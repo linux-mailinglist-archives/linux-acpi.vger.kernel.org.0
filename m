@@ -2,191 +2,394 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C88B4CB381
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 01:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B255A4CB40E
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 02:09:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbiCCAQZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Mar 2022 19:16:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49536 "EHLO
+        id S230444AbiCCAls (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Mar 2022 19:41:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbiCCAQX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 19:16:23 -0500
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87CBD128DFF
-        for <linux-acpi@vger.kernel.org>; Wed,  2 Mar 2022 16:15:37 -0800 (PST)
-Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20220302225640epoutp042dae05e1ef1e4f641de0cfda24cbb1da~YsmKf_97g2598425984epoutp04h
-        for <linux-acpi@vger.kernel.org>; Wed,  2 Mar 2022 22:56:40 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20220302225640epoutp042dae05e1ef1e4f641de0cfda24cbb1da~YsmKf_97g2598425984epoutp04h
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1646261800;
-        bh=3iWbbqBJOFzWAOvgnsU3hKkcSQAKwiWkLuhIlSq681Y=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=uwRvZyP+4WCCQvaNmDPiejEK48NkRC4SHMONuIGqi1NoWEgdUtzlfq9+QY8xI5R7M
-         9+xI4/K/hoHMeL35g7raF9T0/qlYRSWYOOE0VhQ+LAYXpYo9WAvtZQNH5cEsFZhad/
-         8Dtp32qiEU50+zaZ1sAJXBcQqxJQcEOnsga1Qh1k=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20220302225639epcas1p2a85a59e0acf2beadd05e27743e5cb7c9~YsmJ3g_AJ2430124301epcas1p2h;
-        Wed,  2 Mar 2022 22:56:39 +0000 (GMT)
-Received: from epsmges1p3.samsung.com (unknown [182.195.38.241]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4K88ck1y66z4x9Px; Wed,  2 Mar
-        2022 22:56:38 +0000 (GMT)
-Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
-        epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-        FC.E4.09592.626FF126; Thu,  3 Mar 2022 07:56:38 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20220302225637epcas1p11a0d9f404de6dc2701121ffbc7d412e4~YsmIDhjBt1098510985epcas1p1b;
-        Wed,  2 Mar 2022 22:56:37 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20220302225637epsmtrp2e5254885b64a554a7d19bc991a04ece6~YsmICsmnX0052300523epsmtrp2Q;
-        Wed,  2 Mar 2022 22:56:37 +0000 (GMT)
-X-AuditID: b6c32a37-2a5ff70000002578-00-621ff626ad30
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        6A.74.29871.526FF126; Thu,  3 Mar 2022 07:56:37 +0900 (KST)
-Received: from yj84jang02 (unknown [10.88.97.211]) by epsmtip1.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20220302225637epsmtip1abad9f4216e10a5d6043de269b6cd3e7~YsmHzktTf0949609496epsmtip1D;
-        Wed,  2 Mar 2022 22:56:37 +0000 (GMT)
-From:   =?utf-8?B?7J6l7JiB7KeEL1RWIFMvVyBMYWIoVkQpL1N0YWZmIEVuZ2luZWU=?=
-         =?utf-8?B?ci/sgrzshLHsoITsnpA=?= <yj84.jang@samsung.com>
-To:     "'Bjorn Helgaas'" <helgaas@kernel.org>,
-        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>
-Cc:     "'Rafael J. Wysocki'" <rafael@kernel.org>,
-        "'Pavel Machek'" <pavel@ucw.cz>,
-        "'Len Brown'" <len.brown@intel.com>,
-        "'Bjorn Helgaas'" <bhelgaas@google.com>,
-        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <js07.lee@samsung.com>
-In-Reply-To: <20220302201600.GA746065@bhelgaas>
-Subject: RE: [PATCH] PM: Add device name to suspend_report_result()
-Date:   Thu, 3 Mar 2022 07:56:37 +0900
-Message-ID: <044701d82e88$c5edb6f0$51c924d0$@samsung.com>
+        with ESMTP id S230422AbiCCAls (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 19:41:48 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4DE26245;
+        Wed,  2 Mar 2022 16:41:02 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 666C9B822BC;
+        Thu,  3 Mar 2022 00:41:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA44FC004E1;
+        Thu,  3 Mar 2022 00:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646268060;
+        bh=f1wXkjavZEegdLfZM4+Xjf3Xoe2Bhm05K6wqA9b6Vaw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=S1RT3v0UaUujRv1Yo/V8f5WAS0Kh0QTn9tTmTUPlRA02l0jwYc/IduShkADWXalHZ
+         Imj2Zt7tmM3JtwzJt11cqBUXHg0xwJK+y84qMXFj/OfPTuKumw/npEGT+/zJ26FHVu
+         MdA+KT0rtCa9mzXU4m0s6P+iRcq5DQIxSr5k+AOTXIAojv57AgUNSZWCWp0ROl2B/v
+         2RpMjghGwLJstsG/VLhsUvsxYzIWhYoHzg3Fz/j16PUppFhMFh6X+ipogI5b29EbCb
+         x+uAM8usATGHUZWqynyqIHwGhCBmFUYoLWggtURsJcZFk5Rtuf6DPxHQHZmzGjwSII
+         5Kxvac1ktatww==
+Date:   Wed, 2 Mar 2022 18:40:58 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] x86/PCI: Disable exclusion of E820 reserved addressed
+ in some cases
+Message-ID: <20220303004058.GA610543@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQEynvdJh8FuJQ7CWAlJZtNNGRQBBQHeIvO4rejfgPA=
-Content-Language: ko
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOJsWRmVeSWpSXmKPExsWy7bCmga7aN/kkg8OLOCyWNGVYNC9ez2bx
-        6sxaNotHN3+zWsyaspfJYvm+fkaLy7vmsFmcnXeczeJz7xFGi0XLWpkt7p46ymYx98tUZgce
-        jwWbSj0W73nJ5LFpVSebx/65a9g9+rasYvRYsfo7u8fnTXIB7FHZNhmpiSmpRQqpecn5KZl5
-        6bZK3sHxzvGmZgaGuoaWFuZKCnmJuam2Si4+AbpumTlAdyoplCXmlAKFAhKLi5X07WyK8ktL
-        UhUy8otLbJVSC1JyCswK9IoTc4tL89L18lJLrAwNDIxMgQoTsjMmNneyFRxSrXg3cy5TA+N6
-        lS5GTg4JAROJd00vmbsYuTiEBHYwShyfupgVJCEk8IlR4s4fa4jEN0aJ+St2ssF0nH/znQmi
-        aC+jxI9bTBBFzxkl3r2ewgiSYBNoZJT4810BxBYRSJRYO7+ZBaSIWeASk8T1S1vAijgF9CXO
-        n+0AmyQs4Cyxd98RFhCbRUBF4sDVM8wgNq+ApcTiNSfZIWxBiZMzn4DVMAtoSyxb+JoZ4iIF
-        iZ9Pl7FCLLOSaFnSB1UjIjG7sw2q5giHxMZzYRC2i0TPwrusELawxKvjW9ghbCmJz+/2Qn2Z
-        LjHx8VuoeIHE38dLoOYYS7x7uxbI5gCarymxfpc+RFhRYufvuYwQa/kk3n3tYQUpkRDgleho
-        E4IoUZZ4fH411HRJifW/9zNNYFSaheSxWUgem4XkgVkIyxYwsqxiFEstKM5NTy02LDCGx3Vy
-        fu4mRnAK1jLfwTjt7Qe9Q4xMHIyHGCU4mJVEeMWt5ZOEeFMSK6tSi/Lji0pzUosPMZoCg3oi
-        s5Rocj4wC+SVxBuaWBqYmBmZWBhbGpspifOumnY6UUggPbEkNTs1tSC1CKaPiYNTqoHpunid
-        Q/RF7nWGV99tnsnyTfbFPf80zu8CC7cySl039FwoPa/9wDXBd11ZBf6+Z3f2ZvHo7G/w3Kln
-        MO9F/S5XaZOCVZZW/N8ZH69LCM8/97fBsPQgf0KWaPCZk3JL/Lz3ap7RYJ+yil3tS2SNzP3Y
-        F5rLt3GvWrHrrnxD1sYSv0wP2ReqDs+XJR40YjlpfuLlJt2ujRt4nkWl9Hg6HL1RvvZ1XdI1
-        Jo0jk76VLZ70TW+n5k6BdwJuAR8mZ31V00jbfyp9iahyZLTq9qN/8+VlHc6I39l/kOPutpmB
-        +mmVGRLG1zZI+DbM/HwjvHjLiZWH7A6VT2zizVy0q7r2ivIrXrkPapO5jP+eFL2b6y+txFKc
-        kWioxVxUnAgAG6TXeEoEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCIsWRmVeSWpSXmKPExsWy7bCSnK7qN/kkg28PdCyWNGVYNC9ez2bx
-        6sxaNotHN3+zWsyaspfJYvm+fkaLy7vmsFmcnXeczeJz7xFGi0XLWpkt7p46ymYx98tUZgce
-        jwWbSj0W73nJ5LFpVSebx/65a9g9+rasYvRYsfo7u8fnTXIB7FFcNimpOZllqUX6dglcGSv2
-        32EsWCBV0fxrE1sD40zRLkZODgkBE4nzb74zdTFycQgJ7GaUeD7lNyNEQlLi66fPbF2MHEC2
-        sMThw8UQNU8ZJTbNu8cMUsMm0Mgo8ee7AogtIpAo0ft1BguIzSxwi0ni7yFniIYGRolVRzeA
-        JTgF9CXOn+1gArGFBZwl9u47AhZnEVCROHD1DNhQXgFLicVrTrJD2IISJ2c+gRqqLfH05lM4
-        e9nC18wQhypI/Hy6jBXiCCuJliV9UDUiErM725gnMArPQjJqFpJRs5CMmoWkZQEjyypGydSC
-        4tz03GLDAsO81HK94sTc4tK8dL3k/NxNjOCI1NLcwbh91Qe9Q4xMHIyHGCU4mJVEeMWt5ZOE
-        eFMSK6tSi/Lji0pzUosPMUpzsCiJ817oOhkvJJCeWJKanZpakFoEk2Xi4JRqYNoV9uXFt/Uy
-        RUovPXVa5Hyip3hEeO3teT/JKa7xmpKy5nLrIKEf9qZ81idKYm/dND7y8zvTphKPG7Nj425m
-        8E+5sdaoN/NS0fyvqT+nff1k3HKhwnP1tve7zefZOO3e7yXsqKK4ou05y+wda6P65Eyr3uvO
-        SRR0lT8s67luXSXjje2687ftF5zR8LJme7f+se5H/6aLR06xM4ot8mIp+lfxRnuXwR6Jxztb
-        fD/UXLho/6rpXeVB7Z9zwo48Snjv3dfp+1/pyQfj0kwldsfABxOce26kHf69SPbxWSUjL9tr
-        Xlm7Xh34zXVr7f7sB11n9d8lcGrOOTFn2TtbL9UVOVyrO2vMczgY+5eYcAQ92qbEUpyRaKjF
-        XFScCADf4E/lNwMAAA==
-X-CMS-MailID: 20220302225637epcas1p11a0d9f404de6dc2701121ffbc7d412e4
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220302201609epcas1p4d2c0b15e8915f359e6744e21c27022a0
-References: <CGME20220302201609epcas1p4d2c0b15e8915f359e6744e21c27022a0@epcas1p4.samsung.com>
-        <20220302201600.GA746065@bhelgaas>
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220228105259.230903-2-hdegoede@redhat.com>
+X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> -----Original Message-----
-> From: Bjorn Helgaas <helgaas=40kernel.org>
-> Sent: Thursday, March 3, 2022 5:16 AM
-> To: 'Greg Kroah-Hartman' <gregkh=40linuxfoundation.org>
-> Cc: =EF=BF=BD=E5=BF=B5=EF=BF=BD=EF=BF=BD/TV=20S/W=20Lab(VD)/Staff=20Engin=
-eer/=EF=BF=BD=EF=BC=BA=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=20<yj84.jang=40s=
-amsung.com>;=0D=0A>=20'Rafael=20J.=20Wysocki'=20<rafael=40kernel.org>;=20'P=
-avel=20Machek'=20<pavel=40ucw.cz>;=0D=0A>=20'Len=20Brown'=20<len.brown=40in=
-tel.com>;=20'Bjorn=20Helgaas'=20<bhelgaas=40google.com>;=0D=0A>=20linux-pm=
-=40vger.kernel.org;=20linux-kernel=40vger.kernel.org;=20linux-=0D=0A>=20pci=
-=40vger.kernel.org;=20linux-acpi=40vger.kernel.org;=20linux-usb=40vger.kern=
-el.org;=0D=0A>=20js07.lee=40samsung.com=0D=0A>=20Subject:=20Re:=20=5BPATCH=
-=5D=20PM:=20Add=20device=20name=20to=20suspend_report_result()=0D=0A>=20=0D=
-=0A>=20On=20Wed,=20Mar=2002,=202022=20at=2003:52:51PM=20+0100,=20'Greg=20Kr=
-oah-Hartman'=20wrote:=0D=0A>=20>=20On=20Wed,=20Mar=2002,=202022=20at=2008:0=
-0:14PM=20+0900,=20=20=E5=BF=B5=20=20/TV=20S/W=20Lab(VD)/Staff=0D=0A>=20Engi=
-neer/=20=EF=BC=BA=20=20=20=20=20wrote:=0D=0A>=20>=20>=20>=20-----Original=
-=20Message-----=0D=0A>=20>=20>=20>=20From:=20Greg=20Kroah-Hartman=20<gregkh=
-=40linuxfoundation.org>=0D=0A>=20>=20>=20>=20Sent:=20Wednesday,=20March=202=
-,=202022=204:58=20PM=0D=0A>=20>=20>=20>=20To:=20Youngjin=20Jang=20<yj84.jan=
-g=40samsung.com>=0D=0A>=20>=20>=20>=20Cc:=20Rafael=20J.=20Wysocki=20<rafael=
-=40kernel.org>;=20Pavel=20Machek=0D=0A>=20>=20>=20>=20<pavel=40ucw.cz>;=20L=
-en=20Brown=20<len.brown=40intel.com>;=20Bjorn=20Helgaas=0D=0A>=20>=20>=20>=
-=20<bhelgaas=40google.com>;=20linux-pm=40vger.kernel.org;=0D=0A>=20>=20>=20=
->=20linux-kernel=40vger.kernel.org;=20linux-=20pci=40vger.kernel.org;=0D=0A=
->=20>=20>=20>=20linux-acpi=40vger.kernel.org;=20linux-=0D=0A>=20>=20>=20usb=
-=40vger.kernel.org;=0D=0A>=20>=20>=20>=20js07.lee=40samsung.com=0D=0A>=20>=
-=20>=20>=20Subject:=20Re:=20=5BPATCH=5D=20PM:=20Add=20device=20name=20to=0D=
-=0A>=20>=20>=20>=20suspend_report_result()=0D=0A>=20>=20>=20>=0D=0A>=20>=20=
->=20>=20On=20Wed,=20Mar=2002,=202022=20at=2003:49:17PM=20+0900,=20Youngjin=
-=20Jang=20wrote:=0D=0A>=20>=20>=20>=20>=20From:=20=22yj84.jang=22=20<yj84.j=
-ang=40samsung.com>=0D=0A>=20>=20>=20>=20>=0D=0A>=20>=20>=20>=20>=20currentl=
-y,=20suspend_report_result()=20prints=20only=20function=0D=0A>=20informatio=
-n.=0D=0A>=20>=20>=20>=20>=20If=20any=20driver=20uses=20common=20pm=20functi=
-on,=20nobody=20knows=20who=20called=0D=0A>=20>=20>=20>=20>=20failed=20funct=
-ion=20exactly.=0D=0A>=20>=20>=20>=20>=0D=0A>=20>=20>=20>=20>=20So,=20device=
-=20information=20is=20needed=20to=20recognize=20specific=20wrong=0D=0A>=20d=
-river.=0D=0A>=20>=20>=20>=20>=0D=0A>=20>=20>=20>=20>=20e.g.)=0D=0A>=20>=20>=
-=20>=20>=20PM:=20dpm_run_callback():=20pm_generic_suspend+0x0/0x48=20return=
-s=200=0D=0A>=20>=20>=20>=20>=20PM:=20dpm_run_callback():=20platform_pm_susp=
-end+0x0/0x68=20returns=200=0D=0A>=20>=20>=20>=20>=20after=20patch,=0D=0A>=
-=20>=20>=20>=20>=20PM:=20dpm_run_callback():=20pm_generic_suspend+0x0/0x48=
-=20(amba)=0D=0A>=20>=20>=20>=20>=20returns=200=0D=0A>=20>=20>=20>=20>=20PM:=
-=20dpm_run_callback():=20platform_pm_suspend+0x0/0x68=20(armv7-pmu)=0D=0A>=
-=20>=20>=20>=20>=20returns=200=0D=0A>=20=0D=0A>=20>=20>=20>=20>=20-=09=09pr=
-_err(=22%s():=20%pS=20returns=20%d=5Cn=22,=20function,=20fn,=20ret);=0D=0A>=
-=20>=20>=20>=20>=20+=09=09pr_err(=22%s():=20%pS=20(%s)=20returns=20%d=5Cn=
-=22,=20function,=20fn,=0D=0A>=20>=20>=20>=20>=20+dev_driver_string(dev),=20=
-ret);=0D=0A>=20>=20>=20>=0D=0A>=20>=20>=20>=20If=20you=20have=20a=20struct=
-=20device,=20please=20use=20dev_err().=0D=0A>=20>=20>=0D=0A>=20>=20>=20I=20=
-think=20dev_err()=20is=20nice=20option,=20but=20we=20can=20see=20a=20minor=
-=20issue.=0D=0A>=20>=20>=20Prefix=20log=20=22PM:=20=22=20would=20be=20lost,=
-=20If=20I=20use=20dev_err()=20in=20this=20context.=0D=0A>=20>=20>=20As=20yo=
-u=20know,=20all=20logs=20in=20power=20management=20include=20=22PM=20:=22=
-=20prefix.=0D=0A>=20>=0D=0A>=20>=20Why=20does=20that=20matter?=20=20Fix=20t=
-hem=20all=20to=20use=20the=20struct=20device=20pointer=0D=0A>=20>=20and=20t=
-hen=20they=20will=20be=20properly=20unified=20with=20the=20rest=20of=20the=
-=20kernel=20log=0D=0A>=20>=20infrastructure.=0D=0A>=20=0D=0A>=20You=20can=
-=20=23define=20dev_fmt=20if=20you=20need=20a=20prefix.=0D=0A=0D=0AI=20teste=
-d=20dev_fmt=20before,=20but=20I=20feel=20that=20not=20a=20good=20solution.=
-=0D=0ABecause=20the=20readability=20is=20not=20so=20great=20than=20I=20expe=
-cted.=0D=0AI=20didn't=20want=20to=20break=20the=20PM=20logging=20rules.=0D=
-=0A=0D=0AAnyway,=20I=20got=20you=20guys=20opinion.=0D=0ALet=20me=20try=20se=
-cond=20patch=20with=20dev_err().=0D=0A=0D=0A
+On Mon, Feb 28, 2022 at 11:52:59AM +0100, Hans de Goede wrote:
+
+I know Rafael has already applied this, but I'm still trying to
+understand this because it looks like a very complicated maintenance
+problem.
+
+> Some fw has a bug where the PCI bridge window returned by the ACPI
+> resources partly overlaps with some other address range, causing issues.
+> To workaround this Linux excludes E820 reserved addresses when allocating
+> addresses from the PCI bridge window. 2 known examples of such fw bugs are:
+>
+> 1. The returned window contains addresses which map to system RAM,
+> see commit 4dc2287c1805 ("x86: avoid E820 regions when allocating
+> address space").
+
+Bug report is https://bugzilla.kernel.org/show_bug.cgi?id=16228
+First dmesg log https://bugzilla.kernel.org/attachment.cgi?id=26811
+shows:
+
+  BIOS-e820: 00000000bfe4dc00 - 00000000c0000000 (reserved)
+  pci_root PNP0A03:00: host bridge window [mem 0xbff00000-0xdfffffff]
+  pci 0000:00:1f.2: no compatible bridge window for [mem 0xff970000-0xff9707ff]
+  pci 0000:00:1f.2: BAR 5: assigned [mem 0xbff00000-0xbff007ff]
+  ahci 0000:00:1f.2: controller reset failed (0xffffffff)
+  ahci 0000:00:1f.2: failed to stop engine (-5)
+
+The problem is that _CRS advertises [mem 0xbff00000-0xdfffffff], and
+we assigned [mem 0xbff00000-0xbff007ff] to 00:1f.2, but
+0xbff00000-0xbfffffff is not usable for PCI devices.  My guess is that
+it contains host bridge registers, but all we really know is that it
+doesn't work.
+
+I think the _CRS that includes non-usable space is clearly a BIOS
+defect.
+
+The fix from 4dc2287c1805 was to avoid that region based on the
+0xbfe4dc00-0xc0000000 E820 entry, and the result is in
+https://bugzilla.kernel.org/attachment.cgi?id=30662:
+
+  BIOS-e820: 00000000bfe4dc00 - 00000000c0000000 (reserved)
+  pci_root PNP0A03:00: host bridge window [mem 0xbff00000-0xf7ffffff]
+  pci_root PNP0A03:00: host bridge window [mem 0xff980000-0xff980fff]
+  pci 0000:00:1f.2: reg 24: [mem 0xff970000-0xff9707ff]   # BAR 5
+  pci 0000:00:1f.2: no compatible bridge window for [mem 0xff970000-0xff9707ff]
+  pci 0000:00:1f.2: BAR 5: assigned [mem 0xff980800-0xff980fff]
+
+The patch below doesn't affect this workaround.
+
+> 2. The Lenovo X1 carbon gen 2 BIOS has an overlap between an EFI/E820
+> reserved range and the ACPI provided PCI bridge window:
+>  efi: mem46: [MMIO] range=              [0x00000000dfa00000-0x00000000dfa0ffff] (0MB)
+>  BIOS-e820:                         [mem 0x00000000dceff000-0x00000000dfa0ffff] reserved
+>  pci_bus 0000:00: root bus resource [mem         0xdfa00000-        0xfebfffff window]
+> If Linux assigns the overlapping 0xdfa00000-0xdfa0ffff range to a PCI BAR
+> then the system fails to resume after a suspend.
+
+I think this is from https://bugzilla.redhat.com/show_bug.cgi?id=2029207
+
+If I understand correctly, the log in comment 23 from Ivan
+(https://bugzilla.redhat.com/attachment.cgi?id=1859801) is a
+case where resume doesn't work:
+
+  BIOS-e820: [mem 0x00000000dceff000-0x00000000dfa0ffff] reserved
+  pci_bus 0000:00: root bus resource [mem 0xdfa00000-0xfebfffff window]
+  pci 0000:00:1c.0: BAR 14: assigned [mem 0xdfa00000-0xdfbfffff]
+
+And the log in comment 38, also from Ivan,
+(https://bugzilla.redhat.com/attachment.cgi?id=1861539) is a case
+where resume *does* work:
+
+  BIOS-e820: [mem 0x00000000dcf00000-0x00000000dfa0ffff] reserved
+  efi: mem46: [MMIO        |RUN|  |  |  |  |  |  |  |  |   |  |  |  |  ] range=[0x00000000dfa00000-0x00000000dfa0ffff] (0MB)
+  pci_bus 0000:00: root bus resource [mem 0xdfa00000-0xfebfffff window]
+  pci 0000:00:1c.0: BAR 14: assigned [mem 0xdfb00000-0xdfcfffff]
+
+_CRS advertises [mem 0xdfa00000-0xfebfffff], but when we assign the
+0xdfa00000-0xdfafffff region to the 00:1c.0 MMIO window, resume fails.
+
+I don't see a theory about what the root cause is.  It's possible this
+is similar to case 1 above, where _CRS is defective.  But here we're
+only assigning the 00:1c.0 MMIO window, and 00:1c.0 is a bridge to
+[bus 02], and there are no devices on bus 02.  There should be no
+transactions that use that MMIO window, so it's not clear why this
+should matter.
+
+If this is a _CRS defect similar to case 1, it's possible there are
+host bridge registers in 0xdfa00000-0xdfafffff, and BIOS might use
+those during resume, and assigning that area to the 00:1c.0 MMIO
+window might interfere with that.  But that's a lot of speculation.
+
+If you have a good Lenovo contact, they might be able to confirm or
+deny this.
+
+I'm missing some things here that should be obvious; can you help me
+out?
+
+  - Why did the 4dc2287c1805 workaround not apply here?  The E820
+    region overlaps the _CRS window just like in case 1, so why did we
+    assign 0xdfa00000?
+
+  - How does this patch work around the problem?  This patch checks if
+    a host bridge window is completely contained in an EFI MMIO
+    region, but I don't see such an EFI region here.
+
+It might be interesting to poke around in the 0xdfa00000-0xdfafffff
+range.  For example, if Ivan tried things like this, it's possible
+we'd find something we could identify as registers:
+
+  # ./rdwrmem -b 4 -m -s 0xdfa00000 -l 256
+  # ./rdwrmem -b 4 -m -s 0xdfa40000 -l 256
+  # ./rdwrmem -b 4 -m -s 0xdfa80000 -l 256
+  # ./rdwrmem -b 4 -m -s 0xdfac0000 -l 256
+
+This tool is from https://cmp.felk.cvut.cz/~pisa/linux/rdwrmem.c
+
+> Recently (2019) some systems have shown-up with EFI memmap MMIO entries
+> covering the entire ACPI provided PCI bridge window. These memmap entries
+> get converted into e820_table entries, causing all attempts to assign
+> memory to PCI BARs which have not been setup by the BIOS to fail.
+> For example see these dmesg snippets from a Lenovo IdeaPad 3 15IIL 81WE:
+>  efi: mem63: [MMIO] range=              [0x0000000065400000-0x00000000cfffffff] (1708MB)
+>  BIOS-e820:                         [mem 0x000000004bc50000-0x00000000cfffffff] reserved
+>  pci_bus 0000:00: root bus resource [mem         0x65400000-        0xbfffffff window]
+>  pci 0000:00:15.0: BAR 0: no space for [mem size 0x00001000 64bit]
+>  pci 0000:00:15.0: BAR 0: failed to assign [mem size 0x00001000 64bit]
+> 
+> To fix this, check if the ACPI provided PCI bridge window is fully
+> contained within in EFI memmap MMIO region and in that case disable
+> the "exclude E820 reserved addresses" workaround, fixing the problem
+> of not being able to find free space for unassigned BARs.
+> 
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
+> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
+> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=2029207
+> BugLink: https://bugs.launchpad.net/bugs/1878279
+> BugLink: https://bugs.launchpad.net/bugs/1931715
+> BugLink: https://bugs.launchpad.net/bugs/1932069
+> BugLink: https://bugs.launchpad.net/bugs/1921649
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v2:
+> - Add a couple of missing includes to arch/x86/include/asm/pci_x86.h
+>   to fix i386 build errors Reported-by: kernel test robot <lkp@intel.com>
+> - Do not call resource_is_efi_mmio_region() on resource-list entries which
+>   have just been destroyed because they match resource_is_pcicfg_ioport()
+>   Reported-by: kernel test robot <oliver.sang@intel.com>
+> - Add (res->flags & IORESOURCE_MEM) check to resource_is_efi_mmio_region()
+> ---
+>  arch/x86/include/asm/pci_x86.h | 10 +++++
+>  arch/x86/kernel/resource.c     |  4 ++
+>  arch/x86/pci/acpi.c            | 68 +++++++++++++++++++++++++++++++++-
+>  3 files changed, 81 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/include/asm/pci_x86.h b/arch/x86/include/asm/pci_x86.h
+> index 490411dba438..4ce61ab01a4f 100644
+> --- a/arch/x86/include/asm/pci_x86.h
+> +++ b/arch/x86/include/asm/pci_x86.h
+> @@ -5,7 +5,9 @@
+>   *	(c) 1999 Martin Mares <mj@ucw.cz>
+>   */
+>  
+> +#include <linux/init.h>
+>  #include <linux/ioport.h>
+> +#include <linux/spinlock.h>
+>  
+>  #undef DEBUG
+>  
+> @@ -64,6 +66,8 @@ void pcibios_scan_specific_bus(int busn);
+>  
+>  /* pci-irq.c */
+>  
+> +struct pci_dev;
+
+Both the above look like fixes to an unrelated asm/pci_x86.h
+problem that happened to be exposed by including it in
+arch/x86/kernel/resource.c.  Most users of asm/pci_x86.h
+include linux/pci.h first, which covers up the problem.
+
+>  struct irq_info {
+>  	u8 bus, devfn;			/* Bus, device and function */
+>  	struct {
+> @@ -232,3 +236,9 @@ static inline void mmio_config_writel(void __iomem *pos, u32 val)
+>  # define x86_default_pci_init_irq	NULL
+>  # define x86_default_pci_fixup_irqs	NULL
+>  #endif
+> +
+> +#if defined CONFIG_PCI && defined CONFIG_ACPI
+> +extern bool pci_use_e820;
+> +#else
+> +#define pci_use_e820 true
+> +#endif
+> diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
+> index 9b9fb7882c20..e8dc9bc327bd 100644
+> --- a/arch/x86/kernel/resource.c
+> +++ b/arch/x86/kernel/resource.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #include <linux/ioport.h>
+>  #include <asm/e820/api.h>
+> +#include <asm/pci_x86.h>
+>  
+>  static void resource_clip(struct resource *res, resource_size_t start,
+>  			  resource_size_t end)
+> @@ -28,6 +29,9 @@ static void remove_e820_regions(struct resource *avail)
+>  	int i;
+>  	struct e820_entry *entry;
+>  
+> +	if (!pci_use_e820)
+> +		return;
+> +
+>  	for (i = 0; i < e820_table->nr_entries; i++) {
+>  		entry = &e820_table->entries[i];
+>  
+> diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+> index 052f1d78a562..fce05e03ba9e 100644
+> --- a/arch/x86/pci/acpi.c
+> +++ b/arch/x86/pci/acpi.c
+> @@ -1,4 +1,5 @@
+>  // SPDX-License-Identifier: GPL-2.0
+> +#include <linux/efi.h>
+>  #include <linux/pci.h>
+>  #include <linux/acpi.h>
+>  #include <linux/init.h>
+> @@ -21,6 +22,7 @@ struct pci_root_info {
+>  
+>  static bool pci_use_crs = true;
+>  static bool pci_ignore_seg;
+> +bool pci_use_e820 = true;
+>  
+>  static int __init set_use_crs(const struct dmi_system_id *id)
+>  {
+> @@ -291,6 +293,63 @@ static bool resource_is_pcicfg_ioport(struct resource *res)
+>  		res->start == 0xCF8 && res->end == 0xCFF;
+>  }
+>  
+> +/*
+> + * Some fw has a bug where the PCI bridge window returned by the ACPI resources
+> + * partly overlaps with some other address range, causing issues. To workaround
+> + * this Linux excludes E820 reserved addresses when allocating addresses from
+> + * the PCI bridge window. 2 known examples of such firmware bugs are:
+> + *
+> + * 1. The returned window contains addresses which map to system RAM, see
+> + * commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address space").
+> + *
+> + * 2. The Lenovo X1 carbon gen 2 BIOS has an overlap between an EFI/E820
+> + * reserved range and the ACPI provided PCI bridge window:
+> + *  efi: mem46: [MMIO] range=[0x00000000dfa00000-0x00000000dfa0ffff] (0MB)
+> + *  BIOS-e820: [mem 0x00000000dceff000-0x00000000dfa0ffff] reserved
+> + *  pci_bus 0000:00: root bus resource [mem 0xdfa00000-0xfebfffff window]
+> + * If Linux assigns the overlapping 0xdfa00000-0xdfa0ffff range to a PCI BAR
+> + * then the system fails to resume after a suspend.
+> + *
+> + * Recently (2019) some systems have shown-up with EFI memmap MMIO entries
+> + * covering the entire ACPI provided PCI bridge window. These memmap entries
+> + * get converted into e820_table entries, causing all attempts to assign
+> + * memory to PCI BARs which have not been setup by the BIOS to fail.
+> + * For example see these dmesg snippets from a Lenovo IdeaPad 3 15IIL 81WE:
+> + *  efi: mem63: [MMIO] range=[0x0000000065400000-0x00000000cfffffff] (1708MB)
+> + *  BIOS-e820: [mem 0x000000004bc50000-0x00000000cfffffff] reserved
+> + *  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
+> + *  pci 0000:00:15.0: BAR 0: no space for [mem size 0x00001000 64bit]
+> + *  pci 0000:00:15.0: BAR 0: failed to assign [mem size 0x00001000 64bit]
+> + *
+> + * To code below checks if the ACPI provided PCI bridge window is fully
+> + * contained within in EFI memmap MMIO region and in that case disables
+> + * the "exclude E820 reserved addresses" workaround to avoid this issue.
+> + */
+> +static bool resource_is_efi_mmio_region(const struct resource *res)
+> +{
+> +	unsigned long long start, end;
+> +	efi_memory_desc_t *md;
+> +
+> +	if (!(res->flags & IORESOURCE_MEM))
+> +		return false;
+> +
+> +	if (!efi_enabled(EFI_MEMMAP))
+> +		return false;
+> +
+> +	for_each_efi_memory_desc(md) {
+> +		if (md->type != EFI_MEMORY_MAPPED_IO)
+> +			continue;
+> +
+> +		start = md->phys_addr;
+> +		end = start + (md->num_pages << EFI_PAGE_SHIFT) - 1;
+> +
+> +		if (res->start >= start && res->end <= end)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+>  {
+>  	struct acpi_device *device = ci->bridge;
+> @@ -300,9 +359,16 @@ static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+>  
+>  	status = acpi_pci_probe_root_resources(ci);
+>  	if (pci_use_crs) {
+> -		resource_list_for_each_entry_safe(entry, tmp, &ci->resources)
+> +		resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
+>  			if (resource_is_pcicfg_ioport(entry->res))
+>  				resource_list_destroy_entry(entry);
+> +			else if (resource_is_efi_mmio_region(entry->res)) {
+> +				dev_info(&device->dev,
+> +					"host bridge window %pR is marked by EFI as MMIO\n",
+> +					entry->res);
+> +				pci_use_e820 = false;
+
+This message suggests that marking the host bridge window as MMIO in
+EFI is a defect, or at least something unusual and worthy of being
+flagged.  But I think it's perfectly legal.
+
+UEFI v2.8, sec 7.2, says EfiMemoryMappedIO means:
+
+  Used by system firmware to request that a memory-mapped IO region be
+  mapped by the OS to a virtual address so it can be accessed by EFI
+  runtime services.
+
+
+> +			}
+> +		}
+>  		return status;
+>  	}
+>  
+> -- 
+> 2.35.1
+> 
