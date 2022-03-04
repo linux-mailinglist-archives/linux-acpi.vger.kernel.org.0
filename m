@@ -2,68 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16DD44CD597
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Mar 2022 14:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2703F4CD61A
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Mar 2022 15:15:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235840AbiCDN43 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Mar 2022 08:56:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50236 "EHLO
+        id S234206AbiCDOQK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Mar 2022 09:16:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229687AbiCDN42 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Mar 2022 08:56:28 -0500
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3606619D634;
-        Fri,  4 Mar 2022 05:55:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646402141; x=1677938141;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=c4N+V43B3i0c7JWoTDHNDNh4DYCcViChbXoi/oxgYJ4=;
-  b=nOzgqITRsYTt3w3jH6R4vrDtROCF2kN2Q9RZ329aWoWgCxUGPkyE9FpJ
-   0bKMjYn5S7aBex4XDPD8gm24Tm4uJCFYISHl/XYMwPY/TtRp+WQ8OgQoG
-   O5b+8Ex3mDwyKX4QJECQeZioe8utkAHvxS7bbjPJ2/FaKr/rzGBbaqU5Z
-   d78vi5BtDMNxNxJbdZWGkSzfNsM5fqJ5BARrDdhoxVHIAOgg1PSnEV0qn
-   mS9EmC3sZ8Y/x+XFOlomzjmmbAmQjSEMgU4s0Ex8EdbOMDIM42NKGbcXj
-   QpIHWBjW0HADYY/407JMXkOxFCUm/SkNXVVRQ1sMsi8pzn3nWuWdMwXL8
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10275"; a="314693087"
-X-IronPort-AV: E=Sophos;i="5.90,155,1643702400"; 
-   d="scan'208";a="314693087"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 05:55:40 -0800
-X-IronPort-AV: E=Sophos;i="5.90,155,1643702400"; 
-   d="scan'208";a="511854676"
-Received: from smile.fi.intel.com ([10.237.72.59])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 05:55:37 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nQ8OR-00BF8a-QX;
-        Fri, 04 Mar 2022 15:54:51 +0200
-Date:   Fri, 4 Mar 2022 15:54:51 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v3 4/6] typec: mux: Allow multiple mux_devs per mux
-Message-ID: <YiIaK8kSYGtivvhk@smile.fi.intel.com>
-References: <20220303223351.141238-1-bjorn.andersson@linaro.org>
- <20220303223351.141238-4-bjorn.andersson@linaro.org>
+        with ESMTP id S233951AbiCDOQK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Mar 2022 09:16:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CC43D1B7A3
+        for <linux-acpi@vger.kernel.org>; Fri,  4 Mar 2022 06:15:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1646403320;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/bGymhB6617r1a5UtR5SmVs04n4Hj/5Nxc0lgsmBP4E=;
+        b=H+raRbN+AMIsMdPwuxDAm48pRqQXjpeVnlsvm5ZIDsSMSqvyThkgxBCS31gNRCniUr7ro0
+        48aRGK0LQBE4B3kT4dNxAojKasR+PJNNqpXhNv4BcBBesdbChMcn0OMtCkP0ZbKR0dkeDO
+        WMGBrIZJMxyjTK5R38xn22Q82gWQhig=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-362-AIUH3vKYMdSfQ5VJztfmvQ-1; Fri, 04 Mar 2022 09:15:19 -0500
+X-MC-Unique: AIUH3vKYMdSfQ5VJztfmvQ-1
+Received: by mail-ej1-f70.google.com with SMTP id r18-20020a17090609d200b006a6e943d09eso4444058eje.20
+        for <linux-acpi@vger.kernel.org>; Fri, 04 Mar 2022 06:15:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=/bGymhB6617r1a5UtR5SmVs04n4Hj/5Nxc0lgsmBP4E=;
+        b=ZQ2SxaWvQuMalHrOmBoPs/lpsdJQy7rXxDt8gwmq1pR76N3Nz6UPLzVDL2GsD9ohHJ
+         pzvy1pG0V76ztGMXkhvMkS8a4WPax2sQmtMb0gHIy5UffnzmKEfsdZLsCutdM7heIBoz
+         zThbUokVOHW3QB8dM9Vm7kPwk+B6lZW1ZlgcZYQwr3Pe7k1TDLMB+KqdkTteKHP+mYFa
+         hTMRl/w6jlKgR2Ik3wBsLZdJVVcRXNy51IqhFU3SzitW3HNWBML8d7S+XBAkfyoqCsHy
+         Jh02QjoIEbZqkTFClj7ze/1px+E99E6KhMyrv95wSAx0nBsKmCEM8h9RCYEBsW894+9O
+         6gSQ==
+X-Gm-Message-State: AOAM532uvkRBfnjpT4StnPWokrs+4yPFpZCbAvH8NiDxm1zerWXTWML6
+        5YVR9aamSjbFskNJwBxqJvAu/ER+mGRP/XuS6u8x6U6yfWlpYy2WKBsT4D3rN5FVKihueZNS2D4
+        HYYVp31SfOx/Qq8Q4tATj5g==
+X-Received: by 2002:a17:907:a0c9:b0:6da:9614:2626 with SMTP id hw9-20020a170907a0c900b006da96142626mr5831174ejc.100.1646403318308;
+        Fri, 04 Mar 2022 06:15:18 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzuq8suB3cekzKdmKk+8QL/Qxz4QVcdLRr5yO92DMAEEF4jcJL9bcL7SgOMYa4YtQzq1wpoMg==
+X-Received: by 2002:a17:907:a0c9:b0:6da:9614:2626 with SMTP id hw9-20020a170907a0c900b006da96142626mr5831141ejc.100.1646403317995;
+        Fri, 04 Mar 2022 06:15:17 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id da19-20020a056402177300b00413583e0996sm2124494edb.14.2022.03.04.06.15.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Mar 2022 06:15:17 -0800 (PST)
+Message-ID: <4836963c-7a1e-7452-eb88-454f2b75e407@redhat.com>
+Date:   Fri, 4 Mar 2022 15:15:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220303223351.141238-4-bjorn.andersson@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH 0/3] x86/PCI: Clip only partial E820 overlaps
+Content-Language: en-US
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+References: <20220304035110.988712-1-helgaas@kernel.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220304035110.988712-1-helgaas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,85 +92,57 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 03, 2022 at 02:33:49PM -0800, Bjorn Andersson wrote:
-> In the Qualcomm platforms the USB/DP PHY handles muxing and orientation
-> switching of the SuperSpeed lines, but the SBU lines needs to be
-> connected and switched by external (to the SoC) hardware.
+Hi Bjorn,
+
+On 3/4/22 04:51, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
 > 
-> It's therefor necessary to be able to have the TypeC controller operate
-> multiple TypeC muxes and switches. Use the newly introduced indirection
-> object to handle this, to avoid having to taint the TypeC controllers
-> with knowledge about the downstream hardware configuration.
+> This is based on Hans' extensive debugging and patch at
+> https://lore.kernel.org/r/20220228105259.230903-1-hdegoede@redhat.com
+> and applies on 7e57714cd0ad ("Linux 5.17-rc6").
 > 
-> The max number of devs per indirection is set to 3, which account for
-> being able to mux/switch the USB HS, SS and SBU lines, as per defined
-> defined in the usb-c-connector binding. This number could be grown if
-> need arrises at a later point in time.
+> This is basically the same idea (applying the 4dc2287c1805 workaround only
+> when an E820 region *partially* overlaps a host bridge window), but I think
+> it's a little simpler.
+> 
+> This also adds a little dmesg output when clipping, which should make
+> future debugging easier.
+> 
+> I bcc'd several folks who didn't have public email addresses in the RedHat
+> bugzilla or Launchpad.  If you review or test this, I'd be happy to
+> acknowledge that.
+> 
+> Bjorn Helgaas (3):
+>   x86/PCI: Eliminate remove_e820_regions() common subexpressions
+>   x86/PCI: Log host bridge window clipping for E820 regions
+>   x86/PCI: Preserve host bridge windows completely covered by E820
 
-...
+Thanks, I agree that this is better then my fix I also like the logging
+added to 2/3 which lets us know if the commit 4dc2287c1805 workaround
+is active.
 
-> +	for (i = 0; i < count; i++) {
-> +		if (IS_ERR(sw_devs[i])) {
-> +			err = PTR_ERR(sw_devs[i]);
-> +			goto put_sw_devs;
-> +		}
-> +	}
->  
-> -	sw->sw_dev = sw_dev;
-> +	for (i = 0; i < count; i++) {
-> +		WARN_ON(!try_module_get(sw_devs[i]->dev.parent->driver->owner));
-> +		sw->sw_devs[i] = sw_devs[i];
-> +	}
-> +
-> +	sw->num_sw_devs = count;
->  
->  	return sw;
-> +
-> +put_sw_devs:
-> +	for (i = 0; i < count; i++) {
+I have one small remark on 3/3. Regardless of that getting addressed
+the entire series is:
 
-Shouldn't it be
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-	while (i--)
+I've done a Fedora test kernel build of 5.16.12 with these 3 patches
+added and asked the reporters of:
 
-?
+https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+(ideapad touchpad bug)
 
-> +		if (!IS_ERR(sw_devs[i]))
+and:
 
-We may get rid of this check if we guarantee that the device is NULL.
+https://bugzilla.redhat.com/show_bug.cgi?id=2029207
+(Lenovo x1 carbon gen 2 regression with my bios-data based fix_
 
-> +			put_device(&sw_devs[i]->dev);
-> +	}
-> +
-> +	kfree(sw);
-> +
-> +	return ERR_PTR(err);
->  }
+to test the rpms and to collect dmesg. On the X1C2 this should show
+the new logging from 2/3 "in action" and on the ideapad the touchpad
+should still work...
 
-...
+Regards,
 
-> +	for (i = 0; i < count; i++) {
-> +		if (IS_ERR(mux_devs[i])) {
-> +			err = PTR_ERR(mux_devs[i]);
-> +			goto put_mux_devs;
-> +		}
-
-Ditto.
-
-> +	}
-
-...
-
-> +put_mux_devs:
-> +	for (i = 0; i < count; i++) {
-> +		if (!IS_ERR(mux_devs[i]))
-> +			put_device(&mux_devs[i]->dev);
-> +	}
-
-Ditto.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Hans
 
 
