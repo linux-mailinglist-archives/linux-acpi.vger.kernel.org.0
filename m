@@ -2,125 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C68134CD771
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Mar 2022 16:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C6394CD7A4
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Mar 2022 16:23:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237804AbiCDPOm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Mar 2022 10:14:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44220 "EHLO
+        id S240316AbiCDPX4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Mar 2022 10:23:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240075AbiCDPOl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Mar 2022 10:14:41 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E409F1B124C;
-        Fri,  4 Mar 2022 07:13:51 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98267143D;
-        Fri,  4 Mar 2022 07:13:51 -0800 (PST)
-Received: from lpieralisi (unknown [10.57.37.112])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 96D4F3F73D;
-        Fri,  4 Mar 2022 07:13:49 -0800 (PST)
-Date:   Fri, 4 Mar 2022 15:13:44 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
-        linux@armlinux.org.uk, lenb@kernel.org, robert.moore@intel.com,
-        james.morse@arm.com, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        patches@amperecomputing.com, scott@os.amperecomputing.com,
-        darren@os.amperecomputing.com
-Subject: Re: [PATCH v5 RESEND 0/2] ACPI: Arm Generic Diagnostic Dump and
- Reset device
-Message-ID: <YiIsYzGeeYWPQKsp@lpieralisi>
-References: <20220304054003.152319-1-ilkka@os.amperecomputing.com>
+        with ESMTP id S240313AbiCDPXs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Mar 2022 10:23:48 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 444D41BB702;
+        Fri,  4 Mar 2022 07:22:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646407380; x=1677943380;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=66bGrpR5PYIU1/su9EGXUAH+XSxS4Nhc40zZxcfzJR8=;
+  b=mn5DeOLLKsmGtbGPwlMokWBBx0yzKxnnOjgO+3j87I2wo4Q0ohhDyYin
+   jPrGdqPO74uMMQuxqXZhRml+uB38xidZl5hDaKBroIWn9bvTi1bjgJHS1
+   IDn00uwmKuh99ESnYta/4InvMlSHl+phcBr5whxdMZ5lBZvj/c2QSZyzp
+   lhBdJbhuKzf41iow9/4+ipXz3Tji8SMZJc6S7Ei/Mrrpfgg56n1iWPrX8
+   20lqgSAXyNlulVwKCKqGTOmmIYmHtfg36F9EbW1GdzIo7Uk3sOP4sbqBK
+   tBmrk+bEG+h58584SfVuo8K3U8yztxid7lJ2BTiFbY70nzQND2nRbOOjc
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10276"; a="233954757"
+X-IronPort-AV: E=Sophos;i="5.90,155,1643702400"; 
+   d="scan'208";a="233954757"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 07:22:59 -0800
+X-IronPort-AV: E=Sophos;i="5.90,155,1643702400"; 
+   d="scan'208";a="609970281"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 07:22:54 -0800
+Received: by lahna (sSMTP sendmail emulation); Fri, 04 Mar 2022 17:21:41 +0200
+Date:   Fri, 4 Mar 2022 17:21:41 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH 0/3] x86/PCI: Clip only partial E820 overlaps
+Message-ID: <YiIuhYVpgkzVwtAi@lahna>
+References: <20220304035110.988712-1-helgaas@kernel.org>
+ <4836963c-7a1e-7452-eb88-454f2b75e407@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220304054003.152319-1-ilkka@os.amperecomputing.com>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <4836963c-7a1e-7452-eb88-454f2b75e407@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 03, 2022 at 09:40:01PM -0800, Ilkka Koskinen wrote:
-> Hi Lorenzo,
-> 
-> Would you prefer this version, which doesn't have platform
-> device/driver any more?
+Hi,
 
-I thought about that and in order to keep consistency it is better to
-keep the platform device model, so please resend the latest version
-platform device based and I will ACK it (hopefully it is not too late
-for v5.18).
+On Fri, Mar 04, 2022 at 03:15:16PM +0100, Hans de Goede wrote:
+> Hi Bjorn,
+> 
+> On 3/4/22 04:51, Bjorn Helgaas wrote:
+> > From: Bjorn Helgaas <bhelgaas@google.com>
+> > 
+> > This is based on Hans' extensive debugging and patch at
+> > https://lore.kernel.org/r/20220228105259.230903-1-hdegoede@redhat.com
+> > and applies on 7e57714cd0ad ("Linux 5.17-rc6").
+> > 
+> > This is basically the same idea (applying the 4dc2287c1805 workaround only
+> > when an E820 region *partially* overlaps a host bridge window), but I think
+> > it's a little simpler.
+> > 
+> > This also adds a little dmesg output when clipping, which should make
+> > future debugging easier.
+> > 
+> > I bcc'd several folks who didn't have public email addresses in the RedHat
+> > bugzilla or Launchpad.  If you review or test this, I'd be happy to
+> > acknowledge that.
+> > 
+> > Bjorn Helgaas (3):
+> >   x86/PCI: Eliminate remove_e820_regions() common subexpressions
+> >   x86/PCI: Log host bridge window clipping for E820 regions
+> >   x86/PCI: Preserve host bridge windows completely covered by E820
+> 
+> Thanks, I agree that this is better then my fix I also like the logging
+> added to 2/3 which lets us know if the commit 4dc2287c1805 workaround
+> is active.
+> 
+> I have one small remark on 3/3. Regardless of that getting addressed
+> the entire series is:
+> 
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-Please note before resending it that sdei_event_unregister() requires a
-retry loop since it can return -EINPROGRESS (see sdei_unregister_ghes()).
+Looks good to me too :)
 
-Thanks,
-Lorenzo
-
-> 
-> --Ilkka
-> 
-> 
-> ----
-> 
-> Arm Generic Diagnostic Dump and Reset device enables a maintainer to
-> request OS to perform a diagnostic dump and reset a system via SDEI
-> event or an interrupt. This patchset adds support for the SDEI path.
-> 
-> I do have a patch to enable the interrupt path as well but I'm holding
-> it back since AGDI table is missing interrupt configuration fields
-> (trigger type etc.).
-> 
-> The recently published specification is available at
-> https://developer.arm.com/documentation/den0093/latest
-> 
-> The patchset was tested on Ampere Altra/Mt. Jade.
-> 
-> The patchset applies on top of
->   git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm bleeding-edge (9db71e8e3027)
-> 
-> I also tested it works on top of Shuai Xue's new patches in bleeding-edge branch (c6f4ba2d2b9a)
-> 
-> From v1:
->      * Moved pdata to the stack and dropped unnecessary kzalloc() in agdi_init()
->      * Changed the ACPICA patch upstreaming order comment in the paragraph above
-> 
-> From v2:
->      * The first patch was split. The most of it was merged to ACPICA project
->        at first and later ported to linux-acpi
->        (fd919e37cb15914c6fe13e13d530a4f732407c6d). The rest are in the first
->        patch.
-> 
-> From v3:
->      Fixed:
-> 	* Moved header files in alphabetical order and removed unnecessary ones
-> 
-> From v4:
-> 	* Platform device/driver stuff removed
-> 	* acpi_agdi_init() call moved from device_initcall to acpi_init() 
-> 	* Slightly modified Kconfig text to keep checkpatch happy
-> 
-> Ilkka Koskinen (2):
->   ACPI: tables: Add AGDI to the list of known table signatures
->   ACPI: AGDI: Add support for Arm Generic Diagnostic Dump and Reset
->     device
-> 
->  drivers/acpi/arm64/Kconfig  | 10 +++++++
->  drivers/acpi/arm64/Makefile |  1 +
->  drivers/acpi/arm64/agdi.c   | 52 +++++++++++++++++++++++++++++++++++++
->  drivers/acpi/bus.c          |  2 ++
->  drivers/acpi/tables.c       |  2 +-
->  include/linux/acpi_agdi.h   | 13 ++++++++++
->  6 files changed, 79 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/acpi/arm64/agdi.c
->  create mode 100644 include/linux/acpi_agdi.h
-> 
-> -- 
-> 2.17.1
-> 
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
