@@ -2,62 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41F344CCC65
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Mar 2022 04:52:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D0ED4CCD09
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Mar 2022 06:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237633AbiCDDxH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Mar 2022 22:53:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55594 "EHLO
+        id S235088AbiCDFXx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Mar 2022 00:23:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237580AbiCDDxG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 22:53:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6D317F6AF;
-        Thu,  3 Mar 2022 19:52:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B1D561AB8;
-        Fri,  4 Mar 2022 03:52:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B743AC340F0;
-        Fri,  4 Mar 2022 03:52:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646365938;
-        bh=75N+jcmKzyM15eD5aiw09cfBllrrBCD9pGfIotildII=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BKgomiKxjAbEBYHFRqv8oZyBrDoEinlAxLe1VGVFAwtZw0nu5Ru8XsWX7+upw4bVk
-         hg8kU2Q6BwdOJUPPzAZWFmeTW3W7qIhgcJC1MdZTCA7RLLGeyv6BWLF7sKTiRQm+UV
-         Kyl1OsUbExBTMwX0UgifFG9l5gv4slkKwQg9djZ4cGaNUBQxJxUWcdHrU/WpkEGw50
-         I7Z7RV7IBsMUra0wNZpkILMe8EEIrwNczcKXBrx0FTgZzQACc4WoYKfgALAT3gEtRq
-         2lqqjrZW9tY2T3x82Oz+jQ1nnVWixoqi4nNTWzbOH6hzpI3YhrQYlJn3YvO9cCe8P5
-         XWLUMkEBLejkQ==
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        =?UTF-8?q?Benoit=20Gr=C3=A9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>, wse@tuxedocomputers.com
-Subject: [PATCH 3/3] x86/PCI: Preserve host bridge windows completely covered by E820
-Date:   Thu,  3 Mar 2022 21:51:11 -0600
-Message-Id: <20220304035110.988712-4-helgaas@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220304035110.988712-1-helgaas@kernel.org>
-References: <20220304035110.988712-1-helgaas@kernel.org>
+        with ESMTP id S238154AbiCDFXv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Mar 2022 00:23:51 -0500
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2098.outbound.protection.outlook.com [40.107.220.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B633184B79;
+        Thu,  3 Mar 2022 21:23:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=n+uIiSKsoNaGBGRDFhsEdlT2PTL/+t6xv410OUPTygF2SorOlZgfcZR0yGlepVMvcFOldDi2yZGAyYHI2zb1J0ECDPBTtY9F+6kv5Tr3b6fcPb26lXp6vqaVDxfqKXupXaEV95K3s9Q+AEJzeGTUi8lmPl5EtjBByEImNhWlDjwW3nX9y5B+98sEyGtYLz1EpvlRSmZdDkpEhOA5iJvCJK3H/FU2H5GG0zKIVyIO0T1VCVzoP3O1cAfPiYLN2AvFFE6F1TfOR1+y2snvB9YqGud7aiWa+msgobD+uuI1YmZU7KathpqFUxIz7xyWXsmMStPXjARuN0ihrXbVeb6P3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Mnt0BVzRyWj/Pd9UarkC1p5dfib/C8yCO0tbyIgLpY=;
+ b=iGgJILJSYeX5F9HRKy2bgPrHTj8CskboYR12qFEgYoQallTp5tBZjKWTWzVAKyg1KYz7n4HnydQNOL9cst6I8EaR8Riugf0/Q3Z5ewU2W0HEFuPsTl2jjvguzqU2mOeLwVEuYu2Ed6+bXwWw4AyUJ5fFSw6t7LvQqCrnlc7picd9mzJFZtlOFZzAPKwFWHQB5A2joNMZiQKWiecwHArvDD13PMf/pWf7lJ7StaaOzm1MVYDUomJ99VYVDV5ImPjRO7OR16MnW6X4Um9pBT3/j9JsNSPIU0j0fxm0ZTJBsQO0M56uI6hSTupHtHJ1SHg2Uxkb+nTqKw8OdHF6IPw1Hg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Mnt0BVzRyWj/Pd9UarkC1p5dfib/C8yCO0tbyIgLpY=;
+ b=QvpO3/1tvcOxgGZ/HAA80ac4BJY6vPRCaFxuMce5SW1q+D6IW3nXfqSWZiLYmxTC6/2fm1a09eIRZIwkqkZBesNDgdmSjMEyN0YS6S08DDxUcvqsPcQHYSMnkoOyMqCG5eiERslbz9gxtiljlkgqD709V+D9ZH0uEHnS3REhTmw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from DM5PR0102MB3590.prod.exchangelabs.com (2603:10b6:4:a4::25) by
+ CH2PR01MB5896.prod.exchangelabs.com (2603:10b6:610:39::30) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5017.22; Fri, 4 Mar 2022 05:23:01 +0000
+Received: from DM5PR0102MB3590.prod.exchangelabs.com
+ ([fe80::181b:1522:26bc:c243]) by DM5PR0102MB3590.prod.exchangelabs.com
+ ([fe80::181b:1522:26bc:c243%4]) with mapi id 15.20.5017.026; Fri, 4 Mar 2022
+ 05:23:01 +0000
+From:   Ilkka Koskinen <ilkka@os.amperecomputing.com>
+To:     lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rafael@kernel.org, linux@armlinux.org.uk
+Cc:     lenb@kernel.org, robert.moore@intel.com, james.morse@arm.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, patches@amperecomputing.com,
+        scott@os.amperecomputing.com, darren@os.amperecomputing.com
+Subject: xFrom e2ebdef7c3a5e7ba998ff20bf62806c388efeaac Mon Sep 17 00:00:00 2001
+Date:   Thu,  3 Mar 2022 21:22:39 -0800
+Message-Id: <20220304052241.151946-1-ilkka@os.amperecomputing.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: CH2PR12CA0006.namprd12.prod.outlook.com
+ (2603:10b6:610:57::16) To DM5PR0102MB3590.prod.exchangelabs.com
+ (2603:10b6:4:a4::25)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d09ac243-c7e0-4fc3-7cd8-08d9fd9f0cc9
+X-MS-TrafficTypeDiagnostic: CH2PR01MB5896:EE_
+X-Microsoft-Antispam-PRVS: <CH2PR01MB589630800B67255675A971619D059@CH2PR01MB5896.prod.exchangelabs.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /dcdi9a37MlyA03+0b52pMibpNGV3FHSaGzqOg2CAu2xr4kSRl6dn56X1Pkj21BIUEW3f6UoAfs8HeZzZrnuwZ7b8TNXo0pctCLhHKANX561Skh3D9+dZd5OfgfDDMSOj25FxcdIQzsS9RUO0VLEtrJV2OmdqKmOzimdhQjkH2Bn18wOBiHlMKfifIXjTVmys0b3zz/+wgzv6X8tux2aM3ocKnRvvH3VLcZavL7yEEIhMQD7KQLgimYt55c1p1LAPXZvS61O9YUpGJBaOh/mKztxZyWGoRLzGahvb7JOOJZMT4VNa1Le7TubSssIjGSLZLcCCnsVJBtqbyjvMe3NC9sm63l28w3qokuz9p5b2O5h9qDCujyrDs12AnDzzYU+FzilAGB3kgpJfGAS/hJARhtV2hqhp9jOJvfmFG7wXeS/QbWOn/hi+ZxIWlniMrXILF9qMK403drvYd87wzbn5PvNW8JQFTKqhzGqpvnnbY4fstGuXKcJKpEqBvr0a+Z6O28O6yLmwL/YV+3SABYfK57YibLauUIE+2k8Suqa0ydHH27ZzUWj0w2ucl4suuinQCAOBQmXCw95v/ioJO2tNpvgqFIyNKCJhgQmH4RqYaGbR+/1nWh2DBJW0Dvpsehxk+ufGBUn+kTw6046tGt7a3QYMtkV6vucxxJILRzl5JBjhfZcD2htyp7zyooiWp/nEVg5w2kKaH33mDxD0bjWfwUx0pwsHPIz2YeYz810V6wE+FNfqlM4MirKqhVSyJ1zMnYc5l0ivejddmKZnde2Yrd0OnJhtSvBElqX41c+puY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR0102MB3590.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(1076003)(5660300002)(6512007)(7416002)(26005)(8936002)(107886003)(2906002)(186003)(2616005)(6486002)(83380400001)(38350700002)(38100700002)(508600001)(6506007)(316002)(52116002)(66556008)(6666004)(4326008)(8676002)(66476007)(66946007)(86362001)(966005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9ae8yS2lwiLpFTrqChycuVeWLhJMGnhw5rbaKr5T0MN4eNPxhCZ2TeT5mVm5?=
+ =?us-ascii?Q?HXO2LQpJWsDL4IcAeqc6Xawy18Zl/wQylPvvA3Sx6BfA9Vwc5UGUjgK2GfJF?=
+ =?us-ascii?Q?l7jpVQRcp8s4xox2rkxv1blq2TbvH0BAEYXnJ3OnlxqHU8ncH+qQNyF55x5b?=
+ =?us-ascii?Q?sYLkJAzXEE7+8JGhoCqGOFuG//fcoGQ5teutbZpwdTU/P8zm2S2PdhzP/96G?=
+ =?us-ascii?Q?wsMd3yCEK/We75KX99o6dQV1mGxQ9eewtPZcdFBlNhS/SF+85M2rK/JGu9I6?=
+ =?us-ascii?Q?alNaZZPbKa6MaHM+P1up82NHNVbryVM90g5J/RmoOcM7/3MGT2LHfEjACDPK?=
+ =?us-ascii?Q?E62tNw/EOrU+8/aaO2oK9DvVEOtL7uZJBk0uE1oQx23PXms7N98/bhOykFwn?=
+ =?us-ascii?Q?+T+G2e/fNIf0JKYZOMcbitCojthh1mXVKEBGqMXg5XaqqvhNK4utgHhuUNAn?=
+ =?us-ascii?Q?JjWW851hWbGe6dNnrfaA/5r0EqylT3HWGqBUsC/Sf4a9hUaBzU4NKf2YEL78?=
+ =?us-ascii?Q?zF6kYz385357k4JIO8deoayESqcZVctZJz/CRdPx5INunf3sKS7hakvq6JrV?=
+ =?us-ascii?Q?Rv2jV0zRJQcZULX4OTMYaGFEj9Ov83UMQAqBZpz+pQqVWbwfgr6si/k+u+Gi?=
+ =?us-ascii?Q?U4ZIUGV85LHxKse6Hh0jtoYBWyDw7lTTZe1uDStcc3UiMwXLSH+4NVz3uHia?=
+ =?us-ascii?Q?ganBX4ocmubwucqRd78PTbDsncfLjIythOnGa1IJFf1vlLvnu9GRt1jqDSPV?=
+ =?us-ascii?Q?V4/khqXrSbqHvOpImVB5RyZ1RTbY/KztB8KLxRZHsoEgCDq6GsyJEDdclDJy?=
+ =?us-ascii?Q?RTtsBEbFs16IzI99SLnE6tnksO5cSWf9UQpnXkbMW/g+J2QBZXQHkT+4nNuE?=
+ =?us-ascii?Q?CE0aDegwZUTUPE8MT9bKqe8eSiYsBLzZLBfM6MDd2D7wK2fVKWY8fmlyoIxO?=
+ =?us-ascii?Q?ILCh73A9DMzp1hADcgScljdOIJ9YSQ/yytPDv/YS2XWwoyQqGF43q8/Rs/Ji?=
+ =?us-ascii?Q?uZTk/poALcPg0BcWN9fxFSZlwYH7p3V72dxjTU2efWsOaCRg1x+QnencJahZ?=
+ =?us-ascii?Q?wiQ/JXOy1KRMA97+YGe/zCVjjXk66pq30p34NQSErLN/73q4aULrIR1HJsWA?=
+ =?us-ascii?Q?zL20vZzKV0hsdhwGdE43dXx1ZXjP7O1Jvy9B3v8hZ2XdpRhFg65eJ/d8CAeq?=
+ =?us-ascii?Q?Gr8wOt7pREGC+C3WWwsGrUqbeANfXO13+LlcYgN32l9y64RPRWlvRLySz+2H?=
+ =?us-ascii?Q?hsH2w1QqNv5zQc6AYex3W6xpRIRWmaqactLGaeu1CBCdb7c7/ubvH2/RDSyS?=
+ =?us-ascii?Q?wXO+y9/FJMGbTvhDFvi4qYNdElq03Wo8RkTitEKU2L3tLtxjo08zZrlXekS5?=
+ =?us-ascii?Q?gBd8k6q9cbi2Ie0S27bx/T33/0haiM9Lb9/wRGV7UF0siedcyZ/L8lhCbfIX?=
+ =?us-ascii?Q?eEY+x8+snIKKKkHPRr9KINfH9BDm7iySb+cQYCla2B9lKo9SpmauMDwKUupS?=
+ =?us-ascii?Q?VnPsExojEIOJQPqp2+llw9/58RNQYIpXK2q+BMr9THqUmNBrR8q9YpMPuN+k?=
+ =?us-ascii?Q?dlVKiRhCw0n12gV9lg2QV5A3X8Vl/Nojbi0I90D0ftPj8k4r/7mXsVvSd2Bt?=
+ =?us-ascii?Q?wbUKBQkAzklEA2GuckHsGGTsDk/H7xSP76/fAs2M3T8sXHgFq+tv7o4piEe4?=
+ =?us-ascii?Q?yNOUqSn5ss1DlfTg3nFMQcZUE48R97qw/6CKYQDVSacnoYVMSjSzFUL/jvjN?=
+ =?us-ascii?Q?fyW95qrKbw=3D=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d09ac243-c7e0-4fc3-7cd8-08d9fd9f0cc9
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR0102MB3590.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2022 05:23:01.1106
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aCrwLDUmhKa/OUbtj8d7WEJuCbILx4OLVKpYzdsMfTE3kZZ50O+7qu5V7pAw4feHIAmZr/8o3tVpEu9cIJ+++47e76UqhwAaZTZfWm4Ypejvux3rNAVfuf3fd34J55dN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR01MB5896
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,98 +117,68 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+Hi Lorenzo,
 
-Many folks have reported PCI devices not working.  It could affect any
-device, but most reports are for Thunderbolt controllers on Lenovo Yoga and
-Clevo Barebone laptops and the touchpad on Lenovo IdeaPads.
+Would you prefer this version, which doesn't have platform device/driver
+any more?
 
-In every report, a region in the E820 table entirely encloses a PCI host
-bridge window from _CRS, and because of 4dc2287c1805 ("x86: avoid E820
-regions when allocating address space"), we ignore the entire window,
-preventing us from assigning space to PCI devices.
+--Ilkka
 
-For example, the dmesg log [2] from bug report [1] shows:
 
-  BIOS-e820: [mem 0x000000004bc50000-0x00000000cfffffff] reserved
-  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
-  pci 0000:00:15.0: BAR 0: no space for [mem size 0x00001000 64bit]
+----
 
-The efi=debug dmesg log [3] from the same report shows the EFI memory map
-entries that created the E820 map:
+Arm Generic Diagnostic Dump and Reset device enables a maintainer to
+request OS to perform a diagnostic dump and reset a system via SDEI
+event or an interrupt. This patchset adds support for the SDEI path.
 
-  efi: mem47: [Reserved |   |WB|WT|WC|UC] range=[0x4bc50000-0x5fffffff]
-  efi: mem48: [Reserved |   |WB|  |  |UC] range=[0x60000000-0x60ffffff]
-  efi: mem49: [Reserved |   |  |  |  |  ] range=[0x61000000-0x653fffff]
-  efi: mem50: [MMIO     |RUN|  |  |  |UC] range=[0x65400000-0xcfffffff]
+I do have a patch to enable the interrupt path as well but I'm holding
+it back since AGDI table is missing interrupt configuration fields
+(trigger type etc.).
 
-4dc2287c1805 ("x86: avoid E820 regions when allocating address space")
-works around issues where _CRS contains non-window address space that can't
-be used for PCI devices.  It does this by removing E820 regions from host
-bridge windows.  But in these reports, the E820 region covers the entire
-window, so 4dc2287c1805 makes it completely unusable.
+The recently published specification is available at
+https://developer.arm.com/documentation/den0093/latest
 
-Per UEFI v2.8, sec 7.2, the EfiMemoryMappedIO type means:
+The patchset was tested on Ampere Altra/Mt. Jade.
 
-  Used by system firmware to request that a memory-mapped IO region be
-  mapped by the OS to a virtual address so it can be accessed by EFI
-  runtime services.
+The patchset applies on top of
+  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm bleeding-edge (9db71e8e3027)
 
-A host bridge window is definitely a memory-mapped IO region, and EFI
-runtime services may need to access it, so I don't think we can argue that
-this is a firmware defect.
+I also tested it works on top of Shuai Xue's new patches in bleeding-edge branch (c6f4ba2d2b9a)
 
-Instead, change the 4dc2287c1805 strategy so it only removes E820 regions
-when they overlap *part* of a host bridge window on the assumption that a
-partial overlap is really register space, not part of the window proper.
+From v1:
+     * Moved pdata to the stack and dropped unnecessary kzalloc() in agdi_init()
+     * Changed the ACPICA patch upstreaming order comment in the paragraph above
 
-If an E820 region covers the entire window from _CRS, assume the _CRS
-window is correct and do nothing.
+From v2:
+     * The first patch was split. The most of it was merged to ACPICA project
+       at first and later ported to linux-acpi
+       (fd919e37cb15914c6fe13e13d530a4f732407c6d). The rest are in the first
+       patch.
 
-[1] https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-[2] https://bugzilla.redhat.com/attachment.cgi?id=1711424
-[3] https://bugzilla.redhat.com/attachment.cgi?id=1861407
+From v3:
+     Fixed:
+	* Moved header files in alphabetical order and removed unnecessary ones
 
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214259
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
-BugLink: https://bugs.launchpad.net/bugs/1878279
-BugLink: https://bugs.launchpad.net/bugs/1931715
-BugLink: https://bugs.launchpad.net/bugs/1932069
-BugLink: https://bugs.launchpad.net/bugs/1921649
-Fixes: 4dc2287c1805 ("x86: avoid E820 regions when allocating address space")
-Link: https://lore.kernel.org/r/20220228105259.230903-1-hdegoede@redhat.com
-Based-on-patch-by: Hans de Goede <hdegoede@redhat.com>
-Reported-by: Benoit Grégoire <benoitg@coeus.ca>   # BZ 206459
-Reported-by: wse@tuxedocomputers.com              # BZ 214259
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
----
- arch/x86/kernel/resource.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+From v4:
+	* Platform device/driver stuff removed
+	* acpi_agdi_init() call moved from device_initcall to acpi_init() 
+	* Slightly modified Kconfig text to keep checkpatch happy
 
-diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
-index 7378ea146976..405f0af53e3d 100644
---- a/arch/x86/kernel/resource.c
-+++ b/arch/x86/kernel/resource.c
-@@ -39,6 +39,17 @@ void remove_e820_regions(struct device *dev, struct resource *avail)
- 		e820_start = entry->addr;
- 		e820_end = entry->addr + entry->size - 1;
- 
-+		/*
-+		 * If an E820 entry covers just part of the resource, we
-+		 * assume E820 is telling us about something like host
-+		 * bridge register space that is unavailable for PCI
-+		 * devices.  But if it covers the *entire* resource, it's
-+		 * more likely just telling us that this is MMIO space, and
-+		 * that doesn't need to be removed.
-+		 */
-+		if (e820_start <= avail->start && avail->end <= e820_end)
-+			continue;
-+
- 		resource_clip(avail, e820_start, e820_end);
- 		if (orig.start != avail->start || orig.end != avail->end) {
- 			dev_info(dev, "clipped %pR to %pR for e820 entry [mem %#010Lx-%#010Lx]\n",
+Ilkka Koskinen (2):
+  ACPI: tables: Add AGDI to the list of known table signatures
+  ACPI: AGDI: Add support for Arm Generic Diagnostic Dump and Reset
+    device
+
+ drivers/acpi/arm64/Kconfig  | 10 +++++++
+ drivers/acpi/arm64/Makefile |  1 +
+ drivers/acpi/arm64/agdi.c   | 52 +++++++++++++++++++++++++++++++++++++
+ drivers/acpi/bus.c          |  2 ++
+ drivers/acpi/tables.c       |  2 +-
+ include/linux/acpi_agdi.h   | 13 ++++++++++
+ 6 files changed, 79 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/acpi/arm64/agdi.c
+ create mode 100644 include/linux/acpi_agdi.h
+
 -- 
-2.25.1
+2.17.1
 
