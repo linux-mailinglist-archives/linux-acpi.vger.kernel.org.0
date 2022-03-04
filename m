@@ -2,46 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 113FD4CD556
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Mar 2022 14:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 417BA4CD591
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Mar 2022 14:53:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230456AbiCDNm1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Mar 2022 08:42:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40886 "EHLO
+        id S231559AbiCDNyN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Mar 2022 08:54:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230061AbiCDNm1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Mar 2022 08:42:27 -0500
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFA251B84F7;
-        Fri,  4 Mar 2022 05:41:38 -0800 (PST)
+        with ESMTP id S230098AbiCDNyN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Mar 2022 08:54:13 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16884532E5;
+        Fri,  4 Mar 2022 05:53:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646401298; x=1677937298;
+  t=1646402006; x=1677938006;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=W8+cYexF94Vl6YzXjBdnxaTLtgugktdOPocSTG8FZjE=;
-  b=fgbVb8Lri4D8f/UrJBnB5Xx45w7rPzcFwsUcbVxtsX7Z28UYVhwk1ksT
-   8ZSpIqcwfu4s0BdQZ/V8hr3EJa9zhOX2GTSsEXWV27AnH8mCYEkP3TYY5
-   lK41hTtGsP7I9DpWDC3DflYs/U68HkQEOKmauknplI9vnHjdB77zBNvdk
-   v6BU59WYH6xVwcsQ55eDj/6LE72xBTSVLlwXO6Qd+i2t9bSGHdzxOkQG4
-   27U/IB8UIxIKgSq4v0N425err6QZhRQFV5k5cgepif0bI4yU9hJNVHvhc
-   AiVqvzHCmg+V+5KXSzPc84GhP2teRBB8c/VBb2d1WL9MEM/R6mUAonnmL
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10275"; a="314691021"
+   mime-version:in-reply-to;
+  bh=EBV+8A/WSH+HEZn2WXFADUJhrDTrMNNGavJydqTbqEE=;
+  b=TpyPI486IwuLTlbBIKbByPctIkCTcqCopfetMFCemqeHECpunCMyY3h4
+   KkOYqRzkM71RIs73pv5+iG0+KxderaHJsVtZTNFrpED3Wg4h25/vIJeob
+   8rFm8/M0TTWls1s98+p/98Ghb5hQjucAroOFCXjc19Go0LNo1dR6WPuTk
+   GzxTzS++P0frb/I62QGZ4gDaogRjo9QvYd84k+XqUI2DPqXDAi1Cq3t9s
+   aNKcb+U2KStjMxUu9X2CdxJA1zb/xt8rjrABNU+3AqYbLbPGIbDaGKwGc
+   3GNlStBW/5pRxvCFVLtBH39aKxZeRCLZWXTEXm70Ok3rbxhSoktbDCkZH
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10275"; a="254170019"
 X-IronPort-AV: E=Sophos;i="5.90,155,1643702400"; 
-   d="scan'208";a="314691021"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 05:41:38 -0800
+   d="scan'208";a="254170019"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 05:53:25 -0800
 X-IronPort-AV: E=Sophos;i="5.90,155,1643702400"; 
-   d="scan'208";a="494331573"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 05:41:35 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 205D420087;
-        Fri,  4 Mar 2022 15:41:33 +0200 (EET)
-Date:   Fri, 4 Mar 2022 15:41:33 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+   d="scan'208";a="642513908"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 05:53:22 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nQ8MG-00BF56-8O;
+        Fri, 04 Mar 2022 15:52:36 +0200
+Date:   Fri, 4 Mar 2022 15:52:35 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Daniel Scally <djrscally@gmail.com>,
@@ -53,16 +54,17 @@ Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Subject: Re: [PATCH v3 1/6] device property: Helper to match multiple
  connections
-Message-ID: <YiIXDZnquRZj8dU5@paasikivi.fi.intel.com>
+Message-ID: <YiIZoyfsJDcwR4gr@smile.fi.intel.com>
 References: <20220303223351.141238-1-bjorn.andersson@linaro.org>
  <YiIL/ejgxhfRhTDP@smile.fi.intel.com>
+ <YiIXDZnquRZj8dU5@paasikivi.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YiIL/ejgxhfRhTDP@smile.fi.intel.com>
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+In-Reply-To: <YiIXDZnquRZj8dU5@paasikivi.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,151 +73,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy, Björn,
+On Fri, Mar 04, 2022 at 03:41:33PM +0200, Sakari Ailus wrote:
+> On Fri, Mar 04, 2022 at 02:54:21PM +0200, Andy Shevchenko wrote:
+> > On Thu, Mar 03, 2022 at 02:33:46PM -0800, Bjorn Andersson wrote:
 
-On Fri, Mar 04, 2022 at 02:54:21PM +0200, Andy Shevchenko wrote:
-> On Thu, Mar 03, 2022 at 02:33:46PM -0800, Bjorn Andersson wrote:
-> > In some cases multiple connections with the same connection id
-> > needs to be resolved from a fwnode graph.
+...
+
+> > > +		if (count >= matches_len && matches) {
+> > > +			fwnode_handle_put(ep);
+> > > +			return count;
+> > > +		}
 > > 
-> > One such example is when separate hardware is used for performing muxing
-> > and/or orientation switching of the SuperSpeed and SBU lines in a USB
-> > Type-C connector. In this case the connector needs to belong to a graph
-> > with multiple matching remote endpoints, and the Type-C controller needs
-> > to be able to resolve them both.
+> > Wouldn't be the same as
 > > 
-> > Add a new API that allows this kind of lookup.
+> > 		if (count >= matches_len) {
+> > 			fwnode_handle_put(ep);
+> > 			break;
+> > 		}
 > 
-> ...
-> 
-> > +static unsigned int fwnode_graph_devcon_matches(struct fwnode_handle *fwnode,
-> > +						const char *con_id, void *data,
-> > +						devcon_match_fn_t match,
-> > +						void **matches,
-> > +						unsigned int matches_len)
-> > +{
-> > +	struct fwnode_handle *node;
-> > +	struct fwnode_handle *ep;
-> > +	unsigned int count = 0;
-> > +	void *ret;
-> > +
-> > +	fwnode_graph_for_each_endpoint(fwnode, ep) {
-> 
-> > +		if (count >= matches_len && matches) {
-> > +			fwnode_handle_put(ep);
-> > +			return count;
-> > +		}
-> 
-> Wouldn't be the same as
-> 
-> 		if (count >= matches_len) {
-> 			fwnode_handle_put(ep);
-> 			break;
-> 		}
+> Don't you need to check for non-NULL matches here?
 
-Don't you need to check for non-NULL matches here?
+Right, this should be kept as in original patch.
 
-I find return above easier to read.
+> I find return above easier to read.
 
-> 
-> ?
-> 
-> > +		node = fwnode_graph_get_remote_port_parent(ep);
-> > +		if (!fwnode_device_is_available(node)) {
-> > +			fwnode_handle_put(node);
-> > +			continue;
-> > +		}
-> > +
-> > +		ret = match(node, con_id, data);
-> > +		fwnode_handle_put(node);
-> > +		if (ret) {
-> > +			if (matches)
-> > +				matches[count] = ret;
-> > +			count++;
-> > +		}
-> > +	}
-> > +	return count;
-> > +}
-> 
-> ...
-> 
-> > +static unsigned int fwnode_devcon_matches(struct fwnode_handle *fwnode,
-> > +					  const char *con_id, void *data,
-> > +					  devcon_match_fn_t match,
-> > +					  void **matches,
-> > +					  unsigned int matches_len)
-> > +{
-> > +	struct fwnode_handle *node;
-> > +	unsigned int count = 0;
-> > +	unsigned int i;
-> > +	void *ret;
-> > +
-> > +	for (i = 0; ; i++) {
-> 
-> > +		if (count >= matches_len && matches)
-> > +			return count;
-> 
-> Ditto.
-> 
-> > +		node = fwnode_find_reference(fwnode, con_id, i);
-> > +		if (IS_ERR(node))
-> > +			break;
-> > +
-> > +		ret = match(node, NULL, data);
-> > +		fwnode_handle_put(node);
-> > +		if (ret) {
-> > +			if (matches)
-> > +				matches[count] = ret;
-> > +			count++;
-> > +		}
-> > +	}
-> > +
-> > +	return count;
-> > +}
-> 
-> ...
-> 
-> > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
-> > +				   const char *con_id, void *data,
-> > +				   devcon_match_fn_t match,
-> > +				   void **matches, unsigned int matches_len)
-> > +{
-> > +	unsigned int count_graph;
-> > +	unsigned int count_ref;
-> > +
-> > +	if (!fwnode || !match)
-> > +		return -EINVAL;
-> 
-> > +	count_graph = fwnode_graph_devcon_matches(fwnode, con_id, data, match,
-> > +						  matches, matches_len);
-> 
-> > +	matches += count_graph;
-> > +	matches_len -= count_graph;
-> 
-> No, won't work when matches == NULL.
-> 
-> Also, matches_len is expected to be 0 in that case (or at least being ignored,
-> check with vsnprintf() behaviour in similar case).
-> 
-> So, something like this, perhaps
-> 
-> 	if (matches && matches_len) {
-> 		matches += count_graph;
-> 		matches_len -= count_graph;
-> 	}
+Okay, original code may work, so I have no strong opinion about return vs
+break, although I find slightly better to have a single point of return in
+such case.
 
-Good find!
+> > ?
 
+...
+
+> > > +	count_graph = fwnode_graph_devcon_matches(fwnode, con_id, data, match,
+> > > +						  matches, matches_len);
+> > 
+> > > +	matches += count_graph;
+> > > +	matches_len -= count_graph;
+> > 
+> > No, won't work when matches == NULL.
+> > 
+> > Also, matches_len is expected to be 0 in that case (or at least being ignored,
+> > check with vsnprintf() behaviour in similar case).
+> > 
+> > So, something like this, perhaps
+> > 
+> > 	if (matches && matches_len) {
+> > 		matches += count_graph;
+> > 		matches_len -= count_graph;
+> > 	}
 > 
-> > +	count_ref = fwnode_devcon_matches(fwnode, con_id, data, match,
-> > +					  matches, matches_len);
-> > +
-> > +	return count_graph + count_ref;
-> > +}
-> 
-> 
+> Good find!
+
+I have checked vsnprintf() and indeed, it expects to have the size is 0 when
+the resulting buffer pointer is NULL, and it doesn't do any additional checks.
+
+> > > +	count_ref = fwnode_devcon_matches(fwnode, con_id, data, match,
+> > > +					  matches, matches_len);
 
 -- 
-Regards,
+With Best Regards,
+Andy Shevchenko
 
-Sakari Ailus
+
