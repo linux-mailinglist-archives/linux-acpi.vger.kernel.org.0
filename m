@@ -2,129 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C7EF4CE744
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Mar 2022 22:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB5FE4CE851
+	for <lists+linux-acpi@lfdr.de>; Sun,  6 Mar 2022 03:46:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230337AbiCEVsP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Mar 2022 16:48:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53738 "EHLO
+        id S232515AbiCFCrV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 5 Mar 2022 21:47:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229805AbiCEVsO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Mar 2022 16:48:14 -0500
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1948C5006F;
-        Sat,  5 Mar 2022 13:47:24 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id d10so24359232eje.10;
-        Sat, 05 Mar 2022 13:47:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Zc9mq6hVzaRjLQEcIpq3l9xbumYlszQ9nEQAPa0hcT8=;
-        b=oHhI9CdwIKIw2V5EkezeDZLy6C5w9JYFVa6xwIFz5MSTTcKDxIR/6ndolTmQVuAPYc
-         HVRi+EuEcQua0Y86dEOI4Dh87rPQpRzdjAG+O3yoYfdk7loWFPanTTIr0FyLu+FqfShx
-         zoKc+NvB8RAhJ2//hEv7+lUTdnMMhAmgGNX6BGW/PTVtBC7XfX8z8xFVrayXoND87nHj
-         zq9soUmiBcMvZN8JG6QBLev9nL57pfl5a48kt4LDEolaUoTKL24klZmL3ApEwz+PT7ct
-         1kj3TmgHza99hG9ihY/9dxxJhetsF3V504VM8byVhyVsEoewUQ7nDdo9iIrvBZO9rRV8
-         q+2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Zc9mq6hVzaRjLQEcIpq3l9xbumYlszQ9nEQAPa0hcT8=;
-        b=8BM8HHClB1vemR18PLfkgJ2VJ+fmLCm6Tr0jDctxPnBJTk6pg/q1wI1LIaBqbpizA3
-         YqG788rUw8cKq0HnmCrnm/6uCqrCBHH8xN/EGGToNA9BKsr6jaVE6F2QFEShLSecc8pv
-         z2kL3NLWtDsLf/Ipqx7Qjbsy4y70ty/wUh4v5NkHwbvW/guNYLgVzZC95NEqXHICYLr+
-         3buD2yZRO0gRtOavjIuyhw3pioefkvPNegrrd9v5dWUdv3bLf+YW3soZa2hWubJ3AS6E
-         muI9jqclMt+TjO9pdQqkBjmroCY+UpG3lLVws8InGfIdmao9wqmCEtKk3sEgBWbvwj1T
-         xDfQ==
-X-Gm-Message-State: AOAM530QvfwUeDF7FYsnX0DtE4tL9R3rpIgHT7iujpYIEwjG76WAhh+F
-        iY1DA+2cmzuPys4ipnLrs4oqI6L/x+ogfMqDZWE=
-X-Google-Smtp-Source: ABdhPJzV3+Tsi+h2uDFpfyBgn+UG9H0N55yeiyQRatFUr+RgHgMqteJzfFMct9WM0TME+hd8YqoDk+lAovFkbEX5TTg=
-X-Received: by 2002:a17:907:728b:b0:6da:97db:b66d with SMTP id
- dt11-20020a170907728b00b006da97dbb66dmr3928537ejc.636.1646516842576; Sat, 05
- Mar 2022 13:47:22 -0800 (PST)
-MIME-Version: 1.0
-References: <20220304173256.39059-1-andriy.shevchenko@linux.intel.com> <8afcf0b81f78ffdda8bcac5f0fd1d4c40dc4f8d6.camel@gmail.com>
-In-Reply-To: <8afcf0b81f78ffdda8bcac5f0fd1d4c40dc4f8d6.camel@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 5 Mar 2022 23:46:46 +0200
-Message-ID: <CAHp75Vd7QcujZKEtx2_PT-QxoAh7LAykkV3k_OOO5Q0tRQKrBA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] device property: Allow error pointer to be passed
- to fwnode APIs
-To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S230439AbiCFCrU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Mar 2022 21:47:20 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F2685A168;
+        Sat,  5 Mar 2022 18:46:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=u/33azRL5XameLxIEXRB7SnNNWFdwGDEuCezQAz1NOk=; b=LVYda2IyoTiJ39UfbnVKOeY6S+
+        7EKIU71T3ZBamFhT3Oh+wSeBO7XBgEwyMBmX41oQamqPUBhKc+HHKByuDMrdt9FFzb+V7xUmPljgs
+        t+WAKn02tlhlUx9K6QZniv9JLJHjsPQTIM120xEQqfppiXMk9HII3vQyrq/H4t5gXqjPq8tHgSlAV
+        2utO4D2DEdr/F+Ei5TX+NB8QaKfo4ShUumavFJspn/1z7k7btrnlU2Vkl737Kq9UFSKORyX8PL1Se
+        A51TdF0on/UzIPZehc51N0sDEfJghqehzMFmv5CZYARdhMf8qCfbtXYljeL/zkNc1PhTu+zCT2sb5
+        JZCfh2mQ==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nQguc-00E4e7-TT; Sun, 06 Mar 2022 02:46:23 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Igor Zhbanov <i.zhbanov@omprussia.ru>,
+        Huang Ying <ying.huang@intel.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
+Subject: [PATCH] ACPI: APEI: fix return value of __setup handlers
+Date:   Sat,  5 Mar 2022 18:46:20 -0800
+Message-Id: <20220306024620.5847-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Mar 5, 2022 at 10:28 PM Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->
-> On Fri, 2022-03-04 at 19:32 +0200, Andy Shevchenko wrote:
-> > Some of the fwnode APIs might return an error pointer instead of NULL
-> > or valid fwnode handle. The result of such API call may be considered
-> > optional and hence the test for it is usually done in a form of
-> >
-> >         fwnode =3D fwnode_find_reference(...);
-> >         if (IS_ERR_OR_NULL(fwnode))
-> >                 ...error handling...
-> >
-> > Nevertheless the resulting fwnode may have bumped reference count and
-> > hence caller of the above API is obliged to call fwnode_handle_put().
-> > Since fwnode may be not valid either as NULL or error pointer the
-> > check
-> > has to be performed there. This approach uglifies the code and adds
-> > a point of making a mistake, i.e. forgetting about error point case.
-> >
-> > To prevent this allow error pointer to be passed to the fwnode APIs.
+__setup() handlers should return 1 to indicate that the boot option
+has been handled. Returning 0 causes a boot option to be listed in
+the Unknown kernel command line parameters and also added to init's
+arg list (if no '=' sign) or environment list (if of the form 'a=b').
 
-...
+Unknown kernel command line parameters "erst_disable
+  bert_disable hest_disable BOOT_IMAGE=/boot/bzImage-517rc6", will be
+  passed to user space.
 
-> >         ret =3D fwnode_call_int_op(fwnode, property_read_string_array,
-> > propname,
-> >                                  val, nval);
-> > -       if (ret =3D=3D -EINVAL && !IS_ERR_OR_NULL(fwnode) &&
-> > -           !IS_ERR_OR_NULL(fwnode->secondary))
-> > +       if (ret =3D=3D -EINVAL && !IS_ERR_OR_NULL(fwnode->secondary))
-> >                 ret =3D fwnode_call_int_op(fwnode->secondary,
-> >                                          property_read_string_array,
->
-> Isn't !IS_ERR_OR_NULL(fwnode->secondary)) redundant? AFAIU,
-> fwnode_call_int_op() will already check the fwnode and only call the op
-> if the pointer is valid...
+ Run /sbin/init as init process
+   with arguments:
+     /sbin/init
+     erst_disable
+     bert_disable
+     hest_disable
+   with environment:
+     HOME=/
+     TERM=linux
+     BOOT_IMAGE=/boot/bzImage-517rc6
 
-It will shadow the error code, but it seems currently it's the same error c=
-ode.
-So, the question here is if we hide something important with that change.
+Fixes: a3e2acc5e37b ("ACPI / APEI: Add Boot Error Record Table (BERT) support")
+Fixes: a08f82d08053 ("ACPI, APEI, Error Record Serialization Table (ERST) support")
+Fixes: 9dc966641677 ("ACPI, APEI, HEST table parsing")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Igor Zhbanov <i.zhbanov@omprussia.ru>
+Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
+Cc: Huang Ying <ying.huang@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Cc: James Morse <james.morse@arm.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+---
+ drivers/acpi/apei/bert.c |    2 +-
+ drivers/acpi/apei/erst.c |    2 +-
+ drivers/acpi/apei/hest.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-I dunno what is the best approach here (esp. taking into account that
-this is a fix), but ideally we should open code those macros to avoid
-double test for fwnode being valid. Because it seems that validation
-of fwnode and validation of the operation of the fwnode are orthogonal
-and here we mix them. I made this way for the sake of easier
-backporting and kicking off a discussion (as you already did). TL;DR:
-I think the introduction of the macros was a controversial move, for
-which I see pros and cons.
-
-
---=20
-With Best Regards,
-Andy Shevchenko
+--- lnx-517-rc6.orig/drivers/acpi/apei/bert.c
++++ lnx-517-rc6/drivers/acpi/apei/bert.c
+@@ -77,7 +77,7 @@ static int __init setup_bert_disable(cha
+ {
+ 	bert_disable = 1;
+ 
+-	return 0;
++	return 1;
+ }
+ __setup("bert_disable", setup_bert_disable);
+ 
+--- lnx-517-rc6.orig/drivers/acpi/apei/erst.c
++++ lnx-517-rc6/drivers/acpi/apei/erst.c
+@@ -891,7 +891,7 @@ EXPORT_SYMBOL_GPL(erst_clear);
+ static int __init setup_erst_disable(char *str)
+ {
+ 	erst_disable = 1;
+-	return 0;
++	return 1;
+ }
+ 
+ __setup("erst_disable", setup_erst_disable);
+--- lnx-517-rc6.orig/drivers/acpi/apei/hest.c
++++ lnx-517-rc6/drivers/acpi/apei/hest.c
+@@ -224,7 +224,7 @@ err:
+ static int __init setup_hest_disable(char *str)
+ {
+ 	hest_disable = HEST_DISABLED;
+-	return 0;
++	return 1;
+ }
+ 
+ __setup("hest_disable", setup_hest_disable);
