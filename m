@@ -2,125 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB5FE4CE851
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Mar 2022 03:46:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4A134CE98F
+	for <lists+linux-acpi@lfdr.de>; Sun,  6 Mar 2022 07:50:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232515AbiCFCrV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Mar 2022 21:47:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36594 "EHLO
+        id S232667AbiCFGv0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 6 Mar 2022 01:51:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230439AbiCFCrU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Mar 2022 21:47:20 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F2685A168;
-        Sat,  5 Mar 2022 18:46:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=u/33azRL5XameLxIEXRB7SnNNWFdwGDEuCezQAz1NOk=; b=LVYda2IyoTiJ39UfbnVKOeY6S+
-        7EKIU71T3ZBamFhT3Oh+wSeBO7XBgEwyMBmX41oQamqPUBhKc+HHKByuDMrdt9FFzb+V7xUmPljgs
-        t+WAKn02tlhlUx9K6QZniv9JLJHjsPQTIM120xEQqfppiXMk9HII3vQyrq/H4t5gXqjPq8tHgSlAV
-        2utO4D2DEdr/F+Ei5TX+NB8QaKfo4ShUumavFJspn/1z7k7btrnlU2Vkl737Kq9UFSKORyX8PL1Se
-        A51TdF0on/UzIPZehc51N0sDEfJghqehzMFmv5CZYARdhMf8qCfbtXYljeL/zkNc1PhTu+zCT2sb5
-        JZCfh2mQ==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nQguc-00E4e7-TT; Sun, 06 Mar 2022 02:46:23 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Igor Zhbanov <i.zhbanov@omprussia.ru>,
-        Huang Ying <ying.huang@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
-Subject: [PATCH] ACPI: APEI: fix return value of __setup handlers
-Date:   Sat,  5 Mar 2022 18:46:20 -0800
-Message-Id: <20220306024620.5847-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232591AbiCFGv0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Mar 2022 01:51:26 -0500
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00B8531930
+        for <linux-acpi@vger.kernel.org>; Sat,  5 Mar 2022 22:50:29 -0800 (PST)
+Received: by mail-lj1-x231.google.com with SMTP id o6so16313390ljp.3
+        for <linux-acpi@vger.kernel.org>; Sat, 05 Mar 2022 22:50:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=YrElWOnioSvi6agwGYpHn6eZnGGJJfzwROlfAOI7afI3FV4uoIIP6uxre83Z9b2Fh0
+         wQ6KOmzkNElWZABEXIDDtP1L2VjDwznzBB1GC0rXi6dQtUl7wLwBnLPCzmuYdmGAKqEl
+         Pg1+0U3LoYo1om+zDOrLTEuKDciHiwd26bRN8UE7/f0A3L1LQiqPKA5pVLKGJuDpsIFN
+         MuZW5HeDgvRoNrUzxy4HhVZeKq2qZFzUPVtZNg5e/yeJRLpUBCroJEkQOq7U5qgHYgiP
+         r8mMBcda5A1M6t314IKnZgdBqZQs94WFh2xL7O+UQEJ9dtFtkgeAbMvbXLvs2zshWuFc
+         gp3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=sewiobFxEsctgFJ9UjfkqZKRQotgdi2qQVyWAMhltsDIhQx9zD3qcNKq1nGAZLsg1j
+         o5//X8xLS+eCzwaVZs/B+/LniLTRTpMmsiyE5v1i0V0rXjUehLnJCogPvZBeX/NOIoiL
+         qSLkSQe7YF8fMa/dyJI0Hi1dSpKk0DWh3aa/llA9hrMYfOaymh3GkVkL3/81G0/AthKY
+         oOfvTOXkENpOcJcWH0ALS+6Ta0W5148BsLzYDtxbLT45ITZHg7yEb/0bQlRDALq9zqCL
+         sGtwUAHe+AY+RDIAgGhXca3FaTNTscFndrTc8il7MVP4tP7eiRfVgG7X8bPUhXxeNuwf
+         5iGw==
+X-Gm-Message-State: AOAM53092RTx+4L/oOSNzLH1gmYdYXg8agGUKlDnlybZ3RlmoO4ejV20
+        AaGOQkUGPJNyuCxv0zTmL7ElQMLv6cpzKH7fw3U=
+X-Google-Smtp-Source: ABdhPJyJ8hMPh4DWVCIiJShT2FiXX6IorN+yUVHTNiqhvLlQ9gEIgZvAzGFDeIGTG5i27pzoQ5fj0JTAXmPMf7ibwQc=
+X-Received: by 2002:a2e:9a98:0:b0:247:e29f:fbd7 with SMTP id
+ p24-20020a2e9a98000000b00247e29ffbd7mr897608lji.509.1646549428226; Sat, 05
+ Mar 2022 22:50:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Reply-To: mrs.susanelwoodhara17@gmail.com
+Sender: mrs.arawyann@gmail.com
+Received: by 2002:ab3:7d89:0:0:0:0:0 with HTTP; Sat, 5 Mar 2022 22:50:27 -0800 (PST)
+From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
+Date:   Sun, 6 Mar 2022 06:50:27 +0000
+X-Google-Sender-Auth: 2IDmeeCswS-nXDmPj-lzApf7VfY
+Message-ID: <CACppo44FdZoD_SnrwVyD-yvu7pHgFq0czow3nR5ViQfkjD1p4g@mail.gmail.com>
+Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-__setup() handlers should return 1 to indicate that the boot option
-has been handled. Returning 0 causes a boot option to be listed in
-the Unknown kernel command line parameters and also added to init's
-arg list (if no '=' sign) or environment list (if of the form 'a=b').
+GOD BLESS YOU AS YOU REPLY URGENTLY
 
-Unknown kernel command line parameters "erst_disable
-  bert_disable hest_disable BOOT_IMAGE=/boot/bzImage-517rc6", will be
-  passed to user space.
-
- Run /sbin/init as init process
-   with arguments:
-     /sbin/init
-     erst_disable
-     bert_disable
-     hest_disable
-   with environment:
-     HOME=/
-     TERM=linux
-     BOOT_IMAGE=/boot/bzImage-517rc6
-
-Fixes: a3e2acc5e37b ("ACPI / APEI: Add Boot Error Record Table (BERT) support")
-Fixes: a08f82d08053 ("ACPI, APEI, Error Record Serialization Table (ERST) support")
-Fixes: 9dc966641677 ("ACPI, APEI, HEST table parsing")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <i.zhbanov@omprussia.ru>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: Huang Ying <ying.huang@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: James Morse <james.morse@arm.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
----
- drivers/acpi/apei/bert.c |    2 +-
- drivers/acpi/apei/erst.c |    2 +-
- drivers/acpi/apei/hest.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
---- lnx-517-rc6.orig/drivers/acpi/apei/bert.c
-+++ lnx-517-rc6/drivers/acpi/apei/bert.c
-@@ -77,7 +77,7 @@ static int __init setup_bert_disable(cha
- {
- 	bert_disable = 1;
- 
--	return 0;
-+	return 1;
- }
- __setup("bert_disable", setup_bert_disable);
- 
---- lnx-517-rc6.orig/drivers/acpi/apei/erst.c
-+++ lnx-517-rc6/drivers/acpi/apei/erst.c
-@@ -891,7 +891,7 @@ EXPORT_SYMBOL_GPL(erst_clear);
- static int __init setup_erst_disable(char *str)
- {
- 	erst_disable = 1;
--	return 0;
-+	return 1;
- }
- 
- __setup("erst_disable", setup_erst_disable);
---- lnx-517-rc6.orig/drivers/acpi/apei/hest.c
-+++ lnx-517-rc6/drivers/acpi/apei/hest.c
-@@ -224,7 +224,7 @@ err:
- static int __init setup_hest_disable(char *str)
- {
- 	hest_disable = HEST_DISABLED;
--	return 0;
-+	return 1;
- }
- 
- __setup("hest_disable", setup_hest_disable);
+ Hello Dear,
+Greetings, I am contacting you regarding an important information i
+have for you please reply to confirm your email address and for more
+details Thanks
+Regards
+Mrs Susan Elwood Hara.
