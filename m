@@ -2,75 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 561F04D0753
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Mar 2022 20:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38FE24D082C
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Mar 2022 21:11:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240129AbiCGTMl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Mar 2022 14:12:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33750 "EHLO
+        id S239099AbiCGUMD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Mar 2022 15:12:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232163AbiCGTMl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Mar 2022 14:12:41 -0500
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48E44527D9
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Mar 2022 11:11:46 -0800 (PST)
-Received: by mail-ot1-x32b.google.com with SMTP id d15-20020a05683018ef00b005b2304fdeecso3204340otf.1
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Mar 2022 11:11:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Jb3LOlMf5pk1D9PjLVHGSfg0goBFbrUHnygCupUhgZI=;
-        b=iNQpsc5C47zsL+rwea5Gp9oqE5D8fpUxVHM/oEeqnouFvmu3EH516OlUb2UAnzE9j7
-         0fKrEb4VlNgNhBDOxV3WTDoN9IjJv7auS6de717hqUuXbO8rfTXzlEGqnVyfSBYs4TRo
-         JbHNYrXbasfzo6mbe5OoZ43yxlqsM24sjqZeKJddKqh+lHn/8ULKrgyJODzAudqWEF2M
-         dZQJtvb/W71PecwPK8ychQ5EwhbpQfCJL6Yz3j/4KX4p5jnGKQKdzSlKW5WRYZOJA82r
-         SQi+26rzzx5f0ztSOvpa211LBscQiorvpyq+3U7Wca8GeWz9ACEhPQLS8pKIgqhbMLjM
-         9itg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Jb3LOlMf5pk1D9PjLVHGSfg0goBFbrUHnygCupUhgZI=;
-        b=iUbtuzP/nirDIbG9Kvx8UZuG/9a2m+tiul9/m2j/q5Fv3VIQWwXQ0N8suW4jnmS1HH
-         geuqNi6wV0V2rchSZCFlKK8WD3CwxrdG/AqSxdoGXIa6jh0GCJiHZeYP61ciyKUXmq5r
-         oMYZFvR2xeEP3FjfU3XjGZbhaYsl1ZW+HjhKN4JbU69O1ksQ1wI7DFZ9xm47p4O0dPAY
-         mc/0aFwB8+aoYMrfGlIhf3opRXKUDJEAmNKRLi0nmBo1VFzGmJUl/Iu7mRg5kEwP8dEt
-         3FhYpUybEYs9ELTHrKBcl/ABeGj9YgBm+7JWee1gbt0kbN+SAwktYYm1DDR6F+VY508V
-         KeUQ==
-X-Gm-Message-State: AOAM533jbzvUyUmF5P2xnn2r5RFSr6kGnCkGNlblIthOUULfp/fkVg7n
-        4wxypF03Jn6mizubHDFRYgZGtA==
-X-Google-Smtp-Source: ABdhPJyrQkhnOMlIjCfuY6r6deiMNn2tGrB6tFf9VgrnJ7SyMmVsaBZWntgAitDk2cHkCVeXVdDvAQ==
-X-Received: by 2002:a9d:2045:0:b0:5b2:1052:93fd with SMTP id n63-20020a9d2045000000b005b2105293fdmr6358924ota.259.1646680305167;
-        Mon, 07 Mar 2022 11:11:45 -0800 (PST)
-Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
-        by smtp.gmail.com with ESMTPSA id k15-20020a056808068f00b002d91362e56esm6764310oig.1.2022.03.07.11.11.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Mar 2022 11:11:44 -0800 (PST)
-Date:   Mon, 7 Mar 2022 11:13:28 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v4 1/7] device property: Helper to match multiple
- connections
-Message-ID: <YiZZWN1FgnWxBCuN@ripper>
-References: <20220307034040.1111107-1-bjorn.andersson@linaro.org>
- <YiXZBMG7cK6Cm7wP@smile.fi.intel.com>
+        with ESMTP id S238439AbiCGUMD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Mar 2022 15:12:03 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5171443C0;
+        Mon,  7 Mar 2022 12:11:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646683866; x=1678219866;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tGwgDlH9PPA5nTATEJHR9cOY/CDSl2ETLaBxt7WWT2M=;
+  b=Ufm0Yk4zY5a1TrTyy0ySdgzhTylwGlgAhjgsk4aeekdPA7VQUh/AHTJB
+   bhWNTnScPzIv/X0t9RpOZHisvji0lNykWMjXClEltSL5dPd0eyASfSLGD
+   lnYCEqtrqjkOU7kGXYUyZ7cupE1awwtM/AFKF6KHa8IL5Gs0rEAC4Yp/p
+   Sy1zdNsNr0mHBG31AGOqbayyzY4h4EbWhl8bqcj6koeJBrewQ9FLsJBXQ
+   IIcnSV1aU5BVBaRAhjEkmUqgi0SS7DU0Z/E/CJXR0sBubvPmsVFCOUVb2
+   +c3LYnjRt4GpV9/Eb0MueIryZatLXrdproefz8Y5NP+xLyC2IgTx6CM42
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10279"; a="235102692"
+X-IronPort-AV: E=Sophos;i="5.90,163,1643702400"; 
+   d="scan'208";a="235102692"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2022 12:11:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,163,1643702400"; 
+   d="scan'208";a="512817397"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 07 Mar 2022 12:11:02 -0800
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nRJh7-0000g4-RM; Mon, 07 Mar 2022 20:11:01 +0000
+Date:   Tue, 08 Mar 2022 04:10:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 61de6fd32880fd2b7ca0c26a299df6af054aa286
+Message-ID: <622666a9.bPAUfFhMqYIlzNDe%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YiXZBMG7cK6Cm7wP@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,143 +62,110 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon 07 Mar 02:05 PST 2022, Andy Shevchenko wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 61de6fd32880fd2b7ca0c26a299df6af054aa286  Merge branch 'pm-cpuidle' into bleeding-edge
 
-> On Sun, Mar 06, 2022 at 07:40:34PM -0800, Bjorn Andersson wrote:
-> > In some cases multiple connections with the same connection id
-> > needs to be resolved from a fwnode graph.
-> > 
-> > One such example is when separate hardware is used for performing muxing
-> > and/or orientation switching of the SuperSpeed and SBU lines in a USB
-> > Type-C connector. In this case the connector needs to belong to a graph
-> > with multiple matching remote endpoints, and the Type-C controller needs
-> > to be able to resolve them both.
-> > 
-> > Add a new API that allows this kind of lookup.
-> 
-> Thanks for the update!
-> 
-> First of all, I have noticed that subject misses the verb, something like Add
-> or Introduce.
-> 
+elapsed time: 783m
 
-Will update accordingly.
+configs tested: 89
+configs skipped: 3
 
-> ...
-> 
-> > +/**
-> > + * fwnode_connection_find_matches - Find connections from a device node
-> > + * @fwnode: Device node with the connection
-> > + * @con_id: Identifier for the connection
-> > + * @data: Data for the match function
-> > + * @match: Function to check and convert the connection description
-> > + * @matches: Array of pointers to fill with matches
-> 
-> (Optional) array...
-> 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Ditto.
+gcc tested configs:
+arm64                               defconfig
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm64                            allyesconfig
+i386                 randconfig-c001-20220307
+mips                 randconfig-c004-20220307
+arm                           sama5_defconfig
+sh                            migor_defconfig
+arm                          gemini_defconfig
+parisc                generic-32bit_defconfig
+openrisc                            defconfig
+sh                          rsk7201_defconfig
+powerpc                    amigaone_defconfig
+sh                           se7724_defconfig
+arm                      integrator_defconfig
+sh                        sh7763rdp_defconfig
+powerpc                 canyonlands_defconfig
+sh                   rts7751r2dplus_defconfig
+s390                          debug_defconfig
+arm                  randconfig-c002-20220307
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+alpha                               defconfig
+nds32                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+parisc64                            defconfig
+s390                             allmodconfig
+s390                                defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                   debian-10.3-kselftests
+i386                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+arc                  randconfig-r043-20220307
+x86_64               randconfig-a003-20220307
+x86_64               randconfig-a001-20220307
+x86_64               randconfig-a002-20220307
+x86_64               randconfig-a004-20220307
+x86_64               randconfig-a006-20220307
+x86_64               randconfig-a005-20220307
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
 
-> > + * @matches_len: Length of @matches
-> > + *
-> > + * Find up to @matches_len connections with unique identifier @con_id between
-> > + * @fwnode and other device nodes. @match will be used to convert the
-> > + * connection description to data the caller is expecting to be returned
-> > + * through the @matches array.
-> 
-> > + * If @matches is NULL @matches_len is ignored and the total number of resolved
-> > + * matches is returned.
-> 
-> I would require matches_len to be 0, see below.
-> 
-> > + * Return: Number of matches resolved, or negative errno.
-> > + */
-> > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
-> > +				   const char *con_id, void *data,
-> > +				   devcon_match_fn_t match,
-> > +				   void **matches, unsigned int matches_len)
-> > +{
-> > +	unsigned int count_graph;
-> > +	unsigned int count_ref;
-> > +
-> > +	if (!fwnode || !match)
-> > +		return -EINVAL;
-> > +
-> > +	count_graph = fwnode_graph_devcon_matches(fwnode, con_id, data, match,
-> > +						  matches, matches_len);
-> 
-> > +	if (matches) {
-> > +		matches += count_graph;
-> > +		matches_len -= count_graph;
-> > +	}
-> 
-> So, the valid case is matches != NULL and matches_len == 0. For example, when
-> we have run something previously on the buffer and it becomes full.
-> 
-> In this case we have carefully handle this case.
-> 
-> 	if (matches) {
-> 		matches += count_graph;
-> 		if (matches_len)
-> 			matches_len -= count_graph;
+clang tested configs:
+powerpc                      walnut_defconfig
+mips                      bmips_stb_defconfig
+mips                          ath79_defconfig
+mips                           ip22_defconfig
+i386                 randconfig-a016-20220307
+i386                 randconfig-a015-20220307
+hexagon              randconfig-r041-20220307
+riscv                randconfig-r042-20220307
+hexagon              randconfig-r045-20220307
+s390                 randconfig-r044-20220307
 
-When matches is non-NULL, both the sub-functions are limited by
-matches_len and as such count_graph <= matches_len.
-
-As such matches_len >= 0.
-
-In the event that the originally passed matches_len was 0, then
-count_graph will be 0 and matches_len will remain 0.
-
-I therefor don't see that this additional check changes things.
-
-> 	}
-> 
-> Seems it can be also
-> 
-> 	if (matches)
-> 		matches += count_graph;
-> 
-> 	if (matches_len)
-> 		matches_len -= count_graph;
-
-We covered the case of matches && (matches_len || !matches_len) above.
-
-For the case of !matches && matches_len, this added conditional would
-cause matches_len to be extra ignored by keeping it at 0, but per
-kernel-doc and implementation we ignore all other values already.
-
-
-Note that this is in contrast from vsnprintf() where the code will
-continue to produce results, only store the first "matches_len"
-entires and return the final count.
-
-Unfortunately we can't follow such semantics here, instead it is clearly
-documented in the kernel-doc that @matches_len is ignored when @matches
-is NULL.
-
-
-So unless I'm missing something I don't see what you gain over keeping
-the check on only matches.
-
-> 
-> That said, do we have a test cases for this?
-> 
-
-I looked briefly at adding some kunit tests for this, but was discourage
-by the prospect of building up the graphs to run the tests against.
-
-Regards,
-Bjorn
-
-> > +	count_ref = fwnode_devcon_matches(fwnode, con_id, data, match,
-> > +					  matches, matches_len);
-> > +
-> > +	return count_graph + count_ref;
-> > +}
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
