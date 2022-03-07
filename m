@@ -2,73 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1272F4CF06E
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Mar 2022 04:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B97DD4CF1B3
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Mar 2022 07:16:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235120AbiCGDkA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 6 Mar 2022 22:40:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60228 "EHLO
+        id S233483AbiCGGRe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Mar 2022 01:17:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235116AbiCGDjz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Mar 2022 22:39:55 -0500
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4739A4E388
-        for <linux-acpi@vger.kernel.org>; Sun,  6 Mar 2022 19:39:01 -0800 (PST)
-Received: by mail-oi1-x231.google.com with SMTP id 12so13874041oix.12
-        for <linux-acpi@vger.kernel.org>; Sun, 06 Mar 2022 19:39:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=49L7WLNCDMugCqX6fsdECZs0GVJID2sbYVWyG32rCpw=;
-        b=Tx6KfbiJuFYkqkl/CBjrqJFb7VDjM4fGn5H8eUrcLSVrmbTKPX5aQ/BbdiItNh4Tcg
-         VT3gFp3QPX9XEIesM1Le8LEflQITkEkS1ok7D805kIWtS5FW7EEFqhTv+ITH1XGWgvk9
-         8yuy64GDDIhUaqwpxz7DkdEGOAppZ7w6rBVvTrIzvsiacOZrYuV5qdX887U0Wd0/4omZ
-         nCBlw1sUhs6W3qU+8ZroPS+cDLCQ82V+azMrIeirUZvIqIE64Cn0LdbjSrP1lactiY0C
-         qcOCeMozci+AGvRIqr73XxGoVdETpWz/3336A4evyzAdr8MnU8EsBwLbP8TXSztwxVYs
-         0LdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=49L7WLNCDMugCqX6fsdECZs0GVJID2sbYVWyG32rCpw=;
-        b=Lw3WTPk3gE6VWsS4TlOwcf8tZ16M0nwT6n6o6ciSahinJhN+jwN38TNpOfB9ppYHNz
-         si7/YhRoNCSerPGbsBoviwkj1CypwgYfUxgjch2tpdVuZgt2vs36vNChuwqFcqSlm0KZ
-         7zY7vEsM/tqBzeILYtlRZm2V74IKzJx1L3u7//b+gfzO6L7TWrC+tVw8XsRLmEVHcx5r
-         uI714O/SSpE3rAEc0SJQPlXuh8trUE2Btny3p2WEno8lQob/Q/dan/+DAoA4NV0Mci+6
-         b9Uj7shs+36DJr1He5fzAhg72bSryW41dUs6wJKufi2s8z8wGcIGoUS3YeKMy8/e3PUK
-         UUAg==
-X-Gm-Message-State: AOAM530UAF5ujY4649KKGVPOujqSMmcwjjPXS0zUr0LATrWfGZalalz6
-        2C+9WTnIIQHz6qn0okvUWKI+Gw==
-X-Google-Smtp-Source: ABdhPJyX2BXF3WJ65qS0nhgl/lTvKjLYe+ljR3L17V/GVwnZXMDGrtI5cuhIRDfC5MxwA0yIA+9Cmg==
-X-Received: by 2002:a05:6808:2022:b0:2d4:752b:dfb5 with SMTP id q34-20020a056808202200b002d4752bdfb5mr5841086oiw.174.1646624340640;
-        Sun, 06 Mar 2022 19:39:00 -0800 (PST)
-Received: from ripper.. ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
-        by smtp.gmail.com with ESMTPSA id o2-20020a05687072c200b000d9ae3e1fabsm5005172oak.12.2022.03.06.19.38.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Mar 2022 19:39:00 -0800 (PST)
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH v4 7/7] usb: typec: mux: Add On Semi fsa4480 driver
-Date:   Sun,  6 Mar 2022 19:40:40 -0800
-Message-Id: <20220307034040.1111107-7-bjorn.andersson@linaro.org>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20220307034040.1111107-1-bjorn.andersson@linaro.org>
-References: <20220307034040.1111107-1-bjorn.andersson@linaro.org>
+        with ESMTP id S234840AbiCGGRd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Mar 2022 01:17:33 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386455F24E;
+        Sun,  6 Mar 2022 22:16:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646633800; x=1678169800;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=czqyC369iJ/4Fiuo2aAnacT+hcsllm8pRuj6qchrKa8=;
+  b=NZO7Y2rLEtWgkJiWj/ds8LH/DJA4LUd+ZDFGjO0zN9vkMvjW9h9MqJQz
+   PIcTb12a7BIbpyK2sEIVQ8ow1f8WYzpks7zZ6+RjBK/0ayR3Aw+eeGe6B
+   1N/kMmk1myGPRCzK8Mqg8tCo3opullzL3K0FP0twguIEUYjHUw05973pq
+   jx77G64sLjrtFheWfLphRyj7iRTQFyYlbd1aQzSkuwEFcrvaUFxOjR+Qb
+   3FG9k9YVlsQh0eC9EGulkyiqIHK0uXAyQF/kxOVVhexqrz8+LEYr4884q
+   g7PLNVcUWzyuJYjQm6i1tWfyRVA7A6wvokEoWqglRiVvGk0w05rbfqQ2v
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10278"; a="317544470"
+X-IronPort-AV: E=Sophos;i="5.90,161,1643702400"; 
+   d="scan'208";a="317544470"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2022 22:16:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,161,1643702400"; 
+   d="scan'208";a="710991044"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 06 Mar 2022 22:16:37 -0800
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nR6fY-00002N-B1; Mon, 07 Mar 2022 06:16:32 +0000
+Date:   Mon, 07 Mar 2022 13:40:20 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ c6f4ba2d2b9ac49e8576e8532879484fabec198e
+Message-ID: <62259ac4.hltsASUBeeswv9DD%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,293 +62,133 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ON Semiconductor FSA4480 is a USB Type-C port multimedia switch with
-support for analog audio headsets. It allows sharing a common USB Type-C
-port to pass USB2.0 signal, analog audio, sideband use wires and analog
-microphone signal.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: c6f4ba2d2b9ac49e8576e8532879484fabec198e  Merge branch 'acpi-apei' into bleeding-edge
 
-Due to lacking upstream audio support for testing, the audio muxing is
-left untouched, but implementation of muxing the SBU lines is provided
-as a pair of Type-C mux and switch devices. This provides the necessary
-support for enabling the DisplayPort altmode on devices with this
-circuit.
+elapsed time: 4819m
 
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+configs tested: 111
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                               defconfig
+arm                              allmodconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+i386                          randconfig-c001
+m68k                       m5275evb_defconfig
+sh                             sh03_defconfig
+arm                         axm55xx_defconfig
+sh                          r7780mp_defconfig
+xtensa                generic_kc705_defconfig
+arm                          pxa3xx_defconfig
+m68k                          multi_defconfig
+arm                           stm32_defconfig
+sh                          r7785rp_defconfig
+arc                        vdk_hs38_defconfig
+riscv             nommu_k210_sdcard_defconfig
+arm                            hisi_defconfig
+arm                            mps2_defconfig
+h8300                     edosk2674_defconfig
+arm                  randconfig-c002-20220302
+arm                  randconfig-c002-20220304
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+alpha                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+nds32                               defconfig
+nios2                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+parisc                              defconfig
+parisc64                            defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                   debian-10.3-kselftests
+i386                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+x86_64                        randconfig-a015
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a006
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220304
+arc                  randconfig-r043-20220302
+s390                 randconfig-r044-20220302
+riscv                randconfig-r042-20220304
+s390                 randconfig-r044-20220304
+riscv                randconfig-r042-20220302
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                           allyesconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+powerpc                     tqm5200_defconfig
+powerpc                     kilauea_defconfig
+mips                      maltaaprp_defconfig
+powerpc                      ppc64e_defconfig
+i386                             allyesconfig
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+x86_64                        randconfig-a014
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220304
+hexagon              randconfig-r045-20220302
+hexagon              randconfig-r041-20220302
+hexagon              randconfig-r041-20220304
+
 ---
-
-Changes since v3:
-- None
-
-Changes since v2:
-- Expanded Kconfig help text.
-- Fixed copyright year
-- Fixed spelling mistakes in comments
-- Introduce FSA4480_MAX_REGISTER
-- Use dev_err_probe()
-- Removed some useless blank lines.
-
-Changes since v1:
-- None
-
- drivers/usb/typec/mux/Kconfig   |  10 ++
- drivers/usb/typec/mux/Makefile  |   1 +
- drivers/usb/typec/mux/fsa4480.c | 216 ++++++++++++++++++++++++++++++++
- 3 files changed, 227 insertions(+)
- create mode 100644 drivers/usb/typec/mux/fsa4480.c
-
-diff --git a/drivers/usb/typec/mux/Kconfig b/drivers/usb/typec/mux/Kconfig
-index edead555835e..5eb2c17d72c1 100644
---- a/drivers/usb/typec/mux/Kconfig
-+++ b/drivers/usb/typec/mux/Kconfig
-@@ -2,6 +2,16 @@
- 
- menu "USB Type-C Multiplexer/DeMultiplexer Switch support"
- 
-+config TYPEC_MUX_FSA4480
-+	tristate "ON Semi FSA4480 Analog Audio Switch driver"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  Driver for the ON Semiconductor FSA4480 Analog Audio Switch, which
-+	  provides support for muxing analog audio and sideband signals on a
-+	  common USB Type-C connector.
-+	  If compiled as a module, the module will be named fsa4480.
-+
- config TYPEC_MUX_PI3USB30532
- 	tristate "Pericom PI3USB30532 Type-C cross switch driver"
- 	depends on I2C
-diff --git a/drivers/usb/typec/mux/Makefile b/drivers/usb/typec/mux/Makefile
-index 280a6f553115..e52a56c16bfb 100644
---- a/drivers/usb/typec/mux/Makefile
-+++ b/drivers/usb/typec/mux/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
- 
-+obj-$(CONFIG_TYPEC_MUX_FSA4480)		+= fsa4480.o
- obj-$(CONFIG_TYPEC_MUX_PI3USB30532)	+= pi3usb30532.o
- obj-$(CONFIG_TYPEC_MUX_INTEL_PMC)	+= intel_pmc_mux.o
-diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
-new file mode 100644
-index 000000000000..ab8d014a6b79
---- /dev/null
-+++ b/drivers/usb/typec/mux/fsa4480.c
-@@ -0,0 +1,216 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2021-2022 Linaro Ltd.
-+ * Copyright (C) 2018-2020 The Linux Foundation
-+ */
-+
-+#include <linux/bits.h>
-+#include <linux/i2c.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/regmap.h>
-+#include <linux/usb/typec_dp.h>
-+#include <linux/usb/typec_mux.h>
-+
-+#define FSA4480_SWITCH_ENABLE	0x04
-+#define FSA4480_SWITCH_SELECT	0x05
-+#define FSA4480_SWITCH_STATUS1	0x07
-+#define FSA4480_SLOW_L		0x08
-+#define FSA4480_SLOW_R		0x09
-+#define FSA4480_SLOW_MIC	0x0a
-+#define FSA4480_SLOW_SENSE	0x0b
-+#define FSA4480_SLOW_GND	0x0c
-+#define FSA4480_DELAY_L_R	0x0d
-+#define FSA4480_DELAY_L_MIC	0x0e
-+#define FSA4480_DELAY_L_SENSE	0x0f
-+#define FSA4480_DELAY_L_AGND	0x10
-+#define FSA4480_RESET		0x1e
-+#define FSA4480_MAX_REGISTER	0x1f
-+
-+#define FSA4480_ENABLE_DEVICE	BIT(7)
-+#define FSA4480_ENABLE_SBU	GENMASK(6, 5)
-+#define FSA4480_ENABLE_USB	GENMASK(4, 3)
-+
-+#define FSA4480_SEL_SBU_REVERSE	GENMASK(6, 5)
-+#define FSA4480_SEL_USB		GENMASK(4, 3)
-+
-+struct fsa4480 {
-+	struct i2c_client *client;
-+
-+	/* used to serialize concurrent change requests */
-+	struct mutex lock;
-+
-+	struct typec_switch_dev *sw;
-+	struct typec_mux_dev *mux;
-+
-+	struct regmap *regmap;
-+
-+	u8 cur_enable;
-+	u8 cur_select;
-+};
-+
-+static const struct regmap_config fsa4480_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = FSA4480_MAX_REGISTER,
-+};
-+
-+static int fsa4480_switch_set(struct typec_switch_dev *sw,
-+			      enum typec_orientation orientation)
-+{
-+	struct fsa4480 *fsa = typec_switch_get_drvdata(sw);
-+	u8 new_sel;
-+
-+	mutex_lock(&fsa->lock);
-+	new_sel = FSA4480_SEL_USB;
-+	if (orientation == TYPEC_ORIENTATION_REVERSE)
-+		new_sel |= FSA4480_SEL_SBU_REVERSE;
-+
-+	if (new_sel == fsa->cur_select)
-+		goto out_unlock;
-+
-+	if (fsa->cur_enable & FSA4480_ENABLE_SBU) {
-+		/* Disable SBU output while re-configuring the switch */
-+		regmap_write(fsa->regmap, FSA4480_SWITCH_ENABLE,
-+			     fsa->cur_enable & ~FSA4480_ENABLE_SBU);
-+
-+		/* 35us to allow the SBU switch to turn off */
-+		usleep_range(35, 1000);
-+	}
-+
-+	regmap_write(fsa->regmap, FSA4480_SWITCH_SELECT, new_sel);
-+	fsa->cur_select = new_sel;
-+
-+	if (fsa->cur_enable & FSA4480_ENABLE_SBU) {
-+		regmap_write(fsa->regmap, FSA4480_SWITCH_ENABLE, fsa->cur_enable);
-+
-+		/* 15us to allow the SBU switch to turn on again */
-+		usleep_range(15, 1000);
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&fsa->lock);
-+
-+	return 0;
-+}
-+
-+static int fsa4480_mux_set(struct typec_mux_dev *mux, struct typec_mux_state *state)
-+{
-+	struct fsa4480 *fsa = typec_mux_get_drvdata(mux);
-+	u8 new_enable;
-+
-+	mutex_lock(&fsa->lock);
-+
-+	new_enable = FSA4480_ENABLE_DEVICE | FSA4480_ENABLE_USB;
-+	if (state->mode >= TYPEC_DP_STATE_A)
-+		new_enable |= FSA4480_ENABLE_SBU;
-+
-+	if (new_enable == fsa->cur_enable)
-+		goto out_unlock;
-+
-+	regmap_write(fsa->regmap, FSA4480_SWITCH_ENABLE, new_enable);
-+	fsa->cur_enable = new_enable;
-+
-+	if (new_enable & FSA4480_ENABLE_SBU) {
-+		/* 15us to allow the SBU switch to turn off */
-+		usleep_range(15, 1000);
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&fsa->lock);
-+
-+	return 0;
-+}
-+
-+static int fsa4480_probe(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	struct typec_switch_desc sw_desc = { };
-+	struct typec_mux_desc mux_desc = { };
-+	struct fsa4480 *fsa;
-+
-+	fsa = devm_kzalloc(dev, sizeof(*fsa), GFP_KERNEL);
-+	if (!fsa)
-+		return -ENOMEM;
-+
-+	fsa->client = client;
-+	mutex_init(&fsa->lock);
-+
-+	fsa->regmap = devm_regmap_init_i2c(client, &fsa4480_regmap_config);
-+	if (IS_ERR(fsa->regmap))
-+		return dev_err_probe(dev, PTR_ERR(fsa->regmap), "failed to initialize regmap\n");
-+
-+	fsa->cur_enable = FSA4480_ENABLE_DEVICE | FSA4480_ENABLE_USB;
-+	fsa->cur_select = FSA4480_SEL_USB;
-+
-+	/* set default settings */
-+	regmap_write(fsa->regmap, FSA4480_SLOW_L, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_SLOW_R, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_SLOW_MIC, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_SLOW_SENSE, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_SLOW_GND, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_DELAY_L_R, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_DELAY_L_MIC, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_DELAY_L_SENSE, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_DELAY_L_AGND, 0x09);
-+	regmap_write(fsa->regmap, FSA4480_SWITCH_SELECT, fsa->cur_select);
-+	regmap_write(fsa->regmap, FSA4480_SWITCH_ENABLE, fsa->cur_enable);
-+
-+	sw_desc.drvdata = fsa;
-+	sw_desc.fwnode = dev->fwnode;
-+	sw_desc.set = fsa4480_switch_set;
-+
-+	fsa->sw = typec_switch_register(dev, &sw_desc);
-+	if (IS_ERR(fsa->sw))
-+		return dev_err_probe(dev, PTR_ERR(fsa->sw), "failed to register typec switch\n");
-+
-+	mux_desc.drvdata = fsa;
-+	mux_desc.fwnode = dev->fwnode;
-+	mux_desc.set = fsa4480_mux_set;
-+
-+	fsa->mux = typec_mux_register(dev, &mux_desc);
-+	if (IS_ERR(fsa->mux)) {
-+		typec_switch_unregister(fsa->sw);
-+		return dev_err_probe(dev, PTR_ERR(fsa->mux), "failed to register typec mux\n");
-+	}
-+
-+	i2c_set_clientdata(client, fsa);
-+	return 0;
-+}
-+
-+static int fsa4480_remove(struct i2c_client *client)
-+{
-+	struct fsa4480 *fsa = i2c_get_clientdata(client);
-+
-+	typec_mux_unregister(fsa->mux);
-+	typec_switch_unregister(fsa->sw);
-+
-+	return 0;
-+}
-+
-+static const struct i2c_device_id fsa4480_table[] = {
-+	{ "fsa4480" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, fsa4480_table);
-+
-+static const struct of_device_id fsa4480_of_table[] = {
-+	{ .compatible = "fcs,fsa4480" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, fsa4480_of_table);
-+
-+static struct i2c_driver fsa4480_driver = {
-+	.driver = {
-+		.name = "fsa4480",
-+		.of_match_table = fsa4480_of_table,
-+	},
-+	.probe_new	= fsa4480_probe,
-+	.remove		= fsa4480_remove,
-+	.id_table	= fsa4480_table,
-+};
-+module_i2c_driver(fsa4480_driver);
-+
-+MODULE_DESCRIPTION("ON Semiconductor FSA4480 driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.33.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
