@@ -2,66 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E15A4D150E
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Mar 2022 11:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5CE54D15F7
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Mar 2022 12:15:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345973AbiCHKr6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Mar 2022 05:47:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58760 "EHLO
+        id S240877AbiCHLQZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Mar 2022 06:16:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345972AbiCHKrx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Mar 2022 05:47:53 -0500
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [IPv6:2001:4b98:dc4:8::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA758433B1;
-        Tue,  8 Mar 2022 02:46:56 -0800 (PST)
-Received: (Authenticated sender: clement.leger@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 1D2CE100004;
-        Tue,  8 Mar 2022 10:46:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1646736411;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5A0zb4t9NXxV/TMbvKkfhk1i5aXlwJ1eBjKZ196vADw=;
-        b=QAcpC7UOVQQjqSs91NJW2+VCDoq3TnKdHl4jLJSH5l9639UITKRZ+hnIXGUwkA7FTpmZtE
-        f/d8Sho9KDa5p/EEeIn/ikh/KehI2UnszSLfxKcNzNtMyhskCrHRcIaBRksz7IMOUgoqNl
-        I9pGEsSVGrGi5pXTlwV2KRDDT6Ou0EvCfNWVyGQO05FWahk2Mcnnh221SJSCTIQssrAC22
-        0VfEFm8JybHj33hiaRG9uVSrdBwySo6/mBtmhG63aJXbdU4pf6EgS/DRTN69Q5P49uDcGF
-        tWaQLjl7wkf5YiP0M8zNEvwgvnnNfUt+Xjy9vBF7Uj6/Ukvu+haxTTbIg4r6wA==
-Date:   Tue, 8 Mar 2022 11:45:24 +0100
-From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S238474AbiCHLQY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Mar 2022 06:16:24 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D433B544;
+        Tue,  8 Mar 2022 03:15:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646738128; x=1678274128;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=KoWUG7e7YIIFnTkCHQYkhAmq+KJ3tI1osWCdZnLLdoA=;
+  b=LfuroAc2KzuWJh/WvWUH0MvosJfnabbIobdUGxpjv6rzXc3t7YAUh67U
+   IfumdSV6EOgPa17PqC/CcA084xydLTmo5vGjYVOcpYYO5WglX2ISDRNM8
+   BdyyGqKOllKPZCZK1etLOd8mzbXgRTe0C36YnqrcmDwKApBVJz8U58E6O
+   5ZLF3tSd/FTPUnpkpz65Hij7ejXtZkknsZoUp7eDdYdccmT2ZXJ9c/6s5
+   DPPvwyR+eIyCl8HPA3Xx5//lMQxec9zwt7hhSdeEyUHYHhvzjMs75lnYS
+   GxIiaulK6/chQLLP2GIPsW2Mho5YdF6p7pRO6pycvv19tAEZpNZqqQ0jx
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10279"; a="235267719"
+X-IronPort-AV: E=Sophos;i="5.90,164,1643702400"; 
+   d="scan'208";a="235267719"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2022 03:15:27 -0800
+X-IronPort-AV: E=Sophos;i="5.90,164,1643702400"; 
+   d="scan'208";a="513069069"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2022 03:15:24 -0800
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 4CA01204C3;
+        Tue,  8 Mar 2022 13:15:22 +0200 (EET)
+Date:   Tue, 8 Mar 2022 13:15:22 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Brown <broonie@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [RFC 00/10] add support for fwnode in i2c mux system and sfp
-Message-ID: <20220308114524.4cd4b308@fixe.home>
-In-Reply-To: <20220224154040.2633a4e4@fixe.home>
-References: <20220221162652.103834-1-clement.leger@bootlin.com>
-        <20220224154040.2633a4e4@fixe.home>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Subject: Re: [PATCH v3 1/1] device property: Allow error pointer to be passed
+ to fwnode APIs
+Message-ID: <Yic6yr6aycu7IHHh@paasikivi.fi.intel.com>
+References: <20220307202949.75300-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220307202949.75300-1-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,163 +69,238 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Thu, 24 Feb 2022 15:40:40 +0100,
-Cl=C3=A9ment L=C3=A9ger <clement.leger@bootlin.com> a =C3=A9crit :
+Hi Andy,
 
-> Hi,
->=20
-> As stated at the beginning of the cover letter, the PCIe card I'm
-> working on uses a lan9662 SoC. This card is meant to be used an
-> ethernet switch with 2 x RJ45 ports and 2 x 10G SFPs. The lan966x SoCs
-> can be used in two different ways:
->=20
->  - It can run Linux by itself, on ARM64 cores included in the SoC. This
->    use-case of the lan966x is currently being upstreamed, using a
->    traditional Device Tree representation of the lan996x HW blocks [1]
->    A number of drivers for the different IPs of the SoC have already
->    been merged in upstream Linux.
->=20
->  - It can be used as a PCIe endpoint, connected to a separate platform
->    that acts as the PCIe root complex. In this case, all the devices
->    that are embedded on this SoC are exposed through PCIe BARs and the
->    ARM64 cores of the SoC are not used. Since this is a PCIe card, it
->    can be plugged on any platform, of any architecture supporting PCIe.
->=20
-> The goal of this effort is to enable this second use-case, while
-> allowing the re-use of the existing drivers for the different devices
-> part of the SoC.
->=20
-> Following a first round of discussion, here are some clarifications on
-> what problem this series is trying to solve and what are the possible
-> choices to support this use-case.
->=20
-> Here is the list of devices that are exposed and needed to make this
-> card work as an ethernet switch:
->  - lan966x-switch
->  - reset-microchip-sparx5
->  - lan966x_serdes
->  - reset-microchip-lan966x-phy
->  - mdio-mscc-miim
->  - pinctrl-lan966x
->  - atmel-flexcom
->  - i2c-at91
->  - i2c-mux
->  - i2c-mux-pinctrl
->  - sfp
->  - clk-lan966x
->=20
-> All the devices on this card are "self-contained" and do not require
-> cross-links with devices that are on the host (except to demux IRQ but
-> this is something easy to do). These drivers already exists and are
-> using of_* API to register controllers, get properties and so on.
->=20
-> The challenge we're trying to solve is how can the PCI driver for this
-> card re-use the existing drivers, and using which hardware
-> representation to instantiate all those drivers.
->=20
-> Although this series only contained the modifications for the I2C
-> subsystem all the subsystems that are used or needed by the previously
-> listed driver have also been modified to have support for fwnode. This
-> includes the following subsystems:
-> - reset
-> - clk
-> - pinctrl
-> - syscon
-> - gpio
-> - pinctrl
-> - phy
-> - mdio
-> - i2c
->=20
-> The first feedback on this series does not seems to reach a consensus
-> (to say the least) on how to do it cleanly so here is a recap of the
-> possible solutions, either brought by this series or mentioned by
-> contributors:
->=20
-> 1) Describe the card statically using swnode
->=20
-> This is the approach that was taken by this series. The devices are
-> described using the MFD subsystem with mfd_cells. These cells are
-> attached with a swnode which will be used as a primary node in place of
-> ACPI or OF description. This means that the device description
-> (properties and references) is conveyed entirely in the swnode. In order
-> to make these swnode usable with existing OF based subsystems, the
-> fwnode API can be used in needed subsystems.
->=20
-> Pros:
->  - Self-contained in the driver.
->  - Will work on all platforms no matter the firmware description.
->  - Makes the subsystems less OF-centric.
->=20
-> Cons:
->  - Modifications are required in subsystems to support fwnode
->    (mitigated by the fact it makes to subsystems less OF-centric).
->  - swnode are not meant to be used entirely as primary nodes.
->  - Specifications for both ACPI and OF must be handled if using fwnode
->    API.
->=20
-> 2) Use SSDT overlays
->=20
-> Andy mentioned that SSDT overlays could be used. This overlay should
-> match the exact configuration that is used (ie correct PCIe bus/port
-> etc). It requires the user to write/modify/compile a .asl file and load
-> it using either EFI vars, custom initrd or via configfs. The existing
-> drivers would also need more modifications to work with ACPI. Some of
-> them might even be harder (if not possible) to use since there is no
-> ACPI support for the subsystems they are using .
->=20
-> Pros:
->  - Can't really find any for this one
->=20
-> Cons:
->  - Not all needed subsystems have appropriate ACPI bindings/support
->    (reset, clk, pinctrl, syscon).
->  - Difficult to setup for the user (modify/compile/load .aml file).
->  - Not portable between machines, as the SSDT overlay need to be
->    different depending on how the PCI device is connected to the
->    platform.
->=20
-> 3) Use device-tree overlays
->=20
-> This solution was proposed by Andrew and could potentially allows to
-> keep all the existing device-tree infrastructure and helpers. A
-> device-tree overlay could be loaded by the driver and applied using
-> of_overlay_fdt_apply(). There is some glue to make this work but it
-> could potentially be possible. Mark have raised some warnings about
-> using such device-tree overlays on an ACPI enabled platform.
->=20
-> Pros:
->  - Reuse all the existing OF infrastructure, no modifications at all on
->    drivers and subsystems.
->  - Could potentially lead to designing a generic driver for PCI devices
->    that uses a composition of other drivers.
->=20
-> Cons:
->  - Might not the best idea to mix it with ACPI.
->  - Needs CONFIG_OF, which typically isn't enabled today on most x86
->    platforms.
->  - Loading DT overlays on non-DT platforms is not currently working. It
->    can be addressed, but it's not necessarily immediate.
->=20
-> My preferred solutions would be swnode or device-tree overlays but
-> since there to is no consensus on how to add this support, how
-> can we go on with this series ?
->=20
-> Thanks,
->=20
-> [1]
-> https://lore.kernel.org/linux-arm-kernel/20220210123704.477826-1-michael@=
-walle.cc/
->=20
+This makes secondary handling quite a big nicer, thanks! A few comments
+below. Apart from that,
 
-Does anybody have some other advices or recommendation regarding
-this RFC ? It would be nice to have more feedback on the solution that
-might e preferred to support this use-case.
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Thanks,
+On Mon, Mar 07, 2022 at 10:29:49PM +0200, Andy Shevchenko wrote:
+> Some of the fwnode APIs might return an error pointer instead of NULL
+> or valid fwnode handle. The result of such API call may be considered
+> optional and hence the test for it is usually done in a form of
+> 
+> 	fwnode = fwnode_find_reference(...);
+> 	if (IS_ERR(fwnode))
+> 		...error handling...
+> 
+> Nevertheless the resulting fwnode may have bumped the reference count
+> and hence caller of the above API is obliged to call fwnode_handle_put().
+> Since fwnode may be not valid either as NULL or error pointer the check
+> has to be performed there. This approach uglifies the code and adds
+> a point of making a mistake, i.e. forgetting about error point case.
+> 
+> To prevent this, allow an error pointer to be passed to the fwnode APIs.
+> 
+> Fixes: 83b34afb6b79 ("device property: Introduce fwnode_find_reference()")
+> Reported-by: Nuno Sá <nuno.sa@analog.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Tested-by: Nuno Sá <nuno.sa@analog.com>
+> ---
+> 
+> v3: dropped test of secondary fwnode (Nuno), added tag (Nuno), amended commit message
+> v2: adjusted the entire fwnode API (Sakari)
+> 
+> Nuno, can you re-test this with the ltc2983 series to be sure it is still okay?
+> 
+>  drivers/base/property.c | 76 +++++++++++++++++++++++------------------
+>  include/linux/fwnode.h  | 10 +++---
+>  2 files changed, 48 insertions(+), 38 deletions(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index c0e94cce9c29..635a0e556a4f 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -9,6 +9,7 @@
+>  
+>  #include <linux/acpi.h>
+>  #include <linux/export.h>
+> +#include <linux/fwnode.h>
 
+Is this intended? linux/property.h already includes linux/fwnode.h.
 
---=20
-Cl=C3=A9ment L=C3=A9ger,
-Embedded Linux and Kernel engineer at Bootlin
-https://bootlin.com
+>  #include <linux/kernel.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> @@ -47,12 +48,14 @@ bool fwnode_property_present(const struct fwnode_handle *fwnode,
+>  {
+>  	bool ret;
+>  
+> +	if (IS_ERR_OR_NULL(fwnode))
+> +		return false;
+> +
+>  	ret = fwnode_call_bool_op(fwnode, property_present, propname);
+> -	if (ret == false && !IS_ERR_OR_NULL(fwnode) &&
+> -	    !IS_ERR_OR_NULL(fwnode->secondary))
+> -		ret = fwnode_call_bool_op(fwnode->secondary, property_present,
+> -					 propname);
+> -	return ret;
+> +	if (ret == true)
+
+It's already bool. I'd instead use:
+
+	if (ret)
+
+> +		return ret;
+> +
+> +	return fwnode_call_bool_op(fwnode->secondary, property_present, propname);
+>  }
+>  EXPORT_SYMBOL_GPL(fwnode_property_present);
+>  
+> @@ -232,15 +235,16 @@ static int fwnode_property_read_int_array(const struct fwnode_handle *fwnode,
+>  {
+>  	int ret;
+>  
+> +	if (IS_ERR_OR_NULL(fwnode))
+> +		return -EINVAL;
+> +
+>  	ret = fwnode_call_int_op(fwnode, property_read_int_array, propname,
+>  				 elem_size, val, nval);
+> -	if (ret == -EINVAL && !IS_ERR_OR_NULL(fwnode) &&
+> -	    !IS_ERR_OR_NULL(fwnode->secondary))
+> -		ret = fwnode_call_int_op(
+> -			fwnode->secondary, property_read_int_array, propname,
+> -			elem_size, val, nval);
+> +	if (ret != -EINVAL)
+> +		return ret;
+>  
+> -	return ret;
+> +	return fwnode_call_int_op(fwnode->secondary, property_read_int_array, propname,
+> +				  elem_size, val, nval);
+>  }
+>  
+>  /**
+> @@ -371,14 +375,16 @@ int fwnode_property_read_string_array(const struct fwnode_handle *fwnode,
+>  {
+>  	int ret;
+>  
+> +	if (IS_ERR_OR_NULL(fwnode))
+> +		return -EINVAL;
+> +
+>  	ret = fwnode_call_int_op(fwnode, property_read_string_array, propname,
+>  				 val, nval);
+> -	if (ret == -EINVAL && !IS_ERR_OR_NULL(fwnode) &&
+> -	    !IS_ERR_OR_NULL(fwnode->secondary))
+> -		ret = fwnode_call_int_op(fwnode->secondary,
+> -					 property_read_string_array, propname,
+> -					 val, nval);
+> -	return ret;
+> +	if (ret != -EINVAL)
+> +		return ret;
+> +
+> +	return fwnode_call_int_op(fwnode->secondary, property_read_string_array, propname,
+> +				  val, nval);
+>  }
+>  EXPORT_SYMBOL_GPL(fwnode_property_read_string_array);
+>  
+> @@ -480,15 +486,16 @@ int fwnode_property_get_reference_args(const struct fwnode_handle *fwnode,
+>  {
+>  	int ret;
+>  
+> +	if (IS_ERR_OR_NULL(fwnode))
+> +		return -ENOENT;
+> +
+>  	ret = fwnode_call_int_op(fwnode, get_reference_args, prop, nargs_prop,
+>  				 nargs, index, args);
+> +	if (ret == 0)
+> +		return ret;
+>  
+> -	if (ret < 0 && !IS_ERR_OR_NULL(fwnode) &&
+> -	    !IS_ERR_OR_NULL(fwnode->secondary))
+> -		ret = fwnode_call_int_op(fwnode->secondary, get_reference_args,
+> -					 prop, nargs_prop, nargs, index, args);
+> -
+> -	return ret;
+> +	return fwnode_call_int_op(fwnode->secondary, get_reference_args, prop, nargs_prop,
+> +				  nargs, index, args);
+>  }
+>  EXPORT_SYMBOL_GPL(fwnode_property_get_reference_args);
+>  
+> @@ -698,7 +705,7 @@ fwnode_get_next_available_child_node(const struct fwnode_handle *fwnode,
+>  {
+>  	struct fwnode_handle *next_child = child;
+>  
+> -	if (!fwnode)
+> +	if (IS_ERR_OR_NULL(fwnode))
+>  		return NULL;
+>  
+>  	do {
+> @@ -722,16 +729,16 @@ struct fwnode_handle *device_get_next_child_node(struct device *dev,
+>  	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+>  	struct fwnode_handle *next;
+>  
+> +	if (IS_ERR_OR_NULL(fwnode))
+> +		return NULL;
+> +
+>  	/* Try to find a child in primary fwnode */
+>  	next = fwnode_get_next_child_node(fwnode, child);
+>  	if (next)
+>  		return next;
+>  
+>  	/* When no more children in primary, continue with secondary */
+> -	if (fwnode && !IS_ERR_OR_NULL(fwnode->secondary))
+> -		next = fwnode_get_next_child_node(fwnode->secondary, child);
+> -
+> -	return next;
+> +	return fwnode_get_next_child_node(fwnode->secondary, child);
+>  }
+>  EXPORT_SYMBOL_GPL(device_get_next_child_node);
+>  
+> @@ -798,6 +805,9 @@ EXPORT_SYMBOL_GPL(fwnode_handle_put);
+>   */
+>  bool fwnode_device_is_available(const struct fwnode_handle *fwnode)
+>  {
+> +	if (IS_ERR_OR_NULL(fwnode))
+> +		return false;
+> +
+>  	if (!fwnode_has_op(fwnode, device_is_available))
+>  		return true;
+>  
+> @@ -988,14 +998,14 @@ fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
+>  		parent = fwnode_graph_get_port_parent(prev);
+>  	else
+>  		parent = fwnode;
+> +	if (IS_ERR_OR_NULL(parent))
+> +		return NULL;
+>  
+>  	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
+> +	if (ep)
+> +		return ep;
+>  
+> -	if (IS_ERR_OR_NULL(ep) &&
+> -	    !IS_ERR_OR_NULL(parent) && !IS_ERR_OR_NULL(parent->secondary))
+> -		ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+> -
+> -	return ep;
+> +	return fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+>  }
+>  EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
+>  
+> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> index 3a532ba66f6c..7defac04f9a3 100644
+> --- a/include/linux/fwnode.h
+> +++ b/include/linux/fwnode.h
+> @@ -148,12 +148,12 @@ struct fwnode_operations {
+>  	int (*add_links)(struct fwnode_handle *fwnode);
+>  };
+>  
+> -#define fwnode_has_op(fwnode, op)				\
+> -	((fwnode) && (fwnode)->ops && (fwnode)->ops->op)
+> +#define fwnode_has_op(fwnode, op)					\
+> +	(!IS_ERR_OR_NULL(fwnode) && (fwnode)->ops && (fwnode)->ops->op)
+> +
+>  #define fwnode_call_int_op(fwnode, op, ...)				\
+> -	(fwnode ? (fwnode_has_op(fwnode, op) ?				\
+> -		   (fwnode)->ops->op(fwnode, ## __VA_ARGS__) : -ENXIO) : \
+> -	 -EINVAL)
+> +	(fwnode_has_op(fwnode, op) ?					\
+> +	 (fwnode)->ops->op(fwnode, ## __VA_ARGS__) : (IS_ERR_OR_NULL(fwnode) ? -EINVAL : -ENXIO))
+>  
+>  #define fwnode_call_bool_op(fwnode, op, ...)		\
+>  	(fwnode_has_op(fwnode, op) ?			\
+
+-- 
+Kind regards,
+
+Sakari Ailus
