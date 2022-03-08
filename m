@@ -2,168 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B89D4D0C58
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Mar 2022 00:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 909844D0EF6
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Mar 2022 06:19:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233585AbiCHAAf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Mar 2022 19:00:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33170 "EHLO
+        id S237725AbiCHFUS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Mar 2022 00:20:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235106AbiCHAAf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Mar 2022 19:00:35 -0500
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9620233A3A
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Mar 2022 15:59:39 -0800 (PST)
-Received: by mail-oo1-xc35.google.com with SMTP id w3-20020a4ac183000000b0031d806bbd7eso19959996oop.13
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Mar 2022 15:59:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=KEKG+0hooW1zM7qhTU6cSghfN5cLCif35DDe+3mMJLQ=;
-        b=qFLO6hAIpl06N4GNLGqecP/zlZwavKJvd+C2rXjxnNQPO4w64M+806hqjlD7t5TC6g
-         BNcZsQmoORx6UJxpnwD9nzyJsEPGkmb0zpT0utUZNkmvIvTQPsNqjE/ItkaeHXwNtLfY
-         efsTbuorX+m2WMmD3Euhws5BSxUNtK+/decBRrARGms/jFqz8lQbCru/seLE4bzH+M9f
-         D9u3UAjiDwhUSEja4sQILVR7zt0gV81PgQ7xKfOLlmw9jXZIVArFCZHhQ1up67wWc9fZ
-         2Jf8M3tT8faHc4vRoIoMP8KxFQi8dtC4xe0MCaKN1gJY+MWmOar9FEoBxNxjw6Fq0f3r
-         8CfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=KEKG+0hooW1zM7qhTU6cSghfN5cLCif35DDe+3mMJLQ=;
-        b=N3knjmI8xUkK/tI8UiLrJOuCLCv8VQm3FgUaJtsIIqtOpg8orrH60qg1JiDw8KpEKs
-         mWpPrXHZ+tQiqXzglUIcamrlcvthHhlRPphdLqoahhxm4Ex4WoGMEeIp3diDEEvEZKQF
-         oWpAiQPsig4xYzDrnoJIrmsAszOtJronqC8gnd+biuSMgkcmbLiz/UbveIa8Fr8u6IqH
-         QKFFbTCaQ792VL6mEeUPAv2tHLZ9YP+K+3UBmzoMUo266e/irz1ZGI6bWFVQ/0ornrP3
-         teGlGitaBCSJeOwwCgH8/X0+jCvh46pj3+tfbMs9awRcuiPh8l32A7V4gZbcIkOzvVmG
-         KhbA==
-X-Gm-Message-State: AOAM533jCHairk8VLlI+FlJ3wv5wy3zibO6XnOFkx4PLHQG51sU7fivq
-        +9MIFKcloMhP0EpEVPZ2uEnrOQ==
-X-Google-Smtp-Source: ABdhPJytmm6mXDFw5YmoLtk0zA0zRvReKCgSL+J2N0/BnKQabYOOJvsgpbE9CnKc9Mj8U2BLGCcYMA==
-X-Received: by 2002:a05:6870:a189:b0:da:b3f:2b83 with SMTP id a9-20020a056870a18900b000da0b3f2b83mr870514oaf.290.1646697578856;
-        Mon, 07 Mar 2022 15:59:38 -0800 (PST)
-Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
-        by smtp.gmail.com with ESMTPSA id l4-20020a4a94c4000000b002ea822fbac8sm6381033ooi.21.2022.03.07.15.59.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Mar 2022 15:59:38 -0800 (PST)
-Date:   Mon, 7 Mar 2022 16:01:22 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v4 7/7] usb: typec: mux: Add On Semi fsa4480 driver
-Message-ID: <Yiac0h4RX8VxDtZ7@ripper>
-References: <20220307034040.1111107-1-bjorn.andersson@linaro.org>
- <20220307034040.1111107-7-bjorn.andersson@linaro.org>
- <YiXbg4QwgIgLh3LW@smile.fi.intel.com>
- <YiYbOQpX4+fP8S1W@ripper>
- <YiYvMf5X+S0WZ9lO@smile.fi.intel.com>
- <YiZzco76Nrxbxz95@ripper>
- <YiaDd+quwXgbuz5D@smile.fi.intel.com>
+        with ESMTP id S234381AbiCHFUR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Mar 2022 00:20:17 -0500
+Received: from out30-42.freemail.mail.aliyun.com (out30-42.freemail.mail.aliyun.com [115.124.30.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E940C38BFF;
+        Mon,  7 Mar 2022 21:19:20 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V6cdc5s_1646716755;
+Received: from 30.240.113.144(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V6cdc5s_1646716755)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 08 Mar 2022 13:19:17 +0800
+Message-ID: <8c40a492-9461-2b43-6ec9-06bfc7a0e77f@linux.alibaba.com>
+Date:   Tue, 8 Mar 2022 13:19:12 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YiaDd+quwXgbuz5D@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.6.1
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: [BUG] kernel side can NOT trigger memory error with einj
+To:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "Luck, Tony" <tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        graeme.gregory@linaro.org, will.deacon@arm.com,
+        myron.stowe@redhat.com, len.brown@intel.com, ying.huang@intel.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon 07 Mar 14:13 PST 2022, Andy Shevchenko wrote:
+Hi folks,
 
-> On Mon, Mar 07, 2022 at 01:04:50PM -0800, Bjorn Andersson wrote:
-> > On Mon 07 Mar 08:13 PST 2022, Andy Shevchenko wrote:
-> > > On Mon, Mar 07, 2022 at 06:48:25AM -0800, Bjorn Andersson wrote:
-> > > > On Mon 07 Mar 02:16 PST 2022, Andy Shevchenko wrote:
-> > > > > On Sun, Mar 06, 2022 at 07:40:40PM -0800, Bjorn Andersson wrote:
-> 
-> ...
-> 
-> > > > > > +		/* 15us to allow the SBU switch to turn off */
-> > > > > > +		usleep_range(15, 1000);
-> > > > > 
-> > > > > This is quite unusual range.
-> > > > > 
-> > > > > If you are fine with the long delay, why to stress the system on it?
-> > > > > Otherwise the use of 1000 is unclear.
-> > > > > 
-> > > > > That said, I would expect one of the below:
-> > > > > 
-> > > > > 		usleep_range(15, 30);
-> > > > > 		usleep_range(500, 1000);
-> > > > 
-> > > > Glad you asked about that, as you say the typical form is to keep the
-> > > > range within 2x of the lower value, or perhaps lower + 5.
-> > > > 
-> > > > But if the purpose is to specify a minimum time and then give a max to
-> > > > give the system some flexibility in it's decision of when to wake up.
-> > > > And in situations such as this, we're talking about someone connecting a
-> > > > cable, so we're in "no rush" and I picked the completely arbitrary 1ms
-> > > > as the max.
-> > > > 
-> > > > Do you see any drawback of this much higher number? (Other than it
-> > > > looking "wrong")
-> > > 
-> > > I see the drawback of low number.
-> > 
-> > 15us is based on the data sheet and if the kernel is ready to serve us
-> > after 15us then let's do that.
-> > 
-> > > The 1000 makes not much sense to me with the minimum 66x times less.
-> > > If there is no rush, use some reasonable values,
-> > > what about
-> > > 
-> > > 		usleep_range(100, 1000);
-> > > 
-> > > ? 10x is way better than 66x.
-> > 
-> > I don't agree, and in particular putting 100 here because it's 1/10 of
-> > the number I just made up doesn't sounds like a good reason. The
-> > datasheet says 15us, so that is at least based on something real.
-> > 
-> > In https://www.kernel.org/doc/Documentation/timers/timers-howto.txt
-> > I find the following:
-> > 
-> >     With the introduction of a range, the scheduler is
-> >     free to coalesce your wakeup with any other wakeup
-> >     that may have happened for other reasons, or at the
-> >     worst case, fire an interrupt for your upper bound.
-> > 
-> >     The larger a range you supply, the greater a chance
-> >     that you will not trigger an interrupt; this should
-> >     be balanced with what is an acceptable upper bound on
-> >     delay / performance for your specific code path. Exact
-> >     tolerances here are very situation specific, thus it
-> >     is left to the caller to determine a reasonable range.
-> > 
-> > Which to me says that the wider range is perfectly reasonable. In
-> > particular 15, 30 (which seems to be quite common) makes the available
-> > range to the scheduler unnecessarily narrow.
-> > 
-> > And it's clear that whatever the upper bound it's going to be some
-> > arbitrary number, but 1ms should ensure that there are other hrtimer
-> > interrupts to piggy back on.
-> 
-> Okay, I have grepped for usleep_range(x[x], yyyy) and there are 9 modules
-> use it. A few commit messages call 1000 as "reasonable upper limit".
-> 
+If we inject an memory error at physical memory address, e.g. 0x92f033038,
+used by a user space process:
 
-Right, we usually see a much more narrow range, as you say 2x or perhaps
-10x, and this why I said I was glad you asked. I have been wondering
-about this in a few different cases...
+	echo 0x92f033038 > /sys/kernel/debug/apei/einj/param1
+	echo 0xfffffffffffff000 > /sys/kernel/debug/apei/einj/param2
+	echo 0x1 > /sys/kernel/debug/apei/einj/flags
+	echo 0x8 > /sys/kernel/debug/apei/einj/error_type
+	echo 1 > /sys/kernel/debug/apei/einj/error_inject
 
-Thanks,
-Bjorn
+Then the following error will be reported in dmesg:
+
+    ACPI: [Firmware Bug]: requested region covers kernel memory @ 0x000000092f033038
+
+After digging into einj trigger interface, I think it's a kernel bug.
+
+On our platform, firmware relies on kernel to trigger an injected error.
+Specifically, it populates trigger_tab with the injected physical memory
+address, which is set in param1. It is expected to map the RAM address and
+run read action. And the execution path is as follows:
+
+    __einj_error_trigger
+        => apei_resources_request
+            => apei_exec_pre_map_gars
+                => apei_exec_run
+
+The root cause is because:
+
+1. Commit fdea163d8c17 ("ACPI, APEI, EINJ, Fix resource conflict on some
+machine") removes the injecting memory address range which conflits with
+regular memory from trigger table resources. It make sense when calling
+apei_resources_request(). **However, the actual mapping operation in
+apei_exec_pre_map_gars() with trigger_ctx. And the conflit physical address
+is still in trigger_ctx.**
+
+2. Then apei_exec_pre_map_gars() will finally call acpi_os_ioremap().
+The injected physical memory address is EFI_CONVENTIONAL_MEMORY and
+memblock_is_map_memory is true (arch/arm64/kernel/acpi.c) so that we see
+the printed message.
+
+        case EFI_CONVENTIONAL_MEMORY:
+        case EFI_PERSISTENT_MEMORY:
+            if (memblock_is_map_memory(phys) ||
+                !memblock_is_region_memory(phys, size)) {
+                pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
+                return NULL;
+            }
+
+3. On the other hand, commit ba242d5b1a84 ("ACPI, APEI: Add RAM mapping support to ACPI")
+add RAM support with kmap. But after commit aafc65c731fe ("ACPI: add arm64 to the
+platforms that use ioremap"), ioremap is used to map memory. However, the
+ioremap implementation (arch/arm64/mm/ioremap.c) not allowed to map RAM at
+all.
+
+    /*
+     * Don't allow RAM to be mapped.
+     */
+    if (WARN_ON(pfn_valid(__phys_to_pfn(phys_addr))))
+        return NULL;
+
+**As a result, the error could not be triggered, which is not expected if we want
+to inject an error to a physical page used by process.**
+
+A normal workflow maps Generic Address Register (GAR) by acpi_os_ioremap
+and add its virtual address into acpi_ioremaps. The execution path is as
+follows:
+
+    apei_exec_pre_map_gars
+        => pre_map_gar_callback
+            => apei_map_generic_address
+                => acpi_os_map_generic_address
+                    => acpi_os_map_iomem    /* add mapped VA into acpi_ioremaps */
+                        =>    acpi_map
+                            => acpi_os_ioremap /**/
+
+Then, a read or write action is taken. It will check if the physical
+address is mapped from acpi_ioremap. If yes, the value is read directly.
+Otherwise, acpi_os_ioremap the physical address first. The execution path
+is as follows:
+
+    __apei_exec_run
+        => apei_exec_read_register
+            => apei_read
+                => acpi_os_read_memory
+                    => acpi_map_vaddr_lookup    /* lookup VA of PA from acpi_ioremap */
+                    => acpi_os_ioremap
+
+It works well for reserved memory, but not for common case in which we want
+to inject normal memory.
+
+
+A hacking way to address this issue is that map RAM memory with kmap
+instead of apei_exec_pre_map_gars, and read it directly instead of
+apei_exec_run.
+-       rc = apei_exec_pre_map_gars(&trigger_ctx);
+-       if (rc)
+-               goto out_release;
++       volatile long *ptr;
++       long tmp;
++       unsigned long pfn;
++       pfn = param1 >> PAGE_SHIFT;
+
+-       rc = apei_exec_run(&trigger_ctx, ACPI_EINJ_TRIGGER_ERROR);
++       ptr = kmap(pfn_to_page(pfn));
++       tmp = *(ptr + (param1 & ~ PAGE_MASK));
+
+-       apei_exec_post_unmap_gars(&trigger_ctx);
+
+I am wondering that should we use kmap to map RAM in acpi_map or add a
+another path to address this issue? Any comment is welcomed.
+
+Best Regards,
+Shuai
