@@ -2,90 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE1874D386B
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Mar 2022 19:05:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BE774D3894
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Mar 2022 19:16:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236467AbiCISET (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Mar 2022 13:04:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54518 "EHLO
+        id S234604AbiCISQV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Mar 2022 13:16:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236524AbiCISET (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Mar 2022 13:04:19 -0500
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3027665C9;
-        Wed,  9 Mar 2022 10:03:20 -0800 (PST)
-Received: by mail-yb1-f178.google.com with SMTP id w16so5987545ybi.12;
-        Wed, 09 Mar 2022 10:03:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c3a48oLLkjSGkQnL2WkjoDyztkm4ooACKXJyQszVdjI=;
-        b=OLTrPKjyTP1qQ9a0WZcWH3qfTIM7LZxYG6G98Kl0kVMPtR4DmpGs44lkM7xuAntviZ
-         gxPZUnYmU0aGlOgGk1PgR332+L7N59fTRN7zfqdQeZSy12neEzFtDpk0UBZYdYHFAaK3
-         pXPBhS5eCQjc+zdfGRWYOEELWwCpLv4cBiY425awjLZWb0FypwzNTwrdQKXiyRWEy9Kl
-         mOj1RcXsIasoJ7P4WpTuSiymUpwZxQDd4Jnmq4VluRjC5ME1+USo7UUoAN91Oix5Xnhp
-         xI2Y2FyfDknORf8RKNl8Lc3ysYMQX+rY+QjT6ANpk1GU1JwhKLbPCBmLE1u7ONnvgR59
-         9d6w==
-X-Gm-Message-State: AOAM531vFHMHJWHrhb6kLYNE8mx+Z29E8SeGrkUHHliNPL8+hTTT2NrC
-        ZhRmto6V4ivxQwQjjDhmb6aDVtwKELB0nlFGXmHP/Wzw
-X-Google-Smtp-Source: ABdhPJyFIzJT9II3hyzJSUIzk1lEe013GVdTGaNPFaKPwsguBkhgAPwOP/ti4JbmOes0lbZ8NFFUjyJqbYBqgeDwS1k=
-X-Received: by 2002:a25:4052:0:b0:628:cdca:afb7 with SMTP id
- n79-20020a254052000000b00628cdcaafb7mr790485yba.81.1646848999300; Wed, 09 Mar
- 2022 10:03:19 -0800 (PST)
+        with ESMTP id S235106AbiCISQU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Mar 2022 13:16:20 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7DE4128DD7;
+        Wed,  9 Mar 2022 10:15:21 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F124861607;
+        Wed,  9 Mar 2022 18:15:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148A6C340E8;
+        Wed,  9 Mar 2022 18:15:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646849720;
+        bh=klcC1qku76fYEhGINiDMx4XkazS43HCSZUi7qfC3JBY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=CepSo++WWIGwTuVJKKTM7HLAiWkZg5mzQV4zyG9GeFtbyyeFy1UVtOkuIp4lUmG03
+         KK8NirWLnZm0gn43tASPP4JB8KPKiuKU9jRSZSUy2fYqV81BrsL5Js9BlBnlHM1G8c
+         IQIDeJhaitcFZBkRatn8tAViKBVF/ISjA3p0msAX2+arHZ/fCQjpKMd+qCe4JtWByu
+         1iC7C3xYplktvT+K2Wj8+X6wJ1h4+EkBbMEJGwOaOWWHlCASJEOoUa5C91q3nCxPX6
+         byvkcdtth4XtnQHvX8PvFmOAAkqsm5BQ4Gmo4D/kZfZzP04aagW+hcl7g0e9y6ZAeC
+         erBQmBbiBEC2w==
+Date:   Wed, 9 Mar 2022 12:15:18 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>, wse@tuxedocomputers.com
+Subject: Re: [PATCH 3/3] x86/PCI: Preserve host bridge windows completely
+ covered by E820
+Message-ID: <20220309181518.GA63422@bhelgaas>
 MIME-Version: 1.0
-References: <e1b3112fd6c8c889408915e9a849301d13acf2f1.camel@fifi.org>
- <a52f9cfb-818f-6ed9-42aa-1385584c8103@intel.com> <427c153f2d34997e2131bdeb0fe851c74083f21a.camel@fifi.org>
-In-Reply-To: <427c153f2d34997e2131bdeb0fe851c74083f21a.camel@fifi.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 9 Mar 2022 19:03:08 +0100
-Message-ID: <CAJZ5v0hKXyTtb1Jk=wqNV9_mZKdf3mmwF4bPOcmADyNnTkpMbQ@mail.gmail.com>
-Subject: Re: Bisected regression: 4287509b4d21 causes HP Spectre 14t-ea100 to
- overheat while suspended
-To:     Philippe Troin <phil@fifi.org>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bfdb214d-b6e7-f0e7-60de-f30204b0aa90@redhat.com>
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 9, 2022 at 7:02 PM Philippe Troin <phil@fifi.org> wrote:
->
-> On Wed, 2022-03-09 at 16:21 +0100, Rafael J. Wysocki wrote:
-> > On 3/9/2022 4:50 AM, Philippe Troin wrote:
-> > > Linux 5.16.9 was working fine, but starting with 5.16.10 my main laptop
-> > > has been overheating while suspended.
-> > > I've also tried 5.16.11, 5.16.12 and 5.16.13 and they also show the
-> > > same issue (overheating while suspended).
-> > >
-> > > I could not spot any difference between the dmesg messages issued
-> > > during suspend between a working version (5.16.9) and the the broken
-> > > ones (5.16.1[0-3]).
-> > >
-> > > I've bisected the regression down to commit 4287509b4d21
-> > > https://lore.kernel.org/lkml/20220214092510.074083242@linuxfoundation.org/
-> > >
-> > > I have also tried reverting that change on top of 5.16.12, and the
-> > > overheating behavior is gone.
-> >
-> > OK, so it is not clear if this is a regression in -stable only or in the
-> > mainline.
-> >
-> > Would it be possible to try 5.17-rc7 and see if the issue is still there?
->
-> Tried 5.17-rc7, and the issue is not appearing when running it (the
-> laptop does not overheat when suspended).
->
-> So it looks like the problem only appears on the 5.16 branch, starting
-> on 4287509b4d21.
+On Sat, Mar 05, 2022 at 11:37:23AM +0100, Hans de Goede wrote:
+> On 3/4/22 16:46, Hans de Goede wrote:
+> > On 3/4/22 16:32, Bjorn Helgaas wrote:
+> >> On Fri, Mar 04, 2022 at 03:16:42PM +0100, Hans de Goede wrote:
+> >>> On 3/4/22 04:51, Bjorn Helgaas wrote:
+> >>>> From: Bjorn Helgaas <bhelgaas@google.com>
+> >>>>
+> >>>> Many folks have reported PCI devices not working.  It could affect any
+> >>>> device, but most reports are for Thunderbolt controllers on Lenovo Yoga and
+> >>>> Clevo Barebone laptops and the touchpad on Lenovo IdeaPads.
+> >>>> ...
 
-Thanks for the confirmation!
+> >>>> diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
+> >>>> index 7378ea146976..405f0af53e3d 100644
+> >>>> --- a/arch/x86/kernel/resource.c
+> >>>> +++ b/arch/x86/kernel/resource.c
+> >>>> @@ -39,6 +39,17 @@ void remove_e820_regions(struct device *dev, struct resource *avail)
+> >>>>  		e820_start = entry->addr;
+> >>>>  		e820_end = entry->addr + entry->size - 1;
+> >>>>  
+> >>>> +		/*
+> >>>> +		 * If an E820 entry covers just part of the resource, we
+> >>>> +		 * assume E820 is telling us about something like host
+> >>>> +		 * bridge register space that is unavailable for PCI
+> >>>> +		 * devices.  But if it covers the *entire* resource, it's
+> >>>> +		 * more likely just telling us that this is MMIO space, and
+> >>>> +		 * that doesn't need to be removed.
+> >>>> +		 */
+> >>>> +		if (e820_start <= avail->start && avail->end <= e820_end)
+> >>>> +			continue;
+> >>>> +
+> >>>
+> >>> IMHO it would be good to add some logging here, since hitting this is
+> >>> somewhat of a special case. For the Fedora test kernels I did I changed
+> >>> this to:
+> >>>
+> >>> 		if (e820_start <= avail->start && avail->end <= e820_end) {
+> >>> 			dev_info(dev, "resource %pR fully covered by e820 entry [mem %#010Lx-%#010Lx]\n",
+> >>> 				 avail, e820_start, e820_end);
+> >>> 			continue;
+> >>> 		}
+> >>>
+> >>> And I expect/hope to see this new info message on the ideapad with the
+> >>> touchpad issue.
+
+I added this logging.
+
+> So I just got the first report back from the Fedora test 5.16.12 kernel
+> with this series added. Good news on the ideapad this wotks fine to
+> fix the touchpad issue (as expected).
+
+Any "Tested-by" I could add?  If we can, I'd really like to give some
+credit to the folks who suffered through this and helped resolve it.
+
+Bjorn
