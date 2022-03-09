@@ -2,178 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07C674D2D03
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Mar 2022 11:21:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A57EA4D2FFA
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Mar 2022 14:32:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229745AbiCIKWd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Mar 2022 05:22:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38894 "EHLO
+        id S230119AbiCINd1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Mar 2022 08:33:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbiCIKWc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Mar 2022 05:22:32 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CD7216BF91;
-        Wed,  9 Mar 2022 02:21:33 -0800 (PST)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KD7Vc5DydzfYlR;
-        Wed,  9 Mar 2022 18:20:08 +0800 (CST)
-Received: from [10.67.102.169] (10.67.102.169) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Wed, 9 Mar 2022 18:21:31 +0800
-CC:     <yangyicong@hisilicon.com>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v3 2/3] arch_topology: obtain cpu capacity using
- information from CPPC
-To:     Ionela Voinescu <ionela.voinescu@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Giovanni Gherdovich <ggherdovich@suse.cz>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Sean Kelley <skelley@nvidia.com>
-References: <20220302180913.13229-1-ionela.voinescu@arm.com>
- <20220302180913.13229-3-ionela.voinescu@arm.com>
-From:   Yicong Yang <yangyicong@huawei.com>
-Message-ID: <4283eacf-6eab-b2f5-07f2-d19fad134277@huawei.com>
-Date:   Wed, 9 Mar 2022 18:21:30 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        with ESMTP id S232615AbiCINd0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Mar 2022 08:33:26 -0500
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F5DD13C39D
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Mar 2022 05:32:25 -0800 (PST)
+Received: by mail-yb1-f174.google.com with SMTP id w16so4295889ybi.12
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Mar 2022 05:32:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=w7p0JckL1w/2NfmH5tXvE+QWrfz+oN2oxWMLVUvmaHw=;
+        b=PL69+DTCUFGcHkYPhl0CVrwvVXwpX1mBXrtmaeuYQxfd5uMkBCxElDt9mMHcHdmnjG
+         37XM5ZgWOIesjtfKHpF+JJRTgYHJDhQprHOyN/I35nwbtonIZ8PgZgcoLZ68X0lnYhcO
+         TCfBu2MlNxP6XPCdCz68mjtCfl9Z2pmWqW4t/GpZAd4EfTZvLtxPxpY7NCBtKO1hAhx5
+         YHB9KIXmhlCg7eYR5Xcuj1IFcJkQ0uhKbmFWdCeTLp/ZnyVElGO42t5aZFvmEeYy2FIm
+         T3YYXJ15iPrQwEDqtYtF1hb5TK7/qs5VvS0OTCTy8lZBiFDbF9wrCe3DCsJf+dfXWNL+
+         2lsw==
+X-Gm-Message-State: AOAM533+j2lQfrZ47C6Ynsc6E22ed8vWg0A5yWLJtestWdNb2Q9ouUJM
+        hUf4a3GXDIHRxBtixHtCucgJL3NfR9keBQzHOTOH4aiDlmc=
+X-Google-Smtp-Source: ABdhPJzIKIQJgDDiw0vldyFEblNuijIE30ygwalOz2SpVDqHXbuYizAlzdgx5Zz9xM/nAdfODCnTHFkADca8mQN2lkU=
+X-Received: by 2002:a25:bbc1:0:b0:610:b4ce:31db with SMTP id
+ c1-20020a25bbc1000000b00610b4ce31dbmr16188953ybk.482.1646832744226; Wed, 09
+ Mar 2022 05:32:24 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20220302180913.13229-3-ionela.voinescu@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.169]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220308224200.2691564-1-mario.limonciello@amd.com>
+In-Reply-To: <20220308224200.2691564-1-mario.limonciello@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 9 Mar 2022 14:32:11 +0100
+Message-ID: <CAJZ5v0ixsSuH_d+CCiU_Mn7HaCf6mLekOadte9j33NKg4aH20w@mail.gmail.com>
+Subject: Re: [PATCH] PCI/ACPI: Add support for `AE_SUPPORT` in _OSC queries
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Qian Cai <quic_qiancai@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ionela,
+On Tue, Mar 8, 2022 at 11:44 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> commit a412caea5a2d ("ACPI: bus: Allow negotiating _OSC capabilities")
+> added support for `acpi_run_osc` to return `AE_SUPPORT` when negotiating
+> an _OSC.
+>
+> This was fixed in other kernel consumers, but `acpi_pci_run_osc` was
+> missed.  Update the function to detect when called with `OSC_QUERY_ENABLE`
+> set and attempt to negotiate up to 5 times.
 
-On 2022/3/3 2:09, Ionela Voinescu wrote:
-> Define topology_init_cpu_capacity_cppc() to use highest performance
-> values from _CPC objects to obtain and set maximum capacity information
-> for each CPU. acpi_cppc_processor_probe() is a good point at which to
-> trigger the initialization of CPU (u-arch) capacity values, as at this
-> point the highest performance values can be obtained from each CPU's
-> _CPC objects. Architectures can therefore use this functionality
-> through arch_init_invariance_cppc().
-> 
-> The performance scale used by CPPC is a unified scale for all CPUs in
-> the system. Therefore, by obtaining the raw highest performance values
-> from the _CPC objects, and normalizing them on the [0, 1024] capacity
-> scale, used by the task scheduler, we obtain the CPU capacity of each
-> CPU.
-> 
+This is not how it is designed to work, though.
 
-So we're going to use highest performance rather than nominal performance,
-and I checked the discussion in v2 [1]. Maybe we should also document this
-in sched-capacity.rst that where scheduler get the capacity from on ACPI
-based system? Currently we only have DT part but after this patch it's
-also supported on ACPI based system.
+acpi_pci_query_osc() is for that.
 
-Out of curiosity, since we have raw capacity now on ACPI system, seems we
-are able to scale the capacity with freq_factor now? looked into
-register_cpufreq_notifier().
+>
+> Reported-by: Qian Cai <quic_qiancai@quicinc.com>
+> Fixes: a412caea5a2d ("ACPI: bus: Allow negotiating _OSC capabilities")
 
-[1] https://lore.kernel.org/lkml/Yh5OAsYVBWWko+CH@arm.com/
+So I'm seriously thinking about dropping that whole lot at this point.
 
-Thanks,
-Yicong
-
-> While an ACPI Notify(0x85) could alert about a change in the highest
-> performance value, which should in turn retrigger the CPU capacity
-> computations, this notification is not currently handled by the ACPI
-> processor driver. When supported, a call to arch_init_invariance_cppc()
-> would perform the update.
-> 
-> Signed-off-by: Ionela Voinescu <ionela.voinescu@arm.com>
-> Tested-by: Valentin Schneider <valentin.schneider@arm.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  drivers/base/arch_topology.c  | 40 +++++++++++++++++++++++++++++++++++
->  include/linux/arch_topology.h |  4 ++++
->  2 files changed, 44 insertions(+)
-> 
-> diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-> index 976154140f0b..ad2d95920ad1 100644
-> --- a/drivers/base/arch_topology.c
-> +++ b/drivers/base/arch_topology.c
-> @@ -339,6 +339,46 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
->  	return !ret;
->  }
->  
-> +#ifdef CONFIG_ACPI_CPPC_LIB
-> +#include <acpi/cppc_acpi.h>
+>  drivers/acpi/pci_root.c | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 6f9e75d14808..2eda355fde57 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -171,7 +171,7 @@ static void decode_osc_control(struct acpi_pci_root *root, char *msg, u32 word)
+>  static u8 pci_osc_uuid_str[] = "33DB4D5B-1FF7-401C-9657-7441C03DD766";
+>
+>  static acpi_status acpi_pci_run_osc(acpi_handle handle,
+> -                                   const u32 *capbuf, u32 *retval)
+> +                                   u32 *capbuf, u32 *retval)
+>  {
+>         struct acpi_osc_context context = {
+>                 .uuid_str = pci_osc_uuid_str,
+> @@ -180,7 +180,26 @@ static acpi_status acpi_pci_run_osc(acpi_handle handle,
+>                 .cap.pointer = (void *)capbuf,
+>         };
+>         acpi_status status;
+> +       u32 *capbuf_ret;
+> +       int i;
 > +
-> +void topology_init_cpu_capacity_cppc(void)
-> +{
-> +	struct cppc_perf_caps perf_caps;
-> +	int cpu;
-> +
-> +	if (likely(acpi_disabled || !acpi_cpc_valid()))
-> +		return;
-> +
-> +	raw_capacity = kcalloc(num_possible_cpus(), sizeof(*raw_capacity),
-> +			       GFP_KERNEL);
-> +	if (!raw_capacity)
-> +		return;
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		if (!cppc_get_perf_caps(cpu, &perf_caps) &&
-> +		    (perf_caps.highest_perf >= perf_caps.nominal_perf) &&
-> +		    (perf_caps.highest_perf >= perf_caps.lowest_perf)) {
-> +			raw_capacity[cpu] = perf_caps.highest_perf;
-> +			pr_debug("cpu_capacity: CPU%d cpu_capacity=%u (raw).\n",
-> +				 cpu, raw_capacity[cpu]);
-> +			continue;
-> +		}
-> +
-> +		pr_err("cpu_capacity: CPU%d missing/invalid highest performance.\n", cpu);
-> +		pr_err("cpu_capacity: partial information: fallback to 1024 for all CPUs\n");
-> +		goto exit;
-> +	}
-> +
-> +	topology_normalize_cpu_scale();
-> +	schedule_work(&update_topology_flags_work);
-> +	pr_debug("cpu_capacity: cpu_capacity initialization done\n");
-> +
-> +exit:
-> +	free_raw_capacity();
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_CPU_FREQ
->  static cpumask_var_t cpus_to_visit;
->  static void parsing_done_workfn(struct work_struct *work);
-> diff --git a/include/linux/arch_topology.h b/include/linux/arch_topology.h
-> index cce6136b300a..58cbe18d825c 100644
-> --- a/include/linux/arch_topology.h
-> +++ b/include/linux/arch_topology.h
-> @@ -11,6 +11,10 @@
->  void topology_normalize_cpu_scale(void);
->  int topology_update_cpu_topology(void);
->  
-> +#ifdef CONFIG_ACPI_CPPC_LIB
-> +void topology_init_cpu_capacity_cppc(void);
-> +#endif
-> +
->  struct device_node;
->  bool topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu);
->  
-> 
+> +       if (!(capbuf[OSC_QUERY_DWORD] & OSC_QUERY_ENABLE))
+> +               goto skip_negotiate;
+> +       for (i = 0; i < 5; i++) {
+> +               status = acpi_run_osc(handle, &context);
+> +               if (status == AE_OK || status == AE_SUPPORT) {
+> +                       capbuf_ret = context.ret.pointer;
+> +                       capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
+> +                       kfree(context.ret.pointer);
+> +               }
+> +               if (status != AE_SUPPORT)
+> +                       break;
+> +       }
+> +       if (ACPI_FAILURE(status))
+> +               return status;
+>
+> +skip_negotiate:
+> +       capbuf[OSC_QUERY_DWORD] = 0;
+>         status = acpi_run_osc(handle, &context);
+>         if (ACPI_SUCCESS(status)) {
+>                 *retval = *((u32 *)(context.ret.pointer + 8));
+> --
+> 2.34.1
+>
