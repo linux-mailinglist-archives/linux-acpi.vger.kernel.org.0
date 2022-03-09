@@ -2,132 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C6C4D38CE
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Mar 2022 19:28:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BED2F4D390A
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Mar 2022 19:44:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235367AbiCIS26 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Mar 2022 13:28:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55898 "EHLO
+        id S229547AbiCISnj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Mar 2022 13:43:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232406AbiCIS25 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Mar 2022 13:28:57 -0500
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D5B831206;
-        Wed,  9 Mar 2022 10:27:57 -0800 (PST)
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-2dbd8777564so33640277b3.0;
-        Wed, 09 Mar 2022 10:27:57 -0800 (PST)
+        with ESMTP id S231269AbiCISni (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Mar 2022 13:43:38 -0500
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7EB1403D;
+        Wed,  9 Mar 2022 10:42:37 -0800 (PST)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-2dbd97f9bfcso33212037b3.9;
+        Wed, 09 Mar 2022 10:42:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=abyW9EPAt1/N2g7LcA6pvtwKR9wcKCKXIM62EVOVNTg=;
-        b=YrQWr5MRlTKtKfiHJOJ/KDZwvgPoPPoGw7IurCuo1JY4ISiyPCaoAkWBNzLvUL4cyg
-         WY06c+xpxnWRflqHFuygmL9vueS2Uyhi64A+v6rIOIdTjCciKF+Q0mmbnZlxemaaN8/y
-         RHcyf1faQGLrTKXKOarmuwxfozXv+LXZ2AVZmfmyJy5tIchAS2m2SVkA8o2Q4nhpoWjJ
-         c+tTV0lvWpXfn1TpL3qBzHf028jYatQnpXKAquEXOEHVRivhlM2AK0kN4Mludd1w4ntZ
-         aRwxUuhaYcku0FS/CVqfG97XAWlX+U1V5/VL+AfwmghLpfQkLxqb/PW+HX2UVYloWeT+
-         GSdg==
-X-Gm-Message-State: AOAM530R7GCq/7yQoeiylpTVraYev5fKHXaUvzAaXKHj+6IYCEDmHZz+
-        XOUWRvXAvphBSQRPRJ4GQ1YDP05w6BEz0TP44TIpgfw1/7c=
-X-Google-Smtp-Source: ABdhPJxl9BcwZnFKR4ckz/GGm2JFpaPyXO9ChA7b1yNGKEZEX9CiJuXw85c12rE55V8JfkQgTQ0xbzXGlD/5zF4jdOg=
-X-Received: by 2002:a81:524c:0:b0:2dc:1a00:1124 with SMTP id
- g73-20020a81524c000000b002dc1a001124mr981662ywb.196.1646850476426; Wed, 09
- Mar 2022 10:27:56 -0800 (PST)
+        bh=Y61mRCKE3zM9b3wOa8ze9bCmXMfmsVduldNuViZnA4k=;
+        b=GE95ESInc2IO8KVquGpLPySZ/+w308ZgkRCbYhr/mdez6s10atGaEEOcXQNqF3yOzs
+         7or9LjOeJNNZhBLWPPqqHkRY96Siescs1oPn5ngD0J51AS0agRTYkTYwPapikrj3jumj
+         QAw/GTvMHddtmjsXUPcL3Zw1EKf/3ZSv5Zgbyw4wsoaDs/PiJe/ewE30VZl+iyXwImhw
+         Lf3ZzrJIpEVszDT8UAzgX28bYH5lgyZygdgfnwUfaEXisJYYHq4+ItkgxDeCs0iamHGn
+         EuAHLMWkwiFLka24HjPmofayoBwRbYTgWn6XtkCmgAacUOHy0ymn/zKKoxoIQMda3YQZ
+         hrpA==
+X-Gm-Message-State: AOAM532aKd7EdlPF04nB4xyuJKmDe5EnFI5tkuJmiXJpZ0QzZaHHSRRV
+        ljRivgTtoSkwmCpjnUIGuOikuMdw0K96HUDL090=
+X-Google-Smtp-Source: ABdhPJwnEUJOD5z2fMROtMR0asiHyfh52H3fwaFsMnbIiBicsEFlOHLbZIOrDuUxLrBPkwWxCOLEpAfGKZlTIDoDxT0=
+X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
+ b145-20020a811b97000000b002db640f49d8mr971245ywb.326.1646851356977; Wed, 09
+ Mar 2022 10:42:36 -0800 (PST)
 MIME-Version: 1.0
-References: <31b9d1cd-6a67-218b-4ada-12f72e6f00dc@redhat.com>
- <CAJZ5v0hQifvD+U8q1O7p_5QeicG_On4=CrgNj0RsbPSbkY8Hww@mail.gmail.com>
- <ad3b77f8-7e75-1dfa-8ee4-1077336911aa@redhat.com> <CAJZ5v0js8Vr7dW09WGyR_JTn4kMybDhaTWt4yziqwSM+oAXUNA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0js8Vr7dW09WGyR_JTn4kMybDhaTWt4yziqwSM+oAXUNA@mail.gmail.com>
+References: <43dfaba0646d498fe94c1a8479b812346133f438.1646765290.git.darren@os.amperecomputing.com>
+In-Reply-To: <43dfaba0646d498fe94c1a8479b812346133f438.1646765290.git.darren@os.amperecomputing.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 9 Mar 2022 19:27:45 +0100
-Message-ID: <CAJZ5v0imJfOp-Uw=tH2dimSQzb-EgHu_yEU_0LScmrQ43t3pbw@mail.gmail.com>
-Subject: Re: Many reports of laptops getting hot while suspended with kernels
- >= 5.16.10 || >= 5.17-rc1
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>,
-        Justin Forbes <jmforbes@linuxtx.org>,
-        Mark Pearson <markpearson@lenovo.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Wed, 9 Mar 2022 19:42:26 +0100
+Message-ID: <CAJZ5v0gMh2ed+ZWOnd-t_uTrZtm=AUfxOAkAKWT7WQK3=gf+7w@mail.gmail.com>
+Subject: Re: [PATCH] ACPI/APEI: Limit printable size of BERT table data
+To:     Darren Hart <darren@os.amperecomputing.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Doug Rady <dcrady@os.amperecomputing.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 9, 2022 at 5:34 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Tue, Mar 8, 2022 at 7:51 PM Darren Hart
+<darren@os.amperecomputing.com> wrote:
 >
-> On Wed, Mar 9, 2022 at 5:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> >
-> > Hi,
-> >
-> > On 3/9/22 14:57, Rafael J. Wysocki wrote:
-> > > On Wed, Mar 9, 2022 at 2:44 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> > >>
-> > >> Hi Rafael,
-> > >>
-> > >> We (Fedora) have been receiving a whole bunch of bug reports about
-> > >> laptops getting hot/toasty while suspended with kernels >= 5.16.10
-> > >> and this seems to still happen with 5.17-rc7 too.
-> > >>
-> > >> The following are all bugzilla.redhat.com bug numbers:
-> > >>
-> > >>    1750910 - Laptop failed to suspend and completely drained the battery
-> > >>    2050036 - Framework laptop: 5.16.5 breaks s2idle sleep
-> > >>    2053957 - Package c-states never go below C2
-> > >>    2056729 - No lid events when closing lid / laptop does not suspend
-> > >>    2057909 - Thinkpad X1C 9th in s2idle suspend still draining battery to zero over night , Ap
-> > >>    2059668 - HP Envy Laptop deadlocks on entering suspend power state when plugged in. Case ge
-> > >>    2059688 - Dell G15 5510 s2idle fails in 5.16.11 works in 5.16.10
-> > >>
-> > >> And one of the bugs has also been mirrored at bugzilla.kernel.org by
-> > >> the reporter:
-> > >>
-> > >>  bko215641 - Dell G15 5510 s2idle fails in 5.16.11 works in 5.16.10
-> > >>
-> > >> The common denominator here (besides the kernel version) seems to
-> > >> be that these are all Ice or Tiger Lake systems (I did not do
-> > >> check this applies 100% to all bugs, but it does see, to be a pattern).
-> > >>
-> > >> A similar arch-linux report:
-> > >>
-> > >> https://bbs.archlinux.org/viewtopic.php?id=274292&p=2
-> > >>
-> > >> Suggest that reverting
-> > >> "ACPI: PM: s2idle: Cancel wakeup before dispatching EC GPE"
-> > >>
-> > >> which was cherry-picked into 5.16.10 fixes things.
-> > >
-> > > Thanks for letting me know!
-> > >
-> > >> If you want I can create Fedora kernel test-rpms of a recent
-> > >> 5.16.y with just that one commit reverted and ask users to
-> > >> confirm if that helps. Please let me know if doing that woulkd
-> > >> be useful ?
-> > >
-> > > Yes, it would.
-> > >
-> > > However, it follows from the arch-linux report linked above that
-> > > 5.17-rc is fine, so it would be good to also check if reverting that
-> > > commit from 5.17-rc helps.
-> >
-> > Ok, I've done Fedora kernel builds of both 5.16.13 and 5.17-rc7 with
-> > the patch reverted and asked the bug-reporters to test both.
+> Platforms with large BERT table data can trigger soft lockup errors
+> while attempting to print the entire BERT table data to the console at
+> boot:
 >
-> Thanks!
+>   watchdog: BUG: soft lockup - CPU#160 stuck for 23s! [swapper/0:1]
+>
+> Observed on Ampere Altra systems with a single BERT record of ~250KB.
+>
+> The original bert driver appears to have assumed relatively small table
+> data. Since it is impractical to reassemble large table data from
+> interwoven console messages, and the table data is available in
+>
+>   /sys/firmware/acpi/tables/data/BERT
+>
+> limit the size for tables printed to the console to 1024 (for no reason
+> other than it seemed like a good place to kick off the discussion, would
+> appreciate feedback from existing users in terms of what size would
+> maintain their current usage model).
+>
+> Alternatively, we could make printing a CONFIG option, use the
+> bert_disable boot arg (or something similar), or use a debug log level.
+> However, all those solutions require extra steps or change the existing
+> behavior for small table data. Limiting the size preserves existing
+> behavior on existing platforms with small table data, and eliminates the
+> soft lockups for platforms with large table data, while still making it
+> available.
+>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: James Morse <james.morse@arm.com>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Doug Rady <dcrady@os.amperecomputing.com>
+> Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
 
-Also, in the cases where people have not tested 5.17-rc7 without any
-reverts, it would be good to ask them to do so.
+Not that I have a particularly strong opinion here, but this looks
+reasonable to me, so I've queued it up for 5.18.
 
-I have received another report related to this issue where the problem
-is not present in 5.17-rc7 (see
-https://lore.kernel.org/linux-pm/CAJZ5v0hKXyTtb1Jk=wqNV9_mZKdf3mmwF4bPOcmADyNnTkpMbQ@mail.gmail.com/).
+APEI reviewers, please chime in if you disagree with the above.
 
-It is likely that the commit in question actually depends on some
-other commits that were not backported into 5.16.y.
+> ---
+>  drivers/acpi/apei/bert.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
+> index 19e50fcbf4d6..ad8ab3f12cf3 100644
+> --- a/drivers/acpi/apei/bert.c
+> +++ b/drivers/acpi/apei/bert.c
+> @@ -29,6 +29,7 @@
+>
+>  #undef pr_fmt
+>  #define pr_fmt(fmt) "BERT: " fmt
+> +#define ACPI_BERT_PRINT_MAX_LEN 1024
+>
+>  static int bert_disable;
+>
+> @@ -58,8 +59,11 @@ static void __init bert_print_all(struct acpi_bert_region *region,
+>                 }
+>
+>                 pr_info_once("Error records from previous boot:\n");
+> -
+> -               cper_estatus_print(KERN_INFO HW_ERR, estatus);
+> +               if (region_len < ACPI_BERT_PRINT_MAX_LEN)
+> +                       cper_estatus_print(KERN_INFO HW_ERR, estatus);
+> +               else
+> +                       pr_info_once("Max print length exceeded, table data is available at:\n"
+> +                                    "/sys/firmware/acpi/tables/data/BERT");
+>
+>                 /*
+>                  * Because the boot error source is "one-time polled" type,
+> --
+> 2.31.1
+>
