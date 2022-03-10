@@ -2,99 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 226F84D4338
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 10:14:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09CC24D43AA
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 10:43:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238834AbiCJJPo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Mar 2022 04:15:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59316 "EHLO
+        id S231843AbiCJJoN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Mar 2022 04:44:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237211AbiCJJPo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Mar 2022 04:15:44 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E309A137740;
-        Thu, 10 Mar 2022 01:14:43 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A7D1F1650;
-        Thu, 10 Mar 2022 01:14:43 -0800 (PST)
-Received: from lpieralisi (unknown [10.57.43.13])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C5363FA20;
-        Thu, 10 Mar 2022 01:14:40 -0800 (PST)
-Date:   Thu, 10 Mar 2022 09:14:40 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        James Morse <james.morse@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        patches@amperecomputing.com, scott@os.amperecomputing.com,
-        Darren Hart <darren@os.amperecomputing.com>
-Subject: Re: [PATCH v6 1/2] ACPI: tables: Add AGDI to the list of known table
- signatures
-Message-ID: <YinBgHvZT8T1EGtm@lpieralisi>
-References: <20220309020750.65399-1-ilkka@os.amperecomputing.com>
- <20220309020750.65399-2-ilkka@os.amperecomputing.com>
- <CAJZ5v0iY-pV-N7JhuAM4JM99tHVBVnCHj+JyJYpShS4cKA+q_w@mail.gmail.com>
- <alpine.DEB.2.22.394.2203091234060.4508@ubuntu200401>
+        with ESMTP id S240892AbiCJJoN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Mar 2022 04:44:13 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23A0694A0
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 01:43:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646905392; x=1678441392;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nJDuBFBWhgnMu54bwr6tU62dHI0EOIlopOB62xKZpFE=;
+  b=VPCe8kocGTvPZSWw1aDFaTI55/7oESMXHKpTyFzfUsGLBXRM0VCK1CTJ
+   cn4KtrNVlaOE5cOwYm1bCpp7nHpZw7I/PWXtii0dG3EN5tRhYeh94g/ki
+   pcCrQdtyYpOM40qngm1CeXKVIb3xqYAqF+dt3MwV0gwMk0CwzMKxhUDlm
+   eiwA82BrDU7YHV6DiZ+tAHCr/p7iNUKZwhUl/J3jHWDkxJmLGVUTio56o
+   IZ4vzMXuSBCJZd34+bsBlJZctyXfmw1XErq1eiwKCKWfcMUBadvsWlAbW
+   vLVDTHCNatrs1q650bj8cizbuw6Q2+EIeWOSIB4RxtEZwnb5sTREVNRu0
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10281"; a="235157991"
+X-IronPort-AV: E=Sophos;i="5.90,170,1643702400"; 
+   d="scan'208";a="235157991"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2022 01:43:12 -0800
+X-IronPort-AV: E=Sophos;i="5.90,170,1643702400"; 
+   d="scan'208";a="554568685"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2022 01:43:09 -0800
+Received: by lahna (sSMTP sendmail emulation); Thu, 10 Mar 2022 11:43:06 +0200
+Date:   Thu, 10 Mar 2022 11:43:06 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org, Xiaomeng.Hou@amd.com,
+        Aaron.Liu@amd.com, Ray.Huang@amd.com, hdegoede@redhat.com
+Subject: Re: [PATCH v5] ACPI: bus: For platform OSC negotiate capabilities
+Message-ID: <YinIKrMkqBd4Igma@lahna>
+References: <20220309163749.773474-1-mario.limonciello@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2203091234060.4508@ubuntu200401>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220309163749.773474-1-mario.limonciello@amd.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 09, 2022 at 12:41:27PM -0800, Ilkka Koskinen wrote:
+On Wed, Mar 09, 2022 at 10:37:49AM -0600, Mario Limonciello wrote:
+> According to the ACPI 6.4 spec:
+> It is strongly recommended that the OS evaluate _OSC with the Query
+> Support Flag set until _OSC returns the Capabilities Masked bit clear,
+> to negotiate the set of features to be granted to the OS for native
+> support; a platform may require a specific combination of features
+> to be supported natively by an OS before granting native control
+> of a given feature. After negotiation with the query flag set,
+> the OS should evaluate without it so that any negotiated values
+> can be made effective to hardware.
 > 
-> Hi Rafael,
+> Currently the code sends the exact same values in both executions of the
+> _OSC and this leads to some problems on some AMD platforms in certain
+> configurations.
 > 
-> On Wed, 9 Mar 2022, Rafael J. Wysocki wrote:
-> > On Wed, Mar 9, 2022 at 3:08 AM Ilkka Koskinen
-> > <ilkka@os.amperecomputing.com> wrote:
-> > > 
-> > > Add AGDI to the list of known ACPI table signatures to allow the
-> > > kernel to recognize it when upgrading tables via initrd.
-> > > 
-> > > Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-> > > Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > > ---
-> > >  drivers/acpi/tables.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> > > index 369eb998c3d1..ceee808f7f2a 100644
-> > > --- a/drivers/acpi/tables.c
-> > > +++ b/drivers/acpi/tables.c
-> > > @@ -545,7 +545,7 @@ static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
-> > >         ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
-> > >         ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
-> > >         ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
-> > > -       ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT };
-> > > +       ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI };
-> > > 
-> > >  #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
-> > 
-> > I'm noticing that this depends on the linux-next-only commit
-> > 783dedf41b79ac7a3a68b51cf6f88cbfd6dc3292, so it is probably better if
-> > I apply it and the other patch in the series can be routed via ARM64.
+> The following notable capabilities are set by OSPM when query is enabled:
+> * OSC_SB_PR3_SUPPORT
+> * OSC_SB_PCLPI_SUPPORT
+> * OSC_SB_NATIVE_USB4_SUPPORT
 > 
-> Sounds good to me, thanks. The other patch needs commit dc4e8c07e9e2 ("ACPI:
-> APEI: explicit init of HEST and GHES in apci_init()") in your bleeding edge
-> branch to work but it hasn't been acked yet anyway.
+> The first call to the platform OSC returns back a masked capabilities
+> error because the firmware did not acknowledge OSC_SB_PCLPI_SUPPORT but
+> it acknolwedged the others.
+> 
+> The second call to the platform _OSC without the query flag set then
+> fails because the OSPM still sent the exact same values.  This leads
+> to not acknowledging OSC_SB_NATIVE_USB4_SUPPORT and later USB4 PCIe
+> tunnels can't be authorized.
+> 
+> This problem was first introduced by commit 159d8c274fd9 ("ACPI: Pass the
+> same capabilities to the _OSC regardless of the query flag") which subtly
+> adjusted the behavior from 719e1f5 ("ACPI: Execute platform _OSC also
+> with query bit clear").
+> 
+> The _OSC was called exactly 2 times:
+>  * Once to query and request from firmware
+>  * Once to commit to firmware without query
+> 
+> To fix this problem, continue to call the _OSC until the firmware has
+> indicated that capabilities are no longer masked or after an arbitrary
+> number of negotiation attempts.
+> 
+> Furthermore, to avoid the problem that commit 159d8c274fd9 ("ACPI: Pass
+> the same capabilities to the _OSC regardless of the query flag")
+> introduced, explicitly mark support for CPC and CPPCv2 even if they
+> were masked by the series of query calls due to table loading order on
+> some systems.
+> 
+> Fixes: 159d8c274fd9 ("ACPI: Pass the same capabilities to the _OSC regardless of the query flag")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> This series was accepted but showed a regression in another use of acpi_run_osc
+> so the series was dropped.
+> 
+> Changes from v4->v5:
+>  * Move negotiation entirely into acpi_bus_osc_negotiate_platform_control
 
-It is best for both patches to go via Rafael's tree, given the
-dependency above. I acked patch (2).
+Probably worth mentioning that the v5 fixes memory leak that was
+reported.
 
-Thanks,
-Lorenzo
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
