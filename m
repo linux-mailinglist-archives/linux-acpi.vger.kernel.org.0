@@ -2,50 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A714D4854
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 14:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 776614D4CFE
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 16:43:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242525AbiCJNq4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Mar 2022 08:46:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33038 "EHLO
+        id S245483AbiCJPFz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Mar 2022 10:05:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234363AbiCJNqz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Mar 2022 08:46:55 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5F814EF72;
-        Thu, 10 Mar 2022 05:45:55 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8D5861AEA;
-        Thu, 10 Mar 2022 13:45:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F0AC340E8;
-        Thu, 10 Mar 2022 13:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1646919954;
-        bh=ON3EKOjCzN7S0LPwoCmafxvqt4NOQsB1i5denEPJ74c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UNa0hWTV/aql92FGFyQ3YVazJmQ/6dKBErtPG4K4Ku6FcNOSKxfEPMtembehKGnd+
-         7IThWHCu+5ibJARTp8Df3CAn09Zuw4Xc27wqGmWv5w4lTqc0dlt23IYiVua3oEBliY
-         3/xJ+FTL6fmd2Av+3IY0wpCfsdNMUvVGlq6dzIZw=
-Date:   Thu, 10 Mar 2022 14:45:50 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Sasha Levin <sashal@kernel.org>, Stable <stable@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Thorsten Leemhuis (regressions address)" <regressions@leemhuis.info>
-Subject: Re: Please revert commit 4287509b4d21e34dc492 from 5.16.y
-Message-ID: <YioBDqqTjLc+XT19@kroah.com>
-References: <CAJZ5v0gE52NT=4kN4MkhV3Gx=M5CeMGVHOF0jgTXDb5WwAMs_Q@mail.gmail.com>
- <YinyzxnSsty8BDKn@kroah.com>
- <CAJZ5v0ghFyFG3aDRawoVFDvhXLkvjZqiaPeqbtFnRQvhd9T_rA@mail.gmail.com>
+        with ESMTP id S1344487AbiCJPDv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Mar 2022 10:03:51 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 108CE199E1B;
+        Thu, 10 Mar 2022 06:55:39 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 935811692;
+        Thu, 10 Mar 2022 06:55:15 -0800 (PST)
+Received: from e108754-lin.cambridge.arm.com (unknown [10.1.195.34])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CDD0C3F7B4;
+        Thu, 10 Mar 2022 06:55:13 -0800 (PST)
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Giovanni Gherdovich <ggherdovich@suse.cz>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Sean Kelley <skelley@nvidia.com>
+Cc:     Pierre Gondois <pierre.gondois@arm.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 0/3] arch_topology, ACPI: populate cpu capacity from CPPC
+Date:   Thu, 10 Mar 2022 14:54:48 +0000
+Message-Id: <20220310145451.15596-1-ionela.voinescu@arm.com>
+X-Mailer: git-send-email 2.29.2.dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0ghFyFG3aDRawoVFDvhXLkvjZqiaPeqbtFnRQvhd9T_rA@mail.gmail.com>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,35 +49,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 10, 2022 at 02:01:04PM +0100, Rafael J. Wysocki wrote:
-> On Thu, Mar 10, 2022 at 1:45 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Thu, Mar 10, 2022 at 01:26:16PM +0100, Rafael J. Wysocki wrote:
-> > > Hi Greg & Sasha,
-> > >
-> > > Commit 4287509b4d21e34dc492 that went into 5.16.y as a backport of
-> > > mainline commit dc0075ba7f38 ("ACPI: PM: s2idle: Cancel wakeup before
-> > > dispatching EC GPE") is causing trouble in 5.16.y, but 5.17-rc7
-> > > including the original commit is fine.
-> > >
-> > > This is most likely due to some other changes that commit dc0075ba7f38
-> > > turns out to depend on which have not been backported, but because it
-> > > is not an essential fix (and it was backported, because it carried a
-> > > Fixes tag and not because it was marked for backporting), IMV it is
-> > > better to revert it from 5.16.y than to try to pull all of the
-> > > dependencies in (and risk missing any of them), so please do that.
-> > >
-> > > Please see this thread:
-> > >
-> > > https://lore.kernel.org/linux-pm/31b9d1cd-6a67-218b-4ada-12f72e6f00dc@redhat.com/
-> >
-> > Odd that this is only showing up in 5.16 as this commit also is in 5.4
-> > and 5.10 and 5.15.  Should I drop it from there as well?
-> 
-> It's better to do so, because these series are also likely to be
-> missing the mainline commits it depends on.
+Hi all,
 
-Ok, will go do that now, thanks!
+v3->v4:
+ - v3 can be found at [3]
+ - rebased on linux-next 20220310 which contains patches at [4]
+   requested by Rafael
+ - 2/3 fixed obsolete comment as reported by Yicong at [5]
+ - Kept Acked-by,Tested-by as v4 has no code changes compared
+   to v3, but only a comment fix.
 
-greg k-h
+v2->v3:
+ - v2 can be found at [2]
+ - Added sanity checking on perf_caps.highest_perf
+
+v1->v2:
+ - v1 can be found at [1]
+ - Changed debug prints to the format used on the DT path
+ - s/init_cpu_capacity_cppc/topology_init_cpu_capacity_cppc
+
+Patches are based on linux next 20220310.
+
+[1] https://lore.kernel.org/lkml/20210514095339.12979-1-ionela.voinescu@arm.com/
+[2] https://lore.kernel.org/lkml/20210824105651.28660-1-ionela.voinescu@arm.com/
+[3] https://lore.kernel.org/lkml/20220302180913.13229-1-ionela.voinescu@arm.com/
+[4] https://lore.kernel.org/linux-acpi/20220214101450.356047-1-ray.huang@amd.com/
+[5] https://lore.kernel.org/lkml/477748c7-ae9e-712b-90ad-b04a6767a996@huawei.com/
+
+
+Thanks,
+Ionela.
+
+Ionela Voinescu (3):
+  x86, ACPI: rename init_freq_invariance_cppc to
+    arch_init_invariance_cppc
+  arch_topology: obtain cpu capacity using information from CPPC
+  arm64, topology: enable use of init_cpu_capacity_cppc()
+
+ arch/arm64/include/asm/topology.h |  4 +++
+ arch/x86/include/asm/topology.h   |  2 +-
+ drivers/acpi/cppc_acpi.c          |  6 ++---
+ drivers/base/arch_topology.c      | 45 ++++++++++++++++++++++++++++---
+ include/linux/arch_topology.h     |  4 +++
+ 5 files changed, 54 insertions(+), 7 deletions(-)
+
+-- 
+2.25.1
+
