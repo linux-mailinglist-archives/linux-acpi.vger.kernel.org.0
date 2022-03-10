@@ -2,113 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCCB84D44EC
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 11:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E71804D452B
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 11:56:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237337AbiCJKqz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Mar 2022 05:46:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36160 "EHLO
+        id S233979AbiCJK50 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Mar 2022 05:57:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbiCJKqx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Mar 2022 05:46:53 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB71213DE3C
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 02:45:52 -0800 (PST)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KDm0B5Kc7zfYqJ;
-        Thu, 10 Mar 2022 18:44:26 +0800 (CST)
-Received: from dggpemm100008.china.huawei.com (7.185.36.125) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Thu, 10 Mar 2022 18:45:50 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm100008.china.huawei.com (7.185.36.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Thu, 10 Mar 2022 18:45:49 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2308.021; Thu, 10 Mar 2022 10:45:47 +0000
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     "eric.auger@redhat.com" <eric.auger@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
-CC:     Linuxarm <linuxarm@huawei.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        "steven.price@arm.com" <steven.price@arm.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        "jon@solid-run.com" <jon@solid-run.com>,
-        yangyicong <yangyicong@huawei.com>
-Subject: RE: [PATCH v8 03/11] ACPI/IORT: Add helper functions to parse RMR
- nodes
-Thread-Topic: [PATCH v8 03/11] ACPI/IORT: Add helper functions to parse RMR
- nodes
-Thread-Index: AQHYJzoU7y0scyFWHEWb6SBtCVveFqy4hbiAgAAB0fA=
-Date:   Thu, 10 Mar 2022 10:45:47 +0000
-Message-ID: <464edc7655514a89afd5d91a4553da4d@huawei.com>
-References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
- <20220221154344.2126-4-shameerali.kolothum.thodi@huawei.com>
- <d5740467-f070-bd29-5ef4-de071b751292@redhat.com>
-In-Reply-To: <d5740467-f070-bd29-5ef4-de071b751292@redhat.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.85.233]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S229738AbiCJK5Z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Mar 2022 05:57:25 -0500
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96CE01405FC;
+        Thu, 10 Mar 2022 02:56:24 -0800 (PST)
+Received: by mail-yb1-f169.google.com with SMTP id h126so10117597ybc.1;
+        Thu, 10 Mar 2022 02:56:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9hRn5CDDGpweS0MoucbZPEewL2lB60a7c1YjeToAIiU=;
+        b=lmfnJAidXYK+57ZHS0FsZLw3NK4Bcp4eME3pfKqAG7S88QpSH7LuNwimU0o3mdphoW
+         BRxzV/PPzQUn4K2Q4HqlNxix1unWFgXE+QcejiFILJcnJrLizf5o4rGf0sfOk+h2y1s0
+         wh0kR5klOf/AHBnn7I+poMJwocdewk4jZIgi6JVt0ZmitXGV1MclJilAf7j+mfz0lWX8
+         nS/e99KYPE2Mxof7QKykUCE1CsYPLbNI5gjjEML9A+Cspb7k3J/krHoBOpWHJW5cUwlg
+         4AwmnJGC3MngweXkfvgYwdrIojQD2SWLlcKAcsoGli2IWqqiqP9FqPSZcYQp9fuUkolO
+         3TVg==
+X-Gm-Message-State: AOAM531TyWcMy+OmcREd1wrAM6Mvskaa3Cjh/YGdnzPw2gKun7at6/9D
+        jU0qxkirXQtZJgV2MMsc9C+Qk9DW+NBF3Ifj0ThedVipHyI=
+X-Google-Smtp-Source: ABdhPJzrjwMkuTgFrhXZ4FlRjYyii5y/8U7PsKTCoY+ANf4ktCG8Bmy2ZQ1S3x0T426GRjIn+qz9Rk8XsPakralAz24=
+X-Received: by 2002:a25:24d7:0:b0:628:79dc:1250 with SMTP id
+ k206-20020a2524d7000000b0062879dc1250mr3301712ybk.153.1646909783576; Thu, 10
+ Mar 2022 02:56:23 -0800 (PST)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <31b9d1cd-6a67-218b-4ada-12f72e6f00dc@redhat.com>
+ <CAJZ5v0hQifvD+U8q1O7p_5QeicG_On4=CrgNj0RsbPSbkY8Hww@mail.gmail.com>
+ <ad3b77f8-7e75-1dfa-8ee4-1077336911aa@redhat.com> <CAJZ5v0js8Vr7dW09WGyR_JTn4kMybDhaTWt4yziqwSM+oAXUNA@mail.gmail.com>
+ <CAJZ5v0imJfOp-Uw=tH2dimSQzb-EgHu_yEU_0LScmrQ43t3pbw@mail.gmail.com> <c9a1adb5-17b7-c7ed-d23f-6b6523a4771a@redhat.com>
+In-Reply-To: <c9a1adb5-17b7-c7ed-d23f-6b6523a4771a@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 10 Mar 2022 11:56:11 +0100
+Message-ID: <CAJZ5v0gB2ZCWe3MeGnw6_CNu_Ds0QEPZ6X6jnA7dQbZe6gKZ8w@mail.gmail.com>
+Subject: Re: Many reports of laptops getting hot while suspended with kernels
+ >= 5.16.10 || >= 5.17-rc1
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>,
+        Justin Forbes <jmforbes@linuxtx.org>,
+        Mark Pearson <markpearson@lenovo.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgRXJpYywNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIEF1
-Z2VyIFttYWlsdG86ZXJpYy5hdWdlckByZWRoYXQuY29tXQ0KPiBTZW50OiAxMCBNYXJjaCAyMDIy
-IDEwOjMyDQo+IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpIDxzaGFtZWVyYWxpLmtvbG90
-aHVtLnRob2RpQGh1YXdlaS5jb20+Ow0KPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVh
-ZC5vcmc7IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOw0KPiBpb21tdUBsaXN0cy5saW51eC1m
-b3VuZGF0aW9uLm9yZw0KPiBDYzogTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+OyBsb3Jl
-bnpvLnBpZXJhbGlzaUBhcm0uY29tOw0KPiBqb3JvQDhieXRlcy5vcmc7IHJvYmluLm11cnBoeUBh
-cm0uY29tOyB3aWxsQGtlcm5lbC5vcmc7IHdhbmdodWlxaWFuZw0KPiA8d2FuZ2h1aXFpYW5nQGh1
-YXdlaS5jb20+OyBHdW9oYW5qdW4gKEhhbmp1biBHdW8pDQo+IDxndW9oYW5qdW5AaHVhd2VpLmNv
-bT47IHN0ZXZlbi5wcmljZUBhcm0uY29tOyBTYW1pLk11amF3YXJAYXJtLmNvbTsNCj4gam9uQHNv
-bGlkLXJ1bi5jb207IHlhbmd5aWNvbmcgPHlhbmd5aWNvbmdAaHVhd2VpLmNvbT4NCj4gU3ViamVj
-dDogUmU6IFtQQVRDSCB2OCAwMy8xMV0gQUNQSS9JT1JUOiBBZGQgaGVscGVyIGZ1bmN0aW9ucyB0
-byBwYXJzZSBSTVINCj4gbm9kZXMNCj4gDQo+IEhpIFNoYW1lZXIsDQo+IA0KPiBPbiAyLzIxLzIy
-IDQ6NDMgUE0sIFNoYW1lZXIgS29sb3RodW0gd3JvdGU6DQo+ID4gVGhlIGhlbHBlciBmdW5jdGlv
-bnMgaGVyZSBwYXJzZSB0aHJvdWdoIHRoZSBJT1JUIFJNUiBub2RlcyBhbmQNCj4gPiBwb3B1bGF0
-ZSBhIHJlc2VydmVkIHJlZ2lvbiBsaXN0ICBjb3JyZXNwb25kaW5nIHRvIGEgZ2l2ZW4gaW9tbXUN
-Cj4gPiBhbmQgZGV2aWNlKG9wdGlvbmFsKS4gVGhlc2UgYWxzbyBnbyB0aHJvdWdoIHRoZSBJRCBt
-YXBwaW5ncyBvZg0KPiA+IHRoZSBSTVIgbm9kZSBhbmQgcmV0cmlldmVzIGFsbCB0aGUgU0lEcyBh
-c3NvY2lhdGVkIHdpdGggYSBSTVINCj4gPiBkZXNjcmlwdG9yLg0KPiA+DQo+ID4gU2lnbmVkLW9m
-Zi1ieTogU2hhbWVlciBLb2xvdGh1bQ0KPiA8c2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBodWF3
-ZWkuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL2FjcGkvYXJtNjQvaW9ydC5jIHwgMjI1DQo+
-ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFu
-Z2VkLCAyMjUgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNw
-aS9hcm02NC9pb3J0LmMgYi9kcml2ZXJzL2FjcGkvYXJtNjQvaW9ydC5jDQo+ID4gaW5kZXggMDcz
-MGM0ZGJiNzAwLi4wNWRhOWViZmY1MGEgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9hY3BpL2Fy
-bTY0L2lvcnQuYw0KPiA+ICsrKyBiL2RyaXZlcnMvYWNwaS9hcm02NC9pb3J0LmMNCj4gPiBAQCAt
-ODMwLDYgKzgzMCwyMzEgQEAgc3RhdGljIHN0cnVjdCBhY3BpX2lvcnRfbm9kZQ0KPiAqaW9ydF9n
-ZXRfbXNpX3Jlc3ZfaW9tbXUoc3RydWN0IGRldmljZSAqZGV2KQ0KPiA+ICAJcmV0dXJuIE5VTEw7
-DQo+ID4gIH0NCj4gPg0KWy4uLl0NCg0KPiA+ICtzdGF0aWMgdm9pZCBpb3J0X2ZpbmRfcm1ycyhz
-dHJ1Y3QgYWNwaV9pb3J0X25vZGUgKmlvbW11LCBzdHJ1Y3QgZGV2aWNlICpkZXYsDQo+ID4gKwkJ
-CSAgIHN0cnVjdCBsaXN0X2hlYWQgKmhlYWQpDQo+ID4gK3sNCj4gPiArCXN0cnVjdCBhY3BpX3Rh
-YmxlX2lvcnQgKmlvcnQ7DQo+ID4gKwlzdHJ1Y3QgYWNwaV9pb3J0X25vZGUgKmlvcnRfbm9kZSwg
-KmlvcnRfZW5kOw0KPiA+ICsJaW50IGk7DQo+ID4gKw0KPiA+ICsJaWYgKGlvcnRfdGFibGUtPnJl
-dmlzaW9uIDwgNSkNCj4gVGhpcyBtZWFucyBFLmIgYW5kIEUuYyByZXZzIGFyZSBub3Qgc3VwcG9y
-dGVkLiBJcyBpdCB3aGF0IHdlIHdhbnQ/DQoNClllcy4gRS5iIGxhY2tzIG1lbW9yeSBhdHRyaWJ1
-dGVzIGluZm8gYXNzb2NpYXRlZCB3aXRoIFJNUiBub2RlLiBUaG91Z2ggRS5jIA0KYWRkZWQgdGhv
-c2UsIGl0IGJyb2tlIGJhY2t3YXJkIGNvbXBhdGliaWxpdHkgd2l0aCBBQ1BJQ0EgRS5iIHN1cHBv
-cnQgYW5kDQppcyBub3cgZGVwcmVjYXRlZC4NCg0KVGhhbmtzLA0KU2hhbWVlcg0KDQoNCg==
+On Thu, Mar 10, 2022 at 10:07 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 3/9/22 19:27, Rafael J. Wysocki wrote:
+> > On Wed, Mar 9, 2022 at 5:34 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >>
+> >> On Wed, Mar 9, 2022 at 5:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>>
+> >>> Hi,
+> >>>
+> >>> On 3/9/22 14:57, Rafael J. Wysocki wrote:
+> >>>> On Wed, Mar 9, 2022 at 2:44 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>>>>
+> >>>>> Hi Rafael,
+> >>>>>
+> >>>>> We (Fedora) have been receiving a whole bunch of bug reports about
+> >>>>> laptops getting hot/toasty while suspended with kernels >= 5.16.10
+> >>>>> and this seems to still happen with 5.17-rc7 too.
+> >>>>>
+> >>>>> The following are all bugzilla.redhat.com bug numbers:
+> >>>>>
+> >>>>>    1750910 - Laptop failed to suspend and completely drained the battery
+> >>>>>    2050036 - Framework laptop: 5.16.5 breaks s2idle sleep
+> >>>>>    2053957 - Package c-states never go below C2
+> >>>>>    2056729 - No lid events when closing lid / laptop does not suspend
+> >>>>>    2057909 - Thinkpad X1C 9th in s2idle suspend still draining battery to zero over night , Ap
+> >>>>>    2059668 - HP Envy Laptop deadlocks on entering suspend power state when plugged in. Case ge
+> >>>>>    2059688 - Dell G15 5510 s2idle fails in 5.16.11 works in 5.16.10
+> >>>>>
+> >>>>> And one of the bugs has also been mirrored at bugzilla.kernel.org by
+> >>>>> the reporter:
+> >>>>>
+> >>>>>  bko215641 - Dell G15 5510 s2idle fails in 5.16.11 works in 5.16.10
+> >>>>>
+> >>>>> The common denominator here (besides the kernel version) seems to
+> >>>>> be that these are all Ice or Tiger Lake systems (I did not do
+> >>>>> check this applies 100% to all bugs, but it does see, to be a pattern).
+> >>>>>
+> >>>>> A similar arch-linux report:
+> >>>>>
+> >>>>> https://bbs.archlinux.org/viewtopic.php?id=274292&p=2
+> >>>>>
+> >>>>> Suggest that reverting
+> >>>>> "ACPI: PM: s2idle: Cancel wakeup before dispatching EC GPE"
+> >>>>>
+> >>>>> which was cherry-picked into 5.16.10 fixes things.
+> >>>>
+> >>>> Thanks for letting me know!
+> >>>>
+> >>>>> If you want I can create Fedora kernel test-rpms of a recent
+> >>>>> 5.16.y with just that one commit reverted and ask users to
+> >>>>> confirm if that helps. Please let me know if doing that woulkd
+> >>>>> be useful ?
+> >>>>
+> >>>> Yes, it would.
+> >>>>
+> >>>> However, it follows from the arch-linux report linked above that
+> >>>> 5.17-rc is fine, so it would be good to also check if reverting that
+> >>>> commit from 5.17-rc helps.
+> >>>
+> >>> Ok, I've done Fedora kernel builds of both 5.16.13 and 5.17-rc7 with
+> >>> the patch reverted and asked the bug-reporters to test both.
+> >>
+> >> Thanks!
+> >
+> > Also, in the cases where people have not tested 5.17-rc7 without any
+> > reverts, it would be good to ask them to do so.
+>
+> Ok, done.
+>
+> > I have received another report related to this issue where the problem
+> > is not present in 5.17-rc7 (see
+> > https://lore.kernel.org/linux-pm/CAJZ5v0hKXyTtb1Jk=wqNV9_mZKdf3mmwF4bPOcmADyNnTkpMbQ@mail.gmail.com/).
+>
+> The first results from the Fedora test kernel builds are in:
+>
+> "HP Envy Laptop deadlocks on entering suspend power state when plugged in. Case gets very hot and requires a power button hold to restart"
+> https://bugzilla.redhat.com/show_bug.cgi?id=2059668
+>
+> 5.16.9: good
+> 5.16.10+: bad
+> 5.16.13 with "ACPI: PM: s2idle: Cancel wakeup before dispatching EC GPE" reverted: good
+> 5.17-rc7 with "ACPI: PM: s2idle: Cancel wakeup before dispatching EC GPE" reverted: good
+> 5.17-rc7 (plain): good
+>
+> So this seems to match the arch-linux report and the email report
+> you linked. There is a problem with the backport in 5.16.10+,
+> while 5.17-rc7 is fine.
+>
+> > It is likely that the commit in question actually depends on some
+> > other commits that were not backported into 5.16.y.
+> I was thinking the same thing, but I've no idea which commits
+> that would be.
+
+I do have an idea, but regardless of this, IMO the least risky way
+forward would be to request "stable" to drop "ACPI: PM: s2idle: Cancel
+wakeup before dispatching EC GPE" which has been backported, because
+it carried a Fixes tag and not because it was marked for "stable".
+
+Let me do that.
