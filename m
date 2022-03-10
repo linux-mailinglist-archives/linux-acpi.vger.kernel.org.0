@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B27264D3FDB
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 04:49:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE3C94D3FDD
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 04:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239318AbiCJDum (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Mar 2022 22:50:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56316 "EHLO
+        id S239314AbiCJDus (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Mar 2022 22:50:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239314AbiCJDuj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Mar 2022 22:50:39 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758D16D946
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Mar 2022 19:49:37 -0800 (PST)
+        with ESMTP id S239315AbiCJDun (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Mar 2022 22:50:43 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355EB6D946
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Mar 2022 19:49:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646884178; x=1678420178;
+  t=1646884183; x=1678420183;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NZ9lzUpSH27ZVhCVy0PyyU7vHjtstmYXSpeiy1bu42s=;
-  b=U5v/U3aQhiu54pCz2j2ebYHM+BhgTE6bbZ5gLc4m+0NLHJA8nnTqeqj4
-   Si6UgboosBVSDd+hbzVejbNon3TfRBZCGBBnlA4eDsh6BI8Lnv3Vb0DFO
-   Bggn2kLM1jcjIlnS040tbIxS5ha6tyZ+385MW6g2dROfMU5W39QkwD0qQ
-   l0h5OkOzkpG+euN0Flw1Tyod2eUoXOCmp7ziIoFnGvh06HBZInfwv0AL9
-   hQqKCMvKfjIVazAk5iIGSEGWtFBYm8aZ3sbl4YA9qOYliBMZUccW+NgAR
-   8ANLscbFDPzt1JNFmLvxVrxsAo/PFoCzFkisAYgOyumih5t/bYnnT+4DC
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10281"; a="255096946"
+  bh=dTP1du+sA+bvpHlJgQDh7Lo7PieRTlOTT8kjcjeO5VE=;
+  b=UmrxClUrauAUF/VJ5vzJzNFPw2jPjBbASSjUHvzku+bnbK27hbpL3/EF
+   Fe9tGVq+xlRCqK5At8Rj9+GlMJWTcdWukwkTjbhghUQFNYftZ/5sJLkTb
+   Yw0PTBjXu+poVPutx+2lIVzZjSEC+/gsTeTb/uqkH5sB2KGSehzZRhZun
+   iLzAUdsxc7xCIalTNNlQIGdl9/XTbjdUymr+EOv/UdCJsDM8cOzLvuEGU
+   XAE3hv3tSw71o8DMmcv8Q6TBm1kTgvooAdScfkRW84/KXrWXqipgesuHC
+   cX3b9qIGEfKQLYtH6LiIDmy2V3MjdvECqC5Ywizoohfgz9Ge67ejxGFHF
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10281"; a="341581653"
 X-IronPort-AV: E=Sophos;i="5.90,169,1643702400"; 
-   d="scan'208";a="255096946"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2022 19:49:37 -0800
+   d="scan'208";a="341581653"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2022 19:49:42 -0800
 X-IronPort-AV: E=Sophos;i="5.90,169,1643702400"; 
-   d="scan'208";a="712208698"
+   d="scan'208";a="815427681"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2022 19:49:37 -0800
-Subject: [PATCH 4/6] nvdimm/namespace: Delete nd_namespace_blk
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2022 19:49:42 -0800
+Subject: [PATCH 5/6] ACPI: NFIT: Remove block aperture support
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     nvdimm@lists.linux.dev
 Cc:     robert.hu@linux.intel.com, vishal.l.verma@intel.com, hch@lst.de,
         linux-acpi@vger.kernel.org
-Date:   Wed, 09 Mar 2022 19:49:37 -0800
-Message-ID: <164688417727.2879318.11691110761800109662.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Wed, 09 Mar 2022 19:49:42 -0800
+Message-ID: <164688418240.2879318.400185926874596938.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <164688415599.2879318.17035042246954533659.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <164688415599.2879318.17035042246954533659.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -59,771 +59,518 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that none of the configuration paths consider BLK namespaces, delete
-the BLK namespace data and supporting code.
+Delete the code to parse interleave-descriptor-tables and coordinate I/O
+through a BLK aperture.
 
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/nvdimm/label.c          |  340 ---------------------------------------
- drivers/nvdimm/label.h          |    3 
- drivers/nvdimm/namespace_devs.c |  227 +-------------------------
- drivers/nvdimm/nd-core.h        |    3 
- drivers/nvdimm/nd.h             |    1 
- include/linux/nd.h              |   26 ---
- 6 files changed, 13 insertions(+), 587 deletions(-)
+ drivers/acpi/nfit/core.c         |  376 --------------------------------------
+ drivers/acpi/nfit/nfit.h         |    6 -
+ tools/testing/nvdimm/test/nfit.c |   23 --
+ 3 files changed, 405 deletions(-)
 
-diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index 5ec9a4023df9..8c972bcb2ac3 100644
---- a/drivers/nvdimm/label.c
-+++ b/drivers/nvdimm/label.c
-@@ -968,326 +968,6 @@ static int __pmem_label_update(struct nd_region *nd_region,
- 	return rc;
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index e5d7f2bda13f..bea6a219fddd 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -999,80 +999,6 @@ static void *add_table(struct acpi_nfit_desc *acpi_desc,
+ 	return table + hdr->length;
  }
  
--static bool is_old_resource(struct resource *res, struct resource **list, int n)
+-static void nfit_mem_find_spa_bdw(struct acpi_nfit_desc *acpi_desc,
+-		struct nfit_mem *nfit_mem)
 -{
--	int i;
+-	u32 device_handle = __to_nfit_memdev(nfit_mem)->device_handle;
+-	u16 dcr = nfit_mem->dcr->region_index;
+-	struct nfit_spa *nfit_spa;
 -
--	if (res->flags & DPA_RESOURCE_ADJUSTED)
--		return false;
--	for (i = 0; i < n; i++)
--		if (res == list[i])
--			return true;
--	return false;
--}
+-	list_for_each_entry(nfit_spa, &acpi_desc->spas, list) {
+-		u16 range_index = nfit_spa->spa->range_index;
+-		int type = nfit_spa_type(nfit_spa->spa);
+-		struct nfit_memdev *nfit_memdev;
 -
--static struct resource *to_resource(struct nvdimm_drvdata *ndd,
--		struct nd_namespace_label *nd_label)
--{
--	struct resource *res;
--
--	for_each_dpa_resource(ndd, res) {
--		if (res->start != nsl_get_dpa(ndd, nd_label))
+-		if (type != NFIT_SPA_BDW)
 -			continue;
--		if (resource_size(res) != nsl_get_rawsize(ndd, nd_label))
--			continue;
--		return res;
--	}
 -
--	return NULL;
--}
--
--/*
-- * Use the presence of the type_guid as a flag to determine isetcookie
-- * usage and nlabel + position policy for blk-aperture namespaces.
-- */
--static void nsl_set_blk_isetcookie(struct nvdimm_drvdata *ndd,
--				   struct nd_namespace_label *nd_label,
--				   u64 isetcookie)
--{
--	if (efi_namespace_label_has(ndd, type_guid)) {
--		nsl_set_isetcookie(ndd, nd_label, isetcookie);
--		return;
--	}
--	nsl_set_isetcookie(ndd, nd_label, 0); /* N/A */
--}
--
--bool nsl_validate_blk_isetcookie(struct nvdimm_drvdata *ndd,
--				 struct nd_namespace_label *nd_label,
--				 u64 isetcookie)
--{
--	if (!efi_namespace_label_has(ndd, type_guid))
--		return true;
--
--	if (nsl_get_isetcookie(ndd, nd_label) != isetcookie) {
--		dev_dbg(ndd->dev, "expect cookie %#llx got %#llx\n", isetcookie,
--			nsl_get_isetcookie(ndd, nd_label));
--		return false;
--	}
--
--	return true;
--}
--
--static void nsl_set_blk_nlabel(struct nvdimm_drvdata *ndd,
--			       struct nd_namespace_label *nd_label, int nlabel,
--			       bool first)
--{
--	if (!efi_namespace_label_has(ndd, type_guid)) {
--		nsl_set_nlabel(ndd, nd_label, 0); /* N/A */
--		return;
--	}
--	nsl_set_nlabel(ndd, nd_label, first ? nlabel : 0xffff);
--}
--
--static void nsl_set_blk_position(struct nvdimm_drvdata *ndd,
--				 struct nd_namespace_label *nd_label,
--				 bool first)
--{
--	if (!efi_namespace_label_has(ndd, type_guid)) {
--		nsl_set_position(ndd, nd_label, 0);
--		return;
--	}
--	nsl_set_position(ndd, nd_label, first ? 0 : 0xffff);
--}
--
--/*
-- * 1/ Account all the labels that can be freed after this update
-- * 2/ Allocate and write the label to the staging (next) index
-- * 3/ Record the resources in the namespace device
-- */
--static int __blk_label_update(struct nd_region *nd_region,
--		struct nd_mapping *nd_mapping, struct nd_namespace_blk *nsblk,
--		int num_labels)
--{
--	int i, alloc, victims, nfree, old_num_resources, nlabel, rc = -ENXIO;
--	struct nd_interleave_set *nd_set = nd_region->nd_set;
--	struct nd_namespace_common *ndns = &nsblk->common;
--	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
--	struct nd_namespace_label *nd_label;
--	struct nd_label_ent *label_ent, *e;
--	struct nd_namespace_index *nsindex;
--	unsigned long *free, *victim_map = NULL;
--	struct resource *res, **old_res_list;
--	struct nd_label_id label_id;
--	int min_dpa_idx = 0;
--	LIST_HEAD(list);
--	u32 nslot, slot;
--
--	if (!preamble_next(ndd, &nsindex, &free, &nslot))
--		return -ENXIO;
--
--	old_res_list = nsblk->res;
--	nfree = nd_label_nfree(ndd);
--	old_num_resources = nsblk->num_resources;
--	nd_label_gen_id(&label_id, nsblk->uuid, NSLABEL_FLAG_LOCAL);
--
--	/*
--	 * We need to loop over the old resources a few times, which seems a
--	 * bit inefficient, but we need to know that we have the label
--	 * space before we start mutating the tracking structures.
--	 * Otherwise the recovery method of last resort for userspace is
--	 * disable and re-enable the parent region.
--	 */
--	alloc = 0;
--	for_each_dpa_resource(ndd, res) {
--		if (strcmp(res->name, label_id.id) != 0)
--			continue;
--		if (!is_old_resource(res, old_res_list, old_num_resources))
--			alloc++;
--	}
--
--	victims = 0;
--	if (old_num_resources) {
--		/* convert old local-label-map to dimm-slot victim-map */
--		victim_map = bitmap_zalloc(nslot, GFP_KERNEL);
--		if (!victim_map)
--			return -ENOMEM;
--
--		/* mark unused labels for garbage collection */
--		for_each_clear_bit_le(slot, free, nslot) {
--			nd_label = to_label(ndd, slot);
--			if (!nsl_uuid_equal(ndd, nd_label, nsblk->uuid))
+-		list_for_each_entry(nfit_memdev, &acpi_desc->memdevs, list) {
+-			if (nfit_memdev->memdev->range_index != range_index)
 -				continue;
--			res = to_resource(ndd, nd_label);
--			if (res && is_old_resource(res, old_res_list,
--						old_num_resources))
+-			if (nfit_memdev->memdev->device_handle != device_handle)
 -				continue;
--			slot = to_slot(ndd, nd_label);
--			set_bit(slot, victim_map);
--			victims++;
--		}
--	}
--
--	/* don't allow updates that consume the last label */
--	if (nfree - alloc < 0 || nfree - alloc + victims < 1) {
--		dev_info(&nsblk->common.dev, "insufficient label space\n");
--		bitmap_free(victim_map);
--		return -ENOSPC;
--	}
--	/* from here on we need to abort on error */
--
--
--	/* assign all resources to the namespace before writing the labels */
--	nsblk->res = NULL;
--	nsblk->num_resources = 0;
--	for_each_dpa_resource(ndd, res) {
--		if (strcmp(res->name, label_id.id) != 0)
--			continue;
--		if (!nsblk_add_resource(nd_region, ndd, nsblk, res->start)) {
--			rc = -ENOMEM;
--			goto abort;
--		}
--	}
--
--	/* release slots associated with any invalidated UUIDs */
--	mutex_lock(&nd_mapping->lock);
--	list_for_each_entry_safe(label_ent, e, &nd_mapping->labels, list)
--		if (test_and_clear_bit(ND_LABEL_REAP, &label_ent->flags)) {
--			reap_victim(nd_mapping, label_ent);
--			list_move(&label_ent->list, &list);
--		}
--	mutex_unlock(&nd_mapping->lock);
--
--	/*
--	 * Find the resource associated with the first label in the set
--	 * per the v1.2 namespace specification.
--	 */
--	for (i = 0; i < nsblk->num_resources; i++) {
--		struct resource *min = nsblk->res[min_dpa_idx];
--
--		res = nsblk->res[i];
--		if (res->start < min->start)
--			min_dpa_idx = i;
--	}
--
--	for (i = 0; i < nsblk->num_resources; i++) {
--		size_t offset;
--
--		res = nsblk->res[i];
--		if (is_old_resource(res, old_res_list, old_num_resources))
--			continue; /* carry-over */
--		slot = nd_label_alloc_slot(ndd);
--		if (slot == UINT_MAX) {
--			rc = -ENXIO;
--			goto abort;
--		}
--		dev_dbg(ndd->dev, "allocated: %d\n", slot);
--
--		nd_label = to_label(ndd, slot);
--		memset(nd_label, 0, sizeof_namespace_label(ndd));
--		nsl_set_uuid(ndd, nd_label, nsblk->uuid);
--		nsl_set_name(ndd, nd_label, nsblk->alt_name);
--		nsl_set_flags(ndd, nd_label, NSLABEL_FLAG_LOCAL);
--
--		nsl_set_blk_nlabel(ndd, nd_label, nsblk->num_resources,
--				   i == min_dpa_idx);
--		nsl_set_blk_position(ndd, nd_label, i == min_dpa_idx);
--		nsl_set_blk_isetcookie(ndd, nd_label, nd_set->cookie2);
--
--		nsl_set_dpa(ndd, nd_label, res->start);
--		nsl_set_rawsize(ndd, nd_label, resource_size(res));
--		nsl_set_lbasize(ndd, nd_label, nsblk->lbasize);
--		nsl_set_slot(ndd, nd_label, slot);
--		nsl_set_type_guid(ndd, nd_label, &nd_set->type_guid);
--		nsl_set_claim_class(ndd, nd_label, ndns->claim_class);
--		nsl_calculate_checksum(ndd, nd_label);
--
--		/* update label */
--		offset = nd_label_offset(ndd, nd_label);
--		rc = nvdimm_set_config_data(ndd, offset, nd_label,
--				sizeof_namespace_label(ndd));
--		if (rc < 0)
--			goto abort;
--	}
--
--	/* free up now unused slots in the new index */
--	for_each_set_bit(slot, victim_map, victim_map ? nslot : 0) {
--		dev_dbg(ndd->dev, "free: %d\n", slot);
--		nd_label_free_slot(ndd, slot);
--	}
--
--	/* update index */
--	rc = nd_label_write_index(ndd, ndd->ns_next,
--			nd_inc_seq(__le32_to_cpu(nsindex->seq)), 0);
--	if (rc)
--		goto abort;
--
--	/*
--	 * Now that the on-dimm labels are up to date, fix up the tracking
--	 * entries in nd_mapping->labels
--	 */
--	nlabel = 0;
--	mutex_lock(&nd_mapping->lock);
--	list_for_each_entry_safe(label_ent, e, &nd_mapping->labels, list) {
--		nd_label = label_ent->label;
--		if (!nd_label)
--			continue;
--		nlabel++;
--		if (!nsl_uuid_equal(ndd, nd_label, nsblk->uuid))
--			continue;
--		nlabel--;
--		list_move(&label_ent->list, &list);
--		label_ent->label = NULL;
--	}
--	list_splice_tail_init(&list, &nd_mapping->labels);
--	mutex_unlock(&nd_mapping->lock);
--
--	if (nlabel + nsblk->num_resources > num_labels) {
--		/*
--		 * Bug, we can't end up with more resources than
--		 * available labels
--		 */
--		WARN_ON_ONCE(1);
--		rc = -ENXIO;
--		goto out;
--	}
--
--	mutex_lock(&nd_mapping->lock);
--	label_ent = list_first_entry_or_null(&nd_mapping->labels,
--			typeof(*label_ent), list);
--	if (!label_ent) {
--		WARN_ON(1);
--		mutex_unlock(&nd_mapping->lock);
--		rc = -ENXIO;
--		goto out;
--	}
--	for_each_clear_bit_le(slot, free, nslot) {
--		nd_label = to_label(ndd, slot);
--		if (!nsl_uuid_equal(ndd, nd_label, nsblk->uuid))
--			continue;
--		res = to_resource(ndd, nd_label);
--		res->flags &= ~DPA_RESOURCE_ADJUSTED;
--		dev_vdbg(&nsblk->common.dev, "assign label slot: %d\n", slot);
--		list_for_each_entry_from(label_ent, &nd_mapping->labels, list) {
--			if (label_ent->label)
+-			if (nfit_memdev->memdev->region_index != dcr)
 -				continue;
--			label_ent->label = nd_label;
--			nd_label = NULL;
+-
+-			nfit_mem->spa_bdw = nfit_spa->spa;
+-			return;
+-		}
+-	}
+-
+-	dev_dbg(acpi_desc->dev, "SPA-BDW not found for SPA-DCR %d\n",
+-			nfit_mem->spa_dcr->range_index);
+-	nfit_mem->bdw = NULL;
+-}
+-
+-static void nfit_mem_init_bdw(struct acpi_nfit_desc *acpi_desc,
+-		struct nfit_mem *nfit_mem, struct acpi_nfit_system_address *spa)
+-{
+-	u16 dcr = __to_nfit_memdev(nfit_mem)->region_index;
+-	struct nfit_memdev *nfit_memdev;
+-	struct nfit_bdw *nfit_bdw;
+-	struct nfit_idt *nfit_idt;
+-	u16 idt_idx, range_index;
+-
+-	list_for_each_entry(nfit_bdw, &acpi_desc->bdws, list) {
+-		if (nfit_bdw->bdw->region_index != dcr)
+-			continue;
+-		nfit_mem->bdw = nfit_bdw->bdw;
+-		break;
+-	}
+-
+-	if (!nfit_mem->bdw)
+-		return;
+-
+-	nfit_mem_find_spa_bdw(acpi_desc, nfit_mem);
+-
+-	if (!nfit_mem->spa_bdw)
+-		return;
+-
+-	range_index = nfit_mem->spa_bdw->range_index;
+-	list_for_each_entry(nfit_memdev, &acpi_desc->memdevs, list) {
+-		if (nfit_memdev->memdev->range_index != range_index ||
+-				nfit_memdev->memdev->region_index != dcr)
+-			continue;
+-		nfit_mem->memdev_bdw = nfit_memdev->memdev;
+-		idt_idx = nfit_memdev->memdev->interleave_index;
+-		list_for_each_entry(nfit_idt, &acpi_desc->idts, list) {
+-			if (nfit_idt->idt->interleave_index != idt_idx)
+-				continue;
+-			nfit_mem->idt_bdw = nfit_idt->idt;
 -			break;
 -		}
--		if (nd_label)
--			dev_WARN(&nsblk->common.dev,
--					"failed to track label slot%d\n", slot);
+-		break;
 -	}
--	mutex_unlock(&nd_mapping->lock);
--
-- out:
--	kfree(old_res_list);
--	bitmap_free(victim_map);
--	return rc;
--
-- abort:
--	/*
--	 * 1/ repair the allocated label bitmap in the index
--	 * 2/ restore the resource list
--	 */
--	nd_label_copy(ndd, nsindex, to_current_namespace_index(ndd));
--	kfree(nsblk->res);
--	nsblk->res = old_res_list;
--	nsblk->num_resources = old_num_resources;
--	old_res_list = NULL;
--	goto out;
 -}
 -
- static int init_labels(struct nd_mapping *nd_mapping, int num_labels)
+ static int __nfit_mem_init(struct acpi_nfit_desc *acpi_desc,
+ 		struct acpi_nfit_system_address *spa)
  {
- 	int i, old_num_labels = 0;
-@@ -1425,26 +1105,6 @@ int nd_pmem_namespace_label_update(struct nd_region *nd_region,
+@@ -1189,7 +1115,6 @@ static int __nfit_mem_init(struct acpi_nfit_desc *acpi_desc,
+ 				nfit_mem->idt_dcr = nfit_idt->idt;
+ 				break;
+ 			}
+-			nfit_mem_init_bdw(acpi_desc, nfit_mem, spa);
+ 		} else if (type == NFIT_SPA_PM) {
+ 			/*
+ 			 * A single dimm may belong to multiple SPA-PM
+@@ -1532,8 +1457,6 @@ static int num_nvdimm_formats(struct nvdimm *nvdimm)
+ 
+ 	if (nfit_mem->memdev_pmem)
+ 		formats++;
+-	if (nfit_mem->memdev_bdw)
+-		formats++;
+ 	return formats;
+ }
+ 
+@@ -2079,11 +2002,6 @@ static int acpi_nfit_register_dimms(struct acpi_nfit_desc *acpi_desc)
+ 			continue;
+ 		}
+ 
+-		if (nfit_mem->bdw && nfit_mem->memdev_pmem) {
+-			set_bit(NDD_ALIASING, &flags);
+-			set_bit(NDD_LABELING, &flags);
+-		}
+-
+ 		/* collate flags across all memdevs for this dimm */
+ 		list_for_each_entry(nfit_memdev, &acpi_desc->memdevs, list) {
+ 			struct acpi_nfit_memory_map *dimm_memdev;
+@@ -2429,272 +2347,6 @@ static int acpi_nfit_init_interleave_set(struct acpi_nfit_desc *acpi_desc,
  	return 0;
  }
  
--int nd_blk_namespace_label_update(struct nd_region *nd_region,
--		struct nd_namespace_blk *nsblk, resource_size_t size)
+-static u64 to_interleave_offset(u64 offset, struct nfit_blk_mmio *mmio)
 -{
--	struct nd_mapping *nd_mapping = &nd_region->mapping[0];
--	struct resource *res;
--	int count = 0;
+-	struct acpi_nfit_interleave *idt = mmio->idt;
+-	u32 sub_line_offset, line_index, line_offset;
+-	u64 line_no, table_skip_count, table_offset;
 -
--	if (size == 0)
--		return del_labels(nd_mapping, nsblk->uuid);
+-	line_no = div_u64_rem(offset, mmio->line_size, &sub_line_offset);
+-	table_skip_count = div_u64_rem(line_no, mmio->num_lines, &line_index);
+-	line_offset = idt->line_offset[line_index]
+-		* mmio->line_size;
+-	table_offset = table_skip_count * mmio->table_size;
 -
--	for_each_dpa_resource(to_ndd(nd_mapping), res)
--		count++;
--
--	count = init_labels(nd_mapping, count);
--	if (count < 0)
--		return count;
--
--	return __blk_label_update(nd_region, nd_mapping, nsblk, count);
+-	return mmio->base_offset + line_offset + table_offset + sub_line_offset;
 -}
 -
- int __init nd_label_init(void)
- {
- 	WARN_ON(guid_parse(NVDIMM_BTT_GUID, &nvdimm_btt_guid));
-diff --git a/drivers/nvdimm/label.h b/drivers/nvdimm/label.h
-index 8ee248fc214f..198ef1df298b 100644
---- a/drivers/nvdimm/label.h
-+++ b/drivers/nvdimm/label.h
-@@ -221,9 +221,6 @@ bool nd_label_free_slot(struct nvdimm_drvdata *ndd, u32 slot);
- u32 nd_label_nfree(struct nvdimm_drvdata *ndd);
- struct nd_region;
- struct nd_namespace_pmem;
--struct nd_namespace_blk;
- int nd_pmem_namespace_label_update(struct nd_region *nd_region,
- 		struct nd_namespace_pmem *nspm, resource_size_t size);
--int nd_blk_namespace_label_update(struct nd_region *nd_region,
--		struct nd_namespace_blk *nsblk, resource_size_t size);
- #endif /* __LABEL_H__ */
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index 5c76547c9b84..d1c190b02657 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -32,19 +32,6 @@ static void namespace_pmem_release(struct device *dev)
- 	kfree(nspm);
- }
- 
--static void namespace_blk_release(struct device *dev)
+-static u32 read_blk_stat(struct nfit_blk *nfit_blk, unsigned int bw)
 -{
--	struct nd_namespace_blk *nsblk = to_nd_namespace_blk(dev);
--	struct nd_region *nd_region = to_nd_region(dev->parent);
+-	struct nfit_blk_mmio *mmio = &nfit_blk->mmio[DCR];
+-	u64 offset = nfit_blk->stat_offset + mmio->size * bw;
+-	const u32 STATUS_MASK = 0x80000037;
 -
--	if (nsblk->id >= 0)
--		ida_simple_remove(&nd_region->ns_ida, nsblk->id);
--	kfree(nsblk->alt_name);
--	kfree(nsblk->uuid);
--	kfree(nsblk->res);
--	kfree(nsblk);
+-	if (mmio->num_lines)
+-		offset = to_interleave_offset(offset, mmio);
+-
+-	return readl(mmio->addr.base + offset) & STATUS_MASK;
 -}
 -
- static bool is_namespace_pmem(const struct device *dev);
- static bool is_namespace_io(const struct device *dev);
- 
-@@ -245,65 +232,6 @@ static ssize_t __alt_name_store(struct device *dev, const char *buf,
- 	return rc;
- }
- 
--static bool __nd_namespace_blk_validate(struct nd_namespace_blk *nsblk)
+-static void write_blk_ctl(struct nfit_blk *nfit_blk, unsigned int bw,
+-		resource_size_t dpa, unsigned int len, unsigned int write)
 -{
--	struct nd_region *nd_region = to_nd_region(nsblk->common.dev.parent);
--	struct nd_mapping *nd_mapping = &nd_region->mapping[0];
--	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
--	struct nd_label_id label_id;
--	struct resource *res;
--	int count, i;
+-	u64 cmd, offset;
+-	struct nfit_blk_mmio *mmio = &nfit_blk->mmio[DCR];
 -
--	if (!nsblk->uuid || !nsblk->lbasize || !ndd)
--		return false;
+-	enum {
+-		BCW_OFFSET_MASK = (1ULL << 48)-1,
+-		BCW_LEN_SHIFT = 48,
+-		BCW_LEN_MASK = (1ULL << 8) - 1,
+-		BCW_CMD_SHIFT = 56,
+-	};
 -
--	count = 0;
--	nd_label_gen_id(&label_id, nsblk->uuid, NSLABEL_FLAG_LOCAL);
--	for_each_dpa_resource(ndd, res) {
--		if (strcmp(res->name, label_id.id) != 0)
--			continue;
--		/*
--		 * Resources with unacknowledged adjustments indicate a
--		 * failure to update labels
--		 */
--		if (res->flags & DPA_RESOURCE_ADJUSTED)
--			return false;
--		count++;
--	}
+-	cmd = (dpa >> L1_CACHE_SHIFT) & BCW_OFFSET_MASK;
+-	len = len >> L1_CACHE_SHIFT;
+-	cmd |= ((u64) len & BCW_LEN_MASK) << BCW_LEN_SHIFT;
+-	cmd |= ((u64) write) << BCW_CMD_SHIFT;
 -
--	/* These values match after a successful label update */
--	if (count != nsblk->num_resources)
--		return false;
+-	offset = nfit_blk->cmd_offset + mmio->size * bw;
+-	if (mmio->num_lines)
+-		offset = to_interleave_offset(offset, mmio);
 -
--	for (i = 0; i < nsblk->num_resources; i++) {
--		struct resource *found = NULL;
+-	writeq(cmd, mmio->addr.base + offset);
+-	nvdimm_flush(nfit_blk->nd_region, NULL);
 -
--		for_each_dpa_resource(ndd, res)
--			if (res == nsblk->res[i]) {
--				found = res;
--				break;
--			}
--		/* stale resource */
--		if (!found)
--			return false;
--	}
--
--	return true;
+-	if (nfit_blk->dimm_flags & NFIT_BLK_DCR_LATCH)
+-		readq(mmio->addr.base + offset);
 -}
 -
--resource_size_t nd_namespace_blk_validate(struct nd_namespace_blk *nsblk)
+-static int acpi_nfit_blk_single_io(struct nfit_blk *nfit_blk,
+-		resource_size_t dpa, void *iobuf, size_t len, int rw,
+-		unsigned int lane)
 -{
--	resource_size_t size;
+-	struct nfit_blk_mmio *mmio = &nfit_blk->mmio[BDW];
+-	unsigned int copied = 0;
+-	u64 base_offset;
+-	int rc;
 -
--	nvdimm_bus_lock(&nsblk->common.dev);
--	size = __nd_namespace_blk_validate(nsblk);
--	nvdimm_bus_unlock(&nsblk->common.dev);
+-	base_offset = nfit_blk->bdw_offset + dpa % L1_CACHE_BYTES
+-		+ lane * mmio->size;
+-	write_blk_ctl(nfit_blk, lane, dpa, len, rw);
+-	while (len) {
+-		unsigned int c;
+-		u64 offset;
 -
--	return size;
--}
--EXPORT_SYMBOL(nd_namespace_blk_validate);
+-		if (mmio->num_lines) {
+-			u32 line_offset;
 -
--
- static int nd_namespace_label_update(struct nd_region *nd_region,
- 		struct device *dev)
- {
-@@ -1579,12 +1507,6 @@ static const struct device_type namespace_pmem_device_type = {
- 	.groups = nd_namespace_attribute_groups,
- };
- 
--static const struct device_type namespace_blk_device_type = {
--	.name = "nd_namespace_blk",
--	.release = namespace_blk_release,
--	.groups = nd_namespace_attribute_groups,
--};
--
- static bool is_namespace_pmem(const struct device *dev)
- {
- 	return dev ? dev->type == &namespace_pmem_device_type : false;
-@@ -1964,54 +1886,6 @@ static struct device *create_namespace_pmem(struct nd_region *nd_region,
- 	return ERR_PTR(rc);
- }
- 
--struct resource *nsblk_add_resource(struct nd_region *nd_region,
--		struct nvdimm_drvdata *ndd, struct nd_namespace_blk *nsblk,
--		resource_size_t start)
--{
--	struct nd_label_id label_id;
--	struct resource *res;
--
--	nd_label_gen_id(&label_id, nsblk->uuid, NSLABEL_FLAG_LOCAL);
--	res = krealloc(nsblk->res,
--			sizeof(void *) * (nsblk->num_resources + 1),
--			GFP_KERNEL);
--	if (!res)
--		return NULL;
--	nsblk->res = (struct resource **) res;
--	for_each_dpa_resource(ndd, res)
--		if (strcmp(res->name, label_id.id) == 0
--				&& res->start == start) {
--			nsblk->res[nsblk->num_resources++] = res;
--			return res;
--		}
--	return NULL;
--}
--
--static struct device *nd_namespace_blk_create(struct nd_region *nd_region)
--{
--	struct nd_namespace_blk *nsblk;
--	struct device *dev;
--
--	if (!is_nd_blk(&nd_region->dev))
--		return NULL;
--
--	nsblk = kzalloc(sizeof(*nsblk), GFP_KERNEL);
--	if (!nsblk)
--		return NULL;
--
--	dev = &nsblk->common.dev;
--	dev->type = &namespace_blk_device_type;
--	nsblk->id = ida_simple_get(&nd_region->ns_ida, 0, 0, GFP_KERNEL);
--	if (nsblk->id < 0) {
--		kfree(nsblk);
--		return NULL;
--	}
--	dev_set_name(dev, "namespace%d.%d", nd_region->id, nsblk->id);
--	dev->parent = &nd_region->dev;
--
--	return &nsblk->common.dev;
--}
--
- static struct device *nd_namespace_pmem_create(struct nd_region *nd_region)
- {
- 	struct nd_namespace_pmem *nspm;
-@@ -2050,10 +1924,7 @@ void nd_region_create_ns_seed(struct nd_region *nd_region)
- 	if (nd_region_to_nstype(nd_region) == ND_DEVICE_NAMESPACE_IO)
- 		return;
- 
--	if (is_nd_blk(&nd_region->dev))
--		nd_region->ns_seed = nd_namespace_blk_create(nd_region);
--	else
--		nd_region->ns_seed = nd_namespace_pmem_create(nd_region);
-+	nd_region->ns_seed = nd_namespace_pmem_create(nd_region);
- 
- 	/*
- 	 * Seed creation failures are not fatal, provisioning is simply
-@@ -2128,54 +1999,6 @@ static int add_namespace_resource(struct nd_region *nd_region,
- 	return i;
- }
- 
--static struct device *create_namespace_blk(struct nd_region *nd_region,
--		struct nd_namespace_label *nd_label, int count)
--{
--
--	struct nd_mapping *nd_mapping = &nd_region->mapping[0];
--	struct nd_interleave_set *nd_set = nd_region->nd_set;
--	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
--	struct nd_namespace_blk *nsblk;
--	char name[NSLABEL_NAME_LEN];
--	struct device *dev = NULL;
--	struct resource *res;
--	uuid_t uuid;
--
--	if (!nsl_validate_type_guid(ndd, nd_label, &nd_set->type_guid))
--		return ERR_PTR(-EAGAIN);
--	if (!nsl_validate_blk_isetcookie(ndd, nd_label, nd_set->cookie2))
--		return ERR_PTR(-EAGAIN);
--
--	nsblk = kzalloc(sizeof(*nsblk), GFP_KERNEL);
--	if (!nsblk)
--		return ERR_PTR(-ENOMEM);
--	dev = &nsblk->common.dev;
--	dev->type = &namespace_blk_device_type;
--	dev->parent = &nd_region->dev;
--	nsblk->id = -1;
--	nsblk->lbasize = nsl_get_lbasize(ndd, nd_label);
--	nsl_get_uuid(ndd, nd_label, &uuid);
--	nsblk->uuid = kmemdup(&uuid, sizeof(uuid_t), GFP_KERNEL);
--	nsblk->common.claim_class = nsl_get_claim_class(ndd, nd_label);
--	if (!nsblk->uuid)
--		goto blk_err;
--	nsl_get_name(ndd, nd_label, name);
--	if (name[0]) {
--		nsblk->alt_name = kmemdup(name, NSLABEL_NAME_LEN, GFP_KERNEL);
--		if (!nsblk->alt_name)
--			goto blk_err;
--	}
--	res = nsblk_add_resource(nd_region, ndd, nsblk,
--			nsl_get_dpa(ndd, nd_label));
--	if (!res)
--		goto blk_err;
--	nd_dbg_dpa(nd_region, ndd, res, "%d: assign\n", count);
--	return dev;
-- blk_err:
--	namespace_blk_release(dev);
--	return ERR_PTR(-ENXIO);
--}
--
- static int cmp_dpa(const void *a, const void *b)
- {
- 	const struct device *dev_a = *(const struct device **) a;
-@@ -2233,12 +2056,7 @@ static struct device **scan_labels(struct nd_region *nd_region)
- 		kfree(devs);
- 		devs = __devs;
- 
--		if (is_nd_blk(&nd_region->dev))
--			dev = create_namespace_blk(nd_region, nd_label, count);
--		else
--			dev = create_namespace_pmem(nd_region, nd_mapping,
--						    nd_label);
--
-+		dev = create_namespace_pmem(nd_region, nd_mapping, nd_label);
- 		if (IS_ERR(dev)) {
- 			switch (PTR_ERR(dev)) {
- 			case -EAGAIN:
-@@ -2260,30 +2078,21 @@ static struct device **scan_labels(struct nd_region *nd_region)
- 			? "blk" : "pmem", count == 1 ? "" : "s");
- 
- 	if (count == 0) {
-+		struct nd_namespace_pmem *nspm;
-+
- 		/* Publish a zero-sized namespace for userspace to configure. */
- 		nd_mapping_free_labels(nd_mapping);
- 
- 		devs = kcalloc(2, sizeof(dev), GFP_KERNEL);
- 		if (!devs)
- 			goto err;
--		if (is_nd_blk(&nd_region->dev)) {
--			struct nd_namespace_blk *nsblk;
--
--			nsblk = kzalloc(sizeof(*nsblk), GFP_KERNEL);
--			if (!nsblk)
--				goto err;
--			dev = &nsblk->common.dev;
--			dev->type = &namespace_blk_device_type;
+-			offset = to_interleave_offset(base_offset + copied,
+-					mmio);
+-			div_u64_rem(offset, mmio->line_size, &line_offset);
+-			c = min_t(size_t, len, mmio->line_size - line_offset);
 -		} else {
--			struct nd_namespace_pmem *nspm;
- 
--			nspm = kzalloc(sizeof(*nspm), GFP_KERNEL);
--			if (!nspm)
--				goto err;
--			dev = &nspm->nsio.common.dev;
--			dev->type = &namespace_pmem_device_type;
--			nd_namespace_pmem_set_resource(nd_region, nspm, 0);
+-			offset = base_offset + nfit_blk->bdw_offset;
+-			c = len;
 -		}
-+		nspm = kzalloc(sizeof(*nspm), GFP_KERNEL);
-+		if (!nspm)
-+			goto err;
-+		dev = &nspm->nsio.common.dev;
-+		dev->type = &namespace_pmem_device_type;
-+		nd_namespace_pmem_set_resource(nd_region, nspm, 0);
- 		dev->parent = &nd_region->dev;
- 		devs[count++] = dev;
- 	} else if (is_memory(&nd_region->dev)) {
-@@ -2318,10 +2127,7 @@ static struct device **scan_labels(struct nd_region *nd_region)
-  err:
- 	if (devs) {
- 		for (i = 0; devs[i]; i++)
--			if (is_nd_blk(&nd_region->dev))
--				namespace_blk_release(devs[i]);
--			else
--				namespace_pmem_release(devs[i]);
-+			namespace_pmem_release(devs[i]);
- 		kfree(devs);
- 	}
- 	return NULL;
-@@ -2484,19 +2290,12 @@ int nd_region_register_namespaces(struct nd_region *nd_region, int *err)
- 		struct device *dev = devs[i];
- 		int id;
- 
--		if (type == ND_DEVICE_NAMESPACE_BLK) {
--			struct nd_namespace_blk *nsblk;
 -
--			nsblk = to_nd_namespace_blk(dev);
--			id = ida_simple_get(&nd_region->ns_ida, 0, 0,
--					GFP_KERNEL);
--			nsblk->id = id;
--		} else if (type == ND_DEVICE_NAMESPACE_PMEM) {
-+		if (type == ND_DEVICE_NAMESPACE_PMEM) {
- 			struct nd_namespace_pmem *nspm;
- 
- 			nspm = to_nd_namespace_pmem(dev);
- 			id = ida_simple_get(&nd_region->ns_ida, 0, 0,
--					GFP_KERNEL);
-+					    GFP_KERNEL);
- 			nspm->id = id;
- 		} else
- 			id = i;
-diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-index a11850dd475d..e4af0719cf33 100644
---- a/drivers/nvdimm/nd-core.h
-+++ b/drivers/nvdimm/nd-core.h
-@@ -150,9 +150,6 @@ int nd_region_conflict(struct nd_region *nd_region, resource_size_t start,
- resource_size_t nvdimm_allocated_dpa(struct nvdimm_drvdata *ndd,
- 		struct nd_label_id *label_id);
- int alias_dpa_busy(struct device *dev, void *data);
--struct resource *nsblk_add_resource(struct nd_region *nd_region,
--		struct nvdimm_drvdata *ndd, struct nd_namespace_blk *nsblk,
--		resource_size_t start);
- int nvdimm_num_label_slots(struct nvdimm_drvdata *ndd);
- void get_ndd(struct nvdimm_drvdata *ndd);
- resource_size_t __nvdimm_namespace_capacity(struct nd_namespace_common *ndns);
-diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index 6f8ce114032d..8391bf2729bc 100644
---- a/drivers/nvdimm/nd.h
-+++ b/drivers/nvdimm/nd.h
-@@ -687,7 +687,6 @@ static inline bool is_bad_pmem(struct badblocks *bb, sector_t sector,
- 
- 	return false;
- }
--resource_size_t nd_namespace_blk_validate(struct nd_namespace_blk *nsblk);
- const uuid_t *nd_dev_to_uuid(struct device *dev);
- bool pmem_should_map_pages(struct device *dev);
- #endif /* __ND_H__ */
-diff --git a/include/linux/nd.h b/include/linux/nd.h
-index 4813c7089e5c..7b2ccbdc1cbc 100644
---- a/include/linux/nd.h
-+++ b/include/linux/nd.h
-@@ -136,27 +136,6 @@ struct nd_namespace_pmem {
- 	int id;
- };
- 
--/**
-- * struct nd_namespace_blk - namespace for dimm-bounded persistent memory
-- * @alt_name: namespace name supplied in the dimm label
-- * @uuid: namespace name supplied in the dimm label
-- * @id: ida allocated id
-- * @lbasize: blk namespaces have a native sector size when btt not present
-- * @size: sum of all the resource ranges allocated to this namespace
-- * @num_resources: number of dpa extents to claim
-- * @res: discontiguous dpa extents for given dimm
-- */
--struct nd_namespace_blk {
--	struct nd_namespace_common common;
--	char *alt_name;
--	uuid_t *uuid;
--	int id;
--	unsigned long lbasize;
--	resource_size_t size;
--	int num_resources;
--	struct resource **res;
--};
+-		if (rw)
+-			memcpy_flushcache(mmio->addr.aperture + offset, iobuf + copied, c);
+-		else {
+-			if (nfit_blk->dimm_flags & NFIT_BLK_READ_FLUSH)
+-				arch_invalidate_pmem((void __force *)
+-					mmio->addr.aperture + offset, c);
 -
- static inline struct nd_namespace_io *to_nd_namespace_io(const struct device *dev)
- {
- 	return container_of(dev, struct nd_namespace_io, common.dev);
-@@ -169,11 +148,6 @@ static inline struct nd_namespace_pmem *to_nd_namespace_pmem(const struct device
- 	return container_of(nsio, struct nd_namespace_pmem, nsio);
- }
- 
--static inline struct nd_namespace_blk *to_nd_namespace_blk(const struct device *dev)
--{
--	return container_of(dev, struct nd_namespace_blk, common.dev);
+-			memcpy(iobuf + copied, mmio->addr.aperture + offset, c);
+-		}
+-
+-		copied += c;
+-		len -= c;
+-	}
+-
+-	if (rw)
+-		nvdimm_flush(nfit_blk->nd_region, NULL);
+-
+-	rc = read_blk_stat(nfit_blk, lane) ? -EIO : 0;
+-	return rc;
 -}
 -
- /**
-  * nvdimm_read_bytes() - synchronously read bytes from an nvdimm namespace
-  * @ndns: device to read
+-static int acpi_nfit_blk_region_do_io(struct nd_blk_region *ndbr,
+-		resource_size_t dpa, void *iobuf, u64 len, int rw)
+-{
+-	struct nfit_blk *nfit_blk = nd_blk_region_provider_data(ndbr);
+-	struct nfit_blk_mmio *mmio = &nfit_blk->mmio[BDW];
+-	struct nd_region *nd_region = nfit_blk->nd_region;
+-	unsigned int lane, copied = 0;
+-	int rc = 0;
+-
+-	lane = nd_region_acquire_lane(nd_region);
+-	while (len) {
+-		u64 c = min(len, mmio->size);
+-
+-		rc = acpi_nfit_blk_single_io(nfit_blk, dpa + copied,
+-				iobuf + copied, c, rw, lane);
+-		if (rc)
+-			break;
+-
+-		copied += c;
+-		len -= c;
+-	}
+-	nd_region_release_lane(nd_region, lane);
+-
+-	return rc;
+-}
+-
+-static int nfit_blk_init_interleave(struct nfit_blk_mmio *mmio,
+-		struct acpi_nfit_interleave *idt, u16 interleave_ways)
+-{
+-	if (idt) {
+-		mmio->num_lines = idt->line_count;
+-		mmio->line_size = idt->line_size;
+-		if (interleave_ways == 0)
+-			return -ENXIO;
+-		mmio->table_size = mmio->num_lines * interleave_ways
+-			* mmio->line_size;
+-	}
+-
+-	return 0;
+-}
+-
+-static int acpi_nfit_blk_get_flags(struct nvdimm_bus_descriptor *nd_desc,
+-		struct nvdimm *nvdimm, struct nfit_blk *nfit_blk)
+-{
+-	struct nd_cmd_dimm_flags flags;
+-	int rc;
+-
+-	memset(&flags, 0, sizeof(flags));
+-	rc = nd_desc->ndctl(nd_desc, nvdimm, ND_CMD_DIMM_FLAGS, &flags,
+-			sizeof(flags), NULL);
+-
+-	if (rc >= 0 && flags.status == 0)
+-		nfit_blk->dimm_flags = flags.flags;
+-	else if (rc == -ENOTTY) {
+-		/* fall back to a conservative default */
+-		nfit_blk->dimm_flags = NFIT_BLK_DCR_LATCH | NFIT_BLK_READ_FLUSH;
+-		rc = 0;
+-	} else
+-		rc = -ENXIO;
+-
+-	return rc;
+-}
+-
+-static int acpi_nfit_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
+-		struct device *dev)
+-{
+-	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
+-	struct nd_blk_region *ndbr = to_nd_blk_region(dev);
+-	struct nfit_blk_mmio *mmio;
+-	struct nfit_blk *nfit_blk;
+-	struct nfit_mem *nfit_mem;
+-	struct nvdimm *nvdimm;
+-	int rc;
+-
+-	nvdimm = nd_blk_region_to_dimm(ndbr);
+-	nfit_mem = nvdimm_provider_data(nvdimm);
+-	if (!nfit_mem || !nfit_mem->dcr || !nfit_mem->bdw) {
+-		dev_dbg(dev, "missing%s%s%s\n",
+-				nfit_mem ? "" : " nfit_mem",
+-				(nfit_mem && nfit_mem->dcr) ? "" : " dcr",
+-				(nfit_mem && nfit_mem->bdw) ? "" : " bdw");
+-		return -ENXIO;
+-	}
+-
+-	nfit_blk = devm_kzalloc(dev, sizeof(*nfit_blk), GFP_KERNEL);
+-	if (!nfit_blk)
+-		return -ENOMEM;
+-	nd_blk_region_set_provider_data(ndbr, nfit_blk);
+-	nfit_blk->nd_region = to_nd_region(dev);
+-
+-	/* map block aperture memory */
+-	nfit_blk->bdw_offset = nfit_mem->bdw->offset;
+-	mmio = &nfit_blk->mmio[BDW];
+-	mmio->addr.base = devm_nvdimm_memremap(dev, nfit_mem->spa_bdw->address,
+-			nfit_mem->spa_bdw->length, nd_blk_memremap_flags(ndbr));
+-	if (!mmio->addr.base) {
+-		dev_dbg(dev, "%s failed to map bdw\n",
+-				nvdimm_name(nvdimm));
+-		return -ENOMEM;
+-	}
+-	mmio->size = nfit_mem->bdw->size;
+-	mmio->base_offset = nfit_mem->memdev_bdw->region_offset;
+-	mmio->idt = nfit_mem->idt_bdw;
+-	mmio->spa = nfit_mem->spa_bdw;
+-	rc = nfit_blk_init_interleave(mmio, nfit_mem->idt_bdw,
+-			nfit_mem->memdev_bdw->interleave_ways);
+-	if (rc) {
+-		dev_dbg(dev, "%s failed to init bdw interleave\n",
+-				nvdimm_name(nvdimm));
+-		return rc;
+-	}
+-
+-	/* map block control memory */
+-	nfit_blk->cmd_offset = nfit_mem->dcr->command_offset;
+-	nfit_blk->stat_offset = nfit_mem->dcr->status_offset;
+-	mmio = &nfit_blk->mmio[DCR];
+-	mmio->addr.base = devm_nvdimm_ioremap(dev, nfit_mem->spa_dcr->address,
+-			nfit_mem->spa_dcr->length);
+-	if (!mmio->addr.base) {
+-		dev_dbg(dev, "%s failed to map dcr\n",
+-				nvdimm_name(nvdimm));
+-		return -ENOMEM;
+-	}
+-	mmio->size = nfit_mem->dcr->window_size;
+-	mmio->base_offset = nfit_mem->memdev_dcr->region_offset;
+-	mmio->idt = nfit_mem->idt_dcr;
+-	mmio->spa = nfit_mem->spa_dcr;
+-	rc = nfit_blk_init_interleave(mmio, nfit_mem->idt_dcr,
+-			nfit_mem->memdev_dcr->interleave_ways);
+-	if (rc) {
+-		dev_dbg(dev, "%s failed to init dcr interleave\n",
+-				nvdimm_name(nvdimm));
+-		return rc;
+-	}
+-
+-	rc = acpi_nfit_blk_get_flags(nd_desc, nvdimm, nfit_blk);
+-	if (rc < 0) {
+-		dev_dbg(dev, "%s failed get DIMM flags\n",
+-				nvdimm_name(nvdimm));
+-		return rc;
+-	}
+-
+-	if (nvdimm_has_flush(nfit_blk->nd_region) < 0)
+-		dev_warn(dev, "unable to guarantee persistence of writes\n");
+-
+-	if (mmio->line_size == 0)
+-		return 0;
+-
+-	if ((u32) nfit_blk->cmd_offset % mmio->line_size
+-			+ 8 > mmio->line_size) {
+-		dev_dbg(dev, "cmd_offset crosses interleave boundary\n");
+-		return -ENXIO;
+-	} else if ((u32) nfit_blk->stat_offset % mmio->line_size
+-			+ 8 > mmio->line_size) {
+-		dev_dbg(dev, "stat_offset crosses interleave boundary\n");
+-		return -ENXIO;
+-	}
+-
+-	return 0;
+-}
+-
+ static int ars_get_cap(struct acpi_nfit_desc *acpi_desc,
+ 		struct nd_cmd_ars_cap *cmd, struct nfit_spa *nfit_spa)
+ {
+@@ -2911,9 +2563,6 @@ static int acpi_nfit_init_mapping(struct acpi_nfit_desc *acpi_desc,
+ 	struct nvdimm *nvdimm = acpi_nfit_dimm_by_handle(acpi_desc,
+ 			memdev->device_handle);
+ 	struct acpi_nfit_system_address *spa = nfit_spa->spa;
+-	struct nd_blk_region_desc *ndbr_desc;
+-	struct nfit_mem *nfit_mem;
+-	int rc;
+ 
+ 	if (!nvdimm) {
+ 		dev_err(acpi_desc->dev, "spa%d dimm: %#x not found\n",
+@@ -2928,30 +2577,6 @@ static int acpi_nfit_init_mapping(struct acpi_nfit_desc *acpi_desc,
+ 		mapping->start = memdev->address;
+ 		mapping->size = memdev->region_size;
+ 		break;
+-	case NFIT_SPA_DCR:
+-		nfit_mem = nvdimm_provider_data(nvdimm);
+-		if (!nfit_mem || !nfit_mem->bdw) {
+-			dev_dbg(acpi_desc->dev, "spa%d %s missing bdw\n",
+-					spa->range_index, nvdimm_name(nvdimm));
+-			break;
+-		}
+-
+-		mapping->size = nfit_mem->bdw->capacity;
+-		mapping->start = nfit_mem->bdw->start_address;
+-		ndr_desc->num_lanes = nfit_mem->bdw->windows;
+-		ndr_desc->mapping = mapping;
+-		ndr_desc->num_mappings = 1;
+-		ndbr_desc = to_blk_region_desc(ndr_desc);
+-		ndbr_desc->enable = acpi_nfit_blk_region_enable;
+-		ndbr_desc->do_io = acpi_desc->blk_do_io;
+-		rc = acpi_nfit_init_interleave_set(acpi_desc, ndr_desc, spa);
+-		if (rc)
+-			return rc;
+-		nfit_spa->nd_region = nvdimm_blk_region_create(acpi_desc->nvdimm_bus,
+-				ndr_desc);
+-		if (!nfit_spa->nd_region)
+-			return -ENOMEM;
+-		break;
+ 	}
+ 
+ 	return 0;
+@@ -3635,7 +3260,6 @@ void acpi_nfit_desc_init(struct acpi_nfit_desc *acpi_desc, struct device *dev)
+ 
+ 	dev_set_drvdata(dev, acpi_desc);
+ 	acpi_desc->dev = dev;
+-	acpi_desc->blk_do_io = acpi_nfit_blk_region_do_io;
+ 	nd_desc = &acpi_desc->nd_desc;
+ 	nd_desc->provider_name = "ACPI.NFIT";
+ 	nd_desc->module = THIS_MODULE;
+diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
+index c674f3df9be7..50882bdbeb96 100644
+--- a/drivers/acpi/nfit/nfit.h
++++ b/drivers/acpi/nfit/nfit.h
+@@ -208,13 +208,9 @@ struct nfit_mem {
+ 	struct nvdimm *nvdimm;
+ 	struct acpi_nfit_memory_map *memdev_dcr;
+ 	struct acpi_nfit_memory_map *memdev_pmem;
+-	struct acpi_nfit_memory_map *memdev_bdw;
+ 	struct acpi_nfit_control_region *dcr;
+-	struct acpi_nfit_data_region *bdw;
+ 	struct acpi_nfit_system_address *spa_dcr;
+-	struct acpi_nfit_system_address *spa_bdw;
+ 	struct acpi_nfit_interleave *idt_dcr;
+-	struct acpi_nfit_interleave *idt_bdw;
+ 	struct kernfs_node *flags_attr;
+ 	struct nfit_flush *nfit_flush;
+ 	struct list_head list;
+@@ -266,8 +262,6 @@ struct acpi_nfit_desc {
+ 	unsigned long family_dsm_mask[NVDIMM_BUS_FAMILY_MAX + 1];
+ 	unsigned int platform_cap;
+ 	unsigned int scrub_tmo;
+-	int (*blk_do_io)(struct nd_blk_region *ndbr, resource_size_t dpa,
+-			void *iobuf, u64 len, int rw);
+ 	enum nvdimm_fwa_state fwa_state;
+ 	enum nvdimm_fwa_capability fwa_cap;
+ 	int fwa_count;
+diff --git a/tools/testing/nvdimm/test/nfit.c b/tools/testing/nvdimm/test/nfit.c
+index 0bc91ffee257..65dbdda3a054 100644
+--- a/tools/testing/nvdimm/test/nfit.c
++++ b/tools/testing/nvdimm/test/nfit.c
+@@ -2842,28 +2842,6 @@ static void nfit_test1_setup(struct nfit_test *t)
+ 	set_bit(ND_CMD_SET_CONFIG_DATA, &acpi_desc->dimm_cmd_force_en);
+ }
+ 
+-static int nfit_test_blk_do_io(struct nd_blk_region *ndbr, resource_size_t dpa,
+-		void *iobuf, u64 len, int rw)
+-{
+-	struct nfit_blk *nfit_blk = ndbr->blk_provider_data;
+-	struct nfit_blk_mmio *mmio = &nfit_blk->mmio[BDW];
+-	struct nd_region *nd_region = &ndbr->nd_region;
+-	unsigned int lane;
+-
+-	lane = nd_region_acquire_lane(nd_region);
+-	if (rw)
+-		memcpy(mmio->addr.base + dpa, iobuf, len);
+-	else {
+-		memcpy(iobuf, mmio->addr.base + dpa, len);
+-
+-		/* give us some some coverage of the arch_invalidate_pmem() API */
+-		arch_invalidate_pmem(mmio->addr.base + dpa, len);
+-	}
+-	nd_region_release_lane(nd_region, lane);
+-
+-	return 0;
+-}
+-
+ static unsigned long nfit_ctl_handle;
+ 
+ union acpi_object *result;
+@@ -3219,7 +3197,6 @@ static int nfit_test_probe(struct platform_device *pdev)
+ 	nfit_test->setup(nfit_test);
+ 	acpi_desc = &nfit_test->acpi_desc;
+ 	acpi_nfit_desc_init(acpi_desc, &pdev->dev);
+-	acpi_desc->blk_do_io = nfit_test_blk_do_io;
+ 	nd_desc = &acpi_desc->nd_desc;
+ 	nd_desc->provider_name = NULL;
+ 	nd_desc->module = THIS_MODULE;
 
