@@ -2,208 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CBE94D4F6E
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 17:36:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74A6F4D526C
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Mar 2022 20:44:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235724AbiCJQhb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Mar 2022 11:37:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33400 "EHLO
+        id S245740AbiCJTG0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Mar 2022 14:06:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbiCJQhb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Mar 2022 11:37:31 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE0C194152;
-        Thu, 10 Mar 2022 08:36:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646930190; x=1678466190;
-  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=yXrVj4ueVsgorKrp3nCTaEB/0IPGmBsCFjn44DQd2es=;
-  b=iiiFuzXEMzGjG2HYrlAePUhy/5uhZaUNYqyRHsw/sJPg8LCi2V/7eOAZ
-   aZbXmmGyUTtmxuFA1ZBGn9d9/I/HnYKIiM7EcRih26ssMmfabnklnL593
-   uZNy0VYmCbmoWZsG24ekElmJnBDy1zcxAteGNvg1Qn10Q10Ox3gLZdnAC
-   QOy6o5uUE0zhklZOzdd0+t6G5T/lpfgc5sAIEFjaXHWr8QUjZVZV/nLyO
-   vb+50GyOQzHYBJ7p/cXDmhr6kxAM2XE5J3n95yRl2VXf8JmgRnIZRQufW
-   VcrT3L1hLns6B3Y9nEh/w8eCgNWn9peIFOnBVGtPNStOjmUaFa5LakP4R
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10282"; a="318519729"
-X-IronPort-AV: E=Sophos;i="5.90,171,1643702400"; 
-   d="scan'208";a="318519729"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2022 08:35:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,171,1643702400"; 
-   d="scan'208";a="644503239"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga004.jf.intel.com with ESMTP; 10 Mar 2022 08:35:27 -0800
-Received: from ngpereir-MOBL.amr.corp.intel.com (unknown [10.212.217.28])
-        by linux.intel.com (Postfix) with ESMTP id 1E48058093E;
-        Thu, 10 Mar 2022 08:35:27 -0800 (PST)
-Message-ID: <6b33269731e04c25f8766261db75dcb5e5bb60f2.camel@linux.intel.com>
-Subject: Re: [PATCH 3/4] platform/x86: amd-pmc: Move to later in the suspend
- process
-From:   "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Cc:     "open list:X86 PLATFORM DRIVERS" 
-        <platform-driver-x86@vger.kernel.org>, linux-acpi@vger.kernel.org
-Date:   Thu, 10 Mar 2022 08:35:26 -0800
-In-Reply-To: <20220310151705.577442-3-mario.limonciello@amd.com>
-References: <20220310151705.577442-1-mario.limonciello@amd.com>
-         <20220310151705.577442-3-mario.limonciello@amd.com>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S245757AbiCJTGZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Mar 2022 14:06:25 -0500
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C63615929B
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 11:05:20 -0800 (PST)
+Received: by mail-yb1-f181.google.com with SMTP id f38so12812347ybi.3
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 11:05:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eOi4cn58r0eZpnQkiy/hcxzLFxYtfFpSpg3WsG4WRgw=;
+        b=z0SJf1VH1YYcWwylXcx0hXCRIfI/QR5day7Ym/NAT1f/VXugQw32ws03fnxmiN8sB1
+         7ig8dHbVRUFSniUEvvRlEPttpeTUJrgvJrVbScYGfRKqVHb9ZiKov8wpm9lPaPMZne8A
+         Uh7ysZ+bLsLph9g3F31z6vorafSJMWA+CVSALK0Dd2VjHneHtl6Q3RlGovDffSxel3Yx
+         XvyAN2Lc9XD/pAWITjRIkqCl/GFg5yJ+q6vUjv5bzGWTdPwaSweqe/AwL/bugRHiJwkN
+         NyPK39TVUvPk0CLmtCmGS56BcxRpjKYV2jF9V6nrqOX2MoxXPpZtGnA+HjvVE7Ps8r6G
+         PIrA==
+X-Gm-Message-State: AOAM533N4bopzKM0sPZfezoZxxJDVKwxRlZ7GB7gHQEPAcfMF3y8WJmY
+        4in0l6E2kvKK6XyhVWest1wFddx7rFGs5JE3xEk=
+X-Google-Smtp-Source: ABdhPJzzVQRIP9wurCZY76zTFRtZXob7srktxguUruxLrhfgmgpyico8+6P9QWuW3Mev52MjSuxzXJt+EUqr63yS3Q4=
+X-Received: by 2002:a25:d7c2:0:b0:628:9d06:457b with SMTP id
+ o185-20020a25d7c2000000b006289d06457bmr5149198ybg.137.1646939119358; Thu, 10
+ Mar 2022 11:05:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220309163749.773474-1-mario.limonciello@amd.com>
+In-Reply-To: <20220309163749.773474-1-mario.limonciello@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 10 Mar 2022 20:05:08 +0100
+Message-ID: <CAJZ5v0gw7z6qwXRYe-_XRTZouJ+gpAWX3W02jiMnaR44T453Cg@mail.gmail.com>
+Subject: Re: [PATCH v5] ACPI: bus: For platform OSC negotiate capabilities
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Xiaomeng.Hou@amd.com, Aaron.Liu@amd.com,
+        Huang Rui <Ray.Huang@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 2022-03-10 at 09:17 -0600, Mario Limonciello wrote:
-> The `OS_HINT` message is supposed to indicate that everything else
-> that is supposed to go into the deepest state has done so.
-> 
-> This assumption is invalid as:
-> 1) The CPUs will still go in and out of the deepest state
-> 2) Other devices may still run their `noirq` suspend routines
-> 3) The LPS0 ACPI device will still run
-
-Yep. We had looked at adding a notifier to address this.
-
-David
-
-> 
-> To more closely mirror how this works on other operating systems,
-> move the `amd-pmc` suspend to the very last thing before the s2idle
-> loop via an lps0 callback.
-> 
-> Fixes: 8d89835b0467 ("PM: suspend: Do not pause cpuidle in the suspend-to-idle 
-> path")
+On Wed, Mar 9, 2022 at 5:46 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> According to the ACPI 6.4 spec:
+> It is strongly recommended that the OS evaluate _OSC with the Query
+> Support Flag set until _OSC returns the Capabilities Masked bit clear,
+> to negotiate the set of features to be granted to the OS for native
+> support; a platform may require a specific combination of features
+> to be supported natively by an OS before granting native control
+> of a given feature. After negotiation with the query flag set,
+> the OS should evaluate without it so that any negotiated values
+> can be made effective to hardware.
+>
+> Currently the code sends the exact same values in both executions of the
+> _OSC and this leads to some problems on some AMD platforms in certain
+> configurations.
+>
+> The following notable capabilities are set by OSPM when query is enabled:
+> * OSC_SB_PR3_SUPPORT
+> * OSC_SB_PCLPI_SUPPORT
+> * OSC_SB_NATIVE_USB4_SUPPORT
+>
+> The first call to the platform OSC returns back a masked capabilities
+> error because the firmware did not acknowledge OSC_SB_PCLPI_SUPPORT but
+> it acknolwedged the others.
+>
+> The second call to the platform _OSC without the query flag set then
+> fails because the OSPM still sent the exact same values.  This leads
+> to not acknowledging OSC_SB_NATIVE_USB4_SUPPORT and later USB4 PCIe
+> tunnels can't be authorized.
+>
+> This problem was first introduced by commit 159d8c274fd9 ("ACPI: Pass the
+> same capabilities to the _OSC regardless of the query flag") which subtly
+> adjusted the behavior from 719e1f5 ("ACPI: Execute platform _OSC also
+> with query bit clear").
+>
+> The _OSC was called exactly 2 times:
+>  * Once to query and request from firmware
+>  * Once to commit to firmware without query
+>
+> To fix this problem, continue to call the _OSC until the firmware has
+> indicated that capabilities are no longer masked or after an arbitrary
+> number of negotiation attempts.
+>
+> Furthermore, to avoid the problem that commit 159d8c274fd9 ("ACPI: Pass
+> the same capabilities to the _OSC regardless of the query flag")
+> introduced, explicitly mark support for CPC and CPPCv2 even if they
+> were masked by the series of query calls due to table loading order on
+> some systems.
+>
+> Fixes: 159d8c274fd9 ("ACPI: Pass the same capabilities to the _OSC regardless of the query flag")
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  drivers/platform/x86/amd-pmc.c | 33 +++++++++++++++++----------------
->  1 file changed, 17 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/platform/x86/amd-pmc.c b/drivers/platform/x86/amd-pmc.c
-> index 971aaabaa9c8..c13fd93f2662 100644
-> --- a/drivers/platform/x86/amd-pmc.c
-> +++ b/drivers/platform/x86/amd-pmc.c
-> @@ -639,9 +639,9 @@ static int amd_pmc_verify_czn_rtc(struct amd_pmc_dev
-> *pdev, u32 *arg)
->  	return rc;
->  }
->  
-> -static int __maybe_unused amd_pmc_suspend(struct device *dev)
-> +static int amd_pmc_suspend(void *context, bool constraints_met)
->  {
-> -	struct amd_pmc_dev *pdev = dev_get_drvdata(dev);
-> +	struct amd_pmc_dev *pdev = dev_get_drvdata((struct device *)context);
->  	int rc;
->  	u8 msg;
->  	u32 arg = 1;
-> @@ -658,7 +658,7 @@ static int __maybe_unused amd_pmc_suspend(struct device
-> *dev)
->  	}
->  
->  	/* Dump the IdleMask before we send hint to SMU */
-> -	amd_pmc_idlemask_read(pdev, dev, NULL);
-> +	amd_pmc_idlemask_read(pdev, pdev->dev, NULL);
->  	msg = amd_pmc_get_os_hint(pdev);
->  	rc = amd_pmc_send_cmd(pdev, arg, NULL, msg, 0);
->  	if (rc) {
-> @@ -681,28 +681,28 @@ static int __maybe_unused amd_pmc_suspend(struct device
-> *dev)
->  	return rc;
->  }
->  
-> -static int __maybe_unused amd_pmc_resume(struct device *dev)
-> +static void amd_pmc_resume(void *context)
->  {
-> -	struct amd_pmc_dev *pdev = dev_get_drvdata(dev);
-> +	struct amd_pmc_dev *pdev = dev_get_drvdata((struct device *)context);
->  	int rc;
->  	u8 msg;
->  
->  	msg = amd_pmc_get_os_hint(pdev);
->  	rc = amd_pmc_send_cmd(pdev, 0, NULL, msg, 0);
->  	if (rc)
-> -		dev_err(pdev->dev, "resume failed\n");
-> +		dev_err(pdev->dev, "resume failed: %d\n", rc);
->  
->  	/* Let SMU know that we are looking for stats */
->  	amd_pmc_send_cmd(pdev, 0, NULL, SMU_MSG_LOG_DUMP_DATA, 0);
->  
->  	/* Dump the IdleMask to see the blockers */
-> -	amd_pmc_idlemask_read(pdev, dev, NULL);
-> +	amd_pmc_idlemask_read(pdev, pdev->dev, NULL);
->  
->  	/* Write data incremented by 1 to distinguish in stb_read */
->  	if (enable_stb)
->  		rc = amd_pmc_write_stb(pdev, AMD_PMC_STB_PREDEF + 1);
->  	if (rc)
-> -		dev_err(pdev->dev, "error writing to STB\n");
-> +		dev_err(pdev->dev, "error writing to STB: %d\n", rc);
->  
->  	/* Restore the QoS request back to defaults if it was set */
->  	if (pdev->cpu_id == AMD_CPU_ID_CZN)
-> @@ -711,15 +711,8 @@ static int __maybe_unused amd_pmc_resume(struct device
-> *dev)
->  
->  	/* Notify on failed entry */
->  	amd_pmc_validate_deepest(pdev);
-> -
-> -	return rc;
->  }
->  
-> -static const struct dev_pm_ops amd_pmc_pm_ops = {
-> -	.suspend_noirq = amd_pmc_suspend,
-> -	.resume_noirq = amd_pmc_resume,
-> -};
-> -
->  static const struct pci_device_id pmc_pci_ids[] = {
->  	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_YC) },
->  	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_CZN) },
-> @@ -884,6 +877,12 @@ static int amd_pmc_probe(struct platform_device *pdev)
->  
->  	amd_pmc_get_smu_version(dev);
->  	platform_set_drvdata(pdev, dev);
-> +	err = acpi_register_lps0_callbacks(amd_pmc_suspend,
-> +					   amd_pmc_resume,
-> +					   &pdev->dev);
-> +	if (err)
-> +		goto err_pci_dev_put;
-> +
->  	amd_pmc_dbgfs_register(dev);
->  	cpu_latency_qos_add_request(&dev->amd_pmc_pm_qos_req,
-> PM_QOS_DEFAULT_VALUE);
->  	return 0;
-> @@ -897,6 +896,9 @@ static int amd_pmc_remove(struct platform_device *pdev)
->  {
->  	struct amd_pmc_dev *dev = platform_get_drvdata(pdev);
->  
-> +	acpi_unregister_lps0_callbacks(amd_pmc_suspend,
-> +					amd_pmc_resume,
-> +					&pdev->dev);
->  	amd_pmc_dbgfs_unregister(dev);
->  	pci_dev_put(dev->rdev);
->  	mutex_destroy(&dev->lock);
-> @@ -917,7 +919,6 @@ static struct platform_driver amd_pmc_driver = {
->  	.driver = {
->  		.name = "amd_pmc",
->  		.acpi_match_table = amd_pmc_acpi_ids,
-> -		.pm = &amd_pmc_pm_ops,
->  	},
->  	.probe = amd_pmc_probe,
->  	.remove = amd_pmc_remove,
+> This series was accepted but showed a regression in another use of acpi_run_osc
+> so the series was dropped.
+>
+> Changes from v4->v5:
+>  * Move negotiation entirely into acpi_bus_osc_negotiate_platform_control
+>  drivers/acpi/bus.c | 31 ++++++++++++++++++++++++++++---
+>  1 file changed, 28 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index b96c54813886..86d88bd72c07 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -294,6 +294,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+>                 .cap.pointer = capbuf,
+>         };
+>         acpi_handle handle;
+> +       int i;
+>
+>         capbuf[OSC_QUERY_DWORD] = OSC_QUERY_ENABLE;
+>         capbuf[OSC_SUPPORT_DWORD] = OSC_SB_PR3_SUPPORT; /* _PR3 is in use */
+> @@ -329,10 +330,34 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+>         if (ACPI_FAILURE(acpi_get_handle(NULL, "\\_SB", &handle)))
+>                 return;
+>
+> -       if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+> -               return;
+> +       /*
+> +        * Check if bits were masked, we need to negotiate
+> +        * prevent potential endless loop by limited number of
+> +        * negotiation cycles.
+> +        */
+> +       for (i = 0; i < 5; i++) {
 
+Why 5 iterations?
+
+Why cannot it work in analogy with the loop in acpi_pci_osc_control_set()?
+
+> +               bool retry = false;
+> +
+> +               if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+> +                       return;
+> +               capbuf_ret = context.ret.pointer;
+> +               retry = capbuf_ret[OSC_SUPPORT_DWORD] != capbuf[OSC_SUPPORT_DWORD];
+> +               capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
+> +               kfree(context.ret.pointer);
+> +               if (!retry)
+> +                       break;
+> +       }
+>
+> -       kfree(context.ret.pointer);
+> +       /*
+> +        * Avoid problems with BIOS dynamically loading tables by indicating
+> +        * support for CPPC even if it was masked.
+> +        */
+> +#ifdef CONFIG_X86
+> +       if (boot_cpu_has(X86_FEATURE_HWP)) {
+> +               capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPC_SUPPORT;
+> +               capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPCV2_SUPPORT;
+> +       }
+> +#endif
+>
+>         /* Now run _OSC again with query flag clear */
+>         capbuf[OSC_QUERY_DWORD] = 0;
+> --
+> 2.34.1
+>
