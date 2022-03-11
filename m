@@ -2,87 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57AE24D5CC9
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Mar 2022 08:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A44B4D5D03
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Mar 2022 09:07:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343533AbiCKHxo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Mar 2022 02:53:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42922 "EHLO
+        id S240944AbiCKIHr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Mar 2022 03:07:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347249AbiCKHxj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Mar 2022 02:53:39 -0500
+        with ESMTP id S1347359AbiCKIHq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Mar 2022 03:07:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5ECF93A1B4
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 23:52:36 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AD23E1B8BE4
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Mar 2022 00:06:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1646985155;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=mimecast20190719; t=1646986002;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nOdafaJtse+8LgWXWQrqdTTqXMwIbmNc8kkDbRO4C2U=;
-        b=JmPFq40oQK4L77dWhCcOAOZS1huusL3o5RMC6/gT7oWFzgaihrjthq2QTegu955jSI5E5W
-        ioggAuMi6rK/BIWVFyVc3UySc0abql2ua0Qo08bZ0T73m+MwLeEYtmBj/OnTEZtLQLrDFH
-        ziX5AVe8XfChogAfTnBarFtk0TIBkSE=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=vgP2Kr6cQT3iIV3nMtr5LhvA/+AXCJWjko3NF+tsE8k=;
+        b=c4AtF5KXADrR06AifIeck0xWgaKw3/Yrr+oVrgETsMW/MYbLFc40xYGN556jdmXwEd+oOA
+        WrnS/1DhPvm/UbgigfAuogRnwIp134IB5okPEWuEBgxzof+fp61Knmh0m+5twO50ADfp75
+        nydZS0J2Z4CZzDKtAnd/T25BqRi84CI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-118-al1dKpgJNsWFlzVvRhFeSQ-1; Fri, 11 Mar 2022 02:52:34 -0500
-X-MC-Unique: al1dKpgJNsWFlzVvRhFeSQ-1
-Received: by mail-ej1-f69.google.com with SMTP id hx13-20020a170906846d00b006db02e1a307so4506441ejc.2
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 23:52:33 -0800 (PST)
+ us-mta-282-dltDu4JzP-uUD_ldiFIP_A-1; Fri, 11 Mar 2022 03:06:41 -0500
+X-MC-Unique: dltDu4JzP-uUD_ldiFIP_A-1
+Received: by mail-wr1-f69.google.com with SMTP id w17-20020adfec51000000b001f068bc3342so2524092wrn.6
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Mar 2022 00:06:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:from:to:cc:references:in-reply-to
-         :content-transfer-encoding;
-        bh=nOdafaJtse+8LgWXWQrqdTTqXMwIbmNc8kkDbRO4C2U=;
-        b=XYcMvMoQ58aJec3xcwt5tlStecWL5q1PeDEZsZBJ/PWJQDL8mFq2elTygtstHkGQBG
-         ExezJHoHP1I1MUvNNgNI6UDEvWxBlh+rIEPidLaNDWSqO7oATPZXJrr7PfzYQua09QlH
-         ChHjf2XLZFacJSnxvWVWU0J3rfuLcA6HIonnhI6DE5zcD17rTOnETLLNupVoOwKQQXf8
-         K4d29RFUkc5epEGJjXiflFPrlCiuWQ/zKLrIOmcL4k9pPCOlrXRESETXhyakVnJ6VtZM
-         kKbj8g8qd89mb1oGurjhkuoiHJcx64H2m099lrDmOrj2dWrfdlMfZ0+cCnW/QxygdSsU
-         sBjw==
-X-Gm-Message-State: AOAM531wRBUe4AHckQblBwSJ+rkIcm4U7kjq5WaOUlqFu/0bcpZO45em
-        WOZTmP6KI3mwZXyd8FQMZI1LD1VmoLiOA6y9lezBpT//IjoSYzx9GykYa2YwGAXqnI4Wol6JIyh
-        WYJzgLesc1Uniqf9cAiv7PA==
-X-Received: by 2002:a17:907:86a8:b0:6db:6c1c:d9c4 with SMTP id qa40-20020a17090786a800b006db6c1cd9c4mr7402001ejc.640.1646985152883;
-        Thu, 10 Mar 2022 23:52:32 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxoi4tVAbZEr4iaXAILaYiGbWBCMw/gOSBC7p2ecbnJ1XfcWwLWDBERuFBQjbG34JyrAe8X+w==
-X-Received: by 2002:a17:907:86a8:b0:6db:6c1c:d9c4 with SMTP id qa40-20020a17090786a800b006db6c1cd9c4mr7401976ejc.640.1646985152657;
-        Thu, 10 Mar 2022 23:52:32 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:cdb2:2781:c55:5db0? (2001-1c00-0c1e-bf00-cdb2-2781-0c55-5db0.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:cdb2:2781:c55:5db0])
-        by smtp.gmail.com with ESMTPSA id r14-20020a1709067fce00b006db0edb8a80sm2639575ejs.225.2022.03.10.23.52.31
+        h=x-gm-message-state:reply-to:subject:to:cc:references:from
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding:content-language;
+        bh=vgP2Kr6cQT3iIV3nMtr5LhvA/+AXCJWjko3NF+tsE8k=;
+        b=MHooqXUTEUpK0Ana18fZWBGOZ1lBZ3VStSsgRaA+NvTdUvVmyGineYSOm0A5mLwdF7
+         ag9rSoyJr9nCZCx39ESQTulHV3hwDwNscYTQIUzbGV/+DIYzmypnC5/u1EVlubzxvAE7
+         tuoZtWrl5an6UF4XYHo91HqNHSgR1hej3fyMnhiPh9Q69jVe0R/JlO9hacGhvF2WWU+2
+         h1J5IinPxe1umid7D8PmMbckwJVA62VdVK03aURV88d0SUqOoZz3IfqCFvG4hLX2/dzw
+         QK+wTqnbVg8RIpnTES6xav/OH6t0AsnuPW8WwosNoDIDaN80x+C0Q7eN7xiWAiTAnQAY
+         qfHw==
+X-Gm-Message-State: AOAM533ufEaymo/ELYOWFdYfkR7/b378UJXQRIAFqGTLMx/M3ktIv+Sk
+        rY8/sO4XOnIkOEkI2ZjO7v4J0gxDAmDgBwHtUGrWewFuUs0JtnXSEDO5VGeLAzMqRZxI6Xtvsjm
+        ORY/5zukbYm/NDwhlbBK7rQ==
+X-Received: by 2002:adf:ed0c:0:b0:1f0:63a5:36aa with SMTP id a12-20020adfed0c000000b001f063a536aamr6305558wro.588.1646986000398;
+        Fri, 11 Mar 2022 00:06:40 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJw2Vm6KkbbdN49P08cPdti6Bocnw762oiUUP6ZqnjAq5tnsFyAkAMa6xeqMtfYWEzcvFxaUkQ==
+X-Received: by 2002:adf:ed0c:0:b0:1f0:63a5:36aa with SMTP id a12-20020adfed0c000000b001f063a536aamr6305537wro.588.1646986000119;
+        Fri, 11 Mar 2022 00:06:40 -0800 (PST)
+Received: from ?IPv6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id e20-20020adfa454000000b001f01a14dce8sm6107441wra.97.2022.03.11.00.06.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Mar 2022 23:52:32 -0800 (PST)
-Message-ID: <03675c75-ee6f-5da3-099c-2b82a1865455@redhat.com>
-Date:   Fri, 11 Mar 2022 08:52:31 +0100
+        Fri, 11 Mar 2022 00:06:39 -0800 (PST)
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH v8 00/11] ACPI/IORT: Support for IORT RMR node
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
+        robin.murphy@arm.com, will@kernel.org, wanghuiqiang@huawei.com,
+        guohanjun@huawei.com, steven.price@arm.com, Sami.Mujawar@arm.com,
+        jon@solid-run.com, yangyicong@huawei.com
+References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
+From:   Eric Auger <eric.auger@redhat.com>
+Message-ID: <0f9634c1-8401-7814-7783-c1c042e8fb42@redhat.com>
+Date:   Fri, 11 Mar 2022 09:06:37 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH 3/3] x86/PCI: Preserve host bridge windows completely
- covered by E820
-Content-Language: en-US
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>, wse@tuxedocomputers.com
-References: <20220309181518.GA63422@bhelgaas>
- <b41cfd4d-3f55-168a-e96c-cf2d11d50f28@redhat.com>
-In-Reply-To: <b41cfd4d-3f55-168a-e96c-cf2d11d50f28@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
@@ -94,80 +87,120 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bjorn,
+Hi Shameer,
 
-On 3/10/22 13:28, Hans de Goede wrote:
-> Hi Bjorn,
-> 
-> On 3/9/22 19:15, Bjorn Helgaas wrote:
->> On Sat, Mar 05, 2022 at 11:37:23AM +0100, Hans de Goede wrote:
->>> On 3/4/22 16:46, Hans de Goede wrote:
->>>> On 3/4/22 16:32, Bjorn Helgaas wrote:
->>>>> On Fri, Mar 04, 2022 at 03:16:42PM +0100, Hans de Goede wrote:
->>>>>> On 3/4/22 04:51, Bjorn Helgaas wrote:
->>>>>>> From: Bjorn Helgaas <bhelgaas@google.com>
->>>>>>>
->>>>>>> Many folks have reported PCI devices not working.  It could affect any
->>>>>>> device, but most reports are for Thunderbolt controllers on Lenovo Yoga and
->>>>>>> Clevo Barebone laptops and the touchpad on Lenovo IdeaPads.
->>>>>>> ...
->>
->>>>>>> diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
->>>>>>> index 7378ea146976..405f0af53e3d 100644
->>>>>>> --- a/arch/x86/kernel/resource.c
->>>>>>> +++ b/arch/x86/kernel/resource.c
->>>>>>> @@ -39,6 +39,17 @@ void remove_e820_regions(struct device *dev, struct resource *avail)
->>>>>>>  		e820_start = entry->addr;
->>>>>>>  		e820_end = entry->addr + entry->size - 1;
->>>>>>>  
->>>>>>> +		/*
->>>>>>> +		 * If an E820 entry covers just part of the resource, we
->>>>>>> +		 * assume E820 is telling us about something like host
->>>>>>> +		 * bridge register space that is unavailable for PCI
->>>>>>> +		 * devices.  But if it covers the *entire* resource, it's
->>>>>>> +		 * more likely just telling us that this is MMIO space, and
->>>>>>> +		 * that doesn't need to be removed.
->>>>>>> +		 */
->>>>>>> +		if (e820_start <= avail->start && avail->end <= e820_end)
->>>>>>> +			continue;
->>>>>>> +
->>>>>>
->>>>>> IMHO it would be good to add some logging here, since hitting this is
->>>>>> somewhat of a special case. For the Fedora test kernels I did I changed
->>>>>> this to:
->>>>>>
->>>>>> 		if (e820_start <= avail->start && avail->end <= e820_end) {
->>>>>> 			dev_info(dev, "resource %pR fully covered by e820 entry [mem %#010Lx-%#010Lx]\n",
->>>>>> 				 avail, e820_start, e820_end);
->>>>>> 			continue;
->>>>>> 		}
->>>>>>
->>>>>> And I expect/hope to see this new info message on the ideapad with the
->>>>>> touchpad issue.
->>
->> I added this logging.
->>
->>> So I just got the first report back from the Fedora test 5.16.12 kernel
->>> with this series added. Good news on the ideapad this wotks fine to
->>> fix the touchpad issue (as expected).
->>
->> Any "Tested-by" I could add?  If we can, I'd really like to give some
->> credit to the folks who suffered through this and helped resolve it.
-> 
-> Good point, the reporter of:
-> https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-> 
-> has done most of the ideapad with touchpad issues testing for me
-> and has been very helpful. I agree he deserves credit for this.
-> 
-> I've asked him if he is ok with adding a Tested-by tag and if yes,
-> which email we should use.
+On 2/21/22 4:43 PM, Shameer Kolothum wrote:
+> Hi,
+>
+> Since we now have an updated verion[0] of IORT spec(E.d) which
+> addresses the memory attributes issues discussed here [1],
+> this series now make use of it.
+>
+> The pull request for ACPICA E.d related changes are already
+> raised and can be found here,
+> https://github.com/acpica/acpica/pull/752
+>
+> v7 --> v8
+>   - Patch #1 has temp definitions for RMR related changes till
+>     the ACPICA header changes are part of kernel.
+>   - No early parsing of RMR node info and is only parsed at the
+>     time of use.
+>   - Changes to the RMR get/put API format compared to the
+>     previous version.
+>   - Support for RMR descriptor shared by multiple stream IDs.
 
-If you can add the following tag that would be great:
+I tested it on guest side for host MSI SW RESV region flat mapping
+(using both the old single mapping layout and the now allowed multiple
+RID ID mapping format) and this worked for me. Feel free to add my
 
-Tested-by: Matt Hansen <2lprbe78@duck.com>
+Tested-by: Eric Auger <eric.auger@redhat.com>
 
-Regards,
+Thanks
 
-Hans
+Eric
+
+
+>
+> Please take a look and let me know your thoughts.
+>
+> Thanks,
+> Shameer
+> [0] https://developer.arm.com/documentation/den0049/ed/
+> [1] https://lore.kernel.org/linux-acpi/20210805160319.GB23085@lpieralisi/
+>
+> From old:
+> We have faced issues with 3408iMR RAID controller cards which
+> fail to boot when SMMU is enabled. This is because these
+> controllers make use of host memory for various caching related
+> purposes and when SMMU is enabled the iMR firmware fails to
+> access these memory regions as there is no mapping for them.
+> IORT RMR provides a way for UEFI to describe and report these
+> memory regions so that the kernel can make a unity mapping for
+> these in SMMU.
+>
+> Change History:
+>
+> v6 --> v7
+>  -fix pointed out by Steve to the SMMUv2 SMR bypass install in patch #8.
+>
+> v5 --> v6
+> - Addressed comments from Robin & Lorenzo.
+>   : Moved iort_parse_rmr() to acpi_iort_init() from
+>     iort_init_platform_devices().
+>   : Removed use of struct iort_rmr_entry during the initial
+>     parse. Using struct iommu_resv_region instead.
+>   : Report RMR address alignment and overlap errors, but continue.
+>   : Reworked arm_smmu_init_bypass_stes() (patch # 6).
+> - Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
+> - Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
+>   on Type of RMR region. Suggested by Jon N.
+>
+> v4 --> v5
+>  -Added a fw_data union to struct iommu_resv_region and removed
+>   struct iommu_rmr (Based on comments from Joerg/Robin).
+>  -Added iommu_put_rmrs() to release mem.
+>  -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
+>   yet because of the above changes.
+>
+> v3 -->v4
+> -Included the SMMUv2 SMR bypass install changes suggested by
+>  Steve(patch #7)
+> -As per Robin's comments, RMR reserve implementation is now
+>  more generic  (patch #8) and dropped v3 patches 8 and 10.
+> -Rebase to 5.13-rc1
+>
+> RFC v2 --> v3
+>  -Dropped RFC tag as the ACPICA header changes are now ready to be
+>   part of 5.13[0]. But this series still has a dependency on that patch.
+>  -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+>   PCIe).
+>  -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+>   discussion here[1].
+>  -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
+>
+> Jon Nettleton (1):
+>   iommu/arm-smmu: Get associated RMR info and install bypass SMR
+>
+> Shameer Kolothum (10):
+>   ACPI/IORT: Add temporary RMR node flag definitions
+>   iommu: Introduce a union to struct iommu_resv_region
+>   ACPI/IORT: Add helper functions to parse RMR nodes
+>   iommu/dma: Introduce generic helper to retrieve RMR info
+>   ACPI/IORT: Add a helper to retrieve RMR memory regions
+>   iommu/arm-smmu-v3: Introduce strtab init helper
+>   iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
+>     bypass
+>   iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
+>   iommu/arm-smmu-v3: Reserve any RMR regions associated with a dev
+>   iommu/arm-smmu: Reserve any RMR regions associated with a dev
+>
+>  drivers/acpi/arm64/iort.c                   | 305 ++++++++++++++++++++
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  91 ++++--
+>  drivers/iommu/arm/arm-smmu/arm-smmu.c       |  65 ++++-
+>  drivers/iommu/dma-iommu.c                   |  25 ++
+>  include/linux/acpi_iort.h                   |  14 +
+>  include/linux/dma-iommu.h                   |  14 +
+>  include/linux/iommu.h                       |   9 +
+>  7 files changed, 504 insertions(+), 19 deletions(-)
+>
 
