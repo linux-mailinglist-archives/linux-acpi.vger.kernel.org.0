@@ -2,166 +2,203 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C57894D5DA6
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Mar 2022 09:42:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43B834D5F99
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Mar 2022 11:34:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229993AbiCKInZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Mar 2022 03:43:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41596 "EHLO
+        id S1347957AbiCKKfk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Mar 2022 05:35:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229882AbiCKInY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Mar 2022 03:43:24 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 888D11BA17E;
-        Fri, 11 Mar 2022 00:42:21 -0800 (PST)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4KFKCC5bTQzfYkj;
-        Fri, 11 Mar 2022 16:40:55 +0800 (CST)
-Received: from [10.67.102.169] (10.67.102.169) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Fri, 11 Mar 2022 16:42:19 +0800
-CC:     <yangyicong@hisilicon.com>, Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Giovanni Gherdovich <ggherdovich@suse.cz>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Sean Kelley <skelley@nvidia.com>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v3 2/3] arch_topology: obtain cpu capacity using
- information from CPPC
-To:     Ionela Voinescu <ionela.voinescu@arm.com>
-References: <20220302180913.13229-1-ionela.voinescu@arm.com>
- <20220302180913.13229-3-ionela.voinescu@arm.com>
- <4283eacf-6eab-b2f5-07f2-d19fad134277@huawei.com> <YijJzekA1nFEs3nz@arm.com>
- <477748c7-ae9e-712b-90ad-b04a6767a996@huawei.com> <YioUdqMmma49nIJq@arm.com>
-From:   Yicong Yang <yangyicong@huawei.com>
-Message-ID: <1a18588b-c1a1-246f-01ae-dd431c7812d8@huawei.com>
-Date:   Fri, 11 Mar 2022 16:42:19 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        with ESMTP id S1347953AbiCKKfe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Mar 2022 05:35:34 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E871D10241F
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Mar 2022 02:34:30 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FA1D16A3;
+        Fri, 11 Mar 2022 02:34:30 -0800 (PST)
+Received: from [10.57.43.199] (unknown [10.57.43.199])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5BC1E3F7D8;
+        Fri, 11 Mar 2022 02:34:27 -0800 (PST)
+Message-ID: <8ecce421-e2ee-1a19-ae2d-a8454a8a5844@arm.com>
+Date:   Fri, 11 Mar 2022 10:34:22 +0000
 MIME-Version: 1.0
-In-Reply-To: <YioUdqMmma49nIJq@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.169]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH v8 00/11] ACPI/IORT: Support for IORT RMR node
+Content-Language: en-GB
+To:     eric.auger@redhat.com,
+        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org, Ard Biesheuvel <ardb@kernel.org>
+Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
+        will@kernel.org, wanghuiqiang@huawei.com, guohanjun@huawei.com,
+        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
+        yangyicong@huawei.com
+References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
+ <bb3688c7-8f42-039e-e22f-6529078da97d@redhat.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <bb3688c7-8f42-039e-e22f-6529078da97d@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/3/10 23:08, Ionela Voinescu wrote:
-> On Thursday 10 Mar 2022 at 14:39:12 (+0800), Yicong Yang wrote:
->> On 2022/3/9 23:37, Ionela Voinescu wrote:
->>> Hi Yicong,
->>>
->>> On Wednesday 09 Mar 2022 at 18:21:30 (+0800), Yicong Yang wrote:
->>>> Hi Ionela,
-> [..]
->>>> Out of curiosity, since we have raw capacity now on ACPI system, seems we
->>>> are able to scale the capacity with freq_factor now? looked into
->>>> register_cpufreq_notifier().
->>>>
->>>
->>> The freq_factor is only used for DT systems where one provides
->>> "capacity-dmips-mhz" in DT. This entry actually represents DMIPS/MHz.
->>>
->>> So the freq_factor, set to:
->>>
->>> per_cpu(freq_factor, cpu) = policy->cpuinfo.max_freq / 1000;
->>>
->>> is used to obtain the performance at the maximum frequency, basically
->>> DMIPS = (Dhrystone) million instructions per second, by multiplying this
->>> raw value from DT with the freq_factor. After this, all these value for
->>> each CPU type are normalized on a scale [0, 1024], resulting in what we
->>> call CPU capacity.
->>>
+On 2022-03-11 08:19, Eric Auger wrote:
+> Hi guys,
+> 
+> On 2/21/22 4:43 PM, Shameer Kolothum wrote:
+>> Hi,
 >>
->> Thanks for the illustration. I can understand what DT does as it's defined
->> clearly in [1]. The CPUs in the system may have different capacity-dmips-mhz
->> as well as frequency so we first obtain the DMIPS/MHz and then scaled it with
->> the max frequency.
+>> Since we now have an updated verion[0] of IORT spec(E.d) which
+>> addresses the memory attributes issues discussed here [1],
+>> this series now make use of it.
 >>
->>> For ACPI systems freq_factor will have the default value of 1 when we
->>> call topology_normalize_cpu_scale(), as the performance value obtained
->>> from _CPC is already representative for the highest frequency of the CPU
->>> and not performance/Hz as we get from DT. Therefore, we are not and
->>> should not use a freq_factor here.
->>>
->>> Hopefully I understood your question correctly.
->>>
+>> The pull request for ACPICA E.d related changes are already
+>> raised and can be found here,
+>> https://github.com/acpica/acpica/pull/752
 >>
->> Seems we have different meaning of raw capacity on DT based and ACPI based system.
->> On DT based system it doesn't consider the max frequency of each CPU so we need
->> to take the frequency into account later. But on ACPI based system the max perf
->> has already take the max frequency into account and we don't need to consider
->> the frequency differences among the CPUs. If so, the comment [2] is no more
->> correct as we don't need to scale the capcity according to the frequnecy but
->> not because that we cannot get the raw cpu capacity on ACPI based system.
+>> v7 --> v8
+>>    - Patch #1 has temp definitions for RMR related changes till
+>>      the ACPICA header changes are part of kernel.
+>>    - No early parsing of RMR node info and is only parsed at the
+>>      time of use.
+>>    - Changes to the RMR get/put API format compared to the
+>>      previous version.
+>>    - Support for RMR descriptor shared by multiple stream IDs.
+>>
+>> Please take a look and let me know your thoughts.
+>>
+>> Thanks,
+>> Shameer
+>> [0] https://developer.arm.com/documentation/den0049/ed/
+> I still have a question on the IORT E.d spec (unrelated to this series).
+> 
+> The spec mandates that if RMR nodes are presented in the IORT,
+> _DSM function #5 for the PCIe host bridge ACPI device object must return
+> 0, indicating the OS must honour the PCI config that the FW computed at
+> boot time.
+> 
+> However implementing this _DSM #5 as above is known to prevent PCI
+> devices with IO ports from working, on aarch64 linux.
+> 
+> "
+> The reason is that EFI creates I/O port mappings below
+>      0x1000 (in fact, at 0). However Linux, for legacy reasons, does not
+>      support I/O ports <= 0x1000 on PCI, so the I/O assignment created by EFI
+>      is rejected.
+>     
+>      EFI creates the mappings primarily for itself, and up until DSM #5
+>      started to be enforced, all PCI resource allocations that existed at
+>      boot were ignored by Linux and recreated from scratch.
+> "
+> 
+> This is an excerpt of a qemu commit message that reverted the _DMS #5
+> change (Revert "acpi/gpex: Inform os to keep firmware resource map").
+> Has the situation changed since July 2021 (ie. has UEFI been reworked?).
+> [+ Ard]
+
+FWIW I wasn't aware of that, but if it's an issue then it will need to 
+be fixed in Linux or UEFI's PCI resource code (arguably if UEFI has 
+already allocated from the bottom of I/O space then Linux should be safe 
+to assume that there are no legacy PC I/O resources to worry about). The 
+DSM is required to prevent bus numbers being reassigned, because if that 
+happens then any PCI StreamIDs referenced in IORT may suddenly become 
+meaningless and the association of root complex nodes and RMRs to 
+physical hardware lost.
+
+Robin.
+
+> Thank you in advance
+> 
+> Regards
+> 
+> Eric
+> 
+> 
+> 
+> 
+>> [1] https://lore.kernel.org/linux-acpi/20210805160319.GB23085@lpieralisi/
+>>
+>>  From old:
+>> We have faced issues with 3408iMR RAID controller cards which
+>> fail to boot when SMMU is enabled. This is because these
+>> controllers make use of host memory for various caching related
+>> purposes and when SMMU is enabled the iMR firmware fails to
+>> access these memory regions as there is no mapping for them.
+>> IORT RMR provides a way for UEFI to describe and report these
+>> memory regions so that the kernel can make a unity mapping for
+>> these in SMMU.
+>>
+>> Change History:
+>>
+>> v6 --> v7
+>>   -fix pointed out by Steve to the SMMUv2 SMR bypass install in patch #8.
+>>
+>> v5 --> v6
+>> - Addressed comments from Robin & Lorenzo.
+>>    : Moved iort_parse_rmr() to acpi_iort_init() from
+>>      iort_init_platform_devices().
+>>    : Removed use of struct iort_rmr_entry during the initial
+>>      parse. Using struct iommu_resv_region instead.
+>>    : Report RMR address alignment and overlap errors, but continue.
+>>    : Reworked arm_smmu_init_bypass_stes() (patch # 6).
+>> - Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
+>> - Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
+>>    on Type of RMR region. Suggested by Jon N.
+>>
+>> v4 --> v5
+>>   -Added a fw_data union to struct iommu_resv_region and removed
+>>    struct iommu_rmr (Based on comments from Joerg/Robin).
+>>   -Added iommu_put_rmrs() to release mem.
+>>   -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
+>>    yet because of the above changes.
+>>
+>> v3 -->v4
+>> -Included the SMMUv2 SMR bypass install changes suggested by
+>>   Steve(patch #7)
+>> -As per Robin's comments, RMR reserve implementation is now
+>>   more generic  (patch #8) and dropped v3 patches 8 and 10.
+>> -Rebase to 5.13-rc1
+>>
+>> RFC v2 --> v3
+>>   -Dropped RFC tag as the ACPICA header changes are now ready to be
+>>    part of 5.13[0]. But this series still has a dependency on that patch.
+>>   -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+>>    PCIe).
+>>   -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+>>    discussion here[1].
+>>   -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
+>>
+>> Jon Nettleton (1):
+>>    iommu/arm-smmu: Get associated RMR info and install bypass SMR
+>>
+>> Shameer Kolothum (10):
+>>    ACPI/IORT: Add temporary RMR node flag definitions
+>>    iommu: Introduce a union to struct iommu_resv_region
+>>    ACPI/IORT: Add helper functions to parse RMR nodes
+>>    iommu/dma: Introduce generic helper to retrieve RMR info
+>>    ACPI/IORT: Add a helper to retrieve RMR memory regions
+>>    iommu/arm-smmu-v3: Introduce strtab init helper
+>>    iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
+>>      bypass
+>>    iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
+>>    iommu/arm-smmu-v3: Reserve any RMR regions associated with a dev
+>>    iommu/arm-smmu: Reserve any RMR regions associated with a dev
+>>
+>>   drivers/acpi/arm64/iort.c                   | 305 ++++++++++++++++++++
+>>   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  91 ++++--
+>>   drivers/iommu/arm/arm-smmu/arm-smmu.c       |  65 ++++-
+>>   drivers/iommu/dma-iommu.c                   |  25 ++
+>>   include/linux/acpi_iort.h                   |  14 +
+>>   include/linux/dma-iommu.h                   |  14 +
+>>   include/linux/iommu.h                       |   9 +
+>>   7 files changed, 504 insertions(+), 19 deletions(-)
 >>
 > 
-> Correct! I've fixed that comment in v4 [1].
-> 
->> The CPUs on ACPI based system may also have different DMIPS and maximum frequency,
->> the same with the DT based system. Is it possible to keep consistence with
->> what DT does? As defined by the spec[3], the CPPC aims to "maintaining a performance
->> definition that backs a continuous, abstract, unit-less performance scale" and
->> "leaves the definition of the exact performance metric to the platform." So is it
->> possible we can also interpret it as "capacity-dmips-mhz"?
-> 
-> I don't believe so because of:
-> 
-> "Platforms must use the same performance scale for all processors in the
-> system. On platforms with heterogeneous processors, the performance
-> characteristics of all processors may not be identical. In this case, the
-> platform must synthesize a performance scale that adjusts for differences
-> in processors, such that any two processors running the same workload at
-> the same performance level will complete in approximately the same time."
-> 
-> So IMO, given this description, it's not appropriate to provide/use
-> capacity-dmips-mhz "performance levels" in _CPC. To have a very simple
-> example, let's assume we have a system with two CPUs of the same u-arch
-> but one of them is clocked at 1GHz while the other is clocked at 2GHz
-> (fixed frequency for both). If we are to run a theoretical benchmark on
-> both we would get 50% on the first and 100% on the second (considering we
-> normalize the performance scores on a scale [0, 100%]). So we could have
-> 50 and 100 as highest performance levels in _CPC, if one uses a system
-> wide performance scale as described in the specification.
-> 
-> But if we convert those values to DMIPS/MHz we would get the same value
-> for both CPUs. But if we provide this same value as highest performance
-> level in _CPC for both we break the rule of "running the same workload
-> at the same performance level will complete in approximately the same
-> time."
-> 
-
-Thanks for the clarification. That sounds reasonable to me. :)
-
->> Then to scale the cpu with max frequency provided by cpufreq, for example
->> cppc_cpufreq. I'm not sure I'm right and understand it correctly, please
->> correct me if I'm wrong.
-> 
-> All frequency information on ACPI system is optional so even if one
-> would ever want to do something like the above, one might not know what> is the maximum frequency of a CPU. I believe the tendency in recent
-
-I doubt that. Even the frequency in the _CPC is optional, the kernel may
-get the maximum frequency in other ways. On my platform it's gotten from
-DMI, see cppc_cpufreq_perf_to_khz(). But I'm not sure for other cpufreq
-drivers.
-
-Thanks,
-Yicong
