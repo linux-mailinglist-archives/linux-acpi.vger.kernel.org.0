@@ -2,92 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A44B4D5D03
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Mar 2022 09:07:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67BF44D5D24
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Mar 2022 09:19:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240944AbiCKIHr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Mar 2022 03:07:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51036 "EHLO
+        id S231472AbiCKIUY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Mar 2022 03:20:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347359AbiCKIHq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Mar 2022 03:07:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AD23E1B8BE4
-        for <linux-acpi@vger.kernel.org>; Fri, 11 Mar 2022 00:06:43 -0800 (PST)
+        with ESMTP id S229531AbiCKIUX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Mar 2022 03:20:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 089301B3A5D
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Mar 2022 00:19:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1646986002;
+        s=mimecast20190719; t=1646986758;
         h=from:from:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vgP2Kr6cQT3iIV3nMtr5LhvA/+AXCJWjko3NF+tsE8k=;
-        b=c4AtF5KXADrR06AifIeck0xWgaKw3/Yrr+oVrgETsMW/MYbLFc40xYGN556jdmXwEd+oOA
-        WrnS/1DhPvm/UbgigfAuogRnwIp134IB5okPEWuEBgxzof+fp61Knmh0m+5twO50ADfp75
-        nydZS0J2Z4CZzDKtAnd/T25BqRi84CI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=8AGBOXeSleA1IuyfT69wuJp+6zvr7dHRVBmDnVZmB7g=;
+        b=K+EcTfwga8QTg9QUCI1Jbadz4Xi4u4xIM0Wio2dFM++H4fGDiq3GTodBI6D+6wrKqftDuA
+        ep8h7obMVtWUQMBTq934aP1p31dXi4DNhIFjOE21GtD0xXeLkcBocsGwKB7XagbRkt4TJq
+        9OXEoGFettPKJ5LHpLcBYUyWppgiB6A=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-282-dltDu4JzP-uUD_ldiFIP_A-1; Fri, 11 Mar 2022 03:06:41 -0500
-X-MC-Unique: dltDu4JzP-uUD_ldiFIP_A-1
-Received: by mail-wr1-f69.google.com with SMTP id w17-20020adfec51000000b001f068bc3342so2524092wrn.6
-        for <linux-acpi@vger.kernel.org>; Fri, 11 Mar 2022 00:06:41 -0800 (PST)
+ us-mta-663-d05VuiUHNzOwCy1UZx2rIA-1; Fri, 11 Mar 2022 03:19:17 -0500
+X-MC-Unique: d05VuiUHNzOwCy1UZx2rIA-1
+Received: by mail-wr1-f71.google.com with SMTP id l10-20020a05600012ca00b001f1e4669c98so2517494wrx.23
+        for <linux-acpi@vger.kernel.org>; Fri, 11 Mar 2022 00:19:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:reply-to:subject:to:cc:references:from
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-transfer-encoding:content-language;
-        bh=vgP2Kr6cQT3iIV3nMtr5LhvA/+AXCJWjko3NF+tsE8k=;
-        b=MHooqXUTEUpK0Ana18fZWBGOZ1lBZ3VStSsgRaA+NvTdUvVmyGineYSOm0A5mLwdF7
-         ag9rSoyJr9nCZCx39ESQTulHV3hwDwNscYTQIUzbGV/+DIYzmypnC5/u1EVlubzxvAE7
-         tuoZtWrl5an6UF4XYHo91HqNHSgR1hej3fyMnhiPh9Q69jVe0R/JlO9hacGhvF2WWU+2
-         h1J5IinPxe1umid7D8PmMbckwJVA62VdVK03aURV88d0SUqOoZz3IfqCFvG4hLX2/dzw
-         QK+wTqnbVg8RIpnTES6xav/OH6t0AsnuPW8WwosNoDIDaN80x+C0Q7eN7xiWAiTAnQAY
-         qfHw==
-X-Gm-Message-State: AOAM533ufEaymo/ELYOWFdYfkR7/b378UJXQRIAFqGTLMx/M3ktIv+Sk
-        rY8/sO4XOnIkOEkI2ZjO7v4J0gxDAmDgBwHtUGrWewFuUs0JtnXSEDO5VGeLAzMqRZxI6Xtvsjm
-        ORY/5zukbYm/NDwhlbBK7rQ==
-X-Received: by 2002:adf:ed0c:0:b0:1f0:63a5:36aa with SMTP id a12-20020adfed0c000000b001f063a536aamr6305558wro.588.1646986000398;
-        Fri, 11 Mar 2022 00:06:40 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw2Vm6KkbbdN49P08cPdti6Bocnw762oiUUP6ZqnjAq5tnsFyAkAMa6xeqMtfYWEzcvFxaUkQ==
-X-Received: by 2002:adf:ed0c:0:b0:1f0:63a5:36aa with SMTP id a12-20020adfed0c000000b001f063a536aamr6305537wro.588.1646986000119;
-        Fri, 11 Mar 2022 00:06:40 -0800 (PST)
+        bh=8AGBOXeSleA1IuyfT69wuJp+6zvr7dHRVBmDnVZmB7g=;
+        b=x3b+MlAWbPFYYeNVOeW6z/Dy1YmhSSclUeAs06w8Kwd3cyeDTIsdR4AU15YR1oGhKG
+         gRYqHurYygqZ1NTbjFNMNv+vcwd37jPCyR3lzAUB+6aHETUf3HONKNnXn6h/HAWzsk2d
+         ktXXUQDpToEc0GU6Y/fnwYwxapKNsIMjn6PvDwG2Otfb/U7TXm2wqvs3gDrN5OzrhY6T
+         hNsMh58lTmLDsA+Bd5ZYV084mMBdhdZLYaeua1f+scEW9KwAB3EwHmw3Rls0YyecIXpD
+         VDsksV+A1KyjpRnL+1/s3pmzx4JWTNiVUH+9Bvb+aF2pLHUxCxye0AauieSCihVXVAc1
+         7YnQ==
+X-Gm-Message-State: AOAM5313BP/y5qT/Jkjn6OISVTC8GwS0yEk9UTAUiNIStX5p/U8sMsju
+        l2ZMwZAYow0CK8dIzcapldx4PLtOioibdKa7n+k2DXYxjdgNHyESAk+ZY8mPa+U4ccX9C824eXk
+        QxWABJaFFPYCW5CKFp81X5Q==
+X-Received: by 2002:a5d:58d3:0:b0:1f1:dfb1:ab63 with SMTP id o19-20020a5d58d3000000b001f1dfb1ab63mr6559776wrf.326.1646986756034;
+        Fri, 11 Mar 2022 00:19:16 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwerKE4N1pKS+KaYDddjpq12y53SjIesUYPI8D5gzCRx+rCUaQVVVwdH//6D1UiLOzeAFP89w==
+X-Received: by 2002:a5d:58d3:0:b0:1f1:dfb1:ab63 with SMTP id o19-20020a5d58d3000000b001f1dfb1ab63mr6559718wrf.326.1646986755349;
+        Fri, 11 Mar 2022 00:19:15 -0800 (PST)
 Received: from ?IPv6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id e20-20020adfa454000000b001f01a14dce8sm6107441wra.97.2022.03.11.00.06.38
+        by smtp.gmail.com with ESMTPSA id n15-20020a05600c4f8f00b003842f011bc5sm10353512wmq.2.2022.03.11.00.19.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Mar 2022 00:06:39 -0800 (PST)
+        Fri, 11 Mar 2022 00:19:14 -0800 (PST)
 Reply-To: eric.auger@redhat.com
 Subject: Re: [PATCH v8 00/11] ACPI/IORT: Support for IORT RMR node
 To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
         linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org
+        iommu@lists.linux-foundation.org, Ard Biesheuvel <ardb@kernel.org>
 Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
         robin.murphy@arm.com, will@kernel.org, wanghuiqiang@huawei.com,
         guohanjun@huawei.com, steven.price@arm.com, Sami.Mujawar@arm.com,
         jon@solid-run.com, yangyicong@huawei.com
 References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
 From:   Eric Auger <eric.auger@redhat.com>
-Message-ID: <0f9634c1-8401-7814-7783-c1c042e8fb42@redhat.com>
-Date:   Fri, 11 Mar 2022 09:06:37 +0100
+Message-ID: <bb3688c7-8f42-039e-e22f-6529078da97d@redhat.com>
+Date:   Fri, 11 Mar 2022 09:19:12 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
 In-Reply-To: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Shameer,
+Hi guys,
 
 On 2/21/22 4:43 PM, Shameer Kolothum wrote:
 > Hi,
@@ -108,24 +107,47 @@ On 2/21/22 4:43 PM, Shameer Kolothum wrote:
 >   - Changes to the RMR get/put API format compared to the
 >     previous version.
 >   - Support for RMR descriptor shared by multiple stream IDs.
-
-I tested it on guest side for host MSI SW RESV region flat mapping
-(using both the old single mapping layout and the now allowed multiple
-RID ID mapping format) and this worked for me. Feel free to add my
-
-Tested-by: Eric Auger <eric.auger@redhat.com>
-
-Thanks
-
-Eric
-
-
 >
 > Please take a look and let me know your thoughts.
 >
 > Thanks,
 > Shameer
 > [0] https://developer.arm.com/documentation/den0049/ed/
+I still have a question on the IORT E.d spec (unrelated to this series).
+
+The spec mandates that if RMR nodes are presented in the IORT,
+_DSM function #5 for the PCIe host bridge ACPI device object must return
+0, indicating the OS must honour the PCI config that the FW computed at
+boot time.
+
+However implementing this _DSM #5 as above is known to prevent PCI
+devices with IO ports from working, on aarch64 linux.
+
+"
+The reason is that EFI creates I/O port mappings below
+    0x1000 (in fact, at 0). However Linux, for legacy reasons, does not
+    support I/O ports <= 0x1000 on PCI, so the I/O assignment created by EFI
+    is rejected.
+   
+    EFI creates the mappings primarily for itself, and up until DSM #5
+    started to be enforced, all PCI resource allocations that existed at
+    boot were ignored by Linux and recreated from scratch.
+"
+
+This is an excerpt of a qemu commit message that reverted the _DMS #5
+change (Revert "acpi/gpex: Inform os to keep firmware resource map").
+Has the situation changed since July 2021 (ie. has UEFI been reworked?).
+[+ Ard]
+
+Thank you in advance
+
+Regards
+
+Eric
+
+
+
+
 > [1] https://lore.kernel.org/linux-acpi/20210805160319.GB23085@lpieralisi/
 >
 > From old:
