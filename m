@@ -2,151 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 986E24D5C6D
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Mar 2022 08:36:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57AE24D5CC9
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Mar 2022 08:53:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244289AbiCKHg0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Mar 2022 02:36:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38722 "EHLO
+        id S1343533AbiCKHxo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Mar 2022 02:53:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242566AbiCKHgW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Mar 2022 02:36:22 -0500
-Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60B5D1B71A9
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 23:35:19 -0800 (PST)
-Received: by mail-vk1-xa31.google.com with SMTP id j201so4245186vke.11
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 23:35:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AK8jJe5p0CmtAP9GGVmcx4LMpBtc3WqynwWuA7UMUt8=;
-        b=dua3ythHZ4ZLzaVF9KNqhLPkaYPqp2C4fVWilOtuDEH526RQDQFUjJ2I3ZREdj+erV
-         oNMQs84sKZGhN6V/PQ7CYFjyYLLFJTf/bCNuJV+5PNBAIjUuTvWg9mPZkTW9PH2LEO3x
-         k32N3Tpg5/tvxmzMScumAnOenxJ5gcUzJEMckYSfMv+qINjouIp154gbQeFdt6FiZGiZ
-         fzhOMZBch3Mum0+Hjs9kAQOlTksm16NdG3xLhDfCHL3v1gvt2ixMIq5mhav8OtDTrZ2i
-         0kW/w1CmtHalQZjBrSc/WsBgs5O1wHIKV0fX4xk6Z2DC07CsDMvHDarJoABPYplju4pz
-         DbDg==
+        with ESMTP id S1347249AbiCKHxj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Mar 2022 02:53:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5ECF93A1B4
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 23:52:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1646985155;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nOdafaJtse+8LgWXWQrqdTTqXMwIbmNc8kkDbRO4C2U=;
+        b=JmPFq40oQK4L77dWhCcOAOZS1huusL3o5RMC6/gT7oWFzgaihrjthq2QTegu955jSI5E5W
+        ioggAuMi6rK/BIWVFyVc3UySc0abql2ua0Qo08bZ0T73m+MwLeEYtmBj/OnTEZtLQLrDFH
+        ziX5AVe8XfChogAfTnBarFtk0TIBkSE=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-118-al1dKpgJNsWFlzVvRhFeSQ-1; Fri, 11 Mar 2022 02:52:34 -0500
+X-MC-Unique: al1dKpgJNsWFlzVvRhFeSQ-1
+Received: by mail-ej1-f69.google.com with SMTP id hx13-20020a170906846d00b006db02e1a307so4506441ejc.2
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Mar 2022 23:52:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AK8jJe5p0CmtAP9GGVmcx4LMpBtc3WqynwWuA7UMUt8=;
-        b=2U6Rro7MWOzCC+gASDfJ4XiJ3+MsigFYvLT0oWN78j09+XT1U6dBAPSSTbReMr1X6g
-         HrQt/5yq0dHapC5YWGx3aqW65rXz3f2dmqxj0QnMrD/ibF0WVKQSCoOqu1DIyQLEOAzA
-         3tf6BOATDApMuqlVL144+wqv2TXEOy8auVtjuvtqU5JZrL54jrYOamV8BUZzXgnSAj12
-         9OEgg/KRUj7sUXMYrfwsTvtyJyESrwwgX0bX10H8EgmE/bFoQYyvwI6W/Ls2O/6hVZCc
-         cTt3CZLL46+jCGa9QDkCkKWdBAjJ6DMBzwIRzM0hp7JWBhslJpLgULItpOCUOU6ie7vH
-         9q5Q==
-X-Gm-Message-State: AOAM531lyGFeqbrlQrHFxxT/CWhiiGvyT86AVBHU2KvXp23u6aokxhkx
-        BiIImR7kFRszLwq3I+jkF75U0scaZmOkSL7qF6o=
-X-Google-Smtp-Source: ABdhPJyE4G4GVup4tTVrpyUDLaEMUnMTwLjQea3AwHSsOTr89XHqNWWWDyWxhMnSD4aBtOUCZN4lEc4tS36/NST6HIE=
-X-Received: by 2002:a1f:1dce:0:b0:333:21cc:1a81 with SMTP id
- d197-20020a1f1dce000000b0033321cc1a81mr4112931vkd.18.1646984118292; Thu, 10
- Mar 2022 23:35:18 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:from:to:cc:references:in-reply-to
+         :content-transfer-encoding;
+        bh=nOdafaJtse+8LgWXWQrqdTTqXMwIbmNc8kkDbRO4C2U=;
+        b=XYcMvMoQ58aJec3xcwt5tlStecWL5q1PeDEZsZBJ/PWJQDL8mFq2elTygtstHkGQBG
+         ExezJHoHP1I1MUvNNgNI6UDEvWxBlh+rIEPidLaNDWSqO7oATPZXJrr7PfzYQua09QlH
+         ChHjf2XLZFacJSnxvWVWU0J3rfuLcA6HIonnhI6DE5zcD17rTOnETLLNupVoOwKQQXf8
+         K4d29RFUkc5epEGJjXiflFPrlCiuWQ/zKLrIOmcL4k9pPCOlrXRESETXhyakVnJ6VtZM
+         kKbj8g8qd89mb1oGurjhkuoiHJcx64H2m099lrDmOrj2dWrfdlMfZ0+cCnW/QxygdSsU
+         sBjw==
+X-Gm-Message-State: AOAM531wRBUe4AHckQblBwSJ+rkIcm4U7kjq5WaOUlqFu/0bcpZO45em
+        WOZTmP6KI3mwZXyd8FQMZI1LD1VmoLiOA6y9lezBpT//IjoSYzx9GykYa2YwGAXqnI4Wol6JIyh
+        WYJzgLesc1Uniqf9cAiv7PA==
+X-Received: by 2002:a17:907:86a8:b0:6db:6c1c:d9c4 with SMTP id qa40-20020a17090786a800b006db6c1cd9c4mr7402001ejc.640.1646985152883;
+        Thu, 10 Mar 2022 23:52:32 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxoi4tVAbZEr4iaXAILaYiGbWBCMw/gOSBC7p2ecbnJ1XfcWwLWDBERuFBQjbG34JyrAe8X+w==
+X-Received: by 2002:a17:907:86a8:b0:6db:6c1c:d9c4 with SMTP id qa40-20020a17090786a800b006db6c1cd9c4mr7401976ejc.640.1646985152657;
+        Thu, 10 Mar 2022 23:52:32 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:cdb2:2781:c55:5db0? (2001-1c00-0c1e-bf00-cdb2-2781-0c55-5db0.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:cdb2:2781:c55:5db0])
+        by smtp.gmail.com with ESMTPSA id r14-20020a1709067fce00b006db0edb8a80sm2639575ejs.225.2022.03.10.23.52.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Mar 2022 23:52:32 -0800 (PST)
+Message-ID: <03675c75-ee6f-5da3-099c-2b82a1865455@redhat.com>
+Date:   Fri, 11 Mar 2022 08:52:31 +0100
 MIME-Version: 1.0
-References: <20220306111838.810959-1-chenhuacai@loongson.cn>
- <CAJZ5v0hsHMcqd==+cJZUcd3T11NUU6bSphFbBRjvv1ktCuH08w@mail.gmail.com> <CAAhV-H7oB9KMSEv-ea-qazSFw+zBowqufO=8mWsPPP7L9Gx9vQ@mail.gmail.com>
-In-Reply-To: <CAAhV-H7oB9KMSEv-ea-qazSFw+zBowqufO=8mWsPPP7L9Gx9vQ@mail.gmail.com>
-From:   Huacai Chen <chenhuacai@gmail.com>
-Date:   Fri, 11 Mar 2022 15:35:06 +0800
-Message-ID: <CAAhV-H6SLk9z4VkJ98RAwkEpTLvpW3nd9Cq+bsB-gW1-LdUnYA@mail.gmail.com>
-Subject: Re: [PATCH V2 0/2] ACPI: Add LoongArch-related definitions
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Jianmin Lv <lvjianmin@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH 3/3] x86/PCI: Preserve host bridge windows completely
+ covered by E820
+Content-Language: en-US
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>, wse@tuxedocomputers.com
+References: <20220309181518.GA63422@bhelgaas>
+ <b41cfd4d-3f55-168a-e96c-cf2d11d50f28@redhat.com>
+In-Reply-To: <b41cfd4d-3f55-168a-e96c-cf2d11d50f28@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Rafael,
+Hi Bjorn,
 
-On Wed, Mar 9, 2022 at 1:29 PM Huacai Chen <chenhuacai@gmail.com> wrote:
->
-> Hi, Rafael,
->
-> On Wed, Mar 9, 2022 at 2:49 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Sun, Mar 6, 2022 at 12:17 PM Huacai Chen <chenhuacai@loongson.cn> wrote:
-> > >
-> > > LoongArch is a new RISC ISA, which is a bit like MIPS or RISC-V.
-> > > LoongArch includes a reduced 32-bit version (LA32R), a standard 32-bit
-> > > version (LA32S) and a 64-bit version (LA64). LoongArch use ACPI as its
-> > > boot protocol LoongArch-specific interrupt controllers (similar to APIC)
-> > > are already added in the next revision of ACPI Specification (current
-> > > revision is 6.4).
-> > >
-> > > This patchset are preparing to add LoongArch support in mainline kernel,
-> > > we can see a snapshot here:
-> > > https://github.com/loongson/linux/tree/loongarch-next
-> > >
-> > > Cross-compile tool chain to build kernel:
-> > > https://github.com/loongson/build-tools/releases
-> > >
-> > > Loongson and LoongArch documentations:
-> > > https://github.com/loongson/LoongArch-Documentation
-> > >
-> > > ECR for LoongArch-specific interrupt controllers:
-> > > https://mantis.uefi.org/mantis/view.php?id=2203
-> > > https://mantis.uefi.org/mantis/view.php?id=2313
-> > >
-> > > ACPI changes of LoongArch have been approved in the last year, but the
-> > > new version of ACPI SPEC hasn't been made public yet.
-> > >
-> > > V2: Remove merged patches and update commit messages.
-> > >
-> > > Huacai Chen and Jianmin Lv(2):
-> > >  ACPICA: MADT: Add LoongArch APICs support.
-> > >  ACPICA: Events: Support fixed pcie wake event.
-> >
-> > Both patches in this series are mostly ACPICA material which needs to
-> > be submitted to the upstream ACPICA project via
-> > https://github.com/acpica/acpica
-> >
-> > It will be pulled by the Linux kernel from there.
-> I found that you are also a maintainer of the ACPICA project, do you
-> mean I should submit by github PR, not by maillist?
-I submit ACPICA project, please review:
-https://github.com/acpica/acpica/pull/757
+On 3/10/22 13:28, Hans de Goede wrote:
+> Hi Bjorn,
+> 
+> On 3/9/22 19:15, Bjorn Helgaas wrote:
+>> On Sat, Mar 05, 2022 at 11:37:23AM +0100, Hans de Goede wrote:
+>>> On 3/4/22 16:46, Hans de Goede wrote:
+>>>> On 3/4/22 16:32, Bjorn Helgaas wrote:
+>>>>> On Fri, Mar 04, 2022 at 03:16:42PM +0100, Hans de Goede wrote:
+>>>>>> On 3/4/22 04:51, Bjorn Helgaas wrote:
+>>>>>>> From: Bjorn Helgaas <bhelgaas@google.com>
+>>>>>>>
+>>>>>>> Many folks have reported PCI devices not working.  It could affect any
+>>>>>>> device, but most reports are for Thunderbolt controllers on Lenovo Yoga and
+>>>>>>> Clevo Barebone laptops and the touchpad on Lenovo IdeaPads.
+>>>>>>> ...
+>>
+>>>>>>> diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
+>>>>>>> index 7378ea146976..405f0af53e3d 100644
+>>>>>>> --- a/arch/x86/kernel/resource.c
+>>>>>>> +++ b/arch/x86/kernel/resource.c
+>>>>>>> @@ -39,6 +39,17 @@ void remove_e820_regions(struct device *dev, struct resource *avail)
+>>>>>>>  		e820_start = entry->addr;
+>>>>>>>  		e820_end = entry->addr + entry->size - 1;
+>>>>>>>  
+>>>>>>> +		/*
+>>>>>>> +		 * If an E820 entry covers just part of the resource, we
+>>>>>>> +		 * assume E820 is telling us about something like host
+>>>>>>> +		 * bridge register space that is unavailable for PCI
+>>>>>>> +		 * devices.  But if it covers the *entire* resource, it's
+>>>>>>> +		 * more likely just telling us that this is MMIO space, and
+>>>>>>> +		 * that doesn't need to be removed.
+>>>>>>> +		 */
+>>>>>>> +		if (e820_start <= avail->start && avail->end <= e820_end)
+>>>>>>> +			continue;
+>>>>>>> +
+>>>>>>
+>>>>>> IMHO it would be good to add some logging here, since hitting this is
+>>>>>> somewhat of a special case. For the Fedora test kernels I did I changed
+>>>>>> this to:
+>>>>>>
+>>>>>> 		if (e820_start <= avail->start && avail->end <= e820_end) {
+>>>>>> 			dev_info(dev, "resource %pR fully covered by e820 entry [mem %#010Lx-%#010Lx]\n",
+>>>>>> 				 avail, e820_start, e820_end);
+>>>>>> 			continue;
+>>>>>> 		}
+>>>>>>
+>>>>>> And I expect/hope to see this new info message on the ideapad with the
+>>>>>> touchpad issue.
+>>
+>> I added this logging.
+>>
+>>> So I just got the first report back from the Fedora test 5.16.12 kernel
+>>> with this series added. Good news on the ideapad this wotks fine to
+>>> fix the touchpad issue (as expected).
+>>
+>> Any "Tested-by" I could add?  If we can, I'd really like to give some
+>> credit to the folks who suffered through this and helped resolve it.
+> 
+> Good point, the reporter of:
+> https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+> 
+> has done most of the ideapad with touchpad issues testing for me
+> and has been very helpful. I agree he deserves credit for this.
+> 
+> I've asked him if he is ok with adding a Tested-by tag and if yes,
+> which email we should use.
 
-Huacai
->
-> >
-> > >
-> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-> > > ---
-> > >  drivers/acpi/acpica/evevent.c  |  17 ++++--
-> > >  drivers/acpi/acpica/hwsleep.c  |  12 ++++
-> > >  drivers/acpi/acpica/utglobal.c |   4 ++
-> > >  drivers/acpi/tables.c          |  10 ++++
-> >
-> > This tables.c change can be submitted as a separate patch when the
-> > ACPICA changes get integrated.
-> Do you mean split the first patch into .h parts and .c parts, then
-> submit the .h parts and the second patch by github PR, then submit the
-> .c parts of the first patch by maillist?
->
-> Huacai
-> >
-> > >  include/acpi/actbl2.h          | 125 ++++++++++++++++++++++++++++++++++++++++-
-> > >  include/acpi/actypes.h         |   3 +-
-> > >  6 files changed, 163 insertions(+), 8 deletions(-)
-> > > --
-> > > 2.27.0
-> > >
+If you can add the following tag that would be great:
+
+Tested-by: Matt Hansen <2lprbe78@duck.com>
+
+Regards,
+
+Hans
+
