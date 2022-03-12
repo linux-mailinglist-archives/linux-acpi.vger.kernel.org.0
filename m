@@ -2,202 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 711D94D6EB0
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Mar 2022 13:40:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0C574D70A9
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Mar 2022 21:04:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbiCLMli (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 12 Mar 2022 07:41:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53778 "EHLO
+        id S232533AbiCLUFE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 12 Mar 2022 15:05:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbiCLMlh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 12 Mar 2022 07:41:37 -0500
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67DC41D330;
-        Sat, 12 Mar 2022 04:40:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647088831; x=1678624831;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=yRTYP/FooPXwwCa8B9QLoZnS895MMvyeiPt7HFgLbkc=;
-  b=Qi0BW1zuuGCwTkopbfNZfThh84trxGftI0MEIfVDPDHRzyxYiMXNX4Tz
-   v+YrJvVAEsqYMvpVZ7PcPoKHZOn+IINfSf6uiz30l6VsWq8AyGPLRN3fQ
-   GD5IyG66UtvNcjh3RUrPtfhQO9Yp/SSE25dmGz9yP/+opzl1n/uTLytpP
-   qMAzW+PnYRctl8QQd/4WiKzIZm98gNA2Ox4g+WHv05s+4VZ3C5lh2h1W0
-   JeG590l4pOCIrSTIb6h4BpXbFb97NjL41DNZ05U6Q+rfz/oohUpW1ylsw
-   napX2bnDCWe7WVy3Q+p3krkF8Sri8qMWgZe3n1FfaAQDgZSV8XSMn5auF
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10283"; a="255522340"
-X-IronPort-AV: E=Sophos;i="5.90,175,1643702400"; 
-   d="scan'208";a="255522340"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2022 04:40:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,175,1643702400"; 
-   d="scan'208";a="514863292"
-Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 12 Mar 2022 04:40:28 -0800
-Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nT12q-0007s2-08; Sat, 12 Mar 2022 12:40:28 +0000
-Date:   Sat, 12 Mar 2022 20:39:29 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- bbc0e4dfa777cb722b27b3f36a839c0fc61f475b
-Message-ID: <622c9481.vhBMDgUD/HNLRZUL%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S232192AbiCLUFD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 12 Mar 2022 15:05:03 -0500
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CF914925D
+        for <linux-acpi@vger.kernel.org>; Sat, 12 Mar 2022 12:03:57 -0800 (PST)
+Received: by mail-yb1-xb36.google.com with SMTP id u10so23425020ybd.9
+        for <linux-acpi@vger.kernel.org>; Sat, 12 Mar 2022 12:03:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
+        b=ElKoPt64izj9FSG/0eE/NmsT2fBcrqCjzH/tZgH7SXeqBdYMAi/IvuZyXePP7Bwjzj
+         EOFmv0h13Ia/uhSsz1IGQCe62l0TQuXOb7HQw4GssxN8tnbVyXupHiBmRYtCe9gL0uXl
+         p5zSAjhW3bQtd0eJzTysvzdJlAqPoiEQABs+l13Gr9AHBlojt0jtJ/7DO7gaQvh4UoBo
+         jzcMCdE67eDB4T1ZZtb4ROz7MafVnL+8v/kqIcM87B32upjp8QZqC4iKrpVD1PD+gr/B
+         QmELstyUq+ueCTn/9B3X7ZKomb9c6+AL1cZ69coSamkqFu+L8jpjEIgIf/CK7juC+YBp
+         5C9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
+        b=tgawtAPTVjPffVAEPJRDlyaLUC3Kj977dv1Z/thhhSZjjv7icvaTYVlvIpkRNTxJ16
+         YtwYE3FTZ70zQdwLFlODFFEusCeGgSK6vsNMiquDcxgM7fUvbGDLj1M+jOwBfHviPUrY
+         orXuAX/cMFKEhODu8rAce2RoEQMbszKo03keEnyagwAwqxekK/tUGN8RjKPPKi4TgMJf
+         CXdhufDbP2jifU4vqRgNZM5e6CS1kUHClYyefUSL3Qlgy0Gq50dnjpvJPTcgNBlWNgi1
+         4mxRitTRI+lT3xv3fb8b6tjdugaBJ7XYWA2M5c25k/tiVdN2BPystoiKg1OPM3nepKQT
+         LC+A==
+X-Gm-Message-State: AOAM531Cvj+vKfYyC7D+aR217qAYTnHNUZTfFSdV4r/x2nXWDa0DGo4c
+        BbJ9ZEDdehm6+RBXAMuU1hlK6WtsfiBMqB9LXkM=
+X-Google-Smtp-Source: ABdhPJxUb1eIenpMFGZ4ZJT7YCpQjYQCjTf0T6fpp+19StyQ4qJ07TXUqgYKdtC1Mixr/W1WfHc2RvDlHtSmX+zb6IU=
+X-Received: by 2002:a5b:9c2:0:b0:611:ad59:be04 with SMTP id
+ y2-20020a5b09c2000000b00611ad59be04mr12452938ybq.405.1647115436363; Sat, 12
+ Mar 2022 12:03:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Received: by 2002:a05:7108:1cc:0:0:0:0 with HTTP; Sat, 12 Mar 2022 12:03:55
+ -0800 (PST)
+Reply-To: avamedicinemed3@gmail.com
+From:   Dr Ava Smith <doctortracywilliam@gmail.com>
+Date:   Sat, 12 Mar 2022 12:03:55 -0800
+Message-ID: <CAJiqmQHLGPWsQG2YkOzOHO1_wHb8JRyyj0B1bkmD36ktGMwnTw@mail.gmail.com>
+Subject: From Dr Ava Smith from United States
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b36 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4124]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [avamedicinemed3[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [doctortracywilliam[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: bbc0e4dfa777cb722b27b3f36a839c0fc61f475b  Merge branch 'pm-docs-next' into bleeding-edge
-
-elapsed time: 903m
-
-configs tested: 118
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                              allmodconfig
-arm                                 defconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-mips                        vocore2_defconfig
-i386                             alldefconfig
-arm                            zeus_defconfig
-x86_64                           alldefconfig
-powerpc                      mgcoge_defconfig
-m68k                        mvme16x_defconfig
-sh                            migor_defconfig
-m68k                          amiga_defconfig
-sh                   sh7724_generic_defconfig
-ia64                      gensparse_defconfig
-powerpc                       ppc64_defconfig
-arm                  randconfig-c002-20220310
-ia64                             allmodconfig
-ia64                             allyesconfig
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-csky                                defconfig
-alpha                               defconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-nds32                             allnoconfig
-nios2                               defconfig
-arc                              allyesconfig
-parisc                              defconfig
-parisc64                            defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                   debian-10.3-kselftests
-i386                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-i386                          randconfig-a003
-i386                          randconfig-a001
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                  randconfig-r043-20220310
-arc                  randconfig-r043-20220312
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-riscv                    nommu_virt_defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-mips                 randconfig-c004-20220310
-x86_64                        randconfig-c007
-mips                 randconfig-c004-20220312
-riscv                randconfig-c006-20220312
-s390                 randconfig-c005-20220310
-s390                 randconfig-c005-20220312
-arm                  randconfig-c002-20220312
-powerpc              randconfig-c003-20220310
-i386                          randconfig-c001
-riscv                randconfig-c006-20220310
-powerpc              randconfig-c003-20220312
-arm                  randconfig-c002-20220310
-mips                       lemote2f_defconfig
-arm                   milbeaut_m10v_defconfig
-mips                     cu1000-neo_defconfig
-mips                  cavium_octeon_defconfig
-powerpc                          g5_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a015
-i386                          randconfig-a011
-riscv                randconfig-r042-20220310
-s390                 randconfig-r044-20220312
-hexagon              randconfig-r045-20220312
-hexagon              randconfig-r041-20220310
-riscv                randconfig-r042-20220312
-hexagon              randconfig-r045-20220310
-s390                 randconfig-r044-20220310
-hexagon              randconfig-r041-20220312
-
----
-0-DAY CI Kernel Test Service
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Hello Dear,
+how are you today?hope you are fine
+My name is Dr Ava Smith ,Am an English and French nationalities.
+I will give you pictures and more details about me as soon as i hear from you
+Thanks
+Ava
