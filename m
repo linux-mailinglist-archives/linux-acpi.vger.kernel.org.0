@@ -2,346 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 565EE4D855A
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Mar 2022 13:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FC0D4D85E4
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Mar 2022 14:28:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237023AbiCNMtF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Mar 2022 08:49:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53880 "EHLO
+        id S233080AbiCNN3p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Mar 2022 09:29:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242260AbiCNMs1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Mar 2022 08:48:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BE5ECDC5
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Mar 2022 05:45:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1647261922;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ko9Pq+nujR93rrqWCg4cr/ojM0WA1IT4uWw4ERwFbho=;
-        b=RzILbf+ZFXLja6LinKm8MEymIXQuvA5M4+sBZwBqUjIUQgGsFREqmybc59WLeaz2EBtVwR
-        fuCGxUesHreiRnloG7kfaFaihWxR8xX8WyCHpBKpcxcmgYvY/J/BfqUyBQXdX0dYpJKOmr
-        fwxvs6kYWsvmYL39+fWJe/4oQb5C9nI=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-402-qszimuBDNAG5cG7tRKPaaA-1; Mon, 14 Mar 2022 08:45:21 -0400
-X-MC-Unique: qszimuBDNAG5cG7tRKPaaA-1
-Received: by mail-ed1-f69.google.com with SMTP id l8-20020a056402028800b0041636072ef0so8569350edv.13
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Mar 2022 05:45:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=ko9Pq+nujR93rrqWCg4cr/ojM0WA1IT4uWw4ERwFbho=;
-        b=PI54NkhDsV2Z4nn4rTUbWWvXMcM1z0Y2UpGeiGvZCyVyDYY9OlwmKmmyJa+IC4KDCj
-         jkdjPi/2n5AOvgbclqsT+57plSQD2+Tg8PREO4xmAf9+8JQRPXrbXe4uEUfXjPJWghuH
-         QqRG1NONJ5EgI12YRaVZWhxzzX7NDZwpAzn2gjFUbNSdjgKfRZ2wCMDYWegleDKPD7Yf
-         qRPiUllY6tfhTe2jMNylA9LYMAtJ7/r9ysO5PXdc3G6/3mSTEVa0Y4dJn5jAoSYMqFlJ
-         K4bAyJ5UGnL2Ps1bYyxTjRTC/BQWEDKo6VIvstBiIp5lMA7BDmSeVAEMADfZXwjIC6SS
-         wIag==
-X-Gm-Message-State: AOAM533jb7dQWMbNcdwHZcMCm/sCoarPShDnEROpwvY0KrkqPuXVEOfM
-        jR1FEjxTGO/ikEl1pxaFjjyHSxkia8rtg2VwN4yQ1dDKoC8bbjOlBAuEmcUBlSX18y+xxmqoRXP
-        Xue0muI7sBryYFFpD5hyX7g==
-X-Received: by 2002:a05:6402:1148:b0:413:11e0:1f58 with SMTP id g8-20020a056402114800b0041311e01f58mr19839654edw.113.1647261920319;
-        Mon, 14 Mar 2022 05:45:20 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyrpc8wiG9oQ3qlRC2XNAiY6B5+pwU1vsVE6vrq4nkf+MiQB1tgYnnhLIcbB33yteCeHna8YA==
-X-Received: by 2002:a05:6402:1148:b0:413:11e0:1f58 with SMTP id g8-20020a056402114800b0041311e01f58mr19839638edw.113.1647261920000;
-        Mon, 14 Mar 2022 05:45:20 -0700 (PDT)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id b9-20020a056402278900b004186d013655sm3765988ede.33.2022.03.14.05.45.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Mar 2022 05:45:19 -0700 (PDT)
-Message-ID: <c18abb55-6874-6e1e-bdb0-9d96d52987cd@redhat.com>
-Date:   Mon, 14 Mar 2022 13:45:19 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [External] Re: [RFC] ACPI: platform-profile: support for AC vs DC
- modes
-Content-Language: en-US
-To:     Mark Pearson <markpearson@lenovo.com>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "rafael@kernel.org" <rafael@kernel.org>,
+        with ESMTP id S230349AbiCNN3o (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Mar 2022 09:29:44 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2084.outbound.protection.outlook.com [40.107.236.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0310812618;
+        Mon, 14 Mar 2022 06:28:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jxklnZnKP1YhAjPNOMlI7RO3H6yzul0Uw1BnLj7dvyRbKCznEP8XeH15+sC8c7NYnTMhQ9/oNxpYls69OkEcEsBlNAUNB/dFDOcOc3ic8EMZUF1bbkelt+hgHJTPYfRb0h6WNacpuOjIXBryr0AQyl11WHMKytDRDerM58acj8iXKs/9noWxja1SuWaPbY4+YeSNAU5dCVgjGsG98J/0Y1Yviz2Pc1xNedrqOmimEAolobv7zR07yYLwdBgYbZx8qzdXpkGJ31dkqM1dXFYSObbg1jk5swBGmE0qHmHHXvppfKrx4uhH9+flgkfjskRMlguCVtc+wKMarnwfisbD3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nMg2Oe5jVBoJJ5OLBkhBzj0g23DfdrzNmE+7L6aIl6A=;
+ b=Po2Q/s6g2DAC829jdYvWQZ67dr4SShilO3lDx8pIMlMazKaQxPPaLA9Q3cl4ni8ZorPDJE/WxHwOl4hosUzRuedrd22kUFn0DLiPKMNQbxiMIHIxu9IVwuKcTA4n4hKQ/YehliujU6TPp4oyTs3Kt0rBZ7DM6MQU/XXglqxag7arjGloNiUu+YiF9lttzC/iJ/ASVYde2LxzDgSfGhFxzDXGUFVoQL/RHhhaFGmTljNonh7wX02xGF+nr1nYSg5YnkIqurZT3YxSKwA2+H3AgGrpkjXdkGrD17Xoj7+R3fV6uwQIlJEMsZYRQKskgG22l7u4aZiU7Y3GFGFRndt+oQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nMg2Oe5jVBoJJ5OLBkhBzj0g23DfdrzNmE+7L6aIl6A=;
+ b=xio1LM+aqPqId89q2Ze9zwvtzMN4Gh5vRvOs0cAm6x5hqlYipdeHFvkJDY7DjqKMAd3HWVRttIp8o9YfG5DeITvmNR+CtVb5HZLhBNcr7Wv1apKmfzHpcJTix1x4S7kpvOTeG8ONrBj4CZVulrENov3nP5zN5dCjcLqVFzZY21U=
+Received: from BL1PR12MB5157.namprd12.prod.outlook.com (2603:10b6:208:308::15)
+ by DM5PR12MB1898.namprd12.prod.outlook.com (2603:10b6:3:10d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5061.26; Mon, 14 Mar
+ 2022 13:28:31 +0000
+Received: from BL1PR12MB5157.namprd12.prod.outlook.com
+ ([fe80::692d:9532:906b:2b08]) by BL1PR12MB5157.namprd12.prod.outlook.com
+ ([fe80::692d:9532:906b:2b08%5]) with mapi id 15.20.5061.028; Mon, 14 Mar 2022
+ 13:28:31 +0000
+From:   "Limonciello, Mario" <Mario.Limonciello@amd.com>
+To:     Lukas Wunner <lukas@wunner.de>
+CC:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "open list:X86 PLATFORM DRIVERS" 
+        <platform-driver-x86@vger.kernel.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>
-References: <markpearson@lenovo.com>
- <20220301201554.4417-1-markpearson@lenovo.com>
- <65d8cf3b-0eea-0583-fa23-e2c71287fb85@redhat.com>
- <BL1PR12MB5157CDB77675859B7F279578E2099@BL1PR12MB5157.namprd12.prod.outlook.com>
- <7b281a37-5163-6cd7-360e-1c63bde714a8@redhat.com>
- <BL1PR12MB5157125246817A70649C12F7E2099@BL1PR12MB5157.namprd12.prod.outlook.com>
- <1cd4ae24-ae92-302e-ac87-76ef15472a9f@redhat.com>
- <2180533b-c921-5ae4-e6bc-569728a4f990@lenovo.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <2180533b-c921-5ae4-e6bc-569728a4f990@lenovo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        "S-k, Shyam-sundar" <Shyam-sundar.S-k@amd.com>,
+        "Goswami, Sanket" <Sanket.Goswami@amd.com>
+Subject: RE: [PATCH v3 1/5] ACPI / x86: Add support for LPS0 callback handler
+Thread-Topic: [PATCH v3 1/5] ACPI / x86: Add support for LPS0 callback handler
+Thread-Index: AQHYN2DqFPMQrXTwwk2R9AIKdGhSYay+mJWAgABGODA=
+Date:   Mon, 14 Mar 2022 13:28:31 +0000
+Message-ID: <BL1PR12MB5157D2C86D5588607F53EFAEE20F9@BL1PR12MB5157.namprd12.prod.outlook.com>
+References: <20220314050340.1176-1-mario.limonciello@amd.com>
+ <20220314091247.GA28904@wunner.de>
+In-Reply-To: <20220314091247.GA28904@wunner.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=true;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2022-03-14T13:24:08Z;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public-AIP 2.0;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ActionId=3bc6693e-d61e-409b-9dfd-3f2e119984b3;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=1
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_enabled: true
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_setdate: 2022-03-14T13:28:29Z
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_method: Privileged
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_name: Public-AIP 2.0
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_siteid: 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_actionid: 1650cc4c-6833-49ad-bef9-26907dd61483
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 145bc63a-1f66-4bf0-7082-08da05be8875
+x-ms-traffictypediagnostic: DM5PR12MB1898:EE_
+x-microsoft-antispam-prvs: <DM5PR12MB1898759B5EF7FC1101B29FB0E20F9@DM5PR12MB1898.namprd12.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: qdmtiSI6zDqowg3HSMZ6FqNd6rFv56Zx/QXt5nTbgDz0y7aticNudEkxbryBbmV5XwV6iEW0gqTbZgoo95oIk0VD2bKppUMOfhs7SRX7JXS6IcX7Hp79W6JPhvhRPZxU86Z53nmt5LASxy2AOtVc+eMdHTrxqUVzn9Ci5KyXUTvbcugCmgV35m03A/lRvllPj+uFYGux8XwkPfrhSUVOJADGbp2TdmaMFfkJnfS2+T+9FXr2jBC0EokILgbSL4LaWdkk7pWnbR6TRZhs2g9CHs6M/J+BdQ3hxwbsQZaIvJ1rMEf+jD6+2vimVGgFZ8TO6ExJ2wjNi+6N+e6rXqCpgAlO0QoqP3arsCREHC265dh4jcBVnSG1r6kKnzA/HzVyC3Nt2AnHaHLwqU+VtweTIyDL7cYfvLXuUhTo3YQG5SJUWC3eF57nbnPQq9MbQQkS2biTUuLFd2ET6wi5w3A0DMC/ykGaKGwozQXEf/x53NApmSti3jW6eCg58Q4MB4/0csacCmLlosrSj22kWD0rHKnqBEAkSt2zrDd7Iq991MrV9ylW2SgOnzl5ihpVjIVkPxS4mrEW2ZYEBqzQJqcLR+IMl94z2fE0LZp3jo/hRO4AwX6kBgp00astWEZYfhloZN8JEIjPOKXOjBDNBkli5J0WS0XNs1xHN+bN+u6WI3NNHIjnsuLDks53f2kjVfgHmXstMiTCXbBPw7BtXCa6dQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5157.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(83380400001)(6506007)(508600001)(7696005)(5660300002)(9686003)(55016003)(26005)(186003)(53546011)(2906002)(52536014)(71200400001)(66556008)(4326008)(8676002)(76116006)(66946007)(66446008)(64756008)(86362001)(66476007)(8936002)(316002)(54906003)(6916009)(122000001)(38100700002)(38070700005)(33656002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?9RR+/dbLQOmumm1jgSkGtkz5uzBiap7cpZMJYIoNRrD1niZUm4AVyVkosmTc?=
+ =?us-ascii?Q?kGiATttqMmr86zzAsyyPBSzK4INwhlB4vhIf2puXAfwIY6+G7HPoB5h2aaao?=
+ =?us-ascii?Q?RQZIeMefwWHR7G840csuiQPYQ6/lJSXVRJhWZAf/aAris6SBhLFxumNJlikz?=
+ =?us-ascii?Q?0k1EoKArwFXz2mcSZF9jbB8cgwP7j32EH68kZ/nqwUFijW6dODR7aCYr4U71?=
+ =?us-ascii?Q?zJSqepFOzSgtLSJmg7rvdQh8qAoxrjX3Bv0H1+gZZd0ZT1PANFRjH0tUGPBO?=
+ =?us-ascii?Q?iTHIBetkYhxYBO0ec70MFB4bclb9lsEjKum9GagKS9qcuPYjR7qExVnZhzsk?=
+ =?us-ascii?Q?GlHp6jvmb7XoIEIwryirShKa31zWsSVDLBpi4tiEYh/tlL/0DJ3AoGCwXtQz?=
+ =?us-ascii?Q?ymWTHLYLwlf4Y8ZS4a7ZFzjwZGoLZcGeMNVUvyW685d77G7gD0wyOCCYhLGk?=
+ =?us-ascii?Q?v9DQITcljwhOnVir3zO2sZENcY9nSeHVMtkFpu6+0CL65dMnoeph9hUbBFQL?=
+ =?us-ascii?Q?ViEQkCIuo10wK+8O2JW+u+o470Ort9gUqZPA/PW7vEKiU/K1cT06CwWweAQh?=
+ =?us-ascii?Q?H21AJDJypglVHE81lHN6neG3SakXJXIhtTk6COzr3n1+eQYEBw7LRByuByYF?=
+ =?us-ascii?Q?KcJ5hxXDrCrPOVuzsDms/+qmcfm9dotAM4iOlr/prQvB/ZQCm/agJsw61iQs?=
+ =?us-ascii?Q?u2gFXW5u7L+IztSIGK4p1tw2H+0OesSFDJwVNzDi1yGT9Ane+QzGYkA4FFHH?=
+ =?us-ascii?Q?x3idyFmHFxtLtRsGVIx2xTagbeQbgIXLS3MKfMShf9xEeAE3HIC/Cp213zX2?=
+ =?us-ascii?Q?r/44VazwLxJQsQEDXRp3o4mNVRmlpvW1a4VXr4CTonNIRfab1mmdH0IR6KQD?=
+ =?us-ascii?Q?RTFu1yzHTdkkZ+p2xmmmABrQHBvb1QoPkEYluTK7J6ZzHlsv6lfnkzYZNdn6?=
+ =?us-ascii?Q?4WRiARwDi3ArW279/MgJk0UTgi78BePvXgY8Fnx6bM2HS14BemRwT83zkINv?=
+ =?us-ascii?Q?7rS/IrnzWTWIa9s5KZKY79QnMbp/HKgGwPhMDFVIfwJyzR9WDhYeQTvzhLrm?=
+ =?us-ascii?Q?kVt4YpdRdbrjpFjsdgCMeJMk3h8K+rgf4HvosLAz931qvsuwux79Zu6ySa/p?=
+ =?us-ascii?Q?Kc6Tc3UVJ/ykTlI+ZOxm2rxJ4PZ4NNrejhB2yHUCXKtu96i2ERFwTTXmmJMv?=
+ =?us-ascii?Q?wElUJJdJ1vonXJjzNNg13pGwjyez+9ywYabAKlefVAu3Nj1gUa1O5uXDWYdD?=
+ =?us-ascii?Q?R43wdxaAnvn7ibKEI/a2SSma7u8CW2ygLU8noEGSm888nXm2aDqle4sI0hg5?=
+ =?us-ascii?Q?bOL+XjDBpK5oZTRAiz5Yu9h4n3Ho3NCdMAYGM6q6bcSBBLW+ApShW/lXSPVh?=
+ =?us-ascii?Q?GE0F1+4jjkixGEg3dj7npljFGJtXZO+Dl3QtLcFd4tXjLYZJsUH3uzvtQBNI?=
+ =?us-ascii?Q?GZSIfnemYKs=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5157.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 145bc63a-1f66-4bf0-7082-08da05be8875
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Mar 2022 13:28:31.5951
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: G9WvVt3IpMr1LaS+VaOXa/9LDvfSnLNSxNyTHlAjwZ3OAqYKKYUotYqu0Gg1zUgtnVGq7RZyKulKz6avzug+Pg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1898
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mark,
+[Public]
 
-On 3/8/22 18:44, Mark Pearson wrote:
-> 
-> Thanks Mario & Hans
-> 
-> On 2022-03-08 11:10, Hans de Goede wrote:
->> Hi,
->>
->> On 3/8/22 16:55, Limonciello, Mario wrote:
->>> [AMD Official Use Only]
->>>
->>>>> I don't think that's right for the PSC Thinkpads.  They have dedicated
->>>>> different tunings for each of the slider positions on AC vs DC.
->>>>>
->>>>> So "balanced" on AC will not be the same as "balanced" on DC.
->>>>
->>>> I see, but it is not like balanced on AC is closer to performance
->>>> on DC then it is to balanced on DC, right? IOW in the UI we should
->>>> still call them both balanced ?
->>>
->>> I feel that's a gross oversimplification to say balanced on AC is close
->>> to performance on DC.  There are *so many* other (otherwise invisible)
->>> tuning knobs behind what PSC does that Lenovo has weighed out the benefits
->>> of using for different circumstances.  
->>>
->>> You nerf all this by just having one user space facing knob and let userspace
->>> change to performance mode when you on charger.
->>
->> The way I see this there are 2 ways this can work on the kernel to fw/ec
->> boundary:
->>
->> 1. There are actually 6 values we can write to a single slot:
->>    ac-low-power,dc-lowpower,ac-balanced,dc-balanced,ac-performance,dc-performance
->>
->> 2. There are separate ac-setting + dc-setting slots to which we can
->>    write one of 3 values: low-power, balanced, performance; and the fw/ec
->>    automatically picks which slot to used based on ac vs battery status
->>
->> If 1 is the case for PSC then I agree that the kernel should indeed get involved
->> and it should automatically write either the ac or dc variant of the last
->> userspace requested value so that things behave as expected.
->>
->> If 2 however is the case then I think all that is necessary is for the
->> driver to just write the last userspace selected value to both slots.
->>
->> Note that neither case requires a userspace API change when solved
->> as I suggest.
-> 
-> I cycled through a few different implementations but came down on what I
-> proposed. I considered 6 values - but I don't think that makes sense and
-> makes it overall more complicated than it needs to be and less flexible.
 
-Ah, so to be clear, my 2 scenarios above were theoretical scenarios,
-because I'm wondering how the firmware API here actually looks like,
-something which so far is not really clear to me.
 
-When you say that you considered using 6 values, then I guess that
-the firmware API actually offers 6 values which we can write to a single slot:
-ac-low-power,dc-lowpower,ac-balanced,dc-balanced,ac-performance,dc-performance
+> -----Original Message-----
+> From: Lukas Wunner <lukas@wunner.de>
+> Sent: Monday, March 14, 2022 04:13
+> To: Limonciello, Mario <Mario.Limonciello@amd.com>
+> Cc: Hans de Goede <hdegoede@redhat.com>; Mark Gross
+> <mgross@linux.intel.com>; Rafael J . Wysocki <rjw@rjwysocki.net>; open
+> list:X86 PLATFORM DRIVERS <platform-driver-x86@vger.kernel.org>; linux-
+> acpi@vger.kernel.org; S-k, Shyam-sundar <Shyam-sundar.S-k@amd.com>;
+> Goswami, Sanket <Sanket.Goswami@amd.com>
+> Subject: Re: [PATCH v3 1/5] ACPI / x86: Add support for LPS0 callback han=
+dler
+>=20
+> On Mon, Mar 14, 2022 at 12:03:35AM -0500, Mario Limonciello wrote:
+> > Currenty the latest thing run during a suspend to idle attempt is
+> > the LPS0 `prepare_late` callback and the earliest thing is the
+> > `resume_early` callback.
+> >
+> > There is a desire for the `amd-pmc` driver to suspend later in the
+> > suspend process (ideally the very last thing), so create a callback
+> > that it or any other driver can hook into to do this.
+>=20
+> I'm wondering if this can be solved with much less code by either
+> using device links (a device link to amd-pmc from everything that
+> needs to be suspended before it), or with a notifier chain?
+>=20
 
-?
+I don't believe that device links will work well here - the LPS0 "prepare_l=
+ate"
+happens after all device suspend routines are already done.
 
-But that is not what the RFC patch that started this thread shows at all,
-the API to the driver is totally unchanged and does not get passed
-any info on ac/dc selection ?  So it seems to me that the ACPI API Linux
-uses for this writes only 1 of 3 values to a single slot and the EC automatically
-switches between say ac-balanced and dc-balanced internally.
-
-IOW there really being 2 differently tuned balance-profiles is not visible to
-the OS at all, this is handled internally inside the EC, correct ?
-
-Otherwise I would expect the kernel internal driver API to also change and
-to also see a matching thinkpad_acpi patch in the RFC series?
-
-> The biggest use case I can think of is that a user wants performance
-> when plugged in and power-save when unplugged; and they want that to
-> happen automatically.
-
-Right, so this what I have understood all along and I'm not disagreeing
-that this is a desirable feature, but it _does not belong in the kernel_!
-
-Also taking Mario's remark about the EC-firmware using differently
-tuned balanced profiles based on ac vs dc, here is how I envision this
-working:
-
-1. Laptop is connected to charger
-2. EC notices this and:
-2.1 Internally switches from balanced-dc settings to balanced-ac settings
-2.2 Sends out an event about the laptop now being on AC, which the kernel
-    picks up and then sends to userspace (this already happens)
-3. Userspace, e.g. power-profiles-daemon, gets the event that the laptop is
-   now an AC and in its settings sees that the user wants to switch to
-   performance mode on AC and uses the platform_api in its current form to
-   ask for a switch to performance mode
-4. The EC gets a command telling it to switch to performance mode and
-   switches to the ac-tuned version of performance mode since the laptop is
-   on ac.
-
-So same end-result, but without introducing new userspace API. Note that
-even if we were to go with your RFC userspace would still need to be
-adjusted to use the new uapi, so AFAICT we really win nothing by doing this
-in the kernel.
-
-> This patch let's that happen for any platform - regardless of if it has
-> separate support.
-
-Doing this fully in userspace also allows this to happen for any platform.
-
-> If a vendor wants to handle plugged in vs battery to a
-> more nuanced degree they can, but that's at the individual driver level.
-> 
-> I originally thought that maybe this should be done in user space but:
-> 
-> 1) It takes a lot longer for user space changes to get rolled out and
-> make it into distros.
-
-Distros usually are quicker in updating userspace bits which are required
-for hw-enablement purposes; and for this to be really useful it
-needs a UI to control it, so it will need userspace support regardless
-of where we solve it.
-
-> 2) Not all users will get to use it - sure Gnome and KDE might get the
-> feature but chances of other desktops picking it up are small. I could
-> look at releasing a utility to do it but....urgh. Nobody gets a good
-> experience that way. Linux packaging is a minefield.
-
-Many many hw-enablement things, like thunderbolt authentication, proper
-automatic switching of audio streams, proper handling of various hotkeys
-like vol / brightness up/down, privacy screen on/off toggling, easy use
-of VPNs and wwan modems, are all not or very poorly supported in other
-desktop-environments. I often get bug reports from users using other
-DEs about things like this and there really is nothing which we can
-do about this. In some cases like i3 window-manager the norm
-is actually for users to have to write custom scripts for everything.
-
-Other DEs do try, but simply lack the manpower, this is an unfortunate
-situation, but not really a good argument for just shoving everything
-in the kernel.
-
-> 3) The power events happen in the kernel which is perfect. Once I
-> figured that out it seemed a no-brainer to me.
-
-That same event also gets forwarded to userspace over the power_supply
-class uapi.
-> I think user space should add the ability to have a nice GUI to toggle a
-> unplugged profile setting. But the guts of it seem to me to belong
-> better in the kernel.
-
-There is nothing which the kernel can do here, which userspace cannot
-also do; and generally speaking in cases like this userspace can do it
-better, because it can add a lot more fancy policy like (random example):
-switch to performance mode when on AC and the battery is fully charged.
-
-There will be many different usecases here and hardcoding a single
-simple but also dumb policy in the kernel really is not doing anyone
-any favors.
-
->>> At least the way Windows does this is that it offers "one" UI slider but you
->>> have last selected values based on if you're plugged in or on battery.
->>>
->>> 1) So on battery I might have balanced selected to start out.
->>> 2) Then I plug in a charger, and balanced is still selected but this has
->>> different characteristics from balanced on battery.
->>> 3) Now I change to performance while on charger.
->>> 4) Then I unplug charger and it goes back to my selection for battery: "balanced".
->>
->> The above is more about policy then it is about mechanism, userspace
->> can easily remember 2 separate settings for ac vs battery and restore
->> the last set value for ac or battery when changing between the 2.
->>
->> Since this mostly about the policy which profile to set when this
->> really belongs in userspace IMHO and solving this in userspace means that
->> we will have a single universal solution for all the different
->> platform_profile implementations, and we seem to have quite a lot of
->> those (at least one per laptop vendor, Lenovo currently has 2)
-> 
-> I disagree here. This is more universal by design. I was surprised at
-> how many vendors are using platform-profiles (I think it's awesome!) but
-> now they can all get this too. The intention here is very strongly not
-> supposed to be Lenovo specific.
-
-A userspace solution, at least at the power-profile-daemon level will
-be just as universal. And as for unsupported DEs, whether users have
-to manually poke a sysfs file, or have to manually make a dbus call
-(which can also be done from the shell) really does not make much
-of a difference.
-
-> The follow on patch that I could do in thinkpad_acpi to use a different
-> setting in unplugged/plugged mode - that will be Lenovo specific and
-> taking advantage of the functionality the Lenovo FW is offering. That
-> doesn't seem unreasonable to me.
-> 
->>>> If that is right then I think my point still stands, if PSC
->>>> has 2 separate slots (one AC one DC) for the performance
->>>> setting, then we can just set both when userspace selects a
->>>> performance level and have the actual e.g. balanced -> performance
->>>> change be done by userspace when userspace select the machine
->>>> has been connected to a charger.
->>>
->>> But you *don't want to* actually select performance when you switch to a
->>> charger.  If you have 3 value slots for AC and 3 value slots for DC you
->>> should only be swapping between what is in those 3 values slots.
->>
->> That only works if all implementation have separate AC and DC profile
->> slots, which most won't have. If we just sync the 2 slots for implementations
->> which do have 2 slots and then always "fake" 2 slots in userspace we
->> have a universal implementation which will work well everywhere, without
->> any significant downside to the implementations which do have 2 slots.
->>
-> I'm missing something in this bit. If a vendor is providing platform
-> profiles all we're doing is letting a user choose the profile they want
-> depending on their power situation. I don't think there are empty slots
-> particularly.
-> 
-> I've got a feeling I'm missing something obvious - but my experience of
-> user space is it's really hard to get a consistent experience for all
-> Linux users reliably - everybody is running something different.
-> If nothing else I think that should be a big factor for adding this
-> support to the kernel.
-
-See above, userspace not doing its job properly is really not a good
-argument to put something in the kernel. The kernel generally is
-about resource management/sharing and hardware abstraction,
-in general where possible the kernel should provide mechanism with
-no, or a very minimal policy and leave the rest up to userspace.
-
-This feels like just shoving something into the kernel just because
-that is convenient, not because it really belongs in the kernel,
-but we want the kernel to be as small as possible (it really already
-is much too big) because:
-
-1. Any kernel bugs are fatal if they get triggered, unlike hitting
-   a bug in userdspace code, hitting a bug in kernelspace code will
-   almost always take the entire system down.
-2. Kernel memory is not swapable
-
-> Obviously if this feature isn't wanted I'll drop it - but I think it's
-> something useful that users will appreciate on any HW.
-
-Above you are talking about changes to the thinkpad_acpi driver
-to possibly use some sort of "hardware" support for ac/dc profile
-switching, that is something which might be sensible to support
-in the kernel, although given that that is Lenovo specific a
-generic userspace solution to offer the same functionality by
-having p-p-d switch profiles on ac/dc changes seems like it
-would work just as well, avoiding the need for anything lenovo
-specific .
-
-Regards,
-
-Hans
-
+Notifier chains would probably work, but I'm not convinced they will be muc=
+h
+less code.  As I already have everything working with the current patch ser=
+ies
+before I try I'd like to know what Rafael prefers that for this purpose.
