@@ -2,56 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F3DF4D98E0
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Mar 2022 11:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E43F74D9A2A
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Mar 2022 12:16:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347110AbiCOKgX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Mar 2022 06:36:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40452 "EHLO
+        id S1344141AbiCOLRZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 15 Mar 2022 07:17:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347142AbiCOKgW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Mar 2022 06:36:22 -0400
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8EB338B7
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Mar 2022 03:35:09 -0700 (PDT)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-2dbfe58670cso195969257b3.3
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Mar 2022 03:35:09 -0700 (PDT)
+        with ESMTP id S240443AbiCOLRZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Mar 2022 07:17:25 -0400
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674C14F9C8;
+        Tue, 15 Mar 2022 04:16:13 -0700 (PDT)
+Received: by mail-io1-f44.google.com with SMTP id z7so21756558iom.1;
+        Tue, 15 Mar 2022 04:16:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Pkc9GvGFo4iMQJpC2p6s/Wqo1qfRHuszmmXMcpGLxXA=;
-        b=GMC3ucgt2L5dCVkwCW1iodeIvZlFi3TztvrtLzZ4gb0VBdf12remkRcclJ2nwuxYPX
-         ETHfSz90tpo3/EzrJwLyd0jC2AdAhd8IvP7kdG5bETJ9lmH3ZWHA5XDnFyqdM/+qT+yL
-         pb4F8pXCQsreKoK2Sg93LXV+YTJVI46EXijjRozrulse3H7mkaqCvKQyTuHto5hsVwW4
-         wJI9GfdhkSTBni3uvXR9SGM8YRx8+MrFKCwIqMUar8cCw6jGsRIayn+1sh6Ncj96nvSB
-         Yrk9V1HIKsO1ZSmTsVdX/gWIPGK1tDaBybwu3oEpymKI2GUQ3XH51pPPLuEAThdR1EIP
-         A8+g==
-X-Gm-Message-State: AOAM531ov7NayRLNDglaDz2u0uR94QceSJLCjm/teBT0etnGu5BgNlKS
-        g0yeLpd30kQBqAvNQNBEVyaci6LAjJfPl9KDFFiwUhLU
-X-Google-Smtp-Source: ABdhPJwzTFdmtm9GPvDwA16IgyRR4ukqA0j6rFQMwNsTA0IWMZEEWwMpxmQrwKpMEt5Eids3m2B98RxPaua72Uz2mtg=
-X-Received: by 2002:a0d:e904:0:b0:2e5:80bb:90a6 with SMTP id
- s4-20020a0de904000000b002e580bb90a6mr3833332ywe.515.1647340507584; Tue, 15
- Mar 2022 03:35:07 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=SHSnS045xOSqGUGYNxZz1bWOxpfWFGxEnCoZhA82baU=;
+        b=3xfAtRGVXGHBLcX8+Mh3vpAwuXjYGkfopVBc94KvSfP1NcrqbaNyJONef7m4+N3OTa
+         Z/RBOIL/EByyETatpL+pIGDsVci3FDg/MYfjaxD/cpZgP8ar0H8kha8UPTUM0YuTDPHo
+         s2Xu5joW7JFZyCarbf9WRHfelFqXUZvsNc28V/fr5aozX3WaU8lxVVQ0OhVzd/zb42CS
+         algVk6Efq9iLkA1ef6Rid82tfEYq8GyZ2FS7JNPDXG2ngMgRdvsm8mj/gDEiUwBz8CfU
+         aCpFW8mcJ7hZxOlwSdVawraDJWtJJ/zVyucC6aUBBkZ+3rH6HiI150mscwzYT+BCIF9M
+         dXfQ==
+X-Gm-Message-State: AOAM5323WclRKWTa32v4CxUyaxpyDnSYjYBKAbRS0Yzy4r7sSNo9lrH5
+        dYtV8uxWvHyg1EwPXxh4VLVlgtTiZdZTwWl2yTM=
+X-Google-Smtp-Source: ABdhPJzi1K37T2uO44ZNsKuw/g+YHc0BL3RHRsR2lKGCgz1cR7gvf6hv3h3YACkfVRqhb8e8u22W4O3QZKPWM+TnQcw=
+X-Received: by 2002:a02:aa05:0:b0:315:40b9:7439 with SMTP id
+ r5-20020a02aa05000000b0031540b97439mr24177076jam.131.1647342972700; Tue, 15
+ Mar 2022 04:16:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220310212805.3786-1-mario.limonciello@amd.com>
- <CAJZ5v0ibnaZZu_Gxngjbu5vzdQaJog8XZnJP6_msLqV_gi4Zig@mail.gmail.com>
- <BL1PR12MB5157839B59321A1A6AD9F73FE20E9@BL1PR12MB5157.namprd12.prod.outlook.com>
- <CAJZ5v0g_TH+OeQkBwXELKZiRcxjLvstr8G_bXOBChJ94sTkvHw@mail.gmail.com> <BL1PR12MB51576398DFBD0EADC6AFEAF1E2109@BL1PR12MB5157.namprd12.prod.outlook.com>
-In-Reply-To: <BL1PR12MB51576398DFBD0EADC6AFEAF1E2109@BL1PR12MB5157.namprd12.prod.outlook.com>
+References: <20220308123712.18613-1-andriy.shevchenko@linux.intel.com> <20220314195138.20036-1-michael@walle.cc>
+In-Reply-To: <20220314195138.20036-1-michael@walle.cc>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 15 Mar 2022 11:34:55 +0100
-Message-ID: <CAJZ5v0i=ecAksq0TV+iLVObm-=fUfdqPABzzkgm9K6KxO1ZCcg@mail.gmail.com>
-Subject: Re: [PATCH v6] ACPI: bus: For platform OSC negotiate capabilities
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+Date:   Tue, 15 Mar 2022 12:16:01 +0100
+Message-ID: <CAJZ5v0hbY8XCC-DfkoPFe15awV_FOpq91pUZvmZ9JrYi1QBMEg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/1] device property: Allow error pointer to be passed
+ to fwnode APIs
+To:     Michael Walle <michael@walle.cc>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Hou, Xiaomeng (Matthew)" <Xiaomeng.Hou@amd.com>,
-        "Liu, Aaron" <Aaron.Liu@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
@@ -62,104 +66,71 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 15, 2022 at 5:30 AM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
+On Mon, Mar 14, 2022 at 8:51 PM Michael Walle <michael@walle.cc> wrote:
 >
-> [AMD Official Use Only]
+> Hi Andy,
 >
->
->
-> > -----Original Message-----
-> > From: Rafael J. Wysocki <rafael@kernel.org>
-> > Sent: Monday, March 14, 2022 15:01
-> > To: Limonciello, Mario <Mario.Limonciello@amd.com>
-> > Cc: Rafael J. Wysocki <rafael@kernel.org>; Rafael J . Wysocki
-> > <rjw@rjwysocki.net>; ACPI Devel Maling List <linux-acpi@vger.kernel.org>;
-> > Mika Westerberg <mika.westerberg@linux.intel.com>; Hou, Xiaomeng
-> > (Matthew) <Xiaomeng.Hou@amd.com>; Liu, Aaron <Aaron.Liu@amd.com>;
-> > Huang, Ray <Ray.Huang@amd.com>; Hans de Goede
-> > <hdegoede@redhat.com>
-> > Subject: Re: [PATCH v6] ACPI: bus: For platform OSC negotiate capabilities
+> > Some of the fwnode APIs might return an error pointer instead of NULL
+> > or valid fwnode handle. The result of such API call may be considered
+> > optional and hence the test for it is usually done in a form of
 > >
-> > On Mon, Mar 14, 2022 at 12:45 AM Limonciello, Mario
-> > <Mario.Limonciello@amd.com> wrote:
-> > >
-> > > [Public]
-> > >
-> > > > I would do
-> > > >
-> > > > if (capbuf[OSC_SUPPORT_DWORD] ==
-> > capbuf_ret[OSC_SUPPORT_DWORD])
-> > > >         capbuf[OSC_QUERY_DWORD] = 0;
-> > > > else
-> > > >         capbuf[OSC_SUPPORT_DWORD] &=
-> > capbuf_ret[OSC_SUPPORT_DWORD];
-> > > >
-> > > > so that the loop terminates even if the firmware does strange things
-> > > > and then it would only be necessary to check
-> > capbuf[OSC_QUERY_DWORD]
-> > > > in the loop termination condition.
-> > > >
-> > > > Would that work?
-> > > >
-> > >
-> > > I think it will.  I'll try it and send up a v7 if so.
-> > >
-> > > > > +               kfree(context.ret.pointer);
-> > > > > +       } while (capbuf[OSC_QUERY_DWORD] &&
-> > > > capbuf[OSC_SUPPORT_DWORD]);
-> > > > >
-> > > > > -       /* Now run _OSC again with query flag clear */
-> > > > > -       capbuf[OSC_QUERY_DWORD] = 0;
-> > > > > +       /*
-> > > > > +        * Avoid problems with BIOS dynamically loading tables by
-> > indicating
-> > > > > +        * support for CPPC even if it was masked.
-> > > >
-> > > > What exactly do you mean by "BIOS dynamically loading tables"?
-> > >
-> > > As mentioned in commit 159d8c274fd9:
-> > >
-> > >     On certain systems the BIOS loads SSDT tables dynamically based on the
-> > >     capabilities the OS claims to support. However, on these systems the
-> > >     _OSC actually clears some of the bits (under certain conditions) so what
-> > >     happens is that now when we call the _OSC twice the second time we
-> > pass
-> > >     the cleared values and that results errors like below to appear on the
-> > >     system log:
-> > >
-> > >       ACPI BIOS Error (bug): Could not resolve symbol [\_PR.PR00._CPC],
-> > AE_NOT_FOUND (20210105/psargs-330)
-> > >       ACPI Error: Aborting method \_PR.PR01._CPC due to previous error
-> > (AE_NOT_FOUND) (20210105/psparse-529)
-> > >
-> > > This block  is to avoid regressing that again by forcing it on these systems.
+> >       fwnode = fwnode_find_reference(...);
+> >       if (IS_ERR(fwnode))
+> >               ...error handling...
 > >
-> > Well, this means that the code before and after the patch is not
-> > actually following the spec.
+> > Nevertheless the resulting fwnode may have bumped the reference count
+> > and hence caller of the above API is obliged to call fwnode_handle_put().
+> > Since fwnode may be not valid either as NULL or error pointer the check
+> > has to be performed there. This approach uglifies the code and adds
+> > a point of making a mistake, i.e. forgetting about error point case.
 > >
-> > First off, as mentioned in the changelog of commit 159d8c274fd9 (in
-> > the part that has not been quoted above), the OS is required to pass
-> > the same set of capabilities every time _OSC is evaluated.  This
-> > doesn't happen after the change.
+> > To prevent this, allow an error pointer to be passed to the fwnode APIs.
 > >
-> > Second, acpi_bus_osc_negotiate_platform_control() should take the
-> > capabilities mask returned by the platform which it doesn't do without
-> > the patch.
+> > Fixes: 83b34afb6b79 ("device property: Introduce fwnode_find_reference()")
+> > Reported-by: Nuno Sá <nuno.sa@analog.com>
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Tested-by: Nuno Sá <nuno.sa@analog.com>
+> > Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > Acked-by: Nuno Sá <nuno.sa@analog.com>
 >
-> Right on both points.
->
-> >
-> > That latter piece appears to be the bug in question here and IMO
-> > fixing it doesn't even require calling acpi_run_osc() with the query
-> > flag set for multiple times.
->
-> I think just taking the results will re-introduce the CPC bug though
-> won't it?  So how to avoid it but also to take the results?
+> This breaks SFP/phylink (using the lan966x switch) on my board. See below
+> for more details.
 
-I think that the OS should not ask for the control of the CPPC bits if
-they are masked by the firmware and it should avoid invoking _CPC
-then.
+I'm dropping this commit for the time being.
 
-Otherwise we risk breaking legitimate cases in which the firmware
-actually doesn't want the OS to control those bits.
+> [..]
+>
+> > @@ -480,15 +485,16 @@ int fwnode_property_get_reference_args(const struct fwnode_handle *fwnode,
+> >  {
+> >       int ret;
+> >
+> > +     if (IS_ERR_OR_NULL(fwnode))
+> > +             return -ENOENT;
+> > +
+> >       ret = fwnode_call_int_op(fwnode, get_reference_args, prop, nargs_prop,
+> >                                nargs, index, args);
+> > +     if (ret == 0)
+>
+> Should this be "if (ret == 0 || IS_ERR_OR_NULL(fwnode->secondary))" ?
+>
+> > +             return ret;
+> >
+> > -     if (ret < 0 && !IS_ERR_OR_NULL(fwnode) &&
+> > -         !IS_ERR_OR_NULL(fwnode->secondary))
+> > -             ret = fwnode_call_int_op(fwnode->secondary, get_reference_args,
+> > -                                      prop, nargs_prop, nargs, index, args);
+> > -
+> > -     return ret;
+> > +     return fwnode_call_int_op(fwnode->secondary, get_reference_args, prop, nargs_prop,
+> > +                               nargs, index, args);
+> >  }
+> >  EXPORT_SYMBOL_GPL(fwnode_property_get_reference_args);
+>
+> What happens before this patch is that sfp_bus_find_fwnode() will call
+> fwnode_property_get_reference_args() and the first calls return -ENOENT
+> which sfp_bus_find_fwnode() will handle in a special way. After your
+> patch, -EINVAL is returned, because fwnode_call_int_op() on
+> fwnode->secondary is always called regardless of the return value of
+> the original fwnode.
+>
+> -michael
