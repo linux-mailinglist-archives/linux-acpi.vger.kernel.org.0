@@ -2,141 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 499324D8DAB
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Mar 2022 21:01:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B74024D91E0
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Mar 2022 02:01:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244768AbiCNUCp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Mar 2022 16:02:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60716 "EHLO
+        id S241219AbiCOBCT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Mar 2022 21:02:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244836AbiCNUCp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Mar 2022 16:02:45 -0400
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEA5A3EA9F
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Mar 2022 13:01:34 -0700 (PDT)
-Received: by mail-yb1-f180.google.com with SMTP id u61so32988246ybi.11
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Mar 2022 13:01:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tvSQZLVC46WFPzsBuFexBtLZE2ddKnu34L2COPZ/7sQ=;
-        b=56UOGNga0Lg/4RyVQLwFtBvdV3ZnVUOXxrtPouPXMeaU8Q2hB5WexdDStvmF7IxvNz
-         VUyY+5H+CSXR/rcRax/262mH37RSQBBA+HXefcY2Y4TK8bIpLyumlKvgleBWB82J5ZEX
-         vCbrQkhixk5CM83XQcgbZ5gy0pE3EHO5QSGb0911UoXwtoU8uyPJdjmvmD2GPO4lfmUd
-         KKg60mz0HLvEt3aEoZ83IY0HFJJNFg4R+vs++Mc+F7psxcIGA/F5wg5MMsetocCMyem/
-         eofppFeQQc7TwU5XrbPpBMRuREWLqifDF4nM31rgaduTvFzfc9JY4ZPq4q8Osxa0uN3D
-         2cag==
-X-Gm-Message-State: AOAM5322g638Schb/ZOXLItj/q+yG3EX9sYt/xm7+xGsfBizl2k0PMX0
-        VBe9FJqYzFs4Hf98PhKPot5UGt8Yx5AjtkTErgTAz7778Jc=
-X-Google-Smtp-Source: ABdhPJwVmq3fi9UvNGGA5mR2/uOHDYi80bJEJD1UgIvBNPIWQCcE2f2NSllQI76pO6jGl/88idpQ3/HH1+hFrXsE8vQ=
-X-Received: by 2002:a25:4052:0:b0:628:cdca:afb7 with SMTP id
- n79-20020a254052000000b00628cdcaafb7mr19648276yba.81.1647288094089; Mon, 14
- Mar 2022 13:01:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220310212805.3786-1-mario.limonciello@amd.com>
- <CAJZ5v0ibnaZZu_Gxngjbu5vzdQaJog8XZnJP6_msLqV_gi4Zig@mail.gmail.com> <BL1PR12MB5157839B59321A1A6AD9F73FE20E9@BL1PR12MB5157.namprd12.prod.outlook.com>
-In-Reply-To: <BL1PR12MB5157839B59321A1A6AD9F73FE20E9@BL1PR12MB5157.namprd12.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 14 Mar 2022 21:01:23 +0100
-Message-ID: <CAJZ5v0g_TH+OeQkBwXELKZiRcxjLvstr8G_bXOBChJ94sTkvHw@mail.gmail.com>
-Subject: Re: [PATCH v6] ACPI: bus: For platform OSC negotiate capabilities
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Hou, Xiaomeng (Matthew)" <Xiaomeng.Hou@amd.com>,
-        "Liu, Aaron" <Aaron.Liu@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>
+        with ESMTP id S233143AbiCOBCS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Mar 2022 21:02:18 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE4931911;
+        Mon, 14 Mar 2022 18:01:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647306067; x=1678842067;
+  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=NWusIOIo+vyDfRBYbXa+JW6qvU98GxBj6Z5YtR9TtG0=;
+  b=NlJjVTYHnBuGLse/ZPfYj2Zd799XgktYx4q4hv9lg7lW6k3PG5nZLqVG
+   eXcU/UGAGoeonXZtDxhAqkdRwNADS3mOA22J5amppe4SS6RwaKhI84MGO
+   SqVqyPdxJYV5lC541hpa4tQSDkOrf6sr3AcYtmnwndycC5/JGdWkdWxie
+   /Or2zUhmIkoDpAKmQFSi4KrB6Mb3kzhbc4/QURqYA02wktseBmAUc+I7d
+   98z/ysbVn0WouiBdwHs5YxYW4nGdCZHRLXe+Xmr0PgMlBcPH1VJONU9NK
+   OnTT9ohC/95b3+QO+hmN9/7pns5OQ0FJs79ZwNGBFcMx/XzqH0MTWFMAo
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10286"; a="280949601"
+X-IronPort-AV: E=Sophos;i="5.90,181,1643702400"; 
+   d="scan'208";a="280949601"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 18:01:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,181,1643702400"; 
+   d="scan'208";a="634413805"
+Received: from linux.intel.com ([10.54.29.200])
+  by FMSMGA003.fm.intel.com with ESMTP; 14 Mar 2022 18:01:06 -0700
+Received: from zehall-mobl.amr.corp.intel.com (unknown [10.209.53.245])
+        by linux.intel.com (Postfix) with ESMTP id 9E357580690;
+        Mon, 14 Mar 2022 18:01:06 -0700 (PDT)
+Message-ID: <4121875ff3ee2999e50c687ed9f808d1dc98a68f.camel@linux.intel.com>
+Subject: Re: [PATCH v3 1/5] ACPI / x86: Add support for LPS0 callback handler
+From:   "David E. Box" <david.e.box@linux.intel.com>
+Reply-To: david.e.box@linux.intel.com
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     "open list:X86 PLATFORM DRIVERS" 
+        <platform-driver-x86@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "S-k, Shyam-sundar" <Shyam-sundar.S-k@amd.com>,
+        "Goswami, Sanket" <Sanket.Goswami@amd.com>
+Date:   Mon, 14 Mar 2022 18:01:06 -0700
+In-Reply-To: <BL1PR12MB5157664C2AA7D80E7DF48EC9E20F9@BL1PR12MB5157.namprd12.prod.outlook.com>
+References: <20220314050340.1176-1-mario.limonciello@amd.com>
+         <0101142d-3ea6-a47b-be26-76aaaac46b0a@redhat.com>
+         <BL1PR12MB5157664C2AA7D80E7DF48EC9E20F9@BL1PR12MB5157.namprd12.prod.outlook.com>
+Organization: David E. Box
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.36.5-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 14, 2022 at 12:45 AM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
->
+On Mon, 2022-03-14 at 13:32 +0000, Limonciello, Mario wrote:
 > [Public]
->
-> > I would do
-> >
-> > if (capbuf[OSC_SUPPORT_DWORD] == capbuf_ret[OSC_SUPPORT_DWORD])
-> >         capbuf[OSC_QUERY_DWORD] = 0;
-> > else
-> >         capbuf[OSC_SUPPORT_DWORD] &= capbuf_ret[OSC_SUPPORT_DWORD];
-> >
-> > so that the loop terminates even if the firmware does strange things
-> > and then it would only be necessary to check capbuf[OSC_QUERY_DWORD]
-> > in the loop termination condition.
-> >
-> > Would that work?
-> >
->
-> I think it will.  I'll try it and send up a v7 if so.
->
-> > > +               kfree(context.ret.pointer);
-> > > +       } while (capbuf[OSC_QUERY_DWORD] &&
-> > capbuf[OSC_SUPPORT_DWORD]);
-> > >
-> > > -       /* Now run _OSC again with query flag clear */
-> > > -       capbuf[OSC_QUERY_DWORD] = 0;
-> > > +       /*
-> > > +        * Avoid problems with BIOS dynamically loading tables by indicating
-> > > +        * support for CPPC even if it was masked.
-> >
-> > What exactly do you mean by "BIOS dynamically loading tables"?
->
-> As mentioned in commit 159d8c274fd9:
->
->     On certain systems the BIOS loads SSDT tables dynamically based on the
->     capabilities the OS claims to support. However, on these systems the
->     _OSC actually clears some of the bits (under certain conditions) so what
->     happens is that now when we call the _OSC twice the second time we pass
->     the cleared values and that results errors like below to appear on the
->     system log:
->
->       ACPI BIOS Error (bug): Could not resolve symbol [\_PR.PR00._CPC], AE_NOT_FOUND (20210105/psargs-330)
->       ACPI Error: Aborting method \_PR.PR01._CPC due to previous error (AE_NOT_FOUND) (20210105/psparse-529)
->
-> This block  is to avoid regressing that again by forcing it on these systems.
+> 
+> > > +int acpi_register_lps0_callbacks(struct lps0_callback_handler *arg)
+> > > +{
+> > > +	struct lps0_callback_handler *handler;
+> > > +
+> > > +	if (!lps0_device_handle || sleep_no_lps0)
+> > > +		return -ENODEV;
+> > > +
+> > > +	handler = kmalloc(sizeof(*handler), GFP_KERNEL);
+> > > +	if (!handler)
+> > > +		return -ENOMEM;
+> > > +	handler->prepare_late_callback = arg->prepare_late_callback;
+> > > +	handler->restore_early_callback = arg->restore_early_callback;
+> > > +	handler->context = arg->context;
+> > > +
+> > > +	mutex_lock(&lps0_callback_handler_mutex);
+> > > +	list_add(&handler->list_node, &lps0_callback_handler_head);
+> > > +	mutex_unlock(&lps0_callback_handler_mutex);
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(acpi_register_lps0_callbacks);
+> > 
+> > Typically with calls like these we simply let the caller own the struct
+> > lps0_callback_handler
+> > and only make the list_add() call here. Typically the struct
+> > lps0_callback_handler will
+> > be embedded in the driver_data of the driver registering the handler and it
+> > will
+> > call the unregister function before free-ing its driver_data.
+> > 
+> 
+> When I put this together I was modeling it off of `struct acpi_wakeup_handler`
+> which the handling and the use in the kernel doesn't seem to follow the design
+> pattern
+> you describe.
+> 
+> Rafael - can you please confirm which direction you want to see here for this?
+> 
+> > > +
+> > > +void acpi_unregister_lps0_callbacks(struct lps0_callback_handler *arg)
+> > > +{
+> > > +	struct lps0_callback_handler *handler;
+> > > +
+> > > +	mutex_lock(&lps0_callback_handler_mutex);
+> > > +	list_for_each_entry(handler, &lps0_callback_handler_head,
+> > list_node) {
+> > > +		if (handler->prepare_late_callback == arg-
+> > > prepare_late_callback &&
+> > > +		    handler->restore_early_callback == arg-
+> > > restore_early_callback &&
+> > > +		    handler->context == arg->context) {
+> > > +			list_del(&handler->list_node);
+> > > +			kfree(handler);
+> > > +			break;
+> > > +		}
+> > > +	}
+> > > +	mutex_unlock(&lps0_callback_handler_mutex);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(acpi_unregister_lps0_callbacks);
+> > 
+> > And this then becomes just lock, list_del, unlock.
+> > 
+> > Regards,
+> > 
+> > Hans
 
-Well, this means that the code before and after the patch is not
-actually following the spec.
+If you keep v3,
 
-First off, as mentioned in the changelog of commit 159d8c274fd9 (in
-the part that has not been quoted above), the OS is required to pass
-the same set of capabilities every time _OSC is evaluated.  This
-doesn't happen after the change.
+Reviewed-by: David E. Box <david.e.box@linux.intel.com>
 
-Second, acpi_bus_osc_negotiate_platform_control() should take the
-capabilities mask returned by the platform which it doesn't do without
-the patch.
-
-That latter piece appears to be the bug in question here and IMO
-fixing it doesn't even require calling acpi_run_osc() with the query
-flag set for multiple times.
-
->
-> >
-> > > +        */
-> > > +#ifdef CONFIG_X86
-> > > +       if (boot_cpu_has(X86_FEATURE_HWP)) {
-> > > +               capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPC_SUPPORT;
-> > > +               capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPCV2_SUPPORT;
-> > > +       }
-> > > +#endif
-> > >
-> > > +       /* Now run _OSC again with query flag clear */
-> > >         if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
-> > >                 return;
-> > >
-> > > --
-> > > 2.34.1
-> > >
