@@ -2,185 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A8954DA6E0
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Mar 2022 01:30:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E4124DAE29
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Mar 2022 11:20:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348553AbiCPAbl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Mar 2022 20:31:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59962 "EHLO
+        id S1355109AbiCPKV2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Mar 2022 06:21:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242769AbiCPAbj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Mar 2022 20:31:39 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC4E54F9C;
-        Tue, 15 Mar 2022 17:30:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647390625; x=1678926625;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FcDRWTou30Wxb55qZtenvzv/I/o5T65Zp2z3SdJU3pk=;
-  b=W9pNwBB50OeWQRna+LfeKPaq45dqcaaAEvpT3hBV/Ob9XoL0u9QYQLHp
-   gItjkVGvTuyApbRMUj1mL0YJFQETywiQJxv3FXLHX9OQw+Mf8mSMi3GU3
-   uANwM48OgGGJfrtvkK698Wuue1qsrdRVcY7LV0UE2pA0nG+YsDDGaPTar
-   o5vqmK+pXJLWUR63chAgtsnWxezBTmkUOnm1QrTGx2fXi206W3DMjivGb
-   Le6boqdBRkuv9KFxOuG4gaqqH1e/2auUBey17+a1UXAfBYJkIJJL1s8KH
-   UlhEusmnGo21o2btCEJN1cekZtsW8ckDTmlTjkjitR+WVien1REWJNOoJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10286"; a="243906382"
-X-IronPort-AV: E=Sophos;i="5.90,185,1643702400"; 
-   d="scan'208";a="243906382"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2022 17:30:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,185,1643702400"; 
-   d="scan'208";a="646435143"
-Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 15 Mar 2022 17:30:23 -0700
-Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nUHYU-000Bgw-Tg; Wed, 16 Mar 2022 00:30:22 +0000
-Date:   Wed, 16 Mar 2022 08:30:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 216aa68e610f96eb9882a10f1fe41732030e2d99
-Message-ID: <62312f9c.Zi4I8XH8nG5qTv9j%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S1355104AbiCPKV1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Mar 2022 06:21:27 -0400
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 086065BD1A
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Mar 2022 03:20:13 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-2e58e59d101so16990337b3.13
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Mar 2022 03:20:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8mhaNyjTIS1cIGMji7UhkQW+aATVlod4sQoXQV3HzLA=;
+        b=xDMtZ4RwvaIY43JjzbOYL9WSNGRgCya7EbVlOLyLWRWK5QLuz5789LHKPyjr9/3gMc
+         5xSrQXSFrdfBHmBqbGv7ETP7OKq9n6pfWADUgIY8XOz5oeE0F37z4g7qN7m3JojDF+ry
+         jaOPzktauYod6jJqKSet77M5k4yv1AzVXk9xET1vkizR9e2t4Vynd6bKs4lHI03nktaK
+         vGWe8LBG+Y3NZLPk+9V1rNMJv2pH0l3fUIB4QBkYJ0k2OxzZ3LaCSCOk3USaivMf3Axa
+         B9APyVOIANxOA3cnlYnOMBnmH8IZ3XA6sxCEchD2JhLUxu917ajCWlYHEAzYYOt1AOdQ
+         z8dQ==
+X-Gm-Message-State: AOAM531bZZmOaJisLHVLRJpx0Hfdv/bqgZ/jWVVz91caJqTj6H9EvQKY
+        PI3UEepDf9aY/yESJBStntudBbYLd0Ws4reYkBo=
+X-Google-Smtp-Source: ABdhPJygFuXlYCF07KVs4pOQjxP5lMKXskQ0xWKrEnZy5C59Z1e0xnI1Ff43gbACM8eimWdppeM9Jlla6C/Phb8sBQs=
+X-Received: by 2002:a81:5cf:0:b0:2e5:7477:168e with SMTP id
+ 198-20020a8105cf000000b002e57477168emr11470558ywf.149.1647426012281; Wed, 16
+ Mar 2022 03:20:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220310212805.3786-1-mario.limonciello@amd.com>
+ <CAJZ5v0ibnaZZu_Gxngjbu5vzdQaJog8XZnJP6_msLqV_gi4Zig@mail.gmail.com>
+ <BL1PR12MB5157839B59321A1A6AD9F73FE20E9@BL1PR12MB5157.namprd12.prod.outlook.com>
+ <CAJZ5v0g_TH+OeQkBwXELKZiRcxjLvstr8G_bXOBChJ94sTkvHw@mail.gmail.com>
+ <BL1PR12MB51576398DFBD0EADC6AFEAF1E2109@BL1PR12MB5157.namprd12.prod.outlook.com>
+ <CAJZ5v0i=ecAksq0TV+iLVObm-=fUfdqPABzzkgm9K6KxO1ZCcg@mail.gmail.com>
+ <CAJZ5v0iStA0JmO0H3z+VgQsVuQONVjKPpw0F5HKfiq=Gb6B5yw@mail.gmail.com> <BL1PR12MB515702B2DB9FED265B7B41BAE2109@BL1PR12MB5157.namprd12.prod.outlook.com>
+In-Reply-To: <BL1PR12MB515702B2DB9FED265B7B41BAE2109@BL1PR12MB5157.namprd12.prod.outlook.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 16 Mar 2022 11:20:00 +0100
+Message-ID: <CAJZ5v0iQOG0-6SOfDwVm2QFOm1C0Nmtb=+2PHrMEt4ycCzOLtw@mail.gmail.com>
+Subject: Re: [PATCH v6] ACPI: bus: For platform OSC negotiate capabilities
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Hou, Xiaomeng (Matthew)" <Xiaomeng.Hou@amd.com>,
+        "Liu, Aaron" <Aaron.Liu@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 216aa68e610f96eb9882a10f1fe41732030e2d99  Merge branches 'pm-docs-next' and 'devprop-next' into bleeding-edge
+On Tue, Mar 15, 2022 at 9:32 PM Limonciello, Mario
+<Mario.Limonciello@amd.com> wrote:
+>
+> [Public]
+>
+> > > > > That latter piece appears to be the bug in question here and IMO
+> > > > > fixing it doesn't even require calling acpi_run_osc() with the query
+> > > > > flag set for multiple times.
+> > > >
+> > > > I think just taking the results will re-introduce the CPC bug though
+> > > > won't it?  So how to avoid it but also to take the results?
+> > >
+> > > I think that the OS should not ask for the control of the CPPC bits if
+> > > they are masked by the firmware and it should avoid invoking _CPC
+> > > then.
+> > >
+> > > Otherwise we risk breaking legitimate cases in which the firmware
+> > > actually doesn't want the OS to control those bits.
+> >
+> > I'm basically talking about reverting commit 159d8c274fd9, as the part
+> > of the _OSC definition in the spec it is based on appears to be bogus
+> > (that will be addressed separately via the ACPI spec process), and
+> > applying the attached change on top of that.
+> >
+> > If this looks good to you, I'll take care of it.
+>
+> Yes, that looks great and I checked with 159d8c274fd9 reverted and that applying
+> the problem does not exist.  I do think it has the possibility to cause CPPC to not
+> be enabled outside of Intel though since HWP is only set there so I would suggest
+> this other change on top of it:
 
-elapsed time: 729m
+Good point.
 
-configs tested: 104
-configs skipped: 3
+I'll make it x86-specific for the time being and that can be changed later.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-arm                      footbridge_defconfig
-arm                     eseries_pxa_defconfig
-powerpc                 mpc834x_itx_defconfig
-mips                        vocore2_defconfig
-sh                              ul2_defconfig
-arm                        multi_v7_defconfig
-sh                          r7780mp_defconfig
-m68k                        m5307c3_defconfig
-arm                  randconfig-c002-20220314
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-nds32                             allnoconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-alpha                               defconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-parisc64                            defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-s390                             allyesconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                   debian-10.3-kselftests
-i386                                defconfig
-sparc                               defconfig
-sparc                            allyesconfig
-mips                             allmodconfig
-mips                             allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-i386                 randconfig-a001-20220314
-i386                 randconfig-a002-20220314
-i386                 randconfig-a004-20220314
-i386                 randconfig-a003-20220314
-i386                 randconfig-a005-20220314
-i386                 randconfig-a006-20220314
-x86_64                        randconfig-a006
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-arc                  randconfig-r043-20220313
-riscv                randconfig-r042-20220313
-s390                 randconfig-r044-20220313
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-riscv                    nommu_virt_defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-mips                           ip28_defconfig
-arm                       cns3420vb_defconfig
-mips                      bmips_stb_defconfig
-arm                        magician_defconfig
-powerpc                       ebony_defconfig
-arm                      pxa255-idp_defconfig
-powerpc                     skiroot_defconfig
-powerpc                          g5_defconfig
-mips                        omega2p_defconfig
-x86_64               randconfig-a011-20220314
-x86_64               randconfig-a014-20220314
-x86_64               randconfig-a013-20220314
-x86_64               randconfig-a012-20220314
-x86_64               randconfig-a016-20220314
-x86_64               randconfig-a015-20220314
-i386                 randconfig-a012-20220314
-i386                 randconfig-a011-20220314
-i386                 randconfig-a013-20220314
-i386                 randconfig-a014-20220314
-i386                 randconfig-a015-20220314
-i386                 randconfig-a016-20220314
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-hexagon              randconfig-r045-20220313
-hexagon              randconfig-r041-20220313
-
----
-0-DAY CI Kernel Test Service
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 4df749b82568..e61dbd7f7108 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -314,10 +314,8 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+>  #endif
+>  #ifdef CONFIG_X86
+>         capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_GENERIC_INITIATOR_SUPPORT;
+> -       if (boot_cpu_has(X86_FEATURE_HWP)) {
+> -               capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPC_SUPPORT;
+> -               capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPCV2_SUPPORT;
+> -       }
+> +       capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPC_SUPPORT;
+> +       capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_CPCV2_SUPPORT;
+>  #endif
+>
+>         if (IS_ENABLED(CONFIG_SCHED_MC_PRIO))
