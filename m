@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B82294DAFDB
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Mar 2022 13:39:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F124DAFD7
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Mar 2022 13:39:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355762AbiCPMkn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Mar 2022 08:40:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
+        id S1355671AbiCPMkf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Mar 2022 08:40:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355735AbiCPMkg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Mar 2022 08:40:36 -0400
+        with ESMTP id S1355713AbiCPMke (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Mar 2022 08:40:34 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B830565832;
-        Wed, 16 Mar 2022 05:39:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD4B5AEE5;
+        Wed, 16 Mar 2022 05:39:18 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 0f515980c8f941e4; Wed, 16 Mar 2022 13:39:18 +0100
+ id e2f96ae570f65f18; Wed, 16 Mar 2022 13:39:17 +0100
 Received: from kreacher.localnet (unknown [213.134.162.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 0757766B8A7;
-        Wed, 16 Mar 2022 13:39:17 +0100 (CET)
+        by v370.home.net.pl (Postfix) with ESMTPSA id F1B0066B8A9;
+        Wed, 16 Mar 2022 13:39:15 +0100 (CET)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     Linux PM <linux-pm@vger.kernel.org>,
@@ -30,9 +30,9 @@ Cc:     Linux PM <linux-pm@vger.kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v1 1/2] Revert "ACPI: Pass the same capabilities to the _OSC regardless of the query flag"
-Date:   Wed, 16 Mar 2022 13:37:44 +0100
-Message-ID: <4707785.GXAFRqVoOG@kreacher>
+Subject: [PATCH v1 2/2] ACPI: bus: Avoid using CPPC if not supported by firmware
+Date:   Wed, 16 Mar 2022 13:39:03 +0100
+Message-ID: <2107550.irdbgypaU6@kreacher>
 In-Reply-To: <4734682.31r3eYUQgx@kreacher>
 References: <4734682.31r3eYUQgx@kreacher>
 MIME-Version: 1.0
@@ -55,67 +55,76 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Revert commit 159d8c274fd9 ("ACPI: Pass the same capabilities to the
-_OSC regardless of the query flag") which caused legitimate usage
-scenarios (when the platform firmware does not want the OS to control
-certain platform features controlled by the system bus scope _OSC) to
-break and was misguided by some misleading language in the _OSC
-definition in the ACPI specification (in particular, Section 6.2.11.1.3
-"Sequence of _OSC Calls" that contradicts other perts of the _OSC
-definition).
+If the platform firmware indicates that it does not support CPPC by
+clearing the OSC_SB_CPC_SUPPORT and OSC_SB_CPCV2_SUPPORT bits in the
+platform _OSC capabilities mask, avoid attempting to evaluate _CPC
+which may fail in that case.
 
-Link: https://lore.kernel.org/linux-acpi/CAJZ5v0iStA0JmO0H3z+VgQsVuQONVjKPpw0F5HKfiq=Gb6B5yw@mail.gmail.com
-Reported-by: Mario Limonciello <Mario.Limonciello@amd.com>
+Because the OSC_SB_CPC_SUPPORT and OSC_SB_CPCV2_SUPPORT bits are only
+added to the supported platform capabilities mask on x86, when
+X86_FEATURE_HWP is supported, allow _CPC to be evaluated regardless
+in the other cases.
+
+Link: https://lore.kernel.org/linux-acpi/CAJZ5v0i=ecAksq0TV+iLVObm-=fUfdqPABzzkgm9K6KxO1ZCcg@mail.gmail.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/bus.c |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/acpi/bus.c       |    8 ++++++++
+ drivers/acpi/cppc_acpi.c |    3 +++
+ include/linux/acpi.h     |    1 +
+ 3 files changed, 12 insertions(+)
 
 Index: linux-pm/drivers/acpi/bus.c
 ===================================================================
 --- linux-pm.orig/drivers/acpi/bus.c
 +++ linux-pm/drivers/acpi/bus.c
-@@ -333,21 +333,32 @@ static void acpi_bus_osc_negotiate_platf
- 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+@@ -284,6 +284,8 @@ EXPORT_SYMBOL_GPL(osc_pc_lpi_support_con
+ bool osc_sb_native_usb4_support_confirmed;
+ EXPORT_SYMBOL_GPL(osc_sb_native_usb4_support_confirmed);
+ 
++bool osc_sb_cppc_not_supported;
++
+ static u8 sb_uuid_str[] = "0811B06E-4A27-44F9-8D60-3CBBC22E7B48";
+ static void acpi_bus_osc_negotiate_platform_control(void)
+ {
+@@ -339,6 +341,12 @@ static void acpi_bus_osc_negotiate_platf
  		return;
+ 	}
  
--	kfree(context.ret.pointer);
-+	capbuf_ret = context.ret.pointer;
-+	if (context.ret.length <= OSC_SUPPORT_DWORD) {
-+		kfree(context.ret.pointer);
-+		return;
-+	}
++#ifdef CONFIG_X86
++	if (boot_cpu_has(X86_FEATURE_HWP))
++		osc_sb_cppc_not_supported = !(capbuf_ret[OSC_SUPPORT_DWORD] &
++				(OSC_SB_CPC_SUPPORT | OSC_SB_CPCV2_SUPPORT));
++#endif
++
+ 	/*
+ 	 * Now run _OSC again with query flag clear and with the caps
+ 	 * supported by both the OS and the platform.
+Index: linux-pm/drivers/acpi/cppc_acpi.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/cppc_acpi.c
++++ linux-pm/drivers/acpi/cppc_acpi.c
+@@ -656,6 +656,9 @@ int acpi_cppc_processor_probe(struct acp
+ 	acpi_status status;
+ 	int ret = -EFAULT;
  
--	/* Now run _OSC again with query flag clear */
-+	/*
-+	 * Now run _OSC again with query flag clear and with the caps
-+	 * supported by both the OS and the platform.
-+	 */
- 	capbuf[OSC_QUERY_DWORD] = 0;
-+	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
-+	kfree(context.ret.pointer);
++	if (osc_sb_cppc_not_supported)
++		return -ENODEV;
++
+ 	/* Parse the ACPI _CPC table for this CPU. */
+ 	status = acpi_evaluate_object_typed(handle, "_CPC", NULL, &output,
+ 			ACPI_TYPE_PACKAGE);
+Index: linux-pm/include/linux/acpi.h
+===================================================================
+--- linux-pm.orig/include/linux/acpi.h
++++ linux-pm/include/linux/acpi.h
+@@ -580,6 +580,7 @@ acpi_status acpi_run_osc(acpi_handle han
+ extern bool osc_sb_apei_support_acked;
+ extern bool osc_pc_lpi_support_confirmed;
+ extern bool osc_sb_native_usb4_support_confirmed;
++extern bool osc_sb_cppc_not_supported;
  
- 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
- 		return;
- 
- 	capbuf_ret = context.ret.pointer;
--	osc_sb_apei_support_acked =
--		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
--	osc_pc_lpi_support_confirmed =
--		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
--	osc_sb_native_usb4_support_confirmed =
--		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
-+	if (context.ret.length > OSC_SUPPORT_DWORD) {
-+		osc_sb_apei_support_acked =
-+			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
-+		osc_pc_lpi_support_confirmed =
-+			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
-+		osc_sb_native_usb4_support_confirmed =
-+			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
-+	}
- 
- 	kfree(context.ret.pointer);
- }
+ /* USB4 Capabilities */
+ #define OSC_USB_USB3_TUNNELING			0x00000001
 
 
 
