@@ -2,160 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB8504DBF0A
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 07:12:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A2094DBEA3
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 06:47:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229916AbiCQGNw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Mar 2022 02:13:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47210 "EHLO
+        id S229445AbiCQFsV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Mar 2022 01:48:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230162AbiCQGNR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Mar 2022 02:13:17 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC912221BA2;
-        Wed, 16 Mar 2022 22:51:02 -0700 (PDT)
+        with ESMTP id S229437AbiCQFsV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Mar 2022 01:48:21 -0400
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DFF265E9D;
+        Wed, 16 Mar 2022 22:18:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647496262; x=1679032262;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=+viz+QYgxuzou9aIPC1dlzdY5c64yzm42y59YRpTAU8=;
-  b=fdyucc4JEA5DTZAf6jp90v7puzuVp8P7BSyEKEA/hXp6zWZdUxP1Ngx+
-   WGv0lWyn7IeL2QAtAiIiBjqU21OuPzN/VWiGCwenrlz+jDcelytDCe+ZQ
-   hRN8y/aKM5s6eqDrt+SJuLFme2eCqfXBJCORiPK7s1xvBx+gnOp0KSpmi
-   V7NY+Te3CFViLo+8nWB7GrzcwDqR1inuITP3uaT3ELSX4ISP83tu1mrnz
-   ePQfjduESBpU0tcQ4YKz+Puw1THKlKveW32QP2puZJ8gNQL0b3Hs6BXKl
-   ZhQUUH6VKDP5Qmq4Oh8n4kN+gDtG1K7MQl6NjXFq7LdZKrV09tl9kPuVR
+  t=1647494319; x=1679030319;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pZQu34NZppkJa6YMn9JUKxZUUg6QdFsPgHLjcQxd89s=;
+  b=cx3acKJXSxQZVDRAO4e6Xef3FMfHTSLoGSgd5bS0/g9p0dUgsxIdyqXM
+   6JDX8agYs+I7Dw14N9Mndi7dduzlA6bVdyJHeDwm/QPTSxPrlQqmjVSh7
+   iHZPG58ZyFOriU48iRxeBuqP/+oMB6OvxGg3NHeCMu+su5p3ZLJDhee8j
+   0o/v+GMGr5oavlzzg2MrDovX13qk9ggUCply45tg1Zf1N/WHh4xKqT4r7
+   r+CZuHgPlCqSkZHgr7rYyHNxg0QjvJabkqZEUIdz6rD0EQ60Tw1rJQdLc
+   u3mmfarzlpDJ7ZJ44erS+M1duYZgXYkkZt63GrOUkjgUEaafJhW/XlNtO
    Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10288"; a="254331571"
+X-IronPort-AV: E=McAfee;i="6200,9189,10288"; a="317503267"
 X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
-   d="scan'208";a="254331571"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2022 20:49:52 -0700
+   d="scan'208";a="317503267"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2022 22:18:38 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
-   d="scan'208";a="646904373"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orsmga004.jf.intel.com with ESMTP; 16 Mar 2022 20:49:51 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Wed, 16 Mar 2022 20:49:51 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21 via Frontend Transport; Wed, 16 Mar 2022 20:49:51 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.177)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2308.21; Wed, 16 Mar 2022 20:49:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bbA+dct3KMTHG070TyTmqAS2KHxsrA3J0y/m/9QIpCXacq8se1m4ZMUHZra4y43Y09sSKpBGlYOnEpgWT3NieoJnqBMqlur39jscqKccOeKiezPowuy+JE3HsySygKbfqAek/AI87g0+sj1zbSZJWWchXqQKY5cQiZWIYs/Bh+6BT30mKB1t83ub1Tiabp29RXMJYb5al4IiZAlnZLxyQ3HNiw5h7ZDtK+gfyAueZoDtK3es8i065l4yQU3Vb+/9lnKKt/a42muivZNYOA3vQo6MZOD77mabauSXvp2OvoXVsQJnYOvh6JlFuDYbrCoXqQXe8lOr3Ll6nkhMQQBFKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+viz+QYgxuzou9aIPC1dlzdY5c64yzm42y59YRpTAU8=;
- b=aujLmoPGep3x0ey6lWboZCMT3956OSDJBn0vOgHvKuh/gCkCYafiv2H41d1bjmfUbaGOAYear2VYB4FcIr+GX9XpHGiXRRRrDrLv63At96PqpBuz+3jTQs6S1NPq+xeZjhKQJ0hVEBhgUWaNKScQPkGDyqwPskGq7eew2aF0hVxnW4ybunq57ZaQk13R0gtlHZypLHx2KUPvyylKH9h1ej3I6Zw1ssS8kKvrR7QS2/Ootf9n5hZtbwop0RHpCvtyLeSLsvPwLtuBZdjBlUNSffe3IIXkAx5UgNaPn1aDHqnApLflW6k4nQKmRPFdr5M+ptM7XZ0bDP4fMMmaTLtSBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN2PR11MB3999.namprd11.prod.outlook.com (2603:10b6:208:154::32)
- by MWHPR11MB1679.namprd11.prod.outlook.com (2603:10b6:301:f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.14; Thu, 17 Mar
- 2022 03:49:48 +0000
-Received: from MN2PR11MB3999.namprd11.prod.outlook.com
- ([fe80::d898:84ee:d6a:4eb1]) by MN2PR11MB3999.namprd11.prod.outlook.com
- ([fe80::d898:84ee:d6a:4eb1%6]) with mapi id 15.20.5081.015; Thu, 17 Mar 2022
- 03:49:48 +0000
-From:   "Verma, Vishal L" <vishal.l.verma@intel.com>
-To:     "Williams, Dan J" <dan.j.williams@intel.com>
-CC:     "rafael@kernel.org" <rafael@kernel.org>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [RFC PATCH 2/2] acpi/pci_root: negotiate CXL _OSC
-Thread-Topic: [RFC PATCH 2/2] acpi/pci_root: negotiate CXL _OSC
-Thread-Index: AQHYOZXEX0UItFxD/USR0kvjsLOzz6zC6HmAgAAIcoA=
-Date:   Thu, 17 Mar 2022 03:49:48 +0000
-Message-ID: <7c577fd6c824890144b698a9e7164ab334b14016.camel@intel.com>
-References: <20220317002704.1835870-1-vishal.l.verma@intel.com>
-         <20220317002704.1835870-3-vishal.l.verma@intel.com>
-         <CAPcyv4iOOrefEF5QOrZyvPYJ9_5GuhpMKPeSbvVXci=qGevmBw@mail.gmail.com>
-In-Reply-To: <CAPcyv4iOOrefEF5QOrZyvPYJ9_5GuhpMKPeSbvVXci=qGevmBw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.42.4 (3.42.4-1.fc35) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 224b48fe-7ae6-4a27-b13a-08da07c92f2f
-x-ms-traffictypediagnostic: MWHPR11MB1679:EE_
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr,ExtFwd
-x-microsoft-antispam-prvs: <MWHPR11MB16791FC154519CE2D6AD8D17C7129@MWHPR11MB1679.namprd11.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: dyMFolb75HfBesdbJUrNxayfl1lqCLycTgoVHRk+XSN0WDB+1PR7+5uFzLownaGpfAf6qvwX9GF9a4/1ysDe03/2U7UExNaq5vrBtX8ZuUdMu4jDRYuzKLoPfUCLIlGtpW0hrjXNbxwOMFzuist7SPumhDi/EhKK+MI4Eh1z24zKFIc6ZuR9M00OGtt4rOQGSLXTyKk0i1FJB7vBwPhwGB4Dgi+DtjWzYUXqWmpo3uS4oXSyzCAa/+zebBXUSdI1KQXlLUp3SmGnrdoevGq3eW1b5pqKVFGp++O2EVnTlT9npo5OXbdLXISOssYzqhQATh9iGdywbHJK9FGGcFpJUfWy+Eu/EypVQ8eq/rGv/c9Z/P2Q3iRlKcxvPtiVrCipoXbY7PVKhjAt0OHlK0+wblhtqmpjcbuFIhXB56cifNPHHWAAopSCO2PI946QmqKHgIeeTkn0IkofkwGj8do4xzBYJvAlUeEJ3OnSiDc4VMXddHUXnnk0zEC0Hj1x8MQZd+GxokhPDdnIs3BarjAj7BrkGlP/JkiRnbkw20IiaPyOdoXTiDNVVhK95q2TS0yHJbmUuYY2PmzhFIaQZ8R6ywu+eQOrG8dVi8ek3Xq9WpymuuX2M2ubS4ve2pJsq8XrMmmWq28Qfb0DRZYQpkMpFeQipFz2rFJQ3BD8x96ax+uCZ6I0KIh39mJjJJYa4LYD1jueveZaXPYxvKWS2ug6qi1h/KYydY/MzoqP4EpEf/LtNxFZdlPw+//2C51OT3GQwZ7uAKmmb5LancMprED5dTU8HginZ7CAuClrBBTZCV8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3999.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(54906003)(83380400001)(37006003)(6636002)(316002)(91956017)(6506007)(76116006)(6862004)(8676002)(4326008)(66556008)(66476007)(66446008)(64756008)(66946007)(2906002)(186003)(26005)(53546011)(86362001)(71200400001)(2616005)(36756003)(966005)(6486002)(5660300002)(508600001)(82960400001)(122000001)(6512007)(8936002)(38100700002)(38070700005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UlhMYlp1OFlCN01jelRTZXNKemYvRjJnamVNMVFUeEw3VW9PRDE2cUpFQ1Nm?=
- =?utf-8?B?dmpYdS9CbytJZ28xZWdlQ1VxYkk2bFRaa01ML3VUSEhWVG9LK1N4YWVrdHRJ?=
- =?utf-8?B?VnV1VmVQajBqRzQ3WHJNUXg0MVNaV1hkWitQSk53a1VlZHhjWWVMaHN4VmZk?=
- =?utf-8?B?UUNMWWJjT0pjeGJVVjNMYUM0QjJ5SFFZam5tT3dmTlRuK04wZ1lXalVueVpo?=
- =?utf-8?B?YzJJL2EwaDhHYjJuSHl1b0lSQzJYTTdGa0djejVocWhTM00xYXNoMmk5bEIy?=
- =?utf-8?B?WWVDazdTRHErb2F1RWlVYnh2bE1wT0t3NHMzcEo2N2FpdG5oSU9XYXpQays5?=
- =?utf-8?B?VjIxVDJpRThZVTVScTQzWDNVdlJTZkZGUnpSbFlndHhSbUduTmJrUHRLN0M0?=
- =?utf-8?B?NXhjVG81YlhtVzJMRFNyZ0tUeXJFUzlMK2kvWTJFRU01TmRoR3VyZVdqMkJk?=
- =?utf-8?B?U2ZiTWdleFlxVGRvT1AvTzFLQ2wyU3gwN2MwMjUzZFpGdEp2Ynl1aXhhbGM5?=
- =?utf-8?B?UjZBV01GNHN5bGFNTzJCaTYxa3pZM1VPd29vL2EzUzA2MHBoeVNSSGcrTXps?=
- =?utf-8?B?UkQ1bXdCbGtDTGw2U3dzNEJqVnJHUStRQ285YWtiUzRNb3JaNzhLMkRUNW95?=
- =?utf-8?B?b0c5ek1lWk5QTUM0YWFNSGU5WnZ2NmUya28rNm1rRGE4elJudElWNktTVGxL?=
- =?utf-8?B?bWI5c0lheVRZMlAvOUFFNUpSVUVWM2pnZUxoQzJKeWc1TStieFZXcCtudWRC?=
- =?utf-8?B?ZFcySzBtSVYyUEpFbDc2eFRSMExpZXJQT3Z3eGJ4UnBwZGE4Wk5aQUkxR0hJ?=
- =?utf-8?B?eWU0M3dXZlJObEg0bDdUUE82Q3dORmpVNWlsYUkvYTVIYjBUREp6ajlUVVpl?=
- =?utf-8?B?a1dydTYxWjB0K2tmRUlzWE4vWkJHMzJMTmRYWXlmYkM5QTRYSFBiRTJCVjZh?=
- =?utf-8?B?SzhFK01EWnZRK0NPZWxsZUNpZWpKTEtIbFVrbzZVWHZRL3F2TytpYUFZbjhH?=
- =?utf-8?B?djlxODVpK3EvWlcwdTRtL1hkWjlHenRFbVFESGpXWnJlUHVPSVJxVld3Mk5H?=
- =?utf-8?B?eFYyRnhVRkZ4QTZUTlZmUGJOOFNXdkh1dEszeU9zc2RQTXYzR1ZNUjRaMlRP?=
- =?utf-8?B?NkJjNndjZittSkFTdGRBTmdKbWp0ZWo5U0FkYm82L1ZPZXh6dG1GSDhaWTkz?=
- =?utf-8?B?aEVQR2NnWjQ5cHBTcDFRY0dEeDhaaklScG9YcEtYMlIzMmJvVDMxNTl4Q3ND?=
- =?utf-8?B?dG9TUURrcmxZQzdNdlI0QmQwS3FGZTFieEYxWkh0RGE0WFpheEphakJCVW9z?=
- =?utf-8?B?Vko4RW1lSTVuMnNKbzAxNjVMemQ0UzJvdklaZ0p0S0E3VVhXc2ZFTm1TMW9Y?=
- =?utf-8?B?RG9HbjhSa1BrbnJKZSt6TmhGRlRPakF3ZjBDSkpManh2ektMazZYWmlCdnVz?=
- =?utf-8?B?aDVsYXZaNzJ0Mm1KN1NOdGI1bkwwQnJWbENyWTNKbTh6dGUzYnZPSlFkTlZs?=
- =?utf-8?B?eG5PeVo1NVc0NzV6aUxKUlBraDNJU3pTdm14ZlZhLzhWK0paTEliNUl0RlpD?=
- =?utf-8?B?c1BvR0xKbk8wdk1Rb2FOdXdkWkh3K3pqSVZVRDNFUjZJeWF2c3ZTbWd6SFZt?=
- =?utf-8?B?Wnh4WkxUNG1pS0ZoclJuR3RFK0V4RlFEK1QxWTg4TW5tQjlsaVA2K3dZZHYz?=
- =?utf-8?B?eWF1Q2xJTlNjT0pJWWdwOWJvYStkWGo4bHJYc0FsNTd2bi8vaDFWNVFrYVJk?=
- =?utf-8?B?UmJqZDkzMFdhUkF5S3BKM3ZtdWxYZ2pHQXNKS055RHJad21rN2t0bUsvV0FH?=
- =?utf-8?B?YWtleUxnUlNaN29pYUxPV093TnFaSnNpUVF1d0pQKzE0Um96OW51Q3VGVFlU?=
- =?utf-8?B?Z2VHTHJNRnJDUkZLMXBsZlY1TUsvQVpBTjl0cXZGbFNHeWphaHdGcUhqZERh?=
- =?utf-8?B?WG56MlVxSEVSSG4xbFEzSmpCM2ZndnIyanljOW0wYzdMMXh2aWtrT0tGSUNH?=
- =?utf-8?B?aWFXb2dVU1NRPT0=?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B078C08CECD4FD45B2498E7480659D10@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+   d="scan'208";a="690828957"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 16 Mar 2022 22:18:36 -0700
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nUiWx-000DJq-SX; Thu, 17 Mar 2022 05:18:35 +0000
+Date:   Thu, 17 Mar 2022 13:17:51 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 26f31e5a7e645b72dbd9cb1add8c94c49cbbd488
+Message-ID: <6232c47f.tBigSHloJLnffHAy%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3999.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 224b48fe-7ae6-4a27-b13a-08da07c92f2f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2022 03:49:48.6415
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xKxHYjsJGkkWz2wUhxO2VNSYoU5kS4z1919a11Q0Mrk2B5rN2n+KwBpGsSyDnbepPLE5MvFviJwzybXtB8Ds8R+zvYVMFa+d6ma50BHx8Lc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1679
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -164,57 +62,131 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-T24gV2VkLCAyMDIyLTAzLTE2IGF0IDIwOjE5IC0wNzAwLCBEYW4gV2lsbGlhbXMgd3JvdGU6DQo+
-IE9uIFdlZCwgTWFyIDE2LCAyMDIyIGF0IDU6MjcgUE0gVmlzaGFsIFZlcm1hIDx2aXNoYWwubC52
-ZXJtYUBpbnRlbC5jb20+IHdyb3RlOg0KPiA+IA0KPiA+IEFkZCBmdWxsIHN1cHBvcnQgZm9yIG5l
-Z290aWF0aW5nIF9PU0MgYXMgZGVmaW5lZCBpbiB0aGUgQ1hMIDIuMCBzcGVjLCBhcw0KPiA+IGFw
-cGxpY2FibGUgdG8gQ1hMLWVuYWJsZWQgcGxhdGZvcm1zLiBBZHZlcnRpc2Ugc3VwcG9ydCBmb3Ig
-dGhlIENYTA0KPiA+IGZlYXR1cmVzIHdlIHN1cHBvcnQgLSAnQ1hMIDIuMCBwb3J0L2RldmljZSBy
-ZWdpc3RlciBhY2Nlc3MnLCAnUHJvdG9jb2wNCj4gPiBFcnJvciBSZXBvcnRpbmcnLCBhbmQgJ0NM
-IE5hdGl2ZSBIb3QgUGx1ZycuIFJlcXVlc3QgY29udHJvbCBmb3IgJ0NYTA0KPiA+IE1lbW9yeSBF
-cnJvciBSZXBvcnRpbmcnLiBUaGUgcmVxdWVzdHMgYXJlIGRlcGVuZGVudCBvbiBDT05GSUdfKiBi
-YXNlZA0KPiA+IHByZS1yZXF1aXNpdGVzLCBhbmQgcHJpb3IgUENJIGVuYWJsaW5nLCBzaW1pbGFy
-IHRvIGhvdyB0aGUgc3RhbmRhcmQgUENJDQo+ID4gX09TQyBiaXRzIGFyZSBkZXRlcm1pbmVkLg0K
-PiANCj4gTWlnaHQgd2FudCB0byBhZGQgYSBjbGFyaWZpY2F0aW9uIGhlcmUgb2Ygd2h5IHRoaXMg
-anVzdCByZWZsZWN0cyB0aGUNCj4gUENJZSBzdXBwb3J0IGludG8gdGhlIHNpbWlsYXIgQ1hMIGZp
-ZWxkcy4gRm9yIGV4YW1wbGU6DQo+IA0KPiBUaGUgQ1hMIHNwZWNpZmljYXRpb24gZG9lcyBub3Qg
-ZGVmaW5lIGFueSBhZGRpdGlvbmFsIGNvbnN0cmFpbnRzIG9uDQo+IHRoZSBob3RwbHVnIGZsb3cg
-YmV5b25kIFBDSWUgbmF0aXZlIGhvdHBsdWcsIHNvIGEga2VybmVsIHRoYXQgc3VwcG9ydHMNCj4g
-bmF0aXZlIFBDSWUgaG90cGx1Zywgc3VwcG9ydHMgQ1hMIGhvdHBsdWcuIEZvciBlcnJvciBoYW5k
-bGluZyBwcm90b2NvbA0KPiBhbmQgbGluayBlcnJvcnMganVzdCB1c2UgUENJZSBBRVIuIFRoZXJl
-IGlzIG5hc2NlbnQgc3VwcG9ydCBmb3INCj4gYW1lbmRpbmcgQUVSIGV2ZW50cyB3aXRoIENYTCBz
-cGVjaWZpYyBzdGF0dXMgWzFdLCBidXQgdGhlcmUncw0KPiBvdGhlcndpc2Ugbm8gYWRkaXRpb25h
-bCBPUyByZXNwb25zaWJpbGl0eSBmb3IgQ1hMIGVycm9ycyBiZXlvbmQgUENJZQ0KPiBBRVIuIENY
-TCBNZW1vcnkgRXJyb3JzIGJlaGF2ZSB0aGUgc2FtZSBhcyB0eXBpY2FsIG1lbW9yeSBlcnJvcnMg
-c28NCj4gQ09ORklHX01FTU9SWV9GQUlMVVJFIGlzIHN1ZmZpY2llbnQgdG8gaW5kaWNhdGUgc3Vw
-cG9ydCB0byBwbGF0Zm9ybQ0KPiBmaXJtd2FyZS4NCj4gDQo+IFsxXTogaHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvbGludXgtY3hsLzE2NDc0MDQwMjI0Mi4zOTEyMDU2LjgzMDM2MjUzOTI4NzEzMTM4
-NjAuc3RnaXRAZHdpbGxpYTItZGVzazMuYW1yLmNvcnAuaW50ZWwuY29tLw0KDQpZZXMgdGhhdCBz
-b3VuZHMgZ29vZCwgd2lsbCBhZGQuDQoNCj4gPiANCg0KWy4uXQ0KDQo+ID4gQEAgLTQ0MCw2ICs1
-MTEsMTggQEAgc3RhdGljIHUzMiBjYWxjdWxhdGVfc3VwcG9ydCh2b2lkKQ0KPiA+IMKgwqDCoMKg
-wqDCoMKgIHJldHVybiBzdXBwb3J0Ow0KPiA+IMKgfQ0KPiA+IA0KPiA+ICtzdGF0aWMgdTMyIGNh
-bGN1bGF0ZV9jeGxfc3VwcG9ydCh2b2lkKQ0KPiA+ICt7DQo+ID4gK8KgwqDCoMKgwqDCoCB1MzIg
-c3VwcG9ydDsNCj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoCBzdXBwb3J0ID0gT1NDX0NYTF8yXzBf
-UE9SVF9ERVZfUkVHX0FDQ0VTU19TVVBQT1JUOw0KPiA+ICvCoMKgwqDCoMKgwqAgc3VwcG9ydCB8
-PSBPU0NfQ1hMX1BFUl9TVVBQT1JUOw0KPiANCj4gSSB3b3VsZCBleHBlY3QgdGhpcyBvbmUgdG8g
-YmUgZ2F0ZWQgYnkgcGNpX2Flcl9hdmFpbGFibGUoKSBzaW5jZSB0aGVzZQ0KPiBlcnJvcnMgYXJl
-IHJlcG9ydGVkIGJ5IFBDSWUgQUVSLg0KPiANCj4gUGVyaGFwcyBhbHNvIHMvUEVSL1BPUlRfRVJS
-T1IvPyBJIGtlZXAgcmVhZGluZyBQRVIgbGlrZSAncGVyJyBhcyBpbiAncGVyLWNwdScuDQoNCkV4
-cGFuZGluZyB0aGUgYWNyb255bSBzb3VuZHMgZ29vZCwgdGhvdWdoIGl0IGlzIFByb3RvY29sIEVy
-cm9yDQpSZXBvcnRpbmcsIG5vdCBQb3J0Lg0KDQo+IA0KPiA+ICvCoMKgwqDCoMKgwqAgaWYgKElT
-X0VOQUJMRUQoQ09ORklHX0hPVFBMVUdfUENJX1BDSUUpKQ0KPiA+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIHN1cHBvcnQgfD0gT1NDX0NYTF9OQVRJVkVfSFBfU1VQUE9SVDsNCj4gPiAr
-DQo+ID4gK8KgwqDCoMKgwqDCoCByZXR1cm4gc3VwcG9ydDsNCj4gPiArfQ0KPiA+ICsNCj4gPiDC
-oHN0YXRpYyB1MzIgY2FsY3VsYXRlX2NvbnRyb2wodm9pZCkNCj4gPiDCoHsNCj4gPiDCoMKgwqDC
-oMKgwqDCoCB1MzIgY29udHJvbDsNCj4gPiBAQCAtNDcxLDYgKzU1NCwxNiBAQCBzdGF0aWMgdTMy
-IGNhbGN1bGF0ZV9jb250cm9sKHZvaWQpDQo+ID4gwqDCoMKgwqDCoMKgwqAgcmV0dXJuIGNvbnRy
-b2w7DQo+ID4gwqB9DQo+ID4gDQo+ID4gK3N0YXRpYyB1MzIgY2FsY3VsYXRlX2N4bF9jb250cm9s
-KHZvaWQpDQo+ID4gK3sNCj4gPiArwqDCoMKgwqDCoMKgIHUzMiBjb250cm9sOw0KPiA+ICsNCj4g
-PiArwqDCoMKgwqDCoMKgIGlmIChwY2lfYWVyX2F2YWlsYWJsZSgpKQ0KPiA+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIGNvbnRyb2wgfD0gT1NDX0NYTF9FUlJPUl9SRVBPUlRJTkdfQ09O
-VFJPTDsNCj4gDQo+IEluIHRoaXMgY2FzZSB0aGUgZXJyb3IgaGFuZGxpbmcgaXMgZm9yIG1lbW9y
-eSBlcnJvcnMsIHNvIHRoaXMgb25lIHNob3VsZCBiZToNCj4gDQo+IGlmIChJU19FTkFCTEVEKENP
-TkZJR19NRU1PUllfRkFJTFVSRSkpDQo+IMKgwqDCoMKgwqDCoMKgIGNvbnRyb2wgfD0gT1NDX0NY
-TF9FUlJPUl9SRVBPUlRJTkdfQ09OVFJPTDsNCg0KTWFrZXMgc2Vuc2UsIEknbGwgY2hhbmdlIHRv
-IHRoaXMuDQoNCj4gDQo+IC4uLm90aGVyIHRoYW4gdGhhdCBsb29rcyBnb29kIHRvIG1lLg0KDQpU
-aGFua3MgZm9yIHRoZSByZXZpZXchDQoNCj4gDQo=
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 26f31e5a7e645b72dbd9cb1add8c94c49cbbd488  Merge branch 'pm-docs-next' into bleeding-edge
+
+elapsed time: 725m
+
+configs tested: 110
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm                              allmodconfig
+arm                              allyesconfig
+arm64                               defconfig
+arm64                            allyesconfig
+i386                 randconfig-c001-20220314
+powerpc                  storcenter_defconfig
+sh                           sh2007_defconfig
+powerpc                     tqm8548_defconfig
+parisc                generic-64bit_defconfig
+xtensa                           alldefconfig
+powerpc                     ep8248e_defconfig
+sh                              ul2_defconfig
+arc                      axs103_smp_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+m68k                       bvme6000_defconfig
+sh                        apsh4ad0a_defconfig
+ia64                          tiger_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                         virt_defconfig
+arm                  randconfig-c002-20220313
+arm                  randconfig-c002-20220314
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+csky                                defconfig
+alpha                               defconfig
+nds32                               defconfig
+nios2                            allyesconfig
+alpha                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+parisc                              defconfig
+parisc64                            defconfig
+s390                             allmodconfig
+s390                                defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                   debian-10.3-kselftests
+i386                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+x86_64                        randconfig-a006
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+s390                 randconfig-r044-20220313
+arc                  randconfig-r043-20220313
+riscv                randconfig-r042-20220313
+arc                  randconfig-r043-20220314
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+
+clang tested configs:
+mips                       rbtx49xx_defconfig
+arm                       mainstone_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64               randconfig-a011-20220314
+x86_64               randconfig-a013-20220314
+x86_64               randconfig-a012-20220314
+x86_64               randconfig-a015-20220314
+x86_64               randconfig-a016-20220314
+x86_64               randconfig-a014-20220314
+i386                          randconfig-a013
+i386                          randconfig-a015
+i386                          randconfig-a011
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+hexagon              randconfig-r045-20220313
+hexagon              randconfig-r045-20220314
+hexagon              randconfig-r041-20220313
+s390                 randconfig-r044-20220314
+hexagon              randconfig-r041-20220314
+riscv                randconfig-r042-20220314
+
+---
+0-DAY CI Kernel Test Service
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
