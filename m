@@ -2,79 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EDFB4DC4FB
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 12:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 632A14DC730
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 14:04:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233068AbiCQLow (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Mar 2022 07:44:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40054 "EHLO
+        id S230340AbiCQNF3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Mar 2022 09:05:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232562AbiCQLov (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Mar 2022 07:44:51 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDFC56773;
-        Thu, 17 Mar 2022 04:43:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647517415; x=1679053415;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=izMyFSd/6/exTcmhx8kxg+WRK3vb/oe1G6XfehxbOcw=;
-  b=bamGKhWgR22flfkrNChcQ9UNGjblXG8A4DjIUq2qRnkAlIzLUVXtT5Wg
-   aqgz/zzyV8Me+aag4xKN4PQb7hmTr/gHcKvQsgLInh+qRXY/xNM1uQfs/
-   qZY+Mib8TRmOx23hs9MCMqivXK9ia7ZvvrX435uXa6nku/92E1D94qTw1
-   Iq6AtF4p3aKwNkZMyxFDDkJAMor8FzFiRZFVYI49n7Nn2g6IQ3C6aGvRg
-   BoYlziYSY5uL+Ld3tHnV2HiQFp9Z/PbUQpfKjbQpAeRc0SFDlC514uQBo
-   xd9DB4UhEHPOXae36sK9w4To4EfH9LxM2FQ9rgf+T45reWrsWEKF16NPY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10288"; a="254402656"
-X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
-   d="scan'208";a="254402656"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2022 04:43:34 -0700
-X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
-   d="scan'208";a="513397834"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2022 04:43:31 -0700
-Received: by lahna (sSMTP sendmail emulation); Thu, 17 Mar 2022 13:43:29 +0200
-Date:   Thu, 17 Mar 2022 13:43:29 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v1 0/2] ACPI: bus: Fix platform-level _OSC handling and
- avoid CPPC is not supported
-Message-ID: <YjMe4Wdh6Y8PkVE5@lahna>
-References: <4734682.31r3eYUQgx@kreacher>
+        with ESMTP id S235337AbiCQNDr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Mar 2022 09:03:47 -0400
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C91D148674;
+        Thu, 17 Mar 2022 06:02:27 -0700 (PDT)
+Received: by mail-yb1-f175.google.com with SMTP id v130so10007569ybe.13;
+        Thu, 17 Mar 2022 06:02:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=B7qYsNUbGJYHdxCIQHkf/OD/PW64BsHLYhrDQx+Tw6A=;
+        b=l/T/ddD3wQRP2CLVQA8G66Mj6xL8Ss119WlpsqKk2PhPEDBLfTPxUhG+B1yy4RLy9N
+         5xXPorTviJDEjjGBRPDkXKJ+Tv/fHFRB4yoy/Oz5Gjg6wi6Rg2NLqjtq6N2klXq8hR6c
+         Hq6C+uaI/K/BbJGvhnnyZaWHons1hb/iix62jobVnYS3a6ypyiOY5RSRu07Gvl9LeWEx
+         nM5/W6V6hM+24ZdaKDnYeFeg4Cb7gfyMS8ks8HV99HBHLwFc31yMvoE9Z0Y54epG4bMR
+         iCeMSZxo1uB5y9LNrI82/xtHeO6/SVX0UtGDLPd4N67ix4lLH50hmhrQePEnRV1oqvOg
+         QwdA==
+X-Gm-Message-State: AOAM530DSjSd9+GJ2z9wd7EgoJ0anarUUJmpS21KjFAeMgb9WssSHk6L
+        T3H2r/cFl/tXWGYzOJqJEHJQhOcyBSwbX8ho9D3tSJ6ldCc=
+X-Google-Smtp-Source: ABdhPJyOqVbWlCAFoVtJfjG/++NcPW/hSsSa5o6Ghrd0pjN2FM5kxovkHkVhqvNZMaTH468GRkVguvNg9V55mgYPkjA=
+X-Received: by 2002:a25:9d8a:0:b0:633:9668:c48a with SMTP id
+ v10-20020a259d8a000000b006339668c48amr4653467ybp.153.1647522146210; Thu, 17
+ Mar 2022 06:02:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4734682.31r3eYUQgx@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Mar 2022 14:02:15 +0100
+Message-ID: <CAJZ5v0gcZb9mq4WfHuGC-3zMx215u_cYMzwTkx1jxgZmu_EUbw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fix for final v5.17
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi Linus,
 
-On Wed, Mar 16, 2022 at 01:35:23PM +0100, Rafael J. Wysocki wrote:
-> Hi All,
-> 
-> The following two patches revert a commit that caused the handling of
-> platform-level _OSC to fail in some legitimate cases and address the
-> CPPC handling breakage that was the motivation for the reverted commit.
-> 
-> Please refer to the patch changelogs for details.
+Please pull from the tag
 
-For both,
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.17-rc9
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+with top-most commit 462ccc35a750f335c8456cde9120b8b593fff60f
+
+ Revert "ACPI: scan: Do not add device IDs from _CID if _HID is not valid"
+
+on top of commit 09688c0166e76ce2fb85e86b9d99be8b0084cdf9
+
+ Linux 5.17-rc8
+
+to receive an ACPI fix for final 5.17.
+
+This reverts recent commit that caused multiple systems to misbehave
+due to firmware issues.
+
+Thanks!
+
+
+---------------
+
+Rafael J. Wysocki (1):
+      Revert "ACPI: scan: Do not add device IDs from _CID if _HID is not valid"
+
+---------------
+
+ drivers/acpi/scan.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
