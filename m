@@ -2,115 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 741624DCD45
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 19:13:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F1884DCDD6
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 19:44:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237264AbiCQSNB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Mar 2022 14:13:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58866 "EHLO
+        id S237557AbiCQSpl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Mar 2022 14:45:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237297AbiCQSMx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Mar 2022 14:12:53 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB9921A897
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Mar 2022 11:11:34 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id c15so8297858ljr.9
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Mar 2022 11:11:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GvRtkI+aajtqCy2c1b2F4MUYD+uMLWJPyiKwyzY7fBQ=;
-        b=hne5dkL1r66jaWeZwLdqsQWeaYzLA0jCNqUeaPeX4MK0bcpogrmJFtTsAHSYPHTv37
-         F31NNlIDn9bslKYtcs9T7Ma0331NI3pAKkY7Smg4Njyl7fKErwUzZLR77VAJgDJGt60n
-         8yoAF2gzIx0ez9xH7e1/L5DkEJjrMCAG7htDNgWR4IVaW+tvIGLmwLqztCBKJVgv8JNg
-         9J29bhh2X/xEUKQYCshpyqmTT6OTC0cbzKTXSYQzOMHmhryjwsJyMrPUTkPxAl/m9Ng8
-         HHfV7rzkYosyidu3QWTr29KI54SAqAdUXPgypkWcpypqbuGZSPra+xml3A+fuJpxtgBF
-         iU+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GvRtkI+aajtqCy2c1b2F4MUYD+uMLWJPyiKwyzY7fBQ=;
-        b=Hyhc+ntYeiCYatp95mjMgJZ1zxBwPFx+TtaL/TQIdbtaTUGPzL3vSk1towugoj3Hp1
-         fyCn8MHIkRNgtaug9CnDACm5UzYFj5WLXM1a0alOztwsypdDzplqMuu5a/Y5s29RyxdD
-         MyT5BTsVY2JEwcEKNKK5fP9W3TGbgHofY/BVLwqyAXhRZrIv1MsKOEORvkWf5DkMIqIK
-         2gze16HjXF7BC8L/Dxulo7arY3JlDWeo7vZunNjxJZv2o6W9VgefjuAGFq520Mj6LV68
-         4nbV8c4wqN5u0Hnh0dNrsK+X1niBYT7iJhP0yYBEknrjY9m8iMCjTGWNOPXJSPUPI+tY
-         t29Q==
-X-Gm-Message-State: AOAM531pvLXyPRgdMpHwesPZm+XjpDWNVrvQV3kcmwFHDpc4hmMEmjLf
-        IAI4foVOxrh1vU4VO2RTU5K471zwe2afa3vw5wAb3w==
-X-Google-Smtp-Source: ABdhPJw321RYGnd+eSI0h5Spru1PQ/7vVF+BX9Nro0IcXN12RAcPjoehXMVZPqBvuitiGJFoQTKh96/tVTcy8uPYIkw=
-X-Received: by 2002:a05:651c:1791:b0:243:94bd:d94c with SMTP id
- bn17-20020a05651c179100b0024394bdd94cmr3596248ljb.468.1647540692501; Thu, 17
- Mar 2022 11:11:32 -0700 (PDT)
+        with ESMTP id S237462AbiCQSpk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Mar 2022 14:45:40 -0400
+Received: from srv1.home.kabele.me (gw.home.kabele.me [195.88.143.223])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 796D9D5E88
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Mar 2022 11:44:22 -0700 (PDT)
+Received: from srv1.home.kabele.me (localhost [IPv6:::1])
+        by srv1.home.kabele.me (Postfix) with ESMTP id 7423916927C;
+        Thu, 17 Mar 2022 19:44:24 +0100 (CET)
+Received: from localhost ([2a01:c22:8dfa:1400:beea:2810:7764:7afc])
+        by srv1.home.kabele.me with ESMTPSA
+        id 9D7GGYiBM2LuRjQAnmUwTQ
+        (envelope-from <vit@kabele.me>); Thu, 17 Mar 2022 19:44:24 +0100
+Date:   Thu, 17 Mar 2022 19:44:19 +0100
+From:   Vit Kabele <vit@kabele.me>
+To:     platform-driver-x86@vger.kernel.org
+Cc:     r.marek@assembler.cz, devel@acpica.org, mingo@redhat.com,
+        robert.moore@intel.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH 0/3 RESEND] platform/x86, apcica: Sanitize EBDA pointer from
+ memory
+Message-ID: <YjOBg4Oys3qV1dbe@czspare1-lap.sysgo.cz>
+Mail-Followup-To: platform-driver-x86@vger.kernel.org, r.marek@assembler.cz,
+        devel@acpica.org, mingo@redhat.com, robert.moore@intel.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
 MIME-Version: 1.0
-References: <20220316213055.2351342-1-morbo@google.com> <YjL6K49CkH+YC4FQ@smile.fi.intel.com>
-In-Reply-To: <YjL6K49CkH+YC4FQ@smile.fi.intel.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Thu, 17 Mar 2022 11:11:21 -0700
-Message-ID: <CAKwvOdkjb3uR+kqjfdKL5gqA8R+00c5=3E7uGGW+mGZ3QRsjqg@mail.gmail.com>
-Subject: Re: [PATCH] gpiolib: acpi: use correct format characters
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bill Wendling <morbo@google.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 17, 2022 at 2:07 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Wed, Mar 16, 2022 at 02:30:55PM -0700, Bill Wendling wrote:
-> > When compiling with -Wformat, clang emits the following warning:
-> >
-> > drivers/gpio/gpiolib-acpi.c:393:4: warning: format specifies type
-> > 'unsigned char' but the argument has type 'int' [-Wformat]
-> >                         pin);
-> >                         ^~~
-> >
-> > The types of these arguments are unconditionally defined, so this patch
-> > updates the format character to the correct ones for ints and unsigned
-> > ints.
->
-> hhX specifier refers to unsigned char. It's a bug in the compiler.
->
-> NAK.
+[Resend because I messed up the mailing list addresses]
 
-Andy,
-Our goal is to enable -Wformat for CC=clang.  Please see also:
-commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
-unnecessary %h[xudi] and %hh[xudi]")
-and the lore link it cites.
-https://lore.kernel.org/lkml/CAHk-=wgoxnmsj8GEVFJSvTwdnWm8wVJthefNk2n6+4TC=20e0Q@mail.gmail.com/
-(I saw your follow up; this patch is one of the less controversial
-ones though since the types are not ones that are promoted).
+When testing custom virtualization platform, we noticed that in cases
+where the memory is initialized with random pattern, the Linux guest
+tends to crash on EPT violation.
 
-Bill,
-I just remembered that we will want to explicitly set
--Wno-format-pedantic when enabling -Wformat. Remember that -Wformat is
-a group flag that turns on other flags, such as -Wformat-security
-(currently disabled) and -Wformat-pedantic.  See also:
-https://reviews.llvm.org/rGcc01d6421f4a896820c02da2ea92b82d973b431e
-commit a8735821d198 ("Kbuild: Disable the -Wformat-security gcc flag")
+It turns out that (at least two) codepaths during boot do not check the
+validity of EBDA pointer retrieved from BDA memory at address 0x40e.
+In case that the returned address is over 640K, the kernel happily
+touches the VGA memory (which was not present in our setup, hence the
+EPT violation).
 
-It may be helpful to cite
-commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
-unnecessary %h[xudi] and %hh[xudi]")
-in future commits that change the format flags for types that are promoted.
+This may be problematic in other virtualized environment too, but it can
+probably also happen on bare metal when booted with legacy free (e.g.
+UEFI without CSM) firmware, because the BDA may not be initialized and
+the VGA range might not be properly decoded.
+
+The third patch of the series adds workaround for the situation where
+EBDA is smaller than 1KiB and the ACPI code scanning for RSDP table
+bumps to the VGA memory.
+
+The two acpcia patches can eventually be squashed together, it's up to you.
+
+I tested these patches on my lenovo laptop (and in QEMU if that counts).
+
+Vit Kabele (3):
+  platform/x86: Check validity of EBDA pointer in mpparse.c
+  acpica: Check that the EBDA pointer is in valid range
+  acpica: Do not touch VGA memory when EBDA < 1KiB
+
+ arch/x86/include/asm/bios_ebda.h |  3 +++
+ arch/x86/kernel/ebda.c           |  3 ---
+ arch/x86/kernel/mpparse.c        | 12 +++++++++++-
+ drivers/acpi/acpica/tbxfroot.c   | 25 ++++++++++++++++++-------
+ 4 files changed, 32 insertions(+), 11 deletions(-)
+
 -- 
-Thanks,
-~Nick Desaulniers
+2.30.2
+
