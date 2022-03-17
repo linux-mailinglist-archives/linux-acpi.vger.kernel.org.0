@@ -2,103 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C66D4DBA1C
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Mar 2022 22:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52CFC4DBBAA
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 01:27:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345933AbiCPVcV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Mar 2022 17:32:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49774 "EHLO
+        id S245585AbiCQA2X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Mar 2022 20:28:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354825AbiCPVcT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Mar 2022 17:32:19 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44EF72612C
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Mar 2022 14:31:04 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id h83-20020a25d056000000b0063380d246ceso2987057ybg.3
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Mar 2022 14:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=j/W+I4hHsgH0XmEC7Q4gF3YIvEIHceq4+Sd40Z0ZTqU=;
-        b=fAPqoEotR6HXIWawKwJLbFLhD0A7kMknqpiO8DHzknb9BSEjSwwaaqwkfL1qrpTi8R
-         k3g4JaAfa8Bz0S2VeIr6CON9g3BcIbSAHseYOY//qhUNsFXL+8A0I2+L7MxU265AXL+k
-         pIRfpqeZlvbqQwKfGQeYd11YySR1zPqPWgd37R18PwMDphUyr00wLdQMwztwNQSxiVjR
-         9kFIiZVpnXNNuOIGc6GANy940pe/XmIDdALFaHfPtnBBbQ288Y9EWfL1xAEN1zpHs8CM
-         eiohhkWvfzaKDyZsJGF/55akhba5Za6lOwdQu5lNmeKGOcqg2grWp1PFGW+SlcSEajpf
-         49gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=j/W+I4hHsgH0XmEC7Q4gF3YIvEIHceq4+Sd40Z0ZTqU=;
-        b=H/70+/ZsIqZ61adnEZgJd0rd10SQvnb0Zo8+1mcZlwS6DiFL0jhxOaQUy6V9Ez3NjM
-         vUkUQw4j1myk/nKtBcHBzmJjF6akISbJkgh5LVFJbtFWqi7V/cvNfEciqmYLI+v0kGO0
-         0pzzpg/8ALqXarp1M98sYrioHfScYa85d+fSSmXjvPNEefeOM/A4nsvK6JN2rX52Yyle
-         102VkhyxxxChSO4uqSQb40YtKCBCPRvx02kKwSEfW8Rld2MXUP1d+EmlsnM1TL9acFGW
-         ibdFdkWcR48w3gxYwU4rP56sJyNzLfijniZYGobYQgyqvmXp6/tSrLBf7mH9JW/HRQzw
-         cERw==
-X-Gm-Message-State: AOAM532caoJzaDLK4EZr7TVkw9+Bv4pqZ2uvMOiLhe13OdHRRofSmcAO
-        fioJm26x6/ymn6aTh9jnfeaNrJSB
-X-Google-Smtp-Source: ABdhPJwpDfWf//RRMeE/B+yywXGJvdHVgFFevRfNLr3P2AD8ceUgdkB6afRES9swV7fkNGQt0BKcrzWL6w==
-X-Received: from fawn.svl.corp.google.com ([2620:15c:2cd:202:7dae:6503:2272:5cd1])
- (user=morbo job=sendgmr) by 2002:a81:5dd7:0:b0:2e5:8fc3:6d85 with SMTP id
- r206-20020a815dd7000000b002e58fc36d85mr2327247ywb.393.1647466263509; Wed, 16
- Mar 2022 14:31:03 -0700 (PDT)
-Date:   Wed, 16 Mar 2022 14:30:55 -0700
-Message-Id: <20220316213055.2351342-1-morbo@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.35.1.723.g4982287a31-goog
-Subject: [PATCH] gpiolib: acpi: use correct format characters
-From:   Bill Wendling <morbo@google.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Cc:     Bill Wendling <morbo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229648AbiCQA2X (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Mar 2022 20:28:23 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CBC51C930;
+        Wed, 16 Mar 2022 17:27:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647476827; x=1679012827;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Lic9ChaQZXkEd9xgaha9i8E77wzSUJy2HT8oCui14Lk=;
+  b=UVgytTo4C4hyx91dn/msVxcTXChVef0MuI4CCwPsI/8jbAgavSPFr5rY
+   vDpZ0cq6E6P6+gNl+OeuAOPpNN1jy0DZ/F7O6u1bFgUwH0QVWh/l5Nswk
+   kQrTCw3HPEXYBZQRTFwYiLDPj5TrsvcUmdtKsiHeN7Ks89zBAEsFjZOsg
+   DtRyAP99M+OO1lcd31mBCTDP197gnUi/t48pHlvR85YtCoh4kX6op+t+c
+   HlIbgkPBftMFCkrW/7eV3LRJgaD0DLFFNbQ4Ifo1iA5YeRq0TtBAJzvjx
+   5PW/hmP/v/zY31IciLsekY9PS/gfws+JZ5qHNJDpTfaAgi4SiJhhNIuH/
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10288"; a="256699162"
+X-IronPort-AV: E=Sophos;i="5.90,187,1643702400"; 
+   d="scan'208";a="256699162"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2022 17:27:07 -0700
+X-IronPort-AV: E=Sophos;i="5.90,187,1643702400"; 
+   d="scan'208";a="646860796"
+Received: from mjbitsoi-mobl2.amr.corp.intel.com (HELO vverma7-desk1.intel.com) ([10.212.15.66])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2022 17:27:06 -0700
+From:   Vishal Verma <vishal.l.verma@intel.com>
+To:     <linux-cxl@vger.kernel.org>
+Cc:     <linux-acpi@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Vishal Verma <vishal.l.verma@intel.com>
+Subject: [RFC PATCH 0/2] acpi: add support for CXL _OSC
+Date:   Wed, 16 Mar 2022 18:27:02 -0600
+Message-Id: <20220317002704.1835870-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1117; h=from:subject; bh=Lic9ChaQZXkEd9xgaha9i8E77wzSUJy2HT8oCui14Lk=; b=owGbwMvMwCXGf25diOft7jLG02pJDElGDRESUpml/m0CBWrrNizl8eS9fMr4iP6rEp7ABEW74nf1 7vkdpSwMYlwMsmKKLH/3fGQ8Jrc9HyjpCDOHlQlkCAMXpwBMJMSIkWH1IX3VXZYzAsS2WAg6BsaXFk +f2BXS4e7aUyC+8kKp+k6GvwKhTw1ub5fSjvp4Y/30hvZpF9vPmmzT/MTC/Prgh8M237kB
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp; fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When compiling with -Wformat, clang emits the following warning:
+Add support for using the CXL definition of _OSC where applicable, and
+negotiating CXL specific support and control bits.
 
-drivers/gpio/gpiolib-acpi.c:393:4: warning: format specifies type
-'unsigned char' but the argument has type 'int' [-Wformat]
-                        pin);
-                        ^~~
+Patch 1 adds the new CXL _OSC UUID, and uses it instead of the PCI UUID
+when a root port is CXL enabled. It provides a fallback method for
+CXL-1.1 devices that may not implement the CXL-2.0 _OSC.
 
-The types of these arguments are unconditionally defined, so this patch
-updates the format character to the correct ones for ints and unsigned
-ints.
+Patch 2 performs negotiation for the CXL specific _OSC support and
+control bits.
 
-Link: ClangBuiltLinux/linux#378
-Signed-off-by: Bill Wendling <morbo@google.com>
----
- drivers/gpio/gpiolib-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I've tested these against a custom qemu[1], which adds the CXL _OSC (in
+addition to other CXL support). Specifically, _OSC support is added
+here[2].
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index a5495ad31c9c..be6fb2ad2c4a 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -388,7 +388,7 @@ static acpi_status acpi_gpiochip_alloc_event(struct acpi_resource *ares,
- 
- 	if (pin <= 255) {
- 		char ev_name[5];
--		sprintf(ev_name, "_%c%02hhX",
-+		sprintf(ev_name, "_%c%02X",
- 			agpio->triggering == ACPI_EDGE_SENSITIVE ? 'E' : 'L',
- 			pin);
- 		if (ACPI_SUCCESS(acpi_get_handle(handle, ev_name, &evt_handle)))
+[1]: https://gitlab.com/jic23/qemu/-/tree/cxl-v7-draft-2-for-test
+[2]: https://gitlab.com/jic23/qemu/-/commit/31c85054b84645dfbd9e9bb14aa35286141c14cf
+
+Dan Williams (1):
+  PCI/ACPI: Use CXL _OSC instead of PCIe _OSC
+
+Vishal Verma (1):
+  acpi/pci_root: negotiate CXL _OSC
+
+ include/linux/acpi.h    |  11 +++
+ include/acpi/acpi_bus.h |   7 +-
+ drivers/acpi/pci_root.c | 201 ++++++++++++++++++++++++++++++++++------
+ 3 files changed, 187 insertions(+), 32 deletions(-)
+
+
+base-commit: 74be98774dfbc5b8b795db726bd772e735d2edd4
 -- 
-2.35.1.723.g4982287a31-goog
+2.35.1
 
