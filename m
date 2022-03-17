@@ -2,96 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE1D14DC262
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 10:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EDFB4DC4FB
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Mar 2022 12:43:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231660AbiCQJPG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Mar 2022 05:15:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59894 "EHLO
+        id S233068AbiCQLow (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Mar 2022 07:44:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbiCQJPG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Mar 2022 05:15:06 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A88D76F8;
-        Thu, 17 Mar 2022 02:13:50 -0700 (PDT)
+        with ESMTP id S232562AbiCQLov (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Mar 2022 07:44:51 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDFC56773;
+        Thu, 17 Mar 2022 04:43:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647508430; x=1679044430;
+  t=1647517415; x=1679053415;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=8IL//g/TMfBIk8JNUXUEvy1l+g02hROaz5Pc67EYVBM=;
-  b=VogIT2l/LSLhQMNk1Fo+3EQGs8vyuxnfD+vcUYMVjQ2i/UbZ/pNArPJ1
-   YHuHZrAgEl2+R+1qtMQlYJIICuGU/7d3AEt9wtpw6647/0xcYRJL5/YpV
-   ZsMyNL9M3ioZVT5ooG6mvLJkOnY4VKdUwkcGW43ZZOWzYC5z1OFbiP/NV
-   CIoX5XExwalmEGS3zbbtrH4MgcW1XldDTYMpvv/90YNCNBrX7AtuptyPR
-   UqgFzU6HPyGA+W3Ld+ckpjDvNmpTS9cTrd07w/2RCAZ/s/T0qnrgL6x7W
-   ZgHOT8Go/nhJfNcmFEEM61SDzxdjj+bpC4fLPEiHc4DdL/enjK5+vaO9f
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10288"; a="238984974"
+  bh=izMyFSd/6/exTcmhx8kxg+WRK3vb/oe1G6XfehxbOcw=;
+  b=bamGKhWgR22flfkrNChcQ9UNGjblXG8A4DjIUq2qRnkAlIzLUVXtT5Wg
+   aqgz/zzyV8Me+aag4xKN4PQb7hmTr/gHcKvQsgLInh+qRXY/xNM1uQfs/
+   qZY+Mib8TRmOx23hs9MCMqivXK9ia7ZvvrX435uXa6nku/92E1D94qTw1
+   Iq6AtF4p3aKwNkZMyxFDDkJAMor8FzFiRZFVYI49n7Nn2g6IQ3C6aGvRg
+   BoYlziYSY5uL+Ld3tHnV2HiQFp9Z/PbUQpfKjbQpAeRc0SFDlC514uQBo
+   xd9DB4UhEHPOXae36sK9w4To4EfH9LxM2FQ9rgf+T45reWrsWEKF16NPY
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10288"; a="254402656"
 X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
-   d="scan'208";a="238984974"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2022 02:13:28 -0700
+   d="scan'208";a="254402656"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2022 04:43:34 -0700
 X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
-   d="scan'208";a="635304398"
-Received: from smile.fi.intel.com ([10.237.72.59])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2022 02:13:25 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nUmBZ-001QAZ-Rm;
-        Thu, 17 Mar 2022 11:12:45 +0200
-Date:   Thu, 17 Mar 2022 11:12:45 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bill Wendling <morbo@google.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] gpiolib: acpi: use correct format characters
-Message-ID: <YjL7jWpOCjo9R0SH@smile.fi.intel.com>
-References: <20220316213055.2351342-1-morbo@google.com>
- <YjL6K49CkH+YC4FQ@smile.fi.intel.com>
+   d="scan'208";a="513397834"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2022 04:43:31 -0700
+Received: by lahna (sSMTP sendmail emulation); Thu, 17 Mar 2022 13:43:29 +0200
+Date:   Thu, 17 Mar 2022 13:43:29 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v1 0/2] ACPI: bus: Fix platform-level _OSC handling and
+ avoid CPPC is not supported
+Message-ID: <YjMe4Wdh6Y8PkVE5@lahna>
+References: <4734682.31r3eYUQgx@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YjL6K49CkH+YC4FQ@smile.fi.intel.com>
+In-Reply-To: <4734682.31r3eYUQgx@kreacher>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 17, 2022 at 11:06:51AM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 16, 2022 at 02:30:55PM -0700, Bill Wendling wrote:
-> > When compiling with -Wformat, clang emits the following warning:
-> > 
-> > drivers/gpio/gpiolib-acpi.c:393:4: warning: format specifies type
-> > 'unsigned char' but the argument has type 'int' [-Wformat]
-> >                         pin);
-> >                         ^~~
-> > 
-> > The types of these arguments are unconditionally defined, so this patch
-> > updates the format character to the correct ones for ints and unsigned
-> > ints.
+Hi Rafael,
+
+On Wed, Mar 16, 2022 at 01:35:23PM +0100, Rafael J. Wysocki wrote:
+> Hi All,
 > 
-> hhX specifier refers to unsigned char. It's a bug in the compiler.
+> The following two patches revert a commit that caused the handling of
+> platform-level _OSC to fail in some legitimate cases and address the
+> CPPC handling breakage that was the motivation for the reverted commit.
 > 
-> NAK.
+> Please refer to the patch changelogs for details.
 
-Oh, I read this wrong, sorry. The pin has been checked to fit in one byte,
-but its type is bigger indeed.
+For both,
 
-I will apply your patch right away and send as a fix after rc1.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
