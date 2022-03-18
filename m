@@ -2,100 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84CE84DD8B8
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Mar 2022 12:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C564DDB23
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Mar 2022 15:01:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235617AbiCRLJF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Mar 2022 07:09:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37952 "EHLO
+        id S236893AbiCRODQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Mar 2022 10:03:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235613AbiCRLJD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Mar 2022 07:09:03 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6476BF3F94;
-        Fri, 18 Mar 2022 04:07:44 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F60E16F2;
-        Fri, 18 Mar 2022 04:07:44 -0700 (PDT)
-Received: from [10.57.43.230] (unknown [10.57.43.230])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 02C4E3F7F5;
-        Fri, 18 Mar 2022 04:07:40 -0700 (PDT)
-Message-ID: <249e5876-f8c6-0236-16fa-a611a9f9e0b2@arm.com>
-Date:   Fri, 18 Mar 2022 11:07:36 +0000
+        with ESMTP id S234767AbiCRODN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Mar 2022 10:03:13 -0400
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD2A921F74D;
+        Fri, 18 Mar 2022 07:01:53 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-2e5e176e1b6so14460057b3.13;
+        Fri, 18 Mar 2022 07:01:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5VArFVcUzcHgwGcBdrmCG7NoSNoulRRst2M2L56rKO0=;
+        b=3irpL0IJrA5Bs1v1tKtLyXNcM4V2DzmBYk5cg8XzFiZhljZ+7v+qjsb4r8Wnh1RuX+
+         x53LEqjuR64VUOXUbvHmxLGHMny9RZBCIarVy5tfT1sJDGjdYgBs4tvssAlcoWrMfmgk
+         D47xH0lj3z302XDLLe2sUenmunIYMQM2FQi+ya1sqs4QSg4udpeHeyD/WlUWJJwnwlup
+         lyDI04vn8Smqfe+G9sWgnw0vNvAg8Zlzha8V7fx5GbvqyuEXFoUjPYqQt2rOrEb65DYc
+         9t/9SXNl9/FuZ4J3lWjvjWpoRVbHm3qU4SISKZ8EA5n3Jy9HcBI9m+Ke2TQlPKQSN0uo
+         bpqQ==
+X-Gm-Message-State: AOAM533aFB6bueoHoMgoDyl8L4NFlBp6fT6kJPMgF4DgSzxE32vB4xQx
+        oUVv7cFA4nhUU/RgIJMYtahjcQsH+nCXWARu9FE=
+X-Google-Smtp-Source: ABdhPJzwQecTT2Agccf/LxIghc1zMAMSnNZ2nyhoX5sX6HqhZGbPV01RH30w0pao+y+fr0MowFnI4C+xlatme6Nf4eo=
+X-Received: by 2002:a81:36cf:0:b0:2e5:2597:a026 with SMTP id
+ d198-20020a8136cf000000b002e52597a026mr11225028ywa.301.1647612112897; Fri, 18
+ Mar 2022 07:01:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 2/4 RESEND] dma-mapping: Add wrapper function to set
- dma_coherent
-Content-Language: en-GB
-To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "robh@kernel.org" <robh@kernel.org>, "kw@linux.com" <kw@linux.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "hch@lst.de" <hch@lst.de>,
-        "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
-References: <1647534311-2349-1-git-send-email-mikelley@microsoft.com>
- <1647534311-2349-3-git-send-email-mikelley@microsoft.com>
- <d480c8ea-f047-2854-b1cf-041475b451db@arm.com>
- <PH0PR21MB30252951848A6328E11385A4D7129@PH0PR21MB3025.namprd21.prod.outlook.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <PH0PR21MB30252951848A6328E11385A4D7129@PH0PR21MB3025.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220317153939.31542-1-rdunlap@infradead.org>
+In-Reply-To: <20220317153939.31542-1-rdunlap@infradead.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 18 Mar 2022 15:01:42 +0100
+Message-ID: <CAJZ5v0i_70DuJdHZLcv_eDdXKE=txCSrYR0kMetyk5D22_p7Eg@mail.gmail.com>
+Subject: Re: [PATCH v4] clocksource: acpi_pm: fix return value of __setup handler
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Igor Zhbanov <i.zhbanov@omprussia.ru>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022-03-17 19:13, Michael Kelley (LINUX) wrote:
-> From: Robin Murphy <robin.murphy@arm.com> Sent: Thursday, March 17, 2022 10:20 AM
->>
->> On 2022-03-17 16:25, Michael Kelley via iommu wrote:
->>> Add a wrapper function to set dma_coherent, avoiding the need for
->>> complex #ifdef's when setting it in architecture independent code.
->>
->> No. It might happen to work out on the architectures you're looking at,
->> but if Hyper-V were ever to support, say, AArch32 VMs you might see the
->> problem. arch_setup_dma_ops() is the tool for this job.
->>
-> 
-> OK.   There's currently no vIOMMU in a Hyper-V guest, so presumably the
-> code would call arch_setup_dma_ops() with the dma_base, size, and iommu
-> parameters set to 0 and NULL.  This call can then be used in Patch 3 instead
-> of acpi_dma_configure(), and in the Patch 4 hv_dma_configure() function
-> as you suggested.  arch_setup_dma_ops() is not exported, so I'd need to
-> wrap it in a Hyper-V specific function in built-in code that is exported.
-> 
-> But at some point in the future if there's a vIOMMU in Hyper-V guests,
-> this approach will need some rework.
-> 
-> Does that make sense?  Thanks for your input and suggestions ...
+On Thu, Mar 17, 2022 at 4:39 PM Randy Dunlap <rdunlap@infradead.org> wrote:
+>
+> __setup() handlers should return 1 to obsolete_checksetup() in
+> init/main.c to indicate that the boot option has been handled.
+> A return of 0 causes the boot option/value to be listed as an Unknown
+> kernel parameter and added to init's (limited) environment strings.
+>
+> The __setup() handler interface isn't meant to handle negative return
+> values -- they are non-zero, so they mean "handled" (like a return
+> value of 1 does), but that's just a quirk. So return 1 from
+> parse_pmtmr(). Also print a warning message if kstrtouint() returns
+> an error.
+>
+> Fixes: 6b148507d3d0 ("pmtmr: allow command line override of ioport")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Reported-by: Igor Zhbanov <i.zhbanov@omprussia.ru>
+> Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
+> Cc: Dan Carpenter <dan.carpenter@oracle.com>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> ---
+> v4: correct Igor's email address to be Reported-by: (Rafael)
+> v3: also cc: linux-acpi (Rafael)
+> v2: correct the Fixes: tag (Dan Carpenter);
+>     remove Cc: John Stultz <john.stultz@linaro.org> (bouncing)
+>
+>  drivers/clocksource/acpi_pm.c |    6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> --- linux-next-20220315.orig/drivers/clocksource/acpi_pm.c
+> +++ linux-next-20220315/drivers/clocksource/acpi_pm.c
+> @@ -229,8 +229,10 @@ static int __init parse_pmtmr(char *arg)
+>         int ret;
+>
+>         ret = kstrtouint(arg, 16, &base);
+> -       if (ret)
+> -               return ret;
+> +       if (ret) {
+> +               pr_warn("PMTMR: invalid 'pmtmr=' value: '%s'\n", arg);
+> +               return 1;
+> +       }
+>
+>         pr_info("PMTMR IOPort override: 0x%04x -> 0x%04x\n", pmtmr_ioport,
+>                 base);
 
-Yes, that's essentially what I had in mind. If you did present a vIOMMU 
-to the guest, presumably you'd either have to construct a regular 
-IORT/VIOT, and thus end up adding the root complex to the ACPI namespace 
-too so it can be referenced, at which point it would all get picked up 
-by the standard machinery, or come up with some magic VMBus mechanism 
-that would need a whole load of work to wire up in all the relevant 
-places anyway.
-
-(But please lean extremely heavily towards the former option!)
-
-Thanks,
-Robin.
+Applied as 5.18 material, thanks!
