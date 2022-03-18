@@ -2,108 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4C564DDB23
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Mar 2022 15:01:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD7F4DDB31
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Mar 2022 15:04:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236893AbiCRODQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Mar 2022 10:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52676 "EHLO
+        id S236564AbiCROGE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Mar 2022 10:06:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234767AbiCRODN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Mar 2022 10:03:13 -0400
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD2A921F74D;
-        Fri, 18 Mar 2022 07:01:53 -0700 (PDT)
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-2e5e176e1b6so14460057b3.13;
-        Fri, 18 Mar 2022 07:01:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5VArFVcUzcHgwGcBdrmCG7NoSNoulRRst2M2L56rKO0=;
-        b=3irpL0IJrA5Bs1v1tKtLyXNcM4V2DzmBYk5cg8XzFiZhljZ+7v+qjsb4r8Wnh1RuX+
-         x53LEqjuR64VUOXUbvHmxLGHMny9RZBCIarVy5tfT1sJDGjdYgBs4tvssAlcoWrMfmgk
-         D47xH0lj3z302XDLLe2sUenmunIYMQM2FQi+ya1sqs4QSg4udpeHeyD/WlUWJJwnwlup
-         lyDI04vn8Smqfe+G9sWgnw0vNvAg8Zlzha8V7fx5GbvqyuEXFoUjPYqQt2rOrEb65DYc
-         9t/9SXNl9/FuZ4J3lWjvjWpoRVbHm3qU4SISKZ8EA5n3Jy9HcBI9m+Ke2TQlPKQSN0uo
-         bpqQ==
-X-Gm-Message-State: AOAM533aFB6bueoHoMgoDyl8L4NFlBp6fT6kJPMgF4DgSzxE32vB4xQx
-        oUVv7cFA4nhUU/RgIJMYtahjcQsH+nCXWARu9FE=
-X-Google-Smtp-Source: ABdhPJzwQecTT2Agccf/LxIghc1zMAMSnNZ2nyhoX5sX6HqhZGbPV01RH30w0pao+y+fr0MowFnI4C+xlatme6Nf4eo=
-X-Received: by 2002:a81:36cf:0:b0:2e5:2597:a026 with SMTP id
- d198-20020a8136cf000000b002e52597a026mr11225028ywa.301.1647612112897; Fri, 18
- Mar 2022 07:01:52 -0700 (PDT)
+        with ESMTP id S233096AbiCROGE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Mar 2022 10:06:04 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B32FE2BC1F7;
+        Fri, 18 Mar 2022 07:04:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647612284; x=1679148284;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jcrYNvI61V8kUynPI7hV1XW2k5B5q68nF1eRgoRh4Cw=;
+  b=dDJEJ29HrsHRd+6r/qCdPy516QHGxDqaRq/EUT0n6sbNFbLea75XmbCD
+   wq51msbMP6SYCDpDdeiLmbEq1an4FDMnYF3eOx3XORFnZsSB58t8oQIvS
+   h0eaq22hEdgeQHBGOP5FmUyVfZb9vguSF0Ec+nTFz2KcXnfQU1/m8p1V8
+   FoMbUJ9jItDq1htGWfd1wePRDnhVujtvt1M9UamaV7+9SvD5H99g5YDUG
+   9nQ/XLxCJ+EHy3SRYIdkqLGVgW+7bV76MF5Js/M2L0eRKOYTbx81WxJ8+
+   4Gp166EaeF/SOZxnn2JkVAmhdrZzxjBy4fcCjmBe8JopsjrEYEs+hxHpW
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10289"; a="257089815"
+X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; 
+   d="scan'208";a="257089815"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 07:04:20 -0700
+X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; 
+   d="scan'208";a="499258563"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 07:04:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nVDCc-002GJv-Mm;
+        Fri, 18 Mar 2022 16:03:38 +0200
+Date:   Fri, 18 Mar 2022 16:03:38 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Bill Wendling <morbo@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Nathan Chancellor <nathan@kernel.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] gpiolib: acpi: use correct format characters
+Message-ID: <YjSROmYwwGhpsXMl@smile.fi.intel.com>
+References: <20220316213055.2351342-1-morbo@google.com>
+ <YjL6K49CkH+YC4FQ@smile.fi.intel.com>
+ <CAKwvOdkjb3uR+kqjfdKL5gqA8R+00c5=3E7uGGW+mGZ3QRsjqg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20220317153939.31542-1-rdunlap@infradead.org>
-In-Reply-To: <20220317153939.31542-1-rdunlap@infradead.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 18 Mar 2022 15:01:42 +0100
-Message-ID: <CAJZ5v0i_70DuJdHZLcv_eDdXKE=txCSrYR0kMetyk5D22_p7Eg@mail.gmail.com>
-Subject: Re: [PATCH v4] clocksource: acpi_pm: fix return value of __setup handler
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Igor Zhbanov <i.zhbanov@omprussia.ru>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKwvOdkjb3uR+kqjfdKL5gqA8R+00c5=3E7uGGW+mGZ3QRsjqg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 17, 2022 at 4:39 PM Randy Dunlap <rdunlap@infradead.org> wrote:
->
-> __setup() handlers should return 1 to obsolete_checksetup() in
-> init/main.c to indicate that the boot option has been handled.
-> A return of 0 causes the boot option/value to be listed as an Unknown
-> kernel parameter and added to init's (limited) environment strings.
->
-> The __setup() handler interface isn't meant to handle negative return
-> values -- they are non-zero, so they mean "handled" (like a return
-> value of 1 does), but that's just a quirk. So return 1 from
-> parse_pmtmr(). Also print a warning message if kstrtouint() returns
-> an error.
->
-> Fixes: 6b148507d3d0 ("pmtmr: allow command line override of ioport")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: Igor Zhbanov <i.zhbanov@omprussia.ru>
-> Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-> Cc: Dan Carpenter <dan.carpenter@oracle.com>
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> ---
-> v4: correct Igor's email address to be Reported-by: (Rafael)
-> v3: also cc: linux-acpi (Rafael)
-> v2: correct the Fixes: tag (Dan Carpenter);
->     remove Cc: John Stultz <john.stultz@linaro.org> (bouncing)
->
->  drivers/clocksource/acpi_pm.c |    6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> --- linux-next-20220315.orig/drivers/clocksource/acpi_pm.c
-> +++ linux-next-20220315/drivers/clocksource/acpi_pm.c
-> @@ -229,8 +229,10 @@ static int __init parse_pmtmr(char *arg)
->         int ret;
->
->         ret = kstrtouint(arg, 16, &base);
-> -       if (ret)
-> -               return ret;
-> +       if (ret) {
-> +               pr_warn("PMTMR: invalid 'pmtmr=' value: '%s'\n", arg);
-> +               return 1;
-> +       }
->
->         pr_info("PMTMR IOPort override: 0x%04x -> 0x%04x\n", pmtmr_ioport,
->                 base);
+On Thu, Mar 17, 2022 at 11:11:21AM -0700, Nick Desaulniers wrote:
+> On Thu, Mar 17, 2022 at 2:07 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Wed, Mar 16, 2022 at 02:30:55PM -0700, Bill Wendling wrote:
 
-Applied as 5.18 material, thanks!
+> > NAK.
+
+I hope you read my follow up to this.
+
+> Andy,
+> Our goal is to enable -Wformat for CC=clang.  Please see also:
+> commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
+> unnecessary %h[xudi] and %hh[xudi]")
+
+Not that I agree on that commit for %h[h]x
+
+	signed char ch = -1;
+	printf("%x\n", ch);
+	printf("%hhx\n", ch);
+
+That's why my first reaction on this change was NAK.
+
+> and the lore link it cites.
+> https://lore.kernel.org/lkml/CAHk-=wgoxnmsj8GEVFJSvTwdnWm8wVJthefNk2n6+4TC=20e0Q@mail.gmail.com/
+> (I saw your follow up; this patch is one of the less controversial
+> ones though since the types are not ones that are promoted).
+
+That said, I hope you are very well aware of the case.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
