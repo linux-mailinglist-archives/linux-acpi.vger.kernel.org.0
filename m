@@ -2,155 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 080B34E1A68
-	for <lists+linux-acpi@lfdr.de>; Sun, 20 Mar 2022 07:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF574E1BCB
+	for <lists+linux-acpi@lfdr.de>; Sun, 20 Mar 2022 14:12:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244815AbiCTGak (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 20 Mar 2022 02:30:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54924 "EHLO
+        id S245128AbiCTNN1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 20 Mar 2022 09:13:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244814AbiCTGak (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Mar 2022 02:30:40 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238BDF1EA5
-        for <linux-acpi@vger.kernel.org>; Sat, 19 Mar 2022 23:29:17 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id h8-20020a25e208000000b00628c0565607so9970948ybe.0
-        for <linux-acpi@vger.kernel.org>; Sat, 19 Mar 2022 23:29:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=ASJzKtjYfW3z8f/kiOdf3O3IhYj+R3xbLBVIICLaL3k=;
-        b=dPFkW/Ck2UL5AoOdA6Cz0rPjNvn8yK05uE0Xm2HL/viXm1ySX1TLtgDnqRKai9VyMl
-         KLy4K5nYOqrleAfGBOFi14Jz8snJOM/Ma3lE5CQaWYaq9GNDs8Tbwqgb9al+0Frlcho0
-         cXAEGoW8VtU11wcxOJOnzwgXAgwWe6avL9HI6MybXN92SKK6Mn2o330K1OzbD3AE5f4c
-         AX0t6SUjhSdCulmD3jO0nRMVEwMLRkEAja9VO8AX8kQnJDyncnJdrdCeFcDee0PM4inx
-         5bq5duGStWNWRNbLTMkjtH5WgvXivj37aFUbhbREceZOmLwQ2PCavmihJR2SuBIsN2yH
-         CivA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=ASJzKtjYfW3z8f/kiOdf3O3IhYj+R3xbLBVIICLaL3k=;
-        b=ZeHwepgVq3SizbqN4pV9yM/RJ99WaT9/F4UR6WifC1hLPe7h/7lX7hx7tnv1esL2Pj
-         l7ltTfP3OmJodeTAxZycvMoiPJ9c/6igcK0jBskUPDR18+g0eTE0ytunNERog7Mf0di5
-         3Kwc08lgmedxKe/cNcvUQZXYtspns8R3Yu+6FmIHwfXky7IdpNJaRNExBInihRAintxq
-         SP2aCqtfQOskKzgfF81Ti4mOBL4g4e5hrAK3QSe+xgWBVzZ8sCL5tj1j5lv5AK4TBDfS
-         WtmF/N751cYWkzF2rSUo45dcy1qrE2VrM3+eRzETxoSFL112VTgC8hs7NqU0RxuTCbvb
-         4phw==
-X-Gm-Message-State: AOAM531LPFrHG8YwwYs5iYWCyxcBYaJRsdeloLGqkBJS9eGHJQx5IV1H
-        OlOj24MJtpB7O8qFfjjdpH7AxzcwRhUT
-X-Google-Smtp-Source: ABdhPJyA1/PLVkOcQRO7zP5IrnCWC5GLuOxnX8km0260X51BYH8R29UtxaOINOdqUREPgrXHVEXZVZqiVanY
-X-Received: from rajat2.mtv.corp.google.com ([2620:15c:202:201:5445:bc31:4f4a:d610])
- (user=rajatja job=sendgmr) by 2002:a25:c884:0:b0:633:7961:8a06 with SMTP id
- y126-20020a25c884000000b0063379618a06mr17596271ybf.38.1647757756226; Sat, 19
- Mar 2022 23:29:16 -0700 (PDT)
-Date:   Sat, 19 Mar 2022 23:29:06 -0700
-In-Reply-To: <20220320062907.3272903-1-rajatja@google.com>
-Message-Id: <20220320062907.3272903-2-rajatja@google.com>
-Mime-Version: 1.0
-References: <20220320062907.3272903-1-rajatja@google.com>
-X-Mailer: git-send-email 2.35.1.894.gb6a874cedc-goog
-Subject: [PATCH v4 2/2] PCI: ACPI: Support Microsoft's "DmaProperty"
-From:   Rajat Jain <rajatja@google.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Dmitry Torokhov <dtor@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Pavel Machek <pavel@denx.de>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        iommu@lists.linux-foundation.org
-Cc:     Rajat Jain <rajatja@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S245124AbiCTNN0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Mar 2022 09:13:26 -0400
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1108A1F630;
+        Sun, 20 Mar 2022 06:12:02 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R741e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V7f.E1k_1647781918;
+Received: from 30.240.112.73(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V7f.E1k_1647781918)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Sun, 20 Mar 2022 21:12:00 +0800
+Message-ID: <78cefd4c-f735-2ec4-0c09-35c8191280c5@linux.alibaba.com>
+Date:   Sun, 20 Mar 2022 21:11:58 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.7.0
+Subject: Re: [BUG] kernel side can NOT trigger memory error with einj
+Content-Language: en-US
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "graeme.gregory@linaro.org" <graeme.gregory@linaro.org>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "myron.stowe@redhat.com" <myron.stowe@redhat.com>,
+        "Brown, Len" <len.brown@intel.com>,
+        "Huang, Ying" <ying.huang@intel.com>
+References: <8c40a492-9461-2b43-6ec9-06bfc7a0e77f@linux.alibaba.com>
+ <YjIeff7ESJB/amYA@agluck-desk3.sc.intel.com>
+ <f93a5532-3e07-edf4-38ca-142a0f1d78d7@linux.alibaba.com>
+ <1421c3ac3d3c4438a6ff18f193f8a41c@intel.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <1421c3ac3d3c4438a6ff18f193f8a41c@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-10.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The "DmaProperty" is supported and documented by Microsoft here:
-https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
-They use this property for DMA protection:
-https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
+在 2022/3/18 AM12:57, Luck, Tony 写道:
+>> -       rc = apei_exec_run(&trigger_ctx, ACPI_EINJ_TRIGGER_ERROR);
+>> +       ptr = kmap(pfn_to_page(pfn));
+>> +       tmp = *(ptr + (param1 & ~ PAGE_MASK));
+> 
+> That hack works when the trigger action is just trying to access the injected
+> location. But on Intel platforms the trigger "kicks" the patrol scrubber in the
+> memory controller to access the address. So the error is triggered not by
+> an access from the core, but by internal memory controller access.
+> 
+> This results in a different error signature (for an uncorrected error injection
+> it will be a UCNA or SRAO in Intel acronym-speak).
 
-Support the "DmaProperty" with the same semantics. This is useful for
-internal PCI devices that do not hang off a PCIe rootport, but offer
-an attack surface for DMA attacks (e.g. internal network devices).
+As far as I know, APEI only defines five injection instructions, ACPI_EINJ_READ_REGISTER,
+ACPI_EINJ_READ_REGISTER_VALUE, ACPI_EINJ_WRITE_REGISTER, ACPI_EINJ_WRITE_REGISTER_VALUE and
+ACPI_EINJ_NOOP. ACPI_EINJ_TRIGGER_ERROR action should run one of them, I don't see
+any of them will kick the patrol scrubber. For example, trigger with ACPI_EINJ_READ_REGISTER:
 
-Signed-off-by: Rajat Jain <rajatja@google.com>
----
-v4: * Add the GUID. 
-    * Use the (now) renamed property - pci_dev->poses_dma_risk)
-    * Update the comment and commitlog.
-v3: * Use Microsoft's documented property "DmaProperty"
-    * Resctrict to ACPI only
+apei_exec_run(&trigger_ctx, ACPI_EINJ_TRIGGER_ERROR)
+    __apei_exec_run	// ins=0
+        => apei_exec_read_register
+            => apei_read
+                => acpi_os_read_memory
+                    => acpi_map_vaddr_lookup    /* lookup VA of PA from acpi_ioremap */
+                    => acpi_os_ioremap
+		    => acpi_os_read_iomem
+			=> *(u32 *) value = readl(virt_addr);
 
- drivers/acpi/property.c |  3 +++
- drivers/pci/pci-acpi.c  | 16 ++++++++++++++++
- 2 files changed, 19 insertions(+)
+As we can see, the error is triggered by access from the core. However, the physical
+address can NOT be mapped by acpi_os_ioremap.
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index d0986bda2964..20603cacc28d 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -48,6 +48,9 @@ static const guid_t prp_guids[] = {
- 	/* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
- 	GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
- 		  0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
-+	/* DmaProperty for PCI devices GUID: 70d24161-6dd5-4c9e-8070-705531292865 */
-+	GUID_INIT(0x70d24161, 0x6dd5, 0x4c9e,
-+		  0x80, 0x70, 0x70, 0x55, 0x31, 0x29, 0x28, 0x65),
- };
- 
- /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 1f15ab7eabf8..5360f1af2ed3 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1350,12 +1350,28 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
- 		dev->external_facing = 1;
- }
- 
-+static void pci_acpi_check_for_dma_protection(struct pci_dev *dev)
-+{
-+	u8 val;
-+
-+	/*
-+	 * Property also used by Microsoft Windows for same purpose,
-+	 * (to implement DMA protection from a device, using the IOMMU).
-+	 */
-+	if (device_property_read_u8(&dev->dev, "DmaProperty", &val))
-+		return;
-+
-+	if (val)
-+		dev->poses_dma_risk = 1;
-+}
-+
- void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
- {
- 	struct pci_dev *pci_dev = to_pci_dev(dev);
- 
- 	pci_acpi_optimize_delay(pci_dev, adev->handle);
- 	pci_acpi_set_external_facing(pci_dev);
-+	pci_acpi_check_for_dma_protection(pci_dev);
- 	pci_acpi_add_edr_notifier(pci_dev);
- 
- 	pci_acpi_add_pm_notifier(adev, pci_dev);
--- 
-2.35.1.894.gb6a874cedc-goog
+If I missed anything, please let me know. Thank you very much.
+
+Best Regards,
+Shuai
+
 
