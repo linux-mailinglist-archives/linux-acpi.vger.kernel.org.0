@@ -2,104 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB8464E24BE
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 11:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FED34E2CF0
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 16:54:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346513AbiCUK7c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Mar 2022 06:59:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34256 "EHLO
+        id S1345936AbiCUPzu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Mar 2022 11:55:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344310AbiCUK72 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Mar 2022 06:59:28 -0400
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [IPv6:2001:4b98:dc4:8::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E28388D;
-        Mon, 21 Mar 2022 03:57:59 -0700 (PDT)
-Received: (Authenticated sender: clement.leger@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 83816240002;
-        Mon, 21 Mar 2022 10:57:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1647860278;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LZNgnjWkKhLzqGXIS2PyfPRDrrDMyUhiYwcO73AF+24=;
-        b=Wxx6YJ/79/95pD6rR/0C2Kaz+JctTL3b6Dorqi7ZVrwbV0L1WAYb+4oAJ6fvMMFtOJ0ne8
-        tZbhuhmzJTPNkZGoa7anaZ3Bn0DTwUuDXaSt+Nq74g4GLRhY6K2T0OYpifi50VPVtlgNn9
-        aC1BtO58qBEZpgFnUBTuNajIQPH5TaLei9n7bQqS65jrLhfVpvugcG+iAwlnCjwMqtSbQ3
-        e+fuprJ2kmr/X4psUPw5XI4VDWIqKdrol6VXdybDLbFk1/3z1K8LtoKIKzzyuRKUxgzhEg
-        I9nafmua3WdquDaRYBDyS3ZzWQQ0JBTTfgli61GuKiTxZd7ytVxfP/UpWWYsjw==
-Date:   Mon, 21 Mar 2022 11:56:34 +0100
-From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "'Rafael J . Wysocki '" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 0/6] introduce fwnode in the I2C subsystem
-Message-ID: <20220321115634.5f4b8bd4@fixe.home>
-In-Reply-To: <20220318100201.630c70bf@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20220318160059.328208-1-clement.leger@bootlin.com>
-        <20220318100201.630c70bf@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        with ESMTP id S1348811AbiCUPzt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Mar 2022 11:55:49 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C5C1B0A42;
+        Mon, 21 Mar 2022 08:54:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647878064; x=1679414064;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=yzFpC7VxjWrIafcSj+avkexiroeO263rG7Ei9+ahZKI=;
+  b=QWIHcaiAYakiQ+jQDmckC/zn/bjGBiSyiz3viRDYfstwZeaQvvM5nPpx
+   joaSbV0Ugz1+/xGt7fGs61c/KyA7odcCBp9iROXidTky+W37ScXOkvOGf
+   6ZneXVP0dqurV76xYqDcjNLtyqueoCSR7g53NSEg4/Zg+LzM3KLRb2zJw
+   kXBXHTMTeoHHhOILC5BrSx3sZNA+Dxo6ZGst3Q8OR+vP8f2Lgnu6H0uLJ
+   m49pV30gndSQeYsOCL8nF6V6+uQnjeOFLuFme8WNj1wETgwlODnQuakCY
+   POU1lktwctMs4nwfzo/hcTiCEWb2UhcARaa2MGb17xYSJ1fuGO7lkiuzn
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10292"; a="256404011"
+X-IronPort-AV: E=Sophos;i="5.90,199,1643702400"; 
+   d="scan'208";a="256404011"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2022 08:54:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,199,1643702400"; 
+   d="scan'208";a="692216313"
+Received: from fmsmsx606.amr.corp.intel.com ([10.18.126.86])
+  by fmsmga001.fm.intel.com with ESMTP; 21 Mar 2022 08:54:23 -0700
+Received: from shsmsx606.ccr.corp.intel.com (10.109.6.216) by
+ fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Mon, 21 Mar 2022 08:54:22 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ SHSMSX606.ccr.corp.intel.com (10.109.6.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Mon, 21 Mar 2022 23:54:19 +0800
+Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
+ fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.2308.021;
+ Mon, 21 Mar 2022 08:54:17 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+CC:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "graeme.gregory@linaro.org" <graeme.gregory@linaro.org>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "myron.stowe@redhat.com" <myron.stowe@redhat.com>,
+        "Brown, Len" <len.brown@intel.com>,
+        "Huang, Ying" <ying.huang@intel.com>
+Subject: RE: [BUG] kernel side can NOT trigger memory error with einj
+Thread-Topic: [BUG] kernel side can NOT trigger memory error with einj
+Thread-Index: AQHYMqwUN/kZY3Cbfk+jlxJiPgOL36zCUXmAgAETuICAAHR30IAE7oAAgAFGNfA=
+Date:   Mon, 21 Mar 2022 15:54:17 +0000
+Message-ID: <16c12d3d310f414ba43219cdf4b31539@intel.com>
+References: <8c40a492-9461-2b43-6ec9-06bfc7a0e77f@linux.alibaba.com>
+ <YjIeff7ESJB/amYA@agluck-desk3.sc.intel.com>
+ <f93a5532-3e07-edf4-38ca-142a0f1d78d7@linux.alibaba.com>
+ <1421c3ac3d3c4438a6ff18f193f8a41c@intel.com>
+ <78cefd4c-f735-2ec4-0c09-35c8191280c5@linux.alibaba.com>
+In-Reply-To: <78cefd4c-f735-2ec4-0c09-35c8191280c5@linux.alibaba.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.6.401.20
+x-originating-ip: [10.1.200.100]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Fri, 18 Mar 2022 10:02:01 -0700,
-Jakub Kicinski <kuba@kernel.org> a =C3=A9crit :
-
-> On Fri, 18 Mar 2022 17:00:46 +0100 Cl=C3=A9ment L=C3=A9ger wrote:
-> > In order to allow the I2C subsystem to be usable with fwnode, add
-> > some functions to retrieve an i2c_adapter from a fwnode and use
-> > these functions in both i2c mux and sfp. ACPI and device-tree are
-> > handled to allow these modifications to work with both descriptions.
-> >=20
-> > This series is a subset of the one that was first submitted as a larger
-> > series to add swnode support [1]. In this one, it will be focused on
-> > fwnode support only since it seems to have reach a consensus that
-> > adding fwnode to subsystems makes sense.
-> >=20
-> > [1] https://lore.kernel.org/netdev/YhPSkz8+BIcdb72R@smile.fi.intel.com/=
-T/ =20
->=20
-> Sorry to jump ahead but would be great to split it up so that every
-> subsystem could apply its patches without risking conflicts, once
-> consensus has been reached.
-
-Hi Jakub,
-
-Ok, to be clear, you would like a series which contains all the
-"base" fwnode functions that I'm going to add to be sent separately
-right ? And then also split i2c/net stuff that was sent in this series ?
-
-Thanks,
-
---=20
-Cl=C3=A9ment L=C3=A9ger,
-Embedded Linux and Kernel engineer at Bootlin
-https://bootlin.com
+PiBBcyBmYXIgYXMgSSBrbm93LCBBUEVJIG9ubHkgZGVmaW5lcyBmaXZlIGluamVjdGlvbiBpbnN0
+cnVjdGlvbnMsIEFDUElfRUlOSl9SRUFEX1JFR0lTVEVSLA0KPiBBQ1BJX0VJTkpfUkVBRF9SRUdJ
+U1RFUl9WQUxVRSwgQUNQSV9FSU5KX1dSSVRFX1JFR0lTVEVSLCBBQ1BJX0VJTkpfV1JJVEVfUkVH
+SVNURVJfVkFMVUUgYW5kDQo+IEFDUElfRUlOSl9OT09QLiBBQ1BJX0VJTkpfVFJJR0dFUl9FUlJP
+UiBhY3Rpb24gc2hvdWxkIHJ1biBvbmUgb2YgdGhlbSwgSSBkb24ndCBzZWUNCj4gYW55IG9mIHRo
+ZW0gd2lsbCBraWNrIHRoZSBwYXRyb2wgc2NydWJiZXIuIEZvciBleGFtcGxlLCB0cmlnZ2VyIHdp
+dGggQUNQSV9FSU5KX1JFQURfUkVHSVNURVI6DQoNCktpY2tpbmcgdGhlIHBhdHJvbCBzY3J1YmJl
+ciBpcyBkb25lIHdpdGggYSB0cmlnZ2VyIGFjdGlvbiB0aGF0IHdyaXRlcw0KdG8gbWVtb3J5IGNv
+bnRyb2xsZXIgcmVnaXN0ZXJzIHVzaW5nIEFDUElfRUlOSl9XUklURV9SRUdJU1RFUl9WQUxVRS4N
+Cg0KLVRvbnkNCg==
