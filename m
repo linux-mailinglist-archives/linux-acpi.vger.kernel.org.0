@@ -2,221 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7BEC4E1E9C
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 02:22:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAFFE4E1EAA
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 02:24:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237860AbiCUBXx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 20 Mar 2022 21:23:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36034 "EHLO
+        id S1343970AbiCUBZ6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 20 Mar 2022 21:25:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232714AbiCUBXw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Mar 2022 21:23:52 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 395F270928;
-        Sun, 20 Mar 2022 18:22:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=7sdUiS9GK2a9IHOMaMalD7HEg3D293dhjq705r7V1jI=; b=Teh+nVdS5SpmsugSPBqwZ2vtd0
-        +SGAN9nxcaeCe3VA5LVBeMAqUMzhmVKv18sUTKrjFyfop5ThCr3djxe15ixxXfRpem7/MuQEdzgWz
-        CVVcIg/Dch7Ogyg+3sapjfNxUUDzrh6kqHpmGT/15Av4lUe5Po/R4ahBZ/grelV6Q9zF++WT96mDL
-        qDvwtntshBNv3Lov8iKnswDa+tIeVHsiF49D5oIp90upBOF+zD3Hv6fsXXgxliPO9mluIobGUwGk8
-        3w5ldhwx4uHqWlFkNFKTwU9EfAI9a78p51Qfnkle88ey82rLKhI4AvArMYd3vzuZBsHFh1y7detFW
-        24gPw2vA==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nW6kU-006Dnt-Sg; Mon, 21 Mar 2022 01:22:19 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        linux-s390@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-ia64@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>, Len Brown <lenb@kernel.org>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
-Subject: [PATCH] Docs: admin/kernel-parameters: edit a few boot options
-Date:   Sun, 20 Mar 2022 18:22:16 -0700
-Message-Id: <20220321012216.23724-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S1343967AbiCUBZ4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Mar 2022 21:25:56 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8641286FD
+        for <linux-acpi@vger.kernel.org>; Sun, 20 Mar 2022 18:24:28 -0700 (PDT)
+Received: from fsav314.sakura.ne.jp (fsav314.sakura.ne.jp [153.120.85.145])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 22L1OQ9W020821;
+        Mon, 21 Mar 2022 10:24:26 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav314.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp);
+ Mon, 21 Mar 2022 10:24:26 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 22L1OOpR020816
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Mon, 21 Mar 2022 10:24:25 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <49925af7-78a8-a3dd-bce6-cfc02e1a9236@I-love.SAKURA.ne.jp>
+Date:   Mon, 21 Mar 2022 10:24:23 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Content-Language: en-US
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: An announcement for kernel-global workqueue users.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,RCVD_IN_SBL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Clean up some of admin-guide/kernel-parameters.txt:
+Hello.
 
-a. "smt" should be "smt=" (S390)
-b. add "smt-enabled" for POWERPC
-c. Sparc supports the vdso= boot option
-d. make the tp_printk options (2) formatting similar to other options
-   by adding spacing
-e. add "trace_clock=" with a reference to Documentation/trace/ftrace.rst
-f. use [IA-64] as documented instead of [ia64]
-g. fix formatting and text for test_suspend=
-h. fix formatting for swapaccount=
-i. fix formatting and grammar for video.brightness_switch_enabled=
+The Linux kernel provides kernel-global WQs (namely, system_wq, system_highpri_wq,
+system_long_wq, system_unbound_wq, system_freezable_wq, system_power_efficient_wq
+and system_freezable_power_efficient_wq). But since attempt to flush kernel-global
+WQs has possibility of deadlock, Tejun Heo thinks that we should stop calling
+flush_scheduled_work() and flush_workqueue(system_*). Such callers as of Linux 5.17
+are listed below.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-ia64@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-pm@vger.kernel.org
-Cc: linux-acpi@vger.kernel.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
----
- Documentation/admin-guide/kernel-parameters.txt |   33 +++++++++-----
- 1 file changed, 22 insertions(+), 11 deletions(-)
+----------
+$ git grep -nF 'flush_scheduled_work()'
+drivers/acpi/osl.c:1182:         * invoke flush_scheduled_work()/acpi_os_wait_events_complete() to flush
+drivers/acpi/osl.c:1575:        flush_scheduled_work();
+drivers/block/aoe/aoedev.c:324: flush_scheduled_work();
+drivers/block/aoe/aoedev.c:523: flush_scheduled_work();
+drivers/crypto/atmel-ecc.c:401: flush_scheduled_work();
+drivers/crypto/atmel-sha204a.c:162:     flush_scheduled_work();
+drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c:2606:       flush_scheduled_work();
+drivers/gpu/drm/bridge/lontium-lt9611uxc.c:985: flush_scheduled_work();
+drivers/gpu/drm/i915/display/intel_display.c:10790:     flush_scheduled_work();
+drivers/gpu/drm/i915/gt/selftest_execlists.c:87:        flush_scheduled_work();
+drivers/iio/light/tsl2563.c:811:        flush_scheduled_work();
+drivers/infiniband/hw/mlx4/cm.c:511:            flush_scheduled_work();
+drivers/infiniband/hw/mlx4/cm.c:543:            flush_scheduled_work(); /* make sure all timers were flushed */
+drivers/infiniband/ulp/isert/ib_isert.c:2639:   flush_scheduled_work();
+drivers/input/mouse/psmouse-smbus.c:320:        flush_scheduled_work();
+drivers/md/dm.c:229:    flush_scheduled_work();
+drivers/message/fusion/mptscsih.c:1234: flush_scheduled_work();
+drivers/net/phy/phy.c:1060:     /* Cannot call flush_scheduled_work() here as desired because
+drivers/net/usb/lan78xx.c:3240:  * can't flush_scheduled_work() until we drop rtnl (later),
+drivers/net/usb/usbnet.c:853:    * can't flush_scheduled_work() until we drop rtnl (later),
+drivers/net/wireless/ath/ath6kl/usb.c:481:      flush_scheduled_work();
+drivers/net/wwan/wwan_hwsim.c:537:      flush_scheduled_work();         /* Wait deletion works completion */
+drivers/nvme/target/configfs.c:1557:    flush_scheduled_work();
+drivers/nvme/target/rdma.c:1587:                flush_scheduled_work();
+drivers/nvme/target/rdma.c:2056:        flush_scheduled_work();
+drivers/nvme/target/tcp.c:1818:         flush_scheduled_work();
+drivers/nvme/target/tcp.c:1879: flush_scheduled_work();
+drivers/nvme/target/tcp.c:1884: flush_scheduled_work();
+drivers/platform/surface/surface_acpi_notify.c:863:     flush_scheduled_work();
+drivers/power/supply/ab8500_btemp.c:975:        flush_scheduled_work();
+drivers/power/supply/ab8500_chargalg.c:1993:    flush_scheduled_work();
+drivers/power/supply/ab8500_charger.c:3400:     flush_scheduled_work();
+drivers/power/supply/ab8500_fg.c:3021:  flush_scheduled_work();
+drivers/rapidio/devices/tsi721.c:2944:  flush_scheduled_work();
+drivers/rtc/dev.c:99:                   flush_scheduled_work();
+drivers/scsi/mpt3sas/mpt3sas_scsih.c:12409:     flush_scheduled_work();
+drivers/scsi/qla2xxx/qla_target.c:1568:         flush_scheduled_work();
+drivers/staging/olpc_dcon/olpc_dcon.c:386:      flush_scheduled_work();
+sound/soc/intel/atom/sst/sst.c:363:     flush_scheduled_work();
+$ git grep -nF 'flush_workqueue(system_'
+drivers/block/rnbd/rnbd-clt.c:1776:     flush_workqueue(system_long_wq);
+drivers/infiniband/core/device.c:2857:  flush_workqueue(system_unbound_wq);
+include/linux/workqueue.h:592:  flush_workqueue(system_wq);
+----------
 
---- linux-next-20220318.orig/Documentation/admin-guide/kernel-parameters.txt
-+++ linux-next-20220318/Documentation/admin-guide/kernel-parameters.txt
-@@ -2814,7 +2814,7 @@
- 			different yeeloong laptops.
- 			Example: machtype=lemote-yeeloong-2f-7inch
- 
--	max_addr=nn[KMG]	[KNL,BOOT,ia64] All physical memory greater
-+	max_addr=nn[KMG]	[KNL,BOOT,IA-64] All physical memory greater
- 			than or equal to this physical address is ignored.
- 
- 	maxcpus=	[SMP] Maximum number of processors that	an SMP kernel
-@@ -3057,7 +3057,7 @@
- 
- 	mga=		[HW,DRM]
- 
--	min_addr=nn[KMG]	[KNL,BOOT,ia64] All physical memory below this
-+	min_addr=nn[KMG]	[KNL,BOOT,IA-64] All physical memory below this
- 			physical address is ignored.
- 
- 	mini2440=	[ARM,HW,KNL]
-@@ -5382,13 +5382,19 @@
- 				1: Fast pin select (default)
- 				2: ATC IRMode
- 
--	smt		[KNL,S390] Set the maximum number of threads (logical
-+	smt=		[KNL,S390] Set the maximum number of threads (logical
- 			CPUs) to use per physical CPU on systems capable of
- 			symmetric multithreading (SMT). Will be capped to the
- 			actual hardware limit.
- 			Format: <integer>
- 			Default: -1 (no limit)
- 
-+	smt-enabled=	[PPC 64-bit] Enable SMT, disable SMT, or set the
-+			maximum number of threads. This can be used to override
-+			the Open Firmware (OF) option.
-+			Format: on | off | <integer>
-+			Default: all threads enabled
-+
- 	softlockup_panic=
- 			[KNL] Should the soft-lockup detector generate panics.
- 			Format: 0 | 1
-@@ -5768,8 +5774,9 @@
- 			This parameter controls use of the Protected
- 			Execution Facility on pSeries.
- 
--	swapaccount=[0|1]
--			[KNL] Enable accounting of swap in memory resource
-+	swapaccount=	[KNL]
-+			Format: [0|1]
-+			Enable accounting of swap in memory resource
- 			controller if no parameter or 1 is given or disable
- 			it if 0 is given (See Documentation/admin-guide/cgroup-v1/memory.rst)
- 
-@@ -5815,7 +5822,8 @@
- 
- 	tdfx=		[HW,DRM]
- 
--	test_suspend=	[SUSPEND][,N]
-+	test_suspend=	[SUSPEND]
-+			Format: { "mem" | "standby" | "freeze" }[,N]
- 			Specify "mem" (for Suspend-to-RAM) or "standby" (for
- 			standby suspend) or "freeze" (for suspend type freeze)
- 			as the system sleep state during system startup with
-@@ -5902,6 +5910,8 @@
- 	trace_buf_size=nn[KMG]
- 			[FTRACE] will set tracing buffer size on each cpu.
- 
-+	trace_clock=	[FTRACE] See Documentation/trace/ftrace.rst
-+
- 	trace_event=[event-list]
- 			[FTRACE] Set and start specified trace events in order
- 			to facilitate early boot debugging. The event-list is a
-@@ -5924,7 +5934,7 @@
- 			See also Documentation/trace/ftrace.rst "trace options"
- 			section.
- 
--	tp_printk[FTRACE]
-+	tp_printk	[FTRACE]
- 			Have the tracepoints sent to printk as well as the
- 			tracing ring buffer. This is useful for early boot up
- 			where the system hangs or reboots and does not give the
-@@ -5946,7 +5956,7 @@
- 			frequency tracepoints such as irq or sched, can cause
- 			the system to live lock.
- 
--	tp_printk_stop_on_boot[FTRACE]
-+	tp_printk_stop_on_boot [FTRACE]
- 			When tp_printk (above) is set, it can cause a lot of noise
- 			on the console. It may be useful to only include the
- 			printing of events during boot up, as user space may
-@@ -6295,7 +6305,7 @@
- 					HIGHMEM regardless of setting
- 					of CONFIG_HIGHPTE.
- 
--	vdso=		[X86,SH]
-+	vdso=		[X86,SH,SPARC]
- 			On X86_32, this is an alias for vdso32=.  Otherwise:
- 
- 			vdso=1: enable VDSO (the default)
-@@ -6321,11 +6331,12 @@
- 	video=		[FB] Frame buffer configuration
- 			See Documentation/fb/modedb.rst.
- 
--	video.brightness_switch_enabled= [0,1]
-+	video.brightness_switch_enabled= [ACPI]
-+			Format: [0|1]
- 			If set to 1, on receiving an ACPI notify event
- 			generated by hotkey, video driver will adjust brightness
- 			level and then send out the event to user space through
--			the allocated input device; If set to 0, video driver
-+			the allocated input device. If set to 0, video driver
- 			will only send out the event without touching backlight
- 			brightness level.
- 			default: 1
+I tried to send a patch that emits a warning when flushing kernel-global WQs is attempted
+( https://lkml.kernel.org/r/2efd5461-fccd-f1d9-7138-0a6767cbf5fe@I-love.SAKURA.ne.jp ).
+But Linus does not want such patch
+( https://lkml.kernel.org/r/CAHk-=whWreGjEQ6yasspzBrNnS7EQiL+SknToWt=SzUh4XomyQ@mail.gmail.com ).
+
+Steps for converting kernel-global WQs into module's local WQs are shown below.
+But since an oversight in Step 4 results in breakage, I think that this conversion
+should be carefully handled by maintainers/developers of each module who are
+familiar with that module. (This is why I'm sending this mail than sending patches,
+in order to ask for your cooperation.)
+
+----------
+Step 0: Consider if flushing kernel-global WQs is unavoidable.
+
+    For example, commit 081bdc9fe05bb232 ("RDMA/ib_srp: Fix a deadlock")
+    simply removed flush_workqueue(system_long_wq) call.
+
+    For another example, schedule_on_each_cpu() does not need to call
+    flush_scheduled_work() because schedule_on_each_cpu() knows the list
+    of all "struct work_struct" instances which need to be flushed using
+    flush_work() call.
+
+    If flushing kernel-global WQs is still unavoidable, please proceed to
+    the following steps.
+
+Step 1: Declare a variable for your module.
+
+    struct workqueue_struct *my_wq;
+
+Step 2: Create a WQ for your module from __init function. The same flags
+        used by corresponding kernel-global WQ can be used when creating
+        the WQ for your module.
+
+    my_wq = alloc_workqueue("my_wq_name", 0, 0);
+
+Step 3: Destroy the WQ created in Step 2 from __exit function (and the error
+        handling path of __init function if __init function may fail after
+        creating the WQ).
+
+    destroy_workqueue(my_wq);
+
+Step 4: Replace e.g. schedule_work() call with corresponding queue_work() call
+        throughout your module which should be handled by the WQ for your module.
+
+Step 5: Replace flush_scheduled_work() and flush_workqueue(system_*) calls
+        with flush_workqueue() of the WQ for your module.
+
+    flush_workqueue(my_wq);
+----------
+
+Regards.
