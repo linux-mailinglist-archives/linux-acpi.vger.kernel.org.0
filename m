@@ -2,94 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F6B94E2404
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 11:09:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B3B14E2463
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 11:32:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346207AbiCUKKh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Mar 2022 06:10:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57364 "EHLO
+        id S1345499AbiCUKeH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Mar 2022 06:34:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233527AbiCUKKg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Mar 2022 06:10:36 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EABE12638;
-        Mon, 21 Mar 2022 03:09:11 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id u26so1613588eda.12;
-        Mon, 21 Mar 2022 03:09:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SkmT2FABHkpew7E/cN4TVjK7zuvf5Ns9Fgh4qceQpwU=;
-        b=g4lAMpd74Jf9YpklzhPxjUQUv6yx2iLEHHrQvVOpWo0P6cDCLzRZeaI8Ih5pJWPbGJ
-         7n9oX0SwQOmCtFvFMO+G0Rd7mU2awVCk3z91ghHm05HGrCDAvQZ0f2zaZnGvMZ4hlKEX
-         5eiCaY073OpARgfDga9fO5BfL+P8wcEuBgQ7JDSbqKpY27/QvKbKHHjqQETF9em1iDlL
-         rqtc0HINi+FpQRfRa1B6wy1sZD6SqeNwJSePP5ZpNj131PXVDScJBe/hZka2doRISQWL
-         rYX3PVx1wQ8RL3d9Oiu/hooyx/FRX/yCufrU//hVvfe66KcR66FATEP8nwhUWSd2EzEX
-         apNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SkmT2FABHkpew7E/cN4TVjK7zuvf5Ns9Fgh4qceQpwU=;
-        b=1/gz+brS8E1xU45CqwbZbes10r/2OlyU8wnrELDVF/8DwOVVKgVxGLS3RA2TEm78wy
-         uJR+cH5amxghPGbziW1DrAoHLAfKXwgVzttN7cEPunyt/zl+KK8iT30FrOwhkwp7/9PX
-         6f/qx246XEGO1Ar29rPTn3dkAOVuwuOUpGb1Ui8qqq2+Hsl4oITXov68pe6UuiSSzF36
-         eIMFuB3xrOEuHkgdYEc6VwKki9gl+Y5wpz6kCoZen5uvqxzJyZG7D41wPXqrqCRszd9I
-         vzYrm2H+ioeVzB4UQ7JhbcqPV0tMnRi6fIo5Ti0ePveuP9mOy+yZJQd9+CD5U37uRbeB
-         uRFQ==
-X-Gm-Message-State: AOAM532SnYNXxCv7LkhcvTOiA/gcnaG/FNnM/Y8VzwtinaIj1Ly4UlRl
-        SM+l+JtfkhSZNYp9yu3qUMbvhKYuz4QsbJ0cRyw=
-X-Google-Smtp-Source: ABdhPJwjMzeDiM1jhIZC9vO3K6bKkPd1fvqJ2Pl9h9z60Lq9e+0K81GLeFaZGDHFPc4KxsZDKtn8yaYZu4f7CiF1fUc=
-X-Received: by 2002:aa7:c30f:0:b0:419:2af:4845 with SMTP id
- l15-20020aa7c30f000000b0041902af4845mr18184178edq.296.1647857349742; Mon, 21
- Mar 2022 03:09:09 -0700 (PDT)
+        with ESMTP id S230223AbiCUKeH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Mar 2022 06:34:07 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C2B8F3F88;
+        Mon, 21 Mar 2022 03:32:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647858762; x=1679394762;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=uW0WOPC73UEvk44rb2hIDfT3tEzB1IDsf3NCkLUv0rE=;
+  b=J3WH2DC4l++3oDpMURG+Z9t4ovQWuTQNMeMzAJCWN08WkVdgYL1zKGIB
+   Q0zxrcBMMyHS2KpcDusRSORt9cqBmQkQ4w1efTmeHco+1BcbmXH1G8erB
+   mgYHnWkU8DNK9Kzyx3L9ZlzAtKP4bItAwxIuYVdkdunhzDQKWzP17oQzW
+   wmah6Ew96VwybQvHfhq9lg+7WO3gZLDvcPlMfg+coc+v9uUo2y5Je1KLl
+   XkfBgYEYf+4pYYteAnluQTkTwUNUPfti0eAer1uOYhIJaqYADt9/+y9I4
+   4LCm7v4NdsN26+LKiSzmX2bbMVrm7OXptvC8nemAY3DpJTRbJ2sM9lems
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10292"; a="255083998"
+X-IronPort-AV: E=Sophos;i="5.90,198,1643702400"; 
+   d="scan'208";a="255083998"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2022 03:32:42 -0700
+X-IronPort-AV: E=Sophos;i="5.90,198,1643702400"; 
+   d="scan'208";a="582820837"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2022 03:32:36 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nWFKQ-003p5V-A4;
+        Mon, 21 Mar 2022 12:31:58 +0200
+Date:   Mon, 21 Mar 2022 12:31:58 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "'Rafael J . Wysocki '" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/6] property: add fwnode_property_read_string_index()
+Message-ID: <YjhUHjeqL2UpB0Gm@smile.fi.intel.com>
+References: <20220318160059.328208-1-clement.leger@bootlin.com>
+ <20220318160059.328208-2-clement.leger@bootlin.com>
+ <YjSymEpNH8vnkQ+L@smile.fi.intel.com>
+ <20220318174912.5759095f@fixe.home>
+ <YjTK4UW7DwZ0S3QY@smile.fi.intel.com>
+ <20220321084921.069c688e@fixe.home>
 MIME-Version: 1.0
-References: <20220316213055.2351342-1-morbo@google.com> <20220319222228.4160598-1-morbo@google.com>
- <CAHk-=wh4B42bYZmGoY8=UsqHDuq_th2KN7TmXuTnhwyYWzQ5pg@mail.gmail.com> <CAHk-=wgH3kbKcNwBO7os3BuU523Gd2aqdu0dVvf50bJbLKrLJg@mail.gmail.com>
-In-Reply-To: <CAHk-=wgH3kbKcNwBO7os3BuU523Gd2aqdu0dVvf50bJbLKrLJg@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 21 Mar 2022 12:07:58 +0200
-Message-ID: <CAHp75Vc+T3eM9=yu9XccXKmf1ZnR6dz1ZP_eL4faPnM8ZNbbnQ@mail.gmail.com>
-Subject: Re: [PATCH v2] gpiolib: acpi: use correct format characters
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Bill Wendling <morbo@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220321084921.069c688e@fixe.home>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Mar 20, 2022 at 1:06 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
-> On Sat, Mar 19, 2022 at 3:54 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
+On Mon, Mar 21, 2022 at 08:49:21AM +0100, Clément Léger wrote:
+> Le Fri, 18 Mar 2022 20:09:37 +0200,
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> a écrit :
+> > On Fri, Mar 18, 2022 at 05:49:12PM +0100, Clément Léger wrote:
+> > > Le Fri, 18 Mar 2022 18:26:00 +0200,
+> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> a écrit :  
+> > > > On Fri, Mar 18, 2022 at 05:00:47PM +0100, Clément Léger wrote:  
 
 ...
 
-> End result: I think the simplest and cleanest option is simply this:
+> > > > > +	values = kcalloc(nval, sizeof(*values), GFP_KERNEL);
+> > > > > +	if (!values)
+> > > > > +		return -ENOMEM;
+> > > > > +
+> > > > > +	ret = fwnode_property_read_string_array(fwnode, propname, values, nval);
+> > > > > +	if (ret < 0)
+> > > > > +		goto out;
+> > > > > +
+> > > > > +	*string = values[index];
+> > > > > +out:
+> > > > > +	kfree(values);    
+> > > > 
+> > > > Here is UAF (use after free). How is it supposed to work?  
+> > > 
+> > > values is an array of pointers. I'm only retrieving a pointer out of
+> > > it.  
+> > 
+> > I see, thanks for pointing out.
+> > 
+> > Nevertheless, I don't like the idea of allocating memory in this case.
+> > Can we rather add a new callback that will provide us the necessary
+> > property directly?
+> > 
+> 
+> IMHO, it would indeed be better. However,
+> fwnode_property_match_string() also allocates memory to do the same
+> kind of operation. Would you also like a callback for this one ?
 
-Would you sign off on this? I will then replace the original patch
-with your version.
-
-And for the record I have a follow up patch to clearly show that pin
-is always unsigned, induced by this discussion.
+But matching string will need all of them to cover all possible cases.
+So, it doesn't rely on the certain index and needs allocation anyway.
 
 -- 
 With Best Regards,
 Andy Shevchenko
+
+
