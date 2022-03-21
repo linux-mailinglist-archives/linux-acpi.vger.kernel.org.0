@@ -2,46 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F10D4E2E16
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 17:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A594E2E27
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 17:37:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351195AbiCUQdX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Mar 2022 12:33:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
+        id S1351234AbiCUQhp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Mar 2022 12:37:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351339AbiCUQdR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Mar 2022 12:33:17 -0400
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 952D210E56B;
-        Mon, 21 Mar 2022 09:31:51 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-2e6650cde1bso9729897b3.12;
-        Mon, 21 Mar 2022 09:31:51 -0700 (PDT)
+        with ESMTP id S1351258AbiCUQhn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Mar 2022 12:37:43 -0400
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5FE51E7D;
+        Mon, 21 Mar 2022 09:36:17 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-2e5757b57caso162063357b3.4;
+        Mon, 21 Mar 2022 09:36:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=8eTA4Aei5sAAmyg2X+tQSmeBwLUM/TWvO5vZq9aOofo=;
-        b=lPYkgt+zFCweLKaSNpMyCZQ2Ami2THesFibPkURW9m615D6ZwQx0I1vgLim54VhSDB
-         Jga3RMgTbMI/JhP/vjR3JY5QIUPA7nrwEsfcCEpH/jmegbXVqbgcorbiTbTlomLPJ7DP
-         X1PUxodPLOhtxtR67gSuBdBVdMarM3lV5H26Pa28c82P6KqEgfsY5vvhIBhqJjcNsu2S
-         /OxkpfjkzE7EYDGdr9opKoGrSP6lZeatMUEXLMe6dk7BEqfMYl0rsoJ0OMMmg0xVF+Qa
-         UzwMesb5X46j8L+vjYBOjpfkbXkPXgr62ajC0mexeFLD9ATVQibGg6xxuv99gGYGu2PY
-         Zblw==
-X-Gm-Message-State: AOAM532BPy8nFhRBnixAHNtKpKMo49yPo3mi1gBgRILw3t7HU61SyZp6
-        Gkh2cy0EyWmBdQIYTQ4mCJucPAo+JYvNc/7zHo8=
-X-Google-Smtp-Source: ABdhPJwLaPUkz9JyCUTMCCL51L7thNpGl6FC7n82qg21zUTUJDZkpCWiEih2bSt8pXh04VJ82cz9O2jZFae+X7V/cJg=
+        bh=gcEWXZl7oxXy4I/zptsRAcc5tMs/kQWqSSJ68DwK/L0=;
+        b=GJMYErHCKbtSaQDZnzz5EhUicjvezeRwe1YNAIYOURjIH68xgJxN12ec4couxKA7YV
+         HMdwBXK/GshUliRBsdHiZWPcGsnqDyOqJj2sdro5X6og1q+Vg1+gaUW5R7hrLOyk9LrY
+         5/pAXNYa+6bVXNcTIKG21wMyXvbJ6nWn3jD8RMlCuqrrF2QTeWZr0ajWTfe1OBWFx3I/
+         C8kgonn0SM4nAbcqjABVdH18ROnkP2FwsLVClBlPzi78MkXAwS3DJYQfPzbdH4Y9Gp8u
+         L8FjzHPQAIvsi4fPkED8TP9DoQx7vSPnmr2ab7a5TW036j19J0sBS9eIQtzYD4H2PN5+
+         Ng0g==
+X-Gm-Message-State: AOAM532V3tCXiJ73FM5KaQWOuaS+cDUeLEUJBUVTZ+0Mjm/ZVAagEDsX
+        f7zInpnZdZSEFkWNsJa6sp2AJvOXB6TzlQ38BKiwZmv+Hf4=
+X-Google-Smtp-Source: ABdhPJw8F1NAELLxNZMiF6TcZXL6m9vymaM4dVoZ09EJxVoOYQwrFxScZV5iWWpOtqIdrRvhfIWfhu1bWH2yoqpdCn0=
 X-Received: by 2002:a81:f20e:0:b0:2dc:56e1:918e with SMTP id
- i14-20020a81f20e000000b002dc56e1918emr25585295ywm.19.1647880310738; Mon, 21
- Mar 2022 09:31:50 -0700 (PDT)
+ i14-20020a81f20e000000b002dc56e1918emr25608873ywm.19.1647880576362; Mon, 21
+ Mar 2022 09:36:16 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 21 Mar 2022 17:31:39 +0100
-Message-ID: <CAJZ5v0jzzwLCo5=TAntL7_GW_VO=rWJ8Hnbne=n19UNNJzdR2A@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v5.18-rc1
+Date:   Mon, 21 Mar 2022 17:36:05 +0100
+Message-ID: <CAJZ5v0i+dDvX2J7CHfawmFXynifkNZ-0ZHYnraYv-HYJN5bdbA@mail.gmail.com>
+Subject: [GIT PULL] Power management updates for v5.18-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -58,252 +57,294 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.18-rc1
+ pm-5.18-rc1
 
-with top-most commit 1bde8bddb5db59e5bcd090b227c74d48965cedef
+with top-most commit ec3d8b8365e9865b43099e943ec5f0bc12f28f96
 
- Merge branch 'acpi-docs'
+ Merge branch 'pm-tools'
 
-on top of commit 462ccc35a750f335c8456cde9120b8b593fff60f
+on top of commit 7e57714cd0ad2d5bb90e50b5096a0e671dec1ef3
 
- Revert "ACPI: scan: Do not add device IDs from _CID if _HID is not valid"
+ Linux 5.17-rc6
 
-to receive ACPI updates for 5.18-rc1.
+to receive power management updates for 5.18-rc1.
 
-From the new functionality perspective, the most significant items
-here are the new driver for the ARM Generic Diagnostic Dump and
-Reset device, the extension of fine grain fan control in the ACPI
-fan driver and the change making it possible to use CPPC information
-to obtain CPU capacity.
+These are mostly fixes and cleanups all over the code and a new
+piece of documentation for Intel uncore frequency scaling.
 
-There are also a few new quirks, a bunch of fixes, including the
-platform-level _OSC handling change to make it actually take the
-platform firmware response into account, some code and documentation
-cleanups and a notable update of the ACPI device enumeration
-documentation.
+Functionality-wise, the intel_idle driver will support Sapphire
+Rapids Xeons natively now (with some extra facilities for controlling
+C-states more precisely on those systems), virtual guests will take
+the ACPI S4 hardware signature into account by default, the
+intel_pstate driver will take the defualt EPP value from the
+firmware, cpupower utility will support the AMD P-state driver added
+in the previous cycle and there is a new tracer utility for that
+driver.
 
 Specifics:
 
- - Use uintptr_t and offsetof() in the ACPICA code to avoid compiler
-   warnings regarding NULL pointer arithmetic (Rafael Wysocki).
+ - Allow device_pm_check_callbacks() to be called from interrupt
+   context without issues (Dmitry Baryshkov).
 
- - Fix possible NULL pointer dereference in acpi_ns_walk_namespace()
-   when passed "acpi=off" in the command line (Rafael Wysocki).
+ - Modify devm_pm_runtime_enable() to automatically handle
+   pm_runtime_dont_use_autosuspend() at driver exit time (Douglas
+   Anderson).
 
- - Fix and clean up acpi_os_read/write_port() (Rafael Wysocki).
+ - Make the schedutil cpufreq governor use to_gov_attr_set() instead
+   of open coding it (Kevin Hao).
 
- - Introduce acpi_bus_for_each_dev() and use it for walking all ACPI
-   device objects in the Type C code (Rafael Wysocki).
+ - Replace acpi_bus_get_device() with acpi_fetch_acpi_dev() in the
+   cpufreq longhaul driver (Rafael Wysocki).
 
- - Fix the _OSC platform capabilities negotioation and prevent CPPC
-   from being used if the platform firmware indicates that it not
-   supported via _OSC (Rafael Wysocki).
+ - Unify show() and store() naming in cpufreq and make it use
+   __ATTR_XX (Lianjie Zhang).
 
- - Use ida_alloc() instead of ida_simple_get() for ACPI enumeration
-   of devices (Rafael Wysocki).
+ - Make the intel_pstate driver use the EPP value set by the firmware
+   by default (Srinivas Pandruvada).
 
- - Add AGDI and CEDT to the list of known ACPI table signatures (Ilkka
-   Koskinen, Robert Kiraly).
+ - Re-order the init checks in the powernow-k8 cpufreq driver (Mario
+   Limonciello).
 
- - Add power management debug messages related to suspend-to-idle in
-   two places (Rafael Wysocki).
+ - Make the ACPI processor idle driver check for architectural
+   support for LPI to avoid using it on x86 by mistake (Mario
+   Limonciello).
 
- - Fix __acpi_node_get_property_reference() return value and clean up
-   that function (Andy Shevchenko, Sakari Ailus).
+ - Add Sapphire Rapids Xeon support to the intel_idle driver (Artem
+   Bityutskiy).
 
- - Fix return value of the __setup handler in the ACPI PM timer clock
-   source driver (Randy Dunlap).
+ - Add 'preferred_cstates' module argument to the intel_idle driver
+   to work around C1 and C1E handling issue on Sapphire Rapids (Artem
+   Bityutskiy).
 
- - Clean up double words in two comments (Tom Rix).
+ - Add core C6 optimization on Sapphire Rapids to the intel_idle
+   driver (Artem Bityutskiy).
 
- - Add "skip i2c clients" quirks for Lenovo Yoga Tablet 1050F/L and
-   Nextbook Ares 8 (Hans de Goede).
+ - Optimize the haltpoll cpuidle driver a bit (Li RongQing).
 
- - Clean up frequency invariance handling on x86 in the ACPI CPPC
-   library (Huang Rui).
+ - Remove leftover text from intel_idle() kerneldoc comment and fix
+   up white space in intel_idle (Rafael Wysocki).
 
- - Work around broken XSDT on the Advantech DAC-BJ01 board (Mark
-   Cilissen).
+ - Fix load_image_and_restore() error path (Ye Bin).
 
- - Make wakeup events checks in the ACPI EC driver more
-   straightforward and clean up acpi_ec_submit_event() (Rafael
-   Wysocki).
+ - Fix typos in comments in the system wakeup hadling code (Tom Rix).
 
- - Make it possible to obtain the CPU capacity with the help of CPPC
-   information (Ionela Voinescu).
+ - Clean up non-kernel-doc comments in hibernation code (Jiapeng
+   Chong).
 
- - Improve fine grained fan control in the ACPI fan driver and
-   document it (Srinivas Pandruvada).
+ - Fix __setup handler error handling in system-wide suspend and
+   hibernation core code (Randy Dunlap).
 
- - Add device HID and quirk for Microsoft Surface Go 3 to the ACPI
-   battery driver (Maximilian Luz).
+ - Add device name to suspend_report_result() (Youngjin Jang).
 
- - Make the ACPI driver for Intel SoCs (LPSS) let the SPI driver know
-   the exact type of the controller (Andy Shevchenko).
+ - Make virtual guests honour ACPI S4 hardware signature by
+   default (David Woodhouse).
 
- - Force native backlight mode on Clevo NL5xRU and NL5xNU (Werner
-   Sembach).
+ - Block power off of a parent PM domain unless child is in deepest
+   state (Ulf Hansson).
 
- - Fix return value of __setup handlers in the APEI code (Randy
-   Dunlap).
+ - Use dev_err_probe() to simplify error handling for generic PM
+   domains (Ahmad Fatoum).
 
- - Add Arm Generic Diagnostic Dump and Reset device driver (Ilkka
-   Koskinen).
+ - Fix sleep-in-atomic bug caused by genpd_debug_remove() (Shawn Guo).
 
- - Limit printable size of BERT table data (Darren Hart).
+ - Document Intel uncore frequency scaling (Srinivas Pandruvada).
 
- - Fix up HEST and GHES initialization (Shuai Xue).
+ - Add DTPM hierarchy description (Daniel Lezcano).
 
- - Update the ACPI device enumeration documentation and unify the ASL
-   style in GPIO-related examples (Andy Shevchenko).
+ - Change the locking scheme in DTPM (Daniel Lezcano).
+
+ - Fix dtpm_cpu cleanup at exit time and missing virtual DTPM pointer
+   release (Daniel Lezcano).
+
+ - Make dtpm_node_callback[] static (kernel test robot).
+
+ - Fix spelling mistake "initialze" -> "initialize" in
+   dtpm_create_hierarchy() (Colin Ian King).
+
+ - Add tracer tool for the amd-pstate driver (Jinzhou Su).
+
+ - Fix PC6 displaying in turbostat on some systems (Artem Bityutskiy).
+
+ - Add AMD P-State support to the cpupower utility (Huang Rui).
 
 Thanks!
 
 
 ---------------
 
-Andy Shevchenko (12):
-      ACPI: property: Get rid of redundant 'else'
-      ACPI: platform: Constify properties parameter in
-acpi_create_platform_device()
-      ACPI: LPSS: Constify properties member in struct lpss_device_desc
-      ACPI: LPSS: Provide an SSP type to the driver
-      ACPI: docs: enumeration: Discourage to use custom _DSM methods
-      ACPI: docs: enumeration: Update UART serial bus resource documentation
-      ACPI: docs: enumeration: Remove redundant .owner assignment
-      ACPI: docs: enumeration: Amend PWM enumeration ASL example
-      ACPI: docs: enumeration: Drop ugly ifdeffery from the examples
-      ACPI: docs: enumeration: Drop comma for terminator entry
-      ACPI: docs: enumeration: Unify Package () for properties
-      ACPI: docs: gpio-properties: Unify ASL style for GPIO examples
+Ahmad Fatoum (1):
+      PM: domains: use dev_err_probe() to simplify error handling
 
-Darren Hart (1):
-      ACPI/APEI: Limit printable size of BERT table data
+Andreas Rammhold (1):
+      tools: cpupower: fix typo in cpupower-idle-set(1) manpage
 
-Hans de Goede (2):
-      ACPI / x86: Add skip i2c clients quirk for Nextbook Ares 8
-      ACPI / x86: Add skip i2c clients quirk for Lenovo Yoga Tablet 1050F/L
+Artem Bityutskiy (4):
+      intel_idle: add SPR support
+      intel_idle: add 'preferred_cstates' module argument
+      intel_idle: add core C6 optimization for SPR
+      turbostat: fix PC6 displaying on some systems
 
-Huang Rui (4):
-      x86/ACPI: CPPC: Rename cppc_msr.c to cppc.c
-      x86/ACPI: CPPC: Move AMD maximum frequency ratio setting
-function into x86 CPPC
-      x86: Expose init_freq_invariance() to topology header
-      x86/ACPI: CPPC: Move init_freq_invariance_cppc() into x86 CPPC
+Colin Ian King (1):
+      powercap: DTPM: Fix spelling mistake "initialze" -> "initialize"
 
-Ilkka Koskinen (2):
-      ACPI: tables: Add AGDI to the list of known table signatures
-      ACPI: AGDI: Add driver for Arm Generic Diagnostic Dump and Reset device
+Daniel Lezcano (12):
+      powercap/drivers/dtpm: Convert the init table section to a simple array
+      powercap/drivers/dtpm: Add hierarchy creation
+      powercap/drivers/dtpm: Add CPU DT initialization support
+      powercap/drivers/dtpm: Add dtpm devfreq with energy model support
+      rockchip/soc/drivers: Add DTPM description for rk3399
+      powercap/dtpm: Change locking scheme
+      powercap/dtpm_cpu: Reset per_cpu variable in the release function
+      powercap/dtpm: Fixup kfree for virtual node
+      powercap/dtpm: Destroy hierarchy function
+      powercap/dtpm: Move the 'root' reset place
+      powercap/dtpm_cpu: Add exit function
+      dtpm/soc/rk3399: Add the ability to unload the module
 
-Ionela Voinescu (3):
-      x86, ACPI: rename init_freq_invariance_cppc() to
-arch_init_invariance_cppc()
-      arch_topology: obtain cpu capacity using information from CPPC
-      arm64, topology: enable use of init_cpu_capacity_cppc()
+David Woodhouse (1):
+      PM: hibernate: Honour ACPI hardware signature by default for
+virtual guests
 
-Mark Cilissen (1):
-      ACPI / x86: Work around broken XSDT on Advantech DAC-BJ01 board
+Dmitry Baryshkov (1):
+      PM: core: keep irq flags in device_pm_check_callbacks()
 
-Maximilian Luz (1):
-      ACPI: battery: Add device HID and quirk for Microsoft Surface Go 3
+Douglas Anderson (1):
+      PM: runtime: Have devm_pm_runtime_enable() handle
+pm_runtime_dont_use_autosuspend()
 
-Rafael J. Wysocki (12):
-      ACPICA: Use uintptr_t and offsetof() in Linux kernel builds
-      ACPI: OSL: Fix and clean up acpi_os_read/write_port()
-      ACPI: PM: Print additional debug message in acpi_s2idle_wake()
-      ACPI: EC / PM: Print additional debug message in acpi_ec_dispatch_gpe()
-      ACPI: EC: Do not return result from advance_transaction()
-      ACPI: EC: Reduce indentation level in acpi_ec_submit_event()
-      ACPI: EC: Rearrange code in acpi_ec_submit_event()
-      ACPI: scan: Use ida_alloc() instead of ida_simple_get()
-      ACPI: bus: Introduce acpi_bus_for_each_dev()
-      ACPICA: Avoid walking the ACPI Namespace if it is not there
-      Revert "ACPI: Pass the same capabilities to the _OSC regardless
-of the query flag"
-      ACPI: bus: Avoid using CPPC if not supported by firmware
+Huang Rui (10):
+      cpupower: Add AMD P-State capability flag
+      cpupower: Add the function to check AMD P-State enabled
+      cpupower: Initial AMD P-State capability
+      cpupower: Add the function to get the sysfs value from specific table
+      cpupower: Introduce ACPI CPPC library
+      cpupower: Add AMD P-State sysfs definition and access helper
+      cpupower: Enable boost state support for AMD P-State module
+      cpupower: Move print_speed function into misc helper
+      cpupower: Add function to print AMD P-State performance capabilities
+      cpupower: Add "perf" option to print AMD P-State information
+
+Jiapeng Chong (1):
+      PM: hibernate: Clean up non-kernel-doc comments
+
+Jinzhou Su (4):
+      cpufreq: amd-pstate: Add more tracepoint for AMD P-State module
+      tools/power/x86/intel_pstate_tracer: make tracer as a module
+      tools/power/x86/amd_pstate_tracer: Add tracer tool for AMD P-state
+      Documentation: amd-pstate: add tracer tool introduction
+
+Kevin Hao (2):
+      cpufreq: Move to_gov_attr_set() to cpufreq.h
+      cpufreq: schedutil: Use to_gov_attr_set() to get the gov_attr_set
+
+Li RongQing (1):
+      cpuidle: haltpoll: Call cpuidle_poll_state_init() later
+
+Lianjie Zhang (1):
+      cpufreq: unify show() and store() naming and use __ATTR_XX
+
+Mario Limonciello (3):
+      cpuidle: PSCI: Move the `has_lpi` check to the beginning of the function
+      ACPI: processor idle: Check for architectural support for LPI
+      cpufreq: powernow-k8: Re-order the init checks
+
+Rafael J. Wysocki (3):
+      cpufreq: longhaul: Replace acpi_bus_get_device()
+      cpuidle: intel_idle: Update intel_idle() kerneldoc comment
+      cpuidle: intel_idle: Drop redundant backslash at line end
 
 Randy Dunlap (2):
-      ACPI: APEI: fix return value of __setup handlers
-      clocksource: acpi_pm: fix return value of __setup handler
+      PM: hibernate: fix __setup handler error handling
+      PM: suspend: fix return value of __setup handler
 
-Robert Kiraly (1):
-      ACPI: tables: Add CEDT signature to the list of known tables
+Shawn Guo (1):
+      PM: domains: Fix sleep-in-atomic bug caused by genpd_debug_remove()
 
-Sakari Ailus (1):
-      ACPI: properties: Consistently return -ENOENT if there are no
-more references
-
-Shuai Xue (2):
-      ACPI: APEI: explicit init of HEST and GHES in apci_init()
-      ACPI: APEI: rename ghes_init() with an "acpi_" prefix
-
-Srinivas Pandruvada (6):
-      ACPI: fan: Fix error reporting to user space
-      ACPI: fan: Separate file for attributes creation
-      ACPI: fan: Optimize struct acpi_fan_fif
-      ACPI: fan: Properly handle fine grain control
-      ACPI: fan: Add additional attributes for fine grain control
-      Documentation/admin-guide/acpi: Add documentation for fine grain control
+Srinivas Pandruvada (2):
+      Documentation: admin-guide: pm: Document uncore frequency scaling
+      cpufreq: intel_pstate: Use firmware default EPP
 
 Tom Rix (1):
-      ACPI: clean up double words in two comments
+      PM: sleep: wakeup: Fix typos in comments
 
-Werner Sembach (1):
-      ACPI: video: Force backlight native for Clevo NL5xRU and NL5xNU
+Ulf Hansson (1):
+      PM: domains: Prevent power off for parent unless child is in deepest state
+
+Ye Bin (1):
+      PM: hibernate: fix load_image_and_restore() error path
+
+Youngjin Jang (1):
+      PM: sleep: Add device name to suspend_report_result()
+
+kernel test robot (1):
+      powercap: DTPM: dtpm_node_callback[] can be static
+
+ozkanonur (1):
+      tools/power/cpupower/{ToDo => TODO}: Rename the todo file
 
 ---------------
 
- .../admin-guide/acpi/fan_performance_states.rst    |  28 +++
- Documentation/driver-api/gpio/board.rst            |  21 +--
- Documentation/firmware-guide/acpi/enumeration.rst  | 111 +++++------
- .../firmware-guide/acpi/gpio-properties.rst        |  26 +--
- arch/arm64/include/asm/topology.h                  |   4 +
- arch/x86/include/asm/topology.h                    |  15 +-
- arch/x86/kernel/acpi/Makefile                      |   2 +-
- arch/x86/kernel/acpi/boot.c                        |  24 +++
- arch/x86/kernel/acpi/cppc.c                        | 103 +++++++++++
- arch/x86/kernel/acpi/cppc_msr.c                    |  49 -----
- arch/x86/kernel/smpboot.c                          |  72 +-------
- drivers/acpi/Kconfig                               |   2 +-
- drivers/acpi/Makefile                              |   3 +
- drivers/acpi/acpi_lpss.c                           |  33 +++-
- drivers/acpi/acpi_platform.c                       |   2 +-
- drivers/acpi/acpica/nswalk.c                       |   3 +
- drivers/acpi/apei/bert.c                           |  10 +-
- drivers/acpi/apei/erst.c                           |   2 +-
- drivers/acpi/apei/ghes.c                           |  19 +-
- drivers/acpi/apei/hest.c                           |   2 +-
- drivers/acpi/arm64/Kconfig                         |  10 +
- drivers/acpi/arm64/Makefile                        |   1 +
- drivers/acpi/arm64/agdi.c                          | 116 ++++++++++++
- drivers/acpi/battery.c                             |  12 ++
- drivers/acpi/bus.c                                 |  46 ++++-
- drivers/acpi/cppc_acpi.c                           |   9 +-
- drivers/acpi/ec.c                                  |  90 ++++-----
- drivers/acpi/fan.h                                 |  44 +++++
- drivers/acpi/fan_attr.c                            | 137 ++++++++++++++
- drivers/acpi/{fan.c => fan_core.c}                 | 204 +++++++++------------
- drivers/acpi/internal.h                            |   2 -
- drivers/acpi/osl.c                                 |  19 +-
- drivers/acpi/pci_link.c                            |   2 +-
- drivers/acpi/pci_root.c                            |   3 -
- drivers/acpi/property.c                            |  29 +--
- drivers/acpi/scan.c                                |   5 +-
- drivers/acpi/sleep.c                               |   2 +
- drivers/acpi/tables.c                              |   2 +-
- drivers/acpi/video_detect.c                        |  75 ++++++++
- drivers/acpi/x86/utils.c                           |  21 +++
- drivers/base/arch_topology.c                       |  45 ++++-
- drivers/clocksource/acpi_pm.c                      |   6 +-
- drivers/firmware/Kconfig                           |   1 +
- drivers/firmware/arm_sdei.c                        |  13 +-
- drivers/usb/typec/port-mapper.c                    |   2 +-
- include/acpi/acpi_bus.h                            |   2 +
- include/acpi/actypes.h                             |   4 +
- include/acpi/apei.h                                |   4 +-
- include/acpi/platform/aclinux.h                    |   5 +
- include/linux/acpi.h                               |   5 +-
- include/linux/acpi_agdi.h                          |  13 ++
- include/linux/arch_topology.h                      |   4 +
- include/linux/arm_sdei.h                           |   2 +
- 53 files changed, 1007 insertions(+), 459 deletions(-)
+ Documentation/admin-guide/pm/amd-pstate.rst        |  26 ++
+ .../pm/intel_uncore_frequency_scaling.rst          |  60 ++++
+ Documentation/admin-guide/pm/working-state.rst     |   1 +
+ MAINTAINERS                                        |   1 +
+ arch/arm64/kernel/cpuidle.c                        |   6 +-
+ arch/x86/kernel/acpi/sleep.c                       |  23 +-
+ drivers/acpi/processor_idle.c                      |  15 +-
+ drivers/acpi/sleep.c                               |  11 +-
+ drivers/base/power/domain.c                        |  42 ++-
+ drivers/base/power/main.c                          |  16 +-
+ drivers/base/power/runtime.c                       |   5 +
+ drivers/base/power/wakeirq.c                       |   2 +-
+ drivers/base/power/wakeup.c                        |   4 +-
+ drivers/cpufreq/amd-pstate-trace.h                 |  22 +-
+ drivers/cpufreq/amd-pstate.c                       |  59 +++-
+ drivers/cpufreq/cpufreq_conservative.c             |  10 +-
+ drivers/cpufreq/cpufreq_governor.c                 |   6 +-
+ drivers/cpufreq/cpufreq_governor.h                 |  12 +-
+ drivers/cpufreq/cpufreq_governor_attr_set.c        |   5 -
+ drivers/cpufreq/cpufreq_ondemand.c                 |  10 +-
+ drivers/cpufreq/intel_pstate.c                     |  38 ++-
+ drivers/cpufreq/longhaul.c                         |   4 +-
+ drivers/cpufreq/powernow-k8.c                      |   6 +-
+ drivers/cpuidle/cpuidle-haltpoll.c                 |   4 +-
+ drivers/idle/intel_idle.c                          | 111 ++++++-
+ drivers/pci/pci-driver.c                           |  14 +-
+ drivers/pnp/driver.c                               |   2 +-
+ drivers/powercap/Kconfig                           |   8 +
+ drivers/powercap/Makefile                          |   1 +
+ drivers/powercap/dtpm.c                            | 333 ++++++++++++++-----
+ drivers/powercap/dtpm_cpu.c                        |  55 +++-
+ drivers/powercap/dtpm_devfreq.c                    | 203 ++++++++++++
+ drivers/powercap/dtpm_subsys.h                     |  22 ++
+ drivers/soc/rockchip/Kconfig                       |   8 +
+ drivers/soc/rockchip/Makefile                      |   1 +
+ drivers/soc/rockchip/dtpm.c                        |  65 ++++
+ drivers/usb/core/hcd-pci.c                         |   4 +-
+ include/asm-generic/vmlinux.lds.h                  |  11 -
+ include/linux/acpi.h                               |   2 +-
+ include/linux/cpufreq.h                            |   5 +
+ include/linux/dtpm.h                               |  36 +--
+ include/linux/pm.h                                 |   8 +-
+ include/linux/pm_runtime.h                         |   4 +
+ kernel/power/hibernate.c                           |   6 +-
+ kernel/power/suspend_test.c                        |   8 +-
+ kernel/power/swap.c                                |   8 +-
+ kernel/sched/cpufreq_schedutil.c                   |   2 +-
+ tools/power/cpupower/Makefile                      |   6 +-
+ tools/power/cpupower/{ToDo => TODO}                |   0
+ tools/power/cpupower/lib/acpi_cppc.c               |  59 ++++
+ tools/power/cpupower/lib/acpi_cppc.h               |  21 ++
+ tools/power/cpupower/lib/cpufreq.c                 |  23 +-
+ tools/power/cpupower/lib/cpufreq.h                 |  12 +
+ tools/power/cpupower/man/cpupower-frequency-info.1 |   3 +
+ tools/power/cpupower/man/cpupower-idle-set.1       |   2 +-
+ tools/power/cpupower/utils/cpufreq-info.c          |  87 ++---
+ tools/power/cpupower/utils/helpers/amd.c           |  77 +++++
+ tools/power/cpupower/utils/helpers/cpuid.c         |  13 +
+ tools/power/cpupower/utils/helpers/helpers.h       |  22 ++
+ tools/power/cpupower/utils/helpers/misc.c          |  60 ++++
+ .../x86/amd_pstate_tracer/amd_pstate_trace.py      | 354 +++++++++++++++++++++
+ .../x86/intel_pstate_tracer/intel_pstate_tracer.py | 260 ++++++++-------
+ tools/power/x86/turbostat/turbostat.c              |   2 +-
+ 63 files changed, 1888 insertions(+), 418 deletions(-)
