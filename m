@@ -2,131 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 214024E1F1A
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 03:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B324E2194
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Mar 2022 08:50:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344053AbiCUCos (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 20 Mar 2022 22:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57522 "EHLO
+        id S1345034AbiCUHwP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Mar 2022 03:52:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242162AbiCUCor (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Mar 2022 22:44:47 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AB520B;
-        Sun, 20 Mar 2022 19:43:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647830603; x=1679366603;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version:content-transfer-encoding;
-  bh=I+HE8aeKfC1xV+LiM5SCNvJ9J2P8mDQI8RqPWqB1Ajg=;
-  b=f/0VZVmUGN8sNofhWobe+POK2Wv1VrZZKLpwW110ZCSPwNF5eiV3wF0o
-   Eog5OLj0V09BzwXJX+l9gFth2KcW9eIpHYQShp/QevRuIJ7zPl0zFnef0
-   MQjOWDD/XXzP73/zQmFmkKHdLuOrZD0AmgNYm6SMxiraZRMM4wTWXgps8
-   1tzUm2tGJeQADr9WQqN9Q+FyBb66nWYF3BvB052wMIE6IW9zHme2QK0pd
-   AoJpgpz7qmC23HJIdlLVLiv9qNU1msvhRsX7yKgFx5cpy9IPC47ksASY2
-   M9uSNiTTD0vuR1UpKkthDfqyBCd3xnStjepItyU7wR9/IMGcQE98Z/2F7
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10292"; a="320659506"
-X-IronPort-AV: E=Sophos;i="5.90,197,1643702400"; 
-   d="scan'208";a="320659506"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2022 19:43:21 -0700
-X-IronPort-AV: E=Sophos;i="5.90,197,1643702400"; 
-   d="scan'208";a="500010768"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.239.13.94])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2022 19:43:18 -0700
-From:   "Huang, Ying" <ying.huang@intel.com>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>
-Cc:     "Luck, Tony" <tony.luck@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "graeme.gregory@linaro.org" <graeme.gregory@linaro.org>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "myron.stowe@redhat.com" <myron.stowe@redhat.com>,
-        "Brown, Len" <len.brown@intel.com>
-Subject: Re: [BUG] kernel side can NOT trigger memory error with einj
-References: <8c40a492-9461-2b43-6ec9-06bfc7a0e77f@linux.alibaba.com>
-        <YjIeff7ESJB/amYA@agluck-desk3.sc.intel.com>
-        <f93a5532-3e07-edf4-38ca-142a0f1d78d7@linux.alibaba.com>
-        <1421c3ac3d3c4438a6ff18f193f8a41c@intel.com>
-        <78cefd4c-f735-2ec4-0c09-35c8191280c5@linux.alibaba.com>
-Date:   Mon, 21 Mar 2022 10:43:16 +0800
-In-Reply-To: <78cefd4c-f735-2ec4-0c09-35c8191280c5@linux.alibaba.com> (Shuai
-        Xue's message of "Sun, 20 Mar 2022 21:11:58 +0800")
-Message-ID: <87wngoc9ff.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        with ESMTP id S236143AbiCUHwO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Mar 2022 03:52:14 -0400
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78235286E2;
+        Mon, 21 Mar 2022 00:50:47 -0700 (PDT)
+Received: (Authenticated sender: clement.leger@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id B2A3A1BF20E;
+        Mon, 21 Mar 2022 07:50:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1647849044;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oyewfmDrMNw+w6+feNe7eI+y5/zMvOy/2DQM7Bmk60I=;
+        b=ncVvFFrRh9wP2PFth4q+uYSwK+8q26M1t++LZ7geib9/toPxbqT3NzW+FNLv4W+YRPiq/C
+        i2xyQFIeyW7jDZPFPfGbLGyrdi4WXgveVFAD7tYOLdn/fNMhSUMnGEjMCvaQI88PZbxqlr
+        GMpSMwIBfwWopJsAW1l452eWa+JNmx9GBIXsksq5fZWxpBxUqQlPgZOTRpTAP4HXiPrbIH
+        VHGX9CyV+Mfg+qfHxduN0BAX5jR8S5byV6rM1uCUEJbracEhv3F852UUNYUzOc+NQwSCDV
+        PeNcafchnRU5Oe6znE6OIgTRi1ojJqu8HX3CVg1R7/ed0GUIFLSevp0tUKUnoA==
+Date:   Mon, 21 Mar 2022 08:49:21 +0100
+From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "'Rafael J . Wysocki '" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/6] property: add fwnode_property_read_string_index()
+Message-ID: <20220321084921.069c688e@fixe.home>
+In-Reply-To: <YjTK4UW7DwZ0S3QY@smile.fi.intel.com>
+References: <20220318160059.328208-1-clement.leger@bootlin.com>
+        <20220318160059.328208-2-clement.leger@bootlin.com>
+        <YjSymEpNH8vnkQ+L@smile.fi.intel.com>
+        <20220318174912.5759095f@fixe.home>
+        <YjTK4UW7DwZ0S3QY@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Shuai Xue <xueshuai@linux.alibaba.com> writes:
+Le Fri, 18 Mar 2022 20:09:37 +0200,
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> a =C3=A9crit :
 
-> =E5=9C=A8 2022/3/18 AM12:57, Luck, Tony =E5=86=99=E9=81=93:
->>> -       rc =3D apei_exec_run(&trigger_ctx, ACPI_EINJ_TRIGGER_ERROR);
->>> +       ptr =3D kmap(pfn_to_page(pfn));
->>> +       tmp =3D *(ptr + (param1 & ~ PAGE_MASK));
->>=20
->> That hack works when the trigger action is just trying to access the inj=
-ected
->> location. But on Intel platforms the trigger "kicks" the patrol scrubber=
- in the
->> memory controller to access the address. So the error is triggered not by
->> an access from the core, but by internal memory controller access.
->>=20
->> This results in a different error signature (for an uncorrected error in=
-jection
->> it will be a UCNA or SRAO in Intel acronym-speak).
->
-> As far as I know, APEI only defines five injection instructions, ACPI_EIN=
-J_READ_REGISTER,
-> ACPI_EINJ_READ_REGISTER_VALUE, ACPI_EINJ_WRITE_REGISTER, ACPI_EINJ_WRITE_=
-REGISTER_VALUE and
-> ACPI_EINJ_NOOP. ACPI_EINJ_TRIGGER_ERROR action should run one of them, I =
-don't see
-> any of them will kick the patrol scrubber. For example, trigger with ACPI=
-_EINJ_READ_REGISTER:
->
-> apei_exec_run(&trigger_ctx, ACPI_EINJ_TRIGGER_ERROR)
->     __apei_exec_run	// ins=3D0
->         =3D> apei_exec_read_register
->             =3D> apei_read
->                 =3D> acpi_os_read_memory
->                     =3D> acpi_map_vaddr_lookup    /* lookup VA of PA from=
- acpi_ioremap */
->                     =3D> acpi_os_ioremap
-> 		    =3D> acpi_os_read_iomem
-> 			=3D> *(u32 *) value =3D readl(virt_addr);
->
-> As we can see, the error is triggered by access from the core. However, t=
-he physical
-> address can NOT be mapped by acpi_os_ioremap.
->
-> If I missed anything, please let me know. Thank you very much.
+> On Fri, Mar 18, 2022 at 05:49:12PM +0100, Cl=C3=A9ment L=C3=A9ger wrote:
+> > Le Fri, 18 Mar 2022 18:26:00 +0200,
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> a =C3=A9crit : =20
+> > > On Fri, Mar 18, 2022 at 05:00:47PM +0100, Cl=C3=A9ment L=C3=A9ger wro=
+te: =20
+> > > > Add fwnode_property_read_string_index() function which allows to
+> > > > retrieve a string from an array by its index. This function is the
+> > > > equivalent of of_property_read_string_index() but for fwnode suppor=
+t.   =20
+>=20
+> ...
+>=20
+> > > > +	values =3D kcalloc(nval, sizeof(*values), GFP_KERNEL);
+> > > > +	if (!values)
+> > > > +		return -ENOMEM;
+> > > > +
+> > > > +	ret =3D fwnode_property_read_string_array(fwnode, propname, value=
+s, nval);
+> > > > +	if (ret < 0)
+> > > > +		goto out;
+> > > > +
+> > > > +	*string =3D values[index];
+> > > > +out:
+> > > > +	kfree(values);   =20
+> > >=20
+> > > Here is UAF (use after free). How is it supposed to work? =20
+> >=20
+> > values is an array of pointers. I'm only retrieving a pointer out of
+> > it. =20
+>=20
+> I see, thanks for pointing out.
+>=20
+> Nevertheless, I don't like the idea of allocating memory in this case.
+> Can we rather add a new callback that will provide us the necessary
+> property directly?
+>=20
 
-As the name suggested, ACPI_EINJ_READ/WRITE_REGISTER are used to
-read/write device registers via iomem.  They aren't used to read/write
-normal physical memory.  If that's needed, you can try some other method
-I guess.
+IMHO, it would indeed be better. However,
+fwnode_property_match_string() also allocates memory to do the same
+kind of operation. Would you also like a callback for this one ?
 
-If you write a device register, the device can kick the patrol scrubber
-for you.  This device behavior needs not to be defined in APEI spec.
+Thanks,
 
-Best Regards,
-Huang, Ying
-
-> Best Regards,
-> Shuai
+--=20
+Cl=C3=A9ment L=C3=A9ger,
+Embedded Linux and Kernel engineer at Bootlin
+https://bootlin.com
