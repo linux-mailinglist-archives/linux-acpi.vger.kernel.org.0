@@ -2,45 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 670564E4683
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Mar 2022 20:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6C2F4E46B4
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Mar 2022 20:31:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbiCVTOe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Mar 2022 15:14:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
+        id S231261AbiCVTdG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Mar 2022 15:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiCVTOd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Mar 2022 15:14:33 -0400
+        with ESMTP id S230461AbiCVTdF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Mar 2022 15:33:05 -0400
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 86F70BF74
-        for <linux-acpi@vger.kernel.org>; Tue, 22 Mar 2022 12:13:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 419DE8A302
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Mar 2022 12:31:37 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2582A152B;
-        Tue, 22 Mar 2022 12:13:05 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0299023A;
+        Tue, 22 Mar 2022 12:31:37 -0700 (PDT)
 Received: from [10.57.43.230] (unknown [10.57.43.230])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A77613F66F;
-        Tue, 22 Mar 2022 12:13:02 -0700 (PDT)
-Message-ID: <485b20e0-595c-bc8c-8fbe-119f19e1a8e0@arm.com>
-Date:   Tue, 22 Mar 2022 19:12:58 +0000
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3CD2D3F66F;
+        Tue, 22 Mar 2022 12:31:35 -0700 (PDT)
+Message-ID: <065a11de-da43-6854-f940-d1537227f191@arm.com>
+Date:   Tue, 22 Mar 2022 19:31:31 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [PATCH v8 10/11] iommu/arm-smmu-v3: Reserve any RMR regions
- associated with a dev
+Subject: Re: [PATCH v8 01/11] ACPI/IORT: Add temporary RMR node flag
+ definitions
 Content-Language: en-GB
 To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
         linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
         iommu@lists.linux-foundation.org
-Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
-        will@kernel.org, wanghuiqiang@huawei.com, guohanjun@huawei.com,
-        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
-        eric.auger@redhat.com, yangyicong@huawei.com
+Cc:     jon@solid-run.com, linuxarm@huawei.com, steven.price@arm.com,
+        guohanjun@huawei.com, yangyicong@huawei.com, Sami.Mujawar@arm.com,
+        will@kernel.org, wanghuiqiang@huawei.com
 References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
- <20220221154344.2126-11-shameerali.kolothum.thodi@huawei.com>
+ <20220221154344.2126-2-shameerali.kolothum.thodi@huawei.com>
 From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20220221154344.2126-11-shameerali.kolothum.thodi@huawei.com>
+In-Reply-To: <20220221154344.2126-2-shameerali.kolothum.thodi@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
@@ -50,56 +49,63 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022-02-21 15:43, Shameer Kolothum wrote:
-> Get ACPI IORT RMR regions associated with a dev reserved
-> so that there is a unity mapping for them in SMMU.
+On 2022-02-21 15:43, Shameer Kolothum via iommu wrote:
+> IORT rev E.d introduces more details into the RMR node Flags
+> field. Add temporary definitions to describe and access these
+> Flags field until ACPICA header is updated to support E.d.
+> 
+> This patch can be reverted once the include/acpi/actbl2.h has
+> all the relevant definitions.
 > 
 > Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 > ---
->   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
+> Please find the ACPICA E.d related changes pull request here,
+> https://github.com/acpica/acpica/pull/752
 > 
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index dee3197474b7..ef2972483fd7 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -2759,6 +2759,7 @@ static void arm_smmu_get_resv_regions(struct device *dev,
->   {
->   	struct iommu_resv_region *region;
->   	int prot = IOMMU_WRITE | IOMMU_NOEXEC | IOMMU_MMIO;
-> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+> ---
+>   drivers/acpi/arm64/iort.c | 24 ++++++++++++++++++++++++
+>   1 file changed, 24 insertions(+)
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index f2f8f05662de..0730c4dbb700 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -25,6 +25,30 @@
+>   #define IORT_IOMMU_TYPE		((1 << ACPI_IORT_NODE_SMMU) |	\
+>   				(1 << ACPI_IORT_NODE_SMMU_V3))
 >   
->   	region = iommu_alloc_resv_region(MSI_IOVA_BASE, MSI_IOVA_LENGTH,
->   					 prot, IOMMU_RESV_SW_MSI);
-> @@ -2768,6 +2769,16 @@ static void arm_smmu_get_resv_regions(struct device *dev,
->   	list_add_tail(&region->list, head);
->   
->   	iommu_dma_get_resv_regions(dev, head);
-> +	iommu_dma_get_rmrs(fwspec->iommu_fwnode, dev, head);
-> +}
+> +/*
+> + * The following RMR related definitions are temporary and
+> + * can be removed once ACPICA headers support IORT rev E.d
+> + */
+> +#ifndef ACPI_IORT_RMR_REMAP_PERMITTED
+> +#define ACPI_IORT_RMR_REMAP_PERMITTED	(1)
+> +#endif
 > +
-> +static void arm_smmu_put_resv_regions(struct device *dev,
-> +				      struct list_head *head)
-> +{
-> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+> +#ifndef ACPI_IORT_RMR_ACCESS_PRIVILEGE
+> +#define ACPI_IORT_RMR_ACCESS_PRIVILEGE	(1 << 1)
+> +#endif
 > +
-> +	iommu_dma_put_rmrs(fwspec->iommu_fwnode, head);
-> +	generic_iommu_put_resv_regions(dev, head);
->   }
+> +#ifndef ACPI_IORT_RMR_ACCESS_ATTRIBUTES
+> +#define ACPI_IORT_RMR_ACCESS_ATTRIBUTES(flags)	(((flags) >> 2) & 0xFF)
+> +#endif
+> +
+> +#ifndef ACPI_IORT_RMR_ATTR_DEVICE_GRE
+> +#define ACPI_IORT_RMR_ATTR_DEVICE_GRE	0x03
+> +#endif
+> +
+> +#ifndef ACPI_IORT_RMR_ATTR_NORMAL
+> +#define ACPI_IORT_RMR_ATTR_NORMAL	0x05
 
-Tying in with my comment on patch #5, this should be a common 
-iommu_dma_put_resv_regions() helper.
+For the record, I've commented directly on the ACPICA pull request that 
+I think this should be more clearly named to indicate that it means 
+Normal Write-Back Cacheable, rather than being potentially ambiguous 
+about cacheability.
 
-Thanks,
 Robin.
 
->   static bool arm_smmu_dev_has_feature(struct device *dev,
-> @@ -2865,7 +2876,7 @@ static struct iommu_ops arm_smmu_ops = {
->   	.enable_nesting		= arm_smmu_enable_nesting,
->   	.of_xlate		= arm_smmu_of_xlate,
->   	.get_resv_regions	= arm_smmu_get_resv_regions,
-> -	.put_resv_regions	= generic_iommu_put_resv_regions,
-> +	.put_resv_regions	= arm_smmu_put_resv_regions,
->   	.dev_has_feat		= arm_smmu_dev_has_feature,
->   	.dev_feat_enabled	= arm_smmu_dev_feature_enabled,
->   	.dev_enable_feat	= arm_smmu_dev_enable_feature,
+> +#endif
+> +
+>   struct iort_its_msi_chip {
+>   	struct list_head	list;
+>   	struct fwnode_handle	*fw_node;
