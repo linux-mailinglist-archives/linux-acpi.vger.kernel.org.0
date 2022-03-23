@@ -2,125 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EDF94E4B24
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 03:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7D84E4CA3
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 07:17:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231992AbiCWC4Z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Mar 2022 22:56:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33476 "EHLO
+        id S241673AbiCWGTA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Mar 2022 02:19:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231958AbiCWC4Z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Mar 2022 22:56:25 -0400
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2074.outbound.protection.outlook.com [40.107.96.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1141F4DF47;
-        Tue, 22 Mar 2022 19:54:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NXNGYRhzv2pBsQ1sZ27xjhxaRpH2rzU80Mtnpt9TdDTWL8+r5H/otpyW1G1ddEfXZDAI1lN3RTH3VTeC48H61CNXAy30jRkcmARHCRuOSRZiNhCQlLylFCAktrG3B4scBdd5npQ1+yRRyJLXXWxorIZUG289lgRh4S1hpOS/8uytQlVo2APTsNy2ERyRctmBWGKSxCC6mGURR8n4SdIwQURM3aKoRx8o1+dhBXFrTL1xrRn8GpFthOTKBX/Ex00wNAUw+c6US3/ftjM1+k3nQ++B6rChU0/tWpvyLovHDj8K+UVh6f3MGXBZAmVcH+B9rsP4qZzLTiJ/XooEA45/TQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nMX/Ik8PPpy5uQzicOn4uk3426OkAK/6kTGwwiit2mM=;
- b=fj6FaJKG6dKl/SwE3sDUQm6I03PHwUD8F1Y0ilSFOLQC6+4xhSmkHfTuM6K5jrsQEB3co+G1UW0B7UoZfbLQbGeEZorgZFzY/GVpaBqUOjx/vLG5ygj42s34nSiOJDkEs+xSMDJOYiRV1fXk8ODwmZPyziWzQAYtjNSjQcc8r5HgBUKqupg6KV+Pu4v06HK15vp0XngZ2wZ2uuj/ZaE3px18JMqHtzeL/8NRIxPqtQCVlvRt20mXi9WrcncUdZ2Z97Ovgr1DYu6GzX/Sx1NaIsczHLY/8ThrxrS97IBT1uIhBQ5yxztO4SxIY56TBfLrIQ3LVU3nrldxoEo74AfzPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nMX/Ik8PPpy5uQzicOn4uk3426OkAK/6kTGwwiit2mM=;
- b=jIkg8IATTdy8dGJ1HC3p6pobr3TNbgdLqxaiq9/8R4i8A71vcqckGmoQxgSLUPgyO32/iMrFBpAuVbL9yL3V+/2LDB1zUF6Q9R46tm8XeLRvyuygiWDUyHxwkDyoQZIZHrCcj/dkR7oc5HqbZpOzpMsOT0JKEfAkN9QE+W0cxCE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM5PR12MB2504.namprd12.prod.outlook.com (2603:10b6:4:b5::19) by
- DM6PR12MB4452.namprd12.prod.outlook.com (2603:10b6:5:2a4::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5102.16; Wed, 23 Mar 2022 02:54:54 +0000
-Received: from DM5PR12MB2504.namprd12.prod.outlook.com
- ([fe80::38da:2ef6:d863:3c90]) by DM5PR12MB2504.namprd12.prod.outlook.com
- ([fe80::38da:2ef6:d863:3c90%6]) with mapi id 15.20.5102.016; Wed, 23 Mar 2022
- 02:54:54 +0000
-Date:   Wed, 23 Mar 2022 10:54:33 +0800
-From:   Huang Rui <ray.huang@amd.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Ionela Voinescu <ionela.voinescu@arm.com>
-Subject: Re: [PATCH v1 0/2] ACPI: CPPC: acpi_cppc_processor_probe() fix and
- cleanup
-Message-ID: <YjqL6d/IEfVcnu7D@amd.com>
-References: <5552457.DvuYhMxLoT@kreacher>
+        with ESMTP id S232627AbiCWGS7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Mar 2022 02:18:59 -0400
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9286C710E4;
+        Tue, 22 Mar 2022 23:17:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1648016248; x=1679552248;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8vzD92UhHfMzrQ/OOVyGmFmDcRcFc7OySsWTT7LpWT4=;
+  b=NPKSS7DoayzTvRCnMWnIdrtpnWUgWstqMFR+IwGnt4P0wNlkkgAEJUI1
+   mJGE3rXxuYk/W8RoHw63BD9scav+gkWNrHN/gos0pUyfp/07R33QsijS8
+   3IU8nS0vKFfp8dWYPTzA4AJDHzVs8MxVRLXW19GJ5RKqAADpcU3RJ2CnH
+   frlyEl/VdMrYHOVEiN6MKWYzSoP6EMyDqQZEznBGJNu7Gl/2k3dNuAIJy
+   /Wn3223S9+gKfdTMEWG4nDcJ/kiPQvUp7nFjw0jnk4mC4wjhwCQHI6Yd9
+   xzzjouvBD3s3iF1ZT82/5dUcebdlUFXQKq1PLHw4KNnjFXe72lv/YSDuu
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10294"; a="318741628"
+X-IronPort-AV: E=Sophos;i="5.90,203,1643702400"; 
+   d="scan'208";a="318741628"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2022 23:17:28 -0700
+X-IronPort-AV: E=Sophos;i="5.90,203,1643702400"; 
+   d="scan'208";a="692833797"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2022 23:17:22 -0700
+Received: by lahna (sSMTP sendmail emulation); Wed, 23 Mar 2022 08:16:15 +0200
+Date:   Wed, 23 Mar 2022 08:16:15 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Rajat Jain <rajatja@google.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Len Brown <lenb@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>
+Subject: Re: [PATCH v4 1/2] PCI: Rename "pci_dev->untrusted" to
+ "pci_dev->poses_dma_risk"
+Message-ID: <Yjq7LzdQDIhtxSJM@lahna>
+References: <20220320062907.3272903-1-rajatja@google.com>
+ <YjmQq1DvWnJwUh6R@infradead.org>
+ <CAJZ5v0h9TnUELahzkO59Vqoio1QRHfixk58Yxgffa72rmEBgOA@mail.gmail.com>
+ <CACK8Z6Fz-TPW1fMpQB09fw11neq8eyn89XB8vy0ioB5zB0Hb9Q@mail.gmail.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5552457.DvuYhMxLoT@kreacher>
-X-ClientProxiedBy: HKAPR04CA0014.apcprd04.prod.outlook.com
- (2603:1096:203:d0::24) To DM5PR12MB2504.namprd12.prod.outlook.com
- (2603:10b6:4:b5::19)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5964ef4c-9496-47b0-3203-08da0c7881de
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4452:EE_
-X-Microsoft-Antispam-PRVS: <DM6PR12MB4452A5C9BA97D7404156107FEC189@DM6PR12MB4452.namprd12.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wLgRx9hlVqvfTFojuVL7I8waJiuHzR25x+I4BHEdYg6Cq6YQCcXvRNkYu0qrm7zVRz2BO1uUbwks8BbG380dFkJjrSWLjK9qeqb/bN788+Hs3hz8LwuU+mV0y3qWlM29+gW9vCZfZYlYJhGZDFNQsztRHftma6WgQSdXrgayug74/XcQ4U8AKo0QvbVpOHTEKtvqF3Lnzby7n6l3dBO8LDBVUTNZFYnFlyofzAHFdA3Lj0V3bRR37KwYFU5UD93hdQlV4CCUxsFY57C2CbZjhf2bpEo7IuPFxWqHUtFBWAkAlDtkJLEIWzjodu/xnYUjhY3qMCJ2LeefwWqJoOtKvv/+2KsVdfRnKXBm9tCKy0jFdi6o9KGmlvMbEGks42qpgseAiS9RxNQrYJMvRxTtF5/O6wyq/aHm8uHDQ2KSL9O/I9+fN+AOsNBdTcRQ1xeQlAVuI9bZcvAu4zNdo/uYrPr/Hh6OGE654I2FRi1wHIXBGUcaTbp1gnRcOuYHPujvzuC8mqBRnh6gbo3HySvzTKsFHl/b7nqiHqUKeRJCVr704P4PLp6wkBI2HZ70ZimVFiVgy8voamNNArG1bSRCgy8RIHM6jtmyOeFbGS9osnIzVujhsRYX9uzvopBZbgNUK8N9c8H48mjrfMP+tsJ6Ow==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR12MB2504.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(86362001)(66556008)(66476007)(4326008)(8676002)(2906002)(38100700002)(36756003)(316002)(6512007)(6916009)(54906003)(4744005)(26005)(186003)(83380400001)(8936002)(6506007)(508600001)(6486002)(2616005)(6666004)(5660300002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Mw/ViYiWaKkCewo6Wtk3enIKoAWJDjTEM78oqscO7pS6pn13FIXXcIyXRtr8?=
- =?us-ascii?Q?P7zLEbZNSXSxJhwsEQ4yQAMxTJYejqk81/jaJuBeNTxN05sHdbMXfKf5fp0i?=
- =?us-ascii?Q?3cwJ/sTMoJKSp2MwdrjpeH2AZmrx39j4iyboVLN6842wWbkJj4FcLF578yGt?=
- =?us-ascii?Q?J/9k5SEXyxu+PQQXMlzfVGwRcap7lDzYLFhXcQ/BlQZ1caweFdv3/DbSPnVe?=
- =?us-ascii?Q?3HkOxApMcx4fZ6w5h5YTwF/aNaTCGTO0Fnih66h2m/Cvm6MVEG/ayjcHraXZ?=
- =?us-ascii?Q?4H1w0yyX7QyAngsjFnqLYvbfJNtC7vN3YA7m4ZhkrVKjftxAQMUf9GICskGd?=
- =?us-ascii?Q?gcC6L/D20xrP6RJN2N7yapbirfIEsd/Cx4l8tnJndLo16t9tvlr1DAdv6/x9?=
- =?us-ascii?Q?oYFJh3rWt+xSYZYgiBvUhoRwKw7KcX1RU9S91qnip1b9jXuFL0ARWncTQkMT?=
- =?us-ascii?Q?/fkGKu6/4ZesHxCylfbJ+KqfxP91VMhxyhyYt41G+bHs3Fi1mQNStGcoaOCu?=
- =?us-ascii?Q?fHz2d+O9oCzxAwhQN5/dNoUnBc4jay41Zmh6b6heWzivOBLGzaRsM2Ydycb8?=
- =?us-ascii?Q?KT85tIzSCLkLp+yh6UO1kxD12iUff0x6IN5Pn5RdBg9rGQfo8KmMZpuanInD?=
- =?us-ascii?Q?tOJbrissLMR2YKL7eWiuf1HdYFKm8XcRqp0RgggizsnrY2+0UTQAi/wJw+FI?=
- =?us-ascii?Q?Lv5hsm1Uw4zXVnCrRrOYdqSE/3O83WL0Wost+8yGEqWJd1/c0anxqDg1xCCS?=
- =?us-ascii?Q?1lgQtopClaQIHxqRbQtyk5Om8atTGhL0v5NdL85WZSs56KeVLyysqH84ArXx?=
- =?us-ascii?Q?KCOWO5r8Ualpzv80NK08ZCaAbsCSIWx03++XLelkBWoJwCHB0SMoQbvwYVS1?=
- =?us-ascii?Q?Ijot0CWvHzqs/ZZLNOHiPh/WtTto6HGc+VhI9rczC8mVm/5RnW6Uvb4+LzgU?=
- =?us-ascii?Q?oJzAvz0qRx/3atqVP2ntflpGmbMy4GRFXPhD52ajLpFCdHws5Lm53oWr7XNi?=
- =?us-ascii?Q?UE6QyF5hn0Wn/YbawdcKj21FGcHuC3kaDD0vdOWUWT2lDgwCxq7fwCF0dAI2?=
- =?us-ascii?Q?mzxplmj7/CrcSY7wuwOW42NeYuwetcJAWOy5oLdqOQw+PbdDfHSbEKYzKdU6?=
- =?us-ascii?Q?fcYBrjGjkjnZyoDsBo3UTPpMzegU+PkqmZC1nhLZECs2vVcxwtwgy81FdFgy?=
- =?us-ascii?Q?gYi1d27vKVl3O/4MzAO0/fbbtNfnI5lrAkZboKgOzQCKasZQoJ0Ndgaci4D/?=
- =?us-ascii?Q?vN5EykKOQ4Ex97RCeAo2uO3fjwt+z/o2MK1eosWh5FQFVwZyv0WrhjNo9i/p?=
- =?us-ascii?Q?++5FrRXjRNTZexsJIva07f7KCeBUsQQ5qDBr/7PRumvzrA20i5ZsmkK+Y5qw?=
- =?us-ascii?Q?tEnwFpaqyHqbXGdcp/nswsWedu+8qsv0dcXIyD23koD4OewqepH5W3GAcCXr?=
- =?us-ascii?Q?jsgUizievDi7qQeU4D42kjB4fYy4q+TD?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5964ef4c-9496-47b0-3203-08da0c7881de
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR12MB2504.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2022 02:54:54.5308
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AIyl8VZtjRHhf/sVQUltnQbWxKQPmMEZkk3A58SqhqCpFtAuND9j6NUUviLM7p+hQRRDoMB/9f7WWyFYBunQhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4452
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CACK8Z6Fz-TPW1fMpQB09fw11neq8eyn89XB8vy0ioB5zB0Hb9Q@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 22, 2022 at 05:00:27PM +0100, Rafael J. Wysocki wrote:
-> Hi All,
+On Tue, Mar 22, 2022 at 01:09:55PM -0700, Rajat Jain wrote:
+> On Tue, Mar 22, 2022 at 4:12 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Tue, Mar 22, 2022 at 10:02 AM Christoph Hellwig <hch@infradead.org> wrote:
+> > >
+> > > On Sat, Mar 19, 2022 at 11:29:05PM -0700, Rajat Jain wrote:
+> > > > Rename the field to make it more clear, that the device can execute DMA
+> > > > attacks on the system, and thus the system may need protection from
+> > > > such attacks from this device.
+> > > >
+> > > > No functional change intended.
+> > > >
+> > > > Signed-off-by: Rajat Jain <rajatja@google.com>
+> > > > ---
+> > > > v4: Initial version, created based on comments on other patch
+> > >
+> > > What a horrible name.  Why not untrusted_dma which captures the
+> > > intent much better?
+> >
+> > FWIW, I like this one much better too.
 > 
-> This series of two patches addresses a possible out-of-bounds array access
-> in acpi_cppc_processor_probe() [1/2] and clean up some of it [2/2].
+> Sure, no problems. I can change the name to "untrusted_dma".
 > 
-> Please refer to the patch changelogs for details.
-> 
+> Mika, can I carry forward your "Reviewed-by" tag with this name change too?
 
-Series are Reviewed-by: Huang Rui <ray.huang@amd.com>
+Sure :)
