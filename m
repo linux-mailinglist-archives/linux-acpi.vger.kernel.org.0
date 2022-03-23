@@ -2,78 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A514E4A30
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 01:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EDF94E4B24
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 03:54:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240969AbiCWAtt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Mar 2022 20:49:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40028 "EHLO
+        id S231992AbiCWC4Z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Mar 2022 22:56:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240979AbiCWAts (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Mar 2022 20:49:48 -0400
-Received: from beige.elm.relay.mailchannels.net (beige.elm.relay.mailchannels.net [23.83.212.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE6242B188;
-        Tue, 22 Mar 2022 17:48:18 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 6130762181B;
-        Wed, 23 Mar 2022 00:48:17 +0000 (UTC)
-Received: from pdx1-sub0-mail-a316.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 362CA6220C8;
-        Wed, 23 Mar 2022 00:47:57 +0000 (UTC)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from pdx1-sub0-mail-a316.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.120.230.141 (trex/6.5.3);
-        Wed, 23 Mar 2022 00:48:17 +0000
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Cooing-Harmony: 09b5388473cb8398_1647996497198_138382780
-X-MC-Loop-Signature: 1647996497198:3884895152
-X-MC-Ingress-Time: 1647996497198
-Received: from offworld (unknown [104.36.25.8])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dave@stgolabs.net)
-        by pdx1-sub0-mail-a316.dreamhost.com (Postfix) with ESMTPSA id 4KNV7w2TByz1B;
-        Tue, 22 Mar 2022 17:47:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-        s=dreamhost; t=1647996477;
-        bh=axK3an3G6/3umiaNKJN/ZVM+j2MnC1T8WlF/xM/eLP0=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=V0LXkz3C8ZvVyyeIQ9MwQQX4Q9O608A0uT/mhQMdx+aYRFhhG9rJ483BZKj4/I5As
-         oBphSlPyOpYIh1wHGEzLH1RvC37YM/U2AL4g/R7lr/O5ZLN0E1aBPTCU8pRqZmbdmY
-         raMR5UokpDKjtu3crUV45O644xfdjY4vPDtIBd5LbaqCCta71wRZ/nLQ6rkXgIuhMx
-         /qXtPfosmWK8yzFZz7ngpVNnS2lL38bKy8soGNZ8mb9pedJHCGz2uiLhyJLA8AtQDI
-         BFCxG8/JCA7/w3CjaRYlSlGfTcjObqHeWzi6GFQdo8t9jde4a4sI+KaWhZnNXYYqMW
-         SQD/GjQlDi0xA==
-Date:   Tue, 22 Mar 2022 17:47:53 -0700
-From:   Davidlohr Bueso <dave@stgolabs.net>
-To:     Vishal Verma <vishal.l.verma@intel.com>
-Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH 2/2] acpi/pci_root: negotiate CXL _OSC
-Message-ID: <20220323004753.qkngm4yctprcgvoc@offworld>
-References: <20220318213004.2287428-1-vishal.l.verma@intel.com>
- <20220318213004.2287428-3-vishal.l.verma@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+        with ESMTP id S231958AbiCWC4Z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Mar 2022 22:56:25 -0400
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2074.outbound.protection.outlook.com [40.107.96.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1141F4DF47;
+        Tue, 22 Mar 2022 19:54:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NXNGYRhzv2pBsQ1sZ27xjhxaRpH2rzU80Mtnpt9TdDTWL8+r5H/otpyW1G1ddEfXZDAI1lN3RTH3VTeC48H61CNXAy30jRkcmARHCRuOSRZiNhCQlLylFCAktrG3B4scBdd5npQ1+yRRyJLXXWxorIZUG289lgRh4S1hpOS/8uytQlVo2APTsNy2ERyRctmBWGKSxCC6mGURR8n4SdIwQURM3aKoRx8o1+dhBXFrTL1xrRn8GpFthOTKBX/Ex00wNAUw+c6US3/ftjM1+k3nQ++B6rChU0/tWpvyLovHDj8K+UVh6f3MGXBZAmVcH+B9rsP4qZzLTiJ/XooEA45/TQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nMX/Ik8PPpy5uQzicOn4uk3426OkAK/6kTGwwiit2mM=;
+ b=fj6FaJKG6dKl/SwE3sDUQm6I03PHwUD8F1Y0ilSFOLQC6+4xhSmkHfTuM6K5jrsQEB3co+G1UW0B7UoZfbLQbGeEZorgZFzY/GVpaBqUOjx/vLG5ygj42s34nSiOJDkEs+xSMDJOYiRV1fXk8ODwmZPyziWzQAYtjNSjQcc8r5HgBUKqupg6KV+Pu4v06HK15vp0XngZ2wZ2uuj/ZaE3px18JMqHtzeL/8NRIxPqtQCVlvRt20mXi9WrcncUdZ2Z97Ovgr1DYu6GzX/Sx1NaIsczHLY/8ThrxrS97IBT1uIhBQ5yxztO4SxIY56TBfLrIQ3LVU3nrldxoEo74AfzPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nMX/Ik8PPpy5uQzicOn4uk3426OkAK/6kTGwwiit2mM=;
+ b=jIkg8IATTdy8dGJ1HC3p6pobr3TNbgdLqxaiq9/8R4i8A71vcqckGmoQxgSLUPgyO32/iMrFBpAuVbL9yL3V+/2LDB1zUF6Q9R46tm8XeLRvyuygiWDUyHxwkDyoQZIZHrCcj/dkR7oc5HqbZpOzpMsOT0JKEfAkN9QE+W0cxCE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM5PR12MB2504.namprd12.prod.outlook.com (2603:10b6:4:b5::19) by
+ DM6PR12MB4452.namprd12.prod.outlook.com (2603:10b6:5:2a4::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5102.16; Wed, 23 Mar 2022 02:54:54 +0000
+Received: from DM5PR12MB2504.namprd12.prod.outlook.com
+ ([fe80::38da:2ef6:d863:3c90]) by DM5PR12MB2504.namprd12.prod.outlook.com
+ ([fe80::38da:2ef6:d863:3c90%6]) with mapi id 15.20.5102.016; Wed, 23 Mar 2022
+ 02:54:54 +0000
+Date:   Wed, 23 Mar 2022 10:54:33 +0800
+From:   Huang Rui <ray.huang@amd.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Ionela Voinescu <ionela.voinescu@arm.com>
+Subject: Re: [PATCH v1 0/2] ACPI: CPPC: acpi_cppc_processor_probe() fix and
+ cleanup
+Message-ID: <YjqL6d/IEfVcnu7D@amd.com>
+References: <5552457.DvuYhMxLoT@kreacher>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220318213004.2287428-3-vishal.l.verma@intel.com>
-User-Agent: NeoMutt/20201120
+In-Reply-To: <5552457.DvuYhMxLoT@kreacher>
+X-ClientProxiedBy: HKAPR04CA0014.apcprd04.prod.outlook.com
+ (2603:1096:203:d0::24) To DM5PR12MB2504.namprd12.prod.outlook.com
+ (2603:10b6:4:b5::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 5964ef4c-9496-47b0-3203-08da0c7881de
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4452:EE_
+X-Microsoft-Antispam-PRVS: <DM6PR12MB4452A5C9BA97D7404156107FEC189@DM6PR12MB4452.namprd12.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: wLgRx9hlVqvfTFojuVL7I8waJiuHzR25x+I4BHEdYg6Cq6YQCcXvRNkYu0qrm7zVRz2BO1uUbwks8BbG380dFkJjrSWLjK9qeqb/bN788+Hs3hz8LwuU+mV0y3qWlM29+gW9vCZfZYlYJhGZDFNQsztRHftma6WgQSdXrgayug74/XcQ4U8AKo0QvbVpOHTEKtvqF3Lnzby7n6l3dBO8LDBVUTNZFYnFlyofzAHFdA3Lj0V3bRR37KwYFU5UD93hdQlV4CCUxsFY57C2CbZjhf2bpEo7IuPFxWqHUtFBWAkAlDtkJLEIWzjodu/xnYUjhY3qMCJ2LeefwWqJoOtKvv/+2KsVdfRnKXBm9tCKy0jFdi6o9KGmlvMbEGks42qpgseAiS9RxNQrYJMvRxTtF5/O6wyq/aHm8uHDQ2KSL9O/I9+fN+AOsNBdTcRQ1xeQlAVuI9bZcvAu4zNdo/uYrPr/Hh6OGE654I2FRi1wHIXBGUcaTbp1gnRcOuYHPujvzuC8mqBRnh6gbo3HySvzTKsFHl/b7nqiHqUKeRJCVr704P4PLp6wkBI2HZ70ZimVFiVgy8voamNNArG1bSRCgy8RIHM6jtmyOeFbGS9osnIzVujhsRYX9uzvopBZbgNUK8N9c8H48mjrfMP+tsJ6Ow==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR12MB2504.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(86362001)(66556008)(66476007)(4326008)(8676002)(2906002)(38100700002)(36756003)(316002)(6512007)(6916009)(54906003)(4744005)(26005)(186003)(83380400001)(8936002)(6506007)(508600001)(6486002)(2616005)(6666004)(5660300002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Mw/ViYiWaKkCewo6Wtk3enIKoAWJDjTEM78oqscO7pS6pn13FIXXcIyXRtr8?=
+ =?us-ascii?Q?P7zLEbZNSXSxJhwsEQ4yQAMxTJYejqk81/jaJuBeNTxN05sHdbMXfKf5fp0i?=
+ =?us-ascii?Q?3cwJ/sTMoJKSp2MwdrjpeH2AZmrx39j4iyboVLN6842wWbkJj4FcLF578yGt?=
+ =?us-ascii?Q?J/9k5SEXyxu+PQQXMlzfVGwRcap7lDzYLFhXcQ/BlQZ1caweFdv3/DbSPnVe?=
+ =?us-ascii?Q?3HkOxApMcx4fZ6w5h5YTwF/aNaTCGTO0Fnih66h2m/Cvm6MVEG/ayjcHraXZ?=
+ =?us-ascii?Q?4H1w0yyX7QyAngsjFnqLYvbfJNtC7vN3YA7m4ZhkrVKjftxAQMUf9GICskGd?=
+ =?us-ascii?Q?gcC6L/D20xrP6RJN2N7yapbirfIEsd/Cx4l8tnJndLo16t9tvlr1DAdv6/x9?=
+ =?us-ascii?Q?oYFJh3rWt+xSYZYgiBvUhoRwKw7KcX1RU9S91qnip1b9jXuFL0ARWncTQkMT?=
+ =?us-ascii?Q?/fkGKu6/4ZesHxCylfbJ+KqfxP91VMhxyhyYt41G+bHs3Fi1mQNStGcoaOCu?=
+ =?us-ascii?Q?fHz2d+O9oCzxAwhQN5/dNoUnBc4jay41Zmh6b6heWzivOBLGzaRsM2Ydycb8?=
+ =?us-ascii?Q?KT85tIzSCLkLp+yh6UO1kxD12iUff0x6IN5Pn5RdBg9rGQfo8KmMZpuanInD?=
+ =?us-ascii?Q?tOJbrissLMR2YKL7eWiuf1HdYFKm8XcRqp0RgggizsnrY2+0UTQAi/wJw+FI?=
+ =?us-ascii?Q?Lv5hsm1Uw4zXVnCrRrOYdqSE/3O83WL0Wost+8yGEqWJd1/c0anxqDg1xCCS?=
+ =?us-ascii?Q?1lgQtopClaQIHxqRbQtyk5Om8atTGhL0v5NdL85WZSs56KeVLyysqH84ArXx?=
+ =?us-ascii?Q?KCOWO5r8Ualpzv80NK08ZCaAbsCSIWx03++XLelkBWoJwCHB0SMoQbvwYVS1?=
+ =?us-ascii?Q?Ijot0CWvHzqs/ZZLNOHiPh/WtTto6HGc+VhI9rczC8mVm/5RnW6Uvb4+LzgU?=
+ =?us-ascii?Q?oJzAvz0qRx/3atqVP2ntflpGmbMy4GRFXPhD52ajLpFCdHws5Lm53oWr7XNi?=
+ =?us-ascii?Q?UE6QyF5hn0Wn/YbawdcKj21FGcHuC3kaDD0vdOWUWT2lDgwCxq7fwCF0dAI2?=
+ =?us-ascii?Q?mzxplmj7/CrcSY7wuwOW42NeYuwetcJAWOy5oLdqOQw+PbdDfHSbEKYzKdU6?=
+ =?us-ascii?Q?fcYBrjGjkjnZyoDsBo3UTPpMzegU+PkqmZC1nhLZECs2vVcxwtwgy81FdFgy?=
+ =?us-ascii?Q?gYi1d27vKVl3O/4MzAO0/fbbtNfnI5lrAkZboKgOzQCKasZQoJ0Ndgaci4D/?=
+ =?us-ascii?Q?vN5EykKOQ4Ex97RCeAo2uO3fjwt+z/o2MK1eosWh5FQFVwZyv0WrhjNo9i/p?=
+ =?us-ascii?Q?++5FrRXjRNTZexsJIva07f7KCeBUsQQ5qDBr/7PRumvzrA20i5ZsmkK+Y5qw?=
+ =?us-ascii?Q?tEnwFpaqyHqbXGdcp/nswsWedu+8qsv0dcXIyD23koD4OewqepH5W3GAcCXr?=
+ =?us-ascii?Q?jsgUizievDi7qQeU4D42kjB4fYy4q+TD?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5964ef4c-9496-47b0-3203-08da0c7881de
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR12MB2504.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2022 02:54:54.5308
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AIyl8VZtjRHhf/sVQUltnQbWxKQPmMEZkk3A58SqhqCpFtAuND9j6NUUviLM7p+hQRRDoMB/9f7WWyFYBunQhw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4452
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,44 +114,13 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 18 Mar 2022, Vishal Verma wrote:
+On Tue, Mar 22, 2022 at 05:00:27PM +0100, Rafael J. Wysocki wrote:
+> Hi All,
+> 
+> This series of two patches addresses a possible out-of-bounds array access
+> in acpi_cppc_processor_probe() [1/2] and clean up some of it [2/2].
+> 
+> Please refer to the patch changelogs for details.
+> 
 
->+/* Max possible _OSC capability DWORDS */
->+#define OSC_CAPABILITY_DWORDS_MAX		5
->+
-> /* Indexes into _OSC Capabilities Buffer (DWORDs 2 & 3 are device-specific) */
-> #define OSC_QUERY_DWORD				0	/* DWORD 1 */
-> #define OSC_SUPPORT_DWORD			1	/* DWORD 2 */
-> #define OSC_CONTROL_DWORD			2	/* DWORD 3 */
->+#define OSC_CXL_SUPPORT_DWORD			3	/* DWORD 4 */
->+#define OSC_CXL_CONTROL_DWORD			4	/* DWORD 5 */
-
-Shouldn't all this be in patch 1/2 (and also as enum maybe)? Or at least
-the define OSC_CAPABILITY_DWORDS_MAX instead of having to do:
-
->-static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 support)
->+static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask,
->+					    u32 support, u32 *cxl_mask,
->+					    u32 cxl_support)
-> {
->	u32 req = OSC_PCI_EXPRESS_CAPABILITY_CONTROL;
->	struct acpi_pci_root *root;
->	acpi_status status;
->-	u32 ctrl, capbuf[6];
->+	u32 ctrl, cxl_ctrl = 0, capbuf[OSC_CAPABILITY_DWORDS_MAX];
-
-... which btw why is capbuf 6 in the previous patch and now 5 in this one?
-Sorry if I missed anything obvious here, just seems odd.
-
-And also it's ugly to just add extra params to acpi_pci_osc_control_set()
-and have callers do do:
-
->+	status = acpi_pci_osc_control_set(handle, &control, support,
->+					  &cxl_control, cxl_support);
-
-And this sort of thing happens all over the patch with struct acpi_pci_root.
-So the whole handling of the _OSC state of support/control bits imo really
-wants to be consolidated between CXL and non-CXL.
-
-Thanks,
-Davidlohr
+Series are Reviewed-by: Huang Rui <ray.huang@amd.com>
