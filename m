@@ -2,439 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DCC24E5916
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 20:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8CA24E59DA
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 21:31:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242678AbiCWT1D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Mar 2022 15:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53372 "EHLO
+        id S234460AbiCWUdL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Mar 2022 16:33:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232143AbiCWT1C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Mar 2022 15:27:02 -0400
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C5F34E392;
-        Wed, 23 Mar 2022 12:25:32 -0700 (PDT)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-2e5e9025c20so28861927b3.7;
-        Wed, 23 Mar 2022 12:25:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iJNuz9Z616i/ZcvPFj0zN2Hy1SLZrtpRIJmUcgm2Ifk=;
-        b=pch+IlQLcVTrK2vfQOjpEbaXs8bYimR7taftp0A/hjNfseKLko5675DPSIDLcip20l
-         64yAp9ivHa1Zs1nvFJrahWdeaqmFjY/U3c/fO/F4rUS1YEGiFzpdu5luKvddVeHLlRxz
-         ktYKYwUnsoAH8kc3vNMWQc2pbd7SICUOgriMofPWj+R4Zh9k5VSBhaqWNYCkf7PGd1xi
-         T0jD+tIzcvc2aY7ZT9qdbOVW6ZppmMUR9QxVek6SIAR54xYrihy/o8Gkomda43EUmwt/
-         0pfNecktvLsWwkl/D8JRAyysW8F2h7fwS1B13WmHXklyK4BOxOWnU32IDcTtglK8lPqH
-         uyow==
-X-Gm-Message-State: AOAM532+vYGb+Ka9ziR2jBUFD2vHvhwPd09Mr0uSQJhyEkzGargUcY5e
-        OfbuH/Bd0Pc+4fg4+tceA7dwwuVPxHUagEh79Lg=
-X-Google-Smtp-Source: ABdhPJxAw+Y+Vdbua1qSeFstpB6naJkWSmI7/QX/DlGLIW7/gP9TGRW2oN252jt+24OqHwQvRvN+cDoSNBdIAVgWZbA=
-X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
- b145-20020a811b97000000b002db640f49d8mr1535490ywb.326.1648063531269; Wed, 23
- Mar 2022 12:25:31 -0700 (PDT)
+        with ESMTP id S230260AbiCWUdL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Mar 2022 16:33:11 -0400
+Received: from na01-obe.outbound.protection.outlook.com (mail-eus2azon11020020.outbound.protection.outlook.com [52.101.56.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F108BF33;
+        Wed, 23 Mar 2022 13:31:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TD4611Do860P0WEyhr4iQk9ev3VKCZi7Dcu+jS14vf7JPk14J3uos5D0VePvigHs2zvWoNlPkUCKsrTQf2ilx6G8n3ng42qBX4ip6XbvwBXvUI2TPOrpUIFINZ0t3wNDZEKUOvaDr/upJ4nr4YG+pf1VhP1fqIg16TVPQTQQDHTZRIdxwWWoIROoSDK5X+fp1/cTCHcM8fAbETZcHO9/mJiO97GGB7s2TEaLBbLGFyqqsUItcfVezbIP9hQf2mFr/nA7HHnlL5/eDBMk1CcYL09BGpdM7fmB3VzHFQ0WM1a4ratkMiweBuzJaUSRSoKTgcpg9MAGlSDE+t/IO68s/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xy8OZinl7z11NmrBLDmzzm9ZbxBjHOPfF+9VYwefMio=;
+ b=C+4G6lzHGwaO0Bpp4Lo/tCkup5EdbpZoSiR1++E8IR77NPaayb/QYkZ9vNMWHQJJk2rysy6QfiotylRjwdA2OonvbtPRWaRKxgTfFReR3wqr3JRTgKlQToX6G+2aVB1yUGbs3nBBhhxCcAeE1DiV6fQb+qEKAAD3X4CGx6U+ReecKzizPWmc4cer1QPblKiNHtFnHv29u2dz4yE1NrbzYnwqsRO5G+rOwcg3ATu46bK8PUGis5bf7w6DvPNgyyxmxhD/Qwz0XtNXeQHhEgBImP606CioYZ1W2LhsEl2Ul6bd81JkXSlrEN6W1DR+qU+8f6XxeOBrwpgfwzG3h2sCiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xy8OZinl7z11NmrBLDmzzm9ZbxBjHOPfF+9VYwefMio=;
+ b=akN59Imquyb5HQnHgFMIJN7y197vjfIRmaWaujHdTZvRttoOPuwnydu87S5eaLCLy4+gpffpJtsLrB10NcYx44XA36g+fOliuhAHbslJK9Ky6UahkPT6CdiG88LcBzrpOIjwtA5iQFKvgS1jq8q3WtDxgBgh1rKBBVYwlRw34kw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from DM6PR21MB1514.namprd21.prod.outlook.com (2603:10b6:5:22d::11)
+ by SN6PR2101MB0942.namprd21.prod.outlook.com (2603:10b6:805:4::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.8; Wed, 23 Mar
+ 2022 20:31:38 +0000
+Received: from DM6PR21MB1514.namprd21.prod.outlook.com
+ ([fe80::f8aa:99ff:9265:bb6b]) by DM6PR21MB1514.namprd21.prod.outlook.com
+ ([fe80::f8aa:99ff:9265:bb6b%4]) with mapi id 15.20.5123.008; Wed, 23 Mar 2022
+ 20:31:38 +0000
+From:   Michael Kelley <mikelley@microsoft.com>
+To:     sthemmin@microsoft.com, kys@microsoft.com, haiyangz@microsoft.com,
+        wei.liu@kernel.org, decui@microsoft.com, rafael@kernel.org,
+        lenb@kernel.org, lorenzo.pieralisi@arm.com, robh@kernel.org,
+        kw@linux.com, bhelgaas@google.com, hch@lst.de,
+        m.szyprowski@samsung.com, robin.murphy@arm.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     mikelley@microsoft.com
+Subject: [PATCH v2 0/2] Fix coherence for VMbus and PCI pass-thru devices in Hyper-V VM
+Date:   Wed, 23 Mar 2022 13:31:10 -0700
+Message-Id: <1648067472-13000-1-git-send-email-mikelley@microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+Content-Type: text/plain
+X-ClientProxiedBy: MW3PR05CA0019.namprd05.prod.outlook.com
+ (2603:10b6:303:2b::24) To DM6PR21MB1514.namprd21.prod.outlook.com
+ (2603:10b6:5:22d::11)
 MIME-Version: 1.0
-References: <20220318213004.2287428-1-vishal.l.verma@intel.com> <20220318213004.2287428-3-vishal.l.verma@intel.com>
-In-Reply-To: <20220318213004.2287428-3-vishal.l.verma@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 23 Mar 2022 20:25:20 +0100
-Message-ID: <CAJZ5v0i5d+eYrW8afeC4xAN8rG54e=mOFVzMEMYLn0U63jhJAg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] acpi/pci_root: negotiate CXL _OSC
-To:     Vishal Verma <vishal.l.verma@intel.com>
-Cc:     linux-cxl@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 75e49e35-c2b2-41cd-14d8-08da0d0c2190
+X-MS-TrafficTypeDiagnostic: SN6PR2101MB0942:EE_
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-Microsoft-Antispam-PRVS: <SN6PR2101MB094243028C5B85ACA1E16FB7D7189@SN6PR2101MB0942.namprd21.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TaNcIdyKCxcvsPgZIyI+qZK3wOebWpPzZEsmQT9Jn9ric6UhLAlLHHpmUhtyoAaRQwwmDIpp8b+t9zTm4jj4LPoibP4TVS+FwUoRJA6f54lRokgTuecQSWJJmnv1w0Rnt4LQreetKYgMOUDLQgufxu4n+l9X1QFg4bfHcPL1NyW+bt6UuqHY61gaTkgQZU8hAqDlpGLPlUzVxPPGCajtUMVzks3qWICwZHPvwcaL3KFCTsJ21CofHMLs1gg58llG4+fAvwTeScgo90MFrsyRueTMBH6dS1fCSB4J/AICwoFwQMQN0nFg9vHJzdlDVlYGuDAsOYvMqtHIKp3IHov9ohj8W9JxXHYA8ZKCNNK2XjgV2dodcUa+3jDbBpZOXPwxwYlcJjwLKDJx3PHVSUF22moZheUIEpJ5q4pv5e06qYho1oTV7/sLuVrjRAi2PEidJqItrQ0O17oY8IcTkI6joAxWsznn8w4JFZc8JhsC38qYvBflMoYnYyH5dpYRA45mQPFa/rN2hY0ji2h4/smWSeR+eU4QkjmPFSFL5b/5eH4lkGDR2UjHh1oziqUlS61kAXfVl7OGN/Ud5t9r5N+OdQ1a5TXaI9gZ58S4gDzX6vK71xjPn/Kv7ugdhHEmlxjDJw7vL1Y9dCk/+O2the4q8FgDKlsTQE8lDRJvPp2+jJofDuLhBDAgH7FhaUyjPlk8FIdthYAs7BJxOGziVqLKuKXWG97nX/y19/aUe8qOS+EhpKJV19iTLkZHv66iiWUZXdxzw/S7Ar58yKd0ZvT3OQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR21MB1514.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(451199009)(921005)(5660300002)(107886003)(316002)(7416002)(36756003)(38100700002)(82950400001)(82960400001)(38350700002)(2906002)(86362001)(66946007)(4326008)(8676002)(66476007)(66556008)(6486002)(10290500003)(8936002)(26005)(186003)(2616005)(6506007)(6512007)(508600001)(6666004)(52116002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?krpYi6JbrhbTNEHm19ZjDVtyxArTMH3reIz2t8w/Lr+SEnrUDDuESyvd2ltW?=
+ =?us-ascii?Q?CwHExkcuem83CVZP3cPYb87zGY2bJzo+IV5N0SJQB4dPrbYnFTJT3gxJ81lV?=
+ =?us-ascii?Q?Mv0xo/ELdxiidK0Y3nlbqRGblpwcP9OTbW7gZi6a18o2mCH9MXCVwry1LIu0?=
+ =?us-ascii?Q?pBXvjxPJkQnCHKoLRIHivhkSbUFD8JZShhShf5FDSjz4G33CrU1HuCyd+Okw?=
+ =?us-ascii?Q?vXlFae581QJQdqfDDUALsSWcvow+5wkwsFHSX7YAXiGZQ5e//Etbgt21PvRS?=
+ =?us-ascii?Q?jeMiyUw8/hpFevefXqeCAtMmX0kFNQdvHGdJpV+ExfPcuvb1bNeLXO7X6Fv1?=
+ =?us-ascii?Q?GryqJtt3VTkW8TxdH1t1kCcJe3eJmQBTlJfkAxCzEKFYDNOicED4AAoF38fR?=
+ =?us-ascii?Q?uNyxSUCyuUzQgMdvFQ8TrnG+cv9JbP+3SLPOTZLSS68etWvi6NcFOLjd5txy?=
+ =?us-ascii?Q?gyWrrXuXIRapCE2yB9UuIsyJcin7TSQE0XfMPSqkS8TQGgJTxwFOCjSBQbQE?=
+ =?us-ascii?Q?ps0KgHlUT3hlIn/8Fy1+mnF+td7SihDioD9qKB1+QA6ila4sew2ULRnVk7va?=
+ =?us-ascii?Q?TXSdX9jlCDOrxEuuXhB6ufYnBBscVpla5I38ACFFGtC63K8V5MLM0AXc8neD?=
+ =?us-ascii?Q?YNC7B4kihCgJvcILzAIu0ZFbFncs3kBNX9oPNkWXxLSq1l/0Jxiog+sn73d3?=
+ =?us-ascii?Q?cS4x0Ii7ChXSNVUxJiDNjrlkstBsOPMyrMVW2l6vPL/wFzRfoSo2wt4YAOAW?=
+ =?us-ascii?Q?mdgXe6sQQ57Q8dTvkpnrfGNxLbkR5K47Y6wzsrBzFtGp71odSynZYGOTsgJa?=
+ =?us-ascii?Q?IBVBhpecr8Qm2KYdhFhhIaL9VzCozFTX+DxLhmj2x5T1sX1ncZMYtO7BXt6o?=
+ =?us-ascii?Q?lBaZ28v05c1D7OZZ7cjrOJagSjCU22Qqf21J34G59ybf/HzMzhAyOVih+914?=
+ =?us-ascii?Q?RTCkqUP2p9eUNkhB9GD3UNRHN73/wgRM9O8S9OZMsshgQPANzXCkan3F89fu?=
+ =?us-ascii?Q?OHJmirt2ur8xSE3Lk9wukY3N8EAqEF9lebLy99ZMoWeAzPMA7NRlo8xbiiV1?=
+ =?us-ascii?Q?vYkcBJ6vJJY5ZpsyHi7RldLkFhVwQ+509UniOdEcs1lVSvIaBmrJE8F4hYGt?=
+ =?us-ascii?Q?ghQgoO3BK7OuxhddFal4dmbQFv3VWXXyhgpD8k+wGKmM+4Ki2+lfJBqqDtV8?=
+ =?us-ascii?Q?FhL13WLtoE8LzLuCMJgTKprkR6UQNefv1Ji6EWNYDC+agXVaH5QVOgs/mryB?=
+ =?us-ascii?Q?r+VcTj481/Xq1EjopQvMURWunSKgwqX5uIoOh1Ixm4BpZWXQ8cSU84crAg4w?=
+ =?us-ascii?Q?2aNd2/JZCEXyuRUiYLgEpBp8Sqa3GPB9A/Gub1leexJeo7hyUsiw46zLGxLd?=
+ =?us-ascii?Q?QFc+Vp9nsvGoWyqxaiDLDGNR5E/vsozfV/N+//JfWLv9pONA+4frPsTvOmst?=
+ =?us-ascii?Q?G2cV/R81a+H9M/6BHntT/oAvE4pTf92v6ZE/OenrCQLy5249RY+ff8Ihtyn+?=
+ =?us-ascii?Q?5WatsYEqy91oo5AzmqmQCcUrp+qp+bv1JmjoNLZnGG/9BoAfAK4p0FWLusER?=
+ =?us-ascii?Q?ZwYFJfGZeymjdVYK7snIP7USm3xV+E5mp1Wt1cEJGy8Y7Budxhip9FwMrAx6?=
+ =?us-ascii?Q?rXiIt/9vMxNEhN8ktyNTICegFs4Qhai5aRtkwgRdAl37lnLhPGJw/w4HxYyi?=
+ =?us-ascii?Q?YylGtHi+DmBJoyzFU3ACwhrQXf4hCQJFjaNpcUfKhCQBUrw0C3SPjFmfaZWM?=
+ =?us-ascii?Q?iuWOtDW/mQ=3D=3D?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75e49e35-c2b2-41cd-14d8-08da0d0c2190
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR21MB1514.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2022 20:31:38.1255
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: coamfU/WhEitvZBazjy2szzYwBcJRa49TTthDf6I5OJFJ2QcFwnleIdGudbScTAFua6nrL1hx7ewgMh82v76KQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR2101MB0942
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 18, 2022 at 10:30 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
->
-> Add full support for negotiating _OSC as defined in the CXL 2.0 spec, as
-> applicable to CXL-enabled platforms. Advertise support for the CXL
-> features we support - 'CXL 2.0 port/device register access', 'Protocol
-> Error Reporting', and 'CL Native Hot Plug'. Request control for 'CXL
-> Memory Error Reporting'. The requests are dependent on CONFIG_* based
-> pre-requisites, and prior PCI enabling, similar to how the standard PCI
-> _OSC bits are determined.
->
-> The CXL specification does not define any additional constraints on
-> the hotplug flow beyond PCIe native hotplug, so a kernel that supports
-> native PCIe hotplug, supports CXL hotplug. For error handling protocol
-> and link errors just use PCIe AER. There is nascent support for
-> amending AER events with CXL specific status [1], but there's
-> otherwise no additional OS responsibility for CXL errors beyond PCIe
-> AER. CXL Memory Errors behave the same as typical memory errors so
-> CONFIG_MEMORY_FAILURE is sufficient to indicate support to platform
-> firmware.
->
-> [1]: https://lore.kernel.org/linux-cxl/164740402242.3912056.8303625392871313860.stgit@dwillia2-desk3.amr.corp.intel.com/
->
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Robert Moore <robert.moore@intel.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> ---
->  include/linux/acpi.h    |  14 ++++
->  include/acpi/acpi_bus.h |   6 +-
->  drivers/acpi/pci_root.c | 150 +++++++++++++++++++++++++++++++++++-----
->  3 files changed, 149 insertions(+), 21 deletions(-)
->
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 6274758648e3..97c2e39f10de 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -550,10 +550,15 @@ struct acpi_osc_context {
->
->  acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
->
-> +/* Max possible _OSC capability DWORDS */
-> +#define OSC_CAPABILITY_DWORDS_MAX              5
-> +
->  /* Indexes into _OSC Capabilities Buffer (DWORDs 2 & 3 are device-specific) */
->  #define OSC_QUERY_DWORD                                0       /* DWORD 1 */
->  #define OSC_SUPPORT_DWORD                      1       /* DWORD 2 */
->  #define OSC_CONTROL_DWORD                      2       /* DWORD 3 */
-> +#define OSC_CXL_SUPPORT_DWORD                  3       /* DWORD 4 */
-> +#define OSC_CXL_CONTROL_DWORD                  4       /* DWORD 5 */
->
->  /* _OSC Capabilities DWORD 1: Query/Control and Error Returns (generic) */
->  #define OSC_QUERY_ENABLE                       0x00000001  /* input */
-> @@ -607,6 +612,15 @@ extern u32 osc_sb_native_usb4_control;
->  #define OSC_PCI_EXPRESS_LTR_CONTROL            0x00000020
->  #define OSC_PCI_EXPRESS_DPC_CONTROL            0x00000080
->
-> +/* CXL _OSC: Capabilities DWORD 4: Support Field */
-> +#define OSC_CXL_1_1_PORT_REG_ACCESS_SUPPORT    0x00000001
-> +#define OSC_CXL_2_0_PORT_DEV_REG_ACCESS_SUPPORT        0x00000002
-> +#define OSC_CXL_PROTOCOL_ERR_REPORTING_SUPPORT 0x00000004
-> +#define OSC_CXL_NATIVE_HP_SUPPORT              0x00000008
-> +
-> +/* CXL _OSC: Capabilities DWORD 5: Control Field */
-> +#define OSC_CXL_ERROR_REPORTING_CONTROL                0x00000001
-> +
->  #define ACPI_GSB_ACCESS_ATTRIB_QUICK           0x00000002
->  #define ACPI_GSB_ACCESS_ATTRIB_SEND_RCV         0x00000004
->  #define ACPI_GSB_ACCESS_ATTRIB_BYTE            0x00000006
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 768ef1584055..5776d4c1509a 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -588,8 +588,10 @@ struct acpi_pci_root {
->         bool cxl_osc_disable;
->         struct resource secondary;      /* downstream bus range */
->
-> -       u32 osc_support_set;    /* _OSC state of support bits */
-> -       u32 osc_control_set;    /* _OSC state of control bits */
-> +       u32 osc_support_set;            /* _OSC state of support bits */
-> +       u32 osc_control_set;            /* _OSC state of control bits */
-> +       u32 cxl_osc_support_set;        /* _OSC state of CXL support bits */
-> +       u32 cxl_osc_control_set;        /* _OSC state of CXL control bits */
->         phys_addr_t mcfg_addr;
->  };
->
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index 2d834504096b..c8c83fc37b81 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -142,6 +142,17 @@ static struct pci_osc_bit_struct pci_osc_control_bit[] = {
->         { OSC_PCI_EXPRESS_DPC_CONTROL, "DPC" },
->  };
->
-> +static struct pci_osc_bit_struct cxl_osc_support_bit[] = {
-> +       { OSC_CXL_1_1_PORT_REG_ACCESS_SUPPORT, "CXL11PortRegAccess" },
-> +       { OSC_CXL_2_0_PORT_DEV_REG_ACCESS_SUPPORT, "CXL20PortDevRegAccess" },
-> +       { OSC_CXL_PROTOCOL_ERR_REPORTING_SUPPORT, "CXLProtocolErrorReporting" },
-> +       { OSC_CXL_NATIVE_HP_SUPPORT, "CXLNativeHotPlug" },
-> +};
-> +
-> +static struct pci_osc_bit_struct cxl_osc_control_bit[] = {
-> +       { OSC_CXL_ERROR_REPORTING_CONTROL, "CXLMemErrorReporting" },
-> +};
-> +
->  static void decode_osc_bits(struct acpi_pci_root *root, char *msg, u32 word,
->                             struct pci_osc_bit_struct *table, int size)
->  {
-> @@ -170,6 +181,18 @@ static void decode_osc_control(struct acpi_pci_root *root, char *msg, u32 word)
->                         ARRAY_SIZE(pci_osc_control_bit));
->  }
->
-> +static void decode_cxl_osc_support(struct acpi_pci_root *root, char *msg, u32 word)
-> +{
-> +       decode_osc_bits(root, msg, word, cxl_osc_support_bit,
-> +                       ARRAY_SIZE(cxl_osc_support_bit));
-> +}
-> +
-> +static void decode_cxl_osc_control(struct acpi_pci_root *root, char *msg, u32 word)
-> +{
-> +       decode_osc_bits(root, msg, word, cxl_osc_control_bit,
-> +                       ARRAY_SIZE(cxl_osc_control_bit));
-> +}
-> +
->  static bool is_pcie(struct acpi_pci_root *root)
->  {
->         return strcmp(acpi_device_hid(root->device), "PNP0A08") == 0;
-> @@ -199,8 +222,21 @@ static int cap_length(struct acpi_pci_root *root)
->         return sizeof(u32) * 3;
->  }
->
-> +static u32 acpi_osc_ctx_get_pci_control(struct acpi_osc_context *context)
-> +{
-> +       return *((u32 *)(context->ret.pointer +
-> +                        (sizeof(u32) * OSC_CONTROL_DWORD)));
-> +}
-> +
-> +static u32 acpi_osc_ctx_get_cxl_control(struct acpi_osc_context *context)
-> +{
-> +       return *((u32 *)(context->ret.pointer +
-> +                        (sizeof(u32) * OSC_CXL_CONTROL_DWORD)));
-> +}
-> +
->  static acpi_status acpi_pci_run_osc(struct acpi_pci_root *root,
-> -                                   const u32 *capbuf, u32 *retval)
-> +                                   const u32 *capbuf, u32 *pci_control,
-> +                                   u32 *cxl_control)
->  {
->         struct acpi_osc_context context = {
->                 .uuid_str = to_uuid(root),
-> @@ -212,18 +248,20 @@ static acpi_status acpi_pci_run_osc(struct acpi_pci_root *root,
->
->         status = acpi_run_osc(root->device->handle, &context);
->         if (ACPI_SUCCESS(status)) {
-> -               *retval = *((u32 *)(context.ret.pointer + 8));
-> +               *pci_control = acpi_osc_ctx_get_pci_control(&context);
-> +               if (is_cxl(root))
-> +                       *cxl_control = acpi_osc_ctx_get_cxl_control(&context);
->                 kfree(context.ret.pointer);
->         }
->         return status;
->  }
->
-> -static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
-> -                                       u32 support,
-> -                                       u32 *control)
-> +static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root, u32 support,
-> +                                     u32 *control, u32 cxl_support,
-> +                                     u32 *cxl_control)
->  {
->         acpi_status status;
-> -       u32 result, capbuf[6];
-> +       u32 pci_result, cxl_result, capbuf[OSC_CAPABILITY_DWORDS_MAX];
->
->         support |= root->osc_support_set;
->
-> @@ -231,11 +269,21 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
->         capbuf[OSC_SUPPORT_DWORD] = support;
->         capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
->
-> +       if (is_cxl(root)) {
-> +               cxl_support |= root->cxl_osc_support_set;
-> +               capbuf[OSC_CXL_SUPPORT_DWORD] = cxl_support;
-> +               capbuf[OSC_CXL_CONTROL_DWORD] = *cxl_control | root->cxl_osc_control_set;
-> +       }
-> +
->  retry:
-> -       status = acpi_pci_run_osc(root, capbuf, &result);
-> +       status = acpi_pci_run_osc(root, capbuf, &pci_result, &cxl_result);
->         if (ACPI_SUCCESS(status)) {
->                 root->osc_support_set = support;
-> -               *control = result;
-> +               *control = pci_result;
-> +               if (is_cxl(root)) {
-> +                       root->cxl_osc_support_set = cxl_support;
-> +                       *cxl_control = cxl_result;
-> +               }
->         } else if (is_cxl(root)) {
->                 /*
->                  * CXL _OSC is optional on CXL 1.1 hosts. Fall back to PCIe _OSC
-> @@ -358,6 +406,8 @@ EXPORT_SYMBOL_GPL(acpi_get_pci_dev);
->   * @handle: ACPI handle of a PCI root bridge (or PCIe Root Complex).
->   * @mask: Mask of _OSC bits to request control of, place to store control mask.
->   * @support: _OSC supported capability.
-> + * @cxl_mask: Mask of CXL _OSC control bits, place to store control mask.
-> + * @cxl_support: CXL _OSC supported capability.
->   *
->   * Run _OSC query for @mask and if that is successful, compare the returned
->   * mask of control bits with @req.  If all of the @req bits are set in the
-> @@ -368,12 +418,14 @@ EXPORT_SYMBOL_GPL(acpi_get_pci_dev);
->   * _OSC bits the BIOS has granted control of, but its contents are meaningless
->   * on failure.
->   **/
-> -static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 support)
-> +static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask,
-> +                                           u32 support, u32 *cxl_mask,
-> +                                           u32 cxl_support)
->  {
->         u32 req = OSC_PCI_EXPRESS_CAPABILITY_CONTROL;
->         struct acpi_pci_root *root;
->         acpi_status status;
-> -       u32 ctrl, capbuf[6];
-> +       u32 ctrl, cxl_ctrl = 0, capbuf[OSC_CAPABILITY_DWORDS_MAX];
->
->         if (!mask)
->                 return AE_BAD_PARAMETER;
-> @@ -385,20 +437,35 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 s
->         ctrl   = *mask;
->         *mask |= root->osc_control_set;
->
-> +       if (is_cxl(root)) {
-> +               cxl_ctrl = *cxl_mask;
-> +               *mask |= root->osc_control_set;
+Hyper-V VMs have VMbus synthetic devices and PCI pass-thru devices that are added
+dynamically via the VMbus protocol and are not represented in the ACPI DSDT. Only
+the top level VMbus node exists in the DSDT. As such, on ARM64 these devices don't
+pick up coherence information and default to not hardware coherent.  This results
+in extra software coherence management overhead since the synthetic devices are
+always hardware coherent. PCI pass-thru devices are also hardware coherent in all
+current usage scenarios.
 
-Is this correct?
+Fix this by propagating coherence information from the top level VMbus node in
+the DSDT to all VMbus synthetic devices and PCI pass-thru devices. While smaller
+granularity of control would be better, basing on the VMbus node in the DSDT
+gives as escape path if a future scenario arises with devices that are not
+hardware coherent.
 
-It appears redundant at least, because the same update has already
-happened above.
+Robin Murphy -- I'm not ignoring your feedback about pci_dma_configure(), but
+I wanted to try this alternate approach where pci_dma_configure() works as is.
+If reviewers prefer modifying pci_dma_configure() to handle the Hyper-V
+specifics, I can go back to that.
 
-> +       }
-> +
->         /* Need to check the available controls bits before requesting them. */
->         do {
-> -               status = acpi_pci_query_osc(root, support, mask);
-> +               status = acpi_pci_query_osc(root, support, mask, cxl_support,
-> +                                           cxl_mask);
->                 if (ACPI_FAILURE(status))
->                         return status;
-> -               if (ctrl == *mask)
-> -                       break;
-> -               decode_osc_control(root, "platform does not support",
-> -                                  ctrl & ~(*mask));
-> +               if (is_cxl(root)) {
-> +                       if ((ctrl == *mask) && (cxl_ctrl == *cxl_mask))
-> +                               break;
-> +                       decode_cxl_osc_control(root, "platform does not support",
-> +                                          cxl_ctrl & ~(*cxl_mask));
-> +               } else {
-> +                       if (ctrl == *mask)
-> +                               break;
-> +                       decode_osc_control(root, "platform does not support",
-> +                                          ctrl & ~(*mask));
-> +               }
->                 ctrl = *mask;
-> -       } while (*mask);
-> +               cxl_ctrl = *cxl_mask;
-> +       } while (*mask || *cxl_mask);
->
->         /* No need to request _OSC if the control was already granted. */
-> -       if ((root->osc_control_set & ctrl) == ctrl)
-> +       if (((root->osc_control_set & ctrl) == ctrl) &&
-> +           ((root->cxl_osc_control_set & cxl_ctrl) == cxl_ctrl))
->                 return AE_OK;
->
->         if ((ctrl & req) != req) {
-> @@ -410,11 +477,17 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 s
->         capbuf[OSC_QUERY_DWORD] = 0;
->         capbuf[OSC_SUPPORT_DWORD] = root->osc_support_set;
->         capbuf[OSC_CONTROL_DWORD] = ctrl;
-> -       status = acpi_pci_run_osc(root, capbuf, mask);
-> +       if (is_cxl(root)) {
-> +               capbuf[OSC_CXL_SUPPORT_DWORD] = root->cxl_osc_support_set;
-> +               capbuf[OSC_CXL_CONTROL_DWORD] = cxl_ctrl;
-> +       }
-> +
-> +       status = acpi_pci_run_osc(root, capbuf, mask, cxl_mask);
->         if (ACPI_FAILURE(status))
->                 return status;
->
->         root->osc_control_set = *mask;
-> +       root->cxl_osc_control_set = *cxl_mask;
->         return AE_OK;
->  }
->
-> @@ -440,6 +513,19 @@ static u32 calculate_support(void)
->         return support;
->  }
->
-> +static u32 calculate_cxl_support(void)
-> +{
-> +       u32 support;
-> +
-> +       support = OSC_CXL_2_0_PORT_DEV_REG_ACCESS_SUPPORT;
-> +       if (pci_aer_available())
-> +               support |= OSC_CXL_PROTOCOL_ERR_REPORTING_SUPPORT;
-> +       if (IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
-> +               support |= OSC_CXL_NATIVE_HP_SUPPORT;
-> +
-> +       return support;
-> +}
-> +
->  static u32 calculate_control(void)
->  {
->         u32 control;
-> @@ -471,6 +557,16 @@ static u32 calculate_control(void)
->         return control;
->  }
->
-> +static u32 calculate_cxl_control(void)
-> +{
-> +       u32 control = 0;
-> +
-> +       if (IS_ENABLED(CONFIG_MEMORY_FAILURE))
-> +               control |= OSC_CXL_ERROR_REPORTING_CONTROL;
-> +
-> +       return control;
-> +}
-> +
->  static bool os_control_query_checks(struct acpi_pci_root *root, u32 support)
->  {
->         struct acpi_device *device = root->device;
-> @@ -492,6 +588,7 @@ static bool os_control_query_checks(struct acpi_pci_root *root, u32 support)
->  static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm)
->  {
->         u32 support, control = 0, requested = 0;
-> +       u32 cxl_support = 0, cxl_control = 0, cxl_requested = 0;
->         acpi_status status;
->         struct acpi_device *device = root->device;
->         acpi_handle handle = device->handle;
-> @@ -515,10 +612,20 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm)
->         if (os_control_query_checks(root, support))
->                 requested = control = calculate_control();
->
-> -       status = acpi_pci_osc_control_set(handle, &control, support);
-> +       if (is_cxl(root)) {
-> +               cxl_support = calculate_cxl_support();
-> +               decode_cxl_osc_support(root, "OS supports", cxl_support);
-> +               cxl_requested = cxl_control = calculate_cxl_control();
-> +       }
-> +
-> +       status = acpi_pci_osc_control_set(handle, &control, support,
-> +                                         &cxl_control, cxl_support);
->         if (ACPI_SUCCESS(status)) {
->                 if (control)
->                         decode_osc_control(root, "OS now controls", control);
-> +               if (cxl_control)
-> +                       decode_cxl_osc_control(root, "OS now controls",
-> +                                          cxl_control);
->
->                 if (acpi_gbl_FADT.boot_flags & ACPI_FADT_NO_ASPM) {
->                         /*
-> @@ -547,6 +654,11 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm)
->                         decode_osc_control(root, "OS requested", requested);
->                         decode_osc_control(root, "platform willing to grant", control);
->                 }
-> +               if (cxl_control) {
-> +                       decode_cxl_osc_control(root, "OS requested", cxl_requested);
-> +                       decode_cxl_osc_control(root, "platform willing to grant",
-> +                                          cxl_control);
-> +               }
->
->                 dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
->                          acpi_format_exception(status));
-> --
-> 2.35.1
->
+Changes since v1:
+* Use device_get_dma_attr() instead of acpi_get_dma_attr(), eliminating the
+  need to export acpi_get_dma_attr() [Robin Murphy]
+* Use arch_setup_dma_ops() to set device coherence [Robin Murphy]
+* Move handling of missing _CCA to vmbus_acpi_add() so it is only done once
+* Rework handling of PCI devices so existing code in pci_dma_configure()
+  just works
+
+Michael Kelley (2):
+  Drivers: hv: vmbus: Propagate VMbus coherence to each VMbus device
+  PCI: hv: Propagate coherence from VMbus device to PCI device
+
+ drivers/hv/hv_common.c              | 11 +++++++++++
+ drivers/hv/vmbus_drv.c              | 23 +++++++++++++++++++++++
+ drivers/pci/controller/pci-hyperv.c |  9 +++++++++
+ include/asm-generic/mshyperv.h      |  1 +
+ 4 files changed, 44 insertions(+)
+
+-- 
+1.8.3.1
+
