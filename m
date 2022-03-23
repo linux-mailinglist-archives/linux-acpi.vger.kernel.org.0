@@ -2,66 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F3854E59FD
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 21:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAEBF4E5B51
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 23:38:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344178AbiCWUld (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Mar 2022 16:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51030 "EHLO
+        id S1345268AbiCWWjw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Mar 2022 18:39:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242660AbiCWUlc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Mar 2022 16:41:32 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33CE28BF18
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Mar 2022 13:40:02 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id n18so2693999plg.5
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Mar 2022 13:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=joaiPi82mBm5ydpjd+lSBaTz0Xb4/xDRfIZaQDGqVyI=;
-        b=BbVLZa2jS0qTk7ys5RPPQ9Cq3/eIL++KpUJE2ooJuHAwY81hX2hFxen/BzhW2ITBQC
-         xzDb97S+s/BwYPL/C1QPEiOYv68gPHxgi/OKqsYYEfZjhzbu4xJVpF6WXm+Y3rw8QX+p
-         1C6MY1MJIgK7P/auX21rKnngUv7n2W6Lkp8UYyn6UUO7ZP2XLAIojCdleiE4JxCgRJUI
-         OTdJ6M+Vte5DuOB7QBAapim7XGWx0OQBgoDJzcH24TY1jcwJjkkRswW6DRppZdz61NWL
-         RyVr6oFYOQT473wNbuXc5RSzz0SlCnlsyZ76OXQ3db6UX1gpIDgvWwywPe7FdbJgv9Co
-         +O4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=joaiPi82mBm5ydpjd+lSBaTz0Xb4/xDRfIZaQDGqVyI=;
-        b=yBVeT1bpQKSlBDS52WU+1Y/19574kMzjU92bfB9QtW26bHpUZumeZM4d9j3PSeEw+w
-         xUb1ipn2JjI2JjnS8K5bGrEmYlGB+9aTZp526Y+pr9eOnqaoD+zZUxqifa707Ar7+dBX
-         FxJaKZzNJgxXeA3UukUjHIXyRkhfN6+WwSeHjSl5BrwnosF4JVHULqKtGyvWMOWb2+WG
-         zEXWJAtwvH+cFtQdDJKRGdraB9czhLVKzOofazD5/X9lk44sxQbhDEKM2eaR15WV7c2J
-         8gMqDKhKTqIQwU1h3dIjgyogAhbSp1hdKzaM4tKRYXzLqlV5OHA8GQ3TxDSGm4cJ/XaV
-         71FA==
-X-Gm-Message-State: AOAM533MFUYVJwP1o/4xNVnj8PPCVKdUYpdrZ4JTY+w56y7uHrIPtJQq
-        b6HVZSkE6gO8paVZfVeaoVN/WnGklJYq9b7tUZ6Axw==
-X-Google-Smtp-Source: ABdhPJzOvC4uT3Sm8xOvJVvlftlVpR9jhvGsfNcyBHbOyh8PLo56Ig00CJc523O4ahhmY7LAlQF3WTemYE+ZAu/jZUQ=
-X-Received: by 2002:a17:90a:430d:b0:1bc:f340:8096 with SMTP id
- q13-20020a17090a430d00b001bcf3408096mr1736190pjg.93.1648068001760; Wed, 23
- Mar 2022 13:40:01 -0700 (PDT)
+        with ESMTP id S1345267AbiCWWju (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Mar 2022 18:39:50 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A83A1B9;
+        Wed, 23 Mar 2022 15:38:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1648075099; x=1679611099;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8W6j9MRzMqrTwJHwnu1KmnMFhXBPnNCWDanG0n2qgGU=;
+  b=KIQN5SDe5OsxkS5nVugw2QZjcukf4ihPt4BBds6mHspeHhs6m+hZIwy7
+   Ga5SoTSJog0JEGbdLSJ+PHYlcqdn62HspFXJagX+lDHv+dZqlB+KmHotz
+   AX7uxevFDm1UHHWNnBThTU3VkuzMYWyQOaQAKlakIW4zXtc1wKBql/+UE
+   KNy2P5GWnVuNCgfPHllAjPexPZgj6KRdSWO8ymSbK16uo6ZMp/MqvdMr5
+   +rcKEyjo0ZjGqcvJkvdzADrxIFQ9u+Xzv2wnXB4L2KbBPHFuGVpymBVPB
+   wKY/YvFq64dUArgVPycSpq/jLkUL39ZI4zFkkVJkjkJqkKv7PBmaeBfcY
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10295"; a="257952560"
+X-IronPort-AV: E=Sophos;i="5.90,205,1643702400"; 
+   d="scan'208";a="257952560"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 15:38:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,205,1643702400"; 
+   d="scan'208";a="637641640"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 23 Mar 2022 15:38:11 -0700
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nX9cI-000KRL-Mn; Wed, 23 Mar 2022 22:38:10 +0000
+Date:   Thu, 24 Mar 2022 06:37:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, andriy.shevchenko@linux.intel.com,
+        devicetree@vger.kernel.org, "Rafael J.Wysocki" <rafael@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>
+Subject: Re: [PATCH v2 3/4] device property: Add iomap to fwnode operations
+Message-ID: <202203240648.x2upaXar-lkp@intel.com>
+References: <20220323154737.169483-4-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-References: <20220318213004.2287428-1-vishal.l.verma@intel.com>
- <20220318213004.2287428-2-vishal.l.verma@intel.com> <CAJZ5v0j42Fd4X=GEHDMS6_bxcaT8ncU5vh6+pUjCGhGrD9U0vA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0j42Fd4X=GEHDMS6_bxcaT8ncU5vh6+pUjCGhGrD9U0vA@mail.gmail.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 23 Mar 2022 13:39:54 -0700
-Message-ID: <CAPcyv4h4djKTZLmTQsiCsyKUfzBd_KXEfCo9AoRSJasLo+Ac0A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] PCI/ACPI: Use CXL _OSC instead of PCIe _OSC
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Vishal Verma <vishal.l.verma@intel.com>, linux-cxl@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220323154737.169483-4-sakari.ailus@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,75 +68,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 23, 2022 at 12:24 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Mar 18, 2022 at 10:30 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
-> >
-> > From: Dan Williams <dan.j.williams@intel.com>
-> >
-> > Rather than pass a boolean flag alongside @root to all the helper
-> > functions that need to consider PCIe specifics, add is_pcie() and
-> > is_cxl() helper functions to check the flavor of @root. This also
-> > allows for dynamic fallback to PCIe _OSC in cases where an attempt to
-> > use CXL _OXC fails. This can happen on CXL 1.1 platforms that publish
-> > ACPI0016 devices to indicate CXL host bridges, but do not publish the
-> > optional CXL _OSC method. CXL _OSC is mandatory for CXL 2.0 hosts.
-> >
-> > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Robert Moore <robert.moore@intel.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> > ---
-> >  include/acpi/acpi_bus.h |  1 +
-> >  drivers/acpi/pci_root.c | 62 +++++++++++++++++++++++++++++++----------
-> >  2 files changed, 48 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index ca88c4706f2b..768ef1584055 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -585,6 +585,7 @@ struct acpi_pci_root {
-> >         struct acpi_device * device;
-> >         struct pci_bus *bus;
-> >         u16 segment;
-> > +       bool cxl_osc_disable;
-> >         struct resource secondary;      /* downstream bus range */
-> >
-> >         u32 osc_support_set;    /* _OSC state of support bits */
-> > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> > index b76db99cced3..2d834504096b 100644
-> > --- a/drivers/acpi/pci_root.c
-> > +++ b/drivers/acpi/pci_root.c
-> > @@ -170,20 +170,47 @@ static void decode_osc_control(struct acpi_pci_root *root, char *msg, u32 word)
-> >                         ARRAY_SIZE(pci_osc_control_bit));
-> >  }
-> >
-> > -static u8 pci_osc_uuid_str[] = "33DB4D5B-1FF7-401C-9657-7441C03DD766";
-> > +static bool is_pcie(struct acpi_pci_root *root)
-> > +{
-> > +       return strcmp(acpi_device_hid(root->device), "PNP0A08") == 0;
-> > +}
-> >
-> > -static acpi_status acpi_pci_run_osc(acpi_handle handle,
-> > +static bool is_cxl(struct acpi_pci_root *root)
-> > +{
-> > +       if (root->cxl_osc_disable)
-> > +               return false;
-> > +       return strcmp(acpi_device_hid(root->device), "ACPI0016") == 0;
->
-> One more thing.
->
-> This will cause the device ID matching to take place every time
-> is_cxl() is called which seems a bit excessive to me (and the same
-> applies to the PCIe counterpart).
->
-> IMV it would make sense to have a "bridge_type" field instead of
-> cxl_osc_disable in acpi_pci_root and use that for all of the checks.
->
-> Moreover, IIUC every CXL bridge is also a PCIe one, so the
-> "bridge_type" could be say 1 for PCIe and 2 for CXL and checks like
-> "bridge_type >= PCIe" would cover both these types then.
+Hi Sakari,
 
-Sounds good, I like it.
+I love your patch! Yet something to improve:
+
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on next-20220323]
+[cannot apply to driver-core/driver-core-testing robh/for-next v5.17]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/Sakari-Ailus/Shovel-firmware-specific-code-to-appropriate-locations/20220324-000256
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20220324/202203240648.x2upaXar-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/c9025bc8f89f50eaf9b9d628f1ac5d47b77c6bc8
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Sakari-Ailus/Shovel-firmware-specific-code-to-appropriate-locations/20220324-000256
+        git checkout c9025bc8f89f50eaf9b9d628f1ac5d47b77c6bc8
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=s390 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   s390-linux-ld: kernel/dma/coherent.o: in function `dma_init_coherent_memory':
+   coherent.c:(.text+0x122): undefined reference to `memremap'
+   s390-linux-ld: coherent.c:(.text+0x230): undefined reference to `memunmap'
+   s390-linux-ld: kernel/dma/coherent.o: in function `dma_declare_coherent_memory':
+   coherent.c:(.text+0x69c): undefined reference to `memunmap'
+   s390-linux-ld: drivers/irqchip/irq-al-fic.o: in function `al_fic_init_dt':
+   irq-al-fic.c:(.init.text+0x7e): undefined reference to `of_iomap'
+   s390-linux-ld: irq-al-fic.c:(.init.text+0x502): undefined reference to `iounmap'
+   s390-linux-ld: drivers/clk/clk-fixed-mmio.o: in function `fixed_mmio_clk_setup':
+   clk-fixed-mmio.c:(.text+0x90): undefined reference to `of_iomap'
+   s390-linux-ld: clk-fixed-mmio.c:(.text+0xcc): undefined reference to `iounmap'
+   s390-linux-ld: drivers/clocksource/timer-of.o: in function `timer_of_init':
+   timer-of.c:(.init.text+0x144): undefined reference to `of_iomap'
+   s390-linux-ld: timer-of.c:(.init.text+0x76c): undefined reference to `iounmap'
+   s390-linux-ld: drivers/clocksource/timer-of.o: in function `timer_of_cleanup':
+   timer-of.c:(.init.text+0x960): undefined reference to `iounmap'
+   s390-linux-ld: drivers/clocksource/timer-microchip-pit64b.o: in function `mchp_pit64b_dt_init_timer':
+   timer-microchip-pit64b.c:(.init.text+0x67c): undefined reference to `of_iomap'
+   s390-linux-ld: timer-microchip-pit64b.c:(.init.text+0xcd2): undefined reference to `iounmap'
+   s390-linux-ld: drivers/of/property.o: in function `of_fwnode_iomap':
+>> property.c:(.text+0x1b8c): undefined reference to `of_iomap'
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
