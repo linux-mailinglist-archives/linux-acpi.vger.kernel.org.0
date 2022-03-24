@@ -2,101 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29B0D4E6111
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Mar 2022 10:26:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 299E84E62D8
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Mar 2022 12:59:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345328AbiCXJ2J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Mar 2022 05:28:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
+        id S245648AbiCXMAu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Mar 2022 08:00:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349266AbiCXJ17 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Mar 2022 05:27:59 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96FBB9E9DE;
-        Thu, 24 Mar 2022 02:26:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1648113988; x=1679649988;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Td8YsXMpI4YXozqUJGH+dpvAo9Uu+wpZGTwGaP5ufBs=;
-  b=c48QdDBYEJ5YKWI69wgWICCk5eC5LdLO+evGx8OAGOHlkskpfhNXDWuI
-   WW7hU7f9NEPhBzI7GUSeCZxnP3Zoo1A3+2RujnIApfdWEf8/ssMGKr8pX
-   fGDlI5XwyydJmAVvaen0bn+lGWW+/5O1++NZqhX1MvGMWbfQ1bgrNq5SK
-   nP4s28N9FvTop+bTLgOCFfd98v418qXEyUkXExVtAkZCQV9iXnUM3R+4g
-   6yqCDhW6SpuQNxd+ucP6oHu4YECtaNEbT3kxlX3p8JsR/Sjrbckdwbhr1
-   S/emm0jJosEtaNBEgylM4J+5HRTiY8kVIUXM4RpvYHJ3OTvSeJlbW5AIf
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10295"; a="255894410"
-X-IronPort-AV: E=Sophos;i="5.90,206,1643702400"; 
-   d="scan'208";a="255894410"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2022 02:26:28 -0700
-X-IronPort-AV: E=Sophos;i="5.90,206,1643702400"; 
-   d="scan'208";a="501326676"
-Received: from smile.fi.intel.com ([10.237.72.59])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2022 02:26:13 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nXJiq-005ioX-Nz;
-        Thu, 24 Mar 2022 11:25:36 +0200
-Date:   Thu, 24 Mar 2022 11:25:36 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     kernel test robot <lkp@intel.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-acpi@vger.kernel.org, kbuild-all@lists.01.org,
-        devicetree@vger.kernel.org, "Rafael J.Wysocki" <rafael@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v2 3/4] device property: Add iomap to fwnode operations
-Message-ID: <Yjw5ED+2574cVib6@smile.fi.intel.com>
-References: <20220323154737.169483-4-sakari.ailus@linux.intel.com>
- <202203240648.x2upaXar-lkp@intel.com>
+        with ESMTP id S241040AbiCXMAu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Mar 2022 08:00:50 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6AABD4339D;
+        Thu, 24 Mar 2022 04:59:18 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 205C011FB;
+        Thu, 24 Mar 2022 04:59:18 -0700 (PDT)
+Received: from [10.57.43.230] (unknown [10.57.43.230])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA0863F73D;
+        Thu, 24 Mar 2022 04:59:14 -0700 (PDT)
+Message-ID: <f984116a-c748-ada0-c073-6e62f486b4f5@arm.com>
+Date:   Thu, 24 Mar 2022 11:59:10 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202203240648.x2upaXar-lkp@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2 1/2] Drivers: hv: vmbus: Propagate VMbus coherence to
+ each VMbus device
+Content-Language: en-GB
+To:     Michael Kelley <mikelley@microsoft.com>, sthemmin@microsoft.com,
+        kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, rafael@kernel.org, lenb@kernel.org,
+        lorenzo.pieralisi@arm.com, robh@kernel.org, kw@linux.com,
+        bhelgaas@google.com, hch@lst.de, m.szyprowski@samsung.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+References: <1648067472-13000-1-git-send-email-mikelley@microsoft.com>
+ <1648067472-13000-2-git-send-email-mikelley@microsoft.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <1648067472-13000-2-git-send-email-mikelley@microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 24, 2022 at 06:37:19AM +0800, kernel test robot wrote:
-> Hi Sakari,
+On 2022-03-23 20:31, Michael Kelley wrote:
+> VMbus synthetic devices are not represented in the ACPI DSDT -- only
+> the top level VMbus device is represented. As a result, on ARM64
+> coherence information in the _CCA method is not specified for
+> synthetic devices, so they default to not hardware coherent.
+> Drivers for some of these synthetic devices have been recently
+> updated to use the standard DMA APIs, and they are incurring extra
+> overhead of unneeded software coherence management.
 > 
-> I love your patch! Yet something to improve:
-
-...
-
-> compiler: s390-linux-gcc (GCC) 11.2.0
-> reproduce (this is a W=1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # https://github.com/0day-ci/linux/commit/c9025bc8f89f50eaf9b9d628f1ac5d47b77c6bc8
->         git remote add linux-review https://github.com/0day-ci/linux
->         git fetch --no-tags linux-review Sakari-Ailus/Shovel-firmware-specific-code-to-appropriate-locations/20220324-000256
->         git checkout c9025bc8f89f50eaf9b9d628f1ac5d47b77c6bc8
->         # save the config file to linux build tree
->         mkdir build_dir
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=s390 SHELL=/bin/bash
+> Fix this by propagating coherence information from the VMbus node
+> in ACPI to the individual synthetic devices. There's no effect on
+> x86/x64 where devices are always hardware coherent.
 > 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+> ---
+>   drivers/hv/hv_common.c         | 11 +++++++++++
+>   drivers/hv/vmbus_drv.c         | 23 +++++++++++++++++++++++
+>   include/asm-generic/mshyperv.h |  1 +
+>   3 files changed, 35 insertions(+)
 > 
-> All errors (new ones prefixed by >>):
+> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+> index 181d16b..820e814 100644
+> --- a/drivers/hv/hv_common.c
+> +++ b/drivers/hv/hv_common.c
+> @@ -20,6 +20,7 @@
+>   #include <linux/panic_notifier.h>
+>   #include <linux/ptrace.h>
+>   #include <linux/slab.h>
+> +#include <linux/dma-map-ops.h>
+>   #include <asm/hyperv-tlfs.h>
+>   #include <asm/mshyperv.h>
+>   
+> @@ -216,6 +217,16 @@ bool hv_query_ext_cap(u64 cap_query)
+>   }
+>   EXPORT_SYMBOL_GPL(hv_query_ext_cap);
+>   
+> +void hv_setup_dma_ops(struct device *dev, bool coherent)
+> +{
+> +	/*
+> +	 * Hyper-V does not offer a vIOMMU in the guest
+> +	 * VM, so pass 0/NULL for the IOMMU settings
+> +	 */
+> +	arch_setup_dma_ops(dev, 0, 0, NULL, coherent);
+> +}
+> +EXPORT_SYMBOL_GPL(hv_setup_dma_ops);
+> +
+>   bool hv_is_hibernation_supported(void)
+>   {
+>   	return !hv_root_partition && acpi_sleep_state_supported(ACPI_STATE_S4);
+> diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+> index 12a2b37..2d2c54c 100644
+> --- a/drivers/hv/vmbus_drv.c
+> +++ b/drivers/hv/vmbus_drv.c
+> @@ -905,6 +905,14 @@ static int vmbus_probe(struct device *child_device)
+>   	struct hv_device *dev = device_to_hv_device(child_device);
+>   	const struct hv_vmbus_device_id *dev_id;
+>   
+> +	/*
+> +	 * On ARM64, propagate the DMA coherence setting from the top level
+> +	 * VMbus ACPI device to the child VMbus device being added here.
+> +	 * On x86/x64 coherence is assumed and these calls have no effect.
+> +	 */
+> +	hv_setup_dma_ops(child_device,
+> +		device_get_dma_attr(&hv_acpi_dev->dev) == DEV_DMA_COHERENT);
 
-Seems it needs some ifdeffery to be added.
+Would you mind hooking up the hv_bus.dma_configure method to do this? 
+Feel free to fold hv_setup_dma_ops entirely into that if you're not 
+likely to need to call it from anywhere else.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> +
+>   	dev_id = hv_vmbus_get_id(drv, dev);
+>   	if (drv->probe) {
+>   		ret = drv->probe(dev, dev_id);
+> @@ -2428,6 +2436,21 @@ static int vmbus_acpi_add(struct acpi_device *device)
+>   
+>   	hv_acpi_dev = device;
+>   
+> +	/*
+> +	 * Older versions of Hyper-V for ARM64 fail to include the _CCA
+> +	 * method on the top level VMbus device in the DSDT. But devices
+> +	 * are hardware coherent in all current Hyper-V use cases, so fix
+> +	 * up the ACPI device to behave as if _CCA is present and indicates
+> +	 * hardware coherence.
+> +	 */
+> +	ACPI_COMPANION_SET(&device->dev, device);
+> +	if (IS_ENABLED(CONFIG_ACPI_CCA_REQUIRED) &&
+> +	    device_get_dma_attr(&device->dev) == DEV_DMA_NOT_SUPPORTED) {
+> +		pr_info("No ACPI _CCA found; assuming coherent device I/O\n");
+> +		device->flags.cca_seen = true;
+> +		device->flags.coherent_dma = true;
+> +	}
 
+I'm not the biggest fan of this, especially since I'm not convinced that 
+there are any out-of-support deployments of ARM64 Hyper-V that can't be 
+updated. However I suppose it's not "real" firmware, and one Hyper-V 
+component is at liberty to hack another Hyper-V component's data if it 
+really wants to...
 
+If you can hook up .dma_configure, or clarify if it wouldn't work,
+
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+
+Cheers,
+Robin.
+
+> +
+>   	result = acpi_walk_resources(device->handle, METHOD_NAME__CRS,
+>   					vmbus_walk_resources, NULL);
+>   
+> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+> index c08758b..c05d2ce 100644
+> --- a/include/asm-generic/mshyperv.h
+> +++ b/include/asm-generic/mshyperv.h
+> @@ -269,6 +269,7 @@ static inline int cpumask_to_vpset_noself(struct hv_vpset *vpset,
+>   u64 hv_ghcb_hypercall(u64 control, void *input, void *output, u32 input_size);
+>   void hyperv_cleanup(void);
+>   bool hv_query_ext_cap(u64 cap_query);
+> +void hv_setup_dma_ops(struct device *dev, bool coherent);
+>   void *hv_map_memory(void *addr, unsigned long size);
+>   void hv_unmap_memory(void *addr);
+>   #else /* CONFIG_HYPERV */
