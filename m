@@ -2,125 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAEBF4E5B51
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Mar 2022 23:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C20594E5C9A
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Mar 2022 02:10:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345268AbiCWWjw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Mar 2022 18:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35142 "EHLO
+        id S245432AbiCXBLh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Mar 2022 21:11:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345267AbiCWWju (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Mar 2022 18:39:50 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A83A1B9;
-        Wed, 23 Mar 2022 15:38:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1648075099; x=1679611099;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8W6j9MRzMqrTwJHwnu1KmnMFhXBPnNCWDanG0n2qgGU=;
-  b=KIQN5SDe5OsxkS5nVugw2QZjcukf4ihPt4BBds6mHspeHhs6m+hZIwy7
-   Ga5SoTSJog0JEGbdLSJ+PHYlcqdn62HspFXJagX+lDHv+dZqlB+KmHotz
-   AX7uxevFDm1UHHWNnBThTU3VkuzMYWyQOaQAKlakIW4zXtc1wKBql/+UE
-   KNy2P5GWnVuNCgfPHllAjPexPZgj6KRdSWO8ymSbK16uo6ZMp/MqvdMr5
-   +rcKEyjo0ZjGqcvJkvdzADrxIFQ9u+Xzv2wnXB4L2KbBPHFuGVpymBVPB
-   wKY/YvFq64dUArgVPycSpq/jLkUL39ZI4zFkkVJkjkJqkKv7PBmaeBfcY
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10295"; a="257952560"
-X-IronPort-AV: E=Sophos;i="5.90,205,1643702400"; 
-   d="scan'208";a="257952560"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 15:38:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,205,1643702400"; 
-   d="scan'208";a="637641640"
-Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 23 Mar 2022 15:38:11 -0700
-Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nX9cI-000KRL-Mn; Wed, 23 Mar 2022 22:38:10 +0000
-Date:   Thu, 24 Mar 2022 06:37:19 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, andriy.shevchenko@linux.intel.com,
-        devicetree@vger.kernel.org, "Rafael J.Wysocki" <rafael@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v2 3/4] device property: Add iomap to fwnode operations
-Message-ID: <202203240648.x2upaXar-lkp@intel.com>
-References: <20220323154737.169483-4-sakari.ailus@linux.intel.com>
+        with ESMTP id S241590AbiCXBLg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Mar 2022 21:11:36 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 781BE91AEB;
+        Wed, 23 Mar 2022 18:10:05 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id v13so2508807qkv.3;
+        Wed, 23 Mar 2022 18:10:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=yB8Xhdcr1UmQH8x5bcI6sm+S/MTI1xulItthpHA07WI=;
+        b=McdUogDwPYB9swFBm2FXkncFErKcszgRCGc2+vf+t4VBJPShVyXnSPpMv3YcxJWDED
+         F3EzvLFhmqSIaYRhQoJJKcNqwxUThjiXAKoIAvLd0tBsCL0kSGVwJ2Vjr/7rmxOlfA0m
+         t7ej0shvb++RaMQy2JZQFzk6Z/O4vPZx0NOFae+Ai9tcKD8LD7cTqpmOh/1rR2rysvnS
+         w5Up28ZSSUKpvJc/qbuGM4gfYJFYhHzODtN/JwPJuXLc9XItIibJzge48Wgl+zp1cxHs
+         J+cnD/Zp0tv7toQzqHnlImRzvh3I7XAkemv1mb7g0IBjUhCCeCx8kEek4LKyZvIhjzB7
+         OHdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=yB8Xhdcr1UmQH8x5bcI6sm+S/MTI1xulItthpHA07WI=;
+        b=Vhm8ci28pKBh1NYIYf0ZJ2kpmLLyJ1SuQB/Rp5MQReVElrcn4JPxuKuk3kVgJ2a2YQ
+         U+cMcaZkBcvOeuMXd1h5K5uUGaEdi3NMuJQGob7VXWE6xyBDLJxipC6I+yPNa7guNIMu
+         d7w0mRYtOryOjwQslkVmhkkJYJEy/tabx095z8S9fL4atSo1hQM6U9mv9hTiEgyRdjzA
+         2RkBN7DY5HZaejSiul81MHHQKAz17BPCojdphUOWCsatWeLtBlR3l3Ns3cFR7TtOUM4h
+         TXItYW2Luj8lOsroAxVZys/x7onMwXiGWq2oRVbXD+SeCFmTxntMqt1gwidNoQtsqTxx
+         /AsA==
+X-Gm-Message-State: AOAM530BOIa8PRz41Zzz3w4qdZSwF508Yw3FvNdUoAQuRXqipnNQovLB
+        XTRO1wjuR8nqvbHZozzc3nE=
+X-Google-Smtp-Source: ABdhPJyOkEF06bgFmKyQhBb+A0wmpygZlW/7H7ia7YahrrMcQBz4D9XJ0EDr8NY3ZI4WwKEs5GrHkA==
+X-Received: by 2002:a05:620a:294e:b0:67e:704d:7c55 with SMTP id n14-20020a05620a294e00b0067e704d7c55mr1865658qkp.118.1648084204497;
+        Wed, 23 Mar 2022 18:10:04 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id o15-20020ae9f50f000000b0067d27e196f1sm729885qkg.133.2022.03.23.18.10.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Mar 2022 18:10:03 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailauth.nyi.internal (Postfix) with ESMTP id BFA8127C0054;
+        Wed, 23 Mar 2022 21:10:02 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Wed, 23 Mar 2022 21:10:02 -0400
+X-ME-Sender: <xms:6cQ7Yv14XCzJ365b4Jqxuq1yNfSLClI1w5uiWCXa0ixK2_r6dHbuwQ>
+    <xme:6cQ7YuHtRC-vWlBHjbbLS1yQGN6jcE69QnWjlVhZv6rAJYgTlzz_A7huNMPtrj7ZZ
+    rxR0VJT-63j7Xvn5w>
+X-ME-Received: <xmr:6cQ7Yv7G3W5Hg3KFn9xzZqcA1ilzEHjjc2or0DEwd9BvoHwhE6b534ps5NYx3Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudegkedgfedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhepvdelieegudfggeevjefhjeevueevieetjeeikedvgfejfeduheefhffggedv
+    geejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
+    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
+    hmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:6cQ7Yk1aQXDv7c6Kky7fz7Ax1u6QICsQXHEPa5BNv3LSMZAOfhAK5w>
+    <xmx:6cQ7YiFlNMRafLKMQALAlK-PDKP1FMuf0MMyyVROfchzWrwxQhyB0A>
+    <xmx:6cQ7Yl9RffYNrNvz3ypcwkw5KOId3nS45xF1wl7DTs4klKDcIFLPlw>
+    <xmx:6sQ7YiIIKzTS6Q0leKUkgVjkgN_eoduPzGJriRDFY3p7HYT21Wv-dw>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Mar 2022 21:10:01 -0400 (EDT)
+Date:   Thu, 24 Mar 2022 09:09:16 +0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Michael Kelley <mikelley@microsoft.com>
+Cc:     sthemmin@microsoft.com, kys@microsoft.com, haiyangz@microsoft.com,
+        wei.liu@kernel.org, decui@microsoft.com, rafael@kernel.org,
+        lenb@kernel.org, lorenzo.pieralisi@arm.com, robh@kernel.org,
+        kw@linux.com, bhelgaas@google.com, hch@lst.de,
+        m.szyprowski@samsung.com, robin.murphy@arm.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Subject: Re: [PATCH v2 2/2] PCI: hv: Propagate coherence from VMbus device to
+ PCI device
+Message-ID: <YjvEvFFuKJiV/NU+@boqun-archlinux>
+References: <1648067472-13000-1-git-send-email-mikelley@microsoft.com>
+ <1648067472-13000-3-git-send-email-mikelley@microsoft.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220323154737.169483-4-sakari.ailus@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <1648067472-13000-3-git-send-email-mikelley@microsoft.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
+On Wed, Mar 23, 2022 at 01:31:12PM -0700, Michael Kelley wrote:
+> PCI pass-thru devices in a Hyper-V VM are represented as a VMBus
+> device and as a PCI device.  The coherence of the VMbus device is
+> set based on the VMbus node in ACPI, but the PCI device has no
+> ACPI node and defaults to not hardware coherent.  This results
+> in extra software coherence management overhead on ARM64 when
+> devices are hardware coherent.
+> 
+> Fix this by setting up the PCI host bus so that normal
+> PCI mechanisms will propagate the coherence of the VMbus
+> device to the PCI device. There's no effect on x86/x64 where
+> devices are always hardware coherent.
+> 
+> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
 
-I love your patch! Yet something to improve:
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on next-20220323]
-[cannot apply to driver-core/driver-core-testing robh/for-next v5.17]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Regards,
+Boqun
 
-url:    https://github.com/0day-ci/linux/commits/Sakari-Ailus/Shovel-firmware-specific-code-to-appropriate-locations/20220324-000256
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20220324/202203240648.x2upaXar-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/c9025bc8f89f50eaf9b9d628f1ac5d47b77c6bc8
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Sakari-Ailus/Shovel-firmware-specific-code-to-appropriate-locations/20220324-000256
-        git checkout c9025bc8f89f50eaf9b9d628f1ac5d47b77c6bc8
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=s390 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   s390-linux-ld: kernel/dma/coherent.o: in function `dma_init_coherent_memory':
-   coherent.c:(.text+0x122): undefined reference to `memremap'
-   s390-linux-ld: coherent.c:(.text+0x230): undefined reference to `memunmap'
-   s390-linux-ld: kernel/dma/coherent.o: in function `dma_declare_coherent_memory':
-   coherent.c:(.text+0x69c): undefined reference to `memunmap'
-   s390-linux-ld: drivers/irqchip/irq-al-fic.o: in function `al_fic_init_dt':
-   irq-al-fic.c:(.init.text+0x7e): undefined reference to `of_iomap'
-   s390-linux-ld: irq-al-fic.c:(.init.text+0x502): undefined reference to `iounmap'
-   s390-linux-ld: drivers/clk/clk-fixed-mmio.o: in function `fixed_mmio_clk_setup':
-   clk-fixed-mmio.c:(.text+0x90): undefined reference to `of_iomap'
-   s390-linux-ld: clk-fixed-mmio.c:(.text+0xcc): undefined reference to `iounmap'
-   s390-linux-ld: drivers/clocksource/timer-of.o: in function `timer_of_init':
-   timer-of.c:(.init.text+0x144): undefined reference to `of_iomap'
-   s390-linux-ld: timer-of.c:(.init.text+0x76c): undefined reference to `iounmap'
-   s390-linux-ld: drivers/clocksource/timer-of.o: in function `timer_of_cleanup':
-   timer-of.c:(.init.text+0x960): undefined reference to `iounmap'
-   s390-linux-ld: drivers/clocksource/timer-microchip-pit64b.o: in function `mchp_pit64b_dt_init_timer':
-   timer-microchip-pit64b.c:(.init.text+0x67c): undefined reference to `of_iomap'
-   s390-linux-ld: timer-microchip-pit64b.c:(.init.text+0xcd2): undefined reference to `iounmap'
-   s390-linux-ld: drivers/of/property.o: in function `of_fwnode_iomap':
->> property.c:(.text+0x1b8c): undefined reference to `of_iomap'
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> ---
+>  drivers/pci/controller/pci-hyperv.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+> index ae0bc2f..88b3b56 100644
+> --- a/drivers/pci/controller/pci-hyperv.c
+> +++ b/drivers/pci/controller/pci-hyperv.c
+> @@ -3404,6 +3404,15 @@ static int hv_pci_probe(struct hv_device *hdev,
+>  	hbus->bridge->domain_nr = dom;
+>  #ifdef CONFIG_X86
+>  	hbus->sysdata.domain = dom;
+> +#elif defined(CONFIG_ARM64)
+> +	/*
+> +	 * Set the PCI bus parent to be the corresponding VMbus
+> +	 * device. Then the VMbus device will be assigned as the
+> +	 * ACPI companion in pcibios_root_bridge_prepare() and
+> +	 * pci_dma_configure() will propagate device coherence
+> +	 * information to devices created on the bus.
+> +	 */
+> +	hbus->sysdata.parent = hdev->device.parent;
+>  #endif
+>  
+>  	hbus->hdev = hdev;
+> -- 
+> 1.8.3.1
+> 
+> 
