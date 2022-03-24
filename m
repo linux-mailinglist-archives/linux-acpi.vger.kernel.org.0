@@ -2,96 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C20594E5C9A
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Mar 2022 02:10:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D9E4E5F11
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Mar 2022 08:04:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245432AbiCXBLh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Mar 2022 21:11:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53362 "EHLO
+        id S231269AbiCXHGZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Mar 2022 03:06:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241590AbiCXBLg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Mar 2022 21:11:36 -0400
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 781BE91AEB;
-        Wed, 23 Mar 2022 18:10:05 -0700 (PDT)
-Received: by mail-qk1-x731.google.com with SMTP id v13so2508807qkv.3;
-        Wed, 23 Mar 2022 18:10:05 -0700 (PDT)
+        with ESMTP id S230024AbiCXHGY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Mar 2022 03:06:24 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C225E7DE23;
+        Thu, 24 Mar 2022 00:04:52 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id u26so4470528eda.12;
+        Thu, 24 Mar 2022 00:04:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=yB8Xhdcr1UmQH8x5bcI6sm+S/MTI1xulItthpHA07WI=;
-        b=McdUogDwPYB9swFBm2FXkncFErKcszgRCGc2+vf+t4VBJPShVyXnSPpMv3YcxJWDED
-         F3EzvLFhmqSIaYRhQoJJKcNqwxUThjiXAKoIAvLd0tBsCL0kSGVwJ2Vjr/7rmxOlfA0m
-         t7ej0shvb++RaMQy2JZQFzk6Z/O4vPZx0NOFae+Ai9tcKD8LD7cTqpmOh/1rR2rysvnS
-         w5Up28ZSSUKpvJc/qbuGM4gfYJFYhHzODtN/JwPJuXLc9XItIibJzge48Wgl+zp1cxHs
-         J+cnD/Zp0tv7toQzqHnlImRzvh3I7XAkemv1mb7g0IBjUhCCeCx8kEek4LKyZvIhjzB7
-         OHdQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QmJzxumpLQcs11vK+3c+4EgOpxANBX6MJwGXngCOMXo=;
+        b=LL2eN8sSyTOZ859wDP3jr4bcEgBnKx5LwkENba4N6GLZYypfPt211FxmqWSDMQJHge
+         TBqhuCw1rBMDXoSc/gzl5gOJ1TI1kDob/jdIsXZkyNYAz1UAsVpzcbn2UIeS8Yw6vncg
+         Zp97G7vdkkt14jKJHjWur/+xxokAcjm2zQL0uJip4RCrPICFsRErLZ7DMGBB6ia+uHMm
+         EYuObp7A3gzYScsUT8dfPLP/11gWH/60IMuyM9a+kJ4+di4B2jIEekA5G6fvVRSSyk0Q
+         DZAHcILhTGzONIWvnQxHIbkKgmoK85UhJ6Z1hgi/0MWK9nQ/YQ+QUa4IArzulTJnhAow
+         mwOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=yB8Xhdcr1UmQH8x5bcI6sm+S/MTI1xulItthpHA07WI=;
-        b=Vhm8ci28pKBh1NYIYf0ZJ2kpmLLyJ1SuQB/Rp5MQReVElrcn4JPxuKuk3kVgJ2a2YQ
-         U+cMcaZkBcvOeuMXd1h5K5uUGaEdi3NMuJQGob7VXWE6xyBDLJxipC6I+yPNa7guNIMu
-         d7w0mRYtOryOjwQslkVmhkkJYJEy/tabx095z8S9fL4atSo1hQM6U9mv9hTiEgyRdjzA
-         2RkBN7DY5HZaejSiul81MHHQKAz17BPCojdphUOWCsatWeLtBlR3l3Ns3cFR7TtOUM4h
-         TXItYW2Luj8lOsroAxVZys/x7onMwXiGWq2oRVbXD+SeCFmTxntMqt1gwidNoQtsqTxx
-         /AsA==
-X-Gm-Message-State: AOAM530BOIa8PRz41Zzz3w4qdZSwF508Yw3FvNdUoAQuRXqipnNQovLB
-        XTRO1wjuR8nqvbHZozzc3nE=
-X-Google-Smtp-Source: ABdhPJyOkEF06bgFmKyQhBb+A0wmpygZlW/7H7ia7YahrrMcQBz4D9XJ0EDr8NY3ZI4WwKEs5GrHkA==
-X-Received: by 2002:a05:620a:294e:b0:67e:704d:7c55 with SMTP id n14-20020a05620a294e00b0067e704d7c55mr1865658qkp.118.1648084204497;
-        Wed, 23 Mar 2022 18:10:04 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id o15-20020ae9f50f000000b0067d27e196f1sm729885qkg.133.2022.03.23.18.10.03
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QmJzxumpLQcs11vK+3c+4EgOpxANBX6MJwGXngCOMXo=;
+        b=SLoPAfXFBu+pl+qVsWAo1kxeayrAcwg5oLfDW8KzeSv7eNul03TFD2YOZLu7l3CBrW
+         +oDdAQgl/taNFePa9YCmHai1NYoqzLbhfc7YuxRnqjzRPpdJx/MekwP6q1lSF+YkRFLW
+         7OEtcVFPACXCZcZqAT30ZGK6ZCsHeXZ1f8HY/zz7qrVgsIQF0rxJMCui5Z5u16GVVPIj
+         hOeIxN6+OZpd8GZXTM33eF/8nG97UJjjlXIsoljK2N0pUg11L5tMzB9/X6TZFY3Jlfmk
+         mdOnSBrFr+lu+Iytftd7HJXs51okyaXAe/sc+GwgmTancAHyM9C3T7HM3kamnRcwAoTZ
+         fC/w==
+X-Gm-Message-State: AOAM533ajCSGf2GuhhL8L9qsAK4RHyc5BG2xV07K+FYkGiWWs4wRXHsh
+        D/c2iQL0+4vN41DnFPJ95mw=
+X-Google-Smtp-Source: ABdhPJyiRVrIl5E62lC8T6N06sfiBY9MLsiGEZ1cVBohHNstoW03QKjOTDNUo/ItSF2GAqvqzrPrpg==
+X-Received: by 2002:a50:fe0d:0:b0:415:e2ee:65af with SMTP id f13-20020a50fe0d000000b00415e2ee65afmr4811578edt.383.1648105491201;
+        Thu, 24 Mar 2022 00:04:51 -0700 (PDT)
+Received: from localhost.localdomain (i130160.upc-i.chello.nl. [62.195.130.160])
+        by smtp.googlemail.com with ESMTPSA id d24-20020a1709067a1800b006e021f4c1c3sm753022ejo.166.2022.03.24.00.04.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Mar 2022 18:10:03 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailauth.nyi.internal (Postfix) with ESMTP id BFA8127C0054;
-        Wed, 23 Mar 2022 21:10:02 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Wed, 23 Mar 2022 21:10:02 -0400
-X-ME-Sender: <xms:6cQ7Yv14XCzJ365b4Jqxuq1yNfSLClI1w5uiWCXa0ixK2_r6dHbuwQ>
-    <xme:6cQ7YuHtRC-vWlBHjbbLS1yQGN6jcE69QnWjlVhZv6rAJYgTlzz_A7huNMPtrj7ZZ
-    rxR0VJT-63j7Xvn5w>
-X-ME-Received: <xmr:6cQ7Yv7G3W5Hg3KFn9xzZqcA1ilzEHjjc2or0DEwd9BvoHwhE6b534ps5NYx3Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudegkedgfedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepvdelieegudfggeevjefhjeevueevieetjeeikedvgfejfeduheefhffggedv
-    geejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
-    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
-    hmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:6cQ7Yk1aQXDv7c6Kky7fz7Ax1u6QICsQXHEPa5BNv3LSMZAOfhAK5w>
-    <xmx:6cQ7YiFlNMRafLKMQALAlK-PDKP1FMuf0MMyyVROfchzWrwxQhyB0A>
-    <xmx:6cQ7Yl9RffYNrNvz3ypcwkw5KOId3nS45xF1wl7DTs4klKDcIFLPlw>
-    <xmx:6sQ7YiIIKzTS6Q0leKUkgVjkgN_eoduPzGJriRDFY3p7HYT21Wv-dw>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Mar 2022 21:10:01 -0400 (EDT)
-Date:   Thu, 24 Mar 2022 09:09:16 +0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Michael Kelley <mikelley@microsoft.com>
-Cc:     sthemmin@microsoft.com, kys@microsoft.com, haiyangz@microsoft.com,
-        wei.liu@kernel.org, decui@microsoft.com, rafael@kernel.org,
-        lenb@kernel.org, lorenzo.pieralisi@arm.com, robh@kernel.org,
-        kw@linux.com, bhelgaas@google.com, hch@lst.de,
-        m.szyprowski@samsung.com, robin.murphy@arm.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Subject: Re: [PATCH v2 2/2] PCI: hv: Propagate coherence from VMbus device to
- PCI device
-Message-ID: <YjvEvFFuKJiV/NU+@boqun-archlinux>
-References: <1648067472-13000-1-git-send-email-mikelley@microsoft.com>
- <1648067472-13000-3-git-send-email-mikelley@microsoft.com>
+        Thu, 24 Mar 2022 00:04:50 -0700 (PDT)
+From:   Jakob Koschel <jakobkoschel@gmail.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+        "Brian Johannesmeyer" <bjohannesmeyer@gmail.com>,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        "Bos, H.J." <h.j.bos@vu.nl>, Jakob Koschel <jakobkoschel@gmail.com>
+Subject: [PATCH] ACPI: ipmi: replace usage of found with dedicated list iterator variable
+Date:   Thu, 24 Mar 2022 08:04:41 +0100
+Message-Id: <20220324070441.56591-1-jakobkoschel@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1648067472-13000-3-git-send-email-mikelley@microsoft.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -102,51 +70,118 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 23, 2022 at 01:31:12PM -0700, Michael Kelley wrote:
-> PCI pass-thru devices in a Hyper-V VM are represented as a VMBus
-> device and as a PCI device.  The coherence of the VMbus device is
-> set based on the VMbus node in ACPI, but the PCI device has no
-> ACPI node and defaults to not hardware coherent.  This results
-> in extra software coherence management overhead on ARM64 when
-> devices are hardware coherent.
-> 
-> Fix this by setting up the PCI host bus so that normal
-> PCI mechanisms will propagate the coherence of the VMbus
-> device to the PCI device. There's no effect on x86/x64 where
-> devices are always hardware coherent.
-> 
-> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+To move the list iterator variable into the list_for_each_entry_*()
+macro in the future it should be avoided to use the list iterator
+variable after the loop body.
 
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
+To *never* use the list iterator variable after the loop it was
+concluded to use a separate iterator variable instead of a
+found boolean [1].
 
-Regards,
-Boqun
+This removes the need to use a found variable and simply checking if
+the variable was set, can determine if the break/goto was hit.
 
-> ---
->  drivers/pci/controller/pci-hyperv.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
-> index ae0bc2f..88b3b56 100644
-> --- a/drivers/pci/controller/pci-hyperv.c
-> +++ b/drivers/pci/controller/pci-hyperv.c
-> @@ -3404,6 +3404,15 @@ static int hv_pci_probe(struct hv_device *hdev,
->  	hbus->bridge->domain_nr = dom;
->  #ifdef CONFIG_X86
->  	hbus->sysdata.domain = dom;
-> +#elif defined(CONFIG_ARM64)
-> +	/*
-> +	 * Set the PCI bus parent to be the corresponding VMbus
-> +	 * device. Then the VMbus device will be assigned as the
-> +	 * ACPI companion in pcibios_root_bridge_prepare() and
-> +	 * pci_dma_configure() will propagate device coherence
-> +	 * information to devices created on the bus.
-> +	 */
-> +	hbus->sysdata.parent = hdev->device.parent;
->  #endif
->  
->  	hbus->hdev = hdev;
-> -- 
-> 1.8.3.1
-> 
-> 
+Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/
+Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+---
+ drivers/acpi/acpi_ipmi.c | 39 ++++++++++++++++++---------------------
+ 1 file changed, 18 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
+index a5fe2926bf50..0555f68c2dfd 100644
+--- a/drivers/acpi/acpi_ipmi.c
++++ b/drivers/acpi/acpi_ipmi.c
+@@ -353,29 +353,27 @@ static void ipmi_flush_tx_msg(struct acpi_ipmi_device *ipmi)
+ static void ipmi_cancel_tx_msg(struct acpi_ipmi_device *ipmi,
+ 			       struct acpi_ipmi_msg *msg)
+ {
+-	struct acpi_ipmi_msg *tx_msg, *temp;
+-	bool msg_found = false;
++	struct acpi_ipmi_msg *tx_msg = NULL, *iter, *temp;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ipmi->tx_msg_lock, flags);
+-	list_for_each_entry_safe(tx_msg, temp, &ipmi->tx_msg_list, head) {
+-		if (msg == tx_msg) {
+-			msg_found = true;
+-			list_del(&tx_msg->head);
++	list_for_each_entry_safe(iter, temp, &ipmi->tx_msg_list, head) {
++		if (msg == iter) {
++			tx_msg = iter;
++			list_del(&iter->head);
+ 			break;
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&ipmi->tx_msg_lock, flags);
+ 
+-	if (msg_found)
++	if (tx_msg)
+ 		acpi_ipmi_msg_put(tx_msg);
+ }
+ 
+ static void ipmi_msg_handler(struct ipmi_recv_msg *msg, void *user_msg_data)
+ {
+ 	struct acpi_ipmi_device *ipmi_device = user_msg_data;
+-	bool msg_found = false;
+-	struct acpi_ipmi_msg *tx_msg, *temp;
++	struct acpi_ipmi_msg *tx_msg = NULL, *iter, *temp;
+ 	struct device *dev = ipmi_device->dev;
+ 	unsigned long flags;
+ 
+@@ -387,16 +385,16 @@ static void ipmi_msg_handler(struct ipmi_recv_msg *msg, void *user_msg_data)
+ 	}
+ 
+ 	spin_lock_irqsave(&ipmi_device->tx_msg_lock, flags);
+-	list_for_each_entry_safe(tx_msg, temp, &ipmi_device->tx_msg_list, head) {
+-		if (msg->msgid == tx_msg->tx_msgid) {
+-			msg_found = true;
+-			list_del(&tx_msg->head);
++	list_for_each_entry_safe(iter, temp, &ipmi_device->tx_msg_list, head) {
++		if (msg->msgid == iter->tx_msgid) {
++			tx_msg = iter;
++			list_del(&iter->head);
+ 			break;
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&ipmi_device->tx_msg_lock, flags);
+ 
+-	if (!msg_found) {
++	if (!tx_msg) {
+ 		dev_warn(dev,
+ 			 "Unexpected response (msg id %ld) is returned.\n",
+ 			 msg->msgid);
+@@ -482,15 +480,14 @@ static void ipmi_register_bmc(int iface, struct device *dev)
+ 
+ static void ipmi_bmc_gone(int iface)
+ {
+-	struct acpi_ipmi_device *ipmi_device, *temp;
+-	bool dev_found = false;
++	struct acpi_ipmi_device *ipmi_device = NULL, *iter, *temp;
+ 
+ 	mutex_lock(&driver_data.ipmi_lock);
+-	list_for_each_entry_safe(ipmi_device, temp,
++	list_for_each_entry_safe(iter, temp,
+ 				 &driver_data.ipmi_devices, head) {
+-		if (ipmi_device->ipmi_ifnum != iface) {
+-			dev_found = true;
+-			__ipmi_dev_kill(ipmi_device);
++		if (iter->ipmi_ifnum != iface) {
++			ipmi_device = iter;
++			__ipmi_dev_kill(iter);
+ 			break;
+ 		}
+ 	}
+@@ -500,7 +497,7 @@ static void ipmi_bmc_gone(int iface)
+ 					struct acpi_ipmi_device, head);
+ 	mutex_unlock(&driver_data.ipmi_lock);
+ 
+-	if (dev_found) {
++	if (ipmi_device) {
+ 		ipmi_flush_tx_msg(ipmi_device);
+ 		acpi_ipmi_dev_put(ipmi_device);
+ 	}
+
+base-commit: f443e374ae131c168a065ea1748feac6b2e76613
+-- 
+2.25.1
+
