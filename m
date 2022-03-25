@@ -2,95 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C2A54E79B8
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Mar 2022 18:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B5F4E7CB5
+	for <lists+linux-acpi@lfdr.de>; Sat, 26 Mar 2022 01:22:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbiCYRPb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Mar 2022 13:15:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50080 "EHLO
+        id S232402AbiCYU4r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Mar 2022 16:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239154AbiCYRPb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Mar 2022 13:15:31 -0400
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA4E4E7295
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Mar 2022 10:13:56 -0700 (PDT)
-Received: by mail-yb1-f171.google.com with SMTP id j2so15225107ybu.0
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Mar 2022 10:13:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YTI0sut7n/2DTyYW4vwVsNTfXly/P/m6WqJKzy12y1M=;
-        b=YhprLn2RNBr5fKHZb2g3YdxnERpcmXclmiRx9P0HiQuQdYIN+JRssEhO07N1YodIU2
-         6yGM73KGKz0pL+PUWMxH9LuvszC4U6J8+zMRIXUj3nppcyQ8EQh69K4WfMYM4O2/i3/5
-         sqoMjduXwZz6ilIBOTpeKdeUrdkcY4ogWAELUobd66NZ/jPL8B4htzd9Ojuns0IMzwvI
-         EGVCokWuW0a2rIsEwmmpqRAjXUsRPpuYxa24jcX8vCNzjl7CuwNl8poyifuTlZsYoQqn
-         99GSZg17A9OIMfivNahhhz5De4JMXsw8gdA10H0rrmuDorPfTPKDgb+/RhJqxv/Hc8wA
-         LUoA==
-X-Gm-Message-State: AOAM530ddsUnYnfFTGOl2+K8YP0B7iS3pr9nBGPHgTB8cE0f9PuCNZIC
-        KgZy+XyIPZAEPFOgNXq/yasdnq05Ve1KPq60VEw=
-X-Google-Smtp-Source: ABdhPJzp4MdvUpmuA9HAieDpqasrvRGJUnlb00CHqnvTBHAziLqLYDCfWU+U7mYWXXdbJsj8lhlKm7loR1SSjSLX5Jk=
-X-Received: by 2002:a25:508:0:b0:633:bcf2:d29a with SMTP id
- 8-20020a250508000000b00633bcf2d29amr10426553ybf.81.1648228435924; Fri, 25 Mar
- 2022 10:13:55 -0700 (PDT)
+        with ESMTP id S232386AbiCYU4q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Mar 2022 16:56:46 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D94D522BFA
+        for <linux-acpi@vger.kernel.org>; Fri, 25 Mar 2022 13:55:11 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 54000D6E;
+        Fri, 25 Mar 2022 10:49:48 -0700 (PDT)
+Received: from [10.57.41.19] (unknown [10.57.41.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4619F3F73D;
+        Fri, 25 Mar 2022 10:49:46 -0700 (PDT)
+Message-ID: <c982f1d7-c565-769a-abae-79c962969d88@arm.com>
+Date:   Fri, 25 Mar 2022 17:49:39 +0000
 MIME-Version: 1.0
-References: <20220317064220.287048-1-vasant.hegde@amd.com>
-In-Reply-To: <20220317064220.287048-1-vasant.hegde@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 25 Mar 2022 18:13:45 +0100
-Message-ID: <CAJZ5v0gqNRMU98=D9DXO3R2XsrKeMjTJc+RSgxYMZWs1S8snWg@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: Fix LAPIC_ADDR_OVR address print
-To:     Vasant Hegde <vasant.hegde@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v8 05/11] ACPI/IORT: Add a helper to retrieve RMR memory
+ regions
+Content-Language: en-GB
+To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
+Cc:     "jon@solid-run.com" <jon@solid-run.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        yangyicong <yangyicong@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
+References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
+ <20220221154344.2126-6-shameerali.kolothum.thodi@huawei.com>
+ <479ae561-e03e-163e-f945-d0c8fdf8dcea@arm.com>
+ <ad7ae652a2b54261a522008a25238039@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <ad7ae652a2b54261a522008a25238039@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 17, 2022 at 7:42 AM Vasant Hegde <vasant.hegde@amd.com> wrote:
->
-> Without fix:
->   [    0.005429] ACPI: LAPIC_ADDR_OVR (address[(____ptrval____)])
->
-> With fix:
->   [    0.005429] ACPI: LAPIC_ADDR_OVR (address[0x800fee00000])
->
-> Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-> Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-> Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-> ---
-> Changes in v2:
->   - Added Missing Co-developed-by tag - Thanks Rafael.
->
-> -Vasant
->
->  drivers/acpi/tables.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> index 0741a4933f62..550e9512534c 100644
-> --- a/drivers/acpi/tables.c
-> +++ b/drivers/acpi/tables.c
-> @@ -151,8 +151,8 @@ void acpi_table_print_madt_entry(struct acpi_subtable_header *header)
->                 {
->                         struct acpi_madt_local_apic_override *p =
->                             (struct acpi_madt_local_apic_override *)header;
-> -                       pr_info("LAPIC_ADDR_OVR (address[%p])\n",
-> -                               (void *)(unsigned long)p->address);
-> +                       pr_info("LAPIC_ADDR_OVR (address[0x%llx])\n",
-> +                               p->address);
->                 }
->                 break;
->
-> --
+On 2022-03-23 16:06, Shameerali Kolothum Thodi wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Robin Murphy [mailto:robin.murphy@arm.com]
+>> Sent: 22 March 2022 19:09
+>> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
+>> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+>> iommu@lists.linux-foundation.org
+>> Cc: jon@solid-run.com; Linuxarm <linuxarm@huawei.com>;
+>> steven.price@arm.com; Guohanjun (Hanjun Guo) <guohanjun@huawei.com>;
+>> yangyicong <yangyicong@huawei.com>; Sami.Mujawar@arm.com;
+>> will@kernel.org; wanghuiqiang <wanghuiqiang@huawei.com>
+>> Subject: Re: [PATCH v8 05/11] ACPI/IORT: Add a helper to retrieve RMR
+>> memory regions
+>>
+>> On 2022-02-21 15:43, Shameer Kolothum via iommu wrote:
+>>> Add helper functions (iort_iommu_get/put_rmrs()) that
+>>> retrieves/releases RMR memory descriptors associated
+>>> with a given IOMMU. This will be used by IOMMU drivers
+>>> to set up necessary mappings.
+>>>
+>>> Invoke it from the generic iommu helper functions.
+>>
+>> iommu_dma_get_resv_regions() already exists - please extend that rather
+>> than adding a parallel implementation of the same thing but different.
+>> IORT should export a single get_resv_regions helper which combines the
+>> new RMRs with the existing MSI workaround, and a separate "do I need to
+>> bypass this StreamID" helper for the SMMU drivers to call directly at
+>> reset time, since the latter isn't really an iommu-dma responsibility.
+> 
+> Right. I actually had couple of back and forth on the interfaces and settled
+> on this mainly because it just requires a single interface from IORT for both
+> get_resv_regions() and SMMU driver reset bypass path.
+> ie, iort_iommu_get/put_rmrs()).
+> 
+> But agree the above comment is also valid.
+> 
+>> I'm happy to do that just by shuffling wrappers around for now - we can
+>> come back and streamline the code properly afterwards - but the sheer
+>> amount of indirection currently at play here is so hard to follow that
+>> it's not even all that easy to see how it's crossing abstraction levels
+>> improperly.
+> 
+> Please find below the revised ones. Please take a look and let me know.
 
-Applied (with an adjusted subject) as 5.18-rc material, thanks!
+Yeah, that looks like it should work!
+
+Cheers,
+Robin.
+
+> 
+> Thanks,
+> Shameer
+> 
+> iommu-dma:
+> 
+> void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list) {
+> 
+>          if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode))
+>                  iort_iommu_get_resv_regions(dev, list);
+> }
+> 
+> void iommu_dma_put_resv_regions(struct device *dev, struct list_head *list) {
+> 
+>          if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode))
+>                  iort_iommu_put_resv_regions(dev, list);
+>          generic_iommu_put_resv_regions(dev, list);
+> }
+> 
+> iort:
+> 
+> void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head) {
+>          struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+> 
+>          iort_iommu_msi_get_resv_regions(dev, head);
+>          iort_iommu_get_rmrs(fwspec->iommu_fwnode, dev, head);
+> }
+> 
+> void iort_iommu_put_resv_regions(struct device *dev, struct list_head *head) {
+>     ./*Free both RMRs and HW MSI ones */
+> }
+> 
+> /* The below ones will be directly called from SMMU drivers during reset */
+> void iort_get_rmr_sids(struct fwnode_handle *iommu_fwnode, struct list_head *head) {
+>          iort_iommu_get_rmrs(iommu_fwnode, NULL, head); }
+> }
+> 
+> void iort_put_rmr_sids(struct fwnode_handle *iommu_fwnode, struct list_head *head) {
+>          iort_iommu_put_resv_regions(NULL, head);
+> }
