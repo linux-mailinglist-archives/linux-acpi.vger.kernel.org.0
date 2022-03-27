@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F14A94E88BC
+	by mail.lfdr.de (Postfix) with ESMTP id D5CBF4E88BA
 	for <lists+linux-acpi@lfdr.de>; Sun, 27 Mar 2022 18:13:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235981AbiC0QPf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S235979AbiC0QPf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Sun, 27 Mar 2022 12:15:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44360 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235979AbiC0QPe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 27 Mar 2022 12:15:34 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C83286EA;
-        Sun, 27 Mar 2022 09:13:55 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id h23so17035359wrb.8;
-        Sun, 27 Mar 2022 09:13:55 -0700 (PDT)
+        with ESMTP id S235977AbiC0QPf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 27 Mar 2022 12:15:35 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0B3427CFF;
+        Sun, 27 Mar 2022 09:13:56 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id w4so17008796wrg.12;
+        Sun, 27 Mar 2022 09:13:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=H+FhRc7KgAfPCLtqzrVvCY/1ZFWM7ONidYWxxdL5dd8=;
-        b=QCb1Mj/vwpfX9vwr60BaT0jWLWOxTdbAaz7fX34nKWOM6q+nxQbAREWHTZIDynYv17
-         HEgNCWHfQ8OpHfuXfzAaxRlKBPw/97tZmlcjwjuLWbZm1GMFYFNsxkmnsto5GlFb3KZ6
-         37FvUFK/s27pDvezCj/hM6B4lWc1Gvmt6hzRgXcHxOUl77jRx/XNkCYq2otQFrWc4R3Z
-         shd+qA8ovzULgh2XuNm6Uu5VvGjsRKeh3TA8JlsR7CBhKyECf6zmm2PZQKyGfkxEiNyL
-         fDHDg6wuv7kE8lSa6Wa1MRFd3H46/VCecSQtUfrQaFBuPoii3piu7fnIg1pa4yzjFqFN
-         wKoQ==
+        bh=MoaYREzq6jXyRyPsLV3DSxV09kFGjo/gj37Cv5lUcH8=;
+        b=dbKQRX+2WDNHQwKo+f8wT6nYSnPGKx6p+cuJ4Bk1nqNvOIfJk9VO4Rgro7w+ZwYbDc
+         r3GKJ40MrPoRL8731j2g2mhO4efwTtZDcAjuLV/fWod0FXFWAARiyvyTERf1fPrOLKsE
+         KWDocqGRDXJhjS9YLjIb1yg75cd+bCLdz9Iyse7rT5/pE0hTR8cMCe/dxeea8Y4TTMIy
+         LO/Y/Vmk4OzbI4x5/La7oiBS0KBGoB4JGrvHduEgJeDpPk51ZGUDn41M5aBiQIFWjn3K
+         guJN5ya4tfRgHdSaNEZNQO9cIEryejVsbjoRZrnDvP6Ijqfeb2nPIQ4V3iBZMUHOrLOa
+         UBVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=H+FhRc7KgAfPCLtqzrVvCY/1ZFWM7ONidYWxxdL5dd8=;
-        b=FWvCEPrsdV1NHOziHRqD+jWyk2rYIypFX/BVkymX33khl1qtzZmCQ55ln4ZKor5UHf
-         5xmNCXPvnyBNHkvzevk7Kxt2fMRfeP8zNVsHSkaXu6TABw6QgoZ9u4iZ2sOVQlrOkL8C
-         Lvwwm9UUURMbLC2eYZhiN834uv4uHlAUaZIv9kcQZTxT4HgnqqoW2tSQ6FgdhO+tr5GC
-         +y6mGx2pBHOYnYOu6S7g3qA0FtU5RJYirakH4aMWvuM+mtqliibGAO+mq2Vfhfb8uQ09
-         gZDJ1eFHtyvfsx3kDoSv9tpgpoC+lqY0NUm2KW/xVMF9LQqWKBUR8VSPZ3wbBitnsb62
-         TfJA==
-X-Gm-Message-State: AOAM532TskKo6lRLVpU+rLGAnVW47TDy1wrbCmJvJI6Tv27jAricCKnq
-        d8OMzObdja+qz8Pbb0rNd6UBDocpK70=
-X-Google-Smtp-Source: ABdhPJxf9ssoXELvzGRtdGYfg5LVFmgJBjqFPwAibpmWdBspmgcIajJ21JgroEVUnStLmXyKhnum6w==
-X-Received: by 2002:adf:f20f:0:b0:203:fc73:a9a0 with SMTP id p15-20020adff20f000000b00203fc73a9a0mr18190442wro.418.1648397634354;
-        Sun, 27 Mar 2022 09:13:54 -0700 (PDT)
+        bh=MoaYREzq6jXyRyPsLV3DSxV09kFGjo/gj37Cv5lUcH8=;
+        b=UJx4zeZyLFNFzYTkqSb0WaOu768L2cyv8I8oD/xeP4foq/XUxmNmxNBkoNl9n2zXMg
+         PLBtOUiysDK0oYa3WTVo1g32dSMpP5wtMKc32HuFIwKWdT9vIjZdx34IBQdoLik/9Uzl
+         mpNOClqW0foCpz6sHVWFVXJlPhwtSaTRMfrhXRhxw73CWrjt3zrVRDxrhUTLcDxQDytq
+         /kmq2GRvsTbOtWAoFGH9AmZ6Bg98RKu6uBsjLGhNkpn0P3vs60lRLKfuDkehKL0UYSea
+         CN2b+MB3EmWnuxN8I0oru8ZenLVhf5oZeoG1CUhzQqcUXBVr8yFq3oKH7Bm9L1pqdH9x
+         nTMA==
+X-Gm-Message-State: AOAM531B2h9M2leLvNqhB40SPYbrvrqshq9R/5kkVpKAZhni1Q3PQS/U
+        Hrvu8utw3uz8VaCFFabeD958S7SfDas=
+X-Google-Smtp-Source: ABdhPJyWhRnLzY0DHAkT/e+X5XKouMYHpLzaYGdW5A54blCDoptzan9nYsBawMS6AQMxvkcojpD1JA==
+X-Received: by 2002:adf:e18f:0:b0:204:444:dd0d with SMTP id az15-20020adfe18f000000b002040444dd0dmr17926225wrb.678.1648397635237;
+        Sun, 27 Mar 2022 09:13:55 -0700 (PDT)
 Received: from localhost.localdomain (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net. [86.13.91.161])
-        by smtp.gmail.com with ESMTPSA id k2-20020a1ca102000000b0038c78fdd59asm13764924wme.39.2022.03.27.09.13.53
+        by smtp.gmail.com with ESMTPSA id k2-20020a1ca102000000b0038c78fdd59asm13764924wme.39.2022.03.27.09.13.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 27 Mar 2022 09:13:54 -0700 (PDT)
 From:   Daniel Scally <djrscally@gmail.com>
@@ -53,9 +53,9 @@ To:     linux-acpi@vger.kernel.org, linux-clk@vger.kernel.org,
 Cc:     rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
         sboyd@kernel.org, hdegoede@redhat.com, markgross@kernel.org,
         robert.moore@intel.com
-Subject: [PATCH v2 1/5] ACPI: scan: Add acpi_dev_get_next_consumer_dev()
-Date:   Sun, 27 Mar 2022 17:13:40 +0100
-Message-Id: <20220327161344.50477-2-djrscally@gmail.com>
+Subject: [PATCH v2 2/5] ACPI: bus: Add iterator for dependent devices
+Date:   Sun, 27 Mar 2022 17:13:41 +0100
+Message-Id: <20220327161344.50477-3-djrscally@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220327161344.50477-1-djrscally@gmail.com>
 References: <20220327161344.50477-1-djrscally@gmail.com>
@@ -71,118 +71,37 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In commit b83e2b306736 ("ACPI: scan: Add function to fetch dependent
-of ACPI device") we added a means of fetching the first device to
-declare itself dependent on another ACPI device in the _DEP method.
-One assumption in that patch was that there would only be a single
-consuming device, but this has not held.
-
-Replace that function with a new function that fetches the next consumer
-of a supplier device. Where no "previous" consumer is passed in, it
-behaves identically to the original function.
+Add a helper macro to iterate over ACPI devices that are flagged
+as consumers of an initial supplier ACPI device.
 
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Daniel Scally <djrscally@gmail.com>
 ---
 Changes in v2:
 
-	- Removed acpi_dev_get_first_consumer_dev() entirely
+	- switched to use acpi_dev_get_next_consumer_dev() in the loop init
 
- drivers/acpi/scan.c                         | 37 +++++++++++++++------
- drivers/platform/x86/intel/int3472/common.c |  2 +-
- include/acpi/acpi_bus.h                     |  4 ++-
- 3 files changed, 30 insertions(+), 13 deletions(-)
+ include/acpi/acpi_bus.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 010ef0b28374..8797e4a33674 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -2215,9 +2215,21 @@ static void acpi_bus_attach(struct acpi_device *device, bool first_pass)
- 		device->handler->hotplug.notify_online(device);
- }
- 
--static int acpi_dev_get_first_consumer_dev_cb(struct acpi_dep_data *dep, void *data)
-+static int acpi_dev_get_next_consumer_dev_cb(struct acpi_dep_data *dep, void *data)
- {
--	struct acpi_device *adev;
-+	struct acpi_device *adev = *(struct acpi_device **)data;
-+
-+	/*
-+	 * If we're passed a 'previous' consumer device then we need to skip
-+	 * any consumers until we meet the previous one, and then NULL @data
-+	 * so the next one can be returned.
-+	 */
-+	if (adev) {
-+		if (dep->consumer == adev->handle)
-+			*(struct acpi_device **)data = NULL;
-+
-+		return 0;
-+	}
- 
- 	adev = acpi_bus_get_acpi_device(dep->consumer);
- 	if (adev) {
-@@ -2348,25 +2360,28 @@ bool acpi_dev_ready_for_enumeration(const struct acpi_device *device)
- EXPORT_SYMBOL_GPL(acpi_dev_ready_for_enumeration);
- 
- /**
-- * acpi_dev_get_first_consumer_dev - Return ACPI device dependent on @supplier
-+ * acpi_dev_get_next_consumer_dev - Return the next adev dependent on @supplier
-  * @supplier: Pointer to the dependee device
-+ * @start: Pointer to the current dependent device
-  *
-- * Returns the first &struct acpi_device which declares itself dependent on
-+ * Returns the next &struct acpi_device which declares itself dependent on
-  * @supplier via the _DEP buffer, parsed from the acpi_dep_list.
-  *
-- * The caller is responsible for putting the reference to adev when it is no
-- * longer needed.
-+ * If the returned adev is not passed as @start to this function, the caller is
-+ * responsible for putting the reference to adev when it is no longer needed.
-  */
--struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier)
-+struct acpi_device *acpi_dev_get_next_consumer_dev(struct acpi_device *supplier,
-+						   struct acpi_device *start)
- {
--	struct acpi_device *adev = NULL;
-+	struct acpi_device *adev = start;
- 
- 	acpi_walk_dep_device_list(supplier->handle,
--				  acpi_dev_get_first_consumer_dev_cb, &adev);
-+				  acpi_dev_get_next_consumer_dev_cb, &adev);
- 
--	return adev;
-+	acpi_dev_put(start);
-+	return adev == start ? NULL : adev;
- }
--EXPORT_SYMBOL_GPL(acpi_dev_get_first_consumer_dev);
-+EXPORT_SYMBOL_GPL(acpi_dev_get_next_consumer_dev);
- 
- /**
-  * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
-diff --git a/drivers/platform/x86/intel/int3472/common.c b/drivers/platform/x86/intel/int3472/common.c
-index 77cf058e4168..9db2bb0bbba4 100644
---- a/drivers/platform/x86/intel/int3472/common.c
-+++ b/drivers/platform/x86/intel/int3472/common.c
-@@ -62,7 +62,7 @@ int skl_int3472_get_sensor_adev_and_name(struct device *dev,
- 	struct acpi_device *sensor;
- 	int ret = 0;
- 
--	sensor = acpi_dev_get_first_consumer_dev(adev);
-+	sensor = acpi_dev_get_next_consumer_dev(adev, NULL);
- 	if (!sensor) {
- 		dev_err(dev, "INT3472 seems to have no dependents.\n");
- 		return -ENODEV;
 diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 2f93ecf05dac..cdc726d251b6 100644
+index cdc726d251b6..7fbe690a5b33 100644
 --- a/include/acpi/acpi_bus.h
 +++ b/include/acpi/acpi_bus.h
-@@ -696,7 +696,9 @@ bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const ch
+@@ -699,6 +699,17 @@ bool acpi_dev_ready_for_enumeration(const struct acpi_device *device);
+ struct acpi_device *acpi_dev_get_next_consumer_dev(struct acpi_device *supplier,
+ 						   struct acpi_device *start);
  
- void acpi_dev_clear_dependencies(struct acpi_device *supplier);
- bool acpi_dev_ready_for_enumeration(const struct acpi_device *device);
--struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier);
-+struct acpi_device *acpi_dev_get_next_consumer_dev(struct acpi_device *supplier,
-+						   struct acpi_device *start);
++/**
++ * for_each_acpi_consumer_dev - iterate over the consumer ACPI devices for a
++ *				given supplier
++ * @supplier: Pointer to the supplier's ACPI device
++ * @consumer: Pointer to &struct acpi_device to hold the consumer, initially NULL
++ */
++#define for_each_acpi_consumer_dev(supplier, consumer)			\
++	for (consumer = acpi_dev_get_next_consumer_dev(supplier, NULL);	\
++	     consumer;							\
++	     consumer = acpi_dev_get_next_consumer_dev(supplier, consumer))
 +
  struct acpi_device *
  acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv);
