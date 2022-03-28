@@ -2,126 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 659C54E9522
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 13:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9528A4E95CB
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 13:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239586AbiC1Lkg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Mar 2022 07:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39422 "EHLO
+        id S241976AbiC1L4H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Mar 2022 07:56:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242024AbiC1LeB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 07:34:01 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CBDDB31;
-        Mon, 28 Mar 2022 04:25:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 70751B81057;
-        Mon, 28 Mar 2022 11:25:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EBDC340EC;
-        Mon, 28 Mar 2022 11:25:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648466707;
-        bh=wlc9krJPz/uNcek6BqwFpw9AGZ/+lyiYea2593VrpEA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gsRUzTSyug0swrOktS/GbDlwJG2MQbPQIYpppV2rxnw5PMKDQnsAVLHnyTGwdI5Jn
-         bjmVUFxnz4/R4eMPuZ+pigkmAWpFtzXcE0QKneZz7ifyDSZlmpUYD0XWgdMgkT3/Rq
-         J8U/NC2liTqjaqOhH9fPHuu0OtB/rVkSjQZkHWJWR8hcurbZASEOtB52M0/ygnukPz
-         fZb5xCEeD165hgNgLTeqXFQidRRK4Ry4GBM+2EdCWQJ6UM0xJNXcUTdImBYXCn7gGb
-         4gOGHxY1uafj7IVWqzkIvmKMhVRhLZF02CLWgoFL2/K73uMMFHZeGOVNO8Iyjw3s8N
-         tKSNlCZiMk33Q==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Darren Hart <darren@os.amperecomputing.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        ying.huang@intel.com, rdunlap@infradead.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 6/8] ACPI/APEI: Limit printable size of BERT table data
-Date:   Mon, 28 Mar 2022 07:24:54 -0400
-Message-Id: <20220328112456.1557226-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220328112456.1557226-1-sashal@kernel.org>
-References: <20220328112456.1557226-1-sashal@kernel.org>
+        with ESMTP id S242046AbiC1Lz7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 07:55:59 -0400
+Received: from stuerz.xyz (stuerz.xyz [IPv6:2001:19f0:5:15da:5400:3ff:fecc:7379])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BBA3587B;
+        Mon, 28 Mar 2022 04:51:50 -0700 (PDT)
+Received: by stuerz.xyz (Postfix, from userid 114)
+        id DB5E3FA6D6; Mon, 28 Mar 2022 11:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+        t=1648468308; bh=3Wi+uKVZkL99swRaVau3EJ8BXQXDlu9JC1kflQpPOrg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=oUQch5AaF2NS4T0Fc7buc7qaKcaMKVG810YRJRo241bkl85duCMxS23fDm3GVMDw1
+         xL8wfFwfguE7DE2l/k4vVmJ5m+zw1ufGo67LfJIKzisY6pcfbZGcdaFk0B9ghPqfKS
+         I2W7g/SOQV7recVh3ztaUhpWJY1H9k0XjfmxF8AmYZ/fAW3ggk2byys8WeLu0ak9ah
+         IgL+/CAYYREpGVUMMRCs+UZIGRhzVjykJ9daQ0sVnnmKwNo2ovBFc7vsiaUCV/jRSa
+         ex0Ku60KERB06l+p4AJhX5EDQm9DgjMeTcaApMq8icB704ISrupDr4D5KxV4dtLzM0
+         6HAU3bjLTErUA==
+Received: from [IPV6:2a02:8109:a100:1a48::e7c] (unknown [IPv6:2a02:8109:a100:1a48::e7c])
+        by stuerz.xyz (Postfix) with ESMTPSA id 96ED2FA6AC;
+        Mon, 28 Mar 2022 11:51:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+        t=1648468306; bh=3Wi+uKVZkL99swRaVau3EJ8BXQXDlu9JC1kflQpPOrg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=zBafXC0qmHbBy2R0CwrqEVHxB0KbRcM6x7IR+QfcMB3oUVBkemOuTu17YEp7Cwbgd
+         Lw+gvLver4LCPJCOHCL2eAzpr1O+pT/EX986F+oA22O2GOoGJb/57oYXvhAOACQpb/
+         rN+svuiDvsbTolC94H1JtxdXdx0U3+g4ZYZxI9bHa94d/+r+oRSAJqz7+XAzj1cCh3
+         ict551S0UMWEtEMaDv06/XFQYnv7JqCdIWuWPwV30h6+Z5RIA9IJAECe2MRFrynB4K
+         mSzFCFSElIq/pRqE39gIg1HoMMEgNA6qMLNrZGciYbRFSH0ycDjGpa+qscnhjrtqTE
+         wSGn8LEPrkJpQ==
+Message-ID: <cc104272-d79a-41e1-f4de-cb78fb073991@stuerz.xyz>
+Date:   Mon, 28 Mar 2022 13:51:42 +0200
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH 00/22] Replace comments with C99 initializers
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-input@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-pci@vger.kernel.org
+References: <20220326165909.506926-1-benni@stuerz.xyz>
+ <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz> <87fsn2zaix.fsf@kernel.org>
+From:   =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>
+In-Reply-To: <87fsn2zaix.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
+        NICE_REPLY_A,PDS_OTHER_BAD_TLD,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Darren Hart <darren@os.amperecomputing.com>
+On 28.03.22 11:33, Kalle Valo wrote:
+> Benjamin Stürz <benni@stuerz.xyz> writes:
+> 
+>> This patch series replaces comments with C99's designated initializers
+>> in a few places. It also adds some enum initializers. This is my first
+>> time contributing to the Linux kernel, therefore I'm probably doing a
+>> lot of things the wrong way. I'm sorry for that.
+> 
+> Just a small tip: If you are new, start with something small and learn
+> from that. Don't do a controversial big patchset spanning multiple
+> subsystems, that's the hard way to learn things. First submit one patch
+> at a time to one subsystem and gain understanding of the process that
+> way.
+> 
 
-[ Upstream commit 3f8dec116210ca649163574ed5f8df1e3b837d07 ]
+I actually thought this would be such simple thing. Do you know of any
+good thing where to start? I already looked into drivers/staging/*/TODO
+and didn't found something for me personally.
 
-Platforms with large BERT table data can trigger soft lockup errors
-while attempting to print the entire BERT table data to the console at
-boot:
-
-  watchdog: BUG: soft lockup - CPU#160 stuck for 23s! [swapper/0:1]
-
-Observed on Ampere Altra systems with a single BERT record of ~250KB.
-
-The original bert driver appears to have assumed relatively small table
-data. Since it is impractical to reassemble large table data from
-interwoven console messages, and the table data is available in
-
-  /sys/firmware/acpi/tables/data/BERT
-
-limit the size for tables printed to the console to 1024 (for no reason
-other than it seemed like a good place to kick off the discussion, would
-appreciate feedback from existing users in terms of what size would
-maintain their current usage model).
-
-Alternatively, we could make printing a CONFIG option, use the
-bert_disable boot arg (or something similar), or use a debug log level.
-However, all those solutions require extra steps or change the existing
-behavior for small table data. Limiting the size preserves existing
-behavior on existing platforms with small table data, and eliminates the
-soft lockups for platforms with large table data, while still making it
-available.
-
-Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/apei/bert.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
-index a05b5c0cf181..e22f3d89b84b 100644
---- a/drivers/acpi/apei/bert.c
-+++ b/drivers/acpi/apei/bert.c
-@@ -31,6 +31,7 @@
- 
- #undef pr_fmt
- #define pr_fmt(fmt) "BERT: " fmt
-+#define ACPI_BERT_PRINT_MAX_LEN 1024
- 
- static int bert_disable;
- 
-@@ -59,8 +60,11 @@ static void __init bert_print_all(struct acpi_bert_region *region,
- 		}
- 
- 		pr_info_once("Error records from previous boot:\n");
--
--		cper_estatus_print(KERN_INFO HW_ERR, estatus);
-+		if (region_len < ACPI_BERT_PRINT_MAX_LEN)
-+			cper_estatus_print(KERN_INFO HW_ERR, estatus);
-+		else
-+			pr_info_once("Max print length exceeded, table data is available at:\n"
-+				     "/sys/firmware/acpi/tables/data/BERT");
- 
- 		/*
- 		 * Because the boot error source is "one-time polled" type,
--- 
-2.34.1
-
+Should I drop this patchset and start with something different? If yes,
+what would the proper way to drop it? Just announcing, that this is
+going nowhere in a separate patch?
