@@ -2,119 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AD194E9862
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 15:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 436FC4E9888
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 15:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239038AbiC1Nkc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Mar 2022 09:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56036 "EHLO
+        id S243392AbiC1NqA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Mar 2022 09:46:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237976AbiC1Nka (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 09:40:30 -0400
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C6B1E13F1C;
-        Mon, 28 Mar 2022 06:38:49 -0700 (PDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 22SDJU00005431;
-        Mon, 28 Mar 2022 08:19:30 -0500
-Received: (from segher@localhost)
-        by gate.crashing.org (8.14.1/8.14.1/Submit) id 22SDJSov005423;
-        Mon, 28 Mar 2022 08:19:28 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date:   Mon, 28 Mar 2022 08:19:28 -0500
-From:   Segher Boessenkool <segher@kernel.crashing.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Benjamin =?iso-8859-1?Q?St=FCrz?= <benni@stuerz.xyz>,
-        Andrew Lunn <andrew@lunn.ch>,
-        linux-atm-general@lists.sourceforge.net,
-        linux-ia64@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Harald Welte <laforge@gnumonks.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, wcn36xx@lists.infradead.org,
-        Pkshih <pkshih@realtek.com>,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-edac@vger.kernel.org,
-        dennis.dalessandro@cornelisnetworks.com,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>,
-        Chas Williams <3chas3@gmail.com>,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
-        Len Brown <lenb@kernel.org>,
-        mike.marciniszyn@cornelisnetworks.com,
-        Robert Richter <rric@kernel.org>,
-        Andrew Donnellan <ajd@linux.ibm.com>, kvalo@kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        loic.poulain@linaro.org, Borislav Petkov <bp@alien8.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        James Morse <james.morse@arm.com>,
-        Networking <netdev@vger.kernel.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH 01/22] orion5x: Replace comments with C99 initializers
-Message-ID: <20220328131928.GH614@gate.crashing.org>
-References: <20220326165909.506926-1-benni@stuerz.xyz> <CAK8P3a1e57mNUQgronhwrsXsuQW9sZYxCktKij7NwsieBWiGmw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a1e57mNUQgronhwrsXsuQW9sZYxCktKij7NwsieBWiGmw@mail.gmail.com>
-User-Agent: Mutt/1.4.2.3i
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S243382AbiC1Npv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 09:45:51 -0400
+X-Greylist: delayed 397 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Mar 2022 06:44:06 PDT
+Received: from wsmtp001.hospedagemweb.com.br (wsmtp001.hospedagemweb.com.br [177.101.150.50])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 253B4646C
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Mar 2022 06:44:04 -0700 (PDT)
+Received: (qmail 6160 invoked by uid 509); 28 Mar 2022 13:37:23 -0000
+Received: from unknown (HELO localhost) (177.101.144.160)
+  by wsmtp001.hospedagemweb.com.br with SMTP; 28 Mar 2022 13:37:23 -0000
+To:     linux-acpi@vger.kernel.org
+Subject: RF: CHARITY DONATION FOR COVID-19 VICTIMS
+X-PHP-Originating-Script: 10054:leafmailer7star.php
+Date:   Mon, 28 Mar 2022 10:36:36 -0300
+From:   Francois Pinault <charity@olimacms.com.br>
+Reply-To: charity@francoischarityholdings.com
+Message-ID: <91995c7bda695f358272be378f0d3c8e@olimacms.com.br>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: Yes, score=7.1 required=5.0 tests=ADVANCE_FEE_3_NEW_MONEY,
+        BAYES_99,BAYES_999,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_NONE,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,T_US_DOLLARS_3
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [177.101.150.50 listed in list.dnswl.org]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.0 T_US_DOLLARS_3 BODY: Mentions millions of $ ($NN,NNN,NNN.NN)
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  2.9 ADVANCE_FEE_3_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Mar 26, 2022 at 08:23:31PM +0100, Arnd Bergmann wrote:
-> On Sat, Mar 26, 2022 at 5:58 PM Benjamin Stürz <benni@stuerz.xyz> wrote:
-> >
-> > This replaces comments with C99's designated
-> > initializers because the kernel supports them now.
-> 
-> The change looks fine, but the comment looks misplaced, as enum initializers
-> are not c99 feature.
+Hello!
 
-Yes, it is from C89/C90.
+  A donation of $1,250,000.00 USD has been made to you by Mr
+ 
+Francois Pinault to help the victims of COVID-19 around you.
+ 
+Your email was randomly selected as one of the lucky people
 
-> Also, the named array and struct intializers have been
-> supported by gnu89 for a long time and widely used in the kernel, so it's
-> not a recent change even for the others.
+to help share the funds to Covid-19 victims around you.
 
-GCC supports this since 1998.  There was a syntax different from C99
-designated initializers (".ans = 42") before (namely, "ans: 42").
+ 
+Kindly reply to this email for further information.
 
-1998 is long enough ago for all intents and purposes now of course ;-)
+ 
+As I wait for your response, I wish you a wonderful day.
 
+ Yours Faithfully,
+ Mr. Francois Pinault
 
-Segher
