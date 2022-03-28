@@ -2,153 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7FE64E989E
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 15:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A3154E9983
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 16:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243411AbiC1Nsx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Mar 2022 09:48:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52374 "EHLO
+        id S243822AbiC1ObV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Mar 2022 10:31:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243432AbiC1Nsw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 09:48:52 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC9252E78
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Mar 2022 06:47:10 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id bi13-20020a05600c3d8d00b0038c2c33d8f3so13011914wmb.4
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Mar 2022 06:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=lqWUovhT3deFfz1zrmG2BdScTmfXFTXlEBWbC7kOkUc=;
-        b=Casp3ieHRH0PsmFMjKH7TFdpT/TNQBYWEewfJb+0xu+uR1ofg9WJFp8XZHfsoJ6hWp
-         C3nRcv1dmEeOPPKeVzOxrD+erWCy3JA6tU8mIHsAGm/8BjsYzwvx7P5mI7L1KmNHeogG
-         38uNEFuvu5fJtLpThq9lRBZu4UJTQpGAB9zPox6v7iYfXD/Z14PGXT9t5owO2tQYWh0P
-         3dUo+G/1/czVs79WbHUKkU/6h2niPOopvKPMU5QpP07x/qfD1LrC5Cesac25l5SMzvon
-         esMFddga3HKSH7nNwn2IpXtOjAEGaytpRSosc2jrznnt1TPvUIg3fMjEdTz9d4Vfr7yu
-         igag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=lqWUovhT3deFfz1zrmG2BdScTmfXFTXlEBWbC7kOkUc=;
-        b=XyUmVHrHJOVpzH7HGKg8bordUv5tRO/S3nb1MuSCKkZlBdX1J7EA96C+HMCXwpHr9e
-         KR6rCTXeFWpiG1UXOxm587WSyOFV82myrg9ly+P9I0990Gkf4vBVEOXJjsHORvjfn8qm
-         f1WaHuT1Phb/RME6VuJmk/ogLfIqgyWhD2U8pRmm13Mh54bgEhEWjFYASC3K/1Llcb0y
-         PVE0g9qgbD8n+1Slhw8Vz2CeWfxKrV8ZcV6xKxCWQXMKJ3oIYuyZglCiAJXogvPeQ80w
-         QoV9ZZk8Az0HQVwupAKhIRpe9jAJv8yUe6SoVgBYPXi2+bqzdOi5OO9fSjwX3XGsKStC
-         y70g==
-X-Gm-Message-State: AOAM531rZ/nwadj8obSJsa4hko3enYODNrzIiaGVVi/U4SFhOEz7Pdod
-        3gAk69kLcPG/UqueS3Fcm0Kxww==
-X-Google-Smtp-Source: ABdhPJwB0pYnLloiCs6wa/2INWNx44L+qT5u6Nb9H+6gXgQ9TsmBu3vjwmvbBF2kaoxeBO0KJ0MWbQ==
-X-Received: by 2002:a05:600c:4401:b0:38c:8df8:9797 with SMTP id u1-20020a05600c440100b0038c8df89797mr35783652wmn.13.1648475228582;
-        Mon, 28 Mar 2022 06:47:08 -0700 (PDT)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id t4-20020a05600001c400b00203fb5dcf29sm12145898wrx.40.2022.03.28.06.47.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Mar 2022 06:47:08 -0700 (PDT)
-Date:   Mon, 28 Mar 2022 14:47:05 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Benjamin =?utf-8?B?U3TDvHJ6?= <benni@stuerz.xyz>
-Cc:     sebastian.hesselbarth@gmail.com, gregory.clement@bootlin.com,
-        linux@armlinux.org.uk, linux@simtec.co.uk, krzk@kernel.org,
-        alim.akhtar@samsung.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
-        robert.moore@intel.com, rafael.j.wysocki@intel.com,
-        lenb@kernel.org, 3chas3@gmail.com, laforge@gnumonks.org,
-        arnd@arndb.de, gregkh@linuxfoundation.org, mchehab@kernel.org,
-        tony.luck@intel.com, james.morse@arm.com, rric@kernel.org,
-        linus.walleij@linaro.org, brgl@bgdev.pl,
-        mike.marciniszyn@cornelisnetworks.com,
-        dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca,
-        pali@kernel.org, dmitry.torokhov@gmail.com, isdn@linux-pingi.de,
-        benh@kernel.crashing.org, fbarrat@linux.ibm.com, ajd@linux.ibm.com,
-        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        nico@fluxnic.net, loic.poulain@linaro.org, kvalo@kernel.org,
-        pkshih@realtek.com, bhelgaas@google.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-input@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Subject: Re: [PATCH 00/22] Replace comments with C99 initializers
-Message-ID: <20220328134705.lnxwwznhw622r2pr@maple.lan>
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz>
+        with ESMTP id S243820AbiC1ObU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 10:31:20 -0400
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284C83D1F2;
+        Mon, 28 Mar 2022 07:29:38 -0700 (PDT)
+Received: (Authenticated sender: clement.leger@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 3FCB9C000B;
+        Mon, 28 Mar 2022 14:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1648477777;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=p3NiSvA7v2bm7VGGIXeyl2Gyk0azu36w+C8pKD/U2OE=;
+        b=T5nzcd6xh9Mdsyz9hOoK2u4VdMYUBeiCeXm0+J75YdZV1k0PkUOgXkT8giUfobn5vCLEAS
+        OyqmlsHRZMFlHtkefQuOX9iGkoHKupBCR2yfwUcPh6AOs2BGRMpb8jPNt2PFkjsYp1kjC7
+        SOIsq4QkJcWyh1FNHbi5qiY2b4XJj5WhaNo6ExgbxxPZB97mGyyU5+77dXWWoYfJ0YrxSw
+        JyhqPLRr0rbwv+pznjpVHbLqCSVZCkJshijEutC/0ksr0aCkXlOan7YUqmbcrE2fr84egg
+        gkfbHGHdL1DmLcqmDCYUchm9KeRtg+x+Vdw16bzFqw4kpYE5MYbuork8dQgXRg==
+Date:   Mon, 28 Mar 2022 16:28:12 +0200
+From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 3/9] device property: add index argument to
+ property_read_string_array() callback
+Message-ID: <20220328162812.16deac92@fixe.home>
+In-Reply-To: <Yj3SFYdUQ4r7GXqs@smile.fi.intel.com>
+References: <20220325113148.588163-1-clement.leger@bootlin.com>
+        <20220325113148.588163-4-clement.leger@bootlin.com>
+        <Yj3SFYdUQ4r7GXqs@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Mar 27, 2022 at 02:46:00PM +0200, Benjamin Stürz wrote:
-> This patch series replaces comments with C99's designated initializers
-> in a few places. It also adds some enum initializers. This is my first
-> time contributing to the Linux kernel, therefore I'm probably doing a
-> lot of things the wrong way. I'm sorry for that.
+Le Fri, 25 Mar 2022 16:30:45 +0200,
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> a =C3=A9crit :
 
-Welcome!
+> >  	pointer =3D property_entry_find(props, propname, length);
+> >  	if (IS_ERR(pointer))
+> >  		return PTR_ERR(pointer); =20
+>=20
+> > +	if (index >=3D array_len)
+> > +		return -ENODATA; =20
+>=20
+> I was about to ask if we can check this before the
+> property_entry_find() call, but realized that in such case it will
+> shadow possible errors due to wrong or absent property.
 
+I think you are actually right, the check can be done after
+property_entry_count_elems_of_size() since it already checks for the
+property to be present. I'll move that check.
 
-> I've gotten a few emails so far stating that this patch series is
-> unnecessary. Yes, in fact this patch series is not necessary by itself,
-> but it could help me understand how the whole process works and maybe I
-> could help somewhere, where help is actually needed.
+>=20
+> ...
+>=20
+> > -		of_property_read_string_array(node, propname, val,
+> > nval) :
+> > +		of_property_read_string_array_index(node,
+> > propname, val, nval,
+> > +						    index) : =20
+>=20
+> Dunno about the style there, but I think it can be one line.
 
-Have you been told the series is unnecessary or too big?
+Seems like the complete file is strictly applying the 80 columns rules
+so I thought it was better to keep it like this. However, I think the
+ternary oeprator is not really readable with such split.
 
-Although all patches represent a variant of the same mechanical
-transformation but they are mostly unrelated to each other and, if
-accepted, they will be applied by many different people.
-
-Taken as a whole presenting this to maintainers as a 22 patch set is too
-big. I'd recommend starting with a smaller patch or patch series where
-all the patches get picked up by the same maintainer.
-
-
-> This patch itself is a no-op.
-
-PATCH 0/XX is for the covering letter. You should generate a template for
-it using the --cover-letter option of git format-patch. That way patch 0
-will contain the diffstat for the whole series (which is often useful
-to help understand what the series is for) and there is no need to
-make no-op changes.
-
-
-Daniel.
-
-> 
-> Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
-> ---
->  .gitignore | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/.gitignore b/.gitignore
-> index 7afd412dadd2..706f667261eb 100644
-> --- a/.gitignore
-> +++ b/.gitignore
-> @@ -20,7 +20,7 @@
->  *.dtb
->  *.dtbo
->  *.dtb.S
-> -*.dwo
-> +*.dwo
->  *.elf
->  *.gcno
->  *.gz
-> -- 
-> 2.35.1
+--=20
+Cl=C3=A9ment L=C3=A9ger,
+Embedded Linux and Kernel engineer at Bootlin
+https://bootlin.com
