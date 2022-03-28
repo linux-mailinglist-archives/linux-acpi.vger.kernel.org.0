@@ -2,45 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 922BF4E937E
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 13:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46EF64E9372
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 13:22:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235362AbiC1LY1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Mar 2022 07:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54712 "EHLO
+        id S240874AbiC1LYZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Mar 2022 07:24:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240955AbiC1LXA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 07:23:00 -0400
+        with ESMTP id S241130AbiC1LXS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 07:23:18 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6FC55BEA;
-        Mon, 28 Mar 2022 04:19:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB892580E8;
+        Mon, 28 Mar 2022 04:20:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 04DECB81055;
-        Mon, 28 Mar 2022 11:19:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37BEC340EC;
-        Mon, 28 Mar 2022 11:19:49 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DF4A7B80D13;
+        Mon, 28 Mar 2022 11:20:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F259C34100;
+        Mon, 28 Mar 2022 11:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648466390;
-        bh=dXFoBao1mnO+CxBybDVWep7qs/QLa3ksJJVYsnYonhc=;
+        s=k20201202; t=1648466409;
+        bh=mP7yVkWymwe1Bg1ZwxWju12O4lA9WkWvgZ0XNh+ZUsw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ERCjnZRna2znaXntCbtvYQmwUUThsr5N8xJeP8at2m4Qoc9bXB5Bxp5bTUmWX3SB6
-         UunUy9L7vDzH4mV8zpDwueB4KwadIB5Q35G7S5bZdg7jx+9JCYNAp8z/v1H7W00vzw
-         +JGkMl9yxD0MXURd+nkV+ZMdqWYqzrLNXucdFGe6hGm6Sw6XXeTHSO7ZAzkTSufpHj
-         izIy6l6F6zkBnMgCKCUFg2lCu5WZaxA7BJ3Q1ClOzBcskm6KH0uWL5W2bb1Gb2VZwq
-         jtPkSf65xgaFGxr/dqT4PRyjYqf0HRivGAtmXRU/BQStqLNtn3kXoGtvLKAyyJeVz0
-         WfyOZIlDKvJYg==
+        b=geT6WG3gBY5UDcppnRog/iORSimnnEXCd9iAIiQVDdwNSbvVGfYysmj6mBt58SHmp
+         iJ04t1TYMsjA5Jfg7Mv1lwAzUEaRNVK38GujWrzzqNCtvK2r2ZgtWnCqvnpBYyH/c0
+         ppt1i28FAb05n2Yu6CaKMVdm2LlDLElOiXz/a42rObhkwzmV+kfe9Oo47nozbOHMjF
+         gQTRlWe6PVyjfYhFAEYTuLjRTxwByDJVQh3Yl5ZhSkySDmmaPBdrPI1is08gvjQMjw
+         O/YJk3pUTZIAsTJefMHvAuN7Jdd4qSS7egHMQ3Tq2RTPzxQ7YZ3mRz2o97lTUpjVo1
+         JNEn1U6+5Tg5Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Darren Hart <darren@os.amperecomputing.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mario Limonciello <Mario.Limonciello@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Huang Rui <ray.huang@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        rdunlap@infradead.org, ying.huang@intel.com,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.17 36/43] ACPI/APEI: Limit printable size of BERT table data
-Date:   Mon, 28 Mar 2022 07:18:20 -0400
-Message-Id: <20220328111828.1554086-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.17 42/43] Revert "ACPI: Pass the same capabilities to the _OSC regardless of the query flag"
+Date:   Mon, 28 Mar 2022 07:18:26 -0400
+Message-Id: <20220328111828.1554086-42-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220328111828.1554086-1-sashal@kernel.org>
 References: <20220328111828.1554086-1-sashal@kernel.org>
@@ -58,70 +60,75 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Darren Hart <darren@os.amperecomputing.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 3f8dec116210ca649163574ed5f8df1e3b837d07 ]
+[ Upstream commit 2ca8e6285250c07a2e5a22ecbfd59b5a4ef73484 ]
 
-Platforms with large BERT table data can trigger soft lockup errors
-while attempting to print the entire BERT table data to the console at
-boot:
+Revert commit 159d8c274fd9 ("ACPI: Pass the same capabilities to the
+_OSC regardless of the query flag") which caused legitimate usage
+scenarios (when the platform firmware does not want the OS to control
+certain platform features controlled by the system bus scope _OSC) to
+break and was misguided by some misleading language in the _OSC
+definition in the ACPI specification (in particular, Section 6.2.11.1.3
+"Sequence of _OSC Calls" that contradicts other perts of the _OSC
+definition).
 
-  watchdog: BUG: soft lockup - CPU#160 stuck for 23s! [swapper/0:1]
-
-Observed on Ampere Altra systems with a single BERT record of ~250KB.
-
-The original bert driver appears to have assumed relatively small table
-data. Since it is impractical to reassemble large table data from
-interwoven console messages, and the table data is available in
-
-  /sys/firmware/acpi/tables/data/BERT
-
-limit the size for tables printed to the console to 1024 (for no reason
-other than it seemed like a good place to kick off the discussion, would
-appreciate feedback from existing users in terms of what size would
-maintain their current usage model).
-
-Alternatively, we could make printing a CONFIG option, use the
-bert_disable boot arg (or something similar), or use a debug log level.
-However, all those solutions require extra steps or change the existing
-behavior for small table data. Limiting the size preserves existing
-behavior on existing platforms with small table data, and eliminates the
-soft lockups for platforms with large table data, while still making it
-available.
-
-Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
+Link: https://lore.kernel.org/linux-acpi/CAJZ5v0iStA0JmO0H3z+VgQsVuQONVjKPpw0F5HKfiq=Gb6B5yw@mail.gmail.com
+Reported-by: Mario Limonciello <Mario.Limonciello@amd.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Huang Rui <ray.huang@amd.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/bert.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/acpi/bus.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
-index 19e50fcbf4d6..ad8ab3f12cf3 100644
---- a/drivers/acpi/apei/bert.c
-+++ b/drivers/acpi/apei/bert.c
-@@ -29,6 +29,7 @@
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 07f604832fd6..079b952ab59f 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -332,21 +332,32 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+ 		return;
  
- #undef pr_fmt
- #define pr_fmt(fmt) "BERT: " fmt
-+#define ACPI_BERT_PRINT_MAX_LEN 1024
+-	kfree(context.ret.pointer);
++	capbuf_ret = context.ret.pointer;
++	if (context.ret.length <= OSC_SUPPORT_DWORD) {
++		kfree(context.ret.pointer);
++		return;
++	}
  
- static int bert_disable;
+-	/* Now run _OSC again with query flag clear */
++	/*
++	 * Now run _OSC again with query flag clear and with the caps
++	 * supported by both the OS and the platform.
++	 */
+ 	capbuf[OSC_QUERY_DWORD] = 0;
++	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
++	kfree(context.ret.pointer);
  
-@@ -58,8 +59,11 @@ static void __init bert_print_all(struct acpi_bert_region *region,
- 		}
+ 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+ 		return;
  
- 		pr_info_once("Error records from previous boot:\n");
--
--		cper_estatus_print(KERN_INFO HW_ERR, estatus);
-+		if (region_len < ACPI_BERT_PRINT_MAX_LEN)
-+			cper_estatus_print(KERN_INFO HW_ERR, estatus);
-+		else
-+			pr_info_once("Max print length exceeded, table data is available at:\n"
-+				     "/sys/firmware/acpi/tables/data/BERT");
+ 	capbuf_ret = context.ret.pointer;
+-	osc_sb_apei_support_acked =
+-		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
+-	osc_pc_lpi_support_confirmed =
+-		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
+-	osc_sb_native_usb4_support_confirmed =
+-		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
++	if (context.ret.length > OSC_SUPPORT_DWORD) {
++		osc_sb_apei_support_acked =
++			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
++		osc_pc_lpi_support_confirmed =
++			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
++		osc_sb_native_usb4_support_confirmed =
++			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
++	}
  
- 		/*
- 		 * Because the boot error source is "one-time polled" type,
+ 	kfree(context.ret.pointer);
+ }
 -- 
 2.34.1
 
