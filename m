@@ -2,50 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E5274E9410
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 13:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 294A34E945C
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Mar 2022 13:26:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233453AbiC1L0O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Mar 2022 07:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43940 "EHLO
+        id S230321AbiC1L2X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Mar 2022 07:28:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240982AbiC1LYl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 07:24:41 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 839CB55BDD;
-        Mon, 28 Mar 2022 04:22:56 -0700 (PDT)
+        with ESMTP id S241174AbiC1LZY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Mar 2022 07:25:24 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA705101C;
+        Mon, 28 Mar 2022 04:23:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EEC30B81058;
-        Mon, 28 Mar 2022 11:22:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA45C340F3;
-        Mon, 28 Mar 2022 11:22:52 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0CE4DB81059;
+        Mon, 28 Mar 2022 11:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F305AC340EC;
+        Mon, 28 Mar 2022 11:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648466573;
-        bh=RDdhik/g8aZ3wGxV6J8LDZnusm4htCVrLUo3WnbvOjw=;
+        s=k20201202; t=1648466605;
+        bh=qULwCOpiwsPA535/FrkoXVUp+zrm5U6r6NmexPlPBko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gfFYd6PN5/aTQ2MC4t87LHDzO6M4Ickpc8/qd8Rom8mm/rddTiThrBr4yazstBrOy
-         MLnGKANYh+WRzB21dIMne3NdcDBu/zqdULp0bS1CJw6LdQHJ0wL7CUMyTvy/CiPwQL
-         XpeFYJ6tW+iQTGj4OpKgJFR85vtU1ZibrX26TssysC3kKl8DtXr+31rtbbarYO2AMN
-         sruj6lXIXBg7JMm0ZM8s1huYi4+B2plSV1/abnmDncKASngnMTHw3OE1FiE+aYBld2
-         cdnw1H6ee8FIQur8XbroMkT+X/AWwzz+wULUhViAkkWwfox4rJiEz9wT/KgtECu+mx
-         0/kuPqtHdINeA==
+        b=ImVL1KbskhEmeAzNcvVbHczPXr9MIT087tab7tgyiFYQH/N/ogcNcncLjFuYQ/Aco
+         Mn7x5CGtX5WfvwYu7TBzrsRsBrQhMbMBKXUuAhYbxLymbNEIykqMQrQ61i3QAHWypN
+         zexiW92gIwZPbnkMAFPtnPAMeSIL1LRR9Qm2wmq8MSELMRbz2c3ar56D5spSryXoNl
+         VTeJsumcqLuu77tfk67zJKNSCP7HzamJ1vLLNiw8J7/nlpsKQ9zWpGW/GwP0LYXqsg
+         H1RxpYNT7kiUnkyfzQ3blilKQpas/0pgQfqPB6cWWDGFWpZbzC0bBLqBLtxqASwA7O
+         dDaUiXMW69Ujw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Mario Limonciello <Mario.Limonciello@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Huang Rui <ray.huang@amd.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 29/29] Revert "ACPI: Pass the same capabilities to the _OSC regardless of the query flag"
-Date:   Mon, 28 Mar 2022 07:21:31 -0400
-Message-Id: <20220328112132.1555683-29-sashal@kernel.org>
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: [PATCH AUTOSEL 5.10 14/21] ACPICA: Avoid walking the ACPI Namespace if it is not there
+Date:   Mon, 28 Mar 2022 07:22:47 -0400
+Message-Id: <20220328112254.1556286-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220328112132.1555683-1-sashal@kernel.org>
-References: <20220328112132.1555683-1-sashal@kernel.org>
+In-Reply-To: <20220328112254.1556286-1-sashal@kernel.org>
+References: <20220328112254.1556286-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -62,73 +59,40 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 2ca8e6285250c07a2e5a22ecbfd59b5a4ef73484 ]
+[ Upstream commit 0c9992315e738e7d6e927ef36839a466b080dba6 ]
 
-Revert commit 159d8c274fd9 ("ACPI: Pass the same capabilities to the
-_OSC regardless of the query flag") which caused legitimate usage
-scenarios (when the platform firmware does not want the OS to control
-certain platform features controlled by the system bus scope _OSC) to
-break and was misguided by some misleading language in the _OSC
-definition in the ACPI specification (in particular, Section 6.2.11.1.3
-"Sequence of _OSC Calls" that contradicts other perts of the _OSC
-definition).
+ACPICA commit b1c3656ef4950098e530be68d4b589584f06cddc
 
-Link: https://lore.kernel.org/linux-acpi/CAJZ5v0iStA0JmO0H3z+VgQsVuQONVjKPpw0F5HKfiq=Gb6B5yw@mail.gmail.com
-Reported-by: Mario Limonciello <Mario.Limonciello@amd.com>
+Prevent acpi_ns_walk_namespace() from crashing when called with
+start_node equal to ACPI_ROOT_OBJECT if the Namespace has not been
+instantiated yet and acpi_gbl_root_node is NULL.
+
+For instance, this can happen if the kernel is run with "acpi=off"
+in the command line.
+
+Link: https://github.com/acpica/acpica/commit/b1c3656ef4950098e530be68d4b589584f06cddc
+Link: https://lore.kernel.org/linux-acpi/CAJZ5v0hJWW_vZ3wwajE7xT38aWjY7cZyvqMJpXHzUL98-SiCVQ@mail.gmail.com/
+Reported-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Huang Rui <ray.huang@amd.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/bus.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/acpi/acpica/nswalk.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index dd535b4b9a16..3500744e6862 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -332,21 +332,32 @@ static void acpi_bus_osc_negotiate_platform_control(void)
- 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
- 		return;
+diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
+index b7f3e8603ad8..901fa5ca284d 100644
+--- a/drivers/acpi/acpica/nswalk.c
++++ b/drivers/acpi/acpica/nswalk.c
+@@ -169,6 +169,9 @@ acpi_ns_walk_namespace(acpi_object_type type,
  
--	kfree(context.ret.pointer);
-+	capbuf_ret = context.ret.pointer;
-+	if (context.ret.length <= OSC_SUPPORT_DWORD) {
-+		kfree(context.ret.pointer);
-+		return;
-+	}
+ 	if (start_node == ACPI_ROOT_OBJECT) {
+ 		start_node = acpi_gbl_root_node;
++		if (!start_node) {
++			return_ACPI_STATUS(AE_NO_NAMESPACE);
++		}
+ 	}
  
--	/* Now run _OSC again with query flag clear */
-+	/*
-+	 * Now run _OSC again with query flag clear and with the caps
-+	 * supported by both the OS and the platform.
-+	 */
- 	capbuf[OSC_QUERY_DWORD] = 0;
-+	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
-+	kfree(context.ret.pointer);
- 
- 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
- 		return;
- 
- 	capbuf_ret = context.ret.pointer;
--	osc_sb_apei_support_acked =
--		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
--	osc_pc_lpi_support_confirmed =
--		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
--	osc_sb_native_usb4_support_confirmed =
--		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
-+	if (context.ret.length > OSC_SUPPORT_DWORD) {
-+		osc_sb_apei_support_acked =
-+			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
-+		osc_pc_lpi_support_confirmed =
-+			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
-+		osc_sb_native_usb4_support_confirmed =
-+			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
-+	}
- 
- 	kfree(context.ret.pointer);
- }
+ 	/* Null child means "get first node" */
 -- 
 2.34.1
 
