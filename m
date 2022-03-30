@@ -2,113 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7372A4ECBEC
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Mar 2022 20:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA3A24ECCD8
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Mar 2022 21:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350573AbiC3S02 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Mar 2022 14:26:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59866 "EHLO
+        id S1343846AbiC3TDi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Mar 2022 15:03:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350496AbiC3S0K (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Mar 2022 14:26:10 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D2F48E51
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Mar 2022 11:23:39 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id f10so10900791plr.6
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Mar 2022 11:23:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=6PnxJaVdYHTfEoSreao3ANO+XeqxY/p/4dxKSObIH1I=;
-        b=U1oUia1Thamt6Z7oWm6PGNKOk9RXK6Jv76DGrI1cLcYRcY5/d1Tt5qepQRdZm6lsyq
-         RBa/xpJM28ShOu5ibphzafHjPKptRC4OMeOVco0xYKihrCNFhnaGQOBDSvUdgHWgE3gf
-         cWTbx+dPO2nv/wujOZrrbxfJpePUzp7QZ1RCloUPxJhGXTvBKUziPieC1LSkK8oSaB+t
-         E85QJNBGnQK8HE8wei7Zq5jQSpeI5JY8kzofCGcJSUHLIHQXWsBy6ta+brl9WPLZzyWA
-         2jPBZlOFyxLxFI8awBJCcZtcLmSyu35IRMr8cJ72zb2pokIUUqe6EUB9pKUwVKwbq4my
-         ou5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=6PnxJaVdYHTfEoSreao3ANO+XeqxY/p/4dxKSObIH1I=;
-        b=xmV4y2A7ooYk0vCxyeCXzUcQJfUTkQJn2n9SsU0sCnwcdwtT2612dBTIROMYy0wOpc
-         jLnJGgthyi80nRaTuhhnf8ZNTE/YefmNxgb5WTc9dtGzwqALgb4uI7PZgTKjLupqDgEd
-         2ZZ+NJfbKjbzYuY/ffXJpavunb3KKjmhLtNDDzBe1eGYaDznPKuv6/8U3jmCBuOyqERv
-         B0QzBShPc6PSIFQ4ZhrpAwAgOc19rglIcfEh1A0eC/Lq4WhpyZ4ZPMoU95hCAVzC5DkU
-         ni0AKgBcJFvv9OZZVQbph/p1w+l/eAif/mFn6Q0rWd6q/uu7KBrGxB3iIkervpICHG5j
-         rz6w==
-X-Gm-Message-State: AOAM531FAfbr5ipiKhmtQZ8580c63shzdvqTekmpS1qvcP60swSBIN0J
-        ipZ8MJ6TXzVKlMV3fkL3vgasJSCSrYu/IIF2IA==
-X-Google-Smtp-Source: ABdhPJzkTl+tJbylc9dRvis6ZhULbTl7j4ynIkLgm4b/Lu4YSrf6PCWjehKBvofPJCmWKHUKJGD0xbE01MjL0VC50Jo=
-X-Received: by 2002:a17:90b:3143:b0:1c7:5cee:3948 with SMTP id
- ip3-20020a17090b314300b001c75cee3948mr852445pjb.140.1648664618224; Wed, 30
- Mar 2022 11:23:38 -0700 (PDT)
+        with ESMTP id S1346534AbiC3TDc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Mar 2022 15:03:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F36B3E0E4;
+        Wed, 30 Mar 2022 12:01:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7A8F613F5;
+        Wed, 30 Mar 2022 19:01:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB63C340EE;
+        Wed, 30 Mar 2022 19:01:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648666906;
+        bh=O0fJh/tHTFLogWD/VMIkY1x8ShZZhrgVVXKld6y2H2Y=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=g8qSsfDnmeUTO+ipn7BJ3nEz3q7aX7jp339ntNuF/O9qIEuVYgC/DqH2K3mN4nMWX
+         NcYR6AYyr7bM1CDRL5B9WRSx12xtrI6YAhQutqZWXOih/vH3wOm3HYfSfSJyBDe6L5
+         Le/tuMeD6AMJcEpfe0spbHrhS+wm+pFzpg/BK6MhAj6sCXRhBrZHOOwtIzGXkYAf7L
+         uMmL88IcM3DNuYGEwzyVHp1KiQLM3j3aTwMtUZiXUuErFGpdY8Ucr3hTEj1e83N/KT
+         xSrqTABg8TkM0Ma59jlN3Z4LojTbTvJ9435FmEVFEliJmwRegz4YC1Gg/z6ycCq2uP
+         lZHX3TRRRHlpg==
+Date:   Wed, 30 Mar 2022 14:01:42 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Vishal Verma <vishal.l.verma@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v3 3/3] acpi/pci_root: negotiate CXL _OSC
+Message-ID: <20220330190142.GA1698903@bhelgaas>
 MIME-Version: 1.0
-Reply-To: isabellasayouba0@gmail.com
-Sender: 040stherchurch@gmail.com
-Received: by 2002:a05:6a20:691d:b0:76:6cf5:d552 with HTTP; Wed, 30 Mar 2022
- 11:23:37 -0700 (PDT)
-From:   Mrs Isabella Sayouba <isabellasayouba0@gmail.com>
-Date:   Wed, 30 Mar 2022 18:23:37 +0000
-X-Google-Sender-Auth: _Xe1kByDkvq-Dn04BagO7gok_qM
-Message-ID: <CAAzQq761QVaWKiKernxpKjqNCK+6V9mRKHBnOcqF8rXJO9Y+aA@mail.gmail.com>
-Subject: =?UTF-8?B?44GC44GE44GV44Gk44CC?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_99,BAYES_999,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220330181434.1515791-4-vishal.l.verma@intel.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-44GC44GE44GV44Gk44CCDQoNCua2meOCkua1geOBl+OBquOBjOOCieOBk+OBruODoeODvOODq+OC
-kuabuOOBhOOBpuOBhOOBvuOBmeOAguengeOBruebruOBq+OBr+Wkp+OBjeOBquaCsuOBl+OBv+OB
-jOOBguOCiuOBvuOBmeOAguengeOBruWQjeWJjeOBr+OCpOOCtuODmeODqeODu+OCteODqOOCpuOD
-kOOBleOCk+OBp+OBmeOAguODgeODpeODi+OCuOOCouWHuui6q+OBp+OAgeODluODq+OCreODiuOD
-leOCoeOCveOBrueXhemZouOBi+OCiemAo+e1oeOCkuWPluOCiuOBvuOBmeOAguengeOBr+OBguOB
-quOBn+OBq+W/g+OCkumWi+OBhOOBpuaEn+WLleOBl+OBn+OBruOBp+OAgeOBguOBquOBn+OBq+ip
-seOBmeS7peWkluOBq+mBuOaKnuiCouOBr+OBguOCiuOBvuOBm+OCk+OAguengeOBr+OAgTIwMTHl
-ubTjgavkuqHjgY/jgarjgovliY3jgavjg5bjg6vjgq3jg4rjg5XjgqHjgr3jga7jg4Hjg6Xjg4vj
-grjjgqLlpKfkvb/jgag55bm06ZaT5YON44GE44Gm44GE44GfU2F5b3ViYQ0KQnJvd27msI/jgajn
-tZDlqZrjgZfjgb7jgZfjgZ/jgILlrZDkvpvjgarjgZfjgacxMeW5tOmWk+e1kOWpmuOBl+OBn+OA
-gg0KDQrlvbzjga/jgZ/jgaPjgZ815pel6ZaT57aa44GE44Gf55+t44GE55eF5rCX44Gu5b6M44Gn
-5q2744Gr44G+44GX44Gf44CC5b2844Gu5q275b6M44CB56eB44Gv5YaN5ama44GX44Gq44GE44GT
-44Go44Gr5rG644KB44G+44GX44Gf44CC5Lqh44GP44Gq44Gj44Gf5aSr44GM55Sf44GN44Gm44GE
-44Gf44Go44GN44CB5b2844Gv57eP6aGNODUw5LiH44OJ44Or44KS6aCQ44GR44G+44GX44Gf44CC
-DQrvvIg4MDDkuIc1MDAw44OJ44Or77yJ6KW/44Ki44OV44Oq44Kr44Gu44OW44Or44Kt44OK44OV
-44Kh44K944Gu6aaW6YO944Ov44Ks44OJ44Kl44Kw44O844Gu6YqA6KGM44Gn44CC54++5Zyo44CB
-44GT44Gu44GK6YeR44Gv44G+44Gg6YqA6KGM44Gr44GC44KK44G+44GZ44CC5b2844Gv44GT44Gu
-44GK6YeR44KS44OW44Or44Kt44OK44OV44Kh44K944Gu6Ymx5qWt44GL44KJ44Gu6YeR44Gu6Ly4
-5Ye644Gr5Yip55So44Gn44GN44KL44KI44GG44Gr44GX44G+44GX44Gf44CCDQoNCuacgOi/keOA
-geengeOBruWMu+iAheOBr+engeOBjOeZjOOBqOiEs+WNkuS4reOBruWVj+mhjOOBruOBn+OCgeOB
-qzfjg7bmnIjplpPjga/ntprjgYvjgarjgYTjgaDjgo3jgYbjgajnp4HjgavoqIDjgYTjgb7jgZfj
-gZ/jgILnp4HjgpLmnIDjgoLmgqnjgb7jgZvjgabjgYTjgovjga7jga/ohLPljZLkuK3jga7nl4Xm
-sJfjgafjgZnjgILnp4Hjga7nirbmhYvjgpLnn6XjgaPjgZ/jga7jgafjgIHnp4Hjga/jgZPjga7j
-gYrph5HjgpLjgYLjgarjgZ/jgavmuKHjgZfjgabjgIHmgbXjgb7jgozjgarjgYTkurrjgIXjga7k
-uJboqbHjgpLjgZnjgovjgZPjgajjgavjgZfjgb7jgZfjgZ/jgILjgYLjgarjgZ/jga/jgZPjga7j
-gYrph5HjgpLnp4HjgYzjgZPjgZPjgafmjIfnpLrjgZnjgovmlrnms5XjgafliKnnlKjjgZnjgovj
-gafjgZfjgofjgYbjgILnp4Hjga/jgYLjgarjgZ/jgavjgYLjgarjgZ/jga7lgIvkurrnmoTjgark
-vb/nlKjjga7jgZ/jgoHjgavnt4/jgYrph5Hjga4zMOODkeODvOOCu+ODs+ODiOOCkuWPluOBo+OB
-puassuOBl+OBhOOBp+OBmeOAguOBiumHkeOBrjcw77yF44Gv56eB44Gu5ZCN5YmN44Gn5a2k5YWQ
-6Zmi44KS5bu644Gm44CB6YCa44KK44Gu6LKn44GX44GE5Lq644CF44KS5Yqp44GR44KL44Gf44KB
-44Gr5L2/44GG44Gn44GX44KH44GG44CC56eB44Gv5a2k5YWQ44Go44GX44Gm6IKy44Gh44G+44GX
-44Gf44GM44CB56We44Gu5a6244KS57at5oyB44GZ44KL44Gf44KB44Gg44GR44Gr44CB5a625peP
-44Gr44Gv6Kqw44KC44GE44G+44Gb44KT44CC44GT44Gu55eF5rCX44GM56eB44KS44Go44Gm44KC
-6Ium44GX44KB44Gf44Gu44Gn44CB56We44GM56eB44Gu572q44KS6LWm44GX44CB5qW95ZyS44Gn
-56eB44Gu6a2C44KS5Y+X44GR5YWl44KM44KL44KI44GG44Gr44GT44KM44KS44GX44Gm44GE44KL
-44Gu44Gn44GZ44CCDQoNCui/lOS/oeOCkuWPl+OBkeWPluOCiuasoeesrOOAgeODluODq+OCreOD
-iuODleOCoeOCveOBrumKgOihjOOBrumAo+e1oeWFiOOCkuOBiuefpeOCieOBm+OBl+OBvuOBmeOA
-guOBvuOBn+OAgemKgOihjOOBruePvuWcqOOBruWPl+WPluS6uuOBp+OBguOCi+OBk+OBqOOCkuio
-vOaYjuOBmeOCi+aoqemZkOabuOOCkueZuuihjOOBmeOCi+OCiOOBhumKgOihjOmVt+OBq+aMh+ek
-uuOBl+OBvuOBmeOAguengeOBjOOBk+OBk+OBp+i/sOOBueOBn+OCiOOBhuOBq+OBguOBquOBn+OB
-jOOBneOCjOOBq+W/nOOBmOOBpuihjOWLleOBmeOCi+OBk+OBqOOCkuengeOBq+S/neiovOOBl+OB
-puOBj+OBoOOBleOBhOOAgg0KDQrjgqTjgrbjg5njg6njg7vjgrXjg6jjgqbjg5DlpKvkurrjgYvj
-gonjgIINCg==
+Don't just make up new prefixes for the subject line.  Previous ones
+look like this:
+
+  PCI/ACPI: Fix acpi_pci_osc_control_set() kernel-doc comment
+  ACPI: Use acpi_fetch_acpi_dev() instead of acpi_bus_get_device()
+  PCI/ACPI: Check for _OSC support in acpi_pci_osc_control_set()
+  PCI/ACPI: Move _OSC query checks to separate function
+  PCI/ACPI: Move supported and control calculations to separate functions
+  PCI/ACPI: Remove OSC_PCI_SUPPORT_MASKS and OSC_PCI_CONTROL_MASKS
+  ACPI: pci_root: Unify the message printing
+  PCI/ACPI: Clarify message about _OSC failure
+  PCI/ACPI: Remove unnecessary osc_lock
+  PCI/ACPI: Make acpi_pci_osc_control_set() static
+  PCI/ACPI: Replace open coded variant of resource_union()
+
+So I think "PCI/ACPI: " would be a good choice.  Also capitalize the
+next word as all the above do.
+
+On Wed, Mar 30, 2022 at 12:14:34PM -0600, Vishal Verma wrote:
+> Add full support for negotiating _OSC as defined in the CXL 2.0 spec, as
+
+Please include a section reference.
+
+> applicable to CXL-enabled platforms. Advertise support for the CXL
+> features we support - 'CXL 2.0 port/device register access', 'Protocol
+> Error Reporting', and 'CL Native Hot Plug'. Request control for 'CXL
+
+"CL" looks like a typo for "CXL"?
+
+> Memory Error Reporting'. The requests are dependent on CONFIG_* based
+> pre-requisites, and prior PCI enabling, similar to how the standard PCI
+
+s/pre-requisites/prerequisites/
+
+> _OSC bits are determined.
+> 
+> The CXL specification does not define any additional constraints on
+> the hotplug flow beyond PCIe native hotplug, so a kernel that supports
+> native PCIe hotplug, supports CXL hotplug. For error handling protocol
+> and link errors just use PCIe AER. There is nascent support for
+> amending AER events with CXL specific status [1], but there's
+> otherwise no additional OS responsibility for CXL errors beyond PCIe
+> AER. CXL Memory Errors behave the same as typical memory errors so
+> CONFIG_MEMORY_FAILURE is sufficient to indicate support to platform
+> firmware.
+> 
+> [1]: https://lore.kernel.org/linux-cxl/164740402242.3912056.8303625392871313860.stgit@dwillia2-desk3.amr.corp.intel.com/
+> 
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Robert Moore <robert.moore@intel.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+
+What was reported by the robot?  If it just complained about something
+in v1 or v2, I think there's no point in mentioning this here.  It's
+the same as ordinary review comments (like these I'm composing), and
+they don't need to be acknowledged.  I think "Reported-by" is great
+when giving credit for bug fixes, but that's not what's happening
+here.
+
+Bjorn
