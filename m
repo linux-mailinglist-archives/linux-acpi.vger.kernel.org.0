@@ -2,101 +2,284 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 996FC4EBC0A
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Mar 2022 09:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF944EBE2A
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Mar 2022 11:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242298AbiC3HrA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Mar 2022 03:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49480 "EHLO
+        id S241374AbiC3KBJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Mar 2022 06:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243975AbiC3Hqx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Mar 2022 03:46:53 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF3240E5C;
-        Wed, 30 Mar 2022 00:45:00 -0700 (PDT)
+        with ESMTP id S240583AbiC3KBI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Mar 2022 06:01:08 -0400
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F361B0A53;
+        Wed, 30 Mar 2022 02:59:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1648626301; x=1680162301;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gyM15ig4vldj9AXbC0+WK8+a+vBF8gBV0bQd4SURqlA=;
-  b=SSamHinFkhvfWicXJQ0ttLemrxKYOYdzdocaFBIoPJImLR0s0TxZv+dc
-   f3zRkaX6J7EyC+cEd+J29Z9+kyWC0/O57hwiF4Ndj4Y9ya2i4eeH1u8SB
-   /5j2p2cLREHM0ZKof6u4rSWwMWlJs3p+AfGUX5Hx14PgWyQwuE2nO/Cg2
-   UXzwl1eIId9Jl85ikmSXhw56L4txxSa9v3TEjEi9oFi52+pNwbkFWzwuT
-   dLiTL5rnbJ0gQywY7/cd5w6ZbYB5ZXbLb4qUTQsJ+EtYzg4hoVCafT+fn
-   VbffawD+ZBbiozmn39HRkyjSFtzZVWbcnAmWzu96vSSj1fLu92mrv52qD
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10301"; a="322656870"
+  t=1648634363; x=1680170363;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VfBiVolvCJHl5eMtmZtvm1ki1KZT8OJLshIN1GcLDMY=;
+  b=iy3GxxR1c4o8akhO1GsR9XQKD3rtxqFoCYhQxOy27zoTE6l/R3F0RcIF
+   R7xDzElwuUI0ZFZ0dwz46uxmnONaYFE85TAFXdFlQOavRpQjWlhjZzj3V
+   eQRih/Mil90uuBW85BjQabfazaKATgyQKxj+1T4zHY/0nDswhq+S8GzOI
+   8K3jq8aEStf6EdMxmZo+93o5DQqHLTTDIdJzWZIDQlhtJ8Ihxr1nATeE+
+   AR2fwM0tSgbTREDBR21WQGIAT7lw8Hr5y+8hKX+DDXXUFtG1sa9F0Qs0h
+   ZvGi/14Y0GArSC4hcfExCySQPHu+OsKPSxWxwDhZ1Z74h5IuyWxmGNqOR
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10301"; a="320203544"
 X-IronPort-AV: E=Sophos;i="5.90,222,1643702400"; 
-   d="scan'208";a="322656870"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2022 00:45:00 -0700
+   d="scan'208";a="320203544"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2022 02:59:21 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,222,1643702400"; 
-   d="scan'208";a="565381332"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2022 00:44:57 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 69B3C20365;
-        Wed, 30 Mar 2022 10:44:55 +0300 (EEST)
-Date:   Wed, 30 Mar 2022 10:44:55 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     kernel test robot <lkp@intel.com>, linux-acpi@vger.kernel.org,
-        kbuild-all@lists.01.org, devicetree@vger.kernel.org,
-        "Rafael J.Wysocki" <rafael@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v2 3/4] device property: Add iomap to fwnode operations
-Message-ID: <YkQKdyrBjHKfmptm@paasikivi.fi.intel.com>
-References: <20220323154737.169483-4-sakari.ailus@linux.intel.com>
- <202203240648.x2upaXar-lkp@intel.com>
- <Yjw5ED+2574cVib6@smile.fi.intel.com>
+   d="scan'208";a="521832879"
+Received: from lkp-server02.sh.intel.com (HELO 7a008980c4ea) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 30 Mar 2022 02:59:18 -0700
+Received: from kbuild by 7a008980c4ea with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nZV6k-0000G7-0g; Wed, 30 Mar 2022 09:59:18 +0000
+Date:   Wed, 30 Mar 2022 17:59:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ bd19672308663b45ebecd8010fa1c51515719dc4
+Message-ID: <624429f0.RenlGNGiIterGGxW%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yjw5ED+2574cVib6@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 24, 2022 at 11:25:36AM +0200, Andy Shevchenko wrote:
-> On Thu, Mar 24, 2022 at 06:37:19AM +0800, kernel test robot wrote:
-> > Hi Sakari,
-> > 
-> > I love your patch! Yet something to improve:
-> 
-> ...
-> 
-> > compiler: s390-linux-gcc (GCC) 11.2.0
-> > reproduce (this is a W=1 build):
-> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         # https://github.com/0day-ci/linux/commit/c9025bc8f89f50eaf9b9d628f1ac5d47b77c6bc8
-> >         git remote add linux-review https://github.com/0day-ci/linux
-> >         git fetch --no-tags linux-review Sakari-Ailus/Shovel-firmware-specific-code-to-appropriate-locations/20220324-000256
-> >         git checkout c9025bc8f89f50eaf9b9d628f1ac5d47b77c6bc8
-> >         # save the config file to linux build tree
-> >         mkdir build_dir
-> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=s390 SHELL=/bin/bash
-> > 
-> > If you fix the issue, kindly add following tag as appropriate
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > 
-> > All errors (new ones prefixed by >>):
-> 
-> Seems it needs some ifdeffery to be added.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: bd19672308663b45ebecd8010fa1c51515719dc4  Merge branch 'pm-docs' into linux-next
 
-Yeah. What surprises me though is there seem to be quite a few other
-sources of such warnings, too.
+elapsed time: 739m
+
+configs tested: 198
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                          randconfig-c001
+mips                 randconfig-c004-20220329
+m68k                             allyesconfig
+m68k                             allmodconfig
+s390                             allmodconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+s390                             allyesconfig
+sh                          landisk_defconfig
+sh                        edosk7760_defconfig
+powerpc                     rainier_defconfig
+um                             i386_defconfig
+xtensa                    smp_lx200_defconfig
+arm                        mini2440_defconfig
+arm                      integrator_defconfig
+sh                           se7751_defconfig
+sh                            migor_defconfig
+arm                        clps711x_defconfig
+arm                            xcep_defconfig
+arm                          badge4_defconfig
+m68k                            q40_defconfig
+nios2                         10m50_defconfig
+mips                      fuloong2e_defconfig
+sh                         microdev_defconfig
+arc                        nsim_700_defconfig
+arm                         nhk8815_defconfig
+powerpc                    sam440ep_defconfig
+mips                            ar7_defconfig
+arm                            hisi_defconfig
+ia64                            zx1_defconfig
+sh                         ecovec24_defconfig
+arm                             pxa_defconfig
+arc                                 defconfig
+i386                                defconfig
+mips                           xway_defconfig
+xtensa                       common_defconfig
+sh                            hp6xx_defconfig
+arc                          axs101_defconfig
+sparc                       sparc32_defconfig
+parisc                           alldefconfig
+h8300                       h8s-sim_defconfig
+sh                     magicpanelr2_defconfig
+parisc                generic-32bit_defconfig
+m68k                       m5275evb_defconfig
+mips                         cobalt_defconfig
+arm                        trizeps4_defconfig
+sh                          lboxre2_defconfig
+sh                         ap325rxa_defconfig
+arm                            lart_defconfig
+arm                          lpd270_defconfig
+powerpc                      ppc40x_defconfig
+m68k                       m5249evb_defconfig
+arm                            pleb_defconfig
+arm                         s3c6400_defconfig
+mips                        vocore2_defconfig
+sh                   sh7724_generic_defconfig
+mips                         bigsur_defconfig
+sh                        sh7757lcr_defconfig
+arm                            qcom_defconfig
+mips                         db1xxx_defconfig
+sh                          sdk7786_defconfig
+powerpc                         wii_defconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                  randconfig-c002-20220329
+arm                  randconfig-c002-20220327
+arm                  randconfig-c002-20220330
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64               randconfig-a001-20220328
+x86_64               randconfig-a003-20220328
+x86_64               randconfig-a004-20220328
+x86_64               randconfig-a002-20220328
+x86_64               randconfig-a005-20220328
+x86_64               randconfig-a006-20220328
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+i386                 randconfig-a001-20220328
+i386                 randconfig-a003-20220328
+i386                 randconfig-a006-20220328
+i386                 randconfig-a005-20220328
+i386                 randconfig-a004-20220328
+i386                 randconfig-a002-20220328
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+riscv                randconfig-r042-20220330
+s390                 randconfig-r044-20220330
+arc                  randconfig-r043-20220330
+arc                  randconfig-r043-20220329
+s390                 randconfig-r044-20220327
+arc                  randconfig-r043-20220328
+arc                  randconfig-r043-20220327
+riscv                randconfig-r042-20220329
+s390                 randconfig-r044-20220329
+riscv                randconfig-r042-20220327
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                                  kexec
+
+clang tested configs:
+mips                 randconfig-c004-20220329
+x86_64                        randconfig-c007
+mips                 randconfig-c004-20220327
+arm                  randconfig-c002-20220327
+arm                  randconfig-c002-20220329
+riscv                randconfig-c006-20220327
+powerpc              randconfig-c003-20220327
+powerpc              randconfig-c003-20220329
+riscv                randconfig-c006-20220329
+i386                          randconfig-c001
+s390                 randconfig-c005-20220327
+s390                 randconfig-c005-20220329
+mips                 randconfig-c004-20220330
+powerpc              randconfig-c003-20220330
+riscv                randconfig-c006-20220330
+arm                  randconfig-c002-20220330
+powerpc                 mpc8313_rdb_defconfig
+mips                           mtx1_defconfig
+mips                     cu1830-neo_defconfig
+powerpc                    socrates_defconfig
+mips                           rs90_defconfig
+powerpc                     mpc5200_defconfig
+arm                     am200epdkit_defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                   lite5200b_defconfig
+powerpc                     kilauea_defconfig
+riscv                            alldefconfig
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+x86_64               randconfig-a016-20220328
+x86_64               randconfig-a012-20220328
+x86_64               randconfig-a011-20220328
+x86_64               randconfig-a014-20220328
+x86_64               randconfig-a013-20220328
+x86_64               randconfig-a015-20220328
+i386                 randconfig-a012-20220328
+i386                 randconfig-a016-20220328
+i386                 randconfig-a015-20220328
+i386                 randconfig-a011-20220328
+i386                 randconfig-a013-20220328
+i386                 randconfig-a014-20220328
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+riscv                randconfig-r042-20220328
+hexagon              randconfig-r045-20220329
+hexagon              randconfig-r045-20220328
+hexagon              randconfig-r045-20220327
+hexagon              randconfig-r041-20220327
+hexagon              randconfig-r045-20220330
+hexagon              randconfig-r041-20220329
+hexagon              randconfig-r041-20220328
+hexagon              randconfig-r041-20220330
+s390                 randconfig-r044-20220328
 
 -- 
-Sakari Ailus
+0-DAY CI Kernel Test Service
+https://01.org/lkp
