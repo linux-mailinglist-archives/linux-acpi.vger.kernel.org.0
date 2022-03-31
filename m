@@ -2,87 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73EEF4ECE0A
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Mar 2022 22:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D76724ED725
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Mar 2022 11:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348693AbiC3Ucd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Mar 2022 16:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49394 "EHLO
+        id S233442AbiCaJnX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 31 Mar 2022 05:43:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343988AbiC3Ucc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Mar 2022 16:32:32 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0D727CFD;
-        Wed, 30 Mar 2022 13:30:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 19FA8B81E43;
-        Wed, 30 Mar 2022 20:30:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F192C340EE;
-        Wed, 30 Mar 2022 20:30:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648672244;
-        bh=MpuyXUhrwGWQwGjgaZyRKPlXjzMLU3CKzApXThgr71I=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=ZrWNSTrmtoyfYyOoKDsgRc9I/eZFdstGlLvHRaXtOjTwMXQAmPR5H1EV9MjGEIifW
-         Rhr0Q009uhNPOkmk1dIfc4I8AQAqxffEsSDXgC5e36rsgWb/oRfmhsbdBEDgxzuhYe
-         e+KBSwKJlcUj3NF6pd7mQlihWyynt2oDKUrj2JzYpc4mV+vNU3nHupZqcASXGgZnGh
-         CkJYx9EJtSeMUlaj/X1M8McVuchMcF0yEbxfBujBx0A3t2UueCusVOrdHQ+/MtLXMy
-         cBEo4A+wc1+v8GlYjV/11fXpq81QIi5+sJ7Oa3upLN/Z/YUQPFsVRe+k60F2Omx4vg
-         SeQ6mGJBZyN+g==
-Date:   Wed, 30 Mar 2022 15:30:42 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Verma, Vishal L" <vishal.l.verma@intel.com>
-Cc:     lkp <lkp@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "dave@stgolabs.net" <dave@stgolabs.net>
-Subject: Re: [PATCH v3 3/3] acpi/pci_root: negotiate CXL _OSC
-Message-ID: <20220330203042.GA1707046@bhelgaas>
+        with ESMTP id S233957AbiCaJnW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Mar 2022 05:43:22 -0400
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6191D207A;
+        Thu, 31 Mar 2022 02:41:33 -0700 (PDT)
+Received: (Authenticated sender: clement.leger@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 4B0E02000D;
+        Thu, 31 Mar 2022 09:41:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1648719692;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=VbsxCOa9JzqELpaQ9PziPailes9HwLBLI2gZIQcLonI=;
+        b=JRMitclP+ldhl0KYInG2ZqCFOIsMhLfD1uad+8wNS9RwXCiRH8wLk/xKp6TXafoFiCJxkk
+        H+A0pU5Gf65OGTQS3GDo8a8lDlhTm1EXpj/8CU6AfBstfbD69/HKIZ3Pbd4CKBA8BresO3
+        l9hYLR/ZDPGNRVLE0qn7NTthWAxu34+YOTudhVtC7U/AW6M1KfVgGNZaPWTzTihwhZtTeV
+        jkKCw4yo9G4kgpFH8OFBBJA9WespPxe15OMAbjubVUafBti2s7ND10NbfvXZbogyzlyxa4
+        C6RPmbiEBw0opSDNx504roXkNUCXLBdRsGFAEd7IPlUL5tNG5/rmVO54KMXaWw==
+Date:   Thu, 31 Mar 2022 11:40:06 +0200
+From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 8/9] i2c: mux: pinctrl: remove CONFIG_OF dependency
+ and use fwnode API
+Message-ID: <20220331114006.0c7bc47a@fixe.home>
+In-Reply-To: <6f519f94-9185-a29b-2eff-fd6c9a36cfaf@axentia.se>
+References: <20220325113148.588163-1-clement.leger@bootlin.com>
+        <20220325113148.588163-9-clement.leger@bootlin.com>
+        <6f519f94-9185-a29b-2eff-fd6c9a36cfaf@axentia.se>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4a6543cf79e66ecd5ec5c15da5bec74d3602cb07.camel@intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 30, 2022 at 08:16:29PM +0000, Verma, Vishal L wrote:
-> On Wed, 2022-03-30 at 14:01 -0500, Bjorn Helgaas wrote:
+Le Fri, 25 Mar 2022 17:48:19 +0100,
+Peter Rosin <peda@axentia.se> a =C3=A9crit :
 
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > 
-> > What was reported by the robot?  If it just complained about something
-> > in v1 or v2, I think there's no point in mentioning this here.  It's
-> > the same as ordinary review comments (like these I'm composing), and
-> > they don't need to be acknowledged.  I think "Reported-by" is great
-> > when giving credit for bug fixes, but that's not what's happening
-> > here.
-> 
-> Correct it was a compile warning, and actually it wasn't on-list - 0day
-> sent it privately, because it was on the RFC version. It makes sense to
-> treat it as a normal review comment - I only added the tag because the
-> 0day emails ask you to (I suppose they use the trailers for metrics on
-> actionable feedback generated by the bot). I'm happy to drop it if
-> that's preferred here.
+> > =20
+> > -	parent_np =3D of_parse_phandle(np, "i2c-parent", 0);
+> > -	if (!parent_np) {
+> > +	parent_fwnode =3D fwnode_find_reference(fwnode, "i2c-parent", 0);
+> > +	if (!parent_fwnode) {
+> >  		dev_err(dev, "Cannot parse i2c-parent\n");
+> >  		return ERR_PTR(-ENODEV);
+> >  	}
+> > -	parent =3D of_find_i2c_adapter_by_node(parent_np);
+> > -	of_node_put(parent_np);
+> > -	if (!parent)
+> > +	parent =3D fwnode_find_i2c_adapter_by_node(parent_fwnode);
+> > +	if (!parent) {
+> > +		dev_err(dev, "Cannot find i2c-parent\n"); =20
+>=20
+> Why do we need to log this as an error?
 
-Yeah, I know.  I *love* the 0-day bot and the fact that it tests
-things before they're even merged, but I wish it would only ask you to
-add the tag if it's something that has already been merged, where the
-likely outcome is a tiny bug-fix patch where it's obvious what
-"Reported-by" refers to.
+Hi Peter, sorry for the late answer, your mail ended up in my SPAM
+folder.
 
-Bjorn
+Regarding the error logging, you are right, this is not needed. I'll
+remove it.
+
+Thanks,
+
+Cl=C3=A9ment=20
+
+--=20
+Cl=C3=A9ment L=C3=A9ger,
+Embedded Linux and Kernel engineer at Bootlin
+https://bootlin.com
