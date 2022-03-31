@@ -2,20 +2,20 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61A214ED9FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Mar 2022 14:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB1C4ED9FA
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Mar 2022 14:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236447AbiCaM7A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 31 Mar 2022 08:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49168 "EHLO
+        id S236435AbiCaM67 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 31 Mar 2022 08:58:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236429AbiCaM67 (ORCPT
+        with ESMTP id S234630AbiCaM67 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Mar 2022 08:58:59 -0400
-Received: from hillosipuli.retiisi.eu (retiisi.eu [95.216.213.190])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABFCD213536;
-        Thu, 31 Mar 2022 05:57:09 -0700 (PDT)
+Received: from hillosipuli.retiisi.eu (hillosipuli.retiisi.eu [IPv6:2a01:4f9:c010:4572::81:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 571D62128FD;
+        Thu, 31 Mar 2022 05:57:08 -0700 (PDT)
 Received: from lanttu.localdomain (unknown [IPv6:fd35:1bc8:1a6:d3d5::c1:2])
-        by hillosipuli.retiisi.eu (Postfix) with ESMTP id 1FFFC634C93;
+        by hillosipuli.retiisi.eu (Postfix) with ESMTP id 2CC7A634C94;
         Thu, 31 Mar 2022 15:57:05 +0300 (EEST)
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     linux-acpi@vger.kernel.org
@@ -24,11 +24,10 @@ Cc:     andriy.shevchenko@linux.intel.com, devicetree@vger.kernel.org,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v3 1/4] device property: Convert device_{dma_supported,get_dma_attr} to fwnode
-Date:   Thu, 31 Mar 2022 15:54:47 +0300
-Message-Id: <20220331125450.218045-2-sakari.ailus@linux.intel.com>
+        Frank Rowand <frowand.list@gmail.com>
+Subject: [PATCH v3 2/4] ACPI: property: Move acpi_fwnode_device_get_match_data() up
+Date:   Thu, 31 Mar 2022 15:54:48 +0300
+Message-Id: <20220331125450.218045-3-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220331125450.218045-1-sakari.ailus@linux.intel.com>
 References: <20220331125450.218045-1-sakari.ailus@linux.intel.com>
@@ -43,149 +42,48 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Make the device_dma_supported and device_get_dma_attr functions to use the
-fwnode ops, and move the implementation to ACPI and OF frameworks.
+Move acpi_fwnode_device_get_match_data() up below
+acpi_fwnode_device_is_available() so the order matches that in struct
+fwnode_operations.
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Acked-by: Rob Herring <robh@kernel.org>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/acpi/property.c | 14 ++++++++++++++
- drivers/base/property.c | 25 ++++---------------------
- drivers/of/property.c   | 17 +++++++++++++++++
- include/linux/fwnode.h  |  3 +++
- 4 files changed, 38 insertions(+), 21 deletions(-)
+ drivers/acpi/property.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index d0986bda2964..1541b318ba46 100644
+index 1541b318ba46..75dc22c117a5 100644
 --- a/drivers/acpi/property.c
 +++ b/drivers/acpi/property.c
-@@ -1253,6 +1253,17 @@ static bool acpi_fwnode_device_is_available(const struct fwnode_handle *fwnode)
+@@ -1253,6 +1253,13 @@ static bool acpi_fwnode_device_is_available(const struct fwnode_handle *fwnode)
  	return acpi_device_is_present(to_acpi_device_node(fwnode));
  }
  
-+static bool acpi_fwnode_device_dma_supported(const struct fwnode_handle *fwnode)
++static const void *
++acpi_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
++				  const struct device *dev)
 +{
-+	return acpi_dma_supported(to_acpi_device_node(fwnode));
++	return acpi_device_get_match_data(dev);
 +}
 +
-+static enum dev_dma_attr
-+acpi_fwnode_device_get_dma_attr(const struct fwnode_handle *fwnode)
-+{
-+	return acpi_get_dma_attr(to_acpi_device_node(fwnode));
-+}
-+
- static bool acpi_fwnode_property_present(const struct fwnode_handle *fwnode,
- 					 const char *propname)
+ static bool acpi_fwnode_device_dma_supported(const struct fwnode_handle *fwnode)
  {
-@@ -1384,6 +1395,9 @@ acpi_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
+ 	return acpi_dma_supported(to_acpi_device_node(fwnode));
+@@ -1384,13 +1391,6 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ 	return 0;
+ }
+ 
+-static const void *
+-acpi_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
+-				  const struct device *dev)
+-{
+-	return acpi_device_get_match_data(dev);
+-}
+-
+ #define DECLARE_ACPI_FWNODE_OPS(ops) \
  	const struct fwnode_operations ops = {				\
  		.device_is_available = acpi_fwnode_device_is_available, \
- 		.device_get_match_data = acpi_fwnode_device_get_match_data, \
-+		.device_dma_supported =				\
-+			acpi_fwnode_device_dma_supported,		\
-+		.device_get_dma_attr = acpi_fwnode_device_get_dma_attr,	\
- 		.property_present = acpi_fwnode_property_present,	\
- 		.property_read_int_array =				\
- 			acpi_fwnode_property_read_int_array,		\
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index c0e94cce9c29..09686e2e903e 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -823,33 +823,16 @@ EXPORT_SYMBOL_GPL(device_get_child_node_count);
- 
- bool device_dma_supported(struct device *dev)
- {
--	const struct fwnode_handle *fwnode = dev_fwnode(dev);
--
--	/* For DT, this is always supported.
--	 * For ACPI, this depends on CCA, which
--	 * is determined by the acpi_dma_supported().
--	 */
--	if (is_of_node(fwnode))
--		return true;
--
--	return acpi_dma_supported(to_acpi_device_node(fwnode));
-+	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
- }
- EXPORT_SYMBOL_GPL(device_dma_supported);
- 
- enum dev_dma_attr device_get_dma_attr(struct device *dev)
- {
--	const struct fwnode_handle *fwnode = dev_fwnode(dev);
--	enum dev_dma_attr attr = DEV_DMA_NOT_SUPPORTED;
--
--	if (is_of_node(fwnode)) {
--		if (of_dma_is_coherent(to_of_node(fwnode)))
--			attr = DEV_DMA_COHERENT;
--		else
--			attr = DEV_DMA_NON_COHERENT;
--	} else
--		attr = acpi_get_dma_attr(to_acpi_device_node(fwnode));
-+	if (!fwnode_has_op(dev_fwnode(dev), device_get_dma_attr))
-+		return DEV_DMA_NOT_SUPPORTED;
- 
--	return attr;
-+	return fwnode_call_int_op(dev_fwnode(dev), device_get_dma_attr);
- }
- EXPORT_SYMBOL_GPL(device_get_dma_attr);
- 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 8e90071de6ed..676899566f7c 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -22,6 +22,7 @@
- #define pr_fmt(fmt)	"OF: " fmt
- 
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/of_device.h>
- #include <linux/of_graph.h>
- #include <linux/of_irq.h>
-@@ -872,6 +873,20 @@ static bool of_fwnode_device_is_available(const struct fwnode_handle *fwnode)
- 	return of_device_is_available(to_of_node(fwnode));
- }
- 
-+static bool of_fwnode_device_dma_supported(const struct fwnode_handle *fwnode)
-+{
-+	return true;
-+}
-+
-+static enum dev_dma_attr
-+of_fwnode_device_get_dma_attr(const struct fwnode_handle *fwnode)
-+{
-+	if (of_dma_is_coherent(to_of_node(fwnode)))
-+		return DEV_DMA_COHERENT;
-+	else
-+		return DEV_DMA_NON_COHERENT;
-+}
-+
- static bool of_fwnode_property_present(const struct fwnode_handle *fwnode,
- 				       const char *propname)
- {
-@@ -1472,6 +1487,8 @@ const struct fwnode_operations of_fwnode_ops = {
- 	.put = of_fwnode_put,
- 	.device_is_available = of_fwnode_device_is_available,
- 	.device_get_match_data = of_fwnode_device_get_match_data,
-+	.device_dma_supported = of_fwnode_device_dma_supported,
-+	.device_get_dma_attr = of_fwnode_device_get_dma_attr,
- 	.property_present = of_fwnode_property_present,
- 	.property_read_int_array = of_fwnode_property_read_int_array,
- 	.property_read_string_array = of_fwnode_property_read_string_array,
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 3a532ba66f6c..6f307f21fc65 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -113,6 +113,9 @@ struct fwnode_operations {
- 	bool (*device_is_available)(const struct fwnode_handle *fwnode);
- 	const void *(*device_get_match_data)(const struct fwnode_handle *fwnode,
- 					     const struct device *dev);
-+	bool (*device_dma_supported)(const struct fwnode_handle *fwnode);
-+	enum dev_dma_attr
-+	(*device_get_dma_attr)(const struct fwnode_handle *fwnode);
- 	bool (*property_present)(const struct fwnode_handle *fwnode,
- 				 const char *propname);
- 	int (*property_read_int_array)(const struct fwnode_handle *fwnode,
 -- 
 2.30.2
 
