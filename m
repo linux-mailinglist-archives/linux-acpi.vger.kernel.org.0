@@ -2,153 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B624ED9FE
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Mar 2022 14:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E9824EDAA8
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Mar 2022 15:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236438AbiCaM7A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 31 Mar 2022 08:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49166 "EHLO
+        id S236913AbiCaNiy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 31 Mar 2022 09:38:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236426AbiCaM67 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Mar 2022 08:58:59 -0400
-Received: from hillosipuli.retiisi.eu (hillosipuli.retiisi.eu [IPv6:2a01:4f9:c010:4572::81:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E99CA213517;
-        Thu, 31 Mar 2022 05:57:09 -0700 (PDT)
-Received: from lanttu.localdomain (unknown [IPv6:fd35:1bc8:1a6:d3d5::c1:2])
-        by hillosipuli.retiisi.eu (Postfix) with ESMTP id 4C828634C96;
-        Thu, 31 Mar 2022 15:57:05 +0300 (EEST)
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     andriy.shevchenko@linux.intel.com, devicetree@vger.kernel.org,
-        "Rafael J.Wysocki" <rafael@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v3 4/4] device property: Add irq_get to fwnode operation
-Date:   Thu, 31 Mar 2022 15:54:50 +0300
-Message-Id: <20220331125450.218045-5-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220331125450.218045-1-sakari.ailus@linux.intel.com>
-References: <20220331125450.218045-1-sakari.ailus@linux.intel.com>
+        with ESMTP id S232034AbiCaNix (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Mar 2022 09:38:53 -0400
+Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 695681E6E98
+        for <linux-acpi@vger.kernel.org>; Thu, 31 Mar 2022 06:37:04 -0700 (PDT)
+Received: by mail-vk1-xa29.google.com with SMTP id d129so13355390vkh.13
+        for <linux-acpi@vger.kernel.org>; Thu, 31 Mar 2022 06:37:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=ASNwqXc+Erq22q6HKuoW7c1SOpwzLs4uTDBGUqT2wrs=;
+        b=pKYGqTd/bG3HCWze1Z7lqmAjlY/KrK4S6hshNdE5vTrxueI0LrniBuTanXSiEdDRNm
+         8y3OlGOEvButA0FAyGfaYwl+CYEWH9l6h8NvsGqVIogYmWxl2+3dqBSLnHEqjkQoG/9u
+         D5N0ifmgGSK04vaE09Jni5HhUKnn9MYbbiAfHmIGHyoLx77H0+uhQUYvaqgnwZ6W3Gmb
+         Eq8k1/zV+3RAL1OtTyjLDyk86/KwP5LHeQLfxpSOIJTbn1+Nxa5hIxt4AjxZ4VifRd+t
+         ojC7Y0EUqKNQgiQ/bQxedaXWyqE5T0Gx6f3BJICp4H4HMxnvvm7GBPF13BVBRTMysvxJ
+         2upg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=ASNwqXc+Erq22q6HKuoW7c1SOpwzLs4uTDBGUqT2wrs=;
+        b=dcgmCw6+KpYfauXtJ7wkNfcaT6tlA3ZOn+Y9RyhjOXIM8MUrDhqHfqQ9mDFT+4750G
+         tnnTTFMVAr7mW3G7+FEenBcB9Jp2nNhrBC+f35gK7iP95A80vuvk0leFGo7Qoid+09uO
+         SOfaCinsWdhyf+ZalbUID62E8MeKDCS8ZgJtBxsLmf6mKVVGy7iAYpEkxcRjDUVzozqK
+         iLNkCzJd3IbY0oIDDux3d0c7sqvcmSERL8ygdHY7SocEkZiJkUpUM772wLGAwrNAJ6H4
+         35/xZJ1Y0LCk8Iji30a8hn7hapcGJl647IevRK2Z0fUk4Mi0sztZat87IuaJ2VX0BqJi
+         mLBg==
+X-Gm-Message-State: AOAM531Uj06SXRnIQ+LL5dnBsFPZ+DKcSdLOl66dqtYmJ5BIh2KoSCjl
+        WpPZeYBx4zAY8bU0gD9BRE0SollklFPxt6wdvfY0+/Azc7Zsr2n5
+X-Google-Smtp-Source: ABdhPJyJWOaFVSGw+uDmTd2/RJv6nMUpiJQLj9DTg/P2wHpapLV4/DJlQjF0lmBFcrQuGXEDW8HBh18Z6FqHtOYiFm8=
+X-Received: by 2002:a05:6122:887:b0:332:699e:7e67 with SMTP id
+ 7-20020a056122088700b00332699e7e67mr2043744vkf.35.1648733823545; Thu, 31 Mar
+ 2022 06:37:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Received: by 2002:ab0:3194:0:0:0:0:0 with HTTP; Thu, 31 Mar 2022 06:37:03
+ -0700 (PDT)
+Reply-To: susanneklatten64@gmail.com
+From:   Susanne Klatten <yauaminu67@gmail.com>
+Date:   Thu, 31 Mar 2022 14:37:03 +0100
+Message-ID: <CA+pcR4QuV49zg+8O58Yb=VatbjHFNbDdL9ub6JBDCC2tsVX1VA@mail.gmail.com>
+Subject: Darlehen
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,REPTO_419_FRAUD_GM_LOOSE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:a29 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [susanneklatten64[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [yauaminu67[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [yauaminu67[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  1.0 REPTO_419_FRAUD_GM_LOOSE Ends-in-digits Reply-To is similar to
+        *      known advance fee fraud collector mailbox
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add irq_get() fwnode operation to implement fwnode_irq_get() through
-fwnode operations, moving the code in fwnode_irq_get() to OF and ACPI
-frameworks.
+--=20
+Hallo
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/property.c | 14 ++++++++++++++
- drivers/base/property.c | 12 +-----------
- drivers/of/property.c   |  7 +++++++
- include/linux/fwnode.h  |  1 +
- 4 files changed, 23 insertions(+), 11 deletions(-)
+Ich bin Susanne Klatten und komme aus Deutschland, ich kann Ihre
+finanziellen Probleme ohne R=C3=BCckgriff auf Banken im Bereich Kreditgeld
+in den Griff bekommen. Wir bieten Privatkredite und Gesch=C3=A4ftskredite
+an, ich bin ein zugelassener und zertifizierter Kreditgeber mit
+jahrelanger Erfahrung in der Kreditvergabe und wir vergeben besicherte
+und unbesicherte Kreditbetr=C3=A4ge von 2.000,00 =E2=82=AC ($) bis maximal
+500.000.000,00 =E2=82=AC mit einem festen Zinssatz von 3 % j=C3=A4hrlich. B=
+rauchen
+Sie einen Kredit? Senden Sie uns eine E-Mail an:
+susanneklatten64@gmail.com
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 75dc22c117a5..1ad5f097c33a 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1391,6 +1391,19 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 	return 0;
- }
- 
-+static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
-+			       unsigned int index)
-+{
-+	struct resource res;
-+	int ret;
-+
-+	ret = acpi_irq_get(ACPI_HANDLE_FWNODE(fwnode), index, &res);
-+	if (ret)
-+		return ret;
-+
-+	return res.start;
-+}
-+
- #define DECLARE_ACPI_FWNODE_OPS(ops) \
- 	const struct fwnode_operations ops = {				\
- 		.device_is_available = acpi_fwnode_device_is_available, \
-@@ -1415,6 +1428,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 			acpi_graph_get_remote_endpoint,			\
- 		.graph_get_port_parent = acpi_fwnode_get_parent,	\
- 		.graph_parse_endpoint = acpi_fwnode_graph_parse_endpoint, \
-+		.irq_get = acpi_fwnode_irq_get,				\
- 	};								\
- 	EXPORT_SYMBOL_GPL(ops)
- 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index 83dd22e7cb81..3560c4419d11 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -901,17 +901,7 @@ EXPORT_SYMBOL(fwnode_iomap);
-  */
- int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
- {
--	struct resource res;
--	int ret;
--
--	if (is_of_node(fwnode))
--		return of_irq_get(to_of_node(fwnode), index);
--
--	ret = acpi_irq_get(ACPI_HANDLE_FWNODE(fwnode), index, &res);
--	if (ret)
--		return ret;
--
--	return res.start;
-+	return fwnode_call_int_op(fwnode, irq_get, index);
- }
- EXPORT_SYMBOL(fwnode_irq_get);
- 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index ac2aa5221069..9a50ad25906e 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1474,6 +1474,12 @@ static void __iomem *of_fwnode_iomap(struct fwnode_handle *fwnode, int index)
- #endif
- }
- 
-+static int of_fwnode_irq_get(const struct fwnode_handle *fwnode,
-+			     unsigned int index)
-+{
-+	return of_irq_get(to_of_node(fwnode), index);
-+}
-+
- static int of_fwnode_add_links(struct fwnode_handle *fwnode)
- {
- 	struct property *p;
-@@ -1512,6 +1518,7 @@ const struct fwnode_operations of_fwnode_ops = {
- 	.graph_get_port_parent = of_fwnode_graph_get_port_parent,
- 	.graph_parse_endpoint = of_fwnode_graph_parse_endpoint,
- 	.iomap = of_fwnode_iomap,
-+	.irq_get = of_fwnode_irq_get,
- 	.add_links = of_fwnode_add_links,
- };
- EXPORT_SYMBOL_GPL(of_fwnode_ops);
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index ebbc3bf03f95..6ab69871b06d 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -149,6 +149,7 @@ struct fwnode_operations {
- 	int (*graph_parse_endpoint)(const struct fwnode_handle *fwnode,
- 				    struct fwnode_endpoint *endpoint);
- 	void __iomem *(*iomap)(struct fwnode_handle *fwnode, int index);
-+	int (*irq_get)(const struct fwnode_handle *fwnode, unsigned int index);
- 	int (*add_links)(struct fwnode_handle *fwnode);
- };
- 
--- 
-2.30.2
+  Sie k=C3=B6nnen auch meinen Link anzeigen und mehr =C3=BCber mich erfahre=
+n.
 
+  https://en.wikipedia.org/wiki/Susanne_Klatten
+  https://www.forbes.com/profile/susanne-klatten
+
+  E-Mail: susanneklatten64@gmail.com
+  Unterschrift,
+  Vorstandsvorsitzender
+  Susanne Klatten.
