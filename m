@@ -2,138 +2,309 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7774EF906
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Apr 2022 19:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B4F4EF97B
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Apr 2022 20:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236155AbiDARjM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Apr 2022 13:39:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51498 "EHLO
+        id S1350936AbiDASFe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Apr 2022 14:05:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233152AbiDARjL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Apr 2022 13:39:11 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED82F20A3B6;
-        Fri,  1 Apr 2022 10:37:17 -0700 (PDT)
-Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
-        by mx0a-002e3701.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 231G9jLc018254;
-        Fri, 1 Apr 2022 17:29:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pps0720;
- bh=IWEKHRJ+fTq1DXKGcxx15f9MF6DQXhL75wZkQHTjY3E=;
- b=R/kzY6m+2ynGFjiCcHxmA9rRLU980gxYvsThUIVNS2Bu6krl1dBR1oZjzO8kea97fnzR
- ibbTe6q2iQ1drncqNb7EcR+niApcWMhFj9SS1zpaPotxbUr4TDraz5SeKaIqikrucG1h
- XRR+awR53mlBgDbNCenSQdB6wUwtbzagG3fQCm5NgGfp2uIMcZV16Y/CYLNMBH72WLSA
- oZq4v59AW2AnopdC8Bpo9mUStiVFkEIf1fs0TSFjZK2qhRuC52C5/9EUmG1YMXiXnADd
- 4VGP4LJjgGLw2KChTb9GXH0FVT7aWdoRCoEW6zNxmmpVHa5Pi1b4b3S2v1wY68StwZQR jA== 
-Received: from g4t3427.houston.hpe.com (g4t3427.houston.hpe.com [15.241.140.73])
-        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3f60uptts7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 01 Apr 2022 17:29:08 +0000
-Received: from g4t3433.houston.hpecorp.net (g4t3433.houston.hpecorp.net [16.208.49.245])
-        by g4t3427.houston.hpe.com (Postfix) with ESMTP id 8898357;
-        Fri,  1 Apr 2022 17:29:07 +0000 (UTC)
-Received: from ubuntu-20.04.3 (unknown [16.116.198.225])
-        by g4t3433.houston.hpecorp.net (Postfix) with ESMTP id 47D994B;
-        Fri,  1 Apr 2022 17:29:05 +0000 (UTC)
-From:   james.liu@hpe.com
-To:     rafael@kernel.org, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rwright@hpe.com, david.chang@hpe.co, clayc@hpe.com,
-        james.liu@hpe.com
-Subject: [PATCH]     ACPI: OSL: Fix the memory mapping of an ACPI GAS that addresses a data structure
-Date:   Fri,  1 Apr 2022 17:28:40 +0000
-Message-Id: <20220401172840.1252-1-james.liu@hpe.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+        with ESMTP id S1347061AbiDASFb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Apr 2022 14:05:31 -0400
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam08on2105.outbound.protection.outlook.com [40.107.102.105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD4EA190;
+        Fri,  1 Apr 2022 11:03:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PQNdwQmdhWhVF5LEZvUMrAo/31kOUAO4RXmjLuLxntBGhMwuT6q2ReYmkL9bPHsuN0RwIbuRrBIZvJZoilO031qe/17n2JiTYtsMnOLfljPzbkCHE4edVonRznEOx5Ebel1gnnQ7hlxH0ZButCuNqUt89R5v1hvuhyi7+ZR7DVWwsiJ1ovKficFrJDm2bQaUyby1nV5rts+zxxHrRitZhpuKiJgYA8yLHOzPv8qIFHQ9PAl9HBXN3odPxxjY4P4B4xYB4W3KTBvczrqYjjmROZmKj7uralv1Di4dvE5wBGxYJPq43Xn7BiJLO1tE1fkM131m/YSr2Q/RBJ116EOcVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eCuYbSVcNnph4oNpJqeLTPFMBZHrvvW34OFMBwmIoYU=;
+ b=kVyfYAZ8BVzAw5ej0QZtYCJctqUrHCK7xW4kCKjaDfRUmK1WpHyDFZtWEgFBwkiDiyfk9aZWIzQvNU9NEtKn7gX5RPHVBJ6T1c+MYMEnxiFczaUxTRuE1Koc9j06WcWb7qqCiVYh7hVr0iK64RgBrplZ4EEChZrV794YcOTDeavPbsVzrznr4cOGzraLEz+65/wClDB84y3PFhYaL1H0eL1sAVfB7/hTkm7k2PsyqCKcPfFfJ718XiHFfeRKsfLjZPnvmfTdtbxsHJY+wR2Ct+h+Q90aifXxIXIUFV9OIt3C0vJmNlUTDO7bJla9wD+vIaiVro+WY6JIW9Ns8/1g8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eCuYbSVcNnph4oNpJqeLTPFMBZHrvvW34OFMBwmIoYU=;
+ b=ZQI+D67oTOvSkYaNeczkZkztzuUuqwCsUlK3iOK5l2rfMsH772ucb+lJugV3vrpWwowxz/qH85LVXZ/Erpk/nqKX2mBfa6G/JVGDIKLU6DgOau79HR2H0KRoXhj+gOXRSM5sDW6+FwWatHyIlimze6WB3h0YVSXpv7IhPPVdJ2E=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from DM6PR01MB3915.prod.exchangelabs.com (2603:10b6:5:8d::28) by
+ BL0PR01MB5169.prod.exchangelabs.com (2603:10b6:208:69::33) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5102.16; Fri, 1 Apr 2022 18:03:32 +0000
+Received: from DM6PR01MB3915.prod.exchangelabs.com
+ ([fe80::cc44:99d1:f22a:b3c4]) by DM6PR01MB3915.prod.exchangelabs.com
+ ([fe80::cc44:99d1:f22a:b3c4%3]) with mapi id 15.20.5123.028; Fri, 1 Apr 2022
+ 18:03:31 +0000
+Message-ID: <60ee55d4-3485-ad20-da01-a3464d5b9799@os.amperecomputing.com>
+Date:   Fri, 1 Apr 2022 11:03:27 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.7.0
+Subject: Re: [PATCH][V2] ACPI: sysfs: copy ACPI data using io memory copying
+From:   doug rady OS <dcrady@os.amperecomputing.com>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Henry Willard <henry.willard@oracle.com>
+Cc:     James Morse <James.Morse@arm.com>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Colin King <colin.king@canonical.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+References: <20200317165409.469013-1-colin.king@canonical.com>
+ <20200320131951.GA6555@lakrids.cambridge.arm.com>
+ <698da6fc-3334-5420-5c97-4406914e4599@arm.com>
+ <88DFC1B9-D444-4D44-963F-34D0F5B9EC01@oracle.com>
+ <Yh5DOz/u2hf3Eu5Z@lpieralisi>
+ <345c99af-4f65-6776-fb21-f9fe8662566c@os.amperecomputing.com>
+In-Reply-To: <345c99af-4f65-6776-fb21-f9fe8662566c@os.amperecomputing.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 8n1cIHgXF3AJkwOoNdF5kd7vptPv2_rX
-X-Proofpoint-ORIG-GUID: 8n1cIHgXF3AJkwOoNdF5kd7vptPv2_rX
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-04-01_05,2022-03-31_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 suspectscore=0
- adultscore=0 priorityscore=1501 mlxlogscore=955 mlxscore=0 spamscore=0
- bulkscore=0 phishscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2204010083
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-ClientProxiedBy: CH2PR14CA0020.namprd14.prod.outlook.com
+ (2603:10b6:610:60::30) To DM6PR01MB3915.prod.exchangelabs.com
+ (2603:10b6:5:8d::28)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 62f9fc95-cb3e-4bf2-4f9a-08da1409ee9e
+X-MS-TrafficTypeDiagnostic: BL0PR01MB5169:EE_
+X-Microsoft-Antispam-PRVS: <BL0PR01MB5169995B0F8259F80CF0B3E2F0E09@BL0PR01MB5169.prod.exchangelabs.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Ft38GaMuG1svtRB9C7Hr/LxNEuvFuEEFJsYrkT3cvn56D6iMKwaZmkWU/j1+0QRqaGYFLGbHlpLO3yk/5U56csv3kRCC9SEHFYjbR4uNWELxe0leOdx58QKQNeLGrdgn1ZNmrv0c9Y9HiGpUVzK9lrsqh5HRJDA8v5mdPmZ9/tOjLYU57gda3Nh4oqHVjFA8AGiCDQQQADWBJmHPcvoh5FqOmYDB5IPifvMup7UVgu0/ucOF9AAwuilJwK3C7k+Nkv77I3OJgNmtwiQV95tJCFZl2fHgrSlStYuYzfxMxbQe0A21nnPk+6ATDVAxaARsSdG0q1Gx/ugUA60+H9U9gXOsplPhE8hOGgWySViFKxnJV8t9kkZo5G1rnslUtkggbpOg+5YOILz2XhybW+yFycmT9DtxibktyJKU1nUYL0/SdAsDyUmBy1c2AvUirgnQjGNleGLs2GLKNg5CmP5hU3GHlATgI6kYX6dIoOFmn6esxE1oC4seeelY/TTJJhcm6XWdXTno9HWtzRA8WeTqGqG02VxQXT18GEHdUDhU0xYyQFymlUWtSsmSyxZfD8fVqVIJU1z6BhKUHIM1IkwKLIp3HKhVKiOKJCnBCocFbhRjZ9VeISjRLCwZHaDNOPJRBW6Is5HBItWMIW2WmrJo+iBLGkKFX3ccwQHWzEUIoU6r13fBkMApy6oifqIBDQg3nen1rgRAFDlv+yk+JKQ2WwatO9BRmPdqxE0pDhf1FU8puhHD6CmRQCAi0tmwQqOKVm5Bcv8t0q7R6o6iVS/DuvVKpTv6aHWctMVRuuype638k8a1FzevN9AXBhC67CXY
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR01MB3915.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(53546011)(52116002)(5660300002)(38100700002)(86362001)(31686004)(110136005)(7416002)(54906003)(6506007)(6486002)(966005)(316002)(38350700002)(66476007)(66946007)(4326008)(8676002)(6512007)(508600001)(83380400001)(8936002)(66556008)(6666004)(31696002)(2906002)(26005)(186003)(2616005)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Ym1SWVJUcmdLQUgwS2MzSkwyQ3dvUE4yOEFLL1BiQU1NMVBNYk5zN2MxN0JO?=
+ =?utf-8?B?VEk3MmEvSXVESm52dVhSOGgveWkreVY3N3Q1YkN5OGc4eWJnSHUxbVRydnZl?=
+ =?utf-8?B?am80TkJrb3pMdjlvQ29UNS9JQzhDT0dBMlVvS09lTHJpalU0VEpTUWgzcmE4?=
+ =?utf-8?B?WXZpOVNKaEtNU0ZjaFdOM1ZTWk56Mm5HTTh4MWlsemJEVU1lZWhNa1huejhv?=
+ =?utf-8?B?Q2hzdWFoRG5KQjhBVnh3TFdyUU40RlVJeG94aXQ1cFBOckdITHJ4R0xEUFVS?=
+ =?utf-8?B?ckEvR2RvNGxWa3F1V2ZQWTN2a0V5VmZKaVUxczh1S29EbmJDT1JCUUhudTA2?=
+ =?utf-8?B?Vm4yanFqNURZeUJ1d09GZ1l3SXRqbE0ydXo0OEtRSFphekZtQVl2Vi95bzU1?=
+ =?utf-8?B?UWJWTUx2L3NPL3NUZUpXMCtqWFE0Z204eHdhYnhhM1ZSb290R2xqVVhRT003?=
+ =?utf-8?B?SWNiSVlwVkxNNUR6a0l1clowSDFXVWtIbllVWFhaNDJBR1NwVlBIRkdDUElh?=
+ =?utf-8?B?UFpTbXIyZm1QOU9IcW9qTUxDSkE4ZVJ4aUJzTWFpVk5XclBIWWs0S1VONlFC?=
+ =?utf-8?B?QnN2UE5XVk9yTlVzdjdxMVltVlAzeXhPaHdHSU1XWmxpdkhIZUZENWZ1OVVk?=
+ =?utf-8?B?WFd5amk5QUR5M3hXYmE0UkRWWjRwUnQvUWJHQnZzMkRKK1NxYjE5eC9HTk9j?=
+ =?utf-8?B?MDN2NzlmaXBDelhjWnMyK0thVllUSU5UY1IwVUd6cjZidHlnRVJMY01uaG5Z?=
+ =?utf-8?B?VGs4a3I1aFdQVGN6TXM0TUtIMkY5V3JEQUdJSTNyL2tWRVMvM0UxYXd5OVJv?=
+ =?utf-8?B?WU55TXBCUUtlZWR3dlZ1SnBlR2lnaHhpS2pBSlpKWitNajA1NFp3OFRHdDF6?=
+ =?utf-8?B?eTBxajJDN3Y3Tm40bTl2aCtUbmNYd3UreVI2S0VZY1RSaFZidG4zS3dpQXMv?=
+ =?utf-8?B?aWJ1Q3MrdXpCNllyZ1lLODFwOFhVck1nVFBKZWpxRjZoV1FvdW9OL0pZUU9Q?=
+ =?utf-8?B?alZVMEFScFlSYTNUOWp2VjM5MVVjd0dCemo5WnlLclA1MUtLY3hhL3dVbzRt?=
+ =?utf-8?B?Z0ZSODRDMFVGK1A3RFBJZlgrTjBxY1d6V0dza0R5bGlNYTRNcnkwTzFpSlBn?=
+ =?utf-8?B?R051eTBadjFnSXY0Z0dCUTYrakd6RWl0SVA2T2I0WmdKQU9yRktPS1gxNlMr?=
+ =?utf-8?B?dVVEcXVkNUxiTHFlNGovMVpWanR0aTB5SE1Bbm1tOWVnNTk3OVI5S2o4bjlB?=
+ =?utf-8?B?SVZWbnVqVE51TVFncTJ2MTNpY3cxVFE2MnpVN1JaS01LVUx3VDN4N1pxemhs?=
+ =?utf-8?B?bUxTbEQ3VFlZNi9uMmZYVVozOHk1cC9BODJsbDR4MG55elVvOU9KTFhyV21Y?=
+ =?utf-8?B?VVpCei8yVUpaTlM2MFF0R3Y1UTE2Z2NibVBKd2hKWVNpM0FPR29YMHo4YVJ2?=
+ =?utf-8?B?elRYMlhtc1Z0aTBORzlSdThIVEp6dEJMdmFKNHM1NFhXc3o0NVk2RnNnNUVG?=
+ =?utf-8?B?bnJLZ1lBcTd2bkQ0amhVWS9RSGFoRm83QnNScytIRVhXZnNDZWFUVmFQaHFo?=
+ =?utf-8?B?L1lEQjBpTVJNN29mdlR2bmYvdFd4ODhuMGxYVWxza3BoTVJVWmJLL3gxNGNZ?=
+ =?utf-8?B?Rm4zaEZRMk9HVitDd0hsbnBhdlBKdER3YzVtMlRnWjFaZW1xRWNSYjdPaldj?=
+ =?utf-8?B?eHRxTXUxdU94djhrbHVUZ2NFeEV1YWJSNzVhTDhZandBT05NZEU5azFwMHA0?=
+ =?utf-8?B?bjZFYVdaR3NTZktqLzViM3pDN2ZhVUJiWTRHTUdxOFpvRUpWZ3RyVHovTlE2?=
+ =?utf-8?B?TWpnV3Yyc0IwdU9HVmQyVmIxS3hpeEI2Y1V3SXA5a2ovTk1KWjJzV0NKYTli?=
+ =?utf-8?B?WHpUWEc0QzhHL1k0VHA4WEhFaFVCNnpmTjVqcHRrTnlwNEY2dzYralNudVZM?=
+ =?utf-8?B?cVRwY3VjVHVSMmQyMmNUd1E4YXBZNEIrWGxNL2RpdVdhRTNVQTNRN0F4NXlQ?=
+ =?utf-8?B?dW12WUF2MWIxQWcvdDdBekZIQ09OOVcwVlZ6YkZhT0w0NzNxaEwxRzB5VTRr?=
+ =?utf-8?B?SUlsTzFrbXZwVXA4d2prdmsxUWNHMXB1dU41UWUybFQvMTZvYnNjRGRFUW40?=
+ =?utf-8?B?Z05veFN2UkZVd280UzNwWkRPajJqVG5qRitFTHY1OEh1ZEdmbVozRlNGc09M?=
+ =?utf-8?B?L3BVNWc1Qnl5VnpyaWpoZUM3RlBwcy8vTkRkQUVGL0lKMlNTZk5zVVZNd2FU?=
+ =?utf-8?B?TTBqZFJUR25CT0c5UWhDS1Q2KzN3L3k1MmJ3Y0ZlRU9kNjhqejYva1A3bkpB?=
+ =?utf-8?B?M0VOam9zUDROY25DaVN2blQ5eHJJb0lhQ1Q2UVRCYm03WXVZekdJVEExNHZn?=
+ =?utf-8?Q?gbe8qnbpPkHD92b99uO4qZkiOA+0KBRvj6Q8q?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62f9fc95-cb3e-4bf2-4f9a-08da1409ee9e
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR01MB3915.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2022 18:03:31.8053
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AZrcSTcv78sGxEYnYQfV1u8aS+4PfWVSuQfZ1Vc2VGSXnDK+GNydbEykIExQSGZxUwV7K62pXL6W8AVOrv4+GzfbIqlUiiRKo+6LUT3nMV+0VGjG41oTGilUMV/ZyKDO
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR01MB5169
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: James Liu <james.liu@hpe.com>
+Hi Lorenzo,
 
-    Modify acpi_os_map_generic_address and acpi_os_unmap_generic_address
-    to handle a case that a GAS table (i.e., Table 5.1 in ACPI 6.4) is used
-    to address a data structure; in this case, the GAS has the field of
-    "Register Bit Width" equal to 0.
+Just checking the status on this patch?
+Are you planning to submit for Rafael to pull?
 
-    For example, "Injection Instruction Entry" (Table 18.25 in ACPI 6.4)
-    has a RegisterRegion field that is a GAS that points to a data
-    structure SET_ERROR_TYPE_WITH_ADDRESS (Table 18.30), which is required
-    when using EINJ (Error Injection module).
+It is more important now that the below has gone into 5.18:
+'[PATCH] ACPI/APEI: Limit printable size of BERT table data'
+https://lore.kernel.org/lkml/CAJZ5v0gMh2ed+ZWOnd-t_uTrZtm=AUfxOAkAKWT7WQK3=gf+7w@mail.gmail.com/
 
-    This fix preserves a fairly sufficient memory space (i.e., page size)
-    to store the data structure so as to prevent EINJ module from loading
-    failure if platform firmware can support Injection Instruction Entry in
-    an EINJ table.
+Thank you!
+doug
 
-Signed-off-by: James Liu <james.liu@hpe.com>
----
- drivers/acpi/osl.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 45c5c0e45..ab2f584b1 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -457,9 +457,15 @@ void __iomem *acpi_os_map_generic_address(struct acpi_generic_address *gas)
- 	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		return NULL;
- 
-+	/* Handle a case that GAS is used to address an ACPI data structure */
-+	if (!gas->bit_width) {
-+		pr_info("An ACPI data structure at 0x%llx is mapped\n", addr);
-+		return  acpi_os_map_iomem(addr, PAGE_SIZE);
-+	}
-+
- 	/* Handle possible alignment issues */
- 	memcpy(&addr, &gas->address, sizeof(addr));
--	if (!addr || !gas->bit_width)
-+	if (!addr)
- 		return NULL;
- 
- 	return acpi_os_map_iomem(addr, gas->bit_width / 8);
-@@ -474,9 +480,22 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
- 	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		return;
- 
-+	/* Handle a case that GAS is used to address an ACPI data structure */
-+	if (!gas->bit_width) {
-+		pr_info("An ACPI data structure at 0x%llx is unmapped\n", addr);
-+		mutex_lock(&acpi_ioremap_lock);
-+		map = acpi_map_lookup(addr, PAGE_SIZE);
-+		if (!map) {
-+			mutex_unlock(&acpi_ioremap_lock);
-+			return;
-+		}
-+		acpi_os_drop_map_ref(map);
-+		mutex_unlock(&acpi_ioremap_lock);
-+	}
-+
- 	/* Handle possible alignment issues */
- 	memcpy(&addr, &gas->address, sizeof(addr));
--	if (!addr || !gas->bit_width)
-+	if (!addr)
- 		return;
- 
- 	mutex_lock(&acpi_ioremap_lock);
--- 
-2.25.1
+On 22-03-07 13:22, doug rady OS wrote:
+> On 22-03-01 08:00, Lorenzo Pieralisi wrote:
+>> On Mon, Feb 28, 2022 at 11:51:23PM +0000, Henry Willard wrote:
+>>>
+>>>
+>>>> On Apr 1, 2020, at 5:44 AM, James Morse <james.morse@arm.com> wrote:
+>>>>
+>>>> Hello!
+>>>>
+>>>> On 3/20/20 1:19 PM, Mark Rutland wrote:
+>>>>> [adding James and Lorenzo]
+>>>>
+>>>> (but not actually...)
+>>>>
+>>>>
+>>>>> On Tue, Mar 17, 2020 at 04:54:09PM +0000, Colin King wrote:
+>>>>>> From: Colin Ian King <colin.king@canonical.com>
+>>>>>>
+>>>>>> Reading ACPI data on ARM64 at a non-aligned offset from
+>>>>>> /sys/firmware/acpi/tables/data/BERT will cause a splat because
+>>>>>> the data is I/O memory mapped
+>>>>
+>>>> On your platform, on someone else's it may be in memory.
+>>>>
+>>>> Which platform is this on?
+>>>> (I've never seen one generate a BERT!)
+>>>
+>>> I have seen this on several platforms. The latest is an Altra based machine. It shows up in the Linux Test Project: ltp test "read_all -d /sys -q -r 10”.
+>>>>
+>>>>
+>>>>>> and being read with just a memcpy.
+>>>>>> Fix this by introducing an I/O variant of memory_read_from_buffer
+>>>>>> and using I/O memory mapped copies instead.
+>>>>
+>>>>> Just to check, is that correct is it correct to map those tables with
+>>>>> Device attributes in the first place, or should we be mapping the tables
+>>>>> with Normal Cacheable attributes with memremap()?
+>>>>>
+>>>>> If the FW placed those into memory using cacheavble attributes, reading
+>>>>> them using Device attributes could result in stale values, which could
+>>>>> be garbage.
+>>>>
+>>>> Yes. The BERT code should be using arch_apei_get_mem_attribute() to use the
+>>>> correct attributes. See ghes_map() for an example. bert_init() will need to use
+>>>> a version of ioremap() that takes the pgprot_t.
+>>>>
+>>>> Always using ioremap_cache() means you get a cacheable mapping, regardless of
+>>>> how firmware described this region in the UEFI memory map. This doesn't explain
+>>>> why you got an alignment fault.
+>>>
+>>> The BERT error region doesn’t appear in the UEFI memory map on any of the systems I have looked at. This means that acpi_os_map_memory() will always map the area  as PROT_DEVICE_nGnRnE, which results in an alignment fault on an unaligned access. For some reason this does not fail on some implementations.
+>>>
+>>> It isn’t clear to me from the ACPI spec whether this can be in anything other than normal memory as bert_init() seems to assume it is.
+>>>
+>>> We have used this patch to resolve this problem on the assumption it
+>>> will eventually make it into the mainline kernel. Is there any chance
+>>> this will happen?
+>>
+>> Yes this should be fixed. I put together a patch that I needed to post,
+>> below.
+>>
+>> -- >8 --
+>> Subject: [PATCH] ACPI: osl: Fix BERT error region memory mapping
+> 
+> I hit this read issue while debugging something else and this addressed
+> the problem for me on Ampere Altra and AltraMax systems. Previously I
+> could only read the BERT file using dd with BS of 1-4.
+> With this patch, now I can 'cp' the  BERT file.
+> 
+> Tested-by: Doug Rady <dcrady@os.amperecomputing.com>
+> 
+> 
+>>
+>> Currently the sysfs interface maps the BERT error region as "memory"
+>> (through acpi_os_map_memory()) in order to copy the error records into
+>> memory buffers through memory operations (eg memory_read_from_buffer()).
+>>
+>> The OS system cannot detect whether the BERT error region is part of
+>> system RAM or it is "device memory" (eg BMC memory) and therefore it
+>> cannot detect which memory attributes the bus to memory support (and
+>> corresponding kernel mapping, unless firmware provides the required
+>> information).
+>>
+>> The acpi_os_map_memory() arch backend implementation determines the
+>> mapping attributes. On arm64, if the BERT error region is not present in
+>> the EFI memory map, the error region is mapped as device-nGnRnE; this
+>> triggers alignment faults since memcpy unaligned accesses are not
+>> allowed in device-nGnRnE regions.
+>>
+>> The ACPI sysfs code cannot therefore map by default the BERT error
+>> region with memory semantics but should use a safer default.
+>>
+>> Change the sysfs code to map the BERT error region as MMIO (through
+>> acpi_os_map_iomem()) and use the memcpy_fromio() interface to read the
+>> error region into the kernel buffer.
+>>
+>> Link: https://lore.kernel.org/linux-arm-kernel/31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com
+>> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0g+OVbhuUUDrLUCfX_mVqY_e8ubgLTU98=jfjTeb4t+Pw@mail.gmail.com
+>> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+>> Cc: Ard Biesheuvel <ardb@kernel.org>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Hanjun Guo <guohanjun@huawei.com>
+>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+>> ---
+>>    drivers/acpi/sysfs.c | 25 ++++++++++++++++++-------
+>>    1 file changed, 18 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+>> index a4b638bea6f1..cc2fe0618178 100644
+>> --- a/drivers/acpi/sysfs.c
+>> +++ b/drivers/acpi/sysfs.c
+>> @@ -415,19 +415,30 @@ static ssize_t acpi_data_show(struct file *filp, struct kobject *kobj,
+>>    			      loff_t offset, size_t count)
+>>    {
+>>    	struct acpi_data_attr *data_attr;
+>> -	void *base;
+>> -	ssize_t rc;
+>> +	void __iomem *base;
+>> +	ssize_t size;
+>>    
+>>    	data_attr = container_of(bin_attr, struct acpi_data_attr, attr);
+>> +	size = data_attr->attr.size;
+>> +
+>> +	if (offset < 0)
+>> +		return -EINVAL;
+>> +
+>> +	if (offset >= size)
+>> +		return 0;
+>>    
+>> -	base = acpi_os_map_memory(data_attr->addr, data_attr->attr.size);
+>> +	if (count > size - offset)
+>> +		count = size - offset;
+>> +
+>> +	base = acpi_os_map_iomem(data_attr->addr, size);
+>>    	if (!base)
+>>    		return -ENOMEM;
+>> -	rc = memory_read_from_buffer(buf, count, &offset, base,
+>> -				     data_attr->attr.size);
+>> -	acpi_os_unmap_memory(base, data_attr->attr.size);
+>>    
+>> -	return rc;
+>> +	memcpy_fromio(buf, base + offset, count);
+>> +
+>> +	acpi_os_unmap_iomem(base, size);
+>> +
+>> +	return count;
+>>    }
+>>    
+>>    static int acpi_bert_data_init(void *th, struct acpi_data_attr *data_attr)
+> 
 
