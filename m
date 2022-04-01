@@ -2,101 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FC7D4EE79F
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Apr 2022 07:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A1974EE965
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Apr 2022 09:56:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245002AbiDAFMe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Apr 2022 01:12:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57710 "EHLO
+        id S241860AbiDAH5K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Apr 2022 03:57:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245001AbiDAFMd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Apr 2022 01:12:33 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1859D1E8CC9;
-        Thu, 31 Mar 2022 22:10:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-        :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=V32+zQcO407Oigns62fencqAWiQUbjG3dkYmA/bzFgs=; b=ZfJXByG0vD8l+JFtQ4yjotGAuY
-        xAgedtPzZTd8OUi1dzB10Si101BKwG0IYWbUCcMjsIiNuwNVenxVCR/KUkSyd/oDjtfDtwUtY+Mn9
-        tnE9E6ckU/QHuJU1mNFHjKGmNRoYXc7KQCx4T17fUppasjeBeiMsnvEfkkgFKrt2669XSgfwMt26e
-        EII86iOdGu6w/fzgHJVnCqnoDNPCV3PpARH3CmgKBBJACtqcFtJloyHytdjvZpcXSGPAB9I2RnLLa
-        pVcCVcwCoVfPWnVPAvAUEZBYbQyavK/AJMzt4IuTrmRktkBZkumKIQqDVXR1iP+MBwNx5+iddah/E
-        9mEWW45w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1na9YU-004W8V-1i; Fri, 01 Apr 2022 05:10:38 +0000
-Date:   Thu, 31 Mar 2022 22:10:38 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Benjamin =?iso-8859-1?Q?St=FCrz?= <benni@stuerz.xyz>,
-        Andrew Lunn <andrew@lunn.ch>,
-        linux-atm-general@lists.sourceforge.net,
-        linux-ia64@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-pci@vger.kernel.org, Robert Moore <robert.moore@intel.com>,
-        Harald Welte <laforge@gnumonks.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, wcn36xx@lists.infradead.org,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-edac@vger.kernel.org,
-        dennis.dalessandro@cornelisnetworks.com,
-        "open list:HFI1 DRIVER" <linux-rdma@vger.kernel.org>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>,
-        3chas3@gmail.com, linux-input <linux-input@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Len Brown <lenb@kernel.org>,
-        mike.marciniszyn@cornelisnetworks.com,
-        Robert Richter <rric@kernel.org>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
-        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux@simtec.co.uk,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Morse <james.morse@arm.com>,
-        netdev <netdev@vger.kernel.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 05/22] acpica: Replace comments with C99 initializers
-Message-ID: <YkaJTh+Bhf+oPQB7@infradead.org>
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <20220326165909.506926-5-benni@stuerz.xyz>
- <CAHp75VeTXMAueQc_c0Ryj5+a8PrJ7gk-arugiNnxtAm03x7XTg@mail.gmail.com>
+        with ESMTP id S238845AbiDAH5J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Apr 2022 03:57:09 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3FF9198955;
+        Fri,  1 Apr 2022 00:55:18 -0700 (PDT)
+Received: from ip4d144895.dynamic.kabel-deutschland.de ([77.20.72.149] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1naC7n-0007Qi-Ct; Fri, 01 Apr 2022 09:55:15 +0200
+Message-ID: <edba451c-1798-c60e-5d84-0a9f6a5d134d@leemhuis.info>
+Date:   Fri, 1 Apr 2022 09:55:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Content-Language: en-US
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     Jian-Hong Pan <jhp@endlessos.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org,
+        linux-nvme@lists.infradead.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Bug 215742 - The NVME storage quirked as SIMPLE SUSPEND makes system
+ resume failed after suspend (Regression)
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VeTXMAueQc_c0Ryj5+a8PrJ7gk-arugiNnxtAm03x7XTg@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1648799719;d44c1a22;
+X-HE-SMSGID: 1naC7n-0007Qi-Ct
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -104,14 +47,204 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Mar 27, 2022 at 10:59:54PM +0300, Andy Shevchenko wrote:
-> On Sat, Mar 26, 2022 at 7:39 PM Benjamin St�rz <benni@stuerz.xyz> wrote:
-> >
-> > This replaces comments with C99's designated
-> > initializers because the kernel supports them now.
-> 
-> Does it follow the conventions which are accepted in the ACPI CA project?
+Hi, this is your Linux kernel regression tracker.
 
-Why would ACPI CA be allowed to make up it's own conventions?  And as
-you might imply not allow using a very useful and more than 20 year old
-C feature?  This kind of BS need to stop.
+I noticed a regression report in bugzilla.kernel.org that afaics nobody
+acted upon since it was reported about a week ago, that's why I decided
+to forward it to the lists and all people that seemed to be relevant
+here. Mario, could you maybe take a look at this? Or is that something
+for the NVM or ACPI people? Or was this discussed somewhere else
+already? Or even fixed?
+
+To quote from https://bugzilla.kernel.org/show_bug.cgi?id=215742 :
+
+>  Jian-Hong Pan 2022-03-25 06:41:53 UTC
+> 
+> Created attachment 300614 [details]
+> Journal log
+> 
+> We have an ASUS B1400CEAE laptop equipped with Intel i5-1135G7 and Sandisk Corp WD Blue SN550 NVMe SSD.  The system can resume from suspend correctly with kernel 5.10.  However, it resumes failed from suspend and hangs with kernel 5.15 and current 5.17, which is a regression issue.
+> 
+> I set the persistent journal log.  I read the journal log again and again. I notice there is nothing after system becomes suspended.  The kernel messages after resume might write failed to NVMe.
+> 
+> Then, I notice the message "kernel: nvme 0000:01:00.0: platform quirk: setting simple suspend".  Wonder why it quirks as simple suspend.  Trace the code and disable the quirk, like
+> 
+> diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+> index 9f4f3884fefe..017a87ae999f 100644
+> --- a/drivers/nvme/host/pci.c
+> +++ b/drivers/nvme/host/pci.c
+> @@ -3096,7 +3096,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>                  */
+>                 dev_info(&pdev->dev,
+>                          "platform quirk: setting simple suspend\n");
+> -               quirks |= NVME_QUIRK_SIMPLE_SUSPEND;
+> +               //quirks |= NVME_QUIRK_SIMPLE_SUSPEND;
+>         }
+>  
+>         /*
+> 
+> System resumes successfully!!!  NVMe is the one which produces the bug!
+> 
+> [reply] [−] Comment 1 Jian-Hong Pan 2022-03-25 06:45:48 UTC
+> 
+> Here is the information of the NVMe:
+> 
+> 01:00.0 Non-Volatile memory controller [0108]: Sandisk Corp WD Blue SN550 NVMe SSD [15b7:5009] (rev 01) (prog-if 02 [NVM Express])
+> 	Subsystem: Sandisk Corp WD Blue SN550 NVMe SSD [15b7:5009]
+> 	Flags: bus master, fast devsel, latency 0, IRQ 16, NUMA node 0, IOMMU group 14
+> 	Memory at 82200000 (64-bit, non-prefetchable) [size=16K]
+> 	Memory at 82204000 (64-bit, non-prefetchable) [size=256]
+> 	Capabilities: [80] Power Management version 3
+> 	Capabilities: [90] MSI: Enable- Count=1/32 Maskable- 64bit+
+> 	Capabilities: [b0] MSI-X: Enable+ Count=17 Masked-
+> 	Capabilities: [c0] Express Endpoint, MSI 00
+> 	Capabilities: [100] Advanced Error Reporting
+> 	Capabilities: [150] Device Serial Number 00-00-00-00-00-00-00-00
+> 	Capabilities: [1b8] Latency Tolerance Reporting
+> 	Capabilities: [300] Secondary PCI Express
+> 	Capabilities: [900] L1 PM Substates
+> 	Kernel driver in use: nvme
+> 
+> [reply] [−] Comment 2 Jian-Hong Pan 2022-03-25 07:01:26 UTC
+> 
+> Created attachment 300615 [details]
+> Dump ACPI
+> 
+> To understand why it needs the simple suspend quirk, I trace acpi_storage_d3() [1] in the if condition.
+> 
+> I notice it goes though the whole acpi_storage_d3(), which means the ACPI node has StorageD3Enable with value 1.
+> 
+> To confrim that, I dumped the ACPI and found it:
+> 
+> Scope (_SB.PC00)
+> {
+>     Device (SAT0)
+>     {
+>         Name (_ADR, 0x00170000)  // _ADR: Address
+>         Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
+>         {
+>             ToUUID ("5025030f-842f-4ab4-a561-99a5189762d0") /* Unknown UUID */, 
+>             Package (0x01)
+>             {
+>                 Package (0x02)
+>                 {
+>                     "StorageD3Enable", 
+>                     One
+>                 }
+>             }
+>         })
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/device_pm.c?h=v5.17#n1381
+> 
+> [reply] [−] Comment 3 Jian-Hong Pan 2022-03-25 07:10:25 UTC
+> 
+> I found three related commits:
+> 
+> * df4f9bc4fb9c ("nvme-pci: add support for ACPI StorageD3Enable property")
+> * e21e0243e7b0 ("nvme-pci: look for StorageD3Enable on companion ACPI device instead")
+> * 2744d7a07335 ("ACPI: Check StorageD3Enable _DSD property in ACPI code")
+> 
+> The original ACPI node PXSX and PEGP check is removed in e21e0243e7b0 ("nvme-pci: look for StorageD3Enable on companion ACPI device instead") for AMD platforms.
+> I did not see the ACPI node PXSX, nor PEGP in the ACPI tables in comment #2.
+> 
+> So, I add the check back for test:
+> 
+> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> index cc6c97e7dcae..d5d93d3f01f7 100644
+> --- a/drivers/acpi/device_pm.c
+> +++ b/drivers/acpi/device_pm.c
+> @@ -1381,6 +1381,8 @@ EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
+>  bool acpi_storage_d3(struct device *dev)
+>  {
+>         struct acpi_device *adev = ACPI_COMPANION(dev);
+> +       acpi_handle handle;
+> +       acpi_status status;
+>         u8 val;
+>  
+>         if (force_storage_d3())
+> @@ -1388,6 +1390,14 @@ bool acpi_storage_d3(struct device *dev)
+>  
+>         if (!adev)
+>                 return false;
+> +
+> +       status = acpi_get_handle(adev->handle, "PXSX", &handle);
+> +       if (ACPI_FAILURE(status)) {
+> +               status = acpi_get_handle(adev->handle, "PEGP", &handle);
+> +               if (ACPI_FAILURE(status))
+> +                       return false;
+> +       }
+> +
+>         if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+>                         &val))
+>                 return false;
+> 
+> System resumes successfully! I think Intel platforms need the check provided by df4f9bc4fb9c ("nvme-pci: add support for ACPI StorageD3Enable property").
+> 
+> [reply] [−] Comment 4 Jian-Hong Pan 2022-03-25 07:28:12 UTC
+> 
+> With the test patch in comment #3, the NVMe will not be quirked as NVME_QUIRK_SIMPLE_SUSPEND.  And then, system can resume from suspend correctly.
+> 
+> However, does this mean that the NVMe on this laptop does not support simple suspend?
+> 
+> [reply] [−] Comment 5 Jian-Hong Pan 2022-03-25 08:15:16 UTC
+> 
+> If I set test modes of hibernation for PM test [1]:
+> 
+> * devices mode: System resumes correctly
+> 
+> # echo devices > /sys/power/pm_test
+> # echo platform > /sys/power/disk
+> # echo mem > /sys/power/state
+> 
+> * platform mode: System resumes failed
+> 
+> # echo platform > /sys/power/pm_test
+> # echo platform > /sys/power/disk
+> # echo mem > /sys/power/state
+> 
+> [1] https://www.kernel.org/doc/Documentation/power/basic-pm-debugging.txt
+> 
+Anyway, to get this tracked:
+
+#regzbot introduced: e21e0243e7b0
+#regzbot from: Jian-Hong Pan <jhp@endlessos.org>
+#regzbot title: nvm|acpi: NVME storage quirked as SIMPLE SUSPEND makes
+system resume failed after suspend (Regression)
+#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+P.S.: As the Linux kernel's regression tracker I'm getting a lot of
+reports on my table. I can only look briefly into most of them and lack
+knowledge about most of the areas they concern. I thus unfortunately
+will sometimes get things wrong or miss something important. I hope
+that's not the case here; if you think it is, don't hesitate to tell me
+in a public reply, it's in everyone's interest to set the public record
+straight.
+
+-- 
+Additional information about regzbot:
+
+If you want to know more about regzbot, check out its web-interface, the
+getting start guide, and the references documentation:
+
+https://linux-regtracking.leemhuis.info/regzbot/
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/getting_started.md
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/reference.md
+
+The last two documents will explain how you can interact with regzbot
+yourself if your want to.
+
+Hint for reporters: when reporting a regression it's in your interest to
+CC the regression list and tell regzbot about the issue, as that ensures
+the regression makes it onto the radar of the Linux kernel's regression
+tracker -- that's in your interest, as it ensures your report won't fall
+through the cracks unnoticed.
+
+Hint for developers: you normally don't need to care about regzbot once
+it's involved. Fix the issue as you normally would, just remember to
+include 'Link:' tag in the patch descriptions pointing to all reports
+about the issue. This has been expected from developers even before
+regzbot showed up for reasons explained in
+'Documentation/process/submitting-patches.rst' and
+'Documentation/process/5.Posting.rst'.
