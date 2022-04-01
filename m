@@ -2,133 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 406474EFBB8
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Apr 2022 22:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A37F4EFC30
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Apr 2022 23:34:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352519AbiDAUmO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Apr 2022 16:42:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51980 "EHLO
+        id S1352786AbiDAVgm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Apr 2022 17:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352104AbiDAUmM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Apr 2022 16:42:12 -0400
-Received: from beige.elm.relay.mailchannels.net (beige.elm.relay.mailchannels.net [23.83.212.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB569174BB3;
-        Fri,  1 Apr 2022 13:40:22 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 9CB6E820B4D;
-        Fri,  1 Apr 2022 20:40:21 +0000 (UTC)
-Received: from pdx1-sub0-mail-a229.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 18F748204B4;
-        Fri,  1 Apr 2022 20:40:21 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1648845621; a=rsa-sha256;
-        cv=none;
-        b=Th35VL62JoMGFVR/RNMt3ic4IDKLk+nRShdM70Cy6sUMqLpA0UEJVLZspx0+dHC0prPwEN
-        YgluXIp+qM6B85JXuZOCb5r6TXo5f5liSe7cAT9EoysjuDQ0J3v0TkA8JWUhNsf3MzWc1P
-        LOuwWwDlq8FjplJQKcINpkmcizv3Q+fCBNBz26gMXmZCatSfJ+jmzkdPs91pio9bTRjvIg
-        zg7s+QVcOMCiReUjrLK7Qb4KoZ9d+o9+pdBf5sCYJkYghQHx92lA9mdKSbhKt+lrRzL+/P
-        ub/P+pxY+CIj1yWiTprqFXEhC4JFwXCeE3W1WHKekVzkFsEwiFNluamiwkjagg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1648845621;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=PNKd6vhVfX5oDucS9KT/jNMGz7RGqoHUqWq18NXpaIE=;
-        b=ZLcDQLeUU+LQxevT+0k648kLwNCY18x71JvGFigWEXWjgNIXM7XzJUlkqGYrV6NOUQ1VUs
-        nw0yyaKvQz0N4asUb+caNGTBSp0GqR3eYdRJPZfoevp6D1BvcyMhGP765FcjNJM7LCj5aj
-        ao/YMoHIXgXNNQ5nPTlCKR51QMNdfAKqVddSRkhJpw4bXQaVsRKK2f+zqMkkpbhYc6F4i7
-        5DPCXd9gj8QOew8DkwPuuh9AC7n768sm9jcHBgGj/ZrW9DW7N0HDhRNaXRxwNhzWuNGTXd
-        mrm9qzhKalvfvktEMsZ3+eRpi34mCLxJCYokti1CWVlREFH2YIDREUXB91A44g==
-ARC-Authentication-Results: i=1;
-        rspamd-f76767c84-qrhsc;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from pdx1-sub0-mail-a229.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.115.45.15 (trex/6.7.1);
-        Fri, 01 Apr 2022 20:40:21 +0000
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Lonely-Absorbed: 52f960c07c29bade_1648845621473_2287563284
-X-MC-Loop-Signature: 1648845621472:3802283897
-X-MC-Ingress-Time: 1648845621472
-Received: from offworld (unknown [104.36.25.8])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dave@stgolabs.net)
-        by pdx1-sub0-mail-a229.dreamhost.com (Postfix) with ESMTPSA id 4KVX9Y4f8lz21;
-        Fri,  1 Apr 2022 13:40:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-        s=dreamhost; t=1648845618;
-        bh=PNKd6vhVfX5oDucS9KT/jNMGz7RGqoHUqWq18NXpaIE=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=Q9wJbFhPdS0bMDdwFleZVVsXFj/UWby9K6CBGuKGps4U4n1jnm6AJTvqXMIy92mBr
-         VTTVwAXLXQcNx35+Gj/0OWtbxqQYLkqDkwW5R5qbwFANW46grf2ILioAP8uhjhwtjb
-         08YiyFEPgtm+aMxkSn/amKBO2mhuCg0fPtbuBfem15d7ztTdTpxnzKdpgdCS+Dbi3S
-         r0cgfMe7O54cMjIGuahoJQzAJCsQum4fseQ0FK9XFflI3OVw53tMOjzfYNZaBAhNgF
-         pC12OQ+P8PUQQ81MvSt2HV+19XJDCLSBtBzVFNbg14hSlWXvMd/9gyesxqG9nAFc8Q
-         j+9dn/ZpQbpOA==
-Date:   Fri, 1 Apr 2022 13:40:14 -0700
-From:   Davidlohr Bueso <dave@stgolabs.net>
-To:     Vishal Verma <vishal.l.verma@intel.com>
-Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
+        with ESMTP id S235549AbiDAVgl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Apr 2022 17:36:41 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B02763B3
+        for <linux-acpi@vger.kernel.org>; Fri,  1 Apr 2022 14:34:49 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id c15-20020a17090a8d0f00b001c9c81d9648so3682710pjo.2
+        for <linux-acpi@vger.kernel.org>; Fri, 01 Apr 2022 14:34:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=882z1skVPVrX6JxDUqDucT+CHxsblmX+I1O0oabkTz4=;
+        b=wxh4rGzfAQmQHYTuP+p9XhmOy7drMPxKMKk5diG9xXe4n3a44hg0KD7n+4aAs+oU2b
+         yzjsWnAnbjqk7bCcG9MVzDXQNcJGGhbCUyUr/4dZ1OGJQAo6zVeivXL6K5/Se4zkO+UJ
+         N0zn7G7AkkwDBMEkRtqqRCINNf6QR1CGqavfO6Y/HR7ZYBo0biDDRtoyP85NifE4d8h6
+         vngnkdkr4xbi3qH3ND16MzCMawyIbKGzNJaHCd5OO/LshN9Bdapc1EqePHzlxtJiEZ5X
+         LnjVFAZI0IMdVjRbbSMH7iy6MtopQyQChDhQiNPzuDQrxkRb+8vwhZwbQBEVY1LlqzeV
+         9kmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=882z1skVPVrX6JxDUqDucT+CHxsblmX+I1O0oabkTz4=;
+        b=pPK6gidlfFCUTAyO2viUiRlp1w0nsgzsiY/updfz61QvVZTvvj5P/LDU6e1fWOQ2HR
+         MAdQLYrMnLjcnTfryB1Oom1yH0IOfUGrT66YsnOMr1fNQY2vgqHBiJjd3LvKt1noHadm
+         Xe/5UraceO4U39y65+HWmm5q+36E0ZtEpw57F5HeB9rYzV6DE6WCglf22lhgm1L3DxbL
+         lSaX/N8vj4xJq1nZFa3D9vBpvSDqNeI08/x1NuBoGDWMLJYZ2TcL0eq3qIk/9tVsW7of
+         X5F6L7ICB7qWr344zD6Y5khevvaeIaqa2wxjV8Cq1jlg1m23grhzhW8MDHCvdAxHr31z
+         gDVA==
+X-Gm-Message-State: AOAM531OraFB3rCob575Ia5WwBCY7c1+OTGI6f8iASH6P3uTZpmUli8u
+        oBq82fqF/yHIAXsHIlbcIb5/Xvs+n0lsj6eZkHhLgw==
+X-Google-Smtp-Source: ABdhPJwfj+RSvxQDoYuS28pfHAKx6Y2BH+koHOBy4kcEcxUYv7LWtMHxoh8KL4bmiIJ4R0y1hSLv9n7EXBnBflKyQ2A=
+X-Received: by 2002:a17:90a:ca:b0:1ca:5253:b625 with SMTP id
+ v10-20020a17090a00ca00b001ca5253b625mr840636pjd.220.1648848888811; Fri, 01
+ Apr 2022 14:34:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220331202022.1823174-1-vishal.l.verma@intel.com>
+ <20220331202022.1823174-4-vishal.l.verma@intel.com> <20220401204014.khgozoeu6biirknu@offworld>
+In-Reply-To: <20220401204014.khgozoeu6biirknu@offworld>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Fri, 1 Apr 2022 14:34:37 -0700
+Message-ID: <CAPcyv4iGtgO6tqLV_UjOsORmC0q-Kw0y5yvstXd=OO8vQ=9XoQ@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] PCI/ACPI: negotiate CXL _OSC
+To:     Davidlohr Bueso <dave@stgolabs.net>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>, linux-cxl@vger.kernel.org,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Robert Moore <robert.moore@intel.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v4 3/3] PCI/ACPI: negotiate CXL _OSC
-Message-ID: <20220401204014.khgozoeu6biirknu@offworld>
-References: <20220331202022.1823174-1-vishal.l.verma@intel.com>
- <20220331202022.1823174-4-vishal.l.verma@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20220331202022.1823174-4-vishal.l.verma@intel.com>
-User-Agent: NeoMutt/20201120
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 31 Mar 2022, Vishal Verma wrote:
+On Fri, Apr 1, 2022 at 1:40 PM Davidlohr Bueso <dave@stgolabs.net> wrote:
+>
+> On Thu, 31 Mar 2022, Vishal Verma wrote:
+>
+> >The CXL specification does not define any additional constraints on
+> >the hotplug flow beyond PCIe native hotplug, so a kernel that supports
+> >native PCIe hotplug, supports CXL hotplug.
+>
+> Hmm but from a Linux-pov does it make sense to allow hotplug
+> support if the MM cannot handle it?
 
->The CXL specification does not define any additional constraints on
->the hotplug flow beyond PCIe native hotplug, so a kernel that supports
->native PCIe hotplug, supports CXL hotplug.
+I would say yes, i.e. do not consider CONFIG_MEMORY_HOTPLUG for
+OSC_CXL_NATIVE_HP_SUPPORT, but see below and poke holes in my
+argument...
 
-Hmm but from a Linux-pov does it make sense to allow hotplug
-support if the MM cannot handle it?
+>
+> @@ -531,7 +518,8 @@ static u32 calculate_cxl_support(void)
+>         support = OSC_CXL_2_0_PORT_DEV_REG_ACCESS_SUPPORT;
+>         if (pci_aer_available())
+>                 support |= OSC_CXL_PROTOCOL_ERR_REPORTING_SUPPORT;
+> -       if (IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
+> +       if (IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE) &&
+> +           IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+>                 support |= OSC_CXL_NATIVE_HP_SUPPORT;
+>
+>         return support;
+>
+> After all, per the CXL 2.0 Type 3 device Hot-Add flow:
+>
+> ""
+> 7. CXL aware software notifies OS memory manager about the new memory and its
+> attributes such as latency and bandwidth. Memory manager processes a request
+> and adds the new memory to its allocation pool.
+> ""
 
-@@ -531,7 +518,8 @@ static u32 calculate_cxl_support(void)
-	support = OSC_CXL_2_0_PORT_DEV_REG_ACCESS_SUPPORT;
-	if (pci_aer_available())
-		support |= OSC_CXL_PROTOCOL_ERR_REPORTING_SUPPORT;
--       if (IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
-+       if (IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE) &&
-+           IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
-		support |= OSC_CXL_NATIVE_HP_SUPPORT;
+If I look at ACPI hotplug it is true that CONFIG_ACPI_HOTPLUG_MEMORY
+depends on CONFIG_MEMORY_HOTPLUG. However, it is also true that there
+is no existing _OSC for memory hotplug support. The reason is that
+ACPI memory hotplug requires the OS to acknowledge / coordinate with
+memory plug events via a scan handler. On the CXL side the equivalent
+would be if Linux supported the Mechanical Retention Lock [1], or
+otherwise had some coordination for the driver of a PCI device
+undergoing hotplug to be consulted on whether the hotplug should
+proceed or not.
 
-	return support;
+The concern is that if Linux says no to supporting CXL hotplug then
+the BIOS may say no to giving the OS hotplug control of any other PCIe
+device. So the question here is not whether hotplug is enabled, it's
+whether it is handled natively by the at all OS, and if
+CONFIG_HOTPLUG_PCI_PCIE is enabled then the answer is "yes".
 
-After all, per the CXL 2.0 Type 3 device Hot-Add flow:
+Otherwise, the plan for CXL coordinated remove, since the kernel does
+not support blocking hotplug, is to require the memory device to be
+disabled before hotplug is attempted. When CONFIG_MEMORY_HOTPLUG is
+disabled that step will fail and the remove attempt cancelled. by the
+user. If that is not honored and the card is removed anyway then it
+does not matter if CONFIG_MEMORY_HOTPLUG is enabled or not, it will
+cause a crash and other badness.
 
-""
-7. CXL aware software notifies OS memory manager about the new memory and its
-attributes such as latency and bandwidth. Memory manager processes a request
-and adds the new memory to its allocation pool.
-""
+Long story short, just say yes, to CXL hotplug and require removal to
+be coordinated by userspace unless and until the kernel grows better
+mechanisms for doing "managed" removal of devices in consultation with
+the driver.
 
-Thanks,
-Davidlohr
+[1]: https://lore.kernel.org/all/20201122014203.4706-1-ashok.raj@intel.com/
