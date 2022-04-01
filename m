@@ -2,108 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAC8E4EEEB4
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Apr 2022 15:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9601C4EF7F4
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Apr 2022 18:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346620AbiDAOBf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Apr 2022 10:01:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58196 "EHLO
+        id S233906AbiDAQa2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Apr 2022 12:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346629AbiDAOBd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Apr 2022 10:01:33 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE4816623A;
-        Fri,  1 Apr 2022 06:59:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1648821584; x=1680357584;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TNn0jwiZyy2Bm4qdeuMEH72Uk556e7hle8S7qhOqgZo=;
-  b=ku7VbdEwEjvjk8erCmekbdbyJtmzP8CwcovJgu2TycFHOizv6IyKOm/9
-   zqRDNC7HwqnLoroAdYw1Fq80uPJgyV7kuIhq4HhdGa3Rckyy5pwwr86sN
-   wz7cbRWmdeBD8SBzzbfoLayn37MMqB13Pbu3U3SryafpGfXpsn6QzcjRn
-   JoJoeeBUcr/YOR4oCQ0UiUPXE9esu0RHoGcK3xaIIyOFt7UuJ4aY+0iBT
-   Ch6YlYKrdHEK7IH8JtcRVSqYqY1+acuolRACH04Yj7Mj0bv1bNNInx91F
-   7yDW905JzPq0wPq4G5cHYOTavkl6Qqs7udXKAYIEEOtegB+CS3WPIXLm3
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10304"; a="260127023"
-X-IronPort-AV: E=Sophos;i="5.90,227,1643702400"; 
-   d="scan'208";a="260127023"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2022 06:59:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,227,1643702400"; 
-   d="scan'208";a="695901161"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 01 Apr 2022 06:59:39 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 01 Apr 2022 16:59:38 +0300
-Date:   Fri, 1 Apr 2022 16:59:38 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, andriy.shevchenko@linux.intel.com,
-        devicetree@vger.kernel.org, "Rafael J.Wysocki" <rafael@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v3 0/4] Shovel firmware specific code to appropriate
- locations
-Message-ID: <YkcFSgL+j1IvSsby@kuha.fi.intel.com>
-References: <20220331125450.218045-1-sakari.ailus@linux.intel.com>
+        with ESMTP id S1344678AbiDAQaA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Apr 2022 12:30:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C32182AF9;
+        Fri,  1 Apr 2022 09:03:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 766F761AF8;
+        Fri,  1 Apr 2022 16:03:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83596C2BBE4;
+        Fri,  1 Apr 2022 16:03:07 +0000 (UTC)
+Date:   Fri, 1 Apr 2022 12:03:05 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        linux-s390@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        linux-ia64@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <lenb@kernel.org>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 1/3 v2] Docs: admin/kernel-parameters: edit a few boot
+ options
+Message-ID: <20220401120305.00076d14@gandalf.local.home>
+In-Reply-To: <20220401030927.12023-2-rdunlap@infradead.org>
+References: <20220401030927.12023-1-rdunlap@infradead.org>
+        <20220401030927.12023-2-rdunlap@infradead.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220331125450.218045-1-sakari.ailus@linux.intel.com>
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 31, 2022 at 03:54:46PM +0300, Sakari Ailus wrote:
-> Hi folks,
-> 
-> This set moves the implementation of recently added device property API
-> functions to OF and ACPI frameworks, where the rest of such functionality
-> resides.
-> 
-> Compile tested.
-> 
-> The dependencies can be found in Rafael's devprop branch now.
-> 
-> since v2:
-> 
-> - Add pre-processor check for CONFIG_OF_ADDRESS in of_fwnode_iomap() (3rd
->   patch).
-> 
-> changes since v1:
-> 
-> - Drop wrongly placed Depends-on: tag from the first patch.
-> 
-> - Drop IS_ENABLED(CONFIG_OF_ADDRESS) && is_of_node(fwnode) check (3rd
->   patch).
-> 
-> Sakari Ailus (4):
->   device property: Convert device_{dma_supported,get_dma_attr} to fwnode
->   ACPI: property: Move acpi_fwnode_device_get_match_data() up
->   device property: Add iomap to fwnode operations
->   device property: Add irq_get to fwnode operation
-> 
->  drivers/acpi/property.c | 36 +++++++++++++++++++++++++++++++----
->  drivers/base/property.c | 42 ++++++-----------------------------------
->  drivers/of/property.c   | 34 +++++++++++++++++++++++++++++++++
->  include/linux/fwnode.h  |  5 +++++
->  4 files changed, 77 insertions(+), 40 deletions(-)
+On Thu, 31 Mar 2022 20:09:25 -0700
+Randy Dunlap <rdunlap@infradead.org> wrote:
 
-These look good to me. FWIW:
+> @@ -5908,6 +5910,8 @@
+>  	trace_buf_size=nn[KMG]
+>  			[FTRACE] will set tracing buffer size on each cpu.
+>  
+> +	trace_clock=	[FTRACE] See Documentation/trace/ftrace.rst
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+	trace_clock=	[FTRACE] Set the clock used for tracing events
+			at boot up.
+			local - Use the per CPU time stamp counter
+				(converted into nanoseconds). Fast, but
+				depending on the architecture, may not be
+				in sync between CPUs.
+			global - Event time stamps are synchronize across
+				CPUs. May be slower than the local clock,
+				but better for some race conditions.
+			counter - Simple counting of events (1, 2, ..)
+				note, some counts may be skipped due to the
+				infrastructure grabbing the clock more than
+				once per event.
+			uptime - Use jiffies as the time stamp.
+			perf - Use the same clock that perf uses.
+			mono - Use ktime_get_mono_fast_ns() for time stamps.
+			mono_raw - Use ktime_get_raw_fast_ns() for time
+				stamps.
+			boot - Use ktime_get_boot_fast_ns() for time stamps.
+			Architectures may add more clocks. See
+			Documentation/trace/ftrace.rst for more details.
 
-thanks,
+-- Steve
 
--- 
-heikki
+
+> +
+>  	trace_event=[event-list]
+>  			[FTRACE] Set and start specified trace events in order
+>  			to facilitate early boot debugging. The event-list is a
