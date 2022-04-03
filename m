@@ -2,61 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9042D4EFF37
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Apr 2022 09:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 232314F06B7
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 Apr 2022 02:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238374AbiDBHDg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 2 Apr 2022 03:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49790 "EHLO
+        id S230388AbiDCBAd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 2 Apr 2022 21:00:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229714AbiDBHDg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 Apr 2022 03:03:36 -0400
+        with ESMTP id S230021AbiDCBAc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 Apr 2022 21:00:32 -0400
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20EA91D915A;
-        Sat,  2 Apr 2022 00:01:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365DF13CC4;
+        Sat,  2 Apr 2022 17:58:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1648882905; x=1680418905;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fLmsgl0Q4YkX0EizUHeR74OfO/1Yuf1/KhQm7/xuNO8=;
-  b=CRYLBkwTUK6pBUsKZ9LWvv5PKfV1f9WUDLzR+ZzwRMwm8fot5USS8Vt7
-   BbfMLfVYV0yuhMA1y1L1nznyYhdHvDC8p/6MKPZ6Qf5+eBvLYsos/420N
-   cg/H45cV4tbdp1R1LGnYsr0hGuFW7jDLb2iqhGIcjjbavircmt0H3YM/Z
-   y6f6E89VYstMouMZ0RAyNDeY+lMyXI/NXXuyPUBjAW4rdx9TgMQgRf4cO
-   5vP5nnQH8AF7ig6pcmvHGQT+t9Jx52MIn1mi3pFpYLPEezu5sNYmEz5BT
-   OIDLyaZ4U59Af5+IpUKlf0NJX+rArdeVeFqNXkomQg0Ueqg0MmkP5z35r
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10304"; a="260461114"
-X-IronPort-AV: E=Sophos;i="5.90,229,1643702400"; 
-   d="scan'208";a="260461114"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2022 00:01:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,229,1643702400"; 
-   d="scan'208";a="504407121"
-Received: from lkp-server02.sh.intel.com (HELO 3231c491b0e2) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 02 Apr 2022 00:01:41 -0700
-Received: from kbuild by 3231c491b0e2 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1naXlV-0001zP-4e;
-        Sat, 02 Apr 2022 07:01:41 +0000
-Date:   Sat, 2 Apr 2022 15:01:02 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     james.liu@hpe.com, rafael@kernel.org, lenb@kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rwright@hpe.com, david.chang@hpe.co, clayc@hpe.com,
-        james.liu@hpe.com
-Subject: Re: [PATCH]     ACPI: OSL: Fix the memory mapping of an ACPI GAS
- that addresses a data structure
-Message-ID: <202204021406.lxRmdIm5-lkp@intel.com>
-References: <20220401172840.1252-1-james.liu@hpe.com>
+  t=1648947519; x=1680483519;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nVAOtsgMnAV1IoOL1iOgLnzwJVC7f0kFIyd7uqIf+BM=;
+  b=a6Ip6XgyvdpY4d4ZndcKPkgqMQnC1i5HlkTiPtBYEED5Vo/BpIVino33
+   93FlTuM/H4tGGlAEg5yGluYCqgLzf9IMCfzjBdWC4hWx4MEXpl4KFng7p
+   ZritWjYJQvElXAFlrnAPd0CSzQ/pvY66n+g6WcKapkStzonpmOEzkJf8t
+   9SnoaRjPeNoMvk2OQRu1iYbBvt3wthgZ1CCtXpqKFI3+WuCWPQdl3zk9v
+   Ixt0foXwUg0cs2HlMuZeUfyPtE5HcifJBj64Q0pmDEyvrSX5FHvWzv9Rj
+   Miz0svgQbIowvVDdf0tyW/INMXA1DCiowZS5AoymRsCfXf11qukbhHpi6
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10305"; a="260525497"
+X-IronPort-AV: E=Sophos;i="5.90,231,1643702400"; 
+   d="scan'208";a="260525497"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2022 17:58:38 -0700
+X-IronPort-AV: E=Sophos;i="5.90,231,1643702400"; 
+   d="scan'208";a="548245047"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2022 17:58:37 -0700
+Subject: [PATCH] cxl/mem: Disable suspend
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     linux-cxl@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Date:   Sat, 02 Apr 2022 17:58:37 -0700
+Message-ID: <164894751774.951952.9428402449668442020.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220401172840.1252-1-james.liu@hpe.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -67,79 +57,95 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+The CXL specification claims S3 support at a hardware level, but at a
+system software level there are some missing pieces. Section 9.4 rightly
+claims that "CXL mem adapters may need aux power to retain memory
+context across S3", but there is no enumeration mechanism for the OS to
+determine if a given adapter has that support. Moreover the save state
+and resume image for the system may inadvertantly end up in a CXL device
+that needs to be restored before the save state is recoverable. I.e. a
+circular dependency that is not resolvable without a third party
+save-area.
 
-Thank you for the patch! Perhaps something to improve:
+Arrange for the cxl_mem driver to fail S3 attempts. This still nominaly
+allows for suspend, but requires unbinding all CXL memory devices before
+the suspend to ensure the typical DRAM flow is taken. The cxl_mem unbind
+flow is intended to also tear down all CXL memory regions associated
+with a given cxl_memdev.
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on v5.17 next-20220401]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+It is reasonable to assume that any device participating in a System RAM
+range published in the EFI memory map is covered by aux power and
+save-area outside the device itself. So this restriction can be
+minimized in the future once pre-existing region enumeration support
+arrives, and perhaps a spec update to clarify if the EFI memory is
+sufficent for determining the range of devices managed by
+platform-firmware for S3 support.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/james-liu-hpe-com/ACPI-OSL-Fix-the-memory-mapping-of-an-ACPI-GAS-that-addresses-a-data-structure/20220402-013755
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: x86_64-randconfig-a012 (https://download.01.org/0day-ci/archive/20220402/202204021406.lxRmdIm5-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project c4a1b07d0979e7ff20d7d541af666d822d66b566)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/594496ff7d62c6d42b3c8a436fca46cc289aea67
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review james-liu-hpe-com/ACPI-OSL-Fix-the-memory-mapping-of-an-ACPI-GAS-that-addresses-a-data-structure/20220402-013755
-        git checkout 594496ff7d62c6d42b3c8a436fca46cc289aea67
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/acpi/
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/cxl/core/memdev.c |    1 -
+ drivers/cxl/mem.c         |   26 ++++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
+index 1f76b28f9826..efe4d2e9bfef 100644
+--- a/drivers/cxl/core/memdev.c
++++ b/drivers/cxl/core/memdev.c
+@@ -251,7 +251,6 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
+ 	dev->bus = &cxl_bus_type;
+ 	dev->devt = MKDEV(cxl_mem_major, cxlmd->id);
+ 	dev->type = &cxl_memdev_type;
+-	device_set_pm_not_required(dev);
+ 	INIT_WORK(&cxlmd->detach_work, detach_memdev);
+ 
+ 	cdev = &cxlmd->cdev;
+diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+index 49a4b1c47299..0660bb1488cb 100644
+--- a/drivers/cxl/mem.c
++++ b/drivers/cxl/mem.c
+@@ -3,6 +3,7 @@
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/pm.h>
+ 
+ #include "cxlmem.h"
+ #include "cxlpci.h"
+@@ -210,10 +211,35 @@ static int cxl_mem_probe(struct device *dev)
+ 	return rc;
+ }
+ 
++static int cxl_mem_suspend(struct device *dev)
++{
++	/*
++	 * The kernel may be operating out of CXL memory on this device,
++	 * there is no spec defined way to determine whether this device
++	 * preserves contents over suspend, and there is no simple way
++	 * to arrange for the suspend image to avoid CXL memory which
++	 * would setup a circular dependency between PCI resume and save
++	 * state restoration.
++	 */
++	dev_err(dev, "CXL memory suspend not supported\n");
++	return -EBUSY;
++}
++
++static int cxl_mem_resume(struct device *dev)
++{
++	/* nothing to do since suspend is prevented */
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(cxl_pm_ops, cxl_mem_suspend, cxl_mem_resume);
++
+ static struct cxl_driver cxl_mem_driver = {
+ 	.name = "cxl_mem",
+ 	.probe = cxl_mem_probe,
+ 	.id = CXL_DEVICE_MEMORY_EXPANDER,
++	.drv = {
++		.pm = &cxl_pm_ops,
++	},
+ };
+ 
+ module_cxl_driver(cxl_mem_driver);
 
-All warnings (new ones prefixed by >>):
-
->> drivers/acpi/osl.c:463:29: warning: variable 'addr' is uninitialized when used here [-Wuninitialized]
-                   return  acpi_os_map_iomem(addr, PAGE_SIZE);
-                                             ^~~~
-   drivers/acpi/osl.c:455:10: note: initialize the variable 'addr' to silence this warning
-           u64 addr;
-                   ^
-                    = 0
-   drivers/acpi/osl.c:487:25: warning: variable 'addr' is uninitialized when used here [-Wuninitialized]
-                   map = acpi_map_lookup(addr, PAGE_SIZE);
-                                         ^~~~
-   drivers/acpi/osl.c:477:10: note: initialize the variable 'addr' to silence this warning
-           u64 addr;
-                   ^
-                    = 0
-   2 warnings generated.
-
-
-vim +/addr +463 drivers/acpi/osl.c
-
-   452	
-   453	void __iomem *acpi_os_map_generic_address(struct acpi_generic_address *gas)
-   454	{
-   455		u64 addr;
-   456	
-   457		if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
-   458			return NULL;
-   459	
-   460		/* Handle a case that GAS is used to address an ACPI data structure */
-   461		if (!gas->bit_width) {
-   462			pr_info("An ACPI data structure at 0x%llx is mapped\n", addr);
- > 463			return  acpi_os_map_iomem(addr, PAGE_SIZE);
-   464		}
-   465	
-   466		/* Handle possible alignment issues */
-   467		memcpy(&addr, &gas->address, sizeof(addr));
-   468		if (!addr)
-   469			return NULL;
-   470	
-   471		return acpi_os_map_iomem(addr, gas->bit_width / 8);
-   472	}
-   473	EXPORT_SYMBOL(acpi_os_map_generic_address);
-   474	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
