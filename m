@@ -2,46 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB55F4F07B2
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Apr 2022 07:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDFCB4F07E5
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 Apr 2022 07:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231969AbiDCFP3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 Apr 2022 01:15:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53042 "EHLO
+        id S239413AbiDCFuW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 3 Apr 2022 01:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbiDCFP3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Apr 2022 01:15:29 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7633419289;
-        Sat,  2 Apr 2022 22:13:35 -0700 (PDT)
+        with ESMTP id S239369AbiDCFuW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Apr 2022 01:50:22 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B374BA4;
+        Sat,  2 Apr 2022 22:48:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=PEgc8Ga0cnyRYRy3sepXDsniqZif9JIr9jjDkoUEBdQ=; b=arcia5dACXcwl6PBm4kdLKQ00e
-        o+b4po6tKbqKMZVRftRs0MOz/ARBR1SL4zRpNCD088wyaw+l/rX4n8jLRgiv+JD5oX5Jp2DVRCVtM
-        TEpqzQHaa93aHawO0Ees1yGVSLxDdD/+P/isouLSUUjwEjSPtVzDSBZNImmvM9XKRBRLWhziBXNr5
-        mP98OBnzolebyVuK2ufK30MfdrfD8oSeVDJRvV2q09RFzGveyNPj/XeszSH8AyXfNUgDm9VmOqO1L
-        /WcMrQk0UamQ52KlJnfk8mJt52OK8dtFYjxSXMVgqC1T0gyqF4+h20AbE6NaGk4uQaUx+54DaPUed
-        vK3iw9mA==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nasYK-004fIF-Ft; Sun, 03 Apr 2022 05:13:28 +0000
-Message-ID: <53133d81-e52c-8887-c879-615b585e3351@infradead.org>
-Date:   Sat, 2 Apr 2022 22:13:20 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 1/3 v2] Docs: admin/kernel-parameters: edit a few boot
- options
-Content-Language: en-US
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=8OckaxcOSZ2k2xdkU7ZKW69myxxJJjtrXFwWLiZFBdA=; b=tELY8MshI7tydJIGuvWsNTnZxl
+        qYIsCZzijU+t/q2OmxmN8IBVBtAS0m89bK4W3aB+oPJVNEqjhvRJCQeEMaj1VPcSs3XweDbwXv5Zp
+        KrQDiSX+1ZMj/PGjVlBvn+Gm06KbxD8BxTDRA9FxCidtPqL7PdrgSEVj7SWNSZvhyrRtaNU6dVjVT
+        KrXy8KAvQbLWDniUb4RsvoHal5WCjbV0WBg774pivTVHeKtujlzAXH4bem33SJ250iHc/LLHPWyZo
+        p6ePO8smQeqXjm4OkrRR06lknz0JUPw/vJ+K9FTiP6J6+12qTqUElDkAvK9eZ35+tkt4n21jK9ksg
+        v1w1OTpA==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nat67-00Amnh-Rp; Sun, 03 Apr 2022 05:48:23 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         Alexander Gordeev <agordeev@linux.ibm.com>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
         Sven Schnelle <svens@linux.ibm.com>,
-        linux-s390@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        linux-s390@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
         "David S. Miller" <davem@davemloft.net>,
         sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
         linux-ia64@vger.kernel.org,
@@ -51,66 +46,53 @@ Cc:     linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
         Johannes Weiner <hannes@cmpxchg.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
-References: <20220401030927.12023-1-rdunlap@infradead.org>
- <20220401030927.12023-2-rdunlap@infradead.org>
- <20220401120305.00076d14@gandalf.local.home>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20220401120305.00076d14@gandalf.local.home>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH 0/3 v3] Documentation: kernel-parameters: alphabetize and misc. fixes
+Date:   Sat,  2 Apr 2022 22:48:19 -0700
+Message-Id: <20220403054822.16868-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Alphabetize parts of kernel-parameters.txt. Alphabetize the "legends"
+in kernel-parameters.rst. Add a few and drop a few outdated legends.
 
 
-On 4/1/22 09:03, Steven Rostedt wrote:
-> On Thu, 31 Mar 2022 20:09:25 -0700
-> Randy Dunlap <rdunlap@infradead.org> wrote:
-> 
->> @@ -5908,6 +5910,8 @@
->>  	trace_buf_size=nn[KMG]
->>  			[FTRACE] will set tracing buffer size on each cpu.
->>  
->> +	trace_clock=	[FTRACE] See Documentation/trace/ftrace.rst
-> 
-> 	trace_clock=	[FTRACE] Set the clock used for tracing events
-> 			at boot up.
-> 			local - Use the per CPU time stamp counter
-> 				(converted into nanoseconds). Fast, but
-> 				depending on the architecture, may not be
-> 				in sync between CPUs.
-> 			global - Event time stamps are synchronize across
-> 				CPUs. May be slower than the local clock,
-> 				but better for some race conditions.
-> 			counter - Simple counting of events (1, 2, ..)
-> 				note, some counts may be skipped due to the
-> 				infrastructure grabbing the clock more than
-> 				once per event.
-> 			uptime - Use jiffies as the time stamp.
-> 			perf - Use the same clock that perf uses.
-> 			mono - Use ktime_get_mono_fast_ns() for time stamps.
-> 			mono_raw - Use ktime_get_raw_fast_ns() for time
-> 				stamps.
-> 			boot - Use ktime_get_boot_fast_ns() for time stamps.
-> 			Architectures may add more clocks. See
-> 			Documentation/trace/ftrace.rst for more details.
-> 
+ [PATCH 1/3 v3] Docs: admin/kernel-parameters: edit a few boot options
+ [PATCH 2/3 v3] Docs/admin: alphabetize some kernel-parameters (part 1)
+ [PATCH 3/3 v3] docs/admin: alphabetize parts of kernel-parameters.txt (part 2)
 
-Will do. Thanks.
+ Documentation/admin-guide/kernel-parameters.rst |   11 
+ Documentation/admin-guide/kernel-parameters.txt |  326 +++++++-------
+ 2 files changed, 180 insertions(+), 157 deletions(-)
 
-> 
-> 
->> +
->>  	trace_event=[event-list]
->>  			[FTRACE] Set and start specified trace events in order
->>  			to facilitate early boot debugging. The event-list is a
 
--- 
-~Randy
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linux-ia64@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-pm@vger.kernel.org
+Cc: linux-acpi@vger.kernel.org
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
