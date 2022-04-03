@@ -2,229 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A36D4F07EB
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Apr 2022 07:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81D994F0810
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 Apr 2022 08:25:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240827AbiDCFuX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 Apr 2022 01:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39222 "EHLO
+        id S232950AbiDCG1C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 3 Apr 2022 02:27:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240151AbiDCFuW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Apr 2022 01:50:22 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BCF0BCC;
-        Sat,  2 Apr 2022 22:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=WQNoMJjopelVAEED89ffOV+of291eaLHpcsVbmVHuRQ=; b=0es1+Ejv35t67D4PBnvSGY/rZV
-        sJrcHTVDcmzHeR/+6K+lfakLc/aI1HB5TCGmW2QfOxFshZaHOM9tBYnyq1dKNQVwIh1RbuLidkD/w
-        AKpCI1yVgPrc8TMLHLgaISKIp/FvU0QNPAa/TT8DhzcpnF/Xv18GC6R+sKr0LmPgtSuKJxfrwzXoh
-        95PZe1xZM8K/4VwRIi7niem8fIJVOee8liypxnGE3mA8ppSNpdEkDK9Y/zz1FnmlrXWdqZR5UauPn
-        kKFTLTTBEW3/3kTLqSt8Y949sWFATGlnXJo2RVOYvfrXw6JAwEP0VRLASyk/EDnEiKidW/mwKeGse
-        8CkrguFA==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nat68-00Amnh-OU; Sun, 03 Apr 2022 05:48:24 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        linux-s390@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        linux-ia64@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>, Len Brown <lenb@kernel.org>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
-Subject: [PATCH 1/3 v3] Docs: admin/kernel-parameters: edit a few boot options
-Date:   Sat,  2 Apr 2022 22:48:20 -0700
-Message-Id: <20220403054822.16868-2-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220403054822.16868-1-rdunlap@infradead.org>
-References: <20220403054822.16868-1-rdunlap@infradead.org>
+        with ESMTP id S232866AbiDCG1C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Apr 2022 02:27:02 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07B4369C8;
+        Sat,  2 Apr 2022 23:25:07 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id j20-20020a17090ae61400b001ca9553d073so50461pjy.5;
+        Sat, 02 Apr 2022 23:25:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+ln+ipvTDeyqH22NPT0mkIhLM/Lhh8eFnXKg/BK4KII=;
+        b=PesS8Gv/q/M/zbWHp/BYGzM5SC5p+Eec8q+PL2AG+1t+kuOOYKv5ueafawve4YshBL
+         aJ7hnxNPL5rNlBlPIGSf/eJie5s3VW3BvZkWmJ7O1/g1weRm/9FfHvy7AYDIoNUlZJpQ
+         f9Fnx7LOGhi2b3YrDWVK38zv/ePEkUS3I+5PabhOWeJ2KnkoIRgGNjFi+G+IizWInAl/
+         6RHJRFWK0L6oLABhhjrlWo65tvNzcqPr9u0xjYJx+WO+NoQmAb2tKK+FdYmOktLgazU3
+         szbFJXzXZyIEx1jwHiHuywFkzeCABiz+s6z3uwvBesm5D9pP9XK9gP9YZBfCvm9hDS47
+         evMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+ln+ipvTDeyqH22NPT0mkIhLM/Lhh8eFnXKg/BK4KII=;
+        b=JKcFiGBL+ltTK76mulH2k0d7njcDPtiw/kOyUAUfS52mOTYZNxVfYcUvW30+md1iIR
+         eNmEBda1IUVVlBVr18GbOH/5AdHe7J4DCtU5kzDJM6EAoqOnWVwoqqxm2AjVPNd2GOHr
+         pA3kSZV0KcG+33EvMPDz39rB6sHaUt2EOW5JwFVcz2B0yLo5/2j5xh1i01+C5mwRtZUm
+         aKRYhYbCIk4flRGbkVnKvFWVNWwnMUgVSyp1yfGGdB07S3bf/020jGVvm5WGbloDoxpK
+         VFukgrbWBMd5fWaPIKDKQzMte7CGskn0aFpjpfYUJD7o178+EgH7hO4B1oNaA/4PY0i8
+         zXzA==
+X-Gm-Message-State: AOAM530XRncjjeOT7WtYLd7poC6zDhIxrfYvbr1Klq9AuutK7Sy0RN/n
+        5zx7WJ81a2X9twxd5W+uu8xYCzRhaYs=
+X-Google-Smtp-Source: ABdhPJyP+oDLt5zblk1Nq5q5/xQsQ6hoHiRTswQIjsOtXphu0rQxE8hQzi43TIUdgoC3PttbflEPGw==
+X-Received: by 2002:a17:902:bd46:b0:154:b936:d1df with SMTP id b6-20020a170902bd4600b00154b936d1dfmr17850493plx.73.1648967107184;
+        Sat, 02 Apr 2022 23:25:07 -0700 (PDT)
+Received: from fedora.flets-east.jp ([2400:4050:c360:8200:8ae8:3c4:c0da:7419])
+        by smtp.gmail.com with ESMTPSA id v189-20020a622fc6000000b004fb72e95806sm7731471pfv.48.2022.04.02.23.25.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Apr 2022 23:25:06 -0700 (PDT)
+From:   Akihiko Odaki <akihiko.odaki@gmail.com>
+Cc:     "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        ak@linux.intel.com, bp@alien8.de, dan.j.williams@intel.com,
+        dave.hansen@linux.intel.com, hpa@zytor.com, knsathya@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mingo@redhat.com, rjw@rjwysocki.net,
+        sathyanarayanan.kuppuswamy@linux.intel.com, tglx@linutronix.de,
+        tony.luck@intel.com, x86@kernel.org,
+        Akihiko Odaki <akihiko.odaki@gmail.com>
+Subject: [PATCH] Revert "ACPI: processor: idle: Only flush cache on entering C3"
+Date:   Sun,  3 Apr 2022 15:23:22 +0900
+Message-Id: <20220403062322.3168-1-akihiko.odaki@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Clean up some of admin-guide/kernel-parameters.txt:
+This reverts commit 87ebbb8c612b1214f227ebb8f25442c6d163e802.
 
-a. "smt" should be "smt=" (S390)
-b. (dropped)
-c. Sparc supports the vdso= boot option
-d. make the tp_printk options (2) formatting similar to other options
-   by adding spacing
-e. add "trace_clock=" with a reference to Documentation/trace/ftrace.rst
-f. use [IA-64] as documented instead of [ia64]
-g. fix formatting and text for test_suspend=
-h. fix formatting for swapaccount=
-i. fix formatting and grammar for video.brightness_switch_enabled=
+ACPI processor power states can be transitioned in two distinct
+situations: 1. when CPU goes idle and 2. before CPU goes offline
+("playing dead") to suspend or hibernate. Case 1 is handled by
+acpi_idle_enter or acpi_idle_enter_s2idle. Case 2 is handled by
+acpi_idle_play_dead.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linux-ia64@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-pm@vger.kernel.org
-Cc: linux-acpi@vger.kernel.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
+It is necessary to flush CPU caches in case 2 even if it is not
+required to transit ACPI processor power states as CPU will go
+offline soon. However, the reverted commit incorrectly removed CPU
+cache flushing in such a condition. In fact, it made resuming from
+suspend-to-RAM occasionally fail on Lenovo ThinkPad C13 Yoga.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@gmail.com>
 ---
-v3: add trace_clock= specifics (Steven)
-v2: drop "smt-enabled" for arch/powerpc/ (Michael)
+ drivers/acpi/processor_idle.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- Documentation/admin-guide/kernel-parameters.txt |   47 ++++++++++----
- 1 file changed, 36 insertions(+), 11 deletions(-)
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index f8e9fa82cb9b..05b3985a1984 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -570,8 +570,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
+ {
+ 	struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
+ 
+-	if (cx->type == ACPI_STATE_C3)
+-		ACPI_FLUSH_CPU_CACHE();
++	ACPI_FLUSH_CPU_CACHE();
+ 
+ 	while (1) {
+ 
+-- 
+2.35.1
 
---- linux-next-20220331.orig/Documentation/admin-guide/kernel-parameters.txt
-+++ linux-next-20220331/Documentation/admin-guide/kernel-parameters.txt
-@@ -2814,7 +2814,7 @@
- 			different yeeloong laptops.
- 			Example: machtype=lemote-yeeloong-2f-7inch
- 
--	max_addr=nn[KMG]	[KNL,BOOT,ia64] All physical memory greater
-+	max_addr=nn[KMG]	[KNL,BOOT,IA-64] All physical memory greater
- 			than or equal to this physical address is ignored.
- 
- 	maxcpus=	[SMP] Maximum number of processors that	an SMP kernel
-@@ -3057,7 +3057,7 @@
- 
- 	mga=		[HW,DRM]
- 
--	min_addr=nn[KMG]	[KNL,BOOT,ia64] All physical memory below this
-+	min_addr=nn[KMG]	[KNL,BOOT,IA-64] All physical memory below this
- 			physical address is ignored.
- 
- 	mini2440=	[ARM,HW,KNL]
-@@ -5388,7 +5388,7 @@
- 				1: Fast pin select (default)
- 				2: ATC IRMode
- 
--	smt		[KNL,S390] Set the maximum number of threads (logical
-+	smt=		[KNL,S390] Set the maximum number of threads (logical
- 			CPUs) to use per physical CPU on systems capable of
- 			symmetric multithreading (SMT). Will be capped to the
- 			actual hardware limit.
-@@ -5774,8 +5774,9 @@
- 			This parameter controls use of the Protected
- 			Execution Facility on pSeries.
- 
--	swapaccount=[0|1]
--			[KNL] Enable accounting of swap in memory resource
-+	swapaccount=	[KNL]
-+			Format: [0|1]
-+			Enable accounting of swap in memory resource
- 			controller if no parameter or 1 is given or disable
- 			it if 0 is given (See Documentation/admin-guide/cgroup-v1/memory.rst)
- 
-@@ -5821,7 +5822,8 @@
- 
- 	tdfx=		[HW,DRM]
- 
--	test_suspend=	[SUSPEND][,N]
-+	test_suspend=	[SUSPEND]
-+			Format: { "mem" | "standby" | "freeze" }[,N]
- 			Specify "mem" (for Suspend-to-RAM) or "standby" (for
- 			standby suspend) or "freeze" (for suspend type freeze)
- 			as the system sleep state during system startup with
-@@ -5908,6 +5910,28 @@
- 	trace_buf_size=nn[KMG]
- 			[FTRACE] will set tracing buffer size on each cpu.
- 
-+	trace_clock=	[FTRACE] Set the clock used for tracing events
-+			at boot up.
-+			local - Use the per CPU time stamp counter
-+				(converted into nanoseconds). Fast, but
-+				depending on the architecture, may not be
-+				in sync between CPUs.
-+			global - Event time stamps are synchronize across
-+				CPUs. May be slower than the local clock,
-+				but better for some race conditions.
-+			counter - Simple counting of events (1, 2, ..)
-+				note, some counts may be skipped due to the
-+				infrastructure grabbing the clock more than
-+				once per event.
-+			uptime - Use jiffies as the time stamp.
-+			perf - Use the same clock that perf uses.
-+			mono - Use ktime_get_mono_fast_ns() for time stamps.
-+			mono_raw - Use ktime_get_raw_fast_ns() for time
-+				stamps.
-+			boot - Use ktime_get_boot_fast_ns() for time stamps.
-+			Architectures may add more clocks. See
-+			Documentation/trace/ftrace.rst for more details.
-+
- 	trace_event=[event-list]
- 			[FTRACE] Set and start specified trace events in order
- 			to facilitate early boot debugging. The event-list is a
-@@ -5930,7 +5954,7 @@
- 			See also Documentation/trace/ftrace.rst "trace options"
- 			section.
- 
--	tp_printk[FTRACE]
-+	tp_printk	[FTRACE]
- 			Have the tracepoints sent to printk as well as the
- 			tracing ring buffer. This is useful for early boot up
- 			where the system hangs or reboots and does not give the
-@@ -5952,7 +5976,7 @@
- 			frequency tracepoints such as irq or sched, can cause
- 			the system to live lock.
- 
--	tp_printk_stop_on_boot[FTRACE]
-+	tp_printk_stop_on_boot [FTRACE]
- 			When tp_printk (above) is set, it can cause a lot of noise
- 			on the console. It may be useful to only include the
- 			printing of events during boot up, as user space may
-@@ -6301,7 +6325,7 @@
- 					HIGHMEM regardless of setting
- 					of CONFIG_HIGHPTE.
- 
--	vdso=		[X86,SH]
-+	vdso=		[X86,SH,SPARC]
- 			On X86_32, this is an alias for vdso32=.  Otherwise:
- 
- 			vdso=1: enable VDSO (the default)
-@@ -6327,11 +6351,12 @@
- 	video=		[FB] Frame buffer configuration
- 			See Documentation/fb/modedb.rst.
- 
--	video.brightness_switch_enabled= [0,1]
-+	video.brightness_switch_enabled= [ACPI]
-+			Format: [0|1]
- 			If set to 1, on receiving an ACPI notify event
- 			generated by hotkey, video driver will adjust brightness
- 			level and then send out the event to user space through
--			the allocated input device; If set to 0, video driver
-+			the allocated input device. If set to 0, video driver
- 			will only send out the event without touching backlight
- 			brightness level.
- 			default: 1
