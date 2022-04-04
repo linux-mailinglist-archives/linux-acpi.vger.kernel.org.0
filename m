@@ -2,34 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA77E4F17E1
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 17:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF13D4F17E6
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 17:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378402AbiDDPFe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Apr 2022 11:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49916 "EHLO
+        id S1378393AbiDDPFW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Apr 2022 11:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378408AbiDDPFZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 11:05:25 -0400
+        with ESMTP id S1378394AbiDDPFV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 11:05:21 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A197512C;
-        Mon,  4 Apr 2022 08:03:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 194802F394;
+        Mon,  4 Apr 2022 08:03:24 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id cb6601044555c095; Mon, 4 Apr 2022 17:03:25 +0200
+ id f11a583fad584dbf; Mon, 4 Apr 2022 17:03:23 +0200
 Received: from kreacher.localnet (unknown [213.134.181.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 6B3AC66BCD2;
-        Mon,  4 Apr 2022 17:03:24 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 9392D66BCD2;
+        Mon,  4 Apr 2022 17:03:22 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>
-Subject: [PATCH v1 1/3] ACPI: PM: Convert debug message in acpi_device_get_power()
-Date:   Mon, 04 Apr 2022 17:00:45 +0200
-Message-ID: <4748430.31r3eYUQgx@kreacher>
+Subject: [PATCH v1 2/3] ACPI: PM: Change pr_fmt() in device_pm.c
+Date:   Mon, 04 Apr 2022 17:02:00 +0200
+Message-ID: <2254768.ElGaqSPkdT@kreacher>
 In-Reply-To: <5575732.DvuYhMxLoT@kreacher>
 References: <5575732.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
@@ -51,31 +51,31 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Convert the debug message printed by acpi_device_get_power() to
-acpi_handle_debug(), because that function is also called when
-the ACPI device object name has not been set yet and the dev_dbg()
-message printed by it at that time is not useful.
+All messages printed by functions in this file either contain
+the "ACPI" or "acpi" string regardless of the format, or they don't
+need to contain it at all.
+
+In the former case, the "ACPI:" string added by the format is
+redundant, so drop it from there.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/device_pm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/device_pm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 Index: linux-pm/drivers/acpi/device_pm.c
 ===================================================================
 --- linux-pm.orig/drivers/acpi/device_pm.c
 +++ linux-pm/drivers/acpi/device_pm.c
-@@ -130,8 +130,8 @@ int acpi_device_get_power(struct acpi_de
- 	*state = result;
+@@ -10,7 +10,7 @@
+  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  */
  
-  out:
--	dev_dbg(&device->dev, "Device power state is %s\n",
--		acpi_power_state_string(*state));
-+	acpi_handle_debug(device->handle, "Power state: %s\n",
-+			  acpi_power_state_string(*state));
+-#define pr_fmt(fmt) "ACPI: PM: " fmt
++#define pr_fmt(fmt) "PM: " fmt
  
- 	return 0;
- }
+ #include <linux/acpi.h>
+ #include <linux/export.h>
 
 
 
