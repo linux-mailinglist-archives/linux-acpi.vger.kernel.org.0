@@ -2,111 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81D994F0810
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Apr 2022 08:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8764F139D
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 13:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232950AbiDCG1C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 Apr 2022 02:27:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49290 "EHLO
+        id S243187AbiDDLMO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Apr 2022 07:12:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232866AbiDCG1C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Apr 2022 02:27:02 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07B4369C8;
-        Sat,  2 Apr 2022 23:25:07 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id j20-20020a17090ae61400b001ca9553d073so50461pjy.5;
-        Sat, 02 Apr 2022 23:25:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+ln+ipvTDeyqH22NPT0mkIhLM/Lhh8eFnXKg/BK4KII=;
-        b=PesS8Gv/q/M/zbWHp/BYGzM5SC5p+Eec8q+PL2AG+1t+kuOOYKv5ueafawve4YshBL
-         aJ7hnxNPL5rNlBlPIGSf/eJie5s3VW3BvZkWmJ7O1/g1weRm/9FfHvy7AYDIoNUlZJpQ
-         f9Fnx7LOGhi2b3YrDWVK38zv/ePEkUS3I+5PabhOWeJ2KnkoIRgGNjFi+G+IizWInAl/
-         6RHJRFWK0L6oLABhhjrlWo65tvNzcqPr9u0xjYJx+WO+NoQmAb2tKK+FdYmOktLgazU3
-         szbFJXzXZyIEx1jwHiHuywFkzeCABiz+s6z3uwvBesm5D9pP9XK9gP9YZBfCvm9hDS47
-         evMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+ln+ipvTDeyqH22NPT0mkIhLM/Lhh8eFnXKg/BK4KII=;
-        b=JKcFiGBL+ltTK76mulH2k0d7njcDPtiw/kOyUAUfS52mOTYZNxVfYcUvW30+md1iIR
-         eNmEBda1IUVVlBVr18GbOH/5AdHe7J4DCtU5kzDJM6EAoqOnWVwoqqxm2AjVPNd2GOHr
-         pA3kSZV0KcG+33EvMPDz39rB6sHaUt2EOW5JwFVcz2B0yLo5/2j5xh1i01+C5mwRtZUm
-         aKRYhYbCIk4flRGbkVnKvFWVNWwnMUgVSyp1yfGGdB07S3bf/020jGVvm5WGbloDoxpK
-         VFukgrbWBMd5fWaPIKDKQzMte7CGskn0aFpjpfYUJD7o178+EgH7hO4B1oNaA/4PY0i8
-         zXzA==
-X-Gm-Message-State: AOAM530XRncjjeOT7WtYLd7poC6zDhIxrfYvbr1Klq9AuutK7Sy0RN/n
-        5zx7WJ81a2X9twxd5W+uu8xYCzRhaYs=
-X-Google-Smtp-Source: ABdhPJyP+oDLt5zblk1Nq5q5/xQsQ6hoHiRTswQIjsOtXphu0rQxE8hQzi43TIUdgoC3PttbflEPGw==
-X-Received: by 2002:a17:902:bd46:b0:154:b936:d1df with SMTP id b6-20020a170902bd4600b00154b936d1dfmr17850493plx.73.1648967107184;
-        Sat, 02 Apr 2022 23:25:07 -0700 (PDT)
-Received: from fedora.flets-east.jp ([2400:4050:c360:8200:8ae8:3c4:c0da:7419])
-        by smtp.gmail.com with ESMTPSA id v189-20020a622fc6000000b004fb72e95806sm7731471pfv.48.2022.04.02.23.25.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Apr 2022 23:25:06 -0700 (PDT)
-From:   Akihiko Odaki <akihiko.odaki@gmail.com>
-Cc:     "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        ak@linux.intel.com, bp@alien8.de, dan.j.williams@intel.com,
-        dave.hansen@linux.intel.com, hpa@zytor.com, knsathya@kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mingo@redhat.com, rjw@rjwysocki.net,
-        sathyanarayanan.kuppuswamy@linux.intel.com, tglx@linutronix.de,
-        tony.luck@intel.com, x86@kernel.org,
-        Akihiko Odaki <akihiko.odaki@gmail.com>
-Subject: [PATCH] Revert "ACPI: processor: idle: Only flush cache on entering C3"
-Date:   Sun,  3 Apr 2022 15:23:22 +0900
-Message-Id: <20220403062322.3168-1-akihiko.odaki@gmail.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S1359282AbiDDLMN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 07:12:13 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 996B53B54F;
+        Mon,  4 Apr 2022 04:10:17 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5010BD6E;
+        Mon,  4 Apr 2022 04:10:17 -0700 (PDT)
+Received: from donnerap.arm.com (donnerap.cambridge.arm.com [10.1.196.172])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DC8853F718;
+        Mon,  4 Apr 2022 04:10:15 -0700 (PDT)
+From:   Andre Przywara <andre.przywara@arm.com>
+To:     Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [RFC PATCH] irqchip/gic/gic-v3: prevent GSI to SGI translations
+Date:   Mon,  4 Apr 2022 12:08:42 +0100
+Message-Id: <20220404110842.2882446-1-andre.przywara@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This reverts commit 87ebbb8c612b1214f227ebb8f25442c6d163e802.
+At the moment the GIC IRQ domain translation routine happily converts
+ACPI table GSI numbers below 16 to GIC SGIs (Software Generated
+Interrupts aka IPIs). On the Devicetree side we explicitly forbid this
+translation, actually the function will never return HWIRQs below 16 when
+using a DT based domain translation.
 
-ACPI processor power states can be transitioned in two distinct
-situations: 1. when CPU goes idle and 2. before CPU goes offline
-("playing dead") to suspend or hibernate. Case 1 is handled by
-acpi_idle_enter or acpi_idle_enter_s2idle. Case 2 is handled by
-acpi_idle_play_dead.
+We expect SGIs to be handled in the first part of the function, and any
+further occurrence should be treated as a firmware bug, so add a check
+and print to report this explicitly and avoid lengthy debug sessions.
 
-It is necessary to flush CPU caches in case 2 even if it is not
-required to transit ACPI processor power states as CPU will go
-offline soon. However, the reverted commit incorrectly removed CPU
-cache flushing in such a condition. In fact, it made resuming from
-suspend-to-RAM occasionally fail on Lenovo ThinkPad C13 Yoga.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@gmail.com>
+Fixes: 64b499d8df40 ("irqchip/gic-v3: Configure SGIs as standard interrupts")
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
 ---
- drivers/acpi/processor_idle.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Hi,
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index f8e9fa82cb9b..05b3985a1984 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -570,8 +570,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
- {
- 	struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
+marking this as an RFC because:
+- I don't know if we really can forbid IPIs in ACPI tables. We certainly
+  pushed back against this multiple times on the DT side.
+- I don't know if this is the right place to filter this out.
+
+This was triggered by an SSDT table wrongly containing an interrupt
+resource entry of "0", for a debug UART without an interrupt line
+connected [1] (about to be fixed). This overwrote the IPI0 trigger method
+to "level", which prevented SGI0 to be enabled again *after* a CPU
+offline/online cycle.
+It required some debugging to find this firmware problem, so I am
+proposing an explicit error message, and to actually deny registering
+this interrupt.
+
+[1] https://github.com/tianocore/edk2-platforms/blob/master/Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManager.c#L150-L157
+
+Cheers,
+Andre
+
+ drivers/irqchip/irq-gic-v3.c | 6 ++++++
+ drivers/irqchip/irq-gic.c    | 6 ++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 0efe1a9a9f3b..c946ef3067d2 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -1466,6 +1466,12 @@ static int gic_irq_domain_translate(struct irq_domain *d,
+ 		if(fwspec->param_count != 2)
+ 			return -EINVAL;
  
--	if (cx->type == ACPI_STATE_C3)
--		ACPI_FLUSH_CPU_CACHE();
-+	ACPI_FLUSH_CPU_CACHE();
++		if (fwspec->param[0] < 16) {
++			pr_err(FW_BUG "Illegal GSI%d translation request\n",
++			       fwspec->param[0]);
++			return -EINVAL;
++		}
++
+ 		*hwirq = fwspec->param[0];
+ 		*type = fwspec->param[1];
  
- 	while (1) {
+diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
+index 58ba835bee1f..09c710ecc387 100644
+--- a/drivers/irqchip/irq-gic.c
++++ b/drivers/irqchip/irq-gic.c
+@@ -1123,6 +1123,12 @@ static int gic_irq_domain_translate(struct irq_domain *d,
+ 		if(fwspec->param_count != 2)
+ 			return -EINVAL;
+ 
++		if (fwspec->param[0] < 16) {
++			pr_err(FW_BUG "Illegal GSI%d translation request\n",
++			       fwspec->param[0]);
++			return -EINVAL;
++		}
++
+ 		*hwirq = fwspec->param[0];
+ 		*type = fwspec->param[1];
  
 -- 
-2.35.1
+2.25.1
 
