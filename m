@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9557C4F151E
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 14:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F4714F151F
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 14:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347576AbiDDMpj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Apr 2022 08:45:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53674 "EHLO
+        id S233970AbiDDMpn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Apr 2022 08:45:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347754AbiDDMpd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 08:45:33 -0400
+        with ESMTP id S1347542AbiDDMpn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 08:45:43 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57753DFBE
-        for <linux-acpi@vger.kernel.org>; Mon,  4 Apr 2022 05:43:37 -0700 (PDT)
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KX9Pq4TV3z685B2;
-        Mon,  4 Apr 2022 20:41:35 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C5E51AF01
+        for <linux-acpi@vger.kernel.org>; Mon,  4 Apr 2022 05:43:47 -0700 (PDT)
+Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KX9QN2d1Yz686H8;
+        Mon,  4 Apr 2022 20:42:04 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
+ fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 4 Apr 2022 14:43:35 +0200
+ 15.1.2375.24; Mon, 4 Apr 2022 14:43:45 +0200
 Received: from A2006125610.china.huawei.com (10.47.93.34) by
  lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 4 Apr 2022 13:43:27 +0100
+ 15.1.2375.24; Mon, 4 Apr 2022 13:43:37 +0100
 From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 To:     <linux-arm-kernel@lists.infradead.org>,
         <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
@@ -34,15 +34,14 @@ CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
         <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
         <jon@solid-run.com>, <eric.auger@redhat.com>,
         <laurentiu.tudor@nxp.com>, <yangyicong@huawei.com>
-Subject: [PATCH v9 04/11] ACPI/IORT: Provide a generic helper to retrieve reserve regions
-Date:   Mon, 4 Apr 2022 13:42:02 +0100
-Message-ID: <20220404124209.1086-5-shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH v9 05/11] iommu/dma: Introduce a helper to remove reserved regions
+Date:   Mon, 4 Apr 2022 13:42:03 +0100
+Message-ID: <20220404124209.1086-6-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20220404124209.1086-1-shameerali.kolothum.thodi@huawei.com>
 References: <20220404124209.1086-1-shameerali.kolothum.thodi@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.47.93.34]
 X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
  lhreml710-chm.china.huawei.com (10.201.108.61)
@@ -56,104 +55,115 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently IORT provides a helper to retrieve HW MSI reserve regions.
-Change this to a generic helper to retrieve any IORT related reserve
-regions. This will be useful when we add support for RMR nodes in
-subsequent patches.
+Currently drivers use generic_iommu_put_resv_regions() to remove
+reserved regions. Introduce a dma-iommu specific reserve region
+removal helper(iommu_dma_put_resv_regions()). This will be useful
+when we introduce reserve regions with any firmware specific memory
+allocations(eg: IORT RMR) that have to be freed. Also update current
+users of iommu_dma_get_resv_regions() to use iommu_dma_put_resv_regions()
+for removal.
 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- drivers/acpi/arm64/iort.c | 23 +++++++++++++++--------
- drivers/iommu/dma-iommu.c |  2 +-
- include/linux/acpi_iort.h |  4 ++--
- 3 files changed, 18 insertions(+), 11 deletions(-)
+ drivers/iommu/apple-dart.c                  | 2 +-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 +-
+ drivers/iommu/arm/arm-smmu/arm-smmu.c       | 2 +-
+ drivers/iommu/dma-iommu.c                   | 6 ++++++
+ drivers/iommu/virtio-iommu.c                | 2 +-
+ include/linux/dma-iommu.h                   | 5 +++++
+ 6 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index c5ebb2be9a19..63acc3c5b275 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -830,16 +830,13 @@ static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
- 	return NULL;
- }
- 
--/**
-- * iort_iommu_msi_get_resv_regions - Reserved region driver helper
-- *                                   for HW MSI regions.
-- * @dev: Device from iommu_get_resv_regions()
-- * @head: Reserved region list from iommu_get_resv_regions()
-- *
-+/*
-+ * Retrieve platform specific HW MSI reserve regions.
-  * The ITS interrupt translation spaces (ITS_base + SZ_64K, SZ_64K)
-  * associated with the device are the HW MSI reserved regions.
-  */
--void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
-+static void
-+iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
- {
- 	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
- 	struct acpi_iort_its_group *its;
-@@ -888,6 +885,16 @@ void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
- 	}
- }
- 
-+/**
-+ * iort_iommu_get_resv_regions - Generic helper to retrieve reserved regions.
-+ * @dev: Device from iommu_get_resv_regions()
-+ * @head: Reserved region list from iommu_get_resv_regions()
-+ */
-+void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head)
-+{
-+	iort_iommu_msi_get_resv_regions(dev, head);
-+}
-+
- static inline bool iort_iommu_driver_enabled(u8 type)
- {
- 	switch (type) {
-@@ -1052,7 +1059,7 @@ int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
- }
- 
- #else
--void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
-+void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head)
- { }
- int iort_iommu_configure_id(struct device *dev, const u32 *input_id)
- { return -ENODEV; }
+diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
+index decafb07ad08..6c198a08e50f 100644
+--- a/drivers/iommu/apple-dart.c
++++ b/drivers/iommu/apple-dart.c
+@@ -771,7 +771,7 @@ static const struct iommu_ops apple_dart_iommu_ops = {
+ 	.of_xlate = apple_dart_of_xlate,
+ 	.def_domain_type = apple_dart_def_domain_type,
+ 	.get_resv_regions = apple_dart_get_resv_regions,
+-	.put_resv_regions = generic_iommu_put_resv_regions,
++	.put_resv_regions = iommu_dma_put_resv_regions,
+ 	.pgsize_bitmap = -1UL, /* Restricted during dart probe */
+ 	.default_domain_ops = &(const struct iommu_domain_ops) {
+ 		.attach_dev	= apple_dart_attach_dev,
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 627a3ed5ee8f..efa38b4411f3 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -2847,7 +2847,7 @@ static struct iommu_ops arm_smmu_ops = {
+ 	.device_group		= arm_smmu_device_group,
+ 	.of_xlate		= arm_smmu_of_xlate,
+ 	.get_resv_regions	= arm_smmu_get_resv_regions,
+-	.put_resv_regions	= generic_iommu_put_resv_regions,
++	.put_resv_regions	= iommu_dma_put_resv_regions,
+ 	.dev_has_feat		= arm_smmu_dev_has_feature,
+ 	.dev_feat_enabled	= arm_smmu_dev_feature_enabled,
+ 	.dev_enable_feat	= arm_smmu_dev_enable_feature,
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+index 568cce590ccc..9a5b785d28fd 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+@@ -1589,7 +1589,7 @@ static struct iommu_ops arm_smmu_ops = {
+ 	.device_group		= arm_smmu_device_group,
+ 	.of_xlate		= arm_smmu_of_xlate,
+ 	.get_resv_regions	= arm_smmu_get_resv_regions,
+-	.put_resv_regions	= generic_iommu_put_resv_regions,
++	.put_resv_regions	= iommu_dma_put_resv_regions,
+ 	.def_domain_type	= arm_smmu_def_domain_type,
+ 	.pgsize_bitmap		= -1UL, /* Restricted during device attach */
+ 	.owner			= THIS_MODULE,
 diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 09f6e1c0f9c0..93d76b666888 100644
+index 93d76b666888..44e3f3feaab6 100644
 --- a/drivers/iommu/dma-iommu.c
 +++ b/drivers/iommu/dma-iommu.c
-@@ -384,7 +384,7 @@ void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
- {
- 
- 	if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode))
--		iort_iommu_msi_get_resv_regions(dev, list);
-+		iort_iommu_get_resv_regions(dev, list);
- 
+@@ -389,6 +389,12 @@ void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
  }
  EXPORT_SYMBOL(iommu_dma_get_resv_regions);
-diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-index a8198b83753d..e5d2de9caf7f 100644
---- a/include/linux/acpi_iort.h
-+++ b/include/linux/acpi_iort.h
-@@ -36,7 +36,7 @@ int iort_pmsi_get_dev_id(struct device *dev, u32 *dev_id);
- /* IOMMU interface */
- int iort_dma_get_ranges(struct device *dev, u64 *size);
- int iort_iommu_configure_id(struct device *dev, const u32 *id_in);
--void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
-+void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head);
- phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
- #else
- static inline void acpi_iort_init(void) { }
-@@ -52,7 +52,7 @@ static inline int iort_dma_get_ranges(struct device *dev, u64 *size)
- static inline int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
- { return -ENODEV; }
- static inline
--void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
-+void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head)
- { }
  
- static inline phys_addr_t acpi_iort_dma_get_max_cpu_address(void)
++void iommu_dma_put_resv_regions(struct device *dev, struct list_head *list)
++{
++	generic_iommu_put_resv_regions(dev, list);
++}
++EXPORT_SYMBOL(iommu_dma_put_resv_regions);
++
+ static int cookie_init_hw_msi_region(struct iommu_dma_cookie *cookie,
+ 		phys_addr_t start, phys_addr_t end)
+ {
+diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
+index 25be4b822aa0..b8fea7576bbd 100644
+--- a/drivers/iommu/virtio-iommu.c
++++ b/drivers/iommu/virtio-iommu.c
+@@ -1013,7 +1013,7 @@ static struct iommu_ops viommu_ops = {
+ 	.release_device		= viommu_release_device,
+ 	.device_group		= viommu_device_group,
+ 	.get_resv_regions	= viommu_get_resv_regions,
+-	.put_resv_regions	= generic_iommu_put_resv_regions,
++	.put_resv_regions	= iommu_dma_put_resv_regions,
+ 	.of_xlate		= viommu_of_xlate,
+ 	.owner			= THIS_MODULE,
+ 	.default_domain_ops = &(const struct iommu_domain_ops) {
+diff --git a/include/linux/dma-iommu.h b/include/linux/dma-iommu.h
+index 24607dc3c2ac..0628db1e3272 100644
+--- a/include/linux/dma-iommu.h
++++ b/include/linux/dma-iommu.h
+@@ -37,6 +37,7 @@ void iommu_dma_compose_msi_msg(struct msi_desc *desc,
+ 			       struct msi_msg *msg);
+ 
+ void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list);
++void iommu_dma_put_resv_regions(struct device *dev, struct list_head *list);
+ 
+ void iommu_dma_free_cpu_cached_iovas(unsigned int cpu,
+ 		struct iommu_domain *domain);
+@@ -89,5 +90,9 @@ static inline void iommu_dma_get_resv_regions(struct device *dev, struct list_he
+ {
+ }
+ 
++static inline void iommu_dma_put_resv_regions(struct device *dev, struct list_head *list)
++{
++}
++
+ #endif	/* CONFIG_IOMMU_DMA */
+ #endif	/* __DMA_IOMMU_H */
 -- 
 2.25.1
 
