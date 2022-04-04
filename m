@@ -2,143 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C621B4F152E
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 14:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 524A94F16A3
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 15:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347696AbiDDMqp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Apr 2022 08:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58052 "EHLO
+        id S1376684AbiDDOAL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Apr 2022 10:00:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347689AbiDDMqo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 08:46:44 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E103C739
-        for <linux-acpi@vger.kernel.org>; Mon,  4 Apr 2022 05:44:48 -0700 (PDT)
-Received: from fraeml712-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KX9QC3msTz67wsC;
-        Mon,  4 Apr 2022 20:41:55 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml712-chm.china.huawei.com (10.206.15.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 4 Apr 2022 14:44:46 +0200
-Received: from A2006125610.china.huawei.com (10.47.93.34) by
- lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 4 Apr 2022 13:44:38 +0100
-From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-To:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
-CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
-        <joro@8bytes.org>, <robin.murphy@arm.com>, <will@kernel.org>,
-        <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
-        <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
-        <jon@solid-run.com>, <eric.auger@redhat.com>,
-        <laurentiu.tudor@nxp.com>, <yangyicong@huawei.com>
-Subject: [PATCH v9 11/11] iommu/arm-smmu: Get associated RMR info and install bypass SMR
-Date:   Mon, 4 Apr 2022 13:42:09 +0100
-Message-ID: <20220404124209.1086-12-shameerali.kolothum.thodi@huawei.com>
-X-Mailer: git-send-email 2.12.0.windows.1
-In-Reply-To: <20220404124209.1086-1-shameerali.kolothum.thodi@huawei.com>
-References: <20220404124209.1086-1-shameerali.kolothum.thodi@huawei.com>
+        with ESMTP id S1355704AbiDDOAL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 10:00:11 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC383EBB8
+        for <linux-acpi@vger.kernel.org>; Mon,  4 Apr 2022 06:58:15 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id r2so11285909iod.9
+        for <linux-acpi@vger.kernel.org>; Mon, 04 Apr 2022 06:58:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=OzLduqLdlph/C3MBg4rY8qTwRp/ibnBbeg0V9G2gDQo=;
+        b=RBo/+MytuYYGRGXioa2gynomK3dazn9Dq04nmULN0T5KopMW5sLL2FxojJk0PqjzVI
+         XanqFb0zlwTd+1LaQlAYiQ2XeW/IsG6oD5yaZ4TB1vF4Yg3kLVqXvXJkxGfAS6AfIbT3
+         Ua0BpDWcN6oePU9vuYMzZMVS5ADeebwtq5e1Gu8rp4WbpGLNzggAaUg0MD5nWfsqDntb
+         zgFM6H+JXkVb7O3YUg49RkWXrWb44mjD89ZELTGSY8QYDfYNLHT+YIjisbJfDWnvQN/Q
+         gGTkReqbB+a3x143FenxWGr9k6qwCqtSEVFmwah1u481xSpOV+rqxBe3BNhDVHm3t37F
+         2GXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=OzLduqLdlph/C3MBg4rY8qTwRp/ibnBbeg0V9G2gDQo=;
+        b=1v2VLyxBdu3U0j3DNopuLq8r5KF/TTHZdRjvmzoGsoiM9gHdeNKJGjifxK2sc3FxFT
+         yRm92ICyl48wkmMI6d6h0I/HSx/5VijHbN9WkvCvs51FE3KWMbS6rcfvmeflIUyGc7ez
+         d5BLddf+WDj4pHTVqwZUxZdbnwtRGMi9sCnfByWN2FoOPzkrz0NB//Xm/kxgqkgZrZU0
+         zQEF9F1fWKU0AcvwdvNEKFbgQa6QiJuIaqanvubmE/pi6Rgh0go5Rs/XM5hcjbiboy+g
+         K1GK696Uj/W6fD2coqliPmWTUVt5TqHmHlN41Y1aXusln4c1ywnSs3HS6IhV4O8KgWKO
+         +igg==
+X-Gm-Message-State: AOAM533zQGxMRS0eLgxD88YXh5mxtjA5T1Mmspx0xt6oS7sHsSbtY0HR
+        G4dhv8WPoJYxQL3dL2gpUIZCc0OC7HCv2VUGEXU=
+X-Google-Smtp-Source: ABdhPJyTqbjEifgvNiyeW9maFcGb/36L9a4PBk9gp1v1ogxP+jXSsK2/SMhzEGbGnbW0dZbwZuYdCWW/fViTPMCgMJ0=
+X-Received: by 2002:a5d:94c2:0:b0:60b:bd34:bb6f with SMTP id
+ y2-20020a5d94c2000000b0060bbd34bb6fmr75200ior.32.1649080695240; Mon, 04 Apr
+ 2022 06:58:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.47.93.34]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6602:2c8a:0:0:0:0 with HTTP; Mon, 4 Apr 2022 06:58:14
+ -0700 (PDT)
+From:   serge amidal <amidalserge1@gmail.com>
+Date:   Mon, 4 Apr 2022 06:58:14 -0700
+Message-ID: <CA+1711h2xnejbm=bXLtPEkG=AUbV05tjBaA1RDY-vTzJzuccsA@mail.gmail.com>
+Subject: message
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jon Nettleton <jon@solid-run.com>
-
-Check if there is any RMR info associated with the devices behind
-the SMMU and if any, install bypass SMRs for them. This is to
-keep any ongoing traffic associated with these devices alive
-when we enable/reset SMMU during probe().
-
-Signed-off-by: Jon Nettleton <jon@solid-run.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
----
- drivers/iommu/arm/arm-smmu/arm-smmu.c | 52 +++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
-
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-index 9a5b785d28fd..d1d0473b8b88 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-@@ -2068,6 +2068,54 @@ err_reset_platform_ops: __maybe_unused;
- 	return err;
- }
- 
-+static void arm_smmu_rmr_install_bypass_smr(struct arm_smmu_device *smmu)
-+{
-+	struct list_head rmr_list;
-+	struct iommu_resv_region *e;
-+	int idx, cnt = 0;
-+	u32 reg;
-+
-+	INIT_LIST_HEAD(&rmr_list);
-+	iort_get_rmr_sids(dev_fwnode(smmu->dev), &rmr_list);
-+
-+	/*
-+	 * Rather than trying to look at existing mappings that
-+	 * are setup by the firmware and then invalidate the ones
-+	 * that do no have matching RMR entries, just disable the
-+	 * SMMU until it gets enabled again in the reset routine.
-+	 */
-+	reg = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_sCR0);
-+	reg |= ARM_SMMU_sCR0_CLIENTPD;
-+	arm_smmu_gr0_write(smmu, ARM_SMMU_GR0_sCR0, reg);
-+
-+	list_for_each_entry(e, &rmr_list, list) {
-+		const u32 *sids = e->fw_data.rmr.sids;
-+		u32 num_sids = e->fw_data.rmr.num_sids;
-+		int i;
-+
-+		for (i = 0; i < num_sids; i++) {
-+			idx = arm_smmu_find_sme(smmu, sids[i], ~0);
-+			if (idx < 0)
-+				continue;
-+
-+			if (smmu->s2crs[idx].count == 0) {
-+				smmu->smrs[idx].id = sids[i];
-+				smmu->smrs[idx].mask = 0;
-+				smmu->smrs[idx].valid = true;
-+			}
-+			smmu->s2crs[idx].count++;
-+			smmu->s2crs[idx].type = S2CR_TYPE_BYPASS;
-+			smmu->s2crs[idx].privcfg = S2CR_PRIVCFG_DEFAULT;
-+
-+			cnt++;
-+		}
-+	}
-+
-+	dev_notice(smmu->dev, "\tpreserved %d boot mapping%s\n", cnt,
-+		   cnt == 1 ? "" : "s");
-+	iort_put_rmr_sids(dev_fwnode(smmu->dev), &rmr_list);
-+}
-+
- static int arm_smmu_device_probe(struct platform_device *pdev)
- {
- 	struct resource *res;
-@@ -2189,6 +2237,10 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
- 	}
- 
- 	platform_set_drvdata(pdev, smmu);
-+
-+	/* Check for RMRs and install bypass SMRs if any */
-+	arm_smmu_rmr_install_bypass_smr(smmu);
-+
- 	arm_smmu_device_reset(smmu);
- 	arm_smmu_test_smr_masks(smmu);
- 
--- 
-2.25.1
-
+Hello
+ I need your urgent help to transfer an abandoned fund
+to your account within 10-14 days if you are interested, reply to me
+with your information for more details. your first and last name: -. Your
+the country:-. your phone number. : -.
+ Please reply to this email address (sergeamidal@gmail.com)
+ Best regards
+Amidal Serge
