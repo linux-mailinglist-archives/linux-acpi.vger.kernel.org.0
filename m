@@ -2,164 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF61B4F190F
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 17:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A584F1D19
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Apr 2022 23:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378804AbiDDQBs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Apr 2022 12:01:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33960 "EHLO
+        id S1358333AbiDDVaE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Apr 2022 17:30:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242759AbiDDQBs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 12:01:48 -0400
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E649D245A5;
-        Mon,  4 Apr 2022 08:59:51 -0700 (PDT)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-2e5e31c34bfso104471147b3.10;
-        Mon, 04 Apr 2022 08:59:51 -0700 (PDT)
+        with ESMTP id S1379469AbiDDRLc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Apr 2022 13:11:32 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53D8E13D16;
+        Mon,  4 Apr 2022 10:09:35 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id p10so18475000lfa.12;
+        Mon, 04 Apr 2022 10:09:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :in-reply-to;
+        bh=gwfWMGKfVs8N4QDtqO/np4tSwyUv3PJ9EpKeZ9+Gmts=;
+        b=iYGYvS4JUYRKeQVLHnI6WjDuv2/uD5+Hux77BOMXCf+m6zchU8QfKW+oePlxqttUZ6
+         IsZ6aozT0IWKNLzLj9dzNjnGXMOn6NvCZ+uh7bfenLfhi4gt0+4niGSY6BjbDAR0nfF2
+         Y02Hh2qPh62Ac7xFbNOBaU3AMGJNzZZlIOJ0qIrVngJ5Vhldxgz36rnEbQsoGtzP+nYE
+         mteSKaDdgLYnMZBt/d85T2UaaM1UU2bSW1len+ZGmYoapr4Qsofq9/u5xpZ8rWzB8yKi
+         bTvy4m13FDOTzVLG6D4ZzQ32fA3FeCZxXdii3P/Gp9p15lXpmLa+g9Q5CggHfp8sk7FI
+         036w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=w7ocDMuZoyG16WXF5ipj2JQf4AK4I9deIE3Jm5Bs/xc=;
-        b=P/Df+aT0y9hrhXdfv/bPeNgjQqqF6kfMvONu6fRJcBsUA1hRxsve/fckaqkFgBO+vY
-         aucQLxNq0AI3yryHtViHsHggd+95t46c4n1r1MtOmI9sD6NS/kdAHRKmaQ46PKLQ9KoL
-         dtKxJY8xlKyHnEikzXgYwigBw5yCbPGoKoWjZCL/yNGVf4+Qkge3Z4pFvEAj7aTICltn
-         eVs81PTD3UQwJdW57puke/E9qOqHrTQHYxZ0HTxCLbkRy2zKSAYi+brgC0EQiV+h1t11
-         G/H9E83nzLCpxiBkAGNZ4dGkvN6lemN/E/hX8/ilrqMNApAuk3wMi6+5oEXF7HSX+N0J
-         QhwA==
-X-Gm-Message-State: AOAM5327IJT3oa7H8AtR1/w2mr7bXHw4qwdg55vOZswvldOgKD87ldE+
-        Q68khFnlXamNCzIcZOoAtjuXwBUec8nJdwqxCwabO+7E
-X-Google-Smtp-Source: ABdhPJyM8jOQfNwC1LsuoX5wt2+Tez+WgTblGOwGdMIPsSlhv9ZXF+HmUFRB3Pb+p33UR5vpweNUm7aYvABMhBWTvO0=
-X-Received: by 2002:a81:36cf:0:b0:2e5:2597:a026 with SMTP id
- d198-20020a8136cf000000b002e52597a026mr567162ywa.301.1649087991154; Mon, 04
- Apr 2022 08:59:51 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:in-reply-to;
+        bh=gwfWMGKfVs8N4QDtqO/np4tSwyUv3PJ9EpKeZ9+Gmts=;
+        b=pfm9p5ZaAwelSPQzFssxKnZLVbiSu8SzCO7NkLEegboeIauOQqkiXRAFdFTI7VvqT6
+         8Uoutw2ArKSm/u7t5WsMT8wKaAbIHJ7e/zf5QmWPFgymRx2t6dNfVDkZaFDOlAHVgF5N
+         ewBV4H/YV3csDrMyZOQY9QvX3iJsKBVQDs4LqiTKOY7RzrZSmA11xvvxGBq/fX918SxC
+         OLBl5cPE+lWdfWCDnHIM5d4avgAkMWBN8S2xlMxRiAUFwf0wKE09kbpxQwagX57Skkw4
+         8B0695XxUcPuk8HZACZK7CLpJmADBTA3CwPWqwiakGduzI95NFqSwT29r0J1BedfKms5
+         lFqg==
+X-Gm-Message-State: AOAM531JwdiyrSLCiXfrE1XODoCP7fjD6mOV9tLpgkmRIsTX+x5XKA5u
+        nBW6kG8ui7XsB5wgShWK0Ig=
+X-Google-Smtp-Source: ABdhPJymPq1jnMf+wQecstTGdV1RK252ztorAixRVQDiZYwqgawOyGxf5Bq24+2Usv9dC1mnBao0rA==
+X-Received: by 2002:a05:6512:3b90:b0:450:829f:6047 with SMTP id g16-20020a0565123b9000b00450829f6047mr321971lfv.418.1649092173442;
+        Mon, 04 Apr 2022 10:09:33 -0700 (PDT)
+Received: from mainframe.localdomain ([118.137.7.161])
+        by smtp.gmail.com with ESMTPSA id d9-20020a193849000000b0044a54c2ed94sm1189857lfj.300.2022.04.04.10.09.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Apr 2022 10:09:32 -0700 (PDT)
+Date:   Tue, 5 Apr 2022 00:09:20 +0700
+From:   Ketsui <esgwpl@gmail.com>
+To:     akihiko.odaki@gmail.com
+Cc:     ak@linux.intel.com, bp@alien8.de, dan.j.williams@intel.com,
+        dave.hansen@linux.intel.com, hpa@zytor.com,
+        kirill.shutemov@linux.intel.com, knsathya@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mingo@redhat.com, rafael.j.wysocki@intel.com, rjw@rjwysocki.net,
+        sathyanarayanan.kuppuswamy@linux.intel.com, tglx@linutronix.de,
+        tony.luck@intel.com, x86@kernel.org
+Subject: Re: [PATCH] Revert "ACPI: processor: idle: Only flush cache on
+ entering C3"
+Message-ID: <Yksl5f4J5S8RWINS@mainframe.localdomain>
 MIME-Version: 1.0
-References: <164894751774.951952.9428402449668442020.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <164894751774.951952.9428402449668442020.stgit@dwillia2-desk3.amr.corp.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 4 Apr 2022 17:59:40 +0200
-Message-ID: <CAJZ5v0hGVN_=3iU8OLpHY3Ak35T5+JcBM-qs8SbojKrpd0VXsA@mail.gmail.com>
-Subject: Re: [PATCH] cxl/mem: Disable suspend
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-cxl@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220403062322.3168-1-akihiko.odaki@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Apr 3, 2022 at 2:58 AM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> The CXL specification claims S3 support at a hardware level, but at a
-> system software level there are some missing pieces. Section 9.4 rightly
-> claims that "CXL mem adapters may need aux power to retain memory
-> context across S3", but there is no enumeration mechanism for the OS to
-> determine if a given adapter has that support. Moreover the save state
-> and resume image for the system may inadvertantly end up in a CXL device
-> that needs to be restored before the save state is recoverable. I.e. a
-> circular dependency that is not resolvable without a third party
-> save-area.
->
-> Arrange for the cxl_mem driver to fail S3 attempts. This still nominaly
-> allows for suspend, but requires unbinding all CXL memory devices before
-> the suspend to ensure the typical DRAM flow is taken. The cxl_mem unbind
-> flow is intended to also tear down all CXL memory regions associated
-> with a given cxl_memdev.
->
-> It is reasonable to assume that any device participating in a System RAM
-> range published in the EFI memory map is covered by aux power and
-> save-area outside the device itself. So this restriction can be
-> minimized in the future once pre-existing region enumeration support
-> arrives, and perhaps a spec update to clarify if the EFI memory is
-> sufficent for determining the range of devices managed by
-> platform-firmware for S3 support.
->
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+I can confirm that this reversion fixes a very similar issue I have with kernel
+5.17 (only difference is resume always fails on my desktop), here's the bisect
+log:
 
-A few thoughts:
-
-1. I don't think it is necessary to fail suspend-to-idle too (which
-the driver will do after the patch AFAICS).
-2. Should hibernation fail too?  From the description above it looks
-like that should be the case.
-3. If "deep"suspend is going to fail every time, it may be better to
-prevent "deep" from being written to /sys/power/mem_sleep instead of
-failing suspend in progress, especially after freezing user space.
-
-> ---
->  drivers/cxl/core/memdev.c |    1 -
->  drivers/cxl/mem.c         |   26 ++++++++++++++++++++++++++
->  2 files changed, 26 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-> index 1f76b28f9826..efe4d2e9bfef 100644
-> --- a/drivers/cxl/core/memdev.c
-> +++ b/drivers/cxl/core/memdev.c
-> @@ -251,7 +251,6 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
->         dev->bus = &cxl_bus_type;
->         dev->devt = MKDEV(cxl_mem_major, cxlmd->id);
->         dev->type = &cxl_memdev_type;
-> -       device_set_pm_not_required(dev);
->         INIT_WORK(&cxlmd->detach_work, detach_memdev);
->
->         cdev = &cxlmd->cdev;
-> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> index 49a4b1c47299..0660bb1488cb 100644
-> --- a/drivers/cxl/mem.c
-> +++ b/drivers/cxl/mem.c
-> @@ -3,6 +3,7 @@
->  #include <linux/device.h>
->  #include <linux/module.h>
->  #include <linux/pci.h>
-> +#include <linux/pm.h>
->
->  #include "cxlmem.h"
->  #include "cxlpci.h"
-> @@ -210,10 +211,35 @@ static int cxl_mem_probe(struct device *dev)
->         return rc;
->  }
->
-> +static int cxl_mem_suspend(struct device *dev)
-> +{
-> +       /*
-> +        * The kernel may be operating out of CXL memory on this device,
-> +        * there is no spec defined way to determine whether this device
-> +        * preserves contents over suspend, and there is no simple way
-> +        * to arrange for the suspend image to avoid CXL memory which
-> +        * would setup a circular dependency between PCI resume and save
-> +        * state restoration.
-> +        */
-> +       dev_err(dev, "CXL memory suspend not supported\n");
-> +       return -EBUSY;
-> +}
-> +
-> +static int cxl_mem_resume(struct device *dev)
-> +{
-> +       /* nothing to do since suspend is prevented */
-> +       return 0;
-> +}
-
-This is not needed AFAICS.
-
-> +
-> +static DEFINE_SIMPLE_DEV_PM_OPS(cxl_pm_ops, cxl_mem_suspend, cxl_mem_resume);
-> +
->  static struct cxl_driver cxl_mem_driver = {
->         .name = "cxl_mem",
->         .probe = cxl_mem_probe,
->         .id = CXL_DEVICE_MEMORY_EXPANDER,
-> +       .drv = {
-> +               .pm = &cxl_pm_ops,
-> +       },
->  };
->
->  module_cxl_driver(cxl_mem_driver);
->
+# bad: [f443e374ae131c168a065ea1748feac6b2e76613] Linux 5.17
+# good: [df0cc57e057f18e44dac8e6c18aba47ab53202f9] Linux 5.16
+git bisect start 'v5.17' 'v5.16'
+# bad: [22ef12195e13c5ec58320dbf99ef85059a2c0820] Merge tag 'staging-5.17-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
+git bisect bad 22ef12195e13c5ec58320dbf99ef85059a2c0820
+# good: [9bcbf894b6872216ef61faf17248ec234e3db6bc] Merge tag 'media/v5.17-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media
+git bisect good 9bcbf894b6872216ef61faf17248ec234e3db6bc
+# good: [208dd45d8d050360b46ded439a057bcc7cbf3b09] tcp: tcp_send_challenge_ack delete useless param `skb`
+git bisect good 208dd45d8d050360b46ded439a057bcc7cbf3b09
+# bad: [c288ea679840de4dee2ce6da5d0f139e3774ad86] Merge tag 'gpio-updates-for-v5.17' of git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux
+git bisect bad c288ea679840de4dee2ce6da5d0f139e3774ad86
+# bad: [5c947d0dbae8038ec1c8b538891f6475350542ee] Merge branch 'linus' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/crypto-2.6
+git bisect bad 5c947d0dbae8038ec1c8b538891f6475350542ee
+# bad: [a229327733b86aa585effdb0d27a87b12aa51597] Merge tag 'printk-for-5.17' of git://git.kernel.org/pub/scm/linux/kernel/git/printk/linux
+git bisect bad a229327733b86aa585effdb0d27a87b12aa51597
+# bad: [bca21755b9fc00dbe371994b53389eb5d70b8e72] Merge tag 'acpi-5.17-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+git bisect bad bca21755b9fc00dbe371994b53389eb5d70b8e72
+# bad: [af8fefd7444480bb8fd8d74f977dbac4693ac3ed] Merge branches 'acpi-x86', 'acpi-pmic' and 'acpi-dptf'
+git bisect bad af8fefd7444480bb8fd8d74f977dbac4693ac3ed
+# good: [b659ea768ae372e2f82c6346120f2e7272a42ac9] Merge branches 'acpi-scan', 'acpi-pm', 'acpi-power' and 'acpi-pci'
+git bisect good b659ea768ae372e2f82c6346120f2e7272a42ac9
+# bad: [5847d2d2efaab724b7ab374b6fca105e24509c92] Merge branches 'acpi-ec' and 'acpi-processor'
+git bisect bad 5847d2d2efaab724b7ab374b6fca105e24509c92
+# good: [c793570d8725e44b64dbe466eb8ecda34c5eb8ac] ACPI: EC: Avoid queuing unnecessary work in acpi_ec_submit_event()
+git bisect good c793570d8725e44b64dbe466eb8ecda34c5eb8ac
+# bad: [8120832d8f82aa7316c578fbccf11e385a5b3601] ACPI: processor: thermal: avoid cpufreq_get_policy()
+git bisect bad 8120832d8f82aa7316c578fbccf11e385a5b3601
+# good: [0e6078c3c6737df7d0bd0c890fbadf24a27fffbb] ACPI: processor idle: Use swap() instead of open coding it
+git bisect good 0e6078c3c6737df7d0bd0c890fbadf24a27fffbb
+# bad: [87ebbb8c612b1214f227ebb8f25442c6d163e802] ACPI: processor: idle: Only flush cache on entering C3
+git bisect bad 87ebbb8c612b1214f227ebb8f25442c6d163e802
+# first bad commit: [87ebbb8c612b1214f227ebb8f25442c6d163e802] ACPI: processor: idle: Only flush cache on entering C3
