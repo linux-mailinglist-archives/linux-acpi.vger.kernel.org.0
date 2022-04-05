@@ -2,178 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C994F22EE
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Apr 2022 08:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC5C4F36FA
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Apr 2022 16:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbiDEGQp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Apr 2022 02:16:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
+        id S241458AbiDELJ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Apr 2022 07:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbiDEGQk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Apr 2022 02:16:40 -0400
-Received: from chinatelecom.cn (prt-mail.chinatelecom.cn [42.123.76.222])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D4B1015A38;
-        Mon,  4 Apr 2022 23:14:39 -0700 (PDT)
-HMM_SOURCE_IP: 172.18.0.48:37024.1692704233
-HMM_ATTACHE_NUM: 0000
-HMM_SOURCE_TYPE: SMTP
-Received: from clientip-202.80.192.38 (unknown [172.18.0.48])
-        by chinatelecom.cn (HERMES) with SMTP id AEF5A2800A2;
-        Tue,  5 Apr 2022 14:14:27 +0800 (CST)
-X-189-SAVE-TO-SEND: +liuxp11@chinatelecom.cn
-Received: from  ([172.18.0.48])
-        by app0024 with ESMTP id 9a99a4d8a49d41fc9d9701316cefc90a for keescook@chromium.org;
-        Tue, 05 Apr 2022 14:14:37 CST
-X-Transaction-ID: 9a99a4d8a49d41fc9d9701316cefc90a
-X-Real-From: liuxp11@chinatelecom.cn
-X-Receive-IP: 172.18.0.48
-X-MEDUSA-Status: 0
-Sender: liuxp11@chinatelecom.cn
-From:   Liu Xinpeng <liuxp11@chinatelecom.cn>
-To:     keescook@chromium.org, anton@enomsg.org, ccross@android.com,
-        robert.moore@intel.com, tony.luck@intel.com, lenb@kernel.org,
-        james.morse@arm.com, bp@alien8.de, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Liu Xinpeng <liuxp11@chinatelecom.cn>
-Subject: [PATCH v2] ACPI: APEI: fix missing erst record id
-Date:   Tue,  5 Apr 2022 14:14:13 +0800
-Message-Id: <1649139253-26656-1-git-send-email-liuxp11@chinatelecom.cn>
-X-Mailer: git-send-email 1.8.3.1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S1349467AbiDEJtz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Apr 2022 05:49:55 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55F5FFD1D;
+        Tue,  5 Apr 2022 02:46:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649152006; x=1680688006;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HZf/S7rVd3q8yY5bhWH8nEyTLZa+T5GesGL7jfopFXY=;
+  b=BxM8NniRHwZrdAKEyoRLdXzc21jdTLEM9ka8fp3n/zXnd+M+0StfBm+k
+   eMR8T0cGhJ6qJ8HA3WOqarsQO+Hy9tneZ49D7KOIgc9Rm2Jy7uvHv8h0L
+   BF02vZexaKVbpoWUnU6ip8r1JbXE29qYrUL9Ea/5rZA82O3NiUfdlr85o
+   cqzzMdhU6wa6XufFvZRehT5+j3GQluyuMm4ryCsxoyJST4FZpe3NIfxzY
+   VdNCAirZJJgpJlKc55AIb9I7T3fTn6peH5Dbutw/ygh7IlJvdbV1M2Y6Z
+   Z/jB2NDvZkkn+ROUt+R+wCIYbD6eNe8Hp1J7GRPDvjQriQzhxoFg/3ZVa
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10307"; a="242851251"
+X-IronPort-AV: E=Sophos;i="5.90,236,1643702400"; 
+   d="scan'208";a="242851251"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 02:46:45 -0700
+X-IronPort-AV: E=Sophos;i="5.90,236,1643702400"; 
+   d="scan'208";a="651826968"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 02:46:43 -0700
+Received: by lahna (sSMTP sendmail emulation); Tue, 05 Apr 2022 12:46:40 +0300
+Date:   Tue, 5 Apr 2022 12:46:40 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v1 0/3] ACPI: PCI: PM: Power up PCI devices with ACPI
+ companions upfront
+Message-ID: <YkwQAKcFU4CzYX5E@lahna>
+References: <21439956.EfDdHjke4D@kreacher>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21439956.EfDdHjke4D@kreacher>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-record_id is in the erst_record_id_cache but not in storage,so
-erst_read will return -ENOENT, and then goto retry_next,
-erst_get_record_id_next skip a record_id. This can result in
-printing the records just in the cache.
+Hi Rafael,
 
-A reproducer of the problem(retry many times):
+On Mon, Apr 04, 2022 at 05:20:30PM +0200, Rafael J. Wysocki wrote:
+> Hi All,
+> 
+> There are cases in which the power state of a PCI device depends on an ACPI
+> power resource (or more of them) in such a way that when the given power
+> resource is in the "off" state, the PCI device depending on it is in D3cold.
+> 
+> On some systems, the initial state of these power resources is "off", so the
+> kernel should not access the config space of PCI devices depending on them,
+> until the power resources in question are turned "on", but currently that is
+> not respected during PCI device enumeration.  Namely, the PCI device
+> enumeration code walks the entire bus and enumerates all of the devices it
+> can find, including the ones whose initial power state in principle depends on
+> the ACPI power resources in the "off" state.
 
-[root@localhost erst-inject]# ./erst-inject -c 0xaaaaa00011
-[root@localhost erst-inject]# ./erst-inject -p
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00012
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00013
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00014
-[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000006
-[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000007
-[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000008
-[root@localhost erst-inject]# ./erst-inject -p
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00012
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00013
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00014
-[root@localhost erst-inject]# ./erst-inject -n
-total error record count: 6
+I guess these devices do not have _PRE() method either.
 
-Signed-off-by: Liu Xinpeng <liuxp11@chinatelecom.cn>
----
- drivers/acpi/apei/erst-dbg.c |  4 +++-
- drivers/acpi/apei/erst.c     | 34 +++++++++++++++++++++++++++++++---
- include/acpi/apei.h          |  1 +
- 3 files changed, 35 insertions(+), 4 deletions(-)
+> Apparently, most of the time, the config space of such devices is accessible
+> regardless of the state of the ACPI power resource associated with the PCI
+> device, so the device enumeration is successful, but there are two potential
+> issues related to this behavior.  First off, even if the given PCI device
+> is accessible when the ACPI power resource depended on by it is "off",
+> changing its configuration may confuse the platform firmware and lead to
+> problems when the ACPI power resource in question is turned "on".  Second,
+> the PCI device may not be actually accessible at all when the ACPI power
+> resource depended on by it is "off", in which case it won't be found during
+> the PCI enumeration of devices.
+> 
+> This patch series addresses that problem by turning "on" all ACPI power
+> resources depended on by PCI devices before attempting to access the config
+> space of those devices for the first time.
 
-diff --git a/drivers/acpi/apei/erst-dbg.c b/drivers/acpi/apei/erst-dbg.c
-index c740f0faad39..5b8164280a17 100644
---- a/drivers/acpi/apei/erst-dbg.c
-+++ b/drivers/acpi/apei/erst-dbg.c
-@@ -113,8 +113,10 @@ static ssize_t erst_dbg_read(struct file *filp, char __user *ubuf,
- retry:
- 	rc = len = erst_read(id, erst_dbg_buf, erst_dbg_buf_len);
- 	/* The record may be cleared by others, try read next record */
--	if (rc == -ENOENT)
-+	if (rc == -ENOENT) {
-+		erst_clear_cache(id);
- 		goto retry_next;
-+	}
- 	if (rc < 0)
- 		goto out;
- 	if (len > ERST_DBG_RECORD_LEN_MAX) {
-diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
-index 698d67cee052..07d69dc7fd62 100644
---- a/drivers/acpi/apei/erst.c
-+++ b/drivers/acpi/apei/erst.c
-@@ -856,6 +856,31 @@ ssize_t erst_read(u64 record_id, struct cper_record_header *record,
- }
- EXPORT_SYMBOL_GPL(erst_read);
- 
-+int erst_clear_cache(u64 record_id)
-+{
-+	int rc, i;
-+	u64 *entries;
-+
-+	if (erst_disable)
-+		return -ENODEV;
-+
-+	rc = mutex_lock_interruptible(&erst_record_id_cache.lock);
-+	if (rc)
-+		return rc;
-+
-+	entries = erst_record_id_cache.entries;
-+	for (i = 0; i < erst_record_id_cache.len; i++) {
-+		if (entries[i] == record_id)
-+			entries[i] = APEI_ERST_INVALID_RECORD_ID;
-+	}
-+	__erst_record_id_cache_compact();
-+
-+	mutex_unlock(&erst_record_id_cache.lock);
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(erst_clear_cache);
-+
- int erst_clear(u64 record_id)
- {
- 	int rc, i;
-@@ -998,14 +1023,17 @@ static ssize_t erst_reader(struct pstore_record *record)
- 
- 	len = erst_read(record_id, &rcd->hdr, rcd_len);
- 	/* The record may be cleared by others, try read next record */
--	if (len == -ENOENT)
-+	if (len == -ENOENT) {
-+		erst_clear_cache(record_id);
- 		goto skip;
--	else if (len < 0 || len < sizeof(*rcd)) {
-+	} else if (len < 0 || len < sizeof(*rcd)) {
- 		rc = -EIO;
- 		goto out;
- 	}
--	if (!guid_equal(&rcd->hdr.creator_id, &CPER_CREATOR_PSTORE))
-+	if (!guid_equal(&rcd->hdr.creator_id, &CPER_CREATOR_PSTORE)) {
-+		erst_clear_cache(record_id);
- 		goto skip;
-+	}
- 
- 	record->buf = kmalloc(len, GFP_KERNEL);
- 	if (record->buf == NULL) {
-diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-index afaca3a075e8..f8c11ff4115a 100644
---- a/include/acpi/apei.h
-+++ b/include/acpi/apei.h
-@@ -47,6 +47,7 @@ void erst_get_record_id_end(void);
- ssize_t erst_read(u64 record_id, struct cper_record_header *record,
- 		  size_t buflen);
- int erst_clear(u64 record_id);
-+int erst_clear_cache(u64 record_id);
- 
- int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data);
- void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
--- 
-2.23.0
+Makes sense.
 
+For the series,
+
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
