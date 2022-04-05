@@ -2,44 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 098804F46CA
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Apr 2022 01:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36DD04F46D8
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Apr 2022 01:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239517AbiDEUow (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Apr 2022 16:44:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56000 "EHLO
+        id S241853AbiDEUqM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Apr 2022 16:46:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1390859AbiDEPb7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Apr 2022 11:31:59 -0400
+        with ESMTP id S1392188AbiDEPft (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Apr 2022 11:35:49 -0400
 Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B4A47557;
-        Tue,  5 Apr 2022 06:39:15 -0700 (PDT)
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-2e64a6b20eeso136279587b3.3;
-        Tue, 05 Apr 2022 06:39:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4EF6113;
+        Tue,  5 Apr 2022 06:47:37 -0700 (PDT)
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-2eb46d33db9so83315327b3.12;
+        Tue, 05 Apr 2022 06:47:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Xu8dCP9+ges59hYAud7ZVJg5s22Xz6FJgwXRQOOm3bk=;
-        b=cNliRDg6ky+fj9yhXXEFqJPUFqZacpuj56+l/XOh472FbqD7sJMHndEeRdBmbbLwTO
-         VuhzkQAK/hT22FC1QcxJOeYBsin8bVh3/4QrcEZhxu8lK4MOnr72mCdeYLLwCr5pixAy
-         YLcL1pUHAAni8DIBGOnf3FSmGIx8G9FxaJTEiKOTazL5oYKDlVc5lEliTKtcJG7gTukE
-         9p8dmqcMOIn9K5VLvfW3C90DVEf4fDE0Szh5a1jgb9fNC5QwcglHQTFZxwWJDQ8dpfGd
-         RLKgWHCfW3jr5p1W/po8z3O/pKoodOkp9lZyi4oaMYlctLTcb+3nHkcEiJD+Ojq++kA6
-         KGgA==
-X-Gm-Message-State: AOAM5321jKesubEy+LJ2XlVFqhzQHNA46x7d8YKKTdxvMPwtAVb4Z1lf
-        OBTVdZwxC9GvVnzCsZZJrKfcc/05nBPw3RsNrvA=
-X-Google-Smtp-Source: ABdhPJzba05Bydu6AYZ9ZGbyamM84Ar4fPOHIUcmSa0oeKSfqw32ZxwpZ4BNKw0VOpDEm+P2Kg7XAPjSLhopOECX7Hc=
-X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
- b145-20020a811b97000000b002db640f49d8mr2606206ywb.326.1649165954470; Tue, 05
- Apr 2022 06:39:14 -0700 (PDT)
+        bh=Kpj5H/ONbjNqMagoOWuzPrgVmm66wqLMrF02mwgAmpo=;
+        b=OrGuzQkdX87ycKXQGFFn9wFwATzVOUB8UBmxSCdZ/i1HMvyzf3eqwe8Q6ZfzrGDCkD
+         4ZgOAdBHfr/BVY8piIsHuZ1TD/EhKP85nQJH2l1zUAZA6X331jBHBfQyrdQKDaQZM2x0
+         OVFU7N7JGxAy6hiIwtmL5d45XVRH+qJfy50pLoGgxZc582EgZV0U5fkCpG3LVUUA96pR
+         tq2FwB+YUcGmLxC1N7DmaTSIRCiyFeqid0vIUsgB/ZxG1sUJsCD5xJRjhDmUiUhzB2j4
+         S/oIQCDbyYLRE0KYYN2o4TqydYh/FKBsDPginrXHibb9K8pkGrS96K7QarRPibQXwbRy
+         oucw==
+X-Gm-Message-State: AOAM533HV70dvH4QASm/2K4hMhdxS3kWif3K6/++rezSt+lIgkKXjHWy
+        CEMDkS5hmpJ2twyyjtdekvZtDA2FHh4aEcXGhWs=
+X-Google-Smtp-Source: ABdhPJzfEdjVgt9Yq4ho6UFYSWq/ei57AZIDDya7yTDU7iEHuC2ceka/83Uel44Ball5UZYkhXii4ZWAly82slEhlV0=
+X-Received: by 2002:a81:1549:0:b0:2eb:3dc7:bd16 with SMTP id
+ 70-20020a811549000000b002eb3dc7bd16mr2779780ywv.7.1649166457145; Tue, 05 Apr
+ 2022 06:47:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220331202022.1823174-1-vishal.l.verma@intel.com> <20220331202022.1823174-2-vishal.l.verma@intel.com>
-In-Reply-To: <20220331202022.1823174-2-vishal.l.verma@intel.com>
+References: <20220331202022.1823174-1-vishal.l.verma@intel.com> <20220331202022.1823174-3-vishal.l.verma@intel.com>
+In-Reply-To: <20220331202022.1823174-3-vishal.l.verma@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 5 Apr 2022 15:39:03 +0200
-Message-ID: <CAJZ5v0h3nUxQ=d8kUrJ=mdkFHyVkopPyFQ1MbJKXmdpzy1cBJA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] PCI/ACPI: add a helper for retrieving _OSC Control DWORDs
+Date:   Tue, 5 Apr 2022 15:47:26 +0200
+Message-ID: <CAJZ5v0hfTXkHQE2j8B00Qvn1vuW0a-5AoUG-dSJvCH5PW70AZw@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] PCI/ACPI: Use CXL _OSC instead of PCIe _OSC
 To:     Vishal Verma <vishal.l.verma@intel.com>
 Cc:     linux-cxl@vger.kernel.org,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
@@ -61,84 +61,233 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+First off, I would change the subject to something like "Prefer CXL
+_OSC to PCI _OSC for CXL host bridges".  As is, it kind of suggests
+that the CXL _OSC is preferred in all cases.
+
 On Thu, Mar 31, 2022 at 10:20 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
 >
-> During _OSC negotiation, when the 'Control' DWORD is needed from the
-> result buffer after running _OSC, a couple of places performed manual
-> pointer arithmetic to offset into the right spot in the raw buffer.
-> Add a acpi_osc_ctx_get_pci_control() helper to use the #define'd
-> DWORD offsets to fetch the DWORDs needed from @acpi_osc_context, and
-> replace the above instances of the open-coded arithmetic.
+> From: Dan Williams <dan.j.williams@intel.com>
 >
+> OB In preparation for negotiating OS control of CXL _OSC features, do the
+> minimal enabling to use CXL _OSC to handle the base PCIe feature
+> negotiation. Recall that CXL _OSC is a super-set of PCIe _OSC and the
+> CXL 2.0 specification mandates: "If a CXL Host Bridge device exposes CXL
+> _OSC, CXL aware OSPM shall evaluate CXL _OSC and not evaluate PCIe
+> _OSC."
+>
+> Rather than pass a boolean flag alongside @root to all the helper
+> functions that need to consider PCIe specifics, add is_pcie() and
+> is_cxl() helper functions to check the flavor of @root. This also
+> allows for dynamic fallback to PCIe _OSC in cases where an attempt to
+> use CXL _OXC fails. This can happen on CXL 1.1 platforms that publish
+> ACPI0016 devices to indicate CXL host bridges, but do not publish the
+> optional CXL _OSC method. CXL _OSC is mandatory for CXL 2.0 hosts.
+>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
 > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
+> Cc: Robert Moore <robert.moore@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
 > ---
->  include/linux/acpi.h    | 13 +++++++++++++
->  drivers/acpi/bus.c      |  2 +-
->  drivers/acpi/pci_root.c |  2 +-
->  3 files changed, 15 insertions(+), 2 deletions(-)
+>  include/linux/acpi.h    |  4 +++
+>  include/acpi/acpi_bus.h |  6 ++++
+>  drivers/acpi/pci_root.c | 70 ++++++++++++++++++++++++++++++++---------
+>  3 files changed, 65 insertions(+), 15 deletions(-)
 >
 > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 6274758648e3..ff4d1fdd9009 100644
+> index ff4d1fdd9009..fc40da914315 100644
 > --- a/include/linux/acpi.h
 > +++ b/include/linux/acpi.h
-> @@ -607,6 +607,13 @@ extern u32 osc_sb_native_usb4_control;
->  #define OSC_PCI_EXPRESS_LTR_CONTROL            0x00000020
->  #define OSC_PCI_EXPRESS_DPC_CONTROL            0x00000080
+> @@ -550,6 +550,10 @@ struct acpi_osc_context {
 >
-> +static inline u32 acpi_osc_ctx_get_pci_control(struct acpi_osc_context *context)
-> +{
-> +       u32 *ret = context->ret.pointer;
+>  acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+>
+> +/* Number of _OSC capability DWORDS depends on bridge type */
+> +#define OSC_PCI_CAPABILITY_DWORDS              3
+> +#define OSC_CXL_CAPABILITY_DWORDS              5
 > +
-> +       return ret[OSC_CONTROL_DWORD];
-> +}
+>  /* Indexes into _OSC Capabilities Buffer (DWORDs 2 & 3 are device-specific) */
+>  #define OSC_QUERY_DWORD                                0       /* DWORD 1 */
+>  #define OSC_SUPPORT_DWORD                      1       /* DWORD 2 */
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index ca88c4706f2b..9413d2389711 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -581,10 +581,16 @@ int unregister_acpi_bus_type(struct acpi_bus_type *);
+>  int acpi_bind_one(struct device *dev, struct acpi_device *adev);
+>  int acpi_unbind_one(struct device *dev);
+>
+> +enum acpi_bridge_type {
+> +       ACPI_BRIDGE_TYPE_PCIE = 1,
+> +       ACPI_BRIDGE_TYPE_CXL,
+> +};
 > +
->  #define ACPI_GSB_ACCESS_ATTRIB_QUICK           0x00000002
->  #define ACPI_GSB_ACCESS_ATTRIB_SEND_RCV         0x00000004
->  #define ACPI_GSB_ACCESS_ATTRIB_BYTE            0x00000006
-> @@ -1003,6 +1010,12 @@ static inline int acpi_register_wakeup_handler(int wake_irq,
->  static inline void acpi_unregister_wakeup_handler(
->         bool (*wakeup)(void *context), void *context) { }
+>  struct acpi_pci_root {
+>         struct acpi_device * device;
+>         struct pci_bus *bus;
+>         u16 segment;
+> +       int bridge_type;
+>         struct resource secondary;      /* downstream bus range */
 >
-> +struct acpi_osc_context;
-> +static inline u32 acpi_osc_ctx_get_pci_control(struct acpi_osc_context *context)
-> +{
-> +       return 0;
-> +}
-> +
->  #endif /* !CONFIG_ACPI */
->
->  #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 07f604832fd6..4992e05cf429 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -405,7 +405,7 @@ static void acpi_bus_osc_negotiate_usb_control(void)
->         }
->
->         osc_sb_native_usb4_control =
-> -               control & ((u32 *)context.ret.pointer)[OSC_CONTROL_DWORD];
-> +               control &  acpi_osc_ctx_get_pci_control(&context);
->
->         acpi_bus_decode_usb_osc("USB4 _OSC: OS supports", control);
->         acpi_bus_decode_usb_osc("USB4 _OSC: OS controls",
+>         u32 osc_support_set;    /* _OSC state of support bits */
 > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index b76db99cced3..40a74ff3fa02 100644
+> index 40a74ff3fa02..5d33bc61fe44 100644
 > --- a/drivers/acpi/pci_root.c
 > +++ b/drivers/acpi/pci_root.c
-> @@ -185,7 +185,7 @@ static acpi_status acpi_pci_run_osc(acpi_handle handle,
+> @@ -170,20 +170,45 @@ static void decode_osc_control(struct acpi_pci_root *root, char *msg, u32 word)
+>                         ARRAY_SIZE(pci_osc_control_bit));
+>  }
 >
->         status = acpi_run_osc(handle, &context);
+> -static u8 pci_osc_uuid_str[] = "33DB4D5B-1FF7-401C-9657-7441C03DD766";
+> +static inline bool is_pcie(struct acpi_pci_root *root)
+> +{
+> +       return root->bridge_type == ACPI_BRIDGE_TYPE_PCIE;
+> +}
+>
+> -static acpi_status acpi_pci_run_osc(acpi_handle handle,
+> +static inline bool is_cxl(struct acpi_pci_root *root)
+> +{
+> +       return root->bridge_type == ACPI_BRIDGE_TYPE_CXL;
+> +}
+> +
+> +static u8 pci_osc_uuid_str[] = "33DB4D5B-1FF7-401C-9657-7441C03DD766";
+> +static u8 cxl_osc_uuid_str[] = "68F2D50B-C469-4d8A-BD3D-941A103FD3FC";
+> +
+> +static char *to_uuid(struct acpi_pci_root *root)
+> +{
+> +       if (is_cxl(root))
+> +               return cxl_osc_uuid_str;
+> +       return pci_osc_uuid_str;
+> +}
+> +
+> +static int cap_length(struct acpi_pci_root *root)
+> +{
+> +       if (is_cxl(root))
+> +               return sizeof(u32) * OSC_CXL_CAPABILITY_DWORDS;
+> +       return sizeof(u32) * OSC_PCI_CAPABILITY_DWORDS;
+> +}
+> +
+> +static acpi_status acpi_pci_run_osc(struct acpi_pci_root *root,
+>                                     const u32 *capbuf, u32 *retval)
+>  {
+>         struct acpi_osc_context context = {
+> -               .uuid_str = pci_osc_uuid_str,
+> +               .uuid_str = to_uuid(root),
+>                 .rev = 1,
+> -               .cap.length = 12,
+> +               .cap.length = cap_length(root),
+>                 .cap.pointer = (void *)capbuf,
+>         };
+>         acpi_status status;
+>
+> -       status = acpi_run_osc(handle, &context);
+> +       status = acpi_run_osc(root->device->handle, &context);
 >         if (ACPI_SUCCESS(status)) {
-> -               *retval = *((u32 *)(context.ret.pointer + 8));
-> +               *retval = acpi_osc_ctx_get_pci_control(&context);
+>                 *retval = acpi_osc_ctx_get_pci_control(&context);
 >                 kfree(context.ret.pointer);
+> @@ -196,7 +221,7 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
+>                                         u32 *control)
+>  {
+>         acpi_status status;
+> -       u32 result, capbuf[3];
+> +       u32 result, capbuf[OSC_CXL_CAPABILITY_DWORDS];
+>
+>         support |= root->osc_support_set;
+>
+> @@ -204,10 +229,18 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
+>         capbuf[OSC_SUPPORT_DWORD] = support;
+>         capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
+>
+> -       status = acpi_pci_run_osc(root->device->handle, capbuf, &result);
+> +retry:
+> +       status = acpi_pci_run_osc(root, capbuf, &result);
+>         if (ACPI_SUCCESS(status)) {
+>                 root->osc_support_set = support;
+>                 *control = result;
+> +       } else if (is_cxl(root)) {
+> +               /*
+> +                * CXL _OSC is optional on CXL 1.1 hosts. Fall back to PCIe _OSC
+> +                * upon any failure using CXL _OSC.
+> +                */
+> +               root->bridge_type = ACPI_BRIDGE_TYPE_PCIE;
+> +               goto retry;
 >         }
 >         return status;
-> --
-> 2.35.1
+>  }
+> @@ -338,7 +371,7 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 s
+>         u32 req = OSC_PCI_EXPRESS_CAPABILITY_CONTROL;
+>         struct acpi_pci_root *root;
+>         acpi_status status;
+> -       u32 ctrl, capbuf[3];
+> +       u32 ctrl, capbuf[OSC_CXL_CAPABILITY_DWORDS];
 >
+>         if (!mask)
+>                 return AE_BAD_PARAMETER;
+> @@ -375,7 +408,7 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 s
+>         capbuf[OSC_QUERY_DWORD] = 0;
+>         capbuf[OSC_SUPPORT_DWORD] = root->osc_support_set;
+>         capbuf[OSC_CONTROL_DWORD] = ctrl;
+> -       status = acpi_pci_run_osc(handle, capbuf, mask);
+> +       status = acpi_pci_run_osc(root, capbuf, mask);
+>         if (ACPI_FAILURE(status))
+>                 return status;
+>
+> @@ -454,8 +487,7 @@ static bool os_control_query_checks(struct acpi_pci_root *root, u32 support)
+>         return true;
+>  }
+>
+> -static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+> -                                bool is_pcie)
+> +static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm)
+>  {
+>         u32 support, control = 0, requested = 0;
+>         acpi_status status;
+> @@ -506,7 +538,7 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+>                 *no_aspm = 1;
+>
+>                 /* _OSC is optional for PCI host bridges */
+> -               if ((status == AE_NOT_FOUND) && !is_pcie)
+> +               if (status == AE_NOT_FOUND && !is_pcie(root))
+>                         return;
+>
+>                 if (control) {
+> @@ -529,7 +561,7 @@ static int acpi_pci_root_add(struct acpi_device *device,
+>         acpi_handle handle = device->handle;
+>         int no_aspm = 0;
+>         bool hotadd = system_state == SYSTEM_RUNNING;
+> -       bool is_pcie;
+> +       const char *acpi_hid;
+>
+>         root = kzalloc(sizeof(struct acpi_pci_root), GFP_KERNEL);
+>         if (!root)
+> @@ -587,8 +619,16 @@ static int acpi_pci_root_add(struct acpi_device *device,
+>
+>         root->mcfg_addr = acpi_pci_root_get_mcfg_addr(handle);
+>
+> -       is_pcie = strcmp(acpi_device_hid(device), "PNP0A08") == 0;
+> -       negotiate_os_control(root, &no_aspm, is_pcie);
+> +       acpi_hid = acpi_device_hid(root->device);
+> +       if (strcmp(acpi_hid, "PNP0A08") == 0)
+> +               root->bridge_type = ACPI_BRIDGE_TYPE_PCIE;
+> +       else if (strcmp(acpi_hid, "ACPI0016") == 0)
+> +               root->bridge_type = ACPI_BRIDGE_TYPE_CXL;
+> +       else
+> +               dev_warn(&device->dev, "unknown bridge type with hid: %s\n",
+> +                        acpi_hid);
+
+Second, because "device" is an ACPI device object and it has a _HID,
+its name should include the ID in this case, so including it into the
+message once more is redundant.
+
+Also, if this is neither PCIe nor CXL, it should be a "legacy" PCI
+host bridge and that is not an error, so maybe use dev_dbg("Assuming
+non-PCIe host bridge\n")?
+
+> +
+> +       negotiate_os_control(root, &no_aspm);
+>
+>         /*
+>          * TBD: Need PCI interface for enumeration/configuration of roots.
+> --
