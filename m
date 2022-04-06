@@ -2,47 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14C854F687A
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Apr 2022 19:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 335E54F6B49
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Apr 2022 22:23:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239486AbiDFRpT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Apr 2022 13:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57272 "EHLO
+        id S233626AbiDFUY7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Apr 2022 16:24:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239572AbiDFRol (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Apr 2022 13:44:41 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 367C92B4DFD
-        for <linux-acpi@vger.kernel.org>; Wed,  6 Apr 2022 08:54:12 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E47F712FC;
-        Wed,  6 Apr 2022 08:54:11 -0700 (PDT)
-Received: from lpieralisi (unknown [10.57.21.160])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C11083F73B;
-        Wed,  6 Apr 2022 08:54:09 -0700 (PDT)
-Date:   Wed, 6 Apr 2022 16:54:10 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linuxarm@huawei.com,
-        joro@8bytes.org, robin.murphy@arm.com, will@kernel.org,
-        wanghuiqiang@huawei.com, guohanjun@huawei.com,
-        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
-        eric.auger@redhat.com, laurentiu.tudor@nxp.com,
-        yangyicong@huawei.com
-Subject: Re: [PATCH v9 04/11] ACPI/IORT: Provide a generic helper to retrieve
- reserve regions
-Message-ID: <20220406155410.GE27518@lpieralisi>
-References: <20220404124209.1086-1-shameerali.kolothum.thodi@huawei.com>
- <20220404124209.1086-5-shameerali.kolothum.thodi@huawei.com>
+        with ESMTP id S234486AbiDFUWh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Apr 2022 16:22:37 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 795101CEA59;
+        Wed,  6 Apr 2022 10:52:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649267537; x=1680803537;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NKYqSDBSi2gK7jq1hDnM4aEW04YtFUxd7nZHJ7bseh0=;
+  b=Bm9t/h+TXBGewdWnTVzUKQLc64XIY77jTMjvZAnLclF5viOu/od46bF6
+   K5eHIDOvzcJS3WQV+9O3OHBzIe912CVX/W/ZRBg0Gu80bdQIdZF81YyVM
+   /y8G5MZMvF2tQFN9V4t9ull4sh6+3nqvG7Rviejb7u4AQtF411/8v3qmv
+   9uTEcB8Zi+/2xYrXVoVorgluyQu1k2Xh2hEvzGi046KBCz9MI/WjV/Jah
+   4hGiNwb6e8h+2OYIlmJ29hMWcJYX2LN2xN2i0yxgYFntZB9fF/BySP6OA
+   iRtZaVAPoih7ACpJI15t+Al3RDjxnfdiVC43tgDjdx6Y7qsxe5rwcrvHU
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10309"; a="241706443"
+X-IronPort-AV: E=Sophos;i="5.90,240,1643702400"; 
+   d="scan'208";a="241706443"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2022 10:52:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,240,1643702400"; 
+   d="scan'208";a="658629123"
+Received: from lkp-server02.sh.intel.com (HELO a44fdfb70b94) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 06 Apr 2022 10:52:13 -0700
+Received: from kbuild by a44fdfb70b94 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nc9pE-0004dP-QV;
+        Wed, 06 Apr 2022 17:52:12 +0000
+Date:   Thu, 7 Apr 2022 01:51:43 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH v5 4/4] device property: Constify fwnode APIs that uses
+ fwnode_get_next_parent()
+Message-ID: <202204070123.UdpbjnDH-lkp@intel.com>
+References: <20220406130552.30930-4-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220404124209.1086-5-shameerali.kolothum.thodi@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20220406130552.30930-4-andriy.shevchenko@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,108 +70,80 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Apr 04, 2022 at 01:42:02PM +0100, Shameer Kolothum wrote:
-> Currently IORT provides a helper to retrieve HW MSI reserve regions.
-> Change this to a generic helper to retrieve any IORT related reserve
-> regions. This will be useful when we add support for RMR nodes in
-> subsequent patches.
-> 
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> ---
->  drivers/acpi/arm64/iort.c | 23 +++++++++++++++--------
->  drivers/iommu/dma-iommu.c |  2 +-
->  include/linux/acpi_iort.h |  4 ++--
->  3 files changed, 18 insertions(+), 11 deletions(-)
+Hi Andy,
 
-Reviewed-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com> # for ACPI
-IORT
+I love your patch! Perhaps something to improve:
 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index c5ebb2be9a19..63acc3c5b275 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -830,16 +830,13 @@ static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
->  	return NULL;
->  }
->  
-> -/**
-> - * iort_iommu_msi_get_resv_regions - Reserved region driver helper
-> - *                                   for HW MSI regions.
-> - * @dev: Device from iommu_get_resv_regions()
-> - * @head: Reserved region list from iommu_get_resv_regions()
-> - *
-> +/*
-> + * Retrieve platform specific HW MSI reserve regions.
->   * The ITS interrupt translation spaces (ITS_base + SZ_64K, SZ_64K)
->   * associated with the device are the HW MSI reserved regions.
->   */
-> -void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
-> +static void
-> +iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
->  {
->  	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
->  	struct acpi_iort_its_group *its;
-> @@ -888,6 +885,16 @@ void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
->  	}
->  }
->  
-> +/**
-> + * iort_iommu_get_resv_regions - Generic helper to retrieve reserved regions.
-> + * @dev: Device from iommu_get_resv_regions()
-> + * @head: Reserved region list from iommu_get_resv_regions()
-> + */
-> +void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head)
-> +{
-> +	iort_iommu_msi_get_resv_regions(dev, head);
-> +}
-> +
->  static inline bool iort_iommu_driver_enabled(u8 type)
->  {
->  	switch (type) {
-> @@ -1052,7 +1059,7 @@ int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
->  }
->  
->  #else
-> -void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
-> +void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head)
->  { }
->  int iort_iommu_configure_id(struct device *dev, const u32 *input_id)
->  { return -ENODEV; }
-> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-> index 09f6e1c0f9c0..93d76b666888 100644
-> --- a/drivers/iommu/dma-iommu.c
-> +++ b/drivers/iommu/dma-iommu.c
-> @@ -384,7 +384,7 @@ void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
->  {
->  
->  	if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode))
-> -		iort_iommu_msi_get_resv_regions(dev, list);
-> +		iort_iommu_get_resv_regions(dev, list);
->  
->  }
->  EXPORT_SYMBOL(iommu_dma_get_resv_regions);
-> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-> index a8198b83753d..e5d2de9caf7f 100644
-> --- a/include/linux/acpi_iort.h
-> +++ b/include/linux/acpi_iort.h
-> @@ -36,7 +36,7 @@ int iort_pmsi_get_dev_id(struct device *dev, u32 *dev_id);
->  /* IOMMU interface */
->  int iort_dma_get_ranges(struct device *dev, u64 *size);
->  int iort_iommu_configure_id(struct device *dev, const u32 *id_in);
-> -void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
-> +void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head);
->  phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
->  #else
->  static inline void acpi_iort_init(void) { }
-> @@ -52,7 +52,7 @@ static inline int iort_dma_get_ranges(struct device *dev, u64 *size)
->  static inline int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
->  { return -ENODEV; }
->  static inline
-> -void iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
-> +void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head)
->  { }
->  
->  static inline phys_addr_t acpi_iort_dma_get_max_cpu_address(void)
-> -- 
-> 2.25.1
-> 
+[auto build test WARNING on driver-core/driver-core-testing]
+[also build test WARNING on rafael-pm/linux-next linus/master linux/master v5.18-rc1 next-20220406]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/device-property-Allow-error-pointer-to-be-passed-to-fwnode-APIs/20220407-002511
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git 3123109284176b1532874591f7c81f3837bbdc17
+config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20220407/202204070123.UdpbjnDH-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/d9d353ada8d8c3b1b7f3965ad7fe191bd7dea930
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Andy-Shevchenko/device-property-Allow-error-pointer-to-be-passed-to-fwnode-APIs/20220407-002511
+        git checkout d9d353ada8d8c3b1b7f3965ad7fe191bd7dea930
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash drivers/base/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   drivers/base/property.c: In function 'fwnode_get_nth_parent':
+>> drivers/base/property.c:647:42: warning: passing argument 1 of 'fwnode_handle_get' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+     647 |                 return fwnode_handle_get(fwnode);
+         |                                          ^~~~~~
+   In file included from include/linux/of.h:22,
+                    from include/linux/irqdomain.h:35,
+                    from include/linux/acpi.h:13,
+                    from drivers/base/property.c:10:
+   include/linux/property.h:123:63: note: expected 'struct fwnode_handle *' but argument is of type 'const struct fwnode_handle *'
+     123 | struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+
+
+vim +647 drivers/base/property.c
+
+87e5e95db31a27 Sakari Ailus    2019-10-03  629  
+87e5e95db31a27 Sakari Ailus    2019-10-03  630  /**
+87e5e95db31a27 Sakari Ailus    2019-10-03  631   * fwnode_get_nth_parent - Return an nth parent of a node
+87e5e95db31a27 Sakari Ailus    2019-10-03  632   * @fwnode: The node the parent of which is requested
+87e5e95db31a27 Sakari Ailus    2019-10-03  633   * @depth: Distance of the parent from the node
+87e5e95db31a27 Sakari Ailus    2019-10-03  634   *
+87e5e95db31a27 Sakari Ailus    2019-10-03  635   * Returns the nth parent of a node. If there is no parent at the requested
+87e5e95db31a27 Sakari Ailus    2019-10-03  636   * @depth, %NULL is returned. If @depth is 0, the functionality is equivalent to
+87e5e95db31a27 Sakari Ailus    2019-10-03  637   * fwnode_handle_get(). For @depth == 1, it is fwnode_get_parent() and so on.
+87e5e95db31a27 Sakari Ailus    2019-10-03  638   *
+87e5e95db31a27 Sakari Ailus    2019-10-03  639   * The caller is responsible for calling fwnode_handle_put() for the returned
+87e5e95db31a27 Sakari Ailus    2019-10-03  640   * node.
+87e5e95db31a27 Sakari Ailus    2019-10-03  641   */
+d9d353ada8d8c3 Andy Shevchenko 2022-04-06  642  struct fwnode_handle *fwnode_get_nth_parent(const struct fwnode_handle *fwnode, unsigned int depth)
+87e5e95db31a27 Sakari Ailus    2019-10-03  643  {
+040f806ecab6cd Andy Shevchenko 2022-04-06  644  	struct fwnode_handle *parent;
+87e5e95db31a27 Sakari Ailus    2019-10-03  645  
+040f806ecab6cd Andy Shevchenko 2022-04-06  646  	if (depth == 0)
+040f806ecab6cd Andy Shevchenko 2022-04-06 @647  		return fwnode_handle_get(fwnode);
+87e5e95db31a27 Sakari Ailus    2019-10-03  648  
+040f806ecab6cd Andy Shevchenko 2022-04-06  649  	fwnode_for_each_parent_node(fwnode, parent) {
+040f806ecab6cd Andy Shevchenko 2022-04-06  650  		if (--depth == 0)
+040f806ecab6cd Andy Shevchenko 2022-04-06  651  			return parent;
+040f806ecab6cd Andy Shevchenko 2022-04-06  652  	}
+040f806ecab6cd Andy Shevchenko 2022-04-06  653  	return NULL;
+87e5e95db31a27 Sakari Ailus    2019-10-03  654  }
+87e5e95db31a27 Sakari Ailus    2019-10-03  655  EXPORT_SYMBOL_GPL(fwnode_get_nth_parent);
+87e5e95db31a27 Sakari Ailus    2019-10-03  656  
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
