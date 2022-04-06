@@ -2,92 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D5BF4F46DF
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Apr 2022 01:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E8F64F5A0C
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Apr 2022 11:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233638AbiDEUuT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Apr 2022 16:50:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37632 "EHLO
+        id S234355AbiDFJb5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Apr 2022 05:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345373AbiDEUsu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Apr 2022 16:48:50 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4D3F1AFC
-        for <linux-acpi@vger.kernel.org>; Tue,  5 Apr 2022 13:22:54 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id x31so502783pfh.9
-        for <linux-acpi@vger.kernel.org>; Tue, 05 Apr 2022 13:22:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nIHQKyxUpgpxOWFNPXjTrKl0ddNnEy6g9QXsjbdAZCM=;
-        b=d/Y6KZO9645gdnl4o3upqi/iG9kjHXCMROn5f+LebItqV4LN4zekkBGAIgaf4F8Yvi
-         dZudafPooWwy8sgynVt4vyd56kL99iIvSunXkn+J15FpyNKUVZSaTCSTjOmONCsAU2Vx
-         3MRqypy/kGoqtalGE7YwzrikMN9L1iUDe+bVxELbBw1yU1ussZxmNop3XCZFpbQcaMh+
-         X2NjgLkMNsS8p3lgHQQ4MYafNqIk7bCo6pg/BYTeT12ogE0ipCprm09MR8lVQwH+vK71
-         RQrmXn9GBx+pDmhBG5dTlkm/9I9HrfDR5U2nwHNQCPHCHP6wmxjaY8LP9L8GveM1CigB
-         nm6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nIHQKyxUpgpxOWFNPXjTrKl0ddNnEy6g9QXsjbdAZCM=;
-        b=RUbldyZnbcxQguTu21UgkLPYEfeN9h58i90CJ8SiHsXx0xeVG72jawOEJNSeeRbCD9
-         3nNSffHSM4IRzT0b8pjNOlUZ78fhiowhxC3e1y96O+WDjaPIPYBO/AIWJ4HUfCHU1vDL
-         fuqsJJj9N0eQUI5AQyeASvxgDLP74Hw83OKOJakLxR3GYNHL1R1+c4Lt3PJIb3eI4cn9
-         zf6xsfxsXJxA9KbTI/RBXlZyIaZ6h5jthvDoV8kM1syxK2HdFiXK6yfXdYDOILDkVQqA
-         xarANBSS8qcpHUmf7Duh4OlJNf/3n4f5HIg4yLztkW4/7aXepeHnOMmuq4UmGy7R2Cfy
-         S9bg==
-X-Gm-Message-State: AOAM5331IZKhMpjH45P+SrdDCK4jxYlf5ICmAniLGY2KaUZ4Et7/Hy9M
-        H2C4jEUyq9dR22jCIbuIwY7HopXrMFXfKEG5RV6QDg==
-X-Google-Smtp-Source: ABdhPJygHRFzz79Dv7ynI/sD1a/ihGODe4mcJ8u3f/SfJGfUVLl6h8mn409eGbTIBdC8IEGgY5FI40jzYwbmSswzPlI=
-X-Received: by 2002:a63:1117:0:b0:399:2df0:7fb9 with SMTP id
- g23-20020a631117000000b003992df07fb9mr4420099pgl.40.1649190173580; Tue, 05
- Apr 2022 13:22:53 -0700 (PDT)
+        with ESMTP id S1580807AbiDFJVK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Apr 2022 05:21:10 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E6A0AA024;
+        Tue,  5 Apr 2022 19:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649212678; x=1680748678;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uBBoDp9OEecTtULYKqmUDZgqLv9Xxb46gGafhIRRyXs=;
+  b=FwV5GBVRvLE72UXpkaVbUIJIiTPcr/++uE3ZzVnUqK9D3zc4MSBYdf/v
+   aCABJ+okyqjiqXJfZi5byJy0pTGk9FriQpMn+xvP7zshpHpp1A8dBzG7J
+   8QrVDKAzoHIbxkwh+OCn0ybr7YIxV8k7CSWl7r1HW9Lk2D00e4paoFC7n
+   aGiUtm1I1rgHSVRLAoQhjV1LeZVib7SZrTz5s9vNJ2Wo77E2o3SmmTBmU
+   EgybihQZlRccgGkHdXju5n/6x07/BUtS9ui6Z+jFBWa8BhHrv1Po4Z0sQ
+   0x0/wcjaNbfLlGipTgiwsn+9lsj/ZaLcFzaMKRy/l8kTEdI+K3ntXaUtq
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10308"; a="241517560"
+X-IronPort-AV: E=Sophos;i="5.90,238,1643702400"; 
+   d="scan'208";a="241517560"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 19:37:58 -0700
+X-IronPort-AV: E=Sophos;i="5.90,238,1643702400"; 
+   d="scan'208";a="523738416"
+Received: from tomasevx-mobl2.amr.corp.intel.com (HELO vverma7-desk1.intel.com) ([10.213.162.23])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 19:37:57 -0700
+From:   Vishal Verma <vishal.l.verma@intel.com>
+To:     <linux-cxl@vger.kernel.org>
+Cc:     <linux-acpi@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Davidlohr Bueso <dave@stgolabs.net>, a.manzanares@samsung.com,
+        Vishal Verma <vishal.l.verma@intel.com>
+Subject: [PATCH v5 0/3] PCI/ACPI: add support for CXL _OSC
+Date:   Tue,  5 Apr 2022 20:37:43 -0600
+Message-Id: <20220406023746.2807328-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-References: <164894751774.951952.9428402449668442020.stgit@dwillia2-desk3.amr.corp.intel.com>
- <164918880566.2022733.9710638662231385597.stgit@dwillia2-desk3.amr.corp.intel.com>
- <SJ0PR11MB48956875FB15F900B5CF130BE0E49@SJ0PR11MB4895.namprd11.prod.outlook.com>
-In-Reply-To: <SJ0PR11MB48956875FB15F900B5CF130BE0E49@SJ0PR11MB4895.namprd11.prod.outlook.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 5 Apr 2022 13:22:42 -0700
-Message-ID: <CAPcyv4h=A4UKzjzQ5DAQFD66KnAU4F9MZRu6kGAgi6U3nX1hfQ@mail.gmail.com>
-Subject: Re: [PATCH v2] PM: CXL: Disable suspend
-To:     "Brown, Len" <len.brown@intel.com>
-Cc:     "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1799; h=from:subject; bh=uBBoDp9OEecTtULYKqmUDZgqLv9Xxb46gGafhIRRyXs=; b=owGbwMvMwCXGf25diOft7jLG02pJDEk+f75eqXTNqSur2L0tsv7h2dczV37++GItW+WkEq74nYtM H2V+7ChlYRDjYpAVU2T5u+cj4zG57fk8gQmOMHNYmUCGMHBxCsBELisz/I/mmfyl9u88t9235S68bb nzsN3s1ttdi/zKQ52C9S6ZCX9m+J9Wqtpoujh3i+bxkr3e4tJxzkLtr2ZYHzY6ctfs5Mor53gB
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp; fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 5, 2022 at 1:05 PM Brown, Len <len.brown@intel.com> wrote:
->
-> Is it possible for ACPI to be aware that CXL on that system doesn't support S3, and for ACPI to thus simply not export S3?
+Changes since v4[1]:
+- Collect an ack for patch 1 (Rafael)
+- Fix commit subject wording in patch 2 (Rafael)
+- Fix a debug print in patch 2 (Rafael)
+- Document the reasoning behind calculation of cxl hotplug support (David)
+- A few definition and variable name changes to make the new _OSC DWORDS
+  generic instead of CXL specific (Rafael)
 
-The ACPI domain has a chance to be aware of CXL devices attached at
-boot and were configured into the System Memory Map.
+Add support for using the CXL definition of _OSC where applicable, and
+negotiating CXL specific support and control bits.
 
-However, there may be caveats that limit device visibility like
-platform firmware only scans CXL devices directly attached to root
-ports, not behind switches.
+Patch 1 is a preliminary cleanup that replaces open-coded pointer
+arithmetic to retrieve the Control DWORD with an inline helper.
 
-It would be welcome if there was an ACPI data structure to indicate
-"device-X is in scope for S3" which would mean that it has aux power
-and all HDM decoders (the registers that enable access to CXL memory)
-are restored by the BIOS before OS resume begins.
+Patch 2 adds the new CXL _OSC UUID, and uses it instead of the PCI UUID
+when a root port is CXL enabled. It provides a fallback method for
+CXL-1.1 platforms that may not implement the CXL-2.0 _OSC.
 
-Absent that the OS can only assume that the BIOS has no knowledge of
-any HDM configurations that were defined at run time by the OS, like
-after hotplug, or configurations that the OS rewrote by triggering a
-secondary bus reset to unlock what the BIOS had locked and put into
-the EFI memory map.
+Patch 3 performs negotiation for the CXL specific _OSC support and
+control bits.
+
+I've tested these against a custom qemu[2], which adds the CXL _OSC (in
+addition to other CXL support). Specifically, _OSC support is added
+here[3].
+
+[1]: https://lore.kernel.org/linux-cxl/20220331202022.1823174-1-vishal.l.verma@intel.com
+[2]: https://gitlab.com/jic23/qemu/-/tree/cxl-v8-draft
+[3]: https://gitlab.com/jic23/qemu/-/commit/1d67df6b6e3716c27462873f3451956f5c0673a3
+
+Dan Williams (1):
+  PCI/ACPI: Prefer CXL _OSC instead of PCIe _OSC for CXL host bridges
+
+Vishal Verma (2):
+  PCI/ACPI: add a helper for retrieving _OSC Control DWORDs
+  PCI/ACPI: negotiate CXL _OSC
+
+ include/linux/acpi.h    |  42 ++++++-
+ include/acpi/acpi_bus.h |  12 +-
+ drivers/acpi/bus.c      |   2 +-
+ drivers/acpi/pci_root.c | 240 +++++++++++++++++++++++++++++++++++-----
+ 4 files changed, 262 insertions(+), 34 deletions(-)
+
+
+base-commit: 05e815539f3f161585c13a9ab023341bade2c52f
+-- 
+2.35.1
+
