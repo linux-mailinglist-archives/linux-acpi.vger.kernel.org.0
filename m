@@ -2,81 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AB664F810A
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 15:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 343C44F8123
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 15:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236452AbiDGNzr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Apr 2022 09:55:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47508 "EHLO
+        id S1343795AbiDGOBn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Apr 2022 10:01:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbiDGNzr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 09:55:47 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 031F2101F01
-        for <linux-acpi@vger.kernel.org>; Thu,  7 Apr 2022 06:53:45 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C0EF012FC;
-        Thu,  7 Apr 2022 06:53:44 -0700 (PDT)
-Received: from [10.57.41.19] (unknown [10.57.41.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A90933F73B;
-        Thu,  7 Apr 2022 06:53:42 -0700 (PDT)
-Message-ID: <b50cded6-6777-c9c7-7030-a57f28771bc3@arm.com>
-Date:   Thu, 7 Apr 2022 14:53:38 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
+        with ESMTP id S1343798AbiDGOBk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 10:01:40 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A911BA699
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Apr 2022 06:59:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+        :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=Wz4hNkxsawX4PgHGVpqI7DcWA7D+ygHUR+Jezxq/sok=; b=p8lu6HeON3HuIqNpvtMeUF8UAq
+        8f/e/8K+TvocGaKgfxOWSnIxVRfDL+25cIGEQltU/vpsnWLs2u/cG7YeDVQXUgeJTiZe8j2EoesMO
+        Loeu+j1y4VJZO8fvV1AahrwbE4sG/A7yD4tJRVr6AmEOKACG84SlM1jp/JtepWhAi6LmBp+BOUfit
+        ZzxkGfAGEayAyrxcI5txuKnCg1fXhQZD6P7u8aBmmg/d1yEN9g1AP9lVPYA9bu9GpcDVKq2+Jd3E5
+        hODo+PqENwnnZJ56le4zI75STD1YwMVBU/WUTN5Qub3jEdLXTyVUXKJ7TBMWmS0f4KEG1o3wCfRSO
+        NfTZduow==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1ncSfc-00CGaB-Oy; Thu, 07 Apr 2022 13:59:32 +0000
+Date:   Thu, 7 Apr 2022 06:59:32 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        jon@solid-run.com, linuxarm@huawei.com, steven.price@arm.com,
+        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
+        wanghuiqiang@huawei.com, guohanjun@huawei.com,
+        yangyicong@huawei.com, Sami.Mujawar@arm.com, will@kernel.org,
+        linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH v9 06/11] ACPI/IORT: Add support to retrieve IORT RMR
  reserved regions
-Content-Language: en-GB
-To:     Christoph Hellwig <hch@infradead.org>,
-        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org, jon@solid-run.com,
-        linuxarm@huawei.com, steven.price@arm.com, guohanjun@huawei.com,
-        yangyicong@huawei.com, Sami.Mujawar@arm.com, will@kernel.org,
-        wanghuiqiang@huawei.com
+Message-ID: <Yk7uRPG1TwGFPbyY@infradead.org>
 References: <20220404124209.1086-1-shameerali.kolothum.thodi@huawei.com>
  <20220404124209.1086-7-shameerali.kolothum.thodi@huawei.com>
  <Yk7m8oDPtusDzReK@infradead.org>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <Yk7m8oDPtusDzReK@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <b50cded6-6777-c9c7-7030-a57f28771bc3@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b50cded6-6777-c9c7-7030-a57f28771bc3@arm.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022-04-07 14:28, Christoph Hellwig wrote:
->> +static void iort_rmr_desc_check_overlap(struct acpi_iort_rmr_desc *desc, u32 count)
+On Thu, Apr 07, 2022 at 02:53:38PM +0100, Robin Murphy wrote:
+> > Why can't this just go into generic_iommu_put_resv_regions?  The idea
+> > that the iommu low-level drivers need to call into dma-iommu which is
+> > a consumer of the IOMMU API is odd.  Especially if that just calls out
+> > to ACPI code and generic IOMMU code only anyway.
 > 
-> Overly long line.
+> Because assuming ACPI means IORT is not generic. Part of the aim in adding
+> the union to iommu_resv_region is that stuff like AMD's unity_map_entry and
+> Intel's dmar_rmrr_unit can be folded into it as well, and their reserved
+> region handling correspondingly simplified too.
 > 
->>   void iommu_dma_put_resv_regions(struct device *dev, struct list_head *list)
->>   {
->> +	if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode))
->> +		iort_iommu_put_resv_regions(dev, list);
->> +
->>   	generic_iommu_put_resv_regions(dev, list);
->>   }
-> 
-> Why can't this just go into generic_iommu_put_resv_regions?  The idea
-> that the iommu low-level drivers need to call into dma-iommu which is
-> a consumer of the IOMMU API is odd.  Especially if that just calls out
-> to ACPI code and generic IOMMU code only anyway.
+> The iommu_dma_{get,put}_resv_region() helpers are kind of intended to be
+> specific to the fwnode mechanism which deals with IORT and devicetree (once
+> the reserved region bindings are fully worked out).
 
-Because assuming ACPI means IORT is not generic. Part of the aim in 
-adding the union to iommu_resv_region is that stuff like AMD's 
-unity_map_entry and Intel's dmar_rmrr_unit can be folded into it as 
-well, and their reserved region handling correspondingly simplified too.
-
-The iommu_dma_{get,put}_resv_region() helpers are kind of intended to be 
-specific to the fwnode mechanism which deals with IORT and devicetree 
-(once the reserved region bindings are fully worked out).
-
-Thanks,
-Robin.
+But IORT is not driver₋specific code.  So we'll need a USE_IORT flag
+somewhere in core IOMMU code instead of trying to stuff this into
+driver operations.  and dma-iommu mostly certainly implies IORT even
+less than ACPI.
