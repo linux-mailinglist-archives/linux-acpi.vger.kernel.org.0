@@ -2,56 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 343C44F8123
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 15:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C84C4F83C2
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 17:43:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343795AbiDGOBn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Apr 2022 10:01:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
+        id S229682AbiDGPpF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Apr 2022 11:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343798AbiDGOBk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 10:01:40 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A911BA699
-        for <linux-acpi@vger.kernel.org>; Thu,  7 Apr 2022 06:59:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-        :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=Wz4hNkxsawX4PgHGVpqI7DcWA7D+ygHUR+Jezxq/sok=; b=p8lu6HeON3HuIqNpvtMeUF8UAq
-        8f/e/8K+TvocGaKgfxOWSnIxVRfDL+25cIGEQltU/vpsnWLs2u/cG7YeDVQXUgeJTiZe8j2EoesMO
-        Loeu+j1y4VJZO8fvV1AahrwbE4sG/A7yD4tJRVr6AmEOKACG84SlM1jp/JtepWhAi6LmBp+BOUfit
-        ZzxkGfAGEayAyrxcI5txuKnCg1fXhQZD6P7u8aBmmg/d1yEN9g1AP9lVPYA9bu9GpcDVKq2+Jd3E5
-        hODo+PqENwnnZJ56le4zI75STD1YwMVBU/WUTN5Qub3jEdLXTyVUXKJ7TBMWmS0f4KEG1o3wCfRSO
-        NfTZduow==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1ncSfc-00CGaB-Oy; Thu, 07 Apr 2022 13:59:32 +0000
-Date:   Thu, 7 Apr 2022 06:59:32 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        jon@solid-run.com, linuxarm@huawei.com, steven.price@arm.com,
-        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
-        wanghuiqiang@huawei.com, guohanjun@huawei.com,
-        yangyicong@huawei.com, Sami.Mujawar@arm.com, will@kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v9 06/11] ACPI/IORT: Add support to retrieve IORT RMR
- reserved regions
-Message-ID: <Yk7uRPG1TwGFPbyY@infradead.org>
-References: <20220404124209.1086-1-shameerali.kolothum.thodi@huawei.com>
- <20220404124209.1086-7-shameerali.kolothum.thodi@huawei.com>
- <Yk7m8oDPtusDzReK@infradead.org>
- <b50cded6-6777-c9c7-7030-a57f28771bc3@arm.com>
+        with ESMTP id S230196AbiDGPpA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 11:45:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69627939BF;
+        Thu,  7 Apr 2022 08:43:00 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F32E461D47;
+        Thu,  7 Apr 2022 15:42:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E46C385AA;
+        Thu,  7 Apr 2022 15:42:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649346179;
+        bh=gB6qi54d2h5pYe5VdRbfcHtzEy9P9t7ZoE/wMPpDl2Q=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=etCiQjRp5QAY7KYYzDp64vznmp799wma5cIcAVeOXg8cJLNIpXU/fZuRwxtBwpAq1
+         nw/GgudlPiHkWnYEB5Xt7dsC/+sgYBeA2zW/sSgYtEbkJg2Lgoa0qgLOwnH07WssoX
+         wSYsVG4zaqb9J3EV64p1yGTJGMynE81igFF/K/r8FIhlYbg54ii3zknJBTXeXkZVyg
+         p0hKWuDAV83RwJ9CHPrCzMJJttjzwDeKb5ydwVCq+rdvGt/m/D+AsRFVFmPUwTz7ao
+         e0Q6v6R4yqqn9+DuchK/BXLyfuKiVEHWpdEKrnou6cBd/E69gAV3UJqJseYUnZLbDA
+         ipVRNk5AeB0oA==
+Date:   Thu, 7 Apr 2022 10:42:57 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Yicong Yang <yangyicong@hisilicon.com>
+Cc:     bhelgaas@google.com, rafael@kernel.org, lenb@kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linuxarm@huawei.com,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCH] PCI/ACPI: Decouple the negotiation of ASPM and other
+ PCIe services
+Message-ID: <20220407154257.GA235990@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b50cded6-6777-c9c7-7030-a57f28771bc3@arm.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+In-Reply-To: <20220407131602.14727-1-yangyicong@hisilicon.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,22 +55,84 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 07, 2022 at 02:53:38PM +0100, Robin Murphy wrote:
-> > Why can't this just go into generic_iommu_put_resv_regions?  The idea
-> > that the iommu low-level drivers need to call into dma-iommu which is
-> > a consumer of the IOMMU API is odd.  Especially if that just calls out
-> > to ACPI code and generic IOMMU code only anyway.
-> 
-> Because assuming ACPI means IORT is not generic. Part of the aim in adding
-> the union to iommu_resv_region is that stuff like AMD's unity_map_entry and
-> Intel's dmar_rmrr_unit can be folded into it as well, and their reserved
-> region handling correspondingly simplified too.
-> 
-> The iommu_dma_{get,put}_resv_region() helpers are kind of intended to be
-> specific to the fwnode mechanism which deals with IORT and devicetree (once
-> the reserved region bindings are fully worked out).
+[+cc Rafael]
 
-But IORT is not driver₋specific code.  So we'll need a USE_IORT flag
-somewhere in core IOMMU code instead of trying to stuff this into
-driver operations.  and dma-iommu mostly certainly implies IORT even
-less than ACPI.
+On Thu, Apr 07, 2022 at 09:16:02PM +0800, Yicong Yang wrote:
+> Currently we regard ASPM as a necessary PCIe service and if it's disabled
+> by pcie_aspm=off we cannot enable other services like AER and hotplug.
+> However the ASPM is just one of the PCIe services and other services
+> mentioned no dependency on this. So this patch decouples the negotiation
+> of ASPM and other PCIe services, then we can make use of other services
+> in the absence of ASPM.
+
+Why do you want to boot with "pcie_aspm=off"?  If we have to use a
+PCI-related parameter to boot, something is already wrong, so if
+there's a problem that requires ASPM to be disabled, we should fix
+that first.
+
+If there's a known hardware or firmware issue with ASPM, we should
+quirk it so users don't have to discover this parameter.
+
+> Aaron Sierra tried to fix this originally:
+> https://lore.kernel.org/linux-pci/20190702201318.GC128603@google.com/
+
+Yes.  My question from that review is still open:
+
+  But Rafael added ACPI_PCIE_REQ_SUPPORT with 415e12b23792 ("PCI/ACPI:
+  Request _OSC control once for each root bridge (v3)") [1], apparently
+  related to a bug [2].  I assume there was some reason for requiring
+  all those things together, so I'd really like his comments.
+
+  [1] https://git.kernel.org/linus/415e12b23792
+  [2] https://bugzilla.kernel.org/show_bug.cgi?id=20232
+
+Rafael clearly said in [1] that we need to:
+
+  ... check if all of the requisite _OSC support bits are set before
+  calling acpi_pci_osc_control_set() for a given root complex.
+
+We would still need to explain why Rafael thought all these _OSC
+support bits were required, but now they're not.
+
+_OSC does not negotiate directly for control of ASPM (though of course
+it *does* negotiate for control of the PCIe Capability, which contains
+the ASPM control bits), but the PCI Firmware spec, r3.3, sec 4.5.3, has
+this comment in a sample _OSC implementation:
+
+  // Only allow native hot plug control if the OS supports:
+  // * ASPM
+  // * Clock PM
+  // * MSI/MSI-X
+
+which matches the current ACPI_PCIE_REQ_SUPPORT.
+
+So I think I would approach this by reworking the _OSC negotiation so
+we always advertise "OSC_PCI_ASPM_SUPPORT | OSC_PCI_CLOCK_PM_SUPPORT"
+if CONFIG_PCIEASPM=y.
+
+Advertising support for ASPM doesn't mean Linux has to actually
+*enable* it, so we could make a different mechanism to prevent use of
+ASPM if we have a device or platform quirk or we're booting with
+"pcie_aspm=off".
+
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> ---
+>  drivers/acpi/pci_root.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 6f9e75d14808..16fa7c5a11ad 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -37,8 +37,6 @@ static int acpi_pci_root_scan_dependent(struct acpi_device *adev)
+>  }
+>  
+>  #define ACPI_PCIE_REQ_SUPPORT (OSC_PCI_EXT_CONFIG_SUPPORT \
+> -				| OSC_PCI_ASPM_SUPPORT \
+> -				| OSC_PCI_CLOCK_PM_SUPPORT \
+>  				| OSC_PCI_MSI_SUPPORT)
+>  
+>  static const struct acpi_device_id root_device_ids[] = {
+> -- 
+> 2.24.0
+> 
