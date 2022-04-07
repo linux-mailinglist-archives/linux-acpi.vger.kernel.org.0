@@ -2,32 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEA1F4F7F26
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 14:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC5A24F7F2D
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 14:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245226AbiDGMff (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Apr 2022 08:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
+        id S245259AbiDGMhT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Apr 2022 08:37:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232512AbiDGMfd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 08:35:33 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365D4156C5A;
-        Thu,  7 Apr 2022 05:33:29 -0700 (PDT)
+        with ESMTP id S235147AbiDGMhS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 08:37:18 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8D151959F1;
+        Thu,  7 Apr 2022 05:35:16 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: usama.anjum)
-        with ESMTPSA id 587141F4620E
+        with ESMTPSA id 0DF2E1F46225
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649334808;
-        bh=CwdEGgE0Xrn9kscO3wlcTGCBFoWnGlpxLoHtmaIpQYY=;
+        s=mail; t=1649334915;
+        bh=2nsY8QLUcfief4IBTGR7/FrV0GFhhH89yaeVAmr0kEA=;
         h=Date:From:To:Cc:Subject:From;
-        b=RswMbcUwY1oesfBfnuuyZTJ8S+gkO0hUsWD2HbYoEvWgVsf09ZSTkpCDChomFyzr4
-         UOWMd5DPdfgrhV5NnSVOazcikx/HTjXJXKfmJxtUHswSSQ2vnHYETjwa1a6Ngn+ESt
-         nfC8/dlExAqcJLIJr9QhaH6xcZi+zI46fzZ1Cm2j5MEKFJwj8i5byKRmgyrFAxQZ4e
-         zuuXEhmvfkKfcZ2HkZobqfxYxHKMwLNO1r4W765Ci6iTN7NxTX1skzJczNpvTrtrm6
-         4dCR2hyMxu1HMym/gE/Vm+irMLCqJO3lvds48p8jcKIagNNXEryyW0LjRHRXsizr+X
-         gzh6VO31xtAiw==
-Date:   Thu, 7 Apr 2022 17:33:16 +0500
+        b=LCfAxDa6Zzy8OZ7IQnNHWryirnvfQAgWmOx2NIO+4ukD6BbAYAvf/P2tU74v9xhHy
+         KBwDB3uhsXdFo9NSJV9f1jW+V5bMOBFn5hMeOy/hhihwuv2TozVmlxNKkRrqaK8s12
+         Mmz+xIv+a7wdBOB8cr87sh6tjE13B/9Yem9AaXoDdPt9v5d5CG6BSOp8S9hzteTH7r
+         H7AcfrIVdqjEdAgthC1DsV1LwPkFfR/WBAKFVfYSAoxx1XvBJb4W7muwSLm9g913Kb
+         Tzw9uPSyr2d4vsY1ORMR+ryBjM0Az1DPkL3zZwyFHIaicpUKVZxz44nddW0vhArqrL
+         uexz6MNx3/64g==
+Date:   Thu, 7 Apr 2022 17:35:04 +0500
 From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
@@ -53,8 +53,8 @@ Cc:     usama.anjum@collabora.com,
         linux-acpi@vger.kernel.org,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Enric Balletbo i Serra <eballetbo@gmail.com>
-Subject: [PATCH v6] platform: x86: Add ChromeOS ACPI device driver
-Message-ID: <Yk7aDPHI1Pw9Bntg@debian-BULLSEYE-live-builder-AMD64>
+Subject: [PATCH RESEND v6] platform: x86: Add ChromeOS ACPI device driver
+Message-ID: <Yk7aeAcKIBrTupcq@debian-BULLSEYE-live-builder-AMD64>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -88,7 +88,8 @@ Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
 There were the following concerns on v4 which have been delt with in
 v5/v6:
-- BINF.{0,1,4} are reserved and shouldn't be shown in sysfs
+- Remove BINF.{0,1,4} from sysfs as they are reserved and not used
+  anymore
 - Reword the description of MECK
 - Change function name from chromeos_acpi_alloc_name() to
   chromeos_acpi_gen_file_name()
@@ -112,6 +113,11 @@ Changes in v5:
 - Update sysfs interface documentation
 - Remove binf{0,1,4} as they have been deprecated
 - Update some cleanup logic in case of error
+  - Remove freeing of chromeos_acpi.root explicitely in
+    chromeos_acpi_device_remove() as it'll be automatically freed by
+    chromeos_acpi_remove_groups()
+  - If sysfs_create_groups() fails in chromeos_acpi_process_mlst(),
+    cleanup all groups
 - Cosmetic changes
 
 Changes in v4:
@@ -691,7 +697,7 @@ index fe4d4c8970efa..82196b934a0be 100644
  
 diff --git a/drivers/platform/x86/chromeos_acpi.c b/drivers/platform/x86/chromeos_acpi.c
 new file mode 100644
-index 0000000000000..2ad63edd8f27e
+index 0000000000000..f8b8a3d0ef01c
 --- /dev/null
 +++ b/drivers/platform/x86/chromeos_acpi.c
 @@ -0,0 +1,515 @@
@@ -700,7 +706,7 @@ index 0000000000000..2ad63edd8f27e
 + * ChromeOS specific ACPI extensions
 + *
 + * Copyright 2011 Google, Inc.
-+ * Copyright 2020 Google LLC
++ * Copyright 2020-2022 Google LLC
 + *
 + * This file is a rework and part of the code is ported from chromeos-3.18
 + * kernel and was originally written by Vadim Bendebury <vbendeb@chromium.org>.
