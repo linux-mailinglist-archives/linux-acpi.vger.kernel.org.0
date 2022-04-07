@@ -2,142 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 289D74F8516
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 18:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63A974F869C
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 19:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232435AbiDGQnh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Apr 2022 12:43:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
+        id S1346621AbiDGRxR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Apr 2022 13:53:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231684AbiDGQnh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 12:43:37 -0400
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959C3195D97;
-        Thu,  7 Apr 2022 09:41:36 -0700 (PDT)
-Received: by mail-yb1-f175.google.com with SMTP id l36so10513989ybj.12;
-        Thu, 07 Apr 2022 09:41:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ag3ZPrDaG7eymU9bbXcPlL6ed5F1nvkJ2snTyLrGnXs=;
-        b=CukGAeIT43xM17pCPytcQyhT370asJLMKxD1G9ALDllv6I6Rd669Do8qgvq+QygIuN
-         Hxo7ghI6dKZzSAph4osOml+Wkf70N5bCpgBxvb43p7jVL0stg4RR6wTTe3SLwNoICBEG
-         n5LRZ9uD+Na4ElubNJPiax/so7/1vNezIAuqTzQZPNGbmDK5cjt0tCkr0+k8ARP0YUFV
-         TYpB4U37Oj2Wha7PWbWQttTJjENuA/LbIg2UMA4xk1J7a7xWW/AgWCR3m+UAyOd/m2IA
-         /zVyQBo/Pfqt817qd6YERWrN7a7SuvCwp/e56OWnsAuSC45dezzMOBkJKkiVjc53exMA
-         95xQ==
-X-Gm-Message-State: AOAM533p5tXleLMDRy7XioiEVmArbS7PDQyeJpc4hiICWo6pOtwtdqL1
-        9OgbfOvCauo8vajNcfs6TArNBnrAor1U7SfVcEc=
-X-Google-Smtp-Source: ABdhPJwWQD4BFr0N61om2oTZkMiWX4Rr2YEQ3mpLAc2fGixxeUMxNh9UrphFjXkRcH94v9AOqW3Qm14l5jYbhkvU+LY=
-X-Received: by 2002:a25:8409:0:b0:63c:bea7:30af with SMTP id
- u9-20020a258409000000b0063cbea730afmr9874223ybk.633.1649349695694; Thu, 07
- Apr 2022 09:41:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220407131602.14727-1-yangyicong@hisilicon.com> <20220407154257.GA235990@bhelgaas>
-In-Reply-To: <20220407154257.GA235990@bhelgaas>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 7 Apr 2022 18:41:24 +0200
-Message-ID: <CAJZ5v0gWzDsh8VWY+EzO6WxyO6Fe1GcRzVfABVOaO0ywJegLwA@mail.gmail.com>
-Subject: Re: [PATCH] PCI/ACPI: Decouple the negotiation of ASPM and other PCIe services
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Yicong Yang <yangyicong@hisilicon.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
+        with ESMTP id S1346630AbiDGRxP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 13:53:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B29B722EB35;
+        Thu,  7 Apr 2022 10:51:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6C510B82901;
+        Thu,  7 Apr 2022 17:51:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E26C385A0;
+        Thu,  7 Apr 2022 17:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649353869;
+        bh=cmP0BZ3fNUvcP7KxHKtR0yiNgwGpwH3espXWf6j0OxA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Ib2H7AYJZPo72aQsw1/OYImofH7OAeCmw1QztjPZCt5O7vxkDFE3uXOi5E3ORoV/K
+         GHIbKSEdMghvbX/hZBM7JZxdjReU0uda2rUmEpwYxyRgZNtv7daLjG0NvC53UhnWSO
+         lOr+jHVCnKOJR19X1z+r2NAlMzRtN6UzKqfxz+4AHbnWalXuJHl8a3CvsmJf65gXHc
+         TrLgEGJD3Vgwv7EvremvCWzqboi9Tod94Y4FAGtJ+ICkXc7fNGUr0nEfJWkiW+ADSk
+         Nz9CghzPAtZZ0CpoFIfYZEeKMvooc/1zoVfFxKkP64oNi7RFkuEYDDXui6ZlspGzxs
+         K9/WHcmwdmfLQ==
+Date:   Thu, 7 Apr 2022 12:51:07 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
         Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH v1 3/3] PCI: ACPI: PM: Power up devices in D3cold before
+ scanning them
+Message-ID: <20220407175107.GA252647@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5729439.MhkbZ0Pkbq@kreacher>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 7, 2022 at 5:43 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> [+cc Rafael]
->
-> On Thu, Apr 07, 2022 at 09:16:02PM +0800, Yicong Yang wrote:
-> > Currently we regard ASPM as a necessary PCIe service and if it's disabled
-> > by pcie_aspm=off we cannot enable other services like AER and hotplug.
-> > However the ASPM is just one of the PCIe services and other services
-> > mentioned no dependency on this. So this patch decouples the negotiation
-> > of ASPM and other PCIe services, then we can make use of other services
-> > in the absence of ASPM.
->
-> Why do you want to boot with "pcie_aspm=off"?  If we have to use a
-> PCI-related parameter to boot, something is already wrong, so if
-> there's a problem that requires ASPM to be disabled, we should fix
-> that first.
->
-> If there's a known hardware or firmware issue with ASPM, we should
-> quirk it so users don't have to discover this parameter.
->
-> > Aaron Sierra tried to fix this originally:
-> > https://lore.kernel.org/linux-pci/20190702201318.GC128603@google.com/
->
-> Yes.  My question from that review is still open:
->
->   But Rafael added ACPI_PCIE_REQ_SUPPORT with 415e12b23792 ("PCI/ACPI:
->   Request _OSC control once for each root bridge (v3)") [1], apparently
->   related to a bug [2].  I assume there was some reason for requiring
->   all those things together, so I'd really like his comments.
+On Mon, Apr 04, 2022 at 05:25:04PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The initial configuration of ACPI power resources on some systems
+> implies that some PCI devices on them are initially in D3cold.
+> 
+> In some cases, especially for PCIe Root Ports, this is a "logical"
+> D3cold, meaning that the configuration space of the device is
+> accessible, but some of its functionality may be missing, but it
+> very well may be real D3cold, in which case the device will not
+> be accessible at all.  However, the PCI bus type driver will need
+> to access its configuration space in order to enumerate it.
+> 
+> To prevent possible device enumeration failures that may ensue as
+> a result of ACPI power resources being initially in the "off"
+> state, power up all children of the host bridge ACPI device object
+> that hold valid _ADR objects (which indicates that they will be
+> enumerated by the PCI bus type driver) and do that to all children
+> of the ACPI device objects corresponding to PCI bridges (including
+> PCIe ports).
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Well, it was quite a few years ago.
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
->   [1] https://git.kernel.org/linus/415e12b23792
->   [2] https://bugzilla.kernel.org/show_bug.cgi?id=20232
->
-> Rafael clearly said in [1] that we need to:
->
->   ... check if all of the requisite _OSC support bits are set before
->   calling acpi_pci_osc_control_set() for a given root complex.
-
-IIRC, the idea was to avoid requesting native control of anything PCIe
-if those bits were not set in the mask, because otherwise we wouldn't
-be able to get PME and native hotplug control which were not
-configurable at that time.  [PME is still not configurable and
-potentially related to hotplug, because they may use the same MSI IRQ
-in principle, but the native hotplug is configurable now anyway.]
-
-> We would still need to explain why Rafael thought all these _OSC
-> support bits were required, but now they're not.
->
-> _OSC does not negotiate directly for control of ASPM (though of course
-> it *does* negotiate for control of the PCIe Capability, which contains
-> the ASPM control bits), but the PCI Firmware spec, r3.3, sec 4.5.3, has
-> this comment in a sample _OSC implementation:
->
->   // Only allow native hot plug control if the OS supports:
->   // * ASPM
->   // * Clock PM
->   // * MSI/MSI-X
->
-> which matches the current ACPI_PCIE_REQ_SUPPORT.
->
-> So I think I would approach this by reworking the _OSC negotiation so
-> we always advertise "OSC_PCI_ASPM_SUPPORT | OSC_PCI_CLOCK_PM_SUPPORT"
-> if CONFIG_PCIEASPM=y.
-
-That'd be reasonable IMO.
-
-> Advertising support for ASPM doesn't mean Linux has to actually
-> *enable* it, so we could make a different mechanism to prevent use of
-> ASPM if we have a device or platform quirk or we're booting with
-> "pcie_aspm=off".
-
-Right.
-
-Note that if we don't request the native control of a PCIe feature,
-this basically gives the BIOS a licence to scribble on the related
-device registers and some of the features are not independent, so we
-may need to advertise support for two features in order to get control
-of just one of them.
+> ---
+>  drivers/acpi/pci_root.c |    2 ++
+>  drivers/pci/pci-acpi.c  |    3 +++
+>  2 files changed, 5 insertions(+)
+> 
+> Index: linux-pm/drivers/acpi/pci_root.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/pci_root.c
+> +++ linux-pm/drivers/acpi/pci_root.c
+> @@ -927,6 +927,8 @@ struct pci_bus *acpi_pci_root_create(str
+>  		host_bridge->preserve_config = 1;
+>  	ACPI_FREE(obj);
+>  
+> +	acpi_dev_power_up_children_with_adr(device);
+> +
+>  	pci_scan_child_bus(bus);
+>  	pci_set_host_bridge_release(host_bridge, acpi_pci_root_release_info,
+>  				    info);
+> Index: linux-pm/drivers/pci/pci-acpi.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci-acpi.c
+> +++ linux-pm/drivers/pci/pci-acpi.c
+> @@ -1374,6 +1374,9 @@ void pci_acpi_setup(struct device *dev,
+>  
+>  	acpi_pci_wakeup(pci_dev, false);
+>  	acpi_device_power_add_dependent(adev, dev);
+> +
+> +	if (pci_is_bridge(pci_dev))
+> +		acpi_dev_power_up_children_with_adr(adev);
+>  }
+>  
+>  void pci_acpi_cleanup(struct device *dev, struct acpi_device *adev)
+> 
+> 
+> 
