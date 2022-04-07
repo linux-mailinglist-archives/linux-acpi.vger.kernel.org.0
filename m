@@ -2,89 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 232624F7A60
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 10:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E1564F7C9E
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 12:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243440AbiDGIxX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Apr 2022 04:53:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42298 "EHLO
+        id S233688AbiDGKXq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Apr 2022 06:23:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243563AbiDGIxQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 04:53:16 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAAEB2ACD;
-        Thu,  7 Apr 2022 01:51:14 -0700 (PDT)
+        with ESMTP id S244186AbiDGKXn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 06:23:43 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 187941AB9FE;
+        Thu,  7 Apr 2022 03:21:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649321476; x=1680857476;
+  t=1649326902; x=1680862902;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=rvvRdha+qpxn4dQmcryB8CJAVWXcpexk0ryCTlfgnEM=;
-  b=M7RcDyUJ8/zzkWPSzZUJ0vXtK90kP2GO9rH+/AGbzKUkk56Vi+KZz7GP
-   EvZtKbhTCoJyz11aM/aK0h87S2XPr+ywhmka/zOJWGSiWOKTdgpLZbCh/
-   20nShUHl+Mmf29NZdJFdx5Wa9tv/KAExK1o5ZEhS4s4Wa3vyrgIk6H8+s
-   WDnyLZ/MOEqjuPUAtFsTBpd84WjsN7j7yYEidPsmEIv1Cm9B0ps+RFc4c
-   lgmw5aPt4BUZ/u65q+HyjT2NqjjOfeZqyq7aeydFPfjmhNYugvRKx7kgj
-   8t/my32LeBI1Ibx5nwdf0m7l57tD37Re+qSDZe+F4FOCwnlGPECtRTyJZ
+  bh=14uR+X8D1hFafUVEmn6fSTwQ5pea2ecTUrj5n9ZrzLQ=;
+  b=lSVOjOVSyIDMpxpVb+NikGKkdpG14vXVIfX4V47zzxc/kBUU5Wcdhclo
+   HSkg8qNaoGvKy1L5rqgHhETS9JMPxyyTLIpkuIKuAYv0VeZJ7q4sBD57D
+   CHsxB5odDR8Y1aD8mljOzV3UKT6FxoocWmnn26mWSclkbeUkTwlBEVDgm
+   usqXlO90hwXJdlCXVZ9vxgO0kAyHGlOCVhbQNbbY6oFN09Z/lHghiPbtl
+   t+MDrg2h2RYZZk4FQbilPmkv4QeYWt6mVVZ8+sgiNvulivCeed2YB0KIM
+   qK1IMAkqOHbV4ct4LZSNwP1GOc77198KEVCBkhl8MqNC4xcKGqNA2NjGi
    A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10309"; a="241860122"
+X-IronPort-AV: E=McAfee;i="6200,9189,10309"; a="248809078"
 X-IronPort-AV: E=Sophos;i="5.90,241,1643702400"; 
-   d="scan'208";a="241860122"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2022 01:51:13 -0700
+   d="scan'208";a="248809078"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2022 03:21:18 -0700
 X-IronPort-AV: E=Sophos;i="5.90,241,1643702400"; 
-   d="scan'208";a="570963311"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2022 01:51:10 -0700
-Received: by lahna (sSMTP sendmail emulation); Thu, 07 Apr 2022 11:50:46 +0300
-Date:   Thu, 7 Apr 2022 11:50:46 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v1] PCI: PM: Power up all devices during runtime resume
-Message-ID: <Yk6l5riEX3WJLZfT@lahna>
-References: <4412361.LvFx2qVVIh@kreacher>
+   d="scan'208";a="722903528"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2022 03:21:15 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ncPEu-000KjM-I7;
+        Thu, 07 Apr 2022 13:19:44 +0300
+Date:   Thu, 7 Apr 2022 13:19:44 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Michael Walle <michael@walle.cc>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Subject: Re: [PATCH v5 1/4] device property: Allow error pointer to be passed
+ to fwnode APIs
+Message-ID: <Yk66wHWlMg3QLy6u@smile.fi.intel.com>
+References: <20220406130552.30930-1-andriy.shevchenko@linux.intel.com>
+ <df3a78036864716fbeecf3cd94dbcbbe@walle.cc>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4412361.LvFx2qVVIh@kreacher>
+In-Reply-To: <df3a78036864716fbeecf3cd94dbcbbe@walle.cc>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 06, 2022 at 09:00:52PM +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Currently, endpoint devices may not be powered up entirely during
-> runtime resume that follows a D3hot -> D0 transition of the parent
-> bridge.
-> 
-> Namely, even if the power state of an endpoint device, as indicated
-> by its PCI_PM_CTRL register, is D0 after powering up its parent
-> bridge, it may be still necessary to bring its ACPI companion into
-> D0 and that should be done before accessing it.  However, the current
-> code assumes that reading the PCI_PM_CTRL register is sufficient to
-> establish the endpoint device's power state, which may lead to
-> problems.
-> 
-> Address that by forcing a power-up of all PCI devices, including the
-> platform firmware part of it, during runtime resume.
-> 
-> Link: https://lore.kernel.org/linux-pm/11967527.O9o76ZdvQC@kreacher
-> Fixes: 5775b843a619 ("PCI: Restore config space on runtime resume despite being unbound")
-> Reported-by: Abhishek Sahu <abhsahu@nvidia.com>
-> Tested-by: Abhishek Sahu <abhsahu@nvidia.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Apr 06, 2022 at 08:05:23PM +0200, Michael Walle wrote:
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+...
+
+> > +	if (IS_ERR_OR_NULL(fwnode))
+> > +		return -ENOENT;
+> > +
+> >  	ret = fwnode_call_int_op(fwnode, get_reference_args, prop, nargs_prop,
+> >  				 nargs, index, args);
+> > +	if (ret == 0)
+> > +		return ret;
+> > 
+> > -	if (ret < 0 && !IS_ERR_OR_NULL(fwnode) &&
+> > -	    !IS_ERR_OR_NULL(fwnode->secondary))
+> > -		ret = fwnode_call_int_op(fwnode->secondary, get_reference_args,
+> > -					 prop, nargs_prop, nargs, index, args);
+> > +	if (IS_ERR_OR_NULL(fwnode->secondary))
+> > +		return -ENOENT;
+> 
+> Doesn't this mean you overwrite any return code != 0 with -ENOENT?
+> Is this intended?
+
+Indeed, it would shadow the error code.
+So, it should go with
+
+	if (IS_ERR_OR_NULL(fwnode->secondary))
+		return ret;
+
+then.
+
+> In any case:
+> Tested-by: Michael Walle <michael@walle.cc>
+
+Thanks!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
