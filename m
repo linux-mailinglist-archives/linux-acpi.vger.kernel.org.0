@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F3364F908A
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 10:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 597774F90BE
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 10:27:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231401AbiDHISZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Apr 2022 04:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35214 "EHLO
+        id S230139AbiDHI3r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Apr 2022 04:29:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230142AbiDHISY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 04:18:24 -0400
-Received: from chinatelecom.cn (prt-mail.chinatelecom.cn [42.123.76.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 89A1C65826;
-        Fri,  8 Apr 2022 01:16:16 -0700 (PDT)
-HMM_SOURCE_IP: 172.18.0.188:55768.2144374162
+        with ESMTP id S230126AbiDHI3r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 04:29:47 -0400
+Received: from chinatelecom.cn (prt-mail.chinatelecom.cn [42.123.76.226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B68F024F8B1;
+        Fri,  8 Apr 2022 01:27:43 -0700 (PDT)
+HMM_SOURCE_IP: 172.18.0.48:49474.967726217
 HMM_ATTACHE_NUM: 0000
 HMM_SOURCE_TYPE: SMTP
-Received: from clientip-202.80.192.39 (unknown [172.18.0.188])
-        by chinatelecom.cn (HERMES) with SMTP id E28752800BE;
-        Fri,  8 Apr 2022 16:15:43 +0800 (CST)
+Received: from clientip-202.80.192.39 (unknown [172.18.0.48])
+        by chinatelecom.cn (HERMES) with SMTP id 9E0302800F9;
+        Fri,  8 Apr 2022 16:27:21 +0800 (CST)
 X-189-SAVE-TO-SEND: +liuxp11@chinatelecom.cn
-Received: from  ([172.18.0.188])
-        by app0023 with ESMTP id 131277eff98e44e7bbacc98d5e805070 for rafael@kernel.org;
-        Fri, 08 Apr 2022 16:16:07 CST
-X-Transaction-ID: 131277eff98e44e7bbacc98d5e805070
+Received: from  ([172.18.0.48])
+        by app0024 with ESMTP id 7ad1d1860fd746e492a0b7b9acd2ba5b for rafael@kernel.org;
+        Fri, 08 Apr 2022 16:27:42 CST
+X-Transaction-ID: 7ad1d1860fd746e492a0b7b9acd2ba5b
 X-Real-From: liuxp11@chinatelecom.cn
-X-Receive-IP: 172.18.0.188
+X-Receive-IP: 172.18.0.48
 X-MEDUSA-Status: 0
 Sender: liuxp11@chinatelecom.cn
 From:   Liu Xinpeng <liuxp11@chinatelecom.cn>
@@ -35,12 +35,12 @@ To:     rafael@kernel.org, dave.hansen@linux.intel.com, x86@kernel.org,
         ccross@android.com, robert.moore@intel.com, tony.luck@intel.com,
         lenb@kernel.org, james.morse@arm.com, bp@alien8.de,
         tglx@linutronix.de, mingo@redhat.com, ying.huang@intel.com,
-        gong.chen@linux.intel.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Liu Xinpeng <liuxp11@chinatelecom.cn>
-Subject: [PATCH v3] ACPI: APEI: fix missing erst record id
-Date:   Fri,  8 Apr 2022 16:15:23 +0800
-Message-Id: <1649405723-9178-1-git-send-email-liuxp11@chinatelecom.cn>
+        gong.chen@linux.intel.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Liu Xinpeng <liuxp11@chinatelecom.cn>
+Subject: [PATCH v4] ACPI: APEI: fix missing erst record id
+Date:   Fri,  8 Apr 2022 16:27:07 +0800
+Message-Id: <1649406427-9357-1-git-send-email-liuxp11@chinatelecom.cn>
 X-Mailer: git-send-email 1.8.3.1
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -94,20 +94,21 @@ total error record count: 6
 v1->v2  fix style problems
 v2->v3  fix apei_read_mce called erst_get_record_id_next and modify
 the commit message.
+v3->v4  add erst_clear_cache in another retry.
 
 Signed-off-by: Liu Xinpeng <liuxp11@chinatelecom.cn>
 ---
- arch/x86/kernel/cpu/mce/apei.c |  5 +++--
+ arch/x86/kernel/cpu/mce/apei.c |  9 ++++++---
  drivers/acpi/apei/erst-dbg.c   |  4 +++-
  drivers/acpi/apei/erst.c       | 34 +++++++++++++++++++++++++++++++---
  include/acpi/apei.h            |  1 +
- 4 files changed, 38 insertions(+), 6 deletions(-)
+ 4 files changed, 41 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
-index 0e3ae64d3b76..d37d38715231 100644
+index 0e3ae64d3b76..d77de72a91d2 100644
 --- a/arch/x86/kernel/cpu/mce/apei.c
 +++ b/arch/x86/kernel/cpu/mce/apei.c
-@@ -179,9 +179,10 @@ ssize_t apei_read_mce(struct mce *m, u64 *record_id)
+@@ -179,14 +179,17 @@ ssize_t apei_read_mce(struct mce *m, u64 *record_id)
  		goto out;
  	rc = erst_read(*record_id, &rcd.hdr, sizeof(rcd));
  	/* someone else has cleared the record, try next one */
@@ -120,6 +121,14 @@ index 0e3ae64d3b76..d37d38715231 100644
  		goto out;
  	/* try to skip other type records in storage */
  	else if (rc != sizeof(rcd) ||
+-		 !guid_equal(&rcd.hdr.creator_id, &CPER_CREATOR_MCE))
++		 !guid_equal(&rcd.hdr.creator_id, &CPER_CREATOR_MCE)) {
++		erst_clear_cache(*record_id);
+ 		goto retry;
++	}
+ 	memcpy(m, &rcd.mce, sizeof(*m));
+ 	rc = sizeof(*m);
+ out:
 diff --git a/drivers/acpi/apei/erst-dbg.c b/drivers/acpi/apei/erst-dbg.c
 index c740f0faad39..5b8164280a17 100644
 --- a/drivers/acpi/apei/erst-dbg.c
