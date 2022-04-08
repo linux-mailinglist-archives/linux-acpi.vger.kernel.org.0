@@ -2,126 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2997F4F9CB3
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 20:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7E974F9CCD
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 20:33:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbiDHSbL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Apr 2022 14:31:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37244 "EHLO
+        id S229846AbiDHSfX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Apr 2022 14:35:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbiDHSbK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 14:31:10 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332AA97BB4;
-        Fri,  8 Apr 2022 11:29:04 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 90bc16d103d9c465; Fri, 8 Apr 2022 20:29:02 +0200
-Received: from kreacher.localnet (unknown [213.134.187.56])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 2ACED66BDA1;
-        Fri,  8 Apr 2022 20:29:02 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: [PATCH v2] PCI: PM: Power up all devices during runtime resume
-Date:   Fri, 08 Apr 2022 20:29:01 +0200
-Message-ID: <2652115.mvXUDI8C0e@kreacher>
-In-Reply-To: <4412361.LvFx2qVVIh@kreacher>
-References: <4412361.LvFx2qVVIh@kreacher>
+        with ESMTP id S234781AbiDHSfW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 14:35:22 -0400
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29351107CE;
+        Fri,  8 Apr 2022 11:33:18 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id f23so16582324ybj.7;
+        Fri, 08 Apr 2022 11:33:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=wtNwrz7oRIWjkIPNvrbEkRmxAgqdmLlbehB5ZSkoXhg=;
+        b=BnQhROQvxrbGrbElkJbj7N/Oj8j5L7dnboqyh/6P9sjpz9JZG9ADzD7efNXRN6l5YQ
+         y/gGmWwgEibNNLaSHwpwUjqDJWKp+XzuGbjMDEPt5SQkNyaIXUfrUatlGXf8xbw/MyQn
+         7SlzrtmwRzT8SST92P04UK8xsgY/atZCGOFd7PPghXWFziNH9iJiKvxOfEWuEtFyI6cD
+         qn4C1O04b7kyNKenBd092nPomkTjc5opjWfvzUt6oRo2qLsucCaAgw2j4n65lHsCgpyr
+         RLf63x9F4pFMyLiYPXoSU8jH8Ai8dzjIp9x4oawUFMKtZqXaNzZXiaEOVoix804trpjW
+         UXxQ==
+X-Gm-Message-State: AOAM532CD5o7C7jpF48uesLvjsmE4HZrr/aZO5AijJeJ32NF4pIP/t/P
+        t7/IcPBLZ+tjrRGb9nJgfrjR26m5V92SknKwHwUP6lc1J7Y=
+X-Google-Smtp-Source: ABdhPJyCzEXS/CjHXhyPsWMJqSys0t+S6V0CILcgBrheHoAVd1X28DycdTMQiCI7UTHXXlQEhZcWRp02kibzFAZnjpc=
+X-Received: by 2002:a25:8409:0:b0:63c:bea7:30af with SMTP id
+ u9-20020a258409000000b0063cbea730afmr13740174ybk.633.1649442798030; Fri, 08
+ Apr 2022 11:33:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 8 Apr 2022 20:33:07 +0200
+Message-ID: <CAJZ5v0g+31PFhkoROu18aT2CLGkn61v7aLgiPC3M_zbqqf_yCg@mail.gmail.com>
+Subject: [GIT PULL] ACPI updates for v5.18-rc2
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.187.56
-X-CLIENT-HOSTNAME: 213.134.187.56
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrudektddguddvfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepteeggfelteegudehueegieekveduleeuledvueefjeefffegfeejudfgteefhefhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudekjedrheeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekjedrheeipdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghr
- rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Subject: [PATCH] PCI: PM: Power up all devices during runtime resume
+Hi Linus,
 
-Currently, endpoint devices may not be powered up entirely during
-runtime resume that follows a D3hot -> D0 transition of the parent
-bridge.
+Please pull from the tag
 
-Namely, even if the power state of an endpoint device, as indicated
-by its PCI_PM_CTRL register, is D0 after powering up its parent
-bridge, it may be still necessary to bring its ACPI companion into
-D0 and that should be done before accessing it.  However, the current
-code assumes that reading the PCI_PM_CTRL register is sufficient to
-establish the endpoint device's power state, which may lead to
-problems.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.18-rc2
 
-Address that by forcing a power-up of all PCI devices, including the
-platform firmware part of it, during runtime resume.
+with top-most commit 87ad236001eb95cf1760ccaf7670c94722231097
 
-Link: https://lore.kernel.org/linux-pm/11967527.O9o76ZdvQC@kreacher
-Fixes: 5775b843a619 ("PCI: Restore config space on runtime resume despite being unbound")
-Reported-by: Abhishek Sahu <abhsahu@nvidia.com>
-Tested-by: Abhishek Sahu <abhsahu@nvidia.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+ Merge branch 'acpi-bus'
 
-v1 -> v2:
-   * Move pci_pm_default_resume_early() away from #ifdef CONFIG_PM_SLEEP.
-   * Add R-by from Mika.
+on top of commit 3123109284176b1532874591f7c81f3837bbdc17
 
----
- drivers/pci/pci-driver.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ Linux 5.18-rc1
 
-Index: linux-pm/drivers/pci/pci-driver.c
-===================================================================
---- linux-pm.orig/drivers/pci/pci-driver.c
-+++ linux-pm/drivers/pci/pci-driver.c
-@@ -551,10 +551,6 @@ static void pci_pm_default_resume(struct
- 	pci_enable_wake(pci_dev, PCI_D0, false);
- }
- 
--#endif
--
--#ifdef CONFIG_PM_SLEEP
--
- static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
- {
- 	pci_power_up(pci_dev);
-@@ -563,6 +559,10 @@ static void pci_pm_default_resume_early(
- 	pci_pme_restore(pci_dev);
- }
- 
-+#endif
-+
-+#ifdef CONFIG_PM_SLEEP
-+
- /*
-  * Default "suspend" method for devices that have no driver provided suspend,
-  * or not even a driver at all (second part).
-@@ -1312,7 +1312,7 @@ static int pci_pm_runtime_resume(struct
- 	 * to a driver because although we left it in D0, it may have gone to
- 	 * D3cold when the bridge above it runtime suspended.
- 	 */
--	pci_restore_standard_config(pci_dev);
-+	pci_pm_default_resume_early(pci_dev);
- 
- 	if (!pci_dev->driver)
- 		return 0;
+to receive ACPI updates for 5.18-rc2.
+
+These revert a problematic commit from the 5.17 development cycle
+and finalize the elimination of acpi_bus_get_device() that mostly
+took place during the recent merge window.
+
+Specifics:
+
+ - Revert an ACPI processor driver change related to cache
+   invalidation in acpi_idle_play_dead() that clearly was a mistake
+   and introduced user-visible regressions (Akihiko Odaki).
+
+ - Replace the last instance of acpi_bus_get_device() added during
+   the recent merge window and drop the function to prevent more
+   users of it from being added (Rafael Wysocki).
+
+Thanks!
 
 
+---------------
 
+Akihiko Odaki (1):
+      Revert "ACPI: processor: idle: Only flush cache on entering C3"
+
+Rafael J. Wysocki (1):
+      ACPI: bus: Eliminate acpi_bus_get_device()
+
+---------------
+
+ drivers/acpi/processor_idle.c |  3 +--
+ drivers/acpi/scan.c           | 13 -------------
+ drivers/spi/spi.c             |  3 ++-
+ include/acpi/acpi_bus.h       |  1 -
+ 4 files changed, 3 insertions(+), 17 deletions(-)
