@@ -2,218 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 597774F90BE
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 10:27:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F2E4F957A
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 14:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230139AbiDHI3r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Apr 2022 04:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52586 "EHLO
+        id S229762AbiDHMVM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Apr 2022 08:21:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230126AbiDHI3r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 04:29:47 -0400
-Received: from chinatelecom.cn (prt-mail.chinatelecom.cn [42.123.76.226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B68F024F8B1;
-        Fri,  8 Apr 2022 01:27:43 -0700 (PDT)
-HMM_SOURCE_IP: 172.18.0.48:49474.967726217
-HMM_ATTACHE_NUM: 0000
-HMM_SOURCE_TYPE: SMTP
-Received: from clientip-202.80.192.39 (unknown [172.18.0.48])
-        by chinatelecom.cn (HERMES) with SMTP id 9E0302800F9;
-        Fri,  8 Apr 2022 16:27:21 +0800 (CST)
-X-189-SAVE-TO-SEND: +liuxp11@chinatelecom.cn
-Received: from  ([172.18.0.48])
-        by app0024 with ESMTP id 7ad1d1860fd746e492a0b7b9acd2ba5b for rafael@kernel.org;
-        Fri, 08 Apr 2022 16:27:42 CST
-X-Transaction-ID: 7ad1d1860fd746e492a0b7b9acd2ba5b
-X-Real-From: liuxp11@chinatelecom.cn
-X-Receive-IP: 172.18.0.48
-X-MEDUSA-Status: 0
-Sender: liuxp11@chinatelecom.cn
-From:   Liu Xinpeng <liuxp11@chinatelecom.cn>
-To:     rafael@kernel.org, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, keescook@chromium.org, anton@enomsg.org,
-        ccross@android.com, robert.moore@intel.com, tony.luck@intel.com,
-        lenb@kernel.org, james.morse@arm.com, bp@alien8.de,
-        tglx@linutronix.de, mingo@redhat.com, ying.huang@intel.com,
-        gong.chen@linux.intel.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Liu Xinpeng <liuxp11@chinatelecom.cn>
-Subject: [PATCH v4] ACPI: APEI: fix missing erst record id
-Date:   Fri,  8 Apr 2022 16:27:07 +0800
-Message-Id: <1649406427-9357-1-git-send-email-liuxp11@chinatelecom.cn>
-X-Mailer: git-send-email 1.8.3.1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232550AbiDHMVL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 08:21:11 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1F2325738
+        for <linux-acpi@vger.kernel.org>; Fri,  8 Apr 2022 05:19:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649420348; x=1680956348;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yRvUHW2NjjCl+NJusv1LQ7RYIkUPOck7aZW/3pPYTNw=;
+  b=NDk1WP1WaD4r73nDvzTqhu808H981nOjsjt+ksVGBhfZnCys8M081Abu
+   ohFA/o6+TRyXIC7mzFxi1UZLl7pt0gGhizGRx2FO6MILFBdrmQBFzZUuG
+   D4fNRhCZhJGAzG82bijYr8Y+ruWQqqGL7opAdBFrxY/o04iO5MdI6d6bb
+   6Y4JaJp20qs1XRrum7seRq+V042wqJL+VOre9J6svkM9v74bsR8RK+2xh
+   OlBI0LZy2FjXVItITEswUFKyQpAmcFqU9e+iJbSX67pW27kEsRJwaA3Uv
+   ydsKkuv3+WiOKc0BN6z1IRp6xB4gRZ2a62N/ZZ/LqV4PUgQUUtO6MYR+F
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10310"; a="259178891"
+X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
+   d="scan'208";a="259178891"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 05:19:08 -0700
+X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
+   d="scan'208";a="653238413"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 05:19:07 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ncnWQ-000HPj-9M;
+        Fri, 08 Apr 2022 15:15:26 +0300
+Date:   Fri, 8 Apr 2022 15:15:26 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael.j.wysocki@intel.com
+Subject: Re: [PATCH 1/1] ACPI: property: Release subnode properties with data
+ nodes
+Message-ID: <YlAnXoxVdV1JAuSb@smile.fi.intel.com>
+References: <20220406131208.603830-1-sakari.ailus@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220406131208.603830-1-sakari.ailus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Read a record is cleared by others, but the deleted record cache entry is
-still created by erst_get_record_id_next. When next enumerate the records,
-get the cached deleted record, then erst_read return -ENOENT and try to
-get next record, loop back to first ID will return 0 in function
-__erst_record_id_cache_add_one and then set record_id as
-APEI_ERST_INVALID_RECORD_ID, finished this time read operation.
-It will result in read the records just in the cache hereafter.
+On Wed, Apr 06, 2022 at 04:12:08PM +0300, Sakari Ailus wrote:
+> struct acpi_device_properties describes one source of properties present
+> on either struct acpi_device or struct acpi_data_node. When properties are
+> parsed, both are populated but when released, only those properties that
+> are associated with the device node are freed.
+> 
+> Fix this by also releasing memory of the data node properties.
 
-This patch cleared the deleted record cache, fix the issue that
-"./erst-inject -p" shows record counts not equal to "./erst-inject -n".
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-A reproducer of the problem(retry many times):
+> Fixes: 5f5e4890d57a ("ACPI / property: Allow multiple property compatible _DSD entries")
+> Cc: stable@vger.kernel.org (for v4.20 and up)
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/acpi/property.c | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 3fceb4681ec9f..2da5e7cd28134 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -433,6 +433,16 @@ void acpi_init_properties(struct acpi_device *adev)
+>  		acpi_extract_apple_properties(adev);
+>  }
+>  
+> +static void acpi_free_device_properties(struct list_head *list)
+> +{
+> +	struct acpi_device_properties *props, *tmp;
+> +
+> +	list_for_each_entry_safe(props, tmp, list, list) {
+> +		list_del(&props->list);
+> +		kfree(props);
+> +	}
+> +}
+> +
+>  static void acpi_destroy_nondev_subnodes(struct list_head *list)
+>  {
+>  	struct acpi_data_node *dn, *next;
+> @@ -445,22 +455,18 @@ static void acpi_destroy_nondev_subnodes(struct list_head *list)
+>  		wait_for_completion(&dn->kobj_done);
+>  		list_del(&dn->sibling);
+>  		ACPI_FREE((void *)dn->data.pointer);
+> +		acpi_free_device_properties(&dn->data.properties);
+>  		kfree(dn);
+>  	}
+>  }
+>  
+>  void acpi_free_properties(struct acpi_device *adev)
+>  {
+> -	struct acpi_device_properties *props, *tmp;
+> -
+>  	acpi_destroy_nondev_subnodes(&adev->data.subnodes);
+>  	ACPI_FREE((void *)adev->data.pointer);
+>  	adev->data.of_compatible = NULL;
+>  	adev->data.pointer = NULL;
+> -	list_for_each_entry_safe(props, tmp, &adev->data.properties, list) {
+> -		list_del(&props->list);
+> -		kfree(props);
+> -	}
+> +	acpi_free_device_properties(&adev->data.properties);
+>  }
+>  
+>  /**
+> -- 
+> 2.30.2
+> 
 
-[root@localhost erst-inject]# ./erst-inject -c 0xaaaaa00011
-[root@localhost erst-inject]# ./erst-inject -p
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00012
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00013
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00014
-[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000006
-[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000007
-[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000008
-[root@localhost erst-inject]# ./erst-inject -p
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00012
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00013
-rc: 273
-rcd sig: CPER
-rcd id: 0xaaaaa00014
-[root@localhost erst-inject]# ./erst-inject -n
-total error record count: 6
-
-v1->v2  fix style problems
-v2->v3  fix apei_read_mce called erst_get_record_id_next and modify
-the commit message.
-v3->v4  add erst_clear_cache in another retry.
-
-Signed-off-by: Liu Xinpeng <liuxp11@chinatelecom.cn>
----
- arch/x86/kernel/cpu/mce/apei.c |  9 ++++++---
- drivers/acpi/apei/erst-dbg.c   |  4 +++-
- drivers/acpi/apei/erst.c       | 34 +++++++++++++++++++++++++++++++---
- include/acpi/apei.h            |  1 +
- 4 files changed, 41 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
-index 0e3ae64d3b76..d77de72a91d2 100644
---- a/arch/x86/kernel/cpu/mce/apei.c
-+++ b/arch/x86/kernel/cpu/mce/apei.c
-@@ -179,14 +179,17 @@ ssize_t apei_read_mce(struct mce *m, u64 *record_id)
- 		goto out;
- 	rc = erst_read(*record_id, &rcd.hdr, sizeof(rcd));
- 	/* someone else has cleared the record, try next one */
--	if (rc == -ENOENT)
-+	if (rc == -ENOENT) {
-+		erst_clear_cache(*record_id);
- 		goto retry;
--	else if (rc < 0)
-+	} else if (rc < 0)
- 		goto out;
- 	/* try to skip other type records in storage */
- 	else if (rc != sizeof(rcd) ||
--		 !guid_equal(&rcd.hdr.creator_id, &CPER_CREATOR_MCE))
-+		 !guid_equal(&rcd.hdr.creator_id, &CPER_CREATOR_MCE)) {
-+		erst_clear_cache(*record_id);
- 		goto retry;
-+	}
- 	memcpy(m, &rcd.mce, sizeof(*m));
- 	rc = sizeof(*m);
- out:
-diff --git a/drivers/acpi/apei/erst-dbg.c b/drivers/acpi/apei/erst-dbg.c
-index c740f0faad39..5b8164280a17 100644
---- a/drivers/acpi/apei/erst-dbg.c
-+++ b/drivers/acpi/apei/erst-dbg.c
-@@ -113,8 +113,10 @@ static ssize_t erst_dbg_read(struct file *filp, char __user *ubuf,
- retry:
- 	rc = len = erst_read(id, erst_dbg_buf, erst_dbg_buf_len);
- 	/* The record may be cleared by others, try read next record */
--	if (rc == -ENOENT)
-+	if (rc == -ENOENT) {
-+		erst_clear_cache(id);
- 		goto retry_next;
-+	}
- 	if (rc < 0)
- 		goto out;
- 	if (len > ERST_DBG_RECORD_LEN_MAX) {
-diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
-index 698d67cee052..07d69dc7fd62 100644
---- a/drivers/acpi/apei/erst.c
-+++ b/drivers/acpi/apei/erst.c
-@@ -856,6 +856,31 @@ ssize_t erst_read(u64 record_id, struct cper_record_header *record,
- }
- EXPORT_SYMBOL_GPL(erst_read);
- 
-+int erst_clear_cache(u64 record_id)
-+{
-+	int rc, i;
-+	u64 *entries;
-+
-+	if (erst_disable)
-+		return -ENODEV;
-+
-+	rc = mutex_lock_interruptible(&erst_record_id_cache.lock);
-+	if (rc)
-+		return rc;
-+
-+	entries = erst_record_id_cache.entries;
-+	for (i = 0; i < erst_record_id_cache.len; i++) {
-+		if (entries[i] == record_id)
-+			entries[i] = APEI_ERST_INVALID_RECORD_ID;
-+	}
-+	__erst_record_id_cache_compact();
-+
-+	mutex_unlock(&erst_record_id_cache.lock);
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(erst_clear_cache);
-+
- int erst_clear(u64 record_id)
- {
- 	int rc, i;
-@@ -998,14 +1023,17 @@ static ssize_t erst_reader(struct pstore_record *record)
- 
- 	len = erst_read(record_id, &rcd->hdr, rcd_len);
- 	/* The record may be cleared by others, try read next record */
--	if (len == -ENOENT)
-+	if (len == -ENOENT) {
-+		erst_clear_cache(record_id);
- 		goto skip;
--	else if (len < 0 || len < sizeof(*rcd)) {
-+	} else if (len < 0 || len < sizeof(*rcd)) {
- 		rc = -EIO;
- 		goto out;
- 	}
--	if (!guid_equal(&rcd->hdr.creator_id, &CPER_CREATOR_PSTORE))
-+	if (!guid_equal(&rcd->hdr.creator_id, &CPER_CREATOR_PSTORE)) {
-+		erst_clear_cache(record_id);
- 		goto skip;
-+	}
- 
- 	record->buf = kmalloc(len, GFP_KERNEL);
- 	if (record->buf == NULL) {
-diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-index afaca3a075e8..f8c11ff4115a 100644
---- a/include/acpi/apei.h
-+++ b/include/acpi/apei.h
-@@ -47,6 +47,7 @@ void erst_get_record_id_end(void);
- ssize_t erst_read(u64 record_id, struct cper_record_header *record,
- 		  size_t buflen);
- int erst_clear(u64 record_id);
-+int erst_clear_cache(u64 record_id);
- 
- int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data);
- void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
 -- 
-2.23.0
+With Best Regards,
+Andy Shevchenko
+
 
