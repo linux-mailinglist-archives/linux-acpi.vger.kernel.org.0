@@ -2,220 +2,209 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8BC4F87F3
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Apr 2022 21:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F3364F908A
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 10:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230261AbiDGTTb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Apr 2022 15:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51544 "EHLO
+        id S231401AbiDHISZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Apr 2022 04:18:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230170AbiDGTTa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Apr 2022 15:19:30 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DA491E95E2;
-        Thu,  7 Apr 2022 12:17:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 68C06B82970;
-        Thu,  7 Apr 2022 19:17:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5072C385A6;
-        Thu,  7 Apr 2022 19:17:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649359038;
-        bh=FFCCGVSnknPcSGQEt20l5gj9HymHETqLW15RaE75gKw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=th/y6FLTxXotjaQlPStq/a162X1xZUWyGAW5XUrAx3JxehwphlWayv2XOPoJAU5t2
-         dyjePnBC2PH9rXgLmzJJmEgQMxIB9jdmPDwHBYxaHlL/7z2IviRGedkqYeZ/lfePtW
-         XOcki+N9ZjHQkOBlGlCOSHBkVcYkHYw+Mg/aBmMlPNZy/3UT/QMgIn9SrN83JB50d5
-         fu+EoG1I7zYo95GdloqFvsmd5+bRhTJ6alXEwKqR/Uq/5vEy9fd4REq79+M+Q8Ffw1
-         Gy8kVtqixjS2oQnc+kclYS/0J/z7DXI0wAGc+D+HK1Msvnv4lv9INJnMhzGmIqcAJy
-         lpcZ3mWij8Q/g==
-Date:   Thu, 7 Apr 2022 14:17:15 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Rajat Jain <rajatja@google.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Dmitry Torokhov <dtor@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Pavel Machek <pavel@denx.de>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        iommu@lists.linux-foundation.org
-Subject: Re: [PATCH v5 1/2] PCI: ACPI: Support Microsoft's "DmaProperty"
-Message-ID: <20220407191715.GA254460@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220325184609.4059963-1-rajatja@google.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230142AbiDHISY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 04:18:24 -0400
+Received: from chinatelecom.cn (prt-mail.chinatelecom.cn [42.123.76.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 89A1C65826;
+        Fri,  8 Apr 2022 01:16:16 -0700 (PDT)
+HMM_SOURCE_IP: 172.18.0.188:55768.2144374162
+HMM_ATTACHE_NUM: 0000
+HMM_SOURCE_TYPE: SMTP
+Received: from clientip-202.80.192.39 (unknown [172.18.0.188])
+        by chinatelecom.cn (HERMES) with SMTP id E28752800BE;
+        Fri,  8 Apr 2022 16:15:43 +0800 (CST)
+X-189-SAVE-TO-SEND: +liuxp11@chinatelecom.cn
+Received: from  ([172.18.0.188])
+        by app0023 with ESMTP id 131277eff98e44e7bbacc98d5e805070 for rafael@kernel.org;
+        Fri, 08 Apr 2022 16:16:07 CST
+X-Transaction-ID: 131277eff98e44e7bbacc98d5e805070
+X-Real-From: liuxp11@chinatelecom.cn
+X-Receive-IP: 172.18.0.188
+X-MEDUSA-Status: 0
+Sender: liuxp11@chinatelecom.cn
+From:   Liu Xinpeng <liuxp11@chinatelecom.cn>
+To:     rafael@kernel.org, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, keescook@chromium.org, anton@enomsg.org,
+        ccross@android.com, robert.moore@intel.com, tony.luck@intel.com,
+        lenb@kernel.org, james.morse@arm.com, bp@alien8.de,
+        tglx@linutronix.de, mingo@redhat.com, ying.huang@intel.com,
+        gong.chen@linux.intel.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Liu Xinpeng <liuxp11@chinatelecom.cn>
+Subject: [PATCH v3] ACPI: APEI: fix missing erst record id
+Date:   Fri,  8 Apr 2022 16:15:23 +0800
+Message-Id: <1649405723-9178-1-git-send-email-liuxp11@chinatelecom.cn>
+X-Mailer: git-send-email 1.8.3.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In subject,
+Read a record is cleared by others, but the deleted record cache entry is
+still created by erst_get_record_id_next. When next enumerate the records,
+get the cached deleted record, then erst_read return -ENOENT and try to
+get next record, loop back to first ID will return 0 in function
+__erst_record_id_cache_add_one and then set record_id as
+APEI_ERST_INVALID_RECORD_ID, finished this time read operation.
+It will result in read the records just in the cache hereafter.
 
-  PCI/ACPI: ...
+This patch cleared the deleted record cache, fix the issue that
+"./erst-inject -p" shows record counts not equal to "./erst-inject -n".
 
-would be consistent with previous history (at least things coming
-through the PCI tree :)).
+A reproducer of the problem(retry many times):
 
-On Fri, Mar 25, 2022 at 11:46:08AM -0700, Rajat Jain wrote:
-> The "DmaProperty" is supported and documented by Microsoft here:
-> https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
+[root@localhost erst-inject]# ./erst-inject -c 0xaaaaa00011
+[root@localhost erst-inject]# ./erst-inject -p
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00012
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00013
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00014
+[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000006
+[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000007
+[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000008
+[root@localhost erst-inject]# ./erst-inject -p
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00012
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00013
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00014
+[root@localhost erst-inject]# ./erst-inject -n
+total error record count: 6
 
-Here's a more specific link (could probably be referenced below to
-avoid cluttering the text here):
+v1->v2  fix style problems
+v2->v3  fix apei_read_mce called erst_get_record_id_next and modify
+the commit message.
 
-https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
+Signed-off-by: Liu Xinpeng <liuxp11@chinatelecom.cn>
+---
+ arch/x86/kernel/cpu/mce/apei.c |  5 +++--
+ drivers/acpi/apei/erst-dbg.c   |  4 +++-
+ drivers/acpi/apei/erst.c       | 34 +++++++++++++++++++++++++++++++---
+ include/acpi/apei.h            |  1 +
+ 4 files changed, 38 insertions(+), 6 deletions(-)
 
-> They use this property for DMA protection:
-> https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
-> 
-> Support the "DmaProperty" with the same semantics. This is useful for
-> internal PCI devices that do not hang off a PCIe rootport, but offer
-> an attack surface for DMA attacks (e.g. internal network devices).
+diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
+index 0e3ae64d3b76..d37d38715231 100644
+--- a/arch/x86/kernel/cpu/mce/apei.c
++++ b/arch/x86/kernel/cpu/mce/apei.c
+@@ -179,9 +179,10 @@ ssize_t apei_read_mce(struct mce *m, u64 *record_id)
+ 		goto out;
+ 	rc = erst_read(*record_id, &rcd.hdr, sizeof(rcd));
+ 	/* someone else has cleared the record, try next one */
+-	if (rc == -ENOENT)
++	if (rc == -ENOENT) {
++		erst_clear_cache(*record_id);
+ 		goto retry;
+-	else if (rc < 0)
++	} else if (rc < 0)
+ 		goto out;
+ 	/* try to skip other type records in storage */
+ 	else if (rc != sizeof(rcd) ||
+diff --git a/drivers/acpi/apei/erst-dbg.c b/drivers/acpi/apei/erst-dbg.c
+index c740f0faad39..5b8164280a17 100644
+--- a/drivers/acpi/apei/erst-dbg.c
++++ b/drivers/acpi/apei/erst-dbg.c
+@@ -113,8 +113,10 @@ static ssize_t erst_dbg_read(struct file *filp, char __user *ubuf,
+ retry:
+ 	rc = len = erst_read(id, erst_dbg_buf, erst_dbg_buf_len);
+ 	/* The record may be cleared by others, try read next record */
+-	if (rc == -ENOENT)
++	if (rc == -ENOENT) {
++		erst_clear_cache(id);
+ 		goto retry_next;
++	}
+ 	if (rc < 0)
+ 		goto out;
+ 	if (len > ERST_DBG_RECORD_LEN_MAX) {
+diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
+index 698d67cee052..07d69dc7fd62 100644
+--- a/drivers/acpi/apei/erst.c
++++ b/drivers/acpi/apei/erst.c
+@@ -856,6 +856,31 @@ ssize_t erst_read(u64 record_id, struct cper_record_header *record,
+ }
+ EXPORT_SYMBOL_GPL(erst_read);
+ 
++int erst_clear_cache(u64 record_id)
++{
++	int rc, i;
++	u64 *entries;
++
++	if (erst_disable)
++		return -ENODEV;
++
++	rc = mutex_lock_interruptible(&erst_record_id_cache.lock);
++	if (rc)
++		return rc;
++
++	entries = erst_record_id_cache.entries;
++	for (i = 0; i < erst_record_id_cache.len; i++) {
++		if (entries[i] == record_id)
++			entries[i] = APEI_ERST_INVALID_RECORD_ID;
++	}
++	__erst_record_id_cache_compact();
++
++	mutex_unlock(&erst_record_id_cache.lock);
++
++	return rc;
++}
++EXPORT_SYMBOL_GPL(erst_clear_cache);
++
+ int erst_clear(u64 record_id)
+ {
+ 	int rc, i;
+@@ -998,14 +1023,17 @@ static ssize_t erst_reader(struct pstore_record *record)
+ 
+ 	len = erst_read(record_id, &rcd->hdr, rcd_len);
+ 	/* The record may be cleared by others, try read next record */
+-	if (len == -ENOENT)
++	if (len == -ENOENT) {
++		erst_clear_cache(record_id);
+ 		goto skip;
+-	else if (len < 0 || len < sizeof(*rcd)) {
++	} else if (len < 0 || len < sizeof(*rcd)) {
+ 		rc = -EIO;
+ 		goto out;
+ 	}
+-	if (!guid_equal(&rcd->hdr.creator_id, &CPER_CREATOR_PSTORE))
++	if (!guid_equal(&rcd->hdr.creator_id, &CPER_CREATOR_PSTORE)) {
++		erst_clear_cache(record_id);
+ 		goto skip;
++	}
+ 
+ 	record->buf = kmalloc(len, GFP_KERNEL);
+ 	if (record->buf == NULL) {
+diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+index afaca3a075e8..f8c11ff4115a 100644
+--- a/include/acpi/apei.h
++++ b/include/acpi/apei.h
+@@ -47,6 +47,7 @@ void erst_get_record_id_end(void);
+ ssize_t erst_read(u64 record_id, struct cper_record_header *record,
+ 		  size_t buflen);
+ int erst_clear(u64 record_id);
++int erst_clear_cache(u64 record_id);
+ 
+ int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data);
+ void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
+-- 
+2.23.0
 
-Same semantics as what?
-
-The MS description of "ExternalFacingPort" says:
-
-  This ACPI object enables the operating system to identify externally
-  exposed PCIe hierarchies, such as Thunderbolt.
-
-and "DmaProperty" says:
-
-  This ACPI object enables the operating system to identify internal
-  PCIe hierarchies that are easily accessible by users (such as,
-  Laptop M.2 PCIe slots accessible by way of a latch) and require
-  protection by the OS Kernel DMA Protection mechanism.
-
-I don't really understand why they called out "laptop M.2 PCIe slots"
-here.  Is the idea that those are more accessible than a standard
-internal PCIe slot?  Seems like a pretty small distinction to me.
-
-I can understand your example of internal network devices adding an
-attack surface.  But I don't see how "DmaProperty" helps identify
-those.  Wouldn't a NIC in a standard internal PCIe slot add the same
-attack surface?
-
-> Signed-off-by: Rajat Jain <rajatja@google.com>
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> ---
-> v5: * Reorder the patches in the series
-> v4: * Add the GUID. 
->     * Update the comment and commitlog.
-> v3: * Use Microsoft's documented property "DmaProperty"
->     * Resctrict to ACPI only
-> 
->  drivers/acpi/property.c |  3 +++
->  drivers/pci/pci-acpi.c  | 16 ++++++++++++++++
->  2 files changed, 19 insertions(+)
-> 
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index d0986bda2964..20603cacc28d 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -48,6 +48,9 @@ static const guid_t prp_guids[] = {
->  	/* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
->  	GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
->  		  0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
-> +	/* DmaProperty for PCI devices GUID: 70d24161-6dd5-4c9e-8070-705531292865 */
-> +	GUID_INIT(0x70d24161, 0x6dd5, 0x4c9e,
-> +		  0x80, 0x70, 0x70, 0x55, 0x31, 0x29, 0x28, 0x65),
->  };
->  
->  /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 1f15ab7eabf8..378e05096c52 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1350,12 +1350,28 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
->  		dev->external_facing = 1;
->  }
->  
-> +static void pci_acpi_check_for_dma_protection(struct pci_dev *dev)
-
-I try to avoid function names like *_check_*() because they don't give
-any hint about whether there's a side effect or what direction things
-are going.  I prefer things that return a value or make sense when
-used as a predicate.  Maybe something like this?
-
-  int pci_dev_has_dma_property(struct pci_dev *dev)
-
-  dev->untrusted |= pci_dev_has_dma_property(pci_dev);
-
-> +{
-> +	u8 val;
-> +
-> +	/*
-> +	 * Property also used by Microsoft Windows for same purpose,
-> +	 * (to implement DMA protection from a device, using the IOMMU).
-> +	 */
-> +	if (device_property_read_u8(&dev->dev, "DmaProperty", &val))
-
-The MS web page says a _DSD with this property must be implemented in
-the Root Port device scope, but we don't enforce that here.  We *do*
-enforce it in pci_acpi_set_untrusted().  Shouldn't we do the same
-here?
-
-We currently look at three properties from the same _DSD:
-
-  DmaProperty
-  ExternalFacingPort
-  HotPlugSupportInD3
-
-For "HotPlugSupportInD3", we check that "value == 1".  For
-"ExternalFacingPort", we check that it's non-zero.  The MS doc isn't
-explicit about the values, but shows "1" in the sample ASL.  I think
-we should handle all three cases the same.
-
-The first two use device_property_read_u8(); the last uses
-acpi_dev_get_property().  Again, I think they should all be the same.
-
-acpi_dev_get_property() is easier for me to read because there are
-slightly fewer layers of abstraction between _DSD and
-acpi_dev_get_property().
-
-But IIUC, device_property_read_u8() works for either ACPI or DT
-properties, and maybe there is interest in using this for DT systems.
-None of these appear in any in-tree DTs, but maybe it is important to
-handle these in DTs?
-
-If that's the case, this code would no longer be specific to ACPI and
-should be moved to somewhere that's compiled even when CONFIG_ACPI
-isn't set.
-
-> +		return;
-> +
-> +	if (val)
-> +		dev->untrusted = 1;
-> +}
-> +
->  void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
->  {
->  	struct pci_dev *pci_dev = to_pci_dev(dev);
->  
->  	pci_acpi_optimize_delay(pci_dev, adev->handle);
->  	pci_acpi_set_external_facing(pci_dev);
-> +	pci_acpi_check_for_dma_protection(pci_dev);
->  	pci_acpi_add_edr_notifier(pci_dev);
->  
->  	pci_acpi_add_pm_notifier(adev, pci_dev);
-> -- 
-> 2.35.1.1021.g381101b075-goog
-> 
