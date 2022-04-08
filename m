@@ -2,132 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA4B64F9D4B
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 20:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 357A84F9DA1
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 21:25:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231156AbiDHSyR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Apr 2022 14:54:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45622 "EHLO
+        id S232100AbiDHT1F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Apr 2022 15:27:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbiDHSyR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 14:54:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D88FD2DF67C;
-        Fri,  8 Apr 2022 11:52:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7128060E0A;
-        Fri,  8 Apr 2022 18:52:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9787C385A3;
-        Fri,  8 Apr 2022 18:52:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649443931;
-        bh=rK22gO2CZuph9kE+09bxScvaDcjvBm/GHuYiaQ2hvV4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=gklRPiMC62SixPPM1Ji7waJs7s0Jyp0ZnEbnS4/ArCXf1pAOMOnq3FIfQfre0/hzo
-         DIF+sNB6uDg1oYlWgQ0Q6LplwQMUBxxnEDV9eltMd9J0nJTvDqnwLIavcznszTy8/n
-         8mklVQsyWN27VAfgzmgZ7i1lovMyTAVAg0LyeZ06D1IA40ozOs8SubGr0fSb+BbHYz
-         jDpJaeSwoyJ9wQLgWHcjncudVjIB4HeTqcm44m/0WrBr5ljutjI3bEn0Z8ybDVO/yK
-         AVWar4piCXTxgmRUQy1Q2abkcVuuR+aeG11neHkvdtplE7ONpWHbA0q3dL6hajmN93
-         JNygfGroLy30A==
-Date:   Fri, 8 Apr 2022 13:52:10 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v2] PCI: PM: Power up all devices during runtime resume
-Message-ID: <20220408185210.GA339319@bhelgaas>
+        with ESMTP id S231718AbiDHT1E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 15:27:04 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 810571CCADF;
+        Fri,  8 Apr 2022 12:25:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649445900; x=1680981900;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=QWXje4Jo7Kw+9lJyTdkR5NGVYVGitp430LMd/QOyuJA=;
+  b=IS3krlXHehcXM8hdJjOHPtDN9bGh0Ocl0xhsSNgBsX74e5OAD8TX8IRV
+   RlWvQyTyU9eXI4Bbj3IOdODtjC9FVm5qBPYp7SZbnZfF+dTVyGOLXCeZy
+   rk4WAfamwXcNbrYpIDm8QhvPAdJH9sUiNToGkd22Bh9LQ9Yy57Oz7Ahy3
+   axiZN/aNzZJu3pUkBI14CZf8/xdtF7TJmIe5WO4r0Hl0pnNGTfbuC9m/U
+   PWCLK67is5zMRKu4O/5EhOnZyQXAfMXUSVZCFBUC2cJEyUGG6hnttU+C8
+   bn8pmlHRolUcrB52Ti1Rj68LLOZL7n2feQnHAy0/KzQjxLYn3TkNx+URF
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="348106879"
+X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
+   d="scan'208";a="348106879"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 12:25:00 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
+   d="scan'208";a="550625250"
+Received: from fmsmsx604.amr.corp.intel.com ([10.18.126.84])
+  by orsmga007.jf.intel.com with ESMTP; 08 Apr 2022 12:24:59 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx604.amr.corp.intel.com (10.18.126.84) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 8 Apr 2022 12:24:58 -0700
+Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
+ fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.2308.027;
+ Fri, 8 Apr 2022 12:24:58 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     "liuxp11@chinatelecom.cn" <liuxp11@chinatelecom.cn>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "anton@enomsg.org" <anton@enomsg.org>,
+        "ccross@android.com" <ccross@android.com>,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "Huang, Ying" <ying.huang@intel.com>,
+        "gong.chen@linux.intel.com" <gong.chen@linux.intel.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH v4] ACPI: APEI: fix missing erst record id
+Thread-Topic: [PATCH v4] ACPI: APEI: fix missing erst record id
+Thread-Index: AQHYSyKHiR0TBR/Q30CSA+N7POqBxqzmYapQ
+Date:   Fri, 8 Apr 2022 19:24:58 +0000
+Message-ID: <4208d2e15341432ba1137600b7e5b9ae@intel.com>
+References: <1649406427-9357-1-git-send-email-liuxp11@chinatelecom.cn>
+In-Reply-To: <1649406427-9357-1-git-send-email-liuxp11@chinatelecom.cn>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.6.401.20
+x-originating-ip: [10.1.200.100]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2652115.mvXUDI8C0e@kreacher>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 08, 2022 at 08:29:01PM +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Subject: [PATCH] PCI: PM: Power up all devices during runtime resume
-> 
-> Currently, endpoint devices may not be powered up entirely during
-> runtime resume that follows a D3hot -> D0 transition of the parent
-> bridge.
-> 
-> Namely, even if the power state of an endpoint device, as indicated
-> by its PCI_PM_CTRL register, is D0 after powering up its parent
-> bridge, it may be still necessary to bring its ACPI companion into
-> D0 and that should be done before accessing it.  However, the current
-> code assumes that reading the PCI_PM_CTRL register is sufficient to
-> establish the endpoint device's power state, which may lead to
-> problems.
-> 
-> Address that by forcing a power-up of all PCI devices, including the
-> platform firmware part of it, during runtime resume.
-> 
-> Link: https://lore.kernel.org/linux-pm/11967527.O9o76ZdvQC@kreacher
-> Fixes: 5775b843a619 ("PCI: Restore config space on runtime resume despite being unbound")
-> Reported-by: Abhishek Sahu <abhsahu@nvidia.com>
-> Tested-by: Abhishek Sahu <abhsahu@nvidia.com>
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+I think it might be a cleaner solution if you first implement a new functio=
+n:
 
-I replaced the v1 patch with this one on pci/pm, thanks!
+/*
+ * Like erst_read(), but look for a specific record type (by size and guid)
+ * also retry -ENOENT returns by skipping to next record_id
+ */
+ssize_t erst_read_record(u64 *record_id, struct cper_record_header *record,
+			size_t buflen, size_t recordlen, const guid_t *guid)
+{
+}
 
-> ---
-> 
-> v1 -> v2:
->    * Move pci_pm_default_resume_early() away from #ifdef CONFIG_PM_SLEEP.
->    * Add R-by from Mika.
-> 
-> ---
->  drivers/pci/pci-driver.c |   10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> Index: linux-pm/drivers/pci/pci-driver.c
-> ===================================================================
-> --- linux-pm.orig/drivers/pci/pci-driver.c
-> +++ linux-pm/drivers/pci/pci-driver.c
-> @@ -551,10 +551,6 @@ static void pci_pm_default_resume(struct
->  	pci_enable_wake(pci_dev, PCI_D0, false);
->  }
->  
-> -#endif
-> -
-> -#ifdef CONFIG_PM_SLEEP
-> -
->  static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
->  {
->  	pci_power_up(pci_dev);
-> @@ -563,6 +559,10 @@ static void pci_pm_default_resume_early(
->  	pci_pme_restore(pci_dev);
->  }
->  
-> +#endif
-> +
-> +#ifdef CONFIG_PM_SLEEP
-> +
->  /*
->   * Default "suspend" method for devices that have no driver provided suspend,
->   * or not even a driver at all (second part).
-> @@ -1312,7 +1312,7 @@ static int pci_pm_runtime_resume(struct
->  	 * to a driver because although we left it in D0, it may have gone to
->  	 * D3cold when the bridge above it runtime suspended.
->  	 */
-> -	pci_restore_standard_config(pci_dev);
-> +	pci_pm_default_resume_early(pci_dev);
->  
->  	if (!pci_dev->driver)
->  		return 0;
-> 
-> 
-> 
+Step 2: Update apei_read_mce() and erst_reader() to use this function.
+
+Step 3: Apply your erst_clear_cache() fix to the new function
+
+-Tony
