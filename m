@@ -2,142 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D7254F98C3
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 16:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4F114F9981
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 17:30:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237257AbiDHO7s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Apr 2022 10:59:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38054 "EHLO
+        id S229762AbiDHPcA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Apr 2022 11:32:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235049AbiDHO7r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 10:59:47 -0400
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2996F118636;
-        Fri,  8 Apr 2022 07:57:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649429864; x=1680965864;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Lyl03mlhWs42htV83HjHYtMI2teOzFnAwIEADD5Axxk=;
-  b=MlKymDw9njpg6sPabDymiAkiFVyz0DecoAQrSSdpRZH7+NjigpVfCXly
-   UHAOwLtRvsKGsAoYfO1mwkg9lT7EV6i+BurUn9UYvIxPmpv4GTrsoksjF
-   c2k6sMADR0JrGYga8KDCThbfyn3GS5WgVAkJ3k/bEpVdk2iG0IVIuUAKd
-   bl3Uet5mkmJS8JloNN6EjE4lEs+vqAkYqFyv2hynLEovqoENU1BREAIoK
-   awBwrMFUctbK49xYp+bv4/LjIz+ROxjdNljXFyd+1JwvwZyyHv7MU3Sys
-   wdqcfFw9R82t0xwsQzKkLPbyTxTv0KF4P0volqA3FsacyBs8+QEVxIe1n
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10310"; a="322298671"
-X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="322298671"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 07:57:43 -0700
-X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="659511333"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 07:57:41 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ncpzr-000Kof-JN;
-        Fri, 08 Apr 2022 17:53:59 +0300
-Date:   Fri, 8 Apr 2022 17:53:59 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Michael Walle <michael@walle.cc>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Subject: Re: [PATCH v5 1/4] device property: Allow error pointer to be passed
- to fwnode APIs
-Message-ID: <YlBMh3A1UlsoDu1Q@smile.fi.intel.com>
-References: <20220406130552.30930-1-andriy.shevchenko@linux.intel.com>
- <df3a78036864716fbeecf3cd94dbcbbe@walle.cc>
- <Yk66wHWlMg3QLy6u@smile.fi.intel.com>
- <YlAuEzW0fUuuXTN6@smile.fi.intel.com>
- <YlA4Pp11ZXG3eSX/@paasikivi.fi.intel.com>
+        with ESMTP id S235426AbiDHPcA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 11:32:00 -0400
+Received: from bee.birch.relay.mailchannels.net (bee.birch.relay.mailchannels.net [23.83.209.14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF441CB178;
+        Fri,  8 Apr 2022 08:29:53 -0700 (PDT)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+        by relay.mailchannels.net (Postfix) with ESMTP id 505452C18FC;
+        Fri,  8 Apr 2022 15:22:41 +0000 (UTC)
+Received: from pdx1-sub0-mail-a212.dreamhost.com (unknown [127.0.0.6])
+        (Authenticated sender: dreamhost)
+        by relay.mailchannels.net (Postfix) with ESMTPA id B73492C1723;
+        Fri,  8 Apr 2022 15:22:40 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1649431360; a=rsa-sha256;
+        cv=none;
+        b=8ZWU70W9gddEhAHr96ZC3w/kXy70z+PZMdCHlv8rJrfIIctF4069NEYUww+nBiwuzHb9Th
+        4+efs5UsTNGGYoq4JbUl4U+v88ANGs9G9JUSSWM8aKkFIXQ/rqIJC7YbmKg72nidu5rzuQ
+        +hiRvXsG5NMht0rBoQzaELbOnqN4HqH+U3gGSPOTg8eGQflrcTRb1Gu3vx7581zGDl4KVp
+        b7Bniu+2yzG/cK5rLhBHMRKtYPNmEB8CyObP5rPMQgM2xWhsQ2+ittRUR0TNkgw8i2oWnH
+        Q+HOtne6Df+HxKmwyq7HaK8immRjrGWixu5l0199oavsuXmCiYhkPHt0lepcjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+        s=arc-2022; t=1649431360;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references:dkim-signature;
+        bh=PcisFdEGS984kRrr/jV6MSFBSKJSJtTc9mSbo7fwkmk=;
+        b=jwgfUOV3niTwIvDLXZS3/P9iMLkAOkdQ73519pB0z7hJ2D3CI2Mu3MAyHFKzGlzRfzBwol
+        RKfuJbEek2qLgber9xHlKbVKYk8i4DV0D0wIbsOBI0HT3L2aEBW7cVXgX0Dcgng94GtAei
+        CowKUCirBgttvjUEJ6J0C5s2ahJLtMwYVBiFB27tDfuF5SmnNExGbH2dVQ9qgAEaHVfdGX
+        9aCQrMI87eBMKSQnBRcCjzolvi/dWo1/xDYWAJaXfsBdIhFpxji9WJmEdgYMlHb+fLTHaI
+        fphdSK1QyaixcUva9k9lzQ0W2SCsynClFTrjnJX4dDCklH2fU92pl7W/8kY9Zw==
+ARC-Authentication-Results: i=1;
+        rspamd-68f9d8f9d5-cr5h5;
+        auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from pdx1-sub0-mail-a212.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+        by 100.112.55.239 (trex/6.7.1);
+        Fri, 08 Apr 2022 15:22:41 +0000
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Decisive-Cellar: 69f2375f5dcab964_1649431361116_1853168669
+X-MC-Loop-Signature: 1649431361116:3047169180
+X-MC-Ingress-Time: 1649431361115
+Received: from offworld (unknown [104.36.25.8])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dave@stgolabs.net)
+        by pdx1-sub0-mail-a212.dreamhost.com (Postfix) with ESMTPSA id 4KZhnq6GGxz1K6;
+        Fri,  8 Apr 2022 08:22:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+        s=dreamhost; t=1649431360;
+        bh=PcisFdEGS984kRrr/jV6MSFBSKJSJtTc9mSbo7fwkmk=;
+        h=Date:From:To:Cc:Subject:Content-Type;
+        b=PACpE32tvuLpsuioLYe0IGGOODP3B+hcCUrXQCf7WZzir04Xh1CAPBrTpf6QpzX9y
+         js3LD+Y757wDp4YhRUUUSf4NLAPd8gs1q2n0etscE5IiQc1VW17Qf8tgsE6/t6VSn5
+         B6VWZnTPP4ze664xUUtyiAoE0Fwkk4vNuwvUKkegWRRZvFco4wQp3wCjGlxUxiipak
+         KPah80angg44xaUYO9AlNoUC6v/tJNUU27Id+cfo+iPxNP2I0M7avbWbPWJpH8cgre
+         FNwh0V+QqKRZv+7+EdGJLxkeFwn4m/OZSPFYsgeQIX4E68o4mDbFJpHQVzPJeObBTL
+         5f53flUaNgKqw==
+Date:   Fri, 8 Apr 2022 08:22:36 -0700
+From:   Davidlohr Bueso <dave@stgolabs.net>
+To:     Vishal Verma <vishal.l.verma@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, a.manzanares@samsung.com
+Subject: Re: [PATCH v5 0/3] PCI/ACPI: add support for CXL _OSC
+Message-ID: <20220408152236.d6bcs7ktdoy6lzeg@offworld>
+References: <20220406023746.2807328-1-vishal.l.verma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <YlA4Pp11ZXG3eSX/@paasikivi.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220406023746.2807328-1-vishal.l.verma@intel.com>
+User-Agent: NeoMutt/20201120
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 08, 2022 at 04:27:26PM +0300, Sakari Ailus wrote:
-> On Fri, Apr 08, 2022 at 03:44:03PM +0300, Andy Shevchenko wrote:
-> > On Thu, Apr 07, 2022 at 01:19:44PM +0300, Andy Shevchenko wrote:
-> > > On Wed, Apr 06, 2022 at 08:05:23PM +0200, Michael Walle wrote:
+On Tue, 05 Apr 2022, Vishal Verma wrote:
 
-...
+>Changes since v4[1]:
+>- Collect an ack for patch 1 (Rafael)
+>- Fix commit subject wording in patch 2 (Rafael)
+>- Fix a debug print in patch 2 (Rafael)
+>- Document the reasoning behind calculation of cxl hotplug support (David)
+>- A few definition and variable name changes to make the new _OSC DWORDS
+>  generic instead of CXL specific (Rafael)
+>
+>Add support for using the CXL definition of _OSC where applicable, and
+>negotiating CXL specific support and control bits.
+>
+>Patch 1 is a preliminary cleanup that replaces open-coded pointer
+>arithmetic to retrieve the Control DWORD with an inline helper.
+>
+>Patch 2 adds the new CXL _OSC UUID, and uses it instead of the PCI UUID
+>when a root port is CXL enabled. It provides a fallback method for
+>CXL-1.1 platforms that may not implement the CXL-2.0 _OSC.
+>
+>Patch 3 performs negotiation for the CXL specific _OSC support and
+>control bits.
+>
+>I've tested these against a custom qemu[2], which adds the CXL _OSC (in
+>addition to other CXL support). Specifically, _OSC support is added
+>here[3].
 
-> > > > > +	if (IS_ERR_OR_NULL(fwnode))
-> > > > > +		return -ENOENT;
-> > > > > +
-> > > > >  	ret = fwnode_call_int_op(fwnode, get_reference_args, prop, nargs_prop,
-> > > > >  				 nargs, index, args);
-> > > > > +	if (ret == 0)
-> > > > > +		return ret;
-> > > > > 
-> > > > > -	if (ret < 0 && !IS_ERR_OR_NULL(fwnode) &&
-> > > > > -	    !IS_ERR_OR_NULL(fwnode->secondary))
-> > > > > -		ret = fwnode_call_int_op(fwnode->secondary, get_reference_args,
-> > > > > -					 prop, nargs_prop, nargs, index, args);
-> > > > > +	if (IS_ERR_OR_NULL(fwnode->secondary))
-> > > > > +		return -ENOENT;
-> > > > 
-> > > > Doesn't this mean you overwrite any return code != 0 with -ENOENT?
-> > > > Is this intended?
-> > > 
-> > > Indeed, it would shadow the error code.
-> > 
-> > I was thinking more on this and am not sure about the best approach here.
-> > On one hand in the original code this returns the actual error code from
-> > the call against primary fwnode. But it can be at least -ENOENT or -EINVAL.
-> > 
-> > But when we check the secondary fwnode we want to have understanding that it's
-> > secondary fwnode which has not been found, but this requires to have a good
-> > distinguishing between error codes from the callback.
-> > 
-> > That said, the error codes convention of ->get_reference_args() simply
-> > sucks. Sakari, do you have it on your TODO to fix this mess out, if it's
-> > even feasible?
-> 
-> What would you expect to see compared to what it is now?
-> 
-> I guess the error code could be different for a missing property and a
-> property with invalid data,
+For the series, feel free to add my:
 
-Yes, something like this.
-
-> but I'm not sure any caller would be interested
-> in that.
-
-Yes, but it would be good for the consistency and working with fwnodes in
-general. Esp. if we move at some point from primary-secondary to a full
-linked list of fwnodes.
-
-> > To be on safest side, I will change as suggested in previous mail (see below)
-> > so it won't have impact on -EINVAL case.
-> > 
-> > > So, it should go with
-> > > 
-> > > 	if (IS_ERR_OR_NULL(fwnode->secondary))
-> > > 		return ret;
-> > > 
-> > > then.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
