@@ -2,67 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 668C44F96A1
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 15:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 574524F9760
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 15:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234901AbiDHN3g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Apr 2022 09:29:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36040 "EHLO
+        id S233444AbiDHN5A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Apr 2022 09:57:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbiDHN3f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 09:29:35 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A14BAE;
-        Fri,  8 Apr 2022 06:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649424451; x=1680960451;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/HA1QiQ6H5p+tsSS3FpYA6QqwmIqKeG4+bzRgPHZynE=;
-  b=QYfpu9yS0XGLYL+fF8SKmi+aEsYeSSmYuC0cDcvSobmjJfxj2y2E6Dji
-   ggiP8IbPXlwHjGXW9nAvMqCZSsn+WtTp/pg52y+aog/Y153dIJ12Tz4IE
-   1Qcgay6SF4dtyEaHXTTZsQsgn8LNw/sJYu0fMocHpSw9cOmLqPhQ1J5Pb
-   X3g3UrF8XddXCNLju+ieI0nD1QJNyMarG722i/q7XLZxIXjoJlnPCiqH7
-   ZbUfRMpCdKj2+3HTEfTHvNPkvumMJJp7Q1aDWiFTadPbdh+tDBC3Qhx6s
-   X07CCJuTvKO/3NLxMIfrCgGmHkUhMni1hDpy+WFYwwD5xXDBhOn4AXimb
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10310"; a="243724447"
-X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="243724447"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 06:27:31 -0700
-X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="571487565"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 06:27:28 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 8EE0E201C0;
-        Fri,  8 Apr 2022 16:27:26 +0300 (EEST)
-Date:   Fri, 8 Apr 2022 16:27:26 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Michael Walle <michael@walle.cc>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Subject: Re: [PATCH v5 1/4] device property: Allow error pointer to be passed
- to fwnode APIs
-Message-ID: <YlA4Pp11ZXG3eSX/@paasikivi.fi.intel.com>
-References: <20220406130552.30930-1-andriy.shevchenko@linux.intel.com>
- <df3a78036864716fbeecf3cd94dbcbbe@walle.cc>
- <Yk66wHWlMg3QLy6u@smile.fi.intel.com>
- <YlAuEzW0fUuuXTN6@smile.fi.intel.com>
+        with ESMTP id S236306AbiDHN47 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 09:56:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2BF68103B88
+        for <linux-acpi@vger.kernel.org>; Fri,  8 Apr 2022 06:54:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1649426095;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=F5sD64Phf4jmlSsRv9AVRFCmgTMkGKZ3Wla+3d8FT/4=;
+        b=hq0PWQpgcS671/n8FE+ddYQOirCpBGeYRLUgOSkS+e92h3Df+wfJsY3mR2sL+0v3nG1gIJ
+        Js8d2tpiba2NjybCP0wbL0+i+ISkk+tkYkGrSV+aL80uys1RjdnxqYneBIhZgkGygWXAzL
+        SzMnYx8CLS0j6y1QpHf0OFtmAdugLkg=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-470-C2FLhZG2MGCJfAOtqQJEOw-1; Fri, 08 Apr 2022 09:54:54 -0400
+X-MC-Unique: C2FLhZG2MGCJfAOtqQJEOw-1
+Received: by mail-yb1-f198.google.com with SMTP id b65-20020a25e444000000b0063dd00480f8so6755195ybh.13
+        for <linux-acpi@vger.kernel.org>; Fri, 08 Apr 2022 06:54:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F5sD64Phf4jmlSsRv9AVRFCmgTMkGKZ3Wla+3d8FT/4=;
+        b=jI0+jSUm3ddBoSzGgnb3B3Z+bxm5f9jLO58aJWIzZvklemB4mWpCqGJk7IjiIC3TxX
+         V/gM1NquW7vsKUPo4yitBvVo0cWN0x2hgkuOPNZ5FdVD4Gra7FLvCUFZwxbppAs8J48H
+         uHvlBansHnfiXB6gXYr4vHppgf+oT21PzB6aFZmIcc65O6Jm9p4QkvYD8WoV0ZkEYxWJ
+         JGyrzy3Gw6x8ELvvdKDyF7CCXathdw591cwwtfTSvaZzi6CO9iRY17COcxkzpdNCMN7+
+         yh3yzRyYh/9eD53/a9xU/zp3x5YAZ5lb3oKVbyUE4XvR5E0PomLMXQEuImiV+RptLHpz
+         IyIQ==
+X-Gm-Message-State: AOAM5325bvNf1kfzBWUFCZp1ZcIGwOjiJuA7hv0tLi0RlIOMCmeXLFZt
+        Ie2qVSdszv10OrYhzs8P9NCFKGUGBgxac19O1v+R89T6E9GanNGwq8Wep3MqQeAAKBwypqfSUqi
+        2VzTe1PVF2dh9NKv7TnPATZXUkwQosxnUf8Fo8w==
+X-Received: by 2002:a81:1592:0:b0:2eb:5472:c681 with SMTP id 140-20020a811592000000b002eb5472c681mr15950763ywv.10.1649426093615;
+        Fri, 08 Apr 2022 06:54:53 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzTXEngUHw92cMsf+0F9pm0X5XaJw9xfqRkKaZ44wHd20q0vawVBEKrFIMJMvcAduOirlI4ThcUFntR6NFVc0E=
+X-Received: by 2002:a81:1592:0:b0:2eb:5472:c681 with SMTP id
+ 140-20020a811592000000b002eb5472c681mr15950749ywv.10.1649426093406; Fri, 08
+ Apr 2022 06:54:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YlAuEzW0fUuuXTN6@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+References: <20220407105120.1280-1-lorenzo.pieralisi@arm.com>
+In-Reply-To: <20220407105120.1280-1-lorenzo.pieralisi@arm.com>
+From:   Veronika Kabatova <vkabatov@redhat.com>
+Date:   Fri, 8 Apr 2022 15:54:17 +0200
+Message-ID: <CA+tGwnmjv0nj11zRtcu8ZLCng9d94E1rVn71dfopHK16WiuMUQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: osl: Fix BERT error region memory mapping
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Aristeu Rozanski <aris@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,68 +80,99 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Thu, Apr 7, 2022 at 12:51 PM Lorenzo Pieralisi
+<lorenzo.pieralisi@arm.com> wrote:
+>
+> Currently the sysfs interface maps the BERT error region as "memory"
+> (through acpi_os_map_memory()) in order to copy the error records into
+> memory buffers through memory operations (eg memory_read_from_buffer()).
+>
+> The OS system cannot detect whether the BERT error region is part of
+> system RAM or it is "device memory" (eg BMC memory) and therefore it
+> cannot detect which memory attributes the bus to memory support (and
+> corresponding kernel mapping, unless firmware provides the required
+> information).
+>
+> The acpi_os_map_memory() arch backend implementation determines the
+> mapping attributes. On arm64, if the BERT error region is not present in
+> the EFI memory map, the error region is mapped as device-nGnRnE; this
+> triggers alignment faults since memcpy unaligned accesses are not
+> allowed in device-nGnRnE regions.
+>
+> The ACPI sysfs code cannot therefore map by default the BERT error
+> region with memory semantics but should use a safer default.
+>
+> Change the sysfs code to map the BERT error region as MMIO (through
+> acpi_os_map_iomem()) and use the memcpy_fromio() interface to read the
+> error region into the kernel buffer.
+>
 
-On Fri, Apr 08, 2022 at 03:44:03PM +0300, Andy Shevchenko wrote:
-> On Thu, Apr 07, 2022 at 01:19:44PM +0300, Andy Shevchenko wrote:
-> > On Wed, Apr 06, 2022 at 08:05:23PM +0200, Michael Walle wrote:
-> 
-> ...
-> 
-> > > > +	if (IS_ERR_OR_NULL(fwnode))
-> > > > +		return -ENOENT;
-> > > > +
-> > > >  	ret = fwnode_call_int_op(fwnode, get_reference_args, prop, nargs_prop,
-> > > >  				 nargs, index, args);
-> > > > +	if (ret == 0)
-> > > > +		return ret;
-> > > > 
-> > > > -	if (ret < 0 && !IS_ERR_OR_NULL(fwnode) &&
-> > > > -	    !IS_ERR_OR_NULL(fwnode->secondary))
-> > > > -		ret = fwnode_call_int_op(fwnode->secondary, get_reference_args,
-> > > > -					 prop, nargs_prop, nargs, index, args);
-> > > > +	if (IS_ERR_OR_NULL(fwnode->secondary))
-> > > > +		return -ENOENT;
-> > > 
-> > > Doesn't this mean you overwrite any return code != 0 with -ENOENT?
-> > > Is this intended?
-> > 
-> > Indeed, it would shadow the error code.
-> 
-> I was thinking more on this and am not sure about the best approach here.
-> On one hand in the original code this returns the actual error code from
-> the call against primary fwnode. But it can be at least -ENOENT or -EINVAL.
-> 
-> But when we check the secondary fwnode we want to have understanding that it's
-> secondary fwnode which has not been found, but this requires to have a good
-> distinguishing between error codes from the callback.
-> 
-> That said, the error codes convention of ->get_reference_args() simply
-> sucks. Sakari, do you have it on your TODO to fix this mess out, if it's
-> even feasible?
+Hi,
 
-What would you expect to see compared to what it is now?
+I tested this patch on top of the arm tree for-kernelci branch (a2c0b0fbe014).
+I wasn't able to trigger the original problem on the same HW, and the patch
+didn't introduce any new issues on these runs, nor on other randomly
+chosen aarch64 machines.
 
-I guess the error code could be different for a missing property and a
-property with invalid data, but I'm not sure any caller would be interested
-in that.
+Tested-by: Veronika Kabatova <vkabatov@redhat.com>
 
-> 
-> To be on safest side, I will change as suggested in previous mail (see below)
-> so it won't have impact on -EINVAL case.
-> 
-> > So, it should go with
-> > 
-> > 	if (IS_ERR_OR_NULL(fwnode->secondary))
-> > 		return ret;
-> > 
-> > then.
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
 
--- 
-Sakari Ailus
+> Link: https://lore.kernel.org/linux-arm-kernel/31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com
+> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0g+OVbhuUUDrLUCfX_mVqY_e8ubgLTU98=jfjTeb4t+Pw@mail.gmail.com
+> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Hanjun Guo <guohanjun@huawei.com>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> ---
+>  drivers/acpi/sysfs.c | 25 ++++++++++++++++++-------
+>  1 file changed, 18 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+> index a4b638bea6f1..cc2fe0618178 100644
+> --- a/drivers/acpi/sysfs.c
+> +++ b/drivers/acpi/sysfs.c
+> @@ -415,19 +415,30 @@ static ssize_t acpi_data_show(struct file *filp, struct kobject *kobj,
+>                               loff_t offset, size_t count)
+>  {
+>         struct acpi_data_attr *data_attr;
+> -       void *base;
+> -       ssize_t rc;
+> +       void __iomem *base;
+> +       ssize_t size;
+>
+>         data_attr = container_of(bin_attr, struct acpi_data_attr, attr);
+> +       size = data_attr->attr.size;
+> +
+> +       if (offset < 0)
+> +               return -EINVAL;
+> +
+> +       if (offset >= size)
+> +               return 0;
+>
+> -       base = acpi_os_map_memory(data_attr->addr, data_attr->attr.size);
+> +       if (count > size - offset)
+> +               count = size - offset;
+> +
+> +       base = acpi_os_map_iomem(data_attr->addr, size);
+>         if (!base)
+>                 return -ENOMEM;
+> -       rc = memory_read_from_buffer(buf, count, &offset, base,
+> -                                    data_attr->attr.size);
+> -       acpi_os_unmap_memory(base, data_attr->attr.size);
+>
+> -       return rc;
+> +       memcpy_fromio(buf, base + offset, count);
+> +
+> +       acpi_os_unmap_iomem(base, size);
+> +
+> +       return count;
+>  }
+>
+>  static int acpi_bert_data_init(void *th, struct acpi_data_attr *data_attr)
+> --
+> 2.31.0
+>
+
