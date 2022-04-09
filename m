@@ -2,66 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66F264F9F42
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Apr 2022 23:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C2C24FA1CA
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Apr 2022 04:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235110AbiDHVi6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Apr 2022 17:38:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44590 "EHLO
+        id S239421AbiDIClD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Apr 2022 22:41:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232842AbiDHVi5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 17:38:57 -0400
+        with ESMTP id S230244AbiDIClD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Apr 2022 22:41:03 -0400
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01CF019025;
-        Fri,  8 Apr 2022 14:36:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31797BF503;
+        Fri,  8 Apr 2022 19:38:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649453812; x=1680989812;
+  t=1649471937; x=1681007937;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=q7gUV6Oy1V+1Da26I8JHKgDGYCIYUQUcdpcCZ47Ly5s=;
-  b=VL2p0lYJ0rsiPBgQdqGKRpaQp0T/YMrblNYauYCqXpbBGQzp2ikV3G9M
-   CULx+Iu5WmSf34WmUnv/xUqaheF4Ve6FJUUlYQoq/CfbPQO9nvzrbUWya
-   Zo+HLu5BNTuq3L6Sr79ne6WA5bJweFfYH96FL58evyxzBSCUaBeJ6U6da
-   X3VvQMOeG229fRXNdvJiTG7Jv3T/bwKIszAifttUHU3uziO0bO73LUH+g
-   Gy2mf+IlwDHGqQyw+sMjXOGawvWMU3xhnPplXu2U1KE9xBwMqnCWkZIqu
-   OHpxDh9szANpuEjs31ccHvhPZtTBoV/AzrmbdcYapKYtZzZLZL0nv8bW5
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="242283408"
+  bh=7aR8m2ikj3v7u6h4AcK9g+khiMuvadGO9El6+uN/BJ0=;
+  b=UVen5aLxZ8V7Mv7lTqciCOnYYPjh0Zl8flCadik1Syqij44G335pvQC8
+   8ehlSl2mGXChT5eQbjvo59TGDFiRTIwH+SG/97oAN50Osbi48KrN4+KKY
+   ABEdurrbNVzhsrEn4bRsr+IqUM5Ad57Icvu0DTdEsTEqg6FwWJV66kK5+
+   Z/UzEkck/EodUMRJmodjZDcX1cyVSEVPBFCXNEmstkIrJ4rxdozKxKtTK
+   c2nLJ70tNPsVM5+1HCY08qsWJ/9kvzqINnzKgzNLY4djrVE3azClCThId
+   vAoVuEpOhoGJvxLKCVYkndrL2CVPe/a3onVDNNcEDqGDfAO3XHMNJzz6l
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="242342080"
 X-IronPort-AV: E=Sophos;i="5.90,246,1643702400"; 
-   d="scan'208";a="242283408"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 14:36:52 -0700
+   d="scan'208";a="242342080"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 19:38:57 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,246,1643702400"; 
-   d="scan'208";a="550664795"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 14:36:49 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 721012030F;
-        Sat,  9 Apr 2022 00:36:47 +0300 (EEST)
-Date:   Sat, 9 Apr 2022 00:36:47 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Rob Herring <robh@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+   d="scan'208";a="610021726"
+Received: from lkp-server02.sh.intel.com (HELO 7e80bc2a00a0) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 08 Apr 2022 19:38:54 -0700
+Received: from kbuild by 7e80bc2a00a0 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nd101-0000ou-DP;
+        Sat, 09 Apr 2022 02:38:53 +0000
+Date:   Sat, 9 Apr 2022 10:38:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         Len Brown <lenb@kernel.org>
 Subject: Re: [PATCH v6 4/5] device property: Constify fwnode_handle_get()
-Message-ID: <YlCq79KveByePxe9@paasikivi.fi.intel.com>
-References: <20220408184844.22829-1-andriy.shevchenko@linux.intel.com>
- <20220408184844.22829-4-andriy.shevchenko@linux.intel.com>
+Message-ID: <202204091049.rHkbqiFm-lkp@intel.com>
+References: <20220408184844.22829-4-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20220408184844.22829-4-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,95 +74,59 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi Andy,
 
-On Fri, Apr 08, 2022 at 09:48:43PM +0300, Andy Shevchenko wrote:
-> As to_of_node() suggests and the way the code in the OF and software node
-> back ends actually uses the fwnode handle, it may be constified. Do this
-> for good.
+I love your patch! Yet something to improve:
 
-How?
+[auto build test ERROR on driver-core/driver-core-testing]
+[also build test ERROR on rafael-pm/linux-next robh/for-next linus/master v5.18-rc1 next-20220408]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-If the fwnode is const, then the struct it contains must be presumed to be
-const, too.
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/device-property-Allow-error-pointer-to-be-passed-to-fwnode-APIs/20220409-025056
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git 3123109284176b1532874591f7c81f3837bbdc17
+config: hexagon-randconfig-r041-20220408 (https://download.01.org/0day-ci/archive/20220409/202204091049.rHkbqiFm-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project c29a51b3a257908aebc01cd7c4655665db317d66)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/477683439b5ee0954b08970d8c356b4cdaca8bc0
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Andy-Shevchenko/device-property-Allow-error-pointer-to-be-passed-to-fwnode-APIs/20220409-025056
+        git checkout 477683439b5ee0954b08970d8c356b4cdaca8bc0
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/base/
 
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> v6: new patch
->  drivers/base/property.c  | 2 +-
->  drivers/base/swnode.c    | 2 +-
->  drivers/of/property.c    | 2 +-
->  include/linux/fwnode.h   | 2 +-
->  include/linux/property.h | 2 +-
->  5 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 36401cfe432c..1ad4b37cd312 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -776,7 +776,7 @@ EXPORT_SYMBOL_GPL(device_get_named_child_node);
->   *
->   * Returns the fwnode handle.
->   */
-> -struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode)
-> +struct fwnode_handle *fwnode_handle_get(const struct fwnode_handle *fwnode)
->  {
->  	if (!fwnode_has_op(fwnode, get))
->  		return fwnode;
-> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index b0bbd1805970..84a11008ffb8 100644
-> --- a/drivers/base/swnode.c
-> +++ b/drivers/base/swnode.c
-> @@ -363,7 +363,7 @@ EXPORT_SYMBOL_GPL(property_entries_free);
->  /* -------------------------------------------------------------------------- */
->  /* fwnode operations */
->  
-> -static struct fwnode_handle *software_node_get(struct fwnode_handle *fwnode)
-> +static struct fwnode_handle *software_node_get(const struct fwnode_handle *fwnode)
->  {
->  	struct swnode *swnode = to_swnode(fwnode);
->  
-> diff --git a/drivers/of/property.c b/drivers/of/property.c
-> index 9a50ad25906e..8d06282af8e4 100644
-> --- a/drivers/of/property.c
-> +++ b/drivers/of/property.c
-> @@ -858,7 +858,7 @@ struct device_node *of_graph_get_remote_node(const struct device_node *node,
->  }
->  EXPORT_SYMBOL(of_graph_get_remote_node);
->  
-> -static struct fwnode_handle *of_fwnode_get(struct fwnode_handle *fwnode)
-> +static struct fwnode_handle *of_fwnode_get(const struct fwnode_handle *fwnode)
->  {
->  	return of_fwnode_handle(of_node_get(to_of_node(fwnode)));
->  }
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 9a81c4410b9f..a94bd47192a3 100644
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -108,7 +108,7 @@ struct fwnode_reference_args {
->   *		zero on success, a negative error code otherwise.
->   */
->  struct fwnode_operations {
-> -	struct fwnode_handle *(*get)(struct fwnode_handle *fwnode);
-> +	struct fwnode_handle *(*get)(const struct fwnode_handle *fwnode);
->  	void (*put)(struct fwnode_handle *fwnode);
->  	bool (*device_is_available)(const struct fwnode_handle *fwnode);
->  	const void *(*device_get_match_data)(const struct fwnode_handle *fwnode,
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index fc24d45632eb..c631ee7fd161 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -121,7 +121,7 @@ struct fwnode_handle *fwnode_get_named_child_node(
->  struct fwnode_handle *device_get_named_child_node(struct device *dev,
->  						  const char *childname);
->  
-> -struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
-> +struct fwnode_handle *fwnode_handle_get(const struct fwnode_handle *fwnode);
->  void fwnode_handle_put(struct fwnode_handle *fwnode);
->  
->  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
-> -- 
-> 2.35.1
-> 
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+>> drivers/base/property.c:782:10: error: returning 'const struct fwnode_handle *' from a function with result type 'struct fwnode_handle *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+                   return fwnode;
+                          ^~~~~~
+   1 error generated.
+
+
+vim +782 drivers/base/property.c
+
+613e97218ccbd7 Adam Thomson    2016-06-21  772  
+e7887c284969a2 Sakari Ailus    2017-03-28  773  /**
+e7887c284969a2 Sakari Ailus    2017-03-28  774   * fwnode_handle_get - Obtain a reference to a device node
+e7887c284969a2 Sakari Ailus    2017-03-28  775   * @fwnode: Pointer to the device node to obtain the reference to.
+cf89a31ca55272 Sakari Ailus    2017-09-19  776   *
+cf89a31ca55272 Sakari Ailus    2017-09-19  777   * Returns the fwnode handle.
+e7887c284969a2 Sakari Ailus    2017-03-28  778   */
+477683439b5ee0 Andy Shevchenko 2022-04-08  779  struct fwnode_handle *fwnode_handle_get(const struct fwnode_handle *fwnode)
+e7887c284969a2 Sakari Ailus    2017-03-28  780  {
+cf89a31ca55272 Sakari Ailus    2017-09-19  781  	if (!fwnode_has_op(fwnode, get))
+cf89a31ca55272 Sakari Ailus    2017-09-19 @782  		return fwnode;
+cf89a31ca55272 Sakari Ailus    2017-09-19  783  
+cf89a31ca55272 Sakari Ailus    2017-09-19  784  	return fwnode_call_ptr_op(fwnode, get);
+e7887c284969a2 Sakari Ailus    2017-03-28  785  }
+e7887c284969a2 Sakari Ailus    2017-03-28  786  EXPORT_SYMBOL_GPL(fwnode_handle_get);
+e7887c284969a2 Sakari Ailus    2017-03-28  787  
 
 -- 
-Sakari Ailus
+0-DAY CI Kernel Test Service
+https://01.org/lkp
