@@ -2,398 +2,249 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAD314FA594
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Apr 2022 09:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AAF04FA79F
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Apr 2022 14:22:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230072AbiDIHYp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 9 Apr 2022 03:24:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42772 "EHLO
+        id S231516AbiDIMYK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 9 Apr 2022 08:24:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiDIHYo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 Apr 2022 03:24:44 -0400
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EB8E140FA;
-        Sat,  9 Apr 2022 00:22:37 -0700 (PDT)
-Received: from [192.168.0.2] (ip5f5ae90c.dynamic.kabel-deutschland.de [95.90.233.12])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id 991DD61E6478B;
-        Sat,  9 Apr 2022 09:22:35 +0200 (CEST)
-Message-ID: <e28cec02-f91b-0087-6162-03b77581c731@molgen.mpg.de>
-Date:   Sat, 9 Apr 2022 09:22:35 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v1] Bluetooth: btintel: Add support to configure TX power
-Content-Language: en-US
-To:     Kiran K <kiran.k@intel.com>
-Cc:     linux-bluetooth@vger.kernel.org, ravishankar.srivatsa@intel.com,
-        chethan.tumkur.narayan@intel.com,
-        Seema S <seema.sreemantha@intel.com>,
-        linux-acpi@vger.kernel.org
-References: <20220408080633.20463-1-kiran.k@intel.com>
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20220408080633.20463-1-kiran.k@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229712AbiDIMYJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 Apr 2022 08:24:09 -0400
+Received: from chinatelecom.cn (prt-mail.chinatelecom.cn [42.123.76.221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AB7CE3298F;
+        Sat,  9 Apr 2022 05:21:59 -0700 (PDT)
+HMM_SOURCE_IP: 172.18.0.188:51628.1449227777
+HMM_ATTACHE_NUM: 0000
+HMM_SOURCE_TYPE: SMTP
+Received: from clientip-202.80.192.38 (unknown [172.18.0.188])
+        by chinatelecom.cn (HERMES) with SMTP id 53ECD28009D;
+        Sat,  9 Apr 2022 20:21:50 +0800 (CST)
+X-189-SAVE-TO-SEND: +liuxp11@chinatelecom.cn
+Received: from  ([172.18.0.188])
+        by app0023 with ESMTP id 6826f5d46ed048fcae8a3b2942c236e4 for rafael@kernel.org;
+        Sat, 09 Apr 2022 20:21:58 CST
+X-Transaction-ID: 6826f5d46ed048fcae8a3b2942c236e4
+X-Real-From: liuxp11@chinatelecom.cn
+X-Receive-IP: 172.18.0.188
+X-MEDUSA-Status: 0
+Sender: liuxp11@chinatelecom.cn
+From:   Liu Xinpeng <liuxp11@chinatelecom.cn>
+To:     rafael@kernel.org, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, keescook@chromium.org, anton@enomsg.org,
+        ccross@android.com, robert.moore@intel.com, tony.luck@intel.com,
+        lenb@kernel.org, james.morse@arm.com, bp@alien8.de,
+        tglx@linutronix.de, mingo@redhat.com, ying.huang@intel.com,
+        gong.chen@linux.intel.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Liu Xinpeng <liuxp11@chinatelecom.cn>
+Subject: [PATCH v5] ACPI: APEI: fix missing erst record id
+Date:   Sat,  9 Apr 2022 20:21:31 +0800
+Message-Id: <1649506891-27622-1-git-send-email-liuxp11@chinatelecom.cn>
+X-Mailer: git-send-email 1.8.3.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[Cc: +linux-acpi to check for best practices in ACPI table handling]
+Read a record is cleared by others, but the deleted record cache entry is
+still created by erst_get_record_id_next. When next enumerate the records,
+get the cached deleted record, then erst_read return -ENOENT and try to
+get next record, loop back to first ID will return 0 in function
+__erst_record_id_cache_add_one and then set record_id as
+APEI_ERST_INVALID_RECORD_ID, finished this time read operation.
+It will result in read the records just in the cache hereafter.
 
+This patch cleared the deleted record cache, fix the issue that
+"./erst-inject -p" shows record counts not equal to "./erst-inject -n".
 
-Dear Kiran,
+A reproducer of the problem(retry many times):
 
+[root@localhost erst-inject]# ./erst-inject -c 0xaaaaa00011
+[root@localhost erst-inject]# ./erst-inject -p
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00012
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00013
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00014
+[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000006
+[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000007
+[root@localhost erst-inject]# ./erst-inject -i 0xaaaaa000008
+[root@localhost erst-inject]# ./erst-inject -p
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00012
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00013
+rc: 273
+rcd sig: CPER
+rcd id: 0xaaaaa00014
+[root@localhost erst-inject]# ./erst-inject -n
+total error record count: 6
 
-Am 08.04.22 um 10:06 schrieb Kiran K:
+Changelog:
+v1->v2  fix style problems
+v2->v3  fix apei_read_mce called erst_get_record_id_next and modify
+the commit message.
+v3->v4  add erst_clear_cache in another retry.
+v4->v5  implement a new function for looking for a specific record
+ type, suggested by Luck Tony
 
-Thank you for the patch. Maybe as commit message summary:
+Signed-off-by: Liu Xinpeng <liuxp11@chinatelecom.cn>
+---
+ arch/x86/kernel/cpu/mce/apei.c |  8 ++---
+ drivers/acpi/apei/erst-dbg.c   |  3 +-
+ drivers/acpi/apei/erst.c       | 62 ++++++++++++++++++++++++++++++++--
+ include/acpi/apei.h            |  2 ++
+ 4 files changed, 66 insertions(+), 9 deletions(-)
 
-Support to configure TX power using BRDS ACPI table
+diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
+index 0e3ae64d3b76..717192915f28 100644
+--- a/arch/x86/kernel/cpu/mce/apei.c
++++ b/arch/x86/kernel/cpu/mce/apei.c
+@@ -177,16 +177,14 @@ ssize_t apei_read_mce(struct mce *m, u64 *record_id)
+ 	/* no more record */
+ 	if (*record_id == APEI_ERST_INVALID_RECORD_ID)
+ 		goto out;
+-	rc = erst_read(*record_id, &rcd.hdr, sizeof(rcd));
++	rc = erst_read_record(*record_id, &rcd.hdr, sizeof(rcd), sizeof(rcd),
++			&CPER_CREATOR_MCE);
+ 	/* someone else has cleared the record, try next one */
+ 	if (rc == -ENOENT)
+ 		goto retry;
+ 	else if (rc < 0)
+ 		goto out;
+-	/* try to skip other type records in storage */
+-	else if (rc != sizeof(rcd) ||
+-		 !guid_equal(&rcd.hdr.creator_id, &CPER_CREATOR_MCE))
+-		goto retry;
++
+ 	memcpy(m, &rcd.mce, sizeof(*m));
+ 	rc = sizeof(*m);
+ out:
+diff --git a/drivers/acpi/apei/erst-dbg.c b/drivers/acpi/apei/erst-dbg.c
+index c740f0faad39..8bc71cdc2270 100644
+--- a/drivers/acpi/apei/erst-dbg.c
++++ b/drivers/acpi/apei/erst-dbg.c
+@@ -111,7 +111,8 @@ static ssize_t erst_dbg_read(struct file *filp, char __user *ubuf,
+ 		goto out;
+ 	}
+ retry:
+-	rc = len = erst_read(id, erst_dbg_buf, erst_dbg_buf_len);
++	rc = len = erst_read_record(id, erst_dbg_buf, erst_dbg_buf_len,
++			erst_dbg_buf_len, NULL);
+ 	/* The record may be cleared by others, try read next record */
+ 	if (rc == -ENOENT)
+ 		goto retry_next;
+diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
+index 698d67cee052..1dc238783f63 100644
+--- a/drivers/acpi/apei/erst.c
++++ b/drivers/acpi/apei/erst.c
+@@ -856,6 +856,63 @@ ssize_t erst_read(u64 record_id, struct cper_record_header *record,
+ }
+ EXPORT_SYMBOL_GPL(erst_read);
+ 
++static int erst_clear_cache(u64 record_id)
++{
++	int rc, i;
++	u64 *entries;
++
++	if (erst_disable)
++		return -ENODEV;
++
++	rc = mutex_lock_interruptible(&erst_record_id_cache.lock);
++	if (rc)
++		return rc;
++
++	entries = erst_record_id_cache.entries;
++	for (i = 0; i < erst_record_id_cache.len; i++) {
++		if (entries[i] == record_id)
++			entries[i] = APEI_ERST_INVALID_RECORD_ID;
++	}
++	__erst_record_id_cache_compact();
++
++	mutex_unlock(&erst_record_id_cache.lock);
++
++	return rc;
++}
++
++ssize_t erst_read_record(u64 record_id, struct cper_record_header *record,
++		size_t buflen, size_t recordlen, const guid_t *creatorid)
++{
++	ssize_t len;
++
++	/*
++	 * if creatorid is NULL, read any record for erst-dbg module
++	 */
++	if (creatorid == NULL) {
++		len = erst_read(record_id, record, buflen);
++		if (len == -ENOENT)
++			erst_clear_cache(record_id);
++
++		return len;
++	}
++
++	len = erst_read(record_id, record, buflen);
++	/*
++	 * if erst_read return value is -ENOENT or not equal to record length,
++	 * or not wanted creatorid, consider them as not found,
++	 * and clear the record_id cache.
++	 */
++	if (len == -ENOENT || len != recordlen ||
++			!guid_equal(&record->creator_id, creatorid)) {
++		len = -ENOENT;
++		erst_clear_cache(record_id);
++	}
++
++
++	return len;
++}
++EXPORT_SYMBOL_GPL(erst_read_record);
++
+ int erst_clear(u64 record_id)
+ {
+ 	int rc, i;
+@@ -996,7 +1053,8 @@ static ssize_t erst_reader(struct pstore_record *record)
+ 		goto out;
+ 	}
+ 
+-	len = erst_read(record_id, &rcd->hdr, rcd_len);
++	len = erst_read_record(record_id, &rcd->hdr, rcd_len, rcd_len,
++			&CPER_CREATOR_PSTORE);
+ 	/* The record may be cleared by others, try read next record */
+ 	if (len == -ENOENT)
+ 		goto skip;
+@@ -1004,8 +1062,6 @@ static ssize_t erst_reader(struct pstore_record *record)
+ 		rc = -EIO;
+ 		goto out;
+ 	}
+-	if (!guid_equal(&rcd->hdr.creator_id, &CPER_CREATOR_PSTORE))
+-		goto skip;
+ 
+ 	record->buf = kmalloc(len, GFP_KERNEL);
+ 	if (record->buf == NULL) {
+diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+index afaca3a075e8..dc60f7db5524 100644
+--- a/include/acpi/apei.h
++++ b/include/acpi/apei.h
+@@ -46,6 +46,8 @@ int erst_get_record_id_next(int *pos, u64 *record_id);
+ void erst_get_record_id_end(void);
+ ssize_t erst_read(u64 record_id, struct cper_record_header *record,
+ 		  size_t buflen);
++ssize_t erst_read_record(u64 record_id, struct cper_record_header *record,
++		size_t buflen, size_t recordlen, const guid_t *creatorid);
+ int erst_clear(u64 record_id);
+ 
+ int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data);
+-- 
+2.23.0
 
-> BRDS - Bluetooth Regulatory Domain Specific absorption rate
-> -----------------------------------------------------------
-
-Why this header? Integrate the long table name into the message below.
-
-> 
-> Bluetooth has regulatory limitations which prohibit or allow usage
-> of certain bands or channels as well as limiting Tx power. The Tx power
-> values can be configured in ACPI table. This patch reads ACPI entry of
-> Bluetooth SAR and configures the controller accordingly.
-
-It’d be great if you elaborated a little on the implementation? For 
-example, what is the legacy SAR needed for?
-
-How did you test this? What device and firmware providing the BRDS 
-table? Maybe even paste the ASL table here as an example.
-
-> Signed-off-by: Kiran K <kiran.k@intel.com>
-> Signed-off-by: Seema S <seema.sreemantha@intel.com>
-> ---
->   drivers/bluetooth/btintel.c | 229 ++++++++++++++++++++++++++++++++++++
->   drivers/bluetooth/btintel.h |  18 +++
->   2 files changed, 247 insertions(+)
-> 
-> diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-> index 818681c89db8..d3dc703eba78 100644
-> --- a/drivers/bluetooth/btintel.c
-> +++ b/drivers/bluetooth/btintel.c
-> @@ -9,6 +9,7 @@
->   #include <linux/module.h>
->   #include <linux/firmware.h>
->   #include <linux/regmap.h>
-> +#include <linux/acpi.h>
->   #include <asm/unaligned.h>
->   
->   #include <net/bluetooth/bluetooth.h>
-> @@ -32,6 +33,9 @@ struct cmd_write_boot_params {
->   	u8  fw_build_yy;
->   } __packed;
->   
-> +#define BTINTEL_SAR_NAME	"BRDS"
-> +#define BTINTEL_SAR_PREFIX	"\\_SB_.PC00.XHCI.RHUB"
-> +
->   int btintel_check_bdaddr(struct hci_dev *hdev)
->   {
->   	struct hci_rp_read_bd_addr *bda;
-> @@ -2250,6 +2254,228 @@ static int btintel_configure_offload(struct hci_dev *hdev)
->   	return err;
->   }
->   
-> +static acpi_status btintel_sar_callback(acpi_handle handle, u32 lvl, void *data,
-> +					void **ret)
-> +{
-> +	acpi_status status;
-> +	int len;
-
-size_t
-
-> +	struct btintel_sar *sar;
-> +	union acpi_object *p, *elements;
-> +	struct acpi_buffer string = {ACPI_ALLOCATE_BUFFER, NULL};
-> +	struct acpi_buffer buffer = {ACPI_ALLOCATE_BUFFER, NULL};
-> +
-> +	status = acpi_get_name(handle, ACPI_FULL_PATHNAME, &string);
-> +	if (ACPI_FAILURE(status)) {
-> +		BT_DBG("ACPI Failure: %s", acpi_format_exception(status));
-> +		return status;
-> +	}
-> +
-> +	if (strncmp(BTINTEL_SAR_PREFIX, string.pointer,
-> +		    strlen(BTINTEL_SAR_PREFIX))) {
-> +		kfree(string.pointer);
-> +		return AE_OK;
-> +	}
-> +
-> +	len = strlen(string.pointer);
-> +	if (strncmp((char *)string.pointer + len - 4, BTINTEL_SAR_NAME, 4)) {
-> +		kfree(string.pointer);
-> +		return AE_OK;
-> +	}
-> +	kfree(string.pointer);
-> +
-> +	status = acpi_evaluate_object(handle, NULL, NULL, &buffer);
-> +	if (ACPI_FAILURE(status)) {
-> +		BT_DBG("ACPI Failure: %s", acpi_format_exception(status));
-> +		return status;
-> +	}
-> +
-> +	p = buffer.pointer;
-> +	sar = data;
-> +
-> +	if (p->type != ACPI_TYPE_PACKAGE || p->package.count != 2) {
-> +		kfree(buffer.pointer);
-> +		BT_DBG("Invalid object type or package count");
-
-Please add the variable values to the debug line.
-
-> +		return AE_ERROR;
-> +	}
-> +
-> +	elements = p->package.elements;
-> +
-> +	/* SAR table is located at element[1] */
-> +	p = &elements[1];
-> +
-> +	if (p->type != ACPI_TYPE_PACKAGE || p->package.count != 8) {
-> +		kfree(buffer.pointer);
-> +		return AE_ERROR;
-> +	}
-> +
-> +	sar->domain = (u8)p->package.elements[0].integer.value;
-> +	sar->type = (u8)p->package.elements[1].integer.value;
-> +	sar->br = (u32)p->package.elements[2].integer.value;
-> +	sar->edr2 = (u32)p->package.elements[3].integer.value;
-> +	sar->edr3 = (u32)p->package.elements[4].integer.value;
-> +	sar->le = (u32)p->package.elements[5].integer.value;
-> +	sar->le_2mhz = (u32)p->package.elements[6].integer.value;
-> +	sar->le_lr  = (u32)p->package.elements[7].integer.value;
-> +	kfree(buffer.pointer);
-> +	return AE_CTRL_TERMINATE;
-> +}
-> +
-> +static void btintel_send_sar_ddc(struct hci_dev *hdev, void *data, u8 len)
-
-Use native type for `len`? `unsigned int`?
-
-> +{
-> +	struct sk_buff *skb;
-> +
-> +	skb = __hci_cmd_sync(hdev, 0xfc8b, len, data, HCI_CMD_TIMEOUT);
-> +	if (IS_ERR(skb)) {
-> +		bt_dev_warn(hdev, "Failed to send Intel Write SAR DDC (%ld)", PTR_ERR(skb));
-> +		return;
-> +	}
-> +	kfree_skb(skb);
-> +}
-> +
-> +static int btintel_set_legacy_sar(struct hci_dev *hdev, struct btintel_sar *sar)
-> +{
-> +	struct btintel_cp_ddc_write	*cmd;
-> +	u8	buffer[64];
-
-Don’t try to align with tabs?
-
-> +
-> +	if (!sar)
-> +		return -EINVAL;
-> +
-> +	cmd = (void *)buffer;
-> +
-> +	cmd->len = 3;
-> +	cmd->id = cpu_to_le16(0x0131);
-
-Add names for the command id’s?
-
-> +	cmd->data[0] = sar->br >> 3;
-> +	btintel_send_sar_ddc(hdev, cmd, 4);
-> +
-> +	cmd->len = 3;
-> +	cmd->id = cpu_to_le16(0x0132);
-> +	cmd->data[0] = sar->br >> 3;
-> +	btintel_send_sar_ddc(hdev, cmd, 4);
-> +
-> +	cmd->len = 5;
-> +	cmd->id = cpu_to_le16(0x0137);
-> +	cmd->data[0] = sar->br >> 3;
-> +	cmd->data[1] = sar->edr2 >> 3;
-> +	cmd->data[2] = sar->edr3 >> 3;
-> +	btintel_send_sar_ddc(hdev, cmd, 6);
-> +
-> +	cmd->len = 5;
-> +	cmd->id = cpu_to_le16(0x0138);
-> +	cmd->data[0] = sar->br >> 3;
-> +	cmd->data[1] = sar->edr2 >> 3;
-> +	cmd->data[2] = sar->edr3 >> 3;
-> +	btintel_send_sar_ddc(hdev, cmd, 6);
-> +
-> +	cmd->len = 5;
-> +	cmd->id = cpu_to_le16(0x013b);
-> +	cmd->data[0] = sar->br >> 3;
-> +	cmd->data[1] = sar->edr2 >> 3;
-> +	cmd->data[2] = sar->edr3 >> 3;
-> +	btintel_send_sar_ddc(hdev, cmd, 6);
-> +
-> +	cmd->len = 5;
-> +	cmd->id = cpu_to_le16(0x013c);
-> +	cmd->data[0] = sar->br >> 3;
-> +	cmd->data[1] = sar->edr2 >> 3;
-> +	cmd->data[2] = sar->edr3 >> 3;
-> +	btintel_send_sar_ddc(hdev, cmd, 6);
-> +
-> +	return 0;
-> +}
-> +
-> +static int btintel_set_mutual_sar(struct hci_dev *hdev, struct btintel_sar *sar)
-> +{
-> +	u8 buffer[64];
-> +	struct btintel_cp_ddc_write *cmd;
-> +	u8 enable[1] = {1};
-> +	struct sk_buff *skb;
-> +
-> +	if (!sar)
-> +		return -EINVAL;
-> +
-> +	cmd = (void *)buffer;
-> +
-> +	cmd->len = 3;
-> +	cmd->id = cpu_to_le16(0x019e);
-> +	if (!(sar->le_2mhz & BIT(7)))
-> +		cmd->data[0] = 0x01;
-> +	else
-> +		cmd->data[0] = 0x00;
-
-Use ternary operator?
-
-> +	btintel_send_sar_ddc(hdev, cmd, 4);
-> +
-> +	cmd->len = 3;
-> +	cmd->id = cpu_to_le16(0x019f);
-> +	cmd->data[0] = sar->le_lr;
-> +	btintel_send_sar_ddc(hdev, cmd, 4);
-> +
-> +	cmd->len = 3;
-> +	cmd->id = cpu_to_le16(0x01a0);
-> +	cmd->data[0] = sar->br;
-> +	btintel_send_sar_ddc(hdev, cmd, 4);
-> +
-> +	cmd->len = 3;
-> +	cmd->id = cpu_to_le16(0x01a1);
-> +	cmd->data[0] = sar->edr2;
-> +	btintel_send_sar_ddc(hdev, cmd, 4);
-> +
-> +	cmd->len = 3;
-> +	cmd->id = cpu_to_le16(0x01a2);
-> +	cmd->data[0] = sar->edr3;
-> +	btintel_send_sar_ddc(hdev, cmd, 4);
-> +
-> +	cmd->len = 3;
-> +	cmd->id = cpu_to_le16(0x01a3);
-> +	cmd->data[0] = sar->le;
-> +	btintel_send_sar_ddc(hdev, cmd, 4);
-> +
-> +	skb = __hci_cmd_sync(hdev, 0xfe25, 1, enable, HCI_CMD_TIMEOUT);
-> +	if (IS_ERR(skb)) {
-> +		bt_dev_warn(hdev, "Failed to send Intel SAR Enable (%ld)", PTR_ERR(skb));
-> +		return PTR_ERR(skb);
-> +	}
-> +	kfree_skb(skb);
-> +
-> +	return 0;
-> +}
-> +
-> +static int btintel_set_specific_absorption_rate(struct hci_dev *hdev,
-> +						struct intel_version_tlv *ver)
-> +{
-> +	acpi_status status;
-> +	struct btintel_sar sar;
-> +
-> +	switch (ver->cnvr_top & 0xfff) {
-> +	case 0x810: /* MsP */
-> +		break;
-> +	default:
-> +		return 0;
-> +	}
-> +
-> +	memset(&sar, 0, sizeof(sar));
-> +
-> +	status = acpi_walk_namespace(ACPI_TYPE_METHOD, ACPI_ROOT_OBJECT,
-> +				     ACPI_UINT32_MAX, NULL,
-> +				     btintel_sar_callback, &sar, NULL);
-> +
-> +	if (ACPI_FAILURE(status))
-> +		return -1;
-> +
-> +	if (sar.domain != 0x12)
-> +		return -1;
-> +
-> +	/* No need to configure controller if Bluetooth SAR is disabled in BIOS
-> +	 */
-
-Put it on the line above?
-
-> +	if (!sar.type)
-> +		return 0;
-> +
-> +	if (sar.type == 1) {
-> +		bt_dev_info(hdev, "Applying both legacy and mutual Bluetooth SAR");
-> +		btintel_set_legacy_sar(hdev, &sar);
-> +		btintel_set_mutual_sar(hdev, &sar);
-> +	}
-> +	return 0;
-> +}
-> +
->   static int btintel_bootloader_setup_tlv(struct hci_dev *hdev,
->   					struct intel_version_tlv *ver)
->   {
-> @@ -2294,6 +2520,9 @@ static int btintel_bootloader_setup_tlv(struct hci_dev *hdev,
->   	/* Read supported use cases and set callbacks to fetch datapath id */
->   	btintel_configure_offload(hdev);
->   
-> +	/* Set Specific Absorption Rate */
-> +	btintel_set_specific_absorption_rate(hdev, ver);
-> +
->   	hci_dev_clear_flag(hdev, HCI_QUALITY_REPORT);
->   
->   	/* Read the Intel version information after loading the FW  */
-> diff --git a/drivers/bluetooth/btintel.h b/drivers/bluetooth/btintel.h
-> index e0060e58573c..7aa58fb7b02a 100644
-> --- a/drivers/bluetooth/btintel.h
-> +++ b/drivers/bluetooth/btintel.h
-> @@ -137,6 +137,24 @@ struct intel_offload_use_cases {
->   	__u8	preset[8];
->   } __packed;
->   
-> +/* structure to store the data read from ACPI table */
-> +struct btintel_sar {
-> +	u8	domain;
-> +	u8	type;
-> +	u32	br;
-> +	u32	edr2;
-> +	u32	edr3;
-> +	u32	le;
-> +	u32	le_2mhz;
-> +	u32	le_lr;
-
-Can’t native types be used?
-
-> +};
-> +
-> +struct btintel_cp_ddc_write {
-> +	u8	len;
-> +	__le16	id;
-> +	u8	data[0];
-> +} __packed;
-> +
->   #define INTEL_HW_PLATFORM(cnvx_bt)	((u8)(((cnvx_bt) & 0x0000ff00) >> 8))
->   #define INTEL_HW_VARIANT(cnvx_bt)	((u8)(((cnvx_bt) & 0x003f0000) >> 16))
->   #define INTEL_CNVX_TOP_TYPE(cnvx_top)	((cnvx_top) & 0x00000fff)
