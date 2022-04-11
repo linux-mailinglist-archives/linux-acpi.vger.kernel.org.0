@@ -2,34 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA9494FC48B
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Apr 2022 21:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FD7B4FC488
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Apr 2022 21:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349346AbiDKTGi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Apr 2022 15:06:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35628 "EHLO
+        id S1346807AbiDKTGh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Apr 2022 15:06:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349336AbiDKTGh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Apr 2022 15:06:37 -0400
+        with ESMTP id S231265AbiDKTGg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Apr 2022 15:06:36 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AD9A14007;
-        Mon, 11 Apr 2022 12:04:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF3F013D21;
+        Mon, 11 Apr 2022 12:04:18 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 0b0baabfe54f0db8; Mon, 11 Apr 2022 21:04:18 +0200
+ id e1d793a703fbcef3; Mon, 11 Apr 2022 21:04:17 +0200
 Received: from kreacher.localnet (unknown [213.134.175.113])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id EBB3A66BDFD;
-        Mon, 11 Apr 2022 21:04:17 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 4763266BDFD;
+        Mon, 11 Apr 2022 21:04:16 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Bob Moore <robert.moore@intel.com>
-Subject: [PATCH 18/20] ACPICA: IORT: Updates for revision E.d
-Date:   Mon, 11 Apr 2022 21:02:33 +0200
-Message-ID: <44610361.fMDQidcC6G@kreacher>
+Subject: [PATCH 19/20] ACPICA: exsystem.c: Use ACPI_FORMAT_UINT64 for 64-bit output
+Date:   Mon, 11 Apr 2022 21:03:16 +0200
+Message-ID: <110004027.nniJfEyVGO@kreacher>
 In-Reply-To: <5578328.DvuYhMxLoT@kreacher>
 References: <5578328.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
@@ -49,86 +49,34 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+From: Bob Moore <robert.moore@intel.com>
 
-ACPICA commit 87a2e39b8abdfedfb86b0a105708e37e895becd9
+ACPICA commit 82a46ba57fe03ae99342740b92a04d8a8184860d
 
-IORT revision is now updated to E.d (ARM DEN 0049E.d) and
-contains a few additions like,
-    -Added descriptor in the root complex node for specifying
-     PASID width supported by the root complex.
-    -Updated RMR node Flags field.
-    -Introduced memory access attributes in the RMR node.
+%llu fails on 32-bit compilers.
 
-Please note that IORT Rev E.c is deprecated and not supported.
-
-Link: https://github.com/acpica/acpica/commit/87a2e39b
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Link: https://github.com/acpica/acpica/commit/82a46ba5
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- include/acpi/actbl2.h |   27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ exsystem.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Index: linux-pm/include/acpi/actbl2.h
-===================================================================
---- linux-pm.orig/include/acpi/actbl2.h
-+++ linux-pm/include/acpi/actbl2.h
-@@ -357,7 +357,7 @@ struct acpi_table_bdat {
-  * IORT - IO Remapping Table
-  *
-  * Conforms to "IO Remapping Table System Software on ARM Platforms",
-- * Document number: ARM DEN 0049E.b, Feb 2021
-+ * Document number: ARM DEN 0049E.d, Feb 2022
-  *
-  ******************************************************************************/
+diff -Nurp linux.before_name/drivers/acpi/acpica/exsystem.c linux.after_name/drivers/acpi/acpica/exsystem.c
+--- linux.before_name/drivers/acpi/acpica/exsystem.c	2022-04-01 18:28:45.856660253 +0200
++++ linux.after_name/drivers/acpi/acpica/exsystem.c	2022-04-01 18:28:42.231705592 +0200
+@@ -175,8 +175,9 @@ acpi_status acpi_ex_system_do_sleep(u64
+ 	 */
+ 	if (how_long_ms > 10) {
+ 		ACPI_WARNING((AE_INFO,
+-			      "Firmware issue: Excessive sleep time (%lu ms > 10 ms) in ACPI Control Method",
+-			      how_long_ms));
++			      "Firmware issue: Excessive sleep time (0x%8.8X%8.8X ms > 10 ms)"
++			      " in ACPI Control Method",
++			      ACPI_FORMAT_UINT64(how_long_ms)));
+ 	}
  
-@@ -454,7 +454,8 @@ struct acpi_iort_root_complex {
- 	u32 ats_attribute;
- 	u32 pci_segment_number;
- 	u8 memory_address_limit;	/* Memory address size limit */
--	u8 reserved[3];		/* Reserved, must be zero */
-+	u16 pasid_capabilities;	/* PASID Capabilities */
-+	u8 reserved[1];		/* Reserved, must be zero */
- };
- 
- /* Masks for ats_attribute field above */
-@@ -463,6 +464,9 @@ struct acpi_iort_root_complex {
- #define ACPI_IORT_PRI_SUPPORTED         (1<<1)	/* The root complex PRI support */
- #define ACPI_IORT_PASID_FWD_SUPPORTED   (1<<2)	/* The root complex PASID forward support */
- 
-+/* Masks for pasid_capabilities field above */
-+#define ACPI_IORT_PASID_MAX_WIDTH       (0x1F)	/* Bits 0-4 */
-+
- struct acpi_iort_smmu {
- 	u64 base_address;	/* SMMU base address */
- 	u64 span;		/* Length of memory range */
-@@ -538,6 +542,25 @@ struct acpi_iort_rmr {
- 	u32 rmr_offset;
- };
- 
-+/* Masks for Flags field above */
-+#define ACPI_IORT_RMR_REMAP_PERMITTED      (1)
-+#define ACPI_IORT_RMR_ACCESS_PRIVILEGE     (1<<1)
-+
-+/*
-+ * Macro to access the Access Attributes in flags field above:
-+ *  Access Attributes is encoded in bits 9:2
-+ */
-+#define ACPI_IORT_RMR_ACCESS_ATTRIBUTES(flags)          (((flags) >> 2) & 0xFF)
-+
-+/* Values for above Access Attributes */
-+
-+#define ACPI_IORT_RMR_ATTR_DEVICE_NGNRNE   0x00
-+#define ACPI_IORT_RMR_ATTR_DEVICE_NGNRE    0x01
-+#define ACPI_IORT_RMR_ATTR_DEVICE_NGRE     0x02
-+#define ACPI_IORT_RMR_ATTR_DEVICE_GRE      0x03
-+#define ACPI_IORT_RMR_ATTR_NORMAL_NC       0x04
-+#define ACPI_IORT_RMR_ATTR_NORMAL_IWB_OWB  0x05
-+
- struct acpi_iort_rmr_desc {
- 	u64 base_address;
- 	u64 length;
+ 	/*
 
 
 
