@@ -2,34 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCC5F4FC496
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Apr 2022 21:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF36F4FC495
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Apr 2022 21:05:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349435AbiDKTHN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S1349375AbiDKTHN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Mon, 11 Apr 2022 15:07:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36768 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349376AbiDKTGz (ORCPT
+        with ESMTP id S1349370AbiDKTGz (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Apr 2022 15:06:55 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFACE2F388;
-        Mon, 11 Apr 2022 12:04:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F73627B19;
+        Mon, 11 Apr 2022 12:04:27 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 2d7cc22c75eb7076; Mon, 11 Apr 2022 21:04:27 +0200
+ id c82cba2810d760f0; Mon, 11 Apr 2022 21:04:25 +0200
 Received: from kreacher.localnet (unknown [213.134.175.113])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id B40E266BDFE;
-        Mon, 11 Apr 2022 21:04:26 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 116F066BDFD;
+        Mon, 11 Apr 2022 21:04:25 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Bob Moore <robert.moore@intel.com>
-Subject: [PATCH 12/20] ACPICA: executer/exsystem: Add units to time variable names
-Date:   Mon, 11 Apr 2022 20:57:02 +0200
-Message-ID: <8110555.NyiUUSuA9g@kreacher>
+Subject: [PATCH 13/20] ACPICA: Add support for ARM Performance Monitoring Unit Table.
+Date:   Mon, 11 Apr 2022 20:58:04 +0200
+Message-ID: <3370028.QJadu78ljV@kreacher>
 In-Reply-To: <5578328.DvuYhMxLoT@kreacher>
 References: <5578328.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
@@ -49,95 +49,122 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Besar Wicaksono <bwicaksono@nvidia.com>
 
-ACPICA commit b69cbef7a83eadb102a1ff6c6f6fc5abce34805a
+ACPICA commit 002165ecc0a3dc703bb24c789aaa02fdada01675
 
-`how_long` refers to different units in both functions, so make it more
-clear, what unit they expect. That also makes one comment superfluous.
+The specification of this table is described in
+"ARM Performance Monitoring Unit Architecture 1.0 Platform Design Document"
+ARM DEN0117.
 
-Link: https://github.com/acpica/acpica/commit/b69cbef7
+This patch adds the necessary types and support for
+compiling/disassembling APMT.
+
+Link: https://github.com/acpica/acpica/commit/002165ec
+Signed-off-by: Besar Wicaksono <bwicaksono@nvidia.com>
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- exsystem.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ actbl2.h |   80 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
-diff -Nurp linux.before_name/drivers/acpi/acpica/exsystem.c linux.after_name/drivers/acpi/acpica/exsystem.c
---- linux.before_name/drivers/acpi/acpica/exsystem.c	2022-04-01 18:26:24.556426955 +0200
-+++ linux.after_name/drivers/acpi/acpica/exsystem.c	2022-04-01 18:26:20.646475824 +0200
-@@ -107,7 +107,7 @@ acpi_status acpi_ex_system_wait_mutex(ac
+diff -Nurp linux.before_name/include/acpi/actbl2.h linux.after_name/include/acpi/actbl2.h
+--- linux.before_name/include/acpi/actbl2.h	2022-04-01 18:26:31.909335052 +0200
++++ linux.after_name/include/acpi/actbl2.h	2022-04-01 18:26:28.746374585 +0200
+@@ -25,6 +25,7 @@
+  * the wrong signature.
+  */
+ #define ACPI_SIG_AGDI           "AGDI"	/* Arm Generic Diagnostic Dump and Reset Device Interface */
++#define ACPI_SIG_APMT           "APMT"	/* Arm Performance Monitoring Unit table */
+ #define ACPI_SIG_BDAT           "BDAT"	/* BIOS Data ACPI Table */
+ #define ACPI_SIG_IORT           "IORT"	/* IO Remapping Table */
+ #define ACPI_SIG_IVRS           "IVRS"	/* I/O Virtualization Reporting Structure */
+@@ -260,6 +261,85 @@ struct acpi_table_agdi {
+ 
+ /*******************************************************************************
   *
-  * FUNCTION:    acpi_ex_system_do_stall
++ * APMT - ARM Performance Monitoring Unit Table
++ *
++ * Conforms to:
++ * ARM Performance Monitoring Unit Architecture 1.0 Platform Design Document
++ * ARM DEN0117 v1.0 November 25, 2021
++ *
++ ******************************************************************************/
++
++struct acpi_table_apmt {
++	struct acpi_table_header header;	/* Common ACPI table header */
++};
++
++#define ACPI_APMT_NODE_ID_LENGTH                4
++
++/*
++ * APMT subtables
++ */
++struct acpi_apmt_node {
++	u16 length;
++	u8 flags;
++	u8 type;
++	u32 id;
++	u64 inst_primary;
++	u32 inst_secondary;
++	u64 base_address0;
++	u64 base_address1;
++	u32 ovflw_irq;
++	u32 reserved;
++	u32 ovflw_irq_flags;
++	u32 proc_affinity;
++	u32 impl_id;
++};
++
++/* Masks for Flags field above */
++
++#define ACPI_APMT_FLAGS_DUAL_PAGE               (1<<0)
++#define ACPI_APMT_FLAGS_AFFINITY                (1<<1)
++#define ACPI_APMT_FLAGS_ATOMIC                  (1<<2)
++
++/* Values for Flags dual page field above */
++
++#define ACPI_APMT_FLAGS_DUAL_PAGE_NSUPP         (0<<0)
++#define ACPI_APMT_FLAGS_DUAL_PAGE_SUPP          (1<<0)
++
++/* Values for Flags processor affinity field above */
++#define ACPI_APMT_FLAGS_AFFINITY_PROC           (0<<1)
++#define ACPI_APMT_FLAGS_AFFINITY_PROC_CONTAINER (1<<1)
++
++/* Values for Flags 64-bit atomic field above */
++#define ACPI_APMT_FLAGS_ATOMIC_NSUPP            (0<<2)
++#define ACPI_APMT_FLAGS_ATOMIC_SUPP             (1<<2)
++
++/* Values for Type field above */
++
++enum acpi_apmt_node_type {
++	ACPI_APMT_NODE_TYPE_MC = 0x00,
++	ACPI_APMT_NODE_TYPE_SMMU = 0x01,
++	ACPI_APMT_NODE_TYPE_PCIE_ROOT = 0x02,
++	ACPI_APMT_NODE_TYPE_ACPI = 0x03,
++	ACPI_APMT_NODE_TYPE_CACHE = 0x04,
++	ACPI_APMT_NODE_TYPE_COUNT
++};
++
++/* Masks for ovflw_irq_flags field above */
++
++#define ACPI_APMT_OVFLW_IRQ_FLAGS_MODE          (1<<0)
++#define ACPI_APMT_OVFLW_IRQ_FLAGS_TYPE          (1<<1)
++
++/* Values for ovflw_irq_flags mode field above */
++
++#define ACPI_APMT_OVFLW_IRQ_FLAGS_MODE_LEVEL    (0<<0)
++#define ACPI_APMT_OVFLW_IRQ_FLAGS_MODE_EDGE     (1<<0)
++
++/* Values for ovflw_irq_flags type field above */
++
++#define ACPI_APMT_OVFLW_IRQ_FLAGS_TYPE_WIRED    (0<<1)
++
++/*******************************************************************************
++ *
+  * BDAT - BIOS Data ACPI Table
   *
-- * PARAMETERS:  how_long        - The amount of time to stall,
-+ * PARAMETERS:  how_long_us     - The amount of time to stall,
-  *                                in microseconds
-  *
-  * RETURN:      Status
-@@ -120,24 +120,24 @@ acpi_status acpi_ex_system_wait_mutex(ac
-  *
-  ******************************************************************************/
- 
--acpi_status acpi_ex_system_do_stall(u32 how_long)
-+acpi_status acpi_ex_system_do_stall(u32 how_long_us)
- {
- 	acpi_status status = AE_OK;
- 
- 	ACPI_FUNCTION_ENTRY();
- 
--	if (how_long > 255) {	/* 255 microseconds */
-+	if (how_long_us > 255) {
- 		/*
--		 * Longer than 255 usec, this is an error
-+		 * Longer than 255 microseconds, this is an error
- 		 *
- 		 * (ACPI specifies 100 usec as max, but this gives some slack in
- 		 * order to support existing BIOSs)
- 		 */
- 		ACPI_ERROR((AE_INFO,
--			    "Time parameter is too large (%u)", how_long));
-+			    "Time parameter is too large (%u)", how_long_us));
- 		status = AE_AML_OPERAND_VALUE;
- 	} else {
--		acpi_os_stall(how_long);
-+		acpi_os_stall(how_long_us);
- 	}
- 
- 	return (status);
-@@ -147,7 +147,7 @@ acpi_status acpi_ex_system_do_stall(u32
-  *
-  * FUNCTION:    acpi_ex_system_do_sleep
-  *
-- * PARAMETERS:  how_long        - The amount of time to sleep,
-+ * PARAMETERS:  how_long_ms     - The amount of time to sleep,
-  *                                in milliseconds
-  *
-  * RETURN:      None
-@@ -156,7 +156,7 @@ acpi_status acpi_ex_system_do_stall(u32
-  *
-  ******************************************************************************/
- 
--acpi_status acpi_ex_system_do_sleep(u64 how_long)
-+acpi_status acpi_ex_system_do_sleep(u64 how_long_ms)
- {
- 	ACPI_FUNCTION_ENTRY();
- 
-@@ -168,11 +168,11 @@ acpi_status acpi_ex_system_do_sleep(u64
- 	 * For compatibility with other ACPI implementations and to prevent
- 	 * accidental deep sleeps, limit the sleep time to something reasonable.
- 	 */
--	if (how_long > ACPI_MAX_SLEEP) {
--		how_long = ACPI_MAX_SLEEP;
-+	if (how_long_ms > ACPI_MAX_SLEEP) {
-+		how_long_ms = ACPI_MAX_SLEEP;
- 	}
- 
--	acpi_os_sleep(how_long);
-+	acpi_os_sleep(how_long_ms);
- 
- 	/* And now we must get the interpreter again */
- 
+  * Conforms to "BIOS Data ACPI Table", Interface Specification v4.0 Draft 5
 
 
 
