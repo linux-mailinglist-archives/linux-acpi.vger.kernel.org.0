@@ -2,54 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA5544FC99C
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Apr 2022 02:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B24784FCCBE
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Apr 2022 04:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242671AbiDLAsD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Apr 2022 20:48:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41632 "EHLO
+        id S245573AbiDLC4u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Apr 2022 22:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243374AbiDLAru (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Apr 2022 20:47:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C6C1AF14;
-        Mon, 11 Apr 2022 17:45:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9C99617F1;
-        Tue, 12 Apr 2022 00:45:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E059C385AB;
-        Tue, 12 Apr 2022 00:45:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649724334;
-        bh=9tgTgIrTemDGv97o6B8jl4nwl+jRC9WPDriLZxzNA9A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ktIKcLdV6BdjQo0ZwfTvk3BzciQFnAj4MDjLOjlMFMKAThlB6H/a7H0MzFd2PCJpP
-         K2mW11M7ABz60UFRiJ37XcaN5u5bW5ZPLUXfKeu/N8dsDw+QzUN8ZPrKBKmuJw1yKk
-         Oe9pmduBKCeQqVwR16gmya8LI+XJlWqqgyx09EdOPf1XGSXGtDWhX3BZBUG08Svrnv
-         ynaL4z96V/LQ2SoK6jI0eid5mGJI7+8ibkZ7RryfGhyVeZmHTNKJXkVmdOjXq4np3J
-         MqaX+i8rdQexFWlWy/Qa30e3TEKnp6dK6D2xQH0zqw0Q3aoORnGBJ91skPVTsNxsmJ
-         9kvknuQ93Kxvw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Akihiko Odaki <akihiko.odaki@gmail.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.17 26/49] Revert "ACPI: processor: idle: Only flush cache on entering C3"
-Date:   Mon, 11 Apr 2022 20:43:44 -0400
-Message-Id: <20220412004411.349427-26-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220412004411.349427-1-sashal@kernel.org>
-References: <20220412004411.349427-1-sashal@kernel.org>
+        with ESMTP id S1343671AbiDLC4u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Apr 2022 22:56:50 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07E713D46;
+        Mon, 11 Apr 2022 19:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649732073; x=1681268073;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZZ03kDMABJJZI0UrTuqW+R10I6D2dFdE0aD6w2mgkEE=;
+  b=PMctmlVmACmfBs7STF1Ly2d4507Ep1bJLa72/lQnLyuN2ab40oxMEavp
+   qFNgUyDJEC51Vm55krE8hseVxldlAByGMf8bR0CKG9JPwYRcJzn3T6YUA
+   IBe1hFGhVFMZhBZr8hHy2Pm4Txp2LtS8UJDhzr7kg2F2Xks1pMaA+Gfrn
+   J/69Zu/jvFK4vmEmtScJMYngpEXf5XXbRWOAUFPgIhcZlE95ke5g9Haof
+   eiHkj7X4Au5qDf2o2mpNOATjCmiKk5NObDfHZFSOWkG69cAie9qFD6Mdi
+   FjdHd6vxYqnba70yx7NMfg9DsoVxgDOyfQZLEPxfcH7CN9J7zDsAeINmm
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10314"; a="261110559"
+X-IronPort-AV: E=Sophos;i="5.90,252,1643702400"; 
+   d="scan'208";a="261110559"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2022 19:54:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,252,1643702400"; 
+   d="scan'208";a="507360781"
+Received: from lkp-server02.sh.intel.com (HELO d3fc50ef50de) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 11 Apr 2022 19:54:31 -0700
+Received: from kbuild by d3fc50ef50de with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1ne6fm-0002SA-F0;
+        Tue, 12 Apr 2022 02:54:30 +0000
+Date:   Tue, 12 Apr 2022 10:53:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bob Moore <robert.moore@intel.com>
+Subject: Re: [PATCH 14/20] ACPICA: executer/exsystem: Inform users about ACPI
+ spec violation
+Message-ID: <202204121052.HOrN6tpw-lkp@intel.com>
+References: <22622452.6Emhk5qWAg@kreacher>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <22622452.6Emhk5qWAg@kreacher>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,46 +67,98 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Akihiko Odaki <akihiko.odaki@gmail.com>
+Hi "Rafael,
 
-[ Upstream commit dfbba2518aac4204203b0697a894d3b2f80134d3 ]
+Thank you for the patch! Yet something to improve:
 
-Revert commit 87ebbb8c612b ("ACPI: processor: idle: Only flush cache
-on entering C3") that broke the assumptions of the acpi_idle_play_dead()
-callers.
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on linus/master linux/master v5.18-rc2 next-20220411]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Namely, the CPU cache must always be flushed in acpi_idle_play_dead(),
-regardless of the target C-state that is going to be requested, because
-this is likely to be part of a CPU offline procedure or preparation for
-entering a system-wide sleep state and the lack of synchronization
-between the CPU cache and RAM may lead to problems going forward, for
-example when the CPU is brought back online.
+url:    https://github.com/intel-lab-lkp/linux/commits/Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: i386-randconfig-a006-20220411 (https://download.01.org/0day-ci/archive/20220412/202204121052.HOrN6tpw-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project fe2478d44e4f7f191c43fef629ac7a23d0251e72)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/5cdc6166cc35043a80f5f328d6e6b58190c4e46c
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922
+        git checkout 5cdc6166cc35043a80f5f328d6e6b58190c4e46c
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
 
-In particular, it breaks resume from suspend-to-RAM on Lenovo ThinkPad
-C13 which fails occasionally until the problematic commit is reverted.
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@gmail.com>
-[ rjw: Changelog ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/processor_idle.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Note: the linux-review/Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922 HEAD 32181ae3d3173aeee41f709612dfa4d52951b39d builds fine.
+      It only hurts bisectability.
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index f8e9fa82cb9b..05b3985a1984 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -570,8 +570,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
- {
- 	struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
- 
--	if (cx->type == ACPI_STATE_C3)
--		ACPI_FLUSH_CPU_CACHE();
-+	ACPI_FLUSH_CPU_CACHE();
- 
- 	while (1) {
- 
+All errors (new ones prefixed by >>):
+
+>> drivers/acpi/acpica/exsystem.c:140:7: error: use of undeclared identifier 'how_long_US'; did you mean 'how_long_us'?
+                   if (how_long_US > 100) {
+                       ^~~~~~~~~~~
+                       how_long_us
+   drivers/acpi/acpica/exsystem.c:123:41: note: 'how_long_us' declared here
+   acpi_status acpi_ex_system_do_stall(u32 how_long_us)
+                                           ^
+   1 error generated.
+
+
+vim +140 drivers/acpi/acpica/exsystem.c
+
+   105	
+   106	/*******************************************************************************
+   107	 *
+   108	 * FUNCTION:    acpi_ex_system_do_stall
+   109	 *
+   110	 * PARAMETERS:  how_long_us     - The amount of time to stall,
+   111	 *                                in microseconds
+   112	 *
+   113	 * RETURN:      Status
+   114	 *
+   115	 * DESCRIPTION: Suspend running thread for specified amount of time.
+   116	 *              Note: ACPI specification requires that Stall() does not
+   117	 *              relinquish the processor, and delays longer than 100 usec
+   118	 *              should use Sleep() instead. We allow stalls up to 255 usec
+   119	 *              for compatibility with other interpreters and existing BIOSs.
+   120	 *
+   121	 ******************************************************************************/
+   122	
+   123	acpi_status acpi_ex_system_do_stall(u32 how_long_us)
+   124	{
+   125		acpi_status status = AE_OK;
+   126	
+   127		ACPI_FUNCTION_ENTRY();
+   128	
+   129		if (how_long_us > 255) {
+   130			/*
+   131			 * Longer than 255 microseconds, this is an error
+   132			 *
+   133			 * (ACPI specifies 100 usec as max, but this gives some slack in
+   134			 * order to support existing BIOSs)
+   135			 */
+   136			ACPI_ERROR((AE_INFO,
+   137				    "Time parameter is too large (%u)", how_long_us));
+   138			status = AE_AML_OPERAND_VALUE;
+   139		} else {
+ > 140			if (how_long_US > 100) {
+   141				ACPI_WARNING((AE_INFO,
+   142					      "Time parameter %u us > 100 us violating ACPI spec, please fix the firmware.",
+   143					      how_long_us));
+   144			}
+   145			acpi_os_stall(how_long_us);
+   146		}
+   147	
+   148		return (status);
+   149	}
+   150	
+
 -- 
-2.35.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
