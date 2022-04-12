@@ -2,175 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E91E4FCEE9
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Apr 2022 07:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A8864FDB05
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Apr 2022 12:55:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348073AbiDLFYz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Apr 2022 01:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57602 "EHLO
+        id S232656AbiDLJvB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Apr 2022 05:51:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238062AbiDLFYy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Apr 2022 01:24:54 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1C221E2D;
-        Mon, 11 Apr 2022 22:22:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649740957; x=1681276957;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VwBsYPOA6UzCQhM7M1EA3LR9hWztHC4Nf+zw3YFCNbg=;
-  b=bbvZlOjKQI3ZU5FAj6NxKSnL1b2ZxYPDgFkvpiTtuz1oZIqzZxM+HSJT
-   RP4ukXA4Jkg2BhiwJbGK65R9sUOaFV6pSLsgtmkJ376k5MsdYPg4lRfSe
-   CAuWU4G6wdGDeS7hlXYBb3Cmhxyt59x0fcpjCuAOzMZC6p45k+HSi1Ois
-   FRGVZZ1IhF6itn7PGfrEew7ifJLHT1duuLJL3EySfGCI1waNAy0IABo0s
-   ITo2uNymzGNc7IlCJvtmo5dSvqUIW32v/RqFWofKuWutOb68jdCoAy8a4
-   J2by2pxAh8RkdcfhRfGMNamic9yaudPxBErJqGCdupgKOSvi/bw4VGIk9
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10314"; a="322724253"
-X-IronPort-AV: E=Sophos;i="5.90,252,1643702400"; 
-   d="scan'208";a="322724253"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2022 22:22:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,252,1643702400"; 
-   d="scan'208";a="507396618"
-Received: from lkp-server02.sh.intel.com (HELO d3fc50ef50de) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 11 Apr 2022 22:22:35 -0700
-Received: from kbuild by d3fc50ef50de with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1ne8z4-0002XU-AR;
-        Tue, 12 Apr 2022 05:22:34 +0000
-Date:   Tue, 12 Apr 2022 13:22:00 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bob Moore <robert.moore@intel.com>
-Subject: Re: [PATCH 15/20] ACPICA: executer/exsystem: Warn about sleeps
- greater than 10 ms
-Message-ID: <202204121322.P9yX0gKP-lkp@intel.com>
-References: <4200238.ejJDZkT8p0@kreacher>
+        with ESMTP id S1355164AbiDLH1M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Apr 2022 03:27:12 -0400
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A0A48310;
+        Tue, 12 Apr 2022 00:07:07 -0700 (PDT)
+Received: by mail-oi1-f170.google.com with SMTP id q129so18154845oif.4;
+        Tue, 12 Apr 2022 00:07:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=G5mglcYZA42FcZWexfT//Na3N8U+QShWNDx9HhSMVxo=;
+        b=kKJ3nUEWMsvrLSEjjffpnmiZNTAKv4on5YariZdK09oUTFOOJbZgu5tA8vQBAtZ18r
+         E6+Qe32az2p2EwxkK9oA6ePWtoGjE9TH4px3ydOd0WeV+0op0Bd5IGPncnasrC2wKODI
+         XAVk01tIA0D4Nf6u79H0lCf8YKJLt4ka3SqsukAN5aBC6LlNhYZYF8EQNWa2+HxY1EV8
+         cyQmoiJUPBvSfAp1f93p+HrJEHl3CPPt/YpcmaEwE8NROh4cxi7nTZYnY2NdvgO4eQBW
+         EwBgsDhtUy0/k+Oqkn6ck6Nes7LsIXLcms7SD81Cl41lekQ+RqseMzrcZRKQi3GL7BLY
+         UBNA==
+X-Gm-Message-State: AOAM532Gum91u170rACXcmlIBzrzy9KmXNpCRz3aU0vGcRwzZEMgiOSG
+        z2ER9oFvaFzXpGSJ43yLVTvkqZpwxi9zAxu9
+X-Google-Smtp-Source: ABdhPJyY2799smUiwIFdgvJoeCM6WpcXcNi2SOOE90czIXyqPS95bARZpvHXARvzQOeftsWIVQC/BQ==
+X-Received: by 2002:a05:6808:bc2:b0:2ec:e1c2:bd3f with SMTP id o2-20020a0568080bc200b002ece1c2bd3fmr1212821oik.161.1649747226236;
+        Tue, 12 Apr 2022 00:07:06 -0700 (PDT)
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com. [209.85.210.50])
+        by smtp.gmail.com with ESMTPSA id p16-20020a05680811d000b002d72ec3a921sm12272220oiv.21.2022.04.12.00.07.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Apr 2022 00:07:05 -0700 (PDT)
+Received: by mail-ot1-f50.google.com with SMTP id a17-20020a9d3e11000000b005cb483c500dso12828738otd.6;
+        Tue, 12 Apr 2022 00:07:05 -0700 (PDT)
+X-Received: by 2002:a25:c049:0:b0:634:6751:e8d2 with SMTP id
+ c70-20020a25c049000000b006346751e8d2mr25945732ybf.6.1649747214062; Tue, 12
+ Apr 2022 00:06:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4200238.ejJDZkT8p0@kreacher>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
+In-Reply-To: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 12 Apr 2022 09:06:42 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVfOpGvF5FR6vFD-3a1h-7Kc_yAKQzWV71PD6mDy6BmZw@mail.gmail.com>
+Message-ID: <CAMuHMdVfOpGvF5FR6vFD-3a1h-7Kc_yAKQzWV71PD6mDy6BmZw@mail.gmail.com>
+Subject: Re: [PATCH v7 00/20] Introduce power-off+restart call chain API
+To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi "Rafael,
+Hi Dmitry,
 
-Thank you for the patch! Yet something to improve:
+On Tue, Apr 12, 2022 at 1:38 AM Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
+> Problem
+> -------
+>
+> SoC devices require power-off call chaining functionality from kernel.
+> We have a widely used restart chaining provided by restart notifier API,
+> but nothing for power-off.
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on linus/master linux/master v5.18-rc2 next-20220411]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+> Changelog:
+>
+> v7: - Rebased on a recent linux-next. Dropped the recently removed
+>       NDS32 architecture. Only SH and x86 arches left un-acked.
+>
+>     - Added acks from Thomas Bogendoerfer and Krzysztof Kozlowski
+>       to the MIPS and memory/emif patches respectively.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: i386-randconfig-a006-20220411 (https://download.01.org/0day-ci/archive/20220412/202204121322.P9yX0gKP-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project fe2478d44e4f7f191c43fef629ac7a23d0251e72)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/22c298d3a077e7ea8503e9acf7ac83e6b1e10148
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922
-        git checkout 22c298d3a077e7ea8503e9acf7ac83e6b1e10148
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
+Looks like you forgot to add the actual acks?
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+Gr{oetje,eeting}s,
 
-Note: the linux-review/Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922 HEAD 32181ae3d3173aeee41f709612dfa4d52951b39d builds fine.
-      It only hurts bisectability.
+                        Geert
 
-All errors (new ones prefixed by >>):
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-   drivers/acpi/acpica/exsystem.c:140:7: error: use of undeclared identifier 'how_long_US'; did you mean 'how_long_us'?
-                   if (how_long_US > 100) {
-                       ^~~~~~~~~~~
-                       how_long_us
-   drivers/acpi/acpica/exsystem.c:123:41: note: 'how_long_us' declared here
-   acpi_status acpi_ex_system_do_stall(u32 how_long_us)
-                                           ^
->> drivers/acpi/acpica/exsystem.c:179:10: error: use of undeclared identifier 'how_long_us'; did you mean 'how_long_ms'?
-                                 how_long_us));
-                                 ^~~~~~~~~~~
-                                 how_long_ms
-   include/acpi/acoutput.h:203:54: note: expanded from macro 'ACPI_WARNING'
-   #define ACPI_WARNING(plist)             acpi_warning plist
-                                                        ^
-   drivers/acpi/acpica/exsystem.c:164:41: note: 'how_long_ms' declared here
-   acpi_status acpi_ex_system_do_sleep(u64 how_long_ms)
-                                           ^
-   2 errors generated.
-
-
-vim +179 drivers/acpi/acpica/exsystem.c
-
-   150	
-   151	/*******************************************************************************
-   152	 *
-   153	 * FUNCTION:    acpi_ex_system_do_sleep
-   154	 *
-   155	 * PARAMETERS:  how_long_ms     - The amount of time to sleep,
-   156	 *                                in milliseconds
-   157	 *
-   158	 * RETURN:      None
-   159	 *
-   160	 * DESCRIPTION: Sleep the running thread for specified amount of time.
-   161	 *
-   162	 ******************************************************************************/
-   163	
-   164	acpi_status acpi_ex_system_do_sleep(u64 how_long_ms)
-   165	{
-   166		ACPI_FUNCTION_ENTRY();
-   167	
-   168		/* Since this thread will sleep, we must release the interpreter */
-   169	
-   170		acpi_ex_exit_interpreter();
-   171	
-   172		/*
-   173		 * Warn users about excessive sleep times, so ASL code can be improved to
-   174		 * use polling or similar techniques.
-   175		 */
-   176		if (how_long_ms > 10) {
-   177			ACPI_WARNING((AE_INFO,
-   178				      "Firmware issue: Excessive sleep time (%llu ms > 10 ms) in ACPI Control Method",
- > 179				      how_long_us));
-   180		}
-   181	
-   182		/*
-   183		 * For compatibility with other ACPI implementations and to prevent
-   184		 * accidental deep sleeps, limit the sleep time to something reasonable.
-   185		 */
-   186		if (how_long_ms > ACPI_MAX_SLEEP) {
-   187			how_long_ms = ACPI_MAX_SLEEP;
-   188		}
-   189	
-   190		acpi_os_sleep(how_long_ms);
-   191	
-   192		/* And now we must get the interpreter again */
-   193	
-   194		acpi_ex_enter_interpreter();
-   195		return (AE_OK);
-   196	}
-   197	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
