@@ -2,93 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F10F4FC8DB
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Apr 2022 01:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA5544FC99C
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Apr 2022 02:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234515AbiDKXoj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Apr 2022 19:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54088 "EHLO
+        id S242671AbiDLAsD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Apr 2022 20:48:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242632AbiDKXnP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Apr 2022 19:43:15 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1984629817;
-        Mon, 11 Apr 2022 16:40:18 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: dmitry.osipenko)
-        with ESMTPSA id ECBE41F43D65
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649720416;
-        bh=iYfrEabh/hAGujUdJ+A/I+DmpedLWQ8gHOkzzfFNwA8=;
+        with ESMTP id S243374AbiDLAru (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Apr 2022 20:47:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C6C1AF14;
+        Mon, 11 Apr 2022 17:45:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9C99617F1;
+        Tue, 12 Apr 2022 00:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E059C385AB;
+        Tue, 12 Apr 2022 00:45:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649724334;
+        bh=9tgTgIrTemDGv97o6B8jl4nwl+jRC9WPDriLZxzNA9A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c1svoiAR7m0K6n7FtQj4RQRVEfLDNf+rwLT3neRX08SjGxKJYiC6HyM61WH9D/o3y
-         vAJO3f/Ys3tCCGTE9bmhQwmmHvzdi+chCvJXp1Npd/GlWrZMZHyViOEgNhsLyOJzTk
-         WaypFbLIoOXzHL4B5nWZOTZInVtzuAgZL1HRm6zaAYZPbJVUGS8V4EJ2Mc0SPMy0Sw
-         qJHgIWiLSIgASKFu7wMg0n4w6xwajTCa/N/m8HFcI9swRLPhXyd9bPMTdXw6j07VZa
-         h6Rg8HGTvAD0gX8doiBfJ8Letk7TvBw7eZK4sZ4E0EPUScPBbaZsR1J8aceqd22he4
-         YaYXWDOj7297Q==
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Cc:     linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH v7 20/20] reboot: Remove pm_power_off_prepare()
-Date:   Tue, 12 Apr 2022 02:38:32 +0300
-Message-Id: <20220411233832.391817-21-dmitry.osipenko@collabora.com>
+        b=ktIKcLdV6BdjQo0ZwfTvk3BzciQFnAj4MDjLOjlMFMKAThlB6H/a7H0MzFd2PCJpP
+         K2mW11M7ABz60UFRiJ37XcaN5u5bW5ZPLUXfKeu/N8dsDw+QzUN8ZPrKBKmuJw1yKk
+         Oe9pmduBKCeQqVwR16gmya8LI+XJlWqqgyx09EdOPf1XGSXGtDWhX3BZBUG08Svrnv
+         ynaL4z96V/LQ2SoK6jI0eid5mGJI7+8ibkZ7RryfGhyVeZmHTNKJXkVmdOjXq4np3J
+         MqaX+i8rdQexFWlWy/Qa30e3TEKnp6dK6D2xQH0zqw0Q3aoORnGBJ91skPVTsNxsmJ
+         9kvknuQ93Kxvw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Akihiko Odaki <akihiko.odaki@gmail.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.17 26/49] Revert "ACPI: processor: idle: Only flush cache on entering C3"
+Date:   Mon, 11 Apr 2022 20:43:44 -0400
+Message-Id: <20220412004411.349427-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
-References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
+In-Reply-To: <20220412004411.349427-1-sashal@kernel.org>
+References: <20220412004411.349427-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        TVD_SUBJ_WIPE_DEBT,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=no
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -96,56 +57,46 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-All pm_power_off_prepare() users were converted to sys-off handler API.
-Remove the obsolete callback.
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
 
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+[ Upstream commit dfbba2518aac4204203b0697a894d3b2f80134d3 ]
+
+Revert commit 87ebbb8c612b ("ACPI: processor: idle: Only flush cache
+on entering C3") that broke the assumptions of the acpi_idle_play_dead()
+callers.
+
+Namely, the CPU cache must always be flushed in acpi_idle_play_dead(),
+regardless of the target C-state that is going to be requested, because
+this is likely to be part of a CPU offline procedure or preparation for
+entering a system-wide sleep state and the lack of synchronization
+between the CPU cache and RAM may lead to problems going forward, for
+example when the CPU is brought back online.
+
+In particular, it breaks resume from suspend-to-RAM on Lenovo ThinkPad
+C13 which fails occasionally until the problematic commit is reverted.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@gmail.com>
+[ rjw: Changelog ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pm.h |  1 -
- kernel/reboot.c    | 11 -----------
- 2 files changed, 12 deletions(-)
+ drivers/acpi/processor_idle.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index ffe941958501..6cdf279c7f2f 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -21,7 +21,6 @@
-  * Callbacks for platform drivers to implement.
-  */
- extern void (*pm_power_off)(void);
--extern void (*pm_power_off_prepare)(void);
- 
- struct device; /* we have a circular dep with device.h */
- #ifdef CONFIG_VT_CONSOLE_SLEEP
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index e76e2570dcf5..f2f5c9d7caa0 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -48,13 +48,6 @@ int reboot_cpu;
- enum reboot_type reboot_type = BOOT_ACPI;
- int reboot_force;
- 
--/*
-- * If set, this is used for preparing the system to power off.
-- */
--
--void (*pm_power_off_prepare)(void);
--EXPORT_SYMBOL_GPL(pm_power_off_prepare);
--
- /**
-  *	emergency_restart - reboot the system
-  *
-@@ -877,10 +870,6 @@ void do_kernel_power_off(void)
- 
- static void do_kernel_power_off_prepare(void)
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index f8e9fa82cb9b..05b3985a1984 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -570,8 +570,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
  {
--	/* legacy pm_power_off_prepare() is unchained and has highest priority */
--	if (pm_power_off_prepare)
--		return pm_power_off_prepare();
--
- 	blocking_notifier_call_chain(&power_off_handler_list, POWEROFF_PREPARE,
- 				     NULL);
- }
+ 	struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
+ 
+-	if (cx->type == ACPI_STATE_C3)
+-		ACPI_FLUSH_CPU_CACHE();
++	ACPI_FLUSH_CPU_CACHE();
+ 
+ 	while (1) {
+ 
 -- 
 2.35.1
 
