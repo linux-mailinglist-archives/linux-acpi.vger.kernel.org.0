@@ -2,129 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2D224FDD6A
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Apr 2022 13:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 749534FE1B6
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Apr 2022 15:07:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343937AbiDLLJm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Apr 2022 07:09:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36508 "EHLO
+        id S1355221AbiDLNFr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Apr 2022 09:05:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354088AbiDLLFC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Apr 2022 07:05:02 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37A73C48E;
-        Tue, 12 Apr 2022 02:56:53 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: dmitry.osipenko)
-        with ESMTPSA id B9CA61F444DB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649757412;
-        bh=ta29d4wnkNjIs8vxiW+spXtMVlKSVX42O2OgeMWUE4M=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=kvhz7L+WR7F9HsP7+DAE1iJ09kPWZRmi5f2q6+wTFMWAjrPkNWY3Jzpgqp30kF162
-         9ej87DkBRElok2belFURZJE+6KAffcONlx+uSragUy+EKLYmrLe+OmnInaVU38Utnj
-         oGDfaSbiVVHQL6Yf2olT656ydNf9P6W4M76WukTbNC94PbuWprXpn8hcs1neMp19bi
-         iNzDzyCfCh2mIdCCNxP2XuZopGSbEx58bF1q1D3kWpmOuMeUlqToTVLTBXzlWDyGYS
-         beMdM6XO+lz1xQI7S8U0f+hcwzSbrlRYbQ5mvoaXJTg3bPRXH5hIYNcxpGgH7YbXoc
-         9fEZqqnyfRE+w==
-Message-ID: <2b603d3d-c6c1-13d7-8f77-042317a41d00@collabora.com>
-Date:   Tue, 12 Apr 2022 12:56:46 +0300
+        with ESMTP id S1356618AbiDLND4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Apr 2022 09:03:56 -0400
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78407DF38;
+        Tue, 12 Apr 2022 05:47:41 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-2ebf3746f87so104918667b3.6;
+        Tue, 12 Apr 2022 05:47:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WkUiUdHoDpNAi0zdRE9ANpSiniGW0nNNuGE1NcaA95g=;
+        b=gWjcCu10Px+LOvFKkiouMLdDu/etUh9mMnmtPTUjWcamfHIO3o7kKCY38mZVvbpMJD
+         rqzgvqJC8TWXxxe56pTqK82DiN9s3ZN47I3cCrE76WwrOSDIBHzwaFivGrC6u0XMWMBx
+         hkxNsjZxAOE79T/HI0px3tnoytWwecbQuac9ES3x/QXhYfiAxZRsXnBRcRmwEweYHlEU
+         U4EBFyLQIg3QSN+8DuQlr6uiimoO39ts0/mkbmTbpKvHMAMthljutztjgusWWpRCA1dk
+         xib5jymJBhVhxono0FwmmkL30lPaEmCmHEAZzU7lTaxu92OpyxXynLJLsc60KY95MP03
+         hmIw==
+X-Gm-Message-State: AOAM530iave7ZTpxohdlQ6nbytHX7RjBhevmh72KkWdYWUehlzQeuyru
+        bS9rUS8FSSdZ9ymjSgJVLj6jPZApJlS7bx+nBqwNhgGP
+X-Google-Smtp-Source: ABdhPJzqMRaCdna/2UYv9JsfsWjK4Bxln8AmtcV2uN/a+VAXsHvJMw4uCW2Lg3nDHyZCTmndPY/RhPSzoDb3lcuzUQ4=
+X-Received: by 2002:a81:7c45:0:b0:2eb:4759:cc32 with SMTP id
+ x66-20020a817c45000000b002eb4759cc32mr30158169ywc.515.1649767660662; Tue, 12
+ Apr 2022 05:47:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v7 17/20] memory: emif: Use kernel_can_power_off()
-Content-Language: en-US
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Cc:     linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
- <20220411233832.391817-18-dmitry.osipenko@collabora.com>
-In-Reply-To: <20220411233832.391817-18-dmitry.osipenko@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <22622452.6Emhk5qWAg@kreacher> <202204121052.HOrN6tpw-lkp@intel.com>
+In-Reply-To: <202204121052.HOrN6tpw-lkp@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 12 Apr 2022 14:47:29 +0200
+Message-ID: <CAJZ5v0jMXBC63aPdt5FuMqC9sDN_avNbRaPyXjjyVkESMCxkXw@mail.gmail.com>
+Subject: Re: [PATCH 14/20] ACPICA: executer/exsystem: Inform users about ACPI
+ spec violation
+To:     kernel test robot <lkp@intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>, llvm@lists.linux.dev,
+        kbuild-all@lists.01.org, LKML <linux-kernel@vger.kernel.org>,
+        Bob Moore <robert.moore@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Apr 12, 2022 at 4:54 AM kernel test robot <lkp@intel.com> wrote:
+>
+> Hi "Rafael,
+>
+> Thank you for the patch! Yet something to improve:
 
-On 4/12/22 02:38, Dmitry Osipenko wrote:
-> Replace legacy pm_power_off with kernel_can_power_off() helper that
-> is aware about chained power-off handlers.
-> 
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> ---
->  drivers/memory/emif.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/memory/emif.c b/drivers/memory/emif.c
-> index edf3ba7447ed..fa6845313a43 100644
-> --- a/drivers/memory/emif.c
-> +++ b/drivers/memory/emif.c
-> @@ -630,7 +630,7 @@ static irqreturn_t emif_threaded_isr(int irq, void *dev_id)
->  		dev_emerg(emif->dev, "SDRAM temperature exceeds operating limit.. Needs shut down!!!\n");
->  
->  		/* If we have Power OFF ability, use it, else try restarting */
-> -		if (pm_power_off) {
-> +		if (kernel_can_power_off()) {
->  			kernel_power_off();
->  		} else {
->  			WARN(1, "FIXME: NO pm_power_off!!! trying restart\n");
+This is addressed by one of the subsequent patches in the series.
 
-Adding ack from Krzysztof that he gave to v6. It's missing in v7 by
-accident.
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> [auto build test ERROR on rafael-pm/linux-next]
+> [also build test ERROR on linus/master linux/master v5.18-rc2 next-20220411]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+> config: i386-randconfig-a006-20220411 (https://download.01.org/0day-ci/archive/20220412/202204121052.HOrN6tpw-lkp@intel.com/config)
+> compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project fe2478d44e4f7f191c43fef629ac7a23d0251e72)
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/intel-lab-lkp/linux/commit/5cdc6166cc35043a80f5f328d6e6b58190c4e46c
+>         git remote add linux-review https://github.com/intel-lab-lkp/linux
+>         git fetch --no-tags linux-review Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922
+>         git checkout 5cdc6166cc35043a80f5f328d6e6b58190c4e46c
+>         # save the config file to linux build tree
+>         mkdir build_dir
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>
+> Note: the linux-review/Rafael-J-Wysocki/ACPICA-ACPICA-20220331/20220412-030922 HEAD 32181ae3d3173aeee41f709612dfa4d52951b39d builds fine.
+>       It only hurts bisectability.
+>
+> All errors (new ones prefixed by >>):
+>
+> >> drivers/acpi/acpica/exsystem.c:140:7: error: use of undeclared identifier 'how_long_US'; did you mean 'how_long_us'?
+>                    if (how_long_US > 100) {
+>                        ^~~~~~~~~~~
+>                        how_long_us
+>    drivers/acpi/acpica/exsystem.c:123:41: note: 'how_long_us' declared here
+>    acpi_status acpi_ex_system_do_stall(u32 how_long_us)
+>                                            ^
+>    1 error generated.
+>
+>
+> vim +140 drivers/acpi/acpica/exsystem.c
+>
+>    105
+>    106  /*******************************************************************************
+>    107   *
+>    108   * FUNCTION:    acpi_ex_system_do_stall
+>    109   *
+>    110   * PARAMETERS:  how_long_us     - The amount of time to stall,
+>    111   *                                in microseconds
+>    112   *
+>    113   * RETURN:      Status
+>    114   *
+>    115   * DESCRIPTION: Suspend running thread for specified amount of time.
+>    116   *              Note: ACPI specification requires that Stall() does not
+>    117   *              relinquish the processor, and delays longer than 100 usec
+>    118   *              should use Sleep() instead. We allow stalls up to 255 usec
+>    119   *              for compatibility with other interpreters and existing BIOSs.
+>    120   *
+>    121   ******************************************************************************/
+>    122
+>    123  acpi_status acpi_ex_system_do_stall(u32 how_long_us)
+>    124  {
+>    125          acpi_status status = AE_OK;
+>    126
+>    127          ACPI_FUNCTION_ENTRY();
+>    128
+>    129          if (how_long_us > 255) {
+>    130                  /*
+>    131                   * Longer than 255 microseconds, this is an error
+>    132                   *
+>    133                   * (ACPI specifies 100 usec as max, but this gives some slack in
+>    134                   * order to support existing BIOSs)
+>    135                   */
+>    136                  ACPI_ERROR((AE_INFO,
+>    137                              "Time parameter is too large (%u)", how_long_us));
+>    138                  status = AE_AML_OPERAND_VALUE;
+>    139          } else {
+>  > 140                  if (how_long_US > 100) {
+>    141                          ACPI_WARNING((AE_INFO,
+>    142                                        "Time parameter %u us > 100 us violating ACPI spec, please fix the firmware.",
+>    143                                        how_long_us));
+>    144                  }
+>    145                  acpi_os_stall(how_long_us);
+>    146          }
+>    147
+>    148          return (status);
+>    149  }
+>    150
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://01.org/lkp
