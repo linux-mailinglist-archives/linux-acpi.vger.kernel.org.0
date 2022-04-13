@@ -2,61 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20A004FFD72
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Apr 2022 20:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6392F4FFD83
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Apr 2022 20:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230412AbiDMSJC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Apr 2022 14:09:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51390 "EHLO
+        id S237596AbiDMSNN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Apr 2022 14:13:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232809AbiDMSJB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Apr 2022 14:09:01 -0400
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1E54C7A4;
-        Wed, 13 Apr 2022 11:06:38 -0700 (PDT)
-Received: by mail-yb1-f178.google.com with SMTP id f17so5171853ybj.10;
-        Wed, 13 Apr 2022 11:06:38 -0700 (PDT)
+        with ESMTP id S237698AbiDMSMz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Apr 2022 14:12:55 -0400
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ABA526AF7;
+        Wed, 13 Apr 2022 11:10:34 -0700 (PDT)
+Received: by mail-yb1-f181.google.com with SMTP id g34so5266240ybj.1;
+        Wed, 13 Apr 2022 11:10:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=VfKhK3uqPfbVCv99PeforoVikIn2c2jPfy2wcY5O6XQ=;
-        b=IROXXhwF7RTi0KF5eJPG02cvSsZcZnN1pmC4VG7VPBjlF5V8i+SU/Rva2nn7F42hKp
-         oUkAIE6K2DStYXp5I0THDAEFTiPiWP9ThSkmfaP+O1snqRZNTE9eiP7JiMplQ7jH10tC
-         C76Tphv/9vVKVqXQNROfXJjLW5OnJ/ItTDSHqvYXM/DP7eBZjOv3lDpPIkoN3ThkKUfP
-         yNMW1k4tKcV2EAsKkoMuPz1TkFR/XVJyL1irkqsMZQev6s76uqVhvGt8C3Pmz/PUEFc/
-         C/qH+c3GzGH4TIjjMf872ZwMf4zTXE0LE2qM8UuQmLR83z6GEWfGx3P1W9q0Q9WVIEWr
-         h1UA==
-X-Gm-Message-State: AOAM53108I5q+7t+NbZFomqy0Ax/K9UkacqC1Mo+XI8Dfj7Gtd4FbUVA
-        Bxqc+twcQ8IaWRf3xxpj5M8VnaiGW4zDs2P1yfI=
-X-Google-Smtp-Source: ABdhPJyVhsbJNC6CH+LKu5oL5g1G0fNXh+jBfotxvCkl81nkSFlFJP/32iJp4rXNNfAsYouo/NgBrKKwRMHeh+6lGqM=
-X-Received: by 2002:a05:6902:352:b0:63e:94c:883c with SMTP id
- e18-20020a056902035200b0063e094c883cmr81011ybs.365.1649873198214; Wed, 13 Apr
- 2022 11:06:38 -0700 (PDT)
+        bh=QWnLw7pcgFg7OO/Mp5u2CJgjWXHz+s+DaK73ibuVFlU=;
+        b=55DySKyrYv/fNb5oDcmg1V44RYLhlz8LvWDgTlx7nTkQ+FFlkvOSpUHJgGSO++XAFf
+         /cMfVfOhhexjpTjbW4QCL36nX7JQmairVfqE2+tZVFXdjAYQqPG7goW5Zm6KQWVBD2UV
+         uYjXYAR/e8XNwsjlFy6mESrk4bwaoKCJQGX+sCL1A9qBU+W73Xmzwwzj/BI8WLwOoxez
+         CSWVWEsK0xcg6lHAUfzNMz9rM13TZsN5HDW+3eCuHtFWl4pF4irpteUpVLLbRndO9sgB
+         7d7EGH5Y0r6FCLpYJCdIS5jgu9kyUTdXwuSHFIaX2JU/tNjg8OIyO17Cf2gxH4RSY4z5
+         X3Fg==
+X-Gm-Message-State: AOAM5315e634pQ/H/HnJtSGe6kRVF1vFIfX2neZNA9JQSlVaPaI9h2ts
+        cIHD+UaW6fyatRtSsJ4vFQcm79u9UCNbYV/acic=
+X-Google-Smtp-Source: ABdhPJzhrYFwc77slRKKGPSvgQKp3I24ZGfcYuYi9ZzAPo/jWfp3TjnJB9dQmBb7nWtQDG5MRNl7xRiOK+ISKc8OtXE=
+X-Received: by 2002:a25:3cc3:0:b0:63e:6ee9:4840 with SMTP id
+ j186-20020a253cc3000000b0063e6ee94840mr112067yba.153.1649873433436; Wed, 13
+ Apr 2022 11:10:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220408184844.22829-1-andriy.shevchenko@linux.intel.com>
- <YlQyEz3/J0rb2Hew@smile.fi.intel.com> <YlQ69jMduq/evgTt@kroah.com> <YlRNPyxHcNRQE/5A@smile.fi.intel.com>
-In-Reply-To: <YlRNPyxHcNRQE/5A@smile.fi.intel.com>
+References: <20220408184844.22829-1-andriy.shevchenko@linux.intel.com> <20220408184844.22829-4-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20220408184844.22829-4-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 13 Apr 2022 20:06:27 +0200
-Message-ID: <CAJZ5v0gGc8cVzGgXVuHW6hQ67h9b+HfSj_EqFPCOrTfjYGVOUg@mail.gmail.com>
-Subject: Re: [PATCH v6 1/5] device property: Allow error pointer to be passed
- to fwnode APIs
+Date:   Wed, 13 Apr 2022 20:10:22 +0200
+Message-ID: <CAJZ5v0jnyg6n-1QRmVg1tjzu3szsG3DYqYTXAbobbKwkFhTreg@mail.gmail.com>
+Subject: Re: [PATCH v6 4/5] device property: Constify fwnode_handle_get()
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
+Cc:     Rob Herring <robh@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>, Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Michael Walle <michael@walle.cc>
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -68,39 +64,88 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Apr 11, 2022 at 5:49 PM Andy Shevchenko
+On Fri, Apr 8, 2022 at 8:49 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Mon, Apr 11, 2022 at 04:28:06PM +0200, Greg Kroah-Hartman wrote:
-> > On Mon, Apr 11, 2022 at 04:50:11PM +0300, Andy Shevchenko wrote:
-> > > On Fri, Apr 08, 2022 at 09:48:40PM +0300, Andy Shevchenko wrote:
-> > > > Some of the fwnode APIs might return an error pointer instead of NULL
-> > > > or valid fwnode handle. The result of such API call may be considered
-> > > > optional and hence the test for it is usually done in a form of
-> > > >
-> > > >   fwnode = fwnode_find_reference(...);
-> > > >   if (IS_ERR(fwnode))
-> > > >           ...error handling...
-> > > >
-> > > > Nevertheless the resulting fwnode may have bumped the reference count
-> > > > and hence caller of the above API is obliged to call fwnode_handle_put().
-> > > > Since fwnode may be not valid either as NULL or error pointer the check
-> > > > has to be performed there. This approach uglifies the code and adds
-> > > > a point of making a mistake, i.e. forgetting about error point case.
-> > > >
-> > > > To prevent this, allow an error pointer to be passed to the fwnode APIs.
-> > >
-> > > Rafael and Greg, if this okay for you, can the first three patches be
-> > > applied, so we will have at least the fix in and consider constification
-> > > a further work?
-> >
-> > Give us a chance, you sent this on friday and are asking about it first
-> > thing Monday morning?
-> >
-> > Please go and review other patches sent on the list to help us catch up.
+> As to_of_node() suggests and the way the code in the OF and software node
+> back ends actually uses the fwnode handle, it may be constified. Do this
+> for good.
 >
-> OK! Reviewed (actually commented on) a few patches so far.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+> v6: new patch
+>  drivers/base/property.c  | 2 +-
+>  drivers/base/swnode.c    | 2 +-
+>  drivers/of/property.c    | 2 +-
+>  include/linux/fwnode.h   | 2 +-
+>  include/linux/property.h | 2 +-
+>  5 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 36401cfe432c..1ad4b37cd312 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -776,7 +776,7 @@ EXPORT_SYMBOL_GPL(device_get_named_child_node);
+>   *
+>   * Returns the fwnode handle.
+>   */
+> -struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode)
+> +struct fwnode_handle *fwnode_handle_get(const struct fwnode_handle *fwnode)
+>  {
+>         if (!fwnode_has_op(fwnode, get))
+>                 return fwnode;
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index b0bbd1805970..84a11008ffb8 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -363,7 +363,7 @@ EXPORT_SYMBOL_GPL(property_entries_free);
+>  /* -------------------------------------------------------------------------- */
+>  /* fwnode operations */
+>
+> -static struct fwnode_handle *software_node_get(struct fwnode_handle *fwnode)
+> +static struct fwnode_handle *software_node_get(const struct fwnode_handle *fwnode)
+>  {
+>         struct swnode *swnode = to_swnode(fwnode);
+>
+> diff --git a/drivers/of/property.c b/drivers/of/property.c
+> index 9a50ad25906e..8d06282af8e4 100644
+> --- a/drivers/of/property.c
+> +++ b/drivers/of/property.c
+> @@ -858,7 +858,7 @@ struct device_node *of_graph_get_remote_node(const struct device_node *node,
+>  }
+>  EXPORT_SYMBOL(of_graph_get_remote_node);
+>
+> -static struct fwnode_handle *of_fwnode_get(struct fwnode_handle *fwnode)
+> +static struct fwnode_handle *of_fwnode_get(const struct fwnode_handle *fwnode)
+>  {
+>         return of_fwnode_handle(of_node_get(to_of_node(fwnode)));
+>  }
+> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> index 9a81c4410b9f..a94bd47192a3 100644
+> --- a/include/linux/fwnode.h
+> +++ b/include/linux/fwnode.h
+> @@ -108,7 +108,7 @@ struct fwnode_reference_args {
+>   *             zero on success, a negative error code otherwise.
+>   */
+>  struct fwnode_operations {
+> -       struct fwnode_handle *(*get)(struct fwnode_handle *fwnode);
+> +       struct fwnode_handle *(*get)(const struct fwnode_handle *fwnode);
+>         void (*put)(struct fwnode_handle *fwnode);
+>         bool (*device_is_available)(const struct fwnode_handle *fwnode);
+>         const void *(*device_get_match_data)(const struct fwnode_handle *fwnode,
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index fc24d45632eb..c631ee7fd161 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -121,7 +121,7 @@ struct fwnode_handle *fwnode_get_named_child_node(
+>  struct fwnode_handle *device_get_named_child_node(struct device *dev,
+>                                                   const char *childname);
+>
+> -struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+> +struct fwnode_handle *fwnode_handle_get(const struct fwnode_handle *fwnode);
+>  void fwnode_handle_put(struct fwnode_handle *fwnode);
+>
+>  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+> --
 
-I've just queued up the first three patches in the series for 5.19.
-
-Thanks!
+Why is 0-day complaining about this one?
