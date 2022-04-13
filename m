@@ -2,57 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB094FF656
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Apr 2022 13:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78CDC4FF91B
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Apr 2022 16:40:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbiDMMBi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Apr 2022 08:01:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34188 "EHLO
+        id S236163AbiDMOmU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Apr 2022 10:42:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229976AbiDMMBh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Apr 2022 08:01:37 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFEF72C673;
-        Wed, 13 Apr 2022 04:59:16 -0700 (PDT)
+        with ESMTP id S233472AbiDMOmU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Apr 2022 10:42:20 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 053F515A1E;
+        Wed, 13 Apr 2022 07:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649851156; x=1681387156;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3UyuAIcJnXsr3KhEUp8X0PPk2b1/lXGl93FQhPP3cuE=;
-  b=AtH6Nv0uQUnsclcndUzxkI0y5JYTLySpNIQETzT/TqxOq2lg/Cm1Zwcp
-   3LAgVCaOeOa4jvofsDYf/g+iGIF2AIAOrThPbwjRNssRIvyo3/HvEj3KX
-   dYWo8QDi7NC61EatFdKr9PX3eoqxI45iwzFVL77o9EpMYS8N7nXITlcSO
-   vFyRlDESOf4JKfGmxyMTofw7GoIdYFA2BjXNjsg5BMzVDMpEPqbWWcU1U
-   jI7uGjNy0mhWn8XnSNkvFqxUwTU8MHOWtJcI9ZMK/X69+ZKffW/iDMJ23
-   MW/EqX8AZughuBF98HB88lX+qQk/j2tUHTygf/P/hHtpkO3nwdrV3Cz5t
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="261492458"
-X-IronPort-AV: E=Sophos;i="5.90,256,1643702400"; 
-   d="scan'208";a="261492458"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 04:59:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,256,1643702400"; 
-   d="scan'208";a="645138487"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 13 Apr 2022 04:59:14 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id A5CCD14F; Wed, 13 Apr 2022 14:59:14 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+  t=1649860799; x=1681396799;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FEqVR/bJ6blkfzQcYZuLKr7WhhCYJ06aOnPu5ZB6Q6Q=;
+  b=hgvQS/NeeIBDfF4aq/D3TVyFvbAS/ER/8U4Tdy/kuxOfH2FNXMVJ0d7R
+   /mSXNt/g6C63nZKXq2NLQWBPXvdga8xwQtjxvSL/7daYIHMDSzjLpFkMd
+   ox7kk0xz1EAQElKCsjNyFiPPk42JfP/WXSTW0MW+Z9AqddXNxBsPvUE4N
+   l6DWYD0XTisDRspuKNW/3Tgx7uM2/2XpVsLoDUXuBm8IS+8aJMHvUcOZw
+   h/SZ+Q7WQjwe+kr1HnGEhHyp0f6wB2tRbGldNdBGLVk7RAyEABCJhYand
+   2/aNtGDMnZjz/qViuxLurBAqHtZZ4izRO9wNaalXNv3o6VePvhiOwu5in
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="325589399"
+X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
+   d="scan'208";a="325589399"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 07:35:53 -0700
+X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
+   d="scan'208";a="573295871"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 07:35:49 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id C987220316;
+        Wed, 13 Apr 2022 17:35:46 +0300 (EEST)
+Date:   Wed, 13 Apr 2022 17:35:46 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
         Len Brown <lenb@kernel.org>
-Subject: [PATCH v1 1/1] ACPI: docs: enumeration: Unify Package () for properties (part 2)
-Date:   Wed, 13 Apr 2022 14:59:12 +0300
-Message-Id: <20220413115912.41893-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+Subject: Re: [PATCH v6 4/5] device property: Constify fwnode_handle_get()
+Message-ID: <YlbfwjQcxj6fK7re@paasikivi.fi.intel.com>
+References: <20220408184844.22829-1-andriy.shevchenko@linux.intel.com>
+ <20220408184844.22829-4-andriy.shevchenko@linux.intel.com>
+ <YlCq79KveByePxe9@paasikivi.fi.intel.com>
+ <CAHp75Ve-5=6bsF1mMQ4RceobV=OsR6VwZeP==iFGQJLEbt0-yg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75Ve-5=6bsF1mMQ4RceobV=OsR6VwZeP==iFGQJLEbt0-yg@mail.gmail.com>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,30 +74,26 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Unify Package () representation for properties:
- - make them one line where it's possible
- - add spaces between parentheses and curly braces
- - drop the explicit size of package
+On Sun, Apr 10, 2022 at 05:10:23PM +0300, Andy Shevchenko wrote:
+> On Sat, Apr 9, 2022 at 2:35 AM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> > On Fri, Apr 08, 2022 at 09:48:43PM +0300, Andy Shevchenko wrote:
+> > > As to_of_node() suggests and the way the code in the OF and software node
+> > > back ends actually uses the fwnode handle, it may be constified. Do this
+> > > for good.
+> >
+> > How?
+> >
+> > If the fwnode is const, then the struct it contains must be presumed to be
+> > const, too.
+> 
+> Why? The idea is that we are not updating the fwnode, but the container.
+> The container may or may not be const. It's orthogonal, no?
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- Documentation/firmware-guide/acpi/enumeration.rst | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+As you wrote: may or may not. The stricter requirement, i.e. const, must be
+thus followed. I think it would be fine (after adding a comment on what is
+being done) if you *know* the container struct is not const. But that is
+not the case here.
 
-diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Documentation/firmware-guide/acpi/enumeration.rst
-index 47fb4d6d4557..6b62425ef9cd 100644
---- a/Documentation/firmware-guide/acpi/enumeration.rst
-+++ b/Documentation/firmware-guide/acpi/enumeration.rst
-@@ -167,8 +167,7 @@ The table below shows an example of its usage::
-         Name (_DSD, Package () {
-             ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-             Package () {
--                Package () {"interrupt-names",
--                Package (2) {"default", "alert"}},
-+                Package () { "interrupt-names", Package () { "default", "alert" } },
-             }
-         ...
-         })
 -- 
-2.35.1
-
+Sakari Ailus
