@@ -2,126 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E1C500E5E
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Apr 2022 15:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6969B501AED
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Apr 2022 20:18:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243148AbiDNNMW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Apr 2022 09:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34066 "EHLO
+        id S1344441AbiDNSUl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Apr 2022 14:20:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243150AbiDNNMS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Apr 2022 09:12:18 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56E91AF13;
-        Thu, 14 Apr 2022 06:09:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649941791; x=1681477791;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=v5CxLQbfWtXiVq/sE32vce32MQXtkQXZiAcw0x85tOs=;
-  b=N6qy/l1225/WvWy3yBeDGBeEe6Bkv2vmF1gju1TpaH+T4SfCMBVcppF+
-   /6ZEjL7q3kDV5CEtp2WeuSA+8wwlSQWpk1+kq14aK7+gMfWkwIWJwge9I
-   uH+RtlXd8SSIncmUFyJ1SYyi9mmdyX89ozsai7PcTG4CB4dF8XW6EAO9z
-   2psrP+I52C/3aqrOSldPpdK7pSFTs/A0At188MAd//hf7OIx/BChXGt2T
-   0vf1UPyn4WMDWE/8wxzkP1n05q9xgKgmjta5AJ56TMdhlKDOc2DvWCHDo
-   KmKjouJewl8WiidNeBnuupAH8fXRaawNUtRPGJrk9JNVdxQrXGtLMNIOV
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="244810465"
-X-IronPort-AV: E=Sophos;i="5.90,259,1643702400"; 
-   d="scan'208";a="244810465"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2022 06:09:51 -0700
-X-IronPort-AV: E=Sophos;i="5.90,259,1643702400"; 
-   d="scan'208";a="508401064"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2022 06:09:48 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nezEH-002KKY-Gu;
-        Thu, 14 Apr 2022 16:09:45 +0300
-Date:   Thu, 14 Apr 2022 16:09:45 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v6 4/5] device property: Constify fwnode_handle_get()
-Message-ID: <YlgdGb/vKfdCXXx1@smile.fi.intel.com>
-References: <20220408184844.22829-1-andriy.shevchenko@linux.intel.com>
- <20220408184844.22829-4-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0jnyg6n-1QRmVg1tjzu3szsG3DYqYTXAbobbKwkFhTreg@mail.gmail.com>
- <YlcUMNe5gDsEca4f@smile.fi.intel.com>
- <YlcVFRQ9wJIH+sjI@smile.fi.intel.com>
- <YldE6L7MbgS0NXQY@paasikivi.fi.intel.com>
+        with ESMTP id S240694AbiDNSUk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Apr 2022 14:20:40 -0400
+X-Greylist: delayed 509 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 14 Apr 2022 11:18:14 PDT
+Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98B23EA370;
+        Thu, 14 Apr 2022 11:18:14 -0700 (PDT)
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 4KfSCW69gWz4X;
+        Thu, 14 Apr 2022 20:09:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1649959782; bh=dFgq80ZhVmCzh8EszsBqFZFG3IVVYvOIEvlGI0Tq4bM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M6meHZrwxDyeU2pD3ZmxqrGIOzrLBQXdCeqnbtwDtUq7d8NQ4FnteJZa5YFykZ6e+
+         X355Jw6iEC8xz5YVcTjA7IGBOIrhJJnO2gyLkF37nJHv3MgLZmJqPn2G0I5dDKnrg4
+         F4lkBza7OIX6WAPVjLgmrFFU3bI2WDyTsmq3yRNaX+0PJysAXwkYCJl0nPOwBhBgob
+         8slrsU1NRKlCWPtWM49DA1EczNJlhcfy1OC/YVXW0ILmdWA2Y4HIWMLSnQstsdxWpp
+         LxCcPEO0wf/x0jtEuJ4NrLpxwq+b047xHqknUEqc50McWrzi2dQf66NZb5+xCwTgL8
+         LJAaOowB2v/uQ==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.103.5 at mail
+Date:   Thu, 14 Apr 2022 20:09:26 +0200
+From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v7 00/20] Introduce power-off+restart call chain API
+Message-ID: <YlhjVqStJJoL01v9@qmqm.qmqm.pl>
+References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-2
 Content-Disposition: inline
-In-Reply-To: <YldE6L7MbgS0NXQY@paasikivi.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 14, 2022 at 12:47:20AM +0300, Sakari Ailus wrote:
-> On Wed, Apr 13, 2022 at 09:23:17PM +0300, Andy Shevchenko wrote:
-> > On Wed, Apr 13, 2022 at 09:19:28PM +0300, Andy Shevchenko wrote:
-> > > On Wed, Apr 13, 2022 at 08:10:22PM +0200, Rafael J. Wysocki wrote:
-> > > > On Fri, Apr 8, 2022 at 8:49 PM Andy Shevchenko
-> > > > <andriy.shevchenko@linux.intel.com> wrote:
-
-...
-
-> > > > > -struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode)
-> > > > > +struct fwnode_handle *fwnode_handle_get(const struct fwnode_handle *fwnode)
-> > > > >  {
-> > > 
-> > > > >         if (!fwnode_has_op(fwnode, get))
-> > > > >                 return fwnode;
-> > > 
-> > > ^^^^, so it needs a casting, but then we have to comment why is so.
-> > 
-> > Note, it means that the fwnode parameter either invalid or has no given option.
-> > It's not a problem to drop casting in the first case, but the second one should
-> > be justified and Sakari wants to be sure that the initial container is not
-> > const, which seems can't be achieved even with the original code.
+On Tue, Apr 12, 2022 at 02:38:12AM +0300, Dmitry Osipenko wrote:
+> Problem
+> -------
 > 
-> I wonder if I'm missing something. The fwnode argument originally was not
-> const here.
+> SoC devices require power-off call chaining functionality from kernel.
+> We have a widely used restart chaining provided by restart notifier API,
+> but nothing for power-off.
+> 
+> Solution
+> --------
+> 
+> Introduce new API that provides both restart and power-off call chains.
+[...]
 
-Yes, and our discussion went to the direction of what const qualifier implies
-here. I assume that the const means that we do not modify the fwnode object,
-while its container is another story which we have no influence on. You, if
-I read your messages correctly, insisting that const here implies that the
-container object is const as well.
+For the series:
 
-Reading current implementation I see now, that with children APIs we have
-two pointers passed, while with parent APIs only a single one. In children
-API due to above is easy to use const qualifier for the first argument.
-Parent APIs missed that and hence have this problem that we can't constify
-their parameters.
-
-to_of_node() expects const parameter while returns non-const container.
-Is it a subtle issue there? (I believe it should be consistent then)
-
-This patch and the followed one can be moved without understanding why
-we need the non-const parameter there.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Reviewed-by: Micha³ Miros³aw <mirq-linux@rere.qmqm.pl>
