@@ -2,157 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FA95001D7
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Apr 2022 00:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B1C500952
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Apr 2022 11:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232655AbiDMW0Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Apr 2022 18:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43848 "EHLO
+        id S241314AbiDNJKI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Apr 2022 05:10:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbiDMW0X (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Apr 2022 18:26:23 -0400
+        with ESMTP id S241325AbiDNJKH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Apr 2022 05:10:07 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09BA220BC0;
-        Wed, 13 Apr 2022 15:24:01 -0700 (PDT)
-Received: from [IPV6:2a00:5f00:102:0:10b3:10ff:fe5d:4ec1] (unknown [IPv6:2a00:5f00:102:0:10b3:10ff:fe5d:4ec1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 16B2A1F47620;
-        Wed, 13 Apr 2022 23:23:55 +0100 (BST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B7E6D962;
+        Thu, 14 Apr 2022 02:07:43 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: usama.anjum)
+        with ESMTPSA id 148F51F4778C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649888639;
-        bh=EkR5aP9YXjDV++4Mm3vdM0ntQFHoUFn8du5hNEWzcVU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=j1A1c0tVlfMHwkO7ph7+BXecjl3zjCSCuFY4mjDRsMmEMUiSRn2BdhdRX28bqNwRd
-         0kArRjhlR3IJGzxnsIsIV55CLgmFFI2NSRANmlAgGh9kCXVIhjheVEf98HAY8hRICr
-         de+NRfs0/E1u09npw7AvIBnHJ1RV4t8z84ccFmlq2rh+QRMZrOxIOsnFLQ8+zt1Kd4
-         qKUl7Umpny+Mkmr77FYSLFjlQUix00R1aWWELoW4IA9Fdi4ygNsJKyHTTDcHL21FER
-         5mHsl6TGS0ii5K5AIMCobu3OluHXcov5Vb4ZmIfOFm8YTbDv+QPwuKnXvhZ8Xql3Cd
-         iLKh0vklwzMtQ==
-Message-ID: <af51d9d0-26ba-fc66-05f1-d92ef7172730@collabora.com>
-Date:   Thu, 14 Apr 2022 01:23:52 +0300
+        s=mail; t=1649927262;
+        bh=SGjdvm2jxn/wrvUxD5fVBXM2K5YNhQcQ079/GSOHMTM=;
+        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+        b=m1VxcuIEimr1pL6AXUPBpixE9KfydqWy+Yvf7QNvQCWgfZo4BqCHbv/VeS0fgkaK7
+         1ce043sto+XbA7wCsuXlYMm46Pjr3b0K6ijEEEcnMa6OIa5IhG6naZZ0B0mS1aC/qL
+         2ufKmOPdsV2BBhhBlrzCxZjPMf+FDyA8YmhcGALPXXotqpUQEmZcuWAtJiz6ZUdJAy
+         Uh0QoNEw2Z//xRPlNnYNYWhQ9ZlX6/aPt4WMKtsKe5/fejMMQn6EujuyDQtbjSCmqE
+         Lzbad2vaSYyKkCJMUe1hKffhFCSqfhhPys50gVT1hhVV6JWn0OCVD5fngPfWivyCTN
+         jgs2mwU7cXpgQ==
+Message-ID: <fdd5ac4e-bff1-af65-23f8-d73d6b5306e7@collabora.com>
+Date:   Thu, 14 Apr 2022 14:07:30 +0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [PATCH v7 03/20] reboot: Print error message if restart handler
- has duplicated priority
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+Cc:     usama.anjum@collabora.com, Len Brown <lenb@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Dmitry Torokhov <dtor@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>, vbendeb@chromium.org,
+        Andy Shevchenko <andy@infradead.org>,
+        Ayman Bagabas <ayman.bagabas@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
+        Darren Hart <dvhart@infradead.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jeremy Soller <jeremy@system76.com>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Rajat Jain <rajatja@google.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
- <20220411233832.391817-4-dmitry.osipenko@collabora.com>
- <CAJZ5v0gf1J+yPW14TAdLGLGfO+-2s=r0DDP7d+Rgop3=dB0gaQ@mail.gmail.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <CAJZ5v0gf1J+yPW14TAdLGLGfO+-2s=r0DDP7d+Rgop3=dB0gaQ@mail.gmail.com>
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>
+Subject: Re: [PATCH RESEND v6] platform: x86: Add ChromeOS ACPI device driver
+Content-Language: en-US
+To:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+References: <Yk7aeAcKIBrTupcq@debian-BULLSEYE-live-builder-AMD64>
+ <708fb1ec-4e57-7a1d-b0a0-a3a10b3cacf3@redhat.com>
+ <CAJZ5v0g2UDOR3mYsdqnPcpYgmecY706YQcTKTWMRtezkK0sfaQ@mail.gmail.com>
+ <e25f5599-10f5-90b7-227a-01616f722cca@redhat.com>
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <e25f5599-10f5-90b7-227a-01616f722cca@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 4/13/22 21:48, Rafael J. Wysocki wrote:
-> On Tue, Apr 12, 2022 at 1:39 AM Dmitry Osipenko
-> <dmitry.osipenko@collabora.com> wrote:
->>
->> Add sanity check which ensures that there are no two restart handlers
->> registered using the same priority. This requirement will become mandatory
->> once all drivers will be converted to the new API and such errors will be
->> fixed.
->>
->> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+On 4/11/22 6:40 PM, Hans de Goede wrote:
+> Hi,
 > 
-> The first two patches in the series are fine with me and there's only
-> one minor nit regarding this one (below).
-> 
->> ---
->>  kernel/reboot.c | 15 +++++++++++++++
->>  1 file changed, 15 insertions(+)
->>
->> diff --git a/kernel/reboot.c b/kernel/reboot.c
->> index ed4e6dfb7d44..acdae4e95061 100644
->> --- a/kernel/reboot.c
->> +++ b/kernel/reboot.c
->> @@ -182,6 +182,21 @@ static ATOMIC_NOTIFIER_HEAD(restart_handler_list);
->>   */
->>  int register_restart_handler(struct notifier_block *nb)
->>  {
->> +       int ret;
->> +
->> +       ret = atomic_notifier_chain_register_unique_prio(&restart_handler_list, nb);
->> +       if (ret != -EBUSY)
->> +               return ret;
->> +
->> +       /*
->> +        * Handler must have unique priority. Otherwise call order is
->> +        * determined by registration order, which is unreliable.
->> +        *
->> +        * This requirement will become mandatory once all drivers
->> +        * will be converted to use new sys-off API.
->> +        */
->> +       pr_err("failed to register restart handler using unique priority\n");
-> 
-> I would use pr_info() here, because this is not a substantial error AFAICS.
+> On 4/11/22 15:37, Rafael J. Wysocki wrote:
+>> On Mon, Apr 11, 2022 at 3:26 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>
+>>> Hi,
+>>>
+>>> On 4/7/22 14:35, Muhammad Usama Anjum wrote:
+>>>> From: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+>>>>
+>>>> The x86 Chromebooks have ChromeOS ACPI device. This driver attaches to
+>>>> the ChromeOS ACPI device and exports the values reported by ACPI in a
+>>>> sysfs directory. This data isn't present in ACPI tables when read
+>>>> through ACPI tools, hence a driver is needed to do it. The driver gets
+>>>> data from firmware using ACPI component of the kernel. The ACPI values
+>>>> are presented in string form (numbers as decimal values) or binary
+>>>> blobs, and can be accessed as the contents of the appropriate read only
+>>>> files in the standard ACPI device's sysfs directory tree. This data is
+>>>> consumed by the ChromeOS user space.
+>>>>
+>>>> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+>>>> Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+>>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>>>
+>>>
+>>> Thanks overall this looks pretty good to me.  The only remark which
+>>> I have is that I would like to see the Kconfig symbol changed
+>>> from CONFIG_ACPI_CHROMEOS to CONFIG_CHROMEOS_ACPI to match the
+>>> filename.
+>>>
 
-It's indeed not a substantial error so far, but it will become
-substantial later on once only unique priorities will be allowed. The
-pr_warn() could be a good compromise here, pr_info() is too mild, IMO.
+I'll rename in next version.
+
+>>> CONFIG_ACPI_CHROMEOS to me suggests that this is an ACPI subsystem
+>>> Kconfig option which, with the driver living under
+>>> drivers/platform/x86 it is not.
+>>>
+>>> There is no need to send a new version for this, if you agree
+>>> with the change let me know and I can change this while merging
+>>> the driver.
+>>>
+>>> Rafael, before I merge this do you have any (more) remarks
+>>> about this driver?
+>>
+>> I'm not sure why it has to be an acpi_driver.
+>>
+>> I think that the generic enumeration code creates a platform device
+>> for this ACPI device object, so why can't it bind to that platform
+>> device?
+>>
+>> Generally speaking, IMV we should avoid adding drivers binding
+>> directly to ACPI device objects, because that is confusing (it is kind
+>> of like binding directly to an of_node) and it should be entirely
+>> avoidable.
+> 
+> Ah I missed that, good point.
+> 
+> Muhammad can you give turning this into a platform driver a try please?
+> 
+> Note this will change all the sysfs attribute paths from:
+> 
+> /sys/bus/acpi/devices/GGL0001:00/...
+> 
+> to:
+> 
+> /sys/bus/platform/devices/GGL0001:00/...
+> 
+> and the ABI documentation should be updated accordingly.
+> 
+
+Thank you for comments and directions. They mean a lot. I'll make the
+changes in next version.
+
+> Regards,
+> 
+> Hans
+> 
+> 
+> 
+
+-- 
+Muhammad Usama Anjum
