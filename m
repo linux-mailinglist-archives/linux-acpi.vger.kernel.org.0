@@ -2,203 +2,299 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0FE5501B00
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Apr 2022 20:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A16A501EF4
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Apr 2022 01:17:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344531AbiDNSZi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Apr 2022 14:25:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59086 "EHLO
+        id S1347478AbiDNXSx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Apr 2022 19:18:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232644AbiDNSZ3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Apr 2022 14:25:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F5EFEA742;
-        Thu, 14 Apr 2022 11:23:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B141F617BA;
-        Thu, 14 Apr 2022 18:23:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A27C385A8;
-        Thu, 14 Apr 2022 18:23:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649960583;
-        bh=Yb83EN+sDLgzqvgweWLW49J1Fc/NtV05Qrk0Xa6Lqoc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ADx2a5KuaQKlxYnF/wamQ+z5LP9F2h0tZILHySNKoSEs8rdeYyzXrGpq76jAFD0MD
-         +TlXK2OiZLp2Ln5h/Cl5Gp316v3ANnT6xFmA4R/uW/k+WoYKySJru26BDwY3yPUZ5m
-         fcd9of7tr1VQTZcJPSY9HDNui+86VQGDE4GjN4wWt3ScTSTMGVVVZ+PgliI35BwzTq
-         hy7LAsn4fqIS+Dl9ONKwrj3Q69JrJrVWBK1HSTRk3uV40bjh88hTnAacpld4VxpOY6
-         V8Kb7At6BhjDxF4vf7xyFzRb8HwUWCQfrZcFNQfqTa3eyRAFBqpqiUq441R88gHpDq
-         kEq7sqtZlhiJw==
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        =?UTF-8?q?Benoit=20Gr=C3=A9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v2 3/3] x86/PCI: Clip only host bridge windows for E820 regions
-Date:   Thu, 14 Apr 2022 13:22:52 -0500
-Message-Id: <20220414182252.758742-4-helgaas@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220414182252.758742-1-helgaas@kernel.org>
-References: <20220414182252.758742-1-helgaas@kernel.org>
+        with ESMTP id S1347469AbiDNXSv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Apr 2022 19:18:51 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933EFAC90A
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Apr 2022 16:16:24 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id c23so5956490plo.0
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Apr 2022 16:16:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vLhomrpooyVkCPnT/V3GspH1VkT6rkdcQOEP4TxU1jc=;
+        b=Xwr79i/rtcdMWZfT7X4gLtn/vh+8ejYnbNEzZrzwPEZQJl3GxaqMmrDWnIP06UETWf
+         QO6k2kmSdAsNnxYgt5BIdG2EfI3eWsFLzQeSK+jjRh9x9Y4Ioih9qk0/4ccMmDO9ZGTP
+         EkpiuIOmmyUG5xn/9MPYjBUzbjrx0E+jWGo4iZCqvaBK2YXRzbgBSN0AmU/0CHsAwf9+
+         IF01Mv0mvybjqpC+tQ4CafC4sv+hVw5uKhFGwj3DUjqowV5+8pMXD7VHKN6TvZnrX5Vb
+         1PCwm0BXhEAlX8VODN06SyLQVUhJsM3g/UH1w0Vi8Obymk11oeN6R/gTjqo3gv7a6mpE
+         t4bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vLhomrpooyVkCPnT/V3GspH1VkT6rkdcQOEP4TxU1jc=;
+        b=Vjs5oXWO8joH8JPYpy+zqtG4649r9OVxsKJUFlDJ06Gbz/8tQbRtneOob+5H735JWq
+         JrsmgajJfCTcIe2xSeUpVZJPVn0cu062kY0wbWFyrmbunLgQXEbF1tkf29GujbPOYDCy
+         3TMzXB+5mFltsEYO9KrCJK9xxNnN3/jVe4NiTwbSJ94wUtyUVE/TEDGXR14lDE5vOsI6
+         AB4spoA1Zl6OsxnWNN1iMf3EeOctO/96McS2f8Rfl1KCpFALbImf/61NBnpRHUMkK3x9
+         5RPmyl3usXVfOQo/8TB7IEPvKxd7EdCXKiQNfQnu+Pc7YB5AG0wcwxRcq3J1X4RbDUgs
+         uqxw==
+X-Gm-Message-State: AOAM532dLUGI+MRDmb8BKYyV95BSXDUvMtIPfA0/wroh+BltOYivq8pM
+        kmqLGsi+uv4RQTuLlmHq0UuwGpeZ7T9dY+QsuBLVKQ==
+X-Google-Smtp-Source: ABdhPJxbflLVSecIO9jWZq3CT3nUwaSAazyRt2mR5j1dkuDUM61ZcKA4cPzGoWlR/Al2tHHRIW81IvsVP4tAvssYgs8=
+X-Received: by 2002:a17:90b:164f:b0:1c7:8d20:ff6d with SMTP id
+ il15-20020a17090b164f00b001c78d20ff6dmr1006092pjb.64.1649978183669; Thu, 14
+ Apr 2022 16:16:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220325184609.4059963-1-rajatja@google.com> <20220407191715.GA254460@bhelgaas>
+In-Reply-To: <20220407191715.GA254460@bhelgaas>
+From:   Rajat Jain <rajatja@google.com>
+Date:   Thu, 14 Apr 2022 16:15:47 -0700
+Message-ID: <CACK8Z6Fy3L7vijVn4w+6HwRuuTtW5ePrWc04rUc8U8TPT0Re0w@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] PCI: ACPI: Support Microsoft's "DmaProperty"
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        iommu@lists.linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+Hello Bjorn,
 
-ACPI firmware advertises PCI host bridge resources via PNP0A03 _CRS
-methods.  Some BIOSes include non-window address space in _CRS, and if we
-allocate that non-window space for PCI devices, they don't work.
 
-4dc2287c1805 ("x86: avoid E820 regions when allocating address space")
-works around this issue by clipping out any regions mentioned in the E820
-table in the allocate_resource() path, but the implementation has a couple
-issues:
+On Thu, Apr 7, 2022 at 12:17 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> In subject,
+>
+>   PCI/ACPI: ...
+>
+> would be consistent with previous history (at least things coming
+> through the PCI tree :)).
 
-  - The clipping is done for *all* allocations, not just those for PCI
-    address space, and
+Will do.
 
-  - The clipping is done at each allocation instead of being done once when
-    setting up the host bridge windows.
+>
+> On Fri, Mar 25, 2022 at 11:46:08AM -0700, Rajat Jain wrote:
+> > The "DmaProperty" is supported and documented by Microsoft here:
+> > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
+>
+> Here's a more specific link (could probably be referenced below to
+> avoid cluttering the text here):
+>
+> https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
 
-Rework the implementation so we only clip PCI host bridge windows, and we
-do it once when setting them up.
+Will do.
 
-Example output changes:
+>
+> > They use this property for DMA protection:
+> > https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
+> >
+> > Support the "DmaProperty" with the same semantics. This is useful for
+> > internal PCI devices that do not hang off a PCIe rootport, but offer
+> > an attack surface for DMA attacks (e.g. internal network devices).
+>
+> Same semantics as what?
 
-    BIOS-e820: [mem 0x00000000b0000000-0x00000000c00fffff] reserved
-  + acpi PNP0A08:00: clipped [mem 0xc0000000-0xfebfffff window] to [mem 0xc0100000-0xfebfffff window] for e820 entry [mem 0xb0000000-0xc00fffff]
-  - pci_bus 0000:00: root bus resource [mem 0xc0000000-0xfebfffff window]
-  + pci_bus 0000:00: root bus resource [mem 0xc0100000-0xfebfffff window]
+Er, I meant the same semantics as the "DmaProperty". Please also see below.
 
-Link: https://lore.kernel.org/r/20220304035110.988712-3-helgaas@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- arch/x86/include/asm/e820/api.h |  5 +++++
- arch/x86/kernel/resource.c      | 14 +++++++-------
- arch/x86/pci/acpi.c             |  5 +++++
- 3 files changed, 17 insertions(+), 7 deletions(-)
+>
+> The MS description of "ExternalFacingPort" says:
+>
+>   This ACPI object enables the operating system to identify externally
+>   exposed PCIe hierarchies, such as Thunderbolt.
+>
 
-diff --git a/arch/x86/include/asm/e820/api.h b/arch/x86/include/asm/e820/api.h
-index e8f58ddd06d9..5a39ed59b6db 100644
---- a/arch/x86/include/asm/e820/api.h
-+++ b/arch/x86/include/asm/e820/api.h
-@@ -4,6 +4,9 @@
- 
- #include <asm/e820/types.h>
- 
-+struct device;
-+struct resource;
-+
- extern struct e820_table *e820_table;
- extern struct e820_table *e820_table_kexec;
- extern struct e820_table *e820_table_firmware;
-@@ -43,6 +46,8 @@ extern void e820__register_nosave_regions(unsigned long limit_pfn);
- 
- extern int  e820__get_entry_type(u64 start, u64 end);
- 
-+extern void remove_e820_regions(struct device *dev, struct resource *avail);
-+
- /*
-  * Returns true iff the specified range [start,end) is completely contained inside
-  * the ISA region.
-diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
-index 30d524adb012..db2b350a37b7 100644
---- a/arch/x86/kernel/resource.c
-+++ b/arch/x86/kernel/resource.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <linux/dev_printk.h>
- #include <linux/ioport.h>
--#include <linux/printk.h>
- #include <asm/e820/api.h>
- 
- static void resource_clip(struct resource *res, resource_size_t start,
-@@ -24,13 +24,16 @@ static void resource_clip(struct resource *res, resource_size_t start,
- 		res->start = end + 1;
- }
- 
--static void remove_e820_regions(struct resource *avail)
-+void remove_e820_regions(struct device *dev, struct resource *avail)
- {
- 	int i;
- 	struct e820_entry *entry;
- 	u64 e820_start, e820_end;
- 	struct resource orig = *avail;
- 
-+	if (!(avail->flags & IORESOURCE_MEM))
-+		return;
-+
- 	for (i = 0; i < e820_table->nr_entries; i++) {
- 		entry = &e820_table->entries[i];
- 		e820_start = entry->addr;
-@@ -38,7 +41,7 @@ static void remove_e820_regions(struct resource *avail)
- 
- 		resource_clip(avail, e820_start, e820_end);
- 		if (orig.start != avail->start || orig.end != avail->end) {
--			pr_info("clipped %pR to %pR for e820 entry [mem %#010Lx-%#010Lx]\n",
-+			dev_info(dev, "clipped %pR to %pR for e820 entry [mem %#010Lx-%#010Lx]\n",
- 				 &orig, avail, e820_start, e820_end);
- 			orig = *avail;
- 		}
-@@ -52,9 +55,6 @@ void arch_remove_reservations(struct resource *avail)
- 	 * the low 1MB unconditionally, as this area is needed for some ISA
- 	 * cards requiring a memory range, e.g. the i82365 PCMCIA controller.
- 	 */
--	if (avail->flags & IORESOURCE_MEM) {
-+	if (avail->flags & IORESOURCE_MEM)
- 		resource_clip(avail, BIOS_ROM_BASE, BIOS_ROM_END);
--
--		remove_e820_regions(avail);
--	}
- }
-diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
-index 052f1d78a562..562c81a51ea0 100644
---- a/arch/x86/pci/acpi.c
-+++ b/arch/x86/pci/acpi.c
-@@ -8,6 +8,7 @@
- #include <linux/pci-acpi.h>
- #include <asm/numa.h>
- #include <asm/pci_x86.h>
-+#include <asm/e820/api.h>
- 
- struct pci_root_info {
- 	struct acpi_pci_root_info common;
-@@ -299,6 +300,10 @@ static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
- 	int status;
- 
- 	status = acpi_pci_probe_root_resources(ci);
-+
-+	resource_list_for_each_entry(entry, &ci->resources)
-+		remove_e820_regions(&device->dev, entry->res);
-+
- 	if (pci_use_crs) {
- 		resource_list_for_each_entry_safe(entry, tmp, &ci->resources)
- 			if (resource_is_pcicfg_ioport(entry->res))
--- 
-2.25.1
+No, my patch doesn't have to do with this one.
 
+> and "DmaProperty" says:
+>
+>   This ACPI object enables the operating system to identify internal
+>   PCIe hierarchies that are easily accessible by users (such as,
+>   Laptop M.2 PCIe slots accessible by way of a latch) and require
+>   protection by the OS Kernel DMA Protection mechanism.
+
+Yes, this is the property that my patch uses. Microsoft has agreed to
+update this documentation (in a sideband thread that I also copied you
+on), with the updated semantics that this property can be used to
+identify any PCI devices that require Kernel DMA protection. i.e. the
+property is not restricted to identify "internal PCIe hierarchies"
+(starting at root port), but to "any PCI device".
+
+>
+> I don't really understand why they called out "laptop M.2 PCIe slots"
+> here.  Is the idea that those are more accessible than a standard
+> internal PCIe slot?  Seems like a pretty small distinction to me.
+>
+> I can understand your example of internal network devices adding an
+> attack surface.  But I don't see how "DmaProperty" helps identify
+> those.  Wouldn't a NIC in a standard internal PCIe slot add the same
+> attack surface?
+
+Yes it would. The attack surface is the same. They probably only
+thought of devices external to the SoC (starting from a root port)
+when designing this property and thus called out internal M.2 PCI
+slots. But nowhave realized that this could be opened to any PCI
+device.
+
+>
+> > Signed-off-by: Rajat Jain <rajatja@google.com>
+> > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > ---
+> > v5: * Reorder the patches in the series
+> > v4: * Add the GUID.
+> >     * Update the comment and commitlog.
+> > v3: * Use Microsoft's documented property "DmaProperty"
+> >     * Resctrict to ACPI only
+> >
+> >  drivers/acpi/property.c |  3 +++
+> >  drivers/pci/pci-acpi.c  | 16 ++++++++++++++++
+> >  2 files changed, 19 insertions(+)
+> >
+> > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> > index d0986bda2964..20603cacc28d 100644
+> > --- a/drivers/acpi/property.c
+> > +++ b/drivers/acpi/property.c
+> > @@ -48,6 +48,9 @@ static const guid_t prp_guids[] = {
+> >       /* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
+> >       GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
+> >                 0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
+> > +     /* DmaProperty for PCI devices GUID: 70d24161-6dd5-4c9e-8070-705531292865 */
+> > +     GUID_INIT(0x70d24161, 0x6dd5, 0x4c9e,
+> > +               0x80, 0x70, 0x70, 0x55, 0x31, 0x29, 0x28, 0x65),
+> >  };
+> >
+> >  /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
+> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> > index 1f15ab7eabf8..378e05096c52 100644
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -1350,12 +1350,28 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
+> >               dev->external_facing = 1;
+> >  }
+> >
+> > +static void pci_acpi_check_for_dma_protection(struct pci_dev *dev)
+>
+> I try to avoid function names like *_check_*() because they don't give
+> any hint about whether there's a side effect or what direction things
+> are going.  I prefer things that return a value or make sense when
+> used as a predicate.  Maybe something like this?
+>
+>   int pci_dev_has_dma_property(struct pci_dev *dev)
+>
+>   dev->untrusted |= pci_dev_has_dma_property(pci_dev);
+>
+
+OK, will do.
+
+
+> > +{
+> > +     u8 val;
+> > +
+> > +     /*
+> > +      * Property also used by Microsoft Windows for same purpose,
+> > +      * (to implement DMA protection from a device, using the IOMMU).
+> > +      */
+> > +     if (device_property_read_u8(&dev->dev, "DmaProperty", &val))
+>
+> The MS web page says a _DSD with this property must be implemented in
+> the Root Port device scope, but we don't enforce that here.  We *do*
+> enforce it in pci_acpi_set_untrusted().  Shouldn't we do the same
+> here?
+
+No, the whole point of doing this (please refer to the discussion on
+the previous versions of this patch) was that we want to have a
+property that is NOT limited to the root ports only. And we have
+reached an agreement with Microsoft about that.
+
+>
+> We currently look at three properties from the same _DSD:
+>
+>   DmaProperty
+>   ExternalFacingPort
+>   HotPlugSupportInD3
+>
+> For "HotPlugSupportInD3", we check that "value == 1".  For
+> "ExternalFacingPort", we check that it's non-zero.  The MS doc isn't
+> explicit about the values, but shows "1" in the sample ASL.  I think
+> we should handle all three cases the same.
+
+I think we can handle all three cases with "value==1". I will send a
+separate patch for the ExternalFacingPort, and will fixup this patch
+too).
+
+>
+> The first two use device_property_read_u8(); the last uses
+> acpi_dev_get_property().  Again, I think they should all be the same.
+>
+> acpi_dev_get_property() is easier for me to read because there are
+> slightly fewer layers of abstraction between _DSD and
+> acpi_dev_get_property().
+
+I'd prefer that too, and can change it to acpi_dev_get_property.
+
+>
+> But IIUC, device_property_read_u8() works for either ACPI or DT
+> properties, and maybe there is interest in using this for DT systems.
+> None of these appear in any in-tree DTs, but maybe it is important to
+> handle these in DTs?
+>
+> If that's the case, this code would no longer be specific to ACPI and
+> should be moved to somewhere that's compiled even when CONFIG_ACPI
+> isn't set.
+
+I think unifying ACPI and GPIO systems to use the same code / function
+to read the properties might be more work/investigation, because
+reading the properties for ACPI system happens much later than DT
+systems (For acpi systems, it happens in pci_acpi_setup() which is
+called much later). Given that no one wants to use this for DT
+systems, I'd prefer for this to be ACPI specific for now, and then we
+can solve it for DT once someone needs it.
+
+WDYT?
+
+Thanks & Best regards,
+
+Rajat
+
+>
+> > +             return;
+> > +
+> > +     if (val)
+> > +             dev->untrusted = 1;
+> > +}
+> > +
+> >  void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+> >  {
+> >       struct pci_dev *pci_dev = to_pci_dev(dev);
+> >
+> >       pci_acpi_optimize_delay(pci_dev, adev->handle);
+> >       pci_acpi_set_external_facing(pci_dev);
+> > +     pci_acpi_check_for_dma_protection(pci_dev);
+> >       pci_acpi_add_edr_notifier(pci_dev);
+> >
+> >       pci_acpi_add_pm_notifier(adev, pci_dev);
+> > --
+> > 2.35.1.1021.g381101b075-goog
+> >
