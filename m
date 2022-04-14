@@ -2,172 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54F9D500BFB
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Apr 2022 13:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B6A3500E30
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Apr 2022 14:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242609AbiDNLWL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Apr 2022 07:22:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55236 "EHLO
+        id S241920AbiDNNBP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Apr 2022 09:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242597AbiDNLWJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Apr 2022 07:22:09 -0400
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A841FCE5;
-        Thu, 14 Apr 2022 04:19:44 -0700 (PDT)
-Received: by mail-yb1-f172.google.com with SMTP id j2so8883136ybu.0;
-        Thu, 14 Apr 2022 04:19:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dY83H0aPEfDTdUo23MndvBRZZwuNuwRYnVKAWx3MFcc=;
-        b=hTLRdySs3CnpaoymfFiM0y+PetDtOzg8joG6JeTvcOymw/WDpAF5uzwknJ8t0LRBVT
-         I+kcuzIn9LHA4QMYkgS/A+mCY0jUBayfLSo+EgS2HECKTepTptyEdA7DCjIuMujFBvth
-         h6DI7Mv4D2wnOc7xe0cCa2NOPDRYjH4MvwDAHO9Eoe9QPeFLUBmvjLWEduB1VwuQ4qML
-         xRJUP6xAKE1Ydo/qwllNsbCj3Q9D5xUUiUe4zDWillfZfEUHsV4efvowMqqlArMOJnh+
-         8kOex9vW9o7n0FVP+InF2nbmwQo0UHWvtMfQiGghY5VpaPT3mgullEHZfsNRWODIqQnA
-         P5gA==
-X-Gm-Message-State: AOAM530oo9GlqneVIjgHSjGfNsZkw70uXNGYqI9O/wtyNwppNCSte/dV
-        ssEsNqqPvNRMFPyjXj4KDxjmR06F+u8Wu2REZEE=
-X-Google-Smtp-Source: ABdhPJyXV07maZap62IutTg/mwVDj/CfiQiLME5IwIFkAJnTY85PIrUap0WcF7eity1wAkpRDD0UVobPG71n48VtbjA=
-X-Received: by 2002:a05:6902:187:b0:63d:9c95:edca with SMTP id
- t7-20020a056902018700b0063d9c95edcamr1246534ybh.81.1649935183962; Thu, 14 Apr
- 2022 04:19:43 -0700 (PDT)
+        with ESMTP id S238742AbiDNNBP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Apr 2022 09:01:15 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2C59284E;
+        Thu, 14 Apr 2022 05:58:48 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
+ id 87cc61afc5c5b63a; Thu, 14 Apr 2022 14:58:46 +0200
+Received: from kreacher.localnet (unknown [213.134.181.101])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id D684B66BE14;
+        Thu, 14 Apr 2022 14:58:43 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: [PATCH] ACPI: PM: Always print final debug message in acpi_device_set_power()
+Date:   Thu, 14 Apr 2022 14:58:42 +0200
+Message-ID: <11985385.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
- <20220411233832.391817-4-dmitry.osipenko@collabora.com> <CAJZ5v0gf1J+yPW14TAdLGLGfO+-2s=r0DDP7d+Rgop3=dB0gaQ@mail.gmail.com>
- <af51d9d0-26ba-fc66-05f1-d92ef7172730@collabora.com>
-In-Reply-To: <af51d9d0-26ba-fc66-05f1-d92ef7172730@collabora.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 14 Apr 2022 13:19:32 +0200
-Message-ID: <CAJZ5v0jFQi1x1Fnfk04n+HTTirz19-_xW2NgJtpOYyPgVh3Afw@mail.gmail.com>
-Subject: Re: [PATCH v7 03/20] reboot: Print error message if restart handler
- has duplicated priority
-To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-CLIENT-IP: 213.134.181.101
+X-CLIENT-HOSTNAME: 213.134.181.101
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrudelfedgheekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepvddufedrudefgedrudekuddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukedurddutddupdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 14, 2022 at 12:24 AM Dmitry Osipenko
-<dmitry.osipenko@collabora.com> wrote:
->
-> On 4/13/22 21:48, Rafael J. Wysocki wrote:
-> > On Tue, Apr 12, 2022 at 1:39 AM Dmitry Osipenko
-> > <dmitry.osipenko@collabora.com> wrote:
-> >>
-> >> Add sanity check which ensures that there are no two restart handlers
-> >> registered using the same priority. This requirement will become mandatory
-> >> once all drivers will be converted to the new API and such errors will be
-> >> fixed.
-> >>
-> >> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> >
-> > The first two patches in the series are fine with me and there's only
-> > one minor nit regarding this one (below).
-> >
-> >> ---
-> >>  kernel/reboot.c | 15 +++++++++++++++
-> >>  1 file changed, 15 insertions(+)
-> >>
-> >> diff --git a/kernel/reboot.c b/kernel/reboot.c
-> >> index ed4e6dfb7d44..acdae4e95061 100644
-> >> --- a/kernel/reboot.c
-> >> +++ b/kernel/reboot.c
-> >> @@ -182,6 +182,21 @@ static ATOMIC_NOTIFIER_HEAD(restart_handler_list);
-> >>   */
-> >>  int register_restart_handler(struct notifier_block *nb)
-> >>  {
-> >> +       int ret;
-> >> +
-> >> +       ret = atomic_notifier_chain_register_unique_prio(&restart_handler_list, nb);
-> >> +       if (ret != -EBUSY)
-> >> +               return ret;
-> >> +
-> >> +       /*
-> >> +        * Handler must have unique priority. Otherwise call order is
-> >> +        * determined by registration order, which is unreliable.
-> >> +        *
-> >> +        * This requirement will become mandatory once all drivers
-> >> +        * will be converted to use new sys-off API.
-> >> +        */
-> >> +       pr_err("failed to register restart handler using unique priority\n");
-> >
-> > I would use pr_info() here, because this is not a substantial error AFAICS.
->
-> It's indeed not a substantial error so far, but it will become
-> substantial later on once only unique priorities will be allowed. The
-> pr_warn() could be a good compromise here, pr_info() is too mild, IMO.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Well, I'm still unconvinced about requiring all of the users of this
-interface to use unique priorities.
+acpi_device_set_power() prints debug messages regarding its outcome
+(whether or not the power state has been changed and how) in all
+cases except when the device whose power state is being changed to D0
+is in that power state already.
 
-Arguably, there are some of them who don't really care about the
-ordering, so could there be an option for them to specify the lack of
-care by, say, passing 0 as the priority that would be regarded as a
-special case?
+Make acpi_device_set_power() print a final debug message in that case
+too and while at it, fix the indentation of the "end" label in this
+function.
 
-IOW, if you pass 0, you'll be run along the others who've also passed
-0, but if you pass anything different from 0, it must be unique.  What
-do you think?
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/device_pm.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+Index: linux-pm/drivers/acpi/device_pm.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/device_pm.c
++++ linux-pm/drivers/acpi/device_pm.c
+@@ -173,11 +173,8 @@ int acpi_device_set_power(struct acpi_de
+ 	/* Make sure this is a valid target state */
+ 
+ 	/* There is a special case for D0 addressed below. */
+-	if (state > ACPI_STATE_D0 && state == device->power.state) {
+-		acpi_handle_debug(device->handle, "Already in %s\n",
+-				  acpi_power_state_string(state));
+-		return 0;
+-	}
++	if (state > ACPI_STATE_D0 && state == device->power.state)
++		goto no_change;
+ 
+ 	if (state == ACPI_STATE_D3_COLD) {
+ 		/*
+@@ -249,7 +246,7 @@ int acpi_device_set_power(struct acpi_de
+ 
+ 			/* Nothing to do here if _PSC is not present. */
+ 			if (!device->power.flags.explicit_get)
+-				return 0;
++				goto no_change;
+ 
+ 			/*
+ 			 * The power state of the device was set to D0 last
+@@ -264,13 +261,13 @@ int acpi_device_set_power(struct acpi_de
+ 			 */
+ 			result = acpi_dev_pm_explicit_get(device, &psc);
+ 			if (result || psc == ACPI_STATE_D0)
+-				return 0;
++				goto no_change;
+ 		}
+ 
+ 		result = acpi_dev_pm_explicit_set(device, ACPI_STATE_D0);
+ 	}
+ 
+- end:
++end:
+ 	if (result) {
+ 		acpi_handle_debug(device->handle,
+ 				  "Failed to change power state to %s\n",
+@@ -282,6 +279,11 @@ int acpi_device_set_power(struct acpi_de
+ 	}
+ 
+ 	return result;
++
++no_change:
++	acpi_handle_debug(device->handle, "Already in %s\n",
++			  acpi_power_state_string(state));
++	return 0;
+ }
+ EXPORT_SYMBOL(acpi_device_set_power);
+ 
+
+
+
