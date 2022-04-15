@@ -2,1191 +2,772 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1A0502E9A
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Apr 2022 20:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76DE0502F5F
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Apr 2022 21:48:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345804AbiDOSRk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Apr 2022 14:17:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33212 "EHLO
+        id S1349145AbiDOTun (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Apr 2022 15:50:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345941AbiDOSR2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Apr 2022 14:17:28 -0400
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D693CFDB;
-        Fri, 15 Apr 2022 11:14:57 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id h8so15627312ybj.11;
-        Fri, 15 Apr 2022 11:14:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=77m6r0YC0hwpFEj/omSUxYxpraZkiDpa5+1u4U17wuw=;
-        b=OT/FlHdQTMdXNn7/N8yAzlVvxiUZ/wqPGW/crVkh+ZjR4vOcr6U8V9tZ6mrsh+7vFk
-         l36QHRdZEvdOJypEmSInzaR/AehTPndsqNaarV0FA4ZLHQYcv/jtzEk5jaSPcDpWe/gY
-         A50iyXWzFcQKQTqKw46WHVSxyimusZu3RJszbsBLMEB7GacYtQYVcVPQUXXHUqJV8Jae
-         ZdBbTJe9XA8l68oNpqrqhUYJ9U1ScsYuNNxuEt4PDADasLurc79cojfMzeMlOrNGujGH
-         tnbQd98Nr0/4i4xdr9XynW4cw5A+qT4seYkwJIxpY5r3jb1iDkzlFBEFvTowv1KtAdwR
-         2T3Q==
-X-Gm-Message-State: AOAM533z44jct83wmhkrh7vxS9D0vG55a3n7Y3BMjjcJ2S7JiKFLcnTa
-        BCrid+I41LxCnGqmmDYY9NXB8AqhBhUM5TqJg6s=
-X-Google-Smtp-Source: ABdhPJxt5sJRQzRdxjsC4x8wXGkJItgc7hQN04UOiLAgqkfQ3EsFlprZZZVDC7UwT+872A2Ba0pWN4l51uLxhp+UCpY=
-X-Received: by 2002:a05:6902:187:b0:63d:9c95:edca with SMTP id
- t7-20020a056902018700b0063d9c95edcamr412193ybh.81.1650046496677; Fri, 15 Apr
- 2022 11:14:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220411233832.391817-1-dmitry.osipenko@collabora.com> <20220411233832.391817-5-dmitry.osipenko@collabora.com>
-In-Reply-To: <20220411233832.391817-5-dmitry.osipenko@collabora.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 15 Apr 2022 20:14:45 +0200
-Message-ID: <CAJZ5v0gnTSoeNP+QXwrZ45FQY4howVkJMuCjM=j+_-2BngJdQg@mail.gmail.com>
-Subject: Re: [PATCH v7 04/20] kernel: Add combined power-off+restart handler
- call chain API
-To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        with ESMTP id S1348799AbiDOTum (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Apr 2022 15:50:42 -0400
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E599C61A22
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Apr 2022 12:48:11 -0700 (PDT)
+Date:   Fri, 15 Apr 2022 19:47:55 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1650052086;
+        bh=0dHyPpYFL4d5gBo5vU+rHTsqfQyBgNZ3Va/9kH88g+U=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID;
+        b=qwOyU6CLwcBqfB7Q596OFs3j+gd2VKQU6+OX2LUFAIINL6JZEAb6UhcdbitQ6xYj2
+         rnF5Jbtnyo+pU+Ln2DUPYCwb0A280j0SzpSOgv1Dp3uOfOGlU94f7DPx695Sz7kM/U
+         uiXLi40XDe7jUSCPjGeZk6qSK9BfIQ6LComJNjbOpFZ5SZvr7Fn6isbt8W0C68yeAA
+         ZuiErSDRTDjwQZJ6qOgyHU2rok6MOjG63osKnfoq7IJ5LgEV2hp2vuNqgk1VJEStul
+         w1xnIaMEAMAODtwu+L8jsmZf51ofb5PnWxZdeRIi5je9HQFXCXTeS3blulV3zcE4TA
+         YobJ/XfeFFntA==
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
+From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,TRACKER_ID,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        groeck@chromium.org, bleung@chromium.org, dtor@chromium.org,
+        gwendal@chromium.org, vbendeb@chromium.org, andy@infradead.org,
+        Ayman Bagabas <ayman.bagabas@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?utf-8?Q?Bla=C5=BE_Hrastnik?= <blaz@mxxn.io>,
+        Darren Hart <dvhart@infradead.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jeremy Soller <jeremy@system76.com>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Rajat Jain <rajatja@google.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>
+Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Subject: Re: [PATCH v8] platform: x86: Add ChromeOS ACPI device driver
+Message-ID: <eygNMwL4gadqjJuOq-syanavJ5sAb5_dHTcQ0V9TU5kM5uh5TZUQXdYsNFTtnSm1ZI5WKhw7BgzG8lXEwJKEZz4agWq5_HkFDGWiFuuo7fE=@protonmail.com>
+In-Reply-To: <Ylmmf03fewXEjRr0@debian-BULLSEYE-live-builder-AMD64>
+References: <Ylmmf03fewXEjRr0@debian-BULLSEYE-live-builder-AMD64>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Honestly, I would prefer this to be split so as to make it easier to
-review if nothing else.
+Hi
 
-On Tue, Apr 12, 2022 at 1:39 AM Dmitry Osipenko
-<dmitry.osipenko@collabora.com> wrote:
+
+2022. =C3=A1prilis 15., p=C3=A9ntek 19:08 keltez=C3=A9ssel, Muhammad Usama =
+Anjum <usama.anjum@collabora.com> =C3=ADrta
+
+> From: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 >
-> SoC platforms often have multiple ways of how to perform system's
-> power-off and restart operations. Meanwhile today's kernel is limited to
-> a single option. Add combined power-off+restart handler call chain API,
-> which is inspired by the restart API. The new API provides both power-off
-> and restart functionality.
+> The x86 Chromebooks have ChromeOS ACPI device. This driver attaches to
+> the ChromeOS ACPI device and exports the values reported by ACPI in a
+> sysfs directory. This data isn't present in ACPI tables when read
+> through ACPI tools, hence a driver is needed to do it. The driver gets
+> data from firmware using ACPI component of the kernel. The ACPI values
+> are presented in string form (numbers as decimal values) or binary
+> blobs, and can be accessed as the contents of the appropriate read only
+> files in the standard ACPI device's sysfs directory tree. This data is
+> consumed by the ChromeOS user space.
 >
-> The old pm_power_off method will be kept around till all users are
-> converted to the new API.
->
-> Current restart API will be replaced by the new unified API since
-> new API is its superset. The restart functionality of the sys-off handler
-> API is built upon the existing restart-notifier APIs.
-
-Which means that the existing notifier chains for system restart are
-used as they are without modifications.
-
-At least that's what follows from the code and it would be good to
-mention it here.
-
-Moreover, a new notifier chain is introduced for the power-off case
-and it appears to be the counterpart of the restart_handler_list
-chain, but then why is it blocking and not atomic like the latter?
-
-> In order to ease conversion to the new API, convenient helpers are added
-> for the common use-cases. They will reduce amount of boilerplate code and
-> remove global variables. These helpers preserve old behaviour for cases
-> where only one power-off handler is expected, this is what all existing
-> drivers want, and thus, they could be easily converted to the new API.
-> Users of the new API should explicitly enable power-off chaining by
-> setting corresponding flag of the power_handler structure.
-
-"the corresponding"
-
->
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Hans de Goede <hdegoede@redhat.com>
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 > ---
->  include/linux/reboot.h   | 229 ++++++++++++++-
->  kernel/power/hibernate.c |   2 +-
->  kernel/reboot.c          | 604 ++++++++++++++++++++++++++++++++++++++-
->  3 files changed, 827 insertions(+), 8 deletions(-)
+> Changes in v8:
+> - Change struct platform_driver name from chromeos_acpi_driver to
+>   chromeos_acpi_device_driver
 >
-> diff --git a/include/linux/reboot.h b/include/linux/reboot.h
-> index a2429648d831..ba5e5dddcfcd 100644
-> --- a/include/linux/reboot.h
-> +++ b/include/linux/reboot.h
-> @@ -8,10 +8,35 @@
+> Changes in v7:
+> - Rename acpi_chromeos Kconfig option to chromeos_acpi
+> - Change this acpi driver to platform driver
+> - Minor cosmetic changes
 >
->  struct device;
+> There were the following concerns on v4 which have been delt with in
+> v5/v6:
+> - Remove BINF.{0,1,4} from sysfs as they are reserved and not used
+>   anymore
+> - Reword the description of MECK
+> - Change function name from chromeos_acpi_alloc_name() to
+>   chromeos_acpi_gen_file_name()
+> - Remove local variable obj in chromeos_acpi_add_method()
+> - Replace usage of dev_info() to dev_dbg()
+> - Improve the description of the patch
+> - Add the firmware interface document which serves as primary
+>   documentation and garantees that this interface will not change
+> - GGL0001 is valid PNP ID of the Google. PNP ID can be used with the
+>   ACPI devices. Consensus was developed on it in discussion of v4.
 >
-> -#define SYS_DOWN       0x0001  /* Notify of system down */
-> -#define SYS_RESTART    SYS_DOWN
-> -#define SYS_HALT       0x0002  /* Notify of system halt */
-> -#define SYS_POWER_OFF  0x0003  /* Notify of system power off */
-> +enum reboot_prepare_mode {
-> +       SYS_DOWN = 1,           /* Notify of system down */
-> +       SYS_RESTART = SYS_DOWN,
-> +       SYS_HALT,               /* Notify of system halt */
-> +       SYS_POWER_OFF,          /* Notify of system power off */
+> Changes in v6:
+> - Correct authorship and path email's From
+> - Add changelog between v4 and v5 in detail
+> - Add copywrite year 2022
+> - Improve the description and add concerns from V4 which have been fixed
+>
+> Changes in v5:
+> - Improve the description of the patch
+> - Document firmware interface
+> - Update sysfs interface documentation
+> - Remove binf{0,1,4} as they have been deprecated
+> - Update some cleanup logic in case of error
+>   - Remove freeing of chromeos_acpi.root explicitely in
+>     chromeos_acpi_device_remove() as it'll be automatically freed by
+>     chromeos_acpi_remove_groups()
+>   - If sysfs_create_groups() fails in chromeos_acpi_process_mlst(),
+>     cleanup all groups
+> - Cosmetic changes
+>
+> Changes in v4:
+> https://lore.kernel.org/lkml/20200413134611.478441-1-enric.balletbo@colla=
+bora.com/t/
+> - Add COMPILE_TEST to increase build coverage.
+> - Add sysfs ABI documentation.
+> - Rebased on top of 5.7-rc1 and solve conflicts.
+> - Cc ACPI maintainers.
+>
+> Changes in v3:
+> - Use attribute groups instead of adding files "by hand".
+> - Do not use "raw" kobject to create directories.
+> - Do not abuse of the platform_device interface. Remove it.
+>
+> Changes in v2:
+> - Note that this version is a total rework, with those major changes:
+> - Use lists to track dinamically allocated attributes and groups.
+> - Use sysfs binary attributes to store the ACPI contents.
+> - Remove all the functionalities except the one that creates the sysfs fi=
+les.
+> ---
+>  .../ABI/testing/sysfs-driver-chromeos-acpi    | 126 +++++
+>  .../acpi/chromeos-acpi-device.rst             | 363 +++++++++++++
+>  Documentation/firmware-guide/acpi/index.rst   |   1 +
+>  drivers/platform/x86/Kconfig                  |  11 +
+>  drivers/platform/x86/Makefile                 |   3 +
+>  drivers/platform/x86/chromeos_acpi.c          | 513 ++++++++++++++++++
+>  6 files changed, 1017 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-driver-chromeos-acpi
+>  create mode 100644 Documentation/firmware-guide/acpi/chromeos-acpi-devic=
+e.rst
+>  create mode 100644 drivers/platform/x86/chromeos_acpi.c
+>
+> [...]
+> diff --git a/drivers/platform/x86/chromeos_acpi.c b/drivers/platform/x86/=
+chromeos_acpi.c
+> new file mode 100644
+> index 0000000000000..de86119a446b8
+> --- /dev/null
+> +++ b/drivers/platform/x86/chromeos_acpi.c
+> @@ -0,0 +1,513 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ChromeOS specific ACPI extensions
+> + *
+> + * Copyright 2011 Google, Inc.
+> + * Copyright 2020-2022 Google LLC
+> + *
+> + * This file is a rework and part of the code is ported from chromeos-3.=
+18
+> + * kernel and was originally written by Vadim Bendebury <vbendeb@chromiu=
+m.org>.
+> + *
+> + * This driver attaches to the ChromeOS ACPI device and then exports the
+> + * values reported by the ACPI in a sysfs directory. All values are
+> + * presented in the string form (numbers as decimal values) and can be
+> + * accessed as the contents of the appropriate read only files in the
+> + * sysfs directory tree.
+> + */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/list.h>
+> +#include <linux/module.h>
+> +
+> +/*
+> + * ACPI method name for MLST; the response for this method is a package =
+of
+> + * strings listing the methods which should be reflected in sysfs.
+> + */
+> +#define MLST "MLST"
+> +
+> +/*
+> + * The default list of methods the ChromeOS ACPI device is supposed to e=
+xport,
+> + * if the MLST method is not present or is poorly formed.  The MLST meth=
+od
+> + * itself is included, to aid in debugging.
+> + */
+> +static char *chromeos_acpi_default_methods[] =3D {
+> +=09"CHSW", "HWID", "BINF", "GPIO", "CHNV", "FWID", "FRID", MLST
 > +};
 > +
 > +/*
-> + * Standard restart priority levels. Intended to be set in the
-> + * sys_off_handler.restart_priority field.
-> + *
-> + * Use `RESTART_PRIO_ABC +- prio` style for additional levels.
-> + *
-> + * RESTART_PRIO_RESERVED:      Falls back to RESTART_PRIO_DEFAULT.
-> + *                             Drivers may leave priority initialized
-> + *                             to zero, to auto-set it to the default level.
-
-What is the "default level" here?
-
-> + *
-> + * RESTART_PRIO_LOW:           Use this for handler of last resort.
-> + *
-> + * RESTART_PRIO_DEFAULT:       Use this for default/generic handler.
-> + *
-> + * RESTART_PRIO_HIGH:          Use this if you have multiple handlers and
-> + *                             this handler has higher priority than the
-> + *                             default handler.
+> + * Representation of a single sysfs attribute. In addition to the standa=
+rd
+> + * bin_attribute structure has a list of these structures (to keep track=
+ for
+> + * de-allocation when removing the driver) and a pointer to the actual
+> + * attribute name and value, reported when accessing the appropriate sys=
+fs
+> + * file.
 > + */
-> +#define RESTART_PRIO_RESERVED          0
-> +#define RESTART_PRIO_LOW               8
-> +#define RESTART_PRIO_DEFAULT           128
-> +#define RESTART_PRIO_HIGH              192
->
->  enum reboot_mode {
->         REBOOT_UNDEFINED = -1,
-> @@ -49,6 +74,201 @@ extern int register_restart_handler(struct notifier_block *);
->  extern int unregister_restart_handler(struct notifier_block *);
->  extern void do_kernel_restart(char *cmd);
->
-> +/*
-> + * System power-off and restart API.
-> + */
+> +struct chromeos_acpi_attribute {
+> +=09struct bin_attribute bin_attr;
+> +=09struct list_head list;
+> +=09char *name;
+> +=09char *data;
+> +};
 > +
 > +/*
-> + * Standard power-off priority levels. Intended to be set in the
-> + * sys_off_handler.power_off_priority field.
-> + *
-> + * Use `POWEROFF_PRIO_ABC +- prio` style for additional levels.
-
-What exactly does this mean?
-
-> + *
-> + * POWEROFF_PRIO_RESERVED:     Falls back to POWEROFF_PRIO_DEFAULT.
-> + *                             Drivers may leave priority initialized
-> + *                             to zero, to auto-set it to the default level.
-> + *
-> + * POWEROFF_PRIO_PLATFORM:     Intended to be used by platform-level handler.
-> + *                             Has lowest priority since device drivers are
-> + *                             expected to take over platform handler which
-> + *                             doesn't allow further callback chaining.
-> + *
-> + * POWEROFF_PRIO_DEFAULT:      Use this for default/generic handler.
-> + *
-> + * POWEROFF_PRIO_FIRMWARE:     Use this if handler uses firmware call.
-> + *                             Has highest priority since firmware is expected
-> + *                             to know best how to power-off hardware properly.
+> + * Representation of a sysfs attribute group (a sub directory in the dev=
+ice's
+> + * sysfs directory). In addition to the standard structure has lists to =
+allow
+> + * to keep track of the allocated structures.
 > + */
-> +#define POWEROFF_PRIO_RESERVED         0
-> +#define POWEROFF_PRIO_PLATFORM         1
-> +#define POWEROFF_PRIO_DEFAULT          128
-> +#define POWEROFF_PRIO_HIGH             192
-> +#define POWEROFF_PRIO_FIRMWARE         224
-> +
-> +enum poweroff_mode {
-> +       POWEROFF_NORMAL = 0,
-
-Why not just POWEROFF?
-
-> +       POWEROFF_PREPARE,
+> +struct chromeos_acpi_attribute_group {
+> +=09struct attribute_group group;
+> +=09struct list_head attribs;
+> +=09struct list_head list;
+> +=09char *name;
 > +};
-> +
-> +/**
-> + * struct power_off_data - Power-off callback argument
-> + *
-> + * @cb_data: Callback data.
-> + */
-> +struct power_off_data {
-> +       void *cb_data;
-> +};
-> +
-> +/**
-> + * struct power_off_prep_data - Power-off preparation callback argument
-> + *
-> + * @cb_data: Callback data.
-> + */
-> +struct power_off_prep_data {
-> +       void *cb_data;
-> +};
-
-Why does this need to be a separate data type?
-
-> +
-> +/**
-> + * struct restart_data - Restart callback argument
-> + *
-> + * @cb_data: Callback data.
-> + * @cmd: Restart command string.
-> + * @stop_chain: Further lower priority callbacks won't be executed if set to
-> + *             true. Can be changed within callback. Default is false.
-> + * @mode: Reboot mode ID.
-> + */
-> +struct restart_data {
-> +       void *cb_data;
-> +       const char *cmd;
-> +       bool stop_chain;
-> +       enum reboot_mode mode;
-> +};
-> +
-> +/**
-> + * struct reboot_prep_data - Reboot and shutdown preparation callback argument
-> + *
-> + * @cb_data: Callback data.
-> + * @cmd: Restart command string.
-> + * @stop_chain: Further lower priority callbacks won't be executed if set to
-> + *             true. Can be changed within callback. Default is false.
-> + * @mode: Preparation mode ID.
-> + */
-> +struct reboot_prep_data {
-> +       void *cb_data;
-> +       const char *cmd;
-> +       bool stop_chain;
-> +       enum reboot_prepare_mode mode;
-> +};
-
-There seem to be some duplicate data items between struct restart_data
-and struct reboot_prep_data, so what's the reason why they are
-separate?
-
-> +
-> +struct sys_off_handler_private_data {
-> +       struct notifier_block power_off_nb;
-> +       struct notifier_block restart_nb;
-> +       struct notifier_block reboot_nb;
-
-So restart_nb is going to be added to restart_handler_list, eboot_nb
-will be added to reboot_notifier_list (which both exist already) and
-power_off_nb will be added to the new power_off_handler_list, right?
-
-Of course, this means that reboot_nb will be used in
-kernel_restart_prepare() and kernel_shutdown_prepare(), so the
-corresponding callback will be invoked in both the restart and
-power-off cases.
-
-It would be good to document that somehow.
-
-> +       void (*platform_power_off_cb)(void);
-> +       void (*simple_power_off_cb)(void *data);
-> +       void *simple_power_off_cb_data;
-
-Is there any particular reason to put these callbacks here and not
-directly into struct sys_off_handler?
-
-> +       bool registered;
-> +};
-> +
-> +/**
-> + * struct sys_off_handler - System power-off and restart handler
-> + *
-> + * @cb_data: Pointer to user's data.
-> + *
-> + * @power_off_cb: Callback that powers off this machine. Inactive if NULL.
-> + *
-> + * @power_off_prepare_cb: Power-off preparation callback. All power-off
-> + * preparation callbacks are invoked after @reboot_prepare_cb and before
-> + * @power_off_cb. Inactive if NULL.
-> + *
-> + * @power_off_priority: Power-off callback priority, must be unique.
-> + * Zero value is reserved and auto-reassigned to POWEROFF_PRIO_DEFAULT.
-> + * Inactive if @power_off_cb is NULL.
-> + *
-> + * @power_off_chaining_allowed: Set to false if callback's execution should
-> + * stop when @power_off_cb fails to power off this machine. True if further
-> + * lower priority power-off callback should be executed. False is default
-> + * value.
-> + *
-> + * @restart_cb: Callback that reboots this machine. Inactive if NULL.
-> + *
-> + * @restart_priority: Restart callback priority, must be unique. Zero value
-> + * is reserved and auto-reassigned to RESTART_PRIO_DEFAULT. Inactive if
-> + * @restart_cb is NULL.
-> + *
-> + * @restart_chaining_disallowed: Set to true if callback's execution should
-> + * stop when @restart_cb fails to restart this machine. False if further
-> + * lower priority restart callback should be executed. False is default
-> + * value.
-> + *
-> + * @reboot_prepare_cb: Reboot/shutdown preparation callback. All reboot
-> + * preparation callbacks are invoked before @restart_cb or @power_off_cb,
-> + * depending on the mode. It's registered with register_reboot_notifier().
-> + * The point is to remove boilerplate code from drivers which use this
-> + * callback in conjunction with the restart/power-off callbacks.
-> + *
-> + * @reboot_priority: Reboot/shutdown preparation callback priority, doesn't
-> + * need to be unique. Zero is default value. Inactive if @reboot_prepare_cb
-> + * is NULL.
-
-It is unclear that the ->reboot_prepare_cb() callback is going to be
-used for both restart and power-off and reboot_priority is about the
-preparation phase only.
-
-And in the preparation phase the priority may not matter that much,
-because there are users who don't care about the ordering as long as
-their stuff is called at all.
-
-Honestly, I would change the naming here, because what it is is quite
-confusing at least to me.  Especially that "restart" and "reboot" seem
-to be used interchangeably in the comments.
-
-> + *
-> + * @priv: Internal data. Shouldn't be touched.
-> + *
-> + * Describes power-off and restart handlers which are invoked by kernel
-> + * to power off or restart this machine. Supports prioritized chaining for
-> + * both restart and power-off handlers.
-> + *
-> + * Struct sys_off_handler can be static. Members of this structure must not be
-> + * altered while handler is registered.
-> + *
-> + * Fill the structure members and pass it to @register_sys_off_handler().
-> + */
-> +struct sys_off_handler {
-> +       void *cb_data;
-> +
-> +       void (*power_off_cb)(struct power_off_data *data);
-> +       void (*power_off_prepare_cb)(struct power_off_prep_data *data);
-> +       int power_off_priority;
-> +       bool power_off_chaining_allowed;
-> +
-> +       void (*restart_cb)(struct restart_data *data);
-> +       int restart_priority;
-> +       bool restart_chaining_disallowed;
-> +
-> +       void (*reboot_prepare_cb)(struct reboot_prep_data *data);
-> +       int reboot_priority;
-> +
-> +       const struct sys_off_handler_private_data priv;
-
-Why is it const?  Because of the callbacks in there?
-
-Doesn't this mean that all struct sys_off_handler need to be static?
-
-> +};
-> +
-> +int register_sys_off_handler(struct sys_off_handler *handler);
-> +int unregister_sys_off_handler(struct sys_off_handler *handler);
-> +
-> +int devm_register_sys_off_handler(struct device *dev,
-> +                                 struct sys_off_handler *handler);
-> +
-> +int devm_register_prioritized_power_off_handler(struct device *dev,
-> +                                               int priority,
-> +                                               void (*callback)(void *data),
-> +                                               void *cb_data);
-> +
-> +int devm_register_simple_power_off_handler(struct device *dev,
-> +                                          void (*callback)(void *data),
-> +                                          void *cb_data);
-> +
-> +int register_platform_power_off(void (*power_off)(void));
-> +int unregister_platform_power_off(void (*power_off)(void));
-> +
-> +int devm_register_prioritized_restart_handler(struct device *dev,
-> +                                             int priority,
-> +                                             void (*callback)(struct restart_data *data),
-> +                                             void *cb_data);
-> +
-> +int devm_register_simple_restart_handler(struct device *dev,
-> +                                        void (*callback)(struct restart_data *data),
-> +                                        void *cb_data);
-> +
-> +void do_kernel_power_off(void);
-> +
->  /*
->   * Architecture-specific implementations of sys_reboot commands.
->   */
-> @@ -70,6 +290,7 @@ extern void kernel_restart_prepare(char *cmd);
->  extern void kernel_restart(char *cmd);
->  extern void kernel_halt(void);
->  extern void kernel_power_off(void);
-> +extern bool kernel_can_power_off(void);
->
->  void ctrl_alt_del(void);
->
-> diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-> index 938d5c78b421..a9464b4a3209 100644
-> --- a/kernel/power/hibernate.c
-> +++ b/kernel/power/hibernate.c
-> @@ -665,7 +665,7 @@ static void power_down(void)
->                 hibernation_platform_enter();
->                 fallthrough;
->         case HIBERNATION_SHUTDOWN:
-> -               if (pm_power_off)
-> +               if (kernel_can_power_off())
->                         kernel_power_off();
->                 break;
->         }
-> diff --git a/kernel/reboot.c b/kernel/reboot.c
-> index acdae4e95061..e76e2570dcf5 100644
-> --- a/kernel/reboot.c
-> +++ b/kernel/reboot.c
-> @@ -296,6 +296,595 @@ void kernel_halt(void)
->  }
->  EXPORT_SYMBOL_GPL(kernel_halt);
->
-> +/*
-> + *     Notifier list for kernel code which wants to be called
-> + *     to power off the system.
-> + */
-> +static BLOCKING_NOTIFIER_HEAD(power_off_handler_list);
 > +
 > +/*
-> + * Temporary stub that prevents linkage failure while we're in process
-> + * of removing all uses of legacy pm_power_off() around the kernel.
-
-Nit: inconsistent comment formatting.
-
+> + * This is the main structure, we use it to store data and adds links po=
+inting
+> + * at lists of allocated attributes and attribute groups.
 > + */
-> +void __weak (*pm_power_off)(void);
-> +
-> +static void dummy_pm_power_off(void)
-> +{
-> +       /* temporary stub until pm_power_off() is gone, see more below */
-> +}
-> +
-> +static struct notifier_block *pm_power_off_nb;
-> +
-> +/**
-> + *     register_power_off_handler - Register function to be called to power off
-> + *                                  the system
-> + *     @nb: Info about handler function to be called
-> + *     @nb->priority:  Handler priority. Handlers should follow the
-> + *                     following guidelines for setting priorities.
-> + *                     0:      Reserved
-> + *                     1:      Power-off handler of last resort,
-> + *                             with limited power-off capabilities
-> + *                     128:    Default power-off handler; use if no other
-> + *                             power-off handler is expected to be available,
-> + *                             and/or if power-off functionality is
-> + *                             sufficient to power-off the entire system
-> + *                     255:    Highest priority power-off handler, will
-> + *                             preempt all other power-off handlers
-> + *
-> + *     Registers a function with code to be called to power off the
-> + *     system.
-
-Because this is only used internally in this file, I'd say what it
-does directly, that is "Add a notifier to the power-off chain used for
-powering off the system".
-
-> + *
-> + *     Registered functions will be called as last step of the power-off
-> + *     sequence.
-> + *
-> + *     Registered functions are expected to power off the system immediately.
-> + *     If more than one function is registered, the power-off handler priority
-> + *     selects which function will be called first.
-> + *
-> + *     Power-off handlers are expected to be registered from non-architecture
-> + *     code, typically from drivers. A typical use case would be a system
-> + *     where power-off functionality is provided through a PMIC. Multiple
-> + *     power-off handlers may exist; for example, one power-off handler might
-> + *     turn off the entire system, while another only turns off part of
-> + *     system. In such cases, the power-off handler which only disables part
-> + *     of the hardware is expected to register with low priority to ensure
-> + *     that it only runs if no other means to power off the system is
-> + *     available.
-
-I would move the above 3 paragraphs to the description comment for
-power_off_handler_list.
-
-> + *
-> + *     Currently always returns zero, as blocking_notifier_chain_register()
-> + *     always returns zero.
-> + */
-> +static int register_power_off_handler(struct notifier_block *nb)
-> +{
-> +       int ret;
-> +
-> +       ret = blocking_notifier_chain_register_unique_prio(&power_off_handler_list, nb);
-> +       if (ret && ret != -EBUSY)
-> +               return ret;
-> +
-> +       if (!ret)
-> +               goto set_pm_power_off;
-> +
-> +       /*
-> +        * Handler must have unique priority. Otherwise call order is
-> +        * determined by registration order, which is unreliable.
-> +        *
-> +        * This requirement will become mandatory once all drivers
-> +        * will be converted to use new sys-off API.
-> +        */
-> +       pr_err("failed to register power-off handler using unique priority\n");
-> +
-> +       ret = blocking_notifier_chain_register(&power_off_handler_list, nb);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /*
-> +        * Some drivers check whether pm_power_off was already installed.
-> +        * Install dummy callback using new API to preserve old behaviour
-> +        * for those drivers during period of transition to the new API.
-> +        */
-> +set_pm_power_off:
-> +       if (!pm_power_off) {
-> +               pm_power_off = dummy_pm_power_off;
-> +               pm_power_off_nb = nb;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int unregister_power_off_handler(struct notifier_block *nb)
-> +{
-> +       if (nb == pm_power_off_nb) {
-> +               if (pm_power_off == dummy_pm_power_off)
-> +                       pm_power_off = NULL;
-> +
-> +               pm_power_off_nb = NULL;
-> +       }
-> +
-> +       return blocking_notifier_chain_unregister(&power_off_handler_list, nb);
-> +}
-> +
-> +static void devm_unregister_power_off_handler(void *data)
-> +{
-> +       struct notifier_block *nb = data;
-> +
-> +       unregister_power_off_handler(nb);
-> +}
-> +
-> +static int devm_register_power_off_handler(struct device *dev,
-> +                                          struct notifier_block *nb)
-> +{
-> +       int err;
-> +
-> +       err = register_power_off_handler(nb);
-> +       if (err)
-> +               return err;
-> +
-> +       return devm_add_action_or_reset(dev, devm_unregister_power_off_handler,
-> +                                       nb);
-> +}
-> +
-> +static int sys_off_handler_power_off(struct notifier_block *nb,
-> +                                    unsigned long mode, void *unused)
-> +{
-> +       struct power_off_prep_data prep_data = {};
-> +       struct sys_off_handler_private_data *priv;
-> +       struct power_off_data data = {};
-> +       struct sys_off_handler *h;
-> +       int ret = NOTIFY_DONE;
-> +
-> +       priv = container_of(nb, struct sys_off_handler_private_data, power_off_nb);
-> +       h = container_of(priv, struct sys_off_handler, priv);
-> +       prep_data.cb_data = h->cb_data;
-> +       data.cb_data = h->cb_data;
-> +
-> +       switch (mode) {
-> +       case POWEROFF_NORMAL:
-> +               if (h->power_off_cb)
-> +                       h->power_off_cb(&data);
-> +
-> +               if (priv->simple_power_off_cb)
-> +                       priv->simple_power_off_cb(priv->simple_power_off_cb_data);
-> +
-> +               if (priv->platform_power_off_cb)
-> +                       priv->platform_power_off_cb();
-
-The invocation of the priv callbacks here confuses me quite a bit.
-
-Can you please at least add a comment explaining this?
-
-> +
-> +               if (!h->power_off_chaining_allowed)
-> +                       ret = NOTIFY_STOP;
-> +
-> +               break;
-> +
-> +       case POWEROFF_PREPARE:
-> +               if (h->power_off_prepare_cb)
-> +                       h->power_off_prepare_cb(&prep_data);
-> +
-> +               break;
-> +
-> +       default:
-> +               unreachable();
-> +       }
-> +
-> +       return ret;
-> +}
-> +
-> +static int sys_off_handler_restart(struct notifier_block *nb,
-> +                                  unsigned long mode, void *cmd)
-> +{
-> +       struct sys_off_handler_private_data *priv;
-> +       struct restart_data data = {};
-> +       struct sys_off_handler *h;
-> +
-> +       priv = container_of(nb, struct sys_off_handler_private_data, restart_nb);
-> +       h = container_of(priv, struct sys_off_handler, priv);
-> +
-> +       data.stop_chain = h->restart_chaining_disallowed;
-> +       data.cb_data = h->cb_data;
-> +       data.mode = mode;
-> +       data.cmd = cmd;
-> +
-> +       h->restart_cb(&data);
-
-Wouldn't it be a bit more straightforward to allow ->restart_cb() to
-return a value being either NOTIFY_STOP or NOTIFY_DONE?
-
-> +
-> +       return data.stop_chain ? NOTIFY_STOP : NOTIFY_DONE;
-
-And I would prefer
-
-if (data.stop_chain)
-        return NOTIFY_STOP;
-
-return NOTIFY_DONE;
-
-> +}
-> +
-> +static int sys_off_handler_reboot(struct notifier_block *nb,
-> +                                 unsigned long mode, void *cmd)
-> +{
-> +       struct sys_off_handler_private_data *priv;
-> +       struct reboot_prep_data data = {};
-> +       struct sys_off_handler *h;
-> +
-> +       priv = container_of(nb, struct sys_off_handler_private_data, reboot_nb);
-> +       h = container_of(priv, struct sys_off_handler, priv);
-> +
-> +       data.cb_data = h->cb_data;
-> +       data.stop_chain = false;
-> +       data.mode = mode;
-> +       data.cmd = cmd;
-> +
-> +       h->reboot_prepare_cb(&data);
-> +
-> +       return data.stop_chain ? NOTIFY_STOP : NOTIFY_DONE;
-
-And analogously here.
-
-> +}
-> +
-> +static struct sys_off_handler_private_data *
-> +sys_off_handler_private_data(struct sys_off_handler *handler)
-> +{
-> +       return (struct sys_off_handler_private_data *)&handler->priv;
-
-Is the cast needed to avoid a warning about "const"?
-
-> +}
-> +
-> +/**
-> + *     devm_register_sys_off_handler - Register system power-off/restart handler
-
-register_sys_off_handler
-
-> + *     @dev: Device that registers handler
-> + *     @handler: System-off handler
-> + *
-> + *     Registers handler that will be called as last step of the power-off
-> + *     and restart sequences.
-
-Not necessarily as the last step, because there may be other system
-power-off/restart handlers called after it.
-
-I would just say "at the end of the power-off and restart sequences".
-
-Moreover, it registers the "reboot_cb" part that is not called "at the
-end" even.
-
-Also, because this is the function that will be used by drivers etc to
-register handlers, I would give some more information on how the
-object registered by it is going to be used to the prospective users.
-
-> + *
-> + *     Returns zero on success, or error code on failure.
-> + */
-> +int register_sys_off_handler(struct sys_off_handler *handler)
-> +{
-> +       struct sys_off_handler_private_data *priv;
-> +       int err, priority;
-> +
-> +       priv = sys_off_handler_private_data(handler);
-> +
-> +       /* sanity-check whether handler is registered twice */
-> +       if (priv->registered)
-> +               return -EBUSY;
-> +
-> +       if (handler->power_off_cb || handler->power_off_prepare_cb) {
-> +               if (handler->power_off_priority == POWEROFF_PRIO_RESERVED)
-> +                       priority = POWEROFF_PRIO_DEFAULT;
-
-I'm not sure that this helps.
-
-I mean, why can't the users of this new API pass POWEROFF_PRIO_DEFAULT
-directly if they want "default"?
-
-> +               else
-> +                       priority = handler->power_off_priority;
-> +
-> +               priv->power_off_nb.notifier_call = sys_off_handler_power_off;
-> +               priv->power_off_nb.priority = priority;
-> +
-> +               err = register_power_off_handler(&priv->power_off_nb);
-> +               if (err)
-> +                       goto reset_sys_off_handler;
-> +       }
-> +
-> +       if (handler->restart_cb) {
-> +               if (handler->restart_priority == RESTART_PRIO_RESERVED)
-> +                       priority = RESTART_PRIO_DEFAULT;
-> +               else
-> +                       priority = handler->restart_priority;
-> +
-> +               priv->restart_nb.notifier_call = sys_off_handler_restart;
-> +               priv->restart_nb.priority = priority;
-> +
-> +               err = register_restart_handler(&priv->restart_nb);
-> +               if (err)
-> +                       goto unreg_power_off_handler;
-> +       }
-> +
-> +       if (handler->reboot_prepare_cb) {
-> +               priv->reboot_nb.notifier_call = sys_off_handler_reboot;
-> +               priv->reboot_nb.priority = handler->reboot_priority;
-> +
-> +               err = register_reboot_notifier(&priv->reboot_nb);
-> +               if (err)
-> +                       goto unreg_restart_handler;
-> +       }
-> +
-> +       priv->registered = true;
-> +
-> +       return 0;
-> +
-> +unreg_restart_handler:
-> +       if (handler->restart_cb)
-> +               unregister_restart_handler(&priv->restart_nb);
-> +
-> +unreg_power_off_handler:
-> +       if (handler->power_off_cb)
-> +               unregister_power_off_handler(&priv->power_off_nb);
-> +
-> +reset_sys_off_handler:
-> +       memset(priv, 0, sizeof(*priv));
-> +
-> +       return err;
-> +}
-> +EXPORT_SYMBOL(register_sys_off_handler);
-> +
-> +/**
-> + *     unregister_sys_off_handler - Unregister system power-off/restart handler
-> + *     @handler: System-off handler
-> + *
-> + *     Unregisters sys-off handler. Does nothing and returns zero if handler
-> + *     is NULL.
-> + *
-> + *     Returns zero on success, or error code on failure.
-> + */
-> +int unregister_sys_off_handler(struct sys_off_handler *handler)
-> +{
-> +       struct sys_off_handler_private_data *priv;
-> +
-> +       if (!handler)
-> +               return 0;
-> +
-> +       priv = sys_off_handler_private_data(handler);
-> +
-> +       /* sanity-check whether handler is unregistered twice */
-> +       if (!priv->registered)
-> +               return -EINVAL;
-> +
-> +       if (handler->reboot_prepare_cb)
-> +               unregister_reboot_notifier(&priv->reboot_nb);
-> +
-> +       if (handler->restart_cb)
-> +               unregister_restart_handler(&priv->restart_nb);
-> +
-> +       if (handler->power_off_cb)
-> +               unregister_power_off_handler(&priv->power_off_nb);
-> +
-> +       memset(priv, 0, sizeof(*priv));
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL(unregister_sys_off_handler);
-> +
-> +static void devm_unregister_sys_off_handler(void *data)
-> +{
-> +       struct sys_off_handler *handler = data;
-> +
-> +       unregister_sys_off_handler(handler);
-> +}
-> +
-> +/**
-> + *     devm_register_sys_off_handler - Register system power-off/restart handler
-> + *     @dev: Device that registers handler
-> + *     @handler: System-off handler
-> + *
-> + *     Resource-managed variant of register_sys_off_handler().
-> + *
-> + *     Returns zero on success, or error code on failure.
-> + */
-> +int devm_register_sys_off_handler(struct device *dev,
-> +                                 struct sys_off_handler *handler)
-> +{
-> +       int err;
-> +
-> +       err = register_sys_off_handler(handler);
-> +       if (err)
-> +               return err;
-> +
-> +       return devm_add_action_or_reset(dev, devm_unregister_sys_off_handler,
-> +                                       handler);
-> +}
-> +EXPORT_SYMBOL(devm_register_sys_off_handler);
-> +
-> +/**
-> + *     devm_register_prioritized_power_off_handler - Register prioritized power-off callback
-> + *     @dev: Device that registers callback
-> + *     @priority: Callback's priority
-> + *     @callback: Callback function
-> + *     @cb_data: Callback's argument
-> + *
-> + *     Registers resource-managed power-off callback with a given priority.
-> + *     It will be called as last step of the power-off sequence. Callbacks
-> + *     chaining is disabled, i.e. further lower priority callbacks won't
-> + *     be executed if this @callback will fail to execute.
-> + *
-> + *     Returns zero on success, or error code on failure.
-
-What's the case in which this should be used instead of registering a
-full sys_off handler?
-
-> + */
-> +int devm_register_prioritized_power_off_handler(struct device *dev,
-> +                                               int priority,
-> +                                               void (*callback)(void *data),
-> +                                               void *cb_data)
-> +{
-> +       struct sys_off_handler_private_data *priv;
-> +       struct sys_off_handler *handler;
-> +
-> +       handler = devm_kzalloc(dev, sizeof(*handler), GFP_KERNEL);
-> +       if (!handler)
-> +               return -ENOMEM;
-> +
-> +       if (priority == POWEROFF_PRIO_RESERVED)
-> +               priority = POWEROFF_PRIO_DEFAULT;
-> +
-> +       priv = sys_off_handler_private_data(handler);
-> +
-> +       priv->power_off_nb.notifier_call = sys_off_handler_power_off;
-> +       priv->power_off_nb.priority = priority;
-> +       priv->simple_power_off_cb_data = cb_data;
-> +       priv->simple_power_off_cb = callback;
-> +
-> +       return devm_register_power_off_handler(dev, &priv->power_off_nb);
-> +}
-> +EXPORT_SYMBOL(devm_register_prioritized_power_off_handler);
-> +
-> +int devm_register_prioritized_power_off_handler(struct device *dev,
-> +                                               int priority,
-> +                                               void (*callback)(void *data),
-> +                                               void *cb_data);
-> +
-> +/**
-> + *     devm_register_simple_power_off_handler - Register simple power-off callback
-> + *     @dev: Device that registers callback
-> + *     @callback: Callback function
-> + *     @cb_data: Callback's argument
-> + *
-> + *     Registers resource-managed power-off callback with default priority.
-> + *     It will be invoked as last step of the power-off sequence. Further
-> + *     lower priority callbacks won't be executed if this @callback fails.
-> + *
-> + *     Returns zero on success, or error code on failure.
-
-And here?
-
-> + */
-> +int devm_register_simple_power_off_handler(struct device *dev,
-> +                                          void (*callback)(void *data),
-> +                                          void *cb_data)
-> +{
-> +       return devm_register_prioritized_power_off_handler(dev,
-> +                                                          POWEROFF_PRIO_DEFAULT,
-> +                                                          callback, cb_data);
-> +}
-> +EXPORT_SYMBOL(devm_register_simple_power_off_handler);
-> +
-> +/**
-> + *     devm_register_prioritized_restart_handler - Register prioritized restart callback
-> + *     @dev: Device that registers callback
-> + *     @priority: Callback's priority
-> + *     @callback: Callback function
-> + *     @cb_data: Callback's argument
-> + *
-> + *     Registers resource-managed restart callback with a given priority.
-> + *     It will be called as a part of the restart sequence. Callbacks
-> + *     chaining is disabled, i.e. further lower priority callbacks won't
-> + *     be executed if this @callback will fail to execute.
-> + *
-> + *     Returns zero on success, or error code on failure.
-
-And here?
-
-> + */
-> +int devm_register_prioritized_restart_handler(struct device *dev,
-> +                                             int priority,
-> +                                             void (*callback)(struct restart_data *data),
-> +                                             void *cb_data)
-> +{
-> +       struct sys_off_handler *handler;
-> +
-> +       handler = devm_kzalloc(dev, sizeof(*handler), GFP_KERNEL);
-> +       if (!handler)
-> +               return -ENOMEM;
-> +
-> +       if (priority == RESTART_PRIO_RESERVED)
-> +               priority = RESTART_PRIO_DEFAULT;
-> +
-> +       handler->restart_priority = priority;
-> +       handler->restart_cb = callback;
-> +       handler->cb_data = cb_data;
-> +
-> +       return devm_register_sys_off_handler(dev, handler);
-> +}
-> +EXPORT_SYMBOL(devm_register_prioritized_restart_handler);
-> +
-> +/**
-> + *     devm_register_simple_restart_handler - Register simple restart callback
-> + *     @dev: Device that registers callback
-> + *     @callback: Callback function
-> + *     @cb_data: Callback's argument
-> + *
-> + *     Registers resource-managed restart callback with default priority.
-> + *     It will be invoked as a part of the restart sequence. Further
-> + *     lower priority callback will be executed if this @callback fails.
-> + *
-> + *     Returns zero on success, or error code on failure.
-
-And here?
-
-> + */
-> +int devm_register_simple_restart_handler(struct device *dev,
-> +                                        void (*callback)(struct restart_data *data),
-> +                                        void *cb_data)
-> +{
-> +       return devm_register_prioritized_restart_handler(dev,
-> +                                                        RESTART_PRIO_DEFAULT,
-> +                                                        callback, cb_data);
-> +}
-> +EXPORT_SYMBOL(devm_register_simple_restart_handler);
-> +
-> +static struct sys_off_handler platform_power_off_handler = {
-> +       .priv = {
-> +               .power_off_nb = {
-> +                       .notifier_call = sys_off_handler_power_off,
-> +                       .priority = POWEROFF_PRIO_PLATFORM,
-> +               },
-> +       },
+> +struct chromeos_acpi_dev {
+> +=09struct chromeos_acpi_attribute_group *root;
+> +=09const struct attribute_group **dev_groups;
+> +=09struct list_head groups;
+> +=09unsigned int num_groups;
+> +=09unsigned int num_attrs;
 > +};
 > +
-> +static DEFINE_SPINLOCK(platform_power_off_lock);
+> +static struct chromeos_acpi_dev chromeos_acpi;
+> +
+> +static ssize_t chromeos_acpi_read_bin_attribute(struct file *filp,
+> +=09=09=09=09=09=09struct kobject *kobj,
+> +=09=09=09=09=09=09struct bin_attribute *bin_attr,
+> +=09=09=09=09=09=09char *buffer, loff_t pos,
+> +=09=09=09=09=09=09size_t count)
+> +{
+> +=09struct chromeos_acpi_attribute *info =3D bin_attr->private;
+> +
+> +=09return memory_read_from_buffer(buffer, count, &pos, info->data,
+> +=09=09=09=09       info->bin_attr.size);
+> +}
+> +
+> +static char *chromeos_acpi_gen_file_name(char *name, int count, int inde=
+x)
+> +{
+> +=09char *str;
+> +
+> +=09if (count =3D=3D 1)
+> +=09=09str =3D kstrdup(name, GFP_KERNEL);
+> +=09else
+> +=09=09str =3D kasprintf(GFP_KERNEL, "%s.%d", name, index);
+> +
+> +=09return str;
+> +}
+> +
+> +static int
+> +chromeos_acpi_add_attr(struct chromeos_acpi_attribute_group *aag,
+> +=09=09       union acpi_object *element, char *name,
+> +=09=09       int count, int index)
+> +{
+> +=09struct chromeos_acpi_attribute *info;
+> +=09char buffer[24]; /* enough to store a u64 and null character */
+> +=09int length;
+> +=09int ret;
+> +
+> +=09/* Files BINF.{0,1,4} are historical and no longer used. */
+> +=09if (!strcmp(name, "BINF") && (index =3D=3D 0 || index =3D=3D 1 || ind=
+ex =3D=3D 4))
+> +=09=09return 0;
+> +
+> +=09info =3D kzalloc(sizeof(*info), GFP_KERNEL);
+> +=09if (!info)
+> +=09=09return -ENOMEM;
+> +
+> +=09info->name =3D chromeos_acpi_gen_file_name(name, count, index);
+> +=09if (!info->name) {
+> +=09=09ret =3D -ENOMEM;
+> +=09=09goto free_attribute;
+> +=09}
+> +=09sysfs_bin_attr_init(&info->bin_attr);
+> +=09info->bin_attr.attr.name =3D info->name;
+> +=09info->bin_attr.attr.mode =3D 0444;
+> +
+> +=09switch (element->type) {
+> +=09case ACPI_TYPE_BUFFER:
+> +=09=09length =3D element->buffer.length;
+> +=09=09info->data =3D kmemdup(element->buffer.pointer,
+> +=09=09=09=09     length, GFP_KERNEL);
+> +=09=09break;
+> +=09case ACPI_TYPE_INTEGER:
+> +=09=09length =3D snprintf(buffer, sizeof(buffer), "%d",
+> +=09=09=09=09  (int)element->integer.value);
+> +=09=09info->data =3D kmemdup(buffer, length, GFP_KERNEL);
+
+You can use `kasprintf()` here, no?
+
+
+> +=09=09break;
+> +=09case ACPI_TYPE_STRING:
+> +=09=09length =3D element->string.length + 1;
+> +=09=09info->data =3D kstrdup(element->string.pointer, GFP_KERNEL);
+> +=09=09break;
+> +=09default:
+> +=09=09ret =3D -EINVAL;
+> +=09=09goto free_attr_name;
+> +=09}
+> +
+> +=09if (!info->data) {
+> +=09=09ret =3D -ENOMEM;
+> +=09=09goto free_attr_name;
+> +=09}
+> +
+> +=09info->bin_attr.size =3D length;
+> +=09info->bin_attr.read =3D chromeos_acpi_read_bin_attribute;
+> +=09info->bin_attr.private =3D info;
+> +
+> +=09INIT_LIST_HEAD(&info->list);
+
+(technically you only need to initialize the list head explicitly, so this =
+is not
+ strictly needed; there are other examples of such `INIT_LIST_HEAD()` calls
+ in the code)
+
+
+> +
+> +=09list_add(&info->list, &aag->attribs);
+> +=09return 0;
+> +
+> +free_attr_name:
+> +=09kfree(info->name);
+> +free_attribute:
+> +=09kfree(info);
+> +=09return ret;
+> +}
+> +
+> +static void
+> +chromeos_acpi_remove_attribs(struct chromeos_acpi_attribute_group *aag)
+> +{
+> +=09struct chromeos_acpi_attribute *attr, *tmp_attr;
+> +
+> +=09list_for_each_entry_safe(attr, tmp_attr, &aag->attribs, list) {
+> +=09=09kfree(attr->name);
+> +=09=09kfree(attr->data);
+> +=09=09kfree(attr);
+> +=09}
+> +}
+> +
+> +static int
+> +chromeos_acpi_add_attribs_to_group(struct chromeos_acpi_attribute_group =
+*aag,
+> +=09=09=09=09   unsigned int num_attrs)
+> +{
+> +=09struct chromeos_acpi_attribute *attr;
+> +=09int count =3D 0;
+> +
+> +=09aag->group.bin_attrs =3D kcalloc(num_attrs + 1,
+> +=09=09=09=09       sizeof(*aag->group.bin_attrs),
+> +=09=09=09=09       GFP_KERNEL);
+> +=09if (!aag->group.bin_attrs)
+> +=09=09return -ENOMEM;
+> +
+> +=09list_for_each_entry(attr, &aag->attribs, list) {
+> +=09=09aag->group.bin_attrs[count] =3D &attr->bin_attr;
+> +=09=09count++;
+> +=09}
+> +
+> +=09chromeos_acpi.num_groups++;
+> +=09list_add(&aag->list, &chromeos_acpi.groups);
+> +
+> +=09return 0;
+> +}
 > +
 > +/**
-> + *     register_platform_power_off - Register platform-level power-off callback
-> + *     @power_off: Power-off callback
+> + * chromeos_acpi_add_group() - Create a sysfs group including attributes
+> + *=09=09=09       representing a nested ACPI package
 > + *
-> + *     Registers power-off callback that will be called as last step
-> + *     of the power-off sequence. This callback is expected to be invoked
-> + *     for the last resort. Further lower priority callbacks won't be
-> + *     executed if @power_off fails. Only one platform power-off callback
-> + *     is allowed to be registered at a time.
+> + * @obj: Package contents as returned by ACPI
+> + * @name: Name of the group
+> + * @num_attrs: Number of attributes of this package
+> + * @index: Index number of this particular group
 > + *
-> + *     Returns zero on success, or error code on failure.
-
-What's the use case for this?
-
+> + * The created group is called @name in case there is a single instance,=
+ or
+> + * @name.@index otherwise.
+> + *
+> + * All group and attribute storage allocations are included in the lists=
+ for
+> + * tracking of allocated memory.
+> + *
+> + * Return: 0 on success, negative errno on failure.
 > + */
-> +int register_platform_power_off(void (*power_off)(void))
+> +static int chromeos_acpi_add_group(union acpi_object *obj, char *name,
+> +=09=09=09=09   int num_attrs, int index)
 > +{
-> +       struct sys_off_handler_private_data *priv;
-> +       int ret = 0;
+> +=09struct chromeos_acpi_attribute_group *aag;
+> +=09union acpi_object *element;
+> +=09int i, count, ret;
 > +
-> +       priv = sys_off_handler_private_data(&platform_power_off_handler);
+> +=09aag =3D kzalloc(sizeof(*aag), GFP_KERNEL);
+> +=09if (!aag)
+> +=09=09return -ENOMEM;
+> +=09aag->name =3D chromeos_acpi_gen_file_name(name, num_attrs, index);
+> +=09if (!aag->name) {
+> +=09=09ret =3D -ENOMEM;
+> +=09=09goto free_group;
+> +=09}
 > +
-> +       spin_lock(&platform_power_off_lock);
-> +       if (priv->platform_power_off_cb)
-> +               ret = -EBUSY;
-> +       else
-> +               priv->platform_power_off_cb = power_off;
-
-Wasn't priv supposed to be const?
-
-> +       spin_unlock(&platform_power_off_lock);
+> +=09INIT_LIST_HEAD(&aag->attribs);
+> +=09INIT_LIST_HEAD(&aag->list);
 > +
-> +       if (ret)
-> +               return ret;
+> +=09count =3D obj->package.count;
+> +=09element =3D obj->package.elements;
+> +=09for (i =3D 0; i < count; i++, element++) {
+> +=09=09ret =3D chromeos_acpi_add_attr(aag, element, name, count, i);
+> +=09=09if (ret)
+> +=09=09=09goto free_group_attr;
+> +=09}
 > +
-> +       ret = register_power_off_handler(&priv->power_off_nb);
-> +       if (ret)
-> +               priv->platform_power_off_cb = NULL;
+> +=09aag->group.name =3D aag->name;
 > +
-> +       return ret;
+> +=09ret =3D chromeos_acpi_add_attribs_to_group(aag, count);
+> +=09if (ret)
+> +=09=09goto free_group_attr;
+> +
+> +=09return 0;
+> +
+> +free_group_attr:
+> +=09chromeos_acpi_remove_attribs(aag);
+> +=09kfree(aag->name);
+> +free_group:
+> +=09kfree(aag);
+> +=09return ret;
 > +}
-> +EXPORT_SYMBOL_GPL(register_platform_power_off);
+> +
+> +static void chromeos_acpi_remove_groups(void)
+> +{
+> +=09struct chromeos_acpi_attribute_group *aag, *tmp_aag;
+> +
+> +=09list_for_each_entry_safe(aag, tmp_aag, &chromeos_acpi.groups, list) {
+> +=09=09chromeos_acpi_remove_attribs(aag);
+> +=09=09kfree(aag->group.bin_attrs);
+> +=09=09kfree(aag->name);
+> +=09=09kfree(aag);
+> +=09}
+> +}
 > +
 > +/**
-> + *     unregister_platform_power_off - Unregister platform-level power-off callback
-> + *     @power_off: Power-off callback
+> + * chromeos_acpi_handle_package() - Create sysfs group including attribu=
+tes
+> + *=09=09=09=09    representing an ACPI package
 > + *
-> + *     Unregisters previously registered platform power-off callback.
+> + * @pdev: Platform device
+> + * @obj: Package contents as returned by ACPI
+> + * @name: Name of the group
 > + *
-> + *     Returns zero on success, or error code on failure.
+> + * Scalar objects included in the package get sysfs attributes created f=
+or
+> + * them. Nested packages are passed to a function creating a sysfs group=
+ per
+> + * package.
+> + *
+> + * Return: 0 on success, negative errno on failure.
 > + */
-> +int unregister_platform_power_off(void (*power_off)(void))
+> +static int chromeos_acpi_handle_package(struct platform_device *pdev,
+> +=09=09=09=09=09union acpi_object *obj, char *name)
 > +{
-> +       struct sys_off_handler_private_data *priv;
-> +       int ret;
+> +=09struct device *dev =3D &pdev->dev;
+> +=09int count =3D obj->package.count;
+> +=09union acpi_object *element;
+> +=09int i, ret;
 > +
-> +       priv = sys_off_handler_private_data(&platform_power_off_handler);
+> +=09element =3D obj->package.elements;
+> +=09for (i =3D 0; i < count; i++, element++) {
+> +=09=09if (element->type =3D=3D ACPI_TYPE_BUFFER ||
+> +=09=09    element->type =3D=3D ACPI_TYPE_STRING ||
+> +=09=09    element->type =3D=3D ACPI_TYPE_INTEGER) {
+> +=09=09=09/* Create a single attribute in the root directory */
+> +=09=09=09ret =3D chromeos_acpi_add_attr(chromeos_acpi.root,
+> +=09=09=09=09=09=09     element, name,
+> +=09=09=09=09=09=09     count, i);
+> +=09=09=09if (ret) {
+> +=09=09=09=09dev_err(dev, "error adding attributes (%d)\n",
+> +=09=09=09=09=09ret);
+> +=09=09=09=09return ret;
+> +=09=09=09}
+> +=09=09=09chromeos_acpi.num_attrs++;
+> +=09=09} else if (element->type =3D=3D ACPI_TYPE_PACKAGE) {
+> +=09=09=09/* Create a group of attributes */
+> +=09=09=09ret =3D chromeos_acpi_add_group(element, name, count, i);
+> +=09=09=09if (ret) {
+> +=09=09=09=09dev_err(dev, "error adding a group (%d)\n",
+> +=09=09=09=09=09ret);
+> +=09=09=09=09return ret;
+> +=09=09=09}
+> +=09=09} else {
+> +=09=09=09if (ret) {
+
+`ret` can be potentially uninitialized here, no?
+
+
+> +=09=09=09=09dev_err(dev, "error on element type (%d)\n",
+> +=09=09=09=09=09ret);
+> +=09=09=09=09return -EINVAL;
+> +=09=09=09}
+> +=09=09}
+> +=09}
 > +
-> +       if (priv->platform_power_off_cb != power_off)
-> +               return -EINVAL;
-> +
-> +       ret = unregister_power_off_handler(&priv->power_off_nb);
-> +       priv->platform_power_off_cb = NULL;
-> +
-> +       return ret;
+> +=09return 0;
 > +}
-> +EXPORT_SYMBOL_GPL(unregister_platform_power_off);
 > +
 > +/**
-> + *     do_kernel_power_off - Execute kernel power-off handler call chain
+> + * chromeos_acpi_add_method() - Evaluate an ACPI method and create sysfs
+> + *=09=09=09=09attributes
 > + *
-> + *     Calls functions registered with register_power_off_handler.
+> + * @pdev: Platform device
+> + * @name: Name of the method to evaluate
 > + *
-> + *     Expected to be called as last step of the power-off sequence.
-> + *
-> + *     Powers off the system immediately if a power-off handler function has
-> + *     been registered. Otherwise does nothing.
+> + * Return: 0 on success, non-zero on failure
 > + */
-> +void do_kernel_power_off(void)
+> +static int chromeos_acpi_add_method(struct platform_device *pdev, char *=
+name)
 > +{
-> +       /* legacy pm_power_off() is unchained and has highest priority */
-> +       if (pm_power_off && pm_power_off != dummy_pm_power_off)
-> +               return pm_power_off();
+> +=09struct device *dev =3D &pdev->dev;
+> +=09struct acpi_buffer output =3D { ACPI_ALLOCATE_BUFFER, NULL };
+> +=09acpi_status status;
+> +=09int ret =3D 0;
 > +
-> +       blocking_notifier_call_chain(&power_off_handler_list, POWEROFF_NORMAL,
-> +                                    NULL);
-> +}
-> +
-> +static void do_kernel_power_off_prepare(void)
-> +{
-> +       /* legacy pm_power_off_prepare() is unchained and has highest priority */
-> +       if (pm_power_off_prepare)
-> +               return pm_power_off_prepare();
-> +
-> +       blocking_notifier_call_chain(&power_off_handler_list, POWEROFF_PREPARE,
-> +                                    NULL);
-> +}
-> +
->  /**
->   *     kernel_power_off - power_off the system
->   *
-> @@ -304,8 +893,7 @@ EXPORT_SYMBOL_GPL(kernel_halt);
->  void kernel_power_off(void)
->  {
->         kernel_shutdown_prepare(SYSTEM_POWER_OFF);
-> -       if (pm_power_off_prepare)
-> -               pm_power_off_prepare();
-> +       do_kernel_power_off_prepare();
->         migrate_to_reboot_cpu();
->         syscore_shutdown();
->         pr_emerg("Power down\n");
-> @@ -314,6 +902,16 @@ void kernel_power_off(void)
->  }
->  EXPORT_SYMBOL_GPL(kernel_power_off);
->
-> +bool kernel_can_power_off(void)
-> +{
-> +       if (!pm_power_off &&
-> +           blocking_notifier_call_chain_is_empty(&power_off_handler_list))
-> +               return false;
-> +
-> +       return true;
+> +=09status =3D acpi_evaluate_object(ACPI_COMPANION(&pdev->dev)->handle, n=
+ame, NULL, &output);
+> +=09if (ACPI_FAILURE(status)) {
+> +=09=09dev_err(dev, "failed to retrieve %s (%d)\n", name, status);
 
-return pm_power_off ||
-blocking_notifier_call_chain_is_empty(&power_off_handler_list);
+(maybe `acpi_format_exception(status)` would be more meaningful than the nu=
+meric value)
 
-> +}
-> +EXPORT_SYMBOL_GPL(kernel_can_power_off);
+
+> +=09=09return status;
+
+This return value is potentially propagated to become the return value of
+the probe function. The problem is that it is not a negative errno that the=
+ probe
+method should return but rather an ACPI status code.
+
+
+> +=09}
 > +
->  DEFINE_MUTEX(system_transition_mutex);
->
->  /*
-> @@ -355,7 +953,7 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
->         /* Instead of trying to make the power_off code look like
->          * halt when pm_power_off is not set do it the easy way.
->          */
-> -       if ((cmd == LINUX_REBOOT_CMD_POWER_OFF) && !pm_power_off)
-> +       if (cmd == LINUX_REBOOT_CMD_POWER_OFF && !kernel_can_power_off())
->                 cmd = LINUX_REBOOT_CMD_HALT;
->
->         mutex_lock(&system_transition_mutex);
+> +=09if (((union acpi_object *)output.pointer)->type =3D=3D ACPI_TYPE_PACK=
+AGE)
+> +=09=09ret =3D chromeos_acpi_handle_package(pdev, output.pointer, name);
+> +
+> +=09kfree(output.pointer);
+> +=09return ret;
+> +}
+> +
+> +/**
+> + * chromeos_acpi_process_mlst() - Evaluate the MLST method and add metho=
+ds
+> + *=09=09=09=09  listed in the response
+> + *
+> + * @pdev: Platform device
+> + *
+> + * Returns: 0 if successful, non-zero if error.
+> + */
+> +static int chromeos_acpi_process_mlst(struct platform_device *pdev)
+> +{
+> +=09struct chromeos_acpi_attribute_group *aag;
+> +=09char name[ACPI_NAMESEG_SIZE + 1];
+> +=09union acpi_object *element, *obj;
+> +=09struct device *dev =3D &pdev->dev;
+> +=09struct acpi_buffer output =3D { ACPI_ALLOCATE_BUFFER, NULL };
+> +=09acpi_status status;
+> +=09int ret =3D 0;
+> +=09int size;
+> +=09int i;
+> +
+> +=09status =3D acpi_evaluate_object(ACPI_COMPANION(&pdev->dev)->handle, M=
+LST, NULL,
+> +=09=09=09=09      &output);
+> +=09if (ACPI_FAILURE(status))
+> +=09=09return status;
+> +
+> +=09obj =3D output.pointer;
+> +=09if (obj->type !=3D ACPI_TYPE_PACKAGE) {
+> +=09=09ret =3D -EINVAL;
+> +=09=09goto free_acpi_buffer;
+> +=09}
+> +
+> +=09element =3D obj->package.elements;
+> +=09for (i =3D 0; i < obj->package.count; i++, element++) {
+> +=09=09if (element->type =3D=3D ACPI_TYPE_STRING) {
+> +=09=09=09size =3D min(element->string.length + 1,
+> +=09=09=09=09   (u32)ACPI_NAMESEG_SIZE + 1);
+
+Is truncation a real possibility? Shouldn't it abort/etc. in that case?
+And `min()` "returns" a u32 here but `size` is an `int`.
+
+
+> +=09=09=09strscpy(name, element->string.pointer, size);
+> +=09=09=09ret =3D chromeos_acpi_add_method(pdev, name);
+> +=09=09=09if (ret) {
+> +=09=09=09=09chromeos_acpi_remove_groups();
+> +=09=09=09=09break;
+
+Is just a `break` is enough here to handle the error? If this is not fatal,
+then why is a `dev_warn()` not sufficient? If this is fatal, why continue
+with the rest of the function?
+
+
+> +=09=09=09}
+> +=09=09}
+> +=09}
+> +
+> +=09/* Add root attributes to the main group */
+> +=09ret =3D chromeos_acpi_add_attribs_to_group(chromeos_acpi.root,
+> +=09=09=09=09=09=09 chromeos_acpi.num_attrs);
+> +=09if (ret)
+> +=09=09goto free_acpi_buffer;
+> +
+> +=09chromeos_acpi.dev_groups =3D kcalloc(chromeos_acpi.num_groups + 1,
+> +=09=09=09=09=09   sizeof(struct attribute_group),
+> +=09=09=09=09=09   GFP_KERNEL);
+> +
+> +=09i =3D 0;
+> +=09list_for_each_entry(aag, &chromeos_acpi.groups, list) {
+> +=09=09chromeos_acpi.dev_groups[i] =3D &aag->group;
+> +=09=09i++;
+> +=09}
+> +
+> +=09ret =3D sysfs_create_groups(&dev->kobj, chromeos_acpi.dev_groups);
+> +=09if (ret) {
+> +=09=09kfree(chromeos_acpi.dev_groups);
+> +
+> +=09=09/* Remove allocated chromeos acpi groups and attributes */
+> +=09=09chromeos_acpi_remove_groups();
+> +=09}
+> +
+> +free_acpi_buffer:
+> +=09kfree(output.pointer);
+> +=09return ret;
+> +}
+> +
+> +static int chromeos_acpi_device_probe(struct platform_device *pdev)
+> +{
+> +=09struct chromeos_acpi_attribute_group *aag;
+> +=09struct device *dev =3D &pdev->dev;
+> +=09int i, ret;
+> +
+> +=09aag =3D kzalloc(sizeof(*aag), GFP_KERNEL);
+> +=09if (!aag)
+> +=09=09return -ENOMEM;
+> +
+> +=09INIT_LIST_HEAD(&aag->attribs);
+> +=09INIT_LIST_HEAD(&aag->list);
+> +=09INIT_LIST_HEAD(&chromeos_acpi.groups);
+> +
+> +=09chromeos_acpi.root =3D aag;
+> +
+> +=09/*
+> +=09 * Attempt to add methods by querying the device's MLST method
+> +=09 * for the list of methods.
+> +=09 */
+> +=09if (!chromeos_acpi_process_mlst(pdev))
+> +=09=09return 0;
+> +
+> +=09dev_dbg(dev, "falling back to default list of methods\n");
+> +
+> +=09for (i =3D 0; i < ARRAY_SIZE(chromeos_acpi_default_methods); i++) {
+> +=09=09ret =3D chromeos_acpi_add_method(pdev,
+> +=09=09=09=09=09       chromeos_acpi_default_methods[i]);
+> +=09=09if (ret) {
+> +=09=09=09dev_err(dev, "failed to add default methods (%d)\n",
+> +=09=09=09=09ret);
+> +=09=09=09goto free_group_root;
+> +=09=09}
+> +=09}
+> +
+> +=09return 0;
+> +
+> +free_group_root:
+> +=09kfree(chromeos_acpi.root);
+> +=09return ret;
+> +}
+> +
+> +static int chromeos_acpi_device_remove(struct platform_device *pdev)
+> +{
+> +=09/* Remove sysfs groups */
+> +=09sysfs_remove_groups(&pdev->dev.kobj, chromeos_acpi.dev_groups);
+> +=09kfree(chromeos_acpi.dev_groups);
+> +
+> +=09/* Remove allocated chromeos acpi groups and attributes */
+> +=09chromeos_acpi_remove_groups();
+> +
+> +=09return 0;
+> +}
+> +
+> +/* GGL is valid PNP ID of Google. PNP ID can be used with the ACPI devic=
+es. */
+> +static const struct acpi_device_id chromeos_device_ids[] =3D {
+> +=09{ "GGL0001", 0 },
+> +=09{ }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, chromeos_device_ids);
+> +
+> +static struct platform_driver chromeos_acpi_device_driver =3D {
+> +=09.probe =3D chromeos_acpi_device_probe,
+> +=09.remove =3D chromeos_acpi_device_remove,
+> +=09.driver =3D {
+> +=09=09.name   =3D "chromeos-acpi",
+> +=09=09.acpi_match_table =3D ACPI_PTR(chromeos_device_ids)
+> +=09}
+> +};
+> +
+> +module_platform_driver(chromeos_acpi_device_driver);
+> +
+> +MODULE_AUTHOR("Enric Balletbo i Serra <enric.balletbo@collabora.com>");
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("ChromeOS specific ACPI extensions");
 > --
+> 2.30.2
+>
+>
+
+Excuse me if I have missed previous discussions about it, but I am confused=
+ by
+the design. Why is a global variable needed here? The global struct's membe=
+rs
+are overwritten in the probe method in any case.
+
+And checkpatch reports that no MAINTAINERS entry has been added for the new=
+ file.
+(And it appears to be right if I have not missed anything.)
+
+
+Regards,
+Barnab=C3=A1s P=C5=91cze
