@@ -2,106 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C2F5034C4
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Apr 2022 09:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C20350355B
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Apr 2022 10:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230154AbiDPHwD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 16 Apr 2022 03:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43282 "EHLO
+        id S230464AbiDPIwf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 16 Apr 2022 04:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230166AbiDPHwB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Apr 2022 03:52:01 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9580AFFF87
-        for <linux-acpi@vger.kernel.org>; Sat, 16 Apr 2022 00:49:27 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id 14so5883913ily.11
-        for <linux-acpi@vger.kernel.org>; Sat, 16 Apr 2022 00:49:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=bJd2DIgtyK+bZCVQpMa9XLiI7bVnFQgVFeGzbZ6bXamjrEFIUCNaIDR9YpvR5iTRQC
-         EoRjHn2hxdGgHpTmUXoJLhLdkz8kw8CpdMkf+RjOM2yxgJf0M2w5tnzpw0NiczM9cGQm
-         aTRY2J48j2+AVBVM6ZplapTERLwB7sqpQHn0KTPy+GATyEE1HlWbU25nZewZyTln9PiO
-         eb2iuPe3VcoLkYjZ6tmC44EeIcF1BzRiek/y+/+gg720T1wEvd/5m2iOgdTIUS3isI5Z
-         q2z1OdX/gYACU6OexrbNcXzEKBC+MKUq0Bm7V68HpmeyS3D5tFhEEP1iOfnkPKJo7x6w
-         XtNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=fyDkeQyMVQv4gZtKUgaYsNGom4qMuIlUjsUCirGTFt+Nab62C+C+cZ2XgMFAgv/C+7
-         Vaq0U8kaOi8llcZZ6gLzR+v3zS1RoxU2pcM9hgTh1zTmhmsduUoV5Umt4Ru4KB2ThWsu
-         DFJsVwp9kN9rsFezF8B1q+HU2dLtuVbekU2nl21MqA3hK0sQ0tOlHgRAhIiJHOx+hxYg
-         tAaxqDOVWFTi5JBuufu2X1d01RvSmGde0waqR1D631o47C0mpGCBSNladgwBXfOwFwfU
-         jx9QNcjlgKRMw9kQw/zsHK6B54Ab6r/+oa0YyfxPFQnZKyzDwml+P2Nl7W+OtqVgMAU7
-         +Htg==
-X-Gm-Message-State: AOAM532rHtr4N348bdOmd2FBMXKZcd3O/WIrp6LVdpjJJHQhOaB+m1Jk
-        Ghl1RWGSHE+YoL15rdXCwrQHCDAa7l0uaxSWiTk=
-X-Google-Smtp-Source: ABdhPJzPQ782jxaaybf4v05kBQtFRTzv0MMrux20NcZ4Q10XmGrK6dnUIabFDBNBmBOv8fFyQY5zqzYAgf4Cnc3KaCc=
-X-Received: by 2002:a92:508:0:b0:2cb:ebd8:a76b with SMTP id
- q8-20020a920508000000b002cbebd8a76bmr1009500ile.156.1650095366830; Sat, 16
- Apr 2022 00:49:26 -0700 (PDT)
+        with ESMTP id S229871AbiDPIw1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Apr 2022 04:52:27 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A299F6E8;
+        Sat, 16 Apr 2022 01:49:56 -0700 (PDT)
+Received: from localhost (mdns.lwn.net [45.79.72.68])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id BD9202CC;
+        Sat, 16 Apr 2022 08:49:54 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net BD9202CC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1650098995; bh=4dWL/I1aLMHTi0A6a9JPUmXHoDlp+6ZAjF2wqhO9xfI=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=FvfShgNKtlOCDXG86BVrxCG3dgUcSNa1CxjujVAzqRea77H9jb8dJIQ7mV//Jp+Dr
+         NBO7BZqNUisWnoCSLJrTTjmsH9nhAldXwUQtQ0RXguZQlKVV0m+P2N5FpTcaCeMRos
+         UtpzmpufaUOycnRvq/cnDpxogFvwoqylrMc1E3g5Xa/7yA5gz3K0kkmmgnoXOeGTV9
+         0UcEMn684V4hhw5NzhpFshZeJJv6KRnuL4GR307vMW6oszAemvzlwj+rAdhcwy45pT
+         VyiB5bDKJIpDSqKSYVaF452nuBwMHbEYSz+Kq95Ovbfh5OawYe9Wq2vMXoChqeUk9z
+         mIeRa3g6ifEWA==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        linux-s390@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        linux-ia64@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <lenb@kernel.org>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-doc@vger.kernel.org
+Subject: Re: [PATCH 0/3 v3] Documentation: kernel-parameters: alphabetize
+ and misc. fixes
+In-Reply-To: <20220403054822.16868-1-rdunlap@infradead.org>
+References: <20220403054822.16868-1-rdunlap@infradead.org>
+Date:   Sat, 16 Apr 2022 02:49:52 -0600
+Message-ID: <87r15x2z0v.fsf@meer.lwn.net>
 MIME-Version: 1.0
-Received: by 2002:a05:6638:1309:0:0:0:0 with HTTP; Sat, 16 Apr 2022 00:49:26
- -0700 (PDT)
-Reply-To: daniel.seyba@yahoo.com
-From:   Seyba Daniel <royhalton13@gmail.com>
-Date:   Sat, 16 Apr 2022 09:49:26 +0200
-Message-ID: <CALSxb2w9zQYotuLcRSCPns53ksvT9UrEMVx-1Cp1f8RE7er3cA@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:144 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [royhalton13[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [royhalton13[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
+Randy Dunlap <rdunlap@infradead.org> writes:
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+> Alphabetize parts of kernel-parameters.txt. Alphabetize the "legends"
+> in kernel-parameters.rst. Add a few and drop a few outdated legends.
+>
+>
+>  [PATCH 1/3 v3] Docs: admin/kernel-parameters: edit a few boot options
+>  [PATCH 2/3 v3] Docs/admin: alphabetize some kernel-parameters (part 1)
+>  [PATCH 3/3 v3] docs/admin: alphabetize parts of kernel-parameters.txt (part 2)
+>
+>  Documentation/admin-guide/kernel-parameters.rst |   11 
+>  Documentation/admin-guide/kernel-parameters.txt |  326 +++++++-------
+>  2 files changed, 180 insertions(+), 157 deletions(-)
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+Series applied, thanks.
 
-So please confirm interest by responding back.
-
-My dearest regards
-
-Seyba Daniel
+jon
