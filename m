@@ -2,269 +2,191 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5D3C505D88
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Apr 2022 19:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D19BE505DA5
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Apr 2022 19:45:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347125AbiDRReJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Apr 2022 13:34:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55046 "EHLO
+        id S1347219AbiDRRrn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Apr 2022 13:47:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346882AbiDRReC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Apr 2022 13:34:02 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E44F2E9D0;
-        Mon, 18 Apr 2022 10:31:22 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: usama.anjum)
-        with ESMTPSA id 8F5C41F43401
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1650303080;
-        bh=mz68syY+TXaUMaWTzwA0UZdrUTQUGhs7WvFzMxPkjEY=;
-        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=hYxxZo+3YPQCgaNaahvFFIpssMOrFxvlGt9R9tNwGNyFTD9OhKhYh0YK27yoeEshT
-         ejEvUNgcqmZxxtS+I+zSXnXVXcNEdpRFavMM6MaX+qLfVlQXxam0yXRrzOVnqE2xUZ
-         oqjXJxyjnEvdRJVFe5LwTygNk38eS5H1Xpq3if0xwrGaYkSXZsO1U6D4okGCfanPCx
-         ANwdV4fZ+Aid5/Bh/Xicqu6w2vIZCePqN7aMpQIB1pFs7C0fAbSRZ5pXx59fmS8beo
-         b4K43MsX9lgWUTlm++avuPXri1sX7oTFmHdrIXLJ7Ddy3kK3Db2y+sZ9g2DgtydCEt
-         wbn6UqLG8MBKw==
-Message-ID: <78e3e1e9-e21f-052a-ecff-1d13714b4303@collabora.com>
-Date:   Mon, 18 Apr 2022 22:31:08 +0500
+        with ESMTP id S1347213AbiDRRrm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Apr 2022 13:47:42 -0400
+Received: from mellanox.co.il (mail-il-dmz.mellanox.com [193.47.165.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D5EB265CC
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Apr 2022 10:45:00 -0700 (PDT)
+Received: from Internal Mail-Server by MTLPINE1 (envelope-from asmaa@mellanox.com)
+        with SMTP; 18 Apr 2022 20:44:59 +0300
+Received: from farm-0002.mtbu.labs.mlnx (farm-0002.mtbu.labs.mlnx [10.15.2.32])
+        by mtbu-labmailer.labs.mlnx (8.14.4/8.14.4) with ESMTP id 23IHirUX030638;
+        Mon, 18 Apr 2022 13:44:55 -0400
+Received: (from asmaa@localhost)
+        by farm-0002.mtbu.labs.mlnx (8.14.7/8.13.8/Submit) id 23IHir2J004378;
+        Mon, 18 Apr 2022 13:44:53 -0400
+From:   Asmaa Mnebhi <asmaa@nvidia.com>
+To:     sre@kernel.org, linux-pm@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Asmaa Mnebhi <asmaa@nvidia.com>, linus.walleij@linaro.org
+Subject: [PATCH v1 1/1] Support power control driver for BlueField SoCs.
+Date:   Mon, 18 Apr 2022 13:44:50 -0400
+Message-Id: <20220418174450.4304-1-asmaa@nvidia.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Cc:     usama.anjum@collabora.com, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Collabora Kernel ML <kernel@collabora.com>,
-        groeck@chromium.org, bleung@chromium.org, dtor@chromium.org,
-        gwendal@chromium.org, vbendeb@chromium.org, andy@infradead.org,
-        Ayman Bagabas <ayman.bagabas@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
-        Darren Hart <dvhart@infradead.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jeremy Soller <jeremy@system76.com>,
-        Mattias Jacobsson <2pi@mok.nu>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Rajat Jain <rajatja@google.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Enric Balletbo i Serra <eballetbo@gmail.com>
-Subject: Re: [PATCH v8] platform: x86: Add ChromeOS ACPI device driver
-Content-Language: en-US
-To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
-References: <Ylmmf03fewXEjRr0@debian-BULLSEYE-live-builder-AMD64>
- <eygNMwL4gadqjJuOq-syanavJ5sAb5_dHTcQ0V9TU5kM5uh5TZUQXdYsNFTtnSm1ZI5WKhw7BgzG8lXEwJKEZz4agWq5_HkFDGWiFuuo7fE=@protonmail.com>
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <eygNMwL4gadqjJuOq-syanavJ5sAb5_dHTcQ0V9TU5kM5uh5TZUQXdYsNFTtnSm1ZI5WKhw7BgzG8lXEwJKEZz4agWq5_HkFDGWiFuuo7fE=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+This patch supports handling 2 BlueField power states controlled by GPIO interrupts:
+1) chip reset and
+2) low power mode
 
-Thanks for reviewing.
+This driver is dependent and should be loaded after the gpio-mlxbf2.c driver,
+which is the gpio and interrupt controller.
 
->> +	switch (element->type) {
->> +	case ACPI_TYPE_BUFFER:
->> +		length = element->buffer.length;
->> +		info->data = kmemdup(element->buffer.pointer,
->> +				     length, GFP_KERNEL);
->> +		break;
->> +	case ACPI_TYPE_INTEGER:
->> +		length = snprintf(buffer, sizeof(buffer), "%d",
->> +				  (int)element->integer.value);
->> +		info->data = kmemdup(buffer, length, GFP_KERNEL);
-> 
-> You can use `kasprintf()` here, no?
-> 
-Choosing kmemdup vs k*printf depends on what is being achieved. Usage of
-kmemdup indicates that only the memory is being duplicated here. While
-in case of k*printf, some transformation is done. Thus in normal memory
-duplication cases like this, the usage of kmemdup makes code more
-readable and seems preferable to me.
+Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+---
+ drivers/power/reset/Kconfig     |   6 ++
+ drivers/power/reset/Makefile    |   1 +
+ drivers/power/reset/pwr-mlxbf.c | 100 ++++++++++++++++++++++++++++++++
+ 3 files changed, 107 insertions(+)
+ create mode 100644 drivers/power/reset/pwr-mlxbf.c
 
->> +static int chromeos_acpi_handle_package(struct platform_device *pdev,
->> +					union acpi_object *obj, char *name)
->> +{
->> +	struct device *dev = &pdev->dev;
->> +	int count = obj->package.count;
->> +	union acpi_object *element;
->> +	int i, ret;
->> +
->> +	element = obj->package.elements;
->> +	for (i = 0; i < count; i++, element++) {
->> +		if (element->type == ACPI_TYPE_BUFFER ||
->> +		    element->type == ACPI_TYPE_STRING ||
->> +		    element->type == ACPI_TYPE_INTEGER) {
->> +			/* Create a single attribute in the root directory */
->> +			ret = chromeos_acpi_add_attr(chromeos_acpi.root,
->> +						     element, name,
->> +						     count, i);
->> +			if (ret) {
->> +				dev_err(dev, "error adding attributes (%d)\n",
->> +					ret);
->> +				return ret;
->> +			}
->> +			chromeos_acpi.num_attrs++;
->> +		} else if (element->type == ACPI_TYPE_PACKAGE) {
->> +			/* Create a group of attributes */
->> +			ret = chromeos_acpi_add_group(element, name, count, i);
->> +			if (ret) {
->> +				dev_err(dev, "error adding a group (%d)\n",
->> +					ret);
->> +				return ret;
->> +			}
->> +		} else {
->> +			if (ret) {
-> 
-> `ret` can be potentially uninitialized here, no?
-> 
-> 
-This driver is written in this way that the element->type must be from
-these 4 types always. Having a second look, it seems a bit illogical to
-check the value of ret if some other element->type happen to be present.
-I'll remove this `if (ret)` condition entirely.
-
->> +				dev_err(dev, "error on element type (%d)\n",
->> +					ret);
->> +				return -EINVAL;
->> +			}
->> +		}
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +/**
->> + * chromeos_acpi_add_method() - Evaluate an ACPI method and create sysfs
->> + *				attributes
->> + *
->> + * @pdev: Platform device
->> + * @name: Name of the method to evaluate
->> + *
->> + * Return: 0 on success, non-zero on failure
->> + */
->> +static int chromeos_acpi_add_method(struct platform_device *pdev, char *name)
->> +{
->> +	struct device *dev = &pdev->dev;
->> +	struct acpi_buffer output = { ACPI_ALLOCATE_BUFFER, NULL };
->> +	acpi_status status;
->> +	int ret = 0;
->> +
->> +	status = acpi_evaluate_object(ACPI_COMPANION(&pdev->dev)->handle, name, NULL, &output);
->> +	if (ACPI_FAILURE(status)) {
->> +		dev_err(dev, "failed to retrieve %s (%d)\n", name, status);
-> 
-> (maybe `acpi_format_exception(status)` would be more meaningful than the numeric value)
->
-Yeah, it'll be more better. I'll use this macro.
-
-> 
->> +		return status;
-> 
-> This return value is potentially propagated to become the return value of
-> the probe function. The problem is that it is not a negative errno that the probe
-> method should return but rather an ACPI status code.
-> 
-Good catch. I'll return -EINVAL here instead.
-
-> 
->> +	}
->> +
->> +	if (((union acpi_object *)output.pointer)->type == ACPI_TYPE_PACKAGE)
->> +		ret = chromeos_acpi_handle_package(pdev, output.pointer, name);
->> +
->> +	kfree(output.pointer);
->> +	return ret;
->> +}
->> +
->> +/**
->> + * chromeos_acpi_process_mlst() - Evaluate the MLST method and add methods
->> + *				  listed in the response
->> + *
->> + * @pdev: Platform device
->> + *
->> + * Returns: 0 if successful, non-zero if error.
->> + */
->> +static int chromeos_acpi_process_mlst(struct platform_device *pdev)
->> +{
->> +	struct chromeos_acpi_attribute_group *aag;
->> +	char name[ACPI_NAMESEG_SIZE + 1];
->> +	union acpi_object *element, *obj;
->> +	struct device *dev = &pdev->dev;
->> +	struct acpi_buffer output = { ACPI_ALLOCATE_BUFFER, NULL };
->> +	acpi_status status;
->> +	int ret = 0;
->> +	int size;
->> +	int i;
->> +
->> +	status = acpi_evaluate_object(ACPI_COMPANION(&pdev->dev)->handle, MLST, NULL,
->> +				      &output);
->> +	if (ACPI_FAILURE(status))
->> +		return status;
->> +
->> +	obj = output.pointer;
->> +	if (obj->type != ACPI_TYPE_PACKAGE) {
->> +		ret = -EINVAL;
->> +		goto free_acpi_buffer;
->> +	}
->> +
->> +	element = obj->package.elements;
->> +	for (i = 0; i < obj->package.count; i++, element++) {
->> +		if (element->type == ACPI_TYPE_STRING) {
->> +			size = min(element->string.length + 1,
->> +				   (u32)ACPI_NAMESEG_SIZE + 1);
-> 
-> Is truncation a real possibility? Shouldn't it abort/etc. in that case?
-> And `min()` "returns" a u32 here but `size` is an `int`.
-> 
-There is not likely, but can still happen. We want to not abort and
-carry on with truncated string. I'll update the type of size to u32.
-
-> 
->> +			strscpy(name, element->string.pointer, size);
->> +			ret = chromeos_acpi_add_method(pdev, name);
->> +			if (ret) {
->> +				chromeos_acpi_remove_groups();
->> +				break;
-> 
-> Is just a `break` is enough here to handle the error? If this is not fatal,
-> then why is a `dev_warn()` not sufficient? If this is fatal, why continue
-> with the rest of the function?
-> 
-I'll have a look.
-
-> 
-> Excuse me if I have missed previous discussions about it, but I am confused by
-> the design. Why is a global variable needed here? The global struct's members
-> are overwritten in the probe method in any case.
-> 
-The global variable is needed in probe and remove functions. Researching
-this more, I think dev->driver_data can be used instead of global
-variable. I'll test it. Thanks for mentioning it.
-
-> And checkpatch reports that no MAINTAINERS entry has been added for the new file.
-> (And it appears to be right if I have not missed anything.)
-> 
-I thought there will be default maintainer of this directory. But there
-isn't. I'll send a separate email to discuss this.
-
-> 
-> Regards,
-> Barnabás Pőcze
-
+diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
+index 4b563db3ab3e..a8c46ba5878f 100644
+--- a/drivers/power/reset/Kconfig
++++ b/drivers/power/reset/Kconfig
+@@ -297,4 +297,10 @@ config NVMEM_REBOOT_MODE
+ 	  then the bootloader can read it and take different
+ 	  action according to the mode.
+ 
++config POWER_MLXBF
++	tristate "Mellanox BlueField power handling driver"
++	depends on (GPIO_MLXBF2 && ACPI)
++	help
++	  This driver supports reset or low power mode handling for Mellanox BlueField.
++
+ endif
+diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
+index f606a2f60539..0a39424fc558 100644
+--- a/drivers/power/reset/Makefile
++++ b/drivers/power/reset/Makefile
+@@ -35,3 +35,4 @@ obj-$(CONFIG_REBOOT_MODE) += reboot-mode.o
+ obj-$(CONFIG_SYSCON_REBOOT_MODE) += syscon-reboot-mode.o
+ obj-$(CONFIG_POWER_RESET_SC27XX) += sc27xx-poweroff.o
+ obj-$(CONFIG_NVMEM_REBOOT_MODE) += nvmem-reboot-mode.o
++obj-$(CONFIG_POWER_MLXBF) += pwr-mlxbf.o
+diff --git a/drivers/power/reset/pwr-mlxbf.c b/drivers/power/reset/pwr-mlxbf.c
+new file mode 100644
+index 000000000000..30b3ba13be75
+--- /dev/null
++++ b/drivers/power/reset/pwr-mlxbf.c
+@@ -0,0 +1,100 @@
++// SPDX-License-Identifier: GPL-2.0-only or BSD-3-Clause
++
++/*
++ *  Copyright (c) 2022 NVIDIA CORPORATION & AFFILIATES.
++ */
++
++#include <linux/acpi.h>
++#include <linux/device.h>
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/pm.h>
++#include <linux/reboot.h>
++#include <linux/types.h>
++
++const char *rst_pwr_hid = "MLNXBF24";
++const char *low_pwr_hid = "MLNXBF29";
++
++struct pwr_mlxbf {
++	struct work_struct send_work;
++	const char *hid;
++};
++
++static void pwr_mlxbf_send_work(struct work_struct *work)
++{
++	acpi_bus_generate_netlink_event("button/power.*", "Power Button", 0x80, 1);
++}
++
++static irqreturn_t pwr_mlxbf_irq(int irq, void *ptr)
++{
++	struct pwr_mlxbf *priv = ptr;
++
++	if (!strncmp(priv->hid, rst_pwr_hid, 8))
++		emergency_restart();
++
++	if (!strncmp(priv->hid, low_pwr_hid, 8))
++		schedule_work(&priv->send_work);
++
++	return IRQ_HANDLED;
++}
++
++static int
++pwr_mlxbf_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct acpi_device *adev;
++	struct pwr_mlxbf *priv;
++	const char *hid;
++	int irq, err;
++
++	priv = devm_kzalloc(dev, sizeof(struct pwr_mlxbf), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	adev = ACPI_COMPANION(dev);
++	if (!adev)
++		return -ENXIO;
++
++	hid = acpi_device_hid(adev);
++	priv->hid = hid;
++
++	irq = acpi_dev_gpio_irq_get(ACPI_COMPANION(&pdev->dev), 0);
++	if (irq == -EPROBE_DEFER) {
++		return -EPROBE_DEFER;
++	} else if (irq < 0) {
++		dev_err(&pdev->dev, "Error getting %s irq.\n", priv->hid);
++		return -ENXIO;
++	}
++
++	INIT_WORK(&priv->send_work, pwr_mlxbf_send_work);
++
++	err = devm_request_irq(&pdev->dev, irq, pwr_mlxbf_irq, 0, hid, priv);
++	if (err)
++		dev_err(&pdev->dev, "Failed request of %s irq\n", priv->hid);
++
++	return err;
++}
++
++static const struct acpi_device_id __maybe_unused pwr_mlxbf_acpi_match[] = {
++	{ "MLNXBF24", 0 },
++	{ "MLNXBF29", 0 },
++	{},
++};
++MODULE_DEVICE_TABLE(acpi, pwr_mlxbf_acpi_match);
++
++static struct platform_driver pwr_mlxbf_driver = {
++	.driver = {
++		.name = "pwr_mlxbf",
++		.acpi_match_table = pwr_mlxbf_acpi_match,
++	},
++	.probe    = pwr_mlxbf_probe,
++};
++
++module_platform_driver(pwr_mlxbf_driver);
++
++MODULE_DESCRIPTION("Mellanox BlueField power driver");
++MODULE_AUTHOR("Asmaa Mnebhi <asmaa@nvidia.com>");
++MODULE_LICENSE("Dual BSD/GPL");
 -- 
-Muhammad Usama Anjum
+2.30.1
+
