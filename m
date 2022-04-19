@@ -2,89 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82911506824
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Apr 2022 11:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16620506F90
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Apr 2022 15:59:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241947AbiDSKCH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Apr 2022 06:02:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55992 "EHLO
+        id S1344750AbiDSOAh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Apr 2022 10:00:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241931AbiDSKCF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Apr 2022 06:02:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0EB4522530
-        for <linux-acpi@vger.kernel.org>; Tue, 19 Apr 2022 02:59:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1650362362;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZYCbCMusX5qnw2HYP1MeCveqjGocg9sXBdk9ZKPneIA=;
-        b=dTg+1KY04kMNJ0bxuOnuYDG85+S0YfutMIn5FZ2fBU6/CVRwL8dT4OqRLRBMMygYWhEd8T
-        YwI6KA1DLv56gaXwSSkAob+rSCoGz14olvuPQ03TmDTMG2FYQ194M1e1ByzCL3ibz7kyPa
-        B4P7tI9DtVXG2W2+acR/tQB8KgTaOGM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-484-hzlmhXCiMRiXCYijkJSI2w-1; Tue, 19 Apr 2022 05:59:20 -0400
-X-MC-Unique: hzlmhXCiMRiXCYijkJSI2w-1
-Received: by mail-ej1-f69.google.com with SMTP id ne8-20020a1709077b8800b006e87e97d2e7so5681241ejc.3
-        for <linux-acpi@vger.kernel.org>; Tue, 19 Apr 2022 02:59:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=ZYCbCMusX5qnw2HYP1MeCveqjGocg9sXBdk9ZKPneIA=;
-        b=paC/x0K8GsrG9Z+62KNKU9y4Dl4ZgvK/yTOSzVBMQfqzu9BYsvybNw5zKb+ULdG7zH
-         rIGl+sYzSRyUZx7xXcDv84COLZkecIRoUGybo83kKp34kutNRzGq2Uc0eiw82QLAcig+
-         9gUri2RzBmJtHMaSvyICnsI1sMXnsnYHVOUVlJ7i7wkMCOFwQGXi7mqRzcpFjtz7Vm/V
-         fXQPI0ApgLiarKhA4bvlPLtcsrU5fFaNOA/eQX0wYBG14Rwde7tXcjSdYBZRo9hXb2/c
-         si3vJF09LUvxs5aokXmlZlsjXMezJXhKkl4en39TH2h7KeKp7hXfJ7SV4oPyyu0eyUyQ
-         5EBQ==
-X-Gm-Message-State: AOAM530gPA92owlv/eEasDoeaeDMeoXm/J26ZtHDpcR/NF4FgOJ7a0M9
-        w6nEFhk+SLvVlaKriJ1Q2ai47FVceqFiCfXVe03iX9FrXP18y93ONC57wXenMO9peVt5MAOJNJA
-        xcjnrbtIRRH7ahdZgnQas8w==
-X-Received: by 2002:a17:907:96a1:b0:6e8:9dce:c3bc with SMTP id hd33-20020a17090796a100b006e89dcec3bcmr12479266ejc.589.1650362359322;
-        Tue, 19 Apr 2022 02:59:19 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxPj/oCA2jmmG43YRFtvikiwgaJYI1/P+OfA2QaPriTfw/gSnUO1tnTCTWh6or2Q3Awqulg1A==
-X-Received: by 2002:a17:907:96a1:b0:6e8:9dce:c3bc with SMTP id hd33-20020a17090796a100b006e89dcec3bcmr12479257ejc.589.1650362359077;
-        Tue, 19 Apr 2022 02:59:19 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id vw17-20020a170907059100b006e8732d1944sm5460828ejb.5.2022.04.19.02.59.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Apr 2022 02:59:18 -0700 (PDT)
-Message-ID: <d75ede81-49da-855a-6679-c3315089e067@redhat.com>
-Date:   Tue, 19 Apr 2022 11:59:17 +0200
+        with ESMTP id S235548AbiDSOAg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Apr 2022 10:00:36 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFAC38DB4
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Apr 2022 06:57:51 -0700 (PDT)
+Received: from fsav414.sakura.ne.jp (fsav414.sakura.ne.jp [133.242.250.113])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 23JDvF6E043713;
+        Tue, 19 Apr 2022 22:57:16 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav414.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav414.sakura.ne.jp);
+ Tue, 19 Apr 2022 22:57:15 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav414.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 23JDvEXF043698
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 19 Apr 2022 22:57:15 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <892bb009-4ba8-15fa-c8f9-eb66ab75b2f0@I-love.SAKURA.ne.jp>
+Date:   Tue, 19 Apr 2022 22:57:12 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH v2 0/3] x86/PCI: Log E820 clipping
 Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>
-References: <20220414182252.758742-1-helgaas@kernel.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220414182252.758742-1-helgaas@kernel.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
+Cc:     linux-acpi@vger.kernel.org
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH] ACPI: Avoid flush_scheduled_work() usage
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -92,57 +51,156 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+Flushing system-wide workqueues is dangerous and will be forbidden.
+Replace system_wq with local acpi_wq.
 
-On 1/1/70 01:00, Bjorn Helgaas wrote:
-> This is still work-in-progress on the issue of PNP0A03 _CRS methods that
-> are buggy or not interpreted correctly by Linux.
-> 
-> The previous try at:
->   https://lore.kernel.org/r/20220304035110.988712-1-helgaas@kernel.org
-> caused regressions on some Chromebooks:
->   https://lore.kernel.org/r/Yjyv03JsetIsTJxN@sirena.org.uk
-> 
-> This v2 drops the commit that caused the Chromebook regression, so it also
-> doesn't fix the issue we were *trying* to fix on Lenovo Yoga and Clevo
-> Barebones.
-> 
-> The point of this v2 update is to split the logging patch into (1) a pure
-> logging addition and (2) the change to only clip PCI windows, which was
-> previously hidden inside the logging patch and not well documented.
-> 
-> Bjorn Helgaas (3):
->   x86/PCI: Eliminate remove_e820_regions() common subexpressions
->   x86: Log resource clipping for E820 regions
->   x86/PCI: Clip only host bridge windows for E820 regions
+Link: https://lkml.kernel.org/r/49925af7-78a8-a3dd-bce6-cfc02e1a9236@I-love.SAKURA.ne.jp
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+---
+This patch blindly converts schedule_{,rcu_}work() into queue_{,rcu_}work()
+within drivers/acpi/ directory, based on an assumption that none of work items
+outside of drivers/acpi/ directory needs to be handled by acpi_wq.
+Also, I kept sharing acpi_wq between acpi/ and acpi/apei, based on assumption
+that sharing is safe and correct behavior. Did I convert correctly?
 
-Thanks, the entire series looks good to me:
+ drivers/acpi/acpi_video.c         | 2 +-
+ drivers/acpi/apei/apei-internal.h | 1 +
+ drivers/acpi/apei/ghes.c          | 2 +-
+ drivers/acpi/bus.c                | 2 +-
+ drivers/acpi/internal.h           | 1 +
+ drivers/acpi/osl.c                | 6 +++++-
+ drivers/acpi/scan.c               | 2 +-
+ drivers/acpi/video_detect.c       | 2 +-
+ 8 files changed, 12 insertions(+), 6 deletions(-)
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-For the series.
-
-So what is the plan to actually fix the issue seen on some Lenovo models
-and Clevo Barebones ?   As I mentioned previously I think that since all
-our efforts have failed so far that we should maybe reconsider just
-using DMI quirks to ignore the E820 reservation windows for host bridges
-on affected models ?
-
-That or implement 3 of:
-
-> So I think the progression is:
->
->  1) Remove anything mentioned in E820 from _CRS (4dc2287c1805 [7]).
->     This worked around some issues on Dell systems.
->
->  2) Remove things mentioned in E820 unless they cover the entire
->     window (5949965ec934 [8])
->
->  3) Coalesce adjacent _CRS windows, *then* remove things mentioned in
->     E820 unless they cover the entire (coalesced) window (current
->     proposal)
-
-Regards,
-
-Hans
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 990ff5b0aeb8..18a5b8dd766e 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -1637,7 +1637,7 @@ static void brightness_switch_event(struct acpi_video_device *video_device,
+ 		return;
+ 
+ 	video_device->switch_brightness_event = event;
+-	schedule_delayed_work(&video_device->switch_brightness_work, HZ / 10);
++	queue_delayed_work(acpi_wq, &video_device->switch_brightness_work, HZ / 10);
+ }
+ 
+ static void acpi_video_device_notify(acpi_handle handle, u32 event, void *data)
+diff --git a/drivers/acpi/apei/apei-internal.h b/drivers/acpi/apei/apei-internal.h
+index 1d6ef9654725..205dcacf8abf 100644
+--- a/drivers/acpi/apei/apei-internal.h
++++ b/drivers/acpi/apei/apei-internal.h
+@@ -136,4 +136,5 @@ int cper_estatus_check_header(const struct acpi_hest_generic_status *estatus);
+ int cper_estatus_check(const struct acpi_hest_generic_status *estatus);
+ 
+ int apei_osc_setup(void);
++extern struct workqueue_struct *acpi_wq;
+ #endif
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index d91ad378c00d..871b5f6c2b45 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -619,7 +619,7 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
+ 	entry->error_severity = sev;
+ 
+ 	INIT_WORK(&entry->work, ghes_vendor_record_work_func);
+-	schedule_work(&entry->work);
++	queue_work(acpi_wq, &entry->work);
+ }
+ 
+ static bool ghes_do_proc(struct ghes *ghes,
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index e807bffc0804..7dae7f884187 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -608,7 +608,7 @@ static void acpi_sb_notify(acpi_handle handle, u32 event, void *data)
+ 
+ 	if (event == ACPI_SB_NOTIFY_SHUTDOWN_REQUEST) {
+ 		if (!work_busy(&acpi_sb_work))
+-			schedule_work(&acpi_sb_work);
++			queue_work(acpi_wq, &acpi_sb_work);
+ 	} else
+ 		pr_warn("event %x is not supported by \\_SB device\n", event);
+ }
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index 628bf8f18130..5f77c7c573a6 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -77,6 +77,7 @@ void acpi_lpss_init(void);
+ #else
+ static inline void acpi_lpss_init(void) {}
+ #endif
++extern struct workqueue_struct *acpi_wq;
+ 
+ void acpi_apd_init(void);
+ 
+diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+index 7a70c4bfc23c..1725125890cd 100644
+--- a/drivers/acpi/osl.c
++++ b/drivers/acpi/osl.c
+@@ -64,6 +64,7 @@ static int (*__acpi_os_prepare_extended_sleep)(u8 sleep_state, u32 val_a,
+ 
+ static acpi_osd_handler acpi_irq_handler;
+ static void *acpi_irq_context;
++struct workqueue_struct *acpi_wq;
+ static struct workqueue_struct *kacpid_wq;
+ static struct workqueue_struct *kacpi_notify_wq;
+ static struct workqueue_struct *kacpi_hotplug_wq;
+@@ -1575,7 +1576,7 @@ acpi_status acpi_release_memory(acpi_handle handle, struct resource *res,
+ 	 */
+ 	synchronize_rcu();
+ 	rcu_barrier();
+-	flush_scheduled_work();
++	flush_workqueue(acpi_wq);
+ 
+ 	return AE_OK;
+ }
+@@ -1755,9 +1756,11 @@ acpi_status __init acpi_os_initialize(void)
+ 
+ acpi_status __init acpi_os_initialize1(void)
+ {
++	acpi_wq = alloc_workqueue("acpi", 0, 0);
+ 	kacpid_wq = alloc_workqueue("kacpid", 0, 1);
+ 	kacpi_notify_wq = alloc_workqueue("kacpi_notify", 0, 1);
+ 	kacpi_hotplug_wq = alloc_ordered_workqueue("kacpi_hotplug", 0);
++	BUG_ON(!acpi_wq);
+ 	BUG_ON(!kacpid_wq);
+ 	BUG_ON(!kacpi_notify_wq);
+ 	BUG_ON(!kacpi_hotplug_wq);
+@@ -1786,6 +1789,7 @@ acpi_status acpi_os_terminate(void)
+ 	destroy_workqueue(kacpid_wq);
+ 	destroy_workqueue(kacpi_notify_wq);
+ 	destroy_workqueue(kacpi_hotplug_wq);
++	destroy_workqueue(acpi_wq);
+ 
+ 	return AE_OK;
+ }
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 762b61f67e6c..f16aaec445f2 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2676,7 +2676,7 @@ void acpi_scan_table_notify(void)
+ 		return;
+ 
+ 	INIT_WORK(work, acpi_table_events_fn);
+-	schedule_work(work);
++	queue_work(acpi_wq, work);
+ }
+ 
+ int acpi_reconfig_notifier_register(struct notifier_block *nb)
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index becc198e4c22..441664275645 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -529,7 +529,7 @@ static int acpi_video_backlight_notify(struct notifier_block *nb,
+ 	/* A raw bl registering may change video -> native */
+ 	if (backlight->props.type == BACKLIGHT_RAW &&
+ 	    val == BACKLIGHT_REGISTERED)
+-		schedule_work(&backlight_notify_work);
++		queue_work(acpi_wq, &backlight_notify_work);
+ 
+ 	return NOTIFY_OK;
+ }
+-- 
+2.32.0
 
