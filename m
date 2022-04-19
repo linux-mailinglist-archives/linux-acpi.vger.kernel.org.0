@@ -2,387 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC121505F12
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Apr 2022 23:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF155066F8
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Apr 2022 10:32:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237320AbiDRVDi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Apr 2022 17:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43404 "EHLO
+        id S1343625AbiDSIeq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Apr 2022 04:34:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbiDRVDg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Apr 2022 17:03:36 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E943729CA5;
-        Mon, 18 Apr 2022 14:00:55 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id g13so1303643ejb.4;
-        Mon, 18 Apr 2022 14:00:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=s49MuJS7EtIm1BiU8ytUtIRhfv4IUVLxSmWXxvR9Bsg=;
-        b=e2kdszhFrvCaUrpm5fDjIoLI0C0X7JLgr2s0XZdTOSd84ExJSQSEmp3wOoOOcCT8tS
-         qwTWDGthc8Zv0iu5WYlUyBXBvBhhPR0sKOYVD/6ekJzVz6jbqSlIxoeqKGcMvOex06g+
-         xA90QhlyTVAv/J+7ptubmRbhS4yfk+e1mRgfcP5ay2PoyMjaqR2CiRUfrbjQZpSo2spu
-         6mzViQCKgOZjYIbna5ZWSMnmPOfYADCRnzF9BPPxPUJL14rRI9zOkgs7KAP/61IkaWPp
-         /Y9aQf5dbIT7/L8gVTdR6NESZyW48hwJ87+y4La5ROQOaGH+UMqKqA/KUaElm8tAfOCM
-         gefA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=s49MuJS7EtIm1BiU8ytUtIRhfv4IUVLxSmWXxvR9Bsg=;
-        b=LBXAbIRtYKY8jG3LnjW3DMe894dGz809600zbmMuVDmWoXhXhj526AUVNzYAenAAgF
-         yJoX1YQ21cSRerI4mdvL9WfWiVaZ0iT0wxM2RpyyECoIHlv9E03sUK1jQuihQaEVutHH
-         jujseSjsZYqT33TT65u7G6ThVpJvXeSvdnk6Wrsb9HAvCCPQ3nnCzv7/Kxf8pVxd2wTw
-         iXxL3lKiuRn853ThKkGc+g7n/Is//zLOrmbMfLUS+Dc6QEBShNfd3SrMKQma72I+95q2
-         PawST5pmlfEim9AIxFhrsjmk3u+Wv9NFJwTDdHB1iV4WB2uw8TExR5obkkatdg3r7PDa
-         rWTA==
-X-Gm-Message-State: AOAM531sy2/+43YgC2MZy+4xR/ExPiWv8Hpm43DOcSQ8zp4oMOBZcljo
-        153yJeWNA71wsyFZdqkrSyLSolvRT6gdHue/XvfRMzJ0b6srOq2b
-X-Google-Smtp-Source: ABdhPJyVa+tqzJ31xec8CMDzMFN/KxOGV0GSwFA/L+QTb4k3i/EZzvz5/Smdj2a5SA1IPi+9C5HfMIO+DVteR+nNHuM=
-X-Received: by 2002:a17:907:8a14:b0:6e8:9691:62f7 with SMTP id
- sc20-20020a1709078a1400b006e8969162f7mr10815351ejc.497.1650315654172; Mon, 18
- Apr 2022 14:00:54 -0700 (PDT)
+        with ESMTP id S236306AbiDSIep (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Apr 2022 04:34:45 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F43013D23
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Apr 2022 01:32:01 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KjH8l6Z68zhXXK;
+        Tue, 19 Apr 2022 16:31:51 +0800 (CST)
+Received: from dggpemm100002.china.huawei.com (7.185.36.179) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 19 Apr 2022 16:31:58 +0800
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggpemm100002.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 19 Apr 2022 16:31:57 +0800
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2375.024; Tue, 19 Apr 2022 09:31:55 +0100
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Christoph Hellwig <hch@infradead.org>,
+        Robin Murphy <robin.murphy@arm.com>
+CC:     "jon@solid-run.com" <jon@solid-run.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        yangyicong <yangyicong@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v9 06/11] ACPI/IORT: Add support to retrieve IORT RMR
+ reserved regions
+Thread-Topic: [PATCH v9 06/11] ACPI/IORT: Add support to retrieve IORT RMR
+ reserved regions
+Thread-Index: AQHYSCG95Y0d6z1dQEidSJE+wh/QIqzkZagAgAAHFACAAAGmAIASjl6g
+Date:   Tue, 19 Apr 2022 08:31:55 +0000
+Message-ID: <955601f02f3b474da3327963fb1630f0@huawei.com>
+References: <20220404124209.1086-1-shameerali.kolothum.thodi@huawei.com>
+ <20220404124209.1086-7-shameerali.kolothum.thodi@huawei.com>
+ <Yk7m8oDPtusDzReK@infradead.org>
+ <b50cded6-6777-c9c7-7030-a57f28771bc3@arm.com>
+ <Yk7uRPG1TwGFPbyY@infradead.org>
+In-Reply-To: <Yk7uRPG1TwGFPbyY@infradead.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.202.227.178]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <Ylmmf03fewXEjRr0@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <Ylmmf03fewXEjRr0@debian-BULLSEYE-live-builder-AMD64>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 19 Apr 2022 00:00:17 +0300
-Message-ID: <CAHp75VeahcM4jwQ_+65JOgqrDXHVrZvdpj8UaGVakJP0gFmZvQ@mail.gmail.com>
-Subject: Re: [PATCH v8] platform: x86: Add ChromeOS ACPI device driver
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Collabora Kernel ML <kernel@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Dmitry Torokhov <dtor@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>, vbendeb@chromium.org,
-        Andy Shevchenko <andy@infradead.org>,
-        Ayman Bagabas <ayman.bagabas@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        =?UTF-8?Q?Bla=C5=BE_Hrastnik?= <blaz@mxxn.io>,
-        Darren Hart <dvhart@infradead.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jeremy Soller <jeremy@system76.com>,
-        Mattias Jacobsson <2pi@mok.nu>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Rajat Jain <rajatja@google.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Enric Balletbo i Serra <eballetbo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 15, 2022 at 8:08 PM Muhammad Usama Anjum
-<usama.anjum@collabora.com> wrote:
->
-> From: Enric Balletbo i Serra <enric.balletbo@collabora.com>
->
-> The x86 Chromebooks have ChromeOS ACPI device. This driver attaches to
-
-Either 'devices' or ' the ChromeOS'.
-
-> the ChromeOS ACPI device and exports the values reported by ACPI in a
-> sysfs directory. This data isn't present in ACPI tables when read
-> through ACPI tools, hence a driver is needed to do it. The driver gets
-> data from firmware using ACPI component of the kernel. The ACPI values
-
-'the ACPI'
-
-> are presented in string form (numbers as decimal values) or binary
-> blobs, and can be accessed as the contents of the appropriate read only
-> files in the standard ACPI device's sysfs directory tree. This data is
-> consumed by the ChromeOS user space.
-
-...
-
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-No need to have in the commit message, esp. taking into account below tag.
-
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Missed Co-developed-by?
-
-> Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-
-...
-
-> +What:          /sys/bus/platform/devices/GGL0001:00/VBNV.1
-
-In all these examples theoretically the second part can be :01 or
-anything depending on how many devices of the kind the platform has
-(note, that may be the case when in the ACPI tables the first device,
-for example, simply has status not 15, like in multi-platform DSDT
-when it's done at boot-time).
-
-...
-
-> +Hardware functionality specific to Chrome OS is exposed through a Chrome OS ACPI device.
-> +The plug and play ID of a Chrome OS ACPI device is GGL0001. GGL is valid PNP ID of Google.
-
-a valid
-
-> +PNP ID can be used with the ACPI devices accourding to the guidelines. The following ACPI
-
-according
-
-> +objects are supported:
-
-...
-
-> +   * - 0x00000200
-> +     - Firmware write protect was disabled when x86 firmware booted. (required if
-
-protection
-
-> +       firmware write protect is controlled through x86 BIOS; otherwise optional)
-
-protection
-
-...
-
-> +MECK (Management Engine Checksum)
-> +=================================
-> +This control method returns the SHA-1 or SHA-256 hash that is read out of the Management
-> +Engine extend registers during boot. The hash is exported via ACPI so the OS can verify that
-
-extended ?
-
-> +the ME firmware has not changed. If Management Engine is not present, or if the firmware was
-> +unable to read the extend registers, this buffer can be zero.
-
-Ditto.
-
-...
-
-> +static char *chromeos_acpi_default_methods[] = {
-> +       "CHSW", "HWID", "BINF", "GPIO", "CHNV", "FWID", "FRID", MLST
-
-You can still leave comma at the end.
-
-> +};
-
-...
-
-> +static char *chromeos_acpi_gen_file_name(char *name, int count, int index)
-> +{
-> +       char *str;
-
-You can avoid it, by returning directly.
-
-> +       if (count == 1)
-> +               str = kstrdup(name, GFP_KERNEL);
-> +       else
-> +               str = kasprintf(GFP_KERNEL, "%s.%d", name, index);
-> +
-> +       return str;
-> +}
-
-...
-
-> +       switch (element->type) {
-> +       case ACPI_TYPE_BUFFER:
-> +               length = element->buffer.length;
-> +               info->data = kmemdup(element->buffer.pointer,
-> +                                    length, GFP_KERNEL);
-> +               break;
-> +       case ACPI_TYPE_INTEGER:
-
-> +               length = snprintf(buffer, sizeof(buffer), "%d",
-> +                                 (int)element->integer.value);
-> +               info->data = kmemdup(buffer, length, GFP_KERNEL);
-
-kasprintf()
-
-> +               break;
-> +       case ACPI_TYPE_STRING:
-> +               length = element->string.length + 1;
-> +               info->data = kstrdup(element->string.pointer, GFP_KERNEL);
-> +               break;
-> +       default:
-> +               ret = -EINVAL;
-> +               goto free_attr_name;
-> +       }
-
-> +       if (!info->data) {
-> +               ret = -ENOMEM;
-> +               goto free_attr_name;
-> +       }
-
-While saving a few lines of code this is more fragile to have it after
-the switch, because it might be in the future that some of those types
-won't fill info->data and be correct. But I have no strong opinion
-here.
-
-...
-
-> +                       if (ret) {
-> +                               dev_err(dev, "error adding attributes (%d)\n",
-> +                                       ret);
-> +                               return ret;
-> +                       }
-
-> +                       if (ret) {
-> +                               dev_err(dev, "error adding a group (%d)\n",
-> +                                       ret);
-> +                               return ret;
-> +                       }
-
-> +                       if (ret) {
-> +                               dev_err(dev, "error on element type (%d)\n",
-> +                                       ret);
-> +                               return -EINVAL;
-> +                       }
-
-I believe all three can be converted to return dev_error_probe(...);
-
-...
-
-> +static int chromeos_acpi_add_method(struct platform_device *pdev, char *name)
-> +{
-> +       struct device *dev = &pdev->dev;
-> +       struct acpi_buffer output = { ACPI_ALLOCATE_BUFFER, NULL };
-> +       acpi_status status;
-> +       int ret = 0;
-> +
-> +       status = acpi_evaluate_object(ACPI_COMPANION(&pdev->dev)->handle, name, NULL, &output);
-> +       if (ACPI_FAILURE(status)) {
-> +               dev_err(dev, "failed to retrieve %s (%d)\n", name, status);
-> +               return status;
-
-Are you sure it's valid error code returned here?
-
-> +       }
-> +
-> +       if (((union acpi_object *)output.pointer)->type == ACPI_TYPE_PACKAGE)
-> +               ret = chromeos_acpi_handle_package(pdev, output.pointer, name);
-> +
-> +       kfree(output.pointer);
-> +       return ret;
-> +}
-> +
-
-...
-
-> +       status = acpi_evaluate_object(ACPI_COMPANION(&pdev->dev)->handle, MLST, NULL,
-> +                                     &output);
-> +       if (ACPI_FAILURE(status))
-> +               return status;
-
-Are you sure it's correct error code returned here?
-
-> +       obj = output.pointer;
-> +       if (obj->type != ACPI_TYPE_PACKAGE) {
-> +               ret = -EINVAL;
-> +               goto free_acpi_buffer;
-> +       }
-
-...
-
-> +static int chromeos_acpi_device_probe(struct platform_device *pdev)
-> +{
-> +       struct chromeos_acpi_attribute_group *aag;
-> +       struct device *dev = &pdev->dev;
-> +       int i, ret;
-> +
-> +       aag = kzalloc(sizeof(*aag), GFP_KERNEL);
-
-devm_kzalloc() ?
-
-> +       if (!aag)
-> +               return -ENOMEM;
-> +
-> +       INIT_LIST_HEAD(&aag->attribs);
-> +       INIT_LIST_HEAD(&aag->list);
-> +       INIT_LIST_HEAD(&chromeos_acpi.groups);
-> +
-> +       chromeos_acpi.root = aag;
-> +
-> +       /*
-> +        * Attempt to add methods by querying the device's MLST method
-> +        * for the list of methods.
-> +        */
-> +       if (!chromeos_acpi_process_mlst(pdev))
-> +               return 0;
-> +
-> +       dev_dbg(dev, "falling back to default list of methods\n");
-> +
-> +       for (i = 0; i < ARRAY_SIZE(chromeos_acpi_default_methods); i++) {
-> +               ret = chromeos_acpi_add_method(pdev,
-> +                                              chromeos_acpi_default_methods[i]);
-> +               if (ret) {
-> +                       dev_err(dev, "failed to add default methods (%d)\n",
-> +                               ret);
-> +                       goto free_group_root;
-
-return dev_err_probe(...); ?
-
-> +               }
-> +       }
-> +
-> +       return 0;
-> +
-> +free_group_root:
-> +       kfree(chromeos_acpi.root);
-> +       return ret;
-> +}
-> +
-> +static int chromeos_acpi_device_remove(struct platform_device *pdev)
-> +{
-> +       /* Remove sysfs groups */
-> +       sysfs_remove_groups(&pdev->dev.kobj, chromeos_acpi.dev_groups);
-> +       kfree(chromeos_acpi.dev_groups);
-> +
-> +       /* Remove allocated chromeos acpi groups and attributes */
-> +       chromeos_acpi_remove_groups();
-
-I'm wondering why you have no such things in error path of the ->probe().
-
-> +       return 0;
-> +}
-
-...
-
-> +static struct platform_driver chromeos_acpi_device_driver = {
-> +       .probe = chromeos_acpi_device_probe,
-> +       .remove = chromeos_acpi_device_remove,
-> +       .driver = {
-> +               .name   = "chromeos-acpi",
-
-> +               .acpi_match_table = ACPI_PTR(chromeos_device_ids)
-
-The point of usage of ACPI_PTR is...?
-
-> +       }
-> +};
-
-> +
-
-No need to have this blank line.
-
-> +module_platform_driver(chromeos_acpi_device_driver);
-
--- 
-With Best Regards,
-Andy Shevchenko
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2hyaXN0b3BoIEhlbGx3
+aWcgW21haWx0bzpoY2hAaW5mcmFkZWFkLm9yZ10NCj4gU2VudDogMDcgQXByaWwgMjAyMiAxNTow
+MA0KPiBUbzogUm9iaW4gTXVycGh5IDxyb2Jpbi5tdXJwaHlAYXJtLmNvbT4NCj4gQ2M6IENocmlz
+dG9waCBIZWxsd2lnIDxoY2hAaW5mcmFkZWFkLm9yZz47IFNoYW1lZXJhbGkgS29sb3RodW0gVGhv
+ZGkNCj4gPHNoYW1lZXJhbGkua29sb3RodW0udGhvZGlAaHVhd2VpLmNvbT47IGpvbkBzb2xpZC1y
+dW4uY29tOyBMaW51eGFybQ0KPiA8bGludXhhcm1AaHVhd2VpLmNvbT47IHN0ZXZlbi5wcmljZUBh
+cm0uY29tOyBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsNCj4gaW9tbXVAbGlzdHMubGludXgt
+Zm91bmRhdGlvbi5vcmc7IHdhbmdodWlxaWFuZw0KPiA8d2FuZ2h1aXFpYW5nQGh1YXdlaS5jb20+
+OyBHdW9oYW5qdW4gKEhhbmp1biBHdW8pDQo+IDxndW9oYW5qdW5AaHVhd2VpLmNvbT47IHlhbmd5
+aWNvbmcgPHlhbmd5aWNvbmdAaHVhd2VpLmNvbT47DQo+IFNhbWkuTXVqYXdhckBhcm0uY29tOyB3
+aWxsQGtlcm5lbC5vcmc7DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZw0K
+PiBTdWJqZWN0OiBSZTogW1BBVENIIHY5IDA2LzExXSBBQ1BJL0lPUlQ6IEFkZCBzdXBwb3J0IHRv
+IHJldHJpZXZlIElPUlQgUk1SDQo+IHJlc2VydmVkIHJlZ2lvbnMNCj4gDQo+IE9uIFRodSwgQXBy
+IDA3LCAyMDIyIGF0IDAyOjUzOjM4UE0gKzAxMDAsIFJvYmluIE11cnBoeSB3cm90ZToNCj4gPiA+
+IFdoeSBjYW4ndCB0aGlzIGp1c3QgZ28gaW50byBnZW5lcmljX2lvbW11X3B1dF9yZXN2X3JlZ2lv
+bnM/ICBUaGUgaWRlYQ0KPiA+ID4gdGhhdCB0aGUgaW9tbXUgbG93LWxldmVsIGRyaXZlcnMgbmVl
+ZCB0byBjYWxsIGludG8gZG1hLWlvbW11IHdoaWNoIGlzDQo+ID4gPiBhIGNvbnN1bWVyIG9mIHRo
+ZSBJT01NVSBBUEkgaXMgb2RkLiAgRXNwZWNpYWxseSBpZiB0aGF0IGp1c3QgY2FsbHMgb3V0DQo+
+ID4gPiB0byBBQ1BJIGNvZGUgYW5kIGdlbmVyaWMgSU9NTVUgY29kZSBvbmx5IGFueXdheS4NCj4g
+Pg0KPiA+IEJlY2F1c2UgYXNzdW1pbmcgQUNQSSBtZWFucyBJT1JUIGlzIG5vdCBnZW5lcmljLiBQ
+YXJ0IG9mIHRoZSBhaW0gaW4gYWRkaW5nDQo+ID4gdGhlIHVuaW9uIHRvIGlvbW11X3Jlc3ZfcmVn
+aW9uIGlzIHRoYXQgc3R1ZmYgbGlrZSBBTUQncyB1bml0eV9tYXBfZW50cnkNCj4gYW5kDQo+ID4g
+SW50ZWwncyBkbWFyX3JtcnJfdW5pdCBjYW4gYmUgZm9sZGVkIGludG8gaXQgYXMgd2VsbCwgYW5k
+IHRoZWlyIHJlc2VydmVkDQo+ID4gcmVnaW9uIGhhbmRsaW5nIGNvcnJlc3BvbmRpbmdseSBzaW1w
+bGlmaWVkIHRvby4NCj4gPg0KPiA+IFRoZSBpb21tdV9kbWFfe2dldCxwdXR9X3Jlc3ZfcmVnaW9u
+KCkgaGVscGVycyBhcmUga2luZCBvZiBpbnRlbmRlZCB0byBiZQ0KPiA+IHNwZWNpZmljIHRvIHRo
+ZSBmd25vZGUgbWVjaGFuaXNtIHdoaWNoIGRlYWxzIHdpdGggSU9SVCBhbmQgZGV2aWNldHJlZQ0K
+PiAob25jZQ0KPiA+IHRoZSByZXNlcnZlZCByZWdpb24gYmluZGluZ3MgYXJlIGZ1bGx5IHdvcmtl
+ZCBvdXQpLg0KPiANCj4gQnV0IElPUlQgaXMgbm90IGRyaXZlcuKCi3NwZWNpZmljIGNvZGUuICBT
+byB3ZSdsbCBuZWVkIGEgVVNFX0lPUlQgZmxhZw0KPiBzb21ld2hlcmUgaW4gY29yZSBJT01NVSBj
+b2RlIGluc3RlYWQgb2YgdHJ5aW5nIHRvIHN0dWZmIHRoaXMgaW50bw0KPiBkcml2ZXIgb3BlcmF0
+aW9ucy4gIGFuZCBkbWEtaW9tbXUgbW9zdGx5IGNlcnRhaW5seSBpbXBsaWVzIElPUlQgZXZlbg0K
+PiBsZXNzIHRoYW4gQUNQSS4NCg0KU29ycnkgZm9yIHRoZSBkZWxheWVkIHJlc3BvbnNlKHdhcyBv
+biBob2xpZGF5cykuIFNvIGlmIHdlIG1vdmUgdGhlDQppb21tdV9kbWFfcHV0X3Jlc3ZfcmVnaW9u
+KCkgY2FsbCB0byBnZW5lcmljX2lvbW11X3B1dF9yZXN2X3JlZ2lvbnMoKSAsDQp3aWxsIHRoYXQg
+YWRkcmVzcyB0aGUgY29uY2VybnMgaGVyZT8NCg0KSSB0aGluayBpdCB3aWxsIHJlc29sdmUgdGhl
+IGlzc3VlIGluIDA1LzExIGFzIHdlbGwgcG9pbnRlZCBvdXQgYnkgQ2hyaXN0b3BoDQp3aGVyZSB3
+ZSBlbmQgdXAgbm90IHJlbGVhc2luZyByZXNlcnZlZCByZWdpb25zIHdoZW4NCkNPTkZJR19JT01N
+VV9ETUEgaXMgbm90IHNldC4NCg0KU29tZXRoaW5nIGxpa2UgYmVsb3csDQoNCmRpZmYgLS1naXQg
+YS9kcml2ZXJzL2lvbW11L2lvbW11LmMgYi9kcml2ZXJzL2lvbW11L2lvbW11LmMNCmluZGV4IGYy
+YzQ1Yjg1YjlmYy4uZDA4MjA0YTI1YmE4IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9pb21tdS9pb21t
+dS5jDQorKysgYi9kcml2ZXJzL2lvbW11L2lvbW11LmMNCkBAIC0yNjA1LDYgKzI2MDUsOCBAQCB2
+b2lkIGdlbmVyaWNfaW9tbXVfcHV0X3Jlc3ZfcmVnaW9ucyhzdHJ1Y3QNCmRldmljZSAqZGV2LCBz
+dHJ1Y3QgbGlzdF9oZWFkICpsaXN0KQ0KIHsNCiAgICAgICAgc3RydWN0IGlvbW11X3Jlc3ZfcmVn
+aW9uICplbnRyeSwgKm5leHQ7DQoNCisgICAgICAgaW9tbXVfZG1hX3B1dF9yZXN2X3JlZ2lvbnMo
+ZGV2LCBsaXN0KTsNCisNCiAgICAgICAgbGlzdF9mb3JfZWFjaF9lbnRyeV9zYWZlKGVudHJ5LCBu
+ZXh0LCBsaXN0LCBsaXN0KQ0KICAgICAgICAgICAgICAgIGtmcmVlKGVudHJ5KTsNCiB9DQoNCmRp
+ZmYgLS1naXQgYS9kcml2ZXJzL2lvbW11L2RtYS1pb21tdS5jIGIvZHJpdmVycy9pb21tdS9kbWEt
+aW9tbXUuYw0KaW5kZXggNTgxMTIzM2RjOWZiLi44Y2IxZTQxOWRiNDkgMTAwNjQ0DQotLS0gYS9k
+cml2ZXJzL2lvbW11L2RtYS1pb21tdS5jDQorKysgYi9kcml2ZXJzL2lvbW11L2RtYS1pb21tdS5j
+DQpAQCAtMzkzLDggKzM5Myw2IEBAIHZvaWQgaW9tbXVfZG1hX3B1dF9yZXN2X3JlZ2lvbnMoc3Ry
+dWN0IGRldmljZQ0KKmRldiwgc3RydWN0IGxpc3RfaGVhZCAqbGlzdCkNCiB7DQogICAgICAgIGlm
+ICghaXNfb2Zfbm9kZShkZXZfaW9tbXVfZndzcGVjX2dldChkZXYpLT5pb21tdV9md25vZGUpKQ0K
+ICAgICAgICAgICAgICAgIGlvcnRfaW9tbXVfcHV0X3Jlc3ZfcmVnaW9ucyhkZXYsIGxpc3QpOw0K
+LQ0KLSAgICAgICBnZW5lcmljX2lvbW11X3B1dF9yZXN2X3JlZ2lvbnMoZGV2LCBsaXN0KTsNCiB9
+DQoNClBsZWFzZSBsZXQgbWUga25vdyBpZiB0aGlzIGlzIG5vdCBnb29kIGVub3VnaC4NCg0KVGhh
+bmtzLA0KU2hhbWVlcg0K
