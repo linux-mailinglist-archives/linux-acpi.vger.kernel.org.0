@@ -2,53 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ECB5508C0B
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Apr 2022 17:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 051FF508C26
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Apr 2022 17:32:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354756AbiDTP1H convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 20 Apr 2022 11:27:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56996 "EHLO
+        id S234586AbiDTPeo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Apr 2022 11:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351566AbiDTP1H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Apr 2022 11:27:07 -0400
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5A8E45ADA;
-        Wed, 20 Apr 2022 08:24:20 -0700 (PDT)
-Received: by mail-yb1-f181.google.com with SMTP id b95so3512429ybi.1;
-        Wed, 20 Apr 2022 08:24:20 -0700 (PDT)
+        with ESMTP id S1380112AbiDTPel (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Apr 2022 11:34:41 -0400
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A1E13CA40;
+        Wed, 20 Apr 2022 08:31:54 -0700 (PDT)
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-2ef5380669cso22043487b3.9;
+        Wed, 20 Apr 2022 08:31:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=MWceczmjUO37YPGOpaCzlE2Zyz50+yuUdjcpMp0Klao=;
-        b=J9AF9s6Pd1ZQ80L8NM8m6mXMwQNRfZnYZMxhb9DV/XpYBQXYNi4tSggZI9iPobDuxs
-         mEeXEP4014nmIm+eFc2w2BjcQJRu3eodwzENT+uYvMqULne3ica1gA/mfVuhvuLHhhsc
-         c4YL0t3l1sMKVkWIaU5xKyw51d3r5GU3s3aSMQFHMWNtvcN0qM/kgiR2BRMq+Ey82NEy
-         JFGGqhS6gasi1t4dNWvgORZug2QLOn56MpmCVt8sW7yeL/FYsZdm2zswZfXzPq/4hCy7
-         lVSG00j6h/atg5OBs+zFeJnG1kBc0o2d4ov0iiKhrmZt42Laipp3Pjf6WGbE7lUzY8fR
-         DBVw==
-X-Gm-Message-State: AOAM530d2jVNhOLgAp3AEMPg4xocOLl3Q6l/6UQzM1TTXzlq+FvK+9z7
-        cD/QU1nnf+ZohHAkFzkd6vk1CLQNFi5tAI52gSbngSuIWAQ=
-X-Google-Smtp-Source: ABdhPJzXVjGZVbhUklUBSihwA80GowN9dpk172WqM1FWGxil0M8njrswfqcur+9ptU35rJxkc4FLQJEp1xJ+T+kIT0s=
-X-Received: by 2002:a25:ac9b:0:b0:641:3c32:bee7 with SMTP id
- x27-20020a25ac9b000000b006413c32bee7mr19051604ybi.633.1650468260183; Wed, 20
- Apr 2022 08:24:20 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=BX4DYIsh9shdL0wVWNesEbyhwwCB5uGYwoFJu/5ZDOA=;
+        b=eFGAteg8FIXSzuyiBTJXzdufzug4fX/YNtM8ZJNm8qFZpXhKi3PLhxa8I7zDofBNM6
+         JnsTve2hr3exZcuXUCAPSUHhqgKl2Lur/tmQql1ar4qH9llqq+iFJzpzOk2F9SCmtknm
+         IcwYX28QsCCxQ+qSTCmmMnx4+/sDOX6eQP2XDXXppEm/3N1PetVrFBrjP8bNdhqeCPv8
+         7synREt5+bc5YxAFHeVn8/Il0a+V1bImkmUC50WNw+kIFfwz8EOp+Il154jfIbMOgBvM
+         rtvrwwItvfyhPeejOD3DcovFZxkVA66u+BW95Kv+zldTuXbhuZsjadDfdBKu2Uo9eOVj
+         Uvig==
+X-Gm-Message-State: AOAM533ywHNKIHEtndzy99qQImPUtS/iURzbKU1ADOpSrNwDbHLT3Wem
+        SgNctbzQcir7gF4a+rDDuAHUb4dXRDHHkxZ+s6Hqz1X+zyg=
+X-Google-Smtp-Source: ABdhPJx/esx+nly4Faz952uAqt/+ztWg0bemjimUpNFF9AVlh6yAb7iPTGu7hoW4PeNdbXsPUA7GPhieyCZyDrNQu/s=
+X-Received: by 2002:a81:b89:0:b0:2eb:e9e6:470a with SMTP id
+ 131-20020a810b89000000b002ebe9e6470amr21757661ywl.7.1650468713921; Wed, 20
+ Apr 2022 08:31:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220420134417.24546-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20220420134417.24546-1-ville.syrjala@linux.intel.com>
+References: <20220419205432.46021-1-bwicaksono@nvidia.com> <20220419205432.46021-2-bwicaksono@nvidia.com>
+In-Reply-To: <20220419205432.46021-2-bwicaksono@nvidia.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 20 Apr 2022 17:24:09 +0200
-Message-ID: <CAJZ5v0heJzWWio7m4-hO5j7q3fA-S6q6tXojJGsQ2rty-4hd2w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ACPI: processor: Do not use C3 w/o ARB_DIS=1
-To:     Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>, Stable <stable@vger.kernel.org>,
-        Woody Suwalski <wsuwalski@gmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Richard Gong <richard.gong@amd.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Date:   Wed, 20 Apr 2022 17:31:43 +0200
+Message-ID: <CAJZ5v0jUZSSvMGYhu44rSnEXmVve-wKXkUf-U_qy0ojn4v6kXA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPICA: Add support for ARM Performance Monitoring
+ Unit Table.
+To:     Besar Wicaksono <bwicaksono@nvidia.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Thierry Reding <treding@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
@@ -59,70 +68,134 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 20, 2022 at 3:44 PM Ville Syrjala
-<ville.syrjala@linux.intel.com> wrote:
+On Tue, Apr 19, 2022 at 10:55 PM Besar Wicaksono <bwicaksono@nvidia.com> wrote:
 >
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ACPICA commit 002165ecc0a3dc703bb24c789aaa02fdada01675
 >
-> commit d6b88ce2eb9d ("ACPI: processor idle: Allow playing dead in C3 state")
-> was supposedly just trying to enable C3 when the CPU is offlined,
-> but it also mistakenly enabled C3 usage without setting ARB_DIS=1
-> in normal idle scenarios.
+> The specification of this table is described in
+> "ARM Performance Monitoring Unit Architecture 1.0 Platform Design Document"
+> ARM DEN0117.
 >
-> This results in a machine that won't boot past the point when it first
-> enters C3. Restore the correct behaviour (either demote to C1/C2, or
-> use C3 but also set ARB_DIS=1).
+> This patch adds the necessary types and support for
+> compiling/disassembling APMT.
 >
-> I hit this on a Fujitsu Siemens Lifebook S6010 (P3) machine.
->
-> Cc: stable@vger.kernel.org
-> Cc: Woody Suwalski <wsuwalski@gmail.com>
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> Cc: Richard Gong <richard.gong@amd.com>
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Fixes: d6b88ce2eb9d ("ACPI: processor idle: Allow playing dead in C3 state")
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Link: https://github.com/acpica/acpica/commit/002165ec
+> Signed-off-by: Besar Wicaksono <bwicaksono@nvidia.com>
+
+It should be equivalent to this patch:
+
+https://patchwork.kernel.org/project/linux-acpi/patch/3370028.QJadu78ljV@kreacher/
+
+present in linux-next.
+
+If the other patch in the series is ACKed by the ARM64 ACPi people, I
+can take it too.
+
+Thanks!
+
 > ---
->  drivers/acpi/processor_idle.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  include/acpi/actbl2.h | 81 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 81 insertions(+)
 >
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 4556c86c3465..54f0a1915025 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -793,10 +793,10 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
+> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+> index 16847c8d9d5f..8fc5cf318c15 100644
+> --- a/include/acpi/actbl2.h
+> +++ b/include/acpi/actbl2.h
+> @@ -25,6 +25,7 @@
+>   * the wrong signature.
+>   */
+>  #define ACPI_SIG_AGDI           "AGDI" /* Arm Generic Diagnostic Dump and Reset Device Interface */
+> +#define ACPI_SIG_APMT           "APMT" /* Arm Performance Monitoring Unit table */
+>  #define ACPI_SIG_BDAT           "BDAT" /* BIOS Data ACPI Table */
+>  #define ACPI_SIG_IORT           "IORT" /* IO Remapping Table */
+>  #define ACPI_SIG_IVRS           "IVRS" /* I/O Virtualization Reporting Structure */
+> @@ -258,6 +259,86 @@ struct acpi_table_agdi {
 >
->                 state->flags = 0;
->                 if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2 ||
-> -                   cx->type == ACPI_STATE_C3) {
-> +                   cx->type == ACPI_STATE_C3)
->                         state->enter_dead = acpi_idle_play_dead;
-> +               if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2)
->                         drv->safe_state_index = count;
-> -               }
->                 /*
->                  * Halt-induced C1 is not good for ->enter_s2idle, because it
->                  * re-enables interrupts on exit.  Moreover, C1 is generally not
+>  #define ACPI_AGDI_SIGNALING_MODE (1)
+>
+> +/*******************************************************************************
+> + *
+> + * APMT - ARM Performance Monitoring Unit Table
+> + *
+> + * Conforms to:
+> + * ARM Performance Monitoring Unit Architecture 1.0 Platform Design Document
+> + * ARM DEN0117 v1.0 November 25, 2021
+> + *
+> + ******************************************************************************/
+> +
+> +struct acpi_table_apmt {
+> +       struct acpi_table_header header;    /* Common ACPI table header */
+> +};
+> +
+> +#define ACPI_APMT_NODE_ID_LENGTH                4
+> +
+> +/*
+> + * APMT subtables
+> + */
+> +struct acpi_apmt_node {
+> +       u16                                  length;
+> +       u8                                   flags;
+> +       u8                                   type;
+> +       u32                                  id;
+> +       u64                                  inst_primary;
+> +       u32                                  inst_secondary;
+> +       u64                                  base_address0;
+> +       u64                                  base_address1;
+> +       u32                                  ovflw_irq;
+> +       u32                                  reserved;
+> +       u32                                  ovflw_irq_flags;
+> +       u32                                  proc_affinity;
+> +       u32                                  impl_id;
+> +};
+> +
+> +/* Masks for Flags field above */
+> +
+> +#define ACPI_APMT_FLAGS_DUAL_PAGE               (1<<0)
+> +#define ACPI_APMT_FLAGS_AFFINITY                (1<<1)
+> +#define ACPI_APMT_FLAGS_ATOMIC                  (1<<2)
+> +
+> +/* Values for Flags dual page field above */
+> +
+> +#define ACPI_APMT_FLAGS_DUAL_PAGE_NSUPP         (0<<0)
+> +#define ACPI_APMT_FLAGS_DUAL_PAGE_SUPP          (1<<0)
+> +
+> +/* Values for Flags processor affinity field above */
+> +#define ACPI_APMT_FLAGS_AFFINITY_PROC           (0<<1)
+> +#define ACPI_APMT_FLAGS_AFFINITY_PROC_CONTAINER (1<<1)
+> +
+> +/* Values for Flags 64-bit atomic field above */
+> +#define ACPI_APMT_FLAGS_ATOMIC_NSUPP            (0<<2)
+> +#define ACPI_APMT_FLAGS_ATOMIC_SUPP             (1<<2)
+> +
+> +/* Values for Type field above */
+> +
+> +enum acpi_apmt_node_type {
+> +       ACPI_APMT_NODE_TYPE_MC                      = 0x00,
+> +       ACPI_APMT_NODE_TYPE_SMMU                    = 0x01,
+> +       ACPI_APMT_NODE_TYPE_PCIE_ROOT               = 0x02,
+> +       ACPI_APMT_NODE_TYPE_ACPI                    = 0x03,
+> +       ACPI_APMT_NODE_TYPE_CACHE                   = 0x04,
+> +       ACPI_APMT_NODE_TYPE_COUNT
+> +};
+> +
+> +/* Masks for ovflw_irq_flags field above */
+> +
+> +#define ACPI_APMT_OVFLW_IRQ_FLAGS_MODE          (1<<0)
+> +#define ACPI_APMT_OVFLW_IRQ_FLAGS_TYPE          (1<<1)
+> +
+> +/* Values for ovflw_irq_flags mode field above */
+> +
+> +#define ACPI_APMT_OVFLW_IRQ_FLAGS_MODE_LEVEL    (0<<0)
+> +#define ACPI_APMT_OVFLW_IRQ_FLAGS_MODE_EDGE     (1<<0)
+> +
+> +/* Values for ovflw_irq_flags type field above */
+> +
+> +#define ACPI_APMT_OVFLW_IRQ_FLAGS_TYPE_WIRED    (0<<1)
+> +
+> +
+>  /*******************************************************************************
+>   *
+>   * BDAT - BIOS Data ACPI Table
 > --
-
-Good catch, but I would prefer doing the below which should be
-equivalent (modulo GMail-induced white space breakage):
-
----
- drivers/acpi/processor_idle.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-Index: linux-pm/drivers/acpi/processor_idle.c
-===================================================================
---- linux-pm.orig/drivers/acpi/processor_idle.c
-+++ linux-pm/drivers/acpi/processor_idle.c
-@@ -795,7 +795,8 @@ static int acpi_processor_setup_cstates(
-         if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2 ||
-             cx->type == ACPI_STATE_C3) {
-             state->enter_dead = acpi_idle_play_dead;
--            drv->safe_state_index = count;
-+            if (cx->type != ACPI_STATE_C3)
-+                drv->safe_state_index = count;
-         }
-         /*
-          * Halt-induced C1 is not good for ->enter_s2idle, because it
+> 2.17.1
+>
