@@ -2,139 +2,217 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59723507E87
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Apr 2022 04:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76617508020
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Apr 2022 06:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235627AbiDTCGk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Apr 2022 22:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39268 "EHLO
+        id S239088AbiDTEft (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Apr 2022 00:35:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358799AbiDTCGj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Apr 2022 22:06:39 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C6C23147
-        for <linux-acpi@vger.kernel.org>; Tue, 19 Apr 2022 19:03:54 -0700 (PDT)
+        with ESMTP id S236411AbiDTEft (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Apr 2022 00:35:49 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD9EB10CD;
+        Tue, 19 Apr 2022 21:33:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1650420234; x=1681956234;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qvDEhsl7hIoDNKe+3wWu0A8CGhWmMRsX3/dxJdjiSjY=;
-  b=S9ko7SzChZ5o+6z1euIdyqB6V96zfUfE0hGrQZpAizRV6sZUp+KvDSPc
-   s53bcoAAT4PCTHf+1rzR+IPgufzVibvOA78vSNYc+ndAGE8g5qA01RVp4
-   ZrKeXE+sKlSO9nmfO3IBiSutC1RmDxmDFfFn371tMXxCb9fFSRhu0ozCr
-   1Nabytvq34V4QzMdfHnhiW7cyrRX+G6cT0kPYNEYydnAnteP+oj5zmaEH
-   CEUKhPsRdW/NUlVNXA4RFnlqK8UjnbpybyLN5f5Ii856FHBc+wM8By95X
-   9xjix6Xr+z2/x1i7pBbCV7u7JYg9WfmLa5Xzr4Q6QceHMdAcwRWJvZP/6
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10322"; a="263680260"
+  t=1650429184; x=1681965184;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0Swg8Fj5tNL0EuUxxXtCxT3rXCvYjGGLFsk/WfnqY8Q=;
+  b=MblOQcP7t8zhmSji3RfgcHVqpK6f+mX8eyuibaMERrWo/Pp0RgY4kU+7
+   6582GR9DqSbc+pLqFEo/kU7v9B6ZHQypRm4JgPqd+vMP2Gz2PvD8IUzBC
+   z8RMbXx0WMG8agNK44xkhR6UHfXlftGBEQvsAQAze61C/ssWtKzCeMfxk
+   hEDq4eZCu73j9xFtrQcy/32WtdnBELxWidVq1i3TWTrRPfp2zmadlIB47
+   B8yNox6JKQXJGvVnee5t4Vzqnf+F12zDG3emOzybxR442NxcwYvwxal++
+   D1NoOcH/E5vJ9RMfKBYtp8GE3xfvvWrBY8Z82ivQOa723yKnjHwLGF+qq
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10322"; a="263399274"
 X-IronPort-AV: E=Sophos;i="5.90,274,1643702400"; 
-   d="scan'208";a="263680260"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2022 19:03:54 -0700
+   d="scan'208";a="263399274"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2022 21:33:04 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,274,1643702400"; 
-   d="scan'208";a="702409452"
+   d="scan'208";a="667709800"
 Received: from lkp-server01.sh.intel.com (HELO 3abc53900bec) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 19 Apr 2022 19:03:51 -0700
+  by orsmga004.jf.intel.com with ESMTP; 19 Apr 2022 21:33:02 -0700
 Received: from kbuild by 3abc53900bec with local (Exim 4.95)
         (envelope-from <lkp@intel.com>)
-        id 1ngzh9-0006Qu-6n;
-        Wed, 20 Apr 2022 02:03:51 +0000
-Date:   Wed, 20 Apr 2022 10:02:51 +0800
+        id 1nh21V-0006YO-OK;
+        Wed, 20 Apr 2022 04:33:01 +0000
+Date:   Wed, 20 Apr 2022 12:32:04 +0800
 From:   kernel test robot <lkp@intel.com>
-To:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] ACPI: Avoid flush_scheduled_work() usage
-Message-ID: <202204200917.Gi0wjcgM-lkp@intel.com>
-References: <892bb009-4ba8-15fa-c8f9-eb66ab75b2f0@I-love.SAKURA.ne.jp>
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ a8a4f8e63bdfeac9fafe43dcafabc27d8f2e8b8e
+Message-ID: <625f8cc4.yxYXrt09ppdZa9T2%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <892bb009-4ba8-15fa-c8f9-eb66ab75b2f0@I-love.SAKURA.ne.jp>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Tetsuo,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: a8a4f8e63bdfeac9fafe43dcafabc27d8f2e8b8e  Merge branch 'pm-tools' into linux-next
 
-I love your patch! Yet something to improve:
+elapsed time: 724m
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on v5.18-rc3 next-20220419]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+configs tested: 133
+configs skipped: 3
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tetsuo-Handa/ACPI-Avoid-flush_scheduled_work-usage/20220419-215854
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: i386-randconfig-a013 (https://download.01.org/0day-ci/archive/20220420/202204200917.Gi0wjcgM-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project c1c49a356162b22554088d269f7689bdb044a9f1)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/cebc6c01f6fac86f7deaf74ca81311d9c3d179f4
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Tetsuo-Handa/ACPI-Avoid-flush_scheduled_work-usage/20220419-215854
-        git checkout cebc6c01f6fac86f7deaf74ca81311d9c3d179f4
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+powerpc                       eiger_defconfig
+nios2                         10m50_defconfig
+arm                          pxa910_defconfig
+arm                        cerfcube_defconfig
+arm                         at91_dt_defconfig
+sh                          sdk7786_defconfig
+powerpc                 mpc834x_itx_defconfig
+powerpc                 linkstation_defconfig
+sh                            hp6xx_defconfig
+mips                           jazz_defconfig
+arc                           tb10x_defconfig
+arm                          gemini_defconfig
+mips                         cobalt_defconfig
+microblaze                          defconfig
+sh                           se7722_defconfig
+mips                            ar7_defconfig
+i386                                defconfig
+xtensa                       common_defconfig
+sh                            titan_defconfig
+sh                             shx3_defconfig
+sh                        sh7757lcr_defconfig
+csky                                defconfig
+sh                        apsh4ad0a_defconfig
+ia64                             alldefconfig
+sh                          r7785rp_defconfig
+arm                        shmobile_defconfig
+m68k                        m5307c3_defconfig
+arm                         axm55xx_defconfig
+arm                        mvebu_v7_defconfig
+powerpc                       holly_defconfig
+s390                          debug_defconfig
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20220419
+arm                  randconfig-c002-20220420
+ia64                             allmodconfig
+ia64                             allyesconfig
+ia64                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+nios2                               defconfig
+arc                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+riscv                randconfig-r042-20220419
+s390                 randconfig-r044-20220419
+arc                  randconfig-r043-20220419
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                         rhel-8.3-kunit
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
 
-All errors (new ones prefixed by >>):
-
->> drivers/acpi/acpi_video.c:1640:21: error: use of undeclared identifier 'acpi_wq'
-           queue_delayed_work(acpi_wq, &video_device->switch_brightness_work, HZ / 10);
-                              ^
-   drivers/acpi/acpi_video.c:2258:6: warning: no previous prototype for function 'acpi_video_unregister_backlight' [-Wmissing-prototypes]
-   void acpi_video_unregister_backlight(void)
-        ^
-   drivers/acpi/acpi_video.c:2258:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   void acpi_video_unregister_backlight(void)
-   ^
-   static 
-   1 warning and 1 error generated.
---
->> drivers/acpi/video_detect.c:532:14: error: use of undeclared identifier 'acpi_wq'
-                   queue_work(acpi_wq, &backlight_notify_work);
-                              ^
-   drivers/acpi/video_detect.c:605:13: warning: no previous prototype for function 'acpi_video_detect_exit' [-Wmissing-prototypes]
-   void __exit acpi_video_detect_exit(void)
-               ^
-   drivers/acpi/video_detect.c:605:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   void __exit acpi_video_detect_exit(void)
-   ^
-   static 
-   1 warning and 1 error generated.
-
-
-vim +/acpi_wq +1640 drivers/acpi/acpi_video.c
-
-  1632	
-  1633	static void brightness_switch_event(struct acpi_video_device *video_device,
-  1634					    u32 event)
-  1635	{
-  1636		if (!brightness_switch_enabled)
-  1637			return;
-  1638	
-  1639		video_device->switch_brightness_event = event;
-> 1640		queue_delayed_work(acpi_wq, &video_device->switch_brightness_work, HZ / 10);
-  1641	}
-  1642	
+clang tested configs:
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220419
+arm                  randconfig-c002-20220419
+i386                          randconfig-c001
+riscv                randconfig-c006-20220419
+mips                 randconfig-c004-20220419
+s390                 randconfig-c005-20220419
+mips                           ip28_defconfig
+arm                       netwinder_defconfig
+arm                     davinci_all_defconfig
+mips                       lemote2f_defconfig
+powerpc                     ksi8560_defconfig
+arm                       mainstone_defconfig
+powerpc                 mpc832x_mds_defconfig
+powerpc                      ppc64e_defconfig
+arm                         bcm2835_defconfig
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r041-20220420
+riscv                randconfig-r042-20220420
+hexagon              randconfig-r045-20220420
+hexagon              randconfig-r041-20220419
+hexagon              randconfig-r045-20220419
 
 -- 
 0-DAY CI Kernel Test Service
