@@ -2,47 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69C9850BADF
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Apr 2022 16:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A33D50BAFD
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Apr 2022 17:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1448985AbiDVO7b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Apr 2022 10:59:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43460 "EHLO
+        id S1448454AbiDVPD0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Apr 2022 11:03:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1449081AbiDVO70 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Apr 2022 10:59:26 -0400
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9F95D186;
-        Fri, 22 Apr 2022 07:56:30 -0700 (PDT)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-2f7b815ac06so11962137b3.3;
-        Fri, 22 Apr 2022 07:56:30 -0700 (PDT)
+        with ESMTP id S1449125AbiDVPCe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Apr 2022 11:02:34 -0400
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC6115C841;
+        Fri, 22 Apr 2022 07:59:40 -0700 (PDT)
+Received: by mail-yb1-f172.google.com with SMTP id m66so4308085ybm.4;
+        Fri, 22 Apr 2022 07:59:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=bnk4bSj33w5ONisLnwinOIO7YU3rJXD/3b8GbGFERCE=;
-        b=E12yFrBdzYPrVMbJJjpCVlXi60AXLTav8pCp/kxWPPXCEzDTBtGphnD3DdcVhOWYTx
-         8NjdeeO+OVOnBGzm3P7x7qZIcYy/xFTWLXVJ8RWqXpZavJuv7X5DGCmHKXvWyarYB0We
-         xYQQOOv+LCxQBCs7CjHlSAUYYXZ2h5WkD78Nkoo8ZgK7rgdYIXBFOThfagCga2BsM96D
-         qhU3Sh+HT3i4+nIl9Z+nZ2gmtRahl3nSxg1aePctZPePNSydZYSm8UElVqO3Dd4P432u
-         q63WAKoxyzg9Frr9Zg5FeFIOf2JGchDVuOn1Z4O8L9rScwBc32KJta46uDBbiJaWN9Ku
-         Qeew==
-X-Gm-Message-State: AOAM533+dzmX/hxNIimUC0ojGHNAxYqZ9eXWAlmCT3TOmg72WBEUO2fi
-        kH+pxkGX5Ktv2BU9FcpbnmwJkQh+Uxw8XRWG+1U=
-X-Google-Smtp-Source: ABdhPJy9tUCk3u0oHHIxt4bXYYvuVAO1Op8RV37m9A9G2JbZP+QlSKRnH/d505sobWKnaOhGdpxMcgvKT2yynCLRBOg=
-X-Received: by 2002:a81:1096:0:b0:2ec:4a46:7e5a with SMTP id
- 144-20020a811096000000b002ec4a467e5amr5412135ywq.196.1650639389433; Fri, 22
- Apr 2022 07:56:29 -0700 (PDT)
+        bh=VNFOjNCpQgsQswwarHmngoqDT1JA2XELuUTrOwXKkcU=;
+        b=DB2B9F0a3bPkigc5b3hMmrPhQkXLFuUdOTcHJqZaCF89QS1hs3DtYWDBC0R2x0aFuE
+         VOjNtU0kjzk9iv9MeNOfYE11sPdvsOXytC2RTlnQ/3NlxmUj45w6aZn/ir+iHon7xtmg
+         9qv15Ts+gxiXutLmt4uJI/oF+Cj9qx6KEzmhychss6TgVgwt2mVnIeS9rOnnhzcXozNK
+         iilvKaGn/kheEIUY5ENvXtGPYe6Mnwa7OH4j20nFqADJt1Pj1gWgamjQ3wSHmF6HryuW
+         pHMpgkBcU054byvfnyFbM33ZHribK2NrHVA79E7X0KDggOCy96fCUt3dRDTOjPvrd3hF
+         1RxQ==
+X-Gm-Message-State: AOAM532dLzvfyMzgilGT9wtQ9dGMvGOXh/+RSBP0gtKAsN8Z2CHf2Ve2
+        ED3dlgNW52HZviD7OS78BF7ywekM1NVDZ8VX9jY=
+X-Google-Smtp-Source: ABdhPJwa/RZFpiAVJa2lBcWbHNbqpptu66W3sthW5aORvkgMEcb9ZyjnS3A0y8uT32JAnZ/pXhW38CArQi72JRoMuEU=
+X-Received: by 2002:a25:688d:0:b0:645:794b:815 with SMTP id
+ d135-20020a25688d000000b00645794b0815mr4367951ybc.633.1650639580026; Fri, 22
+ Apr 2022 07:59:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220421164254.859162-1-trix@redhat.com>
-In-Reply-To: <20220421164254.859162-1-trix@redhat.com>
+References: <20220421165543.435-1-sumeet.r.pawnikar@intel.com>
+In-Reply-To: <20220421165543.435-1-sumeet.r.pawnikar@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 22 Apr 2022 16:56:18 +0200
-Message-ID: <CAJZ5v0jJUOXs=RDJLnDSp40i7FdaLGfb=GN-wVifd0UJ-gtEMA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: bgrt: use static for BGRT_SHOW kobj_attribute defines
-To:     Tom Rix <trix@redhat.com>
+Date:   Fri, 22 Apr 2022 16:59:29 +0200
+Message-ID: <CAJZ5v0jM_o0n3BzqAr5donRZN6a5y2tYHddV_naA3hbaMTJEEQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: DPTF: Correct description of INT3407 / INT3532 attributes
+To:     Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -56,34 +57,37 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 21, 2022 at 6:43 PM Tom Rix <trix@redhat.com> wrote:
+On Thu, Apr 21, 2022 at 6:59 PM Sumeet Pawnikar
+<sumeet.r.pawnikar@intel.com> wrote:
 >
-> Smatch reports this repesentative issue
-> bgrt.c:26:1: warning: symbol 'bgrt_attr_version' was not declared. Should it be static?
-> Similar for *status,type,xoffset,yoffset
+> Remove duplicate comments of PBSS for Battery steady state power and
+> correct the typo for PMAX Maximum platform power.
 >
-> These variables are defined with the BGRT_SHOW macro.
-> For the definition of bgrt_attr_##_name,
-> the storage-class specifier should be static
->
-> Signed-off-by: Tom Rix <trix@redhat.com>
+> Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
 > ---
->  drivers/acpi/bgrt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/dptf/dptf_power.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 >
-> diff --git a/drivers/acpi/bgrt.c b/drivers/acpi/bgrt.c
-> index 02d208732f9a..e4fb9e225ddf 100644
-> --- a/drivers/acpi/bgrt.c
-> +++ b/drivers/acpi/bgrt.c
-> @@ -21,7 +21,7 @@ static struct kobject *bgrt_kobj;
->         {                                                                       \
->                 return sysfs_emit(buf, "%d\n", bgrt_tab._member);               \
->         }                                                                       \
-> -       struct kobj_attribute bgrt_attr_##_name = __ATTR_RO(_name)
-> +       static struct kobj_attribute bgrt_attr_##_name = __ATTR_RO(_name)
->
->  BGRT_SHOW(version, version);
->  BGRT_SHOW(status, status);
+> diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
+> index dc1f52a5b3f4..1f2e6c29773b 100644
+> --- a/drivers/acpi/dptf/dptf_power.c
+> +++ b/drivers/acpi/dptf/dptf_power.c
+> @@ -12,14 +12,12 @@
+>  /*
+>   * Presentation of attributes which are defined for INT3407 and INT3532.
+>   * They are:
+> - * PMAX : Maximum platform powe
+> + * PMAX : Maximum platform power
+>   * PSRC : Platform power source
+>   * ARTG : Adapter rating
+>   * CTYP : Charger type
+> - * PBSS : Battery steady power
+>   * PROP : Rest of worst case platform Power
+>   * PBSS : Power Battery Steady State
+> - * PBSS : Power Battery Steady State
+>   * RBHF : High Frequency Impedance
+>   * VBNL : Instantaneous No-Load Voltage
+>   * CMPP : Current Discharge Capability
 > --
 
 Applied as 5.19 material, thanks!
