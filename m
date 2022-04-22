@@ -2,92 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A33D50BAFD
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Apr 2022 17:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 005AA50BB74
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Apr 2022 17:15:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1448454AbiDVPD0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Apr 2022 11:03:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46564 "EHLO
+        id S1448930AbiDVPQq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Apr 2022 11:16:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1449125AbiDVPCe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Apr 2022 11:02:34 -0400
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC6115C841;
-        Fri, 22 Apr 2022 07:59:40 -0700 (PDT)
-Received: by mail-yb1-f172.google.com with SMTP id m66so4308085ybm.4;
-        Fri, 22 Apr 2022 07:59:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VNFOjNCpQgsQswwarHmngoqDT1JA2XELuUTrOwXKkcU=;
-        b=DB2B9F0a3bPkigc5b3hMmrPhQkXLFuUdOTcHJqZaCF89QS1hs3DtYWDBC0R2x0aFuE
-         VOjNtU0kjzk9iv9MeNOfYE11sPdvsOXytC2RTlnQ/3NlxmUj45w6aZn/ir+iHon7xtmg
-         9qv15Ts+gxiXutLmt4uJI/oF+Cj9qx6KEzmhychss6TgVgwt2mVnIeS9rOnnhzcXozNK
-         iilvKaGn/kheEIUY5ENvXtGPYe6Mnwa7OH4j20nFqADJt1Pj1gWgamjQ3wSHmF6HryuW
-         pHMpgkBcU054byvfnyFbM33ZHribK2NrHVA79E7X0KDggOCy96fCUt3dRDTOjPvrd3hF
-         1RxQ==
-X-Gm-Message-State: AOAM532dLzvfyMzgilGT9wtQ9dGMvGOXh/+RSBP0gtKAsN8Z2CHf2Ve2
-        ED3dlgNW52HZviD7OS78BF7ywekM1NVDZ8VX9jY=
-X-Google-Smtp-Source: ABdhPJwa/RZFpiAVJa2lBcWbHNbqpptu66W3sthW5aORvkgMEcb9ZyjnS3A0y8uT32JAnZ/pXhW38CArQi72JRoMuEU=
-X-Received: by 2002:a25:688d:0:b0:645:794b:815 with SMTP id
- d135-20020a25688d000000b00645794b0815mr4367951ybc.633.1650639580026; Fri, 22
- Apr 2022 07:59:40 -0700 (PDT)
+        with ESMTP id S1448890AbiDVPQq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Apr 2022 11:16:46 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 441785D674;
+        Fri, 22 Apr 2022 08:13:51 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
+ id 036e7665410539f2; Fri, 22 Apr 2022 17:13:49 +0200
+Received: from kreacher.localnet (unknown [213.134.161.204])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id F381766BFEB;
+        Fri, 22 Apr 2022 17:13:48 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: [PATCH] ACPI: bus: Avoid non-ACPI device objects in walks over children
+Date:   Fri, 22 Apr 2022 17:13:48 +0200
+Message-ID: <11974495.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20220421165543.435-1-sumeet.r.pawnikar@intel.com>
-In-Reply-To: <20220421165543.435-1-sumeet.r.pawnikar@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 22 Apr 2022 16:59:29 +0200
-Message-ID: <CAJZ5v0jM_o0n3BzqAr5donRZN6a5y2tYHddV_naA3hbaMTJEEQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: DPTF: Correct description of INT3407 / INT3532 attributes
-To:     Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-CLIENT-IP: 213.134.161.204
+X-CLIENT-HOSTNAME: 213.134.161.204
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrtdeggdekfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrdduiedurddvtdegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeiuddrvddtgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohephhgv
+ lhhgrggrsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 21, 2022 at 6:59 PM Sumeet Pawnikar
-<sumeet.r.pawnikar@intel.com> wrote:
->
-> Remove duplicate comments of PBSS for Battery steady state power and
-> correct the typo for PMAX Maximum platform power.
->
-> Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
-> ---
->  drivers/acpi/dptf/dptf_power.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
-> index dc1f52a5b3f4..1f2e6c29773b 100644
-> --- a/drivers/acpi/dptf/dptf_power.c
-> +++ b/drivers/acpi/dptf/dptf_power.c
-> @@ -12,14 +12,12 @@
->  /*
->   * Presentation of attributes which are defined for INT3407 and INT3532.
->   * They are:
-> - * PMAX : Maximum platform powe
-> + * PMAX : Maximum platform power
->   * PSRC : Platform power source
->   * ARTG : Adapter rating
->   * CTYP : Charger type
-> - * PBSS : Battery steady power
->   * PROP : Rest of worst case platform Power
->   * PBSS : Power Battery Steady State
-> - * PBSS : Power Battery Steady State
->   * RBHF : High Frequency Impedance
->   * VBNL : Instantaneous No-Load Voltage
->   * CMPP : Current Discharge Capability
-> --
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Applied as 5.19 material, thanks!
+When walking the children of an ACPI device, take extra care to avoid
+using to_acpi_device() on the ones that are not ACPI devices, because
+that may lead to out-of-bounds access and memory corruption.
+
+While at it, make the function passed to acpi_dev_for_each_child()
+take a struct acpi_device pointer argument (instead of a struct device
+one), so it is more straightforward to use.
+
+Fixes: b7dd6298db81 ("ACPI: PM: Introduce acpi_dev_power_up_children_with_adr()")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+BugLink: https://lore.kernel.org/lkml/20220420064725.GB16310@xsang-OptiPlex-9020/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+The commit being fixed is present in linux-next.
+
+---
+ drivers/acpi/bus.c       |   24 ++++++++++++++++++++++--
+ drivers/acpi/device_pm.c |    5 +----
+ include/acpi/acpi_bus.h  |    2 +-
+ 3 files changed, 24 insertions(+), 7 deletions(-)
+
+Index: linux-pm/drivers/acpi/bus.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/bus.c
++++ linux-pm/drivers/acpi/bus.c
+@@ -1070,10 +1070,30 @@ int acpi_bus_for_each_dev(int (*fn)(stru
+ }
+ EXPORT_SYMBOL_GPL(acpi_bus_for_each_dev);
+ 
++struct acpi_dev_walk_context {
++	int (*fn)(struct acpi_device *, void *);
++	void *data;
++};
++
++static int acpi_dev_for_one_check(struct device *dev, void *context)
++{
++	struct acpi_dev_walk_context *adwc = context;
++
++	if (dev->bus != &acpi_bus_type)
++		return 0;
++
++	return adwc->fn(to_acpi_device(dev), adwc->data);
++}
++
+ int acpi_dev_for_each_child(struct acpi_device *adev,
+-			    int (*fn)(struct device *, void *), void *data)
++			    int (*fn)(struct acpi_device *, void *), void *data)
+ {
+-	return device_for_each_child(&adev->dev, data, fn);
++	struct acpi_dev_walk_context adwc = {
++		.fn = fn,
++		.data = data,
++	};
++
++	return device_for_each_child(&adev->dev, &adwc, acpi_dev_for_one_check);
+ }
+ 
+ /* --------------------------------------------------------------------------
+Index: linux-pm/include/acpi/acpi_bus.h
+===================================================================
+--- linux-pm.orig/include/acpi/acpi_bus.h
++++ linux-pm/include/acpi/acpi_bus.h
+@@ -482,7 +482,7 @@ extern struct bus_type acpi_bus_type;
+ 
+ int acpi_bus_for_each_dev(int (*fn)(struct device *, void *), void *data);
+ int acpi_dev_for_each_child(struct acpi_device *adev,
+-			    int (*fn)(struct device *, void *), void *data);
++			    int (*fn)(struct acpi_device *, void *), void *data);
+ 
+ /*
+  * Events
+Index: linux-pm/drivers/acpi/device_pm.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/device_pm.c
++++ linux-pm/drivers/acpi/device_pm.c
+@@ -429,11 +429,8 @@ bool acpi_bus_power_manageable(acpi_hand
+ }
+ EXPORT_SYMBOL(acpi_bus_power_manageable);
+ 
+-static int acpi_power_up_if_adr_present(struct device *dev, void *not_used)
++static int acpi_power_up_if_adr_present(struct acpi_device *adev, void *not_used)
+ {
+-	struct acpi_device *adev;
+-
+-	adev = to_acpi_device(dev);
+ 	if (!(adev->flags.power_manageable && adev->pnp.type.bus_address))
+ 		return 0;
+ 
+
+
+
