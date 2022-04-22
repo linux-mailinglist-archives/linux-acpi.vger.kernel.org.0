@@ -2,360 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5709C50C320
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Apr 2022 01:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EF9350C404
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Apr 2022 01:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233993AbiDVW5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Apr 2022 18:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51622 "EHLO
+        id S234153AbiDVXCW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Apr 2022 19:02:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233897AbiDVW47 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Apr 2022 18:56:59 -0400
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66B993766AD
-        for <linux-acpi@vger.kernel.org>; Fri, 22 Apr 2022 15:21:59 -0700 (PDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-e2afb80550so10087575fac.1
-        for <linux-acpi@vger.kernel.org>; Fri, 22 Apr 2022 15:21:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=YfdyUeRBKR7/kufYH33kid5tsUaSAg2QglexM2TYAZE=;
-        b=S25cr15PWqZVQoaeR93yTdLNOyjL74an2NA5fiXvUN03SfqBvkwUc6/NJ90wfypL6n
-         7qnczyOLRDGNi6Qy28R0x8oTvofoG9WX/Fc27z5mU0aF1mw0AB7pFoU6mLVNG/5JGeVW
-         OLj2uQPq8NFb6be6O4z0NPT1JhEAWH2HfCh9e/NBdrzGjq9oKTg4VDm9F+Li5xCUfOEv
-         ULg+g6VaAjSjYqTqGODCKxJAIEtj6flZaplXDSM8WtFAFZrHaSEgt4p3gmRhd1MC8wvr
-         e+lRijbqUCY2tzpQHXe+yGcltJKrP9sBBoqrHPWSs+mansOmL6v0I1MDmZKJBUHp0BuZ
-         +hDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=YfdyUeRBKR7/kufYH33kid5tsUaSAg2QglexM2TYAZE=;
-        b=X2ZFSPQm+QxxFPZ9BoZmCNj5w6SUyczGfkkucGQJ8cfhS8KV4zR5SjbHJMDIxR3xwZ
-         I0PQa9AkVjWPgtrvtJqFNMX0iCfxPSqYPUmPwNKE9tt4yvKAiKFH/bnKGBzOSXi66lhm
-         edNmRjmOWwmKwwb4fY8YOBsnE+DCDZbXtN8ufYG5F5F0CqdN4SblQ9a6G8NIGNwdTl3p
-         kQziRT4rETy6WglJTcbEZW1OjCF+JGlMZL3o7F4euzc0SwIGFW4dAYyBNAgdHV6ZjzXN
-         UvkPpAfuz0jDQOyNij20Z9U8vqwKaUI8aISbWwT3N+/gRiND1Ey2KdaEvpFh2SGu+KgN
-         m4+Q==
-X-Gm-Message-State: AOAM530gm8iGh0+aLO6coJGUbO2BrtTuTVsDE/V0LSMFY3IuJl3vAl2W
-        uRrgOuBrSLlmSFMGGb3MMGxwkw==
-X-Google-Smtp-Source: ABdhPJxzLx2x/E6WOR5Si0YdPNktJBV8OkVVmeAAG7G+uedRUBkDjgfJ8N9psrJxZUh6jlA7ixI/8g==
-X-Received: by 2002:a05:6870:5802:b0:de:ce5e:33ea with SMTP id r2-20020a056870580200b000dece5e33eamr2967613oap.57.1650666118478;
-        Fri, 22 Apr 2022 15:21:58 -0700 (PDT)
-Received: from ripper.. ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
-        by smtp.gmail.com with ESMTPSA id js4-20020a056870bac400b000e687cdf5adsm1049224oab.55.2022.04.22.15.21.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Apr 2022 15:21:57 -0700 (PDT)
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH v5 7/7] usb: typec: mux: Add On Semi fsa4480 driver
-Date:   Fri, 22 Apr 2022 15:23:51 -0700
-Message-Id: <20220422222351.1297276-8-bjorn.andersson@linaro.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220422222351.1297276-1-bjorn.andersson@linaro.org>
-References: <20220422222351.1297276-1-bjorn.andersson@linaro.org>
+        with ESMTP id S234233AbiDVXCE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Apr 2022 19:02:04 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09EAB2FC8A1;
+        Fri, 22 Apr 2022 15:26:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1650666397; x=1682202397;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=AQbGVwbR+ew7/hFCbMeaoG2NTtSHqzpa2u7UF2EvsU8=;
+  b=Ffot2TS4ueA+9dRaHPxKnouoQUeGFK3Sltt84NulcoiVCjRdbpJezs8T
+   8oBPzeSV7mOJA/zDqydM261qolPtjmNdQSX0ezwIakPa/4MdIxKgJ4eCm
+   pShxtJPOXZrtv4aUF7QULm4fwH92HQwkfzRIYszMw+iJWfyjPWEtUaR2I
+   15Puv5EzB6hmJsOdSQDIddWv4LgFpAIVFvBiqMNz6q99a5CG7l2dreb6D
+   V5KkCZO+R+oFHsh1rzUjkf5VHDCB8X6ehTTFKrZgice83ibKu5qDjwHM5
+   EJdRQc3Vgn49LjplAJm2IBpEWDC5EpAy01Bj8Rhzwpv4Z5hirUTID3cHl
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10324"; a="252133060"
+X-IronPort-AV: E=Sophos;i="5.90,282,1643702400"; 
+   d="scan'208";a="252133060"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2022 15:24:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,282,1643702400"; 
+   d="scan'208";a="728717937"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga005.jf.intel.com with ESMTP; 22 Apr 2022 15:24:39 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 22 Apr 2022 15:24:39 -0700
+Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 22 Apr 2022 15:24:38 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27 via Frontend Transport; Fri, 22 Apr 2022 15:24:38 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.102)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.27; Fri, 22 Apr 2022 15:24:38 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lc7ki+dzS2k9k7HYkgehUOTtYxgJSRWZLuFhpRvTMx2KNddKcUvg8R4RVo5EekzklviguHnTjiKP2kSDKCRfZrvaeDsQeAE4S0X7C+D5/yPcUQr60Oy2WI+D9c16hhAKrZaIQ+TADgEK0DQwQP8FBqIRfs4G1RPA0meZk23RsD66fnMuW9IAgK9LtKRFGETs81K5O45M1BEy20xviqqkYlAkJgRL9m+EkFMpVapREXV0kpjWomnyLeWLwxIbtjD9WnHc4rm0nNk56BAimOdKG12jy4/kj8RDRbxZHswQYAfDmZVNi14AoArL6DHmPaF8UDX3BSynnbuWMTt0qfDsYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AQbGVwbR+ew7/hFCbMeaoG2NTtSHqzpa2u7UF2EvsU8=;
+ b=kQ9sN4iqJZZvb1/VH5O9d7n836vV8QLKVhnG4qlOWSQC0JdJqq9Sbd8btpbhnwbq2HBZhm1o+AId9gSySpOK3g0wuUofFcKElPDsqr5jnL1s3S8ru0m7PmnA7fnhpc7BHqFcMb9WOx/5Be7A7zaqJT+3ZbbuHu3oG/Cvpa/gm93sZ+MSfrKHdkH8GnHacp9YWJ8rz5lAvsMpv/sSXgXi6/YEefzqxYGuxeEjIPhnuc3gkYrfd5JiMDw+1ROjmlOyuOtVGaxAPo9R/Oj2VjxVp3Jru+mkIeIWqE//9xksPrigAEULPCjzPK/0CUchySZRRssDKHaOX6oNU/X9hGl1pA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN2PR11MB3999.namprd11.prod.outlook.com (2603:10b6:208:154::32)
+ by PH0PR11MB5109.namprd11.prod.outlook.com (2603:10b6:510:3e::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5186.13; Fri, 22 Apr
+ 2022 22:24:36 +0000
+Received: from MN2PR11MB3999.namprd11.prod.outlook.com
+ ([fe80::41a:5dd4:f4b3:33cb]) by MN2PR11MB3999.namprd11.prod.outlook.com
+ ([fe80::41a:5dd4:f4b3:33cb%7]) with mapi id 15.20.5186.015; Fri, 22 Apr 2022
+ 22:24:35 +0000
+From:   "Verma, Vishal L" <vishal.l.verma@intel.com>
+To:     "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>
+CC:     "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
+        "a.manzanares@samsung.com" <a.manzanares@samsung.com>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "bhelgaas@google.com" <bhelgaas@google.com>,
+        "dave@stgolabs.net" <dave@stgolabs.net>
+Subject: Re: [PATCH v6 0/3] PCI/ACPI: add support for CXL _OSC
+Thread-Topic: [PATCH v6 0/3] PCI/ACPI: add support for CXL _OSC
+Thread-Index: AQHYTwk1Q2ULHsfELEKXFQDAlajYQqz8kWiA
+Date:   Fri, 22 Apr 2022 22:24:34 +0000
+Message-ID: <4f277b84c2ee770f6a2706744b96fb1dfd6184a7.camel@intel.com>
+References: <20220413073618.291335-1-vishal.l.verma@intel.com>
+In-Reply-To: <20220413073618.291335-1-vishal.l.verma@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 8a44e6be-f1dd-4567-5bd9-08da24aee149
+x-ms-traffictypediagnostic: PH0PR11MB5109:EE_
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr,ExtFwd
+x-microsoft-antispam-prvs: <PH0PR11MB51098F5F39056BD1BF2C2ACAC7F79@PH0PR11MB5109.namprd11.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: TVp2ZkxPsUBXAx0qNg69fu6qQ4R3cJ5gVa6Gj5Zpk4GSokzT2KhZNBDzU3Cf7jsgkuWa7y3XUjeStHB/DKuTttPhXfQI3/ntQsmP9FdNV+w01EKMzQl2tb2LuAWKsTchsxwX2/CGT5JoYvB+vtFDURsyCfX0opgju9oYAb4S81M18wv6L+AeOA/b7aYw3QxEF15fCrSsFMolNbqzfbN2VfDW3weJybzfYbj/zFSgLjpg07JC6QVNlyBigkDCLiR2ulkswRJRt1FWSqj2ypiIaSrtM2bP1P24dRx2pWzvHkjeLVslezbst7t0+Nujrd4nvKZ9lP9QqEYTBoDpkyuBUGwRcSNFW4hNyycTEXqAf7Z0GEc1RDhJbla0XGQM/x9HtGPu/a9SzXWhSeV2boIJgOXfcPTCGuagHdOyl1qTD/WEvsQ3Y94z5qIf6CF5C9WL9w0kmIF5QxqpW9ikwdcuaBlXTNHoJD4b/q5p9lqqissxxLMTu9Vi9d0vdK2Mr84i6Xd2t1hK7DpYiplN5Gv4b1NJnDlMqijNI538odcVt00uaHc8LRgCsShyoodRMAExw3HsyzGaM9PvOpHvCwMbiHOyravnURbcamC+rcaeIqZmNi6EJb8pqYAlRHMV+i27XwWCwEV82eY/Y+qbpFaSaGsQr2KQ85kWcswaTGy7iOO/124XNU3LGgHZG14kc/whmuoKvUqFRLO7426jC4Mpq4B2lTnS97pAhHPguR2zkRrnWYvimPVrlLc5j+dYhoavhzGK/OHlgHcCo97tmWf17i5gJLRe4u5/1PJcFqa1htifv3KY510C2ACMRzch8+sC2+TwqZaYOYAmL4zIByLBVA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3999.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(64756008)(83380400001)(91956017)(66446008)(8676002)(66556008)(4326008)(966005)(66476007)(38070700005)(82960400001)(122000001)(6486002)(2616005)(8936002)(5660300002)(71200400001)(26005)(6512007)(508600001)(2906002)(38100700002)(36756003)(76116006)(186003)(66946007)(316002)(6916009)(54906003)(86362001)(6506007);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UFFDN05GWHlSVHJsOXBTU21uazgrOEgxYlBXQ2tXbHRDcXlLU0JJVmR2UnpF?=
+ =?utf-8?B?eUFvMS9pbEM0T3dPSG1OMmhkeDhTUlFVcElUWll6cmphQ08xaWprVnBzelAy?=
+ =?utf-8?B?VzZtSVRGL3RyU2U3NXdHYWhLa0IveXJGZ2hvL2ljR2VWRU8vMUF5MEphZXNx?=
+ =?utf-8?B?QlpVODAveHJoUzFIVkgxTE9VeXArNGd3ZnBuWUpzY1FqVHhQUWc5WWFrUFBB?=
+ =?utf-8?B?RGJTMUVrZlkrRDJZdmpKclVsSDBLVTAxWEhUYlJLblFtcnJhaVdiNE01NnFw?=
+ =?utf-8?B?cGZUOTJJWTBkeFFiN0FjSG1GV0lnOFpXdEZmTythMG1MODh6VjA0d2p4SVh5?=
+ =?utf-8?B?VFVFai8yMlNoWWhHNDlxbjdtUnk3Ym05aVQvbytSVk9XYUY0aFNZRkNSdS9X?=
+ =?utf-8?B?Yzc1VVhpUTRKeWt2d2xPMy9xc2J4TXJmWXl5ZlE4elRnVzFaL01yWVdMWkls?=
+ =?utf-8?B?VWVTNGEraWZndVhjZXUrbEFWUlVTZHl5UXlQR01rSmpBNXdsSVE0R0FWZ2p2?=
+ =?utf-8?B?V3ZwNkxDNVpkRXRXS0pTclRKRzVmL2RaazAxT3BiWFJMYnQyR3V3QW1Ib3ZF?=
+ =?utf-8?B?Z1dQbGljR0dNVVZxTzhnWnk2c1gvLzBGaFVrSStCdXFBNjM5QkxBOXY0WUVB?=
+ =?utf-8?B?eXBPdnh1TjBUeVBmK2NyT1BYakdlRkFzQW96WjBPUkUxSGZ4bDJMS0p5OVhT?=
+ =?utf-8?B?dlo2c2JlVlArcXRUMmx3eHc0R1FPbWg1Q3MwU3Z4ZmYreHByUWU5SERjOGc1?=
+ =?utf-8?B?QTcrZnd1cGdtcW9qRGVJR3ZsODlKM3hZS1FONTJpcmhPcGFiU3phdUNrK2JT?=
+ =?utf-8?B?d1JjYjBselZvcVdpdXlIdUJRMUwzOHk1VURmRWlDWUJ2bWRWSG1aWEo3bFFm?=
+ =?utf-8?B?NzlFK3E1WkkxdnFTR0VLQVNRSFMydUdwaHJ1MG9jZ2hWempyS3Q3SnFZdHYy?=
+ =?utf-8?B?a1FXSVdnb0s4V0MvTUtkVVJpWUF5UzcrMWdEV0swKzAwcjBzUXhlOC9mL1FO?=
+ =?utf-8?B?RURjbitCTEZSUnFtTGg2dE5SaTIxTWVFeCtDSDVIWHpXRGRYUWZZSk5EeStR?=
+ =?utf-8?B?c0FmQTNaMXJoVlJRb3NkZmxvYXFlczdmVDdneEZScUx6VDhKZWtZZFV5YWJn?=
+ =?utf-8?B?ZFhqdlZvWVFhVFhOekxIbUUrcVZqTjhSRU1BRG5sNFdVNlJma0J3TEtOeUYr?=
+ =?utf-8?B?bkdIM0trajU3TUdkNndrVFBKZUF5RG93b3VERjR6TjVvcVBldFRiMVkxd1JI?=
+ =?utf-8?B?UE5zK1BQZUo3ZHoxMksxd0tiM01pS2c5bkFBRkFuQWJSM00yZlJ4VFFCczRj?=
+ =?utf-8?B?N3pvYUl0V1kvU1VyQVJQd25xdVVDUmVMUU9WdXBVV1VwMVgwKzh0c2Y3N21L?=
+ =?utf-8?B?U0R3d2hCN3NqLzI3UW9TVFdTa05QdnVpeUpod0crV2hKOVVxQXk5aGsyTDZ1?=
+ =?utf-8?B?b293N2dIUC9sMHRMWDRjZ2l2eGlDR3YvYkZyYlBkSTIzUlp4eWJQS0pLd3RW?=
+ =?utf-8?B?QXhtNTh0emFhN3Vvb3Q3LzVyV1RlK0dwbUxvcXNkNlRuNHRpQ3hHM2tBSEsw?=
+ =?utf-8?B?YWs3eWY2TGhGdlpKdEtTU24xbzFUK3JGVjhKSi9SYkRWcmFoYU5qVU9DcHJU?=
+ =?utf-8?B?aVU4L0tZQm92MHZaVVpqNlBlek9PekxPUmQ1a3dtQmFTWWhiMEFabVBDV3dp?=
+ =?utf-8?B?aEE1VGtjelZTdEg5SDJwd3pKb2VtNmVRd21jQ2RacEVKMjUzbDVFWENxU2VF?=
+ =?utf-8?B?QTRWbHFDL2hVRVdHdjBKMkhWWUFJMFVPTzhHSXpUaXlYclkrMGZZeTdMaGl4?=
+ =?utf-8?B?cUpZUW9PNUdpM0gzR29ST1UzaXgyQVh5bHNkNlJ6MkptUTQyK3dOU2pNSFc0?=
+ =?utf-8?B?RysrbS8wcUUrSmV6eVBZR092eHhBQ3J5QWRDSEJ4RzhKYjN2dFcwUXRCMFBG?=
+ =?utf-8?B?RlpESkMrTTYzaTdLWnF0UFVTa3Q3cFFFM3BmZFU2eExrTXFNaERuVkVlbGNN?=
+ =?utf-8?B?SGw1YlVPVkhKU010U2NISlNxTXN5T3d5c25xZURsQVI0eVArYm1QQnF6NG0v?=
+ =?utf-8?B?YUttcUovallWQzIrSWFlTEtVQTR5ZVFCL1p0RHF3RDFuSm1Rb3FkQ0hxOXA2?=
+ =?utf-8?B?VUhndGJFMTNRSlh0aGhibytGS1NUSTZVcWswdTRqTU9XWmxSRDhKa3ZUcUZr?=
+ =?utf-8?B?VDlLcXpvQVU4QUZlK2lBRzFFZ0x4VWZQQVhZemdEdGFUbHUvNkw3ekRHWlAr?=
+ =?utf-8?B?VWJHd1BwTDB0Rzg4WXRFRytEQ2NvVElVdlNiVElMVlVFZzQ0dHVSNU1MdWhi?=
+ =?utf-8?B?WUE4SWN2MU9DcXZXb2RHQktLSEN2ajZFT0F1NFowWE1CWHkzOGpFdmVabnRo?=
+ =?utf-8?Q?Wkb2LM9dQgdg+IBw=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2B89156C4E87144AAE0C41155118045F@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3999.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a44e6be-f1dd-4567-5bd9-08da24aee149
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Apr 2022 22:24:34.8624
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: aWr5jNZ90wz5EJ++DbMluQIdj1dhiHl7GaPR5tdvcnB0GoHV9zYdwBIPWp57B02VfjnrQ+lUAjKCSNxK7M7fITtJgf0fOQ+oSmG820wI30w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5109
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ON Semiconductor FSA4480 is a USB Type-C port multimedia switch with
-support for analog audio headsets. It allows sharing a common USB Type-C
-port to pass USB2.0 signal, analog audio, sideband use wires and analog
-microphone signal.
-
-Due to lacking upstream audio support for testing, the audio muxing is
-left untouched, but implementation of muxing the SBU lines is provided
-as a pair of Type-C mux and switch devices. This provides the necessary
-support for enabling the DisplayPort altmode on devices with this
-circuit.
-
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
----
-
-Changes since v4:
-- Disable locking of the regmap
-- Use dev_fwnode() instead of explicit dereference
-
- drivers/usb/typec/mux/Kconfig   |  10 ++
- drivers/usb/typec/mux/Makefile  |   1 +
- drivers/usb/typec/mux/fsa4480.c | 218 ++++++++++++++++++++++++++++++++
- 3 files changed, 229 insertions(+)
- create mode 100644 drivers/usb/typec/mux/fsa4480.c
-
-diff --git a/drivers/usb/typec/mux/Kconfig b/drivers/usb/typec/mux/Kconfig
-index edead555835e..5eb2c17d72c1 100644
---- a/drivers/usb/typec/mux/Kconfig
-+++ b/drivers/usb/typec/mux/Kconfig
-@@ -2,6 +2,16 @@
- 
- menu "USB Type-C Multiplexer/DeMultiplexer Switch support"
- 
-+config TYPEC_MUX_FSA4480
-+	tristate "ON Semi FSA4480 Analog Audio Switch driver"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  Driver for the ON Semiconductor FSA4480 Analog Audio Switch, which
-+	  provides support for muxing analog audio and sideband signals on a
-+	  common USB Type-C connector.
-+	  If compiled as a module, the module will be named fsa4480.
-+
- config TYPEC_MUX_PI3USB30532
- 	tristate "Pericom PI3USB30532 Type-C cross switch driver"
- 	depends on I2C
-diff --git a/drivers/usb/typec/mux/Makefile b/drivers/usb/typec/mux/Makefile
-index 280a6f553115..e52a56c16bfb 100644
---- a/drivers/usb/typec/mux/Makefile
-+++ b/drivers/usb/typec/mux/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
- 
-+obj-$(CONFIG_TYPEC_MUX_FSA4480)		+= fsa4480.o
- obj-$(CONFIG_TYPEC_MUX_PI3USB30532)	+= pi3usb30532.o
- obj-$(CONFIG_TYPEC_MUX_INTEL_PMC)	+= intel_pmc_mux.o
-diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
-new file mode 100644
-index 000000000000..6184f5367190
---- /dev/null
-+++ b/drivers/usb/typec/mux/fsa4480.c
-@@ -0,0 +1,218 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2021-2022 Linaro Ltd.
-+ * Copyright (C) 2018-2020 The Linux Foundation
-+ */
-+
-+#include <linux/bits.h>
-+#include <linux/i2c.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/regmap.h>
-+#include <linux/usb/typec_dp.h>
-+#include <linux/usb/typec_mux.h>
-+
-+#define FSA4480_SWITCH_ENABLE	0x04
-+#define FSA4480_SWITCH_SELECT	0x05
-+#define FSA4480_SWITCH_STATUS1	0x07
-+#define FSA4480_SLOW_L		0x08
-+#define FSA4480_SLOW_R		0x09
-+#define FSA4480_SLOW_MIC	0x0a
-+#define FSA4480_SLOW_SENSE	0x0b
-+#define FSA4480_SLOW_GND	0x0c
-+#define FSA4480_DELAY_L_R	0x0d
-+#define FSA4480_DELAY_L_MIC	0x0e
-+#define FSA4480_DELAY_L_SENSE	0x0f
-+#define FSA4480_DELAY_L_AGND	0x10
-+#define FSA4480_RESET		0x1e
-+#define FSA4480_MAX_REGISTER	0x1f
-+
-+#define FSA4480_ENABLE_DEVICE	BIT(7)
-+#define FSA4480_ENABLE_SBU	GENMASK(6, 5)
-+#define FSA4480_ENABLE_USB	GENMASK(4, 3)
-+
-+#define FSA4480_SEL_SBU_REVERSE	GENMASK(6, 5)
-+#define FSA4480_SEL_USB		GENMASK(4, 3)
-+
-+struct fsa4480 {
-+	struct i2c_client *client;
-+
-+	/* used to serialize concurrent change requests */
-+	struct mutex lock;
-+
-+	struct typec_switch_dev *sw;
-+	struct typec_mux_dev *mux;
-+
-+	struct regmap *regmap;
-+
-+	u8 cur_enable;
-+	u8 cur_select;
-+};
-+
-+static const struct regmap_config fsa4480_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = FSA4480_MAX_REGISTER,
-+	/* Accesses only done under fsa4480->lock */
-+	.disable_locking = true,
-+};
-+
-+static int fsa4480_switch_set(struct typec_switch_dev *sw,
-+			      enum typec_orientation orientation)
-+{
-+	struct fsa4480 *fsa = typec_switch_get_drvdata(sw);
-+	u8 new_sel;
-+
-+	mutex_lock(&fsa->lock);
-+	new_sel = FSA4480_SEL_USB;
-+	if (orientation == TYPEC_ORIENTATION_REVERSE)
-+		new_sel |= FSA4480_SEL_SBU_REVERSE;
-+
-+	if (new_sel == fsa->cur_select)
-+		goto out_unlock;
-+
-+	if (fsa->cur_enable & FSA4480_ENABLE_SBU) {
-+		/* Disable SBU output while re-configuring the switch */
-+		regmap_write(fsa->regmap, FSA4480_SWITCH_ENABLE,
-+			     fsa->cur_enable & ~FSA4480_ENABLE_SBU);
-+
-+		/* 35us to allow the SBU switch to turn off */
-+		usleep_range(35, 1000);
-+	}
-+
-+	regmap_write(fsa->regmap, FSA4480_SWITCH_SELECT, new_sel);
-+	fsa->cur_select = new_sel;
-+
-+	if (fsa->cur_enable & FSA4480_ENABLE_SBU) {
-+		regmap_write(fsa->regmap, FSA4480_SWITCH_ENABLE, fsa->cur_enable);
-+
-+		/* 15us to allow the SBU switch to turn on again */
-+		usleep_range(15, 1000);
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&fsa->lock);
-+
-+	return 0;
-+}
-+
-+static int fsa4480_mux_set(struct typec_mux_dev *mux, struct typec_mux_state *state)
-+{
-+	struct fsa4480 *fsa = typec_mux_get_drvdata(mux);
-+	u8 new_enable;
-+
-+	mutex_lock(&fsa->lock);
-+
-+	new_enable = FSA4480_ENABLE_DEVICE | FSA4480_ENABLE_USB;
-+	if (state->mode >= TYPEC_DP_STATE_A)
-+		new_enable |= FSA4480_ENABLE_SBU;
-+
-+	if (new_enable == fsa->cur_enable)
-+		goto out_unlock;
-+
-+	regmap_write(fsa->regmap, FSA4480_SWITCH_ENABLE, new_enable);
-+	fsa->cur_enable = new_enable;
-+
-+	if (new_enable & FSA4480_ENABLE_SBU) {
-+		/* 15us to allow the SBU switch to turn off */
-+		usleep_range(15, 1000);
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&fsa->lock);
-+
-+	return 0;
-+}
-+
-+static int fsa4480_probe(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	struct typec_switch_desc sw_desc = { };
-+	struct typec_mux_desc mux_desc = { };
-+	struct fsa4480 *fsa;
-+
-+	fsa = devm_kzalloc(dev, sizeof(*fsa), GFP_KERNEL);
-+	if (!fsa)
-+		return -ENOMEM;
-+
-+	fsa->client = client;
-+	mutex_init(&fsa->lock);
-+
-+	fsa->regmap = devm_regmap_init_i2c(client, &fsa4480_regmap_config);
-+	if (IS_ERR(fsa->regmap))
-+		return dev_err_probe(dev, PTR_ERR(fsa->regmap), "failed to initialize regmap\n");
-+
-+	fsa->cur_enable = FSA4480_ENABLE_DEVICE | FSA4480_ENABLE_USB;
-+	fsa->cur_select = FSA4480_SEL_USB;
-+
-+	/* set default settings */
-+	regmap_write(fsa->regmap, FSA4480_SLOW_L, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_SLOW_R, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_SLOW_MIC, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_SLOW_SENSE, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_SLOW_GND, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_DELAY_L_R, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_DELAY_L_MIC, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_DELAY_L_SENSE, 0x00);
-+	regmap_write(fsa->regmap, FSA4480_DELAY_L_AGND, 0x09);
-+	regmap_write(fsa->regmap, FSA4480_SWITCH_SELECT, fsa->cur_select);
-+	regmap_write(fsa->regmap, FSA4480_SWITCH_ENABLE, fsa->cur_enable);
-+
-+	sw_desc.drvdata = fsa;
-+	sw_desc.fwnode = dev_fwnode(dev);
-+	sw_desc.set = fsa4480_switch_set;
-+
-+	fsa->sw = typec_switch_register(dev, &sw_desc);
-+	if (IS_ERR(fsa->sw))
-+		return dev_err_probe(dev, PTR_ERR(fsa->sw), "failed to register typec switch\n");
-+
-+	mux_desc.drvdata = fsa;
-+	mux_desc.fwnode = dev_fwnode(dev);
-+	mux_desc.set = fsa4480_mux_set;
-+
-+	fsa->mux = typec_mux_register(dev, &mux_desc);
-+	if (IS_ERR(fsa->mux)) {
-+		typec_switch_unregister(fsa->sw);
-+		return dev_err_probe(dev, PTR_ERR(fsa->mux), "failed to register typec mux\n");
-+	}
-+
-+	i2c_set_clientdata(client, fsa);
-+	return 0;
-+}
-+
-+static int fsa4480_remove(struct i2c_client *client)
-+{
-+	struct fsa4480 *fsa = i2c_get_clientdata(client);
-+
-+	typec_mux_unregister(fsa->mux);
-+	typec_switch_unregister(fsa->sw);
-+
-+	return 0;
-+}
-+
-+static const struct i2c_device_id fsa4480_table[] = {
-+	{ "fsa4480" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, fsa4480_table);
-+
-+static const struct of_device_id fsa4480_of_table[] = {
-+	{ .compatible = "fcs,fsa4480" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, fsa4480_of_table);
-+
-+static struct i2c_driver fsa4480_driver = {
-+	.driver = {
-+		.name = "fsa4480",
-+		.of_match_table = fsa4480_of_table,
-+	},
-+	.probe_new	= fsa4480_probe,
-+	.remove		= fsa4480_remove,
-+	.id_table	= fsa4480_table,
-+};
-+module_i2c_driver(fsa4480_driver);
-+
-+MODULE_DESCRIPTION("ON Semiconductor FSA4480 driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.35.1
-
+T24gV2VkLCAyMDIyLTA0LTEzIGF0IDAxOjM2IC0wNjAwLCBWaXNoYWwgVmVybWEgd3JvdGU6DQo+
+IENoYW5nZXMgc2luY2UgdjVbMV06DQo+IC0gQ29sbGVjdCBhbiByZXZpZXdlZC1ieSB0YWdzIGZy
+b20gUmFmYWVsLCBBZGFtLCBhbmQgRGF2aWQNCj4gLSBGaXggYSBjb3VwbGUgb2YgbWlzc2VkIHMv
+Q1hML2V4dGVuZGVkLyBpbiBhY3BpX2J1cy5oIChSYWZhZWwpDQoNClJhZmFlbCwgb3IgQmpvcm4s
+DQoNCkRhbiBoYXMgb2ZmZXJlZCB0byB0YWtlIHRoaXMgdGhyb3VnaCBjeGwuZ2l0LiBBbnkgb2Jq
+ZWN0aW9ucyB0byB0aGF0IC0NCndvdWxkIHlvdSBwcmVmZXIgaXQgdG8gZ28gdGhyb3VnaCBlaXRo
+ZXIgdGhlIFBDSSBvciBBQ1BJIHRyZWVzIGluc3RlYWQ/DQoNCj4gDQo+IEFkZCBzdXBwb3J0IGZv
+ciB1c2luZyB0aGUgQ1hMIGRlZmluaXRpb24gb2YgX09TQyB3aGVyZSBhcHBsaWNhYmxlLCBhbmQN
+Cj4gbmVnb3RpYXRpbmcgQ1hMIHNwZWNpZmljIHN1cHBvcnQgYW5kIGNvbnRyb2wgYml0cy4NCj4g
+DQo+IFBhdGNoIDEgaXMgYSBwcmVsaW1pbmFyeSBjbGVhbnVwIHRoYXQgcmVwbGFjZXMgb3Blbi1j
+b2RlZCBwb2ludGVyDQo+IGFyaXRobWV0aWMgdG8gcmV0cmlldmUgdGhlIENvbnRyb2wgRFdPUkQg
+d2l0aCBhbiBpbmxpbmUgaGVscGVyLg0KPiANCj4gUGF0Y2ggMiBhZGRzIHRoZSBuZXcgQ1hMIF9P
+U0MgVVVJRCwgYW5kIHVzZXMgaXQgaW5zdGVhZCBvZiB0aGUgUENJIFVVSUQNCj4gd2hlbiBhIHJv
+b3QgcG9ydCBpcyBDWEwgZW5hYmxlZC4gSXQgcHJvdmlkZXMgYSBmYWxsYmFjayBtZXRob2QgZm9y
+DQo+IENYTC0xLjEgcGxhdGZvcm1zIHRoYXQgbWF5IG5vdCBpbXBsZW1lbnQgdGhlIENYTC0yLjAg
+X09TQy4NCj4gDQo+IFBhdGNoIDMgcGVyZm9ybXMgbmVnb3RpYXRpb24gZm9yIHRoZSBDWEwgc3Bl
+Y2lmaWMgX09TQyBzdXBwb3J0IGFuZA0KPiBjb250cm9sIGJpdHMuDQo+IA0KPiBJJ3ZlIHRlc3Rl
+ZCB0aGVzZSBhZ2FpbnN0IGEgY3VzdG9tIHFlbXVbMl0sIHdoaWNoIGFkZHMgdGhlIENYTCBfT1ND
+IChpbg0KPiBhZGRpdGlvbiB0byBvdGhlciBDWEwgc3VwcG9ydCkuIFNwZWNpZmljYWxseSwgX09T
+QyBzdXBwb3J0IGlzIGFkZGVkDQo+IGhlcmVbM10uDQo+IA0KPiBbMV06IGh0dHBzOi8vbG9yZS5r
+ZXJuZWwub3JnL2xpbnV4LWN4bC8yMDIyMDQwNjAyMzc0Ni4yODA3MzI4LTEtdmlzaGFsLmwudmVy
+bWFAaW50ZWwuY29tDQo+IFsyXTogaHR0cHM6Ly9naXRsYWIuY29tL2ppYzIzL3FlbXUvLS90cmVl
+L2N4bC12OC1kcmFmdA0KPiBbM106IGh0dHBzOi8vZ2l0bGFiLmNvbS9qaWMyMy9xZW11Ly0vY29t
+bWl0LzFkNjdkZjZiNmUzNzE2YzI3NDYyODczZjM0NTE5NTZmNWMwNjczYTMNCj4gDQo+IERhbiBX
+aWxsaWFtcyAoMSk6DQo+IMKgIFBDSS9BQ1BJOiBQcmVmZXIgQ1hMIF9PU0MgaW5zdGVhZCBvZiBQ
+Q0llIF9PU0MgZm9yIENYTCBob3N0IGJyaWRnZXMNCj4gDQo+IFZpc2hhbCBWZXJtYSAoMik6DQo+
+IMKgIFBDSS9BQ1BJOiBhZGQgYSBoZWxwZXIgZm9yIHJldHJpZXZpbmcgX09TQyBDb250cm9sIERX
+T1JEcw0KPiDCoCBQQ0kvQUNQSTogbmVnb3RpYXRlIENYTCBfT1NDDQo+IA0KPiDCoGluY2x1ZGUv
+bGludXgvYWNwaS5owqDCoMKgIHzCoCA0MiArKysrKystDQo+IMKgaW5jbHVkZS9hY3BpL2FjcGlf
+YnVzLmggfMKgIDEyICstDQo+IMKgZHJpdmVycy9hY3BpL2J1cy5jwqDCoMKgwqDCoCB8wqDCoCAy
+ICstDQo+IMKgZHJpdmVycy9hY3BpL3BjaV9yb290LmMgfCAyNDAgKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKystLS0tLQ0KPiDCoDQgZmlsZXMgY2hhbmdlZCwgMjYyIGluc2VydGlv
+bnMoKyksIDM0IGRlbGV0aW9ucygtKQ0KPiANCj4gDQo+IGJhc2UtY29tbWl0OiAwNWU4MTU1Mzlm
+M2YxNjE1ODVjMTNhOWFiMDIzMzQxYmFkZTJjNTJmDQoNCg==
