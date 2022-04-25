@@ -2,87 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD6650D6E1
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Apr 2022 04:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01AF550D9E7
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Apr 2022 09:08:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240322AbiDYCRY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 24 Apr 2022 22:17:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39246 "EHLO
+        id S232733AbiDYHLu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Apr 2022 03:11:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240320AbiDYCRY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 24 Apr 2022 22:17:24 -0400
-Received: from bee.birch.relay.mailchannels.net (bee.birch.relay.mailchannels.net [23.83.209.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F303F894;
-        Sun, 24 Apr 2022 19:14:20 -0700 (PDT)
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 12AF7121D3A;
-        Mon, 25 Apr 2022 02:14:19 +0000 (UTC)
-Received: from pdx1-sub0-mail-a217.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 835C5121E04;
-        Mon, 25 Apr 2022 02:14:18 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1650852858; a=rsa-sha256;
-        cv=none;
-        b=d1vemvf4nhgWkSZZzsz9nDtbSdj/tDA84mWlcc4KPOGCIyqd/jxYvlRyUI471/sVAVDCLy
-        MF+tHuTClI+V66j7OwOi4Gzt2zyJwFafqFrpXN5YyLodfnQvt91e4xXRlSeehiMug8CNhg
-        kZJpjfb8IhAReuVCowZ9+FewJerGpYmFipm5S1HKFbo7XPys4Yh5VwIXA7Rycj2hsKj/MI
-        DfieP10fyg0egW4dH6X15RzxOkLSHEnoCzMFs2hDc7/X7FHrFueJMF9StDuotu5CkC7Tei
-        Zd4Te3jFx1zVUGenR+OHOptQXxPXybZDpFARk6Z9AOvYyj6FTI760KkSPmLelA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1650852858;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:dkim-signature;
-        bh=KxnLMzjR75kF8mNlPzwLdtNEw5lVgw9YWOw5RLRjW2E=;
-        b=7ADHk7i9oKsQDDEYGoheIvlO+aeQizWNv5mCd1H816rPtvyoD2jbyY/wO7WxV2pIikqwdJ
-        snVotR97pDqpcV0bMX06PFxz/fKOGIIqgCpNMN1dTnRkBw9Hbx2X6t8slu5pNoicc1lsKV
-        BhRg38i4fe6zvG/wL9wKQAOGqnEtaARaW1hs+yjUaqfDmH/EeRkWkDPy+sLjpHpXowK6yL
-        uncrhJq2d3G6OR/Ug2U5s7meV/BL1xYMS1XMo0Bm+LVUBUo4y2kPKLdBPCHjKeOFG6t3H/
-        9+e8fZOIZIZZZY9Us9Xiux0XKr9AR+Mgfh1ag72gn7/d++kClyxyf9ygX66zvQ==
-ARC-Authentication-Results: i=1;
-        rspamd-67b64f579b-tg62q;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=ian@linux.cowan.aero
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|ian@linux.cowan.aero
-X-MailChannels-Auth-Id: dreamhost
-X-Wipe-Spot: 7569185d58f77829_1650852858927_1998791521
-X-MC-Loop-Signature: 1650852858927:3081617291
-X-MC-Ingress-Time: 1650852858926
-Received: from pdx1-sub0-mail-a217.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.121.210.129 (trex/6.7.1);
-        Mon, 25 Apr 2022 02:14:18 +0000
-Received: from localhost.localdomain (unknown [69.12.38.97])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: ian@linux.cowan.aero)
-        by pdx1-sub0-mail-a217.dreamhost.com (Postfix) with ESMTPSA id 4KmpVK606Qz2n;
-        Sun, 24 Apr 2022 19:14:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.cowan.aero;
-        s=dreamhost; t=1650852858;
-        bh=KxnLMzjR75kF8mNlPzwLdtNEw5lVgw9YWOw5RLRjW2E=;
-        h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
-        b=c+2XlTSYiuVRbaPwwBz5Uh1RUz5FRMKTCCEONOiUgQZ2Mte1D3uUP3XEoQDiyQ0m1
-         Ww29UOnQkKm3xW1i9B0B+AcKUQtvqwC1mh42eQErtOi/G+qGF4rt2qCcCiWbupCkbO
-         MIyQ9zONnTUsJoLQDvqEwLTLK8RB5Nzq2f/jw9rjd9kbOyvDPzuDRiZidXCDYRpa0A
-         TPwwrPgKsrQmVO7Q9jnNV+RTvrIxX7+S0hh/RiezPxPXJlsYK9MXzu/129tpCqbrbZ
-         3PGlCNEiMNwXbwMmIiPNBwDqm8eqbi092/7fzxSNhFdR7EQSskY4rSUQC0Gyx1C6Fo
-         SBCMnYkFmK96Q==
-From:   Ian Cowan <ian@linux.cowan.aero>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ian Cowan <ian@linux.cowan.aero>
-Subject: [PATCH] drivers: acpi: clean up spaces to be consistent
-Date:   Sun, 24 Apr 2022 22:14:07 -0400
-Message-Id: <20220425021407.486916-1-ian@linux.cowan.aero>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S231663AbiDYHLt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 25 Apr 2022 03:11:49 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6211C13D0A;
+        Mon, 25 Apr 2022 00:08:45 -0700 (PDT)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Kmwyk0JrjzGpLq;
+        Mon, 25 Apr 2022 15:05:50 +0800 (CST)
+Received: from localhost.localdomain (10.67.164.66) by
+ canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 25 Apr 2022 15:08:24 +0800
+From:   Yicong Yang <yangyicong@hisilicon.com>
+To:     <bhelgaas@google.com>, <rafael@kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+CC:     <lenb@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <yangyicong@hisilicon.com>, <linuxarm@huawei.com>
+Subject: [PATCH] PCI/ACPI: Always advertise ASPM support if CONFIG_PCIEASPM=y
+Date:   Mon, 25 Apr 2022 15:06:34 +0800
+Message-ID: <20220425070634.28227-1-yangyicong@hisilicon.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.67.164.66]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,67 +46,52 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This cleans up a few line spaces so that it is consistent with the rest
-of the file. There are a few places where a space was added before a
-return and two spots where a double line space was made into one line
-space.
+When we have CONFIG_PCIEASPM enabled it means OS can always support ASPM no
+matter user have disabled it through pcie_aspm=off or not. But currently we
+won't advertise ASPM support in _OSC negotiation if user disables it, which
+doesn't match the fact. This will also have side effects that other PCIe
+services like AER and hotplug will be disabled as ASPM support is required
+and we won't negotiate other services if ASPM support is absent.
 
-Signed-off-by: Ian Cowan <ian@linux.cowan.aero>
+So this patch makes OS always advertising ASPM support if CONFIG_PCIEASPM=y.
+It intends no functional change to pcie_aspm=off as it will still mark
+aspm_disabled=1 and aspm_support_enabled=false, driver will check these
+status before configuring ASPM.
+
+Tested this patch with pcie_aspm=off:
+estuary:/$ dmesg | egrep -i "aspm|osc"
+[    0.000000] PCIe ASPM is disabled
+[    8.706961] acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM
+ClockPM Segments MSI EDR HPX-Type3]
+[    8.726032] acpi PNP0A08:00: _OSC: platform does not support [LTR]
+[    8.742818] acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug PME
+AER PCIeCapability DPC]
+estuary:/sys/module/pcie_aspm/parameters$ cat policy
+[default] performance powersave powersupersave
+estuary:/sys/module/pcie_aspm/parameters$ echo powersave > policy
+bash: echo: write error: Operation not permitted
+
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+[https://lore.kernel.org/linux-pci/20220407154257.GA235990@bhelgaas/]
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 ---
- drivers/acpi/ac.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/pci_root.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-index db487ff9dd1b..f8ec48cd7659 100644
---- a/drivers/acpi/ac.c
-+++ b/drivers/acpi/ac.c
-@@ -32,7 +32,6 @@ MODULE_AUTHOR("Paul Diefenbaugh");
- MODULE_DESCRIPTION("ACPI AC Adapter Driver");
- MODULE_LICENSE("GPL");
- 
--
- static int acpi_ac_add(struct acpi_device *device);
- static int acpi_ac_remove(struct acpi_device *device);
- static void acpi_ac_notify(struct acpi_device *device, u32 event);
-@@ -125,6 +124,7 @@ static int get_ac_property(struct power_supply *psy,
- 	default:
- 		return -EINVAL;
- 	}
-+
- 	return 0;
- }
- 
-@@ -190,12 +190,14 @@ static int acpi_ac_battery_notify(struct notifier_block *nb,
- static int __init thinkpad_e530_quirk(const struct dmi_system_id *d)
- {
- 	ac_sleep_before_get_state_ms = 1000;
-+
- 	return 0;
- }
- 
- static int __init ac_only_quirk(const struct dmi_system_id *d)
- {
- 	ac_only = 1;
-+
- 	return 0;
- }
- 
-@@ -286,6 +288,7 @@ static int acpi_ac_resume(struct device *dev)
- 		return 0;
- 	if (old_state != ac->state)
- 		kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-+
- 	return 0;
- }
- #else
-@@ -296,7 +299,6 @@ static int acpi_ac_remove(struct acpi_device *device)
- {
- 	struct acpi_ac *ac = NULL;
- 
--
- 	if (!device || !acpi_driver_data(device))
- 		return -EINVAL;
- 
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index 6f9e75d14808..17e78582e633 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -393,7 +393,7 @@ static u32 calculate_support(void)
+ 	support |= OSC_PCI_HPX_TYPE_3_SUPPORT;
+ 	if (pci_ext_cfg_avail())
+ 		support |= OSC_PCI_EXT_CONFIG_SUPPORT;
+-	if (pcie_aspm_support_enabled())
++	if (IS_ENABLED(CONFIG_PCIEASPM))
+ 		support |= OSC_PCI_ASPM_SUPPORT | OSC_PCI_CLOCK_PM_SUPPORT;
+ 	if (pci_msi_enabled())
+ 		support |= OSC_PCI_MSI_SUPPORT;
 -- 
-2.35.1
+2.24.0
 
