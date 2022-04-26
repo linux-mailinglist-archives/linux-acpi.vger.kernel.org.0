@@ -2,73 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BC4950FAB6
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Apr 2022 12:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF7BE50FBCB
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Apr 2022 13:16:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349157AbiDZKfj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Apr 2022 06:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57678 "EHLO
+        id S1346663AbiDZLTP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Apr 2022 07:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349169AbiDZKfW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Apr 2022 06:35:22 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76807BC80;
-        Tue, 26 Apr 2022 03:15:54 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id bv19so35046021ejb.6;
-        Tue, 26 Apr 2022 03:15:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Q3Y2xFiZZM73aQbd0fWB6wOUMQq6/t+7deOrBNRhpAo=;
-        b=L0JvI+hwzslb7KKVSWtMbcFSetgyuHbkwLbRyMxEENT6QJ+aSWwO2YG51X3qnGcv/Y
-         /d/Q6vSYhVwvUVLG3dPZbFsDQL1fwYeNw/jlAUUuF6sjHW08dWfI8/0Kk6WjrmeX8sgP
-         XEJalN/f+v2PU6g2LnOVTridPXqmUoZG2CFSk+GokxNEco2+pRcAjnHCZil8rEpATQIP
-         NupWyqdlD5+F7+jCFBaLO3GkQWf0jYMUq5ZvhTYTnGgqx2MYEHhYUKpgdLIm8o7e10kT
-         wRUek3rToTfanY01ncLCh9/98lWMw+ZqTmfjeLkm6+DfKlRVgeKp+H1UX6y2AwI7NNkX
-         NDAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Q3Y2xFiZZM73aQbd0fWB6wOUMQq6/t+7deOrBNRhpAo=;
-        b=HyJUwYTl/34QwMHUpaRftAIJWwHevrEsSjvvwpir4gC8c7Ka+t8Kic+JzH37Bw23hw
-         lVdxUUiJ/ACcHh6kMmV15UUOAjUguejuw2WUfKPQAqVcoGKP6I+71CwF7Rhutk8C+qKH
-         cv+pCTCBbcy/rSItCCyD4/RTgVrq76ZPMoXZlskVFzkZnpEf/1RSWNUlO63aLGAGpJQQ
-         JR+qce83EQt9t7TjM9wouLXCSsAkp9w0hViGO5UGqJdl4m8JJ1HoBIeW5fzSC4TF8ifn
-         Nr8ocwZfFxNGu594aXD0Jr9LO0eo3Zt52BIkpaXYo6GLOaXKtJ3tcgjYOnDKPs+ikHo+
-         MFsA==
-X-Gm-Message-State: AOAM531cZsPmregWjh1dZ0EuEspjKlbLiMD/MRpfDpaTdNUMSnYdWa/L
-        /YTN9aeRg+w3mONgG0OAajFuz2mjIvHVfe2Q8Mk=
-X-Google-Smtp-Source: ABdhPJx+imrat0Zla/qc8W6CK7Tbr/jceeZWxvAY6UNQhFT3P/lC6vjpbSbUKrsLvZi6tatpbMkn9a7w0LbrUygEvi4=
-X-Received: by 2002:a17:907:7d8c:b0:6f2:476d:fde4 with SMTP id
- oz12-20020a1709077d8c00b006f2476dfde4mr19519158ejc.497.1650968152522; Tue, 26
- Apr 2022 03:15:52 -0700 (PDT)
+        with ESMTP id S1349490AbiDZLSz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Apr 2022 07:18:55 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 13A6D38BE7;
+        Tue, 26 Apr 2022 04:15:47 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB8B023A;
+        Tue, 26 Apr 2022 04:15:46 -0700 (PDT)
+Received: from [10.57.80.98] (unknown [10.57.80.98])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 99EA53F5A1;
+        Tue, 26 Apr 2022 04:15:43 -0700 (PDT)
+Message-ID: <030f48f4-44d7-c04c-a194-5f4999873ebe@arm.com>
+Date:   Tue, 26 Apr 2022 12:15:37 +0100
 MIME-Version: 1.0
-References: <20220422222351.1297276-1-bjorn.andersson@linaro.org> <20220422222351.1297276-2-bjorn.andersson@linaro.org>
-In-Reply-To: <20220422222351.1297276-2-bjorn.andersson@linaro.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 26 Apr 2022 12:15:13 +0200
-Message-ID: <CAHp75VdT7FYpoxV8RD6J-ujHuDnj0GWswDx6wCyCyz9cozkQ7Q@mail.gmail.com>
-Subject: Re: [PATCH v5 1/7] device property: Add helper to match multiple connections
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v6 1/2] PCI/ACPI: Support Microsoft's "DmaProperty"
+Content-Language: en-GB
+To:     Rajat Jain <rajatja@google.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        USB <linux-usb@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        iommu@lists.linux-foundation.org
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+References: <20220426000640.3581446-1-rajatja@google.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20220426000640.3581446-1-rajatja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,187 +61,107 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Apr 23, 2022 at 1:25 AM Bjorn Andersson
-<bjorn.andersson@linaro.org> wrote:
->
-> In some cases multiple connections with the same connection id
-> needs to be resolved from a fwnode graph.
->
-> One such example is when separate hardware is used for performing muxing
-> and/or orientation switching of the SuperSpeed and SBU lines in a USB
-> Type-C connector. In this case the connector needs to belong to a graph
-> with multiple matching remote endpoints, and the Type-C controller needs
-> to be able to resolve them both.
->
-> Add a new API that allows this kind of lookup.
-
-LGTM now,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-thanks!
-
-> Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+On 2022-04-26 01:06, Rajat Jain via iommu wrote:
+> The "DmaProperty" is supported and currently documented and used by
+> Microsoft [link 1 below], to flag internal PCIe root ports that need
+> DMA protection [link 2 below]. We have discussed with them and reached
+> a common understanding that they shall change their MSDN documentation
+> to say that the same property can be used to protect any PCI device,
+> and not just internal PCIe root ports (since there is no point
+> introducing yet another property for arbitrary PCI devices). This helps
+> with security from internal devices that offer an attack surface for
+> DMA attacks (e.g. internal network devices).
+> 
+> Support DmaProperty to mark DMA from a PCI device as untrusted.
+> 
+> Link: [1] https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
+> Link: [2] https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
+> Signed-off-by: Rajat Jain <rajatja@google.com>
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->
-> Changes since v4:
-> - Added "Add" to patch subject
-> - Added "(Optional)" kernel-doc of fwnode_connection_find_matches()
->
->  drivers/base/property.c  | 109 +++++++++++++++++++++++++++++++++++++++
->  include/linux/property.h |   5 ++
->  2 files changed, 114 insertions(+)
->
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 36401cfe432c..babab8cec7a0 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -1201,6 +1201,40 @@ fwnode_graph_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
->         return NULL;
->  }
->
-> +static unsigned int fwnode_graph_devcon_matches(struct fwnode_handle *fwnode,
-> +                                               const char *con_id, void *data,
-> +                                               devcon_match_fn_t match,
-> +                                               void **matches,
-> +                                               unsigned int matches_len)
+> v6: * Take care of Bjorn's comments:
+>         - Update the commit log
+>         - Rename to pci_dev_has_dma_property()
+>         - Use acpi_dev_get_property()
+> v5: * Reorder the patches in the series
+> v4: * Add the GUID.
+>      * Update the comment and commitlog.
+> v3: * Use Microsoft's documented property "DmaProperty"
+>      * Resctrict to ACPI only
+> 
+>   drivers/acpi/property.c |  3 +++
+>   drivers/pci/pci-acpi.c  | 21 +++++++++++++++++++++
+>   2 files changed, 24 insertions(+)
+> 
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 12bbfe833609..bafe35c301ac 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -48,6 +48,9 @@ static const guid_t prp_guids[] = {
+>   	/* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
+>   	GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
+>   		  0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
+> +	/* DmaProperty for PCI devices GUID: 70d24161-6dd5-4c9e-8070-705531292865 */
+> +	GUID_INIT(0x70d24161, 0x6dd5, 0x4c9e,
+> +		  0x80, 0x70, 0x70, 0x55, 0x31, 0x29, 0x28, 0x65),
+>   };
+>   
+>   /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 3ae435beaf0a..d7c6ba48486f 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1369,12 +1369,33 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
+>   		dev->external_facing = 1;
+>   }
+>   
+> +static int pci_dev_has_dma_property(struct pci_dev *dev)
 > +{
-> +       struct fwnode_handle *node;
-> +       struct fwnode_handle *ep;
-> +       unsigned int count = 0;
-> +       void *ret;
+> +	struct acpi_device *adev;
+> +	const union acpi_object *obj;
 > +
-> +       fwnode_graph_for_each_endpoint(fwnode, ep) {
-> +               if (matches && count >= matches_len) {
-> +                       fwnode_handle_put(ep);
-> +                       break;
-> +               }
+> +	adev = ACPI_COMPANION(&dev->dev);
+> +	if (!adev)
+> +		return 0;
 > +
-> +               node = fwnode_graph_get_remote_port_parent(ep);
-> +               if (!fwnode_device_is_available(node)) {
-> +                       fwnode_handle_put(node);
-> +                       continue;
-> +               }
-> +
-> +               ret = match(node, con_id, data);
-> +               fwnode_handle_put(node);
-> +               if (ret) {
-> +                       if (matches)
-> +                               matches[count] = ret;
-> +                       count++;
-> +               }
-> +       }
-> +       return count;
-> +}
-> +
->  static void *
->  fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
->                     void *data, devcon_match_fn_t match)
-> @@ -1223,6 +1257,37 @@ fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
->         return NULL;
->  }
->
-> +static unsigned int fwnode_devcon_matches(struct fwnode_handle *fwnode,
-> +                                         const char *con_id, void *data,
-> +                                         devcon_match_fn_t match,
-> +                                         void **matches,
-> +                                         unsigned int matches_len)
-> +{
-> +       struct fwnode_handle *node;
-> +       unsigned int count = 0;
-> +       unsigned int i;
-> +       void *ret;
-> +
-> +       for (i = 0; ; i++) {
-> +               if (matches && count >= matches_len)
-> +                       break;
-> +
-> +               node = fwnode_find_reference(fwnode, con_id, i);
-> +               if (IS_ERR(node))
-> +                       break;
-> +
-> +               ret = match(node, NULL, data);
-> +               fwnode_handle_put(node);
-> +               if (ret) {
-> +                       if (matches)
-> +                               matches[count] = ret;
-> +                       count++;
-> +               }
-> +       }
-> +
-> +       return count;
-> +}
-> +
->  /**
->   * fwnode_connection_find_match - Find connection from a device node
->   * @fwnode: Device node with the connection
-> @@ -1250,3 +1315,47 @@ void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
->         return fwnode_devcon_match(fwnode, con_id, data, match);
->  }
->  EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
-> +
-> +/**
-> + * fwnode_connection_find_matches - Find connections from a device node
-> + * @fwnode: Device node with the connection
-> + * @con_id: Identifier for the connection
-> + * @data: Data for the match function
-> + * @match: Function to check and convert the connection description
-> + * @matches: (Optional) array of pointers to fill with matches
-> + * @matches_len: Length of @matches
-> + *
-> + * Find up to @matches_len connections with unique identifier @con_id between
-> + * @fwnode and other device nodes. @match will be used to convert the
-> + * connection description to data the caller is expecting to be returned
-> + * through the @matches array.
-> + * If @matches is NULL @matches_len is ignored and the total number of resolved
-> + * matches is returned.
-> + *
-> + * Return: Number of matches resolved, or negative errno.
-> + */
-> +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
-> +                                  const char *con_id, void *data,
-> +                                  devcon_match_fn_t match,
-> +                                  void **matches, unsigned int matches_len)
-> +{
-> +       unsigned int count_graph;
-> +       unsigned int count_ref;
-> +
-> +       if (!fwnode || !match)
-> +               return -EINVAL;
-> +
-> +       count_graph = fwnode_graph_devcon_matches(fwnode, con_id, data, match,
-> +                                                 matches, matches_len);
-> +
-> +       if (matches) {
-> +               matches += count_graph;
-> +               matches_len -= count_graph;
-> +       }
-> +
-> +       count_ref = fwnode_devcon_matches(fwnode, con_id, data, match,
-> +                                         matches, matches_len);
-> +
-> +       return count_graph + count_ref;
-> +}
-> +EXPORT_SYMBOL_GPL(fwnode_connection_find_matches);
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index fc24d45632eb..a5b429d623f6 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -451,6 +451,11 @@ static inline void *device_connection_find_match(struct device *dev,
->         return fwnode_connection_find_match(dev_fwnode(dev), con_id, data, match);
->  }
->
-> +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
-> +                                  const char *con_id, void *data,
-> +                                  devcon_match_fn_t match,
-> +                                  void **matches, unsigned int matches_len);
-> +
->  /* -------------------------------------------------------------------------- */
->  /* Software fwnode support - when HW description is incomplete or missing */
->
-> --
-> 2.35.1
->
+> +	/*
+> +	 * Property also used by Microsoft Windows for same purpose,
+> +	 * (to implement DMA protection from a device, using the IOMMU).
 
+Nit: there is no context for "same purpose" here, so this comment is 
+more confusing than helpful. Might I suggest a rewording like:
 
--- 
-With Best Regards,
-Andy Shevchenko
+	/*
+	 * Property used by Microsoft Windows to enforce IOMMU DMA
+	 * protection for any device that the system might not fully
+	 * trust; we'll honour it the same way.
+	 */
+
+?
+
+Personally I think it would have been more logical to handle this in 
+pci_set_dma_untrusted(), but I see some of those implementation aspects 
+have already been discussed, and Bjorn's preference definitely wins over 
+mine here :)
+
+Thanks,
+Robin.
+
+> +	 */
+> +	if (!acpi_dev_get_property(adev, "DmaProperty", ACPI_TYPE_INTEGER,
+> +				   &obj) && obj->integer.value == 1)
+> +		return 1;
+> +
+> +	return 0;
+> +}
+> +
+>   void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+>   {
+>   	struct pci_dev *pci_dev = to_pci_dev(dev);
+>   
+>   	pci_acpi_optimize_delay(pci_dev, adev->handle);
+>   	pci_acpi_set_external_facing(pci_dev);
+> +	pci_dev->untrusted |= pci_dev_has_dma_property(pci_dev); >   	pci_acpi_add_edr_notifier(pci_dev);
+>   
+>   	pci_acpi_add_pm_notifier(adev, pci_dev);
