@@ -2,160 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91AEA50EBE5
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Apr 2022 00:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C308850ED28
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Apr 2022 02:06:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238129AbiDYWZR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 25 Apr 2022 18:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46262 "EHLO
+        id S239101AbiDZAJv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Apr 2022 20:09:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343730AbiDYWVb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 25 Apr 2022 18:21:31 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2135.outbound.protection.outlook.com [40.107.223.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90308644E6;
-        Mon, 25 Apr 2022 15:18:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PneKFFdCBFRNLuqo4vt7WhHL1V6MmokbBbh290DvwoPDPQs0Di5bgQ+jVlKT9loAtFsWDtbbWhMExIKLD9dbfyvc4AZRxBfQ1geJBDr5ZVw2A6UD4vqNM+iwSkAhzLiw36LBCNJCs4jivDSBzXFGXFy4tjTZIPOtPz1u1+38noRcVFMGDvkVl8+t8Jj9taCdu81RhyqXNs81dTfouIPeUmoWNc2JDnvB3mVzlQHf2PhAvMMpH8bYD+syCTbekPKUwinto7Nimnqq/QXQeeCmcTdtf9bW5qreQJWJ/N+Ole6qPXd/0GrR0wAnJ0tdhBajby6KYf9j0fwRefn4NlnhdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CtrvvNBlBlQElBlRpv1FH8wYGHhXgw41j18xQ1uOJaM=;
- b=A3ptzbBPpBYBHfGVSPpbFIpuly5JOam08RT9asjTOLQnacz/8qPVCFiND/fiSahKg2a40G1n5OQtBYE41We3wuIiAcZKgIIjsraxdv13PxJtrXztj1CdMOc+aow85yg7HM1y+E6BcJeg2X1/00wgcR8cPQmzDbdhA7u8dLoaYBLYt0bX4DKCzvNBbwhhCQJWErMl0FYofKFERpLJUNx/T4HjuIj3b358bwyQTA6RL23AeArTd0DZ2NflTDKHDxhXYfGr5ck0Ua5SM9tbVa5Hh07wztTBQdjxPTxkLihWXGqilpeG+X6TIa+Rcfaz0yhaMnco4Q/+Whr/XcfS9zgR5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
+        with ESMTP id S234498AbiDZAJu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 25 Apr 2022 20:09:50 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F0D1132F1
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Apr 2022 17:06:44 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id a18-20020a25bad2000000b0063360821ea7so14436796ybk.15
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Apr 2022 17:06:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CtrvvNBlBlQElBlRpv1FH8wYGHhXgw41j18xQ1uOJaM=;
- b=X2QLgZAF0+BfjtaQDB2fahjdoiJAMDpnxy7HIXeKz/IRFqUaaA9SXs/7HwURFKa0hZ/gtLscVtviIhyW6J5nMQUvRUnqKbsl47aBKAGYGaz7eF11y0co0iTrcPAJ/RFlOSsyx1Yq7k9iejap5gZk/9hup2TB+cNHH3HYqt0QgIo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from DM5PR0102MB3590.prod.exchangelabs.com (2603:10b6:4:a4::25) by
- SN6PR0102MB3598.prod.exchangelabs.com (2603:10b6:805:d::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5186.14; Mon, 25 Apr 2022 22:18:21 +0000
-Received: from DM5PR0102MB3590.prod.exchangelabs.com
- ([fe80::6523:e373:99c:8ce]) by DM5PR0102MB3590.prod.exchangelabs.com
- ([fe80::6523:e373:99c:8ce%5]) with mapi id 15.20.5186.021; Mon, 25 Apr 2022
- 22:18:21 +0000
-From:   Ilkka Koskinen <ilkka@os.amperecomputing.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>,
-        Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: AGDI: Fix missing prototype warning for acpi_agdi_init()
-Date:   Mon, 25 Apr 2022 15:18:02 -0700
-Message-Id: <20220425221802.68498-1-ilkka@os.amperecomputing.com>
-X-Mailer: git-send-email 2.17.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR03CA0012.namprd03.prod.outlook.com
- (2603:10b6:610:b0::17) To DM5PR0102MB3590.prod.exchangelabs.com
- (2603:10b6:4:a4::25)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fbe2f045-1896-41f6-ede1-08da27098209
-X-MS-TrafficTypeDiagnostic: SN6PR0102MB3598:EE_
-X-Microsoft-Antispam-PRVS: <SN6PR0102MB3598DD1D6EE29EA71F734E7C9DF89@SN6PR0102MB3598.prod.exchangelabs.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2NKKsb+OCDE1EXmTVnnQ90cbR+n5oseYhXeel5Mq9SzP/7Brf2NjTbdKPu5HIlDba5s4QxrFnOCbEDg+wWPvzfUFmKFHjn3T3veaqLQH752L8xMJe5tzUXre2r6RkTM7apmgjhe/vtb2ncsMWZCx8wfQ4zCAOz2ShgLR/dwr86Rw3mzidulzgAtwL/pnbhEWXitWRCzBeLXpFTSGPieHkL4IploTT9Js3gWdFine3FprHftGsgnssUMeTBJ4jg8rw9dk3lLgwvAWnSynJrikLaYuTCqDU/6Svo2OrbNRil8MpEzqDpBNwmgDrGWs7HGPIaZpZC9IlG6P2WIkz+xh9o2unsNpSYt4iOk5fU4ZWaDe/jw5++hyA9B9HB4nvycDTWr7o2eIyLF6yNu+kqpyH0+cwflQ0RD4wb/5Ez44fFqWn90zHQzGFq1+lrxIJT1pd39/TkT1B3jBO+1mc4OnGYlgU4XtBQdV3e22EbY2WSCqtiY8mwPdiYpzozasalbU5gjCrF5zxYbrY+yc8IuoZVZet1rA56irW9hOlFvL0DmFMkoQzBxwY6Fz8lLaHkVkQLtJ2xeIez1mSvcIm1i7I2NRnKjLvamFLMvsakcBt7/AwxABexJ4kBAlEvVGOTv2WluioNmxr9InHH5hFU6yWNYrKhyhK3xrH9RA/icjvPDa8FybqufIz90MskX82JUeoNXNP95DDhwLF9MfkQap+g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR0102MB3590.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(508600001)(52116002)(4326008)(6486002)(6666004)(6506007)(6512007)(26005)(186003)(2616005)(1076003)(66946007)(66476007)(83380400001)(66556008)(8676002)(54906003)(86362001)(38100700002)(5660300002)(8936002)(38350700002)(4744005)(2906002)(316002)(110136005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZzFYZy8xQnZpSnFNME5XL3dMWWxYYVZiSFlqYi9iR1hGUk16SnBUNHlKTmFU?=
- =?utf-8?B?ZXhsQ3AwdEpPaVk3MUpibnloQkdyTWx3S2pFN3R4UW54di9pb1NObGl5a1FX?=
- =?utf-8?B?ZTl1T1paTVdnVkFqNU82RitHeG5aeFFyeFR1K0p0ZUYrYkJndFpTS040QzJO?=
- =?utf-8?B?NnpBRHYyMTQvNjdETzgzYUVXTW5ldy9tTWlvbnkyaWM1YlBzd3ZmYjI1OUdw?=
- =?utf-8?B?UmVuNmNscTBFZHlER1RpMDJReGIwenFzbCs1MmFmVkduRHh2NFNQTkY3R2dy?=
- =?utf-8?B?WFU0Wk1lVWZUdGRjU0FqbDRiVFZXenplb3o5b1QySmlJWEdjU211L01PWXFy?=
- =?utf-8?B?ODAzUlg5UVl6T2Z4ckZoSkRpYVJ1RVoxdzl2Ly9JRDR3aDVCWVVZTTk1M0t5?=
- =?utf-8?B?TVY5MVdEZ21GQmFCSzdQdW9ET2hlbXp3TjJKUUJkS1lRQ1JkcnJxcDRrUkhB?=
- =?utf-8?B?a2hQZGVJdzlodUFCYnhva0t0dUNBZ1lYTk40TUhQK1ZPczFwQVZacktUMlNE?=
- =?utf-8?B?ZmFGbEZhRDR3MFdmSDF0MXoySFB6L1ZMbEdZakZwTGJhN2Zyaytwa1lKaFJH?=
- =?utf-8?B?RlVxQmV0SnNtaVN5QWFaVlp0bGpWKzNrVFFkbUZxcUg4Qjc0bDZIZldzNy93?=
- =?utf-8?B?eG9YK3QzVmpiWG9FOWtMQWs3NWt6M2NWMDcxeG1tMGRiSXJvMHFmQStjMHFS?=
- =?utf-8?B?UlpPMlVUVGFYTk96TmFpdmJNeVZQeGpTc256Qk1pVjdOeUR2aGxGck1DQzFs?=
- =?utf-8?B?M05XdFM5alhuWnVqSS9aYWVXRHRpZTZkVXNJU2xxNTJxTW02dHhhdTNiVmhu?=
- =?utf-8?B?Z015S3RyMFgzZi9Tdktuc1czMHlGRk5KTURKY2dyMGNLRVphL0VyMEpFVWdn?=
- =?utf-8?B?ek1sVCtNK0R5UUJYY3hEK1pacWEzZmE4M2hkd20zTERMa3NBOURjMWJLQmc3?=
- =?utf-8?B?TUkxVGJMZDdsdWNDa0UycHN2NnlHN1Z2U20ydHRPSE5MN3ZTVzdGNEhRZWZ6?=
- =?utf-8?B?cTVySVpESUZyNU5YdmN3TWRQNmxtZTdXSlVUQVBjRG9jejJwcWpjU0ZoTVRw?=
- =?utf-8?B?RkN5eGZuSXhjUktEY3JSMnRwWEQyY0E1NkZVL2drVlpEOTg1VFhDak9JT3pn?=
- =?utf-8?B?WkN6czJaa282QUhybTdSemVLSkYvZkE0OXVJbXRzVjh1cmd0c1hJU3JlN2FD?=
- =?utf-8?B?RTJVYTZvZjN4TXFwWllNOGp0M2ZlQ2NCUG9hclRvNUEwY0wzR2FIeEI1YWNV?=
- =?utf-8?B?bWNnK2pzUTlSOGxPTWpYckJaSlA0Qm9VSFVETzNBTCtpZFd4V2NMcDlIYmsy?=
- =?utf-8?B?QlhqT2w2VTN3NUFRbDlRT25vdkk4OGd4R1NyWXB5YTdERkM2WGQ3Q0R4TDgv?=
- =?utf-8?B?VHVNS0owS1RqMmNEMHY5STkrTzUrbHo5cWhnbVNFZjY5bnVFVFNuQzA2dk5V?=
- =?utf-8?B?aEh0VHZyM3hoVkQ0Y3dEY0tVWGEzV3NRc1lUS1BmYkg1cC9TMnNJTFhueVRO?=
- =?utf-8?B?MllMb0ozTTljNSthc1loTGV5M1pPRlUwK3VpQUFYd1R2NW5wN0FselhrNjFT?=
- =?utf-8?B?ejFybHhlWGZJVjcxSTA5TzVDOVp3NUtzUWlmM1B1Zmx2cDBBNk9pekVaa2lx?=
- =?utf-8?B?aDJEUlhBcVZFS3dOdDljR1RyQjhlNWNVVTZPcUtlcnBvc0Z5Vjc4QTZmR1gx?=
- =?utf-8?B?U2trMW1wMVVWcHlVYWJtUkdVSkpJUmQ2Vi9SQWVrdnIwMEdoeXcyODZwWlNM?=
- =?utf-8?B?Q3FKbGhJL25VMVR0V0NJYmdXdXV3THdvMUYycFB1TE1FaFc4dkJabnA5MCtY?=
- =?utf-8?B?TDZJVjdPeFd3bWsway9DZUcyL1AyeW5rYUY0SjBsTDBod3BSY1pqQmpJS2dN?=
- =?utf-8?B?VXpzSS9QRUFZajVTQ2JvUDJvMkRHY3B1eUpTUDJ3NE5IZmovZUNFYysxQ1lJ?=
- =?utf-8?B?ZDBqUzFkL0s0R3ZYb3c1VThyalV4VmRFYk1lY2FxSDRORVZ3NWpxOENEYzds?=
- =?utf-8?B?bU1vVlZOelB6QWk2NWIybEg4R05XRXVxeXBPajQ2WU5obkplRXJSRmc0NHc1?=
- =?utf-8?B?dmsyZEFURDdvNDdCWklRaDdmVk5QQUdZWlJRZ1JxL0lGeXcxL2FESHVtTThT?=
- =?utf-8?B?bWpHWjNGMUV6a25aMEN5SGZNK2U1SDludlAxVFJaSGpqMlFNbU5EcERTaHU5?=
- =?utf-8?B?QjYrcksvUHF5dFNJNVdRZjhLWXQvY2RUVDZlTzFLYm5nKytYTFA0N2NVTyt2?=
- =?utf-8?B?cURFWWZXYTU0SzFmUWhzb2JvQ1pCdkhoUHNTSWdoNjZkaUIzUGhCcTNJZ2Vr?=
- =?utf-8?B?WnNRckFKV1NxTStya3B6ZEVQelhEUzY3cFRYQUYyczdkTndpRklib1M2SGRl?=
- =?utf-8?Q?eujT09KyapBhsUWQfKHSrcE1TkJy1KLxiampF?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbe2f045-1896-41f6-ede1-08da27098209
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR0102MB3590.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2022 22:18:21.7786
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oFZCEcG1Atms31XCYR0Ui/uBAPReSu4PukRX+Yfa7GXuzdeevfXXJljuL4QyLkkqlpJHEc1aIa7f2BSazUPs3uKOJCTv19tBfDMQYW+n+t56KtmnLTjXNWjqizsa2u0J
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR0102MB3598
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=EQ6VT6w46Hd44XRTan9TInx0ubvgoNtxDCqLgonw/Fw=;
+        b=HS1HO9FzmdSJFLMep5JjzcdD/vAauAAiJdJtzVrco1UZk50LeqYCzwhWCfRJZ34zuo
+         qofqkRZyy6+RFdFh2w+QDW8VSe7d6xxNp46ta/i+iF8YOjRw3+5tLbnRtaro28Cio8o4
+         OiNAeSDzHohgt4vbhCl/9Wvc9F6y3USITzJ10+JX+o97t3jdebP1nHALnKme07MYlKGU
+         mxH/cmQgkqRAOh5TyDU0LaZ+kzTDPONTBv2KsgkeszUMtpbaBxIlgTjQx1ZHJGgr9rAO
+         X8d6uZP7cZOeMc6TODikbj71Y+Li4qUszasbi90W6haTph6MsBXtG6XPJ0xdp8YxPd40
+         2tBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=EQ6VT6w46Hd44XRTan9TInx0ubvgoNtxDCqLgonw/Fw=;
+        b=jHR1tBDjgrY8PmkraK3UNiZsEdZ5nRhd8pm3HwxVoN6RdK0ixDAynqjkqtLU8rHAOC
+         y4pyOnj3xp05c7HOwwla0WzC+nL9cACHivIjnMQk8ULMrWQy4tOUBy601SyDz9qIowZ5
+         gxkJ7X4I/qFHy/iF3mfJZV32gDpVH6d1td6MK30mw0C77aZXjT7s9aeEwXPwTUlNRDGU
+         /n76SN/36poe7iZc6dtSvgGWeFrjhbZ3i6Ssf3w58Qw05lpBWNThkFOeCDVvNIyuQZbW
+         NLJMvT6PROQ0jJ8d7XNURWP9VBabVhDifB/+OLITYjHjDNSQjRDkjuERAfp4hTtRe2wl
+         cpZQ==
+X-Gm-Message-State: AOAM5309h6l+NP4mW28AnGZZ/0k/dlmjLbTZ/FhTydtQQq7Mcw3GMXh7
+        0ScCwP6oDC9bnetjFhKySxl8shVMc0Nn
+X-Google-Smtp-Source: ABdhPJwNNzWNR0miZ2gObmHApAL+Qq+RPW++GHIubAxH7gus9hz33wGevQAaQAJC9bdTGWNEfprWQMSD7v1q
+X-Received: from rajat2.mtv.corp.google.com ([2620:15c:202:201:9590:6ed7:be38:9068])
+ (user=rajatja job=sendgmr) by 2002:a25:f30f:0:b0:648:6d75:614 with SMTP id
+ c15-20020a25f30f000000b006486d750614mr6652624ybs.558.1650931604103; Mon, 25
+ Apr 2022 17:06:44 -0700 (PDT)
+Date:   Mon, 25 Apr 2022 17:06:39 -0700
+Message-Id: <20220426000640.3581446-1-rajatja@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.36.0.rc2.479.g8af0fa9b8e-goog
+Subject: [PATCH v6 1/2] PCI/ACPI: Support Microsoft's "DmaProperty"
+From:   Rajat Jain <rajatja@google.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        iommu@lists.linux-foundation.org
+Cc:     Rajat Jain <rajatja@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When building with W=1, we get the following warning:
+The "DmaProperty" is supported and currently documented and used by
+Microsoft [link 1 below], to flag internal PCIe root ports that need
+DMA protection [link 2 below]. We have discussed with them and reached
+a common understanding that they shall change their MSDN documentation
+to say that the same property can be used to protect any PCI device,
+and not just internal PCIe root ports (since there is no point
+introducing yet another property for arbitrary PCI devices). This helps
+with security from internal devices that offer an attack surface for
+DMA attacks (e.g. internal network devices).
 
-drivers/acpi/arm64/agdi.c:88:13: warning: no previous prototype for ‘acpi_agdi_init’ [-Wmissing-prototypes]
- void __init acpi_agdi_init(void)
+Support DmaProperty to mark DMA from a PCI device as untrusted.
 
-Include AGDI driver's header file to pull in the prototype definition
-for acpi_agdi_init() to get rid of the compiler warning
-
-Fixes: a2a591fb76e6 ("ACPI: AGDI: Add driver for Arm Generic Diagnostic Dump and Reset device")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Link: [1] https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
+Link: [2] https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
+Signed-off-by: Rajat Jain <rajatja@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/arm64/agdi.c | 1 +
- 1 file changed, 1 insertion(+)
+v6: * Take care of Bjorn's comments:
+       - Update the commit log
+       - Rename to pci_dev_has_dma_property()
+       - Use acpi_dev_get_property()
+v5: * Reorder the patches in the series
+v4: * Add the GUID. 
+    * Update the comment and commitlog.
+v3: * Use Microsoft's documented property "DmaProperty"
+    * Resctrict to ACPI only
 
-diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-index 4df337d545b7..cf31abd0ed1b 100644
---- a/drivers/acpi/arm64/agdi.c
-+++ b/drivers/acpi/arm64/agdi.c
-@@ -9,6 +9,7 @@
- #define pr_fmt(fmt) "ACPI: AGDI: " fmt
+ drivers/acpi/property.c |  3 +++
+ drivers/pci/pci-acpi.c  | 21 +++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
+
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 12bbfe833609..bafe35c301ac 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -48,6 +48,9 @@ static const guid_t prp_guids[] = {
+ 	/* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
+ 	GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
+ 		  0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
++	/* DmaProperty for PCI devices GUID: 70d24161-6dd5-4c9e-8070-705531292865 */
++	GUID_INIT(0x70d24161, 0x6dd5, 0x4c9e,
++		  0x80, 0x70, 0x70, 0x55, 0x31, 0x29, 0x28, 0x65),
+ };
  
- #include <linux/acpi.h>
-+#include <linux/acpi_agdi.h>
- #include <linux/arm_sdei.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
+ /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 3ae435beaf0a..d7c6ba48486f 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1369,12 +1369,33 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
+ 		dev->external_facing = 1;
+ }
+ 
++static int pci_dev_has_dma_property(struct pci_dev *dev)
++{
++	struct acpi_device *adev;
++	const union acpi_object *obj;
++
++	adev = ACPI_COMPANION(&dev->dev);
++	if (!adev)
++		return 0;
++
++	/*
++	 * Property also used by Microsoft Windows for same purpose,
++	 * (to implement DMA protection from a device, using the IOMMU).
++	 */
++	if (!acpi_dev_get_property(adev, "DmaProperty", ACPI_TYPE_INTEGER,
++				   &obj) && obj->integer.value == 1)
++		return 1;
++
++	return 0;
++}
++
+ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+ {
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 
+ 	pci_acpi_optimize_delay(pci_dev, adev->handle);
+ 	pci_acpi_set_external_facing(pci_dev);
++	pci_dev->untrusted |= pci_dev_has_dma_property(pci_dev);
+ 	pci_acpi_add_edr_notifier(pci_dev);
+ 
+ 	pci_acpi_add_pm_notifier(adev, pci_dev);
 -- 
-2.17.1
+2.36.0.rc2.479.g8af0fa9b8e-goog
 
