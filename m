@@ -2,392 +2,202 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E0435101EB
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Apr 2022 17:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EED0510509
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Apr 2022 19:14:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348115AbiDZPdH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Apr 2022 11:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56134 "EHLO
+        id S231265AbiDZRRh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Apr 2022 13:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352282AbiDZPdH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Apr 2022 11:33:07 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 276FC1FCC1
-        for <linux-acpi@vger.kernel.org>; Tue, 26 Apr 2022 08:29:58 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC3B323A;
-        Tue, 26 Apr 2022 08:29:57 -0700 (PDT)
-Received: from lpieralisi (unknown [10.57.13.189])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACB443F73B;
-        Tue, 26 Apr 2022 08:29:54 -0700 (PDT)
-Date:   Tue, 26 Apr 2022 16:29:48 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linuxarm@huawei.com,
-        joro@8bytes.org, robin.murphy@arm.com, will@kernel.org,
-        wanghuiqiang@huawei.com, guohanjun@huawei.com,
-        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
-        eric.auger@redhat.com, laurentiu.tudor@nxp.com, hch@infradead.org
-Subject: Re: [PATCH v11 4/9] ACPI/IORT: Add support to retrieve IORT RMR
- reserved regions
-Message-ID: <YmgP7KFe/tNYXKd2@lpieralisi>
-References: <20220422162907.1276-1-shameerali.kolothum.thodi@huawei.com>
- <20220422162907.1276-5-shameerali.kolothum.thodi@huawei.com>
+        with ESMTP id S233700AbiDZRRC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Apr 2022 13:17:02 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98C7E1DA72
+        for <linux-acpi@vger.kernel.org>; Tue, 26 Apr 2022 10:13:54 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id v10so5499283pgl.11
+        for <linux-acpi@vger.kernel.org>; Tue, 26 Apr 2022 10:13:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=COISYBtLemURzEtVRJTSOaoU1kvxhQruqFG2UXo9XUw=;
+        b=ICQKMM5VJ8dZCmZ5IDftKBD0tk2p/btzOGUR1kYXd/zFRS/EkvTLCpPCF1BWQ1lKzH
+         Bqh4vxvd9/HnKEhvMjZIYnNj2yFTyCqWnJW+u9sWIKXgfunEJOyiAGcoiGom0Fjw4+ka
+         PLtm7GIGMzzUN3ttrb56TQfPJKwV2PasGCyTFseghYcMYWl+0iS+YumxymWwxECcFY1g
+         JRdSZQT+i9TCp8T5DDInsYfDjIyKVFo702VauqiPnw8KYNWqo4U3LUZim+g67CUif1E7
+         I2M4VxY3Hs8iCvYzmtDEU4yfuI4Q/MIIivgirMZZUMt0ThznOwHSbGUBfWZwJDUpmo8/
+         B/oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=COISYBtLemURzEtVRJTSOaoU1kvxhQruqFG2UXo9XUw=;
+        b=0fmu+ojaYGy1v9Hu/Qv0Ze83rCEqySEjsYpEqwbboUJ9nNxUHhmV69HvOEzjP8WMgE
+         PKKsZwn4/d0m6eBgahgb59wRegHt65X99k6f+RFZ0mTd8+23Igpuxa1guY2rR6g3grM6
+         9IuaHHTR7dIoaBrhAOi1q3NTOt/3oECWuhOiHDibG83IKA0RJaP72Tkiti+wVbEbKdBn
+         uI+WlLsjIPtUVGTLtXZQPnVmLe4j5Py0w+xARsX3ESMzxB1XDeEy7ywQ8I5TJDPbX/1i
+         EnyqDCf3Ui6BoSMXxqLSyiXPXBsk+E90lgFS94RxA15m6rPY5xdvtpJ9SFp1A+KldQCJ
+         jLAA==
+X-Gm-Message-State: AOAM533SLtxdeHFPwtKYHCHd/HnUATZEAacCERDg4xKV1X2vK6A5+nrB
+        DjHy3YZSXKYA4+t1ujCcWzVRLxbQ8oL9Bzb3DJAHnw==
+X-Google-Smtp-Source: ABdhPJw0Ra1dMBKYFZkjWanWW4cefxv2B97eXQvw3FrcmpDznbuhiQB1ig3w2zhaYU9CkF8BOrp7P30WHnRXgF9Udfk=
+X-Received: by 2002:a62:fb0e:0:b0:505:fd9e:9218 with SMTP id
+ x14-20020a62fb0e000000b00505fd9e9218mr26023121pfm.78.1650993233860; Tue, 26
+ Apr 2022 10:13:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220422162907.1276-5-shameerali.kolothum.thodi@huawei.com>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20220426000640.3581446-1-rajatja@google.com> <030f48f4-44d7-c04c-a194-5f4999873ebe@arm.com>
+In-Reply-To: <030f48f4-44d7-c04c-a194-5f4999873ebe@arm.com>
+From:   Rajat Jain <rajatja@google.com>
+Date:   Tue, 26 Apr 2022 10:13:17 -0700
+Message-ID: <CACK8Z6GEPTaQKbxeBqQuKbNmVkL1DoHDrKwDeosCeRXfHbD_=w@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] PCI/ACPI: Support Microsoft's "DmaProperty"
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        iommu@lists.linux-foundation.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 22, 2022 at 05:29:02PM +0100, Shameer Kolothum wrote:
-> Parse through the IORT RMR nodes and populate the reserve region list
-> corresponding to a given IOMMU and device(optional). Also, go through
-> the ID mappings of the RMR node and retrieve all the SIDs associated
-> with it.
-> 
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> ---
->  drivers/acpi/arm64/iort.c | 290 ++++++++++++++++++++++++++++++++++++++
->  include/linux/iommu.h     |   8 ++
->  2 files changed, 298 insertions(+)
+On Tue, Apr 26, 2022 at 4:15 AM Robin Murphy <robin.murphy@arm.com> wrote:
+>
+> On 2022-04-26 01:06, Rajat Jain via iommu wrote:
+> > The "DmaProperty" is supported and currently documented and used by
+> > Microsoft [link 1 below], to flag internal PCIe root ports that need
+> > DMA protection [link 2 below]. We have discussed with them and reached
+> > a common understanding that they shall change their MSDN documentation
+> > to say that the same property can be used to protect any PCI device,
+> > and not just internal PCIe root ports (since there is no point
+> > introducing yet another property for arbitrary PCI devices). This helps
+> > with security from internal devices that offer an attack surface for
+> > DMA attacks (e.g. internal network devices).
+> >
+> > Support DmaProperty to mark DMA from a PCI device as untrusted.
+> >
+> > Link: [1] https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
+> > Link: [2] https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
+> > Signed-off-by: Rajat Jain <rajatja@google.com>
+> > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> > v6: * Take care of Bjorn's comments:
+> >         - Update the commit log
+> >         - Rename to pci_dev_has_dma_property()
+> >         - Use acpi_dev_get_property()
+> > v5: * Reorder the patches in the series
+> > v4: * Add the GUID.
+> >      * Update the comment and commitlog.
+> > v3: * Use Microsoft's documented property "DmaProperty"
+> >      * Resctrict to ACPI only
+> >
+> >   drivers/acpi/property.c |  3 +++
+> >   drivers/pci/pci-acpi.c  | 21 +++++++++++++++++++++
+> >   2 files changed, 24 insertions(+)
+> >
+> > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> > index 12bbfe833609..bafe35c301ac 100644
+> > --- a/drivers/acpi/property.c
+> > +++ b/drivers/acpi/property.c
+> > @@ -48,6 +48,9 @@ static const guid_t prp_guids[] = {
+> >       /* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
+> >       GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
+> >                 0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
+> > +     /* DmaProperty for PCI devices GUID: 70d24161-6dd5-4c9e-8070-705531292865 */
+> > +     GUID_INIT(0x70d24161, 0x6dd5, 0x4c9e,
+> > +               0x80, 0x70, 0x70, 0x55, 0x31, 0x29, 0x28, 0x65),
+> >   };
+> >
+> >   /* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
+> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> > index 3ae435beaf0a..d7c6ba48486f 100644
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -1369,12 +1369,33 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
+> >               dev->external_facing = 1;
+> >   }
+> >
+> > +static int pci_dev_has_dma_property(struct pci_dev *dev)
+> > +{
+> > +     struct acpi_device *adev;
+> > +     const union acpi_object *obj;
+> > +
+> > +     adev = ACPI_COMPANION(&dev->dev);
+> > +     if (!adev)
+> > +             return 0;
+> > +
+> > +     /*
+> > +      * Property also used by Microsoft Windows for same purpose,
+> > +      * (to implement DMA protection from a device, using the IOMMU).
+>
+> Nit: there is no context for "same purpose" here, so this comment is
+> more confusing than helpful. Might I suggest a rewording like:
+>
+>         /*
+>          * Property used by Microsoft Windows to enforce IOMMU DMA
+>          * protection for any device that the system might not fully
+>          * trust; we'll honour it the same way.
+>          */
+>
+> ?
 
-Reviewed-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Sure, will do.
 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index cd5d1d7823cb..5be6e8ecca38 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -788,6 +788,293 @@ void acpi_configure_pmsi_domain(struct device *dev)
->  }
->  
->  #ifdef CONFIG_IOMMU_API
-> +static void iort_rmr_free(struct device *dev,
-> +			  struct iommu_resv_region *region)
-> +{
-> +	struct iommu_iort_rmr_data *rmr_data;
-> +
-> +	rmr_data = container_of(region, struct iommu_iort_rmr_data, rr);
-> +	kfree(rmr_data->sids);
-> +	kfree(rmr_data);
-> +}
-> +
-> +struct iommu_iort_rmr_data *iort_rmr_alloc(struct acpi_iort_rmr_desc *rmr_desc,
-> +					   int prot, enum iommu_resv_type type,
-> +					   u32 *sids, u32 num_sids)
-> +{
-> +	struct iommu_iort_rmr_data *rmr_data;
-> +	struct iommu_resv_region *region;
-> +	u32 *sids_copy;
-> +	u64 addr = rmr_desc->base_address, size = rmr_desc->length;
-> +
-> +	rmr_data = kmalloc(sizeof(*rmr_data), GFP_KERNEL);
-> +	if (!rmr_data)
-> +		return NULL;
-> +
-> +	/* Create a copy of SIDs array to associate with this rmr_data */
-> +	sids_copy = kmemdup(sids, num_sids * sizeof(*sids), GFP_KERNEL);
-> +	if (!sids_copy) {
-> +		kfree(rmr_data);
-> +		return NULL;
-> +	}
-> +	rmr_data->sids = sids_copy;
-> +	rmr_data->num_sids = num_sids;
-> +
-> +	if (!IS_ALIGNED(addr, SZ_64K) || !IS_ALIGNED(size, SZ_64K)) {
-> +		/* PAGE align base addr and size */
-> +		addr &= PAGE_MASK;
-> +		size = PAGE_ALIGN(size + offset_in_page(rmr_desc->base_address));
-> +
-> +		pr_err(FW_BUG "RMR descriptor[0x%llx - 0x%llx] not aligned to 64K, continue with [0x%llx - 0x%llx]\n",
-> +		       rmr_desc->base_address,
-> +		       rmr_desc->base_address + rmr_desc->length - 1,
-> +		       addr, addr + size - 1);
-> +	}
-> +
-> +	region = &rmr_data->rr;
-> +	INIT_LIST_HEAD(&region->list);
-> +	region->start = addr;
-> +	region->length = size;
-> +	region->prot = prot;
-> +	region->type = type;
-> +	region->free = iort_rmr_free;
-> +
-> +	return rmr_data;
-> +}
-> +
-> +static void iort_rmr_desc_check_overlap(struct acpi_iort_rmr_desc *desc,
-> +					u32 count)
-> +{
-> +	int i, j;
-> +
-> +	for (i = 0; i < count; i++) {
-> +		u64 end, start = desc[i].base_address, length = desc[i].length;
-> +
-> +		if (!length) {
-> +			pr_err(FW_BUG "RMR descriptor[0x%llx] with zero length, continue anyway\n",
-> +			       start);
-> +			continue;
-> +		}
-> +
-> +		end = start + length - 1;
-> +
-> +		/* Check for address overlap */
-> +		for (j = i + 1; j < count; j++) {
-> +			u64 e_start = desc[j].base_address;
-> +			u64 e_end = e_start + desc[j].length - 1;
-> +
-> +			if (start <= e_end && end >= e_start)
-> +				pr_err(FW_BUG "RMR descriptor[0x%llx - 0x%llx] overlaps, continue anyway\n",
-> +				       start, end);
-> +		}
-> +	}
-> +}
-> +
-> +/*
-> + * Please note, we will keep the already allocated RMR reserve
-> + * regions in case of a memory allocation failure.
-> + */
-> +static void iort_get_rmrs(struct acpi_iort_node *node,
-> +			  struct acpi_iort_node *smmu,
-> +			  u32 *sids, u32 num_sids,
-> +			  struct list_head *head)
-> +{
-> +	struct acpi_iort_rmr *rmr = (struct acpi_iort_rmr *)node->node_data;
-> +	struct acpi_iort_rmr_desc *rmr_desc;
-> +	int i;
-> +
-> +	rmr_desc = ACPI_ADD_PTR(struct acpi_iort_rmr_desc, node,
-> +				rmr->rmr_offset);
-> +
-> +	iort_rmr_desc_check_overlap(rmr_desc, rmr->rmr_count);
-> +
-> +	for (i = 0; i < rmr->rmr_count; i++, rmr_desc++) {
-> +		struct iommu_iort_rmr_data *rmr_data;
-> +		enum iommu_resv_type type;
-> +		int prot = IOMMU_READ | IOMMU_WRITE;
-> +
-> +		if (rmr->flags & ACPI_IORT_RMR_REMAP_PERMITTED)
-> +			type = IOMMU_RESV_DIRECT_RELAXABLE;
-> +		else
-> +			type = IOMMU_RESV_DIRECT;
-> +
-> +		if (rmr->flags & ACPI_IORT_RMR_ACCESS_PRIVILEGE)
-> +			prot |= IOMMU_PRIV;
-> +
-> +		/* Attributes 0x00 - 0x03 represents device memory */
-> +		if (ACPI_IORT_RMR_ACCESS_ATTRIBUTES(rmr->flags) <=
-> +				ACPI_IORT_RMR_ATTR_DEVICE_GRE)
-> +			prot |= IOMMU_MMIO;
-> +		else if (ACPI_IORT_RMR_ACCESS_ATTRIBUTES(rmr->flags) ==
-> +				ACPI_IORT_RMR_ATTR_NORMAL_IWB_OWB)
-> +			prot |= IOMMU_CACHE;
-> +
-> +		rmr_data = iort_rmr_alloc(rmr_desc, prot, type,
-> +					  sids, num_sids);
-> +		if (!rmr_data)
-> +			return;
-> +
-> +		list_add_tail(&rmr_data->rr.list, head);
-> +	}
-> +}
-> +
-> +static u32 *iort_rmr_alloc_sids(u32 *sids, u32 count, u32 id_start,
-> +				u32 new_count)
-> +{
-> +	u32 *new_sids;
-> +	u32 total_count = count + new_count;
-> +	int i;
-> +
-> +	new_sids = krealloc_array(sids, count + new_count,
-> +				  sizeof(*new_sids), GFP_KERNEL);
-> +	if (!new_sids)
-> +		return NULL;
-> +
-> +	for (i = count; i < total_count; i++)
-> +		new_sids[i] = id_start++;
-> +
-> +	return new_sids;
-> +}
-> +
-> +static bool iort_rmr_has_dev(struct device *dev, u32 id_start,
-> +			     u32 id_count)
-> +{
-> +	int i;
-> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> +
-> +	/*
-> +	 * Make sure the kernel has preserved the boot firmware PCIe
-> +	 * configuration. This is required to ensure that the RMR PCIe
-> +	 * StreamIDs are still valid (Refer: ARM DEN 0049E.d Section 3.1.1.5).
-> +	 */
-> +	if (dev_is_pci(dev)) {
-> +		struct pci_dev *pdev = to_pci_dev(dev);
-> +		struct pci_host_bridge *host = pci_find_host_bridge(pdev->bus);
-> +
-> +		if (!host->preserve_config)
-> +			return false;
-> +	}
-> +
-> +	for (i = 0; i < fwspec->num_ids; i++) {
-> +		if (fwspec->ids[i] >= id_start &&
-> +		    fwspec->ids[i] <= id_start + id_count)
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +static void iort_node_get_rmr_info(struct acpi_iort_node *node,
-> +				   struct acpi_iort_node *iommu,
-> +				   struct device *dev, struct list_head *head)
-> +{
-> +	struct acpi_iort_node *smmu = NULL;
-> +	struct acpi_iort_rmr *rmr;
-> +	struct acpi_iort_id_mapping *map;
-> +	u32 *sids = NULL;
-> +	u32 num_sids = 0;
-> +	int i;
-> +
-> +	if (!node->mapping_offset || !node->mapping_count) {
-> +		pr_err(FW_BUG "Invalid ID mapping, skipping RMR node %p\n",
-> +		       node);
-> +		return;
-> +	}
-> +
-> +	rmr = (struct acpi_iort_rmr *)node->node_data;
-> +	if (!rmr->rmr_offset || !rmr->rmr_count)
-> +		return;
-> +
-> +	map = ACPI_ADD_PTR(struct acpi_iort_id_mapping, node,
-> +			   node->mapping_offset);
-> +
-> +	/*
-> +	 * Go through the ID mappings and see if we have a match for SMMU
-> +	 * and dev(if !NULL). If found, get the sids for the Node.
-> +	 * Please note, id_count is equal to the number of IDs  in the
-> +	 * range minus one.
-> +	 */
-> +	for (i = 0; i < node->mapping_count; i++, map++) {
-> +		struct acpi_iort_node *parent;
-> +
-> +		if (!map->id_count)
-> +			continue;
-> +
-> +		parent = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
-> +				      map->output_reference);
-> +		if (parent != iommu)
-> +			continue;
-> +
-> +		/* If dev is valid, check RMR node corresponds to the dev SID */
-> +		if (dev && !iort_rmr_has_dev(dev, map->output_base,
-> +					     map->id_count))
-> +			continue;
-> +
-> +		/* Retrieve SIDs associated with the Node. */
-> +		sids = iort_rmr_alloc_sids(sids, num_sids, map->output_base,
-> +					   map->id_count + 1);
-> +		if (!sids)
-> +			return;
-> +
-> +		num_sids += map->id_count + 1;
-> +	}
-> +
-> +	if (!sids)
-> +		return;
-> +
-> +	iort_get_rmrs(node, smmu, sids, num_sids, head);
-> +	kfree(sids);
-> +}
-> +
-> +static void iort_find_rmrs(struct acpi_iort_node *iommu, struct device *dev,
-> +			   struct list_head *head)
-> +{
-> +	struct acpi_table_iort *iort;
-> +	struct acpi_iort_node *iort_node, *iort_end;
-> +	int i;
-> +
-> +	/* Only supports ARM DEN 0049E.d onwards */
-> +	if (iort_table->revision < 5)
-> +		return;
-> +
-> +	iort = (struct acpi_table_iort *)iort_table;
-> +
-> +	iort_node = ACPI_ADD_PTR(struct acpi_iort_node, iort,
-> +				 iort->node_offset);
-> +	iort_end = ACPI_ADD_PTR(struct acpi_iort_node, iort,
-> +				iort_table->length);
-> +
-> +	for (i = 0; i < iort->node_count; i++) {
-> +		if (WARN_TAINT(iort_node >= iort_end, TAINT_FIRMWARE_WORKAROUND,
-> +			       "IORT node pointer overflows, bad table!\n"))
-> +			return;
-> +
-> +		if (iort_node->type == ACPI_IORT_NODE_RMR)
-> +			iort_node_get_rmr_info(iort_node, iommu, dev, head);
-> +
-> +		iort_node = ACPI_ADD_PTR(struct acpi_iort_node, iort_node,
-> +					 iort_node->length);
-> +	}
-> +}
-> +
-> +/*
-> + * Populate the RMR list associated with a given IOMMU and dev(if provided).
-> + * If dev is NULL, the function populates all the RMRs associated with the
-> + * given IOMMU.
-> + */
-> +static void iort_iommu_rmr_get_resv_regions(struct fwnode_handle *iommu_fwnode,
-> +					    struct device *dev,
-> +					    struct list_head *head)
-> +{
-> +	struct acpi_iort_node *iommu;
-> +
-> +	iommu = iort_get_iort_node(iommu_fwnode);
-> +	if (!iommu)
-> +		return;
-> +
-> +	iort_find_rmrs(iommu, dev, head);
-> +}
-> +
->  static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
->  {
->  	struct acpi_iort_node *iommu;
-> @@ -868,7 +1155,10 @@ static void iort_iommu_msi_get_resv_regions(struct device *dev,
->   */
->  void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head)
->  {
-> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> +
->  	iort_iommu_msi_get_resv_regions(dev, head);
-> +	iort_iommu_rmr_get_resv_regions(fwspec->iommu_fwnode, dev, head);
->  }
->  
->  static inline bool iort_iommu_driver_enabled(u8 type)
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index 68bcfb3a06d7..0936d7980ce2 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -145,6 +145,14 @@ struct iommu_resv_region {
->  	void (*free)(struct device *dev, struct iommu_resv_region *region);
->  };
->  
-> +struct iommu_iort_rmr_data {
-> +	struct iommu_resv_region rr;
-> +
-> +	/* Stream IDs associated with IORT RMR entry */
-> +	const u32 *sids;
-> +	u32 num_sids;
-> +};
-> +
->  /**
->   * enum iommu_dev_features - Per device IOMMU features
->   * @IOMMU_DEV_FEAT_SVA: Shared Virtual Addresses
-> -- 
-> 2.17.1
-> 
+>
+> Personally I think it would have been more logical to handle this in
+> pci_set_dma_untrusted(), but I see some of those implementation aspects
+> have already been discussed, and Bjorn's preference definitely wins over
+> mine here :)
+
+Yes, this was discussed. The primary reason is that ACPI properties
+for PCI devices are not available at the time pci_set_untrusted_dma()
+is called.
+
+Thanks & Best Regards,
+
+Rajat
+
+>
+> Thanks,
+> Robin.
+>
+> > +      */
+> > +     if (!acpi_dev_get_property(adev, "DmaProperty", ACPI_TYPE_INTEGER,
+> > +                                &obj) && obj->integer.value == 1)
+> > +             return 1;
+> > +
+> > +     return 0;
+> > +}
+> > +
+> >   void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+> >   {
+> >       struct pci_dev *pci_dev = to_pci_dev(dev);
+> >
+> >       pci_acpi_optimize_delay(pci_dev, adev->handle);
+> >       pci_acpi_set_external_facing(pci_dev);
+> > +     pci_dev->untrusted |= pci_dev_has_dma_property(pci_dev); >      pci_acpi_add_edr_notifier(pci_dev);
+> >
+> >       pci_acpi_add_pm_notifier(adev, pci_dev);
