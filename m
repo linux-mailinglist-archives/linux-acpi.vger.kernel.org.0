@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5653350FA7F
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Apr 2022 12:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BC4950FAB6
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Apr 2022 12:34:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349114AbiDZKfV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Apr 2022 06:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33596 "EHLO
+        id S1349157AbiDZKfj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Apr 2022 06:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349166AbiDZKfD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Apr 2022 06:35:03 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C166E8C4;
-        Tue, 26 Apr 2022 03:14:12 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id k23so35056037ejd.3;
-        Tue, 26 Apr 2022 03:14:12 -0700 (PDT)
+        with ESMTP id S1349169AbiDZKfW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Apr 2022 06:35:22 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76807BC80;
+        Tue, 26 Apr 2022 03:15:54 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id bv19so35046021ejb.6;
+        Tue, 26 Apr 2022 03:15:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Qz5RSrvROhmFAod9m9cY+vK4Aq4/SnLehvmOeU3zDWU=;
-        b=FdIHPCZX9WaSrko7Vtgn0upm4gBnH3l+alc3Mv7C6n9LfwIOWhalo/qHnkWrdcYlCA
-         Ebz1HuvGorUIYnEBFx/4ij4iH94sEHzt3mGW3hATFqf/GtnUzKJ0Vy1Wy9/jmYeIkoTi
-         xI5S9ecpF4mZDUoHnqQeNYOuZsaJS6M8Eh0K33Y7ele3goZfXb5t3h21g4BV4cAYu6gN
-         MMj+fubyXcxVHOb91Gi+f7zdsCSQr5y9xznKq4e/7ZUrpriZVkWdaYagecOz0R6alge8
-         LsiucjraPi8zSQ6g28qksOCfWMaTMu7EGiZgkzNjo35rOHKXyqRxhELIjtMFy7GSmsf0
-         C7hA==
+        bh=Q3Y2xFiZZM73aQbd0fWB6wOUMQq6/t+7deOrBNRhpAo=;
+        b=L0JvI+hwzslb7KKVSWtMbcFSetgyuHbkwLbRyMxEENT6QJ+aSWwO2YG51X3qnGcv/Y
+         /d/Q6vSYhVwvUVLG3dPZbFsDQL1fwYeNw/jlAUUuF6sjHW08dWfI8/0Kk6WjrmeX8sgP
+         XEJalN/f+v2PU6g2LnOVTridPXqmUoZG2CFSk+GokxNEco2+pRcAjnHCZil8rEpATQIP
+         NupWyqdlD5+F7+jCFBaLO3GkQWf0jYMUq5ZvhTYTnGgqx2MYEHhYUKpgdLIm8o7e10kT
+         wRUek3rToTfanY01ncLCh9/98lWMw+ZqTmfjeLkm6+DfKlRVgeKp+H1UX6y2AwI7NNkX
+         NDAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Qz5RSrvROhmFAod9m9cY+vK4Aq4/SnLehvmOeU3zDWU=;
-        b=fA+o1X8ZUCLaxgQ7Cg+B0tMmtBpBSHPFLNQ2cWmpE6pYQiiWXa0LXeJJTuDhLLcC0/
-         X6x5kyHbx6/2pTDLNgl1Z4E25azDSeHEWQcBVKl/BPVv3Y/6DcMCzP7WM5li//zBCYu5
-         KKo9RtlH405G00oQf4tVSZdl1ARri+dHIJRTcf5yuxp/x+0PKLAn6Ggt8DGE/3tFLEea
-         6xNCfD7vYC/m2gElX27xYHxj8mR1b0+ljOrxU7Ce0dQanLo/I/q3QIJYgrZFmrTLsGSt
-         ioYBvRhCV2dHdD1rXHVZlD3AEcpLBsqtVOsV/W8meCJxkFuuMnhJmF/82SQfTaV01s39
-         VuzQ==
-X-Gm-Message-State: AOAM531m+bihXc6kb/KpdUzfGL6aOxB5mxoM09Mtj8nK9bFwviTp3Ivd
-        cGivyxT1QFSnyGTN784+Nf/FDkvCNZ1PuEWFg4A=
-X-Google-Smtp-Source: ABdhPJyqN1ZErxhsIK+txK0CUqN74jbit9o4azskJha+4UbYysFNAN2+1c40MFg3TvTzg64L+uzyvh0W1rJma7dE+RY=
-X-Received: by 2002:a17:906:3ce9:b0:6ef:a8aa:ab46 with SMTP id
- d9-20020a1709063ce900b006efa8aaab46mr20132385ejh.579.1650968051046; Tue, 26
- Apr 2022 03:14:11 -0700 (PDT)
+        bh=Q3Y2xFiZZM73aQbd0fWB6wOUMQq6/t+7deOrBNRhpAo=;
+        b=HyJUwYTl/34QwMHUpaRftAIJWwHevrEsSjvvwpir4gC8c7Ka+t8Kic+JzH37Bw23hw
+         lVdxUUiJ/ACcHh6kMmV15UUOAjUguejuw2WUfKPQAqVcoGKP6I+71CwF7Rhutk8C+qKH
+         cv+pCTCBbcy/rSItCCyD4/RTgVrq76ZPMoXZlskVFzkZnpEf/1RSWNUlO63aLGAGpJQQ
+         JR+qce83EQt9t7TjM9wouLXCSsAkp9w0hViGO5UGqJdl4m8JJ1HoBIeW5fzSC4TF8ifn
+         Nr8ocwZfFxNGu594aXD0Jr9LO0eo3Zt52BIkpaXYo6GLOaXKtJ3tcgjYOnDKPs+ikHo+
+         MFsA==
+X-Gm-Message-State: AOAM531cZsPmregWjh1dZ0EuEspjKlbLiMD/MRpfDpaTdNUMSnYdWa/L
+        /YTN9aeRg+w3mONgG0OAajFuz2mjIvHVfe2Q8Mk=
+X-Google-Smtp-Source: ABdhPJx+imrat0Zla/qc8W6CK7Tbr/jceeZWxvAY6UNQhFT3P/lC6vjpbSbUKrsLvZi6tatpbMkn9a7w0LbrUygEvi4=
+X-Received: by 2002:a17:907:7d8c:b0:6f2:476d:fde4 with SMTP id
+ oz12-20020a1709077d8c00b006f2476dfde4mr19519158ejc.497.1650968152522; Tue, 26
+ Apr 2022 03:15:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220422222351.1297276-1-bjorn.andersson@linaro.org> <20220422222351.1297276-4-bjorn.andersson@linaro.org>
-In-Reply-To: <20220422222351.1297276-4-bjorn.andersson@linaro.org>
+References: <20220422222351.1297276-1-bjorn.andersson@linaro.org> <20220422222351.1297276-2-bjorn.andersson@linaro.org>
+In-Reply-To: <20220422222351.1297276-2-bjorn.andersson@linaro.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 26 Apr 2022 12:13:31 +0200
-Message-ID: <CAHp75VcYJYYUQxb6xhFiP_aG389ifte0RRBNN+M7tq3N9-nS1A@mail.gmail.com>
-Subject: Re: [PATCH v5 3/7] usb: typec: mux: Check dev_set_name() return value
+Date:   Tue, 26 Apr 2022 12:15:13 +0200
+Message-ID: <CAHp75VdT7FYpoxV8RD6J-ujHuDnj0GWswDx6wCyCyz9cozkQ7Q@mail.gmail.com>
+Subject: Re: [PATCH v5 1/7] device property: Add helper to match multiple connections
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -79,54 +79,179 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Sat, Apr 23, 2022 at 1:25 AM Bjorn Andersson
 <bjorn.andersson@linaro.org> wrote:
 >
-> It's possible that dev_set_name() returns -ENOMEM, catch and handle this.
+> In some cases multiple connections with the same connection id
+> needs to be resolved from a fwnode graph.
+>
+> One such example is when separate hardware is used for performing muxing
+> and/or orientation switching of the SuperSpeed and SBU lines in a USB
+> Type-C connector. In this case the connector needs to belong to a graph
+> with multiple matching remote endpoints, and the Type-C controller needs
+> to be able to resolve them both.
+>
+> Add a new API that allows this kind of lookup.
 
+LGTM now,
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+thanks!
 
-> Fixes: 3370db35193b ("usb: typec: Registering real device entries for the muxes")
-> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 > Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 > ---
 >
 > Changes since v4:
-> - Added Fixes tag
+> - Added "Add" to patch subject
+> - Added "(Optional)" kernel-doc of fwnode_connection_find_matches()
 >
->  drivers/usb/typec/mux.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+>  drivers/base/property.c  | 109 +++++++++++++++++++++++++++++++++++++++
+>  include/linux/property.h |   5 ++
+>  2 files changed, 114 insertions(+)
 >
-> diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
-> index c8340de0ed49..d2aaf294b649 100644
-> --- a/drivers/usb/typec/mux.c
-> +++ b/drivers/usb/typec/mux.c
-> @@ -131,8 +131,11 @@ typec_switch_register(struct device *parent,
->         sw->dev.class = &typec_mux_class;
->         sw->dev.type = &typec_switch_dev_type;
->         sw->dev.driver_data = desc->drvdata;
-> -       dev_set_name(&sw->dev, "%s-switch",
-> -                    desc->name ? desc->name : dev_name(parent));
-> +       ret = dev_set_name(&sw->dev, "%s-switch", desc->name ? desc->name : dev_name(parent));
-> +       if (ret) {
-> +               put_device(&sw->dev);
-> +               return ERR_PTR(ret);
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 36401cfe432c..babab8cec7a0 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -1201,6 +1201,40 @@ fwnode_graph_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
+>         return NULL;
+>  }
+>
+> +static unsigned int fwnode_graph_devcon_matches(struct fwnode_handle *fwnode,
+> +                                               const char *con_id, void *data,
+> +                                               devcon_match_fn_t match,
+> +                                               void **matches,
+> +                                               unsigned int matches_len)
+> +{
+> +       struct fwnode_handle *node;
+> +       struct fwnode_handle *ep;
+> +       unsigned int count = 0;
+> +       void *ret;
+> +
+> +       fwnode_graph_for_each_endpoint(fwnode, ep) {
+> +               if (matches && count >= matches_len) {
+> +                       fwnode_handle_put(ep);
+> +                       break;
+> +               }
+> +
+> +               node = fwnode_graph_get_remote_port_parent(ep);
+> +               if (!fwnode_device_is_available(node)) {
+> +                       fwnode_handle_put(node);
+> +                       continue;
+> +               }
+> +
+> +               ret = match(node, con_id, data);
+> +               fwnode_handle_put(node);
+> +               if (ret) {
+> +                       if (matches)
+> +                               matches[count] = ret;
+> +                       count++;
+> +               }
 > +       }
+> +       return count;
+> +}
+> +
+>  static void *
+>  fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
+>                     void *data, devcon_match_fn_t match)
+> @@ -1223,6 +1257,37 @@ fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
+>         return NULL;
+>  }
 >
->         ret = device_add(&sw->dev);
->         if (ret) {
-> @@ -338,8 +341,11 @@ typec_mux_register(struct device *parent, const struct typec_mux_desc *desc)
->         mux->dev.class = &typec_mux_class;
->         mux->dev.type = &typec_mux_dev_type;
->         mux->dev.driver_data = desc->drvdata;
-> -       dev_set_name(&mux->dev, "%s-mux",
-> -                    desc->name ? desc->name : dev_name(parent));
-> +       ret = dev_set_name(&mux->dev, "%s-mux", desc->name ? desc->name : dev_name(parent));
-> +       if (ret) {
-> +               put_device(&mux->dev);
-> +               return ERR_PTR(ret);
+> +static unsigned int fwnode_devcon_matches(struct fwnode_handle *fwnode,
+> +                                         const char *con_id, void *data,
+> +                                         devcon_match_fn_t match,
+> +                                         void **matches,
+> +                                         unsigned int matches_len)
+> +{
+> +       struct fwnode_handle *node;
+> +       unsigned int count = 0;
+> +       unsigned int i;
+> +       void *ret;
+> +
+> +       for (i = 0; ; i++) {
+> +               if (matches && count >= matches_len)
+> +                       break;
+> +
+> +               node = fwnode_find_reference(fwnode, con_id, i);
+> +               if (IS_ERR(node))
+> +                       break;
+> +
+> +               ret = match(node, NULL, data);
+> +               fwnode_handle_put(node);
+> +               if (ret) {
+> +                       if (matches)
+> +                               matches[count] = ret;
+> +                       count++;
+> +               }
 > +       }
+> +
+> +       return count;
+> +}
+> +
+>  /**
+>   * fwnode_connection_find_match - Find connection from a device node
+>   * @fwnode: Device node with the connection
+> @@ -1250,3 +1315,47 @@ void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
+>         return fwnode_devcon_match(fwnode, con_id, data, match);
+>  }
+>  EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
+> +
+> +/**
+> + * fwnode_connection_find_matches - Find connections from a device node
+> + * @fwnode: Device node with the connection
+> + * @con_id: Identifier for the connection
+> + * @data: Data for the match function
+> + * @match: Function to check and convert the connection description
+> + * @matches: (Optional) array of pointers to fill with matches
+> + * @matches_len: Length of @matches
+> + *
+> + * Find up to @matches_len connections with unique identifier @con_id between
+> + * @fwnode and other device nodes. @match will be used to convert the
+> + * connection description to data the caller is expecting to be returned
+> + * through the @matches array.
+> + * If @matches is NULL @matches_len is ignored and the total number of resolved
+> + * matches is returned.
+> + *
+> + * Return: Number of matches resolved, or negative errno.
+> + */
+> +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
+> +                                  const char *con_id, void *data,
+> +                                  devcon_match_fn_t match,
+> +                                  void **matches, unsigned int matches_len)
+> +{
+> +       unsigned int count_graph;
+> +       unsigned int count_ref;
+> +
+> +       if (!fwnode || !match)
+> +               return -EINVAL;
+> +
+> +       count_graph = fwnode_graph_devcon_matches(fwnode, con_id, data, match,
+> +                                                 matches, matches_len);
+> +
+> +       if (matches) {
+> +               matches += count_graph;
+> +               matches_len -= count_graph;
+> +       }
+> +
+> +       count_ref = fwnode_devcon_matches(fwnode, con_id, data, match,
+> +                                         matches, matches_len);
+> +
+> +       return count_graph + count_ref;
+> +}
+> +EXPORT_SYMBOL_GPL(fwnode_connection_find_matches);
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index fc24d45632eb..a5b429d623f6 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -451,6 +451,11 @@ static inline void *device_connection_find_match(struct device *dev,
+>         return fwnode_connection_find_match(dev_fwnode(dev), con_id, data, match);
+>  }
 >
->         ret = device_add(&mux->dev);
->         if (ret) {
+> +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
+> +                                  const char *con_id, void *data,
+> +                                  devcon_match_fn_t match,
+> +                                  void **matches, unsigned int matches_len);
+> +
+>  /* -------------------------------------------------------------------------- */
+>  /* Software fwnode support - when HW description is incomplete or missing */
+>
 > --
 > 2.35.1
 >
