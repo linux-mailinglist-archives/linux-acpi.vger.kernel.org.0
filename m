@@ -2,91 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B160C511F46
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Apr 2022 20:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BBA45121DC
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Apr 2022 20:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241550AbiD0QGy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Apr 2022 12:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49120 "EHLO
+        id S229663AbiD0TAz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Apr 2022 15:00:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241543AbiD0QGw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Apr 2022 12:06:52 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AA183C9D7D;
-        Wed, 27 Apr 2022 09:03:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651075380; x=1682611380;
-  h=from:to:cc:subject:date:message-id;
-  bh=VYULZm1ptnSTDWX7g9iwC8F1X12CH5Sh9VvlyVesL2U=;
-  b=kLvGfw2WrVFj7l2PBxJzqfWpxLmd2WRHbQujR/vCH+7Yu4ozN5zepqO+
-   PSdS/4pa8r7dfE1YQ/VnrbEzJfz5c8fb8mt/vl1NopxMRjyC0LHWdBO5c
-   Y+NG2QfZBgVjjk7/029Hj4L6tziSGyhmHuhEpBqvl7wRdrWM4ZXriGeMT
-   LqXJsznOzTF3PUQF72tVsEgs/zLxOKITVHxg/wUNY264/+CrcwSqShsur
-   /lv1rw/hqUQxUrWJQn80G/ljk88TdTwO5xFz0GuTNU4knecF1qztJylQL
-   u0YrAkPxjXdl33iA36V8agoG4VaZc5hN2knQyQZ2HNbfWaR4xeWb5btPt
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10330"; a="291131603"
-X-IronPort-AV: E=Sophos;i="5.90,293,1643702400"; 
-   d="scan'208";a="291131603"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2022 08:53:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,293,1643702400"; 
-   d="scan'208";a="808096549"
-Received: from srpawnik.iind.intel.com ([10.99.123.68])
-  by fmsmga006.fm.intel.com with ESMTP; 27 Apr 2022 08:53:37 -0700
-From:   Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
-To:     rafael@kernel.org, lenb@kernel.org,
-        srinivas.pandruvada@linux.intel.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     sumeet.r.pawnikar@intel.com
-Subject: [PATCH] ACPI: DPTF: Add support for high frequency impedance notification
-Date:   Wed, 27 Apr 2022 21:21:30 +0530
-Message-Id: <20220427155130.8023-1-sumeet.r.pawnikar@intel.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232452AbiD0TAn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Apr 2022 15:00:43 -0400
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F5F113CA3;
+        Wed, 27 Apr 2022 11:46:23 -0700 (PDT)
+Received: by mail-yb1-f173.google.com with SMTP id j2so5109837ybu.0;
+        Wed, 27 Apr 2022 11:46:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0cdA+JI48kZS+AxlzBx4Qt8iIGll7kLbRjF8CRRc1mE=;
+        b=OaGyrRoSv87NfVAv27V/6TqlLXkvlnh9pdHNpxbZEfuw6UzLqHMGOs+Aa93jRSka42
+         tbVHc8FgVwcE72i2vK8DpC3+PQD6tkL9r98PE/oFOFQQvbSjtKes/TuUxb/RmRv6Uq8B
+         F6w2fyeV4QbFRbkUDz+tJOfQ2MrzseKQjBkQi+si732f8FNn7DQUKhMZJvFur+VfzGiM
+         QpTSy8ZWIIQxU+CG8aTqgfOTJmM3ZWZF/FvOl1Y/IHi0YuTTafXgPfh2I3mVgNHCpxpD
+         Q/6jcXhbLDWvVJ/doGOZP+ygHMQKRJwZ++t2UpWU3FFB7trTbXf9poGlS/8QUvPrRtaR
+         hLsA==
+X-Gm-Message-State: AOAM530xjjY9c8bxla3SMqW03parMTAdfLHzH6fL7KdLTbNBvVuxjbce
+        av6lypbhPRsIGB+T4Ja5xWQzndGcH77X5VFpMe1g7w75
+X-Google-Smtp-Source: ABdhPJwT3huBGS2K+bNnsZ8eZSYIdoXsCaigBa/fDfOditHuurhLrxP5JNE15oQnd6/c0CSljL/aM4n6to8/57goMo0=
+X-Received: by 2002:a25:da84:0:b0:648:423e:57b0 with SMTP id
+ n126-20020a25da84000000b00648423e57b0mr19076088ybf.137.1651085182297; Wed, 27
+ Apr 2022 11:46:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220425114544.37595-1-heikki.krogerus@linux.intel.com> <Ymfa3F83zxgqD2pk@kroah.com>
+In-Reply-To: <Ymfa3F83zxgqD2pk@kroah.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 27 Apr 2022 20:46:11 +0200
+Message-ID: <CAJZ5v0hBjWomOxTw8Nfa83FEyDqGm+5B8W9WPEHfZR3uwUUdOw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] acpi: Remove acpi_release_memory()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add high frequency impedance notification support under DPTF.
-This returns high frequency impedance value that can be obtained
-from battery fuel gauge whenever there is change over a threshold.
+On Tue, Apr 26, 2022 at 1:43 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Mon, Apr 25, 2022 at 02:45:42PM +0300, Heikki Krogerus wrote:
+> > Hi,
+> >
+> > It seems there never were and there never will be actual devices that
+> > expose the UCSI ACPI mailbox interface. There are now PD controllers
+> > that support the UCSI interface, but they do not use the ACPI mailbox.
+> >
+> > So there is no point in mapping the mailbox with ioremap(), we can
+> > just use memremap(). That should make it possible to also remove the
+> > function acpi_release_memory(). That function was only there to make
+> > it possible to use ioremap() in the UCSI ACPI driver.
+> >
+> > thanks,
+> >
+> > Heikki Krogerus (2):
+> >   usb: typec: ucsi: acpi: Map the mailbox with memremap()
+> >   acpi: Remove the helper for deactivating memory region
+> >
+> >  drivers/acpi/osl.c                 | 86 ------------------------------
+> >  drivers/usb/typec/ucsi/ucsi_acpi.c | 19 ++-----
+> >  include/linux/acpi.h               |  3 --
+> >  3 files changed, 4 insertions(+), 104 deletions(-)
+> >
+> > --
+> > 2.35.1
+> >
+>
+> Look good to me, Rafael, want me to take this through the USB tree?  Or
+> if you want to take it through the USB tree, here's my reviewed-by:
+> either is fine with me.
+>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
----
- drivers/acpi/dptf/dptf_power.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
-index dc1f52a5b3f4..2ef53ca88714 100644
---- a/drivers/acpi/dptf/dptf_power.c
-+++ b/drivers/acpi/dptf/dptf_power.c
-@@ -117,7 +117,7 @@ static const struct attribute_group dptf_battery_attribute_group = {
- #define POWER_STATE_CHANGED		0x81
- #define STEADY_STATE_POWER_CHANGED	0x83
- #define POWER_PROP_CHANGE_EVENT	0x84
--#define IMPEDANCED_CHNGED		0x85
-+#define IMPEDANCE_CHANGED		0x85
- #define VOLTAGE_CURRENT_CHANGED	0x86
- 
- static long long dptf_participant_type(acpi_handle handle)
-@@ -150,6 +150,9 @@ static void dptf_power_notify(acpi_handle handle, u32 event, void *data)
- 	case STEADY_STATE_POWER_CHANGED:
- 		attr = "max_steady_state_power_mw";
- 		break;
-+	case IMPEDANCE_CHANGED:
-+		attr = "high_freq_impedance_mohm";
-+		break;
- 	case VOLTAGE_CURRENT_CHANGED:
- 		attr = "no_load_voltage_mv";
- 		break;
--- 
-2.17.1
-
+I've taken this into the ACPI tree (for 5.19) with your R-by, thanks!
