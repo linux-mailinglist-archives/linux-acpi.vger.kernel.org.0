@@ -2,175 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5669D51372C
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 16:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09431513863
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 17:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348441AbiD1OrG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Apr 2022 10:47:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45124 "EHLO
+        id S1349286AbiD1PeA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 28 Apr 2022 11:34:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347623AbiD1OrE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 10:47:04 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D3C32220CB
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Apr 2022 07:43:49 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 917281474;
-        Thu, 28 Apr 2022 07:43:49 -0700 (PDT)
-Received: from [10.1.31.24] (e122027.cambridge.arm.com [10.1.31.24])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 79F853F5A1;
-        Thu, 28 Apr 2022 07:43:47 -0700 (PDT)
-Message-ID: <242c9f39-a604-1ef7-77ab-b50ec4eac359@arm.com>
-Date:   Thu, 28 Apr 2022 15:43:46 +0100
+        with ESMTP id S1349217AbiD1Pdm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 11:33:42 -0400
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077F3562FD;
+        Thu, 28 Apr 2022 08:30:27 -0700 (PDT)
+Received: by mail-yb1-f178.google.com with SMTP id f38so9704059ybi.3;
+        Thu, 28 Apr 2022 08:30:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=z68eCpwlSny4KKgVzvMDlrW0IKmP+18VYo0BJNQ1LLo=;
+        b=anHMc+zORSF8M+S7y2hLVWiqKpyjBbeCk9LbRDHy7McXpU4iiGMjH2PlEzx9hOpjm4
+         tb24VZO3TjHCZ+dwyev7OtSk+Eg4A4I3SEP1xczFkxxBS2d3S2wOfW1Kn2/R/feKeL+s
+         +5F6JPiv5CbHddg/a1kUbSWDLgf+QmX1zZ8RFp7Zy7C2xKS/MmXNNbnon3+buAt40wZO
+         VlW831GKculFsNwFkc1xN+TM/ZmWdTYgJDWrRWC3Ljsdz5gJaTC1t3ZOWY8m8TO9mMrG
+         9xIQRX56At7oshPlDRY3Al6Wws4qI0X0SdHwKtB6LaBV6H0jEiXH55sKbKjTupWCn2LJ
+         fvqw==
+X-Gm-Message-State: AOAM532N0/dohbG6OiCt8lOLEgbXo+/I4hl/q/CMDD3AgCxfK6VuuMIX
+        NGgcigg5Sr3Lqql2dHQrw7Qwzg0vyV7aJUMTERnsZkhTcF8=
+X-Google-Smtp-Source: ABdhPJzPMZfx4UPXN2INNyIs2eu1P0Zn17ZqR9UnELv2FZ7paKTTdO1Ce3ipLPPTSPO5es6A/L8qJehbrQl/P/N5u04=
+X-Received: by 2002:a25:e792:0:b0:645:7ddb:b5eb with SMTP id
+ e140-20020a25e792000000b006457ddbb5ebmr31483894ybh.482.1651159826109; Thu, 28
+ Apr 2022 08:30:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v11 0/9] ACPI/IORT: Support for IORT RMR node
-Content-Language: en-GB
-To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
-        robin.murphy@arm.com, will@kernel.org, wanghuiqiang@huawei.com,
-        guohanjun@huawei.com, Sami.Mujawar@arm.com, jon@solid-run.com,
-        eric.auger@redhat.com, laurentiu.tudor@nxp.com, hch@infradead.org
-References: <20220422162907.1276-1-shameerali.kolothum.thodi@huawei.com>
-From:   Steven Price <steven.price@arm.com>
-In-Reply-To: <20220422162907.1276-1-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 28 Apr 2022 17:30:15 +0200
+Message-ID: <CAJZ5v0hHYRsWkRsJj+_Wa=jTS5cHasajYeh14yxEDvxu7gWWRQ@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v5.18-rc5
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 22/04/2022 17:28, Shameer Kolothum wrote:
-> Hi
-> 
-> v9 --> v10
->  -Addressed Christoph's comments. We now have a callback to 
->   struct iommu_resv_region to free all related memory and also dropped
->   the FW specific union and now has a container struct iommu_iort_rmr_data.
->   See patches #1 & #4
->  -Added R-by from Christoph.
->  -Dropped R-by from Lorenzo for patches #4 & #5 due to the above changes.
->  -Also dropped T-by from Steve and Laurentiu. Many thanks for your test
->   efforts. I have done basic sanity testing on my platform but please
->   give it a try at your end as well.
+Hi Linus,
 
-I'm back in the office and given it a spin, it's all good:
+Please pull from the tag
 
-Tested-by: Steven Price <steven.price@arm.com>
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.18-rc5
 
-Thanks,
+with top-most commit 20e582e16af24b074e583f9551fad557882a3c9d
 
-Steve
+ Revert "ACPI: processor: idle: fix lockup regression on 32-bit ThinkPad T40"
 
-> 
-> As mentioned in v10, this now has a dependency on the ACPICA header patch
-> here[1]. 
-> 
-> Please take a look and let me know.
-> 
-> Thanks,
-> Shameer
-> [1] https://lore.kernel.org/all/44610361.fMDQidcC6G@kreacher/
-> 
-> From old:
-> We have faced issues with 3408iMR RAID controller cards which
-> fail to boot when SMMU is enabled. This is because these
-> controllers make use of host memory for various caching related
-> purposes and when SMMU is enabled the iMR firmware fails to
-> access these memory regions as there is no mapping for them.
-> IORT RMR provides a way for UEFI to describe and report these
-> memory regions so that the kernel can make a unity mapping for
-> these in SMMU.
-> 
-> Change History:
-> 
-> v9 --> v10
->  - Dropped patch #1 ("Add temporary RMR node flag definitions") since
->    the ACPICA header updates patch is now in the mailing list
->  - Based on the suggestion from Christoph, introduced a 
->    resv_region_free_fw_data() callback in struct iommu_resv_region and
->    used that to free RMR specific memory allocations.
-> 
-> v8 --> v9
->  - Adressed comments from Robin on interfaces.
->  - Addressed comments from Lorenzo.
-> 
-> v7 --> v8
->   - Patch #1 has temp definitions for RMR related changes till
->     the ACPICA header changes are part of kernel.
->   - No early parsing of RMR node info and is only parsed at the
->     time of use.
->   - Changes to the RMR get/put API format compared to the
->     previous version.
->   - Support for RMR descriptor shared by multiple stream IDs.
-> 
-> v6 --> v7
->  -fix pointed out by Steve to the SMMUv2 SMR bypass install in patch #8.
-> 
-> v5 --> v6
-> - Addressed comments from Robin & Lorenzo.
->   : Moved iort_parse_rmr() to acpi_iort_init() from
->     iort_init_platform_devices().
->   : Removed use of struct iort_rmr_entry during the initial
->     parse. Using struct iommu_resv_region instead.
->   : Report RMR address alignment and overlap errors, but continue.
->   : Reworked arm_smmu_init_bypass_stes() (patch # 6).
-> - Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
-> - Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
->   on Type of RMR region. Suggested by Jon N.
-> 
-> v4 --> v5
->  -Added a fw_data union to struct iommu_resv_region and removed
->   struct iommu_rmr (Based on comments from Joerg/Robin).
->  -Added iommu_put_rmrs() to release mem.
->  -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
->   yet because of the above changes.
-> 
-> v3 -->v4
-> -Included the SMMUv2 SMR bypass install changes suggested by
->  Steve(patch #7)
-> -As per Robin's comments, RMR reserve implementation is now
->  more generic  (patch #8) and dropped v3 patches 8 and 10.
-> -Rebase to 5.13-rc1
-> 
-> RFC v2 --> v3
->  -Dropped RFC tag as the ACPICA header changes are now ready to be
->   part of 5.13[0]. But this series still has a dependency on that patch.
->  -Added IORT E.b related changes(node flags, _DSM function 5 checks for
->   PCIe).
->  -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
->   discussion here[1].
->  -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
-> 
-> Jon Nettleton (1):
->   iommu/arm-smmu: Get associated RMR info and install bypass SMR
-> 
-> Shameer Kolothum (8):
->   iommu: Introduce a callback to struct iommu_resv_region
->   ACPI/IORT: Make iort_iommu_msi_get_resv_regions() return void
->   ACPI/IORT: Provide a generic helper to retrieve reserve regions
->   ACPI/IORT: Add support to retrieve IORT RMR reserved regions
->   ACPI/IORT: Add a helper to retrieve RMR info directly
->   iommu/arm-smmu-v3: Introduce strtab init helper
->   iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
->     bypass
->   iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
-> 
->  drivers/acpi/arm64/iort.c                   | 359 ++++++++++++++++++--
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  78 ++++-
->  drivers/iommu/arm/arm-smmu/arm-smmu.c       |  52 +++
->  drivers/iommu/dma-iommu.c                   |   2 +-
->  drivers/iommu/iommu.c                       |  16 +-
->  include/linux/acpi_iort.h                   |  14 +-
->  include/linux/iommu.h                       |  10 +
->  7 files changed, 485 insertions(+), 46 deletions(-)
-> 
+on top of commit b2d229d4ddb17db541098b83524d901257e93845
 
+ Linux 5.18-rc3
+
+to receive ACPI fixes for 5.18-rc5.
+
+These fix up the ACPI processor driver after a change made during
+the 5.16 cycle that inadvertently broke falling back to shallower
+C-states when C3 cannot be used.
+
+Specifics:
+
+ - Make the ACPI processor driver avoid falling back to C3 type of
+   C-states when C3 cannot be requested (Ville Syrjälä).
+
+ - Revert a quirk that is not necessary any more after fixing the
+   underlying issue properly (Ville Syrjälä).
+
+Thanks!
+
+
+---------------
+
+Ville Syrjälä (2):
+      ACPI: processor: idle: Avoid falling back to C3 type C-states
+      Revert "ACPI: processor: idle: fix lockup regression on 32-bit
+ThinkPad T40"
+
+---------------
+
+ drivers/acpi/processor_idle.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
