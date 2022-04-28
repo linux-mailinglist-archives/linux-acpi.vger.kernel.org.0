@@ -2,121 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2900512C3C
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 09:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0BA2512DBB
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 10:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244779AbiD1HIk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Apr 2022 03:08:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59288 "EHLO
+        id S233711AbiD1IKX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Apr 2022 04:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244789AbiD1HIf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 03:08:35 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50EC37C78D;
-        Thu, 28 Apr 2022 00:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651129514; x=1682665514;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=1Tyx8UMLpzLkE5H7J9+iV5npaiElgUkBN8dO9mfu1X8=;
-  b=dPK+tIfmzJ8XazDXjxXpBKaATbh4J/z1BEVTRZmIqWrSi/1ltEhgDSIi
-   KmZmsQ6+WiguutFzjJsNMKyS06coFgwuRlG7mpwwJNag4SaOTDgOjoa8K
-   eLg1rW25K4RMm9XUby023y0jfIYb3df9Yvco2CB2MlczRAFIy9bjvnOjm
-   V0lLyZtqpVsPAJyrGqgSRRCyEVVmAuhAlbQ6ZiVOl96MCeayN9xOaI/bE
-   EuWhIyAMDmFyqc/fN3dNwN0zYctYNo+zhyCxiIkQG8zputfeDq4MLApWD
-   L4/hfHSan52AxhX+aazepcCH0+oTyjKvYwaEAU2pRy+55DMhvAmBh6mVk
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10330"; a="266344667"
-X-IronPort-AV: E=Sophos;i="5.90,295,1643702400"; 
-   d="scan'208";a="266344667"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2022 00:05:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,295,1643702400"; 
-   d="scan'208";a="682095251"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 28 Apr 2022 00:05:12 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1njyD9-00059b-BW;
-        Thu, 28 Apr 2022 07:05:11 +0000
-Date:   Thu, 28 Apr 2022 15:04:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:testing 12/12] drivers/idle/intel_idle.c:1854:13:
- warning: conflicting types for 'c1e_promotion_enable'; have 'void(void)'
-Message-ID: <202204281547.5qD9L1sw-lkp@intel.com>
+        with ESMTP id S233548AbiD1IKV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 04:10:21 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBFEE54F9D;
+        Thu, 28 Apr 2022 01:07:07 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: usama.anjum)
+        with ESMTPSA id C5D1A1F45034
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1651133225;
+        bh=gkofCbla6q/11zKU00zv0OsLH0Kg1dBauD7EEXXr8w4=;
+        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+        b=nIeU3RHTyPGIbfsEWhwWP2fVMUQQGuJtXlVD9kFzxnPfRWMhllRUjI6u8vypNIVN1
+         eu5cHaG3n9ZXhp5V0x+Jf73SMqKL3ceJeaWwg/m5gnjeiUO1Lk3UuaB20pLNZryoDz
+         XfhHxrUIAcPO/NxiDtUFBcV+SeCuArS5mWrsQTaxFQAEHs6+4Xak2qTkB/r9e3xVLF
+         zirWf7yQjIrqAO3iiIzePtDqizqzGS0G3clZvhCHmq6HKa5jxswEmgUjt7W0zgvuzt
+         5PZlEXA7u9a/1YAtHxNSnPF/XdiH0rnqPh8pD3XCcSFKgJQTOXdSu5tF19o5iqJ2Cx
+         dY4T1R3CTKPVw==
+Message-ID: <8acef982-0aec-aaf0-7e26-b02cf024cdf8@collabora.com>
+Date:   Thu, 28 Apr 2022 13:06:48 +0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Cc:     usama.anjum@collabora.com, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        groeck@chromium.org, bleung@chromium.org, dtor@chromium.org,
+        gwendal@chromium.org, vbendeb@chromium.org, andy@infradead.org,
+        Ayman Bagabas <ayman.bagabas@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
+        Darren Hart <dvhart@infradead.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jeremy Soller <jeremy@system76.com>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Rajat Jain <rajatja@google.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>
+Subject: Re: [PATCH v8] platform: x86: Add ChromeOS ACPI device driver
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <Ylmmf03fewXEjRr0@debian-BULLSEYE-live-builder-AMD64>
+ <YmUNnq5tH8mykNOF@kroah.com>
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <YmUNnq5tH8mykNOF@kroah.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git testing
-head:   55ecda6f25ef6de769ae64f162828aee4812c313
-commit: 55ecda6f25ef6de769ae64f162828aee4812c313 [12/12] Merge branch 'intel-idle' into linux-next
-config: x86_64-randconfig-c001 (https://download.01.org/0day-ci/archive/20220428/202204281547.5qD9L1sw-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.2.0-20) 11.2.0
-reproduce (this is a W=1 build):
-        # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=55ecda6f25ef6de769ae64f162828aee4812c313
-        git remote add rafael-pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
-        git fetch --no-tags rafael-pm testing
-        git checkout 55ecda6f25ef6de769ae64f162828aee4812c313
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/idle/
+On 4/24/22 1:43 PM, Greg Kroah-Hartman wrote:
+> On Fri, Apr 15, 2022 at 10:08:15PM +0500, Muhammad Usama Anjum wrote:
+>> +	i = 0;
+>> +	list_for_each_entry(aag, &chromeos_acpi.groups, list) {
+>> +		chromeos_acpi.dev_groups[i] = &aag->group;
+>> +		i++;
+>> +	}
+>> +
+>> +	ret = sysfs_create_groups(&dev->kobj, chromeos_acpi.dev_groups);
+> 
+> You have raced with userspace and lost here :(
+> 
+> Use the default groups pointer in the platform driver for this, and use
+> the is_visible() callback to know to show, or not show, the attribute
+> instead of building up dynamic lists of attributes at runtime.  That
+> will save you lots of crazy logic and housekeeping _AND_ userspace tools
+> will work properly as well.
+> 
+Yeah, using dev_group pointer in platform driver makes it simple. We
+need to define the attributes at compile time. At run time, we can only
+make decision to show or not to show the attribute. This simplifies
+logic for the static attributes which will always be there. But there
+are some set of attributes which may be 1 to N depending upon the
+platform such as GPIO.0, GPIO.2 .... and GPIO.N. I'm working on
+overcoming this. Once this is done, the driver is going to be very simple.
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   drivers/idle/intel_idle.c: In function 'adl_idle_state_table_update':
-   drivers/idle/intel_idle.c:1701:17: error: 'disable_promotion_to_c1e' undeclared (first use in this function)
-    1701 |                 disable_promotion_to_c1e = true;
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/idle/intel_idle.c:1701:17: note: each undeclared identifier is reported only once for each function it appears in
-   drivers/idle/intel_idle.c:1706:9: error: implicit declaration of function 'c1e_promotion_enable' [-Werror=implicit-function-declaration]
-    1706 |         c1e_promotion_enable();
-         |         ^~~~~~~~~~~~~~~~~~~~
-   drivers/idle/intel_idle.c: At top level:
->> drivers/idle/intel_idle.c:1854:13: warning: conflicting types for 'c1e_promotion_enable'; have 'void(void)'
-    1854 | static void c1e_promotion_enable(void)
-         |             ^~~~~~~~~~~~~~~~~~~~
-   drivers/idle/intel_idle.c:1854:13: error: static declaration of 'c1e_promotion_enable' follows non-static declaration
-   drivers/idle/intel_idle.c:1706:9: note: previous implicit declaration of 'c1e_promotion_enable' with type 'void(void)'
-    1706 |         c1e_promotion_enable();
-         |         ^~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +1854 drivers/idle/intel_idle.c
-
-1aefbd7aeb7695 Rafael J. Wysocki 2020-01-10  1853  
-da0e58c038e60e Artem Bityutskiy  2022-03-02 @1854  static void c1e_promotion_enable(void)
-da0e58c038e60e Artem Bityutskiy  2022-03-02  1855  {
-da0e58c038e60e Artem Bityutskiy  2022-03-02  1856  	unsigned long long msr_bits;
-da0e58c038e60e Artem Bityutskiy  2022-03-02  1857  
-da0e58c038e60e Artem Bityutskiy  2022-03-02  1858  	rdmsrl(MSR_IA32_POWER_CTL, msr_bits);
-da0e58c038e60e Artem Bityutskiy  2022-03-02  1859  	msr_bits |= 0x2;
-da0e58c038e60e Artem Bityutskiy  2022-03-02  1860  	wrmsrl(MSR_IA32_POWER_CTL, msr_bits);
-da0e58c038e60e Artem Bityutskiy  2022-03-02  1861  }
-da0e58c038e60e Artem Bityutskiy  2022-03-02  1862  
-
-:::::: The code at line 1854 was first introduced by commit
-:::::: da0e58c038e60e7e65d30813ebdfe91687aa8a24 intel_idle: add 'preferred_cstates' module argument
-
-:::::: TO: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-:::::: CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> thanks,
+> 
+> greg k-h
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Muhammad Usama Anjum
