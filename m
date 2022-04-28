@@ -2,80 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DF6D5130A8
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 12:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56CCC513124
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 12:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233356AbiD1KHH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Apr 2022 06:07:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34862 "EHLO
+        id S243155AbiD1KU4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Apr 2022 06:20:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233311AbiD1KG3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 06:06:29 -0400
-Received: from out1.migadu.com (out1.migadu.com [91.121.223.63])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCCC13EBA9;
-        Thu, 28 Apr 2022 02:54:32 -0700 (PDT)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1651139671;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=/LQAEssi1M6FayAPx2YBnSoMR8g+uDhzHtXD+e37qLM=;
-        b=DvQ1d7ov8yXbCPR3FwSILkkwfgJNoqUIVah0qn73oswhSx+cH/Wl9nHr6zkFAccVVSTrOh
-        yTomwTRctfChmMBBJFCZTm8AUO1nmQrNr8/rlLgs/g4El2CYLe4LEjDko+2QOGmS50CQLB
-        qNDT9YlXdyEgVE1xhI9WMeGVmFgXyfI=
-From:   Yajun Deng <yajun.deng@linux.dev>
-To:     rafael@kernel.org, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yajun Deng <yajun.deng@linux.dev>
-Subject: [PATCH] ACPI: processor: idle: expose max_cstate/nocst/bm_check_disable read-only in sysfs
-Date:   Thu, 28 Apr 2022 17:54:13 +0800
-Message-Id: <20220428095413.2950758-1-yajun.deng@linux.dev>
+        with ESMTP id S244110AbiD1KUd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 06:20:33 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E927E41FA4;
+        Thu, 28 Apr 2022 03:12:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651140734; x=1682676734;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DN8nmFYcb38IeRXfm3ZKJ3F7KWzA3y9zzhKp5ZnLg5s=;
+  b=V+S/0rfa6bHAlfhdOxrjpTcTheq203+QLXAL5ciLxQpCnqw+KgsqwgoE
+   hdcR7fhxIgE/Fsm8cm1eY07am1znNbTCAyfnkG6UTugNyKDRrOIqAAP8K
+   RUC5iamRP9jakRf/oLefBJlG5OM9K3NspvflEHLdlvfscKTtuhe63S8vZ
+   0Lm49kEPZAs3ETOkStujWaz7B53AXNn40tgt6rNWIfBxrXO6+2aNZjV9t
+   Si1a364zAdl7PBDz7manQ5AvaotyijnfPNjUAeHeEgB3343Y7baFaZCJT
+   bja8me5+aBlRjRi9/ld1UjP1IVhhCDVyXizQnnxirdy1nm440zSPE1xnM
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10330"; a="265082134"
+X-IronPort-AV: E=Sophos;i="5.90,295,1643702400"; 
+   d="scan'208";a="265082134"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2022 03:12:14 -0700
+X-IronPort-AV: E=Sophos;i="5.90,295,1643702400"; 
+   d="scan'208";a="731348066"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2022 03:12:12 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nk185-009FHA-7N;
+        Thu, 28 Apr 2022 13:12:09 +0300
+Date:   Thu, 28 Apr 2022 13:12:08 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Aubrey Li <aubrey.li@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Mark Gross <markgross@kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH 0/4] platform: allow ATOM PMC code to be optional
+Message-ID: <YmpoeJtFNSyCq1QL@smile.fi.intel.com>
+References: <20220428062430.31010-1-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Migadu-Auth-User: linux.dev
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220428062430.31010-1-paul.gortmaker@windriver.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch exposes max_cstate/nocst/bm_check_disable in read-only sysfs.
-This will allow super users to verify them when changed in grub.
+On Thu, Apr 28, 2022 at 02:24:26AM -0400, Paul Gortmaker wrote:
+> A few months back I was doing a test build for "defconfig-like" COTS
+> hardware and happened to notice some pmc-atom stuff being built.  Fine,
+> I thought - the defconfig isn't minimal - we all know that - what Kconfig
+> do I use to turn that off?  Well, imagine my surprise when I found out
+> you couldn't turn it [Atom Power Management Controller] code off!
 
-The parameters "nocst/bm_check_disable" is only used to be enable/disable.
-So change them from integer to bool.
+Turning it off on BayTrail and CherryTrail devices will be devastating
+to the users' experience. And plenty of cheap tablets are exactly made
+on that SoCs.
 
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
----
- drivers/acpi/processor_idle.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> Normally we all agree to not use "default y" unless unavoidable, but
+> somehow this was added as "def_bool y" which is even worse ; you can
+> see the Kconfig setting but there is *no* way you can turn it off.
+> 
+> After investigating, I found no reason why the atom code couldn't be
+> opt-out with just minor changes that the original addition overlooked.
+> 
+> And so this series addreses that.  I tried to be sensitive to not
+> break any existing configs in the process, but the defconfig will
+> now intentionally be different and exclude this atom specific code.
+> 
+> Using a defconfig on today's linux-next, here is the delta summary:
+> 
+> $ ./scripts/bloat-o-meter -c ../pmc-atom-pre/vmlinux ../pmc-atom-post/vmlinux|grep add/remove
+> add/remove: 0/410 grow/shrink: 0/7 up/down: 0/-47659 (-47659)
+> add/remove: 0/105 grow/shrink: 0/1 up/down: 0/-6848 (-6848)
+> add/remove: 0/56 grow/shrink: 0/1 up/down: 0/-10155 (-10155)
+> 
+> $ ./scripts/bloat-o-meter -c ../pmc-atom-pre/vmlinux ../pmc-atom-post/vmlinux|grep Total
+> Total: Before=13626994, After=13579335, chg -0.35%
+> Total: Before=3572137, After=3565289, chg -0.19%
+> Total: Before=1235335, After=1225180, chg -0.82%
+> 
+> It is hard to reclaim anything against the inevitable growth in
+> footprint, so I'd say we should be glad to take whatever we can.
+> 
+> Boot tested defconfig on today's linux-next on older non-atom COTS.
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index e9c84d0ac55b..6a5572a1a80c 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -38,11 +38,11 @@
- #define ACPI_IDLE_STATE_START	(IS_ENABLED(CONFIG_ARCH_HAS_CPU_RELAX) ? 1 : 0)
- 
- static unsigned int max_cstate __read_mostly = ACPI_PROCESSOR_MAX_POWER;
--module_param(max_cstate, uint, 0000);
--static unsigned int nocst __read_mostly;
--module_param(nocst, uint, 0000);
--static int bm_check_disable __read_mostly;
--module_param(bm_check_disable, uint, 0000);
-+module_param(max_cstate, uint, 0400);
-+static bool nocst __read_mostly;
-+module_param(nocst, bool, 0400);
-+static bool bm_check_disable __read_mostly;
-+module_param(bm_check_disable, bool, 0400);
- 
- static unsigned int latency_factor __read_mostly = 2;
- module_param(latency_factor, uint, 0644);
+I believe this needs an extensive test done by Hans who possesses a lot of
+problematic devices that require that module to be present.
+
+Note to all your patches, please, use --cc option instead of putting noisy
+lines in the each of the commit messages. For myself I created a "smart"
+script [1] to avoid bothering with that. Feel free to use, modify, send PRs
+back to improve.
+
+[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 
