@@ -2,48 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0BA2512DBB
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 10:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C754512DF1
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 10:13:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233711AbiD1IKX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Apr 2022 04:10:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44596 "EHLO
+        id S240955AbiD1IQR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Apr 2022 04:16:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233548AbiD1IKV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 04:10:21 -0400
+        with ESMTP id S1343921AbiD1IPo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 04:15:44 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBFEE54F9D;
-        Thu, 28 Apr 2022 01:07:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33444985BA;
+        Thu, 28 Apr 2022 01:12:31 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: usama.anjum)
-        with ESMTPSA id C5D1A1F45034
+        with ESMTPSA id 5CC3E1F45063
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1651133225;
-        bh=gkofCbla6q/11zKU00zv0OsLH0Kg1dBauD7EEXXr8w4=;
+        s=mail; t=1651133549;
+        bh=8bMyqaACFiy7OVrp3cMwiVvolfDCzZMcBSLFx20Uw90=;
         h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=nIeU3RHTyPGIbfsEWhwWP2fVMUQQGuJtXlVD9kFzxnPfRWMhllRUjI6u8vypNIVN1
-         eu5cHaG3n9ZXhp5V0x+Jf73SMqKL3ceJeaWwg/m5gnjeiUO1Lk3UuaB20pLNZryoDz
-         XfhHxrUIAcPO/NxiDtUFBcV+SeCuArS5mWrsQTaxFQAEHs6+4Xak2qTkB/r9e3xVLF
-         zirWf7yQjIrqAO3iiIzePtDqizqzGS0G3clZvhCHmq6HKa5jxswEmgUjt7W0zgvuzt
-         5PZlEXA7u9a/1YAtHxNSnPF/XdiH0rnqPh8pD3XCcSFKgJQTOXdSu5tF19o5iqJ2Cx
-         dY4T1R3CTKPVw==
-Message-ID: <8acef982-0aec-aaf0-7e26-b02cf024cdf8@collabora.com>
-Date:   Thu, 28 Apr 2022 13:06:48 +0500
+        b=EaSvayxCmdmZsLuclunB5vMl9alBjuoeXNSwKOFrE9jRXk0kC4L3YY53WNkwAwqee
+         RcDDMp91NWvx9VvP9S3R09OhjLH2e6xombOgZaGeO6YI3bB2tIt4eVRkrLdo8pIfi8
+         Pjub2DCvS6qoNStEOneXVx11apS5IYn1Ku9vxy5s894V1EhQsuQrx24T3lMx/4l86r
+         VIWRzVlC7H0VjKNm6lEfDenXal3dVqss8pI2+pCZCc8lsmClMxdIUzaEk4t1+WXLFn
+         RXtExmeIGQ12+ZjVBkbiDTrpugOw9oDdo9fhYKnLfaGC9PvnUwHolRsgTa4+vIuCHU
+         /CPXRcDbwddYg==
+Message-ID: <28534819-647e-1fef-2754-63aba75f821e@collabora.com>
+Date:   Thu, 28 Apr 2022 13:12:19 +0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Cc:     usama.anjum@collabora.com, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
+Cc:     usama.anjum@collabora.com,
         Collabora Kernel ML <kernel@collabora.com>,
-        groeck@chromium.org, bleung@chromium.org, dtor@chromium.org,
-        gwendal@chromium.org, vbendeb@chromium.org, andy@infradead.org,
+        groeck@chromium.org, dtor@chromium.org,
+        Len Brown <lenb@kernel.org>, gwendal@chromium.org,
+        vbendeb@chromium.org, andy@infradead.org,
         Ayman Bagabas <ayman.bagabas@gmail.com>,
         Benjamin Tissoires <benjamin.tissoires@redhat.com>,
         =?UTF-8?Q?Bla=c5=be_Hrastnik?= <blaz@mxxn.io>,
         Darren Hart <dvhart@infradead.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jeremy Soller <jeremy@system76.com>,
         Mattias Jacobsson <2pi@mok.nu>,
         Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
@@ -52,16 +51,21 @@ Cc:     usama.anjum@collabora.com, "Rafael J. Wysocki" <rafael@kernel.org>,
         platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Enric Balletbo i Serra <eballetbo@gmail.com>
+        Enric Balletbo i Serra <eballetbo@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mark Gross <markgross@kernel.org>
 Subject: Re: [PATCH v8] platform: x86: Add ChromeOS ACPI device driver
 Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Benson Leung <bleung@chromium.org>
 References: <Ylmmf03fewXEjRr0@debian-BULLSEYE-live-builder-AMD64>
- <YmUNnq5tH8mykNOF@kroah.com>
+ <e4c150a8-6e68-d06b-c695-a428ccba14c8@collabora.com>
+ <ded85a65-2631-cf7d-88f7-532a26eec5ed@collabora.com>
+ <a855bf87-aa73-0977-ed31-6855aa1ce426@redhat.com>
 From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <YmUNnq5tH8mykNOF@kroah.com>
+In-Reply-To: <a855bf87-aa73-0977-ed31-6855aa1ce426@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
         SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
@@ -72,35 +76,51 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 4/24/22 1:43 PM, Greg Kroah-Hartman wrote:
-> On Fri, Apr 15, 2022 at 10:08:15PM +0500, Muhammad Usama Anjum wrote:
->> +	i = 0;
->> +	list_for_each_entry(aag, &chromeos_acpi.groups, list) {
->> +		chromeos_acpi.dev_groups[i] = &aag->group;
->> +		i++;
->> +	}
->> +
->> +	ret = sysfs_create_groups(&dev->kobj, chromeos_acpi.dev_groups);
-> 
-> You have raced with userspace and lost here :(
-> 
-> Use the default groups pointer in the platform driver for this, and use
-> the is_visible() callback to know to show, or not show, the attribute
-> instead of building up dynamic lists of attributes at runtime.  That
-> will save you lots of crazy logic and housekeeping _AND_ userspace tools
-> will work properly as well.
-> 
-Yeah, using dev_group pointer in platform driver makes it simple. We
-need to define the attributes at compile time. At run time, we can only
-make decision to show or not to show the attribute. This simplifies
-logic for the static attributes which will always be there. But there
-are some set of attributes which may be 1 to N depending upon the
-platform such as GPIO.0, GPIO.2 .... and GPIO.N. I'm working on
-overcoming this. Once this is done, the driver is going to be very simple.
+Hi,
 
-> thanks,
+On 4/27/22 7:22 PM, Hans de Goede wrote:
+> On 4/22/22 16:47, Muhammad Usama Anjum wrote:
+>> Hi Hans,
+>>
+>> Can I add you as a maintainer of drivers/platform/x86/chromeos_acpi.c?
+>> You already maintain some other drivers in this directory.
+> If you want to rely on me as default/fallback maintainer
+> for the new chromeos_acpi driver, then simply don't add
+> a MAINTAINERS entry for this driver.
 > 
-> greg k-h
+> I'm the default maintainer for everything under
+> drivers/platform/x86/ .
+> 
+> With that said:
+> 
+> 
+>> On 4/18/22 10:57 PM, Muhammad Usama Anjum wrote:
+>>> Hi Benson,
+>>>
+>>> We are very near to getting this patch in. I can see that you are
+>>> maintaining Chrome Platform support. This driver is in
+>>> drivers/platform/x86/chromeos_acpi.c. Can you maintain this driver as
+>>> well? I'll add you to the maintainers.
+> now that you mention it, moving this to drivers/platform/chrome/
+> actually seems like the most sensible thing to do given that
+> this is chrome specific platform code. So please move it
+> there for the next version.
+> 
+This driver was added in platform/x86 as it is only x86 specific.
+Definitely it makes more sense to move it to platform/chrome. I'll move it.
+
+> Talking about the next version, please address all review
+> remarks from Barnabás for the next version.
+> 
+After Greg's comment to define attributes at compile time, the driver
+will change completely and way simpler.
+
+> Regards,
+> 
+> Hans
+> 
+> 
+> 
 
 -- 
 Muhammad Usama Anjum
