@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56CCC513124
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 12:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3099F51312D
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 12:20:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243155AbiD1KU4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Apr 2022 06:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35452 "EHLO
+        id S230474AbiD1KX1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Apr 2022 06:23:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244110AbiD1KUd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 06:20:33 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E927E41FA4;
-        Thu, 28 Apr 2022 03:12:14 -0700 (PDT)
+        with ESMTP id S231246AbiD1KX0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 06:23:26 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1FFB6408;
+        Thu, 28 Apr 2022 03:20:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651140734; x=1682676734;
+  t=1651141211; x=1682677211;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=DN8nmFYcb38IeRXfm3ZKJ3F7KWzA3y9zzhKp5ZnLg5s=;
-  b=V+S/0rfa6bHAlfhdOxrjpTcTheq203+QLXAL5ciLxQpCnqw+KgsqwgoE
-   hdcR7fhxIgE/Fsm8cm1eY07am1znNbTCAyfnkG6UTugNyKDRrOIqAAP8K
-   RUC5iamRP9jakRf/oLefBJlG5OM9K3NspvflEHLdlvfscKTtuhe63S8vZ
-   0Lm49kEPZAs3ETOkStujWaz7B53AXNn40tgt6rNWIfBxrXO6+2aNZjV9t
-   Si1a364zAdl7PBDz7manQ5AvaotyijnfPNjUAeHeEgB3343Y7baFaZCJT
-   bja8me5+aBlRjRi9/ld1UjP1IVhhCDVyXizQnnxirdy1nm440zSPE1xnM
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10330"; a="265082134"
+  bh=geWC0vTfFeW70jzj+mxX3TbT5h1lFqMsvssH+3VsSkA=;
+  b=FuMLTKVLL0sTWgkFO219V8larkQ9LHiJtZN4Llsd/8c31nOOIiNyjR2i
+   KwkmaxYS/jeG6RZII+m9EPhEpPG4RV8JeKjyDpP6r1yQ6RDz6Jg9YO6dy
+   5ciU7QQpu6bFrvVSrPcqkmHOPRCG1fjeuwdfnb60PBH5sQBVQbPw5bpwu
+   /Zu3+7Dx0egUX4PvI6NYQpJKJZ6Z1q7QCNjp61dDohFgBJiGYeP5Ed5zS
+   S6zqkvSB8przd8fH0yZW0pdtP9TX+wf/jmDUipgamrQbjbgNFHnCGtePm
+   f+PPAuWn/+IDQXP33lLHHWenPRjJLiQlvWP98Cem6+Yofp/grgIGCYoxV
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10330"; a="266049574"
 X-IronPort-AV: E=Sophos;i="5.90,295,1643702400"; 
-   d="scan'208";a="265082134"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2022 03:12:14 -0700
+   d="scan'208";a="266049574"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2022 03:20:11 -0700
 X-IronPort-AV: E=Sophos;i="5.90,295,1643702400"; 
-   d="scan'208";a="731348066"
+   d="scan'208";a="682425717"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2022 03:12:12 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2022 03:20:08 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.95)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nk185-009FHA-7N;
-        Thu, 28 Apr 2022 13:12:09 +0300
-Date:   Thu, 28 Apr 2022 13:12:08 +0300
+        id 1nk1Fm-009FRL-1y;
+        Thu, 28 Apr 2022 13:20:06 +0300
+Date:   Thu, 28 Apr 2022 13:20:05 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Paul Gortmaker <paul.gortmaker@windriver.com>
 Cc:     linux-kernel@vger.kernel.org,
@@ -50,13 +50,15 @@ Cc:     linux-kernel@vger.kernel.org,
         Mark Gross <markgross@kernel.org>,
         platform-driver-x86@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH 0/4] platform: allow ATOM PMC code to be optional
-Message-ID: <YmpoeJtFNSyCq1QL@smile.fi.intel.com>
+Subject: Re: [PATCH 4/4] platform/x86: pmc_atom: make the PMC driver actually
+ unselectable
+Message-ID: <YmpqVUSva0HUNUXD@smile.fi.intel.com>
 References: <20220428062430.31010-1-paul.gortmaker@windriver.com>
+ <20220428062430.31010-5-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220428062430.31010-1-paul.gortmaker@windriver.com>
+In-Reply-To: <20220428062430.31010-5-paul.gortmaker@windriver.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -67,54 +69,52 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 28, 2022 at 02:24:26AM -0400, Paul Gortmaker wrote:
-> A few months back I was doing a test build for "defconfig-like" COTS
-> hardware and happened to notice some pmc-atom stuff being built.  Fine,
-> I thought - the defconfig isn't minimal - we all know that - what Kconfig
-> do I use to turn that off?  Well, imagine my surprise when I found out
-> you couldn't turn it [Atom Power Management Controller] code off!
+On Thu, Apr 28, 2022 at 02:24:30AM -0400, Paul Gortmaker wrote:
+> This caught my eye when I saw it was def_bool and hence largely
+> pointless to have a Kconfig for it at all.
+> 
+> Yet there is no reason why you shouldn't be able to opt out of Atom
+> platform support if you only care about desktop and server class CPUs.
+> 
+> It was introduced as def_bool, but there is no obvious reason as to why
+> it was forcibly built-in for everyone, other than LPSS implicitly
+> relying on it (which is now fixed).  So here we fix up the Kconfig and
+> open the door for people to opt out.
+> 
+> Since putting "default y" on anything that isn't absolutely essential is
+> generally frowned upon, I made the default be CONFIG_MATOM.  People who
+> use "make oldconfig" or similar won't notice any difference.
+> 
+> The two "unchanged" lines for PCI and COMMON_CLK appear in the diff from
+> fixing a whitespace issue that somehow managed to live on despite being
+> moved between two different Kconfig files since its introduction.
 
-Turning it off on BayTrail and CherryTrail devices will be devastating
-to the users' experience. And plenty of cheap tablets are exactly made
-on that SoCs.
+>  config PMC_ATOM
+> -       def_bool y
+> -       depends on PCI
+> -       select COMMON_CLK
+> +	bool "Intel Atom SOC Power Management Controller driver"
 
-> Normally we all agree to not use "default y" unless unavoidable, but
-> somehow this was added as "def_bool y" which is even worse ; you can
-> see the Kconfig setting but there is *no* way you can turn it off.
-> 
-> After investigating, I found no reason why the atom code couldn't be
-> opt-out with just minor changes that the original addition overlooked.
-> 
-> And so this series addreses that.  I tried to be sensitive to not
-> break any existing configs in the process, but the defconfig will
-> now intentionally be different and exclude this atom specific code.
-> 
-> Using a defconfig on today's linux-next, here is the delta summary:
-> 
-> $ ./scripts/bloat-o-meter -c ../pmc-atom-pre/vmlinux ../pmc-atom-post/vmlinux|grep add/remove
-> add/remove: 0/410 grow/shrink: 0/7 up/down: 0/-47659 (-47659)
-> add/remove: 0/105 grow/shrink: 0/1 up/down: 0/-6848 (-6848)
-> add/remove: 0/56 grow/shrink: 0/1 up/down: 0/-10155 (-10155)
-> 
-> $ ./scripts/bloat-o-meter -c ../pmc-atom-pre/vmlinux ../pmc-atom-post/vmlinux|grep Total
-> Total: Before=13626994, After=13579335, chg -0.35%
-> Total: Before=3572137, After=3565289, chg -0.19%
-> Total: Before=1235335, After=1225180, chg -0.82%
-> 
-> It is hard to reclaim anything against the inevitable growth in
-> footprint, so I'd say we should be glad to take whatever we can.
-> 
-> Boot tested defconfig on today's linux-next on older non-atom COTS.
+s/SOC/SoC/ here and everywhere else in this patch.
 
-I believe this needs an extensive test done by Hans who possesses a lot of
-problematic devices that require that module to be present.
+> +	default MATOM
+> +	depends on PCI
+> +	select COMMON_CLK
+> +	help
+> +	  This enables support for the Atom SOC Power Management Controller
+> +	  driver, and associated platform clocks.  If you intend to boot this
 
-Note to all your patches, please, use --cc option instead of putting noisy
-lines in the each of the commit messages. For myself I created a "smart"
-script [1] to avoid bothering with that. Feel free to use, modify, send PRs
-back to improve.
+One space is enough.
 
-[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
+> +	  kernel on platforms with an intel Atom CPU, say Y here.
+
+Please, list the Atoms that really need this, for example, Broxton doesn't.
+
+I believe the list should include (but not limited to):
+
+	Intel Bay Trail
+	Intel Braswell
+	Intel Cherry Trail
 
 -- 
 With Best Regards,
