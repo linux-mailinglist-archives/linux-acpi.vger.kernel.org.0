@@ -2,98 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09431513863
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 17:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D1C0513941
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 17:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349286AbiD1PeA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 28 Apr 2022 11:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54772 "EHLO
+        id S1349710AbiD1QCR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Apr 2022 12:02:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349217AbiD1Pdm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 11:33:42 -0400
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077F3562FD;
-        Thu, 28 Apr 2022 08:30:27 -0700 (PDT)
-Received: by mail-yb1-f178.google.com with SMTP id f38so9704059ybi.3;
-        Thu, 28 Apr 2022 08:30:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=z68eCpwlSny4KKgVzvMDlrW0IKmP+18VYo0BJNQ1LLo=;
-        b=anHMc+zORSF8M+S7y2hLVWiqKpyjBbeCk9LbRDHy7McXpU4iiGMjH2PlEzx9hOpjm4
-         tb24VZO3TjHCZ+dwyev7OtSk+Eg4A4I3SEP1xczFkxxBS2d3S2wOfW1Kn2/R/feKeL+s
-         +5F6JPiv5CbHddg/a1kUbSWDLgf+QmX1zZ8RFp7Zy7C2xKS/MmXNNbnon3+buAt40wZO
-         VlW831GKculFsNwFkc1xN+TM/ZmWdTYgJDWrRWC3Ljsdz5gJaTC1t3ZOWY8m8TO9mMrG
-         9xIQRX56At7oshPlDRY3Al6Wws4qI0X0SdHwKtB6LaBV6H0jEiXH55sKbKjTupWCn2LJ
-         fvqw==
-X-Gm-Message-State: AOAM532N0/dohbG6OiCt8lOLEgbXo+/I4hl/q/CMDD3AgCxfK6VuuMIX
-        NGgcigg5Sr3Lqql2dHQrw7Qwzg0vyV7aJUMTERnsZkhTcF8=
-X-Google-Smtp-Source: ABdhPJzPMZfx4UPXN2INNyIs2eu1P0Zn17ZqR9UnELv2FZ7paKTTdO1Ce3ipLPPTSPO5es6A/L8qJehbrQl/P/N5u04=
-X-Received: by 2002:a25:e792:0:b0:645:7ddb:b5eb with SMTP id
- e140-20020a25e792000000b006457ddbb5ebmr31483894ybh.482.1651159826109; Thu, 28
- Apr 2022 08:30:26 -0700 (PDT)
+        with ESMTP id S1349716AbiD1QCQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 12:02:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE4AADD52;
+        Thu, 28 Apr 2022 08:59:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F6786202D;
+        Thu, 28 Apr 2022 15:59:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FE5C385A9;
+        Thu, 28 Apr 2022 15:59:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651161540;
+        bh=llQO55R8ueMagBmuxdF8+Ay3kju0BUP4ouQuU4CdaiE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=QDCAAZxqt5IL0MeUbXWV/e7VhwTchVb50NbWACCZMiQIOra9t54YZHcrcuNJpRoGT
+         SfYyoUPxUj31ZvKwOZOYukS8BKlLnBNq+uf3GOuNQCODrZ2Kpirdeo/Xh9+qUw1CfK
+         410M0RfcMSMP01hI26Na/XpSKnG9QRDGx1XyxhFkAPfGNg+OMYC0CMKvvM13WLfxNX
+         YMX+Cy27PX+olZWX3pKPU0ZTsHl/2/mW2gG+GPrI3uBWrWNc6y1tNiS1WU9gnAvbcF
+         RpdRvOtvkjK3FYysIHNmYnMQlcmedh9tjDE0YHUwJvuXQHVwInMPVIa7AY8fLW6lMS
+         WHs2hS0v8YHIg==
+Date:   Thu, 28 Apr 2022 10:58:58 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     bhelgaas@google.com, rafael@kernel.org,
+        linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        whitehat002 <hackyzh002@gmail.com>
+Subject: Re: [PATCH] PCI/ACPI: do not reference a pci device after it has
+ been released
+Message-ID: <20220428155858.GA14614@bhelgaas>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 28 Apr 2022 17:30:15 +0200
-Message-ID: <CAJZ5v0hHYRsWkRsJj+_Wa=jTS5cHasajYeh14yxEDvxu7gWWRQ@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v5.18-rc5
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220428142854.1065953-1-gregkh@linuxfoundation.org>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Thu, Apr 28, 2022 at 04:28:53PM +0200, Greg Kroah-Hartman wrote:
+> In acpi_get_pci_dev(), the debugging message for when a PCI bridge is
+> not found uses a pointer to a pci device whose reference has just been
+> dropped.  The chance that this really is a device that is now been
+> removed from the system is almost impossible to happen, but to be safe,
+> let's print out the debugging message based on the acpi root device
+> which we do have a valid reference to at the moment.
 
-Please pull from the tag
+This code was added by 497fb54f578e ("ACPI / PCI: Fix NULL pointer
+dereference in acpi_get_pci_dev() (rev. 2)").  Not sure if it's worth
+a Fixes: tag.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.18-rc5
+acpi_get_pci_dev() is used by only five callers, three of which are
+video/backlight related.  I'm always skeptical of one-off interfaces
+like this, but I don't know enough to propose any refactoring or other
+alternatives.
 
-with top-most commit 20e582e16af24b074e583f9551fad557882a3c9d
+I'll leave this for Rafael, but if I were applying I would silently
+touch up the subject to match convention:
 
- Revert "ACPI: processor: idle: fix lockup regression on 32-bit ThinkPad T40"
+  PCI/ACPI: Do not reference PCI device after it has been released
 
-on top of commit b2d229d4ddb17db541098b83524d901257e93845
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-pci@vger.kernel.org
+> Cc: linux-acpi@vger.kernel.org
+> Reported-by: whitehat002 <hackyzh002@gmail.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/acpi/pci_root.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 6f9e75d14808..ecda378dbc09 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -303,7 +303,8 @@ struct pci_dev *acpi_get_pci_dev(acpi_handle handle)
+>  		 * case pdev->subordinate will be NULL for the parent.
+>  		 */
+>  		if (!pbus) {
+> -			dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
+> +			dev_dbg(&root->device->dev,
+> +				"dev %d, function %d is not a PCI-to-PCI bridge\n", dev, fn);
 
- Linux 5.18-rc3
+This should use "%02x.%d" to be consistent with the dev_set_name() in
+pci_setup_device().
 
-to receive ACPI fixes for 5.18-rc5.
-
-These fix up the ACPI processor driver after a change made during
-the 5.16 cycle that inadvertently broke falling back to shallower
-C-states when C3 cannot be used.
-
-Specifics:
-
- - Make the ACPI processor driver avoid falling back to C3 type of
-   C-states when C3 cannot be requested (Ville Syrjälä).
-
- - Revert a quirk that is not necessary any more after fixing the
-   underlying issue properly (Ville Syrjälä).
-
-Thanks!
-
-
----------------
-
-Ville Syrjälä (2):
-      ACPI: processor: idle: Avoid falling back to C3 type C-states
-      Revert "ACPI: processor: idle: fix lockup regression on 32-bit
-ThinkPad T40"
-
----------------
-
- drivers/acpi/processor_idle.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+>  			pdev = NULL;
+>  			break;
+>  		}
+> -- 
+> 2.36.0
+> 
