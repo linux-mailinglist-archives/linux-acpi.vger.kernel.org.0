@@ -2,74 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1ED3513BEC
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 21:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F3E513C33
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Apr 2022 21:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351305AbiD1TGm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Apr 2022 15:06:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35420 "EHLO
+        id S229449AbiD1TxX convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 28 Apr 2022 15:53:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346460AbiD1TGl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 15:06:41 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86C2D5DA7A;
-        Thu, 28 Apr 2022 12:03:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 40A3AB82F43;
-        Thu, 28 Apr 2022 19:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EC917C385A0;
-        Thu, 28 Apr 2022 19:03:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651172604;
-        bh=EnUY92OFuv1H14nuVbXRqLmmH4SWof73crEfPp9DBag=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=J79JrAIMUKpomqxQxQmbADz1XPA5YkuPD3E6Zd82qb05Q2EAYuwFDtRGblj8RWLGb
-         brukPF307KRDp5HP+mVxQWbjAvdH+1NowiR1oEaBSpg/sSjdKytZ6LcG7jvoEFQHMn
-         lq+csk5dAZnX2Y8M27QB3XTKXrQXsuo/daZGpVg8yBB8eXWdmVl6jqJVz48KNaMz6b
-         GFFkZRwGcdTPxzKeNb/TmVk7i7YNB6c5C0EBmBNnAY3vQJRtfUhaObd1ivKz3E8iMd
-         CXc/u0nhIrMh4fx0B6DvThUMj36qqlwjBOofRGyiGtwEjlhRrOdOlVkbCFetLBHvTC
-         zFSxSh8REcVgg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D012DE8DD67;
-        Thu, 28 Apr 2022 19:03:23 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fixes for v5.18-rc5
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0hHYRsWkRsJj+_Wa=jTS5cHasajYeh14yxEDvxu7gWWRQ@mail.gmail.com>
+        with ESMTP id S236574AbiD1TxX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Apr 2022 15:53:23 -0400
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B3B26DA;
+        Thu, 28 Apr 2022 12:50:06 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id w17so10899115ybh.9;
+        Thu, 28 Apr 2022 12:50:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=MjJFRl9zxHBD7Ef9rxT75GXYs6BfVSpg1GTO4h+nOHo=;
+        b=UQiHkrTTB5YhdWVQSBm5bxf43qLkP/SMGyIhUYGZv6HlxVg+UuclWuaUYIYT68oih+
+         MnBEvk4m1qIFWf8Qa7E6gqDc82HEEYhK+/LIN15uMwvqWF5xbRad8wIno5PRTBLB7jW1
+         Uo1+n7DjWOVM2mk9BUHOrvahYw5TfeYq1qIOYQ4unXNneuJe1KF80VK8aR6OGbmmOsYh
+         Z0T45p4+7Z/3FuYyj02xbBY3TZ61sMuVUAyZFMCBRnGdCrciOeIKl95rYrK0mroZvD5m
+         tJ5V/Iy4v9yMvjwFomo6SQZh33oeAQw11cADykZgSb7cTZmUhgYgg1N10UMnXrCpC3xq
+         zAAg==
+X-Gm-Message-State: AOAM531v+2fk/sZ01n7VvShL8Gf9hB1QsMOPBZKdV6eG4O9fg86VOr5D
+        Evb/BnhoGdjGE2IPJFVgHDFUTzPis++QKin+bsPYESvn4jQ=
+X-Google-Smtp-Source: ABdhPJzd1gMQJMRF8n6zclaqn9im1EeqLqzsuhBkQncyHUtYxezKcxxDsdklplYjnIyfEOOJ6nEHelJompr8vXe/7+U=
+X-Received: by 2002:a05:6902:187:b0:63d:9c95:edca with SMTP id
+ t7-20020a056902018700b0063d9c95edcamr31156818ybh.81.1651175405157; Thu, 28
+ Apr 2022 12:50:05 -0700 (PDT)
+MIME-Version: 1.0
 References: <CAJZ5v0hHYRsWkRsJj+_Wa=jTS5cHasajYeh14yxEDvxu7gWWRQ@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0hHYRsWkRsJj+_Wa=jTS5cHasajYeh14yxEDvxu7gWWRQ@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.18-rc5
-X-PR-Tracked-Commit-Id: 20e582e16af24b074e583f9551fad557882a3c9d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f12d31c00b2e1d0774772695fd644b1c15e446ac
-Message-Id: <165117260384.15527.6186068422852149800.pr-tracker-bot@kernel.org>
-Date:   Thu, 28 Apr 2022 19:03:23 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+ <CAHk-=wit9xfwAf=z6YqkZerH28qFYeTnhr3GtBqCYBnsTsSYXw@mail.gmail.com>
+In-Reply-To: <CAHk-=wit9xfwAf=z6YqkZerH28qFYeTnhr3GtBqCYBnsTsSYXw@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 28 Apr 2022 21:49:53 +0200
+Message-ID: <CAJZ5v0jpaAwq0Ad-ZA60bA5AU8JG1Y2muYtXy-bA4LapX8_dJQ@mail.gmail.com>
+Subject: Re: [GIT PULL] ACPI fixes for v5.18-rc5
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Thu, 28 Apr 2022 17:30:15 +0200:
+On Thu, Apr 28, 2022 at 8:50 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Thu, Apr 28, 2022 at 8:30 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> >  - Make the ACPI processor driver avoid falling back to C3 type of
+> >    C-states when C3 cannot be requested (Ville Syrjälä).
+>
+> Hmm.
+>
+> Doesn't this avoid C3 for _everybody_ rather than some conditional
+> "when C3 cannot be requested"?
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.18-rc5
+The bug was that if acpi_idle_bm_check() returned 1, it would "fall
+back"  to the same state via safe_state_index.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f12d31c00b2e1d0774772695fd644b1c15e446ac
+> Of course, it looks like the 'has_lpi' state still potentially allows
+> C3 even for busmastering sleeps. Maybe that is what you meant.
 
-Thank you!
+That too.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Thanks for pulling!
+
+Rafael
