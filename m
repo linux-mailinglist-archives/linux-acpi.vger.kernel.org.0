@@ -2,69 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BE6E516283
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 May 2022 09:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF4415168E8
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 May 2022 01:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229799AbiEAHyE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 1 May 2022 03:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58720 "EHLO
+        id S245228AbiEAXvI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 1 May 2022 19:51:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237134AbiEAHxq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 1 May 2022 03:53:46 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B0B6576;
-        Sun,  1 May 2022 00:50:20 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id d6so13472645ede.8;
-        Sun, 01 May 2022 00:50:20 -0700 (PDT)
+        with ESMTP id S229449AbiEAXvH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 1 May 2022 19:51:07 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C632BB24;
+        Sun,  1 May 2022 16:47:40 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id p18so14933660edr.7;
+        Sun, 01 May 2022 16:47:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=th+XkMr+xSq8zrqmODzL0k9Rhzhmi8pbbPFc0AQCHUo=;
-        b=bawiRp3YGAQinPjoP6bTDEYBal5Pfxcis4zes1ZbsiieKJMwsPsKr3xvinsksBaQz/
-         BqFV2/N4edlQoy3GwMr7h5eeKuyHLRj7Xk4XFYs/125f6yDIO/af41NddM7SygyLzUl4
-         B2MN1qVswNbRKXAA9gGA4UW4efgce0WNsKn3ap8r1X3Hxo3hm9N/V5w4hoUXci6RQYY/
-         R0cOh9j0PcTnR1u4DpUZjOlk68Y2ZffKDbQv4dBaJs5bi5YHqNOGz3V+eP1k8j0tMClK
-         9cbFTf3JdMSg6IxPvszZ81Vl7Kj5VqhkzPWPedmqxqiz+ufNhBCAbp+UpDujOw4+60wy
-         z+GQ==
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=c4ekEUJI1otjKCbC/Ch8dyPiWi8pK8+znYkkTcEytXc=;
+        b=GnrU21HYat/Onr3IKg4Cet0n8I2iAOTKnwwLzSv4PwvpqLZOanORtsI7YI8PKlYMMI
+         jpoXeBFKNklvE+Wg9hGlubnGpznjoJ7kJbTQR8IORKrMxot2f96/tdeoMu1rxLCdFleB
+         uqivk18o1rQR0Qj40400FYt3+un07t3HnEgfXeINKhewiLm3tcF+RnyHCC7N+VeqwLmI
+         fxSSFr5IYUdWU7FXB/c2xj2VR2puQFKUE4kDPJVujDpxFg2HqwPBcjLZETMQMGcoOYWa
+         ei8uUo2WareTvD7ifE7T9Y/0OdZhx7Gcjq4ANsivoDopIv8oYV0LZQO1OdhBoGtIAjr+
+         rJBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=th+XkMr+xSq8zrqmODzL0k9Rhzhmi8pbbPFc0AQCHUo=;
-        b=wiSxFCmr8I7zb6piimZkh1BeaTM/YAgqsq2U3Scdg5O44ekVYQ43a0LGXxrwWEb3fb
-         FS9xhQBJrExEFdXXktZ7S/CJKuT8KF4vfqD4J5l5gPK9aUG2j++B2tHe72KaIOb071Rr
-         L0wT2OhOWgoRF2Y04OSrp6AuVv9wcgs7VljDz0KC9LUq3hJ8wRzdnbv5tEf77s2GW7XC
-         8172+aKFC+1d0rby7DQiqJjiz+tUFu6O3lITyTrCHh0ZGD2o+OfhBTFWzF99hSLtXpqt
-         hL0g3mfTGO2cXU231mpzweXOjVr2iZ9x/ZIqUIGzHJSY3WYghx22QYsCwnoU2M5p/ohd
-         WE+A==
-X-Gm-Message-State: AOAM530Fv8Z2RZtGyl5MukFhF5EKuHbdTpQ0z+kMMBZ/n6Gotxg9khQ9
-        P6+X3DYPNXgb6ZpaVxekn4Rq7zvlpgGRPAtLwgw=
-X-Google-Smtp-Source: ABdhPJxOLm/7ex3DQLIs0sNDFrYrb7qlhaif/VnBiv4BwNq/I3biHG+3SHYb0Q/8kA81V4ogDaPF0Q7TWs7fbA5+4ts=
-X-Received: by 2002:a05:6402:d51:b0:425:d5e1:e9f0 with SMTP id
- ec17-20020a0564020d5100b00425d5e1e9f0mr7754800edb.125.1651391418629; Sun, 01
- May 2022 00:50:18 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=c4ekEUJI1otjKCbC/Ch8dyPiWi8pK8+znYkkTcEytXc=;
+        b=zCRkRh271P9ZFmOouYOA7JHJ0PTIIH4rBK/4mW5j0GK8W7QleTLuOm+FPS2wg6f0Qo
+         HNS3P7IlZP4dvhJdvFXyhR90x2BfuzYWVvMTlMw091ytpSL2xzTlyTRXSutf2FeLX6eh
+         kvgilxpfn4uhy30lE2WUfvX6Q2O1hVrcj+OnuUp2TxkyixLOndiAs1Elpt/Gbszz30Um
+         61uEuHrE7HIWKjfYf78hDqtR3aXzr/ue3rn8x/j6U+nQQ40maMtTClTUskLKohEcnNCF
+         hDS6x2nWcyAIXuCuX/t7OUtPB/ZW0iHFpV7Nr1QfCsPP8v4V19Nsy3MY8IxEqI8jyij4
+         HU7Q==
+X-Gm-Message-State: AOAM533OTbqqLBynmEjoToNmQYXLir6Ez+mrsmB2QyjX3/7vyJiqhq4L
+        S3X2ea7fKfQYCyvQtij+yyRl66oiDamx3kZci3f/fFqmgYk=
+X-Google-Smtp-Source: ABdhPJw51VSuqY99qvJQse1B5TCzwStKP6otBEcp3h+Ob86r4RA6AcZTLu8lw9vQBrUjWB5P29TNYH7GV4y7RHpCV5A=
+X-Received: by 2002:a05:6402:354b:b0:426:1193:39ad with SMTP id
+ f11-20020a056402354b00b00426119339admr10612551edd.351.1651448858385; Sun, 01
+ May 2022 16:47:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220429164325.1.I2a3b980ea051e59140227999f0f0ca16f1125768@changeid>
-In-Reply-To: <20220429164325.1.I2a3b980ea051e59140227999f0f0ca16f1125768@changeid>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 1 May 2022 09:49:41 +0200
-Message-ID: <CAHp75VdqbXCYoEwxMt7xG55QDu2mXHbnpwdnHb6ktm8NdVPJnQ@mail.gmail.com>
-Subject: Re: [PATCH] device property: Fix recent breakage of fwnode_get_next_parent_dev()
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        freedreno@lists.freedesktop.org,
-        Saravana Kannan <saravanak@google.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-arm-msm@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+From:   Test Bot <zgrieee@gmail.com>
+Date:   Mon, 2 May 2022 03:47:27 +0400
+Message-ID: <CAOFRbGm8Qd5Pd9_ZA1a864wVAN=rkYzL9Hq5n=TopTDZPAHtfg@mail.gmail.com>
+Subject: [5.18.0-rc5] report: kernel compile
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -76,42 +60,27 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Apr 30, 2022 at 3:00 PM Douglas Anderson <dianders@chromium.org> wrote:
->
-> Due to a subtle typo, instead of commit 87ffea09470d ("device
-> property: Introduce fwnode_for_each_parent_node()") being a no-op
-> change, it ended up causing the display on my sc7180-trogdor-lazor
-> device from coming up unless I added "fw_devlink=off" to my kernel
-> command line. Fix the typo.
+Hi,
 
-Sorry and merci pour la fix!
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+The v5.18.0-rc5 kernel was automatically tested and foun BUG.
 
-> Fixes: 87ffea09470d ("device property: Introduce fwnode_for_each_parent_node()")
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
->
->  drivers/base/property.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 36401cfe432c..52e85dcb20b5 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -600,7 +600,7 @@ struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode)
->         struct device *dev;
->
->         fwnode_for_each_parent_node(fwnode, parent) {
-> -               dev = get_dev_from_fwnode(fwnode);
-> +               dev = get_dev_from_fwnode(parent);
->                 if (dev) {
->                         fwnode_handle_put(parent);
->                         return dev;
-> --
-> 2.36.0.464.gb9c8b46e94-goog
->
+dmesg log:
 
+[    0.234262] ACPI BIOS Error (bug): Could not resolve symbol
+[\_SB.PCI0.GPP0.SWUS.SWDS], AE_NOT_FOUND (20211217/dswload2-162)
+[    0.234267] ACPI Error: AE_NOT_FOUND, During name lookup/catalog
+(20211217/psobject-220)
 
--- 
-With Best Regards,
-Andy Shevchenko
+[    3.192835] tpm_crb MSFT0101:00: [Firmware Bug]: ACPI region does
+not cover the entire command/response buffer. [mem
+0xbd49e000-0xbd49efff flags 0x200] vs bd49e000 4000
+[    3.192890] tpm_crb MSFT0101:00: [Firmware Bug]: ACPI region does
+not cover the entire command/response buffer. [mem
+0xbd4a2000-0xbd4a2fff flags 0x200] vs bd4a2000 4000
+
+Hardware Information:
+
+ASUS TUF Gaming (FX505D)
+
+Kernel Booted?
+Yes
