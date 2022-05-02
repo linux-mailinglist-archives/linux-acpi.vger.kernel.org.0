@@ -2,193 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D685171DA
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 May 2022 16:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A0D5173B5
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 May 2022 18:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349405AbiEBOtX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 May 2022 10:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56894 "EHLO
+        id S239798AbiEBQIh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 May 2022 12:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385684AbiEBOtP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 May 2022 10:49:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B61137660
-        for <linux-acpi@vger.kernel.org>; Mon,  2 May 2022 07:45:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651502745;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=B4pQrxwbMkCLJ5ROt7mPOSwd6NiZcg0UnB/It7+vur8=;
-        b=Emo2+bVJsNMD5NIa/uHZ2TEiWacSZH+3o7UHUc7BMPOHavluFfTvqUNTmgw9c/GHYb86cu
-        rSvhWMBhFULRol/QjwUQu6i9nnkln1hcr++/rWbgYUNJRO86z6yYzKXRgP3+kkmFFUmY3k
-        AC5t5b4TWq3L9F/8CVSJsPBbWfPT7b4=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-255-D9MmcsgMORCah2WlRT4tJA-1; Mon, 02 May 2022 10:45:44 -0400
-X-MC-Unique: D9MmcsgMORCah2WlRT4tJA-1
-Received: by mail-ed1-f71.google.com with SMTP id eg38-20020a05640228a600b00425d61d0302so8811428edb.17
-        for <linux-acpi@vger.kernel.org>; Mon, 02 May 2022 07:45:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=B4pQrxwbMkCLJ5ROt7mPOSwd6NiZcg0UnB/It7+vur8=;
-        b=vJnBJIeNaqZ4lPVMe52h/hRNM46hAb6Jxnm8W17t2bFq2BPU8DkEA+ZZmhYz++Bu9p
-         KYY7bEXNhoIGS7iLYkz1I9G7AWIHjxoV2zNvrFZaDM+jB7jF3cXurj7shVpzTAo00LWX
-         sswYj9z03+6U4QduuDJg/p1GYSJ7koWX7LcoJpg6QjiC2MmzFqV5+iXJh7KblNvMfm+5
-         pR6ic2l5eKnE6tDYbdOOKS9PHiBgO8MF1rkVYRYi3EgZWzOJ3z7jIeYbhE7Dn0fMaO5n
-         ePdkwfzp8/5ULKMbJd082alW7l7oogruRB5hKQYLNhCNfcNNmHvy/aa5QUcauSlecBoN
-         R9VA==
-X-Gm-Message-State: AOAM5307eCVYeH2zogNoOPHpnP37T0sgHAWkqHUS0wSYw6I1LWWKhXba
-        KS60+m1JcshaQYwoNnf6BSyAJBhbuq4sgQyTcSocT9tnm7SzB4oZ1D1X2rbJoC3+FYMX/8W94KN
-        iRawZv4nCJnl+5wyM9wbpHA==
-X-Received: by 2002:aa7:d416:0:b0:425:f5c7:d633 with SMTP id z22-20020aa7d416000000b00425f5c7d633mr13503790edq.105.1651502743724;
-        Mon, 02 May 2022 07:45:43 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwvSFWfM2G/qAaAHK+B/XTlThC9zby/KRVnSdmSjo6AXVwHq4i/vQblfOGY/9duxKZi86DgHQ==
-X-Received: by 2002:aa7:d416:0:b0:425:f5c7:d633 with SMTP id z22-20020aa7d416000000b00425f5c7d633mr13503769edq.105.1651502743524;
-        Mon, 02 May 2022 07:45:43 -0700 (PDT)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id h21-20020a1709070b1500b006f3ef214e17sm3645444ejl.125.2022.05.02.07.45.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 May 2022 07:45:42 -0700 (PDT)
-Message-ID: <7609be8e-6331-2b4b-3349-bf300bb6af15@redhat.com>
-Date:   Mon, 2 May 2022 16:45:42 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 4/4] platform/x86: pmc_atom: make the PMC driver actually
- unselectable
-Content-Language: en-US
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S229621AbiEBQIh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 May 2022 12:08:37 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA7EBC3D;
+        Mon,  2 May 2022 09:05:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651507508; x=1683043508;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mTN/sFuEKOvHaXrCmuIKcyX8bTKXzMSHR2ip8sSamBk=;
+  b=NlQQgGyv35yNl4gAZEIF4PGmPBhe89/v588AeYSSXWjID/0ubTdgwxrl
+   djuVRjvV56tyZCuTBxptbj6WPBKbSCsE3Mjtt76CtbCcLyjWM13ZbposO
+   K11rOIafOmFJhrlF7ptXCp+rMU4H20FfpyvwGm0RmRICx7B1AlTAgUk9n
+   UKHwdlQZqVQZKe1SGm1uN/JjvzInufpMSxX+wFyz2wIck2I46gT2csjyI
+   0KF6FkQBMVVpOFUTZK9lL/+mUQ8CnrYl7PmpsWjmgifPQFJUKb+0OGB+a
+   7fktiCcuylRcic1X2aQBacwqOHQ3rtO44ix9/6xZguZtERGoxwpbnA/SR
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10335"; a="330239489"
+X-IronPort-AV: E=Sophos;i="5.91,192,1647327600"; 
+   d="scan'208";a="330239489"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2022 09:05:07 -0700
+X-IronPort-AV: E=Sophos;i="5.91,192,1647327600"; 
+   d="scan'208";a="516162976"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2022 09:05:05 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nlYXm-00B6Tb-Tt;
+        Mon, 02 May 2022 19:05:02 +0300
+Date:   Mon, 2 May 2022 19:05:02 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
+        linux-kernel@vger.kernel.org,
         Aubrey Li <aubrey.li@linux.intel.com>,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         Mark Gross <markgross@kernel.org>,
         platform-driver-x86@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH 0/4] platform: allow ATOM PMC code to be optional
+Message-ID: <YnABLhyUGR+ZRQ+u@smile.fi.intel.com>
 References: <20220428062430.31010-1-paul.gortmaker@windriver.com>
- <20220428062430.31010-5-paul.gortmaker@windriver.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220428062430.31010-5-paul.gortmaker@windriver.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <YmpoeJtFNSyCq1QL@smile.fi.intel.com>
+ <20220428181131.GG12977@windriver.com>
+ <827dc313-33ff-1c91-afaf-7645b655a1be@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <827dc313-33ff-1c91-afaf-7645b655a1be@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, May 02, 2022 at 04:30:57PM +0200, Hans de Goede wrote:
+> On 4/28/22 20:11, Paul Gortmaker wrote:
 
-On 4/28/22 08:24, Paul Gortmaker wrote:
-> This caught my eye when I saw it was def_bool and hence largely
-> pointless to have a Kconfig for it at all.
+...
+
+> As for users breaking support for BYT/CHT setups because they forget
+> to enable this, without X86_INTEL_LPSS being enabled BYT/CHT are pretty
+> much broken anyways and since patch 2/4 adds a "select PMC_ATOM" to the
+> X86_INTEL_LPSS Kconfig option I'm not really worried about that.
 > 
-> Yet there is no reason why you shouldn't be able to opt out of Atom
-> platform support if you only care about desktop and server class CPUs.
+> I'm afraid this patch-set might break some randomconfig builds though,
+> but I cannot see anything obviously causing such breakage here, so
+> I think it would be fine to just merge this series as is and then
+> see if we get any breakage reports.
 > 
-> It was introduced as def_bool, but there is no obvious reason as to why
-> it was forcibly built-in for everyone, other than LPSS implicitly
-> relying on it (which is now fixed).  So here we fix up the Kconfig and
-> open the door for people to opt out.
-> 
-> Since putting "default y" on anything that isn't absolutely essential is
-> generally frowned upon, I made the default be CONFIG_MATOM.  People who
-> use "make oldconfig" or similar won't notice any difference.
-> 
-> The two "unchanged" lines for PCI and COMMON_CLK appear in the diff from
-> fixing a whitespace issue that somehow managed to live on despite being
-> moved between two different Kconfig files since its introduction.
-> 
-> Cc: Aubrey Li <aubrey.li@linux.intel.com>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Cc: Mark Gross <markgross@kernel.org>
-> Cc: platform-driver-x86@vger.kernel.org
-> Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-> ---
->  drivers/platform/x86/Kconfig | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-> index f08ad85683cb..86459e99d831 100644
-> --- a/drivers/platform/x86/Kconfig
-> +++ b/drivers/platform/x86/Kconfig
-> @@ -1163,6 +1163,11 @@ config WINMATE_FM07_KEYS
->  endif # X86_PLATFORM_DEVICES
->  
->  config PMC_ATOM
-> -       def_bool y
-> -       depends on PCI
-> -       select COMMON_CLK
-> +	bool "Intel Atom SOC Power Management Controller driver"
-> +	default MATOM
+> Andy, are you ok with me moving ahead and merging this series as is?
 
-Besides the remarks from Andy, this does seem like a weird default,
-MATOM means that gcc is passed -march=atom nothing more and nothing
-less. For a distro kernel which may e.g. set 
-CONFIG_GENERIC_CPU we still want this enabled. But as said it is
-brought in by CONFIG_X86_INTEL_LPSS when that is set. 
+It seems as is can't be fulfilled due to your own comment, but in general I'm
+not objecting the idea. So, go ahead if you feel it's ready.
 
-Thinking more about this I think it might be best to just do this
-instead, replacing patch 2 + 4 of this set:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-diff --git a/drivers/clk/x86/Makefile b/drivers/clk/x86/Makefile
-index 1244c4e568ff..c2088b3c4081 100644
---- a/drivers/clk/x86/Makefile
-+++ b/drivers/clk/x86/Makefile
-@@ -1,6 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
--obj-$(CONFIG_PMC_ATOM)		+= clk-pmc-atom.o
- obj-$(CONFIG_X86_AMD_PLATFORM_DEVICE)	+= clk-fch.o
--clk-x86-lpss-y			:= clk-lpss-atom.o
--obj-$(CONFIG_X86_INTEL_LPSS)	+= clk-x86-lpss.o
-+obj-$(CONFIG_X86_INTEL_LPSS)	+= clk-lpss-atom.o clk-pmc-atom.o
- obj-$(CONFIG_CLK_LGM_CGU)	+= clk-cgu.o clk-cgu-pll.o clk-lgm.o
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index f08ad85683cb..85c396a43048 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -1161,8 +1161,3 @@ config WINMATE_FM07_KEYS
- 	  that delivers key events when these buttons are pressed.
- 
- endif # X86_PLATFORM_DEVICES
--
--config PMC_ATOM
--       def_bool y
--       depends on PCI
--       select COMMON_CLK
-diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
-index 4a59f47a46e2..cc2a74713313 100644
---- a/drivers/platform/x86/Makefile
-+++ b/drivers/platform/x86/Makefile
-@@ -126,7 +126,7 @@ obj-$(CONFIG_INTEL_SCU_PCI)		+= intel_scu_pcidrv.o
- obj-$(CONFIG_INTEL_SCU_PLATFORM)	+= intel_scu_pltdrv.o
- obj-$(CONFIG_INTEL_SCU_WDT)		+= intel_scu_wdt.o
- obj-$(CONFIG_INTEL_SCU_IPC_UTIL)	+= intel_scu_ipcutil.o
--obj-$(CONFIG_PMC_ATOM)			+= pmc_atom.o
-+obj-$(CONFIG_X86_INTEL_LPSS)		+= pmc_atom.o
- 
- # Siemens Simatic Industrial PCs
- obj-$(CONFIG_SIEMENS_SIMATIC_IPC)	+= simatic-ipc.o
-
-
-This just folds the enabling of the pmc_atom code into the same
-Kconfig option as the one used the the LPSS code, so this actually
-simplify things; while at the same time making it possible to
-not build the pmc_atom code by unselecting the CONFIG_X86_INTEL_LPSS
-option.
-
-Regards,
-
-Hans
 
