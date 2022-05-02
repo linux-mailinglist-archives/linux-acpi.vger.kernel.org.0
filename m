@@ -2,85 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF4415168E8
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 May 2022 01:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00856516DBE
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 May 2022 11:51:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245228AbiEAXvI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 1 May 2022 19:51:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48198 "EHLO
+        id S229657AbiEBJyi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 May 2022 05:54:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiEAXvH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 1 May 2022 19:51:07 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C632BB24;
-        Sun,  1 May 2022 16:47:40 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id p18so14933660edr.7;
-        Sun, 01 May 2022 16:47:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=c4ekEUJI1otjKCbC/Ch8dyPiWi8pK8+znYkkTcEytXc=;
-        b=GnrU21HYat/Onr3IKg4Cet0n8I2iAOTKnwwLzSv4PwvpqLZOanORtsI7YI8PKlYMMI
-         jpoXeBFKNklvE+Wg9hGlubnGpznjoJ7kJbTQR8IORKrMxot2f96/tdeoMu1rxLCdFleB
-         uqivk18o1rQR0Qj40400FYt3+un07t3HnEgfXeINKhewiLm3tcF+RnyHCC7N+VeqwLmI
-         fxSSFr5IYUdWU7FXB/c2xj2VR2puQFKUE4kDPJVujDpxFg2HqwPBcjLZETMQMGcoOYWa
-         ei8uUo2WareTvD7ifE7T9Y/0OdZhx7Gcjq4ANsivoDopIv8oYV0LZQO1OdhBoGtIAjr+
-         rJBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=c4ekEUJI1otjKCbC/Ch8dyPiWi8pK8+znYkkTcEytXc=;
-        b=zCRkRh271P9ZFmOouYOA7JHJ0PTIIH4rBK/4mW5j0GK8W7QleTLuOm+FPS2wg6f0Qo
-         HNS3P7IlZP4dvhJdvFXyhR90x2BfuzYWVvMTlMw091ytpSL2xzTlyTRXSutf2FeLX6eh
-         kvgilxpfn4uhy30lE2WUfvX6Q2O1hVrcj+OnuUp2TxkyixLOndiAs1Elpt/Gbszz30Um
-         61uEuHrE7HIWKjfYf78hDqtR3aXzr/ue3rn8x/j6U+nQQ40maMtTClTUskLKohEcnNCF
-         hDS6x2nWcyAIXuCuX/t7OUtPB/ZW0iHFpV7Nr1QfCsPP8v4V19Nsy3MY8IxEqI8jyij4
-         HU7Q==
-X-Gm-Message-State: AOAM533OTbqqLBynmEjoToNmQYXLir6Ez+mrsmB2QyjX3/7vyJiqhq4L
-        S3X2ea7fKfQYCyvQtij+yyRl66oiDamx3kZci3f/fFqmgYk=
-X-Google-Smtp-Source: ABdhPJw51VSuqY99qvJQse1B5TCzwStKP6otBEcp3h+Ob86r4RA6AcZTLu8lw9vQBrUjWB5P29TNYH7GV4y7RHpCV5A=
-X-Received: by 2002:a05:6402:354b:b0:426:1193:39ad with SMTP id
- f11-20020a056402354b00b00426119339admr10612551edd.351.1651448858385; Sun, 01
- May 2022 16:47:38 -0700 (PDT)
+        with ESMTP id S1384356AbiEBJyh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 May 2022 05:54:37 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4259EDED;
+        Mon,  2 May 2022 02:51:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651485067; x=1683021067;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lW0lO5z5VpH64eO+G5VofuHf7b1zIUUWm2f++1r8rig=;
+  b=O2/J2nOfNDpHI5WStXPH3wOuUgwogm13yBJ7nwbHIA92ptydj9p9d1sH
+   ExK8yjuHGv80ZkSczcIqmoOrVZN5NI1ODYXywi4nxoUn/BnSrFoC8wQym
+   igQ7C6/iOXC3crmuPBuaXw/AEw7PDTJ6MtfA54KcwUP6EAJLXmQy8FWR8
+   lsiUC0UDhWtJJLblgN3bmMRfLGX4YJZsddf5DU2Y32tI84BwctIc+ip7p
+   1EBpRzw7jRLVMFx/9rWYk/rGma5R1BloxbSLj+TFY44smP9m1xuHPds/G
+   EdNvgViFFg84ctXGtRck5CxheJxEB1xCp6s8t4WL768bHDoqmUem8A3Uk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10334"; a="353598688"
+X-IronPort-AV: E=Sophos;i="5.91,190,1647327600"; 
+   d="scan'208";a="353598688"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2022 02:51:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,190,1647327600"; 
+   d="scan'208";a="652757630"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 02 May 2022 02:51:03 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 3A4C8179; Mon,  2 May 2022 12:51:04 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH v1 1/1] device property: Advertise fwnode and device property count API calls
+Date:   Mon,  2 May 2022 12:51:01 +0300
+Message-Id: <20220502095101.46920-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-From:   Test Bot <zgrieee@gmail.com>
-Date:   Mon, 2 May 2022 03:47:27 +0400
-Message-ID: <CAOFRbGm8Qd5Pd9_ZA1a864wVAN=rkYzL9Hq5n=TopTDZPAHtfg@mail.gmail.com>
-Subject: [5.18.0-rc5] report: kernel compile
-To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     gregkh@linuxfoundation.org, torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+The documentation of fwnode and device property array API calls isn't
+pointing out to the shortcuts to count the number of elements of size
+in an array. Amend the documentation to advertise fwnode and device
+property count API calls.
 
-The v5.18.0-rc5 kernel was automatically tested and foun BUG.
+Reported-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/base/property.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-dmesg log:
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index f289f582209c..836124f54332 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -68,6 +68,9 @@ EXPORT_SYMBOL_GPL(fwnode_property_present);
+  * Function reads an array of u8 properties with @propname from the device
+  * firmware description and stores them to @val if found.
+  *
++ * It's recommended to call device_property_count_u8() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values if @val was %NULL,
+  *         %0 if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+@@ -93,6 +96,9 @@ EXPORT_SYMBOL_GPL(device_property_read_u8_array);
+  * Function reads an array of u16 properties with @propname from the device
+  * firmware description and stores them to @val if found.
+  *
++ * It's recommended to call device_property_count_u16() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values if @val was %NULL,
+  *         %0 if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+@@ -118,6 +124,9 @@ EXPORT_SYMBOL_GPL(device_property_read_u16_array);
+  * Function reads an array of u32 properties with @propname from the device
+  * firmware description and stores them to @val if found.
+  *
++ * It's recommended to call device_property_count_u32() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values if @val was %NULL,
+  *         %0 if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+@@ -143,6 +152,9 @@ EXPORT_SYMBOL_GPL(device_property_read_u32_array);
+  * Function reads an array of u64 properties with @propname from the device
+  * firmware description and stores them to @val if found.
+  *
++ * It's recommended to call device_property_count_u64() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values if @val was %NULL,
+  *         %0 if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+@@ -168,6 +180,9 @@ EXPORT_SYMBOL_GPL(device_property_read_u64_array);
+  * Function reads an array of string properties with @propname from the device
+  * firmware description and stores them to @val if found.
+  *
++ * It's recommended to call device_property_string_array_count() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values read on success if @val is non-NULL,
+  *	   number of values available on success if @val is NULL,
+  *	   %-EINVAL if given arguments are not valid,
+@@ -256,6 +271,9 @@ static int fwnode_property_read_int_array(const struct fwnode_handle *fwnode,
+  * Read an array of u8 properties with @propname from @fwnode and stores them to
+  * @val if found.
+  *
++ * It's recommended to call fwnode_property_count_u8() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values if @val was %NULL,
+  *         %0 if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+@@ -282,6 +300,9 @@ EXPORT_SYMBOL_GPL(fwnode_property_read_u8_array);
+  * Read an array of u16 properties with @propname from @fwnode and store them to
+  * @val if found.
+  *
++ * It's recommended to call fwnode_property_count_u16() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values if @val was %NULL,
+  *         %0 if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+@@ -308,6 +329,9 @@ EXPORT_SYMBOL_GPL(fwnode_property_read_u16_array);
+  * Read an array of u32 properties with @propname from @fwnode store them to
+  * @val if found.
+  *
++ * It's recommended to call fwnode_property_count_u32() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values if @val was %NULL,
+  *         %0 if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+@@ -334,6 +358,9 @@ EXPORT_SYMBOL_GPL(fwnode_property_read_u32_array);
+  * Read an array of u64 properties with @propname from @fwnode and store them to
+  * @val if found.
+  *
++ * It's recommended to call fwnode_property_count_u64() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values if @val was %NULL,
+  *         %0 if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+@@ -360,6 +387,9 @@ EXPORT_SYMBOL_GPL(fwnode_property_read_u64_array);
+  * Read an string list property @propname from the given firmware node and store
+  * them to @val if found.
+  *
++ * It's recommended to call fwnode_property_string_array_count() instead of calling
++ * this function with @val equals %NULL and @nval equals 0.
++ *
+  * Return: number of values read on success if @val is non-NULL,
+  *	   number of values available on success if @val is NULL,
+  *	   %-EINVAL if given arguments are not valid,
+-- 
+2.35.1
 
-[    0.234262] ACPI BIOS Error (bug): Could not resolve symbol
-[\_SB.PCI0.GPP0.SWUS.SWDS], AE_NOT_FOUND (20211217/dswload2-162)
-[    0.234267] ACPI Error: AE_NOT_FOUND, During name lookup/catalog
-(20211217/psobject-220)
-
-[    3.192835] tpm_crb MSFT0101:00: [Firmware Bug]: ACPI region does
-not cover the entire command/response buffer. [mem
-0xbd49e000-0xbd49efff flags 0x200] vs bd49e000 4000
-[    3.192890] tpm_crb MSFT0101:00: [Firmware Bug]: ACPI region does
-not cover the entire command/response buffer. [mem
-0xbd4a2000-0xbd4a2fff flags 0x200] vs bd4a2000 4000
-
-Hardware Information:
-
-ASUS TUF Gaming (FX505D)
-
-Kernel Booted?
-Yes
