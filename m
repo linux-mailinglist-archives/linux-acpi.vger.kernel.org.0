@@ -2,83 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8C23516F8A
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 May 2022 14:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F79B51719B
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 May 2022 16:31:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239023AbiEBM2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 May 2022 08:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53590 "EHLO
+        id S1385528AbiEBOer (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 May 2022 10:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235914AbiEBM2A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 May 2022 08:28:00 -0400
+        with ESMTP id S1385523AbiEBOeq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 May 2022 10:34:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1E2D7BC1E
-        for <linux-acpi@vger.kernel.org>; Mon,  2 May 2022 05:24:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E1B60F38
+        for <linux-acpi@vger.kernel.org>; Mon,  2 May 2022 07:31:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651494270;
+        s=mimecast20190719; t=1651501877;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0PWb4JWsmuGJGKazGQUhn92eJLKgCumnf5HYFTKEj0Q=;
-        b=FN4yl0PrMQawfvbcK3Zy/znPLaP3pQh3e9nLszRy5fgHyc+26+ZvnbnYTHiH0FQzbM9oVX
-        Meb4bTogRMZIsZ0r9iY0ptmBdcTDfFEcqXnL124aj84jPySXnsJuhPm59sTtpm4cHXkiu5
-        +Q5YopgcAP1pd9f21eHi8yaxgICFZyc=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=c77/rDIAYeEnW8QDTuHFvfz/klWTZsXPW+s3RWN5ms4=;
+        b=gwsDflyhhn7epLOC5sqCacuiVkb3SbJuBNcvHHClK/1hnw014UJEuw1sh9/5lOU1+ZVkQ5
+        D6hAW/cq3p5UWujWYoSdqFJt7keVNFSuDc7BvrXSBho5u4CakvkGpj/WArBG/SkgOGWMts
+        izETxduLtcd2X5XhLx3gkkFepQAC4AE=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-341--jpz5GmbOqKAwDA5g3sH_g-1; Mon, 02 May 2022 08:24:29 -0400
-X-MC-Unique: -jpz5GmbOqKAwDA5g3sH_g-1
-Received: by mail-ej1-f71.google.com with SMTP id qb36-20020a1709077ea400b006f45e182187so680366ejc.14
-        for <linux-acpi@vger.kernel.org>; Mon, 02 May 2022 05:24:28 -0700 (PDT)
+ us-mta-633-BZDOzlrdNsal6B9aq7KN-A-1; Mon, 02 May 2022 10:30:59 -0400
+X-MC-Unique: BZDOzlrdNsal6B9aq7KN-A-1
+Received: by mail-ed1-f69.google.com with SMTP id h7-20020a056402094700b00425a52983dfso8839194edz.8
+        for <linux-acpi@vger.kernel.org>; Mon, 02 May 2022 07:30:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=0PWb4JWsmuGJGKazGQUhn92eJLKgCumnf5HYFTKEj0Q=;
-        b=TSv6SLvEe4jzp3ZYFIuWMr8NZAh5v94RmEyGFsY5r+WGYy//xxrdb36a6vaoxYCdWI
-         BtUii/q+B/uNkGOBPlxWkHaIjF30q1nAm2KnAExXVv0I5aKrOSdiyT5sd4XpVZZcJfUN
-         TkZ+dUwxkWHJCI4EKBNwttAX0APalGTjgw3ZRSizXVUE1PjXaJlqSSY2Wz1msjLL1j5w
-         0zdY6i1TXpOxyDDZIEuXlPxLPrKeOUv9MEb4RKOJAfjQ8RLbk8IBJQG/s1+ARXgjFG6Y
-         fNdYNqHkk8dAuR/2J9ZfetIKEnusK0csy5xlgrH4bU7/aNENTWl/2COp+Fefckf55VeM
-         X8vw==
-X-Gm-Message-State: AOAM531T4vPoIa4rozmo6Ajd6zBmTngXkIPXdlVTzMVBuG32XhDIgSON
-        gkeRejoJU/b0bqp58PaTkVqCVLLmRHT2bcsCTGiYKPfJppFp+QVdEBcqPpDSIkSRuJm301nTKAO
-        Dsa1aWqI6EsZWOgACL4P9iQ==
-X-Received: by 2002:a17:907:2d93:b0:6f3:8524:6f92 with SMTP id gt19-20020a1709072d9300b006f385246f92mr11143457ejc.556.1651494267907;
-        Mon, 02 May 2022 05:24:27 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyMW9CzlQ1mWVSORPBTlZIOJx0ICt1p3XiOTG1lGD/OnYJxBBIM7JMB0Hy5A+bQT4uoHzsPcg==
-X-Received: by 2002:a17:907:2d93:b0:6f3:8524:6f92 with SMTP id gt19-20020a1709072d9300b006f385246f92mr11143438ejc.556.1651494267611;
-        Mon, 02 May 2022 05:24:27 -0700 (PDT)
+        bh=c77/rDIAYeEnW8QDTuHFvfz/klWTZsXPW+s3RWN5ms4=;
+        b=yNm48A5T+g42Boq1MuzeSVJzky/UdipSeY9fJp91BdrbuXvypCXO3+52ioek+vjX20
+         ZwEm31WEG4dJzTE4rPGjiGixBSJp3VyKzShjRdMwW/PtwsPS4uX7s80i6H9DTqHstzud
+         rYtuI80yWnHdvlg2+ISFrB1/Fh0nY/Syws49vDhV/1V5WgJvVuSbWXi9/KTyhACM/fcQ
+         445PbWL/o+W1CIkZC+Oc4s1V1QCIsG5fFdbeFJNOR6wiT3WQ2bMstpr54N91IXF1quLR
+         wEey8oZMHYrnXaCpV2aKOu16aXPsdqNl8McXjGwnA0xC9IN4QUyDd4IZl6sPAPyg9ifT
+         lh4A==
+X-Gm-Message-State: AOAM533j6VVFMZOg9cTOjlQDXAcPeg5PuRnoKnromQnmkRFu4HN3CNPE
+        COxmAq3YpA9oF+1Bjfw+9JQtcuKG21T23SO/pVJJ7KZIHLx9HZSkbIHbbUI8IhLwrhGS2jItSTy
+        Qt7lLFUlU9MBreHyZjxqwjw==
+X-Received: by 2002:a17:907:2cc3:b0:6da:e6cb:2efa with SMTP id hg3-20020a1709072cc300b006dae6cb2efamr11358683ejc.169.1651501858374;
+        Mon, 02 May 2022 07:30:58 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwLx4IDXJr0EkxOumtryaZEbv9FTqjHDJFUHQuJ26Yauo+JoJXebyA8GYbJpiGICTwaJs7ASg==
+X-Received: by 2002:a17:907:2cc3:b0:6da:e6cb:2efa with SMTP id hg3-20020a1709072cc300b006dae6cb2efamr11358667ejc.169.1651501858142;
+        Mon, 02 May 2022 07:30:58 -0700 (PDT)
 Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id q8-20020aa7cc08000000b0042617ba637esm6575823edt.8.2022.05.02.05.24.26
+        by smtp.gmail.com with ESMTPSA id hy24-20020a1709068a7800b006f3ef214e76sm3602483ejc.220.2022.05.02.07.30.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 May 2022 05:24:27 -0700 (PDT)
-Message-ID: <7bbd9205-aa35-4a27-0df4-8f2b22603831@redhat.com>
-Date:   Mon, 2 May 2022 14:24:26 +0200
+        Mon, 02 May 2022 07:30:57 -0700 (PDT)
+Message-ID: <827dc313-33ff-1c91-afaf-7645b655a1be@redhat.com>
+Date:   Mon, 2 May 2022 16:30:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH v2 0/3] x86/PCI: Log E820 clipping
+Subject: Re: [PATCH 0/4] platform: allow ATOM PMC code to be optional
 Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>
-References: <20220419164526.GA1204065@bhelgaas>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Aubrey Li <aubrey.li@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Mark Gross <markgross@kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+References: <20220428062430.31010-1-paul.gortmaker@windriver.com>
+ <YmpoeJtFNSyCq1QL@smile.fi.intel.com> <20220428181131.GG12977@windriver.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220419164526.GA1204065@bhelgaas>
+In-Reply-To: <20220428181131.GG12977@windriver.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -93,170 +88,84 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-Sorry for the late reply.
-
-On 4/19/22 18:45, Bjorn Helgaas wrote:
-> On Tue, Apr 19, 2022 at 05:16:44PM +0200, Hans de Goede wrote:
->> Hi,
+On 4/28/22 20:11, Paul Gortmaker wrote:
+> [Re: [PATCH 0/4] platform: allow ATOM PMC code to be optional] On 28/04/2022 (Thu 13:12) Andy Shevchenko wrote:
+> 
+>> On Thu, Apr 28, 2022 at 02:24:26AM -0400, Paul Gortmaker wrote:
+>>> A few months back I was doing a test build for "defconfig-like" COTS
+>>> hardware and happened to notice some pmc-atom stuff being built.  Fine,
+>>> I thought - the defconfig isn't minimal - we all know that - what Kconfig
+>>> do I use to turn that off?  Well, imagine my surprise when I found out
+>>> you couldn't turn it [Atom Power Management Controller] code off!
 >>
->> On 4/19/22 17:03, Bjorn Helgaas wrote:
->>> On Tue, Apr 19, 2022 at 11:59:17AM +0200, Hans de Goede wrote:
->>>> On 1/1/70 01:00, Bjorn Helgaas wrote:
->>>>> This is still work-in-progress on the issue of PNP0A03 _CRS methods that
->>>>> are buggy or not interpreted correctly by Linux.
->>>>>
->>>>> The previous try at:
->>>>>   https://lore.kernel.org/r/20220304035110.988712-1-helgaas@kernel.org
->>>>> caused regressions on some Chromebooks:
->>>>>   https://lore.kernel.org/r/Yjyv03JsetIsTJxN@sirena.org.uk
->>>>>
->>>>> This v2 drops the commit that caused the Chromebook regression, so it also
->>>>> doesn't fix the issue we were *trying* to fix on Lenovo Yoga and Clevo
->>>>> Barebones.
->>>>>
->>>>> The point of this v2 update is to split the logging patch into (1) a pure
->>>>> logging addition and (2) the change to only clip PCI windows, which was
->>>>> previously hidden inside the logging patch and not well documented.
->>>>>
->>>>> Bjorn Helgaas (3):
->>>>>   x86/PCI: Eliminate remove_e820_regions() common subexpressions
->>>>>   x86: Log resource clipping for E820 regions
->>>>>   x86/PCI: Clip only host bridge windows for E820 regions
->>>>
->>>> Thanks, the entire series looks good to me:
->>>>
->>>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+>> Turning it off on BayTrail and CherryTrail devices will be devastating
+>> to the users' experience. And plenty of cheap tablets are exactly made
+>> on that SoCs.
+> 
+> Sure, but I could say the same thing for DRM_I915 and millions of
+> desktop PC users - yet we still give all the other non i915 users the
+> option to be able to turn it off.  Pick any other Kconfig value you like
+> and the same thing holds true.
+> 
+> Just so we are on the same page - I want to give the option to let
+> people opt out, and at the same time not break existing users. If you
+> think the defconfig default of being off is too risky, then I am OK with
+> that and we can just start by exposing the option with "default y".
+> 
+> So, to that end - are you OK with exposing the Kconfig so people can
+> opt out, or are you 100% against exposing the Kconfig at all?  That
+> obviously has the most impact on what I do or don't do next.
+> 
+>>> Normally we all agree to not use "default y" unless unavoidable, but
+>>> somehow this was added as "def_bool y" which is even worse ; you can
+>>> see the Kconfig setting but there is *no* way you can turn it off.
 >>>
->>> Thank you!
+>>> After investigating, I found no reason why the atom code couldn't be
+>>> opt-out with just minor changes that the original addition overlooked.
 >>>
->>>> So what is the plan to actually fix the issue seen on some Lenovo models
->>>> and Clevo Barebones ?   As I mentioned previously I think that since all
->>>> our efforts have failed so far that we should maybe reconsider just
->>>> using DMI quirks to ignore the E820 reservation windows for host bridges
->>>> on affected models ?
+>>> And so this series addreses that.  I tried to be sensitive to not
+>>> break any existing configs in the process, but the defconfig will
+>>> now intentionally be different and exclude this atom specific code.
 >>>
->>> I have been resisting DMI quirks but I'm afraid there's no other way.
->>
->> Well there is the first match adjacent windows returned by _CRS and
->> only then do the "covers whole region" exception check. I still
->> think that would work at least for the chromebook regression...
-> 
-> Without a crystal clear strategy, I think we're going to be tweaking
-> the algorithm forever as the _CRS/E820 mix changes.  That's why I
-> think that in the long term, a "use _CRS only, with quirks for
-> exceptions" strategy will be simplest.
-
-Looking at the amount of exception we already now about I'm
-not sure if that will work well.
-
-
-> 
->> So do you want me to give that a try; or shall I write a patch
->> using DMI quirks. And if we go the DMI quirks, what about
->> matching cmdline arguments?  If we add matching cmdline arguments,
->> which seems to be the sensible thing to do then to allow users
->> to test if they need the quirk, then we basically end up with my
->> first attempt at fixing this from 6 months ago:
->>
->> https://lore.kernel.org/linux-pci/20211005150956.303707-1-hdegoede@redhat.com/
-> 
-> So I think we should go ahead with DMI quirks instead of trying to
-> make the algorithm smarter, and yes, I think we will need commandline
-> arguments, probably one to force E820 clipping for future machines,
-> and one to disable it for old machines.
-
-So what you are suggesting is to go back to a bios-date based approach
-(to determine old vs new machines) combined with DMI quirks to force
-E820 clipping on new machines which turn out to need it despite them
-being new ?
-
-> 
->>> I think the web we've gotten into, where vendors have used E820 to
->>> interact with _CRS in incompatible and undocumented ways, is not
->>> sustainable.
+>>> Using a defconfig on today's linux-next, here is the delta summary:
 >>>
->>> I'm not aware of any spec that says the OS should use E820 to clip
->>> things out of _CRS, so I think the long term plan should be to
->>> decouple them by default.
+>>> $ ./scripts/bloat-o-meter -c ../pmc-atom-pre/vmlinux ../pmc-atom-post/vmlinux|grep add/remove
+>>> add/remove: 0/410 grow/shrink: 0/7 up/down: 0/-47659 (-47659)
+>>> add/remove: 0/105 grow/shrink: 0/1 up/down: 0/-6848 (-6848)
+>>> add/remove: 0/56 grow/shrink: 0/1 up/down: 0/-10155 (-10155)
+>>>
+>>> $ ./scripts/bloat-o-meter -c ../pmc-atom-pre/vmlinux ../pmc-atom-post/vmlinux|grep Total
+>>> Total: Before=13626994, After=13579335, chg -0.35%
+>>> Total: Before=3572137, After=3565289, chg -0.19%
+>>> Total: Before=1235335, After=1225180, chg -0.82%
+>>>
+>>> It is hard to reclaim anything against the inevitable growth in
+>>> footprint, so I'd say we should be glad to take whatever we can.
+>>>
+>>> Boot tested defconfig on today's linux-next on older non-atom COTS.
 >>
->> Right and AFAICT the reason Windows is getting away with this is
->> the same as with the original Dell _CRS has overlap with
->> physical RAM issue (1), Linux assigns address to unassigneds BAR-s
->> starting with the lowest available address in the bridge window,
->> where as Windows assigns addresses from the highest available
->> address in the window.
+>> I believe this needs an extensive test done by Hans who possesses a lot of
+>> problematic devices that require that module to be present.
 > 
-> Right, I agree.  I'm guessing Chromebooks don't get tested with
-> Windows at all, so we don't even have that level of testing to help.
-> 
->> So the real fix here might very well be
->> to rework the BAR assignment code to switch to fill the window
->> from the top rather then from the bottom. AFAICT all issues where
->> excluding _E820 reservations have helped are with _E820 - bridge
->> window overlaps at the bottom of the window.
->>
->> IOW these are really all bugs in the _CRS method for the bridge,
->> which Windows does not hit because it never actually uses
->> the lowest address(es) of the _CRS returned window.
-> 
-> Yes.  We actually did try this
-> (https://git.kernel.org/linus/1af3c2e45e7a), but unfortunately we had
-> to revert it.  Even more unfortunately, the revert
-> (https://git.kernel.org/linus/5e52f1c5e85f) doesn't have any details
-> about what went wrong.
+> Input from Hans is 100% welcome - but maybe again if we just consider
+> using "default y" even though it isn't typical - then your concerns are
+> not as extensive?
 
-When I first started working on this I did read the entire old
-email thread and IIRC this approach was reverted because the
-e820 based approach was deemed to be a cleaner fix. Also the
-single resource_alloc_from_bottom flag influenced all types
-of resource allocations, not just PCI host bridge window
-allocations.
+I have no objection against allowing disabling the PMC_ATOM Kconfig option.
 
-Note that the current kernel no longer has the resource_alloc_from_bottom
-flag. Still I think it might be worthwhile to give switching to
-top-down allocating for host bridge window allocs a try. Maybe we
-can make the desired allocation strategy a flag in the resource ?
+As for users breaking support for BYT/CHT setups because they forget
+to enable this, without X86_INTEL_LPSS being enabled BYT/CHT are pretty
+much broken anyways and since patch 2/4 adds a "select PMC_ATOM" to the
+X86_INTEL_LPSS Kconfig option I'm not really worried about that.
 
-I have the feeling that if we switch to top-down allocating
-that we can then switch to just using _CRS and that everything
-will then just work, because we then match what Windows is doing...
+I'm afraid this patch-set might break some randomconfig builds though,
+but I cannot see anything obviously causing such breakage here, so
+I think it would be fine to just merge this series as is and then
+see if we get any breakage reports.
+
+Andy, are you ok with me moving ahead and merging this series as is?
 
 Regards,
 
 Hans
-
-
-
-
-
-
-
-> 
->> 1) At least I read in either a bugzilla, or email thread about
->> this that Windows allocating bridge window space from the top
->> was assumed to be why Windows was not impacted.
->>
->>> Straw man:
->>>
->>>   - Disable E820 clipping by default.
->>>
->>>   - Add a quirk to enable E820 clipping for machines older than X,
->>>     e.g., 2023, to avoid breaking machines that currently work.
->>>
->>>   - Add quirks to disable E820 clipping for individual machines like
->>>     the Lenovo and Clevos that predate X, but E820 clipping breaks
->>>     them.
->>>
->>>   - Add quirks to enable E820 clipping for individual machines like
->>>     the Chromebooks (and probably machines we don't know about yet)
->>>     that have devices that consume part of _CRS but are not
->>>     enumerable.
->>>
->>>   - Communicate this to OEMs to try to prevent future machines that
->>>     need quirks.
->>>
->>> Bjorn
->>>
->>
-> 
 
