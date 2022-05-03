@@ -2,93 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1853C517C4B
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 May 2022 05:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C39C517F24
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 May 2022 09:48:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230457AbiECDqr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 May 2022 23:46:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59966 "EHLO
+        id S232108AbiECHwC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 May 2022 03:52:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230456AbiECDqq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 May 2022 23:46:46 -0400
+        with ESMTP id S231982AbiECHwB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 May 2022 03:52:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BABA03CA50
-        for <linux-acpi@vger.kernel.org>; Mon,  2 May 2022 20:43:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CA324205F6
+        for <linux-acpi@vger.kernel.org>; Tue,  3 May 2022 00:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651549394;
+        s=mimecast20190719; t=1651564109;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IAD018WElU9xghuzkSMUkUxt4Nb5z2Ox0B3F5e4aA7E=;
-        b=eQcztj6uJtT6oq/MLmC+PIDiElNqQ09zS2CCt/vBP/SMFmG7udG1y7lKDY1uNeS0cc1bUY
-        txMaoZNBbGzxiuki1YZOOEwOuYrGyMRQjd8O3fTLAe2kJDj1UbFOisB5/H9qyo9w4wOc9P
-        HYlK7Xcu5fMKISn6I+02EnM9+Fb9uLU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=RK4+d7IXOmnVvMuBtdXRM0A5n8ssUbmBR+IC4Lj417Y=;
+        b=XY05xnYv+ORYZjFoYydD1pkD0ORb3lJX3nwlLtnlgpVytyVFnJB6fADq2XEkNd2+xk0MLW
+        Hk4raUTM2w78ZaoWlPsKItPpKtW4d7NbzbjS0qQhmRjz9nRV9Q79glx9xet0EynP8/cys6
+        1zFvwgq7N8uSbANhEyLiTOKklWxjeDA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-615-s-WaF6ekN36Uy0s98R70xQ-1; Mon, 02 May 2022 23:43:11 -0400
-X-MC-Unique: s-WaF6ekN36Uy0s98R70xQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 048C885A5BE;
-        Tue,  3 May 2022 03:43:11 +0000 (UTC)
-Received: from asgard.redhat.com (unknown [10.36.110.4])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 2B6D51534B29;
-        Tue,  3 May 2022 03:43:08 +0000 (UTC)
-Date:   Tue, 3 May 2022 05:43:06 +0200
-From:   Eugene Syromiatnikov <esyr@redhat.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     nvdimm@lists.linux.dev, robert.hu@linux.intel.com,
-        vishal.l.verma@intel.com, hch@lst.de, linux-acpi@vger.kernel.org,
-        ldv@strace.io
-Subject: Re: [PATCH 6/6] nvdimm/region: Delete nd_blk_region infrastructure
-Message-ID: <20220503034306.GA30980@asgard.redhat.com>
-References: <164688415599.2879318.17035042246954533659.stgit@dwillia2-desk3.amr.corp.intel.com>
- <164688418803.2879318.1302315202397235855.stgit@dwillia2-desk3.amr.corp.intel.com>
+ us-mta-317-6Jwwyoa2MGi0zFWbOYr8Ig-1; Tue, 03 May 2022 03:48:25 -0400
+X-MC-Unique: 6Jwwyoa2MGi0zFWbOYr8Ig-1
+Received: by mail-ed1-f71.google.com with SMTP id ec44-20020a0564020d6c00b00425b136662eso9646503edb.12
+        for <linux-acpi@vger.kernel.org>; Tue, 03 May 2022 00:48:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=RK4+d7IXOmnVvMuBtdXRM0A5n8ssUbmBR+IC4Lj417Y=;
+        b=ZlRNjxgHKVJSDRlkQK8fj2JktRXDM0B8v7ElUi5wJeiVcT/0B4KpCGHA1b2iXL+Jf8
+         DI3BaUtnIowUM9fyt48RnrWSK9mWDfiJm2gBvy5XDHQ/nD8uTtfnHEOpXWTDVObv2j9m
+         1UCSNqNJvPQmEs6wcD79DrD+Lb5l1z/b/lXtQO/qbju2jpR9TeaGPPRZuGgUsGMInXET
+         5lahnWKpMNYvkG7LbiHOc1XF2vK6bzvD6bfbgccvwD1koNGDT+xMsJ7y6/DigT8uBEaa
+         Mp5k0/gm5HOutsim6djq+0ymYdVT9EB4sa2+WTspHrPRvwQd8xucgkoTuiGe4AkVCtl0
+         056A==
+X-Gm-Message-State: AOAM531Mr/yn1W4YaYxHCiFXbatOkVVilh5uH/C/6MHCAHR0oVS7SQVy
+        U5ABjUHG6ph8cLyaS0fAuxTRTg3gijN000D51qNWWRQxqTdGDLJXCVvtS8BrNTzDnwIeNuV1d11
+        yscrYJ8SDdNP3lr/+uvB73A==
+X-Received: by 2002:a17:906:19c3:b0:6ec:c7b:ed28 with SMTP id h3-20020a17090619c300b006ec0c7bed28mr14140037ejd.612.1651564103918;
+        Tue, 03 May 2022 00:48:23 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwAaULOlxzyT0iv2iUzlfT8MNaSJkBtBPmhJ5VcL6pKgzwEbSFqaxeTus5zp8qT3F+CAYQj5A==
+X-Received: by 2002:a17:906:19c3:b0:6ec:c7b:ed28 with SMTP id h3-20020a17090619c300b006ec0c7bed28mr14140028ejd.612.1651564103744;
+        Tue, 03 May 2022 00:48:23 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id dq10-20020a170907734a00b006f3ef214deasm4366641ejc.80.2022.05.03.00.48.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 May 2022 00:48:23 -0700 (PDT)
+Message-ID: <84b5b002-9d5f-e87d-ef54-95a161a72718@redhat.com>
+Date:   Tue, 3 May 2022 09:48:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <164688418803.2879318.1302315202397235855.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 0/4] platform: allow ATOM PMC code to be optional
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
+        linux-kernel@vger.kernel.org,
+        Aubrey Li <aubrey.li@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Mark Gross <markgross@kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+References: <20220428062430.31010-1-paul.gortmaker@windriver.com>
+ <YmpoeJtFNSyCq1QL@smile.fi.intel.com> <20220428181131.GG12977@windriver.com>
+ <827dc313-33ff-1c91-afaf-7645b655a1be@redhat.com>
+ <YnABLhyUGR+ZRQ+u@smile.fi.intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <YnABLhyUGR+ZRQ+u@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 09, 2022 at 07:49:48PM -0800, Dan Williams wrote:
-> Now that the nd_namespace_blk infrastructure is removed, delete all the
-> region machinery to coordinate provisioning aliased capacity between
-> PMEM and BLK.
+Hi,
 
-> --- a/include/uapi/linux/ndctl.h
-> +++ b/include/uapi/linux/ndctl.h
-> @@ -189,7 +189,6 @@ static inline const char *nvdimm_cmd_name(unsigned cmd)
->  #define ND_DEVICE_REGION_BLK 3      /* nd_region: (parent of BLK namespaces) */
->  #define ND_DEVICE_NAMESPACE_IO 4    /* legacy persistent memory */
->  #define ND_DEVICE_NAMESPACE_PMEM 5  /* PMEM namespace (may alias with BLK) */
-> -#define ND_DEVICE_NAMESPACE_BLK 6   /* BLK namespace (may alias with PMEM) */
+On 5/2/22 18:05, Andy Shevchenko wrote:
+> On Mon, May 02, 2022 at 04:30:57PM +0200, Hans de Goede wrote:
+>> On 4/28/22 20:11, Paul Gortmaker wrote:
+> 
+> ...
+> 
+>> As for users breaking support for BYT/CHT setups because they forget
+>> to enable this, without X86_INTEL_LPSS being enabled BYT/CHT are pretty
+>> much broken anyways and since patch 2/4 adds a "select PMC_ATOM" to the
+>> X86_INTEL_LPSS Kconfig option I'm not really worried about that.
+>>
+>> I'm afraid this patch-set might break some randomconfig builds though,
+>> but I cannot see anything obviously causing such breakage here, so
+>> I think it would be fine to just merge this series as is and then
+>> see if we get any breakage reports.
+>>
+>> Andy, are you ok with me moving ahead and merging this series as is?
+> 
+> It seems as is can't be fulfilled due to your own comment, but in general I'm
+> not objecting the idea. So, go ahead if you feel it's ready.
 
-As [1] suggests, this would break compilation of at least one Debian
-package, as well as unknown number of any other potential users of this part
-of UAPI.
+Right, my later comment to just replace PMC_ATOM with X86_INTEL_LPSS
+supersedes this.
 
->  #define ND_DEVICE_DAX_PMEM 7        /* Device DAX interface to pmem */
->  
->  enum nd_driver_flags {
-> @@ -198,7 +197,6 @@ enum nd_driver_flags {
->  	ND_DRIVER_REGION_BLK      = 1 << ND_DEVICE_REGION_BLK,
->  	ND_DRIVER_NAMESPACE_IO    = 1 << ND_DEVICE_NAMESPACE_IO,
->  	ND_DRIVER_NAMESPACE_PMEM  = 1 << ND_DEVICE_NAMESPACE_PMEM,
-> -	ND_DRIVER_NAMESPACE_BLK   = 1 << ND_DEVICE_NAMESPACE_BLK,
+I'll send out a patch with that approach so that this can get some
+comments / review.
 
-The same probably applies here.
+Regards,
 
-[1] https://sources.debian.org/src/ipmctl/03.00.00.0429-1/src/os/linux/lnx_system.c/?hl=334#L334
+Hans
+
+  
 
