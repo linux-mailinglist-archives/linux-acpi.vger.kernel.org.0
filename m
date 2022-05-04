@@ -2,47 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE5C4519FF3
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 May 2022 14:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 695AE51A0DC
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 May 2022 15:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349312AbiEDMx3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 May 2022 08:53:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38228 "EHLO
+        id S1345489AbiEDN1o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 May 2022 09:27:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347676AbiEDMx1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 May 2022 08:53:27 -0400
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E089835DE6
-        for <linux-acpi@vger.kernel.org>; Wed,  4 May 2022 05:49:51 -0700 (PDT)
-Received: by mail-yb1-f176.google.com with SMTP id v59so2140358ybi.12
-        for <linux-acpi@vger.kernel.org>; Wed, 04 May 2022 05:49:51 -0700 (PDT)
+        with ESMTP id S1347065AbiEDN1l (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 May 2022 09:27:41 -0400
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C7DD88;
+        Wed,  4 May 2022 06:24:04 -0700 (PDT)
+Received: by mail-yb1-f169.google.com with SMTP id f38so2355465ybi.3;
+        Wed, 04 May 2022 06:24:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=fI803stuI6gH1/kB/n9w8zzlJvKDRztayylY2D1Auws=;
-        b=aCE5v7Go1qX7NRuhuEzfgslE7AhbrY+qE3CsRQhHSDsMpeLRd+LGN8WokrMrNuE3Ov
-         jBpMLOSACf49YY7TSSDKvHoynKaHPJJ3GOwBejRraTo1xOzv1OiskIbD6+LK0cBGhkHX
-         V9WQHNnnd7/wzlys/H2UOVwoesicBiYVryI50AyxdbIE4Fi5JI3/Kc2SLfdBc723xOr5
-         piskKWWTBmHchMM4oyIwVkDxGFt0LcmXpwzZ2DRGBGGsSDO9OcGT+xsEAQxkLmEs3wxb
-         eUO2qw9S7YE4fSFJoyr9Np//FKkOCHNODtjPuzNLcaVFMCgK8WeCsSacF4tJES+01Pc3
-         sWug==
-X-Gm-Message-State: AOAM530wAbL3UxXALGhoBCauq0QbwjJJH+3U8PnsoKqXaG/LApNMT4uh
-        jo+E+ZXeqqfMC5QqbxQNFdxgDgpMy03DWkCfpzY=
-X-Google-Smtp-Source: ABdhPJxHMAHX+1yp9qAVAYwKNNOsoFwxylzG1k3wzuFGSEnMMGm8aLAYZI04qdAOv3g3yQgJ1v/EvLJpvn+lSLaixd8=
-X-Received: by 2002:a25:9102:0:b0:649:ea3d:f932 with SMTP id
- v2-20020a259102000000b00649ea3df932mr4836398ybl.633.1651668591033; Wed, 04
- May 2022 05:49:51 -0700 (PDT)
+        bh=vvTTUaLWJsjzPOFhmxoasD7sFbTs6/YjaMVSqjmO3ts=;
+        b=VFHLhVpkw7v/V1fI3l0jrlIOpZ9OmvzXuxPnzWbk4k+w2wAo+9U5CPXaYrz/790OOU
+         ZPmO5+ikLZ49TvOFhvUkN8wPfMutOMFasYevjcrvIxZQTAsjUc/CUdr6yVKL+GsRbcDm
+         D18bEHEo1rMvPlmDW7rbYUbrLt5VPLZx9ZeaUTKECQVDRh5cp0mqyxPWVhsylszWrafZ
+         A23j4vnkhwcwyBlVreuaWh5eUTDMzKxMKK0vWv6X3oL8zDm3PJoMUViIY/U2WH1+YPLG
+         QqFL8ZadM0bnJQhFA9fucDzSZXk3h0k6mN5zX4p74oliju/d6BJMwHjfCYRcpxOcOQJ9
+         bYfA==
+X-Gm-Message-State: AOAM530UIK9XXExKRGpN6rMukDlf74Q8C/cxIMiP/b4PzJVKvN8mAVtr
+        xWJlph4CQ0FRplqwo6eIJldHJe1N0/VlwQJHZdg=
+X-Google-Smtp-Source: ABdhPJxppYsWFTgmx4TSOuqHe5105380Jz8OCQyRpJxioOe85R2bkm4kBc3Ir4s/36lupzUTfHVs8wA1Ac+nLmg8rAI=
+X-Received: by 2002:a25:3795:0:b0:648:fa25:5268 with SMTP id
+ e143-20020a253795000000b00648fa255268mr18583257yba.153.1651670643716; Wed, 04
+ May 2022 06:24:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <1e09b023-13d3-4474-f724-cb512d5244fb@infradead.org> <0d399fdd-fbb5-47f8-dd5c-3a646829cb3e@infradead.org>
-In-Reply-To: <0d399fdd-fbb5-47f8-dd5c-3a646829cb3e@infradead.org>
+References: <20220429135108.2781579-1-schnelle@linux.ibm.com> <20220429135108.2781579-3-schnelle@linux.ibm.com>
+In-Reply-To: <20220429135108.2781579-3-schnelle@linux.ibm.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 4 May 2022 14:49:29 +0200
-Message-ID: <CAJZ5v0hUQedE71WkfCeFAnRJd-YQXRd-EtfLkjOF9uPoDwpp9w@mail.gmail.com>
-Subject: Re: next: BUG: KASAN: slab-out-of-bounds in acpi_power_up_if_adr_present
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 4 May 2022 15:23:52 +0200
+Message-ID: <CAJZ5v0jbX6kWWn9a9SBh0qhmreC-KDOHCB2TbM4A5_HSJu++UQ@mail.gmail.com>
+Subject: Re: [RFC v2 02/39] ACPI: add dependency on HAS_IOPORT
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Arnd Bergmann <arnd@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -54,20 +60,35 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Apr 30, 2022 at 7:41 PM Randy Dunlap <rdunlap@infradead.org> wrote:
+On Fri, Apr 29, 2022 at 3:51 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
 >
+> In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+> not being declared. As ACPI always uses I/O port access we simply depend
+> on HAS_IOPORT.
 >
+> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> ---
+>  drivers/acpi/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> On 4/28/22 22:43, Randy Dunlap wrote:
-> > Hi,
-> >
-> > I'm hitting $Subject bug on a Dell Inspiron laptop during boot.
-> >
-> > faddr2line says that it's here:
-> >
-> >       adev = to_acpi_device(dev);
-> >       if (!(adev->flags.power_manageable && adev->pnp.type.bus_address)) // <<<<< HERE
-> >               return 0;
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 1e34f846508f..8ad0d168004c 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -5,6 +5,7 @@
+>
+>  config ARCH_SUPPORTS_ACPI
+>         bool
+> +       depends on HAS_IOPORT
 
-This should be addressed by commit 10fa1b2cdc89 ("ACPI: bus: Avoid
-non-ACPI device objects in walks over children").
+This and the analogous PNP change are both fine with me.
+
+Thanks!
+
+>
+>  menuconfig ACPI
+>         bool "ACPI (Advanced Configuration and Power Interface) Support"
+> --
+> 2.32.0
+>
