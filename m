@@ -2,57 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5932551BEC2
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 14:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3C551BF2E
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 14:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359374AbiEEMGF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 May 2022 08:06:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43112 "EHLO
+        id S241648AbiEEMYl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 May 2022 08:24:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356598AbiEEMGF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 08:06:05 -0400
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EEA44551C;
-        Thu,  5 May 2022 05:02:26 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id f38so7249523ybi.3;
-        Thu, 05 May 2022 05:02:26 -0700 (PDT)
+        with ESMTP id S232170AbiEEMYk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 08:24:40 -0400
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C4E1209B;
+        Thu,  5 May 2022 05:21:01 -0700 (PDT)
+Received: by mail-yb1-f175.google.com with SMTP id i38so7256063ybj.13;
+        Thu, 05 May 2022 05:21:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7v2CD/TPwrcoEWudBwZsC3kPJhWxSkWgF2bGSBvAsoc=;
-        b=voMCLYKcOy7jEVWOHmkPjpOMDJxfxAe6GIvnjnMTW/qMGq4iIkHibwTsj8fRDdAsHA
-         bDaB9j2uutSY0hIQJ4Bf5RtXrTQ8gJp9koKLGPXR+qhwyoAcKRUcoN8u1Q15+2p4J5fq
-         BMF53JbGa4Dvh40vLPChimmy6+NX2/mgJq3jJQ4Vbfqda0QjZsHAR5AP9udP1SDSQFHN
-         hnnusqocumRrnvgA21NpHpokAeYk3MOeXQ9YotXyrUc2hnsIxYanfbwXj0q3T/pi79FI
-         Txecs+EyZYO38Wr8C5Lzo5TIv+LatIMhF5Mfel1y7FcC8zu5z+pX0SanZWdo8ipesMuV
-         DSpA==
-X-Gm-Message-State: AOAM530epU9i9aIczjmY4Q91Agap/35lnnohE+MkiMM23fpwem3EEssJ
-        TwakJdozX8ggv/S4xv6EwparrpyMtDjkj2lugX4=
-X-Google-Smtp-Source: ABdhPJyKpd7G7qLA+GPK2PlKD+1TSCHY7kpSqAdE7H1yIDAZVQ+IQ+Nlt3Lzo4yG35XXp+zVRbglifazAfGWMMGzHUg=
-X-Received: by 2002:a25:3795:0:b0:648:fa25:5268 with SMTP id
- e143-20020a253795000000b00648fa255268mr22558130yba.153.1651752145467; Thu, 05
- May 2022 05:02:25 -0700 (PDT)
+        bh=oqzYqmtOukgWsbQu7Sm4paiPoURWMu6g5DfWZGiQmpI=;
+        b=kw7u8Lvn2SdptagddSjnuM02rhozD33RnJNp9tcroJXDwHXbbhQqzcpVoolrYAVRg5
+         OS3gMlCzxDy/qa/A/AtOCMFVTJ/F/kdV3mU8uTFZycc0ePSmWjQQ2FOI6QbDVhoQXCcy
+         UfZP2WeXstmJQUa9ZJgp7/OyyAHZnvnKrCz5xhkH1V+zGkSrVIZuJSsgaFIDDobj1Upl
+         CSiCSjRKH7uUT9UksmjsiVlGvUiOBG1E3fn3nP9T0tyiN2+m9gAmSq2ZQ5D9bBoZ720c
+         4fEUcps+CD+bbErkmByuO9vSvMwxeESowcMjnZAyYls3gwi6Q09RRsr2Q5yo8DRhxqMI
+         KDLw==
+X-Gm-Message-State: AOAM53003QXcGYtt5jGNeAFqRgCpsFnF/7Feg5xrY6R/DV3HC6tM7lMT
+        iYtgV64rP3a0IQFHnj5X8609XKgzmVggYMtLfsM=
+X-Google-Smtp-Source: ABdhPJyG1iLik/vFtFS9S/zeuipmFl5Gpkix5aWcrJKW9hkV7rmqAdKIbPiRyp0qfbH/Xm9ONsG2JYip54XwJP1Ai5U=
+X-Received: by 2002:a25:da84:0:b0:648:423e:57b0 with SMTP id
+ n126-20020a25da84000000b00648423e57b0mr20879291ybf.137.1651753261048; Thu, 05
+ May 2022 05:21:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220505015814.3727692-1-rui.zhang@intel.com> <40b8ad06-6ef2-113c-fffb-2fa001603b3f@suse.com>
-In-Reply-To: <40b8ad06-6ef2-113c-fffb-2fa001603b3f@suse.com>
+References: <20220429164325.1.I2a3b980ea051e59140227999f0f0ca16f1125768@changeid>
+ <CAHp75VdqbXCYoEwxMt7xG55QDu2mXHbnpwdnHb6ktm8NdVPJnQ@mail.gmail.com>
+In-Reply-To: <CAHp75VdqbXCYoEwxMt7xG55QDu2mXHbnpwdnHb6ktm8NdVPJnQ@mail.gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 5 May 2022 14:02:14 +0200
-Message-ID: <CAJZ5v0hceDVkv05=SFbO53wsmHWkrs1SSoxZ=FuErYsnNutGWg@mail.gmail.com>
-Subject: Re: [PATCH 0/7] PM: Solution for S0ix failure caused by PCH overheating
-To:     Oliver Neukum <oneukum@suse.com>
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, kvalo@kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
+Date:   Thu, 5 May 2022 14:20:50 +0200
+Message-ID: <CAJZ5v0hKrnRznpTjTyb8ANGN=REaukAbqQNB_14i_NwAA84=uA@mail.gmail.com>
+Subject: Re: [PATCH] device property: Fix recent breakage of fwnode_get_next_parent_dev()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        freedreno <freedreno@lists.freedesktop.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-rtc@vger.kernel.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        merez@codeaurora.org, mat.jonczyk@o2.pl,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Len Brown <len.brown@intel.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -64,34 +68,47 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 5, 2022 at 10:23 AM Oliver Neukum <oneukum@suse.com> wrote:
+On Sun, May 1, 2022 at 9:50 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
->
->
-> On 05.05.22 03:58, Zhang Rui wrote:
-> > On some Intel client platforms like SKL/KBL/CNL/CML, there is a
-> > PCH thermal sensor that monitors the PCH temperature and blocks the system
-> > from entering S0ix in case it overheats.
+> On Sat, Apr 30, 2022 at 3:00 PM Douglas Anderson <dianders@chromium.org> wrote:
 > >
-> > Commit ef63b043ac86 ("thermal: intel: pch: fix S0ix failure due to PCH
-> > temperature above threshold") introduces a delay loop to cool the
-> > temperature down for this purpose.
-> >
-> > However, in practice, we found that the time it takes to cool the PCH down
-> > below threshold highly depends on the initial PCH temperature when the
-> > delay starts, as well as the ambient temperature.
+> > Due to a subtle typo, instead of commit 87ffea09470d ("device
+> > property: Introduce fwnode_for_each_parent_node()") being a no-op
+> > change, it ended up causing the display on my sc7180-trogdor-lazor
+> > device from coming up unless I added "fw_devlink=off" to my kernel
+> > command line. Fix the typo.
 >
-> >
-> > This patch series has been tested on the same Dell XPS 9360 laptop and
-> > S0ix is 100% achieved across 1000+ s2idle iterations.
-> >
-> Hi,
->
-> what is the user experience if this ever triggers? At that stage the
-> system will appear to be suspended to an external observer, won't it?
-> So in effect you'd have a system that spontaneously wakes up, won't you?
+> Sorry and merci pour la fix!
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-No, you won't.
+Applied, thanks!
 
-It will just go ahead and reach S0ix when it can.  It will only wake
-up if there's a legitimate wakeup even in the meantime.
+> > Fixes: 87ffea09470d ("device property: Introduce fwnode_for_each_parent_node()")
+> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> > ---
+> >
+> >  drivers/base/property.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/base/property.c b/drivers/base/property.c
+> > index 36401cfe432c..52e85dcb20b5 100644
+> > --- a/drivers/base/property.c
+> > +++ b/drivers/base/property.c
+> > @@ -600,7 +600,7 @@ struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode)
+> >         struct device *dev;
+> >
+> >         fwnode_for_each_parent_node(fwnode, parent) {
+> > -               dev = get_dev_from_fwnode(fwnode);
+> > +               dev = get_dev_from_fwnode(parent);
+> >                 if (dev) {
+> >                         fwnode_handle_put(parent);
+> >                         return dev;
+> > --
+> > 2.36.0.464.gb9c8b46e94-goog
+> >
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
