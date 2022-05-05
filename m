@@ -2,60 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 426FD51C340
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 17:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 978FE51C344
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 17:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380368AbiEEPGP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 May 2022 11:06:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55584 "EHLO
+        id S1380390AbiEEPHP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 May 2022 11:07:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380949AbiEEPGO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 11:06:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29B1926563;
-        Thu,  5 May 2022 08:02:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B92BC61A8E;
-        Thu,  5 May 2022 15:02:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1746C385A4;
-        Thu,  5 May 2022 15:02:32 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="UAm57+66"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1651762950;
+        with ESMTP id S1343500AbiEEPHN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 11:07:13 -0400
+Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [170.10.129.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0680B2CE17
+        for <linux-acpi@vger.kernel.org>; Thu,  5 May 2022 08:03:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1651763013;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GKKGKklZtLoueldeDqbHGUe+e5mxdO5wc2FitHQweAI=;
-        b=UAm57+66t9js5iNsUd4NJhcrHsN0ZJCSk7spExq888H5JnUbOJj0DtydKlMh837bMHQuGc
-        8+9UDXRmoOmOkjW3ssF8RM3gH85+rvCnIlN56oveLJhf39ErLsvUP5yOsMpsT6H4EWKV4a
-        mn9UBcm2SfRDScZPeqs0GRZDPAge4qI=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 1d7d722a (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Thu, 5 May 2022 15:02:30 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     linux-acpi@vger.kernel.org, stable@vger.kernel.org,
-        rafael@kernel.org, gregkh@linuxfoundation.org,
-        linux-kernel@vger.kernel.org
-Cc:     Vegard Nossum <vegard.nossum@oracle.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Kees Cook <keescook@chromium.org>,
-        Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4] ACPICA: Always create namespace nodes using acpi_ns_create_node()
-Date:   Thu,  5 May 2022 17:01:40 +0200
-Message-Id: <20220505150140.159449-1-Jason@zx2c4.com>
-In-Reply-To: <YnPmDlf3KD9ckpM1@zx2c4.com>
-References: <YnPmDlf3KD9ckpM1@zx2c4.com>
+        bh=sA/KIQCdTb/F+pQjAIlInu0/F8H7M5rpL61UAO5Y95w=;
+        b=fF3GVhp1oDZodowdt1LpdjhOhdAM7xKTj4207HDy6ytHe/fzaRvbUJCqYfXzDzZiIfJOhF
+        eSX+jZpzObPN2paoCLBTADlEt5wVq64txj4XdaSE+4HTnsK/Zx4W6mbodTPI8YzDkwZitH
+        4tCaM90dJYkEkrgOerzALmOQGWvioTM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-561-ZPEnOw0TP6OOagOFM9JcGQ-1; Thu, 05 May 2022 11:03:32 -0400
+X-MC-Unique: ZPEnOw0TP6OOagOFM9JcGQ-1
+Received: by mail-ej1-f70.google.com with SMTP id sc20-20020a1709078a1400b006f4a358c817so2776609ejc.16
+        for <linux-acpi@vger.kernel.org>; Thu, 05 May 2022 08:03:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=sA/KIQCdTb/F+pQjAIlInu0/F8H7M5rpL61UAO5Y95w=;
+        b=uXFdOFaWuh4T1EyFm4AZcNfVRCpe/InKXkezL76GkzaQ3ZKBMIHuYmWtTtJUq0KOn+
+         H47nYh44PWaKPjA+FVoihKH8K2codlZk9bRtXx8Ncoa8zC0MRLJkBZ7/iCzE2DBY5cUg
+         F/tAKCoTVllJjdh0nIHih1d/xk5YgrgZ8whKn/1+POlnfnrCCYsZW0HUZKjTKKB2OzuX
+         SlDzDD6y8eNIE6VUCFr9pFUAGpQaUFyodgN1EU1vjlndJ+dbqA+FDJXZnjqDzwlRjDet
+         GzTYRl/6flp+3Xcmt9G4MlYdi1GggN9QvLwjY5a/ATN1rwvP+YuK2Y2bedYR7RoAS1X/
+         k3Ag==
+X-Gm-Message-State: AOAM531sBBIQiShX9wzYTf/FQr3lpyRx9a2zQJ31YCjCtprZd8ILI7aI
+        44ST75O3WixRxiiY5rbDif34/dUYYLQG+sy+wTaP/wEG5MJkAgwfKwmpiuXpgu6LsNTiqATVaxu
+        BcVHNhZcD+nzw7fP1cp/XTw==
+X-Received: by 2002:a17:907:9811:b0:6f3:a389:a203 with SMTP id ji17-20020a170907981100b006f3a389a203mr27712768ejc.381.1651763010782;
+        Thu, 05 May 2022 08:03:30 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxvKcmoPezXMvFtXD5XeulCIfHDnyYC+o7MEOW/0DJHt5i1PmO2y8VD9/zVDY88RzlffxpBNw==
+X-Received: by 2002:a17:907:9811:b0:6f3:a389:a203 with SMTP id ji17-20020a170907981100b006f3a389a203mr27712727ejc.381.1651763010396;
+        Thu, 05 May 2022 08:03:30 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id i24-20020a05640200d800b0042617ba63a8sm980440edu.50.2022.05.05.08.03.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 May 2022 08:03:29 -0700 (PDT)
+Message-ID: <8e3ad8dc-b9a3-4c2d-f673-19434b565e72@redhat.com>
+Date:   Thu, 5 May 2022 17:03:28 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v2 0/3] x86/PCI: Log E820 clipping
+Content-Language: en-US
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+References: <20220502203205.GA349835@bhelgaas>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220502203205.GA349835@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,99 +91,82 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Vegard Nossum <vegard.nossum@oracle.com>
+Hi,
 
-commit 25928deeb1e4e2cdae1dccff349320c6841eb5f8 upstream.
+On 5/2/22 22:32, Bjorn Helgaas wrote:
+> On Mon, May 02, 2022 at 02:24:26PM +0200, Hans de Goede wrote:
+>> On 4/19/22 18:45, Bjorn Helgaas wrote:
+>>> On Tue, Apr 19, 2022 at 05:16:44PM +0200, Hans de Goede wrote:
+>>>> On 4/19/22 17:03, Bjorn Helgaas wrote:
+>>>>> On Tue, Apr 19, 2022 at 11:59:17AM +0200, Hans de Goede wrote:
+> 
+>>>>>> So what is the plan to actually fix the issue seen on some
+>>>>>> Lenovo models and Clevo Barebones ?   As I mentioned previously
+>>>>>> I think that since all our efforts have failed so far that we
+>>>>>> should maybe reconsider just using DMI quirks to ignore the
+>>>>>> E820 reservation windows for host bridges on affected models ?
+>>>>>
+>>>>> I have been resisting DMI quirks but I'm afraid there's no other
+>>>>> way.
+>>>>
+>>>> Well there is the first match adjacent windows returned by _CRS
+>>>> and only then do the "covers whole region" exception check. I
+>>>> still think that would work at least for the chromebook
+>>>> regression...
+>>>
+>>> Without a crystal clear strategy, I think we're going to be
+>>> tweaking the algorithm forever as the _CRS/E820 mix changes.
+>>> That's why I think that in the long term, a "use _CRS only, with
+>>> quirks for exceptions" strategy will be simplest.
+>>
+>> Looking at the amount of exception we already now about I'm not sure
+>> if that will work well.
+> 
+> It's possible that many quirks will be required.  But I think in the
+> long run the value of the simplest, most obvious strategy is huge.
+> It's laid out in the spec already and it's the clearest way to
+> agreement between firmware and OS.  When we trip over something, it's
+> very easy to determine whether _CRS is wrong or Linux is using it
+> wrong.  If we have to bring in question of looking at E820 entries,
+> possibly merging them, using them or not based on overlaps ... that's
+> a much more difficult conversation without a clear resolution.
+> 
+>>> So I think we should go ahead with DMI quirks instead of trying to
+>>> make the algorithm smarter, and yes, I think we will need commandline
+>>> arguments, probably one to force E820 clipping for future machines,
+>>> and one to disable it for old machines.
+>>
+>> So what you are suggesting is to go back to a bios-date based approach
+>> (to determine old vs new machines) combined with DMI quirks to force
+>> E820 clipping on new machines which turn out to need it despite them
+>> being new ?
+> 
+> Yes.  It's ugly but I think the 10-year outlook is better.
 
-ACPICA commit 29da9a2a3f5b2c60420893e5c6309a0586d7a329
+Ok, I've brushed off one of my earlier patches doing this and
+added DMI quirks for the "Lenovo X1 Carbon 2nd gen" suspend
+issue + the Asus C523NA / Google Coral Chromebook not booting
+issues which we already know will get triggered by this based
+on earlier testing.
 
-ACPI is allocating an object using kmalloc(), but then frees it
-using kmem_cache_free(<"Acpi-Namespace" kmem_cache>).
+I'll send this out right after this email.
 
-This is wrong and can lead to boot failures manifesting like this:
+Note this new patch is based on top of your:
 
-    hpet0: 3 comparators, 64-bit 100.000000 MHz counter
-    clocksource: Switched to clocksource tsc-early
-    BUG: unable to handle page fault for address: 000000003ffe0018
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 0 P4D 0
-    Oops: 0000 [#1] SMP PTI
-    CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.6.0+ #211
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-Ubuntu-1.8.2-1ubuntu1 04/01/2014
-    RIP: 0010:kmem_cache_alloc+0x70/0x1d0
-    Code: 00 00 4c 8b 45 00 65 49 8b 50 08 65 4c 03 05 6f cc e7 7e 4d 8b
-20 4d 85 e4 0f 84 3d 01 00 00 8b 45 20 48 8b 7d 00 48 8d 4a 01 <49> 8b
-   1c 04 4c 89 e0 65 48 0f c7 0f 0f 94 c0 84 c0 74 c5 8b 45 20
-    RSP: 0000:ffffc90000013df8 EFLAGS: 00010206
-    RAX: 0000000000000018 RBX: ffffffff81c49200 RCX: 0000000000000002
-    RDX: 0000000000000001 RSI: 0000000000000dc0 RDI: 000000000002b300
-    RBP: ffff88803e403d00 R08: ffff88803ec2b300 R09: 0000000000000001
-    R10: 0000000000000dc0 R11: 0000000000000006 R12: 000000003ffe0000
-    R13: ffffffff8110a583 R14: 0000000000000dc0 R15: ffffffff81c49a80
-    FS:  0000000000000000(0000) GS:ffff88803ec00000(0000)
-knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: 000000003ffe0018 CR3: 0000000001c0a001 CR4: 00000000003606f0
-    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-    Call Trace:
-     __trace_define_field+0x33/0xa0
-     event_trace_init+0xeb/0x2b4
-     tracer_init_tracefs+0x60/0x195
-     ? register_tracer+0x1e7/0x1e7
-     do_one_initcall+0x74/0x160
-     kernel_init_freeable+0x190/0x1f0
-     ? rest_init+0x9a/0x9a
-     kernel_init+0x5/0xf6
-     ret_from_fork+0x35/0x40
-    CR2: 000000003ffe0018
-    ---[ end trace 707efa023f2ee960 ]---
-    RIP: 0010:kmem_cache_alloc+0x70/0x1d0
+https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git/log/?h=pci/resource
 
-Bisection leads to unrelated changes in slab; Vlastimil Babka
-suggests an unrelated layout or slab merge change merely exposed
-the underlying bug.
+>> I have the feeling that if we switch to top-down allocating
+>> that we can then switch to just using _CRS and that everything
+>> will then just work, because we then match what Windows is doing...
+> 
+> Yes, it might.  But I'm not 100% comfortable because it basically
+> sweeps _CRS bugs under the rug, and we may trip over them as we do
+> more hotplug and (eventually) resource rebalancing.  I think we need
+> to work toward getting _CRS more reliable.
 
-Link: https://lore.kernel.org/lkml/4dc93ff8-f86e-f4c9-ebeb-6d3153a78d03@oracle.com/
-Link: https://lore.kernel.org/r/a1461e21-c744-767d-6dfc-6641fd3e3ce2@siemens.com
-Link: https://github.com/acpica/acpica/commit/29da9a2a
-Fixes: f79c8e4136ea ("ACPICA: Namespace: simplify creation of the initial/default namespace")
-Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
-Diagnosed-by: Vlastimil Babka <vbabka@suse.cz>
-Diagnosed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-Greg/Rafael - tihs was marked as 5.10, but 5.4 crashes without it. So
-maybe it was mistagged? Will let you guys decide. -Jason
+Ok.
 
- drivers/acpi/acpica/nsaccess.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Regards,
 
-diff --git a/drivers/acpi/acpica/nsaccess.c b/drivers/acpi/acpica/nsaccess.c
-index 3f045b5953b2..a0c1a665dfc1 100644
---- a/drivers/acpi/acpica/nsaccess.c
-+++ b/drivers/acpi/acpica/nsaccess.c
-@@ -99,13 +99,12 @@ acpi_status acpi_ns_root_initialize(void)
- 		 * just create and link the new node(s) here.
- 		 */
- 		new_node =
--		    ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_namespace_node));
-+		    acpi_ns_create_node(*ACPI_CAST_PTR(u32, init_val->name));
- 		if (!new_node) {
- 			status = AE_NO_MEMORY;
- 			goto unlock_and_exit;
- 		}
- 
--		ACPI_COPY_NAMESEG(new_node->name.ascii, init_val->name);
- 		new_node->descriptor_type = ACPI_DESC_TYPE_NAMED;
- 		new_node->type = init_val->type;
- 
--- 
-2.35.1
+Hans
 
