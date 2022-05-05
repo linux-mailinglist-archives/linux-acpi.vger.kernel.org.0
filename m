@@ -2,100 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F082251B444
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 02:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF3BA51B4F7
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 03:02:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235264AbiEEAF2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 May 2022 20:05:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41494 "EHLO
+        id S234001AbiEEBGA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 May 2022 21:06:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243311AbiEDX5b (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 May 2022 19:57:31 -0400
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDAD84EDD1
-        for <linux-acpi@vger.kernel.org>; Wed,  4 May 2022 16:53:52 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id v65so2789321oig.10
-        for <linux-acpi@vger.kernel.org>; Wed, 04 May 2022 16:53:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
-        b=FNIAYmcejzHfmZlCiIHYgT6erzQSC9gmgFmOiY6jxN7WvOxDyBQzTWQXuf0QQSLa76
-         OjSO2mcjza7TfryU2Yt8mJxkT+qWMSaleALBlY7mfzTxVPd1JjVxyw0EBBmPWGPP2G3/
-         EjJyRmLlkni3UqZSkuePTk9fUuzh8hCavLsGDVWv86trmI+S5ZFLXA2M/ALU/OX9/Dog
-         FVBSuENuyzE6Zj/zsEo0v3B7v/NSoUlBUw+9pnAspgHs/c6uItO7g+7oIPUnQ5P8rHEg
-         Uw50ND4b7eJCcoszBXUiYPFOBzRcktyN3Nzu2+vze2IYlqC3egzGpfENgoTcj3C+TYFW
-         rVYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
-        b=A5dcfV8FxRgdwZIh9FRQ4TUkLIVoxpxZ+le0xkQuN6KeAiqdK+VDUbaDeaTggR191+
-         aC3TCVs6nlESkvQyREUlVSc3HdMZimpS2MsNplkpLY59fX7EuK5ZAdn3GJdQ6Q+T0LDR
-         LEY06hAId6XLQ+27UXgtWW7bP/l+sLQ3+dvMUb1Feu8Zv+NW3PHBW0BSmeFAUxYBGYwN
-         YZvPbdqTIIL/lzZWU2aPu0HYpNyJVJkL2NoWjlfmEpSYTLUOHZBLumRvbwO0dMuRG5dz
-         vZUhfgzt6WHyP5psd+NrqHfeDkdiGaPNDPNLk6dI98SHMUkevs9kv9t7QsOrtxlzt93Y
-         srYw==
-X-Gm-Message-State: AOAM533TnsnhBrWbtZiw3TP4ELcEUcXGvW5uye7qG/wDJM2JR29fEDNy
-        ybH9aOsUtT93pnArs/wo6JXkl7ynUmTbKNpy2R8=
-X-Google-Smtp-Source: ABdhPJwYlgNc/5bis71DucVvd+ZioHPl83VcBeyXc51mm1mJBTXR/7J8yaMUf518PLLny14+iH6/by9bmkLUTmJvSMI=
-X-Received: by 2002:a05:6808:2019:b0:326:6d24:dfd9 with SMTP id
- q25-20020a056808201900b003266d24dfd9mr1003508oiw.183.1651708432083; Wed, 04
- May 2022 16:53:52 -0700 (PDT)
+        with ESMTP id S229449AbiEEBF7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 May 2022 21:05:59 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3826C47AF8
+        for <linux-acpi@vger.kernel.org>; Wed,  4 May 2022 18:02:22 -0700 (PDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.57])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4KtwKH5ctgzCsWg;
+        Thu,  5 May 2022 08:57:39 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 5 May 2022 09:02:20 +0800
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 5 May 2022 09:02:19 +0800
+Subject: Re: [PATCH v12 2/9] ACPI/IORT: Make iort_iommu_msi_get_resv_regions()
+ return void
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
+CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
+        <joro@8bytes.org>, <robin.murphy@arm.com>, <will@kernel.org>,
+        <wanghuiqiang@huawei.com>, <steven.price@arm.com>,
+        <Sami.Mujawar@arm.com>, <jon@solid-run.com>,
+        <eric.auger@redhat.com>, <laurentiu.tudor@nxp.com>,
+        <hch@infradead.org>
+References: <20220503163330.509-1-shameerali.kolothum.thodi@huawei.com>
+ <20220503163330.509-3-shameerali.kolothum.thodi@huawei.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <2471e99d-9bef-97b2-56f4-ac7ce9ba63e0@huawei.com>
+Date:   Thu, 5 May 2022 09:02:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Received: by 2002:a05:6802:1a9:0:0:0:0 with HTTP; Wed, 4 May 2022 16:53:51
- -0700 (PDT)
-Reply-To: ortegainvestmmentforrealinvest@gmail.com
-From:   Info <joybhector64@gmail.com>
-Date:   Thu, 5 May 2022 05:23:51 +0530
-Message-ID: <CAP7KLYhOuoEX9VpuWFzfxXW3-SdA7X=MyCKJ7oAAs4__V29BXQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:242 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5009]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [joybhector64[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [joybhector64[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+In-Reply-To: <20220503163330.509-3-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-I am an investor. I came from the USA and I have many investments all
-over the world.
+On 2022/5/4 0:33, Shameer Kolothum wrote:
+> At present iort_iommu_msi_get_resv_regions() returns the number of
+> MSI reserved regions on success and there are no users for this.
+> The reserved region list will get populated anyway for platforms
+> that require the HW MSI region reservation. Hence, change the
+> function to return void instead.
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Tested-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
-I want you to partner with me to invest in your country I am into many
-investment such as real Estate or buying of properties i can also
-invest money in any of existing business with equity royalty or by %
-percentage so on,
-Warm regards
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+
+Thanks
+Hanjun
