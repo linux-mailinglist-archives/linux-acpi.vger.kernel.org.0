@@ -2,108 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D99E651C878
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 20:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 592A751C8A5
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 21:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244189AbiEES5d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 May 2022 14:57:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44770 "EHLO
+        id S1384840AbiEETHn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 May 2022 15:07:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351575AbiEES5a (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 14:57:30 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 165FD377D7;
-        Thu,  5 May 2022 11:53:49 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 5a6eb3309ae26a11; Thu, 5 May 2022 20:53:48 +0200
-Received: from kreacher.localnet (unknown [213.134.161.219])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id DA7C566C2F4;
-        Thu,  5 May 2022 20:53:47 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH v1] ACPI: glue: Rearrange find_child_checks()
-Date:   Thu, 05 May 2022 20:52:57 +0200
-Message-ID: <2630129.mvXUDI8C0e@kreacher>
+        with ESMTP id S1384766AbiEETHi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 15:07:38 -0400
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D31454B848;
+        Thu,  5 May 2022 12:03:56 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-2ec42eae76bso58989917b3.10;
+        Thu, 05 May 2022 12:03:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+d8jggKU6mOKErS+3k+HsyBKNRPIov5SQeHSvQ1qwKo=;
+        b=fQGIewobS+NxJ3Q/9NPbYOQk4TeZTNA/GC2OYM9xhYU/2oWAU3pkTbCqnshLMi3A7F
+         ZhUHvbn+1tSAuPBGojUo2y+Eo/rVpU5bQ4bbBD0Gg33XSd2mEqmmp6rBhPRCTFIYXAdy
+         dQihFlLpWqUyslwQa9Ei0IG7wJ+AWlMpCyN1lwedboTJ0+RAi7vt++phfaSy19yGRv+f
+         T4cqsyj++/t51GV47dlrv5EGvPCz/pwwLkfAx7diNj+p6UeIGqenEdQhLLdxtqI09Xo7
+         OzCG/9M4IEIkBuyeQoNbGRxZhT0vGZOBX4OKFmXMje0pZ80wRKbvDnZhC36Kavf+aGXS
+         rPmw==
+X-Gm-Message-State: AOAM533sZJcVeecEtNtt9cQL519r8V6cVE655pikWQ+mtJJ9/0NLRrDV
+        ZvxJDyufkSsEjxqg2nvYO2jdHj08SljWzExxzFA=
+X-Google-Smtp-Source: ABdhPJw0KSCRp0CU4bSgUXmkXfGzcdWqfUroHgnRsTqE2GhIvIoHR9UIMvNgJwnp/08BKbH/c/lEqwZnq5cmCr50vNA=
+X-Received: by 2002:a81:8493:0:b0:2f7:d7c3:15f8 with SMTP id
+ u141-20020a818493000000b002f7d7c315f8mr26060015ywf.196.1651777435904; Thu, 05
+ May 2022 12:03:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20220428062430.31010-1-paul.gortmaker@windriver.com> <20220428062430.31010-3-paul.gortmaker@windriver.com>
+In-Reply-To: <20220428062430.31010-3-paul.gortmaker@windriver.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 5 May 2022 21:03:45 +0200
+Message-ID: <CAJZ5v0gkQqb-R1y_ZaPKTTiBNJYeNZd1csX=x_FkM9QxrR=pxA@mail.gmail.com>
+Subject: Re: [PATCH 2/4] ACPI: LPSS: make the Kconfig dependency on PMC_ATOM explicit
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Aubrey Li <aubrey.li@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.161.219
-X-CLIENT-HOSTNAME: 213.134.161.219
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfedugdduvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppedvudefrddufeegrdduiedurddvudelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeiuddrvdduledphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepvddprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=2 Fuz1=2 Fuz2=2
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Thu, Apr 28, 2022 at 8:25 AM Paul Gortmaker
+<paul.gortmaker@windriver.com> wrote:
+>
+> The code in acpi_lpss.c has been unconditionally using pmc_atom_read()
+> for about the past six years.  This hasn't been a problem since you
+> currently can't disable PMC_ATOM short of disabling PCI entirely.
+>
+> But it doesn't need to be that way, and so that we can change Kconfigs
+> in a subsequent commit, we make sure LPSS selects PMC_ATOM in advance,
+> so that existing .config files can live on with "make oldconfig".
+>
+> In theory, one could make LPSS build w/o PMC_ATOM, similar to what it
+> did six years ago, but I doubt there is any demand for that now.
 
-Notice that it is not necessary to evaluate _STA in find_child_checks()
-if the device is expected to have children, but there are none, so
-move the children check to the front of the function.
+You probably are right and it will get some more build test coverage
+with respect to the other option, so
 
-Also notice that FIND_CHILD_MIN_SCORE can be returned right away if
-_STA is missing, so make the function do so.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Finally, replace the ternary operator in the return statement argument
-with an if () and a standalone return which is somewhat easier to
-follow.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/glue.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
-
-Index: linux-pm/drivers/acpi/glue.c
-===================================================================
---- linux-pm.orig/drivers/acpi/glue.c
-+++ linux-pm/drivers/acpi/glue.c
-@@ -79,17 +79,17 @@ static struct acpi_bus_type *acpi_get_bu
- 
- static int find_child_checks(struct acpi_device *adev, bool check_children)
- {
--	bool sta_present = true;
- 	unsigned long long sta;
- 	acpi_status status;
- 
-+	if (check_children && list_empty(&adev->children))
-+		return -ENODEV;
-+
- 	status = acpi_evaluate_integer(adev->handle, "_STA", NULL, &sta);
- 	if (status == AE_NOT_FOUND)
--		sta_present = false;
--	else if (ACPI_FAILURE(status) || !(sta & ACPI_STA_DEVICE_ENABLED))
--		return -ENODEV;
-+		return FIND_CHILD_MIN_SCORE;
- 
--	if (check_children && list_empty(&adev->children))
-+	if (ACPI_FAILURE(status) || !(sta & ACPI_STA_DEVICE_ENABLED))
- 		return -ENODEV;
- 
- 	/*
-@@ -99,8 +99,10 @@ static int find_child_checks(struct acpi
- 	 * matched going forward.  [This means a second spec violation in a row,
- 	 * so whatever we do here is best effort anyway.]
- 	 */
--	return sta_present && !adev->pnp.type.platform_id ?
--			FIND_CHILD_MAX_SCORE : FIND_CHILD_MIN_SCORE;
-+	if (adev->pnp.type.platform_id)
-+		return FIND_CHILD_MIN_SCORE;
-+
-+	return FIND_CHILD_MAX_SCORE;
- }
- 
- struct acpi_device *acpi_find_child_device(struct acpi_device *parent,
-
-
-
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Aubrey Li <aubrey.li@linux.intel.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+> ---
+>  arch/x86/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 2ee26f10a814..163c198ec8ec 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -654,6 +654,7 @@ config X86_INTEL_LPSS
+>         select COMMON_CLK
+>         select PINCTRL
+>         select IOSF_MBI
+> +       select PMC_ATOM
+>         help
+>           Select to build support for Intel Low Power Subsystem such as
+>           found on Intel Lynxpoint PCH. Selecting this option enables
+> --
+> 2.17.1
+>
