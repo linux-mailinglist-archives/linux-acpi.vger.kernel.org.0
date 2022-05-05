@@ -2,68 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD2AA51C424
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 17:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA55D51C3BB
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 17:20:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244598AbiEEPsG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 May 2022 11:48:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
+        id S1381264AbiEEPYa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 May 2022 11:24:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230240AbiEEPsG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 11:48:06 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2E4532E2;
-        Thu,  5 May 2022 08:44:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651765466; x=1683301466;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/K27mxZVpjV2wVe4/S1pgizw/HTC8KiYO9tIqdJDhro=;
-  b=PYL7hq5OsEEpdMOVmkYyI1NSZsdKTEkDoWM/RT57PqS7WZbpPmoius0h
-   Q1QjnDamKW+pe545yKrwH7WLHlSBod3uKQpqpKnX7cjk4Cn+KpQzje2yi
-   Drk283JZqSOVxMxieHLK6FcqntyprVJC61+aKruIOKKw0OzDpNk6O8WbL
-   eiPECPreg6wOgiW113ZLLz3oCnPeLr/zf3KcDa03Gi21khpOmVBu27TYC
-   wgDpHS2a4iLaS2rf/m+BiDm7bbBP2TWKlWXOlebQhgDpWq+O0eUR81Qpw
-   d13OSkCaXqfYIvsJH9L0EmdL0xzakO/EhJGCao99ZYjZmbVGLasosOdid
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268297952"
-X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
-   d="scan'208";a="268297952"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 08:18:09 -0700
-X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
-   d="scan'208";a="563286371"
-Received: from bfu-mobl3.ccr.corp.intel.com ([10.255.31.7])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 08:18:05 -0700
-Message-ID: <0f39c2be651d75895d3dfca1d8afc7cad2d4a1af.camel@intel.com>
-Subject: Re: [PATCH 0/7] PM: Solution for S0ix failure caused by PCH
- overheating
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Oliver Neukum <oneukum@suse.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, kvalo@kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-rtc@vger.kernel.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        merez@codeaurora.org, mat.jonczyk@o2.pl,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Len Brown <len.brown@intel.com>
-Date:   Thu, 05 May 2022 23:18:02 +0800
-In-Reply-To: <CAJZ5v0hceDVkv05=SFbO53wsmHWkrs1SSoxZ=FuErYsnNutGWg@mail.gmail.com>
-References: <20220505015814.3727692-1-rui.zhang@intel.com>
-         <40b8ad06-6ef2-113c-fffb-2fa001603b3f@suse.com>
-         <CAJZ5v0hceDVkv05=SFbO53wsmHWkrs1SSoxZ=FuErYsnNutGWg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        with ESMTP id S1381219AbiEEPY3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 11:24:29 -0400
+Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [170.10.129.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 219A3562CD
+        for <linux-acpi@vger.kernel.org>; Thu,  5 May 2022 08:20:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1651764049;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=NOhqwWJm0Xg7KJkj4jc2xm55/msX/E/vXJVK7yWqZr8=;
+        b=VAHc8WlpspXh6niZ2yOSTF3ZG6nY46rK371j+z7YEuXW3Kgd+Zi40Gy9U4csYTVeYU+GzZ
+        YegYkEE2XzjyXWWYRQ9ThmKLsCfWMPHhBiscZVXwUOdoEd5P3E2wRlh9u1qaZfpsc/NB8x
+        2688qVNvHqSZlujpNFczT9RqgxuMQAU=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-195-htru64m9OTylFJ3NnKPgnQ-1; Thu, 05 May 2022 11:20:46 -0400
+X-MC-Unique: htru64m9OTylFJ3NnKPgnQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AF1A53C10229;
+        Thu,  5 May 2022 15:20:40 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.251])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 032207B64;
+        Thu,  5 May 2022 15:20:16 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?q?Benoit=20Gr=C3=A9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/1] x86/PCI: Ignore E820 reservations for bridge windows on newer systems
+Date:   Thu,  5 May 2022 17:20:15 +0200
+Message-Id: <20220505152016.5059-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -72,59 +68,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Neukum,
+Hi All,
 
-Thanks for your response, I missed your original reply in my Inbox.
+Here is v7 of my patch to address the E820 reservations vs PCI host bridge
+ranges issue which are causing touchpad and/or thunderbolt issues on many
+different laptop models.
 
-On Thu, 2022-05-05 at 14:02 +0200, Rafael J. Wysocki wrote:
-> On Thu, May 5, 2022 at 10:23 AM Oliver Neukum <oneukum@suse.com>
-> wrote:
-> > 
-> > 
-> > 
-> > On 05.05.22 03:58, Zhang Rui wrote:
-> > > On some Intel client platforms like SKL/KBL/CNL/CML, there is a
-> > > PCH thermal sensor that monitors the PCH temperature and blocks
-> > > the system
-> > > from entering S0ix in case it overheats.
-> > > 
-> > > Commit ef63b043ac86 ("thermal: intel: pch: fix S0ix failure due
-> > > to PCH
-> > > temperature above threshold") introduces a delay loop to cool the
-> > > temperature down for this purpose.
-> > > 
-> > > However, in practice, we found that the time it takes to cool the
-> > > PCH down
-> > > below threshold highly depends on the initial PCH temperature
-> > > when the
-> > > delay starts, as well as the ambient temperature.
-> > > 
-> > > This patch series has been tested on the same Dell XPS 9360
-> > > laptop and
-> > > S0ix is 100% achieved across 1000+ s2idle iterations.
-> > > 
-> > 
-> > Hi,
-> > 
-> > what is the user experience if this ever triggers? At that stage
-> > the
-> > system will appear to be suspended to an external observer, won't
-> > it?
-> > So in effect you'd have a system that spontaneously wakes up, won't
-> > you?
-> 
-> No, you won't.
-> 
-> It will just go ahead and reach S0ix when it can.  It will only wake
-> up if there's a legitimate wakeup even in the meantime.
+After previous attemps to identify these systems by looking for E820
+reservations covering the entire bridge window, which broke the boot
+on some coreboot based ChromeBooks we are now back to using a bios date
+based approach, now combined with DMI quirks for systems after the
+cutoff date which still report a wrong window from their _CRS method
+despite them being new(ish).
 
-Please correct me if I misunderstand your question, Oliver.
+This is based on top of Bjorn's pci/resource branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git/log/?h=pci/resource
 
-Without the patch, the system becomes suspended and stays in PCx.
-With the patch, the system first stays in PCx during suspending (in the
-intel_pch_thermal driver' cooling delays), and then becomes suspended
-and stays in S0ix.
+Regards,
 
-thanks,
-rui
+Hans
+
+
+Hans de Goede (1):
+  x86/PCI: Ignore E820 reservations for bridge windows on newer systems
+
+ .../admin-guide/kernel-parameters.txt         |  9 +++
+ arch/x86/include/asm/pci_x86.h                |  2 +
+ arch/x86/pci/acpi.c                           | 74 ++++++++++++++++++-
+ arch/x86/pci/common.c                         |  6 ++
+ 4 files changed, 89 insertions(+), 2 deletions(-)
+
+-- 
+2.36.0
 
