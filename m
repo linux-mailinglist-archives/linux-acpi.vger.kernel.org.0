@@ -2,67 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0028751C3BC
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 17:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93CDE51C404
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 17:35:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381219AbiEEPYb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 May 2022 11:24:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49140 "EHLO
+        id S229742AbiEEPjU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 May 2022 11:39:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381258AbiEEPY3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 11:24:29 -0400
-Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [170.10.133.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2B7B4554A8
-        for <linux-acpi@vger.kernel.org>; Thu,  5 May 2022 08:20:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651764048;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hWxWKOjA+mrwfwmaVyLWfuQsGzTpskPFIs1iDrrl94A=;
-        b=iIcDKF7hCq8iBF4aLAp9ua7qfK8idvXurQ4z7CyMdiOnY57ovVPFPH/yZFcoZmVYOcahWk
-        mFNmi0PkuC5JyQt1KhNcgFMj6k/nElcBn3WnkRQHJ2wu4exfug0TaDCK/7yHxijQWmBNCy
-        OuF0RFF5S4M2WxByK02o4b95p3vZTTo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-50-v-yKP7oTPuCZfFLQz7DH1Q-1; Thu, 05 May 2022 11:20:45 -0400
-X-MC-Unique: v-yKP7oTPuCZfFLQz7DH1Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9F39804189;
-        Thu,  5 May 2022 15:20:44 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.192.251])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E4B7E7B64;
-        Thu,  5 May 2022 15:20:40 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        =?UTF-8?q?Benoit=20Gr=C3=A9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v7 1/1] x86/PCI: Ignore E820 reservations for bridge windows on newer systems
-Date:   Thu,  5 May 2022 17:20:16 +0200
-Message-Id: <20220505152016.5059-2-hdegoede@redhat.com>
-In-Reply-To: <20220505152016.5059-1-hdegoede@redhat.com>
-References: <20220505152016.5059-1-hdegoede@redhat.com>
-MIME-Version: 1.0
+        with ESMTP id S242689AbiEEPit (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 11:38:49 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0A0158E74;
+        Thu,  5 May 2022 08:35:09 -0700 (PDT)
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 245DZdE9018740;
+        Thu, 5 May 2022 15:34:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2021-07-09;
+ bh=hTsGKl5x1QrbsakYvssPdtFLooUSIbsNJfE9c7snd1s=;
+ b=jEnqZrTsihysu/LB6IEvowPAH2v8BN7U2fQxEPrcMO0oB+w7WcUvyjtBBd+iIGQO0D0Y
+ Cd6MZ4UJASmCProQefFJt9Lxzmk/j1lH9Z9drJdlfSIzwhIWoUvugDtHCWdwq9Hq5cZQ
+ LkDIBnQoT2eAHVZkhFwOst4JsWrWzyGOVRnimWsiwnZgXX7Cv1b7439LK1pS+pdpo8t8
+ CuCT2hNVled187qFIKE2WCUpOZH5j0VlHwVqPq48jOPr9gCXpzkQUuG0JcUHqogocir8
+ ri4uUYvgaWLEx9uI39Y3l4Hesjab3P8RqnMNhUDTppTzjgqLyK+A8AIaq+vMQHN2Ee0P mg== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3frwntbth8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 05 May 2022 15:34:58 +0000
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 245FAm0l018812;
+        Thu, 5 May 2022 15:34:57 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2170.outbound.protection.outlook.com [104.47.58.170])
+        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com with ESMTP id 3fus8y797w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 05 May 2022 15:34:56 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QEJc3yvL40tTJFIaZ+hmvFC+oLPcbxPfj0tJjZJjJsL5Dm0XZlGgePC/SrbbUzM5am1Co8ze/wepb65kZYtQQhNBJKkLiPsGv2P3ah9CASuTIoSfOoVBV/eRsD5mUWjp1XjxFXB1CfoG4Svyj7DHqyL4qAWm7fJltJPL6UrGqZR3Zmd4MDR6D4yH03+MU1a2iBf+zoiSFljhxzCtC8JAJ1m+3uH8b1JFB8AsOXfPrp46AFbjnsXHqPpEOps2kTLm8WGY5lxGcjBXIbGMtEFbnCE6OqtWHCvCCcUdoneB1rq2HRLoiiqmE0LaoN2Esj1X7ZASibNWni6XPanrYRbPiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hTsGKl5x1QrbsakYvssPdtFLooUSIbsNJfE9c7snd1s=;
+ b=NWjI0Qa6MkG87DV/05vUph2/TGC1FEI73uXByCy6Ru4r0lTo7BoRLQITI0zJa9DUQRjB93Grj5fC4Xr3huuVJVz8kMA43n4Oxpjou5OMdtbCT27IQ+U2bLPbEW896/fc8qciLEWG4VCmzy1vy2j8ZWfRsoMm8s4Wd6S/yl3uYylqpy2K6AzrmxbHDqRB9lfyfy9oCBgxiNyU9blJoMWXJ2NNpcNukrpqGP6nNKw+Uhb96EIpWnsnJFYn7IUN8W1xa5dTpzUrKLLOxXz9pK+PEDdUKvcJBp9RlyyDcZoSaUWJ24jDH5dHUNPrCTq48UuCvma2QM/LAR7W2ksiZLJRdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hTsGKl5x1QrbsakYvssPdtFLooUSIbsNJfE9c7snd1s=;
+ b=ZOagZ+809ZEXUXD4lgaJ9dpYWPSXdhxPc0crVXhEqLHnMR27gUkkC88nddGxuU1TBtKRBmgkpWLMJiMw4mQnj+BPF8FSXWxVzA6372C7zCUvIcWCw4GCHVEBDJDnlpN9PEuRBKslyuL0FnQC0COVbNVeQiOk0pe0Gopb1k/mnXQ=
+Received: from PH0PR10MB5433.namprd10.prod.outlook.com (2603:10b6:510:e0::9)
+ by SN4PR10MB5654.namprd10.prod.outlook.com (2603:10b6:806:20d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5206.13; Thu, 5 May
+ 2022 15:34:55 +0000
+Received: from PH0PR10MB5433.namprd10.prod.outlook.com
+ ([fe80::47:2730:1cb1:bd51]) by PH0PR10MB5433.namprd10.prod.outlook.com
+ ([fe80::47:2730:1cb1:bd51%4]) with mapi id 15.20.5206.027; Thu, 5 May 2022
+ 15:34:55 +0000
+Message-ID: <c20cc64b-d622-ebe7-2a54-9f5e291d988f@oracle.com>
+Date:   Thu, 5 May 2022 17:34:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 5.4] ACPICA: Always create namespace nodes using
+ acpi_ns_create_node()
+Content-Language: en-US
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org, rafael@kernel.org,
+        gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org
+Cc:     Jan Kiszka <jan.kiszka@siemens.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Kees Cook <keescook@chromium.org>,
+        Bob Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+References: <YnPmDlf3KD9ckpM1@zx2c4.com>
+ <20220505150140.159449-1-Jason@zx2c4.com>
+From:   Vegard Nossum <vegard.nossum@oracle.com>
+In-Reply-To: <20220505150140.159449-1-Jason@zx2c4.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PR0P264CA0191.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:100:1c::35) To PH0PR10MB5433.namprd10.prod.outlook.com
+ (2603:10b6:510:e0::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c5432ae5-4507-4969-96ad-08da2eaccdc1
+X-MS-TrafficTypeDiagnostic: SN4PR10MB5654:EE_
+X-Microsoft-Antispam-PRVS: <SN4PR10MB5654593EB950BF50472963DF97C29@SN4PR10MB5654.namprd10.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: dS/fba/wVI14KtuzqgnyX3T6d5Y7dLhy42heZOxfdY83hDAkKH9fEd+SXZuBlu6LANsvS4qv4XEZKD79HYXk41X69RFf/zjRKTNg5fPGR3rn9fYxc0HGj8c7c2UE8xbdioxDArB7QkQ4t1rwimX1ybFugfEYNZnmsiQDkq/0HK0dRVOseK9l4jXHrJdHhxp3h0wcN3fdyaxYYkL/VCj2xSgUWHhxVKiaNSwDnmPAVzo1iAzW6bbMaixxmWVPwZaJiNMgzjU4GMPuUXC0fBdaJnYzu2g1aB++rI9Zqp4lhDKZ5DxePzpebA+gpwqCvqOc9L44wQ7MLTA46owZbbu/9j7phYIiWnJ3smrotQwhCTaK8HGe9zIQeHNRfc/eYet5RHElvJ8APV4WknvID6oV6W/fMJtbu174OS/jlVZrqRDH/GAUwlwR41ffrO6PlalwdE/CQ7nZK2B1Sl85IgwHvHST48UMgx4oxxRlJK/g0urDTu7QBb+SyMdGNYJBkj0vJEfPADaIFzFAfpPXlOglIVGRgoLga2/nCjxZ6y5B2x7zF0pkfhwODFlIwJtIklnDn5uujF1/+f2E1Hnp0OiYQZbWw3N3JX0V0llADCMMgmPh5wBczrG7z7qVRusELQ/H0yWk3V1aJstkH/Q/mgPGrDNasXUUeLbeKEZ+vzGVYkyVdUlJrUeQ0318F+hyhCu/zq/YdrT5mv88N77ThkgrMYB01nxiukHJKhGEfsGBKK/UY+syYfNK3gGeIhamhGm+4gOwPcNxjIYgLy9MzEOai0mM9chgZIObJwS+V38ztpb64nEu31wlt6zBdPVNCgzWKzsFDGtD0rPmrF30lf2nQcovO4AjSJ9EN85es18R4FQDDETQqVJzUZ2rnbbrZdLeV9kd90GT5FWgqwwWpEALNA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5433.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(8936002)(38350700002)(66476007)(6486002)(5660300002)(966005)(2616005)(66556008)(38100700002)(7416002)(508600001)(31696002)(8676002)(53546011)(4326008)(26005)(86362001)(6512007)(6506007)(316002)(54906003)(52116002)(6666004)(66946007)(186003)(31686004)(36756003)(2906002)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OG92a1IyQTFQTGxQWGJCdkk4YkJPUDVoZzVDNmdJWm1NWkVTOUp4NFVza1lE?=
+ =?utf-8?B?QXdXYnZ0TXkvQ1pZRG93cFJxVjhyUE5qYnpuRlpyb01xMjBvSENhTDcxRmpF?=
+ =?utf-8?B?UkNkeE02bUVHcDZtUCt5cmNCblQ5MW1ReGhGYk5ud2VRNjlKeHBFT0dqNkNB?=
+ =?utf-8?B?Zm4yWmRCL2ZMQlZhMThoT1A3UXJUTE94REl2WHNiV2FlNG1Sam9mcVYxWjJD?=
+ =?utf-8?B?NE9NTFhHMi9tcVh5aWp1RXVhc3ZYMEFEZnBlQU03MWlqbVVnRG9nVjNhdmRu?=
+ =?utf-8?B?eFdEUVlaUkpNYWdzemlGU252S3huMStOT1RCMUNVQWxrUDM5YXhzMHJnUnpj?=
+ =?utf-8?B?R1A0UFI2ZEJWcnpSNm1NZjNXaXVRdHhUeXF6dVNqM1I5Y0NQby9sV3ZSc3Vz?=
+ =?utf-8?B?ckpPOXJsVERTVHdXMWw1aHhEcEhYSElobVJYaG5wVE54dUNteFU4WDRpcm1P?=
+ =?utf-8?B?WVo4YVVZczBOTDdnMC9yWFZlbnN6L1RVMWpqTTVoOEFsV3hKd253OWZKSy9B?=
+ =?utf-8?B?b3lzU1hwbEw2Vmc3SFhxSkZnU2dvNmo0R21nYW51c1BPVlE4V0xFVW5TNDVI?=
+ =?utf-8?B?d3NDZXpJeEtFU01ZUmtBQUthTTlaU2kzRTZnMWYrbm5iN2ZKMUhvYU9ZeFZS?=
+ =?utf-8?B?ODZ0blkxUXo0Wk5tc0pQd3hDbDdmNy9yRFVsc0VlOENsYVNSOXM5VVh4RTZU?=
+ =?utf-8?B?UDFTS2NpWmh3ZjFxWW92bVZUQVJVRkZ4aWpxdmhTemVXOWt6NVdnd1diaS80?=
+ =?utf-8?B?M3R5MmpGRS8xRk5HZGF5UlpuUHZPVGRNMDV4WmRIK01NSzd2WU4ybFFhVkMw?=
+ =?utf-8?B?QjFPSHhZTFZmNmR5eXJra3M4Z0N1aXlZVGdLVkUwdkcvckdUVkZHK1VBRFBI?=
+ =?utf-8?B?U1RFZEwwOUtQZGxpdmZjeU1SYXp3UXZ1VFYydnhBZDIwOVpPclFsT3p2SExJ?=
+ =?utf-8?B?T25XdGVMcERoTFZkMFF4eUIyMWtxODNsY2VBQ2duZ2FZSkxlZjh5NnJ4ZjhB?=
+ =?utf-8?B?S1RYWnpPVlhuUDRpUW14WDgvKzZ4R1pKZHlraGVUelZucTk0YjhKVE9VajN1?=
+ =?utf-8?B?WlN4MXdaL3RNZGlkNGdVVk1hQXE0eDJPcGdDRFNlWGk4NE1xeVA1MU91UXJ5?=
+ =?utf-8?B?VE5ydGN1OFpvZmlYQnRrTXZuTmdsRVFwWkF0STZxeTR5b0duMVp5amtEMnA4?=
+ =?utf-8?B?RlI1UGFjUGNLYlNibXpOb3BMU3pxR1AyTGV3WCttUXh4OGhjSHhWeWUxQkxP?=
+ =?utf-8?B?N05PWXlnYm10UWdjYk1JVVo1SlJqa2lMTnlGY096c2VPQUhVMTF2WldLdTh2?=
+ =?utf-8?B?dk9ZeVdhazNaMWxVdGJzUlRMaEZMdVNvVnk1NGxDeTZpanh1OWFEV3luQ090?=
+ =?utf-8?B?QmJjaXpSS01GK1JoNVJDeXQrd2d1N3RMMS85eFhRZDg4aTdCSkN0bGxBTGE1?=
+ =?utf-8?B?bWJzK09pQTl1YXVxUVVSOE5xRGtuQldqdzdzY1FGTDZjUzd1cUo2dnhWenh3?=
+ =?utf-8?B?SkxPTXhDWUkyRUtKQ0tTMkdYbTk0S3loS0R1U3FSaDU4eHhIOGYwRGs1Qmcw?=
+ =?utf-8?B?Z0pXWjRlenBDTnh0RDQxeS9jYVJVYUwvcjYzVHVhNHFJRDQxOThLZ0JTeTJ3?=
+ =?utf-8?B?cDRZaGhrWUVoRkVXWXJHZXpxbkZaVWhjaEJkQi9JUTl6d3h6ODRCUDg1WjNS?=
+ =?utf-8?B?bHM4Rjc1RmxwbzRMWGZsMjErWHRSSW5taEIvN01kdW40eU14VjF4WTJwMU5q?=
+ =?utf-8?B?NlNZS1AxQk1XMXhxc2Z5WUIwYW1wZHpSWEt0ZTZqRlB0ZndBOVpTL3hyZXhZ?=
+ =?utf-8?B?T3Jsby8xR2xQdGI3QjVJbUxXUDRXWVFEUTVNcUpMZ3RxK2xOR0VMQ1QxVldB?=
+ =?utf-8?B?YzZMZkxrWnBzcmthd3VwanJ1OVNTWVRVMlB3Z01ZSHFGdW5qNVdqd2VQUGF5?=
+ =?utf-8?B?dTl2TnZqc3RzS3dpeDFIL3Vyb0xFV3VoZFhpWjd6Nmx3ZExBckRWdWJBZHJ2?=
+ =?utf-8?B?VXVyNTVBMjdEakpvMkVUbERUOHFrZ0lwbXRKN1VKOW1mK29OK1FyL3VYOWdy?=
+ =?utf-8?B?UXFTeGtjSlQxWW5IMHVZVHBzYzhORW93UjQwMXAyRW9sanZDRWVYZzR0Uy9n?=
+ =?utf-8?B?WkxUUnJZMldWT2FSZUF4TXlhZ00rMXRRY3JTa2hsbklGSVFFSkI3M0l6RWFm?=
+ =?utf-8?B?K3pHWjlHN3NLdGJZVi9xcHRpYjd3RnFWRUlJYnJ6clN1Mm9DM0UrTEltWXZL?=
+ =?utf-8?B?dzkybWRpSDBhUDNlRURWOWV4dCtkWGpyd1U1QmUrU3BzcUtEY1hzQzBqTzh1?=
+ =?utf-8?B?OEE0RWhOYmtWYm1NaGdKeHhoWmE1dWQzR3hCTFNSMEYxRUZ5MHpvMk5IUlBG?=
+ =?utf-8?Q?kbA3HuboKvEmSz0Y=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5432ae5-4507-4969-96ad-08da2eaccdc1
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5433.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2022 15:34:55.1989
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZnD5mJtN0Z3Z5VIvj5gRzP0aLN/HsjT/HMluZZ+dBqN4GeIm3s0PFMc7DWKQPajKVv4qQWhuhOVi7W0XZUbgUudw+lCB60EJmh6zR34vi/U=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR10MB5654
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.486,18.0.858
+ definitions=2022-05-05_06:2022-05-05,2022-05-05 signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0
+ mlxlogscore=999 adultscore=0 mlxscore=0 spamscore=0 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205050110
+X-Proofpoint-ORIG-GUID: k4ppbnzaHnv7ehgyqEfkfkSjk1UWDsnu
+X-Proofpoint-GUID: k4ppbnzaHnv7ehgyqEfkfkSjk1UWDsnu
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,282 +166,55 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some BIOS-es contain bugs where they add addresses which are already
-used in some other manner to the PCI host bridge window returned by
-the ACPI _CRS method. To avoid this Linux by default excludes
-E820 reservations when allocating addresses since 2010, see:
-commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
-space").
 
-Recently (2019) some systems have shown-up with E820 reservations which
-cover the entire _CRS returned PCI bridge memory window, causing all
-attempts to assign memory to PCI BARs which have not been setup by the
-BIOS to fail. For example here are the relevant dmesg bits from a
-Lenovo IdeaPad 3 15IIL 81WE:
+On 5/5/22 17:01, Jason A. Donenfeld wrote:
+> From: Vegard Nossum <vegard.nossum@oracle.com>
+> 
+> commit 25928deeb1e4e2cdae1dccff349320c6841eb5f8 upstream.
+> 
+> ACPICA commit 29da9a2a3f5b2c60420893e5c6309a0586d7a329
+> 
+> ACPI is allocating an object using kmalloc(), but then frees it
+> using kmem_cache_free(<"Acpi-Namespace" kmem_cache>).
+> 
 
- [mem 0x000000004bc50000-0x00000000cfffffff] reserved
- pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
+[...]
 
-The ACPI specifications appear to allow this new behavior:
+> Link: https://lore.kernel.org/lkml/4dc93ff8-f86e-f4c9-ebeb-6d3153a78d03@oracle.com/
+> Link: https://lore.kernel.org/r/a1461e21-c744-767d-6dfc-6641fd3e3ce2@siemens.com
+> Link: https://github.com/acpica/acpica/commit/29da9a2a
+> Fixes: f79c8e4136ea ("ACPICA: Namespace: simplify creation of the initial/default namespace")
+> Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
+> Diagnosed-by: Vlastimil Babka <vbabka@suse.cz>
+> Diagnosed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+> Signed-off-by: Bob Moore <robert.moore@intel.com>
+> Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+> Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> Greg/Rafael - tihs was marked as 5.10, but 5.4 crashes without it. So
+> maybe it was mistagged? Will let you guys decide. -Jason
 
-The relationship between E820 and ACPI _CRS is not really very clear.
-ACPI v6.3, sec 15, table 15-374, says AddressRangeReserved means:
+If I look up the Fixes: commit I get:
 
-  This range of addresses is in use or reserved by the system and is
-  not to be included in the allocatable memory pool of the operating
-  system's memory manager.
+$ git name-rev f79c8e4136eac37255ead8875593ae33a2c16d20
+f79c8e4136eac37255ead8875593ae33a2c16d20 tags/linus/v5.3-rc1~166^2~1^2~4
 
-and it may be used when:
+so it looks like the buggy commit actually went into v5.3.
 
-  The address range is in use by a memory-mapped system device.
+I think maybe the bug was there since v5.3 but it was merely exposed by
+some unrelated SLUB change that went in later, maybe that's where the
+version number confusion came from, see
+<https://lore.kernel.org/lkml/ce333dcb-2b2c-3e1f-2a7e-02a7819b1db4@suse.cz/>
+as well. The commit I had bisected to it was:
 
-Furthermore, sec 15.2 says:
+$ git name-rev --refs='v5.*' 67a72420a326b45514deb3f212085fb2cd1595b5
+67a72420a326b45514deb3f212085fb2cd1595b5 linus/v5.4-rc1~141^2~2^2~7
 
-  Address ranges defined for baseboard memory-mapped I/O devices, such
-  as APICs, are returned as reserved.
+But as Vlastimil Babka pointed out, the bug is sensitive to slab merging.
 
-A PCI host bridge qualifies as a baseboard memory-mapped I/O device,
-and its apertures are in use and certainly should not be included in
-the general allocatable pool, so the fact that some BIOS-es reports
-the PCI aperture as "reserved" in E820 doesn't seem like a BIOS bug.
+Anyway, thanks for spotting that.
 
-So it seems that the excluding of E820 reserved addresses is a mistake.
 
-Ideally Linux would fully stop excluding E820 reserved addresses,
-but then various old systems will regress.
-Instead keep the old behavior for old systems, while ignoring
-the E820 reservations for any systems from now on.
-
-Old systems are defined here as BIOS year < 2018, this was chosen to
-make sure that pci_use_e820 will not be set on the currently affected
-systems, the oldest known one is from 2019.
-
-Testing has shown that some newer systems also have a bad _CRS return.
-The pci_crs_quirks DMI table is used to keep excluding E820 reservations
-from the bridge window on these systems.
-
-Also add pci=no_e820 and pci=use_e820 options to allow overriding
-the BIOS year + DMI matching logic.
-
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
-BugLink: https://bugs.launchpad.net/bugs/1878279
-BugLink: https://bugs.launchpad.net/bugs/1931715
-BugLink: https://bugs.launchpad.net/bugs/1932069
-BugLink: https://bugs.launchpad.net/bugs/1921649
-Cc: Benoit Grégoire <benoitg@coeus.ca>
-Cc: Hui Wang <hui.wang@canonical.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v7:
-- Re-add the pci=use_e820 and pci=no_e820 kernel cmdline options since it
-  turns out that some newer laptops still need pci=use_e820
-- Add DMI quirks for known newer laptops which need pci=use_e820
-
-Changes in v6:
-- Remove the possibility to change the behavior from the commandline
-  because of worries that users may use this to paper over other problems
-
-Changes in v5:
-- Drop mention of Windows behavior from the commit msg, replace with a
-  reference to the specs
-- Improve documentation in Documentation/admin-guide/kernel-parameters.txt
-- Reword the big comment added, use "PCI host bridge window" in it and drop
-  all refences to Windows
-
-Changes in v4:
-- Rewrap the big comment block to fit in 80 columns
-- Add Rafael's Acked-by
-- Add Cc: stable@vger.kernel.org
-
-Changes in v3:
-- Commit msg tweaks (drop dmesg timestamps, typo fix)
-- Use "defined(CONFIG_...)" instead of "defined CONFIG_..."
-- Add Mika's Reviewed-by
-
-Changes in v2:
-- Replace the per model DMI quirk approach with disabling E820 reservations
-  checking for all systems with a BIOS year >= 2018
-- Add documentation for the new kernel-parameters to
-  Documentation/admin-guide/kernel-parameters.txt
----
- .../admin-guide/kernel-parameters.txt         |  9 +++
- arch/x86/include/asm/pci_x86.h                |  2 +
- arch/x86/pci/acpi.c                           | 74 ++++++++++++++++++-
- arch/x86/pci/common.c                         |  6 ++
- 4 files changed, 89 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 3f1cc5e317ed..2477b639d5c4 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4066,6 +4066,15 @@
- 				please report a bug.
- 		nocrs		[X86] Ignore PCI host bridge windows from ACPI.
- 				If you need to use this, please report a bug.
-+		use_e820	[X86] Use E820 reservations to exclude parts of
-+				PCI host bridge windows. This is a workaround
-+				for BIOS defects in host bridge _CRS methods.
-+				If you need to use this, please report a bug to
-+				<linux-pci@vger.kernel.org>.
-+		no_e820		[X86] Ignore E820 reservations for PCI host
-+				bridge windows. This is the default on modern
-+				hardware. If you need to use this, please report
-+				a bug to <linux-pci@vger.kernel.org>.
- 		routeirq	Do IRQ routing for all PCI devices.
- 				This is normally done in pci_enable_device(),
- 				so this option is a temporary workaround
-diff --git a/arch/x86/include/asm/pci_x86.h b/arch/x86/include/asm/pci_x86.h
-index a0627dfae541..ce3fd3311772 100644
---- a/arch/x86/include/asm/pci_x86.h
-+++ b/arch/x86/include/asm/pci_x86.h
-@@ -42,6 +42,8 @@ do {						\
- #define PCI_ROOT_NO_CRS		0x100000
- #define PCI_NOASSIGN_BARS	0x200000
- #define PCI_BIG_ROOT_WINDOW	0x400000
-+#define PCI_USE_E820		0x800000
-+#define PCI_NO_E820		0x1000000
- 
- extern unsigned int pci_probe;
- extern unsigned long pirq_table_addr;
-diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
-index 562c81a51ea0..749f175c0fb7 100644
---- a/arch/x86/pci/acpi.c
-+++ b/arch/x86/pci/acpi.c
-@@ -22,6 +22,7 @@ struct pci_root_info {
- 
- static bool pci_use_crs = true;
- static bool pci_ignore_seg;
-+static bool pci_use_e820;
- 
- static int __init set_use_crs(const struct dmi_system_id *id)
- {
-@@ -42,6 +43,12 @@ static int __init set_ignore_seg(const struct dmi_system_id *id)
- 	return 0;
- }
- 
-+static int __init set_use_e820(const struct dmi_system_id *id)
-+{
-+	pci_use_e820 = true;
-+	return 0;
-+}
-+
- static const struct dmi_system_id pci_crs_quirks[] __initconst = {
- 	/* http://bugzilla.kernel.org/show_bug.cgi?id=14183 */
- 	{
-@@ -136,6 +143,42 @@ static const struct dmi_system_id pci_crs_quirks[] __initconst = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "HP xw9300 Workstation"),
- 		},
- 	},
-+
-+	/*
-+	 * Asus-C523NA / Google Coral Chromebook needs the following E820 clips:
-+	 * clipped [mem 0x000a0000-0x000bffff window] to [mem 0x00100000-0x000bffff window]
-+	 *  for e820 entry [mem 0x000a0000-0x000fffff]
-+	 * clipped [mem 0x7b800000-0x7fffffff window] to [mem 0x80000000-0x7fffffff window]
-+	 *  for e820 entry [mem 0x7b000000-0x7fffffff]
-+	 * clipped [mem 0x80000000-0xe0000000 window] to [mem 0x80000000-0xcfffffff window]
-+	 *  for e820 entry [mem 0xd0000000-0xd0ffffff]
-+	 * Otherwise the system does not boot. Note the first 2 clips completely cover
-+	 * the windows.
-+	 */
-+	{
-+		.callback = set_use_e820,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Coral"),
-+		},
-+	},
-+
-+	/*
-+	 * Lenovo ThinkPad X1 Carbon 2nd needs the following E820 clips:
-+	 * clipped [mem 0xdfa00000-0xfebfffff window] to [mem 0xdfa10000-0xfebfffff window]
-+	 *  for e820 entry [mem 0xdceff000-0xdfa0ffff]
-+	 * clipped [mem 0xdfa10000-0xfebfffff window] to [mem 0xdfa10000-0xf7ffffff window]
-+	 *  for e820 entry [mem 0xf8000000-0xfbffffff]
-+	 * Otherwise the system does not resume from suspend.
-+	 * https://bugzilla.redhat.com/show_bug.cgi?id=2029207
-+	 */
-+	{
-+		.callback = set_use_e820,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X1 Carbon 2nd"),
-+		},
-+	},
- 	{}
- };
- 
-@@ -146,6 +189,22 @@ void __init pci_acpi_crs_quirks(void)
- 	if (year >= 0 && year < 2008 && iomem_resource.end <= 0xffffffff)
- 		pci_use_crs = false;
- 
-+	/*
-+	 * Some BIOS-es contain bugs where they add addresses which are already
-+	 * used in some other manner to the PCI host bridge window returned by
-+	 * the ACPI _CRS method. To avoid this Linux by default excludes
-+	 * E820 reservations when allocating addresses since 2010.
-+	 * In 2019 some systems have shown-up with E820 reservations which cover
-+	 * the entire _CRS returned PCI host bridge window, causing all attempts
-+	 * to assign memory to PCI BARs to fail if Linux uses E820 reservations.
-+	 *
-+	 * Ideally Linux would fully stop using E820 reservations, but then
-+	 * various old systems will regress. Instead keep the old behavior for
-+	 * old systems + known to be broken newer systems in pci_crs_quirks.
-+	 */
-+	if (year >= 0 && year < 2018)
-+		pci_use_e820 = true;
-+
- 	dmi_check_system(pci_crs_quirks);
- 
- 	/*
-@@ -161,6 +220,15 @@ void __init pci_acpi_crs_quirks(void)
- 	       "if necessary, use \"pci=%s\" and report a bug\n",
- 	       pci_use_crs ? "Using" : "Ignoring",
- 	       pci_use_crs ? "nocrs" : "use_crs");
-+
-+	/* "pci=use_e820"/"pci=no_e820" on the kernel cmdline takes precedence */
-+	if (pci_probe & PCI_NO_E820)
-+		pci_use_e820 = false;
-+	else if (pci_probe & PCI_USE_E820)
-+		pci_use_e820 = true;
-+
-+	printk(KERN_INFO "PCI: %s E820 reservations for host bridge windows\n",
-+	       pci_use_e820 ? "Using" : "Ignoring");
- }
- 
- #ifdef	CONFIG_PCI_MMCONFIG
-@@ -301,8 +369,10 @@ static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
- 
- 	status = acpi_pci_probe_root_resources(ci);
- 
--	resource_list_for_each_entry(entry, &ci->resources)
--		remove_e820_regions(&device->dev, entry->res);
-+	if (pci_use_e820) {
-+		resource_list_for_each_entry(entry, &ci->resources)
-+			remove_e820_regions(&device->dev, entry->res);
-+	}
- 
- 	if (pci_use_crs) {
- 		resource_list_for_each_entry_safe(entry, tmp, &ci->resources)
-diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
-index 9e1e6b8d8876..7e6f79aab6a8 100644
---- a/arch/x86/pci/common.c
-+++ b/arch/x86/pci/common.c
-@@ -595,6 +595,12 @@ char *__init pcibios_setup(char *str)
- 	} else if (!strcmp(str, "nocrs")) {
- 		pci_probe |= PCI_ROOT_NO_CRS;
- 		return NULL;
-+	} else if (!strcmp(str, "use_e820")) {
-+		pci_probe |= PCI_USE_E820;
-+		return NULL;
-+	} else if (!strcmp(str, "no_e820")) {
-+		pci_probe |= PCI_NO_E820;
-+		return NULL;
- #ifdef CONFIG_PHYS_ADDR_T_64BIT
- 	} else if (!strcmp(str, "big_root_window")) {
- 		pci_probe |= PCI_BIG_ROOT_WINDOW;
--- 
-2.36.0
-
+Vegard
