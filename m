@@ -2,113 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3C551BF2E
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 14:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8DD151BF89
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 14:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241648AbiEEMYl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 May 2022 08:24:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59264 "EHLO
+        id S1346861AbiEEMkZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 May 2022 08:40:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232170AbiEEMYk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 08:24:40 -0400
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C4E1209B;
-        Thu,  5 May 2022 05:21:01 -0700 (PDT)
-Received: by mail-yb1-f175.google.com with SMTP id i38so7256063ybj.13;
-        Thu, 05 May 2022 05:21:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oqzYqmtOukgWsbQu7Sm4paiPoURWMu6g5DfWZGiQmpI=;
-        b=kw7u8Lvn2SdptagddSjnuM02rhozD33RnJNp9tcroJXDwHXbbhQqzcpVoolrYAVRg5
-         OS3gMlCzxDy/qa/A/AtOCMFVTJ/F/kdV3mU8uTFZycc0ePSmWjQQ2FOI6QbDVhoQXCcy
-         UfZP2WeXstmJQUa9ZJgp7/OyyAHZnvnKrCz5xhkH1V+zGkSrVIZuJSsgaFIDDobj1Upl
-         CSiCSjRKH7uUT9UksmjsiVlGvUiOBG1E3fn3nP9T0tyiN2+m9gAmSq2ZQ5D9bBoZ720c
-         4fEUcps+CD+bbErkmByuO9vSvMwxeESowcMjnZAyYls3gwi6Q09RRsr2Q5yo8DRhxqMI
-         KDLw==
-X-Gm-Message-State: AOAM53003QXcGYtt5jGNeAFqRgCpsFnF/7Feg5xrY6R/DV3HC6tM7lMT
-        iYtgV64rP3a0IQFHnj5X8609XKgzmVggYMtLfsM=
-X-Google-Smtp-Source: ABdhPJyG1iLik/vFtFS9S/zeuipmFl5Gpkix5aWcrJKW9hkV7rmqAdKIbPiRyp0qfbH/Xm9ONsG2JYip54XwJP1Ai5U=
-X-Received: by 2002:a25:da84:0:b0:648:423e:57b0 with SMTP id
- n126-20020a25da84000000b00648423e57b0mr20879291ybf.137.1651753261048; Thu, 05
- May 2022 05:21:01 -0700 (PDT)
+        with ESMTP id S244338AbiEEMkY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 08:40:24 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE0154FA0;
+        Thu,  5 May 2022 05:36:44 -0700 (PDT)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KvCqJ4wbJzQj6q;
+        Thu,  5 May 2022 20:36:12 +0800 (CST)
+Received: from [10.67.102.169] (10.67.102.169) by
+ canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 5 May 2022 20:36:42 +0800
+CC:     <bhelgaas@google.com>, <rafael@kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <lenb@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linuxarm@huawei.com>
+Subject: Re: [PATCH] PCI/ACPI: Always advertise ASPM support if
+ CONFIG_PCIEASPM=y
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Yicong Yang <yangyicong@hisilicon.com>
+References: <20220503223857.GA414278@bhelgaas>
+From:   Yicong Yang <yangyicong@huawei.com>
+Message-ID: <38e81af3-e7fa-df0c-c3f7-14244dde5a21@huawei.com>
+Date:   Thu, 5 May 2022 20:36:42 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-References: <20220429164325.1.I2a3b980ea051e59140227999f0f0ca16f1125768@changeid>
- <CAHp75VdqbXCYoEwxMt7xG55QDu2mXHbnpwdnHb6ktm8NdVPJnQ@mail.gmail.com>
-In-Reply-To: <CAHp75VdqbXCYoEwxMt7xG55QDu2mXHbnpwdnHb6ktm8NdVPJnQ@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 5 May 2022 14:20:50 +0200
-Message-ID: <CAJZ5v0hKrnRznpTjTyb8ANGN=REaukAbqQNB_14i_NwAA84=uA@mail.gmail.com>
-Subject: Re: [PATCH] device property: Fix recent breakage of fwnode_get_next_parent_dev()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Douglas Anderson <dianders@chromium.org>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20220503223857.GA414278@bhelgaas>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.102.169]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, May 1, 2022 at 9:50 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Sat, Apr 30, 2022 at 3:00 PM Douglas Anderson <dianders@chromium.org> wrote:
-> >
-> > Due to a subtle typo, instead of commit 87ffea09470d ("device
-> > property: Introduce fwnode_for_each_parent_node()") being a no-op
-> > change, it ended up causing the display on my sc7180-trogdor-lazor
-> > device from coming up unless I added "fw_devlink=off" to my kernel
-> > command line. Fix the typo.
->
-> Sorry and merci pour la fix!
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+On 2022/5/4 6:38, Bjorn Helgaas wrote:
+> On Mon, Apr 25, 2022 at 03:06:34PM +0800, Yicong Yang wrote:
+>> When we have CONFIG_PCIEASPM enabled it means OS can always support ASPM no
+>> matter user have disabled it through pcie_aspm=off or not. But currently we
+>> won't advertise ASPM support in _OSC negotiation if user disables it, which
+>> doesn't match the fact. This will also have side effects that other PCIe
+>> services like AER and hotplug will be disabled as ASPM support is required
+>> and we won't negotiate other services if ASPM support is absent.
+>>
+>> So this patch makes OS always advertising ASPM support if CONFIG_PCIEASPM=y.
+>> It intends no functional change to pcie_aspm=off as it will still mark
+>> aspm_disabled=1 and aspm_support_enabled=false, driver will check these
+>> status before configuring ASPM.
+>>
+>> Tested this patch with pcie_aspm=off:
+>> estuary:/$ dmesg | egrep -i "aspm|osc"
+>> [    0.000000] PCIe ASPM is disabled
+>> [    8.706961] acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM
+>> ClockPM Segments MSI EDR HPX-Type3]
+>> [    8.726032] acpi PNP0A08:00: _OSC: platform does not support [LTR]
+>> [    8.742818] acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug PME
+>> AER PCIeCapability DPC]
+>> estuary:/sys/module/pcie_aspm/parameters$ cat policy
+>> [default] performance powersave powersupersave
+>> estuary:/sys/module/pcie_aspm/parameters$ echo powersave > policy
+>> bash: echo: write error: Operation not permitted
+>>
+>> Cc: Rafael J. Wysocki <rafael@kernel.org>
+>> Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+>> [https://lore.kernel.org/linux-pci/20220407154257.GA235990@bhelgaas/]
+>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+>> ---
+>>  drivers/acpi/pci_root.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+>> index 6f9e75d14808..17e78582e633 100644
+>> --- a/drivers/acpi/pci_root.c
+>> +++ b/drivers/acpi/pci_root.c
+>> @@ -393,7 +393,7 @@ static u32 calculate_support(void)
+>>  	support |= OSC_PCI_HPX_TYPE_3_SUPPORT;
+>>  	if (pci_ext_cfg_avail())
+>>  		support |= OSC_PCI_EXT_CONFIG_SUPPORT;
+>> -	if (pcie_aspm_support_enabled())
+>> +	if (IS_ENABLED(CONFIG_PCIEASPM))
+> 
+> Is there any way firmware could tell the difference between
+> "CONFIG_PCIEASPM not set" and "CONFIG_PCIEASPM=y and booted with
+> 'pcie_aspm=off'"?
+> 
+> If not, why would we even check whether CONFIG_PCIEASPM is set?
+> 
 
-Applied, thanks!
+If we announce ASPM support when CONFIG_PCIEASPM=n it'll work as well
+but negotiation and the log don't match the fact. We'll get misleading
+messages that ASPM is supported by OS by it cannot be enable as there's
+no driver.
 
-> > Fixes: 87ffea09470d ("device property: Introduce fwnode_for_each_parent_node()")
-> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > ---
-> >
-> >  drivers/base/property.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/base/property.c b/drivers/base/property.c
-> > index 36401cfe432c..52e85dcb20b5 100644
-> > --- a/drivers/base/property.c
-> > +++ b/drivers/base/property.c
-> > @@ -600,7 +600,7 @@ struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode)
-> >         struct device *dev;
-> >
-> >         fwnode_for_each_parent_node(fwnode, parent) {
-> > -               dev = get_dev_from_fwnode(fwnode);
-> > +               dev = get_dev_from_fwnode(parent);
-> >                 if (dev) {
-> >                         fwnode_handle_put(parent);
-> >                         return dev;
-> > --
-> > 2.36.0.464.gb9c8b46e94-goog
-> >
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+As mentioned by the PCIe Firmware Spec r3.3,
+"ASPM Optionality supported
+ The operating system sets this bit to 1 if it properly recognizes
+ and manages ASPM support on PCI Express components which report
+ support for ASPM L1 only in the ASPM Support field within the Link
+ Capabilities Register. Otherwise, the operating system sets this
+ bit to 0"
+
+When CONFIG_PCIEASPM=n we have no aspm driver and apparently cannot
+support any ASPM features so we should set the bit to 0 to match the spec.
+
+>>  		support |= OSC_PCI_ASPM_SUPPORT | OSC_PCI_CLOCK_PM_SUPPORT;
+>>  	if (pci_msi_enabled())
+>>  		support |= OSC_PCI_MSI_SUPPORT;
+>> -- 
+>> 2.24.0
+>>
+> .
+> 
