@@ -2,64 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F1B51C391
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 17:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD2AA51C424
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 May 2022 17:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231680AbiEEPPr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 May 2022 11:15:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38006 "EHLO
+        id S244598AbiEEPsG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 May 2022 11:48:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380513AbiEEPPq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 11:15:46 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 396C519296
-        for <linux-acpi@vger.kernel.org>; Thu,  5 May 2022 08:12:06 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-2ec42eae76bso51722327b3.10
-        for <linux-acpi@vger.kernel.org>; Thu, 05 May 2022 08:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=apoghpeFFlLJjbI+JkUxZif30mEbTTO0hnERVhJbN3Q=;
-        b=viiYLjUnWtneZywN8kxyoG7EqkVDupk+UleFm8eVhNouy268w5jp5yAmOB662BTvSK
-         dE0Ioer4x3MLWwLixj6Nlj0CThsRXhoNigU3pGqDAVZICn+WlOwhi5Ci7M6b9lTaN4mu
-         tcR5P4pl4nOMBzOCbh1dUAC3jIWXbq27/dimkCEXtZ4prWaKws7TQ63GerLCpmTQAPDI
-         6Lkml3yJpZsfDKVzQHVIcLC93keO1WQerZxcW37JddZoDuOh5Y2jrbEQtUV72LJJrO1/
-         0XugiztPkXkATS4QtMvABGvtENO+6FpWPuDDXkpC9yj/bj66/cKgaA4Hjj9Ckgt3iCxp
-         c/uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=apoghpeFFlLJjbI+JkUxZif30mEbTTO0hnERVhJbN3Q=;
-        b=H6vRttqe0+n1/riyvpFFIoNV8HIUdkFggDa98aekSlZmLv0YaUoAiTro6u2CptZOHs
-         aRHdOIFV09+TzVbLjrUWnHhc+h4oCpPDLNnOaGeu/2QzpnEOsqTixN0kzzgHjyT90ziQ
-         s9S226plPRHqdNSptuSoB3KlVCCmg8L1tMFUDq9AAlhZ7+KbFqCx5/tpr+36nLBd1Otl
-         N7CgR4Tck/F5dN2K6zlYkVDd0iiWsg2evbILiqy+c4brA/NbFgEdL1gtI2CicbXfWbrG
-         tZzRMyu0cr4vyp033fMtmkvbvtwwoNerqdsBrBg6GtsfhC42M4qJOY3R6GRrQrK9RhG1
-         3YgQ==
-X-Gm-Message-State: AOAM532v+9FP4h8QYcODq2X5aQuAfwgFzO5/mRr9bAhhz2mkPYfdefhm
-        cgmxZxRH6jV8NH7K9mk9/j95NGIiqGjHCBajIQlpEw==
-X-Google-Smtp-Source: ABdhPJwqyPgR8L7LE6khdxgrPIVH5TCiWOInEzf7tOdB1v+aePHoRW00iTlxrRJkp5hvcQhokJqxZT4OmK0ZKsZsvWA=
-X-Received: by 2002:a0d:ddc6:0:b0:2f8:a506:a5c0 with SMTP id
- g189-20020a0dddc6000000b002f8a506a5c0mr25834850ywe.140.1651763525340; Thu, 05
- May 2022 08:12:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220418141416.27529-1-asmaa@nvidia.com> <CH2PR12MB3895A1FB2977B725ED92AB57D7C29@CH2PR12MB3895.namprd12.prod.outlook.com>
-In-Reply-To: <CH2PR12MB3895A1FB2977B725ED92AB57D7C29@CH2PR12MB3895.namprd12.prod.outlook.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 5 May 2022 17:11:54 +0200
-Message-ID: <CACRpkdY1uK=73zpEM5zUyXacm5xaUUFYkuKMxi_q6vwmOPy6tw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] Add driver for Mellanox BlueField-3 GPIO controller
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+        with ESMTP id S230240AbiEEPsG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 May 2022 11:48:06 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2E4532E2;
+        Thu,  5 May 2022 08:44:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651765466; x=1683301466;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/K27mxZVpjV2wVe4/S1pgizw/HTC8KiYO9tIqdJDhro=;
+  b=PYL7hq5OsEEpdMOVmkYyI1NSZsdKTEkDoWM/RT57PqS7WZbpPmoius0h
+   Q1QjnDamKW+pe545yKrwH7WLHlSBod3uKQpqpKnX7cjk4Cn+KpQzje2yi
+   Drk283JZqSOVxMxieHLK6FcqntyprVJC61+aKruIOKKw0OzDpNk6O8WbL
+   eiPECPreg6wOgiW113ZLLz3oCnPeLr/zf3KcDa03Gi21khpOmVBu27TYC
+   wgDpHS2a4iLaS2rf/m+BiDm7bbBP2TWKlWXOlebQhgDpWq+O0eUR81Qpw
+   d13OSkCaXqfYIvsJH9L0EmdL0xzakO/EhJGCao99ZYjZmbVGLasosOdid
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268297952"
+X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
+   d="scan'208";a="268297952"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 08:18:09 -0700
+X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
+   d="scan'208";a="563286371"
+Received: from bfu-mobl3.ccr.corp.intel.com ([10.255.31.7])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 08:18:05 -0700
+Message-ID: <0f39c2be651d75895d3dfca1d8afc7cad2d4a1af.camel@intel.com>
+Subject: Re: [PATCH 0/7] PM: Solution for S0ix failure caused by PCH
+ overheating
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Oliver Neukum <oneukum@suse.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, kvalo@kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-rtc@vger.kernel.org,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        merez@codeaurora.org, mat.jonczyk@o2.pl,
+        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
+        Len Brown <len.brown@intel.com>
+Date:   Thu, 05 May 2022 23:18:02 +0800
+In-Reply-To: <CAJZ5v0hceDVkv05=SFbO53wsmHWkrs1SSoxZ=FuErYsnNutGWg@mail.gmail.com>
+References: <20220505015814.3727692-1-rui.zhang@intel.com>
+         <40b8ad06-6ef2-113c-fffb-2fa001603b3f@suse.com>
+         <CAJZ5v0hceDVkv05=SFbO53wsmHWkrs1SSoxZ=FuErYsnNutGWg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,91 +72,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> Could you please have a look at this patch?
+Hi, Neukum,
 
-Sure!
+Thanks for your response, I missed your original reply in my Inbox.
 
-> +static void mlxbf3_gpio_set(struct gpio_chip *chip, unsigned int
-> +offset, int val) {
+On Thu, 2022-05-05 at 14:02 +0200, Rafael J. Wysocki wrote:
+> On Thu, May 5, 2022 at 10:23 AM Oliver Neukum <oneukum@suse.com>
+> wrote:
+> > 
+> > 
+> > 
+> > On 05.05.22 03:58, Zhang Rui wrote:
+> > > On some Intel client platforms like SKL/KBL/CNL/CML, there is a
+> > > PCH thermal sensor that monitors the PCH temperature and blocks
+> > > the system
+> > > from entering S0ix in case it overheats.
+> > > 
+> > > Commit ef63b043ac86 ("thermal: intel: pch: fix S0ix failure due
+> > > to PCH
+> > > temperature above threshold") introduces a delay loop to cool the
+> > > temperature down for this purpose.
+> > > 
+> > > However, in practice, we found that the time it takes to cool the
+> > > PCH down
+> > > below threshold highly depends on the initial PCH temperature
+> > > when the
+> > > delay starts, as well as the ambient temperature.
+> > > 
+> > > This patch series has been tested on the same Dell XPS 9360
+> > > laptop and
+> > > S0ix is 100% achieved across 1000+ s2idle iterations.
+> > > 
+> > 
+> > Hi,
+> > 
+> > what is the user experience if this ever triggers? At that stage
+> > the
+> > system will appear to be suspended to an external observer, won't
+> > it?
+> > So in effect you'd have a system that spontaneously wakes up, won't
+> > you?
+> 
+> No, you won't.
+> 
+> It will just go ahead and reach S0ix when it can.  It will only wake
+> up if there's a legitimate wakeup even in the meantime.
 
-Put opening bracket on new line.
-Run your code through scripts/checkpatch.pl before submitting.
+Please correct me if I misunderstand your question, Oliver.
 
-> +       struct mlxbf3_gpio_context *gs = gpiochip_get_data(chip);
-> +
-> +       /* Software can only control GPIO pins defined by ctrl_gpio_mask */
-> +       if (!(BIT(offset) & gs->ctrl_gpio_mask))
-> +               return;
-> +
-> +       if (val)
-> +               writel(BIT(offset), gs->gpio_io + YU_GPIO_FW_DATA_OUT_SET);
-> +       else
-> +               writel(BIT(offset), gs->gpio_io + YU_GPIO_FW_DATA_OUT_CLEAR);
-> +
-> +       /* Make sure all previous writes are done before changing YU_GPIO_FW_CONTROL_SET */
-> +       wmb();
-> +
-> +       /* This needs to be done last to avoid glitches */
-> +       writel(BIT(offset), gs->gpio_io + YU_GPIO_FW_CONTROL_SET); }
+Without the patch, the system becomes suspended and stays in PCx.
+With the patch, the system first stays in PCx during suspending (in the
+intel_pch_thermal driver' cooling delays), and then becomes suspended
+and stays in S0ix.
 
-Bracket on new line. This coding style is very odd.
+thanks,
+rui
 
-The hardware is a bit odd too but I see why you can't use GPIO_GENERIC
-properly with this FW_CONTROL_SET business :/
-
-> +static int mlxbf3_gpio_direction_input(struct gpio_chip *chip,
-> +                                      unsigned int offset)
-> +{
-> +       struct mlxbf3_gpio_context *gs = gpiochip_get_data(chip);
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
-> +
-> +       writel(BIT(offset), gs->gpio_io + YU_GPIO_FW_OUTPUT_ENABLE_CLEAR);
-> +       writel(BIT(offset), gs->gpio_io + YU_GPIO_FW_CONTROL_CLEAR);
-> +
-> +       spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
-> +
-> +       return 0;
-> +}
-> +
-> +static int mlxbf3_gpio_direction_output(struct gpio_chip *chip,
-> +                                       unsigned int offset,
-> +                                       int value)
-> +{
-> +       struct mlxbf3_gpio_context *gs = gpiochip_get_data(chip);
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
-> +
-> +       writel(BIT(offset), gs->gpio_io + YU_GPIO_FW_OUTPUT_ENABLE_SET);
-> +
-> +       spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
-> +
-> +       return 0;
-> +}
-
-Why isn't FW_CONTROL_CLEAR/SET used when making  a line
-into an output? Seems unsymmetric? At least put a comment in the
-code why this is different from making a line into input.
-
-> +       /* To set the direction to input, just give control to HW by setting
-> +        * YU_GPIO_FW_CONTROL_CLEAR.
-> +        * If the GPIO is controlled by HW, read its value via read_data_in register.
-> +        *
-> +        * When the direction = output, the GPIO is controlled by SW and
-> +        * datain=dataout. If software modifies the value of the GPIO pin,
-> +        * the value can be read from read_data_in without changing the direction.
-> +        */
-> +       ret = bgpio_init(gc, dev, 4,
-> +                       gs->gpio_io + YU_GPIO_READ_DATA_IN,
-> +                       NULL,
-> +                       NULL,
-> +                       NULL,
-> +                       NULL,
-> +                       0);
-
-Hm. Is it still worth it?
-
-MVH
-Linus Walleij
