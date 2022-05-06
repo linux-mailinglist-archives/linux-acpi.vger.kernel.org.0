@@ -2,50 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64DA251DF29
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE5551DF2E
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343907AbiEFSiF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 14:38:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52928 "EHLO
+        id S1347934AbiEFSkt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 6 May 2022 14:40:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbiEFSiE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:38:04 -0400
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63006D845;
-        Fri,  6 May 2022 11:34:20 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id y2so14311753ybi.7;
-        Fri, 06 May 2022 11:34:20 -0700 (PDT)
+        with ESMTP id S230050AbiEFSkq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:40:46 -0400
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D8B642EDA;
+        Fri,  6 May 2022 11:37:03 -0700 (PDT)
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-2ef5380669cso90552687b3.9;
+        Fri, 06 May 2022 11:37:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nC6W8a6qKsChzlkK2pVqEzNOxfTALLGgiZco+DC/LTQ=;
-        b=PfWR4Uz9loLMGXh/LDsr/xU92RagjqklW9Sp2GW/0j5jmqHSY7UaJgg86vxPlbYq2M
-         aoumjplGyHco2TFchSY0n70O++9Ci4EuMsdagkeO0GYs7aWyjhBDOrq7uQfOwa0kTLK5
-         TBQVny7fOYmE0zRDubeRVeLHIfNPO+7+Cw4w0mEu/fvTfbSr5BAwNk3+wJByk1hrIrfo
-         kr7YrXLWwFRJ8EQX/YwutVwnDloZJIneuliFskBnoR6a09OMmg3ItWDnOY3iBYHq2Lgh
-         IMEiHrTTAR9jIimfED5uUuyjWJkM5dYr/fn8kRfrotFTeT+uG2tdyRJjRxh96XLXPkAG
-         pyYQ==
-X-Gm-Message-State: AOAM530tb5Lsp3J+HVuaU4VKaQimp2J+jmfZWuMDx1HwpFjfi7AiokWN
-        zlinZAvccH4vNrj05xjE/xEnsR/a/4DuHXqF4D7Sj+hc
-X-Google-Smtp-Source: ABdhPJzqHNjf6f+rGOKdsFqTdsMPlLXnR/Fgsi9gO3TRsaCEyyHQjNRtH6iZoSKX2iJDJ2UJrDZvvjlOhBbzwTr0qSQ=
-X-Received: by 2002:a05:6902:352:b0:63e:94c:883c with SMTP id
- e18-20020a056902035200b0063e094c883cmr3307517ybs.365.1651862060042; Fri, 06
- May 2022 11:34:20 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=UdrIyXyLxRtPh/1P7CtUuWGYYGnc99vSj2tkYEMNJKA=;
+        b=8GdxsFD+Gs+r8Jag/nZep7PR0XEcXGMIlwRkM+Ag5Cz19F+DKjZ4i05YfesBQEBUWJ
+         7hIYJRCHHHvH2P5aMcJsoobE4cosdEBJyBd69hzgurrk5/6/+udMOQACzpxxx/VgkaHt
+         WEGBd/8RmTl+sClUy3Asc2NAQLOZoPqY3aVCqXXnsjow9Aixcg5N0/yP8OuMtMJkpyw1
+         HKey+Ja4U+ByveXWvz+0pevVJowhk3aFn5kQbSEgcgmB6N5Z4dYfCNGiPGmWRondWoU2
+         hT9BLuHYoZK7aq8dPVAJA4zyQXqfSs8sCZCjx3WO1rkRydnba/Nw4HQKS4aEQqBzdOZP
+         ulqQ==
+X-Gm-Message-State: AOAM5325cdPd911WTaMTq7ND1bAeari4FHRjzUlG49wbhsAeBMQIBNMZ
+        T85Du8PvD/LcpgVpWG8Xf0E3YqmicJPu8TPK0TY=
+X-Google-Smtp-Source: ABdhPJz0zX+i6/o5qpEXuBrNZYFgGG0kgzOrG9BZ4N6Say4IgoDIeoX9gH6L4iAtjq6u87CfKPEdZW1wuCn/31MFsrE=
+X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
+ b145-20020a811b97000000b002db640f49d8mr3751243ywb.326.1651862222537; Fri, 06
+ May 2022 11:37:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220425021407.486916-1-ian@linux.cowan.aero>
-In-Reply-To: <20220425021407.486916-1-ian@linux.cowan.aero>
+References: <20220425221802.68498-1-ilkka@os.amperecomputing.com>
+In-Reply-To: <20220425221802.68498-1-ilkka@os.amperecomputing.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 6 May 2022 20:34:09 +0200
-Message-ID: <CAJZ5v0hb9Goj9N+VCfAB9Fy+HA7EqG=Z+XJo1t53KcmF62-PbA@mail.gmail.com>
-Subject: Re: [PATCH] drivers: acpi: clean up spaces to be consistent
-To:     Ian Cowan <ian@linux.cowan.aero>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Fri, 6 May 2022 20:36:51 +0200
+Message-ID: <CAJZ5v0gqr97AFuk855UZkcVpDnmj1Q6B2PE32zWmx4eKxbNvCw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: AGDI: Fix missing prototype warning for acpi_agdi_init()
+To:     Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
@@ -56,75 +61,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Apr 25, 2022 at 4:14 AM Ian Cowan <ian@linux.cowan.aero> wrote:
+On Tue, Apr 26, 2022 at 12:18 AM Ilkka Koskinen
+<ilkka@os.amperecomputing.com> wrote:
 >
-> This cleans up a few line spaces so that it is consistent with the rest
-> of the file. There are a few places where a space was added before a
-> return and two spots where a double line space was made into one line
-> space.
+> When building with W=1, we get the following warning:
 >
-> Signed-off-by: Ian Cowan <ian@linux.cowan.aero>
+> drivers/acpi/arm64/agdi.c:88:13: warning: no previous prototype for ‘acpi_agdi_init’ [-Wmissing-prototypes]
+>  void __init acpi_agdi_init(void)
+>
+> Include AGDI driver's header file to pull in the prototype definition
+> for acpi_agdi_init() to get rid of the compiler warning
+>
+> Fixes: a2a591fb76e6 ("ACPI: AGDI: Add driver for Arm Generic Diagnostic Dump and Reset device")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 > ---
->  drivers/acpi/ac.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/acpi/arm64/agdi.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-> index db487ff9dd1b..f8ec48cd7659 100644
-> --- a/drivers/acpi/ac.c
-> +++ b/drivers/acpi/ac.c
-> @@ -32,7 +32,6 @@ MODULE_AUTHOR("Paul Diefenbaugh");
->  MODULE_DESCRIPTION("ACPI AC Adapter Driver");
->  MODULE_LICENSE("GPL");
+> diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+> index 4df337d545b7..cf31abd0ed1b 100644
+> --- a/drivers/acpi/arm64/agdi.c
+> +++ b/drivers/acpi/arm64/agdi.c
+> @@ -9,6 +9,7 @@
+>  #define pr_fmt(fmt) "ACPI: AGDI: " fmt
 >
-> -
->  static int acpi_ac_add(struct acpi_device *device);
->  static int acpi_ac_remove(struct acpi_device *device);
->  static void acpi_ac_notify(struct acpi_device *device, u32 event);
-> @@ -125,6 +124,7 @@ static int get_ac_property(struct power_supply *psy,
->         default:
->                 return -EINVAL;
->         }
-> +
->         return 0;
->  }
->
-> @@ -190,12 +190,14 @@ static int acpi_ac_battery_notify(struct notifier_block *nb,
->  static int __init thinkpad_e530_quirk(const struct dmi_system_id *d)
->  {
->         ac_sleep_before_get_state_ms = 1000;
-> +
->         return 0;
->  }
->
->  static int __init ac_only_quirk(const struct dmi_system_id *d)
->  {
->         ac_only = 1;
-> +
->         return 0;
->  }
-
-I don't really think that it is useful to add empty lines in the two
-cases above.
-
-The rest of the patch is fine with me.
-
->
-> @@ -286,6 +288,7 @@ static int acpi_ac_resume(struct device *dev)
->                 return 0;
->         if (old_state != ac->state)
->                 kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-> +
->         return 0;
->  }
->  #else
-> @@ -296,7 +299,6 @@ static int acpi_ac_remove(struct acpi_device *device)
->  {
->         struct acpi_ac *ac = NULL;
->
-> -
->         if (!device || !acpi_driver_data(device))
->                 return -EINVAL;
->
+>  #include <linux/acpi.h>
+> +#include <linux/acpi_agdi.h>
+>  #include <linux/arm_sdei.h>
+>  #include <linux/io.h>
+>  #include <linux/kernel.h>
 > --
-> 2.35.1
->
+
+Applied as 5.19 material, thanks!
