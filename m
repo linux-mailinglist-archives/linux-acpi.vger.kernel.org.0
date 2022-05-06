@@ -2,33 +2,33 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4689851DA25
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 16:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10C9D51DB0B
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 16:47:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442070AbiEFOO1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 10:14:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
+        id S1442421AbiEFOvA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 May 2022 10:51:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442080AbiEFOO0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 10:14:26 -0400
+        with ESMTP id S237385AbiEFOuy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 10:50:54 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3877529C96;
-        Fri,  6 May 2022 07:10:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D21496AA5C;
+        Fri,  6 May 2022 07:47:11 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: dmitry.osipenko)
-        with ESMTPSA id C4EBD1F46719
+        with ESMTPSA id C32391F468F5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1651846231;
-        bh=aPzN11eOYyBmn6uYxSJ4z+OxGW0B11goKlzatjEFOG4=;
+        s=mail; t=1651848427;
+        bh=utol468ApKu3UfEFy7x8r+aU8cRRwOmqk4bK/1Di3gM=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=A5kW1JJmvHfMp+G3BYZfs1DtIoJxwTSAkQcm9HkU230sGHCbaarPy3d3ylVb7ghQK
-         QFidNeP16CsPIu7NGef5buR6vQrZaa2Bu2Ol7ocivR52MK99+p14lZHhPhckFBadHq
-         LWO8HGz0L5XHJgOXIl4zHum9KGrTPQ8XNRCAiPLiBFHqfgiXkDJFYnZvSeZjgWY6Sf
-         b+r6JcWvC90AjEGx12tTLe293/2dwUtSGPf4vDeIZmmldanQoeJoRJ1W5+Zs/dm4mK
-         YMULBdy55mQ6HS0+7WhL/7UJ3ikAvXuW+YZrNYtURWDPqYm9/aozEGozBwUb1cqkv6
-         H0OATVRjsYPpg==
-Message-ID: <ca422804-0fa0-5fef-07e2-a9ff005a495c@collabora.com>
-Date:   Fri, 6 May 2022 17:10:24 +0300
+        b=jBE3ytwUGToW06KmZyXbQlLMQh11EfcrZ6bdwLxbmA9KbTMiYuuNn3kvbqh632rH2
+         Jgx0CZHq1E9lNHGEsuRz21D8kAvAh8rFaR8jds1ArktyMwvqKLxX4GAkX19BTWUmPP
+         b1quvNeRnJpwzsGfRULjPmqW94UBaLvY+SdyGZ2o/bAt8UYAzh00sKV0zWBnlAl37N
+         VELNP3WacCdMrm2dk8Vabl3yhZXLesCAV/s6oeDX+kpR+1yBykPgcYSQODD7Vr7gKd
+         V7A6zoiXfzrqEzkhyai26Ys6RbYpjgl9Ni5GI2/IasHsLcZOIHlsySI8JROUyGnbmg
+         dahigOUrcy3KA==
+Message-ID: <f8075f97-4cc7-b802-97af-c0ef5a969624@collabora.com>
+Date:   Fri, 6 May 2022 17:46:57 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
@@ -101,7 +101,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -110,57 +110,37 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 On 4/20/22 21:47, Rafael J. Wysocki wrote:
->>>> +       POWEROFF_PREPARE,
->>>> +};
->>>> +
 >>>> +/**
->>>> + * struct power_off_data - Power-off callback argument
+>>>> + *     devm_register_prioritized_power_off_handler - Register prioritized power-off callback
+>>>> + *     @dev: Device that registers callback
+>>>> + *     @priority: Callback's priority
+>>>> + *     @callback: Callback function
+>>>> + *     @cb_data: Callback's argument
 >>>> + *
->>>> + * @cb_data: Callback data.
->>>> + */
->>>> +struct power_off_data {
->>>> +       void *cb_data;
->>>> +};
->>>> +
->>>> +/**
->>>> + * struct power_off_prep_data - Power-off preparation callback argument
+>>>> + *     Registers resource-managed power-off callback with a given priority.
+>>>> + *     It will be called as last step of the power-off sequence. Callbacks
+>>>> + *     chaining is disabled, i.e. further lower priority callbacks won't
+>>>> + *     be executed if this @callback will fail to execute.
 >>>> + *
->>>> + * @cb_data: Callback data.
->>>> + */
->>>> +struct power_off_prep_data {
->>>> +       void *cb_data;
->>>> +};
->>> Why does this need to be a separate data type?
->> To allow us extend the "struct power_off_prep_data" with more parameters
->> later on without a need to update each driver with the new arguments.
+>>>> + *     Returns zero on success, or error code on failure.
+>>> What's the case in which this should be used instead of registering a
+>>> full sys_off handler?
+>> There are a lot of drivers that just want to register power-off handler
+>> with a non-default priority and don't need to stop the chain or do
+>> anything else special. This is a convinient helper for them.
+>>
+>> Please note that the callback here takes only the cb_data for the
+>> argument, while sys_off uses "struct power_off_data".
+>>
+>> Similar for the reset of the convinient helpers.
+> So if there is a way to do this, why would anyone prefer to use the
+> full sys_off handler at all?
 
-> I'm not really sure what you mean here.  Can you give an example?
-> 
+There are couple occurrences around kernel where there is no device
+available for the devm_ functions, like this for example [1].
 
-The restart callbacks use more than the cb_data and we have:
-
-struct restart_data {
-	void *cb_data;
-	const char *cmd;
-	bool stop_chain;
-	enum reboot_mode mode;
-};
-
-If we'll ever need to extended struct power_off_data similarly to the
-restart_data, then we will need to update all the power-off callbacks
-instead of adding a new field to the power_off_data.
-
-Hence, for example, if you'll want to extend power_off_data with "enum
-poweroff_mode mode", then for each driver you'll need to do this change:
-
--power_off(void *cb_data)
-+power_off(void *cb_data, enum poweroff_mode mode)
-
-and you won't need to do that using struct power_off_data.
-
-Why do we need this? Because I saw in the past people changing kernel
-APIs that way when they wanted to add new arguments and then needed to
-update every call site around the kernel.
+[1]
+https://gitlab.collabora.com/dmitry.osipenko/linux-kernel-rd/-/commit/184dfd3983e774d3cf9050dc5b4ec23a662a9551
 
 -- 
 Best regards,
