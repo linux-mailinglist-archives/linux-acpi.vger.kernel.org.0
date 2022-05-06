@@ -2,118 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 566DC51DF49
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A54EE51DF4B
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:47:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386541AbiEFSvO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 14:51:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33998 "EHLO
+        id S1388566AbiEFSvf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 May 2022 14:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1388545AbiEFSvG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:51:06 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF6B63533;
-        Fri,  6 May 2022 11:47:22 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id k2so11115942wrd.5;
-        Fri, 06 May 2022 11:47:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Vt0OWBct8YhWCch2+2OkXoGqDKSr3TcXp5y1WslSxb0=;
-        b=Cjo/YUaxkMwPxpg/1jrCgoxVaa0657POk8MVPJtu2fSAfdjI9N/0OoJ8AMA/b5qVBF
-         NhjbTxO8G7FOzu+75usLEAjKTwDOxFC9pMH94Y2sWjRxRuRqXzh9MIdC/rBP8uAhE9vu
-         wpZWRYwVM36ejJ4OkCrsMyiKKRCWPaxivl/2pB0eksZ/gGQQBycu9nzwrU6Uc9Jla/uh
-         AAjg1kIsvvuEkmRyQZLlBrHMQHlpjmzmfjIhKDdBInawqPxEZbK5CtxsyeZoo9eUdeAX
-         SKoCrIfnb+z5xt5J4shDn4p32/zUzn1qhxlkb+Ecz4Dla2jKxDvywirWavYdpD9wgCZX
-         mamQ==
+        with ESMTP id S1358215AbiEFSve (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:51:34 -0400
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88F3D5F8E8;
+        Fri,  6 May 2022 11:47:51 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id y76so14412968ybe.1;
+        Fri, 06 May 2022 11:47:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Vt0OWBct8YhWCch2+2OkXoGqDKSr3TcXp5y1WslSxb0=;
-        b=pN6PqhPwbIAecp49E6SzZUZQ4+kUqUyHLu+Q4SHOoWyFFiwXpt1yepr1Wr9vssWah9
-         /EjnwT45blLKbx5vz51u+CgtRZsgx+ya0oMVx+7WiHaX+h623uqi1sd4xV0b9Ormuk+q
-         lASHapa5aS+iGZSS50JSxOK2GMIfDQ+QoQwa8YcR5VrCmxaGp5ms9Ih5f5O++2EObhvq
-         u2MDdIhFCf6EPizOQvU7ZFyI4kY7RHrV/Jyavn8VKHcRlwqw7/VV2E8qfsghp7p2HqCm
-         qd9CPy0zNXur7VUCdOz051whwuFcsoUqzjUgiiBn4B24ZVX7F3DBnQEa2tHoS5DAu3oh
-         RpjQ==
-X-Gm-Message-State: AOAM530IBM4IhMMGskux1wV9xhYxxsZiQzFectfC+5k1KZeCluhQKKRo
-        r99+iP/6gOiwFZgKBV7fKxKUAhzXJDg=
-X-Google-Smtp-Source: ABdhPJw5T/i5wLRQpeYYOhW8GC1eO03llyK9BZ8FVVykkMSjfn1KbnufqxCOOZAjOvJxiOjSC7dMjg==
-X-Received: by 2002:adf:e7c1:0:b0:20a:b724:cedd with SMTP id e1-20020adfe7c1000000b0020ab724ceddmr3894091wrn.409.1651862840866;
-        Fri, 06 May 2022 11:47:20 -0700 (PDT)
-Received: from [10.17.0.15] ([194.126.177.12])
-        by smtp.gmail.com with ESMTPSA id e13-20020a5d530d000000b0020c5253d8fasm4276785wrv.70.2022.05.06.11.47.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 May 2022 11:47:20 -0700 (PDT)
-Message-ID: <40c3033e-b9d8-0cf6-4009-35701f02c8aa@gmail.com>
-Date:   Fri, 6 May 2022 20:47:18 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=keHWgDtz7S3VXIsgJT8jBHEk5J6pPJA7/dvmm/BYIcw=;
+        b=oigCX+XYWz7gtp7znBvt5m6ymFlNmelZx8IMnTHk0FSnq8gYJLZzT6fYGjcGhZft+9
+         0nwUDJQrrf3Z+SUc7vFSrZt7ZgAEPnFQr0VAdrbtIeN0ImApK2rSgzcRu3suteoHZTJ+
+         f0/mZKjrV1UKaUk3D09JAGM+URRhwF7sW2mYzBbds+X54DtYe86C2BPL61y5vpCFk8Fp
+         pySlfO+2/1EmsjheSGHehtYx+1GkdgZe9oNqw9D4CElI5UBWny3H9B7Si7bD2pqcxudO
+         28xMOZCR7HX/lBjyrpHZkTWnR8xO8PURUoNi+7CMrutlazhvpyqZjjSJ3OoRAHThRQ+s
+         63fQ==
+X-Gm-Message-State: AOAM530bobpsklOXtoRqMAD7zk01ZS78q5LhYSNY7RPZBfXlB2/C6U+D
+        g6SE7VJSKxkK8Ps9+PIf7WG+xLz2o9B0GdaWvSf7Mupd
+X-Google-Smtp-Source: ABdhPJxvDQhccvN3sDAsVqxtedhAuMgwNyc0hZk60N+9BOH9ZEaIW/slD/s9fHY3sPIFfHGY8zN/X/SwoA8TojNA+io=
+X-Received: by 2002:a05:6902:187:b0:63d:9c95:edca with SMTP id
+ t7-20020a056902018700b0063d9c95edcamr3364072ybh.81.1651862870833; Fri, 06 May
+ 2022 11:47:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH] ACPI: battery: Add "Not Charging" quirk for Microsoft
- Surface devices
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>,
+References: <20220428095413.2950758-1-yajun.deng@linux.dev>
+In-Reply-To: <20220428095413.2950758-1-yajun.deng@linux.dev>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 6 May 2022 20:47:39 +0200
+Message-ID: <CAJZ5v0h5Vc17rg5V_kHHV6A6=MdET9SpbQB6cvzekwFzH4Mxjg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: processor: idle: expose max_cstate/nocst/bm_check_disable
+ read-only in sysfs
+To:     Yajun Deng <yajun.deng@linux.dev>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20220429174114.1277799-1-luzmaximilian@gmail.com>
- <CAJZ5v0hoE0vn5BX586Ag4oLFRn3WoZJCUQZ1+jM1O6Vm+yyc4A@mail.gmail.com>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <CAJZ5v0hoE0vn5BX586Ag4oLFRn3WoZJCUQZ1+jM1O6Vm+yyc4A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 5/6/22 20:43, Rafael J. Wysocki wrote:
-> On Fri, Apr 29, 2022 at 7:41 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
->>
->> Microsoft Surface devices have a limiter that sets a fixed maximum
->> charge capacity for the battery. When that maximum capacity has been
->> reached, charging stops. In that case, _BST returns a battery state
->> field with both "charging" and "discharging" bits cleared. The battery
->> driver, however, returns "unknown" as status.
->>
->> This seems to be the same behavior as observed on the ThinkPads, so
->> let's use the same quirk to handle that.
->>
->> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
->> ---
->>
->> For what it's worth, I don't think the ACPI spec explicitly states that
->> any of the status bits need to be set, or that there are only the
->> "charging" and "discharging" states. As far as I can tell, ACPI only
->> states:
->>
->>      Notice that the Charging bit and the Discharging bit are mutually
->>      exclusive and must not both be set at the same time. Even in
->>      critical state, hardware should report the corresponding
->>      charging/discharging state.
->>
->> But that does not exclude the case that no bit is set. So, strictly
->> going by spec, I don't think it's necessary to put all of this behind a
->> quirk.
-> 
-> I think that this should be covered by the patch I've just applied:
-> 
-> https://patchwork.kernel.org/project/linux-acpi/patch/20220427154053.499203-1-wse@tuxedocomputers.com/
-> 
-> Shouldn't it?
+On Thu, Apr 28, 2022 at 11:54 AM Yajun Deng <yajun.deng@linux.dev> wrote:
+>
+> This patch exposes max_cstate/nocst/bm_check_disable in read-only sysfs.
+> This will allow super users to verify them when changed in grub.
+>
+> The parameters "nocst/bm_check_disable" is only used to be enable/disable.
+> So change them from integer to bool.
+>
+> Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+> ---
+>  drivers/acpi/processor_idle.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index e9c84d0ac55b..6a5572a1a80c 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -38,11 +38,11 @@
+>  #define ACPI_IDLE_STATE_START  (IS_ENABLED(CONFIG_ARCH_HAS_CPU_RELAX) ? 1 : 0)
+>
+>  static unsigned int max_cstate __read_mostly = ACPI_PROCESSOR_MAX_POWER;
+> -module_param(max_cstate, uint, 0000);
+> -static unsigned int nocst __read_mostly;
+> -module_param(nocst, uint, 0000);
+> -static int bm_check_disable __read_mostly;
+> -module_param(bm_check_disable, uint, 0000);
+> +module_param(max_cstate, uint, 0400);
+> +static bool nocst __read_mostly;
+> +module_param(nocst, bool, 0400);
+> +static bool bm_check_disable __read_mostly;
+> +module_param(bm_check_disable, bool, 0400);
+>
+>  static unsigned int latency_factor __read_mostly = 2;
+>  module_param(latency_factor, uint, 0644);
+> --
 
-It does, thank you!
-
-Sorry for having missed that one.
-
-Regards,
-Max
+Applied as 5.19 material with some edits in the changelog, thanks!
