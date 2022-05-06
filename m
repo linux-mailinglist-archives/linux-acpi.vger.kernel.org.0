@@ -2,61 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 411D051DE51
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 19:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 234BA51DE92
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444171AbiEFR1h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 13:27:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56308 "EHLO
+        id S231305AbiEFSHR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 May 2022 14:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1444167AbiEFR1f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 13:27:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E5123BD2;
-        Fri,  6 May 2022 10:23:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C92A3620B2;
-        Fri,  6 May 2022 17:23:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6385C385A8;
-        Fri,  6 May 2022 17:23:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651857831;
-        bh=nXZ3Q1jTbaZ/sK8x9V920nhEF4T7dJ3ktr0gnhCZATw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=OfYs4mRhp6lLGqo13sQacwVW9iittAZ7SAI7kb+r6hxxdi/apElxndNV2zhleIjOa
-         R19ikT+HJLadc/9Ye9/w48Cbh2j2zDiXP1448RufOjTjoKrwQLOpaYs7svQda8uNHl
-         1yp0T2hge2QaBesrUXtuFaOu7mz+e+agAvK9ixsfGkCLNaHFlC3+EC8Cd5CNeCOX3J
-         v498ZxqcSIobrgKGg/YVtjgFYXl3l/djT+e/iwLJwUmjgvQDs6QaZFv0sqApMzlbYU
-         uRHapzwdExq7H7WLMD+rjjwqt1kgyHR0gJHvZWb9+1I3CwwnqPnicF0+eHdFs1YRp5
-         atMpv+P/D1hUQ==
-Date:   Fri, 6 May 2022 12:23:48 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Peng Liu <liupeng256@huawei.com>
-Cc:     bhelgaas@google.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
-        sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
-        akpm@linux-foundation.org, logang@deltatee.com,
-        martin.oliveira@eideticom.com, thunder.leizhen@huawei.com,
-        axboe@kernel.dk, kch@nvidia.com, ming.lei@redhat.com,
-        shinichiro.kawasaki@wdc.com, mcgrof@kernel.org,
-        jiangguoqing@kylinos.cn, jpittman@redhat.com, dave@stgolabs.net,
-        wangkefeng.wang@huawei.com, linux-block@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/2] include/linux/nodemask.h: create node_available()
- helper
-Message-ID: <20220506172348.GA543299@bhelgaas>
+        with ESMTP id S1345265AbiEFSHQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:07:16 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FDE462BEB;
+        Fri,  6 May 2022 11:03:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651860212; x=1683396212;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8fFvGdzoG/rA8+1UZY/4PHel/cIyIvtKdIsOtXJKLw8=;
+  b=II6nW9dbL6gLFUl5di4Q+aQcHl4FMSc1ZIo1g35/zSzZFTjTMmM1RRXn
+   zJtLk6U25whU0Hm7oH4b3ASBPNNxUk0xKnytuDqVY3nJ7BAwwZOuB5oeE
+   0x2s+ciTdD218iB7Ejda8JC/i/orkaVxjShwdWCPGRX90N72vTGp9bNIf
+   Jk7a7NXn/ArBidNUi0EnzailEKBpWdzJha7O7i9K5YysATsL4dqV0qPdd
+   bcq0tJ1XHYpLILjTngz/3R6QMiogc66Dna2fyHGiE1ZvMiHNqR7PwoHT0
+   qMc2z4RuG0i3J7KFyQsaZSJPbc2eEqAZNAIaeA+ZbjQJGlemnzOTD4f3J
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10339"; a="248443577"
+X-IronPort-AV: E=Sophos;i="5.91,205,1647327600"; 
+   d="scan'208";a="248443577"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 11:03:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,205,1647327600"; 
+   d="scan'208";a="735870259"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 06 May 2022 11:03:24 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nn2IV-000DjU-Ps;
+        Fri, 06 May 2022 18:03:23 +0000
+Date:   Sat, 7 May 2022 02:02:39 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        usama.anjum@collabora.com,
+        Collabora Kernel ML <kernel@collabora.com>,
+        groeck@chromium.org, dtor@chromium.org, gwendal@chromium.org,
+        vbendeb@chromium.org, andy@infradead.org,
+        Ayman Bagabas <ayman.bagabas@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?utf-8?B?Qmxhxb4=?= Hrastnik <blaz@mxxn.io>,
+        Darren Hart <dvhart@infradead.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jeremy Soller <jeremy@system76.com>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, Rajat Jain <rajatja@google.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        chrome-platform@lists.linux.dev
+Subject: Re: [PATCH v9] platform/chrome: Add ChromeOS ACPI device driver
+Message-ID: <202205070117.SW4TyTN4-lkp@intel.com>
+References: <YnTw/iQ1Asjjmsb9@debian-BULLSEYE-live-builder-AMD64>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220506015801.757918-2-liupeng256@huawei.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <YnTw/iQ1Asjjmsb9@debian-BULLSEYE-live-builder-AMD64>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,38 +87,65 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Subject line convention looks like "numa: ..."
+Hi Muhammad,
 
-On Fri, May 06, 2022 at 01:58:00AM +0000, Peng Liu wrote:
-> Lots of code dose
-               does
+I love your patch! Perhaps something to improve:
 
-> 	node != NUMA_NO_NODE && !node_online(node)
-> or
-> 	node == NUMA_NO_NODE || node_online(node)
-> so create node_available to do this to simplify code.
-            node_available()
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on chrome-platform/for-next v5.18-rc5 next-20220506]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-I'm not really sure what meaning "node_available" conveys, though.
-Probably just because I don't understand NUMA.
+url:    https://github.com/intel-lab-lkp/linux/commits/Muhammad-Usama-Anjum/platform-chrome-Add-ChromeOS-ACPI-device-driver/20220506-175951
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20220507/202205070117.SW4TyTN4-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 5e004fb787698440a387750db7f8028e7cb14cfc)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/4f6407962feddc57bc7c80e5b29d5d339a1dba6c
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Muhammad-Usama-Anjum/platform-chrome-Add-ChromeOS-ACPI-device-driver/20220506-175951
+        git checkout 4f6407962feddc57bc7c80e5b29d5d339a1dba6c
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/platform/chrome/
 
-Should the test for NUMA_NO_NODE be folded into node_state() or
-node_online() directly instead of adding a new node_available()
-interface?
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-NUMA_NO_NODE is -1.  It's not clear to me that node_state()/
-node_isset()/test_bit() would do the right thing given -1.  I doubt
-all node_online() callers ensure they don't pass NUMA_NO_NODE.
+All warnings (new ones prefixed by >>):
 
-> --- a/include/linux/nodemask.h
-> +++ b/include/linux/nodemask.h
-> @@ -70,6 +70,7 @@
->   *
->   * int node_online(node)		Is some node online?
->   * int node_possible(node)		Is some node possible?
-> + * int node_available(node)		Is some node available(online or NUMA_NO_NODE)?
+>> drivers/platform/chrome/chromeos_acpi.c:254:5: warning: format specifies type 'long' but the argument has type 'unsigned int' [-Wformat]
+                            (ARRAY_SIZE(chromeos_acpi_all_groups) - 2), chromeos_acpi_gpio_groups);
+                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:146:70: note: expanded from macro 'dev_warn'
+           dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+                                                                       ~~~     ^~~~~~~~~~~
+   include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
+                   _p_func(dev, fmt, ##__VA_ARGS__);                       \
+                                ~~~    ^~~~~~~~~~~
+   1 warning generated.
 
-Existing file generally fits in 80 columns; follow that lead unless
-you have a really good reason.  E.g., maybe this?
 
-  + * int node_available(node)		Node online or NUMA_NO_NODE
+vim +254 drivers/platform/chrome/chromeos_acpi.c
+
+   244	
+   245	static int chromeos_acpi_device_probe(struct platform_device *pdev)
+   246	{
+   247		chromeos_acpi_gpio_groups = get_gpio_pkg_num(&pdev->dev);
+   248	
+   249		/* If platform has more GPIO attribute groups than the number of
+   250		 * groups this driver supports, give out a warning message.
+   251		 */
+   252		if (chromeos_acpi_gpio_groups > (ARRAY_SIZE(chromeos_acpi_all_groups) - 2))
+   253			dev_warn(&(pdev->dev), "Only %ld GPIO attr groups supported by the driver out of total %d.\n",
+ > 254				 (ARRAY_SIZE(chromeos_acpi_all_groups) - 2), chromeos_acpi_gpio_groups);
+   255		return 0;
+   256	}
+   257	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
