@@ -2,33 +2,33 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C9D51DB0B
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 16:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98FB351DBA4
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 17:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442421AbiEFOvA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 10:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48154 "EHLO
+        id S231641AbiEFPOc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 May 2022 11:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237385AbiEFOuy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 10:50:54 -0400
+        with ESMTP id S1442873AbiEFPO1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 11:14:27 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D21496AA5C;
-        Fri,  6 May 2022 07:47:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60E84B430;
+        Fri,  6 May 2022 08:10:42 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: dmitry.osipenko)
-        with ESMTPSA id C32391F468F5
+        with ESMTPSA id 3BE091F46A77
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1651848427;
-        bh=utol468ApKu3UfEFy7x8r+aU8cRRwOmqk4bK/1Di3gM=;
+        s=mail; t=1651849840;
+        bh=W4lTpGoqRDp9jGpQmSeg75zdqgDSf5NBF1xaIYSJv90=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=jBE3ytwUGToW06KmZyXbQlLMQh11EfcrZ6bdwLxbmA9KbTMiYuuNn3kvbqh632rH2
-         Jgx0CZHq1E9lNHGEsuRz21D8kAvAh8rFaR8jds1ArktyMwvqKLxX4GAkX19BTWUmPP
-         b1quvNeRnJpwzsGfRULjPmqW94UBaLvY+SdyGZ2o/bAt8UYAzh00sKV0zWBnlAl37N
-         VELNP3WacCdMrm2dk8Vabl3yhZXLesCAV/s6oeDX+kpR+1yBykPgcYSQODD7Vr7gKd
-         V7A6zoiXfzrqEzkhyai26Ys6RbYpjgl9Ni5GI2/IasHsLcZOIHlsySI8JROUyGnbmg
-         dahigOUrcy3KA==
-Message-ID: <f8075f97-4cc7-b802-97af-c0ef5a969624@collabora.com>
-Date:   Fri, 6 May 2022 17:46:57 +0300
+        b=nzDQfSC0mATKPl7KMFojVZYi/BuoRw0OpfD54szXaDeylL+J+qQoXJUCJwPnICT/+
+         I/8Sy9s84BogRpRojC6gImDJ92xHSdZ7FPiQMJZURPxR9roLC1xtjbIKIwiggwbDrJ
+         UyaTMJ/2JU2bfO9WoTWZ2N7xEm7TpEz7ocN5RCxlOhvhrIBNeygJsGOPczykA2dH3Y
+         ihMVuTbEr72h1fNuHXeA9KS5RWNyWO9XvwVu/QHvJStTZHleWev97ymTDjkKKIqCsB
+         bhqNsJtDoTgZz1cxiqs29hp9q3R5MhFc8U2fUaOt4aKqtIuVwJRIWZP1u5mW0Ypayn
+         BRUe8/CfvIiJQ==
+Message-ID: <3fc21eb5-218b-f783-a7ef-f805f13c66da@collabora.com>
+Date:   Fri, 6 May 2022 18:10:33 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
@@ -101,7 +101,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=unavailable
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -110,37 +110,19 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 On 4/20/22 21:47, Rafael J. Wysocki wrote:
->>>> +/**
->>>> + *     devm_register_prioritized_power_off_handler - Register prioritized power-off callback
->>>> + *     @dev: Device that registers callback
->>>> + *     @priority: Callback's priority
->>>> + *     @callback: Callback function
->>>> + *     @cb_data: Callback's argument
->>>> + *
->>>> + *     Registers resource-managed power-off callback with a given priority.
->>>> + *     It will be called as last step of the power-off sequence. Callbacks
->>>> + *     chaining is disabled, i.e. further lower priority callbacks won't
->>>> + *     be executed if this @callback will fail to execute.
->>>> + *
->>>> + *     Returns zero on success, or error code on failure.
->>> What's the case in which this should be used instead of registering a
->>> full sys_off handler?
->> There are a lot of drivers that just want to register power-off handler
->> with a non-default priority and don't need to stop the chain or do
->> anything else special. This is a convinient helper for them.
->>
->> Please note that the callback here takes only the cb_data for the
->> argument, while sys_off uses "struct power_off_data".
->>
->> Similar for the reset of the convinient helpers.
-> So if there is a way to do this, why would anyone prefer to use the
-> full sys_off handler at all?
+>>>> +       void (*platform_power_off_cb)(void);
+>>>> +       void (*simple_power_off_cb)(void *data);
+>>>> +       void *simple_power_off_cb_data;
+>>> Is there any particular reason to put these callbacks here and not
+>>> directly into struct sys_off_handler?
+>> They are used internally by reboot.c and shouldn't be touched by the
+>> kernel API users, so I wanted to factor out and protect all the private
+>> data.
+> But they come from these users anyway, don't they?
+> 
 
-There are couple occurrences around kernel where there is no device
-available for the devm_ functions, like this for example [1].
-
-[1]
-https://gitlab.collabora.com/dmitry.osipenko/linux-kernel-rd/-/commit/184dfd3983e774d3cf9050dc5b4ec23a662a9551
+Yes, the point is that these callback pointers are owned by the kernel
+core while callbacks are registered.
 
 -- 
 Best regards,
