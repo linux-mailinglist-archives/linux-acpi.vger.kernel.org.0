@@ -2,103 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E73EC51D9F8
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 16:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4689851DA25
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 16:10:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356317AbiEFOMo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 10:12:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34388 "EHLO
+        id S1442070AbiEFOO1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 May 2022 10:14:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231739AbiEFOMo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 10:12:44 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D126542F
-        for <linux-acpi@vger.kernel.org>; Fri,  6 May 2022 07:09:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651846141; x=1683382141;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/YPvqktr//b1XeoXWbV8Zi9QyR9BUpe+t6hYsGQGNE0=;
-  b=MKWnP+MyJ1QT4R2qQSzQMKjzUfTtVlaxGuDYlNF0jjydwY7FlJMNVg1d
-   9RCseE77b2JxD+3akDR0gAq+ixgC5VsAXLW5jwEvfkB6GdJXcIQZ3Xn4j
-   vpmDc8aYZXCFrxcEZieEylVhtRQf5a7rZtgfXxvYtVSWe31kLreIhskc/
-   wpNiKxQRStlET1gzufXuekKm2QRIyHkMSdV1xchvjrZQMVN0mh/0RyTCn
-   f/9YBiBh3YZP+4XF9U4LVupV21mwkDIX8u542y96cYiqe6JTzvUOXDArJ
-   m3C7oErNpTG7Ut6n3W9znQeSjhjzpRP5ENvDrxAuYeXS+LHZ4J6aQjVvi
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10339"; a="293683539"
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; 
-   d="scan'208";a="293683539"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 07:09:00 -0700
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; 
-   d="scan'208";a="632943584"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 07:08:59 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id C9F21202C2;
-        Fri,  6 May 2022 17:08:57 +0300 (EEST)
-Date:   Fri, 6 May 2022 17:08:57 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
-Subject: Re: [PATCH 07/11] ACPI: Initialise device child list early to access
- data nodes early
-Message-ID: <YnUr+b1KB57ps926@paasikivi.fi.intel.com>
-References: <20220506130025.984026-1-sakari.ailus@linux.intel.com>
- <20220506130025.984026-8-sakari.ailus@linux.intel.com>
- <CAJZ5v0gQR+zFdWqst1D-XYkwwZJkNuBen1-acxFWRY=2Ty6Sdw@mail.gmail.com>
+        with ESMTP id S1442080AbiEFOO0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 10:14:26 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3877529C96;
+        Fri,  6 May 2022 07:10:39 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: dmitry.osipenko)
+        with ESMTPSA id C4EBD1F46719
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1651846231;
+        bh=aPzN11eOYyBmn6uYxSJ4z+OxGW0B11goKlzatjEFOG4=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=A5kW1JJmvHfMp+G3BYZfs1DtIoJxwTSAkQcm9HkU230sGHCbaarPy3d3ylVb7ghQK
+         QFidNeP16CsPIu7NGef5buR6vQrZaa2Bu2Ol7ocivR52MK99+p14lZHhPhckFBadHq
+         LWO8HGz0L5XHJgOXIl4zHum9KGrTPQ8XNRCAiPLiBFHqfgiXkDJFYnZvSeZjgWY6Sf
+         b+r6JcWvC90AjEGx12tTLe293/2dwUtSGPf4vDeIZmmldanQoeJoRJ1W5+Zs/dm4mK
+         YMULBdy55mQ6HS0+7WhL/7UJ3ikAvXuW+YZrNYtURWDPqYm9/aozEGozBwUb1cqkv6
+         H0OATVRjsYPpg==
+Message-ID: <ca422804-0fa0-5fef-07e2-a9ff005a495c@collabora.com>
+Date:   Fri, 6 May 2022 17:10:24 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0gQR+zFdWqst1D-XYkwwZJkNuBen1-acxFWRY=2Ty6Sdw@mail.gmail.com>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v7 04/20] kernel: Add combined power-off+restart handler
+ call chain API
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
+ <20220411233832.391817-5-dmitry.osipenko@collabora.com>
+ <CAJZ5v0gnTSoeNP+QXwrZ45FQY4howVkJMuCjM=j+_-2BngJdQg@mail.gmail.com>
+ <990621e7-9f8a-8b4a-02ec-fd6c1e1f48ff@collabora.com>
+ <CAJZ5v0jxXtwot0qpib4UG8Tz8Hd1dEbgo58tEdPFboU8xwKHNw@mail.gmail.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <CAJZ5v0jxXtwot0qpib4UG8Tz8Hd1dEbgo58tEdPFboU8xwKHNw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On 4/20/22 21:47, Rafael J. Wysocki wrote:
+>>>> +       POWEROFF_PREPARE,
+>>>> +};
+>>>> +
+>>>> +/**
+>>>> + * struct power_off_data - Power-off callback argument
+>>>> + *
+>>>> + * @cb_data: Callback data.
+>>>> + */
+>>>> +struct power_off_data {
+>>>> +       void *cb_data;
+>>>> +};
+>>>> +
+>>>> +/**
+>>>> + * struct power_off_prep_data - Power-off preparation callback argument
+>>>> + *
+>>>> + * @cb_data: Callback data.
+>>>> + */
+>>>> +struct power_off_prep_data {
+>>>> +       void *cb_data;
+>>>> +};
+>>> Why does this need to be a separate data type?
+>> To allow us extend the "struct power_off_prep_data" with more parameters
+>> later on without a need to update each driver with the new arguments.
 
-On Fri, May 06, 2022 at 03:28:10PM +0200, Rafael J. Wysocki wrote:
-> On Fri, May 6, 2022 at 2:58 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > The properties, including data nodes, are initialised in
-> > acpi_init_device_object(). Traversing the data nodes also requires the
-> > device's child list to be initialised which happens much later in
-> > __acpi_device_add(). The function also makes the device visible in the
-> > system, so setting up its properties and nodes is too late by then.
-> >
-> > To address this, move the child list initialisation before
-> > acpi_init_properties() in acpi_init_device_object().
-> >
-> > Note that this is currently not an issue as the properties will only be
-> > accessed by drivers. In the near future accessing the properties will be
-> > done in the ACPI framework itself, and doing so requires this change.
-> >
-> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> I'm not really sure what you mean here.  Can you give an example?
 > 
-> There is a problem with this that the children list is redundant and
-> not really safe to use and so it will be dropped.  I actually have a
-> series of patches to do that in the works.
-> 
-> I'm also unsure why it would be necessary to initialize the list of
-> the device's children earlier, because adding anything to that list
-> requires a child device object to be registered with cannot happen
-> before registering the parent itself.
 
-I actually intended to send this one later if it were to be still relevant.
-Please ignore it for now, I'll drop it from v2.
+The restart callbacks use more than the cb_data and we have:
 
-It is currently needed needed for accessing device's data nodes before
-registering the device.
+struct restart_data {
+	void *cb_data;
+	const char *cmd;
+	bool stop_chain;
+	enum reboot_mode mode;
+};
+
+If we'll ever need to extended struct power_off_data similarly to the
+restart_data, then we will need to update all the power-off callbacks
+instead of adding a new field to the power_off_data.
+
+Hence, for example, if you'll want to extend power_off_data with "enum
+poweroff_mode mode", then for each driver you'll need to do this change:
+
+-power_off(void *cb_data)
++power_off(void *cb_data, enum poweroff_mode mode)
+
+and you won't need to do that using struct power_off_data.
+
+Why do we need this? Because I saw in the past people changing kernel
+APIs that way when they wanted to add new arguments and then needed to
+update every call site around the kernel.
 
 -- 
-Sakari Ailus
+Best regards,
+Dmitry
