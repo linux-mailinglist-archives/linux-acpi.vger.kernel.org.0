@@ -2,125 +2,212 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A2951E046
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 22:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A3E51E157
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 23:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1443571AbiEFUwn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 16:52:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46846 "EHLO
+        id S1442903AbiEFVue (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 May 2022 17:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240336AbiEFUwm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 16:52:42 -0400
-X-Greylist: delayed 73 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 May 2022 13:48:56 PDT
-Received: from crane.ash.relay.mailchannels.net (crane.ash.relay.mailchannels.net [23.83.222.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72AD96A002;
-        Fri,  6 May 2022 13:48:55 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|ian@linux.cowan.aero
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 4ED98560541;
-        Fri,  6 May 2022 20:48:52 +0000 (UTC)
-Received: from pdx1-sub0-mail-a267.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id CADA85601B1;
-        Fri,  6 May 2022 20:48:51 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1651870131; a=rsa-sha256;
-        cv=none;
-        b=tlZm0qFWyqtcBqH9fobXqKDw0JWU7GgU0vi7f4FbQSi5kgFeef5UDXcxfrCDtW2C+HYFsN
-        g/yg8pQYEGAE4X3QxRcNS6yuNM3iyd9jz8nYB2n0abGPO2yKrglUTXQgWg8SUQ0Q0Ae8t/
-        jYpYltM/bFX9Tz9mXkum2gL3NeANkSW28ebieQhjBRJ67cC8mtwl3CtWwKWxGoxSzMVC3M
-        KPXM6kEth5x3jrImvlfL+Uq/6P82LnfOaELpldmJmpzhF1yUozDg40XqiyrsMmjKlnaiko
-        /tPBdqo8W4+6vSC7uNwkTlLPfTklXw7swy8U45A59cCQb6EzVLR7EesYqA9P9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1651870131;
+        with ESMTP id S1348985AbiEFVud (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 17:50:33 -0400
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54E2637D;
+        Fri,  6 May 2022 14:46:48 -0700 (PDT)
+Received: (Authenticated sender: alexandre.belloni@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 52EABFF802;
+        Fri,  6 May 2022 21:46:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1651873602;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=d03LEg4EiHb0XA8sVn3OfFU5E4GP5cp77bojf6DOcbo=;
-        b=mJ2qbK+Xjou9YBwiNgVOkRcoPG5LDGn4+fW8dhfP0hgSpgSoP04cKl37cQu7GKhmbE50bg
-        3aNeVT6JhfdKMKM7rWqzObs32Td2GrBeB545Hf57wzecLWnqajj0DBzx36iTyF0iuEk0kv
-        rjrKPfSliNJzjLboxQmUemAp+pY8/yS3Qg5b2cZdNg4O9PapxwN/scue+zuU+3eBQV6CVA
-        tpTi+UB2TeW4BN68wJ1l26P4v1z31hXQBAAcWsL8zf4MEU9bC541JEXJ/ocndhxTUvcTPO
-        JGVzkNA3RUlpZfl/vby5t/GEWgoKKPPopoLKM9vuWudu7VHYswutBfdmjRyR0Q==
-ARC-Authentication-Results: i=1;
-        rspamd-c4dc5ff8f-q9969;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=ian@linux.cowan.aero
-X-Sender-Id: dreamhost|x-authsender|ian@linux.cowan.aero
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|ian@linux.cowan.aero
-X-MailChannels-Auth-Id: dreamhost
-X-Little-Abaft: 5aceb7dc1f514589_1651870132140_3751359075
-X-MC-Loop-Signature: 1651870132140:3846452387
-X-MC-Ingress-Time: 1651870132140
-Received: from pdx1-sub0-mail-a267.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.115.45.49 (trex/6.7.1);
-        Fri, 06 May 2022 20:48:52 +0000
-Received: from fedora (unknown [69.12.38.97])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: ian@linux.cowan.aero)
-        by pdx1-sub0-mail-a267.dreamhost.com (Postfix) with ESMTPSA id 4Kw2jH0fNkz2M;
-        Fri,  6 May 2022 13:48:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.cowan.aero;
-        s=dreamhost; t=1651870131;
-        bh=d03LEg4EiHb0XA8sVn3OfFU5E4GP5cp77bojf6DOcbo=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=yedLvVeEXNhf7fWWi4gP1x3EcpZ3OrvaB5Tc+poz/mBIOBf0iY4m3eOnwdmiryR30
-         4sDAjEabEMjHtSQ/xQrdjlKYxgMcvQqZr36MO5MVcrgj020BokIsFE0Sp0P7iX0MpX
-         HFFZhR3iNytbpmN9SG11VQ8RodnesWkWgG6XFZDwNq4SfyX7XtEWkpqPCzRdaQWpz1
-         hcLhtPqIlfy0Kdu+c9vDxXQoWPXziib7NTnosdVt+Mspl+d9PHQyC1VfG7ZPaOaavl
-         +457r9P0F/xbA6p+eI95wnP+j3bYy6zibsQOLL1xig8j1TUOFDlhbIwO4GBrzUa9cK
-         nummamTv/WDig==
-Date:   Fri, 6 May 2022 16:48:49 -0400
-From:   Ian Cowan <ian@linux.cowan.aero>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drivers: acpi: clean up spaces to be consistent
-Message-ID: <YnWJsS8OaCJssz89@fedora>
-References: <20220425021407.486916-1-ian@linux.cowan.aero>
- <CAJZ5v0hb9Goj9N+VCfAB9Fy+HA7EqG=Z+XJo1t53KcmF62-PbA@mail.gmail.com>
+         in-reply-to:in-reply-to:references:references;
+        bh=jgdW+utjX69lw9hZBaJPICrrQFeG4ACbfoIiurJVsC0=;
+        b=cWZn2bIvqcSVFGu3IsFqsqClQjrfuRcnBfGvVG1LC+EZb+VCl3Yve3JqmG+2HHscqfqp4i
+        vX97M++arG5GXblHmiyRHG9ZIgYSYZVpCZKXHS8td9kNTSj4IS28/SMJNhO9jrkVvk0ATN
+        24bIxEbxb/BKyXuR5gp81RK8bjzdn5jkjH//ttYhUvkv0x4kUkoWf4YX59s1KBc9aZOfNG
+        0gJTBGziACERliLJVvJ3QeGv//sGN7+r852isaiAwAtl7iQ64GSyw4gmGupgAcheSJ1W+9
+        g30110feSLlykUWTJKC7WTbThbnp43eb6vzRn+UpM8oxgk68GpzG5k+tY7GEVA==
+Date:   Fri, 6 May 2022 23:46:40 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     rjw@rjwysocki.net, kvalo@kernel.org, linux-pm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-wireless@vger.kernel.org, daniel.lezcano@linaro.org,
+        merez@codeaurora.org, mat.jonczyk@o2.pl,
+        sumeet.r.pawnikar@intel.com, len.brown@intel.com
+Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
+Message-ID: <YnWXQE9QASycOzZo@mail.local>
+References: <20220505015814.3727692-1-rui.zhang@intel.com>
+ <20220505015814.3727692-8-rui.zhang@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hb9Goj9N+VCfAB9Fy+HA7EqG=Z+XJo1t53KcmF62-PbA@mail.gmail.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220505015814.3727692-8-rui.zhang@intel.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 06, 2022 at 08:34:09PM +0200, Rafael J. Wysocki wrote:
-> On Mon, Apr 25, 2022 at 4:14 AM Ian Cowan <ian@linux.cowan.aero> wrote:
-> > @@ -190,12 +190,14 @@ static int acpi_ac_battery_notify(struct notifier_block *nb,
-> >  static int __init thinkpad_e530_quirk(const struct dmi_system_id *d)
-> >  {
-> >         ac_sleep_before_get_state_ms = 1000;
-> > +
-> >         return 0;
-> >  }
-> >
-> >  static int __init ac_only_quirk(const struct dmi_system_id *d)
-> >  {
-> >         ac_only = 1;
-> > +
-> >         return 0;
-> >  }
+Hello,
+
+I assume I can ignore this patch as this seems to be only for testing
+I'm not even sure why this is needed as this completely breaks setting
+the alarm time.
+
+On 05/05/2022 09:58:14+0800, Zhang Rui wrote:
+> Automated suspend/resume testing uses the RTC for wakeup.
+> A short rtcwake period is desirable, so that more suspend/resume
+> cycles can be completed, while the machine is available for testing.
 > 
-> I don't really think that it is useful to add empty lines in the two
-> cases above.
+> But if too short a wake interval is specified, the event can occur,
+> while still suspending, and then no event wakes the suspended system
+> until the user notices that testing has stalled, and manually intervenes.
 > 
-> The rest of the patch is fine with me.
+> Here we add a hook to the rtc-cmos driver to
+> a) remove the alarm timer in the beginning of suspend, if there is any
+> b) arm the wakeup in PM notifier callback, which is in the very late stage
+>    before the system really suspends
+> The remaining part of suspend is usually measured under 10 ms,
+> and so arming the timer at this point could be as fast as the minimum
+> time of 1-second.
+> 
+> But there is a 2nd race.  The RTC has 1-second granularity, and unless
+> you are timing the timer with a higher resolution timer,
+> there is no telling if the current time + 1 will occur immediately,
+> or a full second in the future.  And so 2-seconds is the safest minimum:
+> 
+> Run 1,000 s2idle cycles with (max of) 2 second wakeup period:
+> 
+>  # echo 2 > /sys/module/rtc_cmos/parameters/rtc_wake_override_sec
+>  # sleepgraph.py -m freeze -multi 1000 0 -skiphtml -gzip
+> 
+> Clear the timer override, to not interfere with subsequent
+> real use of the machine's suspend/resume feature:
+> 
+>  # echo 0 > /sys/module/rtc_cmos/parameters/rtc_wake_override_sec
+> 
+> Originally-by: Len Brown <len.brown@intel.com>
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> Tested-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+> ---
+>  drivers/rtc/interface.c |  1 +
+>  drivers/rtc/rtc-cmos.c  | 45 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 46 insertions(+)
+> 
+> diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+> index 9edd662c69ac..fb93aa2dc99c 100644
+> --- a/drivers/rtc/interface.c
+> +++ b/drivers/rtc/interface.c
+> @@ -1020,6 +1020,7 @@ void rtc_timer_cancel(struct rtc_device *rtc, struct rtc_timer *timer)
+>  		rtc_timer_remove(rtc, timer);
+>  	mutex_unlock(&rtc->ops_lock);
+>  }
+> +EXPORT_SYMBOL_GPL(rtc_timer_cancel);
+>  
+>  /**
+>   * rtc_read_offset - Read the amount of rtc offset in parts per billion
+> diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
+> index 7c006c2b125f..9590c40fa9d8 100644
+> --- a/drivers/rtc/rtc-cmos.c
+> +++ b/drivers/rtc/rtc-cmos.c
+> @@ -32,6 +32,7 @@
+>  #include <linux/init.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/spinlock.h>
+> +#include <linux/suspend.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/log2.h>
+>  #include <linux/pm.h>
+> @@ -70,6 +71,9 @@ static inline int cmos_use_acpi_alarm(void)
+>  }
+>  #endif
+>  
+> +static int rtc_wake_override_sec;
+> +module_param(rtc_wake_override_sec, int, 0644);
+> +
+>  struct cmos_rtc {
+>  	struct rtc_device	*rtc;
+>  	struct device		*dev;
+> @@ -89,6 +93,7 @@ struct cmos_rtc {
+>  	u8			century;
+>  
+>  	struct rtc_wkalrm	saved_wkalrm;
+> +	struct notifier_block	pm_nb;
+>  };
+>  
+>  /* both platform and pnp busses use negative numbers for invalid irqs */
+> @@ -744,6 +749,42 @@ static irqreturn_t cmos_interrupt(int irq, void *p)
+>  		return IRQ_NONE;
+>  }
+>  
+> +static int cmos_pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
+> +{
+> +	struct cmos_rtc *cmos = container_of(nb, struct cmos_rtc, pm_nb);
+> +	struct rtc_device       *rtc = cmos->rtc;
+> +	unsigned long           now;
+> +	struct rtc_wkalrm       alm;
+> +
+> +	if (rtc_wake_override_sec == 0)
+> +		return NOTIFY_OK;
+> +
+> +	switch (mode) {
+> +	case PM_SUSPEND_PREPARE:
+> +		/*
+> +		 * Cancel the timer to make sure it won't fire
+> +		 * before rtc is rearmed later.
+> +		 */
+> +		rtc_timer_cancel(rtc, &rtc->aie_timer);
+> +		break;
+> +	case PM_SUSPEND_LATE:
+> +		if (rtc_read_time(rtc, &alm.time))
+> +			return NOTIFY_BAD;
+> +
+> +		now = rtc_tm_to_time64(&alm.time);
+> +		memset(&alm, 0, sizeof(alm));
+> +		rtc_time64_to_tm(now + rtc_wake_override_sec, &alm.time);
+> +		alm.enabled = true;
+> +		if (rtc_set_alarm(rtc, &alm))
+> +			return NOTIFY_BAD;
+> +		if (cmos->wake_on)
+> +			cmos->wake_on(cmos->dev);
+> +		break;
+> +	}
+> +
+> +	return NOTIFY_OK;
+> +}
+> +
+>  #ifdef	CONFIG_PNP
+>  #define	INITSECTION
+>  
+> @@ -937,6 +978,9 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
+>  		 nvmem_cfg.size,
+>  		 use_hpet_alarm() ? ", hpet irqs" : "");
+>  
+> +	cmos_rtc.pm_nb.notifier_call = cmos_pm_notify;
+> +	register_pm_notifier(&cmos_rtc.pm_nb);
+> +
+>  	return 0;
+>  
+>  cleanup2:
+> @@ -965,6 +1009,7 @@ static void cmos_do_remove(struct device *dev)
+>  	struct cmos_rtc	*cmos = dev_get_drvdata(dev);
+>  	struct resource *ports;
+>  
+> +	unregister_pm_notifier(&cmos_rtc.pm_nb);
+>  	cmos_do_shutdown(cmos->irq);
+>  
+>  	if (is_valid_irq(cmos->irq)) {
+> -- 
+> 2.17.1
 > 
 
-I just submitted v2 removing these 2 changes and leaving the others.
-
-Thanks!
-Ian
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
