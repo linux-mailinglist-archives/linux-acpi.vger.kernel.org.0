@@ -2,150 +2,263 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 234BA51DE92
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18F0151DF04
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:21:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231305AbiEFSHR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 14:07:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54140 "EHLO
+        id S1391334AbiEFSZM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 May 2022 14:25:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345265AbiEFSHQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:07:16 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FDE462BEB;
-        Fri,  6 May 2022 11:03:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651860212; x=1683396212;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8fFvGdzoG/rA8+1UZY/4PHel/cIyIvtKdIsOtXJKLw8=;
-  b=II6nW9dbL6gLFUl5di4Q+aQcHl4FMSc1ZIo1g35/zSzZFTjTMmM1RRXn
-   zJtLk6U25whU0Hm7oH4b3ASBPNNxUk0xKnytuDqVY3nJ7BAwwZOuB5oeE
-   0x2s+ciTdD218iB7Ejda8JC/i/orkaVxjShwdWCPGRX90N72vTGp9bNIf
-   Jk7a7NXn/ArBidNUi0EnzailEKBpWdzJha7O7i9K5YysATsL4dqV0qPdd
-   bcq0tJ1XHYpLILjTngz/3R6QMiogc66Dna2fyHGiE1ZvMiHNqR7PwoHT0
-   qMc2z4RuG0i3J7KFyQsaZSJPbc2eEqAZNAIaeA+ZbjQJGlemnzOTD4f3J
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10339"; a="248443577"
-X-IronPort-AV: E=Sophos;i="5.91,205,1647327600"; 
-   d="scan'208";a="248443577"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 11:03:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,205,1647327600"; 
-   d="scan'208";a="735870259"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 06 May 2022 11:03:24 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nn2IV-000DjU-Ps;
-        Fri, 06 May 2022 18:03:23 +0000
-Date:   Sat, 7 May 2022 02:02:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <eballetbo@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        usama.anjum@collabora.com,
-        Collabora Kernel ML <kernel@collabora.com>,
-        groeck@chromium.org, dtor@chromium.org, gwendal@chromium.org,
-        vbendeb@chromium.org, andy@infradead.org,
-        Ayman Bagabas <ayman.bagabas@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        =?utf-8?B?Qmxhxb4=?= Hrastnik <blaz@mxxn.io>,
-        Darren Hart <dvhart@infradead.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jeremy Soller <jeremy@system76.com>,
-        Mattias Jacobsson <2pi@mok.nu>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, Rajat Jain <rajatja@google.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        chrome-platform@lists.linux.dev
-Subject: Re: [PATCH v9] platform/chrome: Add ChromeOS ACPI device driver
-Message-ID: <202205070117.SW4TyTN4-lkp@intel.com>
-References: <YnTw/iQ1Asjjmsb9@debian-BULLSEYE-live-builder-AMD64>
+        with ESMTP id S1357923AbiEFSZK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:25:10 -0400
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938EC289BA;
+        Fri,  6 May 2022 11:21:26 -0700 (PDT)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-2f7d7e3b5bfso90248627b3.5;
+        Fri, 06 May 2022 11:21:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4eqHGxVTiC+aOYyLf5Hf3ZQlbjff/7JbxSC1u3k4i3I=;
+        b=dBWk/dp0NXUQsaZFkg8kwmIQaLS1QgzDX4+7jSSdE9Pq4LZsRneRbyj2L5gcU7ron1
+         VfWD/P4YN9XRB7OQ8pkWV6UvwuoUt6ytGibxrs/nruB0n8i8IhVO252lKn0k6ch1aJ6l
+         52Z68UUtSEEaI9USNB7nu8CJXrgKgAMLvNTkhkXYesums/7y1nYzdBKjonp0UFchIbsI
+         3mO4t9kYi5K/Y9BgFQrbhwM2NB7ZWjeFHVngxQqkKUU+T61qbD5d1W7MA6mo7dQWFVfH
+         wyCKvSuK6yWq/ruzkuaJx6KGxmAuxEt9F5UOKfjU1fEj+McKN2L42hjb0+vHs0CQtxdY
+         HT0g==
+X-Gm-Message-State: AOAM532Xop+ONypgdiN/tJqmO7ijcIp13120J3uDSD3/yzJ8/03FUKcI
+        iPEgmagTFxR48pTHPFCx90VxEX4+z9vWzxlXvuE=
+X-Google-Smtp-Source: ABdhPJxwEWPNBpCkkxsc+OW2EnhG0ybSKmz2h5QNQ80MYVe3xElHnV7PBsvP2u4Hwf++KNrbm4Ed3vR0FopXoyJxjKo=
+X-Received: by 2002:a0d:edc7:0:b0:2f8:f300:df2b with SMTP id
+ w190-20020a0dedc7000000b002f8f300df2bmr3757397ywe.515.1651861285758; Fri, 06
+ May 2022 11:21:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YnTw/iQ1Asjjmsb9@debian-BULLSEYE-live-builder-AMD64>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220422222351.1297276-1-bjorn.andersson@linaro.org>
+ <20220422222351.1297276-2-bjorn.andersson@linaro.org> <CAHp75VdT7FYpoxV8RD6J-ujHuDnj0GWswDx6wCyCyz9cozkQ7Q@mail.gmail.com>
+In-Reply-To: <CAHp75VdT7FYpoxV8RD6J-ujHuDnj0GWswDx6wCyCyz9cozkQ7Q@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 6 May 2022 20:21:14 +0200
+Message-ID: <CAJZ5v0grpObZMb+C6ResOnmVMZmiHf9NYBtVQzsTRSP_Wn8t=g@mail.gmail.com>
+Subject: Re: [PATCH v5 1/7] device property: Add helper to match multiple connections
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        USB <linux-usb@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Muhammad,
+On Tue, Apr 26, 2022 at 12:15 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Sat, Apr 23, 2022 at 1:25 AM Bjorn Andersson
+> <bjorn.andersson@linaro.org> wrote:
+> >
+> > In some cases multiple connections with the same connection id
+> > needs to be resolved from a fwnode graph.
+> >
+> > One such example is when separate hardware is used for performing muxing
+> > and/or orientation switching of the SuperSpeed and SBU lines in a USB
+> > Type-C connector. In this case the connector needs to belong to a graph
+> > with multiple matching remote endpoints, and the Type-C controller needs
+> > to be able to resolve them both.
+> >
+> > Add a new API that allows this kind of lookup.
+>
+> LGTM now,
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> thanks!
 
-I love your patch! Perhaps something to improve:
+For this and the next patch in the series:
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on chrome-platform/for-next v5.18-rc5 next-20220506]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Muhammad-Usama-Anjum/platform-chrome-Add-ChromeOS-ACPI-device-driver/20220506-175951
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20220507/202205070117.SW4TyTN4-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 5e004fb787698440a387750db7f8028e7cb14cfc)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/4f6407962feddc57bc7c80e5b29d5d339a1dba6c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Muhammad-Usama-Anjum/platform-chrome-Add-ChromeOS-ACPI-device-driver/20220506-175951
-        git checkout 4f6407962feddc57bc7c80e5b29d5d339a1dba6c
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/platform/chrome/
+and please feel free to route the whole lot via USB.
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+Thanks!
 
-All warnings (new ones prefixed by >>):
-
->> drivers/platform/chrome/chromeos_acpi.c:254:5: warning: format specifies type 'long' but the argument has type 'unsigned int' [-Wformat]
-                            (ARRAY_SIZE(chromeos_acpi_all_groups) - 2), chromeos_acpi_gpio_groups);
-                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dev_printk.h:146:70: note: expanded from macro 'dev_warn'
-           dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
-                                                                       ~~~     ^~~~~~~~~~~
-   include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
-                   _p_func(dev, fmt, ##__VA_ARGS__);                       \
-                                ~~~    ^~~~~~~~~~~
-   1 warning generated.
-
-
-vim +254 drivers/platform/chrome/chromeos_acpi.c
-
-   244	
-   245	static int chromeos_acpi_device_probe(struct platform_device *pdev)
-   246	{
-   247		chromeos_acpi_gpio_groups = get_gpio_pkg_num(&pdev->dev);
-   248	
-   249		/* If platform has more GPIO attribute groups than the number of
-   250		 * groups this driver supports, give out a warning message.
-   251		 */
-   252		if (chromeos_acpi_gpio_groups > (ARRAY_SIZE(chromeos_acpi_all_groups) - 2))
-   253			dev_warn(&(pdev->dev), "Only %ld GPIO attr groups supported by the driver out of total %d.\n",
- > 254				 (ARRAY_SIZE(chromeos_acpi_all_groups) - 2), chromeos_acpi_gpio_groups);
-   255		return 0;
-   256	}
-   257	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> > Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> > ---
+> >
+> > Changes since v4:
+> > - Added "Add" to patch subject
+> > - Added "(Optional)" kernel-doc of fwnode_connection_find_matches()
+> >
+> >  drivers/base/property.c  | 109 +++++++++++++++++++++++++++++++++++++++
+> >  include/linux/property.h |   5 ++
+> >  2 files changed, 114 insertions(+)
+> >
+> > diff --git a/drivers/base/property.c b/drivers/base/property.c
+> > index 36401cfe432c..babab8cec7a0 100644
+> > --- a/drivers/base/property.c
+> > +++ b/drivers/base/property.c
+> > @@ -1201,6 +1201,40 @@ fwnode_graph_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
+> >         return NULL;
+> >  }
+> >
+> > +static unsigned int fwnode_graph_devcon_matches(struct fwnode_handle *fwnode,
+> > +                                               const char *con_id, void *data,
+> > +                                               devcon_match_fn_t match,
+> > +                                               void **matches,
+> > +                                               unsigned int matches_len)
+> > +{
+> > +       struct fwnode_handle *node;
+> > +       struct fwnode_handle *ep;
+> > +       unsigned int count = 0;
+> > +       void *ret;
+> > +
+> > +       fwnode_graph_for_each_endpoint(fwnode, ep) {
+> > +               if (matches && count >= matches_len) {
+> > +                       fwnode_handle_put(ep);
+> > +                       break;
+> > +               }
+> > +
+> > +               node = fwnode_graph_get_remote_port_parent(ep);
+> > +               if (!fwnode_device_is_available(node)) {
+> > +                       fwnode_handle_put(node);
+> > +                       continue;
+> > +               }
+> > +
+> > +               ret = match(node, con_id, data);
+> > +               fwnode_handle_put(node);
+> > +               if (ret) {
+> > +                       if (matches)
+> > +                               matches[count] = ret;
+> > +                       count++;
+> > +               }
+> > +       }
+> > +       return count;
+> > +}
+> > +
+> >  static void *
+> >  fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
+> >                     void *data, devcon_match_fn_t match)
+> > @@ -1223,6 +1257,37 @@ fwnode_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
+> >         return NULL;
+> >  }
+> >
+> > +static unsigned int fwnode_devcon_matches(struct fwnode_handle *fwnode,
+> > +                                         const char *con_id, void *data,
+> > +                                         devcon_match_fn_t match,
+> > +                                         void **matches,
+> > +                                         unsigned int matches_len)
+> > +{
+> > +       struct fwnode_handle *node;
+> > +       unsigned int count = 0;
+> > +       unsigned int i;
+> > +       void *ret;
+> > +
+> > +       for (i = 0; ; i++) {
+> > +               if (matches && count >= matches_len)
+> > +                       break;
+> > +
+> > +               node = fwnode_find_reference(fwnode, con_id, i);
+> > +               if (IS_ERR(node))
+> > +                       break;
+> > +
+> > +               ret = match(node, NULL, data);
+> > +               fwnode_handle_put(node);
+> > +               if (ret) {
+> > +                       if (matches)
+> > +                               matches[count] = ret;
+> > +                       count++;
+> > +               }
+> > +       }
+> > +
+> > +       return count;
+> > +}
+> > +
+> >  /**
+> >   * fwnode_connection_find_match - Find connection from a device node
+> >   * @fwnode: Device node with the connection
+> > @@ -1250,3 +1315,47 @@ void *fwnode_connection_find_match(struct fwnode_handle *fwnode,
+> >         return fwnode_devcon_match(fwnode, con_id, data, match);
+> >  }
+> >  EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
+> > +
+> > +/**
+> > + * fwnode_connection_find_matches - Find connections from a device node
+> > + * @fwnode: Device node with the connection
+> > + * @con_id: Identifier for the connection
+> > + * @data: Data for the match function
+> > + * @match: Function to check and convert the connection description
+> > + * @matches: (Optional) array of pointers to fill with matches
+> > + * @matches_len: Length of @matches
+> > + *
+> > + * Find up to @matches_len connections with unique identifier @con_id between
+> > + * @fwnode and other device nodes. @match will be used to convert the
+> > + * connection description to data the caller is expecting to be returned
+> > + * through the @matches array.
+> > + * If @matches is NULL @matches_len is ignored and the total number of resolved
+> > + * matches is returned.
+> > + *
+> > + * Return: Number of matches resolved, or negative errno.
+> > + */
+> > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
+> > +                                  const char *con_id, void *data,
+> > +                                  devcon_match_fn_t match,
+> > +                                  void **matches, unsigned int matches_len)
+> > +{
+> > +       unsigned int count_graph;
+> > +       unsigned int count_ref;
+> > +
+> > +       if (!fwnode || !match)
+> > +               return -EINVAL;
+> > +
+> > +       count_graph = fwnode_graph_devcon_matches(fwnode, con_id, data, match,
+> > +                                                 matches, matches_len);
+> > +
+> > +       if (matches) {
+> > +               matches += count_graph;
+> > +               matches_len -= count_graph;
+> > +       }
+> > +
+> > +       count_ref = fwnode_devcon_matches(fwnode, con_id, data, match,
+> > +                                         matches, matches_len);
+> > +
+> > +       return count_graph + count_ref;
+> > +}
+> > +EXPORT_SYMBOL_GPL(fwnode_connection_find_matches);
+> > diff --git a/include/linux/property.h b/include/linux/property.h
+> > index fc24d45632eb..a5b429d623f6 100644
+> > --- a/include/linux/property.h
+> > +++ b/include/linux/property.h
+> > @@ -451,6 +451,11 @@ static inline void *device_connection_find_match(struct device *dev,
+> >         return fwnode_connection_find_match(dev_fwnode(dev), con_id, data, match);
+> >  }
+> >
+> > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
+> > +                                  const char *con_id, void *data,
+> > +                                  devcon_match_fn_t match,
+> > +                                  void **matches, unsigned int matches_len);
+> > +
+> >  /* -------------------------------------------------------------------------- */
+> >  /* Software fwnode support - when HW description is incomplete or missing */
+> >
+> > --
+> > 2.35.1
+> >
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
