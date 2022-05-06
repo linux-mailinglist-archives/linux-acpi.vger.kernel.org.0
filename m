@@ -2,123 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A951B51DF3B
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 566DC51DF49
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 May 2022 20:47:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357477AbiEFSrA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 May 2022 14:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
+        id S1386541AbiEFSvO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 May 2022 14:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbiEFSq5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:46:57 -0400
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C491562F4;
-        Fri,  6 May 2022 11:43:14 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-2f7c57ee6feso90984317b3.2;
-        Fri, 06 May 2022 11:43:14 -0700 (PDT)
+        with ESMTP id S1388545AbiEFSvG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 May 2022 14:51:06 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF6B63533;
+        Fri,  6 May 2022 11:47:22 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id k2so11115942wrd.5;
+        Fri, 06 May 2022 11:47:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=Vt0OWBct8YhWCch2+2OkXoGqDKSr3TcXp5y1WslSxb0=;
+        b=Cjo/YUaxkMwPxpg/1jrCgoxVaa0657POk8MVPJtu2fSAfdjI9N/0OoJ8AMA/b5qVBF
+         NhjbTxO8G7FOzu+75usLEAjKTwDOxFC9pMH94Y2sWjRxRuRqXzh9MIdC/rBP8uAhE9vu
+         wpZWRYwVM36ejJ4OkCrsMyiKKRCWPaxivl/2pB0eksZ/gGQQBycu9nzwrU6Uc9Jla/uh
+         AAjg1kIsvvuEkmRyQZLlBrHMQHlpjmzmfjIhKDdBInawqPxEZbK5CtxsyeZoo9eUdeAX
+         SKoCrIfnb+z5xt5J4shDn4p32/zUzn1qhxlkb+Ecz4Dla2jKxDvywirWavYdpD9wgCZX
+         mamQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ahozwA6JR5T2cdvT7X6332oCeq+rsm8ghW3MnqhOLVQ=;
-        b=NiHH0BweiFoPVnDwANIlKnelwo5Qb51GmVdjG+c48HkTU6/RcipXw99p7NoFkz9ERf
-         fVY+vgr0MzNlJfKVp0Lvlu7P3Gtucjr8Uj1nQaswSCiRe/4GjQNYIAHDliKDtgmS6Tfm
-         ncEq7lHxbzLp87YFrS5ac9xoSILfiiLZZoe9+3OFD58BfNGatpsFCVg/cggr3kBwVl+o
-         DlBaeYUVOkhRbCBPmwstgKbb9N62eHBFUqNJuBmY6qRKrCu2OlnPrXfROGMHeJJ4NR7m
-         ZMC0VHaKfuTILNKukOlkLyIMIFleGCmu47Bp8p5LAUaajw6RAZdhySJb7SZe12jL5SZj
-         hNQA==
-X-Gm-Message-State: AOAM533fyFV7OGis1JRs6oOS5lAvvm0DJKFOm5JjgwIc3/7QU9Rjbw+0
-        jarsWo5pYjKLSBle8zSQmE+dw8gUUyNaNV9VFow=
-X-Google-Smtp-Source: ABdhPJxyhio+VMd91Op4H0BgZTrwq0+91VU5XeN+Yn1ssNSy/OzKsrOvBfqsnVQsz3+4YWU8uo5xJG5Q4m7XGbHnucY=
-X-Received: by 2002:a81:260a:0:b0:2f4:ca82:a42f with SMTP id
- m10-20020a81260a000000b002f4ca82a42fmr3879863ywm.149.1651862593459; Fri, 06
- May 2022 11:43:13 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Vt0OWBct8YhWCch2+2OkXoGqDKSr3TcXp5y1WslSxb0=;
+        b=pN6PqhPwbIAecp49E6SzZUZQ4+kUqUyHLu+Q4SHOoWyFFiwXpt1yepr1Wr9vssWah9
+         /EjnwT45blLKbx5vz51u+CgtRZsgx+ya0oMVx+7WiHaX+h623uqi1sd4xV0b9Ormuk+q
+         lASHapa5aS+iGZSS50JSxOK2GMIfDQ+QoQwa8YcR5VrCmxaGp5ms9Ih5f5O++2EObhvq
+         u2MDdIhFCf6EPizOQvU7ZFyI4kY7RHrV/Jyavn8VKHcRlwqw7/VV2E8qfsghp7p2HqCm
+         qd9CPy0zNXur7VUCdOz051whwuFcsoUqzjUgiiBn4B24ZVX7F3DBnQEa2tHoS5DAu3oh
+         RpjQ==
+X-Gm-Message-State: AOAM530IBM4IhMMGskux1wV9xhYxxsZiQzFectfC+5k1KZeCluhQKKRo
+        r99+iP/6gOiwFZgKBV7fKxKUAhzXJDg=
+X-Google-Smtp-Source: ABdhPJw5T/i5wLRQpeYYOhW8GC1eO03llyK9BZ8FVVykkMSjfn1KbnufqxCOOZAjOvJxiOjSC7dMjg==
+X-Received: by 2002:adf:e7c1:0:b0:20a:b724:cedd with SMTP id e1-20020adfe7c1000000b0020ab724ceddmr3894091wrn.409.1651862840866;
+        Fri, 06 May 2022 11:47:20 -0700 (PDT)
+Received: from [10.17.0.15] ([194.126.177.12])
+        by smtp.gmail.com with ESMTPSA id e13-20020a5d530d000000b0020c5253d8fasm4276785wrv.70.2022.05.06.11.47.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 May 2022 11:47:20 -0700 (PDT)
+Message-ID: <40c3033e-b9d8-0cf6-4009-35701f02c8aa@gmail.com>
+Date:   Fri, 6 May 2022 20:47:18 +0200
 MIME-Version: 1.0
-References: <20220429174114.1277799-1-luzmaximilian@gmail.com>
-In-Reply-To: <20220429174114.1277799-1-luzmaximilian@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 6 May 2022 20:43:02 +0200
-Message-ID: <CAJZ5v0hoE0vn5BX586Ag4oLFRn3WoZJCUQZ1+jM1O6Vm+yyc4A@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
 Subject: Re: [PATCH] ACPI: battery: Add "Not Charging" quirk for Microsoft
  Surface devices
-To:     Maximilian Luz <luzmaximilian@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20220429174114.1277799-1-luzmaximilian@gmail.com>
+ <CAJZ5v0hoE0vn5BX586Ag4oLFRn3WoZJCUQZ1+jM1O6Vm+yyc4A@mail.gmail.com>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+In-Reply-To: <CAJZ5v0hoE0vn5BX586Ag4oLFRn3WoZJCUQZ1+jM1O6Vm+yyc4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 29, 2022 at 7:41 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
->
-> Microsoft Surface devices have a limiter that sets a fixed maximum
-> charge capacity for the battery. When that maximum capacity has been
-> reached, charging stops. In that case, _BST returns a battery state
-> field with both "charging" and "discharging" bits cleared. The battery
-> driver, however, returns "unknown" as status.
->
-> This seems to be the same behavior as observed on the ThinkPads, so
-> let's use the same quirk to handle that.
->
-> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-> ---
->
-> For what it's worth, I don't think the ACPI spec explicitly states that
-> any of the status bits need to be set, or that there are only the
-> "charging" and "discharging" states. As far as I can tell, ACPI only
-> states:
->
->     Notice that the Charging bit and the Discharging bit are mutually
->     exclusive and must not both be set at the same time. Even in
->     critical state, hardware should report the corresponding
->     charging/discharging state.
->
-> But that does not exclude the case that no bit is set. So, strictly
-> going by spec, I don't think it's necessary to put all of this behind a
-> quirk.
+On 5/6/22 20:43, Rafael J. Wysocki wrote:
+> On Fri, Apr 29, 2022 at 7:41 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
+>>
+>> Microsoft Surface devices have a limiter that sets a fixed maximum
+>> charge capacity for the battery. When that maximum capacity has been
+>> reached, charging stops. In that case, _BST returns a battery state
+>> field with both "charging" and "discharging" bits cleared. The battery
+>> driver, however, returns "unknown" as status.
+>>
+>> This seems to be the same behavior as observed on the ThinkPads, so
+>> let's use the same quirk to handle that.
+>>
+>> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+>> ---
+>>
+>> For what it's worth, I don't think the ACPI spec explicitly states that
+>> any of the status bits need to be set, or that there are only the
+>> "charging" and "discharging" states. As far as I can tell, ACPI only
+>> states:
+>>
+>>      Notice that the Charging bit and the Discharging bit are mutually
+>>      exclusive and must not both be set at the same time. Even in
+>>      critical state, hardware should report the corresponding
+>>      charging/discharging state.
+>>
+>> But that does not exclude the case that no bit is set. So, strictly
+>> going by spec, I don't think it's necessary to put all of this behind a
+>> quirk.
+> 
+> I think that this should be covered by the patch I've just applied:
+> 
+> https://patchwork.kernel.org/project/linux-acpi/patch/20220427154053.499203-1-wse@tuxedocomputers.com/
+> 
+> Shouldn't it?
 
-I think that this should be covered by the patch I've just applied:
+It does, thank you!
 
-https://patchwork.kernel.org/project/linux-acpi/patch/20220427154053.499203-1-wse@tuxedocomputers.com/
+Sorry for having missed that one.
 
-Shouldn't it?
-
-> ---
->  drivers/acpi/battery.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> index dc208f5f5a1f..1c88504aae5b 100644
-> --- a/drivers/acpi/battery.c
-> +++ b/drivers/acpi/battery.c
-> @@ -1152,6 +1152,19 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
->                         DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad"),
->                 },
->         },
-> +       {
-> +               /*
-> +                * Microsoft Surface devices have an optional "battery
-> +                * limiter". Due to this, there is a "Not Charging" state
-> +                * similar to the one on the Lenovo ThinkPads, described above.
-> +                */
-> +               .callback = battery_quirk_not_charging,
-> +               .ident = "Microsoft Surface",
-> +               .matches = {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "Surface"),
-> +               },
-> +       },
->         {
->                 /* Microsoft Surface Go 3 */
->                 .callback = battery_notification_delay_quirk,
-> --
-> 2.36.0
->
+Regards,
+Max
