@@ -2,104 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0737951EAD3
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 May 2022 04:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B34D51ECE2
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 May 2022 12:26:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346226AbiEHCTD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 7 May 2022 22:19:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59610 "EHLO
+        id S230482AbiEHKa3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 8 May 2022 06:30:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230082AbiEHCTC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 7 May 2022 22:19:02 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ADAC1114D
-        for <linux-acpi@vger.kernel.org>; Sat,  7 May 2022 19:15:13 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id p4so12638999edx.0
-        for <linux-acpi@vger.kernel.org>; Sat, 07 May 2022 19:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Cr4jqiwCZqgvtQ1mPAG6hA/aEXX0FhXJr8HGvR+MOF4=;
-        b=hIE5zwv2rTKn+CswdyopQHf0jMYKWFxRBF6odjeCxWBM/WRdVHzPYHl78NQfbEd29K
-         9enqxTUB9ZAvVAoyjF8AWhpC+f5IVcnJoMj+unQol6NBiW/KIRN+RPaYSq7RoP62yjw1
-         2X5NuVc9b98bRcPhXJz7ydAIkaPKYIMfoxEKnd5fu9ZsX03fmWcqseP8+bykpooAanlU
-         h5RINDqd4mWKTcsWni5bShtEPJLQkkRYT8dOneNqwF1lDvdzymwuLYp+4P1W1ToIwe8o
-         DNyWfhk7sajXrmDQAaFVYyGNgCHChouTJ3BZcW21ISZxH2nUIlO4cSJ32UEeiIotkomt
-         QV/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Cr4jqiwCZqgvtQ1mPAG6hA/aEXX0FhXJr8HGvR+MOF4=;
-        b=IICLIY0HrQblphdUwN9Y1J82PPGFEqnKpsiuMr0g8R/SH7a/5haz+XV2JQ4N3/Q8Gf
-         d5QPk/pHCKXcmwCQx2AZsqYhw/Pacg1+Dqptuymhy6dNX8nGhaorRdjn0XPU+pPXycTd
-         rStIXXYftI5bKEpTIAI5T6TkFGifQLCH78XAbPeVyjr/Mjhpkbmpm5B7/yZMMau+C3Wh
-         LS34IFjzRHraggzL7j0h1UeQOKgj1LrhMDBKcN/+hGEXG9rNp9BDBPPPmRM9KM+ktuDO
-         4siXKvJqmIhNcugQvNqo1mnZQIJzyWAfrhaN4jhneOdbNQ+9uRqm3icQVX3/mf30CzD6
-         M2pA==
-X-Gm-Message-State: AOAM530tgzcc7pxYArseaM/Ygufo1EoR4+o4cKdCfxZxSQjEkO4k+MRg
-        HAa1P4PwbRlQPZj5exqdYqXOTNy9W1Do12YM7hU=
-X-Google-Smtp-Source: ABdhPJzTI/QqRCdwIAmphqF9OzyyYNq5Vx7Ax17gRaKdquRTzXBKHWHIi7p9/pNhdRsw+jE0joTHzv2TJm/aPiu3TUo=
-X-Received: by 2002:a50:ed0e:0:b0:425:e476:f4ed with SMTP id
- j14-20020a50ed0e000000b00425e476f4edmr10770566eds.32.1651976112082; Sat, 07
- May 2022 19:15:12 -0700 (PDT)
+        with ESMTP id S230152AbiEHKa2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 8 May 2022 06:30:28 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01903DFBD;
+        Sun,  8 May 2022 03:26:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652005598; x=1683541598;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bSU9fO4lrWoDsIEUgjYMWmwmoe4o/mjHCu3zxv5muLo=;
+  b=bgLWj9Ugko7x3VrxEUt+bA8JPpASnmfAw1o6MUinh/egqAJlZVsOZsUF
+   OpPwjg74P73SVlHzQASclgOQg4JTNnba5JSvrildL03zgVBAY0p45BZdu
+   jD4Jcdduwompy3biUGjGM25k5I9iPlGJWiAkUezPkjTMKenvlgS6bISEd
+   hAX3rGbYH1z7abWiBc7ax3lWfnPHJqPaJr8+0Amxngs1cE7qFPjh9/Vu6
+   09+GnLlT86T3odBOHPQ5nDErTa+0E3TSkhS0WV1+BJR3INzkkyofOs9D7
+   rrRFI+9LzW399sOhtfVynAJgv9XUlzCK3e0SLSS3ZQuGgtQfMre4VGm3b
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10340"; a="329386548"
+X-IronPort-AV: E=Sophos;i="5.91,208,1647327600"; 
+   d="scan'208";a="329386548"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2022 03:26:37 -0700
+X-IronPort-AV: E=Sophos;i="5.91,208,1647327600"; 
+   d="scan'208";a="564569270"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2022 03:26:26 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nne7J-00DSlW-Qt;
+        Sun, 08 May 2022 13:26:21 +0300
+Date:   Sun, 8 May 2022 13:26:21 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Daniel Lezcano <daniel.lezcano@linexp.org>
+Cc:     daniel.lezcano@linaro.org, rafael@kernel.org, khilman@baylibre.com,
+        abailon@baylibre.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@kernel.org>, Peter Kaestle <peter@piie.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Niklas =?iso-8859-1?Q?S=F6derlund?= 
+        <niklas.soderlund@ragnatech.se>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Chuansheng Liu <chuansheng.liu@intel.com>,
+        Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Antoine Tenart <atenart@kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
+        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
+        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER" 
+        <platform-driver-x86@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:RENESAS R-CAR THERMAL DRIVERS" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v2 01/14] thermal/core: Change thermal_zone_ops to
+ thermal_sensor_ops
+Message-ID: <YneazaFEg3nONazs@smile.fi.intel.com>
+References: <20220507125443.2766939-1-daniel.lezcano@linexp.org>
+ <20220507125443.2766939-2-daniel.lezcano@linexp.org>
 MIME-Version: 1.0
-Received: by 2002:a50:3554:0:0:0:0:0 with HTTP; Sat, 7 May 2022 19:15:11 -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Mr. David Kabore" <dkabore16@gmail.com>
-Date:   Sat, 7 May 2022 19:15:11 -0700
-Message-ID: <CANLKR0vzXK+xff8dc1NLRToAvTmMja99WOdUionm413PVRoNow@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        HK_NAME_FM_MR_MRS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220507125443.2766939-2-daniel.lezcano@linexp.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:52a listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [wijh555[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [dkabore16[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [dkabore16[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 HK_NAME_FM_MR_MRS No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-Hello,
-I'm Mr. David Kabore, how are you doing hope you are in good health,
-the Board irector try to reach you on phone several times Meanwhile,
-your number was not connecting. before he ask me to send you an email
-to hear from you if you are fine. hope to hear you are in good Health.
+On Sat, May 07, 2022 at 02:54:29PM +0200, Daniel Lezcano wrote:
+> A thermal zone is software abstraction of a sensor associated with
+> properties and cooling devices if any.
+> 
+> The fact that we have thermal_zone and thermal_zone_ops mixed is
+> confusing and does not clearly identify the different components
+> entering in the thermal management process. A thermal zone appears to
+> be a sensor while it is not.
+> 
+> In order to set the scene for multiple thermal sensors aggregated into
+> a single thermal zone. Rename the thermal_zone_ops to
+> thermal_sensor_ops, that will appear clearyl the thermal zone is not a
+> sensor but an abstraction of one [or multiple] sensor(s).
 
-Thanks,
-Mr. David Kabore.
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+for whatever drivers in this series I have somehow been involved into.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
