@@ -2,96 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC64851FF7D
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 May 2022 16:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B021520398
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 May 2022 19:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236904AbiEIOVX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 May 2022 10:21:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50240 "EHLO
+        id S239678AbiEIRh3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 May 2022 13:37:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236905AbiEIOVW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 May 2022 10:21:22 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2086.outbound.protection.outlook.com [40.107.236.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F8AA2044C8;
-        Mon,  9 May 2022 07:17:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bTh1uTPssXf91BaT0PzDMWxSXiFBcKiq5tvHLMEH9uRQrw/sfftcq5+f0DsrW0J/zDyI68+V9zvBfSzJbX8Gdqtf65XcYHfChB3TgZbkjASDRwTmUK7eKnQ6DRHWaUW6CBa2QZUoDpFvUfNFMSYu0Hf73YvjgPwz31PSOSlGwfWqGise+yO3JC4Q/VbRnQXbPvhLWBlO6RHugMp4WQyKL0D3982GLAsDAQeSPL7wcR4Zwd71BrqZrETtRVCsKAYD8nP6EAglg+ecTQZNlyrLBOmXNeyNbREPI0p4d2tsb517G8eZV/42yJsnZT0F5psS7saXJJFbenXlksRzP9RWiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ChsgT1BknTbDT6cYZIEKT43oemuREX/tCoABYafNBEQ=;
- b=UuOu//Pi/5OT36dRS6Dm4jPvWQk5lyi9H/2jxqxS91gSvCCIGDgbmknkRX2aZ7aApULM2ISNGeP2qmiftB06GThpkPN8sjiv7S9JN4g475TC79qxerdwC5T7sUbOmUISrUNDmRvCoD93uphUTs+tTzE7nfGs5ZPSAICViq/8/FuqQ1qPlJ07if4RN489yWc1qedJVnE62Mh9FmwBzvdKMZX40z5+/gQcWkfaWQ2tc+06lY9tp5QEGeW64LNGrzLNnLXVHM7FOOXdXob9p6o2O4a8pQyqgpvyH8XJxa/2uhjBN2k2Efe+lV47xvuhNd3E0A3IbGekhP6tS3fh7ByyAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ChsgT1BknTbDT6cYZIEKT43oemuREX/tCoABYafNBEQ=;
- b=glxjijBhlOnYuHFYSU+3ml1VWPux+h1ThDDxgvyC1y8BQg38f+nESY69UNh7lAPv+E0t/P04nXO4JDlh8XgbEHnS4IUF43vX7P91eGXd4tDDFXh+dCwRgg8i8chvO3Qxr7+gRgnjI7U6y9ZREdXs2dHtS8CKj1ymR2SuAw7wBIs=
-Received: from MW4PR04CA0317.namprd04.prod.outlook.com (2603:10b6:303:82::22)
- by CH0PR12MB5187.namprd12.prod.outlook.com (2603:10b6:610:ba::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.21; Mon, 9 May
- 2022 14:17:25 +0000
-Received: from CO1NAM11FT035.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:82:cafe::5c) by MW4PR04CA0317.outlook.office365.com
- (2603:10b6:303:82::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.22 via Frontend
- Transport; Mon, 9 May 2022 14:17:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT035.mail.protection.outlook.com (10.13.175.36) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5227.15 via Frontend Transport; Mon, 9 May 2022 14:17:24 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 9 May
- 2022 09:17:23 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <mario.limonciello@amd.com>, Sudeep Holla <sudeep.holla@arm.com>,
-        "Jassi Brar" <jassisinghbrar@gmail.com>,
-        "open list:ACPI PCC(Platform Communication Channel) MAILBO..." 
-        <linux-acpi@vger.kernel.org>,
-        "open list:MAILBOX API" <linux-kernel@vger.kernel.org>
-Subject: [PATCH] mailbox: pcc: Fix an invalid-load caught by the address sanitizer
-Date:   Mon, 9 May 2022 09:17:16 -0500
-Message-ID: <20220509141716.1270-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S239675AbiEIRh1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 May 2022 13:37:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 77EBE18A688
+        for <linux-acpi@vger.kernel.org>; Mon,  9 May 2022 10:33:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1652117611;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=BrOryVoiPth4NEXB/BcHFi4CDETprY0Y6T3t1K6jM1o=;
+        b=XWtcTwaQO2P77oTj4pMMvVdC7DjUcTMnMGWGprMinzDe732aZDd0FKIkmdi1Sz3GM+5Uf4
+        s/KY1+JwWx1sSZ+aoKTSnhnJhuoQa1mEdMPVfEOKV+wnuK+XKUKjMBcGgvAVmhB+iqLrfd
+        Zwh57EhAS5w9gSRgptDVwz3PCDyTtNY=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-659-FzQ4WxRxMY6lN_JxDuugoQ-1; Mon, 09 May 2022 13:33:30 -0400
+X-MC-Unique: FzQ4WxRxMY6lN_JxDuugoQ-1
+Received: by mail-ed1-f71.google.com with SMTP id e3-20020a50a683000000b00427afcc840aso8652214edc.13
+        for <linux-acpi@vger.kernel.org>; Mon, 09 May 2022 10:33:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=BrOryVoiPth4NEXB/BcHFi4CDETprY0Y6T3t1K6jM1o=;
+        b=CMRPYmyCO6y35kj0lyZdW0a0Dw/fQUYaHZXOVpEnZsLvUjjJ7NaLLxnMNk78jMu5oG
+         xnd8pwVxvhKgLrOtOPGCMbXhXEcMeBMyZnZ3v2mBmg0ubQRNMffZ9laUp9YnldiE6+ox
+         D+ZCJAgP2F90FWYZ1WQGnG/tkmU8g5bf6aTBVThjSapPPnzSadotsjuU1aYRd7uOHir8
+         TbqqlvvPNZLriqPeF1ZSPLxsfi3Tk3ZXzvON4DbjaqYhNuihcg653CmPU8OKzYSWLKc9
+         8XLpOsCVghPMloQrxBomngrD0lYHUjFgu4Z3R+6qrrXXKPTDk4rRd8wrWXEDxFVU9zp0
+         W95Q==
+X-Gm-Message-State: AOAM531HIZrIqlCQyr83kFicjqaguUi5zKm+16xsCcqH+CkYOXhUr4rx
+        cVI28F4XX6FENLdkka3fsG3JB1Q0I/3DEJWCLoxZer9L6o8YoSJDIfGUAdLBfj+ycH4cnEml989
+        tCzuwgzDG9owLyKadSqJa+w==
+X-Received: by 2002:a17:906:79c4:b0:6cf:5489:da57 with SMTP id m4-20020a17090679c400b006cf5489da57mr15435333ejo.48.1652117608879;
+        Mon, 09 May 2022 10:33:28 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxaavMaXxuM8ysKOeG2C2lbbsIb3Vfw0b+bxtCrrx8ajotBokbYemcoj+TK9IdWhzV0vUW+mg==
+X-Received: by 2002:a17:906:79c4:b0:6cf:5489:da57 with SMTP id m4-20020a17090679c400b006cf5489da57mr15435313ejo.48.1652117608590;
+        Mon, 09 May 2022 10:33:28 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id d26-20020a056402079a00b004288d9c0b0asm2927448edy.34.2022.05.09.10.33.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 May 2022 10:33:28 -0700 (PDT)
+Message-ID: <3e92c4b6-8976-2bd4-ebe2-465990eb66d2@redhat.com>
+Date:   Mon, 9 May 2022 19:33:27 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v7 1/1] x86/PCI: Ignore E820 reservations for bridge
+ windows on newer systems
+Content-Language: en-US
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220507153142.GA568130@bhelgaas>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220507153142.GA568130@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4ffe8db1-420a-47ca-72fd-08da31c6a3e9
-X-MS-TrafficTypeDiagnostic: CH0PR12MB5187:EE_
-X-Microsoft-Antispam-PRVS: <CH0PR12MB5187984CB5E4491871BE0586E2C69@CH0PR12MB5187.namprd12.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: a+qvcgiCEjscx2ss+Avgx10vHWQ625aohXYP66HkSQPTrHbrLl95Ma0wMlhyx51H4NHuCYPAwghHhCOaM+BrHnGm1F8DQIXWjT7SaxxKNs3If3NEW9J7W9krysX7giedS/y+pN0pnDugh1WmmDObVMiCfewJOH0WwDv5z1kW/T3KC0Do7U/hdxGPxriv4K3r5JF3eOHSLQJMr0z45gTuKkJ2AR+qk9N+GY1X1NHksL0Y6wJKiQgGKh3Y+MwgJ4QlLgu9bLNFYV6U/l/u/W76Tmxs75lsLNr4QMBxlYebs+8YFUUTTPf0pG6ZpU7GxceCuv+Hm3tMQsveWqzLiGaWEugn/KPBAkKXyHFtXHdPKNxaRQ+MA7eXBTYlRbZWbnedmeT0Td2NTSPhzBijlEL3JFUy4xJolGutkxlCITUnOnEsGlfdMFbbm3DZ1Eox7dd4Ea4fnCV8VS+6uqeahZmSi8Ey2PHiPTjSDKihXdTb7WLWMBYjoypL2kyJ044nndqDGkck9gwmk4jIM6hnD18wVHcy4skUuZkuYl7CfKhqDYrJCLCEjS/7SONpqa4CI+H5tdTn78vr+nNkbFzOr7TKtXjnAn3J0EY9Y9A47M7LrmVuhFSvmRZoKdd6MWodmYXhyFrcOJZt/ihr6R//hdI7YpJKo2/LxD3c2wdWRi9PE4/DEhTVckRbR60YAIIlKKNrehQok2wgisbQk3BZ8SzgVIhPLeYTHpuKiJYPp346H6mYdnL3B6pgwqzusYQd7gxnGdTJNGvRiwde5bWG63lRfUBB9Quye5sHydE2lxy6u+8=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(70586007)(2616005)(8676002)(1076003)(47076005)(426003)(336012)(508600001)(70206006)(186003)(83380400001)(966005)(86362001)(26005)(6666004)(316002)(82310400005)(7696005)(110136005)(36860700001)(356005)(40460700003)(16526019)(8936002)(81166007)(44832011)(2906002)(36756003)(15650500001)(5660300002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2022 14:17:24.7742
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ffe8db1-420a-47ca-72fd-08da31c6a3e9
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT035.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5187
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -99,35 +92,166 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-`pcc_mailbox_probe` doesn't initialize all memory that has been allocated
-before the first time that one of it's members `txdone_irq` may be
-accessed.
+Hi Bjorn,
 
-This leads to a an invalid load any time that this member is accessed:
-[    2.429769] UBSAN: invalid-load in drivers/mailbox/pcc.c:684:22
-[    2.430324] UBSAN: invalid-load in drivers/mailbox/mailbox.c:486:12
-[    4.276782] UBSAN: invalid-load in drivers/acpi/cppc_acpi.c:314:45
+On 5/7/22 17:31, Bjorn Helgaas wrote:
+> On Sat, May 07, 2022 at 12:09:03PM +0200, Hans de Goede wrote:
+>> Hi Bjorn,
+>>
+>> On 5/6/22 18:51, Bjorn Helgaas wrote:
+>>> On Thu, May 05, 2022 at 05:20:16PM +0200, Hans de Goede wrote:
+>>>> Some BIOS-es contain bugs where they add addresses which are already
+>>>> used in some other manner to the PCI host bridge window returned by
+>>>> the ACPI _CRS method. To avoid this Linux by default excludes
+>>>> E820 reservations when allocating addresses since 2010, see:
+>>>> commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
+>>>> space").
+>>>>
+>>>> Recently (2019) some systems have shown-up with E820 reservations which
+>>>> cover the entire _CRS returned PCI bridge memory window, causing all
+>>>> attempts to assign memory to PCI BARs which have not been setup by the
+>>>> BIOS to fail. For example here are the relevant dmesg bits from a
+>>>> Lenovo IdeaPad 3 15IIL 81WE:
+>>>>
+>>>>  [mem 0x000000004bc50000-0x00000000cfffffff] reserved
+>>>>  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
+>>>>
+>>>> The ACPI specifications appear to allow this new behavior:
+>>>>
+>>>> The relationship between E820 and ACPI _CRS is not really very clear.
+>>>> ACPI v6.3, sec 15, table 15-374, says AddressRangeReserved means:
+>>>>
+>>>>   This range of addresses is in use or reserved by the system and is
+>>>>   not to be included in the allocatable memory pool of the operating
+>>>>   system's memory manager.
+>>>>
+>>>> and it may be used when:
+>>>>
+>>>>   The address range is in use by a memory-mapped system device.
+>>>>
+>>>> Furthermore, sec 15.2 says:
+>>>>
+>>>>   Address ranges defined for baseboard memory-mapped I/O devices, such
+>>>>   as APICs, are returned as reserved.
+>>>>
+>>>> A PCI host bridge qualifies as a baseboard memory-mapped I/O device,
+>>>> and its apertures are in use and certainly should not be included in
+>>>> the general allocatable pool, so the fact that some BIOS-es reports
+>>>> the PCI aperture as "reserved" in E820 doesn't seem like a BIOS bug.
+>>>>
+>>>> So it seems that the excluding of E820 reserved addresses is a mistake.
+>>>>
+>>>> Ideally Linux would fully stop excluding E820 reserved addresses,
+>>>> but then various old systems will regress.
+>>>> Instead keep the old behavior for old systems, while ignoring
+>>>> the E820 reservations for any systems from now on.
+>>>>
+>>>> Old systems are defined here as BIOS year < 2018, this was chosen to
+>>>> make sure that pci_use_e820 will not be set on the currently affected
+>>>> systems, the oldest known one is from 2019.
+>>>>
+>>>> Testing has shown that some newer systems also have a bad _CRS return.
+>>>> The pci_crs_quirks DMI table is used to keep excluding E820 reservations
+>>>> from the bridge window on these systems.
+>>>>
+>>>> Also add pci=no_e820 and pci=use_e820 options to allow overriding
+>>>> the BIOS year + DMI matching logic.
+>>>>
+>>>> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
+>>>> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+>>>> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
+>>>> BugLink: https://bugs.launchpad.net/bugs/1878279
+>>>> BugLink: https://bugs.launchpad.net/bugs/1931715
+>>>> BugLink: https://bugs.launchpad.net/bugs/1932069
+>>>> BugLink: https://bugs.launchpad.net/bugs/1921649
+>>>> Cc: Benoit Grégoire <benoitg@coeus.ca>
+>>>> Cc: Hui Wang <hui.wang@canonical.com>
+>>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>>
+>>>> +	 * Ideally Linux would fully stop using E820 reservations, but then
+>>>> +	 * various old systems will regress. Instead keep the old behavior for
+>>>> +	 * old systems + known to be broken newer systems in pci_crs_quirks.
+>>>> +	 */
+>>>> +	if (year >= 0 && year < 2018)
+>>>> +		pci_use_e820 = true;
+>>>
+>>> How did you pick 2018?  Prior to this patch, we used E820 reservations
+>>> for all machines.  This patch would change that for 2019-2022
+>>> machines, so there's a risk of breaking some of them.
+>>
+>> Correct. I picked 2018 because the first devices where using E820
+>> reservations are causing issues (i2c controller not getting resources
+>> leading to non working touchpad / thunderbolt hotplug issues) have
+>> BIOS dates starting in 2019. I added a year margin, so we could make
+>> this 2019.
+>>
+>>> I'm hesitant about changing the behavior for machines already in the
+>>> field because if they were tested at all with Linux, it was without
+>>> this patch.  So I would lean toward preserving the current behavior
+>>> for BIOS year < 2023.
+>>
+>> I see, I presume the idea is to then use DMI to disable E820 clipping
+>> on current devices where this is known to cause problems ?
+>>
+>> So for v8 I would:
+>>
+>> 1. Change the cut-off check to < 2023
+>> 2. Drop the DMI quirks I added for models which are known to need E820
+>>    clipping hit by the < 2018 check
+>> 3. Add DMI quirks for models for which it is known that we must _not_
+>>    do E820 clipping
+>>
+>> Is this the direction you want to go / does that sound right?
+> 
+> Yes, I think that's what we should do.  All the machines in the field
+> will be unaffected, except that we add quirks for known problems.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215587
-Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/mailbox/pcc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I've been working on this today. I've mostly been going through
+the all the existing bugs about this, to make a list of DMI matches
+for devices on which we should _not_ do e820 clipping to fix th
+kernel being unable to assign BARs there.
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index ed18936b8ce6..ebfa33a40fce 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -654,7 +654,7 @@ static int pcc_mbox_probe(struct platform_device *pdev)
- 		goto err;
- 	}
- 
--	pcc_mbox_ctrl = devm_kmalloc(dev, sizeof(*pcc_mbox_ctrl), GFP_KERNEL);
-+	pcc_mbox_ctrl = devm_kzalloc(dev, sizeof(*pcc_mbox_ctrl), GFP_KERNEL);
- 	if (!pcc_mbox_ctrl) {
- 		rc = -ENOMEM;
- 		goto err;
--- 
-2.25.1
+I've found an interesting pattern there, all affected devices
+are Lenovo devices with "IIL" in there device name, e.g. :
+"IdeaPad 3 15IIL05". I've looked up all Lenovo devices which
+have "IIL" as part of their DMI_PRODUCT_VERSION string here:
+https://github.com/linuxhw/DMI/
+
+And then looked them up at https://linux-hardware.org/ and checked
+their dmesg to see if they have the e820 problem other ideapads
+have. I've gone through approx. half the list now and all
+except one model seem to have the e820 problem.
+
+So it looks like we might be able to match all problem models
+with a single DMI match.
+
+So the problem seems to be limited to one specific device
+series / range and this is making me have second thoughts
+about doing a date based cut-off at all. Trying to switch
+over any models which are new in 2023 is fine, the problem
+with a DMI BIOS date approach though is that as soon as some
+new management-engine CVE comes out we will also see BIOS
+updates with a year of 2023 for many existing models, of
+up to 3-4 years old at least; and chances are that some of
+those older models getting BIOS updates will be bitten by
+this change.
+
+So as said I'm having second thoughts about the date based
+approach. Bjorn, what do you think of just using DMI quirks
+to disable e820 clipping on known problematic models and
+otherwise keeping things as is ?
+
+Note I'm also fine with going with the 2023 date based
+approach, I'm just wondering if that will be a good idea
+and not something which we might regret later.
+
+Regards,
+
+Hans
+
+
+p.s.
+
+I've seen your email about the Acer laptop; I'll take
+a look at that coming Wednesday.
 
