@@ -2,169 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA5551FE7F
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 May 2022 15:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC64851FF7D
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 May 2022 16:25:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236027AbiEINlr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 May 2022 09:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38694 "EHLO
+        id S236904AbiEIOVX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 May 2022 10:21:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235984AbiEINlp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 May 2022 09:41:45 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2123.outbound.protection.outlook.com [40.107.93.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3A5E00;
-        Mon,  9 May 2022 06:37:51 -0700 (PDT)
+        with ESMTP id S236905AbiEIOVW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 May 2022 10:21:22 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2086.outbound.protection.outlook.com [40.107.236.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F8AA2044C8;
+        Mon,  9 May 2022 07:17:27 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g9rQ/0TfLCQeh+8SoHP97HOW6rTt5dvoblNM2ULSHPdFkKnxvIHfR9SDDtmHU/GwN89E/dkqve6SR05w2TfKwc24U1t4a6nPML6xk7UudZPb/yoKD5Sv9tm7UjcB6JgDyzXcII1wJAnrZLawZ9LYdUmEe+l/pS6h7yjV0UvJkK+92n6SMO1iTkhhHmvrGvmkAktuFwsZhEvf6scYSNKJxyQx3fkRI7yIViF+3OL3U1ReDkpD4BjRagtO3IVm2iH8EqUy88pFUnus3xUf6l7PRJMgj4SeHdZkieBD70oN4SrylfZnbnDj2hrAD8sfCkgOzyxX9i7BTFhIchoLPSYG1g==
+ b=bTh1uTPssXf91BaT0PzDMWxSXiFBcKiq5tvHLMEH9uRQrw/sfftcq5+f0DsrW0J/zDyI68+V9zvBfSzJbX8Gdqtf65XcYHfChB3TgZbkjASDRwTmUK7eKnQ6DRHWaUW6CBa2QZUoDpFvUfNFMSYu0Hf73YvjgPwz31PSOSlGwfWqGise+yO3JC4Q/VbRnQXbPvhLWBlO6RHugMp4WQyKL0D3982GLAsDAQeSPL7wcR4Zwd71BrqZrETtRVCsKAYD8nP6EAglg+ecTQZNlyrLBOmXNeyNbREPI0p4d2tsb517G8eZV/42yJsnZT0F5psS7saXJJFbenXlksRzP9RWiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ff95JI19/gyQEjNfUa/WYjuVRsBll2sRmhFrmNGnG4A=;
- b=J80IPaIk+YZayDjbVm9ktkUHngrBwneD2kDFF5ondAlmISKQsp3IqxBsDTXvpxVx2txYkHYoQGM9yFVSwmV1EVV7PaHwS0d8YK0IySfemFfNhCr+XZ/DFyqyPAMEkkB0fY6BEi1rjvR58KPtUDw+/K5pWtt0EQ9dySYx7HTIVUnuLysCgg7EajeVp+gKjlVGQOa6ogMKDOuYeh5gl1vfXsChW8oQRQDjh2euExKCK8WcjCb7H/DJBi2+3QXvLQ+KHn+i0siFWeF5esZnAjhV24PvZPvayyzoQs9N6h1ExRgdn4m+4jAO4E2nIDg2kZeDGaedw8lQVDAHns/gXZKKHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=amperemail.onmicrosoft.com; dkim=pass
- header.d=amperemail.onmicrosoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
+ bh=ChsgT1BknTbDT6cYZIEKT43oemuREX/tCoABYafNBEQ=;
+ b=UuOu//Pi/5OT36dRS6Dm4jPvWQk5lyi9H/2jxqxS91gSvCCIGDgbmknkRX2aZ7aApULM2ISNGeP2qmiftB06GThpkPN8sjiv7S9JN4g475TC79qxerdwC5T7sUbOmUISrUNDmRvCoD93uphUTs+tTzE7nfGs5ZPSAICViq/8/FuqQ1qPlJ07if4RN489yWc1qedJVnE62Mh9FmwBzvdKMZX40z5+/gQcWkfaWQ2tc+06lY9tp5QEGeW64LNGrzLNnLXVHM7FOOXdXob9p6o2O4a8pQyqgpvyH8XJxa/2uhjBN2k2Efe+lV47xvuhNd3E0A3IbGekhP6tS3fh7ByyAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ff95JI19/gyQEjNfUa/WYjuVRsBll2sRmhFrmNGnG4A=;
- b=xno+wTw9gl7B/ia0G64NDWcCjdFUdbjNJ2soJevwkYOlkkc99936JpBa0xX7w7EJN8MHYSrC19QiCG/CdGf2O9i1PD9k/WtJv0MTX09Rmob799Zt2iFybNfD1EqdQNPt8htnrlKGOazkGkvEiA1bsMscpy/I+raEw3wVxKisHIg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
-Received: from PH7PR01MB7608.prod.exchangelabs.com (2603:10b6:510:1d3::5) by
- DS7PR01MB7590.prod.exchangelabs.com (2603:10b6:8:72::18) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5186.21; Mon, 9 May 2022 13:37:49 +0000
-Received: from PH7PR01MB7608.prod.exchangelabs.com
- ([fe80::e8eb:b7b1:f812:8ce]) by PH7PR01MB7608.prod.exchangelabs.com
- ([fe80::e8eb:b7b1:f812:8ce%3]) with mapi id 15.20.5164.020; Mon, 9 May 2022
- 13:37:48 +0000
-Message-ID: <7413d707-93a5-3681-e338-adebef198ec5@amperemail.onmicrosoft.com>
-Date:   Mon, 9 May 2022 09:37:41 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
-Content-Language: en-US
-To:     "ishii.shuuichir@fujitsu.com" <ishii.shuuichir@fujitsu.com>,
-        'Tyler Baicar' <baicar@os.amperecomputing.com>,
-        "patches@amperecomputing.com" <patches@amperecomputing.com>,
-        "abdulhamid@os.amperecomputing.com" 
-        <abdulhamid@os.amperecomputing.com>,
-        "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "maz@kernel.org" <maz@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "alexandru.elisei@arm.com" <alexandru.elisei@arm.com>,
-        "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>,
-        "vincenzo.frascino@arm.com" <vincenzo.frascino@arm.com>,
-        "tabba@google.com" <tabba@google.com>,
-        "marcan@marcan.st" <marcan@marcan.st>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "jthierry@redhat.com" <jthierry@redhat.com>,
-        "masahiroy@kernel.org" <masahiroy@kernel.org>,
-        "samitolvanen@google.com" <samitolvanen@google.com>,
-        "john.garry@huawei.com" <john.garry@huawei.com>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "gor@linux.ibm.com" <gor@linux.ibm.com>,
-        "zhangshaokun@hisilicon.com" <zhangshaokun@hisilicon.com>,
-        "tmricht@linux.ibm.com" <tmricht@linux.ibm.com>,
-        "dchinner@redhat.com" <dchinner@redhat.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "Vineeth.Pillai@microsoft.com" <Vineeth.Pillai@microsoft.com>
-References: <20211124170708.3874-1-baicar@os.amperecomputing.com>
- <20211124170708.3874-2-baicar@os.amperecomputing.com>
- <TYCPR01MB6160D05580A6E8C9510D25A5E9709@TYCPR01MB6160.jpnprd01.prod.outlook.com>
- <9330bbfb-d016-0283-a5ed-e2f4d5446759@amperemail.onmicrosoft.com>
- <TYCPR01MB616007723D2C8BA08F5337D2E9F59@TYCPR01MB6160.jpnprd01.prod.outlook.com>
-From:   Tyler Baicar <baicar@amperemail.onmicrosoft.com>
-In-Reply-To: <TYCPR01MB616007723D2C8BA08F5337D2E9F59@TYCPR01MB6160.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH2PR15CA0029.namprd15.prod.outlook.com
- (2603:10b6:610:51::39) To PH7PR01MB7608.prod.exchangelabs.com
- (2603:10b6:510:1d3::5)
+ bh=ChsgT1BknTbDT6cYZIEKT43oemuREX/tCoABYafNBEQ=;
+ b=glxjijBhlOnYuHFYSU+3ml1VWPux+h1ThDDxgvyC1y8BQg38f+nESY69UNh7lAPv+E0t/P04nXO4JDlh8XgbEHnS4IUF43vX7P91eGXd4tDDFXh+dCwRgg8i8chvO3Qxr7+gRgnjI7U6y9ZREdXs2dHtS8CKj1ymR2SuAw7wBIs=
+Received: from MW4PR04CA0317.namprd04.prod.outlook.com (2603:10b6:303:82::22)
+ by CH0PR12MB5187.namprd12.prod.outlook.com (2603:10b6:610:ba::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.21; Mon, 9 May
+ 2022 14:17:25 +0000
+Received: from CO1NAM11FT035.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:82:cafe::5c) by MW4PR04CA0317.outlook.office365.com
+ (2603:10b6:303:82::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.22 via Frontend
+ Transport; Mon, 9 May 2022 14:17:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT035.mail.protection.outlook.com (10.13.175.36) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5227.15 via Frontend Transport; Mon, 9 May 2022 14:17:24 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 9 May
+ 2022 09:17:23 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     <mario.limonciello@amd.com>, Sudeep Holla <sudeep.holla@arm.com>,
+        "Jassi Brar" <jassisinghbrar@gmail.com>,
+        "open list:ACPI PCC(Platform Communication Channel) MAILBO..." 
+        <linux-acpi@vger.kernel.org>,
+        "open list:MAILBOX API" <linux-kernel@vger.kernel.org>
+Subject: [PATCH] mailbox: pcc: Fix an invalid-load caught by the address sanitizer
+Date:   Mon, 9 May 2022 09:17:16 -0500
+Message-ID: <20220509141716.1270-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3bedd3fa-ac04-4387-8f43-08da31c11b34
-X-MS-TrafficTypeDiagnostic: DS7PR01MB7590:EE_
-X-Microsoft-Antispam-PRVS: <DS7PR01MB75906AFBB11402A3849515AAE3C69@DS7PR01MB7590.prod.exchangelabs.com>
+X-MS-Office365-Filtering-Correlation-Id: 4ffe8db1-420a-47ca-72fd-08da31c6a3e9
+X-MS-TrafficTypeDiagnostic: CH0PR12MB5187:EE_
+X-Microsoft-Antispam-PRVS: <CH0PR12MB5187984CB5E4491871BE0586E2C69@CH0PR12MB5187.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7gjFDem9Pa3oY90FHco0El2DelbD9gEUKhhKZL6XPmVBUs3jeY7Yl7amB52SpS3P/4WLoeyVeUuONwS5zgJc3qaOYtetltGx8eHAPAmnnOSn3sTlZ/NljENPpEaay1BuiYRGqA4Lu95j2TbjGTiEcB51+CceVZjQLmi+A86MadqG/D/jpIDT5mKU2oBOiDeGuyeq+YdssiD+RWmMYGwlSLKFxE3OaA6hIpOBoAcyUevh8Xihji7AEkVjWb2P+JRkpayXzyLMgbYVc8jCQKTvqKh39W47RViM3aLn7jcl8fqT9gAFgXasR+VkKKcmsTr7ia5l0avzyMeS3m1u31DoL2CNZZ/0HgWYMW0WGTQefOS9Z0iQA1Cpza5cCI6Xw0xVgemrnVRonThdkCbnhN6DI+PbnQNV+3I4omw56ZlosswehKBYJlNMBOKB1nJEoccF55A2o5cshE+qFl+a9A6WYVOxdVhzPqbccEKcLKnsnrQdLYqLDOUOYAL3BTI6Mq/u/UXSs5guUi2OF+xTPK2tSp47lKMq4QKcjgMzvQ5UK7ccvKH0WAOWtZLjgBT6iKLhaZbopem/0KSFBcZRZZyiIvGKWJVInlC6brz0KDBdqbvB+z9bQesGEPtTvGm9VfzhFyyUcRXybgsHVu4kvTiEVe0Z50ZRkYkobOGPcPCpGSmRMBhcZe2ObUp0YF3QjVbOVet5pMn3tbc8Sj8olg9UEVqI/lsziNW1NC4Y6sx0VJLSVNRw/yeX0dVoLQgGsRFU
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR01MB7608.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(110136005)(83170400001)(8936002)(7416002)(7406005)(31696002)(66946007)(66556008)(66476007)(5660300002)(8676002)(26005)(186003)(921005)(316002)(42882007)(2616005)(2906002)(38350700002)(38100700002)(53546011)(6666004)(6512007)(6506007)(52116002)(508600001)(31686004)(83380400001)(6486002)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UTQ2QW1ka3VqTS8vSnlBc0tVdFhLbHFMd0kwa0hIQktUdGQyV1ZmNktPd05I?=
- =?utf-8?B?Z0RsSzNGTUs1K3FuWFdxVzVRRTQ5d3Z5dmZBWTVlUHZhZnRuS014RFlTY1lW?=
- =?utf-8?B?TEhxeXM0OXBwNTc5bDBpbzlWZWdiL1VMWlM0VmdoNWRCYVJvODBEUWxWYm12?=
- =?utf-8?B?NTV2THQ0cEtEQndZeVN4U2FCNG9zTHU1UVNHZGk3VkNvZHY3Vmgxd3hDT0Rv?=
- =?utf-8?B?SUlXS0VqYjRTNkpZNTY4M1FmWlFvL2hubWM0eHYxNE8rV29JRG5qeitwZTNk?=
- =?utf-8?B?ZVJkK2J2MUVBTGRyTEZ2aFpTcm4rSmE1NnNjUzNlQVVhLzJtOVphME82TnJW?=
- =?utf-8?B?STFhWkVFeWt0NTAveVNJMW5nS1MrOUwvQnV3cnYxQVdreWt2N05Db2JZMDJP?=
- =?utf-8?B?YzVWVVFWR3VKNEFOand3bTdwZmFKMzZpWW1EUjE1aFdibmoraW0vR21zajF0?=
- =?utf-8?B?ZGdRdTVUQmRybGUyOStmYzFKR1NLVzRCS1lNclpKdmJMclhtZ2twdUREcWFn?=
- =?utf-8?B?MEpYSjlsU1g5bTZqWFczNytYWUpPMXpvdTByQWRnd05BWENSeEswdDF5SnF5?=
- =?utf-8?B?ZlB0ektQeDdsSitCY0FjT2FscnkxdGQ0dUV1RWhveGZzZy9BWllGOEc2bHV4?=
- =?utf-8?B?QmlKdzgwSlBQK09KRndxdHlSMzNyNTd5UTdvWWZvbElGNklKQTI1VE1WcUds?=
- =?utf-8?B?aDN5b05EV0NxV3U0WG9vKzRDMXc5ODFROTBKaFgzbUtZS0drL1dFL0NwY2RX?=
- =?utf-8?B?QXRKc0FWWjVDUWNGUGxEUVdvaXZIbEFrdlFpb3RWaVovdFpRSWthUFRSbzky?=
- =?utf-8?B?WnFyTDI1M0dTWG0yOUQzOUVVa2JrVFAzaXdxMXlHOTd6VHdwUWw1VnJMa1gw?=
- =?utf-8?B?eURkRSs3blJvV3dRR1IvaDJCZU5BVzFuNXdhdnBUZHl4cmRQSWFpdStjWEJF?=
- =?utf-8?B?NHNiNzA0alIwL04vYWxVTVF3T3pIREJxVnBpWHFsTFNlRW82VVhlNW0vTDZy?=
- =?utf-8?B?ZkNiMDZSVjFzWS9yWHhuSEJjNGZwNHREcmNQeTg1Q2VyUmZzTTc0VHlpdzd0?=
- =?utf-8?B?UmdLOUFqWDJHTzcrVUlWYm16bUpBaE9pQTBRa0VxQVpyN2pHTnYyWkt3Yzd5?=
- =?utf-8?B?RFFDcGphMStlRjMvaUpyVmpSclZwR3lRUDRJOWE0dnI1ZGFYYXJmc0xLclh4?=
- =?utf-8?B?TGo2aFZwd2JUQ21IdFVUTHJndDZOY2VSNStzK2VHcjNOcGl5aDZTdWpOVHRN?=
- =?utf-8?B?ZGdLZ2J6YVFIb1BPZ1doMkFYdzdJMklFVnl2em9DNUJLTy9yUTJ0cFgxWlJL?=
- =?utf-8?B?U0xWaWdHTVJxYURma2dOSUp6WjN4SHljRHp1V3NUYTBEaDhadjFKdlRLT2Zz?=
- =?utf-8?B?SW43STNVeHRiSGdUYk44bk5pTCtuRGtMUjRxam5ucGlETkN2QkZvdjBPT1kv?=
- =?utf-8?B?enFtNzNzOS9FV1RwRmFPT045cnhSZWsya1BmYytvWmZhb0FXKzVwM3NzdDhx?=
- =?utf-8?B?NHh1WkVUdjZmTnY1dlVGV3QvQXNjc052MlBNc01hb1Q2cktYNVMvQU95NWF5?=
- =?utf-8?B?OGtoTXBKeGtwRzFEYTA3L2JPa1BNdXhlZ1U1VCs0Y2EvME1oOFdEVjFqeTRu?=
- =?utf-8?B?NGVuaG9pU01nR0huZW50d21iMmg5NGpGWE1QeGtPWHFUdFZOL0tVSWRYYm1V?=
- =?utf-8?B?bncxbFZRc3dhVStpK0N5YlVVL0hrb1RCZXAza2hFUW83UXJqb0o2eXFSdW9B?=
- =?utf-8?B?YU5SbzVaS1RLNUlXM0FzVEdKdHNjN2tibWFFV3lTaUdQNnlDMWprUTBQQ2J2?=
- =?utf-8?B?VnlTWDRBTVI3dHBtQkZJWFFXOFFrMDRqNGRrZXZUbGZGR2VrV3hwZ1N5RzQ5?=
- =?utf-8?B?a2pPdndUd0FJTGF4YThqM0pJM1hPdjJOL1hXMTZpcnlyZEhYM3NSdUFDcFgr?=
- =?utf-8?B?ekNuaHVxSTUxdEljQzlNcXh1UUNsejNrbStmMTVuSmxwSGVQVjc1MXlHMzRT?=
- =?utf-8?B?U1BjbzJlbVJQWEYyYjJlWDE5Qzhudy9VSzlTUlpha1RudU9TblMvdW43bGsx?=
- =?utf-8?B?L3BXQXpBUXdqOFBuRm9ycG84dDVZck9SM2R0TExMV1RmMjltSmNWNDI1b3JE?=
- =?utf-8?B?eXlldjRIeG5mV1ZIUDlGQ0RRKzFoY1NzOGY1YnJtZkZOcHdUalJGdlF5S1dU?=
- =?utf-8?B?dWdHRnFzYnZBanhycWVCVFZ0WjNhYTBXaXMwQ0hHZlZYQkwyQTFXaGtMWnZp?=
- =?utf-8?B?RWpZL1pCQWdjNlRYREQrNG1XOGdnWGM1NnRVZHVMT3hjMUhzTzI1RnYwdU9m?=
- =?utf-8?B?dEMyMXd0cmNOQ1B4UzliN0JGdEY3LzZuajJLdExwaDdJVWhkZFlmR0RaOEpM?=
- =?utf-8?Q?WuzLvdlJOzKldddmTg5kgw4qUB/sBQ8jr8lAZ?=
-X-OriginatorOrg: amperemail.onmicrosoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3bedd3fa-ac04-4387-8f43-08da31c11b34
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR01MB7608.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2022 13:37:48.8844
+X-Microsoft-Antispam-Message-Info: a+qvcgiCEjscx2ss+Avgx10vHWQ625aohXYP66HkSQPTrHbrLl95Ma0wMlhyx51H4NHuCYPAwghHhCOaM+BrHnGm1F8DQIXWjT7SaxxKNs3If3NEW9J7W9krysX7giedS/y+pN0pnDugh1WmmDObVMiCfewJOH0WwDv5z1kW/T3KC0Do7U/hdxGPxriv4K3r5JF3eOHSLQJMr0z45gTuKkJ2AR+qk9N+GY1X1NHksL0Y6wJKiQgGKh3Y+MwgJ4QlLgu9bLNFYV6U/l/u/W76Tmxs75lsLNr4QMBxlYebs+8YFUUTTPf0pG6ZpU7GxceCuv+Hm3tMQsveWqzLiGaWEugn/KPBAkKXyHFtXHdPKNxaRQ+MA7eXBTYlRbZWbnedmeT0Td2NTSPhzBijlEL3JFUy4xJolGutkxlCITUnOnEsGlfdMFbbm3DZ1Eox7dd4Ea4fnCV8VS+6uqeahZmSi8Ey2PHiPTjSDKihXdTb7WLWMBYjoypL2kyJ044nndqDGkck9gwmk4jIM6hnD18wVHcy4skUuZkuYl7CfKhqDYrJCLCEjS/7SONpqa4CI+H5tdTn78vr+nNkbFzOr7TKtXjnAn3J0EY9Y9A47M7LrmVuhFSvmRZoKdd6MWodmYXhyFrcOJZt/ihr6R//hdI7YpJKo2/LxD3c2wdWRi9PE4/DEhTVckRbR60YAIIlKKNrehQok2wgisbQk3BZ8SzgVIhPLeYTHpuKiJYPp346H6mYdnL3B6pgwqzusYQd7gxnGdTJNGvRiwde5bWG63lRfUBB9Quye5sHydE2lxy6u+8=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(70586007)(2616005)(8676002)(1076003)(47076005)(426003)(336012)(508600001)(70206006)(186003)(83380400001)(966005)(86362001)(26005)(6666004)(316002)(82310400005)(7696005)(110136005)(36860700001)(356005)(40460700003)(16526019)(8936002)(81166007)(44832011)(2906002)(36756003)(15650500001)(5660300002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2022 14:17:24.7742
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3eDaicKRH3gyuXkmmufvqwfBv4b5k533V4VDoa3nCKdotZnPG6h8CbrqDfnwUWbTtSHOUz0imON/rd/3Ms98CSVxuKaYye+WeOb1D2OpERR+u9gHAryLexDNnoDEg9BC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR01MB7590
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ffe8db1-420a-47ca-72fd-08da31c6a3e9
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT035.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5187
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -173,201 +99,35 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Shuuichirou,
+`pcc_mailbox_probe` doesn't initialize all memory that has been allocated
+before the first time that one of it's members `txdone_irq` may be
+accessed.
 
-I should be able to get a v2 patch series out by the end of the month.
+This leads to a an invalid load any time that this member is accessed:
+[    2.429769] UBSAN: invalid-load in drivers/mailbox/pcc.c:684:22
+[    2.430324] UBSAN: invalid-load in drivers/mailbox/mailbox.c:486:12
+[    4.276782] UBSAN: invalid-load in drivers/acpi/cppc_acpi.c:314:45
 
-Thanks,
-Tyler
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215587
+Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/mailbox/pcc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 4/20/2022 3:54 AM, ishii.shuuichir@fujitsu.com wrote:
-> Hi, Tyler.
-> 
-> When do you plan to post the v2 patch series?
-> Please let me know if you don't mind.
-> 
-> Best regards.
-> 
->> -----Original Message-----
->> From: Tyler Baicar <baicar@amperemail.onmicrosoft.com>
->> Sent: Friday, December 17, 2021 8:33 AM
->> To: Ishii, Shuuichirou/石井 周一郎 <ishii.shuuichir@fujitsu.com>; 'Tyler Baicar'
->> <baicar@os.amperecomputing.com>; patches@amperecomputing.com;
->> abdulhamid@os.amperecomputing.com; darren@os.amperecomputing.com;
->> catalin.marinas@arm.com; will@kernel.org; maz@kernel.org;
->> james.morse@arm.com; alexandru.elisei@arm.com; suzuki.poulose@arm.com;
->> lorenzo.pieralisi@arm.com; guohanjun@huawei.com; sudeep.holla@arm.com;
->> rafael@kernel.org; lenb@kernel.org; tony.luck@intel.com; bp@alien8.de;
->> mark.rutland@arm.com; anshuman.khandual@arm.com;
->> vincenzo.frascino@arm.com; tabba@google.com; marcan@marcan.st;
->> keescook@chromium.org; jthierry@redhat.com; masahiroy@kernel.org;
->> samitolvanen@google.com; john.garry@huawei.com; daniel.lezcano@linaro.org;
->> gor@linux.ibm.com; zhangshaokun@hisilicon.com; tmricht@linux.ibm.com;
->> dchinner@redhat.com; tglx@linutronix.de; linux-kernel@vger.kernel.org;
->> linux-arm-kernel@lists.infradead.org; kvmarm@lists.cs.columbia.edu;
->> linux-acpi@vger.kernel.org; linux-edac@vger.kernel.org;
->> Vineeth.Pillai@microsoft.com
->> Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
->>
->> Hi Shuuichirou,
->>
->> Thank you for your feedback!
->>
->> On 12/9/2021 3:10 AM, ishii.shuuichir@fujitsu.com wrote:
->>> Hi, Tyler.
->>>
->>> We would like to make a few comments.
->>>
->>>> -----Original Message-----
->>>> From: Tyler Baicar <baicar@os.amperecomputing.com>
->>>> Sent: Thursday, November 25, 2021 2:07 AM
->>>> To: patches@amperecomputing.com; abdulhamid@os.amperecomputing.com;
->>>> darren@os.amperecomputing.com; catalin.marinas@arm.com;
->>>> will@kernel.org; maz@kernel.org; james.morse@arm.com;
->>>> alexandru.elisei@arm.com; suzuki.poulose@arm.com;
->>>> lorenzo.pieralisi@arm.com; guohanjun@huawei.com;
->>>> sudeep.holla@arm.com; rafael@kernel.org; lenb@kernel.org;
->>>> tony.luck@intel.com; bp@alien8.de; mark.rutland@arm.com;
->>>> anshuman.khandual@arm.com; vincenzo.frascino@arm.com;
->>>> tabba@google.com; marcan@marcan.st; keescook@chromium.org;
->>>> jthierry@redhat.com; masahiroy@kernel.org; samitolvanen@google.com;
->>>> john.garry@huawei.com; daniel.lezcano@linaro.org; gor@linux.ibm.com;
->>>> zhangshaokun@hisilicon.com; tmricht@linux.ibm.com;
->>>> dchinner@redhat.com; tglx@linutronix.de;
->>>> linux-kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
->>>> kvmarm@lists.cs.columbia.edu; linux-acpi@vger.kernel.org;
->>>> linux-edac@vger.kernel.org; Ishii, Shuuichirou/石井
->>>> 周一郎 <ishii.shuuichir@fujitsu.com>; Vineeth.Pillai@microsoft.com
->>>> Cc: Tyler Baicar <baicar@os.amperecomputing.com>
->>>> Subject: [PATCH 1/2] ACPI/AEST: Initial AEST driver
->>>>
->>>> Add support for parsing the ARM Error Source Table and basic handling
->>>> of errors reported through both memory mapped and system register
->> interfaces.
->>>>
->>>> Assume system register interfaces are only registered with private
->>>> peripheral interrupts (PPIs); otherwise there is no guarantee the
->>>> core handling the error is the core which took the error and has the
->>>> syndrome info in its system registers.
->>>>
->>>> Add logging for all detected errors and trigger a kernel panic if
->>>> there is any uncorrected error present.
->>>>
->>>> Signed-off-by: Tyler Baicar <baicar@os.amperecomputing.com>
->>>> ---
->>> [...]
->>>
->>>> +static int __init aest_init_node(struct acpi_aest_hdr *node) {
->>>> +	union acpi_aest_processor_data *proc_data;
->>>> +	union aest_node_spec *node_spec;
->>>> +	struct aest_node_data *data;
->>>> +	int ret;
->>>> +
->>>> +	data = kzalloc(sizeof(struct aest_node_data), GFP_KERNEL);
->>>> +	if (!data)
->>>> +		return -ENOMEM;
->>>> +
->>>> +	data->node_type = node->type;
->>>> +
->>>> +	node_spec = ACPI_ADD_PTR(union aest_node_spec, node,
->>>> node->node_specific_offset);
->>>> +
->>>> +	switch (node->type) {
->>>> +	case ACPI_AEST_PROCESSOR_ERROR_NODE:
->>>> +		memcpy(&data->data, node_spec, sizeof(struct
->>>> acpi_aest_processor));
->>>> +		break;
->>>> +	case ACPI_AEST_MEMORY_ERROR_NODE:
->>>> +		memcpy(&data->data, node_spec, sizeof(struct
->>>> acpi_aest_memory));
->>>> +		break;
->>>> +	case ACPI_AEST_SMMU_ERROR_NODE:
->>>> +		memcpy(&data->data, node_spec, sizeof(struct
->>>> acpi_aest_smmu));
->>>> +		break;
->>>> +	case ACPI_AEST_VENDOR_ERROR_NODE:
->>>> +		memcpy(&data->data, node_spec, sizeof(struct
->>>> acpi_aest_vendor));
->>>> +		break;
->>>> +	case ACPI_AEST_GIC_ERROR_NODE:
->>>> +		memcpy(&data->data, node_spec, sizeof(struct
->>>> acpi_aest_gic));
->>>> +		break;
->>>> +	default:
->>>> +		kfree(data);
->>>> +		return -EINVAL;
->>>> +	}
->>>> +
->>>> +	if (node->type == ACPI_AEST_PROCESSOR_ERROR_NODE) {
->>>> +		proc_data = ACPI_ADD_PTR(union acpi_aest_processor_data,
->>>> node_spec,
->>>> +					 sizeof(acpi_aest_processor));
->>>> +
->>>> +		switch (data->data.processor.resource_type) {
->>>> +		case ACPI_AEST_CACHE_RESOURCE:
->>>> +			memcpy(&data->proc_data, proc_data,
->>>> +			       sizeof(struct acpi_aest_processor_cache));
->>>> +			break;
->>>> +		case ACPI_AEST_TLB_RESOURCE:
->>>> +			memcpy(&data->proc_data, proc_data,
->>>> +			       sizeof(struct acpi_aest_processor_tlb));
->>>> +			break;
->>>> +		case ACPI_AEST_GENERIC_RESOURCE:
->>>> +			memcpy(&data->proc_data, proc_data,
->>>> +			       sizeof(struct acpi_aest_processor_generic));
->>>> +			break;
->>>> +		}
->>>> +	}
->>>> +
->>>> +	ret = aest_init_interface(node, data);
->>>> +	if (ret) {
->>>> +		kfree(data);
->>>> +		return ret;
->>>> +	}
->>>> +
->>>> +	return aest_init_interrupts(node, data);
->>> If aest_init_interrupts() failed, is it necessary to release the data
->>> pointer acquired by kzalloc?
->> aest_init_interrupts() returns an error if any of the interrupts in the interrupt list
->> fails, but it's possible that some interrupts in the list registered successfully. So
->> we attempt to keep chugging along in that scenario because some interrupts may
->> be enabled and registered with the interface successfully. If any interrupt
->> registration fails, there will be a print notifying that there was a failure when
->> initializing that node.
->>>> +}
->>>> +
->>>> +static void aest_count_ppi(struct acpi_aest_hdr *node)
->>>> +{
->>>> +	struct acpi_aest_node_interrupt *interrupt;
->>>> +	int i;
->>>> +
->>>> +	interrupt = ACPI_ADD_PTR(struct acpi_aest_node_interrupt, node,
->>>> +				 node->node_interrupt_offset);
->>>> +
->>>> +	for (i = 0; i < node->node_interrupt_count; i++, interrupt++) {
->>>> +		if (interrupt->gsiv >= 16 && interrupt->gsiv < 32)
->>>> +			num_ppi++;
->>>> +	}
->>>> +}
->>>> +
->>>> +static int aest_starting_cpu(unsigned int cpu)
->>>> +{
->>>> +	int i;
->>>> +
->>>> +	for (i = 0; i < num_ppi; i++)
->>>> +		enable_percpu_irq(ppi_irqs[i], IRQ_TYPE_NONE);
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +
->>>> +static int aest_dying_cpu(unsigned int cpu)
->>>> +{
->>> Wouldn't it be better to execute disable_percpu_irq(), which is paired
->>> with enable_percpu_irq(), in aest_dying_cpu()?
->>
->> Good point. I will add that in the next version.
->>
->> Thanks,
->>
->> Tyler
-> 
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index ed18936b8ce6..ebfa33a40fce 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -654,7 +654,7 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 		goto err;
+ 	}
+ 
+-	pcc_mbox_ctrl = devm_kmalloc(dev, sizeof(*pcc_mbox_ctrl), GFP_KERNEL);
++	pcc_mbox_ctrl = devm_kzalloc(dev, sizeof(*pcc_mbox_ctrl), GFP_KERNEL);
+ 	if (!pcc_mbox_ctrl) {
+ 		rc = -ENOMEM;
+ 		goto err;
+-- 
+2.25.1
+
