@@ -2,32 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B95F3520DAA
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 May 2022 08:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F5B7520DFA
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 May 2022 08:44:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233564AbiEJGUf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 May 2022 02:20:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49028 "EHLO
+        id S234966AbiEJGso (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 May 2022 02:48:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236489AbiEJGUe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 May 2022 02:20:34 -0400
+        with ESMTP id S231464AbiEJGsn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 May 2022 02:48:43 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7A7023DED3;
-        Mon,  9 May 2022 23:16:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7004B2AC0DF;
+        Mon,  9 May 2022 23:44:45 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: usama.anjum)
-        with ESMTPSA id D3D451F441EE
+        with ESMTPSA id 405DF1F42504
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652163389;
-        bh=nZH6Sk+iDiYPhIKy6Z1z9I1hX/ZBZkaFjrao6csb280=;
+        s=mail; t=1652165084;
+        bh=KFUtF7Pbl0A6qa8HdgxHJDCW1QUqNSXva/uuMwNfe8E=;
         h=Date:From:To:Cc:Subject:From;
-        b=cT0aZx3M+YERkQpBpggxZtBlRS5U3m69vRanxkvxMMIPhesOqK3dFKP8PaXZOpMkO
-         Oij2Fu7q8VfiGiVVYvTGUuW8Gssfj6IgigqSs+ca9Rk14IxEo1qR30k+HMPi7/wgxD
-         9GLhJdMxiMWL1jPTDFlxvJy6a3dZSLNysI+muARB5EZbXqxcNLjv5of8b1tNskW9f2
-         TQp58E7xN60vyR052fgqTsPqVW5voNknJEAU2qWIRb4xezjkgIcpF9gZrv4XZxpzEd
-         D1/r7pll6GUVn5WUwAJWoXkCVx1yAUliatZzaCFzQVgyH7vyjrKI6zphAAn8bdlFt4
-         tWdGTrNR1jK6Q==
-Date:   Tue, 10 May 2022 11:16:10 +0500
+        b=PUUzC/GqCmvKInQIX9SPR4imBWf74HsjaUISk1TO69P0cX+peYd96Nmmo7echc0z6
+         EtoW06QOK8ZmJ/9yBfQ7Zc1/GjpdLT9NeXZ++0XTnyVVCeP/SqgsCDcI0FwXCMEmkl
+         vao0iJfVM8LL0qiw+FeY7C09J58nysRULQYzey1E9p0rO73MQA6giifo8XeZZT83MU
+         r27IIMQn8GFtmAGcS/tjul+bec3anWBdM64OHL4k91g2iVCMuOga5HaeVuiqiNpsTD
+         2POgvTkmUi9SgMCBB3pY3nshqeOABoCM546i6L2s4KSuWnr5I4kJD9bwKXjqhWhm68
+         jLw++8UNZr/YA==
+Date:   Tue, 10 May 2022 11:44:34 +0500
 From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
@@ -55,8 +55,8 @@ Cc:     usama.anjum@collabora.com,
         linux-acpi@vger.kernel.org,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         chrome-platform@lists.linux.dev
-Subject: [PATCH v11] platform/chrome: Add ChromeOS ACPI device driver
-Message-ID: <YnoDKidG5LIFSSRV@debian-BULLSEYE-live-builder-AMD64>
+Subject: [PATCH RESEND v11] platform/chrome: Add ChromeOS ACPI device driver
+Message-ID: <YnoJ0k6eIUiwjXSZ@debian-BULLSEYE-live-builder-AMD64>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -172,8 +172,8 @@ Changes in v2:
  Documentation/firmware-guide/acpi/index.rst   |   1 +
  drivers/platform/chrome/Kconfig               |  11 +
  drivers/platform/chrome/Makefile              |   1 +
- drivers/platform/chrome/chromeos_acpi.c       | 269 +++++++++++++
- 6 files changed, 771 insertions(+)
+ drivers/platform/chrome/chromeos_acpi.c       | 263 +++++++++++++
+ 6 files changed, 765 insertions(+)
  create mode 100644 Documentation/ABI/testing/sysfs-driver-chromeos-acpi
  create mode 100644 Documentation/firmware-guide/acpi/chromeos-acpi-device.rst
  create mode 100644 drivers/platform/chrome/chromeos_acpi.c
@@ -724,10 +724,10 @@ index 6420ca129548e..52f5a2dde8b81 100644
  obj-$(CONFIG_CHROMEOS_PSTORE)		+= chromeos_pstore.o
 diff --git a/drivers/platform/chrome/chromeos_acpi.c b/drivers/platform/chrome/chromeos_acpi.c
 new file mode 100644
-index 0000000000000..f106c813b7483
+index 0000000000000..af400558742cc
 --- /dev/null
 +++ b/drivers/platform/chrome/chromeos_acpi.c
-@@ -0,0 +1,269 @@
+@@ -0,0 +1,263 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * ChromeOS specific ACPI extensions
@@ -805,7 +805,6 @@ index 0000000000000..f106c813b7483
 +					int pkg_num, int sub_pkg_num, char *name, char *buf)
 +{
 +	union acpi_object *element = obj->package.elements;
-+	int length = -EINVAL;
 +
 +	if (pkg_num >= obj->package.count)
 +		return -EINVAL;
@@ -821,20 +820,15 @@ index 0000000000000..f106c813b7483
 +
 +	switch (element->type) {
 +	case ACPI_TYPE_INTEGER:
-+		length = sysfs_emit(buf, "%d", (int)element->integer.value);
-+		break;
++		return sysfs_emit(buf, "%d\n", (int)element->integer.value);
 +	case ACPI_TYPE_STRING:
-+		length = sysfs_emit(buf, "%s", element->string.pointer);
-+		break;
++		return sysfs_emit(buf, "%s\n", element->string.pointer);
 +	case ACPI_TYPE_BUFFER:
-+		length = sysfs_emit(buf, "%s", element->buffer.pointer);
-+		break;
++		return sysfs_emit(buf, "%s\n", element->buffer.pointer);
 +	default:
 +		dev_err(dev, "element type %d not supported\n", element->type);
-+		break;
++		return -EINVAL;
 +	}
-+
-+	return length;
 +}
 +
 +static int chromeos_acpi_evaluate_method(struct device *dev, int pkg_num, int sub_pkg_num,
