@@ -2,121 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 017305229F8
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 May 2022 04:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E820A522B26
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 May 2022 06:39:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240559AbiEKCrc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 May 2022 22:47:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59632 "EHLO
+        id S238200AbiEKEj0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 May 2022 00:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243328AbiEKCkf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 May 2022 22:40:35 -0400
-Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6EF20F4C4
-        for <linux-acpi@vger.kernel.org>; Tue, 10 May 2022 19:40:32 -0700 (PDT)
-Received: by mail-oo1-xc2d.google.com with SMTP id q73-20020a4a334c000000b0035eb110dd0dso723925ooq.10
-        for <linux-acpi@vger.kernel.org>; Tue, 10 May 2022 19:40:32 -0700 (PDT)
+        with ESMTP id S234311AbiEKEjV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 May 2022 00:39:21 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B91114B66A
+        for <linux-acpi@vger.kernel.org>; Tue, 10 May 2022 21:39:12 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id e24so1131763pjt.2
+        for <linux-acpi@vger.kernel.org>; Tue, 10 May 2022 21:39:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=jtaiydWG/wHEMbYT/FSFofg9mXlu8btSO46ZLTfW2rA=;
-        b=eGyFVrO10lmw+zfaf5pcltLktNJ/1CbPOHymz7tN2r3TOcOAfeRKz40YqA963vP6Sj
-         4+pnLx6kifsxT1QTpSkWWCvT4wJFDRgxVEoNYJTNnEUcNXwtYAow1ohLI7MDL0WpObqn
-         gZ1nDsuhO86xqC+aFz2sB7vp0Ouj/1FMnmCy72wpLNUxqg+7C/l6Mo2WdgmQGLgSzuZk
-         OFFxkfvg12/OVpCkcbcp4SILs5YLxNRAHP7/XiWcAZIdRMXK7xsXq8bAqaFQKeaBgyhA
-         +uf0OmAUGoclt2ZWaXD3s1vaf6OuMtxkT6nDPaBm+PzUVYwoyq1a668E06SVvS8yzasc
-         AVlg==
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
+         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
+         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
+         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
+         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
+         wrQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=jtaiydWG/wHEMbYT/FSFofg9mXlu8btSO46ZLTfW2rA=;
-        b=HH4AdFr2/dwOcU40M9gQ96EvAM6+O88xOLl792wxLIJGuPNkrPcbz/snSb+oUlNd7x
-         mZTFpguj2JGgSrIixXjmW43BF2NtYKi+jhr22GoI/uw30RA7lGlXVozxOWZ2aFRk2rhB
-         uDkgTOC7PNwfk/icLwt5JfUGLClv16uOYZPigSQEE7k/Mg9/uDZ0eUCyk9Vbus4am028
-         KH3wU5m8AbRuf7TugZXYDqT3Kr7hA6SvSBDl66kLnKZkNMzNKiMUrlTmnQss9Xet0T89
-         n0K3aiYEZlNV8XeGZ4nHTNap4Tz6iLE6MiPqVC4NJna3aNuwiP6F3N8h1MhWqQQwcyO2
-         ja9Q==
-X-Gm-Message-State: AOAM533UOrQd1VurM/nHEx010015Ywy+Jd2w9woRcISJAa80ky4g8KLz
-        gg3bT2Lhm58WA7pCk1mH95CuuSUeVt5fSy7dEHd8wQ==
-X-Google-Smtp-Source: ABdhPJz+ei/hQMAcBiVGCP/disKXAMzLMiX0vJBayUYqAiRMua51m3bNh5IsKSq1ogoNfL8nyG0RKn+rtIE9XjUvhAU=
-X-Received: by 2002:a05:6830:246f:b0:606:bbb:f613 with SMTP id
- x47-20020a056830246f00b006060bbbf613mr8997032otr.102.1652236831957; Tue, 10
- May 2022 19:40:31 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=pc9cU1Oahwy8NDmhoCk8t82NJsCMMPUjPiACUmCkCavgh/9HEEEiJYOWyue+JBPcD9
+         iyH4gEULT5q7SF/y+I/QiosNDbFibJSGNkctpuZzG0+42f2W1xRZE8OTGIrnEyViOLh7
+         HfVGIA7dm0P2HROuYNuA20X5KyWnr994wNlSPV7YzC4uokkXyJxV/w88ow39oxSoZh+r
+         IOaPcfq2yvbE7oovuyiisJ8RHT+LNw+Pyl/zPPVMFuoVR404NPaokEb89rBeqxVC6BaW
+         /W5jsUmgzdR4Rlade8trNfO/HEIImT5fWP2DHTE8cQ2HeQmNAHFRbBy4CIUqTNPyl3CU
+         rtrw==
+X-Gm-Message-State: AOAM5336h2/0Pp2GWrvy92sNY6CAqekCrmz5Yc0C4FPl5dg8U9ZZymkX
+        Gft6uHAIOA/I//IUu6QclnFscnckHghUdwM8nwY=
+X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
+X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
+ gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
+ May 2022 21:39:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220510131136.1103-1-mario.limonciello@amd.com>
-In-Reply-To: <20220510131136.1103-1-mario.limonciello@amd.com>
-From:   Jian-Hong Pan <jhp@endlessos.org>
-Date:   Wed, 11 May 2022 10:39:25 +0800
-Message-ID: <CAPpJ_efn1YiLRtbhNwDEr8j+jJfZrHBM9fukDJpuH0czJpgRTQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
+Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
+ -0700 (PDT)
+From:   Private Mail <privatemail1961@gmail.com>
+Date:   Tue, 10 May 2022 21:39:10 -0700
+Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
+Subject: Have you had this? It is for your Benefit
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
+        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Mario Limonciello <mario.limonciello@amd.com> =E6=96=BC 2022=E5=B9=B45=E6=
-=9C=8810=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=889:11=E5=AF=AB=E9=81=
-=93=EF=BC=9A
->
-> ASUS B1400CEAE fails to resume from suspend to idle by default.  This was
-> bisected back to commit df4f9bc4fb9c ("nvme-pci: add support for ACPI
-> StorageD3Enable property") but this is a red herring to the problem.
->
-> Before this commit the system wasn't getting into deepest sleep state.
-> Presumably this commit is allowing entry into deepest sleep state as
-> advertised by firmware, but there are some other problems related to
-> the wakeup.
->
-> As it is confirmed the system works properly with S3, set the default for
-> this system to S3.
->
-> Reported-by: Jian-Hong Pan <jhp@endlessos.org>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D215742
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/sleep.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> index c992e57b2c79..3147702710af 100644
-> --- a/drivers/acpi/sleep.c
-> +++ b/drivers/acpi/sleep.c
-> @@ -373,6 +373,18 @@ static const struct dmi_system_id acpisleep_dmi_tabl=
-e[] __initconst =3D {
->                 DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
->                 },
->         },
-> +       /*
-> +        * ASUS B1400CEAE hangs on resume from suspend (see
-> +        * https://bugzilla.kernel.org/show_bug.cgi?id=3D215742).
-> +        */
-> +       {
-> +       .callback =3D init_default_s3,
-> +       .ident =3D "ASUS B1400CEAE",
-> +       .matches =3D {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
-> +               },
-> +       },
->         {},
->  };
->
-> --
-> 2.34.1
->
+Our Ref: BG/WA0151/2022
 
-Tested-by: Jian-Hong Pan <jhp@endlessos.org>
+Dear Beneficiary
+
+Subject: An Estate of US$15.8 Million
+
+Blount and Griffin Genealogical Investigators specializes in probate
+research to locate missing heirs and beneficiaries to estates in the
+United Kingdom and Europe.
+
+We can also help you find wills, obtain copies of certificates, help
+you to administer an estate, as well as calculating how an estate,
+intestacy or trust should be distributed.
+
+You may be entitled to a large pay out for an inheritance in Europe
+worth US$15.8 million. We have discovered an estate belonging to the
+late Depositor has remained unclaimed since he died in 2011 and we
+have strong reasons to believe you are the closest living relative to
+the deceased we can find.
+
+You may unknowingly be the heir of this person who died without
+leaving a will (intestate). We will conduct a probate research to
+prove your entitlement, and can submit a claim on your behalf all at
+no risk to yourselves.
+
+Our service fee of 10% will be paid to us after you have received the estate.
+
+The estate transfer process should take just a matter of days as we
+have the mechanism and expertise to get this done very quickly. This
+message may come to you as a shock, however we hope to work with you
+to transfer the estate to you as quickly as possible.
+
+Feel free to email our senior case worker Mr. Malcolm Casey on email:
+malcolmcasey68@yahoo.com for further discussions.
+
+With warm regards,
+
+Mr. Blount W. Gort, CEO.
+Blount and Griffin Associates Inc
