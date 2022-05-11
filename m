@@ -2,104 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E820A522B26
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 May 2022 06:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D5C523069
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 May 2022 12:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238200AbiEKEj0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 May 2022 00:39:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42466 "EHLO
+        id S241774AbiEKKMn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 May 2022 06:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234311AbiEKEjV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 May 2022 00:39:21 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B91114B66A
-        for <linux-acpi@vger.kernel.org>; Tue, 10 May 2022 21:39:12 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id e24so1131763pjt.2
-        for <linux-acpi@vger.kernel.org>; Tue, 10 May 2022 21:39:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
-         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
-         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
-         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
-         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
-         wrQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=pc9cU1Oahwy8NDmhoCk8t82NJsCMMPUjPiACUmCkCavgh/9HEEEiJYOWyue+JBPcD9
-         iyH4gEULT5q7SF/y+I/QiosNDbFibJSGNkctpuZzG0+42f2W1xRZE8OTGIrnEyViOLh7
-         HfVGIA7dm0P2HROuYNuA20X5KyWnr994wNlSPV7YzC4uokkXyJxV/w88ow39oxSoZh+r
-         IOaPcfq2yvbE7oovuyiisJ8RHT+LNw+Pyl/zPPVMFuoVR404NPaokEb89rBeqxVC6BaW
-         /W5jsUmgzdR4Rlade8trNfO/HEIImT5fWP2DHTE8cQ2HeQmNAHFRbBy4CIUqTNPyl3CU
-         rtrw==
-X-Gm-Message-State: AOAM5336h2/0Pp2GWrvy92sNY6CAqekCrmz5Yc0C4FPl5dg8U9ZZymkX
-        Gft6uHAIOA/I//IUu6QclnFscnckHghUdwM8nwY=
-X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
-X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
- gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
- May 2022 21:39:11 -0700 (PDT)
+        with ESMTP id S241418AbiEKKMd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 May 2022 06:12:33 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D63021AA8E;
+        Wed, 11 May 2022 03:12:19 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: dmitry.osipenko)
+        with ESMTPSA id 6482B1F44D36
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1652263934;
+        bh=qcj+acMxU0ciOKBaVy6pJbQiEuRN08dsxaJseG6RfwE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=ALAQu/eEe04LAruPgoaxZO/rAmAmbVl+HcocVYpgGrXIRB8C3EP1FAmUZXjQFjUKn
+         wfogK/QUTiSxNChIDNBZqO/aeRmGclTu4TrSdSdMO/cmWfEIqdry6AZOEiAP2fouZ6
+         Ze5K+g3wOPlOW2v6pMuegjSC6cihNNChKdrphdfE2ltP+RE0LEmom809Y8+fvE6J4/
+         Ahs2yVkxSRw3aK+Wy1uhxbsXzAskjDUGhwcgP9S4/r1ElfK42qDIjASJs4PEUZO9GN
+         V4ie/nhjCksrQsC7KjRypS3JpnKPKwmWfZcBd1V4WsAwj2K9BvhnPx92oDSMYGMk4e
+         Jp2S214QNnEnQ==
+Message-ID: <5894c310-fe50-8037-fc9c-cbedb0d8e71f@collabora.com>
+Date:   Wed, 11 May 2022 13:12:07 +0300
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
- -0700 (PDT)
-From:   Private Mail <privatemail1961@gmail.com>
-Date:   Tue, 10 May 2022 21:39:10 -0700
-Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
-Subject: Have you had this? It is for your Benefit
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v8 01/27] notifier: Add
+ atomic_notifier_call_chain_is_empty()
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+References: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
+ <20220509233235.995021-2-dmitry.osipenko@collabora.com>
+ <CAJZ5v0gApRhc9+jZLxgNXC2B2tmz450=8+mFZUjTFF1iU7C-gw@mail.gmail.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <CAJZ5v0gApRhc9+jZLxgNXC2B2tmz450=8+mFZUjTFF1iU7C-gw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Our Ref: BG/WA0151/2022
+On 5/10/22 21:14, Rafael J. Wysocki wrote:
+> On Tue, May 10, 2022 at 1:33 AM Dmitry Osipenko
+> <dmitry.osipenko@collabora.com> wrote:
+>> Add atomic_notifier_call_chain_is_empty() that returns true if given
+>> atomic call chain is empty.
+> It would be good to mention a use case for it.
+> 
 
-Dear Beneficiary
+I'll update this patch for v9.
 
-Subject: An Estate of US$15.8 Million
-
-Blount and Griffin Genealogical Investigators specializes in probate
-research to locate missing heirs and beneficiaries to estates in the
-United Kingdom and Europe.
-
-We can also help you find wills, obtain copies of certificates, help
-you to administer an estate, as well as calculating how an estate,
-intestacy or trust should be distributed.
-
-You may be entitled to a large pay out for an inheritance in Europe
-worth US$15.8 million. We have discovered an estate belonging to the
-late Depositor has remained unclaimed since he died in 2011 and we
-have strong reasons to believe you are the closest living relative to
-the deceased we can find.
-
-You may unknowingly be the heir of this person who died without
-leaving a will (intestate). We will conduct a probate research to
-prove your entitlement, and can submit a claim on your behalf all at
-no risk to yourselves.
-
-Our service fee of 10% will be paid to us after you have received the estate.
-
-The estate transfer process should take just a matter of days as we
-have the mechanism and expertise to get this done very quickly. This
-message may come to you as a shock, however we hope to work with you
-to transfer the estate to you as quickly as possible.
-
-Feel free to email our senior case worker Mr. Malcolm Casey on email:
-malcolmcasey68@yahoo.com for further discussions.
-
-With warm regards,
-
-Mr. Blount W. Gort, CEO.
-Blount and Griffin Associates Inc
+-- 
+Best regards,
+Dmitry
