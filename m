@@ -2,52 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1775250BD
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 16:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 574645250C3
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 16:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355261AbiELO6R convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 12 May 2022 10:58:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52400 "EHLO
+        id S1352445AbiELO7s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 May 2022 10:59:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347344AbiELO6Q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 10:58:16 -0400
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87DA45DD1A;
-        Thu, 12 May 2022 07:58:15 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id y76so10299937ybe.1;
-        Thu, 12 May 2022 07:58:15 -0700 (PDT)
+        with ESMTP id S1343585AbiELO7r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 10:59:47 -0400
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B6495DD1A;
+        Thu, 12 May 2022 07:59:46 -0700 (PDT)
+Received: by mail-yb1-f174.google.com with SMTP id r11so10256083ybg.6;
+        Thu, 12 May 2022 07:59:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=4O1k7I/CH4N/aEPXR6lSNVfiMtZH2gmEFshql9wDoQk=;
-        b=E/if2hswEDyBPgftn1NQ926dNZQN02lVNY9JHrDcJXXNYGHjCgxXwCmdI4CRIeHToc
-         qBn32hd3Vp58eEc1p8pGZQtd8o40MAKfCilKE7TLS9TL9jZWGIpGZL8cpfeqANLCrNmV
-         GXh2Nl6ZLIXO1yTV4N0EhVtk3V2I158Z/Bj9F7jWqgVNqY2GfKEOlKXHnLZ5WSWav/m6
-         CbTjhxgum+i4TZXcTqJl/RJOBj5fQVRfvn5NezFUkepY/L3d1ZIdcg8RMcJyHRw+3Ah9
-         kDvM22XAft9Y7Ufiim3e0pUmSTUP4JdLNecVpMofMijhRqmWQsI1T82v0kmW9paqX3OW
-         LiZA==
-X-Gm-Message-State: AOAM53003o+dzSwkgMD+kd6R5CJkrt6XpfuMdUNknZA1kuijR2pjPkSk
-        TZhWEuilI975MMnjGcPEavHGspqjKNEslagxY8E=
-X-Google-Smtp-Source: ABdhPJylzAVZ4tD7vda9G2EjXUeC2XbuORzktWXOI46xz8R/5rp8jCvCD0EwdBJj3k4nCf0F+jmlgu/SFS6MXbcVW70=
+         :message-id:subject:to:cc;
+        bh=fjYn5CDwHEMqMskpcbiPZayzeTiT7uRz4ad7VPAKrRw=;
+        b=7j2R32O3Dwq/dWERL615t6d09AukLIrkrdhJt+P3Z3sJT736FMZW6HsVqzIjNzWOAH
+         FsZ0SjDS+ETvS0ET06Uk8bpDWh0CjHzzLq/fMGVVoEgIgtHFXvA1bv3J91T4OPJtEYek
+         PcEnU5F34egDtiYW5k6poaXjEg0r7jKSBcLrj5f84wvudRTlz7TTJh6ttKb6VMIlWZDI
+         gDsfqg+kSf6EfCl1fvPs0qY8VOCSWIsapjdQ4y0f37JMyKmG78olWP+pGvAMDyzsFRRs
+         fXp7CXLO0QIoUYkWSgZI5SsTWYCZhdcww7byG49Cz0TZMy9JLUfpKUceh+LvzzCZoSjt
+         QcrA==
+X-Gm-Message-State: AOAM531G6O5POnXPhDgf8Nw0fEIDm5lS2tZwnLt7rGaO24dlqzvqdkH6
+        g9CTUtiQY7UMYIPFK4l9e99I0urNCT5tyNIWikI=
+X-Google-Smtp-Source: ABdhPJxLwnU63w6zP3WMO3aOxg4t3ua4oFQ4Kt1pfaTnUynnFHIXlWHPpXsuUZNrYLHVMK32NvXshFVQYG6Uzb/vnI0=
 X-Received: by 2002:a25:c0d5:0:b0:64a:c6dd:1a00 with SMTP id
- c204-20020a25c0d5000000b0064ac6dd1a00mr160093ybf.365.1652367494726; Thu, 12
- May 2022 07:58:14 -0700 (PDT)
+ c204-20020a25c0d5000000b0064ac6dd1a00mr166815ybf.365.1652367585477; Thu, 12
+ May 2022 07:59:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220510131136.1103-1-mario.limonciello@amd.com> <CAPpJ_efn1YiLRtbhNwDEr8j+jJfZrHBM9fukDJpuH0czJpgRTQ@mail.gmail.com>
-In-Reply-To: <CAPpJ_efn1YiLRtbhNwDEr8j+jJfZrHBM9fukDJpuH0czJpgRTQ@mail.gmail.com>
+References: <20220506204731.330378-1-ian@linux.cowan.aero>
+In-Reply-To: <20220506204731.330378-1-ian@linux.cowan.aero>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 12 May 2022 16:58:03 +0200
-Message-ID: <CAJZ5v0iUM0oYxFnRZ9g_UGOY43v9ori=pdO2FWVO+L8hKKYfAw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default
-To:     Jian-Hong Pan <jhp@endlessos.org>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Thu, 12 May 2022 16:59:34 +0200
+Message-ID: <CAJZ5v0jStNBSPJoRPdY4NggwO5qr7oh1Wg2hauz084H_kyXQnw@mail.gmail.com>
+Subject: Re: [PATCH v2] drivers: acpi: clean up spaces to be consistent
+To:     Ian Cowan <ian@linux.cowan.aero>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
@@ -58,56 +56,54 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 11, 2022 at 4:40 AM Jian-Hong Pan <jhp@endlessos.org> wrote:
+On Fri, May 6, 2022 at 10:54 PM Ian Cowan <ian@linux.cowan.aero> wrote:
 >
-> Mario Limonciello <mario.limonciello@amd.com> 於 2022年5月10日 週二 下午9:11寫道：
-> >
-> > ASUS B1400CEAE fails to resume from suspend to idle by default.  This was
-> > bisected back to commit df4f9bc4fb9c ("nvme-pci: add support for ACPI
-> > StorageD3Enable property") but this is a red herring to the problem.
-> >
-> > Before this commit the system wasn't getting into deepest sleep state.
-> > Presumably this commit is allowing entry into deepest sleep state as
-> > advertised by firmware, but there are some other problems related to
-> > the wakeup.
-> >
-> > As it is confirmed the system works properly with S3, set the default for
-> > this system to S3.
-> >
-> > Reported-by: Jian-Hong Pan <jhp@endlessos.org>
-> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > ---
-> >  drivers/acpi/sleep.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >
-> > diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> > index c992e57b2c79..3147702710af 100644
-> > --- a/drivers/acpi/sleep.c
-> > +++ b/drivers/acpi/sleep.c
-> > @@ -373,6 +373,18 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
-> >                 DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
-> >                 },
-> >         },
-> > +       /*
-> > +        * ASUS B1400CEAE hangs on resume from suspend (see
-> > +        * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
-> > +        */
-> > +       {
-> > +       .callback = init_default_s3,
-> > +       .ident = "ASUS B1400CEAE",
-> > +       .matches = {
-> > +               DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +               DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
-> > +               },
-> > +       },
-> >         {},
-> >  };
-> >
-> > --
-> > 2.34.1
-> >
+> This cleans up a few line spaces so that it is consistent with the rest
+> of the file. There are a few places where a space was added before a
+> return and two spots where a double line space was made into one line
+> space.
 >
-> Tested-by: Jian-Hong Pan <jhp@endlessos.org>
+> Signed-off-by: Ian Cowan <ian@linux.cowan.aero>
+> ---
+>  drivers/acpi/ac.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
+> index db487ff9dd1b..f8ec48cd7659 100644
+> --- a/drivers/acpi/ac.c
+> +++ b/drivers/acpi/ac.c
+> @@ -32,7 +32,6 @@ MODULE_AUTHOR("Paul Diefenbaugh");
+>  MODULE_DESCRIPTION("ACPI AC Adapter Driver");
+>  MODULE_LICENSE("GPL");
+>
+> -
+>  static int acpi_ac_add(struct acpi_device *device);
+>  static int acpi_ac_remove(struct acpi_device *device);
+>  static void acpi_ac_notify(struct acpi_device *device, u32 event);
+> @@ -125,6 +124,7 @@ static int get_ac_property(struct power_supply *psy,
+>         default:
+>                 return -EINVAL;
+>         }
+> +
+>         return 0;
+>  }
+>
+> @@ -286,6 +288,7 @@ static int acpi_ac_resume(struct device *dev)
+>                 return 0;
+>         if (old_state != ac->state)
+>                 kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
+> +
+>         return 0;
+>  }
+>  #else
+> @@ -296,7 +299,6 @@ static int acpi_ac_remove(struct acpi_device *device)
+>  {
+>         struct acpi_ac *ac = NULL;
+>
+> -
+>         if (!device || !acpi_driver_data(device))
+>                 return -EINVAL;
+>
+> --
 
-Applied as 5.19 material, thanks!
+Applied with adjusted subject as 5.19 material, thanks!
