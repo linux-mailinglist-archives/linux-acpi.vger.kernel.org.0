@@ -2,54 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E06524A62
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 12:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 841F3524AC9
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 12:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351784AbiELKe3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 May 2022 06:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36858 "EHLO
+        id S1352839AbiELKvT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 May 2022 06:51:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240040AbiELKe2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 06:34:28 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0FE9223876;
-        Thu, 12 May 2022 03:34:25 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id l18so9294192ejc.7;
-        Thu, 12 May 2022 03:34:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YxUnFLs6d2OKV6JAgbcUVcwMXEjoVcwHta+WKOf3uyA=;
-        b=hwKygiKy5Gq/aeQSoZnC7lGlu44MYxTEdxTM7YAVst2Hr0cd3wU7Sy0bcVfPvJrrgD
-         EwaIVfv/hJKpnUDYGEAlwXP67Kq3c64yvFmNw4G2CCSY//zzeAklxN4QwjQmLSJKkSH/
-         B8ntVoH8BoY0e7bSY+9c0AMbsO/mlkQ1F8aQNPcpE8HxlT/j4GzYY9aTPtRL9e+8yEKa
-         IOVWrR53Wm1lyjbgrWM2WyxAMMdiJ++tY/1UXpSDmwrfecet7h0L6Lw3L+z3jYuTeMpe
-         K1CNoI5K23tZFHCHtuzSiVm/OxNIcI2xU6yAKUjeSNQR4aGcOVRZXtDcV443MAOrh4RC
-         WFZQ==
+        with ESMTP id S1352837AbiELKvR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 06:51:17 -0400
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403C243ED6;
+        Thu, 12 May 2022 03:51:15 -0700 (PDT)
+Received: by mail-yb1-f176.google.com with SMTP id e12so8926785ybc.11;
+        Thu, 12 May 2022 03:51:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YxUnFLs6d2OKV6JAgbcUVcwMXEjoVcwHta+WKOf3uyA=;
-        b=CDHTBqR2+bbwzvDhv69AB52oGCUZwYrvzgCYy86FUh5he2jxL8iswTfoqSa0X1aI2w
-         3cNmbWFy1NkALWznK6oHq2kvOl9Xsicv90sIu4fv0JTp9Zw7Bb58eVGTzh2X5rJ1s4p0
-         br/N5jgKfT99YRPf2kX+IMnHyQtf3DMM/wjGDcyXo0xRCiEcNoNmIRx4MYyYAoP5GcSd
-         MUQ3+fuo7lmXA4E6HplXmLOb+an7xTwG3qbo+0f5SCJYPTaD/Z6BjojRmiP1giFaCAx0
-         HTpOMoWpbTwhIlL++OrayBPHRgP5qEGJQR4hNkCegzxEzlvhwRbSLpSIEELziX83PDpl
-         jQcw==
-X-Gm-Message-State: AOAM531OJz6c5Q+7zYW32mXOKBOuu9PVV4ilRl40OeYRWbN+TsatZO2L
-        +fGoDW2zQ5PSrFOErSddXT1YenEw1VahlHxSC2c=
-X-Google-Smtp-Source: ABdhPJyXbDZwvfW8c4kosCjARWOnEgS89ySqoUcsB5cTJbdXGy0+51R1i8zFfvTaoyMAifairnH0MHx9uMtt8aB6axA=
-X-Received: by 2002:a17:907:3e8c:b0:6f4:4fdb:6f24 with SMTP id
- hs12-20020a1709073e8c00b006f44fdb6f24mr29282944ejc.44.1652351663577; Thu, 12
- May 2022 03:34:23 -0700 (PDT)
+        bh=bvkc/5xcgtS0G/lszVNVFQYj2Ci65ZlPIQoUua69cVo=;
+        b=w66yN6Dz0xJ9GvTl1KKK2ZWE9w8XGURA9Vh975a4+IVqaafa76F1Ilvh19JliA83Jb
+         YhtCl0gc03Rp5xuLlS3TATXOhInVlGksUUVC2w3FLLihY4V/Yo0qRycnnIiPVBNr/vgV
+         yBBbSlwYM+hrvrQmCCh46CK5HL8DZyKIXMhAaV3uJ8SzNW0zDxv2AcfFvhdAD5CebHmK
+         BKYepRBsOray2NOMGSo9sQ0hqGjbcxsVrKjrh3k6WX56ppTvKVyPUyTiRMYNgxQ/lYdB
+         WrZgytOH5SDDdw2y4W0nHKaW/HZQH9HgCp017EhIRWzpQ5XgTJ69hVzxyHcUQZLHdjki
+         23RQ==
+X-Gm-Message-State: AOAM531sbI8W4iWuhzMmCOgzCvg9tdSGZvBkXSGCYud4BYvENbegH9Gs
+        YpwOOvoPKggTo9EkjbsXNFpviXJH4g0w/nJFHvc=
+X-Google-Smtp-Source: ABdhPJxIcISSxN5wkMYvUSqnsUc2aciZLx/hDIlBPNDBAM9OIXe0zv+d86g7MCmhvLu7+VEIfXrXZYzFMF+M4BNzAWw=
+X-Received: by 2002:a25:3795:0:b0:648:fa25:5268 with SMTP id
+ e143-20020a253795000000b00648fa255268mr29583990yba.153.1652352674159; Thu, 12
+ May 2022 03:51:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <YnycZaoBPF89t/qF@debian-BULLSEYE-live-builder-AMD64>
 In-Reply-To: <YnycZaoBPF89t/qF@debian-BULLSEYE-live-builder-AMD64>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 12 May 2022 12:33:46 +0200
-Message-ID: <CAHp75VfbcS1Br2ry3gAwXDPag-U6aAR4TbrNz0Kp7Q9s9zreqQ@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 12 May 2022 12:51:03 +0200
+Message-ID: <CAJZ5v0iw2izuDOmZhS=sHMFV=F=cWWR598na3oE3tTuFS+FmbA@mail.gmail.com>
 Subject: Re: [PATCH v12] platform/chrome: Add ChromeOS ACPI device driver
 To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -80,10 +69,10 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         chrome-platform@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -104,17 +93,14 @@ On Thu, May 12, 2022 at 7:34 AM Muhammad Usama Anjum
 > blobs, and can be accessed as the contents of the appropriate read only
 > files in the standard ACPI device's sysfs directory tree. This data is
 > consumed by the ChromeOS user space.
-
-Thanks for update, looks good to me
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-Couple of the same nit-picks below in case you want to address them
-now (it's minor and you may do it later, as you wish).
-
+>
 > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 > Co-developed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
 > ---
 > Changes in v12:
 > - Use one type of correct commenting style
@@ -802,12 +788,8 @@ now (it's minor and you may do it later, as you wish).
 > +               ret = parse_attr_name(attr->attr.name, name, &num);                     \
 > +               if (ret)                                                                \
 > +                       return ret;                                                     \
-
 > +               ret = chromeos_acpi_evaluate_method(dev, _num, num, name, buf);         \
 > +               return ret;                                                             \
-
-It can be now return chromeos_acpi_evaluate_method(...);
-
 > +       }                                                                               \
 > +       static struct device_attribute dev_attr_0_##_group =                            \
 > +               __ATTR(GPIO.0, 0444, chromeos_attr_show_gpio_##_num, NULL);             \
@@ -904,12 +886,8 @@ It can be now return chromeos_acpi_evaluate_method(...);
 > +       ret = parse_attr_name(attr->attr.name, attr_name, &attr_num);
 > +       if (ret)
 > +               return 0;
-
 > +       ret = chromeos_acpi_evaluate_method(dev, attr_num, 0, attr_name, buf);
 > +       return ret;
-
-Ditto.
-
 > +}
 > +
 > +static unsigned int get_gpio_pkg_num(struct device *dev)
@@ -1030,8 +1008,3 @@ Ditto.
 > --
 > 2.30.2
 >
-
-
--- 
-With Best Regards,
-Andy Shevchenko
