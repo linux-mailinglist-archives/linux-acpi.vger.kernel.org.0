@@ -2,108 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 574645250C3
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 16:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAC5D5250CA
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 17:04:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352445AbiELO7s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 May 2022 10:59:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56422 "EHLO
+        id S245735AbiELPEE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 12 May 2022 11:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343585AbiELO7r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 10:59:47 -0400
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B6495DD1A;
-        Thu, 12 May 2022 07:59:46 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id r11so10256083ybg.6;
-        Thu, 12 May 2022 07:59:46 -0700 (PDT)
+        with ESMTP id S231782AbiELPED (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 11:04:03 -0400
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F91C6BFED;
+        Thu, 12 May 2022 08:04:00 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-2f16645872fso60025107b3.4;
+        Thu, 12 May 2022 08:04:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fjYn5CDwHEMqMskpcbiPZayzeTiT7uRz4ad7VPAKrRw=;
-        b=7j2R32O3Dwq/dWERL615t6d09AukLIrkrdhJt+P3Z3sJT736FMZW6HsVqzIjNzWOAH
-         FsZ0SjDS+ETvS0ET06Uk8bpDWh0CjHzzLq/fMGVVoEgIgtHFXvA1bv3J91T4OPJtEYek
-         PcEnU5F34egDtiYW5k6poaXjEg0r7jKSBcLrj5f84wvudRTlz7TTJh6ttKb6VMIlWZDI
-         gDsfqg+kSf6EfCl1fvPs0qY8VOCSWIsapjdQ4y0f37JMyKmG78olWP+pGvAMDyzsFRRs
-         fXp7CXLO0QIoUYkWSgZI5SsTWYCZhdcww7byG49Cz0TZMy9JLUfpKUceh+LvzzCZoSjt
-         QcrA==
-X-Gm-Message-State: AOAM531G6O5POnXPhDgf8Nw0fEIDm5lS2tZwnLt7rGaO24dlqzvqdkH6
-        g9CTUtiQY7UMYIPFK4l9e99I0urNCT5tyNIWikI=
-X-Google-Smtp-Source: ABdhPJxLwnU63w6zP3WMO3aOxg4t3ua4oFQ4Kt1pfaTnUynnFHIXlWHPpXsuUZNrYLHVMK32NvXshFVQYG6Uzb/vnI0=
-X-Received: by 2002:a25:c0d5:0:b0:64a:c6dd:1a00 with SMTP id
- c204-20020a25c0d5000000b0064ac6dd1a00mr166815ybf.365.1652367585477; Thu, 12
- May 2022 07:59:45 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=03yB+3thvFD8JtxaGtTda0M+LOZiA6X6v6EA8xoZfXM=;
+        b=e4Ct9ZIOom74c7Ba9ymnDNQpfFK4j/1r+hPXxxHc86JE/jwjAnH2tlShNjGsLX74nq
+         NHmveYwy7z0T49PNZxafLQc9eJyn3qih64HFlFycxXBAzA9ihLDTSy09r60xdYmpzRT1
+         etrE9PTqtRQyH/uKuBN5fhgpGcZhu9yzPPop4FZ/tg9s/IvFz3pXfHN9bFKTq7TIu8oK
+         GvMe8XzSwKPqKJ0SI45A1A17SuPNn68biJiLvuY0g/M/kISF4yQTYHRsM7v+GczYmduL
+         MNsp/GcJc8OcKv11mr5TAqODRr5eaqZlUbc80nLIReHhKGfyRZG5t7g8xwzkLThDHPcq
+         M7tQ==
+X-Gm-Message-State: AOAM5326XRgBNf3IeSnof5rhGAuuejCDRjov/ZHxE4qFVKSdmif12KU0
+        0yr7JT69bUGmvAFyaN7eoDmKFWtzzL9ty8CrXAQ=
+X-Google-Smtp-Source: ABdhPJxFA3tZOBogfQgb9aTgqq84JZxkvDvNi3qwEuj4PulKcyiU7vJHw/S2JJ/D2cvzfRRNHdxeWqzmOfVkiSKTz6Y=
+X-Received: by 2002:a0d:ddce:0:b0:2f8:c9f7:8f7c with SMTP id
+ g197-20020a0dddce000000b002f8c9f78f7cmr479195ywe.301.1652367839727; Thu, 12
+ May 2022 08:03:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220506204731.330378-1-ian@linux.cowan.aero>
-In-Reply-To: <20220506204731.330378-1-ian@linux.cowan.aero>
+References: <20220511134559.1466925-1-pierre.gondois@arm.com> <20220511141731.rjyjmgvux43lsj3x@bogus>
+In-Reply-To: <20220511141731.rjyjmgvux43lsj3x@bogus>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 12 May 2022 16:59:34 +0200
-Message-ID: <CAJZ5v0jStNBSPJoRPdY4NggwO5qr7oh1Wg2hauz084H_kyXQnw@mail.gmail.com>
-Subject: Re: [PATCH v2] drivers: acpi: clean up spaces to be consistent
-To:     Ian Cowan <ian@linux.cowan.aero>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+Date:   Thu, 12 May 2022 17:03:48 +0200
+Message-ID: <CAJZ5v0gvHO=2ZwdpQrgMufGFtkEcG-K9zEqoFBYys36qAhTE4Q@mail.gmail.com>
+Subject: Re: [PATCH v1 1/5] ACPI: CPPC: Check _OSC for flexible address space
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        Pierre Gondois <pierre.gondois@arm.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ionela Voinescu <Ionela.Voinescu@arm.com>,
+        Dietmar Eggemann <Dietmar.Eggemann@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Robert Moore <robert.moore@intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux PM <linux-pm@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 6, 2022 at 10:54 PM Ian Cowan <ian@linux.cowan.aero> wrote:
+On Wed, May 11, 2022 at 4:17 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
 >
-> This cleans up a few line spaces so that it is consistent with the rest
-> of the file. There are a few places where a space was added before a
-> return and two spots where a double line space was made into one line
-> space.
+> On Wed, May 11, 2022 at 03:45:55PM +0200, Pierre Gondois wrote:
+> > ACPI 6.2 Section 6.2.11.2 'Platform-Wide OSPM Capabilities':
+> >   Starting with ACPI Specification 6.2, all _CPC registers can be in
+> >   PCC, System Memory, System IO, or Functional Fixed Hardware address
+> >   spaces. OSPM support for this more flexible register space scheme is
+> >   indicated by the “Flexible Address Space for CPPC Registers” _OSC bit
+> >
+> > Otherwise (cf ACPI 6.1, s8.4.7.1.1.X), _CPC registers must be in:
+> > - PCC or Functional Fixed Hardware address space if defined
+> > - SystemMemory address space (NULL register) if not defined
+> >
+> > Add the corresponding _OSC bit and check it when parsing _CPC objects.
+> >
 >
-> Signed-off-by: Ian Cowan <ian@linux.cowan.aero>
-> ---
->  drivers/acpi/ac.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> Looks good, other than a minor nit below. Feel free to ignore that or
+> check what is Rafael's preference. Otherwise,
 >
-> diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-> index db487ff9dd1b..f8ec48cd7659 100644
-> --- a/drivers/acpi/ac.c
-> +++ b/drivers/acpi/ac.c
-> @@ -32,7 +32,6 @@ MODULE_AUTHOR("Paul Diefenbaugh");
->  MODULE_DESCRIPTION("ACPI AC Adapter Driver");
->  MODULE_LICENSE("GPL");
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 >
-> -
->  static int acpi_ac_add(struct acpi_device *device);
->  static int acpi_ac_remove(struct acpi_device *device);
->  static void acpi_ac_notify(struct acpi_device *device, u32 event);
-> @@ -125,6 +124,7 @@ static int get_ac_property(struct power_supply *psy,
->         default:
->                 return -EINVAL;
->         }
-> +
->         return 0;
->  }
+> > Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+> > ---
+> >  drivers/acpi/bus.c       | 18 ++++++++++++++++++
+> >  drivers/acpi/cppc_acpi.c |  9 +++++++++
+> >  include/linux/acpi.h     |  2 ++
+> >  3 files changed, 29 insertions(+)
+> >
+> [...]
 >
-> @@ -286,6 +288,7 @@ static int acpi_ac_resume(struct device *dev)
->                 return 0;
->         if (old_state != ac->state)
->                 kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-> +
->         return 0;
->  }
->  #else
-> @@ -296,7 +299,6 @@ static int acpi_ac_remove(struct acpi_device *device)
->  {
->         struct acpi_ac *ac = NULL;
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index d7136d13aa44..977d74d0465b 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -574,6 +574,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+> >  #define OSC_SB_OSLPI_SUPPORT                 0x00000100
+> >  #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT              0x00001000
+> >  #define OSC_SB_GENERIC_INITIATOR_SUPPORT     0x00002000
+> > +#define OSC_SB_CPC_FLEXIBLE_ADR_SP           0x00004000
 >
-> -
->         if (!device || !acpi_driver_data(device))
->                 return -EINVAL;
->
-> --
+> I would prefer ADR_SPACE instead of ADR_SP.
 
-Applied with adjusted subject as 5.19 material, thanks!
+Yes, please make this change.
