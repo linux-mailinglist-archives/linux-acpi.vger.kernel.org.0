@@ -2,130 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05BFC524A18
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 12:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 374DE524A2D
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 12:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240772AbiELKPi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 May 2022 06:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51588 "EHLO
+        id S1352512AbiELKWO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 May 2022 06:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243726AbiELKPg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 06:15:36 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15C11ACF91;
-        Thu, 12 May 2022 03:15:32 -0700 (PDT)
-Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KzSG90PzVz6H7Ps;
-        Thu, 12 May 2022 18:10:41 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 12 May 2022 12:15:30 +0200
-Received: from localhost (10.81.210.133) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 12 May
- 2022 11:15:29 +0100
-Date:   Thu, 12 May 2022 11:15:25 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     Jonathan Lemon <jonathan.lemon@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Len Brown <lenb@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        <kernel-team@fb.com>, <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] : Revert "ACPI: Remove side effect of partly creating a
- node in acpi_get_node()"
-Message-ID: <20220512111525.0000570e@Huawei.com>
-In-Reply-To: <CAJZ5v0hSJExYtxEZuw-+ZUf1YoZesOtS+x9UbdoBNXtTKPiYxg@mail.gmail.com>
-References: <20220511171754.avfrrqg6eihku55s@bsd-mbp.dhcp.thefacebook.com>
-        <CAJZ5v0jHDNBqCfmgyLUOs7yUZaEjQ96m5HVZKHP3x7_uamH5zQ@mail.gmail.com>
-        <7A00774E-13F2-4FB4-9979-D7827C92F5B8@gmail.com>
-        <CAJZ5v0hSJExYtxEZuw-+ZUf1YoZesOtS+x9UbdoBNXtTKPiYxg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S1345059AbiELKWN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 06:22:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073795B3D1;
+        Thu, 12 May 2022 03:22:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A114F61CE2;
+        Thu, 12 May 2022 10:22:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A62AC385CB;
+        Thu, 12 May 2022 10:22:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1652350932;
+        bh=MwEdIPt8V7IcGJwcblLAwmE2i5Lh/8BkDawpPULT2II=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TaC4Ro+XrApotYdCJoxHvramF2ezR+O1E0eYlTMMjWtxZfspVKTMSqdhNgqa2PoSt
+         24TK/sqR8iJkV1q6I0626qlpJb2xtMk8LcDR2jwXRoIPlUkPMclaoNAQH7Jjk+nFcO
+         HeoQmg8OyKK0QDaOt+Sb8HlNE3Nh2sl5aDg+zH3s=
+Date:   Thu, 12 May 2022 12:22:05 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        groeck@chromium.org, dtor@chromium.org, gwendal@chromium.org,
+        vbendeb@chromium.org, andy@infradead.org,
+        Ayman Bagabas <ayman.bagabas@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?utf-8?B?Qmxhxb4=?= Hrastnik <blaz@mxxn.io>,
+        Darren Hart <dvhart@infradead.org>,
+        Jeremy Soller <jeremy@system76.com>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Rajat Jain <rajatja@google.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        chrome-platform@lists.linux.dev
+Subject: Re: [PATCH v12] platform/chrome: Add ChromeOS ACPI device driver
+Message-ID: <YnzfzRhGwtO9RtNi@kroah.com>
+References: <YnycZaoBPF89t/qF@debian-BULLSEYE-live-builder-AMD64>
+ <YnzdDMPR3qZ1waJW@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.81.210.133]
-X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YnzdDMPR3qZ1waJW@google.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 11 May 2022 19:44:14 +0200
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
-
-> On Wed, May 11, 2022 at 7:42 PM Jonathan Lemon <jonathan.lemon@gmail.com> wrote:
-> >
-> > On 11 May 2022, at 10:33, Rafael J. Wysocki wrote:
-> >  
-> > > On Wed, May 11, 2022 at 7:24 PM Jonathan Lemon <jonathan.lemon@gmail.com> wrote:  
-> > >>
-> > >> This reverts commit a62d07e0006a3a3ce77041ca07f3c488ec880790.
-> > >>
-> > >> The change calls pxm_to_node(), which ends up returning -1
-> > >> (NUMA_NO_NODE) on some systems for the pci bus, as opposed
-> > >> to the prior call to acpi_map_pxm_to_node(), which returns 0.
-> > >>
-> > >> The default numa node is then inherited by all pci devices, and is
-> > >> visible in /sys/bus/pci/devices/*/numa_node
-> > >>
-> > >> The prior behavior shows:
-> > >>  # cat /sys/bus/pci/devices/*/numa_node | sort | uniq -c
-> > >>      122 0
-> > >>
-> > >> While the new behavior has:
-> > >>  # cat /sys/bus/pci/devices/*/numa_node | sort | uniq -c
-> > >>        1 0
-
-Curious, which device is turning up in node 0?
-
-> > >>      121 -1
-> > >>
-> > >> While arguably NUMA_NO_NODE is correct on single-socket systems which
-> > >> have only one numa domain, this breaks scripts that attempt to read the
-> > >> NIC numa_node and pass that to numactl in order to pin memory allocation
-> > >> when running applications (like iperf).  E.g.:
-> > >>
-> > >>   # numactl -p -1 iperf3
-> > >>   libnuma: Warning: node argument -1 is out of range
-> > >>   <-1> is invalid
-> > >>
-> > >> Reverting this change restores the prior behavior.  
-> > >
-> > > Well, that's not a recent commit and it fixed a real and serious issue.
-> > >
-> > > Isn't there a way to fix this other than reverting it?  
-> >
-> > The userspace behavior changed - is there another way to fix things
-> > so that a valid numa_node is returned?  
+On Thu, May 12, 2022 at 03:10:20AM -0700, Dmitry Torokhov wrote:
+> Hi Muhammad,
 > 
-> Well, that's my question.
+> On Thu, May 12, 2022 at 10:34:29AM +0500, Muhammad Usama Anjum wrote:
+> > +static int chromeos_acpi_device_probe(struct platform_device *pdev)
+> > +{
+> > +	chromeos_acpi_gpio_groups = get_gpio_pkg_num(&pdev->dev);
+> > +
+> > +	/*
+> > +	 * If the platform has more GPIO attribute groups than the number of
+> > +	 * groups this driver supports, give out a warning message.
+> > +	 */
+> > +	if (chromeos_acpi_gpio_groups > ARRAY_SIZE(chromeos_acpi_all_groups) - 2)
+> > +		dev_warn(&pdev->dev, "Only %zu GPIO attr groups supported by the driver out of total %u.\n",
+> > +			 ARRAY_SIZE(chromeos_acpi_all_groups) - 2, chromeos_acpi_gpio_groups);
+> 
+> I know that we can bikeshed this until dawn of time, but we are dealing
+> here with data coming from the system firmware and a singleton device,
+> so it should be all available pretty early in boot sequence. I
+> understand we want to solve the "race" even though it is purely
+> theoretical, but we should be able to figure out what gpios are
+> supported and construct the groups array(s) before registering the
+> platform driver. Or do we see that runtime costs of constricting groups
+> dynamically outweigh space wasted by unused groups?
 
-As Rafael noted, we don't want to change the internal kernel representation because
-previous kernel behavior resulting in several paths where you could
-get NULL pointer de-references, but maybe we could special case
-it at the userspace boundary.
+I really really do not like dynamically created groups as it's more
+complex and fragile.  This is much simpler code overall.
 
-e.g. override dev_to_node() return value here
-https://elixir.bootlin.com/linux/v5.18-rc6/source/drivers/pci/pci-sysfs.c#L358
+thanks,
 
-What's problematic is we missed this being being an issue until now and hence
-have shipping kernels with both behaviors.
-
-+CC Bjorn and linux-pci
-
-Jonathan
-
-
-
+greg k-h
