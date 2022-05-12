@@ -2,108 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD5952474D
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 09:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958EF524A00
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 May 2022 12:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351150AbiELHrZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 May 2022 03:47:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
+        id S1352226AbiELKK2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 May 2022 06:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351164AbiELHrX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 03:47:23 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F7B1B54B0
-        for <linux-acpi@vger.kernel.org>; Thu, 12 May 2022 00:47:15 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d17so4178068plg.0
-        for <linux-acpi@vger.kernel.org>; Thu, 12 May 2022 00:47:15 -0700 (PDT)
+        with ESMTP id S1345766AbiELKK0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 May 2022 06:10:26 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A43B19C747;
+        Thu, 12 May 2022 03:10:25 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id x23so4352475pff.9;
+        Thu, 12 May 2022 03:10:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vwkfMqkkpGs1FVotSl8gOPBh3VAjsH5HCd0W5khKpM0=;
-        b=QwOMO2oq5TbAyOFDFvpvkgkWVG6EaFOmZlzyuwsRB7Flg+Ox5gGrxGlgd257ueDece
-         fAIvn+7oEvIbuelneZQjTzbxL+CSaBt4skadbYywXlDR4ZoqdF4Jo5aIouhWpRx2qpsl
-         bpaVmdL7fcragnIuna4eczG35NFsj5Fgjn6TXwwsJ+P6s/WXLxqPiSVc5kHe1LyILLw1
-         5Kuc9nX8N/8UVRcAjKl9ry49jeTRNn8+5BE/tPtuTlGEQ5h3osSjs+0ywkuWTx/M2HQY
-         ZZmO8ghKDlLqpecBME9A6nLni9x7hRLyp8im5ldlY/plFQEKIeDSSiEOVFZNZD3X6A0N
-         Z3RQ==
+         :content-disposition:in-reply-to;
+        bh=2IFiYfoIKlICTpTGvMOw6q9N3Q3vW+HIY5wMaOVljZc=;
+        b=ZS9+8YiztFlMOzLkLRbd3S2QaIvchP0IYmkI4QwtS2UX5aWkOX3kW9v5luy05CeE5U
+         m3Ns2rDEhxjuZj3AvCADV2PrDTS6u+zwRWkrdt4JoAAa1cIgRXTigPM9QSo48OnMdl0p
+         0N7VeiYFaOecenJjLxTl/Ai1cXGHxgfRhsvEHWREOlLCGAfMNL/g2FDT6TWF8r9VA1bi
+         2t9jjCvrYDZAckvV10bZhoYKhtEmh60T43DFvxQOdOddYLSfAZ2XBBMGnxzw6r//x2/1
+         RyuiMg6Vz1/MQ0jh7fKfvAuIhp1RnaHUHAxn6e22FzGfwp1tAMGKEcRU5+VrzHCErJbg
+         mINw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vwkfMqkkpGs1FVotSl8gOPBh3VAjsH5HCd0W5khKpM0=;
-        b=MsJN5EO/Nqfs3kTP6u/KjZE2BE0njPzZ0rhPSe1ficgkIyRfofs+0VSf3OeDYOALJq
-         kYqZJQlkoYQ5n5LLgMrThJ59wD4hy1PZnoHhh7hUpsD6j6YkXHXglToiz7WFoNlhasUh
-         CZkWeaqgakr0IZtlsbgDmgKOcxs4i1lu/KGgcwcgGakJXJN+xU2eDRBy0PhXQb8VSTZ6
-         wn/iP3BfABiUusS3fds7jrVUg+K1uTA7gVxOLhELawLk2Tb97otJNiP3haBOu2aih/mc
-         O8BqMK+FCdiLphasuvC3tgd0OeVNNP4zyh3NZVp6uNQxhge9rT6qyNz51YjUOyPPh9iO
-         iOBg==
-X-Gm-Message-State: AOAM533081N+dC9vPiBzWnKs2HiY1D7KoOJb3NgwhGDHA9FEnqEwgCAH
-        6GT4S33ZBvNCdfEgKlXTPbbYvg==
-X-Google-Smtp-Source: ABdhPJx0gFtg0LRz6XpvrQ6zmby9LlayUCFmF87pWSFCFPlW3HOI/+gcMgEygACnvoeQR4T/ohb3ug==
-X-Received: by 2002:a17:902:f78d:b0:14d:522e:deb3 with SMTP id q13-20020a170902f78d00b0014d522edeb3mr29111982pln.173.1652341635112;
-        Thu, 12 May 2022 00:47:15 -0700 (PDT)
-Received: from localhost ([122.162.234.2])
-        by smtp.gmail.com with ESMTPSA id z12-20020a170902708c00b0015e8d4eb1desm3180431plk.40.2022.05.12.00.47.14
+         :mime-version:content-disposition:in-reply-to;
+        bh=2IFiYfoIKlICTpTGvMOw6q9N3Q3vW+HIY5wMaOVljZc=;
+        b=dhCpPNtZ4LBmD/74laIPNz1f9tNKGCAt2uObSrE3yzg6SPmJT2svk7vXqbxdoEsrcW
+         m8pX9vZ2x4tve8nwZhCc+vvVTaYPvc3adixPCdyGa8PtRE7OX6kjs8xPmA5uqDplPCGY
+         fI0mSdktmz82dHG4TM4NhkfdPVE9UfBjMwdtBi9eg/AkQd7mUz39Eh88am4kK/vO0wuX
+         YITpNyAf4plKYZLkgG+Jo92jzw5GlaZ9vVQMe6cU72h7eni1k+NfyuxJB50LizUlOczs
+         eFzCXTT3s+TDr+dhlJzljaPiOyp2dEJ9TYGRB4Ffy9MGQsGb7NzSwPXK4y6fQ6OGvJ5d
+         xMiw==
+X-Gm-Message-State: AOAM532G4eRQt9y+5bizLETbBWMRvAYz/IE+qyItfMDSIgE0ytgJnqsg
+        uBoAa2iI9ZIEq9uDe0+Luqc=
+X-Google-Smtp-Source: ABdhPJzDknA/eDpL7RTHehedtaKh6jrwFijU1Kxudu0qoCCpM9PmOpPk0MgEfMNQSrtTeIYg8P84dA==
+X-Received: by 2002:a62:61c6:0:b0:4bd:118:8071 with SMTP id v189-20020a6261c6000000b004bd01188071mr10719694pfb.28.1652350224466;
+        Thu, 12 May 2022 03:10:24 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:ad76:8fc:e2ba:172])
+        by smtp.gmail.com with ESMTPSA id u1-20020a626001000000b0050dc76281aesm3336599pfb.136.2022.05.12.03.10.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 May 2022 00:47:14 -0700 (PDT)
-Date:   Thu, 12 May 2022 13:17:12 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Pierre Gondois <pierre.gondois@arm.com>
-Cc:     linux-kernel@vger.kernel.org, Ionela.Voinescu@arm.com,
-        Dietmar.Eggemann@arm.com, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Thu, 12 May 2022 03:10:23 -0700 (PDT)
+Date:   Thu, 12 May 2022 03:10:20 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        devel@acpica.org
-Subject: Re: [PATCH v1 5/5] cpufreq: CPPC: Enable dvfs_possible_from_any_cpu
-Message-ID: <20220512074712.oaf7qaqeds5hlg63@vireshk-i7>
-References: <20220511134559.1466925-1-pierre.gondois@arm.com>
- <20220511134559.1466925-5-pierre.gondois@arm.com>
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        groeck@chromium.org, dtor@chromium.org, gwendal@chromium.org,
+        vbendeb@chromium.org, andy@infradead.org,
+        Ayman Bagabas <ayman.bagabas@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?utf-8?B?Qmxhxb4=?= Hrastnik <blaz@mxxn.io>,
+        Darren Hart <dvhart@infradead.org>,
+        Jeremy Soller <jeremy@system76.com>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Rajat Jain <rajatja@google.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        chrome-platform@lists.linux.dev
+Subject: Re: [PATCH v12] platform/chrome: Add ChromeOS ACPI device driver
+Message-ID: <YnzdDMPR3qZ1waJW@google.com>
+References: <YnycZaoBPF89t/qF@debian-BULLSEYE-live-builder-AMD64>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220511134559.1466925-5-pierre.gondois@arm.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <YnycZaoBPF89t/qF@debian-BULLSEYE-live-builder-AMD64>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11-05-22, 15:45, Pierre Gondois wrote:
-> From: Pierre Gondois <Pierre.Gondois@arm.com>
-> 
-> The communication mean of the _CPC desired performance can be
-> PCC, System Memory, System IO, or Functional Fixed Hardware (FFH).
-> 
-> PCC, SystemMemory and SystemIo address spaces are available from any
-> CPU. Thus, dvfs_possible_from_any_cpu should be enabled in such case.
-> For FFH, let the FFH implementation do smp_call_function_*() calls.
-> 
-> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-> ---
->  drivers/cpufreq/cppc_cpufreq.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index 000a0c610c30..ad1535fbf389 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -558,6 +558,7 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
->  	}
->  
->  	policy->fast_switch_possible = cppc_allow_fast_switch();
-> +	policy->dvfs_possible_from_any_cpu = true;
->  
->  	/*
->  	 * If 'highest_perf' is greater than 'nominal_perf', we assume CPU Boost
+Hi Muhammad,
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+On Thu, May 12, 2022 at 10:34:29AM +0500, Muhammad Usama Anjum wrote:
+> +static int chromeos_acpi_device_probe(struct platform_device *pdev)
+> +{
+> +	chromeos_acpi_gpio_groups = get_gpio_pkg_num(&pdev->dev);
+> +
+> +	/*
+> +	 * If the platform has more GPIO attribute groups than the number of
+> +	 * groups this driver supports, give out a warning message.
+> +	 */
+> +	if (chromeos_acpi_gpio_groups > ARRAY_SIZE(chromeos_acpi_all_groups) - 2)
+> +		dev_warn(&pdev->dev, "Only %zu GPIO attr groups supported by the driver out of total %u.\n",
+> +			 ARRAY_SIZE(chromeos_acpi_all_groups) - 2, chromeos_acpi_gpio_groups);
+
+I know that we can bikeshed this until dawn of time, but we are dealing
+here with data coming from the system firmware and a singleton device,
+so it should be all available pretty early in boot sequence. I
+understand we want to solve the "race" even though it is purely
+theoretical, but we should be able to figure out what gpios are
+supported and construct the groups array(s) before registering the
+platform driver. Or do we see that runtime costs of constricting groups
+dynamically outweigh space wasted by unused groups?
+
+Thanks.
 
 -- 
-viresh
+Dmitry
