@@ -2,25 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E874E525EDD
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 May 2022 12:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CEE0525F5F
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 May 2022 12:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356039AbiEMJpL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 May 2022 05:45:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36458 "EHLO
+        id S1379146AbiEMJtx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 May 2022 05:49:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359682AbiEMJpK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 May 2022 05:45:10 -0400
+        with ESMTP id S1379143AbiEMJtt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 May 2022 05:49:49 -0400
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BD101218FEF
-        for <linux-acpi@vger.kernel.org>; Fri, 13 May 2022 02:45:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 709B0200F71
+        for <linux-acpi@vger.kernel.org>; Fri, 13 May 2022 02:49:48 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86BE1143D;
-        Fri, 13 May 2022 02:45:07 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3A66E143D;
+        Fri, 13 May 2022 02:49:48 -0700 (PDT)
 Received: from lpieralisi (unknown [10.57.2.233])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EDB503F73D;
-        Fri, 13 May 2022 02:45:04 -0700 (PDT)
-Date:   Fri, 13 May 2022 10:44:59 +0100
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8AD983F73D;
+        Fri, 13 May 2022 02:49:45 -0700 (PDT)
+Date:   Fri, 13 May 2022 10:49:40 +0100
 From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 To:     Robin Murphy <robin.murphy@arm.com>,
         Shameerali Kolothum Thodi 
@@ -40,9 +40,9 @@ Cc:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
         "jon@solid-run.com" <jon@solid-run.com>,
         "eric.auger@redhat.com" <eric.auger@redhat.com>,
         "laurentiu.tudor@nxp.com" <laurentiu.tudor@nxp.com>,
-        "hch@infradead.org" <hch@infradead.or>
+        "hch@infradead.org" <hch@infradead.org>
 Subject: Re: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
-Message-ID: <Yn4om0B/AD6W1Cgi@lpieralisi>
+Message-ID: <20220513094940.GA23371@lpieralisi>
 References: <20220503163330.509-1-shameerali.kolothum.thodi@huawei.com>
  <2234ad60-c49f-8c72-616c-dfa5300354ef@huawei.com>
  <8e4f012717e34195a53cb73f8ce28627@huawei.com>
@@ -51,6 +51,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <5c8ae673-f8e3-0ed3-e62d-d445913b012c@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
@@ -59,6 +60,8 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
+
+[with Christoph's correct email address]
 
 On Tue, May 10, 2022 at 09:07:00AM +0100, Robin Murphy wrote:
 > On 2022-05-10 08:23, Shameerali Kolothum Thodi wrote:
