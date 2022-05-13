@@ -2,63 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A91C52615C
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 May 2022 13:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A99C526BFE
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 May 2022 22:58:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380052AbiEMLuS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 May 2022 07:50:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43474 "EHLO
+        id S1384385AbiEMU6R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 May 2022 16:58:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380044AbiEMLuR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 May 2022 07:50:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF44B1F8F0B;
-        Fri, 13 May 2022 04:50:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67E0161E79;
-        Fri, 13 May 2022 11:50:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C147EC3411E;
-        Fri, 13 May 2022 11:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652442615;
-        bh=UHq75syz1TwIK/R+8b105K6sf477mrGnpEYKE8UUBjg=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=OXOhqbvkVUCbn/mD9aQ/qla4Vx7uqJe+Klm49poBCtW6tS5QxiIXSB392vQJVnkGz
-         rokxy3+le9vm/RuFySY/NNhrbSc7CDofLoq1CUZQsoMobPorNAaanH3nHccna7Wqpw
-         yJZfb8qsi2fk7+9OYLqNy5BojL/L5k6hj3C70tFGumwK7FieK8QD7e7AxIkHxiZWge
-         Rt7oteioNHESX0eqlvnMaawju/Q/ycjnvJ00GimdWcuV6MIzXN35NR8FYzH8qsKLKC
-         Nzl/G0vMOsNwS5EFThuDIuA6mIwzgaFr9M03vbhOXtVSA70QK3dqMy7qkVZOpTbJn0
-         bno8Q8FXLkA9g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A857AF03935;
-        Fri, 13 May 2022 11:50:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S1376690AbiEMU6Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 May 2022 16:58:16 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12BAB36E1F
+        for <linux-acpi@vger.kernel.org>; Fri, 13 May 2022 13:58:16 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id e12so17244515ybc.11
+        for <linux-acpi@vger.kernel.org>; Fri, 13 May 2022 13:58:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WxwjdHb6GEM+MgL/h9hAhwGzHrI9ED16/yD6d7+q8kA=;
+        b=AJ3MMUdAsy2KYM6tgO45ka5ahx9U/xhqfbNZjeeHg3jIAt/iBzi8WLflrczDE4+PII
+         OoYT6T73obpj++O0t4+GGkV+321SwZ4zBrYCw0mW1JstsxDHi6JyA57YnjPPAZKTLUXr
+         1Hzp41aUGjG1RW5GjHCX6zW6Ip+wSXpX0eW3nUDv4KW3wgO4hIdV652ECemIk5sXRfEf
+         wPUllUJgx53nIgqWg8f6lsljBHYBcxiE18NPSsj5b+cNcMFzqodss+l6ei48I6z91ign
+         vup4RjkNfem4VLELvD38b9MziK8rFFm1lERIPwCkQ3L5Xr2zWMYwSPHWzKgLey0SL3L5
+         b0FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WxwjdHb6GEM+MgL/h9hAhwGzHrI9ED16/yD6d7+q8kA=;
+        b=dpzlyldalemVQibBRy4w1SkGdcu4ymYRg1KMTBRErfo4f9XZQq3HVhh/CJ3+68U1ye
+         wjnsKVLXT73B192+uGdUNFRwmYd0cGkbghi8CDsMCnr1HGSwH/z89LrClt2To03g+gIu
+         46jB0ACFR6Uq757jYJfGUftLP2LFq7c11jMkHTJ+CB1GHCphNuTDzAg/xtyiRsq9Ce0M
+         43yBlO8N3zYhDvhwJmaYboILfIqo3zdc2/TQ429KHn4ohUNQg4mzOHzI2NLebHRYDFJ3
+         u2ZDLsJTPu7HkgLcU1fSiXRj4nCRkVIsLZF2Pv3J5anqffvdSdKK/W+e8u63C0GCwrgc
+         J14g==
+X-Gm-Message-State: AOAM531pNLNes0spvCCL87A1L4w1E9iWZu4OckZmgCRgxcg6WAnZSTWW
+        Qo4ow2yrxtTNboLoEiUbfWoaZ6+3tuSIqDwoEdbdWA==
+X-Google-Smtp-Source: ABdhPJyHjpfKqAU2CtfRT/4oUKgGz53TWH1vkCd306prnkDRzhu+I/QTvLdJ0kqhCkoyvyNqCpTxaev682mnkvqkIu0=
+X-Received: by 2002:a25:bcc3:0:b0:648:7360:8e75 with SMTP id
+ l3-20020a25bcc3000000b0064873608e75mr6796741ybm.533.1652475495308; Fri, 13
+ May 2022 13:58:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v13] platform/chrome: Add ChromeOS ACPI device driver
-From:   patchwork-bot+chrome-platform@kernel.org
-Message-Id: <165244261568.26306.10633068874919454705.git-patchwork-notify@kernel.org>
-Date:   Fri, 13 May 2022 11:50:15 +0000
-References: <Yn4OKYrtV35Dv+nd@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <Yn4OKYrtV35Dv+nd@debian-BULLSEYE-live-builder-AMD64>
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, hdegoede@redhat.com,
-        markgross@kernel.org, bleung@chromium.org, eballetbo@gmail.com,
-        gregkh@linuxfoundation.org, kernel@collabora.com,
-        groeck@chromium.org, dtor@chromium.org, gwendal@chromium.org,
-        vbendeb@chromium.org, andy@infradead.org, ayman.bagabas@gmail.com,
-        benjamin.tissoires@redhat.com, blaz@mxxn.io, dvhart@infradead.org,
-        dmitry.torokhov@gmail.com, jeremy@system76.com, 2pi@mok.nu,
-        mchehab+samsung@kernel.org, rajatja@google.com,
-        srinivas.pandruvada@linux.intel.com,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, rafael.j.wysocki@intel.com,
-        chrome-platform@lists.linux.dev
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220418141416.27529-1-asmaa@nvidia.com> <CH2PR12MB3895A1FB2977B725ED92AB57D7C29@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <CACRpkdY1uK=73zpEM5zUyXacm5xaUUFYkuKMxi_q6vwmOPy6tw@mail.gmail.com>
+ <CH2PR12MB389560A1873030472A7A371DD7C29@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <CACRpkdZhW9XK3opXLLzdMiVLVkGQyJCf7RLZtRQLsmzv-aqwbA@mail.gmail.com> <CH2PR12MB38953FF57D91FA75AB9CB102D7CB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+In-Reply-To: <CH2PR12MB38953FF57D91FA75AB9CB102D7CB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 13 May 2022 22:58:03 +0200
+Message-ID: <CACRpkdbAhMa2CXvQra3E13n8WfiBxyHNqzEp4dW3qo5upr_=gw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] Add driver for Mellanox BlueField-3 GPIO controller
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,33 +70,27 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello:
+On Thu, May 12, 2022 at 10:45 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
 
-This patch was applied to chrome-platform/linux.git (for-kernelci)
-by Tzung-Bi Shih <tzungbi@kernel.org>:
+>> > All GPIOs are always controlled by HW by default.
+>> > FW_CONTROL_SET is used when we want to release control of the GPIO by
+>> > HW and give the control to software instead.
+>>
+>> What does that mean in practice? What way does hardware control a GPIO?
+>>
+>> It's not some way of remuxing the pins is it, so you what you are calling
+>> "controlled by hardware" is actually that it is controlled by e.g. I2C and
+>> other stuff that may be muxed in?
+>
+> Yes exactly. These GPIO pins are already assigned a specific HW
+> functionality like I2C SDA/SCL, MDIO etc... but we would like to
+> support the option to control them from software if desired.
 
-On Fri, 13 May 2022 12:52:09 +0500 you wrote:
-> From: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> 
-> The x86 Chromebooks have the ChromeOS ACPI device. This driver attaches
-> to the ChromeOS ACPI device and exports the values reported by ACPI in a
-> sysfs directory. This data isn't present in ACPI tables when read
-> through ACPI tools, hence a driver is needed to do it. The driver gets
-> data from firmware using the ACPI component of the kernel. The ACPI values
-> are presented in string form (numbers as decimal values) or binary
-> blobs, and can be accessed as the contents of the appropriate read only
-> files in the standard ACPI device's sysfs directory tree. This data is
-> consumed by the ChromeOS user space.
-> 
-> [...]
+But how does that play with your pin controller?
 
-Here is the summary with links:
-  - [v13] platform/chrome: Add ChromeOS ACPI device driver
-    https://git.kernel.org/chrome-platform/c/0a4cad9c11ad
+I mean: is the multiplexing of different other devices also software
+controlled, so this should have a proper pin control driver rather
+than just a GPIO driver?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Yours,
+Linus Walleij
