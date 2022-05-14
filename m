@@ -2,60 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 249B1526F21
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 May 2022 09:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 009D352722A
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 May 2022 16:47:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231898AbiENFrY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 14 May 2022 01:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43954 "EHLO
+        id S233453AbiENOr6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 14 May 2022 10:47:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231876AbiENFrX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 14 May 2022 01:47:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F51114C;
-        Fri, 13 May 2022 22:47:22 -0700 (PDT)
+        with ESMTP id S233439AbiENOr5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 14 May 2022 10:47:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F229588;
+        Sat, 14 May 2022 07:47:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6E561B81D4F;
-        Sat, 14 May 2022 05:47:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F21C340EE;
-        Sat, 14 May 2022 05:47:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1652507240;
-        bh=vf2oLc0MEqjD1BilnbgV6Jliq+/poCm2Ji1IcvG5qhI=;
+        by ams.source.kernel.org (Postfix) with ESMTPS id 669F9B808CF;
+        Sat, 14 May 2022 14:47:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513F5C340EE;
+        Sat, 14 May 2022 14:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652539673;
+        bh=96QjL+OprZRjV2X3/4FwD7Eu1i7V9gHRJCzXuKCsUD4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TnBQ3gW3Mgy4xSLlzsQVY2FkVHtJnnEKuaXFFByUIkHP/U0KYDC3ezH/tkBPNSMBO
-         BFBY23Gepo3P6EzjbmtkfdRwN2K0WI+iqfsrna0jSQNHaqca8aRP6WcRvgUPO1gr6B
-         WRHWuZ6uq/ARgsBKCsKy8g4GnZ0dzbvypbowjpcM=
-Date:   Sat, 14 May 2022 07:47:15 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        b=K0p2wXwwjlEvJbEDb9qe6UzKn/x5tZKdKuAGfA7JTCI3vT21xwYioYs0kGmZ8cffn
+         cuJH3z3NaIm3XPQ3PPFqhKESmDQ8eZ7xPXfIm3aMwFR0yr/H7W+WL9BSQn3y5SuybD
+         do7rXnhVFHTOqqB2NEvlSXys2Mb0tP3FubY8cmmvLYvabZM0Z2VLo8Jn3Piw8vB7Bq
+         IAt7hTYPy2shrCU6pVtU8GGt1ZMdh7ky0VqYmm4YeT3vuFEEMIDUJxtgn/QhD22ZPG
+         tGc2jbcNnK9LwtKNWlExXo62BPlhVWaVj3loDnnAiFxF9pFYT4P9Dc57QIrK9Jyagd
+         rPTrkT4wvi3pg==
+Date:   Sat, 14 May 2022 16:47:48 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] device property: Fix recent breakage of
- fwnode_get_next_parent_dev()
-Message-ID: <Yn9CY99u4HkPGHDa@kroah.com>
-References: <20220429164325.1.I2a3b980ea051e59140227999f0f0ca16f1125768@changeid>
- <CAHp75VdqbXCYoEwxMt7xG55QDu2mXHbnpwdnHb6ktm8NdVPJnQ@mail.gmail.com>
- <CAJZ5v0hKrnRznpTjTyb8ANGN=REaukAbqQNB_14i_NwAA84=uA@mail.gmail.com>
- <CAGETcx_9MNGBi1avOzYoOOaed0CVHa03dfTxYpQuOErtpiisLg@mail.gmail.com>
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Peter Rosin <peda@axentia.se>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 0/9] introduce fwnode in the I2C subsystem
+Message-ID: <Yn/BFKwzVLwrjF/F@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Peter Rosin <peda@axentia.se>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
+References: <20220325113148.588163-1-clement.leger@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="CWEGzloJfYGyEJWo"
 Content-Disposition: inline
-In-Reply-To: <CAGETcx_9MNGBi1avOzYoOOaed0CVHa03dfTxYpQuOErtpiisLg@mail.gmail.com>
+In-Reply-To: <20220325113148.588163-1-clement.leger@bootlin.com>
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -66,36 +84,42 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 13, 2022 at 08:58:12PM -0700, Saravana Kannan wrote:
-> On Thu, May 5, 2022 at 5:21 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Sun, May 1, 2022 at 9:50 AM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote:
-> > >
-> > > On Sat, Apr 30, 2022 at 3:00 PM Douglas Anderson <dianders@chromium.org> wrote:
-> > > >
-> > > > Due to a subtle typo, instead of commit 87ffea09470d ("device
-> > > > property: Introduce fwnode_for_each_parent_node()") being a no-op
-> > > > change, it ended up causing the display on my sc7180-trogdor-lazor
-> > > > device from coming up unless I added "fw_devlink=off" to my kernel
-> > > > command line. Fix the typo.
-> > >
-> > > Sorry and merci pour la fix!
-> > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> >
-> > Applied, thanks!
-> 
-> Has this been picked up by one of the driver-core branches yet? I was
-> poking around that
-> git repo and didn't see any commit with this title. This breaks
-> fw_devlink in a severe manner, so I want to make sure it gets into
-> 5.18.
 
-Look in linux-next:
-	117ef574074d ("device property: Fix recent breakage of fwnode_get_next_parent_dev()")
+--CWEGzloJfYGyEJWo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Rafael's tree is not my tree :)
+O
+> This series is a subset of the one that was first submitted as a larger
+> series to add swnode support [1]. In this one, it will be focused on
+> fwnode support only since it seems to have reach a consensus that
+> adding fwnode to subsystems makes sense.
 
-thanks,
+=46rom a high level view, I like this series. Though, it will need Peter's
+ack on the I2C mux patches as he is the I2C mux maintainer. Still, I
+wonder about the way to upstream the series. Feels like the first 5
+patches should not go via I2C but seperately?
 
-greg k-h
+
+--CWEGzloJfYGyEJWo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJ/wRQACgkQFA3kzBSg
+KbZJfQ//R0rV8DTGd3xrIPGTB9PzBgKFLGuP1U5pe1/vBWfXIcV7u1rriR6/dy0L
+8blaWksrkgq1lMlr63D9bjbQ7q3tT4MlWECfAb9XPDdCYJUuwj0FJlSwFFBwBqrl
+m809ClSPjIu8G59UQ9YhdxR4XKmdfGk0nA3t9Drj5KwJ9u2nLLiOXAz3fehdLf48
+J22eDeq0+JmWDJBppbZNfnU51Dy5entBzUsRcj5QkOP2zKQEQeH4Rqv+8ZWI2sqK
+l283onwpJvow6+sEFz6BcqFUyoE3khpLRQgfyzlzuXR6zAG/g9HYG7txyEcIx4t1
++5cuXh+8iHEO3iiikqbo1UevNjWl7LI0YAKAJppWIiNY75Xm5JBqHbZ8wW2C34qU
+4adXtsn+JRvf3g9CKA/fMvGzO2hSSGclY8UG8L3jJbh+1o2tI3C3jNldhH478rFx
+srq4Cm5Ohs6yMRXRCsc0eGFNgsOiaUN9/R5LP0/51JuYAEAURAM2zh/2ilcdjjOA
+/rH590vI6INl17s4/Hg5Na3WGM3n8agOuNeDL8AecyjrRvCzhc/CVtUveXwIpYAK
+jWpRzFsjHFvbLN5Tgx4AAT71br0bGdDfrDSJfJlb2KjS2r1ar7VGECcXFzrG/WMO
+tyvf/XgTohsZaYDO/Q0Vr1wKTh2D+rwpcK1IkM+Nu3oPgtt8I6s=
+=dJXb
+-----END PGP SIGNATURE-----
+
+--CWEGzloJfYGyEJWo--
