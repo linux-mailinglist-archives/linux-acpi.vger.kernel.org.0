@@ -2,124 +2,197 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 009D352722A
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 May 2022 16:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76C0A527709
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 May 2022 12:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233453AbiENOr6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 14 May 2022 10:47:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42076 "EHLO
+        id S231545AbiEOKfM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 15 May 2022 06:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233439AbiENOr5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 14 May 2022 10:47:57 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F229588;
-        Sat, 14 May 2022 07:47:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 669F9B808CF;
-        Sat, 14 May 2022 14:47:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513F5C340EE;
-        Sat, 14 May 2022 14:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652539673;
-        bh=96QjL+OprZRjV2X3/4FwD7Eu1i7V9gHRJCzXuKCsUD4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=K0p2wXwwjlEvJbEDb9qe6UzKn/x5tZKdKuAGfA7JTCI3vT21xwYioYs0kGmZ8cffn
-         cuJH3z3NaIm3XPQ3PPFqhKESmDQ8eZ7xPXfIm3aMwFR0yr/H7W+WL9BSQn3y5SuybD
-         do7rXnhVFHTOqqB2NEvlSXys2Mb0tP3FubY8cmmvLYvabZM0Z2VLo8Jn3Piw8vB7Bq
-         IAt7hTYPy2shrCU6pVtU8GGt1ZMdh7ky0VqYmm4YeT3vuFEEMIDUJxtgn/QhD22ZPG
-         tGc2jbcNnK9LwtKNWlExXo62BPlhVWaVj3loDnnAiFxF9pFYT4P9Dc57QIrK9Jyagd
-         rPTrkT4wvi3pg==
-Date:   Sat, 14 May 2022 16:47:48 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Peter Rosin <peda@axentia.se>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 0/9] introduce fwnode in the I2C subsystem
-Message-ID: <Yn/BFKwzVLwrjF/F@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Peter Rosin <peda@axentia.se>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
-References: <20220325113148.588163-1-clement.leger@bootlin.com>
+        with ESMTP id S236513AbiEOKe7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 15 May 2022 06:34:59 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB9A286DC;
+        Sun, 15 May 2022 03:34:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652610856; x=1684146856;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=D2zM/NOEft1xXBFaRL/87t/mkHUG/94CxpYCSdy6ZDc=;
+  b=ZVAVM1Pb73P86KKZmlz858ljRwHlJmYfZ6SWcbCq2iNC/EdHXYAKRYFk
+   Wi7SLDCDX3/Ag0by93J74gr2pehfiC4AfxtH9nxZUzf+Prc27SCCKb0Ke
+   yvbayHkVfNKBAkZKQzqV66gAklJJj7SzzZZhYebjMdEBoqURb6Jdaj94Y
+   tL3qWhHYzAvwkqN29SMlIewEQcIWXvkoFcywfhLBa8UHIUA+R5FpaBejs
+   5e0mVcXmFy94n6wMVVy0dDUxW+Hr/7Ed+8grSUGBWRZX5Lj2ghh0CBXo+
+   v9hTl6aihNPLptT0kgtCFTMy5XGb56ccaRjUUM/AiuB/OjPP9/o0dgCgd
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10347"; a="258184980"
+X-IronPort-AV: E=Sophos;i="5.91,228,1647327600"; 
+   d="scan'208";a="258184980"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2022 03:34:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,228,1647327600"; 
+   d="scan'208";a="740814903"
+Received: from lkp-server01.sh.intel.com (HELO d1462bc4b09b) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 15 May 2022 03:34:11 -0700
+Received: from kbuild by d1462bc4b09b with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nqBZi-0001X7-Nn;
+        Sun, 15 May 2022 10:34:10 +0000
+Date:   Sun, 15 May 2022 18:34:00 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 60c4d1a7db661a73f444de5563a84e57ce78dc76
+Message-ID: <6280d718.XFcnVdyqKBjMBerm%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="CWEGzloJfYGyEJWo"
-Content-Disposition: inline
-In-Reply-To: <20220325113148.588163-1-clement.leger@bootlin.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 60c4d1a7db661a73f444de5563a84e57ce78dc76  Merge branch 'pm-cpufreq' into bleeding-edge
 
---CWEGzloJfYGyEJWo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 4002m
 
-O
-> This series is a subset of the one that was first submitted as a larger
-> series to add swnode support [1]. In this one, it will be focused on
-> fwnode support only since it seems to have reach a consensus that
-> adding fwnode to subsystems makes sense.
+configs tested: 110
+configs skipped: 3
 
-=46rom a high level view, I like this series. Though, it will need Peter's
-ack on the I2C mux patches as he is the I2C mux maintainer. Still, I
-wonder about the way to upstream the series. Feels like the first 5
-patches should not go via I2C but seperately?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+gcc tested configs:
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm64                               defconfig
+arm64                            allyesconfig
+i386                          randconfig-c001
+mips                         bigsur_defconfig
+powerpc                 mpc837x_mds_defconfig
+arm                        trizeps4_defconfig
+mips                         tb0226_defconfig
+arm                         lpc18xx_defconfig
+m68k                          atari_defconfig
+ia64                         bigsur_defconfig
+arc                     haps_hs_smp_defconfig
+arc                        nsim_700_defconfig
+sh                           se7343_defconfig
+parisc                generic-32bit_defconfig
+sh                            hp6xx_defconfig
+sh                           se7751_defconfig
+sh                          rsk7264_defconfig
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20220512
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+alpha                               defconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+parisc64                            defconfig
+s390                             allyesconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                                defconfig
+i386                             allyesconfig
+sparc                               defconfig
+sparc                            allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+mips                             allmodconfig
+mips                             allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220512
+s390                 randconfig-r044-20220512
+riscv                randconfig-r042-20220512
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                            allyesconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                                  kexec
+x86_64                           rhel-8.3-syz
+x86_64                          rhel-8.3-func
+x86_64                               rhel-8.3
+x86_64                         rhel-8.3-kunit
 
---CWEGzloJfYGyEJWo
-Content-Type: application/pgp-signature; name="signature.asc"
+clang tested configs:
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220512
+arm                  randconfig-c002-20220512
+s390                 randconfig-c005-20220512
+i386                          randconfig-c001
+riscv                randconfig-c006-20220512
+mips                 randconfig-c004-20220512
+arm                         orion5x_defconfig
+powerpc                      ppc64e_defconfig
+powerpc                     tqm5200_defconfig
+x86_64                           allyesconfig
+powerpc                          allmodconfig
+mips                      pic32mzda_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220512
+hexagon              randconfig-r041-20220512
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJ/wRQACgkQFA3kzBSg
-KbZJfQ//R0rV8DTGd3xrIPGTB9PzBgKFLGuP1U5pe1/vBWfXIcV7u1rriR6/dy0L
-8blaWksrkgq1lMlr63D9bjbQ7q3tT4MlWECfAb9XPDdCYJUuwj0FJlSwFFBwBqrl
-m809ClSPjIu8G59UQ9YhdxR4XKmdfGk0nA3t9Drj5KwJ9u2nLLiOXAz3fehdLf48
-J22eDeq0+JmWDJBppbZNfnU51Dy5entBzUsRcj5QkOP2zKQEQeH4Rqv+8ZWI2sqK
-l283onwpJvow6+sEFz6BcqFUyoE3khpLRQgfyzlzuXR6zAG/g9HYG7txyEcIx4t1
-+5cuXh+8iHEO3iiikqbo1UevNjWl7LI0YAKAJppWIiNY75Xm5JBqHbZ8wW2C34qU
-4adXtsn+JRvf3g9CKA/fMvGzO2hSSGclY8UG8L3jJbh+1o2tI3C3jNldhH478rFx
-srq4Cm5Ohs6yMRXRCsc0eGFNgsOiaUN9/R5LP0/51JuYAEAURAM2zh/2ilcdjjOA
-/rH590vI6INl17s4/Hg5Na3WGM3n8agOuNeDL8AecyjrRvCzhc/CVtUveXwIpYAK
-jWpRzFsjHFvbLN5Tgx4AAT71br0bGdDfrDSJfJlb2KjS2r1ar7VGECcXFzrG/WMO
-tyvf/XgTohsZaYDO/Q0Vr1wKTh2D+rwpcK1IkM+Nu3oPgtt8I6s=
-=dJXb
------END PGP SIGNATURE-----
-
---CWEGzloJfYGyEJWo--
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
