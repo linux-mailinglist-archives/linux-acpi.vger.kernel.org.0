@@ -2,97 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93998527B82
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 May 2022 03:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D6D2527EA8
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 May 2022 09:36:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237597AbiEPBuQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 15 May 2022 21:50:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43190 "EHLO
+        id S241104AbiEPHfp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 May 2022 03:35:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233300AbiEPBuP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 15 May 2022 21:50:15 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05AD5389B;
-        Sun, 15 May 2022 18:50:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A9E04B80E81;
-        Mon, 16 May 2022 01:50:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2D6E7C34100;
-        Mon, 16 May 2022 01:50:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652665812;
-        bh=jKN9jck8Cg4KOGCMfWWvP4ssROBon9ITJfnmgvrhoso=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=AWyTTFpfS8wz7J0MElpBgEKOdKrp6Yjd/crGpWxKcnne/5o7cMqYk5+LmiRJqKP+g
-         P7JIgzdRl7e6hhPO0cmx9SMKp1UyLz6ZOhTgs0M2xX2YJvL5TP0wKSbq80UkJG4U8+
-         XgimDq6ydh7d2Ha1yH7aQrzoX+7vRv2s+e1FJDOREevY+D62ZIHwyK0y+8grNAy+Qc
-         gCb2PYXT+FeI1E4oFw3k9T4B3JUSDgNEjmWc0VXAQRV9/NEaC6hCTuS262258m8qO2
-         Y5V0kD9lj9R06lsEhfM9IkinqKn2XRqqjKR4CWefkg53I2YdDnBXPT5Fi+jtM2J/WU
-         BfT3ZA8vEKSJw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 13A7DF0383D;
-        Mon, 16 May 2022 01:50:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229771AbiEPHfe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 May 2022 03:35:34 -0400
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3D0323173;
+        Mon, 16 May 2022 00:35:31 -0700 (PDT)
+Received: (Authenticated sender: clement.leger@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 5BD3AC0009;
+        Mon, 16 May 2022 07:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1652686529;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qBDInhr0yZ1fOXspgyh+6sLKoxgAx7ViWH8dL349Tjs=;
+        b=d+goV1MEW4MIn5lwfeiPYXFuKknZCEbSnceabWOkWUCcFnwHzHhkbWbv19xk4BMzUin/If
+        VjwgWZ+2vG/A+h+EZXcxrKu0u8t57ZPvipF/eGcow08Fz0VwqlylGmvh8UKXIPc/aCmgpH
+        DjQP362ER2T9Qe6kOze832gbVDSHMmrrtHwrrvAMFDZsm2VXHTRDq+Mnxor1rrmA3j6DmA
+        9CK0CxqjWbUg/NwlCriR+rYzjYzIW63YHN/1DqIkdCr45xIscptJW2iJmX06KF8FIj1RRr
+        uIx3LpKShMGunnZdaDUppLXHJnnLuQVbuEkDEtm7nYVOtf6gHEDoSG9A7tXtWg==
+Date:   Mon, 16 May 2022 09:34:18 +0200
+From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Wolfram Sang <wsa@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 0/9] introduce fwnode in the I2C subsystem
+Message-ID: <20220516093418.0038845c@fixe.home>
+In-Reply-To: <12be48dc-b5d1-063c-87a0-050886cc2505@axentia.se>
+References: <20220325113148.588163-1-clement.leger@bootlin.com>
+        <Yn/BFKwzVLwrjF/F@shikoro>
+        <12be48dc-b5d1-063c-87a0-050886cc2505@axentia.se>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v13] platform/chrome: Add ChromeOS ACPI device driver
-From:   patchwork-bot+chrome-platform@kernel.org
-Message-Id: <165266581207.6997.10229505003935532310.git-patchwork-notify@kernel.org>
-Date:   Mon, 16 May 2022 01:50:12 +0000
-References: <Yn4OKYrtV35Dv+nd@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <Yn4OKYrtV35Dv+nd@debian-BULLSEYE-live-builder-AMD64>
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, hdegoede@redhat.com,
-        markgross@kernel.org, bleung@chromium.org, eballetbo@gmail.com,
-        gregkh@linuxfoundation.org, kernel@collabora.com,
-        groeck@chromium.org, dtor@chromium.org, gwendal@chromium.org,
-        vbendeb@chromium.org, andy@infradead.org, ayman.bagabas@gmail.com,
-        benjamin.tissoires@redhat.com, blaz@mxxn.io, dvhart@infradead.org,
-        dmitry.torokhov@gmail.com, jeremy@system76.com, 2pi@mok.nu,
-        mchehab+samsung@kernel.org, rajatja@google.com,
-        srinivas.pandruvada@linux.intel.com,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, rafael.j.wysocki@intel.com,
-        chrome-platform@lists.linux.dev
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello:
+Le Sun, 15 May 2022 23:34:16 +0200,
+Peter Rosin <peda@axentia.se> a =C3=A9crit :
 
-This patch was applied to chrome-platform/linux.git (for-next)
-by Tzung-Bi Shih <tzungbi@kernel.org>:
+> 2022-05-14 at 16:47, Wolfram Sang wrote:
+> > O =20
+> >> This series is a subset of the one that was first submitted as a larger
+> >> series to add swnode support [1]. In this one, it will be focused on
+> >> fwnode support only since it seems to have reach a consensus that
+> >> adding fwnode to subsystems makes sense. =20
+> >=20
+> > From a high level view, I like this series. Though, it will need Peter's
+> > ack on the I2C mux patches as he is the I2C mux maintainer. Still, I
+> > wonder about the way to upstream the series. Feels like the first 5
+> > patches should not go via I2C but seperately? =20
+>=20
+> Hi Wolfram,
+>=20
+> I also think it looks basically sane. However, there are a couple of
+> comments plus promises to adjust accordingly. I guess I filed it under
+> "wait for the next iteration"...
+>=20
+> Cheers,
+> Peter
 
-On Fri, 13 May 2022 12:52:09 +0500 you wrote:
-> From: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> 
-> The x86 Chromebooks have the ChromeOS ACPI device. This driver attaches
-> to the ChromeOS ACPI device and exports the values reported by ACPI in a
-> sysfs directory. This data isn't present in ACPI tables when read
-> through ACPI tools, hence a driver is needed to do it. The driver gets
-> data from firmware using the ACPI component of the kernel. The ACPI values
-> are presented in string form (numbers as decimal values) or binary
-> blobs, and can be accessed as the contents of the appropriate read only
-> files in the standard ACPI device's sysfs directory tree. This data is
-> consumed by the ChromeOS user space.
-> 
-> [...]
+Hi Wolfram & Peter,
 
-Here is the summary with links:
-  - [v13] platform/chrome: Add ChromeOS ACPI device driver
-    https://git.kernel.org/chrome-platform/c/0a4cad9c11ad
+While doing the same conversion on the reset subsystem, Rob Herring
+stepped in and mention the fact that this could be done using
+device-tree overlay (even on system with ACPI) .
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+The result was that a new serie [1] which add support to create the PCI
+devices of_node if not existing, and then allow drivers to applies an
+overlay which describe the tree of devices as a child of a specific PCI
+device of_node. There are a lot of advantages to this approach (small
+patchset working for all susbystems, easier to use, description is
+using already existing device-tree). There are still some concerns
+about the viability of dynamic overlay but this might be settled soon.
 
+Regards,
 
+[1] https://lore.kernel.org/all/20220509141634.16158c38@xps-bootlin/T/
+
+--=20
+Cl=C3=A9ment L=C3=A9ger,
+Embedded Linux and Kernel engineer at Bootlin
+https://bootlin.com
