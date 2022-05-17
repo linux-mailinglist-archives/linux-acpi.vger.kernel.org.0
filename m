@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB06352A639
+	by mail.lfdr.de (Postfix) with ESMTP id 954F952A638
 	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 17:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349977AbiEQPYP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 May 2022 11:24:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
+        id S1345464AbiEQPYQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 May 2022 11:24:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349937AbiEQPYC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 11:24:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 888604F46A
-        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 08:24:01 -0700 (PDT)
+        with ESMTP id S1349947AbiEQPYE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 11:24:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 05E144F47D
+        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 08:24:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1652801040;
+        s=mimecast20190719; t=1652801043;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EzQ0bpfNq/u5CmCRWzwXFCuUS14QmFp9uACdqa5mEOQ=;
-        b=AGXJiMLrdYTzB4EfJvbqIKxQ9hKA2U1uKCc8M4nyBMPHwKeaW6Dn3HVE1yXdKpHsljbpZi
-        fzRBUpR5Df6qp1Q6FbpGjK7R7c+RZ3GCyZ3sHwS9T2eaGUwzNNs0Jiq2O8l8IZ06jYw4XX
-        vJew3us9bt4EtDrFjPz6uuyVIooM24c=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=sbKbgxKeWNRiPObZFk8Py7N2yB0e9SBa2BgfmtpZj3c=;
+        b=JcIcUSG/5ldWT2cJ+bxtZv3OvKL9KIWE9pZ5YyyD/mC9tiFTXJZGa3KfblqYHwSX5B+i7N
+        J3z8DAidMjvIDn3s8OM+P3bDuuaPzRkq24KfaPOTGS/2Qo6kjRrshYEWkbVM//tauwosOo
+        CPWkiYXZ/iCyc4mytv/orHoAX/xoolM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-520-Jn-4oR0_MKSItA1HmnTSUQ-1; Tue, 17 May 2022 11:23:56 -0400
-X-MC-Unique: Jn-4oR0_MKSItA1HmnTSUQ-1
+ us-mta-435-l7vbtma-MUS5bLsB3LxK-A-1; Tue, 17 May 2022 11:24:00 -0400
+X-MC-Unique: l7vbtma-MUS5bLsB3LxK-A-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 307203817A62;
-        Tue, 17 May 2022 15:23:55 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E253780418F;
+        Tue, 17 May 2022 15:23:58 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.39.192.162])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AF7C6C15D5C;
-        Tue, 17 May 2022 15:23:51 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 655F5C080BC;
+        Tue, 17 May 2022 15:23:55 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
         Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
@@ -61,9 +61,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: [PATCH 04/14] drm/radeon: Don't register backlight when another backlight should be used
-Date:   Tue, 17 May 2022 17:23:21 +0200
-Message-Id: <20220517152331.16217-5-hdegoede@redhat.com>
+Subject: [PATCH 05/14] drm/nouveau: Don't register backlight when another backlight should be used
+Date:   Tue, 17 May 2022 17:23:22 +0200
+Message-Id: <20220517152331.16217-6-hdegoede@redhat.com>
 In-Reply-To: <20220517152331.16217-1-hdegoede@redhat.com>
 References: <20220517152331.16217-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -71,7 +71,7 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
 X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,73 +90,34 @@ another backlight device should be used.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/gpu/drm/Kconfig                         | 1 +
- drivers/gpu/drm/radeon/atombios_encoders.c      | 7 +++++++
- drivers/gpu/drm/radeon/radeon_legacy_encoders.c | 7 +++++++
- 3 files changed, 15 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_backlight.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index ddbeb2124df7..37205953056b 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -258,6 +258,7 @@ config DRM_RADEON
- 	select HWMON
- 	select BACKLIGHT_CLASS_DEVICE
- 	select INTERVAL_TREE
-+	select ACPI_VIDEO if ACPI && X86 && INPUT
- 	help
- 	  Choose this option if you have an ATI Radeon graphics card.  There
- 	  are both PCI and AGP versions.  You don't need to choose this to
-diff --git a/drivers/gpu/drm/radeon/atombios_encoders.c b/drivers/gpu/drm/radeon/atombios_encoders.c
-index 70bd84b7ef2b..f82577dc25e8 100644
---- a/drivers/gpu/drm/radeon/atombios_encoders.c
-+++ b/drivers/gpu/drm/radeon/atombios_encoders.c
-@@ -32,6 +32,8 @@
- #include <drm/drm_file.h>
- #include <drm/radeon_drm.h>
+diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+index daf9f87477ba..f56ff797c78c 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
++++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+@@ -34,6 +34,8 @@
+ #include <linux/backlight.h>
+ #include <linux/idr.h>
  
 +#include <acpi/video.h>
 +
- #include "atom.h"
- #include "radeon_atombios.h"
- #include "radeon.h"
-@@ -211,6 +213,11 @@ void radeon_atom_backlight_init(struct radeon_encoder *radeon_encoder,
- 	if (!(rdev->mode_info.firmware_flags & ATOM_BIOS_INFO_BL_CONTROLLED_BY_GPU))
- 		return;
+ #include "nouveau_drv.h"
+ #include "nouveau_reg.h"
+ #include "nouveau_encoder.h"
+@@ -404,6 +406,11 @@ nouveau_backlight_init(struct drm_connector *connector)
+ 		goto fail_alloc;
+ 	}
  
 +	if (acpi_video_get_backlight_type(true) != acpi_backlight_native) {
-+		DRM_INFO("Skipping radeon atom DIG backlight registration\n");
-+		return;
++		NV_INFO(drm, "Skipping nv_backlight registration\n");
++		goto fail_alloc;
 +	}
 +
- 	pdata = kmalloc(sizeof(struct radeon_backlight_privdata), GFP_KERNEL);
- 	if (!pdata) {
- 		DRM_ERROR("Memory allocation failed\n");
-diff --git a/drivers/gpu/drm/radeon/radeon_legacy_encoders.c b/drivers/gpu/drm/radeon/radeon_legacy_encoders.c
-index 7fdb77d48d6a..d2180f5c80fa 100644
---- a/drivers/gpu/drm/radeon/radeon_legacy_encoders.c
-+++ b/drivers/gpu/drm/radeon/radeon_legacy_encoders.c
-@@ -33,6 +33,8 @@
- #include <drm/drm_util.h>
- #include <drm/radeon_drm.h>
- 
-+#include <acpi/video.h>
-+
- #include "radeon.h"
- #include "radeon_asic.h"
- #include "radeon_legacy_encoders.h"
-@@ -389,6 +391,11 @@ void radeon_legacy_backlight_init(struct radeon_encoder *radeon_encoder,
- 		return;
- #endif
- 
-+	if (acpi_video_get_backlight_type(true) != acpi_backlight_native) {
-+		DRM_INFO("Skipping radeon legacy LVDS backlight registration\n");
-+		return;
-+	}
-+
- 	pdata = kmalloc(sizeof(struct radeon_backlight_privdata), GFP_KERNEL);
- 	if (!pdata) {
- 		DRM_ERROR("Memory allocation failed\n");
+ 	if (!nouveau_get_backlight_name(backlight_name, bl)) {
+ 		NV_ERROR(drm, "Failed to retrieve a unique name for the backlight interface\n");
+ 		goto fail_alloc;
 -- 
 2.36.0
 
