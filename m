@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8A1452A629
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 17:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74B0C52A62B
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 17:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349922AbiEQPX7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 May 2022 11:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36914 "EHLO
+        id S1349923AbiEQPYA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 May 2022 11:24:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349923AbiEQPX5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 11:23:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 801694F471
-        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 08:23:55 -0700 (PDT)
+        with ESMTP id S237466AbiEQPX7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 11:23:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 59DB94F472
+        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 08:23:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1652801034;
+        s=mimecast20190719; t=1652801036;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uYXEw23QaybZczrEyMlwByxGA3gLwXOpa6JX6bmKDxI=;
-        b=OeDmziOVSB07VyOAf4ieRon/FdZNSEXhK9Buvch3AgNaNyiTmUzA8TUMm/A2OA6BWQgokP
-        EltU2rhrUwDMdurrY5HEMCLs5HdjAHhIFU2j8wny09FYl9dI6727xqPckzTg6cG2jkK278
-        UUncxyp6QjCQP/a8fizlhSW9ffNmJgM=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=nrgaigmhtT/c3yNhuGBcztXKchf7HdgOC/zOZ1F01Vw=;
+        b=GrgFr4/0h3kHrTkZD9EWjrF0Odj2YQ3un15opjrPnufS9iL5cZ3xo25P1RYeQdr2Z2L8DP
+        qhHtXzf4Ffw1EynaFZAhIWKH3ewWz/pvFJKQKCvl1pAkY8aE6kZiYHNITFgdOGmKIpcbvF
+        IIGsdD51CIW4IwbsSRAM1lLoGJtpbiQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-157-iQdxcSsTO2GfeSk7xvwBTQ-1; Tue, 17 May 2022 11:23:49 -0400
-X-MC-Unique: iQdxcSsTO2GfeSk7xvwBTQ-1
+ us-mta-596-m8jAcUa4PfG3b5nOVxKb1g-1; Tue, 17 May 2022 11:23:52 -0400
+X-MC-Unique: m8jAcUa4PfG3b5nOVxKb1g-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C2BFC2999B24;
-        Tue, 17 May 2022 15:23:47 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B0AD10665A4;
+        Tue, 17 May 2022 15:23:51 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.39.192.162])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 48CBFC15D75;
-        Tue, 17 May 2022 15:23:44 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 03F98C15D70;
+        Tue, 17 May 2022 15:23:47 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
         Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
@@ -61,9 +61,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: [PATCH 02/14] drm/i915: Don't register backlight when another backlight should be used
-Date:   Tue, 17 May 2022 17:23:19 +0200
-Message-Id: <20220517152331.16217-3-hdegoede@redhat.com>
+Subject: [PATCH 03/14] drm/amdgpu: Don't register backlight when another backlight should be used
+Date:   Tue, 17 May 2022 17:23:20 +0200
+Message-Id: <20220517152331.16217-4-hdegoede@redhat.com>
 In-Reply-To: <20220517152331.16217-1-hdegoede@redhat.com>
 References: <20220517152331.16217-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -90,34 +90,73 @@ another backlight device should be used.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/gpu/drm/i915/display/intel_backlight.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/Kconfig                           | 1 +
+ drivers/gpu/drm/amd/amdgpu/atombios_encoders.c    | 7 +++++++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 7 +++++++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_backlight.c b/drivers/gpu/drm/i915/display/intel_backlight.c
-index 98f7ea44042f..582d7f48575d 100644
---- a/drivers/gpu/drm/i915/display/intel_backlight.c
-+++ b/drivers/gpu/drm/i915/display/intel_backlight.c
-@@ -6,6 +6,8 @@
- #include <linux/kernel.h>
- #include <linux/pwm.h>
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index f1422bee3dcc..ddbeb2124df7 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -280,6 +280,7 @@ config DRM_AMDGPU
+ 	select HWMON
+ 	select BACKLIGHT_CLASS_DEVICE
+ 	select INTERVAL_TREE
++	select ACPI_VIDEO if ACPI && X86 && INPUT
+ 	help
+ 	  Choose this option if you have a recent AMD Radeon graphics card.
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+index a92d86e12718..f9c62cd84a18 100644
+--- a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
++++ b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+@@ -26,6 +26,8 @@
+ 
+ #include <linux/pci.h>
  
 +#include <acpi/video.h>
 +
- #include "intel_backlight.h"
- #include "intel_connector.h"
- #include "intel_de.h"
-@@ -948,6 +950,11 @@ int intel_backlight_device_register(struct intel_connector *connector)
- 
- 	WARN_ON(panel->backlight.max == 0);
+ #include <drm/drm_crtc_helper.h>
+ #include <drm/amdgpu_drm.h>
+ #include "amdgpu.h"
+@@ -186,6 +188,11 @@ void amdgpu_atombios_encoder_init_backlight(struct amdgpu_encoder *amdgpu_encode
+ 	if (!(adev->mode_info.firmware_flags & ATOM_BIOS_INFO_BL_CONTROLLED_BY_GPU))
+ 		return;
  
 +	if (acpi_video_get_backlight_type(true) != acpi_backlight_native) {
-+		DRM_INFO("Skipping intel_backlight registration\n");
-+		return 0;
++		DRM_INFO("Skipping amdgpu atom DIG backlight registration\n");
++		return;
 +	}
 +
- 	memset(&props, 0, sizeof(props));
- 	props.type = BACKLIGHT_RAW;
+ 	pdata = kmalloc(sizeof(struct amdgpu_backlight_privdata), GFP_KERNEL);
+ 	if (!pdata) {
+ 		DRM_ERROR("Memory allocation failed\n");
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 62139ff35476..a838c7b5d942 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -83,6 +83,8 @@
+ #include <drm/drm_vblank.h>
+ #include <drm/drm_audio_component.h>
  
++#include <acpi/video.h>
++
+ #if defined(CONFIG_DRM_AMD_DC_DCN)
+ #include "ivsrcid/dcn/irqsrcs_dcn_1_0.h"
+ 
+@@ -4079,6 +4081,11 @@ amdgpu_dm_register_backlight_device(struct amdgpu_display_manager *dm)
+ 	amdgpu_dm_update_backlight_caps(dm, dm->num_of_edps);
+ 	dm->brightness[dm->num_of_edps] = AMDGPU_MAX_BL_LEVEL;
+ 
++	if (acpi_video_get_backlight_type(true) != acpi_backlight_native) {
++		DRM_INFO("Skipping amdgpu DM backlight registration\n");
++		return;
++	}
++
+ 	props.max_brightness = AMDGPU_MAX_BL_LEVEL;
+ 	props.brightness = AMDGPU_MAX_BL_LEVEL;
+ 	props.type = BACKLIGHT_RAW;
 -- 
 2.36.0
 
