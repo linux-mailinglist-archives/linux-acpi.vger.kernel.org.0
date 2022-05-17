@@ -2,70 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20FD6528C1C
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 May 2022 19:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3988B529AA6
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 09:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344313AbiEPRhR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 May 2022 13:37:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43440 "EHLO
+        id S235840AbiEQHSQ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 17 May 2022 03:18:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243262AbiEPRhQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 May 2022 13:37:16 -0400
-X-Greylist: delayed 687 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 16 May 2022 10:37:15 PDT
-Received: from sender4-of-o58.zoho.com (sender4-of-o58.zoho.com [136.143.188.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE00FD3A
-        for <linux-acpi@vger.kernel.org>; Mon, 16 May 2022 10:37:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1652721941; cv=none; 
-        d=zohomail.com; s=zohoarc; 
-        b=MQeFmKR3gB8XyOHY8gne52tEFmoHgBClx5oLclILgXAXjI8hwShXzbWOc+DInP1dvaBb/A6KYt4EZH3CV42i5MUcXSB6PO6taNIBIBRfCaEFR8QrKQy7cT+RnBWU06sSxYMbQutv36j3YlIMfrBc1akaz8NhQfYY9wf6y1BmcOI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1652721941; h=Content-Type:Content-Transfer-Encoding:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=IKOeFlmUjA5Fjdk5mYV0getpP+8le9LGF7g8Udv0S1w=; 
-        b=Ps6Qp5NAODhpdcB1XVSTyjoIxQXcTL7td3euPN9MpE0thbnQQCUnNtSCL6TlXqcn+wRq6rc9QEAnZPAA5zkIr+SnkTeEqUFk85J/+afNGII4SMMmp7nxxDkbyIkG8d1+D4hPFs+mz/mvX97bf05ov5U1/0zGCLB9ibOuSIQTqIc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-        spf=pass  smtp.mailfrom=linux@mniewoehner.de;
-        dmarc=pass header.from=<linux@mniewoehner.de>
-Received: from z3r0.lan (185.31.62.161 [185.31.62.161]) by mx.zohomail.com
-        with SMTPS id 1652721940160127.3711236380924; Mon, 16 May 2022 10:25:40 -0700 (PDT)
-Message-ID: <f80dfd57fdca87897f070a3ea4ee0a26b03e7831.camel@mniewoehner.de>
-Subject: [PATCH] ACPI: utils: include UUID in _DSM evaluation warning
-From:   Michael =?ISO-8859-1?Q?Niew=F6hner?= <linux@mniewoehner.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Mon, 16 May 2022 19:25:37 +0200
+        with ESMTP id S231211AbiEQHSP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 03:18:15 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11D2B473A9
+        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 00:18:13 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L2S9v2s7pzhZWN;
+        Tue, 17 May 2022 15:17:23 +0800 (CST)
+Received: from dggpemm500006.china.huawei.com (7.185.36.236) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 17 May 2022 15:18:11 +0800
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 17 May 2022 15:18:10 +0800
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2375.024; Tue, 17 May 2022 08:18:07 +0100
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "joro@8bytes.org" <joro@8bytes.org>
+CC:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        "will@kernel.org" <will@kernel.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "jon@solid-run.com" <jon@solid-run.com>,
+        "eric.auger@redhat.com" <eric.auger@redhat.com>,
+        "laurentiu.tudor@nxp.com" <laurentiu.tudor@nxp.com>,
+        "hch@infradead.org" <hch@infradead.org>
+Subject: RE: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
+Thread-Topic: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
+Thread-Index: AQHYXwu3gTgIMyz0zUiu6Dja1BmGsa0PbqaAgAhOLiD///4qAIAE064AgAYtdiA=
+Date:   Tue, 17 May 2022 07:18:07 +0000
+Message-ID: <0481f110d060413aaf32228b0be68ef2@huawei.com>
+References: <20220503163330.509-1-shameerali.kolothum.thodi@huawei.com>
+ <2234ad60-c49f-8c72-616c-dfa5300354ef@huawei.com>
+ <8e4f012717e34195a53cb73f8ce28627@huawei.com>
+ <5c8ae673-f8e3-0ed3-e62d-d445913b012c@arm.com>
+ <20220513094940.GA23371@lpieralisi>
+In-Reply-To: <20220513094940.GA23371@lpieralisi>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.202.227.178]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Evolution 3.42.2 
-Content-Transfer-Encoding: base64
-X-ZohoMailClient: External
-X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,DKIM_ADSP_ALL,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-VGhlIF9EU00gZXZhbHVhdGlvbiB3YXJuaW5nIGluIGl0cyBjdXJyZW50IGZvcm0gaXMgbm90IHZl
-cnkgaGVscGZ1bCwgYXMgCml0IGxhY2tzIGFueSBzcGVjaWZpYyBpbmZvcm1hdGlvbjoKwqAgQUNQ
-STogXDogZmFpbGVkIHRvIGV2YWx1YXRlIF9EU00gKDB4MTAwMSkKClRodXMsIGluY2x1ZGUgdGhl
-IFVVSUQgb2YgdGhlIG1pc3NpbmcgX0RTTToKwqAgQUNQSTogXDogZmFpbGVkIHRvIGV2YWx1YXRl
-IF9EU00gYmYwMjEyZjItLi4uICgweDEwMDEpCgpTaWduZWQtb2ZmLWJ5OiBNaWNoYWVsIE5pZXfD
-tmhuZXIgPGxpbnV4QG1uaWV3b2VobmVyLmRlPgotLS0KwqBkcml2ZXJzL2FjcGkvdXRpbHMuYyB8
-IDMgKystCsKgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoK
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS91dGlscy5jIGIvZHJpdmVycy9hY3BpL3V0aWxzLmMK
-aW5kZXggZDVjZWRmZmVlZmY5Li43ZGE5OTNmNWI2YzMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvYWNw
-aS91dGlscy5jCisrKyBiL2RyaXZlcnMvYWNwaS91dGlscy5jCkBAIC02ODEsNyArNjgxLDggQEAg
-YWNwaV9ldmFsdWF0ZV9kc20oYWNwaV9oYW5kbGUgaGFuZGxlLCBjb25zdCBndWlkX3QgKmd1aWQs
-CnU2NCByZXYsIHU2NCBmdW5jLArCoArCoMKgwqDCoMKgwqDCoMKgaWYgKHJldCAhPSBBRV9OT1Rf
-Rk9VTkQpCsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYWNwaV9oYW5kbGVfd2Fybiho
-YW5kbGUsCi3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCJmYWlsZWQgdG8gZXZhbHVhdGUgX0RTTSAoMHgleClcbiIsIHJldCk7CivC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCJmYWlsZWQgdG8gZXZhbHVhdGUgX0RTTSAlcFViICgweCV4KVxuIiwKK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0LCBn
-dWlkKTsKwqAKwqDCoMKgwqDCoMKgwqDCoHJldHVybiBOVUxMOwrCoH0KLS0gCjIuMzQuMQoKCg==
 
+> -----Original Message-----
+> From: Lorenzo Pieralisi [mailto:lorenzo.pieralisi@arm.com]
+> Sent: 13 May 2022 10:50
+> To: Robin Murphy <robin.murphy@arm.com>; Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; rafael@kernel.org;
+> joro@8bytes.org
+> Cc: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
+> Guohanjun (Hanjun Guo) <guohanjun@huawei.com>;
+> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+> iommu@lists.linux-foundation.org; Linuxarm <linuxarm@huawei.com>;
+> will@kernel.org; wanghuiqiang <wanghuiqiang@huawei.com>;
+> steven.price@arm.com; Sami.Mujawar@arm.com; jon@solid-run.com;
+> eric.auger@redhat.com; laurentiu.tudor@nxp.com; hch@infradead.org
+> Subject: Re: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
+> 
+> [with Christoph's correct email address]
+> 
+> On Tue, May 10, 2022 at 09:07:00AM +0100, Robin Murphy wrote:
+> > On 2022-05-10 08:23, Shameerali Kolothum Thodi wrote:
+> > > Hi Joerg/Robin,
+> > >
+> > > I think this series is now ready to be merged. Could you please let
+> > > me know if there is anything missing.
+> >
+> > Fine by me - these patches have had enough review and testing now that
+> > even if anything else did come up, I think it would be better done as
+> > follow-up work on the merged code.
+> 
+> Given the ACPICA dependency I believe it is best for this series
+> to go via the ACPI tree, right ?
+> 
+> I assume there are all the required ACKs for that to happen.
+
+The SMMUv3/SMMU related changes (patches 6 - 9) still doesn't have
+explicit ACK from maintainers other than the go ahead above from Robin.
+
+Just thought of highlighting it as not sure that will be an issue or not.
+
+Thanks,
+Shameer
+ 
