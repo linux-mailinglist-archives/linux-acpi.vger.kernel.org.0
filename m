@@ -2,73 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3988B529AA6
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 09:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5265F529B5A
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 09:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235840AbiEQHSQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 17 May 2022 03:18:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57074 "EHLO
+        id S239285AbiEQHsQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 May 2022 03:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231211AbiEQHSP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 03:18:15 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11D2B473A9
-        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 00:18:13 -0700 (PDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L2S9v2s7pzhZWN;
-        Tue, 17 May 2022 15:17:23 +0800 (CST)
-Received: from dggpemm500006.china.huawei.com (7.185.36.236) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 17 May 2022 15:18:11 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 17 May 2022 15:18:10 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2375.024; Tue, 17 May 2022 08:18:07 +0100
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "joro@8bytes.org" <joro@8bytes.org>
-CC:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        "will@kernel.org" <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "steven.price@arm.com" <steven.price@arm.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        "jon@solid-run.com" <jon@solid-run.com>,
-        "eric.auger@redhat.com" <eric.auger@redhat.com>,
-        "laurentiu.tudor@nxp.com" <laurentiu.tudor@nxp.com>,
-        "hch@infradead.org" <hch@infradead.org>
-Subject: RE: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Topic: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Index: AQHYXwu3gTgIMyz0zUiu6Dja1BmGsa0PbqaAgAhOLiD///4qAIAE064AgAYtdiA=
-Date:   Tue, 17 May 2022 07:18:07 +0000
-Message-ID: <0481f110d060413aaf32228b0be68ef2@huawei.com>
-References: <20220503163330.509-1-shameerali.kolothum.thodi@huawei.com>
- <2234ad60-c49f-8c72-616c-dfa5300354ef@huawei.com>
- <8e4f012717e34195a53cb73f8ce28627@huawei.com>
- <5c8ae673-f8e3-0ed3-e62d-d445913b012c@arm.com>
- <20220513094940.GA23371@lpieralisi>
-In-Reply-To: <20220513094940.GA23371@lpieralisi>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.227.178]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S240333AbiEQHsP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 03:48:15 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8469A4476B;
+        Tue, 17 May 2022 00:48:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652773694; x=1684309694;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qVIpKTaKVVZpRK2k3PZiIKe0MQF+IrOdNEK5O+jBR8I=;
+  b=AyD4jbLwFt+HFhcsWntNmNMPXzeFW94Ehi6I8ANxm+xM172NXoLo/QOO
+   rEU/0JbVn9SKo2+o/wfYRHtuEy5tA6JRH+f3iTi6wzDYIBYpiq700s2ja
+   DncAqzHaDupTawnv7S0NbfD4Et9DVmK8eG++GqE9dFPDk+ws4tsrBE+nV
+   Mj+GFz9uTfzTs7WQ9aPuOgo8pyQWCADNFSmnUQu7H40xi3mkmniiS2iAG
+   qKTSORZaOlEiiuxfeibQzDrDE7NzIhNBkcoNMkDneekqlDuPB1sexAy03
+   3TWXCZJACmZfd8KEE/LCMYjU2Ou1/QnO8ONC1E6XTHt5g/vLkBd6JIqln
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="269924085"
+X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
+   d="scan'208";a="269924085"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 00:48:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
+   d="scan'208";a="660496147"
+Received: from lkp-server02.sh.intel.com (HELO 242b25809ac7) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 17 May 2022 00:48:12 -0700
+Received: from kbuild by 242b25809ac7 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nqrwB-0000jd-PE;
+        Tue, 17 May 2022 07:48:11 +0000
+Date:   Tue, 17 May 2022 15:47:26 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 6b601767c503e2488f8e4ce6ce06ad67573797dd
+Message-ID: <6283530e.S0T7WGEIa66R66vL%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,45 +63,114 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 6b601767c503e2488f8e4ce6ce06ad67573797dd  Merge branch 'thermal-int340x-fixes' into linux-next
 
-> -----Original Message-----
-> From: Lorenzo Pieralisi [mailto:lorenzo.pieralisi@arm.com]
-> Sent: 13 May 2022 10:50
-> To: Robin Murphy <robin.murphy@arm.com>; Shameerali Kolothum Thodi
-> <shameerali.kolothum.thodi@huawei.com>; rafael@kernel.org;
-> joro@8bytes.org
-> Cc: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
-> Guohanjun (Hanjun Guo) <guohanjun@huawei.com>;
-> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
-> iommu@lists.linux-foundation.org; Linuxarm <linuxarm@huawei.com>;
-> will@kernel.org; wanghuiqiang <wanghuiqiang@huawei.com>;
-> steven.price@arm.com; Sami.Mujawar@arm.com; jon@solid-run.com;
-> eric.auger@redhat.com; laurentiu.tudor@nxp.com; hch@infradead.org
-> Subject: Re: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
-> 
-> [with Christoph's correct email address]
-> 
-> On Tue, May 10, 2022 at 09:07:00AM +0100, Robin Murphy wrote:
-> > On 2022-05-10 08:23, Shameerali Kolothum Thodi wrote:
-> > > Hi Joerg/Robin,
-> > >
-> > > I think this series is now ready to be merged. Could you please let
-> > > me know if there is anything missing.
-> >
-> > Fine by me - these patches have had enough review and testing now that
-> > even if anything else did come up, I think it would be better done as
-> > follow-up work on the merged code.
-> 
-> Given the ACPICA dependency I believe it is best for this series
-> to go via the ACPI tree, right ?
-> 
-> I assume there are all the required ACKs for that to happen.
+elapsed time: 848m
 
-The SMMUv3/SMMU related changes (patches 6 - 9) still doesn't have
-explicit ACK from maintainers other than the go ahead above from Robin.
+configs tested: 93
+configs skipped: 3
 
-Just thought of highlighting it as not sure that will be an issue or not.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Thanks,
-Shameer
- 
+gcc tested configs:
+arm                              allmodconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm64                               defconfig
+i386                 randconfig-c001-20220516
+sh                           se7780_defconfig
+sh                           se7705_defconfig
+powerpc                     sequoia_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+alpha                               defconfig
+csky                                defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+sh                               allmodconfig
+arc                                 defconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+parisc64                            defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+nios2                               defconfig
+arc                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+x86_64               randconfig-a012-20220516
+x86_64               randconfig-a011-20220516
+x86_64               randconfig-a013-20220516
+x86_64               randconfig-a014-20220516
+x86_64               randconfig-a016-20220516
+x86_64               randconfig-a015-20220516
+i386                 randconfig-a014-20220516
+i386                 randconfig-a011-20220516
+i386                 randconfig-a013-20220516
+i386                 randconfig-a015-20220516
+i386                 randconfig-a012-20220516
+i386                 randconfig-a016-20220516
+arc                  randconfig-r043-20220516
+riscv                randconfig-r042-20220516
+s390                 randconfig-r044-20220516
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                                  kexec
+x86_64                          rhel-8.3-func
+x86_64                               rhel-8.3
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+x86_64                           rhel-8.3-syz
+
+clang tested configs:
+mips                  cavium_octeon_defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                   microwatt_defconfig
+powerpc                     akebono_defconfig
+powerpc                    mvme5100_defconfig
+i386                 randconfig-a005-20220516
+i386                 randconfig-a003-20220516
+i386                 randconfig-a001-20220516
+i386                 randconfig-a004-20220516
+i386                 randconfig-a006-20220516
+i386                 randconfig-a002-20220516
+hexagon              randconfig-r045-20220516
+hexagon              randconfig-r041-20220516
+x86_64               randconfig-a002-20220516
+x86_64               randconfig-a001-20220516
+x86_64               randconfig-a003-20220516
+x86_64               randconfig-a005-20220516
+x86_64               randconfig-a004-20220516
+x86_64               randconfig-a006-20220516
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
