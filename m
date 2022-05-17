@@ -2,79 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1D752A5CA
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 17:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 451B452A620
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 17:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243523AbiEQPOi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 May 2022 11:14:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38366 "EHLO
+        id S236663AbiEQPXs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 May 2022 11:23:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243212AbiEQPOg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 11:14:36 -0400
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363704BB93;
-        Tue, 17 May 2022 08:14:34 -0700 (PDT)
-Received: by mail-io1-f46.google.com with SMTP id s23so19505665iog.13;
-        Tue, 17 May 2022 08:14:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mbFG0j0OOb8L9zhN2w48Y4xmkuGMCVJKy6dA52/T7lY=;
-        b=Oe2oZ4fRNldQ2RrA3y4TuzVMwHgFBnJJFsDcII6BiLBtCcecpKJkYEtaYUVNX1jRxp
-         RqOJ6pPxt+Rhc6xgGHxQaQSo8EOV8lUc4wtJbYXmAEsIOcV7RwcZSGjWOAK00lhvUTan
-         eW43CY5IGdWWCuldiSwSXkWHHFm+Ew2vYIcY0LiAit/Y7wrGBq6gOcxU51BWchULamXO
-         bdaiWk2D4/xFIXEPgy4CJdEICEtXfNcFBAaeps7P8s4gPx0hnLA2Bna1CQRfvkNv4Ga+
-         ShbYa5smC7CHTmV2T+EXjsmu5xWUpIxXT8QstKF9rWC+Fa6MKnC/cUy3pVyCtcrcamgp
-         1Y4g==
-X-Gm-Message-State: AOAM533zT/fbiJZu/oRqguWHfT+J+alEDblKxXSINUtinWtu03KTAoAF
-        iO/zQY0GhzIO4pJ+SngNCu2CYV3Zy+v15JuqAVk=
-X-Google-Smtp-Source: ABdhPJw5xQpiFWoBi/dY9A7l3qiBSYaoqRi7wvq1y38zlaEpSiq91Cpu4sxBMJ0hvEtSAzij38P5pYCiRnixLE2uvw0=
-X-Received: by 2002:a05:6638:3289:b0:32e:2c45:93b5 with SMTP id
- f9-20020a056638328900b0032e2c4593b5mr6150196jav.96.1652800473303; Tue, 17 May
- 2022 08:14:33 -0700 (PDT)
+        with ESMTP id S234922AbiEQPXs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 11:23:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1371D4F466
+        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 08:23:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1652801025;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=7nJqaMKU0QZZRpkaVkXvoI5hrSAoyhlwswTv6wQi4hM=;
+        b=gXaazZ5dBWrswBWcMi+sN8TWfDdPSd9kMIhEk2EiqRG/CNBdnsr/Di9ekkWVMlMVrkfCAd
+        8kkj2V/hXFA/EYAJTUx+qYL2E1f5Ij3yIBMfrmzgE/wZ58H7BjsR1i7woWJ7ohYtBoDCpf
+        oOBouo/qraEKaDC2U95D1vYc2nX2HYM=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-152-Q6i2ip8ZM4SjQYuBZ7G8BA-1; Tue, 17 May 2022 11:23:41 -0400
+X-MC-Unique: Q6i2ip8ZM4SjQYuBZ7G8BA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D9183817A6B;
+        Tue, 17 May 2022 15:23:40 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.162])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 99322C15D7D;
+        Tue, 17 May 2022 15:23:36 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
+        Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Pan@vger.kernel.org, Xinhui <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH 00/14] drm/kms: Stop registering multiple /sys/class/backlight devs for a single display
+Date:   Tue, 17 May 2022 17:23:17 +0200
+Message-Id: <20220517152331.16217-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20220505015814.3727692-1-rui.zhang@intel.com> <20220505015814.3727692-8-rui.zhang@intel.com>
-In-Reply-To: <20220505015814.3727692-8-rui.zhang@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 May 2022 17:14:22 +0200
-Message-ID: <CAJZ5v0jt1OND_d08mC0TC1LZ-JGANDY5fiDmH5RUfdtRk1vZFw@mail.gmail.com>
-Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
-To:     Zhang Rui <rui.zhang@intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, kvalo@kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-rtc@vger.kernel.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        merez@codeaurora.org, mat.jonczyk@o2.pl,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Len Brown <len.brown@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 5, 2022 at 3:58 AM Zhang Rui <rui.zhang@intel.com> wrote:
->
-> Automated suspend/resume testing uses the RTC for wakeup.
-> A short rtcwake period is desirable, so that more suspend/resume
-> cycles can be completed, while the machine is available for testing.
->
-> But if too short a wake interval is specified, the event can occur,
-> while still suspending, and then no event wakes the suspended system
-> until the user notices that testing has stalled, and manually intervenes.
+Hi All,
 
-If the wakeup event occurs while still suspending, it should abort the
-suspend in progress, shouldn't it?  But the above implies that it
-doesn't do that.
+As mentioned in my RFC titled "drm/kms: control display brightness through
+drm_connector properties":
+https://lore.kernel.org/dri-devel/0d188965-d809-81b5-74ce-7d30c49fee2d@redhat.com/
 
-If this is fixed, wouldn't it address the issue at hand?
+The first step towards this is to deal with some existing technical debt
+in backlight handling on x86/ACPI boards, specifically we need to stop
+registering multiple /sys/class/backlight devs for a single display.
+
+This series implements my RFC describing my plan for these cleanups:
+https://lore.kernel.org/dri-devel/98519ba0-7f18-201a-ea34-652f50343158@redhat.com/
+
+Specifically patches 1-6 implement the "Fixing kms driver unconditionally
+register their "native" backlight dev" part.
+
+And patches 7-14 implement the "Fixing acpi_video0 getting registered for
+a brief time" time.
+
+Note this series does not deal yet with the "Other issues" part, I plan
+to do a follow up series for that.
+
+The changes in this series are good to have regardless of the further
+"drm/kms: control display brightness through drm_connector properties"
+plans. So I plan to push these upstream once they are ready (once
+reviewed). Since this crosses various subsystems / touches multiple
+kms drivers my plan is to provide an immutable branch based on say
+5.19-rc1 and then have that get merged into all the relevant trees.
+
+Please review.
+
+Regards,
+
+Hans
+
+
+Hans de Goede (14):
+  ACPI: video: Add a native function parameter to
+    acpi_video_get_backlight_type()
+  drm/i915: Don't register backlight when another backlight should be
+    used
+  drm/amdgpu: Don't register backlight when another backlight should be
+    used
+  drm/radeon: Don't register backlight when another backlight should be
+    used
+  drm/nouveau: Don't register backlight when another backlight should be
+    used
+  ACPI: video: Drop backlight_device_get_by_type() call from
+    acpi_video_get_backlight_type()
+  ACPI: video: Remove acpi_video_bus from list before tearing it down
+  ACPI: video: Simplify acpi_video_unregister_backlight()
+  ACPI: video: Make backlight class device registration a separate step
+  ACPI: video: Remove code to unregister acpi_video backlight when a
+    native backlight registers
+  drm/i915: Call acpi_video_register_backlight()
+  drm/nouveau: Register ACPI video backlight when nv_backlight
+    registration fails
+  drm/amdgpu: Register ACPI video backlight when skipping amdgpu
+    backlight registration
+  drm/radeon: Register ACPI video backlight when skipping radeon
+    backlight registration
+
+ drivers/acpi/acpi_video.c                     | 69 ++++++++++++++-----
+ drivers/acpi/video_detect.c                   | 53 +++-----------
+ drivers/gpu/drm/Kconfig                       |  2 +
+ .../gpu/drm/amd/amdgpu/atombios_encoders.c    | 14 +++-
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  9 +++
+ .../gpu/drm/i915/display/intel_backlight.c    |  7 ++
+ drivers/gpu/drm/i915/display/intel_display.c  |  1 +
+ drivers/gpu/drm/i915/display/intel_opregion.c |  2 +-
+ drivers/gpu/drm/nouveau/nouveau_backlight.c   | 14 ++++
+ drivers/gpu/drm/radeon/atombios_encoders.c    |  7 ++
+ drivers/gpu/drm/radeon/radeon_encoders.c      | 11 ++-
+ .../gpu/drm/radeon/radeon_legacy_encoders.c   |  7 ++
+ drivers/platform/x86/acer-wmi.c               |  2 +-
+ drivers/platform/x86/asus-laptop.c            |  2 +-
+ drivers/platform/x86/asus-wmi.c               |  4 +-
+ drivers/platform/x86/compal-laptop.c          |  2 +-
+ drivers/platform/x86/dell/dell-laptop.c       |  2 +-
+ drivers/platform/x86/eeepc-laptop.c           |  2 +-
+ drivers/platform/x86/fujitsu-laptop.c         |  4 +-
+ drivers/platform/x86/ideapad-laptop.c         |  2 +-
+ drivers/platform/x86/intel/oaktrail.c         |  2 +-
+ drivers/platform/x86/msi-laptop.c             |  2 +-
+ drivers/platform/x86/msi-wmi.c                |  2 +-
+ drivers/platform/x86/samsung-laptop.c         |  2 +-
+ drivers/platform/x86/sony-laptop.c            |  2 +-
+ drivers/platform/x86/thinkpad_acpi.c          |  4 +-
+ drivers/platform/x86/toshiba_acpi.c           |  2 +-
+ include/acpi/video.h                          |  8 ++-
+ 28 files changed, 156 insertions(+), 84 deletions(-)
+
+-- 
+2.36.0
+
