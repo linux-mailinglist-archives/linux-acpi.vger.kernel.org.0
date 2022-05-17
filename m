@@ -2,177 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F27352AB43
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 20:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15BCF52AB62
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 21:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352400AbiEQSyI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 May 2022 14:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44558 "EHLO
+        id S1351300AbiEQTBL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 May 2022 15:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352390AbiEQSyH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 14:54:07 -0400
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 256634E3AD;
-        Tue, 17 May 2022 11:54:06 -0700 (PDT)
-Received: by mail-yb1-f180.google.com with SMTP id t26so652049ybt.3;
-        Tue, 17 May 2022 11:54:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qF0GVGEWML04R3eflXhzjNR3bh9aYLmjOF0GGxt5/MQ=;
-        b=4IY94HE/DSxjckkD6sW/DIMiaOGO+PfpZYEMTgGQGTf7Afp6ZfJBRkuAzIF94jd3mT
-         7rcSPtWzHVkIh2G9QwNSNqyTU85o1pIbVQKV+mr9K8L7MWaK6adLXlZls/J+lG1cFAIc
-         k2FViWoKsgn9+Y8x3v/NJ5dfDu6ZGyLlnNr+RcuKMtGERjT9BlsJ+Nkyo10W3MKCb86C
-         30ndygtCv3EwezbmgzaT6No4CHHkTjl2ghOF1VfxZOKOeY3BnhzIChCbDON/bgpwdyl/
-         E2kQBijsHVYdxYsJKB1FvDAjMWxneayE5KGZPhZYd1co2TIkAHbgyqxRheWmgrwN+lUy
-         b9XQ==
-X-Gm-Message-State: AOAM530bA5b/JNbLDaxwEsfvyfFtasxoYzsoIyQ9Er3TbjniiadtwsW5
-        ZDuxifOVWy01axrCUNHFYJ2HDZcB5rJBcqXf4UI=
-X-Google-Smtp-Source: ABdhPJyGBw4F87Ht0i2/yHvICsShiFUUkK8/5v8rdIg8QWB5ngXGjygxVqdY3mWc6GMP5EQodHlMgx+0it1423H00xE=
-X-Received: by 2002:a25:1145:0:b0:64d:d6be:c741 with SMTP id
- 66-20020a251145000000b0064dd6bec741mr8839716ybr.137.1652813645345; Tue, 17
- May 2022 11:54:05 -0700 (PDT)
+        with ESMTP id S1352455AbiEQTA5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 15:00:57 -0400
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8FA1759A;
+        Tue, 17 May 2022 12:00:55 -0700 (PDT)
+Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
+        by mx0a-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24HHaK9D024967;
+        Tue, 17 May 2022 19:00:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pps0720; bh=XveI8+0xCxlLMtFfs03HSpwypECml/UscIp78HvomVk=;
+ b=UP8w49nkrdaSadmehED6lZ5+T3Tz6PYBymPz0bqFmYRYSxOK7QaC0VFIvasj2ez3Pe1t
+ /E2DmRSDd2rsg4Pn88jcMVLfttfzUZEeJ+4s1SsXuKGoeEJqlc056wyo9H8LK6u6RBy3
+ LmflUZA/OAf4VwHW/FfJC8SRa+CpYlomrJJFxuNcUiVE+IWfNWGyQ1uBoN3Er8PtJNkO
+ 5rEyPzJwtqoVEoQqOg/RHySYrD2Ag2zrVwyLH/lBjq7WisckyzNWu5mTM8MU/CdcmR0T
+ WJZT96iYvaEZk5x5aHz9mYAFEG03Fh2HuPmTUC+GF+dia3mnTpi7z5unFrcKzgQlkKHT 1w== 
+Received: from g2t2353.austin.hpe.com (g2t2353.austin.hpe.com [15.233.44.26])
+        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3g46pph8va-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 May 2022 19:00:52 +0000
+Received: from g2t2360.austin.hpecorp.net (g2t2360.austin.hpecorp.net [16.196.225.135])
+        by g2t2353.austin.hpe.com (Postfix) with ESMTP id E460577;
+        Tue, 17 May 2022 19:00:51 +0000 (UTC)
+Received: from ubuntu-20.04.3 (unknown [16.99.205.220])
+        by g2t2360.austin.hpecorp.net (Postfix) with SMTP id DE65B36;
+        Tue, 17 May 2022 19:00:50 +0000 (UTC)
+Date:   Wed, 18 May 2022 03:00:49 +0800
+From:   James Liu <james.liu@hpe.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI: OSL: Fix the memory mapping of an ACPI GAS that
+ addresses a data structure
+Message-ID: <20220517190049.GA6375@ubuntu-20.04.3>
+References: <20220401172840.1252-1-james.liu@hpe.com>
+ <20220517175629.GA4788@ubuntu-20.04.3>
+ <CAJZ5v0hv5__ZQVqr-yzMa4_OgeknhOkbSpxQ233eCmJXksgNGw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20220507125443.2766939-1-daniel.lezcano@linexp.org>
- <20220507125443.2766939-2-daniel.lezcano@linexp.org> <CAJZ5v0ik_JQ4Awtw7iR68W4-9ZL8FRDsDd-kWmL-n09fgg3reg@mail.gmail.com>
- <7b1a9f3b5b5087f47bf4839858c7bfebdb60aa2f.camel@linux.intel.com>
-In-Reply-To: <7b1a9f3b5b5087f47bf4839858c7bfebdb60aa2f.camel@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 May 2022 20:53:54 +0200
-Message-ID: <CAJZ5v0hqN-zKZvWTNPzW2P22Dirmyh99qyycf+US4Z9Yxw9mhA@mail.gmail.com>
-Subject: Re: [PATCH v2 01/14] thermal/core: Change thermal_zone_ops to thermal_sensor_ops
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linexp.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Alexandre Bailon <abailon@baylibre.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Peter Kaestle <peter@piie.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Chuansheng Liu <chuansheng.liu@intel.com>,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Antoine Tenart <atenart@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
-        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
-        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER" 
-        <platform-driver-x86@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:RENESAS R-CAR THERMAL DRIVERS" 
-        <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0hv5__ZQVqr-yzMa4_OgeknhOkbSpxQ233eCmJXksgNGw@mail.gmail.com>
+X-Proofpoint-GUID: pc3Oi10D8h_3F_0uONzt8PKk-gBcbGPp
+X-Proofpoint-ORIG-GUID: pc3Oi10D8h_3F_0uONzt8PKk-gBcbGPp
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-17_03,2022-05-17_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
+ mlxscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 priorityscore=1501 adultscore=0 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205170109
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 17, 2022 at 6:51 PM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
+O Tue, May 17, 2022 at 08:25:55PM +0200, Rafael J. Wysocki wrote:
+> On Tue, May 17, 2022 at 7:56 PM James Liu <james.liu@hpe.com> wrote:
+> >
+> > Hi Rafael and all,
+> > Could you take a look into this patches? The mentioned bug blocks EINJ
+> > testing whenever a system firmware can correctly support GAS according
+> > to ACPI 6.4.
+> 
+> The kernel test robot reported an issue with it.  Have you seen that report?
 >
-> On Tue, 2022-05-17 at 17:42 +0200, Rafael J. Wysocki wrote:
-> > On Sat, May 7, 2022 at 2:55 PM Daniel Lezcano
-> > <daniel.lezcano@linexp.org> wrote:
+Yes, I saw that the issue is warnings about the initialization of "u64 addr".
+Will you suggest fixing it in another patch or just merge the change
+(i.e., u64 addr = 0) into this one? Thanks for reviewing this.
+
+> > On Fri, Apr 01, 2022 at 05:28:40PM +0000, james.liu@hpe.com wrote:
+> > > From: James Liu <james.liu@hpe.com>
 > > >
-> > > A thermal zone is software abstraction of a sensor associated with
-> > > properties and cooling devices if any.
+> > >     Modify acpi_os_map_generic_address and acpi_os_unmap_generic_address
+> > >     to handle a case that a GAS table (i.e., Table 5.1 in ACPI 6.4) is used
+> > >     to address a data structure; in this case, the GAS has the field of
+> > >     "Register Bit Width" equal to 0.
 > > >
-> > > The fact that we have thermal_zone and thermal_zone_ops mixed is
-> > > confusing and does not clearly identify the different components
-> > > entering in the thermal management process. A thermal zone appears
-> > > to
-> > > be a sensor while it is not.
-> >
-> > Well, the majority of the operations in thermal_zone_ops don't apply
-> > to thermal sensors.  For example, ->set_trips(), ->get_trip_type(),
-> > ->get_trip_temp().
-> >
-> In past we discussed adding thermal sensor sysfs with threshold to
-> notify temperature.
->
-> So sensor can have set/get_threshold() functions instead of the
-> set/get_trip for zones.
->
-> Like we have /sys/class/thermal_zone* we can have
-> /sys/class/thermal_sensor*.
-
-Exactly, so renaming thermal_zone_ops as thermal_sensor_ops isn't
-quite helpful in this respect.
-
-IMO there should be operations for sensors and there should be
-operations for thermal zones and those two sets of operations should
-be different.
-
-> Thermal sensor(s) are bound to  thermal zones.
-
-So I think that this binding should be analogous to the binding
-between thermal zones and cooling devices.
-
-> This can also include multiple sensors in a zone and can create a virtual sensor also.
-
-It can.
-
-However, what's the difference between a thermal zone with multiple
-sensors and a thermal zone with one virtual sensor being an aggregate
-of multiple physical sensors?
-
-Both involve some type of aggregation of temperature values measured
-by the physical sensors.
-
-> > > In order to set the scene for multiple thermal sensors aggregated
-> > > into
-> > > a single thermal zone. Rename the thermal_zone_ops to
-> > > thermal_sensor_ops, that will appear clearyl the thermal zone is
-> > > not a
-> > > sensor but an abstraction of one [or multiple] sensor(s).
-> >
-> > So I'm not convinced that the renaming mentioned above is
-> > particularly
-> > clean either.
-> >
-> > IMV the way to go would be to split the thermal sensor operations,
-> > like ->get_temp(), out of thermal_zone_ops.
-> >
-> > But then it is not clear what a thermal zone with multiple sensors in
-> > it really means.  I guess it would require an aggregation function to
-> > combine the thermal sensors in it that would produce an effective
-> > temperature to check against the trip points.
-> >
-> > Honestly, I don't think that setting a separate set of trips for each
-> > sensor in a thermal zone would make a lot of sense.
->
+> > >     For example, "Injection Instruction Entry" (Table 18.25 in ACPI 6.4)
+> > >     has a RegisterRegion field that is a GAS that points to a data
+> > >     structure SET_ERROR_TYPE_WITH_ADDRESS (Table 18.30), which is required
+> > >     when using EINJ (Error Injection module).
+> > >
+> > >     This fix preserves a fairly sufficient memory space (i.e., page size)
+> > >     to store the data structure so as to prevent EINJ module from loading
+> > >     failure if platform firmware can support Injection Instruction Entry in
+> > >     an EINJ table.
+> > >
+> > > Signed-off-by: James Liu <james.liu@hpe.com>
+> > > ---
+> > >  drivers/acpi/osl.c | 23 +++++++++++++++++++++--
+> > >  1 file changed, 21 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> > > index 45c5c0e45..ab2f584b1 100644
+> > > --- a/drivers/acpi/osl.c
+> > > +++ b/drivers/acpi/osl.c
+> > > @@ -457,9 +457,15 @@ void __iomem *acpi_os_map_generic_address(struct acpi_generic_address *gas)
+> > >       if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
+> > >               return NULL;
+> > >
+> > > +     /* Handle a case that GAS is used to address an ACPI data structure */
+> > > +     if (!gas->bit_width) {
+> > > +             pr_info("An ACPI data structure at 0x%llx is mapped\n", addr);
+> > > +             return  acpi_os_map_iomem(addr, PAGE_SIZE);
+> > > +     }
+> > > +
+> > >       /* Handle possible alignment issues */
+> > >       memcpy(&addr, &gas->address, sizeof(addr));
+> > > -     if (!addr || !gas->bit_width)
+> > > +     if (!addr)
+> > >               return NULL;
+> > >
+> > >       return acpi_os_map_iomem(addr, gas->bit_width / 8);
+> > > @@ -474,9 +480,22 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
+> > >       if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
+> > >               return;
+> > >
+> > > +     /* Handle a case that GAS is used to address an ACPI data structure */
+> > > +     if (!gas->bit_width) {
+> > > +             pr_info("An ACPI data structure at 0x%llx is unmapped\n", addr);
+> > > +             mutex_lock(&acpi_ioremap_lock);
+> > > +             map = acpi_map_lookup(addr, PAGE_SIZE);
+> > > +             if (!map) {
+> > > +                     mutex_unlock(&acpi_ioremap_lock);
+> > > +                     return;
+> > > +             }
+> > > +             acpi_os_drop_map_ref(map);
+> > > +             mutex_unlock(&acpi_ioremap_lock);
+> > > +     }
+> > > +
+> > >       /* Handle possible alignment issues */
+> > >       memcpy(&addr, &gas->address, sizeof(addr));
+> > > -     if (!addr || !gas->bit_width)
+> > > +     if (!addr)
+> > >               return;
+> > >
+> > >       mutex_lock(&acpi_ioremap_lock);
+> > > --
+> > > 2.25.1
+> > >
