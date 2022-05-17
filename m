@@ -2,47 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCEF352A7CA
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 18:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 425DF52A81F
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 May 2022 18:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347553AbiEQQV6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 May 2022 12:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
+        id S241781AbiEQQgn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 May 2022 12:36:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350852AbiEQQV5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 12:21:57 -0400
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3A13B023
-        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 09:21:56 -0700 (PDT)
-Received: by mail-yb1-f180.google.com with SMTP id o130so17734002ybc.8
-        for <linux-acpi@vger.kernel.org>; Tue, 17 May 2022 09:21:56 -0700 (PDT)
+        with ESMTP id S238721AbiEQQgn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 May 2022 12:36:43 -0400
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE0C120BD4;
+        Tue, 17 May 2022 09:36:41 -0700 (PDT)
+Received: by mail-yb1-f175.google.com with SMTP id p139so12431861ybc.11;
+        Tue, 17 May 2022 09:36:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UvleERSawxplffshiaVSIMQjlXqAyLMjM5BckhxYrjw=;
-        b=ivbZioX+GDtLybg2fffHi70EGKC36b4r6+/ofhHpgK71P4JJyidQf2xU0mH6v9IQ9f
-         775oAswGosfhBj/y3/8YEleJhImA9DjgKml0DS9oVVt9tq2pfIjSohkfkHxnwtQATvY9
-         oJ855TSo63ZMBKrvhUo2k6thmJMQj2zpwA6PgRNW4/wQ5VmDnCDREhB4WTO0xBK31hdE
-         GMQkMoA8gvgEkJlDoApA1l25t6Vq34KIPi7VyuehwIM26raldajbd3PqNc0tr+s8RBdR
-         ACpgOmJDCyy2v04AQ/XB6XVos6VPspq5fSoMjCaYz2bQkqv/i6FP0kYGfZ/QeTH4s7BX
-         NqaA==
-X-Gm-Message-State: AOAM531asMESYBAJ9CegBQBOHEsKqhdUBBXe3B6fxRCtOR/vYDJJhR9v
-        VikQCFGFY6CBM4e5bdtQEd7zouY+wUyyKub8abo=
-X-Google-Smtp-Source: ABdhPJxqzvO/ig6U0TVqK+YipaVTNsi1Wa9RbZ7pgC5o9XQnAL74qBTZciWm62RfXpygQvd9wJHwmUVCkGHaDntiAQ4=
-X-Received: by 2002:a25:c6:0:b0:64d:8a54:d45c with SMTP id 189-20020a2500c6000000b0064d8a54d45cmr13677345yba.153.1652804515824;
- Tue, 17 May 2022 09:21:55 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=XzZsCz+FEDhr5zfSeWU+bowEEKWP57VJ8xk562lPInY=;
+        b=jqNRJecgJWG0orNedLcyhTebhAn71pml9sD8cIVjuQ8SU0FHi8ccPrbqjIeU+OW73/
+         2bUrYGHMs8dOz1SFbl9nZhiGasxkH9pkdm2AmuiHRAIKWt7gwtMxbVIQ6nPbGQovnig7
+         iE3KbEipVsTN5rpVbF40QLqTf52iHhZXi5TlAmR13bPXnLJr6Ah/M3QwVBzB+AGBiWZ6
+         A6wbVcZFjKBSVxIPT5YT/U/JYQdoGn1JWXS6IxEFm0VviPALGxr7wFj9VPx21iWUAlgc
+         3mA/6heoo2URQh6gztBgPjsnaQ0dKM5bJ6+k7j9oS2RibvWigb1VLRpso7zZumCwuiqB
+         c+eQ==
+X-Gm-Message-State: AOAM532kbN1Xz5K7dcCqSWZQ8gaEMags9pMBXQUM6XSNssKTOj3B4IdW
+        GnXukWGoeRZOttVXFooPN2VHGAlUOlIAfuideAmQgGJjM7Y=
+X-Google-Smtp-Source: ABdhPJx2hgUuHv/xBi+xAczLQQBmVAOVbS0p3qrHUhTBhMGTALjD7CIZDEbnEjM2Yt3ZNyEVKnHWuOzfmJE4CMXdgM4=
+X-Received: by 2002:a25:ed06:0:b0:64d:e12f:5229 with SMTP id
+ k6-20020a25ed06000000b0064de12f5229mr7140356ybh.622.1652805401179; Tue, 17
+ May 2022 09:36:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220506130025.984026-1-sakari.ailus@linux.intel.com> <20220506130025.984026-3-sakari.ailus@linux.intel.com>
-In-Reply-To: <20220506130025.984026-3-sakari.ailus@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 May 2022 18:21:44 +0200
-Message-ID: <CAJZ5v0ip==ZYopb3sJvyrNpErpa1gGaJLk+OfLgff3x2tH98Og@mail.gmail.com>
-Subject: Re: [PATCH 02/11] ACPI: acpica: Constify pathname argument for acpi_get_handle()
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
+Date:   Tue, 17 May 2022 18:36:30 +0200
+Message-ID: <CAJZ5v0ghkfwSznen8DTiS_O_obYWmOw8R_RyqK4ZYur+Kkus8w@mail.gmail.com>
+Subject: [GIT PULL] Thermal control fix for v5.18-rc8
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -54,49 +52,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 6, 2022 at 2:58 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> acpi_get_handle() uses the pathname argument to find a handle related to
-> that pathname but it does not need to modify it. Make it const, in order
-> to be able to pass const pathname to it.
->
-> Cc: "Moore, Robert" <robert.moore@intel.com>
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Hi Linus,
 
-Which patches in the rest of the series depend on this one?
+Please pull from the tag
 
-> ---
->  drivers/acpi/acpica/nsxfname.c | 2 +-
->  include/acpi/acpixf.h          | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/nsxfname.c b/drivers/acpi/acpica/nsxfname.c
-> index b2cfdfef31947..a0592d15dd37c 100644
-> --- a/drivers/acpi/acpica/nsxfname.c
-> +++ b/drivers/acpi/acpica/nsxfname.c
-> @@ -44,7 +44,7 @@ static char *acpi_ns_copy_device_id(struct acpi_pnp_device_id *dest,
->
->  acpi_status
->  acpi_get_handle(acpi_handle parent,
-> -               acpi_string pathname, acpi_handle *ret_handle)
-> +               const char *pathname, acpi_handle *ret_handle)
->  {
->         acpi_status status;
->         struct acpi_namespace_node *node = NULL;
-> diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-> index 67c0b9e734b64..085f23d833349 100644
-> --- a/include/acpi/acpixf.h
-> +++ b/include/acpi/acpixf.h
-> @@ -526,7 +526,7 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
->                                            struct acpi_buffer *ret_path_ptr))
->  ACPI_EXTERNAL_RETURN_STATUS(acpi_status
->                              acpi_get_handle(acpi_handle parent,
-> -                                            acpi_string pathname,
-> +                                            const char *pathname,
->                                              acpi_handle *ret_handle))
->  ACPI_EXTERNAL_RETURN_STATUS(acpi_status
->                              acpi_attach_data(acpi_handle object,
-> --
-> 2.30.2
->
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ thermal-5.18-rc8
+
+with top-most commit 7b145802ba545ecf9446ce6d67d6011b73dac0e0
+
+ thermal: int340x: Mode setting with new OS handshake
+
+on top of commit c5eb0a61238dd6faf37f58c9ce61c9980aaffd7a
+
+ Linux 5.18-rc6
+
+to receive a thermal control fix for 5.18-rc8.
+
+This fixes up a recent change in the int340x thermal driver that
+inadvertently broke thermal zone handling on some systems (Srinivas
+Pandruvada).
+
+Thanks!
+
+
+---------------
+
+Srinivas Pandruvada (1):
+      thermal: int340x: Mode setting with new OS handshake
+
+---------------
+
+ .../intel/int340x_thermal/int3400_thermal.c        | 48 ++++++++++++++--------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
