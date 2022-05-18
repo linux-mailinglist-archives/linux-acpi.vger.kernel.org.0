@@ -2,69 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EAC652BCF8
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 May 2022 16:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A37DA52BC05
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 May 2022 16:16:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238196AbiERNvn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 May 2022 09:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41238 "EHLO
+        id S238173AbiERN7k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 May 2022 09:59:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238246AbiERNvk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 May 2022 09:51:40 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CD719CEEB
-        for <linux-acpi@vger.kernel.org>; Wed, 18 May 2022 06:51:39 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-2fed823dd32so24746877b3.12
-        for <linux-acpi@vger.kernel.org>; Wed, 18 May 2022 06:51:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ezkF+KufCRulaATTf+tA3i0YmPN8Lg/E/OJ5KWGLi9s=;
-        b=uGNd03MI81VqlOTp83UbNvG7RNsf4JwdkIUpBemFFroQN/ghPDZN15hQVkSIUo9Y+m
-         RFdhHMVM5nbW1OSRcv2fiztcN2rNCYuW03ZVkrmJl3jMIZO9FdAyBMJt7AigMbN9Lyb4
-         bL2Mmh06bmrMQ2Pss2J1tW+AgVMFOU8a0pcQccwayaDXEYxlvL4+rUohNDiH2hG62G4R
-         vyRU9BoSvX4w5wx6gy6MzyofxQ0LHJ1cbBgRXfxdVHe/wQkybembQwu/7B4cQViqMdsm
-         3z+3FMMPKNU0mcLT9JPS4HItaf9sbLRk+z8Rqur7f//JbGqsugsLG2+2Pb6syuJ/NKyU
-         cguA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ezkF+KufCRulaATTf+tA3i0YmPN8Lg/E/OJ5KWGLi9s=;
-        b=l6hDGptjDI8ICEFDBUBvLTmkcQyn5KDd6REdJNx4/7WEmeWLzN2R8wU0LfN17Mjmb5
-         IH8sHCh+K8fZ4TsX5HkKJabSwQJAUgU+Dg8BdMsf+CZ0BbV/ziycb0H+uw2FCcuzRKfZ
-         hyrN5xEq/HCvsv05SNgxQqrkkT6JG5B4I65eQS0Y5UPyrRXYHw4QTntt+m7G0OQcvYjG
-         Uj9wSctSTv456M4IKM2RQRrYpDcxrxop1ezL3TPxbFUO2jeLFGlSyozxZmfJrkY4wHbW
-         s9QpOBbT2KCdSUnTHmOB44M7jP098jspyo6XkXZqOZ/Non+dHKykVwprYsXuacbnskb6
-         00Vw==
-X-Gm-Message-State: AOAM532CJVyckEqQ9ZsRZ7yctw+KBjSO6wuhyjq+DTxE2W5y+Smmtomi
-        XLmPnwyn9F0gzG63Dz1Kv1yskSnvCAUe4Wl6/vAIjg==
-X-Google-Smtp-Source: ABdhPJxpHy6dIs00LRXeGNRMgX921VLukf4liJgNBcyAdsNr2nvvmrO+nqIa6p9eJAUAaA5lDN2SqFDUk598KuThmrQ=
-X-Received: by 2002:a81:2154:0:b0:2f4:d79e:35dc with SMTP id
- h81-20020a812154000000b002f4d79e35dcmr31816444ywh.126.1652881898898; Wed, 18
- May 2022 06:51:38 -0700 (PDT)
+        with ESMTP id S229721AbiERN7j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 May 2022 09:59:39 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D0371A6AFD;
+        Wed, 18 May 2022 06:59:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652882378; x=1684418378;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=t2g1cVLuSFG7WW/DFQOUpg4APpNYfHwlebNYCM+5+6E=;
+  b=bY1fa/lla//GjiH1AJZiNk5vK4ecO7/UZpXyhUFDU/hvIEBdf6TOIUQQ
+   dZNdaCYCVKcg+zoWzOYTzDY2KtHcizzVi5ygN2l88jGyQBzfzpuQ+yJjW
+   yxHTQYLQr6LxNqSJewh7hag2lwaN7hpF9Tcs7Wy0i5Oq3zem6LtPcJXGX
+   1BAbH++QxQNIoESG7v7ygBx9j/8aeNs/jkD8IJmT+6kbH5L2ZYK1U2Bot
+   Eme7pDFlFdCEbpXEq6fYJ0jBvvl/q3UGvJJ5pv/p6AZrDr/wAWH+LAsj0
+   uZeNfWHL6l1AK5AXg7EY7vOZSiWCghowa2brKlYM29F3olduQp8lmsGma
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="334729724"
+X-IronPort-AV: E=Sophos;i="5.91,235,1647327600"; 
+   d="scan'208";a="334729724"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2022 06:59:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,235,1647327600"; 
+   d="scan'208";a="556335174"
+Received: from lkp-server02.sh.intel.com (HELO 242b25809ac7) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 18 May 2022 06:59:35 -0700
+Received: from kbuild by 242b25809ac7 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nrKD8-0002FN-W1;
+        Wed, 18 May 2022 13:59:34 +0000
+Date:   Wed, 18 May 2022 21:59:07 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ c0ba9ef9d454d6189164b92bbfdb12f6691e880c
+Message-ID: <6284fbab.XAuUMbPSdZ8LDG5K%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220418141416.27529-1-asmaa@nvidia.com> <CH2PR12MB3895A1FB2977B725ED92AB57D7C29@CH2PR12MB3895.namprd12.prod.outlook.com>
- <CACRpkdY1uK=73zpEM5zUyXacm5xaUUFYkuKMxi_q6vwmOPy6tw@mail.gmail.com>
- <CH2PR12MB389560A1873030472A7A371DD7C29@CH2PR12MB3895.namprd12.prod.outlook.com>
- <CACRpkdZhW9XK3opXLLzdMiVLVkGQyJCf7RLZtRQLsmzv-aqwbA@mail.gmail.com>
- <CH2PR12MB38953FF57D91FA75AB9CB102D7CB9@CH2PR12MB3895.namprd12.prod.outlook.com>
- <CACRpkdbAhMa2CXvQra3E13n8WfiBxyHNqzEp4dW3qo5upr_=gw@mail.gmail.com> <CH2PR12MB38958CD365876A2106712C3CD7CF9@CH2PR12MB3895.namprd12.prod.outlook.com>
-In-Reply-To: <CH2PR12MB38958CD365876A2106712C3CD7CF9@CH2PR12MB3895.namprd12.prod.outlook.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 18 May 2022 15:51:27 +0200
-Message-ID: <CACRpkdZp9hx2SHxsmjBm2oj7m3UT-4S+MKw5qqNME0PLjPNV2A@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] Add driver for Mellanox BlueField-3 GPIO controller
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,42 +63,113 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 16, 2022 at 3:00 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: c0ba9ef9d454d6189164b92bbfdb12f6691e880c  Merge branch 'pm-cpufreq' into bleeding-edge
 
-> So these GPIO pins are assigned one specific HW functionality on the boards
->  and software should never change them.
->
-> By default, for security purposes, I think we shouldn't let the user have the option
-> to control the GPIO pins since they have a specific HW functionality.
->
-> But for bringup/debug purposes, we would like to support the option of software
-> being able to change these pin values. We also might have customers that choose
-> to change the default HW connection of a certain GPIO pin and connect it to
-> control their LEDs for instance.
+elapsed time: 1046m
 
-The fact that the usecase is bringup/debug does not mean we cut
-corners and do "quick fixes". The proper APIs have to be implemented,
-the alternative is to not submit the driver at all.
+configs tested: 92
+configs skipped: 3
 
-What I hear is that these pins have two modes:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-1. Used for a device (I2C etc)
-2. Used as GPIO by setting a bit in YU_GPIO_FW_CONTROL_SET
+gcc tested configs:
+arm                              allmodconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm64                               defconfig
+i386                 randconfig-c001-20220516
+m68k                        m5407c3_defconfig
+arm                         at91_dt_defconfig
+powerpc                 mpc8540_ads_defconfig
+m68k                          amiga_defconfig
+arm                             pxa_defconfig
+arm                         cm_x300_defconfig
+sh                   sh7770_generic_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+alpha                               defconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                            allyesconfig
+arc                                 defconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+parisc64                            defconfig
+s390                             allyesconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+x86_64               randconfig-a012-20220516
+x86_64               randconfig-a011-20220516
+x86_64               randconfig-a013-20220516
+x86_64               randconfig-a014-20220516
+x86_64               randconfig-a016-20220516
+x86_64               randconfig-a015-20220516
+i386                 randconfig-a011-20220516
+i386                 randconfig-a013-20220516
+i386                 randconfig-a015-20220516
+i386                 randconfig-a012-20220516
+i386                 randconfig-a016-20220516
+i386                 randconfig-a014-20220516
+arc                  randconfig-r043-20220516
+riscv                randconfig-r042-20220516
+s390                 randconfig-r044-20220516
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                                  kexec
+x86_64                          rhel-8.3-func
+x86_64                               rhel-8.3
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
 
-This is two pin control multiplexing states already.
+clang tested configs:
+x86_64               randconfig-a002-20220516
+x86_64               randconfig-a001-20220516
+x86_64               randconfig-a003-20220516
+x86_64               randconfig-a005-20220516
+x86_64               randconfig-a004-20220516
+x86_64               randconfig-a006-20220516
+i386                 randconfig-a003-20220516
+i386                 randconfig-a001-20220516
+i386                 randconfig-a004-20220516
+i386                 randconfig-a002-20220516
+i386                 randconfig-a005-20220516
+i386                 randconfig-a006-20220516
+hexagon              randconfig-r041-20220516
+hexagon              randconfig-r045-20220516
 
-So this should have a simple pin control driver as back-end with
-the GPIO as front end. A shortcut to enabling pins into GPIO
-mode can be provided using .gpio_request_enable() from
-struct pinmux_ops.
-
-Please refer to
-https://docs.kernel.org/driver-api/pin-control.html
-
-I know this means more work and is kind of complex. But drivers/pinctrl
-has a lot of examples you can follow, for example
-drivers/pinctrl/pinctrl-sx150x.c and other simple multipurpose
-chips.
-
-Yours,
-Linus Walleij
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
