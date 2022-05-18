@@ -2,72 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FE652BA02
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 May 2022 14:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAC652BCF8
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 May 2022 16:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236846AbiERMae (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 May 2022 08:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51046 "EHLO
+        id S238196AbiERNvn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 May 2022 09:51:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236947AbiERM3w (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 May 2022 08:29:52 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5315F196687
-        for <linux-acpi@vger.kernel.org>; Wed, 18 May 2022 05:28:25 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id bd25-20020a05600c1f1900b0039485220e16so2477501wmb.0
-        for <linux-acpi@vger.kernel.org>; Wed, 18 May 2022 05:28:25 -0700 (PDT)
+        with ESMTP id S238246AbiERNvk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 May 2022 09:51:40 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CD719CEEB
+        for <linux-acpi@vger.kernel.org>; Wed, 18 May 2022 06:51:39 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-2fed823dd32so24746877b3.12
+        for <linux-acpi@vger.kernel.org>; Wed, 18 May 2022 06:51:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=vbZ35HTc/Z+9/YtPffCcXnSQ34v/inirF9FoyPpxltg=;
-        b=XMZgvjHgjIEqx7BPEB+Mdfhrp5/F6NWKbVG3Q6DHC2nGEPXEQc90ld+Gz69p1flrqV
-         psPqnkkcTUVGnyHvizy90TW1A/mBQtY+zxcholbkSylys2Fnwya1odyM8BuREjk7joN/
-         4HBkKzziHy05hSlCMOE1nk1BJZ4Ialira3K2Jmw4xD9CwPdOdwzoxH8cc+4H4wnDhpnT
-         VEQXw3FLimcMlPr9IArItdoBeDkD5Zfhi5sEiJL8EtWCtkYANpQPmY5aoTECOXjmSQ9v
-         tnAsF5JNzAXVE8bou5eMoBJ+QYSCFHLIYVjE+OjhEnTW32uZN7AvpjybB1IRbckAh68v
-         6qqQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ezkF+KufCRulaATTf+tA3i0YmPN8Lg/E/OJ5KWGLi9s=;
+        b=uGNd03MI81VqlOTp83UbNvG7RNsf4JwdkIUpBemFFroQN/ghPDZN15hQVkSIUo9Y+m
+         RFdhHMVM5nbW1OSRcv2fiztcN2rNCYuW03ZVkrmJl3jMIZO9FdAyBMJt7AigMbN9Lyb4
+         bL2Mmh06bmrMQ2Pss2J1tW+AgVMFOU8a0pcQccwayaDXEYxlvL4+rUohNDiH2hG62G4R
+         vyRU9BoSvX4w5wx6gy6MzyofxQ0LHJ1cbBgRXfxdVHe/wQkybembQwu/7B4cQViqMdsm
+         3z+3FMMPKNU0mcLT9JPS4HItaf9sbLRk+z8Rqur7f//JbGqsugsLG2+2Pb6syuJ/NKyU
+         cguA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=vbZ35HTc/Z+9/YtPffCcXnSQ34v/inirF9FoyPpxltg=;
-        b=b18IVZVVlsoFXRJO7E35rWhTxWUVi+umFuAxl7mcANyWZLAwjs93rCWFwIjbrz9fyn
-         wCEF+3qAtlr2LjxT15z25BKwq7Q1xTVyCMTw3hJowfdRFhgvoSGgxSjpCg8ZP5ISunex
-         +TmHp07Z4OD0a3Be/LyKyIidUhaeSob1UbVAvBKmpNlrGsLJMFgCsAU+fnPPxKDA+Ruu
-         OXYCrvVJnN8gVOtjX/tPAYLwEx4gFnZe2j57ATcN2Tz3NYHip3D9ASElcNLvS5uT/W+n
-         dgRE/Ks2XFRJ0CmAeokom0IsN30RB0eChDqNqUpenfHWLl/Zu3Tg/Ix7NXWm+lJe+NQJ
-         LWVg==
-X-Gm-Message-State: AOAM533uE/G+vpTHMZkanKs/5x0PfJQZ+xXooVWh7b5XwzUmqnHL/0Fx
-        XG5+JgB8lmz782EwNXsx3eAJNA==
-X-Google-Smtp-Source: ABdhPJxaPpelIGlhHrpTWKJVajqQdAKSpL79pB1ObInSUNS/WOVFT1qfZsR7QWypis9eBbi7xMO4jA==
-X-Received: by 2002:a05:600c:1c17:b0:394:7ecb:5b3a with SMTP id j23-20020a05600c1c1700b003947ecb5b3amr36479002wms.185.1652876896879;
-        Wed, 18 May 2022 05:28:16 -0700 (PDT)
-Received: from localhost ([212.187.182.163])
-        by smtp.gmail.com with ESMTPSA id e4-20020adf9bc4000000b0020d0c48d135sm1969667wrc.15.2022.05.18.05.28.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 May 2022 05:28:16 -0700 (PDT)
-Date:   Wed, 18 May 2022 13:28:15 +0100
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Pierre Gondois <pierre.gondois@arm.com>
-Cc:     linux-kernel@vger.kernel.org, Ionela.Voinescu@arm.com,
-        dietmar.eggemann@arm.com, sudeep.holla@arm.com,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        devel@acpica.org
-Subject: Re: [PATCH v2 1/5] ACPI: CPPC: Check _OSC for flexible address space
-Message-ID: <20220518122815.7wzbzi2u55eq7tpv@viresh-thinkpad>
-References: <20220518090901.2724518-1-pierre.gondois@arm.com>
- <20220518094243.6oxbdmf226jvqoef@viresh-thinkpad>
- <16566ef8-15d3-bf1b-37f2-c0b94b0493bc@arm.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ezkF+KufCRulaATTf+tA3i0YmPN8Lg/E/OJ5KWGLi9s=;
+        b=l6hDGptjDI8ICEFDBUBvLTmkcQyn5KDd6REdJNx4/7WEmeWLzN2R8wU0LfN17Mjmb5
+         IH8sHCh+K8fZ4TsX5HkKJabSwQJAUgU+Dg8BdMsf+CZ0BbV/ziycb0H+uw2FCcuzRKfZ
+         hyrN5xEq/HCvsv05SNgxQqrkkT6JG5B4I65eQS0Y5UPyrRXYHw4QTntt+m7G0OQcvYjG
+         Uj9wSctSTv456M4IKM2RQRrYpDcxrxop1ezL3TPxbFUO2jeLFGlSyozxZmfJrkY4wHbW
+         s9QpOBbT2KCdSUnTHmOB44M7jP098jspyo6XkXZqOZ/Non+dHKykVwprYsXuacbnskb6
+         00Vw==
+X-Gm-Message-State: AOAM532CJVyckEqQ9ZsRZ7yctw+KBjSO6wuhyjq+DTxE2W5y+Smmtomi
+        XLmPnwyn9F0gzG63Dz1Kv1yskSnvCAUe4Wl6/vAIjg==
+X-Google-Smtp-Source: ABdhPJxpHy6dIs00LRXeGNRMgX921VLukf4liJgNBcyAdsNr2nvvmrO+nqIa6p9eJAUAaA5lDN2SqFDUk598KuThmrQ=
+X-Received: by 2002:a81:2154:0:b0:2f4:d79e:35dc with SMTP id
+ h81-20020a812154000000b002f4d79e35dcmr31816444ywh.126.1652881898898; Wed, 18
+ May 2022 06:51:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <16566ef8-15d3-bf1b-37f2-c0b94b0493bc@arm.com>
+References: <20220418141416.27529-1-asmaa@nvidia.com> <CH2PR12MB3895A1FB2977B725ED92AB57D7C29@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <CACRpkdY1uK=73zpEM5zUyXacm5xaUUFYkuKMxi_q6vwmOPy6tw@mail.gmail.com>
+ <CH2PR12MB389560A1873030472A7A371DD7C29@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <CACRpkdZhW9XK3opXLLzdMiVLVkGQyJCf7RLZtRQLsmzv-aqwbA@mail.gmail.com>
+ <CH2PR12MB38953FF57D91FA75AB9CB102D7CB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <CACRpkdbAhMa2CXvQra3E13n8WfiBxyHNqzEp4dW3qo5upr_=gw@mail.gmail.com> <CH2PR12MB38958CD365876A2106712C3CD7CF9@CH2PR12MB3895.namprd12.prod.outlook.com>
+In-Reply-To: <CH2PR12MB38958CD365876A2106712C3CD7CF9@CH2PR12MB3895.namprd12.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 18 May 2022 15:51:27 +0200
+Message-ID: <CACRpkdZp9hx2SHxsmjBm2oj7m3UT-4S+MKw5qqNME0PLjPNV2A@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] Add driver for Mellanox BlueField-3 GPIO controller
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -78,49 +72,42 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 18-05-22, 12:34, Pierre Gondois wrote:
-> 
-> 
-> On 5/18/22 11:42, Viresh Kumar wrote:
-> > On 18-05-22, 11:08, Pierre Gondois wrote:
-> > > ACPI 6.2 Section 6.2.11.2 'Platform-Wide OSPM Capabilities':
-> > >    Starting with ACPI Specification 6.2, all _CPC registers can be in
-> > >    PCC, System Memory, System IO, or Functional Fixed Hardware address
-> > >    spaces. OSPM support for this more flexible register space scheme is
-> > >    indicated by the “Flexible Address Space for CPPC Registers” _OSC bit
-> > > 
-> > > Otherwise (cf ACPI 6.1, s8.4.7.1.1.X), _CPC registers must be in:
-> > > - PCC or Functional Fixed Hardware address space if defined
-> > > - SystemMemory address space (NULL register) if not defined
-> > > 
-> > > Add the corresponding _OSC bit and check it when parsing _CPC objects.
-> > > 
-> > > Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-> > > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> > > ---
-> > >   drivers/acpi/bus.c       | 18 ++++++++++++++++++
-> > >   drivers/acpi/cppc_acpi.c |  9 +++++++++
-> > >   include/linux/acpi.h     |  2 ++
-> > >   3 files changed, 29 insertions(+)
-> > 
-> > It would be much useful to get a cover letter for this series with
-> > what you have changed since the previous version. It is almost
-> > impossible to find that out otherwise.
-> > 
-> 
-> Yes indeed, sorry for that, the changelog is:
-> v2:
-> [1/5] ACPI: CPPC: Check _OSC for flexible address space
-> - Renamed OSC_SB_CPC_FLEXIBLE_ADR_SP to OSC_SB_CPC_FLEXIBLE_ADR_SPACE
-> [3/5] ACPI: CPPC: Assume no transition latency if no PCCT
-> and
-> [4/5] cpufreq: CPPC: Enable fast_switch
-> - Renamed CPC_IN_SIO to CPC_IN_SYSTEM_IO
-> - Renamed CPC_IN_SM to CPC_IN_SYSTEM_MEMORY
-> 
-> or do you prefer to have the serie re-submitted ?
+On Mon, May 16, 2022 at 3:00 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
 
-No it is fine for now :)
+> So these GPIO pins are assigned one specific HW functionality on the boards
+>  and software should never change them.
+>
+> By default, for security purposes, I think we shouldn't let the user have the option
+> to control the GPIO pins since they have a specific HW functionality.
+>
+> But for bringup/debug purposes, we would like to support the option of software
+> being able to change these pin values. We also might have customers that choose
+> to change the default HW connection of a certain GPIO pin and connect it to
+> control their LEDs for instance.
 
--- 
-viresh
+The fact that the usecase is bringup/debug does not mean we cut
+corners and do "quick fixes". The proper APIs have to be implemented,
+the alternative is to not submit the driver at all.
+
+What I hear is that these pins have two modes:
+
+1. Used for a device (I2C etc)
+2. Used as GPIO by setting a bit in YU_GPIO_FW_CONTROL_SET
+
+This is two pin control multiplexing states already.
+
+So this should have a simple pin control driver as back-end with
+the GPIO as front end. A shortcut to enabling pins into GPIO
+mode can be provided using .gpio_request_enable() from
+struct pinmux_ops.
+
+Please refer to
+https://docs.kernel.org/driver-api/pin-control.html
+
+I know this means more work and is kind of complex. But drivers/pinctrl
+has a lot of examples you can follow, for example
+drivers/pinctrl/pinctrl-sx150x.c and other simple multipurpose
+chips.
+
+Yours,
+Linus Walleij
