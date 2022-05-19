@@ -2,116 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A44152D611
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 May 2022 16:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB83B52D642
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 May 2022 16:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239727AbiESO3w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 May 2022 10:29:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
+        id S239880AbiESOh4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 May 2022 10:37:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236562AbiESO3v (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 May 2022 10:29:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C64F370904
-        for <linux-acpi@vger.kernel.org>; Thu, 19 May 2022 07:29:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1652970589;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=skQV/7bpYYCLikiWPou37BZfffdt7LpNOeVYRjZR2lk=;
-        b=efZ0FspOjKjIWqZk+E4Aiy0Hv05qylCBoRDJ/n9O5WinOKQI8qEttc9ukuGuVMJCauI2/h
-        UI8eYpGyuWnbztaPx1+DItp481AqH3plJV9K+aWLfJezxjUkXQXCcq6DJPFOre+I1GWWgM
-        6GFt58ju6PORnL2N6G/g8BnBXAlVHPQ=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-59-Xg-Yr3raMhGBENVmlzr2pg-1; Thu, 19 May 2022 10:29:46 -0400
-X-MC-Unique: Xg-Yr3raMhGBENVmlzr2pg-1
-Received: by mail-ej1-f71.google.com with SMTP id sd38-20020a1709076e2600b006f3e54b1dbcso2637992ejc.4
-        for <linux-acpi@vger.kernel.org>; Thu, 19 May 2022 07:29:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=skQV/7bpYYCLikiWPou37BZfffdt7LpNOeVYRjZR2lk=;
-        b=WReMpMcygb4JTiO9i/FDYQ6w4t7fg6TZT0m1WblMmVJqpP365s7Hm64CjEJeBiecpg
-         CTHtxBCY5vTE3s7OvzrzXPJP2PRZZvvR2tAJ0Nn30fZ03Y36/6ybSkqpy/0LCSOtxlE3
-         8vEFu36hgoXPHrXF68YgjWJ7NUW9+fUqeigmj5Ph70nR9PQcynmYJiQBNkMwnUyOsS0W
-         7LvayKIAYLE3h3VGtyhcFENnLo7gi2z1TX/pNB35U7oHbCvzVirdqtbgukyFeKA8kn4s
-         SJpsMM7DyYJFKUHREpH4OEn9p4NiTrCW/i7fdvbxH55KmatE2pOHtJRxLXRUAdOFojbL
-         Bndg==
-X-Gm-Message-State: AOAM532CgEK4YsE4k4IGO9EwaPfRPVnX4rP8kesYKBnOd+F4/4yytO8T
-        o4ja0rA0eZIBSZH6z7kzZUh1NY3qR4YYFTwSncAFdo94wmyDD82nffEPHFtGb+sI/VS5Bu1bu5B
-        sd3IyBm6zpiZRgjBz0fWcQA==
-X-Received: by 2002:a17:907:6e09:b0:6fe:8b65:357b with SMTP id sd9-20020a1709076e0900b006fe8b65357bmr4556166ejc.492.1652970585077;
-        Thu, 19 May 2022 07:29:45 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyR6WHxquEyjTqk32bptNw0qJbDMyBekjUeS7a4RWeKtvRRxz2LEG0cbg0e2bJOBOt7i1Z4UQ==
-X-Received: by 2002:a17:907:6e09:b0:6fe:8b65:357b with SMTP id sd9-20020a1709076e0900b006fe8b65357bmr4556142ejc.492.1652970584862;
-        Thu, 19 May 2022 07:29:44 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id b26-20020a170906729a00b006f3ef214e0esm2184208ejl.116.2022.05.19.07.29.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 May 2022 07:29:44 -0700 (PDT)
-Message-ID: <c49dfdf1-c1e8-a9d2-0f31-f190d7b6631f@redhat.com>
-Date:   Thu, 19 May 2022 16:29:43 +0200
+        with ESMTP id S239895AbiESOhl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 May 2022 10:37:41 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66AB2AFB3F
+        for <linux-acpi@vger.kernel.org>; Thu, 19 May 2022 07:37:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652971052; x=1684507052;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XyBfHMKW1tI5bLDOJnXn72Wt1g67Xg28eHyb5gv1SYs=;
+  b=hRV84FV7YIRFaVWB0PN0eu1/Iyov10I+YOsl0WJ3DGuWwulhMipZmjdN
+   EsAumAr2x5pzYKllvaDSOwqQAVVK8uHsspQB7k3ad+hf/YnxY3kwOxzyl
+   ck7Yq+GeDDFdkommLAdRxdYGWVN+shDP5pSwpeT18rrqiGgWSctGAFuoV
+   sUTA0lP5PbIublGWYRK2ajG/rT0Mi+vWxvQlJpkNEgUTh6ovPxZm7v1HH
+   +KUFkCJGxfFbl4zbuW/oTMySgfoKgiAMpN1nbijerkXEy+UPvINECGqUZ
+   j4oR+nIyrhrzVnoBCzE+sOVyD4BnYydSnYOJXrkg9MyHETYkDTTYWmJ47
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10352"; a="271048156"
+X-IronPort-AV: E=Sophos;i="5.91,237,1647327600"; 
+   d="scan'208";a="271048156"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2022 07:37:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,237,1647327600"; 
+   d="scan'208";a="598602289"
+Received: from rzhang1-dev.sh.intel.com ([10.239.48.43])
+  by orsmga008.jf.intel.com with ESMTP; 19 May 2022 07:37:18 -0700
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     rjw@rjwysocki.net
+Cc:     linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: video: improve PM notifer callback
+Date:   Thu, 19 May 2022 22:37:32 +0800
+Message-Id: <20220519143732.3804174-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v7 1/1] x86/PCI: Ignore E820 reservations for bridge
- windows on newer systems
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220519141450.GA19225@bhelgaas>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220519141450.GA19225@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+PM notifier callbacks should check for supported events rather than filter
+out the unsupported events. So that it won't break when a new event is
+introduced.
 
-On 5/19/22 16:14, Bjorn Helgaas wrote:
-> On Thu, May 19, 2022 at 04:01:48PM +0200, Hans de Goede wrote:
-> 
->> Ok, I'll go and prepare a v9 and I will submit that later today.
-> 
-> Would it be practical to split into three patches?
-> 
->   1) Add command-line args
->   2) Add DMI quirks
->   3) Add date check
-> 
-> It seems easier to assimilate and document in smaller pieces, if
-> that's possible.
+No functional change in this patch.
 
-Ack, will do. Note this will cause quite a bit of copy/paste
-in the commit msg to explain why these changes are necessary.
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+---
+ drivers/acpi/acpi_video.c | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-Regards,
-
-Hans
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 990ff5b0aeb8..e07782b1fbb6 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -1707,24 +1707,23 @@ static int acpi_video_resume(struct notifier_block *nb,
+ 	int i;
+ 
+ 	switch (val) {
+-	case PM_HIBERNATION_PREPARE:
+-	case PM_SUSPEND_PREPARE:
+-	case PM_RESTORE_PREPARE:
+-		return NOTIFY_DONE;
+-	}
+-
+-	video = container_of(nb, struct acpi_video_bus, pm_nb);
+-
+-	dev_info(&video->device->dev, "Restoring backlight state\n");
++	case PM_POST_HIBERNATION:
++	case PM_POST_SUSPEND:
++	case PM_POST_RESTORE:
++		video = container_of(nb, struct acpi_video_bus, pm_nb);
++
++		dev_info(&video->device->dev, "Restoring backlight state\n");
++
++		for (i = 0; i < video->attached_count; i++) {
++			video_device = video->attached_array[i].bind_info;
++			if (video_device && video_device->brightness)
++				acpi_video_device_lcd_set_level(video_device,
++						video_device->brightness->curr);
++		}
+ 
+-	for (i = 0; i < video->attached_count; i++) {
+-		video_device = video->attached_array[i].bind_info;
+-		if (video_device && video_device->brightness)
+-			acpi_video_device_lcd_set_level(video_device,
+-					video_device->brightness->curr);
++		return NOTIFY_OK;
+ 	}
+-
+-	return NOTIFY_OK;
++	return NOTIFY_DONE;
+ }
+ 
+ static acpi_status
+-- 
+2.17.1
 
