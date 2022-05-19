@@ -2,135 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A124752D6E5
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 May 2022 17:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 413C952D758
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 May 2022 17:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240332AbiESPGq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 May 2022 11:06:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58720 "EHLO
+        id S239096AbiESPWO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 May 2022 11:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240660AbiESPGm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 May 2022 11:06:42 -0400
+        with ESMTP id S234696AbiESPWJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 May 2022 11:22:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F0B9830F65
-        for <linux-acpi@vger.kernel.org>; Thu, 19 May 2022 08:06:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E1813606E7
+        for <linux-acpi@vger.kernel.org>; Thu, 19 May 2022 08:22:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1652972801;
+        s=mimecast20190719; t=1652973724;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6cukqKLlYVO6UiHSZMrtRJgoast0/luZetDqiqEdUko=;
-        b=JuRsPyE/6yd87aXDGGXsCXMbaSPJxtbOuowTigP+hV2HGuoLuoS14E7lUPXeWhdTVsobjV
-        IE4yHbZyctXnh7YasNo+HbNNsQxhOD5A4KshRNMNc3+YX0PIzVPnKjKgp99a1SjCB/ICt/
-        RaEW76AZtSBDUn+V6wi1Jyx6icaamC4=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+         content-transfer-encoding:content-transfer-encoding;
+        bh=oCOOhtQfOiUeAUzQCMYzedVhc/AxXpBqy3Rjtp7VL80=;
+        b=A1BEiz+mSoBNSorMn/olS37fEWAQu5KWdVlQmZYUpZ1VM+e6B/ZjCZPOuuQNbdnZv+A/G1
+        AhKJApyFrgiOREGRPJsONd8T6DfMl+P2RBfdwvbM/W6fFzenW/xSC79vp9A+DCbCuMv/g6
+        tuUlhbiDRuNyVz+grZbGm5wSeEtQXf0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-622-rKZlsbVKNgO261EbRWTgEQ-1; Thu, 19 May 2022 11:06:39 -0400
-X-MC-Unique: rKZlsbVKNgO261EbRWTgEQ-1
-Received: by mail-ej1-f72.google.com with SMTP id x2-20020a1709065ac200b006d9b316257fso2706828ejs.12
-        for <linux-acpi@vger.kernel.org>; Thu, 19 May 2022 08:06:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=6cukqKLlYVO6UiHSZMrtRJgoast0/luZetDqiqEdUko=;
-        b=4B+XeEEu8hrA/YnI+8GtItVscuGlpWXZqirpmUJKYcc+38bQbOWaUh7B/wh3mP0MVz
-         uEWnNWbQ6QY/OID/qpk4lthhLSM/yc0jE7Jn2Gi+tCfnjlQNT78j6aNEwISaTGa5+ANu
-         XemRdTJNjMwPl5xv1YY8MiHEg0ZweCmTiKFXtR+GKQ8HraFze3UXp1Sx8cATVF/W9J/x
-         XjVoy+FvEBGvMMeFeBhI73dmrYrq0lerR/4/Zl5pYu3JH4TtTFtKxxa7OycOcUPNM6CN
-         Kx7HMgemZTkXLcbOEt+hMYp8Jt8WfovwV/x2uWKUMJ26wN9oc6J2zT6+BdkQAVWPpNeq
-         Z6LQ==
-X-Gm-Message-State: AOAM532sR20fxrVwFpQKr58M5yQYwTvI+tUauMD3UmG2Zwti8UdkUEEx
-        uq+V3tVLFlACd1+E8yuY5k4hNTqj0WiZEVfEvFxG4B8HhT1bjGIRWek6NHLLqc4ZDkvj/GFUQlE
-        9KMGFRXwwycBYg4+AMnBBTg==
-X-Received: by 2002:a17:906:ece3:b0:6f3:da10:138a with SMTP id qt3-20020a170906ece300b006f3da10138amr4833728ejb.438.1652972798594;
-        Thu, 19 May 2022 08:06:38 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxNOoQNKVItf73DSDM0VafoQHW0cH49Hzz2nXR7wvug3z2zrL8Tzk3+pUB5ClBDB3sbRS2J6Q==
-X-Received: by 2002:a17:906:ece3:b0:6f3:da10:138a with SMTP id qt3-20020a170906ece300b006f3da10138amr4833709ejb.438.1652972798316;
-        Thu, 19 May 2022 08:06:38 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id c6-20020a056402120600b0042aa6a43ccdsm2953894edw.28.2022.05.19.08.06.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 May 2022 08:06:37 -0700 (PDT)
-Message-ID: <4f10c3aa-5eca-ee00-6b9e-f152ffdcca7f@redhat.com>
-Date:   Thu, 19 May 2022 17:06:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v7 1/1] x86/PCI: Ignore E820 reservations for bridge
- windows on newer systems
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+ us-mta-440-YY1iGLTzPw6ZpLeDJu6pFg-1; Thu, 19 May 2022 11:21:59 -0400
+X-MC-Unique: YY1iGLTzPw6ZpLeDJu6pFg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 960F0811E80;
+        Thu, 19 May 2022 15:21:58 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.117])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2FA471121314;
+        Thu, 19 May 2022 15:21:56 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Myron Stowe <myron.stowe@redhat.com>,
         Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
+        "H . Peter Anvin" <hpa@zytor.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?q?Benoit=20Gr=C3=A9goire?= <benoitg@coeus.ca>,
         Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
         linux-pci@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-References: <20220519144923.GA22233@bhelgaas>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220519144923.GA22233@bhelgaas>
+Subject: [PATCH v9 0/3] x86/PCI: Ignore E820 reservations for bridge windows on future systems
+Date:   Thu, 19 May 2022 17:21:47 +0200
+Message-Id: <20220519152150.6135-1-hdegoede@redhat.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bjorn,
+Hi All,
 
-On 5/19/22 16:49, Bjorn Helgaas wrote:
-> On Thu, May 19, 2022 at 04:29:43PM +0200, Hans de Goede wrote:
->> Hi,
->>
->> On 5/19/22 16:14, Bjorn Helgaas wrote:
->>> On Thu, May 19, 2022 at 04:01:48PM +0200, Hans de Goede wrote:
->>>
->>>> Ok, I'll go and prepare a v9 and I will submit that later today.
->>>
->>> Would it be practical to split into three patches?
->>>
->>>   1) Add command-line args
->>>   2) Add DMI quirks
->>>   3) Add date check
->>>
->>> It seems easier to assimilate and document in smaller pieces, if
->>> that's possible.
->>
->> Ack, will do. Note this will cause quite a bit of copy/paste
->> in the commit msg to explain why these changes are necessary.
-> 
-> OK, if the repetition gets excessive I can squash them back
-> together.  Hopefully the main explanation can go in the first patch,
-> the second can just mention the fact that these machines need the
-> exception, and the third can focus on the plan for the future.
+Here is v9 of my patch to address the E820 reservations vs PCI host bridge
+ranges issue which are causing touchpad and/or thunderbolt issues on many
+different laptop models.
 
-I'm almost done with prepping v9 and atm there is a 17 line
-introduction of the problem which is shared between all 3
-patches in the commit msg.
+After previous attempts to identify these systems by looking for E820
+reservations covering the entire bridge window, which broke the boot
+on some coreboot based ChromeBooks we are now back to using a bios date
++ DMI quirks based approach.
 
-I personally don't think this is too bad, but feel free to
-shorten it a bit in patch 2 + 3 before merging these.
+Changes in v9:
+- Split making use_e820=false the default for BIOS year >= 2023 out into
+  a separate patch
+- Split the addition of DMI quirks out into a separate patch
+- Add a DMI quirk for the TUXEDO Book XUX7 - Gen12
 
-I think the split makes sense, so I would prefer you amending
-the commit msg over squashing them back together again.
+Changes in v8:
+- Change the cut-off for no longer excluding E820 reservations from
+  the bridge window to BIOS year >= 2023 so that this only applies to
+  upcoming systems.
+- Use DMI quirks for existing systems on which excluding E820
+  reservations from the _CRS returned bridge window is an issue.
+
+This is based on top of Bjorn's pci/resource branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git/log/?h=pci/resource
 
 Regards,
 
 Hans
+
+
+Hans de Goede (3):
+  x86/PCI: Add kernel cmdline options to use/ignore E820 reserved
+    regions
+  x86/PCI: Add DMI quirks to ignore E820 reserved regions on some
+    systems
+  x86/PCI: Ignore E820 reserved regions for bridge windows on future
+    systems
+
+ .../admin-guide/kernel-parameters.txt         |   9 ++
+ arch/x86/include/asm/pci_x86.h                |   2 +
+ arch/x86/pci/acpi.c                           | 121 +++++++++++++++++-
+ arch/x86/pci/common.c                         |   8 ++
+ 4 files changed, 138 insertions(+), 2 deletions(-)
+
+-- 
+2.36.0
 
