@@ -2,60 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C78452E627
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 May 2022 09:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 483D552EE03
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 May 2022 16:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346369AbiETHXF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 May 2022 03:23:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54644 "EHLO
+        id S233881AbiETOWI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 May 2022 10:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346348AbiETHXE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 May 2022 03:23:04 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9213514ACB9;
-        Fri, 20 May 2022 00:23:02 -0700 (PDT)
-Received: from kwepemi100016.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L4J800KcXzhYR4;
-        Fri, 20 May 2022 15:22:08 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- kwepemi100016.china.huawei.com (7.221.188.123) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 20 May 2022 15:23:00 +0800
-Received: from localhost.localdomain (10.175.112.125) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 20 May 2022 15:22:58 +0800
-From:   Peng Liu <liupeng256@huawei.com>
-To:     <bhelgaas@google.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
-        <bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-        <hpa@zytor.com>, <lorenzo.pieralisi@arm.com>,
-        <guohanjun@huawei.com>, <sudeep.holla@arm.com>,
-        <rafael@kernel.org>, <lenb@kernel.org>,
-        <akpm@linux-foundation.org>, <logang@deltatee.com>,
-        <martin.oliveira@eideticom.com>, <thunder.leizhen@huawei.com>,
-        <axboe@kernel.dk>, <kch@nvidia.com>, <ming.lei@redhat.com>,
-        <shinichiro.kawasaki@wdc.com>, <mcgrof@kernel.org>,
-        <jiangguoqing@kylinos.cn>, <jpittman@redhat.com>,
-        <dave@stgolabs.net>, <liupeng256@huawei.com>,
-        <wangkefeng.wang@huawei.com>, <linux-block@vger.kernel.org>,
-        <linux-ia64@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>
-Subject: [PATCH v2 2/2] null_blk: fix wrong use of nr_online_nodes
-Date:   Fri, 20 May 2022 07:37:47 +0000
-Message-ID: <20220520073747.1184091-3-liupeng256@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220520073747.1184091-1-liupeng256@huawei.com>
-References: <20220520073747.1184091-1-liupeng256@huawei.com>
+        with ESMTP id S1350221AbiETOWE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 May 2022 10:22:04 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7762166469
+        for <linux-acpi@vger.kernel.org>; Fri, 20 May 2022 07:22:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653056522; x=1684592522;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IlQM99qMoOBV5PJlrUG89Chx3AY8uXcB59CoPPkNcqU=;
+  b=EzCF2970vtCP1woXYZNj4k8AA32BpKnDhvzmTMEJuvl8624+aIm7n6Bl
+   aDMWTOwQAoznYvXvylNMo4K86dYJc+/GX3DLQzRtdOKBZgsHh/W0fUIj1
+   O4R75TH3KiNbCkIkHyihMT7Qruetu6OZNDifnySxUw46FrSyBfnuVAgYT
+   Z82vpfJa6MhK+eavCcHGO64mIcBhcVzfpiLBsgZI/NF9kbHzQDglfJ66f
+   6S7H7hoClkm/pq2M18JL/MwqQvA0OpkJsD0wp9JL0q6tmP8lAkCmjPZSC
+   ToKL3nHY94VHRkXwo6KWTRtVeJxbDCAWXkFhadw64s/iVGvQmEvIXg//9
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10353"; a="271436435"
+X-IronPort-AV: E=Sophos;i="5.91,239,1647327600"; 
+   d="scan'208";a="271436435"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2022 07:22:02 -0700
+X-IronPort-AV: E=Sophos;i="5.91,239,1647327600"; 
+   d="scan'208";a="524666519"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2022 07:22:01 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1ns3Vu-000GqW-O1;
+        Fri, 20 May 2022 17:21:58 +0300
+Date:   Fri, 20 May 2022 17:21:58 +0300
+From:   "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 02/11] ACPI: acpica: Constify pathname argument for
+ acpi_get_handle()
+Message-ID: <YoekBq6zKocR/mGy@smile.fi.intel.com>
+References: <20220506130025.984026-1-sakari.ailus@linux.intel.com>
+ <20220506130025.984026-3-sakari.ailus@linux.intel.com>
+ <CAJZ5v0ip==ZYopb3sJvyrNpErpa1gGaJLk+OfLgff3x2tH98Og@mail.gmail.com>
+ <YoUbUQkjKATrgf6n@paasikivi.fi.intel.com>
+ <CAJZ5v0jvzHbD6fxNKYJ75eCc3A008fDTf8kA4nP5FK5EvuTS-w@mail.gmail.com>
+ <YoVL/uDnwpfoVQwV@paasikivi.fi.intel.com>
+ <CAJZ5v0i2UfBKdD1uHa8R-cuHiTbX1Fc3+ow=Pz1tcpfDhpWS3w@mail.gmail.com>
+ <YocxciJSTkc5leZa@paasikivi.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600017.china.huawei.com (7.193.23.234)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YocxciJSTkc5leZa@paasikivi.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,95 +71,21 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Certain systems are designed to have sparse/discontiguous nodes,
-a valid node may be greater than nr_online_nodes. So, the use of
-"nid >= nr_online_nodes" to judge if a node is online is wrong.
+On Fri, May 20, 2022 at 09:13:06AM +0300, Sakari Ailus wrote:
+> On Thu, May 19, 2022 at 08:05:00PM +0200, Rafael J. Wysocki wrote:
 
-Node id is a basic parameter of the system, a user-configured node
-must be checked as early as possible. Otherwise, it may cause panic
-when calling some vulnerable functions such as node_online which
-will cause panic if a very big node is received.
+...
 
-Check g_home_node once users config it, and use node_available to
-make node-checking compatible with sparse/discontiguous nodes.
+> Funnily enough, I saw no
+> conflicts with your linux-next branch. git am is more picky than git rebase
+> though.
 
-Fixes: 7ff684a683d7 ("null_blk: prevent crash from bad home_node value")
-Signed-off-by: Peng Liu <liupeng256@huawei.com>
-Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
----
- drivers/block/null_blk/main.c | 45 ++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 17 deletions(-)
+My experience with both is telling me that it might be related to the context,
+rebase is really trying hard to resolve possible conflicts / context issues
+automatically. That said, I believe `git am -C1 ...` should solve that.
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index c441a4972064..312903f3a09e 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -97,7 +97,33 @@ module_param_named(poll_queues, g_poll_queues, int, 0444);
- MODULE_PARM_DESC(poll_queues, "Number of IOPOLL submission queues");
- 
- static int g_home_node = NUMA_NO_NODE;
--module_param_named(home_node, g_home_node, int, 0444);
-+
-+static int null_param_store_val(const char *str, int *val, int min, int max)
-+{
-+	int ret, new_val;
-+
-+	ret = kstrtoint(str, 10, &new_val);
-+	if (ret)
-+		return -EINVAL;
-+
-+	if (new_val < min || new_val > max)
-+		return -EINVAL;
-+
-+	*val = new_val;
-+	return 0;
-+}
-+
-+static int null_set_home_node(const char *str, const struct kernel_param *kp)
-+{
-+	return null_param_store_val(str, &g_home_node, 0, MAX_NUMNODES - 1);
-+}
-+
-+static const struct kernel_param_ops null_home_node_param_ops = {
-+	.set	= null_set_home_node,
-+	.get	= param_get_int,
-+};
-+
-+device_param_cb(home_node, &null_home_node_param_ops, &g_home_node, 0444);
- MODULE_PARM_DESC(home_node, "Home node for the device");
- 
- #ifdef CONFIG_BLK_DEV_NULL_BLK_FAULT_INJECTION
-@@ -120,21 +146,6 @@ MODULE_PARM_DESC(init_hctx, "Fault injection to fail hctx init. init_hctx=<inter
- 
- static int g_queue_mode = NULL_Q_MQ;
- 
--static int null_param_store_val(const char *str, int *val, int min, int max)
--{
--	int ret, new_val;
--
--	ret = kstrtoint(str, 10, &new_val);
--	if (ret)
--		return -EINVAL;
--
--	if (new_val < min || new_val > max)
--		return -EINVAL;
--
--	*val = new_val;
--	return 0;
--}
--
- static int null_set_queue_mode(const char *str, const struct kernel_param *kp)
- {
- 	return null_param_store_val(str, &g_queue_mode, NULL_Q_BIO, NULL_Q_MQ);
-@@ -2107,7 +2118,7 @@ static int __init null_init(void)
- 		g_max_sectors = BLK_DEF_MAX_SECTORS;
- 	}
- 
--	if (g_home_node != NUMA_NO_NODE && g_home_node >= nr_online_nodes) {
-+	if (!node_available(g_home_node)) {
- 		pr_err("invalid home_node value\n");
- 		g_home_node = NUMA_NO_NODE;
- 	}
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 
