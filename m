@@ -2,72 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36DF252FAD2
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 May 2022 13:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED09952FE0B
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 May 2022 18:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241675AbiEULMB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 21 May 2022 07:12:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46786 "EHLO
+        id S236254AbiEUQLo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 21 May 2022 12:11:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238785AbiEULL7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 21 May 2022 07:11:59 -0400
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C06F2980F;
-        Sat, 21 May 2022 04:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=D6SwVHgxTU4ivyQqfknWUgj4ctP9444wxZqjMMPa57o=;
-  b=qUM+9N+5ijPFA+dMeia8QG24Ly9urjs4c+yCv2jr3dWe0TkVwdoM1i2l
-   9ipL7ZgZHmwbisYJRQyw/Khzembp0EcTZFFxAGsLNyhZI7VcDZ1LuBlpd
-   diSZyEnV7YyvPEYPuoJTDfpZOd7FPxpx2AcReq9RR2HFEPSrTF6fszq+N
-   8=;
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="5.91,242,1647298800"; 
-   d="scan'208";a="14727889"
-Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2022 13:11:52 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     kernel-janitors@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: CPPC: fix typo in comment
-Date:   Sat, 21 May 2022 13:10:13 +0200
-Message-Id: <20220521111145.81697-3-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 2.20.1
+        with ESMTP id S230324AbiEUQLo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 21 May 2022 12:11:44 -0400
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488AE3584B;
+        Sat, 21 May 2022 09:11:43 -0700 (PDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-2ef5380669cso112662627b3.9;
+        Sat, 21 May 2022 09:11:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7F6oCzNYFBxHPnk12TdNoHJALNY+iFdjEcmlwUydIPo=;
+        b=q/3tfnlNiCI12EMTttZmr0txPlCxd4unoiAaljjYrqRcZ9FD3+NBNPdwIggTVVdzej
+         NoDVSDstomX1+OP0kiclTx1sYdAUgo3kSLPkR+MFJtNz3QoCnQ0Uiyf6SAvxMhs+nZXt
+         C5sdxri74eufjsoHlcC1XlH6PpQycttEhCuzFUkMjVKhdJ7BIGrOjCr/PV9PqHCddeJS
+         mpIcdnmoNX8T0l5tfaW3UVw6K9OchngaIwg+WTPe25B0wed5utawB7rQdTLq9wzb28ty
+         F8x7wqc+AYLQ4/C76akOB4BdW13qEmt6sakgBF7xECfgm5sz5v5LU6iFxgV/FX+c1WRw
+         6ZVg==
+X-Gm-Message-State: AOAM533/F9N7qjwY6VEE06h6zszdf+WoDr81NhAOcZxoee8igjdr1H5V
+        en1ZZF5IpBTmpd4LscwlQhOfStz5D7gQlU+zhGP26sMKPW0=
+X-Google-Smtp-Source: ABdhPJyPmchyL2rUrrZadOciabAgIi21N61kdrjslr9zf8LLd29IHUhRCfL05KermlwYqyh0coSJQ/aI/TA2uRmviEA=
+X-Received: by 2002:a81:6d8e:0:b0:2ff:a8d9:d574 with SMTP id
+ i136-20020a816d8e000000b002ffa8d9d574mr3990143ywc.301.1653149502506; Sat, 21
+ May 2022 09:11:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <5578328.DvuYhMxLoT@kreacher> <4200238.ejJDZkT8p0@kreacher>
+In-Reply-To: <4200238.ejJDZkT8p0@kreacher>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 21 May 2022 18:11:31 +0200
+Message-ID: <CAJZ5v0gWYZ_BSonhLGT7L4wPQvXLVyobPptE1Nx6PoNSGn4yXg@mail.gmail.com>
+Subject: Re: [PATCH 15/20] ACPICA: executer/exsystem: Warn about sleeps
+ greater than 10 ms
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Bob Moore <robert.moore@intel.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Paul Menzel <pmenzel@molgen.mpg.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Spelling mistake (triple letters) in comment.
-Detected with the help of Coccinelle.
+On Mon, Apr 11, 2022 at 9:04 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> From: Paul Menzel <pmenzel@molgen.mpg.de>
+>
+> ACPICA commit 2a0d1d475e7ea1c815bee1e0692d81db9a7c909c
+>
+> Quick boottime is important, so warn about sleeps greater than 10 ms.
+>
+> Distribution Linux kernels reach initrd in 350 ms, so excessive delays
+> should be called out. 10 ms is chosen randomly, but three of such delays
+> would already make up ten percent of the boottime.
+>
+> Link: https://github.com/acpica/acpica/commit/2a0d1d47
+> Signed-off-by: Bob Moore <robert.moore@intel.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+I have decided to revert this, because it spams logs with unuseful
+warnings on many production systems.
 
----
- drivers/acpi/cppc_acpi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Power management AML uses sleeps above 10 ms for PCI spec compliance
+and polling is not useful in those cases.
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index bc1454789a06..e6c1df0b3cc4 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -305,7 +305,7 @@ static int send_pcc_cmd(int pcc_ss_id, u16 cmd)
- 		goto end;
- 	}
- 
--	/* wait for completion and check for PCC errro bit */
-+	/* wait for completion and check for PCC error bit */
- 	ret = check_pcc_chan(pcc_ss_id, true);
- 
- 	if (pcc_ss_data->pcc_mrtt)
+I will submit an analogous revert for upstream ACPICA.
 
+> ---
+>  exsystem.c |   10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff -Nurp linux.before_name/drivers/acpi/acpica/exsystem.c linux.after_name/drivers/acpi/acpica/exsystem.c
+> --- linux.before_name/drivers/acpi/acpica/exsystem.c    2022-04-01 18:26:54.958046947 +0200
+> +++ linux.after_name/drivers/acpi/acpica/exsystem.c     2022-04-01 18:26:51.760086923 +0200
+> @@ -170,6 +170,16 @@ acpi_status acpi_ex_system_do_sleep(u64
+>         acpi_ex_exit_interpreter();
+>
+>         /*
+> +        * Warn users about excessive sleep times, so ASL code can be improved to
+> +        * use polling or similar techniques.
+> +        */
+> +       if (how_long_ms > 10) {
+> +               ACPI_WARNING((AE_INFO,
+> +                             "Firmware issue: Excessive sleep time (%llu ms > 10 ms) in ACPI Control Method",
+> +                             how_long_us));
+> +       }
+> +
+> +       /*
+>          * For compatibility with other ACPI implementations and to prevent
+>          * accidental deep sleeps, limit the sleep time to something reasonable.
+>          */
+>
+>
+>
