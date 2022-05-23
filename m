@@ -2,151 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A064A53064A
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 May 2022 23:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE4B0530DB0
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 May 2022 12:42:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbiEVVoN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 22 May 2022 17:44:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38942 "EHLO
+        id S233947AbiEWKMw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 May 2022 06:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbiEVVoM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 22 May 2022 17:44:12 -0400
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079C037BF4;
-        Sun, 22 May 2022 14:44:10 -0700 (PDT)
-Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24M7rXZB005618;
-        Sun, 22 May 2022 21:44:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pps0720;
- bh=aGlcc2GqZT7sFyR5O7EQRE6Or8G/wOVNNNJPdqhnb1g=;
- b=LNx6cnTyNZsU94EnbIJXZX3wMGyeLwkYfgwKEhUrRdhNBlZIYhcMx7RKicKiBdHrzSnU
- Cn2EnENshrNe1HqrEVfdP7wtg2gLbM4jGq9qigdw+PfgWRoxCqbgTLhmT9ggCP+XLjMm
- lNmXZlud0g+xA9m9RYy32O+R1VtEJhBLzJsDIzXaLUGiLzh1mKDly/y/jW4yPEGAuAom
- uFE/WAN8PTpBpcecvMmS8adr87cLaHnkbr8INhvmzzEctFwSLm6YWh4C73/XJfP3pMbP
- Fuuj+S+zNpijbvkkaH15zDM0q9g6ImcAq6g3oYwi8kGl7xilgD04NqGPbksvYKJxktsQ Rg== 
-Received: from g2t2354.austin.hpe.com (g2t2354.austin.hpe.com [15.233.44.27])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3g7h6cbtft-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 22 May 2022 21:44:02 +0000
-Received: from g2t2360.austin.hpecorp.net (g2t2360.austin.hpecorp.net [16.196.225.135])
-        by g2t2354.austin.hpe.com (Postfix) with ESMTP id E049683;
-        Sun, 22 May 2022 21:44:01 +0000 (UTC)
-Received: from ubuntu-20.04.3 (unknown [16.99.181.233])
-        by g2t2360.austin.hpecorp.net (Postfix) with ESMTP id E4E9F42;
-        Sun, 22 May 2022 21:43:59 +0000 (UTC)
-From:   james.liu@hpe.com
-To:     rafael@kernel.org, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rwright@hpe.com, david.chang@hpe.com, clayc@hpe.com,
-        james.liu@hpe.com
-Subject: [PATCH v2] ACPI: OSL: Fix the memory mapping of an ACPI GAS that addresses a data structure
-Date:   Mon, 23 May 2022 05:43:02 +0800
-Message-Id: <20220522214302.39024-1-james.liu@hpe.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S233925AbiEWKMu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 May 2022 06:12:50 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654791000
+        for <linux-acpi@vger.kernel.org>; Mon, 23 May 2022 03:12:47 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id j28so18396714eda.13
+        for <linux-acpi@vger.kernel.org>; Mon, 23 May 2022 03:12:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=uc-cl.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=z+uM7vIRKv3KK6/ogXLySxrVBPRCNjdMKIe5V0kgmw8=;
+        b=JXDGBBA7JGqlxXHyvQpaU9r1OfIG4UChBlTRgcZiFqNDPkMn2lUkVmzq7G3QvVoimG
+         QjUarawautbENaTcxz4YxjPg4mysypVybiMPe+hDyI1E7HLqTZHKPb9TrAF9eEZuABWl
+         aGyr/1wpO+qcIz9w/F0yrngVWxFR+/rnWAS61Ad3plMjgV+rkUTmEQ7e0hZbppPwg4L/
+         eMuV0I0nKMlhXrhOInmf4d/DA7m9hnpx+/gTaqLEhsmerxCwSud3Ym8rvVmV+/HMtcdv
+         AeK+kvohkv4VET64mJP720/GCURh9eqCf97bUUYPeFIkWTJI/56C4pUu739J7seVc2kG
+         d1Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=z+uM7vIRKv3KK6/ogXLySxrVBPRCNjdMKIe5V0kgmw8=;
+        b=VAWByE+VD9ODWdBrpQslsRaGeguDz0ck2GoqJPW/iaoEK9L/1/HZJUhsbdGob8HjRe
+         MHUe0dlZFlWJgIcr1bPeZRIlpFNfhHvMRq6SEObRUiJK5I/P8WMwnoqn5QVqzOm3sq1w
+         Av9y71G2wMK8b/AZts873yfaEVyNGqmJHkNzB6WgtAhF8L4TiSC9TuVx4xkqgFGMx2Eb
+         XzzEEkgwbqIsvFtrwxC8dD/zkIqhC2rIRfoLshMcJr6oJ8FQYMN1zH1aO+SuMHgBw03V
+         /ySsC6NkQDhYEpHSuQ7vVgi4lNR4u46ayN1nmJMJ3Uc9jtfG0J5qOmyMdRmhFMGQ+1d1
+         Q5Mg==
+X-Gm-Message-State: AOAM532d1mAWNQj+XUDeCuNpyovfP8v1csB/VyTpEtTynwyJyMwDVkSc
+        UJnN2OwUdpb2rairYmjNyAaN9ccu2rZqXBvKHd4YPQ==
+X-Google-Smtp-Source: ABdhPJwaFh7ZG1oXVDdnC5mLW0Wxa/KXRkx9vch7z0UZRums9K3SwJojO6qJ3O7IvZv5hafotBx3MIaUMqojTPrsVog=
+X-Received: by 2002:a05:6402:2752:b0:41c:b898:19a6 with SMTP id
+ z18-20020a056402275200b0041cb89819a6mr23381311edd.30.1653300765781; Mon, 23
+ May 2022 03:12:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: rXzbSKsVRFGGutJm2lHosWwBjVEqn7jd
-X-Proofpoint-GUID: rXzbSKsVRFGGutJm2lHosWwBjVEqn7jd
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-22_11,2022-05-20_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 mlxlogscore=944 mlxscore=0 spamscore=0 impostorscore=0
- clxscore=1015 phishscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205220137
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:640c:2cc5:b0:153:d95a:3c5d with HTTP; Mon, 23 May 2022
+ 03:12:23 -0700 (PDT)
+Reply-To: stevebrucefss@gmail.com
+From:   Steve Bruce Financial Service <camila.toledo@uc.cl>
+Date:   Mon, 23 May 2022 13:12:23 +0300
+Message-ID: <CALeUmqNxzsFDTScjrKzqa+eamJo4TPbP3_nW7FuQHONsToSrwg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FORGED_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: James Liu <james.liu@hpe.com>
-
-    Modify acpi_os_map_generic_address() & acpi_os_unmap_generic_address()
-    to correctly handle cases that a GAS table (i.e., Table 5.1, ACPI 6.4)
-    is used to address a data structure; in the case, the GAS has the field
-    of "Register Bit Width" equal to 0.
-
-    For example, "Injection Instruction Entry" (Table 18.25, ACPI 6.4) has
-    a RegisterRegion field that is a GAS that points to a data structure
-    SET_ERROR_TYPE_WITH_ADDRESS (Table 18.30), which is required when using
-    EINJ (Error Injection module).
-
-    This fix preserves a fairly sufficient memory space (i.e. page size) to
-    store the data structure to prevent EINJ module from loading failure if
-    platform firmware can correctly support Injection Instruction Entry in
-    an EINJ table.
-
-Signed-off-by: James Liu <james.liu@hpe.com>
----
- drivers/acpi/osl.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 45c5c0e45..99f987c8c 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -452,14 +452,20 @@ EXPORT_SYMBOL_GPL(acpi_os_unmap_memory);
- 
- void __iomem *acpi_os_map_generic_address(struct acpi_generic_address *gas)
- {
--	u64 addr;
-+	u64 addr = 0;
- 
- 	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		return NULL;
- 
-+	/* Handle a case that GAS is used to address an ACPI data structure */
-+	if (!gas->bit_width) {
-+		pr_info("An ACPI data structure at 0x%llx is mapped\n", addr);
-+		return  acpi_os_map_iomem(addr, PAGE_SIZE);
-+	}
-+
- 	/* Handle possible alignment issues */
- 	memcpy(&addr, &gas->address, sizeof(addr));
--	if (!addr || !gas->bit_width)
-+	if (!addr)
- 		return NULL;
- 
- 	return acpi_os_map_iomem(addr, gas->bit_width / 8);
-@@ -468,15 +474,28 @@ EXPORT_SYMBOL(acpi_os_map_generic_address);
- 
- void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
- {
--	u64 addr;
-+	u64 addr = 0;
- 	struct acpi_ioremap *map;
- 
- 	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		return;
- 
-+	/* Handle a case that GAS is used to address an ACPI data structure */
-+	if (!gas->bit_width) {
-+		pr_info("An ACPI data structure at 0x%llx is unmapped\n", addr);
-+		mutex_lock(&acpi_ioremap_lock);
-+		map = acpi_map_lookup(addr, PAGE_SIZE);
-+		if (!map) {
-+			mutex_unlock(&acpi_ioremap_lock);
-+			return;
-+		}
-+		acpi_os_drop_map_ref(map);
-+		mutex_unlock(&acpi_ioremap_lock);
-+	}
-+
- 	/* Handle possible alignment issues */
- 	memcpy(&addr, &gas->address, sizeof(addr));
--	if (!addr || !gas->bit_width)
-+	if (!addr)
- 		return;
- 
- 	mutex_lock(&acpi_ioremap_lock);
 -- 
-2.25.1
-
+Steve Bruce Financial Service is giving out stress-free loans to new
+applicants at a low interest rate of 2%. If interested, kindly apply
+in person via stevebrucefss@gmail.com or call +1 (815) 771-5090.
+Thanks
