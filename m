@@ -2,48 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0042C531779
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 May 2022 22:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0549C531BD2
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 May 2022 22:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231493AbiEWTnY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 23 May 2022 15:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42576 "EHLO
+        id S230161AbiEWTpV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 May 2022 15:45:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234717AbiEWTmx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 May 2022 15:42:53 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9B73D8;
-        Mon, 23 May 2022 12:42:33 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id d137so27214592ybc.13;
-        Mon, 23 May 2022 12:42:33 -0700 (PDT)
+        with ESMTP id S231816AbiEWTpL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 May 2022 15:45:11 -0400
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92FC4E77;
+        Mon, 23 May 2022 12:44:43 -0700 (PDT)
+Received: by mail-yb1-f181.google.com with SMTP id t26so27267492ybt.3;
+        Mon, 23 May 2022 12:44:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=Fj/OpzWZFCIbCTU6BT7NErmOvtdXQjyKLPhUjJvPsZI=;
-        b=zmIKLJwzMEeX/UjLXqbPzGQBKcNmXYkUmvmJlRC6iPvZzBYuh4v58nEJwYooAlDmQu
-         RwumVQ0C1PDZLk0IU7CtUtNgrYUeSYubGQwrlE94TgyzrLRvxpyVPawT3D9vxNmATj8/
-         QYMQRXdW5W2PJ2qcENNheWcf9rNhyK4EGHQegSZEePO4U8vbX0iSTFxFiUCKfYKYqCGh
-         RrXdZ9B2krCRiEh/km3HXYZBvoRxpqYCAQb05Lk/W9wIHw369UlmBW/yS1EUMJTd8aI3
-         tx2FwNYys1+XDme106dID/d7ZJAdFkDlUr5PN5APYOfzScWaIXsQYBREPEcWOIixBn22
-         TiAA==
-X-Gm-Message-State: AOAM532C2KCGZ5ikYcv+ukmcuFGe7cr9V8nvCRrDZPqJ3iNW2avLBFDW
-        +TISBAObUm/5efueEAS2LzAszgoiyu/JN+SMLvb+6lamWHE=
-X-Google-Smtp-Source: ABdhPJzCQZdHarxpehn7z3mBO6JP5/1KETp1N8jqBF7HtQbNu+yU36E2JTRk9F7hvBk51gNrgp5oS2HdDGUi9nSniHg=
-X-Received: by 2002:a25:2004:0:b0:650:740:f31d with SMTP id
- g4-20020a252004000000b006500740f31dmr3905294ybg.81.1653334953110; Mon, 23 May
- 2022 12:42:33 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=1UFvX39NtfpENeFeSqm15Ok9Y3UgF929dIZB7DaqiWs=;
+        b=ZGM9hTCbNCNbSBX6DCgPqHl4On70SBxzJk2AtGUY7mxYnc4guZPOqQx1e2SyAB2sVt
+         m7zJpPNpwrUYr/TJjB4+ow3CfvekHTJKXxI8uTHno/w4qGKlIQjTeimpXmSKQxFh7otY
+         W2siGCVL2whjjjnbgxMpuyccA9lTSs3JiJ49H7F1vT5+U7gRlGrj6vBJXjSRAFVnVf0i
+         2vREcoutWQtAJD9YmZ0P5ScHIrD7TYIGrjZIp3p8vU7l/S2fPpecip53UsjofysTIPCx
+         +vQV2QQ7PIMOht/Y4UgZF4M6Ib1eIm3asjledULIy+JIjzt+JVB2p+xTAle0n1TM9HTX
+         JfDQ==
+X-Gm-Message-State: AOAM533+q2dOqnypAiAOYCjnWRbWwxf34YMUg5bNKfe026i3agzxWk4n
+        q5depf9ZVYB5rHy9Yu4G9UeTf8+MpdXx7ghW9lkF3yqYcs0=
+X-Google-Smtp-Source: ABdhPJw+r2WDnLRkeP7kU+jwLwLscbC6WPEeP6qV6zkunGQrssqr2ZBku4w+RoY2dwg/gysjjFPg9G+uixehaLCdgsM=
+X-Received: by 2002:a25:6b50:0:b0:64f:4b33:664 with SMTP id
+ o16-20020a256b50000000b0064f4b330664mr20740180ybm.153.1653335082793; Mon, 23
+ May 2022 12:44:42 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 23 May 2022 21:42:22 +0200
-Message-ID: <CAJZ5v0hKBt3js65w18iKxzWoN5QuEc84_2xcM6paSv-ZHwe3Rw@mail.gmail.com>
-Subject: [GIT PULL] Power management updates for v5.19-rc1
+Date:   Mon, 23 May 2022 21:44:31 +0200
+Message-ID: <CAJZ5v0h803aUmDW-oHh6+DkBkSXftmrVTwD463YkHW-h+8c=kQ@mail.gmail.com>
+Subject: [GIT PULL] Thermal control updates for v5.19-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
@@ -59,325 +57,228 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.19-rc1
+ thermal-5.19-rc1
 
-with top-most commit 0d64482bf29917e659c556aa36cea241b17c33df
+with top-most commit bbb544f3349197d1e7f4f9b921b75e919cd45f39
 
- Merge branch 'pm-tools'
+ Merge branches 'thermal-int340x', 'thermal-pch' and 'thermal-misc'
 
 on top of commit 42226c989789d8da4af1de0c31070c96726d990c
 
  Linux 5.18-rc7
 
-to receive power management updates for 5.19-rc1.
+to receive thermal control updates for 5.19-rc1.
 
-These add support for "artificial" Energy Models in which power numbers
-for different entities may be in different scales, add support for some
-new hardware, fix bugs and clean up code in multiple places.
+These add a thermal library and thermal tools to wrap the netlink
+interface into event-based callbacks, improve overheat condition
+handling during suspend-to-idle on Intel SoCs, add some new hardware
+support, fix bugs and clean up code.
 
 Specifics:
 
- - Update the Energy Model support code to allow the Energy Model to be
-   artificial, which means that the power values may not be on a uniform
-   scale with other devices providing power information, and update the
-   cpufreq_cooling and devfreq_cooling thermal drivers to support
-   artificial Energy Models (Lukasz Luba).
+ - Add thermal library and thermal tools to encapsulate the netlink
+   into event based callbacks (Daniel Lezcano, Jiapeng Chong).
 
- - Make DTPM check the Energy Model type (Lukasz Luba).
+ - Improve overheat condition handling during suspend-to-idle in the
+   Intel PCH thermal driver (Zhang Rui).
 
- - Fix policy counter decrementation in cpufreq if Energy Model is in
-   use (Pierre Gondois).
+ - Use local ops instead of global ops in devfreq_cooling (Kant Fan).
 
- - Add CPU-based scaling support to passive devfreq governor (Saravana
-   Kannan, Chanwoo Choi).
+ - Clean up _OSC handling in int340x (Davidlohr Bueso).
 
- - Update the rk3399_dmc devfreq driver (Brian Norris).
+ - Switch hisi_termal from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+   (Hesham Almatary).
 
- - Export dev_pm_ops instead of suspend() and resume() in the IIO
-   chemical scd30 driver (Jonathan Cameron).
+ - Add new k3 j72xx bangdap driver and the corresponding bindings
+   (Keerthy).
 
- - Add namespace variants of EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and
-   PM-runtime counterparts (Jonathan Cameron).
+ - Fix missing of_node_put() in the SC iMX driver at probe time
+   (Miaoqian Lin).
 
- - Move symbol exports in the IIO chemical scd30 driver into the
-   IIO_SCD30 namespace (Jonathan Cameron).
+ - Fix memory leak in __thermal_cooling_device_register() when
+   device_register() fails by calling thermal_cooling_device_destroy_sysfs()
+   (Yang Yingliang).
 
- - Avoid device PM-runtime usage count underflows (Rafael Wysocki).
+ - Add sc8180x and sc8280xp compatible string in the DT bindings and
+   lMH support for QCom tsens driver (Bjorn Andersson).
 
- - Allow dynamic debug to control printing of PM messages  (David
-   Cohen).
+ - Fix OTP Calibration Register values conforming to the documentation
+   on RZ/G2L and bindings documentation for RZ/G2UL (Biju Das).
 
- - Fix some kernel-doc comments in hibernation code (Yang Li, Haowen
-   Bai).
+ - Fix type in kerneldoc description for __thermal_bind_params (Corentin
+   Labbe).
 
- - Preserve ACPI-table override during hibernation (Amadeusz Sławiński).
+ - Fix potential NULL dereference in sr_thermal_probe() on Broadcom
+   platform (Zheng Yongjun).
 
- - Improve support for suspend-to-RAM for PSCI OSI mode (Ulf Hansson).
+ - Add change mode ops to the thermal-of sensor (Manaf Meethalavalappu
+   Pallikunhi).
 
- - Make Intel RAPL power capping driver support the RaptorLake and
-   AlderLake N processors (Zhang Rui, Sumeet Pawnikar).
+ - Fix non-negative value support by preventing the value to be clamp
+   to zero (Stefan Wahren).
 
- - Remove redundant store to value after multiply in the RAPL power
-   capping driver (Colin Ian King).
+ - Add compatible string and DT bindings for MSM8960 tsens driver
+   (Dmitry Baryshkov).
 
- - Add AlderLake processor support to the intel_idle driver (Zhang Rui).
+ - Add hwmon support for K3 driver (Massimiliano Minella).
 
- - Fix regression leading to no genpd governor in the PSCI cpuidle
-   driver and fix the riscv-sbi cpuidle driver to allow a genpd
-   governor to be used (Ulf Hansson).
+ - Refactor and add multiple generations support for QCom ADC driver
+   (Jishnu Prakash).
 
- - Fix cpufreq governor clean up code to avoid using kfree() directly
-   to free kobject-based items (Kevin Hao).
+ - Use platform_get_irq_optional() to get the interrupt on RCar driver and
+   document Document RZ/V2L bindings (Lad Prabhakar).
 
- - Prepare cpufreq for powerpc's asm/prom.h cleanup (Christophe Leroy).
-
- - Make intel_pstate notify frequency invariance code when no_turbo is
-   turned on and off (Chen Yu).
-
- - Add Sapphire Rapids OOB mode support to intel_pstate (Srinivas
-   Pandruvada).
-
- - Make cpufreq avoid unnecessary frequency updates due to mismatch
-   between hardware and the frequency table (Viresh Kumar).
-
- - Make remove_cpu_dev_symlink() clear the real_cpus mask to simplify
-   code (Viresh Kumar).
-
- - Rearrange cpufreq_offline() and cpufreq_remove_dev() to make the
-   calling convention for some driver callbacks consistent (Rafael
-   Wysocki).
-
- - Avoid accessing half-initialized cpufreq policies from the show()
-   and store() sysfs functions (Schspa Shi).
-
- - Rearrange cpufreq_offline() to make the calling convention for some
-   driver callbacks consistent (Schspa Shi).
-
- - Update CPPC handling in cpufreq (Pierre Gondois).
-
- - Extend dev_pm_domain_detach() doc (Krzysztof Kozlowski).
-
- - Move genpd's time-accounting to ktime_get_mono_fast_ns() (Ulf
-   Hansson).
-
- - Improve the way genpd deals with its governors (Ulf Hansson).
-
- - Update the turbostat utility to version 2022.04.16 (Len Brown,
-   Dan Merillat, Sumeet Pawnikar, Zephaniah E. Loss-Cutler-Hull, Chen
-   Yu).
+ - Remove NULL check after container_of() call from the Intel HFI
+   thermal driver (Haowen Bai).
 
 Thanks!
 
 
 ---------------
 
-Amadeusz Sławiński (1):
-      x86/ACPI: Preserve ACPI-table override during hibernation
+Biju Das (2):
+      dt-bindings: thermal: rzg2l-thermal: Document RZ/G2UL bindings
+      thermal/drivers/rz2gl: Fix OTP Calibration Register values
 
-Brian Norris (15):
-      dt-bindings: devfreq: rk3399_dmc: Convert to YAML
-      dt-bindings: devfreq: rk3399_dmc: Deprecate unused/redundant properties
-      dt-bindings: devfreq: rk3399_dmc: Fix Hz units
-      dt-bindings: devfreq: rk3399_dmc: Specify idle params in nanoseconds
-      dt-bindings: devfreq: rk3399_dmc: Add more disable-freq properties
-      PM / devfreq: rk3399_dmc: Drop undocumented ondemand DT props
-      PM / devfreq: rk3399_dmc: Drop excess timing properties
-      PM / devfreq: rk3399_dmc: Use bitfield macro definitions for ODT_PD
-      PM / devfreq: rk3399_dmc: Support new disable-freq properties
-      PM / devfreq: rk3399_dmc: Support new *-ns properties
-      PM / devfreq: rk3399_dmc: Disable edev on remove()
-      PM / devfreq: rk3399_dmc: Use devm_pm_opp_of_add_table()
-      PM / devfreq: rk3399_dmc: Avoid static (reused) profile
-      soc: rockchip: power-domain: Manage resource conflicts with firmware
-      PM / devfreq: rk3399_dmc: Block PMU during transitions
+Bjorn Andersson (3):
+      thermal/drivers/qcom/lmh: Add sc8180x compatible
+      dt-bindings: thermal: lmh: Add Qualcomm sc8180x compatible
+      dt-bindings: thermal: tsens: Add sc8280xp compatible
 
-Chanwoo Choi (4):
-      PM / devfreq: Export devfreq_get_freq_range symbol within devfreq
-      PM / devfreq: passive: Reduce duplicate code when passive_devfreq case
-      PM / devfreq: passive: Keep cpufreq_policy for possible cpus
-      PM / devfreq: passive: Return non-error when not-supported event
-is required
+Corentin Labbe (1):
+      thermal: thermal_of: fix typo on __thermal_bind_params
 
-Chen Yu (2):
-      cpufreq: intel_pstate: Handle no_turbo in frequency invariance
-      tools/power turbostat: Support thermal throttle count print
+Daniel Lezcano (4):
+      tools/lib/thermal: Add a thermal library
+      tools/thermal: Add util library
+      tools/thermal: Add a temperature capture tool
+      tools/thermal: Add thermal daemon skeleton
 
-Christophe Leroy (1):
-      cpufreq: Prepare cleanup of powerpc's asm/prom.h
+Davidlohr Bueso (3):
+      thermal: int340x: Clean up unnecessary acpi_buffer pointer freeing
+      thermal: int340x: Consolidate freeing of acpi_buffer pointer
+      thermal: int340x: Clean up _OSC context init
 
-Colin Ian King (1):
-      powercap: intel_rapl: remove redundant store to value after multiply
-
-Dan Merillat (1):
-      tools/power turbostat: fix dump for AMD cpus
-
-David Cohen (2):
-      PM: sleep: Narrow down -DDEBUG on kernel/power/ files
-      PM: sleep: enable dynamic debug support within pm_pr_dbg()
+Dmitry Baryshkov (2):
+      dt-bindings: thermal: qcom-tsens.yaml: add msm8960 compat string
+      thermal/drivers/tsens: Add compat string for the qcom,msm8960
 
 Haowen Bai (1):
-      PM: hibernate: Don't mark comment as kernel-doc
+      thermal: intel: hfi: remove NULL check after container_of() call
 
-Jonathan Cameron (3):
-      iio: chemical: scd30: Export dev_pm_ops instead of suspend() and resume()
-      PM: core: Add NS varients of EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and
-runtime pm equiv
-      iio: chemical: scd30: Move symbol exports into IIO_SCD30 namespace
+Hesham Almatary (1):
+      thermal: hisi_termal: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
 
-Kevin Hao (1):
-      cpufreq: governor: Use kobject release() method to free dbs_data
+Jiapeng Chong (2):
+      tools/lib/thermal: remove unneeded semicolon
+      tools/thermal: remove unneeded semicolon
 
-Krzysztof Kozlowski (1):
-      PM: domains: Extend dev_pm_domain_detach() doc
+Jishnu Prakash (4):
+      dt-bindings: thermal: qcom: add PMIC5 Gen2 ADC_TM bindings
+      iio: adc: qcom-vadc-common: add reverse scaling for PMIC5 Gen2 ADC_TM
+      thermal/drivers/qcom: Add support for multiple generations of devices
+      thermal/drivers/qcom: Add support for PMIC5 Gen2 ADCTM
 
-Len Brown (5):
-      tools/power turbostat: tweak --show and --hide capability
-      tools/power turbostat: fix ICX DRAM power numbers
-      tools/power turbostat: be more useful as non-root
-      tools/power turbostat: No build warnings with -Wextra
-      tools/power turbostat: version 2022.04.16
+Kant Fan (1):
+      thermal: devfreq_cooling: use local ops instead of global ops
 
-Lukasz Luba (7):
-      PM: EM: Add .get_cost() callback
-      PM: EM: Use the new .get_cost() callback while registering EM
-      PM: EM: Change the order of arguments in the .active_power() callback
-      PM: EM: Remove old debugfs files and print all 'flags'
-      Documentation: EM: Add artificial EM registration description
-      thermal: cooling: Check Energy Model type in cpufreq_cooling and
-devfreq_cooling
-      powercap: DTPM: Check for Energy Model type
+Keerthy (2):
+      dt-bindings: thermal: k3-j72xx: Add VTM bindings documentation
+      thermal: k3_j72xx_bandgap: Add the bandgap driver support
 
-Pierre Gondois (9):
-      PM: EM: Add artificial EM flag
-      cpufreq: CPPC: Add per_cpu efficiency_class
-      cpufreq: CPPC: Register EM based on efficiency class information
-      PM: EM: Decrement policy counter
-      ACPI: CPPC: Check _OSC for flexible address space
-      ACPI: bus: Set CPPC _OSC bits for all and when CPPC_LIB is supported
-      ACPI: CPPC: Assume no transition latency if no PCCT
-      cpufreq: CPPC: Enable fast_switch
-      cpufreq: CPPC: Enable dvfs_possible_from_any_cpu
+Lad Prabhakar (2):
+      dt-bindings: thermal: rzg2l-thermal: Document RZ/V2L bindings
+      thermal/drivers/rcar_thermal: Use platform_get_irq_optional() to
+get the interrupt
 
-Rafael J. Wysocki (4):
-      PM: runtime: Avoid device usage count underflows
-      cpufreq: Reorganize checks in cpufreq_offline()
-      cpufreq: Split cpufreq_offline()
-      cpufreq: Rearrange locking in cpufreq_remove_dev()
+Manaf Meethalavalappu Pallikunhi (1):
+      thermal/drivers/thermal_of: Add change_mode ops support for
+thermal_of sensor
 
-Saravana Kannan (1):
-      PM / devfreq: Add cpu based scaling support to passive governor
+Massimiliano Minella (1):
+      thermal/drivers/k3: Add hwmon support
 
-Schspa Shi (3):
-      cpufreq: Fix possible race in cpufreq online error path
-      cpufreq: Abort show()/store() for half-initialized policies
-      cpufreq: make interface functions and lock holding state clear
+Miaoqian Lin (1):
+      thermal/drivers/imx_sc_thermal: Fix refcount leak in imx_sc_thermal_probe
 
 Srinivas Pandruvada (1):
-      cpufreq: intel_pstate: Support Sapphire Rapids OOB mode
+      thermal: int340x: Mode setting with new OS handshake
 
-Sumeet Pawnikar (3):
-      tools/power turbostat: Add Power Limit4 support
-      tools/power turbostat: print power values upto three decimal
-      powercap: RAPL: Add Power Limit4 support for RaptorLake
+Stefan Wahren (1):
+      thermal/drivers/bcm2711: Don't clamp temperature at zero
 
-Ulf Hansson (19):
-      PM: runtime: Allow to call __pm_runtime_set_status() from atomic context
-      cpuidle: PSCI: Improve support for suspend-to-RAM for PSCI OSI mode
-      PM: domains: Move genpd's time-accounting to ktime_get_mono_fast_ns()
-      cpuidle: psci: Fix regression leading to no genpd governor
-      cpuidle: riscv-sbi: Fix code to allow a genpd governor to be used
-      PM: domains: Add GENPD_FLAG_RPM_ALWAYS_ON for the always-on governor
-      PM: domains: Drop redundant code for genpd always-on governor
-      PM: domains: Don't check PM_QOS_FLAG_NO_POWER_OFF in genpd
-      PM: domains: Rename irq_safe_dev_in_no_sleep_domain() in genpd
-      PM: domains: Skip another warning in irq_safe_dev_in_sleep_domain()
-      PM: domains: Allocate gpd_timing_data dynamically based on governor
-      PM: domains: Move the next_wakeup variable into the struct gpd_timing_data
-      PM: domains: Measure suspend/resume latencies in genpd based on governor
-      PM: domains: Fixup QoS latency measurements for IRQ safe devices in genpd
-      PM: domains: Fix initialization of genpd's next_wakeup
-      PM: domains: Clean up some code in pm_genpd_init() and genpd_remove()
-      PM: domains: Allocate governor data dynamically based on a genpd governor
-      PM: domains: Measure power-on/off latencies in genpd based on a governor
-      PM: domains: Trust domain-idle-states from DT to be correct by genpd
+Yang Yingliang (1):
+      thermal/core: Fix memory leak in __thermal_cooling_device_register()
 
-Viresh Kumar (3):
-      cpufreq: Avoid unnecessary frequency updates due to mismatch
-      Revert "cpufreq: Fix possible race in cpufreq online error path"
-      cpufreq: Clear real_cpus mask from remove_cpu_dev_symlink()
+Zhang Rui (4):
+      PM: wakeup: expose pm_wakeup_pending to modules
+      thermal: intel: pch: move cooling delay to suspend_noirq phase
+      thermal: intel: pch: enhance overheat handling
+      thermal: intel: pch: improve the cooling delay log
 
-Yang Li (1):
-      PM: hibernate: Fix some kernel-doc comments
-
-Zephaniah E. Loss-Cutler-Hull (2):
-      tools/power turbostat: Allow -e for all names.
-      tools/power turbostat: Allow printing header every N iterations
-
-Zhang Rui (3):
-      powercap: intel_rapl: add support for RaptorLake
-      intel_idle: Add AlderLake support
-      powercap: intel_rapl: add support for ALDERLAKE_N
+Zheng Yongjun (1):
+      thermal/drivers/broadcom: Fix potential NULL dereference in
+sr_thermal_probe
 
 ---------------
 
- .../devicetree/bindings/devfreq/rk3399_dmc.txt     | 212 --------
- .../memory-controllers/rockchip,rk3399-dmc.yaml    | 384 +++++++++++++
- Documentation/power/energy-model.rst               |  24 +-
- arch/arm64/kernel/smp.c                            |   1 +
- arch/x86/include/asm/msr-index.h                   |   1 +
- arch/x86/kernel/acpi/boot.c                        |   2 +-
- drivers/acpi/bus.c                                 |  34 +-
- drivers/acpi/cppc_acpi.c                           |  44 +-
- drivers/base/power/common.c                        |   8 +-
- drivers/base/power/domain.c                        | 278 ++++++----
- drivers/base/power/domain_governor.c               |  65 +--
- drivers/base/power/runtime.c                       |  53 +-
- drivers/cpufreq/cppc_cpufreq.c                     | 211 ++++++++
- drivers/cpufreq/cpufreq.c                          | 112 ++--
- drivers/cpufreq/cpufreq_governor.c                 |  20 +-
- drivers/cpufreq/cpufreq_governor.h                 |   1 +
- drivers/cpufreq/intel_pstate.c                     |   2 +
- drivers/cpufreq/mediatek-cpufreq-hw.c              |   4 +-
- drivers/cpufreq/pasemi-cpufreq.c                   |   1 -
- drivers/cpufreq/pmac32-cpufreq.c                   |   2 +-
- drivers/cpufreq/pmac64-cpufreq.c                   |   2 +-
- drivers/cpufreq/ppc_cbe_cpufreq.c                  |   1 -
- drivers/cpufreq/ppc_cbe_cpufreq_pmi.c              |   2 +-
- drivers/cpufreq/scmi-cpufreq.c                     |   4 +-
- drivers/cpuidle/cpuidle-psci-domain.c              |   4 +-
- drivers/cpuidle/cpuidle-psci.c                     |  46 ++
- drivers/cpuidle/cpuidle-riscv-sbi.c                |   4 +-
- drivers/devfreq/devfreq.c                          |  20 +-
- drivers/devfreq/governor.h                         |  27 +
- drivers/devfreq/governor_passive.c                 | 403 +++++++++++---
- drivers/devfreq/rk3399_dmc.c                       | 312 +++++------
- drivers/idle/intel_idle.c                          | 133 +++++
- drivers/iio/chemical/scd30.h                       |   5 +-
- drivers/iio/chemical/scd30_core.c                  |  10 +-
- drivers/iio/chemical/scd30_i2c.c                   |   3 +-
- drivers/iio/chemical/scd30_serial.c                |   3 +-
- drivers/opp/of.c                                   |   6 +-
- drivers/powercap/dtpm_cpu.c                        |   2 +-
- drivers/powercap/intel_rapl_common.c               |   4 +-
- drivers/powercap/intel_rapl_msr.c                  |   1 +
- drivers/soc/rockchip/pm_domains.c                  | 118 ++++
- drivers/thermal/cpufreq_cooling.c                  |   2 +-
- drivers/thermal/devfreq_cooling.c                  |   8 +-
- include/acpi/cppc_acpi.h                           |   5 +
- include/linux/acpi.h                               |   2 +
- include/linux/devfreq.h                            |  17 +-
- include/linux/energy_model.h                       |  35 +-
- include/linux/pm.h                                 |  14 +-
- include/linux/pm_domain.h                          |  24 +-
- include/linux/pm_runtime.h                         |  10 +-
- include/linux/suspend.h                            |  44 +-
- include/soc/rockchip/pm_domains.h                  |  25 +
- kernel/power/Makefile                              |   6 +-
- kernel/power/energy_model.c                        |  65 ++-
- kernel/power/main.c                                |  29 -
- kernel/power/process.c                             |   3 -
- kernel/power/snapshot.c                            |  12 +-
- tools/power/x86/turbostat/Makefile                 |   2 +-
- tools/power/x86/turbostat/turbostat.8              |   2 +-
- tools/power/x86/turbostat/turbostat.c              | 594 +++++++++++++--------
- 60 files changed, 2463 insertions(+), 1005 deletions(-)
+ .../devicetree/bindings/thermal/qcom-lmh.yaml      |   1 +
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml        | 110 +++-
+ .../devicetree/bindings/thermal/qcom-tsens.yaml    |   5 +-
+ .../devicetree/bindings/thermal/rzg2l-thermal.yaml |   2 +
+ .../bindings/thermal/ti,j72xx-thermal.yaml         |  63 +++
+ MAINTAINERS                                        |   1 +
+ drivers/base/power/wakeup.c                        |   1 +
+ drivers/iio/adc/qcom-vadc-common.c                 |  11 +
+ drivers/thermal/Makefile                           |   2 +-
+ drivers/thermal/broadcom/bcm2711_thermal.c         |   5 +-
+ drivers/thermal/broadcom/sr-thermal.c              |   3 +
+ drivers/thermal/devfreq_cooling.c                  |  25 +-
+ drivers/thermal/hisi_thermal.c                     |   6 +-
+ drivers/thermal/imx_sc_thermal.c                   |   6 +-
+ .../intel/int340x_thermal/int3400_thermal.c        |  72 +--
+ drivers/thermal/intel/intel_hfi.c                  |   2 -
+ drivers/thermal/intel/intel_pch_thermal.c          |  43 +-
+ drivers/thermal/k3_bandgap.c                       |   5 +
+ drivers/thermal/k3_j72xx_bandgap.c                 | 566 ++++++++++++++++++++
+ drivers/thermal/qcom/lmh.c                         |   1 +
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c           | 486 +++++++++++++++--
+ drivers/thermal/qcom/tsens.c                       |   3 +
+ drivers/thermal/rcar_thermal.c                     |  17 +-
+ drivers/thermal/rzg2l_thermal.c                    |  10 +-
+ drivers/thermal/thermal_core.c                     |   1 +
+ drivers/thermal/thermal_of.c                       |  14 +-
+ include/linux/iio/adc/qcom-vadc-common.h           |   2 +
+ include/linux/thermal.h                            |   3 +
+ tools/Makefile                                     |  36 +-
+ tools/lib/thermal/.gitignore                       |   2 +
+ tools/lib/thermal/Build                            |   5 +
+ tools/lib/thermal/Makefile                         | 165 ++++++
+ tools/lib/thermal/commands.c                       | 349 +++++++++++++
+ tools/lib/thermal/events.c                         | 164 ++++++
+ tools/lib/thermal/include/thermal.h                | 142 +++++
+ tools/lib/thermal/libthermal.map                   |  25 +
+ tools/lib/thermal/libthermal.pc.template           |  12 +
+ tools/lib/thermal/sampling.c                       |  75 +++
+ tools/lib/thermal/thermal.c                        | 135 +++++
+ tools/lib/thermal/thermal_nl.c                     | 215 ++++++++
+ tools/lib/thermal/thermal_nl.h                     |  46 ++
+ tools/thermal/lib/Build                            |   3 +
+ tools/thermal/lib/Makefile                         | 158 ++++++
+ tools/thermal/lib/libthermal_tools.pc.template     |  12 +
+ tools/thermal/lib/log.c                            |  77 +++
+ tools/thermal/lib/log.h                            |  31 ++
+ tools/thermal/lib/mainloop.c                       | 120 +++++
+ tools/thermal/lib/mainloop.h                       |  15 +
+ tools/thermal/lib/thermal-tools.h                  |  10 +
+ tools/thermal/lib/uptimeofday.c                    |  40 ++
+ tools/thermal/lib/uptimeofday.h                    |  12 +
+ tools/thermal/thermal-engine/Build                 |   1 +
+ tools/thermal/thermal-engine/Makefile              |  28 +
+ tools/thermal/thermal-engine/thermal-engine.c      | 341 ++++++++++++
+ tools/thermal/thermometer/Build                    |   1 +
+ tools/thermal/thermometer/Makefile                 |  26 +
+ tools/thermal/thermometer/thermometer.8            |  92 ++++
+ tools/thermal/thermometer/thermometer.c            | 572 +++++++++++++++++++++
+ tools/thermal/thermometer/thermometer.conf         |   5 +
+ 59 files changed, 4263 insertions(+), 118 deletions(-)
