@@ -2,49 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61260532B88
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 May 2022 15:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5D43532CD1
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 May 2022 17:03:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237850AbiEXNn1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 May 2022 09:43:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59528 "EHLO
+        id S238583AbiEXPDx convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 24 May 2022 11:03:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231224AbiEXNn0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 May 2022 09:43:26 -0400
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AC1174DFE;
-        Tue, 24 May 2022 06:43:26 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id i11so30929541ybq.9;
-        Tue, 24 May 2022 06:43:26 -0700 (PDT)
+        with ESMTP id S236693AbiEXPDs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 May 2022 11:03:48 -0400
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355BD8AE4C;
+        Tue, 24 May 2022 08:03:47 -0700 (PDT)
+Received: by mail-qt1-f182.google.com with SMTP id hh4so14886798qtb.10;
+        Tue, 24 May 2022 08:03:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gF0TUV/f1EYPh7LzpbylOlyjLRvO0rS2Z8aSd7vESdM=;
-        b=rwc7InZVARa4UImFOH28MSER2NINZZvdPOS6LawmXEEdJm4suds/ImaINBQAfgJkvC
-         YoMCIWD6C3z+VQQ1mdWSuhxEkVi+uqBIMXfRAqN5orZBtl12zNFz/wGoAjQvu4BT06Ww
-         prntmf0f1VCUzA6KA9USF7BA+vlUm0ILWHjZMQrEGN3NOq9tFPyazLWUJtI5/dqV+og7
-         WPODhNggo5aVPvslr+01MNnC5V1P7K1f+4gzCK6IyeT16r5Hkp4ZLTuL9fbYV1Qqf0id
-         yGDda2umZ6krD93L6eaoqGhFyGm1z3wau9Om2Bl77ExP6eTjOvV1KjN1u4LPtCgNYJT/
-         qfIA==
-X-Gm-Message-State: AOAM533Iq2Q1sZnybdasilgS5xGizLqMgJ8BDUE1utBnPUa3WUDZBiPG
-        Mt7CgFa2oRUovA8hAPqfFFx2JX9IL0fzYJKOZz0=
-X-Google-Smtp-Source: ABdhPJxrx+4PyTpojs6STJF90N5O3lVotlMS1F5ewlefJhltMPRleCLQ6INTFZNdlhzglSskVKU04pl4oHllKVWle+Q=
-X-Received: by 2002:a05:6902:100a:b0:64f:44ec:13ff with SMTP id
- w10-20020a056902100a00b0064f44ec13ffmr24477246ybt.137.1653399805346; Tue, 24
- May 2022 06:43:25 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=xvY3YRGz6Q5JdIA0GD3/2z1w0vgXjW2K3nWPGIL58cE=;
+        b=xmw6PBJiSKQWxyIlk16DzUlnKILhKmHhqG8uMXbF+yPCpsjbkkIGNrPKL+ptX2oSWM
+         10hxtw6XYabM9Y6OFj5CbNeOA11OELyYv1s2LMJi0B+U7SaIcApYvttqfLYa3DLLFIe6
+         S1XMdU4rNuEnzPKmVtdKefOHqVUQBOc1Pg+PLs8+H6hmY3FdIRDD2MEQ+B/QlLapC+Jh
+         V54GLpUZUm8uVkePXQ2BZmAFyFCrb/ErCxRFnlyNGmCTIV6PeP7HbUeKM+eqQkev274K
+         5QGR/DRp6vwg+1wk+89Ky86U/IXZiASfyi9yRqe2FcFNhh84gv4iAPVQvPxpgKfOfeuV
+         7zIw==
+X-Gm-Message-State: AOAM533jFVWX6MTIzltEAkzjXD+sgLwm/jLPRMy1Ure0h6xAde70GoHj
+        b543jcrjuUQklrGLL37dklIHDP06AnN3uGYc
+X-Google-Smtp-Source: ABdhPJwuk9H/mEk8wIoK8/x19GtEPey883vcqDGFb9QDo6KvHAzFTF8B3gztyBKrkKlDvmsI+8rjtg==
+X-Received: by 2002:a05:622a:1aa9:b0:2f9:8593:76c0 with SMTP id s41-20020a05622a1aa900b002f9859376c0mr1039264qtc.278.1653404626186;
+        Tue, 24 May 2022 08:03:46 -0700 (PDT)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id 7-20020a370707000000b0069fc13ce244sm6230671qkh.117.2022.05.24.08.03.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 May 2022 08:03:43 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id g72so3324900ybf.0;
+        Tue, 24 May 2022 08:03:42 -0700 (PDT)
+X-Received: by 2002:a81:2143:0:b0:2fb:1274:247e with SMTP id
+ h64-20020a812143000000b002fb1274247emr28501106ywh.384.1653404610585; Tue, 24
+ May 2022 08:03:30 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
- <CAJZ5v0jhWs-8ChHddebTZcaH6kA05sLEMsXM9Op7kHWAQDxeYA@mail.gmail.com> <CAMuHMdVbWpgubaA0V_tau3O=czAb3RQV9AwJsoQ+LWjf-wjMkA@mail.gmail.com>
-In-Reply-To: <CAMuHMdVbWpgubaA0V_tau3O=czAb3RQV9AwJsoQ+LWjf-wjMkA@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 24 May 2022 15:43:14 +0200
-Message-ID: <CAJZ5v0jar8GONkAZfLuRpKHuYRu1Y_0AecmGxayM00AHCJkYVg@mail.gmail.com>
-Subject: Re: [PATCH v8 00/27] Introduce power-off+restart call chain API
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
+ <20220509233235.995021-8-dmitry.osipenko@collabora.com> <CAMuHMdVGjeFe=Z_1Kr9ZaNZ7HUVH1usvubEB31WUQf0fg8E1kA@mail.gmail.com>
+ <c4914e14-1882-55a1-bcbd-a905852b45a3@collabora.com>
+In-Reply-To: <c4914e14-1882-55a1-bcbd-a905852b45a3@collabora.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 24 May 2022 17:03:19 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWBWWVeegvLQQzT8CRL5z38AhXigaNjzw8p0NwQ1B4DPQ@mail.gmail.com>
+Message-ID: <CAMuHMdWBWWVeegvLQQzT8CRL5z38AhXigaNjzw8p0NwQ1B4DPQ@mail.gmail.com>
+Subject: Re: [PATCH v8 07/27] kernel/reboot: Add kernel_can_power_off()
+To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -75,6 +83,7 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Santosh Shilimkar <ssantosh@kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
@@ -97,50 +106,93 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         xen-devel@lists.xenproject.org,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Geert,
+Hi Dmitry,
 
-On Mon, May 23, 2022 at 8:08 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Rafael,
->
-> On Wed, May 18, 2022 at 4:46 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Tue, May 24, 2022 at 3:41 PM Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
+> On 5/24/22 16:14, Geert Uytterhoeven wrote:
 > > On Tue, May 10, 2022 at 1:33 AM Dmitry Osipenko
 > > <dmitry.osipenko@collabora.com> wrote:
+> >> Add kernel_can_power_off() helper that replaces open-coded checks of
+> >> the global pm_power_off variable. This is a necessary step towards
+> >> supporting chained power-off handlers.
+> >>
+> >> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> >
+> > Thanks for your patch, which is now commit 0e2110d2e910e44c
+> > ("kernel/reboot: Add kernel_can_power_off()") in pm/linux-next.
+> >
+> > This causes the "poweroff" command (Debian nfsroot) to no longer
+> > cleanly halt the system on arm32 systems, but fail with a panic
+> > instead:
+> >
+> > -reboot: System halted
+> > +reboot: Power down
+> > +Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000000
+> > +CPU: 0 PID: 1 Comm: systemd-shutdow Not tainted
+> > 5.18.0-rc7-shmobile-00007-g0e2110d2e910 #1274
+> > +Hardware name: Generic R-Car Gen2 (Flattened Device Tree)
+> > + unwind_backtrace from show_stack+0x10/0x14
+> > + show_stack from dump_stack_lvl+0x40/0x4c
+> > + dump_stack_lvl from panic+0xf4/0x330
+> > + panic from do_exit+0x1c8/0x8e4
+> > + do_exit from __do_sys_reboot+0x174/0x1fc
+> > + __do_sys_reboot from ret_fast_syscall+0x0/0x54
+> > +Exception stack(0xf0815fa8 to 0xf0815ff0)
+> > +5fa0:                   004e6954 00000000 fee1dead 28121969 4321fedc f0d94600
+> > +5fc0: 004e6954 00000000 00000000 00000058 befa0c78 00000000 befa0c10 004e56f8
+> > +5fe0: 00000058 befa0b6c b6ec8d45 b6e4a746
+> > +---[ end Kernel panic - not syncing: Attempted to kill init!
+> > exitcode=0x00000000 ]---
+> >
+> > On arm64, "poweroff" causes a clean "reboot: Power down" before/after.
+> >
+> > On both arm32 and arm64, the same handlers are registered:
+> >   - SYS_OFF_MODE_POWER_OFF_PREPARE: legacy_pm_power_off_prepare
+> >   - SYS_OFF_MODE_POWER_OFF: legacy_pm_power_off
+> >
+> > On both arm32 and arm64, legacy_pm_power_off_prepare() is called.
+> > On both arm32 and arm64, legacy_pm_power_off() does not seem to
+> > be called.
+> >
+> > On arm32, both pm_power_off_prepare and pm_power_off are NULL.
+> > On arm64, pm_power_off_prepare is NULL, and
+> > pm_power_off is psci_sys_poweroff.
+> >
+> > Do you have a clue?
+> > Thanks!
 >
-> > >   m68k: Switch to new sys-off handler API
+> Thank you, Geert! I see the problem, the kernel_can_power_off() checks whether power-off handler is registered, but it's always registered because legacy_pm_power_off is registered unconditionally. So it causes trouble for platforms that don't have power-off handler installed at all. All platforms that I tested have a power-off handler, so now wonder that I didn't notice this before.
 >
-> Sorry, I didn't realize this was going to interact with the new m68k
-> virtual machine support, which is included in the m68k pull request
-> for v5.19.
->
-> > However, I'm going to send a pull request with it in the second half
-> > of the merge window, after the majority of the other changes in the
-> > subsystems touched by it have been integrated.
->
-> And presumably you will have to merge in v5.19-rc1, too?
+> This change should fix the problem, please give it a try:
 
-I will merge this series on top of the Linus' merges of my pull
-requests sent yesterday (assuming that he pulls them, that is).
+Thank you, that fixes the problem for me!
 
-> I've sent a fix.  It should appear at
-> https://lore.kernel.org/r/20220523175520.949681-1-geert@linux-m68k.org
-> soon.
->
-> Can you please include that in your PR?
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-I will.
+Gr{oetje,eeting}s,
 
-Thanks!
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
