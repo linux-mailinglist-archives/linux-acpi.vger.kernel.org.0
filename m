@@ -2,106 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B33534268
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 May 2022 19:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E13C6534512
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 May 2022 22:40:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343516AbiEYRt0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 May 2022 13:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53202 "EHLO
+        id S1345135AbiEYUj4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 May 2022 16:39:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343533AbiEYRtP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 13:49:15 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81A0B0A72
-        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 10:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1653500947; x=1685036947;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4qhN3hgQveI5aDBmL09sDEMiFdhFO98DlxSJyb2k2Js=;
-  b=ODm5KUQS1OYUsGc+HF97YfApMAMcD1CKs3h1WxZMM870N41OmUSYyg3f
-   kyAGhHg6m7kxnWoYxzNYBN+h7bvZCz8fkIV2A0Z9KzTH7w6lJroSjaYPn
-   YOX9N124erDy73n//XAucqlmhidMqP4cCaWzAa1adesegE2Nsr1TQ0Rk+
-   nZ3qgRB2eCuaIVJZ8E1Ke9FfQF3FMx02hcMHBV/WuMKeuS/SLwasYYAUe
-   7myy8J6LPeYSw/pXz5I8cRvEsmUDU/jT6wFF+w4gteSxBb3UChSTBCcrF
-   qfIekhQIGDCDpYjGYGKAn5bIYE3MQ/RIKLIDrbNBAbWuuQxMBngtWEc1P
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10358"; a="273998001"
-X-IronPort-AV: E=Sophos;i="5.91,250,1647327600"; 
-   d="scan'208";a="273998001"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 10:44:15 -0700
-X-IronPort-AV: E=Sophos;i="5.91,250,1647327600"; 
-   d="scan'208";a="602095083"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 10:44:14 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1ntv3L-000L5w-Ub;
-        Wed, 25 May 2022 20:44:11 +0300
-Date:   Wed, 25 May 2022 20:44:11 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org
-Subject: Re: [PATCH v3 7/8] ACPI: property: Add support for parsing buffer
- property UUID
-Message-ID: <Yo5q6/qVkRyESOa+@smile.fi.intel.com>
-References: <20220525130123.767410-1-sakari.ailus@linux.intel.com>
- <20220525130123.767410-8-sakari.ailus@linux.intel.com>
+        with ESMTP id S235975AbiEYUjw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 16:39:52 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BBC7B0D0A
+        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 13:39:51 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id m20so43932965ejj.10
+        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 13:39:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=LDBqQh/PztHeiDiV9Pr0v62BTTaDnPQyU98FGi1REkw=;
+        b=V8ZoB3zlHdgZ2R2A4vgEAj70aKyCnGGpFtRZ9b0oTxUWZCuNT/gtyTwACRo1CCwI4R
+         IK4Nm9PfwKHWvA3UrYMHrWxHVZx/Fd1WN7EUywQ1Bx9EGwE2G5w+zQhx2dxTEJx/Qhvx
+         kZHC0CLj7Sf9TB4hKuFbYrHXEwFsp8ZlF2JEwj0d8Z6q0YaBJ7Gfmb4lwLJwI4EdSv4O
+         UtqL/rx7DREYH1tyNT+z+VgaTm8jRy/Jx3K7Yn8LdMubX2Ahh10T0v0ikCTHCFRQ16rV
+         PtrFcIYGMYWfojivKhNlerEa9N1T3tnRrDG9EOuK3KSgvDiYyowahaCPNsF4eF/kmTY3
+         r85w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=LDBqQh/PztHeiDiV9Pr0v62BTTaDnPQyU98FGi1REkw=;
+        b=hctxXJMC6t0cSLy8qoSB7/dxbJnjQQr8tGGjKvf/TxUZ4IRxofxzjOCXUFuLFX3nlQ
+         byaWNhplq06DXqeh6gSwqCNowW6BfjZZQOLLWpFDZXFzGiqRD4ngFCspUWv14jWcoAGi
+         bJbjCRQcajthsZnBxxIYeEFmRZmxrM13Xt6tgdkE0A5qRGzf2Ma6nhBUTbRP8Rypr/Zx
+         5xeKWfPXc2+O7WBZ694OQrsktR4FNs65jie7Sw1wSTW4i4aeLXH5xBPcdAX+vQIUET0/
+         eIkXifEppzKKWvTBlUuSfuuJmhX6lw0MozYPkyKa3PcXmp3lKXjudhgPGaiVdAqyHxys
+         i9bQ==
+X-Gm-Message-State: AOAM532dPjOLU2Y4w1p4nWy0fd+L179xOG9EyIT/IahSKc1GosNi+puP
+        AFmJyiCN+Y834WztuUpbd6jRe7h07YFDGH7u8VM=
+X-Google-Smtp-Source: ABdhPJwUsfb5OrQ3vcRS6HNq0+X7djtQ2eKtPHczM9HgH7+6P7FYocdSAR9l/DYJudx0gCT9N+SQNUs9NxBhx4GBA2I=
+X-Received: by 2002:a17:906:8301:b0:6e4:896d:59b1 with SMTP id
+ j1-20020a170906830100b006e4896d59b1mr29792721ejx.396.1653511190094; Wed, 25
+ May 2022 13:39:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220525130123.767410-8-sakari.ailus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a17:907:16a0:0:0:0:0 with HTTP; Wed, 25 May 2022 13:39:49
+ -0700 (PDT)
+From:   Deterin Falcao <falcaodeterin@gmail.com>
+Date:   Wed, 25 May 2022 22:39:49 +0200
+Message-ID: <CABCO4Z34L5Ob2sRJ+JwD5j-Hmd-m2wJ6TEysrc=k65vmAnA3cw@mail.gmail.com>
+Subject: Bitte kontaktaufnahme Erforderlich !!! Please Contact Required !!!
+To:     info@firstdiamondbk.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 25, 2022 at 04:01:22PM +0300, Sakari Ailus wrote:
-> Add support for newly added buffer property UUID, as defined in the DSD
-> guide.
+Guten Tag,
 
-...
+Ich habe mich nur gefragt, ob Sie meine vorherige E-Mail bekommen
 
-> +	if (check_mul_overflow((size_t)properties->package.count,
+haben ?
 
-Why do you need casting? Any issues on 32-bit compilation?
+Ich habe versucht, Sie per E-Mail zu erreichen.
 
-Looking at the below code snippets, it seems you also can have a local
-copy with needed type and use it everywhere (as outer_package_count or so).
-But first question first...
+Kommen Sie bitte schnell zu mir zur=C3=BCck, es ist sehr wichtig.
 
-> +			       sizeof(*package) + sizeof(void *),
-> +			       &alloc_size) ||
-> +	    check_add_overflow(sizeof(*props) + sizeof(*package), alloc_size,
-> +			       &alloc_size)) {
-> +		acpi_handle_warn(handle,
-> +				 "can't allocate memory for %u buffer props",
-> +				 properties->package.count);
-> +		return;
-> +	}
+Danke
 
-...
+Falcao Deterin
 
-> +		if (ACPI_FAILURE(status)) {
-> +			acpi_handle_warn(handle,
-> +					 "can't evaluate \"%s\" as buffer\n",
-> +					 obj->string.pointer);
-
-I'm wondering if better to use %*pE here to show the full data of the buffer.
-
-> +			continue;
-> +		}
-
--- 
-With Best Regards,
-Andy Shevchenko
+falcaodeterin@gmail.com
 
 
+
+
+
+
+
+
+----------------------------------
+
+
+
+
+Good Afternoon,
+
+I was just wondering if you got my Previous E-mail
+have ?
+
+I tried to reach you by E-mail.
+
+Please come back to me quickly, it is very Important.
+
+Thanks
+
+Falcao Deterin
+
+falcaodeterin@gmail.com
