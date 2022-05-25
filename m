@@ -2,106 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A375533813
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 May 2022 10:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E66ED5338F0
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 May 2022 10:59:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbiEYINr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 May 2022 04:13:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46376 "EHLO
+        id S232725AbiEYI7q convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 25 May 2022 04:59:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232628AbiEYINq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 04:13:46 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCF6737A07
-        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 01:13:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1653466424; x=1685002424;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vax5EiY99gs3t6yNzUXRADqAwb8U1aZ++Ac8ZB344mU=;
-  b=fQYqfu2FrP+YM695fKLOjko3qTjkm/38ag9+JHItXkaKmciMQ9E74OXb
-   3C/Sn6+D7lf+XF8ydMjLFiIS89G9oYitNfQn0Qq4B44CDusXU3lAr1wpH
-   Y9wLfkKtkFDbBzmJuHYmf9mDNgkaN4Fvdut3aWEVnMBUJCpWbf/Lx+OuO
-   UI34FXZEr+GM0/2hVxbrsJ3ArkO8dH9CceuhiCiKP9F5wRhkfnLnhMpMl
-   lalmwLXR659/5ziOcDxp712k1DEqK0Ci59Y5z9tFbJMj4P+WR8sXNCBZJ
-   Cif1/exkyVHpflTiBiwhgpGIl4IYRJp/BX6ZtJ6f6dOYbz9aXBqvhQz/3
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10357"; a="334396034"
-X-IronPort-AV: E=Sophos;i="5.91,250,1647327600"; 
-   d="scan'208";a="334396034"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 01:13:44 -0700
-X-IronPort-AV: E=Sophos;i="5.91,250,1647327600"; 
-   d="scan'208";a="548889496"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 01:13:43 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 0F5A02057F;
-        Wed, 25 May 2022 11:13:41 +0300 (EEST)
-Date:   Wed, 25 May 2022 11:13:41 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org
-Subject: Re: [PATCH v2 7/8] ACPI: property: Add support for parsing buffer
- property UUID
-Message-ID: <Yo3lNXr0KcJmq4W9@paasikivi.fi.intel.com>
-References: <20220520061148.21366-1-sakari.ailus@linux.intel.com>
- <20220520061148.21366-8-sakari.ailus@linux.intel.com>
- <YoelpPVmLoKL295p@smile.fi.intel.com>
+        with ESMTP id S233812AbiEYI7p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 04:59:45 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B681070350
+        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 01:59:43 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4L7Q496S71zDqSw;
+        Wed, 25 May 2022 16:59:37 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 25 May 2022 16:59:41 +0800
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 25 May 2022 16:59:40 +0800
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2375.024; Wed, 25 May 2022 09:59:39 +0100
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "joro@8bytes.org" <joro@8bytes.org>
+CC:     "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        "will@kernel.org" <will@kernel.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "jon@solid-run.com" <jon@solid-run.com>,
+        "eric.auger@redhat.com" <eric.auger@redhat.com>,
+        "laurentiu.tudor@nxp.com" <laurentiu.tudor@nxp.com>,
+        "hch@infradead.org" <hch@infradead.org>
+Subject: RE: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
+Thread-Topic: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
+Thread-Index: AQHYXwu3gTgIMyz0zUiu6Dja1BmGsa0PbqaAgAhOLiD///4qAIAE064AgAYtdiCADLBS4A==
+Date:   Wed, 25 May 2022 08:59:39 +0000
+Message-ID: <0c12f81f62f8415f8061cb844f779904@huawei.com>
+References: <20220503163330.509-1-shameerali.kolothum.thodi@huawei.com>
+ <2234ad60-c49f-8c72-616c-dfa5300354ef@huawei.com>
+ <8e4f012717e34195a53cb73f8ce28627@huawei.com>
+ <5c8ae673-f8e3-0ed3-e62d-d445913b012c@arm.com>
+ <20220513094940.GA23371@lpieralisi> 
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.202.227.178]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YoelpPVmLoKL295p@smile.fi.intel.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
 
-On Fri, May 20, 2022 at 05:28:52PM +0300, Andy Shevchenko wrote:
-> On Fri, May 20, 2022 at 09:11:47AM +0300, Sakari Ailus wrote:
-> > Add support for newly added buffer property UUID, as defined in the DSD
-> > guide.
-> 
-> ...
-> 
-> >  static bool acpi_enumerate_nondev_subnodes(acpi_handle scope,
-> > -					   const union acpi_object *desc,
-> > +					   union acpi_object *desc,
-> >  					   struct acpi_device_data *data,
-> >  					   struct fwnode_handle *parent);
-> > -static bool acpi_extract_properties(const union acpi_object *desc,
-> > +static bool acpi_extract_properties(acpi_handle handle,
-> > +				    union acpi_object *desc,
-> >  				    struct acpi_device_data *data);
-> 
-> Looking at the first one, can union member be const in the last one?
 
-The object contains _DSD properties that will be changed if the properties
-are of buffer type --- see acpi_data_add_buffer_props() in the same patch.
+> -----Original Message-----
+> From: Shameerali Kolothum Thodi
+> Sent: 17 May 2022 08:18
+> To: 'Lorenzo Pieralisi' <lorenzo.pieralisi@arm.com>; Robin Murphy
+> <robin.murphy@arm.com>; rafael@kernel.org; joro@8bytes.org
+> Cc: Guohanjun (Hanjun Guo) <guohanjun@huawei.com>;
+> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+> iommu@lists.linux-foundation.org; Linuxarm <linuxarm@huawei.com>;
+> will@kernel.org; wanghuiqiang <wanghuiqiang@huawei.com>;
+> steven.price@arm.com; Sami.Mujawar@arm.com; jon@solid-run.com;
+> eric.auger@redhat.com; laurentiu.tudor@nxp.com; hch@infradead.org
+> Subject: RE: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
+> 
+> 
+> > -----Original Message-----
+> > From: Lorenzo Pieralisi [mailto:lorenzo.pieralisi@arm.com]
+> > Sent: 13 May 2022 10:50
+> > To: Robin Murphy <robin.murphy@arm.com>; Shameerali Kolothum Thodi
+> > <shameerali.kolothum.thodi@huawei.com>; rafael@kernel.org;
+> > joro@8bytes.org
+> > Cc: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
+> > Guohanjun (Hanjun Guo) <guohanjun@huawei.com>;
+> > linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+> > iommu@lists.linux-foundation.org; Linuxarm <linuxarm@huawei.com>;
+> > will@kernel.org; wanghuiqiang <wanghuiqiang@huawei.com>;
+> > steven.price@arm.com; Sami.Mujawar@arm.com; jon@solid-run.com;
+> > eric.auger@redhat.com; laurentiu.tudor@nxp.com; hch@infradead.org
+> > Subject: Re: [PATCH v12 0/9] ACPI/IORT: Support for IORT RMR node
+> >
+> > [with Christoph's correct email address]
+> >
+> > On Tue, May 10, 2022 at 09:07:00AM +0100, Robin Murphy wrote:
+> > > On 2022-05-10 08:23, Shameerali Kolothum Thodi wrote:
+> > > > Hi Joerg/Robin,
+> > > >
+> > > > I think this series is now ready to be merged. Could you please let
+> > > > me know if there is anything missing.
+> > >
+> > > Fine by me - these patches have had enough review and testing now that
+> > > even if anything else did come up, I think it would be better done as
+> > > follow-up work on the merged code.
+> >
+> > Given the ACPICA dependency I believe it is best for this series
+> > to go via the ACPI tree, right ?
+> >
+> > I assume there are all the required ACKs for that to happen.
+> 
+> The SMMUv3/SMMU related changes (patches 6 - 9) still doesn't have
+> explicit ACK from maintainers other than the go ahead above from Robin.
+> 
+> Just thought of highlighting it as not sure that will be an issue or not.
+> 
 
-> 
-> ...
-> 
-> >  struct acpi_device_properties {
-> >  	const guid_t *guid;
-> > -	const union acpi_object *properties;
-> > +	union acpi_object *properties;
-> 
-> Probably this change explains on the above question...
-> 
-> >  	struct list_head list;
-> > +	void **bufs;
-> >  };
+All,
 
--- 
-Kind regards,
+Just a gentle ping on this series again. Any chance this can make into 5.19?
 
-Sakari Ailus
+Please consider.
+
+Thanks,
+Shameer
+
