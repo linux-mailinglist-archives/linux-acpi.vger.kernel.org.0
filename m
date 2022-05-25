@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99F20534013
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 May 2022 17:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D125534178
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 May 2022 18:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231797AbiEYPNJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 May 2022 11:13:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48126 "EHLO
+        id S237633AbiEYQZ6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 May 2022 12:25:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245038AbiEYPMb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 11:12:31 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2388BB36FE
-        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 08:12:25 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id r6-20020a1c2b06000000b00396fee5ebc9so3541280wmr.1
-        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 08:12:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=fGUpPWSrdU78NE568Vi5RUu5F1/oAZko7D0EGEMZcTs=;
-        b=ly2REis4yQXudDb1MLYh74zNRkgBN/c6oZzobXxjktwZkuhhTU0Wx+HAWxzKCS7VWZ
-         AL0iLQNjukhoN/0FwbkyqDSqtfMdPDN7nnTUMcHoIBGRhPcYWHZsbpU0ublXE9/O2gdf
-         3K2Mr3bZT4Qe9HolD2eHLcIXkLcL24PMSCON8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=fGUpPWSrdU78NE568Vi5RUu5F1/oAZko7D0EGEMZcTs=;
-        b=EVzxbnqE0DmDPl1kcbHWgMXHm2i8SCjpVlUDutrljXpg/06Zw2n9LtTGHXS28UWwhs
-         SRtUm3oa+tAmUfDdXxk9lo0BKeruPd0q7SPqCBUGdBOcKMcbRtH2iCNChktCX+xXPIhR
-         lYlvY42IMLZ6NJhkF7gQgShEUe6RF37BkTlIuk60/d096T1yO5mpLTTRTYXfEfcoX9bs
-         8kX7ejMkMkGu7kisGlASQgTsK5SBGCvYF/BFO1hQubgmoqShpVvgpUuiUvWsObwq0v0S
-         1GzZ0dUIw+flzf7Yg8g78EK9eZEOAjaejcWBzgQtQkKNwWog4nxjSsx0XGFZxg6mhLTH
-         7tHw==
-X-Gm-Message-State: AOAM531Z47x6KJbscWvqSYvX2pkzXY/GjgWJlLwF7h6Nypp4N7p2blgo
-        CQYQMLTMNAhM8sdTrdfRNLNzeg==
-X-Google-Smtp-Source: ABdhPJyf5MZFhqZum/8sY+o7JAm0UvmGWJpAAUbWNAawaQCAVL/h8KmxD+PlAyEjOXhtMiQTzOq6Jw==
-X-Received: by 2002:a05:600c:4e91:b0:394:8d30:d6dd with SMTP id f17-20020a05600c4e9100b003948d30d6ddmr8444794wmq.21.1653491543368;
-        Wed, 25 May 2022 08:12:23 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id u14-20020a5d434e000000b0020c5253d8fcsm2669373wrr.72.2022.05.25.08.12.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 May 2022 08:12:22 -0700 (PDT)
-Date:   Wed, 25 May 2022 17:12:20 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Jani Nikula <jani.nikula@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
+        with ESMTP id S233582AbiEYQZ5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 12:25:57 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2085.outbound.protection.outlook.com [40.107.223.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7728C8A075;
+        Wed, 25 May 2022 09:25:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k7zAIomJ9rpvu9QlDolBQ5usbmMp4jAH+DjePj59fhtEPLOE3N9OdmRxjMd4r/5yYdv5nn9gX199YzpukXAtxLk5aZkVDCj6+UlkhzSbEA7i0l++26eym8TSVpxhbSuLaZ1naojKQ0l13tb4UVKs56axWj6RoQmymFLuMKjupN/rSSa68F8drV/sOnYwjhXtOxZfg8urdZNp5ooCh5mkPXD5PIM+AY5YO2Y/OMqsV1Fc7lHCei93Nzvi9kOxYT53+EnLKGaLBLgXcQDdCTXf9fBhhh1BR4NuyMfCpDgTmDBTg42mwIR5Ps4JL5517Rkmb20OAr9H07D4Ngb1npvk6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VIUKmz1emGMHI8YuL9Fj4o882wfzYeK5G3vvStG/FCU=;
+ b=IegpwCXqM9sZuNjMzE9CCHEVcD1zfOf8WD46xKLxR6bIHJk7aFLNGE/pdsj9PBl7/RvsJCtO2Z/O0sqaeS0hhO8lanQ12/aRCTXqsPPlZdEFmKnFQjBl3j+uR+9CPN0vNlEOfZ75PQfUz9J14MhU0oGTC4FNKkM/IF6kzKKGcjs7y/5YQJuIl/ydaCENNjhdE/fwI9JvGujEMVdr61dwjmBmBw/E0OOzThNm0JRtCqquO95VSfI6gpNksqqlArukRwDIZZW2SISL1YENi4BnIcq3MVw2rZ19CfH8jDkrVsya8ZPf0Tigyrk/e3CzSUSlKUDUGE6xE6kWtN01Y0s2MQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VIUKmz1emGMHI8YuL9Fj4o882wfzYeK5G3vvStG/FCU=;
+ b=INFH7W2W2eBB+Qme7yeYr1/Tz9fnTY7RYjzjKFp6JIGe1ySMKbRfYrkGgHpVbQ7s8dFYnBcii0/8YKZJfd7ypm3dWUR1jgBq10oOXOXqgJe+16Nxf2muZbqoqUdWhDh5t5pyPzv3M5suH1/bKzV+/dGdH3HHO6+dQAbnuKVTbuCW7o1RzbpaFCokdcCxUXhRpA0t0UeZlfwbb4HkYBpsmalQgKPQpQAPtXv8tPhJGon2Eyg707XT3WhLjQZhmjvEMM7Mq2AoyuoH7Q74R9z9Y83Wf/CoVsT6J0rowtMqaEZeowUkFJJvicfgvnVaNZ2YXIs56SkrGsDJYotydDwWgg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB2763.namprd12.prod.outlook.com (2603:10b6:5:48::16) by
+ BN6PR1201MB0020.namprd12.prod.outlook.com (2603:10b6:405:56::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.15; Wed, 25 May
+ 2022 16:25:54 +0000
+Received: from DM6PR12MB2763.namprd12.prod.outlook.com
+ ([fe80::8d18:7673:ce09:c538]) by DM6PR12MB2763.namprd12.prod.outlook.com
+ ([fe80::8d18:7673:ce09:c538%5]) with mapi id 15.20.5273.023; Wed, 25 May 2022
+ 16:25:54 +0000
+Message-ID: <628007f0-22dc-c684-e530-f56a6e9186a4@nvidia.com>
+Date:   Wed, 25 May 2022 11:24:43 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 00/14] drm/kms: Stop registering multiple
+ /sys/class/backlight devs for a single display
+Content-Language: en-US
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Ben Skeggs <bskeggs@redhat.com>,
         Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
-        Daniel Dadap <ddadap@nvidia.com>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
         Thomas Zimmermann <tzimmermann@suse.de>,
@@ -58,252 +58,235 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
         Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
         "Pan, Xinhui" <Xinhui.Pan@amd.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
         intel-gfx <intel-gfx@lists.freedesktop.org>,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 00/14] drm/kms: Stop registering multiple
- /sys/class/backlight devs for a single display
-Message-ID: <Yo5HVDb5Ak4Ddqt/@phenom.ffwll.local>
 References: <20220517152331.16217-1-hdegoede@redhat.com>
  <871qwrfcwr.fsf@intel.com>
- <614a7cef-bfe6-c631-dc4c-d9e99a0b0937@redhat.com>
- <87r14rdu9a.fsf@intel.com>
+From:   Daniel Dadap <ddadap@nvidia.com>
+In-Reply-To: <871qwrfcwr.fsf@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS7PR03CA0192.namprd03.prod.outlook.com
+ (2603:10b6:5:3b6::17) To DM6PR12MB2763.namprd12.prod.outlook.com
+ (2603:10b6:5:48::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r14rdu9a.fsf@intel.com>
-X-Operating-System: Linux phenom 5.10.0-8-amd64 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a87c65d9-3ed1-460a-ee01-08da3e6b3d7f
+X-MS-TrafficTypeDiagnostic: BN6PR1201MB0020:EE_
+X-Microsoft-Antispam-PRVS: <BN6PR1201MB00209F60178BCB578CB127E5BCD69@BN6PR1201MB0020.namprd12.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: BBoUGErJ9da401z09cQfMDc6U0c3yypUmnSsEm6fFD9ZVWfK6sH/Tb98i7X00rb9qGK8oS1NZyn+6EQDM8dHWTIPLYCVXLrLr9BXN41KwmHkhxJe+1t4/IGYcf3uqMgnip0WZhuEtSwlDj5JpB8peZGE23jJxAfYl3lfG4bNeuTmgSp5oXrR64qZ7oz6cvmL4xJeHV8PNhldmbNMFTL9N/iuDFDt89UNWk9WkqWP3GCxVb3WgKLStBBn/E14ADGGnV426edJsonVESrbxLmLnpMLtFqjBUZ1inErKuYvBOotNKbNoFoS+EnbkEQM9xoDGitL4ovtYQbPcnpxO7/fNdgRwKptSNiscutCDiUDHc1pt9hMM/EZ80P4t8I0z8kFPsbeP7wng2zLazNT2uH3ZYAqhUSmCW1jL4sVrg3H5yRZP0GbUcZndUk1VNOqr1tbf/cPr5xir8cG0CtnPn2MeXTAfK3mxkZQMXeY8EkQ7tq6dHRuKf/Fu5mNn4EBl6D2BvyyiVdYsXd7itpBTgucbydrS+0aFFFLMDjnqrrLKuTL7oKYqOY//4U8fgJjKPjLliWVIYj5/u7eGoBY5c+zPTHDNh0SrICc8y4IQpr9cbSFOg2mgOpKb17JtW649jyqDj+r6ZqrCik0w0ea8FlUSwKY4Jnn2Mh07yqzoLjwLRi1XzMsyyffM0YC7T3m1YHCpDFFKOt2hVi14P1NATQfzFlm4/ViwrZYrt3LgJ1JuUWwHXLR58l5mzTzkd2lhyedIR7jKHtq+JfYBaY2gpji0z7m6OUb2Bz42vG4n22yYujgqUeiHzgEPEhgSDEGwVTaCJptJeigX4LongnnzQ6Ynv59yIz3cHesqwfeNsCWdvlNKwRtoPijEspCHxevXLRJ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2763.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(36756003)(31686004)(54906003)(316002)(6506007)(2906002)(53546011)(38100700002)(921005)(110136005)(4326008)(508600001)(26005)(6666004)(66556008)(83380400001)(66946007)(66476007)(8676002)(86362001)(31696002)(186003)(966005)(8936002)(6486002)(2616005)(5660300002)(7416002)(6512007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L0dORG5XRWxFcDlLYS9POU8zMmRPbDhqOGdmWEEwSVVOUGpZN3dmaElUU0Jm?=
+ =?utf-8?B?dUg2YjRkc2R5Mm5ya1UwSEhDcGpBUm9MQVBRSW1sdWltNkkyc3JGaVZNenU4?=
+ =?utf-8?B?K2I5ajVscVozNGIvMEFJQnNSaE5kWG9DVkpJNDVRdGNRV2xkWFk1R1dDM2d0?=
+ =?utf-8?B?NmtqMTZ1YWpCZmlNL1k3aWlLeTNMK2k1eDRIcVFnYUg4V20wODU3dTV4SEQy?=
+ =?utf-8?B?NmpMRDZZL1YzKzhXTEVZVEF3SkR3Vnp3ZmlIQ0tyMlFRZnNXWTZpNDB5TjlE?=
+ =?utf-8?B?enFyRkE4QnhFQWlxOGdVYWdoMFlUNTdRTnNaT0M1aGJabXhvQUlCdzZJQmJC?=
+ =?utf-8?B?M05GU2FQRnRHOTBMR01nSWwrZjcrQmlaeDNvbXFncFdDRER2YTBiR24vbjl4?=
+ =?utf-8?B?cUc4NVhHanMxS0pKNk9nMEJnTXdsU1lCTElFUEZ2eVR0elFBcjh3QzlYWC9o?=
+ =?utf-8?B?ZjRFeDBCbUdWVG9TS1k2TTNxbmNkSGMyWFlQczdzcjdBemVjRDJHN083NDFN?=
+ =?utf-8?B?QzltZWxoZ3Q1WnNzUzM5ZjFnR1VOeFEwWHdlSXB5bmREc3VpZnBYSkVleDls?=
+ =?utf-8?B?c3RUS3BaMVJsZkZ1YjZWT1Y2WStMdVp1OGpyb0hqU3BYZkZ2TDNabmJka3p6?=
+ =?utf-8?B?NjRjdVZYYVNrUWdxckJkT2hOZU9mbkN1MzBJNWh6R0Z3SmF4TDBKVG4xb3c2?=
+ =?utf-8?B?em8vSnQ2YVJGcXZCc2JoZGVjclV1THNBd3dlR2FzMTlwdjBFZWM3TzdaZUtv?=
+ =?utf-8?B?N0g1NmRHVGp4NlpJUzZ5SVNTYVo2dE8ycWs4OFJ5QzNkMWpnekYya3VuclFo?=
+ =?utf-8?B?QURzRndNVlpuUlpRb09WZ0NkVU1kTk5tY1FQRmNodDRMcjVjTGdvTWx2Q2Zt?=
+ =?utf-8?B?a0psTHVxZ2JSdU84OVBZcmIxSmRaMG5VTVRNT2E1Z04xR2h6SDNrSGR3cmtS?=
+ =?utf-8?B?WUJoMmFFWjN3b0prRG9KcExRZS8xMUZoc0M0dlpxalRMM2hYaThlclloOXBu?=
+ =?utf-8?B?aHVuVTJPOHVVOE96cElKSXE3OGt2WmNyM0Z5VXQ4UG0rbmhOeGd1Yi8zYThE?=
+ =?utf-8?B?b2lXSHE1c0hveUVRa2pFS3gzVU03UEdPMHoreVdic0cxQ0NWRjFZNzFzU3Bp?=
+ =?utf-8?B?S0crTnRHdmNMZUVncVJtOHJQbXd3SjhXeDdRQ1llRzNDdGEvVTh6TFRMWkcw?=
+ =?utf-8?B?cVVMeXRTS2t1Zkx2dmltWGZLeW8xYlU4aHBVVjY1T3N2ZWMxSGJJNFpueHpo?=
+ =?utf-8?B?Z1ovTmorbDdNb25MaWM3R0ZlaXRST0F6VEhXeXkycXdCd3c3cDFOVVlvYjVj?=
+ =?utf-8?B?ek1xc25aaHh1VWd3MzR2OXRsR211SEl1YWR3SDVTVVhHUmNXaWw5TlhJeXl4?=
+ =?utf-8?B?dE4xQ0dGVkcrNHl1cktUOTIwb3RVNFBSKyt0aktZbElJK3UxWVYyeVFiaVhC?=
+ =?utf-8?B?aHZFS21YYjFPTmVMbC96cTBPanJIQkh2azN0Zmc4ZVV2bmxzUmxUczZBTGxk?=
+ =?utf-8?B?cGQ5Sk1UZzZ1Yi8xZTh1MGE0S2FDWjZ4WXoyeXNqa2lvR0l2YXlKRmw4WHdw?=
+ =?utf-8?B?b0FGYnFic1RiZ0NKSGZWTmlqUjh5aG5yVXZZdGhySjVVQXVtdGptdEkrYmZm?=
+ =?utf-8?B?Wko5R2xKSkRWU1VRQjhXU05uUkd3eGlIZkFNVmxCUHNyeGFGam9EZWg4RmFS?=
+ =?utf-8?B?R2FvN2MrbzRKVDM3S0pLU2Q0dk5TN3E3c3lRdTVxMWZza2V3NDFHUzBPdnI1?=
+ =?utf-8?B?bHlweHU1M0E4T01MQkkySmI5TEU2QnlIdk5kNjkzdDJ6Nmk3SXlRbWs0R08r?=
+ =?utf-8?B?aTZGbGVWQ2dicWxCTkxNemVmUEkxQ3MrdkgycSs0aUZzRFh0bHFlUjRPOG1R?=
+ =?utf-8?B?elNFaWQxdFBOUEpBSGZXU2pqTjJHQk9TVStheFM0cGxjdWVvankrYURyczZo?=
+ =?utf-8?B?OHU3NU9GclJDNlZnNWZkNk1ZWEpQcUZrWXFLdGhQeDlKczFKQmk2Mmc0R1JW?=
+ =?utf-8?B?VlVCR0QzdmNZZUdzTlkxaUk5ODlsOUxBak5IcUduYjlBQVdBQmNDeFFGeEVZ?=
+ =?utf-8?B?Vm5mVnIwRlkwZGRZcUlRRGxFdzhSVjN2cDB5MXlqMEVzNlNpUndwRmh3KzR5?=
+ =?utf-8?B?ZzFMZ3hCaHNIcTZIZTY3MjY3L0crSUdGQnFINkVmMWEwTDZ0c2QyODh1Q0ht?=
+ =?utf-8?B?VW95ZitoOS8vOEMzMGIxRXJzY09udTRsNmY4YnpvejJkc1ZpL0I1RHVxc3A2?=
+ =?utf-8?B?Tk9oeStvNVhET2FwMG1oNUNTTjlmbERRMTlRYkpNUnlwdGhMVWtpeXhtbGVG?=
+ =?utf-8?B?Smc2NXZXM2J3QnFnVmw4SGlaU2NTVFNSQ2IxeVk1TUlKcmpqdXdTUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a87c65d9-3ed1-460a-ee01-08da3e6b3d7f
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2763.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2022 16:25:54.1969
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Jgmg8z369dPHgWOSJgMPyHG5IxoX9mm5EeLDfGqM+4v9bsyIfCEpCPRs9VbFsYjRLs6PSlF3ol33JQsFVAtV/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR1201MB0020
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 18, 2022 at 01:12:33PM +0300, Jani Nikula wrote:
-> On Wed, 18 May 2022, Hans de Goede <hdegoede@redhat.com> wrote:
-> > Hi,
-> >
-> > On 5/18/22 10:44, Jani Nikula wrote:
-> >> On Tue, 17 May 2022, Hans de Goede <hdegoede@redhat.com> wrote:
-> >>> Hi All,
-> >>>
-> >>> As mentioned in my RFC titled "drm/kms: control display brightness through
-> >>> drm_connector properties":
-> >>> https://lore.kernel.org/dri-devel/0d188965-d809-81b5-74ce-7d30c49fee2d@redhat.com/
-> >>>
-> >>> The first step towards this is to deal with some existing technical debt
-> >>> in backlight handling on x86/ACPI boards, specifically we need to stop
-> >>> registering multiple /sys/class/backlight devs for a single display.
-> >> 
-> >> I guess my question here is, how do you know it's for a *single*
-> >> display?
-> >> 
-> >> There are already designs out there with two flat panels, with
-> >> independent brightness controls. They're still rare and I don't think we
-> >> handle them very well. But we've got code to register multiple native
-> >> backlight interfaces, see e.g. commit 20f85ef89d94 ("drm/i915/backlight:
-> >> use unique backlight device names").
-> >> 
-> >> So imagine a design where one of the panels needs backlight control via
-> >> ACPI and the other via native backlight control. Granted, I don't know
-> >> if one exists, but I think it's very much in the realm of possible
-> >> things the OEMs might do. For example, have an EC PWM for primary panel
-> >> backlight, and use GPU PWM for secondary. How do you know you actually
-> >> do need to register two interfaces?
-> >
-> > On x86/ACPI devices this is all driven by acpi_video_get_backlight_type() /
-> > by the drivers/acpi/video_detect.c code. That code already will break on
-> > systems where there are 2 backlight controls, with one being ACPI based
-> > and the other a native GPU PWM backlight device.
-> >
-> > In this scenario as soon as the native GPU PWM backlight device shows up
-> > then, if acpi_video_get_backlight_type()==native, video_detect.c will
-> > currently unregister the acpi_video# backlight device(s) since userspace
-> > prefers the firmware type over the native type, so for userspace to
-> > actually honor the acpi_video_get_backlight_type()==native we need to get
-> > the acpi_video# backlight device "out of the way" which is currently
-> > handled by unregistering it.
-> >
-> > Note in a way we already have a case where userspace sees 2 panels,
-> > in hybrid laptop setups with a mux and on those systems we may see
-> > either 2 native backlight devices; or 2 native backlight devices +
-> > 2 acpi_video backlight devices with userspace preferring the ACPI
-> > ones.
-> >
-> > Also note that userspace already has code to detect if the related
-> > panel is active (iow which way the mux between the GPU and the panels
-> > points) and then uses that backlight device. Userspace here very
-> > much assumes a single panel though.
-> >
-> >> I'm fine with dealing with such cases as they arise to avoid
-> >> over-engineering up front, but I also don't want us to completely paint
-> >> ourselves in a corner either.
-> >
-> > Right. Note that the current code (both with and without this patchset)
-> > already will work fine from a kernel pov as long as both panels
-> > are either using native GPU PWM or are both using ACPI. But if we
-> > ever get a mix then this will need special handling.
-> >
-> > Note that all userspace code I know is currently hardcoded
-> > to assume a single panel. Userspace already picks one preferred
-> > device under /sys/class/backlight and ignores the rest. Actually
-> > atm userspace must behave this way, because on x86/ACPI boards we
-> > do often register multiple backlight devices for a single panel.
-> >
-> > So in a way moving to registering only a single backlight device
-> > prepares for actually having multiple panels work.
-> >
-> > Also keep in mind that this is preparation work for making the
-> > panel brightness a drm_connector property. When the panel uses
-> > a backlight device other then the native GPU PWM to control the
-> > brightness then the helper code for this needs to have a way to
-> > select which backlight_device to use then and the non native
-> > types are not "linked" to a specific connector so in this case
-> > we really need there to be only 1 backlight device registered
-> > so that the code looking up the (non native) backlight device
-> > for the connector gets the right one and not merely the one
-> > which happened to get registered first.
-> >
-> > And I believe that having the panel brightness be a drm_connector
-> > property is the way to make it possible for userspace to deal
-> > with the multiple panels which each have a separate brightness
-> > control case.
-> 
-> Agreed.
-> 
-> Thanks for the explanations and recording them here.
-
-Can we stuff a summary of all the things we've discussed here into
-Documentation/gpu/todo.rst so that we have this recorded somewhere more
-permanently? Also good place to make sure everyone who was part of these
-discussions has a chance to ack the overall plan as part of merging such a
-patch.
-
-Just feels like this is big&complex enough to justify a todo entry with
-what's going on and what's still to be done.
--Daniel
+On 5/18/22 03:44, Jani Nikula wrote:
+> On Tue, 17 May 2022, Hans de Goede <hdegoede@redhat.com> wrote:
+>> Hi All,
+>>
+>> As mentioned in my RFC titled "drm/kms: control display brightness through
+>> drm_connector properties":
+>> https://lore.kernel.org/dri-devel/0d188965-d809-81b5-74ce-7d30c49fee2d@redhat.com/
+>>
+>> The first step towards this is to deal with some existing technical debt
+>> in backlight handling on x86/ACPI boards, specifically we need to stop
+>> registering multiple /sys/class/backlight devs for a single display.
+> I guess my question here is, how do you know it's for a *single*
+> display?
+>
+> There are already designs out there with two flat panels, with
+> independent brightness controls. They're still rare and I don't think we
+> handle them very well. But we've got code to register multiple native
+> backlight interfaces, see e.g. commit 20f85ef89d94 ("drm/i915/backlight:
+> use unique backlight device names").
 
 
-> 
+This is one of my concerns as well. There are a small number of (mostly 
+somewhat old) designs with more than one internal panel. Since the 
+intent here is to tie the new backlight UAPI to DRM connectors, I think 
+it should remain possible to address each panel individually (the goal 
+is to stop having multiple backlight handlers, all of which control the 
+same display, not to stop having multiple backlight handlers in 
+general). Where I think it might get tricky is when the same display 
+might be driven by one GPU or another at different times, for example, 
+with a switchable mux. Notebook designs which use the 
+nvidia-wmi-ec-backlight driver will use the same backlight handler for 
+the display regardless of which GPU is currently driving it, but I 
+believe there are other designs where the same panel might have 
+backlight controlled by either the iGPU or the dGPU, depending on the 
+mux state.
+
+
+> So imagine a design where one of the panels needs backlight control via
+> ACPI and the other via native backlight control. Granted, I don't know
+> if one exists, but I think it's very much in the realm of possible
+> things the OEMs might do. For example, have an EC PWM for primary panel
+> backlight, and use GPU PWM for secondary. How do you know you actually
+> do need to register two interfaces?
+
+
+The "how do you know" question is one I am wondering as well. I need to 
+check with some of our backlight experts here at NVIDIA to figure out 
+how exactly reliably we are able to make this determination.
+
+
+> I'm fine with dealing with such cases as they arise to avoid
+> over-engineering up front, but I also don't want us to completely paint
+> ourselves in a corner either.
+>
 > BR,
 > Jani.
-> 
-> >
-> > Regards,
-> >
-> > Hans
-> >
-> >
-> >
-> >
-> >
-> >> 
-> >> BR,
-> >> Jani.
-> >> 
-> >> 
-> >>>
-> >>> This series implements my RFC describing my plan for these cleanups:
-> >>> https://lore.kernel.org/dri-devel/98519ba0-7f18-201a-ea34-652f50343158@redhat.com/
-> >>>
-> >>> Specifically patches 1-6 implement the "Fixing kms driver unconditionally
-> >>> register their "native" backlight dev" part.
-> >>>
-> >>> And patches 7-14 implement the "Fixing acpi_video0 getting registered for
-> >>> a brief time" time.
-> >>>
-> >>> Note this series does not deal yet with the "Other issues" part, I plan
-> >>> to do a follow up series for that.
-> >>>
-> >>> The changes in this series are good to have regardless of the further
-> >>> "drm/kms: control display brightness through drm_connector properties"
-> >>> plans. So I plan to push these upstream once they are ready (once
-> >>> reviewed). Since this crosses various subsystems / touches multiple
-> >>> kms drivers my plan is to provide an immutable branch based on say
-> >>> 5.19-rc1 and then have that get merged into all the relevant trees.
-> >>>
-> >>> Please review.
-> >>>
-> >>> Regards,
-> >>>
-> >>> Hans
-> >>>
-> >>>
-> >>> Hans de Goede (14):
-> >>>   ACPI: video: Add a native function parameter to
-> >>>     acpi_video_get_backlight_type()
-> >>>   drm/i915: Don't register backlight when another backlight should be
-> >>>     used
-> >>>   drm/amdgpu: Don't register backlight when another backlight should be
-> >>>     used
-> >>>   drm/radeon: Don't register backlight when another backlight should be
-> >>>     used
-> >>>   drm/nouveau: Don't register backlight when another backlight should be
-> >>>     used
-> >>>   ACPI: video: Drop backlight_device_get_by_type() call from
-> >>>     acpi_video_get_backlight_type()
-> >>>   ACPI: video: Remove acpi_video_bus from list before tearing it down
-> >>>   ACPI: video: Simplify acpi_video_unregister_backlight()
-> >>>   ACPI: video: Make backlight class device registration a separate step
-> >>>   ACPI: video: Remove code to unregister acpi_video backlight when a
-> >>>     native backlight registers
-> >>>   drm/i915: Call acpi_video_register_backlight()
-> >>>   drm/nouveau: Register ACPI video backlight when nv_backlight
-> >>>     registration fails
-> >>>   drm/amdgpu: Register ACPI video backlight when skipping amdgpu
-> >>>     backlight registration
-> >>>   drm/radeon: Register ACPI video backlight when skipping radeon
-> >>>     backlight registration
-> >>>
-> >>>  drivers/acpi/acpi_video.c                     | 69 ++++++++++++++-----
-> >>>  drivers/acpi/video_detect.c                   | 53 +++-----------
-> >>>  drivers/gpu/drm/Kconfig                       |  2 +
-> >>>  .../gpu/drm/amd/amdgpu/atombios_encoders.c    | 14 +++-
-> >>>  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  9 +++
-> >>>  .../gpu/drm/i915/display/intel_backlight.c    |  7 ++
-> >>>  drivers/gpu/drm/i915/display/intel_display.c  |  1 +
-> >>>  drivers/gpu/drm/i915/display/intel_opregion.c |  2 +-
-> >>>  drivers/gpu/drm/nouveau/nouveau_backlight.c   | 14 ++++
-> >>>  drivers/gpu/drm/radeon/atombios_encoders.c    |  7 ++
-> >>>  drivers/gpu/drm/radeon/radeon_encoders.c      | 11 ++-
-> >>>  .../gpu/drm/radeon/radeon_legacy_encoders.c   |  7 ++
-> >>>  drivers/platform/x86/acer-wmi.c               |  2 +-
-> >>>  drivers/platform/x86/asus-laptop.c            |  2 +-
-> >>>  drivers/platform/x86/asus-wmi.c               |  4 +-
-> >>>  drivers/platform/x86/compal-laptop.c          |  2 +-
-> >>>  drivers/platform/x86/dell/dell-laptop.c       |  2 +-
-> >>>  drivers/platform/x86/eeepc-laptop.c           |  2 +-
-> >>>  drivers/platform/x86/fujitsu-laptop.c         |  4 +-
-> >>>  drivers/platform/x86/ideapad-laptop.c         |  2 +-
-> >>>  drivers/platform/x86/intel/oaktrail.c         |  2 +-
-> >>>  drivers/platform/x86/msi-laptop.c             |  2 +-
-> >>>  drivers/platform/x86/msi-wmi.c                |  2 +-
-> >>>  drivers/platform/x86/samsung-laptop.c         |  2 +-
-> >>>  drivers/platform/x86/sony-laptop.c            |  2 +-
-> >>>  drivers/platform/x86/thinkpad_acpi.c          |  4 +-
-> >>>  drivers/platform/x86/toshiba_acpi.c           |  2 +-
-> >>>  include/acpi/video.h                          |  8 ++-
-> >>>  28 files changed, 156 insertions(+), 84 deletions(-)
-> >> 
-> >
-> 
-> -- 
-> Jani Nikula, Intel Open Source Graphics Center
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+>
+>
+>> This series implements my RFC describing my plan for these cleanups:
+>> https://lore.kernel.org/dri-devel/98519ba0-7f18-201a-ea34-652f50343158@redhat.com/
+>>
+>> Specifically patches 1-6 implement the "Fixing kms driver unconditionally
+>> register their "native" backlight dev" part.
+>>
+>> And patches 7-14 implement the "Fixing acpi_video0 getting registered for
+>> a brief time" time.
+>>
+>> Note this series does not deal yet with the "Other issues" part, I plan
+>> to do a follow up series for that.
+>>
+>> The changes in this series are good to have regardless of the further
+>> "drm/kms: control display brightness through drm_connector properties"
+>> plans. So I plan to push these upstream once they are ready (once
+>> reviewed). Since this crosses various subsystems / touches multiple
+>> kms drivers my plan is to provide an immutable branch based on say
+>> 5.19-rc1 and then have that get merged into all the relevant trees.
+>>
+>> Please review.
+>>
+>> Regards,
+>>
+>> Hans
+>>
+>>
+>> Hans de Goede (14):
+>>    ACPI: video: Add a native function parameter to
+>>      acpi_video_get_backlight_type()
+>>    drm/i915: Don't register backlight when another backlight should be
+>>      used
+>>    drm/amdgpu: Don't register backlight when another backlight should be
+>>      used
+>>    drm/radeon: Don't register backlight when another backlight should be
+>>      used
+>>    drm/nouveau: Don't register backlight when another backlight should be
+>>      used
+>>    ACPI: video: Drop backlight_device_get_by_type() call from
+>>      acpi_video_get_backlight_type()
+>>    ACPI: video: Remove acpi_video_bus from list before tearing it down
+>>    ACPI: video: Simplify acpi_video_unregister_backlight()
+>>    ACPI: video: Make backlight class device registration a separate step
+>>    ACPI: video: Remove code to unregister acpi_video backlight when a
+>>      native backlight registers
+>>    drm/i915: Call acpi_video_register_backlight()
+>>    drm/nouveau: Register ACPI video backlight when nv_backlight
+>>      registration fails
+>>    drm/amdgpu: Register ACPI video backlight when skipping amdgpu
+>>      backlight registration
+>>    drm/radeon: Register ACPI video backlight when skipping radeon
+>>      backlight registration
+>>
+>>   drivers/acpi/acpi_video.c                     | 69 ++++++++++++++-----
+>>   drivers/acpi/video_detect.c                   | 53 +++-----------
+>>   drivers/gpu/drm/Kconfig                       |  2 +
+>>   .../gpu/drm/amd/amdgpu/atombios_encoders.c    | 14 +++-
+>>   .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  9 +++
+>>   .../gpu/drm/i915/display/intel_backlight.c    |  7 ++
+>>   drivers/gpu/drm/i915/display/intel_display.c  |  1 +
+>>   drivers/gpu/drm/i915/display/intel_opregion.c |  2 +-
+>>   drivers/gpu/drm/nouveau/nouveau_backlight.c   | 14 ++++
+>>   drivers/gpu/drm/radeon/atombios_encoders.c    |  7 ++
+>>   drivers/gpu/drm/radeon/radeon_encoders.c      | 11 ++-
+>>   .../gpu/drm/radeon/radeon_legacy_encoders.c   |  7 ++
+>>   drivers/platform/x86/acer-wmi.c               |  2 +-
+>>   drivers/platform/x86/asus-laptop.c            |  2 +-
+>>   drivers/platform/x86/asus-wmi.c               |  4 +-
+>>   drivers/platform/x86/compal-laptop.c          |  2 +-
+>>   drivers/platform/x86/dell/dell-laptop.c       |  2 +-
+>>   drivers/platform/x86/eeepc-laptop.c           |  2 +-
+>>   drivers/platform/x86/fujitsu-laptop.c         |  4 +-
+>>   drivers/platform/x86/ideapad-laptop.c         |  2 +-
+>>   drivers/platform/x86/intel/oaktrail.c         |  2 +-
+>>   drivers/platform/x86/msi-laptop.c             |  2 +-
+>>   drivers/platform/x86/msi-wmi.c                |  2 +-
+>>   drivers/platform/x86/samsung-laptop.c         |  2 +-
+>>   drivers/platform/x86/sony-laptop.c            |  2 +-
+>>   drivers/platform/x86/thinkpad_acpi.c          |  4 +-
+>>   drivers/platform/x86/toshiba_acpi.c           |  2 +-
+>>   include/acpi/video.h                          |  8 ++-
+>>   28 files changed, 156 insertions(+), 84 deletions(-)
