@@ -2,57 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EAE753425D
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 May 2022 19:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12045534261
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 May 2022 19:47:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245188AbiEYRqF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 May 2022 13:46:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50552 "EHLO
+        id S1343493AbiEYRrV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 May 2022 13:47:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243862AbiEYRqF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 13:46:05 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CEB79D06A
-        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 10:46:04 -0700 (PDT)
+        with ESMTP id S245758AbiEYRrT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 13:47:19 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC412018E
+        for <linux-acpi@vger.kernel.org>; Wed, 25 May 2022 10:47:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1653500764; x=1685036764;
+  t=1653500839; x=1685036839;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Exps3SgTQQ/0EA+qu4RqymB+I35Km9jd9MlY1B76C6o=;
-  b=Hud9yGshyNZtmDtQ+mgzSpisvDdk/18u3NH42A6blazM/dRbzeYr3dG+
-   6a0R2sre91h/Ls5qi+rNW2I7YlPDpSWrxpJ9tf56PFc1WAPSGADsgVZcx
-   Lkau/+KTWi35HBb9hh/n6+Ue/x4p/tmn9jV6dfkoNF/4EJQh1DLgLvjXL
-   n+nzHs2FEejc7ekWIFD3FtoQ6tOl3NASHYrH81sgOX2npxiTTsyaQD85w
-   gWeH04ndDv48TbmCC2pOxfAY1+hq+ENXsJ27vbz4fmrs+HuoAukm+EMKh
-   SIpLE4hOc1iSCzdiz7rX4wvHyvbLAW5Oc+mKD6RsFL2mWUqOOwyPKdAOo
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10358"; a="254386231"
+  bh=cy/ZY9c51u1GO5cX9KHF384E8b0FjTATLJGVU/vYlwc=;
+  b=FU/gATtdXShFHZ897wMtvRtMSHNQBgHJF28tjobn3LXAobq/OFh851mF
+   k9q33yhG7UEopUJo1J3zeXRlYj8asS2YWdLOqtdl+i+LjGBV8/i6aNtBl
+   WvCNI0037/6FiQhBr/9oPazV5N4RF+mum5iJTmkMKWZqjZw0iMVCMbOPX
+   boR1vgnC9fSlsPiCQnjqlXaaA91+BT2Wod1C3PzLg1+Lgcl/Hw2k3RxQ+
+   Z6MmrEtFIN8oyft+YNH29N3rVw1T3XHsC/ILpdNMW+DYpi1zv/DoLyPVF
+   hl0PwZYS82gOMkqmmMDbu0ReDomoCYKBS4Wur9dMqAvE7EW9IE1ZoDQ8Z
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10358"; a="272705138"
 X-IronPort-AV: E=Sophos;i="5.91,250,1647327600"; 
-   d="scan'208";a="254386231"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 10:30:24 -0700
+   d="scan'208";a="272705138"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 10:36:58 -0700
 X-IronPort-AV: E=Sophos;i="5.91,250,1647327600"; 
-   d="scan'208";a="704092634"
+   d="scan'208";a="745849176"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 10:30:23 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 10:36:57 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.95)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ntupv-000L5X-Ff;
-        Wed, 25 May 2022 20:30:19 +0300
-Date:   Wed, 25 May 2022 20:30:19 +0300
+        id 1ntuwI-000L5k-IO;
+        Wed, 25 May 2022 20:36:54 +0300
+Date:   Wed, 25 May 2022 20:36:54 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org
-Subject: Re: [PATCH v3 5/8] ACPI: property: Switch node property referencing
- from ifs to a switch
-Message-ID: <Yo5nq1a7S1RgZg7f@smile.fi.intel.com>
+Subject: Re: [PATCH v3 8/8] ACPI: property: Read buffer properties as integers
+Message-ID: <Yo5pNjsb2oNX9Knf@smile.fi.intel.com>
 References: <20220525130123.767410-1-sakari.ailus@linux.intel.com>
- <20220525130123.767410-6-sakari.ailus@linux.intel.com>
+ <20220525130123.767410-9-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220525130123.767410-6-sakari.ailus@linux.intel.com>
+In-Reply-To: <20220525130123.767410-9-sakari.ailus@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -64,103 +63,40 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 25, 2022 at 04:01:20PM +0300, Sakari Ailus wrote:
-> __acpi_node_get_property_reference() uses a series of if () statements for
-> testing the same variable. There's soon going to be one more value to be
-> tested.
-> 
-> Switch to use switch() instead.
+On Wed, May 25, 2022 at 04:01:23PM +0300, Sakari Ailus wrote:
+> Instead of adding a new property type, read buffer properties as integers.
+> Even though the internal representation in ACPI is different, the data
+> type is the same (byte) than on 8-bit integers.
 
-Looks like sanitization over the different parts of the code in this file.
+...
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/acpi/property.c | 41 ++++++++++++++++++++++-------------------
->  1 file changed, 22 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index dd6cce955ee28..a8e8a214a524f 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -780,11 +780,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->  	if (ret)
->  		return ret == -EINVAL ? -ENOENT : -EINVAL;
->  
-> -	/*
-> -	 * The simplest case is when the value is a single reference.  Just
-> -	 * return that reference then.
-> -	 */
-> -	if (obj->type == ACPI_TYPE_LOCAL_REFERENCE) {
-> +	switch (obj->type) {
-> +	case ACPI_TYPE_LOCAL_REFERENCE:
-> +		/* Plain single reference without arguments. */
->  		if (index)
->  			return -ENOENT;
->  
-> @@ -795,19 +793,21 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->  		args->fwnode = acpi_fwnode_handle(device);
->  		args->nargs = 0;
->  		return 0;
-> +	case ACPI_TYPE_PACKAGE:
-> +		/*
-> +		 * If it is not a single reference, then it is a package of
-> +		 * references followed by number of ints as follows:
-> +		 *
-> +		 *  Package () { REF, INT, REF, INT, INT }
-> +		 *
-> +		 * The index argument is then used to determine which reference
-> +		 * the caller wants (along with the arguments).
-> +		 */
+> +	switch (proptype) {
+> +	case DEV_PROP_STRING:
 > +		break;
+> +	case DEV_PROP_U8 ... DEV_PROP_U64:
+> +		if (obj->type == ACPI_TYPE_BUFFER) {
+
+> +			if (nval <= obj->buffer.length)
+> +				break;
+> +			return -EOVERFLOW;
+
+Why not traditional pattern and be consistent with default case?
+
+			if (nval > obj->buffer.length)
+				return -EOVERFLOW;
+			break;
+
+> +		}
+> +		fallthrough;
 > +	default:
-> +		return -EINVAL;
->  	}
->  
-> -	/*
-> -	 * If it is not a single reference, then it is a package of
-> -	 * references followed by number of ints as follows:
-> -	 *
-> -	 *  Package () { REF, INT, REF, INT, INT }
-> -	 *
-> -	 * The index argument is then used to determine which reference
-> -	 * the caller wants (along with the arguments).
-> -	 */
-> -	if (obj->type != ACPI_TYPE_PACKAGE)
-> -		return -EINVAL;
->  	if (index >= obj->package.count)
->  		return -ENOENT;
->  
-> @@ -815,7 +815,8 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->  	end = element + obj->package.count;
->  
->  	while (element < end) {
-> -		if (element->type == ACPI_TYPE_LOCAL_REFERENCE) {
-> +		switch (element->type) {
-> +		case ACPI_TYPE_LOCAL_REFERENCE:
->  			device = acpi_fetch_acpi_dev(element->reference.handle);
->  			if (!device)
->  				return -EINVAL;
-> @@ -831,11 +832,13 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->  			if (idx == index)
->  				return 0;
->  
-> -		} else if (element->type == ACPI_TYPE_INTEGER) {
-> +			break;
-> +		case ACPI_TYPE_INTEGER:
->  			if (idx == index)
->  				return -ENOENT;
->  			element++;
-> -		} else {
-> +			break;
-> +		default:
->  			return -EINVAL;
->  		}
->  
-> -- 
-> 2.30.2
-> 
+> +		if (nval > obj->package.count)
+> +			return -EOVERFLOW;
+
+I would add break statement here.
+
+> +	}
+>  	if (nval == 0)
+>  		return -EINVAL;
 
 -- 
 With Best Regards,
