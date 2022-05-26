@@ -2,166 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7842A534B6E
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 May 2022 10:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC615353D7
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 May 2022 21:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239711AbiEZIQr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 May 2022 04:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
+        id S1348704AbiEZTTb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 May 2022 15:19:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346702AbiEZIQm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 May 2022 04:16:42 -0400
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815624FC7B
-        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:21 -0700 (PDT)
-Received: by mail-pj1-x104a.google.com with SMTP id o8-20020a17090a9f8800b001dc9f554c7fso779038pjp.4
-        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=2cafqgyvMaG8pnmb2DwUPLH+NwqexHFaoGplVLqjY6c=;
-        b=Qhvec8EM5waM3couwB4Dum8OsNReKnA1EIAEV8LpsepiAu+NTnpIDd6zPzvaScyoHi
-         joLxHL0NnhEkyS300O8xI9N1fgEmoiNW+tHhgRg+C3VgA1m7nuIAVZgpAAN0SCoZaXb3
-         HEB/SDIh21LxIk12AKALJ8PaTt3HoxW0TucqgFk8I+2nWe8sV+SOqE/1qyqqfeteZr3g
-         EufhH6H9hKX80HxUrjS4SaCSZY+0yU4qfhVpbOF9hKztCUUvRR36MTpKRlzF3fXGT8kL
-         xXPgN+vDeTbaZIcJj1bpAuXYJV78EUX8wvpAl/KOGx8ob/jDmnzqVjFH+adTvCIPzWq4
-         hKpQ==
+        with ESMTP id S1348719AbiEZTTa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 May 2022 15:19:30 -0400
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C21F72980C
+        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 12:19:29 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-2ef5380669cso25763227b3.9
+        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 12:19:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=2cafqgyvMaG8pnmb2DwUPLH+NwqexHFaoGplVLqjY6c=;
-        b=pIRKdZ7blYILTZiKOcIeEtsD86TUf+kgmpkn8AzPATwlpUIyAL8Q87F0T/zp8iKsvs
-         heNoMZsw1z5uobnHuny95s4ehKRhTW6OFD3sbLoq1T/mfdS3+d9OQLNPEEpMzDbtFFiq
-         lIQcvCQ+ItOGhc72HbIbCRczoTc42AKHfSO27uVyfQdQfJhu+aEI079oDQkKPKZxf8hV
-         A+eNR6NuwauNyU+E3P+UPqYx9/j/6Xu0gx9Utko95ssz8BsRVEfCDEf0NM4IdxScd7Ij
-         YX0OeGupV+vaswI3reVDbzu29hzEpTOmQN5qikREZdrYYlv+Tne0tTum1ygd77KhD6lM
-         sDkg==
-X-Gm-Message-State: AOAM533g2N2MZ9EsIgn7Lb6U/nTtLJDFAb97vYjjp0j8nF0OrS9J8/up
-        WzpkTbFgK1JdZ26hhrE8PgQF8M1L/RjU9/g=
-X-Google-Smtp-Source: ABdhPJyinReesiUqDbMmyw2id5J+MedifDe6OonBttcETpmdQGcuAvMkhqslxCFm255z4G73O9ROU101o9oWZy4=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:ff1f:a3b7:b6de:d30f])
- (user=saravanak job=sendgmr) by 2002:a17:902:7004:b0:161:f216:4f3f with SMTP
- id y4-20020a170902700400b00161f2164f3fmr30173525plk.98.1653552980455; Thu, 26
- May 2022 01:16:20 -0700 (PDT)
-Date:   Thu, 26 May 2022 01:15:48 -0700
-In-Reply-To: <20220526081550.1089805-1-saravanak@google.com>
-Message-Id: <20220526081550.1089805-10-saravanak@google.com>
-Mime-Version: 1.0
-References: <20220526081550.1089805-1-saravanak@google.com>
-X-Mailer: git-send-email 2.36.1.124.g0e6072fb45-goog
-Subject: [RFC PATCH v1 9/9] driver core: Delete driver_deferred_probe_check_state()
-From:   Saravana Kannan <saravanak@google.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NgXAO40gBIUu1WUEitfXKOQleyYY2QlsEz9jRKAKfEM=;
+        b=31idHmDXSJWh+qJuLyiI+tUVS8SgEGWnuQDiZK+7qUYqWq5E/+sNsOiGROvxGW4DSA
+         egsLCmmu443+o8QpgTX16y5oRCsJwSMmfclrRL7JZEvBXvvgbNeyWC6joFaMRU4Mrnfi
+         29/eutgdd/Mg/bmVamF/fCRWrADt8q2bO9TTcr7FfTEIPXB5MtoP48vDfR5Kjc2Q7Ll7
+         PyegcIw7zXvtHCpDQRpECnVYeOdFQeYJFSTHxX/+JTP2eNBYeHAviOWe8tynVgmOh0Dg
+         d6duyfhg6sTNV0P04DCFasKE9upRkBzzXBB1LJVNWTMDGfXUeoFPHTReMNyhr8a7kfZX
+         OOHg==
+X-Gm-Message-State: AOAM531L3PZexiyPJNvFgltgtXGZMXPtHqXXC+bpAHY55aEXRXf2UW0p
+        QRE4PFHgSt1FPpXTQ0bWuKh/Xa3ETrQ7eSTnQtzwurOD
+X-Google-Smtp-Source: ABdhPJyStcz0BCiDJHyEn6Fd9ODy2pVez1ESnH1qgNfaBLGtUgvxQnV374PGU3VqeTMztgwbbjznN39ASx+f/NZbrnc=
+X-Received: by 2002:a0d:c442:0:b0:2fe:beab:1fef with SMTP id
+ g63-20020a0dc442000000b002febeab1fefmr41387396ywd.196.1653592769022; Thu, 26
+ May 2022 12:19:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220525130123.767410-1-sakari.ailus@linux.intel.com> <20220525130123.767410-3-sakari.ailus@linux.intel.com>
+In-Reply-To: <20220525130123.767410-3-sakari.ailus@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 26 May 2022 21:19:17 +0200
+Message-ID: <CAJZ5v0jrFQk2aH78Fg=W+6KAzhony3yZ+NjYy8ki5atKoaPwLw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/8] ACPI: property: Tie data nodes to acpi handles
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        David Ahern <dsahern@kernel.org>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        John Stultz <jstultz@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, iommu@lists.linux-foundation.org,
-        netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org
+        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The function is no longer used. So delete it.
+On Wed, May 25, 2022 at 3:01 PM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> ACPICA allows associating additional information (i.e. pointers with
+> specific tag) to acpi_handles. The acpi_device's are associated to
+> acpi_handle's in acpi_tie_acpi_dev() in scan.c, do the same here for the
+> _DSD data nodes.
+>
+> This allows direct data node references in properties, implemented later on
+> in the series.
+>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/acpi/property.c | 42 ++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 41 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index bc9a645f8bb77..f8c83ee6c8d59 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -340,6 +340,43 @@ acpi_data_add_props(struct acpi_device_data *data, const guid_t *guid,
+>         return props;
+>  }
+>
+> +static void acpi_nondev_subnode_tag(acpi_handle handle, void *context)
+> +{
+> +}
+> +
+> +static void acpi_untie_nondev_subnodes(struct acpi_device_data *data)
+> +{
+> +       struct acpi_data_node *dn;
+> +
+> +       list_for_each_entry(dn, &data->subnodes, sibling) {
+> +               acpi_detach_data(dn->handle, acpi_nondev_subnode_tag);
+> +
+> +               acpi_untie_nondev_subnodes(&dn->data);
+> +       }
+> +}
+> +
+> +static int acpi_tie_nondev_subnodes(struct acpi_device_data *data)
+> +{
+> +       struct acpi_data_node *dn;
+> +
+> +       list_for_each_entry(dn, &data->subnodes, sibling) {
+> +               acpi_status status;
+> +               int ret;
+> +
+> +               status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
+> +               if (ACPI_FAILURE(status)) {
+> +                       acpi_handle_err(dn->handle, "Can't tag data node\n");
+> +                       return 0;
+> +               }
+> +
+> +               ret = acpi_tie_nondev_subnodes(&dn->data);
+> +               if (ret)
+> +                       return ret;
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
----
- drivers/base/dd.c             | 30 ------------------------------
- include/linux/device/driver.h |  1 -
- 2 files changed, 31 deletions(-)
+Is it actually possible that this returns anything different from 0?
 
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index af8138d44e6c..789b0871dc45 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -274,42 +274,12 @@ static int __init deferred_probe_timeout_setup(char *str)
- }
- __setup("deferred_probe_timeout=", deferred_probe_timeout_setup);
- 
--/**
-- * driver_deferred_probe_check_state() - Check deferred probe state
-- * @dev: device to check
-- *
-- * Return:
-- * * -ENODEV if initcalls have completed and modules are disabled.
-- * * -ETIMEDOUT if the deferred probe timeout was set and has expired
-- *   and modules are enabled.
-- * * -EPROBE_DEFER in other cases.
-- *
-- * Drivers or subsystems can opt-in to calling this function instead of directly
-- * returning -EPROBE_DEFER.
-- */
--int driver_deferred_probe_check_state(struct device *dev)
--{
--	if (!IS_ENABLED(CONFIG_MODULES) && initcalls_done) {
--		dev_warn(dev, "ignoring dependency for device, assuming no driver\n");
--		return -ENODEV;
--	}
--
--	if (!driver_deferred_probe_timeout && initcalls_done) {
--		dev_warn(dev, "deferred probe timeout, ignoring dependency\n");
--		return -ETIMEDOUT;
--	}
--
--	return -EPROBE_DEFER;
--}
--EXPORT_SYMBOL_GPL(driver_deferred_probe_check_state);
--
- static void deferred_probe_timeout_work_func(struct work_struct *work)
- {
- 	struct device_private *p;
- 
- 	fw_devlink_drivers_done();
- 
--	driver_deferred_probe_timeout = 0;
- 	driver_deferred_probe_trigger();
- 	flush_work(&deferred_probe_work);
- 
-diff --git a/include/linux/device/driver.h b/include/linux/device/driver.h
-index 700453017e1c..7c245d269feb 100644
---- a/include/linux/device/driver.h
-+++ b/include/linux/device/driver.h
-@@ -241,7 +241,6 @@ driver_find_device_by_acpi_dev(struct device_driver *drv, const void *adev)
- 
- extern int driver_deferred_probe_timeout;
- void driver_deferred_probe_add(struct device *dev);
--int driver_deferred_probe_check_state(struct device *dev);
- void driver_init(void);
- 
- /**
--- 
-2.36.1.124.g0e6072fb45-goog
-
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+>  static bool acpi_extract_properties(const union acpi_object *desc,
+>                                     struct acpi_device_data *data)
+>  {
+> @@ -419,7 +456,9 @@ void acpi_init_properties(struct acpi_device *adev)
+>                                         &adev->data, acpi_fwnode_handle(adev)))
+>                 adev->data.pointer = buf.pointer;
+>
+> -       if (!adev->data.pointer) {
+> +       if (!adev->data.pointer ||
+> +           acpi_tie_nondev_subnodes(&adev->data) < 0) {
+> +               acpi_untie_nondev_subnodes(&adev->data);
+>                 acpi_handle_debug(adev->handle, "Invalid _DSD data, skipping\n");
+>                 ACPI_FREE(buf.pointer);
+>         }
+> @@ -462,6 +501,7 @@ static void acpi_destroy_nondev_subnodes(struct list_head *list)
+>
+>  void acpi_free_properties(struct acpi_device *adev)
+>  {
+> +       acpi_untie_nondev_subnodes(&adev->data);
+>         acpi_destroy_nondev_subnodes(&adev->data.subnodes);
+>         ACPI_FREE((void *)adev->data.pointer);
+>         adev->data.of_compatible = NULL;
+> --
+> 2.30.2
+>
