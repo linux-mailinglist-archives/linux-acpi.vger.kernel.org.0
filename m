@@ -2,56 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D923534B68
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 May 2022 10:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA508534B66
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 May 2022 10:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346644AbiEZIQU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 May 2022 04:16:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
+        id S235701AbiEZIQM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 May 2022 04:16:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346645AbiEZIQJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 May 2022 04:16:09 -0400
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A19BA54B
-        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:03 -0700 (PDT)
-Received: by mail-pg1-x54a.google.com with SMTP id i9-20020a632209000000b003facc62e253so544353pgi.11
-        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:03 -0700 (PDT)
+        with ESMTP id S1346656AbiEZIQK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 May 2022 04:16:10 -0400
+Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7514B8BD1
+        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:05 -0700 (PDT)
+Received: by mail-pf1-x44a.google.com with SMTP id a76-20020a621a4f000000b00519021bd5a6so741072pfa.5
+        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=DUCLIv3fIFZkN4IwkAbrdxyKeVczdAPuMH/CpPcV4SU=;
-        b=CyzwtSa5kL7asxlJAQxy6KynJEIdFhvGau0g94npATBUb08mCN7xWPYiqWSpgyW7pp
-         AeKTLb8s+1yIbjcvPRGqkRXa/d5TFin/hQLWeMaJAETlo6oYW5f14ntDOqjhIvmFKH7Y
-         to71h+gy1/+mvnPHDbGWIsuAvvkUo1tnVwOwiNBYAz/Th1IFA4cu6ZOpIDrj4HrVUFgZ
-         8TxgahJGhhjYVYLYmfpUFt435KgFpIWHwyX3O6yL6OwYx2jNmvoxtX57zkKnPlBhHjOv
-         6ap3F7Gzmj4ck2T+A1f3T4XMo/l1Sr7ClNm8Ko3J8AHf9Vnb1FGRV7j+BHxzraC/ZahT
-         26MA==
+        bh=BAxCptwO7y2xVPn5yxfUXuZaiLDAgG5VdQuxNau2t/A=;
+        b=SSAklAtF5M2MvdVlYodbyAxTphyyK02Oj42SVcd3FTLXmUoOWmKohwP0jyuy7Dywnn
+         z+Rwg5B5m390JADA/tH9Kd5hrRor7L7xc2HarYOOY1eeh0X5ooFq6gop9u+FKPEH68sX
+         PSmyWhcvNVI+KSAsfLsiJwAoZy4hoOLroAWm7/PcoZRZ5RRn7c5QPkSzY4al45bC9y1m
+         rxt4J+H9awRoebh/t2rs9NdCgcDLPVKf5pbTahtHh4OEILiQvhD1Izdrf/nBW5LrZ6Hr
+         cCTqNUjkmGwlDPIsIOZy6KsBLIleiDr0kGVZMU24uQyWpnq1xNF84jdZo+Qvww3Nq5FM
+         6uTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=DUCLIv3fIFZkN4IwkAbrdxyKeVczdAPuMH/CpPcV4SU=;
-        b=YoA7S9R5NRtLu/doF1KpmFPHqfjzhtHRyweiM3DZypDC9EQQXuvWz8OJmsiZR0GtH7
-         I17mh4E85qulVuemOU2+OfL/T8L0yh+hiIwSBaVXUNGNS/nZ5MOZwKI+NLEl9rraD6Z/
-         YNihCFLdVI6yO4SOKWABXpgy/Q78VsO4qAI4mnnn9niMTEicFQsVWk4l6migOEbzCMNu
-         OvumTOj3BtqiAcSnqiJlHHP3kSVWhlpLVIspH0cuuAkPYtyY0onQgubgSleySZtMFxg7
-         3/rA9UGcM1DLc6qTNniYWX08TQ7qFjHD/wvPSb51BxY74IEHk2cGB3BnExTEH68SHigh
-         YUbw==
-X-Gm-Message-State: AOAM5312pc6XVWLwQLH8vlqT1l3sJMc5oIojG2xEMVzQDZIKdtsOqLsa
-        +/HJV/onSI5ngkEkrrVITgrI0aoigslsG/s=
-X-Google-Smtp-Source: ABdhPJw2pOLycSo0Dk2hnHYGrYjnmnj9FmTbJXx5Eil6VtjWJt3Y4OCof/7QvyjmXMAMae1GQK5aRzIjQ2vExSg=
+        bh=BAxCptwO7y2xVPn5yxfUXuZaiLDAgG5VdQuxNau2t/A=;
+        b=jjrs1EpL6UfOcTBC2tmTNGP1kaBH2raSll163SiFvUetyXwXGO72HWkEhiKAj/KWgB
+         dD7W+Di80B6J+a4RrCsk6px7AMhQMnQ6k2U+UQ9M+U3+d1hm2hJZE7kyo1V1n7YTO4R9
+         ShkKTC6WUUm2qBiYyqHRZlGnYdtrtXUDTmvpaerg9gHuvYZj+TEOmTfP7IyA9Px9FGx0
+         UwAvpfZ3NNPAYbNjwBaVRAmfFBH0uufbhGCo5CrwLz8iO5ZpgiZOYTfpSdmK5uCbaQAE
+         bBM7BQY+P73MnKm0cR+VvwIRWvoRUmh7iMyCNgCPG9SvIhxl8qKOkOhNd1Bvo+YYzv4V
+         Z0RQ==
+X-Gm-Message-State: AOAM5325G4jJSR1tqu5vTvqMk8/AIx5rp6KSCSNVJWxnCO+lzJ0Q+HWt
+        vbfQ6CG+tsk8N0OZSlVmCOxJj6j/K6FcEeU=
+X-Google-Smtp-Source: ABdhPJz4snZQEDVmZXj6RODHXR7rp3pbTlyyKgm6WM3ongSTDnEvvxBi0qJKrzgY36D1YxzBeGXt+A93QwpkuHs=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:ff1f:a3b7:b6de:d30f])
- (user=saravanak job=sendgmr) by 2002:a63:343:0:b0:3f6:52e5:edbe with SMTP id
- 64-20020a630343000000b003f652e5edbemr29501334pgd.272.1653552962496; Thu, 26
- May 2022 01:16:02 -0700 (PDT)
-Date:   Thu, 26 May 2022 01:15:42 -0700
+ (user=saravanak job=sendgmr) by 2002:a17:902:b58f:b0:15e:b2f4:b75 with SMTP
+ id a15-20020a170902b58f00b0015eb2f40b75mr37115965pls.25.1653552965291; Thu,
+ 26 May 2022 01:16:05 -0700 (PDT)
+Date:   Thu, 26 May 2022 01:15:43 -0700
 In-Reply-To: <20220526081550.1089805-1-saravanak@google.com>
-Message-Id: <20220526081550.1089805-4-saravanak@google.com>
+Message-Id: <20220526081550.1089805-5-saravanak@google.com>
 Mime-Version: 1.0
 References: <20220526081550.1089805-1-saravanak@google.com>
 X-Mailer: git-send-email 2.36.1.124.g0e6072fb45-goog
-Subject: [RFC PATCH v1 3/9] net: mdio: Delete usage of driver_deferred_probe_check_state()
+Subject: [RFC PATCH v1 4/9] Revert "driver core: Set default
+ deferred_probe_timeout back to 0."
 From:   Saravana Kannan <saravanak@google.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -95,33 +96,32 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that fw_devlink=on by default and fw_devlink supports interrupt
-properties, the execution will never get to the point where
-driver_deferred_probe_check_state() is called before the supplier has
-probed successfully or before deferred probe timeout has expired.
+This reverts commit 11f7e7ef553b6b93ac1aa74a3c2011b9cc8aeb61.
 
-So, delete the call and replace it with -ENODEV.
+Let's take another shot at getting deferred_probe_timeout=10 to work.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/net/mdio/fwnode_mdio.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/base/dd.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
-index 1c1584fca632..3e79c2c51929 100644
---- a/drivers/net/mdio/fwnode_mdio.c
-+++ b/drivers/net/mdio/fwnode_mdio.c
-@@ -47,9 +47,7 @@ int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
- 	 * just fall back to poll mode
- 	 */
- 	if (rc == -EPROBE_DEFER)
--		rc = driver_deferred_probe_check_state(&phy->mdio.dev);
--	if (rc == -EPROBE_DEFER)
--		return rc;
-+		rc = -ENODEV;
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 11b0fb6414d3..f963d9010d7f 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -256,7 +256,12 @@ static int deferred_devs_show(struct seq_file *s, void *data)
+ }
+ DEFINE_SHOW_ATTRIBUTE(deferred_devs);
  
- 	if (rc > 0) {
- 		phy->irq = rc;
++#ifdef CONFIG_MODULES
++int driver_deferred_probe_timeout = 10;
++#else
+ int driver_deferred_probe_timeout;
++#endif
++
+ EXPORT_SYMBOL_GPL(driver_deferred_probe_timeout);
+ 
+ static int __init deferred_probe_timeout_setup(char *str)
 -- 
 2.36.1.124.g0e6072fb45-goog
 
