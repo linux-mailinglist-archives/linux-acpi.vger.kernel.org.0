@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8378534B85
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 May 2022 10:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A25D0534B75
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 May 2022 10:17:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346716AbiEZIQn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 May 2022 04:16:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37334 "EHLO
+        id S1343802AbiEZIQo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 May 2022 04:16:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346632AbiEZIQL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 May 2022 04:16:11 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E947E018
-        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:09 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id i12-20020a25d10c000000b0064fec988b24so1015242ybg.7
-        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:09 -0700 (PDT)
+        with ESMTP id S240278AbiEZIQP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 May 2022 04:16:15 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D998040E4C
+        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:11 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id l72-20020a25254b000000b00651f60988dfso998689ybl.11
+        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:16:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=5GHBoFboCsQPgW0xnX8626mjCMc2pUtGqVQ4b897WKc=;
-        b=IrILs6/SrbLE4LxEZxNKCm/JFj6eee7zIC+Pzx0k28blExnst8p510N+Mrt6f7Ati/
-         fhCLg+kIuoSBGxRzYVVkBrn63L8QzTnZkJYc+jKZnJm5JNaCL1XmmvYBctVPcR+qBS4Q
-         4wGC14+pYhcdcXPlJ8KKsOY776WVCqrKd5R2mTvBd9JNSJx0gAZsEcqFNfNjwN61LpwP
-         wY12x1+QnyJW06iCpgYiPtLxT3ic3L0/CM/Hl9WavuWnDT7UzG67QuvgYRK2zzxRr467
-         x76TkjjCfbOV/OiKelBwG+ZZI+ODSVX9nCHAb3bfLDYI4sagD3QOzDplraPR35J1ch4q
-         W9tw==
+        bh=kqnLyT5BScBmxPie/jUOGEmzvdpZW3OfuWkwvvKbmIQ=;
+        b=O8dwYlRm5myWtMCUjluMS06m9OQufbVTaL0SA/1SSpLb6Q1H1ZeyGd0a6SHjz/l2AC
+         gRRr/WCLHTFyURFv63GZWekkODW7A8O4IB2yzQJWM+/K0NtEVu9a5tsIpy3YI44fV34Q
+         uTpUGoCbwChTFA2pkNGTMrYZa0xzpaUUIVE8dYXjTIu+gHcpLFh+pcu5hZYghuiUoJm2
+         ZKupDPbYJUcArPC1Umnaoqe/6Zgos/v0q8iU1hCEpHdc6TOgYFCUzgVDj2Q/pbkNtaXd
+         2RxGcLTqBsnDUI0hj8KfYCR16HfmSlIsdyhfQgPBL+wYl36dau32BugaaSnT2tbIlwGz
+         BC+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=5GHBoFboCsQPgW0xnX8626mjCMc2pUtGqVQ4b897WKc=;
-        b=Z2MoPA+mGXeIyheoRRMSZV6TQR56t5643vtZk8v4WNVuz7CA3UCl6oGPlpHO7pUYf3
-         rH/c0x0jZgjBYgJRW1BIYTyuynq9ay6YfGRQVtdJ1rXzT7f7itZESWoEcqYdCfqzFPGC
-         e8uPNnpnnz7ZL+pnOOrSLTvaeYWuFDIFsJ3SqKRwpXWuITlY2rIRJhizW/SWi4g0tIaF
-         cXXLMnbgSXZzkCStSudD9WGCs0Y2L+ZN9BasQ9CksBaJSIBTo4sLkOfJp9npFxh4s05X
-         XHbhCievjOJ8usgyGztD+hWSOPCnRJu23HKeJRNTXOqj/vqqE2MW/+d81B/W/09Gqm10
-         ePZQ==
-X-Gm-Message-State: AOAM5309qXWEqqMoIn1qXSm4QcZs5hMRPT8p0zBPim8Ysd1ZlYpUDPT1
-        kzIeVZrlBFvjjuvgeKMsjvXOb86sUPAKvFg=
-X-Google-Smtp-Source: ABdhPJwfT06c9prMUark3SgFprxU4855waPyfG4Z17nnwU6nQsbeq/CDsaY7uVT4Uffa6yH95LJ8lA+usCDNGiw=
+        bh=kqnLyT5BScBmxPie/jUOGEmzvdpZW3OfuWkwvvKbmIQ=;
+        b=RZV/W4YJ2sA6hc/WW/JAnkyvohc4YwGT5LgFeKnDifaNEPSJeceMlhrUNEUjLMmvJ+
+         HDs5PPr2Vy9pNOQ2laqsKjv22MdUNc7AARP3iJOjE0JX4C3tP7yGyzA6SvNY6LGpe5q1
+         MgNJdpzwNNr/B1NubQKj3Z1s29FKQ9BvQPvs1keLFsyBfb/ZUeM4AspgZMtBR115DCsi
+         GpmBuK1sxx9/ii3/s6CAp/TjSjjVy7sIXMZpqBODu6PACtCvs4g9JFDBV39Hg+OuaNb2
+         1iU4+xS/+VUeFBCpFvyEG4t94c8SL5/fOb/IOpgFHpEXSsXqjzs7JfKNqhwmn9mV33bQ
+         SWkQ==
+X-Gm-Message-State: AOAM531vFhkuuSVrzYFGBznUfgBp0P+uflqH6k9Uup57B+KsDTyheebQ
+        pZDSfZhQK0fa/YU93tR1bzGSDpIb2XYyaOk=
+X-Google-Smtp-Source: ABdhPJz3E2nD3dyR5epKdpx7T0AcqAuln5UJYq6/LusJXLA9qDXoEEc3OI/BRFh9Q4xJz3OuN7NXxtEIzJwaSYI=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:ff1f:a3b7:b6de:d30f])
- (user=saravanak job=sendgmr) by 2002:a25:8e08:0:b0:64d:b20e:bf73 with SMTP id
- p8-20020a258e08000000b0064db20ebf73mr34625441ybl.558.1653552968266; Thu, 26
- May 2022 01:16:08 -0700 (PDT)
-Date:   Thu, 26 May 2022 01:15:44 -0700
+ (user=saravanak job=sendgmr) by 2002:a81:4fd4:0:b0:2ff:2c4c:a687 with SMTP id
+ d203-20020a814fd4000000b002ff2c4ca687mr37158577ywb.500.1653552971096; Thu, 26
+ May 2022 01:16:11 -0700 (PDT)
+Date:   Thu, 26 May 2022 01:15:45 -0700
 In-Reply-To: <20220526081550.1089805-1-saravanak@google.com>
-Message-Id: <20220526081550.1089805-6-saravanak@google.com>
+Message-Id: <20220526081550.1089805-7-saravanak@google.com>
 Mime-Version: 1.0
 References: <20220526081550.1089805-1-saravanak@google.com>
 X-Mailer: git-send-email 2.36.1.124.g0e6072fb45-goog
-Subject: [RFC PATCH v1 5/9] driver core: Set fw_devlink.strict=1 by default
+Subject: [RFC PATCH v1 6/9] iommu/of: Delete usage of driver_deferred_probe_check_state()
 From:   Saravana Kannan <saravanak@google.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -95,29 +95,31 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that deferred_probe_timeout is non-zero by default, fw_devlink will
-never permanently block the probing of devices. It'll try its best to
-probe the devices in the right order and then finally let devices probe
-even if their suppliers don't have any drivers.
+Now that fw_devlink=on and fw_devlink.strict=1 by default and fw_devlink
+supports iommu DT properties, the execution will never get to the point
+where driver_deferred_probe_check_state() is called before the supplier
+has probed successfully or before deferred probe timeout has expired.
+
+So, delete the call and replace it with -ENODEV.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/core.c | 2 +-
+ drivers/iommu/of_iommu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 7cd789c4985d..7672f23231c1 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -1581,7 +1581,7 @@ static int __init fw_devlink_setup(char *arg)
- }
- early_param("fw_devlink", fw_devlink_setup);
+diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+index 5696314ae69e..41f4eb005219 100644
+--- a/drivers/iommu/of_iommu.c
++++ b/drivers/iommu/of_iommu.c
+@@ -40,7 +40,7 @@ static int of_iommu_xlate(struct device *dev,
+ 	 * a proper probe-ordering dependency mechanism in future.
+ 	 */
+ 	if (!ops)
+-		return driver_deferred_probe_check_state(dev);
++		return -ENODEV;
  
--static bool fw_devlink_strict;
-+static bool fw_devlink_strict = true;
- static int __init fw_devlink_strict_setup(char *arg)
- {
- 	return strtobool(arg, &fw_devlink_strict);
+ 	if (!try_module_get(ops->owner))
+ 		return -ENODEV;
 -- 
 2.36.1.124.g0e6072fb45-goog
 
