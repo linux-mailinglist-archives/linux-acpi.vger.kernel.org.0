@@ -2,165 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92B15534966
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 May 2022 05:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22E3E534B48
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 May 2022 10:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234456AbiEZDo5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 May 2022 23:44:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50962 "EHLO
+        id S239904AbiEZIP4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 May 2022 04:15:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239639AbiEZDou (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 May 2022 23:44:50 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E15035DD7;
-        Wed, 25 May 2022 20:44:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1653536689; x=1685072689;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=EfIYsA2RCyJ7mRS6RB9DgWkUlOKoWOnvZwCYQ8DTIcc=;
-  b=M3Ep2tv6YsxlxNANr6eLZWgm5ajYZr0E2mI/k7lUiWG/zfzJq9oK5TnM
-   1beToB1KQAzBGOdkimHlRpcU1h6zQqmzJvMPg+r/7OfQqrhzFxUfrdZOf
-   l7NiYkB+zcrha9/yOhowE44hUquRWbgW3vfoa3SDFTHpXI0RbMvH8Y0X6
-   1R/xfgM08RQwoAfxnA/8NQTz5iq+2XphnbdIgjXQ974BV8o/cs7swHVd5
-   TFCCTolIhAHvnggnZRr9L1M/qLR+5QL1m2/rwo22aKpFf0ThM1EEBrIfR
-   tIOXxhvoEQ1dlBl3ka/zIuZ9Ns+8pkY3SULU0UlqYbTdHf1JIenOXOklQ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10358"; a="337066783"
-X-IronPort-AV: E=Sophos;i="5.91,252,1647327600"; 
-   d="scan'208";a="337066783"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 20:44:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,252,1647327600"; 
-   d="scan'208";a="559993247"
-Received: from lkp-server01.sh.intel.com (HELO db63a1be7222) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 25 May 2022 20:44:47 -0700
-Received: from kbuild by db63a1be7222 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nu4QY-0003Z4-Hn;
-        Thu, 26 May 2022 03:44:46 +0000
-Date:   Thu, 26 May 2022 11:43:52 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        with ESMTP id S238101AbiEZIP4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 May 2022 04:15:56 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27A4B0D04
+        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:15:54 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-3004ae6bfffso7198287b3.20
+        for <linux-acpi@vger.kernel.org>; Thu, 26 May 2022 01:15:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=7ovu32HwfTXJZkxeBDrxZ8ZPAGcSmwTvZEaaoxjr5Ec=;
+        b=A5IYs6L7vf+F2QJ35kvDWANbcirKT5v6KM8ClXGKhMKZlBtap4tK4FtzcxDnuCZUM2
+         1MdoAe53oMAaYvVh0NBFN9zWi/1tedJ/pn3STJRgI5TEod6qqS5bjJ3jgTMLlV99IZhw
+         bl3dncSWym4j3vdDRkPBP/r8/LapBYRpkuhgixrNPw8jT1gSt1jGIUlXIVWE+skTmA3c
+         UiVFS3E4a6ZW/wMqG/NYeMaiXjyckaYyfNFSNiQXSwHzsKYDmuhGTQK/QI9HHSYBlqd6
+         JMuIjD5Suc2/VSV47X/GXl0XsU/o8j5RWYmL6mQ93nQKXWtTvW2fr+ez+gfWLJc3fFan
+         uYmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=7ovu32HwfTXJZkxeBDrxZ8ZPAGcSmwTvZEaaoxjr5Ec=;
+        b=vOoRCeeAYqT2XZJ1z2IGZ21S+qlDlTvEC1gGs/yelRq8heUQ2VagRdSTO/ZhkdgSwx
+         CwDLgrVeSjusAXEX7BYsv1YfocyJR3JfKRjRIJR3fEpO+Cp3ks+BZjmNL8nnd1vTvjmK
+         ak4qwXrNtkfIiSu8RtA+RCncpw+18ObcP2/WP9o/dJ1qu7ZG3nGFbRwInvjmriDtX/YX
+         TNSnqWVTMK0Q9YOtz6XMHz0FL2v8T9y6llZZgQn+2cPsVUh4cnB1LTqH80Dc0QLLXqxm
+         cTqUT3BPOsrUqXc1klOyJlmgCpZn3/dalIPwWXNeR1bTD4GbOXK5nFa+CpFBtIW31PQX
+         Nj3w==
+X-Gm-Message-State: AOAM53236bAT1jNys3O9LFNE2NtfVuSpCIxshKo7QlzbW/byNby1Eau/
+        hoEMirEW7B0FHCVig5fQFEYHB3hhVphX3gU=
+X-Google-Smtp-Source: ABdhPJwgygNcXLfgS/GhNtXfKLT0ANRPU/9nFzxb/3BLRPqGqHSVhLefDjnDtbT8PzPoRD3rLYHQCxeGMGeZcX4=
+X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:ff1f:a3b7:b6de:d30f])
+ (user=saravanak job=sendgmr) by 2002:a25:ab4a:0:b0:64f:b782:f941 with SMTP id
+ u68-20020a25ab4a000000b0064fb782f941mr20119540ybi.408.1653552953895; Thu, 26
+ May 2022 01:15:53 -0700 (PDT)
+Date:   Thu, 26 May 2022 01:15:39 -0700
+Message-Id: <20220526081550.1089805-1-saravanak@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.36.1.124.g0e6072fb45-goog
+Subject: [RFC PATCH v1 0/9] deferred_probe_timeout logic clean up
+From:   Saravana Kannan <saravanak@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        David Ahern <dsahern@kernel.org>
+Cc:     Saravana Kannan <saravanak@google.com>,
+        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        John Stultz <jstultz@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- ee80e69facff8b4c9c955b8e8c58949c50b4f6f3
-Message-ID: <628ef778.qgLXXxiTkNxq48zu%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: ee80e69facff8b4c9c955b8e8c58949c50b4f6f3  Merge branch 'pm-docs' into bleeding-edge
+This series is based on linux-next + these 2 small patches applies on top:
+https://lore.kernel.org/lkml/20220526034609.480766-1-saravanak@google.com/
 
-elapsed time: 722m
+A lot of the deferred_probe_timeout logic is redundant with
+fw_devlink=on.  Also, enabling deferred_probe_timeout by default breaks
+a few cases.
 
-configs tested: 83
-configs skipped: 3
+This series tries to delete the redundant logic, simplify the frameworks
+that use driver_deferred_probe_check_state(), enable
+deferred_probe_timeout=10 by default, and fixes the nfsroot failure
+case.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Patches 1 to 3 are fairly straightforward and can probably be applied
+right away.
 
-gcc tested configs:
-arm                              allmodconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-arm                                 defconfig
-arm64                               defconfig
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-alpha                               defconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-s390                             allyesconfig
-parisc64                            defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-i386                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-riscv                randconfig-r042-20220524
-arc                  randconfig-r043-20220524
-s390                 randconfig-r044-20220524
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                            allmodconfig
-riscv                    nommu_k210_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-syz
+Patches 4 to 9 are related and are the complicated bits of this series.
 
-clang tested configs:
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-hexagon              randconfig-r045-20220524
-hexagon              randconfig-r041-20220524
+Patch 8 is where someone with more knowledge of the IP auto config code
+can help rewrite the patch to limit the scope of the workaround by
+running the work around only if IP auto config fails the first time
+around. But it's also something that can be optimized in the future
+because it's already limited to the case where IP auto config is enabled
+using the kernel commandline.
+
+Yoshihiro/Geert,
+
+If you can test this patch series and confirm that the NFS root case
+works, I'd really appreciate that.
+
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: John Stultz <jstultz@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+
+Saravana Kannan (9):
+  PM: domains: Delete usage of driver_deferred_probe_check_state()
+  pinctrl: devicetree: Delete usage of driver_deferred_probe_check_state()
+  net: mdio: Delete usage of driver_deferred_probe_check_state()
+  Revert "driver core: Set default deferred_probe_timeout back to 0."
+  driver core: Set fw_devlink.strict=1 by default
+  iommu/of: Delete usage of driver_deferred_probe_check_state()
+  driver core: Add fw_devlink_unblock_may_probe() helper function
+  net: ipconfig: Force fw_devlink to unblock any devices that might probe
+  driver core: Delete driver_deferred_probe_check_state()
+
+ drivers/base/base.h            |  1 +
+ drivers/base/core.c            | 60 +++++++++++++++++++++++++++++++++-
+ drivers/base/dd.c              | 37 ++++-----------------
+ drivers/base/power/domain.c    |  2 +-
+ drivers/iommu/of_iommu.c       |  2 +-
+ drivers/net/mdio/fwnode_mdio.c |  4 +--
+ drivers/pinctrl/devicetree.c   |  2 +-
+ include/linux/device/driver.h  |  1 -
+ include/linux/fwnode.h         |  2 ++
+ net/ipv4/ipconfig.c            |  2 ++
+ 10 files changed, 74 insertions(+), 39 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.36.1.124.g0e6072fb45-goog
+
