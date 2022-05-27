@@ -2,74 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28F5053639A
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 May 2022 15:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9E785362F3
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 May 2022 14:45:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352158AbiE0Nyt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 27 May 2022 09:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35646 "EHLO
+        id S239316AbiE0Mpa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 May 2022 08:45:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240514AbiE0Nyt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 May 2022 09:54:49 -0400
-X-Greylist: delayed 10111 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 06:54:48 PDT
-Received: from mail.composit.net (mail.composit.net [195.49.185.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A1AB6B8BCB;
-        Fri, 27 May 2022 06:54:48 -0700 (PDT)
-Received: from mail.composit.net (localhost.localdomain [127.0.0.1])
-        by mail.composit.net (Proxmox) with ESMTP id AEA1C383FA5;
-        Fri, 27 May 2022 14:02:53 +0300 (MSK)
-Received: from mail.composit.net (unknown [192.168.101.14])
-        by mail.composit.net (Proxmox) with SMTP id 86DF23888B7;
-        Fri, 27 May 2022 14:02:53 +0300 (MSK)
-Received: from [192.168.1.105] (Unknown [197.234.219.23])
-        by mail.composit.net with ESMTPSA
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256)
-        ; Fri, 27 May 2022 14:02:54 +0300
-Message-ID: <CCEA6016-BBCB-41FA-A99B-4B9532B44E56@mail.composit.net>
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S1352923AbiE0Mon (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 May 2022 08:44:43 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 057D117A88
+        for <linux-acpi@vger.kernel.org>; Fri, 27 May 2022 05:43:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653655418; x=1685191418;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mgb2inh/KPajRf59aaZDnbQKbztDLPP9kUPYrp4i3ZY=;
+  b=BWpIeD8dn1bUfW5Vvt+rPmsuZmtYQGd7GkKA6d7INdGVle2H5xyyot6n
+   RG/cw6furHcMZgpvuH4JxvdKcYHzBwTgIlL2HnR0ozn19RKTWTLoeMtY+
+   qfld8EdLYonujOXuyvXpJUxRqBqYJ9U5nH1rOOr1bgaHR36gFNSafmjFH
+   8Br3hmNZK9ETcQgpIMsPwIreq/GDSzAbRASDs6oKeA79yuo7tPgc+my2O
+   fowF8547IUhIoRbm1RA2atukGx/h8Zag/bRt05POMQxZoO9AZNHvh25G9
+   nsO1Qu7D/+hbC4F0rh/ckHlCFHdHDHdsJ/pl3QuYcJQYvn5GrNielFIYP
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10359"; a="335119316"
+X-IronPort-AV: E=Sophos;i="5.91,255,1647327600"; 
+   d="scan'208";a="335119316"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2022 05:43:37 -0700
+X-IronPort-AV: E=Sophos;i="5.91,255,1647327600"; 
+   d="scan'208";a="560752155"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2022 05:43:36 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id E45182057F;
+        Fri, 27 May 2022 15:43:33 +0300 (EEST)
+Date:   Fri, 27 May 2022 15:43:33 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org
+Subject: Re: [PATCH v3 7/8] ACPI: property: Add support for parsing buffer
+ property UUID
+Message-ID: <YpDHdVa574WiyxCD@paasikivi.fi.intel.com>
+References: <20220525130123.767410-1-sakari.ailus@linux.intel.com>
+ <20220525130123.767410-8-sakari.ailus@linux.intel.com>
+ <Yo5q6/qVkRyESOa+@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Greetings From Ukraine.  
-To:     Recipients <heiss@dnet.it>
-From:   "Kostiantyn Chichkov" <heiss@dnet.it>
-Date:   Fri, 27 May 2022 12:00:02 +0100
-Reply-To: kostiantync@online.ee
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_SBL,RCVD_IN_SORBS_WEB,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?195.49.185.119>]
-        *  1.5 RCVD_IN_SORBS_WEB RBL: SORBS: sender is an abusable web server
-        *      [197.234.219.23 listed in dnsbl.sorbs.net]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [197.234.219.23 listed in zen.spamhaus.org]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [195.49.185.119 listed in bl.score.senderscore.com]
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Yo5q6/qVkRyESOa+@smile.fi.intel.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Good Morning,
+Hi Andy,
 
-We are Kostiantyn Chychkov and Maryna Chudnovska from Ukraine, we need your service, we have gone through your profile and we will like to work with you on an important service that needs urgent attention due to the ongoing war in our country. Kindly acknowledge this inquiry as soon as possible for a detailed discussion about the service.
+On Wed, May 25, 2022 at 08:44:11PM +0300, Andy Shevchenko wrote:
+> On Wed, May 25, 2022 at 04:01:22PM +0300, Sakari Ailus wrote:
+> > Add support for newly added buffer property UUID, as defined in the DSD
+> > guide.
+> 
+> ...
+> 
+> > +	if (check_mul_overflow((size_t)properties->package.count,
+> 
+> Why do you need casting? Any issues on 32-bit compilation?
 
-Thank you.
+I think it can be removed. I'll see.
 
-Yours expectantly,
+> 
+> Looking at the below code snippets, it seems you also can have a local
+> copy with needed type and use it everywhere (as outer_package_count or so).
+> But first question first...
 
-Kostiantyn Chichkov & Ms. Maryna Chudnovska,
-From Ukraine.
+u32 should be fine.
 
+> 
+> > +			       sizeof(*package) + sizeof(void *),
+> > +			       &alloc_size) ||
+> > +	    check_add_overflow(sizeof(*props) + sizeof(*package), alloc_size,
+> > +			       &alloc_size)) {
+> > +		acpi_handle_warn(handle,
+> > +				 "can't allocate memory for %u buffer props",
+> > +				 properties->package.count);
+> > +		return;
+> > +	}
+> 
+> ...
+> 
+> > +		if (ACPI_FAILURE(status)) {
+> > +			acpi_handle_warn(handle,
+> > +					 "can't evaluate \"%s\" as buffer\n",
+> > +					 obj->string.pointer);
+> 
+> I'm wondering if better to use %*pE here to show the full data of the buffer.
 
+The string is supposed to be printable. If it's not, something is seriously
+wrong. There's no harm though to prepare for this possibility. It'll make
+backslashes printing twice but that is hardly an issue in practice.
+
+> 
+> > +			continue;
+> > +		}
+> 
+
+-- 
+Sakari Ailus
