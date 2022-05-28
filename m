@@ -2,114 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD4B4536D2E
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 May 2022 15:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA228536D75
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 May 2022 17:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236280AbiE1N4f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 28 May 2022 09:56:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44396 "EHLO
+        id S237287AbiE1POg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 May 2022 11:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236202AbiE1N4b (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 May 2022 09:56:31 -0400
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 306E62187
-        for <linux-acpi@vger.kernel.org>; Sat, 28 May 2022 06:56:29 -0700 (PDT)
-Received: by mail-yb1-f169.google.com with SMTP id z186so7951368ybz.3
-        for <linux-acpi@vger.kernel.org>; Sat, 28 May 2022 06:56:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=h8D3dq9fjKiHJEpNi9lD/Pi+3kzdxm1zCcx42uFEdrI=;
-        b=kI+vT7GVGTgHRnqgEQW0svSCRG+FjgtqBqJfbmw0Nj37YxUNXNxjk2kFoFSpfZut0X
-         EMaZoqdro/orN8JU6Lkb4uj3bZd2Boyr4njL5YgwXApko3zzyDtiI+FMowa19zMJCOHN
-         at6vf5L/UC5U3XhXRALUfV2+2hGYrLbbfvkaL8lMzeHzY4X7c+RtednIIpA1C/kWcAEn
-         8dJhM0tJX0sa6PZsFwAm7p1wGR53my4dNR0K2teYWLEHdkTAQi8Mom5XGbidLeGG8u1n
-         424YjaXCBVbGJlhN6VQhECaWVoxd1jvRScjDXhps8wk97HF8zTi40R6D0oGfDen6U+SH
-         y17w==
-X-Gm-Message-State: AOAM530z4JEZ293kwHHuiaakeYQY2nJsHBjjTjnkaCB1gCAOqB8XNf+V
-        wwoU/6zy/kNLdB2UjvrQEONONTF0nwuFDv6tVFU=
-X-Google-Smtp-Source: ABdhPJyj+dkLDvUQfH6uz7UJ1ri7nZuWQpletKCOOFDknySi4oHXfzvFnkC5QjMY05a1dVJQgQ4AcNAHplQuf6m3QfE=
-X-Received: by 2002:a25:2004:0:b0:650:740:f31d with SMTP id
- g4-20020a252004000000b006500740f31dmr24722611ybg.81.1653746188366; Sat, 28
- May 2022 06:56:28 -0700 (PDT)
+        with ESMTP id S237228AbiE1POf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 May 2022 11:14:35 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BE0E2EE23;
+        Sat, 28 May 2022 08:14:33 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5609D1063;
+        Sat, 28 May 2022 08:14:33 -0700 (PDT)
+Received: from e123427-lin.arm.com (unknown [10.57.7.209])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 81FB73F73D;
+        Sat, 28 May 2022 08:14:31 -0700 (PDT)
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-pci@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: Update my email address to @kernel.org
+Date:   Sat, 28 May 2022 16:14:11 +0100
+Message-Id: <20220528151411.29810-1-lorenzo.pieralisi@arm.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-References: <20220525130123.767410-1-sakari.ailus@linux.intel.com>
- <20220525130123.767410-3-sakari.ailus@linux.intel.com> <CAJZ5v0jrFQk2aH78Fg=W+6KAzhony3yZ+NjYy8ki5atKoaPwLw@mail.gmail.com>
- <YpCTjhncY4fhDjMq@paasikivi.fi.intel.com> <CAJZ5v0jM3rayEkAT21aReau+n-mZsNzVeQjH0wS5c1F+s5OgsQ@mail.gmail.com>
- <YpE7oTE5iy97jbjZ@paasikivi.fi.intel.com>
-In-Reply-To: <YpE7oTE5iy97jbjZ@paasikivi.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 28 May 2022 15:56:17 +0200
-Message-ID: <CAJZ5v0hW=kiwNqyjR6_+nQ3uvxBK2DVimo573jgkHMXf1B3oVQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/8] ACPI: property: Tie data nodes to acpi handles
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 27, 2022 at 10:59 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> On Fri, May 27, 2022 at 07:04:39PM +0200, Rafael J. Wysocki wrote:
-> > On Fri, May 27, 2022 at 11:02 AM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > >
-> > > Hi Rafael,
-> > >
-> > > On Thu, May 26, 2022 at 09:19:17PM +0200, Rafael J. Wysocki wrote:
-> > > > > +static int acpi_tie_nondev_subnodes(struct acpi_device_data *data)
-> > > > > +{
-> > > > > +       struct acpi_data_node *dn;
-> > > > > +
-> > > > > +       list_for_each_entry(dn, &data->subnodes, sibling) {
-> > > > > +               acpi_status status;
-> > > > > +               int ret;
-> > > > > +
-> > > > > +               status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
-> > > > > +               if (ACPI_FAILURE(status)) {
-> > > > > +                       acpi_handle_err(dn->handle, "Can't tag data node\n");
-> > > > > +                       return 0;
-> > > > > +               }
-> > > > > +
-> > > > > +               ret = acpi_tie_nondev_subnodes(&dn->data);
-> > > > > +               if (ret)
-> > > > > +                       return ret;
-> > > >
-> > > > Is it actually possible that this returns anything different from 0?
-> > >
-> > > acpi_attach_data() involves allocating memory and resolving a reference.
-> > > Both can fail.
-> >
-> > Yes, they can, but the value returned by acpi_attach_data() is
-> > effectively ignored above (except for printing the error message,
-> > which BTW could be "info" and provide more information).
->
-> Oops. Good point.
->
-> I intended this to return an error here. I don't have strong opinion on
-> which way to go though. How about changing that to -ENOMEM?
+I will soon lose my @arm.com email address, so to prevent any possible
+issue let's update all kernel references (inclusive of .mailmap) to my
+@kernel.org alias ahead of time.
 
-It might as well return bool and let the caller worry about the error handling.
+My @arm.com address is still working and will likely resume to work at
+some point in the future; nonetheless, it is safer to switch to the
+@kernel.org alias from now onwards so that continuity is guaranteed.
 
-> I think this is basically a decision on whether any subnodes could be
-> referenced if ore or more of them could not. I don't expect this to happen
-> in practice.
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+---
+ .mailmap    |  1 +
+ MAINTAINERS | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-So is having a partial description of something useful?  I guess it
-may or may not be, depending on the use case.
+diff --git a/.mailmap b/.mailmap
+index 6d484937f901..9ba38a82aba4 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -236,6 +236,7 @@ Linus Lüssing <linus.luessing@c0d3.blue> <linus.luessing@web.de>
+ <linux-hardening@vger.kernel.org> <kernel-hardening@lists.openwall.com>
+ Li Yang <leoyang.li@nxp.com> <leoli@freescale.com>
+ Li Yang <leoyang.li@nxp.com> <leo@zh-kernel.org>
++Lorenzo Pieralisi <lpieralisi@kernel.org> <lorenzo.pieralisi@arm.com>
+ Lukasz Luba <lukasz.luba@arm.com> <l.luba@partner.samsung.com>
+ Maciej W. Rozycki <macro@mips.com> <macro@imgtec.com>
+ Maciej W. Rozycki <macro@orcam.me.uk> <macro@linux-mips.org>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 392467e9ab73..4fa6a8da4b83 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -382,7 +382,7 @@ F:	include/acpi/
+ F:	tools/power/acpi/
+ 
+ ACPI FOR ARM64 (ACPI/arm64)
+-M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+ M:	Hanjun Guo <guohanjun@huawei.com>
+ M:	Sudeep Holla <sudeep.holla@arm.com>
+ L:	linux-acpi@vger.kernel.org
+@@ -2946,7 +2946,7 @@ N:	uniphier
+ ARM/VERSATILE EXPRESS PLATFORM
+ M:	Liviu Dudau <liviu.dudau@arm.com>
+ M:	Sudeep Holla <sudeep.holla@arm.com>
+-M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
+ F:	*/*/*/vexpress*
+@@ -5162,7 +5162,7 @@ F:	arch/x86/kernel/cpuid.c
+ F:	arch/x86/kernel/msr.c
+ 
+ CPUIDLE DRIVER - ARM BIG LITTLE
+-M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+ M:	Daniel Lezcano <daniel.lezcano@linaro.org>
+ L:	linux-pm@vger.kernel.org
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+@@ -5182,7 +5182,7 @@ F:	drivers/cpuidle/cpuidle-exynos.c
+ F:	include/linux/platform_data/cpuidle-exynos.h
+ 
+ CPUIDLE DRIVER - ARM PSCI
+-M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+ M:	Sudeep Holla <sudeep.holla@arm.com>
+ L:	linux-pm@vger.kernel.org
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+@@ -15289,7 +15289,7 @@ F:	drivers/pci/controller/pci-v3-semi.c
+ 
+ PCI ENDPOINT SUBSYSTEM
+ M:	Kishon Vijay Abraham I <kishon@ti.com>
+-M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+ R:	Krzysztof Wilczyński <kw@linux.com>
+ L:	linux-pci@vger.kernel.org
+ S:	Supported
+@@ -15352,7 +15352,7 @@ F:	Documentation/devicetree/bindings/pci/xgene-pci-msi.txt
+ F:	drivers/pci/controller/pci-xgene-msi.c
+ 
+ PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS
+-M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+ R:	Rob Herring <robh@kernel.org>
+ R:	Krzysztof Wilczyński <kw@linux.com>
+ L:	linux-pci@vger.kernel.org
+@@ -15905,7 +15905,7 @@ F:	include/linux/dtpm.h
+ 
+ POWER STATE COORDINATION INTERFACE (PSCI)
+ M:	Mark Rutland <mark.rutland@arm.com>
+-M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
+ F:	drivers/firmware/psci/
+@@ -18277,7 +18277,7 @@ F:	drivers/net/ethernet/smsc/smc91x.*
+ 
+ SECURE MONITOR CALL(SMC) CALLING CONVENTION (SMCCC)
+ M:	Mark Rutland <mark.rutland@arm.com>
+-M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
++M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+ M:	Sudeep Holla <sudeep.holla@arm.com>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
+-- 
+2.31.0
 
-If there's any use case in which it may be useful, I would ignore the
-attach errors and address missing stuff elsewhere.
