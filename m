@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D71045381D7
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 16:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F59538277
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 16:35:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236861AbiE3OVR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 May 2022 10:21:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40154 "EHLO
+        id S237146AbiE3OYD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 May 2022 10:24:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241384AbiE3ORc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 10:17:32 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 771088FF9C;
-        Mon, 30 May 2022 06:46:02 -0700 (PDT)
+        with ESMTP id S240968AbiE3OUs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 10:20:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C58E1269A7;
+        Mon, 30 May 2022 06:50:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 20E20B80D6B;
-        Mon, 30 May 2022 13:46:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10D8C3411A;
-        Mon, 30 May 2022 13:45:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6CE760FCC;
+        Mon, 30 May 2022 13:48:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206C1C36AEA;
+        Mon, 30 May 2022 13:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653918359;
-        bh=cXuTShtzdE1Ec3NbiD1d9uwgWXstvFOpe15uNRADvmQ=;
+        s=k20201202; t=1653918520;
+        bh=+y+tqItgn462wYbLLs6LsQooLjpGTjCvYb7UO89/G2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gaT/Yx3v7mkbGqX6rLl/JhY5hpPjZ3Oe4NiudYGytWRLvtmP9RZ3flHYJo3KBU5AE
-         0NnGublSahwr5fJR6AR7u8orTp49uruY+qY4mL9M8zOa84qRsz6teZ8eSs1seBzbb5
-         M/yf2rT/GgT2xopifJlbCZOQDuQfanYkZy/ZC8HLeeLx2kVADZE1Mm71dBk7PxQh3q
-         OFYq1gk7EdacDzDVQPVJT44J4ayWhe0uLr1v1c58Vak2cnllZeJeiTVOYYaGYGIWyM
-         Sm8/wecWTjuNYcY/Soq3uB4M0lkpBbL7ZfMInV63nD0+/Er5WHQ+e9ybbMBoJ/A0Wg
-         U7aAD1+pp/P7g==
+        b=Np8mF6Nt2o8fDJNF5jjiSbJnrYt/QmU7/taIINYP/txt5wg+E3lJkuGSBQIkiKRxd
+         ojOLjiElxeuF/NOb8b88Kythf/BkOLCxixQf2zaiCBKR1NHtolcTn4AitEWf+qEYHz
+         huO912CGrOoVmKpyWipluX2yn8dpSsORb06J99aqcvT7/lGOEx1JrrvVm2gEZ1O33X
+         CR7C4pwHIzCtfz3OvpQCEL7Qu96rFabkLkm152hWoVOVcLNIWksoCFIpJGnwVXZxN5
+         atwwkYQ/35wz+M+q9/hJmdhFiMswQmAEWDNgZh50MZ0LDp/JrgZ+HfzM9m1VGF6wlb
+         X4N6McXMobRNQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Mario Limonciello <mario.limonciello@amd.com>,
@@ -38,12 +38,12 @@ Cc:     Mario Limonciello <mario.limonciello@amd.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 51/76] ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default
-Date:   Mon, 30 May 2022 09:43:41 -0400
-Message-Id: <20220530134406.1934928-51-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 38/55] ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default
+Date:   Mon, 30 May 2022 09:46:44 -0400
+Message-Id: <20220530134701.1935933-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220530134406.1934928-1-sashal@kernel.org>
-References: <20220530134406.1934928-1-sashal@kernel.org>
+In-Reply-To: <20220530134701.1935933-1-sashal@kernel.org>
+References: <20220530134701.1935933-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 12 insertions(+)
 
 diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 503935b1deeb..cfda5720de02 100644
+index b0e23e3fe0d5..34966128293b 100644
 --- a/drivers/acpi/sleep.c
 +++ b/drivers/acpi/sleep.c
-@@ -377,6 +377,18 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+@@ -374,6 +374,18 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
  		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
  		},
  	},
