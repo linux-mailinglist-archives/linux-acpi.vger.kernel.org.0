@@ -2,50 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D0E3538653
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 18:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC4C253865F
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 18:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236744AbiE3Qt4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 May 2022 12:49:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35202 "EHLO
+        id S235406AbiE3Qwp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 May 2022 12:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235406AbiE3Qtz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 12:49:55 -0400
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40445A167;
-        Mon, 30 May 2022 09:49:54 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id h75so13886523ybg.4;
-        Mon, 30 May 2022 09:49:54 -0700 (PDT)
+        with ESMTP id S230298AbiE3Qwo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 12:52:44 -0400
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9C17A775E;
+        Mon, 30 May 2022 09:52:43 -0700 (PDT)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-30c1b401711so51927127b3.2;
+        Mon, 30 May 2022 09:52:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=O0qtKGbgqamTRlfvEaAawcHUxUuFNdQZ++whauvuoLA=;
-        b=ZD3zzJc9p6hTmAz6WUvH/aylhgRUx6VzDQWFX0fwggdpAId6wYwbi1lBU+n64bnuuV
-         nfV/P3X9bD4aA4a73JKM7iHdu3ZdxDz836vlznRdS0l1pOqvPPi1/AsV8a7GJw7+jDfm
-         dBfgqcgV39YmMZ7dqdFw7hKqfl+JRvFp12NSSKG2GBf5Vb3RF60Ql2EAtc8EEVD+ecIs
-         tUkYKYzlmJC2j86VH0T09Cx1Ex9jvHqHZVf52u+3bStZtJU4S2zbbwSQVH4sts6EdpoS
-         1qB1bF8pP2hB1J6/HlMQ3ntXqTPSS3mTVtRlfOQvcKgkMQqH1cE1B6EZNbb9ExxxRXhO
-         U/nQ==
-X-Gm-Message-State: AOAM530+Y+A13GM1s4Qh8yBeqnM1M10V+uFotspRddmTanKGovc0Ep+2
-        T7rOXI89XW4xh8yh5Ea8Bum8kPvUydmTDkuvZ2CEYNQ7ONo=
-X-Google-Smtp-Source: ABdhPJy7e7HF/Lq0ogGvxIH3ZcJw+HDgPFMGLhTsGppoAggsbtDoqSG9hJd2netQthg/GvkO0P7Tg7WcMkxi7D93uzM=
-X-Received: by 2002:a25:84ca:0:b0:65c:b5a4:3d0a with SMTP id
- x10-20020a2584ca000000b0065cb5a43d0amr9644306ybm.137.1653929394225; Mon, 30
- May 2022 09:49:54 -0700 (PDT)
+        bh=SKfptvkUxwMfk/IlJMA5wzd9eIE+N9x3Mg+MDZPogb8=;
+        b=pOuvvtTVjWYY9ELT63w+lURVcnghWojFZsKTvb/ITypDrkRbmDe97VjM5k41EjhYnL
+         qp8WR6uMRA6Lbl0bxtw2YF7gLzWXogblgaCXRtpF4gfjCtvMyb1iU93SGWFBYou2lg+9
+         1aAtoc52HfKyJzr6RL6qQlMRNN8SLk2pNmmPy2OrbCSlULAuLnURrQqlQqVyfG1MbWGS
+         Jo76FY7Mn0pGgQI99HPRiOVdn2g6jRvoESVJ45rND2by3T9UDmGyzL/mHYe5fBsWRKG8
+         MWP35LWU1CpoJvCjqQJ4scvPJBp/yuKbvVTu/8w+lYsHRW+3jQnHX3ECqdDIPfXBtAdq
+         KjEQ==
+X-Gm-Message-State: AOAM531/bjZ5do1T4F8sCrr9zBwvCQPFvFKBafvycJoMEkdF9TpFn5SP
+        zZ4aVBj8lI63kUbxNPbUytwdbMbbGRZbr7+wwnvMw929x6w=
+X-Google-Smtp-Source: ABdhPJzNm+1BBfEDF6cSPCx7vpjf+0qINBPR1xZ1kgGdSiVdl2F57iSoFO7sLXZlEviHeqL4Qk67sd+s0D0XroUiWB8=
+X-Received: by 2002:a0d:c442:0:b0:2fe:beab:1fef with SMTP id
+ g63-20020a0dc442000000b002febeab1fefmr61019215ywd.196.1653929562908; Mon, 30
+ May 2022 09:52:42 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 30 May 2022 18:49:43 +0200
-Message-ID: <CAJZ5v0gJ-06Zt_p9SS+wCZW60Z9TmvUF8zgL3g=iw3y_VGM71Q@mail.gmail.com>
-Subject: [GIT PULL] More ACPI updates for v5.19-rc1
+Date:   Mon, 30 May 2022 18:52:31 +0200
+Message-ID: <CAJZ5v0hJ2X6aR6rLsm2g1ysiYaSvePTwXhE6k5cW-q+8dcLOmA@mail.gmail.com>
+Subject: [GIT PULL] More power management updates for v5.19-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -57,44 +59,54 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.19-rc1-2
+ pm-5.19-rc1-2
 
-with top-most commit 4a577fca503a63442928ff4cec06c1136ea9b53e
+with top-most commit 9f9c1f6844bdacb4a011cc69e19b929997038f4f
 
- Merge branches 'acpi-battery', 'acpi-video' and 'acpi-misc'
+ Merge branch 'pm-sysoff'
 
-on top of commit f4fb8596657c998ca4cdb833bc0f509533a38ddd
+on top of commit 09583dfed2cb9723da31601cb7080490c2e2e2d7
 
- Merge tag 'thermal-5.19-rc1' of
+ Merge tag 'pm-5.19-rc1' of
 git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-to receive more ACPI updates for 5.19-rc1.
+to receive more power management updates for 5.19-rc1.
 
-These add some new device IDs, update a few drivers (processor,
-battery, backlight) and clean up code in a few places.
+These update the ARM cpufreq drivers and fix up the CPPC cpufreq
+driver after recent changes, update the OPP code and PM documentation
+and add power sequences support to the system reboot and power off
+code.
 
 Specifics:
 
- - Add Meteor Lake ACPI IDs for DPTF devices (Sumeet Pawnikar).
+ - Add Tegra234 cpufreq support (Sumit Gupta).
 
- - Rearrange find_child_checks() to simplify code (Rafael Wysocki).
+ - Clean up and enhance the Mediatek cpufreq driver (Wan Jiabing,
+   Rex-BC Chen, and Jia-Wei Chang).
 
- - Use memremap() to map the UCSI mailbox that is always in main memory
-   and drop acpi_release_memory() that has no more users (Heikki
-   Krogerus, Dan Carpenter).
+ - Fix up the CPPC cpufreq driver after recent changes (Zheng Bin,
+   Pierre Gondois).
 
- - Make max_cstate/nocst/bm_check_disable processor module parameters
-   visible in sysfs (Yajun Deng).
+ - Minor update to dt-binding for Qcom's opp-v2-kryo-cpu (Yassine
+   Oudjana).
 
- - Fix typo in the CPPC driver (Julia Lawall).
+ - Use list iterator only inside the list_for_each_entry loop (Xiaomeng
+   Tong, and Jakob Koschel).
 
- - Make the ACPI battery driver show the "not-charging" status by
-   default unless "charging" or "full" is directly indicated (Werner
-   Sembach).
+ - New APIs related to finding OPP based on interconnect bandwidth
+   (Krzysztof Kozlowski).
 
- - Improve the PM notifier in the ACPI backlight driver (Zhang Rui).
+ - Fix the missing of_node_put() in _bandwidth_supported() (Dan
+   Carpenter).
 
- - Clean up some white space in the ACPI code (Ian Cowan).
+ - Cleanups (Krzysztof Kozlowski, and Viresh Kumar).
+
+ - Add Out of Band mode description to the intel-speed-select utility
+   documentation (Srinivas Pandruvada).
+
+ - Add power sequences support to the system reboot and power off
+   code and make related platform-specific changes for multiple
+   platforms (Dmitry Osipenko, Geert Uytterhoeven).
 
 Thanks!
 
@@ -102,49 +114,137 @@ Thanks!
 ---------------
 
 Dan Carpenter (1):
-      usb: typec: ucsi: acpi: fix a NULL vs IS_ERR() check in probe
+      OPP: call of_node_put() on error path in _bandwidth_supported()
 
-Heikki Krogerus (2):
-      usb: typec: ucsi: acpi: Map the mailbox with memremap()
-      ACPI: OSL: Remove the helper for deactivating memory region
+Dmitry Osipenko (28):
+      notifier: Add atomic_notifier_call_chain_is_empty()
+      notifier: Add blocking/atomic_notifier_chain_register_unique_prio()
+      kernel/reboot: Introduce sys-off handler API
+      kernel/reboot: Wrap legacy power-off callbacks into sys-off handlers
+      kernel/reboot: Add do_kernel_power_off()
+      kernel/reboot: Add stub for pm_power_off
+      kernel/reboot: Add kernel_can_power_off()
+      kernel/reboot: Add register_platform_power_off()
+      ARM: Use do_kernel_power_off()
+      csky: Use do_kernel_power_off()
+      riscv: Use do_kernel_power_off()
+      arm64: Use do_kernel_power_off()
+      parisc: Use do_kernel_power_off()
+      xen/x86: Use do_kernel_power_off()
+      powerpc: Use do_kernel_power_off()
+      m68k: Switch to new sys-off handler API
+      sh: Use do_kernel_power_off()
+      x86: Use do_kernel_power_off()
+      ia64: Use do_kernel_power_off()
+      mips: Use do_kernel_power_off()
+      memory: emif: Use kernel_can_power_off()
+      ACPI: power: Switch to sys-off handler API
+      regulator: pfuze100: Use devm_register_sys_off_handler()
+      reboot: Remove pm_power_off_prepare()
+      soc/tegra: pmc: Use sys-off handler API to power off Nexus 7 properly
+      kernel/reboot: Add devm_register_power_off_handler()
+      kernel/reboot: Add devm_register_restart_handler()
+      kernel/reboot: Change registration order of legacy power-off handler
 
-Ian Cowan (1):
-      ACPI: clean up white space in a few places for consistency
+Geert Uytterhoeven (1):
+      m68k: virt: Switch to new sys-off handler API
 
-Julia Lawall (1):
-      ACPI: CPPC: fix typo in comment
+Jakob Koschel (1):
+      opp: replace usage of found with dedicated list iterator variable
 
-Rafael J. Wysocki (1):
-      ACPI: glue: Rearrange find_child_checks()
+Jia-Wei Chang (8):
+      cpufreq: mediatek: Use module_init and add module_exit
+      cpufreq: mediatek: Cleanup variables and error handling in
+mtk_cpu_dvfs_info_init()
+      cpufreq: mediatek: Remove unused headers
+      cpufreq: mediatek: Enable clocks and regulators
+      cpufreq: mediatek: Record previous target vproc value
+      cpufreq: mediatek: Make sram regulator optional
+      cpufreq: mediatek: Refine mtk_cpufreq_voltage_tracking()
+      cpufreq: mediatek: Add support for MT8186
 
-Sumeet Pawnikar (1):
-      ACPI: DPTF: Support Meteor Lake
+Krzysztof Kozlowski (2):
+      PM: opp: simplify with dev_err_probe()
+      opp: Add apis to retrieve opps with interconnect bandwidth
 
-Werner Sembach (1):
-      ACPI: battery: Make "not-charging" the default on no charging or full info
+Pierre Gondois (1):
+      cpufreq: CPPC: Fix unused-function warning
 
-Yajun Deng (1):
-      ACPI: processor: idle: Expose max_cstate/nocst/bm_check_disable
-read-only in sysfs
+Rex-BC Chen (7):
+      cpufreq: mediatek: Use device print to show logs
+      cpufreq: mediatek: Replace old_* with pre_*
+      cpufreq: mediatek: Unregister platform device on exit
+      cpufreq: mediatek: Move voltage limits to platform data
+      cpufreq: mediatek: Add opp notification support
+      dt-bindings: cpufreq: mediatek: Add MediaTek CCI property
+      cpufreq: mediatek: Link CCI device to CPU
 
-Zhang Rui (1):
-      ACPI: video: improve PM notifer callback
+Srinivas Pandruvada (1):
+      Documentation: admin-guide: PM: Add Out of Band mode
+
+Sumit Gupta (4):
+      dt-bindings: Document Tegra CCPLEX Cluster
+      cpufreq: tegra194: add soc data to support multiple soc
+      cpufreq: tegra194: Add support for Tegra234
+      arm64: tegra: add node for tegra234 cpufreq
+
+Viresh Kumar (1):
+      opp: Reorder definition of ceil/floor helpers
+
+Wan Jiabing (2):
+      cpufreq: mediatek: Fix NULL pointer dereference in mediatek-cpufreq
+      cpufreq: mediatek: Fix potential deadlock problem in
+mtk_cpufreq_set_target
+
+Xiaomeng Tong (1):
+      opp: use list iterator only inside the loop
+
+Yassine Oudjana (1):
+      dt-bindings: opp: opp-v2-kryo-cpu: Remove SMEM
+
+Zheng Bin (1):
+      cpufreq: CPPC: Fix build error without CONFIG_ACPI_CPPC_CPUFREQ_FIE
 
 ---------------
 
- drivers/acpi/ac.c                                  |  4 +-
- drivers/acpi/acpi_video.c                          | 31 ++++----
- drivers/acpi/battery.c                             | 24 +-----
- drivers/acpi/cppc_acpi.c                           |  2 +-
- drivers/acpi/dptf/dptf_pch_fivr.c                  |  1 +
- drivers/acpi/dptf/dptf_power.c                     |  2 +
- drivers/acpi/dptf/int340x_thermal.c                |  6 ++
- drivers/acpi/fan.h                                 |  1 +
- drivers/acpi/glue.c                                | 16 ++--
- drivers/acpi/osl.c                                 | 86 ----------------------
- drivers/acpi/processor_idle.c                      | 10 +--
- .../intel/int340x_thermal/int3400_thermal.c        |  1 +
- .../intel/int340x_thermal/int3403_thermal.c        |  1 +
- drivers/usb/typec/ucsi/ucsi_acpi.c                 | 23 ++----
- include/linux/acpi.h                               |  3 -
- 15 files changed, 51 insertions(+), 160 deletions(-)
+ .../admin-guide/pm/intel-speed-select.rst          |  22 +
+ .../arm/tegra/nvidia,tegra-ccplex-cluster.yaml     |  52 ++
+ .../bindings/cpufreq/cpufreq-mediatek.txt          |   7 +
+ .../devicetree/bindings/opp/opp-v2-kryo-cpu.yaml   |  56 +-
+ arch/arm/kernel/reboot.c                           |   4 +-
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi           |   7 +
+ arch/arm64/kernel/process.c                        |   3 +-
+ arch/csky/kernel/power.c                           |   6 +-
+ arch/ia64/kernel/process.c                         |   4 +-
+ arch/m68k/emu/natfeat.c                            |   3 +-
+ arch/m68k/include/asm/machdep.h                    |   1 -
+ arch/m68k/kernel/process.c                         |   5 +-
+ arch/m68k/kernel/setup_mm.c                        |   1 -
+ arch/m68k/kernel/setup_no.c                        |   1 -
+ arch/m68k/mac/config.c                             |   4 +-
+ arch/m68k/virt/config.c                            |   4 +-
+ arch/mips/kernel/reset.c                           |   3 +-
+ arch/parisc/kernel/process.c                       |   4 +-
+ arch/powerpc/kernel/setup-common.c                 |   4 +-
+ arch/powerpc/xmon/xmon.c                           |   3 +-
+ arch/riscv/kernel/reset.c                          |  12 +-
+ arch/sh/kernel/reboot.c                            |   3 +-
+ arch/x86/kernel/reboot.c                           |   4 +-
+ arch/x86/xen/enlighten_pv.c                        |   4 +-
+ drivers/acpi/sleep.c                               |  16 +-
+ drivers/cpufreq/cppc_cpufreq.c                     |  20 +-
+ drivers/cpufreq/mediatek-cpufreq.c                 | 636 ++++++++++++++-------
+ drivers/cpufreq/tegra194-cpufreq.c                 | 246 ++++++--
+ drivers/memory/emif.c                              |   2 +-
+ drivers/opp/core.c                                 | 339 +++++++----
+ drivers/opp/debugfs.c                              |  10 +-
+ drivers/opp/of.c                                   |   2 +-
+ drivers/regulator/pfuze100-regulator.c             |  42 +-
+ drivers/soc/tegra/pmc.c                            |  87 ++-
+ include/linux/notifier.h                           |   7 +
+ include/linux/pm.h                                 |   1 -
+ include/linux/pm_opp.h                             |  41 +-
+ include/linux/reboot.h                             |  91 +++
+ kernel/notifier.c                                  | 101 +++-
+ kernel/reboot.c                                    | 348 ++++++++++-
+ 40 files changed, 1655 insertions(+), 551 deletions(-)
