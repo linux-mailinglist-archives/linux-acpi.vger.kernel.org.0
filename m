@@ -2,108 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB3555376E5
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 10:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E589537700
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 10:51:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233986AbiE3IhL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 May 2022 04:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45066 "EHLO
+        id S233159AbiE3ItQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 May 2022 04:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233448AbiE3IhK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 04:37:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58F3412AFB;
-        Mon, 30 May 2022 01:37:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AE2D60F2D;
-        Mon, 30 May 2022 08:37:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E2AC341C8;
-        Mon, 30 May 2022 08:37:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653899824;
-        bh=joaNwl2fglJBNL3HOsZi03uJqqPgjSPdmOy8fc9Csbs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=iI4m4dIr/FEIkPPpu9FdnrrNSbIBYVhvxduTEeSlAV9jqA9sz2TH+uqGybCOrT1fu
-         u2PrMAL6/d/JHj6Km6epM6iSoAun5OL9b/H2VsbcvXSS3VkhV/ETiyA5i3QtLQGNr0
-         3Jtc3FOygZDxkY4p6IFkBaCIGNqwUEeZk5+Cp458X070B/Lk180yRxPf3+52q1k39j
-         dYpCE5+YrtMY4gcCSbEb/YTgPi30ewDdQ//lcP2Rvo7OujYcIl2IMO4Wn3DkLs4qTL
-         nvy0A5O2MHDjwIS45FXemOYJe97196JcxPnZ4rwGfDA9UbGce6f4c4itJw7QbS9GaE
-         ewIn3D1qpGd6g==
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-2ff90e0937aso102036907b3.4;
-        Mon, 30 May 2022 01:37:04 -0700 (PDT)
-X-Gm-Message-State: AOAM532IIyWjZZp7xByQRKFvEh9ex9pB5MAS/on/b3A8NJlTRiy/M1Ou
-        Nl1P6UII6j1F6zKJBQMHbnqbvrcDw5Wm5eXTLr4=
-X-Google-Smtp-Source: ABdhPJw8WweVAyA25Gq4dNf35mk0GYgpbsvXPpTIBf1QNFJB7VQoktGvUZiRkWA77LZQ+jp6sCFNhFuRdf+fx5DDzq0=
-X-Received: by 2002:a0d:efc2:0:b0:2fe:d2b7:da8 with SMTP id
- y185-20020a0defc2000000b002fed2b70da8mr54769437ywe.42.1653899823455; Mon, 30
- May 2022 01:37:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAK8P3a2_52JPnBWNvTTkFVwLxPAa7=NaQ4whwC1UeH_NYHeUKQ@mail.gmail.com>
- <CAK8P3a0SpU1n+29KQxzKnPRvzmDE=L0V9RUpKxhemv=74kevcQ@mail.gmail.com>
- <875ylomq3m.wl-maz@kernel.org> <CAAhV-H4icDqABQiT4ckKdsmfVzqBKjxncDt9649c2ijOD093gw@mail.gmail.com>
-In-Reply-To: <CAAhV-H4icDqABQiT4ckKdsmfVzqBKjxncDt9649c2ijOD093gw@mail.gmail.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Mon, 30 May 2022 10:36:46 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0aQO2rOVD0F6w811z6ooeGcmLd4UkpPK7dX_SGGy7WDw@mail.gmail.com>
-Message-ID: <CAK8P3a0aQO2rOVD0F6w811z6ooeGcmLd4UkpPK7dX_SGGy7WDw@mail.gmail.com>
-Subject: Re: [musl] Re: [GIT PULL] asm-generic changes for 5.19
-To:     musl@lists.openwall.com
-Cc:     Marc Zyngier <maz@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        WANG Xuerui <kernel@xen0n.name>, libc-alpha@sourceware.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
+        with ESMTP id S231640AbiE3ItP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 04:49:15 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F9E672219;
+        Mon, 30 May 2022 01:49:13 -0700 (PDT)
+Date:   Mon, 30 May 2022 10:49:08 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1653900550;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Mb32qARmKX/oF5s+kHIv0X9LwS5Vfd7eo5GK1onxbS4=;
+        b=oKod/4yDEBaJi9iSKiGnIgGVyCp8e+d2eVwVdzte+6E86zRPZJb6uEjvY9/CW55BhnnY43
+        ebGZ+E6AvYiBDeczcq+JHuFv1HT/m6EUhkoQLyx7NvTZQEIvJydHNpHBSZnzpfeZS4/A/7
+        WGOHtJFe9NMPJhsqGcfjxAiHHCgjBuhNBBwbV+/kN1yItnFW2+10TbUX85HAvObQVcfwy3
+        Z/TJ45JrIoDnh3p6gb7cbvNUxJHf5ULSF687VCmIIUyqaT3WK72dn/WdaL3xTiQEswmrnn
+        nOA8I3nPJmVo1oAkxzrvDFAlPJUQE6RQrsz0po9ChI7ybB+ptjNpn/bXqyZHyA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1653900550;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Mb32qARmKX/oF5s+kHIv0X9LwS5Vfd7eo5GK1onxbS4=;
+        b=fn7UBgTUB18eEO+ZPOF0lTcnEkE+cEHthbTzQs24jteMlG7VDojMV7jKwiMO1pIQklIDh2
+        MZUM5BfSfn06/zCA==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        David Ahern <dsahern@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        John Stultz <jstultz@google.com>,
+        Nathan Chancellor <nathan@kernel.org>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [RFC PATCH v1 0/9] deferred_probe_timeout logic clean up
+Message-ID: <YpSFBNfGDpy3rqEV@linutronix.de>
+References: <20220526081550.1089805-1-saravanak@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220526081550.1089805-1-saravanak@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 30, 2022 at 8:28 AM Huacai Chen <chenhuacai@kernel.org> wrote:
-> On Sun, May 29, 2022 at 9:21 PM Marc Zyngier <maz@kernel.org> wrote:
-> > On Sun, 29 May 2022 12:24:29 +0100, Arnd Bergmann <arnd@kernel.org> wrote:
-> >
-> > I'd tend to agree. But if on the other hand the userspace ABI is
-> > clearly defined, I think it could make sense to go for it (if I
-> > remember well, we merged arm64 without any support irqchip support,
-> > and the arm64 GIC support appeared later in the game).
-> (adding linux-pci and linux-acpi maintainers to Cc)
->
-> I'd like to confirm the review status of the respective LoongArch
-> patchsets ([1], [2]), to see if we can make it into this merge window.
+On 2022-05-26 01:15:39 [-0700], Saravana Kannan wrote:
+> Yoshihiro/Geert,
+Hi Saravana,
 
-In the meantime, can you rebase the tree once more to split out the
-driver patches and make sure the architecture port without the drivers
-still builds cleanly (at least defconfig and allmodconfig) using the compiler
-from [1]? If this requires additional patches, please add them on top.
+> If you can test this patch series and confirm that the NFS root case
+> works, I'd really appreciate that.
 
-Once that is done, we can ask Linus to consider merging the branch
-for the architecture port, while you keep working with the pci and irqchip
-maintainers to merge the drivers either for 5.19 or a future release.
+The two patches you sent earlier, plus this series, plus
 
-While this means merging a branch that does not actually work on any
-hardware by itself, it should be sufficient for the libc patches to
-consider the ABI stable, and it is consistent with how we keep
-CPU architecture support separate from platform driver support
-elsewhere.
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 7ff7fbb006431..829d9b1f7403f 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -1697,8 +1697,6 @@ static int fw_devlink_may_probe(struct device *dev, void *data)
+  */
+ void __init fw_devlink_unblock_may_probe(void)
+ {
+-	struct device_link *link, *ln;
+-
+ 	if (!fw_devlink_flags || fw_devlink_is_permissive())
+ 		return;
+ 
+and it compiles + boots without a delay.
 
-       Arnd
-
-[1] https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/12.1.0/x86_64-gcc-12.1.0-nolibc-loongarch64-linux.tar.xz
+Sebastian
