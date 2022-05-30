@@ -2,54 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF88E537834
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 12:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 042415377FD
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 12:06:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232854AbiE3JNE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 May 2022 05:13:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33090 "EHLO
+        id S233089AbiE3J22 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 May 2022 05:28:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231572AbiE3JNE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 05:13:04 -0400
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA9C257997;
-        Mon, 30 May 2022 02:13:02 -0700 (PDT)
-Received: by mail-qk1-f174.google.com with SMTP id o68so3028366qkf.13;
-        Mon, 30 May 2022 02:13:02 -0700 (PDT)
+        with ESMTP id S232976AbiE3J20 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 05:28:26 -0400
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B435A483A0;
+        Mon, 30 May 2022 02:28:23 -0700 (PDT)
+Received: by mail-qt1-f179.google.com with SMTP id c8so328557qtj.1;
+        Mon, 30 May 2022 02:28:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=CevRGTtrDTs4Z7bTQdrqHWG/lWL6b5bSowmXhMt2lks=;
-        b=Gh4PquHJSV05mYTDDsQP76bO1MAnTJx2Q9AXD3F2RCz1bVegrYuXNOiIhFQlojjrVx
-         tDEjXGYSmyf4pdw1Pt+nvRrIirBuv7w1poToOnVDELG912A4WH9QMQR3bz2lGDstnk0Y
-         VDpozxLexcXXjQGVhojMsjMFhCiBwL+VgyDJdl6umZuYarIR3DvzPmgMR7eiVV+/ker9
-         fsgxzZjD/Pe+busswmYjfbIH9KmpD8v6wFAwWNheiHLb9K2F0xH0ui9GApUMzggXBd7r
-         6cPin+4B+28OjUkM0JJmMbgwp0D4xN57n6jKF/5V3wtqFr8gvg9aE8BKuDx2DZVII3kP
-         3hTg==
-X-Gm-Message-State: AOAM530snAlr3gqnuQ3dLiycErMHNldPfhMi5sRCQl7KxLpFB4RFO7In
-        ix8JjftLJLGfM8IFvpbHEhbNuHuSi7a+eA==
-X-Google-Smtp-Source: ABdhPJw8khA82V6rqgtUvHZvyJcvT+05F5uhWWJwKof6sBR4+S/NTAI6QUdQEI+v3gyW8647A61nVw==
-X-Received: by 2002:a05:620a:440c:b0:6a0:4c1d:eeaa with SMTP id v12-20020a05620a440c00b006a04c1deeaamr35648311qkp.370.1653901981933;
-        Mon, 30 May 2022 02:13:01 -0700 (PDT)
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
-        by smtp.gmail.com with ESMTPSA id 72-20020a370c4b000000b0069fc13ce1e1sm7639728qkm.18.2022.05.30.02.12.57
+        bh=sRRIuRryzgFI8ELIIPROeVlwSt2lbuDu8QoygFjo9dY=;
+        b=xhMCCryKaUgXAGzmfynEzov/h3DV+irDCkvwFk9FVpxAlBOi4uPlmyknBz8FLzpFYW
+         PH9mPInVoUC8ItuT80REI7tW+d6JBOxhKJG7mYavsIch3AnDk8/tRsUYeBZ7yiYNq6k5
+         P4rtoZM827yjMM+kx3ywjmxbcDrXgqFUgPmQzR+7rbAdFNFWUgcG1vjNXTlBxBmRri0B
+         FWKKHUlDZ+h1RSqLJYXjK0qzxIAAyLyCgLDYkI7nknaF1HNLDphlCfuOIjt5p7nrQyFo
+         fJL9jBKwWR/xmdkGtbwyLgiqrJvfDNum1iiFGO7B3XVnn7yRIQwSHpzskrkIo1+O6bx8
+         Fz6g==
+X-Gm-Message-State: AOAM531FC+aUCeLmfWAYJotLhhZco/K8UbFTDyAdYCa1kWz5MZwWdPh9
+        gga1ELEi7USEQrdo7MGvmJDhz0DysWbIKw==
+X-Google-Smtp-Source: ABdhPJx6LkWgelCyq4Tp9CBP0jVA4z6X2m6AeRjECc5lO8DzDztKPCLfny3veaAeZP8VfHM3QdPGKg==
+X-Received: by 2002:ac8:5cd3:0:b0:2ff:5954:9a91 with SMTP id s19-20020ac85cd3000000b002ff59549a91mr7848167qta.433.1653902902666;
+        Mon, 30 May 2022 02:28:22 -0700 (PDT)
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com. [209.85.219.180])
+        by smtp.gmail.com with ESMTPSA id ca20-20020a05622a1f1400b002f3ef928fbbsm6955038qtb.72.2022.05.30.02.28.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 May 2022 02:12:58 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id r82so8100498ybc.13;
-        Mon, 30 May 2022 02:12:57 -0700 (PDT)
-X-Received: by 2002:a05:6902:905:b0:64a:2089:f487 with SMTP id
- bu5-20020a056902090500b0064a2089f487mr53259449ybb.202.1653901976605; Mon, 30
- May 2022 02:12:56 -0700 (PDT)
+        Mon, 30 May 2022 02:28:22 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id l204so7377570ybf.10;
+        Mon, 30 May 2022 02:28:22 -0700 (PDT)
+X-Received: by 2002:a05:6902:389:b0:633:31c1:d0f7 with SMTP id
+ f9-20020a056902038900b0063331c1d0f7mr50896098ybs.543.1653902534054; Mon, 30
+ May 2022 02:22:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220526081550.1089805-1-saravanak@google.com> <20220526081550.1089805-5-saravanak@google.com>
-In-Reply-To: <20220526081550.1089805-5-saravanak@google.com>
+References: <20220526081550.1089805-1-saravanak@google.com> <20220526081550.1089805-3-saravanak@google.com>
+In-Reply-To: <20220526081550.1089805-3-saravanak@google.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 30 May 2022 11:12:43 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXcHcuAn8UVS6RPsfenuCny4BgWNJFod41CFjdOF+w0sg@mail.gmail.com>
-Message-ID: <CAMuHMdXcHcuAn8UVS6RPsfenuCny4BgWNJFod41CFjdOF+w0sg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 4/9] Revert "driver core: Set default
- deferred_probe_timeout back to 0."
+Date:   Mon, 30 May 2022 11:22:03 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV4Uzfg8aBY=tKnRcig=Npebd158J7UK3zg5_DtHwAR5w@mail.gmail.com>
+Message-ID: <CAMuHMdV4Uzfg8aBY=tKnRcig=Npebd158J7UK3zg5_DtHwAR5w@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 2/9] pinctrl: devicetree: Delete usage of driver_deferred_probe_check_state()
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -86,8 +85,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -96,17 +96,43 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi Saravana,
 
+Thanks for your patch!
+
 On Thu, May 26, 2022 at 10:16 AM Saravana Kannan <saravanak@google.com> wrote:
-> This reverts commit 11f7e7ef553b6b93ac1aa74a3c2011b9cc8aeb61.
+> Now that fw_devlink=on by default and fw_devlink supports
+> "pinctrl-[0-8]" property, the execution will never get to the point
 
-scripts/chdeckpatch.pl says:
+0-9?
 
-    WARNING: Unknown commit id
-'11f7e7ef553b6b93ac1aa74a3c2011b9cc8aeb61', maybe rebased or not
-pulled?
+oh, it's really 0-8:
 
-I assume this is your local copy of
-https://lore.kernel.org/r/20220526034609.480766-3-saravanak@google.com?
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl0, "pinctrl-0", NULL)
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl1, "pinctrl-1", NULL)
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl2, "pinctrl-2", NULL)
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl3, "pinctrl-3", NULL)
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl4, "pinctrl-4", NULL)
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl5, "pinctrl-5", NULL)
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl6, "pinctrl-6", NULL)
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl7, "pinctrl-7", NULL)
+    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl8, "pinctrl-8", NULL)
+
+Looks fragile, especially since we now have:
+
+    arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi:
+pinctrl-9 = <&i2cmux_9>;
+    arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-10
+= <&i2cmux_10>;
+    arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-11
+= <&i2cmux_11>;
+    arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-12
+= <&i2cmux_pins_i>;
+
+> where driver_deferred_probe_check_state() is called before the supplier
+> has probed successfully or before deferred probe timeout has expired.
+>
+> So, delete the call and replace it with -ENODEV.
+>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
 
 Gr{oetje,eeting}s,
 
