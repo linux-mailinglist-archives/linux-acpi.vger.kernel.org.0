@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 042415377FD
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 12:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF42B53781F
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 May 2022 12:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233089AbiE3J22 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 May 2022 05:28:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48602 "EHLO
+        id S234862AbiE3Jpq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 May 2022 05:45:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232976AbiE3J20 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 05:28:26 -0400
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B435A483A0;
-        Mon, 30 May 2022 02:28:23 -0700 (PDT)
-Received: by mail-qt1-f179.google.com with SMTP id c8so328557qtj.1;
-        Mon, 30 May 2022 02:28:23 -0700 (PDT)
+        with ESMTP id S234799AbiE3Jpp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 May 2022 05:45:45 -0400
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6F02AF6;
+        Mon, 30 May 2022 02:45:44 -0700 (PDT)
+Received: by mail-qk1-f176.google.com with SMTP id v11so11009530qkf.1;
+        Mon, 30 May 2022 02:45:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sRRIuRryzgFI8ELIIPROeVlwSt2lbuDu8QoygFjo9dY=;
-        b=xhMCCryKaUgXAGzmfynEzov/h3DV+irDCkvwFk9FVpxAlBOi4uPlmyknBz8FLzpFYW
-         PH9mPInVoUC8ItuT80REI7tW+d6JBOxhKJG7mYavsIch3AnDk8/tRsUYeBZ7yiYNq6k5
-         P4rtoZM827yjMM+kx3ywjmxbcDrXgqFUgPmQzR+7rbAdFNFWUgcG1vjNXTlBxBmRri0B
-         FWKKHUlDZ+h1RSqLJYXjK0qzxIAAyLyCgLDYkI7nknaF1HNLDphlCfuOIjt5p7nrQyFo
-         fJL9jBKwWR/xmdkGtbwyLgiqrJvfDNum1iiFGO7B3XVnn7yRIQwSHpzskrkIo1+O6bx8
-         Fz6g==
-X-Gm-Message-State: AOAM531FC+aUCeLmfWAYJotLhhZco/K8UbFTDyAdYCa1kWz5MZwWdPh9
-        gga1ELEi7USEQrdo7MGvmJDhz0DysWbIKw==
-X-Google-Smtp-Source: ABdhPJx6LkWgelCyq4Tp9CBP0jVA4z6X2m6AeRjECc5lO8DzDztKPCLfny3veaAeZP8VfHM3QdPGKg==
-X-Received: by 2002:ac8:5cd3:0:b0:2ff:5954:9a91 with SMTP id s19-20020ac85cd3000000b002ff59549a91mr7848167qta.433.1653902902666;
-        Mon, 30 May 2022 02:28:22 -0700 (PDT)
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com. [209.85.219.180])
-        by smtp.gmail.com with ESMTPSA id ca20-20020a05622a1f1400b002f3ef928fbbsm6955038qtb.72.2022.05.30.02.28.22
+        bh=2eXMq1aM/7odJFSrV6FBn6WXqmOgMduOgC14zR4eCz0=;
+        b=HEDckpgfihaMhPPc0kWhN8MTfRPa+77OZbrV8jR2Se284rXFhGvwb7PpXpDFkpDW2m
+         qCGl3FCPlODyNVFjfrqVaO06cHzB9eznxBb/XTEc5V81WepmrISXfv5DlPmp5xm1FZVd
+         NyL6QW5coYGAS18/H/rFaBguH5b/PWIcSi4lY8Zb++k4Vm3xahwypHxUWeO1/47TczNL
+         AgE+yLdniL6iGPMgYzVLk2H+49qABpH6FDckHRje/VKY8PsepiirtvVQNKX+58aSGzeT
+         w/c7v98Sim5Lc0YNCtHis3Q32R136QpbL4ZwsBSeQOBeojmNNgwU9swJ0BsG84cO9WuK
+         OuHQ==
+X-Gm-Message-State: AOAM5332x7t0oG/h5oZrttmokwWORYbGRwb7W44/6qgul/QzJ6YHOAdn
+        +zdUsPSdCxpyIquqwfRWg5bHz4Y3oqch5w==
+X-Google-Smtp-Source: ABdhPJx1ReHal4K3RKQ/nxfS6vNNPgewAiUTZPLPXyfuc+SxDdcqS59lQCrkzRpEKpGODMI+fkVwHA==
+X-Received: by 2002:a05:620a:408e:b0:6a5:7a3f:471b with SMTP id f14-20020a05620a408e00b006a57a3f471bmr20845094qko.323.1653903943359;
+        Mon, 30 May 2022 02:45:43 -0700 (PDT)
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
+        by smtp.gmail.com with ESMTPSA id e5-20020a37ac05000000b006a353b7bf78sm6815744qkm.122.2022.05.30.02.45.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 May 2022 02:28:22 -0700 (PDT)
-Received: by mail-yb1-f180.google.com with SMTP id l204so7377570ybf.10;
-        Mon, 30 May 2022 02:28:22 -0700 (PDT)
-X-Received: by 2002:a05:6902:389:b0:633:31c1:d0f7 with SMTP id
- f9-20020a056902038900b0063331c1d0f7mr50896098ybs.543.1653902534054; Mon, 30
- May 2022 02:22:14 -0700 (PDT)
+        Mon, 30 May 2022 02:45:42 -0700 (PDT)
+Received: by mail-yb1-f181.google.com with SMTP id e184so8651926ybf.8;
+        Mon, 30 May 2022 02:45:42 -0700 (PDT)
+X-Received: by 2002:a81:2143:0:b0:2fb:1274:247e with SMTP id
+ h64-20020a812143000000b002fb1274247emr56723516ywh.384.1653903497533; Mon, 30
+ May 2022 02:38:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220526081550.1089805-1-saravanak@google.com> <20220526081550.1089805-3-saravanak@google.com>
-In-Reply-To: <20220526081550.1089805-3-saravanak@google.com>
+References: <20220526081550.1089805-1-saravanak@google.com>
+In-Reply-To: <20220526081550.1089805-1-saravanak@google.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 30 May 2022 11:22:03 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV4Uzfg8aBY=tKnRcig=Npebd158J7UK3zg5_DtHwAR5w@mail.gmail.com>
-Message-ID: <CAMuHMdV4Uzfg8aBY=tKnRcig=Npebd158J7UK3zg5_DtHwAR5w@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 2/9] pinctrl: devicetree: Delete usage of driver_deferred_probe_check_state()
+Date:   Mon, 30 May 2022 11:38:04 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW+Dmi9g=Cw9g5vOa9iYRA+L_ujU9C1-j0eKE7u3EmcFQ@mail.gmail.com>
+Message-ID: <CAMuHMdW+Dmi9g=Cw9g5vOa9iYRA+L_ujU9C1-j0eKE7u3EmcFQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 0/9] deferred_probe_timeout logic clean up
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -85,9 +85,8 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -96,43 +95,45 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi Saravana,
 
-Thanks for your patch!
-
-On Thu, May 26, 2022 at 10:16 AM Saravana Kannan <saravanak@google.com> wrote:
-> Now that fw_devlink=on by default and fw_devlink supports
-> "pinctrl-[0-8]" property, the execution will never get to the point
-
-0-9?
-
-oh, it's really 0-8:
-
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl0, "pinctrl-0", NULL)
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl1, "pinctrl-1", NULL)
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl2, "pinctrl-2", NULL)
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl3, "pinctrl-3", NULL)
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl4, "pinctrl-4", NULL)
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl5, "pinctrl-5", NULL)
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl6, "pinctrl-6", NULL)
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl7, "pinctrl-7", NULL)
-    drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl8, "pinctrl-8", NULL)
-
-Looks fragile, especially since we now have:
-
-    arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi:
-pinctrl-9 = <&i2cmux_9>;
-    arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-10
-= <&i2cmux_10>;
-    arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-11
-= <&i2cmux_11>;
-    arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-12
-= <&i2cmux_pins_i>;
-
-> where driver_deferred_probe_check_state() is called before the supplier
-> has probed successfully or before deferred probe timeout has expired.
+On Thu, May 26, 2022 at 10:15 AM Saravana Kannan <saravanak@google.com> wrote:
+> This series is based on linux-next + these 2 small patches applies on top:
+> https://lore.kernel.org/lkml/20220526034609.480766-1-saravanak@google.com/
 >
-> So, delete the call and replace it with -ENODEV.
+> A lot of the deferred_probe_timeout logic is redundant with
+> fw_devlink=on.  Also, enabling deferred_probe_timeout by default breaks
+> a few cases.
 >
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> This series tries to delete the redundant logic, simplify the frameworks
+> that use driver_deferred_probe_check_state(), enable
+> deferred_probe_timeout=10 by default, and fixes the nfsroot failure
+> case.
+>
+> Patches 1 to 3 are fairly straightforward and can probably be applied
+> right away.
+>
+> Patches 4 to 9 are related and are the complicated bits of this series.
+>
+> Patch 8 is where someone with more knowledge of the IP auto config code
+> can help rewrite the patch to limit the scope of the workaround by
+> running the work around only if IP auto config fails the first time
+> around. But it's also something that can be optimized in the future
+> because it's already limited to the case where IP auto config is enabled
+> using the kernel commandline.
+
+Thanks for your series!
+
+> Yoshihiro/Geert,
+>
+> If you can test this patch series and confirm that the NFS root case
+> works, I'd really appreciate that.
+
+On Salvator-XS, Micrel KSZ9031 Gigabit PHY probe is no longer delayed
+by 9s after applying the two earlier patches, and the same is true
+after applying this series on top.
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+I will do testing on more boards, but that may take a while, as we're
+in the middle of the merge window.
 
 Gr{oetje,eeting}s,
 
