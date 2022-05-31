@@ -2,213 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85C7D5396B4
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 May 2022 21:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C89C5397BB
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 May 2022 22:04:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244208AbiEaTEi convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 31 May 2022 15:04:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43908 "EHLO
+        id S1347538AbiEaUDv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 May 2022 16:03:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231464AbiEaTEh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 May 2022 15:04:37 -0400
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 882835A16A;
-        Tue, 31 May 2022 12:04:36 -0700 (PDT)
-Received: by mail-qt1-f173.google.com with SMTP id hf10so1773586qtb.7;
-        Tue, 31 May 2022 12:04:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=1ZeGJTUXZPxAO5jhONwtVhilmc3GtYxBhVB9MqXOe9g=;
-        b=pZTlsKPPrr7OlIeBxRn7GAu78CrTE8lb9O2HLaC6BEJ0mWx86LY4N5feFKOpdYEZyN
-         rt+mdNS/ttWHvJmdhMQwY5HRFv2l5zU7jY4sVZnScZWGxbvAcXCvk14oKPlla86MFr7h
-         /U8E21OiqkMjG3GvTLC5jA+Etj3NO3NpDs+lPqzEhvMFjIpOeA+1vPTAzDzJJPmwz4nq
-         S4Emquz4AmabNLdqxnUgHAD8lKwQvIRS+kZWFHH8DatmZWY5qJ0vNBj4wzlNQz1265Gz
-         EKOHmza2dZLs3RBu3AYZk53mwtRnrZvrjU2uAQJ5iu3pin+uCf1RjRvqZkF2//J5awai
-         nNfQ==
-X-Gm-Message-State: AOAM5338iMbRdK1EKg1Y2uRR1e1RXJaEVdopVthaq3SUb4rnIU+tWkt6
-        GpvTWA6YJU5Ut+HxhRoeR7BZ5dCA2hBpLg==
-X-Google-Smtp-Source: ABdhPJwan1az7R8iE/9DtGoHLn7F6sF+yl/T3u5AK+cP4EkQsX+Xuac6YqQf01KD2U3do5MtyU6pqQ==
-X-Received: by 2002:a05:622a:54f:b0:2f3:d566:e22c with SMTP id m15-20020a05622a054f00b002f3d566e22cmr49654230qtx.466.1654023875385;
-        Tue, 31 May 2022 12:04:35 -0700 (PDT)
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com. [209.85.219.176])
-        by smtp.gmail.com with ESMTPSA id c135-20020ae9ed8d000000b0069fc13ce232sm9757209qkg.99.2022.05.31.12.04.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 May 2022 12:04:34 -0700 (PDT)
-Received: by mail-yb1-f176.google.com with SMTP id v22so6971497ybd.5;
-        Tue, 31 May 2022 12:04:34 -0700 (PDT)
-X-Received: by 2002:a05:6902:905:b0:64a:2089:f487 with SMTP id
- bu5-20020a056902090500b0064a2089f487mr61384058ybb.202.1654023864081; Tue, 31
- May 2022 12:04:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220509233235.995021-1-dmitry.osipenko@collabora.com> <20220509233235.995021-17-dmitry.osipenko@collabora.com>
-In-Reply-To: <20220509233235.995021-17-dmitry.osipenko@collabora.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 31 May 2022 21:04:12 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUFqf58F31EAGnhp_cu9k-G4Sx1cmwx-PGb3mU+6bjRnQ@mail.gmail.com>
-Message-ID: <CAMuHMdUFqf58F31EAGnhp_cu9k-G4Sx1cmwx-PGb3mU+6bjRnQ@mail.gmail.com>
-Subject: Re: [PATCH v8 16/27] m68k: Switch to new sys-off handler API
-To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
+        with ESMTP id S233062AbiEaUDt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 May 2022 16:03:49 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5AED3BA7A;
+        Tue, 31 May 2022 13:03:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5886AB810F1;
+        Tue, 31 May 2022 20:03:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5054C385A9;
+        Tue, 31 May 2022 20:03:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654027426;
+        bh=Pfk28myHk/3Cvx3u7P+lbHGdGSulMgPmZyXSWfrF0qk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=WotY6DJAm+Qfsztc9Kj+2n9uGNuzFmnsxvOxOxOpTo3bck4G19bk0xzCrWUSGjYnd
+         FNptSvijMh56NRbulr+d4y/M0KGaQfFT3b+S8LIHEZLwq80ueGIHnMoHAR8ZHCeadr
+         gIFrMGhClQKhZfPU38kS1iq1w+WA5BxnINQ5j3QYFillDuWRrNI7G+uCYgAEtzuzaf
+         mCiM+cjxWIXrpo1bBgFSeNsUX0CzgKAP2hjunFaaoQ1pk4Abrwjb4sNC8EVJjky3ju
+         QpCwKE44aRO9Nwpu6jZzAuJ0yIpAOwvJEtZcbjK4MTXABMglcC678ZL7olTvytAEfN
+         BEvK3VWjWoI4w==
+Date:   Tue, 31 May 2022 15:03:44 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-pci@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: Update my email address to @kernel.org
+Message-ID: <20220531200344.GA778872@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220528151411.29810-1-lorenzo.pieralisi@arm.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dmitry,
+On Sat, May 28, 2022 at 04:14:11PM +0100, Lorenzo Pieralisi wrote:
+> I will soon lose my @arm.com email address, so to prevent any possible
+> issue let's update all kernel references (inclusive of .mailmap) to my
+> @kernel.org alias ahead of time.
+> 
+> My @arm.com address is still working and will likely resume to work at
+> some point in the future; nonetheless, it is safer to switch to the
+> @kernel.org alias from now onwards so that continuity is guaranteed.
+> 
+> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
 
-On Tue, May 10, 2022 at 1:34 AM Dmitry Osipenko
-<dmitry.osipenko@collabora.com> wrote:
-> Kernel now supports chained power-off handlers. Use
-> register_power_off_handler() that registers power-off handlers and
-> do_kernel_power_off() that invokes chained power-off handlers. Legacy
-> pm_power_off() will be removed once all drivers will be converted to
-> the new sys-off API.
->
-> Normally arch code should adopt only the do_kernel_power_off() at first,
-> but m68k is a special case because it uses pm_power_off() "inside out",
-> i.e. pm_power_off() invokes machine_power_off() [in fact it does nothing],
-> while it's machine_power_off() that should invoke the pm_power_off(), and
-> thus, we can't convert platforms to the new API separately. There are only
-> two platforms changed here, so it's not a big deal.
->
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Reviewed-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Applied to for-linus for v5.19, thanks!
 
-Thanks for your patch, which is now commit f0f7e5265b3b37b0
-("m68k: Switch to new sys-off handler API") upstream.
-
-> --- a/arch/m68k/emu/natfeat.c
-> +++ b/arch/m68k/emu/natfeat.c
-> @@ -15,6 +15,7 @@
->  #include <linux/string.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> +#include <linux/reboot.h>
->  #include <linux/io.h>
->  #include <asm/machdep.h>
->  #include <asm/natfeat.h>
-> @@ -90,5 +91,5 @@ void __init nf_init(void)
->         pr_info("NatFeats found (%s, %lu.%lu)\n", buf, version >> 16,
->                 version & 0xffff);
->
-> -       mach_power_off = nf_poweroff;
-> +       register_platform_power_off(nf_poweroff);
-
-Unfortunately nothing is registered, as this is called very early
-(from setup_arch(), before the memory allocator is available.
-Hence register_sys_off_handler() fails with -ENOMEM, and poweroff
-stops working.
-
-Possible solutions:
-  - As at most one handler can be registered,
-    register_platform_power_off() could use a static struct sys_off_handler
-    instance,
-  - Keep mach_power_off, and call register_platform_power_off() later.
-
-Anything else?
-Thanks!
-
-> --- a/arch/m68k/mac/config.c
-> +++ b/arch/m68k/mac/config.c
-> @@ -12,6 +12,7 @@
->
->  #include <linux/errno.h>
->  #include <linux/module.h>
-> +#include <linux/reboot.h>
->  #include <linux/types.h>
->  #include <linux/mm.h>
->  #include <linux/tty.h>
-> @@ -140,7 +141,6 @@ void __init config_mac(void)
->         mach_hwclk = mac_hwclk;
->         mach_reset = mac_reset;
->         mach_halt = mac_poweroff;
-> -       mach_power_off = mac_poweroff;
->  #if IS_ENABLED(CONFIG_INPUT_M68K_BEEP)
->         mach_beep = mac_mksound;
->  #endif
-> @@ -160,6 +160,8 @@ void __init config_mac(void)
->
->         if (macintosh_config->ident == MAC_MODEL_IICI)
->                 mach_l2_flush = via_l2_flush;
-> +
-> +       register_platform_power_off(mac_poweroff);
->  }
-
-This must have the same problem.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> ---
+>  .mailmap    |  1 +
+>  MAINTAINERS | 16 ++++++++--------
+>  2 files changed, 9 insertions(+), 8 deletions(-)
+> 
+> diff --git a/.mailmap b/.mailmap
+> index 6d484937f901..9ba38a82aba4 100644
+> --- a/.mailmap
+> +++ b/.mailmap
+> @@ -236,6 +236,7 @@ Linus Lüssing <linus.luessing@c0d3.blue> <linus.luessing@web.de>
+>  <linux-hardening@vger.kernel.org> <kernel-hardening@lists.openwall.com>
+>  Li Yang <leoyang.li@nxp.com> <leoli@freescale.com>
+>  Li Yang <leoyang.li@nxp.com> <leo@zh-kernel.org>
+> +Lorenzo Pieralisi <lpieralisi@kernel.org> <lorenzo.pieralisi@arm.com>
+>  Lukasz Luba <lukasz.luba@arm.com> <l.luba@partner.samsung.com>
+>  Maciej W. Rozycki <macro@mips.com> <macro@imgtec.com>
+>  Maciej W. Rozycki <macro@orcam.me.uk> <macro@linux-mips.org>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 392467e9ab73..4fa6a8da4b83 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -382,7 +382,7 @@ F:	include/acpi/
+>  F:	tools/power/acpi/
+>  
+>  ACPI FOR ARM64 (ACPI/arm64)
+> -M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> +M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+>  M:	Hanjun Guo <guohanjun@huawei.com>
+>  M:	Sudeep Holla <sudeep.holla@arm.com>
+>  L:	linux-acpi@vger.kernel.org
+> @@ -2946,7 +2946,7 @@ N:	uniphier
+>  ARM/VERSATILE EXPRESS PLATFORM
+>  M:	Liviu Dudau <liviu.dudau@arm.com>
+>  M:	Sudeep Holla <sudeep.holla@arm.com>
+> -M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> +M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+>  F:	*/*/*/vexpress*
+> @@ -5162,7 +5162,7 @@ F:	arch/x86/kernel/cpuid.c
+>  F:	arch/x86/kernel/msr.c
+>  
+>  CPUIDLE DRIVER - ARM BIG LITTLE
+> -M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> +M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+>  M:	Daniel Lezcano <daniel.lezcano@linaro.org>
+>  L:	linux-pm@vger.kernel.org
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+> @@ -5182,7 +5182,7 @@ F:	drivers/cpuidle/cpuidle-exynos.c
+>  F:	include/linux/platform_data/cpuidle-exynos.h
+>  
+>  CPUIDLE DRIVER - ARM PSCI
+> -M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> +M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+>  M:	Sudeep Holla <sudeep.holla@arm.com>
+>  L:	linux-pm@vger.kernel.org
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+> @@ -15289,7 +15289,7 @@ F:	drivers/pci/controller/pci-v3-semi.c
+>  
+>  PCI ENDPOINT SUBSYSTEM
+>  M:	Kishon Vijay Abraham I <kishon@ti.com>
+> -M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> +M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+>  R:	Krzysztof Wilczyński <kw@linux.com>
+>  L:	linux-pci@vger.kernel.org
+>  S:	Supported
+> @@ -15352,7 +15352,7 @@ F:	Documentation/devicetree/bindings/pci/xgene-pci-msi.txt
+>  F:	drivers/pci/controller/pci-xgene-msi.c
+>  
+>  PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS
+> -M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> +M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+>  R:	Rob Herring <robh@kernel.org>
+>  R:	Krzysztof Wilczyński <kw@linux.com>
+>  L:	linux-pci@vger.kernel.org
+> @@ -15905,7 +15905,7 @@ F:	include/linux/dtpm.h
+>  
+>  POWER STATE COORDINATION INTERFACE (PSCI)
+>  M:	Mark Rutland <mark.rutland@arm.com>
+> -M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> +M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+>  F:	drivers/firmware/psci/
+> @@ -18277,7 +18277,7 @@ F:	drivers/net/ethernet/smsc/smc91x.*
+>  
+>  SECURE MONITOR CALL(SMC) CALLING CONVENTION (SMCCC)
+>  M:	Mark Rutland <mark.rutland@arm.com>
+> -M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> +M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
+>  M:	Sudeep Holla <sudeep.holla@arm.com>
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+> -- 
+> 2.31.0
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
