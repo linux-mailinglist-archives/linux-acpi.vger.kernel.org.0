@@ -2,43 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A962538F86
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 May 2022 13:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C92275394A0
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 May 2022 18:01:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343693AbiEaLPX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 May 2022 07:15:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34768 "EHLO
+        id S243700AbiEaQBZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 May 2022 12:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233540AbiEaLPW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 May 2022 07:15:22 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 441E2994F3;
-        Tue, 31 May 2022 04:15:21 -0700 (PDT)
+        with ESMTP id S243673AbiEaQBY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 May 2022 12:01:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4FCF13DC8;
+        Tue, 31 May 2022 09:01:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 02846B80FBD;
-        Tue, 31 May 2022 11:15:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2E3C385A9;
-        Tue, 31 May 2022 11:15:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 790E76141C;
+        Tue, 31 May 2022 16:01:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EC0C3411E;
+        Tue, 31 May 2022 16:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653995718;
-        bh=spm2UFjiS6fo8kk8UmCdleJqxwofF/24678eBahMomc=;
+        s=k20201202; t=1654012882;
+        bh=WaZPxezERvXxWSR20vjO6mRMqeP64XtvJ9phxzM8Wpw=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=DUTZyAV6vmjsTeXar9jAU8J1pcHQfkQuE5QyO53BZ8O6qshPBXt3F4Ue1GJ6SXGNe
-         xVzcOgcyEA1gJWG0/rXEsHtnu61j9OOX7kyU2z/Kf1WnM+x8t+sjTKN+EDVFCALLgW
-         5qT/LD2vYLqTTcqYS1OMH7FWK5Fb7cQW4GySvfQ9U3XQrBX31zCpcycj4Wm/VcwOyG
-         ZeE32bTP6rkd8lLPtfmxzOKN26hh89r5lqmKQWvjpFK2WwJ58Xm6aPAbm6I4903902
-         a7bQyNNXEa7OO2CR+CtY64+u4tLz5scXH0MOz7YYGCuroKyDWOKPggtvcBkYeXhyPW
-         SbXuo8v6tpjgw==
-Received: by mail-yb1-f178.google.com with SMTP id a64so13036382ybg.11;
-        Tue, 31 May 2022 04:15:18 -0700 (PDT)
-X-Gm-Message-State: AOAM530+/jaMtKsb0p5mtCp0ybK2KSaJW+kGw0xRzeJ+z/E4wOn/pwHu
-        UeU3EqzESrIfWqfCrEfBt0oeISiUJNJedP3u25E=
-X-Google-Smtp-Source: ABdhPJzib5WuqtNhjnhge2BPfWDo2FJWgi1Qcys5IM2Iv/hVgNJtSBxsL/pGrhAkQ4whDydRW9RKvkK9GP/C8I9PNXo=
-X-Received: by 2002:a25:4f0a:0:b0:64f:6a76:3d8f with SMTP id
- d10-20020a254f0a000000b0064f6a763d8fmr47846196ybb.134.1653995717866; Tue, 31
- May 2022 04:15:17 -0700 (PDT)
+        b=jMEircEpk7Qa7s1rNAlI8nS0Rox00/3jC7FfauQw3nrc8OmwMoGKzhjOfn/9UCAoW
+         Rgqy5g96dFneqbPR9lw2HjBnz0746omKrhdAXqAdtQi1SceoPeD4gCpZcV1kNiWpGW
+         1syt8fG15Uisfx998jX/uUTdkBBsr7y3+d1ECN+1FTYZ7RtV42yc5laWP7qdd4SZ5d
+         t+c6BJ0Nddxtt2xJxfghWCCbrKhM/o3ShvlRegY/dMmSSguM0cFhSS+Q51bEYW5Gmu
+         DhmZ4SVvqZN8z6Z+noPDEQYW82pjJeZybzmkdZEyFnzJBaHXFIsiV7aFw9oiqvkrHG
+         cTCZpp7KRjfrQ==
+Received: by mail-ua1-f43.google.com with SMTP id n11so1179730uaq.9;
+        Tue, 31 May 2022 09:01:22 -0700 (PDT)
+X-Gm-Message-State: AOAM533mQMnaCTCeznxauLL9dtpcxNoavVVrnSM8qYVkrEwdzQanNqth
+        cyLBBp5Jg5rwbciNDhTKyszNyYkEbuQv5XRnIkc=
+X-Google-Smtp-Source: ABdhPJztX9RuQzOYTt6tUYLbR4Lcd8XkPHAMFzObgsrYtSHnuG8CpCpURyBMw+dxN0EdOgUf9WbqY/sHWLYA0O7dWPo=
+X-Received: by 2002:a9f:3582:0:b0:365:8006:eceb with SMTP id
+ t2-20020a9f3582000000b003658006ecebmr22004340uad.70.1654012881481; Tue, 31
+ May 2022 09:01:21 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAK8P3a2_52JPnBWNvTTkFVwLxPAa7=NaQ4whwC1UeH_NYHeUKQ@mail.gmail.com>
  <CAK8P3a0SpU1n+29KQxzKnPRvzmDE=L0V9RUpKxhemv=74kevcQ@mail.gmail.com>
@@ -46,14 +46,15 @@ References: <CAK8P3a2_52JPnBWNvTTkFVwLxPAa7=NaQ4whwC1UeH_NYHeUKQ@mail.gmail.com>
  <CAAhV-H6sNr-yo8brBFtzziH6k9Tby0dFp7yehK55SfH5HjZ8hQ@mail.gmail.com>
  <358025d1-28e6-708b-d23d-3f22ae12a800@xen0n.name> <CAK8P3a1ge2bZS13ahm_LdO3jEcbtR4w3do-gLjggKvppqnBDkw@mail.gmail.com>
  <CAAhV-H5NCUpR6aBtR9d7c9vW2KiHpk3iFQxj7BeTSS0boMz8PQ@mail.gmail.com>
- <CAK8P3a2JgrW5a7_udCUWen-gOnJgVeRV2oAd-uq4VSuYkFUqNQ@mail.gmail.com> <CAAhV-H6wfmdcV=a4L43dcabsvO+JbOebCX3_6PV+p85NjA9qhQ@mail.gmail.com>
-In-Reply-To: <CAAhV-H6wfmdcV=a4L43dcabsvO+JbOebCX3_6PV+p85NjA9qhQ@mail.gmail.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Tue, 31 May 2022 13:15:01 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0c_tbHov_b6cz-_Tj6VD3OWLwpGJf_2rj-nitipSKdYQ@mail.gmail.com>
-Message-ID: <CAK8P3a0c_tbHov_b6cz-_Tj6VD3OWLwpGJf_2rj-nitipSKdYQ@mail.gmail.com>
+ <CAK8P3a2JgrW5a7_udCUWen-gOnJgVeRV2oAd-uq4VSuYkFUqNQ@mail.gmail.com>
+ <CAAhV-H6wfmdcV=a4L43dcabsvO+JbOebCX3_6PV+p85NjA9qhQ@mail.gmail.com> <CAK8P3a0c_tbHov_b6cz-_Tj6VD3OWLwpGJf_2rj-nitipSKdYQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a0c_tbHov_b6cz-_Tj6VD3OWLwpGJf_2rj-nitipSKdYQ@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Wed, 1 Jun 2022 00:01:10 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4_qqQtTp2=mJF=OV+qcKzA0j8SPWKRMR-LJgC0zNfatQ@mail.gmail.com>
+Message-ID: <CAAhV-H4_qqQtTp2=mJF=OV+qcKzA0j8SPWKRMR-LJgC0zNfatQ@mail.gmail.com>
 Subject: Re: [musl] Re: [GIT PULL] asm-generic changes for 5.19
-To:     Huacai Chen <chenhuacai@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     musl@lists.openwall.com, WANG Xuerui <kernel@xen0n.name>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         linux-arch <linux-arch@vger.kernel.org>,
@@ -80,44 +81,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 31, 2022 at 10:17 AM Huacai Chen <chenhuacai@kernel.org> wrote:
-> On Tue, May 31, 2022 at 4:09 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> >
-> > On Tue, May 31, 2022 at 9:50 AM Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > On Mon, May 30, 2022 at 11:56 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> > > > On Mon, May 30, 2022 at 5:00 PM WANG Xuerui <kernel@xen0n.name> wrote:
-> > > > > Now I see
-> > > > > the loongarch-next HEAD is already rebased on top of what I believe to
-> > > > > be the current main branch, however I vaguely remember that it's not
-> > > > > good to base one's patches on top of "some random commit", so I wonder
-> > > > > whether the current branch state is appropriate for a PR?
-> > > >
-> > > > You are correct, a pull request should always be based on an -rc, orat least
-> > > > have the minimum set of dependencies. The branch was previously
-> > > > based on top of the spinlock implementation, which is still the best
-> > > > place to start here.
-> > > I have a difficult problem to select the base. Take swiotlb_init() as
-> > > an example: If I select 5.18-rc1, I should use swiotlb_init(1); if I
-> > > select Linus' latest tree, I should use swiotlb_init(true,
-> > > SWIOTLB_VERBOSE). However, if I select 5.18-rc1, linux-next will have
-> > > a build error because the code there expect swiotlb_init(true,
-> > > SWIOTLB_VERBOSE).
-> >
-> > Ok, I see. This is the kind of thing we normally prevent by having everything
-> > in linux-next for a few weeks before the merge window. How many issues
-> > like this are you aware of? If it's just the swiotlb, you could try merging
-> > the swiotlb branch that is in mainline now on top of the spinlock branch,
-> > and still get a minimum set of dependencies. If there are many more,
-> > then basing on top of the current mainline is probably less intrusive after
-> > all.
-> I have 3 issues:
-> 1, swiotlb_init(1) --> swiotlb_init(true, SWIOTLB_VERBOSE);
-> 2, the prototype of handle_kernel_image() should be changed from 5
-> parameters to 6 parameters;
-> 3, the return value type of huge_ptep_get_and_clear() should be
-> changed from void to pte_t (and the function implementation should be
-> also changed).
+Hi, Arnd,
 
-Ok, I see. Let's stay with the base on top of a mainline snapshot then.
+On Tue, May 31, 2022 at 7:15 PM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> On Tue, May 31, 2022 at 10:17 AM Huacai Chen <chenhuacai@kernel.org> wrote:
+> > On Tue, May 31, 2022 at 4:09 PM Arnd Bergmann <arnd@kernel.org> wrote:
+> > >
+> > > On Tue, May 31, 2022 at 9:50 AM Huacai Chen <chenhuacai@kernel.org> wrote:
+> > > > On Mon, May 30, 2022 at 11:56 PM Arnd Bergmann <arnd@kernel.org> wrote:
+> > > > > On Mon, May 30, 2022 at 5:00 PM WANG Xuerui <kernel@xen0n.name> wrote:
+> > > > > > Now I see
+> > > > > > the loongarch-next HEAD is already rebased on top of what I believe to
+> > > > > > be the current main branch, however I vaguely remember that it's not
+> > > > > > good to base one's patches on top of "some random commit", so I wonder
+> > > > > > whether the current branch state is appropriate for a PR?
+> > > > >
+> > > > > You are correct, a pull request should always be based on an -rc, orat least
+> > > > > have the minimum set of dependencies. The branch was previously
+> > > > > based on top of the spinlock implementation, which is still the best
+> > > > > place to start here.
+> > > > I have a difficult problem to select the base. Take swiotlb_init() as
+> > > > an example: If I select 5.18-rc1, I should use swiotlb_init(1); if I
+> > > > select Linus' latest tree, I should use swiotlb_init(true,
+> > > > SWIOTLB_VERBOSE). However, if I select 5.18-rc1, linux-next will have
+> > > > a build error because the code there expect swiotlb_init(true,
+> > > > SWIOTLB_VERBOSE).
+> > >
+> > > Ok, I see. This is the kind of thing we normally prevent by having everything
+> > > in linux-next for a few weeks before the merge window. How many issues
+> > > like this are you aware of? If it's just the swiotlb, you could try merging
+> > > the swiotlb branch that is in mainline now on top of the spinlock branch,
+> > > and still get a minimum set of dependencies. If there are many more,
+> > > then basing on top of the current mainline is probably less intrusive after
+> > > all.
+> > I have 3 issues:
+> > 1, swiotlb_init(1) --> swiotlb_init(true, SWIOTLB_VERBOSE);
+> > 2, the prototype of handle_kernel_image() should be changed from 5
+> > parameters to 6 parameters;
+> > 3, the return value type of huge_ptep_get_and_clear() should be
+> > changed from void to pte_t (and the function implementation should be
+> > also changed).
+>
+> Ok, I see. Let's stay with the base on top of a mainline snapshot then.
+https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/log/?h=loongarch-next
+has been updated. Now this branch droped irqchip drivers and pci
+drivers. But the existing irqchip drivers need some small adjustment
+to avoid build errors [1], and I hope Marc can give an Acked-by.
+Thanks.
 
-       Arnd
+This branch can be built with defconfig and allmodconfig (except
+drivers/platform/surface/aggregator/controller.c, because it requires
+8bit/16bit cmpxchg, which I was told to remove their support).
+
+[1] https://lore.kernel.org/lkml/e7cf33a170d0b4e98e53744f60dbf922@kernel.org/T/#t
+
+Huacai
+>
+>        Arnd
