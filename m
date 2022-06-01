@@ -2,279 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 175215398A1
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 May 2022 23:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C398F539A71
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Jun 2022 02:42:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347977AbiEaVZG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 May 2022 17:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51214 "EHLO
+        id S1344276AbiFAAlu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 May 2022 20:41:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347989AbiEaVZC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 May 2022 17:25:02 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD149CF26;
-        Tue, 31 May 2022 14:25:00 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: dmitry.osipenko)
-        with ESMTPSA id 4C9F21F43F0B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1654032299;
-        bh=dWPjJiUcTEsCTwSVeYSxHnF1/ruJ13+dt9/M97DHXpY=;
+        with ESMTP id S232296AbiFAAlt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 May 2022 20:41:49 -0400
+Received: from mailbox.box.xen0n.name (mail.xen0n.name [115.28.160.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B540D110B;
+        Tue, 31 May 2022 17:41:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xen0n.name; s=mail;
+        t=1654044103; bh=gAA/T6RmFtJ8e1KmZkGo7oW84DFSEfMlvKn6/ylyuf0=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=iw1cl93DawB1wUr9b6KkZdHCFs5+L/GBohLHlROEAOks05zME/v6MXMPk6D7ui5Yi
-         RNRHdZFdzCLwhRjjb38P9M6JexB3Wbp2yKOPr5eeU8sVg/8ntyHzURiHlZSY6J8Cm9
-         q6oV/gJyO14M2ElVzYwoEuvi7LeAOBJpJO7JVAQIQbIk2iZISrAGCD8WEks6N0mo8W
-         PABIM3KRc5wMYvZgEpozGR6zO7yQLUE2dke3U5CmMfjFhmLTkzt3Ddgs0XBxEfDRJn
-         c+JlwyAdHThzhqLupTWaB45a5dOVfxT+a6WiHu8uAbSXS41ExvvXWl05U0ZRpjuSZP
-         ldNnEXKzwDRFg==
-Message-ID: <a41c323a-5d69-0ff1-d0da-38eb55e1e4db@collabora.com>
-Date:   Wed, 1 Jun 2022 00:24:49 +0300
+        b=uhjVYNRyqBoD6KwGoMOam9BA2X3FFe4lh4HVCU56n5uxcuDR8qAjGPmL87LsIT0Qc
+         W0+AUC8UNdzT31FvW+2zBxeC7+eJTsyV/VHrypPQhnc3qNSc+ORdo/bR0vVYuNYh4j
+         0CK2jp+rnLLoUsef2u6AaRh9KuelLXGg/BK8K9cI=
+Received: from [192.168.9.172] (unknown [101.88.28.48])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mailbox.box.xen0n.name (Postfix) with ESMTPSA id B8D83600FF;
+        Wed,  1 Jun 2022 08:41:42 +0800 (CST)
+Message-ID: <1dbaed5d-fb83-be70-85fc-4b819fa7d47c@xen0n.name>
+Date:   Wed, 1 Jun 2022 08:41:42 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v8 16/27] m68k: Switch to new sys-off handler API
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101
+ Thunderbird/103.0a1
+Subject: Re: [musl] Re: [GIT PULL] asm-generic changes for 5.19
+To:     Arnd Bergmann <arnd@kernel.org>,
+        Huacai Chen <chenhuacai@kernel.org>
+Cc:     musl@lists.openwall.com, WANG Xuerui <kernel@xen0n.name>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        GNU C Library <libc-alpha@sourceware.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-References: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
- <20220509233235.995021-17-dmitry.osipenko@collabora.com>
- <CAMuHMdUFqf58F31EAGnhp_cu9k-G4Sx1cmwx-PGb3mU+6bjRnQ@mail.gmail.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <CAMuHMdUFqf58F31EAGnhp_cu9k-G4Sx1cmwx-PGb3mU+6bjRnQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Jianmin Lv <lvjianmin@loongson.cn>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Huacai Chen <chenhuacai@loongson.cn>
+References: <CAK8P3a2_52JPnBWNvTTkFVwLxPAa7=NaQ4whwC1UeH_NYHeUKQ@mail.gmail.com>
+ <CAK8P3a0SpU1n+29KQxzKnPRvzmDE=L0V9RUpKxhemv=74kevcQ@mail.gmail.com>
+ <df5c406c-eec6-c340-2847-49670b7fe8bf@xen0n.name>
+ <CAK8P3a3awFdB1-G65DC38NBuSTvo6SvFTaS0m9YBxunHjHjQvQ@mail.gmail.com>
+ <CAAhV-H6sNr-yo8brBFtzziH6k9Tby0dFp7yehK55SfH5HjZ8hQ@mail.gmail.com>
+ <358025d1-28e6-708b-d23d-3f22ae12a800@xen0n.name>
+ <CAK8P3a1ge2bZS13ahm_LdO3jEcbtR4w3do-gLjggKvppqnBDkw@mail.gmail.com>
+ <CAAhV-H5NCUpR6aBtR9d7c9vW2KiHpk3iFQxj7BeTSS0boMz8PQ@mail.gmail.com>
+ <CAK8P3a2JgrW5a7_udCUWen-gOnJgVeRV2oAd-uq4VSuYkFUqNQ@mail.gmail.com>
+ <CAAhV-H6wfmdcV=a4L43dcabsvO+JbOebCX3_6PV+p85NjA9qhQ@mail.gmail.com>
+ <CAK8P3a0c_tbHov_b6cz-_Tj6VD3OWLwpGJf_2rj-nitipSKdYQ@mail.gmail.com>
+ <CAAhV-H4_qqQtTp2=mJF=OV+qcKzA0j8SPWKRMR-LJgC0zNfatQ@mail.gmail.com>
+ <CAK8P3a3UfDJkoAkA6an2kXyAYSzz2vt__19JoQmum8LZehXrgg@mail.gmail.com>
+ <CAK8P3a0tu4ZANdxY-beVb4C1hKrn2VJqpfwBemhqHkr6760b7A@mail.gmail.com>
+Content-Language: en-US
+From:   WANG Xuerui <kernel@xen0n.name>
+In-Reply-To: <CAK8P3a0tu4ZANdxY-beVb4C1hKrn2VJqpfwBemhqHkr6760b7A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 5/31/22 22:04, Geert Uytterhoeven wrote:
-> Hi Dmitry,
-> 
-> On Tue, May 10, 2022 at 1:34 AM Dmitry Osipenko
-> <dmitry.osipenko@collabora.com> wrote:
->> Kernel now supports chained power-off handlers. Use
->> register_power_off_handler() that registers power-off handlers and
->> do_kernel_power_off() that invokes chained power-off handlers. Legacy
->> pm_power_off() will be removed once all drivers will be converted to
->> the new sys-off API.
->>
->> Normally arch code should adopt only the do_kernel_power_off() at first,
->> but m68k is a special case because it uses pm_power_off() "inside out",
->> i.e. pm_power_off() invokes machine_power_off() [in fact it does nothing],
->> while it's machine_power_off() that should invoke the pm_power_off(), and
->> thus, we can't convert platforms to the new API separately. There are only
->> two platforms changed here, so it's not a big deal.
->>
->> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->> Reviewed-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
->> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> 
-> Thanks for your patch, which is now commit f0f7e5265b3b37b0
-> ("m68k: Switch to new sys-off handler API") upstream.
-> 
->> --- a/arch/m68k/emu/natfeat.c
->> +++ b/arch/m68k/emu/natfeat.c
->> @@ -15,6 +15,7 @@
->>  #include <linux/string.h>
->>  #include <linux/kernel.h>
->>  #include <linux/module.h>
->> +#include <linux/reboot.h>
->>  #include <linux/io.h>
->>  #include <asm/machdep.h>
->>  #include <asm/natfeat.h>
->> @@ -90,5 +91,5 @@ void __init nf_init(void)
->>         pr_info("NatFeats found (%s, %lu.%lu)\n", buf, version >> 16,
->>                 version & 0xffff);
->>
->> -       mach_power_off = nf_poweroff;
->> +       register_platform_power_off(nf_poweroff);
-> 
-> Unfortunately nothing is registered, as this is called very early
-> (from setup_arch(), before the memory allocator is available.
-> Hence register_sys_off_handler() fails with -ENOMEM, and poweroff
-> stops working.
-> 
-> Possible solutions:
->   - As at most one handler can be registered,
->     register_platform_power_off() could use a static struct sys_off_handler
->     instance,
->   - Keep mach_power_off, and call register_platform_power_off() later.
-> 
-> Anything else?
-> Thanks!
-> 
->> --- a/arch/m68k/mac/config.c
->> +++ b/arch/m68k/mac/config.c
->> @@ -12,6 +12,7 @@
->>
->>  #include <linux/errno.h>
->>  #include <linux/module.h>
->> +#include <linux/reboot.h>
->>  #include <linux/types.h>
->>  #include <linux/mm.h>
->>  #include <linux/tty.h>
->> @@ -140,7 +141,6 @@ void __init config_mac(void)
->>         mach_hwclk = mac_hwclk;
->>         mach_reset = mac_reset;
->>         mach_halt = mac_poweroff;
->> -       mach_power_off = mac_poweroff;
->>  #if IS_ENABLED(CONFIG_INPUT_M68K_BEEP)
->>         mach_beep = mac_mksound;
->>  #endif
->> @@ -160,6 +160,8 @@ void __init config_mac(void)
->>
->>         if (macintosh_config->ident == MAC_MODEL_IICI)
->>                 mach_l2_flush = via_l2_flush;
->> +
->> +       register_platform_power_off(mac_poweroff);
->>  }
-> 
-> This must have the same problem.
+On 6/1/22 04:40, Arnd Bergmann wrote:
+> lib/test_printf.c:215: warning: "PTR" redefined
+>    215 | #define PTR ((void *)0xffff0123456789abUL)
+>        |
+> In file included from /git/arm-soc/arch/loongarch/include/asm/vdso/vdso.h:9,
+>                   from
+> /git/arm-soc/arch/loongarch/include/asm/vdso/gettimeofday.h:13,
+>                   from /git/arm-soc/include/vdso/datapage.h:137,
+>                   from /git/arm-soc/arch/loongarch/include/asm/vdso.h:11,
+>                   from /git/arm-soc/arch/loongarch/include/asm/elf.h:13,
+>                   from /git/arm-soc/include/linux/elf.h:6,
+>                   from /git/arm-soc/include/linux/module.h:19,
+>                   from /git/arm-soc/lib/test_printf.c:10:
+> /git/arm-soc/arch/loongarch/include/asm/asm.h:182: note: this is the
+> location of the previous definition
+>    182 | #define PTR             .dword
+>        |
+>
+> Not sure what the best fix is for this, maybe the contents of asm/asm.h could
+> just be hidden in an "#idef __ASSEMBLER__" check. This can be a follow-up
+> patch when the branch is merged.
 
-The static variant should be better, IMO. I'm not sure whether other platforms won't face the same problem once they will start using register_platform_power_off(). I'll send the fix, thank you for the testing!
+Ah, the dreaded PTR... This has plagued Loongson users since antiquity 
+(i.e. the MIPS era).
 
---- >8 ---
+It must have been the case that the arch/loongarch was based on an 
+earlier version of arch/mips, that didn't have the commit fa62f39dc7e25 
+("MIPS: Fix build error due to PTR used in more places"). So the fix 
+would be simple: just rename the PTR to something else. MIPS changed 
+that to PTR_WD and maybe we could re-use that name.
 
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index a091145ee710..4fea05d387dc 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -315,6 +315,37 @@ static int sys_off_notify(struct notifier_block *nb,
- 	return handler->sys_off_cb(&data);
- }
- 
-+static struct sys_off_handler platform_sys_off_handler;
-+
-+static struct sys_off_handler *alloc_sys_off_handler(int priority)
-+{
-+	struct sys_off_handler *handler;
-+
-+	/*
-+	 * Platforms like m68k can't allocate sys_off handler dynamically
-+	 * at the early boot time.
-+	 */
-+	if (priority == SYS_OFF_PRIO_PLATFORM) {
-+		handler = &platform_sys_off_handler;
-+		if (handler->cb_data)
-+			return ERR_PTR(-EBUSY);
-+	} else {
-+		handler = kzalloc(sizeof(*handler), GFP_KERNEL);
-+		if (!handler)
-+			return ERR_PTR(-ENOMEM);
-+	}
-+
-+	return handler;
-+}
-+
-+static void free_sys_off_handler(struct sys_off_handler *handler)
-+{
-+	if (handler == &platform_sys_off_handler)
-+		memset(handler, 0, sizeof(*handler));
-+	else
-+		kfree(handler);
-+}
-+
- /**
-  *	register_sys_off_handler - Register sys-off handler
-  *	@mode: Sys-off mode
-@@ -345,9 +376,9 @@ register_sys_off_handler(enum sys_off_mode mode,
- 	struct sys_off_handler *handler;
- 	int err;
- 
--	handler = kzalloc(sizeof(*handler), GFP_KERNEL);
--	if (!handler)
--		return ERR_PTR(-ENOMEM);
-+	handler = alloc_sys_off_handler(priority);
-+	if (IS_ERR(handler))
-+		return handler;
- 
- 	switch (mode) {
- 	case SYS_OFF_MODE_POWER_OFF_PREPARE:
-@@ -364,7 +395,7 @@ register_sys_off_handler(enum sys_off_mode mode,
- 		break;
- 
- 	default:
--		kfree(handler);
-+		free_sys_off_handler(handler);
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-@@ -391,7 +422,7 @@ register_sys_off_handler(enum sys_off_mode mode,
- 	}
- 
- 	if (err) {
--		kfree(handler);
-+		free_sys_off_handler(handler);
- 		return ERR_PTR(err);
- 	}
- 
-@@ -422,7 +453,7 @@ void unregister_sys_off_handler(struct sys_off_handler *handler)
- 	/* sanity check, shall never happen */
- 	WARN_ON(err);
- 
--	kfree(handler);
-+	free_sys_off_handler(handler);
- }
- EXPORT_SYMBOL_GPL(unregister_sys_off_handler);
- 
+But I agree that wrapping the whole asm/asm.h with an #ifdef 
+__ASSEMBLY__ is very reasonable regardless. Maybe both could be done.
+
