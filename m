@@ -2,166 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1011D53C541
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jun 2022 08:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E587E53C601
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jun 2022 09:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235190AbiFCGzz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Jun 2022 02:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60352 "EHLO
+        id S242220AbiFCHYG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Jun 2022 03:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234173AbiFCGzy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jun 2022 02:55:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 001BB366B8
-        for <linux-acpi@vger.kernel.org>; Thu,  2 Jun 2022 23:55:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1654239351;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7E5lR+VTALld2mTfNQxdusQn4aNxYfVVAc9A8NqQeSE=;
-        b=FgO2PjeXBmNXC6qJi5/kBJCZDpJXicut2hLaX7C/8tFU2mCFCkj3P2G01BRcJDGIMEazGj
-        JjM+ypB1dQeeJpVhu6iMgpNchu8bUlMknxn1LlAwDUOQDxmrNUujVT04t32lLd3+BLS+gg
-        eLAtCqs5nHRnvuUXd5N7IDvtQWd2vx4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-112-2VWICKAtM_OgHjm3VLRivg-1; Fri, 03 Jun 2022 02:55:50 -0400
-X-MC-Unique: 2VWICKAtM_OgHjm3VLRivg-1
-Received: by mail-wm1-f70.google.com with SMTP id u12-20020a05600c19cc00b0038ec265155fso6365203wmq.6
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Jun 2022 23:55:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=7E5lR+VTALld2mTfNQxdusQn4aNxYfVVAc9A8NqQeSE=;
-        b=IhNruSUf259/eD+2/B3nfP5wJM9N32AqIhZZ2AYBgl74TwDDUvSltsafRFZs4iAQlg
-         NHxxai+F7+9YbwNv7I7Wb9NxquBpaVtqE/BQvRSbIaRyaMgDDoMQsOQm/YsV8kPeDD1B
-         iJUVLhvLMu0kOxSlWOe9nJt/H8gtvOKmBSeRKVpjduGYd/3hJDuPK+ZUEHT4eRnG2UOu
-         KM16oUyUYsB6hzl3CT1lew6uwZXY+CTxWo8uYDDgxECnVhIMyXOujBu/KoeSS97X/JVh
-         i6gV1tbq52O/Zay3DG36u5e748W/fY8+/R2yJ7zUo2K3bhynX7pZcpeKLoMJr1PnxQi7
-         EIMw==
-X-Gm-Message-State: AOAM530emNx76WA4pLKeVtKousJ5/M3UBnBclx32bGtOAeh8Fvux6kNy
-        V4+PNkx+BnXn5OEKwg2+Ctnl3Bl4xsXBPbhvdK4aWbzvHuciVO2Tuur7gdbUM+Eoutdq4L4x+uy
-        DOyuQtpmdvQwLiOw3F4+xpw==
-X-Received: by 2002:a05:600c:1c86:b0:39c:eeb:39a3 with SMTP id k6-20020a05600c1c8600b0039c0eeb39a3mr7114005wms.40.1654239349163;
-        Thu, 02 Jun 2022 23:55:49 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxrSRa5Dxj7z6MY5xtT+kIz0IbbtMCxkQJLgdqcN5Ae38x2SZ7pJ1GoY/N+E8qgoPHMEiuqSQ==
-X-Received: by 2002:a05:600c:1c86:b0:39c:eeb:39a3 with SMTP id k6-20020a05600c1c8600b0039c0eeb39a3mr7113980wms.40.1654239348953;
-        Thu, 02 Jun 2022 23:55:48 -0700 (PDT)
-Received: from [172.28.2.131] (163.106.124.80.rev.sfr.net. [80.124.106.163])
-        by smtp.gmail.com with ESMTPSA id l10-20020a5d410a000000b0020fc6590a12sm6256206wrp.41.2022.06.02.23.55.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jun 2022 23:55:48 -0700 (PDT)
-Message-ID: <a3cd0f3f-9e97-706a-27af-4e5b6f63eb05@redhat.com>
-Date:   Fri, 3 Jun 2022 08:55:47 +0200
+        with ESMTP id S240945AbiFCHYG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jun 2022 03:24:06 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A1FA2E0AC;
+        Fri,  3 Jun 2022 00:24:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654241045; x=1685777045;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7Yciyx7VAW/zJpcHuy8/gsTy1zy7JoOWU2t1hPiCBEk=;
+  b=IHRutndjt7un5PB2URRMGYFWzy+r67RN77EDOLZypunRcKPhMSgaUfRO
+   DyqP622AEGpfSsVdsrmAooXM3z9eVFxr1PiSm/BTxAVBYHEXKbQ2uDuWT
+   OV+t9FIMQx5tJTX5SbcUZFiJG+rP3V+cshWG2VLOsq9PkZ5T0eN3SHOGS
+   VaIeWTpUeOHl1mOEcgJWxBUl/P51Zg3+bYgBsIr8VTVcTIHkMn+v6YRMU
+   VlbZK6C7agaeQIpR7KRCGSUQS6nly0QTyIwUqtFP/1iJ991cihGTsaZ8Z
+   WJOmYeo5gQyAmSI5+g1SJjOEC8o+X7gCSSz0Qv9ZK276vlh7ZZLQWkOLs
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10366"; a="258263402"
+X-IronPort-AV: E=Sophos;i="5.91,273,1647327600"; 
+   d="scan'208";a="258263402"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2022 00:24:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,273,1647327600"; 
+   d="scan'208";a="707927252"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 03 Jun 2022 00:24:03 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nx1f8-0006m7-9e;
+        Fri, 03 Jun 2022 07:24:02 +0000
+Date:   Fri, 03 Jun 2022 15:23:34 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 473d7985fed12e32bd979fc32b1c910f51d396bd
+Message-ID: <6299b6f6.ajGGF30FBwNQpUxF%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 12/14] drm/nouveau: Register ACPI video backlight when
- nv_backlight registration fails
-Content-Language: en-US
-To:     Lyude Paul <lyude@redhat.com>, Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>,
-        Daniel Dadap <ddadap@nvidia.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-References: <20220517152331.16217-1-hdegoede@redhat.com>
- <20220517152331.16217-13-hdegoede@redhat.com>
- <0c9c2c59ca9c351769921c47beb49dda79ddd5de.camel@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <0c9c2c59ca9c351769921c47beb49dda79ddd5de.camel@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Lyude,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 473d7985fed12e32bd979fc32b1c910f51d396bd  Merge branch 'pm-sysoff' into linux-next
 
-Thank you for the reviews.
+elapsed time: 723m
 
-On 5/18/22 19:39, Lyude Paul wrote:
-> On Tue, 2022-05-17 at 17:23 +0200, Hans de Goede wrote:
->> Typically the acpi_video driver will initialize before nouveau, which
->> used to cause /sys/class/backlight/acpi_video0 to get registered and then
->> nouveau would register its own nv_backlight device later. After which
->> the drivers/acpi/video_detect.c code unregistered the acpi_video0 device
->> to avoid there being 2 backlight devices.
->>
->> This means that userspace used to briefly see 2 devices and the
->> disappearing of acpi_video0 after a brief time confuses the systemd
->> backlight level save/restore code, see e.g.:
->> https://bbs.archlinux.org/viewtopic.php?id=269920
->>
->> To fix this the ACPI video code has been modified to make backlight class
->> device registration a separate step, relying on the drm/kms driver to
->> ask for the acpi_video backlight registration after it is done setting up
->> its native backlight device.
->>
->> Add a call to the new acpi_video_register_backlight() when native backlight
->> device registration has failed / was skipped to ensure that there is a
->> backlight device available before the drm_device gets registered with
->> userspace.
->>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>  drivers/gpu/drm/nouveau/nouveau_backlight.c | 7 +++++++
->>  1 file changed, 7 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c
->> b/drivers/gpu/drm/nouveau/nouveau_backlight.c
->> index f56ff797c78c..0ae8793357a4 100644
->> --- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
->> +++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
->> @@ -436,6 +436,13 @@ nouveau_backlight_init(struct drm_connector *connector)
->>  
->>  fail_alloc:
->>         kfree(bl);
->> +       /*
->> +        * If we get here we have an internal panel, but no nv_backlight,
->> +        * try registering an ACPI video backlight device instead.
->> +        */
->> +       if (ret == 0)
->> +               acpi_video_register_backlight();
-> 
-> Assuming we don't need to return the value of acpi_video_register_backlight()
-> here:
+configs tested: 106
+configs skipped: 3
 
-The function return type is void, so no return value to check :)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> 
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
-> 
->> +
->>         return ret;
->>  }
->>  
-> 
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+sh                   secureedge5410_defconfig
+arm64                            alldefconfig
+sh                         microdev_defconfig
+xtensa                generic_kc705_defconfig
+powerpc                      cm5200_defconfig
+sh                ecovec24-romimage_defconfig
+arm                       aspeed_g5_defconfig
+arm                           sama5_defconfig
+mips                         mpc30x_defconfig
+openrisc                 simple_smp_defconfig
+x86_64                        randconfig-c001
+i386                          randconfig-c001
+arm                  randconfig-c002-20220531
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+arc                              allyesconfig
+nios2                               defconfig
+alpha                               defconfig
+csky                                defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+parisc64                            defconfig
+s390                                defconfig
+s390                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                                defconfig
+i386                             allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+arc                  randconfig-r043-20220531
+riscv                randconfig-r042-20220531
+s390                 randconfig-r044-20220531
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           rhel-8.3-syz
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
 
+clang tested configs:
+mips                 randconfig-c004-20220531
+x86_64                        randconfig-c007
+i386                          randconfig-c001
+s390                 randconfig-c005-20220531
+arm                  randconfig-c002-20220531
+powerpc              randconfig-c003-20220531
+riscv                randconfig-c006-20220531
+mips                malta_qemu_32r6_defconfig
+mips                        workpad_defconfig
+arm                             mxs_defconfig
+powerpc                 mpc832x_rdb_defconfig
+powerpc                 mpc832x_mds_defconfig
+powerpc                     tqm8540_defconfig
+arm                       cns3420vb_defconfig
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r041-20220531
+hexagon              randconfig-r045-20220531
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
