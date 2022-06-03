@@ -2,190 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E587E53C601
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jun 2022 09:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FCB653C80F
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jun 2022 12:02:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242220AbiFCHYG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Jun 2022 03:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
+        id S229812AbiFCKCM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Jun 2022 06:02:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240945AbiFCHYG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jun 2022 03:24:06 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A1FA2E0AC;
-        Fri,  3 Jun 2022 00:24:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654241045; x=1685777045;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=7Yciyx7VAW/zJpcHuy8/gsTy1zy7JoOWU2t1hPiCBEk=;
-  b=IHRutndjt7un5PB2URRMGYFWzy+r67RN77EDOLZypunRcKPhMSgaUfRO
-   DyqP622AEGpfSsVdsrmAooXM3z9eVFxr1PiSm/BTxAVBYHEXKbQ2uDuWT
-   OV+t9FIMQx5tJTX5SbcUZFiJG+rP3V+cshWG2VLOsq9PkZ5T0eN3SHOGS
-   VaIeWTpUeOHl1mOEcgJWxBUl/P51Zg3+bYgBsIr8VTVcTIHkMn+v6YRMU
-   VlbZK6C7agaeQIpR7KRCGSUQS6nly0QTyIwUqtFP/1iJ991cihGTsaZ8Z
-   WJOmYeo5gQyAmSI5+g1SJjOEC8o+X7gCSSz0Qv9ZK276vlh7ZZLQWkOLs
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10366"; a="258263402"
-X-IronPort-AV: E=Sophos;i="5.91,273,1647327600"; 
-   d="scan'208";a="258263402"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2022 00:24:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,273,1647327600"; 
-   d="scan'208";a="707927252"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 03 Jun 2022 00:24:03 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nx1f8-0006m7-9e;
-        Fri, 03 Jun 2022 07:24:02 +0000
-Date:   Fri, 03 Jun 2022 15:23:34 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 473d7985fed12e32bd979fc32b1c910f51d396bd
-Message-ID: <6299b6f6.ajGGF30FBwNQpUxF%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S243276AbiFCKCL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jun 2022 06:02:11 -0400
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 973845FA2
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Jun 2022 03:02:08 -0700 (PDT)
+Received: by mail-il1-f197.google.com with SMTP id c1-20020a928e01000000b002d1b20aa761so5410535ild.6
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Jun 2022 03:02:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=CETyWVHu7ACjpSUlEO+0eiI0hfJXIrRX6DzyX/3YTu4=;
+        b=jntsUHt+LA5KNETF0hzk/nCf9s4rlWfFd7pnBLS8VeGjzzFbDCijwXXiOuhVrfCCDO
+         WmM4+Pesq5DJqeJ0Livx/DVrwr5Jvgk3QQO0FoFPjeGAyI/2VYCBnXWmlLdC5IBIPDO4
+         mZ283quDYi9+T3zCeqI+mJT0cEQbi5TmKjv0aWKTxuIc9WZ9qKCWAZO7TKlThEejS6ma
+         I7UfWvhxyFfr+ubYkAANeTuvWVUOOGMEJR49QMLblt0yvSoTtvmCh9rgmgJ0ZUtQmzya
+         QqUSrX3NND0pCkHO5mfBLhO7xt3W1kEgHCEX6sy5AF4i5NSsVYCfXAv9BjeTvetB6CVt
+         otJA==
+X-Gm-Message-State: AOAM530mDu7pejGn+rGcQUbxwZykJ1ljoqNzXLkunX/GYpSsQ6FiY+0I
+        lFN5lo+ywMqph0trQWHrAkmpank9uyfW0IAFVlOjdgWgJXeT
+X-Google-Smtp-Source: ABdhPJzbSJVbRANJ4lX5DaQExVRaf/aESQ7vPiixhdBT1+wC8VMM8xNu/cX8tmXqyxgNCDxCmiEyLOkFSxd21nQbl7YGufSdIA/D
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-Received: by 2002:a05:6638:d01:b0:330:cdea:7084 with SMTP id
+ q1-20020a0566380d0100b00330cdea7084mr5405003jaj.117.1654250527568; Fri, 03
+ Jun 2022 03:02:07 -0700 (PDT)
+Date:   Fri, 03 Jun 2022 03:02:07 -0700
+In-Reply-To: <000000000000bb7f1c05da29b601@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000010b7d305e08837c8@google.com>
+Subject: Re: [syzbot] general protection fault in __device_attach
+From:   syzbot <syzbot+dd3c97de244683533381@syzkaller.appspotmail.com>
+To:     andriy.shevchenko@linux.intel.com, gregkh@linuxfoundation.org,
+        hdanton@sina.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rafael.j.wysocki@intel.com,
+        rafael@kernel.org, rjw@rjwysocki.net,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_DIGITS,
+        FROM_LOCAL_HEX,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 473d7985fed12e32bd979fc32b1c910f51d396bd  Merge branch 'pm-sysoff' into linux-next
+syzbot has bisected this issue to:
 
-elapsed time: 723m
+commit a9c4cf299f5f79d5016c8a9646fa1fc49381a8c1
+Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date:   Fri Jun 18 13:41:27 2021 +0000
 
-configs tested: 106
-configs skipped: 3
+    ACPI: sysfs: Use __ATTR_RO() and __ATTR_RW() macros
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1040b80df00000
+start commit:   d1dc87763f40 assoc_array: Fix BUG_ON during garbage collect
+git tree:       upstream
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1240b80df00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1440b80df00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c51cd24814bb5665
+dashboard link: https://syzkaller.appspot.com/bug?extid=dd3c97de244683533381
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15613e2bf00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15c90adbf00000
 
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-sh                   secureedge5410_defconfig
-arm64                            alldefconfig
-sh                         microdev_defconfig
-xtensa                generic_kc705_defconfig
-powerpc                      cm5200_defconfig
-sh                ecovec24-romimage_defconfig
-arm                       aspeed_g5_defconfig
-arm                           sama5_defconfig
-mips                         mpc30x_defconfig
-openrisc                 simple_smp_defconfig
-x86_64                        randconfig-c001
-i386                          randconfig-c001
-arm                  randconfig-c002-20220531
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-arc                              allyesconfig
-nios2                               defconfig
-alpha                               defconfig
-csky                                defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-parisc64                            defconfig
-s390                                defconfig
-s390                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-i386                                defconfig
-i386                             allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220531
-riscv                randconfig-r042-20220531
-s390                 randconfig-r044-20220531
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
+Reported-by: syzbot+dd3c97de244683533381@syzkaller.appspotmail.com
+Fixes: a9c4cf299f5f ("ACPI: sysfs: Use __ATTR_RO() and __ATTR_RW() macros")
 
-clang tested configs:
-mips                 randconfig-c004-20220531
-x86_64                        randconfig-c007
-i386                          randconfig-c001
-s390                 randconfig-c005-20220531
-arm                  randconfig-c002-20220531
-powerpc              randconfig-c003-20220531
-riscv                randconfig-c006-20220531
-mips                malta_qemu_32r6_defconfig
-mips                        workpad_defconfig
-arm                             mxs_defconfig
-powerpc                 mpc832x_rdb_defconfig
-powerpc                 mpc832x_mds_defconfig
-powerpc                     tqm8540_defconfig
-arm                       cns3420vb_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a016
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r041-20220531
-hexagon              randconfig-r045-20220531
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
