@@ -2,195 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABDA553B683
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jun 2022 12:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1011D53C541
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jun 2022 08:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233283AbiFBKC0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Jun 2022 06:02:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36968 "EHLO
+        id S235190AbiFCGzz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Jun 2022 02:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233072AbiFBKCX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Jun 2022 06:02:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6358010D9;
-        Thu,  2 Jun 2022 03:02:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BED95614FA;
-        Thu,  2 Jun 2022 10:02:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F94C3411E;
-        Thu,  2 Jun 2022 10:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654164140;
-        bh=FbzUCD0Nyys1GvPjap25s98kySjc2A+W4LnGeGiZ0vs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ETMG8MESltoMId/pTxjM5BKdiXqbNoT+K9rtBbmJvfwjr7xkdX1N+xQ4Mj1c7Z3E2
-         JG5Ob+10iGq7/7rgmvMjJo6QHGpyKFTfdUvKlzhfOD8L47VTlKfW3ipFykcjZCYaom
-         x7Vkh+glnePKauzzCRdWDkWnkhe2mlFGX3EqNnaldQAX/JIudeqlWwbky+8QOgYKyC
-         Yd+BQLg2mu5QLtpvz+6gu9iEa1dTF/ujh4FIqxjYCBTQEr7PZ9oLPMjRK0/UQcPhls
-         NRrCrijcIl+29mZuPsfutOZDgiL3KwIJDc1UKpf/ari+G+YIzdX9Pl3WJxgTv45N+E
-         gka9QmCY1iueg==
-Received: by mail-io1-f53.google.com with SMTP id b4so4286659iog.11;
-        Thu, 02 Jun 2022 03:02:20 -0700 (PDT)
-X-Gm-Message-State: AOAM532PjMmTmRPSE4FuYt/XViiHGHsPeQtFDhueiLKm8ZIS9w4W3FH4
-        UYn6ngbQBfGCh4/3xggj0HX0Mfr5+15aS1Bt22c=
-X-Google-Smtp-Source: ABdhPJz+8ZXb25r7ObdDPSo1yCDAM4q4Hg1Q724ZPndy3EVmKfFgOMxE05ZJh5Hma9jrAfFmInrAEilM27IBWk/nms0=
-X-Received: by 2002:a05:6638:1692:b0:32e:e00f:ec2 with SMTP id
- f18-20020a056638169200b0032ee00f0ec2mr2572945jat.270.1654164139147; Thu, 02
- Jun 2022 03:02:19 -0700 (PDT)
+        with ESMTP id S234173AbiFCGzy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jun 2022 02:55:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 001BB366B8
+        for <linux-acpi@vger.kernel.org>; Thu,  2 Jun 2022 23:55:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1654239351;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7E5lR+VTALld2mTfNQxdusQn4aNxYfVVAc9A8NqQeSE=;
+        b=FgO2PjeXBmNXC6qJi5/kBJCZDpJXicut2hLaX7C/8tFU2mCFCkj3P2G01BRcJDGIMEazGj
+        JjM+ypB1dQeeJpVhu6iMgpNchu8bUlMknxn1LlAwDUOQDxmrNUujVT04t32lLd3+BLS+gg
+        eLAtCqs5nHRnvuUXd5N7IDvtQWd2vx4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-112-2VWICKAtM_OgHjm3VLRivg-1; Fri, 03 Jun 2022 02:55:50 -0400
+X-MC-Unique: 2VWICKAtM_OgHjm3VLRivg-1
+Received: by mail-wm1-f70.google.com with SMTP id u12-20020a05600c19cc00b0038ec265155fso6365203wmq.6
+        for <linux-acpi@vger.kernel.org>; Thu, 02 Jun 2022 23:55:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=7E5lR+VTALld2mTfNQxdusQn4aNxYfVVAc9A8NqQeSE=;
+        b=IhNruSUf259/eD+2/B3nfP5wJM9N32AqIhZZ2AYBgl74TwDDUvSltsafRFZs4iAQlg
+         NHxxai+F7+9YbwNv7I7Wb9NxquBpaVtqE/BQvRSbIaRyaMgDDoMQsOQm/YsV8kPeDD1B
+         iJUVLhvLMu0kOxSlWOe9nJt/H8gtvOKmBSeRKVpjduGYd/3hJDuPK+ZUEHT4eRnG2UOu
+         KM16oUyUYsB6hzl3CT1lew6uwZXY+CTxWo8uYDDgxECnVhIMyXOujBu/KoeSS97X/JVh
+         i6gV1tbq52O/Zay3DG36u5e748W/fY8+/R2yJ7zUo2K3bhynX7pZcpeKLoMJr1PnxQi7
+         EIMw==
+X-Gm-Message-State: AOAM530emNx76WA4pLKeVtKousJ5/M3UBnBclx32bGtOAeh8Fvux6kNy
+        V4+PNkx+BnXn5OEKwg2+Ctnl3Bl4xsXBPbhvdK4aWbzvHuciVO2Tuur7gdbUM+Eoutdq4L4x+uy
+        DOyuQtpmdvQwLiOw3F4+xpw==
+X-Received: by 2002:a05:600c:1c86:b0:39c:eeb:39a3 with SMTP id k6-20020a05600c1c8600b0039c0eeb39a3mr7114005wms.40.1654239349163;
+        Thu, 02 Jun 2022 23:55:49 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxrSRa5Dxj7z6MY5xtT+kIz0IbbtMCxkQJLgdqcN5Ae38x2SZ7pJ1GoY/N+E8qgoPHMEiuqSQ==
+X-Received: by 2002:a05:600c:1c86:b0:39c:eeb:39a3 with SMTP id k6-20020a05600c1c8600b0039c0eeb39a3mr7113980wms.40.1654239348953;
+        Thu, 02 Jun 2022 23:55:48 -0700 (PDT)
+Received: from [172.28.2.131] (163.106.124.80.rev.sfr.net. [80.124.106.163])
+        by smtp.gmail.com with ESMTPSA id l10-20020a5d410a000000b0020fc6590a12sm6256206wrp.41.2022.06.02.23.55.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jun 2022 23:55:48 -0700 (PDT)
+Message-ID: <a3cd0f3f-9e97-706a-27af-4e5b6f63eb05@redhat.com>
+Date:   Fri, 3 Jun 2022 08:55:47 +0200
 MIME-Version: 1.0
-References: <CAK8P3a2_52JPnBWNvTTkFVwLxPAa7=NaQ4whwC1UeH_NYHeUKQ@mail.gmail.com>
- <CAK8P3a0SpU1n+29KQxzKnPRvzmDE=L0V9RUpKxhemv=74kevcQ@mail.gmail.com>
- <df5c406c-eec6-c340-2847-49670b7fe8bf@xen0n.name> <CAK8P3a3awFdB1-G65DC38NBuSTvo6SvFTaS0m9YBxunHjHjQvQ@mail.gmail.com>
- <CAAhV-H6sNr-yo8brBFtzziH6k9Tby0dFp7yehK55SfH5HjZ8hQ@mail.gmail.com>
- <358025d1-28e6-708b-d23d-3f22ae12a800@xen0n.name> <CAK8P3a1ge2bZS13ahm_LdO3jEcbtR4w3do-gLjggKvppqnBDkw@mail.gmail.com>
- <CAAhV-H5NCUpR6aBtR9d7c9vW2KiHpk3iFQxj7BeTSS0boMz8PQ@mail.gmail.com>
- <CAK8P3a2JgrW5a7_udCUWen-gOnJgVeRV2oAd-uq4VSuYkFUqNQ@mail.gmail.com>
- <CAAhV-H6wfmdcV=a4L43dcabsvO+JbOebCX3_6PV+p85NjA9qhQ@mail.gmail.com>
- <CAK8P3a0c_tbHov_b6cz-_Tj6VD3OWLwpGJf_2rj-nitipSKdYQ@mail.gmail.com>
- <CAAhV-H4_qqQtTp2=mJF=OV+qcKzA0j8SPWKRMR-LJgC0zNfatQ@mail.gmail.com>
- <832c3ae8-6c68-db2c-2c7f-0a5cd3071543@xen0n.name> <CAK8P3a1Mg=Mr6aig25Kk9+Qf_E6DPMs0Yd-ozcvmY11kvCU74Q@mail.gmail.com>
- <CAMj1kXFijHBnQVPR=O85u78n6A1Ev_24k=vns4yPQ=d-aiAC8Q@mail.gmail.com> <47b559c0-b1e8-e800-0491-2431e2083dad@xen0n.name>
-In-Reply-To: <47b559c0-b1e8-e800-0491-2431e2083dad@xen0n.name>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Thu, 2 Jun 2022 18:02:09 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6BVo8nsCsC11oBGgmZOw0TFQbBwqGQRmqR1bSHsM9mJg@mail.gmail.com>
-Message-ID: <CAAhV-H6BVo8nsCsC11oBGgmZOw0TFQbBwqGQRmqR1bSHsM9mJg@mail.gmail.com>
-Subject: Re: [musl] Re: [GIT PULL] asm-generic changes for 5.19
-To:     WANG Xuerui <kernel@xen0n.name>, Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        GNU C Library <libc-alpha@sourceware.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        musl@lists.openwall.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Huacai Chen <chenhuacai@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 12/14] drm/nouveau: Register ACPI video backlight when
+ nv_backlight registration fails
+Content-Language: en-US
+To:     Lyude Paul <lyude@redhat.com>, Ben Skeggs <bskeggs@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+References: <20220517152331.16217-1-hdegoede@redhat.com>
+ <20220517152331.16217-13-hdegoede@redhat.com>
+ <0c9c2c59ca9c351769921c47beb49dda79ddd5de.camel@redhat.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <0c9c2c59ca9c351769921c47beb49dda79ddd5de.camel@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Ard,
+Hi Lyude,
 
-On Thu, Jun 2, 2022 at 12:44 AM WANG Xuerui <kernel@xen0n.name> wrote:
->
-> Hi Ard,
->
-> On 6/2/22 00:01, Ard Biesheuvel wrote:
-> > On Wed, 1 Jun 2022 at 09:41, Arnd Bergmann <arnd@kernel.org> wrote:
-> >> On Wed, Jun 1, 2022 at 7:52 AM WANG Xuerui <kernel@xen0n.name> wrote:
-> >>> On 6/1/22 00:01, Huacai Chen wrote:
-> >>>> https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/log/?h=loongarch-next
-> >>>> has been updated. Now this branch droped irqchip drivers and pci
-> >>>> drivers. But the existing irqchip drivers need some small adjustment
-> >>>> to avoid build errors [1], and I hope Marc can give an Acked-by.
-> >>>> Thanks.
-> >>>>
-> >>>> This branch can be built with defconfig and allmodconfig (except
-> >>>> drivers/platform/surface/aggregator/controller.c, because it requires
-> >>>> 8bit/16bit cmpxchg, which I was told to remove their support).
-> >>>>
-> >>>> [1] https://lore.kernel.org/lkml/e7cf33a170d0b4e98e53744f60dbf922@kernel.org/T/#t
-> >>> I see the loongarch-next HEAD has been updated and it's now purely arch
-> >>> changes aside from the two trivial irqchip cleanups. Some other changes
-> >>> to the v11 patchset [1] are included, but arguably minor enough to not
-> >>> invalidate previous Reviewed-by tags.
-> >> Very nice! I don't see exactly how the previous build bugs were addressed,
-> >> but I can confirm that this version builds. Regarding the two irqchip patches,
-> >> 621e7015b529 ("irqchip/loongson-liointc: Fix build error for LoongArch") is
-> >> a good way to work around the mips oddity, and I have no problem taking
-> >> that through the asm-generic tree. The other one, f54b4a166023 ("irqchip:
-> >>   Adjust Kconfig for Loongson"), looks mostly unnecessary, and I think only
-> >> the LOONGSON_HTPIC change should be included here, while I would
-> >> leave out the COMPILE_TEST changes and instead have the driver
-> >> changes take care of making it possible to keep building it on x86, possibly
-> >> doing
-> >>
-> >>          depends on MACH_LOONGSON64 || (COMPILE_TEST && ACPI)
-> >>
-> >> in the future, after the loongarch64 ACPI support is merged.
-> >>
-> >>> After some small tweaks:
-> >>>
-> >>> - adding "#include <asm/irqflags.h>" to arch/loongarch/include/asm/ptrace.h,
-> >>> - adding an arch/loongarch/include/uapi/asm/bpf_perf_event.h with the
-> >>> same content as arch/arm64's, and
-> >>> - adding "depends on ARM64 || X86" to
-> >>> drivers/platform/surface/aggregator/Kconfig,
-> >>>
-> >>> the current loongarch-next HEAD (commit
-> >>> 36552a24f70d21b7d63d9ef490561dbdc13798d7) now passes allmodconfig build
-> >>> (with CONFIG_WERROR disabled; my Gentoo-flavored gcc-12 seems to emit
-> >>> warnings on a few drivers).
-> >> The only one of these issues that I see is the surface aggregator one.
-> >> I think we can address all three as follow-up fixes after -rc1 if the port
-> >> gets merged and these are still required.
-> >>
-> >>> The majority of userspace ABI has been stable for a few months already,
-> >>> after the addition of orig_a0 and removal of newfstatat; the necessary
-> >>> changes to switch to statx are already reviewed [2] / merged [3], and
-> >>> have been integrated into the LoongArch port of Gentoo for a while. Eric
-> >>> looked at the v11 and gave comments, and changes were made according to
-> >>> the suggestions, but it'd probably better to get a proper Reviewed-by.
-> >> Right.
-> >>
-> >>> Among the rest of patches, I think maybe the EFI/boot protocol part
-> >>> still need approval/ack from the EFI maintainer. However because the
-> >>> current port isn't going to be able to run on any real hardware, maybe
-> >>> that part could be done later; I'm not sure if the unacknowledged EFI
-> >>> bits should be removed as well.
-> >> Ard, do you have any last comments on this?
-> >>
-> > It would be nice if the questions I raised against the previous
-> > revision (v11) were addressed (or at least answered) first. In
-> > general, I think this is feeling a bit rushed and IMHO we should
-> > probably defer this to the next cycle.
->
-> Actually I think Huacai did reply to your review on v11:
-> https://lore.kernel.org/all/CAAhV-H7KAg8RxN7M=WiOOh0fDhEKTyqrwp6V-SC0cyR0iMrdeg@mail.gmail.com/.
-> It's a bit unfortunate that he probably didn't justify some of the
-> approaches enough, and it's especially unfortunate that some of the
-> points (like maybe the kernel version string in the EFI stub header) are
-> result of their internal discussion, which I presume to be especially
-> hard to change due to their particularly worrying corporate dynamics...
-I'm sorry that you haven't seen my reply, but as Xuerui said, I have
-replied to your review. :)
-Since you didn't reply to my answers again, I supposed that you
-consider "everything is OK". :)
-Now I plan to send V13, with the following changes:
-1, Remove kernel_version string in efistub;
-2, Remove the boardinfo knob in /sys/firmware/efi;
-3, Add a reference in the commit message to explain while we need a
-magic number [1].
-[1] https://lists.gnu.org/archive/html/grub-devel/2021-10/msg00215.html
+Thank you for the reviews.
 
-Huacai
+On 5/18/22 19:39, Lyude Paul wrote:
+> On Tue, 2022-05-17 at 17:23 +0200, Hans de Goede wrote:
+>> Typically the acpi_video driver will initialize before nouveau, which
+>> used to cause /sys/class/backlight/acpi_video0 to get registered and then
+>> nouveau would register its own nv_backlight device later. After which
+>> the drivers/acpi/video_detect.c code unregistered the acpi_video0 device
+>> to avoid there being 2 backlight devices.
+>>
+>> This means that userspace used to briefly see 2 devices and the
+>> disappearing of acpi_video0 after a brief time confuses the systemd
+>> backlight level save/restore code, see e.g.:
+>> https://bbs.archlinux.org/viewtopic.php?id=269920
+>>
+>> To fix this the ACPI video code has been modified to make backlight class
+>> device registration a separate step, relying on the drm/kms driver to
+>> ask for the acpi_video backlight registration after it is done setting up
+>> its native backlight device.
+>>
+>> Add a call to the new acpi_video_register_backlight() when native backlight
+>> device registration has failed / was skipped to ensure that there is a
+>> backlight device available before the drm_device gets registered with
+>> userspace.
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>  drivers/gpu/drm/nouveau/nouveau_backlight.c | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c
+>> b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+>> index f56ff797c78c..0ae8793357a4 100644
+>> --- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
+>> +++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+>> @@ -436,6 +436,13 @@ nouveau_backlight_init(struct drm_connector *connector)
+>>  
+>>  fail_alloc:
+>>         kfree(bl);
+>> +       /*
+>> +        * If we get here we have an internal panel, but no nv_backlight,
+>> +        * try registering an ACPI video backlight device instead.
+>> +        */
+>> +       if (ret == 0)
+>> +               acpi_video_register_backlight();
+> 
+> Assuming we don't need to return the value of acpi_video_register_backlight()
+> here:
 
->
-> But again, my point is that the userspace ABI in particular is *not*
-> rushed -- it has been brewing since v1 of the port which is already
-> several months ago, and multiple distro-building efforts are already
-> underway. We (LoongArch distro packagers) want to freeze the userspace
-> ABI so that many downstream efforts wouldn't be blocked by the merging
-> of kernel port.
->
-> As the boot protocol is technically not part of the userspace ABI that
-> toolchains care about, and we already know it'll be a rather
-> standards-compliant UEFI implementation even if this part gets dropped
-> for brewing one more cycle, would taking this part out work for you?
->
+The function return type is void, so no return value to check :)
+
+> 
+> Reviewed-by: Lyude Paul <lyude@redhat.com>
+> 
+>> +
+>>         return ret;
+>>  }
+>>  
+> 
+
