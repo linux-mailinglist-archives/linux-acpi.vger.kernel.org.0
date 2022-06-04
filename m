@@ -2,92 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 346DB53CD31
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jun 2022 18:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97EB353D528
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Jun 2022 06:14:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343901AbiFCQ12 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Jun 2022 12:27:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59848 "EHLO
+        id S1350420AbiFDENo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 4 Jun 2022 00:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245209AbiFCQ11 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Jun 2022 12:27:27 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id BDF5918379
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Jun 2022 09:27:25 -0700 (PDT)
-Received: (qmail 306240 invoked by uid 1000); 3 Jun 2022 12:27:25 -0400
-Date:   Fri, 3 Jun 2022 12:27:25 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        syzbot <syzbot+dd3c97de244683533381@syzkaller.appspotmail.com>,
-        hdanton@sina.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rafael.j.wysocki@intel.com,
-        rafael@kernel.org, rjw@rjwysocki.net,
-        syzkaller-bugs@googlegroups.com, linux-usb@vger.kernel.org
-Subject: Re: [syzbot] general protection fault in __device_attach
-Message-ID: <Ypo2bbTfzdH3jH42@rowland.harvard.edu>
-References: <000000000000bb7f1c05da29b601@google.com>
- <00000000000010b7d305e08837c8@google.com>
- <YpnqpMYcokTwCB6u@smile.fi.intel.com>
- <Ypor265BTdnmgwpM@rowland.harvard.edu>
- <YpouRmanvCQeKA3S@kroah.com>
- <Ypow1LRZ3Hau36ci@rowland.harvard.edu>
- <Ypoyy/stICFdHauR@kroah.com>
+        with ESMTP id S232370AbiFDENn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Jun 2022 00:13:43 -0400
+Received: from smtpbg.qq.com (smtpbg136.qq.com [106.55.201.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 763512E6AE;
+        Fri,  3 Jun 2022 21:13:37 -0700 (PDT)
+X-QQ-mid: bizesmtp65t1654315983tz7bgyfv
+Received: from localhost.localdomain ( [111.9.5.115])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Sat, 04 Jun 2022 12:13:00 +0800 (CST)
+X-QQ-SSF: 01000000002000B0G000B00A0000000
+X-QQ-FEAT: 0Mv5E39fBgZryfVyjPYIPioplg4fxOWAmPDHFrnSJ7KUfXYKXGXRdU9GByOnt
+        dMqwrq2PrPh95iyul6GAZykQM/yPr41Nn2bYU0zrC9TGsGq+JZlJY9LlMXM7B+N8NeWj1GH
+        IErWrJq5v0R5HVtDFwjPhMt/sJ0lM8fa04WReSqPU130dyhXZSbg4vbIdHIE8ZLvfcBvE29
+        LH2J4A7kqG7O3SBqJV1AhlKTMtGeDjy0qJYp8l69swNlf3dCWCbj5IRS/wQQ+9dWEhn5Mza
+        VAbnLa+SATeM+dRxPn+RWTeWjhxzy2OjNPX6OSsXKcwa6BmF/vqi2KcxC9arkijGJ5pCl/f
+        Mp6QW0c
+X-QQ-GoodBg: 0
+From:   Xiang wangx <wangxiang@cdjrlc.com>
+To:     lenb@kernel.org
+Cc:     james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Xiang wangx <wangxiang@cdjrlc.com>
+Subject: [PATCH] ACPI, APEI, Fix syntax errors in comments
+Date:   Sat,  4 Jun 2022 12:12:53 +0800
+Message-Id: <20220604041253.9298-1-wangxiang@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Ypoyy/stICFdHauR@kroah.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam7
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 03, 2022 at 06:11:55PM +0200, Greg KH wrote:
-> On Fri, Jun 03, 2022 at 12:03:32PM -0400, Alan Stern wrote:
-> > On Fri, Jun 03, 2022 at 05:52:38PM +0200, Greg KH wrote:
-> > > On Fri, Jun 03, 2022 at 11:42:19AM -0400, Alan Stern wrote:
-> > > > So now what should happen when device_add() for an interface fails in 
-> > > > usb_set_configuration()?
-> > > 
-> > > But how can that really fail on a real system?
-> > > 
-> > > Is this just due to error-injection stuff?  If so, I'm really loath to
-> > > rework the world for something that can never happen in real life.
-> > > 
-> > > Or is this a real syzbot-found-with-reproducer issue?
-> > 
-> > Aren't there quite a few reasons why device_add() might fail?  (Although 
-> > most of them probably are memory allocation errors...)
-> 
-> I was thinking of the dev_set_name() issue further back in the call
-> chain.
+Delete the redundant word 'the'.
 
-As far as I know, the only reason for dev_set_name() to fail is -ENOMEM.  
-That's not something the user can control directly.
+Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
+---
+ drivers/acpi/apei/apei-base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > Basically, you have to make up your mind.  If a function can fail, you 
-> > should be prepared to handle the failure.  If it can't fail, there's no 
-> > point in even checking the return code.
-> 
-> True, ok, we should unwind the mess.  I'll try to look at it after the
-> merge window...
-> 
-> But again, is this a "real and able to be triggered from userspace"
-> problem, or just fault-injection-induced?
+diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
+index 33b7fbbeda82..9f49272cad39 100644
+--- a/drivers/acpi/apei/apei-base.c
++++ b/drivers/acpi/apei/apei-base.c
+@@ -3,7 +3,7 @@
+  * apei-base.c - ACPI Platform Error Interface (APEI) supporting
+  * infrastructure
+  *
+- * APEI allows to report errors (for example from the chipset) to the
++ * APEI allows to report errors (for example from the chipset) to
+  * the operating system. This improves NMI handling especially. In
+  * addition it supports error serialization and error injection.
+  *
+-- 
+2.36.1
 
-I don't think any of the failure paths here are controlled by the user.  
-They all seem to involve something going wrong internally in the kernel 
-(i.e., corruption or memory allocation failure for a small buffer).  
-Once that happens, the game is pretty much over anyway.
-
-Is it worth handling this sort of thing, or should we ignore the 
-possibility and allow it to escalate to the point where the user can 
-potentially trigger a kernel panic?  Another way of putting it is: How 
-gracefully do you want the kernel to collapse when this sort of 
-corruption happens?
-
-Alan Stern
