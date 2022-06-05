@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3399553D974
-	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jun 2022 05:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E945553D981
+	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jun 2022 05:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347904AbiFEDpr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Jun 2022 23:45:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57184 "EHLO
+        id S1348088AbiFEDsK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 4 Jun 2022 23:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236902AbiFEDpq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Jun 2022 23:45:46 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBC574EDC0
-        for <linux-acpi@vger.kernel.org>; Sat,  4 Jun 2022 20:45:45 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id t31so20269058ybi.2
-        for <linux-acpi@vger.kernel.org>; Sat, 04 Jun 2022 20:45:45 -0700 (PDT)
+        with ESMTP id S1348238AbiFEDsJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Jun 2022 23:48:09 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D171DA7E
+        for <linux-acpi@vger.kernel.org>; Sat,  4 Jun 2022 20:48:05 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-2ff7b90e635so115758337b3.5
+        for <linux-acpi@vger.kernel.org>; Sat, 04 Jun 2022 20:48:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=u927xqlaG4+M+ycErvXLDv/hJjpEjGMZ02h0/MOu0dE=;
-        b=ehj6NFZQv8BDVJJlJnUvvcDSXp9LpCqfvnmr5AXmU20WA3jQqH6sOl5be/5V6xWW+t
-         i6e5y2mRwk2MV3UEKvTcTRXkOUeJZYrrczsFw+5q64C+0kLefCc4fK+oOEk6SmfB4YBP
-         kkamPTLmuhJB011WNvofNqiRM5wg40Y+7zX0rei48rYtP3kEkpky6NpnOkPYqmuK7nYN
-         oTPwGWjuof4MrzV/WUiIydLaUqeiDYDhhmpboRu0PgShxoo9F1xB2iZ69uUQJ5kfrYWy
-         Jnwt0lMMEEKuEqbAm6O/urhy4l7obV+Pmh17DWGaW5a3DJaZVV3+PbaTSg8l6KGLEMX4
-         v7+g==
+        bh=Ui3IhTvHG08TEOp9AndOEANRcK2QqiFOkb8b6B7ZUYA=;
+        b=AddFdKx/oipuNEWUN4TnsoDh8nTD0u8HK2RqT51wdoG72syLlKDo/zEd+agic/30/e
+         WYwjcFvzl4oj/XNn32X2/ylGcuwnyf42X2JMcTlsu4msdOH1kNmwbgm+VHgtTGInga2u
+         6DJ1gMG/QM0Ak6DMaGBVtrkOzjVwCw8FnMs90R09fO4rE1yynJFOYVQdfXtEPH5OgrQZ
+         Us0JNbDV/U+tD8Pxr2CorRPyvzghTnvPjhAjLF4Ig47UDWxYO4wVa36ySy0c0R4mhP15
+         pfJp4rBVPuYHyH3f1GIkogzfn19KI8lMguaiWf9WMI8YXYJKW3RRmrJWUHuYm5hnlGsM
+         J3ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=u927xqlaG4+M+ycErvXLDv/hJjpEjGMZ02h0/MOu0dE=;
-        b=B3s/P+juZsUziHiRMU7IklNf40G2Rp5O8kn34TqTg2Jm6dWua7ooWJOfJjUgjMizcH
-         9lxwPRId3lLtdtnkUBgK86X2/I8FwsG1vPg6uJfIDwgeJBbOZCfNNQk+rLO9+bJoXvSC
-         UHaagmfHF/YXGhm4wFJzzMXzRCSIyG9cyMgVNQjcj/MDNI9ZX3edW0C1zU24af1qFIBC
-         St9DsDrnuovBAyDoxv/LV3tfg0FzHuqIVmQfW4RxkPI+h/LtYiuZKYd3C5XzMS6o9bDe
-         RTSAsNFeUEyrCipuqQk5bas0UEvcz8Gfxc6NWx7ZFY9PQw7H2QL+9q7YXmDHHRxpVv7V
-         iMYQ==
-X-Gm-Message-State: AOAM530uELOzDtFKUx7/g0yB35AvCn/F+KsOp8kpGEu9zGeJc+hkQ1Qy
-        361AqFIXPGGMPWv0xcb45zIJSfXgVjpya7bM12cD7w==
-X-Google-Smtp-Source: ABdhPJwXtoaNM32RInd5ZTKb8WwYpukxL2Izf1ybTZRPqnFQCNw5sfzLXMWMQyk9Vor1Gw8PdsE5l0dAUAlKBxb7VNQ=
-X-Received: by 2002:a05:6902:1009:b0:660:3a01:84eb with SMTP id
- w9-20020a056902100900b006603a0184ebmr19585298ybt.80.1654400744733; Sat, 04
- Jun 2022 20:45:44 -0700 (PDT)
+        bh=Ui3IhTvHG08TEOp9AndOEANRcK2QqiFOkb8b6B7ZUYA=;
+        b=hL7YP6HJqgUOlO35M8PbBvyHxBXwQ5r6c9smBZ2L4cwMB0VBGImyHpTz2AKQCl39J/
+         3o2CQb2lKb0pokw4uGZdZ8wBO/j/SjMY3d2L+sNDcOPGtCvG+pe2VyTR+U3TQ736JPSf
+         qOy2N12yhvgfadCS6vof9x86TvOOJ48ZuV6ejdintD9RONRtqxoBjpu8GCLcpDqRuKlB
+         DHGKQNLyVIYl8W95kZyoaOF3k7HNK3cVd7CByb3kJMI32kzQj7y5cj3MIetoOx9hUSWU
+         dnRld+J0Yfrebl69DLtTreD7em/+P8Yv3TRQGMyxpPMGR2wHIsZSpnbOZcMQFJywQuh7
+         gtFw==
+X-Gm-Message-State: AOAM532W7H/jGrjIkj7xl/a7DFkgCav7k5pTgJMNJTlwtpKoxm+O4ifJ
+        Uf+YF873LVW3fC/QAKY+bMR1kgNHxO+Fu9N0uHTB2g==
+X-Google-Smtp-Source: ABdhPJwfIUzHGUOY3GZySier5uLjJethOaftbfXihz53N9j35hn71WjRuf110V4OoTkXUC32BWfTpBzZA8XoLj95YRY=
+X-Received: by 2002:a0d:c984:0:b0:30c:c95c:21d0 with SMTP id
+ l126-20020a0dc984000000b0030cc95c21d0mr20276334ywd.218.1654400884335; Sat, 04
+ Jun 2022 20:48:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220526081550.1089805-1-saravanak@google.com> <YpSFBNfGDpy3rqEV@linutronix.de>
-In-Reply-To: <YpSFBNfGDpy3rqEV@linutronix.de>
+References: <20220526081550.1089805-1-saravanak@google.com> <CAMuHMdW+Dmi9g=Cw9g5vOa9iYRA+L_ujU9C1-j0eKE7u3EmcFQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdW+Dmi9g=Cw9g5vOa9iYRA+L_ujU9C1-j0eKE7u3EmcFQ@mail.gmail.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Sat, 4 Jun 2022 20:45:09 -0700
-Message-ID: <CAGETcx9wya9L2voMAFBc04LMKcEY97kwVCgdt0MDqU8cjoQKMw@mail.gmail.com>
+Date:   Sat, 4 Jun 2022 20:47:28 -0700
+Message-ID: <CAGETcx_TGdeZWZOMyP8m+KvCWcPgH9ov1iryq4XGNjJ3kF+BNg@mail.gmail.com>
 Subject: Re: [RFC PATCH v1 0/9] deferred_probe_timeout logic clean up
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Kevin Hilman <khilman@kernel.org>,
@@ -73,56 +73,75 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
         David Ahern <dsahern@kernel.org>,
         Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
         John Stultz <jstultz@google.com>,
-        Nathan Chancellor <nathan@kernel.org>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+        Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        netdev <netdev@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 30, 2022 at 1:49 AM Sebastian Andrzej Siewior
-<bigeasy@linutronix.de> wrote:
+On Mon, May 30, 2022 at 2:38 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 >
-> On 2022-05-26 01:15:39 [-0700], Saravana Kannan wrote:
-> > Yoshihiro/Geert,
 > Hi Saravana,
 >
+> On Thu, May 26, 2022 at 10:15 AM Saravana Kannan <saravanak@google.com> wrote:
+> > This series is based on linux-next + these 2 small patches applies on top:
+> > https://lore.kernel.org/lkml/20220526034609.480766-1-saravanak@google.com/
+> >
+> > A lot of the deferred_probe_timeout logic is redundant with
+> > fw_devlink=on.  Also, enabling deferred_probe_timeout by default breaks
+> > a few cases.
+> >
+> > This series tries to delete the redundant logic, simplify the frameworks
+> > that use driver_deferred_probe_check_state(), enable
+> > deferred_probe_timeout=10 by default, and fixes the nfsroot failure
+> > case.
+> >
+> > Patches 1 to 3 are fairly straightforward and can probably be applied
+> > right away.
+> >
+> > Patches 4 to 9 are related and are the complicated bits of this series.
+> >
+> > Patch 8 is where someone with more knowledge of the IP auto config code
+> > can help rewrite the patch to limit the scope of the workaround by
+> > running the work around only if IP auto config fails the first time
+> > around. But it's also something that can be optimized in the future
+> > because it's already limited to the case where IP auto config is enabled
+> > using the kernel commandline.
+>
+> Thanks for your series!
+>
+> > Yoshihiro/Geert,
+> >
 > > If you can test this patch series and confirm that the NFS root case
 > > works, I'd really appreciate that.
 >
-> The two patches you sent earlier, plus this series, plus
+> On Salvator-XS, Micrel KSZ9031 Gigabit PHY probe is no longer delayed
+> by 9s after applying the two earlier patches, and the same is true
+> after applying this series on top.
+> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 >
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 7ff7fbb006431..829d9b1f7403f 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -1697,8 +1697,6 @@ static int fw_devlink_may_probe(struct device *dev, void *data)
->   */
->  void __init fw_devlink_unblock_may_probe(void)
->  {
-> -       struct device_link *link, *ln;
-> -
->         if (!fw_devlink_flags || fw_devlink_is_permissive())
->                 return;
->
-> and it compiles + boots without a delay.
+> I will do testing on more boards, but that may take a while, as we're
+> in the middle of the merge window.
 
-Thanks for testing! I missed your reply until now and I ended up
-sending out a v2 a few days back. That's a much better series IMO
-because it only temporarily ignores dependencies and only when NFS
-root mounting might not work. If you can test that too (and it
-shouldn't have the useless variable), I'd appreciate it.
+Thanks for testing. I missed your email until now. I sent out a v2
+series a few days back and that's a much better solution than v1. If
+you can test that series instead, that'd be nice.
 
 -Saravana
