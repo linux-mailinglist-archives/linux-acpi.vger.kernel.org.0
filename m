@@ -2,55 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E945553D981
-	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jun 2022 05:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E330153D9A0
+	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jun 2022 06:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348088AbiFEDsK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Jun 2022 23:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33492 "EHLO
+        id S1348609AbiFEENY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 5 Jun 2022 00:13:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348238AbiFEDsJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Jun 2022 23:48:09 -0400
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D171DA7E
-        for <linux-acpi@vger.kernel.org>; Sat,  4 Jun 2022 20:48:05 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-2ff7b90e635so115758337b3.5
-        for <linux-acpi@vger.kernel.org>; Sat, 04 Jun 2022 20:48:05 -0700 (PDT)
+        with ESMTP id S1348634AbiFEENW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Jun 2022 00:13:22 -0400
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501F93914A
+        for <linux-acpi@vger.kernel.org>; Sat,  4 Jun 2022 21:13:20 -0700 (PDT)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-30fa61b1a83so110454137b3.0
+        for <linux-acpi@vger.kernel.org>; Sat, 04 Jun 2022 21:13:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Ui3IhTvHG08TEOp9AndOEANRcK2QqiFOkb8b6B7ZUYA=;
-        b=AddFdKx/oipuNEWUN4TnsoDh8nTD0u8HK2RqT51wdoG72syLlKDo/zEd+agic/30/e
-         WYwjcFvzl4oj/XNn32X2/ylGcuwnyf42X2JMcTlsu4msdOH1kNmwbgm+VHgtTGInga2u
-         6DJ1gMG/QM0Ak6DMaGBVtrkOzjVwCw8FnMs90R09fO4rE1yynJFOYVQdfXtEPH5OgrQZ
-         Us0JNbDV/U+tD8Pxr2CorRPyvzghTnvPjhAjLF4Ig47UDWxYO4wVa36ySy0c0R4mhP15
-         pfJp4rBVPuYHyH3f1GIkogzfn19KI8lMguaiWf9WMI8YXYJKW3RRmrJWUHuYm5hnlGsM
-         J3ow==
+        bh=2MjRSm5fzYQetqVlpQBYSrGfumNiB0ZrM39dLqOPrH4=;
+        b=iruy/VIRmrmVkPQ3JLz43LdlgzYIIgIh0TbvAdWum+0Rddx+fvFvZL+AZmkeq14EM3
+         EQj2TyKZKOx/AidEftZoePqY5YpO4cwMuitvB+yKPScFqtDTdzo5ldCi4OGAOk3+UFMp
+         j/kBbn6KV51/XQkwn8o9tfq6LNjmHBZoctzSxwBUBFOQBY/6aPKKgU+LJpKUd4lxHOLC
+         a3pKPoOaZ50Yav85+Htu9s5WpYjwMqsKV6ln5h3Ivwjaws5e9R7ngDvbV4Yh0sJleDX7
+         vOAsHme5FRTkYJMFVoEn7Vce2+XgoAYlewVpVngjjzo07L1N3f9jaxvI2/N8fznw3lB9
+         3viw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Ui3IhTvHG08TEOp9AndOEANRcK2QqiFOkb8b6B7ZUYA=;
-        b=hL7YP6HJqgUOlO35M8PbBvyHxBXwQ5r6c9smBZ2L4cwMB0VBGImyHpTz2AKQCl39J/
-         3o2CQb2lKb0pokw4uGZdZ8wBO/j/SjMY3d2L+sNDcOPGtCvG+pe2VyTR+U3TQ736JPSf
-         qOy2N12yhvgfadCS6vof9x86TvOOJ48ZuV6ejdintD9RONRtqxoBjpu8GCLcpDqRuKlB
-         DHGKQNLyVIYl8W95kZyoaOF3k7HNK3cVd7CByb3kJMI32kzQj7y5cj3MIetoOx9hUSWU
-         dnRld+J0Yfrebl69DLtTreD7em/+P8Yv3TRQGMyxpPMGR2wHIsZSpnbOZcMQFJywQuh7
-         gtFw==
-X-Gm-Message-State: AOAM532W7H/jGrjIkj7xl/a7DFkgCav7k5pTgJMNJTlwtpKoxm+O4ifJ
-        Uf+YF873LVW3fC/QAKY+bMR1kgNHxO+Fu9N0uHTB2g==
-X-Google-Smtp-Source: ABdhPJwfIUzHGUOY3GZySier5uLjJethOaftbfXihz53N9j35hn71WjRuf110V4OoTkXUC32BWfTpBzZA8XoLj95YRY=
-X-Received: by 2002:a0d:c984:0:b0:30c:c95c:21d0 with SMTP id
- l126-20020a0dc984000000b0030cc95c21d0mr20276334ywd.218.1654400884335; Sat, 04
- Jun 2022 20:48:04 -0700 (PDT)
+        bh=2MjRSm5fzYQetqVlpQBYSrGfumNiB0ZrM39dLqOPrH4=;
+        b=v29oDIxZXVD1DU94XLfQK9+qmhjfU6/hqiVzD6wufZM3l+TPFOQv98ji2jmx7KHrvT
+         7/RuHk9azf3yZbwmwmWsnkdzp4521pnFXblWDDNTu10kqp65/d2noUVZOEfCX39usiLk
+         C+mVtFR8J2i1lSz+K+2ytaOVaTvzxUYeH/KFQl9SK+lGu8tw3vC631NNfKIR/Vgu1H0x
+         qscbK1izAVYNDZ0BlIEFyHAq5rqqqMsamjs/0rGv73eV8WwELFJPT4aHEw+byBd8m7T7
+         2TjslJ76vtU0ZAgUyAKvPpl5/Js+LemiVYdzPBDCQxd7hD4eh6YFNIeQVoqhG5FsGBXo
+         e3cw==
+X-Gm-Message-State: AOAM533Hi2cESxFD2TILbsxUulp/9Q9y1qRGISf8OcBLPMLfu8eUSb8l
+        7bX+7h+wmKkU2g+V3FH/EecoqZoAL+cNoKb5MFSc1g==
+X-Google-Smtp-Source: ABdhPJzUYcFQq7wQgnRsS9UvlhN43rSEgXe2PJa6kBJxtfcgg8d502Y2JGKc3riC3LG/Qxh1ZRmB7415nK5yWOq+ZK0=
+X-Received: by 2002:a81:87c2:0:b0:2ff:c948:ae50 with SMTP id
+ x185-20020a8187c2000000b002ffc948ae50mr19620905ywf.83.1654402399190; Sat, 04
+ Jun 2022 21:13:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220526081550.1089805-1-saravanak@google.com> <CAMuHMdW+Dmi9g=Cw9g5vOa9iYRA+L_ujU9C1-j0eKE7u3EmcFQ@mail.gmail.com>
-In-Reply-To: <CAMuHMdW+Dmi9g=Cw9g5vOa9iYRA+L_ujU9C1-j0eKE7u3EmcFQ@mail.gmail.com>
+References: <20220526081550.1089805-1-saravanak@google.com>
+ <20220526081550.1089805-5-saravanak@google.com> <CAMuHMdXcHcuAn8UVS6RPsfenuCny4BgWNJFod41CFjdOF+w0sg@mail.gmail.com>
+ <CAGETcx_uXXw_OtHO+_2DmZnHA3WCT5CeKbb_RWNqZtZSU1OB2g@mail.gmail.com>
+In-Reply-To: <CAGETcx_uXXw_OtHO+_2DmZnHA3WCT5CeKbb_RWNqZtZSU1OB2g@mail.gmail.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Sat, 4 Jun 2022 20:47:28 -0700
-Message-ID: <CAGETcx_TGdeZWZOMyP8m+KvCWcPgH9ov1iryq4XGNjJ3kF+BNg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 0/9] deferred_probe_timeout logic clean up
+Date:   Sat, 4 Jun 2022 21:12:43 -0700
+Message-ID: <CAGETcx9=CQha3HyBmw1S2KS--Fqv_kGEKwyVT-GSQCT=Uxi0zQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 4/9] Revert "driver core: Set default
+ deferred_probe_timeout back to 0."
 To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -96,52 +99,31 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 30, 2022 at 2:38 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Sat, Jun 4, 2022 at 8:18 PM Saravana Kannan <saravanak@google.com> wrote:
 >
-> Hi Saravana,
+> On Mon, May 30, 2022 at 2:13 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> >
+> > Hi Saravana,
+> >
+> > On Thu, May 26, 2022 at 10:16 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > This reverts commit 11f7e7ef553b6b93ac1aa74a3c2011b9cc8aeb61.
+> >
+> > scripts/chdeckpatch.pl says:
+> >
+> >     WARNING: Unknown commit id
+> > '11f7e7ef553b6b93ac1aa74a3c2011b9cc8aeb61', maybe rebased or not
+> > pulled?
+> >
+> > I assume this is your local copy of
+> > https://lore.kernel.org/r/20220526034609.480766-3-saravanak@google.com?
 >
-> On Thu, May 26, 2022 at 10:15 AM Saravana Kannan <saravanak@google.com> wrote:
-> > This series is based on linux-next + these 2 small patches applies on top:
-> > https://lore.kernel.org/lkml/20220526034609.480766-1-saravanak@google.com/
-> >
-> > A lot of the deferred_probe_timeout logic is redundant with
-> > fw_devlink=on.  Also, enabling deferred_probe_timeout by default breaks
-> > a few cases.
-> >
-> > This series tries to delete the redundant logic, simplify the frameworks
-> > that use driver_deferred_probe_check_state(), enable
-> > deferred_probe_timeout=10 by default, and fixes the nfsroot failure
-> > case.
-> >
-> > Patches 1 to 3 are fairly straightforward and can probably be applied
-> > right away.
-> >
-> > Patches 4 to 9 are related and are the complicated bits of this series.
-> >
-> > Patch 8 is where someone with more knowledge of the IP auto config code
-> > can help rewrite the patch to limit the scope of the workaround by
-> > running the work around only if IP auto config fails the first time
-> > around. But it's also something that can be optimized in the future
-> > because it's already limited to the case where IP auto config is enabled
-> > using the kernel commandline.
+> I somehow missed all your replies and noticed it just now.
 >
-> Thanks for your series!
->
-> > Yoshihiro/Geert,
-> >
-> > If you can test this patch series and confirm that the NFS root case
-> > works, I'd really appreciate that.
->
-> On Salvator-XS, Micrel KSZ9031 Gigabit PHY probe is no longer delayed
-> by 9s after applying the two earlier patches, and the same is true
-> after applying this series on top.
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
->
-> I will do testing on more boards, but that may take a while, as we're
-> in the middle of the merge window.
+> That commit should be based on driver-core-next.
 
-Thanks for testing. I missed your email until now. I sent out a v2
-series a few days back and that's a much better solution than v1. If
-you can test that series instead, that'd be nice.
+My bad, it was indeed a local commit, but it's one I had already sent
+to LKML. It's one of the 2 patches I asked to pull-in in the cover
+letter. I'll fix this once I get some tests/reviews on this series or
+if I need to send out a v3 series before that.
 
 -Saravana
