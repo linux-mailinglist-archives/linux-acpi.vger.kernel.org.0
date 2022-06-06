@@ -2,163 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B610353EB3D
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jun 2022 19:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6136A53E710
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jun 2022 19:07:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232686AbiFFJRM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Jun 2022 05:17:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52600 "EHLO
+        id S233622AbiFFKTw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jun 2022 06:19:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232568AbiFFJRI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jun 2022 05:17:08 -0400
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 443A13524F;
-        Mon,  6 Jun 2022 02:16:49 -0700 (PDT)
-Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2569CL7Z008565;
-        Mon, 6 Jun 2022 09:16:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=pps0720;
- bh=QYEmeQE8+30+1aFDhZOWwmdvgWf38zX/CePvO7aXijM=;
- b=GeyOcFpJtZJQ3xcH5XdHfx9scPoibpR7IKcZWsGYfUL6CoDGWLCMs2J0pK6X+m3d4z+8
- 9Yp6h579yfbVuJjcWYu3AP1phPTISN3iyk4bE9m8hIiluFAKFnmoSVjX6K0Nk7Xa+Z7O
- wJ+wECRwzO1MDI1i5GeilZ7ZHuZiOoi3MTYe0StR796sVVD4nFFCO0yLc5F+M+jDvtVy
- jBTs6aPCa4dvorhSB9QSGzx6ItsLsDEs+o/ofC9xFlL5q9m/GyjyqKEz6u6l3tynB4Zf
- LtF2qZ3TRrbgOqWXc/cnLfjkQK4lLpIBZAJR8ZAkxQfM6+NFRVmc7D2lKH62bpfdMEkR hw== 
-Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3gg0269amp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Jun 2022 09:16:40 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 09DC212E96;
-        Mon,  6 Jun 2022 09:16:38 +0000 (UTC)
-Received: from ubuntu-20.04.3 (unknown [16.99.211.150])
-        by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id B868E80DE70;
-        Mon,  6 Jun 2022 09:16:37 +0000 (UTC)
-Date:   Mon, 6 Jun 2022 17:16:36 +0800
-From:   James Liu <james.liu@hpe.com>
-To:     "rafael@kernel.org" <rafael@kernel.org>
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ACPI: OSL: Fix the memory mapping of an ACPI GAS that
- addresses a data structure
-Message-ID: <20220606091636.GA47704@ubuntu-20.04.3>
-References: <20220522214302.39024-1-james.liu@hpe.com>
- <PH7PR84MB1958F5A9F4F05EFE72A9E906E6A29@PH7PR84MB1958.NAMPRD84.PROD.OUTLOOK.COM>
+        with ESMTP id S233619AbiFFKTv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jun 2022 06:19:51 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC7E1760CE;
+        Mon,  6 Jun 2022 03:19:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654510789; x=1686046789;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XkXW18DsxASgWy3W6vVrSfD8C2RLZ7Hhaeol5XaMazA=;
+  b=WBTOrMNmN1vs8gNXRaRzgWQ6jzWK4S2vJSIuh5wyZ1UMoeKqg6U0IrZt
+   OXJS1NBUZvkaOCB0grovQG8H8KuU/oUenEd04cmtyEyMkay2gGLR2aNNI
+   VgLX12SmpjJ14YAY6dKZiKTxlU0EK0aFkoKzz0JhW5Gwn5I06vQ/i0IYK
+   X74V59BQ3g1fXX/zE5RwatLw0LhbOeUuvihpXHtpcqBjcTx6vsGDytGKQ
+   Dudocxg+x3OC9nrGPI+D6QIfxFAc1IWDLIZShut/2gp4sVZz4DI4pmd5X
+   16YgKuatvQXHtN8XCXdeE6xaBT4uAlzd/fD9S10xpduaKGsPv1aUj1Bp7
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10369"; a="276593154"
+X-IronPort-AV: E=Sophos;i="5.91,280,1647327600"; 
+   d="scan'208";a="276593154"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2022 03:19:48 -0700
+X-IronPort-AV: E=Sophos;i="5.91,280,1647327600"; 
+   d="scan'208";a="647476480"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2022 03:19:40 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ny9nZ-000UYV-54;
+        Mon, 06 Jun 2022 13:17:25 +0300
+Date:   Mon, 6 Jun 2022 13:17:24 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        David Ahern <dsahern@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        John Stultz <jstultz@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        netdev <netdev@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: Re: [RFC PATCH v1 2/9] pinctrl: devicetree: Delete usage of
+ driver_deferred_probe_check_state()
+Message-ID: <Yp3UNAW5Zv+RjabA@smile.fi.intel.com>
+References: <20220526081550.1089805-1-saravanak@google.com>
+ <20220526081550.1089805-3-saravanak@google.com>
+ <CAMuHMdV4Uzfg8aBY=tKnRcig=Npebd158J7UK3zg5_DtHwAR5w@mail.gmail.com>
+ <CAGETcx-=kAJp282OvG4yd830fhQowN7-yXifERqiHRi2w0bGFw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PH7PR84MB1958F5A9F4F05EFE72A9E906E6A29@PH7PR84MB1958.NAMPRD84.PROD.OUTLOOK.COM>
-X-Proofpoint-GUID: mk6Rf3NFqEPy-IJtKIgMN9e-KbMj0rsU
-X-Proofpoint-ORIG-GUID: mk6Rf3NFqEPy-IJtKIgMN9e-KbMj0rsU
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-06_03,2022-06-03_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 clxscore=1011
- bulkscore=0 suspectscore=0 impostorscore=0 mlxlogscore=884
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206060043
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAGETcx-=kAJp282OvG4yd830fhQowN7-yXifERqiHRi2w0bGFw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael, the reported warning (i.e., uninitialized local variable) in V1
-by the robot has been fixed. Could you check V2 of this patch? Thanks.
+On Sat, Jun 04, 2022 at 08:41:01PM -0700, Saravana Kannan wrote:
+> On Mon, May 30, 2022 at 2:22 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Thu, May 26, 2022 at 10:16 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > Now that fw_devlink=on by default and fw_devlink supports
+> > > "pinctrl-[0-8]" property, the execution will never get to the point
+> >
+> > 0-9?
+> >
+> > oh, it's really 0-8:
+> >
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl0, "pinctrl-0", NULL)
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl1, "pinctrl-1", NULL)
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl2, "pinctrl-2", NULL)
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl3, "pinctrl-3", NULL)
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl4, "pinctrl-4", NULL)
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl5, "pinctrl-5", NULL)
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl6, "pinctrl-6", NULL)
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl7, "pinctrl-7", NULL)
+> >     drivers/of/property.c:DEFINE_SIMPLE_PROP(pinctrl8, "pinctrl-8", NULL)
+> >
+> > Looks fragile, especially since we now have:
+> >
+> >     arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi:
+> > pinctrl-9 = <&i2cmux_9>;
+> >     arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-10
+> > = <&i2cmux_10>;
+> >     arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-11
+> > = <&i2cmux_11>;
+> >     arch/arm64/boot/dts/microchip/sparx5_pcb134_board.dtsi: pinctrl-12
+> > = <&i2cmux_pins_i>;
+> 
+> Checking for pinctrl-* and then verifying if * matches %d would be
+> more complicated and probably more expensive compared to listing
+> pinctrl-[0-8]. Especially because more than 50% of pinctrl-*
+> properties in DT files are NOT pinctrl-%d. So back when we merged
+> this, Rob and I agreed [0-8] was good enough for now and we can add
+> more if we needed to. Also, when I checked back then, all the
+> pinctrl-5+ properties ended up pointing to the same suppliers as the
+> lower numbered ones. So it didn't make a difference.
+> 
+> Ok, I just checked linux-next all the pinctrl-9+ instances and it's
+> still true that they all point to the same supplier pointed to by
+> pinctrl-[0-8].
+> 
+> So yeah, it looks fragile, 
 
-> Subject: [PATCH v2] ACPI: OSL: Fix the memory mapping of an ACPI GAS that addresses a data structure 
->  
-> From: James Liu <james.liu@hpe.com>
+And feels fragile, adds into confusion, etc.
+Please, consider redesigning this to be more robust.
+
+>	but is not broken and it's more efficient
+> than looking for pinctrl-%d or adding more pinctrl-xx entries. So,
+> let's fix it if it actually breaks? Not going to oppose a patch if
+> anyone wants to make it more complete.
 > 
->     Modify acpi_os_map_generic_address() & acpi_os_unmap_generic_address()
->     to correctly handle cases that a GAS table (i.e., Table 5.1, ACPI 6.4)
->     is used to address a data structure; in the case, the GAS has the field
->     of "Register Bit Width" equal to 0.
-> 
->     For example, "Injection Instruction Entry" (Table 18.25, ACPI 6.4) has
->     a RegisterRegion field that is a GAS that points to a data structure
->     SET_ERROR_TYPE_WITH_ADDRESS (Table 18.30), which is required when using
->     EINJ (Error Injection module).
-> 
->     This fix preserves a fairly sufficient memory space (i.e. page size) to
->     store the data structure to prevent EINJ module from loading failure if
->     platform firmware can correctly support Injection Instruction Entry in
->     an EINJ table.
-> 
-> Signed-off-by: James Liu <james.liu@hpe.com>
-> ---
->  drivers/acpi/osl.c | 27 +++++++++++++++++++++++----
->  1 file changed, 23 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> index 45c5c0e45..99f987c8c 100644
-> --- a/drivers/acpi/osl.c
-> +++ b/drivers/acpi/osl.c
-> @@ -452,14 +452,20 @@ EXPORT_SYMBOL_GPL(acpi_os_unmap_memory);
->  
->  void __iomem *acpi_os_map_generic_address(struct acpi_generic_address *gas)
->  {
-> -       u64 addr;
-> +       u64 addr = 0;
->  
->          if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
->                  return NULL;
->  
-> +       /* Handle a case that GAS is used to address an ACPI data structure */
-> +       if (!gas->bit_width) {
-> +               pr_info("An ACPI data structure at 0x%llx is mapped\n", addr);
-> +               return  acpi_os_map_iomem(addr, PAGE_SIZE);
-> +       }
-> +
->          /* Handle possible alignment issues */
->          memcpy(&addr, &gas->address, sizeof(addr));
-> -       if (!addr || !gas->bit_width)
-> +       if (!addr)
->                  return NULL;
->  
->          return acpi_os_map_iomem(addr, gas->bit_width / 8);
-> @@ -468,15 +474,28 @@ EXPORT_SYMBOL(acpi_os_map_generic_address);
->  
->  void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
->  {
-> -       u64 addr;
-> +       u64 addr = 0;
->          struct acpi_ioremap *map;
->  
->          if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
->                  return;
->  
-> +       /* Handle a case that GAS is used to address an ACPI data structure */
-> +       if (!gas->bit_width) {
-> +               pr_info("An ACPI data structure at 0x%llx is unmapped\n", addr);
-> +               mutex_lock(&acpi_ioremap_lock);
-> +               map = acpi_map_lookup(addr, PAGE_SIZE);
-> +               if (!map) {
-> +                       mutex_unlock(&acpi_ioremap_lock);
-> +                       return;
-> +               }
-> +               acpi_os_drop_map_ref(map);
-> +               mutex_unlock(&acpi_ioremap_lock);
-> +       }
-> +
->          /* Handle possible alignment issues */
->          memcpy(&addr, &gas->address, sizeof(addr));
-> -       if (!addr || !gas->bit_width)
-> +       if (!addr)
->                  return;
->  
->          mutex_lock(&acpi_ioremap_lock);
-> -- 
-> 2.25.1
+> > > where driver_deferred_probe_check_state() is called before the supplier
+> > > has probed successfully or before deferred probe timeout has expired.
+> > >
+> > > So, delete the call and replace it with -ENODEV.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
