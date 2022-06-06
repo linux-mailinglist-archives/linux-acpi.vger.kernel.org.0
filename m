@@ -2,332 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C98C53DAC8
-	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jun 2022 09:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B610353EB3D
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jun 2022 19:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244551AbiFEH6b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 5 Jun 2022 03:58:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43038 "EHLO
+        id S232686AbiFFJRM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Jun 2022 05:17:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244537AbiFEH63 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Jun 2022 03:58:29 -0400
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2028.outbound.protection.outlook.com [40.92.99.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 122A63818A;
-        Sun,  5 Jun 2022 00:58:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SlLb3vOoEmIBqDxltU9hRoemT6YdVUiBF76gDGTWdbVL5ycecRf4rpcfQ0+uu5CBsRZcs6YU2sJIOr7IIdV+qXq9X4g7ICMm+V+10m4RiBPxlcQMXSap30rQR7sT3ZpZSK4y+sgTzX1Kk1vx/P/TFFlLy6PpwdV85BAlCQuM8xvKUHDysDkGTSwCV6OPZ8WMOUbJOlGgOyn5e0HVDO18h/vJWGcdFNX7UNxr2zmjavG3B5zAuAOFqyaDJpZdeB5xtFFZCkRh3J2xmVFxCHUgfRQ3Sa6VWpoEkEXsk83aig/IRPt1MNOjxs+VB+uqWTVXMKNv896WVV7wSFRsfUGcCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NCcK68eYMF48JcPunfCn7rwrTCYKjnB88/9GSsmeuW4=;
- b=VqAzLF50WnXcRN3zNIpU1n+Pct5tYXiU3ti7TRrMi7i70kEKlRuV3d+2iB+zThXOyD9FnL9hSuLni1CVLYHp3GqSRsRlxpao+6KUP463hw7n8XbN514K89jZMB4oexytD7PF6Q+SfY1XyjjtQfWNg6jFarj32BSBYZlGU+wWFcDmiunrk/CNzzGv6LjWkyHPbZr7opjPp6MPCghup6lJ341bJjetNgYOYlCIuQYgHKhpuI3T7orlA3n5uyyueH/OSKNcuYGQSpcJc6zkpQyBXfIhXyhvRD1qaw5k1RUIk4b6L1sPohFSp8vRApMgxmdIg1ca8UuV0BF6IhA3ozWsvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NCcK68eYMF48JcPunfCn7rwrTCYKjnB88/9GSsmeuW4=;
- b=SHpjYPvdE6z/6ZEV8LtGw9O9BRE9K9hO/2CLRLIU8q73eXjmhx7FDlDJKAVucwV4iUZKtXpUiUx9koejZgXwe0+BrgapZ0lTYhYebRKoo05B9n/UL1k2L+s37ySTD4Co3k6dA/NLBjVplBjg4HIftRjumQPxpz14ublTleTwso5G1+4WhtPlaAv/ZvhbSWBMA953b5AsDC2OtW6go0zmRez8wn71Yl+I3MJEv5WzpZxr9oMoIvxVCe3Tu5xXjczKrU3kqxCPrP0NrD7jIrw9FvX9Jbg89o5P3qr1/7BfUHRp0Ot4z8pHKWBMh+kB0CP5gL6DObe1NTgPK7iAgH/2zw==
-Received: from TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:248::14)
- by TYCP286MB0832.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:7f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.12; Sun, 5 Jun
- 2022 07:58:25 +0000
-Received: from TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
- ([fe80::9cb3:323f:e99e:39c1]) by TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
- ([fe80::9cb3:323f:e99e:39c1%9]) with mapi id 15.20.5314.018; Sun, 5 Jun 2022
- 07:58:25 +0000
-From:   Riwen Lu <luriwen@hotmail.com>
-To:     rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devel@acpica.org, Riwen Lu <luriwen@kylinos.com>
-Subject: [PATCH v1] ACPI: Split out processor thermal register from ACPI PSS
-Date:   Sun,  5 Jun 2022 15:58:14 +0800
-Message-ID: <TYWP286MB26019A5110491AC2C0157082B1A39@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN:  [cWMIWANSCxBr9943Pff9M7VyY1CjpjFrNDP5JZCvpyc=]
-X-ClientProxiedBy: SG2PR02CA0022.apcprd02.prod.outlook.com
- (2603:1096:3:17::34) To TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:248::14)
-X-Microsoft-Original-Message-ID: <20220605075814.2176503-1-luriwen@hotmail.com>
+        with ESMTP id S232568AbiFFJRI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Jun 2022 05:17:08 -0400
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 443A13524F;
+        Mon,  6 Jun 2022 02:16:49 -0700 (PDT)
+Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2569CL7Z008565;
+        Mon, 6 Jun 2022 09:16:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=pps0720;
+ bh=QYEmeQE8+30+1aFDhZOWwmdvgWf38zX/CePvO7aXijM=;
+ b=GeyOcFpJtZJQ3xcH5XdHfx9scPoibpR7IKcZWsGYfUL6CoDGWLCMs2J0pK6X+m3d4z+8
+ 9Yp6h579yfbVuJjcWYu3AP1phPTISN3iyk4bE9m8hIiluFAKFnmoSVjX6K0Nk7Xa+Z7O
+ wJ+wECRwzO1MDI1i5GeilZ7ZHuZiOoi3MTYe0StR796sVVD4nFFCO0yLc5F+M+jDvtVy
+ jBTs6aPCa4dvorhSB9QSGzx6ItsLsDEs+o/ofC9xFlL5q9m/GyjyqKEz6u6l3tynB4Zf
+ LtF2qZ3TRrbgOqWXc/cnLfjkQK4lLpIBZAJR8ZAkxQfM6+NFRVmc7D2lKH62bpfdMEkR hw== 
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3gg0269amp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Jun 2022 09:16:40 +0000
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 09DC212E96;
+        Mon,  6 Jun 2022 09:16:38 +0000 (UTC)
+Received: from ubuntu-20.04.3 (unknown [16.99.211.150])
+        by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id B868E80DE70;
+        Mon,  6 Jun 2022 09:16:37 +0000 (UTC)
+Date:   Mon, 6 Jun 2022 17:16:36 +0800
+From:   James Liu <james.liu@hpe.com>
+To:     "rafael@kernel.org" <rafael@kernel.org>
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ACPI: OSL: Fix the memory mapping of an ACPI GAS that
+ addresses a data structure
+Message-ID: <20220606091636.GA47704@ubuntu-20.04.3>
+References: <20220522214302.39024-1-james.liu@hpe.com>
+ <PH7PR84MB1958F5A9F4F05EFE72A9E906E6A29@PH7PR84MB1958.NAMPRD84.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3411a6e1-8a72-4f8b-3998-08da46c92b02
-X-MS-TrafficTypeDiagnostic: TYCP286MB0832:EE_
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UjexvVMI3EqS1P+3qbIvTG/RC3+hkKpxdsAisSV5KIxhGt+DTGRt5yMwayV7BwxVTT34VzVxqFuZPwjN4Z4zwRR7u/sCGidkZIkMRVElwZXPL4NmvpgRY40nLFxskgchtU64wmY9b8Ma7eFwDhin6qBBT6PlwGzOyuFmJQaR8cgAeSTu7voJbxylu0j3wfEn3zeT3SMBvpkkAxMvHK90XqXvq5ck7uyC+zO0zYngG1/YOvqt+rVTl/saUT6Moq6Gwcv+VRqqLS3rANspV8jC91gnfDeRM8X3ptXrzP3rjEsNlqEbLJC3wSwbdNq6873sidHEMzRaXuLFmzvygLwiU8se0Y8OMDghOJ5f8WJKPWh4f3TNSF41MtUO2mwjor2XoCOcJtMwtLSQUsfeescGflAb81cNG3MKi0388CfF2A5FzWkfIB49FjTp8kA+bI8gMkdPxeHh9NoUkSJ6bjVfiEwhKiuY3DUScUs6Ce9Fj/cTn+DjOs71HA57L6q1wQ7ihgFph0X6PZdNDhed32j+T5t8f/pfIh5XubhnbJJvKGhYyxT1WScRXHaCVhyn8Y/ca9uu/JtII4FDAph9aES9dA==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?505KLPtlKsTHIEjaY5hSJ08mo1zyKpodYQBMbIHcecZ6WNLlyxTK6yObpuTI?=
- =?us-ascii?Q?pn9gR94trEqvA7oX2XhV0+D2/FnOMR9tc1iVl76yc2V9sFGd0CwkepP0XNTE?=
- =?us-ascii?Q?HQpkjY3bGhYU8URxKoCRUkUNv9wiytadLpxPzrhL+y/1NrVJcXxaq0Ioke2K?=
- =?us-ascii?Q?v3NrKHq5WI3nYE1e8jnE5WzaiVPLqepf7kISXJHtBkoQURHMwkcjvsAdo2Ed?=
- =?us-ascii?Q?4kEjWZwWeYuSFawiEzK7Ts2Ah7ofkJ4NHrq63J5zlBmpZhc2k/iL2OXmk3bi?=
- =?us-ascii?Q?zV370vpqiinmzd8kFn5/chDFdb4mpPSrLFzUfubTWywIrQc3p/sJVkyrglGQ?=
- =?us-ascii?Q?ahXgDnuVj3BohX8528drUvEqAThamR5KYDiWzP1QDF4tBrN8fYQOIQ7poD5n?=
- =?us-ascii?Q?hK/i/ndYBVEY3a8GBU6mwT8B0+CpHCkB5zcATnDGvERm3YEaozdca9v1Yfmx?=
- =?us-ascii?Q?cz82QlUFQ75tb/FLFOG+WMgT8To7ToiP+sTZ0sjbrbnI4WdYbxRLnXWo+Bvu?=
- =?us-ascii?Q?p4vHgyMiweE7JA9pNbvaz02LnCfHDjxQKqTHgfgxiNVp+P8y/bz8o+duXFnx?=
- =?us-ascii?Q?m3ohSSISFmm7Lgjmdj2p13Z/l+LBjifglDz0W3Gfbd3BZRggE1U/K3CguRKA?=
- =?us-ascii?Q?wbKV3Sa8flhgMJshASaxv2TxyHaIn1l4oN7iMhwdEmHBeaOtCttDg4BLdzsJ?=
- =?us-ascii?Q?+xNK/guUVtdCQJw3MCwYoJq1vQx0PXXzrnxKxJk6SZIgLDbBPq89R7sFKg/8?=
- =?us-ascii?Q?/FdwsyYl9TfiUfJf89V5QoFK+Dca+0EsEeNRBI6brbTqB7ygSipytBoJORAc?=
- =?us-ascii?Q?i3Y7CWfpYzZvEcwCNJBu3coCQ46vDzLb7hPrH7hIynB8v2pZQjLdp8kcqdCl?=
- =?us-ascii?Q?WHKGTEljlWXiYtDmztP8fnygMNzMozLVrTdsuLtGLP3vEqb/qNzn70pJ5tv9?=
- =?us-ascii?Q?ITGEuml+Mir61piANGfGWKnY1/BEy1Kh1ENfG28gASh5u6iZ6+WwdFxYkVTe?=
- =?us-ascii?Q?tmngLoXQ0LClercgRNXKjHsiybeMFAdHIvBRB7aPU+ivvw4dMll8H15SVGMl?=
- =?us-ascii?Q?ZNI9bQnWbiBwtNvVgtMfJHry1xwcWMs8xDPG35IBeUssqlZhL+HH/FiCkD1N?=
- =?us-ascii?Q?Nfl0PbrT4gOnSBvEGOZle4DIWHIO6t2rVjPusoVVzIsQ6EZHfMTiyvnZtTYf?=
- =?us-ascii?Q?WiWfV4m5yE6ZTeV5TZrdsaMIU2LI0/PWsGV+ccrLzg2b2jf2N1WfNwjFM+AV?=
- =?us-ascii?Q?0GMc1khizdx+UuolcwT41twaKRuk50DB+qytSpXmCOBSVTmMfmT0gNIT00U1?=
- =?us-ascii?Q?wZxi2lol+li+p1Ut9la/gUxSXfsGaJMBDF03EWgfr2teMGe+2nDfc9v0SgyW?=
- =?us-ascii?Q?rSY3yTTbf3HC5gFDzjIS7PL1RL8T5VlDK8Bj25O3yfQcFgZKXVy0klSWRSL1?=
- =?us-ascii?Q?Op5xWl+JSp4=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-05f45.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3411a6e1-8a72-4f8b-3998-08da46c92b02
-X-MS-Exchange-CrossTenant-AuthSource: TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2022 07:58:25.2314
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB0832
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PH7PR84MB1958F5A9F4F05EFE72A9E906E6A29@PH7PR84MB1958.NAMPRD84.PROD.OUTLOOK.COM>
+X-Proofpoint-GUID: mk6Rf3NFqEPy-IJtKIgMN9e-KbMj0rsU
+X-Proofpoint-ORIG-GUID: mk6Rf3NFqEPy-IJtKIgMN9e-KbMj0rsU
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-06_03,2022-06-03_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 clxscore=1011
+ bulkscore=0 suspectscore=0 impostorscore=0 mlxlogscore=884
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206060043
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Riwen Lu <luriwen@kylinos.com>
+Hi Rafael, the reported warning (i.e., uninitialized local variable) in V1
+by the robot has been fixed. Could you check V2 of this patch? Thanks.
 
-In prior commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
-driver"), move processor thermal register to acpi_pss_perf_init(), and it
-won't excute if ACPI_CPU_FREQ_PSS not enabled.
-
-Since ARM64 support P states by CPPC, it should also support processor
-passive cooling. So split out the processor thermal cooling register from
-ACPI PSS.
-
-Signed-off-by: Riwen Lu <luriwen@kylinos.com>
----
- drivers/acpi/Kconfig            |  2 +-
- drivers/acpi/Makefile           |  5 +-
- drivers/acpi/processor_driver.c | 97 ++++++++++++++-------------------
- include/acpi/processor.h        |  4 +-
- 4 files changed, 45 insertions(+), 63 deletions(-)
-
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index 1e34f846508f..2457ade3f82d 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -255,7 +255,6 @@ config ACPI_DOCK
- 
- config ACPI_CPU_FREQ_PSS
- 	bool
--	select THERMAL
- 
- config ACPI_PROCESSOR_CSTATE
- 	def_bool y
-@@ -287,6 +286,7 @@ config ACPI_PROCESSOR
- 	depends on X86 || IA64 || ARM64 || LOONGARCH
- 	select ACPI_PROCESSOR_IDLE
- 	select ACPI_CPU_FREQ_PSS if X86 || IA64 || LOONGARCH
-+	select THERMAL
- 	default y
- 	help
- 	  This driver adds support for the ACPI Processor package. It is required
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index b5a8d3e00a52..0002eecbf870 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -109,10 +109,9 @@ obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
- obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
- 
- # processor has its own "processor." module_param namespace
--processor-y			:= processor_driver.o
-+processor-y			:= processor_driver.o processor_thermal.o
- processor-$(CONFIG_ACPI_PROCESSOR_IDLE) += processor_idle.o
--processor-$(CONFIG_ACPI_CPU_FREQ_PSS)	+= processor_throttling.o	\
--	processor_thermal.o
-+processor-$(CONFIG_ACPI_CPU_FREQ_PSS)	+= processor_throttling.o
- processor-$(CONFIG_CPU_FREQ)	+= processor_perflib.o
- 
- obj-$(CONFIG_ACPI_PROCESSOR_AGGREGATOR) += acpi_pad.o
-diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-index 368a9edefd0c..c84738a24eca 100644
---- a/drivers/acpi/processor_driver.c
-+++ b/drivers/acpi/processor_driver.c
-@@ -142,8 +142,6 @@ static int acpi_soft_cpu_dead(unsigned int cpu)
- static int acpi_pss_perf_init(struct acpi_processor *pr,
- 		struct acpi_device *device)
- {
--	int result = 0;
--
- 	acpi_processor_ppc_has_changed(pr, 0);
- 
- 	acpi_processor_get_throttling_info(pr);
-@@ -151,53 +149,7 @@ static int acpi_pss_perf_init(struct acpi_processor *pr,
- 	if (pr->flags.throttling)
- 		pr->flags.limit = 1;
- 
--	pr->cdev = thermal_cooling_device_register("Processor", device,
--						   &processor_cooling_ops);
--	if (IS_ERR(pr->cdev)) {
--		result = PTR_ERR(pr->cdev);
--		return result;
--	}
--
--	dev_dbg(&device->dev, "registered as cooling_device%d\n",
--		pr->cdev->id);
--
--	result = sysfs_create_link(&device->dev.kobj,
--				   &pr->cdev->device.kobj,
--				   "thermal_cooling");
--	if (result) {
--		dev_err(&device->dev,
--			"Failed to create sysfs link 'thermal_cooling'\n");
--		goto err_thermal_unregister;
--	}
--
--	result = sysfs_create_link(&pr->cdev->device.kobj,
--				   &device->dev.kobj,
--				   "device");
--	if (result) {
--		dev_err(&pr->cdev->device,
--			"Failed to create sysfs link 'device'\n");
--		goto err_remove_sysfs_thermal;
--	}
--
- 	return 0;
--
-- err_remove_sysfs_thermal:
--	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-- err_thermal_unregister:
--	thermal_cooling_device_unregister(pr->cdev);
--
--	return result;
--}
--
--static void acpi_pss_perf_exit(struct acpi_processor *pr,
--		struct acpi_device *device)
--{
--	if (pr->cdev) {
--		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
--		sysfs_remove_link(&pr->cdev->device.kobj, "device");
--		thermal_cooling_device_unregister(pr->cdev);
--		pr->cdev = NULL;
--	}
- }
- #else
- static inline int acpi_pss_perf_init(struct acpi_processor *pr,
-@@ -205,9 +157,6 @@ static inline int acpi_pss_perf_init(struct acpi_processor *pr,
- {
- 	return 0;
- }
--
--static inline void acpi_pss_perf_exit(struct acpi_processor *pr,
--		struct acpi_device *device) {}
- #endif /* CONFIG_ACPI_CPU_FREQ_PSS */
- 
- static int __acpi_processor_start(struct acpi_device *device)
-@@ -229,9 +178,35 @@ static int __acpi_processor_start(struct acpi_device *device)
- 	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
- 		acpi_processor_power_init(pr);
- 
--	result = acpi_pss_perf_init(pr, device);
--	if (result)
-+	acpi_pss_perf_init(pr, device);
-+
-+	pr->cdev = thermal_cooling_device_register("Processor", device,
-+						   &processor_cooling_ops);
-+	if (IS_ERR(pr->cdev)) {
-+		result = PTR_ERR(pr->cdev);
- 		goto err_power_exit;
-+	}
-+
-+	dev_dbg(&device->dev, "registered as cooling_device%d\n",
-+		pr->cdev->id);
-+
-+	result = sysfs_create_link(&device->dev.kobj,
-+				   &pr->cdev->device.kobj,
-+				   "thermal_cooling");
-+	if (result) {
-+		dev_err(&device->dev,
-+			"Failed to create sysfs link 'thermal_cooling'\n");
-+		goto err_thermal_unregister;
-+	}
-+
-+	result = sysfs_create_link(&pr->cdev->device.kobj,
-+				   &device->dev.kobj,
-+				   "device");
-+	if (result) {
-+		dev_err(&pr->cdev->device,
-+			"Failed to create sysfs link 'device'\n");
-+		goto err_remove_sysfs_thermal;
-+	}
- 
- 	status = acpi_install_notify_handler(device->handle, ACPI_DEVICE_NOTIFY,
- 					     acpi_processor_notify, device);
-@@ -239,8 +214,11 @@ static int __acpi_processor_start(struct acpi_device *device)
- 		return 0;
- 
- 	result = -ENODEV;
--	acpi_pss_perf_exit(pr, device);
--
-+	sysfs_remove_link(&pr->cdev->device.kobj, "device");
-+err_remove_sysfs_thermal:
-+	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-+err_thermal_unregister:
-+	thermal_cooling_device_unregister(pr->cdev);
- err_power_exit:
- 	acpi_processor_power_exit(pr);
- 	return result;
-@@ -277,10 +255,15 @@ static int acpi_processor_stop(struct device *dev)
- 		return 0;
- 	acpi_processor_power_exit(pr);
- 
--	acpi_pss_perf_exit(pr, device);
--
- 	acpi_cppc_processor_exit(pr);
- 
-+	if (pr->cdev) {
-+		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-+		sysfs_remove_link(&pr->cdev->device.kobj, "device");
-+		thermal_cooling_device_unregister(pr->cdev);
-+		pr->cdev = NULL;
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 194027371928..f2d8f0cd1736 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -443,7 +443,7 @@ static inline int acpi_processor_hotplug(struct acpi_processor *pr)
- /* in processor_thermal.c */
- int acpi_processor_get_limit_info(struct acpi_processor *pr);
- extern const struct thermal_cooling_device_ops processor_cooling_ops;
--#if defined(CONFIG_ACPI_CPU_FREQ_PSS) & defined(CONFIG_CPU_FREQ)
-+#ifdef CONFIG_CPU_FREQ
- void acpi_thermal_cpufreq_init(struct cpufreq_policy *policy);
- void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy);
- #else
-@@ -455,6 +455,6 @@ static inline void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
- {
- 	return;
- }
--#endif	/* CONFIG_ACPI_CPU_FREQ_PSS */
-+#endif /* CONFIG_CPU_FREQ */
- 
- #endif
--- 
-2.25.1
-
+> Subject: [PATCH v2] ACPI: OSL: Fix the memory mapping of an ACPI GAS that addresses a data structure 
+>  
+> From: James Liu <james.liu@hpe.com>
+> 
+>     Modify acpi_os_map_generic_address() & acpi_os_unmap_generic_address()
+>     to correctly handle cases that a GAS table (i.e., Table 5.1, ACPI 6.4)
+>     is used to address a data structure; in the case, the GAS has the field
+>     of "Register Bit Width" equal to 0.
+> 
+>     For example, "Injection Instruction Entry" (Table 18.25, ACPI 6.4) has
+>     a RegisterRegion field that is a GAS that points to a data structure
+>     SET_ERROR_TYPE_WITH_ADDRESS (Table 18.30), which is required when using
+>     EINJ (Error Injection module).
+> 
+>     This fix preserves a fairly sufficient memory space (i.e. page size) to
+>     store the data structure to prevent EINJ module from loading failure if
+>     platform firmware can correctly support Injection Instruction Entry in
+>     an EINJ table.
+> 
+> Signed-off-by: James Liu <james.liu@hpe.com>
+> ---
+>  drivers/acpi/osl.c | 27 +++++++++++++++++++++++----
+>  1 file changed, 23 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index 45c5c0e45..99f987c8c 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -452,14 +452,20 @@ EXPORT_SYMBOL_GPL(acpi_os_unmap_memory);
+>  
+>  void __iomem *acpi_os_map_generic_address(struct acpi_generic_address *gas)
+>  {
+> -       u64 addr;
+> +       u64 addr = 0;
+>  
+>          if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
+>                  return NULL;
+>  
+> +       /* Handle a case that GAS is used to address an ACPI data structure */
+> +       if (!gas->bit_width) {
+> +               pr_info("An ACPI data structure at 0x%llx is mapped\n", addr);
+> +               return  acpi_os_map_iomem(addr, PAGE_SIZE);
+> +       }
+> +
+>          /* Handle possible alignment issues */
+>          memcpy(&addr, &gas->address, sizeof(addr));
+> -       if (!addr || !gas->bit_width)
+> +       if (!addr)
+>                  return NULL;
+>  
+>          return acpi_os_map_iomem(addr, gas->bit_width / 8);
+> @@ -468,15 +474,28 @@ EXPORT_SYMBOL(acpi_os_map_generic_address);
+>  
+>  void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
+>  {
+> -       u64 addr;
+> +       u64 addr = 0;
+>          struct acpi_ioremap *map;
+>  
+>          if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
+>                  return;
+>  
+> +       /* Handle a case that GAS is used to address an ACPI data structure */
+> +       if (!gas->bit_width) {
+> +               pr_info("An ACPI data structure at 0x%llx is unmapped\n", addr);
+> +               mutex_lock(&acpi_ioremap_lock);
+> +               map = acpi_map_lookup(addr, PAGE_SIZE);
+> +               if (!map) {
+> +                       mutex_unlock(&acpi_ioremap_lock);
+> +                       return;
+> +               }
+> +               acpi_os_drop_map_ref(map);
+> +               mutex_unlock(&acpi_ioremap_lock);
+> +       }
+> +
+>          /* Handle possible alignment issues */
+>          memcpy(&addr, &gas->address, sizeof(addr));
+> -       if (!addr || !gas->bit_width)
+> +       if (!addr)
+>                  return;
+>  
+>          mutex_lock(&acpi_ioremap_lock);
+> -- 
+> 2.25.1
