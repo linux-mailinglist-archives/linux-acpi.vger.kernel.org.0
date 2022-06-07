@@ -2,177 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1448353FE56
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jun 2022 14:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B3FA53FEFB
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jun 2022 14:37:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243461AbiFGMIK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jun 2022 08:08:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51480 "EHLO
+        id S244034AbiFGMhl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 7 Jun 2022 08:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243448AbiFGMH5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jun 2022 08:07:57 -0400
-Received: from esa8.hc1455-7.c3s2.iphmx.com (esa8.hc1455-7.c3s2.iphmx.com [139.138.61.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A2328CB07;
-        Tue,  7 Jun 2022 05:07:52 -0700 (PDT)
-X-IronPort-AV: E=McAfee;i="6400,9594,10370"; a="63506366"
-X-IronPort-AV: E=Sophos;i="5.91,283,1647270000"; 
-   d="scan'208";a="63506366"
-Received: from unknown (HELO yto-r2.gw.nic.fujitsu.com) ([218.44.52.218])
-  by esa8.hc1455-7.c3s2.iphmx.com with ESMTP; 07 Jun 2022 21:07:50 +0900
-Received: from yto-m4.gw.nic.fujitsu.com (yto-nat-yto-m4.gw.nic.fujitsu.com [192.168.83.67])
-        by yto-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 6843CC68A4;
-        Tue,  7 Jun 2022 21:07:49 +0900 (JST)
-Received: from oym-om4.fujitsu.com (oym-om4.o.css.fujitsu.com [10.85.58.164])
-        by yto-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id 90D6CFA56;
-        Tue,  7 Jun 2022 21:07:48 +0900 (JST)
-Received: from cn-r05-10.example.com (n3235113.np.ts.nmh.cs.fujitsu.co.jp [10.123.235.113])
-        by oym-om4.fujitsu.com (Postfix) with ESMTP id 3A50640080208;
-        Tue,  7 Jun 2022 21:07:48 +0900 (JST)
-From:   Kohei Tarumizu <tarumizu.kohei@fujitsu.com>
-To:     catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, rafael@kernel.org, lenb@kernel.org,
-        gregkh@linuxfoundation.org, mchehab+huawei@kernel.org,
-        eugenis@google.com, tony.luck@intel.com, pcc@google.com,
-        peterz@infradead.org, marcos@orca.pet, marcan@marcan.st,
-        linus.walleij@linaro.org, nicolas.ferre@microchip.com,
-        conor.dooley@microchip.com, arnd@arndb.de, ast@kernel.org,
-        peter.chen@kernel.org, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org
-Cc:     tarumizu.kohei@fujitsu.com
-Subject: [PATCH v5 6/6] docs: ABI: Add sysfs documentation interface of hardware prefetch control driver
-Date:   Tue,  7 Jun 2022 21:05:30 +0900
-Message-Id: <20220607120530.2447112-7-tarumizu.kohei@fujitsu.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
-References: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
+        with ESMTP id S243802AbiFGMg4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jun 2022 08:36:56 -0400
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C848FE27BE;
+        Tue,  7 Jun 2022 05:36:52 -0700 (PDT)
+Received: by mail-qt1-f175.google.com with SMTP id y15so12480292qtx.4;
+        Tue, 07 Jun 2022 05:36:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=jI9Eiy9NqYqthM/bM2aEWTmdS6Ov8FCqsQpj0jvzrm0=;
+        b=i3xBIdu0Imzpn7+GeYihuu7FZqWWmUkazEo4w0O0JfJkM7NFbnww16nSsMSFMTi63J
+         JTWuN+HETtLS1Y5fkmYBDcUOVvWwqhvOpWH6xy6RoqPkMkUfQso5BzvgDQ6o4T4VS1Rt
+         EF3ySOVUrBr1UbmGhLHYW6vWT09lScATSRKYr9hGX9Mul0eAmxpJLyFo3LksEE5gqTM/
+         +RvOAS1OXDaFm1XVKfh0OPFKEyODmUKNf9SIK9ZcLDLgkNKOfYWydhzrZRr7udEiV18O
+         UcfMvwm5Qjsh7J+AoSH7zaULP/wWZM06S11g97yWYCTho902T+y11AxyNShLqgafZ/KA
+         II4A==
+X-Gm-Message-State: AOAM532Wsv1yYYwZaR6/bKwMD1Yfb8coa9nL0sMVLNRUD9oWdOs03zZP
+        IdjRE0PZG/l9Pxp67ej1t3agCddLmjgyCQ==
+X-Google-Smtp-Source: ABdhPJwGod2ZTC35dVzxa46M26uqJXqucakYCo0RId/YXLNI8RDb6tjB9wj6NF6g49Hm73uxz8q1Ig==
+X-Received: by 2002:ac8:58ca:0:b0:2f3:da32:ab1 with SMTP id u10-20020ac858ca000000b002f3da320ab1mr22157947qta.308.1654605400840;
+        Tue, 07 Jun 2022 05:36:40 -0700 (PDT)
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com. [209.85.219.179])
+        by smtp.gmail.com with ESMTPSA id f12-20020a05620a280c00b0069fe1dfbeffsm218111qkp.92.2022.06.07.05.36.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jun 2022 05:36:40 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id p13so30908697ybm.1;
+        Tue, 07 Jun 2022 05:36:40 -0700 (PDT)
+X-Received: by 2002:a05:6902:a:b0:65c:b38e:6d9f with SMTP id
+ l10-20020a056902000a00b0065cb38e6d9fmr30887112ybh.36.1654605399923; Tue, 07
+ Jun 2022 05:36:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220526081550.1089805-1-saravanak@google.com> <20220526081550.1089805-9-saravanak@google.com>
+In-Reply-To: <20220526081550.1089805-9-saravanak@google.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 7 Jun 2022 14:36:28 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXrTjjNcqro+FA0BPJ+rK3bCAX+boYdf5=ZvGGocVJPMw@mail.gmail.com>
+Message-ID: <CAMuHMdXrTjjNcqro+FA0BPJ+rK3bCAX+boYdf5=ZvGGocVJPMw@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 8/9] net: ipconfig: Force fw_devlink to unblock any
+ devices that might probe
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        David Ahern <dsahern@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        John Stultz <jstultz@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        netdev <netdev@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This describes the sysfs interface implemented by the hardware prefetch
-control driver.
+Hi Saravana,
 
-Signed-off-by: Kohei Tarumizu <tarumizu.kohei@fujitsu.com>
----
- .../ABI/testing/sysfs-devices-system-cpu      | 98 +++++++++++++++++++
- 1 file changed, 98 insertions(+)
+On Thu, May 26, 2022 at 10:16 AM Saravana Kannan <saravanak@google.com> wrote:
+> If there are network devices that could probe without some of their
+> suppliers probing and those network devices are needed for IP auto
+> config to work, then fw_devlink=on might break that usecase by blocking
+> the network devices from probing by the time IP auto config starts.
+>
+> So, when IP auto config is enabled, make sure fw_devlink doesn't block
+> the probing of any device that has a driver by the time we get to IP
+> auto config.
+>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  net/ipv4/ipconfig.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
+> index 9d41d5d5cd1e..aa7b8ba68ca6 100644
+> --- a/net/ipv4/ipconfig.c
+> +++ b/net/ipv4/ipconfig.c
+> @@ -1435,6 +1435,8 @@ static int __init wait_for_devices(void)
+>  {
+>         int i;
+>
+> +       fw_devlink_unblock_may_probe();
+> +
+>         for (i = 0; i < DEVICE_WAIT_MAX; i++) {
+>                 struct net_device *dev;
+>                 int found = 0;
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-index 2ad01cad7f1c..0da4c1bac51e 100644
---- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-+++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-@@ -688,3 +688,101 @@ Description:
- 		(RO) the list of CPUs that are isolated and don't
- 		participate in load balancing. These CPUs are set by
- 		boot parameter "isolcpus=".
-+
-+What:		/sys/devices/system/cpu/cpu*/cache/index*/prefetch_control/hardware_prefetcher_enable
-+		/sys/devices/system/cpu/cpu*/cache/index*/prefetch_control/ip_prefetcher_enable
-+		/sys/devices/system/cpu/cpu*/cache/index*/prefetch_control/adjacent_cache_line_prefetcher_enable
-+Date:		March 2022
-+Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
-+Description:	Parameters for some Intel CPU's hardware prefetch control
-+
-+		This sysfs interface provides Hardware Prefetch control
-+		attribute for some Intel processors. Attributes are only
-+		present if the particular cache implements the relevant
-+		prefetcher controls.
-+
-+		*_prefetcher_enable:
-+		    (RW) control this prefetcher's enablement state.
-+		    Read returns current status:
-+			0: this prefetcher is disabled
-+			1: this prefetcher is enabled
-+
-+		- Attribute mapping
-+
-+		    Some Intel processors have MSR 0x1a4. This register has several
-+		    specifications depending on the model. This interface provides
-+		    a one-to-one attribute file to control all the tunable
-+		    parameters the CPU provides of the following.
-+
-+			- "* Hardware Prefetcher Disable (R/W)"
-+			    corresponds to the "hardware_prefetcher_enable"
-+
-+			- "* Adjacent Cache Line Prefetcher Disable (R/W)"
-+			    corresponds to the "adjacent_cache_line_prefetcher_enable"
-+
-+			- "* IP Prefetcher Disable (R/W)"
-+			    corresponds to the "ip_prefetcher_enable"
-+
-+What:		/sys/devices/system/cpu/cpu*/cache/index*/prefetch_control/stream_detect_prefetcher_enable
-+		/sys/devices/system/cpu/cpu*/cache/index*/prefetch_control/stream_detect_prefetcher_strength
-+		/sys/devices/system/cpu/cpu*/cache/index*/prefetch_control/stream_detect_prefetcher_strength_available
-+		/sys/devices/system/cpu/cpu*/cache/index*/prefetch_control/stream_detect_prefetcher_dist
-+Date:		March 2022
-+Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
-+Description:	Parameters for A64FX's hardware prefetch control
-+
-+		This sysfs interface provides Hardware Prefetch control
-+		attribute for the processor A64FX. Attributes are only
-+		present if the particular cache implements the relevant
-+		prefetcher controls.
-+
-+		stream_detect_prefetcher_enable:
-+		    (RW) control the prefetcher's enablement state.
-+		    Read returns current status:
-+			0: this prefetcher is disabled
-+			1: this prefetcher is enabled
-+
-+		stream_detect_prefetcher_strength:
-+		    (RW) control the prefetcher operation's strongness state.
-+		    Read returns current status:
-+			weak: prefetch operation is weak
-+			strong: prefetch operation is strong
-+
-+		    Strong prefetch operation is surely executed, if there is
-+		    no corresponding data in cache.
-+		    Weak prefetch operation allows the hardware not to execute
-+		    operation depending on hardware state.
-+
-+
-+		stream_detect_prefetcher_strength_available:
-+		    (RO) displays a space separated list of available strongness
-+		    state.
-+
-+		stream_detect_prefetcher_dist:
-+		    (RW) control the prefetcher distance value.
-+		    Read return current prefetcher distance value in bytes
-+		    or the string "auto".
-+
-+		    Write either a value in byte or the string "auto" to this
-+		    parameter. If you write a value less than multiples of a
-+		    specific value, it is rounded up.
-+
-+		    The string "auto" have a special meaning. This means that
-+		    instead of setting dist to a user-specified value, it
-+		    operates using hardware-specific values.
-+
-+		- Attribute mapping
-+
-+		    The processor A64FX has register IMP_PF_STREAM_DETECT_CTRL_EL0
-+		    for Hardware Prefetch Control. This attribute maps each
-+		    specification to the following.
-+
-+			- "L*PF_DIS": enablement of hardware prefetcher
-+			    corresponds to the "stream_detect_prefetcher_enable"
-+
-+			- "L*W": strongness of hardware prefetcher
-+			    corresponds to "stream_detect_prefetcher_strength"
-+			    and "stream_detect_prefetcher_strength_available"
-+
-+			- "L*_DIST": distance of hardware prefetcher
-+			    corresponds to the "stream_detect_prefetcher_dist"
--- 
-2.27.0
+FTR, this lacks an include <linux/fwnode.h>, as my mips rbtx4927
+build fails with:
 
+net/ipv4/ipconfig.c:1438:2: error: implicit declaration of function
+‘fw_devlink_unblock_may_probe’ [-Werror=implicit-function-declaration]
+
+Switching to v2 instead...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
