@@ -2,120 +2,265 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EB4B53F6FA
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jun 2022 09:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8092F53FE5B
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jun 2022 14:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237497AbiFGHP1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Jun 2022 03:15:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48514 "EHLO
+        id S243441AbiFGMIs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jun 2022 08:08:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237323AbiFGHPZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jun 2022 03:15:25 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D5DADEC8
-        for <linux-acpi@vger.kernel.org>; Tue,  7 Jun 2022 00:15:24 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id j10so26845681lfe.12
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Jun 2022 00:15:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YtcjALjI2RZjsiofJNrRsd8EXD975AiTacZTv5laD3A=;
-        b=f19PMMaVtX+BpJFFtU0Q2VO6fMGbOuJgz1c/nFXb3jADKHD6RE8bc/7KA/pI+rkX00
-         ybDIVaW11W0wAoniwtNsqCLG/50GCtvMU8/n4twyfDCbZ8cjJRj4a7qRSeyqA1vLLLrZ
-         7GTNTZmnzfob0R++KIEhuymJltw9rPlWjAm7GHHK8n+bICqn7KRgKh1VAvOdmrIH25rL
-         226hoidniZOStstv09tB6xTZVHpwYC795Ig5R1HrELOOmPC6MFGVJ0m0tnle7VE2/4oG
-         ejvQQGfLuvOGSSUrsZPjtQ6CM3cdp7Gfd6V8Cg29vyhLqnFbV6fEUQ7p+YYNkjXCc0Xw
-         eEUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YtcjALjI2RZjsiofJNrRsd8EXD975AiTacZTv5laD3A=;
-        b=Ie6T0fX9BcBfMU7OAKQ6vX0Kg9ZGPWYAm+XmJAhLJepsBlNz6Uoy5uJf4ksyV3i98f
-         /pxMjPru14q6POWEedXnaBd8dV8W5yDS1S6bsypzvADFyBk4rcB8qDgtbxIZWw1ksA7p
-         3eG0YxOB4thZwA8QaNM1iwtoAuBk5B13dmpIee0EWcXda+AKq0GNRchpwTohagC4+5PO
-         PoAhiXGgtBafK/H9XNik++r7UYfB3k89vTf84KxHijMca90Qk7RG/KlvcmS/cO+vh+1b
-         eMtTWICjl8BD5gqh0ZKMBu2dzPiBhhtcGflnAROTxBEHcytwufHpt0T0dJpWDXiHFtNs
-         /ryQ==
-X-Gm-Message-State: AOAM531s4YxBCkEY/7Hsgt9Ey8G8h5RZOn2oYCAdpC20asythdXv7Mrx
-        WsXRMl/cWSEJhS2/OpfGj/Pb7VvFBaqLR3PW39bozg==
-X-Google-Smtp-Source: ABdhPJz4O8/a80YWrP8iHg32QGtqg64ZDJWv3CN+Yh1UTo6DQ30IJZeQhx92HsCuaD0TO7q46mPTTeT7H0VNqwLKbBg=
-X-Received: by 2002:a05:6512:1085:b0:479:478b:d2cc with SMTP id
- j5-20020a056512108500b00479478bd2ccmr5934514lfg.540.1654586122236; Tue, 07
- Jun 2022 00:15:22 -0700 (PDT)
+        with ESMTP id S243551AbiFGMIg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jun 2022 08:08:36 -0400
+X-Greylist: delayed 66 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 05:08:31 PDT
+Received: from esa10.hc1455-7.c3s2.iphmx.com (esa10.hc1455-7.c3s2.iphmx.com [139.138.36.225])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89988FFAA
+        for <linux-acpi@vger.kernel.org>; Tue,  7 Jun 2022 05:08:31 -0700 (PDT)
+X-IronPort-AV: E=McAfee;i="6400,9594,10370"; a="63351129"
+X-IronPort-AV: E=Sophos;i="5.91,283,1647270000"; 
+   d="scan'208";a="63351129"
+Received: from unknown (HELO yto-r4.gw.nic.fujitsu.com) ([218.44.52.220])
+  by esa10.hc1455-7.c3s2.iphmx.com with ESMTP; 07 Jun 2022 21:07:22 +0900
+Received: from yto-m4.gw.nic.fujitsu.com (yto-nat-yto-m4.gw.nic.fujitsu.com [192.168.83.67])
+        by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 8C1ADD3EB0;
+        Tue,  7 Jun 2022 21:07:21 +0900 (JST)
+Received: from oym-om4.fujitsu.com (oym-om4.o.css.fujitsu.com [10.85.58.164])
+        by yto-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id 9C17CF89E;
+        Tue,  7 Jun 2022 21:07:20 +0900 (JST)
+Received: from cn-r05-10.example.com (n3235113.np.ts.nmh.cs.fujitsu.co.jp [10.123.235.113])
+        by oym-om4.fujitsu.com (Postfix) with ESMTP id 36B3D4007A996;
+        Tue,  7 Jun 2022 21:07:20 +0900 (JST)
+From:   Kohei Tarumizu <tarumizu.kohei@fujitsu.com>
+To:     catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, rafael@kernel.org, lenb@kernel.org,
+        gregkh@linuxfoundation.org, mchehab+huawei@kernel.org,
+        eugenis@google.com, tony.luck@intel.com, pcc@google.com,
+        peterz@infradead.org, marcos@orca.pet, marcan@marcan.st,
+        linus.walleij@linaro.org, nicolas.ferre@microchip.com,
+        conor.dooley@microchip.com, arnd@arndb.de, ast@kernel.org,
+        peter.chen@kernel.org, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org
+Cc:     tarumizu.kohei@fujitsu.com
+Subject: [PATCH v5 0/6] Add hardware prefetch control driver for A64FX and x86
+Date:   Tue,  7 Jun 2022 21:05:24 +0900
+Message-Id: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <000000000000bb7f1c05da29b601@google.com> <00000000000010b7d305e08837c8@google.com>
- <YpnqpMYcokTwCB6u@smile.fi.intel.com> <Ypor265BTdnmgwpM@rowland.harvard.edu>
- <YpouRmanvCQeKA3S@kroah.com> <Ypow1LRZ3Hau36ci@rowland.harvard.edu>
- <Ypoyy/stICFdHauR@kroah.com> <CACT4Y+bBWrLRwiowaWk8o4+XAtCHxxJiEQfiSkgM3BDut9atAw@mail.gmail.com>
- <20220606123839.GW2146@kadam>
-In-Reply-To: <20220606123839.GW2146@kadam>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Tue, 7 Jun 2022 09:15:09 +0200
-Message-ID: <CACT4Y+Y_kg1J00iBL=sMr5AP7U4RXuBizusvQG52few2NcJ6dg@mail.gmail.com>
-Subject: Re: [syzbot] general protection fault in __device_attach
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        syzbot <syzbot+dd3c97de244683533381@syzkaller.appspotmail.com>,
-        hdanton@sina.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rafael.j.wysocki@intel.com,
-        rafael@kernel.org, rjw@rjwysocki.net,
-        syzkaller-bugs@googlegroups.com, linux-usb@vger.kernel.org,
-        Linux-MM <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 6 Jun 2022 at 14:39, Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> On Sat, Jun 04, 2022 at 10:32:46AM +0200, 'Dmitry Vyukov' via syzkaller-bugs wrote:
-> > On Fri, 3 Jun 2022 at 18:12, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > But again, is this a "real and able to be triggered from userspace"
-> > > problem, or just fault-injection-induced?
-> >
-> > Then this is something to fix in the fault injection subsystem.
-> > Testing systems shouldn't be reporting false positives.
-> > What allocations cannot fail in real life? Is it <=page_size?
-> >
->
-> Apparently in 2014, anything less than *EIGHT?!!* pages succeeded!
->
-> https://lwn.net/Articles/627419/
->
-> I have been on the look out since that article and never seen anyone
-> mention it changing.  I think we should ignore that and say that
-> anything over PAGE_SIZE can fail.  Possibly we could go smaller than
-> PAGE_SIZE...
+This patch series add sysfs interface to control CPU's hardware
+prefetch behavior for performance tuning from userspace for the
+processor A64FX and x86 (on supported CPU).
 
-+linux-mm for GFP expertise re what allocations cannot possibly fail
-and should be excluded from fault injection.
+Changes from v4:
+  - remove core driver
+  - fix to use attribute_group instead of attribute (patch 1, 4)
+  - fix to store a pointer of CPU number in driver_data when the
+    initialization of sysfs (patch 1, 4)
+  - move #if in .c file to .h file (patch 3)
+  - fix drivers to be loaded automatically (patch 1, 4)
+    - for x86, it is tied to the discovery of a specific CPU model
+    - for A64FX, it is tied to the discovery of a specific ACPI device
+  - add Kconfig description (patch 2, 5)
+https://lore.kernel.org/lkml/20220518063032.2377351-1-tarumizu.kohei@fujitsu.com/
 
-Interesting, thanks for the link.
+[Background]
+============
+A64FX and some Intel processors have implementation-dependent register
+for controlling CPU's hardware prefetch behavior. A64FX has
+IMP_PF_STREAM_DETECT_CTRL_EL0[1], and Intel processors have MSR 0x1a4
+(MSR_MISC_FEATURE_CONTROL)[2]. These registers cannot be accessed from
+userspace.
 
-PAGE_SIZE looks like a good start. Once we have the predicate in
-place, we can refine it later when/if we have more inputs.
+[1]https://github.com/fujitsu/A64FX/tree/master/doc/
+   A64FX_Specification_HPC_Extension_v1_EN.pdf
 
-But I wonder about GFP flags. They definitely have some impact on allocations.
-If GFP_ACCOUNT is set, all allocations can fail, right?
-If GFP_DMA/DMA32 is set, allocations can fail, right? What about other zones?
-If GFP_NORETRY is set, allocations can fail?
-What about GFP_NOMEMALLOC and GFP_ATOMIC?
-What about GFP_IO/GFP_FS/GFP_DIRECT_RECLAIM/GFP_KSWAPD_RECLAIM? At
-least some of these need to be set for allocations to not fail? Which
-ones?
-Any other flags are required to be set/unset for allocations to not fail?
+[2]https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
+    Volume 4
 
-FTR here is quick link to flags list:
-https://elixir.bootlin.com/linux/v5.19-rc1/source/include/linux/gfp.h#L32
+The advantage of using these is improved performance. As an example of
+performance improvements, the results of running the Stream benchmark
+on the A64FX are described in section [Merit].
+
+For MSR 0x1a4, it is also possible to change the value from userspace
+via the MSR driver. However, using MSR driver is not recommended, so
+it needs a proper kernel interface[3].
+
+[3]https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/about/
+
+For these reasons, we provide a new proper kernel interface to control
+both IMP_PF_STREAM_DETECT_CTRL_EL0 and MSR 0x1a4.
+
+[Overall design]
+================
+This driver creates "prefetch_control" directory and some attributes
+in every CPU's cache/indexX directory, if CPU supports hardware
+prefetch control behavior.
+
+Detailed description of this sysfs interface is in
+Documentation/ABI/testing/sysfs-devices-system-cpu (patch6).
+
+This driver needs cache sysfs directory and cache level/type
+information. In ARM processor, these information can be obtained
+from registers even without ACPI PPTT.
+We add processing to create a cache/index directory using only the
+information from the register if the machine does not support ACPI
+PPTT and CONFIG_ALLOW_INCOMPLETE_CACHE_SYSFS is true in patch3.
+This action caused a problem and is described in [Known problem].
+
+[Examples]
+==========
+This section provides an example of using this sysfs interface at the
+x86's model of INTEL_FAM6_BROADWELL_X.
+
+This model has the following register specifications:
+
+[0]    L2 Hardware Prefetcher Disable (R/W)
+[1]    L2 Adjacent Cache Line Prefetcher Disable (R/W)
+[2]    DCU Hardware Prefetcher Disable (R/W)
+[3]    DCU IP Prefetcher Disable (R/W)
+[63:4] Reserved
+
+In this case, index0 (L1d cache) corresponds to bit[2,3] and index2
+(L2 cache) corresponds to bit [0,1]. A list of attribute files of
+index0 and index2 in CPU1 at BROADWELL_X is following:
+
+```
+# ls /sys/devices/system/cpu/cpu1/cache/index0/prefetch_control/
+
+hardware_prefetcher_enable
+ip_prefetcher_enable
+
+# ls /sys/devices/system/cpu/cpu1/cache/index2/prefetch_control/
+
+adjacent_cache_line_prefetcher_enable
+hardware_prefetcher_enable
+```
+
+If user would like to disable the setting of "L2 Adjacent Cache Line
+Prefetcher Disable (R/W)" in CPU1, do the following:
+
+```
+# echo 0 >
+# /sys/devices/system/cpu/cpu1/cache/index2/prefetch_control/adjacent_cache_line_prefetcher_enable
+```
+
+In another example, a list of index0 at A64FX is following:
+
+```
+# ls /sys/devices/system/cpu/cpu1/cache/index0/prefetch_control/
+
+stream_detect_prefetcher_dist
+stream_detect_prefetcher_enable
+stream_detect_prefetcher_strength
+stream_detect_prefetcher_strength_available
+```
+
+[Patch organizations]
+=====================
+This patch series add hardware prefetch control driver for A64FX
+and x86.
+
+- patch1: Add hardware prefetch control driver for A64FX
+
+  Adds module init/exit code to create sysfs attributes for A64FX with
+  "stream_detect_prefetcher_enable", "stream_detect_prefetcher_strong"
+  and "stream_detect_prefetcher_dist".
+
+- patch2: Add Kconfig/Makefile to build driver for A64FX
+
+- patch3: Create cache sysfs directory without ACPI PPTT for hardware
+  prefetch control
+
+  Hardware Prefetch control driver needs cache sysfs directory and cache
+  level/type information. In ARM processor, these information can be
+  obtained from register(CLIDR_EL1) even without PPTT. Therefore, we
+  set the cpu_map_populated to true to create cache sysfs directory, if
+  the machine doesn't have PPTT.
+
+- patch4: Add hardware prefetch control driver for x86
+
+  Adds module init/exit code to create sysfs attributes for x86 with
+  "hardware_prefetcher_enable", "ip_prefetcher_enable" and
+  "adjacent_cache_line_prefetcher_enable".
+
+- patch5: Add Kconfig/Makefile to build driver for x86
+
+- patch6: Add documentation for the new sysfs interface
+
+[Known problem]
+===============
+- `lscpu` command terminates with -ENOENT because cache/index directory
+  is exists but shared_cpu_map file does not exist. This is due to
+  patch5, which creates a cache/index directory containing only level
+  and type without ACPI PPTT.
+
+[Merit]
+=======
+For reference, here is the result of STREAM Triad when tuning with
+the "s file in L1 and L2 cache on A64FX.
+
+| dist combination  | Pattern A   | Pattern B   |
+|-------------------|-------------|-------------|
+| L1:256,  L2:1024  | 234505.2144 | 114600.0801 |
+| L1:1536, L2:1024  | 279172.8742 | 118979.4542 |
+| L1:256,  L2:10240 | 247716.7757 | 127364.1533 |
+| L1:1536, L2:10240 | 283675.6625 | 125950.6847 |
+
+In pattern A, we set the size of the array to 174720, which is about
+half the size of the L1d cache. In pattern B, we set the size of the
+array to 10485120, which is about twice the size of the L2 cache.
+
+In pattern A, a change of dist at L1 has a larger effect. On the other
+hand, in pattern B, the change of dist at L2 has a larger effect.
+As described above, the optimal dist combination depends on the
+characteristics of the application. Therefore, such a sysfs interface
+is useful for performance tuning.
+
+Best regards,
+Kohei Tarumizu
+
+Kohei Tarumizu (6):
+  soc: fujitsu: Add hardware prefetch control driver for A64FX
+  soc: fujitsu: Add Kconfig/Makefile to build hardware prefetch control
+    driver
+  arm64: Create cache sysfs directory without ACPI PPTT for hardware
+    prefetch control
+  x86: Add hardware prefetch control driver for x86
+  x86: Add Kconfig/Makefile to build hardware prefetch control driver
+  docs: ABI: Add sysfs documentation interface of hardware prefetch
+    control driver
+
+ .../ABI/testing/sysfs-devices-system-cpu      |  98 ++++
+ MAINTAINERS                                   |   6 +
+ arch/arm64/kernel/cacheinfo.c                 |  27 +
+ arch/x86/Kconfig                              |  17 +
+ arch/x86/kernel/cpu/Makefile                  |   2 +
+ arch/x86/kernel/cpu/x86-pfctl.c               | 363 +++++++++++++
+ drivers/acpi/pptt.c                           |  18 +
+ drivers/soc/Kconfig                           |   1 +
+ drivers/soc/Makefile                          |   1 +
+ drivers/soc/fujitsu/Kconfig                   |  26 +
+ drivers/soc/fujitsu/Makefile                  |   2 +
+ drivers/soc/fujitsu/a64fx-pfctl.c             | 484 ++++++++++++++++++
+ include/linux/acpi.h                          |   5 +
+ include/linux/cacheinfo.h                     |  10 +
+ 14 files changed, 1060 insertions(+)
+ create mode 100644 arch/x86/kernel/cpu/x86-pfctl.c
+ create mode 100644 drivers/soc/fujitsu/Kconfig
+ create mode 100644 drivers/soc/fujitsu/Makefile
+ create mode 100644 drivers/soc/fujitsu/a64fx-pfctl.c
+
+-- 
+2.27.0
+
