@@ -2,145 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B3FA53FEFB
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jun 2022 14:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 364C45401A5
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jun 2022 16:42:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244034AbiFGMhl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 7 Jun 2022 08:37:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54942 "EHLO
+        id S243276AbiFGOme (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Jun 2022 10:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243802AbiFGMg4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jun 2022 08:36:56 -0400
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C848FE27BE;
-        Tue,  7 Jun 2022 05:36:52 -0700 (PDT)
-Received: by mail-qt1-f175.google.com with SMTP id y15so12480292qtx.4;
-        Tue, 07 Jun 2022 05:36:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=jI9Eiy9NqYqthM/bM2aEWTmdS6Ov8FCqsQpj0jvzrm0=;
-        b=i3xBIdu0Imzpn7+GeYihuu7FZqWWmUkazEo4w0O0JfJkM7NFbnww16nSsMSFMTi63J
-         JTWuN+HETtLS1Y5fkmYBDcUOVvWwqhvOpWH6xy6RoqPkMkUfQso5BzvgDQ6o4T4VS1Rt
-         EF3ySOVUrBr1UbmGhLHYW6vWT09lScATSRKYr9hGX9Mul0eAmxpJLyFo3LksEE5gqTM/
-         +RvOAS1OXDaFm1XVKfh0OPFKEyODmUKNf9SIK9ZcLDLgkNKOfYWydhzrZRr7udEiV18O
-         UcfMvwm5Qjsh7J+AoSH7zaULP/wWZM06S11g97yWYCTho902T+y11AxyNShLqgafZ/KA
-         II4A==
-X-Gm-Message-State: AOAM532Wsv1yYYwZaR6/bKwMD1Yfb8coa9nL0sMVLNRUD9oWdOs03zZP
-        IdjRE0PZG/l9Pxp67ej1t3agCddLmjgyCQ==
-X-Google-Smtp-Source: ABdhPJwGod2ZTC35dVzxa46M26uqJXqucakYCo0RId/YXLNI8RDb6tjB9wj6NF6g49Hm73uxz8q1Ig==
-X-Received: by 2002:ac8:58ca:0:b0:2f3:da32:ab1 with SMTP id u10-20020ac858ca000000b002f3da320ab1mr22157947qta.308.1654605400840;
-        Tue, 07 Jun 2022 05:36:40 -0700 (PDT)
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com. [209.85.219.179])
-        by smtp.gmail.com with ESMTPSA id f12-20020a05620a280c00b0069fe1dfbeffsm218111qkp.92.2022.06.07.05.36.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jun 2022 05:36:40 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id p13so30908697ybm.1;
-        Tue, 07 Jun 2022 05:36:40 -0700 (PDT)
-X-Received: by 2002:a05:6902:a:b0:65c:b38e:6d9f with SMTP id
- l10-20020a056902000a00b0065cb38e6d9fmr30887112ybh.36.1654605399923; Tue, 07
- Jun 2022 05:36:39 -0700 (PDT)
+        with ESMTP id S245703AbiFGOmc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Jun 2022 10:42:32 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F96117A9E;
+        Tue,  7 Jun 2022 07:42:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+        :In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description;
+        bh=guGbsi6oQ5yXtvY36/60g5guK2nnm8Y0GIptFeWRFlQ=; b=qpWI3F+WZnevlqACCPvNu6xauF
+        IB3a2y7ZiiMGbm7ySpCd26UyeoH4gVxQcuKSWjoJHDFKS/Kodfpk80w1QlhaCv8dlZoWCAr1bJJrC
+        vzRppARJ1BxpVHzug25b+gxh9OnxWci76flCsRfUncNrPbdk1z1omtyUb6SqSVH5ZtKtsMfiWKomP
+        BATr4sutE5oEYI+cQ+0bCXajldf/aO2davX8436aEzFSjtQDdHOIS54GhcMAnZ5DA+/zXc7tymO4+
+        7vPZdzNhxm4xWkOjvplPguQxvvHKvRVTsNMMGMwkYqlanUpZ7hLUx0cQ0uAfHFaEYOvfZkDW/fMyE
+        uWE1ARFQ==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nyaO5-005kq1-IP; Tue, 07 Jun 2022 14:40:54 +0000
+Message-ID: <96f4cf1f-bd1e-ae5b-172b-fea572a32500@infradead.org>
+Date:   Tue, 7 Jun 2022 07:40:42 -0700
 MIME-Version: 1.0
-References: <20220526081550.1089805-1-saravanak@google.com> <20220526081550.1089805-9-saravanak@google.com>
-In-Reply-To: <20220526081550.1089805-9-saravanak@google.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 7 Jun 2022 14:36:28 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXrTjjNcqro+FA0BPJ+rK3bCAX+boYdf5=ZvGGocVJPMw@mail.gmail.com>
-Message-ID: <CAMuHMdXrTjjNcqro+FA0BPJ+rK3bCAX+boYdf5=ZvGGocVJPMw@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 8/9] net: ipconfig: Force fw_devlink to unblock any
- devices that might probe
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        David Ahern <dsahern@kernel.org>,
-        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        John Stultz <jstultz@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        netdev <netdev@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v5 5/6] x86: Add Kconfig/Makefile to build hardware
+ prefetch control driver
+Content-Language: en-US
+To:     Kohei Tarumizu <tarumizu.kohei@fujitsu.com>,
+        catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, rafael@kernel.org, lenb@kernel.org,
+        gregkh@linuxfoundation.org, mchehab+huawei@kernel.org,
+        eugenis@google.com, tony.luck@intel.com, pcc@google.com,
+        peterz@infradead.org, marcos@orca.pet, marcan@marcan.st,
+        linus.walleij@linaro.org, nicolas.ferre@microchip.com,
+        conor.dooley@microchip.com, arnd@arndb.de, ast@kernel.org,
+        peter.chen@kernel.org, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org
+References: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
+ <20220607120530.2447112-6-tarumizu.kohei@fujitsu.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220607120530.2447112-6-tarumizu.kohei@fujitsu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
 
-On Thu, May 26, 2022 at 10:16 AM Saravana Kannan <saravanak@google.com> wrote:
-> If there are network devices that could probe without some of their
-> suppliers probing and those network devices are needed for IP auto
-> config to work, then fw_devlink=on might break that usecase by blocking
-> the network devices from probing by the time IP auto config starts.
->
-> So, when IP auto config is enabled, make sure fw_devlink doesn't block
-> the probing of any device that has a driver by the time we get to IP
-> auto config.
->
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  net/ipv4/ipconfig.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
-> index 9d41d5d5cd1e..aa7b8ba68ca6 100644
-> --- a/net/ipv4/ipconfig.c
-> +++ b/net/ipv4/ipconfig.c
-> @@ -1435,6 +1435,8 @@ static int __init wait_for_devices(void)
->  {
->         int i;
->
-> +       fw_devlink_unblock_may_probe();
+
+On 6/7/22 05:05, Kohei Tarumizu wrote:
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 4bed3abf444d..3ee173483f9f 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -1359,6 +1359,23 @@ config X86_CPUID
+>  	  with major 203 and minors 0 to 31 for /dev/cpu/0/cpuid to
+>  	  /dev/cpu/31/cpuid.
+>  
+> +config X86_HWPF_CONTROL
+> +	tristate "x86 Hardware Prefetch Control support"
+> +	depends on X86_64
+> +	help
+> +	  This provides a sysfs interface to control the Hardware Prefetch
+> +	  behavior for X86.
 > +
->         for (i = 0; i < DEVICE_WAIT_MAX; i++) {
->                 struct net_device *dev;
->                 int found = 0;
+> +	  Some Intel processors have MSR 0x1a4 (MSR_MISC_FEATURE_CONTROL),
+> +	  which can control the hardware prefech behavior. If the processor
 
-FTR, this lacks an include <linux/fwnode.h>, as my mips rbtx4927
-build fails with:
+	                                 prefetch
 
-net/ipv4/ipconfig.c:1438:2: error: implicit declaration of function
-‘fw_devlink_unblock_may_probe’ [-Werror=implicit-function-declaration]
+> +	  supports this, the module can be loaded with the name x86-pfctl.
+> +
+> +	  Depending on the characteristics of the application, this register
+> +	  parameters improve or degrade performance.
+> +
+> +	  Please see Documentation/ABI/testing/sysfs-devices-system-cpu for
+> +	  more information.
+> +
 
-Switching to v2 instead...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+~Randy
