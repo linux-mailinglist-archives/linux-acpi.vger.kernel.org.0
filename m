@@ -2,169 +2,247 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A681F542AB5
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jun 2022 11:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 812A45434AC
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jun 2022 16:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233904AbiFHJF7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Jun 2022 05:05:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57658 "EHLO
+        id S241796AbiFHOto (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Jun 2022 10:49:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234238AbiFHJE2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Jun 2022 05:04:28 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B4AA222345
-        for <linux-acpi@vger.kernel.org>; Wed,  8 Jun 2022 01:24:21 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id s13so21877397ljd.4
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Jun 2022 01:24:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qn1e9UAfXz5aNABeJOAzysJEyHPbsjfCU7HdITnS84k=;
-        b=Zf/rY8UPfUil7LCo0AmPL0ktcOejRjNbVkLs6BfbQEG0tklgICY+14UzNT7D2l+FDP
-         kd/C58CeMvLCk8v3OokScSeoWleedGL2pCuZ4fpDA/Jq1KQDZNs4yJvNeRq2uK5ohQfv
-         x4JYv71VyLAWcCv/E2Q2Aj30ajf43xjO6xVU0l7ZmWZuCFV8Mab02uK+G5KxWVWLxWab
-         pz3zN5y+pykDMGv075WbOy8vrLxMM7b81TO1CCsC2Cjxlj6PBZkA0QWRSCsNtnZJpAjf
-         OGONEqGxWA91wAD7DPtau1HbAdjZEXl/4fttRzwneXCGvy6jRrNp4vyt+nqKNTR9wue/
-         xJKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qn1e9UAfXz5aNABeJOAzysJEyHPbsjfCU7HdITnS84k=;
-        b=aAul12IlDTKVr/LaZj+QIq2Ham7bwpEoGMs6NcHgs4Vk5H/8aPa2iei2evgSDmZObc
-         u0Y5WenPFZ9bqn9vWCllS5XnSSN1TTxCl3IjTsAC3PEKyrx75NTTZgc+Px23EM+WukXO
-         APdxdcu4kx8AWgLgiIcDXoXlhgBMKTPhl4Pervzo+OY2SkIePETcTCTNmQyiZCbg+TRg
-         TDy0cGdnslCZfKJubnOwqxsA6adjwDeRuPeLw3vXbzuwdMSwfhpyqImflVfjpTN9Fd3A
-         49BxRYoHCf74CsXL+OKdyBmU14touLue+DDK0SboYQmUQQeBGzVoN1txLhg5PGo5glqZ
-         Tayw==
-X-Gm-Message-State: AOAM531/ssu6sckTCEJP3W2Rewc0rCEfPEWPra24NNSjcuDwKZoK+amm
-        i5JXnFdXqi+KXdI2sVSsL1IiTrJqWBmLI+2MQgFc5g==
-X-Google-Smtp-Source: ABdhPJwud0+3E/Q29u9oy+kzSCNdY14guBqBmA0Hqpt4c+PmhIEHReOxdmFrIBDqbHdvMdQZbHcRxllXIDLHtj3hagQ=
-X-Received: by 2002:a2e:bf14:0:b0:255:b789:576b with SMTP id
- c20-20020a2ebf14000000b00255b789576bmr3093006ljr.47.1654676659002; Wed, 08
- Jun 2022 01:24:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <000000000000bb7f1c05da29b601@google.com> <00000000000010b7d305e08837c8@google.com>
- <YpnqpMYcokTwCB6u@smile.fi.intel.com> <Ypor265BTdnmgwpM@rowland.harvard.edu>
- <YpouRmanvCQeKA3S@kroah.com> <Ypow1LRZ3Hau36ci@rowland.harvard.edu>
- <Ypoyy/stICFdHauR@kroah.com> <CACT4Y+bBWrLRwiowaWk8o4+XAtCHxxJiEQfiSkgM3BDut9atAw@mail.gmail.com>
- <20220606123839.GW2146@kadam> <CACT4Y+Y_kg1J00iBL=sMr5AP7U4RXuBizusvQG52few2NcJ6dg@mail.gmail.com>
- <YqAWpMdi4o1IQslu@casper.infradead.org> <CACT4Y+anOkc=-A5=3EBrvmu+AJ+f7CcrOfWp85hEu+CHkS3BGw@mail.gmail.com>
-In-Reply-To: <CACT4Y+anOkc=-A5=3EBrvmu+AJ+f7CcrOfWp85hEu+CHkS3BGw@mail.gmail.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Wed, 8 Jun 2022 10:24:07 +0200
-Message-ID: <CACT4Y+YM8__WOVAQcpNBNxneHCp5dv2tF7ySDpivRJ-efGNCUQ@mail.gmail.com>
-Subject: Re: [syzbot] general protection fault in __device_attach
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        syzbot <syzbot+dd3c97de244683533381@syzkaller.appspotmail.com>,
-        hdanton@sina.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rafael.j.wysocki@intel.com,
-        rafael@kernel.org, rjw@rjwysocki.net,
-        syzkaller-bugs@googlegroups.com, linux-usb@vger.kernel.org,
-        Linux-MM <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S242211AbiFHOrB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Jun 2022 10:47:01 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E76425224E;
+        Wed,  8 Jun 2022 07:46:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=Subject:Cc:To:From:Date:Message-ID:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=p3ITF8gI2GW93+lJzbbS6NFG2q6U7tMgsXybvfaCekw=; b=LkAMiHzSQ/opHdOEFeCurG9NLG
+        JO+M8wPRoXp+rjlvRp1g6p4deHSrGJRvv4d7IdwxYVZCA6fgQpHjtmLJrV4PCdmnHmGUQvAnyE2UA
+        fwHv2wTNOAIYIT2wUB43GTR5ZNwxfCy55ZYqs3Y348h+pLzkkwczLn6aebzuIqWu8dokLe6hAbrDd
+        HGdq3+b1S6vX0Rc7tglUdTJgdx3k3cOs/ctzEtERltWW/a158CACl3uvpcO8KTF7iW2z1cVJAFUAo
+        mkT6mFk7UPVkskxcPvv+XGScuTuObwFsVrFSWvKd6APK2jNtbqiwDpZU4VuGFDFHTmU5HS3u40Eee
+        GVLfhZEg==;
+Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nywwx-0066BC-3C; Wed, 08 Jun 2022 14:46:24 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5A6423005B7;
+        Wed,  8 Jun 2022 16:46:18 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
+        id 3237720C0F991; Wed,  8 Jun 2022 16:46:18 +0200 (CEST)
+Message-ID: <20220608142723.103523089@infradead.org>
+User-Agent: quilt/0.66
+Date:   Wed, 08 Jun 2022 16:27:23 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     peterz@infradead.org
+Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
+        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
+        dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
+        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
+        jiangshanlai@gmail.com, joel@joelfernandes.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org
+Subject: [PATCH 00/36] cpuidle,rcu: Cleanup the mess
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 8 Jun 2022 at 10:20, Dmitry Vyukov <dvyukov@google.com> wrote:
-> > On Tue, Jun 07, 2022 at 09:15:09AM +0200, Dmitry Vyukov wrote:
-> > > On Mon, 6 Jun 2022 at 14:39, Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > > >
-> > > > On Sat, Jun 04, 2022 at 10:32:46AM +0200, 'Dmitry Vyukov' via syzkaller-bugs wrote:
-> > > > > On Fri, 3 Jun 2022 at 18:12, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > > >
-> > > > > > But again, is this a "real and able to be triggered from userspace"
-> > > > > > problem, or just fault-injection-induced?
-> > > > >
-> > > > > Then this is something to fix in the fault injection subsystem.
-> > > > > Testing systems shouldn't be reporting false positives.
-> > > > > What allocations cannot fail in real life? Is it <=page_size?
-> > > > >
-> > > >
-> > > > Apparently in 2014, anything less than *EIGHT?!!* pages succeeded!
-> > > >
-> > > > https://lwn.net/Articles/627419/
-> > > >
-> > > > I have been on the look out since that article and never seen anyone
-> > > > mention it changing.  I think we should ignore that and say that
-> > > > anything over PAGE_SIZE can fail.  Possibly we could go smaller than
-> > > > PAGE_SIZE...
-> > >
-> > > +linux-mm for GFP expertise re what allocations cannot possibly fail
-> > > and should be excluded from fault injection.
-> > >
-> > > Interesting, thanks for the link.
-> > >
-> > > PAGE_SIZE looks like a good start. Once we have the predicate in
-> > > place, we can refine it later when/if we have more inputs.
-> > >
-> > > But I wonder about GFP flags. They definitely have some impact on allocations.
-> > > If GFP_ACCOUNT is set, all allocations can fail, right?
-> > > If GFP_DMA/DMA32 is set, allocations can fail, right? What about other zones?
-> > > If GFP_NORETRY is set, allocations can fail?
-> > > What about GFP_NOMEMALLOC and GFP_ATOMIC?
-> > > What about GFP_IO/GFP_FS/GFP_DIRECT_RECLAIM/GFP_KSWAPD_RECLAIM? At
-> > > least some of these need to be set for allocations to not fail? Which
-> > > ones?
-> > > Any other flags are required to be set/unset for allocations to not fail?
-> >
-> > I'm not the expert on page allocation, but ...
-> >
-> > I don't think GFP_ACCOUNT makes allocations fail.  It might make reclaim
-> > happen from within that cgroup, and it might cause an OOM kill for
-> > something in that cgroup.  But I don't think it makes a (low order)
-> > allocation more likely to fail.
->
-> Interesting.
-> I was thinking of some malicious specifically crafted configurations
-> with very low limit and particular pattern of allocations. Also what
-> if there is just 1 process (current)? Is it possible to kill and
-> reclaim the current process when a thread is stuck in the middle of
-> the kernel on a kmalloc?
-> Also I see e.g.:
->         Tasks with the OOM protection (oom_score_adj set to -1000)
->         are treated as an exception and are never killed.
->
-> I am not an expert on this either, but I think it may be hard to fight
-> with a specifically crafted attack.
->
->
-> > There's usually less memory avilable in DMA/DMA32 zones, but we have
-> > so few allocations from those zones, I question the utility of focusing
-> > testing on those allocations.
-> >
-> > GFP_ATOMIC allows access to emergency pools, so I would say _less_ likely
-> > to fail.  KSWAPD_RECLAIM has no effect on whether _this_ allocation
-> > succeeds or fails; it kicks kswapd to do reclaim, rather than doing
-> > reclaim directly.  DIRECT_RECLAIM definitely makes allocations more likely
-> > to succeed.  GFP_FS allows (direct) reclaim to happen from filesystems.
-> > GFP_IO allows IO to start (ie writeback can start) in order to clean
-> > dirty memory.
-> >
-> > Anyway, I hope somebody who knows the page allocator better than I do
-> > can say smarter things than this.  Even better if they can put it into
-> > Documentation/ somewhere ;-)
->
-> Even better to put this into code as a predicate function that fault
-> injection will use. It will also serve as precise up-to-date
-> documentation.
+Hi All! (omg so many)
 
-Also at the end of kmalloc as:
-WARN_ON(!ret && !cant_fail(size, gfp));
-!
+These here few patches mostly clear out the utter mess that is cpuidle vs rcuidle.
 
-> > https://www.kernel.org/doc/html/latest/core-api/memory-allocation.html
-> > exists but isn't quite enough to answer this question.
+At the end of the ride there's only 2 real RCU_NONIDLE() users left
+
+  arch/arm64/kernel/suspend.c:            RCU_NONIDLE(__cpu_suspend_exit());
+  drivers/perf/arm_pmu.c:                 RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
+  kernel/cfi.c:   RCU_NONIDLE({
+
+(the CFI one is likely dead in the kCFI rewrite) and there's only a hand full
+of trace_.*_rcuidle() left:
+
+  kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+  kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+  kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, caller_addr);
+  kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, caller_addr);
+  kernel/trace/trace_preemptirq.c:                trace_preempt_enable_rcuidle(a0, a1);
+  kernel/trace/trace_preemptirq.c:                trace_preempt_disable_rcuidle(a0, a1);
+
+All of them are in 'deprecated' code that is unused for GENERIC_ENTRY.
+
+I've touched a _lot_ of code that I can't test and likely broken some of it :/
+In particular, the whole ARM cpuidle stuff was quite involved with OMAP being
+the absolute 'winner'.
+
+I'm hoping Mark can help me sort the remaining ARM64 bits as he moves that to
+GENERIC_ENTRY. I've also got a note that says ARM64 can probably do a WFE based
+idle state and employ TIF_POLLING_NRFLAG to avoid some IPIs.
+
+---
+ arch/alpha/kernel/process.c          |    1 
+ arch/alpha/kernel/vmlinux.lds.S      |    1 
+ arch/arc/kernel/process.c            |    3 +
+ arch/arc/kernel/vmlinux.lds.S        |    1 
+ arch/arm/include/asm/vmlinux.lds.h   |    1 
+ arch/arm/kernel/process.c            |    1 
+ arch/arm/kernel/smp.c                |    6 +--
+ arch/arm/mach-gemini/board-dt.c      |    3 +
+ arch/arm/mach-imx/cpuidle-imx6q.c    |    4 +-
+ arch/arm/mach-imx/cpuidle-imx6sx.c   |    5 ++
+ arch/arm/mach-omap2/cpuidle34xx.c    |   16 ++++++++
+ arch/arm/mach-omap2/cpuidle44xx.c    |   29 +++++++++------
+ arch/arm/mach-omap2/pm.h             |    2 -
+ arch/arm/mach-omap2/pm34xx.c         |   14 +++++--
+ arch/arm/mach-omap2/powerdomain.c    |   10 ++---
+ arch/arm64/kernel/idle.c             |    1 
+ arch/arm64/kernel/smp.c              |    4 +-
+ arch/arm64/kernel/vmlinux.lds.S      |    1 
+ arch/csky/kernel/process.c           |    1 
+ arch/csky/kernel/smp.c               |    2 -
+ arch/csky/kernel/vmlinux.lds.S       |    1 
+ arch/hexagon/kernel/process.c        |    1 
+ arch/hexagon/kernel/vmlinux.lds.S    |    1 
+ arch/ia64/kernel/process.c           |    1 
+ arch/ia64/kernel/vmlinux.lds.S       |    1 
+ arch/loongarch/kernel/vmlinux.lds.S  |    1 
+ arch/m68k/kernel/vmlinux-nommu.lds   |    1 
+ arch/m68k/kernel/vmlinux-std.lds     |    1 
+ arch/m68k/kernel/vmlinux-sun3.lds    |    1 
+ arch/microblaze/kernel/process.c     |    1 
+ arch/microblaze/kernel/vmlinux.lds.S |    1 
+ arch/mips/kernel/idle.c              |    8 +---
+ arch/mips/kernel/vmlinux.lds.S       |    1 
+ arch/nios2/kernel/process.c          |    1 
+ arch/nios2/kernel/vmlinux.lds.S      |    1 
+ arch/openrisc/kernel/process.c       |    1 
+ arch/openrisc/kernel/vmlinux.lds.S   |    1 
+ arch/parisc/kernel/process.c         |    2 -
+ arch/parisc/kernel/vmlinux.lds.S     |    1 
+ arch/powerpc/kernel/idle.c           |    5 +-
+ arch/powerpc/kernel/vmlinux.lds.S    |    1 
+ arch/riscv/kernel/process.c          |    1 
+ arch/riscv/kernel/vmlinux-xip.lds.S  |    1 
+ arch/riscv/kernel/vmlinux.lds.S      |    1 
+ arch/s390/kernel/idle.c              |    1 
+ arch/s390/kernel/vmlinux.lds.S       |    1 
+ arch/sh/kernel/idle.c                |    1 
+ arch/sh/kernel/vmlinux.lds.S         |    1 
+ arch/sparc/kernel/leon_pmc.c         |    4 ++
+ arch/sparc/kernel/process_32.c       |    1 
+ arch/sparc/kernel/process_64.c       |    3 +
+ arch/sparc/kernel/vmlinux.lds.S      |    1 
+ arch/um/kernel/dyn.lds.S             |    1 
+ arch/um/kernel/process.c             |    1 
+ arch/um/kernel/uml.lds.S             |    1 
+ arch/x86/coco/tdx/tdcall.S           |   15 +-------
+ arch/x86/coco/tdx/tdx.c              |   25 +++----------
+ arch/x86/events/amd/brs.c            |   13 ++-----
+ arch/x86/include/asm/irqflags.h      |   11 ++---
+ arch/x86/include/asm/mwait.h         |   14 +++----
+ arch/x86/include/asm/nospec-branch.h |    2 -
+ arch/x86/include/asm/paravirt.h      |    6 ++-
+ arch/x86/include/asm/perf_event.h    |    2 -
+ arch/x86/include/asm/shared/io.h     |    4 +-
+ arch/x86/include/asm/shared/tdx.h    |    1 
+ arch/x86/include/asm/special_insns.h |    6 +--
+ arch/x86/include/asm/xen/hypercall.h |    2 -
+ arch/x86/kernel/paravirt.c           |   14 ++++++-
+ arch/x86/kernel/process.c            |   65 +++++++++++++++++------------------
+ arch/x86/kernel/vmlinux.lds.S        |    1 
+ arch/x86/xen/enlighten_pv.c          |    2 -
+ arch/x86/xen/irq.c                   |    2 -
+ arch/xtensa/kernel/process.c         |    1 
+ arch/xtensa/kernel/vmlinux.lds.S     |    1 
+ drivers/acpi/processor_idle.c        |   46 ++++++++++++++----------
+ drivers/base/power/runtime.c         |   24 ++++++------
+ drivers/clk/clk.c                    |    8 ++--
+ drivers/cpuidle/cpuidle-arm.c        |    1 
+ drivers/cpuidle/cpuidle-big_little.c |    8 +++-
+ drivers/cpuidle/cpuidle-mvebu-v7.c   |    7 +++
+ drivers/cpuidle/cpuidle-psci.c       |   10 +++--
+ drivers/cpuidle/cpuidle-qcom-spm.c   |    1 
+ drivers/cpuidle/cpuidle-riscv-sbi.c  |   10 +++--
+ drivers/cpuidle/cpuidle-tegra.c      |   21 ++++++++---
+ drivers/cpuidle/cpuidle.c            |   21 +++++------
+ drivers/cpuidle/dt_idle_states.c     |    2 -
+ drivers/cpuidle/poll_state.c         |   10 ++++-
+ drivers/idle/intel_idle.c            |   29 ++++++++++++---
+ include/asm-generic/vmlinux.lds.h    |    9 +---
+ include/linux/compiler_types.h       |    8 +++-
+ include/linux/cpu.h                  |    3 -
+ include/linux/cpuidle.h              |   33 +++++++++++++++++
+ include/linux/cpumask.h              |    4 +-
+ include/linux/sched/idle.h           |   40 ++++++++++++++++-----
+ include/linux/thread_info.h          |   18 +++++++++
+ include/linux/tracepoint.h           |   13 ++++++-
+ kernel/cpu_pm.c                      |    9 ----
+ kernel/printk/printk.c               |    2 -
+ kernel/rcu/tree.c                    |    9 +---
+ kernel/sched/idle.c                  |   47 +++++++------------------
+ kernel/time/tick-broadcast-hrtimer.c |   29 ++++++---------
+ kernel/time/tick-broadcast.c         |    6 ++-
+ kernel/trace/trace.c                 |    3 +
+ tools/objtool/check.c                |   15 +++++++-
+ 104 files changed, 449 insertions(+), 342 deletions(-)
+
