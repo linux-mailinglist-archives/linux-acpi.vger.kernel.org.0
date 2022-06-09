@@ -2,159 +2,261 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 291C8544878
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 12:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77971544958
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 12:41:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235314AbiFIKOv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 06:14:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54690 "EHLO
+        id S243308AbiFIKlj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 06:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237540AbiFIKOt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 06:14:49 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1ACA1758D;
-        Thu,  9 Jun 2022 03:14:48 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 850FF1FD9E;
-        Thu,  9 Jun 2022 10:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1654769687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=DrcvBEFljM5p6TtbSeEidSTZ/fg57f/9Kkfw39rL09Y=;
-        b=DMcdvAORR690fi8pr+U8fk3+hyZsj7Tt5x9qwl047KjZChmxVjUcAfS5VoE+jvBI94jRA8
-        x1qWl9NmnYPcL1/wsN/jGmXJEl3+KOTwVVBHmebd33G6ciWPS6jZdzz9VOlvQCAFmLQ8Zj
-        Z7XOIERpCYK8sshW0SQuT7wCuIg0KcE=
-Received: from suse.cz (unknown [10.100.208.146])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 311FB2C141;
-        Thu,  9 Jun 2022 10:14:40 +0000 (UTC)
-Date:   Thu, 9 Jun 2022 12:14:42 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@kernel.org,
-        linux@armlinux.org.uk, ulli.kroll@googlemail.com,
-        linus.walleij@linaro.org, shawnguo@kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
-        khilman@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
-        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
-        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
-        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
-        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
-        gregkh@linuxfoundation.org, mturquette@baylibre.com,
-        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, rostedt@goodmis.org,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
-        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
-        jiangshanlai@gmail.com, joel@joelfernandes.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
-Message-ID: <YqHIEthhhi5e+Mtb@alley>
-References: <20220608142723.103523089@infradead.org>
- <20220608144517.444659212@infradead.org>
+        with ESMTP id S243331AbiFIKle (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 06:41:34 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AAC26D262
+        for <linux-acpi@vger.kernel.org>; Thu,  9 Jun 2022 03:41:16 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id k19so31798044wrd.8
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Jun 2022 03:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:references:date:in-reply-to:message-id
+         :user-agent:mime-version;
+        bh=s7yDuLsDiBHVsfnrsYNovXy2Bt1H7fS8uyn7ZkgnngU=;
+        b=eDFIq80gPXAMihgJnguV6SYMpluR4TOt/h8hslaOGZ2Q67BrpP7JDYL3w0pqImv5hK
+         ZG15Wt+i//lwZOh2a0wx9h6DZNyfSGFWutabFLjjYnBgD6VkzzrSbo7G/gfin92KSJdb
+         iX/CT3fqT7bd4fgyo3wq0R/vNgsBYxmq8DIOFCm/knmAAf9mwwjnELbf2Kn30/U+zQHk
+         GrB3FDhpdgUv+b5/3IG/HSkwtw3jqrKU44sTSQxTkDV2N8snhF6lPUHIwEfGIixPW7sH
+         1qptmVeN+NxPeIuW8yTQVSaCx3yW8tnDFt9+hmArzooYmyRhgT3ZCxzNiKdZFPYgSTQH
+         wgjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version;
+        bh=s7yDuLsDiBHVsfnrsYNovXy2Bt1H7fS8uyn7ZkgnngU=;
+        b=dJZDwrXe2lP1XRqunIDlhvA4iE3yXMtV1KBtnfjOkDJNefF0Dqe7zIQMA1kyZVCZuG
+         M5p9SQxUFxwcU2J93VEa/XyKQOn/AXgOt4+gob/D2VjK8iAEYagK8N5yH7YcuoRXghyV
+         MNZXKMqVp+t9shW/HADkJQIDgFJANAEKVhRalVzSr1lnHj1OtiD2SLHVy7L+woycRIJu
+         4v9jE/5zxebpTF8iKF5Y+3qv2t52GRhL03JvJcsTuBRcr/yyZQ0oQa1svOH8Z7h11CLp
+         Eq6UdfTeVbLFWxKaRHTvqTE+zRqrVX6dlorwxIl8bRa1ccXGfX303EM2DfzSgA38ya2o
+         EeHw==
+X-Gm-Message-State: AOAM530eFZ1HGKab8fUdW+KmBVow1NNUHMkRYX7CRn/pHT2aJo7jYYPJ
+        xFZxLSBOIBh2KG4T9LdaedlRVQ==
+X-Google-Smtp-Source: ABdhPJySkP/Gcqw9Ot76PpqONFdVm06caK34GcJ5EwjfLC4LyV5eeFx3jelqsuqWhs4HRuUa75mquA==
+X-Received: by 2002:adf:f5d0:0:b0:216:5680:b41e with SMTP id k16-20020adff5d0000000b002165680b41emr26289690wrp.216.1654771275138;
+        Thu, 09 Jun 2022 03:41:15 -0700 (PDT)
+Received: from localhost ([109.180.234.132])
+        by smtp.gmail.com with ESMTPSA id bg20-20020a05600c3c9400b0039c15861001sm25820904wmb.21.2022.06.09.03.41.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jun 2022 03:41:14 -0700 (PDT)
+From:   Punit Agrawal <punit.agrawal@bytedance.com>
+To:     Riwen Lu <luriwen@hotmail.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devel@acpica.org, Riwen Lu <luriwen@kylinos.com>
+Subject: Re: [PATCH v1] ACPI: Split out processor thermal register from ACPI
+ PSS
+References: <TYWP286MB26019A5110491AC2C0157082B1A39@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+Date:   Thu, 09 Jun 2022 11:41:13 +0100
+In-Reply-To: <TYWP286MB26019A5110491AC2C0157082B1A39@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+        (Riwen Lu's message of "Sun, 5 Jun 2022 15:58:14 +0800")
+Message-ID: <87h74ui0fq.fsf@stealth>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220608144517.444659212@infradead.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Sending again. The previous attempt was rejected by several
-recipients. It was caused by a mail server changes on my side.
+Hi Riwen,
 
-I am sorry for spamming those who got the 1st mail already.
+Riwen Lu <luriwen@hotmail.com> writes:
 
-On Wed 2022-06-08 16:27:47, Peter Zijlstra wrote:
-> The problem, per commit fc98c3c8c9dc ("printk: use rcuidle console
-> tracepoint"), was printk usage from the cpuidle path where RCU was
-> already disabled.
-> 
-> Per the patches earlier in this series, this is no longer the case.
+> From: Riwen Lu <luriwen@kylinos.com>
+>
+> In prior commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
+> driver"), move processor thermal register to acpi_pss_perf_init(), and it
+> won't excute if ACPI_CPU_FREQ_PSS not enabled.
+>
+> Since ARM64 support P states by CPPC, it should also support processor
+> passive cooling. So split out the processor thermal cooling register from
+> ACPI PSS.
 
-My understanding is that this series reduces a lot the amount
-of code called with RCU disabled. As a result the particular printk()
-call mentioned by commit fc98c3c8c9dc ("printk: use rcuidle console
-tracepoint") is called with RCU enabled now. Hence this particular
-problem is fixed better way now.
+The commit log is a bit difficult to understand - maybe reword as -
 
-But is this true in general?
-Does this "prevent" calling printk() a safe way in code with
-RCU disabled?
+    Commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
+    driver"), moves processor thermal registration to acpi_pss_perf_init(),
+    which doesn't get executed if ACPI_CPU_FREQ_PSS is not enabled.
 
-I am not sure if anyone cares. printk() is the best effort
-functionality because of the consoles code anyway. Also I wonder
-if anyone uses this trace_console().
+    As ARM64 supports P-states using CPPC, it should be possible to also
+    support processor passive cooling even if PSS is not enabled. Split
+    out the processor thermal cooling register from ACPI PSS to support
+    this.
 
-Therefore if this patch allows to remove some tricky tracing
-code then it might be worth it. But if trace_console_rcuidle()
-variant is still going to be available then I would keep using it.
-
-Best Regards,
-Petr
-
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Riwen Lu <luriwen@kylinos.com>
 > ---
->  kernel/printk/printk.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> --- a/kernel/printk/printk.c
-> +++ b/kernel/printk/printk.c
-> @@ -2238,7 +2238,7 @@ static u16 printk_sprint(char *text, u16
->  		}
->  	}
+
+[...]
+
+> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
+> index 368a9edefd0c..c84738a24eca 100644
+> --- a/drivers/acpi/processor_driver.c
+> +++ b/drivers/acpi/processor_driver.c
+> @@ -142,8 +142,6 @@ static int acpi_soft_cpu_dead(unsigned int cpu)
+>  static int acpi_pss_perf_init(struct acpi_processor *pr,
+>  		struct acpi_device *device)
+>  {
+> -	int result = 0;
+> -
+>  	acpi_processor_ppc_has_changed(pr, 0);
 >  
-> -	trace_console_rcuidle(text, text_len);
-> +	trace_console(text, text_len);
+>  	acpi_processor_get_throttling_info(pr);
+> @@ -151,53 +149,7 @@ static int acpi_pss_perf_init(struct acpi_processor *pr,
+>  	if (pr->flags.throttling)
+>  		pr->flags.limit = 1;
 >  
->  	return text_len;
+> -	pr->cdev = thermal_cooling_device_register("Processor", device,
+> -						   &processor_cooling_ops);
+> -	if (IS_ERR(pr->cdev)) {
+> -		result = PTR_ERR(pr->cdev);
+> -		return result;
+> -	}
+> -
+> -	dev_dbg(&device->dev, "registered as cooling_device%d\n",
+> -		pr->cdev->id);
+> -
+> -	result = sysfs_create_link(&device->dev.kobj,
+> -				   &pr->cdev->device.kobj,
+> -				   "thermal_cooling");
+> -	if (result) {
+> -		dev_err(&device->dev,
+> -			"Failed to create sysfs link 'thermal_cooling'\n");
+> -		goto err_thermal_unregister;
+> -	}
+> -
+> -	result = sysfs_create_link(&pr->cdev->device.kobj,
+> -				   &device->dev.kobj,
+> -				   "device");
+> -	if (result) {
+> -		dev_err(&pr->cdev->device,
+> -			"Failed to create sysfs link 'device'\n");
+> -		goto err_remove_sysfs_thermal;
+> -	}
+> -
+>  	return 0;
+> -
+> - err_remove_sysfs_thermal:
+> -	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
+> - err_thermal_unregister:
+> -	thermal_cooling_device_unregister(pr->cdev);
+> -
+> -	return result;
+> -}
+> -
+> -static void acpi_pss_perf_exit(struct acpi_processor *pr,
+> -		struct acpi_device *device)
+> -{
+> -	if (pr->cdev) {
+> -		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
+> -		sysfs_remove_link(&pr->cdev->device.kobj, "device");
+> -		thermal_cooling_device_unregister(pr->cdev);
+> -		pr->cdev = NULL;
+> -	}
 >  }
-> 
+>  #else
+>  static inline int acpi_pss_perf_init(struct acpi_processor *pr,
+> @@ -205,9 +157,6 @@ static inline int acpi_pss_perf_init(struct acpi_processor *pr,
+>  {
+>  	return 0;
+>  }
+> -
+> -static inline void acpi_pss_perf_exit(struct acpi_processor *pr,
+> -		struct acpi_device *device) {}
+>  #endif /* CONFIG_ACPI_CPU_FREQ_PSS */
+>  
+>  static int __acpi_processor_start(struct acpi_device *device)
+> @@ -229,9 +178,35 @@ static int __acpi_processor_start(struct acpi_device *device)
+>  	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
+>  		acpi_processor_power_init(pr);
+>  
+> -	result = acpi_pss_perf_init(pr, device);
+> -	if (result)
+> +	acpi_pss_perf_init(pr, device);
+
+The return value of acpi_pss_perf_init() isn't used anymore. Please also
+update the function signature to void and drop the redundant return.
+
+> +
+> +	pr->cdev = thermal_cooling_device_register("Processor", device,
+> +						   &processor_cooling_ops);
+> +	if (IS_ERR(pr->cdev)) {
+> +		result = PTR_ERR(pr->cdev);
+>  		goto err_power_exit;
+> +	}
+> +
+> +	dev_dbg(&device->dev, "registered as cooling_device%d\n",
+> +		pr->cdev->id);
+> +
+> +	result = sysfs_create_link(&device->dev.kobj,
+> +				   &pr->cdev->device.kobj,
+> +				   "thermal_cooling");
+> +	if (result) {
+> +		dev_err(&device->dev,
+> +			"Failed to create sysfs link 'thermal_cooling'\n");
+> +		goto err_thermal_unregister;
+> +	}
+> +
+> +	result = sysfs_create_link(&pr->cdev->device.kobj,
+>> +				   &device->dev.kobj,
+> +				   "device");
+> +	if (result) {
+> +		dev_err(&pr->cdev->device,
+> +			"Failed to create sysfs link 'device'\n");
+> +		goto err_remove_sysfs_thermal;
+> +	}
+
+Instead of copying the block back here, it would be better to move it
+into a separate function in processor_thermal.c that can be called
+here.
+
+>  
+>  	status = acpi_install_notify_handler(device->handle, ACPI_DEVICE_NOTIFY,
+>  					     acpi_processor_notify, device);
+> @@ -239,8 +214,11 @@ static int __acpi_processor_start(struct acpi_device *device)
+>  		return 0;
+>  
+>  	result = -ENODEV;
+> -	acpi_pss_perf_exit(pr, device);
+> -
+> +	sysfs_remove_link(&pr->cdev->device.kobj, "device");
+> +err_remove_sysfs_thermal:
+> +	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
+> +err_thermal_unregister:
+> +	thermal_cooling_device_unregister(pr->cdev);
+>  err_power_exit:
+>  	acpi_processor_power_exit(pr);
+>  	return result;
+> @@ -277,10 +255,15 @@ static int acpi_processor_stop(struct device *dev)
+>  		return 0;
+>  	acpi_processor_power_exit(pr);
+>  
+> -	acpi_pss_perf_exit(pr, device);
+> -
+>  	acpi_cppc_processor_exit(pr);
+>  
+> +	if (pr->cdev) {
+> +		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
+> +		sysfs_remove_link(&pr->cdev->device.kobj, "device");
+> +		thermal_cooling_device_unregister(pr->cdev);
+> +		pr->cdev = NULL;
+> +	}
+> +
+
+Similarly, the removal can also be moved to a function in processor_thermal.c.
+
+Thoughts?
+
+[...]
