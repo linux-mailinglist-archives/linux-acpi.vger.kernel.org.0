@@ -2,60 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A9C6545311
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 19:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43743545441
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 20:38:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238744AbiFIRfx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 13:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52926 "EHLO
+        id S233065AbiFISi5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 14:38:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232387AbiFIRfx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 13:35:53 -0400
+        with ESMTP id S233030AbiFISiz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 14:38:55 -0400
 Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426B7169E2B;
-        Thu,  9 Jun 2022 10:35:52 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id p13so42956978ybm.1;
-        Thu, 09 Jun 2022 10:35:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7793C703F9
+        for <linux-acpi@vger.kernel.org>; Thu,  9 Jun 2022 11:38:55 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id y188so13757783ybe.11
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Jun 2022 11:38:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=VC+T5gNopDGm2JXb4Q0gD1ESudpir+AKQBEND4sHjLs=;
-        b=430MJSkaxs7KMOw4QhH8X2FHZuBzUIbs704MKdJjhDzvZXtt04U421Ttkq6Hjvf6Ns
-         ZcF9gFlthCSGBRvWEWbVopNf5xItqCs4ZFbIxD8N/GpCwEQ/eMZ/SeJJgwyjjwWwGr4u
-         aaH7ZmKgP0aZwEtPO8VYYEz+rI9AuFkm1PNP4TqoDQlyihLB1gnqBhqJXc7X2JpopANI
-         ZSg+30MckJsBgE5vBaB0+4WuV5mXVr5TopNwwTSRm/gzuqPd/2o4fZ/mvWkt6dpF1X7w
-         FeQNHBIZ+MRUopoaL3Gc1yock+I8UqN6hHHzwO2yqtsattw9NfTcxAT+gZs65Z0NeB0s
-         nJlw==
-X-Gm-Message-State: AOAM532xGFYOESj0mNy2eEZmFXeQqG4w5TeRx1NKAjMqVva2zjl++kwf
-        GgZ6aj1czNZDXvPRE17OwzwHb+aSp8ZE686CUx0Rtpzq
-X-Google-Smtp-Source: ABdhPJyVIGpmxye5bnwhynEG24c16C312gNtzaFfAseNsDXbDB5re+boNDhXJ5I+yEEdQCOMEXBzOFI0n7W06mBDIAE=
-X-Received: by 2002:a25:d748:0:b0:65c:6b00:55af with SMTP id
- o69-20020a25d748000000b0065c6b0055afmr39672546ybg.365.1654796151473; Thu, 09
- Jun 2022 10:35:51 -0700 (PDT)
+        bh=2K8VGsodomKXKKxX7r0t2IzDV1/XigAAo+oNDkBiYgQ=;
+        b=mUS5WgH43ltQDAN2xJR9moWFy9UG6VDt5JeGcKTuTTSQjiINn6ob4/4Cvt3pLwo/qg
+         NNbqaP4Whcnpudvb4bScSYIcETjoMlKv8+xbQ660V6rr38EnV1ZsAGtc4ndXCD3LiHpv
+         ydqfqGEhGbbCvOMdxIuHLXjmzjKndP8LQuM4h0VFpIYHIVNEJ++bdrCv0YtaCFtHf/C3
+         KkxcoDHa8ACQ/BcdZbXQhP4MTtS1brl86Wekekb1ujlp58lq345abFyxNVbF9b+3LKk5
+         UlWW82TG2brgo7BQXlZqQc8KKLmOpJh9ubYRx2ivZL5R6WQl3c0fZ3Ipub8sBZ1RZjSx
+         N9HA==
+X-Gm-Message-State: AOAM530gnn0332piebSFzthT8MTF4a9SRp+QTVvyXgCnQf420c4oPNKn
+        dOzWYybl8czoJ3+igv469RN/s/ah9BARCcZpNe4=
+X-Google-Smtp-Source: ABdhPJz3gQVCgNRUku6BtiMY1w/wk+Kdo3gPxjoGWKDbCbj2O5/JWUJ8Q7tImiM42gGdrMM/W1qcJYH0FpNKr44dtt4=
+X-Received: by 2002:a25:d98b:0:b0:65c:9dc9:7a8f with SMTP id
+ q133-20020a25d98b000000b0065c9dc97a8fmr39802782ybg.622.1654799934735; Thu, 09
+ Jun 2022 11:38:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <1843211.tdWV9SEqCh@kreacher> <5296779.Sb9uPGUboI@kreacher>
- <63d7f3ed-b5a9-c869-5d25-a33a1d4e63c8@linux.intel.com> <CAJZ5v0i7xtjrEOXgKiWP5St8OZoiZ4qq+gL62BFrmv-qpeaG_w@mail.gmail.com>
- <7652ddab-53a5-ac8e-33f5-d25527acb1a6@linux.intel.com>
-In-Reply-To: <7652ddab-53a5-ac8e-33f5-d25527acb1a6@linux.intel.com>
+References: <20220525130123.767410-1-sakari.ailus@linux.intel.com>
+In-Reply-To: <20220525130123.767410-1-sakari.ailus@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 9 Jun 2022 19:35:40 +0200
-Message-ID: <CAJZ5v0jR1_tO_t90UKQFjYfyE+vOoToJSMCfZ8y37voaYO=wJQ@mail.gmail.com>
-Subject: Re: [PATCH v1 14/16] soundwire: Use acpi_dev_for_each_child()
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>, Linux PM <linux-pm@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>
+Date:   Thu, 9 Jun 2022 20:38:43 +0200
+Message-ID: <CAJZ5v0i6sSp-R20ShB6ac0BqzxT9kB+hae8GB=c+m0i2V-i8wQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] ACPI: Buffer property and reference as string support
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -67,38 +55,48 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 9, 2022 at 6:21 PM Pierre-Louis Bossart
-<pierre-louis.bossart@linux.intel.com> wrote:
+On Wed, May 25, 2022 at 3:01 PM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
 >
+> Hello everyone,
 >
-> >> Shouldn't the return of sdw_acpi_find_one() be trapped, e.g. with
-> >>
-> >> return acpi_dev_for_each_child(parent, sdw_acpi_find_one, bus);
-> >
-> > Sure, I'll do that.  Thanks!
+> This set adds support for _DSD buffer properties (specified by DSD Guide
+> <URL:https://github.com/UEFI/DSD-Guide/blob/main/dsd-guide.md>) as well as
+> support for references as strings. Reference property type was previously
+> supported for device objects only, whereas string references enable
+> referencing also _DSD sub-node objects --- also included in the set.
 >
-> I also added this EXPORT_SYMBOL to work-around link errors, not sure if
-> this is in your tree already?
+> The ACPICA patch has been submitted to upstream but not merged yet.
+>
+> This set currently prepares for data node string reference support and
+> does not add it anymore.
+>
+> since v2:
+>
+> - Use C99 _Generic() in patch unifying reading integer arrays.
+>
+> since v1:
+>
+> - Drop the ACPICA, data node child list initialisation and data node
+>   string reference patches.
+>
+> Sakari Ailus (8):
+>   ACPI: property: Return type of acpi_add_nondev_subnodes() should be
+>     bool
+>   ACPI: property: Tie data nodes to acpi handles
+>   ACPI: property: Use acpi_object_type consistently in property ref
+>     parsing
+>   ACPI: property: Move property ref argument parsing into a new function
+>   ACPI: property: Switch node property referencing from ifs to a switch
+>   ACPI: property: Unify integer value reading functions
+>   ACPI: property: Add support for parsing buffer property UUID
+>   ACPI: property: Read buffer properties as integers
+>
+>  drivers/acpi/property.c | 462 +++++++++++++++++++++++++++-------------
+>  include/acpi/acpi_bus.h |   3 +-
+>  include/linux/acpi.h    |   2 +-
+>  3 files changed, 315 insertions(+), 152 deletions(-)
+>
+> --
 
-One of the previous patches in the series is adding the export.
-
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
->
-> index 86fa61a21826c..ade6259c19af6 100644
->
-> --- a/drivers/acpi/bus.c
->
-> +++ b/drivers/acpi/bus.c
->
-> @@ -1113,6 +1113,7 @@ int acpi_dev_for_each_child(struct acpi_device *adev,
->
->
->
->         return device_for_each_child(&adev->dev, &adwc,
-> acpi_dev_for_one_check);
->
->  }
->
-> +EXPORT_SYMBOL_GPL(acpi_dev_for_each_child);
->
->
+FYI, I'm expecting a v4 of this series to be sent.
