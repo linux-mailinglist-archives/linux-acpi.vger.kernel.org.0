@@ -2,39 +2,26 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14D61543E8B
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jun 2022 23:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E6525444E6
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 09:39:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233999AbiFHVZ0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Jun 2022 17:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
+        id S236851AbiFIHj2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 03:39:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234294AbiFHVZY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Jun 2022 17:25:24 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A3F19799D;
-        Wed,  8 Jun 2022 14:25:20 -0700 (PDT)
-Received: from mail-yb1-f173.google.com ([209.85.219.173]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MNc1T-1oNa4K0QrT-00P2e5; Wed, 08 Jun 2022 23:25:19 +0200
-Received: by mail-yb1-f173.google.com with SMTP id s39so11077928ybi.0;
-        Wed, 08 Jun 2022 14:25:16 -0700 (PDT)
-X-Gm-Message-State: AOAM533ccHmRHAtjzIENuM22dhcJwyw6Hc9WOvf6/we8Lwl3909SSkO9
-        yJ1qPPUY++2J0XerrodTaoB3zDcjNnsRmNA1OYw=
-X-Google-Smtp-Source: ABdhPJzN5kbTwiXruPcKSpnmqojFIl1cGQUBuhNCCdRneCrpSwm0deMOGKvKLmavgOJ05DHkpAoCHNV4Fm5CQu/QOU4=
-X-Received: by 2002:a0d:efc2:0:b0:2fe:d2b7:da8 with SMTP id
- y185-20020a0defc2000000b002fed2b70da8mr36982567ywe.42.1654705351589; Wed, 08
- Jun 2022 09:22:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220608142723.103523089@infradead.org> <20220608144517.188449351@infradead.org>
-In-Reply-To: <20220608144517.188449351@infradead.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 8 Jun 2022 18:22:12 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2y5+nrQFzhjrTTZe+d57Ug261J3kwLNe8Mu8i2qxtG2w@mail.gmail.com>
-Message-ID: <CAK8P3a2y5+nrQFzhjrTTZe+d57Ug261J3kwLNe8Mu8i2qxtG2w@mail.gmail.com>
-Subject: Re: [PATCH 20/36] arch/idle: Change arch_cpu_idle() IRQ behaviour
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Richard Henderson <rth@twiddle.net>,
+        with ESMTP id S237153AbiFIHj0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 03:39:26 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 361E11AF1F;
+        Thu,  9 Jun 2022 00:39:25 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 88FEF80F1;
+        Thu,  9 Jun 2022 07:34:50 +0000 (UTC)
+Date:   Thu, 9 Jun 2022 10:39:22 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
         Vineet Gupta <vgupta@kernel.org>,
@@ -46,7 +33,6 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         Sascha Hauer <kernel@pengutronix.de>,
         Fabio Estevam <festevam@gmail.com>,
         NXP Linux Team <linux-imx@nxp.com>,
-        Tony Lindgren <tony@atomide.com>,
         Kevin Hilman <khilman@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
@@ -81,7 +67,7 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
         Arnaldo Carvalho de Melo <acme@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -105,8 +91,7 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         Anup Patel <anup@brainfault.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        Yury Norov <yury.norov@gmail.com>,
+        jacob.jun.pan@linux.intel.com, Yury Norov <yury.norov@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Steven Rostedt <rostedt@goodmis.org>,
@@ -156,50 +141,50 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         linux-arm-msm <linux-arm-msm@vger.kernel.org>,
         "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
         linux-arch <linux-arch@vger.kernel.org>, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:ULl6cVPERAdL9PyvM7zONDpiWVA4ZyVCOCwcYzHyZ73ntMV0dXB
- Qnmv/scTxLAGN5u/O+hL+EvSWO+2o8nUrHr2/SapIIJB48TQzNuq7Qo4YjkkFjKlpP+8WrN
- 4s3kxn7SJ8r4HuxEedkCiCX/mZHBl+eq1ayzzhuhSO7yKbwkoJTbbR4YNjb9FqeLSzEM19Q
- Mc4EFUXFXKH6dwoj9trfQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:grSfKAphyzs=:I2pHeW7GZh5+m3dVZkq2mK
- h1vxzn78vi6v74anukEMbJA1NmbhPJsQ61amenlQ+l0eulwQnAphYlpg9L/wLMXysg2mrtIGl
- Gp6gy8nUKSm98lf1bCp1OxghGzjwMcNPmNXf5rYaGmYlJ302EfJJIkdXy8WIyogSODZwIx/bz
- 3f+Nsz1yJK25RbaEF/EZbTgAlScnruIzkAQVSYdXSD4p8hwt9yyxpxEdwpWFME0gZVyl0Madr
- CnUhu1DEnNYkWJFwfn7u8hClLiS4MEG6k3Ky2lXVWaR6SiADuD0pKXkSs2enFIUKnR+gYR0Wg
- dAGrhJOqTbTrQrgegZe1uqIvesGeKPhJompxYd4WbtuGF6eRQ34yEbu25ehPmNTRuz/E4/1qj
- bJUCwmofNaGObBLn+2Y9Hhm8AzONXvsj0IRq/m7qjUM1HW6+qOAZ6w07tpskpivABnTlBAoJR
- WGVCRozSSODlc+KobCiXeme9quMYCEj/FNJXz+OvOOk3tq2oFvCGV5W1Q8ARC9voBU+Xfy07W
- PIM4H4LdTHtBpF8FRkPrLY/V0M0nCbnMVyrgdDfMDJIt2aIL7LVsvK0v1GiSmU7WpSftyf7Bj
- 9ITI5IZa5QnwqoB5fpLA2b3ZFrZyWarhYbocWot6ttZMKakPG8BWsAGlDPmiDLIMcJsMcbXaT
- /dy88hAw+iE4MJDule9bvMH3EWaEWM1eitRY4U1FocIBhFqhIs92e2Eb27yRQvF7HJ7vm9Cwk
- JAIdAD3nS81Vjs1JQiiVSKI3+N63yI7FxXR9SIi14rGMtCP8uYH1U/2a3Vjo0x54NTLCjRYe8
- +QzdDdWQFo6qvnBiB98ReMOXm3z+vjpl1jmW9gc9BS/K/v5869ib5kHyzx2wjbkj2SN04il97
- QjAJudU8GsAAsFtr5+6CJL724hA/0VuLfc4wXv+9Q=
-X-Spam-Status: No, score=-0.3 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 33/36] cpuidle,omap3: Use WFI for omap3_pm_idle()
+Message-ID: <YqGjqgSrTRseJW6M@atomide.com>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144518.010587032@infradead.org>
+ <CAK8P3a0g-fNu9=BUECSXcNeWT7XWHQMnSXZE-XYE+5eakHxKxA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a0g-fNu9=BUECSXcNeWT7XWHQMnSXZE-XYE+5eakHxKxA@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 8, 2022 at 4:27 PM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> Current arch_cpu_idle() is called with IRQs disabled, but will return
-> with IRQs enabled.
->
-> However, the very first thing the generic code does after calling
-> arch_cpu_idle() is raw_local_irq_disable(). This means that
-> architectures that can idle with IRQs disabled end up doing a
-> pointless 'enable-disable' dance.
->
-> Therefore, push this IRQ disabling into the idle function, meaning
-> that those architectures can avoid the pointless IRQ state flipping.
->
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+* Arnd Bergmann <arnd@arndb.de> [220608 18:18]:
+> On Wed, Jun 8, 2022 at 4:27 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > arch_cpu_idle() is a very simple idle interface and exposes only a
+> > single idle state and is expected to not require RCU and not do any
+> > tracing/instrumentation.
+> >
+> > As such, omap_sram_idle() is not a valid implementation. Replace it
+> > with the simple (shallow) omap3_do_wfi() call. Leaving the more
+> > complicated idle states for the cpuidle driver.
 
-I think you now need to add the a raw_local_irq_disable(); in loongarch
-as well.
+Agreed it makes sense to limit deeper idle states to cpuidle. Hopefully
+there is some informative splat for attempting to use arch_cpu_ide()
+for deeper idle states :)
 
-       Arnd
+> I see similar code in omap2:
+> 
+> omap2_pm_idle()
+>  -> omap2_enter_full_retention()
+>      -> omap2_sram_suspend()
+> 
+> Is that code path safe to use without RCU or does it need a similar change?
+
+Seems like a similar change should be done for omap2. Then anybody who
+cares to implement a minimal cpuidle support can do so.
+
+Regards,
+
+Tony
