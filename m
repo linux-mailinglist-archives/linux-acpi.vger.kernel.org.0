@@ -2,85 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA125450FB
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C323E54510E
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343964AbiFIPhe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 11:37:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52058 "EHLO
+        id S232617AbiFIPkX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 11:40:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344529AbiFIPhd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:37:33 -0400
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F8B09CF15;
-        Thu,  9 Jun 2022 08:37:31 -0700 (PDT)
-Received: by mail-yb1-f172.google.com with SMTP id g201so14560980ybf.12;
-        Thu, 09 Jun 2022 08:37:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oP68gQ771+clRj4cFwUH0Ec4RApgtfD1Z4Jp2OZ6o3Q=;
-        b=KTZOd3Lx6qgH3bZ2+CKWKw7kX1GXH8dj0QuBGSNozzHtcZBpCHb+giK9N90t+BHW1B
-         ImPveg3UN3MFA53ux9XrJ6XTr/hx8uZTN3Nwkji6QCarMw+ENff0nqPOnMrG+QuVZnLS
-         ZcbFWKuj2PABFa4QMHcAxrhgVsy1/K6tciZlKSFUfyMTtMThnyYQponF1oDye4aB0X1K
-         uAzEBmiDcqY9hGAxDbG62Ub4L3N4v53iQq3tAeQYUZvo4XZ8PU21VVZShMx4gX7tICSQ
-         pNWM/4Fc1WcEFcrsALEnCPmlmxXteWU/DrWl7axLudmD0AtDlDYYYTD9JGruYAtI2nyY
-         VD9g==
-X-Gm-Message-State: AOAM5304EDvfEEZvLAJtKtSHIaUdr329zjXEAeMHkSEY13FGK2jjBKF9
-        dfzT8eR/6QT4pv/Ra0gvLAxMYWCGpQtADmkQ2gI=
-X-Google-Smtp-Source: ABdhPJzewuSOGAz8uuz8IRC17huvxlqga12v+Ajz4GI+XfrmsGBeAKa5h8WcMA1Xq9aH/3UoFoD/f99MKmoBn/47fYk=
-X-Received: by 2002:a5b:4a:0:b0:663:7c5b:a5ba with SMTP id e10-20020a5b004a000000b006637c5ba5bamr21326407ybp.81.1654789050580;
- Thu, 09 Jun 2022 08:37:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <1843211.tdWV9SEqCh@kreacher> <3459925.iIbC2pHGDl@kreacher> <YqIRaLdifSnEUN7H@smile.fi.intel.com>
-In-Reply-To: <YqIRaLdifSnEUN7H@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 9 Jun 2022 17:37:19 +0200
-Message-ID: <CAJZ5v0iezaNmhRUp=rm88xgp2kQqyyUn_v8szFDWuEHmSEABQg@mail.gmail.com>
-Subject: Re: [PATCH v1 05/16] USB: ACPI: Use acpi_find_child_by_adr()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
+        with ESMTP id S242772AbiFIPkW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:40:22 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2128264D8;
+        Thu,  9 Jun 2022 08:40:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654789221; x=1686325221;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C0meZMeXRVt+T0/yrWzbylwSvLRo1LFficXb2EiYhUQ=;
+  b=I5VHb1xQ1RCqZkh1YF35pX8eOFpslT4EBgXLbX+Z0RQR+aEAz4I8l9Rj
+   UD20W9wwossOOqgkYLWERVuF2ExDmlqevm5l4PN+oKQEg1L8lDvPW3zpo
+   s88U6eSdT8I8wei4AzAvcZTTuRFmOJ7a3DVR7+b+Emc3G4QQnJbpKzW2x
+   usSDy3gR20ckwestrfIafr354o69rR+NdGl628+t0E8maO+3wiQhSDunW
+   eh+Gho9jrPfsXcFaS7y+7f0N+QciTjAkAfkhxdMzVWvs1y9FUv3mDoMdF
+   qVzf/ne3RE+xuYTWCbdkYbtVioDeBDFjiHDkrJoCcQ6HweIDFsGUqj+P/
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="302692566"
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="302692566"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:40:20 -0700
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="724490262"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:40:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nzKGc-000Xz4-Dz;
+        Thu, 09 Jun 2022 18:40:14 +0300
+Date:   Thu, 9 Jun 2022 18:40:14 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
-        <linux-usb@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH v1 09/16] ACPI: video: Use acpi_dev_for_each_child()
+Message-ID: <YqIUXtyvT1mQBLJ7@smile.fi.intel.com>
+References: <1843211.tdWV9SEqCh@kreacher>
+ <22695031.6Emhk5qWAg@kreacher>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <22695031.6Emhk5qWAg@kreacher>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 9, 2022 at 5:27 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Thu, Jun 09, 2022 at 03:56:42PM +0200, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Instead of walking the list of children of an ACPI device directly
-> > in order to find the child matching a given bus address, use
-> > acpi_find_child_by_adr() for this purpose.
->
-> ...
->
-> >       if (!parent)
-> >               return NULL;
->
-> Can be removed because it's embedded in the call below, no?
+On Thu, Jun 09, 2022 at 04:03:37PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Instead of walking the list of children of an ACPI device directly,
+> use acpi_dev_for_each_child() to carry out an action for all of
+> the given ACPI device's children.
 
-Yes, it can, in analogy with the thunderbolt code.  Will update.
+...
 
-> > +     return acpi_find_child_by_adr(parent, raw);
->
-> --
+> +	return acpi_dev_for_each_child(device, acpi_video_bus_get_one_device,
+> +				       video);
+
+Perhaps one line?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
