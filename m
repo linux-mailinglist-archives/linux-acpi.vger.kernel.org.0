@@ -2,48 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 702FE545139
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6A8E54515C
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243608AbiFIPtr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 11:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50644 "EHLO
+        id S1344567AbiFIP4i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 11:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236467AbiFIPtp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:49:45 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C486FA1A;
-        Thu,  9 Jun 2022 08:49:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654789784; x=1686325784;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zVJ9nUrab+QmY+GSG1HNCt4wr+crK76F+ZOhFnD2E0w=;
-  b=JAZZ2keXx9EXVhm/xq9bfTMk21fwcVbo+56gcXyxng7u+0n2sWdwm3y9
-   LNzEv/r/5KtYy1D7Vd1rKc9xLFoqJvT7r4/4GZe8QxoNQrT0mo0cWBZ0z
-   DY3xDROgytjr9NEpeYA94OBMLi6I6v9JT9aeFR+iBA8nd3DSYi1gqsULP
-   zZywsTNu97NXEI/1bcznOStDmQfCSWA1alyXigTHuxLuEsUzyaPNjzhft
-   FL78kMUZmCL/CcZnfeiodiAJ0Eah9HsP5UH0hqBU1IIXtFGFs4U3Fg3uy
-   EZzil9iKkVovASTUnn5t6tXBzr5sWPQAji+zIQ84FOKWq2LeyRf7IKcUg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="341399797"
-X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="341399797"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:48:28 -0700
-X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="724492128"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:48:25 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nzKOU-000Y0J-OW;
-        Thu, 09 Jun 2022 18:48:22 +0300
-Date:   Thu, 9 Jun 2022 18:48:22 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        with ESMTP id S234872AbiFIP4i (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:56:38 -0400
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 929B249F14;
+        Thu,  9 Jun 2022 08:56:37 -0700 (PDT)
+Received: by mail-yb1-f176.google.com with SMTP id r82so42435079ybc.13;
+        Thu, 09 Jun 2022 08:56:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mvtAx+cq822U1n+fiU6/l7+rvDRHb6xJ+jG+fs2wJOc=;
+        b=2Of0x5SSXOoSTjaQucNrJdcx8eEEZnOX/FIr3bZ3q1T8XCj/mcqoXDspgOv9JB+oJV
+         AKjhqCWvRt0DHc+c2bw7O/GeCRmyUibIcjgfOl9WBEZUW/VNa/J63XaDj8cHXHxQp5Zx
+         vQO7G09YzaN3/S4AN8BHRpfsDymAvTHvdCcx/JKV+P5j1nkGgHIV0k9NlER3bAFYeZgH
+         N4zKPfTDK7srXyanY0sbz0ibjPh4Bl5rci4gqSnWeA3BmXDiUFY6m27HjzmM640l137U
+         bI86K2ljHv66yqAkLNduxpEQyYCI8ot6uFl4IfxhQrXAdiUKKjCRi4bZHba6FPyPzZKt
+         84Rg==
+X-Gm-Message-State: AOAM532sAv5ADLGf2TjK0I5gYjNSZbafRKMgJDPW67DUgQTcYpRxX6Mh
+        PJgdcLKN8AHhyEDMwWMecpdBplVLQuTUoCicwxE=
+X-Google-Smtp-Source: ABdhPJzd8/eT8mnbCY0ZFPYru4ILdn+tBvskGH0ryfRL7NGkvVJrG8nch90H84mRjyalwCUQJzVfJGZ3hzTNsR+Z/Nc=
+X-Received: by 2002:a25:84ca:0:b0:65c:b5a4:3d0a with SMTP id
+ x10-20020a2584ca000000b0065cb5a43d0amr40226725ybm.137.1654790196789; Thu, 09
+ Jun 2022 08:56:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <1843211.tdWV9SEqCh@kreacher> <44750652.fMDQidcC6G@kreacher> <YqIWRnwyqXZppuxN@smile.fi.intel.com>
+In-Reply-To: <YqIWRnwyqXZppuxN@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 9 Jun 2022 17:56:25 +0200
+Message-ID: <CAJZ5v0iDkvg0bK6ywfZCoBfam3hw1Qs3UarJ4MaKLK0rg++cag@mail.gmail.com>
+Subject: Re: [PATCH v1 12/16] platform/x86/thinkpad_acpi: Use acpi_dev_for_each_child()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -52,48 +51,40 @@ Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
         Mark Gross <markgross@kernel.org>,
         ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v1 12/16] platform/x86/thinkpad_acpi: Use
- acpi_dev_for_each_child()
-Message-ID: <YqIWRnwyqXZppuxN@smile.fi.intel.com>
-References: <1843211.tdWV9SEqCh@kreacher>
- <44750652.fMDQidcC6G@kreacher>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <44750652.fMDQidcC6G@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 09, 2022 at 04:09:45PM +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Instead of walking the list of children of an ACPI device directly,
-> use acpi_dev_for_each_child() to carry out an action for all of
-> the given ACPI device's children.
+On Thu, Jun 9, 2022 at 5:49 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Thu, Jun 09, 2022 at 04:09:45PM +0200, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Instead of walking the list of children of an ACPI device directly,
+> > use acpi_dev_for_each_child() to carry out an action for all of
+> > the given ACPI device's children.
+>
+> ...
+>
+> > +     rc = acpi_dev_for_each_child(device, tpacpi_evaluate_bcl, NULL);
+> > +     if (rc > 0)
+> > +             return rc;
+> >
+> > +     return 0;
+>
+> It can be simply 'return acpi_dev_for_each_child();', no?
 
-...
+It can.
 
-> +	rc = acpi_dev_for_each_child(device, tpacpi_evaluate_bcl, NULL);
-> +	if (rc > 0)
-> +		return rc;
->  
-> +	return 0;
+> AFAICS the caller is prepared for negative returns.
 
-It can be simply 'return acpi_dev_for_each_child();', no?
-
-AFAICS the caller is prepared for negative returns.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+It will not return negative though unless the ACPI tables are horribly broken.
