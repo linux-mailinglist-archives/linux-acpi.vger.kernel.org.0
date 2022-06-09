@@ -2,54 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ABEB545458
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 20:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0EB545460
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 20:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239388AbiFISpI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 14:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46258 "EHLO
+        id S233956AbiFISsm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 14:48:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239383AbiFISpH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 14:45:07 -0400
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32255BF66;
-        Thu,  9 Jun 2022 11:45:05 -0700 (PDT)
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-313a8a8b95aso16748147b3.5;
-        Thu, 09 Jun 2022 11:45:05 -0700 (PDT)
+        with ESMTP id S232459AbiFISsj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 14:48:39 -0400
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E042C06B2;
+        Thu,  9 Jun 2022 11:48:35 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-30ce6492a60so250777857b3.8;
+        Thu, 09 Jun 2022 11:48:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ketC8ANShl5T/DJexVfPFGmyQceFPvOn5sBuN5PaWWk=;
-        b=nO+cJIgvAEpEMw7IkKrm8K4sYZf+I+tRqq49YMI7zB/bNslMY1iwLKAwVed4XBhM1j
-         1ZEyvQlVexphHb9JAHEIpYsL3bUx5Ki74plVKUudpIL0RfW/HbGr88RX6bk9okAVgLQM
-         Lm0UMLcSXdFNUpNXCdOpwKN6sQ3qKk4XpptrA7kwVg31KUuuZgJoSh5xj+HSYMycvl0c
-         08x712zroJnF0fWSD/7tVv68ctyxItLft+3OeARWngoj0fGfHStOLNgBPmWCxZjHC/Wy
-         TQW0FvYku5y3xnhTwt9hXNDoRy4DIVuTXbvgJCcet4FRVunQDVTCygCseZ3lQ4UKakNc
-         VWlg==
-X-Gm-Message-State: AOAM532oJa0TrANIUzFPgJRrzybjqdYxDiZ9pFWJKF/X8abl642YEySs
-        5R8INs6Tv/6sYvZ/kYBW9GJWCJaoB/gmUdxhLBI=
-X-Google-Smtp-Source: ABdhPJzaSV2Ou7aW6ZlIz1jOmShiXqw5dvran8jtr+6HB5ThEBFSoVgxH+xh5yCwJo4tKLw6Zu2MkDdF0Rbhq7drggE=
-X-Received: by 2002:a81:1341:0:b0:30c:3a7e:65e9 with SMTP id
- 62-20020a811341000000b0030c3a7e65e9mr46370847ywt.7.1654800304445; Thu, 09 Jun
- 2022 11:45:04 -0700 (PDT)
+        bh=hfgs3zwI6Rth5egEh1uHX/PS8PM8WensrtQySUC8V5c=;
+        b=tVka1LKZE1A3lPhBCEbw30cZZXHQ9hAgFUhw/QQwGUrCWShgqyzMH+1AAqiZ96fmlA
+         NTIiXjVgwdqehcUp53MpZjopgoprCZbRIIvfldZ7a6LCbI4dx8xFdlx48suroJmwcGsf
+         8RRvuzTcJhLs4KkaGI/MHU+CDrw3HSvk/VgjZQcvwW8giZIh6IXaYg/jTcFdj1LRPw8h
+         HpK7jTxpXydQ3hyEI7elDoIBGVqg5m4V2wUAeF+AxaCluoCC8oQJbxf5Gx5a4CSPiozS
+         oKm03GJAIMvp+N78/NajoPHwYqMtTepe5MIxsQTBEpt45/2faZeZu5RBCh2lj1Q25zvi
+         OIWw==
+X-Gm-Message-State: AOAM5326W6ksESlCWem8wtlTtbr6cQiJhLIsJQLddsDnl5r6uKXHYo3w
+        56Hxr9Yk+i9VwWLGpCkgC9TV5WRFpptbz7a042s=
+X-Google-Smtp-Source: ABdhPJxVs9MnNScxd5uOSVc2Dz0VtoMVGY20F5PJ5ue0hd/35cGKtgDhnygbjd3vHJgSnIe8CXdJIwlnJ5INio2uOcU=
+X-Received: by 2002:a81:8844:0:b0:2fe:a7de:20c2 with SMTP id
+ y65-20020a818844000000b002fea7de20c2mr45512057ywf.515.1654800514786; Thu, 09
+ Jun 2022 11:48:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220607222458.1864805-1-gpiccoli@igalia.com>
-In-Reply-To: <20220607222458.1864805-1-gpiccoli@igalia.com>
+References: <20220604041253.9298-1-wangxiang@cdjrlc.com>
+In-Reply-To: <20220604041253.9298-1-wangxiang@cdjrlc.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 9 Jun 2022 20:44:53 +0200
-Message-ID: <CAJZ5v0j-g66TEizAV+j5it_uKkf+=+259yqNNkzJjUtL79=d9w@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: processor/idle: Annotate more functions to live in
- cpuidle section
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        kernel@gpiccoli.net, kernel-dev@igalia.com,
-        Len Brown <lenb@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
+Date:   Thu, 9 Jun 2022 20:48:24 +0200
+Message-ID: <CAJZ5v0iMedFgAhkX6QNgjPf9PN_+LOVUWqCCqTDnqvbbMjsGog@mail.gmail.com>
+Subject: Re: [PATCH] ACPI, APEI, Fix syntax errors in comments
+To:     Xiang wangx <wangxiang@cdjrlc.com>
+Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -61,73 +57,28 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 8, 2022 at 12:25 AM Guilherme G. Piccoli
-<gpiccoli@igalia.com> wrote:
+On Sat, Jun 4, 2022 at 6:13 AM Xiang wangx <wangxiang@cdjrlc.com> wrote:
 >
-> Commit 6727ad9e206c ("nmi_backtrace: generate one-line reports for idle cpus")
-> introduced a new text section called cpuidle; with that, we have a mechanism
-> to add idling functions in such section and skip them from nmi_backtrace
-> output, since they're useless and potentially flooding for such report.
+> Delete the redundant word 'the'.
 >
-> Happens that inlining might cause some real idle functions to end-up
-> outside of such section; this is currently the case of ACPI processor_idle
-> driver; the functions acpi_idle_enter_* do inline acpi_idle_do_entry(),
-> hence they stay out of the cpuidle section.
-> Fix that by marking such functions to also live in the cpuidle section.
->
-> Fixes: 6727ad9e206c ("nmi_backtrace: generate one-line reports for idle cpus")
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
 > ---
+>  drivers/acpi/apei/apei-base.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Hi folks, this was tested on top of v5.19-rc1, with sysrq-l.
->
-> An alternative for this approach would be to mark acpi_idle_do_entry()
-> as noinline, but I'd risk to say that's a bit worse performance-wise.
-> Let me know your preference, I can rework the patch if you prefer =)
->
-> Thanks in advance for reviews,
->
->
-> Guilherme
->
->
->  drivers/acpi/processor_idle.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 6a5572a1a80c..13200969ccf3 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -607,7 +607,7 @@ static DEFINE_RAW_SPINLOCK(c3_lock);
->   * @cx: Target state context
->   * @index: index of target state
->   */
-> -static int acpi_idle_enter_bm(struct cpuidle_driver *drv,
-> +static int __cpuidle acpi_idle_enter_bm(struct cpuidle_driver *drv,
->                                struct acpi_processor *pr,
->                                struct acpi_processor_cx *cx,
->                                int index)
-> @@ -664,7 +664,7 @@ static int acpi_idle_enter_bm(struct cpuidle_driver *drv,
->         return index;
->  }
->
-> -static int acpi_idle_enter(struct cpuidle_device *dev,
-> +static int __cpuidle acpi_idle_enter(struct cpuidle_device *dev,
->                            struct cpuidle_driver *drv, int index)
->  {
->         struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
-> @@ -693,7 +693,7 @@ static int acpi_idle_enter(struct cpuidle_device *dev,
->         return index;
->  }
->
-> -static int acpi_idle_enter_s2idle(struct cpuidle_device *dev,
-> +static int __cpuidle acpi_idle_enter_s2idle(struct cpuidle_device *dev,
->                                   struct cpuidle_driver *drv, int index)
->  {
->         struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
+> diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
+> index 33b7fbbeda82..9f49272cad39 100644
+> --- a/drivers/acpi/apei/apei-base.c
+> +++ b/drivers/acpi/apei/apei-base.c
+> @@ -3,7 +3,7 @@
+>   * apei-base.c - ACPI Platform Error Interface (APEI) supporting
+>   * infrastructure
+>   *
+> - * APEI allows to report errors (for example from the chipset) to the
+> + * APEI allows to report errors (for example from the chipset) to
+>   * the operating system. This improves NMI handling especially. In
+>   * addition it supports error serialization and error injection.
+>   *
 > --
 
-Applied as 5.20 material, thanks!
+Applied (under a more precise subject) as 5.20 material, thanks!
