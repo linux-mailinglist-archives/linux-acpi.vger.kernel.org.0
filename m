@@ -2,133 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BB46544E9A
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 16:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ED2A544EF8
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 16:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237995AbiFIOUu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 10:20:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45086 "EHLO
+        id S238538AbiFIO1r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 10:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244595AbiFIOUd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 10:20:33 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 206E226445D;
-        Thu,  9 Jun 2022 07:20:30 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 950281312cde6a1c; Thu, 9 Jun 2022 16:20:28 +0200
-Received: from kreacher.localnet (unknown [213.134.186.232])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id E728D66C7CA;
-        Thu,  9 Jun 2022 16:20:27 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH v1 16/16] ACPI: bus: Drop unused list heads from struct acpi_device
-Date:   Thu, 09 Jun 2022 16:19:48 +0200
-Message-ID: <14670875.tv2OnDr8pf@kreacher>
-In-Reply-To: <1843211.tdWV9SEqCh@kreacher>
-References: <1843211.tdWV9SEqCh@kreacher>
+        with ESMTP id S229973AbiFIO1q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 10:27:46 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F3412FB29;
+        Thu,  9 Jun 2022 07:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654784865; x=1686320865;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eCY5vfssjBdEESu3NYeDhokIbEHWS/CgrAYFRq7UYdE=;
+  b=DXH8TA4evcya/w22/AJ3pBxXQ/UxKms8dGCZKg2yCCidvBaG5orPxp+S
+   QiPbZHNrn5IldMAjOhtJhR4gHGsNo7mLSGehHwTeAwQYbfWvAmfASF9b2
+   iTZHT0qmAuqzA/oYSdfbHyk6z9r/asxDavKkQFOdtceFO0ARHLENyR5JT
+   c2bQYn2T0u+wszTo5OP779k6EgZiLxPIeblOvwEJAnVHIaWSh3kQAB50p
+   8yxxtNPRA1e/iRQ+VVXZ7LihhbV9tpsPZ3eEZHXIfJQFhicXpatwtIH2x
+   il7TWj+oVsLLuHrW11jEFaj36DiN0i7+JD8Obvq53c2Lh0fLX5ArOmChi
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="257125019"
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="257125019"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 07:27:44 -0700
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="908344064"
+Received: from fungjona-mobl.amr.corp.intel.com (HELO [10.212.203.188]) ([10.212.203.188])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 07:27:43 -0700
+Message-ID: <f62ab257-b2e0-3097-e394-93a9e7a0d2bf@intel.com>
+Date:   Thu, 9 Jun 2022 07:27:43 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.186.232
-X-CLIENT-HOSTNAME: 213.134.186.232
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedruddtledgjeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppedvudefrddufeegrddukeeirddvfedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekiedrvdefvddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhi
- nhhtvghlrdgtohhmpdhrtghpthhtohepmhhikhgrrdifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehhuggvghhovgguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshgrkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH 1/2] x86: notify hypervisor about guest entering s2idle
+ state
+Content-Language: en-US
+To:     Grzegorz Jaszczyk <jaz@semihalf.com>, linux-kernel@vger.kernel.org
+Cc:     dmy@semihalf.com,
+        Zide Chen <zide.chen@intel.corp-partner.google.com>,
+        Peter Fang <peter.fang@intel.corp-partner.google.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sachi King <nakato@nakato.io>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        David Dunn <daviddunn@google.com>,
+        Wei Wang <wei.w.wang@intel.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "open list:KERNEL VIRTUAL MACHINE (KVM)" <kvm@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
+        <linux-pm@vger.kernel.org>
+References: <20220609110337.1238762-1-jaz@semihalf.com>
+ <20220609110337.1238762-2-jaz@semihalf.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <20220609110337.1238762-2-jaz@semihalf.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 6/9/22 04:03, Grzegorz Jaszczyk wrote:
+> Co-developed-by: Peter Fang <peter.fang@intel.corp-partner.google.com>
+> Signed-off-by: Peter Fang <peter.fang@intel.corp-partner.google.com>
+> Co-developed-by: Tomasz Nowicki <tn@semihalf.com>
+> Signed-off-by: Tomasz Nowicki <tn@semihalf.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.corp-partner.google.com>
+> Co-developed-by: Grzegorz Jaszczyk <jaz@semihalf.com>
+> Signed-off-by: Grzegorz Jaszczyk <jaz@semihalf.com>
+> ---
+>  Documentation/virt/kvm/x86/hypercalls.rst | 7 +++++++
+>  arch/x86/kvm/x86.c                        | 3 +++
+>  drivers/acpi/x86/s2idle.c                 | 8 ++++++++
+>  include/linux/suspend.h                   | 1 +
+>  include/uapi/linux/kvm_para.h             | 1 +
+>  kernel/power/suspend.c                    | 4 ++++
+>  6 files changed, 24 insertions(+)
 
-Drop the children and node list heads that have no more users
-from struct acpi_device and the code manipulating them from
-__acpi_device_add() and acpi_device_del().
+What's the deal with these emails?
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/scan.c     |   11 +----------
- include/acpi/acpi_bus.h |    2 --
- 2 files changed, 1 insertion(+), 12 deletions(-)
+	zide.chen@intel.corp-partner.google.com
 
-Index: linux-pm/include/acpi/acpi_bus.h
-===================================================================
---- linux-pm.orig/include/acpi/acpi_bus.h
-+++ linux-pm/include/acpi/acpi_bus.h
-@@ -365,8 +365,6 @@ struct acpi_device {
- 	acpi_handle handle;		/* no handle for fixed hardware */
- 	struct fwnode_handle fwnode;
- 	struct acpi_device *parent;
--	struct list_head children;
--	struct list_head node;
- 	struct list_head wakeup_list;
- 	struct list_head del_list;
- 	struct acpi_device_status status;
-Index: linux-pm/drivers/acpi/scan.c
-===================================================================
---- linux-pm.orig/drivers/acpi/scan.c
-+++ linux-pm/drivers/acpi/scan.c
-@@ -465,8 +465,6 @@ static void acpi_device_del(struct acpi_
- 	struct acpi_device_bus_id *acpi_device_bus_id;
- 
- 	mutex_lock(&acpi_device_lock);
--	if (device->parent)
--		list_del(&device->node);
- 
- 	list_for_each_entry(acpi_device_bus_id, &acpi_bus_id_list, node)
- 		if (!strcmp(acpi_device_bus_id->bus_id,
-@@ -482,6 +480,7 @@ static void acpi_device_del(struct acpi_
- 		}
- 
- 	list_del(&device->wakeup_list);
-+
- 	mutex_unlock(&acpi_device_lock);
- 
- 	acpi_power_add_remove_device(device, false);
-@@ -674,8 +673,6 @@ static int __acpi_device_add(struct acpi
- 	 * -------
- 	 * Link this device to its parent and siblings.
- 	 */
--	INIT_LIST_HEAD(&device->children);
--	INIT_LIST_HEAD(&device->node);
- 	INIT_LIST_HEAD(&device->wakeup_list);
- 	INIT_LIST_HEAD(&device->physical_node_list);
- 	INIT_LIST_HEAD(&device->del_list);
-@@ -715,9 +712,6 @@ static int __acpi_device_add(struct acpi
- 		list_add_tail(&acpi_device_bus_id->node, &acpi_bus_id_list);
- 	}
- 
--	if (device->parent)
--		list_add_tail(&device->node, &device->parent->children);
--
- 	if (device->wakeup.flags.valid)
- 		list_add_tail(&device->wakeup_list, &acpi_wakeup_device_list);
- 
-@@ -746,9 +740,6 @@ static int __acpi_device_add(struct acpi
- err:
- 	mutex_lock(&acpi_device_lock);
- 
--	if (device->parent)
--		list_del(&device->node);
--
- 	list_del(&device->wakeup_list);
- 
- err_unlock:
+I see a smattering of those in the git logs, but never for Intel folks.
 
-
-
+I'll also say that I'm a bit suspicious of a patch that includes 5
+authors for 24 lines of code.  Did it really take five of you to write
+24 lines of code?
