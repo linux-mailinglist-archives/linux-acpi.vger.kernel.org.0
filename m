@@ -2,48 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43743545441
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 20:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ABEB545458
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 20:45:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233065AbiFISi5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 14:38:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46820 "EHLO
+        id S239388AbiFISpI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 14:45:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233030AbiFISiz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 14:38:55 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7793C703F9
-        for <linux-acpi@vger.kernel.org>; Thu,  9 Jun 2022 11:38:55 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id y188so13757783ybe.11
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Jun 2022 11:38:55 -0700 (PDT)
+        with ESMTP id S239383AbiFISpH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 14:45:07 -0400
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32255BF66;
+        Thu,  9 Jun 2022 11:45:05 -0700 (PDT)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-313a8a8b95aso16748147b3.5;
+        Thu, 09 Jun 2022 11:45:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2K8VGsodomKXKKxX7r0t2IzDV1/XigAAo+oNDkBiYgQ=;
-        b=mUS5WgH43ltQDAN2xJR9moWFy9UG6VDt5JeGcKTuTTSQjiINn6ob4/4Cvt3pLwo/qg
-         NNbqaP4Whcnpudvb4bScSYIcETjoMlKv8+xbQ660V6rr38EnV1ZsAGtc4ndXCD3LiHpv
-         ydqfqGEhGbbCvOMdxIuHLXjmzjKndP8LQuM4h0VFpIYHIVNEJ++bdrCv0YtaCFtHf/C3
-         KkxcoDHa8ACQ/BcdZbXQhP4MTtS1brl86Wekekb1ujlp58lq345abFyxNVbF9b+3LKk5
-         UlWW82TG2brgo7BQXlZqQc8KKLmOpJh9ubYRx2ivZL5R6WQl3c0fZ3Ipub8sBZ1RZjSx
-         N9HA==
-X-Gm-Message-State: AOAM530gnn0332piebSFzthT8MTF4a9SRp+QTVvyXgCnQf420c4oPNKn
-        dOzWYybl8czoJ3+igv469RN/s/ah9BARCcZpNe4=
-X-Google-Smtp-Source: ABdhPJz3gQVCgNRUku6BtiMY1w/wk+Kdo3gPxjoGWKDbCbj2O5/JWUJ8Q7tImiM42gGdrMM/W1qcJYH0FpNKr44dtt4=
-X-Received: by 2002:a25:d98b:0:b0:65c:9dc9:7a8f with SMTP id
- q133-20020a25d98b000000b0065c9dc97a8fmr39802782ybg.622.1654799934735; Thu, 09
- Jun 2022 11:38:54 -0700 (PDT)
+        bh=ketC8ANShl5T/DJexVfPFGmyQceFPvOn5sBuN5PaWWk=;
+        b=nO+cJIgvAEpEMw7IkKrm8K4sYZf+I+tRqq49YMI7zB/bNslMY1iwLKAwVed4XBhM1j
+         1ZEyvQlVexphHb9JAHEIpYsL3bUx5Ki74plVKUudpIL0RfW/HbGr88RX6bk9okAVgLQM
+         Lm0UMLcSXdFNUpNXCdOpwKN6sQ3qKk4XpptrA7kwVg31KUuuZgJoSh5xj+HSYMycvl0c
+         08x712zroJnF0fWSD/7tVv68ctyxItLft+3OeARWngoj0fGfHStOLNgBPmWCxZjHC/Wy
+         TQW0FvYku5y3xnhTwt9hXNDoRy4DIVuTXbvgJCcet4FRVunQDVTCygCseZ3lQ4UKakNc
+         VWlg==
+X-Gm-Message-State: AOAM532oJa0TrANIUzFPgJRrzybjqdYxDiZ9pFWJKF/X8abl642YEySs
+        5R8INs6Tv/6sYvZ/kYBW9GJWCJaoB/gmUdxhLBI=
+X-Google-Smtp-Source: ABdhPJzaSV2Ou7aW6ZlIz1jOmShiXqw5dvran8jtr+6HB5ThEBFSoVgxH+xh5yCwJo4tKLw6Zu2MkDdF0Rbhq7drggE=
+X-Received: by 2002:a81:1341:0:b0:30c:3a7e:65e9 with SMTP id
+ 62-20020a811341000000b0030c3a7e65e9mr46370847ywt.7.1654800304445; Thu, 09 Jun
+ 2022 11:45:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220525130123.767410-1-sakari.ailus@linux.intel.com>
-In-Reply-To: <20220525130123.767410-1-sakari.ailus@linux.intel.com>
+References: <20220607222458.1864805-1-gpiccoli@igalia.com>
+In-Reply-To: <20220607222458.1864805-1-gpiccoli@igalia.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 9 Jun 2022 20:38:43 +0200
-Message-ID: <CAJZ5v0i6sSp-R20ShB6ac0BqzxT9kB+hae8GB=c+m0i2V-i8wQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] ACPI: Buffer property and reference as string support
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Date:   Thu, 9 Jun 2022 20:44:53 +0200
+Message-ID: <CAJZ5v0j-g66TEizAV+j5it_uKkf+=+259yqNNkzJjUtL79=d9w@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: processor/idle: Annotate more functions to live in
+ cpuidle section
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        kernel@gpiccoli.net, kernel-dev@igalia.com,
+        Len Brown <lenb@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -55,48 +61,73 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 25, 2022 at 3:01 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
+On Wed, Jun 8, 2022 at 12:25 AM Guilherme G. Piccoli
+<gpiccoli@igalia.com> wrote:
 >
-> Hello everyone,
+> Commit 6727ad9e206c ("nmi_backtrace: generate one-line reports for idle cpus")
+> introduced a new text section called cpuidle; with that, we have a mechanism
+> to add idling functions in such section and skip them from nmi_backtrace
+> output, since they're useless and potentially flooding for such report.
 >
-> This set adds support for _DSD buffer properties (specified by DSD Guide
-> <URL:https://github.com/UEFI/DSD-Guide/blob/main/dsd-guide.md>) as well as
-> support for references as strings. Reference property type was previously
-> supported for device objects only, whereas string references enable
-> referencing also _DSD sub-node objects --- also included in the set.
+> Happens that inlining might cause some real idle functions to end-up
+> outside of such section; this is currently the case of ACPI processor_idle
+> driver; the functions acpi_idle_enter_* do inline acpi_idle_do_entry(),
+> hence they stay out of the cpuidle section.
+> Fix that by marking such functions to also live in the cpuidle section.
 >
-> The ACPICA patch has been submitted to upstream but not merged yet.
+> Fixes: 6727ad9e206c ("nmi_backtrace: generate one-line reports for idle cpus")
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> ---
 >
-> This set currently prepares for data node string reference support and
-> does not add it anymore.
+> Hi folks, this was tested on top of v5.19-rc1, with sysrq-l.
 >
-> since v2:
+> An alternative for this approach would be to mark acpi_idle_do_entry()
+> as noinline, but I'd risk to say that's a bit worse performance-wise.
+> Let me know your preference, I can rework the patch if you prefer =)
 >
-> - Use C99 _Generic() in patch unifying reading integer arrays.
+> Thanks in advance for reviews,
 >
-> since v1:
 >
-> - Drop the ACPICA, data node child list initialisation and data node
->   string reference patches.
+> Guilherme
 >
-> Sakari Ailus (8):
->   ACPI: property: Return type of acpi_add_nondev_subnodes() should be
->     bool
->   ACPI: property: Tie data nodes to acpi handles
->   ACPI: property: Use acpi_object_type consistently in property ref
->     parsing
->   ACPI: property: Move property ref argument parsing into a new function
->   ACPI: property: Switch node property referencing from ifs to a switch
->   ACPI: property: Unify integer value reading functions
->   ACPI: property: Add support for parsing buffer property UUID
->   ACPI: property: Read buffer properties as integers
 >
->  drivers/acpi/property.c | 462 +++++++++++++++++++++++++++-------------
->  include/acpi/acpi_bus.h |   3 +-
->  include/linux/acpi.h    |   2 +-
->  3 files changed, 315 insertions(+), 152 deletions(-)
+>  drivers/acpi/processor_idle.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index 6a5572a1a80c..13200969ccf3 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -607,7 +607,7 @@ static DEFINE_RAW_SPINLOCK(c3_lock);
+>   * @cx: Target state context
+>   * @index: index of target state
+>   */
+> -static int acpi_idle_enter_bm(struct cpuidle_driver *drv,
+> +static int __cpuidle acpi_idle_enter_bm(struct cpuidle_driver *drv,
+>                                struct acpi_processor *pr,
+>                                struct acpi_processor_cx *cx,
+>                                int index)
+> @@ -664,7 +664,7 @@ static int acpi_idle_enter_bm(struct cpuidle_driver *drv,
+>         return index;
+>  }
+>
+> -static int acpi_idle_enter(struct cpuidle_device *dev,
+> +static int __cpuidle acpi_idle_enter(struct cpuidle_device *dev,
+>                            struct cpuidle_driver *drv, int index)
+>  {
+>         struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
+> @@ -693,7 +693,7 @@ static int acpi_idle_enter(struct cpuidle_device *dev,
+>         return index;
+>  }
+>
+> -static int acpi_idle_enter_s2idle(struct cpuidle_device *dev,
+> +static int __cpuidle acpi_idle_enter_s2idle(struct cpuidle_device *dev,
+>                                   struct cpuidle_driver *drv, int index)
+>  {
+>         struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
 > --
 
-FYI, I'm expecting a v4 of this series to be sent.
+Applied as 5.20 material, thanks!
