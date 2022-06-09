@@ -2,108 +2,217 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E06D54505C
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7545450AB
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243004AbiFIPO3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 11:14:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58520 "EHLO
+        id S238438AbiFIPXh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 11:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240876AbiFIPO2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:14:28 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A284A46150;
-        Thu,  9 Jun 2022 08:14:26 -0700 (PDT)
+        with ESMTP id S1344490AbiFIPXa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:23:30 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A16A2F1D;
+        Thu,  9 Jun 2022 08:23:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654787666; x=1686323666;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wr33ML0e4lODezvF0rSXZW2gyNc2rLAlNWAvEtgI1TQ=;
-  b=b2ls8HuuIxikpqK190ySTuiJx0LidsWad4miA2YaT/RD0WTlUxjMjhtc
-   0aMcoY0pVMYkkwM/t9YIdgix8wZ3yRBm0oS7wwUXnqf7kD1OaI7nGoqsM
-   77ePbIPoPBbYsTuc/Bauup64Ipd3Hi8JFPMLqzqzJKKYq4SWxRlQZ9a03
-   KanP9teVV95x6r56zbZE56rPubkx9XfmlSUZNi72PKi9HbOfYIEcSJZ24
-   dOFQH7Ew+HqEtsFkG2/YYl+qS7e8Tbm8UNdQHb3tHGZeifamZoRhDKRyK
-   S5I1JskXsRTFi34k0PzKRSYXnR9WmXPGYCcqSjnrn4N/O1ArIkLTkp7dX
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="274837351"
+  t=1654788209; x=1686324209;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SOwvpVCZjkxg8KZs0RVxDzu9voSyzOt3EM4EtxcOcNc=;
+  b=ZP7VNAPSJ9y9gSklyP/Y3S/rHjVxM8tRF9qVSdvPUL0q5slk9iLHX53y
+   urx+gAz9HmeSlNieQ7IGO4qr1zBZuh6SpQhRebOVtzJzSkt7Mbfk93B7p
+   EvEpzWOG3NeM5RdBZcO8g6jDQtCD3nXuvisTdvSC4uG5vtuVzcLnyKrmb
+   8rroQRzoM0sIpwo2w75cOj5Vng5PEC3hgJfnZ/juWRQSDx1g+BtZ1+VfK
+   cx4kDH2C5vvEyq8Av+/POQRkxah6hF3PBFiQfPlfRHteSip3wMwSPboP8
+   DVT6enK1kuykwbNpiTu5UXrTieosFtqDkaXp7uyYGorCmWsgH1g8n5OID
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="257747939"
 X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="274837351"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:14:26 -0700
+   d="scan'208";a="257747939"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:23:29 -0700
 X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="649312322"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:14:23 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nzJpR-000XxY-4u;
-        Thu, 09 Jun 2022 18:12:09 +0300
-Date:   Thu, 9 Jun 2022 18:12:08 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Frank Rowand <frank.rowand@sony.com>,
-        Rob Herring <robh@kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: Re: [PATCH v1 00/16] ACPI: Get rid of the list of children in struct
- acpi_device
-Message-ID: <YqINyDTfpNBGDYlb@smile.fi.intel.com>
-References: <1843211.tdWV9SEqCh@kreacher>
+   d="scan'208";a="585630730"
+Received: from jeremywe-mobl3.amr.corp.intel.com (HELO [10.209.173.145]) ([10.209.173.145])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:23:28 -0700
+Message-ID: <63d7f3ed-b5a9-c869-5d25-a33a1d4e63c8@linux.intel.com>
+Date:   Thu, 9 Jun 2022 10:22:39 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1843211.tdWV9SEqCh@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.9.1
+Subject: Re: [PATCH v1 14/16] soundwire: Use acpi_dev_for_each_child()
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     alsa-devel@alsa-project.org, Linux PM <linux-pm@vger.kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+References: <1843211.tdWV9SEqCh@kreacher> <5296779.Sb9uPGUboI@kreacher>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <5296779.Sb9uPGUboI@kreacher>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 09, 2022 at 03:44:27PM +0200, Rafael J. Wysocki wrote:
-> Hi All,
+Thanks Rafael. This looks mostly good but I have a doubt on the error
+handling, see below.
+
+> +static int sdw_acpi_check_duplicate(struct acpi_device *adev, void *data)
+> +{
+> +	struct sdw_acpi_child_walk_data *cwd = data;
+> +	struct sdw_bus *bus = cwd->bus;
+> +	struct sdw_slave_id id;
+> +
+> +	if (adev == cwd->adev)
+> +		return 0;
+> +
+> +	if (!find_slave(bus, adev, &id))
+> +		return 0;
+> +
+> +	if (cwd->id.sdw_version != id.sdw_version || cwd->id.mfg_id != id.mfg_id ||
+> +	    cwd->id.part_id != id.part_id || cwd->id.class_id != id.class_id)
+> +		return 0;
+> +
+> +	if (cwd->id.unique_id != id.unique_id) {
+> +		dev_dbg(bus->dev,
+> +			"Valid unique IDs 0x%x 0x%x for Slave mfg_id 0x%04x, part_id 0x%04x\n",
+> +			cwd->id.unique_id, id.unique_id, cwd->id.mfg_id,
+> +			cwd->id.part_id);
+> +		cwd->ignore_unique_id = false;
+> +		return 0;
+> +	}
+> +
+> +	dev_err(bus->dev,
+> +		"Invalid unique IDs 0x%x 0x%x for Slave mfg_id 0x%04x, part_id 0x%04x\n",
+> +		cwd->id.unique_id, id.unique_id, cwd->id.mfg_id, cwd->id.part_id);
+> +	return -ENODEV;
+
+if this error happens, I would guess it's reported ....
+
+> +}
+> +
+> +static int sdw_acpi_find_one(struct acpi_device *adev, void *data)
+> +{
+> +	struct sdw_bus *bus = data;
+> +	struct sdw_acpi_child_walk_data cwd = {
+> +		.bus = bus,
+> +		.adev = adev,
+> +		.ignore_unique_id = true,
+> +	};
+> +	int ret;
+> +
+> +	if (!find_slave(bus, adev, &cwd.id))
+> +		return 0;
+> +
+> +	/* Brute-force O(N^2) search for duplicates. */
+> +	ret = acpi_dev_for_each_child(ACPI_COMPANION(bus->dev),
+> +				      sdw_acpi_check_duplicate, &cwd);
+> +	if (ret)
+> +		return ret;
+
+... here, but I don't see this being propagated further...
+
+> +
+> +	if (cwd.ignore_unique_id)
+> +		cwd.id.unique_id = SDW_IGNORED_UNIQUE_ID;
+> +
+> +	/* Ignore errors and continue. */
+> +	sdw_slave_add(bus, &cwd.id, acpi_fwnode_handle(adev));
+> +	return 0;
+> +}
+> +
+>  /*
+>   * sdw_acpi_find_slaves() - Find Slave devices in Master ACPI node
+>   * @bus: SDW bus instance
+> @@ -135,8 +200,7 @@ static bool find_slave(struct sdw_bus *b
+>   */
+>  int sdw_acpi_find_slaves(struct sdw_bus *bus)
+>  {
+> -	struct acpi_device *adev, *parent;
+> -	struct acpi_device *adev2, *parent2;
+> +	struct acpi_device *parent;
+>  
+>  	parent = ACPI_COMPANION(bus->dev);
+>  	if (!parent) {
+> @@ -144,52 +208,7 @@ int sdw_acpi_find_slaves(struct sdw_bus
+>  		return -ENODEV;
+>  	}
+>  
+> -	list_for_each_entry(adev, &parent->children, node) {
+> -		struct sdw_slave_id id;
+> -		struct sdw_slave_id id2;
+> -		bool ignore_unique_id = true;
+> -
+> -		if (!find_slave(bus, adev, &id))
+> -			continue;
+> -
+> -		/* brute-force O(N^2) search for duplicates */
+> -		parent2 = parent;
+> -		list_for_each_entry(adev2, &parent2->children, node) {
+> -
+> -			if (adev == adev2)
+> -				continue;
+> -
+> -			if (!find_slave(bus, adev2, &id2))
+> -				continue;
+> -
+> -			if (id.sdw_version != id2.sdw_version ||
+> -			    id.mfg_id != id2.mfg_id ||
+> -			    id.part_id != id2.part_id ||
+> -			    id.class_id != id2.class_id)
+> -				continue;
+> -
+> -			if (id.unique_id != id2.unique_id) {
+> -				dev_dbg(bus->dev,
+> -					"Valid unique IDs 0x%x 0x%x for Slave mfg_id 0x%04x, part_id 0x%04x\n",
+> -					id.unique_id, id2.unique_id, id.mfg_id, id.part_id);
+> -				ignore_unique_id = false;
+> -			} else {
+> -				dev_err(bus->dev,
+> -					"Invalid unique IDs 0x%x 0x%x for Slave mfg_id 0x%04x, part_id 0x%04x\n",
+> -					id.unique_id, id2.unique_id, id.mfg_id, id.part_id);
+> -				return -ENODEV;
+> -			}
+> -		}
+> -
+> -		if (ignore_unique_id)
+> -			id.unique_id = SDW_IGNORED_UNIQUE_ID;
+> -
+> -		/*
+> -		 * don't error check for sdw_slave_add as we want to continue
+> -		 * adding Slaves
+> -		 */
+> -		sdw_slave_add(bus, &id, acpi_fwnode_handle(adev));
+> -	}
+> +	acpi_dev_for_each_child(parent, sdw_acpi_find_one, bus);
+
+... here?
+
+It looks like a change in the error handling flow where
+sdw_acpi_find_slaves() is now returning 0 (success) always?
+
+Shouldn't the return of sdw_acpi_find_one() be trapped, e.g. with
+
+return acpi_dev_for_each_child(parent, sdw_acpi_find_one, bus);
+
+>  
+>  	return 0;
+>  }
 > 
-> Confusingly enough, the ACPI subsystem stores the information on the given ACPI
-> device's children in two places: as the list of children in struct acpi_device
-> and (as a result of device registration) in the list of children in the embedded
-> struct device.
 > 
-> These two lists agree with each other most of the time, but not always (like in
-> error paths in some cases), and the list of children in struct acpi_device is
-> not generally safe to use without locking.  In principle, it should always be
-> walked under acpi_device_lock, but in practice holding acpi_scan_lock is
-> sufficient for that too.  However, its users may not know whether or not
-> they operate under acpi_scan_lock and at least in some cases it is not accessed
-> in a safe way (note that ACPI devices may go away as a result of hot-remove,
-
-> unlike OF nodes).
-
-Hmm... Does it true for DT overlays? Not an expert in DT overlays, though,
-adding Rob and Frank.
-
-> For this reason, it is better to consolidate the code that needs to walk the
-> children of an ACPI device which is the purpose of this patch series.
 > 
-> Overall, it switches over all of the users of the list of children in struct
-> acpi_device to using helpers based on the driver core's mechanics and finally
-> drops that list, but some extra cleanups are done on the way.
-> 
-> Please refer to the patch changelogs for details.
-
-I'm going to look the individual patches.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
