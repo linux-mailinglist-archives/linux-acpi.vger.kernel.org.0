@@ -2,139 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 767E8544FE4
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 16:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E06D54505C
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:14:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245452AbiFIOzw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 10:55:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34774 "EHLO
+        id S243004AbiFIPO3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 11:14:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241636AbiFIOzv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 10:55:51 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 884AF37F04B
-        for <linux-acpi@vger.kernel.org>; Thu,  9 Jun 2022 07:55:49 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id w21so21338210pfc.0
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Jun 2022 07:55:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ERqpHHB15unBSTeHEqEMR3UFvMYfb3/GCbSADTuIbHA=;
-        b=AkkQ1lNNSImZ+9IyPfR9U+c4QA+kolWUMUz3suIATQi0Q2AT516ThrNMDTDlnvc7YE
-         /ZhYeyTdnRriWNOxky9myWCfBKm4Sn1EWd1VrHKfPD1yEyHRqP4S1+QQbz/iIxwNIBjn
-         JQ7GFOFH08vZ6a6OHq94eZcvHzamYR/fbyvHYugF2OElBhX86mXkX1rNNeZpILEQFfBF
-         dE7hNmYosDvhTkksbpmcq2gzj7a/JVXxBPr73g/1Daer4sv0xHXFMfv/WYodigfXFFLF
-         X02RmIDCx9AtutgUj4ELTanbechY5vI8hnlVa9VUMddqUEjvdpZtsBkslYmL32KxgL8H
-         lhiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ERqpHHB15unBSTeHEqEMR3UFvMYfb3/GCbSADTuIbHA=;
-        b=RNkcdQfRZUYSZAVgM1pO/xKRiEwnA8gUTFzVP0a36PIZSnNKyop1rWNQrlsDyJ5qOj
-         w327xfdI6psItoht3jr1KUsqWQT+seP8nrog5WK63llN+rM6oaMdehwl7+/KwDQZZeSJ
-         eYmC62/1dqPWH2xTm+MjEca7Fbk8TvkUZBcKmEfgLySMJPKs5FQOdf+Ez7SjTdXwDWGP
-         HEnXbn6bLhULnRPvMK0LhgvTCC+dzkGrZ1S4ombVYRs4l7hf191Br6zG3qIWxknX3zLZ
-         R/CK3iXN4KaHG1sfjJoGhmqY4VeRkG4WKFlcImGl+UpTXMbEKUaIjVuhi4q+ILNeXuT8
-         UZpg==
-X-Gm-Message-State: AOAM531RYaQgrVRUtplCtwb3vnW3ZulaBen9do8wz2DFxROtzLnV+32w
-        luFyLtDwwjdmU3ZZAUCCMGx4XQ==
-X-Google-Smtp-Source: ABdhPJy8b0sXVZ9mcdG0q6aDwplLKBr+elC41y+xW9yxBNhIl6TnCHVg9fqa2vtTLTESAaaUZeU85A==
-X-Received: by 2002:aa7:8d0f:0:b0:518:d867:bae8 with SMTP id j15-20020aa78d0f000000b00518d867bae8mr39566603pfe.13.1654786548865;
-        Thu, 09 Jun 2022 07:55:48 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id j188-20020a62c5c5000000b0051c77027d7fsm2702846pfg.218.2022.06.09.07.55.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jun 2022 07:55:48 -0700 (PDT)
-Date:   Thu, 9 Jun 2022 14:55:44 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Grzegorz Jaszczyk <jaz@semihalf.com>
-Cc:     linux-kernel@vger.kernel.org, dmy@semihalf.com,
-        Zide Chen <zide.chen@intel.corp-partner.google.com>,
-        Peter Fang <peter.fang@intel.corp-partner.google.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+        with ESMTP id S240876AbiFIPO2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:14:28 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A284A46150;
+        Thu,  9 Jun 2022 08:14:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654787666; x=1686323666;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wr33ML0e4lODezvF0rSXZW2gyNc2rLAlNWAvEtgI1TQ=;
+  b=b2ls8HuuIxikpqK190ySTuiJx0LidsWad4miA2YaT/RD0WTlUxjMjhtc
+   0aMcoY0pVMYkkwM/t9YIdgix8wZ3yRBm0oS7wwUXnqf7kD1OaI7nGoqsM
+   77ePbIPoPBbYsTuc/Bauup64Ipd3Hi8JFPMLqzqzJKKYq4SWxRlQZ9a03
+   KanP9teVV95x6r56zbZE56rPubkx9XfmlSUZNi72PKi9HbOfYIEcSJZ24
+   dOFQH7Ew+HqEtsFkG2/YYl+qS7e8Tbm8UNdQHb3tHGZeifamZoRhDKRyK
+   S5I1JskXsRTFi34k0PzKRSYXnR9WmXPGYCcqSjnrn4N/O1ArIkLTkp7dX
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="274837351"
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="274837351"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:14:26 -0700
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="649312322"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:14:23 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nzJpR-000XxY-4u;
+        Thu, 09 Jun 2022 18:12:09 +0300
+Date:   Thu, 9 Jun 2022 18:12:08 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Frank Rowand <frank.rowand@sony.com>,
+        Rob Herring <robh@kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Sachi King <nakato@nakato.io>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        David Dunn <daviddunn@google.com>,
-        Wei Wang <wei.w.wang@intel.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "open list:KERNEL VIRTUAL MACHINE (KVM)" <kvm@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
-        <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 1/2] x86: notify hypervisor about guest entering s2idle
- state
-Message-ID: <YqIJ8HtdqnoVzfQD@google.com>
-References: <20220609110337.1238762-1-jaz@semihalf.com>
- <20220609110337.1238762-2-jaz@semihalf.com>
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH v1 00/16] ACPI: Get rid of the list of children in struct
+ acpi_device
+Message-ID: <YqINyDTfpNBGDYlb@smile.fi.intel.com>
+References: <1843211.tdWV9SEqCh@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220609110337.1238762-2-jaz@semihalf.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <1843211.tdWV9SEqCh@kreacher>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 09, 2022, Grzegorz Jaszczyk wrote:
-> +9. KVM_HC_SYSTEM_S2IDLE
-> +------------------------
-> +
-> +:Architecture: x86
-> +:Status: active
-> +:Purpose: Notify the hypervisor that the guest is entering s2idle state.
+On Thu, Jun 09, 2022 at 03:44:27PM +0200, Rafael J. Wysocki wrote:
+> Hi All,
+> 
+> Confusingly enough, the ACPI subsystem stores the information on the given ACPI
+> device's children in two places: as the list of children in struct acpi_device
+> and (as a result of device registration) in the list of children in the embedded
+> struct device.
+> 
+> These two lists agree with each other most of the time, but not always (like in
+> error paths in some cases), and the list of children in struct acpi_device is
+> not generally safe to use without locking.  In principle, it should always be
+> walked under acpi_device_lock, but in practice holding acpi_scan_lock is
+> sufficient for that too.  However, its users may not know whether or not
+> they operate under acpi_scan_lock and at least in some cases it is not accessed
+> in a safe way (note that ACPI devices may go away as a result of hot-remove,
 
-What about exiting s2idle?  E.g.
+> unlike OF nodes).
 
-  1. VM0 enters s2idle
-  2. host notes that VM0 is in s2idle
-  3. VM0 exits s2idle
-  4. host still thinks VM0 is in s2idle
-  5. VM1 enters s2idle
-  6. host thinks all VMs are in s2idle, suspends the system
+Hmm... Does it true for DT overlays? Not an expert in DT overlays, though,
+adding Rob and Frank.
 
-> +static void s2idle_hypervisor_notify(void)
-> +{
-> +	if (static_cpu_has(X86_FEATURE_HYPERVISOR))
-> +		kvm_hypercall0(KVM_HC_SYSTEM_S2IDLE);
+> For this reason, it is better to consolidate the code that needs to walk the
+> children of an ACPI device which is the purpose of this patch series.
+> 
+> Overall, it switches over all of the users of the list of children in struct
+> acpi_device to using helpers based on the driver core's mechanics and finally
+> drops that list, but some extra cleanups are done on the way.
+> 
+> Please refer to the patch changelogs for details.
 
-Checking the HYPERVISOR flag is not remotely sufficient.  The hypervisor may not
-be KVM, and if it is KVM, it may be an older version of KVM that doesn't support
-the hypercall.  The latter scenario won't be fatal unless KVM has been modified,
-but blindly doing a hypercall for a different hypervisor could have disastrous
-results, e.g. the registers ABIs are different, so the above will make a random
-request depending on what is in other GPRs.
+I'm going to look the individual patches.
 
-The bigger question is, why is KVM involved at all?  KVM is just a dumb pipe out
-to userspace, and not a very good one at that.  There are multiple well established
-ways to communicate with the VMM without custom hypercalls.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-I bet if you're clever this can even be done without any guest changes, e.g. I
-gotta imagine acpi_sleep_run_lps0_dsm() triggers MMIO/PIO with the right ACPI
-configuration.
+
