@@ -2,55 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5FBE544A2E
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 13:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC175544CDF
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 15:02:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243897AbiFILbV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 07:31:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54466 "EHLO
+        id S243593AbiFINCa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 09:02:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240123AbiFILbN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 07:31:13 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EE2D3A3BAD
-        for <linux-acpi@vger.kernel.org>; Thu,  9 Jun 2022 04:31:11 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id fu3so45350531ejc.7
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Jun 2022 04:31:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+XewJc/p+7yp1re11t6BfmEtfp27WPbXPnywgusXXTc=;
-        b=dD0Bz9eW32MHk+TeRLS+QqFpXQSyJG1PFuM0sFc2oIQiPmRbBKI4wiAjUnrY0TOPB3
-         vmLpoVIxPESYT9ISrrirk39KtLhSpCgEKtG3yrDCpv/Gh6ZWSamp4kS8RJg23gIGNIEa
-         lDd2yagv7BcuRvFzrWxMhthjwknH7br96szys=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+XewJc/p+7yp1re11t6BfmEtfp27WPbXPnywgusXXTc=;
-        b=sHwD3hpu5sMtOmLrX4EGjkRhrBlIa7Ks74XFU/+MmUoufqQHg8IPJt94OBHq5VmvMq
-         N1Kxu6Iw6V8sH29UglvcH/msPXh1GfAQTwH2zPxNuzAWN2LPO+oiBaIy60bdfFSIKgu9
-         S0qCOTEJWJq6S9jk9fwkz2bFQ9bJUp21jPKHIF2aMjQPe3N9hmXUB56vaEELqIE+Iwq4
-         jQ8h6lupwpu5LHrpt/r7CYybvYcniPQ0RlVn5hX9JjvAvRYCxQw16+ue9OuyX19BxPPm
-         xH8SHnLUw33igzR3UescxIt21/MXTTRqAcUn3qiHinzX0vdnhrZ5yXU0WEBidAKEXfoY
-         cJOw==
-X-Gm-Message-State: AOAM531JJnUrXk3eL8eC8JOcX9BjODvKtaiO6pR/HXA6847OfwlbeSN6
-        ATK4Fnf7dKw4+RcglSHLCBbHh3Df/bjBYwdUdId+HQ==
-X-Google-Smtp-Source: ABdhPJx9nV7wAxP/lyAtNedlGfDPIROj9YXpatcH7EqCac1uVlfTSKszMzYbWUxkatf8WgjTCZNOZTjPAlJBoltWDx4=
-X-Received: by 2002:a17:907:c22:b0:711:dc95:3996 with SMTP id
- ga34-20020a1709070c2200b00711dc953996mr13928684ejc.62.1654774269713; Thu, 09
- Jun 2022 04:31:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220608142723.103523089@infradead.org> <20220608144517.444659212@infradead.org>
- <YqG6URbihTNCk9YR@alley> <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
-In-Reply-To: <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
-From:   Sergey Senozhatsky <senozhatsky@chromium.org>
-Date:   Thu, 9 Jun 2022 20:30:58 +0900
-Message-ID: <CA+_sPaoJGrXhNPCs2dKf2J7u07y1xYrRFZBUtkKwzK9GqcHSuQ@mail.gmail.com>
-Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Petr Mladek <pmladek@suse.com>, ink@jurassic.park.msu.ru,
+        with ESMTP id S235756AbiFINC3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 09:02:29 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E87B527A;
+        Thu,  9 Jun 2022 06:02:27 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id A52461FE71;
+        Thu,  9 Jun 2022 13:02:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1654779746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=WNgY7GyrprNl76LhtyM4yyAr1//LVOR4uCT8xLqGCE8=;
+        b=ojtY10eQLedQ1p8W7bkgtPGLkS2AZjpFLq6Jm7M5r6QmnKTONMm4DEE4c/QdWiGdnShevp
+        eIN6ALkkVVj/WhUF02Ld8MHz00y8tRrFQ0iNR/EUdLO4UR9+Vq8VAuuJcSid16nMNGAGa3
+        XvOmhnJPAVDKUKq8/PtY3J2tLln4dQU=
+Received: from suse.cz (unknown [10.100.208.146])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id 6EA862C141;
+        Thu,  9 Jun 2022 13:02:21 +0000 (UTC)
+Date:   Thu, 9 Jun 2022 15:02:20 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>, ink@jurassic.park.msu.ru,
         mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
         ulli.kroll@googlemail.com, linus.walleij@linaro.org,
         shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
@@ -108,23 +91,48 @@ Cc:     Petr Mladek <pmladek@suse.com>, ink@jurassic.park.msu.ru,
         linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
         rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
+Message-ID: <YqHvXFdIJfvUDI6e@alley>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144517.444659212@infradead.org>
+ <YqG6URbihTNCk9YR@alley>
+ <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
+ <CA+_sPaoJGrXhNPCs2dKf2J7u07y1xYrRFZBUtkKwzK9GqcHSuQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+_sPaoJGrXhNPCs2dKf2J7u07y1xYrRFZBUtkKwzK9GqcHSuQ@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-My emails are getting rejected... Let me try web-interface
+On Thu 2022-06-09 20:30:58, Sergey Senozhatsky wrote:
+> My emails are getting rejected... Let me try web-interface
 
-Kudos to Petr for the questions and thanks to PeterZ for the answers.
+Bad day for mail sending. I have problems as well ;-)
 
-On Thu, Jun 9, 2022 at 7:02 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> This is the tracepoint used to spool all of printk into ftrace, I
-> suspect there's users, but I haven't used it myself.
+> Kudos to Petr for the questions and thanks to PeterZ for the answers.
+> 
+> On Thu, Jun 9, 2022 at 7:02 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> > This is the tracepoint used to spool all of printk into ftrace, I
+> > suspect there's users, but I haven't used it myself.
+> 
+> I'm somewhat curious whether we can actually remove that trace event.
 
-I'm somewhat curious whether we can actually remove that trace event.
+Good question.
+
+Well, I think that it might be useful. It allows to see trace and
+printk messages together.
+
+It was ugly when it was in the console code. The new location
+in vprintk_store() allows to have it even "correctly" sorted
+(timestamp) against other tracing messages.
+
+Best Regards,
+Petr
