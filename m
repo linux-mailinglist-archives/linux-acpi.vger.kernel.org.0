@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C323E54510E
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1BAA545111
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 17:41:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232617AbiFIPkX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 11:40:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36244 "EHLO
+        id S1343870AbiFIPlF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 11:41:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242772AbiFIPkW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:40:22 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2128264D8;
-        Thu,  9 Jun 2022 08:40:21 -0700 (PDT)
+        with ESMTP id S236178AbiFIPlE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 11:41:04 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBF91C5915;
+        Thu,  9 Jun 2022 08:41:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654789221; x=1686325221;
+  t=1654789263; x=1686325263;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=C0meZMeXRVt+T0/yrWzbylwSvLRo1LFficXb2EiYhUQ=;
-  b=I5VHb1xQ1RCqZkh1YF35pX8eOFpslT4EBgXLbX+Z0RQR+aEAz4I8l9Rj
-   UD20W9wwossOOqgkYLWERVuF2ExDmlqevm5l4PN+oKQEg1L8lDvPW3zpo
-   s88U6eSdT8I8wei4AzAvcZTTuRFmOJ7a3DVR7+b+Emc3G4QQnJbpKzW2x
-   usSDy3gR20ckwestrfIafr354o69rR+NdGl628+t0E8maO+3wiQhSDunW
-   eh+Gho9jrPfsXcFaS7y+7f0N+QciTjAkAfkhxdMzVWvs1y9FUv3mDoMdF
-   qVzf/ne3RE+xuYTWCbdkYbtVioDeBDFjiHDkrJoCcQ6HweIDFsGUqj+P/
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="302692566"
+  bh=L2HFR+cNA9oe1wo8qYpDqHV/TYkzOI48bE6rdd6UD88=;
+  b=dXJ6baYpGCZZKcTj3SttjzGyGkaxcJ+mB9qaSSbT84di0KrAsD/oNzpl
+   v7ABzkgYHQKdDWdMMgFmATT68QfhrgAePxS552zpIM35cMVIRdlQ4z+iR
+   wuDhzz1HvsHrZAoN/4Oy8H45B+d2/wxpSAbmU7zIi5rpiF6I0rcC80SBA
+   fXkAa7lIyLsKkyeSY2zj76+ZqpBaF5RkcsiI6nnfR9hN9QHH+85fqKq6p
+   CPAhoB9+xMxRabKo6qdPogaInJVzNWV7HyfoNkklwPdgnfKOMeel9erVy
+   8B1DhwSdOijPyKUAsgUUMzN5MM0FZVN7el5XWbnqaMGM5Od5gALbI5d4T
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="278469195"
 X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="302692566"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:40:20 -0700
+   d="scan'208";a="278469195"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:41:03 -0700
 X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="724490262"
+   d="scan'208";a="760110181"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:40:17 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 08:41:01 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.95)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nzKGc-000Xz4-Dz;
-        Thu, 09 Jun 2022 18:40:14 +0300
-Date:   Thu, 9 Jun 2022 18:40:14 +0300
+        id 1nzKHK-000XzE-3M;
+        Thu, 09 Jun 2022 18:40:58 +0300
+Date:   Thu, 9 Jun 2022 18:40:57 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
@@ -49,37 +49,37 @@ Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: Re: [PATCH v1 09/16] ACPI: video: Use acpi_dev_for_each_child()
-Message-ID: <YqIUXtyvT1mQBLJ7@smile.fi.intel.com>
+Subject: Re: [PATCH v1 10/16] ACPI: bus: Introduce
+ acpi_dev_for_each_child_reverse()
+Message-ID: <YqIUiQEOJVFSvATD@smile.fi.intel.com>
 References: <1843211.tdWV9SEqCh@kreacher>
- <22695031.6Emhk5qWAg@kreacher>
+ <2137459.Mh6RI2rZIc@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <22695031.6Emhk5qWAg@kreacher>
+In-Reply-To: <2137459.Mh6RI2rZIc@kreacher>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 09, 2022 at 04:03:37PM +0200, Rafael J. Wysocki wrote:
+On Thu, Jun 09, 2022 at 04:06:21PM +0200, Rafael J. Wysocki wrote:
 > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Instead of walking the list of children of an ACPI device directly,
-> use acpi_dev_for_each_child() to carry out an action for all of
-> the given ACPI device's children.
+> Make it possible to walk the children of an ACPI device in the revese
+> order by defining acpi_dev_for_each_child_reverse() in analogy with
+> acpi_dev_for_each_child().
 
 ...
 
-> +	return acpi_dev_for_each_child(device, acpi_video_bus_get_one_device,
-> +				       video);
+> +	return device_for_each_child_reverse(&adev->dev, &adwc,
+> +					     acpi_dev_for_one_check);
 
 Perhaps one line?
 
