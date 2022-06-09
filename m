@@ -2,123 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BEBB545587
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 22:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD8D545708
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 00:17:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231861AbiFIUYt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 16:24:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60516 "EHLO
+        id S1345523AbiFIWRU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 18:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbiFIUYs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 16:24:48 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F6A71CAC0A;
-        Thu,  9 Jun 2022 13:24:47 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id d128so10701937qkg.8;
-        Thu, 09 Jun 2022 13:24:47 -0700 (PDT)
+        with ESMTP id S1344811AbiFIWRS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 18:17:18 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181CA56389
+        for <linux-acpi@vger.kernel.org>; Thu,  9 Jun 2022 15:17:17 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-2fed274f3fbso212440877b3.17
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Jun 2022 15:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=/1JbKgANWf9n04u0SMFCJobkXYrPWds2jPiHBJaP02E=;
-        b=OR8g7bXmEFsQ/q8M5dBJV4Rma7R+PZ4UFnfI/3Q6uO37UgyF1wh6SxxKMA83jB2Sbr
-         2CNJRrsezAFVRjY/94pLKD1uVDgkqRk4xax9JUagey3H5LIYYL4Fz8RDmI7Nzzo8A2dV
-         oxUnwfqwrUtgVueFm+UqkpyAtme4gUg+yUnK00SO5JIRm6jXgT+20FdyGMv6qRb9yAN3
-         hrU0MNYLv0vroQ4jPXNgeRv1NzLN+E9rFzuONF7uh/Iio+cGUQyOkxdoOPFFaAKXmLUl
-         jXjGk3IRyL84lvuYwNWQgBk3171EoAYC6MKJN/PUUgyosvDMVVN/MAxI1e+LPjhep6jP
-         kIyw==
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=ig5mQ0gyC0oce1d/Zy8bEsqqFhtDY79w4cUoB0YUJhk=;
+        b=V05U+x4LNh+To0zL8TXuNjeoTipGUWzS4C+mJRGY7QgduElSX56iUMHvUvLMhzjI09
+         E+x7NCxoYFqVyFXI1TlmbTkoG0K6EXcMKlrYySH1QuvGlP37jlNn3/LNPCdiYeEd0GEX
+         LIv1t4Su+H6fvGFvlkkmP2vDMIKlG+WobBu9nm/V5Y5/3H69sLKj+5cEln+2znKR6SCR
+         fC2/3m/sX6SBfZ7eQ1UCfi6CIHJU4yas6UeLgZ+2cIhzSthWxwnpXo5pPTasAbA9B0Xs
+         rfxKIB3w7yzCPfuUTDB83U0KP/M39tuXj5LkDncm21ZIAnPkSh3VMh/A84ECTFd7kj87
+         IbcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=/1JbKgANWf9n04u0SMFCJobkXYrPWds2jPiHBJaP02E=;
-        b=4ZslhKaFhGsognMVSEedOO71W9H2pcdjfMbKpUCNwo6vbBD6S6qvovjbrJDOoSe39w
-         xz0/05lrDXKdpVWrH58Dh+Xtli8fIaQzwwwS4vc2Jxjb1FL8hZ5xno7gguatNT9yFwv6
-         prJb6TOMvvGjOo+b5EX1y3Zc0wLUZ3pP4KKdlYEE5dY2PzBqCmUMSwGM5Hffa4HOJgRf
-         xM+Rlsdj5B8+myGY7/oV1w2zOmA7eTb7COs0gACSeWMsK2eAdbPFACIjeESJbvqDQdRp
-         DELJTHYyfazbx/avBAV1007mc29OUMbeVA6G+/GwfeyQ8B8W207Wc+SR86J/WWOapvGK
-         whLA==
-X-Gm-Message-State: AOAM532qwq9p3WbbGngyGGr0uvjcUhy+ZzaFiH6n1B7SehAx94yGToWI
-        3gdcNayVM8KCjTGaDbk9f7aXI87+ap4=
-X-Google-Smtp-Source: ABdhPJwKc6KGofN6lIiryk5XRjvxUT1QNenY2aeSDiaba45lr73Ne23TXf7L7pbOv2FtkpYpZqYTwQ==
-X-Received: by 2002:a05:622a:15cb:b0:304:c9a7:cee1 with SMTP id d11-20020a05622a15cb00b00304c9a7cee1mr32790417qty.594.1654806275939;
-        Thu, 09 Jun 2022 13:24:35 -0700 (PDT)
-Received: from ?IPV6:2600:1700:2442:6db0:6563:b714:ecb0:c5a1? ([2600:1700:2442:6db0:6563:b714:ecb0:c5a1])
-        by smtp.gmail.com with ESMTPSA id x16-20020a05622a001000b002f39b99f69csm8865646qtw.54.2022.06.09.13.24.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jun 2022 13:24:35 -0700 (PDT)
-Message-ID: <60c2291e-6e74-1df1-692f-00d02f8a83cd@gmail.com>
-Date:   Thu, 9 Jun 2022 15:24:34 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v1 00/16] ACPI: Get rid of the list of children in struct
- acpi_device
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Frank Rowand <frank.rowand@sony.com>,
-        Rob Herring <robh@kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-References: <1843211.tdWV9SEqCh@kreacher>
- <YqINyDTfpNBGDYlb@smile.fi.intel.com>
-From:   Frank Rowand <frowand.list@gmail.com>
-In-Reply-To: <YqINyDTfpNBGDYlb@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=ig5mQ0gyC0oce1d/Zy8bEsqqFhtDY79w4cUoB0YUJhk=;
+        b=1D9WB5ySvUyWI3ZXYW7Ks+Darmk1jJ+AN93nZJBbo+gljwXJVFAdZEB3K/CtLWwuBj
+         VYuKjTtnYYlZ0wW4FpaDPoZDh19B/BzAejjBtUaQjYEcGWW01pkWq04p2tR7X6tMOM5N
+         f44t6z89OXZaZ5cNGKSji6CEk+e7s7Z3pv7p+ZitOKJd0Z51RA5Rpw2JQnijKr9SMOIj
+         l0SjzYg82UUJc4No7JxoL+s2JHge5aW16oLkkMLuQ56LZ1cs8r/r/2a5hojTJvz6HV0O
+         QfZrA3030Oq7mkb6y3LEuRIVeWwjIFc7RN3SXBna7YrjGaG/wTUgSAlZ7MKdocPpDnQ/
+         IieQ==
+X-Gm-Message-State: AOAM532cHXLRs1365q/Q/mkyqaOW6FVIjxZVxvRlHt/hCYksQgMiNVue
+        8v1E45fHuCJZg9z9xYU2+jH0svX3
+X-Google-Smtp-Source: ABdhPJzwx5X0ZE/nM+u+DgO5va7z203Jwou06sjKdU0c0pt2CnSBxfb1v768IuoKgsISspKmOdai1Wxx4w==
+X-Received: from fawn.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5795])
+ (user=morbo job=sendgmr) by 2002:a25:2985:0:b0:663:ec6a:4ff2 with SMTP id
+ p127-20020a252985000000b00663ec6a4ff2mr14049602ybp.166.1654813036265; Thu, 09
+ Jun 2022 15:17:16 -0700 (PDT)
+Date:   Thu,  9 Jun 2022 22:16:19 +0000
+Message-Id: <20220609221702.347522-1-morbo@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.36.1.476.g0c4daa206d-goog
+Subject: [PATCH 00/12] Clang -Wformat warning fixes
+From:   Bill Wendling <morbo@google.com>
+To:     isanbard@gmail.com
+Cc:     Bill Wendling <morbo@google.com>, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Phillip Potter <phil@philpotter.co.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Jan Kara <jack@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Ross Philipson <ross.philipson@oracle.com>,
+        Daniel Kiper <daniel.kiper@oracle.com>,
+        linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/9/22 11:12, Andy Shevchenko wrote:
-> On Thu, Jun 09, 2022 at 03:44:27PM +0200, Rafael J. Wysocki wrote:
->> Hi All,
->>
->> Confusingly enough, the ACPI subsystem stores the information on the given ACPI
->> device's children in two places: as the list of children in struct acpi_device
->> and (as a result of device registration) in the list of children in the embedded
->> struct device.
->>
->> These two lists agree with each other most of the time, but not always (like in
->> error paths in some cases), and the list of children in struct acpi_device is
->> not generally safe to use without locking.  In principle, it should always be
->> walked under acpi_device_lock, but in practice holding acpi_scan_lock is
->> sufficient for that too.  However, its users may not know whether or not
->> they operate under acpi_scan_lock and at least in some cases it is not accessed
->> in a safe way (note that ACPI devices may go away as a result of hot-remove,
-> 
->> unlike OF nodes).
-> 
-> Hmm... Does it true for DT overlays? Not an expert in DT overlays, though,
-> adding Rob and Frank.
+This patch set fixes some clang warnings when -Wformat is enabled.
 
-DT nodes can be removed.  The devicetree code uses devtree_lock and of_mutex
-as needed for protection.
+Bill Wendling (12):
+  x86/mce: use correct format characters
+  x86/CPU/AMD: use correct format characters
+  x86/e820: use correct format characters
+  blk-cgroup: use correct format characters
+  fs: quota: use correct format characters
+  PNP: use correct format characters
+  driver/char: use correct format characters
+  cdrom: use correct format characters
+  ALSA: seq: use correct format characters
+  ALSA: seq: use correct format characters
+  ALSA: control: use correct format characters
+  netfilter: conntrack: use correct format characters
 
--Frank
+ arch/x86/kernel/cpu/mce/amd.c       | 9 +++++----
+ arch/x86/kernel/cpu/mce/core.c      | 2 +-
+ arch/x86/kernel/e820.c              | 4 ++--
+ drivers/cdrom/cdrom.c               | 2 +-
+ drivers/char/mem.c                  | 2 +-
+ drivers/pnp/interface.c             | 2 +-
+ fs/quota/dquot.c                    | 2 +-
+ mm/backing-dev.c                    | 2 +-
+ net/netfilter/nf_conntrack_helper.c | 2 +-
+ scripts/Makefile.extrawarn          | 4 ++--
+ sound/core/control.c                | 2 +-
+ sound/core/seq/seq_clientmgr.c      | 2 +-
+ sound/core/sound.c                  | 2 +-
+ 13 files changed, 19 insertions(+), 18 deletions(-)
 
-> 
->> For this reason, it is better to consolidate the code that needs to walk the
->> children of an ACPI device which is the purpose of this patch series.
->>
->> Overall, it switches over all of the users of the list of children in struct
->> acpi_device to using helpers based on the driver core's mechanics and finally
->> drops that list, but some extra cleanups are done on the way.
->>
->> Please refer to the patch changelogs for details.
-> 
-> I'm going to look the individual patches.
-> 
+-- 
+2.36.1.255.ge46751e96f-goog
 
