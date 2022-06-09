@@ -2,261 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77971544958
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 12:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9695449A3
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jun 2022 13:04:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243308AbiFIKlj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Jun 2022 06:41:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54674 "EHLO
+        id S243370AbiFILEA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Jun 2022 07:04:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243331AbiFIKle (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 06:41:34 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AAC26D262
-        for <linux-acpi@vger.kernel.org>; Thu,  9 Jun 2022 03:41:16 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id k19so31798044wrd.8
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Jun 2022 03:41:16 -0700 (PDT)
+        with ESMTP id S243345AbiFILEA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Jun 2022 07:04:00 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CDCA366AC
+        for <linux-acpi@vger.kernel.org>; Thu,  9 Jun 2022 04:03:55 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id s10so1316601ljh.12
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Jun 2022 04:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:references:date:in-reply-to:message-id
-         :user-agent:mime-version;
-        bh=s7yDuLsDiBHVsfnrsYNovXy2Bt1H7fS8uyn7ZkgnngU=;
-        b=eDFIq80gPXAMihgJnguV6SYMpluR4TOt/h8hslaOGZ2Q67BrpP7JDYL3w0pqImv5hK
-         ZG15Wt+i//lwZOh2a0wx9h6DZNyfSGFWutabFLjjYnBgD6VkzzrSbo7G/gfin92KSJdb
-         iX/CT3fqT7bd4fgyo3wq0R/vNgsBYxmq8DIOFCm/knmAAf9mwwjnELbf2Kn30/U+zQHk
-         GrB3FDhpdgUv+b5/3IG/HSkwtw3jqrKU44sTSQxTkDV2N8snhF6lPUHIwEfGIixPW7sH
-         1qptmVeN+NxPeIuW8yTQVSaCx3yW8tnDFt9+hmArzooYmyRhgT3ZCxzNiKdZFPYgSTQH
-         wgjQ==
+        d=semihalf.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8uYu8lJiNuFARRdH3Dv0gK66JWjRf/8va0hEQMAWSVE=;
+        b=EMsI0ApUkRgweNKPg6JQ59+57gorw/10/iLwDPMox+DFf4tFX79NVzId4ZnoYaSeIo
+         ItBVH0yUXDl/dOKnowxrWthfkBO14pmFh/pObvY6R0XlN9RXXcUOJdXlciyD9tbNE/mb
+         7DoUyRDn5YzZDhSgtQYR+fraUF/bEIhS/QWB0o30u0oAZR49OSDY0FkV1Yg3zUxN0xoD
+         BUuJbojVzCL4rxEeIqfAcpRmngggYe/yr0HDMluZjStSaKFZbviwIT3BhLa2OtxLMKlA
+         9HWXRq6Wg8xi1TBsjlw/rPqpLweQiO/oDugVTY7SsZXfCNHHWJ2N37A3QNlSw/qAG6QG
+         F+wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
-         :message-id:user-agent:mime-version;
-        bh=s7yDuLsDiBHVsfnrsYNovXy2Bt1H7fS8uyn7ZkgnngU=;
-        b=dJZDwrXe2lP1XRqunIDlhvA4iE3yXMtV1KBtnfjOkDJNefF0Dqe7zIQMA1kyZVCZuG
-         M5p9SQxUFxwcU2J93VEa/XyKQOn/AXgOt4+gob/D2VjK8iAEYagK8N5yH7YcuoRXghyV
-         MNZXKMqVp+t9shW/HADkJQIDgFJANAEKVhRalVzSr1lnHj1OtiD2SLHVy7L+woycRIJu
-         4v9jE/5zxebpTF8iKF5Y+3qv2t52GRhL03JvJcsTuBRcr/yyZQ0oQa1svOH8Z7h11CLp
-         Eq6UdfTeVbLFWxKaRHTvqTE+zRqrVX6dlorwxIl8bRa1ccXGfX303EM2DfzSgA38ya2o
-         EeHw==
-X-Gm-Message-State: AOAM530eFZ1HGKab8fUdW+KmBVow1NNUHMkRYX7CRn/pHT2aJo7jYYPJ
-        xFZxLSBOIBh2KG4T9LdaedlRVQ==
-X-Google-Smtp-Source: ABdhPJySkP/Gcqw9Ot76PpqONFdVm06caK34GcJ5EwjfLC4LyV5eeFx3jelqsuqWhs4HRuUa75mquA==
-X-Received: by 2002:adf:f5d0:0:b0:216:5680:b41e with SMTP id k16-20020adff5d0000000b002165680b41emr26289690wrp.216.1654771275138;
-        Thu, 09 Jun 2022 03:41:15 -0700 (PDT)
-Received: from localhost ([109.180.234.132])
-        by smtp.gmail.com with ESMTPSA id bg20-20020a05600c3c9400b0039c15861001sm25820904wmb.21.2022.06.09.03.41.14
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8uYu8lJiNuFARRdH3Dv0gK66JWjRf/8va0hEQMAWSVE=;
+        b=r+Sdxux0PpCdXTypwtrkeW3fBnKtOSIZt0UvHNzjgja0IvFSIVq2p3M+ydJlzv7xXA
+         irg2JcTtQfcDnZxLTEz30YkZ+9+MlRf68Q26eNEj0RH0wVfPF00BKeFk8sQU0454YB6A
+         8yxN3LarlD13k2zO31ADDrxbmYaKXs9lQ0eNh2R9GIzCIjPCi0qrdq8DxKw1cqsqArPf
+         Ua1QDZX5eKKUPu16jt/gfFToAwFZmtPY5nPX1ls/qIgIrrNI42EehQ0wHncXC9dReHrU
+         ulqM1D+gzRLvXu8DPrf70HT4oMdd/rkjHBQNRRLqEEU/6E0gJQ5CNESrXI3HcdxkZPE7
+         vleQ==
+X-Gm-Message-State: AOAM532OC3uvCTP3HN1WrS2voTmmFXk1C1TgzEfJzq9Bu4w23ZH0eFYP
+        IDIz3+Q+8ts1FB0sfMj++6GuaA==
+X-Google-Smtp-Source: ABdhPJzP9OHSzABmTycdeFyssS0y/yZjxyhfETt55oRQaQYmjEFctwgh5JRBToJgpzHJlNQ/K/jgqg==
+X-Received: by 2002:a2e:b5c5:0:b0:255:5ba4:4892 with SMTP id g5-20020a2eb5c5000000b002555ba44892mr26027566ljn.3.1654772633411;
+        Thu, 09 Jun 2022 04:03:53 -0700 (PDT)
+Received: from jazctssd.c.googlers.com.com (138.58.228.35.bc.googleusercontent.com. [35.228.58.138])
+        by smtp.gmail.com with ESMTPSA id a10-20020a194f4a000000b004793605e59dsm2116674lfk.245.2022.06.09.04.03.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jun 2022 03:41:14 -0700 (PDT)
-From:   Punit Agrawal <punit.agrawal@bytedance.com>
-To:     Riwen Lu <luriwen@hotmail.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devel@acpica.org, Riwen Lu <luriwen@kylinos.com>
-Subject: Re: [PATCH v1] ACPI: Split out processor thermal register from ACPI
- PSS
-References: <TYWP286MB26019A5110491AC2C0157082B1A39@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-Date:   Thu, 09 Jun 2022 11:41:13 +0100
-In-Reply-To: <TYWP286MB26019A5110491AC2C0157082B1A39@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-        (Riwen Lu's message of "Sun, 5 Jun 2022 15:58:14 +0800")
-Message-ID: <87h74ui0fq.fsf@stealth>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        Thu, 09 Jun 2022 04:03:52 -0700 (PDT)
+From:   Grzegorz Jaszczyk <jaz@semihalf.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     jaz@semihalf.com, dmy@semihalf.com,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Steve Rutherford <srutherford@google.com>,
+        Zide Chen <zide.chen@intel.corp-partner.google.com>,
+        Peter Fang <peter.fang@intel.corp-partner.google.com>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sachi King <nakato@nakato.io>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Wei Wang <wei.w.wang@intel.com>,
+        Fabiano Rosas <farosas@linux.ibm.com>,
+        David Dunn <daviddunn@google.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        kvm@vger.kernel.org (open list:KERNEL VIRTUAL MACHINE (KVM)),
+        linux-doc@vger.kernel.org (open list:DOCUMENTATION),
+        linux-acpi@vger.kernel.org (open list:ACPI),
+        linux-pm@vger.kernel.org (open list:HIBERNATION (aka Software Suspend,
+        aka swsusp))
+Subject: [PATCH 0/2] x86: notify hypervisor/VMM about guest entering s2idle
+Date:   Thu,  9 Jun 2022 11:03:26 +0000
+Message-Id: <20220609110337.1238762-1-jaz@semihalf.com>
+X-Mailer: git-send-email 2.36.1.476.g0c4daa206d-goog
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Riwen,
+This patchset introduces support which allows to notify first the
+hypervisor about guest entering the s2idle state (patch #1) and second
+propagate this notification to user-space so the VMM can take advantage
+of such notification (patch #2).
 
-Riwen Lu <luriwen@hotmail.com> writes:
+Please see individual patches and commit logs for more verbose description.
 
-> From: Riwen Lu <luriwen@kylinos.com>
->
-> In prior commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
-> driver"), move processor thermal register to acpi_pss_perf_init(), and it
-> won't excute if ACPI_CPU_FREQ_PSS not enabled.
->
-> Since ARM64 support P states by CPPC, it should also support processor
-> passive cooling. So split out the processor thermal cooling register from
-> ACPI PSS.
+Zide Chen (2):
+  x86: notify hypervisor about guest entering s2idle state
+  KVM: x86: notify user space about guest entering s2idle
 
-The commit log is a bit difficult to understand - maybe reword as -
+ Documentation/virt/kvm/api.rst            | 21 +++++++++++++++++++++
+ Documentation/virt/kvm/x86/hypercalls.rst |  7 +++++++
+ arch/x86/include/asm/kvm_host.h           |  2 ++
+ arch/x86/kvm/x86.c                        | 18 ++++++++++++++++++
+ drivers/acpi/x86/s2idle.c                 |  8 ++++++++
+ include/linux/suspend.h                   |  1 +
+ include/uapi/linux/kvm.h                  |  2 ++
+ include/uapi/linux/kvm_para.h             |  1 +
+ kernel/power/suspend.c                    |  4 ++++
+ tools/include/uapi/linux/kvm.h            |  1 +
+ 10 files changed, 65 insertions(+)
 
-    Commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
-    driver"), moves processor thermal registration to acpi_pss_perf_init(),
-    which doesn't get executed if ACPI_CPU_FREQ_PSS is not enabled.
+-- 
+2.36.1.476.g0c4daa206d-goog
 
-    As ARM64 supports P-states using CPPC, it should be possible to also
-    support processor passive cooling even if PSS is not enabled. Split
-    out the processor thermal cooling register from ACPI PSS to support
-    this.
-
-> Signed-off-by: Riwen Lu <luriwen@kylinos.com>
-> ---
-
-[...]
-
-> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-> index 368a9edefd0c..c84738a24eca 100644
-> --- a/drivers/acpi/processor_driver.c
-> +++ b/drivers/acpi/processor_driver.c
-> @@ -142,8 +142,6 @@ static int acpi_soft_cpu_dead(unsigned int cpu)
->  static int acpi_pss_perf_init(struct acpi_processor *pr,
->  		struct acpi_device *device)
->  {
-> -	int result = 0;
-> -
->  	acpi_processor_ppc_has_changed(pr, 0);
->  
->  	acpi_processor_get_throttling_info(pr);
-> @@ -151,53 +149,7 @@ static int acpi_pss_perf_init(struct acpi_processor *pr,
->  	if (pr->flags.throttling)
->  		pr->flags.limit = 1;
->  
-> -	pr->cdev = thermal_cooling_device_register("Processor", device,
-> -						   &processor_cooling_ops);
-> -	if (IS_ERR(pr->cdev)) {
-> -		result = PTR_ERR(pr->cdev);
-> -		return result;
-> -	}
-> -
-> -	dev_dbg(&device->dev, "registered as cooling_device%d\n",
-> -		pr->cdev->id);
-> -
-> -	result = sysfs_create_link(&device->dev.kobj,
-> -				   &pr->cdev->device.kobj,
-> -				   "thermal_cooling");
-> -	if (result) {
-> -		dev_err(&device->dev,
-> -			"Failed to create sysfs link 'thermal_cooling'\n");
-> -		goto err_thermal_unregister;
-> -	}
-> -
-> -	result = sysfs_create_link(&pr->cdev->device.kobj,
-> -				   &device->dev.kobj,
-> -				   "device");
-> -	if (result) {
-> -		dev_err(&pr->cdev->device,
-> -			"Failed to create sysfs link 'device'\n");
-> -		goto err_remove_sysfs_thermal;
-> -	}
-> -
->  	return 0;
-> -
-> - err_remove_sysfs_thermal:
-> -	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> - err_thermal_unregister:
-> -	thermal_cooling_device_unregister(pr->cdev);
-> -
-> -	return result;
-> -}
-> -
-> -static void acpi_pss_perf_exit(struct acpi_processor *pr,
-> -		struct acpi_device *device)
-> -{
-> -	if (pr->cdev) {
-> -		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> -		sysfs_remove_link(&pr->cdev->device.kobj, "device");
-> -		thermal_cooling_device_unregister(pr->cdev);
-> -		pr->cdev = NULL;
-> -	}
->  }
->  #else
->  static inline int acpi_pss_perf_init(struct acpi_processor *pr,
-> @@ -205,9 +157,6 @@ static inline int acpi_pss_perf_init(struct acpi_processor *pr,
->  {
->  	return 0;
->  }
-> -
-> -static inline void acpi_pss_perf_exit(struct acpi_processor *pr,
-> -		struct acpi_device *device) {}
->  #endif /* CONFIG_ACPI_CPU_FREQ_PSS */
->  
->  static int __acpi_processor_start(struct acpi_device *device)
-> @@ -229,9 +178,35 @@ static int __acpi_processor_start(struct acpi_device *device)
->  	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
->  		acpi_processor_power_init(pr);
->  
-> -	result = acpi_pss_perf_init(pr, device);
-> -	if (result)
-> +	acpi_pss_perf_init(pr, device);
-
-The return value of acpi_pss_perf_init() isn't used anymore. Please also
-update the function signature to void and drop the redundant return.
-
-> +
-> +	pr->cdev = thermal_cooling_device_register("Processor", device,
-> +						   &processor_cooling_ops);
-> +	if (IS_ERR(pr->cdev)) {
-> +		result = PTR_ERR(pr->cdev);
->  		goto err_power_exit;
-> +	}
-> +
-> +	dev_dbg(&device->dev, "registered as cooling_device%d\n",
-> +		pr->cdev->id);
-> +
-> +	result = sysfs_create_link(&device->dev.kobj,
-> +				   &pr->cdev->device.kobj,
-> +				   "thermal_cooling");
-> +	if (result) {
-> +		dev_err(&device->dev,
-> +			"Failed to create sysfs link 'thermal_cooling'\n");
-> +		goto err_thermal_unregister;
-> +	}
-> +
-> +	result = sysfs_create_link(&pr->cdev->device.kobj,
->> +				   &device->dev.kobj,
-> +				   "device");
-> +	if (result) {
-> +		dev_err(&pr->cdev->device,
-> +			"Failed to create sysfs link 'device'\n");
-> +		goto err_remove_sysfs_thermal;
-> +	}
-
-Instead of copying the block back here, it would be better to move it
-into a separate function in processor_thermal.c that can be called
-here.
-
->  
->  	status = acpi_install_notify_handler(device->handle, ACPI_DEVICE_NOTIFY,
->  					     acpi_processor_notify, device);
-> @@ -239,8 +214,11 @@ static int __acpi_processor_start(struct acpi_device *device)
->  		return 0;
->  
->  	result = -ENODEV;
-> -	acpi_pss_perf_exit(pr, device);
-> -
-> +	sysfs_remove_link(&pr->cdev->device.kobj, "device");
-> +err_remove_sysfs_thermal:
-> +	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> +err_thermal_unregister:
-> +	thermal_cooling_device_unregister(pr->cdev);
->  err_power_exit:
->  	acpi_processor_power_exit(pr);
->  	return result;
-> @@ -277,10 +255,15 @@ static int acpi_processor_stop(struct device *dev)
->  		return 0;
->  	acpi_processor_power_exit(pr);
->  
-> -	acpi_pss_perf_exit(pr, device);
-> -
->  	acpi_cppc_processor_exit(pr);
->  
-> +	if (pr->cdev) {
-> +		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> +		sysfs_remove_link(&pr->cdev->device.kobj, "device");
-> +		thermal_cooling_device_unregister(pr->cdev);
-> +		pr->cdev = NULL;
-> +	}
-> +
-
-Similarly, the removal can also be moved to a function in processor_thermal.c.
-
-Thoughts?
-
-[...]
