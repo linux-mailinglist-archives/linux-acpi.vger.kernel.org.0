@@ -2,117 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C297545C9F
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 08:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF90545E3D
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 10:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237499AbiFJGrn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jun 2022 02:47:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45676 "EHLO
+        id S1347166AbiFJILL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jun 2022 04:11:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346578AbiFJGrm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 02:47:42 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E2563BD6;
-        Thu,  9 Jun 2022 23:47:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654843659; x=1686379659;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gdZIHA1wyCczBRKn7aGbyGkKbJ8yyoLB/kKHMoVwUgo=;
-  b=H2REd8vvOrtv9iIowuAZDjFSXNBCsFDdvwt0CeInumQxc6zbH3/Sxi5Z
-   HdC2e8rHjo1zsFtoyKV4RKHPTUve30gokGQjMf+ydFMrx38F7JG+QQeza
-   BVDM/vYcbpRbvCe65v3z4LVr7mo1Mp31Za6GGI+12ShpL0VaZE4Y+0mAv
-   vRr2kvxRLo4Se+Kof/PCHjo3GtZOy3xqQxb0r1+t2VXvYHLYeQqOnHbA7
-   E7TJf5hvU8S5ktZS+i/xLXrIHJaDCQCNo1cLrWYZA022clgzp79NjpXTy
-   vIUCMw2hqhs3/VKPetH6w37F307lIt7KqexOq3ZitWVS2V6pnEUMa90Ps
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="363864975"
-X-IronPort-AV: E=Sophos;i="5.91,288,1647327600"; 
-   d="scan'208";a="363864975"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 23:47:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,288,1647327600"; 
-   d="scan'208";a="724822524"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 09 Jun 2022 23:47:35 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 10 Jun 2022 09:47:34 +0300
-Date:   Fri, 10 Jun 2022 09:47:34 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        with ESMTP id S1347159AbiFJILK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 04:11:10 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 697F021E0EF;
+        Fri, 10 Jun 2022 01:11:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=w8J2KWjgjx9J/jKYFe8GjW3jNW9wYeGtv0q5FHV/ys4=; b=GB5aPyYFM6PkAx1k8v49cM2BwJ
+        WcHcAb9jUq2QalpM0aIhDr3+BATD+8EYM+eWrdcimaNJm2xzuBjssr8WpUOHCt60n94XAWc3FLON0
+        Ea9J0QBamM6uWTM+4HzYRBxWYDjskhw+JmLncWTsnFKFqxOWIxsmL4IFLm4L1tdnFjZSI0pPplO8o
+        9sJxX0TlKZO3aKYVSMxNIiHKcE1/kS+w9R9M0LWGRUAImkmbZyNxVDSII1uFSuj5x0bXfi1yfXOOK
+        c3DmI+O3f6cqKS1/lbJzaDxCojVk8Q1W7xF3ZeNStt9QC+dLwogmOOIHoLpghg/0Ij+XccRx5toAG
+        ilnXeRzQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nzZin-006gfR-MQ; Fri, 10 Jun 2022 08:10:21 +0000
+Date:   Fri, 10 Jun 2022 01:10:21 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Bill Wendling <morbo@google.com>
+Cc:     isanbard@gmail.com, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Phillip Potter <phil@philpotter.co.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH v1 05/16] USB: ACPI: Use acpi_find_child_by_adr()
-Message-ID: <YqLpBp0NYhOCCd2X@kuha.fi.intel.com>
-References: <1843211.tdWV9SEqCh@kreacher>
- <3459925.iIbC2pHGDl@kreacher>
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Jan Kara <jack@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Ross Philipson <ross.philipson@oracle.com>,
+        Daniel Kiper <daniel.kiper@oracle.com>,
+        linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH 04/12] blk-cgroup: use correct format characters
+Message-ID: <YqL8bTQxrkQjlSBT@infradead.org>
+References: <20220609221702.347522-1-morbo@google.com>
+ <20220609221702.347522-5-morbo@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3459925.iIbC2pHGDl@kreacher>
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220609221702.347522-5-morbo@google.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 09, 2022 at 03:56:42PM +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Instead of walking the list of children of an ACPI device directly
-> in order to find the child matching a given bus address, use
-> acpi_find_child_by_adr() for this purpose.
-> 
-> Apart from simplifying the code, this will help to eliminate the
-> children list head from struct acpi_device as it is redundant and it
-> is used in questionable ways in some places (in particular, locking is
-> needed for walking the list pointed to it safely, but it is often
-> missing).
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  drivers/usb/core/usb-acpi.c |    9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
-> 
-> Index: linux-pm/drivers/usb/core/usb-acpi.c
-> ===================================================================
-> --- linux-pm.orig/drivers/usb/core/usb-acpi.c
-> +++ linux-pm/drivers/usb/core/usb-acpi.c
-> @@ -127,17 +127,10 @@ out:
->  static struct acpi_device *usb_acpi_find_port(struct acpi_device *parent,
->  					      int raw)
->  {
-> -	struct acpi_device *adev;
-> -
->  	if (!parent)
->  		return NULL;
->  
-> -	list_for_each_entry(adev, &parent->children, node) {
-> -		if (acpi_device_adr(adev) == raw)
-> -			return adev;
-> -	}
-> -
-> -	return acpi_find_child_device(parent, raw, false);
-> +	return acpi_find_child_by_adr(parent, raw);
->  }
->  
->  static struct acpi_device *
+On Thu, Jun 09, 2022 at 10:16:23PM +0000, Bill Wendling wrote:
+>  	vsnprintf(bdi->dev_name, sizeof(bdi->dev_name), fmt, args);
+> -	dev = device_create(bdi_class, NULL, MKDEV(0, 0), bdi, bdi->dev_name);
+> +	dev = device_create(bdi_class, NULL, MKDEV(0, 0), bdi, "%s", bdi->dev_name);
 
-I think usb_acpi_find_port() can also be dropped now.
+Please avoid the overly long line.  But given that bdi names aren't user
+input this warning seems to shoot from the hip a bit.
 
-thanks,
-
--- 
-heikki
