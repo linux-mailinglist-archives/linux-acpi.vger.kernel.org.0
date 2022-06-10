@@ -2,103 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B86D5461E7
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 11:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CB8D5462EA
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 11:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349184AbiFJJZG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jun 2022 05:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35156 "EHLO
+        id S1344353AbiFJJ6v convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 10 Jun 2022 05:58:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349762AbiFJJYX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 05:24:23 -0400
-Received: from a3.inai.de (a3.inai.de [IPv6:2a01:4f8:10b:45d8::f5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD513158744;
-        Fri, 10 Jun 2022 02:22:47 -0700 (PDT)
-Received: by a3.inai.de (Postfix, from userid 25121)
-        id 7182C5872870F; Fri, 10 Jun 2022 11:22:46 +0200 (CEST)
+        with ESMTP id S1347393AbiFJJ6v (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 05:58:51 -0400
+X-Greylist: delayed 397 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 10 Jun 2022 02:58:47 PDT
+Received: from pout.email.it (pout.email.it [77.93.251.230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700CAB040C;
+        Fri, 10 Jun 2022 02:58:47 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by a3.inai.de (Postfix) with ESMTP id 70A0760C247D5;
-        Fri, 10 Jun 2022 11:22:46 +0200 (CEST)
-Date:   Fri, 10 Jun 2022 11:22:46 +0200 (CEST)
-From:   Jan Engelhardt <jengelh@inai.de>
-To:     David Laight <David.Laight@ACULAB.COM>
-cc:     'Bill Wendling' <morbo@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Bill Wendling <isanbard@gmail.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Phillip Potter <phil@philpotter.co.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Jan Kara <jack@suse.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
-        "coreteam@netfilter.org" <coreteam@netfilter.org>,
-        Networking <netdev@vger.kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        clang-built-linux <llvm@lists.linux.dev>
-Subject: RE: [PATCH 00/12] Clang -Wformat warning fixes
-In-Reply-To: <724889aa6a8d4d41b8557733610c7657@AcuMS.aculab.com>
-Message-ID: <so239116-75sq-89rs-nron-35nsq660rs8n@vanv.qr>
-References: <20220609221702.347522-1-morbo@google.com> <20220609152527.4ad7862d4126e276e6f76315@linux-foundation.org> <CAGG=3QXDt9AeCQOAp1311POFRSByJru4=Q=oFiQn3u2iZYk2_w@mail.gmail.com> <01da36bfd13e421aadb2eff661e7a959@AcuMS.aculab.com>
- <o5496n8r-451p-751-3258-97112opns7s8@vanv.qr> <724889aa6a8d4d41b8557733610c7657@AcuMS.aculab.com>
-User-Agent: Alpine 2.25 (LSU 592 2021-09-18)
+        by pout.email.it (Postfix) with ESMTP id 4A930CBD01;
+        Fri, 10 Jun 2022 11:52:07 +0200 (CEST)
+Received: from pout.email.it ([127.0.0.1])
+        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id a-vjGxilERSg; Fri, 10 Jun 2022 11:52:07 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by pout.email.it (Postfix) with ESMTP id F2B8ECE1CF;
+        Fri, 10 Jun 2022 11:52:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at ir-mtaout02.email.it
+Received: from pout.email.it ([127.0.0.1])
+        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id NW5ds1gH4l21; Fri, 10 Jun 2022 11:52:06 +0200 (CEST)
+Received: from ir-zstore42.email.it (unknown [192.168.25.42])
+        by pout.email.it (Postfix) with ESMTP id DB257CBD01;
+        Fri, 10 Jun 2022 11:52:05 +0200 (CEST)
+Date:   Fri, 10 Jun 2022 11:52:05 +0200 (CEST)
+From:   blinkin@email.it
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        linux-acpi <linux-acpi@vger.kernel.org>
+Message-ID: <1131544892.7359423.1654854725508.JavaMail.zimbra@email.it>
+Subject: Re: Bug report for kernel v4.15-rc8+
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Originating-IP: [93.146.250.201]
+X-Mailer: Zimbra 8.8.15_GA_4257 (ZimbraWebClient - GC102 (Linux)/8.8.15_GA_4257)
+Thread-Index: 3jCrU3LIC1isKA2ySsKGyjGyPR+46g==
+Thread-Topic: Bug report for kernel v4.15-rc8+
+X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,FREEMAIL_FROM,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+hello, any news on this?
 
-On Friday 2022-06-10 11:14, David Laight wrote:
->> >Yep, IMHO definitely should be fixed.
->> >It is even possible that using "%s" is faster because the printf
->> >code doesn't have to scan the string for format effectors.
->> 
->> I see no special handling; the vsnprintf function just loops
->> over fmt as usual and I see no special casing of fmt by
->> e.g. strcmp(fmt, "%s") == 0 to take a shortcut.
+----- Messaggio originale -----
+Da: "Thomas Gleixner" <tglx@linutronix.de>
+A: blinkin@email.it
+Cc: "linux-kernel" <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Inviato: Mercoledì, 11 agosto 2021 16:20:41
+Oggetto: Re: Bug report for kernel v4.15-rc8+
+
+On Wed, Aug 11 2021 at 15:51, blinkin@email.it wrote:
+> 1) You're booting with an out of tree module
 >
->Consider the difference between:
->	printf("fubar");
->and
->	printf("%s", "fubar");
->In the former all of "fubar" is checked for '%'.
->In the latter only the length of "fubar" has to be counted.
+>   Uninstalled virtualbox, reproduced same behavior without the module.
+>   dmesg outputs attached with and without the workaround
+>   (dmesg_novboxdrv_clean.txt and dmesg_novboxdrv_irqaffinity0.txt)
 
-To check the length of "fubar", printf first needs to know that there
-even is an argument to be pulled from the stack, which it does by
-evaluating the format string.
+Ok.
 
-So, in fairness, it's more like:
+> 2) Please provide information what is consuming 90% of a CPU
+>
+>   top shows a kworker process consistently at 50% without the
+>   workaround, 60% with the workaround. No significant activity amounts
+>   from other processes.  Sometimes that 50% is split between two
+>   kworker processes for a short time.  CPU core #0 activity is a
+>   constant 60% without the workaround, 90% with the workaround
 
- >> In the latter, all of "%s" is checked for '%'.
+That's broken. /proc/interrupts gives some hint:
+
+1) Stock kernel
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          0          0          0          9  IR-IO-APIC    1-edge      i8042
+>    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:          0     923411          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+900k ACPI interrupts right after boot
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          0          0          0         11  IR-IO-APIC    1-edge      i8042
+>    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:          0    4869059          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+One minute later it's 4.8M
+
+With affinity forced to CPU0 it's even more:
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          9          0          0          0  IR-IO-APIC    1-edge      i8042
+>    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:    7576456          0          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+7.5M right after boot
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:         11          0          0          0  IR-IO-APIC    1-edge      i8042
+>    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:   10992420          0          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+10.9M after one minute. Though the delta between right after boot and 1
+minute later is in the same ballpark.
+
+Cc'ed the ACPI people for clues.
+
+Thanks,
+
+        tglx
