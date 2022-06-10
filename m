@@ -2,92 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F113A5465DF
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 13:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C715546662
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 14:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347706AbiFJLiR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jun 2022 07:38:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53720 "EHLO
+        id S1348632AbiFJMRA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jun 2022 08:17:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347728AbiFJLhW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 07:37:22 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAEA171A12
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Jun 2022 04:36:53 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id b7so16747953ljr.6
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Jun 2022 04:36:53 -0700 (PDT)
+        with ESMTP id S1345267AbiFJMQ7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 08:16:59 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4934248577
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Jun 2022 05:16:55 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id y15so23974141ljc.0
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Jun 2022 05:16:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=2bt8jTYVrowhc1gg8uINAlbLKdSaOnKBxI1tejzJnw0=;
-        b=VytV+NMseeOv5ay6lpQ90w3nH/J9TkSL7TDekYgqNJ6A5QUx0JjdEV0LQWDwhoNvvm
-         Rz8hppK3LV/Zx32rXRUnaGgGsmX5wt3+Wmt5lTiuSxzOy65Y0u8rI5JHIib+7RFuxjoR
-         K4FMqtzyophRWwfQGCU0kfhqOEQ94XiFDzl6um4dsmiYHUWa3LfOkaMwdF1Qku7lIBoX
-         +J4huc80z4RkwDz+5pqpvmsCfTSDrhJkZa4kFfpu1icagXacVx0PxFd+2xgKHpaVRf2K
-         OAx2EknOTp0kRe54ep30g5Aq3K5hi4ofIym1NY+KaQ9x9OaGRMBB+UILcxymGGjOJClP
-         HyHA==
+         :cc;
+        bh=gx0HoGasRN7LdR7eXYM/bWw5laTDgx21Bj10QU7IgZA=;
+        b=PnkYuuTonTwBAgjp/oKukv2FRIPd9je9Ttx3Q7yPHEpSoRKF9u97bHZ5iZ6/9JNTFS
+         rhA5sF0dx/LtqGpSihcCe5Vsf6yVNhWEm3yCE2Uc23JvAxaaelk/CWNhazNI/abNqL5Q
+         PABNTspLYCIwWOsW8fRrQUBWWG+XSnXU9YGS1QdDHhewm+5321VV+AVLpJ77ALXkJJzn
+         a7PxBnMdO7CtNWeROr5ayi4wtni+E2aA82zhcSJ752cDBFC2JaBTnRiTCa99ph0NtaTe
+         q4A1pWQNZCtjoPzO2v4xzEAh/BW094vPipo8w/R+PYFayhNprB/QBOhb9EPotq478h0V
+         kUUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=2bt8jTYVrowhc1gg8uINAlbLKdSaOnKBxI1tejzJnw0=;
-        b=Qfk+slTvDd7svL9F/sexvYYmtwybHAKURkf+1JYlRxZVzwocd8qEInWkDVSUbwKSil
-         qocbET4acNJUIuD8Zidg6Qemtncc4Y5qkqEfirMKyQfc/lWyhqUpOEcxvPbxJZnbaEZs
-         OZhzCQFHFx0cJFle/M5AtUqmbcioPweIfkaBOAHwuNJA5IDH9YFb+s5+7ssjbW1oe6Ip
-         RAhccOxQfmrC62WTkJaDULyuLDrc8vpDBZ0i0cIf1Vl+1TX0tJ1s+65wcrR3CRFRaIXq
-         LQ5CPccUf4v1qHi5lbXugBZpsJlJpVmlLvoBNeQhaBW/og4mOPC+ztxEdV7rnbgNyTOl
-         7Gpw==
-X-Gm-Message-State: AOAM532646igsMhYkkxO8uDJoDpShW3Se73+VuvyEJGsdAn24OzjKh1c
-        5UHpVOVXU/dcjCYMJ7f6zhwO0Wp4no/aZk9HoAHN+A==
-X-Google-Smtp-Source: ABdhPJz8nMlzBjn3iuzofJua8K4CiElzoan8JfpHCRGcxYs+YT4rOc7inWwuPW0xOg+L4p23ZR9tOj3oZXYetl1y8Z0=
-X-Received: by 2002:a2e:9a82:0:b0:255:77fd:1c2c with SMTP id
- p2-20020a2e9a82000000b0025577fd1c2cmr21978710lji.357.1654861012161; Fri, 10
- Jun 2022 04:36:52 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=gx0HoGasRN7LdR7eXYM/bWw5laTDgx21Bj10QU7IgZA=;
+        b=z4lf+S0KkzydZSkD3AG/Egr08a5Vg5vjwY5hhY/sjksp0BxBR1/I8EH0XWNhjd6hK3
+         tiqI+6hNY5FPVq06f++ol8Ef8sSBTFrTLtYpPLGMTa3oCQaa4GQVigftNSfBONmHcmx4
+         aoek8oGziZ/Mqztt7YOg9WY0hbbU3zLXT/frtFXZjTERK/dViyAt6IuZTDhdtJyWD+p1
+         jlAdmPzC+k4n7xyuI/jwOWfk9v7TZMk5AGlN7Tj7yH9VhLOzrUMxyqrlO7BCwF+cLs1T
+         mM8o+xPSWuJMcWNjNPX2gzHYQ4wtlJ/OsLH7Z2qMdP5oxoENjc1qflpXzjLTCqmNzeSQ
+         /P6w==
+X-Gm-Message-State: AOAM533gcHR6qFJiA7GD7J45cbqy+AXboM05YMXqmZ2gY2bjN3UJ4d3F
+        BEPRXtItI+jm9RbeaDlLskU8KPHpWjuK7nDtG51YLQ==
+X-Google-Smtp-Source: ABdhPJzVguDPZ+MKhgnbfJ241zsjVT6vsWAAftLPmBKsL1BbPVGEvC63gkUEhpJLAgXajRky7w54C+QoCvQsvmQNKRc=
+X-Received: by 2002:a2e:818c:0:b0:255:a6c5:4304 with SMTP id
+ e12-20020a2e818c000000b00255a6c54304mr10731225ljg.367.1654863413929; Fri, 10
+ Jun 2022 05:16:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220609110337.1238762-1-jaz@semihalf.com> <20220609110337.1238762-2-jaz@semihalf.com>
- <f62ab257-b2e0-3097-e394-93a9e7a0d2bf@intel.com>
-In-Reply-To: <f62ab257-b2e0-3097-e394-93a9e7a0d2bf@intel.com>
-From:   Grzegorz Jaszczyk <jaz@semihalf.com>
-Date:   Fri, 10 Jun 2022 13:36:41 +0200
-Message-ID: <CAH76GKPo6VL33tBaZyszL8wvjpzJ7hjOg3o1JddaEnuGbwk=dQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] x86: notify hypervisor about guest entering s2idle state
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     linux-kernel@vger.kernel.org, Dmytro Maluka <dmy@semihalf.com>,
-        Zide Chen <zide.chen@intel.corp-partner.google.com>,
-        Peter Fang <peter.fang@intel.corp-partner.google.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+References: <1843211.tdWV9SEqCh@kreacher> <2159220.NgBsaNRSFp@kreacher>
+In-Reply-To: <2159220.NgBsaNRSFp@kreacher>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 10 Jun 2022 14:16:17 +0200
+Message-ID: <CAPDyKFrbSm7iMx-XnMJ5xyKnd13_kC9w+qjVreeadUb=+bwaNQ@mail.gmail.com>
+Subject: Re: [PATCH v1 15/16] ACPI / MMC: PM: Unify fixing up device power
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Sachi King <nakato@nakato.io>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        David Dunn <daviddunn@google.com>,
-        Wei Wang <wei.w.wang@intel.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "open list:KERNEL VIRTUAL MACHINE (KVM)" <kvm@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
-        <linux-pm@vger.kernel.org>
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -98,45 +72,132 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-czw., 9 cze 2022 o 16:27 Dave Hansen <dave.hansen@intel.com> napisa=C5=82(a=
-):
+On Thu, 9 Jun 2022 at 16:20, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
 >
-> On 6/9/22 04:03, Grzegorz Jaszczyk wrote:
-> > Co-developed-by: Peter Fang <peter.fang@intel.corp-partner.google.com>
-> > Signed-off-by: Peter Fang <peter.fang@intel.corp-partner.google.com>
-> > Co-developed-by: Tomasz Nowicki <tn@semihalf.com>
-> > Signed-off-by: Tomasz Nowicki <tn@semihalf.com>
-> > Signed-off-by: Zide Chen <zide.chen@intel.corp-partner.google.com>
-> > Co-developed-by: Grzegorz Jaszczyk <jaz@semihalf.com>
-> > Signed-off-by: Grzegorz Jaszczyk <jaz@semihalf.com>
-> > ---
-> >  Documentation/virt/kvm/x86/hypercalls.rst | 7 +++++++
-> >  arch/x86/kvm/x86.c                        | 3 +++
-> >  drivers/acpi/x86/s2idle.c                 | 8 ++++++++
-> >  include/linux/suspend.h                   | 1 +
-> >  include/uapi/linux/kvm_para.h             | 1 +
-> >  kernel/power/suspend.c                    | 4 ++++
-> >  6 files changed, 24 insertions(+)
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 >
-> What's the deal with these emails?
+> Introduce acpi_device_fix_up_power_extended() for fixing up power of
+> a device having an ACPI companion in a manner that takes the device's
+> children into account and make the MMC code use it in two places
+> instead of walking the list of the device ACPI companion's children
+> directly.
 >
->         zide.chen@intel.corp-partner.google.com
+> This will help to eliminate the children list head from struct
+> acpi_device as it is redundant and it is used in questionable ways
+> in some places (in particular, locking is needed for walking the
+> list pointed to it safely, but it is often missing).
 >
-> I see a smattering of those in the git logs, but never for Intel folks.
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-I've kept emails as they were in the original patch and I do not think
-I should change them. This is what Zide and Peter originally used.
+Rafael, feel free to pick this via your tree.
 
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Kind regards
+Uffe
+
+> ---
+>  drivers/acpi/device_pm.c          |   22 ++++++++++++++++++++++
+>  drivers/mmc/host/sdhci-acpi.c     |    7 ++-----
+>  drivers/mmc/host/sdhci-pci-core.c |   11 +++--------
+>  include/acpi/acpi_bus.h           |    1 +
+>  4 files changed, 28 insertions(+), 13 deletions(-)
 >
-> I'll also say that I'm a bit suspicious of a patch that includes 5
-> authors for 24 lines of code.  Did it really take five of you to write
-> 24 lines of code?
-
-This patch was built iteratively: original patch comes from Zide and
-Peter, I've squashed it with Tomasz later changes and reworked by
-myself for upstream. I didn't want to take credentials from any of the
-above so ended up with Zide as an author and 3 co-developers. Please
-let me know if that's an issue.
-
-Best regards,
-Grzegorz
+> Index: linux-pm/drivers/mmc/host/sdhci-acpi.c
+> ===================================================================
+> --- linux-pm.orig/drivers/mmc/host/sdhci-acpi.c
+> +++ linux-pm/drivers/mmc/host/sdhci-acpi.c
+> @@ -775,8 +775,8 @@ static int sdhci_acpi_probe(struct platf
+>  {
+>         struct device *dev = &pdev->dev;
+>         const struct sdhci_acpi_slot *slot;
+> -       struct acpi_device *device, *child;
+>         const struct dmi_system_id *id;
+> +       struct acpi_device *device;
+>         struct sdhci_acpi_host *c;
+>         struct sdhci_host *host;
+>         struct resource *iomem;
+> @@ -796,10 +796,7 @@ static int sdhci_acpi_probe(struct platf
+>         slot = sdhci_acpi_get_slot(device);
+>
+>         /* Power on the SDHCI controller and its children */
+> -       acpi_device_fix_up_power(device);
+> -       list_for_each_entry(child, &device->children, node)
+> -               if (child->status.present && child->status.enabled)
+> -                       acpi_device_fix_up_power(child);
+> +       acpi_device_fix_up_power_extended(device);
+>
+>         if (sdhci_acpi_byt_defer(dev))
+>                 return -EPROBE_DEFER;
+> Index: linux-pm/drivers/acpi/device_pm.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/device_pm.c
+> +++ linux-pm/drivers/acpi/device_pm.c
+> @@ -369,6 +369,28 @@ int acpi_device_fix_up_power(struct acpi
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_device_fix_up_power);
+>
+> +static int fix_up_power_if_applicable(struct acpi_device *adev, void *not_used)
+> +{
+> +       if (adev->status.present && adev->status.enabled)
+> +               acpi_device_fix_up_power(adev);
+> +
+> +       return 0;
+> +}
+> +
+> +/**
+> + * acpi_device_fix_up_power_extended - Force device and its children into D0.
+> + * @adev: Parent device object whose power state is to be fixed up.
+> + *
+> + * Call acpi_device_fix_up_power() for @adev and its children so long as they
+> + * are reported as present and enabled.
+> + */
+> +void acpi_device_fix_up_power_extended(struct acpi_device *adev)
+> +{
+> +       acpi_device_fix_up_power(adev);
+> +       acpi_dev_for_each_child(adev, fix_up_power_if_applicable, NULL);
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_device_fix_up_power_extended);
+> +
+>  int acpi_device_update_power(struct acpi_device *device, int *state_p)
+>  {
+>         int state;
+> Index: linux-pm/include/acpi/acpi_bus.h
+> ===================================================================
+> --- linux-pm.orig/include/acpi/acpi_bus.h
+> +++ linux-pm/include/acpi/acpi_bus.h
+> @@ -524,6 +524,7 @@ const char *acpi_power_state_string(int
+>  int acpi_device_set_power(struct acpi_device *device, int state);
+>  int acpi_bus_init_power(struct acpi_device *device);
+>  int acpi_device_fix_up_power(struct acpi_device *device);
+> +void acpi_device_fix_up_power_extended(struct acpi_device *adev);
+>  int acpi_bus_update_power(acpi_handle handle, int *state_p);
+>  int acpi_device_update_power(struct acpi_device *device, int *state_p);
+>  bool acpi_bus_power_manageable(acpi_handle handle);
+> Index: linux-pm/drivers/mmc/host/sdhci-pci-core.c
+> ===================================================================
+> --- linux-pm.orig/drivers/mmc/host/sdhci-pci-core.c
+> +++ linux-pm/drivers/mmc/host/sdhci-pci-core.c
+> @@ -1240,16 +1240,11 @@ static const struct sdhci_pci_fixes sdhc
+>  #ifdef CONFIG_ACPI
+>  static void intel_mrfld_mmc_fix_up_power_slot(struct sdhci_pci_slot *slot)
+>  {
+> -       struct acpi_device *device, *child;
+> +       struct acpi_device *device;
+>
+>         device = ACPI_COMPANION(&slot->chip->pdev->dev);
+> -       if (!device)
+> -               return;
+> -
+> -       acpi_device_fix_up_power(device);
+> -       list_for_each_entry(child, &device->children, node)
+> -               if (child->status.present && child->status.enabled)
+> -                       acpi_device_fix_up_power(child);
+> +       if (device)
+> +               acpi_device_fix_up_power_extended(device);
+>  }
+>  #else
+>  static inline void intel_mrfld_mmc_fix_up_power_slot(struct sdhci_pci_slot *slot) {}
+>
+>
+>
