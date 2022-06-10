@@ -2,125 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63EED545B9F
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 07:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 982DB545C99
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 08:47:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345986AbiFJFUl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jun 2022 01:20:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36338 "EHLO
+        id S1346324AbiFJGqf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jun 2022 02:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346132AbiFJFUk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 01:20:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83A643B3C2;
-        Thu,  9 Jun 2022 22:20:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 43230B830F6;
-        Fri, 10 Jun 2022 05:20:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6278AC34114;
-        Fri, 10 Jun 2022 05:20:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1654838433;
-        bh=obJOg0nC5+NFcMbSl//FLvr+ceUwgMoc50Ko3u2Lf80=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k/PjXRW3Ejm3OWA0ILi7O80zfEKst1OpP7BC0SxRltN5BaZsp6jjKtr3wXBUDO5zB
-         e4Raz/E5WEJs1UM/fE5IzTFZTwR5xBef7mdwfpGnTFs6jcYygdrsalBjswLqjAwcn8
-         xxzJxOn25O10o5RwvKHTCaY9QGZ0KZC/wv3VRoMA=
-Date:   Fri, 10 Jun 2022 07:20:31 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Bill Wendling <morbo@google.com>
-Cc:     Jan Engelhardt <jengelh@inai.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Bill Wendling <isanbard@gmail.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Phillip Potter <phil@philpotter.co.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Jan Kara <jack@suse.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        linux-edac@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-mm@kvack.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, Networking <netdev@vger.kernel.org>,
-        alsa-devel@alsa-project.org,
-        clang-built-linux <llvm@lists.linux.dev>
-Subject: Re: [PATCH 00/12] Clang -Wformat warning fixes
-Message-ID: <YqLUn3RdZ9HAKZKu@kroah.com>
-References: <20220609221702.347522-1-morbo@google.com>
- <20220609152527.4ad7862d4126e276e6f76315@linux-foundation.org>
- <CAGG=3QXDt9AeCQOAp1311POFRSByJru4=Q=oFiQn3u2iZYk2_w@mail.gmail.com>
- <nssn2ps-6n86-nqq6-9039-72847760nnq@vanv.qr>
- <CAGG=3QU0XJhQKJXLMayOkQSiF2yjBi2p2TEZ9KNTzU5mmye-gg@mail.gmail.com>
+        with ESMTP id S234950AbiFJGqd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 02:46:33 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377235A5BC;
+        Thu,  9 Jun 2022 23:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654843592; x=1686379592;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bak+PaguLlGs0EMkmOjZv7d+/b+qyh+9qIl37rSGwWQ=;
+  b=n5n/0j+QM4D+bU9C+wo+Nhrvo/4md9X+DLqor+o1kRt+3DVxNYDMfj8y
+   TyMwNs2N52NnLJ9AUhQoUmAoLi6BWoX7ri7HcKv0hh3etgE0PsCPef2hT
+   iecNbJO+Wr5cbLrKMUsaYXnTWUkhqinbx4gTVt8r+tp7YwlEZZOY7AEUO
+   jqDix+Xdq70/2c+v8qzUWFOpap/uAtECC3e25psmnd2/WGx5d0AdnhOOn
+   NYTJsR//i9cX0CiR+GcCno0UdToKa6XhLtndVt2a9fleIWR7BNKBR1r5E
+   HiFUNfGmv2QssCOEJegwz3fqSYGhWiZzkta16vSf11ELW2+vF3nyHILqp
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="339289554"
+X-IronPort-AV: E=Sophos;i="5.91,288,1647327600"; 
+   d="scan'208";a="339289554"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 23:46:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,288,1647327600"; 
+   d="scan'208";a="724822105"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 09 Jun 2022 23:46:27 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 10 Jun 2022 09:46:26 +0300
+Date:   Fri, 10 Jun 2022 09:46:26 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH v1 04/16] thunderbolt: ACPI: Use acpi_find_child_by_adr()
+Message-ID: <YqLowrkmibyh56T+@kuha.fi.intel.com>
+References: <1843211.tdWV9SEqCh@kreacher>
+ <7414189.EvYhyI6sBW@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGG=3QU0XJhQKJXLMayOkQSiF2yjBi2p2TEZ9KNTzU5mmye-gg@mail.gmail.com>
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <7414189.EvYhyI6sBW@kreacher>
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 09, 2022 at 04:16:16PM -0700, Bill Wendling wrote:
-> On Thu, Jun 9, 2022 at 4:03 PM Jan Engelhardt <jengelh@inai.de> wrote:
-> > On Friday 2022-06-10 00:49, Bill Wendling wrote:
-> > >On Thu, Jun 9, 2022 at 3:25 PM Andrew Morton <akpm@linux-foundation.org> wrote:
-> > >> On Thu,  9 Jun 2022 22:16:19 +0000 Bill Wendling <morbo@google.com> wrote:
-> > >>
-> > >> > This patch set fixes some clang warnings when -Wformat is enabled.
-> > >>
-> > >> tldr:
-> > >>
-> > >> -       printk(msg);
-> > >> +       printk("%s", msg);
-> > >>
-> > >> Otherwise these changes are a
-> > >> useless consumer of runtime resources.
-> > >
-> > >Calling a "printf" style function is already insanely expensive.
-> > >[...]
-> > >The "printk" and similar functions all have the "__printf" attribute.
-> > >I don't know of a modification to that attribute which can turn off
-> > >this type of check.
-> >
-> > Perhaps you can split vprintk_store in the middle (after the call to
-> > vsnprintf), and offer the second half as a function of its own (e.g.
-> > "puts"). Then the tldr could be
-> >
-> > - printk(msg);
-> > + puts(msg);
+On Thu, Jun 09, 2022 at 03:54:40PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> That might be a nice compromise. Andrew, what do you think?
+> Instead of walking the list of children of an ACPI device directly
+> in order to find the child matching a given bus address, use
+> acpi_find_child_by_adr() for this purpose.
+> 
+> Apart from simplifying the code, this will help to eliminate the
+> children list head from struct acpi_device as it is redundant and it
+> is used in questionable ways in some places (in particular, locking is
+> needed for walking the list pointed to it safely, but it is often
+> missing).
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/thunderbolt/acpi.c |    9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
+> 
+> Index: linux-pm/drivers/thunderbolt/acpi.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thunderbolt/acpi.c
+> +++ linux-pm/drivers/thunderbolt/acpi.c
+> @@ -304,8 +304,6 @@ static bool tb_acpi_bus_match(struct dev
+>  static struct acpi_device *tb_acpi_find_port(struct acpi_device *adev,
+>  					     const struct tb_port *port)
+>  {
+> -	struct acpi_device *port_adev;
+> -
+>  	if (!adev)
+>  		return NULL;
+>  
+> @@ -313,12 +311,7 @@ static struct acpi_device *tb_acpi_find_
+>  	 * Device routers exists under the downstream facing USB4 port
+>  	 * of the parent router. Their _ADR is always 0.
+>  	 */
+> -	list_for_each_entry(port_adev, &adev->children, node) {
+> -		if (acpi_device_adr(port_adev) == port->port)
+> -			return port_adev;
+> -	}
+> -
+> -	return NULL;
+> +	return acpi_find_child_by_adr(adev, port->port);
+>  }
+>  
+>  static struct acpi_device *tb_acpi_switch_find_companion(struct tb_switch *sw)
 
-You would need to do that for all of the dev_printk() variants, so I
-doubt that would ever be all that useful as almost no one should be
-using a "raw" printk() these days.
+I don't think you need tb_acpi_find_port() anymore. You can just call
+acpi_find_child_by_ard(ACPI_COMPANION(...), port->port) directly, no?
 
 thanks,
 
-greg k-h
+-- 
+heikki
