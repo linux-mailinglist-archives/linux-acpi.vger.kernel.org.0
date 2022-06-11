@@ -2,161 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB2E1546842
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jun 2022 16:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5761D54714C
+	for <lists+linux-acpi@lfdr.de>; Sat, 11 Jun 2022 04:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235154AbiFJOaJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Jun 2022 10:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57748 "EHLO
+        id S1349354AbiFKCX1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Jun 2022 22:23:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232725AbiFJOaI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 10:30:08 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B552619C3A
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Jun 2022 07:30:02 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id q140so9869171pgq.6
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Jun 2022 07:30:02 -0700 (PDT)
+        with ESMTP id S1348881AbiFKCXU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Jun 2022 22:23:20 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85143F4A33
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Jun 2022 19:23:14 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id b8so970062edj.11
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Jun 2022 19:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=iZkxFrCdz5HGHbN5AvcrMQrT1OxBg7CaPmIJCaX17lQ=;
-        b=KP4HYvtz1/r9i95F1wjVEcLG8E0YRVrsbrMUEtJAGlXCThtn4I+AwBI020BZ8QkENk
-         VkYJUza7vjx9KRxYxYn1blwfJ4DmHGeHYEfXLV2JLucPyU1CcT6RyAiFEGz5xNB1qNs3
-         /H8oz5Osobi0eyKYL6Jxc/SkFRW8e6Rmy5hPD/ePq+GzeBSEpX/JtBIT336CQfQT3h78
-         bJKW+VdriFLI+sUb13QBvbPpKxYpaG4Rm0NEHazp3sA5OclNymsh1q+DI3F/mUVofBjx
-         5cE40h+i7ZQvqjZzKy99OzoR963rVw88+d7oUzCl+YjMBsKs03AJB7Mm5xf283OcfSp5
-         whAQ==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HvaEucNyttJ72r4dgkt1sbWCJsvBPyIh5zMt0LNXalY=;
+        b=D62jI1p8sOcmW+dGG367yCKI6736qfwlRYdRbtg+pQI3VQ/mZvhMkSh4muEy4yFzXi
+         1pifN6keFBPADAFAutLs2f+vKDRy3jOy1SmannYfmHY7tjbpoLbP8600CMqIboz22zit
+         FmdCeKC+IDyY3i3YwKCGDz5In1oYgHbIW3q58=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=iZkxFrCdz5HGHbN5AvcrMQrT1OxBg7CaPmIJCaX17lQ=;
-        b=6okzyPCgAdBU7SHq06ZElGdUfZUB5w5jKHyY3jaFrf6sdzHhgVLteu2gq3BR2/Isp8
-         YcjOQ+TlTlJ8m/MmPIocPqzOAJEDCYWTdvhKIBGrBAUCpi0oNRjmpngFoSAKVpshSRkq
-         9fOMDAuCP26p4+SwYUXJxXBFR/4JLT2Ni9zkvt7GPC/K1aUOsX/1yY7yHP/Bvycnfbn6
-         QgxdDfUO6cbKUFuQnASBShLDugtYjvxnB7F8qJgsncv4HyueGJ1Jdjm6INs/zMWk93aL
-         UfdYOaxVmJadHj4DoqcWOMhRFjCMDrUK6SfkVyJy6CG9BT0upZrOb6vbZVIxQ9jwfMXf
-         yYsQ==
-X-Gm-Message-State: AOAM533AoSChSQPm2ESLiBnZyN2aARV4d4mgBZ1YArTozIls1/F4wUAe
-        3Ryde2de9Y4a1Wf5qQHYarCinA==
-X-Google-Smtp-Source: ABdhPJy9lH+YdGeVgxW6k3OvjfR+G0rlnFgBcN96oP7+X/9Ctfac88M6IIzXUkvNd0dbwRRp3m0BqA==
-X-Received: by 2002:a63:8241:0:b0:3fe:2e64:95f0 with SMTP id w62-20020a638241000000b003fe2e6495f0mr13325930pgd.190.1654871401611;
-        Fri, 10 Jun 2022 07:30:01 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id h11-20020a62830b000000b0050dc7628150sm19477473pfe.42.2022.06.10.07.29.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jun 2022 07:29:59 -0700 (PDT)
-Date:   Fri, 10 Jun 2022 14:29:55 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Grzegorz Jaszczyk <jaz@semihalf.com>
-Cc:     linux-kernel@vger.kernel.org, Dmytro Maluka <dmy@semihalf.com>,
-        Zide Chen <zide.chen@intel.corp-partner.google.com>,
-        Peter Fang <peter.fang@intel.corp-partner.google.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sachi King <nakato@nakato.io>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        David Dunn <daviddunn@google.com>,
-        Wei Wang <wei.w.wang@intel.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "open list:KERNEL VIRTUAL MACHINE (KVM)" <kvm@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
-        <linux-pm@vger.kernel.org>, dbehr@google.com, dtor@google.com
-Subject: Re: [PATCH 1/2] x86: notify hypervisor about guest entering s2idle
- state
-Message-ID: <YqNVYz4+yVbWnmNv@google.com>
-References: <20220609110337.1238762-1-jaz@semihalf.com>
- <20220609110337.1238762-2-jaz@semihalf.com>
- <YqIJ8HtdqnoVzfQD@google.com>
- <CAH76GKNRDXAyGYvs2ji5Phu=5YPW8+SV8-6TLjizBRzTCnEROg@mail.gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HvaEucNyttJ72r4dgkt1sbWCJsvBPyIh5zMt0LNXalY=;
+        b=JdKiI7IBhhwVkb/ciUkoiSwRF2Ej5hhW5IEfzNe/B0oqbIetxkkPfMFM0ajIOid7H1
+         VtKggAj4Ch/HLBmYyLASMFmSsx4562hG0LMxwJ6W8IeY84il5GxwRd2bVaoWakgFO19a
+         iy3qu+b+SZTfAe+gYaJaeu1AiAJRuJvi3NBjgs/MT9nPggwKTumY/XkYEi2iK+3yYFSj
+         ndt9CnYrkiLrxGc2Ue4LR3jjlE+2uFR+SPZAyRs1pPCYzVTQHSnDxrLGZj9PPD1MElzl
+         E+FT/IcdfwS0BcOe6E2GfFsjyYGlg/zf3vLoMLQ/uk56C73X6PoisLWWLuG/33Twd+Ty
+         DARQ==
+X-Gm-Message-State: AOAM5338yi4VubyF8BFaomV8PW9GIFwPQzjWNTGyDkA7DmlCVcHaA4Fy
+        Gka1Axt1xRxvufwkMJYlqJg/B39pmTJFXzPaso9yaQ==
+X-Google-Smtp-Source: ABdhPJz16+9kQdS9QDTB0tjL4FsLbUEsFaIS0ykQfnx5qpyFYyBQCn1i8W4mcCkA/y3viUzYkXAgYYv9JpSOTwgMdpQ=
+X-Received: by 2002:a50:eb91:0:b0:42d:c1d8:616a with SMTP id
+ y17-20020a50eb91000000b0042dc1d8616amr54940771edr.219.1654914192936; Fri, 10
+ Jun 2022 19:23:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH76GKNRDXAyGYvs2ji5Phu=5YPW8+SV8-6TLjizBRzTCnEROg@mail.gmail.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220608142723.103523089@infradead.org> <20220608144517.444659212@infradead.org>
+ <YqG6URbihTNCk9YR@alley> <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net> <YqHwOFg/WlMqe8/Z@alley>
+In-Reply-To: <YqHwOFg/WlMqe8/Z@alley>
+From:   Sergey Senozhatsky <senozhatsky@chromium.org>
+Date:   Sat, 11 Jun 2022 11:23:02 +0900
+Message-ID: <CA+_sPaq_47C2PWnGU7WfGXMc03E1Nz+1=F-wZe0B2+ymqdm3Fg@mail.gmail.com>
+Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
+        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
+        dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org,
+        john.ogness@linutronix.de, paulmck@kernel.org, frederic@kernel.org,
+        quic_neeraju@quicinc.com, josh@joshtriplett.org,
+        mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+        joel@joelfernandes.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+        vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 10, 2022, Grzegorz Jaszczyk wrote:
-> czw., 9 cze 2022 o 16:55 Sean Christopherson <seanjc@google.com> napisał(a):
-> Above could be actually prevented if the VMM had control over the
-> guest resumption. E.g. after VMM receives notification about guest
-> entering s2idle state, it would park the vCPU actually preventing it
-> from exiting s2idle without VMM intervention.
+On Thu, Jun 9, 2022 at 10:06 PM Petr Mladek <pmladek@suse.com> wrote:
+>
+> Makes sense. Feel free to use for this patch:
+>
+> Acked-by: Petr Mladek <pmladek@suse.com>
 
-Ah, so you avoid races by assuming the VM wakes itself from s2idle any time a vCPU
-is run, even if the vCPU doesn't actually have a wake event.  That would be very
-useful info to put in the changelog.
-
-> > > +static void s2idle_hypervisor_notify(void)
-> > > +{
-> > > +     if (static_cpu_has(X86_FEATURE_HYPERVISOR))
-> > > +             kvm_hypercall0(KVM_HC_SYSTEM_S2IDLE);
-> >
-> > Checking the HYPERVISOR flag is not remotely sufficient.  The hypervisor may not
-> > be KVM, and if it is KVM, it may be an older version of KVM that doesn't support
-> > the hypercall.  The latter scenario won't be fatal unless KVM has been modified,
-> > but blindly doing a hypercall for a different hypervisor could have disastrous
-> > results, e.g. the registers ABIs are different, so the above will make a random
-> > request depending on what is in other GPRs.
-> 
-> Good point: we've actually thought about not confusing/breaking VMMs
-> so I've introduced KVM_CAP_X86_SYSTEM_S2IDLE VM capability in the
-> second patch, but not breaking different hypervisors is another story.
-> Would hiding it under new 's2idle_notify_kvm' module parameter work
-> for upstream?:
-
-No, enumerating support via KVM_CPUID_FEATURES is the correct way to do something
-like this, e.g. see KVM_FEATURE_CLOCKSOURCE2.  But honestly I wouldn't spend too
-much time understanding how all of that works, because I still feel quite strongly
-that getting KVM involved is completely unnecessary.  A solution that isn't KVM
-specific is preferable as it can then be implemented by any VMM that enumerates
-s2idle support to the guest.
-
-> > The bigger question is, why is KVM involved at all?  KVM is just a dumb pipe out
-> > to userspace, and not a very good one at that.  There are multiple well established
-> > ways to communicate with the VMM without custom hypercalls.
-> 
-> Could you please kindly advise about the recommended way of
-> communication with VMM, taking into account that we want to send this
-> notification just before entering s2idle state (please see also answer
-> to next comment), which is at a very late stage of the suspend process
-> with a lot of functionality already suspended?
-
-MMIO or PIO for the actual exit, there's nothing special about hypercalls.  As for
-enumerating to the guest that it should do something, why not add a new ACPI_LPS0_*
-function?  E.g. something like
-
-static void s2idle_hypervisor_notify(void)
-{
-	if (lps0_dsm_func_mask > 0)
-		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_HYPERVISOR_NOTIFY
-					lps0_dsm_func_mask, lps0_dsm_guid);
-}
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
