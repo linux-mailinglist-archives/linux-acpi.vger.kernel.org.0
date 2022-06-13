@@ -2,130 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3140F548196
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jun 2022 10:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED190548171
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jun 2022 10:28:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238719AbiFMIZs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Jun 2022 04:25:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58518 "EHLO
+        id S235440AbiFMI0S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jun 2022 04:26:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232021AbiFMIZr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jun 2022 04:25:47 -0400
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn2033.outbound.protection.outlook.com [40.92.98.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 725091EAFD;
-        Mon, 13 Jun 2022 01:25:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EfJT5atsdFm9SHEqI53/AkzBeHn0wFvX33zwEYITiJGYzzWrZLGJ2LTELQNx74PyFp7cKi3WKJPolrFodV9U7GzZKshMDWWv5kV6RrBig+wDJ20Fz0tnH9UKpRqC/Q878CpjRvB/45gMW2/H6/0wgoZSWR1fyyXxtKDtyDkQ7XWkH8fohbH30U2yJfFHnnxvpHfnmZHbTVs9JqvmMuLosEcfYZKC8BPz0AXbpAO/wbf4xtZ5zksmrtv7BL9r0uTsEilJQ3VICGrzviI91BiW6coo6Lc/JYqTGufGIrm8Ma0k/EOFc7I0FkzMIsDaRekgWaUlV7PGUxJ5ZQlF4yU58A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AiTxWXEyoAPs/I+rjR5y33VsDXZiYz5yhqB9YfuxFa0=;
- b=F+4GlfZlD7SxEKIQXaaE/D1shdWU+qR57qeDBtFAckHKz/fAUNZDAmtZQl4mz7aY0qxO4d72Tya7lh6MsaZk2tmMmtVgVtKtmGAN3benWLHfDSefFJzXMnXXm9uLs0M9YtU6EQe1rI0kKCOqMu9sWR/T9OAM3/ct96gKjFaYQuCsCk/0kDusywjpGm8e68LNiv4YmRM0rlNG3qhFuAsPqsJQ4/JTS0YbuDkykXo1FOCNG6aLPrAonMTBWIhj/oupVldFUWq8Key26OVVXdiXauLAZZeuL2k/N9uULEg/penDooJ0jQJDsCand0YBYRIAWF2Ca9q2egphnZLbyXfB5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AiTxWXEyoAPs/I+rjR5y33VsDXZiYz5yhqB9YfuxFa0=;
- b=cTrf+FISk2K4DLq966fORUjLSxvmEgSWOs22iBwzmlvwmZ218cJhZWEhgH1+bCsGOshw7I2Qd1EO05dwo/fAWGOHcPkuitbnXi9cqRh/sptGTWEBbgbWK7CoesFb+AlFq7yrZqQvTluHkF3TW6XaNUKSXWwGxLZ0dQMjQHWxVrsSkRFnek7bZWwEDl5Gw3jBt3wGAEV0z9VRCoAuWnGtUNrIjoJ072pNtZffYdYyl9dpfqOioz4LUJ5EuUqIjyBbk8HfHNcROvqjlqPP2LAYWVoWTwietdZ/E/6tmhlUPO5Wyuju2HNcyzDEhRZ5jKuvpEPw9xXHDezPgJVr0V5RPg==
-Received: from TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:248::14)
- by TYCP286MB1426.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:c1::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.12; Mon, 13 Jun
- 2022 08:25:43 +0000
-Received: from TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
- ([fe80::9cb3:323f:e99e:39c1]) by TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
- ([fe80::9cb3:323f:e99e:39c1%9]) with mapi id 15.20.5332.020; Mon, 13 Jun 2022
- 08:25:43 +0000
-From:   Riwen Lu <luriwen@hotmail.com>
-To:     rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org, Riwen Lu <luriwen@kylinos.cn>
-Subject: [PATCH v1] ACPI/processor: Remove unused function acpi_processor_get_limit_info()
-Date:   Mon, 13 Jun 2022 16:25:26 +0800
-Message-ID: <TYWP286MB2601D57F678AAC931003178EB1AB9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN:  [tqLLVWLLWj+3y5T+uQi1L+8haBgY1PpHz+adaV2iekQ=]
-X-ClientProxiedBy: SGBP274CA0005.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::17)
- To TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:248::14)
-X-Microsoft-Original-Message-ID: <20220613082526.3746201-1-luriwen@hotmail.com>
+        with ESMTP id S239358AbiFMI0R (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jun 2022 04:26:17 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1225E1EED7;
+        Mon, 13 Jun 2022 01:26:14 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id m125-20020a1ca383000000b0039c63fe5f64so2647384wme.0;
+        Mon, 13 Jun 2022 01:26:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3JSggHLDbkXyuZCKaU+uQ7H5KVpBjE3ZWWl/F0t3JyI=;
+        b=hln/7KIUboOODQa9/Iv7zWAXFI8kFLhiLL+AWnA7ZL0itAJaB93eguKFQupB8Lv94a
+         mnMuLqlfVsMy6aSBFmNweaacWKXWw7aT6TScazfBGhspJqqH/PMOPWdnnnaxNLaf842d
+         D+3NPCattkXMe8VyippSy6AVlz1Q90Igxi/lQII1yr2hkIK0YZRpsj0TKs2Px7tXlVgY
+         915w6r1r+N9IHNGMPf7O4C6rOlcjLzR4xSEqc3Zfq8tMbY0ayFsU19Cug+0HkT25Saig
+         zkxTdXbzsbpEfsV6HhW0WtRME3JJZVdyKx57BtFZ0WE2gh0TSNH76QSkgUTVIoEuHNxT
+         f/gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3JSggHLDbkXyuZCKaU+uQ7H5KVpBjE3ZWWl/F0t3JyI=;
+        b=YRQJp1GBM3OcBer6Bp1WG/lVEMPbsdDfQzMPh5cIijwX90UumIifd1W7M9eZ9tOszB
+         5TKl/a0hV5ldDpz7+f9oV27/cDUZv0Xa/xnwc9fZw9n7CCQCMyb/FtECSzWxIrDXppb/
+         Ye09YW/mZOxpI8n0iwJx5ZMNrEHAvOQb/r/j7oW93vahxjzvyBWWcSxwlkuv2u7wVWQG
+         X5sbWQOGc+JHZxzPSk30elqMZx3J9FHvagdN7/rHVt00R1pTvFtyMh3iUaYo2OSFI5aC
+         k8hMkMwMG9o7FdJHCG6Dxaet7U9Y+D5HPReKeLWn0oj1EOQb+nInIl70eEfpdQYzMesu
+         3K+Q==
+X-Gm-Message-State: AOAM5308RPuyABds5tbz4EScO3Ovyc2GgLPib84QRdAipfTp7gj5CkO5
+        /7msG24JNLD8C5BKoOQn0Qg1EAN/JWJ5bTQ75cw=
+X-Google-Smtp-Source: ABdhPJxgJ3qlsWHXb4q5Q9LeHOXh1hQWbFNdZBk/6atfvyd1YyWRPGtuhT6/ZUDmb0vG1CLuyzfEgHlG2xi/itwptM8=
+X-Received: by 2002:a05:600c:1c9a:b0:39c:7db4:90c3 with SMTP id
+ k26-20020a05600c1c9a00b0039c7db490c3mr13053942wms.161.1655108772491; Mon, 13
+ Jun 2022 01:26:12 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 825e42b7-8eaf-48d8-419a-08da4d164ea8
-X-MS-TrafficTypeDiagnostic: TYCP286MB1426:EE_
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WFBwbpnuoMFnJd8uYn1bmrVjoBLiHv1Vo2KIKNx96xdAa2efZ5Yv0THhqtr7Pmug6SaYYjvENeCHIqZA+klWk64IURNRNiVBIFFLSgEhvCY4+d5LPrW8T8k0h2YOs/tMrvyQfo5yUdN+Zdt4WESmkMkRCoKaouIEwS60XNkWrFHO8O3yeruNuFX7pCrbuqlXjbPM8tpO+tPbK5SwpSDeAYPAAUdoGZ+YSDKX+bb8qwHlW1NjEeinUOl8WpGu26okpgkBzFQE0Mllyp80joGMOedkviTNDBCo4LXPeQyVD51RRuaw83G+N9ezKYyoNfrk8Oro0B/YSL2+XQBw/B7zZLxeNcJRknkejRJYPjO712bqbX6Ae7IkkXDqzW0as9ZXpfRcjgXGXLw9GfmNBlf9e4I/L8B23eARw9SloQkKL8Sjtke/0hFTNTpxSvrcWOxIjaLGBh2yBjx8tGZnFVjtNky3nZWa/JhiI1vH4fXYG3ivfBTeJJUcykzi+FqDU1ma+Mj9TKOIbHKIPuf6fDekZwSiRgYVvn7SeQS4F1RHtde67iQGvX0qnmS20Q++Blm2kX7SH3z02kirKlDSXkw3aw==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?deYAQ/b7hlCKyMeRUar12gRol6W4d2RaRN4rduEURHbTh42OzoxVKnSXAmu4?=
- =?us-ascii?Q?b2MObBuB0k2H/0uL5jVU7qbG0c3mK5Gu1hX8uVfgCTCjAIinRTdyPGO8L3l5?=
- =?us-ascii?Q?21Eq0llVjynO9zoAc6sTYDVeo86mKENdx01nhUYGjqZd8chAxkZmn5Koybgr?=
- =?us-ascii?Q?VF/eTnMURDG4RVMOizXgn/BbBwssaifPrQKnJK1fZ+n0XffZbdfkTiRNfiQ9?=
- =?us-ascii?Q?z1kum/EqU48mSVmgm9x3Z9xIWeawwoM0FY/+r0f7ijJotKz29J41qt+tGw3z?=
- =?us-ascii?Q?ep7+zwx5aFwuIArlnScJSWCdp6TfWv/jAUdO17C3R9hf7hLhlVddjBCLoUo3?=
- =?us-ascii?Q?MVS3iRoGz6LZwmcmYHxn58cn1C6g3oHGmhRpkYHvJCPjy6fhsWbRV9tVPK24?=
- =?us-ascii?Q?hGDRXX+Jt4cyQLuJ0xU0Igtmp85xF342BioMU89+Q7gtmozOLTrG6cJFRwci?=
- =?us-ascii?Q?iHLWSGb8ZvXqkHZQtbM8IWb4d8DUK6G2TH33TBhXSjE1sKcgDa6cAf+m1rAR?=
- =?us-ascii?Q?dM6N7pRuOrT/6YqKmbfJ04rqCAT/yXfxJhusem+UILsNl4U9bOAdWruAAbZY?=
- =?us-ascii?Q?gxBkrD9E0e5LU5zax1zJOU8f6nft8OeqOqCfiKXzyZC6QgC5KOIMh7m1Ckgy?=
- =?us-ascii?Q?4oNpLYqJ5NrzZriaqO4XAYR4Pfbuh8CbGzTNMo1ZvYu2p1nIKPRsqcac6T+n?=
- =?us-ascii?Q?CM49KRNJ4KrAKfRH03lo1VMwH+otlOeAI/jHFKd8ATv3Fj2+qtgdtRVwoSq9?=
- =?us-ascii?Q?duO7BiagK4t+vVoVTO3ad/yQ+i4fjJRX+IOnVVdhAILogaCBNZa2uzc7Jefa?=
- =?us-ascii?Q?SnGnG1G2/zBkFGknyJIl3W0QXRFXZFI5v/eA16dlrO8zIzwA4E1gSYEN5XOO?=
- =?us-ascii?Q?1YnJwK9i8SEytoiQ0b0jdgUQKy0+jxUbksmmCilti3XgzmauB46bM7xg7D5T?=
- =?us-ascii?Q?fddPha58C3B5v5LinGyK3A0FmAihw0KnFOgEgn62OJYLRUGma9oUa3946G0k?=
- =?us-ascii?Q?72k16PrbAA68CQL1CnOrmqCv+dby+HPVgYeCqi4hm7k22SUHJCPaP4WUmq1s?=
- =?us-ascii?Q?aBUNhq5OAtzvfOZBRFJbQWjgneA+5cvIavrHABsMnhSXLEqcGMZoRjzbMCnc?=
- =?us-ascii?Q?/G96sad1/lp0CelnrKGeYi98JTCgindVPYrp7TyMOyJBrcC9ogWayYpEqi6M?=
- =?us-ascii?Q?2cVSOZ2566uUdnn8TcE2KiNJw0NjXotIxZP0hC3Qh9dX8LcKEDAGkXemvTAM?=
- =?us-ascii?Q?6oWfRUPbuN5YXUF/n7Bba/WvRtH68RSaclQnDE0GnyWsrXxYbKC2c/9Ibi2C?=
- =?us-ascii?Q?uNFoKQ9MLixqx6e4xmPrh+WYExF/klkfGU99EdlxcpIr42j8VAf9HQGBOsCe?=
- =?us-ascii?Q?5VkL0GoM4yzA+TDkk+sQFfSSAnN1wNipIUmsghyeNw2o9/nrrchUN46HsSyn?=
- =?us-ascii?Q?q2kCXg82bSo=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-05f45.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 825e42b7-8eaf-48d8-419a-08da4d164ea8
-X-MS-Exchange-CrossTenant-AuthSource: TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2022 08:25:43.7478
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB1426
+References: <20220608142723.103523089@infradead.org> <20220608144517.251109029@infradead.org>
+In-Reply-To: <20220608144517.251109029@infradead.org>
+From:   Lai Jiangshan <jiangshanlai@gmail.com>
+Date:   Mon, 13 Jun 2022 16:26:01 +0800
+Message-ID: <CAJhGHyCnu_BsKf5STMMJKMWm0NVZ8qXT8Qh=BhhCjSSgwchL3Q@mail.gmail.com>
+Subject: Re: [PATCH 21/36] x86/tdx: Remove TDX_HCALL_ISSUE_STI
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Richard Henderson <rth@twiddle.net>, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        Will Deacon <will@kernel.org>, guoren@kernel.org,
+        bcain@quicinc.com, Huacai Chen <chenhuacai@kernel.org>,
+        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
+        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, Michael Ellerman <mpe@ellerman.id.au>,
+        benh@kernel.crashing.org, paulus@samba.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        Richard Weinberger <richard@nod.at>,
+        anton.ivanov@cambridgegreys.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        acme <acme@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        jolsa@kernel.org, Namhyung Kim <namhyung@kernel.org>,
+        Juergen Gross <jgross@suse.com>, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, VMware Inc <pv-drivers@vmware.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>, chris@zankel.net,
+        jcmvbkbc@gmail.com, rafael@kernel.org, lenb@kernel.org,
+        pavel@ucw.cz, gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, Anup Patel <anup@brainfault.org>,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
+        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
+        joel@joelfernandes.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+        vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org, Isaku Yamahata <isaku.yamahata@gmail.com>,
+        kirill.shutemov@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Riwen Lu <luriwen@kylinos.cn>
+On Wed, Jun 8, 2022 at 10:48 PM Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> Now that arch_cpu_idle() is expected to return with IRQs disabled,
+> avoid the useless STI/CLI dance.
+>
+> Per the specs this is supposed to work, but nobody has yet relied up
+> this behaviour so broken implementations are possible.
 
-Commit 22e7551eb6fd ("ACPI / processor: Remove acpi_processor_get_limit_info()"),
-left behind this, remove it.
+I'm totally newbie here.
 
-Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
----
- include/acpi/processor.h | 1 -
- 1 file changed, 1 deletion(-)
+The point of safe_halt() is that STI must be used and be used
+directly before HLT to enable IRQ during the halting and stop
+the halting if there is any IRQ.
 
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 194027371928..1d44b84da22c 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -441,7 +441,6 @@ static inline int acpi_processor_hotplug(struct acpi_processor *pr)
- #endif /* CONFIG_ACPI_PROCESSOR_IDLE */
- 
- /* in processor_thermal.c */
--int acpi_processor_get_limit_info(struct acpi_processor *pr);
- extern const struct thermal_cooling_device_ops processor_cooling_ops;
- #if defined(CONFIG_ACPI_CPU_FREQ_PSS) & defined(CONFIG_CPU_FREQ)
- void acpi_thermal_cpufreq_init(struct cpufreq_policy *policy);
--- 
-2.25.1
+In TDX case, STI must be used directly before the hypercall.
+Otherwise, no IRQ can come and the vcpu would be stalled forever.
 
+Although the hypercall has an "irq_disabled" argument.
+But the hypervisor doesn't (and can't) touch the IRQ flags no matter
+what the "irq_disabled" argument is.  The IRQ is not enabled during
+the halting if the IRQ is disabled before the hypercall even if
+irq_disabled=false.
+
+The "irq_disabled" argument is used for workaround purposes:
+https://lore.kernel.org/kvm/c020ee0b90c424a7010e979c9b32a28e9c488a51.1651774251.git.isaku.yamahata@intel.com/
+
+Hope my immature/incorrect reply elicits a real response from
+others.
+
+Thanks
+Lai
