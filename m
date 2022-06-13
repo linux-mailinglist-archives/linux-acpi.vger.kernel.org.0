@@ -2,150 +2,220 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F617547B0D
-	for <lists+linux-acpi@lfdr.de>; Sun, 12 Jun 2022 18:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB451547ED5
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jun 2022 07:04:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231784AbiFLQX5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 12 Jun 2022 12:23:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51140 "EHLO
+        id S231154AbiFMFD6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Jun 2022 01:03:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230357AbiFLQX4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 12 Jun 2022 12:23:56 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB8025E158
-        for <linux-acpi@vger.kernel.org>; Sun, 12 Jun 2022 09:23:54 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id m39-20020a05600c3b2700b0039c511ebbacso3392578wms.3
-        for <linux-acpi@vger.kernel.org>; Sun, 12 Jun 2022 09:23:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=philpotter-co-uk.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Bp1t0MAX0vF2MFrixDjLhlmP3KLo6hgWxyC3M+usaE8=;
-        b=R/sEjCaZtQEnfPFaK+UnnTh0wg4bRV6svzZB+oS2hfNNJzpfcRRfcZmCJOP8EySmQd
-         g+xcBgfqADhJshLEY78CKFvKjnbnDQTiZlNPaYQ4krJN4DIZr0DcF9zio2w2kHV8Sq+E
-         bLM/i/SzIos3D8gnl2FjBUdtUwk4BOXJ/p4Gz7UFvasXpv6HXMR+5PupsiPSPR0TnZya
-         F4NsEqC4DRhyBo+zGRqyKs6C3D88H2ZM6iKWsmgHMRXInXx2VY+xkqjwHyZXLhqJ9DIi
-         GLX8O48hgFb+6agiYOXIOISy12Ll9TGb3KH9UckWOW5W3iIlklqwzjxaxwQD5RPR2Sdf
-         1JcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Bp1t0MAX0vF2MFrixDjLhlmP3KLo6hgWxyC3M+usaE8=;
-        b=PKjncceNsCnywEEj0OMLxH64kCO7DAgkeZEE4lpxcPK+pUn6rHvJcjWCQF1BByazsO
-         oPFuNO8uo2flQwOUqxOTfXXJxv1CDlXjm06V0y9IluoKeHHv5GgHx540IhJSbRoxhEJT
-         uP4K8vhyynQ7MoHXp8UK2NV6U7IBHZqL2GSS6/XemjQUohr98B3CsJLB5QYEc4v+9hUe
-         Y4IXkLe1aQlv0n4aaD4jhRXnzJ6htvWUM/fF5Ez1EQks5InLiiZEd+F5toZJTmdt/yqw
-         OwFzcS/qNHFVkNEbG8It8yPib1R3vaUid8/MAHF+tRpAfwKPffsdcGIeyqqZ+HFvnZuk
-         tmhg==
-X-Gm-Message-State: AOAM533EtkVHn4uZOq1S9KqSjrf0tcmjB28AXXXVISwcGggJ24kPNU5g
-        4EWN0jPGNMQ6a5JsslJz9eNUGA==
-X-Google-Smtp-Source: ABdhPJyPL0K+xAMvnRb2ONEX1jWjnGDkkA7zHOBZU3POgTFS7NF7cqaibZCvN8D1E1ysUwm9U4xflg==
-X-Received: by 2002:a05:600c:2682:b0:39c:8ec6:57d9 with SMTP id 2-20020a05600c268200b0039c8ec657d9mr3559545wmt.99.1655051032703;
-        Sun, 12 Jun 2022 09:23:52 -0700 (PDT)
-Received: from equinox (2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.a.1.e.e.d.f.d.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:dfde:e1a0::2])
-        by smtp.gmail.com with ESMTPSA id bh8-20020a05600c3d0800b003942a244ee6sm6005715wmb.43.2022.06.12.09.23.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jun 2022 09:23:51 -0700 (PDT)
-Date:   Sun, 12 Jun 2022 17:23:47 +0100
-From:   Phillip Potter <phil@philpotter.co.uk>
-To:     Bill Wendling <morbo@google.com>
-Cc:     isanbard@gmail.com, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
+        with ESMTP id S229712AbiFMFD5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Jun 2022 01:03:57 -0400
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2073.outbound.protection.outlook.com [40.107.100.73])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BD147661;
+        Sun, 12 Jun 2022 22:03:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WjsTOg0EGxgkitpenmmqoU8mHeUBbM4sbl645QDPF+kdoDCSeBVQ2uYrz1TAEJhuQY/FtTXGXbj72VYUHKsMn56XU+lG2s+M80D0aH/S3NsmbPCJAp21AEQMAtSVhIp/jX8QEC4XmYq9rkT/jc0YyOhhK4HE4lH4bhb9z/z7Wp5sU+SwBbO2Hf5f7Pz707HRgU0EAm08dfOOqW3DWBxmxzSmXFwm7xwrlCxAWRJ/y7TYNbsaPFDsNIjr8V1A8HZrFacB9e9sJsbQhYEbdwx6QxxoCMWoaHmaJeGb0oT9ByD09YDk3SWcIrYXmuFwvbqsXPZzC1RowfU25IXN6gJO/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Z5NNKHc7trzGfPhsRof6hoO0e6lkEgR/hMYTmQQW5IE=;
+ b=itRAvindSCBhSikBU0NQog5X7OmcyXPjCfH57zasFJ/LGaKqmT3rME3m/d9y9Hgw+V1hT0UG70Ynvge2MEc0OTJGoSUGDFxUWM+JUTNXZwKqAXneksiY6S8E97GyeZtm7yuC3lZV8kL2bpRx9w4QABXYzmRvtGGIFEVx6os+GI0RPphC8KOH65u4mTyvRWBg5TozBdG/oIEd/xFKt89e7OrR4hUh3NUkI2WlRsTkG1TFwXpw7WqfV8pMlamrHrrI895PE3sFW/ewabRJ1eP+5U7Mg541buM0loEYHa4eOsnxwlonlnGEml8zpl+8aPGOlbZvA8eOSI/Tb1O0EgVpbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z5NNKHc7trzGfPhsRof6hoO0e6lkEgR/hMYTmQQW5IE=;
+ b=GHB9E1zA4CSl7x9b7NKfHP00fLDzKzMXBc5xdis/8PJJPx2JLIIGYROpf+CL0MloGlYAlKnKNMmP1g0JCG2zpYULuESS/+QfjHnPJ4PVvbnMu6DeEAnCQxEKG9MaHgkVGee4nfg/sMZxHVMI6nRmKDAaprO7zvkBXjdp9Vdc+gg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by MN2PR12MB4847.namprd12.prod.outlook.com (2603:10b6:208:1ba::27) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.14; Mon, 13 Jun
+ 2022 05:03:53 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::3839:4183:6783:b1d1]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::3839:4183:6783:b1d1%5]) with mapi id 15.20.5332.020; Mon, 13 Jun 2022
+ 05:03:52 +0000
+Message-ID: <7eb5313e-dea0-c73e-5467-d01f0ca0fc2d@amd.com>
+Date:   Mon, 13 Jun 2022 00:03:55 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH 1/2] x86: notify hypervisor about guest entering s2idle
+ state
+Content-Language: en-US
+To:     Dave Hansen <dave.hansen@intel.com>,
+        Grzegorz Jaszczyk <jaz@semihalf.com>
+Cc:     linux-kernel@vger.kernel.org, Dmytro Maluka <dmy@semihalf.com>,
+        Zide Chen <zide.chen@intel.corp-partner.google.com>,
+        Peter Fang <peter.fang@intel.corp-partner.google.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
-        Phillip Potter <phil@philpotter.co.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Jan Kara <jack@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        llvm@lists.linux.dev
-Subject: Re: [PATCH 08/12] cdrom: use correct format characters
-Message-ID: <YqYTExy0IpVbunBL@equinox>
-References: <20220609221702.347522-1-morbo@google.com>
- <20220609221702.347522-9-morbo@google.com>
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sachi King <nakato@nakato.io>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        David Dunn <daviddunn@google.com>,
+        Wei Wang <wei.w.wang@intel.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "open list:KERNEL VIRTUAL MACHINE (KVM)" <kvm@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
+        <linux-pm@vger.kernel.org>
+References: <20220609110337.1238762-1-jaz@semihalf.com>
+ <20220609110337.1238762-2-jaz@semihalf.com>
+ <f62ab257-b2e0-3097-e394-93a9e7a0d2bf@intel.com>
+ <CAH76GKPo6VL33tBaZyszL8wvjpzJ7hjOg3o1JddaEnuGbwk=dQ@mail.gmail.com>
+ <2854ae00-e965-ab0f-80dd-6012ae36b271@intel.com>
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <2854ae00-e965-ab0f-80dd-6012ae36b271@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DM3PR11CA0002.namprd11.prod.outlook.com
+ (2603:10b6:0:54::12) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220609221702.347522-9-morbo@google.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: ef7d7dc4-5484-4835-c7f1-08da4cfa1c3c
+X-MS-TrafficTypeDiagnostic: MN2PR12MB4847:EE_
+X-Microsoft-Antispam-PRVS: <MN2PR12MB4847FD5B783EAF7DE6B09AEEE2AB9@MN2PR12MB4847.namprd12.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Nn02EFKSqbB6psebBx1+AAiGXaWC1gWGHPmdzbAoAppBb2KwgMFdOWg9/fbW00J0f/CNodMz/CxvUlgzMTZ+kvStJH8xPuhijCMLRRD1DsDphBo5NFrxjrUyb/3CWAqvhjFPhkkzFkDSlO6NMHDlC5cVwEFBIQsfY8cLqJF01+xwOKBjQ7R2+FqmitMwWfbU6nbNVc3rxbbn+kMUOJXHNjqfdvmS8TzjoQq5RMhZnwfIoHDz+b3RDe4GkxJmSQsk3RNd1rrhn5FmBawVXzhSRjN4RtF3BwOBI3q34dl4D8GRGcQBHq+wCmED+5ywG7ci79nJ11TYc+baX7xx5yG3srYtC/P8Na8MbwhCafsGG6creVqlIEz/BrIgEN7Bqnmrhxu5cMgRCilRpqFV3xcQVBjV9Zh4e7V2Tc29V9ruDrFArYc2xaxCHRnOLFWRlil3lm5giioDULu+QYcOnygxKfayVQmCOqJdlrbxOThQNmK1mneaGD7W7EmcmwZ4A6gyYYDk8RmsDcVtJMe9I5nW4Z/Qxl/gGVt7yNX6Mi3RxsEzst+sUGBSyX2T8YocenLuFlTHcZEnCfk7PiNhJ69IS7mVSxM3S8H3L/deNflHBSJqMZY3Ad2fENdS5vssyd0ieEU+RIGT3cdKX0PAv/3v1srmfBg5SkIzmkPIsKqZeR9K9Vxaw2DqhHgW7P6Dk0C1/7NNeADTra2OQ5Tt4RqKBJ3FtU7zqNID7qRUDLY8xxxpZNVzjlJQNJRL1gc3tEPD
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(44832011)(31696002)(2906002)(2616005)(6486002)(86362001)(5660300002)(186003)(8936002)(53546011)(6506007)(7406005)(7416002)(6512007)(508600001)(38100700002)(36756003)(110136005)(54906003)(66476007)(66556008)(31686004)(66946007)(83380400001)(8676002)(4326008)(316002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eDJ6VlpzVDNINEhxcXpiVlJIOWZiS29icEtybDBDNE9odnM4cGFkcU56bm5F?=
+ =?utf-8?B?Yk1JMCtTak9Sb0hQODhvT2ZocnA4VEFUWk95TXIxaHEydTNpN1czV0RyZThD?=
+ =?utf-8?B?alY0SnFHR0REei9QK3dqaWp3SVFCenJoMEE0cm15UktRaGVNVnRwTUl1S1BO?=
+ =?utf-8?B?bUtFVUxjUHAwSmxhcWJHWFNwc3lNa2ZiQnpPMzg4akJMVkxsbElqV3dKeURX?=
+ =?utf-8?B?aHBSTnhrNnMrNTZHWmdLVlVUb3ZMQlZtdlNGZ291UW9DSnpsRjVJK3hJaHpy?=
+ =?utf-8?B?WWFGeXBTNzhVRy9OWXdwc0V1RkN5SE84azNNZ1VINjRIT3lGTmE3MUFKdWJF?=
+ =?utf-8?B?M1RaQzZKQnl6Q0VGcGMyK1VDVE1XVDQ2SzA3cnozdW4rMENIL0RGQSt0NE1s?=
+ =?utf-8?B?QlVQMlQwN2g0MzJWVkZLU1h1b1dPVE9zR2dQdVdtOXo5b0tEUHp5NXIwY3p2?=
+ =?utf-8?B?WDF6TGtQSmZ3VnVmU0x5bHIxb3kvTk5WbUdxV0JheWMzZDVoMW1BZGlyT3Bl?=
+ =?utf-8?B?SWVsVkxiVTZXTEpRRWdoMnpYSkZNMkQ5NUQvL3JMZkdINlNyWElObnhXaWZh?=
+ =?utf-8?B?MlJ1c3JWRVRYUm83WmRRUHRFZVJzRm5lbkUwR0NoNWFFZ09hSXlrRXNtQ2U1?=
+ =?utf-8?B?NlN3SlMvaE1mdENhSDRTaHFJVWdNMC9ScFJTcGh4Q0pZYzQzaDFvVEt0SkpY?=
+ =?utf-8?B?c241cS80S3E5bWlaWGpBWHRML0NvaVVMbFRqWFJtanFWcnRlSWxZZ29qS1pt?=
+ =?utf-8?B?WE9FVlFQTVcxMjRIdFJPdmxNRWZoMHpHYmNzOGJPc2g4T25SWU9xYXpiZUlR?=
+ =?utf-8?B?NWY0SzZJcHRsNWRUSldBbXB5cmk4L1YzRE4wZEdSaWNQWnFLS0tleDF0SVJ3?=
+ =?utf-8?B?VnI1cmd1Y0Z6U1YyakxPdFpEeGJaWThTZzhubTd2OGZLYkRUbHRMZkZ1RzZG?=
+ =?utf-8?B?aEF6VWRBemNHcXAxV090MmZLRlluTkt1U1B3RmNnN0tuaEwyNTl5YjNyOTIv?=
+ =?utf-8?B?MllzN2E2TUl2SzRmNzZZQ3pob0lha1Y2VWNFMThUZFJCWVBrdnlXeVJMRVE3?=
+ =?utf-8?B?Uk5NM0tWeTE2c0F3Tmp1Tk9reEZDVUlZdG5YUnJ0N01mcTVNSDJKeVdKaEhx?=
+ =?utf-8?B?WmZ4OW1xNFJ5L2dGbE13bXY4cVdydGFsZEJpUTlmcTV4YWExYmlVcGVkVFpv?=
+ =?utf-8?B?WHJqR1hJSmY0MERQSDhUYzRGTjE1cjF6N0daVE1qU0lJcUZvUng3NUp4YW1V?=
+ =?utf-8?B?RTQ3YjJISzdPOW5udjBLdU4yNGhWekpnZ2t4UmVrSzVDVWhZOTJGYzlieW93?=
+ =?utf-8?B?b291dVMzK3ZxMXhDSlkvQXp4MExNa1dIQTlWSWgyYkR5bmNYMDJDTDh2U2R4?=
+ =?utf-8?B?SlV1K3dJWDBpaFczUlBGZWgyMXd4R3RrcmZ0dkloc1FlcHAwSldFTmhCaFFk?=
+ =?utf-8?B?Q1VWakVaNndCZHh0ai9OQWJJd0VIU21nNHVNOERhbHpKQzM2bHJ3V0FHZFhL?=
+ =?utf-8?B?QVEwVTA5aDRNalcwSjllQjI2N2ZQUmN6eXptakdZNEt3SDJqZzFxNHZLT29F?=
+ =?utf-8?B?ZHdpMmxDVmFuV3ZjVkd3cDhEdFR5QmhQc2J0VWg5bG1EbDNwb1orb1ZIMUZt?=
+ =?utf-8?B?MDdnOGRrUXB1R3E5UnA2Nmd4SFF5dW5BRmhUZit6MTk4MjVNalBKdk1FZVlE?=
+ =?utf-8?B?Z2JnMm40eE1ZblhjSEJsQnVWOVlkWGFnSHVQUkdFY3JJZmJQRytHUnBIRkkw?=
+ =?utf-8?B?VkRITktuN3d1elRTUDQ2NndQQVZ2RngrMEhmdVhXR2kzOUFmVldBL1UrVjNB?=
+ =?utf-8?B?RVdDOTJBZHE4TTliVmE4MVYrM3ZxbGRVdERuM2xBc2ZSUEJZT0htTk82RnpS?=
+ =?utf-8?B?U1J0Q01PNSs3L0dOaHRnaEFWWHBoQlVJaG1ud2pCYXgyVkNVT0hRbTk5ODFT?=
+ =?utf-8?B?M3Y0dlFxb2lTa0FQN25lQ1k0SlZLeUs0QS9hVlVGQmdGTTAySWVKQmk3dzVm?=
+ =?utf-8?B?ZlJXNlo5TUE3dHpjTUREMjh4aEtKVUxKb3IvU3Q5RnhhU21Zak53cy94STFk?=
+ =?utf-8?B?bWU4aVNvVUFiYXVBVUMvT0RwWWlaQjlEaTVHSFc5NWlFd29Tc1J4UUJXdDdo?=
+ =?utf-8?B?WndXMUEyMGYxRjdaY2JINTM5WU5NYkZ0cTV5U0tzaFRObzFtZjF4WGhqRHVE?=
+ =?utf-8?B?RnBBdnI0c1pmUTJvMm1XdHFzN1o5Z1l0OEtHZlFkeEM0NzdHREM2blAvV2dX?=
+ =?utf-8?B?V05Oam5WT3hKRUFmeFRZQ1NDa05Cb3VqUGZOMGlqaFMrN0pERmJTTkhHMVFs?=
+ =?utf-8?B?cTVqS3BNSkhUUE01d1VqaUZwZjhlWWMrenYxbklsM3E5OENNMytaK0FUaWp5?=
+ =?utf-8?Q?Xmq/pxWvUtTavPEj+TDcYBFGZ8QErDWwVE6WkyaccCi+H?=
+X-MS-Exchange-AntiSpam-MessageData-1: jYGJ0n8/OrfSEg==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef7d7dc4-5484-4835-c7f1-08da4cfa1c3c
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2022 05:03:52.7345
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EijwH/pbhdJvdEmKBFNmtl+isEQZyIpNYLfIFeVYIkBS9qnRpsuXAo+2zLKdFWbt2VAjpXjYgOFIk7R4n+8DLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4847
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 09, 2022 at 10:16:27PM +0000, Bill Wendling wrote:
-> From: Bill Wendling <isanbard@gmail.com>
+On 6/10/22 07:49, Dave Hansen wrote:
+> On 6/10/22 04:36, Grzegorz Jaszczyk wrote:
+>> czw., 9 cze 2022 o 16:27 Dave Hansen <dave.hansen@intel.com> napisał(a):
+>>> On 6/9/22 04:03, Grzegorz Jaszczyk wrote:
+>>>> Co-developed-by: Peter Fang <peter.fang@intel.corp-partner.google.com>
+>>>> Signed-off-by: Peter Fang <peter.fang@intel.corp-partner.google.com>
+>>>> Co-developed-by: Tomasz Nowicki <tn@semihalf.com>
+>>>> Signed-off-by: Tomasz Nowicki <tn@semihalf.com>
+>>>> Signed-off-by: Zide Chen <zide.chen@intel.corp-partner.google.com>
+>>>> Co-developed-by: Grzegorz Jaszczyk <jaz@semihalf.com>
+>>>> Signed-off-by: Grzegorz Jaszczyk <jaz@semihalf.com>
+>>>> ---
+>>>>   Documentation/virt/kvm/x86/hypercalls.rst | 7 +++++++
+>>>>   arch/x86/kvm/x86.c                        | 3 +++
+>>>>   drivers/acpi/x86/s2idle.c                 | 8 ++++++++
+>>>>   include/linux/suspend.h                   | 1 +
+>>>>   include/uapi/linux/kvm_para.h             | 1 +
+>>>>   kernel/power/suspend.c                    | 4 ++++
+>>>>   6 files changed, 24 insertions(+)
+>>> What's the deal with these emails?
+>>>
+>>>          zide.chen@intel.corp-partner.google.com
+>>>
+>>> I see a smattering of those in the git logs, but never for Intel folks.
+>> I've kept emails as they were in the original patch and I do not think
+>> I should change them. This is what Zide and Peter originally used.
 > 
-> When compiling with -Wformat, clang emits the following warnings:
-> 
-> drivers/cdrom/cdrom.c:3454:48: error: format string is not a string literal (potentially insecure) [-Werror,-Wformat-security]
->         ret = scnprintf(info + *pos, max_size - *pos, header);
->                                                       ^~~~~~
-> 
-> Use a string literal for the format string.
-> 
-> Link: https://github.com/ClangBuiltLinux/linux/issues/378
-> Signed-off-by: Bill Wendling <isanbard@gmail.com>
-> ---
->  drivers/cdrom/cdrom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
-> index 416f723a2dbb..52b40120c76e 100644
-> --- a/drivers/cdrom/cdrom.c
-> +++ b/drivers/cdrom/cdrom.c
-> @@ -3451,7 +3451,7 @@ static int cdrom_print_info(const char *header, int val, char *info,
->  	struct cdrom_device_info *cdi;
->  	int ret;
->  
-> -	ret = scnprintf(info + *pos, max_size - *pos, header);
-> +	ret = scnprintf(info + *pos, max_size - *pos, "%s", header);
->  	if (!ret)
->  		return 1;
->  
-> -- 
-> 2.36.1.255.ge46751e96f-goog
-> 
+> "Original patch"?  Where did you get this from?
 
-Hi Bill,
+Is this perhaps coming from Chromium Gerrit?  If so, I think you should 
+include a link to the Gerrit code review discussion.
 
-Thank you for the patch, much appreciated.
+If it's not a public discussion/patch originally perhaps Suggested-by: 
+might be a better tag to use.
 
-Looking at this though, all callers of cdrom_print_info() provide 'header'
-as a string literal defined within the driver, when making the call.
-Therefore, I'm not convinced this change is necessary for cdrom.c -
-that said, in this particular use case I don't think it would hurt
-either.
+> 
+>>> I'll also say that I'm a bit suspicious of a patch that includes 5
+>>> authors for 24 lines of code.  Did it really take five of you to write
+>>> 24 lines of code?
+>> This patch was built iteratively: original patch comes from Zide and
+>> Peter, I've squashed it with Tomasz later changes and reworked by
+>> myself for upstream. I didn't want to take credentials from any of the
+>> above so ended up with Zide as an author and 3 co-developers. Please
+>> let me know if that's an issue.
+> 
+> It just looks awfully fishy.
+> 
+> If it were me, and I'd put enough work into it to believe I deserved
+> credit as an *author* (again, of ~13 lines of actual code), I'd probably
+> just zap all the other SoB's and mention them in the changelog.  I'd
+> also explain where the code came from.
+> 
+> Your text above wouldn't be horrible context to add to a cover letter.
 
-I've followed the other responses on parts of this series, so I
-understand that a different solution is potentially in the works.
-Thought I'd respond anyway though out of courtesy.
-
-All the best,
-Phil (Uniform CDROM Maintainer)
