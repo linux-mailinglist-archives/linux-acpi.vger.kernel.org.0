@@ -2,73 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8C3D54B124
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jun 2022 14:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F2F654B1BD
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jun 2022 14:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234415AbiFNMa4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Jun 2022 08:30:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58888 "EHLO
+        id S243521AbiFNMjk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Jun 2022 08:39:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244165AbiFNM2p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Jun 2022 08:28:45 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41AEB22B02;
-        Tue, 14 Jun 2022 05:28:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655209725; x=1686745725;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=G/BX8Uxdz+yrMTFWd+nOOlTWRC0rRAkVHt5072WNsL8=;
-  b=WytpUNbvjE1IvZE7C8TDPCkkamy+L5n0cTedZ4BxzHgXUpFxbeEr7y+X
-   80Y4EK0gbV1pOJq8o7H4Bpq7EOGTNCwe4x3jBx8qp6KUgAUusg+VJGzKV
-   SvQ/rISa9oq1vWsOlhaokZ6xJ22ou2x7qdFtT2JW4x4aMDS7BnMb5J1XT
-   q2uDt2Yio4wwacE+vuu6qAortVlXgIa2lqkm4gE5JZ3Nxelx46y3qNo9g
-   Z5E0mLejcRhIZDEx+RA6VvIMqYy1WMP3x962aipCNWr7T4Dh9TvxF5OnK
-   yF+gt6MP1m+MN+5SVMF4D4N4wPUyVeShMwM3p+fYVrzsARk3GbgY23zxH
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="279639124"
-X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="279639124"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:28:44 -0700
-X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="582677693"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:28:40 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1o15eu-000cKr-Bp;
-        Tue, 14 Jun 2022 15:28:36 +0300
-Date:   Tue, 14 Jun 2022 15:28:36 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH] x86/PCI: Revert: "Clip only host bridge windows for E820
- regions"
-Message-ID: <Yqh+9Ei5BLhKB/da@smile.fi.intel.com>
-References: <20220612144325.85366-1-hdegoede@redhat.com>
+        with ESMTP id S234794AbiFNMiQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Jun 2022 08:38:16 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D6E49F96;
+        Tue, 14 Jun 2022 05:35:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0E15BB8186C;
+        Tue, 14 Jun 2022 12:34:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C6FC3411E;
+        Tue, 14 Jun 2022 12:34:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1655210086;
+        bh=RxBJ6JD8Wf8ojeDpP8PuOnhZqWUwzlveE7eOehiepUk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tccE29lgTynPfIHS7yqWNwxaJZYOzV0VVqp/4uXMujX03Ple5ePWeqyTHOJ5ZhAYj
+         XMwyzSmBg7Uv+qO+GNLZXusyJPAnxyTaj4FtGrMt5xKAiPeMNutq+Fm368HCJM177K
+         p3TqHFeMnXWnxHyCSaVqHfoZitET90MUOQLzYppk=
+Date:   Tue, 14 Jun 2022 14:34:43 +0200
+From:   'Greg KH' <gregkh@linuxfoundation.org>
+To:     "tarumizu.kohei@fujitsu.com" <tarumizu.kohei@fujitsu.com>
+Cc:     "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
+        "eugenis@google.com" <eugenis@google.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "pcc@google.com" <pcc@google.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "marcos@orca.pet" <marcos@orca.pet>,
+        "marcan@marcan.st" <marcan@marcan.st>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
+        "conor.dooley@microchip.com" <conor.dooley@microchip.com>,
+        "arnd@arndb.de" <arnd@arndb.de>, "ast@kernel.org" <ast@kernel.org>,
+        "peter.chen@kernel.org" <peter.chen@kernel.org>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v5 0/6] Add hardware prefetch control driver for A64FX
+ and x86
+Message-ID: <YqiAY689pOJbHKUd@kroah.com>
+References: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
+ <YqNCDrqcp9t8HlUJ@kroah.com>
+ <OSBPR01MB203749DA00C7BEE5741AFEB980AA9@OSBPR01MB2037.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220612144325.85366-1-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <OSBPR01MB203749DA00C7BEE5741AFEB980AA9@OSBPR01MB2037.jpnprd01.prod.outlook.com>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,40 +77,90 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jun 12, 2022 at 04:43:25PM +0200, Hans de Goede wrote:
-> Clipping the bridge windows directly from pci_acpi_root_prepare_resources()
-> instead of clipping from arch_remove_reservations(), has a number of
-> unforseen consequences.
+On Tue, Jun 14, 2022 at 11:55:39AM +0000, tarumizu.kohei@fujitsu.com wrote:
+> Thanks for the comment.
 > 
-> If there is an e820 reservation in the middle of a bridge window, then
-> the smallest of the 2 remaining parts of the window will be also clipped
-> off. Where as the previous code would clip regions requested by devices,
-> rather then the entire window, leaving regions which were either entirely
-> above or below a reservation in the middle of the window alone.
+> > Why does userspace want to even do this?
 > 
-> E.g. on the Steam Deck this leads to this log message:
-> 
-> acpi PNP0A08:00: clipped [mem 0x80000000-0xf7ffffff window] to [mem 0xa0100000-0xf7ffffff window]
-> 
-> which then gets followed by these log messages:
-> 
-> pci 0000:00:01.2: can't claim BAR 14 [mem 0x80600000-0x806fffff]: no compatible bridge window
-> pci 0000:00:01.3: can't claim BAR 14 [mem 0x80500000-0x805fffff]: no compatible bridge window
-> 
-> and many more of these. Ultimately this leads to the Steam Deck
-> no longer booting properly, so revert the change.
-> 
-> Note this is not a clean revert, this revert keeps the later change
-> to make the clipping dependent on a new pci_use_e820 bool, moving
-> the checking of this bool to arch_remove_reservations().
+> This is because the optimal settings may differ from application to
+> application.
 
-It does _not_ fix the Intel MID case. It requires to have my patch applied as well.
-So the difference as I see is the flags checking. I believe that you still need to
-have it in case pci_use_e820 == true. But it might be that I missed an importan
-detail.
+That's not ok.  Linux is a "general purpose" operating system and needs
+to work well for all applications.  Doing application-specific-tuning
+based on the specific hardware like this is a nightmare for users, and
+will be for you as you will now have to support this specific model to
+work correctly on all future kernel releases for the next 20+ years.
+Are you willing to do that?
 
--- 
-With Best Regards,
-Andy Shevchenko
+> Examples of performance improvements for applications with simple
+> memory access characteristics are described in [merit] section.
+> However, some applications have complex characteristics, so it is
+> difficult to predict if an application will improve without actually
+> trying it out.
 
+Then perhaps it isn't anything that they should try out :)
 
+Shouldn't the kernel know how the application works (based on the
+resources it asks for) and tune itself based on that automatically?
+
+If not, how is a user supposed to know how to do this?
+
+> This is not necessary for all applications. However, I want to provide
+> as a minimal interface that can be used by those who want to improve
+> their application even a little.
+> 
+> > How will they do this?
+> 
+> I assume to be used to tune a specific core and execute an application
+> on that core. The execution example is as follows.
+> 
+> 1) The user tunes the parameters of a specific core before executing
+>    the program.
+> 
+> ```
+> # echo 1024 > /sys/devices/system/cpu/cpu12/cache/index0/prefetch_control/stream_detect_prefetcher_dist
+> # echo 1024 > /sys/devices/system/cpu/cpu12/cache/index2/prefetch_control/stream_detect_prefetcher_dist
+> # echo 1024 > /sys/devices/system/cpu/cpu13/cache/index0/prefetch_control/stream_detect_prefetcher_dist
+> # echo 1024 > /sys/devices/system/cpu/cpu13/cache/index2/prefetch_control/stream_detect_prefetcher_dist
+> ```
+
+What is "1024" here?  Where is any of this documented?  And why these
+specific sysfs files and not others?
+
+> 2) Execute the program bound to the target core.
+> 
+> ```
+> # taskset -c 12-13 a.out
+> ```
+> 
+> If the interface is exposed, the user can develop a library to execute
+> 1) and 2) operation instead.
+
+If you have no such user today, nor a library, how do you know any of
+this works well?  And again, how will you support this going forward?
+Or is this specific api only going to be for one specific piece of
+hardware and never any future ones?
+
+> > What programs will do this?
+> 
+> It is assumed to be used by programs that execute many continuous
+> memory access. It may be useful for other applications, but I can't
+> explain them in detail right away.
+
+So you haven't tested this on any real applications?  We need real users
+before being able to add new apis.  Otherwise we can just remove the
+apis :)
+
+> > And why isn't just automatic and why does this hardware require manual
+> > intervention to work properly?
+> 
+> It is difficult for the hardware to determine the optimal parameters
+> in advance. Therefore, I think that the register is provided to change
+> the behavior of the hardware.
+
+Kernel programming for a general purpose operating system is hard, but
+it is possible :)
+
+good luck!
+
+greg k-h
