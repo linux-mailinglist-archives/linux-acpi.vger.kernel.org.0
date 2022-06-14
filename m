@@ -2,123 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4878654B184
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jun 2022 14:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5E2554B243
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jun 2022 15:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356702AbiFNMm4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Jun 2022 08:42:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51850 "EHLO
+        id S245430AbiFNN0J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Jun 2022 09:26:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243456AbiFNMmq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Jun 2022 08:42:46 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EF0572B243;
-        Tue, 14 Jun 2022 05:41:35 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7CCFF1655;
-        Tue, 14 Jun 2022 05:41:35 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.41.154])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CDCF3F73B;
-        Tue, 14 Jun 2022 05:41:17 -0700 (PDT)
-Date:   Tue, 14 Jun 2022 13:41:13 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
-        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
-        jiangshanlai@gmail.com, joel@joelfernandes.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH 14/36] cpuidle: Fix rcu_idle_*() usage
-Message-ID: <YqiB6YpVqq4wuDtO@FVFF77S0Q05N>
-References: <20220608142723.103523089@infradead.org>
- <20220608144516.808451191@infradead.org>
+        with ESMTP id S245372AbiFNN0J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Jun 2022 09:26:09 -0400
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9DDB3D1E1;
+        Tue, 14 Jun 2022 06:26:05 -0700 (PDT)
+Received: by mail-yb1-f178.google.com with SMTP id v22so15145464ybd.5;
+        Tue, 14 Jun 2022 06:26:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Lg40Qzlh3CkBmc2CNOSyZdIPDINffPR4aYYE9K/cZmg=;
+        b=TUViGrVg9+/qQLlpqMJ85PJ92WtE0VTEPUiq2feZIpjoiO0clmcJZ3ZlihiGyNyW/E
+         dO9EwfbwyI1KKeHfqW1XKUSHm6sT5rafroSSRBdB56fbbIAX5NdxhaBPBPoZ4nCIf1nF
+         D5buPjXXYam9RNeNUFxuh+oxrlAWyBLoSzMl6twaTXroyJesKh0o1vKQjZv1YllR6cnj
+         asuYEB2ZBX73QD0ig01/ZXe7gPP5Iuw69pWCEg/w42yH3AIlVbwaHgckOutog6L4XYbF
+         XuvLfli9XAMO5WVu43zWFDz1ETkcZ41U/967wGHRriIC2HUEaCJ3qJpCNE0pMlNyingb
+         gAFA==
+X-Gm-Message-State: AJIora8PZ3v070/6wsz40hIzMvE+1HZ7bNIK05IAg/SGdJU/6WXpxL9r
+        tHcGDKj68TmotPYocZYvyig2n2/2VH9rmUIyWlM=
+X-Google-Smtp-Source: AGRyM1uMZx5W26G2ppurb8xQvisHxvQ9Dqths6isngEG5nqEoYNoNxUyNQ5syyDJUWdOaiSpvoVwH9DWrkUv/sMnjCo=
+X-Received: by 2002:a25:84ca:0:b0:65c:b5a4:3d0a with SMTP id
+ x10-20020a2584ca000000b0065cb5a43d0amr4985609ybm.137.1655213164860; Tue, 14
+ Jun 2022 06:26:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220608144516.808451191@infradead.org>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <5578328.DvuYhMxLoT@kreacher> <4200238.ejJDZkT8p0@kreacher>
+ <CAJZ5v0gWYZ_BSonhLGT7L4wPQvXLVyobPptE1Nx6PoNSGn4yXg@mail.gmail.com> <fd14c5e5-9635-7ef5-0bf4-438dfaea5361@molgen.mpg.de>
+In-Reply-To: <fd14c5e5-9635-7ef5-0bf4-438dfaea5361@molgen.mpg.de>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 14 Jun 2022 15:25:54 +0200
+Message-ID: <CAJZ5v0gYNeson93Zs-ZR7PVQEfwK3GBFpHuBGCk3DeDeeJH6LQ@mail.gmail.com>
+Subject: Re: [PATCH 15/20] ACPICA: executer/exsystem: Warn about sleeps
+ greater than 10 ms
+To:     Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Bob Moore <robert.moore@intel.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 08, 2022 at 04:27:37PM +0200, Peter Zijlstra wrote:
-> --- a/kernel/time/tick-broadcast.c
-> +++ b/kernel/time/tick-broadcast.c
-> @@ -622,9 +622,13 @@ struct cpumask *tick_get_broadcast_onesh
->   * to avoid a deep idle transition as we are about to get the
->   * broadcast IPI right away.
->   */
-> -int tick_check_broadcast_expired(void)
-> +noinstr int tick_check_broadcast_expired(void)
->  {
-> +#ifdef _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H
-> +	return arch_test_bit(smp_processor_id(), cpumask_bits(tick_broadcast_force_mask));
-> +#else
->  	return cpumask_test_cpu(smp_processor_id(), tick_broadcast_force_mask);
-> +#endif
->  }
+Hi Paul,
 
-This is somewhat not-ideal. :/
+Sorry for the delay.
 
-Could we unconditionally do the arch_test_bit() variant, with a comment, or
-does that not exist in some cases?
+On Sun, May 22, 2022 at 1:28 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+>
+> Dear Rafael,
+>
+>
+> Am 21.05.22 um 18:11 schrieb Rafael J. Wysocki:
+> > On Mon, Apr 11, 2022 at 9:04 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+> >>
+> >> From: Paul Menzel <pmenzel@molgen.mpg.de>
+> >>
+> >> ACPICA commit 2a0d1d475e7ea1c815bee1e0692d81db9a7c909c
+> >>
+> >> Quick boottime is important, so warn about sleeps greater than 10 ms.
+> >>
+> >> Distribution Linux kernels reach initrd in 350 ms, so excessive delays
+> >> should be called out. 10 ms is chosen randomly, but three of such delays
+> >> would already make up ten percent of the boottime.
+> >>
+> >> Link: https://github.com/acpica/acpica/commit/2a0d1d47
+> >> Signed-off-by: Bob Moore <robert.moore@intel.com>
+> >> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > I have decided to revert this, because it spams logs with unuseful
+> > warnings on many production systems.
+>
+> Thank you for the information. Can you please give an example?
 
-Thanks,
-Mark.
+Personally, I saw this on Dell XPS13 9360 and 9380 machines in my
+office, but it has been reported to be that it was visible on multiple
+systems in the Linux client power lab at Intel.
+
+You can also see here that Linux is not the only affected OS:
+https://github.com/acpica/acpica/pull/780
+
+Thanks!
