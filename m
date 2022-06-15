@@ -2,66 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2B4954CC3B
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 17:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC51154D090
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 20:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240245AbiFOPLH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jun 2022 11:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59756 "EHLO
+        id S1355585AbiFOSAy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jun 2022 14:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232920AbiFOPLH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 11:11:07 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A13E0340C2;
-        Wed, 15 Jun 2022 08:11:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 481C9B81ED1;
-        Wed, 15 Jun 2022 15:11:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6EAC34115;
-        Wed, 15 Jun 2022 15:11:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655305862;
-        bh=8QqTc264OWMZ8sfVZ4CWeOAu41bS0EzhOXWhbFygifs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=LuUNSUq9DJXyVwzCzA1ADZiRM+aAgdaZ1rvQmPrrm6tOe703EoxSyzax9AD3Ob5Vx
-         1CYgRjxUkOFGBjdcbfHO7yOc2eJNLJlD9pN9sNfrYeL2CW40vZdgJIuKj8LzEwnjLX
-         mP1rH4ndRvrtzH/PmaXFpt9gDe/9swcMmY5QYZA725W4jcTrzhgx6fWvurGQKoN7Fw
-         ywtrKnyTDGSmz+OqGb+AXgcpmrljrVdq3yTHpoqZJVN2U7Hm2BxZEPHU9wBBGzWdHx
-         iaF/8OgA3TXGBP6GodtliG3GrAxuEpXt4qCdkGsOfaEucyhgVyPOly5ZhYhZD7CNyG
-         SJh55/XgsR06w==
-Date:   Wed, 15 Jun 2022 10:11:00 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        with ESMTP id S1357785AbiFOSAx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 14:00:53 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C5E44766
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Jun 2022 11:00:51 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id g10-20020a17090a708a00b001ea8aadd42bso2778857pjk.0
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Jun 2022 11:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=aKVoJG94TlRK1lO5EtxaMQBi2kCbacnBTEUYcvXReYs=;
+        b=FNCP2oYfZ40CEmxTy0qRZfyApcZ+1R96el63F2TOp0qXRzJnR18YS28i4ComAHwniE
+         NzTpAhKsSs6GfhSpMAsAxbNJupjAtzYcPojh6rHDREBCcik6J0UGscpWefqG+eMOycrr
+         aNexRCGLHPIzOHCw8RDDtF/Fgo2OCR6YPINhDQDEeoxo8cbnCZpBaY+kr2yrXknY/y1Z
+         zfx+ItNutvYmKUljGz5VBNfeGRdgaNZ+CJnsAfAr6ZB+wBvlE7tz22gcnBLKKfCg1Vig
+         RWkN5AS2C0LgtERETqvsbgVx5ftTRmODp8vNncg5KxCNG3Nyopz/Rx/p6HlmPiHQzMF9
+         OMBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=aKVoJG94TlRK1lO5EtxaMQBi2kCbacnBTEUYcvXReYs=;
+        b=OwGWymF9OA3fedez/l4hzDKDWpb6RCcyPN0dE6hsXEFhQHAnMJme1FjR4vzswYaF7Y
+         dhar7RxYBgwB4hopgBWyfTr9GLmTJuSlDt7KsGch6GbAHZ+CdtHA3ilTSdbRw4SorvXu
+         X49yzeXJ6Luscw6hqQbfzD+r494v8OJqNY3WXmrhyIb3vRUsixuoKHs1RrvGDuQWIf9s
+         vlgz/WTI8IUz54i2HLJyGqUKnRCiVR6nq1Qa+y4BBpJ/2vHhG+URaE57q53sKmU8+HLd
+         Mn7GvzhaNu0SrCvuLbxvb/IoqA12JRDymg0TO6c8Pr+jR1Dn8595a69b+40hPt5wgleL
+         w8LA==
+X-Gm-Message-State: AJIora/ceyTYLaCLC4a7RRWnzuUNdiI3/GvLd2qs6YcNrAUG1sc8qscN
+        Crnwb3WsCsbx2uhbeyGfzizJ1016cGe3nbnTGd3Xog==
+X-Google-Smtp-Source: AGRyM1sMkrDeId7x/50KkjN7iA2jK8X0btO6512sJN4xGHhvO2BWqk0v85/hMP7+RYjUk3yjrmwAVc2SnFWgd5AdlWU=
+X-Received: by 2002:a17:90b:2247:b0:1e8:9f24:269a with SMTP id
+ hk7-20020a17090b224700b001e89f24269amr11622697pjb.14.1655316051101; Wed, 15
+ Jun 2022 11:00:51 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220609110337.1238762-1-jaz@semihalf.com> <20220609110337.1238762-2-jaz@semihalf.com>
+ <f62ab257-b2e0-3097-e394-93a9e7a0d2bf@intel.com> <CAH76GKPo6VL33tBaZyszL8wvjpzJ7hjOg3o1JddaEnuGbwk=dQ@mail.gmail.com>
+ <2854ae00-e965-ab0f-80dd-6012ae36b271@intel.com> <7eb5313e-dea0-c73e-5467-d01f0ca0fc2d@amd.com>
+In-Reply-To: <7eb5313e-dea0-c73e-5467-d01f0ca0fc2d@amd.com>
+From:   Grzegorz Jaszczyk <jaz@semihalf.com>
+Date:   Wed, 15 Jun 2022 20:00:39 +0200
+Message-ID: <CAH76GKO-X-DrR=yAh3NpvAC_Spd_aJ8+yLTATm+c34iPShNttQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] x86: notify hypervisor about guest entering s2idle state
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        Dave Hansen <dave.hansen@intel.com>
+Cc:     linux-kernel@vger.kernel.org, Dmytro Maluka <dmy@semihalf.com>,
+        Zide Chen <zide.chen@intel.corp-partner.google.com>,
+        Peter Fang <peter.fang@intel.corp-partner.google.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        linux-nvme@lists.infradead.org
-Subject: Re: [PATCH] x86/PCI: Revert: "Clip only host bridge windows for E820
- regions"
-Message-ID: <20220615151100.GA937185@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YqkeF2uqAyyxiZrQ@kbusch-mbp.dhcp.thefacebook.com>
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sachi King <nakato@nakato.io>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        David Dunn <daviddunn@google.com>,
+        Wei Wang <wei.w.wang@intel.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "open list:KERNEL VIRTUAL MACHINE (KVM)" <kvm@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
+        <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,55 +99,80 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 04:47:35PM -0700, Keith Busch wrote:
-> On Tue, Jun 14, 2022 at 06:01:28PM -0500, Bjorn Helgaas wrote:
-> > [+cc NVMe folks]
-> > 
-> > On Tue, Jun 14, 2022 at 07:49:27PM -0300, Guilherme G. Piccoli wrote:
-> > > On 14/06/2022 12:47, Hans de Goede wrote:
-> > > > [...]
-> > > > 
-> > > > Have you looked at the log of the failed boot in the Steam Deck kernel
-> > > > bugzilla? Everything there seems to work just fine and then the system
-> > > > just hangs. I think that maybe it cannot find its root disk, so maybe
-> > > > an NVME issue ?
-> > > 
-> > > *Exactly* that - NVMe device is the root disk, it cannot boot since the
-> > > device doesn't work, hence no rootfs =)
-> > 
-> > Beginning of thread: https://lore.kernel.org/r/20220612144325.85366-1-hdegoede@redhat.com
-> > 
-> > Steam Deck broke because we erroneously trimmed out the PCI host
-> > bridge window where BIOS had placed most devices, successfully
-> > reassigned all the PCI bridge windows and BARs, but some devices,
-> > apparently including NVMe, didn't work at the new addresses.
-> > 
-> > Do you NVMe folks know of gotchas in this area?  I want to know
-> > because we'd like to be able to move devices around someday to
-> > make room for hot-added devices.
-> > 
-> > This reassignment happened before drivers claimed the devices, so
-> > from a PCI point of view, I don't know why the NVMe device
-> > wouldn't work at the new address.
-> 
-> The probe status quickly returns ENODEV. Based on the output (we
-> don't log much, so this is just an educated guesss), I think that
-> means the driver read all F's from the status register, which
-> indicates we can't read it when using the reassigned memory window.
-> 
-> Why changing memory windows may not work tends to be platform or
-> device specific. Considering the renumbered windows didn't cause a
-> problem for other devices, it sounds like this nvme device may be
-> broken.
+pon., 13 cze 2022 o 07:03 Mario Limonciello
+<mario.limonciello@amd.com> napisa=C5=82(a):
+>
+> On 6/10/22 07:49, Dave Hansen wrote:
+> > On 6/10/22 04:36, Grzegorz Jaszczyk wrote:
+> >> czw., 9 cze 2022 o 16:27 Dave Hansen <dave.hansen@intel.com> napisa=C5=
+=82(a):
+> >>> On 6/9/22 04:03, Grzegorz Jaszczyk wrote:
+> >>>> Co-developed-by: Peter Fang <peter.fang@intel.corp-partner.google.co=
+m>
+> >>>> Signed-off-by: Peter Fang <peter.fang@intel.corp-partner.google.com>
+> >>>> Co-developed-by: Tomasz Nowicki <tn@semihalf.com>
+> >>>> Signed-off-by: Tomasz Nowicki <tn@semihalf.com>
+> >>>> Signed-off-by: Zide Chen <zide.chen@intel.corp-partner.google.com>
+> >>>> Co-developed-by: Grzegorz Jaszczyk <jaz@semihalf.com>
+> >>>> Signed-off-by: Grzegorz Jaszczyk <jaz@semihalf.com>
+> >>>> ---
+> >>>>   Documentation/virt/kvm/x86/hypercalls.rst | 7 +++++++
+> >>>>   arch/x86/kvm/x86.c                        | 3 +++
+> >>>>   drivers/acpi/x86/s2idle.c                 | 8 ++++++++
+> >>>>   include/linux/suspend.h                   | 1 +
+> >>>>   include/uapi/linux/kvm_para.h             | 1 +
+> >>>>   kernel/power/suspend.c                    | 4 ++++
+> >>>>   6 files changed, 24 insertions(+)
+> >>> What's the deal with these emails?
+> >>>
+> >>>          zide.chen@intel.corp-partner.google.com
+> >>>
+> >>> I see a smattering of those in the git logs, but never for Intel folk=
+s.
+> >> I've kept emails as they were in the original patch and I do not think
+> >> I should change them. This is what Zide and Peter originally used.
+> >
+> > "Original patch"?  Where did you get this from?
+>
+> Is this perhaps coming from Chromium Gerrit?  If so, I think you should
+> include a link to the Gerrit code review discussion.
 
-It sounds like you've seen this sort of problem before, so we
-shouldn't assume that it's safe to reassign BARs.
+Yes, the original patch comes from chromium gerrit:
+https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/=
+3482475/4
+and after reworking but before sending to the mailing list, I've asked
+all involved guys for ack and it was done internally on gerrit:
+https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/=
+3666997
 
-I think Windows supports rebalancing, but it does look like drivers
-have the ability to veto it:
+>
+> If it's not a public discussion/patch originally perhaps Suggested-by:
+> might be a better tag to use.
+>
+> >
+> >>> I'll also say that I'm a bit suspicious of a patch that includes 5
+> >>> authors for 24 lines of code.  Did it really take five of you to writ=
+e
+> >>> 24 lines of code?
+> >> This patch was built iteratively: original patch comes from Zide and
+> >> Peter, I've squashed it with Tomasz later changes and reworked by
+> >> myself for upstream. I didn't want to take credentials from any of the
+> >> above so ended up with Zide as an author and 3 co-developers. Please
+> >> let me know if that's an issue.
+> >
+> > It just looks awfully fishy.
+> >
+> > If it were me, and I'd put enough work into it to believe I deserved
+> > credit as an *author* (again, of ~13 lines of actual code), I'd probabl=
+y
+> > just zap all the other SoB's and mention them in the changelog.  I'd
+> > also explain where the code came from.
+> >
+> > Your text above wouldn't be horrible context to add to a cover letter.
 
-  https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/stopping-a-device-to-rebalance-resources
-  https://docs.microsoft.com/en-us/windows-hardware/drivers/wdf/the-pnp-manager-redistributes-system-resources
+Actually it may not be an issue for the next version since the
+suggested by Sean approach is quite different so I would most likely
+end up with reduced SoB/Co-dev-by in the next version.
 
-So I suppose if/when we support rebalancing, it'll have to be an
-opt-in thing for each driver.
+Best regards,
+Grzegorz
