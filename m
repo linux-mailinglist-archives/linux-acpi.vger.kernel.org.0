@@ -2,151 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA4C154D3C8
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 23:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADB1854D437
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jun 2022 00:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346713AbiFOVcJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jun 2022 17:32:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55318 "EHLO
+        id S241445AbiFOWGu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jun 2022 18:06:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350179AbiFOVcH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 17:32:07 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6CA8562F7
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Jun 2022 14:32:02 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id x5so18038237edi.2
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Jun 2022 14:32:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=odvCzLSKKuiENzizfeaGPvIgCKaPVvEk14WpPahs/w0=;
-        b=OnzhAziPMz7BHhj/klhh24Swx+QtNowWmbMd6LuDCBdP+N43Bru7ha5pDEi+zB8Wrn
-         C5LJr23DLqYvwwlmXfU5XJSqKepu5Kld6wRDFojm8YhrHA91B8VfXbHpxmtQnT78d+8M
-         sBKz1cmPGJzIE76Zqawbp47jx13Qukc/o3cujrY4VqY+++HfchJW6IdNvp3v7XcDVy47
-         Qv7m6tXQpwATaT38bi/yk6TK1OBatkIfvQ1A187WEMFcQJJRJayYu+M4OxdBFC1wGF3R
-         tlL3n4rMjbpmMhYzoIKKVL40bQlJ8DUZcBnR7mMjAqyxKQTywAPAR+2av4zBbXzvBy8S
-         p2lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=odvCzLSKKuiENzizfeaGPvIgCKaPVvEk14WpPahs/w0=;
-        b=QCkQa2FWtanX15Wz/S0voJUOh5K+mgr19vfl6yoPWuQkoX2LFg7Iwwia1VTAUSvgOE
-         TaF+Rl47uMC+gs1klbAVjCI+41MS5BoTc5FwkODgjWuliTp5h53sOuVJW+EUswGUIP2B
-         UMZ9QQ+wts0P1umQVlQ1ewmCbcQVd9Btzu9AtiGpeu/B666YNrsgwlof5Hgj+19hTKZH
-         eega0uIIUL2U9UaB65hO/TneI+/iBEkLbkP/pu34442eUSbEWJB8UHPovzUKx75BA2x5
-         9+lZ6ef8ajQFXs3QyVZT3FohH/RFSHO25d3iC6jGcSUojFolNXaNSAIGVLY0d9oJWmGy
-         VztQ==
-X-Gm-Message-State: AJIora+OTwntwT58tWDsBCLj80+oHwBziFEf73ONXqkTs+iXakCoiUul
-        dZHo3St8sqKdXOhOGBNgO2gq+VLgHeZ+AhlE8vk=
-X-Google-Smtp-Source: AGRyM1tTcMur2c22XOrIYhYZpjD/tj2dl8cIS+3H0YGB/UpWbCUfUHZePvyqd7sDIfyssr64VznjuvMDXBNDbIPABAs=
-X-Received: by 2002:a05:6402:249e:b0:42d:bb88:865b with SMTP id
- q30-20020a056402249e00b0042dbb88865bmr2263152eda.141.1655328721215; Wed, 15
- Jun 2022 14:32:01 -0700 (PDT)
+        with ESMTP id S238652AbiFOWGt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 18:06:49 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B23C563A5;
+        Wed, 15 Jun 2022 15:06:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655330808; x=1686866808;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1F3Ip+Ag85q874qUWiUpOUFx42ubled3GFsealoyUEY=;
+  b=jLUJsN6ZtepAXju18mabDHtlsOTrwJKoAAW2mOQN2BTvL6sUwJEBtQoK
+   VwUfv8n0XgmCPfVidAcYfvTeksy0A+wSwMeWhYpTnpZEpG0rH3tEiMtLD
+   /h/5V4UBSgnWoJWBcFUirJv4EGakYOpqAlzRU1sxeIloqmR+r+JoxWrmP
+   bCdNhFfIdttJSeXN2L70hUhnV395ufuwuKcHVeTxB67eagtVpFPHsOw7E
+   TB7QDdd0S2sbyWa+cVg7Lqj/9Ui1fkeIbz7BEY8t0qu2xu6Ue/QnFuG5D
+   93wBHdZIpT/mrnkxzwXjUbzgJqzRKqfcR7JegijcfjouYpmfF+3z8OYex
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10379"; a="259573532"
+X-IronPort-AV: E=Sophos;i="5.91,302,1647327600"; 
+   d="scan'208";a="259573532"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 15:06:48 -0700
+X-IronPort-AV: E=Sophos;i="5.91,302,1647327600"; 
+   d="scan'208";a="583398809"
+Received: from agluck-desk3.sc.intel.com ([172.25.222.78])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 15:06:47 -0700
+Date:   Wed, 15 Jun 2022 15:06:46 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Darren Hart <darren@os.amperecomputing.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Doug Rady <dcrady@os.amperecomputing.com>
+Subject: Re: [PATCH] ACPI/APEI: Limit printable size of BERT table data
+Message-ID: <YqpX9npa/wR7mafR@agluck-desk3.sc.intel.com>
+References: <43dfaba0646d498fe94c1a8479b812346133f438.1646765290.git.darren@os.amperecomputing.com>
+ <CAJZ5v0gMh2ed+ZWOnd-t_uTrZtm=AUfxOAkAKWT7WQK3=gf+7w@mail.gmail.com>
 MIME-Version: 1.0
-References: <20220615195643.12608-1-hdegoede@redhat.com> <20220615195643.12608-3-hdegoede@redhat.com>
-In-Reply-To: <20220615195643.12608-3-hdegoede@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 15 Jun 2022 23:31:24 +0200
-Message-ID: <CAHp75VcPEw93_3dZvKCadnAqrJCVvdVcKh+DodgBC68xkmJ7VQ@mail.gmail.com>
-Subject: Re: [RFC 2/4] ACPICA: Add \_SB.PC00, \SB.PCI0 to acpi_ns_early_initialize_devices()
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        =?UTF-8?Q?Johannes_Pen=C3=9Fel?= <johannespenssel@posteo.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gMh2ed+ZWOnd-t_uTrZtm=AUfxOAkAKWT7WQK3=gf+7w@mail.gmail.com>
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 9:57 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Since ACPICA commit f005ee6b90d1 / Linux commit 2d3349de8072
-> ("ACPICA: Namespace: Reorder \_SB._INI to make sure it is evaluated
-> before _REG evaluations") acpi_initialize_objects() calls \_SB._INI
-> before executing _REG OpRegion methods, because the _REG methods may
-> rely on initialization done by this _INI method.
->
-> In many DSDTs the \_SB.PC00._INI / \_SB.PCI0._INI methods set an OSYS
-> global variable based on _OSI evaluations.
->
-> In some cases there are _REG methods which depend on the OSYS value and
-> before this change ACPICA would run these _REG methods before running
-> _SB.PC00._INI / \_SB.PCI0._INI causing issues.
->
-> 2 examples of problems caused by running _REG methods before these
-> _INI methods are:
->
-> 1. on a "Lenovo IdeaPad 5 15ITL05" \_SB.PC00.LPCB.EC0._REG gets
-> evaluated before \_SB.PC00._INI and that _REG contains:
->
->     If ((OSYS == 0x07DF))
->     {
->         Local0 = 0x06
->     }
->
->     If ((Acquire (LFCM, 0xA000) == Zero))
->     {
->         OSTY = Local0
->         ...
->
-> With OSTY being a SystemMemory OpRegion field, due to the _INI running
-> too late, Local0 stays at 0. Causing OSTY to be set to 0 instead of 6,
-> which causes the brightness up/down keys to not work:
-> https://bugzilla.kernel.org/show_bug.cgi?id=214899
->
-> 2. On a "Lenovo Thinkbook 14-ILL" \\_SB_.PCI0.I2C0._REG gets
-> evaluated before \_SB.PCI0._INI and that _REG contains:
->
->     If ((OSYS == 0x07DF))
->     {
->         ...
->         LNUX = Zero
->         TPID = 0x4E
->     }
->     else
->     {
->         LNUX = One
->         TPID = 0xBB
->     }
->
-> And then later on the TPID value gets used to decide for which of multiple
-> devices describing the touchpad _STA should return 0xF and the one which
-> gets enabled by TPID=0xBB is broken, causing to the touchpad to not work:
-> https://bugzilla.redhat.com/show_bug.cgi?id=1842039
->
-> Fix these issues by adding \_SB.PC00._INI / \_SB.PCI0._INI to the list of
-> _INI methods to run early (before executing _REG methods).
+On Wed, Mar 09, 2022 at 07:42:26PM +0100, Rafael J. Wysocki wrote:
+> On Tue, Mar 8, 2022 at 7:51 PM Darren Hart
 
-...
+> Not that I have a particularly strong opinion here, but this looks
+> reasonable to me, so I've queued it up for 5.18.
+> 
+> APEI reviewers, please chime in if you disagree with the above.
 
-> -       char path[ACPI_PATH_SEGMENT_LENGTH + 2];
-> +       char path[ACPI_PATH_SEGMENT_LENGTH * 2 + 2];
+It looked reasonable to me when I skimmed it in March. But the
+reality check now needs cashing because some validation team
+here is complaining that they don't see any errors printed from
+their BERT tests. :-(
 
-Strictly speaking this should be, IIUC,
+So I looked again. This test inside the loop seems bogus:
 
-1 + ACPI_PATH_SEGMENT_LENGTH + ACPI_NAMESEG_SIZE + 1
+	if (region_len < ACPI_BERT_PRINT_MAX_LEN) {
 
-\\ + path segment length (with a separator) + name + \0
+because "region_len" isn't updated inside the loop. If it is too big
+then it will prevent Linux from printing any/all of the records in the
+BERT table (and the test could have been done before the loop).
 
-That said, it seems the original code adds 1 unneeded byte.
+Maybe below patch is better? It avoids printing individual CPER
+records that are too large (checking estatus_len instead of region_len).
 
-Perhaps a comment in the code?
+I also added a limit to how many records to print (I randomly picked "5" as
+the limit ... the specific failing test only want to print one).
 
--- 
-With Best Regards,
-Andy Shevchenko
+-Tony
+
+[I will write up a proper commit message and add a Signed-off-by if
+this looks to be a reasonable direction]
+
+diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
+index 598fd19b65fa..4e894a728c02 100644
+--- a/drivers/acpi/apei/bert.c
++++ b/drivers/acpi/apei/bert.c
+@@ -29,6 +29,8 @@
+ 
+ #undef pr_fmt
+ #define pr_fmt(fmt) "BERT: " fmt
++
++#define ACPI_BERT_PRINT_MAX_RECORDS 5
+ #define ACPI_BERT_PRINT_MAX_LEN 1024
+ 
+ static int bert_disable;
+@@ -39,6 +41,7 @@ static void __init bert_print_all(struct acpi_bert_region *region,
+ 	struct acpi_hest_generic_status *estatus =
+ 		(struct acpi_hest_generic_status *)region;
+ 	int remain = region_len;
++	int ncper = 0, skipped = 0;
+ 	u32 estatus_len;
+ 
+ 	while (remain >= sizeof(struct acpi_bert_region)) {
+@@ -46,24 +49,23 @@ static void __init bert_print_all(struct acpi_bert_region *region,
+ 		if (remain < estatus_len) {
+ 			pr_err(FW_BUG "Truncated status block (length: %u).\n",
+ 			       estatus_len);
+-			return;
++			break;
+ 		}
+ 
+ 		/* No more error records. */
+ 		if (!estatus->block_status)
+-			return;
++			break;
+ 
+ 		if (cper_estatus_check(estatus)) {
+ 			pr_err(FW_BUG "Invalid error record.\n");
+-			return;
++			break;
+ 		}
+ 
+ 		pr_info_once("Error records from previous boot:\n");
+-		if (region_len < ACPI_BERT_PRINT_MAX_LEN)
++		if (ncper++ < ACPI_BERT_PRINT_MAX_RECORDS && estatus_len < ACPI_BERT_PRINT_MAX_LEN)
+ 			cper_estatus_print(KERN_INFO HW_ERR, estatus);
+ 		else
+-			pr_info_once("Max print length exceeded, table data is available at:\n"
+-				     "/sys/firmware/acpi/tables/data/BERT");
++			skipped++;
+ 
+ 		/*
+ 		 * Because the boot error source is "one-time polled" type,
+@@ -75,6 +77,9 @@ static void __init bert_print_all(struct acpi_bert_region *region,
+ 		estatus = (void *)estatus + estatus_len;
+ 		remain -= estatus_len;
+ 	}
++	if (skipped)
++		pr_info("Skipped %d error records, full table data is available at:\n"
++			"/sys/firmware/acpi/tables/data/BERT", skipped);
+ }
+ 
+ static int __init setup_bert_disable(char *str)
