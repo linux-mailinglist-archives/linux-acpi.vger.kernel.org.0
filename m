@@ -2,198 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B736B54D136
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 20:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C0954D204
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 21:52:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358495AbiFOSyN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jun 2022 14:54:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33670 "EHLO
+        id S1350027AbiFOTwh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jun 2022 15:52:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358107AbiFOSyK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 14:54:10 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60BB38186
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Jun 2022 11:54:08 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id h23so20320559lfe.4
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Jun 2022 11:54:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=R/+J1Y9yB1sPzolzla9qc2fDqAKL6OPTM1OdQs0CRno=;
-        b=abcd5znL1a7ok4I0g4GWuTjmiANg0iKDQGwuE8doxfsT9kdULYDdRiGccgJroEls8X
-         5xxZ8c5rwhA/zDqfvtRxTYIP5tKxBkenLEJWpclHtYqcMmHK2uWBV5hfIs0kRo7LEfbt
-         tMGhhPywkfqrfCOHEVHsbf6UtAOSJVXPOkoy4/k2815rrk9vAmRWXWK2HhxteiU/wkww
-         44eCjmP4UoMmiJFizXetKCX9q31AmKP1NgwtXf+uNkb1VeyaQ1V0Hct4EyPLVHQNq+wd
-         0QF+UxZGiWL2qZCF4My/2/U9LTnK3jD4sVBeSS9XopFiK2K4V6xWIYuWYAcSfFSMU5l2
-         BWBQ==
+        with ESMTP id S1343917AbiFOTwd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 15:52:33 -0400
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 529A7D81;
+        Wed, 15 Jun 2022 12:52:31 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id v22so22372101ybd.5;
+        Wed, 15 Jun 2022 12:52:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=R/+J1Y9yB1sPzolzla9qc2fDqAKL6OPTM1OdQs0CRno=;
-        b=EVZ1WWKdvD9CMXGlVQb3nj+EDYx2PT2ueMOMxo6vOZB+8aZPLIt3M0tLb4sgdGvoxx
-         1iWt3rqGkUmiXqzaf4jsQwcDDjOyrAYL6IFCBOQKnGMQx+e7pZB5vymqC/jMspP1qH1+
-         sbMSqn91ktVuUH3FyaAkzo0QvUFkfxxRjvIprgReD/jCiPfALZ3ZWt/Cdm1iX84ZdW92
-         a1UKzK8K5B5x+TTetWjW6W4+5q7522DnnP1wUhlaBCANu3a1jhPHeX7u3FDCWxWZXPXP
-         09mvQQqJueGITwOvSIhAhJD8dFKTOzd1m0KzMUwxBGWTcx7mcwkDqpybV2B6E8cU0tsx
-         /HRQ==
-X-Gm-Message-State: AJIora8A8+wgEhA1hHkNZ66fEurmG1QT9l4NxlUh3Ex0umCVLXf0LBjw
-        HH2Rd77Wif+/TsIUYknYOBtzzKsZnZckb9LlmB9mAQ==
-X-Google-Smtp-Source: AGRyM1vZyfNc9JAgC9nEBUVD0Y6H2PaXy7vuk+wdCfIJrdMLJd38EgjmEGlXRwPi+0wxDf1+ARhAiqhg2XaBUYJM7vo=
-X-Received: by 2002:a05:6512:2087:b0:479:1615:3afe with SMTP id
- t7-20020a056512208700b0047916153afemr509273lfr.114.1655319247144; Wed, 15 Jun
- 2022 11:54:07 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=mL9akpVVZ4tEzNekwbjZgLIJgiBmLezCfn7/cgOspMQ=;
+        b=WTt/+ZRr+Mm+q7tKoJiaPW2HT4+9IFUK0PZFU1rbiY2QdpZwke6Ek9VilKanhUhVVs
+         1MUV+ALCpnC0Mp9202mcsVOSDetHm+bTKA40ZNi91AgARWHiTpHMGUOHT8/FnIN31SIV
+         OAq5B3kpi9HDf+5DCzQ7KkLQ5sVV3jEEu1rcRpHQ5mmVSvEWlEFhUlDgtedEY9SgyJmQ
+         rbq+XolDRdo5fRmRJFQEZ64NEYK28kMpaFC6kFWka9N+VUpJohwINIdc3wnfOeZxhAx+
+         TZAv2gRDB3iKVbXCwrFIHpmPJHTskok6R1qAdqvz6hi8Zf2M2l27VkOutYgUVqMWCfES
+         1y4g==
+X-Gm-Message-State: AJIora/JsnsH/s6kVF7bTKq/tGOJxTbm8r9t4yMIj1D+JYG0HHcxFkTl
+        DT+zHf4sQlVpShtGH7QQNzeqhOQx5byE5nDbFOA=
+X-Google-Smtp-Source: AGRyM1sF+FBhgh0k43sS5ry6Ox06fy9vYOfaKhwdj6kn6fPKiE+CPeLL04/IuPY068Cde/SdzOSdQg3fFpFDF6iy/GU=
+X-Received: by 2002:a25:d748:0:b0:65c:6b00:55af with SMTP id
+ o69-20020a25d748000000b0065c6b0055afmr1534149ybg.365.1655322750507; Wed, 15
+ Jun 2022 12:52:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220609110337.1238762-1-jaz@semihalf.com> <20220609110337.1238762-2-jaz@semihalf.com>
- <YqIJ8HtdqnoVzfQD@google.com> <CAH76GKNRDXAyGYvs2ji5Phu=5YPW8+SV8-6TLjizBRzTCnEROg@mail.gmail.com>
- <YqNVYz4+yVbWnmNv@google.com>
-In-Reply-To: <YqNVYz4+yVbWnmNv@google.com>
-From:   Grzegorz Jaszczyk <jaz@semihalf.com>
-Date:   Wed, 15 Jun 2022 20:53:56 +0200
-Message-ID: <CAH76GKNSfaHwpy46r1WWTVgnsuijqcHe=H5nvUTUUs1UbdZvkQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] x86: notify hypervisor about guest entering s2idle state
-To:     Sean Christopherson <seanjc@google.com>
-Cc:     linux-kernel@vger.kernel.org, Dmytro Maluka <dmy@semihalf.com>,
-        Zide Chen <zide.chen@intel.corp-partner.google.com>,
-        Peter Fang <peter.fang@intel.corp-partner.google.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
+References: <1843211.tdWV9SEqCh@kreacher> <2653857.mvXUDI8C0e@kreacher>
+ <2851774.e9J7NaK4W3@kreacher> <YqglkQZxAagb8ln/@lahna> <CAJZ5v0jBLNpXpVn=WBm1rLxDkPFNo=UqsfDnuWS9hD=CRDPbsQ@mail.gmail.com>
+ <Yql74qs6nYwRaQYf@lahna>
+In-Reply-To: <Yql74qs6nYwRaQYf@lahna>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 15 Jun 2022 21:52:19 +0200
+Message-ID: <CAJZ5v0jM=cUEmABWeV2=v8etXRWLT=GE_FhV1CYRfNrv72CkkA@mail.gmail.com>
+Subject: Re: [PATCH v2 04/16] thunderbolt: ACPI: Replace tb_acpi_find_port()
+ with acpi_find_child_by_adr()
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Sachi King <nakato@nakato.io>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        David Dunn <daviddunn@google.com>,
-        Wei Wang <wei.w.wang@intel.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "open list:KERNEL VIRTUAL MACHINE (KVM)" <kvm@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
-        <linux-pm@vger.kernel.org>, Dominik Behr <dbehr@google.com>,
-        Dmitry Torokhov <dtor@google.com>
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pt., 10 cze 2022 o 16:30 Sean Christopherson <seanjc@google.com> napisa=C5=
-=82(a):
+On Wed, Jun 15, 2022 at 8:27 AM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
 >
-> On Fri, Jun 10, 2022, Grzegorz Jaszczyk wrote:
-> > czw., 9 cze 2022 o 16:55 Sean Christopherson <seanjc@google.com> napisa=
-=C5=82(a):
-> > Above could be actually prevented if the VMM had control over the
-> > guest resumption. E.g. after VMM receives notification about guest
-> > entering s2idle state, it would park the vCPU actually preventing it
-> > from exiting s2idle without VMM intervention.
->
-> Ah, so you avoid races by assuming the VM wakes itself from s2idle any ti=
-me a vCPU
-> is run, even if the vCPU doesn't actually have a wake event.  That would =
-be very
-> useful info to put in the changelog.
-
-Just to clarify: I assumed that the VM may wake from s2idle any time a
-vCPU is running and got a wake event. So going back to the previous
-example:
-1. VM0 enters s2idle
-2. VMM gets notification about VM0 is in s2idle and during this
-notification handling, the vCPU notifying about s2idle is not running
-(we are in the middle of handling vCPU exit in VMM). So even if some
-wakeup event will arrive it couldn't allow that vCPU to exit the
-s2idle. This pending wakeup event wouldn't wakeup the VM0 until VMM
-unpark the vCPU and VMM has control over it.
-
->
-> > > > +static void s2idle_hypervisor_notify(void)
-> > > > +{
-> > > > +     if (static_cpu_has(X86_FEATURE_HYPERVISOR))
-> > > > +             kvm_hypercall0(KVM_HC_SYSTEM_S2IDLE);
+> On Tue, Jun 14, 2022 at 08:25:53PM +0200, Rafael J. Wysocki wrote:
+> > Hi Mika,
+> >
+> > On Tue, Jun 14, 2022 at 8:07 AM Mika Westerberg
+> > <mika.westerberg@linux.intel.com> wrote:
 > > >
-> > > Checking the HYPERVISOR flag is not remotely sufficient.  The hypervi=
-sor may not
-> > > be KVM, and if it is KVM, it may be an older version of KVM that does=
-n't support
-> > > the hypercall.  The latter scenario won't be fatal unless KVM has bee=
-n modified,
-> > > but blindly doing a hypercall for a different hypervisor could have d=
-isastrous
-> > > results, e.g. the registers ABIs are different, so the above will mak=
-e a random
-> > > request depending on what is in other GPRs.
+> > > Hi Rafael,
+> > >
+> > > On Mon, Jun 13, 2022 at 08:11:36PM +0200, Rafael J. Wysocki wrote:
+> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >
+> > > > Use acpi_find_child_by_adr() to find the child matching a given bus
+> > > > address instead of tb_acpi_find_port() that walks the list of children
+> > > > of an ACPI device directly for this purpose and drop the latter.
+> > > >
+> > > > Apart from simplifying the code, this will help to eliminate the
+> > > > children list head from struct acpi_device as it is redundant and it
+> > > > is used in questionable ways in some places (in particular, locking is
+> > > > needed for walking the list pointed to it safely, but it is often
+> > > > missing).
+> > > >
+> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > > ---
+> > > >
+> > > > v1 -> v2:
+> > > >    * Drop tb_acpi_find_port() (Heikki, Andy).
+> > > >    * Change the subject accordingly
+> > > >
+> > > > ---
+> > > >  drivers/thunderbolt/acpi.c |   27 ++++-----------------------
+> > > >  1 file changed, 4 insertions(+), 23 deletions(-)
+> > > >
+> > > > Index: linux-pm/drivers/thunderbolt/acpi.c
+> > > > ===================================================================
+> > > > --- linux-pm.orig/drivers/thunderbolt/acpi.c
+> > > > +++ linux-pm/drivers/thunderbolt/acpi.c
+> > > > @@ -301,26 +301,6 @@ static bool tb_acpi_bus_match(struct dev
+> > > >       return tb_is_switch(dev) || tb_is_usb4_port_device(dev);
+> > > >  }
+> > > >
+> > > > -static struct acpi_device *tb_acpi_find_port(struct acpi_device *adev,
+> > > > -                                          const struct tb_port *port)
+> > > > -{
+> > > > -     struct acpi_device *port_adev;
+> > > > -
+> > > > -     if (!adev)
+> > > > -             return NULL;
+> > > > -
+> > > > -     /*
+> > > > -      * Device routers exists under the downstream facing USB4 port
+> > > > -      * of the parent router. Their _ADR is always 0.
+> > > > -      */
+> > > > -     list_for_each_entry(port_adev, &adev->children, node) {
+> > > > -             if (acpi_device_adr(port_adev) == port->port)
+> > > > -                     return port_adev;
+> > > > -     }
+> > > > -
+> > > > -     return NULL;
+> > > > -}
+> > > > -
+> > > >  static struct acpi_device *tb_acpi_switch_find_companion(struct tb_switch *sw)
+> > > >  {
+> > > >       struct acpi_device *adev = NULL;
+> > > > @@ -331,7 +311,8 @@ static struct acpi_device *tb_acpi_switc
+> > > >               struct tb_port *port = tb_port_at(tb_route(sw), parent_sw);
+> > > >               struct acpi_device *port_adev;
+> > > >
+> > > > -             port_adev = tb_acpi_find_port(ACPI_COMPANION(&parent_sw->dev), port);
+> > > > +             port_adev = acpi_find_child_by_adr(ACPI_COMPANION(&parent_sw->dev),
+> > > > +                                                port->port);
+> > > >               if (port_adev)
+> > > >                       adev = acpi_find_child_device(port_adev, 0, false);
+> > > >       } else {
+> > > > @@ -364,8 +345,8 @@ static struct acpi_device *tb_acpi_find_
+> > > >       if (tb_is_switch(dev))
+> > > >               return tb_acpi_switch_find_companion(tb_to_switch(dev));
+> > > >       else if (tb_is_usb4_port_device(dev))
+> > > > -             return tb_acpi_find_port(ACPI_COMPANION(dev->parent),
+> > > > -                                      tb_to_usb4_port_device(dev)->port);
+> > >
+> > > Can you move the above comment here too?
 > >
-> > Good point: we've actually thought about not confusing/breaking VMMs
-> > so I've introduced KVM_CAP_X86_SYSTEM_S2IDLE VM capability in the
-> > second patch, but not breaking different hypervisors is another story.
-> > Would hiding it under new 's2idle_notify_kvm' module parameter work
-> > for upstream?:
->
-> No, enumerating support via KVM_CPUID_FEATURES is the correct way to do s=
-omething
-> like this, e.g. see KVM_FEATURE_CLOCKSOURCE2.  But honestly I wouldn't sp=
-end too
-> much time understanding how all of that works, because I still feel quite=
- strongly
-> that getting KVM involved is completely unnecessary.  A solution that isn=
-'t KVM
-> specific is preferable as it can then be implemented by any VMM that enum=
-erates
-> s2idle support to the guest.
-
-Sure, thank you for the explanation and an example.
-
->
-> > > The bigger question is, why is KVM involved at all?  KVM is just a du=
-mb pipe out
-> > > to userspace, and not a very good one at that.  There are multiple we=
-ll established
-> > > ways to communicate with the VMM without custom hypercalls.
+> > Do you mean to move the comment from tb_acpi_find_port() right here or
+> > before the if (tb_is_switch(dev)) line above?
 > >
-> > Could you please kindly advise about the recommended way of
-> > communication with VMM, taking into account that we want to send this
-> > notification just before entering s2idle state (please see also answer
-> > to next comment), which is at a very late stage of the suspend process
-> > with a lot of functionality already suspended?
+> > I think that tb_acpi_switch_find_companion() would be a better place
+> > for that comment.  At least it would match the code passing 0 to
+> > acpi_find_child_device() in there.
 >
-> MMIO or PIO for the actual exit, there's nothing special about hypercalls=
-.  As for
-> enumerating to the guest that it should do something, why not add a new A=
-CPI_LPS0_*
-> function?  E.g. something like
->
-> static void s2idle_hypervisor_notify(void)
-> {
->         if (lps0_dsm_func_mask > 0)
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_HYPERVISOR_NOTIFY
->                                         lps0_dsm_func_mask, lps0_dsm_guid=
-);
-> }
+> Yes, I agree (as long as the comment stays somewhere close ;-))
 
-Great, thank you for your suggestion! I will try this approach and
-come back. Since this will be the main change in the next version,
-will it be ok for you to add Suggested-by: Sean Christopherson
-<seanjc@google.com> tag?
+OK, I'll move it to tb_acpi_switch_find_companion() then.
 
-Best regards,
-Grzegorz
+Thanks!
