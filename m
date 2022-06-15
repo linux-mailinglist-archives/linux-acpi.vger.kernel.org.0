@@ -2,167 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C0F954C1CF
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 08:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8ECD54C2E0
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 09:49:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242793AbiFOG14 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jun 2022 02:27:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43090 "EHLO
+        id S230318AbiFOHtg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jun 2022 03:49:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236311AbiFOG1z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 02:27:55 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08E212A96;
-        Tue, 14 Jun 2022 23:27:53 -0700 (PDT)
+        with ESMTP id S236475AbiFOHtQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 03:49:16 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DEAF3FBC1;
+        Wed, 15 Jun 2022 00:49:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655274473; x=1686810473;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=paje04xnVGTi1OtyRY/hN0RZlL5eV183Z88/BdFFA5k=;
-  b=GTCAFplGadcDK6uC0zovKEJz9L0sGMDZ4A1WvEBmxL2OhQ4drtubA3YJ
-   auglswJ76BO6g0HO2/nF/ZgPnrYl0gFMTR+3y2+kmGLSRIpUeFt9U19++
-   jwGLMIfbq0EW4dbsknQul0bzLYcZ0JMoPwFS3iW8gXkUDXBaM/poz3H0A
-   Pij8UnHvaPgFG9Tjswc/xnOAY5BlCmVJpD4QMULgnCxsMq4ueZj+Dfpzk
-   Naj4bobtDEjNyMIN8G85rNS/Co0x9VSQ4sLifduG+rk0Za1aasKHxw2Uq
-   +Kep9JMh7CiaO3I2kcOiGEmT87PrYgyKGpn1InQy/i6WmdxVLEdOjU97m
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10378"; a="342815606"
+  t=1655279354; x=1686815354;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TsvfqySFBOOtkbcV9wmU48iaSI7/s1Hm9iaZc/71HFc=;
+  b=OjTIvm/8tklHqDXagYjHnecIfrUK4/GUokJzq8h1tCLYe0EawAJUR4ER
+   UsU/rvP+OurmvG/8lURixitMqi0IQyT5zTeM4+3o9U0UWjTqH6qaXRTcI
+   p84Dqeo1bmH53IE17K9arj7L7teGj6B/hTLxq6rspPp3WMkwsv3rCyLKF
+   xmfSzf9qlqnHniuCnXnnnnwpzM7inpwThfaDFKb7czSKMsrpTkCz8gFuZ
+   9zwVVzHq57gjEyHwXqKTJtUo7SWiErnz4IIA1K8LtbjYLdVETCFLgFKxA
+   5igUYdEsOV0/bxewEzRjHsz8iGtV2xbL74ai2Qwe0p+mlFy1UIbgFR+rp
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10378"; a="279588926"
 X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="342815606"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 23:27:53 -0700
+   d="scan'208";a="279588926"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 00:49:11 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="762317135"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 23:27:49 -0700
-Received: by lahna (sSMTP sendmail emulation); Wed, 15 Jun 2022 09:27:46 +0300
-Date:   Wed, 15 Jun 2022 09:27:46 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
-        <linux-usb@vger.kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v2 04/16] thunderbolt: ACPI: Replace tb_acpi_find_port()
- with acpi_find_child_by_adr()
-Message-ID: <Yql74qs6nYwRaQYf@lahna>
-References: <1843211.tdWV9SEqCh@kreacher>
- <2653857.mvXUDI8C0e@kreacher>
- <2851774.e9J7NaK4W3@kreacher>
- <YqglkQZxAagb8ln/@lahna>
- <CAJZ5v0jBLNpXpVn=WBm1rLxDkPFNo=UqsfDnuWS9hD=CRDPbsQ@mail.gmail.com>
+   d="scan'208";a="535934298"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 15 Jun 2022 00:49:06 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o1Nlx-000Mg3-Bb;
+        Wed, 15 Jun 2022 07:49:05 +0000
+Date:   Wed, 15 Jun 2022 15:48:09 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 3904c06c5e7dd1494d2feb6cdcd850cf2e832432
+Message-ID: <62a98eb9.R+wTNppuvg2Y8zxN%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0jBLNpXpVn=WBm1rLxDkPFNo=UqsfDnuWS9hD=CRDPbsQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 08:25:53PM +0200, Rafael J. Wysocki wrote:
-> Hi Mika,
-> 
-> On Tue, Jun 14, 2022 at 8:07 AM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> >
-> > Hi Rafael,
-> >
-> > On Mon, Jun 13, 2022 at 08:11:36PM +0200, Rafael J. Wysocki wrote:
-> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >
-> > > Use acpi_find_child_by_adr() to find the child matching a given bus
-> > > address instead of tb_acpi_find_port() that walks the list of children
-> > > of an ACPI device directly for this purpose and drop the latter.
-> > >
-> > > Apart from simplifying the code, this will help to eliminate the
-> > > children list head from struct acpi_device as it is redundant and it
-> > > is used in questionable ways in some places (in particular, locking is
-> > > needed for walking the list pointed to it safely, but it is often
-> > > missing).
-> > >
-> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > ---
-> > >
-> > > v1 -> v2:
-> > >    * Drop tb_acpi_find_port() (Heikki, Andy).
-> > >    * Change the subject accordingly
-> > >
-> > > ---
-> > >  drivers/thunderbolt/acpi.c |   27 ++++-----------------------
-> > >  1 file changed, 4 insertions(+), 23 deletions(-)
-> > >
-> > > Index: linux-pm/drivers/thunderbolt/acpi.c
-> > > ===================================================================
-> > > --- linux-pm.orig/drivers/thunderbolt/acpi.c
-> > > +++ linux-pm/drivers/thunderbolt/acpi.c
-> > > @@ -301,26 +301,6 @@ static bool tb_acpi_bus_match(struct dev
-> > >       return tb_is_switch(dev) || tb_is_usb4_port_device(dev);
-> > >  }
-> > >
-> > > -static struct acpi_device *tb_acpi_find_port(struct acpi_device *adev,
-> > > -                                          const struct tb_port *port)
-> > > -{
-> > > -     struct acpi_device *port_adev;
-> > > -
-> > > -     if (!adev)
-> > > -             return NULL;
-> > > -
-> > > -     /*
-> > > -      * Device routers exists under the downstream facing USB4 port
-> > > -      * of the parent router. Their _ADR is always 0.
-> > > -      */
-> > > -     list_for_each_entry(port_adev, &adev->children, node) {
-> > > -             if (acpi_device_adr(port_adev) == port->port)
-> > > -                     return port_adev;
-> > > -     }
-> > > -
-> > > -     return NULL;
-> > > -}
-> > > -
-> > >  static struct acpi_device *tb_acpi_switch_find_companion(struct tb_switch *sw)
-> > >  {
-> > >       struct acpi_device *adev = NULL;
-> > > @@ -331,7 +311,8 @@ static struct acpi_device *tb_acpi_switc
-> > >               struct tb_port *port = tb_port_at(tb_route(sw), parent_sw);
-> > >               struct acpi_device *port_adev;
-> > >
-> > > -             port_adev = tb_acpi_find_port(ACPI_COMPANION(&parent_sw->dev), port);
-> > > +             port_adev = acpi_find_child_by_adr(ACPI_COMPANION(&parent_sw->dev),
-> > > +                                                port->port);
-> > >               if (port_adev)
-> > >                       adev = acpi_find_child_device(port_adev, 0, false);
-> > >       } else {
-> > > @@ -364,8 +345,8 @@ static struct acpi_device *tb_acpi_find_
-> > >       if (tb_is_switch(dev))
-> > >               return tb_acpi_switch_find_companion(tb_to_switch(dev));
-> > >       else if (tb_is_usb4_port_device(dev))
-> > > -             return tb_acpi_find_port(ACPI_COMPANION(dev->parent),
-> > > -                                      tb_to_usb4_port_device(dev)->port);
-> >
-> > Can you move the above comment here too?
-> 
-> Do you mean to move the comment from tb_acpi_find_port() right here or
-> before the if (tb_is_switch(dev)) line above?
-> 
-> I think that tb_acpi_switch_find_companion() would be a better place
-> for that comment.  At least it would match the code passing 0 to
-> acpi_find_child_device() in there.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 3904c06c5e7dd1494d2feb6cdcd850cf2e832432  Merge branch 'thermal-core' into bleeding-edge
 
-Yes, I agree (as long as the comment stays somewhere close ;-))
+elapsed time: 721m
+
+configs tested: 83
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm64                               defconfig
+arm64                            allyesconfig
+ia64                             allmodconfig
+ia64                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+alpha                               defconfig
+csky                                defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+arc                                 defconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+parisc64                            defconfig
+s390                             allyesconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                                defconfig
+i386                             allyesconfig
+sparc                               defconfig
+sparc                            allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+x86_64               randconfig-a014-20220613
+x86_64               randconfig-a012-20220613
+x86_64               randconfig-a011-20220613
+x86_64               randconfig-a013-20220613
+x86_64               randconfig-a016-20220613
+x86_64               randconfig-a015-20220613
+i386                 randconfig-a013-20220613
+i386                 randconfig-a011-20220613
+i386                 randconfig-a014-20220613
+i386                 randconfig-a012-20220613
+i386                 randconfig-a016-20220613
+i386                 randconfig-a015-20220613
+arc                  randconfig-r043-20220613
+riscv                randconfig-r042-20220613
+s390                 randconfig-r044-20220613
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+x86_64                           rhel-8.3-syz
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+
+clang tested configs:
+x86_64               randconfig-a002-20220613
+x86_64               randconfig-a004-20220613
+x86_64               randconfig-a001-20220613
+x86_64               randconfig-a003-20220613
+x86_64               randconfig-a005-20220613
+x86_64               randconfig-a006-20220613
+i386                 randconfig-a002-20220613
+i386                 randconfig-a003-20220613
+i386                 randconfig-a001-20220613
+i386                 randconfig-a005-20220613
+i386                 randconfig-a004-20220613
+i386                 randconfig-a006-20220613
+hexagon              randconfig-r041-20220613
+hexagon              randconfig-r045-20220613
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
