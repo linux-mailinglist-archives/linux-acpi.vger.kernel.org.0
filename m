@@ -2,167 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C0954D204
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 21:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAF2F54D22A
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 21:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350027AbiFOTwh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jun 2022 15:52:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52214 "EHLO
+        id S1350416AbiFOT4z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jun 2022 15:56:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343917AbiFOTwd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 15:52:33 -0400
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 529A7D81;
-        Wed, 15 Jun 2022 12:52:31 -0700 (PDT)
-Received: by mail-yb1-f177.google.com with SMTP id v22so22372101ybd.5;
-        Wed, 15 Jun 2022 12:52:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mL9akpVVZ4tEzNekwbjZgLIJgiBmLezCfn7/cgOspMQ=;
-        b=WTt/+ZRr+Mm+q7tKoJiaPW2HT4+9IFUK0PZFU1rbiY2QdpZwke6Ek9VilKanhUhVVs
-         1MUV+ALCpnC0Mp9202mcsVOSDetHm+bTKA40ZNi91AgARWHiTpHMGUOHT8/FnIN31SIV
-         OAq5B3kpi9HDf+5DCzQ7KkLQ5sVV3jEEu1rcRpHQ5mmVSvEWlEFhUlDgtedEY9SgyJmQ
-         rbq+XolDRdo5fRmRJFQEZ64NEYK28kMpaFC6kFWka9N+VUpJohwINIdc3wnfOeZxhAx+
-         TZAv2gRDB3iKVbXCwrFIHpmPJHTskok6R1qAdqvz6hi8Zf2M2l27VkOutYgUVqMWCfES
-         1y4g==
-X-Gm-Message-State: AJIora/JsnsH/s6kVF7bTKq/tGOJxTbm8r9t4yMIj1D+JYG0HHcxFkTl
-        DT+zHf4sQlVpShtGH7QQNzeqhOQx5byE5nDbFOA=
-X-Google-Smtp-Source: AGRyM1sF+FBhgh0k43sS5ry6Ox06fy9vYOfaKhwdj6kn6fPKiE+CPeLL04/IuPY068Cde/SdzOSdQg3fFpFDF6iy/GU=
-X-Received: by 2002:a25:d748:0:b0:65c:6b00:55af with SMTP id
- o69-20020a25d748000000b0065c6b0055afmr1534149ybg.365.1655322750507; Wed, 15
- Jun 2022 12:52:30 -0700 (PDT)
+        with ESMTP id S1345218AbiFOT4z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 15:56:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7AD733120C
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Jun 2022 12:56:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655323013;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=dqArTaCGaVZk6IGWHgnbE9TdxFOxfCQSKVeIV7IJhKo=;
+        b=QkgZnA7IZ8FiUv4pu7h1kpeI8vPtnBxW/7M02UVOxoyFdjcPmRceqexJeY0tc9M2BRx8mF
+        abyAI20tEs1b7/TWI0X0LGE4ujgu+l8wb0SNyt0AnFagNojMj5TyV2EZnFE+TEGdOsh8Af
+        zfAXPdWQhZtU3FVkth2JiJTcVJNCEFI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-203-tUYurTs-MViGj1ap1fWo5g-1; Wed, 15 Jun 2022 15:56:52 -0400
+X-MC-Unique: tUYurTs-MViGj1ap1fWo5g-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E5D11C14487;
+        Wed, 15 Jun 2022 19:56:50 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.99])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id EF7652026D64;
+        Wed, 15 Jun 2022 19:56:48 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Andy Shevchenko <andy@kernel.org>, kai.heng.feng@canonical.com,
+        =?UTF-8?q?Johannes=20Pen=C3=9Fel?= <johannespenssel@posteo.net>,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: [RFC 0/4] ACPI[CA]: fix ECDT EC probe ordering issues
+Date:   Wed, 15 Jun 2022 21:56:39 +0200
+Message-Id: <20220615195643.12608-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <1843211.tdWV9SEqCh@kreacher> <2653857.mvXUDI8C0e@kreacher>
- <2851774.e9J7NaK4W3@kreacher> <YqglkQZxAagb8ln/@lahna> <CAJZ5v0jBLNpXpVn=WBm1rLxDkPFNo=UqsfDnuWS9hD=CRDPbsQ@mail.gmail.com>
- <Yql74qs6nYwRaQYf@lahna>
-In-Reply-To: <Yql74qs6nYwRaQYf@lahna>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 15 Jun 2022 21:52:19 +0200
-Message-ID: <CAJZ5v0jM=cUEmABWeV2=v8etXRWLT=GE_FhV1CYRfNrv72CkkA@mail.gmail.com>
-Subject: Re: [PATCH v2 04/16] thunderbolt: ACPI: Replace tb_acpi_find_port()
- with acpi_find_child_by_adr()
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
-        <linux-usb@vger.kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.4
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 8:27 AM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> On Tue, Jun 14, 2022 at 08:25:53PM +0200, Rafael J. Wysocki wrote:
-> > Hi Mika,
-> >
-> > On Tue, Jun 14, 2022 at 8:07 AM Mika Westerberg
-> > <mika.westerberg@linux.intel.com> wrote:
-> > >
-> > > Hi Rafael,
-> > >
-> > > On Mon, Jun 13, 2022 at 08:11:36PM +0200, Rafael J. Wysocki wrote:
-> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > Use acpi_find_child_by_adr() to find the child matching a given bus
-> > > > address instead of tb_acpi_find_port() that walks the list of children
-> > > > of an ACPI device directly for this purpose and drop the latter.
-> > > >
-> > > > Apart from simplifying the code, this will help to eliminate the
-> > > > children list head from struct acpi_device as it is redundant and it
-> > > > is used in questionable ways in some places (in particular, locking is
-> > > > needed for walking the list pointed to it safely, but it is often
-> > > > missing).
-> > > >
-> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > ---
-> > > >
-> > > > v1 -> v2:
-> > > >    * Drop tb_acpi_find_port() (Heikki, Andy).
-> > > >    * Change the subject accordingly
-> > > >
-> > > > ---
-> > > >  drivers/thunderbolt/acpi.c |   27 ++++-----------------------
-> > > >  1 file changed, 4 insertions(+), 23 deletions(-)
-> > > >
-> > > > Index: linux-pm/drivers/thunderbolt/acpi.c
-> > > > ===================================================================
-> > > > --- linux-pm.orig/drivers/thunderbolt/acpi.c
-> > > > +++ linux-pm/drivers/thunderbolt/acpi.c
-> > > > @@ -301,26 +301,6 @@ static bool tb_acpi_bus_match(struct dev
-> > > >       return tb_is_switch(dev) || tb_is_usb4_port_device(dev);
-> > > >  }
-> > > >
-> > > > -static struct acpi_device *tb_acpi_find_port(struct acpi_device *adev,
-> > > > -                                          const struct tb_port *port)
-> > > > -{
-> > > > -     struct acpi_device *port_adev;
-> > > > -
-> > > > -     if (!adev)
-> > > > -             return NULL;
-> > > > -
-> > > > -     /*
-> > > > -      * Device routers exists under the downstream facing USB4 port
-> > > > -      * of the parent router. Their _ADR is always 0.
-> > > > -      */
-> > > > -     list_for_each_entry(port_adev, &adev->children, node) {
-> > > > -             if (acpi_device_adr(port_adev) == port->port)
-> > > > -                     return port_adev;
-> > > > -     }
-> > > > -
-> > > > -     return NULL;
-> > > > -}
-> > > > -
-> > > >  static struct acpi_device *tb_acpi_switch_find_companion(struct tb_switch *sw)
-> > > >  {
-> > > >       struct acpi_device *adev = NULL;
-> > > > @@ -331,7 +311,8 @@ static struct acpi_device *tb_acpi_switc
-> > > >               struct tb_port *port = tb_port_at(tb_route(sw), parent_sw);
-> > > >               struct acpi_device *port_adev;
-> > > >
-> > > > -             port_adev = tb_acpi_find_port(ACPI_COMPANION(&parent_sw->dev), port);
-> > > > +             port_adev = acpi_find_child_by_adr(ACPI_COMPANION(&parent_sw->dev),
-> > > > +                                                port->port);
-> > > >               if (port_adev)
-> > > >                       adev = acpi_find_child_device(port_adev, 0, false);
-> > > >       } else {
-> > > > @@ -364,8 +345,8 @@ static struct acpi_device *tb_acpi_find_
-> > > >       if (tb_is_switch(dev))
-> > > >               return tb_acpi_switch_find_companion(tb_to_switch(dev));
-> > > >       else if (tb_is_usb4_port_device(dev))
-> > > > -             return tb_acpi_find_port(ACPI_COMPANION(dev->parent),
-> > > > -                                      tb_to_usb4_port_device(dev)->port);
-> > >
-> > > Can you move the above comment here too?
-> >
-> > Do you mean to move the comment from tb_acpi_find_port() right here or
-> > before the if (tb_is_switch(dev)) line above?
-> >
-> > I think that tb_acpi_switch_find_companion() would be a better place
-> > for that comment.  At least it would match the code passing 0 to
-> > acpi_find_child_device() in there.
->
-> Yes, I agree (as long as the comment stays somewhere close ;-))
+Hi All,
 
-OK, I'll move it to tb_acpi_switch_find_companion() then.
+This series fixes some ECDT EC probe ordering issues which are causing
+issues om some laptops:
 
-Thanks!
+https://bugzilla.kernel.org/show_bug.cgi?id=214899
+https://bugzilla.redhat.com/show_bug.cgi?id=1842039
+
+This is a RFC because fixing this requires some ACPICA changes which
+obviously need to go upstream through the ACPICA project. But first
+I wanted to try and get some general feedback on the chosen approach.
+
+The problem this fixed is best described by the commit message of patch 4:
+
+ACPI-2.0 says that the EC OpRegion handler must be available immediately
+(like the standard default OpRegion handlers). So acpi_bus_init() calls
+acpi_ec_ecdt_probe(), which calls acpi_install_address_space_handler() to
+install the EC's OpRegion handler, early on.
+
+This not only installs the OpRegion handler, but also calls the EC's
+_REG method. The _REG method call is a problem because it may rely on
+initialization done by the _INI methods of one of the PCI / _SB root devs,
+see for example: https://bugzilla.kernel.org/show_bug.cgi?id=214899 .
+
+This _REG depends on _INI problem can be fixed by calling the new ACPICA
+acpi_early_initialize_objects() function before acpi_ec_ecdt_probe().
+
+But on some boards (e.g. Lenovo X1C8) the root devices _INI method
+relies on the EC OpRegion so executing the _INI methods before
+registering the EC OpRegion handler leads to errors there.
+
+To allow fixing this the ACPICA code now allows to do the OpRegion handler
+installation early on (without calling _REG) and to do the EC's _REG
+execution later on as a separate step.
+
+This commit uses this new ACPICA functions to fix the EC probe ordering
+by changing the acpi_bus_init() initialization order to this:
+
+1. acpi_load_tables()
+2. acpi_ec_ecdt_probe()
+   This now calls acpi_install_address_space_handler(ACPI_NO_EXEC__REG)
+   which installs the OpRegion handler without executing _REG
+3. acpi_enable_subsystem()
+4. acpi_early_initialize_objects()
+   This calls the _INI method of the PCI and _SB root devices
+5. acpi_ec_ecdt_exec_reg();
+   This executes the EC's _REG now that the root devices _INI has run
+6. acpi_initialize_objects(ACPI_NO_EARLY_DEVICE_INIT)
+
+This allows the EC's _REG method to depend on e.g. the \OSYS global/GVNS
+variable often set by a root-device's _INI method, while at the same time
+allowing these _INI methods to access EmbeddedController OpRegions.
+
+Regards,
+
+Hans
+
+
+Hans de Goede (4):
+  ACPICA: Add an acpi_early_initialize_objects() helper
+  ACPICA: Add \_SB.PC00, \SB.PCI0 to acpi_ns_early_initialize_devices()
+  ACPICA: Make address-space-handler install and _REG execution 2
+    separate steps
+  ACPI: fix ECDT EC probe ordering issues
+
+ drivers/acpi/acpica/acnamesp.h |   2 +
+ drivers/acpi/acpica/evxfregn.c |  32 ++++---
+ drivers/acpi/acpica/nsinit.c   | 170 ++++++++++++++++++++-------------
+ drivers/acpi/acpica/utxfinit.c |  21 ++++
+ drivers/acpi/bus.c             |  19 +++-
+ drivers/acpi/ec.c              |  38 ++++++--
+ drivers/acpi/internal.h        |   1 +
+ include/acpi/acpixf.h          |  35 +++++--
+ include/acpi/actypes.h         |   5 +-
+ 9 files changed, 223 insertions(+), 100 deletions(-)
+
+-- 
+2.36.0
+
