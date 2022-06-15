@@ -2,175 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB55054C18A
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 08:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C0F954C1CF
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 08:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345981AbiFOGFT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jun 2022 02:05:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52476 "EHLO
+        id S242793AbiFOG14 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jun 2022 02:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245729AbiFOGFR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 02:05:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B7118E08;
-        Tue, 14 Jun 2022 23:05:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 79489617AA;
-        Wed, 15 Jun 2022 06:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B477C34115;
-        Wed, 15 Jun 2022 06:05:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655273115;
-        bh=yf3pNom/syiLiOha7Upiq9/nR1Hjl9dv2JULctSWZP0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SjnyzJRJ5maovA4d7DzY2/Ij5TNs/akt5ph8MDjdNnh42oSEnpEqun3aky3dQcf6z
-         rGme0eLVsl/XoKZXtCCkL0+cKE/nzsKpLCn2sT4A50UeO3p7crMUO1XfASUME8HSj0
-         pD6alvihCcM/657amEHKEos8BTfaNv0g8jeH8Q6QrkIG8VgVi/YsytFwbegMDMw6Gn
-         Pxj0w5BlxtbfpWb4+1rV886T9D/GynKsmxsWQDGtqkBJk0CUIxtfKvkZpW8JkVRt5W
-         zI01Adx6IQH3zR34l9+HTfR6cCjay+Ytdyco9DFFfWGGA7opCch5d/Lzswk+yKRRZO
-         /G8E+1jj9J/iQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.95)
-        (envelope-from <maz@kernel.org>)
-        id 1o1M9R-000hh4-Lq;
-        Wed, 15 Jun 2022 07:05:13 +0100
-Date:   Wed, 15 Jun 2022 07:05:11 +0100
-Message-ID: <87mteepilk.wl-maz@kernel.org>
-From:   Marc Zyngier <maz@kernel.org>
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@kernel.org,
-        linux@armlinux.org.uk, ulli.kroll@googlemail.com,
-        linus.walleij@linaro.org, shawnguo@kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
-        khilman@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
-        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
-        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
-        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
-        shorne@gmail.com, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
-        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
-        jiangshanlai@gmail.com, joel@joelfernandes.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH 23/36] arm64,smp: Remove trace_.*_rcuidle() usage
-In-Reply-To: <Yqi2UGb4alCAR5s4@FVFF77S0Q05N>
-References: <20220608142723.103523089@infradead.org>
-        <20220608144517.380962958@infradead.org>
-        <Yqi2UGb4alCAR5s4@FVFF77S0Q05N>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: mark.rutland@arm.com, peterz@infradead.org, rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk, ulli.kroll@googlemail.com, linus.walleij@linaro.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com, will@kernel.org, guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org, jonas@southpole.se, stefan.kristiansson@saunalahti.fi, shorne@gmail.com, James.Bottomley@HansenPartnership.com, deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org, paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@
- libc.org, davem@davemloft.net, richard@nod.at, anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, acme@kernel.org, alexander.shishkin@linux.intel.com, jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu, amakhalov@vmware.com, pv-drivers@vmware.com, boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org, mturquette@baylibre.com, sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org, sudeep.holla@arm.com, agross@kernel.org, bjorn.andersson@linaro.org, anup@brainfault.org, thierry.reding@gmail.com, jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com, arnd@arndb.de, yury.norov@gmail.com, andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com, senozhatsky@chromium.org, john.ogness@linutronix.de, paul
- mck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com, josh@joshtriplett.org, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, joel@joelfernandes.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, openrisc@lists.librecores.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org, virtualization@lists.linux-foundation.org, xen-devel@lists.xenproject.org, 
- linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org, rcu@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S236311AbiFOG1z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 02:27:55 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08E212A96;
+        Tue, 14 Jun 2022 23:27:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655274473; x=1686810473;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=paje04xnVGTi1OtyRY/hN0RZlL5eV183Z88/BdFFA5k=;
+  b=GTCAFplGadcDK6uC0zovKEJz9L0sGMDZ4A1WvEBmxL2OhQ4drtubA3YJ
+   auglswJ76BO6g0HO2/nF/ZgPnrYl0gFMTR+3y2+kmGLSRIpUeFt9U19++
+   jwGLMIfbq0EW4dbsknQul0bzLYcZ0JMoPwFS3iW8gXkUDXBaM/poz3H0A
+   Pij8UnHvaPgFG9Tjswc/xnOAY5BlCmVJpD4QMULgnCxsMq4ueZj+Dfpzk
+   Naj4bobtDEjNyMIN8G85rNS/Co0x9VSQ4sLifduG+rk0Za1aasKHxw2Uq
+   +Kep9JMh7CiaO3I2kcOiGEmT87PrYgyKGpn1InQy/i6WmdxVLEdOjU97m
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10378"; a="342815606"
+X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
+   d="scan'208";a="342815606"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 23:27:53 -0700
+X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
+   d="scan'208";a="762317135"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 23:27:49 -0700
+Received: by lahna (sSMTP sendmail emulation); Wed, 15 Jun 2022 09:27:46 +0300
+Date:   Wed, 15 Jun 2022 09:27:46 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v2 04/16] thunderbolt: ACPI: Replace tb_acpi_find_port()
+ with acpi_find_child_by_adr()
+Message-ID: <Yql74qs6nYwRaQYf@lahna>
+References: <1843211.tdWV9SEqCh@kreacher>
+ <2653857.mvXUDI8C0e@kreacher>
+ <2851774.e9J7NaK4W3@kreacher>
+ <YqglkQZxAagb8ln/@lahna>
+ <CAJZ5v0jBLNpXpVn=WBm1rLxDkPFNo=UqsfDnuWS9hD=CRDPbsQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0jBLNpXpVn=WBm1rLxDkPFNo=UqsfDnuWS9hD=CRDPbsQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 14 Jun 2022 17:24:48 +0100,
-Mark Rutland <mark.rutland@arm.com> wrote:
+On Tue, Jun 14, 2022 at 08:25:53PM +0200, Rafael J. Wysocki wrote:
+> Hi Mika,
 > 
-> On Wed, Jun 08, 2022 at 04:27:46PM +0200, Peter Zijlstra wrote:
-> > Ever since commit d3afc7f12987 ("arm64: Allow IPIs to be handled as
-> > normal interrupts") this function is called in regular IRQ context.
-> > 
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> On Tue, Jun 14, 2022 at 8:07 AM Mika Westerberg
+> <mika.westerberg@linux.intel.com> wrote:
+> >
+> > Hi Rafael,
+> >
+> > On Mon, Jun 13, 2022 at 08:11:36PM +0200, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > Use acpi_find_child_by_adr() to find the child matching a given bus
+> > > address instead of tb_acpi_find_port() that walks the list of children
+> > > of an ACPI device directly for this purpose and drop the latter.
+> > >
+> > > Apart from simplifying the code, this will help to eliminate the
+> > > children list head from struct acpi_device as it is redundant and it
+> > > is used in questionable ways in some places (in particular, locking is
+> > > needed for walking the list pointed to it safely, but it is often
+> > > missing).
+> > >
+> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > ---
+> > >
+> > > v1 -> v2:
+> > >    * Drop tb_acpi_find_port() (Heikki, Andy).
+> > >    * Change the subject accordingly
+> > >
+> > > ---
+> > >  drivers/thunderbolt/acpi.c |   27 ++++-----------------------
+> > >  1 file changed, 4 insertions(+), 23 deletions(-)
+> > >
+> > > Index: linux-pm/drivers/thunderbolt/acpi.c
+> > > ===================================================================
+> > > --- linux-pm.orig/drivers/thunderbolt/acpi.c
+> > > +++ linux-pm/drivers/thunderbolt/acpi.c
+> > > @@ -301,26 +301,6 @@ static bool tb_acpi_bus_match(struct dev
+> > >       return tb_is_switch(dev) || tb_is_usb4_port_device(dev);
+> > >  }
+> > >
+> > > -static struct acpi_device *tb_acpi_find_port(struct acpi_device *adev,
+> > > -                                          const struct tb_port *port)
+> > > -{
+> > > -     struct acpi_device *port_adev;
+> > > -
+> > > -     if (!adev)
+> > > -             return NULL;
+> > > -
+> > > -     /*
+> > > -      * Device routers exists under the downstream facing USB4 port
+> > > -      * of the parent router. Their _ADR is always 0.
+> > > -      */
+> > > -     list_for_each_entry(port_adev, &adev->children, node) {
+> > > -             if (acpi_device_adr(port_adev) == port->port)
+> > > -                     return port_adev;
+> > > -     }
+> > > -
+> > > -     return NULL;
+> > > -}
+> > > -
+> > >  static struct acpi_device *tb_acpi_switch_find_companion(struct tb_switch *sw)
+> > >  {
+> > >       struct acpi_device *adev = NULL;
+> > > @@ -331,7 +311,8 @@ static struct acpi_device *tb_acpi_switc
+> > >               struct tb_port *port = tb_port_at(tb_route(sw), parent_sw);
+> > >               struct acpi_device *port_adev;
+> > >
+> > > -             port_adev = tb_acpi_find_port(ACPI_COMPANION(&parent_sw->dev), port);
+> > > +             port_adev = acpi_find_child_by_adr(ACPI_COMPANION(&parent_sw->dev),
+> > > +                                                port->port);
+> > >               if (port_adev)
+> > >                       adev = acpi_find_child_device(port_adev, 0, false);
+> > >       } else {
+> > > @@ -364,8 +345,8 @@ static struct acpi_device *tb_acpi_find_
+> > >       if (tb_is_switch(dev))
+> > >               return tb_acpi_switch_find_companion(tb_to_switch(dev));
+> > >       else if (tb_is_usb4_port_device(dev))
+> > > -             return tb_acpi_find_port(ACPI_COMPANION(dev->parent),
+> > > -                                      tb_to_usb4_port_device(dev)->port);
+> >
+> > Can you move the above comment here too?
 > 
-> [adding Marc since he authored that commit]
+> Do you mean to move the comment from tb_acpi_find_port() right here or
+> before the if (tb_is_switch(dev)) line above?
 > 
-> Makes sense to me:
-> 
->   Acked-by: Mark Rutland <mark.rutland@arm.com>
-> 
-> Mark.
-> 
-> > ---
-> >  arch/arm64/kernel/smp.c |    4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > --- a/arch/arm64/kernel/smp.c
-> > +++ b/arch/arm64/kernel/smp.c
-> > @@ -865,7 +865,7 @@ static void do_handle_IPI(int ipinr)
-> >  	unsigned int cpu = smp_processor_id();
-> >  
-> >  	if ((unsigned)ipinr < NR_IPI)
-> > -		trace_ipi_entry_rcuidle(ipi_types[ipinr]);
-> > +		trace_ipi_entry(ipi_types[ipinr]);
-> >  
-> >  	switch (ipinr) {
-> >  	case IPI_RESCHEDULE:
-> > @@ -914,7 +914,7 @@ static void do_handle_IPI(int ipinr)
-> >  	}
-> >  
-> >  	if ((unsigned)ipinr < NR_IPI)
-> > -		trace_ipi_exit_rcuidle(ipi_types[ipinr]);
-> > +		trace_ipi_exit(ipi_types[ipinr]);
-> >  }
-> >  
-> >  static irqreturn_t ipi_handler(int irq, void *data)
+> I think that tb_acpi_switch_find_companion() would be a better place
+> for that comment.  At least it would match the code passing 0 to
+> acpi_find_child_device() in there.
 
-Acked-by: Marc Zyngier <maz@kernel.org>
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Yes, I agree (as long as the comment stays somewhere close ;-))
