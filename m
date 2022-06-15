@@ -2,165 +2,176 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8ECD54C2E0
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 09:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCD4354C587
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jun 2022 12:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230318AbiFOHtg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Jun 2022 03:49:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57310 "EHLO
+        id S243109AbiFOKLh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Jun 2022 06:11:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236475AbiFOHtQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 03:49:16 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DEAF3FBC1;
-        Wed, 15 Jun 2022 00:49:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655279354; x=1686815354;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=TsvfqySFBOOtkbcV9wmU48iaSI7/s1Hm9iaZc/71HFc=;
-  b=OjTIvm/8tklHqDXagYjHnecIfrUK4/GUokJzq8h1tCLYe0EawAJUR4ER
-   UsU/rvP+OurmvG/8lURixitMqi0IQyT5zTeM4+3o9U0UWjTqH6qaXRTcI
-   p84Dqeo1bmH53IE17K9arj7L7teGj6B/hTLxq6rspPp3WMkwsv3rCyLKF
-   xmfSzf9qlqnHniuCnXnnnnwpzM7inpwThfaDFKb7czSKMsrpTkCz8gFuZ
-   9zwVVzHq57gjEyHwXqKTJtUo7SWiErnz4IIA1K8LtbjYLdVETCFLgFKxA
-   5igUYdEsOV0/bxewEzRjHsz8iGtV2xbL74ai2Qwe0p+mlFy1UIbgFR+rp
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10378"; a="279588926"
-X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="279588926"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 00:49:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="535934298"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 15 Jun 2022 00:49:06 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o1Nlx-000Mg3-Bb;
-        Wed, 15 Jun 2022 07:49:05 +0000
-Date:   Wed, 15 Jun 2022 15:48:09 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 3904c06c5e7dd1494d2feb6cdcd850cf2e832432
-Message-ID: <62a98eb9.R+wTNppuvg2Y8zxN%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S243110AbiFOKLg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Jun 2022 06:11:36 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796DB4AE38
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Jun 2022 03:11:34 -0700 (PDT)
+Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LNLb94KqMz6H8X3;
+        Wed, 15 Jun 2022 18:07:49 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 15 Jun 2022 12:11:31 +0200
+Received: from A2006125610.china.huawei.com (10.202.227.178) by
+ lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 15 Jun 2022 11:11:24 +0100
+From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+To:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
+CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
+        <joro@8bytes.org>, <robin.murphy@arm.com>, <will@kernel.org>,
+        <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
+        <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
+        <jon@solid-run.com>, <eric.auger@redhat.com>,
+        <laurentiu.tudor@nxp.com>, <hch@infradead.org>
+Subject: [PATCH v13 0/9] ACPI/IORT: Support for IORT RMR node
+Date:   Wed, 15 Jun 2022 11:10:35 +0100
+Message-ID: <20220615101044.1972-1-shameerali.kolothum.thodi@huawei.com>
+X-Mailer: git-send-email 2.12.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.202.227.178]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=0.4 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 3904c06c5e7dd1494d2feb6cdcd850cf2e832432  Merge branch 'thermal-core' into bleeding-edge
+Hi
 
-elapsed time: 721m
+v12 --> v13
+  -No changes. Rebased to 5.19-rc1.
+  -Picked up tags received from Laurentiu, Hanjun and Will. Thanks!.
 
-configs tested: 83
-configs skipped: 3
+Thanks,
+Shameer
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+From old:
+We have faced issues with 3408iMR RAID controller cards which
+fail to boot when SMMU is enabled. This is because these
+controllers make use of host memory for various caching related
+purposes and when SMMU is enabled the iMR firmware fails to
+access these memory regions as there is no mapping for them.
+IORT RMR provides a way for UEFI to describe and report these
+memory regions so that the kernel can make a unity mapping for
+these in SMMU.
 
-gcc tested configs:
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm64                               defconfig
-arm64                            allyesconfig
-ia64                             allmodconfig
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-alpha                               defconfig
-csky                                defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-arc                                 defconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-parisc64                            defconfig
-s390                             allyesconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-i386                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-sparc                            allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64               randconfig-a014-20220613
-x86_64               randconfig-a012-20220613
-x86_64               randconfig-a011-20220613
-x86_64               randconfig-a013-20220613
-x86_64               randconfig-a016-20220613
-x86_64               randconfig-a015-20220613
-i386                 randconfig-a013-20220613
-i386                 randconfig-a011-20220613
-i386                 randconfig-a014-20220613
-i386                 randconfig-a012-20220613
-i386                 randconfig-a016-20220613
-i386                 randconfig-a015-20220613
-arc                  randconfig-r043-20220613
-riscv                randconfig-r042-20220613
-s390                 randconfig-r044-20220613
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                            allmodconfig
-riscv                    nommu_k210_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-syz
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
+Change History:
 
-clang tested configs:
-x86_64               randconfig-a002-20220613
-x86_64               randconfig-a004-20220613
-x86_64               randconfig-a001-20220613
-x86_64               randconfig-a003-20220613
-x86_64               randconfig-a005-20220613
-x86_64               randconfig-a006-20220613
-i386                 randconfig-a002-20220613
-i386                 randconfig-a003-20220613
-i386                 randconfig-a001-20220613
-i386                 randconfig-a005-20220613
-i386                 randconfig-a004-20220613
-i386                 randconfig-a006-20220613
-hexagon              randconfig-r041-20220613
-hexagon              randconfig-r045-20220613
+v11 --> v12
+  -Minor fix in patch #4 to address the issue reported by the kernel test robot.
+  -Added R-by tags by Christoph(patch #1) and Lorenzo(patch #4).
+  -Added T-by from Steve to all relevant patches. Many thanks!.
+
+v10 --> v11
+ -Addressed Christoph's comments. We now have a  callback to 
+  struct iommu_resv_region to free all related memory and also dropped
+  the FW specific union and now has a container struct iommu_iort_rmr_data.
+  See patches #1 & #4
+ -Added R-by from Christoph.
+ -Dropped R-by from Lorenzo for patches #4 & #5 due to the above changes.
+ -Also dropped T-by from Steve and Laurentiu. Many thanks for your test
+  efforts. I have done basic sanity testing on my platform but please
+  do it again at your end.
+
+v9 --> v10
+ - Dropped patch #1 ("Add temporary RMR node flag definitions") since
+   the ACPICA header updates patch is now in the mailing list
+ - Based on the suggestion from Christoph, introduced a 
+   resv_region_free_fw_data() callback in struct iommu_resv_region and
+   used that to free RMR specific memory allocations.
+
+v8 --> v9
+ - Adressed comments from Robin on interfaces.
+ - Addressed comments from Lorenzo.
+
+v7 --> v8
+  - Patch #1 has temp definitions for RMR related changes till
+    the ACPICA header changes are part of kernel.
+  - No early parsing of RMR node info and is only parsed at the
+    time of use.
+  - Changes to the RMR get/put API format compared to the
+    previous version.
+  - Support for RMR descriptor shared by multiple stream IDs.
+
+v6 --> v7
+ -fix pointed out by Steve to the SMMUv2 SMR bypass install in patch #8.
+
+v5 --> v6
+- Addressed comments from Robin & Lorenzo.
+  : Moved iort_parse_rmr() to acpi_iort_init() from
+    iort_init_platform_devices().
+  : Removed use of struct iort_rmr_entry during the initial
+    parse. Using struct iommu_resv_region instead.
+  : Report RMR address alignment and overlap errors, but continue.
+  : Reworked arm_smmu_init_bypass_stes() (patch # 6).
+- Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
+- Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
+  on Type of RMR region. Suggested by Jon N.
+
+v4 --> v5
+ -Added a fw_data union to struct iommu_resv_region and removed
+  struct iommu_rmr (Based on comments from Joerg/Robin).
+ -Added iommu_put_rmrs() to release mem.
+ -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
+  yet because of the above changes.
+
+v3 -->v4
+-Included the SMMUv2 SMR bypass install changes suggested by
+ Steve(patch #7)
+-As per Robin's comments, RMR reserve implementation is now
+ more generic  (patch #8) and dropped v3 patches 8 and 10.
+-Rebase to 5.13-rc1
+
+RFC v2 --> v3
+ -Dropped RFC tag as the ACPICA header changes are now ready to be
+  part of 5.13[0]. But this series still has a dependency on that patch.
+ -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+  PCIe).
+ -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+  discussion here[1].
+ -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
+
+Jon Nettleton (1):
+  iommu/arm-smmu: Get associated RMR info and install bypass SMR
+
+Shameer Kolothum (8):
+  iommu: Introduce a callback to struct iommu_resv_region
+  ACPI/IORT: Make iort_iommu_msi_get_resv_regions() return void
+  ACPI/IORT: Provide a generic helper to retrieve reserve regions
+  ACPI/IORT: Add support to retrieve IORT RMR reserved regions
+  ACPI/IORT: Add a helper to retrieve RMR info directly
+  iommu/arm-smmu-v3: Introduce strtab init helper
+  iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
+    bypass
+  iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
+
+ drivers/acpi/arm64/iort.c                   | 360 ++++++++++++++++++--
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  78 ++++-
+ drivers/iommu/arm/arm-smmu/arm-smmu.c       |  52 +++
+ drivers/iommu/dma-iommu.c                   |   2 +-
+ drivers/iommu/iommu.c                       |  16 +-
+ include/linux/acpi_iort.h                   |  14 +-
+ include/linux/iommu.h                       |  10 +
+ 7 files changed, 486 insertions(+), 46 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
