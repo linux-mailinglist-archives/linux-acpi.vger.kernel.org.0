@@ -2,224 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D2754E57A
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jun 2022 16:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D780D54E822
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jun 2022 18:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241568AbiFPO4X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Jun 2022 10:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35456 "EHLO
+        id S233266AbiFPQxb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Jun 2022 12:53:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232898AbiFPO4V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Jun 2022 10:56:21 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E13A12F00D
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Jun 2022 07:56:19 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id m16-20020a7bca50000000b0039c8a224c95so1017005wml.2
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Jun 2022 07:56:19 -0700 (PDT)
+        with ESMTP id S1378469AbiFPQsa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Jun 2022 12:48:30 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF33842A10
+        for <linux-acpi@vger.kernel.org>; Thu, 16 Jun 2022 09:48:20 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id r1so1705756plo.10
+        for <linux-acpi@vger.kernel.org>; Thu, 16 Jun 2022 09:48:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:references:date:in-reply-to:message-id
-         :user-agent:mime-version;
-        bh=Etn/dQhjuQJaHbnT3OVtyS239w7heYivZbd+vYx1CP0=;
-        b=bP7Ix5TGzwlg2jVGKyLnQt9uvuvmXeb5tcmtCnixtuB5rTsg3M2UFhePgzpE/lVVgl
-         kqJnNN/Y0PAl61/sWvGCNcskYpZsxsdVNVgk45GmZpXMpSIx3bA+vxxTUGrgxzE2Jrnt
-         wocX7UWj9XaC2H7q+P5OJJuAEcDSlhaZ6URgS8SPGVaVzY1hFyzWFfkDtBjvG0AAMcbJ
-         Z/x/Z45DUbuFD/rdiC3bcR4tamtHLICgxIyiKy7ZeTY3dyxdlcRJ0Cq4nzVLEiPCrRS8
-         WvbKFubGA83wF9kH9JfPLuHry3Y88Spkk2hB0AXvF6Dyxo31gVqfC6gzpOfJgI4i0IkM
-         comg==
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=/kn16vTwAaiq9Bc2ILIkOn3nZMwcL4ACg5m6p87/3Yo=;
+        b=PRRxzD/clcgliJHEd07/uq15rx/yBZ9V4j/rYWq4ZHrSp30epHtSPOlJiP59CoqqZr
+         6c1JmzQXK2eO929G6Ykm1fK/53At6DA/HfU+VdIRzVij4QeUeNz26ZovCUMIy/fEqvk4
+         JM/pLBrzU8c2a0aiSiWN7IXGKNVRF8+wynuX/BN73HFNKFTlbDiKzEaEsYMdnPFk9yyI
+         GVHyulrayWn/dcsOkO0yjThufPqncch97jY/VlU6HRpIQcMWDL5ERCShy+I9KvEM7UZg
+         vzbcHTshM7cmF0QzoRdyO34Xk9YZOKwVNUbTLAU2ZwSgTtziSbN2uOYvamfTR/Ncpnu3
+         ABjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
-         :message-id:user-agent:mime-version;
-        bh=Etn/dQhjuQJaHbnT3OVtyS239w7heYivZbd+vYx1CP0=;
-        b=4+a5tjewm4nAZm2SavDKh6+gxUuSy3OL5BlauMcK3YRgw+/ZlGSTbvVdgKKBNor9Mr
-         2H52vPqKeB1YvwbRZ/Hp4D3FHnFEE8GinZiHXhfjR2z856WlIxsQV4HYac2DSvQL2Qfz
-         7CzLO7a1NZDAvy45YlWz6n09QcuiVw/svuBlmI9VSl/IFr3mprOV54Ev1HBRULb3IRMn
-         1iLSY2ZjS5Ve6MMkDKVbYouKkVmznTtFWiU5IXTVvJIhz5CrVemskUXHzCyx+xThw4rO
-         GApPx+Y6iqhKtbMqoqAsp1GsVsHsYr6XpQZxVs4r0a6n7S/W624XJsZSCk34QzX6njqd
-         Noyg==
-X-Gm-Message-State: AJIora93XoZrzzv9psYiEtiYojyPwK7MfK2snG5KeFLqu1aSCO67zY5J
-        tOmoIoIf87zDAbMJQEESTyy69w==
-X-Google-Smtp-Source: AGRyM1t8rK29d8qNmLcqjZf5xT0oVNKxL8Rp+fM0+1+6P/SnZTl1+7Br+8zrIoG5oHFAi75h1tgsLg==
-X-Received: by 2002:a05:600c:190d:b0:39c:8216:f53d with SMTP id j13-20020a05600c190d00b0039c8216f53dmr5591994wmq.108.1655391378431;
-        Thu, 16 Jun 2022 07:56:18 -0700 (PDT)
-Received: from localhost ([109.180.234.132])
-        by smtp.gmail.com with ESMTPSA id n23-20020a05600c3b9700b0039c5224bfcbsm6853844wms.46.2022.06.16.07.56.17
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=/kn16vTwAaiq9Bc2ILIkOn3nZMwcL4ACg5m6p87/3Yo=;
+        b=LymV7+ZUXxoTHv0lqGFskeJSCpUGFE6lQNS7RYhD+Z3NvmZN7svyi1VBI93viIr/pj
+         ucwXO8AHCcpxGWOWnxHoODfu8ioa6IW37tMWV0k3w4vazRoab/6DiKqNt+YyLRihxWoe
+         cBdTgD+iEV9THVIm8G0puJgn+lsDdCjTWCL6tYaQcLC23UovHvbkO65x1eWC+RAZZSoX
+         rNkeuZuo45q98VNMj3Noob6FmIgtGLaz367rnLHf/+wlUDaMcyL4tYTInA9ZPyhG9VKO
+         V8w1AzslDK68tRsJ7vimMSZel8Q2MT8ci/ZGGAzE2E1eSxy0Oc8UyGvNjtyAmxGXuyyl
+         LsjQ==
+X-Gm-Message-State: AJIora8QUqthHvS65NBpHYRVaeKp9niyYFroTtCZJtKK2CwKfj+x/pdq
+        pT3CgRc0NXfOXfgdSlzmuH8Vvw==
+X-Google-Smtp-Source: AGRyM1t3uWSAXvdTnUwhyjK92FH1zEVpL2y3mTXY46DWvFJiA+j/mfNxm/+AhMgmBmGLFn0ua19XVQ==
+X-Received: by 2002:a17:902:e889:b0:167:523c:6011 with SMTP id w9-20020a170902e88900b00167523c6011mr5191842plg.114.1655398099979;
+        Thu, 16 Jun 2022 09:48:19 -0700 (PDT)
+Received: from google.com (123.65.230.35.bc.googleusercontent.com. [35.230.65.123])
+        by smtp.gmail.com with ESMTPSA id p14-20020a170902e74e00b00163bfaf0b17sm1881313plf.233.2022.06.16.09.48.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jun 2022 07:56:17 -0700 (PDT)
-From:   Punit Agrawal <punit.agrawal@bytedance.com>
-To:     Riwen Lu <luriwen@hotmail.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, rui.zhang@intel.com,
-        robert.moore@intel.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Riwen Lu <luriwen@kylinos.cn>
-Subject: Re: [PATCH v2] ACPI: Split out processor thermal register from ACPI
- PSS
-References: <TYWP286MB2601DDBB0F472C876D36FBCCB1A69@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-Date:   Thu, 16 Jun 2022 15:56:16 +0100
-In-Reply-To: <TYWP286MB2601DDBB0F472C876D36FBCCB1A69@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-        (Riwen Lu's message of "Fri, 10 Jun 2022 17:22:05 +0800")
-Message-ID: <877d5gpshb.fsf@stealth>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        Thu, 16 Jun 2022 09:48:19 -0700 (PDT)
+Date:   Thu, 16 Jun 2022 16:48:15 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Grzegorz Jaszczyk <jaz@semihalf.com>
+Cc:     linux-kernel@vger.kernel.org, Dmytro Maluka <dmy@semihalf.com>,
+        Zide Chen <zide.chen@intel.corp-partner.google.com>,
+        Peter Fang <peter.fang@intel.corp-partner.google.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sachi King <nakato@nakato.io>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        David Dunn <daviddunn@google.com>,
+        Wei Wang <wei.w.wang@intel.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "open list:KERNEL VIRTUAL MACHINE (KVM)" <kvm@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
+        <linux-pm@vger.kernel.org>, Dominik Behr <dbehr@google.com>,
+        Dmitry Torokhov <dtor@google.com>
+Subject: Re: [PATCH 1/2] x86: notify hypervisor about guest entering s2idle
+ state
+Message-ID: <Yqtez/J540yD7VdD@google.com>
+References: <20220609110337.1238762-1-jaz@semihalf.com>
+ <20220609110337.1238762-2-jaz@semihalf.com>
+ <YqIJ8HtdqnoVzfQD@google.com>
+ <CAH76GKNRDXAyGYvs2ji5Phu=5YPW8+SV8-6TLjizBRzTCnEROg@mail.gmail.com>
+ <YqNVYz4+yVbWnmNv@google.com>
+ <CAH76GKNSfaHwpy46r1WWTVgnsuijqcHe=H5nvUTUUs1UbdZvkQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH76GKNSfaHwpy46r1WWTVgnsuijqcHe=H5nvUTUUs1UbdZvkQ@mail.gmail.com>
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Riwen,
+On Wed, Jun 15, 2022, Grzegorz Jaszczyk wrote:
+> pt., 10 cze 2022 o 16:30 Sean Christopherson <seanjc@google.com> napisał(a):
+> > MMIO or PIO for the actual exit, there's nothing special about hypercalls.  As for
+> > enumerating to the guest that it should do something, why not add a new ACPI_LPS0_*
+> > function?  E.g. something like
+> >
+> > static void s2idle_hypervisor_notify(void)
+> > {
+> >         if (lps0_dsm_func_mask > 0)
+> >                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_HYPERVISOR_NOTIFY
+> >                                         lps0_dsm_func_mask, lps0_dsm_guid);
+> > }
+> 
+> Great, thank you for your suggestion! I will try this approach and
+> come back. Since this will be the main change in the next version,
+> will it be ok for you to add Suggested-by: Sean Christopherson
+> <seanjc@google.com> tag?
 
-Usually it's a good practice to Cc anybody who has commented on previous
-versions. It makes it easier to follow your updates.
-
-A couple of comments below.
-
-Riwen Lu <luriwen@hotmail.com> writes:
-
-> From: Riwen Lu <luriwen@kylinos.cn>
->
-> Commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
-> driver"), moves processor thermal registration to acpi_pss_perf_init(),
-> which doesn't get executed if ACPI_CPU_FREQ_PSS is not enabled.
->
-> As ARM64 supports P-states using CPPC, it should be possible to also
-> support processor passive cooling even if PSS is not enabled. Split
-> out the processor thermal cooling register from ACPI PSS to support
-> this, and move it into a separate function in processor_thermal.c.
->
-> Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
-> ---
->  drivers/acpi/Kconfig             |  2 +-
->  drivers/acpi/Makefile            |  5 +--
->  drivers/acpi/processor_driver.c  | 72 ++++----------------------------
->  drivers/acpi/processor_thermal.c | 69 ++++++++++++++++++++++++++++++
->  include/acpi/processor.h         |  6 ++-
->  5 files changed, 84 insertions(+), 70 deletions(-)
->
-
-[...]
-
-> --- a/drivers/acpi/processor_driver.c
-> +++ b/drivers/acpi/processor_driver.c
-
-[...]
-
-> @@ -239,7 +183,7 @@ static int __acpi_processor_start(struct acpi_device *device)
->  		return 0;
->  
->  	result = -ENODEV;
-> -	acpi_pss_perf_exit(pr, device);
-> +	acpi_processor_thermal_exit(pr);
->  
->  err_power_exit:
->  	acpi_processor_power_exit(pr);
-> @@ -277,10 +221,10 @@ static int acpi_processor_stop(struct device *dev)
->  		return 0;
->  	acpi_processor_power_exit(pr);
->  
-> -	acpi_pss_perf_exit(pr, device);
-> -
->  	acpi_cppc_processor_exit(pr);
->  
-> +	acpi_processor_thermal_exit(pr);
-> +
->  	return 0;
->  }
->  
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
-> index d8b2dfcd59b5..93928db2ae5f 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -266,3 +266,72 @@ const struct thermal_cooling_device_ops processor_cooling_ops = {
->  	.get_cur_state = processor_get_cur_state,
->  	.set_cur_state = processor_set_cur_state,
->  };
-> +
-> +int acpi_processor_thermal_init(struct acpi_processor *pr)
-> +{
-> +	struct acpi_device *device;
-> +	int result = 0;
-> +
-> +	if (!pr)
-> +		return -ENODEV;
-
-What's the reason for this check? When will "pr" be NULL in this code
-path?
-
-> +
-> +	device = acpi_fetch_acpi_dev(pr->handle);
-> +	if (!device)
-> +		return -ENODEV;
-
-Wouldn't it be better to pass the acpi_device into the function as well?
-The device is already available in the caller and it'll avoid having to
-convert it back.
-
-> +
-> +	pr->cdev = thermal_cooling_device_register("Processor", device,
-> +						   &processor_cooling_ops);
-> +	if (IS_ERR(pr->cdev)) {
-> +		result = PTR_ERR(pr->cdev);
-> +		return result;
-> +	}
-> +
-> +	dev_dbg(&device->dev, "registered as cooling_device%d\n",
-> +		pr->cdev->id);
-> +
-> +	result = sysfs_create_link(&device->dev.kobj,
-> +				   &pr->cdev->device.kobj,
-> +				   "thermal_cooling");
-> +	if (result) {
-> +		dev_err(&device->dev,
-> +			"Failed to create sysfs link 'thermal_cooling'\n");
-> +		goto err_thermal_unregister;
-> +	}
-> +
-> +	result = sysfs_create_link(&pr->cdev->device.kobj,
-> +				   &device->dev.kobj,
-> +				   "device");
-> +	if (result) {
-> +		dev_err(&pr->cdev->device,
-> +			"Failed to create sysfs link 'device'\n");
-> +		goto err_remove_sysfs_thermal;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_remove_sysfs_thermal:
-> +	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> +err_thermal_unregister:
-> +	thermal_cooling_device_unregister(pr->cdev);
-> +
-> +	return result;
-> +}
-> +
-> +void acpi_processor_thermal_exit(struct acpi_processor *pr)
-> +{
-> +	struct acpi_device *device;
-> +
-> +	if (!pr)
-> +		return;
-> +
-> +	device = acpi_fetch_acpi_dev(pr->handle);
-> +	if (!device)
-> +		return;
-
-The same comment about passing the acpi_device structure applies here as
-well.
-
-> +
-> +	if (pr->cdev) {
-> +		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> +		sysfs_remove_link(&pr->cdev->device.kobj, "device");
-> +		thermal_cooling_device_unregister(pr->cdev);
-> +		pr->cdev = NULL;
-> +	}
-> +}
-
-[...]
+If you want, but there's certainly no need to do so.  But I assume you or someone
+at Intel will need to get formal approval for adding another ACPI LPS0 function?
+I.e. isn't there work to be done outside of the kernel before any patches can be
+merged?
