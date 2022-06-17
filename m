@@ -2,292 +2,354 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20BFB54F42C
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jun 2022 11:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A695F54F43A
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jun 2022 11:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380334AbiFQJWP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Jun 2022 05:22:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40138 "EHLO
+        id S1381349AbiFQJ0S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Jun 2022 05:26:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379797AbiFQJWO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Jun 2022 05:22:14 -0400
-X-Greylist: delayed 63 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 02:22:13 PDT
-Received: from esa9.fujitsucc.c3s2.iphmx.com (esa9.fujitsucc.c3s2.iphmx.com [68.232.159.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F835D643
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Jun 2022 02:22:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
-  t=1655457733; x=1686993733;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=j71NTyDp7PK1wWZaLb+y/3Qz/6xrxQSPN5ebVAjrx5I=;
-  b=Ag0SPgTg8pqhwYgEvV0x3JjYsF6Bmc4KgvyOP+LRDnPva4q4LInWzmF1
-   wHwttPfmOHBQ6gbCykqQnNxMLfum6SPuInk3qJBiPSPgvlugMS7ZRpHr5
-   WXTTFZ4TRAtlCCuT8Dk04cUArYurqdW5L6fx5h4aknpAaT8h4ZJv4Gtr6
-   AnpvFDFId7xhMQflyMi8BlyCNcCQSxo5Souf+6uu8X7v3tvt5fVvp7Q00
-   BuflkNdbh/FGUDTKryWxIrBJkpY6Z4ItrXSGzv3iQ8ZYCg+GrmgXdQjog
-   wwEWEO0z8qG5WskzwoOpRE+nLrTYnZUE9frc3nfuPk9HeIKuyzuc42hn5
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="58480575"
-X-IronPort-AV: E=Sophos;i="5.92,306,1650898800"; 
-   d="scan'208";a="58480575"
-Received: from mail-os0jpn01lp2108.outbound.protection.outlook.com (HELO JPN01-OS0-obe.outbound.protection.outlook.com) ([104.47.23.108])
-  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2022 18:21:01 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UeOUUea8QIqm83mL0Uz8nDEa/fH9m1fgO7G3jjE5f+I8+9jT+PNTOFlyVIJowBp4meyIfCJJ3BTA3Ph3T7iPVMXeSlqLBKERwjIGsaO9SavYuDjA1ufg/cUkSq3/3cuHdcggrdXT5orgCzEnqx+kiW1NVQl47i+dAm0TCuornX9Y9RApF7FKT2C8GPRI61sLNlaOuA1znPEKvkFakCghHg1l7umfGDXrGRcEA8Mx4jXgYzlW9qnkIp4mnK5zTx2JE+oA8cA13zx6H7yEVQEY2dZ46AB7np57swA/XPeo1IY6trLHhEseymJKHpLtA0JaYqowzh0tFK0143w8j5RjwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L8bUKGlibHKRl8tOg8BWVMoYePfhs7xzNdxdKOF1Idk=;
- b=BG9EOBQ1ivEI6qjxkCOmC9k9VKaYbyykvLPtrasos7jQ0qtzvd1IVGtzqNC54qhdLua9IgHzQbVMNIlh7m00MAAs+ZUWa4e01kPwBp0PfYvD5RPxD/tDeCgSKZdf12HsHACdVUyadkRXlmRIckFnyNpYXlZZQb0711g/WHENnavWCJFEelwWf/R/01d9j610OR9yNxE5FJ79H7ZaNSrmYiWBQuCpyk1c0VgMzYE3UxbrOApQnQT7X15aXdXINzUh2ORbD2OwghFYr+ZvHpjVoiw8Df1X2YK8PqhHJerKTxAUlwrG5rGdx5EARStG+MLU77Zwe6XDM9kBhWVw7HDspg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
+        with ESMTP id S1381475AbiFQJ0O (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Jun 2022 05:26:14 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8821D67D08
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Jun 2022 02:26:09 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id q9so4972943wrd.8
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Jun 2022 02:26:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fujitsu.onmicrosoft.com; s=selector2-fujitsu-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L8bUKGlibHKRl8tOg8BWVMoYePfhs7xzNdxdKOF1Idk=;
- b=Sl9abzBBqUp9SoD0UI5RYFlATysplyFQVWHmolyKvlHz+IHDGScl++JNTFxeHmpFeiaUUs02mkzoC921PHEhh0RccqcUUMU13/HSCvAv5bXdeXP3cTOIA+hsH7ySJOGeHlRQ+E7Px3BFHsLstopH2fmh73lUjJc82oKaSOhE4FM=
-Received: from TY2PR01MB2042.jpnprd01.prod.outlook.com (2603:1096:404:12::11)
- by TYAPR01MB3856.jpnprd01.prod.outlook.com (2603:1096:404:ca::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.16; Fri, 17 Jun
- 2022 09:20:58 +0000
-Received: from TY2PR01MB2042.jpnprd01.prod.outlook.com
- ([fe80::e13d:16ae:7ddb:a10a]) by TY2PR01MB2042.jpnprd01.prod.outlook.com
- ([fe80::e13d:16ae:7ddb:a10a%3]) with mapi id 15.20.5332.023; Fri, 17 Jun 2022
- 09:20:58 +0000
-From:   "tarumizu.kohei@fujitsu.com" <tarumizu.kohei@fujitsu.com>
-To:     'Greg KH' <gregkh@linuxfoundation.org>
-CC:     "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
-        "eugenis@google.com" <eugenis@google.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "pcc@google.com" <pcc@google.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "marcos@orca.pet" <marcos@orca.pet>,
-        "marcan@marcan.st" <marcan@marcan.st>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
-        "conor.dooley@microchip.com" <conor.dooley@microchip.com>,
-        "arnd@arndb.de" <arnd@arndb.de>, "ast@kernel.org" <ast@kernel.org>,
-        "peter.chen@kernel.org" <peter.chen@kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: RE: [PATCH v5 0/6] Add hardware prefetch control driver for A64FX and
- x86
-Thread-Topic: [PATCH v5 0/6] Add hardware prefetch control driver for A64FX
- and x86
-Thread-Index: AQHYemckLVPNFhFQbU+IAdEo3cwBO61IoUEAgAYyEhCAAA4dgIAEfPmg
-Date:   Fri, 17 Jun 2022 09:20:58 +0000
-Message-ID: <TY2PR01MB20426C7822E46B2E8B2525FB80AF9@TY2PR01MB2042.jpnprd01.prod.outlook.com>
-References: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
- <YqNCDrqcp9t8HlUJ@kroah.com>
- <OSBPR01MB203749DA00C7BEE5741AFEB980AA9@OSBPR01MB2037.jpnprd01.prod.outlook.com>
- <YqiAY689pOJbHKUd@kroah.com>
-In-Reply-To: <YqiAY689pOJbHKUd@kroah.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: =?iso-2022-jp?B?TVNJUF9MYWJlbF9hNzI5NWNjMS1kMjc5LTQyYWMtYWI0ZC0zYjBmNGZl?=
- =?iso-2022-jp?B?Y2UwNTBfQWN0aW9uSWQ9NTBjMzc2YWItMmZhNy00M2YyLThkNDItODdk?=
- =?iso-2022-jp?B?NGJkNjIyMGExO01TSVBfTGFiZWxfYTcyOTVjYzEtZDI3OS00MmFjLWFi?=
- =?iso-2022-jp?B?NGQtM2IwZjRmZWNlMDUwX0NvbnRlbnRCaXRzPTA7TVNJUF9MYWJlbF9h?=
- =?iso-2022-jp?B?NzI5NWNjMS1kMjc5LTQyYWMtYWI0ZC0zYjBmNGZlY2UwNTBfRW5hYmxl?=
- =?iso-2022-jp?B?ZD10cnVlO01TSVBfTGFiZWxfYTcyOTVjYzEtZDI3OS00MmFjLWFiNGQt?=
- =?iso-2022-jp?B?M2IwZjRmZWNlMDUwX01ldGhvZD1TdGFuZGFyZDtNU0lQX0xhYmVsX2E3?=
- =?iso-2022-jp?B?Mjk1Y2MxLWQyNzktNDJhYy1hYjRkLTNiMGY0ZmVjZTA1MF9OYW1lPUZV?=
- =?iso-2022-jp?B?SklUU1UtUkVTVFJJQ1RFRBskQiJMJT8lUhsoQjtNU0lQX0xhYmVsX2E3?=
- =?iso-2022-jp?B?Mjk1Y2MxLWQyNzktNDJhYy1hYjRkLTNiMGY0ZmVjZTA1MF9TZXREYXRl?=
- =?iso-2022-jp?B?PTIwMjItMDYtMTdUMDk6MDc6MDJaO01TSVBfTGFiZWxfYTcyOTVjYzEt?=
- =?iso-2022-jp?B?ZDI3OS00MmFjLWFiNGQtM2IwZjRmZWNlMDUwX1NpdGVJZD1hMTlmMTIx?=
- =?iso-2022-jp?B?ZC04MWUxLTQ4NTgtYTlkOC03MzZlMjY3ZmQ0Yzc7?=
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fujitsu.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: bf139050-0599-4be0-e1ed-08da5042b05b
-x-ms-traffictypediagnostic: TYAPR01MB3856:EE_
-x-microsoft-antispam-prvs: <TYAPR01MB385664F7A4C1D8501136947C80AF9@TYAPR01MB3856.jpnprd01.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 0n3K9AbyPo8CnC16G7Bvi9DT46mr6GhxvHrTH4B49t9OR25jqaKfEq6VAL9NtptzWSzy/x5TTALrwe1bF9i+5se8MW+zZJN7Ji/Fv4/XyRzeUxPjzJzUetGFbplMK8AV1vUFuQG3m2zur04Tl4CAI4x4zKnKFTuwBPSTF7uAheyu5PFvsO/A+7IS0CLk8w9Kd/Fde2pXH3Xpctvh+QPPiWPrH5p3TveW+yt7UqXFL6NC6KIqTjVU5Ayc5WVTJg0awuZp86I5+T7eeIPt1rA4UdPu+qBsFwVyK2vDk1yFoKr5BZtty3ArQL44mBIFSAc0C9GUFGuxl46PISQV2pO8hhejqjvdMJ+qcsKx1PktmBYFVUzNt0+Zj7wJy6IwtY2UwxTkLsf3ArZZRMa1K04QW+U0D9DVaJ2QQfkjLMma5RqgixOXEAQjrhlpjWspoHPFB07jjMx0f7NcVjkvXbjXjvGnFKghWAggX0wx7RbLuISnRway3OFT/ORqT4YH+/4RsOsAoF7OhgWpZqDpY1FakfvuflkUPK1wYoW14oy1T78xbHUSBOj56nTtT86sGShM4S/7zmZ0IdTbkN4NYVtSiBtJ0u5JuixVcDpQ1DSaMD/L+HpXKxKfAQkm0tz57RA4wzSBuQVJlj2V4UU1sRRuZ5Hx1yRmPNz5wkdveuo4S4aAQlEkgjW0hwNm3eWzh6pAVooLsERlpO3KAkpot4SL31Qwyf1nBkJk78WujzIV/7rSGrrgdg8ji+VgUw0+ecbmBWUdwqjsBVxxvQWdP9wWjP81ynw1C6WWDPavNIQrzaI=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY2PR01MB2042.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(316002)(186003)(86362001)(7416002)(5660300002)(82960400001)(38100700002)(52536014)(8936002)(122000001)(2906002)(8676002)(66946007)(76116006)(4326008)(38070700005)(66556008)(66476007)(64756008)(498600001)(85182001)(33656002)(66446008)(54906003)(7696005)(6916009)(6506007)(83380400001)(55016003)(26005)(9686003)(71200400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-2022-jp?B?S1FoLzVXNm95RjN1azlNZCtXQ3FJckFxdlZ4M05lcnFnRnBJREhXaFow?=
- =?iso-2022-jp?B?MXZHWlpvWWxNb3l5Zzh5ckhDdi9hcEdiWEU4QnhkREErZEVCd1c4clF5?=
- =?iso-2022-jp?B?bFl6N1A3UEhjcTJWWXRLTjBEN2E3UHA0cXZvKzc1ZERXWlVmaDlKakRN?=
- =?iso-2022-jp?B?YU11aEFRZGpIamUrcFZ5UzBaUXl1SmhEZDBKaXR2VUJJWncxazQ3bTRZ?=
- =?iso-2022-jp?B?MGJqdUZ0bkdmdlZZL0dFR0x2Y3VQM3QwMnUzZFZnVFlDeGl1dmNuYmVo?=
- =?iso-2022-jp?B?VnpKSWZ0OGFkTWtvV2pVQitJZnY2Ujgya2R4TUdnWGk5M3E4QkVOV05J?=
- =?iso-2022-jp?B?blNaVHQ0UndqSWVCSnpZN3RSRm1XclF1aENQa2pkTHZBNHhGQzhWdDdX?=
- =?iso-2022-jp?B?ZDlqRmNtZ3I1VDZuNS9xblpFVHZDYmRtRVg1WFVOR1hZV3QxYm42Sm5N?=
- =?iso-2022-jp?B?eWpsWENuU2FZOExOZlJKQXNNb0hoS0JlaU94SHJnV0FQYlFoVUlhYStV?=
- =?iso-2022-jp?B?Q2t0azYvbEJtVmhWTFNQTFFKblV0M0I2Sm5jSDNwRnRRcFFxVnB1ZGow?=
- =?iso-2022-jp?B?VjFZL1JFL2tjbGxUNzJEUzFYRG1nSDVkQ0lyTVVHMEs5L2dxQ1RuMEpH?=
- =?iso-2022-jp?B?TzdMeTBaaWl4NnNuUXR6RkdZdTE0RzFEWmRiSEo5MC9uT3ZCWll2L0I5?=
- =?iso-2022-jp?B?b2lVU2s0dXJiTjJCU3ltcTVsKy9WMTFWbFJOdWRkZERkMWZKZENuYVNH?=
- =?iso-2022-jp?B?VUd0WkpKMGtFamZrYm5aVCtPazNaKytMYXFVcjcvSDN5RDJqNkV0bm9I?=
- =?iso-2022-jp?B?Q2s2MnZPUmFoOUZQbi9STFFvTGFodzYzZjhvTWtqRVRkQm5JRTBPRERF?=
- =?iso-2022-jp?B?WldYOWg1ZDhEazZITXlBaFRQSEJUQ1ZvZWgzdnR1bHoyMUhVNW5xNGlZ?=
- =?iso-2022-jp?B?Q0xzeWdEQlZXQ0VaWXd5Y2M0Qm5kUFJZK3NQbXduTU9ONC9GNXQ4OVdq?=
- =?iso-2022-jp?B?TDVuMHd6VkZVejZVdVV3c1JCRldmRGFNZ3FsNjFOWW1PRTJSRVFFKzRB?=
- =?iso-2022-jp?B?SHJnR240MFB0NGhPNWlCUGhPa1NLeW5ZK2ttdi96a2M5blBXSVNjMGhU?=
- =?iso-2022-jp?B?OEhQRFBzeVdrYlZCd2hrb24zL2tBaGViUVRHTjcxaXZpMVMvUjhRNW5G?=
- =?iso-2022-jp?B?Tk56QVcvZG9yaUNBZXAwVFYxdkFaaHdzejVmMUd0OHJtY0ZHaklFZFhE?=
- =?iso-2022-jp?B?TmRxUDI5akN6djdNODdLVnQrdHlKRjUxUHEzRXAwV3FmbVJDeFl0dy8z?=
- =?iso-2022-jp?B?Qm5wRWZJUGw0Y1NwQVQrS0dGek1IV2ZKeEdkckorT1ZtTU9SMTJ2MENi?=
- =?iso-2022-jp?B?WDVYYjRoU296NjUyQm5sQ2kyV1F5bHZFUTY5QmVhYUp1RXRtUTYrS0Rj?=
- =?iso-2022-jp?B?bkhST21ZbXgrTm9FSlRWcTlLalU0alBVdnRqREkwbnBZdGRWcWxpMnBs?=
- =?iso-2022-jp?B?KzZkUjhRYWJrelV2TGdKYmNwUXJFTEFGdlozRFpJUFo0RlY0OUE1OFJQ?=
- =?iso-2022-jp?B?cWhaVkFNWUtQRWZ4TGxpK1NsSmMyUHk3RmJyK1ZJS1NMTjVQbnhoWGsr?=
- =?iso-2022-jp?B?SEZUT1duNUwzR2J1QlZ4ZzBqV2xLTDhTejNSRElBZkJIdmt5Qy9ITU1z?=
- =?iso-2022-jp?B?cjQvM05abG1qYit4UmtqZUNNWnpNNzRDQytsdUUwRjRJWWxxNjV2Nlds?=
- =?iso-2022-jp?B?ZmVKSUdOSnlRSTNTSTN2ZWdKZkxHbEtrVUVjQTdYUHVUNWdOQjhsQjRu?=
- =?iso-2022-jp?B?RW8yMXE3eWsweXh4L1hRTnVoRXRtSVZXREg2WmN0V2hvWktlbVNKOVFN?=
- =?iso-2022-jp?B?cmZhSys4NjZrSnlNeEt6YjhzY2ZNNG41YUh0NVJiOFA4ZGhkZkNURjhZ?=
- =?iso-2022-jp?B?eWxjRllqTUE0WUtzR1VTQ0NtN0RMK3NIeTVRa253Ymh5b0RzN3Z1SWtB?=
- =?iso-2022-jp?B?d25QdnRBL29HblUwQ3I0MGNtUnZqMCtkUktJbzUzb3BscXBDUlNIVVpi?=
- =?iso-2022-jp?B?RnlJQmlYekhLVEhrb0R4R0dENVJsMGlFSnBya3FITmNrTmFmNXB5UWcr?=
- =?iso-2022-jp?B?bXk5V0k0UVE2TFhQQXQ0TkEza25RS01vNGQrUFlIZE1wRFFKVkZJTytY?=
- =?iso-2022-jp?B?UlluaEhQUmRqUGkzbVBHZjdGUlJsUzZodnN6TWh6b1gyR0ZLbTIrLzc0?=
- =?iso-2022-jp?B?T1NZUEllSnlLL1FBL1dRRzgwd0wzWWpQcVBPYk80QkdsK0c0YXc0aSt0?=
- =?iso-2022-jp?B?QjZaNDhqd0dnUHJHRk1rSWJpbUVYK1I1b0k2Rk5WZHdSaWpYWGk3OCtH?=
- =?iso-2022-jp?B?K1N0cndvcWdlazRrLzlRblczbjZPN0o3L28zeDljcmlnZE1jTFFmUU9a?=
- =?iso-2022-jp?B?eEJIMmxuTVRQbkJrWVhsajRTUHVhaFdybDJxejBkc3lIcGdFN3ljOTJI?=
- =?iso-2022-jp?B?YUlPSU5ESTY1enpHamRMRmZySDU2d1ZydmdMM3ZMSjB3eXgwNmhWMTJR?=
- =?iso-2022-jp?B?ZmpsSVlmND0=?=
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:references:date:in-reply-to:message-id
+         :user-agent:mime-version;
+        bh=7QgWyOrwcdZfhxMsEv0D/HOdyQQAtGE5lUhJFK9WI34=;
+        b=baDqnxH9AoRr/GTSO8bWcwcoD7EbsPtCklwLM1feiSe89PBitkesjSsy1xWf70qySW
+         ufACQ1c7JEOACwZUozuJF7t/L14ahN2ldYJJfG4JdH/m34CDHe8dzjlny0UMwvuKylTn
+         Jsa1WUY6n1v3htfxzUl9oOWYSS82lL4j7MBOtbJidFi09Qi2fbKAbYrlV7nzbIoLEvxQ
+         zyBrUKvXWbhJhZM6yRtynPwbScrwTAPmb7rn3p0Ng8zvpR9sDrizkoojAsv/2bFJXmVu
+         8UKh1WJZUWN6OWmHlmHpTDKvR2DIrSsdsfKLTo52J1IVZnXdCojrTc89sruhMR6Ndwe2
+         Igtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version;
+        bh=7QgWyOrwcdZfhxMsEv0D/HOdyQQAtGE5lUhJFK9WI34=;
+        b=JdEzkXvZpxte9D5ENrLrUF31tWv3fOoqoj94uOtgl9Vu2KzgX3l44Mt24i2QUhIUub
+         Y7omcmbGP6FSsvg8vLWnXU3WPz3/n0ghIBNz83Zkt0vTzrQ1i9aQNFh5JQRA6mEBtwJF
+         TzD7YSwF87Z4bJ25mM5bzEeAI6vuKeBMvA5gkwRsjHe9FD8B24vn9gre/Cad3VzhrR8w
+         GO4BgE6s3P6s40zN2F/11EsrvPn0BUhybuXNltHp7VroWx70i3tVu+kjxi7uaPbL7rHX
+         VMo6MZQHHd8SNUtzb/1xAoDCjp3aciEJg662N88qzXQAKLouCsXWknFqWBUb2BvdYHM8
+         SGYQ==
+X-Gm-Message-State: AJIora9lj2OhsCtjJJqkzrcBRUX7N+RH4eIVepTIM1SikJ7Lxas4q6nn
+        ew1x0ooJlFGaToKyBdTirI+bzw==
+X-Google-Smtp-Source: AGRyM1uoBpVEA1m4d75Zjba7gCaZE4/6upu+1FTbDBF4sdXro65+m+P7bb+8Qb353obeZcJfP5XJ8w==
+X-Received: by 2002:a05:6000:18a9:b0:218:891d:815c with SMTP id b9-20020a05600018a900b00218891d815cmr8391962wri.311.1655457968081;
+        Fri, 17 Jun 2022 02:26:08 -0700 (PDT)
+Received: from localhost ([109.180.234.132])
+        by smtp.gmail.com with ESMTPSA id b18-20020a056000055200b0021a38089e99sm3817103wrf.57.2022.06.17.02.26.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jun 2022 02:26:06 -0700 (PDT)
+From:   Punit Agrawal <punit.agrawal@bytedance.com>
+To:     Riwen Lu <luriwen@hotmail.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, rui.zhang@intel.com,
+        robert.moore@intel.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devel@acpica.org,
+        punit.agrawal@bytedance.com, Riwen Lu <luriwen@kylinos.cn>
+Subject: Re: [PATCH v3] ACPI: Split out processor thermal register from ACPI
+ PSS
+References: <TYWP286MB2601965DDE4D251807F70415B1AF9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+Date:   Fri, 17 Jun 2022 10:26:04 +0100
+In-Reply-To: <TYWP286MB2601965DDE4D251807F70415B1AF9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+        (Riwen Lu's message of "Fri, 17 Jun 2022 10:51:51 +0800")
+Message-ID: <871qvnpro3.fsf@stealth>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY2PR01MB2042.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf139050-0599-4be0-e1ed-08da5042b05b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jun 2022 09:20:58.2596
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: TW7RGmN584FOcCMbCIerec6QdL2s3w0sGkiC4UrXjoAndEi5aV3S0s0QJ+Iu2E6W6JXrdSx8yEYFZUI/msI9GRBrebuLayxm9zBXgm0Wg1s=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB3856
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Greg,
+Riwen Lu <luriwen@hotmail.com> writes:
 
-> That's not ok.  Linux is a "general purpose" operating system and needs t=
-o
-> work well for all applications.  Doing application-specific-tuning based =
-on the
-> specific hardware like this is a nightmare for users,
+> From: Riwen Lu <luriwen@kylinos.cn>
+>
+> Commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
+> driver"), moves processor thermal registration to acpi_pss_perf_init(),
+> which doesn't get executed if ACPI_CPU_FREQ_PSS is not enabled.
+>
+> As ARM64 supports P-states using CPPC, it should be possible to also
+> support processor passive cooling even if PSS is not enabled. Split
+> out the processor thermal cooling register from ACPI PSS to support
+> this, and move it into a separate function in processor_thermal.c.
+>
+> Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
+>
+> ---
+> v1 -> v2:
+>  - Reword the commit message.
+>  - Update the signature of acpi_pss_perf_init() to void, and remove the
+>    acpi_device parameter.
+>  - Move the processor thermal register/remove into a separate function in
+>    processor_thermal.c.
+>
+> v2 -> v3:
+>  - Remove the "pr" NULL check in processor thermal init/exit fuction.
+>  - Pass the acpi_device into processor thermal init/exit, and remove the
+>    convert in it.
+> ---
+>  drivers/acpi/Kconfig             |  2 +-
+>  drivers/acpi/Makefile            |  5 +--
+>  drivers/acpi/processor_driver.c  | 72 ++++----------------------------
+>  drivers/acpi/processor_thermal.c | 54 ++++++++++++++++++++++++
+>  include/acpi/processor.h         |  8 +++-
+>  5 files changed, 71 insertions(+), 70 deletions(-)
+>
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 1e34f846508f..2457ade3f82d 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -255,7 +255,6 @@ config ACPI_DOCK
+>  
+>  config ACPI_CPU_FREQ_PSS
+>  	bool
+> -	select THERMAL
+>  
+>  config ACPI_PROCESSOR_CSTATE
+>  	def_bool y
+> @@ -287,6 +286,7 @@ config ACPI_PROCESSOR
+>  	depends on X86 || IA64 || ARM64 || LOONGARCH
+>  	select ACPI_PROCESSOR_IDLE
+>  	select ACPI_CPU_FREQ_PSS if X86 || IA64 || LOONGARCH
+> +	select THERMAL
+>  	default y
+>  	help
+>  	  This driver adds support for the ACPI Processor package. It is required
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index b5a8d3e00a52..0002eecbf870 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -109,10 +109,9 @@ obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
+>  obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
+>  
+>  # processor has its own "processor." module_param namespace
+> -processor-y			:= processor_driver.o
+> +processor-y			:= processor_driver.o processor_thermal.o
+>  processor-$(CONFIG_ACPI_PROCESSOR_IDLE) += processor_idle.o
+> -processor-$(CONFIG_ACPI_CPU_FREQ_PSS)	+= processor_throttling.o	\
+> -	processor_thermal.o
+> +processor-$(CONFIG_ACPI_CPU_FREQ_PSS)	+= processor_throttling.o
+>  processor-$(CONFIG_CPU_FREQ)	+= processor_perflib.o
+>  
+>  obj-$(CONFIG_ACPI_PROCESSOR_AGGREGATOR) += acpi_pad.o
+> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
+> index 368a9edefd0c..1278969eec1f 100644
+> --- a/drivers/acpi/processor_driver.c
+> +++ b/drivers/acpi/processor_driver.c
+> @@ -139,75 +139,17 @@ static int acpi_soft_cpu_dead(unsigned int cpu)
+>  }
+>  
+>  #ifdef CONFIG_ACPI_CPU_FREQ_PSS
+> -static int acpi_pss_perf_init(struct acpi_processor *pr,
+> -		struct acpi_device *device)
+> +static void acpi_pss_perf_init(struct acpi_processor *pr)
+>  {
+> -	int result = 0;
+> -
+>  	acpi_processor_ppc_has_changed(pr, 0);
+>  
+>  	acpi_processor_get_throttling_info(pr);
+>  
+>  	if (pr->flags.throttling)
+>  		pr->flags.limit = 1;
+> -
+> -	pr->cdev = thermal_cooling_device_register("Processor", device,
+> -						   &processor_cooling_ops);
+> -	if (IS_ERR(pr->cdev)) {
+> -		result = PTR_ERR(pr->cdev);
+> -		return result;
+> -	}
+> -
+> -	dev_dbg(&device->dev, "registered as cooling_device%d\n",
+> -		pr->cdev->id);
+> -
+> -	result = sysfs_create_link(&device->dev.kobj,
+> -				   &pr->cdev->device.kobj,
+> -				   "thermal_cooling");
+> -	if (result) {
+> -		dev_err(&device->dev,
+> -			"Failed to create sysfs link 'thermal_cooling'\n");
+> -		goto err_thermal_unregister;
+> -	}
+> -
+> -	result = sysfs_create_link(&pr->cdev->device.kobj,
+> -				   &device->dev.kobj,
+> -				   "device");
+> -	if (result) {
+> -		dev_err(&pr->cdev->device,
+> -			"Failed to create sysfs link 'device'\n");
+> -		goto err_remove_sysfs_thermal;
+> -	}
+> -
+> -	return 0;
+> -
+> - err_remove_sysfs_thermal:
+> -	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
+> - err_thermal_unregister:
+> -	thermal_cooling_device_unregister(pr->cdev);
+> -
+> -	return result;
+> -}
+> -
+> -static void acpi_pss_perf_exit(struct acpi_processor *pr,
+> -		struct acpi_device *device)
+> -{
+> -	if (pr->cdev) {
+> -		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
+> -		sysfs_remove_link(&pr->cdev->device.kobj, "device");
+> -		thermal_cooling_device_unregister(pr->cdev);
+> -		pr->cdev = NULL;
+> -	}
+>  }
+>  #else
+> -static inline int acpi_pss_perf_init(struct acpi_processor *pr,
+> -		struct acpi_device *device)
+> -{
+> -	return 0;
+> -}
+> -
+> -static inline void acpi_pss_perf_exit(struct acpi_processor *pr,
+> -		struct acpi_device *device) {}
+> +static inline void acpi_pss_perf_init(struct acpi_processor *pr) {}
+>  #endif /* CONFIG_ACPI_CPU_FREQ_PSS */
+>  
+>  static int __acpi_processor_start(struct acpi_device *device)
+> @@ -229,7 +171,9 @@ static int __acpi_processor_start(struct acpi_device *device)
+>  	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
+>  		acpi_processor_power_init(pr);
+>  
+> -	result = acpi_pss_perf_init(pr, device);
+> +	acpi_pss_perf_init(pr);
+> +
+> +	result = acpi_processor_thermal_init(pr, device);
+>  	if (result)
+>  		goto err_power_exit;
+>  
+> @@ -239,7 +183,7 @@ static int __acpi_processor_start(struct acpi_device *device)
+>  		return 0;
+>  
+>  	result = -ENODEV;
+> -	acpi_pss_perf_exit(pr, device);
+> +	acpi_processor_thermal_exit(pr, device);
+>  
+>  err_power_exit:
+>  	acpi_processor_power_exit(pr);
+> @@ -277,10 +221,10 @@ static int acpi_processor_stop(struct device *dev)
+>  		return 0;
+>  	acpi_processor_power_exit(pr);
+>  
+> -	acpi_pss_perf_exit(pr, device);
+> -
+>  	acpi_cppc_processor_exit(pr);
+>  
+> +	acpi_processor_thermal_exit(pr, device);
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
+> index d8b2dfcd59b5..db6ac540e924 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -266,3 +266,57 @@ const struct thermal_cooling_device_ops processor_cooling_ops = {
+>  	.get_cur_state = processor_get_cur_state,
+>  	.set_cur_state = processor_set_cur_state,
+>  };
+> +
+> +int acpi_processor_thermal_init(struct acpi_processor *pr,
+> +				struct acpi_device *device)
+> +{
+> +	int result = 0;
+> +
+> +	pr->cdev = thermal_cooling_device_register("Processor", device,
+> +						   &processor_cooling_ops);
+> +	if (IS_ERR(pr->cdev)) {
+> +		result = PTR_ERR(pr->cdev);
+> +		return result;
+> +	}
+> +
+> +	dev_dbg(&device->dev, "registered as cooling_device%d\n",
+> +		pr->cdev->id);
+> +
+> +	result = sysfs_create_link(&device->dev.kobj,
+> +				   &pr->cdev->device.kobj,
+> +				   "thermal_cooling");
+> +	if (result) {
+> +		dev_err(&device->dev,
+> +			"Failed to create sysfs link 'thermal_cooling'\n");
+> +		goto err_thermal_unregister;
+> +	}
+> +
+> +	result = sysfs_create_link(&pr->cdev->device.kobj,
+> +				   &device->dev.kobj,
+> +				   "device");
+> +	if (result) {
+> +		dev_err(&pr->cdev->device,
+> +			"Failed to create sysfs link 'device'\n");
+> +		goto err_remove_sysfs_thermal;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_remove_sysfs_thermal:
+> +	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
+> +err_thermal_unregister:
+> +	thermal_cooling_device_unregister(pr->cdev);
+> +
+> +	return result;
+> +}
+> +
+> +void acpi_processor_thermal_exit(struct acpi_processor *pr,
+> +				 struct acpi_device *device)
+> +{
+> +	if (pr->cdev) {
+> +		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
+> +		sysfs_remove_link(&pr->cdev->device.kobj, "device");
+> +		thermal_cooling_device_unregister(pr->cdev);
+> +		pr->cdev = NULL;
+> +	}
+> +}
+> diff --git a/include/acpi/processor.h b/include/acpi/processor.h
+> index 194027371928..ba1e3ed98d3d 100644
+> --- a/include/acpi/processor.h
+> +++ b/include/acpi/processor.h
+> @@ -442,8 +442,12 @@ static inline int acpi_processor_hotplug(struct acpi_processor *pr)
+>  
+>  /* in processor_thermal.c */
+>  int acpi_processor_get_limit_info(struct acpi_processor *pr);
+> +int acpi_processor_thermal_init(struct acpi_processor *pr,
+> +				struct acpi_device *device);
+> +void acpi_processor_thermal_exit(struct acpi_processor *pr,
+> +				 struct acpi_device *device);
+>  extern const struct thermal_cooling_device_ops processor_cooling_ops;
+> -#if defined(CONFIG_ACPI_CPU_FREQ_PSS) & defined(CONFIG_CPU_FREQ)
+> +#ifdef CONFIG_CPU_FREQ
+>  void acpi_thermal_cpufreq_init(struct cpufreq_policy *policy);
+>  void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy);
+>  #else
+> @@ -455,6 +459,6 @@ static inline void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
+>  {
+>  	return;
+>  }
+> -#endif	/* CONFIG_ACPI_CPU_FREQ_PSS */
+> +#endif	/* CONFIG_CPU_FREQ */
+>  
+>  #endif
 
-Hardware prefetch behavior is enabled by default in x86 and A64FX.
-Many applications can perform well without changing the register
-setting. Use this feature for some applications that want to be
-improved performance.
+Thanks for updating the patch.
 
-In particular, A64FX's hardware prefetch behavior is used for HPC
-applications. The user running HPC applications needs to improve
-performance as much as possible. This feature is useful for such
-users. Therefore, some A64FX machines have their own drivers that
-control hardware prefetch behavior. It is built into the software
-products for A64FX and cannot be used without purchase.
+FWIW,
 
-I want to make this feature available to people who want to improve
-performance without purchase the product. This is limited in use and
-depends on the characteristics of the application. Isn't this match
-with "general purpose"?
-
-> and will be for you as you
-> will now have to support this specific model to work correctly on all fut=
-ure
-> kernel releases for the next 20+ years.
-> Are you willing to do that?
-
-Rather than relying on a specific model of this API, I want to make it
-generally available. However, it may not be so now. I am willing to
-support this if I could make it a community-approved interface.
-
-> Then perhaps it isn't anything that they should try out :)
->=20
-> Shouldn't the kernel know how the application works (based on the resourc=
-es
-> it asks for) and tune itself based on that automatically?
->=20
-> If not, how is a user supposed to know how to do this?
-
-It is useful for users if it can be done automatically by the kernel.
-I will consider if there is anything I can do using statistical
-information.
-
-> What is "1024" here?  Where is any of this documented?
-
-This parameter means the difference in bytes between the memory
-address the program is currently accessing and the memory address
-accessed by the hardware prefetch. My document in
-sysfs-devices-system-cpu does not specify what the distance means, so
-I will add it.
-
-For reference, the hardware prefetch details are described below.
-
-"https://github.com/fujitsu/A64FX/tree/master/doc"
-    A64FX_Microarchitecture_Manual_en_1.7.pdf
-
-> And why these
-> specific sysfs files and not others?
-
-I wanted to show an example of changing only the hardware prefetch
-distance. There is no special reason not to specify with other sysfs
-files.
-
-> If you have no such user today, nor a library, how do you know any of thi=
-s works
-> well?
-
-The prefetch control function included in the software product for
-A64FX does the similar operation, and it works well.
-
-> And again, how will you support this going forward?
-> Or is this specific api only going to be for one specific piece of hardwa=
-re and
-> never any future ones?
-
-In order to make the interface widely usable in the future, I will
-consider a different specification from the current one. For example
-control groups which Linus proposaled is one of them.
-
-> So you haven't tested this on any real applications?  We need real users =
-before
-> being able to add new apis.  Otherwise we can just remove the apis :)
-
-At least, some A64FX users use this behavior. However, currently, I
-don't have which applications and how much performance will be
-improved. I will try to get the application actually used and confirm
-that it is effective.
-
-> Kernel programming for a general purpose operating system is hard, but it=
- is
-> possible :)
-
-I will try to do kernel programming for a general purpose operating
-system.
+Reviewed-by: Punit Agrawal <punit.agrawal@bytedance.com>
