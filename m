@@ -2,64 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A695F54F43A
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jun 2022 11:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB08E54F487
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jun 2022 11:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381349AbiFQJ0S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Jun 2022 05:26:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43788 "EHLO
+        id S1381379AbiFQJmT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Jun 2022 05:42:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381475AbiFQJ0O (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Jun 2022 05:26:14 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8821D67D08
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Jun 2022 02:26:09 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id q9so4972943wrd.8
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Jun 2022 02:26:09 -0700 (PDT)
+        with ESMTP id S1380925AbiFQJmS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Jun 2022 05:42:18 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5041A69483
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Jun 2022 02:42:17 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id s1so5022372wra.9
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Jun 2022 02:42:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bytedance-com.20210112.gappssmtp.com; s=20210112;
         h=from:to:cc:subject:references:date:in-reply-to:message-id
          :user-agent:mime-version;
-        bh=7QgWyOrwcdZfhxMsEv0D/HOdyQQAtGE5lUhJFK9WI34=;
-        b=baDqnxH9AoRr/GTSO8bWcwcoD7EbsPtCklwLM1feiSe89PBitkesjSsy1xWf70qySW
-         ufACQ1c7JEOACwZUozuJF7t/L14ahN2ldYJJfG4JdH/m34CDHe8dzjlny0UMwvuKylTn
-         Jsa1WUY6n1v3htfxzUl9oOWYSS82lL4j7MBOtbJidFi09Qi2fbKAbYrlV7nzbIoLEvxQ
-         zyBrUKvXWbhJhZM6yRtynPwbScrwTAPmb7rn3p0Ng8zvpR9sDrizkoojAsv/2bFJXmVu
-         8UKh1WJZUWN6OWmHlmHpTDKvR2DIrSsdsfKLTo52J1IVZnXdCojrTc89sruhMR6Ndwe2
-         Igtg==
+        bh=NZv4CkZhHVjo2WiQVeulQzBHOA+fH2nS6TIJym/u7XA=;
+        b=wLK3Z+5OFc/0E1XIc8LL/90johcd6W+wkAsVUSfrxaeVlkEj5UFZwBP2SaBBFcbiPe
+         6QKWfAPioSFs0mHG+8JuRvpGfRDKCgIFzTUEVw9uHqHPYkGRH5KnW4y2uDattFW0Elew
+         pzUUf42e2Io/lRgJ1ixs9Fylh9BnDtEZeF1JZhjq57BfG1ZyuMW5XrbOGaoob7/uJGCd
+         3Yzn2c12Ct7hssXOTZAFvBv5HNuHC9b1euSSBEmjQkeIp2VJkY7+XJ5V1bWE0EzKPBfH
+         BB3TcU1l/sKeEQAmOLDERw8nz1OLScdt7frEllsap+9Z0ZQ8zDC2l2VZ2wTuGDqEDREf
+         /ZKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
          :message-id:user-agent:mime-version;
-        bh=7QgWyOrwcdZfhxMsEv0D/HOdyQQAtGE5lUhJFK9WI34=;
-        b=JdEzkXvZpxte9D5ENrLrUF31tWv3fOoqoj94uOtgl9Vu2KzgX3l44Mt24i2QUhIUub
-         Y7omcmbGP6FSsvg8vLWnXU3WPz3/n0ghIBNz83Zkt0vTzrQ1i9aQNFh5JQRA6mEBtwJF
-         TzD7YSwF87Z4bJ25mM5bzEeAI6vuKeBMvA5gkwRsjHe9FD8B24vn9gre/Cad3VzhrR8w
-         GO4BgE6s3P6s40zN2F/11EsrvPn0BUhybuXNltHp7VroWx70i3tVu+kjxi7uaPbL7rHX
-         VMo6MZQHHd8SNUtzb/1xAoDCjp3aciEJg662N88qzXQAKLouCsXWknFqWBUb2BvdYHM8
-         SGYQ==
-X-Gm-Message-State: AJIora9lj2OhsCtjJJqkzrcBRUX7N+RH4eIVepTIM1SikJ7Lxas4q6nn
-        ew1x0ooJlFGaToKyBdTirI+bzw==
-X-Google-Smtp-Source: AGRyM1uoBpVEA1m4d75Zjba7gCaZE4/6upu+1FTbDBF4sdXro65+m+P7bb+8Qb353obeZcJfP5XJ8w==
-X-Received: by 2002:a05:6000:18a9:b0:218:891d:815c with SMTP id b9-20020a05600018a900b00218891d815cmr8391962wri.311.1655457968081;
-        Fri, 17 Jun 2022 02:26:08 -0700 (PDT)
+        bh=NZv4CkZhHVjo2WiQVeulQzBHOA+fH2nS6TIJym/u7XA=;
+        b=Et66O76/gNOT5NccfSMwPMLd6CZEtVGTQyHuF/vetztOhdwtbr36fHxrwUPd30yCi/
+         FemTjQm/Xca6pVCH9dLfCAC2KZF4BEe4SD1igqw5RQq4MkkDWnmqDPleCYMDzZ7tx341
+         OWO0nak8hv2BW5Qj2QUzrIzi5ipMx5QPbm/cAjHKeq9Yfa2vem/LuH5TyvYm6O6Zjqgn
+         apVmfblsj8Rs2f+WUjDQCKHgBPFrhHnUdwacZHdRMQekDVhFo3JGdSoo7lj8DuKxiPA8
+         HnkxJe32jKOqHBmwo5BRnjfi57pAlWAQtzFhzJKRygjTHxT4PqSyzd7E9PLNnhp8jnLl
+         WEYA==
+X-Gm-Message-State: AJIora/83PIABWmeGpik8G5nSvazlHbdYKnxYo3nNOXCfvzdDGJ3iDhw
+        OjgIwPUw8VkO32NpnxtN9+fiZDN6hPzrqLOo
+X-Google-Smtp-Source: AGRyM1t5CBxs8rFvCtjdn/6EoixNlpinrPqzTAfs/Ix5emh/N76GE+n4QqBBCNqRUjnO9yVIrSBzMQ==
+X-Received: by 2002:a5d:4108:0:b0:213:b585:66c7 with SMTP id l8-20020a5d4108000000b00213b58566c7mr8373386wrp.335.1655458935880;
+        Fri, 17 Jun 2022 02:42:15 -0700 (PDT)
 Received: from localhost ([109.180.234.132])
-        by smtp.gmail.com with ESMTPSA id b18-20020a056000055200b0021a38089e99sm3817103wrf.57.2022.06.17.02.26.05
+        by smtp.gmail.com with ESMTPSA id m13-20020a5d4a0d000000b0021a2c923c72sm4213296wrq.69.2022.06.17.02.42.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jun 2022 02:26:06 -0700 (PDT)
+        Fri, 17 Jun 2022 02:42:15 -0700 (PDT)
 From:   Punit Agrawal <punit.agrawal@bytedance.com>
 To:     Riwen Lu <luriwen@hotmail.com>
 Cc:     rafael@kernel.org, lenb@kernel.org, rui.zhang@intel.com,
         robert.moore@intel.com, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org, devel@acpica.org,
         punit.agrawal@bytedance.com, Riwen Lu <luriwen@kylinos.cn>
-Subject: Re: [PATCH v3] ACPI: Split out processor thermal register from ACPI
- PSS
-References: <TYWP286MB2601965DDE4D251807F70415B1AF9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-Date:   Fri, 17 Jun 2022 10:26:04 +0100
-In-Reply-To: <TYWP286MB2601965DDE4D251807F70415B1AF9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-        (Riwen Lu's message of "Fri, 17 Jun 2022 10:51:51 +0800")
-Message-ID: <871qvnpro3.fsf@stealth>
+Subject: Re: [PATCH v2] ACPI/processor: Remove unused function
+ acpi_processor_get_limit_info()
+References: <20220617025152.1908638-1-luriwen@hotmail.com>
+        <TYWP286MB2601A75D517AE71EE569CE15B1AF9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+Date:   Fri, 17 Jun 2022 10:42:14 +0100
+In-Reply-To: <TYWP286MB2601A75D517AE71EE569CE15B1AF9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+        (Riwen Lu's message of "Fri, 17 Jun 2022 10:51:52 +0800")
+Message-ID: <87v8szoccp.fsf@stealth>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -76,280 +77,44 @@ Riwen Lu <luriwen@hotmail.com> writes:
 
 > From: Riwen Lu <luriwen@kylinos.cn>
 >
-> Commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
-> driver"), moves processor thermal registration to acpi_pss_perf_init(),
-> which doesn't get executed if ACPI_CPU_FREQ_PSS is not enabled.
->
-> As ARM64 supports P-states using CPPC, it should be possible to also
-> support processor passive cooling even if PSS is not enabled. Split
-> out the processor thermal cooling register from ACPI PSS to support
-> this, and move it into a separate function in processor_thermal.c.
+> Commit 22e7551eb6fd ("ACPI / processor: Remove acpi_processor_get_limit_info()"),
+> left behind this, remove it.
 >
 > Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
 >
 > ---
 > v1 -> v2:
->  - Reword the commit message.
->  - Update the signature of acpi_pss_perf_init() to void, and remove the
->    acpi_device parameter.
->  - Move the processor thermal register/remove into a separate function in
->    processor_thermal.c.
->
-> v2 -> v3:
->  - Remove the "pr" NULL check in processor thermal init/exit fuction.
->  - Pass the acpi_device into processor thermal init/exit, and remove the
->    convert in it.
+>  - Make this patch base on ("ACPI: Split out processor thermal register
+>    from ACPI PSS").
+
+For such changes, it is better to send all the related patches as a
+series so it's easy to see the dependencies . In a series the easy /
+obvious fixes should be earlier so it's easier for them to be merged
+while the more significant changes are still being discussed.
+
+Hopefully in this case Rafael too agrees with the dependency patch -
+otherwise, it's just extra churn on the lists.
+
+But don't resend just yet - give some time for others to add their
+feedback.
+
 > ---
->  drivers/acpi/Kconfig             |  2 +-
->  drivers/acpi/Makefile            |  5 +--
->  drivers/acpi/processor_driver.c  | 72 ++++----------------------------
->  drivers/acpi/processor_thermal.c | 54 ++++++++++++++++++++++++
->  include/acpi/processor.h         |  8 +++-
->  5 files changed, 71 insertions(+), 70 deletions(-)
+>  include/acpi/processor.h | 1 -
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index 1e34f846508f..2457ade3f82d 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -255,7 +255,6 @@ config ACPI_DOCK
->  
->  config ACPI_CPU_FREQ_PSS
->  	bool
-> -	select THERMAL
->  
->  config ACPI_PROCESSOR_CSTATE
->  	def_bool y
-> @@ -287,6 +286,7 @@ config ACPI_PROCESSOR
->  	depends on X86 || IA64 || ARM64 || LOONGARCH
->  	select ACPI_PROCESSOR_IDLE
->  	select ACPI_CPU_FREQ_PSS if X86 || IA64 || LOONGARCH
-> +	select THERMAL
->  	default y
->  	help
->  	  This driver adds support for the ACPI Processor package. It is required
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index b5a8d3e00a52..0002eecbf870 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -109,10 +109,9 @@ obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
->  obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
->  
->  # processor has its own "processor." module_param namespace
-> -processor-y			:= processor_driver.o
-> +processor-y			:= processor_driver.o processor_thermal.o
->  processor-$(CONFIG_ACPI_PROCESSOR_IDLE) += processor_idle.o
-> -processor-$(CONFIG_ACPI_CPU_FREQ_PSS)	+= processor_throttling.o	\
-> -	processor_thermal.o
-> +processor-$(CONFIG_ACPI_CPU_FREQ_PSS)	+= processor_throttling.o
->  processor-$(CONFIG_CPU_FREQ)	+= processor_perflib.o
->  
->  obj-$(CONFIG_ACPI_PROCESSOR_AGGREGATOR) += acpi_pad.o
-> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-> index 368a9edefd0c..1278969eec1f 100644
-> --- a/drivers/acpi/processor_driver.c
-> +++ b/drivers/acpi/processor_driver.c
-> @@ -139,75 +139,17 @@ static int acpi_soft_cpu_dead(unsigned int cpu)
->  }
->  
->  #ifdef CONFIG_ACPI_CPU_FREQ_PSS
-> -static int acpi_pss_perf_init(struct acpi_processor *pr,
-> -		struct acpi_device *device)
-> +static void acpi_pss_perf_init(struct acpi_processor *pr)
->  {
-> -	int result = 0;
-> -
->  	acpi_processor_ppc_has_changed(pr, 0);
->  
->  	acpi_processor_get_throttling_info(pr);
->  
->  	if (pr->flags.throttling)
->  		pr->flags.limit = 1;
-> -
-> -	pr->cdev = thermal_cooling_device_register("Processor", device,
-> -						   &processor_cooling_ops);
-> -	if (IS_ERR(pr->cdev)) {
-> -		result = PTR_ERR(pr->cdev);
-> -		return result;
-> -	}
-> -
-> -	dev_dbg(&device->dev, "registered as cooling_device%d\n",
-> -		pr->cdev->id);
-> -
-> -	result = sysfs_create_link(&device->dev.kobj,
-> -				   &pr->cdev->device.kobj,
-> -				   "thermal_cooling");
-> -	if (result) {
-> -		dev_err(&device->dev,
-> -			"Failed to create sysfs link 'thermal_cooling'\n");
-> -		goto err_thermal_unregister;
-> -	}
-> -
-> -	result = sysfs_create_link(&pr->cdev->device.kobj,
-> -				   &device->dev.kobj,
-> -				   "device");
-> -	if (result) {
-> -		dev_err(&pr->cdev->device,
-> -			"Failed to create sysfs link 'device'\n");
-> -		goto err_remove_sysfs_thermal;
-> -	}
-> -
-> -	return 0;
-> -
-> - err_remove_sysfs_thermal:
-> -	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> - err_thermal_unregister:
-> -	thermal_cooling_device_unregister(pr->cdev);
-> -
-> -	return result;
-> -}
-> -
-> -static void acpi_pss_perf_exit(struct acpi_processor *pr,
-> -		struct acpi_device *device)
-> -{
-> -	if (pr->cdev) {
-> -		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> -		sysfs_remove_link(&pr->cdev->device.kobj, "device");
-> -		thermal_cooling_device_unregister(pr->cdev);
-> -		pr->cdev = NULL;
-> -	}
->  }
->  #else
-> -static inline int acpi_pss_perf_init(struct acpi_processor *pr,
-> -		struct acpi_device *device)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline void acpi_pss_perf_exit(struct acpi_processor *pr,
-> -		struct acpi_device *device) {}
-> +static inline void acpi_pss_perf_init(struct acpi_processor *pr) {}
->  #endif /* CONFIG_ACPI_CPU_FREQ_PSS */
->  
->  static int __acpi_processor_start(struct acpi_device *device)
-> @@ -229,7 +171,9 @@ static int __acpi_processor_start(struct acpi_device *device)
->  	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
->  		acpi_processor_power_init(pr);
->  
-> -	result = acpi_pss_perf_init(pr, device);
-> +	acpi_pss_perf_init(pr);
-> +
-> +	result = acpi_processor_thermal_init(pr, device);
->  	if (result)
->  		goto err_power_exit;
->  
-> @@ -239,7 +183,7 @@ static int __acpi_processor_start(struct acpi_device *device)
->  		return 0;
->  
->  	result = -ENODEV;
-> -	acpi_pss_perf_exit(pr, device);
-> +	acpi_processor_thermal_exit(pr, device);
->  
->  err_power_exit:
->  	acpi_processor_power_exit(pr);
-> @@ -277,10 +221,10 @@ static int acpi_processor_stop(struct device *dev)
->  		return 0;
->  	acpi_processor_power_exit(pr);
->  
-> -	acpi_pss_perf_exit(pr, device);
-> -
->  	acpi_cppc_processor_exit(pr);
->  
-> +	acpi_processor_thermal_exit(pr, device);
-> +
->  	return 0;
->  }
->  
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
-> index d8b2dfcd59b5..db6ac540e924 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -266,3 +266,57 @@ const struct thermal_cooling_device_ops processor_cooling_ops = {
->  	.get_cur_state = processor_get_cur_state,
->  	.set_cur_state = processor_set_cur_state,
->  };
-> +
-> +int acpi_processor_thermal_init(struct acpi_processor *pr,
-> +				struct acpi_device *device)
-> +{
-> +	int result = 0;
-> +
-> +	pr->cdev = thermal_cooling_device_register("Processor", device,
-> +						   &processor_cooling_ops);
-> +	if (IS_ERR(pr->cdev)) {
-> +		result = PTR_ERR(pr->cdev);
-> +		return result;
-> +	}
-> +
-> +	dev_dbg(&device->dev, "registered as cooling_device%d\n",
-> +		pr->cdev->id);
-> +
-> +	result = sysfs_create_link(&device->dev.kobj,
-> +				   &pr->cdev->device.kobj,
-> +				   "thermal_cooling");
-> +	if (result) {
-> +		dev_err(&device->dev,
-> +			"Failed to create sysfs link 'thermal_cooling'\n");
-> +		goto err_thermal_unregister;
-> +	}
-> +
-> +	result = sysfs_create_link(&pr->cdev->device.kobj,
-> +				   &device->dev.kobj,
-> +				   "device");
-> +	if (result) {
-> +		dev_err(&pr->cdev->device,
-> +			"Failed to create sysfs link 'device'\n");
-> +		goto err_remove_sysfs_thermal;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_remove_sysfs_thermal:
-> +	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> +err_thermal_unregister:
-> +	thermal_cooling_device_unregister(pr->cdev);
-> +
-> +	return result;
-> +}
-> +
-> +void acpi_processor_thermal_exit(struct acpi_processor *pr,
-> +				 struct acpi_device *device)
-> +{
-> +	if (pr->cdev) {
-> +		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
-> +		sysfs_remove_link(&pr->cdev->device.kobj, "device");
-> +		thermal_cooling_device_unregister(pr->cdev);
-> +		pr->cdev = NULL;
-> +	}
-> +}
 > diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-> index 194027371928..ba1e3ed98d3d 100644
+> index ba1e3ed98d3d..9fa49686957a 100644
 > --- a/include/acpi/processor.h
 > +++ b/include/acpi/processor.h
-> @@ -442,8 +442,12 @@ static inline int acpi_processor_hotplug(struct acpi_processor *pr)
+> @@ -441,7 +441,6 @@ static inline int acpi_processor_hotplug(struct acpi_processor *pr)
+>  #endif /* CONFIG_ACPI_PROCESSOR_IDLE */
 >  
 >  /* in processor_thermal.c */
->  int acpi_processor_get_limit_info(struct acpi_processor *pr);
-> +int acpi_processor_thermal_init(struct acpi_processor *pr,
-> +				struct acpi_device *device);
-> +void acpi_processor_thermal_exit(struct acpi_processor *pr,
-> +				 struct acpi_device *device);
->  extern const struct thermal_cooling_device_ops processor_cooling_ops;
-> -#if defined(CONFIG_ACPI_CPU_FREQ_PSS) & defined(CONFIG_CPU_FREQ)
-> +#ifdef CONFIG_CPU_FREQ
->  void acpi_thermal_cpufreq_init(struct cpufreq_policy *policy);
->  void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy);
->  #else
-> @@ -455,6 +459,6 @@ static inline void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
->  {
->  	return;
->  }
-> -#endif	/* CONFIG_ACPI_CPU_FREQ_PSS */
-> +#endif	/* CONFIG_CPU_FREQ */
->  
->  #endif
+> -int acpi_processor_get_limit_info(struct acpi_processor *pr);
+>  int acpi_processor_thermal_init(struct acpi_processor *pr,
+>  				struct acpi_device *device);
+>  void acpi_processor_thermal_exit(struct acpi_processor *pr,
 
-Thanks for updating the patch.
-
-FWIW,
+Fwiw,
 
 Reviewed-by: Punit Agrawal <punit.agrawal@bytedance.com>
