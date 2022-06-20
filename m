@@ -2,137 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56674551FA8
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 17:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340EE551FFC
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 17:12:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240310AbiFTPDW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jun 2022 11:03:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59740 "EHLO
+        id S242127AbiFTPMU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jun 2022 11:12:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241572AbiFTPDM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 11:03:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 81C2F2B255
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 07:33:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1655735601;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NZEKAY2GGhOuRw66r1V3hBnlbCKh6JZDPOisgvEphIw=;
-        b=Vnhi2WyOibu2bKDoWsGusQfDYBbPPGEbweVQfGLe7QNvF5P4X5XZIxCa8z9lriHwjHOx6l
-        dZwS61gO9EeZGD4eMDXg7p2hU5zqSfwjBoVR7OlHCyk8yWdjzNZx77byU0ahKD1GRLcjlY
-        5wVTE5Lw4zKv3xhGr13OWXWPN5y2XJk=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-55-Hif_LVdXM82pw1io1DZqdw-1; Mon, 20 Jun 2022 10:33:20 -0400
-X-MC-Unique: Hif_LVdXM82pw1io1DZqdw-1
-Received: by mail-ed1-f69.google.com with SMTP id x8-20020a056402414800b0042d8498f50aso8818341eda.23
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 07:33:20 -0700 (PDT)
+        with ESMTP id S242891AbiFTPMG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 11:12:06 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7DF913F2C
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 08:02:46 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id b23so3654710ljh.7
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 08:02:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yxQNSbinrTsgQGxNEqtziHy+t5H7kRQgWCro6p1KBMA=;
+        b=WPXUf7U5nc8yTs7HL25c+VZwbO5QQ8T1QE+oQNxnT2blOmFQzN3XoFS/PHoxbQ/T31
+         fiqhWBaEDnIxujWfPayn2+tJJRfFzsx0aKRSv1es0t9hBbz7BoG56nmQepi5xs/A4dHl
+         Xk82m+eF76wCTnIkBRZ5dnb8GLVqsT+ME6Iva/hKtAmD3jK8h7Vt5ATRxDSASk9Ps4/e
+         pDLk6tU9UV1a7WtWzYI3tDjPclrLJBkEuo4lA13sX1i1t9X8tHXhGybICgtHao5lJqEV
+         IfC5iJ6zmZWDFrNZ4jFr2e4E4Rh7zW5P4prmXo7jXJrStYsEoZ2BaEdIaC5t8rBmXKy6
+         aCsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=NZEKAY2GGhOuRw66r1V3hBnlbCKh6JZDPOisgvEphIw=;
-        b=ioveF4UxHNfcItLD+dNTgWkkDRJlTnB2au6AvNxOyQTm/NxkAtrWrzVl6IgzeAHXJn
-         1f5BGnhr/tOGe+ijkB0XrxdPfJDMYDTGqE5mBFcbmHyPbvzrALp11D/tUPTZe+3jtpAt
-         KYZEQIhbMEUVYF2v8vy40EfnUpHvOBCBtsZzMS2qK1E+kU4Ou6haEAL/E6+i4fpPWcOj
-         vIH7BCIFsIb5wLnJ+Zn3QKiFptHKJpL73kZyk70C62jbYFqLYnKEMjFwQFe8wA9s8e4f
-         w0poH3VWQ754KopA9F2m8xdzvVChAruTybA6sNrEdloTqDOLzTeP3FG90OHMQK1TAkCl
-         1NgA==
-X-Gm-Message-State: AJIora/N/CTG5f5QzIn81RfsaD8X1gqmyttljPDpPfwi75LITwRxBrZ8
-        9p8kyja9SYbd8YsWHyzb7/wAV+tZXDoIC/L6mHvxScy003Gh1hBP1ffB8xNfp3IhklWEBXvsW2i
-        ROtZ3i+2VWLfT5t4FQaynCQ==
-X-Received: by 2002:a05:6402:51d3:b0:431:6c7b:c35 with SMTP id r19-20020a05640251d300b004316c7b0c35mr30413671edd.28.1655735598999;
-        Mon, 20 Jun 2022 07:33:18 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1tcxT+KH7RtnHCZ9KdXiEfKheSE4uLLpoKMBbIDfv6DAHNER0Is80zeDp/VwUQYW3OW4TOl/A==
-X-Received: by 2002:a05:6402:51d3:b0:431:6c7b:c35 with SMTP id r19-20020a05640251d300b004316c7b0c35mr30413645edd.28.1655735598768;
-        Mon, 20 Jun 2022 07:33:18 -0700 (PDT)
-Received: from [10.0.0.147] (D57D5A4B.static.ziggozakelijk.nl. [213.125.90.75])
-        by smtp.gmail.com with ESMTPSA id a24-20020aa7cf18000000b004356c18b2b9sm6287475edy.44.2022.06.20.07.33.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jun 2022 07:33:18 -0700 (PDT)
-Message-ID: <b2ad4b62-89bc-48c5-ebc3-c9d8f86aa902@redhat.com>
-Date:   Mon, 20 Jun 2022 16:33:17 +0200
+        bh=yxQNSbinrTsgQGxNEqtziHy+t5H7kRQgWCro6p1KBMA=;
+        b=c7dHmTr710FiPw0v/ju+MP1Iz7bD5sBrs2RPfe+uN++p99PPmvW4armgtlvlI67f3k
+         0pwBexCtuL4spYui1LbbPf37o4eLS0NZ/OH3VJffsgs6QebSxe3UOtXkAqxLb+yXMJXy
+         9x85YCCZ+Xe9cHFE10z8cGmN7bpKkH8Wh9BnkPXioa9JMicuin9nJW84bA5j1G2z6k3x
+         JwOLlBLH7XrDZvuu9UrFht+3aQSgBEPUZNA02rof2ptGqQOSicfpy9tg3DuEPLIlsOcN
+         wj89Zq4yCT+OSALBqatz3AALQi/KoJsEJuWXsimkgAgzJQKTGaoii87CBUxy4KD9RzCA
+         47VQ==
+X-Gm-Message-State: AJIora84avknOAkcm5LXIZBmPimRhcuRm9Ad5i2JheaiD8I8lvtHH0za
+        a1oQpsbwH+V+vACF2dpJcnTKUA==
+X-Google-Smtp-Source: AGRyM1tVQkRQxXTDvCUQrJ4dJeOiz18tvgdU6yJBqRC1zlngaVtLknPavVc+pf1G6HMrLNPY1QVPTg==
+X-Received: by 2002:a05:651c:12c5:b0:255:9384:b385 with SMTP id 5-20020a05651c12c500b002559384b385mr12087450lje.229.1655737363697;
+        Mon, 20 Jun 2022 08:02:43 -0700 (PDT)
+Received: from gilgamesh.lab.semihalf.net ([83.142.187.85])
+        by smtp.gmail.com with ESMTPSA id e19-20020a05651236d300b0047f79f7758asm17564lfs.22.2022.06.20.08.02.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jun 2022 08:02:43 -0700 (PDT)
+From:   Marcin Wojtas <mw@semihalf.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     rafael@kernel.org, andriy.shevchenko@linux.intel.com,
+        lenb@kernel.org, andrew@lunn.ch, vivien.didelot@gmail.com,
+        f.fainelli@gmail.com, olteanv@gmail.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux@armlinux.org.uk, hkallweit1@gmail.com, gjb@semihalf.com,
+        mw@semihalf.com, jaz@semihalf.com, tn@semihalf.com,
+        Samer.El-Haj-Mahmoud@arm.com, upstream@semihalf.com
+Subject: [net-next: PATCH 00/12] ACPI support for DSA
+Date:   Mon, 20 Jun 2022 17:02:13 +0200
+Message-Id: <20220620150225.1307946-1-mw@semihalf.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 2/4] ACPI: EC: Drop the EC_FLAGS_IGNORE_DSDT_GPE quirk
-Content-Language: en-US
-To:     Daniel Drake <drake@endlessos.org>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        devel@acpica.org, Lv Zheng <lv.zheng@intel.com>,
-        Chris Chiu <chris.chiu@canonical.com>,
-        Jian-Hong Pan <jhp@endlessos.org>,
-        Carlo Caione <carlo@caione.org>
-References: <20220620092546.8298-1-hdegoede@redhat.com>
- <20220620092546.8298-3-hdegoede@redhat.com>
- <CAD8Lp45ismm5yG2ajGH_h=BKLh6hs8yC7gy3jq1Kn1pst0AFKg@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAD8Lp45ismm5yG2ajGH_h=BKLh6hs8yC7gy3jq1Kn1pst0AFKg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi!
 
-On 6/20/22 12:47, Daniel Drake wrote:
-> Hi Hans,
-> 
-> Thanks for looking at this.
-> 
-> On Mon, Jun 20, 2022 at 5:26 PM Hans de Goede <hdegoede@redhat.com> wrote:
->> Which leaves commit 6306f0431914 ("ACPI: EC: Make more Asus laptops
->> use ECDT _GPE"), which was committed way after the generic fix.
->> But this was just due to slow upstreaming of it. This commit stems
->> from Endless from 15 Aug 2017 (committed upstream 20 May 2021):
->> https://github.com/endlessm/linux/pull/288
->>
->> The current code should work fine without this:
-> 
-> Your explanation of the code flow seems clear and logical, but I have
-> not checked the details. This is a bit of a tricky issue as you have
-> probably seen from history, we went in a couple of wrong directions
-> before we spotted the real cause.
-> 
-> The one thing I don't see clearly in your explanation (which I may
-> have read too quickly) is how the generic fix 69b957c26b32 is
-> responsible for making this a "no-op" code flow now.
+This patchset introduces the support for DSA in ACPI world. A couple of
+words about the background and motivation behind those changes:
 
-It is a no-op now because after that commit the acpi_ec struct
-which gets allocated when parsing the ECDT now gets re-used
-when parsing the DSDT if the EC's cmd + data addresses match.
+The DSA code is strictly dependent on the Device Tree and Open Firmware
+(of_*) interface, both in the drivers and the common high-level net/dsa API.
+The only alternative is to pass the information about the topology via
+platform data - a legacy approach used by older systems that compiled the
+board description into the kernel.
 
-When we enter the if for re-using that boot_ec acpi_ec struct then
-only boot_ec->handle is re-used; and we keep boot_ec->gpe to the
-value set when parsing the ECDT.
+The above constraint is problematic for the embedded devices based e.g. on
+x86_64 SoCs, which are described by ACPI tables - to use DSA, some tricks
+and workarounds have to be applied. Addition of switch description to
+DSDT/SSDT tables would help to solve many similar cases and use unmodified
+kernel modules. It also enables this feature for ARM64 ACPI users.
 
-The quirk does:
+The key enablements allowing for adding ACPI support for DSA in Linux were
+NIC drivers, MDIO, PHY, and phylink modifications – the latter three merged
+in 2021. I thought it would be worth to experiment with DSA, which seemed
+to be a natural follow-up challenge.
 
-ec->gpe is boot_ec->gpe, but since we throw ec away now
-(after taking ec->handle) and reuse boot_ec->gpe we will end
-up using boot_ec->gpe just as the quirk caused us to do before
-we started re-using the boot_ec acpi_ec struct.
+It turned out that without much hassle it is possible to describe
+DSA-compliant switches as child devices of the MDIO busses, which are
+responsible for their enumeration based on the standard _ADR fields and
+description in _DSD objects under 'device properties' UUID [1].
+The vast majority of required changes were simple of_* to fwnode_*
+transition, as the DT and ACPI topolgies are analogous, except for
+'ports' and 'mdio' subnodes naming, as they don't conform ACPI
+namespace constraints [2].
 
-Regards,
+The patchset can be logically split to subsets of commits:
+* Move a couple of missing routines to fwnode_ equivalents
+* Rework net/dsa to use fwnode_*/device_* API
+* Introduce fwnode_mdiobus_register_device() and allow MDIO device probing
+  in ACPI world.
+* Add necessary ACPI-related modifications to net/dsa and add Documentation
+  entry.
+* Shift example mv88e6xxx driver to fwnode_*/device_* and add ACPI hooks.
+The changes details can be found in the commit messages.
 
-Hans
+Note that for now cascade topology remains unsupported in ACPI world
+(based on "dsa" label and "link" property values). It seems to be feasible,
+but would extend this patchset due to necessity of of_phandle_iterator
+migration to fwnode_. Leave it as a possible future step.
+
+Testing:
+* EACH commit was tested against regression with device tree on EspressoBIN
+  and SolidRun CN913x CEx7 Evaluation board. It works as expected throughout
+  entire patchset.
+* The latter board was used as example ACPI user of the feature - it's 1:1
+  to what's available when booting with DT. Please check [3] and [4] to
+  compare the DT/ACPI description.
+
+For convenience, this patchset is also available on a public branch [5].
+
+I am looking forward to any comments or remarks, your review will be
+appreciated.
+
+Best regards,
+Marcin
+
+[1] http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
+[2] https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#acpi-namespace
+[3] https://github.com/semihalf-wojtas-marcin/edk2-platforms/commit/6368ee09a232c1348e19729f21c05e9c5410cdb9
+[4] https://github.com/tianocore/edk2-non-osi/blob/master/Silicon/Marvell/OcteonTx/DeviceTree/T91/cn9130-cex7.dts#L252
+[5] https://github.com/semihalf-wojtas-marcin/Linux-Kernel/commits/dsa-acpi-v1
+
+Marcin Wojtas (12):
+  net: phy: fixed_phy: switch to fwnode_ API
+  net: mdio: switch fixed-link PHYs API to fwnode_
+  net: dsa: switch to device_/fwnode_ APIs
+  net: mvpp2: initialize port fwnode pointer
+  net: core: switch to fwnode_find_net_device_by_node()
+  net: mdio: introduce fwnode_mdiobus_register_device()
+  net: mdio: allow registering non-PHY devices in ACPI world
+  ACPI: scan: prevent double enumeration of MDIO bus children
+  Documentation: ACPI: DSD: introduce DSA description
+  net: dsa: add ACPI support
+  net: dsa: mv88e6xxx: switch to device_/fwnode_ APIs
+  net: dsa: mv88e6xxx: add ACPI support
+
+ include/linux/etherdevice.h                     |   1 +
+ include/linux/fwnode_mdio.h                     |  22 ++
+ include/linux/of_net.h                          |   6 -
+ include/linux/phy_fixed.h                       |   4 +-
+ include/net/dsa.h                               |   1 +
+ drivers/acpi/scan.c                             |  15 +
+ drivers/net/dsa/mv88e6xxx/chip.c                |  76 +++--
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c |   1 +
+ drivers/net/mdio/acpi_mdio.c                    |  40 ++-
+ drivers/net/mdio/fwnode_mdio.c                  | 129 +++++++
+ drivers/net/mdio/of_mdio.c                      | 105 +-----
+ drivers/net/phy/fixed_phy.c                     |  37 +-
+ drivers/net/phy/mdio_bus.c                      |   4 +
+ net/core/net-sysfs.c                            |  18 +-
+ net/dsa/dsa2.c                                  | 104 ++++--
+ net/dsa/port.c                                  |  54 ++-
+ net/dsa/slave.c                                 |   6 +-
+ Documentation/firmware-guide/acpi/dsd/dsa.rst   | 359 ++++++++++++++++++++
+ Documentation/firmware-guide/acpi/index.rst     |   1 +
+ 19 files changed, 748 insertions(+), 235 deletions(-)
+ create mode 100644 Documentation/firmware-guide/acpi/dsd/dsa.rst
+
+-- 
+2.29.0
 
