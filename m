@@ -2,109 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5390D5526F5
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 00:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F905552796
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 01:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243528AbiFTWbR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jun 2022 18:31:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43312 "EHLO
+        id S1345689AbiFTXGE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jun 2022 19:06:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243182AbiFTWbP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 18:31:15 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEF5B1CB39;
-        Mon, 20 Jun 2022 15:31:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655764274; x=1687300274;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pmSKwHf+XOx/cVvFoD/KBOhPf+3PAaRJZ2sU7Jq1+98=;
-  b=ekgd5lyLhWR66HOYz8oPMcLI3tfs1DkAhwI0S7DL3s+aPYy0kxdNDQ3F
-   6+7/cOVRN+9nqDhvkbhl8yrtjln4HjCe4l3iwSYC0aY6GgPaL7da33RhW
-   zqXsQwyO5TCqQTnYcAXByr/FHC05itfD+gmvqQqv4NfkZmMK9SRZcGEuH
-   ireaJ7lDjGzkCnjmBQsRReiA7MXBn73FRRypBdd71ed1m3lr85VxjvJ3U
-   1Fbdfm8dOEexlqos2+mtptqZr6zDAPpBhe8WupVgSF8eeQIQGh2KkUTDq
-   PlAeQULvxwVetU5NnwaDkObn26+1w3Ihn8QL17v1vpTIAnvwapRHHu0Zx
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10384"; a="305417435"
-X-IronPort-AV: E=Sophos;i="5.92,207,1650956400"; 
-   d="scan'208";a="305417435"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2022 15:31:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,207,1650956400"; 
-   d="scan'208";a="585046305"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 20 Jun 2022 15:31:09 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o3PvI-000Wkl-OD;
-        Mon, 20 Jun 2022 22:31:08 +0000
-Date:   Tue, 21 Jun 2022 06:30:29 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Marcin Wojtas <mw@semihalf.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, rafael@kernel.org,
-        andriy.shevchenko@linux.intel.com, lenb@kernel.org, andrew@lunn.ch,
-        vivien.didelot@gmail.com, f.fainelli@gmail.com, olteanv@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
-        gjb@semihalf.com, mw@semihalf.com, jaz@semihalf.com,
-        tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com,
-        upstream@semihalf.com
-Subject: Re: [net-next: PATCH 05/12] net: core: switch to
- fwnode_find_net_device_by_node()
-Message-ID: <202206210649.QCsWk7fK-lkp@intel.com>
-References: <20220620150225.1307946-6-mw@semihalf.com>
+        with ESMTP id S1345704AbiFTXFs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 19:05:48 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE8E237F5
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 16:05:10 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id o23so6365180ljg.13
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 16:05:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=de5jrWZiqnn0+oFXecM5dyCJcFars+Fig56GZVQKRUg=;
+        b=S3KHvFP4pbdA13PxLXWdUbeHiGeLTu+AnNZDZZo2fRkHCc1fRDpOiH209phqN4S65r
+         IrE4rY0XcuSi3iuFjk+Y0tYmzqqX/4qU3JZsq53gZUVuIznV6xWkfNwFHljlFaHQSOZ6
+         6UDM5Cgiljd2WQaw4PGYW16fEkmglmu6XMkfqvsEUidgLxqX2TwH2zjBZJvr7CtnVNBE
+         +Ny/2ggA1c72rWU6szfvjhBftki0eBOkKjN2SmIiy0bmbCjN/2BhlHp3+dao+rbXc7V1
+         f1nZxG5MGtOhx7aBEpcqDOEUVwvgFZ0UNPV3dwM3v6QKks49I+mES+lpM1g/wH1DNOZg
+         mDTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=de5jrWZiqnn0+oFXecM5dyCJcFars+Fig56GZVQKRUg=;
+        b=of1nCO9JdHdQYHHVmLgsdpf7l/mY93b5BVvxoAeiaWwmxD8W5YwZPiV8TC02OrpKD9
+         jhkAu/6w05bajokYGt9Am1ukL33CaBR/IiJSKgpJJoh5FN+azSC4cf8NlEzCpQA6PFmE
+         DZ8SRaYSA2CVaiM+3dzmb6iY8BmD7/2SYO6MCfPfV3v0Hf5iTIXgmO3Ie52Ns1PBblKF
+         zMtnyJMy2Q1aVNzbrxkk2cOSN/Jw1mdNvN2ovo0y/hFTpfrOOUvjoSBobbf6kXXFfo9a
+         zrkhL7xZiKeOnmTGUZRmdyxWIDSQMul9RA0mGUdxMJU2w0damDctW9XXa1haXixQg+xw
+         fBaA==
+X-Gm-Message-State: AJIora/OK7VJ9kn9N8c8dSbNZ9PV1jR7Th2zeAac5xQ0cZ3M0L92d2yq
+        A0W5ExLFicXF7CD5kfvkcmwqyXlILLRKg9VXbKz1cg==
+X-Google-Smtp-Source: AGRyM1sHtnzUqBBH1KYBCQyTHabvpAr+fu4M3EbV1mZSz0+FUrrK9084OV28eW2kvYT50WgKf3f05ZnG//nxZP+RA68=
+X-Received: by 2002:a2e:860e:0:b0:25a:6dbe:abb5 with SMTP id
+ a14-20020a2e860e000000b0025a6dbeabb5mr4403829lji.474.1655766308953; Mon, 20
+ Jun 2022 16:05:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220620150225.1307946-6-mw@semihalf.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220620150225.1307946-1-mw@semihalf.com> <20220620150225.1307946-9-mw@semihalf.com>
+ <YrC0BSeUJaBkhEop@smile.fi.intel.com>
+In-Reply-To: <YrC0BSeUJaBkhEop@smile.fi.intel.com>
+From:   Marcin Wojtas <mw@semihalf.com>
+Date:   Tue, 21 Jun 2022 01:04:58 +0200
+Message-ID: <CAPv3WKdiftkA4_D-z_j1GqyAVk9Rit2Rwf_z=OttMaAZ4f2oAQ@mail.gmail.com>
+Subject: Re: [net-next: PATCH 08/12] ACPI: scan: prevent double enumeration of
+ MDIO bus children
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        vivien.didelot@gmail.com, Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Grzegorz Bernacki <gjb@semihalf.com>,
+        Grzegorz Jaszczyk <jaz@semihalf.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        upstream@semihalf.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Marcin,
+pon., 20 cze 2022 o 19:53 Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
+>
+> On Mon, Jun 20, 2022 at 05:02:21PM +0200, Marcin Wojtas wrote:
+> > The MDIO bus is responsible for probing and registering its respective
+> > children, such as PHYs or other kind of devices.
+> >
+> > It is required that ACPI scan code should not enumerate such
+> > devices, leaving this task for the generic MDIO bus routines,
+> > which are initiated by the controller driver.
+> >
+> > This patch prevents unwanted enumeration of the devices by setting
+> > 'enumeration_by_parent' flag, depending on whether their parent
+> > device is a member of a known list of MDIO controllers. For now,
+> > the Marvell MDIO controllers' IDs are added.
+>
+> This flag is used for serial buses that are not self-discoverable. Not su=
+re
+> about MDIO, but the current usage has a relation to the _CRS. Have you
+> considered to propose the MdioSerialBus() resource type to ACPI specifica=
+tion?
+>
 
-I love your patch! Yet something to improve:
+Indeed, one of the cases checked in the
+acpi_device_enumeration_by_parent() is checking _CRS (of the bus child
+device) for being of the serial bus type. Currently I see
+I2C/SPI/UARTSerialBus resource descriptors in the specification. Since
+MDIO doesn't seem to require any special description macros like the
+mentioned ones (for instance see I2CSerialBusV2 [1]), Based on
+example: dfda4492322ed ("ACPI / scan: Do not enumerate Indirect IO
+host children"), I thought of similar one perhaps being applicable.
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on robh/for-next linus/master v5.19-rc2 next-20220617]
-[cannot apply to horms-ipvs/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Maybe there is some different, more proper solution, I'd be happy to
+hear from the ACPI Maintainers.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marcin-Wojtas/ACPI-support-for-DSA/20220620-231646
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: arm-allmodconfig (https://download.01.org/0day-ci/archive/20220621/202206210649.QCsWk7fK-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/68a7a52989207bfe8640877c512c77ca233c3bba
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Marcin-Wojtas/ACPI-support-for-DSA/20220620-231646
-        git checkout 68a7a52989207bfe8640877c512c77ca233c3bba
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
+[1] https://uefi.org/specs/ACPI/6.4/19_ASL_Reference/ACPI_Source_Language_R=
+eference.html?highlight=3Di2cserialbus#i2cserialbusterm
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
-ERROR: modpost: missing MODULE_LICENSE() in drivers/watchdog/gxp-wdt.o
->> ERROR: modpost: "fwnode_find_net_device_by_node" [net/dsa/dsa_core.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Best regards,
+Marcin
