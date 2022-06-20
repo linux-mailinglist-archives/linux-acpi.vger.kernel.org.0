@@ -2,110 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F14D3550AD4
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Jun 2022 15:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06105551442
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 11:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236448AbiFSNRr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 Jun 2022 09:17:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54302 "EHLO
+        id S240663AbiFTJ0F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jun 2022 05:26:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234547AbiFSNRm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Jun 2022 09:17:42 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726F4E70;
-        Sun, 19 Jun 2022 06:17:40 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id y13-20020a17090a154d00b001eaaa3b9b8dso7962210pja.2;
-        Sun, 19 Jun 2022 06:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Y4ZAlYmM9NAh7Jy0y3cENEFi8vBtUGBTB65jZWB6h3U=;
-        b=OZsHniZMtdGjvsLZPZjk70X2jr5ejROLKEYS5vnH5YtqShPVDPMR1S6ArEWQYpabqg
-         pyTycf0FHIvLGxzN5Tvn0qy8DwnvCdi2KKaw6+p2c6m5BZFRRmyUO7WJ66EWINNrEg/w
-         Pqr5JuJAEtVxTID63AxUZZPqeq2H0fs0wkb67Ur2k2BN1SMr/Fgwz/Xufuw64YLtwAzy
-         Sp3KZ4cGB7XpQeV+eZTydwSXLryL6AcM2fdkRCZ5JgTjJ+JFeXN6LjvOAJXr9ArW1KG6
-         EfBEz1h26p2heOT6oFSYKQvsyia1iuBrZabO3UJXUTTDFo1qoJL3EeHHNPNQ95437vvu
-         kN1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Y4ZAlYmM9NAh7Jy0y3cENEFi8vBtUGBTB65jZWB6h3U=;
-        b=SnTr5VqCqk1V7AP9PdWcwweysRemwmn49SBQ3q4r7Olufs3klYGDYC4DD67YK3EEB3
-         H/RpTfPbRhbYxiTwVNWcZK42+H8J27dwY1Z0u+ewabs3Qvi9yz+L00meZsSSc5ARb5Xa
-         6R2h30ItP+BOrJAw0uRUBGvCoVlR9bQ1Wvn9j67K2yjFM/OMW26E4fi586TWxr/zEHzI
-         WVAP/a8ug10xr+ixbPCXI8BqNUOwI0Ilf/F5tvvYmw9QOluBCyKqxI1NG+JLtWBuA3EG
-         8c6fW/kXXByyNx+DMvdfESFEGHsLdHGAac/Jj1UGOw/NPRoC8JJDS4fLRhqgaqlYwEUH
-         vTDA==
-X-Gm-Message-State: AJIora8iExUlnZXDtY0Q4cnBZjwi7NXgTMjOl87v4u9hX/aGKeknE8BD
-        L7t6R/dH9ODMV//hjVr+Wy9d9mQ8kieCtw==
-X-Google-Smtp-Source: AGRyM1u7CzSJW3yJ78YxHDUNN5NfBxasYkkYQxLo01XtsDUQsdfe4dFutwGF5AJdsTMbmZUSUpn6Gw==
-X-Received: by 2002:a17:90a:e503:b0:1ec:84b2:6404 with SMTP id t3-20020a17090ae50300b001ec84b26404mr10237512pjy.169.1655644659738;
-        Sun, 19 Jun 2022 06:17:39 -0700 (PDT)
-Received: from guoguo-omen.lan ([2401:c080:1400:4da2:b701:47d5:9291:4cf9])
-        by smtp.gmail.com with ESMTPSA id g1-20020a1709026b4100b001635f7a54e8sm6771857plt.1.2022.06.19.06.17.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jun 2022 06:17:39 -0700 (PDT)
-From:   Chuanhong Guo <gch981213@gmail.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Chuanhong Guo <gch981213@gmail.com>, stable@vger.kernel.org,
-        Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        with ESMTP id S240646AbiFTJ0E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 05:26:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B4D8311819
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 02:26:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655717162;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=lQzUyzmeAtsyaXW6UqSmoRFXfQPQ9mYKJjnP3hsZX5g=;
+        b=OkUN/PdAohmDhzYe7ds3VFY6F8bmmtGhkLLjUO7srzQ1P/kMDl8kLX6XgAstsMyPLK2NGO
+        FhoXg/RZwAjfuUcmbCwwo4a8Dnvle7ZWaBpbmwBWY+WoOg562vi2BwLOKXEMoq/tkyHNes
+        Mx+CyT1XngSeDWNP2+9Ii1Oab34Navo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-471-nqlZTNHvP-e3tqIqgo05JQ-1; Mon, 20 Jun 2022 05:25:57 -0400
+X-MC-Unique: nqlZTNHvP-e3tqIqgo05JQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0033880013E;
+        Mon, 20 Jun 2022 09:25:57 +0000 (UTC)
+Received: from x1.nl (unknown [10.39.195.183])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5B7F91410F35;
+        Mon, 20 Jun 2022 09:25:53 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 2/2] ACPI: skip IRQ1 override on Redmi Book Pro 15 2022
-Date:   Sun, 19 Jun 2022 21:16:57 +0800
-Message-Id: <20220619131657.37067-3-gch981213@gmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220619131657.37067-1-gch981213@gmail.com>
-References: <20220619131657.37067-1-gch981213@gmail.com>
+        Robert Moore <robert.moore@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Andy Shevchenko <andy@kernel.org>, kai.heng.feng@canonical.com,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: [PATCH 0/4] ACPI: EC: Various cleanups
+Date:   Mon, 20 Jun 2022 11:25:42 +0200
+Message-Id: <20220620092546.8298-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Tighe Donnelly <tighe.donnelly@protonmail.com>
+Hi All,
 
-The IRQ is described as (Edge, ActiveLow, Shared, ) in ACPI DSDT and
-it's correct. The override makes the keyboard interrupt polarity
-inverted, resulting in non-functional keyboard.
-Add an entry for skipping the override.
+Here is a set of cleanups / removal of no longer necessary
+quirks (or so I believe please review carefully). These are all
+things which I noticed while working on my:
+"[RFC 0/4] ACPI[CA]: fix ECDT EC probe ordering issues" series.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Tighe Donnelly <tighe.donnelly@protonmail.com>
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
----
-Change since v1: new patch
+Regards,
 
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Hans
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index b69c229b23dd..d9d8d546f340 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -407,6 +407,13 @@ static const struct dmi_system_id irq1_edge_low_shared[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21D0"),
- 		},
- 	},
-+	{
-+		.ident = "Redmi Book Pro 15 2022",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "TIMI"),
-+			DMI_MATCH(DMI_BOARD_NAME, "TM2113"),
-+		},
-+	},
- 	{ }
- };
- 
+p.s.
+Talking about my "[RFC 0/4] ACPI[CA]: fix ECDT EC probe ordering issues"
+series, it would be great if someone can take a look at this and let me
+know if that series seems sane. Then I can convert the ACPICA changes
+from kernel patches to upstream github acpica patches and submit a
+pull-req for those at github.
+
+
+Hans de Goede (4):
+  ACPI: EC: Remove duplicate ThinkPad X1 Carbon 6th entry from DMI
+    quirks
+  ACPI: EC: Drop the EC_FLAGS_IGNORE_DSDT_GPE quirk
+  ACPI: EC: Re-use boot_ec when possible even when
+    EC_FLAGS_TRUST_DSDT_GPE is set
+  ACPI: EC: Drop unused ident initializers from dmi_system_id tables
+
+ drivers/acpi/ec.c | 140 ++++++++++++++++------------------------------
+ 1 file changed, 48 insertions(+), 92 deletions(-)
+
 -- 
-2.36.1
+2.36.0
 
