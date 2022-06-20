@@ -2,30 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35AAC5523BA
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 20:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9EBF5523E8
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 20:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241246AbiFTSTV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jun 2022 14:19:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34734 "EHLO
+        id S243854AbiFTScP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jun 2022 14:32:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238101AbiFTSTU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 14:19:20 -0400
+        with ESMTP id S242530AbiFTScO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 14:32:14 -0400
 Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F8D31CFDC;
-        Mon, 20 Jun 2022 11:19:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 290AC1D0EE;
+        Mon, 20 Jun 2022 11:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
         s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
         Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
         Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=CSF2/zODwo1Na+ao/0ihWv1boJjxEfP5yBIxXEy8mw4=; b=b5yL1nUzpSzvXEKn2wa3M2w74h
-        BpHGAASxMRN36cfz3NvkFPQaHR0WhUtB+Pihd7+3IxIpvzkuiRCLKF+rniDZJBroGBx0QXahYSvWM
-        hMUgw8Y27j2wTUizfFCWtSv+R2a4zlP2yl7rBGzIOJs43pjrgUkHwMMeOBiPL8j2eXSQ=;
+        bh=Cv/O7zb/kXAuRbf7PPZy0zV7UOelG4vjvn/esylaMkU=; b=TLIYEbwtyvNALjQ8rED/+y6w59
+        EjWAw4TXs1Lve9iUwCeKeDAsB7brqozjt80fRoVY72M5QL8zQXWIJ/tNeQxVjTK2JKFgfddLcG3VG
+        jCnoSI8RJAb1mgq1BF9CbYcYEGzu2tGaO0AZYvY3dEbvdf4GBQeMC1Ur8aK3amZuUOEw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
         (envelope-from <andrew@lunn.ch>)
-        id 1o3LzW-007dh9-U7; Mon, 20 Jun 2022 20:19:14 +0200
-Date:   Mon, 20 Jun 2022 20:19:14 +0200
+        id 1o3MC2-007dlK-PF; Mon, 20 Jun 2022 20:32:10 +0200
+Date:   Mon, 20 Jun 2022 20:32:10 +0200
 From:   Andrew Lunn <andrew@lunn.ch>
 To:     Marcin Wojtas <mw@semihalf.com>
 Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
@@ -36,15 +36,14 @@ Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
         gjb@semihalf.com, jaz@semihalf.com, tn@semihalf.com,
         Samer.El-Haj-Mahmoud@arm.com, upstream@semihalf.com
-Subject: Re: [net-next: PATCH 09/12] Documentation: ACPI: DSD: introduce DSA
- description
-Message-ID: <YrC6Ihd4I13ctL18@lunn.ch>
+Subject: Re: [net-next: PATCH 10/12] net: dsa: add ACPI support
+Message-ID: <YrC9KpEuYCgHv14l@lunn.ch>
 References: <20220620150225.1307946-1-mw@semihalf.com>
- <20220620150225.1307946-10-mw@semihalf.com>
+ <20220620150225.1307946-11-mw@semihalf.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220620150225.1307946-10-mw@semihalf.com>
+In-Reply-To: <20220620150225.1307946-11-mw@semihalf.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -54,29 +53,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 20, 2022 at 05:02:22PM +0200, Marcin Wojtas wrote:
-> Describe the Distributed Switch Architecture (DSA) - compliant
-> MDIO devices. In ACPI world they are represented as children
-> of the MDIO busses, which are responsible for their enumeration
-> based on the standard _ADR fields and description in _DSD objects
-> under device properties UUID [1].
+>  static int dsa_port_parse_dsa(struct dsa_port *dp)
+>  {
+> +	/* Cascade switch connection is not supported in ACPI world. */
+> +	if (is_acpi_node(dp->fwnode)) {
+> +		dev_warn(dp->ds->dev,
+> +			 "DSA type is not supported with ACPI, disable port #%d\n",
+> +			 dp->index);
+> +		dp->type = DSA_PORT_TYPE_UNUSED;
+> +		return 0;
+> +	}
+> +
 
-I would say this is too limiting. In the DT world, they are not
-limited to MDIO children. They can be I2C children, SPI children
-etc. There are plenty of I2C switches and SPI switches. This is
-actually something we got wrong with the first DT binding. We simply
-translated the platform data in DT, and at that time, there was only
-MDIO switches supported. That was a real blocker to I2C, SPI and MMIO
-devices until we discarded the DT binding and had a second go.
+Did you try this? I'm not sure it will work correctly. When a switch
+registers with the DSA core, the core will poke around in DT and fill
+in various bits of information, including the DSA links. Once that has
+completed, the core will look at all the switches registered so far
+and try to determine if it has a complete set, i.e, it has both ends
+of all DSA links. If it does have a complete set, it then calls the
+setup methods on each switch, and gets them configured. If it finds it
+does not have a complete setup, it does nothing, waiting for the next
+switch to register.
 
-DSA switches are just devices on a bus, any sort of bus.
+So if somebody passed an ACPI description with multiple switches, it
+is likely to call the setup methods as soon as the first switch is
+registered. And it might call those same setup methods a second time,
+when the second switch registers, on both switches. And when the third
+switch registers, it will probably call the setup methods yet again on
+all the switches....
 
-Look at Documentation/devicetree/binding/net/dsa/dsa.yaml. There is no
-reference to MDIO.
+You will have a much safer system if you return -EINVAL if you find a
+DSA link in ACPI. That should abort the switch probe.
 
-I would expect the same with ACPI. Somehow the bus enumerates and
-instantiates a device on the bus. The device then registers itself
-with the DSA core. The DSA core does not care what sort of bus it is
-on, that is the drivers problem.
-
-     Andrew
+    Andrew
