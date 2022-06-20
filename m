@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE115551446
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 11:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A21E551449
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 11:27:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240676AbiFTJ0t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jun 2022 05:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36714 "EHLO
+        id S240680AbiFTJ05 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jun 2022 05:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239143AbiFTJ0s (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 05:26:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8994313CED
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 02:26:46 -0700 (PDT)
+        with ESMTP id S240661AbiFTJ0u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 05:26:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0CF5C12D20
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 02:26:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1655717204;
+        s=mimecast20190719; t=1655717208;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CfqgNtJ2KeCjH/hSiX8HAxv2HqP2gPhDF/hKe51bOdI=;
-        b=VjzQkBMV3bV7lkBu4rbQvkVc2t560ZFc3FNGn+81JzFMudfoKCxErYt3/8ZpzvZkJxM6Oe
-        uEdti+deCD7zquiuzHckKrbP7V80SkMMtVK7WpQ+AOhJxdDRbzb8s8Z4VRwkbsLYUZA7gQ
-        R3f/rZROyzjCY42sU133wgbyu5ruJZ4=
+        bh=6Ur5MB6H6X1AzZ5Mbx517O+R9fAKbfOLE5DULzj1Aag=;
+        b=XtwWk5CDYOidY7yp0nSguhZX+CZqu59SQ/+cyBMNCIOli+AzTs9/uXVBHDBL8xEgB+imMs
+        FJZugtbMszSQBeFfZNEhHQeK8Luu7zpgyfdpLTG2/ov5YLtG/hWgpqXhZumfp4L3d9wo/v
+        VvhZAWdcjop8GHsdUz5pH30xEiYQe9A=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-673-TCwNYBfcM4S82yK35QEUIg-1; Mon, 20 Jun 2022 05:26:41 -0400
-X-MC-Unique: TCwNYBfcM4S82yK35QEUIg-1
+ us-mta-360-GemSygC3M2yXn86RfRNNsA-1; Mon, 20 Jun 2022 05:26:45 -0400
+X-MC-Unique: GemSygC3M2yXn86RfRNNsA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2BAD938005C3;
-        Mon, 20 Jun 2022 09:26:40 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A978929ABA39;
+        Mon, 20 Jun 2022 09:26:44 +0000 (UTC)
 Received: from x1.nl (unknown [10.39.195.183])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id DE89C1415109;
-        Mon, 20 Jun 2022 09:25:59 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 74FD71415109;
+        Mon, 20 Jun 2022 09:26:40 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
@@ -45,15 +45,10 @@ To:     "Rafael J . Wysocki" <rafael@kernel.org>,
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         Zhang Rui <rui.zhang@intel.com>,
         Andy Shevchenko <andy@kernel.org>, kai.heng.feng@canonical.com,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        Lv Zheng <lv.zheng@intel.com>,
-        Chris Chiu <chris.chiu@canonical.com>,
-        Jian-Hong Pan <jhp@endlessos.org>,
-        Carlo Caione <carlo@caione.org>,
-        Daniel Drake <drake@endlessm.com>
-Subject: [PATCH 2/4] ACPI: EC: Drop the EC_FLAGS_IGNORE_DSDT_GPE quirk
-Date:   Mon, 20 Jun 2022 11:25:44 +0200
-Message-Id: <20220620092546.8298-3-hdegoede@redhat.com>
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: [PATCH 3/4] ACPI: EC: Re-use boot_ec when possible even when EC_FLAGS_TRUST_DSDT_GPE is set
+Date:   Mon, 20 Jun 2022 11:25:45 +0200
+Message-Id: <20220620092546.8298-4-hdegoede@redhat.com>
 In-Reply-To: <20220620092546.8298-1-hdegoede@redhat.com>
 References: <20220620092546.8298-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -69,210 +64,57 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-It seems that these quirks are no longer necessary since
-commit 69b957c26b32 ("ACPI: EC: Fix possible issues related to EC
-initialization order"), which has fixed this in a generic manner.
-
-There are 3 commits adding DMI entries with this quirk (adding multiple
-DMI entries per commit). 2/3 commits are from before the generic fix.
-
-Which leaves commit 6306f0431914 ("ACPI: EC: Make more Asus laptops
-use ECDT _GPE"), which was committed way after the generic fix.
-But this was just due to slow upstreaming of it. This commit stems
-from Endless from 15 Aug 2017 (committed upstream 20 May 2021):
-https://github.com/endlessm/linux/pull/288
-
-The current code should work fine without this:
-1. The EC_FLAGS_IGNORE_DSDT_GPE flag is only checked in ec_parse_device(),
-   like this:
-
-	if (boot_ec && boot_ec_is_ecdt && EC_FLAGS_IGNORE_DSDT_GPE) {
-		ec->gpe = boot_ec->gpe;
-	} else {
-		/* parse GPE */
-	}
-
-2. ec_parse_device() is only called from acpi_ec_add() and
-   acpi_ec_dsdt_probe()
-
-3. acpi_ec_dsdt_probe() starts with:
-
-	if (boot_ec)
-		return;
-
-   so it only calls ec_parse_device() when boot_ec == NULL, meaning that
-   the quirk never triggers for this call. So only the call in
-   acpi_ec_add() matters.
-
-4. acpi_ec_add() does the following after the ec_parse_device() call:
+EC_FLAGS_TRUST_DSDT_GPE only does anything when the:
 
 	if (boot_ec && ec->command_addr == boot_ec->command_addr &&
-	    ec->data_addr == boot_ec->data_addr &&
-	    !EC_FLAGS_TRUST_DSDT_GPE) {
-		/*
-		 * Trust PNP0C09 namespace location rather than
-		 * ECDT ID. But trust ECDT GPE rather than _GPE
-		 * because of ASUS quirks, so do not change
-		 * boot_ec->gpe to ec->gpe.
-		 */
-		boot_ec->handle = ec->handle;
-		acpi_handle_debug(ec->handle, "duplicated.\n");
-		acpi_ec_free(ec);
-		ec = boot_ec;
-	}
+	    ec->data_addr == boot_ec->data_addr)
 
-The quirk only matters if boot_ec != NULL and EC_FLAGS_TRUST_DSDT_GPE
-is never set at the same time as EC_FLAGS_IGNORE_DSDT_GPE.
+conditions are all true. Normally acpi_ec_add() would re-use the boot_ec
+struct acpi_ec in this case. But when the EC_FLAGS_TRUST_DSDT_GPE flag was
+set the code would continue with a newly allocated (second) struct acpi_ec.
 
-That means that if the addresses match we always enter this if block and
-then only the ec->handle part of the data stored in ec by ec_parse_device()
-is used and the rest is thrown away, after which ec is made to point
-to boot_ec, at which point ec->gpe == boot_ec->gpe, so the same result
-as with the quirk set, independent of the value of the quirk.
+There is no reason to use a second struct acpi_ec if all the above checks
+match. Instead just change boot_ec->gpe to ec->gpe, when the flag is set,
+similar to how this is already one done for boot_ec->handle.
 
-Also note the comment in this block which indicates that the gpe result
-from ec_parse_device() is deliberately not taken to deal with buggy
-Asus laptops and all DMI quirks setting EC_FLAGS_IGNORE_DSDT_GPE are for
-Asus laptops.
-
-Based on the above I believe that unless on some quirked laptops
-the ECDT and DSDT EC addresses do not match we can drop the quirk.
-
-I've checked dmesg output to ensure the ECDT and DSDT EC addresses match
-for quirked models using https://linux-hardware.org hw-probe reports.
-
-I've been able to confirm that the addresses match for the following
-models this way: GL702VMK, X505BA, X505BP, X550VXK, X580VD.
-Whereas for the following models I could find any dmesg output:
-FX502VD, FX502VE, X542BA, X542BP.
-
-Note the models without dmesg all were submitted in patches with a batch
-of models and other models from the same batch checkout ok.
-
-This, combined with that all the code adding the quirks was written before
-the generic fix makes me believe that it is safe to remove this quirk now.
-
-Cc: Lv Zheng <lv.zheng@intel.com>
-Cc: Chris Chiu <chris.chiu@canonical.com>
-Cc: Jian-Hong Pan <jhp@endlessos.org>
-Cc: Carlo Caione <carlo@caione.org>
-Cc: Daniel Drake <drake@endlessm.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
-Note this has not been tested by me on any of the laptops for which
-the quirk is removed, this is purely based on my reading of the code.
+Note this has not been tested by me on the one laptop model which uses
+this quirk. This is purely based on my reading of the code.
 Please review carefully.
 ---
- drivers/acpi/ec.c | 75 ++++++-----------------------------------------
- 1 file changed, 9 insertions(+), 66 deletions(-)
+ drivers/acpi/ec.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 2efbecb342b2..b1316aba844d 100644
+index b1316aba844d..a4c16b8540e5 100644
 --- a/drivers/acpi/ec.c
 +++ b/drivers/acpi/ec.c
-@@ -180,7 +180,6 @@ static struct workqueue_struct *ec_wq;
- static struct workqueue_struct *ec_query_wq;
+@@ -1618,15 +1618,18 @@ static int acpi_ec_add(struct acpi_device *device)
+ 		}
  
- static int EC_FLAGS_CORRECT_ECDT; /* Needs ECDT port address correction */
--static int EC_FLAGS_IGNORE_DSDT_GPE; /* Needs ECDT GPE as correction setting */
- static int EC_FLAGS_TRUST_DSDT_GPE; /* Needs DSDT GPE as correction setting */
- static int EC_FLAGS_CLEAR_ON_RESUME; /* Needs acpi_ec_clear() on boot/resume */
- 
-@@ -1407,24 +1406,16 @@ ec_parse_device(acpi_handle handle, u32 Level, void *context, void **retval)
- 	if (ec->data_addr == 0 || ec->command_addr == 0)
- 		return AE_OK;
- 
--	if (boot_ec && boot_ec_is_ecdt && EC_FLAGS_IGNORE_DSDT_GPE) {
--		/*
--		 * Always inherit the GPE number setting from the ECDT
--		 * EC.
--		 */
--		ec->gpe = boot_ec->gpe;
--	} else {
--		/* Get GPE bit assignment (EC events). */
--		/* TODO: Add support for _GPE returning a package */
--		status = acpi_evaluate_integer(handle, "_GPE", NULL, &tmp);
--		if (ACPI_SUCCESS(status))
--			ec->gpe = tmp;
-+	/* Get GPE bit assignment (EC events). */
-+	/* TODO: Add support for _GPE returning a package */
-+	status = acpi_evaluate_integer(handle, "_GPE", NULL, &tmp);
-+	if (ACPI_SUCCESS(status))
-+		ec->gpe = tmp;
-+	/*
-+	 * Errors are non-fatal, allowing for ACPI Reduced Hardware
-+	 * platforms which use GpioInt instead of GPE.
-+	 */
- 
--		/*
--		 * Errors are non-fatal, allowing for ACPI Reduced Hardware
--		 * platforms which use GpioInt instead of GPE.
--		 */
--	}
- 	/* Use the global lock for all EC transactions? */
- 	tmp = 0;
- 	acpi_evaluate_integer(handle, "_GLK", NULL, &tmp);
-@@ -1863,60 +1854,12 @@ static int ec_honor_dsdt_gpe(const struct dmi_system_id *id)
- 	return 0;
- }
- 
--/*
-- * Some DSDTs contain wrong GPE setting.
-- * Asus FX502VD/VE, GL702VMK, X550VXK, X580VD
-- * https://bugzilla.kernel.org/show_bug.cgi?id=195651
-- */
--static int ec_honor_ecdt_gpe(const struct dmi_system_id *id)
--{
--	pr_debug("Detected system needing ignore DSDT GPE setting.\n");
--	EC_FLAGS_IGNORE_DSDT_GPE = 1;
--	return 0;
--}
--
- static const struct dmi_system_id ec_dmi_table[] __initconst = {
- 	{
- 	ec_correct_ecdt, "MSI MS-171F", {
- 	DMI_MATCH(DMI_SYS_VENDOR, "Micro-Star"),
- 	DMI_MATCH(DMI_PRODUCT_NAME, "MS-171F"),}, NULL},
- 	{
--	ec_honor_ecdt_gpe, "ASUS FX502VD", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "FX502VD"),}, NULL},
--	{
--	ec_honor_ecdt_gpe, "ASUS FX502VE", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "FX502VE"),}, NULL},
--	{
--	ec_honor_ecdt_gpe, "ASUS GL702VMK", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
--	{
--	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
--	{
--	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
--	{
--	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
--	{
--	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
--	{
--	ec_honor_ecdt_gpe, "ASUS X550VXK", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
--	{
--	ec_honor_ecdt_gpe, "ASUS X580VD", {
--	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--	DMI_MATCH(DMI_PRODUCT_NAME, "X580VD"),}, NULL},
--	{
- 	/* https://bugzilla.kernel.org/show_bug.cgi?id=209989 */
- 	ec_honor_dsdt_gpe, "HP Pavilion Gaming Laptop 15-cx0xxx", {
- 	DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+ 		if (boot_ec && ec->command_addr == boot_ec->command_addr &&
+-		    ec->data_addr == boot_ec->data_addr &&
+-		    !EC_FLAGS_TRUST_DSDT_GPE) {
++		    ec->data_addr == boot_ec->data_addr) {
+ 			/*
+-			 * Trust PNP0C09 namespace location rather than
+-			 * ECDT ID. But trust ECDT GPE rather than _GPE
+-			 * because of ASUS quirks, so do not change
+-			 * boot_ec->gpe to ec->gpe.
++			 * Trust PNP0C09 namespace location rather than ECDT ID.
++			 * But trust ECDT GPE rather than _GPE because of ASUS
++			 * quirks. So do not change boot_ec->gpe to ec->gpe,
++			 * except when the TRUST_DSDT_GPE quirk is set.
+ 			 */
+ 			boot_ec->handle = ec->handle;
++
++			if (EC_FLAGS_TRUST_DSDT_GPE)
++				boot_ec->gpe = ec->gpe;
++
+ 			acpi_handle_debug(ec->handle, "duplicated.\n");
+ 			acpi_ec_free(ec);
+ 			ec = boot_ec;
 -- 
 2.36.0
 
