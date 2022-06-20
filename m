@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9EED552048
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 17:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F1A355205B
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 17:20:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242843AbiFTPOq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jun 2022 11:14:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39444 "EHLO
+        id S241912AbiFTPOp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jun 2022 11:14:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242211AbiFTPMW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 11:12:22 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 037921F63C
+        with ESMTP id S243385AbiFTPMX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 11:12:23 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9901FA4D
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 08:03:00 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id g4so5342519lfv.9
         for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 08:02:59 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id d19so12221845lji.10
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 08:02:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=semihalf.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=sH5mdU0J82lSBubyPIxIw/XIt0m9sm0DajZ7R0PZmFM=;
-        b=knaJ8eJAzYF2U1LYJ1OxeeM1p3RjFGe574cRemVmlbNHTejes4i6AYL3jRMyvOtZ7v
-         1fS4SAr4Ktc0OTo4P7z+pflNDq1ID5JQ5zbdvjnjbnqUlHXsw9MlMA5FczYtmZj2sHWQ
-         O7mgMEC7mlsws04CCUl8x2lUlBCwkCGFbZFLp1jUEEl+cL/3LRPWzTOLZM9FWqk7aEMQ
-         zvdRX+UGVNE/Iodgbp8j90mjh8ubaeFxf0o2H6gHJCxY4AmfEr6aMBzLQ5gXb7C6E78K
-         noaqIpK0dNrMiLMvv2XiuoprCbOcqEbg1QjkDRvAjLjty+GuuiAGmy+wj+Yz1aug2bd9
-         TAxA==
+        bh=79HyXuMDzSUSAqm9LJDxm1QulLKFCMJuKULtDaG7pgg=;
+        b=nFzaIAZullAM5QpV7lhiewLkjFv18wWs2j2rGdYzDLGAKqfmRPytd4UVWA0Sfl8EJ2
+         9d5m4M40GMi7QHDQ9TRwYn4Z9lkJNm2cUfefT8nA9Q/zGr4agzJ1BBbVQ9jKfFyEHmtx
+         ePBznUBHD79+Z1j+mba+bqQTBIH2bJUV38tvJfn/nNjom4f3tYypl9LBWzsfCiDgjYX/
+         7p1zgdkbcrzfnDn1XpWzPxkn1j/Z1oI0UWMzZtzVwFfMLXUWB6/cXOE5cCHUSYk0sgBk
+         AWdAp5D8krh12xI1gZlvwuFmpn7/ZqcR8oTGJ9FEQf5A2tG5dpHH6vd84+ZI5slXizXb
+         dcMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=sH5mdU0J82lSBubyPIxIw/XIt0m9sm0DajZ7R0PZmFM=;
-        b=chaSr8g1G3dPbsbqDdtPk0Ln62jNhvKlERr2HQVpDZ5kSHY9zMh9CuvW4MF9xVPBOg
-         g/U8ghvfrNkk8CqTkly/x3GKzd17l0zbAy1gheACwCxneEkQtjvoayNHjtgp3MbWd7hM
-         I/Hal2v/JN5fwR+ycKtk8HRBZpL91OXbvfandE1DjGd+Qdk/2+AQz6rTbWAfH4Sfu1yN
-         RCHlKjk6HzmprIg1LbvnyvreAlza/wFCSKC4LiNsfDn2jdVq6KhmFYUEKFEVKov+nESj
-         nmsOyExUlsrU5FANRzA5vy7j9lbhiUDI4A/mdwSAu3ILsNUzshYQkFSnfjDsaCPoFarK
-         NGUQ==
-X-Gm-Message-State: AJIora/piYtfLKdVc+w5ojrRuQzD/cr9aZy4DhKlqiIYS3MFeWx3zXKm
-        7YYjK7VfoXGB9Lrx1wrSnyvuvQ==
-X-Google-Smtp-Source: AGRyM1uiyaR+g5NXDERpjkMHAfHMuJYfDGHDxYxby94uVCwaSCkyGa0OMkqKgsg6hF0M/5asgijo4A==
-X-Received: by 2002:a05:651c:4d1:b0:255:c269:da49 with SMTP id e17-20020a05651c04d100b00255c269da49mr12310504lji.54.1655737377262;
-        Mon, 20 Jun 2022 08:02:57 -0700 (PDT)
+        bh=79HyXuMDzSUSAqm9LJDxm1QulLKFCMJuKULtDaG7pgg=;
+        b=p96qNzbYvufLdZDSUQe51pyuBfTGto5ducwBJnJ9uTgV/fnxfC3YFP1N2tDXXAN/0d
+         oJz+bpYILv0YZTppkBmr1KL8A4xHdBRuTQIaxM+zM/m+lDT2xk27OZWuM7MIWpAOe+W9
+         +8vCZKNaqUMRxt3K8CvkBZgDh1G3Ek+SmE0F/NagzvLabqJRp0Sl8ScA12fvhYtmL/o5
+         yqCN7CDR2wswQYdBI3Oj6jP7uxyxSIvI1iUG6tIJMYdCn8Xz8fIZgqUKolFOwHxnyelz
+         C7C4iKmxDrgkv1WsmJYgphe2Nm+ifRj8cJl80ovYMkxG2034wGCtKIi7eRJXSg2vl43T
+         L1gg==
+X-Gm-Message-State: AJIora/NhiGwDJvrG+GIG3BaOxNMK8onYswfyfUqVcRnbthfsqklHT5c
+        DD9U0EdtxXjJA0ZIGZDrph+XiA==
+X-Google-Smtp-Source: AGRyM1sZjX433uIfDuDxIJjCxeAulm4JqpTHnUDqeXfKIxktT74nYmgA/6lU+5nPFAWsS0NTA+T+Pg==
+X-Received: by 2002:a05:6512:3c87:b0:47f:70a0:b8f2 with SMTP id h7-20020a0565123c8700b0047f70a0b8f2mr2584155lfv.407.1655737378368;
+        Mon, 20 Jun 2022 08:02:58 -0700 (PDT)
 Received: from gilgamesh.lab.semihalf.net ([83.142.187.85])
-        by smtp.gmail.com with ESMTPSA id e19-20020a05651236d300b0047f79f7758asm17564lfs.22.2022.06.20.08.02.56
+        by smtp.gmail.com with ESMTPSA id e19-20020a05651236d300b0047f79f7758asm17564lfs.22.2022.06.20.08.02.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jun 2022 08:02:56 -0700 (PDT)
+        Mon, 20 Jun 2022 08:02:58 -0700 (PDT)
 From:   Marcin Wojtas <mw@semihalf.com>
 To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         netdev@vger.kernel.org
@@ -57,9 +57,9 @@ Cc:     rafael@kernel.org, andriy.shevchenko@linux.intel.com,
         linux@armlinux.org.uk, hkallweit1@gmail.com, gjb@semihalf.com,
         mw@semihalf.com, jaz@semihalf.com, tn@semihalf.com,
         Samer.El-Haj-Mahmoud@arm.com, upstream@semihalf.com
-Subject: [net-next: PATCH 11/12] net: dsa: mv88e6xxx: switch to device_/fwnode_ APIs
-Date:   Mon, 20 Jun 2022 17:02:24 +0200
-Message-Id: <20220620150225.1307946-12-mw@semihalf.com>
+Subject: [net-next: PATCH 12/12] net: dsa: mv88e6xxx: add ACPI support
+Date:   Mon, 20 Jun 2022 17:02:25 +0200
+Message-Id: <20220620150225.1307946-13-mw@semihalf.com>
 X-Mailer: git-send-email 2.29.0
 In-Reply-To: <20220620150225.1307946-1-mw@semihalf.com>
 References: <20220620150225.1307946-1-mw@semihalf.com>
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,158 +75,91 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In order to support both ACPI and DT, modify the generic
-DSA code to use device_/fwnode_ equivalent routines.
-No functional change is introduced by this patch.
+Previous patches dropped the strict dependency on the OF_* API
+in both generic DSA subsystem and the mv88e6xxx driver.
+As a result the ACPI support can be introduced by adding
+the necessary ID's in the acpi_match_table and a two
+minor required adjustments, i.e. different mdiobus registration
+and MDIO subnode name, so to conform ACPI namespace requirements [1].
+
+[1] https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#acpi-namespace
 
 Signed-off-by: Marcin Wojtas <mw@semihalf.com>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 53 ++++++++++----------
- 1 file changed, 27 insertions(+), 26 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 25 ++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 0b49d243e00b..556defa4379d 100644
+index 556defa4379d..a74e528184aa 100644
 --- a/drivers/net/dsa/mv88e6xxx/chip.c
 +++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3278,7 +3278,7 @@ static int mv88e6xxx_setup_upstream_port(struct mv88e6xxx_chip *chip, int port)
+@@ -10,6 +10,8 @@
+  *	Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+  */
  
- static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
- {
--	struct device_node *phy_handle = NULL;
-+	struct fwnode_handle *phy_handle = NULL;
- 	struct dsa_switch *ds = chip->ds;
- 	struct dsa_port *dp;
- 	int tx_amp;
-@@ -3475,15 +3475,15 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
- 	if (chip->info->ops->serdes_set_tx_amplitude) {
- 		dp = dsa_to_port(ds, port);
- 		if (dp)
--			phy_handle = of_parse_phandle(dp->dn, "phy-handle", 0);
-+			phy_handle = fwnode_find_reference(dp->fwnode, "phy-handle", 0);
++#include <linux/acpi.h>
++#include <linux/acpi_mdio.h>
+ #include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <linux/dsa/mv88e6xxx.h>
+@@ -3913,7 +3915,10 @@ static int mv88e6xxx_mdio_register(struct mv88e6xxx_chip *chip,
+ 			goto out;
+ 	}
  
--		if (phy_handle && !of_property_read_u32(phy_handle,
--							"tx-p2p-microvolt",
--							&tx_amp))
-+		if (!IS_ERR(phy_handle) && !fwnode_property_read_u32(phy_handle,
-+								     "tx-p2p-microvolt",
-+								     &tx_amp))
- 			err = chip->info->ops->serdes_set_tx_amplitude(chip,
- 								port, tx_amp);
--		if (phy_handle) {
--			of_node_put(phy_handle);
-+		if (!IS_ERR(phy_handle)) {
-+			fwnode_handle_put(phy_handle);
- 			if (err)
- 				return err;
- 		}
-@@ -3867,10 +3867,11 @@ static int mv88e6xxx_mdio_write(struct mii_bus *bus, int phy, int reg, u16 val)
- }
- 
- static int mv88e6xxx_mdio_register(struct mv88e6xxx_chip *chip,
--				   struct device_node *np,
-+				   struct fwnode_handle *fwnode,
- 				   bool external)
- {
- 	static int index;
-+	struct device_node *np = to_of_node(fwnode);
- 	struct mv88e6xxx_mdio_bus *mdio_bus;
- 	struct mii_bus *bus;
- 	int err;
-@@ -3949,18 +3950,18 @@ static void mv88e6xxx_mdios_unregister(struct mv88e6xxx_chip *chip)
- }
- 
+-	err = of_mdiobus_register(bus, np);
++	if (is_acpi_node(fwnode))
++		err = acpi_mdiobus_register(bus, fwnode);
++	else
++		err = of_mdiobus_register(bus, np);
+ 	if (err) {
+ 		dev_err(chip->dev, "Cannot register MDIO bus (%d)\n", err);
+ 		mv88e6xxx_g2_irq_mdio_free(chip, bus);
+@@ -3952,14 +3957,19 @@ static void mv88e6xxx_mdios_unregister(struct mv88e6xxx_chip *chip)
  static int mv88e6xxx_mdios_register(struct mv88e6xxx_chip *chip,
--				    struct device_node *np)
-+				    struct fwnode_handle *fwnode)
+ 				    struct fwnode_handle *fwnode)
  {
--	struct device_node *child;
-+	struct fwnode_handle *child;
++	char mdio_node_name[] = "mdio";
+ 	struct fwnode_handle *child;
  	int err;
  
++	/* Update subnode name if operating in the ACPI world. */
++	if (is_acpi_node(fwnode))
++		strncpy(mdio_node_name, "MDIO", ACPI_NAMESEG_SIZE);
++
  	/* Always register one mdio bus for the internal/default mdio
  	 * bus. This maybe represented in the device tree, but is
  	 * optional.
  	 */
--	child = of_get_child_by_name(np, "mdio");
-+	child = fwnode_get_named_child_node(fwnode, "mdio");
+-	child = fwnode_get_named_child_node(fwnode, "mdio");
++	child = fwnode_get_named_child_node(fwnode, mdio_node_name);
  	err = mv88e6xxx_mdio_register(chip, child, false);
--	of_node_put(child);
-+	fwnode_handle_put(child);
+ 	fwnode_handle_put(child);
  	if (err)
- 		return err;
+@@ -7177,6 +7187,16 @@ static const struct of_device_id mv88e6xxx_of_match[] = {
  
-@@ -3968,13 +3969,13 @@ static int mv88e6xxx_mdios_register(struct mv88e6xxx_chip *chip,
- 	 * which say they are compatible with the external mdio
- 	 * bus.
- 	 */
--	for_each_available_child_of_node(np, child) {
--		if (of_device_is_compatible(
--			    child, "marvell,mv88e6xxx-mdio-external")) {
-+	fwnode_for_each_available_child_node(fwnode, child) {
-+		if (fwnode_property_match_string(child, "compatible",
-+						 "marvell,mv88e6xxx-mdio-external") == 0) {
- 			err = mv88e6xxx_mdio_register(chip, child, true);
- 			if (err) {
- 				mv88e6xxx_mdios_unregister(chip);
--				of_node_put(child);
-+				fwnode_handle_put(child);
- 				return err;
- 			}
- 		}
-@@ -6962,16 +6963,16 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	struct dsa_mv88e6xxx_pdata *pdata = mdiodev->dev.platform_data;
- 	const struct mv88e6xxx_info *compat_info = NULL;
- 	struct device *dev = &mdiodev->dev;
--	struct device_node *np = dev->of_node;
-+	struct fwnode_handle *fwnode = dev->fwnode;
- 	struct mv88e6xxx_chip *chip;
- 	int port;
- 	int err;
+ MODULE_DEVICE_TABLE(of, mv88e6xxx_of_match);
  
--	if (!np && !pdata)
-+	if (!fwnode && !pdata)
- 		return -EINVAL;
- 
--	if (np)
--		compat_info = of_device_get_match_data(dev);
-+	if (fwnode)
-+		compat_info = device_get_match_data(dev);
- 
- 	if (pdata) {
- 		compat_info = pdata_device_get_match_data(dev);
-@@ -7030,9 +7031,9 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	mv88e6xxx_phy_init(chip);
- 
- 	if (chip->info->ops->get_eeprom) {
--		if (np)
--			of_property_read_u32(np, "eeprom-length",
--					     &chip->eeprom_len);
-+		if (fwnode)
-+			device_property_read_u32(dev, "eeprom-length",
-+						 &chip->eeprom_len);
- 		else
- 			chip->eeprom_len = pdata->eeprom_len;
- 	}
-@@ -7043,8 +7044,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	if (err)
- 		goto out;
- 
--	if (np) {
--		chip->irq = of_irq_get(np, 0);
-+	if (fwnode) {
-+		chip->irq = fwnode_irq_get(fwnode, 0);
- 		if (chip->irq == -EPROBE_DEFER) {
- 			err = chip->irq;
- 			goto out;
-@@ -7082,7 +7083,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	if (err)
- 		goto out_g1_atu_prob_irq;
- 
--	err = mv88e6xxx_mdios_register(chip, np);
-+	err = mv88e6xxx_mdios_register(chip, fwnode);
- 	if (err)
- 		goto out_g1_vtu_prob_irq;
- 
++#ifdef CONFIG_ACPI
++static const struct acpi_device_id sdhci_mv88e6xxx_acpi_ids[] = {
++	{ .id = "MRVL0120", (kernel_ulong_t)&mv88e6xxx_table[MV88E6085]},
++	{ .id = "MRVL0121", (kernel_ulong_t)&mv88e6xxx_table[MV88E6190]},
++	{ .id = "MRVL0122", (kernel_ulong_t)&mv88e6xxx_table[MV88E6250]},
++	{}
++};
++MODULE_DEVICE_TABLE(acpi, sdhci_mv88e6xxx_acpi_ids);
++#endif
++
+ static struct mdio_driver mv88e6xxx_driver = {
+ 	.probe	= mv88e6xxx_probe,
+ 	.remove = mv88e6xxx_remove,
+@@ -7184,6 +7204,7 @@ static struct mdio_driver mv88e6xxx_driver = {
+ 	.mdiodrv.driver = {
+ 		.name = "mv88e6085",
+ 		.of_match_table = mv88e6xxx_of_match,
++		.acpi_match_table = ACPI_PTR(sdhci_mv88e6xxx_acpi_ids),
+ 		.pm = &mv88e6xxx_pm_ops,
+ 	},
+ };
 -- 
 2.29.0
 
