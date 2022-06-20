@@ -2,164 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F1A355205B
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 17:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AF315520F7
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jun 2022 17:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241912AbiFTPOp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Jun 2022 11:14:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37608 "EHLO
+        id S241855AbiFTPa4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Jun 2022 11:30:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243385AbiFTPMX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 11:12:23 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9901FA4D
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 08:03:00 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id g4so5342519lfv.9
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Jun 2022 08:02:59 -0700 (PDT)
+        with ESMTP id S237936AbiFTPaz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Jun 2022 11:30:55 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C46EC42;
+        Mon, 20 Jun 2022 08:30:55 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d13so10033850plh.13;
+        Mon, 20 Jun 2022 08:30:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=79HyXuMDzSUSAqm9LJDxm1QulLKFCMJuKULtDaG7pgg=;
-        b=nFzaIAZullAM5QpV7lhiewLkjFv18wWs2j2rGdYzDLGAKqfmRPytd4UVWA0Sfl8EJ2
-         9d5m4M40GMi7QHDQ9TRwYn4Z9lkJNm2cUfefT8nA9Q/zGr4agzJ1BBbVQ9jKfFyEHmtx
-         ePBznUBHD79+Z1j+mba+bqQTBIH2bJUV38tvJfn/nNjom4f3tYypl9LBWzsfCiDgjYX/
-         7p1zgdkbcrzfnDn1XpWzPxkn1j/Z1oI0UWMzZtzVwFfMLXUWB6/cXOE5cCHUSYk0sgBk
-         AWdAp5D8krh12xI1gZlvwuFmpn7/ZqcR8oTGJ9FEQf5A2tG5dpHH6vd84+ZI5slXizXb
-         dcMg==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=BOT86CwIpGfNhldrUrE42MrnwbNP3jQ4SNl8CEF3k+g=;
+        b=qM4h2oAN9RBKPshpp0EHn+/Xy1RQNKz4b1krco6dcGrFAgyn2k9bPwmk18Z11bIE9v
+         ZzE8lrdJ4V/TnmUys/ooGvkN+ObW/zrAa8S6aP5MGg2sQbu2elMEPWHkXyhok9DgXl0a
+         NHnsXnCKvLa0mnLm9zsuYdjbzqJYkTPTG73sPV6BNtGih2UOdAUYdh7tShQvrfbcOmlQ
+         1STg7AWbmpoPzQTMlxpKMNo5pfc/Z9nObP9mu2fCjunybQ3Zkq6YidUdNRIbhX5WeRkp
+         sILXbqsq8rgTr25J9Lk+Saoce9ccKKrJ8VEmnco3wwqIq1Q58T+HQ0Gwz8T5pdnpT28R
+         jkSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=79HyXuMDzSUSAqm9LJDxm1QulLKFCMJuKULtDaG7pgg=;
-        b=p96qNzbYvufLdZDSUQe51pyuBfTGto5ducwBJnJ9uTgV/fnxfC3YFP1N2tDXXAN/0d
-         oJz+bpYILv0YZTppkBmr1KL8A4xHdBRuTQIaxM+zM/m+lDT2xk27OZWuM7MIWpAOe+W9
-         +8vCZKNaqUMRxt3K8CvkBZgDh1G3Ek+SmE0F/NagzvLabqJRp0Sl8ScA12fvhYtmL/o5
-         yqCN7CDR2wswQYdBI3Oj6jP7uxyxSIvI1iUG6tIJMYdCn8Xz8fIZgqUKolFOwHxnyelz
-         C7C4iKmxDrgkv1WsmJYgphe2Nm+ifRj8cJl80ovYMkxG2034wGCtKIi7eRJXSg2vl43T
-         L1gg==
-X-Gm-Message-State: AJIora/NhiGwDJvrG+GIG3BaOxNMK8onYswfyfUqVcRnbthfsqklHT5c
-        DD9U0EdtxXjJA0ZIGZDrph+XiA==
-X-Google-Smtp-Source: AGRyM1sZjX433uIfDuDxIJjCxeAulm4JqpTHnUDqeXfKIxktT74nYmgA/6lU+5nPFAWsS0NTA+T+Pg==
-X-Received: by 2002:a05:6512:3c87:b0:47f:70a0:b8f2 with SMTP id h7-20020a0565123c8700b0047f70a0b8f2mr2584155lfv.407.1655737378368;
-        Mon, 20 Jun 2022 08:02:58 -0700 (PDT)
-Received: from gilgamesh.lab.semihalf.net ([83.142.187.85])
-        by smtp.gmail.com with ESMTPSA id e19-20020a05651236d300b0047f79f7758asm17564lfs.22.2022.06.20.08.02.57
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=BOT86CwIpGfNhldrUrE42MrnwbNP3jQ4SNl8CEF3k+g=;
+        b=35eHFcDYk3nsAu2h+Ir19FIeO2V/C5RO0x3YbEXXdjYqkPgvtmurhjEyJv1y6swDeP
+         Oxc9TjyNHacFx77hiHrdAcA7rEikllpiS9e+y/6acG4LVEJPtS6yFJfbl5ugYE4yozNk
+         CB7vepVPpE1EQwG4teN/oCO7mt/QvOvZfH5vzZAZj/TKTB+7z3NXmp4/XOLlOvcb9yAU
+         5Msl1ORQ+WyJVv7fzSyWGmb/off6kx4Ut1doIi1Ak57t2ZX/L/N5vJFUqvo7e1GMs1hB
+         xjaMcTKi43ObemjQk/NEB2GdjMno7M9zqQmsplBCGTEiTBBVbWvvBMVIH8lvm44q8g28
+         Jy2Q==
+X-Gm-Message-State: AJIora+qkQPHyHB8eglJvmjyS0Hgr1zUl+l6xLyNlnMR3DGTLZzBV5Dl
+        MVA5+FSajUTLPs2pgncnTu8SMQCziX/biw==
+X-Google-Smtp-Source: AGRyM1tXMbdMk0xhzMfzjCGNg7HtlWRgu9Ld/DSZdGGzQmxyUXdwpCpN1OJuM48q81avazvcDNkVzw==
+X-Received: by 2002:a17:902:7088:b0:167:78c0:e05e with SMTP id z8-20020a170902708800b0016778c0e05emr24133204plk.149.1655739054349;
+        Mon, 20 Jun 2022 08:30:54 -0700 (PDT)
+Received: from guoguo-omen.lan ([2401:c080:1400:4da2:b701:47d5:9291:4cf9])
+        by smtp.gmail.com with ESMTPSA id t63-20020a628142000000b0051c03229a2bsm2038856pfd.21.2022.06.20.08.30.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jun 2022 08:02:58 -0700 (PDT)
-From:   Marcin Wojtas <mw@semihalf.com>
-To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        lenb@kernel.org, andrew@lunn.ch, vivien.didelot@gmail.com,
-        f.fainelli@gmail.com, olteanv@gmail.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux@armlinux.org.uk, hkallweit1@gmail.com, gjb@semihalf.com,
-        mw@semihalf.com, jaz@semihalf.com, tn@semihalf.com,
-        Samer.El-Haj-Mahmoud@arm.com, upstream@semihalf.com
-Subject: [net-next: PATCH 12/12] net: dsa: mv88e6xxx: add ACPI support
-Date:   Mon, 20 Jun 2022 17:02:25 +0200
-Message-Id: <20220620150225.1307946-13-mw@semihalf.com>
-X-Mailer: git-send-email 2.29.0
-In-Reply-To: <20220620150225.1307946-1-mw@semihalf.com>
-References: <20220620150225.1307946-1-mw@semihalf.com>
+        Mon, 20 Jun 2022 08:30:53 -0700 (PDT)
+From:   Chuanhong Guo <gch981213@gmail.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     Chuanhong Guo <gch981213@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v3 0/3] Skip IRQ1 override for two laptops
+Date:   Mon, 20 Jun 2022 23:30:42 +0800
+Message-Id: <20220620153045.11129-1-gch981213@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Previous patches dropped the strict dependency on the OF_* API
-in both generic DSA subsystem and the mv88e6xxx driver.
-As a result the ACPI support can be introduced by adding
-the necessary ID's in the acpi_match_table and a two
-minor required adjustments, i.e. different mdiobus registration
-and MDIO subnode name, so to conform ACPI namespace requirements [1].
+The IRQ1 of these laptops with Ryzen 6000 and Insyde UEFI are
+active low and defined in legacy format in ACPI DSDT. The
+kernel override made their keyboard non-functional.
+This patchset skips override for them.
 
-[1] https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#acpi-namespace
+Changes since v1:
+ Match DMI_PRODUCT_NAME for ThinkBook because the board name
+ is used for other completely different Lenovo laptops.
+ Add a patch for RedmiBook
 
-Signed-off-by: Marcin Wojtas <mw@semihalf.com>
----
- drivers/net/dsa/mv88e6xxx/chip.c | 25 ++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+Changes since v2:
+ Fix alphabetical order in skip_override_table
+ Add a patch for Asus Zenbook
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 556defa4379d..a74e528184aa 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -10,6 +10,8 @@
-  *	Vivien Didelot <vivien.didelot@savoirfairelinux.com>
-  */
- 
-+#include <linux/acpi.h>
-+#include <linux/acpi_mdio.h>
- #include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/dsa/mv88e6xxx.h>
-@@ -3913,7 +3915,10 @@ static int mv88e6xxx_mdio_register(struct mv88e6xxx_chip *chip,
- 			goto out;
- 	}
- 
--	err = of_mdiobus_register(bus, np);
-+	if (is_acpi_node(fwnode))
-+		err = acpi_mdiobus_register(bus, fwnode);
-+	else
-+		err = of_mdiobus_register(bus, np);
- 	if (err) {
- 		dev_err(chip->dev, "Cannot register MDIO bus (%d)\n", err);
- 		mv88e6xxx_g2_irq_mdio_free(chip, bus);
-@@ -3952,14 +3957,19 @@ static void mv88e6xxx_mdios_unregister(struct mv88e6xxx_chip *chip)
- static int mv88e6xxx_mdios_register(struct mv88e6xxx_chip *chip,
- 				    struct fwnode_handle *fwnode)
- {
-+	char mdio_node_name[] = "mdio";
- 	struct fwnode_handle *child;
- 	int err;
- 
-+	/* Update subnode name if operating in the ACPI world. */
-+	if (is_acpi_node(fwnode))
-+		strncpy(mdio_node_name, "MDIO", ACPI_NAMESEG_SIZE);
-+
- 	/* Always register one mdio bus for the internal/default mdio
- 	 * bus. This maybe represented in the device tree, but is
- 	 * optional.
- 	 */
--	child = fwnode_get_named_child_node(fwnode, "mdio");
-+	child = fwnode_get_named_child_node(fwnode, mdio_node_name);
- 	err = mv88e6xxx_mdio_register(chip, child, false);
- 	fwnode_handle_put(child);
- 	if (err)
-@@ -7177,6 +7187,16 @@ static const struct of_device_id mv88e6xxx_of_match[] = {
- 
- MODULE_DEVICE_TABLE(of, mv88e6xxx_of_match);
- 
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id sdhci_mv88e6xxx_acpi_ids[] = {
-+	{ .id = "MRVL0120", (kernel_ulong_t)&mv88e6xxx_table[MV88E6085]},
-+	{ .id = "MRVL0121", (kernel_ulong_t)&mv88e6xxx_table[MV88E6190]},
-+	{ .id = "MRVL0122", (kernel_ulong_t)&mv88e6xxx_table[MV88E6250]},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(acpi, sdhci_mv88e6xxx_acpi_ids);
-+#endif
-+
- static struct mdio_driver mv88e6xxx_driver = {
- 	.probe	= mv88e6xxx_probe,
- 	.remove = mv88e6xxx_remove,
-@@ -7184,6 +7204,7 @@ static struct mdio_driver mv88e6xxx_driver = {
- 	.mdiodrv.driver = {
- 		.name = "mv88e6085",
- 		.of_match_table = mv88e6xxx_of_match,
-+		.acpi_match_table = ACPI_PTR(sdhci_mv88e6xxx_acpi_ids),
- 		.pm = &mv88e6xxx_pm_ops,
- 	},
- };
+Chuanhong Guo (1):
+  ACPI: skip IRQ1 override on Lenovo ThinkBook 14G4+ ARA
+
+Kent Hou Man (1):
+  ACPI: skip IRQ1 override on Asus Zenbook S 13 OLED UM5302
+
+Tighe Donnelly (1):
+  ACPI: skip IRQ1 override on Redmi Book Pro 15 2022
+
+ drivers/acpi/resource.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
 -- 
-2.29.0
+2.36.1
 
