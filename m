@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C50B8552E42
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 11:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FAF0552E64
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 11:33:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348765AbiFUJ2r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jun 2022 05:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
+        id S1348335AbiFUJdu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jun 2022 05:33:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348946AbiFUJ2Z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 05:28:25 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4820026AF2
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 02:28:21 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id y32so21340163lfa.6
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 02:28:21 -0700 (PDT)
+        with ESMTP id S1348910AbiFUJdt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 05:33:49 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66B2A25C74
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 02:33:47 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id g12so8663747ljk.11
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 02:33:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=semihalf.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=Va65CLlXT66lPiOAfwa9g+ASPcDM2MU+8pT24RRRO7k=;
-        b=fu3PlG9cjiFDFScwOu8ddGWGy5g+HqrHZe10yxTdqH078iLyUE2HKHs8FuC59gH2So
-         WY7XXtfa8HVwjJrAbMJiHsVO4ag6N85TnZqdR2nXa54ZOSeoi/oe7DGi3vRoK4mRkUrI
-         XCWgoPJvlF10a8dqge8Nxc3I81fcwUwjCC05vPyqmKy0Q7umD3STPXA69BtRZTOrlaz5
-         Phftvrz0yrSqsVEdNSl8UxNIptUQYyKKZbHGTNdDbX7MHSIf6b9IczF5CJemmhWsZFCC
-         kttCGIp2asVqs3R6/hefDfA9BUWTDy6LeTczrj2VIE+m5EpdUiRuSWzB8zGODXyEYNhB
-         Xk/w==
+        bh=eAn0mkf8cbbSldcOsHVmdulCChq1XWCHxJvyevA7Xy8=;
+        b=p4nsrDQU/HL9kiO/BSBR3lWKcRmz20yfkNdEtRFiNLVnFyObvB+2JDLTEPz7ZfSyAx
+         yb8oXPhQwE7wAUNWhTOZJq9rPKo82YQXQT1v57iBWTtjuIlUiGV3ydbeVvOpNV7FIvKf
+         uwypx613RgvnumfBL4EjeGiXKXumJD7NYUvRTFWCMTZlqmqFOvPQZB25F4VUc/BlUzkI
+         3bNO0DGxMuBeZIB2Pr8Vpxlv1ykqtMJcBaw92L+A25T5Dw2K4bZpnInem7cMn/dTNbx7
+         XJx9UovtyH/lBD5ZMglt4lEvpPjY9t9N2PL3lUOYHjaP+i0BTi9noXI9qYHbg9TRgqLw
+         BH/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Va65CLlXT66lPiOAfwa9g+ASPcDM2MU+8pT24RRRO7k=;
-        b=Amz9qP+9EU9fcGUOepQUnMcfBFKEgh6jHDmimJlwWPaA10qQRFgQ6cErKhkJ1K/Wwk
-         IGXIOGpiiY3h8N9jFob83VeJa3Gu70POdxJfoT4800icQdv8pEAml8MvJCIZXuSOpkh7
-         Jcf8PPH1/cLHPPgazMnYDZ3ceDy8kjP3Yy8omlNsTZEz3P69+TcwizO7te5Ff6oV9lsd
-         FjfhUSV4zRHH1aVo5JeJw/alEnAlyKGftPlGuM0Cr3qoc9AeRx/d6mfvCt8WawZ0MBEQ
-         8hSvnZILklNssuLEXd84Z/qR+x+VsATqS0ma8OJS0AuI+41ym8N5/V2y/Y8YYhthXQFj
-         n0sA==
-X-Gm-Message-State: AJIora+HsC8+Pn4kH9XRAPSdooVjwqavmRaRgPpVggxxwWr/zzV6YzIJ
-        KG99rYooBZegXXtXQ6U85N28KyDe28K5/7vxnQQOTQ==
-X-Google-Smtp-Source: AGRyM1tnr/7fffHg+1rH3vAPs7eTuYvzjKulUmJ/wgqA54vx/4+Zywf0KM0jO8ZNCCX++WmE4C8hdBJqBRCAAR4w1Yw=
-X-Received: by 2002:a05:6512:118f:b0:47f:6a1a:20d4 with SMTP id
- g15-20020a056512118f00b0047f6a1a20d4mr7110048lfr.428.1655803699554; Tue, 21
- Jun 2022 02:28:19 -0700 (PDT)
+        bh=eAn0mkf8cbbSldcOsHVmdulCChq1XWCHxJvyevA7Xy8=;
+        b=w5qFmSZQ3+KkgGBSzLSoORMA48C6D78sloF7xZpDWqRztuRL6zC5E5EyITqq3IoBJc
+         BUYiyqU9pOFgDZCy3jSwrtFc+5TNbDE+G7E9Dtst6ngYYMUk9/brulj2aPk0VGMaP8cR
+         uNeeP60EYlDH4Z+ScYU6mp/5yl9rjuiN9XqjSTfi1MtLfsPV7Kztokbm7uaX+vl8/HRa
+         z8pnoSDaSHGoV58IjN+nybmPf8elFEeUi5FAa8RnOlmWScIQrGgs/2lFvknBUm3YGKGf
+         g7wMcUKd4dS7ilOke3VlI4dvuLaMC5knwLDaa1uFxeycjxsxP/PLnyelApBYD9BuEjLj
+         tt0A==
+X-Gm-Message-State: AJIora+hsextpYV8RTiyXBQ0rbDydBczT/kqxfpwO/TB++1gMaraQkKc
+        rXS6aZyqZzhhGsq4bfbtOb3MK0ElQX07J1tgdobTFA==
+X-Google-Smtp-Source: AGRyM1vhoowH12J1zPskShLlXyMV98854EH+GXf+cFtJNMVCeZhPcYPK3u6iSPHLdI8a5bE/oc6mJEfEqdg9mfvyvNk=
+X-Received: by 2002:a2e:860e:0:b0:25a:6dbe:abb5 with SMTP id
+ a14-20020a2e860e000000b0025a6dbeabb5mr5361078lji.474.1655804025707; Tue, 21
+ Jun 2022 02:33:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220620150225.1307946-1-mw@semihalf.com> <20220620150225.1307946-5-mw@semihalf.com>
- <YrCxqDYg6OIdgmG1@smile.fi.intel.com> <YrCx5SkADWBzRokM@smile.fi.intel.com>
-In-Reply-To: <YrCx5SkADWBzRokM@smile.fi.intel.com>
+References: <20220620150225.1307946-1-mw@semihalf.com> <20220620150225.1307946-7-mw@semihalf.com>
+ <YrCzBzKfSl1u90lB@smile.fi.intel.com>
+In-Reply-To: <YrCzBzKfSl1u90lB@smile.fi.intel.com>
 From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Tue, 21 Jun 2022 11:28:10 +0200
-Message-ID: <CAPv3WKfVs9KVboCBgiwR_WA+aPD02Axwvb5uSgjKDsvxYepe7A@mail.gmail.com>
-Subject: Re: [net-next: PATCH 04/12] net: mvpp2: initialize port fwnode pointer
+Date:   Tue, 21 Jun 2022 11:33:36 +0200
+Message-ID: <CAPv3WKd+e5kYz7L0Fnw6u9wcPU6+r54EeEWvJzw8oCyj=m6JPg@mail.gmail.com>
+Subject: Re: [net-next: PATCH 06/12] net: mdio: introduce fwnode_mdiobus_register_device()
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
@@ -74,7 +74,7 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,34 +82,32 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pon., 20 cze 2022 o 19:44 Andy Shevchenko
+pon., 20 cze 2022 o 19:49 Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
 >
-> On Mon, Jun 20, 2022 at 08:43:05PM +0300, Andy Shevchenko wrote:
-> > On Mon, Jun 20, 2022 at 05:02:17PM +0200, Marcin Wojtas wrote:
-> > > As a preparation to switch the DSA subsystem from using
-> > > of_find_net_device_by_node() to its more generic fwnode_
-> > > equivalent, the port's device structure should be updated
-> > > with its fwnode pointer, similarly to of_node - see analogous
-> > > commit c4053ef32208 ("net: mvpp2: initialize port of_node pointer").
-> > >
-> > > This patch is required to prevent a regression before updating
-> > > the DSA API on boards that connect the mvpp2 port to switch,
-> > > such as Clearfog GT-8K or CN913x CEx7 Evaluation Board.
+> On Mon, Jun 20, 2022 at 05:02:19PM +0200, Marcin Wojtas wrote:
+> > As a preparation patch to extend MDIO capabilities in the ACPI world,
+> > introduce fwnode_mdiobus_register_device() to register non-PHY
+> > devices on the mdiobus.
 > >
-> > ...
-> >
-> > >     dev->dev.of_node =3D port_node;
-> > > +   dev->dev.fwnode =3D port_fwnode;
-> >
-> > device_set_node() ?
+> > While at it, also use the newly introduced fwnode operation in
+> > of_mdiobus_phy_device_register().
 >
-> Ah, important remark to all device_set_node() comments. It assumes that y=
-ou
-> replace _both_ assignments with _single_ call.
+> ...
+>
+> >  static int of_mdiobus_register_device(struct mii_bus *mdio,
+> >                                     struct device_node *child, u32 addr=
+)
+> >  {
+>
+> > +     return fwnode_mdiobus_register_device(mdio, of_fwnode_handle(chil=
+d), addr);
+> >  }
+>
+> Since it's static one-liner you probably may ger rid of it completely.
 >
 
-OK, will do.
+Good point, will do in v2.
 
 Thanks,
 Marcin
