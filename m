@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE663552E08
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 11:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3042552E0B
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 11:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346820AbiFUJOo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jun 2022 05:14:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57356 "EHLO
+        id S1348278AbiFUJP0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jun 2022 05:15:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231651AbiFUJOn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 05:14:43 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028F712624
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 02:14:41 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id a11so5889128ljb.5
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 02:14:40 -0700 (PDT)
+        with ESMTP id S231672AbiFUJPY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 05:15:24 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CE5B17E11
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 02:15:23 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id t24so9059155lfr.4
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 02:15:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=semihalf.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=9hW3jjf9bp01ZUcaiVpuKXB3YUlqSGpIT2U7YDux9Rg=;
-        b=Gwli9c0qw+zfBDR9Giy7/Y+52KIgrthSDWDZ+6p5zkOfFViD/gVgJOzZ8HVe65ZZZq
-         R7OXFD+kR9WkHTz83UOHgSsfDefZA9DrOOiS5rOvFoZpIxJmxbPaIzHr11KPXLfaWEvz
-         HMzCV8UJKxcvCWtKrE+Q0ie1PD8inJ71VHKvJTcg+3TxVBag9uCAep+FxnvMpwnvnsFE
-         IsUZdlSa2Z6gFvu4kcJy8KaSoEtau1sUsJE/MrIdM159J1mxXO3MkBWehVXeSDBSDeMt
-         eaEf+u405Xt7tv1EP0rXAjV74aH8Eyrwu9uNl3793ctMqtNDHqByELGkklpMDYeim9ZN
-         XLsQ==
+        bh=iBZb8QF8anbqYzHGcPDDrRLJY5xZsGwi7V0oDGBrKac=;
+        b=AQc7158zy5Ml9gDb+tE/k8bTnCfcB3WvyB862bgHd72Vg8hhgqJMbRrVW97nyoyZJB
+         Irp9HZrE24jjCKypfsOdQToRJH27bRZ4lrX48bWo93HfxWJkE17DFNq9d4w7pm3geUVU
+         44qYPnPz74iw0Fx/olfjhbE5pCrYf6tT311huGdtCX9KeZpQg7bQq45KLStWv6wCZJ7j
+         hckpI/lRVWMJp0w9Eal6XZINA7zbSBfbde67P4xSiPf3G8ARhkITEn39KzCEhiJbOCBT
+         b83krTDDF8YfTVAa4gNCCZ1PvPTzXqq67V5XdiSelWRK0MY03e1+hfo2EPNTw/Ci7qBR
+         7jsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=9hW3jjf9bp01ZUcaiVpuKXB3YUlqSGpIT2U7YDux9Rg=;
-        b=UUobXj2tAg6tfWoK1UA1Pi/1d9hjC1iGctlbDtpP5uF3ZcF6TwjXp4oXVOA9dhBA54
-         N3CPUK27VylS5OCxDTchxALLyFpHGFso+xfcVsSWUm0N6yjC7mahNiOfqYcK+CKCEz47
-         EitqcOx4xOlNDos6fOYYjIdefOXzgI+gw9IsMDEcFzfMnrUO7hMheStUJQT2RY3RmaUm
-         TdH/HI1Ei0RAEiafNruBLoK1UufKuxZLfAhq/fHpa3+PgD/XJgf/UrOU1qo1AmdP83gU
-         HX+oyRvuj7aVakzQdSLNUoyiWW8rP91QRdSreZ/7avuyv7YtGJ38GGtQBbfJdjVTY0WG
-         v8OQ==
-X-Gm-Message-State: AJIora/BMKf12Fn3u3GhhzlI3Rwn6xwQY/jI3zGMysK5YGvGTMAe+MeA
-        sz/VDGOe5UL5CLqFy2cxGHEHdcAFGFgJt09wppV/pw==
-X-Google-Smtp-Source: AGRyM1tKvJq8Yv3GhlY6sfPQBp5eChgXt4TwgRHECFq5GkHc3Tha4gNloRxZWtpPHhXNH3BWUnqfTsoUg09Z/UMHmyo=
-X-Received: by 2002:a2e:bf05:0:b0:247:b233:cfba with SMTP id
- c5-20020a2ebf05000000b00247b233cfbamr13439703ljr.131.1655802879101; Tue, 21
- Jun 2022 02:14:39 -0700 (PDT)
+        bh=iBZb8QF8anbqYzHGcPDDrRLJY5xZsGwi7V0oDGBrKac=;
+        b=pJX9gC0ohh10Gw0CqlO1nyexxdES4C4wcEPSh9dUjwpAxYL4smfHIoJ8kPJc4s3r6T
+         mZHnKK7EC3IL2lWUVvjNRNaGtS+GbaDu1AoL3tW6WFXJ3PAhmlSBCbZUFxuRsrGKwTp0
+         z5RQ1Nj2quKB7H3vvf+tbgy0FTsv5seEx38iSFZr/Deb8Kv7dEYuw+zQoYJjWRToKJo5
+         n9by/Nb3jwctZxGtyPVoaws7oY3qonBTt9wjL7phcW2qAqwvmv5EUBLHepMOgehZ/Ef/
+         dy3meQlXhMf/zeYb1PtHSSIJQJ37+pAwsz/gOESvpkFkN2aw7IspEkaJXDjNJpU8cUgg
+         iHVw==
+X-Gm-Message-State: AJIora+6uaR17Au5kNMwBRkSXJhRVdB5TCmgLu2fXx5tknHZpRHzimyJ
+        7bspBxGRDU7vS0HwVdDXpZPMPkK1waWBuJcpbRVthA==
+X-Google-Smtp-Source: AGRyM1uW8d7u8cI7kXh+CMZlVyClyT59mSUoZvq0jSTf6qOyFJEip/9qYb6o+e+gCLI+yZIYr5R/SN3olWCh1e7tyUw=
+X-Received: by 2002:a05:6512:22d3:b0:47d:a6e4:4232 with SMTP id
+ g19-20020a05651222d300b0047da6e44232mr16064548lfu.671.1655802921771; Tue, 21
+ Jun 2022 02:15:21 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220620150225.1307946-1-mw@semihalf.com> <20220620150225.1307946-12-mw@semihalf.com>
- <YrC1ymfSJ3nxWw4B@smile.fi.intel.com>
-In-Reply-To: <YrC1ymfSJ3nxWw4B@smile.fi.intel.com>
+ <YrC2oV1FiRKwir6u@smile.fi.intel.com>
+In-Reply-To: <YrC2oV1FiRKwir6u@smile.fi.intel.com>
 From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Tue, 21 Jun 2022 11:14:29 +0200
-Message-ID: <CAPv3WKcqpHfN8UnZo19nKPQMbM5hZvptD=mswvuy-8HB6p=BwQ@mail.gmail.com>
+Date:   Tue, 21 Jun 2022 11:15:12 +0200
+Message-ID: <CAPv3WKdYUZZAsF-7SzXfevexN8qzGJ0jqWRGM+522PHb0scQJg@mail.gmail.com>
 Subject: Re: [net-next: PATCH 11/12] net: dsa: mv88e6xxx: switch to
  device_/fwnode_ APIs
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
@@ -83,7 +83,7 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pon., 20 cze 2022 o 20:03 Andy Shevchenko
+pon., 20 cze 2022 o 20:04 Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
 >
 > On Mon, Jun 20, 2022 at 05:02:24PM +0200, Marcin Wojtas wrote:
@@ -93,45 +93,19 @@ pon., 20 cze 2022 o 20:03 Andy Shevchenko
 >
 > ...
 >
-> >       int err;
-> >
-> > -     if (!np && !pdata)
-> > +     if (!fwnode && !pdata)
-> >               return -EINVAL;
+> > @@ -6962,16 +6963,16 @@ static int mv88e6xxx_probe(struct mdio_device *=
+mdiodev)
+> >       struct dsa_mv88e6xxx_pdata *pdata =3D mdiodev->dev.platform_data;
+> >       const struct mv88e6xxx_info *compat_info =3D NULL;
+> >       struct device *dev =3D &mdiodev->dev;
+> > -     struct device_node *np =3D dev->of_node;
+> > +     struct fwnode_handle *fwnode =3D dev->fwnode;
 >
-> Sounds like redundant check
->
->         if (pdata)
->                 ...
->         else
->                 compat_info =3D ...
->         if (!compat_info)
->                 return -EINVAL
->
-> ?
->
-> > -     if (np)
-> > -             compat_info =3D of_device_get_match_data(dev);
-> > +     if (fwnode)
-> > +             compat_info =3D device_get_match_data(dev);
-> >
-> >       if (pdata) {
->
-> Missed 'else' even in the original code (see above)?
+> Forgot to mention: dev_fwnode() or respective device_property_ API, pleas=
+e.
 >
 
-fwnode/np is mutually exclusive with pdata, but imo nothing wrong with
-adding 'else' here or update the condition as suggested above.
+I'll update changes to use the device_property_ API.
 
 Thanks,
 Marcin
-
-
-> >               compat_info =3D pdata_device_get_match_data(dev);
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
