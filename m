@@ -2,74 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CCA7553239
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 14:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F83A553396
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 15:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350467AbiFUMim (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jun 2022 08:38:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40054 "EHLO
+        id S1351434AbiFUNeT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jun 2022 09:34:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350532AbiFUMij (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 08:38:39 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99C9D10FE8
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 05:38:38 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id i7so6561300ybe.11
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 05:38:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kCOMEdjBSgtz3/x5+tXgoigNB44uO36c23d/a03FMis=;
-        b=s/nOETh/m0hKRj70rTFyR/sB/2MFkqF2S6j4pzrBiKLTu6U6Yno0A+lKisk/Q8A3ed
-         DMIpUPnqavauoQkPPI9XSrVGCVer10lXzwgnYAQyqCll7MmvlrSZKWPJICyrL2lINYCP
-         h8k1fikjUfYynG/FVthNq55FkW+4civzhBlXAWR1ReMwWirfEDBRp3fCvn45PrWrAj7+
-         LbES9t8l2AwaUU0j74Inqoapwi7piyjqN9qU73eHblZQmGBXD4s73BZY2uYe/Zgto2Gj
-         RMN0Fmv4/HPPcKEls60r0DDs8oWvGCXY7AIXN2ZsZCgpDjnTUk1cOR6GvfUHsiOUuRVx
-         NLRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kCOMEdjBSgtz3/x5+tXgoigNB44uO36c23d/a03FMis=;
-        b=dU5USYP+n5ErtXfK8Jp7CijlVUl38tNmCfCBuohenu9QuJDB1vLPpPTTyiE6FFmqHi
-         Ge9TWM98KB/RgtYRcjv124yHUtJXOmUIUtHIyuXGvZoOh6L8rwkGNvfGDga4GJsbNmDJ
-         NAMGsRdzeRAs/WB3BPZNBz+yZMP6ily1PNWovMbHigvagIAJe5A/WLIJPDDz/bJpx/Gl
-         C2zUtRFwXWav0S2tJ511tGj9sk5xCi/uLD462ElAMfsXeoGuz6YvIIiCsCb7agubkIPU
-         8xLwuXNypDFa/CM11/cX0xGhZAqhHeiy1tdgiEBBQlQWuqETXiN6YEpbNPIPA8lwLVlf
-         JgIw==
-X-Gm-Message-State: AJIora/vHFMt/R+JogJCRsomarjTak/RFgTzZBiC6N9Z2h/rlvXNvETJ
-        shG8mPLb8Ljge3B867WZqnsHwpm12ISklPe8kiYW4A==
-X-Google-Smtp-Source: AGRyM1uosJhHpPF+vcXs/IQuCXQnRAj4/Ok53LFOFch2pVQSNrNC054peiacjcunasehRXPUFI8vkJjSEKfGGyvBtzs=
-X-Received: by 2002:a05:6902:1205:b0:669:22dc:e8ad with SMTP id
- s5-20020a056902120500b0066922dce8admr9430327ybu.371.1655815117791; Tue, 21
- Jun 2022 05:38:37 -0700 (PDT)
+        with ESMTP id S1351745AbiFUNbI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 09:31:08 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EB3941AF1F;
+        Tue, 21 Jun 2022 06:28:41 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B48F6165C;
+        Tue, 21 Jun 2022 06:28:41 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA5FB3F7D7;
+        Tue, 21 Jun 2022 06:28:38 -0700 (PDT)
+Date:   Tue, 21 Jun 2022 14:28:36 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
+        rafael@kernel.org, lenb@kernel.org, vivien.didelot@gmail.com,
+        f.fainelli@gmail.com, olteanv@gmail.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        Sudeep Holla <sudeep.holla@arm.com>, linux@armlinux.org.uk,
+        hkallweit1@gmail.com, gjb@semihalf.com, jaz@semihalf.com,
+        tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com,
+        upstream@semihalf.com
+Subject: Re: [net-next: PATCH 09/12] Documentation: ACPI: DSD: introduce DSA
+ description
+Message-ID: <20220621132836.wiyexi4y6vjeumrv@bogus>
+References: <20220620150225.1307946-1-mw@semihalf.com>
+ <20220620150225.1307946-10-mw@semihalf.com>
+ <20220621094556.5ev3nencnw7a5xwv@bogus>
+ <YrGoXXBgHvyifny3@smile.fi.intel.com>
+ <YrGqg5fHB4s+Y7wx@lunn.ch>
 MIME-Version: 1.0
-References: <20220620092546.8298-1-hdegoede@redhat.com> <20220620092546.8298-3-hdegoede@redhat.com>
- <CAD8Lp45ismm5yG2ajGH_h=BKLh6hs8yC7gy3jq1Kn1pst0AFKg@mail.gmail.com>
- <b2ad4b62-89bc-48c5-ebc3-c9d8f86aa902@redhat.com> <CAD8Lp464t0NOqR4keodsv2XXq1s_9soFDHEduHZGk1UoP5vFHA@mail.gmail.com>
- <08660caa-6c01-73e3-306d-6f85af0f5e04@redhat.com>
-In-Reply-To: <08660caa-6c01-73e3-306d-6f85af0f5e04@redhat.com>
-From:   Daniel Drake <drake@endlessos.org>
-Date:   Tue, 21 Jun 2022 20:38:27 +0800
-Message-ID: <CAD8Lp466DCY3k0piSJLLxvHXi9Jbd=mdROrnMwVDQtwZDdNMng@mail.gmail.com>
-Subject: Re: [PATCH 2/4] ACPI: EC: Drop the EC_FLAGS_IGNORE_DSDT_GPE quirk
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        devel@acpica.org, Chris Chiu <chris.chiu@canonical.com>,
-        Jian-Hong Pan <jhp@endlessos.org>,
-        Carlo Caione <carlo@caione.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YrGqg5fHB4s+Y7wx@lunn.ch>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,23 +54,65 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 21, 2022 at 4:37 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> If you look for "ACPI: EC: " in the dmesg you shoud find 2 blocks
-> of log lines like this (note the output has changed somewhat
-> overtime):
+On Tue, Jun 21, 2022 at 01:24:51PM +0200, Andrew Lunn wrote:
+> On Tue, Jun 21, 2022 at 02:15:41PM +0300, Andy Shevchenko wrote:
+> > On Tue, Jun 21, 2022 at 10:45:56AM +0100, Sudeep Holla wrote:
+> > > On Mon, Jun 20, 2022 at 05:02:22PM +0200, Marcin Wojtas wrote:
+> > > > Describe the Distributed Switch Architecture (DSA) - compliant
+> > > > MDIO devices. In ACPI world they are represented as children
+> > > > of the MDIO busses, which are responsible for their enumeration
+> > > > based on the standard _ADR fields and description in _DSD objects
+> > > > under device properties UUID [1].
+> > > > 
+> > > > [1] http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
+> > 
+> > > Why is this document part of Linux code base ?
+> > 
+> > It's fine, but your are right with your latter questions.
+> > 
+> > > How will the other OSes be aware of this ?
+> > 
+> > Should be a standard somewhere.
+> > 
+> > > I assume there was some repository to maintain such DSDs so that it
+> > > is accessible for other OSes. I am not agreeing or disagreeing on the
+> > > change itself, but I am concerned about this present in the kernel
+> > > code.
+> > 
+> > I dunno we have a such, but the closest I may imagine is MIPI standardization,
+> > that we have at least for cameras and sound.
+> > 
+> > I would suggest to go and work with MIPI for network / DSA / etc area, so
+> > everybody else will be aware of the standard.
+>
+> It is the same argument as for DT. Other OSes and bootloaders seem to
+> manage digging around in Linux for DT binding documentation. I don't
+> see why bootloaders and other OSes can not also dig around in Linux
+> for ACPI binding documentations.
+>
 
-Got it.
+Theoretically you are right. But in DT case majority of non-standard(by
+standard I am referring to the one's in Open Firmware specification) are
+in the kernel. But that is not true for ACPI. And that is the reason for
+objecting it. One of the main other OS using ACPI may not look here for
+any ACPI bindings(we may not care, but still OS neutral place is better
+for this).
 
-I was able to verify matching addresses for GL702VMK, X505BA, X505BP,
-X580VD, X542BP.
+> Ideally, somebody will submit all this for acceptance into ACPI, but
+> into somebody does, i suspect it will just remain a defacto standard
+> in Linux.
+>
 
-I also have logs for FX502VD, FX502VE and X550VX but they only log one
-set of addresses, some kernel version along the way did not log both.
+DSD is not integral part of ACPI spec, so the process is never clear.
+However there is this project[1], IIUC it is just guidance and doesn't
+include any bindings IIUC. But we need something similar here for better
+visibility and to remain OS agnostic. Even with DT, there is a strong
+desire to separate it out, but it has grown so much that it is getting
+harder to do that with every release. I was just trying to avoid getting
+into that situation.
 
-Don't have logs for X542BA.
+-- 
+Regards,
+Sudeep
 
-I think this plus the code tracing is overly convincing,
-
-Reviewed-by: Daniel Drake <drake@endlessos.org>
-
-Thanks.
+[1] https://github.com/UEFI/DSD-Guide
