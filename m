@@ -2,64 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3D9F553022
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 12:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEE5955305D
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 13:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbiFUKql (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jun 2022 06:46:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42556 "EHLO
+        id S230000AbiFULCv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jun 2022 07:02:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347838AbiFUKqZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 06:46:25 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06C22935D
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:46:23 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id d19so14921015lji.10
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:46:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Vh0naLXKfGaI/wz1sI7ad1anZ++dFGVS52fTgaAz/6E=;
-        b=HT2UAEe9XjNzlZC0Jge5wXtsGk3r7Ou0lNZHdRCJxt1CKHh0xNbVVZ2sCb/OMbCZnO
-         AhTyHfgX2ho38pqkyWYeDIozfGnxQId49Wy1P0/cwrWKuPkCasw4gf3hGwzffILNw0eg
-         4VrVBAQYEQdhGtv/WOYkndEJnIYWVrfnAHdyA8YdmtLoaCyPAGtKNoLhNBi1p45UU55h
-         3EWLdSLEauCoBx9KtoCqhjdTb+q8niKB+Fo6ZsklKdz/MYMgxY+QR05xK2GVNbmd/m1y
-         lL2IqN5ibfu4txDaMWxbybmRAbT5h8pcxgLjfHdLLMzqf1IXWq9fZZJFhm/bymYWUlMg
-         /cyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Vh0naLXKfGaI/wz1sI7ad1anZ++dFGVS52fTgaAz/6E=;
-        b=oNSUzSdug6cF+DsNq60HyeBJFMjxfEnDKiB7ZkgC3kyWi8TJZ95l4SPh+SlB1YRHSk
-         yYdn7yTxH3iaeBzHoDqcbo3OM/HlvbbQ7e9qh3oKqZu9QCRj/T6IT/dZ8n2lq+WQfQwZ
-         98bBhoPIIZAVx1Ik9/0j2jn71A/eIkVgLpCAhEKgzqOD3nf8f8kXM/LQFgJUrdApHn/L
-         LbMREXaU0riCNRrChebGUNi8GHLv6jZEhhcAvA7H2L0fDKHIT4EorSiJD/NxXo31lG/6
-         aKIZswsfg9B5alfIPQSfbsDIDygbSveIhfMMgmkGzb3IsYveplj0S9NhvYVOAEi6HFpB
-         ZlMA==
-X-Gm-Message-State: AJIora90n/4dgwwTvYrlMFh3RCgv4CU47LxzgH8SzdsHrEhySevkGWXo
-        0A5hNYYVXQ7AsJs7XLvGDq4nfVLIlWhTSHP9org4xQ==
-X-Google-Smtp-Source: AGRyM1u4pNhKRXPU7turpV43qj5j4SCI7wxYPpigMhjEiOUNKwaSVRP7sTkjHuF9/qLr0cqmYlLNjnQSFP2vzpnThbY=
-X-Received: by 2002:a2e:a58d:0:b0:25a:6348:9595 with SMTP id
- m13-20020a2ea58d000000b0025a63489595mr7729873ljp.72.1655808381943; Tue, 21
- Jun 2022 03:46:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220620150225.1307946-1-mw@semihalf.com> <YrC0oKdDSjQTgUtM@lunn.ch>
- <YrC3ZKsMQK3PYKkR@smile.fi.intel.com> <YrDAMcGg1uF9m/L+@lunn.ch>
-In-Reply-To: <YrDAMcGg1uF9m/L+@lunn.ch>
-From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Tue, 21 Jun 2022 12:46:12 +0200
-Message-ID: <CAPv3WKeeZwNAs06thrYvgXaTPA9KP-9dQZNZsYWx3UXS8LStAQ@mail.gmail.com>
-Subject: Re: [net-next: PATCH 00/12] ACPI support for DSA
-To:     Andrew Lunn <andrew@lunn.ch>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        with ESMTP id S229613AbiFULCu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 07:02:50 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BC2B2981E;
+        Tue, 21 Jun 2022 04:02:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655809370; x=1687345370;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=XV4/5tqNYqxROdwVrNcTbxKf9vrOy8Yg4VYbG25o8Rs=;
+  b=KGwRp6Xj/zpGynRaDoFIZrfYEKHcKoTquc93BakfC1rNn7koeYCt8BKD
+   T4VLirFwOM2Qmb+I++Wxb7/SMCjI2c0RdDhDjKVpAraRPTCMu5eODk+vQ
+   ofeSef6u47R5D+jzU1xud+OsV5MdRvCl4GnENIBhy4VzkcW5ckv9YSUvT
+   WL3/Hpnh5agKpR5tPeR5Y2SBZzjsDcI88S8yYVi2ZNk6t0boNQc/Ce8Py
+   RFMQnlBEKMomlDks97WYZauneYxrALj+4oc9wBrKbfM+/1z+oFrz3JNma
+   hmj5rqdwSJgtiV3Xfh/2YuEofc/qpwA1ScZTfX7LJFnToV6Ng0CgS9lzd
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10384"; a="341775201"
+X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
+   d="scan'208";a="341775201"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 04:02:49 -0700
+X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
+   d="scan'208";a="562331164"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 04:02:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1o3beb-000qxI-56;
+        Tue, 21 Jun 2022 14:02:41 +0300
+Date:   Tue, 21 Jun 2022 14:02:40 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Marcin Wojtas <mw@semihalf.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>, vivien.didelot@gmail.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        vivien.didelot@gmail.com, Florian Fainelli <f.fainelli@gmail.com>,
         Vladimir Oltean <olteanv@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
@@ -70,81 +59,50 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Grzegorz Jaszczyk <jaz@semihalf.com>,
         Tomasz Nowicki <tn@semihalf.com>,
         Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        upstream@semihalf.com, Jon Nettleton <jon@solid-run.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        upstream@semihalf.com
+Subject: Re: [net-next: PATCH 03/12] net: dsa: switch to device_/fwnode_ APIs
+Message-ID: <YrGlUPxrK4XeaT5h@smile.fi.intel.com>
+References: <20220620150225.1307946-1-mw@semihalf.com>
+ <20220620150225.1307946-4-mw@semihalf.com>
+ <YrCxUfTDmvm9zLXq@smile.fi.intel.com>
+ <CAPv3WKch9hC3ZjZE0f4JntqFDY04PUpQ1yzsgShThmhkqV01-g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPv3WKch9hC3ZjZE0f4JntqFDY04PUpQ1yzsgShThmhkqV01-g@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pon., 20 cze 2022 o 20:45 Andrew Lunn <andrew@lunn.ch> napisa=C5=82(a):
->
-> > You beat me up to this. I also was about to mention that the problem wi=
-th such
-> > conversions (like this series does) is not in the code. It's simplest p=
-art. The
-> > problem is bindings and how you get them to be a standard (at least de =
-facto).
->
-> De facto is easy. Get it merged. After that, i will simply refuse
-> anything else, the same way i and other Maintainers would refuse a
-> different DT binding.
->
-> If the ACPI committee approve and publish a binding, we will naturally
-> accept that as well. So in the end we might have two bindings. But so
-> far in this whole ACPI for networking story, i've not heard anybody
-> say they are going to submit anything for standardisation. So this
-> might be a mute point.
->
+On Tue, Jun 21, 2022 at 11:27:43AM +0200, Marcin Wojtas wrote:
+> pon., 20 cze 2022 o 19:41 Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> napisał(a):
+> > On Mon, Jun 20, 2022 at 05:02:16PM +0200, Marcin Wojtas wrote:
 
-I understand your concern and of course it's better to be on a safe
-side from the beginning. Based on the hitherto discussion under this
-patchset, I would split the question about standardization to 2
-orthogonal topics:
+...
 
-1. Relation to the bus and enumeration:
-  * As pointed out in another patch some switches can be attached to
-    SPI or I2C. In such a case this is simple - SPISerialBus /
-I2CSerialBus structures
-    in _CRS are included in the ACPI Spec. They allow to comprise more
-bus specific
-    information and the code in acpi/scan.c marks those child devices
-as to be enumerated
-    by parent bus.
-  * MDIO bus doesn't have its own _CRS macro in the Spec, on the other
-hand the _ADR
-    seems to be the only object required for proper operation - this
-was my base for
-    proposed solution in patch 06/12.
+> > >       struct device_node      *dn;
+> >
+> > What prevents us from removing this?
+> 
+> I left it to satisfy possible issues with backward compatibility - I
+> migrated mv88e6xxx, other DSA drivers still rely on of_* and may use
+> this field.
 
-2. The device description (unrelated to which bus it is attached)
-  * In Linux and other OS's there is a great amount of devices
-conforming the guidelines
-    and using only the standard device identification/configuration
-objects as per [1].
-  * Above do not contain custom items and entire information can be obtaine=
-d by
-    existing, generic ACPI accessors - those devices (e.g. NICs,
-SD/MMC controllers and
-    many others) are not explicitly mentioned in official standards.
-  * The question, also related to this DSA case - is the ACPI device()
-hierarchical
-    structure of this kind a subject for standardization for including
-in official ACPI specification?
-  * In case not, where to document it? Is Linux' Documentation enough?
-    I agree that in the moment of merge it becomes de facto standard ABI an=
-d
-    it's worth to sort it out.
+If it is so, it's a way to get into troubles of desynchronized dn and fwnode.
 
-Rafael, Len, any other ACPI expert - I would appreciate your inputs
-and clarification
-of the above. Your recommendation would be extremely helpful.
+> > > +     struct fwnode_handle    *fwnode;
 
-Best regards,
-Marcin
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
