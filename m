@@ -2,62 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B798552F8B
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 12:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D9F553022
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 12:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347757AbiFUKRc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jun 2022 06:17:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
+        id S230153AbiFUKql (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jun 2022 06:46:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347396AbiFUKRD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 06:17:03 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1428286FE
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:17:01 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id g12so8782457ljk.11
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:17:01 -0700 (PDT)
+        with ESMTP id S1347838AbiFUKqZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 06:46:25 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06C22935D
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:46:23 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id d19so14921015lji.10
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:46:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=semihalf.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=mH1INl72b4b1qyntiz79cOsU7XObcsYSsqpV5JbVlA8=;
-        b=tiDICGCN5jUEnTP8lLDEDMD9BBYNlmnqh8rSiZV+u2r33vs8pHaZTWlIWoIJNnTQa9
-         1gBofbhO+8s/85yHEPCdLZb1pFC1D1G8VKRkB/RpZ6umm/adG5HVq5x44JqQDgPYNfWU
-         ogW2cZDLbzmL7SGf5MQjrcVugAgX3G7PhvrySUo6GiOwfYz0UV0Yk2jPVF+hiOzJocBl
-         Rs/QlPxt2xoHg/qicMSWpMruz9AfuCuvUWspYjfhY9AA3lPquQS4KilGHFYDjo6dxECD
-         9Ez2uTRrBucQTVZD0pNdXmc0flfb03VviJmiGN0gPlmqZacgvrL0uUHABJrmj9n70RQw
-         Mt3w==
+        bh=Vh0naLXKfGaI/wz1sI7ad1anZ++dFGVS52fTgaAz/6E=;
+        b=HT2UAEe9XjNzlZC0Jge5wXtsGk3r7Ou0lNZHdRCJxt1CKHh0xNbVVZ2sCb/OMbCZnO
+         AhTyHfgX2ho38pqkyWYeDIozfGnxQId49Wy1P0/cwrWKuPkCasw4gf3hGwzffILNw0eg
+         4VrVBAQYEQdhGtv/WOYkndEJnIYWVrfnAHdyA8YdmtLoaCyPAGtKNoLhNBi1p45UU55h
+         3EWLdSLEauCoBx9KtoCqhjdTb+q8niKB+Fo6ZsklKdz/MYMgxY+QR05xK2GVNbmd/m1y
+         lL2IqN5ibfu4txDaMWxbybmRAbT5h8pcxgLjfHdLLMzqf1IXWq9fZZJFhm/bymYWUlMg
+         /cyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=mH1INl72b4b1qyntiz79cOsU7XObcsYSsqpV5JbVlA8=;
-        b=ng9LvsH0JeNXBMAyiekMAC9UiMOSVxEwgWH6SZ/MRAm9dSc0qD/Qeq2X9xIbcI2UfH
-         PoFGAAe7gOc2U9jqkOdVWMO45rEHaZByf4tka3g74j5fvXKu8LoGAGTG+/q7C/ERT2E9
-         uhZpRLAZf3kTK7s42x7xeplRe7xHDKwW3DBVO7W0d0RluS6uZRzYbb4WvNONVhNS0i6Q
-         EP626EZD5tiWR7QXEe+sI6XPh6FYmIpoFfoTp/bp7Ijzqo2Df8zTpknr5bON9zsdAwHJ
-         bLYF/FfqESjb6A3YMsnlx5cPd2lvyDazDtADOxorbRQV4FlRO4QY3ViSEkUx8uQ2Lz/L
-         fBlA==
-X-Gm-Message-State: AJIora8EpKWPxEPzMp48RJ+XUIEG2RLLJynYsoSjcS4roqWiiQnAssQ+
-        hEoSoRiO4VOsg7fByNjErjpdrRWQ5s1IeCe+lK90Rw==
-X-Google-Smtp-Source: AGRyM1tGUmhPrvkIfkYpDEL3yAufqvkWqPK+cyjmxnNYtmma2h6M9ydAJ6qRTzWykIeEsi7b+1m+xgVZ5gYjQ4VAi60=
-X-Received: by 2002:a2e:bf05:0:b0:247:b233:cfba with SMTP id
- c5-20020a2ebf05000000b00247b233cfbamr13569523ljr.131.1655806620230; Tue, 21
- Jun 2022 03:17:00 -0700 (PDT)
+        bh=Vh0naLXKfGaI/wz1sI7ad1anZ++dFGVS52fTgaAz/6E=;
+        b=oNSUzSdug6cF+DsNq60HyeBJFMjxfEnDKiB7ZkgC3kyWi8TJZ95l4SPh+SlB1YRHSk
+         yYdn7yTxH3iaeBzHoDqcbo3OM/HlvbbQ7e9qh3oKqZu9QCRj/T6IT/dZ8n2lq+WQfQwZ
+         98bBhoPIIZAVx1Ik9/0j2jn71A/eIkVgLpCAhEKgzqOD3nf8f8kXM/LQFgJUrdApHn/L
+         LbMREXaU0riCNRrChebGUNi8GHLv6jZEhhcAvA7H2L0fDKHIT4EorSiJD/NxXo31lG/6
+         aKIZswsfg9B5alfIPQSfbsDIDygbSveIhfMMgmkGzb3IsYveplj0S9NhvYVOAEi6HFpB
+         ZlMA==
+X-Gm-Message-State: AJIora90n/4dgwwTvYrlMFh3RCgv4CU47LxzgH8SzdsHrEhySevkGWXo
+        0A5hNYYVXQ7AsJs7XLvGDq4nfVLIlWhTSHP9org4xQ==
+X-Google-Smtp-Source: AGRyM1u4pNhKRXPU7turpV43qj5j4SCI7wxYPpigMhjEiOUNKwaSVRP7sTkjHuF9/qLr0cqmYlLNjnQSFP2vzpnThbY=
+X-Received: by 2002:a2e:a58d:0:b0:25a:6348:9595 with SMTP id
+ m13-20020a2ea58d000000b0025a63489595mr7729873ljp.72.1655808381943; Tue, 21
+ Jun 2022 03:46:21 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220620150225.1307946-1-mw@semihalf.com> <YrC0oKdDSjQTgUtM@lunn.ch>
-In-Reply-To: <YrC0oKdDSjQTgUtM@lunn.ch>
+ <YrC3ZKsMQK3PYKkR@smile.fi.intel.com> <YrDAMcGg1uF9m/L+@lunn.ch>
+In-Reply-To: <YrDAMcGg1uF9m/L+@lunn.ch>
 From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Tue, 21 Jun 2022 12:16:51 +0200
-Message-ID: <CAPv3WKfVuWdhtpsMBnQCZK2yLzic1DPa2ibgn3DM1JcgYmo9hg@mail.gmail.com>
+Date:   Tue, 21 Jun 2022 12:46:12 +0200
+Message-ID: <CAPv3WKeeZwNAs06thrYvgXaTPA9KP-9dQZNZsYWx3UXS8LStAQ@mail.gmail.com>
 Subject: Re: [net-next: PATCH 00/12] ACPI support for DSA
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
+To:     Andrew Lunn <andrew@lunn.ch>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Len Brown <lenb@kernel.org>, vivien.didelot@gmail.com,
+        Len Brown <lenb@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>, vivien.didelot@gmail.com,
         Florian Fainelli <f.fainelli@gmail.com>,
         Vladimir Oltean <olteanv@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
@@ -69,7 +70,7 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Grzegorz Jaszczyk <jaz@semihalf.com>,
         Tomasz Nowicki <tn@semihalf.com>,
         Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        upstream@semihalf.com
+        upstream@semihalf.com, Jon Nettleton <jon@solid-run.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -82,86 +83,68 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pon., 20 cze 2022 o 19:56 Andrew Lunn <andrew@lunn.ch> napisa=C5=82(a):
+pon., 20 cze 2022 o 20:45 Andrew Lunn <andrew@lunn.ch> napisa=C5=82(a):
 >
-> On Mon, Jun 20, 2022 at 05:02:13PM +0200, Marcin Wojtas wrote:
-> > Hi!
-> >
-> > This patchset introduces the support for DSA in ACPI world. A couple of
-> > words about the background and motivation behind those changes:
-> >
-> > The DSA code is strictly dependent on the Device Tree and Open Firmware
-> > (of_*) interface, both in the drivers and the common high-level net/dsa=
- API.
-> > The only alternative is to pass the information about the topology via
-> > platform data - a legacy approach used by older systems that compiled t=
-he
-> > board description into the kernel.
+> > You beat me up to this. I also was about to mention that the problem wi=
+th such
+> > conversions (like this series does) is not in the code. It's simplest p=
+art. The
+> > problem is bindings and how you get them to be a standard (at least de =
+facto).
 >
-> Not true. There are deployed x86 systems which do this, and they are
-> fully up to date, not legacy. There are however limitations in what
-> you can do. So please drop this wording.
+> De facto is easy. Get it merged. After that, i will simply refuse
+> anything else, the same way i and other Maintainers would refuse a
+> different DT binding.
 >
-
-Ok, thanks for clarification, agree for rewording. Afair pdata was a
-legacy derived from the Orion/Dove times, but indeed it can be used in
-the new systems that lack other switch description.
-
-> > The above constraint is problematic for the embedded devices based e.g.=
- on
-> > x86_64 SoCs, which are described by ACPI tables - to use DSA, some tric=
-ks
-> > and workarounds have to be applied.
->
-> It would be good to describe the limitations. As i said, there are x86
-> systems running with marvell 6390 switches.
-
-I'm aware of that and even saw some x86_64 + Marvell switch
-contemporary examples of how lack of DT in system was worked around:
-- out of tree updates to the module code
-- keep small DT blob on the system storage, from where the mv88e6xxx
-Those could be poor-coding / anecdotic showcases. I'd be happy to
-learn if there is a proper and recommended way, how to do it properly.
-
->
-> > It turned out that without much hassle it is possible to describe
-> > DSA-compliant switches as child devices of the MDIO busses, which are
-> > responsible for their enumeration based on the standard _ADR fields and
-> > description in _DSD objects under 'device properties' UUID [1].
->
-> No surprises there. That is how the DT binding works. And the current
-> ACPI concept is basically DT in different words. Maybe the more
-> important question is, is rewording DT in ACPI the correct approach,
-> or should you bo doing a more native ACPI implementation? I cannot
-> answer that, you need to ask the ACPI maintainers.
-
-This is why I added linux-acpi list and the ACPI Maintainers to discuss
-
->
-> > Note that for now cascade topology remains unsupported in ACPI world
-> > (based on "dsa" label and "link" property values). It seems to be feasi=
-ble,
-> > but would extend this patchset due to necessity of of_phandle_iterator
-> > migration to fwnode_. Leave it as a possible future step.
->
-> We really do need to ensure this is possible. You are setting an ABI
-> here, which everybody else in the ACPI world needs to follow. Cascaded
-> switches is fundamental to DSA, it is the D in DSA. So i would prefer
-> that you at least define and document the binding for D in DSA and get
-> it sanity checked by the ACPI people.
+> If the ACPI committee approve and publish a binding, we will naturally
+> accept that as well. So in the end we might have two bindings. But so
+> far in this whole ACPI for networking story, i've not heard anybody
+> say they are going to submit anything for standardisation. So this
+> might be a mute point.
 >
 
-I'm aware of the "D" importance, just kept it aside for now due to
-lack of access to relevant HW and willing to discuss the overall
-approach first.
+I understand your concern and of course it's better to be on a safe
+side from the beginning. Based on the hitherto discussion under this
+patchset, I would split the question about standardization to 2
+orthogonal topics:
 
-WRT the technical side: multiple-phandle property is for sure
-supported in _DSD, so the most straightforward would be to follow that
-and simply migrate to fwnode_. The thing is in arm64 it's not widely
-used and (testing that with ACPI is making it even harder).  There is
-also an alternative brought by Andy - definitely a thing to discuss
-further. I think we seem to have a quorum for that among recipents of
-this thread.
+1. Relation to the bus and enumeration:
+  * As pointed out in another patch some switches can be attached to
+    SPI or I2C. In such a case this is simple - SPISerialBus /
+I2CSerialBus structures
+    in _CRS are included in the ACPI Spec. They allow to comprise more
+bus specific
+    information and the code in acpi/scan.c marks those child devices
+as to be enumerated
+    by parent bus.
+  * MDIO bus doesn't have its own _CRS macro in the Spec, on the other
+hand the _ADR
+    seems to be the only object required for proper operation - this
+was my base for
+    proposed solution in patch 06/12.
 
-Thanks,
+2. The device description (unrelated to which bus it is attached)
+  * In Linux and other OS's there is a great amount of devices
+conforming the guidelines
+    and using only the standard device identification/configuration
+objects as per [1].
+  * Above do not contain custom items and entire information can be obtaine=
+d by
+    existing, generic ACPI accessors - those devices (e.g. NICs,
+SD/MMC controllers and
+    many others) are not explicitly mentioned in official standards.
+  * The question, also related to this DSA case - is the ACPI device()
+hierarchical
+    structure of this kind a subject for standardization for including
+in official ACPI specification?
+  * In case not, where to document it? Is Linux' Documentation enough?
+    I agree that in the moment of merge it becomes de facto standard ABI an=
+d
+    it's worth to sort it out.
+
+Rafael, Len, any other ACPI expert - I would appreciate your inputs
+and clarification
+of the above. Your recommendation would be extremely helpful.
+
+Best regards,
 Marcin
