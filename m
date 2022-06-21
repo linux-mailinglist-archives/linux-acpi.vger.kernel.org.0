@@ -2,142 +2,219 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57AD4552F66
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 12:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79606552F69
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 12:06:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348539AbiFUKDB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jun 2022 06:03:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43048 "EHLO
+        id S229513AbiFUKGy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jun 2022 06:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346969AbiFUKDA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 06:03:00 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5E2AE29
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:02:57 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id s21so10926764lfs.13
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=WgpvJ+ZYQ9wNJ1RH7x/Iyee2F28bg23N2XRimN8MYRQ=;
-        b=ktPF7cOnTQ+f5ss8vA4ne+IqJ1N2aK8YJDV120+3TE5Y/PumvHgTI9YFgKCc/emtfo
-         Rpk77hxnFVp2OoD6JZTZahD5WNhRB58jXTzOyhiGI26jAuV0LO2rsYzX++z/fM1OTXPe
-         RvxfAcSAdUUJr28uLmAby0mBoPAvpNkCR/jGF056uSrC9GxTDf84J4UvIMjPZ/z/OVKr
-         YDXRK3FKeW9eCGLazvBoG9I5pbF0iliNKlnaV6bPxaVInkUTftHN9losZCQKB5WVxwz0
-         CEByZvkr8RrFrC80CCL3NKulB9MQXNa9Lh31KJaecljsfW2TK0XIlIiHubuZfpeb4y2v
-         U5ng==
+        with ESMTP id S229929AbiFUKGx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 06:06:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BF39A27FD1
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:06:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655806011;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OVKCPH4a0JKLpBoajp+D/luYrEgaQCvDF1hMTvEYmdY=;
+        b=H0aIGblHMc0XLmSV4GHkuVcuYXd9Sp3Z10GF5/t/D6OgW13FpUaeMf/cEN7TPWHWY3HgqV
+        2/Rabvqb8J/O96EVDHKmy7gW1ubyhha3YxSrY4qP1/CWzHVmJ6rF7iz7lf8G/nhHh31mHr
+        iyMcSCIcgOE6W5Yey7FK4fa+KfKD/wM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-342-r4Lqgr7QO9GAz0_Fv1-lLA-1; Tue, 21 Jun 2022 06:06:50 -0400
+X-MC-Unique: r4Lqgr7QO9GAz0_Fv1-lLA-1
+Received: by mail-ej1-f69.google.com with SMTP id q5-20020a17090676c500b00704ffb95131so4603238ejn.8
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 03:06:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=WgpvJ+ZYQ9wNJ1RH7x/Iyee2F28bg23N2XRimN8MYRQ=;
-        b=bYwAoOF2B9j9eARf4yPJkHGVyHHQlpv3IYFXSnn9G6KQk1birUgnd0E0bte8cx/BBP
-         wj5+cJfrPGA0gpW/KqwKFKB+ok6u+wycpB9TAqAJSC695vJGz5QmW5UunrBah1XNIu80
-         AgfPlMJGo9Ieo+NHFCqR9IUcwQeXoNYPXep/zvHpxD94x0btkuUvHeRjdB3ljdLLMKg+
-         jcnryDZOgGRBo+dP740wI9wVz8ZJUUXHAophW+GS88p2cwnGln8g9dNkE0MIu2raclOn
-         ZtXZ2HH2yPVq8zjHYm+vjVyaROlI7j1pMPmFVZ8D/7R3rJqVE4tgC6tZAMLjpO2yBC7Q
-         xetA==
-X-Gm-Message-State: AJIora8N0mUFkI19NcIrVTYVTcmkPvaaMsnEtZhEpKyOLlLb7vSakRw0
-        BeauIvwSmS/9o2eEqr0FMna+WlB9p6F2LkhqOu5aaw==
-X-Google-Smtp-Source: AGRyM1vJyn4HX+l1jRaEx/IuJ8VvUq21x67APPtICLlcI6h1PNZNhnGzvCIIh/0z7vZgyTr7dsdpoFugsC0f3Mg2usE=
-X-Received: by 2002:a05:6512:118f:b0:47f:6a1a:20d4 with SMTP id
- g15-20020a056512118f00b0047f6a1a20d4mr7197196lfr.428.1655805776035; Tue, 21
- Jun 2022 03:02:56 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=OVKCPH4a0JKLpBoajp+D/luYrEgaQCvDF1hMTvEYmdY=;
+        b=y749s/OfQHO26aLKSlH5uf+Pki7Q0cu3hRvWHOgkyVqx3eZVeSQLCGqbhe8w5EI4hw
+         kp7bm+Syk4KD0PypCAPcKzroAjzseegpYoB3h+HJE1FUREkh820FOXJB5gu7O86CLe7z
+         eMeI7KSYgCSUEq/jCGHGMdiw1GIxMvz180RGJQ8GSXO1oPitF5phKZMnGi4zE+MXt4Gy
+         V4STD5PhBrEC2KhdNZ3T0QBNn+31Wwj8L+POqeXaqtVcnDBFt8z8jczupK8zmPNqgtUS
+         xnYTHn8CwJuXLMNGWdOaNDK7a2mhl+vyQnmfLimX3HhpBPLIwewnlpOy1Q7DW89JASE7
+         9aoQ==
+X-Gm-Message-State: AJIora91U3uXVZKdkZPZCVPMebRAjzQ5jm7woRa6rOSNPNyHJalOEx56
+        lasXu0+9lD3YMQJ20/wjDW6N2nlC/a1y4MKuVmgroOfmN43a0kYlbgMY5TasF+/KyzQhcHbzE4Q
+        dkzQ01ZfcdbDqtQMS9Gsrzg==
+X-Received: by 2002:a17:907:7e90:b0:704:b67d:623e with SMTP id qb16-20020a1709077e9000b00704b67d623emr24830597ejc.634.1655806009495;
+        Tue, 21 Jun 2022 03:06:49 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1vfDU5HBc6eg5PVLcqUujSoxltFjtYrZOrHgADfRD8wTvWQQMXNdkhuwCq1OBqcEKcR1dzWmQ==
+X-Received: by 2002:a17:907:7e90:b0:704:b67d:623e with SMTP id qb16-20020a1709077e9000b00704b67d623emr24830566ejc.634.1655806009205;
+        Tue, 21 Jun 2022 03:06:49 -0700 (PDT)
+Received: from [10.1.0.34] ([31.137.219.240])
+        by smtp.gmail.com with ESMTPSA id d13-20020a170906304d00b00704757b1debsm7329217ejd.9.2022.06.21.03.06.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jun 2022 03:06:48 -0700 (PDT)
+Message-ID: <7a9bec36-b699-4a5f-ba79-36806f3d36b5@redhat.com>
+Date:   Tue, 21 Jun 2022 12:06:45 +0200
 MIME-Version: 1.0
-References: <20220620150225.1307946-1-mw@semihalf.com> <YrCsgIxOmXQcjy+B@smile.fi.intel.com>
-In-Reply-To: <YrCsgIxOmXQcjy+B@smile.fi.intel.com>
-From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Tue, 21 Jun 2022 12:02:46 +0200
-Message-ID: <CAPv3WKdJ_zoraG=gpOOSWHJcoMTKkkH8=N21aXX2RrusjWWD9g@mail.gmail.com>
-Subject: Re: [net-next: PATCH 00/12] ACPI support for DSA
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        vivien.didelot@gmail.com, Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Grzegorz Bernacki <gjb@semihalf.com>,
-        Grzegorz Jaszczyk <jaz@semihalf.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        upstream@semihalf.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 01/14] ACPI: video: Add a native function parameter to
+ acpi_video_get_backlight_type()
+Content-Language: en-US
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+References: <20220517152331.16217-1-hdegoede@redhat.com>
+ <20220517152331.16217-2-hdegoede@redhat.com> <87y1yzdxtk.fsf@intel.com>
+ <dc30ddc2-b00e-234e-5ec3-b1ea79c74082@redhat.com> <87pmk9dhe1.fsf@intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <87pmk9dhe1.fsf@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pon., 20 cze 2022 o 19:21 Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
->
-> On Mon, Jun 20, 2022 at 05:02:13PM +0200, Marcin Wojtas wrote:
-> > Hi!
-> >
-> > This patchset introduces the support for DSA in ACPI world. A couple of
-> > words about the background and motivation behind those changes:
-> >
-> > The DSA code is strictly dependent on the Device Tree and Open Firmware
-> > (of_*) interface, both in the drivers and the common high-level net/dsa=
- API.
-> > The only alternative is to pass the information about the topology via
-> > platform data - a legacy approach used by older systems that compiled t=
-he
-> > board description into the kernel.
-> >
-> > The above constraint is problematic for the embedded devices based e.g.=
- on
-> > x86_64 SoCs, which are described by ACPI tables - to use DSA, some tric=
-ks
-> > and workarounds have to be applied. Addition of switch description to
-> > DSDT/SSDT tables would help to solve many similar cases and use unmodif=
-ied
-> > kernel modules. It also enables this feature for ARM64 ACPI users.
-> >
-> > The key enablements allowing for adding ACPI support for DSA in Linux w=
-ere
-> > NIC drivers, MDIO, PHY, and phylink modifications =E2=80=93 the latter =
-three merged
-> > in 2021. I thought it would be worth to experiment with DSA, which seem=
-ed
-> > to be a natural follow-up challenge.
-> >
-> > It turned out that without much hassle it is possible to describe
-> > DSA-compliant switches as child devices of the MDIO busses, which are
-> > responsible for their enumeration based on the standard _ADR fields and
-> > description in _DSD objects under 'device properties' UUID [1].
-> > The vast majority of required changes were simple of_* to fwnode_*
-> > transition, as the DT and ACPI topolgies are analogous, except for
-> > 'ports' and 'mdio' subnodes naming, as they don't conform ACPI
-> > namespace constraints [2].
->
-> ...
->
-> > Note that for now cascade topology remains unsupported in ACPI world
-> > (based on "dsa" label and "link" property values). It seems to be feasi=
-ble,
-> > but would extend this patchset due to necessity of of_phandle_iterator
-> > migration to fwnode_. Leave it as a possible future step.
->
-> Wondering if this can be done using fwnode graph.
->
+Hi,
 
-Probably yes. It's a general question whether to follow iterating over
-phandles pointed by properties, like DT with a minimal code change or
-do something completely different.
+On 5/19/22 11:02, Jani Nikula wrote:
+> On Wed, 18 May 2022, Hans de Goede <hdegoede@redhat.com> wrote:
+>> Hi,
+>>
+>> On 5/18/22 10:55, Jani Nikula wrote:
+>>> On Tue, 17 May 2022, Hans de Goede <hdegoede@redhat.com> wrote:
+>>>> ATM on x86 laptops where we want userspace to use the acpi_video backlight
+>>>> device we often register both the GPU's native backlight device and
+>>>> acpi_video's firmware acpi_video# backlight device. This relies on
+>>>> userspace preferring firmware type backlight devices over native ones, but
+>>>> registering 2 backlight devices for a single display really is undesirable.
+>>>>
+>>>> On x86 laptops where the native GPU backlight device should be used,
+>>>> the registering of other backlight devices is avoided by their drivers
+>>>> using acpi_video_get_backlight_type() and only registering their backlight
+>>>> if the return value matches their type.
+>>>>
+>>>> acpi_video_get_backlight_type() uses
+>>>> backlight_device_get_by_type(BACKLIGHT_RAW) to determine if a native
+>>>> driver is available and will never return native if this returns
+>>>> false. This means that the GPU's native backlight registering code
+>>>> cannot just call acpi_video_get_backlight_type() to determine if it
+>>>> should register its backlight, since acpi_video_get_backlight_type() will
+>>>> never return native until the native backlight has already registered.
+>>>>
+>>>> To fix this add a native function parameter to
+>>>> acpi_video_get_backlight_type(), which when set to true will make
+>>>> acpi_video_get_backlight_type() behave as if a native backlight has
+>>>> already been registered.
+> 
+> Regarding the question below, this is the part that throws me off.
+> 
+>>>>
+>>>> Note that all current callers are updated to pass false for the new
+>>>> parameter, so this change in itself causes no functional changes.
+>>>
+>>>
+>>>> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+>>>> index becc198e4c22..0a06f0edd298 100644
+>>>> --- a/drivers/acpi/video_detect.c
+>>>> +++ b/drivers/acpi/video_detect.c
+>>>> @@ -17,12 +17,14 @@
+>>>>   * Otherwise vendor specific drivers like thinkpad_acpi, asus-laptop,
+>>>>   * sony_acpi,... can take care about backlight brightness.
+>>>>   *
+>>>> - * Backlight drivers can use acpi_video_get_backlight_type() to determine
+>>>> - * which driver should handle the backlight.
+>>>> + * Backlight drivers can use acpi_video_get_backlight_type() to determine which
+>>>> + * driver should handle the backlight. RAW/GPU-driver backlight drivers must
+>>>> + * pass true for the native function argument, other drivers must pass false.
+>>>>   *
+>>>>   * If CONFIG_ACPI_VIDEO is neither set as "compiled in" (y) nor as a module (m)
+>>>>   * this file will not be compiled and acpi_video_get_backlight_type() will
+>>>> - * always return acpi_backlight_vendor.
+>>>> + * return acpi_backlight_native when its native argument is true and
+>>>> + * acpi_backlight_vendor when it is false.
+>>>>   */
+>>>
+>>> Frankly, I think the boolean native parameter here, and at the call
+>>> sites, is confusing, and the slightly different explanations in the
+>>> commit message and comment here aren't helping.
+>>
+>> Can you elaborate the "slightly different explanations in the
+>> commit message and comment" part a bit (so that I can fix this) ?
+>>
+>>> I suggest adding a separate function that the native backlight drivers
+>>> should use. I think it's more obvious all around, and easier to document
+>>> too.
+>>
+>> Code wise I think this would mean renaming the original and
+>> then adding 2 wrappers, but that is fine with me. I've no real
+>> preference either way and I'm happy with adding a new variant of
+>> acpi_video_get_backlight_type() for the native backlight drivers
+>> any suggestion for a name ?
+> 
+> Alternatively, do the native backlight drivers have any need for the
+> actual backlight type information from acpi? They only need to be able
+> to ask if they should register themselves, right?
+> 
+> I understand this sounds like bikeshedding, but I'm trying to avoid
+> duplicating the conditions in the drivers where a single predicate
+> function call could be sufficient, and the complexity could be hidden in
+> acpi.
+> 
+> 	if (!acpi_video_backlight_use_native())
+> 		return;
 
-Best regards,
-Marcin
+acpi_video_backlight_use_native() sounds good, I like I will change
+this for v2. This also removes churn in all the other
+acpi_video_get_backlight_type() callers.
+
+> Perhaps all the drivers/platform/x86/* backlight drivers could use:
+> 
+> 	if (acpi_video_backlight_use_vendor())
+> 		...
+
+Hmm, as part of the ractoring there also will be new apple_gmux
+and nvidia_wmi_ec types. I'm not sure about adding seperate functions
+for all of those vs get_type() != foo. I like get_type != foo because
+it makes clear that there will also be another caller somewhere
+where get_type == foo and that that one will rbe the one which
+actually gets to register its backlight.
+
+> You can still use the native parameter etc. internally, but just hide
+> the details from everyone else, and, hopefully, make it harder for them
+> to do silly things?
+
+Ack.
+
+Regards,
+
+Hans
+
