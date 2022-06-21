@@ -2,128 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1000A552CB5
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 10:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A883E552D27
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 10:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348108AbiFUIU6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jun 2022 04:20:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39328 "EHLO
+        id S1345537AbiFUIh1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jun 2022 04:37:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348367AbiFUITN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 04:19:13 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9223D201A9;
-        Tue, 21 Jun 2022 01:19:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655799552; x=1687335552;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=VnOb25EE+Xbwm3fJVJkXzX3ptStChGTjWuHiXzYZZDY=;
-  b=VUctaRUxW05Wr3yf71nMshUEFI1tnrCjBzFvbbt/w0TuYf1HNHvdilvY
-   sj7UFAK4+hM0NS7taMPGo+iwCE9jDZ3joU8rGF18G2rMD6nbsgAFMQYdV
-   fffh0HdKQreTBaZzagicsRnxPZcyXGKI/EhzE4tNICrkwQcHD6+sMzHbU
-   4pDa1+OJu74nxt8QNRXr9Zcj6SbsuwB2Rhioy9ausDjPJeUGDD68yMHta
-   fGC9sFB3VHVB0tzfbyUZ1NtVbnNLN5TZrY+l6KBzMbR2WA5t72uvCUjNB
-   a9T/QPX8CNaMnavgs4P24HM81NzX61F0GGq2oI+m97uIlkC+cAuiAsMjs
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10384"; a="263094907"
-X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
-   d="scan'208";a="263094907"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 01:19:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
-   d="scan'208";a="676894865"
-Received: from lkp-server01.sh.intel.com (HELO e0735e231192) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 21 Jun 2022 01:19:09 -0700
-Received: from kbuild by e0735e231192 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o3Z6L-00004d-1e;
-        Tue, 21 Jun 2022 08:19:09 +0000
-Date:   Tue, 21 Jun 2022 16:18:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [rafael-pm:bleeding-edge 20/24] drivers/acpi/scan.c:2449:5: warning:
- no previous prototype for function 'acpi_bus_trim_one'
-Message-ID: <202206211629.ncqadywd-lkp@intel.com>
+        with ESMTP id S240499AbiFUIh1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 04:37:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 314A524F24
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 01:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655800645;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=z3bclGG1Xinz1sqUkW5ID2LaEL91l9vsEJSfAbwVsFA=;
+        b=HGNTKvtRnbd6FDxZpKKH3rJxZMJMH6eAx8/2Qp9FpXnP8ReKo0LdvuedKjuI0hI23zFr/X
+        ORtAElPy0sAmxrCS3huELGe8nhhYKWJ4o94309Q1vHLasf0dyJaNDPrYu/DxUIugDguxdR
+        0TkbVH5NhObvK95w5dsJBlGv9zp9I50=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-529-4A-fSQxqPVqKbUx3xnh53w-1; Tue, 21 Jun 2022 04:37:23 -0400
+X-MC-Unique: 4A-fSQxqPVqKbUx3xnh53w-1
+Received: by mail-ed1-f70.google.com with SMTP id s15-20020a056402520f00b004327f126170so10467230edd.7
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jun 2022 01:37:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=z3bclGG1Xinz1sqUkW5ID2LaEL91l9vsEJSfAbwVsFA=;
+        b=b6k6Q+9c6NbnVQhO1qpK6wT1eRgQcqU5Vy3TjEWrqtoTVQRSHsCy83FKa0eqou96b7
+         hjffe/aVrsPs7nxtydlrx660/8Z9V+so++h0YEFN/cqGGvGrEBWvsCVtEO1MjrMqV8w/
+         eJ9IHLiWRIvD7BvmLqJVDwtZzUL9QGjxIzhPNxbu5L6V9dTaoojwq0K0wc0Ojd8oW+zb
+         b+VWgjy0k2svwYQTDkxurIbHy3Jthx4pH9ZZhA+mjEnWkIglEjeDeIDJaRQtyRcCiB8h
+         FY4FmW/uFYSR4FFKq1jboAJL583VbTWxBOc9t+0NFsEVToi6uGBMhAraUbA3sxF/LrLC
+         2Qmg==
+X-Gm-Message-State: AJIora+VJOaHFtkmFp7ZF/b79jduvSY0NscmmcvtBbY5Yi/8ulicl4FX
+        wMZS6IwEiOn5Vaa9WSPOWXVTyoWixZtrcYpMcLfNWgjCds2UxCn3udQMVsk5JxiXsYQrNtTZwub
+        o1gwb8g6caZaafRVLp2nKyQ==
+X-Received: by 2002:a17:907:9719:b0:722:e6cf:128 with SMTP id jg25-20020a170907971900b00722e6cf0128mr659521ejc.98.1655800642463;
+        Tue, 21 Jun 2022 01:37:22 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1tiwA6r9scfdOipaRasUuUq6yUH4JY0eQxriJLTxoqFooJuLQR8l4NCdUEjxcB+QZVofyQZFg==
+X-Received: by 2002:a17:907:9719:b0:722:e6cf:128 with SMTP id jg25-20020a170907971900b00722e6cf0128mr659508ejc.98.1655800642267;
+        Tue, 21 Jun 2022 01:37:22 -0700 (PDT)
+Received: from ?IPV6:2001:1c01:2e0c:ab03:79ba:9443:520f:dd0a? (2001-1c01-2e0c-ab03-79ba-9443-520f-dd0a.cable.dynamic.v6.ziggo.nl. [2001:1c01:2e0c:ab03:79ba:9443:520f:dd0a])
+        by smtp.gmail.com with ESMTPSA id qn25-20020a170907211900b00722e49c06e8sm696279ejb.216.2022.06.21.01.37.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jun 2022 01:37:21 -0700 (PDT)
+Message-ID: <08660caa-6c01-73e3-306d-6f85af0f5e04@redhat.com>
+Date:   Tue, 21 Jun 2022 10:37:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 2/4] ACPI: EC: Drop the EC_FLAGS_IGNORE_DSDT_GPE quirk
+Content-Language: en-US
+To:     Daniel Drake <drake@endlessos.org>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        devel@acpica.org, Lv Zheng <lv.zheng@intel.com>,
+        Chris Chiu <chris.chiu@canonical.com>,
+        Jian-Hong Pan <jhp@endlessos.org>,
+        Carlo Caione <carlo@caione.org>
+References: <20220620092546.8298-1-hdegoede@redhat.com>
+ <20220620092546.8298-3-hdegoede@redhat.com>
+ <CAD8Lp45ismm5yG2ajGH_h=BKLh6hs8yC7gy3jq1Kn1pst0AFKg@mail.gmail.com>
+ <b2ad4b62-89bc-48c5-ebc3-c9d8f86aa902@redhat.com>
+ <CAD8Lp464t0NOqR4keodsv2XXq1s_9soFDHEduHZGk1UoP5vFHA@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAD8Lp464t0NOqR4keodsv2XXq1s_9soFDHEduHZGk1UoP5vFHA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   ef9088c776e0c49411bfb413ad43d110a9de1519
-commit: e511ff6b4174fa81ca7ee16f8c17f7362c08fadf [20/24] ACPI: scan: Walk ACPI device's children using driver core
-config: x86_64-randconfig-a013-20220620 (https://download.01.org/0day-ci/archive/20220621/202206211629.ncqadywd-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project af6d2a0b6825e71965f3e2701a63c239fa0ad70f)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=e511ff6b4174fa81ca7ee16f8c17f7362c08fadf
-        git remote add rafael-pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
-        git fetch --no-tags rafael-pm bleeding-edge
-        git checkout e511ff6b4174fa81ca7ee16f8c17f7362c08fadf
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/acpi/
+Hi,
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+On 6/21/22 04:37, Daniel Drake wrote:
+> On Mon, Jun 20, 2022 at 10:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>> It is a no-op now because after that commit the acpi_ec struct
+>> which gets allocated when parsing the ECDT now gets re-used
+>> when parsing the DSDT if the EC's cmd + data addresses match.
+> 
+> Got it. Seems rather clear indeed.
+> 
+> Can you point out how to check these addresses from dmesg output. We
+> have several of them saved here from these models, including for some
+> of the ones you weren't able to find logs for.
 
-All warnings (new ones prefixed by >>):
+If you look for "ACPI: EC: " in the dmesg you shoud find 2 blocks
+of log lines like this (note the output has changed somewhat
+overtime):
 
->> drivers/acpi/scan.c:2449:5: warning: no previous prototype for function 'acpi_bus_trim_one' [-Wmissing-prototypes]
-   int acpi_bus_trim_one(struct acpi_device *adev, void *not_used)
-       ^
-   drivers/acpi/scan.c:2449:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int acpi_bus_trim_one(struct acpi_device *adev, void *not_used)
-   ^
-   static 
-   1 warning generated.
+[    0.642373] ACPI: EC: EC started
+[    0.642375] ACPI: EC: interrupt blocked
+[    0.651140] ACPI: EC: EC_CMD/EC_SC=0x66, EC_DATA=0x62
+[    0.651142] ACPI: EC: Boot ECDT EC used to handle transactions
 
+[    1.191469] ACPI: EC: interrupt unblocked
+[    1.191471] ACPI: EC: event unblocked
+[    1.191491] ACPI: EC: EC_CMD/EC_SC=0x66, EC_DATA=0x62
+[    1.191493] ACPI: EC: GPE=0x16
+[    1.191496] ACPI: \_SB_.PCI0.LPCB.EC__: Boot ECDT EC initialization complete
+[    1.191501] ACPI: \_SB_.PCI0.LPCB.EC__: EC: Used to handle transactions and events
 
-vim +/acpi_bus_trim_one +2449 drivers/acpi/scan.c
+The first block is the ECDT probing, the second one is the DSDT probing
+and the addresses are in the:
 
-  2448	
-> 2449	int acpi_bus_trim_one(struct acpi_device *adev, void *not_used)
-  2450	{
-  2451		struct acpi_scan_handler *handler = adev->handler;
-  2452	
-  2453		acpi_dev_for_each_child_reverse(adev, acpi_bus_trim_one, NULL);
-  2454	
-  2455		adev->flags.match_driver = false;
-  2456		if (handler) {
-  2457			if (handler->detach)
-  2458				handler->detach(adev);
-  2459	
-  2460			adev->handler = NULL;
-  2461		} else {
-  2462			device_release_driver(&adev->dev);
-  2463		}
-  2464		/*
-  2465		 * Most likely, the device is going away, so put it into D3cold before
-  2466		 * that.
-  2467		 */
-  2468		acpi_device_set_power(adev, ACPI_STATE_D3_COLD);
-  2469		adev->flags.initialized = false;
-  2470		acpi_device_clear_enumerated(adev);
-  2471	
-  2472		return 0;
-  2473	}
-  2474	
+[    0.651140] ACPI: EC: EC_CMD/EC_SC=0x66, EC_DATA=0x62
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+lines.
+
+Regards,
+
+Hans
+
