@@ -2,107 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C53553087
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 13:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D5B2553091
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jun 2022 13:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347327AbiFULPx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Jun 2022 07:15:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60616 "EHLO
+        id S1348776AbiFULSw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Jun 2022 07:18:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231209AbiFULPw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 07:15:52 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 016B329C9E;
-        Tue, 21 Jun 2022 04:15:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655810152; x=1687346152;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=T9u4NQStwqgT/FP8Ox1SftRm7jpPdpysrGAUgD9ZRjc=;
-  b=jI6VRD9GRDbsv3Akw1drAKKPQ21dMtKU9nfmw53ZDJFHzB8cQXiO5yZX
-   H4An/jembi6KUNHb26jF1Khrg1lcfJ1HCLH/6IjJcji30MTx/NtWhPqNl
-   v3vzQ8v+edg1KwP1eIfFOXIeq5XDu5R0f5OVup6xm4LEwP9Nd7yAprR47
-   HOfc4bWPwoIE3NT5aWne1eVuFD6eGJWTIf00JC3P+b1B/LgxG0lLcDzrX
-   4S5Jz49VaIQ2xgoyjmuovetKYgbP6nl4Uwgfy9B600ddyGd6BJYaHLqkh
-   LnuIvAqeSTYftGQOB52sZUUEICOX3gt/XdrJ1x8aAiS/gAJ6LgXoXXazd
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10384"; a="259914733"
-X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
-   d="scan'208";a="259914733"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 04:15:51 -0700
-X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
-   d="scan'208";a="614710772"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 04:15:45 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1o3brC-000qy0-7b;
-        Tue, 21 Jun 2022 14:15:42 +0300
-Date:   Tue, 21 Jun 2022 14:15:41 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
+        with ESMTP id S1349175AbiFULSq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Jun 2022 07:18:46 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B4CD289AA;
+        Tue, 21 Jun 2022 04:18:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=7vOo5p0yQrz8WvA9OW0P/gHDo5luj3WAxgSKgWBriNM=; b=6ZJJRVIprvtfY3nIuee+3aB2we
+        QiYsFG3+otBHZgSQ3k9TVyggTrFkrzXw9fLthopF7SW6V2E6YXgAFzYmIy7GKREtifJl4asoYPq5T
+        YXx2sbjr2oKlB2JYnL1eirrvcSGH05kGbYdJk9zbdvxxqeIanZ326qUWLU5srR9l6YBA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1o3bu2-007iEV-1l; Tue, 21 Jun 2022 13:18:38 +0200
+Date:   Tue, 21 Jun 2022 13:18:38 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Marcin Wojtas <mw@semihalf.com>, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        rafael@kernel.org, lenb@kernel.org, andrew@lunn.ch,
-        vivien.didelot@gmail.com, f.fainelli@gmail.com, olteanv@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
-        gjb@semihalf.com, jaz@semihalf.com, tn@semihalf.com,
-        Samer.El-Haj-Mahmoud@arm.com, upstream@semihalf.com
+        rafael@kernel.org, lenb@kernel.org, vivien.didelot@gmail.com,
+        f.fainelli@gmail.com, olteanv@gmail.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux@armlinux.org.uk, hkallweit1@gmail.com, gjb@semihalf.com,
+        jaz@semihalf.com, tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com,
+        upstream@semihalf.com
 Subject: Re: [net-next: PATCH 09/12] Documentation: ACPI: DSD: introduce DSA
  description
-Message-ID: <YrGoXXBgHvyifny3@smile.fi.intel.com>
+Message-ID: <YrGpDgtm4rPkMwnl@lunn.ch>
 References: <20220620150225.1307946-1-mw@semihalf.com>
  <20220620150225.1307946-10-mw@semihalf.com>
- <20220621094556.5ev3nencnw7a5xwv@bogus>
+ <YrDO05TMK8SVgnBP@lunn.ch>
+ <YrGm2jmR7ijHyQjJ@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220621094556.5ev3nencnw7a5xwv@bogus>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <YrGm2jmR7ijHyQjJ@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 21, 2022 at 10:45:56AM +0100, Sudeep Holla wrote:
-> On Mon, Jun 20, 2022 at 05:02:22PM +0200, Marcin Wojtas wrote:
-> > Describe the Distributed Switch Architecture (DSA) - compliant
-> > MDIO devices. In ACPI world they are represented as children
-> > of the MDIO busses, which are responsible for their enumeration
-> > based on the standard _ADR fields and description in _DSD objects
-> > under device properties UUID [1].
+On Tue, Jun 21, 2022 at 02:09:14PM +0300, Andy Shevchenko wrote:
+> On Mon, Jun 20, 2022 at 09:47:31PM +0200, Andrew Lunn wrote:
+> 
+> ...
+> 
+> > > +        Name (_CRS, ResourceTemplate ()
+> > > +        {
+> > > +            Memory32Fixed (ReadWrite,
+> > > +                0xf212a200,
+> > > +                0x00000010,
 > > 
-> > [1] http://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
+> > What do these magic numbers mean?
+> 
+> Address + Length, it's all described in the ACPI specification.
 
-> Why is this document part of Linux code base ?
+The address+plus length of what? This device is on an MDIO bus. As
+such, there is no memory! It probably makes sense to somebody who
+knows ACPI, but to me i have no idea what it means.
 
-It's fine, but your are right with your latter questions.
+> Or if you asked
+> why the values there are the particular numbers? I guess it's fined to have
+> anything sane in the example. OTOH a comment may be added.
+> 
+> > > +                )
+> > > +        })
+> 
+> ...
+> 
+> > > +        Device (SWI0)
+> > > +        {
+> > > +            Name (_HID, "MRVL0120")
+> > > +            Name (_UID, 0x00)
+> > > +            Name (_ADR, 0x4)
+> > > +            <...>
+> > > +        }
+> > 
+> > I guess it is not normal for ACPI, but could you add some comments
+> > which explain this. In DT we have
+> > 
+> >     properties:
+> >       reg:
+> >         minimum: 0
+> >         maximum: 31
+> >         description:
+> >           The ID number for the device.
+> > 
+> > which i guess what this _ADR property is, but it would be nice if it
+> > actually described what it is supposed to mean. You have a lot of
+> > undocumented properties here.
+> 
+> Btw, you are right, _ADR mustn't go together with _HID/_CID.
 
-> How will the other OSes be aware of this ?
+Does ACPI have anything like .yaml to describe the binding and tools
+to validate it?
 
-Should be a standard somewhere.
-
-> I assume there was some repository to maintain such DSDs so that it
-> is accessible for other OSes. I am not agreeing or disagreeing on the
-> change itself, but I am concerned about this present in the kernel
-> code.
-
-I dunno we have a such, but the closest I may imagine is MIPI standardization,
-that we have at least for cameras and sound.
-
-I would suggest to go and work with MIPI for network / DSA / etc area, so
-everybody else will be aware of the standard.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+   Andrew
