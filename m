@@ -2,59 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EF9D555204
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 19:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F1905555A7
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 23:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377080AbiFVRKR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 13:10:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43044 "EHLO
+        id S231589AbiFVVBI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 17:01:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377163AbiFVRKE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 13:10:04 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CABA041F91;
-        Wed, 22 Jun 2022 10:09:12 -0700 (PDT)
+        with ESMTP id S229710AbiFVVBH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 17:01:07 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7319C3F8A8;
+        Wed, 22 Jun 2022 14:01:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655917752; x=1687453752;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=GuhujeoTeqcnmWPVCbag/SuSIX6nu8OxcQUPGZZah2E=;
-  b=NvxdOht+KONCsIYJrsOb4xikuq1b8c35EPdrp5drTN1H6v67mIC1dHXY
-   pxAmDshbaJOlFx23mbMpLi9MZoYl6jSriKTGIv2f9nuS5KaVPeHWZROdB
-   ySIbJDVRWIxTGfBennRivR01t9kHHvqj3KPyDccZMUm+yvFz4HAo1oHjc
-   tyTiq9DweDDd1dVbY77wq/eYMCbYTFXjQLMwqkZ6OeamwZHkR0JKPVD43
-   I7ypNOPA5/y1A+tFoIB/4z0RymjUD4k0ReOv1IvuQnN7WRmDnjYlrRR3j
-   LU1x8hJasge8AeovYbN+Ygs/YcH6GwaDKkIfpQYxujs9rqk2ZXtXkdgbR
+  t=1655931666; x=1687467666;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=un9jTk5iM1Wb08b7+qHwbT4yCWwVDbKuquwCBKzWxiI=;
+  b=h8TKGwU5FWHwaa7NRhe/CyT+WD0LYToQ+PQDR9QzmCzDHZ0TqyD0qN3G
+   U7g93zmS1DSNgiDEydcg5JbxJ8FAuyUepYz2R1grEn3DqPufoRYJnHcK0
+   QkGT67SH9lNMdSpN8ZoI2yLF2D8NS56fMV+/SZ15x2cFmhPV5ePZ4MuUL
+   DwFlcWdRcLdbRngaAjYLCFDXVDKgg/QUQl63KmxQN2N3ShVW4iosOQCU8
+   tY/tSDFfwTmjvVdmANVmFLbnw86HRCK4R6SaGUjxRaByn/kDzwqyT0UT5
+   WXWyg7CoihTTm9AUOLzxxPeuW/Wfm3gVa1asvZhNMeu5scSOLcPMzHvKg
    w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="278026643"
+X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="342229300"
 X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="278026643"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 10:09:12 -0700
+   d="scan'208";a="342229300"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 14:01:05 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="644296730"
-Received: from agluck-desk3.sc.intel.com ([172.25.222.78])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 10:09:12 -0700
-From:   Tony Luck <tony.luck@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Darren Hart <darren@os.amperecomputing.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Doug Rady <dcrady@os.amperecomputing.com>,
-        Tony Luck <tony.luck@intel.com>
-Subject: [PATCH] ACPI/APEI: Better fix to avoid spamming the console with old error logs
-Date:   Wed, 22 Jun 2022 10:09:06 -0700
-Message-Id: <20220622170906.33759-1-tony.luck@intel.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <YqpX9npa/wR7mafR@agluck-desk3.sc.intel.com>
-References: <YqpX9npa/wR7mafR@agluck-desk3.sc.intel.com>
+   d="scan'208";a="588355614"
+Received: from lkp-server02.sh.intel.com (HELO a67cc04a5eeb) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 22 Jun 2022 14:01:02 -0700
+Received: from kbuild by a67cc04a5eeb with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o47TB-0001gX-Ac;
+        Wed, 22 Jun 2022 21:01:01 +0000
+Date:   Thu, 23 Jun 2022 05:00:22 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Stefan Binding <sbinding@opensource.cirrus.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, patches@opensource.cirrus.com,
+        Stefan Binding <sbinding@opensource.cirrus.com>
+Subject: Re: [PATCH v1 1/2] ACPI: utils: Add api to read _SUB from ACPI
+Message-ID: <202206230433.0LyjOI85-lkp@intel.com>
+References: <20220622130730.1573747-2-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220622130730.1573747-2-sbinding@opensource.cirrus.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,106 +68,58 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The fix in commit 3f8dec116210 ("ACPI/APEI: Limit printable size of BERT
-table data") does not work as intended on systems where the BIOS has a
-fixed size block of memory for the BERT table, relying on s/w to quit
-when it finds a record with estatus->block_status == 0. On these systems
-all errors are suppressed because the check:
+Hi Stefan,
 
-	if (region_len < ACPI_BERT_PRINT_MAX_LEN)
+Thank you for the patch! Yet something to improve:
 
-always fails.
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on broonie-sound/for-next linus/master v5.19-rc3 next-20220622]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-New scheme skips individual CPER records that are too large, and also
-limits the total number of records that will be printed to 5.
+url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220622-211004
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: powerpc-buildonly-randconfig-r002-20220622 (https://download.01.org/0day-ci/archive/20220623/202206230433.0LyjOI85-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 8b8d126598ce7bd5243da7f94f69fa1104288bee)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install powerpc cross compiling tool for clang build
+        # apt-get install binutils-powerpc-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/97b928a895ce3105296f0036393bb9ee04f11ae4
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220622-211004
+        git checkout 97b928a895ce3105296f0036393bb9ee04f11ae4
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/
 
-Fixes: 3f8dec116210 ("ACPI/APEI: Limit printable size of BERT table data")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tony Luck <tony.luck@intel.com>
----
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-Now in PATCH format with a real commit comment. This version fixes
-the issues seen by Intel's validation team.
+All errors (new ones prefixed by >>):
 
- drivers/acpi/apei/bert.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+   In file included from arch/powerpc/kernel/traps.c:32:
+   In file included from include/linux/backlight.h:13:
+   In file included from include/linux/fb.h:7:
+   In file included from include/uapi/linux/fb.h:6:
+   In file included from include/linux/i2c.h:13:
+>> include/linux/acpi.h:1029:12: error: unused function 'acpi_get_sub' [-Werror,-Wunused-function]
+   static int acpi_get_sub(acpi_handle handle, char *sub, size_t size)
+              ^
+   1 error generated.
 
-diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
-index 598fd19b65fa..45973aa6e06d 100644
---- a/drivers/acpi/apei/bert.c
-+++ b/drivers/acpi/apei/bert.c
-@@ -29,16 +29,26 @@
- 
- #undef pr_fmt
- #define pr_fmt(fmt) "BERT: " fmt
-+
-+#define ACPI_BERT_PRINT_MAX_RECORDS 5
- #define ACPI_BERT_PRINT_MAX_LEN 1024
- 
- static int bert_disable;
- 
-+/*
-+ * Print "all" the error records in the BERT table, but avoid huge spam to
-+ * the console if the BIOS included oversize records, or too many records.
-+ * Skipping some records here does not lose anything because the full
-+ * data is available to user tools in:
-+ *	/sys/firmware/acpi/tables/data/BERT
-+ */
- static void __init bert_print_all(struct acpi_bert_region *region,
- 				  unsigned int region_len)
- {
- 	struct acpi_hest_generic_status *estatus =
- 		(struct acpi_hest_generic_status *)region;
- 	int remain = region_len;
-+	int printed = 0, skipped = 0;
- 	u32 estatus_len;
- 
- 	while (remain >= sizeof(struct acpi_bert_region)) {
-@@ -46,24 +56,26 @@ static void __init bert_print_all(struct acpi_bert_region *region,
- 		if (remain < estatus_len) {
- 			pr_err(FW_BUG "Truncated status block (length: %u).\n",
- 			       estatus_len);
--			return;
-+			break;
- 		}
- 
- 		/* No more error records. */
- 		if (!estatus->block_status)
--			return;
-+			break;
- 
- 		if (cper_estatus_check(estatus)) {
- 			pr_err(FW_BUG "Invalid error record.\n");
--			return;
-+			break;
- 		}
- 
--		pr_info_once("Error records from previous boot:\n");
--		if (region_len < ACPI_BERT_PRINT_MAX_LEN)
-+		if (estatus_len < ACPI_BERT_PRINT_MAX_LEN &&
-+		    printed < ACPI_BERT_PRINT_MAX_RECORDS) {
-+			pr_info_once("Error records from previous boot:\n");
- 			cper_estatus_print(KERN_INFO HW_ERR, estatus);
--		else
--			pr_info_once("Max print length exceeded, table data is available at:\n"
--				     "/sys/firmware/acpi/tables/data/BERT");
-+			printed++;
-+		} else {
-+			skipped++;
-+		}
- 
- 		/*
- 		 * Because the boot error source is "one-time polled" type,
-@@ -75,6 +87,9 @@ static void __init bert_print_all(struct acpi_bert_region *region,
- 		estatus = (void *)estatus + estatus_len;
- 		remain -= estatus_len;
- 	}
-+
-+	if (skipped)
-+		pr_info(HW_ERR "Skipped %d error records\n", skipped);
- }
- 
- static int __init setup_bert_disable(char *str)
+
+vim +/acpi_get_sub +1029 include/linux/acpi.h
+
+  1028	
+> 1029	static int acpi_get_sub(acpi_handle handle, char *sub, size_t size)
+  1030	{
+  1031		return -ENODEV;
+  1032	}
+  1033	
+
 -- 
-2.35.3
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
