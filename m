@@ -2,127 +2,223 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B40D95547BD
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8D055547F7
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:12:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235456AbiFVLbI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 07:31:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43860 "EHLO
+        id S239968AbiFVLmP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 07:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbiFVLbH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 07:31:07 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 165DE3C4A6;
-        Wed, 22 Jun 2022 04:31:07 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id t5so1042693eje.1;
-        Wed, 22 Jun 2022 04:31:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eh4HkVDsNUcCjrVrz6IL8I6Ukne0dRUkr7TQ/GhLVBU=;
-        b=AZ9iej0XvpRnAhLD0JjZROv9wQKxswkBKvySPNAOlAVr4hLjq6S0zLYbT20iYjL2RT
-         LtcXWf6faKwiu8Vm3IRB/m7SgiMBgc27JaqNRB0Ecd7CQNM0oriSgmqQfbXqNsvigxOy
-         Z2IcJK3BUajzLfaGACW3JJrVYZbG5FXbzE4vfRcfI/UKVvBgy7YDajzRG+W+ohzOcPXt
-         G8+n3ZDIEH69dqmD59bZo9XhziSFnZ3m7cZ3zwXAAo+fXzPFn1pBH/0CHvb0k28p5UEL
-         q1O/5IaDBVcqXvbvztxEy0puq3RSiRPFbYsuY88sI+ynuVtauiPw/PTFYRA6Ane8o78K
-         4A5g==
+        with ESMTP id S229582AbiFVLmO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 07:42:14 -0400
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC9B8167D6;
+        Wed, 22 Jun 2022 04:42:12 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id 23so29698696ybe.8;
+        Wed, 22 Jun 2022 04:42:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=eh4HkVDsNUcCjrVrz6IL8I6Ukne0dRUkr7TQ/GhLVBU=;
-        b=co2UcAeLV1ZKPF9QPqw28/NYl1uCq2TjDhFFn7rYudMwCKr45vSBkDdV7b5fXElg1H
-         Rd7ZjTJRB4hhNoQ2LFF6TsuIG3rE2vcqKYWeqMy9tkuusPUqLaPZ7S3+SgfPu1GCHYJj
-         0P1zaq5VIXRR0ZONtrIDOlPvVWRZf/5hXcDHplyMY+6UD5ceMOkgZe+lySZtlmvIqNyq
-         jNGBWlinkiwYg+rd2IHjshv2FEzKJgQs0LL7pWT7PLtCpNdqneWqZAm5+LARP07pI2r2
-         0f8ELuh2Q/2vu12bvsKLY00WhuoLuHaWk+xqPgYLSk8MQ2EwGcN4KHrZnnZAejyDPQ/J
-         4QhQ==
-X-Gm-Message-State: AJIora/11Rq5NYZAKKHnOISrckRgPpozctRJd2STvSrw/cqJdp/+gfPa
-        bosMR/uQsD/4cMTNNCGPF/10tykps6kY0YhUMz13N5B25ZEqow==
-X-Google-Smtp-Source: AGRyM1uB3jIgZPVv/WFvInCqvONtcIcqxiGZf8z2oaOvwVU053ZyMI96nxq9avUKA7dxjIo9PYTLDDP1bUMfNBKUTMw=
-X-Received: by 2002:a17:907:e92:b0:722:efe6:90fc with SMTP id
- ho18-20020a1709070e9200b00722efe690fcmr2759893ejc.44.1655897465576; Wed, 22
- Jun 2022 04:31:05 -0700 (PDT)
+        bh=JCV2OlM0n75yGXq5Ao9M4QymaqH2JncanYB6RHIUZPs=;
+        b=5KxsD1k27CkrO/nDlmgGnk7hRTxzA7TxK47lcvSFr7XxCZJYc5vv+IA3XQbk7KFoWy
+         xeGnC6M78g7W1C0ia3jjMiCdS7c177xXI6oyfsbtQC4DGpevrp9T7/jdNJZbQe898nQt
+         s//GcgLlZ9PnDTeXuHPfQGQj0LHXzfgpU8hPz17twbCyNM5bAq9AvUHQhV0nT4+Z08gh
+         s1n5bBF4F7XmyeVBM3eI3B5v0KDqvgWHAOP0p2vUVsmWb55OOgX4dS3cQMLfVMQtyb3G
+         /Keut+hSTy1DUPO7dW6GySz1L78Ul1RZ+bqGh56+Iq/zplSUYwJ+Z8pZTN89yJ0gcwlY
+         nkmw==
+X-Gm-Message-State: AJIora997Lv+RXvSWAiRwlYH20smtYY/ooYb6jQOksuwyYz46GoEMglO
+        7NK21NrKBDclAFMO5gwZmpAl0L1VMyzq4XC1dpQ=
+X-Google-Smtp-Source: AGRyM1t+UjB+W2u6c+KuvcQjZuiaMyR3JXTBhu8MFDYNtSJKpufG9a3kUq98N60z/GIEsB/1Kw+FvYOnSJeztB9YtCI=
+X-Received: by 2002:a25:e910:0:b0:668:d4c6:8c2d with SMTP id
+ n16-20020a25e910000000b00668d4c68c2dmr3091586ybd.81.1655898132092; Wed, 22
+ Jun 2022 04:42:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220621150436.3303431-1-sudeep.holla@arm.com>
-In-Reply-To: <20220621150436.3303431-1-sudeep.holla@arm.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Jun 2022 13:30:28 +0200
-Message-ID: <CAHp75VdFNir18Q-mLVd_87Sxd1Dz0Hg2B4XQfm5XzagO8sZQrg@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: ACPI: Update links and references to DSD
- related docs
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>
+References: <cover.1655894131.git.kai.huang@intel.com> <f4bff93d83814ea1f54494f51ce3e5d954cf0f5b.1655894131.git.kai.huang@intel.com>
+In-Reply-To: <f4bff93d83814ea1f54494f51ce3e5d954cf0f5b.1655894131.git.kai.huang@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 22 Jun 2022 13:42:01 +0200
+Message-ID: <CAJZ5v0jV8ODcxuLL+iSpYbW7w=GFtUSakN-n8CO5Zmun3K-Erg@mail.gmail.com>
+Subject: Re: [PATCH v5 02/22] cc_platform: Add new attribute to prevent ACPI
+ CPU hotplug
+To:     Kai Huang <kai.huang@intel.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kvm-devel <kvm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Len Brown <len.brown@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        isaku.yamahata@intel.com, Tom Lendacky <thomas.lendacky@amd.com>,
+        Tianyu.Lan@microsoft.com, Randy Dunlap <rdunlap@infradead.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Yue Haibing <yuehaibing@huawei.com>, dongli.zhang@oracle.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 21, 2022 at 5:12 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
+On Wed, Jun 22, 2022 at 1:16 PM Kai Huang <kai.huang@intel.com> wrote:
 >
-> The existing references to DSD are stale and outdated. The new process
-> and guidance is maintained @https://github.com/UEFI/DSD-Guide
+> Platforms with confidential computing technology may not support ACPI
+> CPU hotplug when such technology is enabled by the BIOS.  Examples
+> include Intel platforms which support Intel Trust Domain Extensions
+> (TDX).
 >
-> Update the existing documents to reflect the same.
-
-Taking Rafael's comment into account,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Thanks!
-
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> If the kernel ever receives ACPI CPU hotplug event, it is likely a BIOS
+> bug.  For ACPI CPU hot-add, the kernel should speak out this is a BIOS
+> bug and reject the new CPU.  For hot-removal, for simplicity just assume
+> the kernel cannot continue to work normally, and BUG().
+>
+> Add a new attribute CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED to indicate the
+> platform doesn't support ACPI CPU hotplug, so that kernel can handle
+> ACPI CPU hotplug events for such platform.  The existing attribute
+> CC_ATTR_HOTPLUG_DISABLED is for software CPU hotplug thus doesn't fit.
+>
+> In acpi_processor_{add|remove}(), add early check against this attribute
+> and handle accordingly if it is set.
+>
+> Also take this chance to rename existing CC_ATTR_HOTPLUG_DISABLED to
+> CC_ATTR_CPU_HOTPLUG_DISABLED as it is for software CPU hotplug.
+>
+> Signed-off-by: Kai Huang <kai.huang@intel.com>
 > ---
->  .../firmware-guide/acpi/DSD-properties-rules.rst      | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+>  arch/x86/coco/core.c          |  2 +-
+>  drivers/acpi/acpi_processor.c | 23 +++++++++++++++++++++++
+>  include/linux/cc_platform.h   | 15 +++++++++++++--
+>  kernel/cpu.c                  |  2 +-
+>  4 files changed, 38 insertions(+), 4 deletions(-)
 >
-> diff --git a/Documentation/firmware-guide/acpi/DSD-properties-rules.rst b/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
-> index 8b2d8d0864c2..70442bc2521e 100644
-> --- a/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
-> +++ b/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
-> @@ -21,7 +21,9 @@ specific type) associated with it.
+> diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+> index 4320fadae716..1bde1af75296 100644
+> --- a/arch/x86/coco/core.c
+> +++ b/arch/x86/coco/core.c
+> @@ -20,7 +20,7 @@ static bool intel_cc_platform_has(enum cc_attr attr)
+>  {
+>         switch (attr) {
+>         case CC_ATTR_GUEST_UNROLL_STRING_IO:
+> -       case CC_ATTR_HOTPLUG_DISABLED:
+> +       case CC_ATTR_CPU_HOTPLUG_DISABLED:
+>         case CC_ATTR_GUEST_MEM_ENCRYPT:
+>         case CC_ATTR_MEM_ENCRYPT:
+>                 return true;
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> index 6737b1cbf6d6..b960db864cd4 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/pci.h>
+> +#include <linux/cc_platform.h>
 >
->  In the ACPI _DSD context it is an element of the sub-package following the
->  generic Device Properties UUID in the _DSD return package as specified in the
-> -Device Properties UUID definition document [1]_.
-> +section titled "Well-Known _DSD UUIDs and Data Structure Formats" sub-section
-> +"Device Properties UUID" in _DSD (Device Specific Data) Implementation Guide
-> +document [1]_.
+>  #include <acpi/processor.h>
 >
->  It also may be regarded as the definition of a key and the associated data type
->  that can be returned by _DSD in the Device Properties UUID sub-package for a
-> @@ -36,7 +38,9 @@ Property subsets are nested collections of properties.  Each of them is
->  associated with an additional key (name) allowing the subset to be referred
->  to as a whole (and to be treated as a separate entity).  The canonical
->  representation of property subsets is via the mechanism specified in the
-> -Hierarchical Properties Extension UUID definition document [2]_.
-> +section titled "Well-Known _DSD UUIDs and Data Structure Formats" sub-section
-> +"Hierarchical Data Extension UUID" in _DSD (Device Specific Data)
-> +Implementation Guide document [1]_.
+> @@ -357,6 +358,17 @@ static int acpi_processor_add(struct acpi_device *device,
+>         struct device *dev;
+>         int result = 0;
 >
->  Property sets may be hierarchical.  That is, a property set may contain
->  multiple property subsets that each may contain property subsets of its
-> @@ -96,5 +100,4 @@ contents.
->  References
->  ==========
+> +       /*
+> +        * If the confidential computing platform doesn't support ACPI
+> +        * memory hotplug, the BIOS should never deliver such event to
+> +        * the kernel.  Report ACPI CPU hot-add as a BIOS bug and ignore
+> +        * the new CPU.
+> +        */
+> +       if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED)) {
+
+This will affect initialization, not just hotplug AFAICS.
+
+You should reset the .hotplug.enabled flag in processor_handler to
+false instead.
+
+> +               dev_err(&device->dev, "[BIOS bug]: Platform doesn't support ACPI CPU hotplug.  New CPU ignored.\n");
+> +               return -EINVAL;
+> +       }
+> +
+>         pr = kzalloc(sizeof(struct acpi_processor), GFP_KERNEL);
+>         if (!pr)
+>                 return -ENOMEM;
+> @@ -434,6 +446,17 @@ static void acpi_processor_remove(struct acpi_device *device)
+>         if (!device || !acpi_driver_data(device))
+>                 return;
 >
-> -.. [1] https://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
-> -.. [2] https://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf
-> +.. [1] https://github.com/UEFI/DSD-Guide
+> +       /*
+> +        * The confidential computing platform is broken if ACPI memory
+> +        * hot-removal isn't supported but it happened anyway.  Assume
+> +        * it's not guaranteed that the kernel can continue to work
+> +        * normally.  Just BUG().
+> +        */
+> +       if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED)) {
+> +               dev_err(&device->dev, "Platform doesn't support ACPI CPU hotplug. BUG().\n");
+> +               BUG();
+> +       }
+> +
+>         pr = acpi_driver_data(device);
+>         if (pr->id >= nr_cpu_ids)
+>                 goto out;
+> diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+> index 691494bbaf5a..9ce9256facc8 100644
+> --- a/include/linux/cc_platform.h
+> +++ b/include/linux/cc_platform.h
+> @@ -74,14 +74,25 @@ enum cc_attr {
+>         CC_ATTR_GUEST_UNROLL_STRING_IO,
+>
+>         /**
+> -        * @CC_ATTR_HOTPLUG_DISABLED: Hotplug is not supported or disabled.
+> +        * @CC_ATTR_CPU_HOTPLUG_DISABLED: CPU hotplug is not supported or
+> +        *                                disabled.
+>          *
+>          * The platform/OS is running as a guest/virtual machine does not
+>          * support CPU hotplug feature.
+>          *
+>          * Examples include TDX Guest.
+>          */
+> -       CC_ATTR_HOTPLUG_DISABLED,
+> +       CC_ATTR_CPU_HOTPLUG_DISABLED,
+> +
+> +       /**
+> +        * @CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED: ACPI CPU hotplug is not
+> +        *                                     supported.
+> +        *
+> +        * The platform/OS does not support ACPI CPU hotplug.
+> +        *
+> +        * Examples include TDX platform.
+> +        */
+> +       CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED,
+>  };
+>
+>  #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
+> diff --git a/kernel/cpu.c b/kernel/cpu.c
+> index edb8c199f6a3..966772cce063 100644
+> --- a/kernel/cpu.c
+> +++ b/kernel/cpu.c
+> @@ -1191,7 +1191,7 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
+>          * If the platform does not support hotplug, report it explicitly to
+>          * differentiate it from a transient offlining failure.
+>          */
+> -       if (cc_platform_has(CC_ATTR_HOTPLUG_DISABLED))
+> +       if (cc_platform_has(CC_ATTR_CPU_HOTPLUG_DISABLED))
+>                 return -EOPNOTSUPP;
+>         if (cpu_hotplug_disabled)
+>                 return -EBUSY;
 > --
 > 2.36.1
 >
-
-
--- 
-With Best Regards,
-Andy Shevchenko
