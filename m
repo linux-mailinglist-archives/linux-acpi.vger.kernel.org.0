@@ -2,155 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B19665549E7
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D518554A52
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:50:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235607AbiFVMSu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 08:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55396 "EHLO
+        id S232260AbiFVMuW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 08:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235564AbiFVMSt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 08:18:49 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708BA1A3AF;
-        Wed, 22 Jun 2022 05:18:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655900328; x=1687436328;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mR40RNTUMjCQ478CK8Zd1sWFPAqPydu8In9LHm/65dY=;
-  b=ZGlJH5YsQofq26S+iqDgIj/ICf5ug8tDlbCVTwG+1Go+NH6Uh+kdS6BS
-   XRZSoUgceyiAZ6zi+fi29UE6e3D+3NwdOWSEWBEQV3ER/AqeMbP/D0euv
-   8X+kJ7Z36CrYY1xY/GH8Cnwc7ahJFlSaYGTmwKf2QRs2kUUq8u6JmBfWO
-   1p/RqbkiHg79/Ta/LvODemMS7gPO3A9jfiq2sOt+DxJr0p/xFNTwSXQk/
-   Uk/D8AzDynZNGDloXw4dRVjRObayQ9UkTIdEd5FhLtODdEhVOc9T5LQ6s
-   SuGfMz4oaPUmydyQVQp1GNCnalXGkQle5F2R+l77PTmKRJ85YkSBNyoyj
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10385"; a="263434679"
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="263434679"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 05:18:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="690472618"
-Received: from lkp-server02.sh.intel.com (HELO a67cc04a5eeb) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 22 Jun 2022 05:18:46 -0700
-Received: from kbuild by a67cc04a5eeb with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o3zJl-0001FT-RA;
-        Wed, 22 Jun 2022 12:18:45 +0000
-Date:   Wed, 22 Jun 2022 20:17:49 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- e99b82b65ff24df6e5c2d1403251e82ef9971ec6
-Message-ID: <62b3086d.odJv5l8iAlTSexUE%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S1347612AbiFVMuV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 08:50:21 -0400
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B676019039
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 05:50:19 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-3178acf2a92so127629697b3.6
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 05:50:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LjImQd/ow4ise4Z8zr9ZK5lwVyVw0hn736HAa5U/9Ek=;
+        b=vb4S1j9xSEIw6KuMBkyoZPjgNJFfJIHjd9jFrRzG42VKhN+w3/f9SJgmFl2Zsn2NAR
+         LkaI7kTMx5IGrnrXUXBKtWvI2vya/aUbDrFQ2LwnaXetp36Z72z5TNC5Zz1saPhBwPnO
+         /FCs0hcWYS7rENYl88GVdnkm8///lOB8UIoc8ByifL4gttjlO/56VIEbZs8oQ8g660Jy
+         W3lDaCqNunFYguJuqT2yfV2kvUOIYQ5L5pT0d66XaA+9JHV1nmk/05/mpXAKMzD1SSNn
+         48Y0El2RIE5cjeBKdRiqzMd9oHkrnKA+Zgz91ZNB03bAj0v496JVIt7a7AYvqsm98zVj
+         Q0YQ==
+X-Gm-Message-State: AJIora+2dYxghATSHBkHZ6aPnEVMit1v4NgBucEqgBeSFDvHzh95fYp2
+        wlQpRHHlHT1qeUIO6HcaSHvTkxkHsYQdFqPXuT0=
+X-Google-Smtp-Source: AGRyM1vkylxwgQxriMQkeegWzZV9FCFxuREkfWa5W45QoNyFuu5PUU9vxfh0mHk/0IzWltB9GP4zmprU5DQlq+4IkbM=
+X-Received: by 2002:a81:57d7:0:b0:317:b111:34d5 with SMTP id
+ l206-20020a8157d7000000b00317b11134d5mr4114819ywb.7.1655902218957; Wed, 22
+ Jun 2022 05:50:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220616090106.2154906-1-sudeep.holla@arm.com> <20220616090106.2154906-2-sudeep.holla@arm.com>
+In-Reply-To: <20220616090106.2154906-2-sudeep.holla@arm.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 22 Jun 2022 14:50:08 +0200
+Message-ID: <CAJZ5v0j0Ayb3KGpfxuuXH9CHUrt8rupVg5OK=r6hqZQEYm3jFA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] ACPICA: Add support for FFH Opregion special context data
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: e99b82b65ff24df6e5c2d1403251e82ef9971ec6  Merge branch 'pm-sleep' into bleeding-edge
+On Thu, Jun 16, 2022 at 11:01 AM Sudeep Holla <sudeep.holla@arm.com> wrote:
+>
+> FFH(Fixed Function Hardware) Opregion is approved to be added in ACPIC 6.5 via
 
-elapsed time: 990m
+s/ACPIC/ACPI/
 
-configs tested: 73
-configs skipped: 2
+> code first approach[1]. It requires special context data similar to GPIO and
+> Generic Serial Bus as it needs to know platform specific offset and length.
+>
+> Add support for the special context data needed by FFH Opregion.
+>
+> FFH OpRegion enables advanced use of FFH on some architectures. For example,
+> it could be used to easily proxy AML code to architecture-specific behavior
+> (to ensure it is OS initiated)
+>
+> Actual behavior of FFH is ofcourse architecture specific and depends on
+> the FFH bindings. The offset and length could have arch specific meaning
+> or usage.
+>
+> [1] https://bugzilla.tianocore.org/show_bug.cgi?id=3598
+>
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This looks reasonable to me and I see that you've already submitted a
+pull request to the upstream ACPICA.
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-m68k                       m5249evb_defconfig
-ia64                         bigsur_defconfig
-openrisc                 simple_smp_defconfig
-powerpc                      bamboo_defconfig
-arm                           stm32_defconfig
-mips                            ar7_defconfig
-ia64                      gensparse_defconfig
-powerpc                      ppc6xx_defconfig
-riscv                               defconfig
-ia64                             allmodconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                              debian-10.3
-i386                             allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220622
-riscv                             allnoconfig
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-syz
-
-clang tested configs:
-arm                       cns3420vb_defconfig
-s390                             alldefconfig
-arm                           sama7_defconfig
-arm                          moxart_defconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                      acadia_defconfig
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-x86_64                        randconfig-a014
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r041-20220622
-hexagon              randconfig-r045-20220622
-riscv                randconfig-r042-20220622
-s390                 randconfig-r044-20220622
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> ---
+>  drivers/acpi/acpica/evregion.c | 8 ++++++++
+>  drivers/acpi/acpica/exfield.c  | 8 ++++++--
+>  drivers/acpi/acpica/exserial.c | 6 ++++++
+>  include/acpi/acconfig.h        | 2 ++
+>  include/acpi/actypes.h         | 7 +++++++
+>  5 files changed, 29 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
+> index b96b3a7e78e5..d5aed3249630 100644
+> --- a/drivers/acpi/acpica/evregion.c
+> +++ b/drivers/acpi/acpica/evregion.c
+> @@ -172,6 +172,14 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+>                         ctx->subspace_id = (u8)region_obj->region.address;
+>                 }
+>
+> +               if (region_obj->region.space_id ==
+> +                       ACPI_ADR_SPACE_FIXED_HARDWARE) {
+> +                       struct acpi_ffh_info *ctx =
+> +                           handler_desc->address_space.context;
+> +
+> +                       ctx->offset = region_obj->region.address;
+> +                       ctx->length = region_obj->region.length;
+> +               }
+>                 /*
+>                  * We must exit the interpreter because the region setup will
+>                  * potentially execute control methods (for example, the _REG method
+> diff --git a/drivers/acpi/acpica/exfield.c b/drivers/acpi/acpica/exfield.c
+> index 2b89a496de65..657f4002f9dc 100644
+> --- a/drivers/acpi/acpica/exfield.c
+> +++ b/drivers/acpi/acpica/exfield.c
+> @@ -141,7 +141,9 @@ acpi_ex_read_data_from_field(struct acpi_walk_state *walk_state,
+>                     || obj_desc->field.region_obj->region.space_id ==
+>                     ACPI_ADR_SPACE_IPMI
+>                     || obj_desc->field.region_obj->region.space_id ==
+> -                   ACPI_ADR_SPACE_PLATFORM_RT)) {
+> +                   ACPI_ADR_SPACE_PLATFORM_RT
+> +                   || obj_desc->field.region_obj->region.space_id ==
+> +                   ACPI_ADR_SPACE_FIXED_HARDWARE)) {
+>
+>                 /* SMBus, GSBus, IPMI serial */
+>
+> @@ -305,7 +307,9 @@ acpi_ex_write_data_to_field(union acpi_operand_object *source_desc,
+>                     || obj_desc->field.region_obj->region.space_id ==
+>                     ACPI_ADR_SPACE_IPMI
+>                     || obj_desc->field.region_obj->region.space_id ==
+> -                   ACPI_ADR_SPACE_PLATFORM_RT)) {
+> +                   ACPI_ADR_SPACE_PLATFORM_RT
+> +                   || obj_desc->field.region_obj->region.space_id ==
+> +                   ACPI_ADR_SPACE_FIXED_HARDWARE)) {
+>
+>                 /* SMBus, GSBus, IPMI serial */
+>
+> diff --git a/drivers/acpi/acpica/exserial.c b/drivers/acpi/acpica/exserial.c
+> index 4da20d7845df..fd63f2042514 100644
+> --- a/drivers/acpi/acpica/exserial.c
+> +++ b/drivers/acpi/acpica/exserial.c
+> @@ -323,6 +323,12 @@ acpi_ex_write_serial_bus(union acpi_operand_object *source_desc,
+>                 function = ACPI_WRITE;
+>                 break;
+>
+> +       case ACPI_ADR_SPACE_FIXED_HARDWARE:
+> +
+> +               buffer_length = ACPI_FFH_INPUT_BUFFER_SIZE;
+> +               function = ACPI_WRITE;
+> +               break;
+> +
+>         default:
+>                 return_ACPI_STATUS(AE_AML_INVALID_SPACE_ID);
+>         }
+> diff --git a/include/acpi/acconfig.h b/include/acpi/acconfig.h
+> index c3ae3ea88e17..02e57191c1fd 100644
+> --- a/include/acpi/acconfig.h
+> +++ b/include/acpi/acconfig.h
+> @@ -190,6 +190,8 @@
+>
+>  #define ACPI_PRM_INPUT_BUFFER_SIZE      26
+>
+> +#define ACPI_FFH_INPUT_BUFFER_SIZE      144
+> +
+>  /* _sx_d and _sx_w control methods */
+>
+>  #define ACPI_NUM_sx_d_METHODS           4
+> diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+> index 3491e454b2ab..1b4f81f1ac5d 100644
+> --- a/include/acpi/actypes.h
+> +++ b/include/acpi/actypes.h
+> @@ -1115,6 +1115,13 @@ struct acpi_pcc_info {
+>         u8 *internal_buffer;
+>  };
+>
+> +/* Special Context data for FFH Opregion (ACPI 6.5) */
+> +
+> +struct acpi_ffh_info {
+> +       u64 offset;
+> +       u64 length;
+> +};
+> +
+>  typedef
+>  acpi_status (*acpi_adr_space_setup) (acpi_handle region_handle,
+>                                      u32 function,
+> --
+> 2.36.1
+>
