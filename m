@@ -2,160 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F9F554977
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B90B5546A3
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:11:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357093AbiFVLQM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 07:16:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
+        id S1356983AbiFVLXQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 07:23:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357117AbiFVLQJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 07:16:09 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29C253BFBC;
-        Wed, 22 Jun 2022 04:16:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655896567; x=1687432567;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=658/EnJQy8x9AQuuVjfquxiCjCcnIIMedjflGOBbyXE=;
-  b=C6wJ7lMBNa4CT0Gv0OB7XvBTPdXfwC9lwL13uH7nWvzZYfqrmAJbvgeE
-   xrR6kUVLDSqlZIXiYqo7VxSwOJsO22VQQDdIDZJ2gAZAm0SM0MrfhGx2W
-   zZSQsm7iHI2D7PuvrpBXk9vWk/yElettgvYHAz7xYd82+uj+q9l+m6Wnl
-   7fN5GUnvEyBboKV1aIx7C8hhC03yEdkuFZczDQoedR++Uoc7T/EsVd0bc
-   vZozT2dL/gqZWJR42Tku4ISOsSDQqsBh7rWQ8Uzz67uu7ndiK99UVxuDu
-   6zvqAP2+t6n8ELSS+NCKf7d2d3Ku0oA5xtT3g5chy3+5NafPodNaqWdIX
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10385"; a="277937027"
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="277937027"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 04:16:06 -0700
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="834065539"
-Received: from jmatsis-mobl.amr.corp.intel.com (HELO khuang2-desk.gar.corp.intel.com) ([10.209.178.197])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 04:16:03 -0700
-From:   Kai Huang <kai.huang@intel.com>
-To:     linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc:     linux-acpi@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
-        dave.hansen@intel.com, len.brown@intel.com, tony.luck@intel.com,
-        rafael.j.wysocki@intel.com, reinette.chatre@intel.com,
-        dan.j.williams@intel.com, peterz@infradead.org, ak@linux.intel.com,
-        kirill.shutemov@linux.intel.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com,
-        isaku.yamahata@intel.com, thomas.lendacky@amd.com,
-        kai.huang@intel.com
-Subject: [PATCH v5 03/22] cc_platform: Add new attribute to prevent ACPI memory hotplug
-Date:   Wed, 22 Jun 2022 23:15:57 +1200
-Message-Id: <87dc19c47bad73509359c8e1e3a81d51d1681e4c.1655894131.git.kai.huang@intel.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <cover.1655894131.git.kai.huang@intel.com>
-References: <cover.1655894131.git.kai.huang@intel.com>
+        with ESMTP id S1357605AbiFVLW6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 07:22:58 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC76D3A71C;
+        Wed, 22 Jun 2022 04:22:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=I+IQpUdGRvzryPiMbgvBe30v5I8PKYgMnD6LyAtMq9s=; b=j1+GJak+LXgezTk5y6Op6Hz8Oc
+        gCjGb6oeibd7Z+rMixmSzNt+EVlBH77RTjCj8p6uUUtjWrJ1ZN7JGNfgu+Jc/YW5zlQ0B+38D14JJ
+        xnEUEQZ1SVVSqO38mOwulyJmIKpmB5vluJ/Gr5J6Cwj1Gx33tIgT4/BMrt1jyPeRl+CU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1o3yR5-007qRc-VN; Wed, 22 Jun 2022 13:22:15 +0200
+Date:   Wed, 22 Jun 2022 13:22:15 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Marcin Wojtas <mw@semihalf.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, vivien.didelot@gmail.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Grzegorz Bernacki <gjb@semihalf.com>,
+        Grzegorz Jaszczyk <jaz@semihalf.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        upstream@semihalf.com
+Subject: Re: [net-next: PATCH 09/12] Documentation: ACPI: DSD: introduce DSA
+ description
+Message-ID: <YrL7Z6/ghTO/9wlx@lunn.ch>
+References: <20220620150225.1307946-1-mw@semihalf.com>
+ <20220620150225.1307946-10-mw@semihalf.com>
+ <YrDO05TMK8SVgnBP@lunn.ch>
+ <YrGm2jmR7ijHyQjJ@smile.fi.intel.com>
+ <YrGpDgtm4rPkMwnl@lunn.ch>
+ <YrGukfw4uiQz0NpW@smile.fi.intel.com>
+ <CAPv3WKf_2QYh0F2LEr1DeErvnMeQqT0M5t40ROP2G6HSUwKpQQ@mail.gmail.com>
+ <YrL3DQD92ijLam2V@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YrL3DQD92ijLam2V@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Platforms with confidential computing technology may not support ACPI
-memory hotplug when such technology is enabled by the BIOS.  Examples
-include Intel platforms which support Intel Trust Domain Extensions
-(TDX).
+> > It's not device on MDIO bus, but the MDIO controller's register itself
+> > (this _CSR belongs to the parent, subnodes do not refer to it in any
+> > way). The child device requires only _ADR (or whatever else is needed
+> > for the case the DSA device is attached to SPI/I2C controllers).
+> 
+> More and more the idea of standardizing the MDIOSerialBus() resource looks
+> plausible. The _ADR() usage is a bit grey area in ACPI specification. Maybe
+> someone can also make it descriptive, so Microsoft and others won't utilize
+> _ADR() in any level of weirdness.
 
-If the kernel ever receives ACPI memory hotplug event, it is likely a
-BIOS bug.  For ACPI memory hot-add, the kernel should speak out this is
-a BIOS bug and reject the new memory.  For hot-removal, for simplicity
-just assume the kernel cannot continue to work normally, and just BUG().
+I don't know if it makes any difference, but there are two protocols
+spoken over MDIO, c22 and c45, specified in clause 22 and clause 45 of
+the 802.3 specification. In some conditions, you need to specify which
+protocol to speak to a device at a particular address. In DT we
+indicate this with the compatible string, when maybe it should really
+be considered as an extension of the address.
 
-Add a new attribute CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED to indicate the
-platform doesn't support ACPI memory hotplug, so that kernel can handle
-ACPI memory hotplug events for such platform.
+If somebody does produce a draft for MDIOSerialBus() i'm happy to
+review it.
 
-In acpi_memory_device_{add|remove}(), add early check against this
-attribute and handle accordingly if it is set.
-
-Signed-off-by: Kai Huang <kai.huang@intel.com>
----
- drivers/acpi/acpi_memhotplug.c | 23 +++++++++++++++++++++++
- include/linux/cc_platform.h    | 10 ++++++++++
- 2 files changed, 33 insertions(+)
-
-diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-index 24f662d8bd39..94d6354ea453 100644
---- a/drivers/acpi/acpi_memhotplug.c
-+++ b/drivers/acpi/acpi_memhotplug.c
-@@ -15,6 +15,7 @@
- #include <linux/acpi.h>
- #include <linux/memory.h>
- #include <linux/memory_hotplug.h>
-+#include <linux/cc_platform.h>
- 
- #include "internal.h"
- 
-@@ -291,6 +292,17 @@ static int acpi_memory_device_add(struct acpi_device *device,
- 	if (!device)
- 		return -EINVAL;
- 
-+	/*
-+	 * If the confidential computing platform doesn't support ACPI
-+	 * memory hotplug, the BIOS should never deliver such event to
-+	 * the kernel.  Report ACPI CPU hot-add as a BIOS bug and ignore
-+	 * the memory device.
-+	 */
-+	if (cc_platform_has(CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED)) {
-+		dev_err(&device->dev, "[BIOS bug]: Platform doesn't support ACPI memory hotplug. New memory device ignored.\n");
-+		return -EINVAL;
-+	}
-+
- 	mem_device = kzalloc(sizeof(struct acpi_memory_device), GFP_KERNEL);
- 	if (!mem_device)
- 		return -ENOMEM;
-@@ -334,6 +346,17 @@ static void acpi_memory_device_remove(struct acpi_device *device)
- 	if (!device || !acpi_driver_data(device))
- 		return;
- 
-+	/*
-+	 * The confidential computing platform is broken if ACPI memory
-+	 * hot-removal isn't supported but it happened anyway.  Assume
-+	 * it is not guaranteed that the kernel can continue to work
-+	 * normally.  Just BUG().
-+	 */
-+	if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED)) {
-+		dev_err(&device->dev, "Platform doesn't support ACPI memory hotplug. BUG().\n");
-+		BUG();
-+	}
-+
- 	mem_device = acpi_driver_data(device);
- 	acpi_memory_remove_memory(mem_device);
- 	acpi_memory_device_free(mem_device);
-diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
-index 9ce9256facc8..b831c24bd7f6 100644
---- a/include/linux/cc_platform.h
-+++ b/include/linux/cc_platform.h
-@@ -93,6 +93,16 @@ enum cc_attr {
- 	 * Examples include TDX platform.
- 	 */
- 	CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED,
-+
-+	/**
-+	 * @CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED: ACPI memory hotplug is
-+	 *					  not supported.
-+	 *
-+	 * The platform/os does not support ACPI memory hotplug.
-+	 *
-+	 * Examples include TDX platform.
-+	 */
-+	CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED,
- };
- 
- #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
--- 
-2.36.1
-
+       Andrew
