@@ -2,113 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98028555135
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 18:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EF9D555204
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 19:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376506AbiFVQVp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 12:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57396 "EHLO
+        id S1377080AbiFVRKR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 13:10:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357785AbiFVQVn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 12:21:43 -0400
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB99D3C720;
-        Wed, 22 Jun 2022 09:21:42 -0700 (PDT)
-Received: by mail-yb1-f171.google.com with SMTP id l11so31024156ybu.13;
-        Wed, 22 Jun 2022 09:21:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=J8NTAQ80ksAaXTU0NZQhSXj7741XMCwbMsx5gXXQTtg=;
-        b=U8dPlnJnCw3yO8+ggB8bMoWrXINcFidWU8E/In9oXaCFJ3QKnyWCCeKuGzbj98zu9z
-         vSwSNeChn06zjiBvzW5M8Ido5kUETGUPXOjRUVcsfOYEnBLHiOItwjDf8oQvmrmyTpQl
-         yjEHqfr8IOEWnlnm23zuDyqzMNYiPB/kjIymcDAnSCAoSdoePRMnGb0NmibHs06wxdDI
-         /vesRYrSgurTLjTKWTygB5Pnpt0c0ZeZAi1vAkvIvi+kphtq6FB57CZUNGc7P55LCvx9
-         ylog53m2yCWdq9PgQUj/8MMmuhwyf88ewCeiwZUSwhAXDguoBwEzyUVqQyhbiaxq4VIE
-         sEZA==
-X-Gm-Message-State: AJIora+BcJBgJakfmCCA43nr2Kb64/cBYGjrmbYx52i2E7G0I6FlhLAA
-        IWNkJd9obyen6xXMPwRpmfdaniaiRbB7lxx4ueTmrtyD2WY=
-X-Google-Smtp-Source: AGRyM1s29ZRQGrHG8aK/LQ9rK/TrvkflQzh7hpqVbott/qGX8Pf/fUqVRzomWlpQkonyMAsASrGPYIlXTaoDDL//5Z8=
-X-Received: by 2002:a25:d841:0:b0:668:ab2f:7b01 with SMTP id
- p62-20020a25d841000000b00668ab2f7b01mr4581583ybg.482.1655914902208; Wed, 22
- Jun 2022 09:21:42 -0700 (PDT)
+        with ESMTP id S1377163AbiFVRKE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 13:10:04 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CABA041F91;
+        Wed, 22 Jun 2022 10:09:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655917752; x=1687453752;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=GuhujeoTeqcnmWPVCbag/SuSIX6nu8OxcQUPGZZah2E=;
+  b=NvxdOht+KONCsIYJrsOb4xikuq1b8c35EPdrp5drTN1H6v67mIC1dHXY
+   pxAmDshbaJOlFx23mbMpLi9MZoYl6jSriKTGIv2f9nuS5KaVPeHWZROdB
+   ySIbJDVRWIxTGfBennRivR01t9kHHvqj3KPyDccZMUm+yvFz4HAo1oHjc
+   tyTiq9DweDDd1dVbY77wq/eYMCbYTFXjQLMwqkZ6OeamwZHkR0JKPVD43
+   I7ypNOPA5/y1A+tFoIB/4z0RymjUD4k0ReOv1IvuQnN7WRmDnjYlrRR3j
+   LU1x8hJasge8AeovYbN+Ygs/YcH6GwaDKkIfpQYxujs9rqk2ZXtXkdgbR
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="278026643"
+X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
+   d="scan'208";a="278026643"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 10:09:12 -0700
+X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
+   d="scan'208";a="644296730"
+Received: from agluck-desk3.sc.intel.com ([172.25.222.78])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 10:09:12 -0700
+From:   Tony Luck <tony.luck@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Darren Hart <darren@os.amperecomputing.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Doug Rady <dcrady@os.amperecomputing.com>,
+        Tony Luck <tony.luck@intel.com>
+Subject: [PATCH] ACPI/APEI: Better fix to avoid spamming the console with old error logs
+Date:   Wed, 22 Jun 2022 10:09:06 -0700
+Message-Id: <20220622170906.33759-1-tony.luck@intel.com>
+X-Mailer: git-send-email 2.35.3
+In-Reply-To: <YqpX9npa/wR7mafR@agluck-desk3.sc.intel.com>
+References: <YqpX9npa/wR7mafR@agluck-desk3.sc.intel.com>
 MIME-Version: 1.0
-References: <20220620150225.1307946-1-mw@semihalf.com> <20220620150225.1307946-9-mw@semihalf.com>
- <YrDFmw4rziGQJCAu@lunn.ch> <CAJZ5v0g4q8N5wMgk7pRYpYoCLPQoH==Z+nrM0JLyFXSgF9y0+Q@mail.gmail.com>
- <54618c2a-e1f3-bbd0-8fb2-1669366a3b59@gmail.com>
-In-Reply-To: <54618c2a-e1f3-bbd0-8fb2-1669366a3b59@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 22 Jun 2022 18:21:31 +0200
-Message-ID: <CAJZ5v0j3A-VYFgcnziSqejp-qJVbrbyFP40S-m9eYTv=H9J0ow@mail.gmail.com>
-Subject: Re: [net-next: PATCH 08/12] ACPI: scan: prevent double enumeration of
- MDIO bus children
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>, Marcin Wojtas <mw@semihalf.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        David Miller <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Grzegorz Bernacki <gjb@semihalf.com>,
-        Grzegorz Jaszczyk <jaz@semihalf.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        upstream@semihalf.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 22, 2022 at 6:12 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
->
-> On 6/22/22 05:05, Rafael J. Wysocki wrote:
-> > On Mon, Jun 20, 2022 at 9:08 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> >>
-> >> On Mon, Jun 20, 2022 at 05:02:21PM +0200, Marcin Wojtas wrote:
-> >>> The MDIO bus is responsible for probing and registering its respective
-> >>> children, such as PHYs or other kind of devices.
-> >>>
-> >>> It is required that ACPI scan code should not enumerate such
-> >>> devices, leaving this task for the generic MDIO bus routines,
-> >>> which are initiated by the controller driver.
-> >>
-> >> I suppose the question is, should you ignore the ACPI way of doing
-> >> things, or embrace the ACPI way?
-> >
-> > What do you mean by "the ACPI way"?
-> >
-> >> At least please add a comment why the ACPI way is wrong, despite this
-> >> being an ACPI binding.
-> >
-> > The question really is whether or not it is desirable to create
-> > platform devices for all of the objects found in the ACPI tables that
-> > correspond to the devices on the MDIO bus.
->
-> If we have devices hanging off a MDIO bus then they are mdio_device (and
-> possibly a more specialized object with the phy_device which does embedd
-> a mdio_device object), not platform devices, since MDIO is a bus in itself.
+The fix in commit 3f8dec116210 ("ACPI/APEI: Limit printable size of BERT
+table data") does not work as intended on systems where the BIOS has a
+fixed size block of memory for the BERT table, relying on s/w to quit
+when it finds a record with estatus->block_status == 0. On these systems
+all errors are suppressed because the check:
 
-Well, that's what I'm saying.
+	if (region_len < ACPI_BERT_PRINT_MAX_LEN)
 
-And when the ACPI subsystem finds those device objects present in the
-ACPI tables, the mdio_device things have not been created yet and it
-doesn't know which ACPI device object will correspond to mdio_device
-eventually unless it is told about that somehow.  One way of doing
-that is to use a list of device IDs in the kernel.  The other is to
-have the firmware tell it about that which is what we are discussing.
+always fails.
+
+New scheme skips individual CPER records that are too large, and also
+limits the total number of records that will be printed to 5.
+
+Fixes: 3f8dec116210 ("ACPI/APEI: Limit printable size of BERT table data")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+---
+
+Now in PATCH format with a real commit comment. This version fixes
+the issues seen by Intel's validation team.
+
+ drivers/acpi/apei/bert.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
+index 598fd19b65fa..45973aa6e06d 100644
+--- a/drivers/acpi/apei/bert.c
++++ b/drivers/acpi/apei/bert.c
+@@ -29,16 +29,26 @@
+ 
+ #undef pr_fmt
+ #define pr_fmt(fmt) "BERT: " fmt
++
++#define ACPI_BERT_PRINT_MAX_RECORDS 5
+ #define ACPI_BERT_PRINT_MAX_LEN 1024
+ 
+ static int bert_disable;
+ 
++/*
++ * Print "all" the error records in the BERT table, but avoid huge spam to
++ * the console if the BIOS included oversize records, or too many records.
++ * Skipping some records here does not lose anything because the full
++ * data is available to user tools in:
++ *	/sys/firmware/acpi/tables/data/BERT
++ */
+ static void __init bert_print_all(struct acpi_bert_region *region,
+ 				  unsigned int region_len)
+ {
+ 	struct acpi_hest_generic_status *estatus =
+ 		(struct acpi_hest_generic_status *)region;
+ 	int remain = region_len;
++	int printed = 0, skipped = 0;
+ 	u32 estatus_len;
+ 
+ 	while (remain >= sizeof(struct acpi_bert_region)) {
+@@ -46,24 +56,26 @@ static void __init bert_print_all(struct acpi_bert_region *region,
+ 		if (remain < estatus_len) {
+ 			pr_err(FW_BUG "Truncated status block (length: %u).\n",
+ 			       estatus_len);
+-			return;
++			break;
+ 		}
+ 
+ 		/* No more error records. */
+ 		if (!estatus->block_status)
+-			return;
++			break;
+ 
+ 		if (cper_estatus_check(estatus)) {
+ 			pr_err(FW_BUG "Invalid error record.\n");
+-			return;
++			break;
+ 		}
+ 
+-		pr_info_once("Error records from previous boot:\n");
+-		if (region_len < ACPI_BERT_PRINT_MAX_LEN)
++		if (estatus_len < ACPI_BERT_PRINT_MAX_LEN &&
++		    printed < ACPI_BERT_PRINT_MAX_RECORDS) {
++			pr_info_once("Error records from previous boot:\n");
+ 			cper_estatus_print(KERN_INFO HW_ERR, estatus);
+-		else
+-			pr_info_once("Max print length exceeded, table data is available at:\n"
+-				     "/sys/firmware/acpi/tables/data/BERT");
++			printed++;
++		} else {
++			skipped++;
++		}
+ 
+ 		/*
+ 		 * Because the boot error source is "one-time polled" type,
+@@ -75,6 +87,9 @@ static void __init bert_print_all(struct acpi_bert_region *region,
+ 		estatus = (void *)estatus + estatus_len;
+ 		remain -= estatus_len;
+ 	}
++
++	if (skipped)
++		pr_info(HW_ERR "Skipped %d error records\n", skipped);
+ }
+ 
+ static int __init setup_bert_disable(char *str)
+-- 
+2.35.3
+
