@@ -2,136 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AD44554A72
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 15:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC6D9554AC8
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 15:19:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350871AbiFVNII (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 09:08:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
+        id S1350274AbiFVNTx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 09:19:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350684AbiFVNIH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 09:08:07 -0400
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFB7634F;
-        Wed, 22 Jun 2022 06:08:04 -0700 (PDT)
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25MAmnr9022149;
-        Wed, 22 Jun 2022 08:07:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=PODMain02222019;
- bh=OX/zp2cZpxgV2NdCHL6oybnWUUgNbKlj6YCC3UjHsj8=;
- b=MlsgOdH4YkjEB0DDKt8BGnqDA5rxtsjnGdphz1xwuB2UY3Me98DJwra2qPc7ODDOekYd
- Tiod9IbwtUVkru6dDgeJsqwbzBDIctt03JPcy1A+C29y/OTbJ1VAfvW2ogoDIKXm5UGq
- aTvXLSRn+mY9Tatq+fqJLrzWXZ98Z87Rhr89+wCDFVpObX1f2v9R0Pv04AjOE39Nlo6l
- 6c4PDEsLzy3WiP3FRKP12vYsNFG1m8qry8YLToDG3ftOMxQj+17VAdPYLx3tzD2TNqJK
- hGXEqkYfTMfLup4BHuTa0JBT8Op4NB2zyNU/Du7U6Vrc+NUp9cjNBWLSs0uxfX+RPhAW 5g== 
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3gsc41d2wc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 22 Jun 2022 08:07:57 -0500
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Wed, 22 Jun
- 2022 14:07:55 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.28 via Frontend
- Transport; Wed, 22 Jun 2022 14:07:55 +0100
-Received: from sbinding-cirrus-dsktp.ad.cirrus.com (unknown [198.90.238.151])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 440627C;
-        Wed, 22 Jun 2022 13:07:55 +0000 (UTC)
-From:   Stefan Binding <sbinding@opensource.cirrus.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>
-CC:     <linux-acpi@vger.kernel.org>, <alsa-devel@alsa-project.org>,
-        <linux-kernel@vger.kernel.org>, <patches@opensource.cirrus.com>,
-        Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: [PATCH v1 2/2] ASoC: cs35l41: Read System Name from ACPI _SUB to identify firmware
-Date:   Wed, 22 Jun 2022 14:07:30 +0100
-Message-ID: <20220622130730.1573747-3-sbinding@opensource.cirrus.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220622130730.1573747-1-sbinding@opensource.cirrus.com>
-References: <20220622130730.1573747-1-sbinding@opensource.cirrus.com>
+        with ESMTP id S242604AbiFVNTw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 09:19:52 -0400
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFAD82F01F;
+        Wed, 22 Jun 2022 06:19:51 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-31772f8495fso161616017b3.4;
+        Wed, 22 Jun 2022 06:19:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JqOQ1mRCFn6Ej3pl8pj+iDE9h6BQbGKpcTypXijaYr0=;
+        b=0tQ8NA9u/3hnZsK81/BvJnnUSvICkO0g/Wp0ibQM1F3Odcv7enRTgwzVAALGz4rYeh
+         C8MihQmlQMiN0Yk0d4+e3cVfMupzbyKvlc3K2ct48spQ7WTEdTqYMoOr/A7N8wbOpeet
+         D5c2BDN6q1iW1OJuv5PvYbArmcd5wOhrVUcIFew84qZWc9StjxLQxDiG+nTso0HNR1x8
+         Zx8Ty8GWq1QiIRaFf/HiXZI7m8jt+6NDSrGxZzChDRfIUUuWboXa1rOuvXiRuzc0jvsL
+         6VN7xjrtq23gNOOjWbffMIgg/7zjOoPIO2j12C9QnyE7ZbtiAJZhPXs0Nn2VTRCy3zj9
+         5PRA==
+X-Gm-Message-State: AJIora8SE7fkp9w1HUvTN7+Lf63bcKnkun4/A+orbxayWH3IrBebTeKw
+        BDs/c8rKzRaHmmXdNc6Y++obyTTSFjdEDHd4E8E=
+X-Google-Smtp-Source: AGRyM1sn53Rt6HkhjVlMSbjNcbNLgVPQ9GwJB20ZiQABo8pxntYhAsovfB2VWcuhTxwAeGHL8rNEKt8B/xh/xVXVPjM=
+X-Received: by 2002:a0d:ed83:0:b0:317:50bb:5463 with SMTP id
+ w125-20020a0ded83000000b0031750bb5463mr4185434ywe.149.1655903990990; Wed, 22
+ Jun 2022 06:19:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: d4Xer4K1ffLl8TVON-jfV70-VNLBo7W_
-X-Proofpoint-ORIG-GUID: d4Xer4K1ffLl8TVON-jfV70-VNLBo7W_
-X-Proofpoint-Spam-Reason: safe
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220622130730.1573747-1-sbinding@opensource.cirrus.com> <20220622130730.1573747-2-sbinding@opensource.cirrus.com>
+In-Reply-To: <20220622130730.1573747-2-sbinding@opensource.cirrus.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 22 Jun 2022 15:19:40 +0200
+Message-ID: <CAJZ5v0ij63HVTTWUBwv9WiWhCfKewJR48reUaGN3nvbzoS31tw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] ACPI: utils: Add api to read _SUB from ACPI
+To:     Stefan Binding <sbinding@opensource.cirrus.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        patches@opensource.cirrus.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When loading firmware, wm_adsp uses a number of parameters to
-determine the path of the firmware and tuning files to load.
-One of these parameters is system_name.
-Add support in cs35l41 to read this system name from the ACPI
-_SUB ID in order to uniquely identify the firmware and tuning
-mapped to a particular system.
+On Wed, Jun 22, 2022 at 3:08 PM Stefan Binding
+<sbinding@opensource.cirrus.com> wrote:
+>
+> Add a wrapper function to read the _SUB string from ACPI.
+>
+> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+> ---
+>  drivers/acpi/utils.c | 26 ++++++++++++++++++++++++++
+>  include/linux/acpi.h |  8 ++++++++
+>  2 files changed, 34 insertions(+)
+>
+> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+> index 3a9773a09e19..5d1bdb79e372 100644
+> --- a/drivers/acpi/utils.c
+> +++ b/drivers/acpi/utils.c
+> @@ -291,6 +291,32 @@ int acpi_get_local_address(acpi_handle handle, u32 *addr)
+>  }
+>  EXPORT_SYMBOL(acpi_get_local_address);
+>
+> +int acpi_get_sub(acpi_handle handle, char *sub, size_t size)
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
----
- sound/soc/codecs/cs35l41.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+I'd call it acpi_get_subsystem_id().
 
-diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index 8766e19d85f1..5df04a2ab5a3 100644
---- a/sound/soc/codecs/cs35l41.c
-+++ b/sound/soc/codecs/cs35l41.c
-@@ -6,6 +6,7 @@
- //
- // Author: David Rhodes <david.rhodes@cirrus.com>
- 
-+#include <linux/acpi.h>
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/init.h>
-@@ -1142,6 +1143,28 @@ static int cs35l41_dsp_init(struct cs35l41_private *cs35l41)
- 	return ret;
- }
- 
-+static int cs35l41_probe_acpi(struct cs35l41_private *cs35l41)
-+{
-+	struct acpi_device *adev;
-+	int ret;
-+	char sub[ACPI_MAX_SUB_BUF_SIZE];
-+
-+	adev = ACPI_COMPANION(cs35l41->dev);
-+	/* If there is no ACPI_COMPANION, there is no ACPI for this system, return 0 */
-+	if (!adev)
-+		return 0;
-+
-+	ret = acpi_get_sub(adev->handle, sub, sizeof(sub));
-+	if (ret < 0)
-+		return ret;
-+
-+	cs35l41->dsp.system_name = devm_kstrdup(cs35l41->dev, sub, GFP_KERNEL);
-+	if (!cs35l41->dsp.system_name)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
- int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *hw_cfg)
- {
- 	u32 regid, reg_revid, i, mtl_revid, int_status, chipid_match;
-@@ -1270,6 +1293,10 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
- 		goto err;
- 	}
- 
-+	ret = cs35l41_probe_acpi(cs35l41);
-+	if (ret < 0)
-+		goto err;
-+
- 	ret = cs35l41_dsp_init(cs35l41);
- 	if (ret < 0)
- 		goto err;
--- 
-2.25.1
+> +{
+> +       struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+> +       union acpi_object *obj;
+> +       acpi_status status;
+> +       int ret;
+> +
+> +       status = acpi_evaluate_object(handle, METHOD_NAME__SUB, NULL, &buffer);
+> +       if (!ACPI_SUCCESS(status)) {
 
+Typically, ACPI_FAILURE() is used in checks like this.
+
+> +               acpi_handle_debug(handle, "Reading ACPI _SUB failed: %#x\n", status);
+
+It would be enough to say "_SUB evaluation failed".
+
+> +               return -ENOENT;
+
+Why not use -ENODATA here?
+
+> +       }
+> +
+> +       obj = buffer.pointer;
+> +       if (obj->type == ACPI_TYPE_STRING) {
+> +               ret = strscpy(sub, obj->string.pointer, size);
+
+It may be simpler to allocate the memory here so that callers don't
+have to worry about it.
+
+Also, this is expected to be a proper device ID, not just a string, so
+maybe some validation checks could be made here?
+
+> +       } else {
+> +               acpi_handle_warn(handle, "Warning ACPI _SUB did not return a string\n");
+> +               ret = -EINVAL;
+> +       }
+> +       acpi_os_free(buffer.pointer);
+> +
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_get_sub);
+> +
+>  acpi_status
+>  acpi_evaluate_reference(acpi_handle handle,
+>                         acpi_string pathname,
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 4f82a5bc6d98..9bf18adf5920 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -21,6 +21,8 @@
+>  #endif
+>  #include <acpi/acpi.h>
+>
+> +#define ACPI_MAX_SUB_BUF_SIZE  9
+> +
+>  #ifdef CONFIG_ACPI
+>
+>  #include <linux/list.h>
+> @@ -762,6 +764,7 @@ static inline u64 acpi_arch_get_root_pointer(void)
+>  #endif
+>
+>  int acpi_get_local_address(acpi_handle handle, u32 *addr);
+> +int acpi_get_sub(acpi_handle handle, char *sub, size_t size);
+>
+>  #else  /* !CONFIG_ACPI */
+>
+> @@ -1023,6 +1026,11 @@ static inline int acpi_get_local_address(acpi_handle handle, u32 *addr)
+>         return -ENODEV;
+>  }
+>
+> +static int acpi_get_sub(acpi_handle handle, char *sub, size_t size)
+> +{
+> +       return -ENODEV;
+> +}
+> +
+>  static inline int acpi_register_wakeup_handler(int wake_irq,
+>         bool (*wakeup)(void *context), void *context)
+>  {
+> --
