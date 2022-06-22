@@ -2,59 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75FC3554833
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2B85548A2
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:15:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357346AbiFVJKQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 05:10:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34084 "EHLO
+        id S230409AbiFVJ71 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 05:59:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357165AbiFVJJs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 05:09:48 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3162638BD5
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 02:08:27 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id n15so6927658ljg.8
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 02:08:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=zwKGgI8hUtI5va3wPSJUOFhw3ATUoJSW/f2ATiDG5G8=;
-        b=rC3FBYLiX6fFBi3tbH92J9KqPuX18ZzM5T8F13vXIgHu3hsGX37Z03/fxQylAI6yfA
-         MQTCWxqUpfSIRR4FO6BjxmvHCrYalH60w96MIwV4KvKGe/+B6pUczm0B7GMoU/NWAi4x
-         yvqBf0JNCu8CwmKXRFFKsUPymQw7O4YY+aZAOuZuIZECeZUUIv4CJ8kKMA88SresY7nM
-         7yuw2v97f29OQR42dKHO8Sdd9aAOjbZr/Rpc+CqiOgyue3Tc3evAH+U5aeFCEiVZX4m/
-         umuY20P2RQDQN3eClcw8KSZm9HIWxAYN0lrZHjZOxUGVjxOEcYMJTJxiOIeRA1K+eI8L
-         PGgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=zwKGgI8hUtI5va3wPSJUOFhw3ATUoJSW/f2ATiDG5G8=;
-        b=g/2Rzm7XHYGlIOhPR47oJ0DKPZ3UUs5eCD40FaBvSqktYsvcnqguHfeb9bRWtksGJb
-         JldZ01SvnfkW2dUzlm86FsZYUebVr4/9HkS4LtEDWH9XOo45vEjonOfR9gFzTDYrvkQv
-         qp7BafchNa3dnISfhxSuQE2XylVkrXsPSai1YYmh8NWb9DirdzSUCkK2jxUQIMO671Kw
-         XphjIF0O5m+JgCAat0usXY3W/BSl2LCG4B2RBsNlKSxiOyJEwEicAcV1YMsnbx919lts
-         mEeL9qqr/qzNARq5wGFCFw35ZFWMIuHOdhbKFMO3z3JC1gTeyPhfpIfMsJQH//SeFZ+9
-         pllg==
-X-Gm-Message-State: AJIora++/jQqHWK6QnvV8r8mCaSRYjLmImNLPgJWP6V5HL79rgasurRz
-        Kf0V3Cfv+56HiuKFvNB00+VJ2Fy0HWPxkjFOTg0yFw==
-X-Google-Smtp-Source: AGRyM1uLAehIaM0118d07ZGVTcBN+8vUVlSuyEVYaYw4d4OUB3fyoJlWcBYQgw73vlkC4qLxOnnh+IXMEGFbdQtYokw=
-X-Received: by 2002:a2e:bf05:0:b0:247:b233:cfba with SMTP id
- c5-20020a2ebf05000000b00247b233cfbamr1255843ljr.131.1655888905245; Wed, 22
- Jun 2022 02:08:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220620150225.1307946-1-mw@semihalf.com> <20220620150225.1307946-10-mw@semihalf.com>
- <YrDO05TMK8SVgnBP@lunn.ch> <YrGm2jmR7ijHyQjJ@smile.fi.intel.com>
- <YrGpDgtm4rPkMwnl@lunn.ch> <YrGukfw4uiQz0NpW@smile.fi.intel.com>
-In-Reply-To: <YrGukfw4uiQz0NpW@smile.fi.intel.com>
-From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Wed, 22 Jun 2022 11:08:13 +0200
-Message-ID: <CAPv3WKf_2QYh0F2LEr1DeErvnMeQqT0M5t40ROP2G6HSUwKpQQ@mail.gmail.com>
-Subject: Re: [net-next: PATCH 09/12] Documentation: ACPI: DSD: introduce DSA description
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
+        with ESMTP id S237443AbiFVJ7Y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 05:59:24 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D5F13A1AF;
+        Wed, 22 Jun 2022 02:59:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+        Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+        In-Reply-To:References; bh=UBYcbr5Blkb1m1XbSmhN6zU/XE1KbkQTUN0OktUTIP8=; b=H+
+        64lTmas6Byuhd/uije30ow2tTek3n1bIjT2R/eSXCX4uXU7gP+GlF4mu89gZr6rhnK/4rd18a6qgh
+        9C7r7PcdWKuFnHOZ0M+WwZAXGQq7x8O3dTh3NatD96pdKgtK/LSO8YXnXtlMWF7sijtW9Hw1aENzX
+        dwNNF+cFxmIeVz4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1o3wal-007ppS-Mh; Wed, 22 Jun 2022 11:24:07 +0200
+Date:   Wed, 22 Jun 2022 11:24:07 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Marcin Wojtas <mw@semihalf.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         netdev <netdev@vger.kernel.org>,
@@ -72,53 +47,81 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Tomasz Nowicki <tn@semihalf.com>,
         Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
         upstream@semihalf.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [net-next: PATCH 09/12] Documentation: ACPI: DSD: introduce DSA
+ description
+Message-ID: <YrLft+BrP2jI5lwp@lunn.ch>
+References: <20220620150225.1307946-1-mw@semihalf.com>
+ <20220620150225.1307946-10-mw@semihalf.com>
+ <YrDO05TMK8SVgnBP@lunn.ch>
+ <YrGm2jmR7ijHyQjJ@smile.fi.intel.com>
+ <YrGpDgtm4rPkMwnl@lunn.ch>
+ <YrGukfw4uiQz0NpW@smile.fi.intel.com>
+ <CAPv3WKf_2QYh0F2LEr1DeErvnMeQqT0M5t40ROP2G6HSUwKpQQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPv3WKf_2QYh0F2LEr1DeErvnMeQqT0M5t40ROP2G6HSUwKpQQ@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-wt., 21 cze 2022 o 13:42 Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
->
-> On Tue, Jun 21, 2022 at 01:18:38PM +0200, Andrew Lunn wrote:
-> > On Tue, Jun 21, 2022 at 02:09:14PM +0300, Andy Shevchenko wrote:
-> > > On Mon, Jun 20, 2022 at 09:47:31PM +0200, Andrew Lunn wrote:
->
-> ...
->
-> > > > > +        Name (_CRS, ResourceTemplate ()
-> > > > > +        {
-> > > > > +            Memory32Fixed (ReadWrite,
-> > > > > +                0xf212a200,
-> > > > > +                0x00000010,
-> > > >
-> > > > What do these magic numbers mean?
-> > >
-> > > Address + Length, it's all described in the ACPI specification.
+On Wed, Jun 22, 2022 at 11:08:13AM +0200, Marcin Wojtas wrote:
+> wt., 21 cze 2022 o 13:42 Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> napisał(a):
 > >
-> > The address+plus length of what? This device is on an MDIO bus. As
-> > such, there is no memory! It probably makes sense to somebody who
-> > knows ACPI, but to me i have no idea what it means.
->
-> I see what you mean. Honestly I dunno what the device this description is=
- for.
-> For the DSA that's behind MDIO bus? Then it's definitely makes no sense a=
-nd
-> MDIOSerialBus() resources type is what would be good to have in ACPI
-> specification.
->
+> > On Tue, Jun 21, 2022 at 01:18:38PM +0200, Andrew Lunn wrote:
+> > > On Tue, Jun 21, 2022 at 02:09:14PM +0300, Andy Shevchenko wrote:
+> > > > On Mon, Jun 20, 2022 at 09:47:31PM +0200, Andrew Lunn wrote:
+> >
+> > ...
+> >
+> > > > > > +        Name (_CRS, ResourceTemplate ()
+> > > > > > +        {
+> > > > > > +            Memory32Fixed (ReadWrite,
+> > > > > > +                0xf212a200,
+> > > > > > +                0x00000010,
+> > > > >
+> > > > > What do these magic numbers mean?
+> > > >
+> > > > Address + Length, it's all described in the ACPI specification.
+> > >
+> > > The address+plus length of what? This device is on an MDIO bus. As
+> > > such, there is no memory! It probably makes sense to somebody who
+> > > knows ACPI, but to me i have no idea what it means.
+> >
+> > I see what you mean. Honestly I dunno what the device this description is for.
+> > For the DSA that's behind MDIO bus? Then it's definitely makes no sense and
+> > MDIOSerialBus() resources type is what would be good to have in ACPI
+> > specification.
+> >
+> 
+> It's not device on MDIO bus, but the MDIO controller's register itself
 
-It's not device on MDIO bus, but the MDIO controller's register itself
-(this _CSR belongs to the parent, subnodes do not refer to it in any
-way). The child device requires only _ADR (or whatever else is needed
-for the case the DSA device is attached to SPI/I2C controllers).
+Ah. So this is equivalent to
 
-Best regards,
-Marcin
+                CP11X_LABEL(mdio): mdio@12a200 {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        compatible = "marvell,orion-mdio";
+                        reg = <0x12a200 0x10>;
+                        clocks = <&CP11X_LABEL(clk) 1 9>, <&CP11X_LABEL(clk) 1 5>,
+                                 <&CP11X_LABEL(clk) 1 6>, <&CP11X_LABEL(clk) 1 18>;
+                        status = "disabled";
+                };
+
+DT seems a lot more readable, "marvell,orion-mdio" is a good hint that
+device this is. But maybe it is more readable because that is what i'm
+used to.
+
+Please could you add a lot more comments. Given that nobody currently
+actually does networking via ACPI, we have to assume everybody trying
+to use it is a newbie, and more comments are better than less.
+
+Thanks
+	Andrew
