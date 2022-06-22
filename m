@@ -2,105 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45730554C43
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 16:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC600554CBC
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 16:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357952AbiFVOKY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 10:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60456 "EHLO
+        id S1358198AbiFVOUM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 10:20:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357939AbiFVOKX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 10:10:23 -0400
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E172338BFD
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 07:10:18 -0700 (PDT)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-317710edb9dso164394577b3.0
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 07:10:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lIqG+aR0A6Wet03mdwIoz78Ax35Y2zEF9BoEJgp3axM=;
-        b=ccN0FIuOm6NCs5fMxudrBlGjdBHj7qSf1fbISgYvm6bygnCJ/yis6tEjV28PAyX+aP
-         p+KrHdArUIJtVMmypYyXbURDHR8HTyrg6HTaZ34ArIa+vnhe+KrhpIc0t4sAUG+xWylm
-         84aOh5ZA552wUSLq9zm5Cncp4/vEmSNpazsMH3dak74duegZ0HAcnUJ/DLqe4JsYmKwI
-         NCPVzeu9IJ78a2Tje6KrdUipmPuAz/AOo53hlLjFIpD2qMh3CoqOL+Xu0oRpNn37aU/m
-         j7D1fMAQjEOFO2H9lvC+2WHc6fZ4IeJz4KzwjzQ5ieCBlxBoAAVb/2aNBYYfDyAUpbj2
-         jU8g==
-X-Gm-Message-State: AJIora+5tZz1MsFTvXcA+gUS0bkXNW7k7LGEnft/j+cvYbhj0f660Fjx
-        RoDav+/5cMbBcX5cPWV/OpRzZAhev2Gg02dOhGcKOwdn
-X-Google-Smtp-Source: AGRyM1vvVPDK1Zpc831zAfOsxRT2OB/S+6XgOlQZb1M1Mncy9ucyvP5OsS7+Vg+Xcv9G+AWqaFIbCEtD+6XHvSLEOqc=
-X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
- b145-20020a811b97000000b002db640f49d8mr4443200ywb.326.1655907017987; Wed, 22
- Jun 2022 07:10:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220616090106.2154906-1-sudeep.holla@arm.com>
- <20220616090106.2154906-2-sudeep.holla@arm.com> <CAJZ5v0j0Ayb3KGpfxuuXH9CHUrt8rupVg5OK=r6hqZQEYm3jFA@mail.gmail.com>
- <20220622140042.bjg72oxjo43l2rwo@bogus>
-In-Reply-To: <20220622140042.bjg72oxjo43l2rwo@bogus>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 22 Jun 2022 16:10:06 +0200
-Message-ID: <CAJZ5v0huYTjyDnPBjSth1BdZcKQ3KhMtH7GC-GaL7gpeg5HTiA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPICA: Add support for FFH Opregion special context data
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        with ESMTP id S1358175AbiFVOUL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 10:20:11 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D009B5FB6;
+        Wed, 22 Jun 2022 07:20:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655907610; x=1687443610;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FXE8o8UOWuK9nf2Bhh8e/wPro8z+x8Ye/C+F7s9tcSA=;
+  b=mBVZF5WJ8pfZYE1mUUrE6BpQ0086cxrsoLEVMR9k2evSljpavn7REb5T
+   z1v+Jnd0Go3z8sKSdW9YdrejUXclshYZMRuzZO5LuZPOO/L9urYVi7LZc
+   wox3Joq+3VAuvCvQ5EM5wCvYd1tXofNH8UEO426s6g204RHxrG6pqJHRr
+   nVHsDAaEuOywVTFTPnAv/d1D2/CcDxDgEMy87xEp3EXIGh3TPikFGM5Cu
+   BaFI7LC+Hdn+l/4ixreldOJKO9VC5veYxjY2Hu/CvWBwRpZQ3rp8nTeZZ
+   FF4d5GZWHvAMXXbqKmiLHBRoD+FgvtLf4bLDtFX7MUIzqvE3fPQoaLl2c
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10385"; a="344418822"
+X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
+   d="scan'208";a="344418822"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 07:20:10 -0700
+X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
+   d="scan'208";a="730366946"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 07:20:05 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1o41D7-000sN3-B2;
+        Wed, 22 Jun 2022 17:20:01 +0300
+Date:   Wed, 22 Jun 2022 17:20:01 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Marcin Wojtas <mw@semihalf.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        netdev <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, vivien.didelot@gmail.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Grzegorz Bernacki <gjb@semihalf.com>,
+        Grzegorz Jaszczyk <jaz@semihalf.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        upstream@semihalf.com
+Subject: Re: [net-next: PATCH 09/12] Documentation: ACPI: DSD: introduce DSA
+ description
+Message-ID: <YrMlEcKwpTmR5qj6@smile.fi.intel.com>
+References: <20220620150225.1307946-1-mw@semihalf.com>
+ <20220620150225.1307946-10-mw@semihalf.com>
+ <YrDO05TMK8SVgnBP@lunn.ch>
+ <YrGm2jmR7ijHyQjJ@smile.fi.intel.com>
+ <YrGpDgtm4rPkMwnl@lunn.ch>
+ <YrGukfw4uiQz0NpW@smile.fi.intel.com>
+ <CAPv3WKf_2QYh0F2LEr1DeErvnMeQqT0M5t40ROP2G6HSUwKpQQ@mail.gmail.com>
+ <YrL3DQD92ijLam2V@smile.fi.intel.com>
+ <YrL7Z6/ghTO/9wlx@lunn.ch>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YrL7Z6/ghTO/9wlx@lunn.ch>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 22, 2022 at 4:01 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
->
-> On Wed, Jun 22, 2022 at 02:50:08PM +0200, Rafael J. Wysocki wrote:
-> > On Thu, Jun 16, 2022 at 11:01 AM Sudeep Holla <sudeep.holla@arm.com> wrote:
-> > >
-> > > FFH(Fixed Function Hardware) Opregion is approved to be added in ACPIC 6.5 via
-> >
-> > s/ACPIC/ACPI/
-> >
->
-> Fixed and pushed in ACPICA PR.
->
-> > > code first approach[1]. It requires special context data similar to GPIO and
-> > > Generic Serial Bus as it needs to know platform specific offset and length.
-> > >
-> > > Add support for the special context data needed by FFH Opregion.
-> > >
-> > > FFH OpRegion enables advanced use of FFH on some architectures. For example,
-> > > it could be used to easily proxy AML code to architecture-specific behavior
-> > > (to ensure it is OS initiated)
-> > >
-> > > Actual behavior of FFH is ofcourse architecture specific and depends on
-> > > the FFH bindings. The offset and length could have arch specific meaning
-> > > or usage.
-> > >
-> > > [1] https://bugzilla.tianocore.org/show_bug.cgi?id=3598
-> > >
-> > > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> >
-> > This looks reasonable to me and I see that you've already submitted a
-> > pull request to the upstream ACPICA.
->
-> I assume you would prefer me to post the other 2 patches once this lands
-> in your -next.
+On Wed, Jun 22, 2022 at 01:22:15PM +0200, Andrew Lunn wrote:
+> > > It's not device on MDIO bus, but the MDIO controller's register itself
+> > > (this _CSR belongs to the parent, subnodes do not refer to it in any
+> > > way). The child device requires only _ADR (or whatever else is needed
+> > > for the case the DSA device is attached to SPI/I2C controllers).
+> > 
+> > More and more the idea of standardizing the MDIOSerialBus() resource looks
+> > plausible. The _ADR() usage is a bit grey area in ACPI specification. Maybe
+> > someone can also make it descriptive, so Microsoft and others won't utilize
+> > _ADR() in any level of weirdness.
+> 
+> I don't know if it makes any difference, but there are two protocols
+> spoken over MDIO, c22 and c45, specified in clause 22 and clause 45 of
+> the 802.3 specification. In some conditions, you need to specify which
+> protocol to speak to a device at a particular address. In DT we
+> indicate this with the compatible string, when maybe it should really
+> be considered as an extension of the address.
+> 
+> If somebody does produce a draft for MDIOSerialBus() i'm happy to
+> review it.
 
-That would be ideal, but technically I can apply an ACPICA patch in
-advance once the corresponding pull request has been integrated
-upstream.
+I also can review it. Marcin, would it be hard for you to prepare a formal
+proposal for ACPI specification?
 
-> Worst case I would like to get the generic patch in along
-> with ACPICA changes, I can then route the arm64 specific next cycle if it
-> gets too late for v5.20
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Let's try the normal flow and worry about workarounds if it gets late.
+
