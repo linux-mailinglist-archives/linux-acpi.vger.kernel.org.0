@@ -2,60 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A085548FB
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EDC25547B3
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 14:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357398AbiFVLrU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 07:47:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57510 "EHLO
+        id S1357072AbiFVMFZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 08:05:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355742AbiFVLrT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 07:47:19 -0400
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8B7335256;
-        Wed, 22 Jun 2022 04:47:17 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id u9so19580412ybq.3;
-        Wed, 22 Jun 2022 04:47:17 -0700 (PDT)
+        with ESMTP id S234389AbiFVMFX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 08:05:23 -0400
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3265D3DA7B;
+        Wed, 22 Jun 2022 05:05:21 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-317710edb9dso160620597b3.0;
+        Wed, 22 Jun 2022 05:05:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9G0m5h5tEL+v3rqcpmcGX0SX814uyxHrxPQmImDaRts=;
-        b=WlJaD6vtA5MtJAwFtitGUPSzlmlJ1BS4V1u78iX5kPv5q0zLykM8eKVAKoem25tJAf
-         syBh8O2kcXNVXNwY+51Dbe2vLwlhoXZOlvhlEgyrenNNyHMzRxWHT1bSxxnfYTze7x4q
-         yMVh0iRZEwtiCbN/VqoOrfuyN15GDA4ikTGEngffnCnJQ+sQR3DwMrwTCOULf3BIVXb8
-         cIu+w270nhKwbE+wqq0YxfEycDbM+FCj8nCAG10dVQvs8yhHVzu1kSg6EaZEuzJgyQqe
-         403scAfyM1n0juBOKJxoH49wIgaD8AlCrNHBbFJJF35DTo+3I/QAUXHioMVw/73mQFdM
-         tfmg==
-X-Gm-Message-State: AJIora+vJXC0s1gBExVVWDx7oN9Qob775TrroKPH1kOkBk94RQxG6UEz
-        osJQiO/RVBs1X2h7L+aZ6o51ui0ShKZg92MfiTM=
-X-Google-Smtp-Source: AGRyM1uQpWaGytZj64Anw2lr4RSLcvw2joZ2mbIGJ5VWxqoBTAcGKfxy4p98mpKgqE/LwF+k96Tkcc5Whw/4hlteUGA=
-X-Received: by 2002:a25:d841:0:b0:668:ab2f:7b01 with SMTP id
- p62-20020a25d841000000b00668ab2f7b01mr3256535ybg.482.1655898437141; Wed, 22
- Jun 2022 04:47:17 -0700 (PDT)
+        bh=yI4NkJ9tQG3vou1hx4UHFZoM6ZFYXNs0D2EVG0DuBZk=;
+        b=UM+X2l6xFPOy6XVwl53mVLkPeB7e/5m7gIfFRrWNnaF4HJqSwB3eZzZnTE91VODvpu
+         9r+3bYgZxuDvDFEWdkdpeUloUPu3wT5wK5r93zG9PKRkgeMf3Dw2ObGffXJE+Ye0kdjm
+         QYpU+FoBBwC2+MPI7IRpHJTmEzn5B2GH4Ldte/3m9KDgzfPy+W5hD6Im1LXQoSh+UOIq
+         DIg8D3v2TAug9qbvXA5zkbILL39U+otZ13WmFlxRGb1J965hms3Ga3O2y1JIpAUQqF1J
+         VPBDzeXuy5M27r/oqKpUQkX6XgbVQndVDwPPtdJQiWgq1ha24X+8Cd3xIQQWMJwF9QhZ
+         g9Mg==
+X-Gm-Message-State: AJIora97M1Fky5dHha4vNq3FFxx9Kryi5L+7urL2sgajBCZuqvy6ULpR
+        6AVMBu63Zo+Qb+HHXsMYW+KU7tgH6c6Y1DkCo30=
+X-Google-Smtp-Source: AGRyM1urPoZoQ3xrgU5g4oEtCQQYk48bScWTjyrE2eQR6nE0SK2a5mzoe+H9CGXazISsucOjFSDQJfs814O9L34ywCk=
+X-Received: by 2002:a81:24c7:0:b0:314:1e60:a885 with SMTP id
+ k190-20020a8124c7000000b003141e60a885mr3881609ywk.301.1655899520432; Wed, 22
+ Jun 2022 05:05:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220621192034.3332546-1-sudeep.holla@arm.com> <20220621192034.3332546-2-sudeep.holla@arm.com>
-In-Reply-To: <20220621192034.3332546-2-sudeep.holla@arm.com>
+References: <20220620150225.1307946-1-mw@semihalf.com> <20220620150225.1307946-9-mw@semihalf.com>
+ <YrDFmw4rziGQJCAu@lunn.ch>
+In-Reply-To: <YrDFmw4rziGQJCAu@lunn.ch>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 22 Jun 2022 13:47:06 +0200
-Message-ID: <CAJZ5v0huqb1+RGD8De0EDM4xbjqin6wCBUsh6pcR=W9rXWw8JA@mail.gmail.com>
-Subject: Re: [PATCH v4 01/20] ACPI: PPTT: Use table offset as fw_token instead
- of virtual address
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Atish Patra <atishp@atishpatra.org>,
-        Atish Patra <atishp@rivosinc.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Qing Wang <wangqing@vivo.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Wed, 22 Jun 2022 14:05:09 +0200
+Message-ID: <CAJZ5v0g4q8N5wMgk7pRYpYoCLPQoH==Z+nrM0JLyFXSgF9y0+Q@mail.gmail.com>
+Subject: Re: [net-next: PATCH 08/12] ACPI: scan: prevent double enumeration of
+ MDIO bus children
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Marcin Wojtas <mw@semihalf.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        David Miller <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Grzegorz Bernacki <gjb@semihalf.com>,
+        Grzegorz Jaszczyk <jaz@semihalf.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        upstream@semihalf.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -67,53 +75,26 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 21, 2022 at 9:20 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
+On Mon, Jun 20, 2022 at 9:08 PM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> There is need to use the cache sharing information quite early during
-> the boot before the secondary cores are up and running. The permanent
-> memory map for all the ACPI tables(via acpi_permanent_mmap) is turned
-> on in acpi_early_init() which is quite late for the above requirement.
+> On Mon, Jun 20, 2022 at 05:02:21PM +0200, Marcin Wojtas wrote:
+> > The MDIO bus is responsible for probing and registering its respective
+> > children, such as PHYs or other kind of devices.
+> >
+> > It is required that ACPI scan code should not enumerate such
+> > devices, leaving this task for the generic MDIO bus routines,
+> > which are initiated by the controller driver.
 >
-> As a result there is possibility that the ACPI PPTT gets mapped to
-> different virtual addresses. In such scenarios, using virtual address as
-> fw_token before the acpi_permanent_mmap is enabled results in different
-> fw_token for the same cache entity and hence wrong cache sharing
-> information will be deduced based on the same.
->
-> Instead of using virtual address, just use the table offset as the
-> unique firmware token for the caches. The same offset is used as
-> ACPI identifiers if the firmware has not set a valid one for other
-> entries in the ACPI PPTT.
->
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> ---
->  drivers/acpi/pptt.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> Hi Rafael,
->
-> If you are happy with this change, can you provide Ack, so that it can be
-> merged together with other changes ?
+> I suppose the question is, should you ignore the ACPI way of doing
+> things, or embrace the ACPI way?
 
-No objections:
+What do you mean by "the ACPI way"?
 
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+> At least please add a comment why the ACPI way is wrong, despite this
+> being an ACPI binding.
 
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index 701f61c01359..763f021d45e6 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -437,7 +437,8 @@ static void cache_setup_acpi_cpu(struct acpi_table_header *table,
->                 pr_debug("found = %p %p\n", found_cache, cpu_node);
->                 if (found_cache)
->                         update_cache_properties(this_leaf, found_cache,
-> -                                               cpu_node, table->revision);
-> +                                               ACPI_TO_POINTER(ACPI_PTR_DIFF(cpu_node, table)),
-> +                                               table->revision);
->
->                 index++;
->         }
-> --
-> 2.36.1
->
+The question really is whether or not it is desirable to create
+platform devices for all of the objects found in the ACPI tables that
+correspond to the devices on the MDIO bus.
+
+I don't think it is, so it should be avoided.
