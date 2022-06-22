@@ -2,98 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60866554B73
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 15:39:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 168D4554C15
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jun 2022 16:02:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357272AbiFVNjo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 09:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
+        id S1354489AbiFVOCC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 10:02:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356463AbiFVNik (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 09:38:40 -0400
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A764F6579;
-        Wed, 22 Jun 2022 06:38:39 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-31780ad7535so136828197b3.8;
-        Wed, 22 Jun 2022 06:38:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SWQHo4/Ll0U0MjHnO1yt+1E/OpL+I/MzfVL3cp/Dgl4=;
-        b=bZ8egskKF1xMps8RZY/NhbRj+jYJx5az6SEnJkGDk+gBDfNbKROyAiI5fV/u2v6GHK
-         SGUa2Rv+jwJ2qTaVeS2dxpfzGmL+TI0mxFqhCLCilo2Wv5aiiTlJ0rtvSHf9OfvKWren
-         UyXXEu+hJCxHKBWeI0bv5sDM+A15578MhdXvFEPzbkXiKuYi0MS4MnUneylB2S1wWS/1
-         sj3d2LJmINdGvyTA+zKjGEpuEg9NfBBkiu6u/enxFe5jwBemwp++bF5Gd4VVFncqKA1s
-         Xd4l8q7i8VdMm4P/WK5XynBxrc71WUJGbtWAgk0P1Xl0UfSlYmqD2Y+UJm95dK+Q6q91
-         RLPw==
-X-Gm-Message-State: AJIora8yw0HDa58CGmtUKRHKLGBWvsiNLUgunE7sM2KtT9kQrcOiTy74
-        p6WKfdkhjExEQwwO52FyDPSywI4/u0flPO+F4uU=
-X-Google-Smtp-Source: AGRyM1vk7tKbl15XHzt37qDEAfj9o5qy9tpX7zdLtm/RWDK0PLTgSAq3saIwSXfd1oxViFMM8knkflnaLNY2oHXWeGg=
-X-Received: by 2002:a81:68d7:0:b0:318:11df:a40d with SMTP id
- d206-20020a8168d7000000b0031811dfa40dmr4453973ywc.196.1655905118755; Wed, 22
- Jun 2022 06:38:38 -0700 (PDT)
+        with ESMTP id S1357822AbiFVOCA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 10:02:00 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6868837BD1
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 07:01:55 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D7DF1042;
+        Wed, 22 Jun 2022 07:01:55 -0700 (PDT)
+Received: from bogus (unknown [10.57.36.82])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B8DD53F792;
+        Wed, 22 Jun 2022 07:01:53 -0700 (PDT)
+Date:   Wed, 22 Jun 2022 15:00:42 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 1/3] ACPICA: Add support for FFH Opregion special context
+ data
+Message-ID: <20220622140042.bjg72oxjo43l2rwo@bogus>
+References: <20220616090106.2154906-1-sudeep.holla@arm.com>
+ <20220616090106.2154906-2-sudeep.holla@arm.com>
+ <CAJZ5v0j0Ayb3KGpfxuuXH9CHUrt8rupVg5OK=r6hqZQEYm3jFA@mail.gmail.com>
 MIME-Version: 1.0
-References: <bccae278-e735-4681-cb3a-41359e42032b@zhaoxin.com>
-In-Reply-To: <bccae278-e735-4681-cb3a-41359e42032b@zhaoxin.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 22 Jun 2022 15:38:27 +0200
-Message-ID: <CAJZ5v0i78UPYpc9epEOndigxAsj3YVXJJTrQDoX0Dw5p-zpgaQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/cstate: Add Zhaoxin ACPI Cx FFH MWAIT support
-To:     Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        CobeChen@zhaoxin.com, TimGuo@zhaoxin.com, LindaChai@zhaoxin.com,
-        LeoLiu@zhaoxin.com,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0j0Ayb3KGpfxuuXH9CHUrt8rupVg5OK=r6hqZQEYm3jFA@mail.gmail.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Please CC linux-acpi@vger.kernel.org on ACPI-related changes (added now).
+On Wed, Jun 22, 2022 at 02:50:08PM +0200, Rafael J. Wysocki wrote:
+> On Thu, Jun 16, 2022 at 11:01 AM Sudeep Holla <sudeep.holla@arm.com> wrote:
+> >
+> > FFH(Fixed Function Hardware) Opregion is approved to be added in ACPIC 6.5 via
+> 
+> s/ACPIC/ACPI/
+>
 
-On Wed, Jun 22, 2022 at 5:29 AM Tony W Wang-oc <TonyWWang-oc@zhaoxin.com> wrote:
->
-> Recent Zhaoxin CPUs support X86_FEATURE_MWAIT that implies the
-> MONITOR/MWAIT instructions can be used for ACPI Cx state. The BIOS
-> declares Cx state in _CST object to use FFH on Zhaoxin systems. So
-> let function ffh_cstate_init() support Zhaoxin too.
->
-> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-> ---
->   arch/x86/kernel/acpi/cstate.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
-> index 7945eae..d4185e1 100644
-> --- a/arch/x86/kernel/acpi/cstate.c
-> +++ b/arch/x86/kernel/acpi/cstate.c
-> @@ -213,7 +213,9 @@ static int __init ffh_cstate_init(void)
->
->         if (c->x86_vendor != X86_VENDOR_INTEL &&
->             c->x86_vendor != X86_VENDOR_AMD &&
-> -           c->x86_vendor != X86_VENDOR_HYGON)
-> +           c->x86_vendor != X86_VENDOR_HYGON &&
-> +           c->x86_vendor != X86_VENDOR_CENTAUR &&
-> +           c->x86_vendor != X86_VENDOR_ZHAOXIN)
+Fixed and pushed in ACPICA PR.
 
-Centaur is not mentioned in the changelog and it should be.
+> > code first approach[1]. It requires special context data similar to GPIO and
+> > Generic Serial Bus as it needs to know platform specific offset and length.
+> >
+> > Add support for the special context data needed by FFH Opregion.
+> >
+> > FFH OpRegion enables advanced use of FFH on some architectures. For example,
+> > it could be used to easily proxy AML code to architecture-specific behavior
+> > (to ensure it is OS initiated)
+> >
+> > Actual behavior of FFH is ofcourse architecture specific and depends on
+> > the FFH bindings. The offset and length could have arch specific meaning
+> > or usage.
+> >
+> > [1] https://bugzilla.tianocore.org/show_bug.cgi?id=3598
+> >
+> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> 
+> This looks reasonable to me and I see that you've already submitted a
+> pull request to the upstream ACPICA.
 
->                 return -1;
->
->         cpu_cstate_entry = alloc_percpu(struct cstate_entry);
-> --
+I assume you would prefer me to post the other 2 patches once this lands
+in your -next. Worst case I would like to get the generic patch in along
+with ACPICA changes, I can then route the arm64 specific next cycle if it
+gets too late for v5.20
+
+-- 
+Regards,
+Sudeep
