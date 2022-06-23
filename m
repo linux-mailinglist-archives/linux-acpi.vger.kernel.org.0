@@ -2,104 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58C06557CE7
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 15:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D39E557D1B
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 15:34:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230362AbiFWN1I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 09:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38582 "EHLO
+        id S232021AbiFWNeE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 09:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbiFWN1I (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 09:27:08 -0400
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8CFD49CA4;
-        Thu, 23 Jun 2022 06:27:07 -0700 (PDT)
-Received: by mail-yb1-f175.google.com with SMTP id q132so2277258ybg.10;
-        Thu, 23 Jun 2022 06:27:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nxTVkuTRwT7zaUdBEZjmRQEHWHA9MbFr7dx9PzbNS8w=;
-        b=aumTZ1dYKWO6G3HKFPLkcGLIxORRpWlcYb4YSk99REeUE7MLb9DjLSTwSLzKIxRYKp
-         f+e+yKjUPoyq+p+QvnCaZCW+ke//fNuSJMXiqYnK29BUSTa0B1tPsZYF8r7TTjAqiEFo
-         rblK4QrzdC/1BClJ5cgjkHGdy1BWezfjg2rfPvv9RZMF3gQTDCGhtFB+BYVNWwqM+XD3
-         47wh5WKvVE70ShI0+5BgXnfm5K7jioy0xe0scdfzAEjB6YrdtOzNlyg7tNdijltxXcBU
-         XOhm+wbIe5Ql/OpDQSNKQPi9r74GjgGvJG/Ge/BXrtR3LhlUOlJMMsfYH7SLtFtg/q/x
-         hgJw==
-X-Gm-Message-State: AJIora/D2EZHiUrYRIKdWbVY4hzj2uRbQhghLfsF8V7k5b8vkHeCJq1e
-        UkdU5WCW/rOcC8frXiVcXf2hshO5UP7ny5iPjU/ZQoWk
-X-Google-Smtp-Source: AGRyM1tHqoIBXvJ/qKXGJAn7vF6/FjaDbr0XBkhwJ/ueBXNgIfPFWwxORM0OiHCx5aXQGGQ+VCKyt/V80YugRpmswUI=
-X-Received: by 2002:a25:6b50:0:b0:64f:4b33:664 with SMTP id
- o16-20020a256b50000000b0064f4b330664mr9743130ybm.153.1655990826869; Thu, 23
- Jun 2022 06:27:06 -0700 (PDT)
+        with ESMTP id S231586AbiFWNd7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 09:33:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C615E2657A
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 06:33:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3710B61DAF
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 13:33:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B3BC3411B;
+        Thu, 23 Jun 2022 13:33:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1655991237;
+        bh=zFaT66Zn1kjbviwOX5/wuUv0LG+iK70L9huwKUeDc4I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sjg0iIxR/3aadqr3z+D6BJl6XHzt9dzxMYtxvLwTGQMEKpd82Mdxz1vciVGWOk0Tb
+         p/dwNMlISL3AhUBy1sDP66jy+afZy1SYr0v6RaHLP1iRsmexlOl4+Wj9TMW089mosp
+         yhhvfYs9LDcYs8NHjvOZZl5CRtNpP4AdZgA66sZI=
+Date:   Thu, 23 Jun 2022 15:33:54 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi <linux-acpi@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "Thorsten Leemhuis (regressions address)" <regressions@leemhuis.info>
+Subject: Re: "Revert "ACPI: Pass the same capabilities to the _OSC regardless
+ of the query flag"" is causing regressions
+Message-ID: <YrRrwqc69MgpA9kl@kroah.com>
+References: <6d7e3740-6107-dab6-64de-b4a978ae329d@redhat.com>
+ <eabb9172-3227-3c12-5553-3de202a2f63a@amd.com>
 MIME-Version: 1.0
-References: <1843211.tdWV9SEqCh@kreacher> <2653857.mvXUDI8C0e@kreacher>
- <9017824.rMLUfLXkoz@kreacher> <YrQf/W/Kmo954hAm@matsya> <CAJZ5v0jY5M-L-XdgY+LT=iSbABzL6cLuSdLiuUEQ+mEjYYk=xA@mail.gmail.com>
- <YrRfd0AvYVn19wck@matsya>
-In-Reply-To: <YrRfd0AvYVn19wck@matsya>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 23 Jun 2022 15:26:56 +0200
-Message-ID: <CAJZ5v0iRcpVZEGA0w6JaoHOFTM4hVAoUEoJ54n-AVE2StFgrgg@mail.gmail.com>
-Subject: Re: [PATCH v2 14/16] soundwire: Use acpi_dev_for_each_child()
-To:     Vinod Koul <vkoul@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eabb9172-3227-3c12-5553-3de202a2f63a@amd.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 23, 2022 at 2:41 PM Vinod Koul <vkoul@kernel.org> wrote:
->
-> On 23-06-22, 14:29, Rafael J. Wysocki wrote:
-> > On Thu, Jun 23, 2022 at 10:10 AM Vinod Koul <vkoul@kernel.org> wrote:
-> > >
-> > > On 13-06-22, 20:35, Rafael J. Wysocki wrote:
-> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > Instead of walking the list of children of an ACPI device directly,
-> > > > use acpi_dev_for_each_child() to carry out an action for all of
-> > > > the given ACPI device's children.
-> > > >
-> > > > This will help to eliminate the children list head from struct
-> > > > acpi_device as it is redundant and it is used in questionable ways
-> > > > in some places (in particular, locking is needed for walking the
-> > > > list pointed to it safely, but it is often missing).
-> > >
-> > > Applied, thanks
-> >
-> > Thanks, but the export of acpi_dev_for_each_child() is being added by
-> > one of the previous patches in the series, so this one will not
-> > compile without the rest of the series in the modular case.
->
-> Aha, I checked the symbol exists and my test build passed!
-> >
-> > Is this not a problem?
->
-> Yes indeed, so can you give a tag for that and or would you like to taje
-> this thru ACPI tree, in that case
+On Thu, Jun 23, 2022 at 07:24:34AM -0500, Mario Limonciello wrote:
+> On 6/23/22 05:06, Hans de Goede wrote:
+> > Hi Rafael, Mario,
+> > 
+> > Commit 2ca8e6285250 ("Revert "ACPI: Pass the same capabilities to the
+> > _OSC regardless of the query flag"") is causing the issues fixed
+> > by the reverted commit to show up again, see:
+> > 
+> > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fbugzilla.kernel.org%2Fshow_bug.cgi%3Fid%3D213023&amp;data=05%7C01%7Cmario.limonciello%40amd.com%7Cf3e0e967549b44bfc78e08da550012c9%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637915756056744972%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=Y0NhQJHeimPYw675CW2hxF9BHc102X8Kl9iQRC5tmyk%3D&amp;reserved=0
+> > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fbugzilla.redhat.com%2Fshow_bug.cgi%3Fid%3D1963717&amp;data=05%7C01%7Cmario.limonciello%40amd.com%7Cf3e0e967549b44bfc78e08da550012c9%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637915756056744972%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=Y02ntSQcVqhiqbVGsxys0BSeiv7BmxIRZIoxzdMHxKI%3D&amp;reserved=0
+> > 
+> > both of which have comments from the reporters that
+> > the error message is back again; and presumably also
+> > that /sys/devices/system/cpu/cpu0/acpi_cppc is missing
+> > again.
+> > 
+> > Can you please take a look and see if we can come up with
+> > something which fixes both the re-surfaced issue, as well
+> > as the issue which the revert tries to address ?
+> > 
+> 
+> 
+> Is it possible that c42fa24b44751c62c86e98430ef915c0609a2ab8 didn't backport
+> to the stable trees it popped back up again?
+> 
 
-I'll take it.
-
-> Acked-By: Vinod Koul <vkoul@kernel.org>
-
-Thank you!
+It is only in 5.18, no stable releases that I can see.
