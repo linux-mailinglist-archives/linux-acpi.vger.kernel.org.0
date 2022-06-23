@@ -2,58 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 157995574EB
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 10:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59E865574CF
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 10:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229891AbiFWIIZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 04:08:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51896 "EHLO
+        id S231134AbiFWIE4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 04:04:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230316AbiFWIIV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 04:08:21 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7EDC27B0C
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 01:08:13 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id d67-20020a251d46000000b006694b8ea9f2so6756047ybd.9
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 01:08:13 -0700 (PDT)
+        with ESMTP id S230512AbiFWIEy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 04:04:54 -0400
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA85944768
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 01:04:52 -0700 (PDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id n144so30376310ybf.12
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 01:04:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=s9ND+o/2c+yLLqaQvSasSfGJRux3sdgC6yXqcCSmvC4=;
-        b=ZChn5ahWF9VYjMaZyt75gRGdRRm9LYwWwkstPyFagKQEAyvitoOq9K9PtewRoCDhSM
-         tAkvp8C+6vLvaAyusyWYI21A6zVjKa5/J8gAEms2VIQwhv3yjw+3NCR2DEx9uxGeN2QJ
-         rS/zNPMzlbhn4YaJRa/lxLtaxH9A7m6NK3ZdXGOgoyyBfWLvx+PDntcmTJFeXZvqRilJ
-         IYZVG4M+dhM5VQEV4SPScrfViR40Ehpl3D5iBw+7OCCiUX0dCoDDiuZRzruyfOzLI4Ou
-         MQ3GXEQicXFecGuaW/OqF2wd1VI2EawxBbtZm4yAP8J1jKc/GtvpSLqNqDM4p5NK5zZS
-         759w==
+        bh=aJdGY8if0kKaADIOnNz/K5T0O1hT/jUoomceGsgv8qg=;
+        b=VTQtFvKLR234TeEsJG9hJ1cv/fTlg/g75r8DUnXK6ZHcXDiNZlsJYB9CHo/M+MtXXm
+         kHxKIuNF0rtlBZTftpqriI4HPVkNAF8Kgf2nEavzZoQhhOEgRbl56Yidg8QEwndgSNmo
+         guDcAYV+JbY07aCqXNXOm0MAQ374EyPk3ywDSm8OW4cMFCwWkHtQXObbRqfIV1Au2qL/
+         2xJX/OVUmoI0Ru+JwXOHrC9gjW8I3BqdmxJTIj+bkS/ZKg4cBj3SDMQZSf2iggQyehVV
+         s0m81yWPr2B/Nu8wqEz2Z07cBjk9Ng0bbJAp4gpara4efxy5PPr9RgZdjjBJiDIEtWTH
+         KYew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=s9ND+o/2c+yLLqaQvSasSfGJRux3sdgC6yXqcCSmvC4=;
-        b=RNMYAqrxOpbV8QGoOVLxIwqQ+uW0mNXtisIRnsFs1i71IjZVHeXTTWBrp/A//Qa75x
-         UHOXtbuzZd/x7L2BJZPlFT1AQfJF5besFanIoIKshfHsJAqqlXdgdOdIzIx4dRvnoNHq
-         Ymqhx3Hmvm+N/1+sh5PF+0MP9WrNG16rBmF2oZ/6Tueb7gN7mQeCqdl4GZlS0TsQZ8bJ
-         N6Ufg0nDaWUDDhNjnGILikdZDV74UQuSbZCRHa/Qrv9nniW7Lmh+IAYetlQS6q3pKDiW
-         tzdJfuOT/3LDbgPhC6EIUGGNRjmwwKL3DyanKiwftHvBxy26NjCX+Y8NQ6qmkyt9eOw6
-         O2tA==
-X-Gm-Message-State: AJIora9pDt2F1S4J9/HnDJfk4I8PIt66kHJ2Jzw4SePyJwdSLP04294Y
-        p1TitSQ4QH9cjeQgCQgvbhlio9O+uoQ/h7k=
-X-Google-Smtp-Source: AGRyM1sE5BByBONr09uTGuYvikqMrbKKy57XSWWEHEYrg9GZbQPbgu/DImBH3QXHzvbDpX1ROMvYGcf5ilhwWN4=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:8b2d:9894:73a4:8e1f])
- (user=saravanak job=sendgmr) by 2002:a81:7007:0:b0:317:912a:32a3 with SMTP id
- l7-20020a817007000000b00317912a32a3mr9395945ywc.194.1655971692862; Thu, 23
- Jun 2022 01:08:12 -0700 (PDT)
-Date:   Thu, 23 Jun 2022 01:03:43 -0700
-In-Reply-To: <20220623080344.783549-1-saravanak@google.com>
-Message-Id: <20220623080344.783549-3-saravanak@google.com>
-Mime-Version: 1.0
-References: <20220623080344.783549-1-saravanak@google.com>
-X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
-Subject: [PATCH v2 2/2] of: base: Avoid console probe delay when fw_devlink.strict=1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aJdGY8if0kKaADIOnNz/K5T0O1hT/jUoomceGsgv8qg=;
+        b=2f1SSwzmk071yZf8JFnxn4A0l48QOB3n0ikeFKVmOdLlVxYQtdvwjtT1Y9SaiAWjqk
+         WFW492Sn9pdbDaNaOaLPbVB/YvtNmMYxkew/fM6aUr0BMn6j+F7d1uHQCKiNmIsPfqpR
+         Qfmf0/m0hRxOHuptY4VHbDu8mcEHy4CqGUzn4ZGhCP6o5gssV8mtZGXuja6FB5pgOxGW
+         FUoTwbXkA/udy2W9gOoUox9tkz0t28LzVVKIO3DT4UselyLONp6F/oGEcDLh6g0tKMlF
+         i+ihHP6RyIYgnFPEQLIY3BHn5iRue+OKvZ4S2tpn3G9kVTx65+ya3iBQPzr/bxzTE9sz
+         5rKA==
+X-Gm-Message-State: AJIora+OQ5qeI/c9Y4HTDi/ukjsQGi1Q88cgD5OEhTtNk0MSJKpykK8r
+        ssVFcSTlixm202UW+kwWSYZ/Quny77cHO61trVpinw==
+X-Google-Smtp-Source: AGRyM1vSa06Bo2VNf1pFNqSEQ2ygrs7ov2BN88IdRJyYwpujxiov2K55jHdtpFFoYamFYqbsbeU9U6O7j7pmqWeF7uU=
+X-Received: by 2002:a25:d8c8:0:b0:669:5f5b:7d75 with SMTP id
+ p191-20020a25d8c8000000b006695f5b7d75mr8205442ybg.80.1655971491674; Thu, 23
+ Jun 2022 01:04:51 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220622215912.550419-1-saravanak@google.com> <20220622215912.550419-2-saravanak@google.com>
+ <20220623065031.GX1615@pengutronix.de>
+In-Reply-To: <20220623065031.GX1615@pengutronix.de>
 From:   Saravana Kannan <saravanak@google.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Date:   Thu, 23 Jun 2022 01:04:14 -0700
+Message-ID: <CAGETcx_TaR+_Z9bf-Gsx3pXC9QwSUT85TTwALj5KjaOY1oNK8g@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Allow firmware to mark
+ devices as best effort
+To:     Sascha Hauer <sha@pengutronix.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
@@ -61,31 +62,30 @@ To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Saravana Kannan <saravanak@google.com>
-Cc:     sascha hauer <sha@pengutronix.de>, peng fan <peng.fan@nxp.com>,
-        kevin hilman <khilman@kernel.org>,
-        ulf hansson <ulf.hansson@linaro.org>,
-        len brown <len.brown@intel.com>, pavel machek <pavel@ucw.cz>,
-        joerg roedel <joro@8bytes.org>, will deacon <will@kernel.org>,
-        andrew lunn <andrew@lunn.ch>,
-        heiner kallweit <hkallweit1@gmail.com>,
-        russell king <linux@armlinux.org.uk>,
-        "david s. miller" <davem@davemloft.net>,
-        eric dumazet <edumazet@google.com>,
-        jakub kicinski <kuba@kernel.org>,
-        paolo abeni <pabeni@redhat.com>,
-        linus walleij <linus.walleij@linaro.org>,
-        hideaki yoshifuji <yoshfuji@linux-ipv6.org>,
-        david ahern <dsahern@kernel.org>, kernel-team@android.com,
+        Len Brown <lenb@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        David Ahern <dsahern@kernel.org>, kernel-team@android.com,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
         linux-gpio@vger.kernel.org, kernel@pengutronix.de,
         devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -93,39 +93,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit 71066545b48e ("driver core: Set fw_devlink.strict=1 by default")
-enabled iommus and dmas dependency enforcement by default. On some
-systems, this caused the console device's probe to get delayed until the
-deferred_probe_timeout expires.
+On Wed, Jun 22, 2022 at 11:50 PM Sascha Hauer <sha@pengutronix.de> wrote:
+>
+> On Wed, Jun 22, 2022 at 02:59:10PM -0700, Saravana Kannan wrote:
+> > When firmware sets the FWNODE_FLAG_BEST_EFFORT flag for a fwnode,
+> > fw_devlink will do a best effort ordering for that device where it'll
+> > only enforce the probe/suspend/resume ordering of that device with
+> > suppliers that have drivers. The driver of that device can then decide
+> > if it wants to defer probe or probe without the suppliers.
+> >
+> > This will be useful for avoid probe delays of the console device that
+> > were caused by commit 71066545b48e ("driver core: Set
+> > fw_devlink.strict=1 by default").
+> >
+> > Fixes: 71066545b48e ("driver core: Set fw_devlink.strict=1 by default")
+> > Reported-by: Sascha Hauer <sha@pengutronix.de>
+> > Reported-by: Peng Fan <peng.fan@nxp.com>
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > ---
+> >  drivers/base/core.c    | 3 ++-
+> >  include/linux/fwnode.h | 4 ++++
+> >  2 files changed, 6 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 839f64485a55..61edd18b7bf3 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -968,7 +968,8 @@ static void device_links_missing_supplier(struct device *dev)
+> >
+> >  static bool dev_is_best_effort(struct device *dev)
+> >  {
+> > -     return fw_devlink_best_effort && dev->can_match;
+> > +     return (fw_devlink_best_effort && dev->can_match) ||
+> > +             dev->fwnode->flags & FWNODE_FLAG_BEST_EFFORT;
+>
+> Check for dev->fwnode first. I am running in a NULL pointer exception
+> here for a device that doesn't have a fwnode.
 
-We need consoles to work as soon as possible, so mark the console device
-node with FWNODE_FLAG_BEST_EFFORT so that fw_delink knows not to delay
-the probe of the console device for suppliers without drivers. The
-driver can then make the decision on where it can probe without those
-suppliers or defer its probe.
+Oops. Fixed and sent out a v2.
 
-Fixes: 71066545b48e ("driver core: Set fw_devlink.strict=1 by default")
-Reported-by: Sascha Hauer <sha@pengutronix.de>
-Reported-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/of/base.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index d4f98c8469ed..a19cd0c73644 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1919,6 +1919,8 @@ void of_alias_scan(void * (*dt_alloc)(u64 size, u64 align))
- 			of_property_read_string(of_aliases, "stdout", &name);
- 		if (name)
- 			of_stdout = of_find_node_opts_by_path(name, &of_stdout_options);
-+		if (of_stdout)
-+			of_stdout->fwnode.flags |= FWNODE_FLAG_BEST_EFFORT;
- 	}
- 
- 	if (!of_aliases)
--- 
-2.37.0.rc0.161.g10f37bed90-goog
-
+-Saravana
