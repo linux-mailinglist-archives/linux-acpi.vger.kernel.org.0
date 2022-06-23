@@ -2,134 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59E865574CF
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 10:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78A23557506
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 10:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231134AbiFWIE4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 04:04:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49214 "EHLO
+        id S229610AbiFWIKp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 04:10:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230512AbiFWIEy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 04:04:54 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA85944768
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 01:04:52 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id n144so30376310ybf.12
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 01:04:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=aJdGY8if0kKaADIOnNz/K5T0O1hT/jUoomceGsgv8qg=;
-        b=VTQtFvKLR234TeEsJG9hJ1cv/fTlg/g75r8DUnXK6ZHcXDiNZlsJYB9CHo/M+MtXXm
-         kHxKIuNF0rtlBZTftpqriI4HPVkNAF8Kgf2nEavzZoQhhOEgRbl56Yidg8QEwndgSNmo
-         guDcAYV+JbY07aCqXNXOm0MAQ374EyPk3ywDSm8OW4cMFCwWkHtQXObbRqfIV1Au2qL/
-         2xJX/OVUmoI0Ru+JwXOHrC9gjW8I3BqdmxJTIj+bkS/ZKg4cBj3SDMQZSf2iggQyehVV
-         s0m81yWPr2B/Nu8wqEz2Z07cBjk9Ng0bbJAp4gpara4efxy5PPr9RgZdjjBJiDIEtWTH
-         KYew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aJdGY8if0kKaADIOnNz/K5T0O1hT/jUoomceGsgv8qg=;
-        b=2f1SSwzmk071yZf8JFnxn4A0l48QOB3n0ikeFKVmOdLlVxYQtdvwjtT1Y9SaiAWjqk
-         WFW492Sn9pdbDaNaOaLPbVB/YvtNmMYxkew/fM6aUr0BMn6j+F7d1uHQCKiNmIsPfqpR
-         Qfmf0/m0hRxOHuptY4VHbDu8mcEHy4CqGUzn4ZGhCP6o5gssV8mtZGXuja6FB5pgOxGW
-         FUoTwbXkA/udy2W9gOoUox9tkz0t28LzVVKIO3DT4UselyLONp6F/oGEcDLh6g0tKMlF
-         i+ihHP6RyIYgnFPEQLIY3BHn5iRue+OKvZ4S2tpn3G9kVTx65+ya3iBQPzr/bxzTE9sz
-         5rKA==
-X-Gm-Message-State: AJIora+OQ5qeI/c9Y4HTDi/ukjsQGi1Q88cgD5OEhTtNk0MSJKpykK8r
-        ssVFcSTlixm202UW+kwWSYZ/Quny77cHO61trVpinw==
-X-Google-Smtp-Source: AGRyM1vSa06Bo2VNf1pFNqSEQ2ygrs7ov2BN88IdRJyYwpujxiov2K55jHdtpFFoYamFYqbsbeU9U6O7j7pmqWeF7uU=
-X-Received: by 2002:a25:d8c8:0:b0:669:5f5b:7d75 with SMTP id
- p191-20020a25d8c8000000b006695f5b7d75mr8205442ybg.80.1655971491674; Thu, 23
- Jun 2022 01:04:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220622215912.550419-1-saravanak@google.com> <20220622215912.550419-2-saravanak@google.com>
- <20220623065031.GX1615@pengutronix.de>
-In-Reply-To: <20220623065031.GX1615@pengutronix.de>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 23 Jun 2022 01:04:14 -0700
-Message-ID: <CAGETcx_TaR+_Z9bf-Gsx3pXC9QwSUT85TTwALj5KjaOY1oNK8g@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Allow firmware to mark
- devices as best effort
-To:     Sascha Hauer <sha@pengutronix.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
+        with ESMTP id S230171AbiFWIKo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 04:10:44 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 849154756E;
+        Thu, 23 Jun 2022 01:10:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 43E03B82208;
+        Thu, 23 Jun 2022 08:10:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECCEC3411B;
+        Thu, 23 Jun 2022 08:10:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655971841;
+        bh=R3uCGcBzcPhEjKLhoHYVr0mcT7inFO/vUdrx4pb+wmY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bpb8gFH2ZoatfRw2fHmWNw0l08XRetd1naHwiFW0SnH5+PLXNAt3WbYdpzFN7PyLR
+         pzD04MEf/DFEbSUQ1MGQzaIK5f4MrFoqE9zicARpfwAD9aZ4rxKfmKsi3x89f8HGxq
+         JwJEQK6tF7+7Rdml1BXBR2pQd/sIjPDso0xC/6kiD22LCbL/Yv5lrcj1iY7vAmZCXi
+         aH0h4rk1zSQtdHP1ker7Mr+lTM2iRnrRi2N6aFCsSvQgHRVDQ5a3rd3EsdVD+zVxtL
+         bYZv6hI4Vyh1F4EXWR/DBVc9ntWgGJWLS9WUrgJdUJ6D0F8Q1pBQEpwuvHg3GLbfkN
+         tJ2T/s4H7XF4A==
+Date:   Thu, 23 Jun 2022 13:40:37 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        David Ahern <dsahern@kernel.org>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, kernel@pengutronix.de,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH v2 14/16] soundwire: Use acpi_dev_for_each_child()
+Message-ID: <YrQf/W/Kmo954hAm@matsya>
+References: <1843211.tdWV9SEqCh@kreacher>
+ <2653857.mvXUDI8C0e@kreacher>
+ <9017824.rMLUfLXkoz@kreacher>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9017824.rMLUfLXkoz@kreacher>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 22, 2022 at 11:50 PM Sascha Hauer <sha@pengutronix.de> wrote:
->
-> On Wed, Jun 22, 2022 at 02:59:10PM -0700, Saravana Kannan wrote:
-> > When firmware sets the FWNODE_FLAG_BEST_EFFORT flag for a fwnode,
-> > fw_devlink will do a best effort ordering for that device where it'll
-> > only enforce the probe/suspend/resume ordering of that device with
-> > suppliers that have drivers. The driver of that device can then decide
-> > if it wants to defer probe or probe without the suppliers.
-> >
-> > This will be useful for avoid probe delays of the console device that
-> > were caused by commit 71066545b48e ("driver core: Set
-> > fw_devlink.strict=1 by default").
-> >
-> > Fixes: 71066545b48e ("driver core: Set fw_devlink.strict=1 by default")
-> > Reported-by: Sascha Hauer <sha@pengutronix.de>
-> > Reported-by: Peng Fan <peng.fan@nxp.com>
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > ---
-> >  drivers/base/core.c    | 3 ++-
-> >  include/linux/fwnode.h | 4 ++++
-> >  2 files changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index 839f64485a55..61edd18b7bf3 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -968,7 +968,8 @@ static void device_links_missing_supplier(struct device *dev)
-> >
-> >  static bool dev_is_best_effort(struct device *dev)
-> >  {
-> > -     return fw_devlink_best_effort && dev->can_match;
-> > +     return (fw_devlink_best_effort && dev->can_match) ||
-> > +             dev->fwnode->flags & FWNODE_FLAG_BEST_EFFORT;
->
-> Check for dev->fwnode first. I am running in a NULL pointer exception
-> here for a device that doesn't have a fwnode.
+On 13-06-22, 20:35, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Instead of walking the list of children of an ACPI device directly,
+> use acpi_dev_for_each_child() to carry out an action for all of
+> the given ACPI device's children.
+> 
+> This will help to eliminate the children list head from struct
+> acpi_device as it is redundant and it is used in questionable ways
+> in some places (in particular, locking is needed for walking the
+> list pointed to it safely, but it is often missing).
 
-Oops. Fixed and sent out a v2.
+Applied, thanks
 
--Saravana
+-- 
+~Vinod
