@@ -2,102 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB6DE557769
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 12:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 160325579B1
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 14:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231509AbiFWKHM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 06:07:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37832 "EHLO
+        id S231830AbiFWMCA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 08:02:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231459AbiFWKGt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 06:06:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CD59449FAD
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 03:06:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1655978802;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=MioxYM3pNfOVLGO8cTNLJgT0cBlvjug91OSVJzVKM8E=;
-        b=TFC9S9TP7H8obJw7894PfsbP0CSFn6HXzU4Q3eHcjaIINbMPW4KNtZHkBqbiw3WQ9Ou646
-        TU9hqoI51UWgp132LpjnyiE1JIQYqDnFdneZCPWnNkFV6+tHbg7PFzAS/Pgyg38K1O6nA4
-        6fn/FdAKylXqC5FYXTJDlF4xa+aGFTU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-643-Ujh0ljr8N4-1v6_V1wOCIA-1; Thu, 23 Jun 2022 06:06:42 -0400
-X-MC-Unique: Ujh0ljr8N4-1v6_V1wOCIA-1
-Received: by mail-ej1-f72.google.com with SMTP id qw12-20020a1709066a0c00b00722e6059673so3499813ejc.10
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 03:06:41 -0700 (PDT)
+        with ESMTP id S230248AbiFWMBh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 08:01:37 -0400
+Received: from mail-oa1-x44.google.com (mail-oa1-x44.google.com [IPv6:2001:4860:4864:20::44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65BA813D6C
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 05:00:23 -0700 (PDT)
+Received: by mail-oa1-x44.google.com with SMTP id 586e51a60fabf-101ec2d6087so15869048fac.3
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 05:00:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=SH1826VGivRTcWTFt6CirTUpizldtIW6lapFTxm7Gbo=;
+        b=dL4ZdfjGobK7bZ5zNav1+xGQiGde1Zc7ClvHsT7kk6LqobgfylVSX6CBG5RjcoVDTa
+         P464n62qmhgQVmko817GDYihyl7pvjfwkgES8JkCRGmr9xxgu3PjHmBrdfIKpKF+gxtz
+         ck0sfdPmzNP6PJDK99aoAJqvIJ6MSx5TfjB1KlqaDZn92DOWiz08x3njQYk7p7AUH10T
+         y+GlFokIsHaKh5IwUNZgaGJCE9OJ9vSfBgmQkTnZzySftM6HqqxRqpOIYwT/wd75+23E
+         P9+fpjMOoHjPoNoGgly+tjBN6a3v4kxdZSCYsYXbKgVUjjGIp5B1Lh0sXido0MvDOb61
+         P1yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent
-         :content-language:from:subject:to:cc:content-transfer-encoding;
-        bh=MioxYM3pNfOVLGO8cTNLJgT0cBlvjug91OSVJzVKM8E=;
-        b=KYNt54oWmGpvKoxVBpuL38sLTwtrsaGu1em/yalDEqIirM6SCKU3yJHiFYyyOpVdD9
-         9UJwYkCP9DfMS2jcianPBaLQNXBcwNv0QYk0K0+ZwwH/DdU2WnaqrVkAiiXigadZVUjq
-         XPTYU7VoGBj/Lf6RvQ26Fvxv5IjqHqEN5vcUB7wygdghvau7w1BOUujr1VCwbJkQpPZh
-         CKWtniUm3AmYOYbgOVJZV0s4qvvFAf58+RisTbzix7r7/VS67EUWwFEKdYr+1IkIcZaq
-         NjUfmYJdNyT7fsqXLDdYM7BemGSxMcCUezGTnkAGdghsGAKXZiO/Xeg2C+vIb2l9xY6l
-         Ho4A==
-X-Gm-Message-State: AJIora9iCYfUHOKuBk+U1i00upjbsv7g6drFVoam7xL+XhAKU+z0sdEy
-        p5IiocTm1YvAvWXx97pA+BsaDNyuufu+jaXeI+n/E8O8J7GPm1k033ozbJQrqw6GsXbeg/qvemr
-        XRxjOnMEJMDFPyk0QKG+JkA==
-X-Received: by 2002:a05:6402:100c:b0:42d:f407:b050 with SMTP id c12-20020a056402100c00b0042df407b050mr9274090edu.39.1655978800588;
-        Thu, 23 Jun 2022 03:06:40 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1v37TQT00xpGm9EZ6fLVsyBKDjYgnUbsIr3TY/LWilvcid/aWwNH4myyTsGzwkbjJ9htNpshg==
-X-Received: by 2002:a05:6402:100c:b0:42d:f407:b050 with SMTP id c12-20020a056402100c00b0042df407b050mr9274071edu.39.1655978800405;
-        Thu, 23 Jun 2022 03:06:40 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id z15-20020a1709060f0f00b006ff19354f9fsm10468108eji.215.2022.06.23.03.06.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jun 2022 03:06:39 -0700 (PDT)
-Message-ID: <6d7e3740-6107-dab6-64de-b4a978ae329d@redhat.com>
-Date:   Thu, 23 Jun 2022 12:06:39 +0200
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=SH1826VGivRTcWTFt6CirTUpizldtIW6lapFTxm7Gbo=;
+        b=NNsPTQYF2Yz0Nqo4ax7mvTlOsSVcpc7gIE71mmftyGSLDyFnm42guTrpkHgpEbiaOa
+         nmn4DQn5Ya1S3WEyvPhBeqZ6b0vndOa9tQuTend/0rZqz532x4sCAHDo7sWoJTkbkluV
+         KM4eAFs+RyWz1W/3BnoaV2FBlqmmyAjBHUFRfxf7WDUwcK+Ilbsv6ToKw97ptEaq58pd
+         lUdOsAdlFgfn/BD452ClxTWHu33x3CTDni8LBlnJSQQ7UfGyqTUdTsNBDpV0lJTlMmom
+         VblSo57eYLbfgtPreEr02Efu1euyblrr6LTmKGDOXE5n8EZLl7TOfVJFO/wyttVYIoMC
+         0rXw==
+X-Gm-Message-State: AJIora8IeRYMtGqFciFhRJSkJ2ZQESJwo95UZrOfRYCL3LULsBJQIzDP
+        vYl4xBeICAQc87j+EqM/KRYPbkdw82pPk2KW8G0=
+X-Google-Smtp-Source: AGRyM1u9XqAMSItZNhegX/ZymFvhNBQP3xenHiWf00X4SNsH0rLed72zRQSP+YVxHt9F6Yhn4fsa6RzBdFD/GHKyBzE=
+X-Received: by 2002:a05:6870:311:b0:f2:d46a:b370 with SMTP id
+ m17-20020a056870031100b000f2d46ab370mr2282258oaf.169.1655985618110; Thu, 23
+ Jun 2022 05:00:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Content-Language: en-US
-From:   Hans de Goede <hdegoede@redhat.com>
-Subject: "Revert "ACPI: Pass the same capabilities to the _OSC regardless of
- the query flag"" is causing regressions
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     linux-acpi <linux-acpi@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "Thorsten Leemhuis (regressions address)" <regressions@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a4a:e60e:0:0:0:0:0 with HTTP; Thu, 23 Jun 2022 05:00:17
+ -0700 (PDT)
+Reply-To: ibnahmadmustafa.aseelfinance@gmail.com
+From:   "Ibn Ahmad Mustafa(ASEEL Islamic Finance)" <alexaziz900@gmail.com>
+Date:   Thu, 23 Jun 2022 13:00:17 +0100
+Message-ID: <CA+ZonYFVf4r4TP5OjTABRM+sUUb77Yi8rA2ZjaW7-M57GTtrGA@mail.gmail.com>
+Subject: LOAN AND INVESTMENT-ASEEL ISLAMIC FINANCE
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_80,DEAR_SOMETHING,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:44 listed in]
+        [list.dnswl.org]
+        *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
+        *      [score: 0.8270]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [alexaziz900[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [alexaziz900[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  2.0 DEAR_SOMETHING BODY: Contains 'Dear (something)'
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael, Mario,
+Dear Sir/Madam
 
-Commit 2ca8e6285250 ("Revert "ACPI: Pass the same capabilities to the
-_OSC regardless of the query flag"") is causing the issues fixed
-by the reverted commit to show up again, see:
+I would like to introduce you to Aseel Islamic finance PJSC which is a
+private joint stock company that was
+established in 2006 and has built a leading market position for itself
+in the UAE's Islamic finance market which specializes in loan finance
+and investment activities in real estate, hospitality, industrial &
+sustainable technologies, strategic financial investments, specialized
+education, healthcare services, agriculture, manufacturing,
+mining,energy and additional environmentally sustainable projects.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=213023
-https://bugzilla.redhat.com/show_bug.cgi?id=1963717
+I would love to send you further details with your consent.
 
-both of which have comments from the reporters that
-the error message is back again; and presumably also
-that /sys/devices/system/cpu/cpu0/acpi_cppc is missing
-again.
+Regards.
 
-Can you please take a look and see if we can come up with
-something which fixes both the re-surfaced issue, as well
-as the issue which the revert tries to address ?
-
-Regards,
-
-Hans
-
+Mr.Ahmad Ibn Mustafa
+International Business Coordinator
+Aseel Islamic Finance PJSC
+Telephone: 800-ASEEL(27335)
