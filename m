@@ -2,65 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B69B557A84
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 14:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163BF557CCD
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 15:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231747AbiFWMlg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 08:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52660 "EHLO
+        id S230482AbiFWNV2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 09:21:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231748AbiFWMlf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 08:41:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C038A49F19;
-        Thu, 23 Jun 2022 05:41:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5902A61C1A;
-        Thu, 23 Jun 2022 12:41:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC524C3411B;
-        Thu, 23 Jun 2022 12:41:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655988091;
-        bh=VEKQqqv0GJJfssR5O+DbzVMdKUZxwolWDybsziOqZNo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mP4e/YxZ8SvnRHgTYBotpx2q2gyxVmuP+Dj7EWGigubb6+JnPDxEUSwo4E7BK3lZo
-         PPrzQlZ3R3kE+AWDrE+4ZzxOBWWqMqBEact1Pe21v5Kpj6hfICQSn4hK+CWKat3Zr3
-         4xndA33E9xINreJ8aMNJamSjLFSPHEwJiGhpBYipFfIyJtqatN1jcbyl4mEj69QsOd
-         Z/CvQWEZ1gpQF+B+YLMkYPS49aj5cnaVJ4aKeLjdEpOTKLsjE3CrXtVJ139RFmYGsb
-         TaRkoyVZ3EN3AMgH41R/CxZrnMbHBJvSNh7g+WoHEyKXZCVxB2LSx2QknwEjQNVvY8
-         PV2nSHSQblf5w==
-Date:   Thu, 23 Jun 2022 18:11:27 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>
-Subject: Re: [PATCH v2 14/16] soundwire: Use acpi_dev_for_each_child()
-Message-ID: <YrRfd0AvYVn19wck@matsya>
-References: <1843211.tdWV9SEqCh@kreacher>
- <2653857.mvXUDI8C0e@kreacher>
- <9017824.rMLUfLXkoz@kreacher>
- <YrQf/W/Kmo954hAm@matsya>
- <CAJZ5v0jY5M-L-XdgY+LT=iSbABzL6cLuSdLiuUEQ+mEjYYk=xA@mail.gmail.com>
+        with ESMTP id S230420AbiFWNV1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 09:21:27 -0400
+Received: from mail-m974.mail.163.com (mail-m974.mail.163.com [123.126.97.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4F1C249C8C;
+        Thu, 23 Jun 2022 06:21:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=YzLWj
+        FH8JUhO6LUNmgSCyovPzdzhMNp9p6VW4aUFODQ=; b=pOGg5PWMUFcMXdSw9EDcs
+        fzpd++jNGevoWEJTaNUfilc7wi65hv/F+EkmrBa8J5EALxCocXQpxUzJFlEEJvmt
+        chqsE5Qp6ry2qBgIqkRwc2pQ5vMrMPBFL4lBbRhPVtmOg4DZyHtJbh13M4iaH3oE
+        sZPKXaAoptFFAMX9ckY4FM=
+Received: from localhost.localdomain (unknown [116.128.244.169])
+        by smtp4 (Coremail) with SMTP id HNxpCgCnbvrHaLRi0YWjKw--.7486S2;
+        Thu, 23 Jun 2022 21:21:12 +0800 (CST)
+From:   huhai <15815827059@163.com>
+To:     rafael@kernel.org, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        huhai <huhai@kylinos.cn>
+Subject: [PATCH] ACPI: LPSS: Fix missing check in register_device_clock
+Date:   Thu, 23 Jun 2022 21:21:27 +0800
+Message-Id: <20220623132127.1248462-1-15815827059@163.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0jY5M-L-XdgY+LT=iSbABzL6cLuSdLiuUEQ+mEjYYk=xA@mail.gmail.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: HNxpCgCnbvrHaLRi0YWjKw--.7486S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Gry3Zr1UWFyftF43Gr17KFg_yoW3ZFb_ZF
+        Z2vFWvqr4kKFn3Cr1DArnxZry0vFnI9rs5XryUKr4xZ348W347WayrZr4qvF45Ww18KFZ8
+        Z3W8trW2kr13CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbPl1JUUUUU==
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: rprvmiivyslimvzbiqqrwthudrp/xtbB0wgphVXlvuBXHAAAsS
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,36 +51,34 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 23-06-22, 14:29, Rafael J. Wysocki wrote:
-> On Thu, Jun 23, 2022 at 10:10 AM Vinod Koul <vkoul@kernel.org> wrote:
-> >
-> > On 13-06-22, 20:35, Rafael J. Wysocki wrote:
-> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >
-> > > Instead of walking the list of children of an ACPI device directly,
-> > > use acpi_dev_for_each_child() to carry out an action for all of
-> > > the given ACPI device's children.
-> > >
-> > > This will help to eliminate the children list head from struct
-> > > acpi_device as it is redundant and it is used in questionable ways
-> > > in some places (in particular, locking is needed for walking the
-> > > list pointed to it safely, but it is often missing).
-> >
-> > Applied, thanks
-> 
-> Thanks, but the export of acpi_dev_for_each_child() is being added by
-> one of the previous patches in the series, so this one will not
-> compile without the rest of the series in the modular case.
+From: huhai <huhai@kylinos.cn>
 
-Aha, I checked the symbol exists and my test build passed!
-> 
-> Is this not a problem?
+register_device_clock() misses a check for platform_device_register_simple().
+Add a check to fix it.
 
-Yes indeed, so can you give a tag for that and or would you like to taje
-this thru ACPI tree, in that case
+Signed-off-by: huhai <huhai@kylinos.cn>
+---
+ drivers/acpi/acpi_lpss.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Acked-By: Vinod Koul <vkoul@kernel.org>
-
-BR
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index fbe0756259c5..c4d4d21391d7 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -422,6 +422,9 @@ static int register_device_clock(struct acpi_device *adev,
+ 	if (!lpss_clk_dev)
+ 		lpt_register_clock_device();
+ 
++	if (IS_ERR(lpss_clk_dev))
++		return PTR_ERR(lpss_clk_dev);
++
+ 	clk_data = platform_get_drvdata(lpss_clk_dev);
+ 	if (!clk_data)
+ 		return -ENODEV;
 -- 
-~Vinod
+2.27.0
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
+
