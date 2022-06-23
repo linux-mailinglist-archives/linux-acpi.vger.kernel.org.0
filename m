@@ -2,66 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D74B85571F8
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 06:57:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D9C557359
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 08:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232958AbiFWErP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 00:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51238 "EHLO
+        id S229529AbiFWGv1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 02:51:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245591AbiFWECR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 00:02:17 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A14B2D1F4;
-        Wed, 22 Jun 2022 21:02:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655956936; x=1687492936;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=iAIaqF7rha3sZC6nzOYKWGpBVTJjKr5yx5Wg7Q0/sfA=;
-  b=QSB1tx95/AqoiQTiK3p0kFOnZl/yAq3x2FEmLrUzjTbOPtFAcnKBPHVz
-   fDX1m9t1kuBewDrDjioyic7H5bm4XSQbBuEK3ZeuUaQLkyHeE0W+KxQ2P
-   ad/fmc4CgP+wKtcft5FqXRWQc5hro//Q0a+6F2Gc9JxLnWwm2O+WJ0OI0
-   8IPhpMlJpEDxE3h1SQZ0LIED6uAVHfBNPx8YyCJIX4DptrXgqUJXA0k9v
-   l85BFmo0J5+vFsbwf1PHZqrGZOdvkW6IIP0yUAGQuZ7/cz03WC+ZoaPVo
-   QMbEDqhp57Cl/3thXmxAdHLHbL3Khffjvbi9+bqKh2vvbTkrc971AN+2M
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="280664601"
-X-IronPort-AV: E=Sophos;i="5.92,215,1650956400"; 
-   d="scan'208";a="280664601"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 21:02:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,215,1650956400"; 
-   d="scan'208";a="655991306"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 22 Jun 2022 21:02:13 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o4E2m-0000fn-QR;
-        Thu, 23 Jun 2022 04:02:12 +0000
-Date:   Thu, 23 Jun 2022 12:01:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Stefan Binding <sbinding@opensource.cirrus.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>
-Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: Re: [PATCH v1 2/2] ASoC: cs35l41: Read System Name from ACPI _SUB to
- identify firmware
-Message-ID: <202206231108.xPflWTbR-lkp@intel.com>
-References: <20220622130730.1573747-3-sbinding@opensource.cirrus.com>
+        with ESMTP id S229982AbiFWGv1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 02:51:27 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D7E44A0F
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 23:51:26 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1o4Gfk-0001vC-Io; Thu, 23 Jun 2022 08:50:36 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1o4Gff-0003Pg-AE; Thu, 23 Jun 2022 08:50:31 +0200
+Date:   Thu, 23 Jun 2022 08:50:31 +0200
+From:   Sascha Hauer <sha@pengutronix.de>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        David Ahern <dsahern@kernel.org>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, kernel@pengutronix.de,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Allow firmware to mark
+ devices as best effort
+Message-ID: <20220623065031.GX1615@pengutronix.de>
+References: <20220622215912.550419-1-saravanak@google.com>
+ <20220622215912.550419-2-saravanak@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220622130730.1573747-3-sbinding@opensource.cirrus.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20220622215912.550419-2-saravanak@google.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,68 +79,46 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Stefan,
+On Wed, Jun 22, 2022 at 02:59:10PM -0700, Saravana Kannan wrote:
+> When firmware sets the FWNODE_FLAG_BEST_EFFORT flag for a fwnode,
+> fw_devlink will do a best effort ordering for that device where it'll
+> only enforce the probe/suspend/resume ordering of that device with
+> suppliers that have drivers. The driver of that device can then decide
+> if it wants to defer probe or probe without the suppliers.
+> 
+> This will be useful for avoid probe delays of the console device that
+> were caused by commit 71066545b48e ("driver core: Set
+> fw_devlink.strict=1 by default").
+> 
+> Fixes: 71066545b48e ("driver core: Set fw_devlink.strict=1 by default")
+> Reported-by: Sascha Hauer <sha@pengutronix.de>
+> Reported-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/base/core.c    | 3 ++-
+>  include/linux/fwnode.h | 4 ++++
+>  2 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 839f64485a55..61edd18b7bf3 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -968,7 +968,8 @@ static void device_links_missing_supplier(struct device *dev)
+>  
+>  static bool dev_is_best_effort(struct device *dev)
+>  {
+> -	return fw_devlink_best_effort && dev->can_match;
+> +	return (fw_devlink_best_effort && dev->can_match) ||
+> +		dev->fwnode->flags & FWNODE_FLAG_BEST_EFFORT;
 
-Thank you for the patch! Yet something to improve:
+Check for dev->fwnode first. I am running in a NULL pointer exception
+here for a device that doesn't have a fwnode.
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on broonie-sound/for-next linus/master v5.19-rc3 next-20220622]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Sascha
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220622-211004
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: sparc64-randconfig-r002-20220622 (https://download.01.org/0day-ci/archive/20220623/202206231108.xPflWTbR-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/338eadc59e88d60759ea445011a6537222b233e3
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220622-211004
-        git checkout 338eadc59e88d60759ea445011a6537222b233e3
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=sparc64 SHELL=/bin/bash sound/soc/codecs/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   sound/soc/codecs/cs35l41.c: In function 'cs35l41_probe_acpi':
->> sound/soc/codecs/cs35l41.c:1157:32: error: invalid use of undefined type 'struct acpi_device'
-    1157 |         ret = acpi_get_sub(adev->handle, sub, sizeof(sub));
-         |                                ^~
-
-
-vim +1157 sound/soc/codecs/cs35l41.c
-
-  1145	
-  1146	static int cs35l41_probe_acpi(struct cs35l41_private *cs35l41)
-  1147	{
-  1148		struct acpi_device *adev;
-  1149		int ret;
-  1150		char sub[ACPI_MAX_SUB_BUF_SIZE];
-  1151	
-  1152		adev = ACPI_COMPANION(cs35l41->dev);
-  1153		/* If there is no ACPI_COMPANION, there is no ACPI for this system, return 0 */
-  1154		if (!adev)
-  1155			return 0;
-  1156	
-> 1157		ret = acpi_get_sub(adev->handle, sub, sizeof(sub));
-  1158		if (ret < 0)
-  1159			return ret;
-  1160	
-  1161		cs35l41->dsp.system_name = devm_kstrdup(cs35l41->dev, sub, GFP_KERNEL);
-  1162		if (!cs35l41->dsp.system_name)
-  1163			return -ENOMEM;
-  1164	
-  1165		return 0;
-  1166	}
-  1167	
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
