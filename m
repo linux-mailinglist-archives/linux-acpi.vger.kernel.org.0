@@ -2,160 +2,216 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E237B556E8E
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 00:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5831C556F45
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 02:01:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbiFVWed (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Jun 2022 18:34:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37032 "EHLO
+        id S234750AbiFWAB5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Jun 2022 20:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359295AbiFVWe2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 18:34:28 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF4640A05
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 15:34:27 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id x38so32675818ybd.9
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Jun 2022 15:34:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WKylA8pYtIvxwg5/dZiB/uZdIVVN/P980vi4sBmsa8g=;
-        b=J4pi/aKDOGnb+AER5hiC/Ur9ZSPqxLhl9mnB71A7+WIlfY2oiT/T5y5JfIyXfOCApX
-         pLilMQlV84wpeyWcdPvtM97nw68tnuZyysLqMtJ7DRRJ6ajeonNGzDXJprWOIg8xBf0y
-         NTH6Wl1a1nlYUaFdI4qtAMzn8cW7xPEjL5f7QJ94kT2HJ1ci6OAaAPqD1UX+0NL/zHh7
-         304JDEDsF/c/vE8OS7ScZ5S8psqurQ00bjxfdujGxOif8q+MEh1dX6y/brQOOJs5BypF
-         iAv8odstd+qJJe5X1KPMo+1qvBAD62prH31qb5OR0/0XW3vKz526q1m+3AN2s9rHhIps
-         PBRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WKylA8pYtIvxwg5/dZiB/uZdIVVN/P980vi4sBmsa8g=;
-        b=Ga7Wi2+6O4qDvfUuLCY+whmEWTH941oHboK1uApTNSLkO5SmaqAcAWBEYKwGC3onIK
-         /8lF4F0Fxu9A0VsKDU0o1Dfe5F1IXeaTwRF6el98+5+OclJyAHWCb7AecKVbq5KaMXB5
-         ecWxlEzi+nGGZxlsgPg4hhdp/jXDZtWI9u88M6ulIEOvBM7x7/Uo+BJW8gaI0Oah10uX
-         n3N7h7IdMiNK6Cp4h5Q1+HWXMITbM4OMAHc3NcNxlaj455/eDRrud7xxzIsk61RFz8bw
-         XpnuTQv37bb4txz4U2SCoSFdY5RpR3IVeCMucGZ7xQc6fFMknL9zam3SdnOxmivN4NZs
-         e2wg==
-X-Gm-Message-State: AJIora/xl2gPzHP9mEfwC6oskyE/FeS7jEE4+/SL6u94zPH7mhz3Njtb
-        bW752bPoLvJCKYTKgxqnJPXlHf7BQ4KbNtF6x1SAJg==
-X-Google-Smtp-Source: AGRyM1vtP8cTHTShZ6uWcl+OVMszNehOV5bCtDdbKW/msmtH+Wdf1HHxNjR1QJIjKUG41gGaaaYuCgB7moTXz8XY7EE=
-X-Received: by 2002:a25:d112:0:b0:669:17:8d98 with SMTP id i18-20020a25d112000000b0066900178d98mr6124766ybg.447.1655937266678;
- Wed, 22 Jun 2022 15:34:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220622215912.550419-1-saravanak@google.com> <DU0PR04MB941733BFD323D3542B7F75A888B29@DU0PR04MB9417.eurprd04.prod.outlook.com>
-In-Reply-To: <DU0PR04MB941733BFD323D3542B7F75A888B29@DU0PR04MB9417.eurprd04.prod.outlook.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Wed, 22 Jun 2022 15:33:50 -0700
-Message-ID: <CAGETcx-h4iDx+WG+HnN0_ej0qtLOp66oOXvkppm060TRCG3_Jg@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] Fix console probe delay due to fw_devlink
-To:     Peng Fan <peng.fan@nxp.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>, Sascha Hauer <sha@pengutronix.de>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        David Ahern <dsahern@kernel.org>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+        with ESMTP id S232190AbiFWAB4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Jun 2022 20:01:56 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5802403F8;
+        Wed, 22 Jun 2022 17:01:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655942515; x=1687478515;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=T15ZJso/B5LUFRkGGDDvgKQQDe8xUIdacYkRiD8qF2I=;
+  b=ZMC2niVbGOm+g78fKfNpWC//GvWPt7ogL/QM6Fn7QJXYLZz2rAQQaO7U
+   PlORxsI0kiW9vPcSzdQL4r/QbUGMNFrXZnLuNzLOf+Nhi0JvxS6I0lVW9
+   A0FNpwA+Pfq4VwMLgtRRDekTh0DHG4/tNoMEAa0o1u9+xiFVEhX7UjTYm
+   bJ6hdllqnv6EZ7e6a9GLXPvYmBNCQJdw4zJTP21nwHZMuKoH82CM+ZCE1
+   1i5MhJMgyafYK+qQlFPTx5eInKg7bn0r8bkuvDOHcB6eFKVNO2pafr48/
+   tcjl24dtmJSX+GP5MaMpWkPFHVxcdQu+exO+2s45ENj6h/p4F6uB5JGqX
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="280627383"
+X-IronPort-AV: E=Sophos;i="5.92,215,1650956400"; 
+   d="scan'208";a="280627383"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 17:01:55 -0700
+X-IronPort-AV: E=Sophos;i="5.92,215,1650956400"; 
+   d="scan'208";a="644454589"
+Received: from jmatsis-mobl.amr.corp.intel.com (HELO khuang2-desk.gar.corp.intel.com) ([10.209.178.197])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 17:01:50 -0700
+Message-ID: <d3ba563f3f4e7aaf90fb99d20c651b5751972f7b.camel@intel.com>
+Subject: Re: [PATCH v5 02/22] cc_platform: Add new attribute to prevent ACPI
+ CPU hotplug
+From:   Kai Huang <kai.huang@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kvm-devel <kvm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Len Brown <len.brown@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        isaku.yamahata@intel.com, Tom Lendacky <thomas.lendacky@amd.com>,
+        Tianyu.Lan@microsoft.com, Randy Dunlap <rdunlap@infradead.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Yue Haibing <yuehaibing@huawei.com>, dongli.zhang@oracle.com
+Date:   Thu, 23 Jun 2022 12:01:48 +1200
+In-Reply-To: <CAJZ5v0jV8ODcxuLL+iSpYbW7w=GFtUSakN-n8CO5Zmun3K-Erg@mail.gmail.com>
+References: <cover.1655894131.git.kai.huang@intel.com>
+         <f4bff93d83814ea1f54494f51ce3e5d954cf0f5b.1655894131.git.kai.huang@intel.com>
+         <CAJZ5v0jV8ODcxuLL+iSpYbW7w=GFtUSakN-n8CO5Zmun3K-Erg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 22, 2022 at 3:32 PM Peng Fan <peng.fan@nxp.com> wrote:
->
-> > Subject: [PATCH v1 0/2] Fix console probe delay due to fw_devlink
-> >
-> > fw_devlink.strict=1 has been enabled by default. This was delaying the probe
-> > of console devices. This series fixes that.
-> >
-> > Sasha/Peng,
-> >
-> > Can you test this please?
->
-> Thanks, just give a test on i.MX8MP-EVK, works well now.
->
-> Tested-by: Peng Fan <peng.fan@nxp.com> #i.MX8MP-EVK
+On Wed, 2022-06-22 at 13:42 +0200, Rafael J. Wysocki wrote:
+> On Wed, Jun 22, 2022 at 1:16 PM Kai Huang <kai.huang@intel.com> wrote:
+> >=20
+> > Platforms with confidential computing technology may not support ACPI
+> > CPU hotplug when such technology is enabled by the BIOS.  Examples
+> > include Intel platforms which support Intel Trust Domain Extensions
+> > (TDX).
+> >=20
+> > If the kernel ever receives ACPI CPU hotplug event, it is likely a BIOS
+> > bug.  For ACPI CPU hot-add, the kernel should speak out this is a BIOS
+> > bug and reject the new CPU.  For hot-removal, for simplicity just assum=
+e
+> > the kernel cannot continue to work normally, and BUG().
+> >=20
+> > Add a new attribute CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED to indicate the
+> > platform doesn't support ACPI CPU hotplug, so that kernel can handle
+> > ACPI CPU hotplug events for such platform.  The existing attribute
+> > CC_ATTR_HOTPLUG_DISABLED is for software CPU hotplug thus doesn't fit.
+> >=20
+> > In acpi_processor_{add|remove}(), add early check against this attribut=
+e
+> > and handle accordingly if it is set.
+> >=20
+> > Also take this chance to rename existing CC_ATTR_HOTPLUG_DISABLED to
+> > CC_ATTR_CPU_HOTPLUG_DISABLED as it is for software CPU hotplug.
+> >=20
+> > Signed-off-by: Kai Huang <kai.huang@intel.com>
+> > ---
+> >  arch/x86/coco/core.c          |  2 +-
+> >  drivers/acpi/acpi_processor.c | 23 +++++++++++++++++++++++
+> >  include/linux/cc_platform.h   | 15 +++++++++++++--
+> >  kernel/cpu.c                  |  2 +-
+> >  4 files changed, 38 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+> > index 4320fadae716..1bde1af75296 100644
+> > --- a/arch/x86/coco/core.c
+> > +++ b/arch/x86/coco/core.c
+> > @@ -20,7 +20,7 @@ static bool intel_cc_platform_has(enum cc_attr attr)
+> >  {
+> >         switch (attr) {
+> >         case CC_ATTR_GUEST_UNROLL_STRING_IO:
+> > -       case CC_ATTR_HOTPLUG_DISABLED:
+> > +       case CC_ATTR_CPU_HOTPLUG_DISABLED:
+> >         case CC_ATTR_GUEST_MEM_ENCRYPT:
+> >         case CC_ATTR_MEM_ENCRYPT:
+> >                 return true;
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processo=
+r.c
+> > index 6737b1cbf6d6..b960db864cd4 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -15,6 +15,7 @@
+> >  #include <linux/kernel.h>
+> >  #include <linux/module.h>
+> >  #include <linux/pci.h>
+> > +#include <linux/cc_platform.h>
+> >=20
+> >  #include <acpi/processor.h>
+> >=20
+> > @@ -357,6 +358,17 @@ static int acpi_processor_add(struct acpi_device *=
+device,
+> >         struct device *dev;
+> >         int result =3D 0;
+> >=20
+> > +       /*
+> > +        * If the confidential computing platform doesn't support ACPI
+> > +        * memory hotplug, the BIOS should never deliver such event to
+> > +        * the kernel.  Report ACPI CPU hot-add as a BIOS bug and ignor=
+e
+> > +        * the new CPU.
+> > +        */
+> > +       if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED)) {
+>=20
+> This will affect initialization, not just hotplug AFAICS.
+>=20
+> You should reset the .hotplug.enabled flag in processor_handler to
+> false instead.
 
-Lol, that was quick! Thanks!
+Hi Rafael,
 
--Saravana
+Thanks for the review.  By "affect initialization" did you mean this
+acpi_processor_add() is also called during kernel boot when any logical cpu=
+ is
+brought up?  Or do you mean ACPI CPU hotplug can also happen during kernel =
+boot
+(after acpi_processor_init())?
 
->
-> Thanks,
-> Peng.
->
-> >
-> > -Saravana
-> >
-> > Cc: Sascha Hauer <sha@pengutronix.de>
-> > Cc: Peng Fan <peng.fan@nxp.com>
-> > Cc: Kevin Hilman <khilman@kernel.org>
-> > Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> > Cc: Len Brown <len.brown@intel.com>
-> > Cc: Pavel Machek <pavel@ucw.cz>
-> > Cc: Joerg Roedel <joro@8bytes.org>
-> > Cc: Will Deacon <will@kernel.org>
-> > Cc: Andrew Lunn <andrew@lunn.ch>
-> > Cc: Heiner Kallweit <hkallweit1@gmail.com>
-> > Cc: Russell King <linux@armlinux.org.uk>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: Eric Dumazet <edumazet@google.com>
-> > Cc: Jakub Kicinski <kuba@kernel.org>
-> > Cc: Paolo Abeni <pabeni@redhat.com>
-> > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > Cc: Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>
-> > Cc: David Ahern <dsahern@kernel.org>
-> > Cc: kernel-team@android.com
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-pm@vger.kernel.org
-> > Cc: iommu@lists.linux-foundation.org
-> > Cc: netdev@vger.kernel.org
-> > Cc: linux-gpio@vger.kernel.org
-> > Cc: kernel@pengutronix.de
-> >
-> > Saravana Kannan (2):
-> >   driver core: fw_devlink: Allow firmware to mark devices as best effort
-> >   of: base: Avoid console probe delay when fw_devlink.strict=1
-> >
-> >  drivers/base/core.c    | 3 ++-
-> >  drivers/of/base.c      | 2 ++
-> >  include/linux/fwnode.h | 4 ++++
-> >  3 files changed, 8 insertions(+), 1 deletion(-)
-> >
-> > --
-> > 2.37.0.rc0.161.g10f37bed90-goog
->
+I see acpi_processor_init() calls acpi_processor_check_duplicates() which c=
+alls
+acpi_evaluate_object() but I don't know details of ACPI so I don't know whe=
+ther
+this would trigger acpi_processor_add().
+
+One thing is TDX doesn't support ACPI CPU hotplug is an architectural thing=
+, so
+it is illegal even if it happens during kernel boot.  Dave's idea is the ke=
+rnel
+should  speak out loudly if physical CPU hotplug indeed happened on (BIOS) =
+TDX-
+enabled platforms.  Otherwise perhaps we can just give up initializing the =
+ACPI
+CPU hotplug in acpi_processor_init(), something like below?
+
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -707,6 +707,10 @@ bool acpi_duplicate_processor_id(int proc_id)
+ void __init acpi_processor_init(void)
+ {
+        acpi_processor_check_duplicates();
++
++       if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED))
++               return;
++
+        acpi_scan_add_handler_with_hotplug(&processor_handler, "processor")=
+;
+        acpi_scan_add_handler(&processor_container_handler);
+ }
+
+
+>=20
+> > +               dev_err(&device->dev, "[BIOS bug]: Platform doesn't sup=
+port ACPI CPU hotplug.  New CPU ignored.\n");
+> > +               return -EINVAL;
+> > +       }
+> > +
+
+--=20
+Thanks,
+-Kai
+
+
