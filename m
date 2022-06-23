@@ -2,94 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97106557CE0
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 15:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58C06557CE7
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jun 2022 15:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbiFWN0J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 09:26:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37466 "EHLO
+        id S230362AbiFWN1I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 09:27:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230230AbiFWN0H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 09:26:07 -0400
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAE849CA5;
-        Thu, 23 Jun 2022 06:26:07 -0700 (PDT)
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-317741c86fdso192022367b3.2;
-        Thu, 23 Jun 2022 06:26:07 -0700 (PDT)
+        with ESMTP id S229761AbiFWN1I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 09:27:08 -0400
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8CFD49CA4;
+        Thu, 23 Jun 2022 06:27:07 -0700 (PDT)
+Received: by mail-yb1-f175.google.com with SMTP id q132so2277258ybg.10;
+        Thu, 23 Jun 2022 06:27:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/VSbXb30dR2Lsb/63hP9yztOqR+GVnXbxsPEVXZX2P8=;
-        b=jVMs100MVogt/YYqOiULAATiSYeusG2/qfrBiT7Dmgv5CHxWdGPLoG9xiaT7DZFYQc
-         fQwXG7zS19k5LNgWVyOY3MxF9tErAn07JrqwNkLl7VYQ6XnnBAXJjw4gPx/JGzTFiBn2
-         9OYOEQqZ37dQt/dJaAJEhZQN2+m+wIFQQVlQJvVo1zKVsPnnGnPnUQDkeb5mt5D/L6cJ
-         tgfOWsw77zGtRt+n2VchR4T4JvTkZPgEvMO3scNdLWdjszj4SKyhnI4qjXvvZheSiF0Z
-         R6lzH6wPBZ5tKT+Lj7B1+sTlkzRx2EEWz0zPzGswSTQ9TbN/sONYRkPIs6XpUH1215nw
-         i2bg==
-X-Gm-Message-State: AJIora/t+Y0NHiL7jij4KBqhfMzPJvfh7hCpaDdgXVnvlJOO/LpGhS4J
-        ROLM/uwgdYzFGAtuj5WRMouaOTEJ6zsFtgeFgyw=
-X-Google-Smtp-Source: AGRyM1s7TdfF4QH60jlRgW7nEFszCDJjTJ91XlVDuBvNebPGObfQ8O8xILdj9DSY5swk/zGpkmwc3De3uXMZw8GAYvI=
-X-Received: by 2002:a81:68d7:0:b0:318:11df:a40d with SMTP id
- d206-20020a8168d7000000b0031811dfa40dmr10924585ywc.196.1655990766614; Thu, 23
- Jun 2022 06:26:06 -0700 (PDT)
+        bh=nxTVkuTRwT7zaUdBEZjmRQEHWHA9MbFr7dx9PzbNS8w=;
+        b=aumTZ1dYKWO6G3HKFPLkcGLIxORRpWlcYb4YSk99REeUE7MLb9DjLSTwSLzKIxRYKp
+         f+e+yKjUPoyq+p+QvnCaZCW+ke//fNuSJMXiqYnK29BUSTa0B1tPsZYF8r7TTjAqiEFo
+         rblK4QrzdC/1BClJ5cgjkHGdy1BWezfjg2rfPvv9RZMF3gQTDCGhtFB+BYVNWwqM+XD3
+         47wh5WKvVE70ShI0+5BgXnfm5K7jioy0xe0scdfzAEjB6YrdtOzNlyg7tNdijltxXcBU
+         XOhm+wbIe5Ql/OpDQSNKQPi9r74GjgGvJG/Ge/BXrtR3LhlUOlJMMsfYH7SLtFtg/q/x
+         hgJw==
+X-Gm-Message-State: AJIora/D2EZHiUrYRIKdWbVY4hzj2uRbQhghLfsF8V7k5b8vkHeCJq1e
+        UkdU5WCW/rOcC8frXiVcXf2hshO5UP7ny5iPjU/ZQoWk
+X-Google-Smtp-Source: AGRyM1tHqoIBXvJ/qKXGJAn7vF6/FjaDbr0XBkhwJ/ueBXNgIfPFWwxORM0OiHCx5aXQGGQ+VCKyt/V80YugRpmswUI=
+X-Received: by 2002:a25:6b50:0:b0:64f:4b33:664 with SMTP id
+ o16-20020a256b50000000b0064f4b330664mr9743130ybm.153.1655990826869; Thu, 23
+ Jun 2022 06:27:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220623132127.1248462-1-15815827059@163.com>
-In-Reply-To: <20220623132127.1248462-1-15815827059@163.com>
+References: <1843211.tdWV9SEqCh@kreacher> <2653857.mvXUDI8C0e@kreacher>
+ <9017824.rMLUfLXkoz@kreacher> <YrQf/W/Kmo954hAm@matsya> <CAJZ5v0jY5M-L-XdgY+LT=iSbABzL6cLuSdLiuUEQ+mEjYYk=xA@mail.gmail.com>
+ <YrRfd0AvYVn19wck@matsya>
+In-Reply-To: <YrRfd0AvYVn19wck@matsya>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 23 Jun 2022 15:25:55 +0200
-Message-ID: <CAJZ5v0jC+B7K0uuE=wLi1hk+WATn5B8sSu6abSO00rYJ4ofRFw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: LPSS: Fix missing check in register_device_clock
-To:     huhai <15815827059@163.com>
+Date:   Thu, 23 Jun 2022 15:26:56 +0200
+Message-ID: <CAJZ5v0iRcpVZEGA0w6JaoHOFTM4hVAoUEoJ54n-AVE2StFgrgg@mail.gmail.com>
+Subject: Re: [PATCH v2 14/16] soundwire: Use acpi_dev_for_each_child()
+To:     Vinod Koul <vkoul@kernel.org>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        huhai <huhai@kylinos.cn>
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 23, 2022 at 3:21 PM huhai <15815827059@163.com> wrote:
+On Thu, Jun 23, 2022 at 2:41 PM Vinod Koul <vkoul@kernel.org> wrote:
 >
-> From: huhai <huhai@kylinos.cn>
+> On 23-06-22, 14:29, Rafael J. Wysocki wrote:
+> > On Thu, Jun 23, 2022 at 10:10 AM Vinod Koul <vkoul@kernel.org> wrote:
+> > >
+> > > On 13-06-22, 20:35, Rafael J. Wysocki wrote:
+> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >
+> > > > Instead of walking the list of children of an ACPI device directly,
+> > > > use acpi_dev_for_each_child() to carry out an action for all of
+> > > > the given ACPI device's children.
+> > > >
+> > > > This will help to eliminate the children list head from struct
+> > > > acpi_device as it is redundant and it is used in questionable ways
+> > > > in some places (in particular, locking is needed for walking the
+> > > > list pointed to it safely, but it is often missing).
+> > >
+> > > Applied, thanks
+> >
+> > Thanks, but the export of acpi_dev_for_each_child() is being added by
+> > one of the previous patches in the series, so this one will not
+> > compile without the rest of the series in the modular case.
 >
-> register_device_clock() misses a check for platform_device_register_simple().
-> Add a check to fix it.
+> Aha, I checked the symbol exists and my test build passed!
+> >
+> > Is this not a problem?
 >
-> Signed-off-by: huhai <huhai@kylinos.cn>
-> ---
->  drivers/acpi/acpi_lpss.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-> index fbe0756259c5..c4d4d21391d7 100644
-> --- a/drivers/acpi/acpi_lpss.c
-> +++ b/drivers/acpi/acpi_lpss.c
-> @@ -422,6 +422,9 @@ static int register_device_clock(struct acpi_device *adev,
->         if (!lpss_clk_dev)
->                 lpt_register_clock_device();
->
-> +       if (IS_ERR(lpss_clk_dev))
-> +               return PTR_ERR(lpss_clk_dev);
-> +
+> Yes indeed, so can you give a tag for that and or would you like to taje
+> this thru ACPI tree, in that case
 
-Why not use IS_ERR_OR_NULL() instead?
+I'll take it.
 
->         clk_data = platform_get_drvdata(lpss_clk_dev);
->         if (!clk_data)
->                 return -ENODEV;
-> --
-> 2.27.0
->
->
-> No virus found
->                 Checked by Hillstone Network AntiVirus
->
+> Acked-By: Vinod Koul <vkoul@kernel.org>
+
+Thank you!
