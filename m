@@ -2,174 +2,225 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BF40558B89
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jun 2022 01:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A09558B97
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jun 2022 01:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229571AbiFWXIG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 19:08:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55078 "EHLO
+        id S230308AbiFWXOC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 19:14:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230237AbiFWXIF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 19:08:05 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1F21BCB0
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 16:08:02 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id t25so1474290lfg.7
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 16:08:02 -0700 (PDT)
+        with ESMTP id S230245AbiFWXOB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 19:14:01 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D253A563A2
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 16:13:57 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-317710edb9dso9439247b3.0
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Jun 2022 16:13:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
+        d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=8W/oRQBAHexnfGyJ1VqjpiqHa9H+SQBCtE7ZQrUbWF0=;
-        b=n3yuIVtow+fK5FJOgLkxsupR+xKY4GMpqUpzFcRHGUYTiV2x9/maWvxtE7TktkaP3G
-         a/AtaLW5385h6qMstwIAv2Qoe5ijPpfGRxpJHR09wVPaUXaOzkGqCwJOxbtvyucGLPv2
-         KYYjc+KYyFfD/VhDqLHAbwbtLpBZ3ad+5RKIMCBGQugoFTvnS/wh1CP1xdN5yczq0FKI
-         c7aTFG8lrAslYH0TJhTbtgo1cz3EkSxHmHvd0b30Vm7R727jBAU5YpJcR3m4js7LM2Mu
-         URJ0cVlUP/QopMEP6Pg1vMRDD0we4SlF9cS0nCW3tEhdshcBXBjDFBdp0TNMITbHDBT3
-         fvxA==
+         :cc;
+        bh=q4rQdhnWLSWo14RnjtXWJNi2g5jmxMvqoaFVDnX2E5Q=;
+        b=cmIBzn0GUySKMskyqJKDVgDVN/8vHWzNfjJ+BREUrbPM7OiFQy/ATX7aLRhZ8MANv1
+         DeCxgq5hoHNltsRta4mLMJ5CVkKh4hfP6LVOwSV/7ivHGPCIqDCrcZofNe4RU/N40PFA
+         084lsyuhYt6X1dulYD/2vojMLUtCUUuNjPCYYrjag+23v4QnctG6vuufvkN8P84KHpsZ
+         1smdglM09EjAq6n/VWxttVgTknSAAilZfUXcBMOYhadXU9RaXikEWNdJ2rEO52JTzByf
+         AZX6K773hR1jhsQBFWv6Jdd8yXumqgqHK9g5FERmM19ObNBe6obaPeOOW1hv8UESqekO
+         6hJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=8W/oRQBAHexnfGyJ1VqjpiqHa9H+SQBCtE7ZQrUbWF0=;
-        b=B6FM5Diq1s2BA2F0ypwj0rtanrjGUNjvVyfMToejrqok6RM05ImUz7V4zypEcgXWfc
-         KTpn4CbNaL9DLbrqfe7YmxsJVKcdWN8w/jibMB1BbH/YiW+MKex+AS4zDknVgZPW7T2s
-         MImb872wa/VE34dj8fKOZqKOzg/UW0RyFBD4qdK/JO4V9JUDolUelb4wU4ZYuIDDPake
-         e+gynA5hMuLQ8pUZ78hePdIMPR2b6MpHx0V17FoNDuZQxw9eV4Vt1bgwsPmIPXTS2+si
-         bAicHsydrKQKmYuNZBm+6P6QXAilJ5SrNqQKOF0pIY/H3pwxSkecHJunsl8h3uwRiUcs
-         kfSQ==
-X-Gm-Message-State: AJIora/r/OtKdWMHHETEZ6Gg4NkMTciFFKJ2kfkOKJvNJCcyfwGp3UhJ
-        jEdZM3wxnROHo/jBh+Nqwo/t3K8/ThMsYKoFpBuuDw==
-X-Google-Smtp-Source: AGRyM1sGIvrP3CG9Kp2cvOPx0vUnT4oQEGxCAzgYgCA+DSul0RFshuZr9+rk6XZqIcJOLI+94LREMotxY1kayQVDp+w=
-X-Received: by 2002:a05:6512:1308:b0:47d:b9cc:ee88 with SMTP id
- x8-20020a056512130800b0047db9ccee88mr6860281lfu.680.1656025681159; Thu, 23
- Jun 2022 16:08:01 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=q4rQdhnWLSWo14RnjtXWJNi2g5jmxMvqoaFVDnX2E5Q=;
+        b=rSrjasQem23wzjlKBkn6J65r5eF4fpTD56C9P5TgNwQDBcQnMHpeSr0yTjCouPZCeL
+         HAkOkzZTWYwnFsPTFF/xG84eQYqrUMo/WuadJnl5BrXJ/KuBVytH5WfK3msTaRFg5ZOI
+         RgkFmok3zPvKxl/x6Kq95CmqzIypOJC70BGwvp/6hWTx/NW77Y1ICMHvBJneMNh26tR/
+         ufAMe9b7kvy2kPqZR24M62ygmHm0UTXuSlyemflse7q7+pGW29fqfhdDUn4Hw5OOBWn1
+         OUtSDqRzaKFmAeNDFJnX/fUJv6WcUbGVZWNyxd9+sYalsD/WMvsnj0rDmdAA+LffEw12
+         pnxQ==
+X-Gm-Message-State: AJIora8T34ufSD0xmzEEMT1MEjbQDzrhNb/CJyKuWft6KqeOHnpBMiMt
+        y4JfIaFU50ITsLiX0cONDpudM4HSIVOLgBSC9iGAzg==
+X-Google-Smtp-Source: AGRyM1tmOAvKbstD4mNEDSzf5ARhyGW/aO0E7tWlKoUjb1ZKcoDOPfJmrPrA9mjxTsX3Z0whnYeMEFOcEVoRWtE94Ys=
+X-Received: by 2002:a0d:dfd5:0:b0:317:f0d4:505b with SMTP id
+ i204-20020a0ddfd5000000b00317f0d4505bmr12968633ywe.518.1656026036778; Thu, 23
+ Jun 2022 16:13:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220620150225.1307946-1-mw@semihalf.com> <20220620150225.1307946-9-mw@semihalf.com>
- <YrDFmw4rziGQJCAu@lunn.ch> <CAJZ5v0g4q8N5wMgk7pRYpYoCLPQoH==Z+nrM0JLyFXSgF9y0+Q@mail.gmail.com>
- <54618c2a-e1f3-bbd0-8fb2-1669366a3b59@gmail.com> <CAJZ5v0j3A-VYFgcnziSqejp-qJVbrbyFP40S-m9eYTv=H9J0ow@mail.gmail.com>
- <YrQZOX4n0ZuTSANP@lunn.ch>
-In-Reply-To: <YrQZOX4n0ZuTSANP@lunn.ch>
-From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Fri, 24 Jun 2022 01:07:52 +0200
-Message-ID: <CAPv3WKc9niXpgppT27weeW0A87zNEGvd2xLCyoXeXKuqqxWs6g@mail.gmail.com>
-Subject: Re: [net-next: PATCH 08/12] ACPI: scan: prevent double enumeration of
- MDIO bus children
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
+References: <20220623080344.783549-1-saravanak@google.com> <20220623080344.783549-3-saravanak@google.com>
+ <20220623100421.GY1615@pengutronix.de> <CAGETcx_eVkYtVX9=TOKnhpP2_ZpJwRDoBye3i7ND2u5Q-eQfPg@mail.gmail.com>
+ <20220623203716.GA1615@pengutronix.de>
+In-Reply-To: <20220623203716.GA1615@pengutronix.de>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 23 Jun 2022 16:13:20 -0700
+Message-ID: <CAGETcx-mCu+M0HhhX+bTNpzEswviJj2U8eCefLv3ezr29Nd+wA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] of: base: Avoid console probe delay when fw_devlink.strict=1
+To:     sascha hauer <sha@pengutronix.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        David Miller <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Grzegorz Bernacki <gjb@semihalf.com>,
-        Grzegorz Jaszczyk <jaz@semihalf.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        upstream@semihalf.com
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, peng fan <peng.fan@nxp.com>,
+        kevin hilman <khilman@kernel.org>,
+        ulf hansson <ulf.hansson@linaro.org>,
+        len brown <len.brown@intel.com>, pavel machek <pavel@ucw.cz>,
+        joerg roedel <joro@8bytes.org>, will deacon <will@kernel.org>,
+        andrew lunn <andrew@lunn.ch>,
+        heiner kallweit <hkallweit1@gmail.com>,
+        russell king <linux@armlinux.org.uk>,
+        "david s. miller" <davem@davemloft.net>,
+        eric dumazet <edumazet@google.com>,
+        jakub kicinski <kuba@kernel.org>,
+        paolo abeni <pabeni@redhat.com>,
+        linus walleij <linus.walleij@linaro.org>,
+        hideaki yoshifuji <yoshfuji@linux-ipv6.org>,
+        david ahern <dsahern@kernel.org>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, kernel@pengutronix.de,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-czw., 23 cze 2022 o 09:42 Andrew Lunn <andrew@lunn.ch> napisa=C5=82(a):
+On Thu, Jun 23, 2022 at 1:37 PM sascha hauer <sha@pengutronix.de> wrote:
 >
-> > And when the ACPI subsystem finds those device objects present in the
-> > ACPI tables, the mdio_device things have not been created yet and it
-> > doesn't know which ACPI device object will correspond to mdio_device
-> > eventually unless it is told about that somehow.  One way of doing
-> > that is to use a list of device IDs in the kernel.  The other is to
-> > have the firmware tell it about that which is what we are discussing.
+> On Thu, Jun 23, 2022 at 10:26:46AM -0700, Saravana Kannan wrote:
+> > On Thu, Jun 23, 2022 at 3:05 AM sascha hauer <sha@pengutronix.de> wrote:
+> > >
+> > > On Thu, Jun 23, 2022 at 01:03:43AM -0700, Saravana Kannan wrote:
+> > > > Commit 71066545b48e ("driver core: Set fw_devlink.strict=1 by default")
+> > > > enabled iommus and dmas dependency enforcement by default. On some
+> > > > systems, this caused the console device's probe to get delayed until the
+> > > > deferred_probe_timeout expires.
+> > > >
+> > > > We need consoles to work as soon as possible, so mark the console device
+> > > > node with FWNODE_FLAG_BEST_EFFORT so that fw_delink knows not to delay
+> > > > the probe of the console device for suppliers without drivers. The
+> > > > driver can then make the decision on where it can probe without those
+> > > > suppliers or defer its probe.
+> > > >
+> > > > Fixes: 71066545b48e ("driver core: Set fw_devlink.strict=1 by default")
+> > > > Reported-by: Sascha Hauer <sha@pengutronix.de>
+> > > > Reported-by: Peng Fan <peng.fan@nxp.com>
+> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > > Tested-by: Peng Fan <peng.fan@nxp.com>
+> > > > ---
+> > > >  drivers/of/base.c | 2 ++
+> > > >  1 file changed, 2 insertions(+)
+> > > >
+> > > > diff --git a/drivers/of/base.c b/drivers/of/base.c
+> > > > index d4f98c8469ed..a19cd0c73644 100644
+> > > > --- a/drivers/of/base.c
+> > > > +++ b/drivers/of/base.c
+> > > > @@ -1919,6 +1919,8 @@ void of_alias_scan(void * (*dt_alloc)(u64 size, u64 align))
+> > > >                       of_property_read_string(of_aliases, "stdout", &name);
+> > > >               if (name)
+> > > >                       of_stdout = of_find_node_opts_by_path(name, &of_stdout_options);
+> > > > +             if (of_stdout)
+> > > > +                     of_stdout->fwnode.flags |= FWNODE_FLAG_BEST_EFFORT;
+> > >
+> > > The device given in the stdout-path property doesn't necessarily have to
+> > > be consistent with the console= parameter. The former is usually
+> > > statically set in the device trees contained in the kernel while the
+> > > latter is dynamically set by the bootloader. So if you change the
+> > > console uart in the bootloader then you'll still run into this trap.
+> > >
+> > > It's problematic to consult only the device tree for dependencies. I
+> > > found several examples of drivers in the tree for which dma support
+> > > is optional. They use it if they can, but continue without it when
+> > > not available. "hwlock" is another property which consider several
+> > > drivers as optional. Also consider SoCs in early upstreaming phases
+> > > when the device tree is merged with "dmas" or "hwlock" properties,
+> > > but the corresponding drivers are not yet upstreamed. It's not nice
+> > > to defer probing of all these devices for a long time.
+> > >
+> > > I wonder if it wouldn't be a better approach to just probe all devices
+> > > and record the device(node) they are waiting on. Then you know that you
+> > > don't need to probe them again until the device they are waiting for
+> > > is available.
+> >
+> > That actually breaks things in a worse sense. There are cases where
+> > the consumer driver is built in and the optional supplier driver is
+> > loaded at boot. Without fw_devlink and the deferred probe timeout, we
+> > end up probing the consumer with limited functionality. With the
+> > current setup, sure we delay some probes a bit but at least everything
+> > works with the right functionality. And you can reduce or remove the
+> > delay if you want to optimize it.
 >
-> Device IDs is a complex subject with MDIO devices. It has somewhat
-> evolved over time, and it could also be that ACPI decides to do
-> something different, or simpler, to what DT does.
+> We have optional and mandatory resources. In this situation a driver has
+> to decide what to do. Either it continues with limited resources or it
+> defers probing. Some drivers try to allocate the optional resources at
+> open time so that they are able to use them once they are available.  We
+> could even think of an asynchronous callback into a driver when a
+> resource becomes available. Whether we put this decision what is
+> optional or not into the driver or in the framework doesn't make a
+> difference to the problem, it is still the same: When a resource is not
+> yet available we have no idea if and when it becomes available, if it's
+> worth waiting for it or not.
 >
-> If the device is an Ethernet PHY, and it follows C22, it has two
-> registers in a well defined location, which when combined give you a
-> vendor model and version. So we scan the bus, look at each address on
-> the bus, try to read these registers and if we don't get 0xffff back,
-> we assume it is a PHY, create an mdio_device, sub type it to
-> phy_device, and then load and probe the driver based on the ID
-> registers.
->
-> If the device is using C45, we currently will not be able to enumerate
-> it this way. We have a number of MDIO bus drivers which don't
-> implement C45, but also don't return -EOPNOTSUPP. They will perform a
-> malformed C22 transaction, or go wrong in some other horrible way. So
-> in DT, we have a compatible string to indicate there is a C45 devices
-> at the address. We then do look around in the C45 address space at the
-> different locations where the ID registers can be, and if we get a
-> valid looking ID, probe the driver using that.
->
-> We also have some chicken/egg problems. Some PHYs won't respond when
-> you read there ID registers until you have turned on clocks, disabled
-> reset lines, enable regulators etc. For these devices, we place the ID
-> as you would read from the ID registers in DT as the compatible
-> string. The mdio_device is created, sub-types as a PHY and the probe
-> happens using the ID register found in DT. The driver can then do what
-> it needs to do to get the device to respond on the bus.
->
+> The difference is that with my proposal (which isn't actually mine but
+> from my collegue Lucas) a driver can decide very fine grained how it
+> wants to deal with the situation. With fw_devlink we try to put this
+> intelligence into the framework and it seems there are quite some quirks
+> necessary to get that running for everyone.
 
-Currently the PHY detection (based on compatible string property in
-_DSD) and handling of both ACPI and DT paths are shared by calling the
-same routine fwnode_mdiobus_register_phy() and all the following
-generic code. No ID's involved.
+That's one possible solution, but for that to work, all drivers with
+optional suppliers would need to be changed to take advantage of this
+callback to work correctly when the optional suppliers become
+available. We could add this callback, but it would be a long time
+before the callback handles all/most cases of optional suppliers.
 
-With MDIOSerialBus property we can probably pass additional
-information about PHY's via one of the fields in _CRS, however, this
-will implicate deviating from the common code with DT. Let's discuss
-it under ECR.
+One of the goals of fw_devlink is so that people can stop having to
+play initcall chicken where they try to tune their initcall levels wrt
+to the chain of suppliers to avoid probe failures or minimize deferred
+probed. Technically with deferred probes and proper error handling,
+people shouldn't have to play initcall chicken, but we still have a
+lot of those. Adding this callback is just going to make writing
+drivers even harder. And there are tons of drivers that can't do
+proper clean up and some drivers can't even be unbound once they are
+bound.
 
-> Then we have devices on the bus which are not PHYs, but generic
-> mdio_devices. These are mostly Ethernet switches, but Broadcom have
-> some other MDIO devices which are not switches. For these, we have
-> compatible strings which identifies the device as a normal string,
-> which then probes the correct driver in the normal way for a
-> compatible string.
+Also, if I'm not mistaken (I could be), stuff like pinctrl is setup
+before we even get to driver->probe(). So when the pinctrl supplier
+becomes available, the driver would need to unbind fully and rebind.
+What if there's a current user of the device?
 
-_HID/_CID fields will be used for that, as in any other driver. In
-case Broadcom decides to support ACPI, they will have to define their
-own ACPI ID and update the relevant driver (extend struct mdio_driver
-with  .acpi_match_table field) - see patch 12/12 as an example.
+> Anyway, we have fw_devlink now and actually I think the dependency graph
+> that we have with fw_devlink is quite nice to resolve the natural probe
+> order. But why do we have to put an extra penalty on drivers whose
+> resources are not yet available?  Probe devices with complete resources
+> as long as you find them, execute more initcalls as long as there are
+> any, but when there are no more left, you could start probing devices
+> with incomplete resources, why wait for another ten seconds?
 
->
-> So giving the kernel a list of device IDs is not simple. I expect
-> dealing with this will be a big part of defining how MDIOSerialBus
-> works.
->
+The timeout is defining how long after the most recent module load
+that we give up waiting for more modules to be loaded. On a Pixel 6
+with serial console output, the timeout of 5 seconds would work
+because the worst case gap between two module loads is ~2.8 seconds
+(so 5 seconds for some margin). The default is this high to
+accommodate slow storage devices where mounting all the filesystems
+can take time (think HDD or network FS). The default is configured for
+correctness so that we can maximize functionality across systems, but
+people can optimize for the specific case.
 
-Actually the _HID/_CID fields values will still be required for the
-devices on the bus and the relevant drivers will use it for matching,
-which is analogous for the compatible string handling. The
-MDIOSerialBus _CRS macro will not be used for this purpose, same as
-already existing examples of I2CSerialBus or SPISerialBus (although
-the child devices use them, they also have _HID/_CID for
-identification).
+> For me it's no problem when the UART probes late, we have earlycon which
+> can be used to debug problems that arise before the UART probes, but
+> what nags is the ten seconds delay. zero would be a much saner value for
+> me.
 
-What we agreed for is to get rid of is a static list of MDIO
-controllers ID's, which I proposed in this patch, whose intention was
-to prevent its enumeration by the default ACPI scan routines, in case
-the device's parent is a listed MDIO bus. Instead, just the presence
-of MDIOSerialBus macro in the _CRS method of the child device will
-suffice to get it skipped at that point. Any other data in this macro
-will be in fact something extra that we can use for any purpose.
+Having said all that, I empathize with your annoyance at the delay.
+Open to ideas of making this better without making the default
+functionality worse.
 
-Best regards,
-Marcin
+-Saravana
