@@ -2,84 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FB1A558D3F
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jun 2022 04:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF6C4558EBC
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jun 2022 05:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229941AbiFXCf5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Jun 2022 22:35:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56066 "EHLO
+        id S229792AbiFXDFY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Jun 2022 23:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbiFXCf5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 22:35:57 -0400
-X-Greylist: delayed 915 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 23 Jun 2022 19:35:55 PDT
-Received: from m13111.mail.163.com (m13111.mail.163.com [220.181.13.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7345C51E5A;
-        Thu, 23 Jun 2022 19:35:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=o9J+p
-        ZBtqnGDTrCmXSeP0lYYcW0DNpeCNkrGVu9xKKU=; b=g+1HTF+ArET0P9cR1mxhO
-        278o4PURNhDsGVAzQin9LWQ7pzvJAf07oSizb/Yff9+lddaQiB3itkx/eDYAqWGP
-        Fg1pilxJvAkzEt+doA0L0EfeoZJdVbVbLHoviWEhmafl6X+5VWOIneyUoTGsj7Xc
-        M1RnthJFTpD5r3XMLqzCMY=
-Received: from 15815827059$163.com ( [116.128.244.169] ) by
- ajax-webmail-wmsvr111 (Coremail) ; Fri, 24 Jun 2022 10:20:29 +0800 (CST)
-X-Originating-IP: [116.128.244.169]
-Date:   Fri, 24 Jun 2022 10:20:29 +0800 (CST)
-From:   huhai <15815827059@163.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Len Brown" <lenb@kernel.org>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        huhai <huhai@kylinos.cn>
-Subject: Re:Re: [PATCH] ACPI: LPSS: Fix missing check in
- register_device_clock
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
- Copyright (c) 2002-2022 www.mailtech.cn 163com
-In-Reply-To: <CAJZ5v0jC+B7K0uuE=wLi1hk+WATn5B8sSu6abSO00rYJ4ofRFw@mail.gmail.com>
-References: <20220623132127.1248462-1-15815827059@163.com>
- <CAJZ5v0jC+B7K0uuE=wLi1hk+WATn5B8sSu6abSO00rYJ4ofRFw@mail.gmail.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+        with ESMTP id S229889AbiFXDFX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Jun 2022 23:05:23 -0400
+Received: from ZXSHCAS2.zhaoxin.com (ZXSHCAS2.zhaoxin.com [210.0.225.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99DBE33F;
+        Thu, 23 Jun 2022 20:05:17 -0700 (PDT)
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHCAS2.zhaoxin.com
+ (10.28.252.162) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Fri, 24 Jun
+ 2022 11:05:15 +0800
+Received: from [10.32.56.37] (10.32.56.37) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Fri, 24 Jun
+ 2022 11:05:13 +0800
+Subject: Re: [PATCH V1] x86/cstate: Add Zhaoxin/Centaur ACPI Cx FFH MWAIT
+ support
+To:     Dave Hansen <dave.hansen@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
+CC:     <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>,
+        <LindaChai@zhaoxin.com>, <LeoLiu@zhaoxin.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <0b583b7e-dcd3-be51-f367-1c12ac841d3f@zhaoxin.com>
+ <ec121630-1ee5-1336-1ed4-04506f0c4129@intel.com>
+From:   Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+Message-ID: <e4fd583f-dafd-e2b5-7880-f12684f3e252@zhaoxin.com>
+Date:   Fri, 24 Jun 2022 11:05:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Message-ID: <18367cc4.16aa.1819382c273.Coremail.15815827059@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: b8GowACnr9ttH7VicrIgAA--.27406W
-X-CM-SenderInfo: rprvmiivyslimvzbiqqrwthudrp/1tbiwAcqhVXlvsh9FAABsG
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FROM_LOCAL_DIGITS,
-        FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <ec121630-1ee5-1336-1ed4-04506f0c4129@intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.32.56.37]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-CkF0IDIwMjItMDYtMjMgMjE6MjU6NTUsICJSYWZhZWwgSi4gV3lzb2NraSIgPHJhZmFlbEBrZXJu
-ZWwub3JnPiB3cm90ZToKPk9uIFRodSwgSnVuIDIzLCAyMDIyIGF0IDM6MjEgUE0gaHVoYWkgPDE1
-ODE1ODI3MDU5QDE2My5jb20+IHdyb3RlOgo+Pgo+PiBGcm9tOiBodWhhaSA8aHVoYWlAa3lsaW5v
-cy5jbj4KPj4KPj4gcmVnaXN0ZXJfZGV2aWNlX2Nsb2NrKCkgbWlzc2VzIGEgY2hlY2sgZm9yIHBs
-YXRmb3JtX2RldmljZV9yZWdpc3Rlcl9zaW1wbGUoKS4KPj4gQWRkIGEgY2hlY2sgdG8gZml4IGl0
-Lgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBodWhhaSA8aHVoYWlAa3lsaW5vcy5jbj4KPj4gLS0tCj4+
-ICBkcml2ZXJzL2FjcGkvYWNwaV9scHNzLmMgfCAzICsrKwo+PiAgMSBmaWxlIGNoYW5nZWQsIDMg
-aW5zZXJ0aW9ucygrKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2FjcGlfbHBzcy5j
-IGIvZHJpdmVycy9hY3BpL2FjcGlfbHBzcy5jCj4+IGluZGV4IGZiZTA3NTYyNTljNS4uYzRkNGQy
-MTM5MWQ3IDEwMDY0NAo+PiAtLS0gYS9kcml2ZXJzL2FjcGkvYWNwaV9scHNzLmMKPj4gKysrIGIv
-ZHJpdmVycy9hY3BpL2FjcGlfbHBzcy5jCj4+IEBAIC00MjIsNiArNDIyLDkgQEAgc3RhdGljIGlu
-dCByZWdpc3Rlcl9kZXZpY2VfY2xvY2soc3RydWN0IGFjcGlfZGV2aWNlICphZGV2LAo+PiAgICAg
-ICAgIGlmICghbHBzc19jbGtfZGV2KQo+PiAgICAgICAgICAgICAgICAgbHB0X3JlZ2lzdGVyX2Ns
-b2NrX2RldmljZSgpOwo+Pgo+PiArICAgICAgIGlmIChJU19FUlIobHBzc19jbGtfZGV2KSkKPj4g
-KyAgICAgICAgICAgICAgIHJldHVybiBQVFJfRVJSKGxwc3NfY2xrX2Rldik7Cj4+ICsKPgo+V2h5
-IG5vdCB1c2UgSVNfRVJSX09SX05VTEwoKSBpbnN0ZWFkPwoKcGxhdGZvcm1fZGV2aWNlX3JlZ2lz
-dGVyX3NpbXBsZSgpIG5ldmVyIHJldHVybnMgTlVMTCBhcyBpdCBkZWNsYXJlZCBiZWxsb3dpbmej
-rApzbyB1c2UgSVNfRVJSKCkgdG8gdmFsaWRhdGUgdGhlIHJldHVybiB2YWx1ZSBzaG91bGQgYmUg
-ZW5vdWdoLgoKLyoqCiAqIHBsYXRmb3JtX2RldmljZV9yZWdpc3Rlcl9zaW1wbGUgLSBhZGQgYSBw
-bGF0Zm9ybS1sZXZlbCBkZXZpY2UgYW5kIGl0cyByZXNvdXJjZXMKICogLi4uCiAqIFJldHVybnMg
-JnN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgcG9pbnRlciBvbiBzdWNjZXNzLCBvciBFUlJfUFRSKCkg
-b24gZXJyb3IuCiAqLwoKVGhhbmtzLgoKPgo+PiAgICAgICAgIGNsa19kYXRhID0gcGxhdGZvcm1f
-Z2V0X2RydmRhdGEobHBzc19jbGtfZGV2KTsKPj4gICAgICAgICBpZiAoIWNsa19kYXRhKQo+PiAg
-ICAgICAgICAgICAgICAgcmV0dXJuIC1FTk9ERVY7Cj4+IC0tCj4+IDIuMjcuMAo+Pgo+Pgo+PiBO
-byB2aXJ1cyBmb3VuZAo+PiAgICAgICAgICAgICAgICAgQ2hlY2tlZCBieSBIaWxsc3RvbmUgTmV0
-d29yayBBbnRpVmlydXMKPj4K
+On 23/6/2022 23:55, Dave Hansen wrote:
+> On 6/22/22 18:26, Tony W Wang-oc wrote:
+>> Recent Zhaoxin/Centaur CPUs support X86_FEATURE_MWAIT that implies
+>> the MONITOR/MWAIT instructions can be used for ACPI Cx state.
+>> The BIOS declares Cx state in _CST object to use FFH on Zhaoxin/Centaur
+>> systems. So let function ffh_cstate_init() support These CPUs too.
+>>
+>> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+>> ---
+>>   arch/x86/kernel/acpi/cstate.c | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+>> index 7945eae..d4185e1 100644
+>> --- a/arch/x86/kernel/acpi/cstate.c
+>> +++ b/arch/x86/kernel/acpi/cstate.c
+>> @@ -213,7 +213,9 @@ static int __init ffh_cstate_init(void)
+>>
+>>       if (c->x86_vendor != X86_VENDOR_INTEL &&
+>>           c->x86_vendor != X86_VENDOR_AMD &&
+>> -        c->x86_vendor != X86_VENDOR_HYGON)
+>> +        c->x86_vendor != X86_VENDOR_HYGON &&
+>> +        c->x86_vendor != X86_VENDOR_CENTAUR &&
+>> +        c->x86_vendor != X86_VENDOR_ZHAOXIN)
+>>           return -1;
+> 
+> Many of the changelogs that add new vendors here go on about particular
+> C states declared in the _CST object and contents of CPUID leaf 5.
+> 
+> Why do we even _have_ a vendor check here?  Shouldn't the code just be
+> going and doing the validation of the _CST object and CPUID that the
+> changelogs blather on about?
+> 
+
+Yes, agree!
+
+Will change as below. Please help to check if it is OK. Thanks a lot.
+  static int __init ffh_cstate_init(void)
+  {
+-       struct cpuinfo_x86 *c = &boot_cpu_data;
+-
+-       if (c->x86_vendor != X86_VENDOR_INTEL &&
+-           c->x86_vendor != X86_VENDOR_AMD &&
+-           c->x86_vendor != X86_VENDOR_HYGON)
++       if (!boot_cpu_has(X86_FEATURE_MWAIT))
+                 return -1;
+
+> Intel certainly made the original sin on this one (see 991528d7348), but
+> I hope _something_ changed in the 16 years since that patch went in.
+> .
+> 
+
+-- 
+Sincerely
+TonyWWang-oc
