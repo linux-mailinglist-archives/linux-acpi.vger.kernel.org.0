@@ -2,98 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C369559E4B
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jun 2022 18:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5DB455A073
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jun 2022 20:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231228AbiFXQLs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Jun 2022 12:11:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41044 "EHLO
+        id S229441AbiFXRlr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Jun 2022 13:41:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231220AbiFXQLr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Jun 2022 12:11:47 -0400
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D1A5002A;
-        Fri, 24 Jun 2022 09:11:47 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id 23so5265242ybe.8;
-        Fri, 24 Jun 2022 09:11:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=T8SvbPl2HkMoNoh8fjmvh+1figA9UteGT0qWY1AbfLY=;
-        b=RMjNk5JByIm6Siaoj3ZI3+oC0mwISSOzrRqYsoRydTn67E2i9sjqeVNzaEsXaBh+Nr
-         zA4YqDxR5sT2+R0H/hcSpNZyldLGJG6kEfxOC9T0j0Rqoo6Oflx54ZIinJ2xb6CXCwIT
-         TtgxCzvClBogRzENp9BCUK9DDLZN6P7+ARa6keda37FbVWYFWLvdJ/OiUP5jAuXmdKqy
-         N2fwHwW9t4FMo7FagCHfBh5T3Z0ZMmQc+2u0+EOWkthT60e8eHux0Wr69p7xdIugArjX
-         aetybKFxaHBw9Lfa6eoaeLTe8/zTIr4jpSG1XkLgfX9010ddQvySVycjvh+LZX4Od1Ju
-         JStg==
-X-Gm-Message-State: AJIora+VCGQO3sx9XSXBnqBpFrFWO6FONvvgPdKQwY8MHE3i3+gzRSqd
-        BeOgP7oVGUaBBJ797YMxKsGDpThh7p0CitJy8oSvT6Fptio=
-X-Google-Smtp-Source: AGRyM1ve/F8rHyeHqtGTuIOFtCx/e8wcxtrG1D/rxohZ3L6KH/fsrwGwrnZTegGICZobudV3v/pi9LuKqHafZ9OCdnc=
-X-Received: by 2002:a05:6902:1141:b0:669:3f2a:c6bb with SMTP id
- p1-20020a056902114100b006693f2ac6bbmr15571250ybu.365.1656087106298; Fri, 24
- Jun 2022 09:11:46 -0700 (PDT)
+        with ESMTP id S230239AbiFXRlq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Jun 2022 13:41:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5017B22BE9;
+        Fri, 24 Jun 2022 10:41:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5F2561F0D;
+        Fri, 24 Jun 2022 17:41:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A89C3411C;
+        Fri, 24 Jun 2022 17:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656092505;
+        bh=pe98CI9kCtS1Z+q8yXfT3SeDJPX3/R3m/CosNWDamWI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ibE5U0/j9jkIKhC+tjYF3b1ypWLCXgHEjiJqJVE3ZE6yeqT4rL3D6PFuUZw0COffu
+         QaX37rbWvwf9hkyEsOb4Xeloqr3Rm4U1NZyhxDigTiQkCkdoKXjcl84nuaTixGnqAZ
+         11dKeRstUuvLSkanhit98+qbHdzBPpbo4LSAqw6I0e1qNAX8R5jCjxIFt/7Am1WWT6
+         ikH9+O7x78mXervpgP4eXAEImBXWVKFqDXFJjP1OMOKEQ/te0Z/zmxB9aPXXDq6Exx
+         LTFeQWTGut2psennWZlMXRJvNW1nU4bIvBvRQmA3VzBF1ftRt6HGfPd1VA4RavcEDv
+         Tyk1sipTDbZ7w==
+Received: by mail-oi1-f169.google.com with SMTP id be10so4460448oib.7;
+        Fri, 24 Jun 2022 10:41:45 -0700 (PDT)
+X-Gm-Message-State: AJIora/4M66gJLXf53wk+l56oIOW6kaLmwSfNgQbuhiq1fWjhhBfiXj0
+        jBktLXMMVZJ+A5rcW8eaPRVm1Pel37FNOBMIBcU=
+X-Google-Smtp-Source: AGRyM1sSG7rQV/siZ5/AO6SL294YHu79aRFgAW9PSWR9NoI5jlkbofCIbWS+/AonubZrtRC3RqqDXurne3KByTcXHn0=
+X-Received: by 2002:a05:6808:13c6:b0:335:3e54:94bc with SMTP id
+ d6-20020a05680813c600b003353e5494bcmr2544949oiw.228.1656092504520; Fri, 24
+ Jun 2022 10:41:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220624115940.272422-1-Perry.Yuan@amd.com>
-In-Reply-To: <20220624115940.272422-1-Perry.Yuan@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 24 Jun 2022 18:11:35 +0200
-Message-ID: <CAJZ5v0igFJgTH9yVCVyuGHmkbonBYh18KKi4X+TYDVaZRwNzxg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: bus: Fix osc_sb_cppc_not_supported check
-To:     Perry Yuan <Perry.Yuan@amd.com>
-Cc:     Huang Rui <Ray.Huang@amd.com>,
-        Mario Limonciello <Mario.Limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Nathan Fontenot <Nathan.Fontenot@amd.com>,
-        "Su, Jinzhou (Joe)" <Jinzhou.Su@amd.com>, Xinmei.Huang@amd.com,
-        "Du, Xiaojian" <Xiaojian.Du@amd.com>,
-        "Meng, Li (Jassmine)" <Li.Meng@amd.com>,
-        Linux PM <linux-pm@vger.kernel.org>
+References: <20220624152331.4009502-1-sudeep.holla@arm.com> <20220624152331.4009502-3-sudeep.holla@arm.com>
+In-Reply-To: <20220624152331.4009502-3-sudeep.holla@arm.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 24 Jun 2022 19:41:33 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH4fo_mm2aRTU2ehkk=gzf0r93cXk4OMX54-hGDt76U7Q@mail.gmail.com>
+Message-ID: <CAMj1kXH4fo_mm2aRTU2ehkk=gzf0r93cXk4OMX54-hGDt76U7Q@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ACPI: Enable Platform Runtime Mechanism(PRM) support
+ on ARM64
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 2:00 PM Perry Yuan <Perry.Yuan@amd.com> wrote:
+On Fri, 24 Jun 2022 at 17:23, Sudeep Holla <sudeep.holla@arm.com> wrote:
 >
-> The patch fixs the osc_sb_cppc_not_supported variable checking
-> Otherwise the cppc acpi driver will be failed to register causing AMD
-> pstate driver failed to load when calling acpi_cpc_valid()
+> There is interest to make use of PRM(Platform Runtime Mechanism) even on
+> ARM64 ACPI platforms. Allow PRM to be enabled on ARM64 platforms. It will
+> be enabled by default as on x86_64.
 >
-> Fixes: c42fa24b447("ACPI: bus: Avoid using CPPC if not supported by firmware")
-> Signed-off-by: Perry Yuan <Perry.Yuan@amd.com>
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+
 > ---
->  drivers/acpi/bus.c | 2 +-
+>  drivers/acpi/Kconfig | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 4d7c51a33b01..9731e4a1e338 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -359,7 +359,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
->         }
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 1e34f846508f..d08b7408f0a5 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -592,7 +592,7 @@ config X86_PM_TIMER
 >
->  #ifdef CONFIG_ACPI_CPPC_LIB
-> -       osc_sb_cppc_not_supported = !(capbuf_ret[OSC_SUPPORT_DWORD] &
-> +       osc_sb_cppc_not_supported = !(capbuf_ret[OSC_SUPPORT_DWORD] &&
->                         (OSC_SB_CPC_SUPPORT | OSC_SB_CPCV2_SUPPORT));
-
-This certainly is not a correct fix, because it causes
-osc_sb_cppc_not_supported to always be true if
-capbuf_ret[OSC_SUPPORT_DWORD] is not zero.
-
->  #endif
->
+>  config ACPI_PRMT
+>         bool "Platform Runtime Mechanism Support"
+> -       depends on EFI && X86_64
+> +       depends on EFI && (X86_64 || ARM64)
+>         default y
+>         help
+>           Platform Runtime Mechanism (PRM) is a firmware interface exposing a
 > --
-> 2.25.1
+> 2.36.1
 >
