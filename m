@@ -2,95 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EBB255A49C
-	for <lists+linux-acpi@lfdr.de>; Sat, 25 Jun 2022 01:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0F7E55A8A0
+	for <lists+linux-acpi@lfdr.de>; Sat, 25 Jun 2022 12:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230473AbiFXXFe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Jun 2022 19:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40160 "EHLO
+        id S231883AbiFYKLp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 25 Jun 2022 06:11:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbiFXXFe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Jun 2022 19:05:34 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A6598896E
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Jun 2022 16:05:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656111931; x=1687647931;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=sTirgUrkotzGrSH6qecJSFz4C/4Jp50Wc83W3PgFw0M=;
-  b=SUBemZwJv5TEFUbg7b4skPvyHrNDra9BQhz90RzkaZ+OBRCqxBI3ZMxk
-   o14wxSZxR3tHr3Y2IEuPclZHJyzOO+tza+ZPhM5rkQ2xNfRNl1eUA95ky
-   vdgZC99YR82hMRpfvC5FIkBeBUr0vjh5KBEU9/q4C0lkokWlUR/6xjYFH
-   Q7Z8vsV6BMzDI+E+eoXbCHYBRFYkmexKm1IZPQ12qQazJc0r4bCX/cOBb
-   Q/Qz1RBr1gQgzYc2IZVOkC1aczrlkFcSovLJ0JVR+dpyBnjCuT6DX6asm
-   SyaCwuU4TDBCr0aaRpi+VbnDd3j/MuXkk1OUbVl0Oe8HdxDdiza1V3fO6
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10388"; a="306580049"
-X-IronPort-AV: E=Sophos;i="5.92,220,1650956400"; 
-   d="scan'208";a="306580049"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2022 16:05:27 -0700
-X-IronPort-AV: E=Sophos;i="5.92,220,1650956400"; 
-   d="scan'208";a="678735414"
-Received: from jooyoun1-mobl1.amr.corp.intel.com (HELO [192.168.1.117]) ([10.209.31.49])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2022 16:05:26 -0700
-Subject: [PATCH] ACPI: Fix _EINJ vs EFI_MEMORY_SP
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     rafael.j.wysocki@intel.com
-Cc:     Mustafa Hajeer <mustafa.hajeer@intel.com>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Omar Avelar <omar.avelar@intel.com>,
-        linux-acpi@vger.kernel.org, patches@lists.linux.dev
-Date:   Fri, 24 Jun 2022 16:05:26 -0700
-Message-ID: <165611192645.990447.9154951000881269149.stgit@dwillia2-xfh>
-User-Agent: StGit/0.18-3-g996c
+        with ESMTP id S230401AbiFYKLo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Jun 2022 06:11:44 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 20429175A9;
+        Sat, 25 Jun 2022 03:11:43 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC5D123A;
+        Sat, 25 Jun 2022 03:11:42 -0700 (PDT)
+Received: from bogus (unknown [10.57.39.193])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 614DD3F66F;
+        Sat, 25 Jun 2022 03:11:40 -0700 (PDT)
+Date:   Sat, 25 Jun 2022 11:10:29 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>
+Subject: Re: [PATCH 1/3] arm64: efi: Simplify arch_efi_call_virt macro by not
+ using efi_##f##_t type
+Message-ID: <20220625101029.qekxekisalya2iys@bogus>
+References: <20220624152331.4009502-1-sudeep.holla@arm.com>
+ <20220624152331.4009502-2-sudeep.holla@arm.com>
+ <CAMj1kXFAwzttyi=--fJyh9bGXv30Z4dkVR02_taS3JtKJXsLhA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXFAwzttyi=--fJyh9bGXv30Z4dkVR02_taS3JtKJXsLhA@mail.gmail.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When a platform marks a memory range as "special purpose" it is not
-onlined as System RAM by default. However, it is still suitable for
-error injection. Add IORES_DESC_SOFT_RESERVED to einj_error_inject() as
-a permissible memory type in the sanity checking of the arguments to
-_EINJ.
+On Fri, Jun 24, 2022 at 07:45:14PM +0200, Ard Biesheuvel wrote:
+> On Fri, 24 Jun 2022 at 17:23, Sudeep Holla <sudeep.holla@arm.com> wrote:
+> >
+> > Currently, the arch_efi_call_virt() assumes all users of it will have
+> > defined a type 'efi_##f##_t' to make use of it. It is unnecessarily
+> > forcing the users to create a new typedef when __efi_rt_asm_wrapper()
+> > actually expects void pointer.
+> >
+> > Simplify the arch_efi_call_virt() macro by typecasting p->f to (void *)
+> > as required by __efi_rt_asm_wrapper() and eliminate the explicit need
+> > for efi_##f##_t type for every user of this macro.
+> >
+>
+> Can't we just use typeof() here?
 
-Fixes: 262b45ae3ab4 ("x86/efi: EFI soft reservation to E820 enumeration")
-Cc: Rafael Wysocki <rafael.j.wysocki@intel.com>
-Cc: Mustafa Hajeer <mustafa.hajeer@intel.com>
-Cc: Len Brown <lenb@kernel.org>
-Cc: James Morse <james.morse@arm.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reported-by: Omar Avelar <omar.avelar@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/acpi/apei/einj.c |    2 ++
- 1 file changed, 2 insertions(+)
+I had tried that, but unless p->f is pointer of some type, we will get
+the warning as it is passed without a cast to __efi_rt_asm_wrapper().
 
-diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-index d4326ec12d29..6b583373c58a 100644
---- a/drivers/acpi/apei/einj.c
-+++ b/drivers/acpi/apei/einj.c
-@@ -546,6 +546,8 @@ static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
- 				!= REGION_INTERSECTS) &&
- 	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_PERSISTENT_MEMORY)
- 				!= REGION_INTERSECTS) &&
-+	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_SOFT_RESERVED)
-+				!= REGION_INTERSECTS) &&
- 	     !arch_is_platform_page(base_addr)))
- 		return -EINVAL;
- 
+> __efi_rt_asm_wrapper() was intended as a temporary thing, so I'd
+> prefer to avoid starting to rely on the void* type of its first
+> argument.
+>
 
+Fair enough. Can we expect p->f to be some pointer then ? If yes, then
+PRMT driver needs to change the handler_addr from u64 to some pointer
+which sounds OK to me.
+
+--
+Regards,
+Sudeep
