@@ -2,135 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F70855AA9C
-	for <lists+linux-acpi@lfdr.de>; Sat, 25 Jun 2022 15:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6C655AB6F
+	for <lists+linux-acpi@lfdr.de>; Sat, 25 Jun 2022 18:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233264AbiFYNoT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 25 Jun 2022 09:44:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50398 "EHLO
+        id S232971AbiFYQBv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 25 Jun 2022 12:01:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233272AbiFYNoD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Jun 2022 09:44:03 -0400
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D5861C117;
-        Sat, 25 Jun 2022 06:43:46 -0700 (PDT)
-Received: by mail-yb1-f172.google.com with SMTP id i15so9185033ybp.1;
-        Sat, 25 Jun 2022 06:43:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UAKAgQ+yky+qtekDhyWd05POB+q8QkxLv66gfq+6TPk=;
-        b=6Lv/onNj9yZUjId2h/vsAJEwQCZB8mGMD9pl8pUaVfwHLIaYTDAW75Y7X0W+hvFS+Y
-         pKcGw1mv2UPvAzBnEqzZ4F9qNRODO1GlP9VzxC+Xn/Z2dc1paVNFLIhbfy1VSagR6f0d
-         K5wUnWXh1t+/AsZkyNrv2NmizHffXtyO94cVk6BTAPJayoe9UX6MgzK0utw4EnD6GJf8
-         O8YjZ0UfcsBZ3XdfN0lJFhHSdPBUYlwV1MBWAVSUpMDJzsxlGdZfOTQVM1rPnYBl5GCk
-         8b6AIJS0Z/C1+KKxMPhkVt19lS2HtEKYf3moMCf2A5fLo3s/gM35jW0sM0BQAdumqR/w
-         eobg==
-X-Gm-Message-State: AJIora+dOwgnGJrAawJRUelgEZTzCycznzMRRzXzJCZwHXj/tXYRa26X
-        G6yvj9tuai75Le2Nx2jjXwMLu3MHnqsjqwPipDE=
-X-Google-Smtp-Source: AGRyM1v5wXOcNu4UWaZx73jz9jkTRv6Ia0s8IquEmqiLD8bsS43vIR5/4h0nTSbbmb2je2bOmzKYnqG/AJDQMgwHgdg=
-X-Received: by 2002:a25:9004:0:b0:66c:97a4:3053 with SMTP id
- s4-20020a259004000000b0066c97a43053mr548906ybl.137.1656164625449; Sat, 25 Jun
- 2022 06:43:45 -0700 (PDT)
+        with ESMTP id S229516AbiFYQBv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Jun 2022 12:01:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365D915A2A;
+        Sat, 25 Jun 2022 09:01:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B38ED614FB;
+        Sat, 25 Jun 2022 16:01:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA262C3411C;
+        Sat, 25 Jun 2022 16:01:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656172908;
+        bh=P3GsmeThlxmqDDdq7R03/BK/ND7CKY2z2N/15Usv7Lg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ajhzmGjAMwuwcFkWretu1EACoUZpnSvor6yMJSys/jzpVeAQqFc6NV8q1W8rtIh2l
+         41aaN/A6+hzBluhHLvJHUfD5rU3OgQuhkDqQcrsKRP4eAYP0yuDlxvqrnomYaLBhAa
+         DZE6MqF1XBEUn4+MvdsoDAOpxdzobIirLBDk/4RmZvT9a/Kn9Sw/dMNpokZ6zhBDyI
+         EDdoYKQwdXmj9vWXYqgTS23ggpz5uzlRPthm5cdeWuZx5w6cU2Gbb2+qOUsuL6BBui
+         M26vzO886o/0ai/sosVIasFK/vAwv6JmxN6fcE9dJlH7prgIVXEOWHqGiGm0DxtU6b
+         onZfelp0Fh/ZQ==
+Received: by mail-oi1-f180.google.com with SMTP id s124so7455517oia.0;
+        Sat, 25 Jun 2022 09:01:48 -0700 (PDT)
+X-Gm-Message-State: AJIora+MBZVpgdrGJV+5UUXrP/7aRhmpbG1zHivgKF57aVLZsbgZzOBZ
+        nCSoIc7jDkMbwND+KUoMiDa1e4qDfTfryAzokG4=
+X-Google-Smtp-Source: AGRyM1uaCHY8Lb3HoMmR8FXrGTi6khWzu6IOICO4hwYBBDxF7teFrFP6XD97v3ogLiRq4VNhJA+E4lqQDnfPpm4fFLY=
+X-Received: by 2002:a05:6808:300e:b0:32c:425e:df34 with SMTP id
+ ay14-20020a056808300e00b0032c425edf34mr2869227oib.126.1656172907994; Sat, 25
+ Jun 2022 09:01:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220624112340.10130-1-hdegoede@redhat.com> <20220624112340.10130-2-hdegoede@redhat.com>
-In-Reply-To: <20220624112340.10130-2-hdegoede@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 25 Jun 2022 15:43:34 +0200
-Message-ID: <CAJZ5v0gYf30tMDTPzB6QMYVp-6zcENhgFQeKSaT4DzLSDi7_zw@mail.gmail.com>
-Subject: Re: [PATCH 1/7] ACPI: video: Change how we determine if brightness
- key-presses are handled
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Stefan Seyfried <stefan.seyfried@googlemail.com>,
-        Kenneth Chan <kenneth.t.chan@gmail.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Stefan Seyfried <seife+kernel@b1-systems.com>
+References: <20220624152331.4009502-1-sudeep.holla@arm.com>
+ <20220624152331.4009502-2-sudeep.holla@arm.com> <CAMj1kXFAwzttyi=--fJyh9bGXv30Z4dkVR02_taS3JtKJXsLhA@mail.gmail.com>
+ <20220625101029.qekxekisalya2iys@bogus>
+In-Reply-To: <20220625101029.qekxekisalya2iys@bogus>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 25 Jun 2022 18:01:37 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFRqCv1AoXO8CoVXo2KJ=xhRzEYaA8sjGV3PKPZk9y9xw@mail.gmail.com>
+Message-ID: <CAMj1kXFRqCv1AoXO8CoVXo2KJ=xhRzEYaA8sjGV3PKPZk9y9xw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] arm64: efi: Simplify arch_efi_call_virt macro by not
+ using efi_##f##_t type
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 1:23 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Sat, 25 Jun 2022 at 12:11, Sudeep Holla <sudeep.holla@arm.com> wrote:
 >
-> Some systems have an ACPI video bus but not ACPI video devices with
-> backlight capability. On these devices brightness key-presses are
-> (logically) not reported through the ACPI video bus.
+> On Fri, Jun 24, 2022 at 07:45:14PM +0200, Ard Biesheuvel wrote:
+> > On Fri, 24 Jun 2022 at 17:23, Sudeep Holla <sudeep.holla@arm.com> wrote:
+> > >
+> > > Currently, the arch_efi_call_virt() assumes all users of it will have
+> > > defined a type 'efi_##f##_t' to make use of it. It is unnecessarily
+> > > forcing the users to create a new typedef when __efi_rt_asm_wrapper()
+> > > actually expects void pointer.
+> > >
+> > > Simplify the arch_efi_call_virt() macro by typecasting p->f to (void *)
+> > > as required by __efi_rt_asm_wrapper() and eliminate the explicit need
+> > > for efi_##f##_t type for every user of this macro.
+> > >
+> >
+> > Can't we just use typeof() here?
 >
-> Change how acpi_video_handles_brightness_key_presses() determines if
-> brightness key-presses are handled by the ACPI video driver to avoid
-> vendor specific drivers/platform/x86 drivers filtering out their
-> brightness key-presses even though they are the only ones reporting
-> these presses.
+> I had tried that, but unless p->f is pointer of some type, we will get
+> the warning as it is passed without a cast to __efi_rt_asm_wrapper().
 >
-> Fixes: ed83c9171829 ("platform/x86: panasonic-laptop: Resolve hotkey double trigger bug")
-> Reported-and-tested-by: Stefan Seyfried <seife+kernel@b1-systems.com>
-> Reported-and-tested-by: Kenneth Chan <kenneth.t.chan@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > __efi_rt_asm_wrapper() was intended as a temporary thing, so I'd
+> > prefer to avoid starting to rely on the void* type of its first
+> > argument.
+> >
+>
+> Fair enough. Can we expect p->f to be some pointer then ? If yes, then
+> PRMT driver needs to change the handler_addr from u64 to some pointer
+> which sounds OK to me.
+>
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-and I'm assuming that you'll take this one along with the rest of the series.
-
-> ---
->  drivers/acpi/acpi_video.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> index b6ee27cb32f3..dc3c037d6313 100644
-> --- a/drivers/acpi/acpi_video.c
-> +++ b/drivers/acpi/acpi_video.c
-> @@ -79,6 +79,7 @@ module_param(device_id_scheme, bool, 0444);
->  static int only_lcd = -1;
->  module_param(only_lcd, int, 0444);
->
-> +static bool has_backlight;
->  static int register_count;
->  static DEFINE_MUTEX(register_count_mutex);
->  static DEFINE_MUTEX(video_list_lock);
-> @@ -1230,6 +1231,9 @@ acpi_video_bus_get_one_device(struct acpi_device *device,
->         acpi_video_device_bind(video, data);
->         acpi_video_device_find_cap(data);
->
-> +       if (data->cap._BCM && data->cap._BCL)
-> +               has_backlight = true;
-> +
->         mutex_lock(&video->device_list_lock);
->         list_add_tail(&data->entry, &video->video_device_list);
->         mutex_unlock(&video->device_list_lock);
-> @@ -2276,6 +2280,7 @@ void acpi_video_unregister(void)
->                 cancel_delayed_work_sync(&video_bus_register_backlight_work);
->                 acpi_bus_unregister_driver(&acpi_video_bus);
->                 register_count = 0;
-> +               has_backlight = false;
->         }
->         mutex_unlock(&register_count_mutex);
->  }
-> @@ -2294,13 +2299,7 @@ EXPORT_SYMBOL(acpi_video_register_backlight);
->
->  bool acpi_video_handles_brightness_key_presses(void)
->  {
-> -       bool have_video_busses;
-> -
-> -       mutex_lock(&video_list_lock);
-> -       have_video_busses = !list_empty(&video_bus_head);
-> -       mutex_unlock(&video_list_lock);
-> -
-> -       return have_video_busses &&
-> +       return has_backlight &&
->                (report_key_events & REPORT_BRIGHTNESS_KEY_EVENTS);
->  }
->  EXPORT_SYMBOL(acpi_video_handles_brightness_key_presses);
-> --
-> 2.36.0
->
+We are dealing with function pointers here, so passing those as u64 is
+just sloppy.
