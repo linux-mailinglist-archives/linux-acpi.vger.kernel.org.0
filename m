@@ -2,249 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C055855AC20
-	for <lists+linux-acpi@lfdr.de>; Sat, 25 Jun 2022 21:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C7B55AFC1
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Jun 2022 08:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233390AbiFYTBI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 25 Jun 2022 15:01:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37132 "EHLO
+        id S232770AbiFZG7j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Jun 2022 02:59:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233159AbiFYTBH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Jun 2022 15:01:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73FBC13F5B;
-        Sat, 25 Jun 2022 12:01:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02CBE60B17;
-        Sat, 25 Jun 2022 19:01:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DC1C3411C;
-        Sat, 25 Jun 2022 19:01:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656183665;
-        bh=9Yol+HZbbq6AmjOX2hEQynrbgqOCgS3MOxZs3p5+9iA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=YRIUwiFBKbwWTGvrZ1PdENH13XwOqRXpcKER9L9DE5gB1z7ZQO9fQBebVn+dmMEpV
-         u2nEvFgNvA0N4ckMdb8FClcjfh/VZV980agff7IpD65JE7gIVwmAZFjld1s4nNRgpW
-         DGGZCa1whroyB8Byvbs1tCPQcXjl/5YqXdzdt62At3tBXo14J4KA4KS1ukuss5jp01
-         yWT8rZxyK29yFvrfVEB+0UvUh1Yr2Y4Mj9gqpWgr+mAmKI1iBgRUQmgrcBF/oIAS8R
-         KwnTFkey7Awp+Z3l69EFRlH4Espe2ooJZnWbKstH3PEp1QjqoQTEMRtifVJ1rU6ruL
-         YIOniQXpPRfaw==
-Date:   Sat, 25 Jun 2022 14:01:03 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Yicong Yang <yangyicong@huawei.com>
-Cc:     yangyicong@hisilicon.com, bhelgaas@google.com, rafael@kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        lenb@kernel.org, linux-kernel@vger.kernel.org, linuxarm@huawei.com
-Subject: Re: [PATCH] PCI/ACPI: Always advertise ASPM support if
- CONFIG_PCIEASPM=y
-Message-ID: <20220625190103.GA1559134@bhelgaas>
+        with ESMTP id S229742AbiFZG7i (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Jun 2022 02:59:38 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95EB7764A;
+        Sat, 25 Jun 2022 23:59:36 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id ge10so12764598ejb.7;
+        Sat, 25 Jun 2022 23:59:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AFCTsw44eCfrIgw5g5eDIqwDRb52nasQ63KFo0XcRT8=;
+        b=iosWctIEzGRn3VqhcDfevg21KFkBMr3PQc+fjRGdNPv6hLOSRgC4v7M2AstxoDchuC
+         V7S++HUkNhKKm+6CFaxqe48R83MawCe1Sg1Cwal4RQ8QxsGkCdCLj3J8TdtAFkLk/8hI
+         bpu2EZ3jGalQfBU0b4emd3UMybTBYMzNCYQARAjBEBYSbKEMDjkYF7EnjvHBFt3v59yy
+         N76Bw0kQ69124S5YAS0EK3Tsim6/8AWqwDM2nhUbIb5wGPvJvxKxafMl1g8oj7ak7gVH
+         QEU+nvsxU1m6Wz/GS6D2qYSdz9k8f3xlSVnzXaf6UoDGsiuRTf5baihDQkYYkStzBW6M
+         +jbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AFCTsw44eCfrIgw5g5eDIqwDRb52nasQ63KFo0XcRT8=;
+        b=ay4mBWHIhdI2SDaE4NM1UMlcVwn5aEKcZQwY7+MAlwXTPLHDBTCwjcK2xz6tjVLyy9
+         3bqtnXNqTmdh9U+lRbZ+16Pl6gd5k64z9LJ0Vmo7DKqwAxlr0j568X/wxR1HE6QTAUxv
+         oNTAa4TS3Av+m52psje68vuawU209A/GAslQ5d+PTr/a+aDXBGoGzE+vO8+bxkk9z/xx
+         I51EYR5XVchJWvAaywAD4fL7ezJ1fFHgaY/Z+tNdFIJpBGblEBYYkaq3z4mV1WDZGn7z
+         ffvSQ7yNadMqr9MVSE3xGz5bIycX2dL9sQCf8zXqP/ITl6sTch8jdvOTC2treZaX3In9
+         xEZw==
+X-Gm-Message-State: AJIora/RgSv/wgU3yAT4E6KkyaoJW7Asapr2Wjb+nMNWMdRvYOOzdpa7
+        8BnX9EE5qbp8AENeAhJTZkVz5nwbR06UxzCvMPQ=
+X-Google-Smtp-Source: AGRyM1vdbd0R7YMxYxy0P2dd8vQrxNLQeA6X4bNQXzyEIGvSWfphBH2XZjr5H4rQJtEKHjuHxSI7AndhUPKnaI4Hbw4=
+X-Received: by 2002:a17:907:2d24:b0:726:34e6:52fd with SMTP id
+ gs36-20020a1709072d2400b0072634e652fdmr7061557ejc.307.1656226775034; Sat, 25
+ Jun 2022 23:59:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a5779c78-eb82-16ae-3f05-16f132f29a67@huawei.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220624112340.10130-1-hdegoede@redhat.com> <df35a580-3e4b-cf45-004f-7c6848a1dfae@message-id.googlemail.com>
+In-Reply-To: <df35a580-3e4b-cf45-004f-7c6848a1dfae@message-id.googlemail.com>
+From:   Kenneth Chan <kenneth.t.chan@gmail.com>
+Date:   Sun, 26 Jun 2022 14:58:57 +0800
+Message-ID: <CAPqSeKu0XRsgg1dQce+cc89LVrqX0GY0ak5Vzzv+PEHF2Pr95w@mail.gmail.com>
+Subject: Re: [PATCH 0/7] ACPI: video / platform/x86: Fix Panasonic laptop
+ missing keypresses
+To:     Stefan Seyfried <stefan.seyfried@googlemail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org,
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 09, 2022 at 08:20:23PM +0800, Yicong Yang wrote:
-> On 2022/5/6 2:41, Bjorn Helgaas wrote:
-> > On Thu, May 05, 2022 at 08:36:42PM +0800, Yicong Yang wrote:
-> >> On 2022/5/4 6:38, Bjorn Helgaas wrote:
-> >>> On Mon, Apr 25, 2022 at 03:06:34PM +0800, Yicong Yang wrote:
-> >>>> When we have CONFIG_PCIEASPM enabled it means OS can always
-> >>>> support ASPM no matter user have disabled it through
-> >>>> pcie_aspm=off or not. But currently we won't advertise ASPM
-> >>>> support in _OSC negotiation if user disables it, which doesn't
-> >>>> match the fact. This will also have side effects that other
-> >>>> PCIe services like AER and hotplug will be disabled as ASPM
-> >>>> support is required and we won't negotiate other services if
-> >>>> ASPM support is absent.
-> >>>>
-> >>>> So this patch makes OS always advertising ASPM support if
-> >>>> CONFIG_PCIEASPM=y.  It intends no functional change to
-> >>>> pcie_aspm=off as it will still mark aspm_disabled=1 and
-> >>>> aspm_support_enabled=false, driver will check these status
-> >>>> before configuring ASPM.
-> >>>>
-> >>>> Tested this patch with pcie_aspm=off:
-> >>>> estuary:/$ dmesg | egrep -i "aspm|osc"
-> >>>> [    0.000000] PCIe ASPM is disabled
-> >>>> [    8.706961] acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM
-> >>>> ClockPM Segments MSI EDR HPX-Type3]
-> >>>> [    8.726032] acpi PNP0A08:00: _OSC: platform does not support [LTR]
-> >>>> [    8.742818] acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug PME
-> >>>> AER PCIeCapability DPC]
-> >>>> estuary:/sys/module/pcie_aspm/parameters$ cat policy
-> >>>> [default] performance powersave powersupersave
-> >>>> estuary:/sys/module/pcie_aspm/parameters$ echo powersave > policy
-> >>>> bash: echo: write error: Operation not permitted
-> >>>>
-> >>>> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> >>>> Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-> >>>> [https://lore.kernel.org/linux-pci/20220407154257.GA235990@bhelgaas/]
-> >>>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> >>>> ---
-> >>>>  drivers/acpi/pci_root.c | 2 +-
-> >>>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>>
-> >>>> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> >>>> index 6f9e75d14808..17e78582e633 100644
-> >>>> --- a/drivers/acpi/pci_root.c
-> >>>> +++ b/drivers/acpi/pci_root.c
-> >>>> @@ -393,7 +393,7 @@ static u32 calculate_support(void)
-> >>>>  	support |= OSC_PCI_HPX_TYPE_3_SUPPORT;
-> >>>>  	if (pci_ext_cfg_avail())
-> >>>>  		support |= OSC_PCI_EXT_CONFIG_SUPPORT;
-> >>>> -	if (pcie_aspm_support_enabled())
-> >>>> +	if (IS_ENABLED(CONFIG_PCIEASPM))
-> >>>
-> >>> Is there any way firmware could tell the difference between
-> >>> "CONFIG_PCIEASPM not set" and "CONFIG_PCIEASPM=y and booted with
-> >>> 'pcie_aspm=off'"?
-> >>>
-> >>> If not, why would we even check whether CONFIG_PCIEASPM is set?
-> >>
-> >> If we announce ASPM support when CONFIG_PCIEASPM=n it'll work as well
-> >> but negotiation and the log don't match the fact. We'll get misleading
-> >> messages that ASPM is supported by OS by it cannot be enable as there's
-> >> no driver.
-> >>
-> >> As mentioned by the PCIe Firmware Spec r3.3,
-> >> "ASPM Optionality supported
-> >>  The operating system sets this bit to 1 if it properly recognizes
-> >>  and manages ASPM support on PCI Express components which report
-> >>  support for ASPM L1 only in the ASPM Support field within the Link
-> >>  Capabilities Register. Otherwise, the operating system sets this
-> >>  bit to 0"
-> > 
-> > Yes.  I don't completely understand this bit, but I think it's related
-> > to the fact that L0s support was originally required for all links, so
-> > the only defined ASPM Support encodings were these:
-> > 
-> >   01b - L0s supported
-> >   11b - L0s and L1 supported
-> > 
-> > The "ASPM Optionality" ECN [1] of June 19, 2009, added these new
-> > encodings:
-> > 
-> >   00b - No ASPM support
-> >   10b - L1 supported
-> > 
-> > So I think the _OSC "ASPM Optionality Supported" bit tells the
-> > firmware that the OS supports this new possibility of devices that
-> > support L1 but not L0s.
-> > 
-> > Linux currently never sets the "ASPM Optionality Supported" bit, but
-> > it probably should, because I think we *do* support L1 even if L0s
-> > isn't supported.
-> 
-> Yes, it sounds sensible to me. Actually I intended to refer BIT[1] which we're
-> currently using for advertising ASPM support in _OSC, but I copied the wrong
-> field...apologize.
-> 
-> "Active State Power Management supported
-> The operating system sets this bit to 1 if it natively supports configuration
-> of Active State Power Management registers in PCI Express devices. Otherwise,
-> the operating system sets this bit to 0."
-> 
-> IIUC, CONFIG_PCIEASPM=y means the OS *natively* support ASPM configuration so
-> we should set this bit to 1 even if we boot with pcie_aspm=off; otherwise the
-> OS has no native support of ASPM the bit should be 0. Currently the _OSC
-> negotiation seems to violent the spec a bit when booting with pcie_aspm=off
-> on a OS with CONFIG_PCIASPM=y.
+Hi Hans and Stefan,
 
-We have three cases:
+On Tue, 21 Jun 2022 at 02:10, Stefan Seyfried
+<stefan.seyfried@googlemail.com> wrote:
+>
+> Well, I looked into the acpi_video.c module and that one is to blame.
+> By default, it assumes that both "OUTPUT_KEY_EVENTS" and
+> "BRIGHTNESS_KEY_EVENTS" should be handled by this module.
+> But on the CF-51, this does not happen. "Video Bus" does not generate
+> any key events (I'm not sure about output, but plugging in a VGA monitor
+> and enabling/disabling it with xrandr or tapping the "display" fn-f3
+> hotkey does not get anything from "Video Bus" input device.
+>
 
-  1) CONFIG_PCIEASPM=y
+The "display" Fn-F3 hotkey doesn't generate any key events on mine
+either. I have no external VGA monitors to test it anyway.
 
-     Linux allocates ASPM link_state for downstream ports and manages
-     ASPM.
+Apart from that, the patches work perfectly on my Let's Note CF-W5.
+Cheers, Hans!
 
-  2) CONFIG_PCIEASPM=y and booted with "pcie_aspm=off"
+Tested-by: Kenneth Chan <kenneth.t.chan@gmail.com>
 
-     aspm_support_enabled is false, so Linux does not allocate ASPM
-     link_state and does not manage ASPM.  There is no way to change
-     aspm_support_enabled at runtime.  pcie_aspm_get_link() always
-     returns NULL, so ASPM cannot be enabled by drivers or by the
-     sysfs knobs (aspm_ctrl_attrs[]).
 
-  3) CONFIG_PCIEASPM is unset
+On Sat, 25 Jun 2022 at 03:49, Stefan Seyfried
+<stefan.seyfried@googlemail.com> wrote:
+>
+> On 24.06.22 13:23, Hans de Goede wrote:
+> > Hi All,
+> >
+> > Here is a series fixing the missing keypresses on some Panasonic Toughbook
+> > models. These missing keypresses are caused by
+> > commit ed83c9171829 ("platform/x86: panasonic-laptop: Resolve hotkey double
+> > trigger bug"), which made the panasonic-laptop driver unconditionally drop
+> > most WMI reported hotkeys.
+> >
+> > This series reverts that commit and then adds some more selective filtering
+> > to still avoid the double key-presses on some models, while avoiding
+> > completely missing keypresses on others.
+> >
+> > Rafael, these fixes rely on patch 1/7, which is a tweak to
+> > the acpi_video_handles_brightness_key_presses() helper. Without this
+> > tweak this series will cause a regression, so I would like to merge
+> > the entire series through the pdx86 tree, may I have your ack for this?
+> >
+> > Regards,
+> >
+> > Hans
+> >
+> >
+> > Hans de Goede (6):
+> >    ACPI: video: Change how we determine if brightness key-presses are
+> >      handled
+> >    platform/x86: panasonic-laptop: sort includes alphabetically
+> >    platform/x86: panasonic-laptop: revert "Resolve hotkey double trigger
+> >      bug"
+> >    platform/x86: panasonic-laptop: don't report duplicate brightness
+> >      key-presses
+> >    platform/x86: panasonic-laptop: filter out duplicate volume
+> >      up/down/mute keypresses
+> >    platform/x86: panasonic-laptop: Use acpi_video_get_backlight_type()
+> >
+> > Stefan Seyfried (1):
+> >    platform/x86: panasonic-laptop: de-obfuscate button codes
+> >
+> >   drivers/acpi/acpi_video.c               |  13 ++-
+> >   drivers/platform/x86/Kconfig            |   2 +
+> >   drivers/platform/x86/panasonic-laptop.c | 112 ++++++++++++++++++------
+> >   3 files changed, 91 insertions(+), 36 deletions(-)
+>
+> The whole series works without any manual setup on my Toughbook CF-51:
+>
+> Tested-by: Stefan Seyfried <seife+kernel@b1-systems.com>
+>
+> Thanks again!
+>
+> Stefan
+> --
+> Stefan Seyfried
+>
+> "For a successful technology, reality must take precedence over
+>   public relations, for nature cannot be fooled." -- Richard Feynman
 
-     aspm.c is not even compiled, so ASPM cannot be enabled by drivers
-     or sysfs.
-
-Currently we set OSC_PCI_ASPM_SUPPORT only for case 1.  This patch
-would set it for both case 1 and case 2.
-
-But I think case 2 and case 3 are indistinguishable from the
-platform's point of view.  The only difference is that case 2 includes
-some ASPM code in the image that can never be used.
-
-I think part of the motivation for this patch is that we'd like AER,
-hotplug, etc to work even in case 2.  We could make an argument for
-doing that, but then AER and hotplug should work even in case 3.
-
-If we want to do that, I think we should do it head-on by relaxing
-this test in os_control_query_checks():
-
-  if ((support & ACPI_PCIE_REQ_SUPPORT) != ACPI_PCIE_REQ_SUPPORT) {
-    decode_osc_support(root, "not requesting OS control; OS requires",
-		       ACPI_PCIE_REQ_SUPPORT);
-    return false;
-  }
-
-> >> When CONFIG_PCIEASPM=n we have no aspm driver and apparently cannot
-> >> support any ASPM features so we should set the bit to 0 to match the spec.
-> > 
-> > I think you're saying that firmware could not tell the difference, but
-> > the Linux log messages might be slightly misleading.  I assume you
-> > mean this message:
-> > 
-> >   acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI EDR HPX-Type3]
-> > 
-> > where we would claim that we support ASPM even when CONFIG_PCIEASPM is
-> > unset.
-> > 
-> 
-> yes. That's what I mean misleading.
-> 
-> > The purpose of that message is to expose what Linux is telling the
-> > platform via _OSC.  If we're telling the platform we support ASPM, I
-> > think the message should reflect that.
-> > 
-> 
-> agree.
-> 
-> > But I'm actually not sure there's real value in advertising ASPM
-> > support to the platform when CONFIG_PCIEASPM=y but we're booted with
-> > "pcie_aspm=off".  It sounds like this was found by using that option
-> > (even though it wasn't *needed*) and finding that Linux didn't request
-> > control of other PCIe services.  I don't know if that's worth
-> > changing.
-> > 
-> 
-> It's found in one of our test scenes that the AER is not worked. The issue
-> is implicit as AER is influenced by the ASPM which it shouldn't be. And
-> the implementation of pcie_aspm=off seems don't follow the spec. This patch
-> intends to make the code follow the spec in this corner case and by the way
-> fixes the issue I met. In the general cases there intends no change.
-> 
-> For the usage of pcie_aspm=off there may be cases of turning off ASPM when
-> the firmware grant the control to the OS. On some platform user may disable
-> ASPM through firmware by ACPI FADT, but on other platform OS may always get
-> the control of ASPM so this provide a way of disabling it. But I think it's
-> not proper to assume user doesn't want other services like AER either.
-> 
-> Since we haven't met any realistic issue on this boot option, I'd really
-> appreciate your suggestions on this.
-> 
-> Regards,
-> Yicong
+-- 
+Kenneth
