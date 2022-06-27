@@ -2,65 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 320E855DEB1
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:29:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5D0955C84E
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 14:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240451AbiF0TlX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 15:41:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54432 "EHLO
+        id S239796AbiF0VP1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 17:15:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240443AbiF0TlV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 15:41:21 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08CB1759E;
-        Mon, 27 Jun 2022 12:41:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656358879; x=1687894879;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8CuvkP0vcHWHYz4O+MpXmhInxvjdtTkynfXQVhQtVvU=;
-  b=jbLMxiB6cksX4WYhPLLmhLAgHe/BBBIpnUT8EpnFN26iAs+lk42UXv0n
-   EckJYLUo0OUZsZL+um/oE+tWvpdIHgkfLqCkgjsy7IhDQPxrNXkYj1Xcp
-   Jv3alCzX1bnzyHv2zf0/QzUJlRSXBgZ5aQKabsJfOe7m9OUWz4xt2xAb+
-   YPWVciRNiVJ58duZGDVsdVJotjEJq1vVAoPYthFIxVwzVIN+7wNwdxl2s
-   tJa9VmamPCUsR6FBjfkpFounIK0TDR3g53/6rGYhhD14rHX8j1H2MWCS9
-   jQJ80F1aENgiLUn1ymnJ+e+qgq+wg8WVSK0mYPgvwTj/EQpRKyJbvoNH4
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="343235485"
-X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
-   d="scan'208";a="343235485"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 12:40:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
-   d="scan'208";a="766877478"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 27 Jun 2022 12:40:46 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o5ubG-0008wF-9g;
-        Mon, 27 Jun 2022 19:40:46 +0000
-Date:   Tue, 28 Jun 2022 03:40:41 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     sound-open-firmware@alsa-project.org, ntb@lists.linux.dev,
-        mjpeg-users@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org,
-        linux-usb@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- aab35c3d5112df6e329a1a5a5a1881e5c4ca3821
-Message-ID: <62ba07b9.qFa7tsWUZhZoW2FF%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
+        with ESMTP id S234920AbiF0VP0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 17:15:26 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2092.outbound.protection.outlook.com [40.107.220.92])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898B2167C7;
+        Mon, 27 Jun 2022 14:15:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HsV27MPMIQMpWj2RjTduTl0PKMdybG40hemOOhX1gnik3BTUnz6bSGHFP14vN4nSHe8JPArYap5l9SSJdFGZVN6Hv55Hebm/pSfcl7EsgJGMPrnFx1QIplW9vd65UDtsnjZm1VLF+BCKUJjP5ICjFWWTgtuOzmL+zZ6MFxiatgVteShhueTFNlNgkrmMQ3ZX3g5y/UEA+egMGPFIP5XennhYoHKznO1agGZR9CheaaLgFZVzWfuTektJZWydn3SxmDQpHzikYQu2DHuyie7+c1+M3HLmz7+ItwMmmXtc5fI5o/nM9P3wV0zEaJvkvdIEtDLyfVEJ4qC7cq1bzctzJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V6aId0008up4bS+7T/y4Rs6MgnHWl9sg3YGUC3zSfNY=;
+ b=CN4syDQVdH1dsYKbvWQEpS/1vXBKBzOw9tIuom7q4qUGGhrVOgck5DLqKoXdSSn1Z9PY5+2tUo2xEWY4/z1YH/wgpkyGYQAycGIegzFFNqkh7ZLC6/9ZBx+9Q0iGs9vHiddR6H5ap33vKT+kQ381goa/mfhvNp/x5BoofS6Avv8DdWrNAvu06kO23yS8l4SQFFSU9npW28nl5c11LPtZHJe4F1ATnadFCNfjPEPNudhDLoLsSiEdbtSl4YB5r2U3h9MssPqZJoKbEIL0Eto3KIX1vky8CNx0l69XM3xEMIAUk4SF1WjP3zPOef2WkVPM+vDNmkwFT+gfOwWQByiEHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V6aId0008up4bS+7T/y4Rs6MgnHWl9sg3YGUC3zSfNY=;
+ b=cnuUZPc6o7xCxmY8ZYpKhzJmxD7GrJ4YJrBx1tUix4ekpZfnxrUy9ajSpXqEw2hAWNWQ8PvygwH/EJjXENCe57MYk9hw5cNAxMM589JXRh0ze7NImkA8J0jMaTgHSOkyUai0UBPBg2wUHp2hjxBR0ysKb/NY+X3tlXL5+/uhm+o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from MWHPR01MB2638.prod.exchangelabs.com (2603:10b6:300:fe::18) by
+ BYAPR01MB4584.prod.exchangelabs.com (2603:10b6:a03:97::25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5373.15; Mon, 27 Jun 2022 21:15:19 +0000
+Received: from MWHPR01MB2638.prod.exchangelabs.com
+ ([fe80::e1e5:b43e:c774:40d2]) by MWHPR01MB2638.prod.exchangelabs.com
+ ([fe80::e1e5:b43e:c774:40d2%7]) with mapi id 15.20.5373.016; Mon, 27 Jun 2022
+ 21:15:19 +0000
+Date:   Mon, 27 Jun 2022 14:15:17 -0700
+From:   Darren Hart <darren@os.amperecomputing.com>
+To:     Tony Luck <tony.luck@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Doug Rady <dcrady@os.amperecomputing.com>
+Subject: Re: [PATCH] ACPI/APEI: Better fix to avoid spamming the console with
+ old error logs
+Message-ID: <Yrod5bc5JCz03wH3@fedora>
+References: <YqpX9npa/wR7mafR@agluck-desk3.sc.intel.com>
+ <20220622170906.33759-1-tony.luck@intel.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Disposition: inline
+In-Reply-To: <20220622170906.33759-1-tony.luck@intel.com>
+X-ClientProxiedBy: MW3PR05CA0026.namprd05.prod.outlook.com
+ (2603:10b6:303:2b::31) To MWHPR01MB2638.prod.exchangelabs.com
+ (2603:10b6:300:fe::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: b791bdde-27c6-4c2f-33ca-08da5882231b
+X-MS-TrafficTypeDiagnostic: BYAPR01MB4584:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 2JrAuZhGoJ1Bb5hmbjBvDOhhhBE3Zluwln+LYR3WciY+IBz24ZkCTXTEC+Cwx8IUnXuY1XqH2D3rM5WaFBpiILM0SYbqr6RK60ea7/8VHpPTPi/WnK5WCje/Vzs3olIOUuuGoRU78qHMLqfQU6RammuHUtHFZ1SqcB/d/vd++eGIqSGXyL3jPQ0r6zuv+UyYTzQPNezfwGY3r0WiSYRQX/UVahlkGM2OFuOsXTZwTIyUEo205G38H5MROIr/inHq8hvzGjuwRrQ3TJ67A6hRuJEVYVUAk9PzpJz3eR7KLvdLGsZafIxs6DB7Ha3Weg2uV3XovZtDIgYa5uOZylFWfb990mifEkYjwOE7FeAEq/cyZ/mKSJUu3Ouaj/34N2CfXq2FK/kx3c3xvF/CQuB4bYt7uxvtuRnNmJaxR43CkakIzmd9s0hAa/FsGUoMqZVOmYp/yg9cQ35Cxs0CN9u0/kcCSD788EaFHg46knLlPOIKnY/vZ/Xoek1l2JdyPIWRJL2fZeDXc82zIXIACzZk3kJ/GIeP5NhAB2121MUYHUyBmudSZWho5RA1IRlqVK+dop1T5BQihU7T/TN+2HoDjWEs9ZEeAW0luAsisUXia2TTHtCifl6CDDxCxdZ/+JttSBo94+Oskk4q97ErjUardd3FxXh1d7U8c7pZPSR9J4dwfgSS+0uuwn8+AzwKJsXUeev5GVV/VYWsRdrXqcC0m6p0+ujSeUE0H9zO397XmIS76tDxeKQxbV2SxDZSzbMLAP0fFSiWyYB44qK8pYxPyCi270n5+VTo4CA7KqA5ETo=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR01MB2638.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(4636009)(396003)(366004)(376002)(39850400004)(136003)(346002)(6486002)(478600001)(4326008)(107886003)(6512007)(86362001)(66556008)(38350700002)(6916009)(41300700001)(26005)(54906003)(6506007)(9686003)(66946007)(2906002)(52116002)(33716001)(316002)(8676002)(5660300002)(4744005)(66476007)(8936002)(38100700002)(83380400001)(186003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?hIXyUOADtlzERqp131muq9vb/s2Cx9OfCy7lxC2Fxri+szazetHQ7uHGfAsj?=
+ =?us-ascii?Q?GZQjSytYX5gFQex9dVyckELf/t61M4bva6W2YwQX4GNdsvzkrm9tqaagQqoZ?=
+ =?us-ascii?Q?q1jaktBKnWXhyYQ2OAAXAVmb8HBpaeQu1Hbo5pT60ptRKit6BPePS9WwdC3V?=
+ =?us-ascii?Q?2BabmqdRqjwIXW29spm5fTBsuf+mAlsGkQVVRB+fj8RJLXt1MYx5e26mv5bK?=
+ =?us-ascii?Q?TtAQVeYwPEjAWS41ijvXd1XPxeHWkZdTrX7lCywL4q8eAj0/+h4fl7/K9Znj?=
+ =?us-ascii?Q?U0vHZAK5laHizTZbNp4zYivcnyuyWI3IlpXC4wLLHAkRY3cNFsxu5rv3+FUh?=
+ =?us-ascii?Q?rwobXqpRJG4qnLsuFwfzwCWQsI3ckM8uTU+vTc35zrWiPhdY5USF6dPPgpRQ?=
+ =?us-ascii?Q?sMo40p9Dt6y+ki6lPcQFPqTlyA4+ndyHgCppIu3tBs8eR1ze2I96ZVwy7r28?=
+ =?us-ascii?Q?siQRJ0AvERbzJpFfW7vGm3CKxvkP5aX+7JJepqYGq1kBTc7f25ZC2+zppGMl?=
+ =?us-ascii?Q?441kJE0djUfiL6uZtBUWgLo21X0leIF76v9rBd9XxNP/5jnzAJNKOZK/IQEK?=
+ =?us-ascii?Q?SBS+witttUdG2mSBkaCMlTMXNDksONbBk9lo8aPXqlQrrGt8hvzzuMkYV5Xa?=
+ =?us-ascii?Q?8gFaB3Iam5PC8qaT8IQG82CSZ5uKrGvfUJUVVq1tPElVPLYWORVlzDKfQEBx?=
+ =?us-ascii?Q?VL+a8HxBKmG1a1LVPf2Jdf3WQm7dT+iplvVRxA/SBvwlYDRcIbAQJgJpHr7Z?=
+ =?us-ascii?Q?Bn3lJ6a0OHHz2zCOB1yR+xaM9XlpC3dKR2a+z5NZFguOBcLpJmInjqznvQsB?=
+ =?us-ascii?Q?tQ1F/+LWGsM5Eruewv7y5eIpxkR04ZmAZCDYlWDPRRnPvLsu0EwbzijMQxgU?=
+ =?us-ascii?Q?o2x3SuU+9WTofd3V/kediDfy5XIqe54XIgOOOl3w7QEmjS6TIle3X9RgVKZD?=
+ =?us-ascii?Q?dvr6YpKv4Cy88yjN/Iq4OeZ3lt9yt5whP+8GwmpOAZLP4Na6AjB5ElhNw19c?=
+ =?us-ascii?Q?HEOmBg899yXimfGxvczvTB9Ra0pe1LoQeBlX7bPmvu8jK3hZAfOT36ZkSkqk?=
+ =?us-ascii?Q?w98iug4ZVCo+elprWerTQva+J6pfGTozUqdqA+IJEtHrLRnakp1QXoj+ridt?=
+ =?us-ascii?Q?QbUxZa0ELZTDHK1ZQ2bm5EKjRt7WAHvsg9GVW+69eqY4THivirsUQZUd5r/v?=
+ =?us-ascii?Q?lHLa7Enk946DrnVoDJnMkvQtcFg+goKuWIfscuqjXHx4dSna9oGID6Z9USS6?=
+ =?us-ascii?Q?jlL+NCQYBGb6cBdODVgmhHxtM/rLR5ohWvir4OgsJlJbaUJUPy7oYnW7ReFi?=
+ =?us-ascii?Q?xdHGwIDkoVQA2/yCPaWNANVJsztZTBfz+wvIKaTOF4F9HJaoIPj+Iek0iJfV?=
+ =?us-ascii?Q?ocSGwyLTrgjt4xmm3nYvTA6/ncGkq6P0Ipnn9nZxmmCnrU+MGOZIhmzZakrP?=
+ =?us-ascii?Q?l92WWug5avGDUh//c12CyR4ubhEgszbDG3jYU2GhL4WkL+b11EP1LQp6bUt1?=
+ =?us-ascii?Q?ybtwzBihfxjLjbqZtjUygK3+Zbw9nnmE25n7y1pIVm7ggSwNzeehsoh+AgdK?=
+ =?us-ascii?Q?iDUHO0dGs6SCQi4u91RwVjHbULulALavXx8hgdqRazJ1ZJpHNVvVd+3ees+o?=
+ =?us-ascii?Q?+8Mrz4fRzmZxpaDxU3eST2o=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b791bdde-27c6-4c2f-33ca-08da5882231b
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR01MB2638.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2022 21:15:18.8230
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hy2wEQptShxLI8dQADu6Ik4uu9Rsa3dGVxMXNDp2Mi0uGZTQN63Ko+ftecUo87kSL17nvgbNvWwHQeFoo4obGYO0jboVIE7TADfW0B5u/aftMvhPAToNdE4G3ttX3GAU
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR01MB4584
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,194 +119,25 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: aab35c3d5112df6e329a1a5a5a1881e5c4ca3821  Add linux-next specific files for 20220627
+On Wed, Jun 22, 2022 at 10:09:06AM -0700, Tony Luck wrote:
+> The fix in commit 3f8dec116210 ("ACPI/APEI: Limit printable size of BERT
+> table data") does not work as intended on systems where the BIOS has a
+> fixed size block of memory for the BERT table, relying on s/w to quit
+> when it finds a record with estatus->block_status == 0. On these systems
+> all errors are suppressed because the check:
+> 
+> 	if (region_len < ACPI_BERT_PRINT_MAX_LEN)
+> 
+> always fails.
+> 
+> New scheme skips individual CPER records that are too large, and also
+> limits the total number of records that will be printed to 5.
 
-Error/Warning: (recently discovered and may have been fixed)
+Apologies for the delay.
 
-arch/powerpc/kernel/interrupt.c:542:55: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
-arch/powerpc/kernel/interrupt.c:542:55: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
-drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link.c:1025:33: warning: variable 'pre_connection_type' set but not used [-Wunused-but-set-variable]
-drivers/ntb/test/ntb_perf.c:1145: undefined reference to `__umoddi3'
-drivers/pci/endpoint/functions/pci-epf-vntb.c:975:5: warning: no previous prototype for 'pci_read' [-Wmissing-prototypes]
-drivers/pci/endpoint/functions/pci-epf-vntb.c:984:5: warning: no previous prototype for 'pci_write' [-Wmissing-prototypes]
-vmlinux.o: warning: objtool: __ct_user_enter+0x8c: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_idle_enter+0x19: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_idle_exit+0x3e: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_irq_enter+0x6a: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_irq_exit+0x6a: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_kernel_enter.constprop.0+0x2a: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_kernel_enter_state+0x2d: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_kernel_exit.constprop.0+0x53: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_kernel_exit_state+0x2d: call to ftrace_likely_update() leaves .noinstr.text section
-vmlinux.o: warning: objtool: ct_nmi_enter+0x4b: call to ftrace_likely_update() leaves .noinstr.text section
-
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-drivers/acpi/scan.c:615:35: warning: Uninitialized variable: acpi_device_bus_id->bus_id [uninitvar]
-drivers/phy/qualcomm/phy-qcom-qmp-combo.c:1701:19: warning: Value stored to 'qmp' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
-drivers/soc/mediatek/mtk-mutex.c:799:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
-drivers/staging/media/zoran/zr36016.c:430:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
-drivers/staging/media/zoran/zr36050.c:829:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
-drivers/staging/media/zoran/zr36060.c:869:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
-drivers/thunderbolt/tmu.c:758:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
-sound/soc/sof/intel/mtl.c:547:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|   |-- drivers-soc-mediatek-mtk-mutex.c:internal-compiler-error:in-arc_ifcvt-at-config-arc-arc.c
-|   |-- drivers-staging-media-zoran-zr36016.c:internal-compiler-error:in-arc_ifcvt-at-config-arc-arc.c
-|   |-- drivers-staging-media-zoran-zr36050.c:internal-compiler-error:in-arc_ifcvt-at-config-arc-arc.c
-|   |-- drivers-staging-media-zoran-zr36060.c:internal-compiler-error:in-arc_ifcvt-at-config-arc-arc.c
-|   |-- drivers-thunderbolt-tmu.c:internal-compiler-error:in-arc_ifcvt-at-config-arc-arc.c
-|   `-- sound-soc-sof-intel-mtl.c:internal-compiler-error:in-arc_ifcvt-at-config-arc-arc.c
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|   `-- ntb_perf.c:(.text):undefined-reference-to-__umoddi3
-|-- i386-randconfig-a013-20220627
-|   `-- ERROR:__umoddi3-drivers-ntb-test-ntb_perf.ko-undefined
-|-- i386-randconfig-m021-20220627
-|   `-- arch-x86-events-core.c-init_hw_perf_events()-warn:missing-error-code-err
-|-- i386-randconfig-p001-20220627
-|   `-- drivers-acpi-scan.c:warning:Uninitialized-variable:acpi_device_bus_id-bus_id-uninitvar
-|-- ia64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- powerpc-allmodconfig
-|   |-- ERROR:__umoddi3-drivers-ntb-test-ntb_perf.ko-undefined
-|   |-- arch-powerpc-kernel-interrupt.c:warning:suggest-braces-around-empty-body-in-an-if-statement
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- powerpc-allnoconfig
-|   `-- arch-powerpc-kernel-interrupt.c:error:suggest-braces-around-empty-body-in-an-if-statement
-|-- powerpc-buildonly-randconfig-r003-20220627
-|   `-- arch-powerpc-kernel-interrupt.c:error:suggest-braces-around-empty-body-in-an-if-statement
-|-- powerpc-buildonly-randconfig-r005-20220627
-|   |-- arch-powerpc-kernel-interrupt.c:warning:suggest-braces-around-empty-body-in-an-if-statement
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|-- powerpc-randconfig-r023-20220627
-|   `-- arch-powerpc-kernel-interrupt.c:warning:suggest-braces-around-empty-body-in-an-if-statement
-|-- riscv-randconfig-r012-20220627
-|   |-- ERROR:__umoddi3-drivers-ntb-test-ntb_perf.ko-undefined
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|-- s390-buildonly-randconfig-r001-20220627
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|-- sparc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- sparc-randconfig-r032-20220627
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|-- x86_64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link.c:warning:variable-pre_connection_type-set-but-not-used
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-pci_write
-|-- x86_64-randconfig-a011-20220627
-|   |-- vmlinux.o:warning:objtool:__ct_user_enter:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   |-- vmlinux.o:warning:objtool:ct_idle_enter:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   |-- vmlinux.o:warning:objtool:ct_idle_exit:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   |-- vmlinux.o:warning:objtool:ct_irq_enter:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   |-- vmlinux.o:warning:objtool:ct_irq_exit:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   |-- vmlinux.o:warning:objtool:ct_kernel_enter:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   |-- vmlinux.o:warning:objtool:ct_kernel_enter_state:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   |-- vmlinux.o:warning:objtool:ct_kernel_exit:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   |-- vmlinux.o:warning:objtool:ct_kernel_exit_state:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|   `-- vmlinux.o:warning:objtool:ct_nmi_enter:call-to-ftrace_likely_update()-leaves-.noinstr.text-section
-|-- x86_64-randconfig-m001-20220627
-|   `-- arch-x86-events-core.c-init_hw_perf_events()-warn:missing-error-code-err
-`-- xtensa-randconfig-r024-20220627
-    `-- drivers-ntb-test-ntb_perf.c:undefined-reference-to-__umoddi3
-
-clang_recent_errors
-`-- riscv-randconfig-c006-20220617
-    `-- drivers-phy-qualcomm-phy-qcom-qmp-combo.c:warning:Value-stored-to-qmp-during-its-initialization-is-never-read-clang-analyzer-deadcode.DeadStores
-
-elapsed time: 726m
-
-configs tested: 52
-configs skipped: 2
-
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-ia64                             allmodconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-m68k                             allyesconfig
-powerpc                           allnoconfig
-sh                               allmodconfig
-powerpc                          allmodconfig
-mips                             allyesconfig
-i386                                defconfig
-i386                             allyesconfig
-x86_64               randconfig-a012-20220627
-x86_64               randconfig-a011-20220627
-x86_64               randconfig-a013-20220627
-x86_64               randconfig-a014-20220627
-x86_64               randconfig-a015-20220627
-x86_64               randconfig-a016-20220627
-i386                 randconfig-a012-20220627
-i386                 randconfig-a011-20220627
-i386                 randconfig-a013-20220627
-i386                 randconfig-a014-20220627
-i386                 randconfig-a015-20220627
-i386                 randconfig-a016-20220627
-arc                  randconfig-r043-20220627
-s390                 randconfig-r044-20220627
-riscv                randconfig-r042-20220627
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-
-clang tested configs:
-i386                 randconfig-a001-20220627
-i386                 randconfig-a002-20220627
-i386                 randconfig-a003-20220627
-i386                 randconfig-a006-20220627
-i386                 randconfig-a005-20220627
-i386                 randconfig-a004-20220627
-x86_64               randconfig-a002-20220627
-x86_64               randconfig-a003-20220627
-x86_64               randconfig-a001-20220627
-x86_64               randconfig-a006-20220627
-x86_64               randconfig-a005-20220627
-x86_64               randconfig-a004-20220627
-hexagon              randconfig-r041-20220627
-hexagon              randconfig-r045-20220627
+This seems like a reasonable approach. Working to confirm new behavior on Ampere
+Altra systems (specifically how region_len and estatus_len are related).
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Darren Hart
+Ampere Computing / OS and Kernel
