@@ -2,57 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC7E055CF10
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9237F55D6AE
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233407AbiF0PHc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 11:07:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46244 "EHLO
+        id S238407AbiF0PeB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 11:34:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237687AbiF0PHa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 11:07:30 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEDB18352;
-        Mon, 27 Jun 2022 08:07:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6239DB81840;
-        Mon, 27 Jun 2022 15:07:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA048C3411D;
-        Mon, 27 Jun 2022 15:07:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1656342447;
-        bh=tZxvX20Ke65Yi+x4CGSg+T4rZrQkmThqBiNjJDO6IrE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EyD5KuLRb4jqQFu72TMxxWafj9WqqZ7E9NwUjT12eOG9N1UKPDOSPH9Bl0PxtPLZw
-         Ag6yjG06qk2rKFyvpuYfW+n6ZFb2v7imAhtAgHfZYvGqsWCWyOCaCKneIu1Yg33P39
-         Ya+JURfgZdwOW+sNCuI4Z7320D/CPaIG2w6fYIOI=
-Date:   Mon, 27 Jun 2022 17:07:24 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        whitehat002 <hackyzh002@gmail.com>
-Subject: Re: [PATCH] PCI/ACPI: do not reference a pci device after it has
- been released
-Message-ID: <YrnHrF8WLy4296Z1@kroah.com>
-References: <20220428142854.1065953-1-gregkh@linuxfoundation.org>
- <20220428155858.GA14614@bhelgaas>
- <Ymq/W+KcWD9DKQr/@kroah.com>
- <CAJZ5v0hCiO6_deYnUK-5pfqE+fy1XLSUiBvkBgWw2nbqu9ggXA@mail.gmail.com>
- <CAJZ5v0itRry98=7X=NOmituD3VH=GYdY3REtrhx3ubH0wf=ckw@mail.gmail.com>
+        with ESMTP id S238518AbiF0Pdp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 11:33:45 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26DAD1A802;
+        Mon, 27 Jun 2022 08:33:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656344015; x=1687880015;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5z4e8YkrpJuqMo/WrMKsbmJ8jjBxVMfE5QCMZ7wIgIg=;
+  b=mPJOHnt745DZdI3rkMUvSMGfIZh9jLdC4zWC2q7ESV1JrEI1X98SCCsU
+   1fnP2nnrIsJxg8uDwcvNgA1rgPRSj19gGzg20myCmZ2LywnQAPo7MJ5e9
+   tOt6UX7XGX6YdRU1xPHBIytHz4TSCCd8lX+7EjC8a7nVuu4lPlICZmLL0
+   1wTrM48eCAm09zKqbevyPWSmHyh8FDN7loPf7vOaThEJg7N2xhCt73Pcq
+   cVy5/gdwod/sLRzL2n0rzHLXcpZWSmjEJRp7BraEmqbQk1TJzgFsyXgfB
+   duFA4ELX3SLx4MuRPLoyyY1frTnVxSSMZpsBNjZDqBvoQi7PZXBM829Jg
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="343161289"
+X-IronPort-AV: E=Sophos;i="5.92,226,1650956400"; 
+   d="scan'208";a="343161289"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 08:33:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,226,1650956400"; 
+   d="scan'208";a="616819892"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 27 Jun 2022 08:33:30 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o5qjx-0008hv-V9;
+        Mon, 27 Jun 2022 15:33:29 +0000
+Date:   Mon, 27 Jun 2022 23:33:29 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Stefan Binding <sbinding@opensource.cirrus.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
+        alsa-devel@alsa-project.org,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        linux-kernel@vger.kernel.org, patches@opensource.cirrus.com
+Subject: Re: [PATCH v2 1/2] ACPI: utils: Add api to read _SUB from ACPI
+Message-ID: <202206272354.ESTdiIXg-lkp@intel.com>
+References: <20220627141148.804319-2-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0itRry98=7X=NOmituD3VH=GYdY3REtrhx3ubH0wf=ckw@mail.gmail.com>
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20220627141148.804319-2-sbinding@opensource.cirrus.com>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,113 +68,82 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 28, 2022 at 10:30:38PM +0200, Rafael J. Wysocki wrote:
-> On Thu, Apr 28, 2022 at 10:15 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Thu, Apr 28, 2022 at 6:22 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Thu, Apr 28, 2022 at 10:58:58AM -0500, Bjorn Helgaas wrote:
-> > > > On Thu, Apr 28, 2022 at 04:28:53PM +0200, Greg Kroah-Hartman wrote:
-> > > > > In acpi_get_pci_dev(), the debugging message for when a PCI bridge is
-> > > > > not found uses a pointer to a pci device whose reference has just been
-> > > > > dropped.  The chance that this really is a device that is now been
-> > > > > removed from the system is almost impossible to happen, but to be safe,
-> > > > > let's print out the debugging message based on the acpi root device
-> > > > > which we do have a valid reference to at the moment.
-> > > >
-> > > > This code was added by 497fb54f578e ("ACPI / PCI: Fix NULL pointer
-> > > > dereference in acpi_get_pci_dev() (rev. 2)").  Not sure if it's worth
-> > > > a Fixes: tag.
-> > >
-> > > Can't hurt, I'll add it for the v2 based on this review.
-> > >
-> > > >
-> > > > acpi_get_pci_dev() is used by only five callers, three of which are
-> > > > video/backlight related.  I'm always skeptical of one-off interfaces
-> > > > like this, but I don't know enough to propose any refactoring or other
-> > > > alternatives.
-> > > >
-> > > > I'll leave this for Rafael, but if I were applying I would silently
-> > > > touch up the subject to match convention:
-> > > >
-> > > >   PCI/ACPI: Do not reference PCI device after it has been released
-> > >
-> > > Much simpler, thanks.
-> > >
-> > > >
-> > > > > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > > > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > > > Cc: Len Brown <lenb@kernel.org>
-> > > > > Cc: linux-pci@vger.kernel.org
-> > > > > Cc: linux-acpi@vger.kernel.org
-> > > > > Reported-by: whitehat002 <hackyzh002@gmail.com>
-> > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > > ---
-> > > > >  drivers/acpi/pci_root.c | 3 ++-
-> > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> > > > > index 6f9e75d14808..ecda378dbc09 100644
-> > > > > --- a/drivers/acpi/pci_root.c
-> > > > > +++ b/drivers/acpi/pci_root.c
-> > > > > @@ -303,7 +303,8 @@ struct pci_dev *acpi_get_pci_dev(acpi_handle handle)
-> > > > >              * case pdev->subordinate will be NULL for the parent.
-> > > > >              */
-> > > > >             if (!pbus) {
-> > > > > -                   dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
-> > > > > +                   dev_dbg(&root->device->dev,
-> > > > > +                           "dev %d, function %d is not a PCI-to-PCI bridge\n", dev, fn);
-> > > >
-> > > > This should use "%02x.%d" to be consistent with the dev_set_name() in
-> > > > pci_setup_device().
-> > >
-> > > Ah, missed that, will change it and send out a new version tomorrow.
-> >
-> > I would make the change below (modulo the gmail-induced wthite space
-> > breakage), though.
-> 
-> That said ->
-> 
-> > ---
-> >  drivers/acpi/pci_root.c |    5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> >
-> > Index: linux-pm/drivers/acpi/pci_root.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/pci_root.c
-> > +++ linux-pm/drivers/acpi/pci_root.c
-> > @@ -295,8 +295,6 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
-> >              break;
-> >
-> >          pbus = pdev->subordinate;
-> > -        pci_dev_put(pdev);
-> > -
-> >          /*
-> >           * This function may be called for a non-PCI device that has a
-> >           * PCI parent (eg. a disk under a PCI SATA controller).  In that
-> > @@ -304,9 +302,12 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
-> >           */
-> >          if (!pbus) {
-> >              dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
-> > +            pci_dev_put(pdev);
-> >              pdev = NULL;
-> >              break;
-> >          }
-> > +
-> > +        pci_dev_put(pdev);
-> 
-> -> we are going to use pbus after this and it is pdev->subordinate
-> which cannot survive without pdev AFAICS.
-> 
-> Are we not concerned about this case?
+Hi Stefan,
 
-Good point.
+Thank you for the patch! Yet something to improve:
 
-whitehat002, any ideas?  You found this issue but it really looks like
-it is not anything that can ever be hit, so how far do you want to go to
-unwind it?
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on broonie-sound/for-next linus/master v5.19-rc4 next-20220627]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-thanks,
+url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220627-221508
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: um-x86_64_defconfig (https://download.01.org/0day-ci/archive/20220627/202206272354.ESTdiIXg-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/93ba13d4b3636b5cf2ff4d9185aa73f059cc7b2a
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220627-221508
+        git checkout 93ba13d4b3636b5cf2ff4d9185aa73f059cc7b2a
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=um SUBARCH=x86_64 SHELL=/bin/bash
 
-greg k-h
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   In file included from init/main.c:30:
+>> include/linux/acpi.h:1028:1: error: expected identifier or '(' before '{' token
+    1028 | {
+         | ^
+   init/main.c:769:20: warning: no previous prototype for 'arch_post_acpi_subsys_init' [-Wmissing-prototypes]
+     769 | void __init __weak arch_post_acpi_subsys_init(void) { }
+         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   init/main.c:781:20: warning: no previous prototype for 'mem_encrypt_init' [-Wmissing-prototypes]
+     781 | void __init __weak mem_encrypt_init(void) { }
+         |                    ^~~~~~~~~~~~~~~~
+   init/main.c:783:20: warning: no previous prototype for 'poking_init' [-Wmissing-prototypes]
+     783 | void __init __weak poking_init(void) { }
+         |                    ^~~~~~~~~~~
+   In file included from init/main.c:30:
+   include/linux/acpi.h:1027:27: warning: 'acpi_get_subsystem_id' declared 'static' but never defined [-Wunused-function]
+    1027 | static inline const char *acpi_get_subsystem_id(acpi_handle handle);
+         |                           ^~~~~~~~~~~~~~~~~~~~~
+--
+   In file included from kernel/sysctl.c:55:
+>> include/linux/acpi.h:1028:1: error: expected identifier or '(' before '{' token
+    1028 | {
+         | ^
+   include/linux/acpi.h:1027:27: warning: 'acpi_get_subsystem_id' declared 'static' but never defined [-Wunused-function]
+    1027 | static inline const char *acpi_get_subsystem_id(acpi_handle handle);
+         |                           ^~~~~~~~~~~~~~~~~~~~~
+--
+   In file included from include/linux/i2c.h:13,
+                    from drivers/input/mouse/synaptics.c:30:
+>> include/linux/acpi.h:1028:1: error: expected identifier or '(' before '{' token
+    1028 | {
+         | ^
+   include/linux/acpi.h:1027:27: warning: 'acpi_get_subsystem_id' declared 'static' but never defined [-Wunused-function]
+    1027 | static inline const char *acpi_get_subsystem_id(acpi_handle handle);
+         |                           ^~~~~~~~~~~~~~~~~~~~~
+   drivers/input/mouse/synaptics.c:164:27: warning: 'smbus_pnp_ids' defined but not used [-Wunused-const-variable=]
+     164 | static const char * const smbus_pnp_ids[] = {
+         |                           ^~~~~~~~~~~~~
+
+
+vim +1028 include/linux/acpi.h
+
+  1026	
+  1027	static inline const char *acpi_get_subsystem_id(acpi_handle handle);
+> 1028	{
+  1029		return ERR_PTR(-ENODEV);
+  1030	}
+  1031	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
