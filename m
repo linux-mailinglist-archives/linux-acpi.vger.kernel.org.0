@@ -2,114 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22DCF55DFFE
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D70155CA01
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 14:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235055AbiF0Ndz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 09:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43182 "EHLO
+        id S236071AbiF0Nl6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 09:41:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236422AbiF0Ndx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 09:33:53 -0400
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11A9A6362;
-        Mon, 27 Jun 2022 06:33:52 -0700 (PDT)
-Received: by mail-yb1-f177.google.com with SMTP id p136so10567648ybg.4;
-        Mon, 27 Jun 2022 06:33:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ztN9msliEJWcvQDVWkbiAiIE0Z0BrDUarJzwnIGzjC8=;
-        b=YMw94vLB9C1PkhH+V5lHE0rNhfmHkWJaK7kt3QhDenuKQWmlOhucJzTRK/EJtRlOFz
-         Z4g2MghMccb9BofygtQjvq9OZgzYxk5XUnE7BXcjXcLBe4fOgiG0T1uSsEyF7pZ/y5D7
-         Y0K5AhY2xgiMGskIMtjl3Bpz1fq/5WMAm9q4KnXqQmTB2pC/oVHN+vCICvOAB0CUOOAZ
-         X45fPwpS13QQljWbylupAd+bnSCQzSFaqS4Cb1g9VuESufeKYg+m6uj9B4mBZ0kKkpaD
-         eflb54zIg/XuaGOsi2kHXC2eRHI1/6KM94dep+34aylNVoV+BKMGGFWugk3tp01FQTKE
-         xCpw==
-X-Gm-Message-State: AJIora/VDoTB+FIrujhlgzNanPht2ZH2YhFobQkIuZabib40fWX4f1x+
-        0F3W2HZ7imnzrF99EXiVjNyEgw0YG0bu/Wmt0uTjOpZGsaQ=
-X-Google-Smtp-Source: AGRyM1u6nXPXMKry/ijjdna0qNq6kJB5nE2ej9khpTTJLBr+PLqFMi0SnjuJi+npHJWR1euI7/M9kBb9E9n/NceMoqk=
-X-Received: by 2002:a25:9004:0:b0:66c:97a4:3053 with SMTP id
- s4-20020a259004000000b0066c97a43053mr10112879ybl.137.1656336831002; Mon, 27
- Jun 2022 06:33:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <4e1d5db9dea68d82c94336a1d6aac404@walle.cc> <b8ec04dc-f803-ee2c-29b7-b0311eb8c5fb@linaro.org>
-In-Reply-To: <b8ec04dc-f803-ee2c-29b7-b0311eb8c5fb@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 27 Jun 2022 15:33:37 +0200
-Message-ID: <CAJZ5v0jz=ee5TrvYs0_ovWn9sT06bcKDucmmocD8L-d9ZZ5DzQ@mail.gmail.com>
-Subject: Re: fwnode_for_each_child_node() and OF backend discrepancy
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Michael Walle <michael@walle.cc>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        with ESMTP id S234535AbiF0Nl6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 09:41:58 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 62A1B2DCD;
+        Mon, 27 Jun 2022 06:41:57 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 28E471758;
+        Mon, 27 Jun 2022 06:41:57 -0700 (PDT)
+Received: from localhost (ionvoi01-desktop.cambridge.arm.com [10.1.196.65])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8AB623F5A1;
+        Mon, 27 Jun 2022 06:41:56 -0700 (PDT)
+Date:   Mon, 27 Jun 2022 14:41:54 +0100
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     linux-kernel@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
+        Atish Patra <atishp@atishpatra.org>,
+        Atish Patra <atishp@rivosinc.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Qing Wang <wangqing@vivo.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Saravana Kannan <saravanak@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 01/20] ACPI: PPTT: Use table offset as fw_token
+ instead of virtual address
+Message-ID: <Yrmzkwur1NVQ8NSA@arm.com>
+References: <20220621192034.3332546-1-sudeep.holla@arm.com>
+ <20220621192034.3332546-2-sudeep.holla@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220621192034.3332546-2-sudeep.holla@arm.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 27, 2022 at 3:08 PM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 27/06/2022 14:49, Michael Walle wrote:
-> > Hi,
-> >
-> > I tired to iterate over all child nodes, regardless if they are
-> > available
-> > or not. Now there is that handy fwnode_for_each_child_node() (and the
-> > fwnode_for_each_available_child_node()). The only thing is the OF
-> > backend
-> > already skips disabled nodes [1], making fwnode_for_each_child_node()
-> > and
-> > fwnode_for_each_available_child_node() behave the same with the OF
-> > backend.
-> >
-> > Doesn't seem to be noticed by anyone for now. I'm not sure how to fix
-> > that
-> > one. fwnode_for_each_child_node() and also fwnode_get_next_child_node()
-> > are
-> > used by a handful of drivers. I've looked at some, but couldn't decide
-> > whether they really want to iterate over all child nodes or just the
-> > enabled
-> > ones.
->
-> If I get it correctly, this was introduced  by 8a0662d9ed29 ("Driver
-> core: Unified interface for firmware node properties")
-> .
+Hi Sudeep,
 
-Originally it was, but then it has been reworked a few times.
+On Tuesday 21 Jun 2022 at 20:20:15 (+0100), Sudeep Holla wrote:
+> There is need to use the cache sharing information quite early during
+> the boot before the secondary cores are up and running. The permanent
+> memory map for all the ACPI tables(via acpi_permanent_mmap) is turned
+> on in acpi_early_init() which is quite late for the above requirement.
+> 
+> As a result there is possibility that the ACPI PPTT gets mapped to
+> different virtual addresses. In such scenarios, using virtual address as
+> fw_token before the acpi_permanent_mmap is enabled results in different
+> fw_token for the same cache entity and hence wrong cache sharing
+> information will be deduced based on the same.
+> 
+> Instead of using virtual address, just use the table offset as the
+> unique firmware token for the caches. The same offset is used as
+> ACPI identifiers if the firmware has not set a valid one for other
+> entries in the ACPI PPTT.
+> 
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> ---
+>  drivers/acpi/pptt.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> Hi Rafael,
+> 
+> If you are happy with this change, can you provide Ack, so that it can be
+> merged together with other changes ?
+> 
+> Regards,
+> Sudeep
+> 
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 701f61c01359..763f021d45e6 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -437,7 +437,8 @@ static void cache_setup_acpi_cpu(struct acpi_table_header *table,
+>  		pr_debug("found = %p %p\n", found_cache, cpu_node);
+>  		if (found_cache)
+>  			update_cache_properties(this_leaf, found_cache,
+> -			                        cpu_node, table->revision);
+> +						ACPI_TO_POINTER(ACPI_PTR_DIFF(cpu_node, table)),
+> +						table->revision);
+>  
+>  		index++;
+>  	}
+> -- 
+> 2.36.1
+> 
 
-The backend callbacks were introduced by Sakari, in particular.
+I've run the set on Kunpeng920 where Dietmar noticed an issue [1] before
+and it looks good to me.
 
-> The question to Rafael - what was your intention when you added
-> device_get_next_child_node() looking only for available nodes?
+Tested-by: Ionela Voinescu <ionela.voinescu@arm.com>
 
-That depends on the backend.
+[1]
+https://lore.kernel.org/lkml/0bf199a0-251d-323c-974a-bfd4e26f4cce@arm.com/
 
-fwnode_for_each_available_child_node() is more specific and IIRC it
-was introduced for fw_devlink (CC Saravana).
-
-> My understanding is that this implementation should be consistent with
-> OF implementation, so fwnode_get_next_child_node=get any child.
-
-IIUC, the OF implementation is not consistent with the
-fwnode_get_next_child_node=get any child thing.
-
-> However maybe ACPI treats it somehow differently?
-
-acpi_get_next_subnode() simply returns the next subnode it can find.
+Thanks,
+Ionela.
