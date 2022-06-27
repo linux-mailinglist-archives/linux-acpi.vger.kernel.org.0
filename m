@@ -2,100 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1256555D332
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D48E55CC26
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232660AbiF0ICE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 04:02:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36930 "EHLO
+        id S233873AbiF0Jg1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 05:36:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232487AbiF0ICD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 04:02:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 182BA10D7
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 01:02:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1656316921;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NjQ/y3uzOB0VPioQUmdD2/aH8hZijcv/VXyRMlZuNQg=;
-        b=QB2L7UqYcbfJKvcItharUG0ucsLsKmoJv2WheSsmnT1V1bYODE4e7WqukuldHNlEJFWS02
-        O5r/++UIVGHLAvQvDs/hmRVdlRo2awHjMLddRSkQZOwlLOwEWG9bzMDRXXR99tjPvjVV8m
-        9n4NJF3WhrvJrYEYVZE3NGUl1wy9fjY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-10-1Dl9JsPKOGW3LQo9aLyKug-1; Mon, 27 Jun 2022 04:01:59 -0400
-X-MC-Unique: 1Dl9JsPKOGW3LQo9aLyKug-1
-Received: by mail-wr1-f71.google.com with SMTP id m7-20020adfa3c7000000b0021b94088ba2so966793wrb.9
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 01:01:59 -0700 (PDT)
+        with ESMTP id S234048AbiF0Jg0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 05:36:26 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEFBD63E2
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 02:36:24 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id t25so15566549lfg.7
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 02:36:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Z3HaeNcG7GUwNm8/fRozB97Y4i9x1s+O7tYwK4jHD7M=;
+        b=QF8DGzrvzH59XuF11YGPgC2m9vdevVtFLu4cKsHEkVjP5E0eo/k5PcEn0wMOl4eeY6
+         Uycf77mBuTJ24IgCm8IhzAUUjCrQm79ID5XfSX9Eg6+CscbLmwa3LvRkzIsrj33PLc0w
+         CUQgHWPSwcdPgGEbbF+AxjKzWVhxDrCKJf7W31rezkmauEpSgHJVRZtVeZVMnVTEcWqW
+         oqx09f24DL1am2dLozxyQtmgIPUGvRZX0BNxuSDG/nECpVsItM8d5b95TocEHhNUVfXB
+         ASDXvIaxD/GHxOb6o9w9Da3cE9BQ+6lHhr6rPARYUyOTlHMa/f3qt3aFtRpFzClUnJQv
+         gMKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=NjQ/y3uzOB0VPioQUmdD2/aH8hZijcv/VXyRMlZuNQg=;
-        b=m4c1whRzrLqAJBNUx4Zj4vxrT2LBC0ynY9+FZnLKwfzoL1Ge0VgLfdYu4sPattGY1z
-         yhpMu6+6yJ1uc81LkxqpamK5PnmAz1BlCuDDa7nt1QRWwNf649PZLVBPq57sc3+o05ap
-         gL/ATfT6F7TdTAMt3+7jnibg0aIaXNJOG4JKLjwtoVZeWKyeDoQDx8SMjzPacxiWC+aa
-         fMPPd0GukCZxzmmPhHERvE1/IdB47iT62po3Rw2DmlFAwsIvnuiVa8E+fzyZm0AeM65/
-         pRpTNa1ut9qDBesMV+9zS88obQL1v3P9q36gxqHqRaIjR8bMj8yOjAkK6gg8KQk1LbQv
-         1LuQ==
-X-Gm-Message-State: AJIora8fVz2e4aXL9+yAOqcYcGqJytLXNeT2+azGToSoQIVkmM4EjxXb
-        dkNSp2ZLOpudHdlpdB/E7PHayuHIDx+uuweqGSQ+Eb75fPOeUktmIMQXUuOSOxr673jqfLq+g/o
-        bLmhNwV1rzEQCIL1zQZihlQ==
-X-Received: by 2002:a05:600c:4f81:b0:39c:809c:8a9e with SMTP id n1-20020a05600c4f8100b0039c809c8a9emr19091655wmq.39.1656316918107;
-        Mon, 27 Jun 2022 01:01:58 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1ucgAGSBXy8zDrJRdc3q59PcoYBheBIuCkSQZpixIvVUMq6Ty2yfJQnho9iegzNyMmUhooTwA==
-X-Received: by 2002:a05:600c:4f81:b0:39c:809c:8a9e with SMTP id n1-20020a05600c4f8100b0039c809c8a9emr19091606wmq.39.1656316917811;
-        Mon, 27 Jun 2022 01:01:57 -0700 (PDT)
-Received: from localhost (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id w9-20020a5d6089000000b0020e5b4ebaecsm9700461wrt.4.2022.06.27.01.01.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jun 2022 01:01:57 -0700 (PDT)
-Date:   Mon, 27 Jun 2022 10:01:55 +0200
-From:   Igor Mammedov <imammedo@redhat.com>
-To:     Kai Huang <kai.huang@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kvm-devel <kvm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Len Brown <len.brown@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        isaku.yamahata@intel.com, Tom Lendacky <thomas.lendacky@amd.com>,
-        Tianyu.Lan@microsoft.com, Randy Dunlap <rdunlap@infradead.org>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Yue Haibing <yuehaibing@huawei.com>, dongli.zhang@oracle.com
-Subject: Re: [PATCH v5 02/22] cc_platform: Add new attribute to prevent ACPI
- CPU hotplug
-Message-ID: <20220627100155.71a7b34c@redhat.com>
-In-Reply-To: <d3ba563f3f4e7aaf90fb99d20c651b5751972f7b.camel@intel.com>
-References: <cover.1655894131.git.kai.huang@intel.com>
-        <f4bff93d83814ea1f54494f51ce3e5d954cf0f5b.1655894131.git.kai.huang@intel.com>
-        <CAJZ5v0jV8ODcxuLL+iSpYbW7w=GFtUSakN-n8CO5Zmun3K-Erg@mail.gmail.com>
-        <d3ba563f3f4e7aaf90fb99d20c651b5751972f7b.camel@intel.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-redhat-linux-gnu)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Z3HaeNcG7GUwNm8/fRozB97Y4i9x1s+O7tYwK4jHD7M=;
+        b=lpwZuk4bmrp9QupVgAGU5luuSzRq4DfxeiqeyJVtNGo1sNWMym5Jb2Y5fQF/cr6sVc
+         rxfHPrIIIOFC/W/9fOP8/F9P8ZNPFF2W9cdsQJFyMbTiyNbteYwZxi3WtRjJIbPKfFXr
+         E1Dd3byFczL2YLsq53wnc4ttghG6+hO14umGUXv2kUK+xYb0MZk6m3Dvm05qNxWrktQe
+         14ZU7tEq1tK1ER7vkouTT9ws1caDC6Yq4E+J8mhdyc7nPSOdSNbL9pGeFkcIkGeLekDI
+         s+4K6B88O4OFcgzsMB79f12WM7WvCR46wbDzFXmCbMLFvL695czkk0V1vKcKuEWSdS2O
+         el3g==
+X-Gm-Message-State: AJIora9ZfgX2zDqKuVpDXhHjvZRzHwxkvGfest/KWfTp9JPLhzhxFfFi
+        vs+Qvgit5r6RJWzQipCS+K/WVg5FxX1uoJQma/6nHA==
+X-Google-Smtp-Source: AGRyM1vYmbCQxG+ZhuBiTxL9XeaO2JU+1o3ytJ35pL/oYBvWbmwYUIsGf47OtQGSi23B/9gdJnm/5/Bwtcvaf+20MBw=
+X-Received: by 2002:ac2:4bcf:0:b0:47f:86f2:812d with SMTP id
+ o15-20020ac24bcf000000b0047f86f2812dmr7505512lfq.400.1656322583045; Mon, 27
+ Jun 2022 02:36:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+References: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
+ <YqNCDrqcp9t8HlUJ@kroah.com> <OSBPR01MB203749DA00C7BEE5741AFEB980AA9@OSBPR01MB2037.jpnprd01.prod.outlook.com>
+ <YqiAY689pOJbHKUd@kroah.com> <TY2PR01MB20426C7822E46B2E8B2525FB80AF9@TY2PR01MB2042.jpnprd01.prod.outlook.com>
+In-Reply-To: <TY2PR01MB20426C7822E46B2E8B2525FB80AF9@TY2PR01MB2042.jpnprd01.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 27 Jun 2022 11:36:11 +0200
+Message-ID: <CACRpkdaV8+06gzxi3ou4+nxa28R5Rhzg+KJ8HWh4gyK4AkoC9g@mail.gmail.com>
+Subject: Re: [PATCH v5 0/6] Add hardware prefetch control driver for A64FX and x86
+To:     "tarumizu.kohei@fujitsu.com" <tarumizu.kohei@fujitsu.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
+        "eugenis@google.com" <eugenis@google.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "pcc@google.com" <pcc@google.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "marcos@orca.pet" <marcos@orca.pet>,
+        "marcan@marcan.st" <marcan@marcan.st>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
+        "conor.dooley@microchip.com" <conor.dooley@microchip.com>,
+        "arnd@arndb.de" <arnd@arndb.de>, "ast@kernel.org" <ast@kernel.org>,
+        "peter.chen@kernel.org" <peter.chen@kernel.org>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -103,127 +91,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 23 Jun 2022 12:01:48 +1200
-Kai Huang <kai.huang@intel.com> wrote:
+On Fri, Jun 17, 2022 at 11:21 AM tarumizu.kohei@fujitsu.com
+<tarumizu.kohei@fujitsu.com> wrote:
 
-> On Wed, 2022-06-22 at 13:42 +0200, Rafael J. Wysocki wrote:
-> > On Wed, Jun 22, 2022 at 1:16 PM Kai Huang <kai.huang@intel.com> wrote:  
-> > > 
-> > > Platforms with confidential computing technology may not support ACPI
-> > > CPU hotplug when such technology is enabled by the BIOS.  Examples
-> > > include Intel platforms which support Intel Trust Domain Extensions
-> > > (TDX).
-> > > 
-> > > If the kernel ever receives ACPI CPU hotplug event, it is likely a BIOS
-> > > bug.  For ACPI CPU hot-add, the kernel should speak out this is a BIOS
-> > > bug and reject the new CPU.  For hot-removal, for simplicity just assume
-> > > the kernel cannot continue to work normally, and BUG().
-> > > 
-> > > Add a new attribute CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED to indicate the
-> > > platform doesn't support ACPI CPU hotplug, so that kernel can handle
-> > > ACPI CPU hotplug events for such platform.  The existing attribute
-> > > CC_ATTR_HOTPLUG_DISABLED is for software CPU hotplug thus doesn't fit.
-> > > 
-> > > In acpi_processor_{add|remove}(), add early check against this attribute
-> > > and handle accordingly if it is set.
-> > > 
-> > > Also take this chance to rename existing CC_ATTR_HOTPLUG_DISABLED to
-> > > CC_ATTR_CPU_HOTPLUG_DISABLED as it is for software CPU hotplug.
-> > > 
-> > > Signed-off-by: Kai Huang <kai.huang@intel.com>
-> > > ---
-> > >  arch/x86/coco/core.c          |  2 +-
-> > >  drivers/acpi/acpi_processor.c | 23 +++++++++++++++++++++++
-> > >  include/linux/cc_platform.h   | 15 +++++++++++++--
-> > >  kernel/cpu.c                  |  2 +-
-> > >  4 files changed, 38 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-> > > index 4320fadae716..1bde1af75296 100644
-> > > --- a/arch/x86/coco/core.c
-> > > +++ b/arch/x86/coco/core.c
-> > > @@ -20,7 +20,7 @@ static bool intel_cc_platform_has(enum cc_attr attr)
-> > >  {
-> > >         switch (attr) {
-> > >         case CC_ATTR_GUEST_UNROLL_STRING_IO:
-> > > -       case CC_ATTR_HOTPLUG_DISABLED:
-> > > +       case CC_ATTR_CPU_HOTPLUG_DISABLED:
-> > >         case CC_ATTR_GUEST_MEM_ENCRYPT:
-> > >         case CC_ATTR_MEM_ENCRYPT:
-> > >                 return true;
-> > > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-> > > index 6737b1cbf6d6..b960db864cd4 100644
-> > > --- a/drivers/acpi/acpi_processor.c
-> > > +++ b/drivers/acpi/acpi_processor.c
-> > > @@ -15,6 +15,7 @@
-> > >  #include <linux/kernel.h>
-> > >  #include <linux/module.h>
-> > >  #include <linux/pci.h>
-> > > +#include <linux/cc_platform.h>
-> > > 
-> > >  #include <acpi/processor.h>
-> > > 
-> > > @@ -357,6 +358,17 @@ static int acpi_processor_add(struct acpi_device *device,
-> > >         struct device *dev;
-> > >         int result = 0;
-> > > 
-> > > +       /*
-> > > +        * If the confidential computing platform doesn't support ACPI
-> > > +        * memory hotplug, the BIOS should never deliver such event to
-> > > +        * the kernel.  Report ACPI CPU hot-add as a BIOS bug and ignore
-> > > +        * the new CPU.
-> > > +        */
-> > > +       if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED)) {  
-> > 
-> > This will affect initialization, not just hotplug AFAICS.
-> > 
-> > You should reset the .hotplug.enabled flag in processor_handler to
-> > false instead.  
-> 
-> Hi Rafael,
-> 
-> Thanks for the review.  By "affect initialization" did you mean this
-> acpi_processor_add() is also called during kernel boot when any logical cpu is
-> brought up?  Or do you mean ACPI CPU hotplug can also happen during kernel boot
-> (after acpi_processor_init())?
-> 
-> I see acpi_processor_init() calls acpi_processor_check_duplicates() which calls
-> acpi_evaluate_object() but I don't know details of ACPI so I don't know whether
-> this would trigger acpi_processor_add().
-> 
-> One thing is TDX doesn't support ACPI CPU hotplug is an architectural thing, so
-> it is illegal even if it happens during kernel boot.  Dave's idea is the kernel
-> should  speak out loudly if physical CPU hotplug indeed happened on (BIOS) TDX-
-> enabled platforms.  Otherwise perhaps we can just give up initializing the ACPI
-> CPU hotplug in acpi_processor_init(), something like below?
+Jumping in here.
 
-The thing is that by the time ACPI machinery kicks in, physical hotplug
-has already happened and in case of (kvm+qemu+ovmf hypervisor combo)
-firmware has already handled it somehow and handed it over to ACPI.
-If you say it's architectural thing then cpu hotplug is platform/firmware
-bug and should be disabled there instead of working around it in the kernel.
+> Hi Greg,
+>
+> > That's not ok.  Linux is a "general purpose" operating system and needs to
+> > work well for all applications.  Doing application-specific-tuning based on the
+> > specific hardware like this is a nightmare for users,
+>
+> Hardware prefetch behavior is enabled by default in x86 and A64FX.
+> Many applications can perform well without changing the register
+> setting. Use this feature for some applications that want to be
+> improved performance.
 
-Perhaps instead of 'preventing' hotplug, complain/panic and be done with it.
- 
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -707,6 +707,10 @@ bool acpi_duplicate_processor_id(int proc_id)
->  void __init acpi_processor_init(void)
->  {
->         acpi_processor_check_duplicates();
-> +
-> +       if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED))
-> +               return;
-> +
->         acpi_scan_add_handler_with_hotplug(&processor_handler, "processor");
->         acpi_scan_add_handler(&processor_container_handler);
->  }
-> 
-> 
-> >   
-> > > +               dev_err(&device->dev, "[BIOS bug]: Platform doesn't support ACPI CPU hotplug.  New CPU ignored.\n");
-> > > +               return -EINVAL;
-> > > +       }
-> > > +  
-> 
+The right way to solve this is to make the Linux kernel contain the necessary
+heuristics to identify which tasks and thus cores need this to improve
+efficiency and then apply it automatically.
 
+Putting it in userspace is making a human do a machines job which isn't
+sustainable.
+
+By putting the heuristics in kernelspace Linux will improve performance also
+on workloads the human operator didn't think of as the machine will
+detect them from
+statictical or other behaviour patterns.
+
+Yours,
+Linus Walleij
