@@ -2,184 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDFE55B31C
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Jun 2022 19:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 022F855B5F2
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jun 2022 06:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231514AbiFZRdO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Jun 2022 13:33:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45214 "EHLO
+        id S229895AbiF0EJv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 00:09:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbiFZRdO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Jun 2022 13:33:14 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC3177649
-        for <linux-acpi@vger.kernel.org>; Sun, 26 Jun 2022 10:33:11 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id o4so5994954wrh.3
-        for <linux-acpi@vger.kernel.org>; Sun, 26 Jun 2022 10:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=LVyzL8mphbtENNv7Ak5Yb4fzhkW9NpbRag7uI4Hacxc=;
-        b=CixvAORRF/ukN2FEZzF3AXwjYn0QSsLkd38tK+4yJetZJEOD2q8BWdl+K7blkYG7QX
-         PEpxd9kqTN2VWUXcz4YD/IK4r7df6FMK1XmJ0tM6GJBIgNOaTzoUXLdb0Hle84111G9o
-         PEcdOK/tcVBUK/beyvIgVjBuqREmne+JuyFWCO/FfnY/agQm+R8Qf8mdpKl+YSiiVc6D
-         warzD6uHfDCskO3OxQ41n/NxKpV0jX6Lm3HwMpdQWZangXskbf0W6LW/iOMuDxXv5+n9
-         tur8NsPqRiFwF1WgpEzx5KFrcp5JtHOeGJzYbiubnZrrT7cSPNOvq+v99yOHeGHnva84
-         muQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=LVyzL8mphbtENNv7Ak5Yb4fzhkW9NpbRag7uI4Hacxc=;
-        b=qDAWf3P69Se/vGWIfyVaJvmr5ULUtE6Pj6pEXSrfcZ7EomgrsyH1H50mICJl3mZ90p
-         A4f06o50dZFRoA1nSxzq8P9aSskyF7Q1MMimED5tjEYh4DQJuydxEs+IotJ3RXtQgpe1
-         d0Bwi6ZEFWhq99P8nbLYGzS37X2EfTqMF5ReDkUwTtxOGDRPgdwPJ3rlHvwS5HilEVLK
-         gIT8yaZkJUHTmjbrJCvNX8ABByOg+4t4tlCG6A/xHGPbavRFqWAdTOh1ehzSBl5jKJCk
-         LBZumJhZFX9Z0aaLN1arwV21f1atx0a4C3bESnr/mjUnugRiV4aJC6Z3RYQeVyWlNdJg
-         +7Kg==
-X-Gm-Message-State: AJIora8pbaBbUk8dJRpNtTL9cptzOSfovXeiLWUNusam0ZGX67/rUV1a
-        sWmi3Z167RYQtdY78w9TbE2qWA==
-X-Google-Smtp-Source: AGRyM1sT+QzEds/eFmu00keheN6WbaWKP57czuiPSPRTt3/jN3GsXQ0byLphmAqRpiPIai9t45cykg==
-X-Received: by 2002:a5d:6ac4:0:b0:21b:a724:1711 with SMTP id u4-20020a5d6ac4000000b0021ba7241711mr8495754wrw.80.1656264790204;
-        Sun, 26 Jun 2022 10:33:10 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id c11-20020a05600c0acb00b00397342e3830sm11310979wmr.0.2022.06.26.10.33.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Jun 2022 10:33:09 -0700 (PDT)
-Message-ID: <43b1c2fd-b746-84eb-c82b-23f1bd39242e@linaro.org>
-Date:   Sun, 26 Jun 2022 19:33:06 +0200
+        with ESMTP id S229538AbiF0EJu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 00:09:50 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986DF2BF8;
+        Sun, 26 Jun 2022 21:09:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656302989; x=1687838989;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=+MlrCsTACgQ3fdMt0MvL5i5SW0bgC6vhQ3XkFwfrHyo=;
+  b=PdeTN0q/0nLqomX8wmoRg10xsY1yyWR4hCeSs+skmAidbBePmIPt0sIW
+   7f+7jTxUn01IXf35j9U9/Q+Dx/iz3lYBqM6mVsN05FXmtqV6F1DTuRL/7
+   oIu55LLpc6Ok/y9Y3JRR0JfteoJQK4ogt93eCEHCsAfBb/I2OllnwZ7Al
+   mcS75JfU7DLfwcR+zBA7ZVaG18GiWfW168KzzVxOT8phJfMAHNl1yeRLz
+   Tn7cnfRpX5PBQofCa1WR3I0dSl4WTu/rMoHQno3NBKBifYf4XCwH425p1
+   ptipsOgQWWPuO/Ljl/xFHg1izmk8i5jL0ePfmbS67yR/DDrN65IKWvfR1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10390"; a="264392774"
+X-IronPort-AV: E=Sophos;i="5.92,225,1650956400"; 
+   d="scan'208";a="264392774"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2022 21:09:48 -0700
+X-IronPort-AV: E=Sophos;i="5.92,225,1650956400"; 
+   d="scan'208";a="679401157"
+Received: from fzaeni-mobl1.amr.corp.intel.com (HELO khuang2-desk.gar.corp.intel.com) ([10.212.88.6])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2022 21:09:42 -0700
+Message-ID: <8853a55e32d6b5f5657e521094dbf01e371516fe.camel@intel.com>
+Subject: Re: [PATCH v5 00/22] TDX host kernel support
+From:   Kai Huang <kai.huang@intel.com>
+To:     Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-acpi@vger.kernel.org, seanjc@google.com,
+        pbonzini@redhat.com, len.brown@intel.com, tony.luck@intel.com,
+        rafael.j.wysocki@intel.com, reinette.chatre@intel.com,
+        dan.j.williams@intel.com, peterz@infradead.org, ak@linux.intel.com,
+        kirill.shutemov@linux.intel.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com,
+        isaku.yamahata@intel.com, akpm@linux-foundation.org,
+        thomas.lendacky@amd.com, Tianyu.Lan@microsoft.com,
+        rdunlap@infradead.org, Jason@zx2c4.com, juri.lelli@redhat.com,
+        mark.rutland@arm.com, frederic@kernel.org, yuehaibing@huawei.com,
+        dongli.zhang@oracle.com
+Date:   Mon, 27 Jun 2022 16:09:40 +1200
+In-Reply-To: <14e3d8cb-5e36-dc90-bfc8-b34a105749a3@intel.com>
+References: <cover.1655894131.git.kai.huang@intel.com>
+         <14e3d8cb-5e36-dc90-bfc8-b34a105749a3@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v2 01/14] thermal/core: Change thermal_zone_ops to
- thermal_sensor_ops
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linexp.org>
-Cc:     Kevin Hilman <khilman@baylibre.com>,
-        Alexandre Bailon <abailon@baylibre.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Peter Kaestle <peter@piie.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Chuansheng Liu <chuansheng.liu@intel.com>,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Antoine Tenart <atenart@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
-        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
-        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER" 
-        <platform-driver-x86@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:RENESAS R-CAR THERMAL DRIVERS" 
-        <linux-renesas-soc@vger.kernel.org>
-References: <20220507125443.2766939-1-daniel.lezcano@linexp.org>
- <20220507125443.2766939-2-daniel.lezcano@linexp.org>
- <CAJZ5v0ik_JQ4Awtw7iR68W4-9ZL8FRDsDd-kWmL-n09fgg3reg@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0ik_JQ4Awtw7iR68W4-9ZL8FRDsDd-kWmL-n09fgg3reg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, 2022-06-24 at 12:47 -0700, Dave Hansen wrote:
+> On 6/22/22 04:15, Kai Huang wrote:
+> > Please kindly help to review, and I would appreciate reviewed-by or
+> > acked-by tags if the patches look good to you.
+>=20
+> Serious question: Is *ANYONE* looking at these patches other than you
+> and the maintainers?  I first saw this code (inside Intel) in early
+> 2020.  In that time, not a single review tag has been acquired?
+>=20
+> $ egrep -ic 'acked-by:|reviewed-by:' kais-patches.mbox
+> 0
 
-Hi Rafael,
+Hi Dave,
 
-sorry for the delay, I was OoO.
+There were big design changes in the history of this series (i.e. we origin=
+ally
+supported loading both the NP-SEAMLDR ACM and the TDX module during boot, a=
+nd we
+changed from initializing the module from during kernel boot to at runtime)=
+, but
+yes some other Linux/KVM TDX developers in our team have been reviewing thi=
+s
+series during the all time, at least at some extent.  They just didn't give
+Reviewed-by or Acked-by.
 
-On 17/05/2022 17:42, Rafael J. Wysocki wrote:
-> On Sat, May 7, 2022 at 2:55 PM Daniel Lezcano <daniel.lezcano@linexp.org> wrote:
->>
->> A thermal zone is software abstraction of a sensor associated with
->> properties and cooling devices if any.
->>
->> The fact that we have thermal_zone and thermal_zone_ops mixed is
->> confusing and does not clearly identify the different components
->> entering in the thermal management process. A thermal zone appears to
->> be a sensor while it is not.
-> 
-> Well, the majority of the operations in thermal_zone_ops don't apply
-> to thermal sensors.  For example, ->set_trips(), ->get_trip_type(),
-> ->get_trip_temp().
+Especially, after we had agreed that this series in general should enable T=
+DX
+with minimal code change, Kevin helped to review this series intensively an=
+d
+helped to simplify the code to the current shape (i.e. TDMR part).  He didn=
+'t
+give any of tags either (only said this series is ready for you to review),
+perhaps because he was _helping_ to get this series to the shape that is re=
+ady
+for you and other Intel reviewers to review.
 
-The set_trips is necessary to set the sensor interrupt to fire when the 
-trip temperature is crossed the way up or down.
-
->> In order to set the scene for multiple thermal sensors aggregated into
->> a single thermal zone. Rename the thermal_zone_ops to
->> thermal_sensor_ops, that will appear clearyl the thermal zone is not a
->> sensor but an abstraction of one [or multiple] sensor(s).
-> 
-> So I'm not convinced that the renaming mentioned above is particularly
-> clean either.
-> 
-> IMV the way to go would be to split the thermal sensor operations,
-> like ->get_temp(), out of thermal_zone_ops.
-
-Probably, we should first replace all the calls to ops->get_temp with a 
-function. Then create the ops for the sensor:
-
-  - get_trend
-  - get_temp
-  - set_trips
-  - bind / unbind
-
-> But then it is not clear what a thermal zone with multiple sensors in
-> it really means.  I guess it would require an aggregation function to
-> combine the thermal sensors in it that would produce an effective
-> temperature to check against the trip points.
-
-Yes, that is why the above ops->get_temp should be wrapped into a 
-function which can evolve to an aggregation function.
-
-> Honestly, I don't think that setting a separate set of trips for each
-> sensor in a thermal zone would make a lot of sense.
-
-I agree the set_trips is for the interrupt mode only.
+--=20
+Thanks,
+-Kai
 
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
