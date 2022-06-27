@@ -2,96 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D970955D2AB
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8924E55C348
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 14:48:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235778AbiF0MPl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 08:15:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52982 "EHLO
+        id S235279AbiF0M0E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 08:26:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233238AbiF0MPl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 08:15:41 -0400
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52CFDDED0;
-        Mon, 27 Jun 2022 05:15:40 -0700 (PDT)
-Received: by mail-yb1-f169.google.com with SMTP id h187so14193128ybg.0;
-        Mon, 27 Jun 2022 05:15:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VV+3h/hOlp+Oqi8pE+qwrDgICcdZetvcWIrS7f4iZ4w=;
-        b=G7q2GM+3KjuplnwzdyqeXX35Pt2AyhnLviySmtIC8IlqNWM8IGUmFn2P/6vNDDSp+P
-         ya/W+NfULx2HpeefUvoYUeRLaL+TUnrcgYPjJ44fLmG8QkEkQW77avNhrl1mt/iIwrxo
-         2bVhAEzZMfgPBhVMyaPvw1rrqrGV/DeTqWyj23q+EvZHnzNxH69EShEVWdqbrtVSN07w
-         EfWKGy1PnZA264cxmq7z+SovfThnMmDqEBwqkjs1EwkCUrG9XYkMbH7QLNOFC+0ZaNAp
-         Ko2GZ+ZxPrCqMq3imQ3S7H1QOmXRlm/T2oMHsdxfpWhMNUKF6mmEeXe5SwNurj9R0tUZ
-         yooA==
-X-Gm-Message-State: AJIora8BUxpk/3H3Nb5qKv+iQy1zZnETPq1iYl0qR1HT8HiTblwy61Wa
-        BL8S0QptSIjE/mzBJxFGbltq4gYkhlrrfog21EwTht++
-X-Google-Smtp-Source: AGRyM1sIcaPnangclcdjMv/KoVhma5+DuiOxcAfH1kPxywchCZWgQK9kFKsDeE0uJPZcFhHgSU8CfaEJReHPYqf6oMg=
-X-Received: by 2002:a05:6902:147:b0:669:b0af:c7ea with SMTP id
- p7-20020a056902014700b00669b0afc7eamr12416736ybh.622.1656332139357; Mon, 27
- Jun 2022 05:15:39 -0700 (PDT)
+        with ESMTP id S234964AbiF0M0B (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 08:26:01 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E31CC2AF6
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 05:26:00 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DED441758;
+        Mon, 27 Jun 2022 05:26:00 -0700 (PDT)
+Received: from [10.57.84.159] (unknown [10.57.84.159])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D4BE53F792;
+        Mon, 27 Jun 2022 05:25:58 -0700 (PDT)
+Message-ID: <ff579ecb-9a37-09ef-a975-cf1e25ab731e@arm.com>
+Date:   Mon, 27 Jun 2022 13:25:54 +0100
 MIME-Version: 1.0
-References: <1843211.tdWV9SEqCh@kreacher> <2653857.mvXUDI8C0e@kreacher>
- <2726954.BEx9A2HvPv@kreacher> <YrmWpn03cys9WUK3@google.com>
-In-Reply-To: <YrmWpn03cys9WUK3@google.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 27 Jun 2022 14:15:25 +0200
-Message-ID: <CAJZ5v0h=_grbXEJa2LKKvbkQ+GkLPvnnThnD-_J01ToC2-48cQ@mail.gmail.com>
-Subject: Re: [GIT PULL] Immutable branch between MFD and ACPI due for the
- v5.20 merge window
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v13 0/9] ACPI/IORT: Support for IORT RMR node
+Content-Language: en-GB
+To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+        Steven Price <steven.price@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
+Cc:     "jon@solid-run.com" <jon@solid-run.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        "hch@infradead.org" <hch@infradead.org>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>, lpieralisi@kernel.org
+References: <20220615101044.1972-1-shameerali.kolothum.thodi@huawei.com>
+ <03b03d88-87cd-0b29-863b-2cb2a9a117d1@arm.com>
+ <44338c87254d4d439d29694de8f19435@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <44338c87254d4d439d29694de8f19435@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Lee,
+On 2022-06-24 16:44, Shameerali Kolothum Thodi via iommu wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Steven Price [mailto:steven.price@arm.com]
+>> Sent: 17 June 2022 13:42
+>> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>;
+>> linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+>> iommu@lists.linux-foundation.org
+>> Cc: Linuxarm <linuxarm@huawei.com>; lorenzo.pieralisi@arm.com;
+>> joro@8bytes.org; robin.murphy@arm.com; will@kernel.org; wanghuiqiang
+>> <wanghuiqiang@huawei.com>; Guohanjun (Hanjun Guo)
+>> <guohanjun@huawei.com>; Sami.Mujawar@arm.com; jon@solid-run.com;
+>> eric.auger@redhat.com; laurentiu.tudor@nxp.com; hch@infradead.org
+>> Subject: Re: [PATCH v13 0/9] ACPI/IORT: Support for IORT RMR node
+>>
+>> On 15/06/2022 11:10, Shameer Kolothum wrote:
+>>> Hi
+>>>
+>>> v12 --> v13
+>>>    -No changes. Rebased to 5.19-rc1.
+>>>    -Picked up tags received from Laurentiu, Hanjun and Will. Thanks!.
+>>
+>> You've already got my Tested-by tags, but just to confirm I gave this a
+>> spin and it works fine.
+> 
+> Thanks Steve.
+> 
+> I think the series is now in a good shape to be merged.
+> 
+> Hi Will/Robin,
+> 
+> Appreciate, if you could please take a look at the remaining SMMU related
+> patches(7-9) and provide your approval?
 
-On Mon, Jun 27, 2022 at 1:43 PM Lee Jones <lee.jones@linaro.org> wrote:
->
-> Rafael,
->
-> As requested.
->
-> The following changes since commit f2906aa863381afb0015a9eb7fefad885d4e5a56:
->
->   Linux 5.19-rc1 (2022-06-05 17:18:54 -0700)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git tags/ib-mfd-acpi-for-rafael-v5.20
->
-> for you to fetch changes up to 0c9b9c2ac0df57b6b5949a51c45043b345698428:
->
->   mfd: core: Use acpi_dev_for_each_child() (2022-06-27 12:22:06 +0100)
->
-> ----------------------------------------------------------------
-> Immutable branch between MFD and ACPI due for the v5.20 merge window
->
-> ----------------------------------------------------------------
-> Rafael J. Wysocki (1):
->       mfd: core: Use acpi_dev_for_each_child()
->
->  drivers/mfd/mfd-core.c | 31 ++++++++++++++++++++++++-------
->  1 file changed, 24 insertions(+), 7 deletions(-)
->
-> --
+I said v12 looked fine, but for the avoidance of doubt, here it is 
+again, as formally as can be:
 
-Pulled, thank you!
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+
+Thanks,
+Robin.
