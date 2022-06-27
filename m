@@ -2,55 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27BA155CE2A
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D0455C350
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 14:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234558AbiF0M4K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 08:56:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55932 "EHLO
+        id S235284AbiF0NJ5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 09:09:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234657AbiF0Mz4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 08:55:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 11F3DCE2B
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 05:55:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1656334554;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=OVZ/LcnMWPN7fhBcYyaEBqrNmBX9SmIqzRP+nADepog=;
-        b=Nt2fKKERGtpG5ZprFxrL8GhOhKLRGtmFXEcHvYMoA+AIgi2zEBncy3UzrOKqxzyBYehpWJ
-        iVBNJ6i8B/D/ECH7+qu6H0LV70/P1/9MCVyRTe6zQINIwmxC+B0xWnEakfinKfjlroMHhC
-        KL7SHJVIcZ2Ms2zL0vNSLF0T/3NKPjE=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-346-iOyWrtXrNTa1LhoQCw5lWQ-1; Mon, 27 Jun 2022 08:55:47 -0400
-X-MC-Unique: iOyWrtXrNTa1LhoQCw5lWQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61B6E2806AAF;
-        Mon, 27 Jun 2022 12:55:47 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.193.10])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7DBDA18EAA;
-        Mon, 27 Jun 2022 12:55:45 +0000 (UTC)
-From:   Eric Auger <eric.auger@redhat.com>
-To:     eric.auger.pro@gmail.com, eric.auger@redhat.com,
-        jean-philippe@linaro.org, jroedel@suse.de,
-        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
-        rafael@kernel.org, lenb@kernel.org
-Cc:     linux-kernel@vger.kernel.org, iommu@lists.linux.dev
-Subject: [PATCH] ACPI: VIOT: Fix ACS setup
-Date:   Mon, 27 Jun 2022 14:55:34 +0200
-Message-Id: <20220627125534.1035912-1-eric.auger@redhat.com>
+        with ESMTP id S235022AbiF0NJp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 09:09:45 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF1311A1A
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 06:08:39 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id w17so12987310wrg.7
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 06:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=O77GUmfuWzZAHz5cdm2ARhc9s7ugUFOvnuezJjvZV0s=;
+        b=u5ceCAd+FRBYKKQ9RBvkDwT91qpG/nGwnpaSw1tt4Ey4cfPGcCZ8l/XcstM/n+xelr
+         hoLMKP/hGJtY4bKlWZ2xQZEkr+pTxPZiWfKI9JICt33eUiH4fUvHgJ/QN6L2pi41nN8A
+         nr/fQ+/UR66bnHCFAwXEjYOveZIsw3sLDIO6pNrLZLQkouobJe3C0v1HA40yYfi7BXAX
+         RHLcyf6eAQYXkTgfzWsXpltisgTOvnro8Kb/OSGcP+vMPRAQ9NVos6qnBZV7JkLkicM5
+         NYWat71uZX72Fow1R0IBzcoWLyVmudO0HIv61Df+GrmjwoXoApNuG+4lw4A50YYQhUQD
+         MpbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=O77GUmfuWzZAHz5cdm2ARhc9s7ugUFOvnuezJjvZV0s=;
+        b=onXKv/KgUgRhdX/GYMPwnCKuHUZJhFjLTj07chJjSC4OhEiJn8f6rNfAtuPzokDuoH
+         jJGED6dAVl+kDDhWzJUCqZVtBr4ORcMtBWkCc2bdSJWucflCvR7+CPoIEIl4PvVsI6cH
+         rQT9SJhKMPMWqmoXHehIlgXzZCU5LiwBBxesw8WZcBbo8y65Pb110CKTo4YWvNEz2Jeu
+         i44lQmb9wzPJboOaC9+1wrr1gmivUnDRIA460XczAsldVtePTUGj7gen1G5ttbydMIUT
+         uDgu3jQwObgh9i0hJ3ShE37qbktXpHbRgP7ZNYyVuaWJ0CIsplEaAayUKuTh6lAU/Vao
+         y8MQ==
+X-Gm-Message-State: AJIora+m0oUD9tp89am2rCM8zGew1kFbIIxVED2lD4VaIuZXNtWN32Ah
+        i9hTv7pDDPzPQl+uX1RYY1vYAscGdRG5+Q==
+X-Google-Smtp-Source: AGRyM1tL66EN5C/gp7DYi0hK9Gi61ldg+WSctXPPMo87UH3gOC8dXtGeH0o81Gbqis2S2fEY38zGGw==
+X-Received: by 2002:a05:6000:1862:b0:216:3c40:6708 with SMTP id d2-20020a056000186200b002163c406708mr12123866wri.101.1656335315136;
+        Mon, 27 Jun 2022 06:08:35 -0700 (PDT)
+Received: from [192.168.0.250] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id n13-20020a05600c4f8d00b003971fc23185sm18626721wmq.20.2022.06.27.06.08.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jun 2022 06:08:34 -0700 (PDT)
+Message-ID: <b8ec04dc-f803-ee2c-29b7-b0311eb8c5fb@linaro.org>
+Date:   Mon, 27 Jun 2022 15:08:33 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: fwnode_for_each_child_node() and OF backend discrepancy
+Content-Language: en-US
+To:     Michael Walle <michael@walle.cc>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <4e1d5db9dea68d82c94336a1d6aac404@walle.cc>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <4e1d5db9dea68d82c94336a1d6aac404@walle.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,97 +77,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently acpi_viot_init() gets called after the pci
-device has been scanned and pci_enable_acs() has been called.
-So pci_request_acs() fails to be taken into account leading
-to wrong single iommu group topologies when dealing with
-multi-function root ports for instance.
+On 27/06/2022 14:49, Michael Walle wrote:
+> Hi,
+> 
+> I tired to iterate over all child nodes, regardless if they are 
+> available
+> or not. Now there is that handy fwnode_for_each_child_node() (and the
+> fwnode_for_each_available_child_node()). The only thing is the OF 
+> backend
+> already skips disabled nodes [1], making fwnode_for_each_child_node() 
+> and
+> fwnode_for_each_available_child_node() behave the same with the OF 
+> backend.
+> 
+> Doesn't seem to be noticed by anyone for now. I'm not sure how to fix 
+> that
+> one. fwnode_for_each_child_node() and also fwnode_get_next_child_node() 
+> are
+> used by a handful of drivers. I've looked at some, but couldn't decide
+> whether they really want to iterate over all child nodes or just the 
+> enabled
+> ones.
 
-We cannot simply move the acpi_viot_init() earlier, similarly
-as the IORT init because the VIOT parsing relies on the pci
-scan. However we can detect VIOT is present earlier and in
-such a case, request ACS. Introduce a new acpi_viot_early_init()
-routine that allows to call pci_request_acs() before the scan.
+If I get it correctly, this was introduced  by 8a0662d9ed29 ("Driver
+core: Unified interface for firmware node properties")
+.
 
-Fixes: 3cf485540e7b ("ACPI: Add driver for the VIOT table")
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reported-by: Jin Liu <jinl@redhat.com>
----
- drivers/acpi/bus.c        |  1 +
- drivers/acpi/viot.c       | 23 +++++++++++++++++------
- include/linux/acpi_viot.h |  2 ++
- 3 files changed, 20 insertions(+), 6 deletions(-)
+The question to Rafael - what was your intention when you added
+device_get_next_child_node() looking only for available nodes?
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 86fa61a21826..906ad8153fd9 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1400,6 +1400,7 @@ static int __init acpi_init(void)
- 
- 	pci_mmcfg_late_init();
- 	acpi_iort_init();
-+	acpi_viot_early_init();
- 	acpi_hest_init();
- 	acpi_ghes_init();
- 	acpi_scan_init();
-diff --git a/drivers/acpi/viot.c b/drivers/acpi/viot.c
-index d2256326c73a..3c1be123e4d6 100644
---- a/drivers/acpi/viot.c
-+++ b/drivers/acpi/viot.c
-@@ -248,6 +248,23 @@ static int __init viot_parse_node(const struct acpi_viot_header *hdr)
- 	return ret;
- }
- 
-+/**
-+ * acpi_viot_early_init - Test the presence of VIOT and enable ACS
-+ *
-+ * If the VIOT does exist, ACS must be enabled. This cannot be
-+ * done in acpi_viot_init() which is called after the bus scan
-+ */
-+void __init acpi_viot_early_init(void)
-+{
-+	acpi_status status;
-+	struct acpi_table_header *hdr;
-+
-+	status = acpi_get_table(ACPI_SIG_VIOT, 0, &hdr);
-+	if (!ACPI_FAILURE(status))
-+		pci_request_acs();
-+	acpi_put_table(hdr);
-+}
-+
- /**
-  * acpi_viot_init - Parse the VIOT table
-  *
-@@ -319,12 +336,6 @@ static int viot_pci_dev_iommu_init(struct pci_dev *pdev, u16 dev_id, void *data)
- 			epid = ((domain_nr - ep->segment_start) << 16) +
- 				dev_id - ep->bdf_start + ep->endpoint_id;
- 
--			/*
--			 * If we found a PCI range managed by the viommu, we're
--			 * the one that has to request ACS.
--			 */
--			pci_request_acs();
--
- 			return viot_dev_iommu_init(&pdev->dev, ep->viommu,
- 						   epid);
- 		}
-diff --git a/include/linux/acpi_viot.h b/include/linux/acpi_viot.h
-index 1eb8ee5b0e5f..e58d60f8ff2e 100644
---- a/include/linux/acpi_viot.h
-+++ b/include/linux/acpi_viot.h
-@@ -6,10 +6,12 @@
- #include <linux/acpi.h>
- 
- #ifdef CONFIG_ACPI_VIOT
-+void __init acpi_viot_early_init(void);
- void __init acpi_viot_init(void);
- int viot_iommu_configure(struct device *dev);
- #else
- static inline void acpi_viot_init(void) {}
-+static inline void acpi_viot_early_init(void) {}
- static inline int viot_iommu_configure(struct device *dev)
- {
- 	return -ENODEV;
--- 
-2.35.3
+My understanding is that this implementation should be consistent with
+OF implementation, so fwnode_get_next_child_node=get any child.
 
+However maybe ACPI treats it somehow differently?
+
+Best regards,
+Krzysztof
