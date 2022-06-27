@@ -2,140 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 217E255C3C8
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 14:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA36755C895
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 14:55:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238804AbiF0PwQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 11:52:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51900 "EHLO
+        id S235142AbiF0QhT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 12:37:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238674AbiF0PwA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 11:52:00 -0400
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C752D1A04E;
-        Mon, 27 Jun 2022 08:51:55 -0700 (PDT)
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25RCSNNN017521;
-        Mon, 27 Jun 2022 10:51:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=PODMain02222019;
- bh=LBdjpKTcBhVvtkLLUBtkb/1VdJ7fQ8gDmZFGNTWayfE=;
- b=c0o3P4PcBbYyxm6ma7UiOlgpOXOy/8kMKDphJvtHrS57G6vD94kqdvWLq3cwIZ5BG1RA
- hZNQua5juIFMrh5mxBSh4e3aDs+EA9lS6ZQujOEeP1N6/fmjlftNE0u/YGSjRo14n+fN
- Igt3Hk05zZuPVcA96ogWYeRc/1Ei35xpDbO72PV7gI4KzE/t5GZJ4UvTTruEEI/RAoVq
- AaNEfm/gz6/aBTRL/4lQCAuyOoTwPvqPx6jEE2iReIYvCmBbSFi3KtDhVBu2BDG1OCQ3
- 55fIF+Ib0sB14k+a92d7SiOTfpYGPajMa56zesP2HEKuw3k7KybCL8gQCsb+ZTTgwDsJ ng== 
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3gwys2k0uh-2
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 27 Jun 2022 10:51:45 -0500
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Mon, 27 Jun
- 2022 16:51:42 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.28 via Frontend
- Transport; Mon, 27 Jun 2022 16:51:42 +0100
-Received: from sbinding-cirrus-dsktp.ad.cirrus.com (unknown [198.90.238.163])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 7A824458;
-        Mon, 27 Jun 2022 15:51:42 +0000 (UTC)
-From:   Stefan Binding <sbinding@opensource.cirrus.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>
-CC:     <linux-acpi@vger.kernel.org>, <alsa-devel@alsa-project.org>,
-        <linux-kernel@vger.kernel.org>, <patches@opensource.cirrus.com>,
-        Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: [PATCH v3 2/2] ASoC: cs35l41: Read System Name from ACPI _SUB to identify firmware
-Date:   Mon, 27 Jun 2022 16:51:38 +0100
-Message-ID: <20220627155138.807420-3-sbinding@opensource.cirrus.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220627155138.807420-1-sbinding@opensource.cirrus.com>
-References: <20220627155138.807420-1-sbinding@opensource.cirrus.com>
+        with ESMTP id S234815AbiF0QhS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 12:37:18 -0400
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E374C1114B;
+        Mon, 27 Jun 2022 09:37:17 -0700 (PDT)
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-3137316bb69so90988597b3.10;
+        Mon, 27 Jun 2022 09:37:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/8cJy4YWWhfOgGW+zMoAe8mZCw8P609Jt5k6gJA927w=;
+        b=Cwn1H2Vq9sYafq7PTMKVTTBSnoMJbNpHkhdMU0Xkx8gbPCw2V44n4mL/aT6kRgcz+g
+         1ZR+lPQyrLj1yZfCUO/OM0bcJfUhGHAS0PI6TnV9Ppuap9sORGI2Td9LjuMLxDqZo9Wv
+         /hAuvp4fLAiVB5vxZQr8rYspY9atwnf6vHxUZMOsUcwWyE1egYSgLCuECKlVCL18azqI
+         qVx71z+2m0fQKn9jtiNGRcHvh3pKOWeKSA9bJdwXIpRGXpfLbintw4jJLGxfFxxjW21r
+         1bTIB/T1CKjWRnsYVcDGbsgGxgHN1irvyB4CLffWTqlKSiZ0CUETUZYKevIGVjxK+w4q
+         bF5g==
+X-Gm-Message-State: AJIora//f6Y4n7SJ185Fpl7lLZXp3aoMgaq7wm2MxQ1C7wvUsGcwsNAa
+        3CUaIaCg4P8hdIjjokDaJKmsYZD7wTxvYTaBcaD4h9WI
+X-Google-Smtp-Source: AGRyM1usIXDdm9P7SB54q/8t5ltXdx4rqEoeT9ry649tveDiSQ//6tBKU1RbXt9fqmxaCge04BSuTw3NHSIIn0cV4Ho=
+X-Received: by 2002:a81:57d7:0:b0:317:b111:34d5 with SMTP id
+ l206-20020a8157d7000000b00317b11134d5mr15951942ywb.7.1656347837101; Mon, 27
+ Jun 2022 09:37:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: M2HzhwYqUWoCzSSn_C-Krx8bqnoCz755
-X-Proofpoint-GUID: M2HzhwYqUWoCzSSn_C-Krx8bqnoCz755
-X-Proofpoint-Spam-Reason: safe
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220428142854.1065953-1-gregkh@linuxfoundation.org>
+ <20220428155858.GA14614@bhelgaas> <Ymq/W+KcWD9DKQr/@kroah.com>
+ <CAJZ5v0hCiO6_deYnUK-5pfqE+fy1XLSUiBvkBgWw2nbqu9ggXA@mail.gmail.com>
+ <CAJZ5v0itRry98=7X=NOmituD3VH=GYdY3REtrhx3ubH0wf=ckw@mail.gmail.com> <YrnHrF8WLy4296Z1@kroah.com>
+In-Reply-To: <YrnHrF8WLy4296Z1@kroah.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 27 Jun 2022 18:37:06 +0200
+Message-ID: <CAJZ5v0hfdnRg0EqG2Zcp9=Kjq+P1NC45iudatisVL_G=QjOC+A@mail.gmail.com>
+Subject: Re: [PATCH] PCI/ACPI: do not reference a pci device after it has been released
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        whitehat002 <hackyzh002@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When loading firmware, wm_adsp uses a number of parameters to
-determine the path of the firmware and tuning files to load.
-One of these parameters is system_name.
-Add support in cs35l41 to read this system name from the ACPI
-_SUB ID in order to uniquely identify the firmware and tuning
-mapped to a particular system.
+On Mon, Jun 27, 2022 at 5:07 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Apr 28, 2022 at 10:30:38PM +0200, Rafael J. Wysocki wrote:
+> > On Thu, Apr 28, 2022 at 10:15 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > >
+> > > On Thu, Apr 28, 2022 at 6:22 PM Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Thu, Apr 28, 2022 at 10:58:58AM -0500, Bjorn Helgaas wrote:
+> > > > > On Thu, Apr 28, 2022 at 04:28:53PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > In acpi_get_pci_dev(), the debugging message for when a PCI bridge is
+> > > > > > not found uses a pointer to a pci device whose reference has just been
+> > > > > > dropped.  The chance that this really is a device that is now been
+> > > > > > removed from the system is almost impossible to happen, but to be safe,
+> > > > > > let's print out the debugging message based on the acpi root device
+> > > > > > which we do have a valid reference to at the moment.
+> > > > >
+> > > > > This code was added by 497fb54f578e ("ACPI / PCI: Fix NULL pointer
+> > > > > dereference in acpi_get_pci_dev() (rev. 2)").  Not sure if it's worth
+> > > > > a Fixes: tag.
+> > > >
+> > > > Can't hurt, I'll add it for the v2 based on this review.
+> > > >
+> > > > >
+> > > > > acpi_get_pci_dev() is used by only five callers, three of which are
+> > > > > video/backlight related.  I'm always skeptical of one-off interfaces
+> > > > > like this, but I don't know enough to propose any refactoring or other
+> > > > > alternatives.
+> > > > >
+> > > > > I'll leave this for Rafael, but if I were applying I would silently
+> > > > > touch up the subject to match convention:
+> > > > >
+> > > > >   PCI/ACPI: Do not reference PCI device after it has been released
+> > > >
+> > > > Much simpler, thanks.
+> > > >
+> > > > >
+> > > > > > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > > > > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > > > > > Cc: Len Brown <lenb@kernel.org>
+> > > > > > Cc: linux-pci@vger.kernel.org
+> > > > > > Cc: linux-acpi@vger.kernel.org
+> > > > > > Reported-by: whitehat002 <hackyzh002@gmail.com>
+> > > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > > > ---
+> > > > > >  drivers/acpi/pci_root.c | 3 ++-
+> > > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > > >
+> > > > > > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> > > > > > index 6f9e75d14808..ecda378dbc09 100644
+> > > > > > --- a/drivers/acpi/pci_root.c
+> > > > > > +++ b/drivers/acpi/pci_root.c
+> > > > > > @@ -303,7 +303,8 @@ struct pci_dev *acpi_get_pci_dev(acpi_handle handle)
+> > > > > >              * case pdev->subordinate will be NULL for the parent.
+> > > > > >              */
+> > > > > >             if (!pbus) {
+> > > > > > -                   dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
+> > > > > > +                   dev_dbg(&root->device->dev,
+> > > > > > +                           "dev %d, function %d is not a PCI-to-PCI bridge\n", dev, fn);
+> > > > >
+> > > > > This should use "%02x.%d" to be consistent with the dev_set_name() in
+> > > > > pci_setup_device().
+> > > >
+> > > > Ah, missed that, will change it and send out a new version tomorrow.
+> > >
+> > > I would make the change below (modulo the gmail-induced wthite space
+> > > breakage), though.
+> >
+> > That said ->
+> >
+> > > ---
+> > >  drivers/acpi/pci_root.c |    5 +++--
+> > >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > >
+> > > Index: linux-pm/drivers/acpi/pci_root.c
+> > > ===================================================================
+> > > --- linux-pm.orig/drivers/acpi/pci_root.c
+> > > +++ linux-pm/drivers/acpi/pci_root.c
+> > > @@ -295,8 +295,6 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
+> > >              break;
+> > >
+> > >          pbus = pdev->subordinate;
+> > > -        pci_dev_put(pdev);
+> > > -
+> > >          /*
+> > >           * This function may be called for a non-PCI device that has a
+> > >           * PCI parent (eg. a disk under a PCI SATA controller).  In that
+> > > @@ -304,9 +302,12 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
+> > >           */
+> > >          if (!pbus) {
+> > >              dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
+> > > +            pci_dev_put(pdev);
+> > >              pdev = NULL;
+> > >              break;
+> > >          }
+> > > +
+> > > +        pci_dev_put(pdev);
+> >
+> > -> we are going to use pbus after this and it is pdev->subordinate
+> > which cannot survive without pdev AFAICS.
+> >
+> > Are we not concerned about this case?
+>
+> Good point.
+>
+> whitehat002, any ideas?  You found this issue but it really looks like
+> it is not anything that can ever be hit, so how far do you want to go to
+> unwind it?
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
----
- sound/soc/codecs/cs35l41.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+I have an idea, sorry for the delay here.
 
-diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index 8766e19d85f1..9ab016094b32 100644
---- a/sound/soc/codecs/cs35l41.c
-+++ b/sound/soc/codecs/cs35l41.c
-@@ -6,6 +6,7 @@
- //
- // Author: David Rhodes <david.rhodes@cirrus.com>
- 
-+#include <linux/acpi.h>
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/init.h>
-@@ -1142,6 +1143,24 @@ static int cs35l41_dsp_init(struct cs35l41_private *cs35l41)
- 	return ret;
- }
- 
-+static int cs35l41_probe_acpi(struct cs35l41_private *cs35l41)
-+{
-+	acpi_handle handle = ACPI_HANDLE(cs35l41->dev);
-+	const char *sub;
-+
-+	/* If there is no ACPI_HANDLE, there is no ACPI for this system, return 0 */
-+	if (!handle)
-+		return 0;
-+
-+	sub = acpi_get_subsystem_id(handle);
-+	if (IS_ERR(sub))
-+		return PTR_ERR(sub);
-+
-+	cs35l41->dsp.system_name = sub;
-+	dev_dbg(cs35l41->dev, "Susystem ID: %s\n", cs35l41->dsp.system_name);
-+	return 0;
-+}
-+
- int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *hw_cfg)
- {
- 	u32 regid, reg_revid, i, mtl_revid, int_status, chipid_match;
-@@ -1270,6 +1289,10 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
- 		goto err;
- 	}
- 
-+	ret = cs35l41_probe_acpi(cs35l41);
-+	if (ret < 0)
-+		goto err;
-+
- 	ret = cs35l41_dsp_init(cs35l41);
- 	if (ret < 0)
- 		goto err;
-@@ -1316,6 +1339,7 @@ void cs35l41_remove(struct cs35l41_private *cs35l41)
- 	pm_runtime_disable(cs35l41->dev);
- 
- 	regmap_write(cs35l41->regmap, CS35L41_IRQ1_MASK1, 0xFFFFFFFF);
-+	kfree(cs35l41->dsp.system_name);
- 	wm_adsp2_remove(&cs35l41->dsp);
- 	cs35l41_safe_reset(cs35l41->regmap, cs35l41->hw_cfg.bst_type);
- 
--- 
-2.25.1
+I should be ready to post something tomorrow.
 
+Cheers!
