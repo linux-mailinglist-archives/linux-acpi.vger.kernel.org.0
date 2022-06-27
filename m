@@ -2,247 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16BEF55C387
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 14:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 905CE55D9C1
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242641AbiF0WbJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 18:31:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36272 "EHLO
+        id S240811AbiF0XcL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 19:32:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242604AbiF0WbE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 18:31:04 -0400
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659CB1EEF5
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 15:31:02 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-318889e6a2cso99349117b3.1
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Jun 2022 15:31:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Ic6C0bmcH9AgkMQw+lCa1TYZynXLTTH9ZtnkkH22rmQ=;
-        b=LZDHLASs1pFn3pf9nxMtict4BJANcSxCih32m6h5gd9YyS20OCjLsZqZ+DJWi3MNxV
-         VGWmo8NqVXvWA0Cjwmprwy+ywLQjDvUfC2uSaJchZRMC8avuyq6cwyNBdMTz+cjclD4t
-         HIcGcUg1dbPRl6Dgs4f7OzldgFJcbAD8FkFDwyqnlaBusbwAwy299uhlvgGuct744OBl
-         /Si/Rq1GDUkeIZUqf80/9OxdkA9gjljHaigE+au4rED07FGnmIW4HAGZuAo0zXQ89Lqr
-         b4LzYr2pm9PqZ4J4YFUhAQYpWJtjGhCwUwr9Iz86RrhGswHth/IquH158keCc3EBJP70
-         w72A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ic6C0bmcH9AgkMQw+lCa1TYZynXLTTH9ZtnkkH22rmQ=;
-        b=OL7eLAQFEjJNPPZVKJZe65CZvikxkFlrHlcIhzMXUuACgpNyAKW5UjAUuxEahXxmO+
-         QyJS49FK5/DssAP8lL2xTc6UzJJuvhQ8cF/BJ7tnw3tG+QqZDMrGNTqJh+PkrnHOQx0n
-         mlPWgMyl4Ayq07gpXqqGo/0/EcAESQiJGv6wUPH3N/qhal4hwuQmrwLjsxGjUzMQm7u8
-         0R0aFlzkYqp3r9XpWgw9u2Xo7nv6nHb9KrY/UJim7TKAVEQstGhEWIevca76aQkgZBTx
-         oUkws85PGsfa5TgOa0mZegsYSOCVMR/6AlMfJWHOIZFpoxWD8hbc9wAR3W99fzUkEu10
-         Ps/g==
-X-Gm-Message-State: AJIora9qWjoU3DGx2fR2+O23R1MPT+MK4ONVuR8Ol4ZpeOoYm6rIl2ZC
-        jUrfw3Kln/4OD1BL6NT/15zIJ625ON3OmlI3vHIwvA==
-X-Google-Smtp-Source: AGRyM1tUFYXa1u3wVtkxZxboJ89DDS4AuPHiVdMC0xYBTCaN8yVy6QiA1xNf+bXnuCHOV2mlpfP9gkMh9RNKKcrJLQM=
-X-Received: by 2002:a0d:eace:0:b0:317:87ac:b3a8 with SMTP id
- t197-20020a0deace000000b0031787acb3a8mr18136555ywe.126.1656369061313; Mon, 27
- Jun 2022 15:31:01 -0700 (PDT)
+        with ESMTP id S236744AbiF0XcL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 19:32:11 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5003610B9;
+        Mon, 27 Jun 2022 16:32:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656372729; x=1687908729;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=O5LxPAYhM+CNwQqbN7pv8Mq8jswCUClbEwHdElRgSyk=;
+  b=TEMGItocrxw5O1QM9oYXq2R/5yGVBOlMN4y3e5hnettICKueBvEa4EAV
+   9cRM1v8AOdTdAQFMKvXGlmlEZI3z4L7cS20NHn/onjVTcE/0RCXR3SY29
+   +xwG1P9MzYXEIWn/Oxq1tbfGc0p+FfV+DTdeOzk9BLMHQhlAGQa96GkDi
+   sqjNJm7R9b+9/lLQFpHXWTHQzL8ov3MsX77uz3otsWeNTENo4NRb63R21
+   XtLiHoV5gfXcrq189HGwev6DyA4U8HCvUNEeNPDAXpXdFOjt5YnhRtWos
+   UNP2NCWlRBawDEvMqj0UJeqxcH0QsPAwCcl0TSNr+/VMQV38RLpZiEs2l
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="261391227"
+X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
+   d="scan'208";a="261391227"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 16:32:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
+   d="scan'208";a="646646287"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 27 Jun 2022 16:32:06 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o5yD7-0009DG-Up;
+        Mon, 27 Jun 2022 23:32:05 +0000
+Date:   Tue, 28 Jun 2022 07:31:18 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Stefan Binding <sbinding@opensource.cirrus.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
+        alsa-devel@alsa-project.org,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        linux-kernel@vger.kernel.org, patches@opensource.cirrus.com
+Subject: Re: [PATCH v3 1/2] ACPI: utils: Add api to read _SUB from ACPI
+Message-ID: <202206280722.5wvfmDeu-lkp@intel.com>
+References: <20220627155138.807420-2-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
-References: <20201121020232.908850-1-saravanak@google.com> <20201121020232.908850-14-saravanak@google.com>
- <YrmXpcU1NTYW6T/n@linaro.org>
-In-Reply-To: <YrmXpcU1NTYW6T/n@linaro.org>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 27 Jun 2022 15:30:25 -0700
-Message-ID: <CAGETcx8dwNcZFFzhhv=kMhpuQnyaEekrycpAmGusD-s+qfvA9g@mail.gmail.com>
-Subject: Re: [PATCH v2 13/17] driver core: Use device's fwnode to check if it
- is waiting for suppliers
-To:     Abel Vesa <abel.vesa@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        kernel-team@android.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220627155138.807420-2-sbinding@opensource.cirrus.com>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 27, 2022 at 4:42 AM Abel Vesa <abel.vesa@linaro.org> wrote:
->
-> On 20-11-20 18:02:28, Saravana Kannan wrote:
-> > To check if a device is still waiting for its supplier devices to be
-> > added, we used to check if the devices is in a global
-> > waiting_for_suppliers list. Since the global list will be deleted in
-> > subsequent patches, this patch stops using this check.
-> >
-> > Instead, this patch uses a more device specific check. It checks if the
-> > device's fwnode has any fwnode links that haven't been converted to
-> > device links yet.
-> >
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > ---
-> >  drivers/base/core.c | 18 ++++++++----------
-> >  1 file changed, 8 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index 395dece1c83a..1873cecb0cc4 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
-> >  static LIST_HEAD(deferred_sync);
-> >  static unsigned int defer_sync_state_count = 1;
-> >  static DEFINE_MUTEX(fwnode_link_lock);
-> > +static bool fw_devlink_is_permissive(void);
-> >
-> >  /**
-> >   * fwnode_link_add - Create a link between two fwnode_handles.
-> > @@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
-> >        * Device waiting for supplier to become available is not allowed to
-> >        * probe.
-> >        */
-> > -     mutex_lock(&wfs_lock);
-> > -     if (!list_empty(&dev->links.needs_suppliers) &&
-> > -         dev->links.need_for_probe) {
-> > -             mutex_unlock(&wfs_lock);
-> > +     mutex_lock(&fwnode_link_lock);
-> > +     if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
-> > +         !fw_devlink_is_permissive()) {
-> > +             mutex_unlock(&fwnode_link_lock);
->
-> Hi Saravana,
->
-> First of, sorry for going back to this.
+Hi Stefan,
 
-No worries at all. If there's an issue with fw_devlink, I want to have it fixed.
+Thank you for the patch! Perhaps something to improve:
 
-> There is a scenario where this check will not work and probably should
-> work. It goes like this:
->
-> A clock controller is not allowed to probe because it uses a clock from a child device of a
-> consumer, like so:
->
->         dispcc: clock-controller@af00000 {
->                 clocks = <&dsi0_phy 0>;
->         };
->
->         mdss: mdss@ae00000 {
->                 clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
->
->                 dsi0_phy: dsi-phy@ae94400 {
->                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
->                 };
->         };
->
-> This is a real scenario actually, but I stripped it down to the essentials.
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on broonie-sound/for-next linus/master v5.19-rc4 next-20220627]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-I'm well aware of this scenario and explicitly wrote code to address this :)
+url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220627-235448
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20220628/202206280722.5wvfmDeu-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/7dd124b65442fd6622e7df2949795f735d8356be
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220627-235448
+        git checkout 7dd124b65442fd6622e7df2949795f735d8356be
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/acpi/
 
-See this comment in fw_devlink_create_devlink()
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-       /*
-         * If we can't find the supplier device from its fwnode, it might be
-         * due to a cyclic dependency between fwnodes. Some of these cycles can
-         * be broken by applying logic. Check for these types of cycles and
-         * break them so that devices in the cycle probe properly.
-         *
-         * If the supplier's parent is dependent on the consumer, then the
-         * consumer and supplier have a cyclic dependency. Since fw_devlink
-         * can't tell which of the inferred dependencies are incorrect, don't
-         * enforce probe ordering between any of the devices in this cyclic
-         * dependency. Do this by relaxing all the fw_devlink device links in
-         * this cycle and by treating the fwnode link between the consumer and
-         * the supplier as an invalid dependency.
-         */
+All warnings (new ones prefixed by >>):
 
-Applying this comment to your example, dispcc is the "consumer",
-dsi0_phy is the "supplier" and mdss is the "supplier's parent".
+   In file included from drivers/acpi/utils.c:17:
+   drivers/acpi/utils.c: In function 'acpi_get_subsystem_id':
+>> drivers/acpi/utils.c:317:49: warning: format '%d' expects argument of type 'int', but argument 4 has type 'size_t' {aka 'long unsigned int'} [-Wformat=]
+     317 |                         acpi_handle_err(handle, "ACPI _SUB Length %d is Invalid\n",
+         |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     318 |                                         strlen(obj->string.pointer));
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                         |
+         |                                         size_t {aka long unsigned int}
+   include/linux/acpi.h:1172:46: note: in definition of macro 'acpi_handle_err'
+    1172 |         acpi_handle_printk(KERN_ERR, handle, fmt, ##__VA_ARGS__)
+         |                                              ^~~
+   drivers/acpi/utils.c:317:68: note: format string is defined here
+     317 |                         acpi_handle_err(handle, "ACPI _SUB Length %d is Invalid\n",
+         |                                                                   ~^
+         |                                                                    |
+         |                                                                    int
+         |                                                                   %ld
 
-And because we can't guarantee the order of addition of these top
-level devices is why I also have this piece of recursive call inside
-__fw_devlink_link_to_suppliers():
 
-                /*
-                 * If a device link was successfully created to a supplier, we
-                 * now need to try and link the supplier to all its suppliers.
-                 *
-                 * This is needed to detect and delete false dependencies in
-                 * fwnode links that haven't been converted to a device link
-                 * yet. See comments in fw_devlink_create_devlink() for more
-                 * details on the false dependency.
-                 *
-                 * Without deleting these false dependencies, some devices will
-                 * never probe because they'll keep waiting for their false
-                 * dependency fwnode links to be converted to device links.
-                 */
-                sup_dev = get_dev_from_fwnode(sup);
-                __fw_devlink_link_to_suppliers(sup_dev, sup_dev->fwnode);
-                put_device(sup_dev);
+vim +317 drivers/acpi/utils.c
 
-So when mdss gets added, we'll link it to dispcc and then check if
-dispcc has any suppliers it needs to link to. And that's when the
-logic will catch the cycle and fix it.
+   295	
+   296	const char *acpi_get_subsystem_id(acpi_handle handle)
+   297	{
+   298		struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+   299		union acpi_object *obj;
+   300		acpi_status status;
+   301		const char *sub;
+   302	
+   303		status = acpi_evaluate_object(handle, METHOD_NAME__SUB, NULL, &buffer);
+   304		if (ACPI_FAILURE(status)) {
+   305			acpi_handle_debug(handle, "Reading ACPI _SUB failed: %#x\n", status);
+   306			return ERR_PTR(-ENODATA);
+   307		}
+   308	
+   309		obj = buffer.pointer;
+   310		if (obj->type == ACPI_TYPE_STRING) {
+   311			if (strlen(obj->string.pointer) < ACPI_MAX_SUB_BUF_SIZE &&
+   312			    strlen(obj->string.pointer) > 0) {
+   313				sub = kstrdup(obj->string.pointer, GFP_KERNEL);
+   314				if (!sub)
+   315					sub = ERR_PTR(-ENOMEM);
+   316			} else {
+ > 317				acpi_handle_err(handle, "ACPI _SUB Length %d is Invalid\n",
+   318						strlen(obj->string.pointer));
+   319				sub = ERR_PTR(-EINVAL);
+   320			}
+   321		} else {
+   322			acpi_handle_warn(handle, "Warning ACPI _SUB did not return a string\n");
+   323			sub = ERR_PTR(-EINVAL);
+   324		}
+   325	
+   326		acpi_os_free(buffer.pointer);
+   327	
+   328		return sub;
+   329	}
+   330	EXPORT_SYMBOL_GPL(acpi_get_subsystem_id);
+   331	
 
-Can you tell me why this wouldn't unblock the probing of dispcc? Are
-you actually hitting this on a device? If so, can you please check why
-this logic isn't sufficient to catch and undo the cycle?
-
-Thanks,
-Saravana
-
-> So, the dsi0_phy will be "device_add'ed" (through of_platform_populate) by the mdss probe.
-> The mdss will probe defer waiting for the DISP_CC_MDSS_MDP_CLK, while
-> the dispcc will probe defer waiting for the dsi0_phy (supplier).
->
-> Basically, this 'supplier availability check' does not work when a supplier might
-> be populated by a consumer of the device that is currently trying to probe.
->
->
-> Abel
->
->
-> >               return -EPROBE_DEFER;
-> >       }
-> > -     mutex_unlock(&wfs_lock);
-> > +     mutex_unlock(&fwnode_link_lock);
-> >
-> >       device_links_write_lock();
-> >
-> > @@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
-> >       bool val;
-> >
-> >       device_lock(dev);
-> > -     mutex_lock(&wfs_lock);
-> > -     val = !list_empty(&dev->links.needs_suppliers)
-> > -           && dev->links.need_for_probe;
-> > -     mutex_unlock(&wfs_lock);
-> > +     val = !list_empty(&dev->fwnode->suppliers);
-> >       device_unlock(dev);
-> >       return sysfs_emit(buf, "%u\n", val);
-> >  }
-> > @@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
-> >                       goto err_remove_dev_groups;
-> >       }
-> >
-> > -     if (fw_devlink_flags && !fw_devlink_is_permissive()) {
-> > +     if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
-> >               error = device_create_file(dev, &dev_attr_waiting_for_supplier);
-> >               if (error)
-> >                       goto err_remove_dev_online;
-> > --
-> > 2.29.2.454.gaff20da3a2-goog
-> >
-> >
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
