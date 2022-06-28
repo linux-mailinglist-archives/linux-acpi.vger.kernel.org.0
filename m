@@ -2,120 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CFE255E6EE
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 18:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C874955E7F2
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 18:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346700AbiF1Nlq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 09:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45174 "EHLO
+        id S1346907AbiF1NsF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 09:48:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230229AbiF1Nlp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 09:41:45 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5159029C8A
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 06:41:43 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id r3so22290116ybr.6
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 06:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=l0lBZBoRWVZwKeLsg5bhh62sfkY43Fuz7vbWyvz07jo=;
-        b=hGw9T6CarZQ/NMBim5LFKd5YTY/o2ySRURtSkju9ltnp+I2dfsm1E743dkEP7vIdI2
-         EF0DRNKbp1NoePxE8d03JMmSXIQyxTYmcA6StyWwY4r+YQPVJD8cCVXjq4KFryi4BOBX
-         R1mZO/ER1L2SAM2BBGv6AMAXI5Jfk4vSpWXci5dnkjMyWFiBRxV+lukWKp040ydV0UYw
-         pi8tg+vw420tIDHBWpl4HD2i87IuVJPBeZxJfEHlBvY0Am4KybIx85T311V7Sc3PDZDd
-         4o1lrjtE8IrlXi97SmhrBQzUpnLpRq4Op7bcrYUqg0s8X0We4xxPIjbi6qZfZCCR6FAX
-         0Wjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=l0lBZBoRWVZwKeLsg5bhh62sfkY43Fuz7vbWyvz07jo=;
-        b=jTPv1aoboR+sHmG+OV8HbHzshg4fMe09Sz32Rtw3J19B7xpVjt503sHBVB1eHmGWyy
-         FZc/Ney5Rj62D1AoJdh4PT7UAsn9aKE5LHL1hLaAPwoou4rYJCRRHy/Z6nRIumWoGlNv
-         Pdf9aXB5QRZ6o63m5ghuGmkzhwmAYwGRdGwn1+Jpf1y5WFi/t3F3TgjoTFhRX/2EDx7a
-         YcvzrcBfY50hY637KE3ZsF31bwu9sPac4fG/Q1S1/G8Ne9Cy4Ukl/HRRm9+VZizwB3hn
-         dT1iy9DaIDR24Z83tMzjtxaWvV13EaV352uWNqxsAfKbT7rA0vKbfMau8zsStPutsIUi
-         6GiA==
-X-Gm-Message-State: AJIora8L1cQPlpctJG1OBL7fBUT9z/pgRsavnguDHTE08W1rZadQqTiz
-        zcU7rr521IX7k13aG+5L3QVCEJv3+uaDunhVYZWRkg==
-X-Google-Smtp-Source: AGRyM1vMJc6mshbdVpv82z3JrgHLSlBVD5A4IKCtkqq06YBNSTzatN88O/XMo49PG0TuIqgDUg33Srr26PKhV2f0pQk=
-X-Received: by 2002:a25:1f57:0:b0:669:b6fa:167e with SMTP id
- f84-20020a251f57000000b00669b6fa167emr20917137ybf.295.1656423702377; Tue, 28
- Jun 2022 06:41:42 -0700 (PDT)
+        with ESMTP id S1346884AbiF1NsD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 09:48:03 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F6B2A966;
+        Tue, 28 Jun 2022 06:48:02 -0700 (PDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id E1B4522246;
+        Tue, 28 Jun 2022 15:47:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1656424080;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mvU588fHhLDk/FSFjMsTn0jfhxkTBTaysnF8j0/C2xI=;
+        b=A84TCTJU719Ug8WU3XD4Yne89LJC6YZr+gkybgqwpjDiSB4njGiAzm5Qm8v1UEZjCwc8Ok
+        NP2ljMffsEG5fWv6cDo7kDQxFWqcpsZKO28C4vhMLVip9NHmN19hc/WSp96p6ORgo5i+ho
+        PCcWo1sCd52JVsCXwFtS9tUqH97nvf0=
 MIME-Version: 1.0
-References: <20220623080344.783549-1-saravanak@google.com> <20220623080344.783549-3-saravanak@google.com>
- <20220623100421.GY1615@pengutronix.de>
-In-Reply-To: <20220623100421.GY1615@pengutronix.de>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 28 Jun 2022 15:41:30 +0200
-Message-ID: <CACRpkdY+MfDHGw4QrFy=A64y7dSrno26vuKbt_AnFbVm9y_hoQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] of: base: Avoid console probe delay when fw_devlink.strict=1
-To:     sascha hauer <sha@pengutronix.de>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 28 Jun 2022 15:47:59 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>, peng fan <peng.fan@nxp.com>,
-        kevin hilman <khilman@kernel.org>,
-        ulf hansson <ulf.hansson@linaro.org>,
-        len brown <len.brown@intel.com>, pavel machek <pavel@ucw.cz>,
-        joerg roedel <joro@8bytes.org>, will deacon <will@kernel.org>,
-        andrew lunn <andrew@lunn.ch>,
-        heiner kallweit <hkallweit1@gmail.com>,
-        russell king <linux@armlinux.org.uk>,
-        "david s. miller" <davem@davemloft.net>,
-        eric dumazet <edumazet@google.com>,
-        jakub kicinski <kuba@kernel.org>,
-        paolo abeni <pabeni@redhat.com>,
-        hideaki yoshifuji <yoshfuji@linux-ipv6.org>,
-        david ahern <dsahern@kernel.org>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, kernel@pengutronix.de,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>
+Subject: Re: fwnode_for_each_child_node() and OF backend discrepancy
+In-Reply-To: <CAHp75VcANMjxgS6S24Zh+mz66usb6LBnQk-ENvU9JHSXXsG1DA@mail.gmail.com>
+References: <4e1d5db9dea68d82c94336a1d6aac404@walle.cc>
+ <Yrrhs3D++V79/4Jk@smile.fi.intel.com>
+ <f17d3ecfecf4491dd15b1fa092205f3f@walle.cc>
+ <CAHp75Vd6e3WwHPfyL=GP=vsoWhwGXadwQziiRRwfHPfjkX2eFg@mail.gmail.com>
+ <2f2d7685e0e43194270a310034004970@walle.cc>
+ <CAHp75VcANMjxgS6S24Zh+mz66usb6LBnQk-ENvU9JHSXXsG1DA@mail.gmail.com>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <9e58f421c27121977d11381530757a6e@walle.cc>
+X-Sender: michael@walle.cc
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 23, 2022 at 12:05 PM sascha hauer <sha@pengutronix.de> wrote:
+[adding Horatiu Vultur, because we now digress to the bug
+in the switch, rather than that odd OF behavior]
 
-> Also consider SoCs in early upstreaming phases
-> when the device tree is merged with "dmas" or "hwlock" properties,
-> but the corresponding drivers are not yet upstreamed. It's not nice
-> to defer probing of all these devices for a long time.
+Am 2022-06-28 15:29, schrieb Andy Shevchenko:
+> On Tue, Jun 28, 2022 at 3:23 PM Michael Walle <michael@walle.cc> wrote:
+>> 
+>> >> I was trying to fix the lan966x driver [1] which doesn't work if there
+>> >> are disabled nodes in between.
+>> >
+>> > Can you elaborate what's wrong now in the behaviour of the driver? In
+>> > the code it uses twice the _available variant.
+>> 
+>> Imagine the following device tree snippet:
+>>   port0 {
+>>     reg = <0>;
+>>     status = "okay";
+>>   }
+>>   port1 {
+>>     reg = <1>;
+>>     status = "disabled";
+>>   }
+>>   port@2 {
+>>     reg = <2>;
+>>     status = "okay";
+>>   }
+>> 
+>> The driver will set num_phys_ports to 2. When port@2 is probed, it
+>> will have the (correct!) physical port number 2. That will then
+>> trigger various EINVAL checks with "port_num >= num_phys_ports" or
+>> WARN()s.
+> 
+> It means the above mentioned condition is wrong: it should be
+> 
+> "port_idx >= num_phys_ports" (if the port_idx doesn't exists, that's
+> the bug in the first place)
 
-Actually this drives a truck through the entire approach in a way.
+I can't follow you here. Please note, that you need the actual
+physical port number. It's not a made up number, but corresponds
+to a physical port on that ethernet switch. So you can't just skip
+the disabled ones. port@2 must have port number 2.
 
-It is perfectly legal to have a device tree with dmas specified
-but leave them unused in the operating system. DT just describes
-what hardware is there, it does not mandate that the OS
-implement drivers for all of it.
+>> So the easiest fix would be to actual count all the child nodes
+>> (regardless if they are available or not), assuming there are as
+>> many nodes as physical ports.
+>> 
+>> But num_phys_ports being a property of the hardware
+> 
+> So, name is wrong, that's how I read it, it should be
+> num_of_acrive_phys_ports (or alike).
 
-This approach really needs that the resolution mechanism
-is aware of whether:
+See above, it is not just an iterator but corresponds to
+a hardware property.
 
-1. a driver exist for the resource at all so it will eventually resolve
+>> I don't
+>> think it's good to deduce it by counting the child nodes anyway,
+> 
+> Right.
+> 
+>> but it should rather be a (hardcoded) property of the driver.
+> 
+> Also good to update.
 
-2. if that driver is compiled in or module at all (IS_ENABLED())
+Horatiu, can we determine the actual number of ports (or maybe
+determine if its a LAN9668 or a LAN9662) from the hardware itself
+in an easy way? That way we wouldn't need a new compatible string,
+but could use the generic "lan966x" one.
 
-3. If the resource should be grabbed early or optionally later
-    such as dmas for console UART
+-michael
 
-Only then can the mechanism work in the generic case.
-
-Yours,
-Linus Walleij
+[1] 
+https://elixir.bootlin.com/linux/v5.19-rc4/source/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
