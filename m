@@ -2,161 +2,312 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F60F55EB7F
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 19:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26EAA55EC3D
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 20:09:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232717AbiF1Rzc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 13:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42872 "EHLO
+        id S234720AbiF1SJ5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 14:09:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232724AbiF1Rz3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 13:55:29 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E0EF0D;
-        Tue, 28 Jun 2022 10:55:23 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id o19so16974547ybg.2;
-        Tue, 28 Jun 2022 10:55:23 -0700 (PDT)
+        with ESMTP id S234700AbiF1SJ4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 14:09:56 -0400
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1835186C2
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 11:09:54 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-2ef5380669cso125458977b3.9
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 11:09:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LYcXptv76jiUKLMxUytxxor8YPRPJV8ed1Ksm57QMfY=;
+        b=gPaHaeaaI978b5ydBeuwCXwB7p5+rQlSV6qxfhLqvTHAolXdRgH8jO8iMj9MKGX2Mz
+         fZH0DdWiowmwJ8lSWm0ZCZ+yjf0cCUVW53JB1iFi2sItpocpjFjm4tbySPjzqRplqQr7
+         o2wkPTO8Ypud1ki4voNQUIE+PtXs2d0UJXppZ7zoWulorSoLG2mYpuxqKBiuIBzgMk+T
+         klTK8NLAY3n5ZQnPicfJjI3Z5G7B6D2nzZmnN/5r+RBUnHk+tO8L+AfVimj9wc198spi
+         6l2MXrGL1n/2vnY7thTm9OlNWdzJKD7gzIZTg23EjGMeP/fmtGnR7dG8XyT8cQiF0UJr
+         uO2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=d/K3uK9czM2AfMF4jLStX27UoeGzElv+mW5P0Wyew2s=;
-        b=a6tmfx4RS91KbPPsEKSq9MW0EWhbaKIe3ABVmuLVOHMnw5Jd0uRfUzWpDX+Tc+RCvO
-         mM/eniQBPGeoN7O5CkYMVxmpL3UCCSCjRWaE+aGC6I47spqtERjX5rLypUbXg1QU2NDz
-         LcOkbYt8Q3cB9jd1JiBjCs5NEiBD5dHIuNsP6iSqxT8s653qO5/CReB9nRgMIzSCbtRx
-         u6ty1V8R/lNApWK6rvqSKlezmPoByzVu3T1KnAC9awUVtErD/Sss7fd+mj/j7ZD+e6eK
-         Qlm59GwN6W1NM1NuaQUH/4Kh68zWK7NRfn9GN4GQIjDnvc2NcitanpUNRLeyo+bz3D/F
-         DJAw==
-X-Gm-Message-State: AJIora/NJ7UhrPgB9sB1FlLEbDIX6mfKhrkClu2JH8Kqvec1MJXeM+pe
-        ZE44rpwPb7Xn+ue6VDevLakve6ZoIT2/ZfWjoYQW8EU3
-X-Google-Smtp-Source: AGRyM1v/ywFkJLLkjz7H/T/b6Mi1Mx+Iv51xRUVw/JSK0iYaV9iae+UatVM9VpQ65PphmXiAD0kj3ZYK9LpaZh7UZJk=
-X-Received: by 2002:a25:ae26:0:b0:66d:1fdc:263c with SMTP id
- a38-20020a25ae26000000b0066d1fdc263cmr6540314ybj.137.1656438922500; Tue, 28
- Jun 2022 10:55:22 -0700 (PDT)
+        bh=LYcXptv76jiUKLMxUytxxor8YPRPJV8ed1Ksm57QMfY=;
+        b=WpLZ4rRyWJKtiUO60QkzUq5+aFmPxexhuV7h4tQL4oWiPZR1ZOJMAzkMB5OKPbQYzl
+         jsefbQ5z+Dh6TiJ3hLdbr19LY3+RG8BOSl2YxzGfyQd/GQt/pTuwzlkXJzjDqmbHLg/v
+         A8MHKzNh7T/I2k+X4YidMJvyt5Ek8EWnjVWXN6n6KvxMNJxRRlUa1AXC+MoFrk7AYZgx
+         lzP9g4lAqOxkSJUR7hvJ8/eq11IsI3xx4C0BzAkrM9+RRHdYoWaUImDBj1pCrbPz5a0D
+         NSuLT9sBXyP/pe3Y6U+0f2BiqxAxyXdaorWb/tnQBFrce0lFAjAYR9bbmdZLu9Fk5yaK
+         JH1Q==
+X-Gm-Message-State: AJIora8uhyb3DJB+VbEswZYfRgIYMJa3Xnv9b6buPl80Jk+LTpDdZb7W
+        in28+QHA4abdaOj1XKed8lbF4nmGepzfZlQXHMalSg==
+X-Google-Smtp-Source: AGRyM1vXSF/CgiisBepoUdbqGMK1G70avpb5M7kcqEegWFWm9L/EdrvdapqcodHm0q1VzDBGk3UOcFlAe/HDnnYt2hE=
+X-Received: by 2002:a0d:ca16:0:b0:31b:7adf:d91 with SMTP id
+ m22-20020a0dca16000000b0031b7adf0d91mr21041838ywd.455.1656439793741; Tue, 28
+ Jun 2022 11:09:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1655894131.git.kai.huang@intel.com> <87dc19c47bad73509359c8e1e3a81d51d1681e4c.1655894131.git.kai.huang@intel.com>
- <CAJZ5v0jEJNdmkidvcOiRn+OVt01D5095t+nyXaJHKsqEAOvcBQ@mail.gmail.com> <198860d65d277dbd30552526a707576db4281b29.camel@intel.com>
-In-Reply-To: <198860d65d277dbd30552526a707576db4281b29.camel@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 28 Jun 2022 19:55:11 +0200
-Message-ID: <CAJZ5v0iyNZN2U+R3_X2vpsChjcufb=mcZrt3xR=oU0zsWcSufg@mail.gmail.com>
-Subject: Re: [PATCH v5 03/22] cc_platform: Add new attribute to prevent ACPI
- memory hotplug
-To:     Kai Huang <kai.huang@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kvm-devel <kvm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Len Brown <len.brown@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        isaku.yamahata@intel.com, Tom Lendacky <thomas.lendacky@amd.com>
+References: <20201121020232.908850-1-saravanak@google.com> <20201121020232.908850-14-saravanak@google.com>
+ <YrmXpcU1NTYW6T/n@linaro.org> <CAGETcx8dwNcZFFzhhv=kMhpuQnyaEekrycpAmGusD-s+qfvA9g@mail.gmail.com>
+ <YrskVLshWeps+NXw@linaro.org>
+In-Reply-To: <YrskVLshWeps+NXw@linaro.org>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Tue, 28 Jun 2022 11:09:17 -0700
+Message-ID: <CAGETcx8F0wP+RA0KpjOJeZfc=DVG-MbM_=SkRHD4UhD2ReL7Kw@mail.gmail.com>
+Subject: Re: [PATCH v2 13/17] driver core: Use device's fwnode to check if it
+ is waiting for suppliers
+To:     Abel Vesa <abel.vesa@linaro.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        kernel-team@android.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-arm-msm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 23, 2022 at 2:09 AM Kai Huang <kai.huang@intel.com> wrote:
+On Tue, Jun 28, 2022 at 8:55 AM Abel Vesa <abel.vesa@linaro.org> wrote:
 >
-> On Wed, 2022-06-22 at 13:45 +0200, Rafael J. Wysocki wrote:
-> > On Wed, Jun 22, 2022 at 1:16 PM Kai Huang <kai.huang@intel.com> wrote:
+> On 22-06-27 15:30:25, Saravana Kannan wrote:
+> > On Mon, Jun 27, 2022 at 4:42 AM Abel Vesa <abel.vesa@linaro.org> wrote:
 > > >
-> > > Platforms with confidential computing technology may not support ACPI
-> > > memory hotplug when such technology is enabled by the BIOS.  Examples
-> > > include Intel platforms which support Intel Trust Domain Extensions
-> > > (TDX).
+> > > On 20-11-20 18:02:28, Saravana Kannan wrote:
+> > > > To check if a device is still waiting for its supplier devices to be
+> > > > added, we used to check if the devices is in a global
+> > > > waiting_for_suppliers list. Since the global list will be deleted in
+> > > > subsequent patches, this patch stops using this check.
+> > > >
+> > > > Instead, this patch uses a more device specific check. It checks if the
+> > > > device's fwnode has any fwnode links that haven't been converted to
+> > > > device links yet.
+> > > >
+> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > > ---
+> > > >  drivers/base/core.c | 18 ++++++++----------
+> > > >  1 file changed, 8 insertions(+), 10 deletions(-)
+> > > >
+> > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > > > index 395dece1c83a..1873cecb0cc4 100644
+> > > > --- a/drivers/base/core.c
+> > > > +++ b/drivers/base/core.c
+> > > > @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
+> > > >  static LIST_HEAD(deferred_sync);
+> > > >  static unsigned int defer_sync_state_count = 1;
+> > > >  static DEFINE_MUTEX(fwnode_link_lock);
+> > > > +static bool fw_devlink_is_permissive(void);
+> > > >
+> > > >  /**
+> > > >   * fwnode_link_add - Create a link between two fwnode_handles.
+> > > > @@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
+> > > >        * Device waiting for supplier to become available is not allowed to
+> > > >        * probe.
+> > > >        */
+> > > > -     mutex_lock(&wfs_lock);
+> > > > -     if (!list_empty(&dev->links.needs_suppliers) &&
+> > > > -         dev->links.need_for_probe) {
+> > > > -             mutex_unlock(&wfs_lock);
+> > > > +     mutex_lock(&fwnode_link_lock);
+> > > > +     if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
+> > > > +         !fw_devlink_is_permissive()) {
+> > > > +             mutex_unlock(&fwnode_link_lock);
 > > >
-> > > If the kernel ever receives ACPI memory hotplug event, it is likely a
-> > > BIOS bug.  For ACPI memory hot-add, the kernel should speak out this is
-> > > a BIOS bug and reject the new memory.  For hot-removal, for simplicity
-> > > just assume the kernel cannot continue to work normally, and just BUG().
+> > > Hi Saravana,
 > > >
-> > > Add a new attribute CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED to indicate the
-> > > platform doesn't support ACPI memory hotplug, so that kernel can handle
-> > > ACPI memory hotplug events for such platform.
-> > >
-> > > In acpi_memory_device_{add|remove}(), add early check against this
-> > > attribute and handle accordingly if it is set.
-> > >
-> > > Signed-off-by: Kai Huang <kai.huang@intel.com>
-> > > ---
-> > >  drivers/acpi/acpi_memhotplug.c | 23 +++++++++++++++++++++++
-> > >  include/linux/cc_platform.h    | 10 ++++++++++
-> > >  2 files changed, 33 insertions(+)
-> > >
-> > > diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-> > > index 24f662d8bd39..94d6354ea453 100644
-> > > --- a/drivers/acpi/acpi_memhotplug.c
-> > > +++ b/drivers/acpi/acpi_memhotplug.c
-> > > @@ -15,6 +15,7 @@
-> > >  #include <linux/acpi.h>
-> > >  #include <linux/memory.h>
-> > >  #include <linux/memory_hotplug.h>
-> > > +#include <linux/cc_platform.h>
-> > >
-> > >  #include "internal.h"
-> > >
-> > > @@ -291,6 +292,17 @@ static int acpi_memory_device_add(struct acpi_device *device,
-> > >         if (!device)
-> > >                 return -EINVAL;
-> > >
-> > > +       /*
-> > > +        * If the confidential computing platform doesn't support ACPI
-> > > +        * memory hotplug, the BIOS should never deliver such event to
-> > > +        * the kernel.  Report ACPI CPU hot-add as a BIOS bug and ignore
-> > > +        * the memory device.
-> > > +        */
-> > > +       if (cc_platform_has(CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED)) {
+> > > First of, sorry for going back to this.
 > >
-> > Same comment as for the acpi_processor driver: this will affect the
-> > initialization too and it would be cleaner to reset the
-> > .hotplug.enabled flag of the scan handler.
+> > No worries at all. If there's an issue with fw_devlink, I want to have it fixed.
 > >
+> > > There is a scenario where this check will not work and probably should
+> > > work. It goes like this:
+> > >
+> > > A clock controller is not allowed to probe because it uses a clock from a child device of a
+> > > consumer, like so:
+> > >
+> > >         dispcc: clock-controller@af00000 {
+> > >                 clocks = <&dsi0_phy 0>;
+> > >         };
+> > >
+> > >         mdss: mdss@ae00000 {
+> > >                 clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
+> > >
+> > >                 dsi0_phy: dsi-phy@ae94400 {
+> > >                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+> > >                 };
+> > >         };
+> > >
+> > > This is a real scenario actually, but I stripped it down to the essentials.
+> >
+> > I'm well aware of this scenario and explicitly wrote code to address this :)
 > >
 >
-> Hi Rafael,
+> Actually, the problem seems to be when you have two dsi phys.
+> Like so:
 >
-> Thanks for review.  The same to the ACPI CPU hotplug handling, this is illegal
-> also during kernel boot.
-
-What do you mean?
-
-Is it not correct to enumerate any memory device through ACPI at all?
-
->  If we just want to disable, then perhaps something like below?
+>          dispcc: clock-controller@af00000 {
+>                  clocks = <&dsi0_phy 0>;
+>                  clocks = <&dsi1_phy 0>;
+>          };
 >
-> --- a/drivers/acpi/acpi_memhotplug.c
-> +++ b/drivers/acpi/acpi_memhotplug.c
-> @@ -366,6 +366,9 @@ static bool __initdata acpi_no_memhotplug;
+>          mdss: mdss@ae00000 {
+>                  clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
 >
->  void __init acpi_memory_hotplug_init(void)
->  {
-> +       if (cc_platform_has(CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED))
-> +               acpi_no_memhotplug = true;
-> +
+>                  dsi0_phy: dsi-phy@ae94400 {
+>                          clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+>                  };
+>
+>                  dsi1_phy: dsi-phy@ae64400 {
+>                          clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+>                  };
+>          };
+>
+> And from what I've seen happening so far is that the device_is_dependent
+> check for the parent of the supplier (if it also a consumer) seems to return
+> false on second pass of the same link due to the DL_FLAG_SYNC_STATE_ONLY
+> being set this time around.
+>
+> > See this comment in fw_devlink_create_devlink()
+> >
+> >        /*
+> >          * If we can't find the supplier device from its fwnode, it might be
+> >          * due to a cyclic dependency between fwnodes. Some of these cycles can
+> >          * be broken by applying logic. Check for these types of cycles and
+> >          * break them so that devices in the cycle probe properly.
+> >          *
+> >          * If the supplier's parent is dependent on the consumer, then the
+> >          * consumer and supplier have a cyclic dependency. Since fw_devlink
+> >          * can't tell which of the inferred dependencies are incorrect, don't
+> >          * enforce probe ordering between any of the devices in this cyclic
+> >          * dependency. Do this by relaxing all the fw_devlink device links in
+> >          * this cycle and by treating the fwnode link between the consumer and
+> >          * the supplier as an invalid dependency.
+> >          */
+> >
+>
+> So when this thing you mentioned above is happening for the second dsi
+> phy (order doesn't matter), since the dsi phy itself cannot be found,
+> the device_is_dependent is run for the same link: dispcc -> mdss
+> (supplier -> consumer), but again, since it has the
+> DL_FLAG_SYNC_STATE_ONLY this time around, it will skip that specific
+> link.
 
-This looks fine to me if the above is the case, but you need to modify
-the changelog to match.
+Ugh... I knew there was this gap, but didn't expect it to be a real world issue.
 
->         if (acpi_no_memhotplug) {
->                 memory_device_handler.attach = NULL;
->                 acpi_scan_add_handler(&memory_device_handler);
+There are different ways of addressing this and they all fall
+somewhere within a spectrum of:
+"stop enforcing very specific edges of the dependency graph when you
+find a cycles"
+To
+"just don't enforce any dependency for devices in a cycle and let the
+drivers figure out when to -EPROBE_DEFER".
+
+And each of those are of varying complexity. Ideally I'd prefer to
+relax specific edges, but I need to balance it out with the code
+complexity. Let me soak this for a few weeks to decide on what option
+to take.
+
+Thanks for the report.
+
+-Saravana
+
 >
+> > Applying this comment to your example, dispcc is the "consumer",
+> > dsi0_phy is the "supplier" and mdss is the "supplier's parent".
+> >
+> > And because we can't guarantee the order of addition of these top
+> > level devices is why I also have this piece of recursive call inside
+> > __fw_devlink_link_to_suppliers():
+> >
+> >                 /*
+> >                  * If a device link was successfully created to a supplier, we
+> >                  * now need to try and link the supplier to all its suppliers.
+> >                  *
+> >                  * This is needed to detect and delete false dependencies in
+> >                  * fwnode links that haven't been converted to a device link
+> >                  * yet. See comments in fw_devlink_create_devlink() for more
+> >                  * details on the false dependency.
+> >                  *
+> >                  * Without deleting these false dependencies, some devices will
+> >                  * never probe because they'll keep waiting for their false
+> >                  * dependency fwnode links to be converted to device links.
+> >                  */
+> >                 sup_dev = get_dev_from_fwnode(sup);
+> >                 __fw_devlink_link_to_suppliers(sup_dev, sup_dev->fwnode);
+> >                 put_device(sup_dev);
+> >
+> > So when mdss gets added, we'll link it to dispcc and then check if
+> > dispcc has any suppliers it needs to link to. And that's when the
+> > logic will catch the cycle and fix it.
+> >
+> > Can you tell me why this wouldn't unblock the probing of dispcc? Are
+> > you actually hitting this on a device? If so, can you please check why
+> > this logic isn't sufficient to catch and undo the cycle?
+> >
 >
-> --
+> This is happening on Qualcomm SDM845 with Linus's tree.
+>
+> > Thanks,
+> > Saravana
+> >
+> > > So, the dsi0_phy will be "device_add'ed" (through of_platform_populate) by the mdss probe.
+> > > The mdss will probe defer waiting for the DISP_CC_MDSS_MDP_CLK, while
+> > > the dispcc will probe defer waiting for the dsi0_phy (supplier).
+> > >
+> > > Basically, this 'supplier availability check' does not work when a supplier might
+> > > be populated by a consumer of the device that is currently trying to probe.
+> > >
+> > >
+> > > Abel
+> > >
+> > >
+> > > >               return -EPROBE_DEFER;
+> > > >       }
+> > > > -     mutex_unlock(&wfs_lock);
+> > > > +     mutex_unlock(&fwnode_link_lock);
+> > > >
+> > > >       device_links_write_lock();
+> > > >
+> > > > @@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
+> > > >       bool val;
+> > > >
+> > > >       device_lock(dev);
+> > > > -     mutex_lock(&wfs_lock);
+> > > > -     val = !list_empty(&dev->links.needs_suppliers)
+> > > > -           && dev->links.need_for_probe;
+> > > > -     mutex_unlock(&wfs_lock);
+> > > > +     val = !list_empty(&dev->fwnode->suppliers);
+> > > >       device_unlock(dev);
+> > > >       return sysfs_emit(buf, "%u\n", val);
+> > > >  }
+> > > > @@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
+> > > >                       goto err_remove_dev_groups;
+> > > >       }
+> > > >
+> > > > -     if (fw_devlink_flags && !fw_devlink_is_permissive()) {
+> > > > +     if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
+> > > >               error = device_create_file(dev, &dev_attr_waiting_for_supplier);
+> > > >               if (error)
+> > > >                       goto err_remove_dev_online;
+> > > > --
+> > > > 2.29.2.454.gaff20da3a2-goog
+> > > >
+> > > >
+> >
