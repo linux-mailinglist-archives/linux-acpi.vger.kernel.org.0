@@ -2,128 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86B3955DE62
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C235655CFE1
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:07:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343539AbiF1Kfj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 06:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38698 "EHLO
+        id S245709AbiF1Kod (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 06:44:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230259AbiF1Kfi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 06:35:38 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C00531399;
-        Tue, 28 Jun 2022 03:35:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656412537; x=1687948537;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8Ci8DfysHblkeyhLSE3h8K3QZUSIUJa57/PqOK9DH8E=;
-  b=mJbIjhcYPr6qhyOFG2EOkxQE0H43Ey8iOlOJmJoUxiy1xTu/yPE0NlPz
-   s79pL71gCNlgcKIrwS2plIV+C/q+W/oQHbrhjzvgAYk/GkXQOUmls/yZV
-   M4SPjj07AHKEfSDbsLFOpSWsuuGdeZQr6UWsYKbtSjk8F7FeAwOq27Sxj
-   SEttkeFlX+8w1Pur6ugJX5vGfUlCdx/QWq5gEBfHFqPbQeoyhzfSd/pS6
-   g0d0Y75LXwNdGumgAS41TByyDoozdMybNWrUzPunw4i+VJ5Xu+zXgHvXV
-   +udHnVqA0rXwd245useLGhVdNY85io6ntgxLbjgUKA1gi4ROE6DK1NX68
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="280465087"
-X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
-   d="scan'208";a="280465087"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 03:35:37 -0700
-X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
-   d="scan'208";a="836628710"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 03:35:35 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1o68ZA-000wj1-BR;
-        Tue, 28 Jun 2022 13:35:32 +0300
-Date:   Tue, 28 Jun 2022 13:35:32 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org,
-        Stefan Seyfried <stefan.seyfried@googlemail.com>,
-        Kenneth Chan <kenneth.t.chan@gmail.com>,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 0/7] ACPI: video / platform/x86: Fix Panasonic laptop
- missing keypresses
-Message-ID: <YrrZdKUxPhT5qR5F@smile.fi.intel.com>
-References: <20220624112340.10130-1-hdegoede@redhat.com>
+        with ESMTP id S236719AbiF1Ko3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 06:44:29 -0400
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 491373137C;
+        Tue, 28 Jun 2022 03:44:28 -0700 (PDT)
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25S8Aom7002616;
+        Tue, 28 Jun 2022 05:44:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=PODMain02222019;
+ bh=QBEidroRw5+JD0Vl6jzELd5/Mgloypbq/UGjqMxx45w=;
+ b=ch9/kbVJQm5QV1wgEMKkMrK3BxZOwh/+KlYuFRZf806EEtYO3g4tJR3qhccmoSp++63C
+ HtJnHZEbqvbbRed+/pxizYCXSg9aAcVU6nv6+AL/tL73Oj/hU3CyOOGOBUVhwWzSK0QQ
+ e/LARF+FgIm2+R/eDdygpIQCovF3lPUer/R6HTf7xmoxCFugTNZ6hsa2qai8oR9feOw8
+ OO6/JHERNvKRdD8W+8Q/4bgE2GTd5Mzn6fUrVpENXwDBelSsWfZOyjod29b6xtgapYQ4
+ mXWAKNaPyaFMLl55J4jbQJndfJ+bKqweZmyDMYEpmy6OxHMLqV4eyMF9V870cwfrG2IW YA== 
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3gwxsq3rut-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 28 Jun 2022 05:44:15 -0500
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Tue, 28 Jun
+ 2022 11:44:14 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.28 via Frontend
+ Transport; Tue, 28 Jun 2022 11:44:14 +0100
+Received: from sbinding-cirrus-dsktp.ad.cirrus.com (unknown [198.90.238.163])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 6F88F2A1;
+        Tue, 28 Jun 2022 10:44:13 +0000 (UTC)
+From:   Stefan Binding <sbinding@opensource.cirrus.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>
+CC:     <linux-acpi@vger.kernel.org>, <alsa-devel@alsa-project.org>,
+        <linux-kernel@vger.kernel.org>, <patches@opensource.cirrus.com>,
+        Stefan Binding <sbinding@opensource.cirrus.com>
+Subject: [PATCH v4 0/2] Read _SUB from ACPI to be able to identify firmware
+Date:   Tue, 28 Jun 2022 11:44:09 +0100
+Message-ID: <20220628104411.984551-1-sbinding@opensource.cirrus.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220624112340.10130-1-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: yKfBcfP_Cn5hX-1DIGltE_b4HOiU4-7n
+X-Proofpoint-ORIG-GUID: yKfBcfP_Cn5hX-1DIGltE_b4HOiU4-7n
+X-Proofpoint-Spam-Reason: safe
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 01:23:33PM +0200, Hans de Goede wrote:
-> Hi All,
-> 
-> Here is a series fixing the missing keypresses on some Panasonic Toughbook
-> models. These missing keypresses are caused by
-> commit ed83c9171829 ("platform/x86: panasonic-laptop: Resolve hotkey double
-> trigger bug"), which made the panasonic-laptop driver unconditionally drop
-> most WMI reported hotkeys.
-> 
-> This series reverts that commit and then adds some more selective filtering
-> to still avoid the double key-presses on some models, while avoiding
-> completely missing keypresses on others.
-> 
-> Rafael, these fixes rely on patch 1/7, which is a tweak to
-> the acpi_video_handles_brightness_key_presses() helper. Without this
-> tweak this series will cause a regression, so I would like to merge
-> the entire series through the pdx86 tree, may I have your ack for this?
+CS35L41 has a DSP which is able to run firmware, as well as a tuning file.
+Different systems may want to use different firmwares and tuning files, and
+some firmwares/tunings may not be compatible with other systems.
+To allow a system to select the correct fimware/tuning, we can read an _SUB
+from the ACPI. This _SUB can then be used to uniquely identify the system
+in the firmware/tuning file name.
+
+Add a helper function which reads the _SUB, so this can be used by other
+parts in the future.
+Add support inside the CS35L41 ASoC driver to read this _SUB, and save it
+appropriately.
+
+Changes since v3:
+- Fix 32 bit format string warning
+
+Changes since v2:
+- Fix error in function prototype
+
+Changes since v1:
+- Add length validation for SSID String
+- Rename API
+- Allocate memory inside API
+- Use ACPI_HANDLE macro instead of ACPI_COMPANION
+- Improve error handling
 
 
-I followed this series on Bugzilla,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stefan Binding (2):
+  ACPI: utils: Add api to read _SUB from ACPI
+  ASoC: cs35l41: Read System Name from ACPI _SUB to identify firmware
 
-with or without my comments addressed (they are optional)
-
-> Regards,
-> 
-> Hans
-> 
-> 
-> Hans de Goede (6):
->   ACPI: video: Change how we determine if brightness key-presses are
->     handled
->   platform/x86: panasonic-laptop: sort includes alphabetically
->   platform/x86: panasonic-laptop: revert "Resolve hotkey double trigger
->     bug"
->   platform/x86: panasonic-laptop: don't report duplicate brightness
->     key-presses
->   platform/x86: panasonic-laptop: filter out duplicate volume
->     up/down/mute keypresses
->   platform/x86: panasonic-laptop: Use acpi_video_get_backlight_type()
-> 
-> Stefan Seyfried (1):
->   platform/x86: panasonic-laptop: de-obfuscate button codes
-> 
->  drivers/acpi/acpi_video.c               |  13 ++-
->  drivers/platform/x86/Kconfig            |   2 +
->  drivers/platform/x86/panasonic-laptop.c | 112 ++++++++++++++++++------
->  3 files changed, 91 insertions(+), 36 deletions(-)
-> 
-> -- 
-> 2.36.0
-> 
+ drivers/acpi/utils.c       | 38 ++++++++++++++++++++++++++++++++++++++
+ include/linux/acpi.h       |  6 ++++++
+ sound/soc/codecs/cs35l41.c | 24 ++++++++++++++++++++++++
+ 3 files changed, 68 insertions(+)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.25.1
 
