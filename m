@@ -2,52 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB45355E73B
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 18:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 607C355E8C3
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 18:36:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347829AbiF1PYj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 11:24:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55854 "EHLO
+        id S1347609AbiF1Pog (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 11:44:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347515AbiF1PYi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 11:24:38 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E8D72CCAB
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 08:24:36 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id ej4so18092709edb.7
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 08:24:36 -0700 (PDT)
+        with ESMTP id S1348032AbiF1Pof (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 11:44:35 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8944136B4C
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 08:44:33 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id ay16so26640933ejb.6
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 08:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=DL6UdLR7FEJazkCj2FBmbmojXNOORr6ZP3bxU8f4s34=;
-        b=mLdlN6f7kHSvYsaEQVd6iE+DmBvqMoY9HcpLvjNSK3WoR6AGCaEQt2gX4sL2ZTxHcq
-         aaYHRwiWiZuGfkrhNtG4qdnVLGKoLo6vSMRX+WvsB5byLc4HA3jUOw+7XGsx2jw8/DZA
-         PnCJ3hE50NmYdBaf2o9GbtsXNfRwShpIKfCYC3QFVhJ9shbkn9fzR+OyiaosjjQQlzIP
-         qOp/nRC2fwrScCe+RMWxpT6XBtqVm12yKJCVy2fn3YBFDH4JIkuCt4Jg/BszewumPeH5
-         iY6mZMvcVuuJUTLSGunPyg3kIoISLQbjJF8ZU+XPrV664H/518ZGFtfkxANmkvX+bYGZ
-         6WUw==
+        bh=406yLlQLKjMCPBS3XzimDcu/hdIBGhJCqQAdv4NXB8c=;
+        b=KcZM9Z4k5Wgnc+FacREdF75fAvwKxd+Bax2++TOk3qKmi9pMLTdT71+X/LdpZeyRnR
+         nlbcfSk+m1vbWPfmYqvkgbwgtiu53+Xx32W0pkjKpVlNzFFdVMCyMzfyFgIuvbWzuWP9
+         se6ACTywYSGX9nEjnZMPJUx37yFRfd82T8RtNqZfN1etWnHap7QeTnWHY0PA7eEjAxUH
+         P5bsdmE77lDW20+7ZZfsYM8D4ynPYZbI3XoFeAsU+lB8uQlVASQnSaeJkS3NOHzKMsFR
+         yaJQBFJNIB/N/edZVVa8z+XSXc05ZGtvEjCB2c+EDAe8QHKAc9exDq9sP8LQNhzSk15Z
+         mj3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=DL6UdLR7FEJazkCj2FBmbmojXNOORr6ZP3bxU8f4s34=;
-        b=GyHSCZCXq7HVFCp124yXqjq0cDghIMwmF5+95pxrFOKt7w5FFPQhAN11719BfuaMKr
-         G1+Nca59SoamhSpSM47ws/PVIUWHVRYLR+Muh5c3stVFPnkMat2E2pBUpjjA8koYAZtH
-         8vJje3nojz0aykbh/Os6uSwV8iz0nXClj397VpJoJ+SDzq/bkLzLW13SDCOQVtxHXPJv
-         /A4rco9WzCPP0ipxwxGgp631blNBLo4y5TF4soYKNt3p/j0lBbRI0eoSn2VPgi7YHSzv
-         ELAGHiU98pVhBUElwKSR2oLjGavpJoVF/BZ5ZbBPdNFa5kTWHb/eIFFYaM447wl3zkAd
-         8ZPA==
-X-Gm-Message-State: AJIora9gZrxggYNQgqDK48ObBy3WZzd2FysSvaJbljFCWFySEvatuQCP
-        X+mq+LVRAUE0OMmOjubNmmxzLA==
-X-Google-Smtp-Source: AGRyM1sEbyTGDyJve5ZC+CP0x18qpcJRoRcJs9T3qxqz5nCvJi/mGytefg0YFs3qKNU4hFqDLDn+Tg==
-X-Received: by 2002:a05:6402:653:b0:435:5aaf:20e7 with SMTP id u19-20020a056402065300b004355aaf20e7mr24046225edx.125.1656429874732;
-        Tue, 28 Jun 2022 08:24:34 -0700 (PDT)
+        bh=406yLlQLKjMCPBS3XzimDcu/hdIBGhJCqQAdv4NXB8c=;
+        b=woE3UkTSQDGcSlyVz/XnxzSj+JCkyQS7wNXMJHWF+d+l12LfHve7aDVx8YiKeyCEo/
+         t+zKCnsxSPx7w5KqE6Dh3ZZW8ciycR5Btm/tiCtbKJqE6VS3gJkXKlGs+Y0Cpmlnny6K
+         3cCWeAZLe9RkKUPXDnhxszitZdAqfNG24rJwB0UCqdLtc59/ulgO9PC0L/b0JkwzmJBf
+         IaPyERlQ7qmaJAK6Kf0d9BBjXMb2tDLAoWwtueUNhp2aVmOJkWyo3K360wpcm8g8x0JA
+         6l+m1uQuA6Bjs5/xEkX6jU+hk7IBojsY2HjbnxEDXZNQIdCVgs9BLZzvKaswKPmSNRkO
+         Ko6A==
+X-Gm-Message-State: AJIora8+AQHo4OHRTXRTLlSVmNhb9mCMYBatGGIIB5rXo5usXRI/QCTE
+        sq0hxu60Ni4HwhG32CsPRTkYMg==
+X-Google-Smtp-Source: AGRyM1sj3GoND2FtW75ZdMgcEf/UpyLQ3OzOh/0DO82t4LLsflF1HgMMTXpWkyWEa/fq5eXR0H4Sew==
+X-Received: by 2002:a17:907:9689:b0:71e:56c1:838b with SMTP id hd9-20020a170907968900b0071e56c1838bmr18607147ejc.304.1656431071520;
+        Tue, 28 Jun 2022 08:44:31 -0700 (PDT)
 Received: from linaro.org ([94.52.112.99])
-        by smtp.gmail.com with ESMTPSA id a21-20020a056402169500b004357063bf60sm9787470edv.41.2022.06.28.08.24.30
+        by smtp.gmail.com with ESMTPSA id n22-20020a1709067b5600b00722ea7a7febsm6561195ejo.194.2022.06.28.08.44.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 08:24:31 -0700 (PDT)
-Date:   Tue, 28 Jun 2022 18:24:29 +0300
+        Tue, 28 Jun 2022 08:44:30 -0700 (PDT)
+Date:   Tue, 28 Jun 2022 18:44:29 +0300
 From:   Abel Vesa <abel.vesa@linaro.org>
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
@@ -70,15 +70,16 @@ Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         linux-arm-msm@vger.kernel.org
 Subject: Re: [PATCH v2 13/17] driver core: Use device's fwnode to check if it
  is waiting for suppliers
-Message-ID: <YrsdLQrOtg1qdaoE@linaro.org>
+Message-ID: <Yrsh3b+jBuOxRzxO@linaro.org>
 References: <20201121020232.908850-1-saravanak@google.com>
  <20201121020232.908850-14-saravanak@google.com>
  <YrmXpcU1NTYW6T/n@linaro.org>
  <CAGETcx8dwNcZFFzhhv=kMhpuQnyaEekrycpAmGusD-s+qfvA9g@mail.gmail.com>
+ <YrsdLQrOtg1qdaoE@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGETcx8dwNcZFFzhhv=kMhpuQnyaEekrycpAmGusD-s+qfvA9g@mail.gmail.com>
+In-Reply-To: <YrsdLQrOtg1qdaoE@linaro.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
@@ -89,207 +90,214 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 22-06-27 15:30:25, Saravana Kannan wrote:
-> On Mon, Jun 27, 2022 at 4:42 AM Abel Vesa <abel.vesa@linaro.org> wrote:
-> >
-> > On 20-11-20 18:02:28, Saravana Kannan wrote:
-> > > To check if a device is still waiting for its supplier devices to be
-> > > added, we used to check if the devices is in a global
-> > > waiting_for_suppliers list. Since the global list will be deleted in
-> > > subsequent patches, this patch stops using this check.
+On 22-06-28 18:24:29, Abel Vesa wrote:
+> On 22-06-27 15:30:25, Saravana Kannan wrote:
+> > On Mon, Jun 27, 2022 at 4:42 AM Abel Vesa <abel.vesa@linaro.org> wrote:
 > > >
-> > > Instead, this patch uses a more device specific check. It checks if the
-> > > device's fwnode has any fwnode links that haven't been converted to
-> > > device links yet.
+
+Oups, forget this reply since it not to the right message-id.
+
+Will do it properly right now.
+
+
+> > > On 20-11-20 18:02:28, Saravana Kannan wrote:
+> > > > To check if a device is still waiting for its supplier devices to be
+> > > > added, we used to check if the devices is in a global
+> > > > waiting_for_suppliers list. Since the global list will be deleted in
+> > > > subsequent patches, this patch stops using this check.
+> > > >
+> > > > Instead, this patch uses a more device specific check. It checks if the
+> > > > device's fwnode has any fwnode links that haven't been converted to
+> > > > device links yet.
+> > > >
+> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > > ---
+> > > >  drivers/base/core.c | 18 ++++++++----------
+> > > >  1 file changed, 8 insertions(+), 10 deletions(-)
+> > > >
+> > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > > > index 395dece1c83a..1873cecb0cc4 100644
+> > > > --- a/drivers/base/core.c
+> > > > +++ b/drivers/base/core.c
+> > > > @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
+> > > >  static LIST_HEAD(deferred_sync);
+> > > >  static unsigned int defer_sync_state_count = 1;
+> > > >  static DEFINE_MUTEX(fwnode_link_lock);
+> > > > +static bool fw_devlink_is_permissive(void);
+> > > >
+> > > >  /**
+> > > >   * fwnode_link_add - Create a link between two fwnode_handles.
+> > > > @@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
+> > > >        * Device waiting for supplier to become available is not allowed to
+> > > >        * probe.
+> > > >        */
+> > > > -     mutex_lock(&wfs_lock);
+> > > > -     if (!list_empty(&dev->links.needs_suppliers) &&
+> > > > -         dev->links.need_for_probe) {
+> > > > -             mutex_unlock(&wfs_lock);
+> > > > +     mutex_lock(&fwnode_link_lock);
+> > > > +     if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
+> > > > +         !fw_devlink_is_permissive()) {
+> > > > +             mutex_unlock(&fwnode_link_lock);
 > > >
-> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > ---
-> > >  drivers/base/core.c | 18 ++++++++----------
-> > >  1 file changed, 8 insertions(+), 10 deletions(-)
+> > > Hi Saravana,
 > > >
-> > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > > index 395dece1c83a..1873cecb0cc4 100644
-> > > --- a/drivers/base/core.c
-> > > +++ b/drivers/base/core.c
-> > > @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
-> > >  static LIST_HEAD(deferred_sync);
-> > >  static unsigned int defer_sync_state_count = 1;
-> > >  static DEFINE_MUTEX(fwnode_link_lock);
-> > > +static bool fw_devlink_is_permissive(void);
+> > > First of, sorry for going back to this.
+> >
+> > No worries at all. If there's an issue with fw_devlink, I want to have it fixed.
+> >
+> > > There is a scenario where this check will not work and probably should
+> > > work. It goes like this:
 > > >
-> > >  /**
-> > >   * fwnode_link_add - Create a link between two fwnode_handles.
-> > > @@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
-> > >        * Device waiting for supplier to become available is not allowed to
-> > >        * probe.
-> > >        */
-> > > -     mutex_lock(&wfs_lock);
-> > > -     if (!list_empty(&dev->links.needs_suppliers) &&
-> > > -         dev->links.need_for_probe) {
-> > > -             mutex_unlock(&wfs_lock);
-> > > +     mutex_lock(&fwnode_link_lock);
-> > > +     if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
-> > > +         !fw_devlink_is_permissive()) {
-> > > +             mutex_unlock(&fwnode_link_lock);
-> >
-> > Hi Saravana,
-> >
-> > First of, sorry for going back to this.
->
-> No worries at all. If there's an issue with fw_devlink, I want to have it fixed.
->
-> > There is a scenario where this check will not work and probably should
-> > work. It goes like this:
-> >
-> > A clock controller is not allowed to probe because it uses a clock from a child device of a
-> > consumer, like so:
-> >
-> >         dispcc: clock-controller@af00000 {
-> >                 clocks = <&dsi0_phy 0>;
-> >         };
-> >
-> >         mdss: mdss@ae00000 {
-> >                 clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
-> >
-> >                 dsi0_phy: dsi-phy@ae94400 {
-> >                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
-> >                 };
-> >         };
-> >
-> > This is a real scenario actually, but I stripped it down to the essentials.
->
-> I'm well aware of this scenario and explicitly wrote code to address this :)
->
-
-Actually, the problem seems to be when you have two dsi phys.
-Like so:
-
-         dispcc: clock-controller@af00000 {
-                 clocks = <&dsi0_phy 0>;
-                 clocks = <&dsi1_phy 0>;
-         };
-
-         mdss: mdss@ae00000 {
-                 clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
-
-                 dsi0_phy: dsi-phy@ae94400 {
-                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
-                 };
-
-		 dsi1_phy: dsi-phy@ae64400 {
-                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
-                 };
-         };
-
-And from what I've seen happening so far is that the device_is_dependent
-check for the parent of the supplier (if it also a consumer) seems to return
-false on second pass of the same link due to the DL_FLAG_SYNC_STATE_ONLY
-being set this time around.
-
-> See this comment in fw_devlink_create_devlink()
->
->        /*
->          * If we can't find the supplier device from its fwnode, it might be
->          * due to a cyclic dependency between fwnodes. Some of these cycles can
->          * be broken by applying logic. Check for these types of cycles and
->          * break them so that devices in the cycle probe properly.
->          *
->          * If the supplier's parent is dependent on the consumer, then the
->          * consumer and supplier have a cyclic dependency. Since fw_devlink
->          * can't tell which of the inferred dependencies are incorrect, don't
->          * enforce probe ordering between any of the devices in this cyclic
->          * dependency. Do this by relaxing all the fw_devlink device links in
->          * this cycle and by treating the fwnode link between the consumer and
->          * the supplier as an invalid dependency.
->          */
->
-
-So when this thing you mentioned above is happening for the second dsi
-phy (order doesn't matter), since the dsi phy itself cannot be found,
-the device_is_dependent is run for the same link: dispcc -> mdss
-(supplier -> consumer), but again, since it has the
-DL_FLAG_SYNC_STATE_ONLY this time around, it will skip that specific
-link.
-
-> Applying this comment to your example, dispcc is the "consumer",
-> dsi0_phy is the "supplier" and mdss is the "supplier's parent".
->
-> And because we can't guarantee the order of addition of these top
-> level devices is why I also have this piece of recursive call inside
-> __fw_devlink_link_to_suppliers():
->
->                 /*
->                  * If a device link was successfully created to a supplier, we
->                  * now need to try and link the supplier to all its suppliers.
->                  *
->                  * This is needed to detect and delete false dependencies in
->                  * fwnode links that haven't been converted to a device link
->                  * yet. See comments in fw_devlink_create_devlink() for more
->                  * details on the false dependency.
->                  *
->                  * Without deleting these false dependencies, some devices will
->                  * never probe because they'll keep waiting for their false
->                  * dependency fwnode links to be converted to device links.
->                  */
->                 sup_dev = get_dev_from_fwnode(sup);
->                 __fw_devlink_link_to_suppliers(sup_dev, sup_dev->fwnode);
->                 put_device(sup_dev);
->
-> So when mdss gets added, we'll link it to dispcc and then check if
-> dispcc has any suppliers it needs to link to. And that's when the
-> logic will catch the cycle and fix it.
->
-> Can you tell me why this wouldn't unblock the probing of dispcc? Are
-> you actually hitting this on a device? If so, can you please check why
-> this logic isn't sufficient to catch and undo the cycle?
->
-
-This is happening on Qualcomm SDM845 with Linus's tree.
-
-> Thanks,
-> Saravana
->
-> > So, the dsi0_phy will be "device_add'ed" (through of_platform_populate) by the mdss probe.
-> > The mdss will probe defer waiting for the DISP_CC_MDSS_MDP_CLK, while
-> > the dispcc will probe defer waiting for the dsi0_phy (supplier).
-> >
-> > Basically, this 'supplier availability check' does not work when a supplier might
-> > be populated by a consumer of the device that is currently trying to probe.
-> >
-> >
-> > Abel
-> >
-> >
-> > >               return -EPROBE_DEFER;
-> > >       }
-> > > -     mutex_unlock(&wfs_lock);
-> > > +     mutex_unlock(&fwnode_link_lock);
+> > > A clock controller is not allowed to probe because it uses a clock from a child device of a
+> > > consumer, like so:
 > > >
-> > >       device_links_write_lock();
+> > >         dispcc: clock-controller@af00000 {
+> > >                 clocks = <&dsi0_phy 0>;
+> > >         };
 > > >
-> > > @@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
-> > >       bool val;
+> > >         mdss: mdss@ae00000 {
+> > >                 clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
 > > >
-> > >       device_lock(dev);
-> > > -     mutex_lock(&wfs_lock);
-> > > -     val = !list_empty(&dev->links.needs_suppliers)
-> > > -           && dev->links.need_for_probe;
-> > > -     mutex_unlock(&wfs_lock);
-> > > +     val = !list_empty(&dev->fwnode->suppliers);
-> > >       device_unlock(dev);
-> > >       return sysfs_emit(buf, "%u\n", val);
-> > >  }
-> > > @@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
-> > >                       goto err_remove_dev_groups;
-> > >       }
+> > >                 dsi0_phy: dsi-phy@ae94400 {
+> > >                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+> > >                 };
+> > >         };
 > > >
-> > > -     if (fw_devlink_flags && !fw_devlink_is_permissive()) {
-> > > +     if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
-> > >               error = device_create_file(dev, &dev_attr_waiting_for_supplier);
-> > >               if (error)
-> > >                       goto err_remove_dev_online;
-> > > --
-> > > 2.29.2.454.gaff20da3a2-goog
+> > > This is a real scenario actually, but I stripped it down to the essentials.
+> >
+> > I'm well aware of this scenario and explicitly wrote code to address this :)
+> >
+>
+> Actually, the problem seems to be when you have two dsi phys.
+> Like so:
+>
+>          dispcc: clock-controller@af00000 {
+>                  clocks = <&dsi0_phy 0>;
+>                  clocks = <&dsi1_phy 0>;
+>          };
+>
+>          mdss: mdss@ae00000 {
+>                  clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
+>
+>                  dsi0_phy: dsi-phy@ae94400 {
+>                          clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+>                  };
+>
+> 		 dsi1_phy: dsi-phy@ae64400 {
+>                          clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+>                  };
+>          };
+>
+> And from what I've seen happening so far is that the device_is_dependent
+> check for the parent of the supplier (if it also a consumer) seems to return
+> false on second pass of the same link due to the DL_FLAG_SYNC_STATE_ONLY
+> being set this time around.
+>
+> > See this comment in fw_devlink_create_devlink()
+> >
+> >        /*
+> >          * If we can't find the supplier device from its fwnode, it might be
+> >          * due to a cyclic dependency between fwnodes. Some of these cycles can
+> >          * be broken by applying logic. Check for these types of cycles and
+> >          * break them so that devices in the cycle probe properly.
+> >          *
+> >          * If the supplier's parent is dependent on the consumer, then the
+> >          * consumer and supplier have a cyclic dependency. Since fw_devlink
+> >          * can't tell which of the inferred dependencies are incorrect, don't
+> >          * enforce probe ordering between any of the devices in this cyclic
+> >          * dependency. Do this by relaxing all the fw_devlink device links in
+> >          * this cycle and by treating the fwnode link between the consumer and
+> >          * the supplier as an invalid dependency.
+> >          */
+> >
+>
+> So when this thing you mentioned above is happening for the second dsi
+> phy (order doesn't matter), since the dsi phy itself cannot be found,
+> the device_is_dependent is run for the same link: dispcc -> mdss
+> (supplier -> consumer), but again, since it has the
+> DL_FLAG_SYNC_STATE_ONLY this time around, it will skip that specific
+> link.
+>
+> > Applying this comment to your example, dispcc is the "consumer",
+> > dsi0_phy is the "supplier" and mdss is the "supplier's parent".
+> >
+> > And because we can't guarantee the order of addition of these top
+> > level devices is why I also have this piece of recursive call inside
+> > __fw_devlink_link_to_suppliers():
+> >
+> >                 /*
+> >                  * If a device link was successfully created to a supplier, we
+> >                  * now need to try and link the supplier to all its suppliers.
+> >                  *
+> >                  * This is needed to detect and delete false dependencies in
+> >                  * fwnode links that haven't been converted to a device link
+> >                  * yet. See comments in fw_devlink_create_devlink() for more
+> >                  * details on the false dependency.
+> >                  *
+> >                  * Without deleting these false dependencies, some devices will
+> >                  * never probe because they'll keep waiting for their false
+> >                  * dependency fwnode links to be converted to device links.
+> >                  */
+> >                 sup_dev = get_dev_from_fwnode(sup);
+> >                 __fw_devlink_link_to_suppliers(sup_dev, sup_dev->fwnode);
+> >                 put_device(sup_dev);
+> >
+> > So when mdss gets added, we'll link it to dispcc and then check if
+> > dispcc has any suppliers it needs to link to. And that's when the
+> > logic will catch the cycle and fix it.
+> >
+> > Can you tell me why this wouldn't unblock the probing of dispcc? Are
+> > you actually hitting this on a device? If so, can you please check why
+> > this logic isn't sufficient to catch and undo the cycle?
+> >
+>
+> This is happening on Qualcomm SDM845 with Linus's tree.
+>
+> > Thanks,
+> > Saravana
+> >
+> > > So, the dsi0_phy will be "device_add'ed" (through of_platform_populate) by the mdss probe.
+> > > The mdss will probe defer waiting for the DISP_CC_MDSS_MDP_CLK, while
+> > > the dispcc will probe defer waiting for the dsi0_phy (supplier).
+> > >
+> > > Basically, this 'supplier availability check' does not work when a supplier might
+> > > be populated by a consumer of the device that is currently trying to probe.
 > > >
 > > >
->
+> > > Abel
+> > >
+> > >
+> > > >               return -EPROBE_DEFER;
+> > > >       }
+> > > > -     mutex_unlock(&wfs_lock);
+> > > > +     mutex_unlock(&fwnode_link_lock);
+> > > >
+> > > >       device_links_write_lock();
+> > > >
+> > > > @@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
+> > > >       bool val;
+> > > >
+> > > >       device_lock(dev);
+> > > > -     mutex_lock(&wfs_lock);
+> > > > -     val = !list_empty(&dev->links.needs_suppliers)
+> > > > -           && dev->links.need_for_probe;
+> > > > -     mutex_unlock(&wfs_lock);
+> > > > +     val = !list_empty(&dev->fwnode->suppliers);
+> > > >       device_unlock(dev);
+> > > >       return sysfs_emit(buf, "%u\n", val);
+> > > >  }
+> > > > @@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
+> > > >                       goto err_remove_dev_groups;
+> > > >       }
+> > > >
+> > > > -     if (fw_devlink_flags && !fw_devlink_is_permissive()) {
+> > > > +     if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
+> > > >               error = device_create_file(dev, &dev_attr_waiting_for_supplier);
+> > > >               if (error)
+> > > >                       goto err_remove_dev_online;
+> > > > --
+> > > > 2.29.2.454.gaff20da3a2-goog
+> > > >
+> > > >
+> >
