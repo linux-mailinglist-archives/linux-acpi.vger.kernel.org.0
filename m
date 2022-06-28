@@ -2,87 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F6EC55E6F8
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 18:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB45355E73B
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 18:32:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347629AbiF1PRL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 11:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50390 "EHLO
+        id S1347829AbiF1PYj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 11:24:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347320AbiF1PRK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 11:17:10 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF822FFE1
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 08:17:08 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id n8so4102310eda.0
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 08:17:07 -0700 (PDT)
+        with ESMTP id S1347515AbiF1PYi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 11:24:38 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E8D72CCAB
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 08:24:36 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id ej4so18092709edb.7
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 08:24:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=aSy4S6OkwU5Fk+1ynDZhkvWk4BHGx0AAK4bKb1Eq7Iw=;
-        b=aF1qoIqXU4mpquNkBwAfdWtJ+lDlwzsxizK1Yn65wbp/x+wE5PeMa3TztoOwBlO9V5
-         6ByMG5HEzbblW3i7YC1W7CuYl7kOXXaLv+9uL9RwkaGz6tLWfuSbrhCVWqYgbUxUyOXk
-         8dbeU6uydZlsr7Nqfv6+wXexrLVRawzM3aW7OchfnL8R8b1XhH23Msm3o4wOhiqFIEqC
-         ah5luGE1x5j/BuE2PxSU+KsQqVxJ3NTdS/6I8xvELHNev4ekIdhmWRJkP/Hdf4xQWekw
-         yyjTNh+i439N/mDdNyC7TMFU9cniWlPVfg2DO3YfXZyTWYDeiz9bWyBKfHZftQAJ/Qc5
-         90Uw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=DL6UdLR7FEJazkCj2FBmbmojXNOORr6ZP3bxU8f4s34=;
+        b=mLdlN6f7kHSvYsaEQVd6iE+DmBvqMoY9HcpLvjNSK3WoR6AGCaEQt2gX4sL2ZTxHcq
+         aaYHRwiWiZuGfkrhNtG4qdnVLGKoLo6vSMRX+WvsB5byLc4HA3jUOw+7XGsx2jw8/DZA
+         PnCJ3hE50NmYdBaf2o9GbtsXNfRwShpIKfCYC3QFVhJ9shbkn9fzR+OyiaosjjQQlzIP
+         qOp/nRC2fwrScCe+RMWxpT6XBtqVm12yKJCVy2fn3YBFDH4JIkuCt4Jg/BszewumPeH5
+         iY6mZMvcVuuJUTLSGunPyg3kIoISLQbjJF8ZU+XPrV664H/518ZGFtfkxANmkvX+bYGZ
+         6WUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=aSy4S6OkwU5Fk+1ynDZhkvWk4BHGx0AAK4bKb1Eq7Iw=;
-        b=mp5r06Hp+mqzHWsrHLg3tKQKXMO21FjgL1klmrrVMjmUlzMgAvDBYjTj2c2qkfv6RB
-         FWgXq1ixO5tBCUCKU8xWUfJdRW+5636sL243pwppTXbvzs45lUVRY4AtBKlUiRgQQaSP
-         SoWSIpxtk9Ez/sfNwq36M01nW/hzJMHfU3xxmQQ94uANmD4bcIlSWMSWwhHn7nKlHKQR
-         a8cQAhD7gmiDj8ItzUnWO3J7mirMtlviDE0mAWVX7yFdg238gOAw5D0yv0w4PZBeMRL3
-         D9fVPbbiQgxv4/Q9ivlI2ea1k07wDrtLs2qbyFf/ez7RX2hn/TlBeQiLLlNj+VpHSqqc
-         ifPQ==
-X-Gm-Message-State: AJIora/wrUdEH56HAG+8aNqCar4kDcxMwdGTc44KCQZXvoGCXVvBq57L
-        bC73DgJxJqj0Ti2ysZQ36BSQoA==
-X-Google-Smtp-Source: AGRyM1unDm6ZbuLpiudtxj55d4HB8KbGOWrH02RP85j/krqr1kifT1DKAYZtE1ZzPvcI52TyTgt0Yg==
-X-Received: by 2002:a05:6402:4302:b0:437:7990:992e with SMTP id m2-20020a056402430200b004377990992emr19557861edc.194.1656429426555;
-        Tue, 28 Jun 2022 08:17:06 -0700 (PDT)
-Received: from [192.168.0.181] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id g3-20020a1709061c8300b0070759e37183sm6542987ejh.59.2022.06.28.08.17.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jun 2022 08:17:06 -0700 (PDT)
-Message-ID: <f9eb6d94-c451-0c9f-f123-2f1324f68b68@linaro.org>
-Date:   Tue, 28 Jun 2022 17:17:05 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: fwnode_for_each_child_node() and OF backend discrepancy
-Content-Language: en-US
-To:     Michael Walle <michael@walle.cc>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=DL6UdLR7FEJazkCj2FBmbmojXNOORr6ZP3bxU8f4s34=;
+        b=GyHSCZCXq7HVFCp124yXqjq0cDghIMwmF5+95pxrFOKt7w5FFPQhAN11719BfuaMKr
+         G1+Nca59SoamhSpSM47ws/PVIUWHVRYLR+Muh5c3stVFPnkMat2E2pBUpjjA8koYAZtH
+         8vJje3nojz0aykbh/Os6uSwV8iz0nXClj397VpJoJ+SDzq/bkLzLW13SDCOQVtxHXPJv
+         /A4rco9WzCPP0ipxwxGgp631blNBLo4y5TF4soYKNt3p/j0lBbRI0eoSn2VPgi7YHSzv
+         ELAGHiU98pVhBUElwKSR2oLjGavpJoVF/BZ5ZbBPdNFa5kTWHb/eIFFYaM447wl3zkAd
+         8ZPA==
+X-Gm-Message-State: AJIora9gZrxggYNQgqDK48ObBy3WZzd2FysSvaJbljFCWFySEvatuQCP
+        X+mq+LVRAUE0OMmOjubNmmxzLA==
+X-Google-Smtp-Source: AGRyM1sEbyTGDyJve5ZC+CP0x18qpcJRoRcJs9T3qxqz5nCvJi/mGytefg0YFs3qKNU4hFqDLDn+Tg==
+X-Received: by 2002:a05:6402:653:b0:435:5aaf:20e7 with SMTP id u19-20020a056402065300b004355aaf20e7mr24046225edx.125.1656429874732;
+        Tue, 28 Jun 2022 08:24:34 -0700 (PDT)
+Received: from linaro.org ([94.52.112.99])
+        by smtp.gmail.com with ESMTPSA id a21-20020a056402169500b004357063bf60sm9787470edv.41.2022.06.28.08.24.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jun 2022 08:24:31 -0700 (PDT)
+Date:   Tue, 28 Jun 2022 18:24:29 +0300
+From:   Abel Vesa <abel.vesa@linaro.org>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>
-References: <4e1d5db9dea68d82c94336a1d6aac404@walle.cc>
- <Yrrhs3D++V79/4Jk@smile.fi.intel.com>
- <f17d3ecfecf4491dd15b1fa092205f3f@walle.cc>
- <CAHp75Vd6e3WwHPfyL=GP=vsoWhwGXadwQziiRRwfHPfjkX2eFg@mail.gmail.com>
- <2f2d7685e0e43194270a310034004970@walle.cc>
- <CAHp75VcANMjxgS6S24Zh+mz66usb6LBnQk-ENvU9JHSXXsG1DA@mail.gmail.com>
- <9e58f421c27121977d11381530757a6e@walle.cc>
- <3ab8afab-b6b7-46aa-06d4-6740cee422d7@linaro.org>
- <288f56ba9cfad46354203b7698babe91@walle.cc>
- <daaddbd5-1cd4-d3ce-869a-249bdd8aecb9@linaro.org>
- <96f40ae6abf76af3b643b1e1c60d1d9f@walle.cc>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <96f40ae6abf76af3b643b1e1c60d1d9f@walle.cc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        kernel-team@android.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devicetree@vger.kernel.org, Andrei Damian <A.Damian@nxp.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 13/17] driver core: Use device's fwnode to check if it
+ is waiting for suppliers
+Message-ID: <YrsdLQrOtg1qdaoE@linaro.org>
+References: <20201121020232.908850-1-saravanak@google.com>
+ <20201121020232.908850-14-saravanak@google.com>
+ <YrmXpcU1NTYW6T/n@linaro.org>
+ <CAGETcx8dwNcZFFzhhv=kMhpuQnyaEekrycpAmGusD-s+qfvA9g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx8dwNcZFFzhhv=kMhpuQnyaEekrycpAmGusD-s+qfvA9g@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,134 +89,207 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 28/06/2022 17:09, Michael Walle wrote:
->> It's bad also from another reason - the DT node was explicitly 
->> disabled,
->> but you perform some operation on actual hardware representing this
->> node. I would assume that a disabled DT node means it is not
->> operational, e.g. hardware not present or missing clocks, so you should
->> not treat it as another meaning - power down/unused.
-> 
-> Mh. Assume a SoC with an integrated ethernet switch. Some ports
-> are externally connected, some don't. I'd think they should be disabled,
-> no? Until now, all bindings I know, treat them as disabled. But OTOH
-> you still need to do some configurations on them, like disable port
-> forwarding, disable them or whatever. So the hardware is present, but
-> it is not connected to anything.
+On 22-06-27 15:30:25, Saravana Kannan wrote:
+> On Mon, Jun 27, 2022 at 4:42 AM Abel Vesa <abel.vesa@linaro.org> wrote:
+> >
+> > On 20-11-20 18:02:28, Saravana Kannan wrote:
+> > > To check if a device is still waiting for its supplier devices to be
+> > > added, we used to check if the devices is in a global
+> > > waiting_for_suppliers list. Since the global list will be deleted in
+> > > subsequent patches, this patch stops using this check.
+> > >
+> > > Instead, this patch uses a more device specific check. It checks if the
+> > > device's fwnode has any fwnode links that haven't been converted to
+> > > device links yet.
+> > >
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > ---
+> > >  drivers/base/core.c | 18 ++++++++----------
+> > >  1 file changed, 8 insertions(+), 10 deletions(-)
+> > >
+> > > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > > index 395dece1c83a..1873cecb0cc4 100644
+> > > --- a/drivers/base/core.c
+> > > +++ b/drivers/base/core.c
+> > > @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
+> > >  static LIST_HEAD(deferred_sync);
+> > >  static unsigned int defer_sync_state_count = 1;
+> > >  static DEFINE_MUTEX(fwnode_link_lock);
+> > > +static bool fw_devlink_is_permissive(void);
+> > >
+> > >  /**
+> > >   * fwnode_link_add - Create a link between two fwnode_handles.
+> > > @@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
+> > >        * Device waiting for supplier to become available is not allowed to
+> > >        * probe.
+> > >        */
+> > > -     mutex_lock(&wfs_lock);
+> > > -     if (!list_empty(&dev->links.needs_suppliers) &&
+> > > -         dev->links.need_for_probe) {
+> > > -             mutex_unlock(&wfs_lock);
+> > > +     mutex_lock(&fwnode_link_lock);
+> > > +     if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
+> > > +         !fw_devlink_is_permissive()) {
+> > > +             mutex_unlock(&fwnode_link_lock);
+> >
+> > Hi Saravana,
+> >
+> > First of, sorry for going back to this.
+>
+> No worries at all. If there's an issue with fw_devlink, I want to have it fixed.
+>
+> > There is a scenario where this check will not work and probably should
+> > work. It goes like this:
+> >
+> > A clock controller is not allowed to probe because it uses a clock from a child device of a
+> > consumer, like so:
+> >
+> >         dispcc: clock-controller@af00000 {
+> >                 clocks = <&dsi0_phy 0>;
+> >         };
+> >
+> >         mdss: mdss@ae00000 {
+> >                 clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
+> >
+> >                 dsi0_phy: dsi-phy@ae94400 {
+> >                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+> >                 };
+> >         };
+> >
+> > This is a real scenario actually, but I stripped it down to the essentials.
+>
+> I'm well aware of this scenario and explicitly wrote code to address this :)
+>
 
-I see your point and the meaning is okay... except that drivers don't
-touch disabled nodes. If a device (with some address space) is disabled,
-you do not write there "please be power off". Here the case is a bit
-different, because I think ports do not have their own address space.
-Yet it contradicts the logic - something is disabled in DT and you
-expect to perform actual operations on it.
+Actually, the problem seems to be when you have two dsi phys.
+Like so:
 
-> 
->>> But it works,
->>> as long as no ports are disabled and all ports are described in the
->>> device tree. But I have device trees where some are disabled.
->>
->> I am not sure if I follow this. You have devices which
->> 1. have unused ports, but all DT nodes are available/okay,
->> 2. have unused ports, which are in DT status=disabled?
->>
->> Doesn't case 2 break the bindings? If so, we don't care about such
->> out-of-tree users. We cannot support all of possible weird combinations
->> in out-of-tree DTS files...
-> 
-> Case 1 is invalid I think.
-> 
-> How does case 2 break the binding? It breaks the driver, yes. But not
-> the binding.
+         dispcc: clock-controller@af00000 {
+                 clocks = <&dsi0_phy 0>;
+                 clocks = <&dsi1_phy 0>;
+         };
 
-The binding asks to describe all the ports, not describe and disable them.
+         mdss: mdss@ae00000 {
+                 clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
 
-> I agree on the out-of-tree argument, *but* isn't that
-> what the binding is for, that out-of-tree device trees gonna work as
-> long as they follow the binding? And I don't see where it dictates that 
-> all
-> nodes must be enabled; nor that it must either be 2 or 8 children nodes.
+                 dsi0_phy: dsi-phy@ae94400 {
+                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+                 };
 
-True, that's not specific, but as with any incomplete hardware
-description in DTS, the binding cannot guarantee you
-backwards-compatibility.
+		 dsi1_phy: dsi-phy@ae64400 {
+                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+                 };
+         };
 
-The hardware should be described fully in DTS and bindings expect that
-as well.
+And from what I've seen happening so far is that the device_is_dependent
+check for the parent of the supplier (if it also a consumer) seems to return
+false on second pass of the same link due to the DL_FLAG_SYNC_STATE_ONLY
+being set this time around.
 
-> 
->>> I assume, you cannot read the hardware itself to get the number of
->>> physical ports; and we have the compatible "microchip,lan966x-switch",
->>> which is the generic one, so it could be the LAN9668 (with 8 ports)
->>> or the LAN9662 (with 2 ports).
->>
->> I'll keep that argument for future when I see again patches adding such
->> wildcard compatible. :) I had to discuss with some folks...
->>
->> Although the compatible difference does not have to be important here,
->> because one could say the 9662 and 9668 programming model is exaclty 
->> the
->> same and they differ by number of ports. This number of ports can be a
->> dedicated property or counted from the children (if they were all
->> available).
-> 
-> Mh. Rob was always in favor of dedicated compatible strings. And I
-> think there are also subtle differences. Eg. the LAN9662 has some kind
-> of accelerating engine, if I'm not mistaken.
-> 
-> So what do you prefer:
-> 
->    compatible = "microchip,lan9668";
-> and
->    compatible = "microchip,lan9662";
+> See this comment in fw_devlink_create_devlink()
+>
+>        /*
+>          * If we can't find the supplier device from its fwnode, it might be
+>          * due to a cyclic dependency between fwnodes. Some of these cycles can
+>          * be broken by applying logic. Check for these types of cycles and
+>          * break them so that devices in the cycle probe properly.
+>          *
+>          * If the supplier's parent is dependent on the consumer, then the
+>          * consumer and supplier have a cyclic dependency. Since fw_devlink
+>          * can't tell which of the inferred dependencies are incorrect, don't
+>          * enforce probe ordering between any of the devices in this cyclic
+>          * dependency. Do this by relaxing all the fw_devlink device links in
+>          * this cycle and by treating the fwnode link between the consumer and
+>          * the supplier as an invalid dependency.
+>          */
+>
 
-This one.
+So when this thing you mentioned above is happening for the second dsi
+phy (order doesn't matter), since the dsi phy itself cannot be found,
+the device_is_dependent is run for the same link: dispcc -> mdss
+(supplier -> consumer), but again, since it has the
+DL_FLAG_SYNC_STATE_ONLY this time around, it will skip that specific
+link.
 
-> 
-> or
-> 
->    compatible = "microchip,lan966x";
->    microchip,num-phys-ports = <8>;
-> and
->    compatible = "microchip,lan966x";
->    microchip,num-phys-ports = <2>;
->    microchip,accelerating-engine;
->    ..
-> 
-> The argument here was always, we don't want too much properties if
-> it can be deduced by the compatible string.
-> 
->>> We somehow have to retain backwards
->>> compatibility. Thus my idea was to at least make the handling slightly
->>> better and count *any* child nodes. So it doesn't fall apart with
->>> disabled
->>> nodes. Then introduce proper compatible strings
->>> "microchip,lan9668-switch"
->>> and use that to hardcode the num_phys_ports to 8. But there will be
->>> device trees with microchip,lan966x-switch out there, which we do want
->>> to support.
->>>
->>> I see the following options:
->>>   (1) just don't care and get rid of the "microchip,lan966x-switch"
->>>       compatible
->>>   (2) quick fix for the older kernels by counting all the nodes and
->>>       proper fix for the newer kernels with dedicated compatibles
->>>   (3) no fix for older kernels, introduce new compatibles for new
->>>       kernels
->>
->> I propose this one. I would not care about out-of-tree DTSes which
->> decided to disable random stuff and expect things working. :)
-> 
-> I'd argue, that is the usual case for all the switch bindings I
-> know of; not some unusual config. E.g. the SoC dtsi disables all
-> ports by default and only the ones which are actually connected
-> by the board are then enabled in the board dts, see
-> arch/arm/boot/dts/lan966x.dtsi
-> arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> 
-> That being said, I don't care too much about the older kernels.
-> So I'm fine with (3).
+> Applying this comment to your example, dispcc is the "consumer",
+> dsi0_phy is the "supplier" and mdss is the "supplier's parent".
+>
+> And because we can't guarantee the order of addition of these top
+> level devices is why I also have this piece of recursive call inside
+> __fw_devlink_link_to_suppliers():
+>
+>                 /*
+>                  * If a device link was successfully created to a supplier, we
+>                  * now need to try and link the supplier to all its suppliers.
+>                  *
+>                  * This is needed to detect and delete false dependencies in
+>                  * fwnode links that haven't been converted to a device link
+>                  * yet. See comments in fw_devlink_create_devlink() for more
+>                  * details on the false dependency.
+>                  *
+>                  * Without deleting these false dependencies, some devices will
+>                  * never probe because they'll keep waiting for their false
+>                  * dependency fwnode links to be converted to device links.
+>                  */
+>                 sup_dev = get_dev_from_fwnode(sup);
+>                 __fw_devlink_link_to_suppliers(sup_dev, sup_dev->fwnode);
+>                 put_device(sup_dev);
+>
+> So when mdss gets added, we'll link it to dispcc and then check if
+> dispcc has any suppliers it needs to link to. And that's when the
+> logic will catch the cycle and fix it.
+>
+> Can you tell me why this wouldn't unblock the probing of dispcc? Are
+> you actually hitting this on a device? If so, can you please check why
+> this logic isn't sufficient to catch and undo the cycle?
+>
 
+This is happening on Qualcomm SDM845 with Linus's tree.
 
-Best regards,
-Krzysztof
+> Thanks,
+> Saravana
+>
+> > So, the dsi0_phy will be "device_add'ed" (through of_platform_populate) by the mdss probe.
+> > The mdss will probe defer waiting for the DISP_CC_MDSS_MDP_CLK, while
+> > the dispcc will probe defer waiting for the dsi0_phy (supplier).
+> >
+> > Basically, this 'supplier availability check' does not work when a supplier might
+> > be populated by a consumer of the device that is currently trying to probe.
+> >
+> >
+> > Abel
+> >
+> >
+> > >               return -EPROBE_DEFER;
+> > >       }
+> > > -     mutex_unlock(&wfs_lock);
+> > > +     mutex_unlock(&fwnode_link_lock);
+> > >
+> > >       device_links_write_lock();
+> > >
+> > > @@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
+> > >       bool val;
+> > >
+> > >       device_lock(dev);
+> > > -     mutex_lock(&wfs_lock);
+> > > -     val = !list_empty(&dev->links.needs_suppliers)
+> > > -           && dev->links.need_for_probe;
+> > > -     mutex_unlock(&wfs_lock);
+> > > +     val = !list_empty(&dev->fwnode->suppliers);
+> > >       device_unlock(dev);
+> > >       return sysfs_emit(buf, "%u\n", val);
+> > >  }
+> > > @@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
+> > >                       goto err_remove_dev_groups;
+> > >       }
+> > >
+> > > -     if (fw_devlink_flags && !fw_devlink_is_permissive()) {
+> > > +     if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
+> > >               error = device_create_file(dev, &dev_attr_waiting_for_supplier);
+> > >               if (error)
+> > >                       goto err_remove_dev_online;
+> > > --
+> > > 2.29.2.454.gaff20da3a2-goog
+> > >
+> > >
+>
