@@ -2,126 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D9155F02D
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 23:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36D0855F03C
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 23:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231555AbiF1VHl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 17:07:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52832 "EHLO
+        id S229921AbiF1VQg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 17:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231518AbiF1VHk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 17:07:40 -0400
-Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78303A1A1;
-        Tue, 28 Jun 2022 14:07:38 -0700 (PDT)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 8575822246;
-        Tue, 28 Jun 2022 23:07:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1656450456;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bcnmTdzKIt3h8Y/cXjAdBaWMZpAGYim0e79RrQFMrHc=;
-        b=BxoSIxSld2y217J+0raDd+5Og1lRRU6snjcxB8pR7pJ9N56FXcy/LdBf0iJJjzT0+ozZTd
-        LsUaTNCqrOKVhp8xuIAdQFzQNEVE267QifIa7wW8it7dTsS3Rf2K4acGMboA46D06bCmPB
-        etoEeefURRQ2b/1U7cqikoNYBa7mQdY=
+        with ESMTP id S229556AbiF1VQe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 17:16:34 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AE431DC9
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 14:16:33 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-317741c86fdso130234177b3.2
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 14:16:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9tDe52GGxzPcMmdw3mYkuOmIyW05Nrirch7vLV731MU=;
+        b=ljimGrfwxm5aduRgvJ1pepWTHcFxjaYSqtMuTkTWyjsLXWTlNz6xomYBkx1fap/1Fz
+         qS8dDnrrWxY3MG3d1mIwuS47Xawi2WwcyElxjPReaRIL8ZV5zWidTLmkfo/ujoVGssRN
+         /xsqxr59B4wRpDdgvBn/GQqpXCva/Yt4wMguNchxEVtnpSMOdvU+D5GkDB9kvH2oqLnz
+         mYfIbvJKlSA6kOq2I4Pa1ny1gdS/5PDmwr0GfsJX7sSfhmMVZTLMPbnHRa4rTJOG5jft
+         DNFUJ1KKOABN5BFrwE0k5F40J5+zHDxJ1iXN9FDtI4TvdLEi0sHrUH5soI2fJcx9esd1
+         ta0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9tDe52GGxzPcMmdw3mYkuOmIyW05Nrirch7vLV731MU=;
+        b=eYKEKZk8wxBt9+9LtyVNO5e7eH5tUus/WIsukAyrJTKAeqikZ6JqE4LiSxr9I943Nn
+         T2hMww99XqldRh6AfCctevc43RU1piUz9yrr7mE8jF8wbwNNqyKhLcfo8FAoAPzU4tDN
+         0kz/nt/vlubwUDJUMjGSWJ3mdgdOzZLXkKjiAYHOpWHEt+l7If3iG+6DPNHEXiZEEENv
+         4kYKUEuVgd2E1Wh34LQaoNlGIxdzXOC8C5QnqQ5E+fNZhE/lMjDP4EPdBBVM9PQYX/Kx
+         crv3jII4tMOS5Q+imdVInd2UcCJWnGlU867QZzElHJK4A/qSpoPcedOvvL6qB0GtYH5W
+         rUWg==
+X-Gm-Message-State: AJIora+J8lfbY331VRhpCPdravTfeeRpTPS4cP3SOIGdVCNYrTstFcHq
+        mkQ+ri0kV7XgyiNFqCl8pV1XoLTV6+NlN5mtK3Li3Q==
+X-Google-Smtp-Source: AGRyM1udrv3zSZinF+m5gMrwovLJdn1y1LkRnjCvhw5Acr31rfHUsleomet3XGcELReoJH28TfIHBgBF3fWyYtV2/tk=
+X-Received: by 2002:a0d:e20a:0:b0:317:ce36:a3a0 with SMTP id
+ l10-20020a0de20a000000b00317ce36a3a0mr120718ywe.448.1656450991969; Tue, 28
+ Jun 2022 14:16:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 28 Jun 2022 23:07:34 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Horatiu Vultur <horatiu.vultur@microchip.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: fwnode_for_each_child_node() and OF backend discrepancy
-In-Reply-To: <20220628205254.gnllvaz7w5jmpfe5@soft-dev3-1.localhost>
-References: <CAHp75Vd6e3WwHPfyL=GP=vsoWhwGXadwQziiRRwfHPfjkX2eFg@mail.gmail.com>
- <2f2d7685e0e43194270a310034004970@walle.cc>
- <CAHp75VcANMjxgS6S24Zh+mz66usb6LBnQk-ENvU9JHSXXsG1DA@mail.gmail.com>
- <9e58f421c27121977d11381530757a6e@walle.cc>
- <3ab8afab-b6b7-46aa-06d4-6740cee422d7@linaro.org>
- <288f56ba9cfad46354203b7698babe91@walle.cc>
- <daaddbd5-1cd4-d3ce-869a-249bdd8aecb9@linaro.org>
- <96f40ae6abf76af3b643b1e1c60d1d9f@walle.cc>
- <f9eb6d94-c451-0c9f-f123-2f1324f68b68@linaro.org>
- <CAHp75VdWdUY-XyGBsQb3i9thCswmBo4UEAEaZCO5MC_HMW+fSQ@mail.gmail.com>
- <20220628205254.gnllvaz7w5jmpfe5@soft-dev3-1.localhost>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <4782de1fc6692a98bd6c267c2714325f@walle.cc>
-X-Sender: michael@walle.cc
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
+ <YqNCDrqcp9t8HlUJ@kroah.com> <OSBPR01MB203749DA00C7BEE5741AFEB980AA9@OSBPR01MB2037.jpnprd01.prod.outlook.com>
+ <YqiAY689pOJbHKUd@kroah.com> <TY2PR01MB20426C7822E46B2E8B2525FB80AF9@TY2PR01MB2042.jpnprd01.prod.outlook.com>
+ <CACRpkdaV8+06gzxi3ou4+nxa28R5Rhzg+KJ8HWh4gyK4AkoC9g@mail.gmail.com>
+ <086370dd-281f-5ac6-3a0f-f1b80500c668@intel.com> <CACRpkdYTNuszctk=stB+RLr5kKwhR2ebF2MJCYQwMwYYPPReLg@mail.gmail.com>
+ <6934b82d-db12-8a17-7dea-7bcbd4fe8566@intel.com>
+In-Reply-To: <6934b82d-db12-8a17-7dea-7bcbd4fe8566@intel.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 28 Jun 2022 23:17:22 +0200
+Message-ID: <CACRpkdaW3nLsemEZgKUTBYR8F_kvA7C1O4i6FjmjOq86Jc5CKA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/6] Add hardware prefetch control driver for A64FX and x86
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     "tarumizu.kohei@fujitsu.com" <tarumizu.kohei@fujitsu.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
+        "eugenis@google.com" <eugenis@google.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "pcc@google.com" <pcc@google.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "marcos@orca.pet" <marcos@orca.pet>,
+        "marcan@marcan.st" <marcan@marcan.st>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
+        "conor.dooley@microchip.com" <conor.dooley@microchip.com>,
+        "arnd@arndb.de" <arnd@arndb.de>, "ast@kernel.org" <ast@kernel.org>,
+        "peter.chen@kernel.org" <peter.chen@kernel.org>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Paolo Valente <paolo.valente@unimore.it>,
+        Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am 2022-06-28 22:52, schrieb Horatiu Vultur:
-> The 06/28/2022 22:28, Andy Shevchenko wrote:
->> EXTERNAL EMAIL: Do not click links or open attachments unless you know 
->> the content is safe
->> 
->> On Tue, Jun 28, 2022 at 5:17 PM Krzysztof Kozlowski
->> <krzysztof.kozlowski@linaro.org> wrote:
->> > On 28/06/2022 17:09, Michael Walle wrote:
-> 
-> Hi,
-> 
-> Sorry for joint this late.
-> 
->> 
->> ...
->> 
->> > > Mh. Assume a SoC with an integrated ethernet switch. Some ports
->> > > are externally connected, some don't. I'd think they should be disabled,
->> > > no? Until now, all bindings I know, treat them as disabled. But OTOH
->> > > you still need to do some configurations on them, like disable port
->> > > forwarding, disable them or whatever. So the hardware is present, but
->> > > it is not connected to anything.
->> >
->> > I see your point and the meaning is okay... except that drivers don't
->> > touch disabled nodes. If a device (with some address space) is disabled,
->> > you do not write there "please be power off". Here the case is a bit
->> > different, because I think ports do not have their own address space.
->> > Yet it contradicts the logic - something is disabled in DT and you
->> > expect to perform actual operations on it.
->> 
->> You beat me up to this comment, I also see a contradiction of what
->> "disabled" means in your, Michael, case and what it should be.
->> 
->> If you need to perform an operation on some piece of HW, it has not to
->> be disabled.
->> 
->> Or, you may deduce them by knowing how many ports in hardware (this is
->> usually done not by counting the nodes, but by a property) and do
->> whatever you want on ones, you have  not listed (by port_num) in the
->> array of parsed children.
-> 
-> It is not possible to have a defined for the MAX number of ports that
-> supported by lan966x. Which is 8. And assigned that define to
-> num_phys_ports instead of counting the entries in DT?
+On Tue, Jun 28, 2022 at 11:02 PM Dave Hansen <dave.hansen@intel.com> wrote:
+> On 6/28/22 13:20, Linus Walleij wrote:
+> >
+> > Well if the knobs are exposed to userspace, how do people using
+> > these knobs know when to turn them? A profiler? perf? All that
+> > data is available to the kernel too.
+>
+> They run their fortran app.  Change the MSRs.  Run it again.  See if it
+> simulated the nuclear weapon blast any faster or slower.  Rinse.  Repeat.
 
-You mean also for the lan9662? I'm pretty sure that doesn't
-work. Have a look where num_phys_ports is used. One random
-example:
-https://elixir.bootlin.com/linux/latest/source/drivers/net/ethernet/microchip/lan966x/lan966x_main.c#L874
+That sounds like a schoolbook definition of the trial-and-error method.
+https://en.wikipedia.org/wiki/Trial_and_error
 
-So if your switch only has 4 ports, then I'd guess you'll
-access a non-existing register.
+That's fair. But these people really need a better hammer.
 
--michael
+> This interface would take a good chunk of the x86 wrmsr(1) audience and
+> convert them over to a less dangerous interface.  That's a win on x86.
+> We don't even *remotely* have line-of-sight for a generic solution for
+> the kernel to figure out a single "best" value for these registers.
+
+Maybe less dangerous for them, but maybe more dangerous for the kernel
+community who signs up to maintain the behaviour of that interface
+perpetually.
+
+Yours,
+Linus Walleij
