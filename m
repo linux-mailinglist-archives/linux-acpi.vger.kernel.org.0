@@ -2,129 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 101C455F019
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 23:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60D9155F02D
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 23:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbiF1VCt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 17:02:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46988 "EHLO
+        id S231555AbiF1VHl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 17:07:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbiF1VCs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 17:02:48 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA433393DF;
-        Tue, 28 Jun 2022 14:02:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656450167; x=1687986167;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wZ/uTrA3bjyScAuweu7zLmoZX9qpUo9vDnaXIZOrcKs=;
-  b=g/hIDkwQ47/ktR4JtVBeDbfARqwRF65lQARKj80eJ5VAxnH0SgZqp+oZ
-   nvlldvupjNiBnGTKYD6WcePml9afjzxsKMdBQqe39anVH2vB003Ck2CQQ
-   FALbnT0JGXqXmW8tKZzlBJeCxe1MnZqWl9g3Cdb5wFWMindOOaxwSB8O8
-   tb5g2eAtZulxPZBXMtsI945Tbnn6exfI6447FQB9aztnASKNVYKNLcqIa
-   aR2z0C70TwmlimuFwtCcysTH7SORkaToHefCYln1CEEVU+Cgc4u7Mu59Z
-   GXXhc9Ro0y0Yi6ebauijHAIXtKZ5UcHGC8ayaOnMNByXlYgAC2IiEH5Kw
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10392"; a="368160480"
-X-IronPort-AV: E=Sophos;i="5.92,229,1650956400"; 
-   d="scan'208";a="368160480"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 14:02:47 -0700
-X-IronPort-AV: E=Sophos;i="5.92,229,1650956400"; 
-   d="scan'208";a="588004851"
-Received: from staibmic-mobl1.amr.corp.intel.com (HELO [10.209.67.166]) ([10.209.67.166])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 14:02:46 -0700
-Message-ID: <6934b82d-db12-8a17-7dea-7bcbd4fe8566@intel.com>
-Date:   Tue, 28 Jun 2022 14:01:40 -0700
+        with ESMTP id S231518AbiF1VHk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 17:07:40 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78303A1A1;
+        Tue, 28 Jun 2022 14:07:38 -0700 (PDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 8575822246;
+        Tue, 28 Jun 2022 23:07:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1656450456;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bcnmTdzKIt3h8Y/cXjAdBaWMZpAGYim0e79RrQFMrHc=;
+        b=BxoSIxSld2y217J+0raDd+5Og1lRRU6snjcxB8pR7pJ9N56FXcy/LdBf0iJJjzT0+ozZTd
+        LsUaTNCqrOKVhp8xuIAdQFzQNEVE267QifIa7wW8it7dTsS3Rf2K4acGMboA46D06bCmPB
+        etoEeefURRQ2b/1U7cqikoNYBa7mQdY=
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v5 0/6] Add hardware prefetch control driver for A64FX and
- x86
-Content-Language: en-US
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     "tarumizu.kohei@fujitsu.com" <tarumizu.kohei@fujitsu.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
-        "eugenis@google.com" <eugenis@google.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "pcc@google.com" <pcc@google.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "marcos@orca.pet" <marcos@orca.pet>,
-        "marcan@marcan.st" <marcan@marcan.st>,
-        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
-        "conor.dooley@microchip.com" <conor.dooley@microchip.com>,
-        "arnd@arndb.de" <arnd@arndb.de>, "ast@kernel.org" <ast@kernel.org>,
-        "peter.chen@kernel.org" <peter.chen@kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Paolo Valente <paolo.valente@unimore.it>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20220607120530.2447112-1-tarumizu.kohei@fujitsu.com>
- <YqNCDrqcp9t8HlUJ@kroah.com>
- <OSBPR01MB203749DA00C7BEE5741AFEB980AA9@OSBPR01MB2037.jpnprd01.prod.outlook.com>
- <YqiAY689pOJbHKUd@kroah.com>
- <TY2PR01MB20426C7822E46B2E8B2525FB80AF9@TY2PR01MB2042.jpnprd01.prod.outlook.com>
- <CACRpkdaV8+06gzxi3ou4+nxa28R5Rhzg+KJ8HWh4gyK4AkoC9g@mail.gmail.com>
- <086370dd-281f-5ac6-3a0f-f1b80500c668@intel.com>
- <CACRpkdYTNuszctk=stB+RLr5kKwhR2ebF2MJCYQwMwYYPPReLg@mail.gmail.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <CACRpkdYTNuszctk=stB+RLr5kKwhR2ebF2MJCYQwMwYYPPReLg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Date:   Tue, 28 Jun 2022 23:07:34 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Horatiu Vultur <horatiu.vultur@microchip.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: fwnode_for_each_child_node() and OF backend discrepancy
+In-Reply-To: <20220628205254.gnllvaz7w5jmpfe5@soft-dev3-1.localhost>
+References: <CAHp75Vd6e3WwHPfyL=GP=vsoWhwGXadwQziiRRwfHPfjkX2eFg@mail.gmail.com>
+ <2f2d7685e0e43194270a310034004970@walle.cc>
+ <CAHp75VcANMjxgS6S24Zh+mz66usb6LBnQk-ENvU9JHSXXsG1DA@mail.gmail.com>
+ <9e58f421c27121977d11381530757a6e@walle.cc>
+ <3ab8afab-b6b7-46aa-06d4-6740cee422d7@linaro.org>
+ <288f56ba9cfad46354203b7698babe91@walle.cc>
+ <daaddbd5-1cd4-d3ce-869a-249bdd8aecb9@linaro.org>
+ <96f40ae6abf76af3b643b1e1c60d1d9f@walle.cc>
+ <f9eb6d94-c451-0c9f-f123-2f1324f68b68@linaro.org>
+ <CAHp75VdWdUY-XyGBsQb3i9thCswmBo4UEAEaZCO5MC_HMW+fSQ@mail.gmail.com>
+ <20220628205254.gnllvaz7w5jmpfe5@soft-dev3-1.localhost>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <4782de1fc6692a98bd6c267c2714325f@walle.cc>
+X-Sender: michael@walle.cc
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/28/22 13:20, Linus Walleij wrote:
-> On Tue, Jun 28, 2022 at 5:47 PM Dave Hansen <dave.hansen@intel.com> wrote:
->> On 6/27/22 02:36, Linus Walleij wrote:
->>> The right way to solve this is to make the Linux kernel contain the
->>> necessary heuristics to identify which tasks and thus cores need this
->>> to improve efficiency and then apply it automatically.
->>
->> I agree in theory.  But, I also want a pony in theory.
->>
->> Any suggestions for how to do this in the real world?
+Am 2022-06-28 22:52, schrieb Horatiu Vultur:
+> The 06/28/2022 22:28, Andy Shevchenko wrote:
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you know 
+>> the content is safe
+>> 
+>> On Tue, Jun 28, 2022 at 5:17 PM Krzysztof Kozlowski
+>> <krzysztof.kozlowski@linaro.org> wrote:
+>> > On 28/06/2022 17:09, Michael Walle wrote:
 > 
-> Well if the knobs are exposed to userspace, how do people using
-> these knobs know when to turn them? A profiler? perf? All that
-> data is available to the kernel too.
+> Hi,
+> 
+> Sorry for joint this late.
+> 
+>> 
+>> ...
+>> 
+>> > > Mh. Assume a SoC with an integrated ethernet switch. Some ports
+>> > > are externally connected, some don't. I'd think they should be disabled,
+>> > > no? Until now, all bindings I know, treat them as disabled. But OTOH
+>> > > you still need to do some configurations on them, like disable port
+>> > > forwarding, disable them or whatever. So the hardware is present, but
+>> > > it is not connected to anything.
+>> >
+>> > I see your point and the meaning is okay... except that drivers don't
+>> > touch disabled nodes. If a device (with some address space) is disabled,
+>> > you do not write there "please be power off". Here the case is a bit
+>> > different, because I think ports do not have their own address space.
+>> > Yet it contradicts the logic - something is disabled in DT and you
+>> > expect to perform actual operations on it.
+>> 
+>> You beat me up to this comment, I also see a contradiction of what
+>> "disabled" means in your, Michael, case and what it should be.
+>> 
+>> If you need to perform an operation on some piece of HW, it has not to
+>> be disabled.
+>> 
+>> Or, you may deduce them by knowing how many ports in hardware (this is
+>> usually done not by counting the nodes, but by a property) and do
+>> whatever you want on ones, you have  not listed (by port_num) in the
+>> array of parsed children.
+> 
+> It is not possible to have a defined for the MAX number of ports that
+> supported by lan966x. Which is 8. And assigned that define to
+> num_phys_ports instead of counting the entries in DT?
 
-They run their fortran app.  Change the MSRs.  Run it again.  See if it
-simulated the nuclear weapon blast any faster or slower.  Rinse.  Repeat.
+You mean also for the lan9662? I'm pretty sure that doesn't
+work. Have a look where num_phys_ports is used. One random
+example:
+https://elixir.bootlin.com/linux/latest/source/drivers/net/ethernet/microchip/lan966x/lan966x_main.c#L874
 
-One thing that is missing from the changelog and cover letter here: On
-x86, there's a 'wrmsr(1)' tool.  That took pokes at Model Specific
-Registers (MSRs) via the /dev/cpu/X/msr interface.  That interface is a
-very, very thinly-veiled wrapper around the WRMSR (WRite MSR) instruction.
+So if your switch only has 4 ports, then I'd guess you'll
+access a non-existing register.
 
-In other words, on x86, our current interface allows userspace programs
-to arbitrarily poke at our most sensitive hardware configuration
-registers.  One of the most common reasons users have reported doing
-this (we have pr_warn()ings about it) is controlling the prefetch hardware.
-
-This interface would take a good chunk of the x86 wrmsr(1) audience and
-convert them over to a less dangerous interface.  That's a win on x86.
-We don't even *remotely* have line-of-sight for a generic solution for
-the kernel to figure out a single "best" value for these registers.
+-michael
