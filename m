@@ -2,93 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0D955DAC9
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77FEE55E3CC
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343921AbiF1MBU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 08:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58486 "EHLO
+        id S1345867AbiF1Mxz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 08:53:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbiF1MBT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 08:01:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 06162248D8
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 05:01:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1656417677;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UB+jWJJOrlgRb4vi0jdlysSgI5DHBdJAyORCSjXEsls=;
-        b=Az5jt0RbqyNgUQU/iUCfN032jzUhzLxgFxGc4dsjv8TCDseuMt3iwn/1oXUHNbSGkjm84X
-        66nQDiR4wllA0U3VIbT/FQlFTgFoJceTtNwJuDrcLijKqTKWmCsi+qwQNYZse8NhjP9jDf
-        5aAgGYvO1biLK8h03JpYXAmRxfBwmOc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-164-fz3b44zqPpm2y0JZjbGwrg-1; Tue, 28 Jun 2022 08:01:15 -0400
-X-MC-Unique: fz3b44zqPpm2y0JZjbGwrg-1
-Received: by mail-wr1-f71.google.com with SMTP id n5-20020adf8b05000000b00219ece7272bso1746577wra.8
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 05:01:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=UB+jWJJOrlgRb4vi0jdlysSgI5DHBdJAyORCSjXEsls=;
-        b=ux5eoQjMqRe4tNIJRmxWtBbonxxpf5BB0BXd8rUTagc0w+NqnmRA3KK7cHBodrItlt
-         Q+pDfHGjEc25nkkIubP0oZNOKr0xyqP/vLzx6EHXN8gEX1lGavdfIgLXiRPkQCU/Yygd
-         J6QMEQGgNdIgETj9dRLKKk2ukPUDnX5XpXuzwxSmZzFJ7+j7TUyHX71ghZ1VIv5QJhCR
-         0SxXUDG7gk0S/3tSqJXl0nSHdW8Manafj41JoAAHo2jNPjA6RPiaAghwbWsU14VEvYlE
-         JGaXuloZyZ9bTXAGSOp5WUaV6I1b2G1+OUPoNSPlIEFRgRMKu0I5cILfQS8CK48DoP/t
-         /KHw==
-X-Gm-Message-State: AJIora9NYzOj99FINX7fRXGXDAGWfn2/mKSBBq5yIljOIh++Lt9zmISk
-        +VIK40XzoZn4TFZ3v7XK3vJTj4HS3piaUKToSBXFAFLbOW+hoxGfFjTUD7tleaMmlt+vix0Dsci
-        +nJBxixln/yWiNXzrZyGZJA==
-X-Received: by 2002:a05:6000:60b:b0:21b:bd9b:aa15 with SMTP id bn11-20020a056000060b00b0021bbd9baa15mr16293319wrb.365.1656417674680;
-        Tue, 28 Jun 2022 05:01:14 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1t5u3NHA/Kst5TxtCM47Bf7rL+ll44GXY6Jcg/sFDaehltv6YIbLBct0treW57gZ+WpSik8TA==
-X-Received: by 2002:a05:6000:60b:b0:21b:bd9b:aa15 with SMTP id bn11-20020a056000060b00b0021bbd9baa15mr16293277wrb.365.1656417674397;
-        Tue, 28 Jun 2022 05:01:14 -0700 (PDT)
-Received: from localhost (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id n9-20020a7bcbc9000000b003a039054567sm17186570wmi.18.2022.06.28.05.01.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 05:01:13 -0700 (PDT)
-Date:   Tue, 28 Jun 2022 14:01:12 +0200
-From:   Igor Mammedov <imammedo@redhat.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Kai Huang <kai.huang@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kvm-devel <kvm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Len Brown <len.brown@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        isaku.yamahata@intel.com, Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v5 03/22] cc_platform: Add new attribute to prevent ACPI
- memory hotplug
-Message-ID: <20220628140112.661154cf@redhat.com>
-In-Reply-To: <CAJZ5v0jEJNdmkidvcOiRn+OVt01D5095t+nyXaJHKsqEAOvcBQ@mail.gmail.com>
-References: <cover.1655894131.git.kai.huang@intel.com>
-        <87dc19c47bad73509359c8e1e3a81d51d1681e4c.1655894131.git.kai.huang@intel.com>
-        <CAJZ5v0jEJNdmkidvcOiRn+OVt01D5095t+nyXaJHKsqEAOvcBQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-redhat-linux-gnu)
+        with ESMTP id S230242AbiF1Mxy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 08:53:54 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 16DE12ED50;
+        Tue, 28 Jun 2022 05:53:54 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B90C152B;
+        Tue, 28 Jun 2022 05:53:54 -0700 (PDT)
+Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 971A53F5A1;
+        Tue, 28 Jun 2022 05:53:52 -0700 (PDT)
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-efi@vger.kernel.org
+Cc:     Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH v2 0/4] ACPI: Enable Platform Runtime Mechanism(PRM) support on ARM64
+Date:   Tue, 28 Jun 2022 13:53:42 +0100
+Message-Id: <20220628125346.693304-1-sudeep.holla@arm.com>
+X-Mailer: git-send-email 2.37.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -96,115 +44,34 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 22 Jun 2022 13:45:01 +0200
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+Hi,
 
-> On Wed, Jun 22, 2022 at 1:16 PM Kai Huang <kai.huang@intel.com> wrote:
-> >
-> > Platforms with confidential computing technology may not support ACPI
-> > memory hotplug when such technology is enabled by the BIOS.  Examples
-> > include Intel platforms which support Intel Trust Domain Extensions
-> > (TDX).
-> >
-> > If the kernel ever receives ACPI memory hotplug event, it is likely a
-> > BIOS bug.  For ACPI memory hot-add, the kernel should speak out this is
-> > a BIOS bug and reject the new memory.  For hot-removal, for simplicity
-> > just assume the kernel cannot continue to work normally, and just BUG().
-> >
-> > Add a new attribute CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED to indicate the
-> > platform doesn't support ACPI memory hotplug, so that kernel can handle
-> > ACPI memory hotplug events for such platform.
-> >
-> > In acpi_memory_device_{add|remove}(), add early check against this
-> > attribute and handle accordingly if it is set.
-> >
-> > Signed-off-by: Kai Huang <kai.huang@intel.com>
-> > ---
-> >  drivers/acpi/acpi_memhotplug.c | 23 +++++++++++++++++++++++
-> >  include/linux/cc_platform.h    | 10 ++++++++++
-> >  2 files changed, 33 insertions(+)
-> >
-> > diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-> > index 24f662d8bd39..94d6354ea453 100644
-> > --- a/drivers/acpi/acpi_memhotplug.c
-> > +++ b/drivers/acpi/acpi_memhotplug.c
-> > @@ -15,6 +15,7 @@
-> >  #include <linux/acpi.h>
-> >  #include <linux/memory.h>
-> >  #include <linux/memory_hotplug.h>
-> > +#include <linux/cc_platform.h>
-> >
-> >  #include "internal.h"
-> >
-> > @@ -291,6 +292,17 @@ static int acpi_memory_device_add(struct acpi_device *device,
-> >         if (!device)
-> >                 return -EINVAL;
-> >
-> > +       /*
-> > +        * If the confidential computing platform doesn't support ACPI
-> > +        * memory hotplug, the BIOS should never deliver such event to
-> > +        * the kernel.  Report ACPI CPU hot-add as a BIOS bug and ignore
-> > +        * the memory device.
-> > +        */
-> > +       if (cc_platform_has(CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED)) {  
-> 
-> Same comment as for the acpi_processor driver: this will affect the
-> initialization too and it would be cleaner to reset the
-> .hotplug.enabled flag of the scan handler.
+This tiny series is to enable Platform Runtime Mechanism(PRM) support on
+ARM64. Not much changes. Just enabling the build and moving the config
+option so that it is not listed under the topmost menu for ARM64.
 
-with QEMU, it is likely broken when memory is added as
-  '-device pc-dimm'
-on CLI since it's advertised only as device node in DSDT.
+Regards,
+Sudeep
 
-> 
-> > +               dev_err(&device->dev, "[BIOS bug]: Platform doesn't support ACPI memory hotplug. New memory device ignored.\n");
-> > +               return -EINVAL;
-> > +       }
-> > +
-> >         mem_device = kzalloc(sizeof(struct acpi_memory_device), GFP_KERNEL);
-> >         if (!mem_device)
-> >                 return -ENOMEM;
-> > @@ -334,6 +346,17 @@ static void acpi_memory_device_remove(struct acpi_device *device)
-> >         if (!device || !acpi_driver_data(device))
-> >                 return;
-> >
-> > +       /*
-> > +        * The confidential computing platform is broken if ACPI memory
-> > +        * hot-removal isn't supported but it happened anyway.  Assume
-> > +        * it is not guaranteed that the kernel can continue to work
-> > +        * normally.  Just BUG().
-> > +        */
-> > +       if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED)) {
-> > +               dev_err(&device->dev, "Platform doesn't support ACPI memory hotplug. BUG().\n");
-> > +               BUG();
-> > +       }
-> > +
-> >         mem_device = acpi_driver_data(device);
-> >         acpi_memory_remove_memory(mem_device);
-> >         acpi_memory_device_free(mem_device);
-> > diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
-> > index 9ce9256facc8..b831c24bd7f6 100644
-> > --- a/include/linux/cc_platform.h
-> > +++ b/include/linux/cc_platform.h
-> > @@ -93,6 +93,16 @@ enum cc_attr {
-> >          * Examples include TDX platform.
-> >          */
-> >         CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED,
-> > +
-> > +       /**
-> > +        * @CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED: ACPI memory hotplug is
-> > +        *                                        not supported.
-> > +        *
-> > +        * The platform/os does not support ACPI memory hotplug.
-> > +        *
-> > +        * Examples include TDX platform.
-> > +        */
-> > +       CC_ATTR_ACPI_MEMORY_HOTPLUG_DISABLED,
-> >  };
-> >
-> >  #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
-> > --
-> > 2.36.1
-> >  
-> 
+v1[1]->v2:
+	- Changed arch_efi_call_virt() to use typeof instead of forced
+	  typecasting to void pointer
+	- Added change in PRMT driver to move handler_addr type to void
+	  pointer
+
+[1] https://lore.kernel.org/linux-acpi/20220624152331.4009502-1-sudeep.holla@arm.com
+
+Sudeep Holla (4):
+  ACPI: PRM: Change handler_addr type to void pointer
+  arm64: efi: Simplify arch_efi_call_virt() macro by using typeof()
+  ACPI: Enable Platform Runtime Mechanism(PRM) support on ARM64
+  ACPI: Move PRM config option under the main ACPI config
+
+ arch/arm64/include/asm/efi.h |  3 +--
+ drivers/acpi/Kconfig         | 30 +++++++++++++++---------------
+ drivers/acpi/prmt.c          |  4 ++--
+ 3 files changed, 18 insertions(+), 19 deletions(-)
+
+--
+2.37.0
 
