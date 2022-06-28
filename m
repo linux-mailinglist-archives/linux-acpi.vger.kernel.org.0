@@ -2,68 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0EE955DAE9
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E29555DD6D
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344360AbiF1K3u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 06:29:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33584 "EHLO
+        id S1344907AbiF1KcT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 06:32:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244644AbiF1K3t (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 06:29:49 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09EB62DABD;
-        Tue, 28 Jun 2022 03:29:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656412188; x=1687948188;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Au78MCEIZK1ygGIJgEKGdmYvYhaAqsHQWJs7/sj4sBI=;
-  b=YsZNcazOeYMnaz7YP/eSg2Yk6dpWEktSLzJkxBzD6Us4x7l+o3qiTiI6
-   MzFCnCviI+42v7d/xiRCGT6bSqaMXHMwJ+l9iPbgdNh8hX2J2lt4wgAv6
-   Mi9BTw2kEjLZa7siqM/klOcpi/gqYMW1gAG46LR7ZLzmJPb+DjLQIxzhy
-   /6Up/6J9uW2OdBMMUD/liDsLEc8IiUzZg/V2rrEe2Bs2GKQ7xqveBHcv2
-   +YN+zb5+n4TG4ZnYPI+nvHoxlNEQlyomPuFEEXxTeIGP7KOM/QdOP9IYU
-   bGjPYISfnt2Ej/QUB6h2hXpasiZITocaY8HJ84ztrW2PODDDGtbHsKoBr
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="281741453"
-X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
-   d="scan'208";a="281741453"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 03:29:47 -0700
-X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
-   d="scan'208";a="594743946"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 03:29:45 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1o68TW-000whw-HH;
-        Tue, 28 Jun 2022 13:29:42 +0300
-Date:   Tue, 28 Jun 2022 13:29:42 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org,
-        Stefan Seyfried <stefan.seyfried@googlemail.com>,
-        Kenneth Chan <kenneth.t.chan@gmail.com>,
-        platform-driver-x86@vger.kernel.org,
-        Stefan Seyfried <seife+kernel@b1-systems.com>
-Subject: Re: [PATCH 2/7] platform/x86: panasonic-laptop: de-obfuscate button
- codes
-Message-ID: <YrrYFgu17uC+bMxo@smile.fi.intel.com>
-References: <20220624112340.10130-1-hdegoede@redhat.com>
- <20220624112340.10130-3-hdegoede@redhat.com>
+        with ESMTP id S1344902AbiF1KcS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 06:32:18 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6660C31DF6
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 03:32:16 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id m6-20020a05600c3b0600b003a0489f412cso2574029wms.1
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 03:32:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=3APJSyQDW2CPdCYh4BrXZo+ifTGN0I3DidbMXQjqz5I=;
+        b=vVasOXgDpS5a8pzCA0h/1ViYnXIdn7+NlAKEK3sUfVy51nbhCu0E9yEsleWytaC8sP
+         Pkijhm3qUW+nnD7H0W+Z2rEae/Q2q8Fs68sR6TjxU4nk1/nQsetGr77azqSuIIvgVdM3
+         l3t/UXdHlFz5LmVGg9dfiIc9aGKjNRHLiJKNFEj5rLPZZDNZEq+7RmB65n76qp7q9RZA
+         vuT1f92PFP5+zzI12iQ0zrSlAFJzuJhO/L5ceh47zeOVQ19JVFcgIbXTxrxehHtt+MmT
+         xx0rymcuZwPqB/rhO66rev47zZGIqBYFfU9kMeqy95jtLCS37vwQHi5NNJ1mX9HK6n0S
+         9R7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=3APJSyQDW2CPdCYh4BrXZo+ifTGN0I3DidbMXQjqz5I=;
+        b=CxqQo0IqfaOxyQ4NlftacO0NyOZ3h7UA5E3lARJPjkLUQ4fhI97XcznemWfbRt3A1u
+         c5c9m0/G1l/q4aqVRXLClx73riGlWm/OXBKtUDFCGlKdo+UIR/rFo2qrl8Twjp6naTs1
+         WZc+pgRIjFXRVKG4TdPvfcVcCo4ZHRx7VjUr/e9dr+WO5NmS5NnMCHoxTTP7wbnPWlag
+         17rqW8clHTBqL3cuubomORn0abei5IwAuoE2TPH0Ww1Q/B+YDoKqysnyVJJY3xh+Smqh
+         NrhQPX2wfz97MvrgK+Ht/c+ulro4IvvqHGo6tI2yo81EeEl1bAlcw44nzH35s2lWox27
+         09lA==
+X-Gm-Message-State: AJIora+GEDPi9PoyhXz+GE0e7IljKngYD1HplZWpIhsVlKR01izBEoKR
+        SCbLrMlmQBwfM7yD58rH8KzlBg==
+X-Google-Smtp-Source: AGRyM1s+JSkyq15GyyzT3xqY8Lc3g+1LuzQ7Glev3KcHkkBqiJAG558oaASpA9V5nhclnhGMPpDhog==
+X-Received: by 2002:a7b:c24c:0:b0:3a0:4d4c:dc96 with SMTP id b12-20020a7bc24c000000b003a04d4cdc96mr8098122wmj.111.1656412334966;
+        Tue, 28 Jun 2022 03:32:14 -0700 (PDT)
+Received: from [192.168.0.252] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id j13-20020a05600c1c0d00b003a0484c069bsm10920284wms.41.2022.06.28.03.32.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jun 2022 03:32:14 -0700 (PDT)
+Message-ID: <0b8e357d-1d8b-843f-d8b6-72c760bcd6fb@linaro.org>
+Date:   Tue, 28 Jun 2022 12:32:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220624112340.10130-3-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: fwnode_for_each_child_node() and OF backend discrepancy
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Michael Walle <michael@walle.cc>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Saravana Kannan <saravanak@google.com>
+References: <4e1d5db9dea68d82c94336a1d6aac404@walle.cc>
+ <b8ec04dc-f803-ee2c-29b7-b0311eb8c5fb@linaro.org>
+ <CAJZ5v0jz=ee5TrvYs0_ovWn9sT06bcKDucmmocD8L-d9ZZ5DzQ@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CAJZ5v0jz=ee5TrvYs0_ovWn9sT06bcKDucmmocD8L-d9ZZ5DzQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,56 +83,69 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 01:23:35PM +0200, Hans de Goede wrote:
-> From: Stefan Seyfried <seife+kernel@b1-systems.com>
+On 27/06/2022 15:33, Rafael J. Wysocki wrote:
+> On Mon, Jun 27, 2022 at 3:08 PM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> On 27/06/2022 14:49, Michael Walle wrote:
+>>> Hi,
+>>>
+>>> I tired to iterate over all child nodes, regardless if they are
+>>> available
+>>> or not. Now there is that handy fwnode_for_each_child_node() (and the
+>>> fwnode_for_each_available_child_node()). The only thing is the OF
+>>> backend
+>>> already skips disabled nodes [1], making fwnode_for_each_child_node()
+>>> and
+>>> fwnode_for_each_available_child_node() behave the same with the OF
+>>> backend.
+>>>
+>>> Doesn't seem to be noticed by anyone for now. I'm not sure how to fix
+>>> that
+>>> one. fwnode_for_each_child_node() and also fwnode_get_next_child_node()
+>>> are
+>>> used by a handful of drivers. I've looked at some, but couldn't decide
+>>> whether they really want to iterate over all child nodes or just the
+>>> enabled
+>>> ones.
+>>
+>> If I get it correctly, this was introduced  by 8a0662d9ed29 ("Driver
+>> core: Unified interface for firmware node properties")
+>> .
 > 
-> In the definition of panasonic_keymap[] the key codes are given in
-> decimal, later checks are done with hexadecimal values, which does
-> not help in understanding the code.
-> Additionally use two helper variables to shorten the code and make
-> the logic more obvious.
+> Originally it was, but then it has been reworked a few times.
+> 
+> The backend callbacks were introduced by Sakari, in particular.
 
-(Note, all comments are up to you, I understand that this is a fix and maybe
- better to make code neat in a separate change)
+I see you as an author of 8a0662d9ed29 which adds
+device_get_next_child_node() and uses of_get_next_available_child()
+instead of of_get_next_child(). Although it was back in 2014, so maybe
+it will be tricky to get original intention. :)
 
-...
+Which commit do you mean when you refer to Sakari's work?
 
->  	struct input_dev *hotk_input_dev = pcc->input_dev;
->  	int rc;
->  	unsigned long long result;
-> +	unsigned int key;
-> +	unsigned int updown;
+> 
+>> The question to Rafael - what was your intention when you added
+>> device_get_next_child_node() looking only for available nodes?
+> 
+> That depends on the backend.
 
-Perhaps make them more like reversed xmas tree order?
+We talk about OF backend. In your commit device_get_next_child_node for
+OF uses explicitly available node, not any node.
 
-...
-
->  			sparse_keymap_report_event(hotk_input_dev,
-> -					result & 0xf, 0x80, false);
-> +					key, 0x80, false);
-
-Maybe move one or more parameters to the previous line?
-
-...
-
->  		if (!sparse_keymap_report_event(hotk_input_dev,
-> -						result & 0xf, result & 0x80, false))
-> +						key, updown, false))
->  			pr_err("Unknown hotkey event: 0x%04llx\n", result);
-
-Ditto.
-
-Although I would even go for
-
-	rc = sparse_...;
-	if (!rc)
-		pr_err(...);
+> fwnode_for_each_available_child_node() is more specific and IIRC it
+> was introduced for fw_devlink (CC Saravana).
+> 
+>> My understanding is that this implementation should be consistent with
+>> OF implementation, so fwnode_get_next_child_node=get any child.
+> 
+> IIUC, the OF implementation is not consistent with the
+> fwnode_get_next_child_node=get any child thing.
+> 
+>> However maybe ACPI treats it somehow differently?
+> 
+> acpi_get_next_subnode() simply returns the next subnode it can find.
 
 
-pattern.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Best regards,
+Krzysztof
