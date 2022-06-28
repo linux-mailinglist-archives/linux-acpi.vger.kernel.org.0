@@ -2,46 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 905CE55D9C1
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3535955CE77
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:05:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240811AbiF0XcL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Jun 2022 19:32:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45298 "EHLO
+        id S239236AbiF1ANO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Jun 2022 20:13:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236744AbiF0XcL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 19:32:11 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5003610B9;
-        Mon, 27 Jun 2022 16:32:09 -0700 (PDT)
+        with ESMTP id S242937AbiF1ANN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Jun 2022 20:13:13 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95D562C6;
+        Mon, 27 Jun 2022 17:13:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656372729; x=1687908729;
+  t=1656375192; x=1687911192;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=O5LxPAYhM+CNwQqbN7pv8Mq8jswCUClbEwHdElRgSyk=;
-  b=TEMGItocrxw5O1QM9oYXq2R/5yGVBOlMN4y3e5hnettICKueBvEa4EAV
-   9cRM1v8AOdTdAQFMKvXGlmlEZI3z4L7cS20NHn/onjVTcE/0RCXR3SY29
-   +xwG1P9MzYXEIWn/Oxq1tbfGc0p+FfV+DTdeOzk9BLMHQhlAGQa96GkDi
-   sqjNJm7R9b+9/lLQFpHXWTHQzL8ov3MsX77uz3otsWeNTENo4NRb63R21
-   XtLiHoV5gfXcrq189HGwev6DyA4U8HCvUNEeNPDAXpXdFOjt5YnhRtWos
-   UNP2NCWlRBawDEvMqj0UJeqxcH0QsPAwCcl0TSNr+/VMQV38RLpZiEs2l
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="261391227"
+  bh=/m//RVJUk7ReNFOJ96tIb+azW6S2LNzlgtWV99yKPtc=;
+  b=E0/D8cjxBud6WME5SDNWmlDbqC/VH5Q+Vr+4npY1zgtywRlsNZ3z4eTg
+   lzOMv4+CtTMGbrLhVbjnay+tMfjCUH/i49ksyuyHGejRulClntluUGM+D
+   +1j/4YNanlckjxVJaNrlxuaSP8s0PCnHKNcOIOmFkRPM5c1sPjQ1I/9Ov
+   o4J4D6Uc+9csi3Tzpy+Gnp4V1ZAxjeNYmtCYclo64tsX3sTfvvwwu2qV6
+   oo3QzowOcneyYHc80FeooFgzvB6lNBoVu8t25sZo4HuoMNVDZdsFMxVD4
+   LTIfB9KUgdPwf3WFeOwsuWL4vRqh7MPvZNt9UoXmZojeCyAJlYjPYmY7E
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="367905684"
 X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
-   d="scan'208";a="261391227"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 16:32:08 -0700
+   d="scan'208";a="367905684"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 17:13:12 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
-   d="scan'208";a="646646287"
+   d="scan'208";a="590103893"
 Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 27 Jun 2022 16:32:06 -0700
+  by orsmga002.jf.intel.com with ESMTP; 27 Jun 2022 17:13:09 -0700
 Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
         (envelope-from <lkp@intel.com>)
-        id 1o5yD7-0009DG-Up;
-        Mon, 27 Jun 2022 23:32:05 +0000
-Date:   Tue, 28 Jun 2022 07:31:18 +0800
+        id 1o5yqr-0009G8-6s;
+        Tue, 28 Jun 2022 00:13:09 +0000
+Date:   Tue, 28 Jun 2022 08:12:14 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Stefan Binding <sbinding@opensource.cirrus.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -52,7 +52,7 @@ Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
         Stefan Binding <sbinding@opensource.cirrus.com>,
         linux-kernel@vger.kernel.org, patches@opensource.cirrus.com
 Subject: Re: [PATCH v3 1/2] ACPI: utils: Add api to read _SUB from ACPI
-Message-ID: <202206280722.5wvfmDeu-lkp@intel.com>
+Message-ID: <202206280813.F9ukvWAK-lkp@intel.com>
 References: <20220627155138.807420-2-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -60,7 +60,7 @@ Content-Disposition: inline
 In-Reply-To: <20220627155138.807420-2-sbinding@opensource.cirrus.com>
 X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,7 +80,7 @@ https://git-scm.com/docs/git-format-patch]
 
 url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Binding/Read-_SUB-from-ACPI-to-be-able-to-identify-firmware/20220627-235448
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20220628/202206280722.5wvfmDeu-lkp@intel.com/config)
+config: x86_64-rhel-8.3-syz (https://download.01.org/0day-ci/archive/20220628/202206280813.F9ukvWAK-lkp@intel.com/config)
 compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
 reproduce (this is a W=1 build):
         # https://github.com/intel-lab-lkp/linux/commit/7dd124b65442fd6622e7df2949795f735d8356be
@@ -98,13 +98,9 @@ All warnings (new ones prefixed by >>):
 
    In file included from drivers/acpi/utils.c:17:
    drivers/acpi/utils.c: In function 'acpi_get_subsystem_id':
->> drivers/acpi/utils.c:317:49: warning: format '%d' expects argument of type 'int', but argument 4 has type 'size_t' {aka 'long unsigned int'} [-Wformat=]
+>> drivers/acpi/utils.c:317:49: warning: format '%d' expects argument of type 'int', but argument 4 has type '__kernel_size_t' {aka 'long unsigned int'} [-Wformat=]
      317 |                         acpi_handle_err(handle, "ACPI _SUB Length %d is Invalid\n",
          |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     318 |                                         strlen(obj->string.pointer));
-         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                                         |
-         |                                         size_t {aka long unsigned int}
    include/linux/acpi.h:1172:46: note: in definition of macro 'acpi_handle_err'
     1172 |         acpi_handle_printk(KERN_ERR, handle, fmt, ##__VA_ARGS__)
          |                                              ^~~
