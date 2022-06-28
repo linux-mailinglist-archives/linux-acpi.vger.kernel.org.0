@@ -2,113 +2,236 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDDC355DD3E
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 15:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6145455CA9E
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Jun 2022 14:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235196AbiF1Lgs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Jun 2022 07:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60960 "EHLO
+        id S1344271AbiF1LwM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Jun 2022 07:52:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230061AbiF1Lgr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 07:36:47 -0400
-Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFAF4326F2;
-        Tue, 28 Jun 2022 04:36:46 -0700 (PDT)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id A8CAE22246;
-        Tue, 28 Jun 2022 13:36:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1656416204;
+        with ESMTP id S1344112AbiF1LwM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Jun 2022 07:52:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7ED231B7B2
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 04:52:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1656417126;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=za8uTTYx8zFPk1Ng0Xyp1mSh2osnL3ssrrojyyayo04=;
-        b=lHtroMucaHy91RglKDxtz8KfYfdTkDypNHaOuDniKsEcg1oSpJakww1A9ZsQRDDzQMxmqn
-        kGlVoX7XYWdcwQgQxg4NQH141viaDiZgkPsezNCgHTyKV9YVcClKgoWgrgvf3vQSDHi/UF
-        ZdHhPcanYwYElIjr9YOrj78V+G+Wmj0=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 28 Jun 2022 13:36:44 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        bh=j/tExLCcuaEdSq/9II+CzXZ/hLnhseJLrJyprOKPr8M=;
+        b=Q2HC02HE1Ds/kolgWUoPKLAr7Rl5t6fKvznEW/PzyxrNuzgaXyzrUQuyhbIq6YYWtl4Y6+
+        2IViTMGfOjdjYdARjQ9l4JZGMEGLX50/KvdmTR9jIGknOeULr3089HAQzcN8xi3YXpTTvG
+        afhgcZhIiMi13zcyWqiFbvLazkv04+0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-597-OW1gStGEMtOQZaLXFIuqpg-1; Tue, 28 Jun 2022 07:52:05 -0400
+X-MC-Unique: OW1gStGEMtOQZaLXFIuqpg-1
+Received: by mail-wm1-f72.google.com with SMTP id n15-20020a05600c4f8f00b0039c3e76d646so6995032wmq.7
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Jun 2022 04:52:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=j/tExLCcuaEdSq/9II+CzXZ/hLnhseJLrJyprOKPr8M=;
+        b=luiG077O4VDXWQQWGmKKt6x2rvMh6fw7Ou4wAiuTTdDA+fwrnArSHWeDtgNpEEmaVa
+         FQWRZbL9yFPSXWzHrK131QPHVl1yVEa5vyUJxSrZ4w4lXoOmuSNQ6T8xzW1mZe+dKfRy
+         nbSWdlr/V0EeTtBFLezHTVI1pvIEdGwqNiCo58+1XALBjmxR6AoED7clfAxdIp4kNkd5
+         m0oXJZ1b+RTZjBd21NAxlnGD2VvNR6ZirmBinS+SNtPSAkmrpJSMnAFkoJ63sX635A2R
+         UtEsGXHreLjlS3om1iibaswsd8xX9dLVhCNsKVDeflXLHpVQvltcPVtSW4u/9QiTikvU
+         al4A==
+X-Gm-Message-State: AJIora8o4/DU6O42qy0hnotqOwZM9eLVrASMEroMkJkklwPdJ1i1rTWM
+        5NhiMJQylJlaoUAh/Fr8J3oyhng9fxuAACOuFD1nZWlXHanI4aTw4SE/a+D0NE4y443ULr3vIes
+        +qo4BM3vFacm5hG87rPtGDQ==
+X-Received: by 2002:a05:6000:703:b0:21b:9274:6b67 with SMTP id bs3-20020a056000070300b0021b92746b67mr18086148wrb.377.1656417123813;
+        Tue, 28 Jun 2022 04:52:03 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1uCu4GCzcrPh5RsBK6mfFRrbGHD7B6cejPvSxFZf9VeWkHaPtaXxcEf7abH2qB66w2FLxoAwA==
+X-Received: by 2002:a05:6000:703:b0:21b:9274:6b67 with SMTP id bs3-20020a056000070300b0021b92746b67mr18086106wrb.377.1656417123545;
+        Tue, 28 Jun 2022 04:52:03 -0700 (PDT)
+Received: from localhost (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id j6-20020adff546000000b0021b862ad439sm16178457wrp.9.2022.06.28.04.52.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jun 2022 04:52:02 -0700 (PDT)
+Date:   Tue, 28 Jun 2022 13:52:00 +0200
+From:   Igor Mammedov <imammedo@redhat.com>
+To:     Kai Huang <kai.huang@intel.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: fwnode_for_each_child_node() and OF backend discrepancy
-In-Reply-To: <Yrrhs3D++V79/4Jk@smile.fi.intel.com>
-References: <4e1d5db9dea68d82c94336a1d6aac404@walle.cc>
- <Yrrhs3D++V79/4Jk@smile.fi.intel.com>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <f17d3ecfecf4491dd15b1fa092205f3f@walle.cc>
-X-Sender: michael@walle.cc
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kvm-devel <kvm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Len Brown <len.brown@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        isaku.yamahata@intel.com, Tom Lendacky <thomas.lendacky@amd.com>,
+        Tianyu.Lan@microsoft.com, Randy Dunlap <rdunlap@infradead.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Yue Haibing <yuehaibing@huawei.com>, dongli.zhang@oracle.com
+Subject: Re: [PATCH v5 02/22] cc_platform: Add new attribute to prevent ACPI
+ CPU hotplug
+Message-ID: <20220628135200.6e9be32d@redhat.com>
+In-Reply-To: <2b676b19db423b995a21c7f215ed117c345c60d9.camel@intel.com>
+References: <cover.1655894131.git.kai.huang@intel.com>
+        <f4bff93d83814ea1f54494f51ce3e5d954cf0f5b.1655894131.git.kai.huang@intel.com>
+        <CAJZ5v0jV8ODcxuLL+iSpYbW7w=GFtUSakN-n8CO5Zmun3K-Erg@mail.gmail.com>
+        <d3ba563f3f4e7aaf90fb99d20c651b5751972f7b.camel@intel.com>
+        <20220627100155.71a7b34c@redhat.com>
+        <2b676b19db423b995a21c7f215ed117c345c60d9.camel@intel.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am 2022-06-28 13:10, schrieb Andy Shevchenko:
-> On Mon, Jun 27, 2022 at 02:49:51PM +0200, Michael Walle wrote:
->> Hi,
->> 
->> I tired to iterate over all child nodes, regardless if they are 
->> available
->> or not. Now there is that handy fwnode_for_each_child_node() (and the
->> fwnode_for_each_available_child_node()). The only thing is the OF 
->> backend
->> already skips disabled nodes [1], making fwnode_for_each_child_node() 
->> and
->> fwnode_for_each_available_child_node() behave the same with the OF 
->> backend.
->> 
->> Doesn't seem to be noticed by anyone for now. I'm not sure how to fix 
->> that
->> one. fwnode_for_each_child_node() and also 
->> fwnode_get_next_child_node() are
->> used by a handful of drivers. I've looked at some, but couldn't decide
->> whether they really want to iterate over all child nodes or just the 
->> enabled
->> ones.
->> 
->> Any thoughts?
+On Tue, 28 Jun 2022 22:04:43 +1200
+Kai Huang <kai.huang@intel.com> wrote:
+
+> On Mon, 2022-06-27 at 10:01 +0200, Igor Mammedov wrote:
+> > On Thu, 23 Jun 2022 12:01:48 +1200
+> > Kai Huang <kai.huang@intel.com> wrote:
+> >   
+> > > On Wed, 2022-06-22 at 13:42 +0200, Rafael J. Wysocki wrote:  
+> > > > On Wed, Jun 22, 2022 at 1:16 PM Kai Huang <kai.huang@intel.com> wrote:    
+> > > > > 
+> > > > > Platforms with confidential computing technology may not support ACPI
+> > > > > CPU hotplug when such technology is enabled by the BIOS.  Examples
+> > > > > include Intel platforms which support Intel Trust Domain Extensions
+> > > > > (TDX).
+> > > > > 
+> > > > > If the kernel ever receives ACPI CPU hotplug event, it is likely a BIOS
+> > > > > bug.  For ACPI CPU hot-add, the kernel should speak out this is a BIOS
+> > > > > bug and reject the new CPU.  For hot-removal, for simplicity just assume
+> > > > > the kernel cannot continue to work normally, and BUG().
+> > > > > 
+> > > > > Add a new attribute CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED to indicate the
+> > > > > platform doesn't support ACPI CPU hotplug, so that kernel can handle
+> > > > > ACPI CPU hotplug events for such platform.  The existing attribute
+> > > > > CC_ATTR_HOTPLUG_DISABLED is for software CPU hotplug thus doesn't fit.
+> > > > > 
+> > > > > In acpi_processor_{add|remove}(), add early check against this attribute
+> > > > > and handle accordingly if it is set.
+> > > > > 
+> > > > > Also take this chance to rename existing CC_ATTR_HOTPLUG_DISABLED to
+> > > > > CC_ATTR_CPU_HOTPLUG_DISABLED as it is for software CPU hotplug.
+> > > > > 
+> > > > > Signed-off-by: Kai Huang <kai.huang@intel.com>
+> > > > > ---
+> > > > >  arch/x86/coco/core.c          |  2 +-
+> > > > >  drivers/acpi/acpi_processor.c | 23 +++++++++++++++++++++++
+> > > > >  include/linux/cc_platform.h   | 15 +++++++++++++--
+> > > > >  kernel/cpu.c                  |  2 +-
+> > > > >  4 files changed, 38 insertions(+), 4 deletions(-)
+> > > > > 
+> > > > > diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+> > > > > index 4320fadae716..1bde1af75296 100644
+> > > > > --- a/arch/x86/coco/core.c
+> > > > > +++ b/arch/x86/coco/core.c
+> > > > > @@ -20,7 +20,7 @@ static bool intel_cc_platform_has(enum cc_attr attr)
+> > > > >  {
+> > > > >         switch (attr) {
+> > > > >         case CC_ATTR_GUEST_UNROLL_STRING_IO:
+> > > > > -       case CC_ATTR_HOTPLUG_DISABLED:
+> > > > > +       case CC_ATTR_CPU_HOTPLUG_DISABLED:
+> > > > >         case CC_ATTR_GUEST_MEM_ENCRYPT:
+> > > > >         case CC_ATTR_MEM_ENCRYPT:
+> > > > >                 return true;
+> > > > > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> > > > > index 6737b1cbf6d6..b960db864cd4 100644
+> > > > > --- a/drivers/acpi/acpi_processor.c
+> > > > > +++ b/drivers/acpi/acpi_processor.c
+> > > > > @@ -15,6 +15,7 @@
+> > > > >  #include <linux/kernel.h>
+> > > > >  #include <linux/module.h>
+> > > > >  #include <linux/pci.h>
+> > > > > +#include <linux/cc_platform.h>
+> > > > > 
+> > > > >  #include <acpi/processor.h>
+> > > > > 
+> > > > > @@ -357,6 +358,17 @@ static int acpi_processor_add(struct acpi_device *device,
+> > > > >         struct device *dev;
+> > > > >         int result = 0;
+> > > > > 
+> > > > > +       /*
+> > > > > +        * If the confidential computing platform doesn't support ACPI
+> > > > > +        * memory hotplug, the BIOS should never deliver such event to
+> > > > > +        * the kernel.  Report ACPI CPU hot-add as a BIOS bug and ignore
+> > > > > +        * the new CPU.
+> > > > > +        */
+> > > > > +       if (cc_platform_has(CC_ATTR_ACPI_CPU_HOTPLUG_DISABLED)) {    
+> > > > 
+> > > > This will affect initialization, not just hotplug AFAICS.
+> > > > 
+> > > > You should reset the .hotplug.enabled flag in processor_handler to
+> > > > false instead.    
+> > > 
+> > > Hi Rafael,
+> > > 
+> > > Thanks for the review.  By "affect initialization" did you mean this
+> > > acpi_processor_add() is also called during kernel boot when any logical cpu is
+> > > brought up?  Or do you mean ACPI CPU hotplug can also happen during kernel boot
+> > > (after acpi_processor_init())?
+> > > 
+> > > I see acpi_processor_init() calls acpi_processor_check_duplicates() which calls
+> > > acpi_evaluate_object() but I don't know details of ACPI so I don't know whether
+> > > this would trigger acpi_processor_add().
+> > > 
+> > > One thing is TDX doesn't support ACPI CPU hotplug is an architectural thing, so
+> > > it is illegal even if it happens during kernel boot.  Dave's idea is the kernel
+> > > should  speak out loudly if physical CPU hotplug indeed happened on (BIOS) TDX-
+> > > enabled platforms.  Otherwise perhaps we can just give up initializing the ACPI
+> > > CPU hotplug in acpi_processor_init(), something like below?  
+> > 
+> > The thing is that by the time ACPI machinery kicks in, physical hotplug
+> > has already happened and in case of (kvm+qemu+ovmf hypervisor combo)
+> > firmware has already handled it somehow and handed it over to ACPI.
+> > If you say it's architectural thing then cpu hotplug is platform/firmware
+> > bug and should be disabled there instead of working around it in the kernel.
+> > 
+> > Perhaps instead of 'preventing' hotplug, complain/panic and be done with it.  
 > 
-> It was discussed at least twice this year (in regard to some new IIO 
-> drivers)
-> and Rob told that iterating over disabled (not available) nodes in OF 
-> kinda
-> legacy/design mistake. That's why device_for_each_child_node() goes 
-> only
-> over available nodes only.
+> Hi Igor,
+> 
+> Thanks for feedback.  Yes the current implementation actually reports CPU hot-
+> add as BIOS bug.  I think I can report BIOS bug for hot-removal too.  And
+> currently I actually used BUG() for the hot-removal case.  For hot-add I didn't
+> use BUG() but rejected the new CPU as the latter is more conservative. 
 
-Mh, but then the fwnode_for_each_child_node() is very misleading, esp.
-with the presence of fwnode_for_each_available_child_node().
+Is it safe to ignore not properly initialized for TDX CPU,
+sitting there (it may wake up to IRQs (as minimum SMI, but
+maybe to IPIs as well (depending in what state FW left it))?
 
-> So, why do you need to iterate over disabled ones?
+for hypervisors, one should disable cpu hotplug there
+(ex: in QEMU, you can try to disable cpu hotplug completely
+if TDX is enabled so it won't ever come to 'physical' cpu
+being added to guest and no CPU hotplug related ACPI AML
+code generated)
 
-I was trying to fix the lan966x driver [1] which doesn't work if there
-are disabled nodes in between. My steps would have been:
-  (1) change fwnode_for_each_available_child_node() to
-      fwnode_for_each_child_node(), maybe with a fixes tag, as it's
-      easy to backport
-  (2) introduce new compatibles and deduce the number of ports
-      according to the compatible string and not by counting
-      the child nodes.
-  (3) keep the old behavior for the legacy compatible and mark it
-      as deprecated in the binding
-  (4) move the device tree over to the new compatible string
+> Hi Rafael,
+> 
+> I am not sure I got what you mean by "This will affect initialization, not just
+> hotplug AFAICS", could you elaborate a little bit?  Thanks.
+> 
+> 
 
--michael
-
-[1] 
-https://elixir.bootlin.com/linux/v5.19-rc4/source/drivers/net/ethernet/microchip/lan966x/lan966x_main.c#L1029
