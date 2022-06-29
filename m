@@ -2,112 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B114A5601AA
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 15:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 106665601B7
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 15:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233548AbiF2Nrg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 09:47:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49118 "EHLO
+        id S230281AbiF2NvM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jun 2022 09:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231622AbiF2NrZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 09:47:25 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1CD8167FB;
-        Wed, 29 Jun 2022 06:47:24 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 882d24b02468b0e9; Wed, 29 Jun 2022 15:47:23 +0200
-Received: from kreacher.localnet (unknown [213.134.175.150])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 4DE9566C9DE;
-        Wed, 29 Jun 2022 15:47:22 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        john.garry@huawei.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v2] hisi_lpc: Use acpi_dev_for_each_child()
-Date:   Wed, 29 Jun 2022 15:47:21 +0200
-Message-ID: <2657553.mvXUDI8C0e@kreacher>
-In-Reply-To: <12026357.O9o76ZdvQC@kreacher>
-References: <12026357.O9o76ZdvQC@kreacher>
+        with ESMTP id S231451AbiF2NvL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 09:51:11 -0400
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02B018E34;
+        Wed, 29 Jun 2022 06:51:10 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id x184so25324390ybg.12;
+        Wed, 29 Jun 2022 06:51:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JCp/LRokJcxZDVsuGLGOHFR2m172HOBXIzph0VMMKOw=;
+        b=UjCVWkrYTSMgHWZOrMmy9fV69edY0W7BFOZcHNd+hBJpA8u4kBbdTLemydBKsASnvy
+         nRFhPqFTADEK/CLP1wKevqqQb9hxUuBHN4LXRfe7/XnYLIbZljC63P3DWzl0/jxawPal
+         lcq6FMapJN+eGsFNQMIIYLG3ZV1j/LrqLZCTHY3ZWy/TR981Ga32lnPjyhFaw70ziNDo
+         N4jDyG2gpaCHe/9BoIAqFkgO3zubLRKC+5kxdMlbthg6UDg5gmjQlCzSmidlgVbSVvmh
+         KiLeMC03MoLt54XBXc7f1EP/6+H5mIhqNLjXjL64UJKZRLpSeE2QhxUz3wQv346U2dVX
+         irMw==
+X-Gm-Message-State: AJIora8EvdiBBblWEZkG1odDKU9iyEBoKNB9e3Xcz32uVn7nar0ktTJI
+        oBtHjRBPJjvrgmWdIpPl5OQqvQBtBBXrAdGVqrw=
+X-Google-Smtp-Source: AGRyM1s66IF0TiL7HjPl7I4lBUzShSoaC6NNemCaiaGJtRsPoy7MMeZdcDP+G6yttdeXcBU4a++p3p7oNEA0ycJSE6M=
+X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
+ z15-20020a25664f000000b0066cd0f436ccmr3368498ybm.482.1656510669730; Wed, 29
+ Jun 2022 06:51:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20220627165047.336669-1-sudeep.holla@arm.com> <20220629130644.1258904-1-sudeep.holla@arm.com>
+In-Reply-To: <20220629130644.1258904-1-sudeep.holla@arm.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 29 Jun 2022 15:50:58 +0200
+Message-ID: <CAJZ5v0jdbS9HNfZ5N=M9jDCOp5uiQ5L30LA6haxpoG6QUFrNbw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Remove the unused find_acpi_cpu_cache_topology()
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Atish Patra <atishp@atishpatra.org>,
+        Atish Patra <atishp@rivosinc.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Wang Qing <wangqing@vivo.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.175.150
-X-CLIENT-HOSTNAME: 213.134.175.150
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrudegledgieekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppedvudefrddufeegrddujeehrdduhedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudejhedrudehtddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepjhhohhhnrdhgrghrrhihsehhuhgrfigv
- ihdrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Jun 29, 2022 at 3:07 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
+>
+> The sole user of this find_acpi_cpu_cache_topology() was arm64 topology
+> which is now consolidated into the generic arch_topology without the need
+> of this function.
+>
+> Drop the unused function find_acpi_cpu_cache_topology().
+>
+> Reported-by: Ionela Voinescu <ionela.voinescu@arm.com>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> ---
+>  drivers/acpi/pptt.c  | 37 -------------------------------------
+>  include/linux/acpi.h |  5 -----
+>  2 files changed, 42 deletions(-)
+>
+> Hi Rafael,
+>
+> This is another patch that I would like to be part of the series[1].
+> Please ack the same if you are OK to route this via Greg. I am avoiding
+> to repost the whole series just for this one additional patch for now.
 
-Instead of walking the list of children of an ACPI device directly,
-use acpi_dev_for_each_child() to carry out an action for all of
-the given ACPI device's children.
+Sure.
 
-This will help to eliminate the children list head from struct
-acpi_device as it is redundant and it is used in questionable ways
-in some places (in particular, locking is needed for walking the
-list pointed to it safely, but it is often missing).
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: John Garry <john.garry@huawei.com>
----
-
--> v2:
-   * Drop unused local variable (John).
-   * Add ACK from John.
-
----
- drivers/bus/hisi_lpc.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-Index: linux-pm/drivers/bus/hisi_lpc.c
-===================================================================
---- linux-pm.orig/drivers/bus/hisi_lpc.c
-+++ linux-pm/drivers/bus/hisi_lpc.c
-@@ -471,6 +471,12 @@ static int hisi_lpc_acpi_remove_subdev(s
- 	return 0;
- }
- 
-+static int hisi_lpc_acpi_clear_enumerated(struct acpi_device *adev, void *not_used)
-+{
-+	acpi_device_clear_enumerated(adev);
-+	return 0;
-+}
-+
- struct hisi_lpc_acpi_cell {
- 	const char *hid;
- 	const char *name;
-@@ -480,13 +486,9 @@ struct hisi_lpc_acpi_cell {
- 
- static void hisi_lpc_acpi_remove(struct device *hostdev)
- {
--	struct acpi_device *adev = ACPI_COMPANION(hostdev);
--	struct acpi_device *child;
--
- 	device_for_each_child(hostdev, NULL, hisi_lpc_acpi_remove_subdev);
--
--	list_for_each_entry(child, &adev->children, node)
--		acpi_device_clear_enumerated(child);
-+	acpi_dev_for_each_child(ACPI_COMPANION(hostdev),
-+				hisi_lpc_acpi_clear_enumerated, NULL);
- }
- 
- /*
-
-
-
+> [1] https://lore.kernel.org/all/20220627165047.336669-1-sudeep.holla@arm.com/
+>
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 763f021d45e6..dd3222a15c9c 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -691,43 +691,6 @@ int find_acpi_cpu_topology(unsigned int cpu, int level)
+>         return find_acpi_cpu_topology_tag(cpu, level, 0);
+>  }
+>
+> -/**
+> - * find_acpi_cpu_cache_topology() - Determine a unique cache topology value
+> - * @cpu: Kernel logical CPU number
+> - * @level: The cache level for which we would like a unique ID
+> - *
+> - * Determine a unique ID for each unified cache in the system
+> - *
+> - * Return: -ENOENT if the PPTT doesn't exist, or the CPU cannot be found.
+> - * Otherwise returns a value which represents a unique topological feature.
+> - */
+> -int find_acpi_cpu_cache_topology(unsigned int cpu, int level)
+> -{
+> -       struct acpi_table_header *table;
+> -       struct acpi_pptt_cache *found_cache;
+> -       acpi_status status;
+> -       u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+> -       struct acpi_pptt_processor *cpu_node = NULL;
+> -       int ret = -1;
+> -
+> -       status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
+> -       if (ACPI_FAILURE(status)) {
+> -               acpi_pptt_warn_missing();
+> -               return -ENOENT;
+> -       }
+> -
+> -       found_cache = acpi_find_cache_node(table, acpi_cpu_id,
+> -                                          CACHE_TYPE_UNIFIED,
+> -                                          level,
+> -                                          &cpu_node);
+> -       if (found_cache)
+> -               ret = ACPI_PTR_DIFF(cpu_node, table);
+> -
+> -       acpi_put_table(table);
+> -
+> -       return ret;
+> -}
+> -
+>  /**
+>   * find_acpi_cpu_topology_package() - Determine a unique CPU package value
+>   * @cpu: Kernel logical CPU number
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 4f82a5bc6d98..7b96a8bff6d2 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1429,7 +1429,6 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
+>  int find_acpi_cpu_topology_cluster(unsigned int cpu);
+>  int find_acpi_cpu_topology_package(unsigned int cpu);
+>  int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
+> -int find_acpi_cpu_cache_topology(unsigned int cpu, int level);
+>  #else
+>  static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
+>  {
+> @@ -1451,10 +1450,6 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+>  {
+>         return -EINVAL;
+>  }
+> -static inline int find_acpi_cpu_cache_topology(unsigned int cpu, int level)
+> -{
+> -       return -EINVAL;
+> -}
+>  #endif
+>
+>  #ifdef CONFIG_ACPI_PCC
+> --
+> 2.37.0
+>
