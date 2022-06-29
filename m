@@ -2,53 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D348D5609FF
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 21:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D098560A14
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 21:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbiF2TJO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 15:09:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52448 "EHLO
+        id S229617AbiF2TMy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jun 2022 15:12:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbiF2TJN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 15:09:13 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72472C658;
-        Wed, 29 Jun 2022 12:09:12 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id i15so29748614ybp.1;
-        Wed, 29 Jun 2022 12:09:12 -0700 (PDT)
+        with ESMTP id S229476AbiF2TMx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 15:12:53 -0400
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050D83336D;
+        Wed, 29 Jun 2022 12:12:51 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id p136so23492949ybg.4;
+        Wed, 29 Jun 2022 12:12:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WIUOcjqbDRqwHoZr9SPqc9wp23o2wvFnWFd2gZt8KDA=;
-        b=LWnGs1tnDYOx83m2JuK1YE/Vgeewgfg5n3YOyLO64Oq5OZz+B5ntCWYkWamBi+li+l
-         4u6EiJc/MZvYyEw75KZe5VKSfQV+DYT14xE43XmW6SqwTx5Y/XKwechMdGCBPmZWe7+P
-         EeOE0kb9hu32+WYr4cksUXfQcRTL3uVHQlZbLDmpFkcRgZ4yMIlj4QasntX3e7FGx6ja
-         iGx9iZwWtYdjzmRm33BWgctCqr+MHkwAkQxN+eFwPNA3EorYOqBwNq3Z6P92IwGDWP9a
-         hJDpMIGuqYNO1d2Z2OcqKdGjPuirotQ3j5J1AwhP2PqCjsReMtS3S2WCKf34YgK42hGk
-         E0YA==
-X-Gm-Message-State: AJIora+BaCelcLv1jk9XRzmtyjWjUJjlnfNQpQgCtl8gAzahgSIl8ACp
-        Jc/0j7PviijIpRV659qpW41hMZMbW4TwGIUUIGhXtwZEQNU=
-X-Google-Smtp-Source: AGRyM1s4C3/6sJZHuyLqpS6iezs/ly5vUFd6ItASLD+BbmfGmMNmroBUjHtM15ShmS3+COg2i+4w3G6bUpDOabwzRHA=
-X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
- z15-20020a25664f000000b0066cd0f436ccmr4909364ybm.482.1656529751871; Wed, 29
- Jun 2022 12:09:11 -0700 (PDT)
+        bh=cg4E+Wh5Xs3hBBKf1ibHf3ZyuhOE7sEJuSViPjSoZBY=;
+        b=5X4n8KZVGGPnAwfWj/YIJ3Z4KFawbfoiHjwC0CVKkeZ4/SG2DhUWJVgEsqvSZO7QyC
+         4BWAeTp8B1maBm2KC26lwf3k4O/c40m2D5rHacgVrzkloe1lpX64pkmJ7u9X/5TOZu9S
+         4UH4stKIZSyxwhCZ58lIcTXXeXVrtteVBNA86Yw+kkP/UePPs2FqJ1QvVH7gsAaA6Bnq
+         gNCf0V4LGIL3L/7Smirx+dNS1rqh/DeBmtImusJnwvTXeDHAeUdGCXDJOs0XfvTKF39R
+         9KqdzLZS1FmW9agrw98GZ3jxoF20CwYYl0XzBytM0O71EPnc4GHeQDiecebMirfMEaKV
+         ynEw==
+X-Gm-Message-State: AJIora+h1W5t7Krp7/5N/JhYw+MWS+q5shQmkBHa6dpBS0HACNu3LKEz
+        NN/CYu26HIJFJ+aIizmWQ//edFJ3rNeh2zWNIDXiNvP6
+X-Google-Smtp-Source: AGRyM1sGcuDvB+XUTfQi2i05PaHWkOQ59uwaSEFN3O2cwM2V45sN4Ec0Na43K00o707AOJ9R41BrwxxNem2qyUYgeZU=
+X-Received: by 2002:a25:9847:0:b0:669:b4c6:d081 with SMTP id
+ k7-20020a259847000000b00669b4c6d081mr4868895ybo.633.1656529970285; Wed, 29
+ Jun 2022 12:12:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220627165832.10246-1-mario.limonciello@amd.com>
- <CAJZ5v0g2qfA00=ukatTxSXPnoOaquwvn8tk0oNHaY-0F7ODZQw@mail.gmail.com> <MN0PR12MB6101BFCBAA33B98D438B25E8E2BB9@MN0PR12MB6101.namprd12.prod.outlook.com>
-In-Reply-To: <MN0PR12MB6101BFCBAA33B98D438B25E8E2BB9@MN0PR12MB6101.namprd12.prod.outlook.com>
+References: <20220628125346.693304-1-sudeep.holla@arm.com> <20220629090635.6kf7thawc4qc4zi2@bogus>
+ <20220629092137.a5fl33recfds7bq3@bogus>
+In-Reply-To: <20220629092137.a5fl33recfds7bq3@bogus>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 29 Jun 2022 21:09:00 +0200
-Message-ID: <CAJZ5v0g8e4pJoPSaCqPmgfvi8KYNLJyAHsXAcU_z-kU5bMJy=w@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Yuan, Perry" <Perry.Yuan@amd.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Wed, 29 Jun 2022 21:12:39 +0200
+Message-ID: <CAJZ5v0iuOMxmwbHr_2F4V6+VtNLR42BxkXDuty-EFhaeZwHvNg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] ACPI: Enable Platform Runtime Mechanism(PRM)
+ support on ARM64
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -60,109 +62,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 29, 2022 at 8:49 PM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
+On Wed, Jun 29, 2022 at 11:22 AM Sudeep Holla <sudeep.holla@arm.com> wrote:
 >
-> [Public]
->
->
->
-> > -----Original Message-----
-> > From: Rafael J. Wysocki <rafael@kernel.org>
-> > Sent: Wednesday, June 29, 2022 13:42
-> > To: Limonciello, Mario <Mario.Limonciello@amd.com>
-> > Cc: Rafael J. Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>;
-> > Pierre Gondois <pierre.gondois@arm.com>; Sudeep Holla
-> > <sudeep.holla@arm.com>; Yuan, Perry <Perry.Yuan@amd.com>; ACPI Devel
-> > Maling List <linux-acpi@vger.kernel.org>; Linux Kernel Mailing List <linux-
-> > kernel@vger.kernel.org>
-> > Subject: Re: [PATCH] ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is
-> > supported
+> On Wed, Jun 29, 2022 at 10:06:35AM +0100, Sudeep Holla wrote:
+> > Hi Rafael,
 > >
-> > On Mon, Jun 27, 2022 at 6:58 PM Mario Limonciello
-> > <mario.limonciello@amd.com> wrote:
+> > On Tue, Jun 28, 2022 at 01:53:42PM +0100, Sudeep Holla wrote:
+> > > Hi,
 > > >
-> > > commit 72f2ecb7ece7 ("ACPI: bus: Set CPPC _OSC bits for all and
-> > > when CPPC_LIB is supported") added support for claiming to
-> > > support CPPC in _OSC on non-Intel platforms.
+> > > This tiny series is to enable Platform Runtime Mechanism(PRM) support on
+> > > ARM64. Not much changes. Just enabling the build and moving the config
+> > > option so that it is not listed under the topmost menu for ARM64.
 > > >
-> > > This unfortunately caused a regression on a vartiety of AMD
-> > > platforms in the field because a number of AMD platforms don't set
-> > > the `_OSC` bit 5 or 6 to indicate CPPC or CPPC v2 support.
-> > >
-> > > As these AMD platforms already claim CPPC support via `X86_FEATURE_CPPC`,
-> > > use this enable this feature rather than requiring the `_OSC`.
-> > >
-> > > Fixes: 72f2ecb7ece7 ("Set CPPC _OSC bits for all and when CPPC_LIB is
-> > supported")
-> > > Reported-by: Perry Yuan <perry.yuan@amd.com>
-> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > ---
-> > >  drivers/acpi/cppc_acpi.c | 12 +++++++++---
-> > >  1 file changed, 9 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> > > index 903528f7e187..5463e6309b9a 100644
-> > > --- a/drivers/acpi/cppc_acpi.c
-> > > +++ b/drivers/acpi/cppc_acpi.c
-> > > @@ -629,6 +629,15 @@ static bool is_cppc_supported(int revision, int
-> > num_ent)
-> > >                 return false;
-> > >         }
-> > >
-> > > +       if (osc_sb_cppc_not_supported) {
-> > > +               pr_debug("Firmware missing _OSC support\n");
-> > > +#ifdef CONFIG_X86
-> > > +               return boot_cpu_has(X86_FEATURE_CPPC);
-> > > +#else
-> > > +               return false;
-> > > +#endif
 > >
-> > What about doing
-> >
-> > if (osc_sb_cppc_not_supported) {
-> >         pr_debug("Firmware missing _OSC support\n");
-> >         return IS_ENABLED(CONFIG_X86) && boot_cpu_has(X86_FEATURE_CPPC);
-> > }
-> >
-> > instead for the sake of reducing #ifdeffery?
+> > Ard has slightly modified version of patch 2/4 which updates few other
+> > arch code. Since the PRMT driver build is dependent on that, is it OK
+> > for you to ACK if you agree with other 3 patches(1,3,4) so that it can
+> > be routed via efi tree. Alternatively, Ard has offered to provide a stable
+> > branch if needed.
 >
-> I don't think that would compile on non-X86.  X86_FEATURE_CPPC comes as part of
-> arch/x86/include/asm/cpufeatures.h, which I wouldn't expect is included on !x86.
+> Sorry pressed enter too early. I wanted to add reference to the commit in
+> Ard's efi queue I was referring[1] and the email where we discussed how
+> to deal with these PRMT patches[2]
 
-Good point.
+The ACPI changes in this series are fine with me, so please feel free to add
 
-Something like this would still look better though IMO:
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-if (!osc_sb_cppc_not_supported)
-        return true;
+to the patches and route them through the EFI tree.
 
-#ifdef CONFIG_X86
-        return boot_cpu_has(X86_FEATURE_CPPC);
-#else
-        return false;
-#endif
-}
-
-
->
-> >
-> > Also, this is somewhat risky, because even if the given processor has
-> > X86_FEATURE_CPPC set, the platform may still not want to expose CPPC
-> > through ACPI.  How's that going to work after this change?
-> >
->
-> Well actually doing that through _OSC wouldn't have worked before 72f2ecb7ece7 either.
-> If desirable - a platform could avoid populating _CPC objects in ACPI tables in this case.
->
-> I do know of OEM platforms that the underlying APU supports CPPC but the OEM doesn't
-> populate _CPC.  Presumably for this exact reason.
-
-That is an option, but there is no requirement that _CPC must not be
-populated when CPPC is not supported.
-
-_OSC is the proper mechanism for negotiating CPPC support.
-
-Still, if you know for a fact that on AMD systems X86_FEATURE_CPPC
-always means that CPPC is supported, I can live with an extra vendor
-check in the code above.
+Thanks!
