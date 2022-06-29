@@ -2,52 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 923E45607B4
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 19:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 377575607CA
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 19:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbiF2RtZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 13:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56214 "EHLO
+        id S230323AbiF2RxZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jun 2022 13:53:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231166AbiF2RtW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 13:49:22 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C4C1401A;
-        Wed, 29 Jun 2022 10:49:18 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id v38so18585219ybi.3;
-        Wed, 29 Jun 2022 10:49:18 -0700 (PDT)
+        with ESMTP id S230482AbiF2RxU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 13:53:20 -0400
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B16561FCF4;
+        Wed, 29 Jun 2022 10:53:19 -0700 (PDT)
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-31780ad7535so155619297b3.8;
+        Wed, 29 Jun 2022 10:53:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=gEj0L9yPBFIov6GzHkQf/TLPGDuR00sIvqo6B9sXrY4=;
-        b=WDbe/wk4e7WW3jc38h1g52dFJzQSmEoqk3ykoPAubl0VpMrS6Au4m72cFy24Qpp768
-         q653XfmOxWwYaRQYi/7dLACG1rzYFxa37BaofT51twyM+V2tHK3RvzP4HllQJfOqBRHh
-         7x2jD54NLUFGIOQUlad9TwBZItsBa122iG8IrNOwc3+hpmY5LHu3WR4bw/go6ShifPBS
-         vPZJaUBWpgR9i2kcQ8BV/5o2fxgOHwJaAVdeNQqUFPwkCRoTKXIiywFiat0p41mnmhfo
-         /BZIAJdW1vn76sgiMRomKTQexwDccgKAau2l3DEYw1r1LbtHkwQ57+4vOzyfz5nGNEY3
-         drmg==
-X-Gm-Message-State: AJIora9EjYe27eot8YxIzSnvGuEynqbF2tMn6h+GmsVQGZk1BEVLh4AB
-        iFLWNvT2wbIsdkVmz8ur2bDxa/ru0AP6ikMRaNqgLVUw
-X-Google-Smtp-Source: AGRyM1sNKxeBTcagqq49HlSqe5T5+UtQibdO1i19MQ54e1K4Ou9nH5563QjTGAsIkDAn95DURC4r3YwKjua/0E3y1rk=
-X-Received: by 2002:a25:ae26:0:b0:66d:1fdc:263c with SMTP id
- a38-20020a25ae26000000b0066d1fdc263cmr4816331ybj.137.1656524957627; Wed, 29
- Jun 2022 10:49:17 -0700 (PDT)
+        bh=V1liYLQU8cdNAjp5w6VPZ5Hc0pQCTqK8+fYV8wkB3Mo=;
+        b=GDRkUZOO/nU/2Iy6ztnW6Yfsvy0ZTc0eSPFhVhcKSGr5lYsNGZw8Ex5vDZeBSVHyPr
+         qp5KYEjeZMxqMe58MjUA7VsNplxT/aCQkEYFX4PTFYyyIe+tPxusIqJubQ8D5zeijrVZ
+         INHXlBd6XFjOyyBVMD6uEFXLEpfaWUC6HXplEuLKOW49b8yre1DSJgcYIywMWf0X5gRw
+         5CIsklJfylVYfg4v8zQ4XlsRZLVY9pyOfj9NmSVMSOZhwQyfIVqGO7lCCRtoM4gNu1M1
+         TZQqwRVeC26Xra/8PpBYHykYTZwcwfU+AeU4w62imJQN73CtZCaBFirHD6T347n+PVmc
+         KcVA==
+X-Gm-Message-State: AJIora/SgdiUshl7YWHQ/iyExMhhGmdujs7OeM8GoH2XumwnQooUCeJg
+        JdwR/fOY3hTOad5JDN3wpuHz6lRL33Sbi8NyGc+rpTnl
+X-Google-Smtp-Source: AGRyM1svcTZDhkLwToOIp/jO3UxgaPuVplQ4ZmGkGYGpPLQzXal5w8OEq+BEscgAA3R4l6AaRYr7OGUGbTFlGdQIAKM=
+X-Received: by 2002:a0d:c486:0:b0:31c:3b63:91fe with SMTP id
+ g128-20020a0dc486000000b0031c3b6391femr358878ywd.7.1656525198833; Wed, 29 Jun
+ 2022 10:53:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220621150436.3303431-1-sudeep.holla@arm.com> <CAHp75VdFNir18Q-mLVd_87Sxd1Dz0Hg2B4XQfm5XzagO8sZQrg@mail.gmail.com>
-In-Reply-To: <CAHp75VdFNir18Q-mLVd_87Sxd1Dz0Hg2B4XQfm5XzagO8sZQrg@mail.gmail.com>
+References: <20220622074248.19004-1-limanyi@uniontech.com>
+In-Reply-To: <20220622074248.19004-1-limanyi@uniontech.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 29 Jun 2022 19:49:06 +0200
-Message-ID: <CAJZ5v0h5HZQqSV7EEbYBNPTqudkocDjr-KpBD1yDAGUF0qZ+gA@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: ACPI: Update links and references to DSD
- related docs
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Sudeep Holla <sudeep.holla@arm.com>,
+Date:   Wed, 29 Jun 2022 19:53:07 +0200
+Message-ID: <CAJZ5v0hGEvw6quaK9oh4Qc2A4ggA68Y0ycBMrEfJ7EDZS=E4bA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: save NVS memory for Lenovo G40-45
+To:     Manyi Li <limanyi@uniontech.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -59,58 +56,38 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 22, 2022 at 1:31 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+On Wed, Jun 22, 2022 at 9:43 AM Manyi Li <limanyi@uniontech.com> wrote:
 >
-> On Tue, Jun 21, 2022 at 5:12 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
-> >
-> > The existing references to DSD are stale and outdated. The new process
-> > and guidance is maintained @https://github.com/UEFI/DSD-Guide
-> >
-> > Update the existing documents to reflect the same.
+> [821d6f0359b0614792ab8e2fb93b503e25a65079] is to make machines
+> produced from 2012 to now not saving NVS region to accelerate S3.
 >
-> Taking Rafael's comment into account,
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Thanks!
+> But, Lenovo G40-45, a platform released in 2015, still needs NVS memory
+> saving during S3. A quirk is introduced for this platform.
 >
-> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> > ---
-> >  .../firmware-guide/acpi/DSD-properties-rules.rst      | 11 +++++++----
-> >  1 file changed, 7 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/Documentation/firmware-guide/acpi/DSD-properties-rules.rst b/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
-> > index 8b2d8d0864c2..70442bc2521e 100644
-> > --- a/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
-> > +++ b/Documentation/firmware-guide/acpi/DSD-properties-rules.rst
-> > @@ -21,7 +21,9 @@ specific type) associated with it.
-> >
-> >  In the ACPI _DSD context it is an element of the sub-package following the
-> >  generic Device Properties UUID in the _DSD return package as specified in the
-> > -Device Properties UUID definition document [1]_.
-> > +section titled "Well-Known _DSD UUIDs and Data Structure Formats" sub-section
-> > +"Device Properties UUID" in _DSD (Device Specific Data) Implementation Guide
-> > +document [1]_.
-> >
-> >  It also may be regarded as the definition of a key and the associated data type
-> >  that can be returned by _DSD in the Device Properties UUID sub-package for a
-> > @@ -36,7 +38,9 @@ Property subsets are nested collections of properties.  Each of them is
-> >  associated with an additional key (name) allowing the subset to be referred
-> >  to as a whole (and to be treated as a separate entity).  The canonical
-> >  representation of property subsets is via the mechanism specified in the
-> > -Hierarchical Properties Extension UUID definition document [2]_.
-> > +section titled "Well-Known _DSD UUIDs and Data Structure Formats" sub-section
-> > +"Hierarchical Data Extension UUID" in _DSD (Device Specific Data)
-> > +Implementation Guide document [1]_.
-> >
-> >  Property sets may be hierarchical.  That is, a property set may contain
-> >  multiple property subsets that each may contain property subsets of its
-> > @@ -96,5 +100,4 @@ contents.
-> >  References
-> >  ==========
-> >
-> > -.. [1] https://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
-> > -.. [2] https://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf
-> > +.. [1] https://github.com/UEFI/DSD-Guide
-> > --
+> Signed-off-by: Manyi Li <limanyi@uniontech.com>
+> ---
+>  drivers/acpi/sleep.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index 04ea1569df78..974746e6e59d 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -360,6 +360,14 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+>                 DMI_MATCH(DMI_PRODUCT_NAME, "80E3"),
+>                 },
+>         },
+> +       {
+> +       .callback = init_nvs_save_s3,
+> +       .ident = "Lenovo G40-45",
+> +       .matches = {
+> +               DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> +               DMI_MATCH(DMI_PRODUCT_NAME, "80E1"),
+> +               },
+> +       },
+>         /*
+>          * ThinkPad X1 Tablet(2016) cannot do suspend-to-idle using
+>          * the Low Power S0 Idle firmware interface (see
+> --
 
 Applied as 5.20 material, thanks!
