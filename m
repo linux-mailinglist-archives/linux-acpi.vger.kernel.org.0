@@ -2,68 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F6C55FB8F
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 11:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AC7755FBCB
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 11:24:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232448AbiF2JOa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 05:14:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55344 "EHLO
+        id S231831AbiF2JW4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jun 2022 05:22:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232058AbiF2JO2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 05:14:28 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E03728E25
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Jun 2022 02:14:27 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id d17so15788111wrc.10
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Jun 2022 02:14:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=U+mKfaGXoONCznFgzmYIZny9AKkMWKoWt6b7S8f60RM=;
-        b=fEDY3d9nvND9FB+yUl1AlWKqmdRimCwOi50i1qa9A3DKppiVdL0evazSl+CYovnpPb
-         +xe7MhtHEIdRd/hU3l/ogn7sAWDlJUBLc392CjdJtrSQfAf0m+yIkjQ5Ga6atX/HRS7q
-         yWgmVnPRgemnHBcUGxlhsY3DN9UnUcJt1/h9p3fpOkxCpxOj0Ckew4iqSSylcCqnElDa
-         AVau4GSEu7q/4s2ZTilxBRERa7+HplvcEVjMmlivdXoSG5lnUC7moEqfpj1JhEbdYSXx
-         6MUxFw9BPh4JT9OYAiLOGKncNm/n7RARaGhuCY/YcqnhEA2h4qe0OikedNdDbvVg1I8b
-         JqNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=U+mKfaGXoONCznFgzmYIZny9AKkMWKoWt6b7S8f60RM=;
-        b=jQWClXWgBL7vaDqSm/f4FYzTMF87Ovq2/Qq6jp1a0tremEMzUMeA3N2Ado+lrb1PSZ
-         scOSGEIPtp2O8Ehit+F3DK62qsAxg4Wtwf8Oo3z1WwevzGaVFWpsJcnOeC+1mnrUEwYu
-         Dmpf9vWBqJEU9T883oXKIsTAuVJEhr6yKwNt59e+luwTnv2oD4ts8EXXsiHApy6Zb81c
-         BL2A8Nhi7ormXxmfe7vOiWp85IdphTZxDKKhqybvWwFQQNks4801plBAQApgvxXJKSjZ
-         KaeKIOGWDZkxkAqcUfujHbT3VjGVnUVzHAQ9xetzph+zOGHRmZEBIKZe1p04NC4RQKcy
-         zCpw==
-X-Gm-Message-State: AJIora/+xLGbU1zK0zL1BZ9/Dy4Lh9kpysach+HFWs9Re43BT32iCjmU
-        SsSXBFcEBsbR14zeZrKBEcqwZudaXHAgVg==
-X-Google-Smtp-Source: AGRyM1uss6yL9ryGiFhRNXcrE8eBDDu99NbY6sECQMgnEwKtRLT98HuE31fmJMfucgcPw940Fu+20A==
-X-Received: by 2002:a5d:4352:0:b0:213:4910:6616 with SMTP id u18-20020a5d4352000000b0021349106616mr2022060wrr.226.1656494065746;
-        Wed, 29 Jun 2022 02:14:25 -0700 (PDT)
-Received: from myrica (cpc92880-cmbg19-2-0-cust679.5-4.cable.virginm.net. [82.27.106.168])
-        by smtp.gmail.com with ESMTPSA id z18-20020a05600c0a1200b0039c45fc58c4sm2440202wmp.21.2022.06.29.02.14.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jun 2022 02:14:25 -0700 (PDT)
-Date:   Wed, 29 Jun 2022 10:14:01 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Eric Auger <eric.auger@redhat.com>
-Cc:     eric.auger.pro@gmail.com, jroedel@suse.de,
-        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
-        rafael@kernel.org, lenb@kernel.org, linux-kernel@vger.kernel.org,
-        iommu@lists.linux.dev
-Subject: Re: [PATCH] ACPI: VIOT: Fix ACS setup
-Message-ID: <YrwX2U48HOC+UF07@myrica>
-References: <20220627125534.1035912-1-eric.auger@redhat.com>
+        with ESMTP id S232389AbiF2JWx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 05:22:53 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 16065377F2;
+        Wed, 29 Jun 2022 02:22:50 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 97EE41477;
+        Wed, 29 Jun 2022 02:22:50 -0700 (PDT)
+Received: from bogus (unknown [10.57.39.193])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE5C23F792;
+        Wed, 29 Jun 2022 02:22:48 -0700 (PDT)
+Date:   Wed, 29 Jun 2022 10:21:37 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-efi@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v2 0/4] ACPI: Enable Platform Runtime Mechanism(PRM)
+ support on ARM64
+Message-ID: <20220629092137.a5fl33recfds7bq3@bogus>
+References: <20220628125346.693304-1-sudeep.holla@arm.com>
+ <20220629090635.6kf7thawc4qc4zi2@bogus>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220627125534.1035912-1-eric.auger@redhat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+In-Reply-To: <20220629090635.6kf7thawc4qc4zi2@bogus>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,125 +46,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Eric,
-
-On Mon, Jun 27, 2022 at 02:55:34PM +0200, Eric Auger wrote:
-> Currently acpi_viot_init() gets called after the pci
-> device has been scanned and pci_enable_acs() has been called.
-> So pci_request_acs() fails to be taken into account leading
-> to wrong single iommu group topologies when dealing with
-> multi-function root ports for instance.
+On Wed, Jun 29, 2022 at 10:06:35AM +0100, Sudeep Holla wrote:
+> Hi Rafael,
 > 
-> We cannot simply move the acpi_viot_init() earlier, similarly
-> as the IORT init because the VIOT parsing relies on the pci
-> scan. However we can detect VIOT is present earlier and in
-> such a case, request ACS. Introduce a new acpi_viot_early_init()
-> routine that allows to call pci_request_acs() before the scan.
+> On Tue, Jun 28, 2022 at 01:53:42PM +0100, Sudeep Holla wrote:
+> > Hi,
+> > 
+> > This tiny series is to enable Platform Runtime Mechanism(PRM) support on
+> > ARM64. Not much changes. Just enabling the build and moving the config
+> > option so that it is not listed under the topmost menu for ARM64.
+> > 
 > 
-> Fixes: 3cf485540e7b ("ACPI: Add driver for the VIOT table")
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Reported-by: Jin Liu <jinl@redhat.com>
+> Ard has slightly modified version of patch 2/4 which updates few other
+> arch code. Since the PRMT driver build is dependent on that, is it OK
+> for you to ACK if you agree with other 3 patches(1,3,4) so that it can
+> be routed via efi tree. Alternatively, Ard has offered to provide a stable
+> branch if needed.
 
-Thanks for the fix, the patch makes sense and fixes the issue.
+Sorry pressed enter too early. I wanted to add reference to the commit in
+Ard's efi queue I was referring[1] and the email where we discussed how
+to deal with these PRMT patches[2]
 
-I wondered whether we should keep the logic where we only request ACS if
-an IOMMU is found to manage a PCI range, but I can't see any harm in
-requesting it regardless (plus there is a precedent with AMD IOMMU).
-I could imagine some VMM wanting to only put an IOMMU in front of its MMIO
-devices and leave PCI to roam free, but that seems like a stretch.
+-- 
+Regards,
+Sudeep
 
-There is another issue with the existing code, though: we can't call
-pci_request_acs() when CONFIG_PCI is disabled because no stub is defined.
-Could you wrap the call in an #ifdef?
-
-> ---
->  drivers/acpi/bus.c        |  1 +
->  drivers/acpi/viot.c       | 23 +++++++++++++++++------
->  include/linux/acpi_viot.h |  2 ++
->  3 files changed, 20 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 86fa61a21826..906ad8153fd9 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -1400,6 +1400,7 @@ static int __init acpi_init(void)
->  
->  	pci_mmcfg_late_init();
->  	acpi_iort_init();
-> +	acpi_viot_early_init();
->  	acpi_hest_init();
->  	acpi_ghes_init();
->  	acpi_scan_init();
-> diff --git a/drivers/acpi/viot.c b/drivers/acpi/viot.c
-> index d2256326c73a..3c1be123e4d6 100644
-> --- a/drivers/acpi/viot.c
-> +++ b/drivers/acpi/viot.c
-> @@ -248,6 +248,23 @@ static int __init viot_parse_node(const struct acpi_viot_header *hdr)
->  	return ret;
->  }
->  
-> +/**
-> + * acpi_viot_early_init - Test the presence of VIOT and enable ACS
-> + *
-> + * If the VIOT does exist, ACS must be enabled. This cannot be
-> + * done in acpi_viot_init() which is called after the bus scan
-> + */
-> +void __init acpi_viot_early_init(void)
-> +{
-> +	acpi_status status;
-> +	struct acpi_table_header *hdr;
-> +
-> +	status = acpi_get_table(ACPI_SIG_VIOT, 0, &hdr);
-> +	if (!ACPI_FAILURE(status))
-> +		pci_request_acs();
-> +	acpi_put_table(hdr);
-
-I'd rather not call acpi_put_table() in case of failure. I know it is
-handled but it looks fragile and I couldn't find any other user of
-acpi_get_table() doing this.
-
-> +}
-> +
->  /**
->   * acpi_viot_init - Parse the VIOT table
->   *
-> @@ -319,12 +336,6 @@ static int viot_pci_dev_iommu_init(struct pci_dev *pdev, u16 dev_id, void *data)
->  			epid = ((domain_nr - ep->segment_start) << 16) +
->  				dev_id - ep->bdf_start + ep->endpoint_id;
->  
-> -			/*
-> -			 * If we found a PCI range managed by the viommu, we're
-> -			 * the one that has to request ACS.
-> -			 */
-> -			pci_request_acs();
-> -
->  			return viot_dev_iommu_init(&pdev->dev, ep->viommu,
->  						   epid);
->  		}
-> diff --git a/include/linux/acpi_viot.h b/include/linux/acpi_viot.h
-> index 1eb8ee5b0e5f..e58d60f8ff2e 100644
-> --- a/include/linux/acpi_viot.h
-> +++ b/include/linux/acpi_viot.h
-> @@ -6,10 +6,12 @@
->  #include <linux/acpi.h>
->  
->  #ifdef CONFIG_ACPI_VIOT
-> +void __init acpi_viot_early_init(void);
->  void __init acpi_viot_init(void);
->  int viot_iommu_configure(struct device *dev);
->  #else
->  static inline void acpi_viot_init(void) {}
-> +static inline void acpi_viot_early_init(void) {}
-
-nit: different declaration order
-
-Thanks,
-Jean
-
-
->  static inline int viot_iommu_configure(struct device *dev)
->  {
->  	return -ENODEV;
-> -- 
-> 2.35.3
-> 
+[1] https://git.kernel.org/efi/efi/c/8add9a3a2243
+[2] https://lore.kernel.org/r/CAMj1kXFc7CaTV3vhJrskL+VZS2rAdb320Be1mhwX4VW=pSsdJA@mail.gmail.com
