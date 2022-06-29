@@ -2,59 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 106665601B7
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 15:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 134A35602AC
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 16:28:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbiF2NvM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 09:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51914 "EHLO
+        id S229744AbiF2O2I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jun 2022 10:28:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231451AbiF2NvL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 09:51:11 -0400
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02B018E34;
-        Wed, 29 Jun 2022 06:51:10 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id x184so25324390ybg.12;
-        Wed, 29 Jun 2022 06:51:10 -0700 (PDT)
+        with ESMTP id S229654AbiF2O2G (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 10:28:06 -0400
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44EABEB;
+        Wed, 29 Jun 2022 07:28:05 -0700 (PDT)
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-31772f8495fso149708077b3.4;
+        Wed, 29 Jun 2022 07:28:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=JCp/LRokJcxZDVsuGLGOHFR2m172HOBXIzph0VMMKOw=;
-        b=UjCVWkrYTSMgHWZOrMmy9fV69edY0W7BFOZcHNd+hBJpA8u4kBbdTLemydBKsASnvy
-         nRFhPqFTADEK/CLP1wKevqqQb9hxUuBHN4LXRfe7/XnYLIbZljC63P3DWzl0/jxawPal
-         lcq6FMapJN+eGsFNQMIIYLG3ZV1j/LrqLZCTHY3ZWy/TR981Ga32lnPjyhFaw70ziNDo
-         N4jDyG2gpaCHe/9BoIAqFkgO3zubLRKC+5kxdMlbthg6UDg5gmjQlCzSmidlgVbSVvmh
-         KiLeMC03MoLt54XBXc7f1EP/6+H5mIhqNLjXjL64UJKZRLpSeE2QhxUz3wQv346U2dVX
-         irMw==
-X-Gm-Message-State: AJIora8EvdiBBblWEZkG1odDKU9iyEBoKNB9e3Xcz32uVn7nar0ktTJI
-        oBtHjRBPJjvrgmWdIpPl5OQqvQBtBBXrAdGVqrw=
-X-Google-Smtp-Source: AGRyM1s66IF0TiL7HjPl7I4lBUzShSoaC6NNemCaiaGJtRsPoy7MMeZdcDP+G6yttdeXcBU4a++p3p7oNEA0ycJSE6M=
-X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
- z15-20020a25664f000000b0066cd0f436ccmr3368498ybm.482.1656510669730; Wed, 29
- Jun 2022 06:51:09 -0700 (PDT)
+        bh=aHR5ymbsi5Z999J/dNB6LVJ9e+8/Ici1kU2JlqnQpKY=;
+        b=8C1ofLx6XDbqlYzlNHkRvE8nKs8/RB04OrLtfDlpnxG4alW9gcVuoXeB8OBbQSNu6i
+         ulJUeRkiaQ7lGULxKzU+bQ0VXvaZ78Lh5XqPB1IWNWpDb4clitjsjxCIzMs6/vWmAJUZ
+         p+2LJuqDyDCcq2R0M/iBmKTJ9G7c8ftiq/a3ADW+XelhafqlLX8Ch8pPJ8Fv4snCfISq
+         cWfoiXDiuzmm+DgBkCTBTCurwrUqrVuqutXZz+vekAoX5PNOCEndJPh3X5yw0YfebepE
+         zR+oDkAbI6bX1qWwjgnwU7jgbyLYlLbKB5YTW0Y34CBZcCsR9uDGmvf7UO2WXbz7fWrQ
+         hQUA==
+X-Gm-Message-State: AJIora/llUJ08rZpsF62SOLPIKnd6GtnUsyRgNxj674znGj4iHlY01YF
+        CndXT6qUhVzQZKTxCP6fx9DiMnOPq0r8iHFbzpUYRLaXi/A=
+X-Google-Smtp-Source: AGRyM1t7OXAfuIqFWwKLk+lBTxMSyeGPHn3W96IbunZGgW4UmzkbDNhR8beTXQHeD4d5aKYs1HBGZD8huUCIIT8oda8=
+X-Received: by 2002:a81:57d7:0:b0:317:b111:34d5 with SMTP id
+ l206-20020a8157d7000000b00317b11134d5mr4228905ywb.7.1656512884315; Wed, 29
+ Jun 2022 07:28:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220627165047.336669-1-sudeep.holla@arm.com> <20220629130644.1258904-1-sudeep.holla@arm.com>
-In-Reply-To: <20220629130644.1258904-1-sudeep.holla@arm.com>
+References: <20220522214302.39024-1-james.liu@hpe.com>
+In-Reply-To: <20220522214302.39024-1-james.liu@hpe.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 29 Jun 2022 15:50:58 +0200
-Message-ID: <CAJZ5v0jdbS9HNfZ5N=M9jDCOp5uiQ5L30LA6haxpoG6QUFrNbw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Remove the unused find_acpi_cpu_cache_topology()
-To:     Sudeep Holla <sudeep.holla@arm.com>
+Date:   Wed, 29 Jun 2022 16:27:53 +0200
+Message-ID: <CAJZ5v0i7CiuXXHOyMqwzS5CUqKPN6rcLC9yxpv20goeAinbKUg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: OSL: Fix the memory mapping of an ACPI GAS that
+ addresses a data structure
+To:     James Liu <james.liu@hpe.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Atish Patra <atishp@atishpatra.org>,
-        Atish Patra <atishp@rivosinc.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Wang Qing <wangqing@vivo.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        rwright@hpe.com, david.chang@hpe.com, clayc@hpe.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -66,106 +58,102 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 29, 2022 at 3:07 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
+On Sun, May 22, 2022 at 11:44 PM <james.liu@hpe.com> wrote:
 >
-> The sole user of this find_acpi_cpu_cache_topology() was arm64 topology
-> which is now consolidated into the generic arch_topology without the need
-> of this function.
+> From: James Liu <james.liu@hpe.com>
 >
-> Drop the unused function find_acpi_cpu_cache_topology().
+>     Modify acpi_os_map_generic_address() & acpi_os_unmap_generic_address()
+>     to correctly handle cases that a GAS table (i.e., Table 5.1, ACPI 6.4)
+>     is used to address a data structure; in the case, the GAS has the field
+>     of "Register Bit Width" equal to 0.
 >
-> Reported-by: Ionela Voinescu <ionela.voinescu@arm.com>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+>     For example, "Injection Instruction Entry" (Table 18.25, ACPI 6.4) has
+>     a RegisterRegion field that is a GAS that points to a data structure
+>     SET_ERROR_TYPE_WITH_ADDRESS (Table 18.30), which is required when using
+>     EINJ (Error Injection module).
+>
+>     This fix preserves a fairly sufficient memory space (i.e. page size) to
+
+The hard-coded PAGE_SIZE allocation size is kind of a concern, because
+the spec doesn't seem to limit the size of the structure pointed to by
+the GAS to a page.
+
+Also it is not clear from the spec that the RegisterRegion field in
+Table 18.25 points to a structure.  On the contrary, Section 18.6.2
+says that it points to a register.
+
+In any case, I don't think it is OK to use
+acpi_os_map_generic_address() to map an address from a GAS pointing to
+a data structure.  acpi_os_map_memory() appears to be the right
+interface to map such memory regions.
+
+>     store the data structure to prevent EINJ module from loading failure if
+>     platform firmware can correctly support Injection Instruction Entry in
+>     an EINJ table.
+>
+> Signed-off-by: James Liu <james.liu@hpe.com>
 > ---
->  drivers/acpi/pptt.c  | 37 -------------------------------------
->  include/linux/acpi.h |  5 -----
->  2 files changed, 42 deletions(-)
+>  drivers/acpi/osl.c | 27 +++++++++++++++++++++++----
+>  1 file changed, 23 insertions(+), 4 deletions(-)
 >
-> Hi Rafael,
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index 45c5c0e45..99f987c8c 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -452,14 +452,20 @@ EXPORT_SYMBOL_GPL(acpi_os_unmap_memory);
 >
-> This is another patch that I would like to be part of the series[1].
-> Please ack the same if you are OK to route this via Greg. I am avoiding
-> to repost the whole series just for this one additional patch for now.
-
-Sure.
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-> [1] https://lore.kernel.org/all/20220627165047.336669-1-sudeep.holla@arm.com/
->
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index 763f021d45e6..dd3222a15c9c 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -691,43 +691,6 @@ int find_acpi_cpu_topology(unsigned int cpu, int level)
->         return find_acpi_cpu_topology_tag(cpu, level, 0);
->  }
->
-> -/**
-> - * find_acpi_cpu_cache_topology() - Determine a unique cache topology value
-> - * @cpu: Kernel logical CPU number
-> - * @level: The cache level for which we would like a unique ID
-> - *
-> - * Determine a unique ID for each unified cache in the system
-> - *
-> - * Return: -ENOENT if the PPTT doesn't exist, or the CPU cannot be found.
-> - * Otherwise returns a value which represents a unique topological feature.
-> - */
-> -int find_acpi_cpu_cache_topology(unsigned int cpu, int level)
-> -{
-> -       struct acpi_table_header *table;
-> -       struct acpi_pptt_cache *found_cache;
-> -       acpi_status status;
-> -       u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
-> -       struct acpi_pptt_processor *cpu_node = NULL;
-> -       int ret = -1;
-> -
-> -       status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
-> -       if (ACPI_FAILURE(status)) {
-> -               acpi_pptt_warn_missing();
-> -               return -ENOENT;
-> -       }
-> -
-> -       found_cache = acpi_find_cache_node(table, acpi_cpu_id,
-> -                                          CACHE_TYPE_UNIFIED,
-> -                                          level,
-> -                                          &cpu_node);
-> -       if (found_cache)
-> -               ret = ACPI_PTR_DIFF(cpu_node, table);
-> -
-> -       acpi_put_table(table);
-> -
-> -       return ret;
-> -}
-> -
->  /**
->   * find_acpi_cpu_topology_package() - Determine a unique CPU package value
->   * @cpu: Kernel logical CPU number
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 4f82a5bc6d98..7b96a8bff6d2 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1429,7 +1429,6 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
->  int find_acpi_cpu_topology_cluster(unsigned int cpu);
->  int find_acpi_cpu_topology_package(unsigned int cpu);
->  int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
-> -int find_acpi_cpu_cache_topology(unsigned int cpu, int level);
->  #else
->  static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
+>  void __iomem *acpi_os_map_generic_address(struct acpi_generic_address *gas)
 >  {
-> @@ -1451,10 +1450,6 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->  {
->         return -EINVAL;
->  }
-> -static inline int find_acpi_cpu_cache_topology(unsigned int cpu, int level)
-> -{
-> -       return -EINVAL;
-> -}
->  #endif
+> -       u64 addr;
+> +       u64 addr = 0;
 >
->  #ifdef CONFIG_ACPI_PCC
+>         if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
+>                 return NULL;
+>
+> +       /* Handle a case that GAS is used to address an ACPI data structure */
+> +       if (!gas->bit_width) {
+> +               pr_info("An ACPI data structure at 0x%llx is mapped\n", addr);
+> +               return  acpi_os_map_iomem(addr, PAGE_SIZE);
+> +       }
+> +
+>         /* Handle possible alignment issues */
+>         memcpy(&addr, &gas->address, sizeof(addr));
+> -       if (!addr || !gas->bit_width)
+> +       if (!addr)
+>                 return NULL;
+>
+>         return acpi_os_map_iomem(addr, gas->bit_width / 8);
+> @@ -468,15 +474,28 @@ EXPORT_SYMBOL(acpi_os_map_generic_address);
+>
+>  void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
+>  {
+> -       u64 addr;
+> +       u64 addr = 0;
+>         struct acpi_ioremap *map;
+>
+>         if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
+>                 return;
+>
+> +       /* Handle a case that GAS is used to address an ACPI data structure */
+> +       if (!gas->bit_width) {
+> +               pr_info("An ACPI data structure at 0x%llx is unmapped\n", addr);
+> +               mutex_lock(&acpi_ioremap_lock);
+> +               map = acpi_map_lookup(addr, PAGE_SIZE);
+> +               if (!map) {
+> +                       mutex_unlock(&acpi_ioremap_lock);
+> +                       return;
+> +               }
+> +               acpi_os_drop_map_ref(map);
+> +               mutex_unlock(&acpi_ioremap_lock);
+> +       }
+> +
+>         /* Handle possible alignment issues */
+>         memcpy(&addr, &gas->address, sizeof(addr));
+> -       if (!addr || !gas->bit_width)
+> +       if (!addr)
+>                 return;
+>
+>         mutex_lock(&acpi_ioremap_lock);
 > --
-> 2.37.0
+> 2.25.1
 >
