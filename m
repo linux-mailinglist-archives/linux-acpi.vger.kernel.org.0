@@ -2,56 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3E835606CF
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 18:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B9E5606EA
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 19:03:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbiF2Q4u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 12:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41458 "EHLO
+        id S231137AbiF2RDf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 29 Jun 2022 13:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229575AbiF2Q4u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 12:56:50 -0400
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED602250C;
-        Wed, 29 Jun 2022 09:56:49 -0700 (PDT)
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-3177f4ce3e2so154175987b3.5;
-        Wed, 29 Jun 2022 09:56:49 -0700 (PDT)
+        with ESMTP id S230072AbiF2RDe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 13:03:34 -0400
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 122C815A06
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Jun 2022 10:03:30 -0700 (PDT)
+Received: by mail-yb1-f174.google.com with SMTP id v185so19554136ybe.8
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Jun 2022 10:03:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZkIej0UJ7PuUWn58IixeF0LRQS/u6RyIKeOWZv4NbdA=;
-        b=GVKIIolGRvve74I/JsxWr1PGQWrExf52MGc8FdFocUJlSUjaw//POtC98qtHGUCdkP
-         BkHALIAtdDOZnyQpvTpQvjJTPDYmaNvskNwxegc/36shoy5MecAVku0fdLUJqvLOG1DL
-         w2QtF6LBAkOGI71M7aVF40qTBSE1ko3i9DBXAq2BpjJ5lXMkr+OrlMK2s2CjUpcjYqOn
-         7u3f5VSWw4JMfs1b+57T8LN0I/M4YxTWOiNHkgzlSXehtTFoRd8HrtGMmWnqyOg4q/Dk
-         BqOr+NUd903AtwllTSvPCyTp26CEOh3LijwL8M4A8cJVuKTcSnw1CdXUlApfbkDy+mNo
-         jlBw==
-X-Gm-Message-State: AJIora+epWyJeq18l0nzioaBfWteAZscjLUsCR0/N1SBdDUeT4Eux650
-        fY3hU5UbI04VZcc+/pWtXUAqFe7L1GAvam0fF7AmcN44
-X-Google-Smtp-Source: AGRyM1s2CbxkModmI/0O7hOvmw6DE7xd5G7FVUCy9hKt/wft6RsAcDx/TDDEpy8faKzufOPehWVJII78xYd5Usg/KAk=
-X-Received: by 2002:a0d:d811:0:b0:31b:ddc4:c0ac with SMTP id
- a17-20020a0dd811000000b0031bddc4c0acmr5025839ywe.149.1656521808695; Wed, 29
- Jun 2022 09:56:48 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Aqm4FC89DWarFJMROs925TeGjJpuRjPm9/zQL+5jjQE=;
+        b=JkhBRZFc+jzkOhRGYotPQ0Ta6Ivy+BEWCoDMV5NcmRuhLeFT6WjF5FhdH2vw4Gljrv
+         XqflT1WtKn6c/Gxm75Td6y2iTP91j7FtTPg+PUCAlLBMowSt4KTMWKgTuFORqjSWGlGP
+         mxxJwNtcV1vqBIhUcFAtZkE/66afzUmq3WJY5Bqm3wKCZHIOaiyaoxFyYzysJ/zGxolW
+         ilJEike/7Edtw3vcqVjlUEDXyTE0BbZBJr4MP0oe+qqC55wHhOm9hgiBXBhoWK4DowVB
+         0fzK/2M/nwLkRd42hgCkw6e+UJttqU2T6cvrlt9dBHOVV27/gDew73vcvlxTSVyvN2Eo
+         OWzw==
+X-Gm-Message-State: AJIora8FX7IorDNBZxf19KDZ5XA2+piEuF5NgNi5+5vE76AhOjOxeCID
+        c/7KMzlFzOJ3v6PTHneDDXTRrVPzTaWtMNZ25fg=
+X-Google-Smtp-Source: AGRyM1totlxXjvK3OXv8JitH90a/+eghX8CaC1a/ln47tRlBn1zPE3Y6wq3ucmu8X9MfmmhLC/RXwQ0HXGtuP918OL0=
+X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
+ z15-20020a25664f000000b0066cd0f436ccmr4328210ybm.482.1656522209222; Wed, 29
+ Jun 2022 10:03:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220617025152.1908638-1-luriwen@hotmail.com> <TYWP286MB2601A75D517AE71EE569CE15B1AF9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
- <87v8szoccp.fsf@stealth>
-In-Reply-To: <87v8szoccp.fsf@stealth>
+References: <20220618112311.14661-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20220618112311.14661-1-u.kleine-koenig@pengutronix.de>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 29 Jun 2022 18:56:37 +0200
-Message-ID: <CAJZ5v0gAJSfWmEJjawSHWnYB-rsBxcMyUQjAf4F3jpMhnjx+-Q@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI/processor: Remove unused function acpi_processor_get_limit_info()
-To:     Punit Agrawal <punit.agrawal@bytedance.com>
-Cc:     Riwen Lu <luriwen@hotmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Wed, 29 Jun 2022 19:03:18 +0200
+Message-ID: <CAJZ5v0hgPwRHyU6cG-gqtRM4wLaKGRoL3z1nS_FiTybLAcvgGA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI: Drop redundant check in acpi_device_remove()
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        "Zhang, Rui" <rui.zhang@intel.com>,
         Robert Moore <robert.moore@intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Riwen Lu <luriwen@kylinos.cn>
+        Sascha Hauer <kernel@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
@@ -62,55 +60,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 17, 2022 at 11:42 AM Punit Agrawal
-<punit.agrawal@bytedance.com> wrote:
+On Sat, Jun 18, 2022 at 1:23 PM Uwe Kleine-König
+<u.kleine-koenig@pengutronix.de> wrote:
 >
-> Riwen Lu <luriwen@hotmail.com> writes:
+> A bus remove callback is only ever called by the device core with a
+> bound driver. So there is no need to check if the driver is non-NULL.
 >
-> > From: Riwen Lu <luriwen@kylinos.cn>
-> >
-> > Commit 22e7551eb6fd ("ACPI / processor: Remove acpi_processor_get_limit_info()"),
-> > left behind this, remove it.
-> >
-> > Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
-> >
-> > ---
-> > v1 -> v2:
-> >  - Make this patch base on ("ACPI: Split out processor thermal register
-> >    from ACPI PSS").
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/acpi/bus.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
 >
-> For such changes, it is better to send all the related patches as a
-> series so it's easy to see the dependencies . In a series the easy /
-> obvious fixes should be earlier so it's easier for them to be merged
-> while the more significant changes are still being discussed.
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 86fa61a21826..67a3f8cf42f9 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1062,12 +1062,11 @@ static void acpi_device_remove(struct device *dev)
+>         struct acpi_device *acpi_dev = to_acpi_device(dev);
+>         struct acpi_driver *acpi_drv = acpi_dev->driver;
 >
-> Hopefully in this case Rafael too agrees with the dependency patch -
-> otherwise, it's just extra churn on the lists.
+> -       if (acpi_drv) {
+> -               if (acpi_drv->ops.notify)
+> -                       acpi_device_remove_notify_handler(acpi_dev);
+> -               if (acpi_drv->ops.remove)
+> -                       acpi_drv->ops.remove(acpi_dev);
+> -       }
+> +       if (acpi_drv->ops.notify)
+> +               acpi_device_remove_notify_handler(acpi_dev);
+> +       if (acpi_drv->ops.remove)
+> +               acpi_drv->ops.remove(acpi_dev);
+> +
+>         acpi_dev->driver = NULL;
+>         acpi_dev->driver_data = NULL;
 >
-> But don't resend just yet - give some time for others to add their
-> feedback.
 >
-> > ---
-> >  include/acpi/processor.h | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-> > index ba1e3ed98d3d..9fa49686957a 100644
-> > --- a/include/acpi/processor.h
-> > +++ b/include/acpi/processor.h
-> > @@ -441,7 +441,6 @@ static inline int acpi_processor_hotplug(struct acpi_processor *pr)
-> >  #endif /* CONFIG_ACPI_PROCESSOR_IDLE */
-> >
-> >  /* in processor_thermal.c */
-> > -int acpi_processor_get_limit_info(struct acpi_processor *pr);
-> >  int acpi_processor_thermal_init(struct acpi_processor *pr,
-> >                               struct acpi_device *device);
-> >  void acpi_processor_thermal_exit(struct acpi_processor *pr,
->
-> Fwiw,
->
-> Reviewed-by: Punit Agrawal <punit.agrawal@bytedance.com>
+> base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
+> --
 
-Applied as 5.20 material with some edits in the subject and changelog.
+Applied (with minor modifications) as 5.20 material along with the [2/2].
 
 Thanks!
