@@ -2,98 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CF2F560904
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 20:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 994DB56094D
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jun 2022 20:42:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbiF2SZv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 14:25:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39040 "EHLO
+        id S229842AbiF2SmH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jun 2022 14:42:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230184AbiF2SZv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 14:25:51 -0400
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E90352654D
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Jun 2022 11:25:49 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-318889e6a2cso156450667b3.1
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Jun 2022 11:25:49 -0700 (PDT)
+        with ESMTP id S229480AbiF2SmG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 14:42:06 -0400
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A9D29827;
+        Wed, 29 Jun 2022 11:42:04 -0700 (PDT)
+Received: by mail-yb1-f169.google.com with SMTP id d5so29545964yba.5;
+        Wed, 29 Jun 2022 11:42:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QiTMGZ1Oor7xHDMn7+pM1tWPeKIIB+ASfs2U6Er3qi0=;
-        b=T/K1VGwDCOovxPYOUeCJo7XJILe9wB3mI1gmBeHUYHFKLLxuF19qbvT51yjARfhvOv
-         EzWsw3GxYHzSqMyWLNBFqxB00LZ6wXHMRrcNHvSqRC5bO8/krMO5Z0TZzOAh/HOCz+y3
-         KOxqNAK0YmT2EzSIlb7t1MHAAZHVU9z94u3HlmNNMNFKsLsOCLr9FwutWcVQeobIKham
-         Qc62gr5GydRlAtc1EaZkBE8ITlVU1H1QluSr7uGhUtHDC4ZeDlhMfaX2tC4pxrblL4tU
-         8m1kyxExNtz5ZLark5+M4T1J77kYOVKCTTgBz3CwJ8nFCAJswNAKszoJgTBLIM6izLzw
-         H0jw==
-X-Gm-Message-State: AJIora/bCJsGUnLVBzlUi+CvvZWLIPVyxt1jF0frz+z+Zy+GP8em6Cly
-        4myuUFRsgdix8cPoduaKKYSvCbGdKxI2X1cSUuc=
-X-Google-Smtp-Source: AGRyM1smcSnklBIPzyeeyuMsfwAbAZCh1f1al96TpLvROYcYrsIjaBhd617UXVfMMs7YBNiyZznf+OuDnlggwpg/g2M=
-X-Received: by 2002:a0d:c486:0:b0:31c:3b63:91fe with SMTP id
- g128-20020a0dc486000000b0031c3b6391femr535206ywd.7.1656527149184; Wed, 29 Jun
- 2022 11:25:49 -0700 (PDT)
+        bh=niDepKniCB5d3I07y4zpYfnckX8GQNMPL/217Nk44uM=;
+        b=364Lo2zzksxZUBSXzgrA+UfG7auHtNmoAZcSnFq8vTie+mrlVHVOEYS6DLv3zkRk3R
+         1wstW/FG9jnhBZlhibDelgcvyqCRPO8KQ0KKEEpkW7bnDHxsP3s8jnUF0JU88JkB7z6B
+         TCDM0Fh4RYYlbXPJHQ+LPSaok8H6OGmDo/ZMJ+bNCz1vyEfWSHuvclQrrVWPs+5uwBy+
+         mgtRcd0CU7SEjaT3MHShhiq6rJqHnth8kv/tvdgUbFLx6s62pzHtLrTNCjzxiJp4Eino
+         dikTAlfY/riGRTRPYfNXqhXd/ZuJnSaKlLIP4HLWkRt5+j/6fejwWkX4Kl1vx0H5wvlP
+         nw1g==
+X-Gm-Message-State: AJIora8UNbTa4dp76VvM3MYGq7h+oFhitZkgjJQgRAWwcAeI2yQ8S35j
+        r803I0KPIS/psry5R9lPOuPIFpCCJ0JOwz/tVPoH5yMD
+X-Google-Smtp-Source: AGRyM1u2pV3v9yOzU1KyjK6E4kduzKglliClPmQ+ZLhcYXW9iky+twdm/TvRio6H/u+xzywgKaQSQ0Em3pryU+SuJwk=
+X-Received: by 2002:a25:5d8:0:b0:66c:dbd1:b2bb with SMTP id
+ 207-20020a2505d8000000b0066cdbd1b2bbmr4996934ybf.81.1656528124098; Wed, 29
+ Jun 2022 11:42:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <165611192645.990447.9154951000881269149.stgit@dwillia2-xfh>
-In-Reply-To: <165611192645.990447.9154951000881269149.stgit@dwillia2-xfh>
+References: <20220627165832.10246-1-mario.limonciello@amd.com>
+In-Reply-To: <20220627165832.10246-1-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 29 Jun 2022 20:25:37 +0200
-Message-ID: <CAJZ5v0gGO+gDLXpbKhD+dstGA3Oz05myd3Uh5XvEb4h7-yUMDw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Fix _EINJ vs EFI_MEMORY_SP
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Mustafa Hajeer <mustafa.hajeer@intel.com>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Omar Avelar <omar.avelar@intel.com>,
+Date:   Wed, 29 Jun 2022 20:41:53 +0200
+Message-ID: <CAJZ5v0g2qfA00=ukatTxSXPnoOaquwvn8tk0oNHaY-0F7ODZQw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Perry Yuan <perry.yuan@amd.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        patches@lists.linux.dev
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jun 25, 2022 at 1:05 AM Dan Williams <dan.j.williams@intel.com> wrote:
+On Mon, Jun 27, 2022 at 6:58 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> When a platform marks a memory range as "special purpose" it is not
-> onlined as System RAM by default. However, it is still suitable for
-> error injection. Add IORES_DESC_SOFT_RESERVED to einj_error_inject() as
-> a permissible memory type in the sanity checking of the arguments to
-> _EINJ.
+> commit 72f2ecb7ece7 ("ACPI: bus: Set CPPC _OSC bits for all and
+> when CPPC_LIB is supported") added support for claiming to
+> support CPPC in _OSC on non-Intel platforms.
 >
-> Fixes: 262b45ae3ab4 ("x86/efi: EFI soft reservation to E820 enumeration")
-> Cc: Rafael Wysocki <rafael.j.wysocki@intel.com>
-> Cc: Mustafa Hajeer <mustafa.hajeer@intel.com>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: James Morse <james.morse@arm.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
-> Reported-by: Omar Avelar <omar.avelar@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> This unfortunately caused a regression on a vartiety of AMD
+> platforms in the field because a number of AMD platforms don't set
+> the `_OSC` bit 5 or 6 to indicate CPPC or CPPC v2 support.
+>
+> As these AMD platforms already claim CPPC support via `X86_FEATURE_CPPC`,
+> use this enable this feature rather than requiring the `_OSC`.
+>
+> Fixes: 72f2ecb7ece7 ("Set CPPC _OSC bits for all and when CPPC_LIB is supported")
+> Reported-by: Perry Yuan <perry.yuan@amd.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  drivers/acpi/apei/einj.c |    2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/acpi/cppc_acpi.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-> index d4326ec12d29..6b583373c58a 100644
-> --- a/drivers/acpi/apei/einj.c
-> +++ b/drivers/acpi/apei/einj.c
-> @@ -546,6 +546,8 @@ static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
->                                 != REGION_INTERSECTS) &&
->              (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_PERSISTENT_MEMORY)
->                                 != REGION_INTERSECTS) &&
-> +            (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_SOFT_RESERVED)
-> +                               != REGION_INTERSECTS) &&
->              !arch_is_platform_page(base_addr)))
->                 return -EINVAL;
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 903528f7e187..5463e6309b9a 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -629,6 +629,15 @@ static bool is_cppc_supported(int revision, int num_ent)
+>                 return false;
+>         }
 >
->
+> +       if (osc_sb_cppc_not_supported) {
+> +               pr_debug("Firmware missing _OSC support\n");
+> +#ifdef CONFIG_X86
+> +               return boot_cpu_has(X86_FEATURE_CPPC);
+> +#else
+> +               return false;
+> +#endif
 
-Applied as 5.20 material, thanks!
+What about doing
+
+if (osc_sb_cppc_not_supported) {
+        pr_debug("Firmware missing _OSC support\n");
+        return IS_ENABLED(CONFIG_X86) && boot_cpu_has(X86_FEATURE_CPPC);
+}
+
+instead for the sake of reducing #ifdeffery?
+
+Also, this is somewhat risky, because even if the given processor has
+X86_FEATURE_CPPC set, the platform may still not want to expose CPPC
+through ACPI.  How's that going to work after this change?
+
+
+> +       }
+> +
+>         return true;
+>  }
+>
+> @@ -684,9 +693,6 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+>         acpi_status status;
+>         int ret = -ENODATA;
+>
+> -       if (osc_sb_cppc_not_supported)
+> -               return -ENODEV;
+> -
+>         /* Parse the ACPI _CPC table for this CPU. */
+>         status = acpi_evaluate_object_typed(handle, "_CPC", NULL, &output,
+>                         ACPI_TYPE_PACKAGE);
+> --
+> 2.34.1
+>
