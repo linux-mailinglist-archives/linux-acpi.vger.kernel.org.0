@@ -2,150 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43524560EAF
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 03:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CB1E560EDD
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 03:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbiF3BcD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 21:32:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39582 "EHLO
+        id S230076AbiF3B6N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jun 2022 21:58:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiF3BcC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 21:32:02 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D295F326E4;
-        Wed, 29 Jun 2022 18:31:59 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id 136so11583640pfy.10;
-        Wed, 29 Jun 2022 18:31:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cOCTVqFJoEKeuuX9iBUm+2/q/as6mV39rJ1R2rX6Sds=;
-        b=QD/2SmOVVZNXfiNHzWuQ9mURGcwngedIclCng+blqHMDdz1yM1w0E8Qe7ncS1+6h3I
-         sLkI9pwX8ped3lqinQLVbUNOop1aSxn6ebyPcSwbBBOP9xPNybwwex5W/O9f/rRnKH7H
-         RKcxRfUvDH8RbojMIKEVFki6ZlD9AAYDtctPFZq5/RiMNDRPwhqQAYRZBncCnSY+nKZ5
-         +yaoL0RQ+W2e8LA/AIifr/1YbQm6rIuJidskRk615K8dljauQnZPHbLsHFOX5XEktNvV
-         O997K4b/0PtpaMZvovvPNFDrsgQ4rSNZ9F2qOGr2Q0WpcR9NVqSMgp94SUzb9HlxiSPT
-         Y/GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cOCTVqFJoEKeuuX9iBUm+2/q/as6mV39rJ1R2rX6Sds=;
-        b=1/WNcfJR6b7l9/iNlHQlFGFv71gNXpJTILsdYQvQWMNMI12N/BlER6S9yGCKDQO7Sg
-         gFoX1qPk7vaCkBY/LXwAE96O4pNZvSfuy6y10O3KUSE47JDbPwN/L0Fn23LsKHcAR1C1
-         PvuFuFrTo2em2wcbeUom0ZkWtolYcl9joEhukt1MxMWYKLT1pmGJHQklAI+fhnkGMqAc
-         VtQFN93N30CPrwYfCpM4VWzq7FTi5TVK/2wlx9lSm+8JmpZ7hnd3gcGckwKopzfONFqi
-         iZmi8ljXiVAQ1SzhrSiACg1JHS7iErHBtm0HLKQwPIofkCPyL1Xbe9P4ZAkD1PLxRFzn
-         jMlw==
-X-Gm-Message-State: AJIora9QkfT4kN6N+mL4fb6ce0NjdVQV8fZtWX/V0eMaDABbdFyBLCcP
-        ZgkCP5t5JUJrkwuTQqqsNFlWUbJIuHbQHw==
-X-Google-Smtp-Source: AGRyM1sVhMBsRvuSQW+ElIZjRiceQijkhg4f+7koeZsfC2BoKJrGQYArHSTbrtsx4FtmOy3eQr6G2A==
-X-Received: by 2002:a63:5b26:0:b0:40d:9515:b5ac with SMTP id p38-20020a635b26000000b0040d9515b5acmr5514627pgb.51.1656552719220;
-        Wed, 29 Jun 2022 18:31:59 -0700 (PDT)
-Received: from guoguo-omen.lan ([2401:c080:1400:4da2:b701:47d5:9291:4cf9])
-        by smtp.gmail.com with ESMTPSA id 132-20020a62198a000000b0051bc5f4df1csm12124383pfz.154.2022.06.29.18.31.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jun 2022 18:31:58 -0700 (PDT)
-From:   Chuanhong Guo <gch981213@gmail.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Chuanhong Guo <gch981213@gmail.com>, stable@vger.kernel.org,
-        Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        Kent Hou Man <knthmn0@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v4] ACPI: skip IRQ1 override on 3 laptops
-Date:   Thu, 30 Jun 2022 09:31:23 +0800
-Message-Id: <20220630013123.9427-1-gch981213@gmail.com>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S229489AbiF3B6M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 21:58:12 -0400
+Received: from ZXSHCAS1.zhaoxin.com (ZXSHCAS1.zhaoxin.com [210.0.225.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D80C248;
+        Wed, 29 Jun 2022 18:58:06 -0700 (PDT)
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHCAS1.zhaoxin.com
+ (10.28.252.161) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Thu, 30 Jun
+ 2022 09:58:03 +0800
+Received: from [10.32.56.37] (10.32.56.37) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Thu, 30 Jun
+ 2022 09:58:01 +0800
+Subject: Re: [PATCH V2] cpufreq: Add Zhaoxin/Centaur turbo boost control
+ interface support
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>,
+        <LindaChai@zhaoxin.com>, <LeoLiu@zhaoxin.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <c4f669a8-0da6-862a-0450-ddf178272bdd@zhaoxin.com>
+ <CAJZ5v0iGQz0GprbHSL6JVmHv8y-kDsyW4TouN6JwJZtp46DokQ@mail.gmail.com>
+From:   Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+Message-ID: <2d961645-75e4-de10-47d5-b3351c54fa0b@zhaoxin.com>
+Date:   Thu, 30 Jun 2022 09:58:00 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAJZ5v0iGQz0GprbHSL6JVmHv8y-kDsyW4TouN6JwJZtp46DokQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.32.56.37]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The IRQ1 of these laptops with Ryzen 6000 and Insyde UEFI are active
-low and defined in legacy format in ACPI DSDT. The kernel override
-makes the keyboard interrupt polarity inverted, resulting in
-non-functional keyboard.
 
-Skip legacy IRQ override for:
-Lenovo ThinkBook 14G4+ ARA
-Redmi Book Pro 15 2022
-Asus Zenbook S 13 OLED UM5302
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Tighe Donnelly <tighe.donnelly@protonmail.com>
-Signed-off-by: Kent Hou Man <knthmn0@gmail.com>
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
----
-Changes since v1:
- Match DMI_PRODUCT_NAME for ThinkBook because the board name
- is used for other completely different Lenovo laptops.
- Add a patch for RedmiBook
+On 30/6/2022 02:16, Rafael J. Wysocki wrote:
+> On Thu, Jun 23, 2022 at 3:21 AM Tony W Wang-oc <TonyWWang-oc@zhaoxin.com> wrote:
+>>
+>> Recent Zhaoxin/Centaur CPUs support X86_FEATURE_IDA and the turbo boost
+>> can be dynamically enabled or disabled through MSR 0x1a0[38] in the same
+>> way as Intel. So add turbo boost control support for these CPUs too.
+>>
+>> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+>> ---
+>>    drivers/cpufreq/acpi-cpufreq.c | 4 ++++
+>>    1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+>> index 3d514b8..1bb2b90 100644
+>> --- a/drivers/cpufreq/acpi-cpufreq.c
+>> +++ b/drivers/cpufreq/acpi-cpufreq.c
+>> @@ -78,6 +78,8 @@ static bool boost_state(unsigned int cpu)
+>>
+>>          switch (boot_cpu_data.x86_vendor) {
+>>          case X86_VENDOR_INTEL:
+>> +       case X86_VENDOR_CENTAUR:
+>> +       case X86_VENDOR_ZHAOXIN:
+>>                  rdmsr_on_cpu(cpu, MSR_IA32_MISC_ENABLE, &lo, &hi);
+>>                  msr = lo | ((u64)hi << 32);
+>>                  return !(msr & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
+>> @@ -97,6 +99,8 @@ static int boost_set_msr(bool enable)
+>>
+>>          switch (boot_cpu_data.x86_vendor) {
+>>          case X86_VENDOR_INTEL:
+>> +       case X86_VENDOR_CENTAUR:
+>> +       case X86_VENDOR_ZHAOXIN:
+>>                  msr_addr = MSR_IA32_MISC_ENABLE;
+>>                  msr_mask = MSR_IA32_MISC_ENABLE_TURBO_DISABLE;
+>>                  break;
+>> --
+> 
+> Applied as 5.20 material.
+> 
 
-Changes since v2:
- Fix alphabetical order in skip_override_table
- Add a patch for Asus Zenbook
+Thanks a lot.
 
-Changes since v3:
- Merge patches as requested
- Fix another alphabetical ordering between two structs
+> However, I had to manually fix up the formatting of the patch.
+> 
 
- drivers/acpi/resource.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Sorry for inconvenient.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index c2d494784425..470722c50afb 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -381,6 +381,31 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
- }
- EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
- 
-+static const struct dmi_system_id irq1_edge_low_shared[] = {
-+	{
-+		.ident = "Asus Zenbook S 13 OLED UM5302",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "UM5302TA"),
-+		},
-+	},
-+	{
-+		.ident = "Lenovo ThinkBook 14 G4+ ARA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21D0"),
-+		},
-+	},
-+	{
-+		.ident = "Redmi Book Pro 15 2022",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "TIMI"),
-+			DMI_MATCH(DMI_BOARD_NAME, "TM2113"),
-+		},
-+	},
-+	{ }
-+};
-+
- static const struct dmi_system_id medion_laptop[] = {
- 	{
- 		.ident = "MEDION P15651",
-@@ -408,6 +433,7 @@ struct irq_override_cmp {
- };
- 
- static const struct irq_override_cmp skip_override_table[] = {
-+	{ irq1_edge_low_shared, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1 },
- 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
- };
- 
+> Can you please configure your e-mail client so that this is not
+> necessary in the future?
+> 
+
+Was using the Thunderbird client to send patch, and will use git 
+send-email in the future.
+
+> Thanks!
+> .
+> 
+
 -- 
-2.36.1
-
+Sincerely
+TonyWWang-oc
