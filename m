@@ -2,60 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45BA0561305
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 09:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 847435616AC
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 11:41:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231163AbiF3HOh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Jun 2022 03:14:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43042 "EHLO
+        id S234530AbiF3Jlm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Jun 2022 05:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230334AbiF3HOg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Jun 2022 03:14:36 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 212B219C38;
-        Thu, 30 Jun 2022 00:14:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656573276; x=1688109276;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=u3UlWiOglfArxWVJc0ESMunrSVWGhs3Xh8fs1/f9ouw=;
-  b=D3VJrQPnwDJjaQexNylzkil71cFMlqr1w0n7DgIP4SC+Wwd4iliyPdr0
-   ktslEPoHRobGgctxDSGPq4bxhTZYE7+laOMYH8Sltkt1G0Kqwe2mxyQb6
-   wVJRwAbZufjd3BI/3b0E5ASvPTs4FWEqjGI+u3iTfyjhH5TmgWTx9tFo/
-   +W7sw7NTFshXTs8gnQheuRUGnzwc/dY0DyqRj6iOJwbS/zz5y3ckCU2Y/
-   g86qDKouKhpHMv/8QDSO4jj46TR5NYcYQaHB309YWwVU/WgrjMo9ppy9M
-   o9CFGlp68Rup0DUxyEovv2Vk6m4KzTdXrOUgLy+kbroqMCiebQC8kk0ch
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10393"; a="282301312"
-X-IronPort-AV: E=Sophos;i="5.92,233,1650956400"; 
-   d="scan'208";a="282301312"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2022 00:14:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,233,1650956400"; 
-   d="scan'208";a="680860041"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 30 Jun 2022 00:14:34 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o6oNl-000CNO-Mv;
-        Thu, 30 Jun 2022 07:14:33 +0000
-Date:   Thu, 30 Jun 2022 15:13:45 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
- 7451d4b13852834afd17b629fb7d4410cefba74c
-Message-ID: <62bd4d29.JCwObo7lyXJuQtt0%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S234532AbiF3JlV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Jun 2022 05:41:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0514A26D0
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Jun 2022 02:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1656582071;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=FbuvANh9DPr+4RMnaRBYz0BK2bY3nTN9q2d37QGk4z4=;
+        b=BEtpPsj3N2wA9a1O9mMXYi3ORv0RTugNqibquyu9kOgg7MlCDsbK0qyXJt3tVyK2a5kRZo
+        xketj6cn5jjlbQxA//DQtXElqRl8KO3czIFTvl+GkUBjfU9pbSNWFBlOmgAaKWMMjXrmx9
+        OwCbfaMe1wB3poA6gxRPhUdzFGX5jKA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-498-awS35iiSPmGd0csI-LWKIg-1; Thu, 30 Jun 2022 05:41:06 -0400
+X-MC-Unique: awS35iiSPmGd0csI-LWKIg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 601DC811E80;
+        Thu, 30 Jun 2022 09:41:06 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.193.10])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5C3DC2026D64;
+        Thu, 30 Jun 2022 09:41:04 +0000 (UTC)
+From:   Eric Auger <eric.auger@redhat.com>
+To:     eric.auger.pro@gmail.com, eric.auger@redhat.com,
+        jean-philippe@linaro.org, jroedel@suse.de,
+        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
+        rafael@kernel.org, lenb@kernel.org
+Cc:     linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+        jinl@redhat.com
+Subject: [PATCH v2] ACPI: VIOT: Fix ACS setup
+Date:   Thu, 30 Jun 2022 11:40:59 +0200
+Message-Id: <20220630094059.1204283-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.4
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,95 +59,109 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 7451d4b13852834afd17b629fb7d4410cefba74c  Merge branch 'acpi-apei' into bleeding-edge
+Currently acpi_viot_init() gets called after the pci
+device has been scanned and pci_enable_acs() has been called.
+So pci_request_acs() fails to be taken into account leading
+to wrong single iommu group topologies when dealing with
+multi-function root ports for instance.
 
-Error/Warning reports:
+We cannot simply move the acpi_viot_init() earlier, similarly
+as the IORT init because the VIOT parsing relies on the pci
+scan. However we can detect VIOT is present earlier and in
+such a case, request ACS. Introduce a new acpi_viot_early_init()
+routine that allows to call pci_request_acs() before the scan.
 
-https://lore.kernel.org/linux-acpi/202206281146.iWj1cpqY-lkp@intel.com
-https://lore.kernel.org/linux-acpi/202206301543.JpCxX65V-lkp@intel.com
+While at it, guard the call to pci_request_acs() with #ifdef
+CONFIG_PCI.
 
-Error/Warning: (recently discovered and may have been fixed)
+Fixes: 3cf485540e7b ("ACPI: Add driver for the VIOT table")
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reported-by: Jin Liu <jinl@redhat.com>
 
-drivers/bus/hisi_lpc.c:511:41: error: 'struct acpi_device' has no member named 'children'
-drivers/bus/hisi_lpc.c:511:53: error: 'struct acpi_device' has no member named 'node'; did you mean 'fwnode'?
-include/linux/compiler_types.h:293:27: error: expression in static assertion is not an integer
+---
 
-Error/Warning ids grouped by kconfigs:
+v1 -> v2:
+- guard acpi_viot_early_init() content with #ifdef CONFIG_PCI
+- do not call acpi_put_table() if acpi_get_table() failed
+- change declaration order of acpi_viot_early_init() stub
+---
+ drivers/acpi/bus.c        |  1 +
+ drivers/acpi/viot.c       | 26 ++++++++++++++++++++------
+ include/linux/acpi_viot.h |  2 ++
+ 3 files changed, 23 insertions(+), 6 deletions(-)
 
-gcc_recent_errors
-|-- arm64-allyesconfig
-|   |-- drivers-bus-hisi_lpc.c:error:struct-acpi_device-has-no-member-named-children
-|   `-- drivers-bus-hisi_lpc.c:error:struct-acpi_device-has-no-member-named-node
-|-- ia64-allmodconfig
-|   |-- drivers-bus-hisi_lpc.c:error:struct-acpi_device-has-no-member-named-children
-|   |-- drivers-bus-hisi_lpc.c:error:struct-acpi_device-has-no-member-named-node
-|   `-- include-linux-compiler_types.h:error:expression-in-static-assertion-is-not-an-integer
-`-- ia64-allyesconfig
-    |-- drivers-bus-hisi_lpc.c:error:struct-acpi_device-has-no-member-named-children
-    `-- drivers-bus-hisi_lpc.c:error:struct-acpi_device-has-no-member-named-node
-
-elapsed time: 722m
-
-configs tested: 52
-configs skipped: 2
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-ia64                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                                defconfig
-i386                             allyesconfig
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                  randconfig-r043-20220629
-s390                 randconfig-r044-20220629
-riscv                randconfig-r042-20220629
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-
-clang tested configs:
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a012
-i386                          randconfig-a013
-i386                          randconfig-a015
-i386                          randconfig-a011
-hexagon              randconfig-r045-20220629
-hexagon              randconfig-r041-20220629
-
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 86fa61a21826..906ad8153fd9 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -1400,6 +1400,7 @@ static int __init acpi_init(void)
+ 
+ 	pci_mmcfg_late_init();
+ 	acpi_iort_init();
++	acpi_viot_early_init();
+ 	acpi_hest_init();
+ 	acpi_ghes_init();
+ 	acpi_scan_init();
+diff --git a/drivers/acpi/viot.c b/drivers/acpi/viot.c
+index d2256326c73a..647f11cf165d 100644
+--- a/drivers/acpi/viot.c
++++ b/drivers/acpi/viot.c
+@@ -248,6 +248,26 @@ static int __init viot_parse_node(const struct acpi_viot_header *hdr)
+ 	return ret;
+ }
+ 
++/**
++ * acpi_viot_early_init - Test the presence of VIOT and enable ACS
++ *
++ * If the VIOT does exist, ACS must be enabled. This cannot be
++ * done in acpi_viot_init() which is called after the bus scan
++ */
++void __init acpi_viot_early_init(void)
++{
++#ifdef CONFIG_PCI
++	acpi_status status;
++	struct acpi_table_header *hdr;
++
++	status = acpi_get_table(ACPI_SIG_VIOT, 0, &hdr);
++	if (ACPI_FAILURE(status))
++		return;
++	pci_request_acs();
++	acpi_put_table(hdr);
++#endif
++}
++
+ /**
+  * acpi_viot_init - Parse the VIOT table
+  *
+@@ -319,12 +339,6 @@ static int viot_pci_dev_iommu_init(struct pci_dev *pdev, u16 dev_id, void *data)
+ 			epid = ((domain_nr - ep->segment_start) << 16) +
+ 				dev_id - ep->bdf_start + ep->endpoint_id;
+ 
+-			/*
+-			 * If we found a PCI range managed by the viommu, we're
+-			 * the one that has to request ACS.
+-			 */
+-			pci_request_acs();
+-
+ 			return viot_dev_iommu_init(&pdev->dev, ep->viommu,
+ 						   epid);
+ 		}
+diff --git a/include/linux/acpi_viot.h b/include/linux/acpi_viot.h
+index 1eb8ee5b0e5f..a5a122431563 100644
+--- a/include/linux/acpi_viot.h
++++ b/include/linux/acpi_viot.h
+@@ -6,9 +6,11 @@
+ #include <linux/acpi.h>
+ 
+ #ifdef CONFIG_ACPI_VIOT
++void __init acpi_viot_early_init(void);
+ void __init acpi_viot_init(void);
+ int viot_iommu_configure(struct device *dev);
+ #else
++static inline void acpi_viot_early_init(void) {}
+ static inline void acpi_viot_init(void) {}
+ static inline int viot_iommu_configure(struct device *dev)
+ {
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.35.3
+
