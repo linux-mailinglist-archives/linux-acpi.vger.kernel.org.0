@@ -2,95 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 143E85616F9
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 11:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8A356195F
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 13:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233691AbiF3J7T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Jun 2022 05:59:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34102 "EHLO
+        id S232473AbiF3LkX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Jun 2022 07:40:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232119AbiF3J7S (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Jun 2022 05:59:18 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15C7443ED8
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Jun 2022 02:59:16 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id s1so26459714wra.9
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Jun 2022 02:59:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=1HMqmjT/Hl6eEoSqluU6kzXOVYJu96vbsB8yRH3pJM0=;
-        b=b/EZPJfCnVquS1NkGq9KsRSBoCZWR7XOtN+NA+DS6Z90ExfXr1goihQkGLPJKgOpGD
-         E41Z7SVhSHeZcyHhReeC5glNz/sMI+cacocAN+FidqgorPd7cmOUipobq8s3bUis9MnM
-         qN2to17GprO8783SMo6neHc53795eruPe6diqQbC/ekLR3M7MhW1cfyEJ61Rna83MVqL
-         6nlD9F4GRvs/uFvHk2Aa7rCsMyacwzeNcrwQP2n8ntFdc8CqWzQNfHv8NM6Zm86Kj1zY
-         ZlVEd7Aoikx9hXwEINGCgvU2Uf2TgLEm2ZqLLW9EV0ImXR0vBTs6xYbWLT8QCxzhNWPs
-         qFMg==
+        with ESMTP id S230350AbiF3LkV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Jun 2022 07:40:21 -0400
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03ED52383
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Jun 2022 04:40:19 -0700 (PDT)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-3137316bb69so175802117b3.10
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Jun 2022 04:40:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=1HMqmjT/Hl6eEoSqluU6kzXOVYJu96vbsB8yRH3pJM0=;
-        b=EaV5bvi5t2zwmRyc6kvbB/XnJ3KvaQw9ZsnOb0xEok2wGnnCdwyxCjA7tfIj9D5oYN
-         Gj5/WM1F4vOO3eoe4nUSgG2JwTG/1uNrSAunf/G0iNDOAYrzVySK7MoPQa+DUFApTGJM
-         rj0kxrNYWKwe078govj2C3X+Ok12PeoQB0BUZo0zZFbZod8Yont6IQYGH2E1eJ7f/mD4
-         hKwF52zTCWbg4kTr/ePPCwpws7MiTMNj3BLPrJBP0t/ttyhyj2u22ccjZGPPo+U2vmws
-         G+f4IFI8/6ASkSUX9uAyHWRQM4HZKt5bFNSSj2KGsbYYOHkKEB0xRE/qrzdsrmTc1Q9x
-         SjMA==
-X-Gm-Message-State: AJIora8Sqq8q53VkohnIpU/89nqc1P7koUmMa1SamZTN8+JU6yCCgxYg
-        O6PF1X3VhdVpBjqVr0Ygg4VfPhjrGqxlfA==
-X-Google-Smtp-Source: AGRyM1vfHfveCYpKUn92Ua/tYhN63FUv0q/bxKLp7QoY98RJ551Y0CyHmJgnGxT6j3AABaTfE3i9OA==
-X-Received: by 2002:adf:d1ca:0:b0:21b:a81c:47f3 with SMTP id b10-20020adfd1ca000000b0021ba81c47f3mr7539642wrd.22.1656583155303;
-        Thu, 30 Jun 2022 02:59:15 -0700 (PDT)
-Received: from myrica (cpc92880-cmbg19-2-0-cust679.5-4.cable.virginm.net. [82.27.106.168])
-        by smtp.gmail.com with ESMTPSA id bi18-20020a05600c3d9200b0039c4506bd25sm2572630wmb.14.2022.06.30.02.59.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jun 2022 02:59:14 -0700 (PDT)
-Date:   Thu, 30 Jun 2022 10:58:50 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Eric Auger <eric.auger@redhat.com>
-Cc:     eric.auger.pro@gmail.com, jroedel@suse.de,
-        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
-        rafael@kernel.org, lenb@kernel.org, linux-kernel@vger.kernel.org,
-        iommu@lists.linux.dev, jinl@redhat.com
-Subject: Re: [PATCH v2] ACPI: VIOT: Fix ACS setup
-Message-ID: <Yr1z2gC0+8zbzpFf@myrica>
-References: <20220630094059.1204283-1-eric.auger@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0ZAvrxWfoixzkGsGiWemPhiC/8VpEB2M1AwjZHpERrU=;
+        b=JfiyhOP8Y/Oqa7n93ZApQdharSNRQZeSPbX3dgH0LaeWEVj5kWvpL4pbuQFeBjbDgw
+         FbtTcZQHU1vK5IR0Qu7AE2P8LXhP6TQXviBuXvJsErcGUCRxCLaJum23CpXn2AzRFDaI
+         YEKyY1sBQFMALXgFoL+j61MXt0i+6NRjNYDfyX2Q+8t2D815EXPQU7PpoI1LNjBxekKR
+         E8OWVyI77ZZkH1V3Pr/mlA1npHSm1LQEm0DnBvfZl8g9YMvJu51c73EqVythzileIKoD
+         SZqjZy1IugeLhgfjtK1mZHtxuLH3xIFHl9mVAzbTtW/diVZB7IBneiOj1o1m4htsD8zo
+         5YcQ==
+X-Gm-Message-State: AJIora9PPYbyyx2Kiof476vvG7Tq0dzqB5JJQFgnihdVcn1wZfFwOQBp
+        BJvbvA0IyVOLQ4PrJS9YbPmSK+DqZxP8fBZR784=
+X-Google-Smtp-Source: AGRyM1vY+ZyHfn9IDh2AcZMeeHgBsc63tlWSYAPoRSJjel8Cj68pCJsjo2tWMOJT4aGK7idMQCTGAN+Z0v4jpHKRR3w=
+X-Received: by 2002:a0d:d811:0:b0:31b:ddc4:c0ac with SMTP id
+ a17-20020a0dd811000000b0031bddc4c0acmr10071951ywe.149.1656589218109; Thu, 30
+ Jun 2022 04:40:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220630094059.1204283-1-eric.auger@redhat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <6d7e3740-6107-dab6-64de-b4a978ae329d@redhat.com>
+ <eabb9172-3227-3c12-5553-3de202a2f63a@amd.com> <YrRrwqc69MgpA9kl@kroah.com>
+ <MN0PR12MB61012088C50712D48968327CE2B59@MN0PR12MB6101.namprd12.prod.outlook.com>
+ <MN0PR12MB6101DA54A802A06CDD0618E5E2BB9@MN0PR12MB6101.namprd12.prod.outlook.com>
+In-Reply-To: <MN0PR12MB6101DA54A802A06CDD0618E5E2BB9@MN0PR12MB6101.namprd12.prod.outlook.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 30 Jun 2022 13:40:07 +0200
+Message-ID: <CAJZ5v0hsJki1nmpdCe+4tHh2atmPNT_=13ErWD00jiGytDapVg@mail.gmail.com>
+Subject: Re: "Revert "ACPI: Pass the same capabilities to the _OSC regardless
+ of the query flag"" is causing regressions
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi <linux-acpi@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        "rui.zhang@intel.com" <rui.zhang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 30, 2022 at 11:40:59AM +0200, Eric Auger wrote:
-> Currently acpi_viot_init() gets called after the pci
-> device has been scanned and pci_enable_acs() has been called.
-> So pci_request_acs() fails to be taken into account leading
-> to wrong single iommu group topologies when dealing with
-> multi-function root ports for instance.
-> 
-> We cannot simply move the acpi_viot_init() earlier, similarly
-> as the IORT init because the VIOT parsing relies on the pci
-> scan. However we can detect VIOT is present earlier and in
-> such a case, request ACS. Introduce a new acpi_viot_early_init()
-> routine that allows to call pci_request_acs() before the scan.
-> 
-> While at it, guard the call to pci_request_acs() with #ifdef
-> CONFIG_PCI.
-> 
-> Fixes: 3cf485540e7b ("ACPI: Add driver for the VIOT table")
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Reported-by: Jin Liu <jinl@redhat.com>
+On Wed, Jun 29, 2022 at 10:12 PM Limonciello, Mario
+<Mario.Limonciello@amd.com> wrote:
+>
+> [Public]
+>
+> > > -----Original Message-----
+> > > From: Greg KH <gregkh@linuxfoundation.org>
+> > > Sent: Thursday, June 23, 2022 08:34
+> > > To: Limonciello, Mario <Mario.Limonciello@amd.com>
+> > > Cc: Hans de Goede <hdegoede@redhat.com>; Rafael J . Wysocki
+> > > <rjw@rjwysocki.net>; linux-acpi <linux-acpi@vger.kernel.org>;
+> > > regressions@lists.linux.dev; Thorsten Leemhuis (regressions address)
+> > > <regressions@leemhuis.info>
+> > > Subject: Re: "Revert "ACPI: Pass the same capabilities to the _OSC regardless
+> > > of the query flag"" is causing regressions
+> > >
+> > > On Thu, Jun 23, 2022 at 07:24:34AM -0500, Mario Limonciello wrote:
+> > > > On 6/23/22 05:06, Hans de Goede wrote:
+> > > > > Hi Rafael, Mario,
+> > > > >
+> > > > > Commit 2ca8e6285250 ("Revert "ACPI: Pass the same capabilities to the
+> > > > > _OSC regardless of the query flag"") is causing the issues fixed
+> > > > > by the reverted commit to show up again, see:
+> > > > >
+> > > > >
+> > > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fbugz
+> > > illa.kernel.org%2Fshow_bug.cgi%3Fid%3D213023&amp;data=05%7C01%7Cm
+> > >
+> > ario.limonciello%40amd.com%7C0040716e869d4021ce3208da551d082d%7C3d
+> > >
+> > d8961fe4884e608e11a82d994e183d%7C0%7C0%7C637915880426388833%7CU
+> > > nknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI
+> > > 6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=KxmNvCfdm
+> > > qvk5gXteXUDXHVTK45yEt%2BUYO4vaBbLXis%3D&amp;reserved=0
+> > > > >
+> > > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fbugz
+> > > illa.redhat.com%2Fshow_bug.cgi%3Fid%3D1963717&amp;data=05%7C01%7C
+> > >
+> > mario.limonciello%40amd.com%7C0040716e869d4021ce3208da551d082d%7C
+> > >
+> > 3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637915880426388833%7
+> > > CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJ
+> > > BTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=pZRqAG3
+> > > %2Bg0QevLOGZ8m9PNxcmkmh58soT2dSLg%2B6qWc%3D&amp;reserved=0
+> > > > >
+> > > > > both of which have comments from the reporters that
+> > > > > the error message is back again; and presumably also
+> > > > > that /sys/devices/system/cpu/cpu0/acpi_cppc is missing
+> > > > > again.
+> > > > >
+> > > > > Can you please take a look and see if we can come up with
+> > > > > something which fixes both the re-surfaced issue, as well
+> > > > > as the issue which the revert tries to address ?
+> > > > >
+> > > >
+> > > >
+> > > > Is it possible that c42fa24b44751c62c86e98430ef915c0609a2ab8 didn't
+> > > backport
+> > > > to the stable trees it popped back up again?
+> > > >
+> > >
+> > > It is only in 5.18, no stable releases that I can see.
+> >
+> > I think that should probably come back to stable along with everything this
+> > revert went back to, but before doing that perhaps we can get someone
+> > affected to confirm cherry-picking it helps.
+>
+> Users have reported to the Kernel Bugzilla that just picking that patch didn't
+> help.  At it's core it "seems" to me the firmware masks CPPC support in the _OSC
+> and previously that was actually ignored.  Since the final SSDT with the PR0._CPC
+> is loaded dynamically based on whether CPPC was supported this runtime error
+> happens.
+>
+> As multiple people have been duplicated into that bug let's work through some
+> ideas on it there.  To start out I've left a suggestion in there for users to have a
+> try with.
 
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-
+Honestly, at this point I'm inclined to revert the commit in question.
