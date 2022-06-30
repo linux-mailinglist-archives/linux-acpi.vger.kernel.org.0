@@ -2,60 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6EA560EB0
+	by mail.lfdr.de (Postfix) with ESMTP id 43524560EAF
 	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 03:36:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230041AbiF3B2r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Jun 2022 21:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38132 "EHLO
+        id S229943AbiF3BcD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Jun 2022 21:32:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229737AbiF3B2r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 21:28:47 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D60327FEE;
-        Wed, 29 Jun 2022 18:28:46 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id s13-20020a0568301e0d00b00616ad12fee7so12638509otr.10;
-        Wed, 29 Jun 2022 18:28:46 -0700 (PDT)
+        with ESMTP id S229449AbiF3BcC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Jun 2022 21:32:02 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D295F326E4;
+        Wed, 29 Jun 2022 18:31:59 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id 136so11583640pfy.10;
+        Wed, 29 Jun 2022 18:31:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HKwqbCq/ayM91H1pK6Ejh+0xhF+H4GaxtXkErwTFOeU=;
-        b=WJCxPAxmmu3l/WBMcoCqMLyFQ/qPtpHS+9olRFC/mRCBO/0g4aqUsO7N4MnDpTuwhb
-         b64PsXTtHULC+j+IeuZe3UB1pSxQEGO75WBjzOI9damQSChdJgLySkkGT2FrBSswIQaJ
-         9l12EaSw7oMgXTCOeF3D7xsdW2VSWuWpT1hGEciGfoRu9k8CeoBCPVDVhDslu7MFZJrZ
-         Fng9O8Etio2ETgkWULhXNarrnf3ZbqM6DdCCU9Enp8Mn1BD5s58Uw6biluuovYaLccU7
-         KMIxUFZ/F0ls+jzfz7ar7VYnGZqJoCYIB5YqHptS+mFDl6sf/L9gnFMvfFPS4Bw3gviN
-         /09A==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cOCTVqFJoEKeuuX9iBUm+2/q/as6mV39rJ1R2rX6Sds=;
+        b=QD/2SmOVVZNXfiNHzWuQ9mURGcwngedIclCng+blqHMDdz1yM1w0E8Qe7ncS1+6h3I
+         sLkI9pwX8ped3lqinQLVbUNOop1aSxn6ebyPcSwbBBOP9xPNybwwex5W/O9f/rRnKH7H
+         RKcxRfUvDH8RbojMIKEVFki6ZlD9AAYDtctPFZq5/RiMNDRPwhqQAYRZBncCnSY+nKZ5
+         +yaoL0RQ+W2e8LA/AIifr/1YbQm6rIuJidskRk615K8dljauQnZPHbLsHFOX5XEktNvV
+         O997K4b/0PtpaMZvovvPNFDrsgQ4rSNZ9F2qOGr2Q0WpcR9NVqSMgp94SUzb9HlxiSPT
+         Y/GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HKwqbCq/ayM91H1pK6Ejh+0xhF+H4GaxtXkErwTFOeU=;
-        b=qYQW3l6dj73NPZT9pvBBS8AwN15PiJS25vKXdn51OHJim40F4E2si04tArTYgTz3Rq
-         B8n80XVOWwPJQSeruskElc9PSS7QIOq8x39V7FL39wrixfy4k0MUwIq+Jq4RD9VpkoNR
-         1Q7cKP9BmN8c20NwclZjvES5PvtAPnCWo91+xuyJmfYgv56ypaoPHgXVjm2asmtk4/gQ
-         f6a5LnlvCA2pJkOuDCbRgpZpOr0AEe8l79ttbW+KROnCNBNRSamGbng50PkVfDjed1uh
-         zi3eCRmJFuCoVQi+FLEj0BZCtRhJul+j3nQ/7XLDp7EyBWbcF7sCtLC9z+UyamBTGYtm
-         9tDQ==
-X-Gm-Message-State: AJIora8R6iHfxjsH0C38eA3M1HhZ525APiZSLJtOsvhMV0MU+z9q0X32
-        Q5wHR7cjQ3vLVjzYovYh3hDTeU5jGismQ2T3cPyvnsQS0Pg=
-X-Google-Smtp-Source: AGRyM1unsycrhNhWvFmeSfbLmQqD2NrN4I2WFnjJ5qbg9WxHn9kms7zxA0HmoheqTg47KfFpm3RQnoBdMxXe+RpA03s=
-X-Received: by 2002:a9d:32f:0:b0:616:aa29:291d with SMTP id
- 44-20020a9d032f000000b00616aa29291dmr2818111otv.312.1656552525776; Wed, 29
- Jun 2022 18:28:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220620153045.11129-1-gch981213@gmail.com> <CAJZ5v0hDe39COAfy+Fsxi7FeUs-u4ikSU-v_dt+=x57CcLHcSw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hDe39COAfy+Fsxi7FeUs-u4ikSU-v_dt+=x57CcLHcSw@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cOCTVqFJoEKeuuX9iBUm+2/q/as6mV39rJ1R2rX6Sds=;
+        b=1/WNcfJR6b7l9/iNlHQlFGFv71gNXpJTILsdYQvQWMNMI12N/BlER6S9yGCKDQO7Sg
+         gFoX1qPk7vaCkBY/LXwAE96O4pNZvSfuy6y10O3KUSE47JDbPwN/L0Fn23LsKHcAR1C1
+         PvuFuFrTo2em2wcbeUom0ZkWtolYcl9joEhukt1MxMWYKLT1pmGJHQklAI+fhnkGMqAc
+         VtQFN93N30CPrwYfCpM4VWzq7FTi5TVK/2wlx9lSm+8JmpZ7hnd3gcGckwKopzfONFqi
+         iZmi8ljXiVAQ1SzhrSiACg1JHS7iErHBtm0HLKQwPIofkCPyL1Xbe9P4ZAkD1PLxRFzn
+         jMlw==
+X-Gm-Message-State: AJIora9QkfT4kN6N+mL4fb6ce0NjdVQV8fZtWX/V0eMaDABbdFyBLCcP
+        ZgkCP5t5JUJrkwuTQqqsNFlWUbJIuHbQHw==
+X-Google-Smtp-Source: AGRyM1sVhMBsRvuSQW+ElIZjRiceQijkhg4f+7koeZsfC2BoKJrGQYArHSTbrtsx4FtmOy3eQr6G2A==
+X-Received: by 2002:a63:5b26:0:b0:40d:9515:b5ac with SMTP id p38-20020a635b26000000b0040d9515b5acmr5514627pgb.51.1656552719220;
+        Wed, 29 Jun 2022 18:31:59 -0700 (PDT)
+Received: from guoguo-omen.lan ([2401:c080:1400:4da2:b701:47d5:9291:4cf9])
+        by smtp.gmail.com with ESMTPSA id 132-20020a62198a000000b0051bc5f4df1csm12124383pfz.154.2022.06.29.18.31.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jun 2022 18:31:58 -0700 (PDT)
 From:   Chuanhong Guo <gch981213@gmail.com>
-Date:   Thu, 30 Jun 2022 09:28:34 +0800
-Message-ID: <CAJsYDVJ7TqF=XotbXkuzgpbd2SQ3bdyC34D7wXgF=oKQFHV4QQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] Skip IRQ1 override for two laptops
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+To:     linux-acpi@vger.kernel.org
+Cc:     Chuanhong Guo <gch981213@gmail.com>, stable@vger.kernel.org,
+        Tighe Donnelly <tighe.donnelly@protonmail.com>,
+        Kent Hou Man <knthmn0@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v4] ACPI: skip IRQ1 override on 3 laptops
+Date:   Thu, 30 Jun 2022 09:31:23 +0800
+Message-Id: <20220630013123.9427-1-gch981213@gmail.com>
+X-Mailer: git-send-email 2.36.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -66,20 +71,81 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 30, 2022 at 1:44 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Mon, Jun 20, 2022 at 5:30 PM Chuanhong Guo <gch981213@gmail.com> wrote:
-> >
-> > The IRQ1 of these laptops with Ryzen 6000 and Insyde UEFI are
-> > active low and defined in legacy format in ACPI DSDT. The
-> > kernel override made their keyboard non-functional.
-> > This patchset skips override for them.
->
-> Can you please merge the three patches in this series into one patch
-> and put the above information into its changelog?
+The IRQ1 of these laptops with Ryzen 6000 and Insyde UEFI are active
+low and defined in legacy format in ACPI DSDT. The kernel override
+makes the keyboard interrupt polarity inverted, resulting in
+non-functional keyboard.
 
-OK. I'll do that.
+Skip legacy IRQ override for:
+Lenovo ThinkBook 14G4+ ARA
+Redmi Book Pro 15 2022
+Asus Zenbook S 13 OLED UM5302
 
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Tighe Donnelly <tighe.donnelly@protonmail.com>
+Signed-off-by: Kent Hou Man <knthmn0@gmail.com>
+Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
+---
+Changes since v1:
+ Match DMI_PRODUCT_NAME for ThinkBook because the board name
+ is used for other completely different Lenovo laptops.
+ Add a patch for RedmiBook
+
+Changes since v2:
+ Fix alphabetical order in skip_override_table
+ Add a patch for Asus Zenbook
+
+Changes since v3:
+ Merge patches as requested
+ Fix another alphabetical ordering between two structs
+
+ drivers/acpi/resource.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index c2d494784425..470722c50afb 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -381,6 +381,31 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+ 
++static const struct dmi_system_id irq1_edge_low_shared[] = {
++	{
++		.ident = "Asus Zenbook S 13 OLED UM5302",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "UM5302TA"),
++		},
++	},
++	{
++		.ident = "Lenovo ThinkBook 14 G4+ ARA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21D0"),
++		},
++	},
++	{
++		.ident = "Redmi Book Pro 15 2022",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "TIMI"),
++			DMI_MATCH(DMI_BOARD_NAME, "TM2113"),
++		},
++	},
++	{ }
++};
++
+ static const struct dmi_system_id medion_laptop[] = {
+ 	{
+ 		.ident = "MEDION P15651",
+@@ -408,6 +433,7 @@ struct irq_override_cmp {
+ };
+ 
+ static const struct irq_override_cmp skip_override_table[] = {
++	{ irq1_edge_low_shared, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1 },
+ 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
+ };
+ 
 -- 
-Regards,
-Chuanhong Guo
+2.36.1
+
