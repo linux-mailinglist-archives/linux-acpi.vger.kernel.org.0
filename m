@@ -2,126 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 804B3561AB4
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 14:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE237561AE5
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jun 2022 15:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232842AbiF3MsT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Jun 2022 08:48:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57252 "EHLO
+        id S234003AbiF3NDP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Jun 2022 09:03:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbiF3MsS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Jun 2022 08:48:18 -0400
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99ED8BC1D;
-        Thu, 30 Jun 2022 05:48:14 -0700 (PDT)
-Received: by mail-yb1-f177.google.com with SMTP id o19so26993857ybg.2;
-        Thu, 30 Jun 2022 05:48:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SwiP+hf2YNC8Lbe3gvH/02qMr4vvCVdAX/mAw68bS3Q=;
-        b=5Mu5tKayaoCPxNCDIOf8k4X/TaA1Dj67t6we7+D0A/n+HwjoshPiJXCI1VrPIYVu5J
-         2KlDGSYLQqbQzVoh/GCZWFEeyftn84f1WH7cdGgvE7H2/yqeF7+JsIXYTcuWU+O+CFEj
-         nHF6+A+B6QpFVcg/Q/GpDDl31cRPtgJltK+CsW8+XbJhXPGsr89D9sPtGQoiZyr+yL0b
-         Hh8QS9PczaHCtTyVBKg5Z7tfNLXDPUAt6DXX/IzVHF3Y5ZLM1ZcnLjTEILz8tBGRdsH0
-         QXk5xgYNSNelBOoNKnMMGqjJrcYGEc2FyYlS1sk8QyCSLWwzkV6O66WsTk/sVRKECZXZ
-         WZpA==
-X-Gm-Message-State: AJIora8y8pkN6Wssp/5cJIGA6n8VCECc3iXHXTAPIQtJzYUEJhUV+iJs
-        a6BcMxxPB1cEhNwpInBLKJODYApLG19azq90Lz0=
-X-Google-Smtp-Source: AGRyM1vfen4G0QN1GhcTeZzI9a2qKM2TeKsnTGcHqsA97qz3JsW/rfsEJzpmBur3Sl5CwFJPTMLWVuFfIapQ1lj2+qk=
-X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
- z15-20020a25664f000000b0066cd0f436ccmr8951994ybm.482.1656593293788; Thu, 30
- Jun 2022 05:48:13 -0700 (PDT)
+        with ESMTP id S235144AbiF3NDO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Jun 2022 09:03:14 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 910BD6564;
+        Thu, 30 Jun 2022 06:03:13 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E903F1063;
+        Thu, 30 Jun 2022 06:03:12 -0700 (PDT)
+Received: from bogus (unknown [10.57.39.193])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 392893F5A1;
+        Thu, 30 Jun 2022 06:03:11 -0700 (PDT)
+Date:   Thu, 30 Jun 2022 14:02:00 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v2 0/4] ACPI: Enable Platform Runtime Mechanism(PRM)
+ support on ARM64
+Message-ID: <20220630130200.4jukcfwiescii32t@bogus>
+References: <20220628125346.693304-1-sudeep.holla@arm.com>
+ <20220629090635.6kf7thawc4qc4zi2@bogus>
+ <20220629092137.a5fl33recfds7bq3@bogus>
+ <CAJZ5v0iuOMxmwbHr_2F4V6+VtNLR42BxkXDuty-EFhaeZwHvNg@mail.gmail.com>
 MIME-Version: 1.0
-References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
-In-Reply-To: <2657553.mvXUDI8C0e@kreacher>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 30 Jun 2022 14:48:02 +0200
-Message-ID: <CAJZ5v0jNOsAXSuX9dw9N3w12Y_nq62Z=OL4QQTwH=OnReGpQvA@mail.gmail.com>
-Subject: Re: [PATCH v2] hisi_lpc: Use acpi_dev_for_each_child()
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        John Garry <john.garry@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0iuOMxmwbHr_2F4V6+VtNLR42BxkXDuty-EFhaeZwHvNg@mail.gmail.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 29, 2022 at 3:47 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> Instead of walking the list of children of an ACPI device directly,
-> use acpi_dev_for_each_child() to carry out an action for all of
-> the given ACPI device's children.
->
-> This will help to eliminate the children list head from struct
-> acpi_device as it is redundant and it is used in questionable ways
-> in some places (in particular, locking is needed for walking the
-> list pointed to it safely, but it is often missing).
+On Wed, Jun 29, 2022 at 09:12:39PM +0200, Rafael J. Wysocki wrote:
+> On Wed, Jun 29, 2022 at 11:22 AM Sudeep Holla <sudeep.holla@arm.com> wrote:
+> >
+> > On Wed, Jun 29, 2022 at 10:06:35AM +0100, Sudeep Holla wrote:
+> > > Hi Rafael,
+> > >
+> > > On Tue, Jun 28, 2022 at 01:53:42PM +0100, Sudeep Holla wrote:
+> > > > Hi,
+> > > >
+> > > > This tiny series is to enable Platform Runtime Mechanism(PRM) support on
+> > > > ARM64. Not much changes. Just enabling the build and moving the config
+> > > > option so that it is not listed under the topmost menu for ARM64.
+> > > >
+> > >
+> > > Ard has slightly modified version of patch 2/4 which updates few other
+> > > arch code. Since the PRMT driver build is dependent on that, is it OK
+> > > for you to ACK if you agree with other 3 patches(1,3,4) so that it can
+> > > be routed via efi tree. Alternatively, Ard has offered to provide a stable
+> > > branch if needed.
+> >
+> > Sorry pressed enter too early. I wanted to add reference to the commit in
+> > Ard's efi queue I was referring[1] and the email where we discussed how
+> > to deal with these PRMT patches[2]
+> 
+> The ACPI changes in this series are fine with me, so please feel free to add
+> 
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> to the patches and route them through the EFI tree.
+> 
 
-I've overlooked another usage of the children list in hisi_lpc, in
-hisi_lpc_acpi_probe(), and eliminating that one is a bit more
-complicated.
+Thanks Rafael.
 
-So please scratch this one and I will send a v3 when 0-day tells me
-that it builds.
+Hi Ard,
 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Acked-by: John Garry <john.garry@huawei.com>
-> ---
->
-> -> v2:
->    * Drop unused local variable (John).
->    * Add ACK from John.
->
-> ---
->  drivers/bus/hisi_lpc.c |   14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
->
-> Index: linux-pm/drivers/bus/hisi_lpc.c
-> ===================================================================
-> --- linux-pm.orig/drivers/bus/hisi_lpc.c
-> +++ linux-pm/drivers/bus/hisi_lpc.c
-> @@ -471,6 +471,12 @@ static int hisi_lpc_acpi_remove_subdev(s
->         return 0;
->  }
->
-> +static int hisi_lpc_acpi_clear_enumerated(struct acpi_device *adev, void *not_used)
-> +{
-> +       acpi_device_clear_enumerated(adev);
-> +       return 0;
-> +}
-> +
->  struct hisi_lpc_acpi_cell {
->         const char *hid;
->         const char *name;
-> @@ -480,13 +486,9 @@ struct hisi_lpc_acpi_cell {
->
->  static void hisi_lpc_acpi_remove(struct device *hostdev)
->  {
-> -       struct acpi_device *adev = ACPI_COMPANION(hostdev);
-> -       struct acpi_device *child;
-> -
->         device_for_each_child(hostdev, NULL, hisi_lpc_acpi_remove_subdev);
-> -
-> -       list_for_each_entry(child, &adev->children, node)
-> -               acpi_device_clear_enumerated(child);
-> +       acpi_dev_for_each_child(ACPI_COMPANION(hostdev),
-> +                               hisi_lpc_acpi_clear_enumerated, NULL);
->  }
->
->  /*
->
->
->
+I assume you will pick up the patches(except 2/4 which is already in your
+-next) with Rafael's ack.
+
+-- 
+Regards,
+Sudeep
