@@ -2,70 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77BB65630A6
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 11:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FC6A5631E5
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 12:49:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236246AbiGAJt1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 05:49:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42906 "EHLO
+        id S235187AbiGAKtb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 06:49:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233732AbiGAJt0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 05:49:26 -0400
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181D97694B
-        for <linux-acpi@vger.kernel.org>; Fri,  1 Jul 2022 02:49:24 -0700 (PDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-101d96fe0a5so2862266fac.2
-        for <linux-acpi@vger.kernel.org>; Fri, 01 Jul 2022 02:49:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DMyolhHXpmu1+9rKonQ8Ub5Er3bhcnEayHaPyRlkSA4=;
-        b=GBrFvYFYOVBzzpmDHs3IrrfJPWTh6RCiSsJBTWQSl2QmDgws/O5CzbbvaoYo7P/SJf
-         cyhOGlDu6Sy/aJd1T9ENNALBTKHhubukyjTytEz5ksj1SfTpIDkxMeNNkK0i66J2J7aD
-         T22Pj2T34mGGznldlkSe4GcLvzDzzbDCAUo7xC7XmHsgEQxx4Prha3Uyr4yPd9WzTZBj
-         US+cZB51ElKLZPX1ckN42uJz3Y2Q8FOvCJ/Eq7TyFFGPJ6Pi6rl84Q2WgBKtR3UVOJtR
-         jt03u3XwJDf3PfURRZlrovDUFv44xp0ZXH7T7lRQEM3b4E/TBU4sOFbPamIb3L9f9yf1
-         kSlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DMyolhHXpmu1+9rKonQ8Ub5Er3bhcnEayHaPyRlkSA4=;
-        b=S2mqS9s3tP2NehZU7PxuhDrmPxI7nTbs+ABb/yWygn3/IdisXVEsCkrtWF1uoFhl48
-         NRESRa+erbJXvR4+1mkiapXyuQc7z95DYK4N7tqUybG0Bd3d+5RDkWi4qxhQzNDAOHAR
-         6l+tGT7yTCQV/yDFd+j3/yyZxI4LT/QeLKylT9bAZ0JKxDe+CBGDb/iRtu+/irp31F40
-         QLJ06bJ1K9tDMwglkDqKrhIdkYtgkVickypNbYf6I812YCkeDHx7O06w9OMyFwOtVfYd
-         uH1ZCSTXpDkrhJoeev7hSxGNrpw2vh2t1o4yyB4KyjoQnLw43WH3cAmA11isy/1SluKt
-         c5ww==
-X-Gm-Message-State: AJIora+42Hh4Q/UsSFX0bjjja7ngL2/1ch0PrfNvEPOp6kl+aR4dec8C
-        19B4vs6tqauNc/enMT9ZtZ+W7U15CXZ6stZUkUM=
-X-Google-Smtp-Source: AGRyM1vUEnxfVBXnLthcFdYPBiJex2ydqSUkRs3JBYl50JOjTOlBaOXlFT8Lm5+/LueeNt5C1Zsv3fMm8ZXYb+a7VHM=
-X-Received: by 2002:a05:6870:8195:b0:101:9342:bf1a with SMTP id
- k21-20020a056870819500b001019342bf1amr7805666oae.149.1656668963662; Fri, 01
- Jul 2022 02:49:23 -0700 (PDT)
+        with ESMTP id S232356AbiGAKta (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 06:49:30 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD607B36C;
+        Fri,  1 Jul 2022 03:49:28 -0700 (PDT)
+Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LZBg542Ppz68652;
+        Fri,  1 Jul 2022 18:45:21 +0800 (CST)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 1 Jul 2022 12:49:26 +0200
+Received: from [10.126.173.51] (10.126.173.51) by
+ lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 1 Jul 2022 11:49:26 +0100
+Message-ID: <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
+Date:   Fri, 1 Jul 2022 11:49:28 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:6839:f85:0:0:0:0 with HTTP; Fri, 1 Jul 2022 02:49:23
- -0700 (PDT)
-Reply-To: fredrich.david.mail@gmail.com
-From:   Mr Fredrich David <randywoods212@gmail.com>
-Date:   Fri, 1 Jul 2022 09:49:23 +0000
-Message-ID: <CAAAmqEZoJXvR7bNFTw7wgM9EcEBmT+Vx+5RsO3evURK6PFAN0Q@mail.gmail.com>
-Subject: dcv3
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+CC:     LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <yangyingliang@huawei.com>
+References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
+ <5606189.DvuYhMxLoT@kreacher>
+From:   John Garry <john.garry@huawei.com>
+In-Reply-To: <5606189.DvuYhMxLoT@kreacher>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.126.173.51]
+X-ClientProxiedBy: lhreml712-chm.china.huawei.com (10.201.108.63) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--In risposta alle tue email, ti scrivo per informarti che i progetti
-sono ora completati e sei stato approvato!
-Cordiali saluti,
-Signor Fredrich David
+On 30/06/2022 19:13, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Subject: [PATCH] hisi_lpc: Use acpi_dev_for_each_child()
+> 
+> Instead of walking the list of children of an ACPI device directly,
+> use acpi_dev_for_each_child() to carry out an action for all of
+> the given ACPI device's children.
+> 
+> This will help to eliminate the children list head from struct
+> acpi_device as it is redundant and it is used in questionable ways
+> in some places (in particular, locking is needed for walking the
+> list pointed to it safely, but it is often missing).
+> 
+> While at it, simplify hisi_lpc_acpi_set_io_res() by making it accept
+> a struct acpi_device pointer from the caller, instead of going to
+> struct device and back to get the same result, and clean up confusion
+> regarding hostdev and its ACPI companion in that function.
+> 
+> Also remove a redundant check from it.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+This change itself looks fine and I quickly tested, so:
+Reviewed-by: John Garry <john.garry@huawei.com>
+
+However Yang Yingliang spotted a pre-existing bug in the ACPI probe and 
+sent a fix today (coincidence?):
+
+https://lore.kernel.org/lkml/20220701094352.2104998-1-yangyingliang@huawei.com/T/#u
+
+And they conflict. This code has been this way for years, so I just 
+suggest Yang Yingliang resends the fix on top off Rafael's change.
+
+Thanks,
+John
