@@ -2,41 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 401E356379B
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 18:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAEA3563831
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 18:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231862AbiGAQRG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 12:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38876 "EHLO
+        id S229708AbiGAQnN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 12:43:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231851AbiGAQRC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 12:17:02 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 53CF53BBF9;
-        Fri,  1 Jul 2022 09:17:02 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 564EF113E;
-        Fri,  1 Jul 2022 09:17:02 -0700 (PDT)
-Received: from pierre123.home (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4EE2F3F66F;
-        Fri,  1 Jul 2022 09:17:00 -0700 (PDT)
-From:   Pierre Gondois <pierre.gondois@arm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Pierre Gondois <Pierre.Gondois@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH RESEND v1 2/2] ACPI/PCI: Make _PRS optional for link device
-Date:   Fri,  1 Jul 2022 18:16:24 +0200
-Message-Id: <20220701161624.2844305-3-pierre.gondois@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220701161624.2844305-1-pierre.gondois@arm.com>
-References: <20220701161624.2844305-1-pierre.gondois@arm.com>
+        with ESMTP id S229544AbiGAQnN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 12:43:13 -0400
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C841013D43
+        for <linux-acpi@vger.kernel.org>; Fri,  1 Jul 2022 09:43:10 -0700 (PDT)
+Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.59])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4LZLb26StgzTwLq;
+        Sat,  2 Jul 2022 00:42:22 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Sat, 2 Jul 2022 00:43:05 +0800
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2375.024; Fri, 1 Jul 2022 17:43:04 +0100
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Robin Murphy <robin.murphy@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "will@kernel.org" <will@kernel.org>
+CC:     "jon@solid-run.com" <jon@solid-run.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        "hch@infradead.org" <hch@infradead.org>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+        Steven Price <steven.price@arm.com>,
+        "lorenzo.pieralisi@gmail.com" <lorenzo.pieralisi@gmail.com>
+Subject: RE: [PATCH v13 0/9] ACPI/IORT: Support for IORT RMR node
+Thread-Topic: [PATCH v13 0/9] ACPI/IORT: Support for IORT RMR node
+Thread-Index: AQHYgKBK6ZkZvzZxLEqm8BkaLnkVo61TfSMAgAs//6CABHLxAIABViUAgAVKlWA=
+Date:   Fri, 1 Jul 2022 16:43:03 +0000
+Message-ID: <9bcec024bba444caa0f60d37afd88b6b@huawei.com>
+References: <20220615101044.1972-1-shameerali.kolothum.thodi@huawei.com>
+ <03b03d88-87cd-0b29-863b-2cb2a9a117d1@arm.com>
+ <44338c87254d4d439d29694de8f19435@huawei.com>
+ <ff579ecb-9a37-09ef-a975-cf1e25ab731e@arm.com> 
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.169.16]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,91 +68,27 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Pierre Gondois <Pierre.Gondois@arm.com>
-
-In ACPI 6.4, s6.2.13 "_PRT (PCI Routing Table)", PCI legacy
-interrupts can be described though a link device (first model).
-From s6.2.12 "_PRS (Possible Resource Settings)":
-"This optional object evaluates [...]"
-
-It is currently checked that the interrupt advertised in _CRS
-is one of the interrupts available in _PRS.
-Make this check conditional to the presence of _PRS.
-
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215560
-Signed-off-by: Pierre Gondois <Pierre.Gondois@arm.com>
----
- drivers/acpi/pci_link.c | 39 +++++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-index 129e3e7e80ee..b5a41866f135 100644
---- a/drivers/acpi/pci_link.c
-+++ b/drivers/acpi/pci_link.c
-@@ -532,19 +532,10 @@ int __init acpi_irq_penalty_init(void)
- 
- static int acpi_irq_balance = -1;	/* 0: static, 1: balance */
- 
--static int acpi_pci_link_allocate(struct acpi_pci_link *link)
-+static int select_from_possible(struct acpi_pci_link *link)
- {
--	acpi_handle handle = link->device->handle;
--	int irq;
- 	int i;
- 
--	if (link->irq.initialized) {
--		if (link->refcnt == 0)
--			/* This means the link is disabled but initialized */
--			acpi_pci_link_set(link, link->irq.active);
--		return 0;
--	}
--
- 	/*
- 	 * search for active IRQ in list of possible IRQs.
- 	 */
-@@ -557,8 +548,9 @@ static int acpi_pci_link_allocate(struct acpi_pci_link *link)
- 	 */
- 	if (i == link->irq.possible_count) {
- 		if (acpi_strict)
--			acpi_handle_warn(handle, "_CRS %d not found in _PRS\n",
--					 link->irq.active);
-+			acpi_handle_warn(link->device->handle,
-+					"_CRS %d not found in _PRS\n",
-+					link->irq.active);
- 		link->irq.active = 0;
- 	}
- 
-@@ -566,9 +558,28 @@ static int acpi_pci_link_allocate(struct acpi_pci_link *link)
- 	 * if active found, use it; else pick entry from end of possible list.
- 	 */
- 	if (link->irq.active)
--		irq = link->irq.active;
-+		return link->irq.active;
-+	else
-+		return link->irq.possible[link->irq.possible_count - 1];
-+}
-+
-+static int acpi_pci_link_allocate(struct acpi_pci_link *link)
-+{
-+	acpi_handle handle = link->device->handle;
-+	int irq;
-+	int i;
-+
-+	if (link->irq.initialized) {
-+		if (link->refcnt == 0)
-+			/* This means the link is disabled but initialized */
-+			acpi_pci_link_set(link, link->irq.active);
-+		return 0;
-+	}
-+
-+	if (link->irq.possible_count)
-+		irq = select_from_possible(link);
- 	else
--		irq = link->irq.possible[link->irq.possible_count - 1];
-+		irq = link->irq.active;
- 
- 	if (acpi_irq_balance || !link->irq.active) {
- 		/*
--- 
-2.25.1
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2hhbWVlcmFsaSBLb2xv
+dGh1bSBUaG9kaQ0KPiBTZW50OiAyOCBKdW5lIDIwMjIgMDk6MDANCj4gVG86ICdSb2JpbiBNdXJw
+aHknIDxyb2Jpbi5tdXJwaHlAYXJtLmNvbT47IGpvcm9AOGJ5dGVzLm9yZzsNCj4gbGludXgtYXJt
+LWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsN
+Cj4gaW9tbXVAbGlzdHMubGludXgtZm91bmRhdGlvbi5vcmcNCj4gQ2M6IGpvbkBzb2xpZC1ydW4u
+Y29tOyBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNvbT47DQo+IGhjaEBpbmZyYWRlYWQub3Jn
+OyBHdW9oYW5qdW4gKEhhbmp1biBHdW8pIDxndW9oYW5qdW5AaHVhd2VpLmNvbT47DQo+IFNhbWku
+TXVqYXdhckBhcm0uY29tOyB3aWxsQGtlcm5lbC5vcmc7IHdhbmdodWlxaWFuZw0KPiA8d2FuZ2h1
+aXFpYW5nQGh1YXdlaS5jb20+OyBscGllcmFsaXNpQGtlcm5lbC5vcmc7IFN0ZXZlbiBQcmljZQ0K
+PiA8c3RldmVuLnByaWNlQGFybS5jb20+OyBsb3JlbnpvLnBpZXJhbGlzaUBnbWFpbC5jb20NCj4g
+U3ViamVjdDogUkU6IFtQQVRDSCB2MTMgMC85XSBBQ1BJL0lPUlQ6IFN1cHBvcnQgZm9yIElPUlQg
+Uk1SIG5vZGUNCj4gPiA+IEhpIFdpbGwvUm9iaW4sDQo+ID4gPg0KPiA+ID4gQXBwcmVjaWF0ZSwg
+aWYgeW91IGNvdWxkIHBsZWFzZSB0YWtlIGEgbG9vayBhdCB0aGUgcmVtYWluaW5nIFNNTVUNCj4g
+PiA+IHJlbGF0ZWQNCj4gPiA+IHBhdGNoZXMoNy05KSBhbmQgcHJvdmlkZSB5b3VyIGFwcHJvdmFs
+Pw0KPiA+DQo+ID4gSSBzYWlkIHYxMiBsb29rZWQgZmluZSwgYnV0IGZvciB0aGUgYXZvaWRhbmNl
+IG9mIGRvdWJ0LCBoZXJlIGl0IGlzDQo+ID4gYWdhaW4sIGFzIGZvcm1hbGx5IGFzIGNhbiBiZToN
+Cj4gPg0KPiA+IEFja2VkLWJ5OiBSb2JpbiBNdXJwaHkgPHJvYmluLm11cnBoeUBhcm0uY29tPg0K
+PiANCj4gVGhhbmtzIFJvYmluLg0KPiANCj4gSGkgSm9lcmcsDQo+IA0KPiBOb3cgdGhhdCB3ZSBo
+YXZlIGFsbCB0aGUgcmVxdWlyZWQgYWNrcywgY291bGQgeW91IHBsZWFzZSBwaWNrIHRoaXMgc2Vy
+aWVzIHZpYQ0KPiBJT01NVSB0cmVlPw0KDQpIaSBXaWxsLA0KDQpTaW5jZSBKb2VyZyBoYXNuJ3Qg
+cmVwbGllZCB5ZXQsIGp1c3Qgd29uZGVyaW5nIGNvdWxkIHlvdSBwbGVhc2UgdGFrZSBpdCB0aHJv
+dWdoIEFSTQ0KU01NVSB0cmVlIGlmIHRoYXQgbWFrZXMgc2Vuc2U/IERvbid0IHdhbnQgdG8gbWlz
+cyB0aGUgNS4yMCBtZXJnZSB3aW5kb3cgZm9yIHRoaXMNCnNlcmllcy4NCg0KVGhhbmtzLA0KU2hh
+bWVlcg0KDQoNCg==
