@@ -2,147 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6495633E9
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 15:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 902F2563731
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 17:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236518AbiGANCt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 09:02:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59534 "EHLO
+        id S229572AbiGAPsY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 11:48:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236291AbiGANCs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 09:02:48 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A04043AE0;
-        Fri,  1 Jul 2022 06:02:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656680567; x=1688216567;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uxWgnXDJDLxeqJd6HJODgjUp8PptkZ+c/9CcJyYl8cY=;
-  b=ChWYLn0BPN0X8Nx15W1vggvS8sOgOn/tk6LVImD4uLQh98S/qG+ANkY6
-   7gzcE1B9rqMytDhlsaBG3iYd+TkE00zDlnLDmSWxYXa6AmcA6KDtpXdGP
-   Y6mV+kaZQBvxNJzhBCg2Fgv5CQd0KdUzMZTG7hXZxir8hWuX9r8mIsho7
-   b09uhWAV6/VTrF85LwryJcMFAhH9QgGWH5rU0RUR1oTgRlt31dZA/aC1m
-   bazb8Ki5zVlUsEYv7L7bp/dLG3l4hruYG/xtuuUQqkAipREUsc2LazZvw
-   rvmQ/ju/dhmNNoFSdf15EQuRSD9jWlbb80WQeID8g/EiwQrwMRKXohQdv
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10394"; a="344331640"
-X-IronPort-AV: E=Sophos;i="5.92,237,1650956400"; 
-   d="scan'208";a="344331640"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2022 06:02:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,237,1650956400"; 
-   d="scan'208";a="718618430"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 01 Jul 2022 06:02:45 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o7GIG-000Dwq-BL;
-        Fri, 01 Jul 2022 13:02:44 +0000
-Date:   Fri, 1 Jul 2022 21:01:49 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Cc:     kbuild-all@lists.01.org, linux-pm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 03/10] ACPI: LPIT: Use new
- `pm_suspend_preferred_s2idle`
-Message-ID: <202207012033.3AjPSdQe-lkp@intel.com>
-References: <20220701023328.2783-3-mario.limonciello@amd.com>
+        with ESMTP id S229627AbiGAPsX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 11:48:23 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE23C2BE4;
+        Fri,  1 Jul 2022 08:48:22 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d17so2800907pfq.9;
+        Fri, 01 Jul 2022 08:48:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=uDarOweoEFTnSdrDvDJllZpMrSn4p19JOAzdu5dS6Q8=;
+        b=bRO4mWU70FDfLNjJsSu+cVGSWroljHlQf21xyBvmpZpeik91heVqs0IY7cEDK7l4mx
+         3g9CTuSDehyr1Epvl/PVWCIOTvCIKaaSkQqhH/3F3PQ4KnsBxejzF8XigGQpDPWkVoh1
+         Q9+vJMW3d6mMxG7wNtkYkBn7X8gT5D/3WZlQj7KSLfA//vMn91A26MuvxKSXf6OaK12L
+         NSyqHS4NUo1ibsrm1gNp8jAO0g7bAPH/VX5JRykRCSs7Y3XtBf+WsVEnfuf/OccvI4sI
+         GKzzLXjzVJRe5fzJJsBKpSU00UCMIe2DF0/JW7cPl3KvItSaM8EwNF3UmhZBfG5hY8Ym
+         gddA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=uDarOweoEFTnSdrDvDJllZpMrSn4p19JOAzdu5dS6Q8=;
+        b=CcOC22nLd9GFi0WYCkmxxiq6dEUKGo6+N5xq4OMianmL9oFf8bDbx+Isb2YTconxKV
+         3w6qSLCmpKnihFMXkCpjDppMdELrGFPPQvBPVFmnfl739Givbet8s6Lminb9MUAEjvy1
+         wosC8nPNeLq0fGdnWDOBuY39bpfUP6pp/sDsYg2mgxWOqLSW+tZDvhjh1NV3oiaEtzak
+         tr62xdTbwEBaotCIIrZbSf5gXdPfYBJU5u2N21NSHIO9W8YXw3zRn/CZ7YUtAj1It4kf
+         /vnEQfWw0bC+IoYkBIyvS5fPbBuU5TIOrsxsEtd9sf65V4LTiotDQuiC0qFKhOqnwNSn
+         LaMQ==
+X-Gm-Message-State: AJIora9ZyLwPd03tWC/ZA1hES12KlKbRC3BvFjH5vnM720SvgMbrTVs2
+        6BfMSPegFmY1AqOqWPgEcGY=
+X-Google-Smtp-Source: AGRyM1vfLcBhdXKZWt1lvdyF/YoLNAqePnjUFcOc+RzzizmYni7T7Qzzp4B5x7Vu/sCebE85txfhuQ==
+X-Received: by 2002:a63:8142:0:b0:40d:314c:57bd with SMTP id t63-20020a638142000000b0040d314c57bdmr12487367pgd.427.1656690502215;
+        Fri, 01 Jul 2022 08:48:22 -0700 (PDT)
+Received: from [192.168.31.116] (dhcp-v209-042.vp.reshsg.uci.edu. [169.234.209.42])
+        by smtp.gmail.com with ESMTPSA id s42-20020a056a0017aa00b0052553215444sm16075338pfg.101.2022.07.01.08.48.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Jul 2022 08:48:21 -0700 (PDT)
+Message-ID: <cfc06d1d-4019-b358-fd81-10d55e1868e5@gmail.com>
+Date:   Fri, 1 Jul 2022 08:48:08 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220701023328.2783-3-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v3 1/2] ACPI: CPPC: Only probe for _CPC if CPPC v2 is
+ acked
+Content-Language: en-US
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Huang Rui <ray.huang@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        perry.yuan@amd.com, maxim.novozhilov@gmail.com,
+        lethe.tree@protonmail.com, garystephenwright@gmail.com,
+        galaxyking0419@gmail.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220701022529.2134-1-mario.limonciello@amd.com>
+From:   CUI Hao <cuihao.leo@gmail.com>
+In-Reply-To: <20220701022529.2134-1-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mario,
+On Thu, Jun 30, 2022 at 09:25:27PM -0500, Mario Limonciello wrote:
+> Previously the kernel used to ignore whether the firmware masked CPPC
+> or CPPCv2 and would just pretend that it worked.
+> 
+> When support for the USB4 bit in _OSC was introduced from commit
+> 9e1f561afb ("ACPI: Execute platform _OSC also with query bit clear")
+> the kernel began to look at the return when the query bit was clear.
+> 
+> This caused regressions that were misdiagnosed and attempted to be solved
+> as part of commit 2ca8e6285250 ("Revert "ACPI: Pass the same capabilities
+> to the _OSC regardless of the query flag""). This caused a different
+> regression where non-Intel systems weren't able to negotiate _OSC
+> properly.
+> 
+> This was reverted in commit 2ca8e6285250 ("Revert "ACPI: Pass the same
+> capabilities to the _OSC regardless of the query flag"") and attempted to
+> be fixed by commit c42fa24b4475 ("ACPI: bus: Avoid using CPPC if not
+> supported by firmware") but the regression still returned.
+> 
+> These systems with the regression only load support for CPPC from an SSDT
+> dynamically when _OSC reports CPPC v2.  Avoid the problem by not letting
+> CPPC satisfy the requirement in `acpi_cppc_processor_probe`.
+> 
+> Reported-by: CUI Hao <cuihao.leo@gmail.com>
+> Reported-by: maxim.novozhilov@gmail.com
+> Reported-by: lethe.tree@protonmail.com
+> Reported-by: garystephenwright@gmail.com
+> Reported-by: galaxyking0419@gmail.com
+> Fixes: c42fa24b4475 ("ACPI: bus: Avoid using CPPC if not supported by firmware")
+> Fixes: 2ca8e6285250 ("Revert "ACPI Pass the same capabilities to the _OSC regardless of the query flag"")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=213023
+> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2075387
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-Thank you for the patch! Yet something to improve:
+I tested the patch on 5.19-rc4 kernel, and confirm that it fixes the ACPI errors:
+ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PR00._CPC] on my ASRock B460M-ITX/ac + i7-10700K machine. New to kernel lists. If my Thunderbird doesn't mangle the text, feel free to add:
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on drm-misc/drm-misc-next hid/for-next linus/master v5.19-rc4 next-20220701]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Tested-by: CUI Hao <cuihao.leo@gmail.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/PM-suspend-Introduce-pm_suspend_preferred_s2idle/20220701-103534
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: x86_64-randconfig-a004 (https://download.01.org/0day-ci/archive/20220701/202207012033.3AjPSdQe-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/9603006925839aeb40b8a65adc7be87f4e89813f
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Mario-Limonciello/PM-suspend-Introduce-pm_suspend_preferred_s2idle/20220701-103534
-        git checkout 9603006925839aeb40b8a65adc7be87f4e89813f
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   drivers/acpi/acpi_lpit.c: In function 'lpit_update_residency':
->> drivers/acpi/acpi_lpit.c:113:22: error: implicit declaration of function 'pm_suspend_preferred_s2idle'; did you mean 'pm_suspend_default_s2idle'? [-Werror=implicit-function-declaration]
-     113 |                 if (!pm_suspend_preferred_s2idle())
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                      pm_suspend_default_s2idle
-   drivers/acpi/acpi_lpit.c: At top level:
-   drivers/acpi/acpi_lpit.c:149:6: warning: no previous prototype for 'acpi_init_lpit' [-Wmissing-prototypes]
-     149 | void acpi_init_lpit(void)
-         |      ^~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +113 drivers/acpi/acpi_lpit.c
-
-    97	
-    98	static void lpit_update_residency(struct lpit_residency_info *info,
-    99					 struct acpi_lpit_native *lpit_native)
-   100	{
-   101		info->frequency = lpit_native->counter_frequency ?
-   102					lpit_native->counter_frequency : tsc_khz * 1000;
-   103		if (!info->frequency)
-   104			info->frequency = 1;
-   105	
-   106		info->gaddr = lpit_native->residency_counter;
-   107		if (info->gaddr.space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-   108			info->iomem_addr = ioremap(info->gaddr.address,
-   109							   info->gaddr.bit_width / 8);
-   110			if (!info->iomem_addr)
-   111				return;
-   112	
- > 113			if (!pm_suspend_preferred_s2idle())
-   114				return;
-   115	
-   116			/* Silently fail, if cpuidle attribute group is not present */
-   117			sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
-   118						&dev_attr_low_power_idle_system_residency_us.attr,
-   119						"cpuidle");
-   120		} else if (info->gaddr.space_id == ACPI_ADR_SPACE_FIXED_HARDWARE) {
-   121			if (!pm_suspend_preferred_s2idle())
-   122				return;
-   123	
-   124			/* Silently fail, if cpuidle attribute group is not present */
-   125			sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
-   126						&dev_attr_low_power_idle_cpu_residency_us.attr,
-   127						"cpuidle");
-   128		}
-   129	}
-   130	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
