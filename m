@@ -2,95 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D10DE5633A0
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 14:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC6495633E9
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 15:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236146AbiGAMpK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 08:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43142 "EHLO
+        id S236518AbiGANCt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 09:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236215AbiGAMpJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 08:45:09 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B745533EB4;
-        Fri,  1 Jul 2022 05:45:06 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id l81so3337472oif.9;
-        Fri, 01 Jul 2022 05:45:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9fESupLsVibFBT9Jshx7sx492QNW1uXVHiFs4UY6jdo=;
-        b=B5NGKiRmAEpLNLEvQvABrUY2mlRFTJIghKa0CmaEprTgUg8P/bMLjDlC9kqySWbxX3
-         WbtV6Ly41oBeo7+bnVMbiOCtsCj+s21zCMaKWHKIFpxWvbGvSRgkZytYo2CDJHWX7CQy
-         H0Lo4IVoOLp0brhFmh1VLK5kNnbeepwvvprEWGPfumaQIQrTiQQpS1U3eI8UUCyg5qNj
-         rgDb2Uz9eLivrzgiR8dVP7NnivyIN7GwoT1+hvhiT42KM1qYWy4gvv0dLWk3Bk9eqgfm
-         vR0MqGdvIWq1A1Yz9vzd5RFkRMmaDB1AviyZo68aMlrOWiSCDjzcIXUTQ31msC+JBIbK
-         jC6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9fESupLsVibFBT9Jshx7sx492QNW1uXVHiFs4UY6jdo=;
-        b=RtRLlPWyj3U/tlpw3Sz/bZ18Rx4FJnhzZwvTHLYx7AiQudjsXkpDMP3oOXLgTFD7IK
-         wQs2NcDoIz2sOEv/xOAy/BGL8bMKobMbIDPz9fjMS3sZf+g8H3vVnzqYFszLMhP/cIJA
-         xU5fvGAaZT4KsbH9w8m7ED6MtdakBlB1Cw00g/AZxTq1IyIAm8qWRbeCpjH8WpVsvMda
-         ONnn+oTtpI8BICbroZuKIYtoIJU3/+ARr+A2mr0RE7GT920p19RlhNyuOxOAr/fWve+p
-         RAj9vEuSg0Rf/1hrjBXcXxNBlQMPn2DLKxOc4AskmYDkqBiKXMqoh2ipBKNZq692uhNY
-         K3NA==
-X-Gm-Message-State: AJIora9uuE48gTxHrdkLlqS2sUlwQzVB2l7uT/nxyTE8XClkkWN3W7Lj
-        392DULjbvSTfRZZc4Tiz2O78NGbO1Tk0HXUW/AGtRUfJTQ2sOA==
-X-Google-Smtp-Source: AGRyM1uoR9RgXLNVs7iXQWGsEnvNo3LHdrJfhjDPo9OILGpE6veZNJc15raUa4vJXNYHDVShVhEAd7LSwSk5Ktr9zIc=
-X-Received: by 2002:a05:6808:30a8:b0:335:afc9:4a2c with SMTP id
- bl40-20020a05680830a800b00335afc94a2cmr7811673oib.288.1656679505945; Fri, 01
- Jul 2022 05:45:05 -0700 (PDT)
+        with ESMTP id S236291AbiGANCs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 09:02:48 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A04043AE0;
+        Fri,  1 Jul 2022 06:02:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656680567; x=1688216567;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uxWgnXDJDLxeqJd6HJODgjUp8PptkZ+c/9CcJyYl8cY=;
+  b=ChWYLn0BPN0X8Nx15W1vggvS8sOgOn/tk6LVImD4uLQh98S/qG+ANkY6
+   7gzcE1B9rqMytDhlsaBG3iYd+TkE00zDlnLDmSWxYXa6AmcA6KDtpXdGP
+   Y6mV+kaZQBvxNJzhBCg2Fgv5CQd0KdUzMZTG7hXZxir8hWuX9r8mIsho7
+   b09uhWAV6/VTrF85LwryJcMFAhH9QgGWH5rU0RUR1oTgRlt31dZA/aC1m
+   bazb8Ki5zVlUsEYv7L7bp/dLG3l4hruYG/xtuuUQqkAipREUsc2LazZvw
+   rvmQ/ju/dhmNNoFSdf15EQuRSD9jWlbb80WQeID8g/EiwQrwMRKXohQdv
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10394"; a="344331640"
+X-IronPort-AV: E=Sophos;i="5.92,237,1650956400"; 
+   d="scan'208";a="344331640"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2022 06:02:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,237,1650956400"; 
+   d="scan'208";a="718618430"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 01 Jul 2022 06:02:45 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o7GIG-000Dwq-BL;
+        Fri, 01 Jul 2022 13:02:44 +0000
+Date:   Fri, 1 Jul 2022 21:01:49 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     kbuild-all@lists.01.org, linux-pm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 03/10] ACPI: LPIT: Use new
+ `pm_suspend_preferred_s2idle`
+Message-ID: <202207012033.3AjPSdQe-lkp@intel.com>
+References: <20220701023328.2783-3-mario.limonciello@amd.com>
 MIME-Version: 1.0
-References: <20220630022317.15734-1-gch981213@gmail.com> <b84edc24-0a3a-a4d2-6481-fb3d4cee6dda@amd.com>
-In-Reply-To: <b84edc24-0a3a-a4d2-6481-fb3d4cee6dda@amd.com>
-From:   Chuanhong Guo <gch981213@gmail.com>
-Date:   Fri, 1 Jul 2022 20:44:54 +0800
-Message-ID: <CAJsYDVL=fgExYdw3JB-59rCwOqTbSt2N0Xw2WCmoTSzOQEMRRg@mail.gmail.com>
-Subject: Re: [PATCH v5] ACPI: skip IRQ1 override on 3 Ryzen 6000 laptops
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     linux-acpi@vger.kernel.org, stable@vger.kernel.org,
-        Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        Kent Hou Man <knthmn0@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220701023328.2783-3-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 1, 2022 at 4:12 AM Limonciello, Mario
-<mario.limonciello@amd.com> wrote:
-> However I do want to point out that Windows doesn't care about legacy
-> format or not.  This bug where keyboard doesn't work only popped up on
-> Linux.
->
-> Given the number of systems with the bug is appearing to grow I wonder
-> if the right answer is actually a new heuristic that doesn't apply the
-> kernel override for polarity inversion anymore.  Maybe if the system is
-> 2022 or newer?  Or on the ACPI version?
+Hi Mario,
 
-The previous attempt to limit the scope of IRQ override ends up
-breaking some other buggy devices:
-https://patchwork.kernel.org/project/linux-acpi/patch/20210728151958.15205-1-hui.wang@canonical.com/
+Thank you for the patch! Yet something to improve:
 
-It's unfortunate that the original author of this IRQ override doesn't
-limit the scope to their exact devices.
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on drm-misc/drm-misc-next hid/for-next linus/master v5.19-rc4 next-20220701]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Hi, Rafael! What do you think? should we skip this IRQ override
-one-by-one or add a different matching logic to check the bios date
-instead?
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/PM-suspend-Introduce-pm_suspend_preferred_s2idle/20220701-103534
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: x86_64-randconfig-a004 (https://download.01.org/0day-ci/archive/20220701/202207012033.3AjPSdQe-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/9603006925839aeb40b8a65adc7be87f4e89813f
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Mario-Limonciello/PM-suspend-Introduce-pm_suspend_preferred_s2idle/20220701-103534
+        git checkout 9603006925839aeb40b8a65adc7be87f4e89813f
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   drivers/acpi/acpi_lpit.c: In function 'lpit_update_residency':
+>> drivers/acpi/acpi_lpit.c:113:22: error: implicit declaration of function 'pm_suspend_preferred_s2idle'; did you mean 'pm_suspend_default_s2idle'? [-Werror=implicit-function-declaration]
+     113 |                 if (!pm_suspend_preferred_s2idle())
+         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                      pm_suspend_default_s2idle
+   drivers/acpi/acpi_lpit.c: At top level:
+   drivers/acpi/acpi_lpit.c:149:6: warning: no previous prototype for 'acpi_init_lpit' [-Wmissing-prototypes]
+     149 | void acpi_init_lpit(void)
+         |      ^~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +113 drivers/acpi/acpi_lpit.c
+
+    97	
+    98	static void lpit_update_residency(struct lpit_residency_info *info,
+    99					 struct acpi_lpit_native *lpit_native)
+   100	{
+   101		info->frequency = lpit_native->counter_frequency ?
+   102					lpit_native->counter_frequency : tsc_khz * 1000;
+   103		if (!info->frequency)
+   104			info->frequency = 1;
+   105	
+   106		info->gaddr = lpit_native->residency_counter;
+   107		if (info->gaddr.space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+   108			info->iomem_addr = ioremap(info->gaddr.address,
+   109							   info->gaddr.bit_width / 8);
+   110			if (!info->iomem_addr)
+   111				return;
+   112	
+ > 113			if (!pm_suspend_preferred_s2idle())
+   114				return;
+   115	
+   116			/* Silently fail, if cpuidle attribute group is not present */
+   117			sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
+   118						&dev_attr_low_power_idle_system_residency_us.attr,
+   119						"cpuidle");
+   120		} else if (info->gaddr.space_id == ACPI_ADR_SPACE_FIXED_HARDWARE) {
+   121			if (!pm_suspend_preferred_s2idle())
+   122				return;
+   123	
+   124			/* Silently fail, if cpuidle attribute group is not present */
+   125			sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
+   126						&dev_attr_low_power_idle_cpu_residency_us.attr,
+   127						"cpuidle");
+   128		}
+   129	}
+   130	
 
 -- 
-Regards,
-Chuanhong Guo
+0-DAY CI Kernel Test Service
+https://01.org/lkp
