@@ -2,62 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF112562B0E
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 07:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3210B562C3B
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 09:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbiGAFss (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 01:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56632 "EHLO
+        id S231727AbiGAHFz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 03:05:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231426AbiGAFsr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 01:48:47 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CDED6B260;
-        Thu, 30 Jun 2022 22:48:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656654527; x=1688190527;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=y5ug2lyRKciQTK4LIaK6tpSgjuLHRuKAtCuP90hqIAY=;
-  b=Yk2yocUeVh4/v7hL72iZ3LS4sqXqto/M7DNFRPeXeKKoolhRW63KTAfV
-   2DVXtIZrFp5mkhODN+E50BejC1pMvPkrOhoHesuGckpvxRNkj3/b9V+1x
-   yDKGnJIwtZh5IPrVJxRamHW0s3aMcsaZgIB1J04odwszAzjX+ajYUpzwH
-   FAeZOMttIZlIfDI1B1A8BRfPpO/J6ymjqtJ5c155Dz0kvCt+uLGZsh3tK
-   L2EGDxabBl9fGoVMGc0foQw9ypqvbHRvm1TDIztwZGVyf/5PpqYsyfdLL
-   ySIGbMHYAfICCS05oOuW6YMl89PRY/EuSp+BooPbzk3P2W99X/y8288xl
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10394"; a="282590975"
-X-IronPort-AV: E=Sophos;i="5.92,236,1650956400"; 
-   d="scan'208";a="282590975"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2022 22:48:47 -0700
-X-IronPort-AV: E=Sophos;i="5.92,236,1650956400"; 
-   d="scan'208";a="733930884"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2022 22:48:43 -0700
-Received: by lahna (sSMTP sendmail emulation); Fri, 01 Jul 2022 08:48:40 +0300
-Date:   Fri, 1 Jul 2022 08:48:40 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Huang Rui <ray.huang@amd.com>,
-        perry.yuan@amd.com, CUI Hao <cuihao.leo@gmail.com>,
-        maxim.novozhilov@gmail.com, lethe.tree@protonmail.com,
-        garystephenwright@gmail.com, galaxyking0419@gmail.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] ACPI: CPPC: Only probe for _CPC if CPPC v2 is
- acked
-Message-ID: <Yr6KuPlWN6girxnx@lahna>
-References: <20220701022529.2134-1-mario.limonciello@amd.com>
+        with ESMTP id S235025AbiGAHFy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 03:05:54 -0400
+Received: from ZXSHCAS1.zhaoxin.com (ZXSHCAS1.zhaoxin.com [210.0.225.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09B55677C2;
+        Fri,  1 Jul 2022 00:05:53 -0700 (PDT)
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHCAS1.zhaoxin.com
+ (10.28.252.161) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Fri, 1 Jul
+ 2022 15:05:49 +0800
+Received: from tony-HX002EA0.zhaoxin.com (10.32.64.1) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Fri, 1 Jul
+ 2022 15:05:47 +0800
+From:   Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+To:     <rafael@kernel.org>, <len.brown@intel.com>, <pavel@ucw.cz>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <CobeChen@zhaoxin.com>,
+        <TimGuo@zhaoxin.com>, <LindaChai@zhaoxin.com>, <LeoLiu@zhaoxin.com>
+Subject: [PATCH] x86/cstate: Replace vendor check with X86_FEATURE_MWAIT in ffh_cstate_init
+Date:   Fri, 1 Jul 2022 15:05:47 +0800
+Message-ID: <1656659147-20396-1-git-send-email-TonyWWang-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220701022529.2134-1-mario.limonciello@amd.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.32.64.1]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,38 +47,44 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 30, 2022 at 09:25:27PM -0500, Mario Limonciello wrote:
-> Previously the kernel used to ignore whether the firmware masked CPPC
-> or CPPCv2 and would just pretend that it worked.
-> 
-> When support for the USB4 bit in _OSC was introduced from commit
-> 9e1f561afb ("ACPI: Execute platform _OSC also with query bit clear")
-> the kernel began to look at the return when the query bit was clear.
-> 
-> This caused regressions that were misdiagnosed and attempted to be solved
-> as part of commit 2ca8e6285250 ("Revert "ACPI: Pass the same capabilities
-> to the _OSC regardless of the query flag""). This caused a different
-> regression where non-Intel systems weren't able to negotiate _OSC
-> properly.
-> 
-> This was reverted in commit 2ca8e6285250 ("Revert "ACPI: Pass the same
-> capabilities to the _OSC regardless of the query flag"") and attempted to
-> be fixed by commit c42fa24b4475 ("ACPI: bus: Avoid using CPPC if not
-> supported by firmware") but the regression still returned.
-> 
-> These systems with the regression only load support for CPPC from an SSDT
-> dynamically when _OSC reports CPPC v2.  Avoid the problem by not letting
-> CPPC satisfy the requirement in `acpi_cppc_processor_probe`.
-> 
-> Reported-by: CUI Hao <cuihao.leo@gmail.com>
-> Reported-by: maxim.novozhilov@gmail.com
-> Reported-by: lethe.tree@protonmail.com
-> Reported-by: garystephenwright@gmail.com
-> Reported-by: galaxyking0419@gmail.com
-> Fixes: c42fa24b4475 ("ACPI: bus: Avoid using CPPC if not supported by firmware")
-> Fixes: 2ca8e6285250 ("Revert "ACPI Pass the same capabilities to the _OSC regardless of the query flag"")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=213023
-> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2075387
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+The original commit 991528d73486 ("ACPI: Processor native C-states using
+MWAIT") has a vendor check for Intel in the function of ffh_cstate_init().
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Commit 5209654a46ee ("x86/ACPI/cstate: Allow ACPI C1 FFH MWAIT use on AMD
+systems") and commit 280b68a3b3b9 ("x86/cstate: Allow ACPI C1 FFH MWAIT
+use on Hygon systems") add vendor check for AMD and HYGON in the function
+of ffh_cstate_init().
+
+Recent Zhaoxin and Centaur CPUs support MONITOR/MWAIT instructions that
+can be used for ACPI Cx state in the same way as Intel. So expected to
+add the support of these CPUs in the function of ffh_cstate_init() too.
+
+The CPU feature X86_FEATURE_MWAIT indicates processor supports MONITOR/
+MWAIT instructions. So the check for many CPU vendors in ffh_cstate_init()
+is unnecessary, use X86_FEATURE_MWAIT to replace the CPU vendor check.
+
+Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+---
+ arch/x86/kernel/acpi/cstate.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+index 7945eae..a64c38f 100644
+--- a/arch/x86/kernel/acpi/cstate.c
++++ b/arch/x86/kernel/acpi/cstate.c
+@@ -209,11 +209,7 @@ EXPORT_SYMBOL_GPL(acpi_processor_ffh_cstate_enter);
+ 
+ static int __init ffh_cstate_init(void)
+ {
+-	struct cpuinfo_x86 *c = &boot_cpu_data;
+-
+-	if (c->x86_vendor != X86_VENDOR_INTEL &&
+-	    c->x86_vendor != X86_VENDOR_AMD &&
+-	    c->x86_vendor != X86_VENDOR_HYGON)
++	if (!boot_cpu_has(X86_FEATURE_MWAIT))
+ 		return -1;
+ 
+ 	cpu_cstate_entry = alloc_percpu(struct cstate_entry);
+-- 
+2.7.4
+
