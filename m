@@ -2,92 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC6A5631E5
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 12:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3158256322C
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 13:06:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235187AbiGAKtb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 06:49:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47742 "EHLO
+        id S230145AbiGALGm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 07:06:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232356AbiGAKta (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 06:49:30 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD607B36C;
-        Fri,  1 Jul 2022 03:49:28 -0700 (PDT)
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LZBg542Ppz68652;
-        Fri,  1 Jul 2022 18:45:21 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 1 Jul 2022 12:49:26 +0200
-Received: from [10.126.173.51] (10.126.173.51) by
- lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 1 Jul 2022 11:49:26 +0100
-Message-ID: <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
-Date:   Fri, 1 Jul 2022 11:49:28 +0100
+        with ESMTP id S229562AbiGALGl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 07:06:41 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1E1F804A2;
+        Fri,  1 Jul 2022 04:06:40 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id p136so3444872ybg.4;
+        Fri, 01 Jul 2022 04:06:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=j6ehmD31s5XqazdmAhzHt8WVaW1urTmfq0xOfL+Tyh4=;
+        b=KQdvj0sRugDXfuSbe2iY7uuQuBuczxfKfTnHZ3Vpr39um8lUz7CjRQgLjPbf7/a3gO
+         Z/BoEa64EXYI1hnY+xmN8LjBUmvAqjW6GDxpXZXFa1DTzXWCQ8n+wgpyRYRNJqfYF7WD
+         g/xvR4mtRG5wzLFSu125FoXw9GoVGCCyPE1CNbKJqjeZ7YdVKYwO21i9AT5+DbBZ7PAI
+         XICMfJJ4IHISVS12UKHtP9/G6HzcSFdssGWVuPZ6bVB+satzjs5HkC0TifbhzyjUMNkD
+         +g83Knjt462Y3amsiKSOmW/HVovVD2jwsstakwDlA1AzviwYuVRZZ1QsUFkIJHH4ltJH
+         1PBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=j6ehmD31s5XqazdmAhzHt8WVaW1urTmfq0xOfL+Tyh4=;
+        b=o4lsHbH2MO5CYWSeskQ3g2xsnw1VvRpdS0erXzB0hpuMf7duDOXN2dehYuAy+G8CdM
+         UEhDL07RIgrpKSUmr+/GWWsJiZ3cxpsUJ8Av433qjYMz14FQb/j4rqocSHk7tptBeAwE
+         EV79akSUX8K0fmPMtB30Tfw3cVz/MAFR2fOvjsX/pCHb67VGFifoOhVrOhTkAxcc+9jc
+         h0KfpR5P30F43S/qC7fuEDsiB+6ukBVHb5gpo9CBBnjeX3JYz1iCER/GTtTHKYdIBb9B
+         f7eZPdE3fLEtMEASrLaThCiHqGKobt49ed6cHqqk0MEG+QTpuBLJDPWA2C07BK+Kmljr
+         V59g==
+X-Gm-Message-State: AJIora/xu/5mH1F0Vc5RP4MYnxuUPhb909CzQRtSizGCD5ZOLSObW/bU
+        GW2rTMMzRL+asDxBI1+nfvKMaA4URFr87QxoHGY=
+X-Google-Smtp-Source: AGRyM1vfqcTy1yFpIwhXaPNZKrnxvSlHFrMyVY82IaofOWaVnzlzIWvcLgN+UBnE9Cw+6p7oOQRFpygiQb/f+n4mouM=
+X-Received: by 2002:a05:6902:c4:b0:64b:4677:331b with SMTP id
+ i4-20020a05690200c400b0064b4677331bmr14561281ybs.93.1656673599985; Fri, 01
+ Jul 2022 04:06:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
+References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
+ <5606189.DvuYhMxLoT@kreacher> <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
+In-Reply-To: <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 1 Jul 2022 13:06:03 +0200
+Message-ID: <CAHp75Ve-Cm43HhqqxxfmKTbC_Gkx=0aAcj0jJmA=-Nr-NT1FqQ@mail.gmail.com>
 Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-CC:     LKML <linux-kernel@vger.kernel.org>,
+To:     John Garry <john.garry@huawei.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <yangyingliang@huawei.com>
-References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
- <5606189.DvuYhMxLoT@kreacher>
-From:   John Garry <john.garry@huawei.com>
-In-Reply-To: <5606189.DvuYhMxLoT@kreacher>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.126.173.51]
-X-ClientProxiedBy: lhreml712-chm.china.huawei.com (10.201.108.63) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Yang Yingliang <yangyingliang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 30/06/2022 19:13, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Subject: [PATCH] hisi_lpc: Use acpi_dev_for_each_child()
-> 
-> Instead of walking the list of children of an ACPI device directly,
-> use acpi_dev_for_each_child() to carry out an action for all of
-> the given ACPI device's children.
-> 
-> This will help to eliminate the children list head from struct
-> acpi_device as it is redundant and it is used in questionable ways
-> in some places (in particular, locking is needed for walking the
-> list pointed to it safely, but it is often missing).
-> 
-> While at it, simplify hisi_lpc_acpi_set_io_res() by making it accept
-> a struct acpi_device pointer from the caller, instead of going to
-> struct device and back to get the same result, and clean up confusion
-> regarding hostdev and its ACPI companion in that function.
-> 
-> Also remove a redundant check from it.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, Jul 1, 2022 at 1:04 PM John Garry <john.garry@huawei.com> wrote:
+> On 30/06/2022 19:13, Rafael J. Wysocki wrote:
 
-This change itself looks fine and I quickly tested, so:
-Reviewed-by: John Garry <john.garry@huawei.com>
+...
 
-However Yang Yingliang spotted a pre-existing bug in the ACPI probe and 
-sent a fix today (coincidence?):
+> However Yang Yingliang spotted a pre-existing bug in the ACPI probe and
+> sent a fix today (coincidence?):
+>
+> https://lore.kernel.org/lkml/20220701094352.2104998-1-yangyingliang@huawei.com/T/#u
+>
+> And they conflict. This code has been this way for years, so I just
+> suggest Yang Yingliang resends the fix on top off Rafael's change.
 
-https://lore.kernel.org/lkml/20220701094352.2104998-1-yangyingliang@huawei.com/T/#u
+Wondering if Yang can actually switch that to use
+platform_device_register_full().
 
-And they conflict. This code has been this way for years, so I just 
-suggest Yang Yingliang resends the fix on top off Rafael's change.
-
-Thanks,
-John
+-- 
+With Best Regards,
+Andy Shevchenko
