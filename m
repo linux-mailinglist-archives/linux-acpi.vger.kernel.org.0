@@ -2,51 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6FF563912
+	by mail.lfdr.de (Postfix) with ESMTP id 4374C563911
 	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 20:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbiGASRF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 14:17:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45076 "EHLO
+        id S230320AbiGASTe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 14:19:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230496AbiGASRE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 14:17:04 -0400
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86D91572E;
-        Fri,  1 Jul 2022 11:17:02 -0700 (PDT)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-317a66d62dfso31368617b3.7;
-        Fri, 01 Jul 2022 11:17:02 -0700 (PDT)
+        with ESMTP id S230241AbiGASTd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 14:19:33 -0400
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D2115706;
+        Fri,  1 Jul 2022 11:19:32 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id x184so5354970ybg.12;
+        Fri, 01 Jul 2022 11:19:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8P1W/M2Ft7EitNG21OG6fNl0ycDFlWrehvj4QKWDQ7E=;
-        b=7KzOeKZEE25UD3KnVLxD/fUoe8aDDC6ovjrXTYCyBOqcrGW242nEgqIdRzdxYIZyao
-         vYQkXCqDY+YUG76TV4qAISrltFJuQdCb8pqU5M50XjA6uMIjBcfbvEg1rHiJFUYxysS5
-         kay3ceMBUjswdPT3VNx7zfawkRgeGrSQes62ZU/F2utz++KMiGjNtr9QesBq6FKu/hUD
-         tSYiuhkUOLoPUBIJoBA4YRwfTE8Xpujy0Vq60J6xuRfICPSqMhfAMnMZxpMbPBYb56O4
-         qKS/yk9JmC8rkUPIt2suR7WOKKhv5WakS/0AgX01oDI4plXES4XeodViWzKB6BXqs4y/
-         nuDQ==
-X-Gm-Message-State: AJIora+IrRpjfa8Uxwt62e1F8r4sqMr6SEIwV6FDKWxfkTFIii8ts1Nv
-        JQ7/9TGt3YETuY+u0EU1v0ZJLipejQk+hOmEgRw=
-X-Google-Smtp-Source: AGRyM1uV4SXroro+TOSvKaalQR95Mjpp8iO4ei0mj/JQ1VCwZ8aVa55ThqR0lIXIQ2eUWc9SMREvu71APW6hYhg4KyY=
-X-Received: by 2002:a81:68d7:0:b0:318:11df:a40d with SMTP id
- d206-20020a8168d7000000b0031811dfa40dmr18234495ywc.196.1656699421800; Fri, 01
- Jul 2022 11:17:01 -0700 (PDT)
+        bh=8kR/eUTqvh3iNFusTLos2UD0LUnTcyRYTp4W2CCxSJE=;
+        b=s3+073z7F52v7p2akPPKHAIhtS8Rhk+We7iDIlnRMu0xZLVovYUijjHhx+zzWsaF8h
+         CeWoBNdipAxwuUeHQSJDqFae4MrEIuWQQA8Y3j4QltPxLn39QhoiGhkkkiy52+UMnA6z
+         eNpSjpBJR+bTVtig/5dMLnOYpulPdG3WqSzRqqEA4K+QMRHFcQ4lwMtbwfGRmc6WncJs
+         Zai369cYTUhCZkEOLF/Qaw4ZdNFuk2Za0/nbiNmg1fPA7TqOok3jIBFIJOWZya6NNSPN
+         SC6pDeN0JYEF0zIlRnJaxbIDFId9TbipQYqQH7vTW3EPTBASLLh2ACnwEuKCXAwFCsxN
+         HNOQ==
+X-Gm-Message-State: AJIora89NDxkEqTfuEL0nXP1aas5vqbgTlT8c/VhfMMxPKDJBb0vU/gm
+        n2qUgXx7kwaVJcetPrPlBUNVbRS/S2xVK9Iamqw=
+X-Google-Smtp-Source: AGRyM1tM2DtxGMR94o7YZ1RzIQTJXRmJ1750je/AQJQoqKm4R8pVE0mv4VSutu4NZHOIlo7hqkAkcL/iuSnz9L91HsU=
+X-Received: by 2002:a25:ae26:0:b0:66d:1fdc:263c with SMTP id
+ a38-20020a25ae26000000b0066d1fdc263cmr17084720ybj.137.1656699571793; Fri, 01
+ Jul 2022 11:19:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
  <5606189.DvuYhMxLoT@kreacher> <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
- <CAHp75Ve-Cm43HhqqxxfmKTbC_Gkx=0aAcj0jJmA=-Nr-NT1FqQ@mail.gmail.com>
- <CAHp75VdT1YZUQbdHupA2RmucUBSzypcPwKBgSa4=sVQAhC+Vsw@mail.gmail.com>
- <61fbd71b-9c36-345c-7aed-561b81c34259@huawei.com> <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
-In-Reply-To: <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
+In-Reply-To: <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 1 Jul 2022 20:16:48 +0200
-Message-ID: <CAJZ5v0hoO6FPLcXf617Y52ePvRAea0JZcqLoqPeVQ4sL8Mib4w@mail.gmail.com>
+Date:   Fri, 1 Jul 2022 20:19:18 +0200
+Message-ID: <CAJZ5v0j9Q1wXOvQbaZRqG4FvWVMwCymMZ4pEKxAu7BXwLof4EA@mail.gmail.com>
 Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     John Garry <john.garry@huawei.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+To:     John Garry <john.garry@huawei.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -63,47 +59,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 1, 2022 at 2:06 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+On Fri, Jul 1, 2022 at 12:49 PM John Garry <john.garry@huawei.com> wrote:
 >
-> On Fri, Jul 1, 2022 at 1:54 PM John Garry <john.garry@huawei.com> wrote:
-> > On 01/07/2022 12:07, Andy Shevchenko wrote:
-> > > On Fri, Jul 1, 2022 at 1:06 PM Andy Shevchenko
-> > > <andy.shevchenko@gmail.com> wrote:
-> > >> On Fri, Jul 1, 2022 at 1:04 PM John Garry <john.garry@huawei.com> wrote:
-> > >>> On 30/06/2022 19:13, Rafael J. Wysocki wrote:
->
-> ...
->
-> > >>> However Yang Yingliang spotted a pre-existing bug in the ACPI probe and
-> > >>> sent a fix today (coincidence?):
-> > >>>
-> > >>> https://lore.kernel.org/lkml/20220701094352.2104998-1-yangyingliang@huawei.com/T/#u
-> > >>>
-> > >>> And they conflict. This code has been this way for years, so I just
-> > >>> suggest Yang Yingliang resends the fix on top off Rafael's change.
-> > >>
-> > >> Wondering if Yang can actually switch that to use
-> > >> platform_device_register_full().
+> On 30/06/2022 19:13, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Subject: [PATCH] hisi_lpc: Use acpi_dev_for_each_child()
 > >
-> > Maybe that would work and simplify things. Let me check it.
+> > Instead of walking the list of children of an ACPI device directly,
+> > use acpi_dev_for_each_child() to carry out an action for all of
+> > the given ACPI device's children.
 > >
-> > BTW, when we originally upstreamed this driver there was some ACPI
-> > platform device registration code which you/we thought could be factored
-> > out later. I can't remember it. I was looking through lore but couldn't
-> > find it. I don't remember it being so important, though.
->
-> My suggestion is definitely not for the fix itself, but as a follow up.
->
-> > > And for the record, I think the Fixes even for very rare bug hits
-> > > should go first.
+> > This will help to eliminate the children list head from struct
+> > acpi_device as it is redundant and it is used in questionable ways
+> > in some places (in particular, locking is needed for walking the
+> > list pointed to it safely, but it is often missing).
 > >
-> > ok, I have to admit that I was going to feel awkward asking Rafael to
-> > deal with this fix by having a v4 on top of it.
+> > While at it, simplify hisi_lpc_acpi_set_io_res() by making it accept
+> > a struct acpi_device pointer from the caller, instead of going to
+> > struct device and back to get the same result, and clean up confusion
+> > regarding hostdev and its ACPI companion in that function.
+> >
+> > Also remove a redundant check from it.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 >
-> I don't think it's a problem as long as we have an immutable branch /
-> tag with that patch. Another approach could be that Rafael can take it
-> as a precursor for his series and route via ACPI tree, but let's hear
-> what he thinks about this himself.
+> This change itself looks fine and I quickly tested, so:
+> Reviewed-by: John Garry <john.garry@huawei.com>
+>
+> However Yang Yingliang spotted a pre-existing bug in the ACPI probe and
+> sent a fix today (coincidence?):
+>
+> https://lore.kernel.org/lkml/20220701094352.2104998-1-yangyingliang@huawei.com/T/#u
+>
+> And they conflict. This code has been this way for years, so I just
+> suggest Yang Yingliang resends the fix on top off Rafael's change.
 
-I can take that fix to my tree and rebase my patch on top of it.
+Well, as I've just said, I can apply both patches just fine.
