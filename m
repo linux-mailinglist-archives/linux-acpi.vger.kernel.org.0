@@ -2,93 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAEA3563831
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 18:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C6FF563912
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 20:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229708AbiGAQnN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 12:43:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37492 "EHLO
+        id S229681AbiGASRF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 14:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbiGAQnN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 12:43:13 -0400
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C841013D43
-        for <linux-acpi@vger.kernel.org>; Fri,  1 Jul 2022 09:43:10 -0700 (PDT)
-Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4LZLb26StgzTwLq;
-        Sat,  2 Jul 2022 00:42:22 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 2 Jul 2022 00:43:05 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2375.024; Fri, 1 Jul 2022 17:43:04 +0100
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     Robin Murphy <robin.murphy@arm.com>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "will@kernel.org" <will@kernel.org>
-CC:     "jon@solid-run.com" <jon@solid-run.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        "hch@infradead.org" <hch@infradead.org>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-        Steven Price <steven.price@arm.com>,
-        "lorenzo.pieralisi@gmail.com" <lorenzo.pieralisi@gmail.com>
-Subject: RE: [PATCH v13 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Topic: [PATCH v13 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Index: AQHYgKBK6ZkZvzZxLEqm8BkaLnkVo61TfSMAgAs//6CABHLxAIABViUAgAVKlWA=
-Date:   Fri, 1 Jul 2022 16:43:03 +0000
-Message-ID: <9bcec024bba444caa0f60d37afd88b6b@huawei.com>
-References: <20220615101044.1972-1-shameerali.kolothum.thodi@huawei.com>
- <03b03d88-87cd-0b29-863b-2cb2a9a117d1@arm.com>
- <44338c87254d4d439d29694de8f19435@huawei.com>
- <ff579ecb-9a37-09ef-a975-cf1e25ab731e@arm.com> 
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.169.16]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S230496AbiGASRE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 14:17:04 -0400
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86D91572E;
+        Fri,  1 Jul 2022 11:17:02 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-317a66d62dfso31368617b3.7;
+        Fri, 01 Jul 2022 11:17:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8P1W/M2Ft7EitNG21OG6fNl0ycDFlWrehvj4QKWDQ7E=;
+        b=7KzOeKZEE25UD3KnVLxD/fUoe8aDDC6ovjrXTYCyBOqcrGW242nEgqIdRzdxYIZyao
+         vYQkXCqDY+YUG76TV4qAISrltFJuQdCb8pqU5M50XjA6uMIjBcfbvEg1rHiJFUYxysS5
+         kay3ceMBUjswdPT3VNx7zfawkRgeGrSQes62ZU/F2utz++KMiGjNtr9QesBq6FKu/hUD
+         tSYiuhkUOLoPUBIJoBA4YRwfTE8Xpujy0Vq60J6xuRfICPSqMhfAMnMZxpMbPBYb56O4
+         qKS/yk9JmC8rkUPIt2suR7WOKKhv5WakS/0AgX01oDI4plXES4XeodViWzKB6BXqs4y/
+         nuDQ==
+X-Gm-Message-State: AJIora+IrRpjfa8Uxwt62e1F8r4sqMr6SEIwV6FDKWxfkTFIii8ts1Nv
+        JQ7/9TGt3YETuY+u0EU1v0ZJLipejQk+hOmEgRw=
+X-Google-Smtp-Source: AGRyM1uV4SXroro+TOSvKaalQR95Mjpp8iO4ei0mj/JQ1VCwZ8aVa55ThqR0lIXIQ2eUWc9SMREvu71APW6hYhg4KyY=
+X-Received: by 2002:a81:68d7:0:b0:318:11df:a40d with SMTP id
+ d206-20020a8168d7000000b0031811dfa40dmr18234495ywc.196.1656699421800; Fri, 01
+ Jul 2022 11:17:01 -0700 (PDT)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
+ <5606189.DvuYhMxLoT@kreacher> <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
+ <CAHp75Ve-Cm43HhqqxxfmKTbC_Gkx=0aAcj0jJmA=-Nr-NT1FqQ@mail.gmail.com>
+ <CAHp75VdT1YZUQbdHupA2RmucUBSzypcPwKBgSa4=sVQAhC+Vsw@mail.gmail.com>
+ <61fbd71b-9c36-345c-7aed-561b81c34259@huawei.com> <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
+In-Reply-To: <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 1 Jul 2022 20:16:48 +0200
+Message-ID: <CAJZ5v0hoO6FPLcXf617Y52ePvRAea0JZcqLoqPeVQ4sL8Mib4w@mail.gmail.com>
+Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     John Garry <john.garry@huawei.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yang Yingliang <yangyingliang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2hhbWVlcmFsaSBLb2xv
-dGh1bSBUaG9kaQ0KPiBTZW50OiAyOCBKdW5lIDIwMjIgMDk6MDANCj4gVG86ICdSb2JpbiBNdXJw
-aHknIDxyb2Jpbi5tdXJwaHlAYXJtLmNvbT47IGpvcm9AOGJ5dGVzLm9yZzsNCj4gbGludXgtYXJt
-LWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsN
-Cj4gaW9tbXVAbGlzdHMubGludXgtZm91bmRhdGlvbi5vcmcNCj4gQ2M6IGpvbkBzb2xpZC1ydW4u
-Y29tOyBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNvbT47DQo+IGhjaEBpbmZyYWRlYWQub3Jn
-OyBHdW9oYW5qdW4gKEhhbmp1biBHdW8pIDxndW9oYW5qdW5AaHVhd2VpLmNvbT47DQo+IFNhbWku
-TXVqYXdhckBhcm0uY29tOyB3aWxsQGtlcm5lbC5vcmc7IHdhbmdodWlxaWFuZw0KPiA8d2FuZ2h1
-aXFpYW5nQGh1YXdlaS5jb20+OyBscGllcmFsaXNpQGtlcm5lbC5vcmc7IFN0ZXZlbiBQcmljZQ0K
-PiA8c3RldmVuLnByaWNlQGFybS5jb20+OyBsb3JlbnpvLnBpZXJhbGlzaUBnbWFpbC5jb20NCj4g
-U3ViamVjdDogUkU6IFtQQVRDSCB2MTMgMC85XSBBQ1BJL0lPUlQ6IFN1cHBvcnQgZm9yIElPUlQg
-Uk1SIG5vZGUNCj4gPiA+IEhpIFdpbGwvUm9iaW4sDQo+ID4gPg0KPiA+ID4gQXBwcmVjaWF0ZSwg
-aWYgeW91IGNvdWxkIHBsZWFzZSB0YWtlIGEgbG9vayBhdCB0aGUgcmVtYWluaW5nIFNNTVUNCj4g
-PiA+IHJlbGF0ZWQNCj4gPiA+IHBhdGNoZXMoNy05KSBhbmQgcHJvdmlkZSB5b3VyIGFwcHJvdmFs
-Pw0KPiA+DQo+ID4gSSBzYWlkIHYxMiBsb29rZWQgZmluZSwgYnV0IGZvciB0aGUgYXZvaWRhbmNl
-IG9mIGRvdWJ0LCBoZXJlIGl0IGlzDQo+ID4gYWdhaW4sIGFzIGZvcm1hbGx5IGFzIGNhbiBiZToN
-Cj4gPg0KPiA+IEFja2VkLWJ5OiBSb2JpbiBNdXJwaHkgPHJvYmluLm11cnBoeUBhcm0uY29tPg0K
-PiANCj4gVGhhbmtzIFJvYmluLg0KPiANCj4gSGkgSm9lcmcsDQo+IA0KPiBOb3cgdGhhdCB3ZSBo
-YXZlIGFsbCB0aGUgcmVxdWlyZWQgYWNrcywgY291bGQgeW91IHBsZWFzZSBwaWNrIHRoaXMgc2Vy
-aWVzIHZpYQ0KPiBJT01NVSB0cmVlPw0KDQpIaSBXaWxsLA0KDQpTaW5jZSBKb2VyZyBoYXNuJ3Qg
-cmVwbGllZCB5ZXQsIGp1c3Qgd29uZGVyaW5nIGNvdWxkIHlvdSBwbGVhc2UgdGFrZSBpdCB0aHJv
-dWdoIEFSTQ0KU01NVSB0cmVlIGlmIHRoYXQgbWFrZXMgc2Vuc2U/IERvbid0IHdhbnQgdG8gbWlz
-cyB0aGUgNS4yMCBtZXJnZSB3aW5kb3cgZm9yIHRoaXMNCnNlcmllcy4NCg0KVGhhbmtzLA0KU2hh
-bWVlcg0KDQoNCg==
+On Fri, Jul 1, 2022 at 2:06 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Fri, Jul 1, 2022 at 1:54 PM John Garry <john.garry@huawei.com> wrote:
+> > On 01/07/2022 12:07, Andy Shevchenko wrote:
+> > > On Fri, Jul 1, 2022 at 1:06 PM Andy Shevchenko
+> > > <andy.shevchenko@gmail.com> wrote:
+> > >> On Fri, Jul 1, 2022 at 1:04 PM John Garry <john.garry@huawei.com> wrote:
+> > >>> On 30/06/2022 19:13, Rafael J. Wysocki wrote:
+>
+> ...
+>
+> > >>> However Yang Yingliang spotted a pre-existing bug in the ACPI probe and
+> > >>> sent a fix today (coincidence?):
+> > >>>
+> > >>> https://lore.kernel.org/lkml/20220701094352.2104998-1-yangyingliang@huawei.com/T/#u
+> > >>>
+> > >>> And they conflict. This code has been this way for years, so I just
+> > >>> suggest Yang Yingliang resends the fix on top off Rafael's change.
+> > >>
+> > >> Wondering if Yang can actually switch that to use
+> > >> platform_device_register_full().
+> >
+> > Maybe that would work and simplify things. Let me check it.
+> >
+> > BTW, when we originally upstreamed this driver there was some ACPI
+> > platform device registration code which you/we thought could be factored
+> > out later. I can't remember it. I was looking through lore but couldn't
+> > find it. I don't remember it being so important, though.
+>
+> My suggestion is definitely not for the fix itself, but as a follow up.
+>
+> > > And for the record, I think the Fixes even for very rare bug hits
+> > > should go first.
+> >
+> > ok, I have to admit that I was going to feel awkward asking Rafael to
+> > deal with this fix by having a v4 on top of it.
+>
+> I don't think it's a problem as long as we have an immutable branch /
+> tag with that patch. Another approach could be that Rafael can take it
+> as a precursor for his series and route via ACPI tree, but let's hear
+> what he thinks about this himself.
+
+I can take that fix to my tree and rebase my patch on top of it.
