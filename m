@@ -2,78 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B99C562E5C
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 10:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77BB65630A6
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 11:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232365AbiGAIfB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 04:35:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
+        id S236246AbiGAJt1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 05:49:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232328AbiGAIfB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 04:35:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD89BCB6;
-        Fri,  1 Jul 2022 01:35:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 938E362066;
-        Fri,  1 Jul 2022 08:34:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94419C341C6;
-        Fri,  1 Jul 2022 08:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1656664499;
-        bh=LLt8c3rqeMX8qdkQ+TsxWoZE+pxIfMpkrg04XFEYbNw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tkKNsshm94FxoLTk9gePIVNMSUAleKhLFWAoVFOOxCxlufu9pWf1IcWA85gsP29eZ
-         IJ5TO3fo5f/k97Ctnwv4TN07QtBbJriVQZOHaOFX+ra20ykAbBVZd0YnrWySrBdOVZ
-         nW0mqGovklNz0csbZFQJpZZ+KggttA0+DmFbKT20=
-Date:   Fri, 1 Jul 2022 10:34:56 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        John Garry <john.garry@huawei.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
-Message-ID: <Yr6xsKbZSMWywUKo@kroah.com>
-References: <12026357.O9o76ZdvQC@kreacher>
- <2657553.mvXUDI8C0e@kreacher>
- <5606189.DvuYhMxLoT@kreacher>
+        with ESMTP id S233732AbiGAJt0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 05:49:26 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181D97694B
+        for <linux-acpi@vger.kernel.org>; Fri,  1 Jul 2022 02:49:24 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-101d96fe0a5so2862266fac.2
+        for <linux-acpi@vger.kernel.org>; Fri, 01 Jul 2022 02:49:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DMyolhHXpmu1+9rKonQ8Ub5Er3bhcnEayHaPyRlkSA4=;
+        b=GBrFvYFYOVBzzpmDHs3IrrfJPWTh6RCiSsJBTWQSl2QmDgws/O5CzbbvaoYo7P/SJf
+         cyhOGlDu6Sy/aJd1T9ENNALBTKHhubukyjTytEz5ksj1SfTpIDkxMeNNkK0i66J2J7aD
+         T22Pj2T34mGGznldlkSe4GcLvzDzzbDCAUo7xC7XmHsgEQxx4Prha3Uyr4yPd9WzTZBj
+         US+cZB51ElKLZPX1ckN42uJz3Y2Q8FOvCJ/Eq7TyFFGPJ6Pi6rl84Q2WgBKtR3UVOJtR
+         jt03u3XwJDf3PfURRZlrovDUFv44xp0ZXH7T7lRQEM3b4E/TBU4sOFbPamIb3L9f9yf1
+         kSlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DMyolhHXpmu1+9rKonQ8Ub5Er3bhcnEayHaPyRlkSA4=;
+        b=S2mqS9s3tP2NehZU7PxuhDrmPxI7nTbs+ABb/yWygn3/IdisXVEsCkrtWF1uoFhl48
+         NRESRa+erbJXvR4+1mkiapXyuQc7z95DYK4N7tqUybG0Bd3d+5RDkWi4qxhQzNDAOHAR
+         6l+tGT7yTCQV/yDFd+j3/yyZxI4LT/QeLKylT9bAZ0JKxDe+CBGDb/iRtu+/irp31F40
+         QLJ06bJ1K9tDMwglkDqKrhIdkYtgkVickypNbYf6I812YCkeDHx7O06w9OMyFwOtVfYd
+         uH1ZCSTXpDkrhJoeev7hSxGNrpw2vh2t1o4yyB4KyjoQnLw43WH3cAmA11isy/1SluKt
+         c5ww==
+X-Gm-Message-State: AJIora+42Hh4Q/UsSFX0bjjja7ngL2/1ch0PrfNvEPOp6kl+aR4dec8C
+        19B4vs6tqauNc/enMT9ZtZ+W7U15CXZ6stZUkUM=
+X-Google-Smtp-Source: AGRyM1vUEnxfVBXnLthcFdYPBiJex2ydqSUkRs3JBYl50JOjTOlBaOXlFT8Lm5+/LueeNt5C1Zsv3fMm8ZXYb+a7VHM=
+X-Received: by 2002:a05:6870:8195:b0:101:9342:bf1a with SMTP id
+ k21-20020a056870819500b001019342bf1amr7805666oae.149.1656668963662; Fri, 01
+ Jul 2022 02:49:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5606189.DvuYhMxLoT@kreacher>
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6839:f85:0:0:0:0 with HTTP; Fri, 1 Jul 2022 02:49:23
+ -0700 (PDT)
+Reply-To: fredrich.david.mail@gmail.com
+From:   Mr Fredrich David <randywoods212@gmail.com>
+Date:   Fri, 1 Jul 2022 09:49:23 +0000
+Message-ID: <CAAAmqEZoJXvR7bNFTw7wgM9EcEBmT+Vx+5RsO3evURK6PFAN0Q@mail.gmail.com>
+Subject: dcv3
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 30, 2022 at 08:13:52PM +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Subject: [PATCH] hisi_lpc: Use acpi_dev_for_each_child()
-> 
-> Instead of walking the list of children of an ACPI device directly,
-> use acpi_dev_for_each_child() to carry out an action for all of
-> the given ACPI device's children.
-> 
-> This will help to eliminate the children list head from struct
-> acpi_device as it is redundant and it is used in questionable ways
-> in some places (in particular, locking is needed for walking the
-> list pointed to it safely, but it is often missing).
-> 
-> While at it, simplify hisi_lpc_acpi_set_io_res() by making it accept
-> a struct acpi_device pointer from the caller, instead of going to
-> struct device and back to get the same result, and clean up confusion
-> regarding hostdev and its ACPI companion in that function.
-> 
-> Also remove a redundant check from it.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+-In risposta alle tue email, ti scrivo per informarti che i progetti
+sono ora completati e sei stato approvato!
+Cordiali saluti,
+Signor Fredrich David
