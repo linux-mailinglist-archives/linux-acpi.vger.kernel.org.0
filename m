@@ -2,60 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DE76562C3E
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 09:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B99C562E5C
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 10:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234878AbiGAHIe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 03:08:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37804 "EHLO
+        id S232365AbiGAIfB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 04:35:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234233AbiGAHIe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 03:08:34 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C505925D;
-        Fri,  1 Jul 2022 00:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656659313; x=1688195313;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=nLn52SaONzTXc6MbfYX59QX4Sfouo33PB/v/ZM2xpPc=;
-  b=m3zoRpqvi/ITeg11bF9mzU7BSM3vDPBjnivqKYfUADQY+6DQZY5g4kkY
-   RFb0YJd+71dkdREfTSWxWUDTLd086MkUkA297W4frbHHjoj6vAtOj/ZiQ
-   5b+/4orgLTPb0Z3Hi5HS+FG02y1JIyk+k7nWyOM7vrZbrgD1TRe3D01qr
-   XaeJCyJ3fJXHJZkFpHV3gS3Inaq6oNvU4v5emgkVts5zUxJ7lWUu1Jd3h
-   PiQWKudMRuhRf/SMQa4ZFE3qnHJe5pM4NELLN0Eq8DFPixClpappUqY2k
-   cyL6UZ4nFWwcnwcDT4zi1r554KFCWEhufPmByq+5LHkp1xatNSfEHgv/P
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10394"; a="262372831"
-X-IronPort-AV: E=Sophos;i="5.92,236,1650956400"; 
-   d="scan'208";a="262372831"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2022 00:08:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,236,1650956400"; 
-   d="scan'208";a="596139219"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 01 Jul 2022 00:08:31 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o7AlS-000Dfa-Lf;
-        Fri, 01 Jul 2022 07:08:30 +0000
-Date:   Fri, 01 Jul 2022 15:08:20 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S232328AbiGAIfB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 04:35:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD89BCB6;
+        Fri,  1 Jul 2022 01:35:00 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 938E362066;
+        Fri,  1 Jul 2022 08:34:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94419C341C6;
+        Fri,  1 Jul 2022 08:34:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1656664499;
+        bh=LLt8c3rqeMX8qdkQ+TsxWoZE+pxIfMpkrg04XFEYbNw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tkKNsshm94FxoLTk9gePIVNMSUAleKhLFWAoVFOOxCxlufu9pWf1IcWA85gsP29eZ
+         IJ5TO3fo5f/k97Ctnwv4TN07QtBbJriVQZOHaOFX+ra20ykAbBVZd0YnrWySrBdOVZ
+         nW0mqGovklNz0csbZFQJpZZ+KggttA0+DmFbKT20=
+Date:   Fri, 1 Jul 2022 10:34:56 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- a4101f533f37bc2cd966ad7dbe379b90f134be30
-Message-ID: <62be9d64.KK0eWxdHJzWPw1EY%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        John Garry <john.garry@huawei.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
+Message-ID: <Yr6xsKbZSMWywUKo@kroah.com>
+References: <12026357.O9o76ZdvQC@kreacher>
+ <2657553.mvXUDI8C0e@kreacher>
+ <5606189.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Disposition: inline
+In-Reply-To: <5606189.DvuYhMxLoT@kreacher>
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,73 +54,26 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: a4101f533f37bc2cd966ad7dbe379b90f134be30  Merge branch 'acpi-bus' into bleeding-edge
+On Thu, Jun 30, 2022 at 08:13:52PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Subject: [PATCH] hisi_lpc: Use acpi_dev_for_each_child()
+> 
+> Instead of walking the list of children of an ACPI device directly,
+> use acpi_dev_for_each_child() to carry out an action for all of
+> the given ACPI device's children.
+> 
+> This will help to eliminate the children list head from struct
+> acpi_device as it is redundant and it is used in questionable ways
+> in some places (in particular, locking is needed for walking the
+> list pointed to it safely, but it is often missing).
+> 
+> While at it, simplify hisi_lpc_acpi_set_io_res() by making it accept
+> a struct acpi_device pointer from the caller, instead of going to
+> struct device and back to get the same result, and clean up confusion
+> regarding hostdev and its ACPI companion in that function.
+> 
+> Also remove a redundant check from it.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-elapsed time: 724m
-
-configs tested: 52
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-ia64                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                                defconfig
-i386                             allyesconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                  randconfig-r043-20220629
-riscv                randconfig-r042-20220629
-s390                 randconfig-r044-20220629
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-
-clang tested configs:
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a012
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220629
-hexagon              randconfig-r041-20220629
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
