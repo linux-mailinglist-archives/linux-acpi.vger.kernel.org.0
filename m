@@ -2,37 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A089563755
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 18:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45CE6563793
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Jul 2022 18:17:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231483AbiGAQDo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Jul 2022 12:03:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55342 "EHLO
+        id S231139AbiGAQQ6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Jul 2022 12:16:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231442AbiGAQDk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 12:03:40 -0400
+        with ESMTP id S230483AbiGAQQ6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Jul 2022 12:16:58 -0400
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 88C241F2DF;
-        Fri,  1 Jul 2022 09:03:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 74D503E0D2;
+        Fri,  1 Jul 2022 09:16:57 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98867143D;
-        Fri,  1 Jul 2022 09:03:39 -0700 (PDT)
-Received: from pierre123.arm.com (unknown [10.57.40.143])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 61C8F3F66F;
-        Fri,  1 Jul 2022 09:03:37 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 82D12113E;
+        Fri,  1 Jul 2022 09:16:57 -0700 (PDT)
+Received: from pierre123.home (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9577C3F66F;
+        Fri,  1 Jul 2022 09:16:55 -0700 (PDT)
 From:   Pierre Gondois <pierre.gondois@arm.com>
-To:     linux-eng@arm.com
-Cc:     Pierre Gondois <Pierre.Gondois@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+To:     linux-kernel@vger.kernel.org
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] ACPI/PCI: Make _PRS optional for link device
-Date:   Fri,  1 Jul 2022 18:03:08 +0200
-Message-Id: <20220701160309.2842180-2-pierre.gondois@arm.com>
+        linux-acpi@vger.kernel.org
+Subject: [PATCH RESEND v1 0/2] Make _PRS and _SRS methods optional
+Date:   Fri,  1 Jul 2022 18:16:22 +0200
+Message-Id: <20220701161624.2844305-1-pierre.gondois@arm.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220701160309.2842180-1-pierre.gondois@arm.com>
-References: <20220701160309.2842180-1-pierre.gondois@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
@@ -44,91 +41,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Pierre Gondois <Pierre.Gondois@arm.com>
+The PCI legacy interrupts can be described with link devices,
+cf ACPI 6.4, s6.2.13 "_PRT (PCI Routing Table)".
+Link devices can have optional _SRS/_PRS methods to set the interrupt.
 
-In ACPI 6.4, s6.2.13 "_PRT (PCI Routing Table)", PCI legacy
-interrupts can be described though a link device (first model).
-From s6.2.12 "_PRS (Possible Resource Settings)":
-"This optional object evaluates [...]"
+In PCI Firmware Specification Revision 3.3, s4.3.2.1. "Resource Setting":
+"""
+A non-configurable device only specifies _CRS. However, if they are
+configurable, devices include _PRS to indicate the possible resource
+setting and _SRS to allow OSPM to specify a new resource allocation
+for the device.
+"""
 
-It is currently checked that the interrupt advertised in _CRS
-is one of the interrupts available in _PRS.
-Make this check conditional to the presence of _PRS.
+However, _PRS/_SRS methods are checked in drivers/acpi/pci_link.c,
+and the driver aborts if they are absent.
+E.g.: When _PRS is missing:
+ACPI: \_SB_.PCI0.LNKA: _CRS 36 not found in _PRS
+ACPI: \_SB_.PCI0.LNKA: No IRQ available. Try pci=noacpi or acpi=off
 
 Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215560
-Signed-off-by: Pierre Gondois <Pierre.Gondois@arm.com>
----
- drivers/acpi/pci_link.c | 39 +++++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-index 129e3e7e80ee..b5a41866f135 100644
---- a/drivers/acpi/pci_link.c
-+++ b/drivers/acpi/pci_link.c
-@@ -532,19 +532,10 @@ int __init acpi_irq_penalty_init(void)
- 
- static int acpi_irq_balance = -1;	/* 0: static, 1: balance */
- 
--static int acpi_pci_link_allocate(struct acpi_pci_link *link)
-+static int select_from_possible(struct acpi_pci_link *link)
- {
--	acpi_handle handle = link->device->handle;
--	int irq;
- 	int i;
- 
--	if (link->irq.initialized) {
--		if (link->refcnt == 0)
--			/* This means the link is disabled but initialized */
--			acpi_pci_link_set(link, link->irq.active);
--		return 0;
--	}
--
- 	/*
- 	 * search for active IRQ in list of possible IRQs.
- 	 */
-@@ -557,8 +548,9 @@ static int acpi_pci_link_allocate(struct acpi_pci_link *link)
- 	 */
- 	if (i == link->irq.possible_count) {
- 		if (acpi_strict)
--			acpi_handle_warn(handle, "_CRS %d not found in _PRS\n",
--					 link->irq.active);
-+			acpi_handle_warn(link->device->handle,
-+					"_CRS %d not found in _PRS\n",
-+					link->irq.active);
- 		link->irq.active = 0;
- 	}
- 
-@@ -566,9 +558,28 @@ static int acpi_pci_link_allocate(struct acpi_pci_link *link)
- 	 * if active found, use it; else pick entry from end of possible list.
- 	 */
- 	if (link->irq.active)
--		irq = link->irq.active;
-+		return link->irq.active;
-+	else
-+		return link->irq.possible[link->irq.possible_count - 1];
-+}
-+
-+static int acpi_pci_link_allocate(struct acpi_pci_link *link)
-+{
-+	acpi_handle handle = link->device->handle;
-+	int irq;
-+	int i;
-+
-+	if (link->irq.initialized) {
-+		if (link->refcnt == 0)
-+			/* This means the link is disabled but initialized */
-+			acpi_pci_link_set(link, link->irq.active);
-+		return 0;
-+	}
-+
-+	if (link->irq.possible_count)
-+		irq = select_from_possible(link);
- 	else
--		irq = link->irq.possible[link->irq.possible_count - 1];
-+		irq = link->irq.active;
- 
- 	if (acpi_irq_balance || !link->irq.active) {
- 		/*
+Pierre Gondois (2):
+  ACPI/PCI: Make _SRS optional for link device
+  ACPI/PCI: Make _PRS optional for link device
+
+ drivers/acpi/pci_link.c | 46 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
+
 -- 
 2.25.1
 
