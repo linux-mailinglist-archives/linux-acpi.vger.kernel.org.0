@@ -2,89 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5DD3565DE6
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Jul 2022 21:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD1E4565DF6
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Jul 2022 21:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231733AbiGDTRC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Jul 2022 15:17:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35236 "EHLO
+        id S231365AbiGDT02 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Jul 2022 15:26:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230454AbiGDTRA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Jul 2022 15:17:00 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B0C96351;
-        Mon,  4 Jul 2022 12:16:59 -0700 (PDT)
+        with ESMTP id S230007AbiGDT02 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Jul 2022 15:26:28 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2401958B;
+        Mon,  4 Jul 2022 12:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656962219; x=1688498219;
+  t=1656962786; x=1688498786;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=cfR/lMwjXMQvAQVDIBh45jPUNzL3PPKWxvCOD+XM0Do=;
-  b=iyEMtso+U4gtSI0OalN2i7y7Mj5P91GE5iCyy1B5qCb/SG3uAHa+KU7B
-   E6/Iik3vKeyDYYUJxkxfYY1ooWmAdHYB28MZD4SrNor5UHL+Y0t0RvVFN
-   yPSIRmq744nyyE+r62j5IMUXny92b+od3cug/B8EBR6ss50Y2yg0c5Qig
-   vxW5E3Q3RzggtIrGdQQ7lSWlgTWS2wVUvtApvguu08kbaREVx52JNYosf
-   Es/4xjKXBdiYptZ7CFdBeoV2nhs1AkXtXwzLP7tSVMpZHx6Xqghp3GvjX
-   E3JZ4oZ6f1rFVtZGYW/ONCmQktJP/gub5LV7J9P9g+i1PkBsXgzRgahTJ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10398"; a="263609302"
+  bh=TPDphj8TfmcM9VKTxqqa+ytMkY+reRi7GaH45JOjRn4=;
+  b=BWZsCctO1efIC9wRM8F+5DVBOUvaaRRWo6WK6hIY6iyeAQKOFFc72qta
+   DvNKJ2FTS5Ye2Ibx6RHWkfY6YoO5ECcMEaolv81lSNhOYKHfMsGM1WTeX
+   9wqWMiUeE84EBaATDbS0qWl45ACTA/zhOX7DupcZvdapHHwJZ+IEBI3rV
+   ubjszfLZSiTTzCXIf6O+rG6734bPiBC4rRYgL12U1P5d0XleHh3Pg4nyO
+   OhPLTFI2d7ifT+Dv19ySfmiWeLxbrWFawba+aETQDjdccCypDE3TaLR5O
+   FeGxXXwy6EahxdjpDVMVOL3XdUjYK4t5T5YAIbTFCoSp4LSo1ds0ywvSL
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10398"; a="280741587"
 X-IronPort-AV: E=Sophos;i="5.92,243,1650956400"; 
-   d="scan'208";a="263609302"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 12:16:58 -0700
+   d="scan'208";a="280741587"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 12:26:26 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.92,243,1650956400"; 
-   d="scan'208";a="649734301"
-Received: from orsmsx605.amr.corp.intel.com ([10.22.229.18])
-  by fmsmga008.fm.intel.com with ESMTP; 04 Jul 2022 12:16:58 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX605.amr.corp.intel.com (10.22.229.18) with Microsoft SMTP Server
+   d="scan'208";a="619405431"
+Received: from fmsmsx605.amr.corp.intel.com ([10.18.126.85])
+  by orsmga008.jf.intel.com with ESMTP; 04 Jul 2022 12:26:25 -0700
+Received: from fmsmsx605.amr.corp.intel.com (10.18.126.85) by
+ fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 4 Jul 2022 12:16:58 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.1.2308.27; Mon, 4 Jul 2022 12:26:25 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27 via Frontend Transport; Mon, 4 Jul 2022 12:16:58 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ 15.1.2308.27 via Frontend Transport; Mon, 4 Jul 2022 12:26:25 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.173)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2308.27; Mon, 4 Jul 2022 12:16:57 -0700
+ 15.1.2308.27; Mon, 4 Jul 2022 12:26:25 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FmLk721ih6gk4UXRhuX9ELxPfX2Q1s6jDPvwayyiT8zL3nFz+FvAFxiQ+r1J4ryryAdQRmaTgjJN4+kEvLW6u6D4icj5c2lYn4q+1JuzfTl3BvJjsdBK6EnNhjHWD5qrNOiJ52ZkZACOxDzh2lnnSGkEd5LqsoY9Jis/WJA1ayTNYT+rUuqkpk8ryRvZBcVgez+CDxY8EFkCnpO8DZIyhVid8k4nb4U6m9iBpsUea4Ya7GNK/Rhk3kq39wpKhf+9aOwTADt9AKQJAKR5j9Y1ZxggmewxgCB7Qltf+yNW0GHlbT+V6vMBwav6YsgSJHDD+BENYdq0EGuTCTMZtBTbKA==
+ b=GA75IsqNYq/VXtTuP2Ouqrh9gAd++0Qzyym92pdFk0uj1vBm7hpqESTk544+ZfLp9LAXkR48AsTaC0kxTXrPiUn5rMlk8GXy9Imkwa51aqAEgCOK6QYPRwzLAve50rxi7JF1w9mEALkZlQwbe3cip5C87H0gqbrgqhYDvHEOr7pOraaU8C+fbWUDYSYXkSovUMgYCZSf3xMIi2LQixVASiy9MkEGdI2nVvT7T9NYz0IzoD+mRowxl04I3OKLGt9u8qXkdPV2hzXa/54+wK9WFjhIotoBpmBodN3/QskRNsr4OfDanO9XgUR2QkOxK9Do14vGgy40mfejjmnJQK651w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DvYlkuRyfrpUHKIUy+vmMM3Wpr5G5Wr81W8VHlCVijs=;
- b=bDyw4NBW7FDY64E3bbCYhdsjWWAXZj67B/q7+VuipOlNyVHtNsJcsR7Ke9IbPazu1bzoSvfQFvNdA0JcE/vAxmeJsqlWhruO21sP6pwRPXq8B/24YyV4glHSIj66NAswXrvjrYW9Yu/nc1snImYiA89fUlsFVVnapv/PS6f28c6uAm7E6VxWp2T7eRsjSIp6FW/Jr7uNig0vb1OH19j74Jnvk9nEY1731uS4ZQ+D64OKoLGrLCfCSef5Jnc7D3Wo6tFplk8dLXajCz679zzuOajXIN9hFksXePilXQlavyWkzYJG7Z5zBKAg47l1C0TxofK0nTmjA8pLX4wTz+7EFA==
+ bh=slvXgEnGqG2Z4z80/vj+5kpRonoKd4jloyDtn+6taPI=;
+ b=K4Wkzmwe7eD/hVA9BRCVCUfBtL7NoxlJR1gK83o/6zps/Prvq/hwE9DMcgNhuFs+mnFAzkfgMF2i64Nl5lzcoBK4YXFBbF6pFgg8LQ9WESx4d3xQ3mgKw3kd++A/X4584TxcDrzSco/DUDqLKMW78MoP/kk8pO9PfKODDUnx/iGgSKrHInxgW8vDAycu8s76R86ry3EEIU4UzqLQyn5r1E6Z1ajR30z+j6G93lDOlAysAukZJj8d3CIQTEF8HcpFWAyhtg/W+/bSXPGAfnkWydso6YaInRoVaWjP72BpmhKobeZ6o9Q2R8kzoSLinU8ppsSic0dQ5HgWxWfRst5Pzg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from MW5PR11MB5810.namprd11.prod.outlook.com (2603:10b6:303:192::22)
- by DM6PR11MB3004.namprd11.prod.outlook.com (2603:10b6:5:67::17) with
+ by DM6PR11MB3451.namprd11.prod.outlook.com (2603:10b6:5:5b::31) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5373.18; Mon, 4 Jul
- 2022 19:16:56 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5395.15; Mon, 4 Jul
+ 2022 19:26:23 +0000
 Received: from MW5PR11MB5810.namprd11.prod.outlook.com
  ([fe80::71c3:7185:c877:74e]) by MW5PR11MB5810.namprd11.prod.outlook.com
  ([fe80::71c3:7185:c877:74e%7]) with mapi id 15.20.5395.020; Mon, 4 Jul 2022
- 19:16:56 +0000
-Message-ID: <453e4f5e-fd04-5aa4-3e2f-f9296e11abab@intel.com>
-Date:   Mon, 4 Jul 2022 21:16:49 +0200
+ 19:26:23 +0000
+Message-ID: <3110c8d7-87ab-13e7-cea2-dcac25f2be70@intel.com>
+Date:   Mon, 4 Jul 2022 21:26:18 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Firefox/91.0 Thunderbird/91.11.0
-Subject: Re: [PATCH] ACPICA: Use swap() instead of open coding it
+Subject: Re: [PATCH] ACPI: acpica: acmacros: fixed linter issues
 Content-Language: en-US
-To:     Tan Zhongjun <tanzhongjun@coolpad.com>, <robert.moore@intel.com>,
-        <lenb@kernel.org>
+To:     Javier Abrego <javier.abrego.lorente@gmail.com>,
+        <robert.moore@intel.com>, <lenb@kernel.org>
 CC:     <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
         <linux-kernel@vger.kernel.org>
-References: <20220704140614.39763-1-tanzhongjun@coolpad.com>
+References: <20220703003014.52949-1-javier.abrego.lorente@gmail.com>
 From:   "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 Organization: Intel Technology Poland Sp. z o. o., KRS 101882, ul. Slowackiego
  173, 80-298 Gdansk
-In-Reply-To: <20220704140614.39763-1-tanzhongjun@coolpad.com>
+In-Reply-To: <20220703003014.52949-1-javier.abrego.lorente@gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: BE1P281CA0052.DEUP281.PROD.OUTLOOK.COM
@@ -92,65 +92,65 @@ X-ClientProxiedBy: BE1P281CA0052.DEUP281.PROD.OUTLOOK.COM
  (2603:10b6:303:192::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1b44755b-7695-415a-d177-08da5df1c277
-X-MS-TrafficTypeDiagnostic: DM6PR11MB3004:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54f4aa83-d25a-440c-91a6-08da5df314c6
+X-MS-TrafficTypeDiagnostic: DM6PR11MB3451:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DasU7bGN+K6h6hsFk0LcNEJJt4XiFMTG3CfA8R5Lb1qO5LDZx6aoqdf2pMcpfCa1oszYpphoSwLNCu7php0ATBLJy5SFpbAAT/BcOc9tVbAtOtxxLBt+TLe/0QnLJcCl83fYVI7y4UEJajQX2VwyA9dL42lFfOvkfQ+/jFOL6CmR9/pS0o0mb/LDcv0JF7eahJlgqUE3fjCTzNP7pGhos+MAQcNWo5b3/joNMb7104faRUbHu2juj25R8QrvXTgdvXQ5LIJysx3vxzxPJHcuX+Va20XJh3N/h/mt04ZMixU7uPig/t+2mUA6aTFeqq/z40iI8ENrE/ln4xdwA1JGP8Uj23Z6XDnk53VljsuE4v1Jdi+UFCB50oTfYFEwcnbiJuv++/4DPo3LvrYiXPtb5FeRzHfXKxiqICionWiNU7RqObT/cHJF7L8fwGBTcGnDixjuLWVdfRj1BmL2IBKxVnjF8BQOyNrVnUqnCsPoqHg/uts30FdEormJZ/VQDyZP1P0NCXMd27PMQ0XI61LWkIuIa4A6g57ydxliiE2BI6UVZVDRTGeL2yFjypxySvx/fxKvsXULiBp+9ioJqi8IaK69yDMPD72rKxrIZy5qm01o/lP+cLGi46IMfIdGdAoRWZQuHKlvK13BxKT8Lpq4MhqZIKqf8k2NdAKWhQN+e7R1dpHLSW1ahyvtmsFW0Nph2mHxUyK64exkFD1jPjl0Hh74le6qLSAHqacxnLGV6/TebrQ08QvrKxGj84XBCVoN3hXmch4a2mDnzOL+uPi7k6aKpi1Pj9yWO8HOpej7oI4+O6BPYChuAy0nD+CtAaScLTgcE0kzeKYojsHR/tENTw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR11MB5810.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(376002)(346002)(136003)(39860400002)(366004)(396003)(31696002)(8676002)(478600001)(83380400001)(53546011)(66476007)(6512007)(2616005)(31686004)(316002)(186003)(8936002)(86362001)(4326008)(36756003)(6486002)(66556008)(66946007)(5660300002)(26005)(2906002)(82960400001)(6506007)(6666004)(38100700002)(36916002)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: beIVfRjpTv6q/tqi++hBbaTN0SdmVLqM9tbRzgFPy0BtP/pZJUpusFPQyiR8jFOiF68cS61rjQAOnkw3WNPK+4vGwoCd7/4QpTwAf5Lgcrv3U/yxEQN0pPt2blUufIUaigcWO/RbbDdbMTf997Qog+VWO2wO3RzelPw1a9h6cRlRFlGX1cqRv8523dYz6ulLe5ZP3fvOmVmmRwjL37Z4C+WlgLTjdXa8m3qddL/tPg6vgLuk7Gp897Ta8h/k6gP0CONMYujw6RTlFFuWiLqNV5xt9s+iPKVqyhmAv1HISr2j35fY8Kfnmx7bvs7VrUeEcvzdPCPHmRyBxD4UoMQlSsNJBbzpd6IMTPbApE2DqNyBYKVOljVobNcA2Fibs57wHCHA0TCb6dmQwii6BSDAJbLWdLJe3MyemPwgydvfWmqCVKzKwgMgG/2ipxXxW5WFgparhaRFlkLtf8W7b4/PRSSjxFoQMb9vr2bWwz4fLSgeO7zIe98G9CaGQKIGu9slIbldaJ+HdG6d1f21XLzazzA4HGkz0rntjOgv3qmx/nRib60VWYG0MF4NS6O+O3CcEToFBqgtAeOgsOs+3mJtuIcuzoj6TgLXt6kdr7E6ZM1+ke0DnbHAKfZDdbPsqv1pm1AhMgI50GT9lSBk4GIYTSqi4XPQpHPCbS+zhI3ipifTdozr56Drc33goIxYkO0QkmC+gROj8v2FwV+G3oDYHckqdfSByAXxllSJAlBIbYezuFs25gibW1VREWcx2usm/Ovj1+9+VKAoUP3kzwwWhKORZIa7nyS2CHbB81MAUoRXqcBeptLQIFOHO9pvZBMd7jg/c23Pj9MsIVexBmt2/trbmFBQmCJR02LErmUnA24=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR11MB5810.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(136003)(39860400002)(346002)(396003)(376002)(366004)(30864003)(2906002)(8936002)(5660300002)(186003)(36756003)(83380400001)(86362001)(26005)(38100700002)(478600001)(6486002)(316002)(66556008)(66476007)(66946007)(6506007)(82960400001)(41300700001)(6666004)(36916002)(6512007)(4326008)(53546011)(8676002)(2616005)(31696002)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aGoyZDV1K1dWRVRXWmUwc3dkdXFYdThxd0dyVGNCWVp1RjF6SVF5d0NsU216?=
- =?utf-8?B?VE5uZVl2RWRnT2ozeHlqUXpWNEJ4YnJvZzdsb3Bhd3pJWFFmVWdmV0QxOWJU?=
- =?utf-8?B?R3I2U2d4KzRjVk1kTFhQUnErWnVYdG1CS1FEeDdSR3V1a0REOXJoaFMybC83?=
- =?utf-8?B?SERqalFLMjE4c2xiTDlCUTZ1OGp5N01QYXRRdnFZSFpOVnFnMUN4WjZZK1Jw?=
- =?utf-8?B?OHFYTzdLNFFhbXNPSzZSYzRvSWxzRkd5dVgrY25IUFo4c1VOT0x1OUFIRFNu?=
- =?utf-8?B?OU5RVnhLMUxXL0hSR0lnQnUwUVA2SUs3TThBL21zTk1kcHRQdzNMMFlacENI?=
- =?utf-8?B?cVBaLytEeWZTK0YwVTRtT1FsMFhsU0NmM08zbDhWL0h2MXVSVjc3a1ZjRXZ1?=
- =?utf-8?B?ZnV3aWdUcGdOVEpwZWRJWDY2MnZtRmNONDhGMkx0T3dkaTdteWVMbzZoYUdK?=
- =?utf-8?B?WUtOdUhBaHZhN2hHNXRQRzY5SnNEREd6YThNbkZLWm8yeDJtcmYyZ01GL3BW?=
- =?utf-8?B?UENhVGJrTTRycFkzUkRhc2JudHRsc0dHVDRZRVZ1U2I5bHB6SUVaNnF6VVRF?=
- =?utf-8?B?WGRyM0g0QUozL2VGcWpWOXFic0hOOEZ6TzUxa1RrRG5TbmUwUFFkK2Q5TDd1?=
- =?utf-8?B?MVZJalRKdy9RZi9rWEV3T2FuWlpSWUs1cUFIMGlPOHJPMlFSL1BuakppNDgy?=
- =?utf-8?B?T3dOM0FyZFpoNkdsZkhTK3EzTlFLY0taRnRaQXdxalBXNjB4aE90SlZOT2Z2?=
- =?utf-8?B?KytWcnFXVFZSUFlZOTYzSy8raEhseTBmT3FlanY2YVpuYlpxQ0Zwc2MvTytP?=
- =?utf-8?B?Q3N0YW44SjJHK0NkOWNFOXlxb2VrL01lZXJZYkhrVlJvZ3puQ0JKUjlTcVNW?=
- =?utf-8?B?Sy82ZzJxQ00rVEdRQkxyYUlUcWp1Uko1YTJNL0xYSkRSUWptanQwOXI0aFM5?=
- =?utf-8?B?VCttSi85M0V3OVdOczRGNmVFTFB5UXh0NWpXZ1NoZC90eDRjbisrZ3Bzc3J6?=
- =?utf-8?B?ek9NT09EcGIrQ2ROK1BSeUdOZFk3dVRiZGJoaDREbCtJcUxiZU1BOWh2RHAw?=
- =?utf-8?B?OHJxVnlNRWZLa0pTUlBxZTgvUWJwTmpmTHZSWFloVWFlaUQ2SGt6S0dnb1JQ?=
- =?utf-8?B?QUJNSllqMnlIRzZwODQxbFJiUldmUGlhTStnWlVuVUpGV01iZUFkK0RVTkxy?=
- =?utf-8?B?cHN2bnVBRlhGSHRIZzMwNHdtOFZwRTNZYlNGZWpCVGhUQWZEbkk1dG1WaFow?=
- =?utf-8?B?eW1mQmZLa1pINlBnUmsxMVFUcFFyaEh4Zk4ydFEwZjU0djdPSXhsWEtITlNq?=
- =?utf-8?B?UU8zMWtxTzBrYzd4TWxNY09Vb1RlcG95NTZIY05YcVB5UHdPRWgrSHVmSFFn?=
- =?utf-8?B?N3NPZmhZeTJrTDNuRnRFU1NabHJIblZUM1NwVkwzY2t1MVRiejR4bXlIejkz?=
- =?utf-8?B?cGk4ZWFQVkZQRjFMcDNvWVgzMWN1OFFBZ25TUnQ1MzFFaWZmUHpjS0lnNzRa?=
- =?utf-8?B?VUNFdkQyRnM1ZEFNSFFPcnVwYzFwVjlodHZYbjl4b3YxL29UWXI5VlJ6V0lR?=
- =?utf-8?B?dndpQUtKSVpadkNBZkIyWmhNeTdIOVlrUnJIRi9BRDFYcENqU0tONVFaZi81?=
- =?utf-8?B?RmpOSUUrc1J6Y0ZOVmdkQVFwclFjampnOC9jTlg1UjJCdVluQXMySk44ZHF0?=
- =?utf-8?B?ZFRCamRFbXFTYXpKUFlYbjVwd0xiQ1YyN212SHpJVElLYWFaOFpqTVpjMGhm?=
- =?utf-8?B?Vi9FQUtxZXJJdU9udDkrZUhlUjhZS0xIRU5sZWNsZDBFQU9ITFIvakwyMFhQ?=
- =?utf-8?B?c0tlVWFzUDBodXJqQ0tmUmtZTU1ONFFHSVVaTnhuanZSaXFyc2dBRUVUb3lQ?=
- =?utf-8?B?SnVHT3lPSDhuQ0tSQXVXUTFqNkg3cmhVUmNWdDk1blhrQUZQdk1zenFwcVZE?=
- =?utf-8?B?anZoS1djSy9qU0E0TFRGQ29kTXhaMFlOUDdGZzdBSG13VXBqMkVGZmw1R1JW?=
- =?utf-8?B?UTBaQzhFaktMelVlOXdTMFNWb0R6aDB6MmtvM3BYanRzUHJCYmF6UFN6dU5Y?=
- =?utf-8?B?TE5pRmhKNWZqTi9QcUtIOW1SUjYxNVVObG15NGt1Ui9tRHgvaGxPR0F5VXJ6?=
- =?utf-8?B?MHBEWlNZRDF6R1phMnFxNER4VjNCTytFM3hkSEVwdzlZUGNXWWpob3pCMWVu?=
- =?utf-8?B?YkE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b44755b-7695-415a-d177-08da5df1c277
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SVZwUk9WT0lMN3l3d0NVeVVWYzVxOW5XY05MeUdSY0ZuNzlBQTVrMllvb0x6?=
+ =?utf-8?B?Njd5eXRFWHdxNVl5OG0zM2doT0c5WVJZckpybTVvWWMrM0xNakpBZ2dFbm5H?=
+ =?utf-8?B?R2hWVjVmNVpNYjdOaWJlejIrakdxUmZPQ2kxN1JscnF3WjFiTmI1TGFYWFZC?=
+ =?utf-8?B?OWRZNmZocUFIaG83QmRybFV0Nk5DMnQ4WlJ2NCtXRFVKKzRlL2VNKzEwTy8v?=
+ =?utf-8?B?TmNuL2ZyS0VnZjlLNG5NaExPMTVHVlB5VEp5UVB3d2ZENnJkWTZRR3VYWDY0?=
+ =?utf-8?B?c3NyUzZGbmR6TzFBRk41UUVCUmI2aytybkdhZ2NTek96cXZyYmI1c0RvT1h2?=
+ =?utf-8?B?eVZzaTRXZ1FBa1N0Z0ZQVE1JZDZHc0RnN0l5dkpHdUY0cWcxSlFSSHNObjNk?=
+ =?utf-8?B?RmpRMWlUSGZEaG9DOUhqZDNuQndWY3RCTVdRbktlazZTM2dubVpabkh0ZWls?=
+ =?utf-8?B?SlhGU3JJUjNDb043SEY5YUptc2Frb3c4QnFtQmV3RnZaS3ZvYVdLOFlyc3VO?=
+ =?utf-8?B?TVFDZnBzclpKK2w3MWxiQmYzSm1lb1hIMFpwaVM4RnV2ZTlqZkNDbjB6YnFp?=
+ =?utf-8?B?RHM0NTlFb0d3Ti9OR01tTjFtOFFMVGloeU95TkRaRmlHay8vdGJleURlM2sz?=
+ =?utf-8?B?a1NVVVhKTTBtb1VWb1BjeXVNdEU2KysxZk9QZEV0bkNobDJtbHowTGc3VmZ3?=
+ =?utf-8?B?dlpveExuelVjcjFaQTZNdVFEMHVDYkl0UE1SOHZ2QkZnK0RyQ21udkpGNmJF?=
+ =?utf-8?B?cjJtYWJ2QWZNN04xTXA3NFR6VnpqcjBnTXJYVENEQ1hwM0s4WWFlSkZmK1p0?=
+ =?utf-8?B?M3I3V2NsWEV6WU9jZ3F4UWdITGlrOWNmOGVmU1ZmTytSaFNENTJROXBEZGZQ?=
+ =?utf-8?B?Tlh6T0dwVE5sTGxGSUtrODhTOVEyNnp1ZUx0RjR6cjAxK1NjTFNScENWQVVi?=
+ =?utf-8?B?dnd0cDVUR1R4V20xaHVqRmUzbmo5cTVELzJJOE1MSG1aR1pwQXBIdHVhNmRM?=
+ =?utf-8?B?VndMeEhBcHVxSFhFbjBsVjk3K3N5eVV3Q01LaVloQncvM2JUU0hXdjVQbFAv?=
+ =?utf-8?B?K0R3R2NramVqbDdEZzhLTDRDWDM5YWJuTEpHNGZDU1cwM2NKSFJnWHd2QVpP?=
+ =?utf-8?B?M0RVUEd1KzFtMlpoejJ4Nllrek43MnQyRHRqQ0pSTHdNQnpHbnlWM0pOeVVI?=
+ =?utf-8?B?SFZrYlBZNXhuM1NvT01jMFNVY1dLNWF6L1VRSVp4MlREOGxaQytrNTJYQ202?=
+ =?utf-8?B?NUhlTjBmT2ZOQmVDbUFKbi8wcS9WUStnYk0reGZnLzY0RXhlOFo3QlBPZUtY?=
+ =?utf-8?B?cE9tK0RzUzFTUnJ0b3FNa25hTVV6dEgvdDBoUjJFTjV4cHd1VlVMTTRtSy9K?=
+ =?utf-8?B?cHlzSG1Jc0VJUlgvdXlobW5zK0dEL3RwSkRKYVVhZnJ3ZVRxWkllelBRMFYv?=
+ =?utf-8?B?Y3ZScnZFbXFtRHhJckliMkNaM0hDRmJxTlg2c3p3blI2S1djaWV5ZWtLY3hw?=
+ =?utf-8?B?VmxzVnAwRU5oRFBPZ1U3V0JlV0lCdWF1Vk53ZlI4Rm9ubUw2SGV6Q2NxVmJF?=
+ =?utf-8?B?SmpjbEZaSlRVaEdaMklTTG5rN0lpU09YTHlaR2MxcFV6dzhYdVJCd2wzdnkx?=
+ =?utf-8?B?Sko2Yit4MXFwVWlFekZtZ2ZLUVl0Q1JqU1BCcjE4TlhRbXFyNnBBclhGOStp?=
+ =?utf-8?B?Nll2SkJFL1duSmRGdWZxTDZKTTRmMFBKNWVuaFJuVksvck1xUWNmVjRFTTRj?=
+ =?utf-8?B?dDR5eHJRd3ZWOUFDa08wOEp3alkzRENFSVlod21iYzV3Wk1DS1Z0amZ5SGtt?=
+ =?utf-8?B?NmM3UTFqdVZNcE5QeGRrL09ZN1JYclh1NzR5V1dLSVBNOEM1ZVRaZW1xU2ND?=
+ =?utf-8?B?SFoxSFRmRS9kSC9NUyttTDlISFpBV3BXNVYybnR2bm9DYU1Zdm8yT2JmcFNY?=
+ =?utf-8?B?VWIvMGhpeXBBT21ESnQ3SUhhRUxuaGppbDQ5dkdYK1NjVjBpdXRDeVFjbWYy?=
+ =?utf-8?B?QUZ6UTgreXFVcXc3WDRJRHArR3c1NHJFMGthc1V0b2tTKzBwcVdrdFVFeC9B?=
+ =?utf-8?B?MG1mR21XYlhYWnlTN2ZWaXpEQllHNVFTaHZyYzNicmg0VFV3bkJ4bTcyWXg3?=
+ =?utf-8?B?NFc4OGtkUitNcnpIV3FUbmVJVTkvVnBGa21XV2FuS1YrQVlyVm5vOXllTHhO?=
+ =?utf-8?B?OGc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54f4aa83-d25a-440c-91a6-08da5df314c6
 X-MS-Exchange-CrossTenant-AuthSource: MW5PR11MB5810.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2022 19:16:56.0448
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2022 19:26:23.4601
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wo5Ad8SKwrjrUaJPs6OHO6mEQR9Nu14SanYWe7hvGgz1H0LBqn7Yks/03NTnaXJusNwqeTGSMLav1nAjXmEPnFqrbWODw4UbmtQK1DQgS6A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB3004
+X-MS-Exchange-CrossTenant-UserPrincipalName: ndGxX/iaiscq+nhPYTyUF1uJ4YDg/13LevgkNsEc0K2wbXcNYt6MBvqv2VvO7tlepX2+GhUF0Y0jH9b0YHINrwQtLHF2Pnbl/f8wEq+8cKY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB3451
 X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -158,43 +158,367 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/4/2022 4:06 PM, Tan Zhongjun wrote:
-> Use swap() instead of open coding it
+On 7/3/2022 2:30 AM, Javier Abrego wrote:
+> Fixed a coding style issue with the linter.
 >
-> Signed-off-by: Tan Zhongjun <tanzhongjun@coolpad.com>
+> Signed-off-by: Javier Abrego <javier.abrego.lorente@gmail.com>
 
-Changes in the ACPICA files need to be routed through the upstream 
-ACPICA project at github.
+Please note that ACPICA code changes need to be submitted to the 
+upstream ACPICA project on github.
 
-Please submit a pull request in there.
+If your patch is appropriate for that code base, please submit a pull 
+request in there.
 
 
 > ---
->   drivers/acpi/acpica/nsrepair2.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
+>   drivers/acpi/acpica/acmacros.h | 212 ++++++++++++++++-----------------
+>   1 file changed, 106 insertions(+), 106 deletions(-)
 >
-> diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
-> index dd533c887e3a..3735ba06ea16 100644
-> --- a/drivers/acpi/acpica/nsrepair2.c
-> +++ b/drivers/acpi/acpica/nsrepair2.c
-> @@ -875,7 +875,6 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
->   {
->   	union acpi_operand_object *obj_desc1;
->   	union acpi_operand_object *obj_desc2;
-> -	union acpi_operand_object *temp_obj;
->   	u32 i;
->   	u32 j;
+> diff --git a/drivers/acpi/acpica/acmacros.h b/drivers/acpi/acpica/acmacros.h
+> index 2f3e609df..597070cde 100644
+> --- a/drivers/acpi/acpica/acmacros.h
+> +++ b/drivers/acpi/acpica/acmacros.h
+> @@ -15,18 +15,18 @@
+>    * get into potential alignment issues -- see the STORE macros below.
+>    * Use with care.
+>    */
+> -#define ACPI_CAST8(ptr)                 ACPI_CAST_PTR (u8, (ptr))
+> -#define ACPI_CAST16(ptr)                ACPI_CAST_PTR (u16, (ptr))
+> -#define ACPI_CAST32(ptr)                ACPI_CAST_PTR (u32, (ptr))
+> -#define ACPI_CAST64(ptr)                ACPI_CAST_PTR (u64, (ptr))
+> -#define ACPI_GET8(ptr)                  (*ACPI_CAST8 (ptr))
+> -#define ACPI_GET16(ptr)                 (*ACPI_CAST16 (ptr))
+> -#define ACPI_GET32(ptr)                 (*ACPI_CAST32 (ptr))
+> -#define ACPI_GET64(ptr)                 (*ACPI_CAST64 (ptr))
+> -#define ACPI_SET8(ptr, val)             (*ACPI_CAST8 (ptr) = (u8) (val))
+> -#define ACPI_SET16(ptr, val)            (*ACPI_CAST16 (ptr) = (u16) (val))
+> -#define ACPI_SET32(ptr, val)            (*ACPI_CAST32 (ptr) = (u32) (val))
+> -#define ACPI_SET64(ptr, val)            (*ACPI_CAST64 (ptr) = (u64) (val))
+> +#define ACPI_CAST8(ptr)                 ACPI_CAST_PTR(u8, (ptr))
+> +#define ACPI_CAST16(ptr)                ACPI_CAST_PTR(u16, (ptr))
+> +#define ACPI_CAST32(ptr)                ACPI_CAST_PTR(u32, (ptr))
+> +#define ACPI_CAST64(ptr)                ACPI_CAST_PTR(u64, (ptr))
+> +#define ACPI_GET8(ptr)                  (*ACPI_CAST8(ptr))
+> +#define ACPI_GET16(ptr)                 (*ACPI_CAST16(ptr))
+> +#define ACPI_GET32(ptr)                 (*ACPI_CAST32(ptr))
+> +#define ACPI_GET64(ptr)                 (*ACPI_CAST64(ptr))
+> +#define ACPI_SET8(ptr, val)             (*ACPI_CAST8(ptr) = (u8) (val))
+> +#define ACPI_SET16(ptr, val)            (*ACPI_CAST16(ptr) = (u16) (val))
+> +#define ACPI_SET32(ptr, val)            (*ACPI_CAST32(ptr) = (u32) (val))
+> +#define ACPI_SET64(ptr, val)            (*ACPI_CAST64(ptr) = (u64) (val))
 >   
-> @@ -892,9 +891,7 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
->   			    || ((sort_direction == ACPI_SORT_DESCENDING)
->   				&& (obj_desc1->integer.value <
->   				    obj_desc2->integer.value))) {
-> -				temp_obj = elements[j - 1];
-> -				elements[j - 1] = elements[j];
-> -				elements[j] = temp_obj;
-> +				swap(elements[j - 1], elements[j]);
->   			}
->   		}
->   	}
+>   /*
+>    * printf() format helper. This macro is a workaround for the difficulties
+> @@ -51,31 +51,31 @@
+>   	 /*  Hi...Lo                     Lo...Hi     */
+>   /* 16-bit source, 16/32/64 destination */
+>   
+> -#define ACPI_MOVE_16_TO_16(d, s)        {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[1];\
+> -			  ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[0];}
+> +#define ACPI_MOVE_16_TO_16(d, s)        {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[1];\
+> +			  ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[0]; }
+>   
+> -#define ACPI_MOVE_16_TO_32(d, s)        {(*(u32 *)(void *)(d))=0;\
+> +#define ACPI_MOVE_16_TO_32(d, s)        {(*(u32 *)(void *)(d)) = 0;\
+>   					  ((u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[1];\
+> -					  ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[0];}
+> +					  ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[0]; }
+>   
+> -#define ACPI_MOVE_16_TO_64(d, s)        {(*(u64 *)(void *)(d))=0;\
+> +#define ACPI_MOVE_16_TO_64(d, s)        {(*(u64 *)(void *)(d)) = 0;\
+>   							   ((u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[1];\
+> -							   ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0];}
+> +							   ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0]; }
+>   
+>   /* 32-bit source, 16/32/64 destination */
+>   
+>   #define ACPI_MOVE_32_TO_16(d, s)        ACPI_MOVE_16_TO_16(d, s)	/* Truncate to 16 */
+>   
+> -#define ACPI_MOVE_32_TO_32(d, s)        {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[3];\
+> -									  ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[2];\
+> -									  ((  u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[1];\
+> -									  ((  u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[0];}
+> +#define ACPI_MOVE_32_TO_32(d, s)        {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[3];\
+> +									  ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[2];\
+> +									  ((u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[1];\
+> +									  ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[0]; }
+>   
+> -#define ACPI_MOVE_32_TO_64(d, s)        {(*(u64 *)(void *)(d))=0;\
+> +#define ACPI_MOVE_32_TO_64(d, s)        {(*(u64 *)(void *)(d)) = 0;\
+>   										   ((u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[3];\
+>   										   ((u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[2];\
+>   										   ((u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[1];\
+> -										   ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0];}
+> +										   ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0]; }
+>   
+>   /* 64-bit source, 16/32/64 destination */
+>   
+> @@ -83,14 +83,14 @@
+>   
+>   #define ACPI_MOVE_64_TO_32(d, s)        ACPI_MOVE_32_TO_32(d, s)	/* Truncate to 32 */
+>   
+> -#define ACPI_MOVE_64_TO_64(d, s)        {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[7];\
+> -										 ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[6];\
+> -										 ((  u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[5];\
+> -										 ((  u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[4];\
+> -										 ((  u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[3];\
+> -										 ((  u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[2];\
+> -										 ((  u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[1];\
+> -										 ((  u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0];}
+> +#define ACPI_MOVE_64_TO_64(d, s)        {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[7];\
+> +										 ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[6];\
+> +										 ((u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[5];\
+> +										 ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[4];\
+> +										 ((u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[3];\
+> +										 ((u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[2];\
+> +										 ((u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[1];\
+> +										 ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0]; }
+>   #else
+>   /*
+>    * Macros for little-endian machines
+> @@ -127,35 +127,35 @@
+>   
+>   /* 16-bit source, 16/32/64 destination */
+>   
+> -#define ACPI_MOVE_16_TO_16(d, s)        {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];\
+> -										 ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];}
+> +#define ACPI_MOVE_16_TO_16(d, s)        {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];\
+> +										 ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1]; }
+>   
+> -#define ACPI_MOVE_16_TO_32(d, s)        {(*(u32 *)(void *)(d)) = 0; ACPI_MOVE_16_TO_16(d, s);}
+> -#define ACPI_MOVE_16_TO_64(d, s)        {(*(u64 *)(void *)(d)) = 0; ACPI_MOVE_16_TO_16(d, s);}
+> +#define ACPI_MOVE_16_TO_32(d, s)        {(*(u32 *)(void *)(d)) = 0; ACPI_MOVE_16_TO_16(d, s); }
+> +#define ACPI_MOVE_16_TO_64(d, s)        {(*(u64 *)(void *)(d)) = 0; ACPI_MOVE_16_TO_16(d, s); }
+>   
+>   /* 32-bit source, 16/32/64 destination */
+>   
+>   #define ACPI_MOVE_32_TO_16(d, s)        ACPI_MOVE_16_TO_16(d, s)	/* Truncate to 16 */
+>   
+> -#define ACPI_MOVE_32_TO_32(d, s)        {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];\
+> -										 ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];\
+> -										 ((  u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[2];\
+> -										 ((  u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[3];}
+> +#define ACPI_MOVE_32_TO_32(d, s)        {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];\
+> +										 ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];\
+> +										 ((u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[2];\
+> +										 ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[3]; }
+>   
+> -#define ACPI_MOVE_32_TO_64(d, s)        {(*(u64 *)(void *)(d)) = 0; ACPI_MOVE_32_TO_32(d, s);}
+> +#define ACPI_MOVE_32_TO_64(d, s)        {(*(u64 *)(void *)(d)) = 0; ACPI_MOVE_32_TO_32(d, s); }
+>   
+>   /* 64-bit source, 16/32/64 destination */
+>   
+>   #define ACPI_MOVE_64_TO_16(d, s)        ACPI_MOVE_16_TO_16(d, s)	/* Truncate to 16 */
+>   #define ACPI_MOVE_64_TO_32(d, s)        ACPI_MOVE_32_TO_32(d, s)	/* Truncate to 32 */
+> -#define ACPI_MOVE_64_TO_64(d, s)        {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];\
+> -										 ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];\
+> -										 ((  u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[2];\
+> -										 ((  u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[3];\
+> -										 ((  u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[4];\
+> -										 ((  u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[5];\
+> -										 ((  u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[6];\
+> -										 ((  u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[7];}
+> +#define ACPI_MOVE_64_TO_64(d, s)        {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];\
+> +										 ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];\
+> +										 ((u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[2];\
+> +										 ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[3];\
+> +										 ((u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[4];\
+> +										 ((u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[5];\
+> +										 ((u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[6];\
+> +										 ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[7]; }
+>   #endif
+>   #endif
+>   
+> @@ -164,7 +164,7 @@
+>    */
+>   #define _ACPI_DIV(value, power_of2)     ((u32) ((value) >> (power_of2)))
+>   #define _ACPI_MUL(value, power_of2)     ((u32) ((value) << (power_of2)))
+> -#define _ACPI_MOD(value, divisor)       ((u32) ((value) & ((divisor) -1)))
+> +#define _ACPI_MOD(value, divisor)       ((u32) ((value) & ((divisor) - 1)))
+>   
+>   #define ACPI_DIV_2(a)                   _ACPI_DIV(a, 1)
+>   #define ACPI_MUL_2(a)                   _ACPI_MUL(a, 1)
+> @@ -232,64 +232,64 @@
+>   
+>   #define __ACPI_FIND_LAST_BIT_2(a, r)        ((((u8)  (a)) & 0x02) ? (r)+1 : (r))
+>   #define __ACPI_FIND_LAST_BIT_4(a, r)        ((((u8)  (a)) & 0x0C) ? \
+> -											 __ACPI_FIND_LAST_BIT_2  ((a)>>2,  (r)+2) : \
+> -											 __ACPI_FIND_LAST_BIT_2  ((a), (r)))
+> +											 __ACPI_FIND_LAST_BIT_2((a)>>2,  (r)+2) : \
+> +											 __ACPI_FIND_LAST_BIT_2((a), (r)))
+>   #define __ACPI_FIND_LAST_BIT_8(a, r)        ((((u8)  (a)) & 0xF0) ? \
+> -											 __ACPI_FIND_LAST_BIT_4  ((a)>>4,  (r)+4) : \
+> -											 __ACPI_FIND_LAST_BIT_4  ((a), (r)))
+> +											 __ACPI_FIND_LAST_BIT_4((a)>>4,  (r)+4) : \
+> +											 __ACPI_FIND_LAST_BIT_4((a), (r)))
+>   #define __ACPI_FIND_LAST_BIT_16(a, r)       ((((u16) (a)) & 0xFF00) ? \
+> -											 __ACPI_FIND_LAST_BIT_8  ((a)>>8,  (r)+8) : \
+> -											 __ACPI_FIND_LAST_BIT_8  ((a), (r)))
+> +											 __ACPI_FIND_LAST_BIT_8((a)>>8,  (r)+8) : \
+> +											 __ACPI_FIND_LAST_BIT_8((a), (r)))
+>   #define __ACPI_FIND_LAST_BIT_32(a, r)       ((((u32) (a)) & 0xFFFF0000) ? \
+> -											 __ACPI_FIND_LAST_BIT_16 ((a)>>16, (r)+16) : \
+> -											 __ACPI_FIND_LAST_BIT_16 ((a), (r)))
+> +											 __ACPI_FIND_LAST_BIT_16((a)>>16, (r)+16) : \
+> +											 __ACPI_FIND_LAST_BIT_16((a), (r)))
+>   #define __ACPI_FIND_LAST_BIT_64(a, r)       ((((u64) (a)) & 0xFFFFFFFF00000000) ? \
+> -											 __ACPI_FIND_LAST_BIT_32 ((a)>>32, (r)+32) : \
+> -											 __ACPI_FIND_LAST_BIT_32 ((a), (r)))
+> +											 __ACPI_FIND_LAST_BIT_32((a)>>32, (r)+32) : \
+> +											 __ACPI_FIND_LAST_BIT_32((a), (r)))
+>   
+> -#define ACPI_FIND_LAST_BIT_8(a)             ((a) ? __ACPI_FIND_LAST_BIT_8 (a, 1) : 0)
+> -#define ACPI_FIND_LAST_BIT_16(a)            ((a) ? __ACPI_FIND_LAST_BIT_16 (a, 1) : 0)
+> -#define ACPI_FIND_LAST_BIT_32(a)            ((a) ? __ACPI_FIND_LAST_BIT_32 (a, 1) : 0)
+> -#define ACPI_FIND_LAST_BIT_64(a)            ((a) ? __ACPI_FIND_LAST_BIT_64 (a, 1) : 0)
+> +#define ACPI_FIND_LAST_BIT_8(a)             ((a) ? __ACPI_FIND_LAST_BIT_8(a, 1) : 0)
+> +#define ACPI_FIND_LAST_BIT_16(a)            ((a) ? __ACPI_FIND_LAST_BIT_16(a, 1) : 0)
+> +#define ACPI_FIND_LAST_BIT_32(a)            ((a) ? __ACPI_FIND_LAST_BIT_32(a, 1) : 0)
+> +#define ACPI_FIND_LAST_BIT_64(a)            ((a) ? __ACPI_FIND_LAST_BIT_64(a, 1) : 0)
+>   
+>   #define __ACPI_FIND_FIRST_BIT_2(a, r)       ((((u8) (a)) & 0x01) ? (r) : (r)+1)
+>   #define __ACPI_FIND_FIRST_BIT_4(a, r)       ((((u8) (a)) & 0x03) ? \
+> -											 __ACPI_FIND_FIRST_BIT_2  ((a), (r)) : \
+> -											 __ACPI_FIND_FIRST_BIT_2  ((a)>>2, (r)+2))
+> +											 __ACPI_FIND_FIRST_BIT_2((a), (r)) : \
+> +											 __ACPI_FIND_FIRST_BIT_2((a)>>2, (r)+2))
+>   #define __ACPI_FIND_FIRST_BIT_8(a, r)       ((((u8) (a)) & 0x0F) ? \
+> -											 __ACPI_FIND_FIRST_BIT_4  ((a), (r)) : \
+> -											 __ACPI_FIND_FIRST_BIT_4  ((a)>>4, (r)+4))
+> +											 __ACPI_FIND_FIRST_BIT_4((a), (r)) : \
+> +											 __ACPI_FIND_FIRST_BIT_4((a)>>4, (r)+4))
+>   #define __ACPI_FIND_FIRST_BIT_16(a, r)      ((((u16) (a)) & 0x00FF) ? \
+> -											 __ACPI_FIND_FIRST_BIT_8  ((a), (r)) : \
+> -											 __ACPI_FIND_FIRST_BIT_8  ((a)>>8, (r)+8))
+> +											 __ACPI_FIND_FIRST_BIT_8((a), (r)) : \
+> +											 __ACPI_FIND_FIRST_BIT_8((a)>>8, (r)+8))
+>   #define __ACPI_FIND_FIRST_BIT_32(a, r)      ((((u32) (a)) & 0x0000FFFF) ? \
+> -											 __ACPI_FIND_FIRST_BIT_16 ((a), (r)) : \
+> -											 __ACPI_FIND_FIRST_BIT_16 ((a)>>16, (r)+16))
+> +											 __ACPI_FIND_FIRST_BIT_16((a), (r)) : \
+> +											 __ACPI_FIND_FIRST_BIT_16((a)>>16, (r)+16))
+>   #define __ACPI_FIND_FIRST_BIT_64(a, r)      ((((u64) (a)) & 0x00000000FFFFFFFF) ? \
+> -											 __ACPI_FIND_FIRST_BIT_32 ((a), (r)) : \
+> -											 __ACPI_FIND_FIRST_BIT_32 ((a)>>32, (r)+32))
+> +											 __ACPI_FIND_FIRST_BIT_32((a), (r)) : \
+> +											 __ACPI_FIND_FIRST_BIT_32((a)>>32, (r)+32))
+>   
+> -#define ACPI_FIND_FIRST_BIT_8(a)            ((a) ? __ACPI_FIND_FIRST_BIT_8 (a, 1) : 0)
+> -#define ACPI_FIND_FIRST_BIT_16(a)           ((a) ? __ACPI_FIND_FIRST_BIT_16 (a, 1) : 0)
+> -#define ACPI_FIND_FIRST_BIT_32(a)           ((a) ? __ACPI_FIND_FIRST_BIT_32 (a, 1) : 0)
+> -#define ACPI_FIND_FIRST_BIT_64(a)           ((a) ? __ACPI_FIND_FIRST_BIT_64 (a, 1) : 0)
+> +#define ACPI_FIND_FIRST_BIT_8(a)            ((a) ? __ACPI_FIND_FIRST_BIT_8(a, 1) : 0)
+> +#define ACPI_FIND_FIRST_BIT_16(a)           ((a) ? __ACPI_FIND_FIRST_BIT_16(a, 1) : 0)
+> +#define ACPI_FIND_FIRST_BIT_32(a)           ((a) ? __ACPI_FIND_FIRST_BIT_32(a, 1) : 0)
+> +#define ACPI_FIND_FIRST_BIT_64(a)           ((a) ? __ACPI_FIND_FIRST_BIT_64(a, 1) : 0)
+>   
+>   #endif				/* ACPI_USE_NATIVE_BIT_FINDER */
+>   
+>   /* Generic (power-of-two) rounding */
+>   
+>   #define ACPI_ROUND_UP_POWER_OF_TWO_8(a)     ((u8) \
+> -											(((u16) 1) <<  ACPI_FIND_LAST_BIT_8  ((a)  - 1)))
+> +											(((u16) 1) <<  ACPI_FIND_LAST_BIT_8((a)  - 1)))
+>   #define ACPI_ROUND_DOWN_POWER_OF_TWO_8(a)   ((u8) \
+> -											(((u16) 1) << (ACPI_FIND_LAST_BIT_8  ((a)) - 1)))
+> +											(((u16) 1) << (ACPI_FIND_LAST_BIT_8((a)) - 1)))
+>   #define ACPI_ROUND_UP_POWER_OF_TWO_16(a)    ((u16) \
+> -											(((u32) 1) <<  ACPI_FIND_LAST_BIT_16 ((a)  - 1)))
+> +											(((u32) 1) <<  ACPI_FIND_LAST_BIT_16((a)  - 1)))
+>   #define ACPI_ROUND_DOWN_POWER_OF_TWO_16(a)  ((u16) \
+> -											(((u32) 1) << (ACPI_FIND_LAST_BIT_16 ((a)) - 1)))
+> +											(((u32) 1) << (ACPI_FIND_LAST_BIT_16((a)) - 1)))
+>   #define ACPI_ROUND_UP_POWER_OF_TWO_32(a)    ((u32) \
+> -											(((u64) 1) <<  ACPI_FIND_LAST_BIT_32 ((a)  - 1)))
+> +											(((u64) 1) <<  ACPI_FIND_LAST_BIT_32((a)  - 1)))
+>   #define ACPI_ROUND_DOWN_POWER_OF_TWO_32(a)  ((u32) \
+> -											(((u64) 1) << (ACPI_FIND_LAST_BIT_32 ((a)) - 1)))
+> +											(((u64) 1) << (ACPI_FIND_LAST_BIT_32((a)) - 1)))
+>   #define ACPI_IS_ALIGNED(a, s)               (((a) & ((s) - 1)) == 0)
+>   #define ACPI_IS_POWER_OF_TWO(a)             ACPI_IS_ALIGNED(a, a)
+>   
+> @@ -353,10 +353,10 @@
+>   
+>   /* Macros to extract flag bits from position one and above */
+>   
+> -#define ACPI_EXTRACT_1BIT_FLAG(field, position)     (ACPI_GET_1BIT_FLAG ((field) >> position))
+> -#define ACPI_EXTRACT_2BIT_FLAG(field, position)     (ACPI_GET_2BIT_FLAG ((field) >> position))
+> -#define ACPI_EXTRACT_3BIT_FLAG(field, position)     (ACPI_GET_3BIT_FLAG ((field) >> position))
+> -#define ACPI_EXTRACT_4BIT_FLAG(field, position)     (ACPI_GET_4BIT_FLAG ((field) >> position))
+> +#define ACPI_EXTRACT_1BIT_FLAG(field, position)     (ACPI_GET_1BIT_FLAG((field) >> position))
+> +#define ACPI_EXTRACT_2BIT_FLAG(field, position)     (ACPI_GET_2BIT_FLAG((field) >> position))
+> +#define ACPI_EXTRACT_3BIT_FLAG(field, position)     (ACPI_GET_3BIT_FLAG((field) >> position))
+> +#define ACPI_EXTRACT_4BIT_FLAG(field, position)     (ACPI_GET_4BIT_FLAG((field) >> position))
+>   
+>   /* ACPI Pathname helpers */
+>   
+> @@ -379,7 +379,7 @@
+>   /*
+>    * Macros for the master AML opcode table
+>    */
+> -#if defined (ACPI_DISASSEMBLER) || defined (ACPI_DEBUG_OUTPUT)
+> +#if defined(ACPI_DISASSEMBLER) || defined(ACPI_DEBUG_OUTPUT)
+>   #define ACPI_OP(name, Pargs, Iargs, obj_type, class, type, flags) \
+>   	{name, (u32)(Pargs), (u32)(Iargs), (u32)(flags), obj_type, class, type}
+>   #else
+> @@ -421,8 +421,8 @@
+>    * the plist contains a set of parens to allow variable-length lists.
+>    * These macros are used for both the debug and non-debug versions of the code.
+>    */
+> -#define ACPI_ERROR_NAMESPACE(s, p, e)       acpi_ut_prefixed_namespace_error (AE_INFO, s, p, e);
+> -#define ACPI_ERROR_METHOD(s, n, p, e)       acpi_ut_method_error (AE_INFO, s, n, p, e);
+> +#define ACPI_ERROR_NAMESPACE(s, p, e)       acpi_ut_prefixed_namespace_error(AE_INFO, s, p, e);
+> +#define ACPI_ERROR_METHOD(s, n, p, e)       acpi_ut_method_error(AE_INFO, s, n, p, e);
+>   #define ACPI_WARN_PREDEFINED(plist)         acpi_ut_predefined_warning plist
+>   #define ACPI_INFO_PREDEFINED(plist)         acpi_ut_predefined_info plist
+>   #define ACPI_BIOS_ERROR_PREDEFINED(plist)   acpi_ut_predefined_bios_error plist
+> @@ -467,17 +467,17 @@
+>   #ifdef ACPI_ASL_COMPILER
+>   
+>   #define ASL_CV_LABEL_FILENODE(a)         cv_label_file_node(a);
+> -#define ASL_CV_CAPTURE_COMMENTS_ONLY(a)   cv_capture_comments_only (a);
+> -#define ASL_CV_CAPTURE_COMMENTS(a)       cv_capture_comments (a);
+> -#define ASL_CV_TRANSFER_COMMENTS(a)      cv_transfer_comments (a);
+> -#define ASL_CV_CLOSE_PAREN(a,b)          cv_close_paren_write_comment(a,b);
+> -#define ASL_CV_CLOSE_BRACE(a,b)          cv_close_brace_write_comment(a,b);
+> -#define ASL_CV_SWITCH_FILES(a,b)         cv_switch_files(a,b);
+> +#define ASL_CV_CAPTURE_COMMENTS_ONLY(a)   cv_capture_comments_only(a);
+> +#define ASL_CV_CAPTURE_COMMENTS(a)       cv_capture_comments(a);
+> +#define ASL_CV_TRANSFER_COMMENTS(a)      cv_transfer_comments(a);
+> +#define ASL_CV_CLOSE_PAREN(a, b)          cv_close_paren_write_comment(a, b);
+> +#define ASL_CV_CLOSE_BRACE(a, b)          cv_close_brace_write_comment(a, b);
+> +#define ASL_CV_SWITCH_FILES(a, b)         cv_switch_files(a, b);
+>   #define ASL_CV_CLEAR_OP_COMMENTS(a)       cv_clear_op_comments(a);
+> -#define ASL_CV_PRINT_ONE_COMMENT(a,b,c,d) cv_print_one_comment_type (a,b,c,d);
+> -#define ASL_CV_PRINT_ONE_COMMENT_LIST(a,b) cv_print_one_comment_list (a,b);
+> +#define ASL_CV_PRINT_ONE_COMMENT(a, b, c, d) cv_print_one_comment_type (a, b, c, d);
+> +#define ASL_CV_PRINT_ONE_COMMENT_LIST(a, b) cv_print_one_comment_list (a, b);
+>   #define ASL_CV_FILE_HAS_SWITCHED(a)       cv_file_has_switched(a)
+> -#define ASL_CV_INIT_FILETREE(a,b)      cv_init_file_tree(a,b);
+> +#define ASL_CV_INIT_FILETREE(a, b)      cv_init_file_tree(a, b);
+>   
+>   #else
+>   
+> @@ -485,14 +485,14 @@
+>   #define ASL_CV_CAPTURE_COMMENTS_ONLY(a)
+>   #define ASL_CV_CAPTURE_COMMENTS(a)
+>   #define ASL_CV_TRANSFER_COMMENTS(a)
+> -#define ASL_CV_CLOSE_PAREN(a,b)          acpi_os_printf (")");
+> -#define ASL_CV_CLOSE_BRACE(a,b)          acpi_os_printf ("}");
+> -#define ASL_CV_SWITCH_FILES(a,b)
+> +#define ASL_CV_CLOSE_PAREN(a, b)          acpi_os_printf (")");
+> +#define ASL_CV_CLOSE_BRACE(a, b)          acpi_os_printf ("}");
+> +#define ASL_CV_SWITCH_FILES(a, b)
+>   #define ASL_CV_CLEAR_OP_COMMENTS(a)
+> -#define ASL_CV_PRINT_ONE_COMMENT(a,b,c,d)
+> -#define ASL_CV_PRINT_ONE_COMMENT_LIST(a,b)
+> +#define ASL_CV_PRINT_ONE_COMMENT(a, b, c, d)
+> +#define ASL_CV_PRINT_ONE_COMMENT_LIST(a, b)
+>   #define ASL_CV_FILE_HAS_SWITCHED(a)       0
+> -#define ASL_CV_INIT_FILETREE(a,b)
+> +#define ASL_CV_INIT_FILETREE(a, b)
+>   
+>   #endif
+>   
 
 
