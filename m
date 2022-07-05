@@ -2,95 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F93566528
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 10:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD0C8566644
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 11:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230313AbiGEIhh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jul 2022 04:37:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44134 "EHLO
+        id S229978AbiGEJjl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jul 2022 05:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230302AbiGEIhg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 04:37:36 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46A42DC5;
-        Tue,  5 Jul 2022 01:37:35 -0700 (PDT)
-Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LcbZk5NPfz68916;
-        Tue,  5 Jul 2022 16:34:54 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 5 Jul 2022 10:37:33 +0200
-Received: from [10.195.35.180] (10.195.35.180) by
- lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 5 Jul 2022 09:37:32 +0100
-Message-ID: <71dfc3cd-c2ae-8096-9280-67e77c21055e@huawei.com>
-Date:   Tue, 5 Jul 2022 09:37:32 +0100
+        with ESMTP id S229497AbiGEJjk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 05:39:40 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB26E2F;
+        Tue,  5 Jul 2022 02:39:39 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id j13so608498ljo.7;
+        Tue, 05 Jul 2022 02:39:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YBwn8GswjKLhf53ockHlKSzvllSizbaKgXkfXlDSJ/8=;
+        b=eT9F6s9ulKTCG9TYTp+7Vz3zITzszwNHjcUjyPKOCLS4A8DBcUE+I56BBifN1ABYsi
+         WJnmC7bXGB34adpPTpS6hJs+gPmft35PbdfAAB92EEsE03yIm2ouTf7MXNDq+ZIeOYVs
+         m7a3mvsQsl7iSWnTsTYmyWBfWPW66vffy1tbci3f4lyNFlzgfsMz3uVWL6a3brxJijxA
+         EtUIRWaeAVWginzONCkmOgI5RaBVbUfQLlz+Lzr278a21rhM37VNZHYEIdrdzbONn+9b
+         j89PYPe4JDigWniSf2dNyrxe5k6NNXa4tFWh43wD22TAOQHY9AZVSSWFbJiEIvfuBuea
+         7Evw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YBwn8GswjKLhf53ockHlKSzvllSizbaKgXkfXlDSJ/8=;
+        b=4eBwDHWXmzNXOPJAYkpIkWiyzzMOVCHfboHBoPv+gOb3efql/VjFIWN+q00Vya/2Ug
+         YotEdvCi3Yih5tKZ4jmH+I+lSomCA3j/zaVXQjx93UumQkKV/UX50WgqPzQUx96gJnSa
+         HVflSem+v/glvIVQeGknZBgFVwqfvZzz4BE1V3yWwAfsdMtMGPXa2ERn6h4WEcKuvFfl
+         8IOeKPSRlS8iYbIqvlzERd5QlRtZ8FxqbWY8b5ZlqTyDamggVGJ5rdpB/ofNh0GO7BZR
+         YoJhEpqbBShEqXfpYHim72ouWkaWYWd/1b8Vn4Fdl46UnmUkBQOOC2E2wcEV3tnm4xJV
+         2heQ==
+X-Gm-Message-State: AJIora9k0bDIuB+b60zoEZVzKd4qSdkXisApYbufeHufFkTLnhmbgfGE
+        K55AwxOoN2LniWtUtgRqeMObXsSKwxPsWY6xEh8=
+X-Google-Smtp-Source: AGRyM1t6yISdyXQTBapWlPeRxsV+d1mtsDnzO34oPcXKVgtKF3XYHBxQfSB4fAaXtxjhKkUYKZ+VeL6zBr5ziaRovlE=
+X-Received: by 2002:a05:651c:1549:b0:25b:d2dc:2e8f with SMTP id
+ y9-20020a05651c154900b0025bd2dc2e8fmr18592708ljp.334.1657013977620; Tue, 05
+ Jul 2022 02:39:37 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
+References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
+ <5606189.DvuYhMxLoT@kreacher> <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
+ <CAHp75Ve-Cm43HhqqxxfmKTbC_Gkx=0aAcj0jJmA=-Nr-NT1FqQ@mail.gmail.com>
+ <CAHp75VdT1YZUQbdHupA2RmucUBSzypcPwKBgSa4=sVQAhC+Vsw@mail.gmail.com>
+ <61fbd71b-9c36-345c-7aed-561b81c34259@huawei.com> <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
+ <df8c0a5d-e950-1726-5d30-80dcc8b20ff9@huawei.com> <CAJZ5v0hv7nm57QrCYX+aX=fVoE0s0BxEpJfz+a8bsPzzSZt7+g@mail.gmail.com>
+ <71dfc3cd-c2ae-8096-9280-67e77c21055e@huawei.com>
+In-Reply-To: <71dfc3cd-c2ae-8096-9280-67e77c21055e@huawei.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 5 Jul 2022 11:38:59 +0200
+Message-ID: <CAHp75VfqJwF4YypH3QE0MRgZAyjEMKche-4czUuiC=aTYoYwig@mail.gmail.com>
 Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+To:     John Garry <john.garry@huawei.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Yang Yingliang <yangyingliang@huawei.com>
-References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
- <5606189.DvuYhMxLoT@kreacher>
- <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
- <CAHp75Ve-Cm43HhqqxxfmKTbC_Gkx=0aAcj0jJmA=-Nr-NT1FqQ@mail.gmail.com>
- <CAHp75VdT1YZUQbdHupA2RmucUBSzypcPwKBgSa4=sVQAhC+Vsw@mail.gmail.com>
- <61fbd71b-9c36-345c-7aed-561b81c34259@huawei.com>
- <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
- <df8c0a5d-e950-1726-5d30-80dcc8b20ff9@huawei.com>
- <CAJZ5v0hv7nm57QrCYX+aX=fVoE0s0BxEpJfz+a8bsPzzSZt7+g@mail.gmail.com>
-From:   John Garry <john.garry@huawei.com>
-In-Reply-To: <CAJZ5v0hv7nm57QrCYX+aX=fVoE0s0BxEpJfz+a8bsPzzSZt7+g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.195.35.180]
-X-ClientProxiedBy: lhreml723-chm.china.huawei.com (10.201.108.74) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 04/07/2022 20:02, Rafael J. Wysocki wrote:
+On Tue, Jul 5, 2022 at 10:37 AM John Garry <john.garry@huawei.com> wrote:
+> On 04/07/2022 20:02, Rafael J. Wysocki wrote:
 
-Hi Rafael,
+...
 
-> I've applied the patch from Yang Yingliang and I thought it would be
-> OK to add your ACK to it based on the conversation so far (please let
-> me know if that's not the case).  Next, I've added my patch rebased on
-> top of it with the tags from you and Greg.
-> 
-> The result is on my bleeding-edge branch:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log/?h=bleeding-edge
-> 
-> and these are the commits in question
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?h=bleeding-edge&id=d674553009afc9b24cab2bbec71628609edbbb27
-> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?h=bleeding-edge&id=54872fea6a5ac967ec2272aea525d1438ac6735a
-> 
-> Please let me know if you see any issues with them.
-> 
+> I gave these a quick test on my board and they look fine.
+>
+> Acked-by: John Garry <john.garry@huawei.com>
 
-I gave these a quick test on my board and they look fine.
+John, I believe now you may send a formal clean up to convert to platform_device
 
-Acked-by: John Garry <john.garry@huawei.com>
-
-> If not, I'll go ahead and move them to my linux-next branch.
-
-Thanks,
-John
+-- 
+With Best Regards,
+Andy Shevchenko
