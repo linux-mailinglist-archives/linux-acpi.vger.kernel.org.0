@@ -2,111 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39D6E5675BE
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 19:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D70D0567601
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 19:53:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232521AbiGERab (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jul 2022 13:30:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50744 "EHLO
+        id S230005AbiGERxA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jul 2022 13:53:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232954AbiGERaR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 13:30:17 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4DAA140FF;
-        Tue,  5 Jul 2022 10:29:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8ABFEB8182F;
-        Tue,  5 Jul 2022 17:29:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5DEC341C7;
-        Tue,  5 Jul 2022 17:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657042172;
-        bh=YWrrUA+ZThEqJgkFRhkW+/fP3qDvkLvBDTNmHnf+Kj0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=V3UNQaCys/fZ8TeQRh+T/nkFart0HNbdzKiF9R4VXHbQeuNVoG/x0s+6Fe+NAUyRl
-         /QNFr6IDn37Doi78svWdWvatIgRJkGtaMmdrEed4EymcJXzjav939BdcBW6ObiI0c9
-         2Aa0uKVZGNj0RnOEjGlbuOBo2bBJ5R3Qi++45uiP5AH+7+ceJDmZrOlajD6mp/CA1x
-         iYIKuwxASCRMR/kxskgbEeEpjFyZeXuYIu13S8cHKeC8jQ1O9p7tMLojasIEB1BKZ+
-         JRHV4j3rMR0k2G2TJt3up7MzKaCjUvRbg1crQi5d8pwvYRKzZmI4gF2jGYxEzCQ3LL
-         PW7yQufXg8jdQ==
-Date:   Tue, 5 Jul 2022 12:29:31 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Pierre Gondois <pierre.gondois@arm.com>
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH RESEND v1 1/2] ACPI/PCI: Make _SRS optional for link
- device
-Message-ID: <20220705172931.GA71865@bhelgaas>
+        with ESMTP id S229591AbiGERw7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 13:52:59 -0400
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 761F519C12;
+        Tue,  5 Jul 2022 10:52:58 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id b85so9928823yba.8;
+        Tue, 05 Jul 2022 10:52:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rtZW43uaFGJ9zjjYWIL3hR7D7c7iNZ58RuAJEx8JrUs=;
+        b=E8KmgTIVCZ8YuVVsrTCc4lS9u0Ji1eDJZ7RORRnbMpJkIJsQ/W9sMOuF4DP8DfmgpG
+         ZaaY652sS0qGhmrzMJBOaakc10tOKiQmKZ1ZlXVAkYWfqlgEM9l56R8/Am2g6JPdacKK
+         Xi/jwmo6pZOtCbzUHymqY7v3E6LUhUei9Fkqrme3F4HaAr84U5uKTKUPcSLKki+zxVUh
+         lMKCX9zm4uMmz2yFp0dq8HXFmtMMeSEW2g00NuWjgmZw80Giwo5c12brwlbg8QFyPRSa
+         DHLaq9KNw3ozTPD7VeKWcUjcbRGsVtmYmDRA5uXIaKeXedjAgdNCV0SzPDAdepC4/0+s
+         aw9Q==
+X-Gm-Message-State: AJIora8Iq8MGU+bfj8WWQHIEc2V+/hufyAQggNOAE80YXzvOVEAbyqhu
+        7NScIdxz5kt1hYXBtfj38OTxWhGeqVcW+4mJVV8Fcb3DOLM=
+X-Google-Smtp-Source: AGRyM1tUkRK6ivdZVYz6eLSLc6jRDky8LL2tfELYNeYotqiIcRDlZFHwuORrn6n29m2di+W4XP3C8c4zym3FIyRXPjY=
+X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
+ z15-20020a25664f000000b0066cd0f436ccmr37116337ybm.482.1657043577315; Tue, 05
+ Jul 2022 10:52:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20220701161624.2844305-1-pierre.gondois@arm.com> <20220701161624.2844305-2-pierre.gondois@arm.com>
 In-Reply-To: <20220701161624.2844305-2-pierre.gondois@arm.com>
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Jul 2022 19:52:46 +0200
+Message-ID: <CAJZ5v0hWm5_zwY9z10dTg4K0Skz-bGc8ABH7C0j_=Vu+Z8zqpQ@mail.gmail.com>
+Subject: Re: [PATCH RESEND v1 1/2] ACPI/PCI: Make _SRS optional for link device
+To:     Pierre Gondois <pierre.gondois@arm.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 01, 2022 at 06:16:23PM +0200, Pierre Gondois wrote:
+On Fri, Jul 1, 2022 at 6:17 PM Pierre Gondois <pierre.gondois@arm.com> wrote:
+>
 > From: Pierre Gondois <Pierre.Gondois@arm.com>
-> 
+>
 > In ACPI 6.4, s6.2.13 "_PRT (PCI Routing Table)", PCI legacy
 > interrupts can be described though a link device (first model).
 > From s6.2.16 "_SRS (Set Resource Settings)":
 > "This optional control method [...]"
-> 
+>
 > Make it optional to have a _SRS method for link devices.
 
-I think it would be helpful to outline the reason for wanting these
-changes in the commit log.  Otherwise we don't know the benefit and
-it's harder to justify making the change since it's not an obvious
-cleanup.
+Note that if _DIS is present, _SRS is necessary to enable the link and
+acpi_pci_link_add() evaluates _DIS for all links.  So you need to
+check both, not just one.
 
-IIRC from [1] there *is* a good reason: you need to use Interrupt Link
-devices so you can specify "level triggered, active high".
+Moreover, it doesn't make much sense to provide _PRS without _SRS and
+arguably _PRS is needed if _SRS is present, so this needs to be taken
+into account too.
 
-Without an Interrupt Link, you would get the default "level triggered,
-active low" setting, which apparently isn't compatible with GICv2.
-
-I assume this fixes a device that previously didn't work correctly,
-but I don't see the details of that in the bugzilla.  I'm a little
-confused about this.  Isn't GICv2 widely used already?  How are things
-working now?  Or are there just a lot of broken devices?
-
-[1] https://lore.kernel.org/r/e2ae06ba-de8f-2cae-60fa-fe9a215d779b@arm.com
+AFAICS, the only valid configuration in which _SRS and _PRS are not
+present is when _DIS is not present too, so only _CRS is present and
+the IRQ listed by it is actually in use.  However, in that case it is
+hardly necessary to add a device object for the PCI link device at
+all.
 
 > Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215560
 > Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
 > ---
 >  drivers/acpi/pci_link.c | 7 +++++++
 >  1 file changed, 7 insertions(+)
-> 
+>
 > diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
 > index 58647051c948..129e3e7e80ee 100644
 > --- a/drivers/acpi/pci_link.c
 > +++ b/drivers/acpi/pci_link.c
 > @@ -288,6 +288,13 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
->  	if (!irq)
->  		return -EINVAL;
->  
-> +	if (!acpi_has_method(handle, METHOD_NAME__SRS)) {
-> +		if (link->irq.active == irq)
-> +			return 0;
-> +		acpi_handle_err(handle, "Unable to set IRQ %d: No _SRS.\n", irq);
-> +		return -ENODEV;
-> +	}
+>         if (!irq)
+>                 return -EINVAL;
+>
+> +       if (!acpi_has_method(handle, METHOD_NAME__SRS)) {
+> +               if (link->irq.active == irq)
+> +                       return 0;
+> +               acpi_handle_err(handle, "Unable to set IRQ %d: No _SRS.\n", irq);
+> +               return -ENODEV;
+> +       }
 > +
->  	resource = kzalloc(sizeof(*resource) + 1, irqs_disabled() ? GFP_ATOMIC: GFP_KERNEL);
->  	if (!resource)
->  		return -ENOMEM;
-> -- 
+>         resource = kzalloc(sizeof(*resource) + 1, irqs_disabled() ? GFP_ATOMIC: GFP_KERNEL);
+>         if (!resource)
+>                 return -ENOMEM;
+> --
 > 2.25.1
-> 
+>
