@@ -2,134 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E78F85663B2
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 09:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7F93566528
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 10:37:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbiGEHEf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jul 2022 03:04:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38208 "EHLO
+        id S230313AbiGEIhh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jul 2022 04:37:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229636AbiGEHEe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 03:04:34 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1CF712AF0;
-        Tue,  5 Jul 2022 00:04:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657004673; x=1688540673;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wv+ihuqMNYfV0YOw4cZgp3e9DiFCWVlHIiwZYlvTD8s=;
-  b=JlkzXZ/GFbYLwqtuCkZyCXYdURcZfuga1NMknFWIHir/1DiWkgoYnbPd
-   rqmnbThB+W4E2QfksMibp0IRJPf6P4K1ZBvswIliEQ5DWxYG3qcIpBhTF
-   vWZURYMVOBPuWhBDVMzXcCtOerQF5CVFqTSF51rTH44W8DAs4T5z/UqSG
-   Q9Q7HBvP4YQyxIbEKHsPYXKGLPRf/ptf3xTRH6RrXPOyK+bAMT5+R8WEk
-   Jmn6+nFmMixkfKrTAjM7VHlULlHn1wkTS827m/1V9T7ntKpxLHCQcZpBM
-   GrVUW86i90Novy1McwPk7Autncq+gFD3TeXfBx4CgaALq8XfuoC+2fyKD
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10398"; a="263063993"
-X-IronPort-AV: E=Sophos;i="5.92,245,1650956400"; 
-   d="scan'208";a="263063993"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2022 00:04:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,245,1650956400"; 
-   d="scan'208";a="619696830"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 05 Jul 2022 00:04:32 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o8cbn-000IpP-2u;
-        Tue, 05 Jul 2022 07:04:31 +0000
-Date:   Tue, 05 Jul 2022 15:03:31 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 5554cbed50ab8807c91451ba6bb292f8668c88f5
-Message-ID: <62c3e243.hCnUAzjERE5kMeqc%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S230302AbiGEIhg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 04:37:36 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46A42DC5;
+        Tue,  5 Jul 2022 01:37:35 -0700 (PDT)
+Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LcbZk5NPfz68916;
+        Tue,  5 Jul 2022 16:34:54 +0800 (CST)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 5 Jul 2022 10:37:33 +0200
+Received: from [10.195.35.180] (10.195.35.180) by
+ lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 5 Jul 2022 09:37:32 +0100
+Message-ID: <71dfc3cd-c2ae-8096-9280-67e77c21055e@huawei.com>
+Date:   Tue, 5 Jul 2022 09:37:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yang Yingliang <yangyingliang@huawei.com>
+References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
+ <5606189.DvuYhMxLoT@kreacher>
+ <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
+ <CAHp75Ve-Cm43HhqqxxfmKTbC_Gkx=0aAcj0jJmA=-Nr-NT1FqQ@mail.gmail.com>
+ <CAHp75VdT1YZUQbdHupA2RmucUBSzypcPwKBgSa4=sVQAhC+Vsw@mail.gmail.com>
+ <61fbd71b-9c36-345c-7aed-561b81c34259@huawei.com>
+ <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
+ <df8c0a5d-e950-1726-5d30-80dcc8b20ff9@huawei.com>
+ <CAJZ5v0hv7nm57QrCYX+aX=fVoE0s0BxEpJfz+a8bsPzzSZt7+g@mail.gmail.com>
+From:   John Garry <john.garry@huawei.com>
+In-Reply-To: <CAJZ5v0hv7nm57QrCYX+aX=fVoE0s0BxEpJfz+a8bsPzzSZt7+g@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Originating-IP: [10.195.35.180]
+X-ClientProxiedBy: lhreml723-chm.china.huawei.com (10.201.108.74) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 5554cbed50ab8807c91451ba6bb292f8668c88f5  Merge branch 'acpi-bus-next' into bleeding-edge
+On 04/07/2022 20:02, Rafael J. Wysocki wrote:
 
-elapsed time: 720m
+Hi Rafael,
 
-configs tested: 52
-configs skipped: 2
+> I've applied the patch from Yang Yingliang and I thought it would be
+> OK to add your ACK to it based on the conversation so far (please let
+> me know if that's not the case).  Next, I've added my patch rebased on
+> top of it with the tags from you and Greg.
+> 
+> The result is on my bleeding-edge branch:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log/?h=bleeding-edge
+> 
+> and these are the commits in question
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?h=bleeding-edge&id=d674553009afc9b24cab2bbec71628609edbbb27
+> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?h=bleeding-edge&id=54872fea6a5ac967ec2272aea525d1438ac6735a
+> 
+> Please let me know if you see any issues with them.
+> 
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I gave these a quick test on my board and they look fine.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-ia64                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                                defconfig
-i386                             allyesconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a016
-i386                          randconfig-a014
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-riscv                randconfig-r042-20220703
-s390                 randconfig-r044-20220703
-arc                  randconfig-r043-20220703
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
+Acked-by: John Garry <john.garry@huawei.com>
 
-clang tested configs:
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-hexagon              randconfig-r045-20220703
-hexagon              randconfig-r041-20220703
+> If not, I'll go ahead and move them to my linux-next branch.
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Thanks,
+John
