@@ -2,61 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A5D5676AF
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 20:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0A585676C4
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 20:45:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231634AbiGESko (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jul 2022 14:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45838 "EHLO
+        id S231874AbiGESp1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jul 2022 14:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229849AbiGESkm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 14:40:42 -0400
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DBFE1EED0;
-        Tue,  5 Jul 2022 11:40:42 -0700 (PDT)
-Received: by mail-yb1-f178.google.com with SMTP id e80so16159611ybb.4;
-        Tue, 05 Jul 2022 11:40:42 -0700 (PDT)
+        with ESMTP id S231181AbiGESp0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 14:45:26 -0400
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064B31C11F;
+        Tue,  5 Jul 2022 11:45:25 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id i14so3693538yba.1;
+        Tue, 05 Jul 2022 11:45:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IqMD43+h/87sPcXJb6GKl/p0e47Kr5belhpvXQpn74s=;
-        b=4oKz4NzIf0rd5c6TetCJQyRSyEqcJ6iJnmhtELdzJcYp3fIHKcIAfd+k1r1IFuCt0A
-         /LEu1oQg2r2J5fmSoXhHPE4fIrviq7xogJY9f13LNVBCVPq+Jgi/EmZsFgFUhtN9aB68
-         0i37lpENNH2NO1hcgOLgR9FS/1Wkbm1/mmpd5OCGSkB6VyNW4Mx3hErx3ad+Ldw8z40h
-         CYL0MOZWVhwRY6p58jo5nbv773uO506zKj3dROiifCxIqMTZDi9ndh/Dh87gXUgUnnAZ
-         3ZgvtDdaEr6nxGySDdUqZ/wZawudZXArFgyjdcRCfpEOAA9wZYDvgHZBegfN33oJNLYx
-         LjAw==
-X-Gm-Message-State: AJIora+JTFNuhW1Ic4IKyaOUxl8KG6i3N/6INyGWnG3ImPmh02G9E2Nl
-        3RDT+tbnp4IHh7ZfK0rcByLvydc/2HdzfOJBZfs=
-X-Google-Smtp-Source: AGRyM1tbU/Q+q1ShqafHYay3V0ImixKEkCcZMfKVWC5BCMMJBAokfuIlMUsuMGcKwepW0ljsXp1WT9XSsRibnwbpG2A=
-X-Received: by 2002:a25:6b50:0:b0:64f:4b33:664 with SMTP id
- o16-20020a256b50000000b0064f4b330664mr41056762ybm.153.1657046441354; Tue, 05
- Jul 2022 11:40:41 -0700 (PDT)
+        bh=2IJa3F4chuHeeOTo8oUJNcMPecHREZFykKcSbqyP2C4=;
+        b=UBtG3OXsFipBmTyXEeF1jnYa3tUrwTz4FCs6p3YdSDSJvHGqIWTr6rFG2hcRtP7SZs
+         pQZhFj1F6kOEcR3K6ijoJrUXAAcL4dEeVK7SUmQZupMwJQMxs0tfbiPFOUa0YVNL/7D5
+         TC5XN4paiEDdn8Qx+bIUmwBzsm2cSkTfde28UzSzU7O4lN2XkzoxKKvpBunWMpJnHIGz
+         TJMiW67HHSS2CuByST+N8UQP0qysncbjoD9BJePCg24G3qpaC1qCJlXfNJagzeNC459k
+         FAqDjuvQf+y/p9KOmEVT5Ri6WPgpJeFEKO4GrOgZ/WZgW1F7KUVMp3hTG9R2dK1zIxac
+         HLOg==
+X-Gm-Message-State: AJIora/2chEuoFrqcBN0emU95XtOW8XxarbqaAhXi14MyoJpo2TbvGuw
+        Y9LYk+PTkX0+MTZK874IYAlYI2vnewen11WS7Tg=
+X-Google-Smtp-Source: AGRyM1v3/TAoUlh/vSdI/8KbANU/81b6OhRkHJO7TopyYQJNhdiSQvywavpjsOHJSgzUP9KxubpmVxa2Uf9mXyNVY4w=
+X-Received: by 2002:a05:6902:50e:b0:66e:7f55:7a66 with SMTP id
+ x14-20020a056902050e00b0066e7f557a66mr3495794ybs.365.1657046724197; Tue, 05
+ Jul 2022 11:45:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220630212819.42958-1-andriy.shevchenko@linux.intel.com> <Yr6KcPlC/3rYAtKE@lahna>
-In-Reply-To: <Yr6KcPlC/3rYAtKE@lahna>
+References: <1656659147-20396-1-git-send-email-TonyWWang-oc@zhaoxin.com>
+In-Reply-To: <1656659147-20396-1-git-send-email-TonyWWang-oc@zhaoxin.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 5 Jul 2022 20:40:30 +0200
-Message-ID: <CAJZ5v0ht6hfaBsifhr=M_htHh6uHohwgcab2dFR5hqq4rO+xFQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/5] ACPI: utils: Introduce acpi_match_video_device_handle()
- helper
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+Date:   Tue, 5 Jul 2022 20:45:13 +0200
+Message-ID: <CAJZ5v0jXZKECfaJ0fqx+Hb5vhaw6uFgOaJD1BxwRUjOfMXMJJQ@mail.gmail.com>
+Subject: Re: [PATCH] x86/cstate: Replace vendor check with X86_FEATURE_MWAIT
+ in ffh_cstate_init
+To:     Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ibm-acpi-devel@lists.sourceforge.net,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-        Mark Gross <markgross@kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        CobeChen@zhaoxin.com, TimGuo@zhaoxin.com, LindaChai@zhaoxin.com,
+        LeoLiu@zhaoxin.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -68,21 +65,52 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 1, 2022 at 7:47 AM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
+On Fri, Jul 1, 2022 at 9:05 AM Tony W Wang-oc <TonyWWang-oc@zhaoxin.com> wrote:
 >
-> Hi Andy,
+> The original commit 991528d73486 ("ACPI: Processor native C-states using
+> MWAIT") has a vendor check for Intel in the function of ffh_cstate_init().
 >
-> On Fri, Jul 01, 2022 at 12:28:15AM +0300, Andy Shevchenko wrote:
-> >  extern long acpi_is_video_device(acpi_handle handle);
-> > +extern bool acpi_match_video_device_handle(acpi_handle handle);
+> Commit 5209654a46ee ("x86/ACPI/cstate: Allow ACPI C1 FFH MWAIT use on AMD
+> systems") and commit 280b68a3b3b9 ("x86/cstate: Allow ACPI C1 FFH MWAIT
+> use on Hygon systems") add vendor check for AMD and HYGON in the function
+> of ffh_cstate_init().
 >
-> I think we can do slightly better here. The only caller of
-> acpi_is_video_device() is in drivers/acpi/video_detect.c so we can move
-> it there and make it static (is_video_device()).
+> Recent Zhaoxin and Centaur CPUs support MONITOR/MWAIT instructions that
+> can be used for ACPI Cx state in the same way as Intel. So expected to
+> add the support of these CPUs in the function of ffh_cstate_init() too.
 >
-> Then we can name this one acpi_is_video_device() instead and in addition
-> make it take struct acpi_device as parameter instead of acpi_handle (I
-> think we should not use acpi_handles in drivers if possible).
+> The CPU feature X86_FEATURE_MWAIT indicates processor supports MONITOR/
+> MWAIT instructions. So the check for many CPU vendors in ffh_cstate_init()
+> is unnecessary, use X86_FEATURE_MWAIT to replace the CPU vendor check.
+>
+> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
 
-Agreed.
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+or please let me know if I'm expected to pick up this one.  Thanks!
+
+
+> ---
+>  arch/x86/kernel/acpi/cstate.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+>
+> diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+> index 7945eae..a64c38f 100644
+> --- a/arch/x86/kernel/acpi/cstate.c
+> +++ b/arch/x86/kernel/acpi/cstate.c
+> @@ -209,11 +209,7 @@ EXPORT_SYMBOL_GPL(acpi_processor_ffh_cstate_enter);
+>
+>  static int __init ffh_cstate_init(void)
+>  {
+> -       struct cpuinfo_x86 *c = &boot_cpu_data;
+> -
+> -       if (c->x86_vendor != X86_VENDOR_INTEL &&
+> -           c->x86_vendor != X86_VENDOR_AMD &&
+> -           c->x86_vendor != X86_VENDOR_HYGON)
+> +       if (!boot_cpu_has(X86_FEATURE_MWAIT))
+>                 return -1;
+>
+>         cpu_cstate_entry = alloc_percpu(struct cstate_entry);
+> --
+> 2.7.4
+>
