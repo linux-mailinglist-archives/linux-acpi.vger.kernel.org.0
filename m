@@ -2,105 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A3456679A
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 12:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16150566803
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 12:30:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231709AbiGEKQP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jul 2022 06:16:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39458 "EHLO
+        id S232494AbiGEKas (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jul 2022 06:30:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231281AbiGEKQO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 06:16:14 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E96EC1400B;
-        Tue,  5 Jul 2022 03:16:12 -0700 (PDT)
-Received: from fraeml738-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LcdmW3817z67sh5;
-        Tue,  5 Jul 2022 18:13:31 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml738-chm.china.huawei.com (10.206.15.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 5 Jul 2022 12:16:10 +0200
-Received: from [10.126.171.232] (10.126.171.232) by
- lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2375.24; Tue, 5 Jul 2022 11:16:09 +0100
-Message-ID: <050e5a2f-42b9-f851-ec6e-e2a9d3fdbe1c@huawei.com>
-Date:   Tue, 5 Jul 2022 11:16:08 +0100
+        with ESMTP id S232126AbiGEKa3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 06:30:29 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D50A15833;
+        Tue,  5 Jul 2022 03:30:06 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-31caffa4a45so32519027b3.3;
+        Tue, 05 Jul 2022 03:30:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8etHjP9NB2AEzDxGeqW3akKDdSo8OiEzz0+PEyCVcMI=;
+        b=e40iovbVTXulHSh0GwhgN51kUXvZf4ISbfavw4qKV94xUm+8MdOKNcXq/EgWgUz5d8
+         BD9EyVlmIknBG+DOhCFTczbbpElxqDUOMAzRaYlQ/pZMcBzj/jxiol+KMxiZcTLPfg7c
+         ZSXMeNy/Qb9z+thnamxGnmOMNtjZjqVMe6cWnldkEVYUJCDsX2I5OFpcznriK+CYWnai
+         sHVEJ7MEzYL2DTIbWgf2sOjWZbIergf3EfBxrnlmQHSJdodopzgkUckqGOlv+TqU86b5
+         sHpK0dSod4Ah58nnOOLL9RCjIfXqBGQQM/TGTCUWW/eZHrx39k7vN3f+Et5P9czC6hRv
+         dKZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8etHjP9NB2AEzDxGeqW3akKDdSo8OiEzz0+PEyCVcMI=;
+        b=aZjztgCWoafc7LeggEXjSppc9SuNVDbqOnvy+65zEirRE1oTol9paAbXCNe2mEdtRN
+         BFM+0lTkWzo5I0L5Rb7aDwaj/ZsPGDrcA7Y8bATjg+iyUcZJSjvp97O6dfSoMZdeICmg
+         o/IjoJI/H6G0I4ZvcDdsuRjnZD4jDSQ/HeUSAs1QSpiaToUjny+xbCUM9LfzntHmMszE
+         yf0K6214Y57Q9DQDGVsfyG3pdsSNmXvh1kaVU1L5091B2jjXIXXnXW69e5oPzekSr2wp
+         tA+ZaBchXWF7e808GumuU3xibUqVNiQRAHiWGDGjF0pIXVJ8JaSBFwWYloOIMgUGfwln
+         bIKQ==
+X-Gm-Message-State: AJIora9N79klqOmt5kIxmHGBsJm7rmVKWhXmt58l10QMiXCKNDt5jJIY
+        eZSoWJRyZPKtguRDSACSM96hdzYmujdy+SlJNZI=
+X-Google-Smtp-Source: AGRyM1u4An9CGm86TWkOCZ6rN+Gp+qniI7fES8Od55cX8SpJNJq4/vULFL0zRs0viV5Xdm7bnUQc5liTVBX8LGJ601I=
+X-Received: by 2002:a81:3984:0:b0:31c:b59e:a899 with SMTP id
+ g126-20020a813984000000b0031cb59ea899mr6131611ywa.195.1657017005324; Tue, 05
+ Jul 2022 03:30:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
+References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
+ <5606189.DvuYhMxLoT@kreacher> <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
+ <CAHp75Ve-Cm43HhqqxxfmKTbC_Gkx=0aAcj0jJmA=-Nr-NT1FqQ@mail.gmail.com>
+ <CAHp75VdT1YZUQbdHupA2RmucUBSzypcPwKBgSa4=sVQAhC+Vsw@mail.gmail.com>
+ <61fbd71b-9c36-345c-7aed-561b81c34259@huawei.com> <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
+ <df8c0a5d-e950-1726-5d30-80dcc8b20ff9@huawei.com> <CAJZ5v0hv7nm57QrCYX+aX=fVoE0s0BxEpJfz+a8bsPzzSZt7+g@mail.gmail.com>
+ <71dfc3cd-c2ae-8096-9280-67e77c21055e@huawei.com> <CAHp75VfqJwF4YypH3QE0MRgZAyjEMKche-4czUuiC=aTYoYwig@mail.gmail.com>
+ <CAHp75VfpQfBYD-AmVhbxm4tp_1EVv8xqCChYpuuRKOC=P_Y_og@mail.gmail.com> <050e5a2f-42b9-f851-ec6e-e2a9d3fdbe1c@huawei.com>
+In-Reply-To: <050e5a2f-42b9-f851-ec6e-e2a9d3fdbe1c@huawei.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 5 Jul 2022 12:29:27 +0200
+Message-ID: <CAHp75VfQDtvUbOYvjXsCg9q62iHwc-SwqZ+XD2yiJe=o12c9xA@mail.gmail.com>
 Subject: Re: [PATCH v3] hisi_lpc: Use acpi_dev_for_each_child()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
+To:     John Garry <john.garry@huawei.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Yang Yingliang <yangyingliang@huawei.com>
-References: <12026357.O9o76ZdvQC@kreacher> <2657553.mvXUDI8C0e@kreacher>
- <5606189.DvuYhMxLoT@kreacher>
- <e9666883-3285-36a6-6278-ace219b88f3c@huawei.com>
- <CAHp75Ve-Cm43HhqqxxfmKTbC_Gkx=0aAcj0jJmA=-Nr-NT1FqQ@mail.gmail.com>
- <CAHp75VdT1YZUQbdHupA2RmucUBSzypcPwKBgSa4=sVQAhC+Vsw@mail.gmail.com>
- <61fbd71b-9c36-345c-7aed-561b81c34259@huawei.com>
- <CAHp75VdxaBG8Sj3j7Wa7BrZOrn1j2eAtJMw0N8z255HwMSohYw@mail.gmail.com>
- <df8c0a5d-e950-1726-5d30-80dcc8b20ff9@huawei.com>
- <CAJZ5v0hv7nm57QrCYX+aX=fVoE0s0BxEpJfz+a8bsPzzSZt7+g@mail.gmail.com>
- <71dfc3cd-c2ae-8096-9280-67e77c21055e@huawei.com>
- <CAHp75VfqJwF4YypH3QE0MRgZAyjEMKche-4czUuiC=aTYoYwig@mail.gmail.com>
- <CAHp75VfpQfBYD-AmVhbxm4tp_1EVv8xqCChYpuuRKOC=P_Y_og@mail.gmail.com>
-From:   John Garry <john.garry@huawei.com>
-In-Reply-To: <CAHp75VfpQfBYD-AmVhbxm4tp_1EVv8xqCChYpuuRKOC=P_Y_og@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.126.171.232]
-X-ClientProxiedBy: lhreml703-chm.china.huawei.com (10.201.108.52) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 05/07/2022 10:39, Andy Shevchenko wrote:
-> On Tue, Jul 5, 2022 at 11:38 AM Andy Shevchenko
-> <andy.shevchenko@gmail.com>  wrote:
->> On Tue, Jul 5, 2022 at 10:37 AM John Garry<john.garry@huawei.com>  wrote:
->>> On 04/07/2022 20:02, Rafael J. Wysocki wrote:
->> ...
->>
->>> I gave these a quick test on my board and they look fine.
->>>
->>> Acked-by: John Garry<john.garry@huawei.com>
->> John, I believe now you may send a formal clean up to convert to platform_device
-> Hit Enter too early:-)
-> 
-> ...to platform_device_register_full().
+On Tue, Jul 5, 2022 at 12:16 PM John Garry <john.garry@huawei.com> wrote:
+> On 05/07/2022 10:39, Andy Shevchenko wrote:
+> > On Tue, Jul 5, 2022 at 11:38 AM Andy Shevchenko
+> > <andy.shevchenko@gmail.com>  wrote:
+> >> On Tue, Jul 5, 2022 at 10:37 AM John Garry<john.garry@huawei.com>  wrote:
 
-Sure, I can look at that now. But I just found where we previously 
-mentioned the possibility of factoring out some of the ACPI platform 
-device creation code:
+...
 
-https://lore.kernel.org/linux-acpi/CAHp75VfOa5pN4MKT-aQmWBwPGWsOaQupyfrN-weWwfR3vMLtuA@mail.gmail.com/
+> >> John, I believe now you may send a formal clean up to convert to platform_device
+> > Hit Enter too early:-)
+> >
+> > ...to platform_device_register_full().
+>
+> Sure, I can look at that now. But I just found where we previously
+> mentioned the possibility of factoring out some of the ACPI platform
+> device creation code:
+>
+> https://lore.kernel.org/linux-acpi/CAHp75VfOa5pN4MKT-aQmWBwPGWsOaQupyfrN-weWwfR3vMLtuA@mail.gmail.com/
+>
+> There is actually still a comment in the hisi_lpc driver - I should have
+> checked there first :)
+>
+> So my impression is that the hisi_lpc code is almost the same in
+> acpi_create_platform_device(), apart from we need do the resource fixup
+> in hisi_lpc_acpi_set_io_res().
+>
+> So we could factor out by dividing acpi_create_platform_device() into 2x
+> parts: resource get and then platform dev create. But that does not seem
+> wise as we have 2x parts which don't make sense on their own. Or else
+> pass a fixup callback into acpi_create_platform_device(). Any other
+> ideas if we want to go this way?
 
-There is actually still a comment in the hisi_lpc driver - I should have 
-checked there first :)
+I prefer having an ops or so structure where you can pass ->fixup()
+and/or ->xlate() function, Btw, it looks like the code in hisi_lpc
+needs a lot of cleanups.
 
-So my impression is that the hisi_lpc code is almost the same in 
-acpi_create_platform_device(), apart from we need do the resource fixup 
-in hisi_lpc_acpi_set_io_res().
-
-So we could factor out by dividing acpi_create_platform_device() into 2x 
-parts: resource get and then platform dev create. But that does not seem 
-wise as we have 2x parts which don't make sense on their own. Or else 
-pass a fixup callback into acpi_create_platform_device(). Any other 
-ideas if we want to go this way?
-
-Thanks,
-John
+-- 
+With Best Regards,
+Andy Shevchenko
