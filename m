@@ -2,54 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04286567659
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 20:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E0CE567664
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Jul 2022 20:27:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231631AbiGESY1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jul 2022 14:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60934 "EHLO
+        id S230013AbiGES1d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jul 2022 14:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231488AbiGESY0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 14:24:26 -0400
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 595DC15FE6;
-        Tue,  5 Jul 2022 11:24:25 -0700 (PDT)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-31c89111f23so67332417b3.0;
-        Tue, 05 Jul 2022 11:24:25 -0700 (PDT)
+        with ESMTP id S229866AbiGES1c (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 14:27:32 -0400
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BE319C11;
+        Tue,  5 Jul 2022 11:27:31 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-31c8a1e9e33so65425277b3.5;
+        Tue, 05 Jul 2022 11:27:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5DQkzNjQz/4vp49g3ADoI4xuDSB+9/8InZKErLv94+w=;
-        b=O7WkMavd7fF5Pv606dCSyNP6CoHYNZKuX+w/PHgGG2wJrKnJExOHHMyBuoyiH38OMd
-         reSfSMdkR5smH2kq48bF/+4+nR5cU/wIzJMRedJ76Hf1nbbPJatxxDI9YB3a/efvblrk
-         0OasRrnioNmrvQ7W605qQ7hqwyLgN35dkNIMNGPRj1PuOtxzHKYu2HLXunwAZDNaXGIg
-         qiCYFj1fA4z1GAsV3BErLKUjVBpVEb1gcYq4iOD2xdJ1m1n99KLUvbL7fhS/SGwXcBfD
-         KpT7ps9HPOWK0tAeWwCx/qMY9gaMDTqa1YTPMlEP4/gHbiBsfuPqNsIwym/MhYiRXHap
-         mwwg==
-X-Gm-Message-State: AJIora/+77X+ZhCn3bm9fX+J09WQtlycJJWCUf3vmXyGL9JC24AIkYlq
-        qVoftxtFDBMMQ9vjPnCdoITPXi/Mxs6aADJiNBy347EQ
-X-Google-Smtp-Source: AGRyM1s3MQGk1vxHUO+TD8bguf5JMzaxg/BOkmuaYjhh5D61R/nmIjIU2pqJVOu5QP6y0MBByRRXJlJyG9OA+KSnpvU=
-X-Received: by 2002:a81:a184:0:b0:31c:b00e:b5c4 with SMTP id
- y126-20020a81a184000000b0031cb00eb5c4mr10080903ywg.149.1657045464483; Tue, 05
- Jul 2022 11:24:24 -0700 (PDT)
+        bh=yDaZJQ1t7WZXHXc1sh5v+s4p6BMcgf4NLI5GY92Hi9Y=;
+        b=YsLj+FjEE1wSWWBoTPNMdiuwSAUjEG2B/SFnSxUDY3eE2cXGua+WJo1hRfPvizR+Z+
+         hE7QY+UA5krJBwM4vffjArMX6jOsQI7uZ0iZZPFQKr3tvyfOk1156Rft/RnTM9NZynHW
+         GPNmCILG0L0rdE5N0NWs8Om7Pr+UkByWS9tdbxgBwq0QBsu3oGSNs46JTPXnLBAv3If6
+         ozw4wR0fflfR1lADEh0++0d6le0Ayjmot/fzAIdpFdffTuIzrPPaGs8Pm2n+xaiiKOyU
+         I+XvVwfOPrD0KibIzRYsRZL2dpJmZog6WuhQeWWdcHg12ZAmLRTLSNZ4OhnkixZLw6kk
+         AyiA==
+X-Gm-Message-State: AJIora8YulmCp9WZuQp84ruYVqewIxoT6dbjpFkS8OsvLtuYS2aSPtQ9
+        UyQrhjXKkBaPHykD3n96KwQhg39Zw/4j9BfmQbE=
+X-Google-Smtp-Source: AGRyM1s2QEn+mZPivlKtPrgixQUmIChTU4gw5ikon89zd7049nfH/7sTVF3gtghrOQrMUchoZ2CX/5thIM3o6KDInik=
+X-Received: by 2002:a0d:d8c8:0:b0:31c:92b1:5dec with SMTP id
+ a191-20020a0dd8c8000000b0031c92b15decmr14867269ywe.19.1657045650713; Tue, 05
+ Jul 2022 11:27:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220630022317.15734-1-gch981213@gmail.com> <b84edc24-0a3a-a4d2-6481-fb3d4cee6dda@amd.com>
- <CAJsYDVL=fgExYdw3JB-59rCwOqTbSt2N0Xw2WCmoTSzOQEMRRg@mail.gmail.com>
-In-Reply-To: <CAJsYDVL=fgExYdw3JB-59rCwOqTbSt2N0Xw2WCmoTSzOQEMRRg@mail.gmail.com>
+References: <20220630094059.1204283-1-eric.auger@redhat.com> <Yr1z2gC0+8zbzpFf@myrica>
+In-Reply-To: <Yr1z2gC0+8zbzpFf@myrica>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 5 Jul 2022 20:24:13 +0200
-Message-ID: <CAJZ5v0g7JOcYTwwLxPws38abn_EVGjG0+QY9E+qpM=guhF11tA@mail.gmail.com>
-Subject: Re: [PATCH v5] ACPI: skip IRQ1 override on 3 Ryzen 6000 laptops
-To:     Chuanhong Guo <gch981213@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
+Date:   Tue, 5 Jul 2022 20:27:19 +0200
+Message-ID: <CAJZ5v0hqcUUTVzkHxGr9pB5G-T5ye5g_=DQVO6L347DpXipwOg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: VIOT: Fix ACS setup
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Eric Auger <eric.auger@redhat.com>
+Cc:     eric.auger.pro@gmail.com, Joerg Roedel <jroedel@suse.de>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>,
-        Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        Kent Hou Man <knthmn0@gmail.com>,
+        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        iommu@lists.linux.dev, jinl@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -61,31 +60,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 1, 2022 at 2:45 PM Chuanhong Guo <gch981213@gmail.com> wrote:
+On Thu, Jun 30, 2022 at 11:59 AM Jean-Philippe Brucker
+<jean-philippe@linaro.org> wrote:
 >
-> On Fri, Jul 1, 2022 at 4:12 AM Limonciello, Mario
-> <mario.limonciello@amd.com> wrote:
-> > However I do want to point out that Windows doesn't care about legacy
-> > format or not.  This bug where keyboard doesn't work only popped up on
-> > Linux.
+> On Thu, Jun 30, 2022 at 11:40:59AM +0200, Eric Auger wrote:
+> > Currently acpi_viot_init() gets called after the pci
+> > device has been scanned and pci_enable_acs() has been called.
+> > So pci_request_acs() fails to be taken into account leading
+> > to wrong single iommu group topologies when dealing with
+> > multi-function root ports for instance.
 > >
-> > Given the number of systems with the bug is appearing to grow I wonder
-> > if the right answer is actually a new heuristic that doesn't apply the
-> > kernel override for polarity inversion anymore.  Maybe if the system is
-> > 2022 or newer?  Or on the ACPI version?
+> > We cannot simply move the acpi_viot_init() earlier, similarly
+> > as the IORT init because the VIOT parsing relies on the pci
+> > scan. However we can detect VIOT is present earlier and in
+> > such a case, request ACS. Introduce a new acpi_viot_early_init()
+> > routine that allows to call pci_request_acs() before the scan.
+> >
+> > While at it, guard the call to pci_request_acs() with #ifdef
+> > CONFIG_PCI.
+> >
+> > Fixes: 3cf485540e7b ("ACPI: Add driver for the VIOT table")
+> > Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> > Reported-by: Jin Liu <jinl@redhat.com>
 >
-> The previous attempt to limit the scope of IRQ override ends up
-> breaking some other buggy devices:
-> https://patchwork.kernel.org/project/linux-acpi/patch/20210728151958.15205-1-hui.wang@canonical.com/
->
-> It's unfortunate that the original author of this IRQ override doesn't
-> limit the scope to their exact devices.
->
-> Hi, Rafael! What do you think? should we skip this IRQ override
-> one-by-one or add a different matching logic to check the bios date
-> instead?
+> Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-It would be better to find something precise enough to identify the
-machines in question without pulling in the others and use that for
-skipping the override instead of listing them all one by one in the
-blocklist.
+Applied as 5.20 material, thanks!
