@@ -2,125 +2,212 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D93B569333
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Jul 2022 22:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3BED56934B
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Jul 2022 22:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234390AbiGFUVh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Jul 2022 16:21:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60388 "EHLO
+        id S234045AbiGFU0c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Jul 2022 16:26:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231916AbiGFUVh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Jul 2022 16:21:37 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD6020F77;
-        Wed,  6 Jul 2022 13:21:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2D2CFB81ECC;
-        Wed,  6 Jul 2022 20:21:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93301C341C0;
-        Wed,  6 Jul 2022 20:21:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657138893;
-        bh=gOcE8HPlzWbrrVF7KpH0louwUHrwrtqqE+BWqbjxFQg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=SPWDMNZbK0/XjRSnLQOxqLWkLpqI/1rDlyOvfopFPr/oagPQAbxHsApeJAjQGKPvY
-         mWJ9UoUz0D0URe53P+Rsy0Aj8v8exukL0e3cGmwCS/fkTBCRffl69ZNE/yHeQmvYMN
-         TbhdJpEX8hHIAUPJMZMg+A6/A5vmttfMObCxsZZoLYf3wJloH4cZLJSxBgiwHZaFdG
-         BtuUEuJ5motTuKyZp20CNwuHiBBu4eOwJ+O79oE3ljhP9eyVNpzvnC22l5kvrNJpEd
-         3yt1CNi04owS5mOaTyM6J4kSV9fVMMqmV0T57BLo4YvaxftGXT4YzIAx+uko9iZeO4
-         +dyzDVuUMKHNw==
-Date:   Wed, 6 Jul 2022 15:21:31 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Pierre Gondois <pierre.gondois@arm.com>
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH RESEND v1 1/2] ACPI/PCI: Make _SRS optional for link
- device
-Message-ID: <20220706202131.GA218207@bhelgaas>
+        with ESMTP id S233610AbiGFU03 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Jul 2022 16:26:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7A41A18E04
+        for <linux-acpi@vger.kernel.org>; Wed,  6 Jul 2022 13:26:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1657139187;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4Hwo8z020LeTeWlRuuo4HAd1S0dCDtVbRtMDTaTwRBo=;
+        b=ejeK9DIOX3xVaqkEeI9e5HLAq/TLWpQZ0AQmh6HGOTclj8fGJLl++UtaDkQaYrPrElPUUl
+        mHGia1zfc88GpiC7wUzr4SOGG0nzqd5M1tRNFmG4eob4D+J3ufD735xuoeHz2iaC6XJ5sA
+        ngQBl/hJZxNx2A0N0PQlK9QrwCzzZuc=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-581-4-KKQg0VN0qdV3V2xyYb6Q-1; Wed, 06 Jul 2022 16:26:26 -0400
+X-MC-Unique: 4-KKQg0VN0qdV3V2xyYb6Q-1
+Received: by mail-ed1-f70.google.com with SMTP id x8-20020a056402414800b0042d8498f50aso12491625eda.23
+        for <linux-acpi@vger.kernel.org>; Wed, 06 Jul 2022 13:26:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=4Hwo8z020LeTeWlRuuo4HAd1S0dCDtVbRtMDTaTwRBo=;
+        b=Mitk25Bnv+isSo6/SoNgiOUu77cnjZrlv3yQRxn1dcrQ06DhP6m+fUtwEbwh7HtUI1
+         kFx4GUrxVZUz5kFEvC5E4ghvdUyFHSri6/8dMLKL/y6KVX2L44Gp5aEzGOAgc1OAaSvS
+         K50umf6bLxam0iB+c1Mpo1aHxXaqOoM22PG9vq87fAbSsLarT3EKIkibrazuF8RbLzhS
+         FcGIG+5+O+KvJhx6y91yVOy1K3pnTYsnCsL0TnmClTrlA+exQlu9Q1ldoqO9tczN+Ez6
+         DZ+BaZmggf6A2ly0BbGlGsrrBp6quc5IE97w8dAbclhqLRvJuAJsEACkReHoMSDSBN3K
+         izKg==
+X-Gm-Message-State: AJIora9rab6BOKFjqjczl5581TST2ugOxDGZYFEe60oo3ct6MEPd49jI
+        3C6795MzBGJ6T+ztf/SI9Em96+J21dYPW0p3tSMxVBJTIOtSf+i9HR3lixTFj8BTkeDkxojx+Wn
+        41G358o8MqRZHwj/x2GQPHw==
+X-Received: by 2002:a17:907:6d1e:b0:726:abf9:cb90 with SMTP id sa30-20020a1709076d1e00b00726abf9cb90mr39141420ejc.685.1657139185174;
+        Wed, 06 Jul 2022 13:26:25 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1stSh0sgO2t5SPZoQVNYoYGxZ7B79qOA1aObb55Rkl5ftoOw1kl+bnhUEKWqBDT9am0abeQRQ==
+X-Received: by 2002:a17:907:6d1e:b0:726:abf9:cb90 with SMTP id sa30-20020a1709076d1e00b00726abf9cb90mr39141402ejc.685.1657139184895;
+        Wed, 06 Jul 2022 13:26:24 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id bm4-20020a0564020b0400b0043a8f40a038sm1770337edb.93.2022.07.06.13.26.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Jul 2022 13:26:24 -0700 (PDT)
+Message-ID: <be219334-456f-c2f1-7102-4a3b01e8cd59@redhat.com>
+Date:   Wed, 6 Jul 2022 22:26:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <35de3948-d8f2-c2da-05f9-995eecf275ce@arm.com>
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [RFC][PATCH] ACPI: EC: Make evaluate acpi_ec_add() _REG for EC
+ operation regions
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>
+References: <5592689.DvuYhMxLoT@kreacher>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <5592689.DvuYhMxLoT@kreacher>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 06, 2022 at 11:52:56AM +0200, Pierre Gondois wrote:
-> On 7/5/22 19:29, Bjorn Helgaas wrote:
-> > On Fri, Jul 01, 2022 at 06:16:23PM +0200, Pierre Gondois wrote:
-> > > From: Pierre Gondois <Pierre.Gondois@arm.com>
-> > > 
-> > > In ACPI 6.4, s6.2.13 "_PRT (PCI Routing Table)", PCI legacy
-> > > interrupts can be described though a link device (first model).
-> > >  From s6.2.16 "_SRS (Set Resource Settings)":
-> > > "This optional control method [...]"
-> > > 
-> > > Make it optional to have a _SRS method for link devices.
-> > 
-> > I think it would be helpful to outline the reason for wanting these
-> > changes in the commit log.  Otherwise we don't know the benefit and
-> > it's harder to justify making the change since it's not an obvious
-> > cleanup.
-> > 
-> > IIRC from [1] there *is* a good reason: you need to use Interrupt Link
-> > devices so you can specify "level triggered, active high".
-> > 
-> > Without an Interrupt Link, you would get the default "level triggered,
-> > active low" setting, which apparently isn't compatible with GICv2.
-> > 
-> > I assume this fixes a device that previously didn't work correctly,
-> > but I don't see the details of that in the bugzilla.  I'm a little
-> > confused about this.  Isn't GICv2 widely used already?  How are things
-> > working now?  Or are there just a lot of broken devices?
-> 
-> It was unsure which of the 2 models described in ACPI 6.4, s6.2.13
-> "_PRT (PCI Routing Table)" would be used for UEFI for kvmtool.
-> 
-> Remainder:
-> The first model allows to accurately describe interrupts: level/edge
-> triggered and active high/low. Interrupts are also configurable with
-> _CRS/_PRS/_SRS/_DIS methods
-> The second model allows to describe hardwired interrupts, and are
-> by default level triggered, active low.
-> 
-> The kernel is aware that GivV2 interrupts are active high, so there
-> was actually no need to accurately describe them. Thus the second
-> model was used.
-> While experimenting, we temporarily had a configuration using
-> the first model, and only had a _CRS method (no _PRS/_SRS), which
-> triggered some warnings.
+Hi,
 
-OK, thanks.  So it sounds like there is some existing kernel code that
-special-cases GICv2 interrupts to make them level/high, and that code
-would not have been necessary if _PRS/_SRS had been optional from the
-beginning.
-
-I don't think we could ever *remove* that code because there's
-firmware in the field that relies on it, and that firmware will never
-be updated.
-
-> So these patches are not fixes for existing platforms, but merely
-> to make _PRS/_SRS methods optional.
+On 7/6/22 14:37, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> In [1] I said I would submit patches to change that. If you think
-> this is not necessary as the configuration is non-existing, I am
-> perfectly fine to drop the patches.
+> acpi_ec_ecdt_probe() is called between acpi_load_tables() and
+> acpi_enable_subsystem().  It passes ACPI_ROOT_OBJECT as ec->handle
+> to acpi_ec_setup() and so ACPI_ROOT_OBJECT is passed to
+> acpi_install_address_space_handler() via ec_install_handlers().
 > 
-> Also as Rafael noted, the _DIS method should also be taken into
-> consideration if _PRS/_SRS are made optional.
+> Next, acpi_ns_validate_handle() converts it to acpi_gbl_root_node
+> which is passed to acpi_ev_install_space_handler() and the handler is
+> installed for acpi_gbl_root_node.
+> 
+> Now, acpi_gbl_root_node is passed to acpi_ev_execute_reg_methods() which
+> evaluates _REG for any ACPI_ADR_SPACE_EC regions it can find in the
+> namespace which should not be necessary, because the OS is expected to
+> make the ECDT operation regions available before evaluating any AML, so
+> in particular AML is not expected to check the evaluation of _REG before
+> it accesses these operation regions (see ACPI 6.4, Section 6.5.4,
+> exception 2 [1]).  Doing that is also problematic, because the _REG
+> methods for the ACPI_ADR_SPACE_EC regions may depend on various _INI, so
+> they should be be evaluated before running acpi_initialize_objects() [2].
+> 
+> Address this problem by modifying acpi_install_address_space_handler()
+> to avoid evaluating _REG for ACPI_ADR_SPACE_EC regions when the handler
+> is installed for acpi_gbl_root_node which indicates the ECDT case.
+> 
+> However, this needs to be accompanied by an EC driver change to
+> actually trigger the evaluation of _REG for the ACPI_ADR_SPACE_EC
+> regions when it finds the EC object in the namespace.
+> 
+> Link: https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#reg-region # [1]
+> Link: https://github.com/acpica/acpica/pull/786 # [2]
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> 
+> Note: This change doesn't make any practical difference on any of the systems
+> in my office.
+> 
+> ---
+>  drivers/acpi/acpica/evxfregn.c |   12 ++++++++++++
+>  drivers/acpi/ec.c              |    7 +++++++
+>  2 files changed, 19 insertions(+)
+> 
+> Index: linux-pm/drivers/acpi/ec.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/ec.c
+> +++ linux-pm/drivers/acpi/ec.c
+> @@ -1632,6 +1632,13 @@ static int acpi_ec_add(struct acpi_devic
+>  			acpi_handle_debug(ec->handle, "duplicated.\n");
+>  			acpi_ec_free(ec);
+>  			ec = boot_ec;
+> +			/*
+> +			 * Uninstall the EC address space handler and let
+> +			 * acpi_ec_setup() install it again along with
+> +			 * evaluating _REG methogs associated with
+> +			 * ACPI_ADR_SPACE_EC operation regions.
+> +			 */
+> +			ec_remove_handlers(ec);
 
-But that said, I'm not opposed to making _PRS/_SRS optional if that
-makes legal and reasonable _PRT descriptions work, and if all the
-considerations Rafael mentioned are taken care of.
+This will call the _REG method to get called with ACPI_REG_DISCONNECT (0)
+as second argument which may lead to unexpected consequences so I'm not
+in favor of doing things this way.
 
-Bjorn
+IMHO it would be much better to instead have flags; or if flags are
+disliked a separate function to only call _REG later on.
+
+>  		}
+>  	}
+>  
+> Index: linux-pm/drivers/acpi/acpica/evxfregn.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/acpica/evxfregn.c
+> +++ linux-pm/drivers/acpi/acpica/evxfregn.c
+> @@ -78,6 +78,18 @@ acpi_install_address_space_handler(acpi_
+>  		goto unlock_and_exit;
+>  	}
+>  
+> +	/*
+> +	 * Avoid evaluating _REG methods if an EC address space handler is
+> +	 * installed for acpi_gbl_root_node, because this is done in order to
+> +	 * make Embedded Controller operation regions, accessed via the Embedded
+> +	 * Controllers described in ECDT, available early (see ACPI 6.4, Section
+> +	 * 6.5.4, exception 2).
+> +	 */
+> +
+> +	if (node == acpi_gbl_root_node || space_id == ACPI_ADR_SPACE_EC) {
+> +		goto unlock_and_exit;
+> +	}
+> +
+
+Hmm, I like this in that it is KISS. But OTOH this does mean that
+acpi_install_address_space_handler() now behaves differently depending on its
+parameters in a possibly surprising way. So IMHO this feels a bit too clever
+for our own good, since it may surprise the callers of this function.
+
+My biggest problem is, that as indicated above I believe that instead
+of uninstalling + re-installing the handler we really need to have a way
+to just call _REG later; and that in turn requires the caller to know if
+_REG has run or not.
+
+I've posted a new RFC patch series which adds flags to
+acpi_install_address_space_handler() to not run / only run _REG :
+
+https://lore.kernel.org/linux-acpi/20220706201410.88244-1-hdegoede@redhat.com/
+
+this then gets used in the drivers/acpi/ec.c patch to defer calling _REG when
+registering the handler based on the ECDT until the DSDT EC entry is parsed.
+I personally like how this turns out and IMHO this is cleaner (less hackish)
+then the proposed solution with calling ec_remove_handlers(ec) :
+
+https://lore.kernel.org/linux-acpi/20220706201410.88244-3-hdegoede@redhat.com/
+
+Regards,
+
+Hans
+
+
+
+
+
+
+>  	/* Run all _REG methods for this address space */
+>  
+>  	acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
+> 
+> 
+> 
+
