@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6C3567B90
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Jul 2022 03:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55865567BA4
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Jul 2022 03:44:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230099AbiGFBe3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Jul 2022 21:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37416 "EHLO
+        id S230079AbiGFBo0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Jul 2022 21:44:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230060AbiGFBe3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 21:34:29 -0400
+        with ESMTP id S229492AbiGFBo0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Jul 2022 21:44:26 -0400
 Received: from mail.nfschina.com (unknown [IPv6:2400:dd01:100f:2:72e2:84ff:fe10:5f45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0BCD0101D8;
-        Tue,  5 Jul 2022 18:34:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 71AE9A471;
+        Tue,  5 Jul 2022 18:44:25 -0700 (PDT)
 Received: from localhost (unknown [127.0.0.1])
-        by mail.nfschina.com (Postfix) with ESMTP id 36C5F1E80D40;
-        Wed,  6 Jul 2022 09:32:17 +0800 (CST)
+        by mail.nfschina.com (Postfix) with ESMTP id 878A61E80D92;
+        Wed,  6 Jul 2022 09:42:14 +0800 (CST)
 X-Virus-Scanned: amavisd-new at test.com
 Received: from mail.nfschina.com ([127.0.0.1])
         by localhost (mail.nfschina.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 1880IgI1VR-9; Wed,  6 Jul 2022 09:32:14 +0800 (CST)
+        with ESMTP id 4SKAl-4QP284; Wed,  6 Jul 2022 09:42:12 +0800 (CST)
 Received: from node1.localdomain (unknown [219.141.250.2])
         (Authenticated sender: zeming@nfschina.com)
-        by mail.nfschina.com (Postfix) with ESMTPA id 8789F1E80CDE;
-        Wed,  6 Jul 2022 09:32:14 +0800 (CST)
+        by mail.nfschina.com (Postfix) with ESMTPA id D01CE1E80D40;
+        Wed,  6 Jul 2022 09:42:11 +0800 (CST)
 From:   Li zeming <zeming@nfschina.com>
 To:     rafael@kernel.org, lenb@kernel.org
 Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel@nfschina.com, Li zeming <zeming@nfschina.com>
-Subject: [PATCH] acpi/sbshc: Add header file macro definition
-Date:   Wed,  6 Jul 2022 09:32:22 +0800
-Message-Id: <20220706013222.5323-1-zeming@nfschina.com>
+Subject: [PATCH] acpi/sleep: Add header file macro definition
+Date:   Wed,  6 Jul 2022 09:44:04 +0800
+Message-Id: <20220706014404.3191-1-zeming@nfschina.com>
 X-Mailer: git-send-email 2.18.2
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
@@ -46,25 +46,25 @@ Add header file macro definition.
 
 Signed-off-by: Li zeming <zeming@nfschina.com>
 ---
- drivers/acpi/sbshc.h | 4 ++++
+ drivers/acpi/sleep.h | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/acpi/sbshc.h b/drivers/acpi/sbshc.h
-index 695c390e2884..22b11a1655d2 100644
---- a/drivers/acpi/sbshc.h
-+++ b/drivers/acpi/sbshc.h
-@@ -1,4 +1,7 @@
+diff --git a/drivers/acpi/sleep.h b/drivers/acpi/sleep.h
+index 7fe41ee489d6..adb3b5c13f90 100644
+--- a/drivers/acpi/sleep.h
++++ b/drivers/acpi/sleep.h
+@@ -1,4 +1,6 @@
  /* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _SBSHC_H
-+#define _SBSHC_H
++#ifndef _SLEEP_H
++#define _SLEEP_H
+ 
+ extern void acpi_enable_wakeup_devices(u8 sleep_state);
+ extern void acpi_disable_wakeup_devices(u8 sleep_state);
+@@ -30,3 +32,5 @@ extern bool acpi_sleep_default_s3;
+ #else
+ #define acpi_sleep_default_s3	(1)
+ #endif
 +
- struct acpi_smb_hc;
- enum acpi_smb_protocol {
- 	SMBUS_WRITE_QUICK = 2,
-@@ -30,3 +33,4 @@ extern int acpi_smbus_write(struct acpi_smb_hc *hc, u8 protocol, u8 slave_addres
- extern int acpi_smbus_register_callback(struct acpi_smb_hc *hc,
- 		smbus_alarm_callback callback, void *context);
- extern int acpi_smbus_unregister_callback(struct acpi_smb_hc *hc);
 +#endif
 -- 
 2.18.2
