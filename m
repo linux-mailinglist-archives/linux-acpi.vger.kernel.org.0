@@ -2,150 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9A56568448
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Jul 2022 11:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00BA0568437
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Jul 2022 11:56:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232444AbiGFJzM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Jul 2022 05:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35484 "EHLO
+        id S232396AbiGFJyf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Jul 2022 05:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232034AbiGFJyN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Jul 2022 05:54:13 -0400
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CA6725281;
-        Wed,  6 Jul 2022 02:54:10 -0700 (PDT)
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-10bf634bc50so11683649fac.3;
-        Wed, 06 Jul 2022 02:54:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o8jOPstF035V3JBIGTjyEra8xnCZ4RAIho4NrHeIzoU=;
-        b=ifKui5S5rFjVMq/DNxGGiZYtnihyrIPz+XgGy+287htk2qPkSPTBDT6zU/bqaW0IAj
-         eEIcUuZm8zNyVqggg0vPkfq5SvWboTygMYut/vI30ZWm7OI6knykq5A50cyUN7yxHwbt
-         x3OJkAQz3rS3Y9MtqJ6NwJrgnwi7+6R6OQArw7NoCvrdzt2fl1u+Op6Sk71Eo0mnk7Kf
-         K4jGzZJ9jl69cTwc5fCZkxMTOGQj3eJLQiDqOz0u70kr/hzsHNPD58iNGRUJ3Qra3PtG
-         IF6KKSoTvxIaCco+8PSMr8pK01Kl4c2wWlCyc/+gJQOyWRzB04t4vTh7uCb3o8arKg4q
-         uq5Q==
-X-Gm-Message-State: AJIora8bNvFpKnAMxBIwdfj9hdkzH+LUCtZi660XXnMILcmdqPyTufKv
-        uEDKcQWoKlpivWccpTeeGBiDcGrSKa967ox8
-X-Google-Smtp-Source: AGRyM1uAKY8ZoN6KGv4/toshO1qHFCf+QFQjTKFAVF+YPn4y9ij2Yrnm8jj6CEE8H4m9dwU7r8nybw==
-X-Received: by 2002:a05:6870:b3a7:b0:10c:224c:a0b6 with SMTP id w39-20020a056870b3a700b0010c224ca0b6mr2265078oap.248.1657101249503;
-        Wed, 06 Jul 2022 02:54:09 -0700 (PDT)
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com. [209.85.161.46])
-        by smtp.gmail.com with ESMTPSA id r81-20020acaf354000000b003359fb6609asm8613210oih.22.2022.07.06.02.54.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Jul 2022 02:54:09 -0700 (PDT)
-Received: by mail-oo1-f46.google.com with SMTP id m26-20020a4abc9a000000b00425cd321033so2843821oop.10;
-        Wed, 06 Jul 2022 02:54:09 -0700 (PDT)
-X-Received: by 2002:a05:6902:50e:b0:66e:7f55:7a66 with SMTP id
- x14-20020a056902050e00b0066e7f557a66mr6648581ybs.365.1657100796735; Wed, 06
- Jul 2022 02:46:36 -0700 (PDT)
+        with ESMTP id S231791AbiGFJxx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Jul 2022 05:53:53 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B3F301ED;
+        Wed,  6 Jul 2022 02:53:21 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBE8AD6E;
+        Wed,  6 Jul 2022 02:53:21 -0700 (PDT)
+Received: from [10.57.40.86] (unknown [10.57.40.86])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 30D7F3F66F;
+        Wed,  6 Jul 2022 02:53:19 -0700 (PDT)
+Message-ID: <35de3948-d8f2-c2da-05f9-995eecf275ce@arm.com>
+Date:   Wed, 6 Jul 2022 11:52:56 +0200
 MIME-Version: 1.0
-References: <20220608142723.103523089@infradead.org> <20220608144517.124597382@infradead.org>
-In-Reply-To: <20220608144517.124597382@infradead.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 6 Jul 2022 11:46:25 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdW4pT+YQfLzLTegFu1M3v9-9vaFDFAama7mc82=x6R__w@mail.gmail.com>
-Message-ID: <CAMuHMdW4pT+YQfLzLTegFu1M3v9-9vaFDFAama7mc82=x6R__w@mail.gmail.com>
-Subject: Re: [PATCH 19/36] objtool/idle: Validate __cpuidle code as noinstr
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>, tony@atomide.com,
-        khilman@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
-        kernel@xen0n.name, sammy@sammy.net, monstr@monstr.eu,
-        tsbogend@alpha.franken.de, dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
-        gregkh@linuxfoundation.org, mturquette@baylibre.com,
-        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
-        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
-        jiangshanlai@gmail.com, joel@joelfernandes.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
-        rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH RESEND v1 1/2] ACPI/PCI: Make _SRS optional for link
+ device
+Content-Language: en-US
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+References: <20220705172931.GA71865@bhelgaas>
+From:   Pierre Gondois <pierre.gondois@arm.com>
+In-Reply-To: <20220705172931.GA71865@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 8, 2022 at 4:46 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> Idle code is very like entry code in that RCU isn't available. As
-> such, add a little validation.
->
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
->  arch/m68k/kernel/vmlinux-nommu.lds   |    1 -
->  arch/m68k/kernel/vmlinux-std.lds     |    1 -
->  arch/m68k/kernel/vmlinux-sun3.lds    |    1 -
 
-FWIW
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+On 7/5/22 19:29, Bjorn Helgaas wrote:
+> On Fri, Jul 01, 2022 at 06:16:23PM +0200, Pierre Gondois wrote:
+>> From: Pierre Gondois <Pierre.Gondois@arm.com>
+>>
+>> In ACPI 6.4, s6.2.13 "_PRT (PCI Routing Table)", PCI legacy
+>> interrupts can be described though a link device (first model).
+>>  From s6.2.16 "_SRS (Set Resource Settings)":
+>> "This optional control method [...]"
+>>
+>> Make it optional to have a _SRS method for link devices.
+> 
+> I think it would be helpful to outline the reason for wanting these
+> changes in the commit log.  Otherwise we don't know the benefit and
+> it's harder to justify making the change since it's not an obvious
+> cleanup.
+> 
+> IIRC from [1] there *is* a good reason: you need to use Interrupt Link
+> devices so you can specify "level triggered, active high".
+> 
+> Without an Interrupt Link, you would get the default "level triggered,
+> active low" setting, which apparently isn't compatible with GICv2.
+> 
+> I assume this fixes a device that previously didn't work correctly,
+> but I don't see the details of that in the bugzilla.  I'm a little
+> confused about this.  Isn't GICv2 widely used already?  How are things
+> working now?  Or are there just a lot of broken devices?
 
-Gr{oetje,eeting}s,
+It was unsure which of the 2 models described in ACPI 6.4, s6.2.13
+"_PRT (PCI Routing Table)" would be used for UEFI for kvmtool.
 
-                        Geert
+Remainder:
+The first model allows to accurately describe interrupts: level/edge
+triggered and active high/low. Interrupts are also configurable with
+_CRS/_PRS/_SRS/_DIS methods
+The second model allows to describe hardwired interrupts, and are
+by default level triggered, active low.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+The kernel is aware that GivV2 interrupts are active high, so there
+was actually no need to accurately describe them. Thus the second
+model was used.
+While experimenting, we temporarily had a configuration using
+the first model, and only had a _CRS method (no _PRS/_SRS), which
+triggered some warnings.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+So these patches are not fixes for existing platforms, but merely
+to make _PRS/_SRS methods optional.
+
+In [1] I said I would submit patches to change that. If you think
+this is not necessary as the configuration is non-existing, I am
+perfectly fine to drop the patches.
+
+Also as Rafael noted, the _DIS method should also be taken into
+consideration if _PRS/_SRS are made optional.
+
+Regards,
+Pierre
+
+
+> 
+> [1] https://lore.kernel.org/r/e2ae06ba-de8f-2cae-60fa-fe9a215d779b@arm.com
+> 
+>> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215560
+>> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+>> ---
+>>   drivers/acpi/pci_link.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
+>> index 58647051c948..129e3e7e80ee 100644
+>> --- a/drivers/acpi/pci_link.c
+>> +++ b/drivers/acpi/pci_link.c
+>> @@ -288,6 +288,13 @@ static int acpi_pci_link_set(struct acpi_pci_link *link, int irq)
+>>   	if (!irq)
+>>   		return -EINVAL;
+>>   
+>> +	if (!acpi_has_method(handle, METHOD_NAME__SRS)) {
+>> +		if (link->irq.active == irq)
+>> +			return 0;
+>> +		acpi_handle_err(handle, "Unable to set IRQ %d: No _SRS.\n", irq);
+>> +		return -ENODEV;
+>> +	}
+>> +
+>>   	resource = kzalloc(sizeof(*resource) + 1, irqs_disabled() ? GFP_ATOMIC: GFP_KERNEL);
+>>   	if (!resource)
+>>   		return -ENOMEM;
+>> -- 
+>> 2.25.1
+>>
