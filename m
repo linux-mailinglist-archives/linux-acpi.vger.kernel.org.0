@@ -2,212 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9672456ABDF
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jul 2022 21:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73BC756AC08
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jul 2022 21:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232284AbiGGTbc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Jul 2022 15:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47876 "EHLO
+        id S232262AbiGGTqW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Jul 2022 15:46:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235993AbiGGTbb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jul 2022 15:31:31 -0400
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78EC226AD7;
-        Thu,  7 Jul 2022 12:31:30 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-31c9b70c382so117601847b3.6;
-        Thu, 07 Jul 2022 12:31:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+Yo1gyIUuh0t0KSq4z0vIRNUEuFAyyrHGuMhkAu6OgU=;
-        b=bjWRR5WmN9XzXuT+Dm+6LuDuva1UfMrSvnpKAh+7UBCzftsl5FMC0TQ0ezOgWCWYnd
-         AMccNaJ2JeBPlw9O+38p5is+uqG8OkVbR+g4liAjEAV7Hl3aTyCmEikiLIlOTg0acJT2
-         tm6aumBPzrcpeiSAC3VNALQ2w+GdZ3HRWa0BklA+CfHSGEjGliOviBzbGYHYI6v2wNE/
-         hstiNUSSVSQAvh5FkryFArpXmJJ3cLWG3SY4A1Q8fmsTOoJSblUzZzd/1HB8HauxwQF9
-         ESxKytPsLhgiVM7yCt+kbTiUvP2X3VW8zA0Sf3vvu81mOnml8K4+iv+8MD0kuYK5XJz6
-         SOGQ==
-X-Gm-Message-State: AJIora++9qLBp+9jMgiW8UF960hva/LYdMGJrcyPRo3gqBHkjfM+OxxY
-        pbGJQ6lWdwvry4iAO11cl8ins8ita6tSkc5Y+GaRv55ShRc=
-X-Google-Smtp-Source: AGRyM1vwKkl4yV8gdhcd8bbAYKoO9Z0C3T9ptqQVFriF7T9p7uUohruC7M0Kt+PbS2XQd7ImTWhKy+cPxlHB58tjk+4=
-X-Received: by 2002:a0d:c486:0:b0:31c:3b63:91fe with SMTP id
- g128-20020a0dc486000000b0031c3b6391femr49182721ywd.7.1657222289321; Thu, 07
- Jul 2022 12:31:29 -0700 (PDT)
+        with ESMTP id S235994AbiGGTqW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jul 2022 15:46:22 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2070.outbound.protection.outlook.com [40.107.243.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2F632EF3;
+        Thu,  7 Jul 2022 12:46:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KPiyQlKwW7jmJ+XxgPmLDF1vaV6ixIyIwISchuJb+SBT7n7H7r2nPJmvFxwCq0QOCNCvuGrUmrws3H1rGP+K5ihSWZJLMmgy1EAm/r1OEfXoTzUbvK5RdoxK8Iupa6dbCdYZCsK/q+6/+8CuGwvCEB6ssG0YRs6kIC5RS+P3ZnFuaLk1eiI/w45rZoNpvsXrpdGtPwD+NEqswJS0v/Gj/wz9+iEbi81/5Q3s8shsnVTNjFpZyhX2m91OezYx0pkiTOxJcs5i0T1F0Xz8gaTeQfv5gRVU6Z6G9jTgvxonJBETf2M7+Q3NxvVR3mtU1QmVuzGkyV22OpCIj6PqnCAlpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=df2rFbwdC9wwKLpm2P8SkhYr/176yFg2xA+M7AuJyyI=;
+ b=KBdV8MNafAp0jGI06PcAe6x+kc+sKfmWBhKo0SYrUQYBViXlGUPjKKs8nxGKtnVNUobkkUoNdFcw1IOrSpR3/ntkHL84pEvzpIXNqc1pHtvdLEM7mb5du4CP44qyGVkjgl7lr6DFfQcUfXRP5Xa4Td8XFusXwAdokMql/XNBAYAPzjAujWm/qOaCbl5P5YdkXh069cYscm6PdPahzV/IjyTcfLBeoJEEW6c1m6tFiGP2fTWtj/gDi/CVQQNr5SGpDh24j9dKBDhfR8Ne83xjeIE2lyJIeuBbnykubnI5J/rMZb2yUNSFZqBBCfUg5QRWQW9A2Z36PxVguNAIzTXaQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=df2rFbwdC9wwKLpm2P8SkhYr/176yFg2xA+M7AuJyyI=;
+ b=VQ35mtNg59Cyf5cwSK2Rh1ItGlixQo/hoNn1IK5uKuwPz1LJ1+LrU62t+zCIXq/LyP668uqBsWomR0MnodsbwK03jsV8k9iml9v6WCYy5nn1rySNSf8dTyOb8qXl9PkfMzqUHBSZ+oNoaqY5bPCVt7LGz0EyDP10aK05CI9ORHU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6222.namprd12.prod.outlook.com (2603:10b6:208:3c2::19)
+ by DM6PR12MB3291.namprd12.prod.outlook.com (2603:10b6:5:186::32) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5395.15; Thu, 7 Jul
+ 2022 19:46:15 +0000
+Received: from MN0PR12MB6222.namprd12.prod.outlook.com
+ ([fe80::ec96:60a2:ca21:17d1]) by MN0PR12MB6222.namprd12.prod.outlook.com
+ ([fe80::ec96:60a2:ca21:17d1%3]) with mapi id 15.20.5395.021; Thu, 7 Jul 2022
+ 19:46:15 +0000
+Message-ID: <e07cfbfd-da96-1251-4d17-2e4bef64e355@amd.com>
+Date:   Thu, 7 Jul 2022 14:46:11 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH 11/12] cpufreq: amd-pstate: add ACPI disabled check
+Content-Language: en-US
+To:     Perry Yuan <Perry.Yuan@amd.com>, rafael.j.wysocki@intel.com,
+        viresh.kumar@linaro.org, Ray.Huang@amd.com,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Cc:     Deepak.Sharma@amd.com, Mario.Limonciello@amd.com,
+        Nathan.Fontenot@amd.com, Alexander.Deucher@amd.com,
+        Jinzhou.Su@amd.com, Xinmei.Huang@amd.com, Xiaojian.Du@amd.com,
+        Li.Meng@amd.com
+References: <20220707170116.216912-1-Perry.Yuan@amd.com>
+From:   Nathan Fontenot <nafonten@amd.com>
+In-Reply-To: <20220707170116.216912-1-Perry.Yuan@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR19CA0005.namprd19.prod.outlook.com
+ (2603:10b6:610:4d::15) To MN0PR12MB6222.namprd12.prod.outlook.com
+ (2603:10b6:208:3c2::19)
 MIME-Version: 1.0
-References: <5592689.DvuYhMxLoT@kreacher> <be219334-456f-c2f1-7102-4a3b01e8cd59@redhat.com>
-In-Reply-To: <be219334-456f-c2f1-7102-4a3b01e8cd59@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 7 Jul 2022 21:31:18 +0200
-Message-ID: <CAJZ5v0jPpsO4OkC=3ZkEwKzQWufwrt6YwMhNv8heEC12chDPTA@mail.gmail.com>
-Subject: Re: [RFC][PATCH] ACPI: EC: Make evaluate acpi_ec_add() _REG for EC
- operation regions
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 69ed68dd-8d30-4bde-7241-08da60515a22
+X-MS-TrafficTypeDiagnostic: DM6PR12MB3291:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: rWd0FT2bkrE4WkIQlaBaO1cah+Lqq4j8k1HI8d57Epf7Iu077i1WU8UAH7DXW1H9LflpIsnbUNnObb4jDddgOoGD5CmbgKGkEylhKqKDDNerBgkMSaeZiDmgxDLqU1VzJ0sYTvT06kfW3HOLF8mmu7SG+R0Q15XI8XeP6eSW58PNUQWlZ7L7UlU8wjizD9NgVie3W4zCFJP9LTQ4YckiplA55jzYt2lKno+ACr2nQc/sRioy3LWTbGfS6t/Sl/Pkfbo74FTdQUXYIcTNJmA23cS1yaU62VNDgPV85fCmEp4rRnZE9tU59fvXJQ92cpQFNur1jzcigLAOLo7dLo/WSt8rUzAGvXTqYhsihU1EgM708Z+JTlalYtBBxFAfUzFGV70H6U7StclJ+KWcywz7MibtwqT49Spo9YdkaZIH7WCnRQRnpRU/WCUF3sXBec8EjaT3Dd7eZREfNccFLtvd3sRGe3+eaF0gEI+f/nxql57oW/0xtCvzgqFWGe6/jetB0qXXyL63mnBKOCBJxRLHmep58WH60zHDCUdcjtDRHjPxMF5neS698yHevHl09FHnfymoHWHdM0QTYqPaFFYcHs46y2iFIyNue0gCWoAcw+Bs8a/6+m5J5VvNWVcdD2AqIZiq4OdupgadLXbm19yNpYbmNaQcdB/FgblHNDcEsJP8C6WAMTa6DuT9U9ja7iBDNLUw0zcIxI7ppwfR1Guc+9y0TtoQwp8ZLFRlLemia8iJ9u+l40L4T9pIqzXYIRJplI+5J0vxqaTIbZIR52wbPmkqeTGNMP5injNColwattrDC2urKkLb92B5RS7LXoZSFKYKZ2qUfYogIZLPZ2JDkHiNynRQdeMx5Z+egMd+Nc8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6222.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(366004)(376002)(396003)(39860400002)(346002)(5660300002)(41300700001)(31696002)(8936002)(478600001)(26005)(6512007)(2906002)(6506007)(53546011)(6486002)(38100700002)(31686004)(6666004)(2616005)(186003)(83380400001)(66946007)(8676002)(66556008)(110136005)(36756003)(316002)(66476007)(4326008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N1UvQXJ6L3A1UkZEVGFuZStVYkZEQ0Y4RlpUOS9iVitIWmEvaTVMZ25jalhr?=
+ =?utf-8?B?aTJWVDA4Um83OXNUSWZWMDhDS2hZcmRoNkxBanZoRWE4Y3dEMTgvamJIbkRE?=
+ =?utf-8?B?MCtHZWF1TXR6NTREK0gyMHpCOVI3UjJuZTRiZlFnRTBmVGlFUEdHZFREWkdN?=
+ =?utf-8?B?YjZ6Y3M5a1BQZFdUOTVmSXBQNEtxMW9YNXB0QWxaMUp0TmFiNzg1dFpJaGZw?=
+ =?utf-8?B?OURVWkdIRzlGZjJ4T2hMbEFjNnFyMmNpaS9rVC9vUTJITm04MmF3M1RZZkQ4?=
+ =?utf-8?B?UFZxSFZ4L3cxRmRkMXM1VUFPZ3prcnVsbzEyNzFpVCtBd1pwdVVBWHJucWRt?=
+ =?utf-8?B?VldDVlJwaitaWnltSXRiTktSZ2h4eTZJc2NQU3MrWVRTWGhsSG9BVGNHMUlN?=
+ =?utf-8?B?WjNhNEEzYkxYRU1qZFdwS0prbjNuZHF2dDdYeU0rU3grRmlBY1NzWHVJaUh5?=
+ =?utf-8?B?TXdBalZYT0tLcjkyZituNkIxOXpoT0E0ZXAzM0M4Nm5ncHV3OGQzQnJrSWpn?=
+ =?utf-8?B?KzNQZFJxdkxxL3dyNkJRRE91VVMrRkpZS2p4dzNMR3kwMHVyWWFhaXZZc1BU?=
+ =?utf-8?B?K0lFdUFrelVMZVJvUlc4THR0NlFiM1ZRajVWMXo3UGtqcFEzWFpKWUhGM2JK?=
+ =?utf-8?B?YWFOTFBQcUM1ZlNOdDYyMXBLK3gwWS9ab1R2aDBFR1hIdTkxUHZ2dkFNZ2g3?=
+ =?utf-8?B?OVZuMVM3V1N2b003eHdSRVM3SUQwQ1o0N01XREZXWUxkTlFGYU4rdjdXMGlq?=
+ =?utf-8?B?U0grRTV6dC83Zlh5N2hFdWpPWHFWREJjenVLdGRRZ0JSeW4rWVBSYmVsUWxN?=
+ =?utf-8?B?dS92dVpUdnlEdy9tcEh3Q3VGU01KNlEwdkRSZ1BoOVNoUks5YWZXTlZvSlZS?=
+ =?utf-8?B?dFV6SWZsRUJuVWVlY2ZHMzdYWkNVYnV4R3hBUk9QdnhJSmZyY1JYSURaM0t6?=
+ =?utf-8?B?VWYyNWFLOUpMQVA2bkRhdWh6eCtkOUdmdUNrSnU1ekNWSmsrZXBEdUpMaXUr?=
+ =?utf-8?B?d2xtWjQ5WFFWYUtmSXNWSkVpYVN2Zk1NLzNHb2dzSXdHRUJQMWpYQ2JRcnox?=
+ =?utf-8?B?dk5tdnQxWFVvYUNxSlY1REwwN1JsWE5tVkN2Nkt5RHlEYzBoZXNNWGxSM3lD?=
+ =?utf-8?B?clI3Y0ZnNXAvUldUMitjZnFwVEdoU0NEQzVraWY3bldUSDlTMUZLYTM1NGdQ?=
+ =?utf-8?B?Njk5eUJHaEVVZERPazVLUnpLZUFaYmg2VCtDNkFWb0w3aFBvYTZHNXhpUFlW?=
+ =?utf-8?B?MkFmQmpqL3d3R3FCZGF6N0hrSEFCUnpwQXg4TjlpK0EzaVNXSkZiWDhDcWJE?=
+ =?utf-8?B?S1IrNGppUmxMYllUbU5SaDZHV1hxcnRnR1ZEc3VuV3VDdFcyWDRETzM0bFlY?=
+ =?utf-8?B?M1BkSDlyem1VQ1JMQjlZT242R0VRTE82YmpzTFRQenZBSWhlQVdLZXAya3Vk?=
+ =?utf-8?B?QS9xZ2RYVUVjZjdCb3gyYVFOclpIRTBEb0ZQUFFJMDZ0aVZEdHBLUWNPZGdN?=
+ =?utf-8?B?YmxRZWIyTmd6N1VyTWE3d3JkUVpVUXQyK3k5blE0NXlMeHNETURJbmRwMld0?=
+ =?utf-8?B?b2RwVms4bFFCMEpZNHM1M0t5WTZlQ1lyK2I4VDl5UG1Ic0NnTm00dElPNC9p?=
+ =?utf-8?B?NG12SXoxQTROTXI5M3dVdXBGckFOaTVzT1dCb2hJVHlKaHVpN3ExYWRPbDFS?=
+ =?utf-8?B?OTRxTENWZHFqdEJDdTBadnpFWlltOTA0cTZ1UERXZFVvR3R5SEZpNnIwZkNu?=
+ =?utf-8?B?UzgzbnRob3ErK0c4eFFseFMrQlA2cm1ZVEFxd0VxUHVtU0lQcSswRWpjZTMz?=
+ =?utf-8?B?WUZpd0ZJaDlBRk1TUzBWTG1FbU8vZDlSRGVxMml2UUk4cURqeFVBQ1lCYUlL?=
+ =?utf-8?B?dWM5NUl0WXF2ZytrM0k4SmVlK3pqTEZqRSs4alRrcXdUaCtuekhsSGMvUzdD?=
+ =?utf-8?B?QTJxT3BwWW9ORk9IVUsySkZCMUZOTTVDdTRoNmtPL0c4V29nckdlNmNxZ0Ns?=
+ =?utf-8?B?N2pjcFU4cXlNVnllNHFZck1NR2ZCUW5OQUZ1MHB4aEt2QmdnNzJMMFE4UmRE?=
+ =?utf-8?B?eG1zT21xQlJzK0JhWkVmWGxmMng1dHRUNEs1RktFU1RaNUNUUklkbW52bXIx?=
+ =?utf-8?Q?s6qW2OtpIi1Fi9R8EkfBTgt74?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69ed68dd-8d30-4bde-7241-08da60515a22
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6222.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2022 19:46:14.8732
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hkmGYDILQVP4tl0AxpcYXQYGBauU9TpOEw+mcQnJRbL/pNSR6AJVBNpsFpZcsnfMZsuBW5ma2XHoN4Db3RvuqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3291
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 6, 2022 at 10:26 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 7/6/22 14:37, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > acpi_ec_ecdt_probe() is called between acpi_load_tables() and
-> > acpi_enable_subsystem().  It passes ACPI_ROOT_OBJECT as ec->handle
-> > to acpi_ec_setup() and so ACPI_ROOT_OBJECT is passed to
-> > acpi_install_address_space_handler() via ec_install_handlers().
-> >
-> > Next, acpi_ns_validate_handle() converts it to acpi_gbl_root_node
-> > which is passed to acpi_ev_install_space_handler() and the handler is
-> > installed for acpi_gbl_root_node.
-> >
-> > Now, acpi_gbl_root_node is passed to acpi_ev_execute_reg_methods() which
-> > evaluates _REG for any ACPI_ADR_SPACE_EC regions it can find in the
-> > namespace which should not be necessary, because the OS is expected to
-> > make the ECDT operation regions available before evaluating any AML, so
-> > in particular AML is not expected to check the evaluation of _REG before
-> > it accesses these operation regions (see ACPI 6.4, Section 6.5.4,
-> > exception 2 [1]).  Doing that is also problematic, because the _REG
-> > methods for the ACPI_ADR_SPACE_EC regions may depend on various _INI, so
-> > they should be be evaluated before running acpi_initialize_objects() [2].
-> >
-> > Address this problem by modifying acpi_install_address_space_handler()
-> > to avoid evaluating _REG for ACPI_ADR_SPACE_EC regions when the handler
-> > is installed for acpi_gbl_root_node which indicates the ECDT case.
-> >
-> > However, this needs to be accompanied by an EC driver change to
-> > actually trigger the evaluation of _REG for the ACPI_ADR_SPACE_EC
-> > regions when it finds the EC object in the namespace.
-> >
-> > Link: https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#reg-region # [1]
-> > Link: https://github.com/acpica/acpica/pull/786 # [2]
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >
-> > Note: This change doesn't make any practical difference on any of the systems
-> > in my office.
-> >
-> > ---
-> >  drivers/acpi/acpica/evxfregn.c |   12 ++++++++++++
-> >  drivers/acpi/ec.c              |    7 +++++++
-> >  2 files changed, 19 insertions(+)
-> >
-> > Index: linux-pm/drivers/acpi/ec.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/ec.c
-> > +++ linux-pm/drivers/acpi/ec.c
-> > @@ -1632,6 +1632,13 @@ static int acpi_ec_add(struct acpi_devic
-> >                       acpi_handle_debug(ec->handle, "duplicated.\n");
-> >                       acpi_ec_free(ec);
-> >                       ec = boot_ec;
-> > +                     /*
-> > +                      * Uninstall the EC address space handler and let
-> > +                      * acpi_ec_setup() install it again along with
-> > +                      * evaluating _REG methogs associated with
-> > +                      * ACPI_ADR_SPACE_EC operation regions.
-> > +                      */
-> > +                     ec_remove_handlers(ec);
->
-> This will call the _REG method to get called with ACPI_REG_DISCONNECT (0)
-> as second argument which may lead to unexpected consequences so I'm not
-> in favor of doing things this way.
->
-> IMHO it would be much better to instead have flags; or if flags are
-> disliked a separate function to only call _REG later on.
+On 7/7/22 12:01, Perry Yuan wrote:
+> Add acpi function check in case ACPI is not enabled, that will cause
+> pstate driver failed to call cppc acpi to change perf or update epp
+> value for shared memory solution processors.
+> 
+> When CPPC is invalid, warning log will be needed to be printed to tell
+> user what is wrong.
+> 
+> Signed-off-by: Perry Yuan <Perry.Yuan@amd.com>
+> ---
+>  drivers/acpi/cppc_acpi.c     | 3 +++
+>  drivers/cpufreq/amd-pstate.c | 2 +-
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 6ff1901d7d43..17d67e3ededf 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -424,6 +424,9 @@ bool acpi_cpc_valid(void)
+>  	struct cpc_desc *cpc_ptr;
+>  	int cpu;
+>  
+> +	if (acpi_disabled)
+> +		return false> +
 
-I'm aware of the _REG(EC, 0) part, but I thought that it might be the
-right thing to do.
+This seems ok, the only other places I find that call acpi_cpc_valid() also check
+for acpi_disabled.
 
-First off, I'm a bit concerned about leaving the EC address space
-handler attached to the root node after we have discovered the proper
-EC object in the namespace, because that's inconsistent with the "no
-ECDT" case.
+If the acpi_disabled check is added to acpi_cpc_valid() the other calling sites should
+be updated to remove their check for acpi_disabled.
 
-It leaves a potential problem on the table too, because acpi_ec_add()
-changes boot_ec->handle from ACPI_ROOT_OBJECT to ec->handle and if
-ec_remove_handlers() is called for it after that, it will fail to
-remove the handler, but it will clear the
-EC_FLAGS_EC_HANDLER_INSTALLED flag (so the change above is actually
-incorrect, because it should remove the handler before changing
-boot_ec->handle).
+-Nathan
 
-But in order to move the EC address space handler under the EC object,
-it needs to be uninstalled and for this purpose AML needs to be told
-that it's not there, so evaluating _REG(EC, 0) seems reasonable to me
-even though I agree that it is somewhat risky.
-
-Second, the spec is kind of suggesting doing it (cf. the "These
-operation regions may become inaccessible after OSPM runs
-_REG(EmbeddedControl, 0)" comment in the _REG definition section).
-
-Moreover, I don't quite like the ACPI_NO_INSTALL_SPACE_HANDLER flag,
-because it causes the "handler installation" to actually do something
-else.
-
-> >               }
-> >       }
-> >
-> > Index: linux-pm/drivers/acpi/acpica/evxfregn.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/acpica/evxfregn.c
-> > +++ linux-pm/drivers/acpi/acpica/evxfregn.c
-> > @@ -78,6 +78,18 @@ acpi_install_address_space_handler(acpi_
-> >               goto unlock_and_exit;
-> >       }
-> >
-> > +     /*
-> > +      * Avoid evaluating _REG methods if an EC address space handler is
-> > +      * installed for acpi_gbl_root_node, because this is done in order to
-> > +      * make Embedded Controller operation regions, accessed via the Embedded
-> > +      * Controllers described in ECDT, available early (see ACPI 6.4, Section
-> > +      * 6.5.4, exception 2).
-> > +      */
-> > +
-> > +     if (node == acpi_gbl_root_node || space_id == ACPI_ADR_SPACE_EC) {
-> > +             goto unlock_and_exit;
-> > +     }
-> > +
->
-> Hmm, I like this in that it is KISS. But OTOH this does mean that
-> acpi_install_address_space_handler() now behaves differently depending on its
-> parameters in a possibly surprising way. So IMHO this feels a bit too clever
-> for our own good, since it may surprise the callers of this function.
->
-> My biggest problem is, that as indicated above I believe that instead
-> of uninstalling + re-installing the handler we really need to have a way
-> to just call _REG later; and that in turn requires the caller to know if
-> _REG has run or not.
-
-Well, as stated above, I think it would be prudent to move the handler
-under the EC object proper once it has been discovered.
-
-> I've posted a new RFC patch series which adds flags to
-> acpi_install_address_space_handler() to not run / only run _REG :
->
-> https://lore.kernel.org/linux-acpi/20220706201410.88244-1-hdegoede@redhat.com/
->
-> this then gets used in the drivers/acpi/ec.c patch to defer calling _REG when
-> registering the handler based on the ECDT until the DSDT EC entry is parsed.
-> I personally like how this turns out and IMHO this is cleaner (less hackish)
-> then the proposed solution with calling ec_remove_handlers(ec) :
->
-> https://lore.kernel.org/linux-acpi/20220706201410.88244-3-hdegoede@redhat.com/
-
-Overall, I think that we'll need a new "no _REG" variant of
-acpi_install_address_space_handler(), at least for backward
-compatibility with other OSes using ACPICA, but I would call it
-acpi_install_address_space_handler_no_reg() and do all of the flags
-(or BOOL for that matter) passing internally in evxfregn.c.
-
-Thanks!
+>  	for_each_present_cpu(cpu) {
+>  		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
+>  		if (!cpc_ptr)
+> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+> index b54b3b559993..6d81a9a94dde 100644
+> --- a/drivers/cpufreq/amd-pstate.c
+> +++ b/drivers/cpufreq/amd-pstate.c
+> @@ -684,7 +684,7 @@ static int __init amd_pstate_init(void)
+>  		return -ENODEV;
+>  
+>  	if (!acpi_cpc_valid()) {
+> -		pr_debug("the _CPC object is not present in SBIOS\n");
+> +		pr_warn_once("the _CPC object is not present in SBIOS or ACPI disabled\n");
+>  		return -ENODEV;
+>  	}
+>  
