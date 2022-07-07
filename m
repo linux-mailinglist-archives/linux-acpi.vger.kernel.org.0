@@ -2,179 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73BC756AC08
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jul 2022 21:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD87256AD7B
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jul 2022 23:31:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232262AbiGGTqW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Jul 2022 15:46:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56894 "EHLO
+        id S236435AbiGGVbN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Jul 2022 17:31:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235994AbiGGTqW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jul 2022 15:46:22 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2070.outbound.protection.outlook.com [40.107.243.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2F632EF3;
-        Thu,  7 Jul 2022 12:46:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KPiyQlKwW7jmJ+XxgPmLDF1vaV6ixIyIwISchuJb+SBT7n7H7r2nPJmvFxwCq0QOCNCvuGrUmrws3H1rGP+K5ihSWZJLMmgy1EAm/r1OEfXoTzUbvK5RdoxK8Iupa6dbCdYZCsK/q+6/+8CuGwvCEB6ssG0YRs6kIC5RS+P3ZnFuaLk1eiI/w45rZoNpvsXrpdGtPwD+NEqswJS0v/Gj/wz9+iEbi81/5Q3s8shsnVTNjFpZyhX2m91OezYx0pkiTOxJcs5i0T1F0Xz8gaTeQfv5gRVU6Z6G9jTgvxonJBETf2M7+Q3NxvVR3mtU1QmVuzGkyV22OpCIj6PqnCAlpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=df2rFbwdC9wwKLpm2P8SkhYr/176yFg2xA+M7AuJyyI=;
- b=KBdV8MNafAp0jGI06PcAe6x+kc+sKfmWBhKo0SYrUQYBViXlGUPjKKs8nxGKtnVNUobkkUoNdFcw1IOrSpR3/ntkHL84pEvzpIXNqc1pHtvdLEM7mb5du4CP44qyGVkjgl7lr6DFfQcUfXRP5Xa4Td8XFusXwAdokMql/XNBAYAPzjAujWm/qOaCbl5P5YdkXh069cYscm6PdPahzV/IjyTcfLBeoJEEW6c1m6tFiGP2fTWtj/gDi/CVQQNr5SGpDh24j9dKBDhfR8Ne83xjeIE2lyJIeuBbnykubnI5J/rMZb2yUNSFZqBBCfUg5QRWQW9A2Z36PxVguNAIzTXaQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=df2rFbwdC9wwKLpm2P8SkhYr/176yFg2xA+M7AuJyyI=;
- b=VQ35mtNg59Cyf5cwSK2Rh1ItGlixQo/hoNn1IK5uKuwPz1LJ1+LrU62t+zCIXq/LyP668uqBsWomR0MnodsbwK03jsV8k9iml9v6WCYy5nn1rySNSf8dTyOb8qXl9PkfMzqUHBSZ+oNoaqY5bPCVt7LGz0EyDP10aK05CI9ORHU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6222.namprd12.prod.outlook.com (2603:10b6:208:3c2::19)
- by DM6PR12MB3291.namprd12.prod.outlook.com (2603:10b6:5:186::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5395.15; Thu, 7 Jul
- 2022 19:46:15 +0000
-Received: from MN0PR12MB6222.namprd12.prod.outlook.com
- ([fe80::ec96:60a2:ca21:17d1]) by MN0PR12MB6222.namprd12.prod.outlook.com
- ([fe80::ec96:60a2:ca21:17d1%3]) with mapi id 15.20.5395.021; Thu, 7 Jul 2022
- 19:46:15 +0000
-Message-ID: <e07cfbfd-da96-1251-4d17-2e4bef64e355@amd.com>
-Date:   Thu, 7 Jul 2022 14:46:11 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 11/12] cpufreq: amd-pstate: add ACPI disabled check
-Content-Language: en-US
-To:     Perry Yuan <Perry.Yuan@amd.com>, rafael.j.wysocki@intel.com,
-        viresh.kumar@linaro.org, Ray.Huang@amd.com,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Cc:     Deepak.Sharma@amd.com, Mario.Limonciello@amd.com,
-        Nathan.Fontenot@amd.com, Alexander.Deucher@amd.com,
-        Jinzhou.Su@amd.com, Xinmei.Huang@amd.com, Xiaojian.Du@amd.com,
-        Li.Meng@amd.com
-References: <20220707170116.216912-1-Perry.Yuan@amd.com>
-From:   Nathan Fontenot <nafonten@amd.com>
-In-Reply-To: <20220707170116.216912-1-Perry.Yuan@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR19CA0005.namprd19.prod.outlook.com
- (2603:10b6:610:4d::15) To MN0PR12MB6222.namprd12.prod.outlook.com
- (2603:10b6:208:3c2::19)
+        with ESMTP id S229876AbiGGVbN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jul 2022 17:31:13 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE70C28E34
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Jul 2022 14:31:11 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id ay25so1742970wmb.1
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Jul 2022 14:31:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fortu-net.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=IucSNIUmv3bfoSWC2fpPpGIdntozHM3LrGlPGnTJnoo=;
+        b=Z3+FvPR9cP3BN9xckeRw/vR52t06mLNibswiXImMS5IzyLigK74GbhAanYRUKC7JvH
+         5LpEM946RK8Yn8D3lYqK2wKe3NVlOedv4WcnCIHbp8/8A+u8vn+DUEXuKnXDdoA4aHH4
+         6saI7pVWqbI5+m7DC2YK+H3NIe+DkhjhNLfyEOHTdAtlf2SaO/qCHE5HEgRRkR7HlX2M
+         KIOaZIlP1oRAga/+8hOfZI7mlP/lorTH9AdYycai88iGBD7UhUfPoMehq0G8sEEj1ZdY
+         GxHVy2D0Yn23SPioQ/Tq+WxMPwCAcFfclfvnNaEdd31TDp7hFpXumwNN2/cCYyDhLDoM
+         J2sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=IucSNIUmv3bfoSWC2fpPpGIdntozHM3LrGlPGnTJnoo=;
+        b=JtdrgadgRvCnN8TdOLrsA8w4DlPrlIZFCWFRqJ+BQAQK6plDpZVTBiTyp6wbuFAHie
+         kC3yfDirIRJ6dYo1WAyc8FaEbkMqMkAQyfz7o2h4KYGBUzvds/MGR+iqbXz77CxJIwdT
+         V1GpfXIwbo+C+qzI+WrGnygVURUwT4JKdFdlwBEfTP4hplSQDmb5KGjUVBXxP9RJ4q+8
+         nZP4hNxNe3GbA1xcjTOj9h4DzA0ykTw5jexBb56PE2mjmBbmB83aOfdCYq+Usl1JgyHM
+         a3JQZWtMTZpjb6Hl01K5cdrYha+oZplJRoKJt++TIdt3+c6UhJF4urQ4UF9KjFxaHvKm
+         vH/g==
+X-Gm-Message-State: AJIora9cAiSAN3bSwvNdPnSc5whQEleiBvqAX0Q/XLFj0+2+UEC4NIoa
+        ULgHtAE5y411VP95zyI8d6IA
+X-Google-Smtp-Source: AGRyM1uzwSj6DHA7nKZebCyj2PA4fxLtm93WKT/k4GBSSZ3WgMlcewtZo8J7N/2xpNmtUbdtgSW8vQ==
+X-Received: by 2002:a7b:c410:0:b0:3a0:2d7d:732a with SMTP id k16-20020a7bc410000000b003a02d7d732amr6819484wmi.113.1657229469856;
+        Thu, 07 Jul 2022 14:31:09 -0700 (PDT)
+Received: from [192.168.1.18] (10.pool85-50-98.dynamic.orange.es. [85.50.98.10])
+        by smtp.gmail.com with ESMTPSA id x2-20020adfdd82000000b0021d62e30a62sm15210806wrl.50.2022.07.07.14.31.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Jul 2022 14:31:09 -0700 (PDT)
+Message-ID: <872f2a21-7bf7-0cc3-298f-f817429f6997@fortu.net>
+Date:   Thu, 7 Jul 2022 23:30:55 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 69ed68dd-8d30-4bde-7241-08da60515a22
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3291:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rWd0FT2bkrE4WkIQlaBaO1cah+Lqq4j8k1HI8d57Epf7Iu077i1WU8UAH7DXW1H9LflpIsnbUNnObb4jDddgOoGD5CmbgKGkEylhKqKDDNerBgkMSaeZiDmgxDLqU1VzJ0sYTvT06kfW3HOLF8mmu7SG+R0Q15XI8XeP6eSW58PNUQWlZ7L7UlU8wjizD9NgVie3W4zCFJP9LTQ4YckiplA55jzYt2lKno+ACr2nQc/sRioy3LWTbGfS6t/Sl/Pkfbo74FTdQUXYIcTNJmA23cS1yaU62VNDgPV85fCmEp4rRnZE9tU59fvXJQ92cpQFNur1jzcigLAOLo7dLo/WSt8rUzAGvXTqYhsihU1EgM708Z+JTlalYtBBxFAfUzFGV70H6U7StclJ+KWcywz7MibtwqT49Spo9YdkaZIH7WCnRQRnpRU/WCUF3sXBec8EjaT3Dd7eZREfNccFLtvd3sRGe3+eaF0gEI+f/nxql57oW/0xtCvzgqFWGe6/jetB0qXXyL63mnBKOCBJxRLHmep58WH60zHDCUdcjtDRHjPxMF5neS698yHevHl09FHnfymoHWHdM0QTYqPaFFYcHs46y2iFIyNue0gCWoAcw+Bs8a/6+m5J5VvNWVcdD2AqIZiq4OdupgadLXbm19yNpYbmNaQcdB/FgblHNDcEsJP8C6WAMTa6DuT9U9ja7iBDNLUw0zcIxI7ppwfR1Guc+9y0TtoQwp8ZLFRlLemia8iJ9u+l40L4T9pIqzXYIRJplI+5J0vxqaTIbZIR52wbPmkqeTGNMP5injNColwattrDC2urKkLb92B5RS7LXoZSFKYKZ2qUfYogIZLPZ2JDkHiNynRQdeMx5Z+egMd+Nc8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6222.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(366004)(376002)(396003)(39860400002)(346002)(5660300002)(41300700001)(31696002)(8936002)(478600001)(26005)(6512007)(2906002)(6506007)(53546011)(6486002)(38100700002)(31686004)(6666004)(2616005)(186003)(83380400001)(66946007)(8676002)(66556008)(110136005)(36756003)(316002)(66476007)(4326008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N1UvQXJ6L3A1UkZEVGFuZStVYkZEQ0Y4RlpUOS9iVitIWmEvaTVMZ25jalhr?=
- =?utf-8?B?aTJWVDA4Um83OXNUSWZWMDhDS2hZcmRoNkxBanZoRWE4Y3dEMTgvamJIbkRE?=
- =?utf-8?B?MCtHZWF1TXR6NTREK0gyMHpCOVI3UjJuZTRiZlFnRTBmVGlFUEdHZFREWkdN?=
- =?utf-8?B?YjZ6Y3M5a1BQZFdUOTVmSXBQNEtxMW9YNXB0QWxaMUp0TmFiNzg1dFpJaGZw?=
- =?utf-8?B?OURVWkdIRzlGZjJ4T2hMbEFjNnFyMmNpaS9rVC9vUTJITm04MmF3M1RZZkQ4?=
- =?utf-8?B?UFZxSFZ4L3cxRmRkMXM1VUFPZ3prcnVsbzEyNzFpVCtBd1pwdVVBWHJucWRt?=
- =?utf-8?B?VldDVlJwaitaWnltSXRiTktSZ2h4eTZJc2NQU3MrWVRTWGhsSG9BVGNHMUlN?=
- =?utf-8?B?WjNhNEEzYkxYRU1qZFdwS0prbjNuZHF2dDdYeU0rU3grRmlBY1NzWHVJaUh5?=
- =?utf-8?B?TXdBalZYT0tLcjkyZituNkIxOXpoT0E0ZXAzM0M4Nm5ncHV3OGQzQnJrSWpn?=
- =?utf-8?B?KzNQZFJxdkxxL3dyNkJRRE91VVMrRkpZS2p4dzNMR3kwMHVyWWFhaXZZc1BU?=
- =?utf-8?B?K0lFdUFrelVMZVJvUlc4THR0NlFiM1ZRajVWMXo3UGtqcFEzWFpKWUhGM2JK?=
- =?utf-8?B?YWFOTFBQcUM1ZlNOdDYyMXBLK3gwWS9ab1R2aDBFR1hIdTkxUHZ2dkFNZ2g3?=
- =?utf-8?B?OVZuMVM3V1N2b003eHdSRVM3SUQwQ1o0N01XREZXWUxkTlFGYU4rdjdXMGlq?=
- =?utf-8?B?U0grRTV6dC83Zlh5N2hFdWpPWHFWREJjenVLdGRRZ0JSeW4rWVBSYmVsUWxN?=
- =?utf-8?B?dS92dVpUdnlEdy9tcEh3Q3VGU01KNlEwdkRSZ1BoOVNoUks5YWZXTlZvSlZS?=
- =?utf-8?B?dFV6SWZsRUJuVWVlY2ZHMzdYWkNVYnV4R3hBUk9QdnhJSmZyY1JYSURaM0t6?=
- =?utf-8?B?VWYyNWFLOUpMQVA2bkRhdWh6eCtkOUdmdUNrSnU1ekNWSmsrZXBEdUpMaXUr?=
- =?utf-8?B?d2xtWjQ5WFFWYUtmSXNWSkVpYVN2Zk1NLzNHb2dzSXdHRUJQMWpYQ2JRcnox?=
- =?utf-8?B?dk5tdnQxWFVvYUNxSlY1REwwN1JsWE5tVkN2Nkt5RHlEYzBoZXNNWGxSM3lD?=
- =?utf-8?B?clI3Y0ZnNXAvUldUMitjZnFwVEdoU0NEQzVraWY3bldUSDlTMUZLYTM1NGdQ?=
- =?utf-8?B?Njk5eUJHaEVVZERPazVLUnpLZUFaYmg2VCtDNkFWb0w3aFBvYTZHNXhpUFlW?=
- =?utf-8?B?MkFmQmpqL3d3R3FCZGF6N0hrSEFCUnpwQXg4TjlpK0EzaVNXSkZiWDhDcWJE?=
- =?utf-8?B?S1IrNGppUmxMYllUbU5SaDZHV1hxcnRnR1ZEc3VuV3VDdFcyWDRETzM0bFlY?=
- =?utf-8?B?M1BkSDlyem1VQ1JMQjlZT242R0VRTE82YmpzTFRQenZBSWhlQVdLZXAya3Vk?=
- =?utf-8?B?QS9xZ2RYVUVjZjdCb3gyYVFOclpIRTBEb0ZQUFFJMDZ0aVZEdHBLUWNPZGdN?=
- =?utf-8?B?YmxRZWIyTmd6N1VyTWE3d3JkUVpVUXQyK3k5blE0NXlMeHNETURJbmRwMld0?=
- =?utf-8?B?b2RwVms4bFFCMEpZNHM1M0t5WTZlQ1lyK2I4VDl5UG1Ic0NnTm00dElPNC9p?=
- =?utf-8?B?NG12SXoxQTROTXI5M3dVdXBGckFOaTVzT1dCb2hJVHlKaHVpN3ExYWRPbDFS?=
- =?utf-8?B?OTRxTENWZHFqdEJDdTBadnpFWlltOTA0cTZ1UERXZFVvR3R5SEZpNnIwZkNu?=
- =?utf-8?B?UzgzbnRob3ErK0c4eFFseFMrQlA2cm1ZVEFxd0VxUHVtU0lQcSswRWpjZTMz?=
- =?utf-8?B?WUZpd0ZJaDlBRk1TUzBWTG1FbU8vZDlSRGVxMml2UUk4cURqeFVBQ1lCYUlL?=
- =?utf-8?B?dWM5NUl0WXF2ZytrM0k4SmVlK3pqTEZqRSs4alRrcXdUaCtuekhsSGMvUzdD?=
- =?utf-8?B?QTJxT3BwWW9ORk9IVUsySkZCMUZOTTVDdTRoNmtPL0c4V29nckdlNmNxZ0Ns?=
- =?utf-8?B?N2pjcFU4cXlNVnllNHFZck1NR2ZCUW5OQUZ1MHB4aEt2QmdnNzJMMFE4UmRE?=
- =?utf-8?B?eG1zT21xQlJzK0JhWkVmWGxmMng1dHRUNEs1RktFU1RaNUNUUklkbW52bXIx?=
- =?utf-8?Q?s6qW2OtpIi1Fi9R8EkfBTgt74?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69ed68dd-8d30-4bde-7241-08da60515a22
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6222.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2022 19:46:14.8732
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hkmGYDILQVP4tl0AxpcYXQYGBauU9TpOEw+mcQnJRbL/pNSR6AJVBNpsFpZcsnfMZsuBW5ma2XHoN4Db3RvuqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3291
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH AUTOSEL 5.17 42/43] Revert "ACPI: Pass the same
+ capabilities to the _OSC regardless of the query flag"
+Content-Language: en-US
+To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mario Limonciello <Mario.Limonciello@amd.com>,
+        Huang Rui <ray.huang@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        rafael@kernel.org, linux-acpi@vger.kernel.org
+References: <20220328111828.1554086-1-sashal@kernel.org>
+ <20220328111828.1554086-42-sashal@kernel.org>
+From:   Tom Crossland <tomc@fortu.net>
+In-Reply-To: <20220328111828.1554086-42-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/7/22 12:01, Perry Yuan wrote:
-> Add acpi function check in case ACPI is not enabled, that will cause
-> pstate driver failed to call cppc acpi to change perf or update epp
-> value for shared memory solution processors.
-> 
-> When CPPC is invalid, warning log will be needed to be printed to tell
-> user what is wrong.
-> 
-> Signed-off-by: Perry Yuan <Perry.Yuan@amd.com>
+Hi, I'm observing the issue described here which I think is due to a 
+recent regression:
+
+https://github.com/intel/linux-intel-lts/issues/22
+
+sudo dmesg -t -l err
+
+ACPI BIOS Error (bug): Could not resolve symbol [\_PR.PR00._CPC], 
+AE_NOT_FOUND (20211217/psargs-330)
+ACPI Error: Aborting method \_PR.PR01._CPC due to previous error 
+(AE_NOT_FOUND) (20211217/psparse-529)
+ACPI BIOS Error (bug): Could not resolve symbol [\_PR.PR00._CPC], 
+AE_NOT_FOUND (20211217/psargs-330)
+ACPI Error: Aborting method \_PR.PR02._CPC due to previous error 
+(AE_NOT_FOUND) (20211217/psparse-529)
+ACPI BIOS Error (bug): Could not resolve symbol [\_PR.PR00._CPC], 
+AE_NOT_FOUND (20211217/psargs-330)
+ACPI Error: Aborting method \_PR.PR03._CPC due to previous error 
+(AE_NOT_FOUND) (20211217/psparse-529)
+
+System:
+   Kernel: 5.18.9-arch1-1 arch: x86_64 bits: 64 compiler: gcc v: 12.1.0
+     parameters: initrd=\intel-ucode.img initrd=\initramfs-linux.img
+     root=xxx intel_iommu=on iommu=pt
+  Machine:
+   Type: Desktop Mobo: Intel model: NUC7i5BNB v: J31144-304 serial: <filter>
+     UEFI: Intel v: BNKBL357.86A.0088.2022.0125.1102 date: 01/25/2022
+
+I hope this is the correct forum to report the issue. Apologies if not.
+
+On 28/03/2022 13.18, Sasha Levin wrote:
+> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+>
+> [ Upstream commit 2ca8e6285250c07a2e5a22ecbfd59b5a4ef73484 ]
+>
+> Revert commit 159d8c274fd9 ("ACPI: Pass the same capabilities to the
+> _OSC regardless of the query flag") which caused legitimate usage
+> scenarios (when the platform firmware does not want the OS to control
+> certain platform features controlled by the system bus scope _OSC) to
+> break and was misguided by some misleading language in the _OSC
+> definition in the ACPI specification (in particular, Section 6.2.11.1.3
+> "Sequence of _OSC Calls" that contradicts other perts of the _OSC
+> definition).
+>
+> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0iStA0JmO0H3z+VgQsVuQONVjKPpw0F5HKfiq=Gb6B5yw@mail.gmail.com
+> Reported-by: Mario Limonciello <Mario.Limonciello@amd.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+> Acked-by: Huang Rui <ray.huang@amd.com>
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  drivers/acpi/cppc_acpi.c     | 3 +++
->  drivers/cpufreq/amd-pstate.c | 2 +-
->  2 files changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 6ff1901d7d43..17d67e3ededf 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -424,6 +424,9 @@ bool acpi_cpc_valid(void)
->  	struct cpc_desc *cpc_ptr;
->  	int cpu;
->  
-> +	if (acpi_disabled)
-> +		return false> +
-
-This seems ok, the only other places I find that call acpi_cpc_valid() also check
-for acpi_disabled.
-
-If the acpi_disabled check is added to acpi_cpc_valid() the other calling sites should
-be updated to remove their check for acpi_disabled.
-
--Nathan
-
->  	for_each_present_cpu(cpu) {
->  		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
->  		if (!cpc_ptr)
-> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-> index b54b3b559993..6d81a9a94dde 100644
-> --- a/drivers/cpufreq/amd-pstate.c
-> +++ b/drivers/cpufreq/amd-pstate.c
-> @@ -684,7 +684,7 @@ static int __init amd_pstate_init(void)
->  		return -ENODEV;
->  
->  	if (!acpi_cpc_valid()) {
-> -		pr_debug("the _CPC object is not present in SBIOS\n");
-> +		pr_warn_once("the _CPC object is not present in SBIOS or ACPI disabled\n");
->  		return -ENODEV;
->  	}
->  
+>   drivers/acpi/bus.c | 27 +++++++++++++++++++--------
+>   1 file changed, 19 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 07f604832fd6..079b952ab59f 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -332,21 +332,32 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+>   	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+>   		return;
+>   
+> -	kfree(context.ret.pointer);
+> +	capbuf_ret = context.ret.pointer;
+> +	if (context.ret.length <= OSC_SUPPORT_DWORD) {
+> +		kfree(context.ret.pointer);
+> +		return;
+> +	}
+>   
+> -	/* Now run _OSC again with query flag clear */
+> +	/*
+> +	 * Now run _OSC again with query flag clear and with the caps
+> +	 * supported by both the OS and the platform.
+> +	 */
+>   	capbuf[OSC_QUERY_DWORD] = 0;
+> +	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
+> +	kfree(context.ret.pointer);
+>   
+>   	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+>   		return;
+>   
+>   	capbuf_ret = context.ret.pointer;
+> -	osc_sb_apei_support_acked =
+> -		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
+> -	osc_pc_lpi_support_confirmed =
+> -		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
+> -	osc_sb_native_usb4_support_confirmed =
+> -		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
+> +	if (context.ret.length > OSC_SUPPORT_DWORD) {
+> +		osc_sb_apei_support_acked =
+> +			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
+> +		osc_pc_lpi_support_confirmed =
+> +			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
+> +		osc_sb_native_usb4_support_confirmed =
+> +			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
+> +	}
+>   
+>   	kfree(context.ret.pointer);
+>   }
