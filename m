@@ -2,60 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4159D569A2F
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jul 2022 08:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2456D56A2F0
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Jul 2022 14:57:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234363AbiGGGA2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Jul 2022 02:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42884 "EHLO
+        id S235905AbiGGM5B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Jul 2022 08:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231139AbiGGGA2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jul 2022 02:00:28 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684DC31938;
-        Wed,  6 Jul 2022 23:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657173627; x=1688709627;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iHzgjgvR53KzV2jnlzVatUj4/qLCd2yhwDfS/pN1Fto=;
-  b=Ye99Q0waBL6HySgGgj0HMrBIR6weqwVGDO6N/tIYil44v74DL1jYtT7I
-   dv+FwDCUdQ65cV+l+5RWzEMBm299xHAew2TuoyTiYhIX2O8PbZiktK6k3
-   qJ3hnUANY9eYiG5wJ0UfQbORftSvekT9JIh/n/hkRoD+UACoUq5+x3HNt
-   oYakUtUPH7cMxiHmRcjnnGGu+D/oUOfhqK2fkqEys1qn+ijf+/KY2Pkk4
-   AJ8eHGA3yqCxwauhRnuJR1PHj8PgpByJTrH44Whd4o79vVJp7JJdi3SI+
-   AfkUuyKLzMkAxeudYNzi6dLkRUQxBo/aIszkhOW8yI9KJvSi/R/OVgbfZ
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10400"; a="282691458"
-X-IronPort-AV: E=Sophos;i="5.92,252,1650956400"; 
-   d="scan'208";a="282691458"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2022 23:00:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,252,1650956400"; 
-   d="scan'208";a="770309014"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 06 Jul 2022 23:00:25 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o9KYq-000Lcg-Ve;
-        Thu, 07 Jul 2022 06:00:24 +0000
-Date:   Thu, 07 Jul 2022 13:59:37 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- f97e5813664c9631f3890f316cc9c8da611719ea
-Message-ID: <62c67649.QhtTSNFmuf+RtSLa%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S235837AbiGGM4r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Jul 2022 08:56:47 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 372CB313BF
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Jul 2022 05:56:15 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id t24so30992787lfr.4
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Jul 2022 05:56:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=H6677ejFNXKglyi/84+y7ULfVLWnlMQ6vEtVbRnv+vI=;
+        b=Mh7gtpR4GcdX4WcgpOC+AbgtdPP6eO6z1dw11i6JBWeX1ULeCBz+lpRR3pORehirTa
+         86zxMqdsM7RuDU6w8EOL+0bNM0etAC2TTxfd4rjD2DVTQzvN0l2yN2NkcKW/SOItDMpU
+         dFVvBoNMbXV0ILGAfklsAmdtRatKiwTaUIozP2JEbk7/qALXd9p+qfz20kNNYlYV1qWV
+         WsTlyC+6KzVBm4GRcpUC6E5dhO3jWsgT93LvIVR6DWK6RLgMWU6M7UZiEttdlYL7cA14
+         1HDKQnyd1ly1tq5a3Tn/QJaBOUD1v1VUs2HOlRK7LDuaJp9FoGvesu5Aen5x1orm1k3l
+         DQtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=H6677ejFNXKglyi/84+y7ULfVLWnlMQ6vEtVbRnv+vI=;
+        b=adwgYcMtnIJJry4+vSWMmh90BKWuwlqQnlMkLblVgqUXW5WyMgQX6aSgS91oLc03lm
+         vyExftmp1RzSpX4B12z0oQwk8ICLnA/0kMAp9/1muPjP3vAoYDLIgDvigzc+2fGMk/XF
+         7jqpjcjwt7RzVYX88MW4uix8IKtPJ9WzJoql3IIXxGr9lJrDs2zWMl/HRCcav94rfRuX
+         Dlo9et1/JR8A1/eXViYterfrsCgoZy56TIr02ECzsQn6G9cshBeLi2LyipaJob03vLSu
+         5FRef3XpDaDSkEEHsBuXjUSoVT5gDhoYEmL9fLX5OSfYEtwJI6up/vY3qWsBZX0uow1a
+         l1fw==
+X-Gm-Message-State: AJIora9LKamidVBd9wDz6pU1UPemUHOVGcU+NlMtNHVIPGNc3pg28WHb
+        8TW5KXM5GaqZ4PYvlaK2NyofqQ==
+X-Google-Smtp-Source: AGRyM1tJ3jCvJ5a/DkRtsTuF+6ZetmEjN6/i+Wqc17/EryWUTrJPKEaxdDE3XdzFq4E7wl3HyOZznw==
+X-Received: by 2002:a05:6512:3d89:b0:47f:c089:1c7f with SMTP id k9-20020a0565123d8900b0047fc0891c7fmr31065785lfv.72.1657198573447;
+        Thu, 07 Jul 2022 05:56:13 -0700 (PDT)
+Received: from jazctssd.c.googlers.com.com (138.58.228.35.bc.googleusercontent.com. [35.228.58.138])
+        by smtp.gmail.com with ESMTPSA id d7-20020a05651221c700b0047255d2111csm6810361lft.75.2022.07.07.05.56.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Jul 2022 05:56:12 -0700 (PDT)
+From:   Grzegorz Jaszczyk <jaz@semihalf.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     jaz@semihalf.com, dmy@semihalf.com, mario.limonciello@amd.com,
+        seanjc@google.com, dbehr@google.com, upstream@semihalf.com,
+        zide.chen@intel.corp-partner.google.com,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Sachi King <nakato@nakato.io>,
+        linux-acpi@vger.kernel.org (open list:ACPI),
+        platform-driver-x86@vger.kernel.org (open list:X86 PLATFORM DRIVERS),
+        linux-pm@vger.kernel.org (open list:HIBERNATION (aka Software Suspend,
+        aka swsusp))
+Subject: [RFC PATCH 0/2] x86: allow to notify host about guest entering s2idle
+Date:   Thu,  7 Jul 2022 12:53:22 +0000
+Message-Id: <20220707125329.378277-1-jaz@semihalf.com>
+X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,73 +78,49 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: f97e5813664c9631f3890f316cc9c8da611719ea  Merge branches 'pm-sleep' and 'powercap' into linux-next
+According to the mailing list discussion [1] about the preferred approach
+for notifying hypervisor/VMM about guest entering s2idle state this RFC was
+implemented.
 
-elapsed time: 972m
+Instead of original hypercall based approach, which involves KVM change [2]
+and makes it hypervisor specific, implement different mechanism, which
+takes advantage of MMIO/PIO trapping and makes it hypervisor independent.
 
-configs tested: 52
-configs skipped: 2
+Patch #1 extends S2Idle ops by new notify handler which will be invoked as
+a very last command before system actually enters S2Idle states. It also
+allows to register and use driver specific notification hook which is used
+in patch #2.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Patch #2 introduces new driver for virtual PMC, which registers
+acpi_s2idle_dev_ops's notify handler. Its implementation is based on an
+ACPI _DSM evaluation, which in turn can perform MMIO access and allow to
+trap and therefore notify the VMM about guest entering S2Idle state.
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-ia64                             allmodconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                                defconfig
-i386                             allyesconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                  randconfig-r043-20220706
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
+Please see individual patches and commit logs for more verbose description.
 
-clang tested configs:
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a015
-i386                          randconfig-a011
-hexagon              randconfig-r041-20220706
-hexagon              randconfig-r045-20220706
-riscv                randconfig-r042-20220706
-s390                 randconfig-r044-20220706
+This patchset is marked as RFC since patch #2 implements driver for non
+existing device "HYPE0001", which ACPI ID was not registered yet.
+Furthermore the required registration process [3] will not be started
+before getting positive feedback about this patchset.
+
+[1] https://patchwork.kernel.org/project/linux-pm/patch/20220609110337.1238762-2-jaz@semihalf.com/
+[2] https://patchwork.kernel.org/project/linux-pm/patch/20220609110337.1238762-3-jaz@semihalf.com/
+[3] https://uefi.org/PNP_ACPI_Registry
+
+Grzegorz Jaszczyk (2):
+  suspend: extend S2Idle ops by new notify handler
+  platform/x86: Add virtual PMC driver used for S2Idle
+
+ drivers/acpi/x86/s2idle.c       | 11 +++++
+ drivers/platform/x86/Kconfig    |  7 ++++
+ drivers/platform/x86/Makefile   |  1 +
+ drivers/platform/x86/virt_pmc.c | 73 +++++++++++++++++++++++++++++++++
+ include/linux/acpi.h            |  1 +
+ include/linux/suspend.h         |  1 +
+ kernel/power/suspend.c          |  4 ++
+ 7 files changed, 98 insertions(+)
+ create mode 100644 drivers/platform/x86/virt_pmc.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.37.0.rc0.161.g10f37bed90-goog
+
