@@ -2,161 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59FD756C0EB
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Jul 2022 20:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF78856C216
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jul 2022 01:12:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238469AbiGHQhu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jul 2022 12:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
+        id S239138AbiGHTUG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jul 2022 15:20:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238547AbiGHQhu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jul 2022 12:37:50 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD86167EF;
-        Fri,  8 Jul 2022 09:37:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B4B00B828B5;
-        Fri,  8 Jul 2022 16:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8D3C341C6;
-        Fri,  8 Jul 2022 16:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657298266;
-        bh=faBbiFmeCk/XXmJzoX4Ig8MuGcWSSVfGfVZBC0uD89k=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=JnNXQWwfR5Pobgkk8oUvEGVJBSmO2r9GUMSSXlJVJdnjacOYs4rzXZWR5xmnv4a9V
-         EgIw/O7MB3F2AVQe10p3DSyNGUskkhA9GX0KFE45XYEH6U2oqHPwNF2s0PTOM6Tbqb
-         +NrTONPkT3X+4Vth/c+oAIggdeCp4m3/wCte3gkq9csT28C2fUd8cgL8vEn2SbmI8z
-         FP4DKekY/u9cbEm5oWQS/AAC1NyCHA/KobF2VwgAUerALCK/Z4B7EYl3T1sjPXN/2R
-         4GXx4zL0QFw2MDFbeBxRG6I3RHAs7Jz4ihj0wGobXZq+EHQLU3c03k26EXfXlRR2CW
-         f+Ip/z3hWi6lA==
-Received: by mail-ot1-f45.google.com with SMTP id q18-20020a9d7c92000000b00616b27cda7cso16572452otn.9;
-        Fri, 08 Jul 2022 09:37:46 -0700 (PDT)
-X-Gm-Message-State: AJIora/ERigHeK+aorDpCkoc6Ighsdjp5BrWUnaNgxSS3bFuDQytH3pt
-        t4g6ymRDrjkMWlCtsP3WV9NbK6rj/tSHF/22NVM=
-X-Google-Smtp-Source: AGRyM1svHSEUASsl57J1Bv3MiYQY3jBtqML3YrRdG2TT3OOBZQNPUyNOlB3mW51SOJdsvRkRATEvgOuuAgNAADolzfA=
-X-Received: by 2002:a9d:7cc7:0:b0:61a:4fe8:95c4 with SMTP id
- r7-20020a9d7cc7000000b0061a4fe895c4mr1924578otn.71.1657298265369; Fri, 08 Jul
- 2022 09:37:45 -0700 (PDT)
+        with ESMTP id S229496AbiGHTUF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jul 2022 15:20:05 -0400
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71BBA167EA;
+        Fri,  8 Jul 2022 12:20:04 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id r3so39353274ybr.6;
+        Fri, 08 Jul 2022 12:20:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=M7CMxMpAwaG1MqNPytiWNPh0UB9uZ/2w81H3Zj9t5RA=;
+        b=Kb3gjypPpLB/zsZMH4XXkNLFBYlZFcmUxl9CfNYymvGGX3McB9LWf7xrvB6OPTO3hF
+         3Lhh9L2hJtY77n0Fb6JrHzXhnkk5jNzSHF/Bk6hrQHdhKQ+gUxdzXsTamApWOMpw3qcu
+         armPr6ZhaDZ6Tpz2/XNpw0S1IAzfvkoXEyfTDEaOXo2F8jhh/gJhbQFKygJSXAjiM4y8
+         QQ35/I7KcMTE2HjvYCB/rwu2fX/L+51PqSVOXeglSDaiUt1fjhmPPEkmrMPpOf5blvG2
+         vaBFZq0rnxlhMkVMq0OaWo4bO4YuscKeckvl0nDxH+JFgXkCm1+DYMuySfwJMUQs5A97
+         e2yA==
+X-Gm-Message-State: AJIora8iX0oRbIuexSXMlgdk1M4ysQ+oUHUJEfI/IXxFTg0L78MdRPxU
+        OtDtcZXSTA9IwIDPzxbTI9cghOM8zCj7GoKu5QWQ1Uo1RNE=
+X-Google-Smtp-Source: AGRyM1uUHMQdTqbeGGG/jL/jWci1lO985PbtRSbTT50EcJ9vwWBxrmX4EGboe5lr7UI5GWGZBc7XFdpX77laKRWXY3w=
+X-Received: by 2002:a25:a2ca:0:b0:66e:719e:279 with SMTP id
+ c10-20020a25a2ca000000b0066e719e0279mr4938693ybn.622.1657308003304; Fri, 08
+ Jul 2022 12:20:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220708131412.81078-1-hdegoede@redhat.com> <20220708131412.81078-3-hdegoede@redhat.com>
-In-Reply-To: <20220708131412.81078-3-hdegoede@redhat.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 8 Jul 2022 18:37:34 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH8sck_WMQObNVuT0RkoRFpdZ-V7A4wNW2Mj9CmwdSmZw@mail.gmail.com>
-Message-ID: <CAMj1kXH8sck_WMQObNVuT0RkoRFpdZ-V7A4wNW2Mj9CmwdSmZw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] efi: Fix efi_power_off() not being run before
- acpi_power_off() when necessary
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 8 Jul 2022 21:19:50 +0200
+Message-ID: <CAJZ5v0hASBaOm4m9b7S5Y1ATfL8ppL07g_dpgVcceXmtnOMRcw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v5.19-rc6
+To:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, X86 ML <x86@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 8 Jul 2022 at 15:14, Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Commit 98f30d0ecf79 ("ACPI: power: Switch to sys-off handler API")
-> switched the ACPI sleep code from directly setting the old global
-> pm_power_off handler to using the new register_sys_off_handler()
-> mechanism with a priority of SYS_OFF_PRIO_FIRMWARE.
->
-> This is a problem when the old global pm_power_off handler would later
-> be overwritten, such as done by the late_initcall(efi_shutdown_init):
->
->         if (efi_poweroff_required())
->                 pm_power_off = efi_power_off;
->
-> The old global pm_power_off handler gets run with a priority of
-> SYS_OFF_PRIO_DEFAULT which is lower then SYS_OFF_PRIO_FIRMWARE, causing
-> acpi_power_off() to run first, changing the behavior from before
-> the ACPI sleep code switched to the new register_sys_off_handler().
->
-> Switch the registering of efi_power_off over to register_sys_off_handler()
-> with a priority of SYS_OFF_PRIO_FIRMWARE + 1 so that it will run before
-> acpi_power_off() as before.
->
-> Note since the new sys-off-handler code will try all handlers in
-> priority order, there is no more need for the EFI code to store and
-> call the original pm_power_off handler.
->
-> Fixes: 98f30d0ecf79 ("ACPI: power: Switch to sys-off handler API")
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Hi Linus,
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Please pull from the tag
 
-Note that, as far as I know, this should only affect x86 even though
-this is generic EFI code, and arm64 also supports ACPI boot, but it
-doesn't use ACPI for poweroff/reboot etc
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.19-rc6
 
-> ---
->  drivers/firmware/efi/reboot.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/firmware/efi/reboot.c b/drivers/firmware/efi/reboot.c
-> index 73089a24f04b..ceae84c19d22 100644
-> --- a/drivers/firmware/efi/reboot.c
-> +++ b/drivers/firmware/efi/reboot.c
-> @@ -6,7 +6,7 @@
->  #include <linux/efi.h>
->  #include <linux/reboot.h>
->
-> -static void (*orig_pm_power_off)(void);
-> +static struct sys_off_handler *efi_sys_off_handler;
->
->  int efi_reboot_quirk_mode = -1;
->
-> @@ -51,15 +51,11 @@ bool __weak efi_poweroff_required(void)
->         return false;
->  }
->
-> -static void efi_power_off(void)
-> +static int efi_power_off(struct sys_off_data *data)
->  {
->         efi.reset_system(EFI_RESET_SHUTDOWN, EFI_SUCCESS, 0, NULL);
-> -       /*
-> -        * The above call should not return, if it does fall back to
-> -        * the original power off method (typically ACPI poweroff).
-> -        */
-> -       if (orig_pm_power_off)
-> -               orig_pm_power_off();
-> +
-> +       return NOTIFY_DONE;
->  }
->
->  static int __init efi_shutdown_init(void)
-> @@ -68,8 +64,13 @@ static int __init efi_shutdown_init(void)
->                 return -ENODEV;
->
->         if (efi_poweroff_required()) {
-> -               orig_pm_power_off = pm_power_off;
-> -               pm_power_off = efi_power_off;
-> +               /* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off */
-> +               efi_sys_off_handler =
-> +                       register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
-> +                                                SYS_OFF_PRIO_FIRMWARE + 1,
-> +                                                efi_power_off, NULL);
-> +               if (IS_ERR(efi_sys_off_handler))
-> +                       return PTR_ERR(efi_sys_off_handler);
->         }
->
->         return 0;
-> --
-> 2.36.0
->
+with top-most commit 8b356e536e69f3a4d6778ae9f0858a1beadabb1f
+
+ ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
+
+on top of commit 88084a3df1672e131ddc1b4e39eeacfd39864acf
+
+ Linux 5.19-rc5
+
+to receive ACPI fixes for 5.19-rc6.
+
+These fix two recent regressions related to CPPC support.
+
+Specifics:
+
+ - Prevent _CPC from being used if the platform firmware does not
+   confirm CPPC v2 support via _OSC (Mario Limonciello).
+
+ - Allow systems with X86_FEATURE_CPPC set to use _CPC even if CPPC
+   support cannot be agreed on via _OSC (Mario Limonciello).
+
+Thanks!
+
+
+---------------
+
+Mario Limonciello (2):
+      ACPI: CPPC: Only probe for _CPC if CPPC v2 is acked
+      ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
+
+---------------
+
+ arch/x86/kernel/acpi/cppc.c | 10 ++++++++++
+ drivers/acpi/bus.c          | 11 +++++------
+ drivers/acpi/cppc_acpi.c    | 20 ++++++++++++++++++--
+ include/acpi/cppc_acpi.h    |  1 +
+ include/linux/acpi.h        |  2 +-
+ 5 files changed, 35 insertions(+), 9 deletions(-)
