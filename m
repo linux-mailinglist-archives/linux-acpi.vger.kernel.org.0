@@ -2,97 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DC2F56C39B
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jul 2022 01:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC7E656C2F9
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jul 2022 01:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239400AbiGHTVg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jul 2022 15:21:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33184 "EHLO
+        id S240240AbiGHUdc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jul 2022 16:33:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbiGHTVe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jul 2022 15:21:34 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFD91EAE0;
-        Fri,  8 Jul 2022 12:21:34 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id n74so9707666yba.3;
-        Fri, 08 Jul 2022 12:21:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=M7CMxMpAwaG1MqNPytiWNPh0UB9uZ/2w81H3Zj9t5RA=;
-        b=4IPOAVcqVe0wF5sKrH6p5IoPU+e1XxE2lJy76HRA35PBYRGm1XMUOV5TlYt6RdvdBL
-         XR45i1qa2+0Bfre6bGUzDd9bhAMlYja636Lgitwwu1ZtVw5Z3YWAHYKkbz4QNhu7JZzu
-         AWFn+YNpF6v8pjFxX81FxqUz9NdlM+6POLu0CF2LGgpGhKswH4ubXd97JM70z/goTJtE
-         4ZdmYJ1tMTCCeoJbNFhEtz3MQW6sN1cWXGsXDUyLuLn8e2LRmeLyE1FrlPKBFsUaciD8
-         i9EsyhGQeuznlAjE+n3YfcGsLva5V5hcQTv/f8plSYPQvhApn83G49zhn+uPWkDz4Dzg
-         PVjQ==
-X-Gm-Message-State: AJIora/unHuUf8G+eVaBVpXwzfFV5R3yO2NkO9Hl7RfdPurfhjQt5olk
-        n0qoBOLAk6PBoclPTVx8K7++O+fU0Gw08iLA8uTFD11ZBjM=
-X-Google-Smtp-Source: AGRyM1vyHLicsEKC3SRbE+ACpCdHzjNBQukOQyHJ8cx53Q1WYFNz6npbuVizO0YNrjiITkXgT1T5Bh03ZEMzGYtJA5A=
-X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
- z15-20020a25664f000000b0066cd0f436ccmr5205979ybm.482.1657308093364; Fri, 08
- Jul 2022 12:21:33 -0700 (PDT)
-MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 8 Jul 2022 21:21:20 +0200
-Message-ID: <CAJZ5v0gJcS9bQ07tRaN2KjOF_8+VvyRRrXNN6aQ=cujog1xXDg@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v5.19-rc6
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        with ESMTP id S240149AbiGHUc6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jul 2022 16:32:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA045A23BE;
+        Fri,  8 Jul 2022 13:32:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5381EB80BFA;
+        Fri,  8 Jul 2022 20:32:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 16715C341C0;
+        Fri,  8 Jul 2022 20:32:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657312357;
+        bh=WhuDTZMeAq/uA5Ny/4FK7RIqMaT2M2cy3G9P5OszzLI=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=WkyffjdCjikJnifCqdtCnHWRJBBt26DF4u32YvFEBLa4noXmdoWr+YXzqgUd5SJrm
+         F2ilob7xYAXwEWcjsSPwiQM4ch5V08myjS3o6trV7h9wicNsEZUaeoknhqVSN7OvkN
+         FWYpcCU7vay200GqkZF0CMDr1CyA9zyfMi+6NWu03pgX0vK/8IvllIiMXkjxiLmjKL
+         D8vtgXiVwLSbkBCUMjsBC4cd9HGrf55tPlSVzaqcjYLSolDtLLLczVg6C/ifCIz6b8
+         8zipvqqk1vN7FA5rXxb0ZjhGXOgN+BMJaa622skxwzoc+27YK5yq/rXw8RwGeiWn5f
+         31A2OE0VbccdA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EF531E45BDB;
+        Fri,  8 Jul 2022 20:32:36 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fixes for v5.19-rc6
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0gJcS9bQ07tRaN2KjOF_8+VvyRRrXNN6aQ=cujog1xXDg@mail.gmail.com>
+References: <CAJZ5v0gJcS9bQ07tRaN2KjOF_8+VvyRRrXNN6aQ=cujog1xXDg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0gJcS9bQ07tRaN2KjOF_8+VvyRRrXNN6aQ=cujog1xXDg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.19-rc6
+X-PR-Tracked-Commit-Id: 8b356e536e69f3a4d6778ae9f0858a1beadabb1f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 525496a030de4ae64bb9e1d6bfc88eec6f5fe6e2
+Message-Id: <165731235696.2541.17872676248443708104.pr-tracker-bot@kernel.org>
+Date:   Fri, 08 Jul 2022 20:32:36 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Fri, 8 Jul 2022 21:21:20 +0200:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.19-rc6
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.19-rc6
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/525496a030de4ae64bb9e1d6bfc88eec6f5fe6e2
 
-with top-most commit 8b356e536e69f3a4d6778ae9f0858a1beadabb1f
+Thank you!
 
- ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
-
-on top of commit 88084a3df1672e131ddc1b4e39eeacfd39864acf
-
- Linux 5.19-rc5
-
-to receive ACPI fixes for 5.19-rc6.
-
-These fix two recent regressions related to CPPC support.
-
-Specifics:
-
- - Prevent _CPC from being used if the platform firmware does not
-   confirm CPPC v2 support via _OSC (Mario Limonciello).
-
- - Allow systems with X86_FEATURE_CPPC set to use _CPC even if CPPC
-   support cannot be agreed on via _OSC (Mario Limonciello).
-
-Thanks!
-
-
----------------
-
-Mario Limonciello (2):
-      ACPI: CPPC: Only probe for _CPC if CPPC v2 is acked
-      ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
-
----------------
-
- arch/x86/kernel/acpi/cppc.c | 10 ++++++++++
- drivers/acpi/bus.c          | 11 +++++------
- drivers/acpi/cppc_acpi.c    | 20 ++++++++++++++++++--
- include/acpi/cppc_acpi.h    |  1 +
- include/linux/acpi.h        |  2 +-
- 5 files changed, 35 insertions(+), 9 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
