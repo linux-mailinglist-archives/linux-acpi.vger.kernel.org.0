@@ -2,42 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF78856C216
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jul 2022 01:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC2F56C39B
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Jul 2022 01:14:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239138AbiGHTUG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Jul 2022 15:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60702 "EHLO
+        id S239400AbiGHTVg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Jul 2022 15:21:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbiGHTUF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jul 2022 15:20:05 -0400
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71BBA167EA;
-        Fri,  8 Jul 2022 12:20:04 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id r3so39353274ybr.6;
-        Fri, 08 Jul 2022 12:20:04 -0700 (PDT)
+        with ESMTP id S229496AbiGHTVe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Jul 2022 15:21:34 -0400
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFD91EAE0;
+        Fri,  8 Jul 2022 12:21:34 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id n74so9707666yba.3;
+        Fri, 08 Jul 2022 12:21:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
         bh=M7CMxMpAwaG1MqNPytiWNPh0UB9uZ/2w81H3Zj9t5RA=;
-        b=Kb3gjypPpLB/zsZMH4XXkNLFBYlZFcmUxl9CfNYymvGGX3McB9LWf7xrvB6OPTO3hF
-         3Lhh9L2hJtY77n0Fb6JrHzXhnkk5jNzSHF/Bk6hrQHdhKQ+gUxdzXsTamApWOMpw3qcu
-         armPr6ZhaDZ6Tpz2/XNpw0S1IAzfvkoXEyfTDEaOXo2F8jhh/gJhbQFKygJSXAjiM4y8
-         QQ35/I7KcMTE2HjvYCB/rwu2fX/L+51PqSVOXeglSDaiUt1fjhmPPEkmrMPpOf5blvG2
-         vaBFZq0rnxlhMkVMq0OaWo4bO4YuscKeckvl0nDxH+JFgXkCm1+DYMuySfwJMUQs5A97
-         e2yA==
-X-Gm-Message-State: AJIora8iX0oRbIuexSXMlgdk1M4ysQ+oUHUJEfI/IXxFTg0L78MdRPxU
-        OtDtcZXSTA9IwIDPzxbTI9cghOM8zCj7GoKu5QWQ1Uo1RNE=
-X-Google-Smtp-Source: AGRyM1uUHMQdTqbeGGG/jL/jWci1lO985PbtRSbTT50EcJ9vwWBxrmX4EGboe5lr7UI5GWGZBc7XFdpX77laKRWXY3w=
-X-Received: by 2002:a25:a2ca:0:b0:66e:719e:279 with SMTP id
- c10-20020a25a2ca000000b0066e719e0279mr4938693ybn.622.1657308003304; Fri, 08
- Jul 2022 12:20:03 -0700 (PDT)
+        b=4IPOAVcqVe0wF5sKrH6p5IoPU+e1XxE2lJy76HRA35PBYRGm1XMUOV5TlYt6RdvdBL
+         XR45i1qa2+0Bfre6bGUzDd9bhAMlYja636Lgitwwu1ZtVw5Z3YWAHYKkbz4QNhu7JZzu
+         AWFn+YNpF6v8pjFxX81FxqUz9NdlM+6POLu0CF2LGgpGhKswH4ubXd97JM70z/goTJtE
+         4ZdmYJ1tMTCCeoJbNFhEtz3MQW6sN1cWXGsXDUyLuLn8e2LRmeLyE1FrlPKBFsUaciD8
+         i9EsyhGQeuznlAjE+n3YfcGsLva5V5hcQTv/f8plSYPQvhApn83G49zhn+uPWkDz4Dzg
+         PVjQ==
+X-Gm-Message-State: AJIora/unHuUf8G+eVaBVpXwzfFV5R3yO2NkO9Hl7RfdPurfhjQt5olk
+        n0qoBOLAk6PBoclPTVx8K7++O+fU0Gw08iLA8uTFD11ZBjM=
+X-Google-Smtp-Source: AGRyM1vyHLicsEKC3SRbE+ACpCdHzjNBQukOQyHJ8cx53Q1WYFNz6npbuVizO0YNrjiITkXgT1T5Bh03ZEMzGYtJA5A=
+X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
+ z15-20020a25664f000000b0066cd0f436ccmr5205979ybm.482.1657308093364; Fri, 08
+ Jul 2022 12:21:33 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 8 Jul 2022 21:19:50 +0200
-Message-ID: <CAJZ5v0hASBaOm4m9b7S5Y1ATfL8ppL07g_dpgVcceXmtnOMRcw@mail.gmail.com>
+Date:   Fri, 8 Jul 2022 21:21:20 +0200
+Message-ID: <CAJZ5v0gJcS9bQ07tRaN2KjOF_8+VvyRRrXNN6aQ=cujog1xXDg@mail.gmail.com>
 Subject: [GIT PULL] ACPI fixes for v5.19-rc6
-To:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
