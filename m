@@ -2,133 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3259256CFC6
-	for <lists+linux-acpi@lfdr.de>; Sun, 10 Jul 2022 17:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAC05700C2
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Jul 2022 13:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbiGJP17 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 10 Jul 2022 11:27:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42872 "EHLO
+        id S231403AbiGKLhJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Jul 2022 07:37:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbiGJP16 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 10 Jul 2022 11:27:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3937FDFFC
-        for <linux-acpi@vger.kernel.org>; Sun, 10 Jul 2022 08:27:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657466877;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WEgc4+9EZyWOg0DX1APF1+peVAF/Sf5RwA1DWtcyQls=;
-        b=RDlOHcQ0nP6mYNO2pckj2ZS87ra2Dvb0Ib9UCpOJGh5EOzHTII3reDjaz7t8rRsrge2lac
-        cdjuHpqfNaBJ5PzFGaKV1sYPvW0/H8xOQhWmHjw2P1/MU0pDsjg/4DDJK9uSPku+FT2Slf
-        fH9imo3MmTtbbqPsk8wEPrO69WRe0lQ=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-259-87qot3LKP9mh7vMnAAcsPw-1; Sun, 10 Jul 2022 11:27:55 -0400
-X-MC-Unique: 87qot3LKP9mh7vMnAAcsPw-1
-Received: by mail-ed1-f70.google.com with SMTP id j6-20020a05640211c600b0043a8ea2c138so2677549edw.2
-        for <linux-acpi@vger.kernel.org>; Sun, 10 Jul 2022 08:27:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=WEgc4+9EZyWOg0DX1APF1+peVAF/Sf5RwA1DWtcyQls=;
-        b=ZIFONu1hEMOdFNYW8tJ9aV0UAjkLWKp7nLPuMqStKQJ2IswIKtv80MyTd1bMm6uhdN
-         w7w6vtmOM/YY6JyaCisb57kWWLpF2HgG6LSuvxMhhVdFo+dyRu1EMFOQ8taCRVp7GlLb
-         fSR6zb3p4o8CTwhalIgaVhceIA2pGp/JdOJRft7VCkgbfdFtZdtPb9X7lE0sqTqkfdh1
-         VQXe9yqhkzRNsTVPWRmG9v+alpsHF1+PrOHAaWPyF4Lbu6nc3cOUm9kMCtjQEnm4w3x7
-         AHReiKat4Te8fnSsAAvknPtLXbpBaRAa88DGfxtWqh6CH7LcwyDGgqAAid1lnNgtI735
-         XwoQ==
-X-Gm-Message-State: AJIora9cObnMEdTpanhYnA+w96rLyPuxmpsJ+ntvalEo9IPYwzHP1Ie+
-        /Ksgtjrk3EToVb0SVJ5L0Y0OAW3zyT3nC5wPwrel6BZbEhG5QPPv5tHZsZFmeA6rln2EpERUO29
-        AXbX22xHv79rCDwkHQMiDnA==
-X-Received: by 2002:a05:6402:35c5:b0:437:140d:5cb3 with SMTP id z5-20020a05640235c500b00437140d5cb3mr18766581edc.72.1657466874433;
-        Sun, 10 Jul 2022 08:27:54 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1sar1BApa+f5UiaF83FXmU4bkBODkz9o1fNx7/o9HOXstI0QKL9JWDfHduHhfrrwr0qUspBig==
-X-Received: by 2002:a05:6402:35c5:b0:437:140d:5cb3 with SMTP id z5-20020a05640235c500b00437140d5cb3mr18766565edc.72.1657466874293;
-        Sun, 10 Jul 2022 08:27:54 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id y26-20020a056402135a00b00435a742e350sm2895727edw.75.2022.07.10.08.27.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Jul 2022 08:27:53 -0700 (PDT)
-Message-ID: <c00dc0f7-dfe8-ecd7-ee6d-72b11a4ab3dc@redhat.com>
-Date:   Sun, 10 Jul 2022 17:27:52 +0200
+        with ESMTP id S231550AbiGKLgw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Jul 2022 07:36:52 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB4808BAB8
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Jul 2022 04:24:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657538649; x=1689074649;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ypwq61mMJ8LaVX5BCtII3+V3oGw4zsujAA02inXbayw=;
+  b=iK8HTdwKcjUin04TPBJ0Nu9glATMNOXTCHqNh/tYWEkwR4vvEVN17e6S
+   UnUfdX05Cr7AaRaIlIzA3quA13HlZrknelntTeLNa1llfh/f0Vpwh74Fm
+   hQgzo/ugWMDuNFZdLBRmSSZrksk965aELQGKkhHBjkkOphaUeD+8mtnXB
+   +oJ7Aylk6UrfnrRy71MLEQmqmWHLIaaEqlnoACNlkbx1OH6+oR38E//v8
+   9vHf6IofiEyduzXjy/Waz0Ot4E2EDt2bfK5nQ5JPRyrr/Ni3sc08KlNVS
+   Dn+lCX0l1IAGHk93vT/tJ8wikdq0fbQciyOQ/fTyvMRXSelxkoYpG456z
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10404"; a="265046036"
+X-IronPort-AV: E=Sophos;i="5.92,262,1650956400"; 
+   d="scan'208";a="265046036"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2022 04:24:01 -0700
+X-IronPort-AV: E=Sophos;i="5.92,262,1650956400"; 
+   d="scan'208";a="627456551"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2022 04:24:00 -0700
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id D5AB7204FB;
+        Mon, 11 Jul 2022 14:23:57 +0300 (EEST)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1oArYE-00CnYP-6p; Mon, 11 Jul 2022 14:26:06 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     rafael@kernel.org, andriy.shevchenko@intel.com
+Subject: [PATCH v4 0/8] [PATCH v3 0/8] ACPI: Buffer property and reference as string support
+Date:   Mon, 11 Jul 2022 14:25:58 +0300
+Message-Id: <20220711112606.3050368-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 0/2] Fix 2 5.19 power-off regressions caused by
- sys-off-handler work
-Content-Language: en-US
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, x86@kernel.org,
-        linux-efi@vger.kernel.org
-References: <20220708131412.81078-1-hdegoede@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220708131412.81078-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hello everyone,
 
-On 7/8/22 15:14, Hans de Goede wrote:
-> Hi All,
-> 
-> I noticed that my Lenovo Yoga Tablet 2 1050L was hanging on power-off again
-> with 5.19, even though I had implemented a workaround for this in 5.17 .
-> 
-> I quickly realized that this was caused by the recent sys-off-handler work
-> and fixed this by switching the workaround over to register_sys_off_handler
-> with a priority of SYS_OFF_PRIO_FIRMWARE + 1, so that the workaround runs
-> before acpi_power_off() get a chance to run.
-> 
-> This made me realize that the efi_power_off handler which sometimes is
-> used in preference of acpi_power_off had the same problem, so the second
-> patch in this series fixes that.
-> 
-> I plan to include patch 1/2 in a fixes pull-req to Linus soon. Ard,
-> if I can get your Ack for 2/2 then I can include this in the pull-req
-> if you want; or you can send this to Linus yourself.
+This set adds support for _DSD buffer properties (specified by DSD Guide
+<URL:https://github.com/UEFI/DSD-Guide/blob/main/dsd-guide.md>) as well as
+support for references as strings. Reference property type was previously
+supported for device objects only, whereas string references enable
+referencing also _DSD sub-node objects --- also included in the set.
 
-I've added these to my review-hans (soon to be for-next) branch now
-and I'll include them in my upcoming 5.19 fixes pull-req.
+The ACPICA patch has been submitted to upstream but not merged yet.
 
-Regards,
+This set currently prepares for data node string reference support and
+does not add it anymore.
 
-Hans
+since v3:
 
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> Hans de Goede (2):
->   platform/x86: x86-android-tablets: Fix Lenovo Yoga Tablet 2 830/1050
->     poweroff again
->   efi: Fix efi_power_off() not being run before acpi_power_off() when
->     necessary
-> 
->  drivers/firmware/efi/reboot.c              | 21 +++++++++++----------
->  drivers/platform/x86/x86-android-tablets.c | 17 +++++++++++++----
->  2 files changed, 24 insertions(+), 14 deletions(-)
-> 
+- Use bool return type for acpi_tie_nondev_subnodes. Return false on
+  failure.
+
+- Print ACPI buffer parsing error references as %*pE (was %s).
+
+- Unwrap a few lines (i.e. non-functional changes).
+
+- Declare local variables for acpi_copy_property_array_uint().
+
+- Clean up buffer size check in acpi_data_prop_read(), add break at the
+  end of the default case.
+
+since v2:
+
+- Use C99 _Generic() in patch unifying reading integer arrays.
+
+since v1:
+
+- Drop the ACPICA, data node child list initialisation and data node
+  string reference patches.
+
+Sakari Ailus (8):
+  ACPI: property: Return type of acpi_add_nondev_subnodes() should be
+    bool
+  ACPI: property: Tie data nodes to acpi handles
+  ACPI: property: Use acpi_object_type consistently in property ref
+    parsing
+  ACPI: property: Move property ref argument parsing into a new function
+  ACPI: property: Switch node property referencing from ifs to a switch
+  ACPI: property: Unify integer value reading functions
+  ACPI: property: Add support for parsing buffer property UUID
+  ACPI: property: Read buffer properties as integers
+
+ drivers/acpi/property.c | 465 +++++++++++++++++++++++++++-------------
+ include/acpi/acpi_bus.h |   3 +-
+ include/linux/acpi.h    |   2 +-
+ 3 files changed, 318 insertions(+), 152 deletions(-)
+
+-- 
+2.30.2
 
