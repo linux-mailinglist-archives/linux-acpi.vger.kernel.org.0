@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CED7D572666
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jul 2022 21:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3356572660
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jul 2022 21:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235558AbiGLTsP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Jul 2022 15:48:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56792 "EHLO
+        id S235013AbiGLTsI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Jul 2022 15:48:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235607AbiGLTr3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Jul 2022 15:47:29 -0400
+        with ESMTP id S235396AbiGLTrZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Jul 2022 15:47:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 86C48BA168
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Jul 2022 12:40:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8157660519
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Jul 2022 12:40:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657654809;
+        s=mimecast20190719; t=1657654802;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ie/A0Q4+OZ0IzjNtGrJ7PlSqzv0K4NldTGgm4aq8WDg=;
-        b=efpZ0pxAfesPtVDkOhK+HTJtZpcx7W5jrxkqgczK6ex9MQJlbXfS/9C8fPTvztsArF64z5
-        TbRuydAVapnYlPc6KhWOibmicM1WSmcTSWeB1yD3V6tj2pkW+FsVtrYLHTqtkT2M4/FScn
-        ZwUTNDsEkA5hTgvtDsICyOsNGxU6tfk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=G71xR+CdSjI/ehlXv3ixGBSAU1doFgjRWSHT8LQrW8s=;
+        b=ewJj+sZNl6oFsS3WZCQzbw3z3vmoJwBYZtX83H5xmy8Q9sAH+h1MS8jxHxAIEkjF4laXHM
+        W6SS5aNxlxgDOwmbROBSepm+HgtE4eqh9Aocmhglgs39W0+fIlsH6Sa/6KWUvtYp9DymRS
+        tbox000+R9lJb1Vup7/yKKfG7eOsED0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-434-L7m-rIP9NlaNA57muWuvKw-1; Tue, 12 Jul 2022 15:39:54 -0400
-X-MC-Unique: L7m-rIP9NlaNA57muWuvKw-1
+ us-mta-664-o5YO3pJHP9OB4tUBaWJkpg-1; Tue, 12 Jul 2022 15:39:58 -0400
+X-MC-Unique: o5YO3pJHP9OB4tUBaWJkpg-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5F0F185A7B2;
-        Tue, 12 Jul 2022 19:39:53 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 82C1F380406E;
+        Tue, 12 Jul 2022 19:39:57 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.39.192.30])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D18ED40E80E1;
-        Tue, 12 Jul 2022 19:39:49 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DCB1B40E80E0;
+        Tue, 12 Jul 2022 19:39:53 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
         Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
@@ -62,9 +62,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: [PATCH v2 08/29] ACPI: video: Simplify acpi_video_unregister_backlight()
-Date:   Tue, 12 Jul 2022 21:38:49 +0200
-Message-Id: <20220712193910.439171-9-hdegoede@redhat.com>
+Subject: [PATCH v2 09/29] ACPI: video: Make backlight class device registration a separate step
+Date:   Tue, 12 Jul 2022 21:38:50 +0200
+Message-Id: <20220712193910.439171-10-hdegoede@redhat.com>
 In-Reply-To: <20220712193910.439171-1-hdegoede@redhat.com>
 References: <20220712193910.439171-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -72,7 +72,7 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
 X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,37 +80,160 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When acpi_video_register() has not run yet the video_bus_head will be
-empty, so there is no need to check the register_count flag first.
+On x86/ACPI boards the acpi_video driver will usually initializing before
+the kms driver (except i915). This causes /sys/class/backlight/acpi_video0
+to show up and then the kms driver registers its own native backlight
+device after which the drivers/acpi/video_detect.c code unregisters
+the acpi_video0 device (when acpi_video_get_backlight_type()==native).
+
+This means that userspace briefly sees 2 devices and the disappearing of
+acpi_video0 after a brief time confuses the systemd backlight level
+save/restore code, see e.g.:
+https://bbs.archlinux.org/viewtopic.php?id=269920
+
+To fix this make backlight class device registration a separate step
+done by a new acpi_video_register_backlight() function. The intend is for
+this to be called by the drm/kms driver *after* it is done setting up its
+own native backlight device. So that acpi_video_get_backlight_type() knows
+if a native backlight will be available or not at acpi_video backlight
+registration time, avoiding the add + remove dance.
+
+Note the new acpi_video_register_backlight() function is also called from
+a delayed work to ensure that the acpi_video backlight devices does get
+registered if necessary even if there is no drm/kms driver or when it is
+disabled.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/acpi_video.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/acpi/acpi_video.c | 45 ++++++++++++++++++++++++++++++++++++---
+ include/acpi/video.h      |  2 ++
+ 2 files changed, 44 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 09899b7f7fab..6944794797a5 100644
+index 6944794797a5..c4c3a9e7ce69 100644
 --- a/drivers/acpi/acpi_video.c
 +++ b/drivers/acpi/acpi_video.c
-@@ -2263,14 +2263,10 @@ void acpi_video_unregister_backlight(void)
- {
- 	struct acpi_video_bus *video;
+@@ -31,6 +31,12 @@
+ #define ACPI_VIDEO_BUS_NAME		"Video Bus"
+ #define ACPI_VIDEO_DEVICE_NAME		"Video Device"
  
--	mutex_lock(&register_count_mutex);
--	if (register_count) {
--		mutex_lock(&video_list_lock);
--		list_for_each_entry(video, &video_bus_head, entry)
--			acpi_video_bus_unregister_backlight(video);
--		mutex_unlock(&video_list_lock);
--	}
--	mutex_unlock(&register_count_mutex);
-+	mutex_lock(&video_list_lock);
-+	list_for_each_entry(video, &video_bus_head, entry)
-+		acpi_video_bus_unregister_backlight(video);
-+	mutex_unlock(&video_list_lock);
++/*
++ * Display probing is known to take up to 5 seconds, so delay the fallback
++ * backlight registration by 5 seconds + 3 seconds for some extra margin.
++ */
++#define ACPI_VIDEO_REGISTER_BACKLIGHT_DELAY	(8 * HZ)
++
+ #define MAX_NAME_LEN	20
+ 
+ MODULE_AUTHOR("Bruno Ducrot");
+@@ -81,6 +87,9 @@ static LIST_HEAD(video_bus_head);
+ static int acpi_video_bus_add(struct acpi_device *device);
+ static int acpi_video_bus_remove(struct acpi_device *device);
+ static void acpi_video_bus_notify(struct acpi_device *device, u32 event);
++static void acpi_video_bus_register_backlight_work(struct work_struct *ignored);
++static DECLARE_DELAYED_WORK(video_bus_register_backlight_work,
++			    acpi_video_bus_register_backlight_work);
+ void acpi_video_detect_exit(void);
+ 
+ /*
+@@ -1865,8 +1874,6 @@ static int acpi_video_bus_register_backlight(struct acpi_video_bus *video)
+ 	if (video->backlight_registered)
+ 		return 0;
+ 
+-	acpi_video_run_bcl_for_osi(video);
+-
+ 	if (acpi_video_get_backlight_type() != acpi_backlight_video)
+ 		return 0;
+ 
+@@ -2092,7 +2099,11 @@ static int acpi_video_bus_add(struct acpi_device *device)
+ 	list_add_tail(&video->entry, &video_bus_head);
+ 	mutex_unlock(&video_list_lock);
+ 
+-	acpi_video_bus_register_backlight(video);
++	/*
++	 * The userspace visible backlight_device gets registered separately
++	 * from acpi_video_register_backlight().
++	 */
++	acpi_video_run_bcl_for_osi(video);
+ 	acpi_video_bus_add_notify_handler(video);
+ 
+ 	return 0;
+@@ -2131,6 +2142,11 @@ static int acpi_video_bus_remove(struct acpi_device *device)
+ 	return 0;
  }
  
- bool acpi_video_handles_brightness_key_presses(void)
++static void acpi_video_bus_register_backlight_work(struct work_struct *ignored)
++{
++	acpi_video_register_backlight();
++}
++
+ static int __init is_i740(struct pci_dev *dev)
+ {
+ 	if (dev->device == 0x00D1)
+@@ -2241,6 +2257,17 @@ int acpi_video_register(void)
+ 	 */
+ 	register_count = 1;
+ 
++	/*
++	 * acpi_video_bus_add() skips registering the userspace visible
++	 * backlight_device. The intend is for this to be registered by the
++	 * drm/kms driver calling acpi_video_register_backlight() *after* it is
++	 * done setting up its own native backlight device. The delayed work
++	 * ensures that acpi_video_register_backlight() always gets called
++	 * eventually, in case there is no drm/kms driver or it is disabled.
++	 */
++	schedule_delayed_work(&video_bus_register_backlight_work,
++			      ACPI_VIDEO_REGISTER_BACKLIGHT_DELAY);
++
+ leave:
+ 	mutex_unlock(&register_count_mutex);
+ 	return ret;
+@@ -2251,6 +2278,7 @@ void acpi_video_unregister(void)
+ {
+ 	mutex_lock(&register_count_mutex);
+ 	if (register_count) {
++		cancel_delayed_work_sync(&video_bus_register_backlight_work);
+ 		acpi_bus_unregister_driver(&acpi_video_bus);
+ 		register_count = 0;
+ 		has_backlight = false;
+@@ -2259,6 +2287,17 @@ void acpi_video_unregister(void)
+ }
+ EXPORT_SYMBOL(acpi_video_unregister);
+ 
++void acpi_video_register_backlight(void)
++{
++	struct acpi_video_bus *video;
++
++	mutex_lock(&video_list_lock);
++	list_for_each_entry(video, &video_bus_head, entry)
++		acpi_video_bus_register_backlight(video);
++	mutex_unlock(&video_list_lock);
++}
++EXPORT_SYMBOL(acpi_video_register_backlight);
++
+ void acpi_video_unregister_backlight(void)
+ {
+ 	struct acpi_video_bus *video;
+diff --git a/include/acpi/video.h b/include/acpi/video.h
+index 4705e339c252..0625806d3bbd 100644
+--- a/include/acpi/video.h
++++ b/include/acpi/video.h
+@@ -53,6 +53,7 @@ enum acpi_backlight_type {
+ #if IS_ENABLED(CONFIG_ACPI_VIDEO)
+ extern int acpi_video_register(void);
+ extern void acpi_video_unregister(void);
++extern void acpi_video_register_backlight(void);
+ extern int acpi_video_get_edid(struct acpi_device *device, int type,
+ 			       int device_id, void **edid);
+ extern enum acpi_backlight_type acpi_video_get_backlight_type(void);
+@@ -69,6 +70,7 @@ extern int acpi_video_get_levels(struct acpi_device *device,
+ #else
+ static inline int acpi_video_register(void) { return -ENODEV; }
+ static inline void acpi_video_unregister(void) { return; }
++static inline void acpi_video_register_backlight(void) { return; }
+ static inline int acpi_video_get_edid(struct acpi_device *device, int type,
+ 				      int device_id, void **edid)
+ {
 -- 
 2.36.0
 
