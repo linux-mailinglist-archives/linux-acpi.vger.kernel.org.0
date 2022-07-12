@@ -2,115 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB549570FEE
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jul 2022 04:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 830C2571299
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Jul 2022 08:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbiGLCBf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Jul 2022 22:01:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46118 "EHLO
+        id S230482AbiGLG5H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Jul 2022 02:57:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229680AbiGLCBe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Jul 2022 22:01:34 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94ADC2F037;
-        Mon, 11 Jul 2022 19:01:32 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id v4-20020a17090abb8400b001ef966652a3so10013929pjr.4;
-        Mon, 11 Jul 2022 19:01:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Fkxd8zIo1AnUctnwK3XErf3kWIJuqlFOkAEqPsRtokc=;
-        b=KaBYOu1L28Jm9zFHTufjdVjIWE7s0oW1snh5c65zY0brBY8GXesih/4XGlT5niH37O
-         YOUqXgEEBZbxctb3hLNNQFvJl5Of4NJhTfA+WWIByLxiLDQgPaxQKq3I2n7tcJLwNZOi
-         6mTgP4y2IaQV/NncDB+6u4hgis+PL99n62Ltzc5CHMsHx/drMtYTPqKiKyRX04Fc8TB8
-         Sy8AoDDh661Dg5aFInbbSt5ASUJL3hT2uzEKQmx2VEyNbyvGQv6AddxVgyLOABPzxRyQ
-         uY+cqLG4QG4c2MjKjseZQeHj2Nb91V1yjp0SPxzFAc97NgFEUf4Blesq/fydVnJ3heAZ
-         BD2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Fkxd8zIo1AnUctnwK3XErf3kWIJuqlFOkAEqPsRtokc=;
-        b=dw2VgAN/1EXwyJQuklRG7y12A4YcMUCIqYaAQ2IXGsm6mjAcMhBEtPNfudpNSHMBlh
-         Flrp1wlPjOK8UqPyIp10HtWz+//R/WPkdrGNCAavv4EWIuncItXiZWS+Aj1I6B17pyV0
-         SstzPZQndeki3zn4BDqy0U3wsSnm8lJe/klOeLYBWkSQWL4HOY0NLJtIEgFcdyXZi8Uk
-         4KL2vfD4b37v6fCEN6DBAe4lF/cqHu1CiREcke4dFpge7om6nbl9vnLHKn66WHxkmSxe
-         PVSsn0cGSzzgWUfibDtS5EZchEXrQrXtJpNdGstjwCiAC+EBGjc5mFX7RZmcbWqn0KVi
-         FyIA==
-X-Gm-Message-State: AJIora+MEZa4afAkGhDGiVEF6+dFeWFs+siDe49nLOqGgku1mihETpav
-        CMG88eAnMGUl5WXBWpZpR7YQU5ibMY0CNA==
-X-Google-Smtp-Source: AGRyM1sC99RV7uLjDmVL+sCSTIHWnfnRoisTLkMhw8hAb8MYOAK8WrInJNJZBTAY1nbYH3sGmVzZDw==
-X-Received: by 2002:a17:902:ea0e:b0:16b:f92b:a3c3 with SMTP id s14-20020a170902ea0e00b0016bf92ba3c3mr21251142plg.10.1657591291892;
-        Mon, 11 Jul 2022 19:01:31 -0700 (PDT)
-Received: from guoguo-omen.lan ([2401:c080:1400:4da2:b701:47d5:9291:4cf9])
-        by smtp.gmail.com with ESMTPSA id y16-20020a17090264d000b0015e8d4eb26esm5361637pli.184.2022.07.11.19.01.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jul 2022 19:01:31 -0700 (PDT)
-From:   Chuanhong Guo <gch981213@gmail.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        Chuanhong Guo <gch981213@gmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v6] ACPI: skip IRQ override on AMD Zen platforms
-Date:   Tue, 12 Jul 2022 10:00:58 +0800
-Message-Id: <20220712020058.90374-1-gch981213@gmail.com>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S229529AbiGLG5G (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Jul 2022 02:57:06 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBDAB951CC;
+        Mon, 11 Jul 2022 23:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657609025; x=1689145025;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XiX0tAoOsmukuEMZ85nx4bGEwQxa5zwVfKa1CMZ4aRs=;
+  b=RLS2LEsDxc2sFIfFDVb5RFr/eWplbWibTTXeis3AS9xwdpLabAjBnVCx
+   stFjCwJocVuYL2m6K/MyC9tc9GovfxO/Sdv51YaE8FpcN0Tu/nL0KCz+w
+   HMWpxZ/HATaVOat8hblK1UbbQXMNvgChj4ARYIGawSGMHh5FNm5wYNO/Q
+   nyp5QQjXGw0sTwFi0ZutghLDml7AaF8BAah7TiVpzQXh/aXF8iwvAYGTx
+   p2aaamZYXwsR3S8vBI4B8UXM/Fn9bZ6pbw9CWH6RosNZbbPRxK9fJpgF5
+   +71K9fejx4BPccWepvtRKGRkgqxUE+SBJlpsErtNe6J1T+plnA0BOlmch
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10405"; a="284882241"
+X-IronPort-AV: E=Sophos;i="5.92,265,1650956400"; 
+   d="scan'208";a="284882241"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2022 23:57:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,265,1650956400"; 
+   d="scan'208";a="922087011"
+Received: from lkp-server02.sh.intel.com (HELO 8708c84be1ad) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 11 Jul 2022 23:57:03 -0700
+Received: from kbuild by 8708c84be1ad with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1oB9pP-0001qv-8W;
+        Tue, 12 Jul 2022 06:57:03 +0000
+Date:   Tue, 12 Jul 2022 14:56:10 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ e71c5921cc5005d866e7acd0b501faff1f548897
+Message-ID: <62cd1b0a.0xr7VHPcLploJ134%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-IRQ override isn't needed on modern AMD Zen systems.
-There's an active low keyboard IRQ on AMD Ryzen 6000 and it will stay
-this way on newer platforms. This IRQ override breaks keyboards for
-almost all Ryzen 6000 laptops currently on the market.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: e71c5921cc5005d866e7acd0b501faff1f548897  Merge branch 'thermal-core' into linux-next
 
-Skip this IRQ override for all AMD Zen platforms because this IRQ
-override is supposed to be a workaround for buggy ACPI DSDT and we can't
-have a long list of all future AMD CPUs/Laptops in the kernel code.
-If a device with buggy ACPI DSDT shows up, a separated list containing
-just them should be created.
+elapsed time: 724m
 
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
----
-Change sice v5: reworked
+configs tested: 52
+configs skipped: 2
 
- drivers/acpi/resource.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index c2d494784425..510cdec375c4 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -416,6 +416,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- {
- 	int i;
- 
-+#ifdef CONFIG_X86
-+	/*
-+	 * IRQ override isn't needed on modern AMD Zen systems and
-+	 * this override breaks active low IRQs on AMD Ryzen 6000 and
-+	 * newer systems. Skip it.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_ZEN))
-+		return false;
-+#endif
-+
- 	for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
- 		const struct irq_override_cmp *entry = &skip_override_table[i];
- 
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+ia64                             allmodconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+m68k                             allyesconfig
+alpha                            allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+i386                                defconfig
+i386                             allyesconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220710
+s390                 randconfig-r044-20220710
+riscv                randconfig-r042-20220710
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+x86_64                           rhel-8.3-syz
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+
+clang tested configs:
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a013
+i386                          randconfig-a015
+i386                          randconfig-a011
+hexagon              randconfig-r041-20220710
+hexagon              randconfig-r045-20220710
+
 -- 
-2.36.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
