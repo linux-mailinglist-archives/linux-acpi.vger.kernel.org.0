@@ -2,251 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1485C573761
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 15:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFACD573773
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 15:33:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbiGMN3R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Jul 2022 09:29:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55646 "EHLO
+        id S229769AbiGMNde (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Jul 2022 09:33:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236181AbiGMN3N (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 09:29:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2561C19C38
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Jul 2022 06:29:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657718950;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uFOLdOBsgcxe9CKH8HCU++bC8nE9+yR90TIi+BCJERQ=;
-        b=VYxyHM3xkoOM50+bCAvwjvIHHGRLz6l/h5ht6JxEnbj9MEnvNWf9NFf2SgX4CWCLd0NHnc
-        jVbs8SuxjDtMxaP4o5cIaHpfF1l+/KCOhd4cOKVtfE9NlM+ksDTztjbBkFvfRfQiVxSNec
-        9/JbyJ7IkFV7iRWRgEyOa0Am+92Emog=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-472-gIjSIx_IOdus6eMAuIbH9g-1; Wed, 13 Jul 2022 09:29:08 -0400
-X-MC-Unique: gIjSIx_IOdus6eMAuIbH9g-1
-Received: by mail-ed1-f72.google.com with SMTP id h17-20020a056402281100b0043aa5c0493dso8431168ede.16
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Jul 2022 06:29:08 -0700 (PDT)
+        with ESMTP id S230303AbiGMNdd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 09:33:33 -0400
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D442121
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Jul 2022 06:33:32 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id f11so9572009pgj.7
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Jul 2022 06:33:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=mO/rKYKB8TZovbO5cQAqIciRv98bFTuqiwjEZXYoHPU=;
+        b=CKtFgRg6T4R/hvR/r0vc7i50JKXmFWpQt7EF8rwDWH9qJ/PkwoKPR7KfSZGG6CP+36
+         2r91/84lLbIfDWpZN3fheX0s6LjUyfqGVckSNpEn46HaZeDPe+8Ke/EPOHXlcL2XLM/7
+         Zyc4reFTshnF3IzXuS9IwATqe4Gf2Imcb7+ErUPCzBMhrtBCliz7syPoS2HenyF+gOTU
+         GzhI83uOomiGbbO5jhKIiWSCNIMnBUR+rO64mGmfru6t18PlDjW0wwwTeBRKt1/XEhR/
+         mc13+Z6LB0m5bPPepAnR95jA2YMfzQafk67R10WCapA+tiPNY3eiA50LOM7TJ6CtC97c
+         /r6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=uFOLdOBsgcxe9CKH8HCU++bC8nE9+yR90TIi+BCJERQ=;
-        b=seSG1R97tqz47cdamwi5kUrSYtIUkRpWAPvnlXNzy0lvAKR1nifepDfKdPNOXkcZWp
-         Mf9zY4ye8GCgYOKa+OPEkRuCxerE13rqC6bztPmCoXg7MA/g4Q6tosdkdYl5R83JHlCu
-         htUqqn3Qbp4+A7TdxmFaa/PFLGxyqs6LUPN8FVHDw5lHIrdiJZaYAFADXHu0UQ4DWuJE
-         fXjr//mlPNdI4NEScwQy16PsDqHQVApnsu1Eq1w0jwP2sbE+LjOTTMtfEXi1Kaquqw0g
-         XzWpHXSjnQvIbGzHCGll6WKtlvjmayIwsTSLzRbV6iwamxBBzM11gSKrmjbijyLhTANN
-         O+Ew==
-X-Gm-Message-State: AJIora/qdUeKZqntxSwshnoAHvNlzinUQOzTr0x1Glov4EP9eujq7A4R
-        BgBGdz4OECvPxPKWHRajlGEoeCAFlaOsJ7QTVkhSXwtUWoJEqINcVauG+42f6f+bc1gDL9FhT9m
-        WBpetRmQNQd+f2GgUpFe/2Q==
-X-Received: by 2002:a17:906:d54f:b0:726:2c7c:c0f9 with SMTP id cr15-20020a170906d54f00b007262c7cc0f9mr3524216ejc.441.1657718947468;
-        Wed, 13 Jul 2022 06:29:07 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1vfcNTB8jRcdcMzJ3HSzgCPaZQzS4wwwuVgyODB0hjR+Eo+z5nzyR+6A/TTQwofdNgz7rYtSQ==
-X-Received: by 2002:a17:906:d54f:b0:726:2c7c:c0f9 with SMTP id cr15-20020a170906d54f00b007262c7cc0f9mr3524187ejc.441.1657718947117;
-        Wed, 13 Jul 2022 06:29:07 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id an12-20020a17090656cc00b0070b7875aa6asm4968942ejc.166.2022.07.13.06.29.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Jul 2022 06:29:06 -0700 (PDT)
-Message-ID: <3ddcdb24-cab3-509d-d694-edd4ab85df0a@redhat.com>
-Date:   Wed, 13 Jul 2022 15:29:05 +0200
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=mO/rKYKB8TZovbO5cQAqIciRv98bFTuqiwjEZXYoHPU=;
+        b=eMdoYzAYDCmjzEqRfPNf1Vszguai1Dt7KKua5SN76sT6GVmduyqmuCBYWo28xUjCr9
+         OC4NS/Mt/6+dhoky/fIHEM/OWu8Lc0TGKa4fyLNQiakREU19duPDjjnci/FEPL++0a2F
+         P4U3jEHlXGuyCfkBMQpYpjd0IQzfVi5+N2W+zCXoMTsUxA9ClGf4aC70+LBGg3EWRsjU
+         pODuM20jhY8Zf5LN38RtqBmSjoWjmdjVJnBglrVF76qe+Jy/+zKz0GAIc+nz1cUYbM2D
+         0kFNNFK7p54faTMNxgQG1QzHX3k/lGOefVbYIX0EP1n66Z1n3F0XOoksf0LT+CLPIOwL
+         OqjA==
+X-Gm-Message-State: AJIora/v4SNl0QxZrPli6lfI1Dx0HSSTHlwSiaS8QAFBa2VGXYI8ychA
+        K813yzlOI967tEvJ7qOF9BnaOupI3oplZjJgDNQ=
+X-Google-Smtp-Source: AGRyM1uORNTXXlM0VdfDDuh2ORmeSCAEW9EHJebcVjRfDaCo+I/iHCFEEUtdt9vKhV6QscyHgasZZievpr6uGlWSG/o=
+X-Received: by 2002:a63:455a:0:b0:412:9855:64eb with SMTP id
+ u26-20020a63455a000000b00412985564ebmr3059776pgk.131.1657719211585; Wed, 13
+ Jul 2022 06:33:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [Regression] ACPI: video: Change how we determine if brightness
- key-presses are handled
-Content-Language: en-US
-To:     Ben Greening <bgreening@gmail.com>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
-References: <CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com>
- <02190bee-2e1b-bea3-b716-a7c7f5aa2ff0@redhat.com>
- <CALF=6jG5gmqqXo5cSFFRWRM96K0rzx3WabNdwAmdZQH=unFG7g@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CALF=6jG5gmqqXo5cSFFRWRM96K0rzx3WabNdwAmdZQH=unFG7g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7022:419a:b0:42:5721:a84b with HTTP; Wed, 13 Jul 2022
+ 06:33:30 -0700 (PDT)
+Reply-To: lindacliford05@yahoo.com
+From:   limda clifford <limdaclifford65@gmail.com>
+Date:   Wed, 13 Jul 2022 10:33:30 -0300
+Message-ID: <CAGUtzAs=J89KO5oYHmtki3+8i-wd+GWcqY=YQXuobLLo=6htuw@mail.gmail.com>
+Subject: WITH DUE RESPECT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:535 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5016]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [limdaclifford65[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [lindacliford05[at]yahoo.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [limdaclifford65[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+ Good day dear love one my name is miss linda cliford  from cote
+d'ivoire please i need your help for fund transffer if you  are
+willing please get back to me  for  more information thanks and have a
+good day,
+Waitting to hear from you thamks,
 
-On 7/13/22 15:08, Ben Greening wrote:
-> Hi Hans, thanks for getting back to me.
-> 
-> evemu-record shows events for both "Video Bus" and "Dell WMI hotkeys":
-> 
-> Video Bus
-> E: 0.000001 0001 00e0 0001 # EV_KEY / KEY_BRIGHTNESSDOWN   1
-> E: 0.000001 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-> E: 0.000020 0001 00e0 0000 # EV_KEY / KEY_BRIGHTNESSDOWN   0
-> E: 0.000020 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-> 
-> Dell WMI hotkeys
-> E: 0.000001 0004 0004 57349 # EV_MSC / MSC_SCAN             57349
-> E: 0.000001 0001 00e0 0001 # EV_KEY / KEY_BRIGHTNESSDOWN   1
-> E: 0.000001 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-> E: 0.000020 0001 00e0 0000 # EV_KEY / KEY_BRIGHTNESSDOWN   0
-> E: 0.000020 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-> 
-> Adding video.report_key_events=1 with acpi_backlight=video makes
-> things work like you said it would.
-> 
-> 
-> With acpi_backlight=video just has intel_backlight.
-> 
-> Without acpi_backlight=video:
->     intel_backlight:
->         max_brightness: 4882
->         backlight control works with echo
->         brightness keys make no change to brightness value
-> 
->     dell_backlight:
->         max_brightness: 15
->         backlight control doesn't work immediately, but does on reboot
-> to set brightness at POST.
->         brightness keys change brightness value, but you don't see the
-> change until reboot.
+your s Linda Clifford
+Regards
 
-Ok, so your system lacks ACPI video backlight control, yet still reports
-brightness keypresses through the ACPI Video Bus. Interesting (weird)...
-
-I think I believe I know how to fix the regression, 1 patch coming up.
-
-For the need to pass acpi_backlight=video, what you are in essence
-doing is setting acpi_backlight=native.
-
-The auto-detect code goes to acpi_backlight=vendor because of the lacking
-ACPI video backlight control and manually setting acpi_backlight != vendor
-disables the dell_backlight. ATM the native (intel) backlight ingnoes
-the acpi_backlight setting so it loads unconditionally. But in the near
-future this will change and then you need to pass acpi_backlight=native
-otherwise the intel backlight will not register because you requested
-video.
-
-So I plan to fix this part by adding a quirk to make native the default
-on your machine. Can you do:
-
-sudo dmidecode > dmidecode.txt
-
-And email me the generated dmidecode.txt (this will contain serialnumbers
-so you may want to send it off-list) ? Then I can also prepare a patch
-to add a quirk to make native the default on your model.
-
-Regards,
-
-Hans
-
-
-
-
-
-
-
-
-
-
-> 
-> Thanks again,
-> 
-> Ben
-> 
-> On Wed, Jul 13, 2022 at 2:43 AM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi Ben,
->>
->> On 7/13/22 07:27, Ben Greening wrote:
->>> (resending because of HTML formatting)
->>> Hi, I'm on Arch Linux and upgraded from kernel 5.18.9.arch1-1 to
->>> 5.18.10.arch1-1. The brightness keys don't work as well as before.
->>> Gnome had 20 degrees of brightness, now it's 10, and Xfce went from 10
->>> to 5. Additionally, on Gnome the brightness keys are a little slow to
->>> respond and there's a bit of a stutter. Don't know why Xfce doesn't
->>> stutter, but halving the degrees of brightness for both makes me
->>> wonder if each press is being counted twice.
->>
->> Author of the troublesome patch here, sorry that this broke things
->> for you.
->>
->> So this sounds like you are getting duplicate key-events reported,
->> causing the brightness to take 2 steps on each key-press which is
->> likely also causing the perceived stutter.
->>
->> This suggests that acpi_video_handles_brightness_key_presses()
->> was returning true on your system and is now returning false.
->>
->> Lets confirm this theory, please run either evtest or evemu-record
->> as root and then record events from the "Video Bus" device and then
->> press the brightness up/down keys. Press CTRL+C to exit. After this
->> repeat selecting the "Dell WMI hotkeys" device as input device.
->>
->> I expect both tests/recordings to show brightness key events with
->> the troublesome kernel, showing that you are getting duplicate events.
->>
->> If this is the case then as a workaround you can add:
->>
->> video.report_key_events=1
->>
->> to the kernel commandline. This should silence the "Video Bus"
->> events. Also can you provide the output of:
->>
->> ls /sys/class/backlight
->>
->> please?
->>
->>
->>> Reverting commit 3a0cf7ab8d in acpi_video.c and rebuilding
->>> 5.18.10.arch1-1 fixed it.
->>
->>> The laptop is a Dell Inspiron n4010 and I use "acpi_backlight=video"
->>> to make the brightness keys work. Please let me know if there's any
->>> hardware info you need.
->>
->> Note needing to add a commandline argument like this to get things
->> to work is something which really should always be reported upstream,
->> so that we can either adjust our heuristics; or add a quirk for your
->> laptop-model so that things will just work when another user tries
->> Linux on the same model.
->>
->> So while at it lets look into fixing this properly to.
->>
->> When you do not pass anything on the kernel commandline, what
->> is then the output of:
->>
->> ls /sys/class/backlight
->>
->> And for each directory under there, please cd into the dir
->> and then (as root) do:
->>
->> cat max_brightness # this gives you the range of this backlight intf.
->> echo $some-value > brightness
->>
->> picking some-value in a range of 0-max_brightness, repeating the
->> echo with different values (e.g. half-range + max) and see if
->> the screens brightness changes. Please let me know which directories
->> under /sys/class/backlight result in working backlight control
->> and which ones do not.
->>
->> Also what is the output of "ls /sys/class/backlight" when
->> "acpi_backlight=video" is present on the kernel commandline ?
->>
->> Regards,
->>
->> Hans
->>
-> 
-
+--
