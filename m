@@ -2,163 +2,244 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E45757331E
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 11:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 079685734F3
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 13:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234413AbiGMJnr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Jul 2022 05:43:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34606 "EHLO
+        id S234603AbiGMLJj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Jul 2022 07:09:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234610AbiGMJno (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 05:43:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 72CA05FF1
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Jul 2022 02:43:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657705421;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Q57qMhZZqPk/BSCGCLflk0fgjBCLtpUl3ALcakqi8Wk=;
-        b=GSubXM/0WdKkgpO55S/DQcHSKvBgWqeezgEqBYV1KcgP5Ie4YyBn8ZQH7Asg153+vzwpHD
-        sMGlIYAuJs7Ezck8yH4ZJH6TQ5zaVHySHC1j1/cqYfuq65N68bLWza4pyn9gjY2KWYUB6X
-        v1xin2lQqOUhAOAvLAmTXVNU8PXTSLU=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-651-Goi0tbt5Oq6CCJtAAjhHUg-1; Wed, 13 Jul 2022 05:43:40 -0400
-X-MC-Unique: Goi0tbt5Oq6CCJtAAjhHUg-1
-Received: by mail-ej1-f70.google.com with SMTP id s4-20020a170906500400b006feaccb3a0eso3193439ejj.11
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Jul 2022 02:43:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Q57qMhZZqPk/BSCGCLflk0fgjBCLtpUl3ALcakqi8Wk=;
-        b=naN9yV5imk/liY9VlQCSgcg8TINWK0xOy0aZD5EBmN+uMJyuG6+tUK17RAYx5ZOEPA
-         UTMffY4SxZZ8x+z/8+rOt8JGcHug1H5YSSMpiYW81NmgW16ziqA3L9BEl0glBpWuRpnc
-         it1nb8JB/JarZtLiqWr3yWuLTnWhAS+uNe3eNezlrDKPYmqucr49npE2YKuyKmHAPyye
-         ZZ9aiJDNppky16AAvPvj1o0qIP5fS0TwyW6V+R/Nsg/zoO5tp0CX896ifuZbXKzZ/Ldp
-         Z/Ml5JZVYLLMPBPL6+HE4Dss8uC3zkb73tmlDNv7tEAWRfHM26/yH9ICU8Hin92czGfe
-         dsjQ==
-X-Gm-Message-State: AJIora+GPyfUvoufiRHc6Rv4rAzXlbbOP9z1p5H0yu9NMWh91bZQW/un
-        e+I8g14iimhfwoXXj1pwQDPxfpK59u45L4ziGASQN0mMBpiFC0bt9OQLDsC7jxz4tpxaRmYtrUj
-        dasZjUgjEGdiK78h8OR9ovg==
-X-Received: by 2002:a17:907:75f1:b0:72b:9e40:c1a9 with SMTP id jz17-20020a17090775f100b0072b9e40c1a9mr1629683ejc.523.1657705419150;
-        Wed, 13 Jul 2022 02:43:39 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1s+Z5bMAfaWyqx0jGhRjxuupNcy/Zum1Xqp0A98ijLTZqoxpuYIDweA/zoY6C5/oHGoCejAbg==
-X-Received: by 2002:a17:907:75f1:b0:72b:9e40:c1a9 with SMTP id jz17-20020a17090775f100b0072b9e40c1a9mr1629670ejc.523.1657705418890;
-        Wed, 13 Jul 2022 02:43:38 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id kv20-20020a17090778d400b0072af6f166c2sm4821546ejc.82.2022.07.13.02.43.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Jul 2022 02:43:38 -0700 (PDT)
-Message-ID: <02190bee-2e1b-bea3-b716-a7c7f5aa2ff0@redhat.com>
-Date:   Wed, 13 Jul 2022 11:43:37 +0200
+        with ESMTP id S229579AbiGMLJj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 07:09:39 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEB9BECB88;
+        Wed, 13 Jul 2022 04:09:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657710577; x=1689246577;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=mluzyxZAImsv355695EcParOvoSEmCd7NTEboqAuATQ=;
+  b=S1OZ1tH6c4XNbWkIUwmEYJmxtXV6n3OOQM1pfOpgStuIOweoj/gk2AWT
+   inbOjwn9bq/Led7z3Pn1fmJ4uGZOOOAYMVC+hwglB8lRv5BGYVZI9NF9h
+   BPjYRzwstJY9rF/UjN7kBqHomYwg+lyZBjApWUuHbkxCRm0CL6K24kpuJ
+   P0zHcR5+2A/54OHNK2kIiSchHkwSBtTXqT/uJc1Bat9KqYOTQwC/LH7y3
+   kMJGnS7aRvK9yZf4KetNG4mZWRqydpWKroghM9HYqDzai7UZv5wjeNutV
+   xpgRPH3yR4PxHo5TrSL3iJfU/cR2KkR0Y0Kt9X1rXg7f9lDRTX/3k634K
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10406"; a="264969301"
+X-IronPort-AV: E=Sophos;i="5.92,267,1650956400"; 
+   d="scan'208";a="264969301"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2022 04:09:34 -0700
+X-IronPort-AV: E=Sophos;i="5.92,267,1650956400"; 
+   d="scan'208";a="622899198"
+Received: from ifatima-mobl1.amr.corp.intel.com (HELO khuang2-desk.gar.corp.intel.com) ([10.212.1.196])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2022 04:09:29 -0700
+Message-ID: <173b20166a77012669fdc2c600556fca0623d0b1.camel@intel.com>
+Subject: Re: [PATCH v5 02/22] cc_platform: Add new attribute to prevent ACPI
+ CPU hotplug
+From:   Kai Huang <kai.huang@intel.com>
+To:     Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc:     linux-acpi@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
+        len.brown@intel.com, tony.luck@intel.com,
+        rafael.j.wysocki@intel.com, reinette.chatre@intel.com,
+        dan.j.williams@intel.com, peterz@infradead.org, ak@linux.intel.com,
+        kirill.shutemov@linux.intel.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com,
+        isaku.yamahata@intel.com, thomas.lendacky@amd.com,
+        Tianyu.Lan@microsoft.com, rdunlap@infradead.org, Jason@zx2c4.com,
+        juri.lelli@redhat.com, mark.rutland@arm.com, frederic@kernel.org,
+        yuehaibing@huawei.com, dongli.zhang@oracle.com
+Date:   Wed, 13 Jul 2022 23:09:27 +1200
+In-Reply-To: <5ebd7c3cfb3ab9d77a2577c4864befcffe5359d4.camel@intel.com>
+References: <cover.1655894131.git.kai.huang@intel.com>
+         <f4bff93d83814ea1f54494f51ce3e5d954cf0f5b.1655894131.git.kai.huang@intel.com>
+         <43a67bfe-9707-33e0-2574-1e6eca6aa24b@intel.com>
+         <5ebd7c3cfb3ab9d77a2577c4864befcffe5359d4.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.3 (3.44.3-1.fc36) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [Regression] ACPI: video: Change how we determine if brightness
- key-presses are handled
-Content-Language: en-US
-To:     Ben Greening <bgreening@gmail.com>, stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev, rafael@kernel.org,
-        linux-acpi@vger.kernel.org
-References: <CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ben,
+On Mon, 2022-06-27 at 17:05 +1200, Kai Huang wrote:
+> On Fri, 2022-06-24 at 11:57 -0700, Dave Hansen wrote:
+> > On 6/22/22 04:15, Kai Huang wrote:
+> > > Platforms with confidential computing technology may not support ACPI
+> > > CPU hotplug when such technology is enabled by the BIOS.  Examples
+> > > include Intel platforms which support Intel Trust Domain Extensions
+> > > (TDX).
+> > >=20
+> > > If the kernel ever receives ACPI CPU hotplug event, it is likely a BI=
+OS
+> > > bug.  For ACPI CPU hot-add, the kernel should speak out this is a BIO=
+S
+> > > bug and reject the new CPU.  For hot-removal, for simplicity just ass=
+ume
+> > > the kernel cannot continue to work normally, and BUG().
+> >=20
+> > So, the kernel is now declaring ACPI CPU hotplug and TDX to be
+> > incompatible and even BUG()'ing if we see them together.  Has anyone
+> > told the firmware guys about this?  Is this in a spec somewhere?  When
+> > the kernel goes boom, are the firmware folks going to cry "Kernel bug!!=
+"?
+> >=20
+> > This doesn't seem like something the kernel should be doing unilaterall=
+y.
+>=20
+> TDX doesn't support ACPI CPU hotplug (both hot-add and hot-removal) is an
+> architectural behaviour.  The public specs doesn't explicitly say  it, bu=
+t it is
+> implied:
+>=20
+> 1) During platform boot MCHECK verifies all logical CPUs on all packages =
+that
+> they are TDX compatible, and it keeps some information, such as total CPU
+> packages and total logical cpus at some location of SEAMRR so it can late=
+r be
+> used by P-SEAMLDR and TDX module.  Please see "3.4 SEAMLDR_SEAMINFO" in t=
+he P-
+> SEAMLDR spec:
+>=20
+> https://cdrdv2.intel.com/v1/dl/getContent/733584
+>=20
+> 2) Also some SEAMCALLs must be called on all logical CPUs or CPU packages=
+ that
+> the platform has (such as such as TDH.SYS.INIT.LP and TDH.SYS.KEY.CONFIG)=
+,
+> otherwise the further step of TDX module initialization will fail.
+>=20
+> Unfortunately there's no public spec mentioning what's the behaviour of A=
+CPI CPU
+> hotplug on TDX enabled platform.  For instance, whether BIOS will ever ge=
+t the
+> ACPI CPU hot-plug event, or if BIOS gets the event, will it suppress it. =
+ What I
+> got from Intel internally is a non-buggy BIOS should never report such ev=
+ent to
+> the kernel, so if kernel receives such event, it should be fair enough to=
+ treat
+> it as BIOS bug.
+>=20
+> But theoretically, the BIOS isn't in TDX's TCB, and can be from 3rd party=
+..
+>=20
+> Also, I was told "CPU hot-plug is a system feature, not a CPU feature or =
+Intel
+> architecture feature", so Intel doesn't have an architectural specificati=
+on for
+> CPU hot-plug.=20
+>=20
+> At the meantime, I am pushing Intel internally to add some statements reg=
+arding
+> to the TDX and CPU hotplug interaction to the BIOS write guide and make i=
+t
+> public.  I guess this is the best thing we can do.
+>=20
+> Regarding to the code change, I agree the BUG() isn't good.  I used it be=
+cause:
+> 1) this basically on a theoretical problem and shouldn't happen in practi=
+ce; 2)
+> because there's no architectural specification regarding to the behaviour=
+ of TDX
+> when CPU hot-removal, so I just used BUG() in assumption that TDX isn't s=
+afe to
+> use anymore.
 
-On 7/13/22 07:27, Ben Greening wrote:
-> (resending because of HTML formatting)
-> Hi, I'm on Arch Linux and upgraded from kernel 5.18.9.arch1-1 to
-> 5.18.10.arch1-1. The brightness keys don't work as well as before.
-> Gnome had 20 degrees of brightness, now it's 10, and Xfce went from 10
-> to 5. Additionally, on Gnome the brightness keys are a little slow to
-> respond and there's a bit of a stutter. Don't know why Xfce doesn't
-> stutter, but halving the degrees of brightness for both makes me
-> wonder if each press is being counted twice.
+Hi Dave,
 
-Author of the troublesome patch here, sorry that this broke things
-for you.
+Trying to close how to handle ACPI CPU hotplug for TDX.  Could you give som=
+e
+suggestion?
 
-So this sounds like you are getting duplicate key-events reported,
-causing the brightness to take 2 steps on each key-press which is
-likely also causing the perceived stutter.
+After discussion with TDX guys, they have agreed they will add below to eit=
+her
+the TDX module spec or TDX whitepaper:
 
-This suggests that acpi_video_handles_brightness_key_presses()
-was returning true on your system and is now returning false.
+"TDX doesn=E2=80=99t support adding or removing CPUs from TDX security peri=
+meter. The
+BIOS should prevent CPUs from being hot-added or hot-removed after platform
+boots."
 
-Lets confirm this theory, please run either evtest or evemu-record
-as root and then record events from the "Video Bus" device and then
-press the brightness up/down keys. Press CTRL+C to exit. After this
-repeat selecting the "Dell WMI hotkeys" device as input device.
+This means if TDX is enabled in BIOS, a non-buggy BIOS should never deliver=
+ ACPI
+CPU hotplug event to kernel, otherwise it is a BIOS bug.  And this is only
+related to whether TDX is enabled in BIOS, no matter whether the TDX module=
+ has
+been loaded/initialized or not.
 
-I expect both tests/recordings to show brightness key events with
-the troublesome kernel, showing that you are getting duplicate events.
+So I think the proper way to handle is: we still have code to detect whethe=
+r TDX
+is enabled by BIOS (patch 01 in this series), and when ACPI CPU hotplug hap=
+pens
+on TDX enabled platform, we print out error message saying it is a BIOS bug=
+.
 
-If this is the case then as a workaround you can add:
+Specifically, for CPU hot-add, we can print error message and reject the ne=
+w
+CPU.  For CPU hot-removal, when the kernel receives this event, the CPU hot=
+-
+removal has already handled by BIOS so the kernel cannot reject it.  So I t=
+hink
+we can either BUG(), or say "TDX is broken and please reboot the machine".
 
-video.report_key_events=1
+I guess BUG() would catch a lot of eyeball, so how about choose the latter,=
+ like
+below?
 
-to the kernel commandline. This should silence the "Video Bus"
-events. Also can you provide the output of:
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -799,6 +799,7 @@ static void __init acpi_set_irq_model_ioapic(void)
+  */
+ #ifdef CONFIG_ACPI_HOTPLUG_CPU
+ #include <acpi/processor.h>
++#include <asm/tdx.h>
+=20
+ static int acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
+ {
+@@ -819,6 +820,12 @@ int acpi_map_cpu(acpi_handle handle, phys_cpuid_t phys=
+id,
+u32 acpi_id,
+ {
+        int cpu;
+=20
++       if (platform_tdx_enabled()) {
++               pr_err("BIOS bug: CPU (physid %u) hot-added on TDX enabled
+platform. Reject it.\n",
++                               physid);
++               return -EINVAL;
++       }
++
+        cpu =3D acpi_register_lapic(physid, acpi_id, ACPI_MADT_ENABLED);
+        if (cpu < 0) {
+                pr_info("Unable to map lapic to logical cpu number\n");
+@@ -835,6 +842,10 @@ EXPORT_SYMBOL(acpi_map_cpu);
+=20
+ int acpi_unmap_cpu(int cpu)
+ {
++       if (platform_tdx_enabled())
++               pr_err("BIOS bug: CPU %d hot-removed on TDX enabled platfor=
+m.
+TDX is broken. Please reboot the machine.\n",
++                               cpu);
++
+ #ifdef CONFIG_ACPI_NUMA
+        set_apicid_to_node(per_cpu(x86_cpu_to_apicid, cpu), NUMA_NO_NODE);
+ #endif
 
-ls /sys/class/backlight
 
-please?
+--=20
+Thanks,
+-Kai
 
-
-> Reverting commit 3a0cf7ab8d in acpi_video.c and rebuilding
-> 5.18.10.arch1-1 fixed it.
-
-> The laptop is a Dell Inspiron n4010 and I use "acpi_backlight=video"
-> to make the brightness keys work. Please let me know if there's any
-> hardware info you need.
-
-Note needing to add a commandline argument like this to get things
-to work is something which really should always be reported upstream,
-so that we can either adjust our heuristics; or add a quirk for your
-laptop-model so that things will just work when another user tries
-Linux on the same model.
-
-So while at it lets look into fixing this properly to.
-
-When you do not pass anything on the kernel commandline, what
-is then the output of:
-
-ls /sys/class/backlight
-
-And for each directory under there, please cd into the dir
-and then (as root) do:
-
-cat max_brightness # this gives you the range of this backlight intf.
-echo $some-value > brightness
-
-picking some-value in a range of 0-max_brightness, repeating the
-echo with different values (e.g. half-range + max) and see if
-the screens brightness changes. Please let me know which directories
-under /sys/class/backlight result in working backlight control
-and which ones do not.
-
-Also what is the output of "ls /sys/class/backlight" when
-"acpi_backlight=video" is present on the kernel commandline ?
-
-Regards,
-
-Hans
 
