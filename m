@@ -2,48 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70134573C07
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 19:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50999573C10
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 19:37:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235925AbiGMRd1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Jul 2022 13:33:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54738 "EHLO
+        id S231678AbiGMRhs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Jul 2022 13:37:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231560AbiGMRd0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 13:33:26 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2E2D275FA;
-        Wed, 13 Jul 2022 10:33:25 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id dc50a12d4af63015; Wed, 13 Jul 2022 19:33:23 +0200
-Received: from kreacher.localnet (unknown [213.134.162.15])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id B540F66CC00;
-        Wed, 13 Jul 2022 19:33:22 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH] Revert "ACPI / PM: LPIT: Register sysfs attributes based on FADT"
-Date:   Wed, 13 Jul 2022 19:33:22 +0200
-Message-ID: <2658707.mvXUDI8C0e@kreacher>
+        with ESMTP id S229654AbiGMRhs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 13:37:48 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A24BA2CCBA;
+        Wed, 13 Jul 2022 10:37:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657733867; x=1689269867;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=jkI+8p3nzS5uhRs0bvgZsKIkyptdyJilhkJ4VnAOZB8=;
+  b=nzW0QCVonDb0+aaSm1DsX6WCaoJ9VVj9wgH/r+h8U0Yr6Kn1U8pHDKVW
+   c5mARU3sT4n0fwrilAqt1GLzQiQn+2O/qB9DZ33d+s3nmVGJiFO9/6wmV
+   MKocvowpCoLTucPGyVwacSAFtP64VAe0F58UIMwsYMkrvjcyzgUgsxtuh
+   38rQqXhapmqTkVW5g7FogOqkH6EFMl3k9ToKEBKAFEcg19yHRUXmVYE4c
+   O+FY/7wXZ1FCBGX2EHAasAJMv4x2Ur3kDwxBzz+f+y8YuG9Y0H3KdrfBc
+   J+FuBCVbLsQL/gnLYwvYUWiCBy4/F2CXVbtBHiQZ8PCFJEA56ufNvaJ/N
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10407"; a="371609382"
+X-IronPort-AV: E=Sophos;i="5.92,267,1650956400"; 
+   d="scan'208";a="371609382"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2022 10:36:45 -0700
+X-IronPort-AV: E=Sophos;i="5.92,267,1650956400"; 
+   d="scan'208";a="737966971"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2022 10:36:42 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oBgHv-001CZF-0z;
+        Wed, 13 Jul 2022 20:36:39 +0300
+Date:   Wed, 13 Jul 2022 20:36:38 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc:     linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/4] gpiolib: add support for bias pull disable
+Message-ID: <Ys8CpqYhWp7zVNC8@smile.fi.intel.com>
+References: <20220713131421.1527179-1-nuno.sa@analog.com>
+ <20220713131421.1527179-2-nuno.sa@analog.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.162.15
-X-CLIENT-HOSTNAME: 213.134.162.15
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrudejjedguddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepvddufedrudefgedrudeivddrudehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeivddrudehpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhn
- thgvlhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220713131421.1527179-2-nuno.sa@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,42 +71,24 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Jul 13, 2022 at 03:14:18PM +0200, Nuno Sá wrote:
+> This change prepares the gpio core to look at firmware flags and set
+> 'FLAG_BIAS_DISABLE' if necessary. It works in similar way to
+> 'GPIO_PULL_DOWN' and 'GPIO_PULL_UP'.
 
-Revert commit 1cdda9486f51 ("ACPI / PM: LPIT: Register sysfs attributes
-based on FADT"), because what it did was more confusing than it would
-be to allow the sysfs attributes in question to be created regardless
-of whether or not the relevant flag was set in the FADT.
+...
 
-If ACPI_FADT_LOW_POWER_S0 is not set, it need not mean that LPIT is
-invalid and low-power S0 idle is not usable.  It merely means that
-using S3 on the given system is more beneficial from the energy
-saving perspective than using low-power S0 idle.
+>  	GPIO_PULL_UP			= (1 << 4),
+>  	GPIO_PULL_DOWN			= (1 << 5),
+> +	GPIO_PULL_DISABLE		= (1 << 6),
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-index 48e5059d67ca..50540d4d4948 100644
---- a/drivers/acpi/acpi_lpit.c
-+++ b/drivers/acpi/acpi_lpit.c
-@@ -109,17 +109,11 @@ static void lpit_update_residency(struct lpit_residency_info *info,
- 		if (!info->iomem_addr)
- 			return;
- 
--		if (!(acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0))
--			return;
--
- 		/* Silently fail, if cpuidle attribute group is not present */
- 		sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
- 					&dev_attr_low_power_idle_system_residency_us.attr,
- 					"cpuidle");
- 	} else if (info->gaddr.space_id == ACPI_ADR_SPACE_FIXED_HARDWARE) {
--		if (!(acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0))
--			return;
--
- 		/* Silently fail, if cpuidle attribute group is not present */
- 		sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
- 					&dev_attr_low_power_idle_cpu_residency_us.attr,
+To me it seems superfluous. You have already two flags:
+PUp
+PDown
+When none is set --> Pdisable
 
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
