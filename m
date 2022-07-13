@@ -2,44 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A15557386C
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 16:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FDB3573916
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 16:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236463AbiGMOJ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Jul 2022 10:09:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43328 "EHLO
+        id S236602AbiGMOn2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Jul 2022 10:43:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236511AbiGMOIh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 10:08:37 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E70526E3;
-        Wed, 13 Jul 2022 07:08:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-        Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-        In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Q6s95lMpMbmCk9KJVQv2vAsPo3xoX650/cHQ9mn8lSg=; b=bNxbHjGk6H1ooqCG0qSfwOa1dI
-        MCi3+HZiqTYjUf46UXPjibdpidvVbP90mN4x7wUIyrZLAVRx7itlM28POQBhLmnRunzi+z0/2v1us
-        keyfWnfrgGWCk/x0o0Ys3sF56uKSY+bmyLj8FI2/cgFxiKZAZj83ZzThgX1IPVXiEnJqkHkPhtn9Y
-        sl13TyikW9gDk8fpXvKn1Y7JJTEOLljWKaP0NwmZZyhNLi62apylvMBPgC968RokvlXkIscQHMVY2
-        Ugw94So0q+Wo3V0wJ2+VmDFECxcsgyXNBgPj1LZaSiKWxnTeYUT9U3jALDixWtmApd/rujUlYPhwW
-        SGBN1fzg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:37062 helo=rmk-PC.armlinux.org.uk)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <rmk@armlinux.org.uk>)
-        id 1oBd29-0004cQ-1U; Wed, 13 Jul 2022 15:08:09 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-        id 1oBd28-006UDF-6Q; Wed, 13 Jul 2022 15:08:08 +0100
-In-Reply-To: <Ys7RdzGgHbYiPyB1@shell.armlinux.org.uk>
-References: <Ys7RdzGgHbYiPyB1@shell.armlinux.org.uk>
-From:   "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        with ESMTP id S236569AbiGMOn1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 10:43:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 874F8357C0;
+        Wed, 13 Jul 2022 07:43:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2531461DB4;
+        Wed, 13 Jul 2022 14:43:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF853C34114;
+        Wed, 13 Jul 2022 14:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657723405;
+        bh=OMC/8S6LiF+qzzd+fptFo0oW68RWQkcm1BdUkffx2BE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dEOavb3jOPgiLiP0dPxNj9Nnnp5eKx0WU9oEANNElWh2f1LJthjt+UzPLE80jWLFd
+         UjJj4vgFwP/49WeGfgFlZUW44Qbyrm6pOc9w12Yabn46070+I3eI1NAjUB+acaWJ4d
+         lSa92zMDWWCwYzzHdCmzGu6zj55gknpc9RX6u6c0tQ4VWA9B+ZL1wRDKQ8y2vG/Ero
+         QPVYHTFOi9AQHimUWXIA/BpyDM8MjPA87F9YFUablsGtCq5kUbiyUyUq60EpENR35s
+         fYVmhFfQ4WiiZjzIuU0kxtcRd1x6E21VDCqCwt2JE0p1bViNTyNfgIPw0Od+QVkL+C
+         Xhp+IWey6EImA==
+Date:   Wed, 13 Jul 2022 16:43:14 +0200
+From:   Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
+To:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         "Alvin __ipraga" <alsi@bang-olufsen.dk>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Claudiu Manoil <claudiu.manoil@nxp.com>,
@@ -66,266 +63,36 @@ Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         UNGLinuxDriver@microchip.com,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Vladimir Oltean <olteanv@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Subject: [PATCH RFC net-next v2 6/6] net: dsa: mv88e6xxx: remove handling for
- DSA and CPU ports
+        Woojung Huh <woojung.huh@microchip.com>
+Subject: Re: [PATCH RFC net-next v2 2/6] software node: allow named software
+ node to be created
+Message-ID: <20220713164314.6c813e26@thinkpad>
+In-Reply-To: <E1oBd1n-006UCq-JK@rmk-PC.armlinux.org.uk>
+References: <Ys7RdzGgHbYiPyB1@shell.armlinux.org.uk>
+        <E1oBd1n-006UCq-JK@rmk-PC.armlinux.org.uk>
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1oBd28-006UDF-6Q@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date:   Wed, 13 Jul 2022 15:08:08 +0100
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As we now always use a fixed-link for DSA and CPU ports, we no longer
-need the hack in the Marvell code to make this work. Remove it.
+On Wed, 13 Jul 2022 15:07:47 +0100
+Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
 
-This is especially important with the conversion of DSA drivers to
-phylink_pcs, as the PCS code only gets called if we are using
-phylink for the port.
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+>=20
+> Allow a named software node to be created, which is needed for software
+> nodes for a fixed-link specification for DSA.
+>=20
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/dsa/mv88e6xxx/chip.c | 49 +++-----------------------------
- drivers/net/dsa/mv88e6xxx/chip.h |  3 --
- drivers/net/dsa/mv88e6xxx/port.c | 32 ---------------------
- drivers/net/dsa/mv88e6xxx/port.h |  5 ----
- 4 files changed, 4 insertions(+), 85 deletions(-)
-
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index ccb35ea5d7b0..01dff8d46642 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3314,9 +3314,8 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
- {
- 	struct device_node *phy_handle = NULL;
- 	struct dsa_switch *ds = chip->ds;
--	phy_interface_t mode;
- 	struct dsa_port *dp;
--	int tx_amp, speed;
-+	int tx_amp;
- 	int err;
- 	u16 reg;
- 
-@@ -3325,40 +3324,9 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
- 
- 	dp = dsa_to_port(ds, port);
- 
--	/* MAC Forcing register: don't force link, speed, duplex or flow control
--	 * state to any particular values on physical ports, but force the CPU
--	 * port and all DSA ports to their maximum bandwidth and full duplex.
--	 */
--	if (dsa_is_cpu_port(ds, port) || dsa_is_dsa_port(ds, port)) {
--		unsigned long caps = dp->pl_config.mac_capabilities;
--
--		if (chip->info->ops->port_max_speed_mode)
--			mode = chip->info->ops->port_max_speed_mode(port);
--		else
--			mode = PHY_INTERFACE_MODE_NA;
--
--		if (caps & MAC_10000FD)
--			speed = SPEED_10000;
--		else if (caps & MAC_5000FD)
--			speed = SPEED_5000;
--		else if (caps & MAC_2500FD)
--			speed = SPEED_2500;
--		else if (caps & MAC_1000)
--			speed = SPEED_1000;
--		else if (caps & MAC_100)
--			speed = SPEED_100;
--		else
--			speed = SPEED_10;
--
--		err = mv88e6xxx_port_setup_mac(chip, port, LINK_FORCED_UP,
--					       speed, DUPLEX_FULL,
--					       PAUSE_OFF, mode);
--	} else {
--		err = mv88e6xxx_port_setup_mac(chip, port, LINK_UNFORCED,
--					       SPEED_UNFORCED, DUPLEX_UNFORCED,
--					       PAUSE_ON,
--					       PHY_INTERFACE_MODE_NA);
--	}
-+	err = mv88e6xxx_port_setup_mac(chip, port, LINK_UNFORCED,
-+				       SPEED_UNFORCED, DUPLEX_UNFORCED,
-+				       PAUSE_ON, PHY_INTERFACE_MODE_NA);
- 	if (err)
- 		return err;
- 
-@@ -4306,7 +4274,6 @@ static const struct mv88e6xxx_ops mv88e6141_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6341_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6341_port_max_speed_mode,
- 	.port_tag_remap = mv88e6095_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -4699,7 +4666,6 @@ static const struct mv88e6xxx_ops mv88e6190_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -4762,7 +4728,6 @@ static const struct mv88e6xxx_ops mv88e6190x_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390x_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390x_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -4825,7 +4790,6 @@ static const struct mv88e6xxx_ops mv88e6191_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
- 	.port_set_ucast_flood = mv88e6352_port_set_ucast_flood,
-@@ -4990,7 +4954,6 @@ static const struct mv88e6xxx_ops mv88e6290_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -5141,7 +5104,6 @@ static const struct mv88e6xxx_ops mv88e6341_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6341_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6341_port_max_speed_mode,
- 	.port_tag_remap = mv88e6095_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -5364,7 +5326,6 @@ static const struct mv88e6xxx_ops mv88e6390_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -5431,7 +5392,6 @@ static const struct mv88e6xxx_ops mv88e6390x_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390x_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390x_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -5497,7 +5457,6 @@ static const struct mv88e6xxx_ops mv88e6393x_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6393x_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6393x_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6393x_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index 4518c17c1b9b..a3b7cfe3eb23 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -502,9 +502,6 @@ struct mv88e6xxx_ops {
- 	int (*port_set_speed_duplex)(struct mv88e6xxx_chip *chip, int port,
- 				     int speed, int duplex);
- 
--	/* What interface mode should be used for maximum speed? */
--	phy_interface_t (*port_max_speed_mode)(int port);
--
- 	int (*port_tag_remap)(struct mv88e6xxx_chip *chip, int port);
- 
- 	int (*port_set_policy)(struct mv88e6xxx_chip *chip, int port,
-diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
-index 90c55f23b7c9..47e21f3c437a 100644
---- a/drivers/net/dsa/mv88e6xxx/port.c
-+++ b/drivers/net/dsa/mv88e6xxx/port.c
-@@ -333,14 +333,6 @@ int mv88e6341_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 					       duplex);
- }
- 
--phy_interface_t mv88e6341_port_max_speed_mode(int port)
--{
--	if (port == 5)
--		return PHY_INTERFACE_MODE_2500BASEX;
--
--	return PHY_INTERFACE_MODE_NA;
--}
--
- /* Support 10, 100, 200, 1000 Mbps (e.g. 88E6352 family) */
- int mv88e6352_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 				    int speed, int duplex)
-@@ -372,14 +364,6 @@ int mv88e6390_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 					       duplex);
- }
- 
--phy_interface_t mv88e6390_port_max_speed_mode(int port)
--{
--	if (port == 9 || port == 10)
--		return PHY_INTERFACE_MODE_2500BASEX;
--
--	return PHY_INTERFACE_MODE_NA;
--}
--
- /* Support 10, 100, 200, 1000, 2500, 10000 Mbps (e.g. 88E6190X) */
- int mv88e6390x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 				     int speed, int duplex)
-@@ -394,14 +378,6 @@ int mv88e6390x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 					       duplex);
- }
- 
--phy_interface_t mv88e6390x_port_max_speed_mode(int port)
--{
--	if (port == 9 || port == 10)
--		return PHY_INTERFACE_MODE_XAUI;
--
--	return PHY_INTERFACE_MODE_NA;
--}
--
- /* Support 10, 100, 200, 1000, 2500, 5000, 10000 Mbps (e.g. 88E6393X)
-  * Function mv88e6xxx_port_set_speed_duplex() can't be used as the register
-  * values for speeds 2500 & 5000 conflict.
-@@ -491,14 +467,6 @@ int mv88e6393x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 	return 0;
- }
- 
--phy_interface_t mv88e6393x_port_max_speed_mode(int port)
--{
--	if (port == 0 || port == 9 || port == 10)
--		return PHY_INTERFACE_MODE_10GBASER;
--
--	return PHY_INTERFACE_MODE_NA;
--}
--
- static int mv88e6xxx_port_set_cmode(struct mv88e6xxx_chip *chip, int port,
- 				    phy_interface_t mode, bool force)
- {
-diff --git a/drivers/net/dsa/mv88e6xxx/port.h b/drivers/net/dsa/mv88e6xxx/port.h
-index cb04243f37c1..2a5741a44e97 100644
---- a/drivers/net/dsa/mv88e6xxx/port.h
-+++ b/drivers/net/dsa/mv88e6xxx/port.h
-@@ -357,11 +357,6 @@ int mv88e6390x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- int mv88e6393x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 				     int speed, int duplex);
- 
--phy_interface_t mv88e6341_port_max_speed_mode(int port);
--phy_interface_t mv88e6390_port_max_speed_mode(int port);
--phy_interface_t mv88e6390x_port_max_speed_mode(int port);
--phy_interface_t mv88e6393x_port_max_speed_mode(int port);
--
- int mv88e6xxx_port_set_state(struct mv88e6xxx_chip *chip, int port, u8 state);
- 
- int mv88e6xxx_port_set_vlan_map(struct mv88e6xxx_chip *chip, int port, u16 map);
--- 
-2.30.2
-
+Reviewed-by: Marek Beh=C3=BAn <kabel@kernel.org>
