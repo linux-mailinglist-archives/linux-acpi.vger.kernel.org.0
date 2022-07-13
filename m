@@ -2,64 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B385736E4
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 15:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95EBC573704
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Jul 2022 15:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234888AbiGMNJE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Jul 2022 09:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57824 "EHLO
+        id S235819AbiGMNNy convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 13 Jul 2022 09:13:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235917AbiGMNI4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 09:08:56 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2023E4C;
-        Wed, 13 Jul 2022 06:08:54 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id w12so13292360edd.13;
-        Wed, 13 Jul 2022 06:08:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hMwe0rdT7SyoDOBgnmApSR8aVe/+Or+lmpy2VVuGPUM=;
-        b=JChb+wKuptilCTlze8CjLmidtgd/qaXrd4cGYb7elwnvZ861sF/hBKRcIeZbY5kvPF
-         kSBf9UYdiNceYHey0iUOtxeBU+aYRNxMe6hwy7tSxH0gSrXNh9JaB9+Dop4YnGng0e3M
-         gZhrKHZa4LXVfdxUYt7oaIRMf3IOFLBwHiQvLXCgxE9XHtuHTwasZzr6yihkUnOK0qTS
-         fVydBxmFC7kV4p1bP19BVz+zpUK42NtG5H0WAeRFc3NPx9AAfSySdBLBMUbgZ9zV9mAj
-         SGdXbh0F03EQAlrJ6/8kMqOEqqSAjO82K+cOi6dHyaUfmgLIKCi11KYwNR3uZOWMQ4IK
-         GrvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hMwe0rdT7SyoDOBgnmApSR8aVe/+Or+lmpy2VVuGPUM=;
-        b=oaxJTietfli//HdwrpVSO6zstq1oMaYW5kWmKluTV+tfWyRzcs8Y4+gUuKiu0tLk9r
-         gW4ecAJ6TXbjXph6KaGq0p8ZhP/73ROsLP3e3vUZ28XzMHLPKEOSXmEBuxnaIxstToh6
-         HdMAfsm8kgPD47Vk1uckEohUFVIhtfG/0h+wMXTGc1Sg2jxfqfPHtSBBl2rqZZDq0W1A
-         +msrq21w7c/FV810+Ih68bRlqXyAtuCHZKKV8yUeHbVMvzImAdee5Fz39XT7FayxiBKd
-         LO+Zj/QaFlPyEv2oLgnZK+W+NCBYehWTeT3UMADFcJ0IEGXv/cmXiKr5sYkqr3NuScs3
-         RNfQ==
-X-Gm-Message-State: AJIora/ypjCoICJY2XeG4UhHzaHYYUm3bgcb0XFadaeXsp0xFnnbvqSN
-        TgGjoaiWHCOYRQ4SnHlGOAIuXTShpz0uhpmYWwM=
-X-Google-Smtp-Source: AGRyM1t0jrurFaS/EFX9ysqrxzvCqtBpUI3RhKRo4y0mOUMKcnHw5APGFXVw1pndrMZbP9PKLmmtZO8AiH0Iomv9Tig=
-X-Received: by 2002:aa7:c2d1:0:b0:43a:997:c6d8 with SMTP id
- m17-20020aa7c2d1000000b0043a0997c6d8mr4702779edp.161.1657717733314; Wed, 13
- Jul 2022 06:08:53 -0700 (PDT)
+        with ESMTP id S235906AbiGMNNx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 09:13:53 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21FD11277B;
+        Wed, 13 Jul 2022 06:13:48 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26DAH6DC011654;
+        Wed, 13 Jul 2022 09:13:38 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3h73h6vaj6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 13 Jul 2022 09:13:37 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 26DDDXcg053467
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 13 Jul 2022 09:13:33 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 13 Jul 2022 09:13:33 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 13 Jul 2022 09:13:32 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 13 Jul 2022 09:13:32 -0400
+Received: from nsa.ad.analog.com ([10.44.3.56])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 26DDDI1T004951;
+        Wed, 13 Jul 2022 09:13:21 -0400
+From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
+To:     <linux-acpi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>
+CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Linus Walleij" <linus.walleij@linaro.org>
+Subject: [PATCH 0/4] add support for bias pull-disable
+Date:   Wed, 13 Jul 2022 15:14:17 +0200
+Message-ID: <20220713131421.1527179-1-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.37.0
 MIME-Version: 1.0
-References: <CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com>
- <02190bee-2e1b-bea3-b716-a7c7f5aa2ff0@redhat.com>
-In-Reply-To: <02190bee-2e1b-bea3-b716-a7c7f5aa2ff0@redhat.com>
-From:   Ben Greening <bgreening@gmail.com>
-Date:   Wed, 13 Jul 2022 06:08:16 -0700
-Message-ID: <CALF=6jG5gmqqXo5cSFFRWRM96K0rzx3WabNdwAmdZQH=unFG7g@mail.gmail.com>
-Subject: Re: [Regression] ACPI: video: Change how we determine if brightness
- key-presses are handled
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: pwQnqwK7M1Bl9xWTTvGwG7PmVJK8l6wq
+X-Proofpoint-ORIG-GUID: pwQnqwK7M1Bl9xWTTvGwG7PmVJK8l6wq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-13_02,2022-07-13_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ mlxlogscore=999 lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 clxscore=1015 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2206140000
+ definitions=main-2207130054
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,126 +76,38 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans, thanks for getting back to me.
+The gpio core looks at 'FLAG_BIAS_DISABLE' in preparation of calling the
+gpiochip 'set_config()' hook. However, AFAICT, there's no way that this
+flag is set because there's no support for it in firwmare code. Moreover,
+in 'gpiod_configure_flags()', only pull-ups and pull-downs are being
+handled.
 
-evemu-record shows events for both "Video Bus" and "Dell WMI hotkeys":
+On top of this, there are some users that are looking at
+'PIN_CONFIG_BIAS_DISABLE' in the 'set_config()' hook. So, unless I'm
+missing something, it looks like this was never working for these chips.
 
-Video Bus
-E: 0.000001 0001 00e0 0001 # EV_KEY / KEY_BRIGHTNESSDOWN   1
-E: 0.000001 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-E: 0.000020 0001 00e0 0000 # EV_KEY / KEY_BRIGHTNESSDOWN   0
-E: 0.000020 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
+Note that the ACPI case is only compiled tested. At first glance, it seems
+the current patch is enough but i'm not really sure...
 
-Dell WMI hotkeys
-E: 0.000001 0004 0004 57349 # EV_MSC / MSC_SCAN             57349
-E: 0.000001 0001 00e0 0001 # EV_KEY / KEY_BRIGHTNESSDOWN   1
-E: 0.000001 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-E: 0.000020 0001 00e0 0000 # EV_KEY / KEY_BRIGHTNESSDOWN   0
-E: 0.000020 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
+As a side note, this came to my attention during this patchset [1]
+(and, ofr OF,  was tested with it).
 
-Adding video.report_key_events=1 with acpi_backlight=video makes
-things work like you said it would.
+[1]: https://lore.kernel.org/linux-input/20220708093448.42617-5-nuno.sa@analog.com/
 
+Nuno Sá (4):
+  gpiolib: add support for bias pull disable
+  gpiolib: of: support bias pull disable
+  gpiolib: acpi: support bias pull disable
+  dt-bindings: gpio: add pull-disable flag
 
-With acpi_backlight=video just has intel_backlight.
+ drivers/gpio/gpiolib-acpi.c     | 3 +++
+ drivers/gpio/gpiolib-of.c       | 7 +++++++
+ drivers/gpio/gpiolib.c          | 8 ++++++--
+ include/dt-bindings/gpio/gpio.h | 3 +++
+ include/linux/gpio/machine.h    | 1 +
+ include/linux/of_gpio.h         | 1 +
+ 6 files changed, 21 insertions(+), 2 deletions(-)
 
-Without acpi_backlight=video:
-    intel_backlight:
-        max_brightness: 4882
-        backlight control works with echo
-        brightness keys make no change to brightness value
+-- 
+2.37.0
 
-    dell_backlight:
-        max_brightness: 15
-        backlight control doesn't work immediately, but does on reboot
-to set brightness at POST.
-        brightness keys change brightness value, but you don't see the
-change until reboot.
-
-Thanks again,
-
-Ben
-
-On Wed, Jul 13, 2022 at 2:43 AM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi Ben,
->
-> On 7/13/22 07:27, Ben Greening wrote:
-> > (resending because of HTML formatting)
-> > Hi, I'm on Arch Linux and upgraded from kernel 5.18.9.arch1-1 to
-> > 5.18.10.arch1-1. The brightness keys don't work as well as before.
-> > Gnome had 20 degrees of brightness, now it's 10, and Xfce went from 10
-> > to 5. Additionally, on Gnome the brightness keys are a little slow to
-> > respond and there's a bit of a stutter. Don't know why Xfce doesn't
-> > stutter, but halving the degrees of brightness for both makes me
-> > wonder if each press is being counted twice.
->
-> Author of the troublesome patch here, sorry that this broke things
-> for you.
->
-> So this sounds like you are getting duplicate key-events reported,
-> causing the brightness to take 2 steps on each key-press which is
-> likely also causing the perceived stutter.
->
-> This suggests that acpi_video_handles_brightness_key_presses()
-> was returning true on your system and is now returning false.
->
-> Lets confirm this theory, please run either evtest or evemu-record
-> as root and then record events from the "Video Bus" device and then
-> press the brightness up/down keys. Press CTRL+C to exit. After this
-> repeat selecting the "Dell WMI hotkeys" device as input device.
->
-> I expect both tests/recordings to show brightness key events with
-> the troublesome kernel, showing that you are getting duplicate events.
->
-> If this is the case then as a workaround you can add:
->
-> video.report_key_events=1
->
-> to the kernel commandline. This should silence the "Video Bus"
-> events. Also can you provide the output of:
->
-> ls /sys/class/backlight
->
-> please?
->
->
-> > Reverting commit 3a0cf7ab8d in acpi_video.c and rebuilding
-> > 5.18.10.arch1-1 fixed it.
->
-> > The laptop is a Dell Inspiron n4010 and I use "acpi_backlight=video"
-> > to make the brightness keys work. Please let me know if there's any
-> > hardware info you need.
->
-> Note needing to add a commandline argument like this to get things
-> to work is something which really should always be reported upstream,
-> so that we can either adjust our heuristics; or add a quirk for your
-> laptop-model so that things will just work when another user tries
-> Linux on the same model.
->
-> So while at it lets look into fixing this properly to.
->
-> When you do not pass anything on the kernel commandline, what
-> is then the output of:
->
-> ls /sys/class/backlight
->
-> And for each directory under there, please cd into the dir
-> and then (as root) do:
->
-> cat max_brightness # this gives you the range of this backlight intf.
-> echo $some-value > brightness
->
-> picking some-value in a range of 0-max_brightness, repeating the
-> echo with different values (e.g. half-range + max) and see if
-> the screens brightness changes. Please let me know which directories
-> under /sys/class/backlight result in working backlight control
-> and which ones do not.
->
-> Also what is the output of "ls /sys/class/backlight" when
-> "acpi_backlight=video" is present on the kernel commandline ?
->
-> Regards,
->
-> Hans
->
