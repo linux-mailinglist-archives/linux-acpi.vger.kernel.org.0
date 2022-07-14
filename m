@@ -2,91 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD8735755A4
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 21:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4F465755AC
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 21:16:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230310AbiGNTLc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jul 2022 15:11:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50242 "EHLO
+        id S239259AbiGNTQc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jul 2022 15:16:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232283AbiGNTLb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 15:11:31 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22B7723BD4;
-        Thu, 14 Jul 2022 12:11:29 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id d548e557d55f423d; Thu, 14 Jul 2022 21:11:27 +0200
-Received: from kreacher.localnet (unknown [213.134.162.64])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S229504AbiGNTQb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 15:16:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A0A78422CE
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Jul 2022 12:16:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1657826189;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=pyOKjb33me+J8ld9DxsocCdXl7/5frLguxOUijQkyG4=;
+        b=Nhx7eghgWeGdJC7Y9YdXuq3ZhnOKvUoZ8OWWvA71jsSd3aRghPQ9DdrDVKK/vndsojUDba
+        v1FRdsBlWSv3JJVqYl1p6leypeVMv6QuEBeBmSDJkl6VE9SBpLmzIH/Xt5j+RyyJOAoMI4
+        UVdFgrefUnaKTODUhowT82b9XAAcNv0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-612-r1VdPEwrPwWiqB2fOtHU1g-1; Thu, 14 Jul 2022 15:16:20 -0400
+X-MC-Unique: r1VdPEwrPwWiqB2fOtHU1g-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id F212C66CC26;
-        Thu, 14 Jul 2022 21:11:26 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH] intel: thermal: PCH: Drop ACPI_FADT_LOW_POWER_S0 check
-Date:   Thu, 14 Jul 2022 21:11:26 +0200
-Message-ID: <12013659.O9o76ZdvQC@kreacher>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24E86811E80;
+        Thu, 14 Jul 2022 19:16:20 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.38])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6DFD8492C3B;
+        Thu, 14 Jul 2022 19:16:19 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        Ben Greening <bgreening@gmail.com>
+Subject: [PATCH] ACPI: video: Use native backlight on Dell Inspiron N4010
+Date:   Thu, 14 Jul 2022 21:16:11 +0200
+Message-Id: <20220714191611.10242-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.162.64
-X-CLIENT-HOSTNAME: 213.134.162.64
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrudejledgudefhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepvddufedrudefgedrudeivddrieegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeivddrieegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehm
- rghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The Dell Inspiron N4010 does not have ACPI backlight control,
+so acpi_video_get_backlight_type()'s heuristics return vendor as
+the type to use.
 
-If ACPI_FADT_LOW_POWER_S0 is not set, this doesn't mean that low-power
-S0 idle is not usable.  It merely means that using S3 on the given
-system is more beneficial from the energy saving perspective than using
-low-power S0 idle, as long as S3 is supported.
+But the vendor interface is broken, where as the native (intel_backlight)
+works well, add a quirk to use native.
 
-Suspend-to-idle is still a valid suspend mode if ACPI_FADT_LOW_POWER_S0
-is not set and the pm_suspend_via_firmware() check in pch_wpt_suspend()
-is sufficient to distinguish suspend-to-idle from S3, so drop the
-confusing ACPI_FADT_LOW_POWER_S0 check.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/regressions/CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com/
+Reported-and-tested-by: Ben Greening <bgreening@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/thermal/intel/intel_pch_thermal.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-===================================================================
---- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
-+++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-@@ -207,14 +207,6 @@ static int pch_wpt_suspend(struct pch_th
- 		return 0;
- 	}
- 
--	/* Do not check temperature if it is not a S0ix capable platform */
--#ifdef CONFIG_ACPI
--	if (!(acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0))
--		return 0;
--#else
--	return 0;
--#endif
--
- 	/* Do not check temperature if it is not s2idle */
- 	if (pm_suspend_via_firmware())
- 		return 0;
-
-
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index becc198e4c22..4099140bbd5f 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -347,6 +347,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro12,1"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Dell Inspiron N4010 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron N4010"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Dell Vostro V131 */
+-- 
+2.36.0
 
