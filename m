@@ -2,109 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB60B5755F4
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 21:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 484E357560D
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 21:59:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240211AbiGNTnW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jul 2022 15:43:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44998 "EHLO
+        id S240765AbiGNT72 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jul 2022 15:59:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240653AbiGNTnV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 15:43:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A64F16BC19
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Jul 2022 12:43:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657827799;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dg9+JDWes1KzSSyj81sTXIcE5x2fJUI/Oun+MFc1PXQ=;
-        b=YVHKQqulfBYy2pyi0XMIVH+RRy0NciAjobMJTn1xNYeXxbossqJqeOonfseyDDUAFhm/WV
-        GUZTTJzdh1Hk8xA4vB8lZ4Epb+5vSDjdy7fs6P5InWewL/aK8PNFnDrvi8Poy/daAzzoT8
-        8DQsFojbS82hJUUyFtm1+yFvw5FXUlU=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-27-lfmcbVGxMpO0U8KQ2LM6oQ-1; Thu, 14 Jul 2022 15:43:18 -0400
-X-MC-Unique: lfmcbVGxMpO0U8KQ2LM6oQ-1
-Received: by mail-ed1-f70.google.com with SMTP id g7-20020a056402424700b0043ac55ccf15so2053669edb.4
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Jul 2022 12:43:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=dg9+JDWes1KzSSyj81sTXIcE5x2fJUI/Oun+MFc1PXQ=;
-        b=XlSMvK7dfhkHuH13LrscLf6vCYZxMb4QfosQ2lWpMxjDjXShZ/faCfAA8qiyVegndN
-         WVVIeD/ok2SX2plJ8Bnro2J42yM3sDUkIJhFxNgt3NZ4+FL3QHLE+nc5B8KmJ4yx1gia
-         W/LVzJ/X+Jr8giwWOpvf/WI6MRhuV8535oaiJOgkX8C5aQ7zPrbHAaFaTchK2ZfpA7y8
-         RtOFg+uLWXX20ZpZZN0nKyH34y+iL8YwrAODrZVO3IRCTSM3r6+cfOPLRbIvuYCDVs6K
-         GTD9MtMO0UaixfMgIRsl/Y75/YzUiP4QL6OTc6ju4BvtZvIRscXgdk8ju0Ebr5I8O9oN
-         kETg==
-X-Gm-Message-State: AJIora8ClF/v0IxCwPlmjIlV9ZGgVGW9eEqDV2a0RJHcvYZm/PNAccJ8
-        Rs0amNtysr5x0I8kvDRts41dJUw/iG8hYvjQueoRJZ2xidPe6s1s+VyQVohzei9c5IA7oaH/Wdx
-        yVsnarkdojY6n6CkUWqQ7PQ==
-X-Received: by 2002:aa7:cd0a:0:b0:43a:8ffd:d8de with SMTP id b10-20020aa7cd0a000000b0043a8ffdd8demr14293296edw.5.1657827797360;
-        Thu, 14 Jul 2022 12:43:17 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1sjzFwGcCzuqBNOwrF/HzJhG/eH+kbiODMOpHqQTx4Vp9DVXAhl6LxC4caqJ/zuahqUSYSUfQ==
-X-Received: by 2002:aa7:cd0a:0:b0:43a:8ffd:d8de with SMTP id b10-20020aa7cd0a000000b0043a8ffdd8demr14293272edw.5.1657827797138;
-        Thu, 14 Jul 2022 12:43:17 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id a9-20020a05640213c900b0043b0951f7b1sm1609186edx.41.2022.07.14.12.43.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Jul 2022 12:43:16 -0700 (PDT)
-Message-ID: <286b0209-ea8d-b3f0-9759-e3a4a86c34cb@redhat.com>
-Date:   Thu, 14 Jul 2022 21:43:15 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v2 27/29] ACPI: video: Drop Clevo/TUXEDO NL5xRU and NL5xNU
- acpi_backlight=native quirks
-Content-Language: en-US
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        Werner Sembach <wse@tuxedocomputers.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
-        Daniel Dadap <ddadap@nvidia.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Pan@vger.kernel.org" <Pan@vger.kernel.org>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        with ESMTP id S231432AbiGNT71 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 15:59:27 -0400
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2051.outbound.protection.outlook.com [40.107.93.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5BD1EC5B;
+        Thu, 14 Jul 2022 12:59:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k2T1TinteRkQLXvM1SNgyJEO57htI7M0QxqLT2CtRPmVD5aNjfWU2M7TynU8MMzGSNVNDkx/uXEQi3Oc3RfV9sddUllAW36qJmC/wTO3SDZJEWvPP/RpqqteuPqpsxivmqyPNcHva2CzFfNdNn32edWUgNF5aW7TDLMW1Igh/u8H5T8K2QfCLdhccDMPqN9bu+wc0WkaLvXQG4TF+GV5L0tMqmJ8rb0kRols+gJHq9F1JBGbNBDNntprjk6wJK1s4ckx+cE+yNEFaPKjqTnJtOciZKRZVDKrL1BBA/70X5cSTxiRHFFupKZ2GkH8JH6RXwrxC2iBXwGMa0dQAheaTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4JgHyZGSRj/bsKn7hyiIjy+JOMMCVeDW4tsalMhn59Y=;
+ b=PAKehSC2jnn5ADvXr8igP0HbbccQX66UKeUjctaep+D9poSTWe9Po99CoFapwNnuJqjso045HONNRmfN/FzFC38cQRySC5pxfA3RBdnHgkJ+AJJdHab8vYTIDAPSTBQ0SznYMOJGZjZN+siKk8yHWV6QtXiT9SOPKIdecC4ZHnxhr7l+82rOO3E89cegAf0G6qOHAwebm1XB+/dLsMmFnft7IvCSNlb6fDJI41xXKl7LNoMeuAOLTFQ5JnHVGPRizpbZRvLE+lhaEDzcy/2bOm947uB3M8opbcrkvACFCR7RPoNJoqz3C00YeL+3cmRHeRuahFELMUG8EpZcwdjk9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4JgHyZGSRj/bsKn7hyiIjy+JOMMCVeDW4tsalMhn59Y=;
+ b=V5lrDDV+won6ftt/p6PRgYXmGfC23c1+4mg04+Mu+BQVmUq9d+prswzfxSQwk38cVHJzy+HRpR0X/FSrIJoZAElOeKH/+ocH3G7DGnsfHnrroCibOI6FLmqzwYWT+WyyL0aFwpaDCKuE3LKBrSgDLXieAd5WuNze6TKVnZxzdOQ=
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by CH2PR12MB5564.namprd12.prod.outlook.com (2603:10b6:610:65::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5417.23; Thu, 14 Jul
+ 2022 19:59:25 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::1143:10a5:987a:7598]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::1143:10a5:987a:7598%6]) with mapi id 15.20.5417.026; Thu, 14 Jul 2022
+ 19:59:25 +0000
+From:   "Limonciello, Mario" <Mario.Limonciello@amd.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Chuanhong Guo <gch981213@gmail.com>
+CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Tighe Donnelly <tighe.donnelly@protonmail.com>,
         Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>
-References: <20220712193910.439171-1-hdegoede@redhat.com>
- <20220712193910.439171-28-hdegoede@redhat.com>
- <82521ebc-3f14-8d3b-5601-6b4a36ef19af@tuxedocomputers.com>
- <MN0PR12MB6101A54D0F72B0501BE818DBE2899@MN0PR12MB6101.namprd12.prod.outlook.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <MN0PR12MB6101A54D0F72B0501BE818DBE2899@MN0PR12MB6101.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        open list <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v6] ACPI: skip IRQ override on AMD Zen platforms
+Thread-Topic: [PATCH v6] ACPI: skip IRQ override on AMD Zen platforms
+Thread-Index: AQHYlZNQUBz3L+ebLkW/6W0BroV+ra1+NeGAgAAW3aA=
+Date:   Thu, 14 Jul 2022 19:59:24 +0000
+Message-ID: <MN0PR12MB6101B53D92737C8021E7ECB8E2889@MN0PR12MB6101.namprd12.prod.outlook.com>
+References: <20220712020058.90374-1-gch981213@gmail.com>
+ <CAJZ5v0jjyvWniC8ReZqAgnaoaRm4cr_Vs3pXhddKf9B6+zONLw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jjyvWniC8ReZqAgnaoaRm4cr_Vs3pXhddKf9B6+zONLw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=true;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2022-07-14T19:58:55Z;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public-AIP 2.0;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ActionId=8c768e20-9576-485c-aef3-cd4101b2de93;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=1
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_enabled: true
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_setdate: 2022-07-14T19:59:23Z
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_method: Privileged
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_name: Public-AIP 2.0
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_siteid: 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_actionid: d679a2e3-3080-42ce-92da-1df4e8e43524
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 303dcb10-f7cc-42da-f30c-08da65d35a14
+x-ms-traffictypediagnostic: CH2PR12MB5564:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 7Ao1TcCIZl+htSbQBbBRS0md+oM0fkK2j8QKzjXpcV7p4e8mZnM3IXtv41fcdl9wWn33nU3pJE0/ah5eWKWVQOXOo/uBE1FLSqhxYBXrW/TjC5eatX9dFiqxRtGQfXUUnenezC7H+ZVNnhmZ4cpxZHRpTo8Cz8jHmaNbfgvckIfEqwulemn3RbGwqsD64ofgZiSthHGUVyuKZLgP4UOjy0W/yWAcSW627tYfPxjWU7K4RkC8/OKyIp4B9OtASDRDMtUUytwH2XW/EOi8Aj4Q0vrti51lA/qiUyaJBIcunf841ynKf21OQUqWIP3gfpeYx2n0tjfIeEwz10cy0yeJjJLisYW4JehL92J+RlnTM/7zcXgjCMlns+Wp7tmU/4C7OZ+LwLZL4Lyv2BzDyePkep+o+zw+6r9oLhQNE1qqGjQSUISHyHtEJ19aZvRt8aW62GfgpQ57DfVxsEbDx0xLx5jY/DSara9Cf8Fku5AJMVQopGa/CRc0RJvSvsz3tTf9B6Og0DOl9iIo3MxCMxv481lIFuMnZS69/01eYU4UCR/8d58ysE9X1KkEGNM3EV8lZlULKk3a4ww6F1JHnzo4Nw9lheUhk9JzIrGp0Z3xuGx3rCeSkEgnGTE+llWGOFirZscrSVjCCn0Q5qDYt5nj7922V0J7X/Cwa/H1hPzZJpGxRz4IMWi36YW9AZ64NCKtcba/QZnlSV/1VH+4MVXUKJxX9+Uq8vBybClhnNM/p4jqZJPmSismvcutitaoMoVhTikmdCD0QwJffybXewWKrb4jQnXGELQpQzSG9KlRw3jnR5HzudQvTq6+KQGiQDXX
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(376002)(39860400002)(396003)(346002)(366004)(54906003)(316002)(55016003)(5660300002)(6506007)(7696005)(53546011)(8936002)(186003)(9686003)(52536014)(38100700002)(38070700005)(2906002)(41300700001)(110136005)(33656002)(478600001)(83380400001)(8676002)(66556008)(122000001)(66476007)(86362001)(64756008)(4326008)(71200400001)(66946007)(66446008)(76116006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Nk9PdFdyU0tMWHV6Y1czK0plcFpkbXZjT2FhVitMVkNvRTRuWk9FdWQvSGd3?=
+ =?utf-8?B?K1IzY2ttdkhLUjdUUGplcUh0c0srQmhRUHpqbUpqZThwUFdYdkFoRjljTmUz?=
+ =?utf-8?B?UElRUnY0UGgwMXJHZ1hNQk5EZHJkbmFsL2gwc0xvc2VLeU5ucjFuTmhxSkdE?=
+ =?utf-8?B?QnZ1bzZVblpxZDMxS2hiL01ueXRMODA3amFGTG1PcG1URTFaSnR3VTZzTTIw?=
+ =?utf-8?B?aGdwT2VVNGVjbWw4WjU2azc3bzl4UmFHOTFVcXNhd3pueE1LY05FdTdiUk5J?=
+ =?utf-8?B?MXBWRjhoc0dPNjZXSjU2RWM3V3E2RllNcTN3R0VXZjhpS2NKdjFDQkxVRnd5?=
+ =?utf-8?B?ejhxL3ROcEZJaWpTNWZYalhYTFJORUNqRjU2aFVnVFl2enpZWnFHa0lhcGhY?=
+ =?utf-8?B?ZGVaN3VrQ3dKTzNEMWZlWHFkUGRERUp0S1lWbzNHd3Z2L3YyVkVSNGY1TFh4?=
+ =?utf-8?B?cHhEQ3MzR1pMaVVmNlF5RzBvLy9ETnZXOTNTbGtmNlM0QjkybnNmWElPWjIy?=
+ =?utf-8?B?cHUyekpGRjFTWHhKQW5ySEVnZzBaU0Y0V1V0d3MwSUQvaUJ2aUtjSXh0dWRN?=
+ =?utf-8?B?TkEwdXZLUm43eFk5Rk5pdHBpZmlPT3l0T3ZSdG96KzZpaTJOdEVSRm8reUZq?=
+ =?utf-8?B?RE50SHlkRzRxZVJKUXZ4REJrZ3FZM3pjMDdicjloVlhrRDBjajg1U3d3OFFP?=
+ =?utf-8?B?MlBVblRXeFc1WEE1T3pSYklSRnM0Ly82Qmh5VE5YbVJFZ0c1MWQ5bkpFV0ox?=
+ =?utf-8?B?SVQxUmpqUUI5bWlEYmorcUpPcEpvWXpwWjN4V1RUQjBpSXZYK0l6Z285dUpO?=
+ =?utf-8?B?eHE4cG1SRnlQVjJ6dDV0VHVTYlYxemZic0dnM1FYTGhUQ1hxUFBGcWdEYUhq?=
+ =?utf-8?B?ZjlGOXR6MEQ2T3VlaUpoOFV2a0M4bzY3VzJlbE8rVXVjNnp6anZXK2w0Umxt?=
+ =?utf-8?B?WlZDY0NxL0F0TkFQeGxESGM3Z1VjdGlycXk4am02d0tuSU5Kdjk3L3ZCbUNr?=
+ =?utf-8?B?b3RKRk56RjdCdEI3eEwyVU9PQ25qdkgrS2kyM0htaFhLMzNUejloNllVYjVt?=
+ =?utf-8?B?Z0s5bzlKc0txMmhuZSsvcXJxVGdDWFhaMlJiaWxSRHEzR1JzRTB2Z2tPck5D?=
+ =?utf-8?B?ZzRYNGQrMnE2eVNlSHFENU1uZ3hOb1drblpCM3U5djZNNi9wb1drVVhhdTAv?=
+ =?utf-8?B?ODN1TENvbmNyeGErc1ZCOTZhUEJuL0haU2dLcXlYMUxsc0tLSU5mQTJEdCtW?=
+ =?utf-8?B?ekQxbm84azBhcXF5dEExTHJneWk1cUd5WDlydGtuMkF1UUlZM045UFFSejJw?=
+ =?utf-8?B?d0dqRDE4SFd0eStLemhoenhHNTJWREZ0UHF6a2plcVZFMExsVVY3dFkyMVVN?=
+ =?utf-8?B?ZzBJZHN6OTFoYnlVeHVUSjYzN3M2eDBWaHJCYk9od2RiNk1iYldKWDV6YkRL?=
+ =?utf-8?B?cnRxNkxCaTN2M2lnR09pUTZmc3o2Z1NlMDJLdmNaZk81aHYxMHVOYWg2Vzc2?=
+ =?utf-8?B?STRHeEk3bndNNkNBRVM5UzZzT1R4TjhhbDRzTUloVXpNZGk0b2NFU2d5UzlU?=
+ =?utf-8?B?RXFZOG5ZMHYxMU9keVowS1JmTUNnL01LSGRmQzVvYWxtejFQTWVFVEtQNWFr?=
+ =?utf-8?B?V3FEMkoyKzVDbkIzNUtwWDJYL1Rtenowd2hETGJScXNnWGVzNXFYNnVsWmRZ?=
+ =?utf-8?B?MStOc0dOTllubStINzlKS1BFV0NQZ2x4N2hVd2IwZTdVamRRYnRvOWVMR1I2?=
+ =?utf-8?B?dHFzeEdmKzhKQWp5TGpVczUvODF6RkhiZzArVE9SaWRWY2pOdVc0N2dhbmRE?=
+ =?utf-8?B?dUhjclc5NjBLZFJlNHBvTWkrS1VCR3ZJU255ekNKeG9jRlNLOHpWOTIreWJR?=
+ =?utf-8?B?Yit3M0Ntd2gwOTN4MGtpRlg2QU1zYXdnS3A2N3MyL1Y0Tk1JaTlmc0ZVQ0Jm?=
+ =?utf-8?B?cXVlZHlUUE04Wm9Sb2ZDbnAwYWw0QzBWM1Irb1U3WUFvZFFSdExhd1Blbi9k?=
+ =?utf-8?B?Y3pDNXNKK0pzM3FqV2U1d2E3ZTd6RnVqV0NIM1RpcXR4eGNVUW14NHBsSVZr?=
+ =?utf-8?B?WXFzc0Fndk43c1V4Q2NwYUVUUjZOSzdQOXBLRjBBZVBhUEhybGI3NC9CZmJQ?=
+ =?utf-8?B?UXpLcm8wLy9Wb0Fad2h6eCt4azQ2QlFrb1JpWEhrZ2pkM2k4Y1ZzSzVWQTFY?=
+ =?utf-8?Q?r1TZZHf/gMbIVysJ9cndikY=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 303dcb10-f7cc-42da-f30c-08da65d35a14
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2022 19:59:24.9861
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ifvhC7M5IugDo305XU1L2JAUp4n/8L5yA7U5AdIdcmbf3+ym9XXmjRrNX2wqbW9loIsGJrkgjKaFJ0ZBHUHK0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB5564
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -112,173 +142,48 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 7/13/22 19:21, Limonciello, Mario wrote:
-> [Public]
-> 
-> 
-> 
->> -----Original Message-----
->> From: Werner Sembach <wse@tuxedocomputers.com>
->> Sent: Wednesday, July 13, 2022 12:08
->> To: Hans de Goede <hdegoede@redhat.com>; Ben Skeggs
->> <bskeggs@redhat.com>; Karol Herbst <kherbst@redhat.com>; Lyude
->> <lyude@redhat.com>; Daniel Dadap <ddadap@nvidia.com>; Maarten
->> Lankhorst <maarten.lankhorst@linux.intel.com>; Maxime Ripard
->> <mripard@kernel.org>; Thomas Zimmermann <tzimmermann@suse.de>;
->> Jani Nikula <jani.nikula@linux.intel.com>; Joonas Lahtinen
->> <joonas.lahtinen@linux.intel.com>; Rodrigo Vivi <rodrigo.vivi@intel.com>;
->> Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>; Deucher, Alexander
->> <Alexander.Deucher@amd.com>; Koenig, Christian
->> <Christian.Koenig@amd.com>; Pan@vger.kernel.org; Pan, Xinhui
->> <Xinhui.Pan@amd.com>; Rafael J . Wysocki <rafael@kernel.org>; Mika
->> Westerberg <mika.westerberg@linux.intel.com>; Lukas Wunner
->> <lukas@wunner.de>; Mark Gross <markgross@kernel.org>; Andy
->> Shevchenko <andy@kernel.org>
->> Cc: nouveau@lists.freedesktop.org; Daniel Vetter <daniel@ffwll.ch>; David
->> Airlie <airlied@linux.ie>; intel-gfx <intel-gfx@lists.freedesktop.org>; dri-
->> devel@lists.freedesktop.org; amd-gfx@lists.freedesktop.org; Len Brown
->> <lenb@kernel.org>; linux-acpi@vger.kernel.org; platform-driver-
->> x86@vger.kernel.org
->> Subject: Re: [PATCH v2 27/29] ACPI: video: Drop Clevo/TUXEDO NL5xRU and
->> NL5xNU acpi_backlight=native quirks
->>
->> Hi,
->>
->> On 7/12/22 21:39, Hans de Goede wrote:
->>> acpi_backlight=native is the default for these, but as the comment
->>> explains the quirk was still necessary because even briefly registering
->>> the acpi_video0 backlight; and then unregistering it once the native
->>> driver showed up, was leading to issues.
->>>
->>> After the "ACPI: video: Make backlight class device registration
->>> a separate step" patch from earlier in this patch-series, we no
->>> longer briefly register the acpi_video0 backlight on systems where
->>> the native driver should be used.
->>>
->>> So this is no longer an issue an the quirks are no longer needed.
->>>
->>> Cc: Werner Sembach <wse@tuxedocomputers.com>
->>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>
->> Tested and can confirm: The quirks are no longer needed with this Patchset.
->>
->> Tested-by: Werner Sembach <wse@tuxedocomputers.com>
-> 
-> Probably should include this link tag in this commit too then as it fixes
-> the Tong Fang systems too.
-> 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215683
-
-Good point, I've added this to the version in my personal tree.
-
-Regards,
-
-Hans
-
-
-
-
-> 
->>
->> Kind Regards,
->>
->> Werner Sembach
->>
->>> ---
->>>   drivers/acpi/video_detect.c | 75 -------------------------------------
->>>   1 file changed, 75 deletions(-)
->>>
->>> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
->>> index 2a4d376a703e..4b9395d1bda7 100644
->>> --- a/drivers/acpi/video_detect.c
->>> +++ b/drivers/acpi/video_detect.c
->>> @@ -599,81 +599,6 @@ static const struct dmi_system_id
->> video_detect_dmi_table[] = {
->>>   		DMI_MATCH(DMI_BOARD_NAME, "N250P"),
->>>   		},
->>>   	},
->>> -	/*
->>> -	 * Clevo NL5xRU and NL5xNU/TUXEDO Aura 15 Gen1 and Gen2 have
->> both a
->>> -	 * working native and video interface. However the default detection
->>> -	 * mechanism first registers the video interface before unregistering
->>> -	 * it again and switching to the native interface during boot. This
->>> -	 * results in a dangling SBIOS request for backlight change for some
->>> -	 * reason, causing the backlight to switch to ~2% once per boot on
->> the
->>> -	 * first power cord connect or disconnect event. Setting the native
->>> -	 * interface explicitly circumvents this buggy behaviour, by avoiding
->>> -	 * the unregistering process.
->>> -	 */
->>> -	{
->>> -	.callback = video_detect_force_native,
->>> -	.ident = "Clevo NL5xRU",
->>> -	.matches = {
->>> -		DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
->>> -		DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
->>> -		},
->>> -	},
->>> -	{
->>> -	.callback = video_detect_force_native,
->>> -	.ident = "Clevo NL5xRU",
->>> -	.matches = {
->>> -		DMI_MATCH(DMI_SYS_VENDOR,
->> "SchenkerTechnologiesGmbH"),
->>> -		DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
->>> -		},
->>> -	},
->>> -	{
->>> -	.callback = video_detect_force_native,
->>> -	.ident = "Clevo NL5xRU",
->>> -	.matches = {
->>> -		DMI_MATCH(DMI_SYS_VENDOR, "Notebook"),
->>> -		DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
->>> -		},
->>> -	},
->>> -	{
->>> -	.callback = video_detect_force_native,
->>> -	.ident = "Clevo NL5xRU",
->>> -	.matches = {
->>> -		DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
->>> -		DMI_MATCH(DMI_BOARD_NAME, "AURA1501"),
->>> -		},
->>> -	},
->>> -	{
->>> -	.callback = video_detect_force_native,
->>> -	.ident = "Clevo NL5xRU",
->>> -	.matches = {
->>> -		DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
->>> -		DMI_MATCH(DMI_BOARD_NAME, "EDUBOOK1502"),
->>> -		},
->>> -	},
->>> -	{
->>> -	.callback = video_detect_force_native,
->>> -	.ident = "Clevo NL5xNU",
->>> -	.matches = {
->>> -		DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
->>> -		DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
->>> -		},
->>> -	},
->>> -	{
->>> -	.callback = video_detect_force_native,
->>> -	.ident = "Clevo NL5xNU",
->>> -	.matches = {
->>> -		DMI_MATCH(DMI_SYS_VENDOR,
->> "SchenkerTechnologiesGmbH"),
->>> -		DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
->>> -		},
->>> -	},
->>> -	{
->>> -	.callback = video_detect_force_native,
->>> -	.ident = "Clevo NL5xNU",
->>> -	.matches = {
->>> -		DMI_MATCH(DMI_SYS_VENDOR, "Notebook"),
->>> -		DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
->>> -		},
->>> -	},
->>>
->>>   	/*
->>>   	 * Desktops which falsely report a backlight and which our heuristics
-
+W1B1YmxpY10NCg0KDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmFm
+YWVsIEouIFd5c29ja2kgPHJhZmFlbEBrZXJuZWwub3JnPg0KPiBTZW50OiBUaHVyc2RheSwgSnVs
+eSAxNCwgMjAyMiAxMzozNg0KPiBUbzogQ2h1YW5ob25nIEd1byA8Z2NoOTgxMjEzQGdtYWlsLmNv
+bT4NCj4gQ2M6IEFDUEkgRGV2ZWwgTWFsaW5nIExpc3QgPGxpbnV4LWFjcGlAdmdlci5rZXJuZWwu
+b3JnPjsgVGlnaGUgRG9ubmVsbHkNCj4gPHRpZ2hlLmRvbm5lbGx5QHByb3Rvbm1haWwuY29tPjsg
+TGltb25jaWVsbG8sIE1hcmlvDQo+IDxNYXJpby5MaW1vbmNpZWxsb0BhbWQuY29tPjsgUmFmYWVs
+IEouIFd5c29ja2kgPHJhZmFlbEBrZXJuZWwub3JnPjsgTGVuDQo+IEJyb3duIDxsZW5iQGtlcm5l
+bC5vcmc+OyBvcGVuIGxpc3QgPGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc+DQo+IFN1Ympl
+Y3Q6IFJlOiBbUEFUQ0ggdjZdIEFDUEk6IHNraXAgSVJRIG92ZXJyaWRlIG9uIEFNRCBaZW4gcGxh
+dGZvcm1zDQo+IA0KPiBPbiBUdWUsIEp1bCAxMiwgMjAyMiBhdCA0OjAxIEFNIENodWFuaG9uZyBH
+dW8gPGdjaDk4MTIxM0BnbWFpbC5jb20+DQo+IHdyb3RlOg0KPiA+DQo+ID4gSVJRIG92ZXJyaWRl
+IGlzbid0IG5lZWRlZCBvbiBtb2Rlcm4gQU1EIFplbiBzeXN0ZW1zLg0KPiA+IFRoZXJlJ3MgYW4g
+YWN0aXZlIGxvdyBrZXlib2FyZCBJUlEgb24gQU1EIFJ5emVuIDYwMDAgYW5kIGl0IHdpbGwgc3Rh
+eQ0KPiA+IHRoaXMgd2F5IG9uIG5ld2VyIHBsYXRmb3Jtcy4gVGhpcyBJUlEgb3ZlcnJpZGUgYnJl
+YWtzIGtleWJvYXJkcyBmb3INCj4gPiBhbG1vc3QgYWxsIFJ5emVuIDYwMDAgbGFwdG9wcyBjdXJy
+ZW50bHkgb24gdGhlIG1hcmtldC4NCj4gPg0KPiA+IFNraXAgdGhpcyBJUlEgb3ZlcnJpZGUgZm9y
+IGFsbCBBTUQgWmVuIHBsYXRmb3JtcyBiZWNhdXNlIHRoaXMgSVJRDQo+ID4gb3ZlcnJpZGUgaXMg
+c3VwcG9zZWQgdG8gYmUgYSB3b3JrYXJvdW5kIGZvciBidWdneSBBQ1BJIERTRFQgYW5kIHdlIGNh
+bid0DQo+ID4gaGF2ZSBhIGxvbmcgbGlzdCBvZiBhbGwgZnV0dXJlIEFNRCBDUFVzL0xhcHRvcHMg
+aW4gdGhlIGtlcm5lbCBjb2RlLg0KPiA+IElmIGEgZGV2aWNlIHdpdGggYnVnZ3kgQUNQSSBEU0RU
+IHNob3dzIHVwLCBhIHNlcGFyYXRlZCBsaXN0IGNvbnRhaW5pbmcNCj4gPiBqdXN0IHRoZW0gc2hv
+dWxkIGJlIGNyZWF0ZWQuDQo+ID4NCj4gPiBTdWdnZXN0ZWQtYnk6IE1hcmlvIExpbW9uY2llbGxv
+IDxtYXJpby5saW1vbmNpZWxsb0BhbWQuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IENodWFuaG9u
+ZyBHdW8gPGdjaDk4MTIxM0BnbWFpbC5jb20+DQo+IA0KPiBJIG5lZWQgYW4gQUNLIGZyb20gTWFy
+aW8gaGVyZS4NCg0KSSBiZWxpZXZlIHRoaXMgaXMgZmluZSwgYnV0IGdpdmUgbWUgYSBmZXcgZGF5
+cyB0byBjaGVjayB3aXRoIG90aGVycy4NClRoaXMgaXNuJ3QgNS4xOSBtYXRlcmlhbCwgYW5kIHNv
+IEkgdGhpbmsgYW4gYWNrIG5leHQgd2VlayBzaG91bGQgYmUgZmluZSBmb3IgaXQuDQoNCj4gDQo+
+ID4gLS0tDQo+ID4gQ2hhbmdlIHNpY2UgdjU6IHJld29ya2VkDQo+ID4NCj4gPiAgZHJpdmVycy9h
+Y3BpL3Jlc291cmNlLmMgfCAxMCArKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxMCBp
+bnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL3Jlc291cmNl
+LmMgYi9kcml2ZXJzL2FjcGkvcmVzb3VyY2UuYw0KPiA+IGluZGV4IGMyZDQ5NDc4NDQyNS4uNTEw
+Y2RlYzM3NWM0IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvYWNwaS9yZXNvdXJjZS5jDQo+ID4g
+KysrIGIvZHJpdmVycy9hY3BpL3Jlc291cmNlLmMNCj4gPiBAQCAtNDE2LDYgKzQxNiwxNiBAQCBz
+dGF0aWMgYm9vbCBhY3BpX2Rldl9pcnFfb3ZlcnJpZGUodTMyIGdzaSwgdTgNCj4gdHJpZ2dlcmlu
+ZywgdTggcG9sYXJpdHksDQo+ID4gIHsNCj4gPiAgICAgICAgIGludCBpOw0KPiA+DQo+ID4gKyNp
+ZmRlZiBDT05GSUdfWDg2DQo+ID4gKyAgICAgICAvKg0KPiA+ICsgICAgICAgICogSVJRIG92ZXJy
+aWRlIGlzbid0IG5lZWRlZCBvbiBtb2Rlcm4gQU1EIFplbiBzeXN0ZW1zIGFuZA0KPiA+ICsgICAg
+ICAgICogdGhpcyBvdmVycmlkZSBicmVha3MgYWN0aXZlIGxvdyBJUlFzIG9uIEFNRCBSeXplbiA2
+MDAwIGFuZA0KPiA+ICsgICAgICAgICogbmV3ZXIgc3lzdGVtcy4gU2tpcCBpdC4NCj4gPiArICAg
+ICAgICAqLw0KPiA+ICsgICAgICAgaWYgKGJvb3RfY3B1X2hhcyhYODZfRkVBVFVSRV9aRU4pKQ0K
+PiA+ICsgICAgICAgICAgICAgICByZXR1cm4gZmFsc2U7DQo+ID4gKyNlbmRpZg0KPiA+ICsNCj4g
+PiAgICAgICAgIGZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKHNraXBfb3ZlcnJpZGVfdGFibGUp
+OyBpKyspIHsNCj4gPiAgICAgICAgICAgICAgICAgY29uc3Qgc3RydWN0IGlycV9vdmVycmlkZV9j
+bXAgKmVudHJ5ID0gJnNraXBfb3ZlcnJpZGVfdGFibGVbaV07DQo+ID4NCj4gPiAtLQ0KPiA+IDIu
+MzYuMQ0KPiA+DQo=
