@@ -2,76 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB65574784
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 10:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24A51574806
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 11:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236048AbiGNIqe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jul 2022 04:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43212 "EHLO
+        id S237691AbiGNJNh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jul 2022 05:13:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237435AbiGNIq3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 04:46:29 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E04CE402E3;
-        Thu, 14 Jul 2022 01:46:27 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id p14so952016qvo.9;
-        Thu, 14 Jul 2022 01:46:27 -0700 (PDT)
+        with ESMTP id S237690AbiGNJNg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 05:13:36 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F231B1;
+        Thu, 14 Jul 2022 02:13:33 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 6so2146006ybc.8;
+        Thu, 14 Jul 2022 02:13:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=AQM3d9GGe4QO9GR8naQccVzLum+tvH/H4+/A6J4Tk+I=;
-        b=dDmm7RsMmk0U5XAbGa5oDaEIdi9M5FS1mgrJph3NwF5OEnwvoZaINbCady4nlOoPMO
-         Dwh7PWjG47bDUArevKjgvuEj1RBiFKAVKlJsDfkBnQ0yDDF2TSenlpqdfIKC6exHiVoV
-         ilE2DTO9rnvuReZx+pzcOArX4/RYB3/dpGE+eNfetdUT+k43q03bd0DaeN3BSf4u60un
-         SFJz7kNcLuDRdxl7BcSZ7/XvawEtc1HitH4nxqgjm0h85UDbOzsDmcK47Cj7FBnkobgq
-         rkDasp8RVdGOyt9Xd13erGL4D1R5kyGl/Hcb7UNhcuj+KEnaqMnDShlTgU9Fqx5yL8k3
-         s4sg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=nD+0N5Ck5WL/nVS2PgpANbQsU9EZRR9EBSE+SFbkBOM=;
+        b=SVYi8kUQWW22wxu91LW3l/SArgfjTfGT3AneCppkhpJYvcXEPOpgEIq3f691NGt7IU
+         2g09GZJA/JMgDR2IjkPFdYUSOkS7ScfWsMNIFn8V0PM2Qcj0D1wxxjTo8S5YXrdUczKl
+         nXePFW2cfbYCap+LM6vc4hU4KLCHyJobwWqhXIqXx0MR7CRMZUDTlu6hVyKDjD7h/ZYA
+         DfzjfhVrUfEGHLtR9uMR99M8i3NL9jP6srLI1DRZl2MYJgiF7Z1jmQNUXgjytnWv1KVO
+         iNDp1eingY42qNiLFBPV3y/CiYV4lG4qWTCAHZ75OLig1JY64EA/4RDmj9hvnVX7g1KH
+         wCHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=AQM3d9GGe4QO9GR8naQccVzLum+tvH/H4+/A6J4Tk+I=;
-        b=RVhIFsNMjTnOV8i/eQpIzimJjtCTjKaXQZqoCldU/mRwSDfpAtZrIpPVRClchUPqaA
-         dWr8XQw3cJO56B3K7Q9H3PZPlpgFLFuQnNo/alj3DF7B2BcRdPj75OMfCRnnVgc37nY9
-         slhXJujWfS20mXem6fQDz7VIKcQpxzuiTUcN4Oh6+hSLX2jbxp5XNFFuDHqoBSV6QgZy
-         XxwmcIxCzo0/C6HllgNIVItn8MY//uT3Gin1X8kfdZI3GdY4aRctdsTcD6RNQFOiQmJy
-         Xle0Ul0xZTEiI4qy0PlxbaS/DgSlx6efLWcvGpa8zSmO3C+3+1lQUb+hNwAexSlMIl5S
-         2BYQ==
-X-Gm-Message-State: AJIora9/Tw9ojDn9gU+ZrE5Ez+nkVRKGoyuasQtcP8qTzA6kJ8Llr7LW
-        ybYC3bC/QVxBO5CmAif2dhQPSYDCEzghA41j
-X-Google-Smtp-Source: AGRyM1vB+Yyk8KgmN6HpnITzNyFe7dEXkEg0UsQzD832fkIjzljFzGNTgtuUT7xQ+827AytCJuJZtw==
-X-Received: by 2002:a05:6214:ccb:b0:472:f2a2:dd73 with SMTP id 11-20020a0562140ccb00b00472f2a2dd73mr7015993qvx.0.1657788386956;
-        Thu, 14 Jul 2022 01:46:26 -0700 (PDT)
-Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id br44-20020a05620a462c00b006b593410fd8sm847892qkb.87.2022.07.14.01.46.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Jul 2022 01:46:26 -0700 (PDT)
-Message-ID: <35e8020f513a77b8a8eb12a45d48a2b1390cce7c.camel@gmail.com>
-Subject: Re: [PATCH 1/4] gpiolib: add support for bias pull disable
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Kent Gibson <warthog618@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=nD+0N5Ck5WL/nVS2PgpANbQsU9EZRR9EBSE+SFbkBOM=;
+        b=1bMTU54Ej2uPpQoAMnGnHDf80BCb5uaIcNv1s959/kltgRe9risxt9pYCH9/wAN1Dw
+         eq9/rmB1YOke6BgjerVRZMhOt8WH8lZ/8lehjqfdtACKLS5VjQPo+Uz/ciJ96ghDmn8V
+         u71dlMFGoJ4LU6dIkTDL/Tjm9fkhe4URO58TXtq7bR8/Nh/Z5+81ExVYuR1LXCP8TsgS
+         QmahW466JxTfuqpOtM4gT72eLPJSYrIBs8BORT4QxerMnp5hKHVKIk6LiwIv6u6e+RYz
+         asiTeMTk3QbYpXwC6cKQbCYQNLqprJS0ThdUIN8pCp0gnXIJVE6ZtgDZdgfMeeyYuQdg
+         kTUA==
+X-Gm-Message-State: AJIora9m8xBfiJIkt959F4unmvQy7bMcIuiPkSCwTLJaSipYEMcTqtDn
+        m0PcA+pgzSgPopeosSyzVyWC5gzFk/cW8lpSatg=
+X-Google-Smtp-Source: AGRyM1sQvn80/A2vNEn15Jx0WTcdl/AG57MJXn8FJjNjYk2q/1eOKyXJ13qX1UVQuk740CM3kPLgoefYDufOeT/l0zc=
+X-Received: by 2002:a05:6902:686:b0:66e:627f:4d29 with SMTP id
+ i6-20020a056902068600b0066e627f4d29mr7114482ybt.385.1657790012251; Thu, 14
+ Jul 2022 02:13:32 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220713131421.1527179-1-nuno.sa@analog.com> <Ys8DPCzRa1qo2AKJ@smile.fi.intel.com>
+ <62ccf0c91d32df557a2bc91c45adb45593302534.camel@gmail.com>
+In-Reply-To: <62ccf0c91d32df557a2bc91c45adb45593302534.camel@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 14 Jul 2022 11:12:55 +0200
+Message-ID: <CAHp75VcEBE3kMDi5Q+89GmS9V=aF+pOcyROY9MdfyB_5OaruPg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] add support for bias pull-disable
+To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
         Frank Rowand <frowand.list@gmail.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 14 Jul 2022 10:47:27 +0200
-In-Reply-To: <20220714082710.GA103849@sol>
-References: <20220713131421.1527179-1-nuno.sa@analog.com>
-         <20220713131421.1527179-2-nuno.sa@analog.com>
-         <Ys8CpqYhWp7zVNC8@smile.fi.intel.com> <20220714042050.GA76737@sol>
-         <4bf06ba5994f559499c45275cd7f44bfee1bbde1.camel@gmail.com>
-         <20220714082710.GA103849@sol>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.3 
-MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -82,114 +76,40 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 2022-07-14 at 16:27 +0800, Kent Gibson wrote:
-> On Thu, Jul 14, 2022 at 09:14:21AM +0200, Nuno S=C3=A1 wrote:
-> > On Thu, 2022-07-14 at 12:20 +0800, Kent Gibson wrote:
-> > > On Wed, Jul 13, 2022 at 08:36:38PM +0300, Andy Shevchenko wrote:
-> > > > On Wed, Jul 13, 2022 at 03:14:18PM +0200, Nuno S=C3=A1 wrote:
-> > > > > This change prepares the gpio core to look at firmware flags
-> > > > > and
-> > > > > set
-> > > > > 'FLAG_BIAS_DISABLE' if necessary. It works in similar way to
-> > > > > 'GPIO_PULL_DOWN' and 'GPIO_PULL_UP'.
-> > > >=20
-> > > > ...
-> > > >=20
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0GPIO_PULL_UP=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D (1 << 4),
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0GPIO_PULL_DOWN=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D (1 << 5),
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0GPIO_PULL_DISABLE=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=3D (1 << 6),
-> > > >=20
-> > > > To me it seems superfluous. You have already two flags:
-> > > > PUp
-> > > > PDown
-> > > > When none is set --> Pdisable
-> > > >=20
-> > >=20
-> > > Agree with Andy on this.=C2=A0 The FLAG_BIAS_DISABLE was added, by me=
-,
-> > > to
-> > > allow the cdev interface to support bias.=C2=A0 cdev requires a "don'=
-t
-> > > care"
-> > > state, distinct from an explicit BIAS_DISABLE.
-> > > The FLAG_BIAS_DISABLE allows gpiolib-cdev to communicate that to
-> > > gpiolib, without altering the interpretation of the existing
-> > > PULL_UP
-> > > and
-> > > PULL_DOWN flags.
-> > > That is not an issue on the machine interface, where the two
-> > > GPIO_PULL
-> > > flags suffice.
-> > >=20
-> >=20
-> > I see, but this means we can only disable the pin BIAS through
-> > userspace. I might be wrong but I don't see a reason why it
-> > wouldn't be
-> > valid to do it from an in kernel path as we do for PULL-UPS and
-> > PULL-
-> > DOWNS=20
-> >=20
->=20
-> > > If you are looking for the place where FLAG_BIAS_DISABLE is set
-> > > it is
-> > > in
-> > > gpio_v2_line_config_flags_to_desc_flags() in gpiolib-cdev.c.
-> > >=20
-> > > Referring to gpio_set_bias(), the only place in gpiolib the
-> > > FLAG_BIAS_DISABLE is used, if neither FLAG_PULL_UP,
-> > > FLAG_PULL_DOWN,
-> > > nor FLAG_BIAS_DISABLE are set then the bias configuration remains
-> > > unchanged (the don't care case) - no change is passed to the
-> > > driver.
-> > > Otherwise the corresponding PIN_CONFIG_BIAS flag is passed to the
-> > > driver.
-> > >=20
-> >=20
-> > Exactly, but note FLAG_BIAS_DISABLE can only be set from userspace
-> > at
-> > this point (IIUTC). If everyone agrees that should be case, so be
-> > it.
-> > But as I said, I just don't see why it's wrong to do it within the
-> > kernel.
-> >=20
->=20
-> Believe it or not gpiolib-cdev is part of the kernel, not userspace -
-> it
-> just provides an interface to userspace.
->=20
+On Thu, Jul 14, 2022 at 9:10 AM Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> On Wed, 2022-07-13 at 20:39 +0300, Andy Shevchenko wrote:
+> > On Wed, Jul 13, 2022 at 03:14:17PM +0200, Nuno S=C3=A1 wrote:
+> > > The gpio core looks at 'FLAG_BIAS_DISABLE' in preparation of
+> > > calling the
+> > > gpiochip 'set_config()' hook. However, AFAICT, there's no way that
+> > > this
+> > > flag is set because there's no support for it in firwmare code.
+> > > Moreover,
+> > > in 'gpiod_configure_flags()', only pull-ups and pull-downs are
+> > > being
+> > > handled.
+> >
+> > Isn't it enough?
+>
+> I might be missing something but don't think so. Look at this driver
+> which seems a lot like the reference i put in the cover:
+>
+> https://elixir.bootlin.com/linux/v5.19-rc6/source/drivers/gpio/gpio-pca95=
+3x.c#L573
+>
+> I just don't see an in-kernel path (I'm aware now that we can get here
+> through gpio cdev) to get to the point where we want to disable the pin
+> BIAS.
 
-Yes, I do know that. But don't you still need a userspace process to
-open the cdev and do the ioctl()?
+Ah, that driver should be converted to pin control. It's definitely a
+problem with the driver.
 
-> Bias can be disabled by calling gpiod_direction_input() or
-> gpiod_direction_output() after setting the FLAG_BIAS_DISABLE, as
-> gpiolib-cdev does.
->=20
-> Does that work for you?
->=20
+But let me look into the library code to understand better what your
+point is in general.
 
-I'm not seeing how would this work... We would need to make gpiod
-consumers having to do this. Something like:
+P.S. Pin muxing has nothing to do with the pin control, many (I guess
+more than 90%) of GPIO controllers do have pin control features.
 
-
-desc =3D giod_get();
-set_bit(FLAG_BIAS_DISABLE, &desc->flags);
-set_direction...
-
-
-Having in mind that we can already specify the direction in gpiod_get,
-I don't really think this is something that consumers should have to
-worry. Moreover, I would say this means special devicetree properties
-for all the consumers of such a gpiochip which want to disable bias...
-
-...
-
-Or do you have something else in mind?
-
-- Nuno S=C3=A1
+--=20
+With Best Regards,
+Andy Shevchenko
