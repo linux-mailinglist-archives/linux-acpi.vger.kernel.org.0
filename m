@@ -2,97 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB5015746EF
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 10:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB65574784
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 10:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236175AbiGNIgu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jul 2022 04:36:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
+        id S236048AbiGNIqe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jul 2022 04:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235898AbiGNIgm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 04:36:42 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7EA3DF0F
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Jul 2022 01:36:40 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id bu42so1706314lfb.0
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Jul 2022 01:36:40 -0700 (PDT)
+        with ESMTP id S237435AbiGNIq3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 04:46:29 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E04CE402E3;
+        Thu, 14 Jul 2022 01:46:27 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id p14so952016qvo.9;
+        Thu, 14 Jul 2022 01:46:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=nfF93HFABydKtKUN6hm08YjvNRh2G4i7biDP0iGWKm0CJI/6tO/7ASVGiMVbrFcvre
-         dFe7LS0o6XmnC1olR6EZQT61Pk5CcDXk8EOCE/ZUPQPC2WOF08wHjQNTI98f51BXkTW7
-         5dyslKzFlMJ1FAFUBcS5XSZMuJJQc0mVGS8sJL1EcuApFLh9MbSY3DeHMChVpm6lylO2
-         ZiD2YD5TYnCnW1RYesj2zabgr2TZokupGOdRW5Wg1Wsic5Yzi6a7GNVAIH/aFq924Tv4
-         l/BLkapdJUQdDh1nnfELCxBLwNTsd2zSHh12MGEWr6e9uOYA2kL+ohlW7KhzBK2CbHvs
-         dAHg==
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=AQM3d9GGe4QO9GR8naQccVzLum+tvH/H4+/A6J4Tk+I=;
+        b=dDmm7RsMmk0U5XAbGa5oDaEIdi9M5FS1mgrJph3NwF5OEnwvoZaINbCady4nlOoPMO
+         Dwh7PWjG47bDUArevKjgvuEj1RBiFKAVKlJsDfkBnQ0yDDF2TSenlpqdfIKC6exHiVoV
+         ilE2DTO9rnvuReZx+pzcOArX4/RYB3/dpGE+eNfetdUT+k43q03bd0DaeN3BSf4u60un
+         SFJz7kNcLuDRdxl7BcSZ7/XvawEtc1HitH4nxqgjm0h85UDbOzsDmcK47Cj7FBnkobgq
+         rkDasp8RVdGOyt9Xd13erGL4D1R5kyGl/Hcb7UNhcuj+KEnaqMnDShlTgU9Fqx5yL8k3
+         s4sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=KnvwJWEdlQLr2vKm6UJjMtzxVG6NfHSwL8EwdrIGTKxVFWaIMfBSmSJEdx0Z3FGzD+
-         g0ehoTieFPoGHqEtK334G4lXgsxQws3zDMU5UhQAG6QeCsOGT5AhxS7ShDjnKMxEw9N1
-         7DoqzRmvWtiRgwO/d3g2V/Hj8S577Rzrqyga8NbR6EQD8bLAATfi5Zzxi6Vfwn6LAqfh
-         gcznVvDNZFBZI5Gm5cODzfaiWuuPJ2bI6pUvnaMTUVDhshAVSa5wgZUIOzFeiXTI3G9L
-         Snz/wQRh709QLcnrZXLLlu6uwM7FLzS/QZWz91cmlkb/SJZ2WEFYA1REaESllbSGrNKe
-         sJgQ==
-X-Gm-Message-State: AJIora/gjtGo6bquOEX9VpQM+CtRlSiEbX59HIZ8GnpSOlAPFKIRQUYK
-        fNcrW593VzVjDJKakyXRzOkFUq31IV44a1YKXN0=
-X-Google-Smtp-Source: AGRyM1sBAY02anFyAAkYvB61573ohyB+lIVHvdune1I2St249pttaSZdeqZISv5rckThyg5u7Q/retQg6yCpkFrJ9YI=
-X-Received: by 2002:a05:6512:1307:b0:47f:baa4:52c5 with SMTP id
- x7-20020a056512130700b0047fbaa452c5mr4350443lfu.103.1657787798421; Thu, 14
- Jul 2022 01:36:38 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:36:37
- -0700 (PDT)
-Reply-To: abdwabbomaddahm@gmail.com
-From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
-Date:   Thu, 14 Jul 2022 09:36:37 +0100
-Message-ID: <CAFC-3idDfFB0Mmtq-N-n6z5Ly7T-KDCJtvbc0UgtirMnTLYTCg@mail.gmail.com>
-Subject: Get back to me... URGENT
-To:     undisclosed-recipients:;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=AQM3d9GGe4QO9GR8naQccVzLum+tvH/H4+/A6J4Tk+I=;
+        b=RVhIFsNMjTnOV8i/eQpIzimJjtCTjKaXQZqoCldU/mRwSDfpAtZrIpPVRClchUPqaA
+         dWr8XQw3cJO56B3K7Q9H3PZPlpgFLFuQnNo/alj3DF7B2BcRdPj75OMfCRnnVgc37nY9
+         slhXJujWfS20mXem6fQDz7VIKcQpxzuiTUcN4Oh6+hSLX2jbxp5XNFFuDHqoBSV6QgZy
+         XxwmcIxCzo0/C6HllgNIVItn8MY//uT3Gin1X8kfdZI3GdY4aRctdsTcD6RNQFOiQmJy
+         Xle0Ul0xZTEiI4qy0PlxbaS/DgSlx6efLWcvGpa8zSmO3C+3+1lQUb+hNwAexSlMIl5S
+         2BYQ==
+X-Gm-Message-State: AJIora9/Tw9ojDn9gU+ZrE5Ez+nkVRKGoyuasQtcP8qTzA6kJ8Llr7LW
+        ybYC3bC/QVxBO5CmAif2dhQPSYDCEzghA41j
+X-Google-Smtp-Source: AGRyM1vB+Yyk8KgmN6HpnITzNyFe7dEXkEg0UsQzD832fkIjzljFzGNTgtuUT7xQ+827AytCJuJZtw==
+X-Received: by 2002:a05:6214:ccb:b0:472:f2a2:dd73 with SMTP id 11-20020a0562140ccb00b00472f2a2dd73mr7015993qvx.0.1657788386956;
+        Thu, 14 Jul 2022 01:46:26 -0700 (PDT)
+Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
+        by smtp.gmail.com with ESMTPSA id br44-20020a05620a462c00b006b593410fd8sm847892qkb.87.2022.07.14.01.46.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Jul 2022 01:46:26 -0700 (PDT)
+Message-ID: <35e8020f513a77b8a8eb12a45d48a2b1390cce7c.camel@gmail.com>
+Subject: Re: [PATCH 1/4] gpiolib: add support for bias pull disable
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Kent Gibson <warthog618@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 14 Jul 2022 10:47:27 +0200
+In-Reply-To: <20220714082710.GA103849@sol>
+References: <20220713131421.1527179-1-nuno.sa@analog.com>
+         <20220713131421.1527179-2-nuno.sa@analog.com>
+         <Ys8CpqYhWp7zVNC8@smile.fi.intel.com> <20220714042050.GA76737@sol>
+         <4bf06ba5994f559499c45275cd7f44bfee1bbde1.camel@gmail.com>
+         <20220714082710.GA103849@sol>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:131 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [abdwabbomaddah746[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [abdwabbomaddah746[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.3 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-Dear,
-I had sent you a mail but i don't think you received it that's why am
-writing you again.It is important you get back to me as soon as you
-can.
-Abd-Wabbo Maddah
+On Thu, 2022-07-14 at 16:27 +0800, Kent Gibson wrote:
+> On Thu, Jul 14, 2022 at 09:14:21AM +0200, Nuno S=C3=A1 wrote:
+> > On Thu, 2022-07-14 at 12:20 +0800, Kent Gibson wrote:
+> > > On Wed, Jul 13, 2022 at 08:36:38PM +0300, Andy Shevchenko wrote:
+> > > > On Wed, Jul 13, 2022 at 03:14:18PM +0200, Nuno S=C3=A1 wrote:
+> > > > > This change prepares the gpio core to look at firmware flags
+> > > > > and
+> > > > > set
+> > > > > 'FLAG_BIAS_DISABLE' if necessary. It works in similar way to
+> > > > > 'GPIO_PULL_DOWN' and 'GPIO_PULL_UP'.
+> > > >=20
+> > > > ...
+> > > >=20
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0GPIO_PULL_UP=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D (1 << 4),
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0GPIO_PULL_DOWN=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D (1 << 5),
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0GPIO_PULL_DISABLE=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=3D (1 << 6),
+> > > >=20
+> > > > To me it seems superfluous. You have already two flags:
+> > > > PUp
+> > > > PDown
+> > > > When none is set --> Pdisable
+> > > >=20
+> > >=20
+> > > Agree with Andy on this.=C2=A0 The FLAG_BIAS_DISABLE was added, by me=
+,
+> > > to
+> > > allow the cdev interface to support bias.=C2=A0 cdev requires a "don'=
+t
+> > > care"
+> > > state, distinct from an explicit BIAS_DISABLE.
+> > > The FLAG_BIAS_DISABLE allows gpiolib-cdev to communicate that to
+> > > gpiolib, without altering the interpretation of the existing
+> > > PULL_UP
+> > > and
+> > > PULL_DOWN flags.
+> > > That is not an issue on the machine interface, where the two
+> > > GPIO_PULL
+> > > flags suffice.
+> > >=20
+> >=20
+> > I see, but this means we can only disable the pin BIAS through
+> > userspace. I might be wrong but I don't see a reason why it
+> > wouldn't be
+> > valid to do it from an in kernel path as we do for PULL-UPS and
+> > PULL-
+> > DOWNS=20
+> >=20
+>=20
+> > > If you are looking for the place where FLAG_BIAS_DISABLE is set
+> > > it is
+> > > in
+> > > gpio_v2_line_config_flags_to_desc_flags() in gpiolib-cdev.c.
+> > >=20
+> > > Referring to gpio_set_bias(), the only place in gpiolib the
+> > > FLAG_BIAS_DISABLE is used, if neither FLAG_PULL_UP,
+> > > FLAG_PULL_DOWN,
+> > > nor FLAG_BIAS_DISABLE are set then the bias configuration remains
+> > > unchanged (the don't care case) - no change is passed to the
+> > > driver.
+> > > Otherwise the corresponding PIN_CONFIG_BIAS flag is passed to the
+> > > driver.
+> > >=20
+> >=20
+> > Exactly, but note FLAG_BIAS_DISABLE can only be set from userspace
+> > at
+> > this point (IIUTC). If everyone agrees that should be case, so be
+> > it.
+> > But as I said, I just don't see why it's wrong to do it within the
+> > kernel.
+> >=20
+>=20
+> Believe it or not gpiolib-cdev is part of the kernel, not userspace -
+> it
+> just provides an interface to userspace.
+>=20
+
+Yes, I do know that. But don't you still need a userspace process to
+open the cdev and do the ioctl()?
+
+> Bias can be disabled by calling gpiod_direction_input() or
+> gpiod_direction_output() after setting the FLAG_BIAS_DISABLE, as
+> gpiolib-cdev does.
+>=20
+> Does that work for you?
+>=20
+
+I'm not seeing how would this work... We would need to make gpiod
+consumers having to do this. Something like:
+
+
+desc =3D giod_get();
+set_bit(FLAG_BIAS_DISABLE, &desc->flags);
+set_direction...
+
+
+Having in mind that we can already specify the direction in gpiod_get,
+I don't really think this is something that consumers should have to
+worry. Moreover, I would say this means special devicetree properties
+for all the consumers of such a gpiochip which want to disable bias...
+
+...
+
+Or do you have something else in mind?
+
+- Nuno S=C3=A1
