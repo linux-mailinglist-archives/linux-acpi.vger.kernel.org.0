@@ -2,93 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4F465755AC
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 21:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1F215755E8
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 21:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239259AbiGNTQc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jul 2022 15:16:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53338 "EHLO
+        id S239182AbiGNTiZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jul 2022 15:38:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiGNTQb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 15:16:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A0A78422CE
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Jul 2022 12:16:30 -0700 (PDT)
+        with ESMTP id S237368AbiGNTiY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 15:38:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4C7A06758D
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Jul 2022 12:38:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657826189;
+        s=mimecast20190719; t=1657827500;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=pyOKjb33me+J8ld9DxsocCdXl7/5frLguxOUijQkyG4=;
-        b=Nhx7eghgWeGdJC7Y9YdXuq3ZhnOKvUoZ8OWWvA71jsSd3aRghPQ9DdrDVKK/vndsojUDba
-        v1FRdsBlWSv3JJVqYl1p6leypeVMv6QuEBeBmSDJkl6VE9SBpLmzIH/Xt5j+RyyJOAoMI4
-        UVdFgrefUnaKTODUhowT82b9XAAcNv0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=h2gwjfySPN5w9CEE1tS8fl1rO2civ/bV3ydiTYY1dv0=;
+        b=N5p41/a18PxQUl2oywymUTi1n+dpsN/T6zH5x8cZFbUsyiXanawz6r76QI6E6gGHnJmHYn
+        +dG98Uzk036zIlW4d1whkNJtCBgmuq9KZoHgjUE1P05RJ5OCzaJcHMGWuxW5iEB2DDGzSY
+        tkkCic8oor109gG881WNVBJtTakq3hQ=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-612-r1VdPEwrPwWiqB2fOtHU1g-1; Thu, 14 Jul 2022 15:16:20 -0400
-X-MC-Unique: r1VdPEwrPwWiqB2fOtHU1g-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24E86811E80;
-        Thu, 14 Jul 2022 19:16:20 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.192.38])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6DFD8492C3B;
-        Thu, 14 Jul 2022 19:16:19 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        Ben Greening <bgreening@gmail.com>
-Subject: [PATCH] ACPI: video: Use native backlight on Dell Inspiron N4010
-Date:   Thu, 14 Jul 2022 21:16:11 +0200
-Message-Id: <20220714191611.10242-1-hdegoede@redhat.com>
+ us-mta-253-yQ6z4eWjPDqELefSfGNWtg-1; Thu, 14 Jul 2022 15:38:19 -0400
+X-MC-Unique: yQ6z4eWjPDqELefSfGNWtg-1
+Received: by mail-ed1-f70.google.com with SMTP id s17-20020a056402521100b0043ade613038so2046282edd.17
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Jul 2022 12:38:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=h2gwjfySPN5w9CEE1tS8fl1rO2civ/bV3ydiTYY1dv0=;
+        b=dQYXrbbqWq76bgrEFRC55LuBEL90fSWWnoziEV52gVD/HgxZ8bcFXgeMSC8Vs6Ly8B
+         GUbguv0vRZA7N/rNRf2jtHXhiLVZA2DFer6ekaJVsFI/Edvc1Q+Afm9yTS0hrYDLV6q0
+         biH+4RsMlcuS9xY5SscN6jWfxz+j6IH4moN7ReVUi1yskOEQDyUalno9Zky3QAVsTaJ+
+         BvDOdtvLfvaG+pwtxnDsvrBCguUaUgiQ+/vOvJ+DIP8lQn2acJHHKVOJMHXi1CXWdiAm
+         qoog5RS+CqKdNQ/XAqol9PCtOOLR3IE0VcSBj5LvL2U7PMpGtuxm9u8dg2k20R8XoeZU
+         EVXQ==
+X-Gm-Message-State: AJIora89h3gnmLd3rI6qGCHm2b3ilpSrsENPdww/dPa0iKPSlA/JFhvC
+        NZaN+IMYpiZlDmLp/NcJWClJorkmhlLtnnI7CxK8FQeZQmPVEZJR01/TA2c3VganVn/sSv4bFdX
+        uyRvHcsTUnLpA0x4MbrO24g==
+X-Received: by 2002:a05:6402:cba:b0:43a:6b17:f6b5 with SMTP id cn26-20020a0564020cba00b0043a6b17f6b5mr14553389edb.330.1657827497664;
+        Thu, 14 Jul 2022 12:38:17 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1t4xuOIXNbl2CNGIAEfrjxV7mv997tcOYLHcI0NV/Q8nRqHgyvSdTrNt6iYAQ263foi/jKBRA==
+X-Received: by 2002:a05:6402:cba:b0:43a:6b17:f6b5 with SMTP id cn26-20020a0564020cba00b0043a6b17f6b5mr14553372edb.330.1657827497479;
+        Thu, 14 Jul 2022 12:38:17 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id f4-20020a17090631c400b0072ee9790894sm378628ejf.197.2022.07.14.12.38.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Jul 2022 12:38:16 -0700 (PDT)
+Message-ID: <3b317137-6550-61f4-8386-4aa787c453af@redhat.com>
+Date:   Thu, 14 Jul 2022 21:38:16 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [Regression] ACPI: video: Change how we determine if brightness
+ key-presses are handled
+Content-Language: en-US
+To:     Ben Greening <bgreening@gmail.com>
+Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
+        rafael@kernel.org, linux-acpi@vger.kernel.org
+References: <CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com>
+ <02190bee-2e1b-bea3-b716-a7c7f5aa2ff0@redhat.com>
+ <CALF=6jG5gmqqXo5cSFFRWRM96K0rzx3WabNdwAmdZQH=unFG7g@mail.gmail.com>
+ <3ddcdb24-cab3-509d-d694-edd4ab85df0a@redhat.com>
+ <eb760bcd-8817-65ed-471e-60e8d9bdae79@redhat.com>
+ <CALF=6jF1TTgc4_mXRcx=6EV64Cj=VWLU3zXi7AoyM1F3bdgT=A@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CALF=6jF1TTgc4_mXRcx=6EV64Cj=VWLU3zXi7AoyM1F3bdgT=A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Dell Inspiron N4010 does not have ACPI backlight control,
-so acpi_video_get_backlight_type()'s heuristics return vendor as
-the type to use.
+Hi,
 
-But the vendor interface is broken, where as the native (intel_backlight)
-works well, add a quirk to use native.
+On 7/14/22 01:56, Ben Greening wrote:
+> Hi Hans,
+> 
+> Applying the latest
+> 0001-ACPI-video-Change-how-we-determine-if-brightness-key.patch you
+> sent me off-list (my fault, forgot to reply all) and
+> 0001-ACPI-video-Use-native-backlight-on-Dell-Inspiron-N40.patch makes
+> it all work again. And a bonus that I don't need any extra kernel
+> parameters anymore.
+> 
+>> It would also be interesting if you can start evemu-record on the
+>> Dell WMI Hotkeys device before pressing any of the brightness keys.
+>>
+>> There might still be a single duplicate event reported there on
+>> the first press. I don't really see a way around that (without causing
+>> all brightness key presses on some panasonic models to be duplicated),
+>> but I'm curious if it is a problem at all...
+> 
+> I rebooted and ran evemu-record before pressing the brightness keys
+> and "Dell WMI hotkeys" didn't show any events at all.
 
-Link: https://lore.kernel.org/regressions/CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com/
-Reported-and-tested-by: Ben Greening <bgreening@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Great thank you for reporting and testing this!
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index becc198e4c22..4099140bbd5f 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -347,6 +347,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro12,1"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Dell Inspiron N4010 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron N4010"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Dell Vostro V131 */
--- 
-2.36.0
+I will send the fix on its way to Linus tomorrow and I've just
+submitted the new acpi_backlight=native quirk upstream too.
+
+Regards,
+
+Hans
+
+
+> On Wed, Jul 13, 2022 at 6:49 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Hi Ben,
+>>
+>> On 7/13/22 15:29, Hans de Goede wrote:
+>>> Hi,
+>>>
+>>> On 7/13/22 15:08, Ben Greening wrote:
+>>>> Hi Hans, thanks for getting back to me.
+>>>>
+>>>> evemu-record shows events for both "Video Bus" and "Dell WMI hotkeys":
+>>>>
+>>>> Video Bus
+>>>> E: 0.000001 0001 00e0 0001 # EV_KEY / KEY_BRIGHTNESSDOWN   1
+>>>> E: 0.000001 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
+>>>> E: 0.000020 0001 00e0 0000 # EV_KEY / KEY_BRIGHTNESSDOWN   0
+>>>> E: 0.000020 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
+>>>>
+>>>> Dell WMI hotkeys
+>>>> E: 0.000001 0004 0004 57349 # EV_MSC / MSC_SCAN             57349
+>>>> E: 0.000001 0001 00e0 0001 # EV_KEY / KEY_BRIGHTNESSDOWN   1
+>>>> E: 0.000001 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
+>>>> E: 0.000020 0001 00e0 0000 # EV_KEY / KEY_BRIGHTNESSDOWN   0
+>>>> E: 0.000020 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
+>>>>
+>>>> Adding video.report_key_events=1 with acpi_backlight=video makes
+>>>> things work like you said it would.
+>>>>
+>>>>
+>>>> With acpi_backlight=video just has intel_backlight.
+>>>>
+>>>> Without acpi_backlight=video:
+>>>>     intel_backlight:
+>>>>         max_brightness: 4882
+>>>>         backlight control works with echo
+>>>>         brightness keys make no change to brightness value
+>>>>
+>>>>     dell_backlight:
+>>>>         max_brightness: 15
+>>>>         backlight control doesn't work immediately, but does on reboot
+>>>> to set brightness at POST.
+>>>>         brightness keys change brightness value, but you don't see the
+>>>> change until reboot.
+>>>
+>>> Ok, so your system lacks ACPI video backlight control, yet still reports
+>>> brightness keypresses through the ACPI Video Bus. Interesting (weird)...
+>>>
+>>> I think I believe I know how to fix the regression, 1 patch coming up.
+>>
+>> Can you please give the attached patch a try, with
+>> video.report_key_events=1 *removed* from the commandline ?
+>>
+>> It would also be interesting if you can start evemu-record on the
+>> Dell WMI Hotkeys device before pressing any of the brightness keys.
+>>
+>> There might still be a single duplicate event reported there on
+>> the first press. I don't really see a way around that (without causing
+>> all brightness key presses on some panasonic models to be duplicated),
+>> but I'm curious if it is a problem at all...
+>>
+>> Regards,
+>>
+>> Hans
+>>
+>>
+>>
+>>
+>>
+> 
 
