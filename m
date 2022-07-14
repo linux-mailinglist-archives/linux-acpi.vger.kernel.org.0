@@ -2,122 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 573FA57522B
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 17:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C43C575363
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 18:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238624AbiGNPqv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Jul 2022 11:46:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52180 "EHLO
+        id S240388AbiGNQub (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jul 2022 12:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbiGNPqu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 11:46:50 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78235AE4E;
-        Thu, 14 Jul 2022 08:46:47 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id az2-20020a05600c600200b003a301c985fcso1215688wmb.4;
-        Thu, 14 Jul 2022 08:46:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=8KOz6CvW48p5QqinPQHBKS23O8fbxtvv7Y3stP5AdXo=;
-        b=PT0gaQosfwj9MRRT8DN1wWKiXsmo2tvULz7G6Q9l4YTpAQ+NQTh3CymU/QMtVJKj9p
-         iGrN3eYmLrL9k70cGw8BjhRpRf+cguKgeDhshPZhcsOuKSfLc67PDA3gEwIoDZcE66eN
-         sCn94yOun9XQFUf6WEkuh4TsupoEyTQaRkIdHbsKdGheChQS8MdLp1ylm9agj0DlnOT0
-         BM53KnUTlw1qaK3Wve7Tw76uYnBMI4X2Ucgq/jPLB4YNTBf38lGFXQuFjxdbDMHupVhw
-         4OezBdn3Ori14WYr5vSIiVQLmtyNcjIDYFX4+WCU41Ji+mkPb6HcvvSPK5S0ZEckRxIx
-         OuLA==
+        with ESMTP id S240506AbiGNQuN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 12:50:13 -0400
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082A013CE3;
+        Thu, 14 Jul 2022 09:47:21 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 75so4192093ybf.4;
+        Thu, 14 Jul 2022 09:47:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=8KOz6CvW48p5QqinPQHBKS23O8fbxtvv7Y3stP5AdXo=;
-        b=EnaWFm/yfZAbS5zjHvwK1Lh0w2ni7izgn8XPKIAcAQ2dIJ1RQBxbUb4wZXAmrbU5Rd
-         /Wg+LuvASq6CnbVuGOpvMV1Hfu4PvzWrUkBYnyLDfPQenMq5mgDz+1vUr+ZkOdFDncL+
-         JX2upsr+w+iMSjCwMJIb73tAsvExAAXfnm/urUjp9RUT5UaQn8OH6ID6cX/els2mpy7Y
-         fE+dS11PPA9vKR9dZVcTnUTJFz4q010s8CbZNBkmA8Uqa8sgM+Cd4cFW9hIianxLuE91
-         qzAXlAS4weMFo+C1T3VT84TP673EsZNjGkLDGN0MlZG7/RpedjcDT6rPMg1oWAcvBfg/
-         m9QQ==
-X-Gm-Message-State: AJIora+EFzN00kbWRTwX+yfBB99yh2qTK2CEAxpHW5hP6oWhXBr+uc5m
-        bfaHXIr8euQw9u7azyosHZs=
-X-Google-Smtp-Source: AGRyM1vV8d14wVlH4ovazryw4IMyTJKQK+pyLi72Fo8GnCV1EdDH6E2vyHee9P6dV7GN+Vsq91+tUw==
-X-Received: by 2002:a05:600c:35ca:b0:3a2:aee3:a8ff with SMTP id r10-20020a05600c35ca00b003a2aee3a8ffmr9744984wmq.206.1657813605912;
-        Thu, 14 Jul 2022 08:46:45 -0700 (PDT)
-Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id n7-20020a5d6607000000b0021b9504cc83sm1736842wru.31.2022.07.14.08.46.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Jul 2022 08:46:45 -0700 (PDT)
-Message-ID: <d7416381e57a4a065616105952926552b7c70415.camel@gmail.com>
-Subject: Re: [PATCH 1/4] gpiolib: add support for bias pull disable
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Kent Gibson <warthog618@gmail.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 14 Jul 2022 17:47:49 +0200
-In-Reply-To: <YtAxaCsQTrUiI4ir@smile.fi.intel.com>
-References: <20220713131421.1527179-1-nuno.sa@analog.com>
-         <20220713131421.1527179-2-nuno.sa@analog.com>
-         <Ys8CpqYhWp7zVNC8@smile.fi.intel.com> <20220714042050.GA76737@sol>
-         <4bf06ba5994f559499c45275cd7f44bfee1bbde1.camel@gmail.com>
-         <20220714082710.GA103849@sol>
-         <35e8020f513a77b8a8eb12a45d48a2b1390cce7c.camel@gmail.com>
-         <20220714120005.GA105609@sol>
-         <fc0ce1235dce7303aac7bcc45b856fcca60fcb57.camel@gmail.com>
-         <YtAxaCsQTrUiI4ir@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.3 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sKkMo+vK7lqJ6rNsvFjcKcJ08hq9L2uCtIalBlioWsM=;
+        b=3rEAHCjxPkYxGZvDSjxlzRpRQ4qEyV/3sbab5GBkTBAO4vrrM8yQoUvdO4C6jjBbay
+         Rn4CxwnzMV/PyBdV6odw3JbU2EZcPA1TuX6gPr95Ge08VEl6qoyQZo9zTPNyidiL2HMl
+         VpNLtu/erVUHYbUAN3w4gDvkNn5V8Lui+gqc81oF9k1uChHYYlEOCBmQply7/bBv7XwA
+         SLlly/SDQs+Z4gRsa4kt04cJMwhRg6cz5FMI5hdgy1/Egm8QkibSX6/PuKsSB+V3VJhe
+         AXW6yeOKxsG4I5YB61kHzoCl3AQ/n2+fjKWCmy9rA9KPGN0mkTTP8Dg6x53WdYW5jH2L
+         XSIg==
+X-Gm-Message-State: AJIora/A0b6O2xrPlF8o5LDCktt6GOa/VI1OIYJQmUnRt/I0rOuTq1Po
+        eqdN+MPCo1ebhOuDVtNmlbzUzMoIAY/YjgwjY3dsLivp
+X-Google-Smtp-Source: AGRyM1vtzdW/okzhD29lioId5DAwBnQkttu10dp0dNEzR7Qr41jZi4wrgQXdYT1WODRaGoFbgqX+WHhey8zVbRHz9ho=
+X-Received: by 2002:a25:fb02:0:b0:66e:3db9:5d49 with SMTP id
+ j2-20020a25fb02000000b0066e3db95d49mr10051140ybe.137.1657817240235; Thu, 14
+ Jul 2022 09:47:20 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220713211101.85547-1-hdegoede@redhat.com> <20220713211101.85547-2-hdegoede@redhat.com>
+In-Reply-To: <20220713211101.85547-2-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 14 Jul 2022 18:47:09 +0200
+Message-ID: <CAJZ5v0g6Gpdc3zjh-xJWU+217xA+eU53rJxdz=qYEEhPN=pZ9A@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: video: Fix acpi_video_handles_brightness_key_presses()
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        regressions@lists.linux.dev, Ben Greening <bgreening@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 2022-07-14 at 18:08 +0300, Andy Shevchenko wrote:
-> On Thu, Jul 14, 2022 at 03:02:08PM +0200, Nuno S=C3=A1 wrote:
-> > On Thu, 2022-07-14 at 20:00 +0800, Kent Gibson wrote:
-> > > On Thu, Jul 14, 2022 at 10:47:27AM +0200, Nuno S=C3=A1 wrote:
->=20
-> ...
->=20
-> > > If that solves your immediate problem then you need to decide
-> > > what
-> > > problem your patch is trying to address.
-> >=20
-> > So my patch is trying to solve exactly this case because (IMO), it
-> > does
-> > not make sense for consumers drivers to have to do the above code.
-> > Moreover, they would need some custom firmware property (eg:
-> > devicetree) for the cases where we want to disable BIAS since we
-> > cannot
-> > just assume we want to do it.
->=20
-> Why? This is the main question. Why do you need that _in kernel_ API.
->=20
-> > Well, maybe we can just assume FLAG_BIAS_DISABLE in gpiolib (when
-> > trying to get the gpiod) if no PULL is specified. However, I do
-> > have
-> > some concerns with it (see my conversation with Andy in the cover).
->=20
-> It's AS IS if you trust firmware.
->=20
+On Wed, Jul 13, 2022 at 11:11 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Commit 3a0cf7ab8df3 ("ACPI: video: Change how we determine if brightness
+> key-presses are handled") made acpi_video_handles_brightness_key_presses()
+> report false when none of the ACPI Video Devices support backlight control.
+>
+> But it turns out that at least on a Dell Inspiron N4010 there is no ACPI
+> backlight control, yet brightness hotkeys are still reported through
+> the ACPI Video Bus; and since acpi_video_handles_brightness_key_presses()
+> now returns false, brightness keypresses are now reported twice.
+>
+> To fix this rename the has_backlight flag to may_report_brightness_keys and
+> also set it the first time a brightness key press event is received.
+>
+> Depending on the delivery of the other ACPI (WMI) event vs the ACPI Video
+> Bus event this means that the first brightness key press might still get
+> reported twice, but all further keypresses will be filtered as before.
+>
+> Note that this relies on other drivers reporting brightness key events
+> calling acpi_video_handles_brightness_key_presses() when delivering
+> the events (rather then once during driver probe). This is already
+> required and documented in include/acpi/video.h:
+>
+> /*
+>  * Note: The value returned by acpi_video_handles_brightness_key_presses()
+>  * may change over time and should not be cached.
+>  */
+>
+> Fixes: 3a0cf7ab8df3 ("ACPI: video: Change how we determine if brightness key-presses are handled")
+> Link: https://lore.kernel.org/regressions/CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com/
+> Reported-by: Ben Greening <bgreening@gmail.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-In my use case, there's no firmware controlling the pin... The input
-driver (which exposes the gpichip) directly controls the pins and I
-want to have a way to tell it (from firmware) to disable the BIAS if
-users want to do so (by default it's pull-up)...
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-- Nuno S=C3=A1
+> ---
+>  drivers/acpi/acpi_video.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> index 43177c20ce4f..eaea733b368a 100644
+> --- a/drivers/acpi/acpi_video.c
+> +++ b/drivers/acpi/acpi_video.c
+> @@ -73,7 +73,7 @@ module_param(device_id_scheme, bool, 0444);
+>  static int only_lcd = -1;
+>  module_param(only_lcd, int, 0444);
+>
+> -static bool has_backlight;
+> +static bool may_report_brightness_keys;
+>  static int register_count;
+>  static DEFINE_MUTEX(register_count_mutex);
+>  static DEFINE_MUTEX(video_list_lock);
+> @@ -1224,7 +1224,7 @@ acpi_video_bus_get_one_device(struct acpi_device *device,
+>         acpi_video_device_find_cap(data);
+>
+>         if (data->cap._BCM && data->cap._BCL)
+> -               has_backlight = true;
+> +               may_report_brightness_keys = true;
+>
+>         mutex_lock(&video->device_list_lock);
+>         list_add_tail(&data->entry, &video->video_device_list);
+> @@ -1693,6 +1693,9 @@ static void acpi_video_device_notify(acpi_handle handle, u32 event, void *data)
+>                 break;
+>         }
+>
+> +       if (keycode)
+> +               may_report_brightness_keys = true;
+> +
+>         acpi_notifier_call_chain(device, event, 0);
+>
+>         if (keycode && (report_key_events & REPORT_BRIGHTNESS_KEY_EVENTS)) {
+> @@ -2253,7 +2256,7 @@ void acpi_video_unregister(void)
+>         if (register_count) {
+>                 acpi_bus_unregister_driver(&acpi_video_bus);
+>                 register_count = 0;
+> -               has_backlight = false;
+> +               may_report_brightness_keys = false;
+>         }
+>         mutex_unlock(&register_count_mutex);
+>  }
+> @@ -2275,7 +2278,7 @@ void acpi_video_unregister_backlight(void)
+>
+>  bool acpi_video_handles_brightness_key_presses(void)
+>  {
+> -       return has_backlight &&
+> +       return may_report_brightness_keys &&
+>                (report_key_events & REPORT_BRIGHTNESS_KEY_EVENTS);
+>  }
+>  EXPORT_SYMBOL(acpi_video_handles_brightness_key_presses);
+> --
+> 2.36.0
+>
