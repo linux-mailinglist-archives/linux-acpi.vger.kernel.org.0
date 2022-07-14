@@ -2,160 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9C27574045
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 01:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDBAB57422E
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Jul 2022 06:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229846AbiGMX5E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Jul 2022 19:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34494 "EHLO
+        id S231670AbiGNEU7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Jul 2022 00:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbiGMX5C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Jul 2022 19:57:02 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAC9B4D4D5;
-        Wed, 13 Jul 2022 16:57:01 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id oy13so537204ejb.1;
-        Wed, 13 Jul 2022 16:57:01 -0700 (PDT)
+        with ESMTP id S229710AbiGNEU6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Jul 2022 00:20:58 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07802252A8;
+        Wed, 13 Jul 2022 21:20:58 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id 89-20020a17090a09e200b001ef7638e536so7056679pjo.3;
+        Wed, 13 Jul 2022 21:20:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=z86mKblHBYOAAN3KH0exFGa+ySzzd2OPDuMCYnxF2eo=;
-        b=VmUlwpdixn3QC60HKdeE1cHM8yrgbDEyAwm0eMxmtg+5aPK27tKda3WQVob2wsZGuH
-         p2IOdDwZ224EqCdK4Y2wm02VUZa2cELDCdl4FWvjvg+KCVGAu76mHWij+zRX9A9ZVd2J
-         hxmHJEh+GeJtyyBmi7D91KgL0QDdqX/Cb8SD2LS5vsxwreJeuJePA9FISyhZ0wkk4rHk
-         BjGbe+ynbrme4EbSEcUjCphfRpml/E4KMXjK5Titcg9RO+N29qImtlGLrK0tzgjcJcii
-         3tbFDHToZ/ZxkVPA/2Yf4yDlXqAeELpCvDrEOTGa1FkrIugoriC0eu5ifBahmo0oKUDL
-         ptMQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=mrgABAOPXIqnoxNX/Ij0KBpROHcNGooVUjMudajcz/g=;
+        b=cl07ZWIwxwnTInCiRgVPiZA/H/npfaSPXfYzoMYNB05WNyren7DToX+zPthoxaDmhW
+         6QLS5/pW3yXZWfoN4ZW4R5+a8BpboPEoJhL83ekvendzpWbfY1fjCtXYVqY+XGjuYC/M
+         DHSJultXsCoqXFGxx/NPR+zx+4VhDhhwrunRjOAMtmLCBcdxNB0SXBYPYYtrJ1LFOOBe
+         KKl84YF1jzvEhLKhPKggCsKiX6jm60G5OIUaifYrhgNwfpVxjPMP0YOmrayHlxw4XoPr
+         GmL4DpJuTCi57l6tS+NhyPW2cSFla7A4QtglZMLot4iNyRPBXFr5dFbiLcA68JfepH1l
+         CF6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=z86mKblHBYOAAN3KH0exFGa+ySzzd2OPDuMCYnxF2eo=;
-        b=YZceGZg4TbE+i2tPsjcIe/cBLqbiUNWUtKuPGB1ax8JD4VGQVFnnpN7tAtDPO/AxaO
-         BY9JrtzJ0dksezUh0PqL1CCyG/GOV4nYeqmQ+/qsJT4obbbfN31Z6OwMi7mpSX3R42o2
-         oWnjuW0rxy/tBhL35oUej4t15NpLPGpPiOf3f6Uw1Nbi2nuVE7Lss0mcGbQkMJL/Cqw2
-         xfQpEzCPY32KQvonQ4iR+nA9cyzLeH/+zX6yHYWim54+4t0XegxtT7/lZf0pTWYTFTdE
-         RLTAuHKIRX9b5h5XM/3LRbWlnyuGuM83NYvGKb6YANPD93zc2cBJCUkaaWzJjSLDgUTn
-         DuRw==
-X-Gm-Message-State: AJIora9/9umdIig3Y3VWksny6bYNF2RGeRnHsbaObqDtFrKbqbQpg7v+
-        Pocftl84PReULvd8EesfCGtMfGXeGrHIx3pn/cVXNMFqgF/6FA==
-X-Google-Smtp-Source: AGRyM1v5zP3X+O4Y/a/iJJOpZ/eXsVsCEdU3tMrvQqnFKdXanoWjvd6L/O+HycYaHT5iEl3w7rl1+bE6paQd6r0wCYc=
-X-Received: by 2002:a17:907:72d1:b0:72b:6da5:9bb with SMTP id
- du17-20020a17090772d100b0072b6da509bbmr5605606ejc.681.1657756620373; Wed, 13
- Jul 2022 16:57:00 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=mrgABAOPXIqnoxNX/Ij0KBpROHcNGooVUjMudajcz/g=;
+        b=g7Q4SSST16ydshudlFnRtyFKi+NslMGmREEiJ3tqJleq0rrNNYV1PApovMCy2om9cU
+         OJWByQ7HXG4UEFYqJEtN2/iOs+pynUN5QjVS6HmY5YfcbgUgpKlB1rgQE+p1FtW7P7ng
+         1tDVxS50bcWhSxETlI1uIwkM9IqMeRh+ay/Uvf4lgHW2hvuHLI/egHaD6TyLtWnKZT9N
+         7GpEZ6FUeohrdh4Digb5jqZPcR2jjSQmjZN6w1aNWDe3VI3LM2hlErtG85hP+GmuHFtI
+         NWA5Z9HphCPl4NmDakO59AJc3Sroaex84Em/3ce0IPAUSb63bZGxp7KnyTWy4n5ZyiHF
+         KMBg==
+X-Gm-Message-State: AJIora+N3DpInx+BxdW2CrVps0+02AjlHWIMRwfxzABStuP1vseBDRXz
+        G5TRumyy+pRAq27IdYfqPTY=
+X-Google-Smtp-Source: AGRyM1v/oGRNKBO7rocEOzLw4mxg2piFBftuYiOjM7kJLTGjMSFaoHKOGfyDvfTKL9BCmdNFEwiR+A==
+X-Received: by 2002:a17:902:a618:b0:16c:abb9:d7a6 with SMTP id u24-20020a170902a61800b0016cabb9d7a6mr1874336plq.119.1657772457460;
+        Wed, 13 Jul 2022 21:20:57 -0700 (PDT)
+Received: from sol (110-174-58-111.static.tpgi.com.au. [110.174.58.111])
+        by smtp.gmail.com with ESMTPSA id y3-20020a1709027c8300b00161947ecc82sm264763pll.199.2022.07.13.21.20.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Jul 2022 21:20:56 -0700 (PDT)
+Date:   Thu, 14 Jul 2022 12:20:50 +0800
+From:   Kent Gibson <warthog618@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/4] gpiolib: add support for bias pull disable
+Message-ID: <20220714042050.GA76737@sol>
+References: <20220713131421.1527179-1-nuno.sa@analog.com>
+ <20220713131421.1527179-2-nuno.sa@analog.com>
+ <Ys8CpqYhWp7zVNC8@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <CALF=6jEe5G8+r1Wo0vvz4GjNQQhdkLT5p8uCHn6ZXhg4nsOWow@mail.gmail.com>
- <02190bee-2e1b-bea3-b716-a7c7f5aa2ff0@redhat.com> <CALF=6jG5gmqqXo5cSFFRWRM96K0rzx3WabNdwAmdZQH=unFG7g@mail.gmail.com>
- <3ddcdb24-cab3-509d-d694-edd4ab85df0a@redhat.com> <eb760bcd-8817-65ed-471e-60e8d9bdae79@redhat.com>
-In-Reply-To: <eb760bcd-8817-65ed-471e-60e8d9bdae79@redhat.com>
-From:   Ben Greening <bgreening@gmail.com>
-Date:   Wed, 13 Jul 2022 16:56:23 -0700
-Message-ID: <CALF=6jF1TTgc4_mXRcx=6EV64Cj=VWLU3zXi7AoyM1F3bdgT=A@mail.gmail.com>
-Subject: Re: [Regression] ACPI: video: Change how we determine if brightness
- key-presses are handled
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Ys8CpqYhWp7zVNC8@smile.fi.intel.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans,
+On Wed, Jul 13, 2022 at 08:36:38PM +0300, Andy Shevchenko wrote:
+> On Wed, Jul 13, 2022 at 03:14:18PM +0200, Nuno Sá wrote:
+> > This change prepares the gpio core to look at firmware flags and set
+> > 'FLAG_BIAS_DISABLE' if necessary. It works in similar way to
+> > 'GPIO_PULL_DOWN' and 'GPIO_PULL_UP'.
+> 
+> ...
+> 
+> >  	GPIO_PULL_UP			= (1 << 4),
+> >  	GPIO_PULL_DOWN			= (1 << 5),
+> > +	GPIO_PULL_DISABLE		= (1 << 6),
+> 
+> To me it seems superfluous. You have already two flags:
+> PUp
+> PDown
+> When none is set --> Pdisable
+> 
 
-Applying the latest
-0001-ACPI-video-Change-how-we-determine-if-brightness-key.patch you
-sent me off-list (my fault, forgot to reply all) and
-0001-ACPI-video-Use-native-backlight-on-Dell-Inspiron-N40.patch makes
-it all work again. And a bonus that I don't need any extra kernel
-parameters anymore.
+Agree with Andy on this.  The FLAG_BIAS_DISABLE was added, by me, to
+allow the cdev interface to support bias.  cdev requires a "don't care"
+state, distinct from an explicit BIAS_DISABLE.
+The FLAG_BIAS_DISABLE allows gpiolib-cdev to communicate that to
+gpiolib, without altering the interpretation of the existing PULL_UP and
+PULL_DOWN flags.
+That is not an issue on the machine interface, where the two GPIO_PULL
+flags suffice.
 
-> It would also be interesting if you can start evemu-record on the
-> Dell WMI Hotkeys device before pressing any of the brightness keys.
->
-> There might still be a single duplicate event reported there on
-> the first press. I don't really see a way around that (without causing
-> all brightness key presses on some panasonic models to be duplicated),
-> but I'm curious if it is a problem at all...
+If you are looking for the place where FLAG_BIAS_DISABLE is set it is in
+gpio_v2_line_config_flags_to_desc_flags() in gpiolib-cdev.c.
 
-I rebooted and ran evemu-record before pressing the brightness keys
-and "Dell WMI hotkeys" didn't show any events at all.
+Referring to gpio_set_bias(), the only place in gpiolib the
+FLAG_BIAS_DISABLE is used, if neither FLAG_PULL_UP, FLAG_PULL_DOWN,
+nor FLAG_BIAS_DISABLE are set then the bias configuration remains
+unchanged (the don't care case) - no change is passed to the driver.
+Otherwise the corresponding PIN_CONFIG_BIAS flag is passed to the
+driver.
 
-Thanks for the fix!
-Ben
+If there are cases of drivers not fully or correctly supporting those
+PIN_CONFIG_BIAS flags, then that is an issue with those drivers.
 
-On Wed, Jul 13, 2022 at 6:49 AM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi Ben,
->
-> On 7/13/22 15:29, Hans de Goede wrote:
-> > Hi,
-> >
-> > On 7/13/22 15:08, Ben Greening wrote:
-> >> Hi Hans, thanks for getting back to me.
-> >>
-> >> evemu-record shows events for both "Video Bus" and "Dell WMI hotkeys":
-> >>
-> >> Video Bus
-> >> E: 0.000001 0001 00e0 0001 # EV_KEY / KEY_BRIGHTNESSDOWN   1
-> >> E: 0.000001 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-> >> E: 0.000020 0001 00e0 0000 # EV_KEY / KEY_BRIGHTNESSDOWN   0
-> >> E: 0.000020 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-> >>
-> >> Dell WMI hotkeys
-> >> E: 0.000001 0004 0004 57349 # EV_MSC / MSC_SCAN             57349
-> >> E: 0.000001 0001 00e0 0001 # EV_KEY / KEY_BRIGHTNESSDOWN   1
-> >> E: 0.000001 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-> >> E: 0.000020 0001 00e0 0000 # EV_KEY / KEY_BRIGHTNESSDOWN   0
-> >> E: 0.000020 0000 0000 0000 # ------------ SYN_REPORT (0) ---------- +0ms
-> >>
-> >> Adding video.report_key_events=1 with acpi_backlight=video makes
-> >> things work like you said it would.
-> >>
-> >>
-> >> With acpi_backlight=video just has intel_backlight.
-> >>
-> >> Without acpi_backlight=video:
-> >>     intel_backlight:
-> >>         max_brightness: 4882
-> >>         backlight control works with echo
-> >>         brightness keys make no change to brightness value
-> >>
-> >>     dell_backlight:
-> >>         max_brightness: 15
-> >>         backlight control doesn't work immediately, but does on reboot
-> >> to set brightness at POST.
-> >>         brightness keys change brightness value, but you don't see the
-> >> change until reboot.
-> >
-> > Ok, so your system lacks ACPI video backlight control, yet still reports
-> > brightness keypresses through the ACPI Video Bus. Interesting (weird)...
-> >
-> > I think I believe I know how to fix the regression, 1 patch coming up.
->
-> Can you please give the attached patch a try, with
-> video.report_key_events=1 *removed* from the commandline ?
->
-> It would also be interesting if you can start evemu-record on the
-> Dell WMI Hotkeys device before pressing any of the brightness keys.
->
-> There might still be a single duplicate event reported there on
-> the first press. I don't really see a way around that (without causing
-> all brightness key presses on some panasonic models to be duplicated),
-> but I'm curious if it is a problem at all...
->
-> Regards,
->
-> Hans
->
->
->
->
->
+Cheers,
+Kent.
