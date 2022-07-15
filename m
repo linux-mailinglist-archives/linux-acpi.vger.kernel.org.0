@@ -2,170 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B72575DAC
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 10:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DF03575E2A
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 11:02:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbiGOImw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jul 2022 04:42:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34640 "EHLO
+        id S232967AbiGOIut (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jul 2022 04:50:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiGOImv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 04:42:51 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE058814A2;
-        Fri, 15 Jul 2022 01:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=/PMhtnjGHpxVks/D0IckRnUPFsjzXDkP0oWJ4YCBhjU=; b=u0DEprWn4REKDNOgrrfUHbBAlT
-        QbKMmsx1lYnPU/7uko/8HJ+NtIpxVSjLg8fMnk0Jy6V8EdA4krtmECqOSUEBSWfycxi1MDyLt6Kc/
-        WwWwvA9Zy2kksqx1xidrEyHtEFElEfyhGbZBQyieONclVL2eFK0LpY7O5ehaT87Jd+31P8evOFQXS
-        oo3dk0CLCO+yVcnTl5vmH0IC3KCALkRapK71u8I/BzACTHOwng6yD/mSeabP6seMDohCwg8L4JHpK
-        IhPixAYh945XOwXWaqoBa7QW1W+qykNAf9zNtYil8ryRbMRpZ8n77aO80GsFN4gohy1jqcb1mt8g+
-        dhptguRg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33352)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1oCGu3-0006nZ-CC; Fri, 15 Jul 2022 09:42:27 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1oCGtw-0007QG-6S; Fri, 15 Jul 2022 09:42:20 +0100
-Date:   Fri, 15 Jul 2022 09:42:20 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin __ipraga <alsi@bang-olufsen.dk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Subject: Re: [PATCH RFC net-next v2 2/6] software node: allow named software
- node to be created
-Message-ID: <YtEobF3wRaOKwPZT@shell.armlinux.org.uk>
-References: <Ys7RdzGgHbYiPyB1@shell.armlinux.org.uk>
- <E1oBd1n-006UCq-JK@rmk-PC.armlinux.org.uk>
+        with ESMTP id S231892AbiGOIus (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 04:50:48 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89A3823A7
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 01:50:41 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id r9so6760097lfp.10
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 01:50:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0L6cELyn7jvpoaX0deTVVc+dWskWPIjbhl9EKXQMb1o=;
+        b=Kt8R6I1PuFUBffIBgqNZBnpQOYHhVItlnRTdxNrnr5lRw3hbimOCwO44clT2b2K000
+         kGLvEiYvFMDviW86zkrJrS1dUooT5Zqrq7QBFIo2QDSVf1a5Qgk3dOZFOfib8C75Qv2y
+         iY42VXFxFqUZnULVf0GOlGIP7fho1/If41i+w81UOjqfLL8FeW1kQw4Xogm69g8WVV6n
+         PZws8mg+tB3FgXthGdzkGPlUicJk1qVbIt+WA3axKUCeQ94F4YPY/jnnVAEOphUbdwJl
+         4VRD4QRacv730iubjTfAztBa4pG4rdCOGoY7HPLNLHZVMk9pHj6SC62GTm+gvn2DAvAs
+         rfng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0L6cELyn7jvpoaX0deTVVc+dWskWPIjbhl9EKXQMb1o=;
+        b=ebFcwMwuLt2drLxnvUcYRFTRSSwrtmU33N33L/eeoNkrxvC91xznPBn2UM+Nha8R7N
+         SYFLoFO39r6ATkpCVKkRDPhyHIvPq+Au4oMBHZ2r2UkpR6JeuXLCnkqEGaEEAopJxV2d
+         nosgnSwOq0/o3oidHjzX9dThIZDPBZojpDZMzMfvAhDpIp9+Cx/GBFZo/0T6tdXwSYug
+         pL1yiMOyutcF+CZ3TywXeALKPMb/4jf5a0Uw15sfrx5z4K6ufEXy7oIA4Rj7vlclr0Pk
+         TgX2hRr10pvLQhC7GIW/pQA+M3n8huq+YBL99rb7iUme++8A22iQmI/ixRpnWU9uz1pi
+         9TBg==
+X-Gm-Message-State: AJIora9cH6lnspT1P2sHQp/fIm5tgZO5cHFAG4LzfcC5HHoIf3SHdGa8
+        6B/kCELbTEDAZnYPuxcKtI345g==
+X-Google-Smtp-Source: AGRyM1vqKZl8Z6F8ovOnVdk5GvmZ1W9G+FpqJ213NmovMavpUEN59ihFQZtqiTv7PuPjA0WpGZcM9w==
+X-Received: by 2002:a05:6512:130f:b0:47f:bf0b:234 with SMTP id x15-20020a056512130f00b0047fbf0b0234mr7753030lfu.351.1657875040038;
+        Fri, 15 Jul 2022 01:50:40 -0700 (PDT)
+Received: from gilgamesh.lab.semihalf.net ([83.142.187.85])
+        by smtp.gmail.com with ESMTPSA id e4-20020a2e9e04000000b0025d773448basm667846ljk.23.2022.07.15.01.50.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Jul 2022 01:50:39 -0700 (PDT)
+From:   Marcin Wojtas <mw@semihalf.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     rafael@kernel.org, andriy.shevchenko@linux.intel.com,
+        sean.wang@mediatek.com, Landen.Chao@mediatek.com,
+        linus.walleij@linaro.org, andrew@lunn.ch, vivien.didelot@gmail.com,
+        f.fainelli@gmail.com, olteanv@gmail.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux@armlinux.org.uk, hkallweit1@gmail.com, gjb@semihalf.com,
+        mw@semihalf.com, jaz@semihalf.com, tn@semihalf.com,
+        Samer.El-Haj-Mahmoud@arm.com, upstream@semihalf.com
+Subject: [net-next: PATCH v2 0/8] DSA: switch to fwnode_/device_
+Date:   Fri, 15 Jul 2022 10:50:04 +0200
+Message-Id: <20220715085012.2630214-1-mw@semihalf.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1oBd1n-006UCq-JK@rmk-PC.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+Hi,
 
-Please can you let me know whether you happy with this patch? I would
-like to send this series to net-next today.
+This is a re-spin of the DSA migration to fwnode_/device_ API.
+As agreed, the ACPI-specific patches were kept aside for now,
+until the MDIOSerialBus is submitted and accepted in the ACPI
+Specification.
 
-Thanks.
+The patchset addresses all comments from the first version,
+mostly related to usage of proper device_ helpers. Also,
+as it was suggested, fwnode_dev_node_match() routine
+was taken out of the network code and introduced as a generic
+one in drivers/base/property.c
 
-On Wed, Jul 13, 2022 at 03:07:47PM +0100, Russell King wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> Allow a named software node to be created, which is needed for software
-> nodes for a fixed-link specification for DSA.
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->  drivers/base/swnode.c    | 14 ++++++++++++--
->  include/linux/property.h |  4 ++++
->  2 files changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index 0a482212c7e8..b2ea08f0e898 100644
-> --- a/drivers/base/swnode.c
-> +++ b/drivers/base/swnode.c
-> @@ -972,8 +972,9 @@ void software_node_unregister(const struct software_node *node)
->  EXPORT_SYMBOL_GPL(software_node_unregister);
->  
->  struct fwnode_handle *
-> -fwnode_create_software_node(const struct property_entry *properties,
-> -			    const struct fwnode_handle *parent)
-> +fwnode_create_named_software_node(const struct property_entry *properties,
-> +				  const struct fwnode_handle *parent,
-> +				  const char *name)
->  {
->  	struct fwnode_handle *fwnode;
->  	struct software_node *node;
-> @@ -991,6 +992,7 @@ fwnode_create_software_node(const struct property_entry *properties,
->  		return ERR_CAST(node);
->  
->  	node->parent = p ? p->node : NULL;
-> +	node->name = name;
->  
->  	fwnode = swnode_register(node, p, 1);
->  	if (IS_ERR(fwnode))
-> @@ -998,6 +1000,14 @@ fwnode_create_software_node(const struct property_entry *properties,
->  
->  	return fwnode;
->  }
-> +EXPORT_SYMBOL_GPL(fwnode_create_named_software_node);
-> +
-> +struct fwnode_handle *
-> +fwnode_create_software_node(const struct property_entry *properties,
-> +			    const struct fwnode_handle *parent)
-> +{
-> +	return fwnode_create_named_software_node(properties, parent, NULL);
-> +}
->  EXPORT_SYMBOL_GPL(fwnode_create_software_node);
->  
->  void fwnode_remove_software_node(struct fwnode_handle *fwnode)
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index a5b429d623f6..23330ae2b1fa 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -492,6 +492,10 @@ void software_node_unregister(const struct software_node *node);
->  struct fwnode_handle *
->  fwnode_create_software_node(const struct property_entry *properties,
->  			    const struct fwnode_handle *parent);
-> +struct fwnode_handle *
-> +fwnode_create_named_software_node(const struct property_entry *properties,
-> +				  const struct fwnode_handle *parent,
-> +				  const char *name);
->  void fwnode_remove_software_node(struct fwnode_handle *fwnode);
->  
->  int device_add_software_node(struct device *dev, const struct software_node *node);
-> -- 
-> 2.30.2
-> 
-> 
+The details can be found in the changelog below. Any comments or
+remarks will be appreciated.
+
+Each patch was tested on:
+* On EspressoBIN
+* On SolidRun CN913x CEx7 Eval Board
+
+IMPORTANT NOTE:
+This patchset is rebased on top of the one from Russell
+(https://lore.kernel.org/all/Ys7RdzGgHbYiPyB1@shell.armlinux.org.uk/),
+so a care should be taken, when merging to the net-next tree.
+
+Best regards,
+Marcin
+
+Changelog v1->v2:
+1/8
+  * Drop unnecessary check in fixed_phy_get_gpiod()
+  * Improve line breaking
+  * Use device_set_node & dev_fwnode
+
+2/8
+  * Switch to fwnode_property_count_u32 and fix comparison
+    in if statement.
+
+3/8
+  * Drop dn usage entirely and use dp->fwnode only. Update
+    all dependent drivers to use to_of_node.
+  * Use device_set_node, dev_fwnode & device_get_named_child_node
+  * Replace '_of' routines suffix with '_fw'
+
+4/8
+  * Use device_set_node
+
+5/8
+  * New patch
+
+6/8 
+  * Use device_match_fwnode
+  * Restore EXPORT_SYMBOL()
+
+7/8
+  * Get rid of of_mdiobus_register_device 
+
+8/8
+  * Use dev_fwnode in mv88e6xxx_probe 
+  * Simplify condition checks in mv88e6xxx_probe as suggested by Andy
+
+Marcin Wojtas (8):
+  net: phy: fixed_phy: switch to fwnode_ API
+  net: mdio: switch fixed-link PHYs API to fwnode_
+  net: dsa: switch to device_/fwnode_ APIs
+  net: mvpp2: initialize port fwnode pointer
+  device property: introduce fwnode_dev_node_match
+  net: core: switch to fwnode_find_net_device_by_node()
+  net: mdio: introduce fwnode_mdiobus_register_device()
+  net: dsa: mv88e6xxx: switch to device_/fwnode_ APIs
+
+ include/linux/etherdevice.h                     |   1 +
+ include/linux/fwnode_mdio.h                     |  22 ++++
+ include/linux/of_net.h                          |   6 -
+ include/linux/phy_fixed.h                       |   4 +-
+ include/linux/property.h                        |   2 +
+ include/net/dsa.h                               |   2 +-
+ net/dsa/dsa_priv.h                              |   4 +-
+ drivers/base/property.c                         |  22 ++++
+ drivers/net/dsa/mt7530.c                        |   2 +-
+ drivers/net/dsa/mv88e6xxx/chip.c                |  57 ++++-----
+ drivers/net/dsa/qca8k.c                         |   2 +-
+ drivers/net/dsa/realtek/rtl8365mb.c             |   2 +-
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c |   2 +-
+ drivers/net/mdio/fwnode_mdio.c                  | 129 ++++++++++++++++++++
+ drivers/net/mdio/of_mdio.c                      | 111 +----------------
+ drivers/net/phy/fixed_phy.c                     |  39 +++---
+ net/core/net-sysfs.c                            |  25 ++--
+ net/dsa/dsa2.c                                  | 101 ++++++++-------
+ net/dsa/port.c                                  |  70 ++++++-----
+ net/dsa/slave.c                                 |   7 +-
+ 20 files changed, 328 insertions(+), 282 deletions(-)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+2.29.0
+
