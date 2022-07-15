@@ -2,113 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB475765C2
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 19:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82395765D3
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 19:25:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235653AbiGORVB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jul 2022 13:21:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
+        id S235743AbiGORWO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jul 2022 13:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235652AbiGORVB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 13:21:01 -0400
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D32D79682;
-        Fri, 15 Jul 2022 10:21:00 -0700 (PDT)
-Received: by mail-pf1-x42e.google.com with SMTP id y141so5181216pfb.7;
-        Fri, 15 Jul 2022 10:21:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=v35aC/SET8Nt1lF58i2LVSGI7TVYKhXpN56HeHPhY4A=;
-        b=QYRuWFCmTvZa/x5P+uESITLhb+SAnK3Ep6RjijQpXs9D9HQ6zQtjDb73w8plJ7rrTN
-         jl9TfKRIr00Y3U4c2O7IK+l52IfmISjdi5DVoOjQuaZRup6uS7Zr3K0ncXMTg8Qth2S+
-         YjK81IU2OOpN0VPXjCGK9FYDqDEur07qD4W2lFxHiX7RFLZstkKrPM9XjqL7l2cJ6kur
-         SeL7QRXbm8BwPLNS/cwAAkRIow9e+DD8dHprPzQ/rc36raoPBVQv/Ar1FXytFjBJP3os
-         gqEOZlIgjrszm0i74uR/LUDHByRmKG4im7M5Tqfx5rz+s8jfFMTlNp4BawIxEr2QvlQF
-         1jUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=v35aC/SET8Nt1lF58i2LVSGI7TVYKhXpN56HeHPhY4A=;
-        b=LP2izyH7hW0MLFzJzz0Ef5EJ4OgRAvvcH93cR/cO4FoSL8qG1i6CW/mr/G5BLErdDQ
-         VbF8UOGP0F4wT19qSr+jr4aipnj2BHp1Yg8GJzD6qPAK2HmdWgXftaJAQhDBMZDAPPrT
-         9GcZh8RXn3bNM47Mwf5suWbzn6CU4etzvUPQw3TVNI+9nDi/a+UA33Lb+LNAAM9m2o3S
-         NY760hBsoO3SQ612IJawTzDHkkjryq8NufXYibGCg4qrqgyTnYxQwld/mebt5W5vBwEU
-         HWwl+ccgTJsJi0IvXK16yJbXXHXQ/Wxv0GgTw0feD9MrFdMuGvMzqt2OZ9vVWqlLAn2S
-         zN+A==
-X-Gm-Message-State: AJIora9W2A+BJbF9s98oZEDVMwzbaWV4+xrdjsmf2Y0tzbCnXS6FZMWM
-        cxtHVojxsUbMoKHdt72zLdo=
-X-Google-Smtp-Source: AGRyM1vINHbIiII2lUdhE4U0lB3RwsmwOrfFF+r+w8TiBpauAFR5zNUGcFsSpEsGUrmUqgFtL4r48A==
-X-Received: by 2002:a05:6a00:993:b0:52a:dd93:f02d with SMTP id u19-20020a056a00099300b0052add93f02dmr15211567pfg.12.1657905659970;
-        Fri, 15 Jul 2022 10:20:59 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id ot8-20020a17090b3b4800b001ef89019352sm13427194pjb.3.2022.07.15.10.20.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Jul 2022 10:20:58 -0700 (PDT)
-Message-ID: <a5b55fb3-3326-eb3c-99e6-3fd6b7e4c2fe@gmail.com>
-Date:   Fri, 15 Jul 2022 10:20:55 -0700
+        with ESMTP id S235781AbiGORWI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 13:22:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE66F84EC9;
+        Fri, 15 Jul 2022 10:22:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 394556225E;
+        Fri, 15 Jul 2022 17:22:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9F6C34115;
+        Fri, 15 Jul 2022 17:22:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657905726;
+        bh=zhKFGDAKzjIcdaKCKOjey1iz1DIJM+vZjFXRFpNiVa0=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=rFmPJuP9Z+UG9D6jPNimAhPrSVZLAU88g1c2UJrPhNhk55G/jNf37HEZFCuHrCGrw
+         SQ+dMlDeNQtQRIZ/9dhvPUgRNClxsg8iVlLR8c19K45YpJkHNLO4qrO9TVdmDXXh2P
+         YcTUyWJnBzN8iHZIOHja5PmogyG/YQ54FgiTnipDOPvDBLdN+hpwx3ZjAVRk5yroW9
+         2xPkx0oAtqhRipjosoRCjWno4md/Sj52bM638vNBfoOA6aBT/UuSLHSHpgqBc/PmGx
+         xZ3X5SU9yD2LKQJWvJOI1YZgSUdh/gKpro7M94X0xH/tZ7NSN/dnSikHA0FMx3VguN
+         vebCAIu42KI3A==
+From:   Mark Brown <broonie@kernel.org>
+To:     sbinding@opensource.cirrus.com, lenb@kernel.org,
+        lgirdwood@gmail.com, rafael@kernel.org
+Cc:     linux-acpi@vger.kernel.org, patches@opensource.cirrus.com,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220707151037.3901050-1-sbinding@opensource.cirrus.com>
+References: <20220707151037.3901050-1-sbinding@opensource.cirrus.com>
+Subject: Re: [PATCH v6 0/2] Read _SUB from ACPI to be able to identify firmware
+Message-Id: <165790572476.3961283.3237743064047303492.b4-ty@kernel.org>
+Date:   Fri, 15 Jul 2022 18:22:04 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [net-next: PATCH v2 1/8] net: phy: fixed_phy: switch to fwnode_
- API
-Content-Language: en-US
-To:     Marcin Wojtas <mw@semihalf.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org
-Cc:     rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        sean.wang@mediatek.com, Landen.Chao@mediatek.com,
-        linus.walleij@linaro.org, andrew@lunn.ch, vivien.didelot@gmail.com,
-        olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
-        hkallweit1@gmail.com, gjb@semihalf.com, jaz@semihalf.com,
-        tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com,
-        upstream@semihalf.com
-References: <20220715085012.2630214-1-mw@semihalf.com>
- <20220715085012.2630214-2-mw@semihalf.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20220715085012.2630214-2-mw@semihalf.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/15/22 01:50, Marcin Wojtas wrote:
-> This patch allows to use fixed_phy driver and its helper
-> functions without Device Tree dependency, by swtiching from
-> of_ to fwnode_ API.
+On Thu, 7 Jul 2022 16:10:35 +0100, Stefan Binding wrote:
+> CS35L41 has a DSP which is able to run firmware, as well as a tuning file.
+> Different systems may want to use different firmwares and tuning files, and
+> some firmwares/tunings may not be compatible with other systems.
+> To allow a system to select the correct fimware/tuning, we can read an _SUB
+> from the ACPI. This _SUB can then be used to uniquely identify the system
+> in the firmware/tuning file name.
 > 
-> Signed-off-by: Marcin Wojtas <mw@semihalf.com>
-> ---
->  include/linux/phy_fixed.h   |  4 +-
->  drivers/net/mdio/of_mdio.c  |  2 +-
->  drivers/net/phy/fixed_phy.c | 39 +++++++-------------
->  3 files changed, 17 insertions(+), 28 deletions(-)
-> 
-> diff --git a/include/linux/phy_fixed.h b/include/linux/phy_fixed.h
-> index 52bc8e487ef7..449a927231ec 100644
-> --- a/include/linux/phy_fixed.h
-> +++ b/include/linux/phy_fixed.h
-> @@ -19,7 +19,7 @@ extern int fixed_phy_add(unsigned int irq, int phy_id,
->  			 struct fixed_phy_status *status);
->  extern struct phy_device *fixed_phy_register(unsigned int irq,
->  					     struct fixed_phy_status *status,
-> -					     struct device_node *np);
-> +					     struct fwnode_handle *fwnode);
+> [...]
 
-I think this ought to require a forward declaration of struct fwnode_handle and a removal of the forward declaration of device_node.
+Applied to
 
-With that fixes:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+Thanks!
+
+[1/2] ACPI: utils: Add api to read _SUB from ACPI
+      commit: 93064e15c8a3a8394319a11b8037666e4b7d653d
+[2/2] ASoC: cs35l41: Read System Name from ACPI _SUB to identify firmware
+      commit: c1ad138822a1be95a7a7b122521c2415583a0c26
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
