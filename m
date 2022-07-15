@@ -2,334 +2,354 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 582BB576507
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 18:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 568DE576513
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 18:04:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233403AbiGOQCr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jul 2022 12:02:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34170 "EHLO
+        id S229692AbiGOQEm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jul 2022 12:04:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233408AbiGOQCH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 12:02:07 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC4874DCD;
-        Fri, 15 Jul 2022 09:02:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-        Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-        In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Ee0S/L/lAaawjhGQkdBJydNVbnF4FxpHz5nSk4/ecXA=; b=sl1F19CLN6rb7NOrnwdMLwMK/g
-        GAngKGXU0eid+AVplNeyYiLz50q6npmcJqExM0vFLK9fXEWfPTNr0RDJptioQ11st5Rv9VUJdbDYI
-        vL3tm9Gy5H2C1gbKLE4qIQ8Xsl5WQ/XjdIn70kORSmS1Bo4zcMYVYqpqCSVPLKYneFGqpbW9ke1u4
-        qhby2li7dYpgXSFiQTZrvIffZtd/cPm0pwxvaAXDfAEnFddcHmUtwn4Y1ALKdvAxZJvyxt0a99X4q
-        v5aDgiICHVjRpQpIZTMKx8eZBj1pEXDG5Muosc3v1Sr8IDlo+vPFEBaeeacnWeWyYArjb7H/hR3Wp
-        19/3RMcA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46056 helo=rmk-PC.armlinux.org.uk)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <rmk@armlinux.org.uk>)
-        id 1oCNlK-0007EM-1h; Fri, 15 Jul 2022 17:01:54 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-        id 1oCNlJ-006e45-8V; Fri, 15 Jul 2022 17:01:53 +0100
-In-Reply-To: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
-References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
-From:   "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Alvin __ipraga" <alsi@bang-olufsen.dk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Subject: [PATCH net-next 6/6] net: dsa: mv88e6xxx: remove handling for DSA and
- CPU ports
+        with ESMTP id S229778AbiGOQEk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 12:04:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 098714E61A
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 09:04:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1657901076;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Sp/UGNgi/73pvwSOWnPEk60LYHAolqV1dOxRpJbQKug=;
+        b=IiU1mjfnUGBaPE9M9hJwmcP8qQzBR2BQ7hb3NAXtiQyzbpGzRa1hVchFS0j4Rcc/bdjFJU
+        QTfzQwpGwIpDXDTV700HAUSpf4idRCPu21D7YeTtjs4XUkNgZ30Yt1l122wAaypRnq3lfM
+        ZivsGpMONABxo6ecPSGatRjhYXA0UJo=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-651-Q-11IC6yN8iED3hgPdRkBg-1; Fri, 15 Jul 2022 12:04:35 -0400
+X-MC-Unique: Q-11IC6yN8iED3hgPdRkBg-1
+Received: by mail-ej1-f70.google.com with SMTP id gr1-20020a170906e2c100b006fefea3ec0aso1640772ejb.14
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 09:04:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Sp/UGNgi/73pvwSOWnPEk60LYHAolqV1dOxRpJbQKug=;
+        b=Wtj4fORweerzmXzTLET5ZkDnTqXbkf7Mzut/PS0u/5r7sXcubPvYtVlR33GzI+ly1r
+         cDziod3H63tZm2sArsVaU7Um9gE/99Eul5D/moSWqiQAid2gUS+hd4PAjwEmiSbwp/Tl
+         zS1HWBwHGE7HBkkVfck08OIOvZc82mN5Nc9tRxZ++Bo7R7m25CXWr6Sfbursy16KyVf3
+         pW2hMUDpcG2JmlRt0pK6riG9R+nopzvtq2hz2aV/NDwzIWeR3dJIUCrRcIgG4YM1MenV
+         s2qIJC5FjlSTeaBLF6ZV49CwMEZUsNFJa0UZ7PnSJGcMp2obCwJWfmHx82DjJeRCiVsZ
+         d9RQ==
+X-Gm-Message-State: AJIora+1EvTgGpKsPOnO2q0U42BhCf9Gi6JS7K0MstYzO2HAYJMLUuXK
+        vefX5R4kOabJiu15mES56WoZGc9lbfRln0/1N0+BFV/1NBhtft+exMC3nyY5/vmXdj/3yziQRmK
+        aSIrk2LoPfzaXixT0RN8OrQ==
+X-Received: by 2002:a05:6402:48c:b0:43a:8bc7:f440 with SMTP id k12-20020a056402048c00b0043a8bc7f440mr19772599edv.8.1657901073350;
+        Fri, 15 Jul 2022 09:04:33 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1sjkMDeAFnOqp5ui6Lqjz/acKZQJMsuG0q68f+Y5L+ry3ktYy6aNCAr4JLTEzr7HBBN7TsGNw==
+X-Received: by 2002:a05:6402:48c:b0:43a:8bc7:f440 with SMTP id k12-20020a056402048c00b0043a8bc7f440mr19772569edv.8.1657901073101;
+        Fri, 15 Jul 2022 09:04:33 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:2a07:3a01:67e5:daf9:cec0:df6? (2001-1c00-2a07-3a01-67e5-daf9-cec0-0df6.cable.dynamic.v6.ziggo.nl. [2001:1c00:2a07:3a01:67e5:daf9:cec0:df6])
+        by smtp.gmail.com with ESMTPSA id w13-20020aa7cb4d000000b0043a5004e714sm3050479edt.64.2022.07.15.09.04.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Jul 2022 09:04:32 -0700 (PDT)
+Message-ID: <cbaa803b-9d06-58c2-a03e-66471ebcf43e@redhat.com>
+Date:   Fri, 15 Jul 2022 18:04:31 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v2 16/29] ACPI: video: Add Nvidia WMI EC brightness
+ control detection
+Content-Language: en-US
+To:     Daniel Dadap <ddadap@nvidia.com>
+Cc:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
+        Lyude <lyude@redhat.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Xinhui <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        Len Brown <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>
+References: <20220712193910.439171-1-hdegoede@redhat.com>
+ <20220712193910.439171-17-hdegoede@redhat.com>
+ <8cde70e6-1115-9b7f-d550-52b9e3623c85@nvidia.com>
+ <f68353f9-fb4c-b5fe-f7f8-69b97865c720@redhat.com>
+ <3DA6A58C-E24D-45AD-8C82-3D8905D0C690@nvidia.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <3DA6A58C-E24D-45AD-8C82-3D8905D0C690@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1oCNlJ-006e45-8V@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date:   Fri, 15 Jul 2022 17:01:53 +0100
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As we now always use a fixed-link for DSA and CPU ports, we no longer
-need the hack in the Marvell code to make this work. Remove it.
+Hi,
 
-This is especially important with the conversion of DSA drivers to
-phylink_pcs, as the PCS code only gets called if we are using
-phylink for the port.
+On 7/15/22 17:32, Daniel Dadap wrote:
+> 
+> 
+>> On Jul 15, 2022, at 06:59, Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> ﻿Hi Daniel,
+>>
+>>> On 7/12/22 22:13, Daniel Dadap wrote:
+>>> Thanks, Hans:
+>>>
+>>>> On 7/12/22 14:38, Hans de Goede wrote:
+>>>> On some new laptop designs a new Nvidia specific WMI interface is present
+>>>> which gives info about panel brightness control and may allow controlling
+>>>> the brightness through this interface when the embedded controller is used
+>>>> for brightness control.
+>>>>
+>>>> When this WMI interface is present and indicates that the EC is used,
+>>>> then this interface should be used for brightness control.
+>>>>
+>>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>>> ---
+>>>>   drivers/acpi/Kconfig           |  1 +
+>>>>   drivers/acpi/video_detect.c    | 35 ++++++++++++++++++++++++++++++++++
+>>>>   drivers/gpu/drm/gma500/Kconfig |  2 ++
+>>>>   drivers/gpu/drm/i915/Kconfig   |  2 ++
+>>>>   include/acpi/video.h           |  1 +
+>>>>   5 files changed, 41 insertions(+)
+>>>>
+>>>> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+>>>> index 1e34f846508f..c372385cfc3f 100644
+>>>> --- a/drivers/acpi/Kconfig
+>>>> +++ b/drivers/acpi/Kconfig
+>>>> @@ -212,6 +212,7 @@ config ACPI_VIDEO
+>>>>       tristate "Video"
+>>>>       depends on X86 && BACKLIGHT_CLASS_DEVICE
+>>>>       depends on INPUT
+>>>> +    depends on ACPI_WMI
+>>>>       select THERMAL
+>>>>       help
+>>>>         This driver implements the ACPI Extensions For Display Adapters
+>>>> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+>>>> index 8c2863403040..7b89dc9a04a2 100644
+>>>> --- a/drivers/acpi/video_detect.c
+>>>> +++ b/drivers/acpi/video_detect.c
+>>>> @@ -75,6 +75,35 @@ find_video(acpi_handle handle, u32 lvl, void *context, void **rv)
+>>>>       return AE_OK;
+>>>>   }
+>>>>   +#define WMI_BRIGHTNESS_METHOD_SOURCE            2
+>>>> +#define WMI_BRIGHTNESS_MODE_GET                0
+>>>> +#define WMI_BRIGHTNESS_SOURCE_EC            2
+>>>> +
+>>>> +struct wmi_brightness_args {
+>>>> +    u32 mode;
+>>>> +    u32 val;
+>>>> +    u32 ret;
+>>>> +    u32 ignored[3];
+>>>> +};
+>>>> +
+>>>> +static bool nvidia_wmi_ec_supported(void)
+>>>> +{
+>>>> +    struct wmi_brightness_args args = {
+>>>> +        .mode = WMI_BRIGHTNESS_MODE_GET,
+>>>> +        .val = 0,
+>>>> +        .ret = 0,
+>>>> +    };
+>>>> +    struct acpi_buffer buf = { (acpi_size)sizeof(args), &args };
+>>>> +    acpi_status status;
+>>>> +
+>>>> +    status = wmi_evaluate_method("603E9613-EF25-4338-A3D0-C46177516DB7", 0,
+>>>> +                     WMI_BRIGHTNESS_METHOD_SOURCE, &buf, &buf);
+>>>> +    if (ACPI_FAILURE(status))
+>>>> +        return false;
+>>>> +
+>>>> +    return args.ret == WMI_BRIGHTNESS_SOURCE_EC;
+>>>> +}
+>>>> +
+>>>
+>>>
+>>> The code duplication here with nvidia-wmi-ec-backlight.c is a little unfortunate. Can we move the constants, struct definition, and WMI GUID from that file to a header file that's used both by the EC backlight driver and the ACPI video driver?
+>>
+>> Yes that is a good idea. I suggest using include/linux/platform_data/x86/nvidia-wmi-ec-backlight.h
+>> to move the shared definitions there.
+>>
+>> If you can submit 2 patches on top of this series:
+>>
+>> 1. Moving the definitions from drivers/platform/x86/nvidia-wmi-ec-backlight.c to
+>>   include/linux/platform_data/x86/nvidia-wmi-ec-backlight.h
+>>
+>> 2. Switching the code from this patch over to using the new nvidia-wmi-ec-backlight.h
+>>
+>> Then for the next version I'll add patch 1. to the series and squash patch 2.
+>> into this one.
+>>
+>>> I was thinking it might be nice to add a wrapper around wmi_brightness_notify() in nvidia-wmi-ec-backlight.c that does this source == WMI_BRIGHTNESS_SOURCE_EC test, and then export it so that it can be called both here and in the EC backlight driver's probe routine, but then I guess that would make video.ko depend on nvidia-wmi-ec-backlight.ko, which seems wrong. It also seems wrong to implement the WMI plumbing in the ACPI video driver, and export it so that the EC backlight driver can use it, so I guess I can live with the duplication of the relatively simple WMI stuff here, it would just be nice to not have to define all of the API constants, structure, and GUID twice.
+>>
+>> Agreed.
+>>
+>>>
+>>>
+>>>>   /* Force to use vendor driver when the ACPI device is known to be
+>>>>    * buggy */
+>>>>   static int video_detect_force_vendor(const struct dmi_system_id *d)
+>>>> @@ -518,6 +547,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+>>>>   static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
+>>>>   {
+>>>>       static DEFINE_MUTEX(init_mutex);
+>>>> +    static bool nvidia_wmi_ec_present;
+>>>>       static bool native_available;
+>>>>       static bool init_done;
+>>>>       static long video_caps;
+>>>> @@ -530,6 +560,7 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
+>>>>           acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
+>>>>                       ACPI_UINT32_MAX, find_video, NULL,
+>>>>                       &video_caps, NULL);
+>>>> +        nvidia_wmi_ec_present = nvidia_wmi_ec_supported();
+>>>>           init_done = true;
+>>>>       }
+>>>>       if (native)
+>>>> @@ -547,6 +578,10 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
+>>>>       if (acpi_backlight_dmi != acpi_backlight_undef)
+>>>>           return acpi_backlight_dmi;
+>>>>   +    /* Special cases such as nvidia_wmi_ec and apple gmux. */
+>>>> +    if (nvidia_wmi_ec_present)
+>>>> +        return acpi_backlight_nvidia_wmi_ec;
+>>>
+>>>
+>>> Should there also be a change to the EC backlight driver to call acpi_video_get_backlight_type() and make sure we get acpi_backlight_nvidia_wmi_ec? I don't see such a change in this patch series; I could implement it (and test it) against your patch if there's some reason you didn't do so with the current patchset.
+>>
+>> I was thinking about this myself too and I decided it was not necessary since
+>> acpi_video_get_backlight_type() will always return acpi_backlight_nvidia_wmi_ec.
+>>
+>> But thinking more about this, that is not true, a user might try to force
+>> using a different backlight firmware interface by e.g. adding:
+>> acpi_backlight=video on the kernel commandline.
+>>
+>> So yes a patch adding something like this:
+>>
+>>    if (acpi_video_get_backlight_type() != acpi_backlight_nvidia_wmi_ec)
+>>        return -ENODEV;
+>>
+>> to the EC backlight driver would be very welcome.
+>>
+>>>
+>>>
+>>>> +
+>>>>       /* On systems with ACPI video use either native or ACPI video. */
+>>>>       if (video_caps & ACPI_VIDEO_BACKLIGHT) {
+>>>>           /*
+>>>> diff --git a/drivers/gpu/drm/gma500/Kconfig b/drivers/gpu/drm/gma500/Kconfig
+>>>> index 0cff20265f97..807b989e3c77 100644
+>>>> --- a/drivers/gpu/drm/gma500/Kconfig
+>>>> +++ b/drivers/gpu/drm/gma500/Kconfig
+>>>> @@ -7,6 +7,8 @@ config DRM_GMA500
+>>>>       select ACPI_VIDEO if ACPI
+>>>>       select BACKLIGHT_CLASS_DEVICE if ACPI
+>>>>       select INPUT if ACPI
+>>>> +    select X86_PLATFORM_DEVICES if ACPI
+>>>> +    select ACPI_WMI if ACPI
+>>>
+>>>
+>>> I'm not sure I understand why the Intel DRM drivers pick up the additional platform/x86 and WMI dependencies here. ACPI_VIDEO already depends on these, doesn't it?
+>>
+>> It does.
+>>
+>>> If Kconfig doesn't otherwise automatically pull in an option's dependencies when selecting that option
+>>
+>> Right that is the reason why this is done, for select the Kconfig block must also select all deps
+>>
+>>> then shouldn't Nouveau's Kconfig get updated as well?
+>>> It selects ACPI_VIDEO in some configuration cases.
+>>
+>> nouveau's Kconfig block already selects ACPI_WMI:
+>>
+>> config DRM_NOUVEAU
+>>    tristate "Nouveau (NVIDIA) cards"
+>>    ...
+>>    select X86_PLATFORM_DEVICES if ACPI && X86
+>>    select ACPI_WMI if ACPI && X86
+>>    ...
+>>    select ACPI_VIDEO if ACPI && X86
+>>
+>> That is why this patch does not add this.
+>>
+>>> (It looks like amdgpu doesn't currently select ACPI_VIDEO, maybe because it doesn't depend on it the way the Intel drivers do: there are several AMD+NVIDIA iGPU/dGPU designs out there which use this backlight interface.)
+>>
+>> Correct, but with this series amdgpu/radeon also start using ACPI_VIDEO
+>> functions so these patches:
+>>
+>> https://patchwork.freedesktop.org/patch/493650/
+>> https://patchwork.freedesktop.org/patch/493653/
+>>
+>> Add the necessary selects and I cheated a bit and also made
+>> them select ACPI_WMI already even though that is only
+>> necessary after this patch (which comes later in the series).
+>>
+>> I hope this answers al your questions...
+>>
+> 
+> Yes, thank you. I don’t have to work with Kconfig much, but that reasoning lined up with my best guess. Sorry for not looking at the other patches in the series, or at Nouveau’s Kconfig more closely.
+> 
+> I will work on and test the three patches we discussed above. Would you prefer if I sent them and set In-reply-to a message in this thread, or as a separate message with no In-reply-to?
 
-Reviewed-by: Marek Behún <kabel@kernel.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/dsa/mv88e6xxx/chip.c | 49 +++-----------------------------
- drivers/net/dsa/mv88e6xxx/chip.h |  3 --
- drivers/net/dsa/mv88e6xxx/port.c | 32 ---------------------
- drivers/net/dsa/mv88e6xxx/port.h |  5 ----
- 4 files changed, 4 insertions(+), 85 deletions(-)
+I have no real preference. Whatever is easiest for you.
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index ccb35ea5d7b0..01dff8d46642 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3314,9 +3314,8 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
- {
- 	struct device_node *phy_handle = NULL;
- 	struct dsa_switch *ds = chip->ds;
--	phy_interface_t mode;
- 	struct dsa_port *dp;
--	int tx_amp, speed;
-+	int tx_amp;
- 	int err;
- 	u16 reg;
- 
-@@ -3325,40 +3324,9 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
- 
- 	dp = dsa_to_port(ds, port);
- 
--	/* MAC Forcing register: don't force link, speed, duplex or flow control
--	 * state to any particular values on physical ports, but force the CPU
--	 * port and all DSA ports to their maximum bandwidth and full duplex.
--	 */
--	if (dsa_is_cpu_port(ds, port) || dsa_is_dsa_port(ds, port)) {
--		unsigned long caps = dp->pl_config.mac_capabilities;
--
--		if (chip->info->ops->port_max_speed_mode)
--			mode = chip->info->ops->port_max_speed_mode(port);
--		else
--			mode = PHY_INTERFACE_MODE_NA;
--
--		if (caps & MAC_10000FD)
--			speed = SPEED_10000;
--		else if (caps & MAC_5000FD)
--			speed = SPEED_5000;
--		else if (caps & MAC_2500FD)
--			speed = SPEED_2500;
--		else if (caps & MAC_1000)
--			speed = SPEED_1000;
--		else if (caps & MAC_100)
--			speed = SPEED_100;
--		else
--			speed = SPEED_10;
--
--		err = mv88e6xxx_port_setup_mac(chip, port, LINK_FORCED_UP,
--					       speed, DUPLEX_FULL,
--					       PAUSE_OFF, mode);
--	} else {
--		err = mv88e6xxx_port_setup_mac(chip, port, LINK_UNFORCED,
--					       SPEED_UNFORCED, DUPLEX_UNFORCED,
--					       PAUSE_ON,
--					       PHY_INTERFACE_MODE_NA);
--	}
-+	err = mv88e6xxx_port_setup_mac(chip, port, LINK_UNFORCED,
-+				       SPEED_UNFORCED, DUPLEX_UNFORCED,
-+				       PAUSE_ON, PHY_INTERFACE_MODE_NA);
- 	if (err)
- 		return err;
- 
-@@ -4306,7 +4274,6 @@ static const struct mv88e6xxx_ops mv88e6141_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6341_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6341_port_max_speed_mode,
- 	.port_tag_remap = mv88e6095_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -4699,7 +4666,6 @@ static const struct mv88e6xxx_ops mv88e6190_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -4762,7 +4728,6 @@ static const struct mv88e6xxx_ops mv88e6190x_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390x_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390x_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -4825,7 +4790,6 @@ static const struct mv88e6xxx_ops mv88e6191_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
- 	.port_set_ucast_flood = mv88e6352_port_set_ucast_flood,
-@@ -4990,7 +4954,6 @@ static const struct mv88e6xxx_ops mv88e6290_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -5141,7 +5104,6 @@ static const struct mv88e6xxx_ops mv88e6341_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6341_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6341_port_max_speed_mode,
- 	.port_tag_remap = mv88e6095_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -5364,7 +5326,6 @@ static const struct mv88e6xxx_ops mv88e6390_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -5431,7 +5392,6 @@ static const struct mv88e6xxx_ops mv88e6390x_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6390x_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6390x_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-@@ -5497,7 +5457,6 @@ static const struct mv88e6xxx_ops mv88e6393x_ops = {
- 	.port_sync_link = mv88e6xxx_port_sync_link,
- 	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
- 	.port_set_speed_duplex = mv88e6393x_port_set_speed_duplex,
--	.port_max_speed_mode = mv88e6393x_port_max_speed_mode,
- 	.port_tag_remap = mv88e6390_port_tag_remap,
- 	.port_set_policy = mv88e6393x_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index 4518c17c1b9b..a3b7cfe3eb23 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -502,9 +502,6 @@ struct mv88e6xxx_ops {
- 	int (*port_set_speed_duplex)(struct mv88e6xxx_chip *chip, int port,
- 				     int speed, int duplex);
- 
--	/* What interface mode should be used for maximum speed? */
--	phy_interface_t (*port_max_speed_mode)(int port);
--
- 	int (*port_tag_remap)(struct mv88e6xxx_chip *chip, int port);
- 
- 	int (*port_set_policy)(struct mv88e6xxx_chip *chip, int port,
-diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
-index 90c55f23b7c9..47e21f3c437a 100644
---- a/drivers/net/dsa/mv88e6xxx/port.c
-+++ b/drivers/net/dsa/mv88e6xxx/port.c
-@@ -333,14 +333,6 @@ int mv88e6341_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 					       duplex);
- }
- 
--phy_interface_t mv88e6341_port_max_speed_mode(int port)
--{
--	if (port == 5)
--		return PHY_INTERFACE_MODE_2500BASEX;
--
--	return PHY_INTERFACE_MODE_NA;
--}
--
- /* Support 10, 100, 200, 1000 Mbps (e.g. 88E6352 family) */
- int mv88e6352_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 				    int speed, int duplex)
-@@ -372,14 +364,6 @@ int mv88e6390_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 					       duplex);
- }
- 
--phy_interface_t mv88e6390_port_max_speed_mode(int port)
--{
--	if (port == 9 || port == 10)
--		return PHY_INTERFACE_MODE_2500BASEX;
--
--	return PHY_INTERFACE_MODE_NA;
--}
--
- /* Support 10, 100, 200, 1000, 2500, 10000 Mbps (e.g. 88E6190X) */
- int mv88e6390x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 				     int speed, int duplex)
-@@ -394,14 +378,6 @@ int mv88e6390x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 					       duplex);
- }
- 
--phy_interface_t mv88e6390x_port_max_speed_mode(int port)
--{
--	if (port == 9 || port == 10)
--		return PHY_INTERFACE_MODE_XAUI;
--
--	return PHY_INTERFACE_MODE_NA;
--}
--
- /* Support 10, 100, 200, 1000, 2500, 5000, 10000 Mbps (e.g. 88E6393X)
-  * Function mv88e6xxx_port_set_speed_duplex() can't be used as the register
-  * values for speeds 2500 & 5000 conflict.
-@@ -491,14 +467,6 @@ int mv88e6393x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 	return 0;
- }
- 
--phy_interface_t mv88e6393x_port_max_speed_mode(int port)
--{
--	if (port == 0 || port == 9 || port == 10)
--		return PHY_INTERFACE_MODE_10GBASER;
--
--	return PHY_INTERFACE_MODE_NA;
--}
--
- static int mv88e6xxx_port_set_cmode(struct mv88e6xxx_chip *chip, int port,
- 				    phy_interface_t mode, bool force)
- {
-diff --git a/drivers/net/dsa/mv88e6xxx/port.h b/drivers/net/dsa/mv88e6xxx/port.h
-index cb04243f37c1..2a5741a44e97 100644
---- a/drivers/net/dsa/mv88e6xxx/port.h
-+++ b/drivers/net/dsa/mv88e6xxx/port.h
-@@ -357,11 +357,6 @@ int mv88e6390x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- int mv88e6393x_port_set_speed_duplex(struct mv88e6xxx_chip *chip, int port,
- 				     int speed, int duplex);
- 
--phy_interface_t mv88e6341_port_max_speed_mode(int port);
--phy_interface_t mv88e6390_port_max_speed_mode(int port);
--phy_interface_t mv88e6390x_port_max_speed_mode(int port);
--phy_interface_t mv88e6393x_port_max_speed_mode(int port);
--
- int mv88e6xxx_port_set_state(struct mv88e6xxx_chip *chip, int port, u8 state);
- 
- int mv88e6xxx_port_set_vlan_map(struct mv88e6xxx_chip *chip, int port, u16 map);
--- 
-2.30.2
+Regards,
+
+Hans
+
+
+
+
+>>>>       help
+>>>>         Say yes for an experimental 2D KMS framebuffer driver for the
+>>>>         Intel GMA500 (Poulsbo), Intel GMA600 (Moorestown/Oak Trail) and
+>>>> diff --git a/drivers/gpu/drm/i915/Kconfig b/drivers/gpu/drm/i915/Kconfig
+>>>> index 7ae3b7d67fcf..3efce05d7b57 100644
+>>>> --- a/drivers/gpu/drm/i915/Kconfig
+>>>> +++ b/drivers/gpu/drm/i915/Kconfig
+>>>> @@ -23,6 +23,8 @@ config DRM_I915
+>>>>       # but for select to work, need to select ACPI_VIDEO's dependencies, ick
+>>>>       select BACKLIGHT_CLASS_DEVICE if ACPI
+>>>>       select INPUT if ACPI
+>>>> +    select X86_PLATFORM_DEVICES if ACPI
+>>>> +    select ACPI_WMI if ACPI
+>>>>       select ACPI_VIDEO if ACPI
+>>>>       select ACPI_BUTTON if ACPI
+>>>>       select SYNC_FILE
+>>>> diff --git a/include/acpi/video.h b/include/acpi/video.h
+>>>> index 0625806d3bbd..91578e77ac4e 100644
+>>>> --- a/include/acpi/video.h
+>>>> +++ b/include/acpi/video.h
+>>>> @@ -48,6 +48,7 @@ enum acpi_backlight_type {
+>>>>       acpi_backlight_video,
+>>>>       acpi_backlight_vendor,
+>>>>       acpi_backlight_native,
+>>>> +    acpi_backlight_nvidia_wmi_ec,
+>>>>   };
+>>>>     #if IS_ENABLED(CONFIG_ACPI_VIDEO)
+>>>
+>>
 
