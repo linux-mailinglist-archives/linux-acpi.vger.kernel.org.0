@@ -2,93 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBDC55765D7
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 19:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB475765C2
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 19:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232754AbiGORR1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jul 2022 13:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54036 "EHLO
+        id S235653AbiGORVB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jul 2022 13:21:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbiGORR0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 13:17:26 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 227C945980;
-        Fri, 15 Jul 2022 10:17:25 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id j22so10119046ejs.2;
-        Fri, 15 Jul 2022 10:17:25 -0700 (PDT)
+        with ESMTP id S235652AbiGORVB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 13:21:01 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D32D79682;
+        Fri, 15 Jul 2022 10:21:00 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id y141so5181216pfb.7;
+        Fri, 15 Jul 2022 10:21:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=s2m65ed+VKU46wmwzODUfX9pQpnIOrJsSOXJsW+RL10=;
-        b=l1dAKUUNH4z2PgburywrqoWlN4/1D2KO9fjGmRU/AzfzM+TZ37w05bSUN3k57gPspR
-         O2aQUy0qwEmJiehFBpqQDNf5fDR0RITWMoSNoY9Rzj2uIfqt5243k3bIAYHZ96q/QbT1
-         kOiCN/q/4n8dbGCQQlxXdlj9xfP5ba/CFNr03tTeVLAc4qQibW8EXPe+aAYSJ5ZRR6gC
-         EcfJ9MnQ3Q7y/up8ohgUId6dheBfbvouEyHIhUzvnzK4r76ns5eLlQ1cKC+ujuYDzyLz
-         BfdQKmbRvr1Dt6+s+VAMMdG0uYQc/axGtfxjRoCi/W7qOYhJ2I48PkcgphSnUdNZwwxy
-         skxg==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=v35aC/SET8Nt1lF58i2LVSGI7TVYKhXpN56HeHPhY4A=;
+        b=QYRuWFCmTvZa/x5P+uESITLhb+SAnK3Ep6RjijQpXs9D9HQ6zQtjDb73w8plJ7rrTN
+         jl9TfKRIr00Y3U4c2O7IK+l52IfmISjdi5DVoOjQuaZRup6uS7Zr3K0ncXMTg8Qth2S+
+         YjK81IU2OOpN0VPXjCGK9FYDqDEur07qD4W2lFxHiX7RFLZstkKrPM9XjqL7l2cJ6kur
+         SeL7QRXbm8BwPLNS/cwAAkRIow9e+DD8dHprPzQ/rc36raoPBVQv/Ar1FXytFjBJP3os
+         gqEOZlIgjrszm0i74uR/LUDHByRmKG4im7M5Tqfx5rz+s8jfFMTlNp4BawIxEr2QvlQF
+         1jUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=s2m65ed+VKU46wmwzODUfX9pQpnIOrJsSOXJsW+RL10=;
-        b=nFDmZ8jwfm5m2BHscOaoQdPTtrLHZIHdA80FlVeeOtaDOXFHzCA658ocByIKGWXIID
-         lUkrieu0M7xVjlig1jRmgn1Wi+nDm5j7geR88vRpLRRAueww3rfK2FxjQbSZQT3Cv3Lr
-         9jgNqQ+GpjFJffaN19gEkM6iOfJVKeOD7/4VVZeE6YN8rDdJySc+m1/8Y16hkbd9rPkN
-         YcXN5wisopGWEaL9IslUit8tvChTaR7jgAeiBOK+eklOXy1QTqMR9xj8GXONnk+lzY4x
-         NMBwdnPdObalejUol74x5Wb2Tv8R2iLbbFBr03fJ/8CRlcW9KmP6vJBMXs6zUwHoCxN+
-         DVZA==
-X-Gm-Message-State: AJIora/iozb02lKwGfzKfctzyl3a8ilL537vxY7tm1RF5Psff9BT+EI2
-        Cvc7Lvrn6WfAgia+UFmjh0c=
-X-Google-Smtp-Source: AGRyM1sAWG7bL6CZyLOwnctXoLSDpqKUPYhVVJyLTDZ+mgM4ARRC7PcjVMARHOHBRrF5407oHABQXg==
-X-Received: by 2002:a17:907:60c7:b0:72e:d01f:b884 with SMTP id hv7-20020a17090760c700b0072ed01fb884mr11047319ejc.550.1657905443553;
-        Fri, 15 Jul 2022 10:17:23 -0700 (PDT)
-Received: from skbuf ([188.25.231.115])
-        by smtp.gmail.com with ESMTPSA id p13-20020a05640210cd00b00435a62d35b5sm3153113edu.45.2022.07.15.10.17.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Jul 2022 10:17:22 -0700 (PDT)
-Date:   Fri, 15 Jul 2022 20:17:19 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Marek =?utf-8?B?PT9pc28tODg1OS0xP1E/QmVoPUZBbj89?= 
-        <kabel@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>
-Subject: Re: [PATCH net-next 0/6] net: dsa: always use phylink
-Message-ID: <20220715171719.niqcrklpk4ittfvl@skbuf>
-References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=v35aC/SET8Nt1lF58i2LVSGI7TVYKhXpN56HeHPhY4A=;
+        b=LP2izyH7hW0MLFzJzz0Ef5EJ4OgRAvvcH93cR/cO4FoSL8qG1i6CW/mr/G5BLErdDQ
+         VbF8UOGP0F4wT19qSr+jr4aipnj2BHp1Yg8GJzD6qPAK2HmdWgXftaJAQhDBMZDAPPrT
+         9GcZh8RXn3bNM47Mwf5suWbzn6CU4etzvUPQw3TVNI+9nDi/a+UA33Lb+LNAAM9m2o3S
+         NY760hBsoO3SQ612IJawTzDHkkjryq8NufXYibGCg4qrqgyTnYxQwld/mebt5W5vBwEU
+         HWwl+ccgTJsJi0IvXK16yJbXXHXQ/Wxv0GgTw0feD9MrFdMuGvMzqt2OZ9vVWqlLAn2S
+         zN+A==
+X-Gm-Message-State: AJIora9W2A+BJbF9s98oZEDVMwzbaWV4+xrdjsmf2Y0tzbCnXS6FZMWM
+        cxtHVojxsUbMoKHdt72zLdo=
+X-Google-Smtp-Source: AGRyM1vINHbIiII2lUdhE4U0lB3RwsmwOrfFF+r+w8TiBpauAFR5zNUGcFsSpEsGUrmUqgFtL4r48A==
+X-Received: by 2002:a05:6a00:993:b0:52a:dd93:f02d with SMTP id u19-20020a056a00099300b0052add93f02dmr15211567pfg.12.1657905659970;
+        Fri, 15 Jul 2022 10:20:59 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id ot8-20020a17090b3b4800b001ef89019352sm13427194pjb.3.2022.07.15.10.20.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Jul 2022 10:20:58 -0700 (PDT)
+Message-ID: <a5b55fb3-3326-eb3c-99e6-3fd6b7e4c2fe@gmail.com>
+Date:   Fri, 15 Jul 2022 10:20:55 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [net-next: PATCH v2 1/8] net: phy: fixed_phy: switch to fwnode_
+ API
+Content-Language: en-US
+To:     Marcin Wojtas <mw@semihalf.com>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, netdev@vger.kernel.org
+Cc:     rafael@kernel.org, andriy.shevchenko@linux.intel.com,
+        sean.wang@mediatek.com, Landen.Chao@mediatek.com,
+        linus.walleij@linaro.org, andrew@lunn.ch, vivien.didelot@gmail.com,
+        olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+        hkallweit1@gmail.com, gjb@semihalf.com, jaz@semihalf.com,
+        tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com,
+        upstream@semihalf.com
+References: <20220715085012.2630214-1-mw@semihalf.com>
+ <20220715085012.2630214-2-mw@semihalf.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20220715085012.2630214-2-mw@semihalf.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -97,23 +82,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Russell,
-
-On Fri, Jul 15, 2022 at 05:00:59PM +0100, Russell King (Oracle) wrote:
-> Hi,
+On 7/15/22 01:50, Marcin Wojtas wrote:
+> This patch allows to use fixed_phy driver and its helper
+> functions without Device Tree dependency, by swtiching from
+> of_ to fwnode_ API.
 > 
-> This is a re-hash of the previous RFC series, this time using the
-> suggestion from Vladimir to create a swnode based fixed-link
-> specifier.
+> Signed-off-by: Marcin Wojtas <mw@semihalf.com>
+> ---
+>  include/linux/phy_fixed.h   |  4 +-
+>  drivers/net/mdio/of_mdio.c  |  2 +-
+>  drivers/net/phy/fixed_phy.c | 39 +++++++-------------
+>  3 files changed, 17 insertions(+), 28 deletions(-)
 > 
-> Most of the changes are to DSA and phylink code from the previous
-> series. I've tested on my Clearfog (which has just one Marvell DSA
-> switch) and it works there - also tested without the fixed-link
-> specified in DT.
+> diff --git a/include/linux/phy_fixed.h b/include/linux/phy_fixed.h
+> index 52bc8e487ef7..449a927231ec 100644
+> --- a/include/linux/phy_fixed.h
+> +++ b/include/linux/phy_fixed.h
+> @@ -19,7 +19,7 @@ extern int fixed_phy_add(unsigned int irq, int phy_id,
+>  			 struct fixed_phy_status *status);
+>  extern struct phy_device *fixed_phy_register(unsigned int irq,
+>  					     struct fixed_phy_status *status,
+> -					     struct device_node *np);
+> +					     struct fwnode_handle *fwnode);
 
-I had some comments I wanted to leave on the previous RFC patch set
-(which in turn is essentially identical to this one, hence they still
-apply), but I held off because I thought you were waiting for some
-feedback from Andrew. Has something changed?
+I think this ought to require a forward declaration of struct fwnode_handle and a removal of the forward declaration of device_node.
 
-I'm going to leave my comments anyway now.
+With that fixes:
+
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian
