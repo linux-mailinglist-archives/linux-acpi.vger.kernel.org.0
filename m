@@ -2,54 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60E9057680A
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 22:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07410576828
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 22:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbiGOURX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jul 2022 16:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41400 "EHLO
+        id S229597AbiGOUdy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jul 2022 16:33:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230379AbiGOURW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 16:17:22 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258AA5018C;
-        Fri, 15 Jul 2022 13:17:21 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id t3so7725902edd.0;
-        Fri, 15 Jul 2022 13:17:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=kUgUodRkFKUUOwUquDcWzYd3uzryMer8NNF5OFV/n3U=;
-        b=Ea7DnxFB8YW7x85iotpMK+8GfKngvKz1AKd+YQL5lC/XhwtJw1GtCZtx9xMuj9P94v
-         FmOQRLwMV8EilKg8d1ysdEVfV2oK3MhX5NW58snn/aSC8gYnHxfmIj0BiYIzRtA78709
-         9RDrri8Gf4l3MLaRp1P5w0GiuB/67EixbDvUwBgZp9j6qCfs5j7q8pFbfiKyEqJt9fDU
-         Utj6jP+4u9OTOnT19df2FLoVo2an6o9agEPdejrPnMaspOGKbuFXxmIDFvL+ZAVg3oi2
-         pkavLyuX/t7U5CPvlzyU3E0f4pGl8E++BwgL+eU0bv5K3d/H3VF0IxbhMybLAuCyxwok
-         XJLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=kUgUodRkFKUUOwUquDcWzYd3uzryMer8NNF5OFV/n3U=;
-        b=aRa3oiJgihELyDP85fZ9O4wBKC+l1pOZ7XjD0n0SfEz2t4x8zBkTEeVTWRz0Z/Wver
-         zx2pzjq1CM00FsCUtuQ1yXGn2bmjESUL/eq/Tvhleh90YzlzcqsAYhXWJlF7PqUuI9Mo
-         qD62MZwY2kU/MxP3oCCMTX0lfrHDM8Ifll3/P9GZaPu6pAqRw6loq5GpZe8CELO28H62
-         n9WHzWPRo/d5zfoRfZ28n5+78Zz7ko7E94WiBHUAKYl65spxHCPchVKoe2qBIirVexbY
-         hWf8mp7LiJ0BP9C+lNibQJW/2tFW+7lXT48UPsCB8qqhgKVN5GfRxPHXrlHPzGH9WxCU
-         wnoA==
-X-Gm-Message-State: AJIora8n6DKGv/GeJI1mqLUImipWXdXdNmT37AmpS/mUYKE5KLw3gfig
-        oR7lVhJKblY5et1lHbxz5JMreM7rkiKhTA==
-X-Google-Smtp-Source: AGRyM1t1xV9P/w3xfqZD1QiQGwgq/xLXDMQuFjnnZzEH6CaG5uGAy6MlAs5/6lNobUF3nMAnDUSmDA==
-X-Received: by 2002:a05:6402:278c:b0:43a:91cb:c43a with SMTP id b12-20020a056402278c00b0043a91cbc43amr21393953ede.188.1657916239591;
-        Fri, 15 Jul 2022 13:17:19 -0700 (PDT)
-Received: from skbuf ([188.25.231.115])
-        by smtp.gmail.com with ESMTPSA id o7-20020aa7c507000000b0043ab81e4230sm3448457edq.50.2022.07.15.13.17.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Jul 2022 13:17:18 -0700 (PDT)
-Date:   Fri, 15 Jul 2022 23:17:15 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229586AbiGOUdy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 16:33:54 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB9E13DE8;
+        Fri, 15 Jul 2022 13:33:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657917233; x=1689453233;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XzNWkK32OdUPfify8t3CgVvtAtYBTKOWpWWoVHFF5eE=;
+  b=JQuQJZizkP0iJDcKb5nrp55++1ttE6Uudc0CUKosgbDFsJ9QoqEAaOFE
+   TS/nQTap4SHli4zLv/Ix+HYIDGTQjN/u0xwliR1KbPLcwPdbf4iTmVG/z
+   HjGQqAkXONP47IeA0O9yREliepHVBYDXP3YrmSD/CSwNXbRZaaqVY91el
+   peUZ/ZEu3nZ6BYC0L5wTHxr5BIH6Whehf8hEyKUAbD2jttULqeUHQ1uat
+   hnPh6WHsv4hrII6MPHn0LebbYo4ROJOf/BnYKlYwl6BJlkdXcPa7UzhO6
+   7kkH0shLm568RvD2zPAIumfsofJ6HTX8Yrq07q3rFDKHlB/8fzakIaaOt
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10409"; a="265683971"
+X-IronPort-AV: E=Sophos;i="5.92,274,1650956400"; 
+   d="scan'208";a="265683971"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2022 13:33:52 -0700
+X-IronPort-AV: E=Sophos;i="5.92,274,1650956400"; 
+   d="scan'208";a="546785486"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2022 13:33:45 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oCS0L-001JGB-0F;
+        Fri, 15 Jul 2022 23:33:41 +0300
+Date:   Fri, 15 Jul 2022 23:33:40 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Vladimir Oltean <olteanv@gmail.com>
 Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
         Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
@@ -79,36 +72,51 @@ Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
         UNGLinuxDriver@microchip.com,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Woojung Huh <woojung.huh@microchip.com>,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
+        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
 Subject: Re: [PATCH net-next 2/6] software node: allow named software node to
  be created
-Message-ID: <20220715201715.foea4rifegmnti46@skbuf>
+Message-ID: <YtHPJNpcN4vNfgT6@smile.fi.intel.com>
 References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
  <E1oCNky-006e3g-KA@rmk-PC.armlinux.org.uk>
  <YtHGwz4v7VWKhIXG@smile.fi.intel.com>
+ <20220715201715.foea4rifegmnti46@skbuf>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YtHGwz4v7VWKhIXG@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220715201715.foea4rifegmnti46@skbuf>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 15, 2022 at 10:57:55PM +0300, Andy Shevchenko wrote:
-> On Fri, Jul 15, 2022 at 05:01:32PM +0100, Russell King wrote:
-> > From: Vladimir Oltean <vladimir.oltean@nxp.com>
+On Fri, Jul 15, 2022 at 11:17:15PM +0300, Vladimir Oltean wrote:
+> On Fri, Jul 15, 2022 at 10:57:55PM +0300, Andy Shevchenko wrote:
+> > On Fri, Jul 15, 2022 at 05:01:32PM +0100, Russell King wrote:
+> > > From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> > > 
+> > > Allow a named software node to be created, which is needed for software
+> > > nodes for a fixed-link specification for DSA.
 > > 
-> > Allow a named software node to be created, which is needed for software
-> > nodes for a fixed-link specification for DSA.
+> > In general I have no objection, but what's worrying me is a possibility to
+> > collide in namespace. With the current code the name is generated based on
+> > unique IDs, how can we make this one more robust?
 > 
-> In general I have no objection, but what's worrying me is a possibility to
-> collide in namespace. With the current code the name is generated based on
-> unique IDs, how can we make this one more robust?
+> Could you be more clear about the exact concern?
 
-Could you be more clear about the exact concern?
+Each software node can be created with a name. The hierarchy should be unique,
+means that there can't be two or more nodes with the same path (like on file
+system or more specifically here, Device Tree). Allowing to pass names we may
+end up with the situation when it will be a path collision. Yet, the static
+names are easier to check, because one may run `git grep ...` or coccinelle
+script to see what's in the kernel.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
