@@ -2,328 +2,281 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C8BB576117
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 14:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8495F57611E
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 14:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234853AbiGOMBx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jul 2022 08:01:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52954 "EHLO
+        id S229844AbiGOMFt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jul 2022 08:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234855AbiGOMBs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 08:01:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CDACE8AB2E
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 05:01:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657886504;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oVqiCGNB6a+1hDQPxLgnu2SagG2cJPOWVlfxzqlYu1Q=;
-        b=iCK+6uoML5nLnoMXj31dCwpbiu0cuoc74LFKAC6+Nlfnqu6GLbGwYBi2KxIBjb63rhYbla
-        M/mqXNrT2SFehY83xPn7jTav1MzuCEJ31b2dxB7GeCP+UpiVaebbDwmbcDDsUpvECbpxjj
-        pRgQZODy+m0lXrYopkrdrArv6NmeMtU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-426-zGCMG5m2M-q6MxuPQZ2xhA-1; Fri, 15 Jul 2022 08:01:43 -0400
-X-MC-Unique: zGCMG5m2M-q6MxuPQZ2xhA-1
-Received: by mail-ej1-f72.google.com with SMTP id hb41-20020a170907162900b0072f044ca263so287493ejc.15
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 05:01:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=oVqiCGNB6a+1hDQPxLgnu2SagG2cJPOWVlfxzqlYu1Q=;
-        b=TP1pA+6X/dZciOIWeKFLQYL283HSW0/YRvTOBqEHaYKp6y95Sf1QIaf/8kuaPcu0T8
-         QU4xJ6KPGLS+XEag9gJkSyO9vJsdEMF4u8rRo5UwxadW56GwFoQbHl9SuONw/NPQ1gB0
-         X8+GvldTXZ99shKOHS4G2TnyMRVPyaBw8pZc8w6x8wDDNVhdKzgAPS3gu1HJpwRBYXId
-         1CxWhE0e9hVKhwjlaQYvqxOVAwzW+4V6xK7MW4Wv4HxHvr1C/2rgWYqedTVFKvAWOoTR
-         8spBG9zRKEApOd9TUiD+VcPjuFW/6XNS3Y66M0JBx4A6BBJtIrxYQWPOKWDs2DZb8KVM
-         UXkQ==
-X-Gm-Message-State: AJIora/CZrl9R7Q2sGDle+36eYCgevhe14CtwO3ItoX8f+pxMDwUSzCM
-        755mkbGmCaHHsDwLVXv7VpuoHR8pEkLJUULXjsMwcIV48/EmYQGkqtT3MdbJpBuAz6wsk2HDpND
-        yTSxmapPBCJ8P23t9MI2gMA==
-X-Received: by 2002:a05:6402:1011:b0:43a:76bf:6c40 with SMTP id c17-20020a056402101100b0043a76bf6c40mr18706519edu.352.1657886502354;
-        Fri, 15 Jul 2022 05:01:42 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1s4ZXT/YV1dR7jU5drrgi+u+qGxZJjoBjsMNrXR/NiwsA9lFfG5d91HH4Ib0JA6GRvbpcAhIw==
-X-Received: by 2002:a05:6402:1011:b0:43a:76bf:6c40 with SMTP id c17-20020a056402101100b0043a76bf6c40mr18706479edu.352.1657886502117;
-        Fri, 15 Jul 2022 05:01:42 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id 2-20020a170906218200b0072b873f19a0sm1933827eju.129.2022.07.15.05.01.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Jul 2022 05:01:41 -0700 (PDT)
-Message-ID: <235a6965-b6df-022f-82ed-b287af81f959@redhat.com>
-Date:   Fri, 15 Jul 2022 14:01:40 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v2 20/29] platform/x86: acer-wmi: Move backlight DMI
- quirks to acpi/video_detect.c
-Content-Language: en-US
-To:     Daniel Dadap <ddadap@nvidia.com>, Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Xinhui <Xinhui.Pan@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+        with ESMTP id S229551AbiGOMFs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 08:05:48 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9E1804A7;
+        Fri, 15 Jul 2022 05:05:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657886747; x=1689422747;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=V3vkPEC+zSZ3L2HSbO6cmV7tLXm2uvZR18LlJDZDves=;
+  b=BUFflnBBrJsVms3ut3CUDlz0X3HOkz9CHG4+YED3GILlHNPXtCiUm8Kd
+   X1kMBiyap9uzBCerZeeIc/eHgyXZUmiydc/tYYRhMPyI/EzrEsJsywUZm
+   ZZCCLvS9bfx8mffbUtdos+V4ZtIawpp2oM9MN/f7E/JrJcPc1yD+0fQTi
+   d7/COssrfsav0151CM9mzExUYBlDzDvMNVAGQLcvMgK7Z/ywDgoVBH2/b
+   NJbESqKWc1zuWaI+HPqK3OT6qDfsYwHmCYjK4ELII/+396D/iFNmgVtDi
+   9c1Fhz8eGC0I+HLgwzKq3OMllkGCeE26dC4bh4JqSLLGYbcd0xjYajm5S
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10408"; a="283338228"
+X-IronPort-AV: E=Sophos;i="5.92,273,1650956400"; 
+   d="scan'208";a="283338228"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2022 05:05:47 -0700
+X-IronPort-AV: E=Sophos;i="5.92,273,1650956400"; 
+   d="scan'208";a="600475182"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2022 05:05:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oCK4j-001IpI-1x;
+        Fri, 15 Jul 2022 15:05:41 +0300
+Date:   Fri, 15 Jul 2022 15:05:41 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Frank Rowand <frowand.list@gmail.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-References: <20220712193910.439171-1-hdegoede@redhat.com>
- <20220712193910.439171-21-hdegoede@redhat.com>
- <2c4fafb0-e47f-d640-0fc9-4530a8d462e0@nvidia.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <2c4fafb0-e47f-d640-0fc9-4530a8d462e0@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 0/4] add support for bias pull-disable
+Message-ID: <YtFYFbP+xqAUUHZa@smile.fi.intel.com>
+References: <20220713131421.1527179-1-nuno.sa@analog.com>
+ <YtAvHMmGay/3HACZ@smile.fi.intel.com>
+ <e0638b02bdcd0ee452846b86ce83458173912ef1.camel@gmail.com>
+ <YtBnIxh6rDJMwpEm@smile.fi.intel.com>
+ <5d9f9272334177e3ea864467f50095a8709bc0d2.camel@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <5d9f9272334177e3ea864467f50095a8709bc0d2.camel@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 7/12/22 22:24, Daniel Dadap wrote:
-> I'll ask around to see if there's some DMI property we can match in order to detect whether a system is expected to use the EC backlight driver: if so, maybe we can avoid the WMI interactions in patch 16/29 of this series. Although I suppose even if there were a DMI property, we'd still need to call the WMI-wrapped ACPI method to check whether the system is currently configured to drive the backlight through the EC, unless the system somehow exports a different DMI table depending on the current backlight control configuration, which I imagine to be unlikely.
-
-IMHO the duplication is fine, it is also important that
-the video_detect.c code and the actual backlight driver use
-the same detection mechanism where possible.
-Otherwise acpi_video_get_backlight_type() may return
-acpi_backlight_nvidia_wmi_ec while the EC backlight driver
-refuses to load...
-
-Regards,
-
-Hans
-
-
-
-
-
+On Fri, Jul 15, 2022 at 12:20:56PM +0200, Nuno S� wrote:
+> On Thu, 2022-07-14 at 21:57 +0300, Andy Shevchenko wrote:
+> > On Thu, Jul 14, 2022 at 05:43:41PM +0200, Nuno S� wrote:
+> > > On Thu, 2022-07-14 at 17:58 +0300, Andy Shevchenko wrote:
+> > > > On Wed, Jul 13, 2022 at 03:14:17PM +0200, Nuno S� wrote:
+> > > > > The gpio core looks at 'FLAG_BIAS_DISABLE' in preparation of
+> > > > > calling the
+> > > > > gpiochip 'set_config()' hook. However, AFAICT, there's no way
+> > > > > that
+> > > > > this
+> > > > > flag is set because there's no support for it in firwmare code.
+> > > > > Moreover,
+> > > > > in 'gpiod_configure_flags()', only pull-ups and pull-downs are
+> > > > > being
+> > > > > handled.
+> > > > > 
+> > > > > On top of this, there are some users that are looking at
+> > > > > 'PIN_CONFIG_BIAS_DISABLE' in the 'set_config()' hook. So,
+> > > > > unless
+> > > > > I'm
+> > > > > missing something, it looks like this was never working for
+> > > > > these
+> > > > > chips.
+> > > > > 
+> > > > > Note that the ACPI case is only compiled tested. At first
+> > > > > glance,
+> > > > > it seems
+> > > > > the current patch is enough but i'm not really sure...
+> > > > 
+> > > > So, I looked closer to the issue you are trying to describe here.
+> > > > 
+> > > > As far as I understand we have 4 state of BIAS in the hardware:
+> > > > 1/ AS IS (defined by firnware)
+> > > > 2/ Disabled (neither PU, not PD)
+> > > > 3/ PU
+> > > > 4/ PD
+> > > > 
+> > > > The case when the default of bias is not disabled (for example
+> > > > specific, and I
+> > > > think very special, hardware may reset it to PD or PU), it's a
+> > > > hardware driver
+> > > > responsibility to inform the framework about the real state of
+> > > > the
+> > > > lines and
+> > > > synchronize it.
+> > > > 
+> > > > Another case is when the firmware sets the line in non-disabled
+> > > > state
+> > > > and
+> > > > by some reason you need to disable it. The question is, why?
+> > > 
+> > > Not getting this point... 
+> > 
+> > I understand that in your case "firmware" is what DTB provides.
+> > So taking into account that the default of hardware is PU, it needs
+> > a mechanism to override that, correct?
+> > 
 > 
-> This change looks fine to me, although I suppose somebody who maintains the acer-wmi driver should comment. The bugzilla links are a nice touch.
+> Exactly...
 > 
-> On 7/12/22 14:39, Hans de Goede wrote:
->> Move the backlight DMI quirks to acpi/video_detect.c, so that
->> the driver no longer needs to call acpi_video_set_dmi_backlight_type().
->>
->> acpi_video_set_dmi_backlight_type() is troublesome because it may end up
->> getting called after other backlight drivers have already called
->> acpi_video_get_backlight_type() resulting in the other drivers
->> already being registered even though they should not.
->>
->> Note that even though the DMI quirk table name was video_vendor_dmi_table,
->> 5/6 quirks were actually quirks to use the GPU native backlight.
->>
->> These 5 quirks also had a callback in their dmi_system_id entry which
->> disabled the acer-wmi vendor driver; and any DMI match resulted in:
->>
->>     acpi_video_set_dmi_backlight_type(acpi_backlight_vendor);
->>
->> which disabled the acpi_video driver, so only the native driver was left.
->> The new entries for these 5/6 devices correctly marks these as needing
->> the native backlight driver.
->>
->> Also note that other changes in this series change the native backlight
->> drivers to no longer unconditionally register their backlight. Instead
->> these drivers now do this check:
->>
->>     if (acpi_video_get_backlight_type(false) != acpi_backlight_native)
->>         return 0; /* bail */
->>
->> which without this patch would have broken these 5/6 "special" quirks.
->>
->> Since I had to look at all the commits adding the quirks anyways, to make
->> sure that I understood the code correctly, I've also added links to
->> the various original bugzillas for these quirks to the new entries.
->>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>   drivers/acpi/video_detect.c     | 53 ++++++++++++++++++++++++++
->>   drivers/platform/x86/acer-wmi.c | 66 ---------------------------------
->>   2 files changed, 53 insertions(+), 66 deletions(-)
->>
->> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
->> index a514adaec14d..cd51cb0d7821 100644
->> --- a/drivers/acpi/video_detect.c
->> +++ b/drivers/acpi/video_detect.c
->> @@ -147,6 +147,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->>           DMI_MATCH(DMI_BOARD_NAME, "X360"),
->>           },
->>       },
->> +    {
->> +     /* https://bugzilla.redhat.com/show_bug.cgi?id=1128309 */
->> +     .callback = video_detect_force_vendor,
->> +     /* Acer KAV80 */
->> +     .matches = {
->> +        DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
->> +        DMI_MATCH(DMI_PRODUCT_NAME, "KAV80"),
->> +        },
->> +    },
->>       {
->>       .callback = video_detect_force_vendor,
->>       /* Asus UL30VT */
->> @@ -427,6 +436,41 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->>           DMI_MATCH(DMI_BOARD_NAME, "JV50"),
->>           },
->>       },
->> +    {
->> +     /* https://bugzilla.redhat.com/show_bug.cgi?id=1012674 */
->> +     .callback = video_detect_force_native,
->> +     /* Acer Aspire 5741 */
->> +     .matches = {
->> +        DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> +        DMI_MATCH(DMI_PRODUCT_NAME, "Aspire 5741"),
->> +        },
->> +    },
->> +    {
->> +     /* https://bugzilla.kernel.org/show_bug.cgi?id=42993 */
->> +     .callback = video_detect_force_native,
->> +     /* Acer Aspire 5750 */
->> +     .matches = {
->> +        DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> +        DMI_MATCH(DMI_PRODUCT_NAME, "Aspire 5750"),
->> +        },
->> +    },
->> +    {
->> +     /* https://bugzilla.kernel.org/show_bug.cgi?id=42833 */
->> +     .callback = video_detect_force_native,
->> +     /* Acer Extensa 5235 */
->> +     .matches = {
->> +        DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> +        DMI_MATCH(DMI_PRODUCT_NAME, "Extensa 5235"),
->> +        },
->> +    },
->> +    {
->> +     .callback = video_detect_force_native,
->> +     /* Acer TravelMate 4750 */
->> +     .matches = {
->> +        DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> +        DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate 4750"),
->> +        },
->> +    },
->>       {
->>        /* https://bugzilla.kernel.org/show_bug.cgi?id=207835 */
->>        .callback = video_detect_force_native,
->> @@ -437,6 +481,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->>           DMI_MATCH(DMI_BOARD_NAME, "BA51_MV"),
->>           },
->>       },
->> +    {
->> +     /* https://bugzilla.kernel.org/show_bug.cgi?id=36322 */
->> +     .callback = video_detect_force_native,
->> +     /* Acer TravelMate 5760 */
->> +     .matches = {
->> +        DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> +        DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate 5760"),
->> +        },
->> +    },
->>       {
->>       .callback = video_detect_force_native,
->>       /* ASUSTeK COMPUTER INC. GA401 */
->> diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
->> index 9c6943e401a6..c08eeb1e0e05 100644
->> --- a/drivers/platform/x86/acer-wmi.c
->> +++ b/drivers/platform/x86/acer-wmi.c
->> @@ -643,69 +643,6 @@ static const struct dmi_system_id non_acer_quirks[] __initconst = {
->>       {}
->>   };
->>   -static int __init
->> -video_set_backlight_video_vendor(const struct dmi_system_id *d)
->> -{
->> -    interface->capability &= ~ACER_CAP_BRIGHTNESS;
->> -    pr_info("Brightness must be controlled by generic video driver\n");
->> -    return 0;
->> -}
->> -
->> -static const struct dmi_system_id video_vendor_dmi_table[] __initconst = {
->> -    {
->> -        .callback = video_set_backlight_video_vendor,
->> -        .ident = "Acer TravelMate 4750",
->> -        .matches = {
->> -            DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> -            DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate 4750"),
->> -        },
->> -    },
->> -    {
->> -        .callback = video_set_backlight_video_vendor,
->> -        .ident = "Acer Extensa 5235",
->> -        .matches = {
->> -            DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> -            DMI_MATCH(DMI_PRODUCT_NAME, "Extensa 5235"),
->> -        },
->> -    },
->> -    {
->> -        .callback = video_set_backlight_video_vendor,
->> -        .ident = "Acer TravelMate 5760",
->> -        .matches = {
->> -            DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> -            DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate 5760"),
->> -        },
->> -    },
->> -    {
->> -        .callback = video_set_backlight_video_vendor,
->> -        .ident = "Acer Aspire 5750",
->> -        .matches = {
->> -            DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> -            DMI_MATCH(DMI_PRODUCT_NAME, "Aspire 5750"),
->> -        },
->> -    },
->> -    {
->> -        .callback = video_set_backlight_video_vendor,
->> -        .ident = "Acer Aspire 5741",
->> -        .matches = {
->> -            DMI_MATCH(DMI_BOARD_VENDOR, "Acer"),
->> -            DMI_MATCH(DMI_PRODUCT_NAME, "Aspire 5741"),
->> -        },
->> -    },
->> -    {
->> -        /*
->> -         * Note no video_set_backlight_video_vendor, we must use the
->> -         * acer interface, as there is no native backlight interface.
->> -         */
->> -        .ident = "Acer KAV80",
->> -        .matches = {
->> -            DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
->> -            DMI_MATCH(DMI_PRODUCT_NAME, "KAV80"),
->> -        },
->> -    },
->> -    {}
->> -};
->> -
->>   /* Find which quirks are needed for a particular vendor/ model pair */
->>   static void __init find_quirks(void)
->>   {
->> @@ -2482,9 +2419,6 @@ static int __init acer_wmi_init(void)
->>         set_quirks();
->>   -    if (dmi_check_system(video_vendor_dmi_table))
->> -        acpi_video_set_dmi_backlight_type(acpi_backlight_vendor);
->> -
->>       if (acpi_video_get_backlight_type() != acpi_backlight_vendor)
->>           interface->capability &= ~ACER_CAP_BRIGHTNESS;
->>   
+> > > > > As a side note, this came to my attention during this patchset
+> > > > > [1]
+> > > > > (and, ofr OF,� was tested with it).
+> > > > > 
+> > > > > [1]:
+> > > > > https://lore.kernel.org/linux-input/20220708093448.42617-5-nuno.sa@analog.com/
+> > > > 
+> > > > Since this provides a GPIO chip, correct?, it's responsibility of
+> > > > the
+> > > > driver to
+> > > > synchronize it, no? Basically if you really don't trust firmware,
+> > > > you
+> > > > may
+> > > 
+> > > What do you mean by synchronize?
+> > 
+> > Full duplex sync, i.e. setting flag to PU for the pins that should
+> > stay PU:ed
+> > and disabling bias for the ones, that want it to be disabled. (PD
+> > accordingly)
+> > 
+> > > > go via all GPIO lines and switch them to the known (in software)
+> > > > state. This
+> > > > approach on the other hand is error prone, because firmware
+> > > > should
+> > > > know better
+> > > > which pin is used for which purpose, no? If you don't trust
+> > > > firwmare
+> > > > (in some
+> > > > cases), then it's a matter of buggy platform that has to be
+> > > > quirked
+> > > > out.
+> > > 
+> > > I'm not getting what you mean by "firmware should know better"? So,
+> > > basically, and let's take OF as example, you can request a GPIO in
+> > > OF
+> > > by doing something like:
+> > > 
+> > > ��������foo-gpios = <&gpio 1 GPIO_PULL_UP>;
+> > > 
+> > > In this way, when the consumer driver gets the gpio, all the flags
+> > > will
+> > > be properly set so that when we set a direction (for example) the
+> > > gpiochip's 'set_config()' will be called and the driver does what
+> > > it
+> > > needs to setup the pull-up. If we want BIAS_DISABLED on the pin,
+> > > there's no way to the same as the above. So basically, this can
+> > > ever
+> > > happen:
+> > > 
+> > > https://elixir.bootlin.com/linux/latest/source/drivers/gpio/gpiolib.c#L2227
+> > > 
+> > > (only possible from the gpiochip cdev interface)
+> > > 
+> > > So, what I'm proposing is to be possible to do from OF:
+> > > 
+> > > ��������foo-gpios = <&gpio 1 GPIO_PULL_DISABLE>;
+> > > 
+> > > And then we will get into the gpiochip's 'set_config()' to disable
+> > > the
+> > > pull-up or pull-down.
+> > > 
+> > > As I said, my device is an input keymap that can export pins as
+> > > GPIOs
+> > > (to be consumed by gpio_keys). The pins by default have pull-ups
+> > > that
+> > > can be disabled by doing a device i2c write. I'm just trying to use
+> > > the
+> > > infrastructure that already exists in gpiolib (for pull-up|down) to
+> > > accomplish this. There's no pinctrl driver controlling the pins.
+> > > The
+> > > device itself controls them and having this device as a pinctrl one
+> > > is
+> > > not really applicable.
+> > 
+> > Yes, I have got it eventually. The root cause is that after reset you
+> > have a
+> > hardware that doesn't disable bias.
+> > 
+> > Now, we have DT properties for PD and PU, correct?
+> > For each requested pin you decide either to leave the state as it is,
+> > or
+> > apply bias.
+> > 
+> > in ->probe() of your GPIO you reset hardware and for each GPIO
+> > descriptor you
+> > set PU flag.
+> > In ->request(), don;t know the name by heart, you disable BIAS based
+> > on absence
+> > of flags, it can be done without an additional properties, purely in
+> > the GPIO
+> > OF code. Do I understand this correctly?
+> > 
 > 
+> Alright, I think now you got it and we are on the same page. If I
+> understood your suggestion, users would just use GPIO_PULL_UP in dtb if
+> wanting the default behavior. I would then use the gpiochip 'request()'
+> callback to test the for pull-up flag right?
+
+Something like this, yes.
+
+> If I'm getting this right, there's a problem with it...
+> gpiod_configure_flags() is called after gpiod_request() which means
+> that the gpiod descriptor won't still have the BIAS flags set. And I
+> don't think there's a way (at least clean and easy) to get the firmware
+> lookup flags from the request callback?
+> 
+> So, honestly the only option I see to do it without changing gpioblib
+> would be to hook this change in output/input callbacks which is far
+> from being optimal...
+> 
+> So, in the end having this explicitly like this feels the best option
+> to me. Sure, I can find some workaround in my driver but that does not
+> change this...
+
+Ok, let me think about it. Meanwhile, maybe others have better ideas already?
+
+> "
+> git grep "PIN_CONFIG_BIAS_DISABLE" drivers/gpio/
+
+Hint: `git grep -lw "PIN_CONFIG_BIAS_DISABLE" -- drivers/gpio`
+
+> drivers/gpio/gpio-aspeed.c:963: else if (param ==
+> PIN_CONFIG_BIAS_DISABLE ||
+> drivers/gpio/gpio-merrifield.c:197:     if
+> ((pinconf_to_config_param(config) == PIN_CONFIG_BIAS_DISABLE) ||
+> drivers/gpio/gpio-omap.c:903:   case PIN_CONFIG_BIAS_DISABLE:
+> drivers/gpio/gpio-pca953x.c:573:        if (config ==
+> PIN_CONFIG_BIAS_DISABLE)
+> drivers/gpio/gpio-pca953x.c:592:        case PIN_CONFIG_BIAS_DISABLE:
+> "
+> 
+> AFAICT, the only way this path is possible for these drivers is through
+> gpiolib cdev which might not be what the authors of the drivers were
+> expecting...
+
+gpio-merrifield is bad example, it has a pin control.
+gpio-pca953x as I said should effectively be a pin control driver.
+
+For the two left it might be the case.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
