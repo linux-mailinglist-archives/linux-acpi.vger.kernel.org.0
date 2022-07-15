@@ -2,124 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F24E6576723
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 21:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E67D5766D4
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Jul 2022 20:39:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230206AbiGOTIe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jul 2022 15:08:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45784 "EHLO
+        id S230160AbiGOSjo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Jul 2022 14:39:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiGOTIe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 15:08:34 -0400
-X-Greylist: delayed 1802 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 15 Jul 2022 12:08:31 PDT
-Received: from smtp.umanwizard.com (smtp.umanwizard.com [54.203.248.109])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 24FC948E94
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 12:08:30 -0700 (PDT)
-X-Fes-Received-For: linux-acpi@vger.kernel.org
-X-Fes-Received-From: brennan@umanwizard.com
-Received: From [10.10.1.216] ([173.205.212.102]) By umanwizard.com ; 15 Jul 2022 18:38:23+0000
-Message-ID: <7d5bd8b6-15ba-a99c-349e-cfbd94942239@umanwizard.com>
-Date:   Fri, 15 Jul 2022 14:38:21 -0400
+        with ESMTP id S229751AbiGOSjn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 14:39:43 -0400
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B724730542;
+        Fri, 15 Jul 2022 11:39:42 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-31c86fe1dddso55341907b3.1;
+        Fri, 15 Jul 2022 11:39:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=tZSAmkhI57/m5p5+yBVvC0sIcY5dskuse/7Nb3HZPtw=;
+        b=Om8aMkpLRaE4NIQrQBAiOZzpihcR/5duwqOByVUpOvdZDSRl/oLWX4f/gnZlT0D/LJ
+         kdGTkgODXoEbuLH5RpgFhkn8g3uNDRL63wv4HQnzoSN1o5lWrs6dxaQxufCP/SLm1kl/
+         nDpOXbqDp5s+nMQHmEa607iGSuzMkNnonMSEBY/LGc+KdPYrXMmCPGGrnSMHboHeolGb
+         aer4YNWhODngkZ4JLj//34+RwxWwu2UpwX/YKnVS5Pdn/akDsSGbnwmBzlz0rY5twEuZ
+         avaO182r1ORNOxx5U4mXusfgxQnCD8h1VBooFPlXY3zS5qggZ91vUQ2eExzzrOkoSpGP
+         nWgQ==
+X-Gm-Message-State: AJIora/4DaXykl26gFiO+SK1jnzgdhTEQWnUIXe073YzW5wYAn9p+bKu
+        nqHwA96WOx5R32x1pP3toV0UtXfLp+T5D+uX6bwNF9AiOhg=
+X-Google-Smtp-Source: AGRyM1vurSdoTVuN/RnJ8mniQ8GmkHS7VnOkQOqLbNTQBB5/DOQZHY3PYObZWlJ3HyMUjpZcEoamm2Dh5kxTiDrfVjk=
+X-Received: by 2002:a81:cd6:0:b0:31d:72e3:8b81 with SMTP id
+ 205-20020a810cd6000000b0031d72e38b81mr17281862ywm.301.1657910382016; Fri, 15
+ Jul 2022 11:39:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-From:   Brennan Vincent <brennan@umanwizard.com>
-Subject: [PATCH] Expose ACPI battery "measurement accuracy" property to sysfs.
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <len@kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Fes-Encrypted: true
-X-Fes-Ehlo-Domain: [10.10.1.216]
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 15 Jul 2022 20:39:30 +0200
+Message-ID: <CAJZ5v0gDqO1fu=i9MOWuryMG7XNp+qMTTSRzNGyxY-+Jrx3wFQ@mail.gmail.com>
+Subject: [GIT PULL] ACPI fix for v5.19-rc7
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This property, expressed in thousands of a percent,
-reports how accurate the device claims its
-capacity metrics to be. It may be useful for battery
-monitoring tools.
----
- drivers/acpi/battery.c                    | 7 +++++++
- drivers/power/supply/power_supply_sysfs.c | 1 +
- include/linux/power_supply.h              | 1 +
- 3 files changed, 9 insertions(+)
+Hi Linus,
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 306513fec1e1..933f3de4dd67 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -300,6 +300,9 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 	case POWER_SUPPLY_PROP_SERIAL_NUMBER:
- 		val->strval = battery->serial_number;
- 		break;
-+	case POWER_SUPPLY_PROP_MEASUREMENT_ACCURACY:
-+		val->intval = battery->measurement_accuracy;
-+		break;
- 	default:
- 		ret = -EINVAL;
- 	}
-@@ -322,6 +325,7 @@ static enum power_supply_property charge_battery_props[] = {
- 	POWER_SUPPLY_PROP_MODEL_NAME,
- 	POWER_SUPPLY_PROP_MANUFACTURER,
- 	POWER_SUPPLY_PROP_SERIAL_NUMBER,
-+	POWER_SUPPLY_PROP_MEASUREMENT_ACCURACY,
- };
+Please pull from the tag
 
- static enum power_supply_property charge_battery_full_cap_broken_props[] = {
-@@ -336,6 +340,7 @@ static enum power_supply_property charge_battery_full_cap_broken_props[] = {
- 	POWER_SUPPLY_PROP_MODEL_NAME,
- 	POWER_SUPPLY_PROP_MANUFACTURER,
- 	POWER_SUPPLY_PROP_SERIAL_NUMBER,
-+	POWER_SUPPLY_PROP_MEASUREMENT_ACCURACY,
- };
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.19-rc7
 
- static enum power_supply_property energy_battery_props[] = {
-@@ -354,6 +359,7 @@ static enum power_supply_property energy_battery_props[] = {
- 	POWER_SUPPLY_PROP_MODEL_NAME,
- 	POWER_SUPPLY_PROP_MANUFACTURER,
- 	POWER_SUPPLY_PROP_SERIAL_NUMBER,
-+	POWER_SUPPLY_PROP_MEASUREMENT_ACCURACY,
- };
+with top-most commit fbd74d16890b9f5d08ea69b5282b123c894f8860
 
- static enum power_supply_property energy_battery_full_cap_broken_props[] = {
-@@ -368,6 +374,7 @@ static enum power_supply_property energy_battery_full_cap_broken_props[] = {
- 	POWER_SUPPLY_PROP_MODEL_NAME,
- 	POWER_SUPPLY_PROP_MANUFACTURER,
- 	POWER_SUPPLY_PROP_SERIAL_NUMBER,
-+	POWER_SUPPLY_PROP_MEASUREMENT_ACCURACY,
- };
+ ACPI: CPPC: Fix enabling CPPC on AMD systems with shared memory
 
- /* Battery Management */
-diff --git a/drivers/power/supply/power_supply_sysfs.c b/drivers/power/supply/power_supply_sysfs.c
-index 4239591e1522..844dbd61295f 100644
---- a/drivers/power/supply/power_supply_sysfs.c
-+++ b/drivers/power/supply/power_supply_sysfs.c
-@@ -220,6 +220,7 @@ static struct power_supply_attr power_supply_attrs[] = {
- 	POWER_SUPPLY_ATTR(MODEL_NAME),
- 	POWER_SUPPLY_ATTR(MANUFACTURER),
- 	POWER_SUPPLY_ATTR(SERIAL_NUMBER),
-+	POWER_SUPPLY_ATTR(MEASUREMENT_ACCURACY),
- };
+on top of commit 32346491ddf24599decca06190ebca03ff9de7f8
 
- static struct attribute *
-diff --git a/include/linux/power_supply.h b/include/linux/power_supply.h
-index cb380c1d9459..4c48ee26f1b5 100644
---- a/include/linux/power_supply.h
-+++ b/include/linux/power_supply.h
-@@ -174,6 +174,7 @@ enum power_supply_property {
- 	POWER_SUPPLY_PROP_MODEL_NAME,
- 	POWER_SUPPLY_PROP_MANUFACTURER,
- 	POWER_SUPPLY_PROP_SERIAL_NUMBER,
-+	POWER_SUPPLY_PROP_MEASUREMENT_ACCURACY,
- };
+ Linux 5.19-rc6
 
- enum power_supply_type {
---
-2.34.1
+to receive an ACPI fix for 5.19-rc7.
+
+This fixes more fallout from recent changes of the ACPI CPPC handling
+on AMD platforms (Mario Limonciello).
+
+Thanks!
+
+
+---------------
+
+Mario Limonciello (1):
+      ACPI: CPPC: Fix enabling CPPC on AMD systems with shared memory
+
+---------------
+
+ arch/x86/kernel/acpi/cppc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
