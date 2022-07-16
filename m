@@ -2,132 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B27576A83
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Jul 2022 01:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76147576C3E
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Jul 2022 08:32:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232012AbiGOXQL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Jul 2022 19:16:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43804 "EHLO
+        id S231874AbiGPGbq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 16 Jul 2022 02:31:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbiGOXQK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Jul 2022 19:16:10 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2434F90D97
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 16:16:08 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id bp17so10152826lfb.3
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Jul 2022 16:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=IvphjXNHmWQnbzb931MiSgLgcDW7fVsa67JAKlnt2zQ=;
-        b=rioWjnPOeuTYTniQE6/dH+2YSvHpAozZvGxY8riSs7TgVioB4KiqF1hKkSQ5SFhak+
-         4gj8boUlAV9DqeDKGajM5x/odFeIhb8HxmWVHrG4r35qqW9OlQ+ZPd+ByQWvYTcz6JRC
-         vHebvOHPlX9i/zQa+NDoOCMr5OrNYHK1kdcM3rlHMnn87G8dKEZavq5lxqjH12yyElVZ
-         gbAPHauE9O76FACEu0j7TAHKj9gs+OghDnkF+3Aza7sLY2XmiJ3MJw+KLhOkWF8f357m
-         Fu3fo7a4xuID4u6c6h40iVqbtN5+yJLXkdRQej0naOm1/mwT5+ZakqbrziBjifIQl0C6
-         nRIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=IvphjXNHmWQnbzb931MiSgLgcDW7fVsa67JAKlnt2zQ=;
-        b=58GJOaRk+uNE+h03Ezwv+ZIdqnVGKtMUpRgW/tqKTjrfmhSVDzUAXGSiYwPRozvT8/
-         gku5cjhPJIyDowV9NZZbpHtUkPHrobB4IarflwMXMPeYaWRk2+m0HdNirsuh3/qgBRCo
-         N6/Ma+WzodViN+6FUHMOdiXsn+ji5Xw8pemuN+adon9qj+BYJ4roQwrYRttcOdQF5Vv3
-         I8woiRbFNdhObvTmr6eFQ3dFRfuEwbSkyg6MMdKvkyIgPq2CNja7FqisogDRTwbFI3co
-         GN7w6fYYWhaHV3a9NHjkiQotS91y41lAbek50glPfqIR4Wvxpmq23TBwlQyzlCNVC3lk
-         QDXg==
-X-Gm-Message-State: AJIora9X5fEMwSrjfBRMWFIQEvS65jdU/rq1VaFH4lcVVNtI1LqzrMfu
-        cjHkOCyJUClxxBJ0+U0xHgXZnUmeSOSIdcPnJZ7yQA==
-X-Google-Smtp-Source: AGRyM1v5XkIj2H4TwKER8mooe9PSuvdVtwkFe1FfiqbIdUSmKu3shWwI/Ie1gPCXfIufrbeQ1xEQnKFi+oUYtQxEZ0E=
-X-Received: by 2002:ac2:44cf:0:b0:48a:1251:1cf5 with SMTP id
- d15-20020ac244cf000000b0048a12511cf5mr6620890lfm.680.1657926966385; Fri, 15
- Jul 2022 16:16:06 -0700 (PDT)
+        with ESMTP id S231657AbiGPGbc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Jul 2022 02:31:32 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF2F7C189;
+        Fri, 15 Jul 2022 23:31:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657953064; x=1689489064;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=f1+wvjfXxGXpf3L37oJl18eujoMaSMdPMFUctu6Zo0A=;
+  b=ND+lnoSj+7TqBX/jNkU3WRdq3d1zP7YABvouYYDwYG5q7aj38vsDBGT/
+   KxEKVJ+QThStNDAfE3OrHfRyG7W7BOX0ScWHvhvvmNlr+GSUhEbcRLTF1
+   Jf/8jLnJ72FCGDpInItw5yxDdr157MCEGd/iH/4gRJGoOoLlNR6h3fcpI
+   oIMUbwmOrsIj9ALK8j8BB1udMMSTjji4YXHY/JKPgHXq9lwvJMM8l+q1h
+   QRYJilrUF9uXuRrdjQKGtXIUYwE339Mv1z3VxAB6G8vq0NU8FPIs9iqO6
+   E7UUcJS6d+vbxALMwHEAHUy99K54hPFHlIEnM6cUlxggnIR8bURW5VseW
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10409"; a="283520331"
+X-IronPort-AV: E=Sophos;i="5.92,275,1650956400"; 
+   d="scan'208";a="283520331"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2022 23:31:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,275,1650956400"; 
+   d="scan'208";a="629360092"
+Received: from lkp-server02.sh.intel.com (HELO ff137eb26ff1) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 15 Jul 2022 23:31:00 -0700
+Received: from kbuild by ff137eb26ff1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1oCbKO-0001E0-8n;
+        Sat, 16 Jul 2022 06:31:00 +0000
+Date:   Sat, 16 Jul 2022 14:30:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 940a7197e7544d2c88df2826b84fc324dd54ba47
+Message-ID: <62d25b1e.6LLu6+/fikrj8XaM%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220715085012.2630214-1-mw@semihalf.com> <20220715085012.2630214-6-mw@semihalf.com>
- <YtHBvb/kh/Sl0cmz@smile.fi.intel.com> <YtHDHtWU5Wbgknej@smile.fi.intel.com>
-In-Reply-To: <YtHDHtWU5Wbgknej@smile.fi.intel.com>
-From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Sat, 16 Jul 2022 01:15:55 +0200
-Message-ID: <CAPv3WKcf7U_KLuxg5zgyQZru52QEAgrHq2dO7dD4JGMMCLq05w@mail.gmail.com>
-Subject: Re: [net-next: PATCH v2 5/8] device property: introduce fwnode_dev_node_match
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Grzegorz Bernacki <gjb@semihalf.com>,
-        Grzegorz Jaszczyk <jaz@semihalf.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        upstream@semihalf.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-pt., 15 lip 2022 o 21:42 Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
->
-> On Fri, Jul 15, 2022 at 10:36:29PM +0300, Andy Shevchenko wrote:
-> > On Fri, Jul 15, 2022 at 10:50:09AM +0200, Marcin Wojtas wrote:
-> > > This patch adds a new generic routine fwnode_dev_node_match
-> > > that can be used e.g. as a callback for class_find_device().
-> > > It searches for the struct device corresponding to a
-> > > struct fwnode_handle by iterating over device and
-> > > its parents.
-> >
-> > Implementation
-> > 1) misses the word 'parent';
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 940a7197e7544d2c88df2826b84fc324dd54ba47  Merge branch 'acpi-video' into bleeding-edge
 
-I'm not sure. We don't necessarily look for parent device(s). We start
-with a struct device and if it matches the fwnode, success is returned
-immediately. Only otherwise we iterate over parent devices to find a
-match.
+elapsed time: 721m
 
-> > 2) located outside of the group of fwnode APIs operating on parents.
+configs tested: 66
+configs skipped: 2
 
-I can shift it right below fwnode_get_nth_parent if you prefer.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> >
-> > I would suggest to rename to fwnode_get_next_parent_node() and place
-> > near to fwnode_get_next_parent_dev() (either before or after, where
-> > it makes more sense).
->
-> And matching function will be after that:
->
->         return fwnode_get_next_parent_node(...) !=3D NULL;
->
-> Think about it. Maybe current solution is good enough, just needs better
-> naming (fwnode_match_parent_node()? Dunno).
->
-> P.S. Actually _get maybe misleading as we won't bump reference counting,
->      rather _find?
->
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                        mvebu_v7_defconfig
+parisc                generic-32bit_defconfig
+mips                           jazz_defconfig
+arm                          simpad_defconfig
+arm                       multi_v4t_defconfig
+ia64                             allmodconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+csky                              allnoconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+sh                               allmodconfig
+i386                                defconfig
+i386                             allyesconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220715
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
 
-How about the following name:
-fwnode_find_dev_match()
-?
+clang tested configs:
+arm                       versatile_defconfig
+arm                          pcm027_defconfig
+powerpc                      acadia_defconfig
+powerpc                     mpc5200_defconfig
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220715
+hexagon              randconfig-r041-20220715
+riscv                randconfig-r042-20220715
+s390                 randconfig-r044-20220715
 
-Thanks,
-Marcin
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
