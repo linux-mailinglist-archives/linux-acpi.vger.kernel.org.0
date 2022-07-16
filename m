@@ -2,136 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DF6D576E1E
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Jul 2022 15:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D4AE57708F
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Jul 2022 20:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231217AbiGPNNx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 16 Jul 2022 09:13:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60786 "EHLO
+        id S231738AbiGPSGR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 16 Jul 2022 14:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230508AbiGPNNw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Jul 2022 09:13:52 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A510A7659;
-        Sat, 16 Jul 2022 06:13:50 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id b11so13339004eju.10;
-        Sat, 16 Jul 2022 06:13:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=vypCuEq/rCX9HvlkITtGSPUFoDxSLRPZn98T+qV3Xf4=;
-        b=WjA5VfCC/rZXpbOeSX9aHYmBGP49eby3ugoPBRHLpX5UQxvaT/LsKYkLfAIFJtNSGd
-         ca1rd41z4niKpWi5tihqGcMdIdgzf+++E86A0mPqYKnHofAEF+Jbo2LcVRyh5Qq4a7HV
-         +POutI91tGrQq1pj6ZraycCRcfSRfXZ+/h9Dg6SjBqtdgD7/09e3VSyN8KdPzF+gTmFQ
-         mwZ8nFqh2whpQExmhq+sIyGjsw8m/1lz3zX1rH89jSw7++GBy7EZBVdVesFaxfqMwf+f
-         sGWjTuslkljUN/35i8ZAkIOev5RTwINOlmLBOpKCG+YG8AVNRVkl2Hu0jGZmW/EyHMvB
-         fMIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=vypCuEq/rCX9HvlkITtGSPUFoDxSLRPZn98T+qV3Xf4=;
-        b=zDI5ZUcWCRBvaQwoMPqyOHDgdPuY7o2/ldzXFFmeU0yZp1iJpgxCTVo+uJEK/ySKuH
-         rGm6+++S3iM1IMIOtjbGyG8uJ26AqCr8tESdG4789fFXxCMydwvRnX13r3BYptOz7qy0
-         4E7Y3QIqQIlpg7pcu8Zt603BNDH45A/Wg0I5H3M0DVKNIO5lyMRAFlLUFJrgjaTTDqs7
-         qLP7AqGQ4RerX1EPpETeiHK272YQDwSrCsNCMaUT5jJppshchb/R3ScffRHDRrnxNt+G
-         2V+1ISmoKvNgbXZS3jUNSZRtdx8Xhfr8DcxD4OwSF+kjSpj9p8dlV6qQ4SksfrueJtro
-         YGSg==
-X-Gm-Message-State: AJIora/Oq5FOijKt6/jSa5ztKMb49rao9ymR1/RR1KDkbSle1JwGVt9+
-        Qt/d2pbu8J/GMiJtOOIthHI=
-X-Google-Smtp-Source: AGRyM1v6lwArwzwqDjUSKayn7lfOf6YdBDjzkR+KmWYHKQQRa+FZwUV3F3Eo1RWzpX/X4H1xYJfwPg==
-X-Received: by 2002:a17:907:6d01:b0:72f:53f:7a25 with SMTP id sa1-20020a1709076d0100b0072f053f7a25mr6177694ejc.126.1657977229200;
-        Sat, 16 Jul 2022 06:13:49 -0700 (PDT)
-Received: from skbuf ([188.25.231.115])
-        by smtp.gmail.com with ESMTPSA id jl10-20020a17090775ca00b0072ed9efc9dfsm3203279ejc.48.2022.07.16.06.13.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Jul 2022 06:13:48 -0700 (PDT)
-Date:   Sat, 16 Jul 2022 16:13:45 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>
-Subject: Re: [PATCH net-next 0/6] net: dsa: always use phylink
-Message-ID: <20220716131345.b2jas3rucsifli7g@skbuf>
-References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
- <20220715171719.niqcrklpk4ittfvl@skbuf>
- <YtHVLGR0RQ6dWuBS@shell.armlinux.org.uk>
- <20220715160359.2e9dabfe@kernel.org>
- <20220716111551.64rjruz4q4g5uzee@skbuf>
- <YtKkRLD74tqoeBuR@shell.armlinux.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtKkRLD74tqoeBuR@shell.armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230250AbiGPSGQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Jul 2022 14:06:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A69A18B25;
+        Sat, 16 Jul 2022 11:06:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7E9C611D2;
+        Sat, 16 Jul 2022 18:06:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 481EFC3411C;
+        Sat, 16 Jul 2022 18:06:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657994775;
+        bh=ErY+x+l1LxgP8vns1PTyMC67lV1YusR54eG9lc9pwbs=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=Zt0YRwy40YotigFmtARIWDqkycrii/SKugPecQBwlGXTYu8kSj+W1WuT+adMmwBek
+         eE70eoZ8MHgRj53uf1pf6rc8oXiTl6RvqOd5lpZYjlIH590c5KSirym6QhJRaGPO15
+         4K1iC30Og0Zv9KgPLUbNG0hsZjmLVDX5pxyuxgDH5znPPq+aqt/XfiZkWf0LEMYpfw
+         DFhrJazRZNk7UNLZkCaBEBy/V56hl7JrMgtjen4lCp4tKzaq54+rbL9DMdCRb56u/w
+         uNrMdG2NlnIxmOhr8lucY9UrfhCG17CZmkWyxfgjRrMlHr3IF3tph2o0aEu+7jfkB7
+         lUMtYfY1CyZ3Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 26993E4522F;
+        Sat, 16 Jul 2022 18:06:15 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fix for v5.19-rc7
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0gDqO1fu=i9MOWuryMG7XNp+qMTTSRzNGyxY-+Jrx3wFQ@mail.gmail.com>
+References: <CAJZ5v0gDqO1fu=i9MOWuryMG7XNp+qMTTSRzNGyxY-+Jrx3wFQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0gDqO1fu=i9MOWuryMG7XNp+qMTTSRzNGyxY-+Jrx3wFQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.19-rc7
+X-PR-Tracked-Commit-Id: fbd74d16890b9f5d08ea69b5282b123c894f8860
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 16c957f089d520893b0b08e06641329fbcec492d
+Message-Id: <165799477515.6229.13663817194486669317.pr-tracker-bot@kernel.org>
+Date:   Sat, 16 Jul 2022 18:06:15 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 16, 2022 at 12:43:00PM +0100, Russell King (Oracle) wrote:
-> In the first RFC series I sent on the 24 June, I explicitly asked the
-> following questions:
-(...)
-> I even stated: "Please look at the patches and make suggestions on how
-> we can proceed to clean up this quirk of DSA." and made no mention of
-> wanting something explicitly from Andrew.
-> 
-> Yet, none of those questions were answered.
-> 
-> So no, Jakub's comments are *not* misdirected at all. Go back and read
-> my June 24th RFC series yourself:
-> 
-> https://lore.kernel.org/all/YrWi5oBFn7vR15BH@shell.armlinux.org.uk/
+The pull request you sent on Fri, 15 Jul 2022 20:39:30 +0200:
 
-I don't believe I need to justify myself any further for why I didn't
-leave a comment on any certain day. I left my comments when I believed
-it was most appropriate for me to intervene (as someone who isn't really
-affected in any way by the changes, except for generally maintaining
-what's in net/dsa/, and wanting to keep a clean framework structure).
-Also, to repeat myself, blaming me for leaving comments, but doing so
-late, is not really fair. I could have not responded at all, and I
-wouldn't be having this unpleasant discussion. It begs the question
-whether you're willing to be held accountable in the same way for the
-dates on which you respond on RFC patches.
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.19-rc7
 
-> I've *tried* my best to be kind and collaborative, but I've been
-> ignored. Now I'm hacked off. This could have been avoided by responding
-> to my explicit questions sooner, rather than at the -rc6/-rc7 stage of
-> the show.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/16c957f089d520893b0b08e06641329fbcec492d
 
-I think you should continue to try your best to be kind and collaborative,
-you weren't provoked or intentionally ignored in any way, and it isn't
-doing these patches any good.
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
