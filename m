@@ -2,109 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5635577283
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Jul 2022 01:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9E75774C5
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Jul 2022 08:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230501AbiGPXod (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 16 Jul 2022 19:44:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59856 "EHLO
+        id S232017AbiGQGOv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Jul 2022 02:14:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbiGPXoc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Jul 2022 19:44:32 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C061DE83;
-        Sat, 16 Jul 2022 16:44:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 600AEB8091D;
-        Sat, 16 Jul 2022 23:44:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DB3C34114;
-        Sat, 16 Jul 2022 23:44:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658015069;
-        bh=ukLCCzWM9aySlVzwqmY7ZDlVI0di04E9F59zQrFKTqU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=monQSVxJKIdyb7u/QuchITMgVkM+e+i5mTWfqwpS8wzM+O+B4kP8+RBau1d0exlcW
-         3HarlgvtCFSw2DJv4Zq8hE+USqlnMfhcicE3ZY1/eIR96IDD8aASVEbl5ysCuWOkbZ
-         5wM0SMz0qoZcE26Sv9HUKzyBs2Kbzw+VMDNHXPtK0lEBY2LZ2mdn7TsE1jmg6khO3G
-         iHqlbonGoGaMUgv+3Z5G/Mpp1yUVtGT2ZB7/fqZmHjGrzVlUs1GU+Q3K4Odm1DP5bz
-         mQvXONzxgkhsz2X17OKXfvYy/JJpzkTYnCGt48290KUlwb0piwkJvBE38j28+cxX2k
-         6cdQjRvzJ2HcQ==
-Date:   Sat, 16 Jul 2022 16:44:26 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin =?UTF-8?B?xaBpcHJhZ2E=?= <alsi@bang-olufsen.dk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>
-Subject: Re: [PATCH net-next 0/6] net: dsa: always use phylink
-Message-ID: <20220716164426.2cb64a09@kernel.org>
-In-Reply-To: <20220716111551.64rjruz4q4g5uzee@skbuf>
-References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
-        <20220715171719.niqcrklpk4ittfvl@skbuf>
-        <YtHVLGR0RQ6dWuBS@shell.armlinux.org.uk>
-        <20220715160359.2e9dabfe@kernel.org>
-        <20220716111551.64rjruz4q4g5uzee@skbuf>
+        with ESMTP id S229980AbiGQGOv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Jul 2022 02:14:51 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A95175BB;
+        Sat, 16 Jul 2022 23:14:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658038489; x=1689574489;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=S1WgjQRPa4Uwj335+S4W8dF8LPgNSePYpZLtsiEAM9I=;
+  b=nM8/Os6wETRcSTlnOzaZZ4Od7vhHu4wExXRf8URou+qfqYTHn5rLrz1k
+   ErIhiTPJYq4ptqS8LRVYNo5Y7eJ5+OTsckSANqIsXdjYianwT2qVcmvp2
+   y1dBpFZZ6ztf6opNaAEbd1fYiGaOOzCbL1w3DuBNOtvBHvPl79xiK+91Q
+   F+4FlaCEAw/9TzEZQWrUieov/BjU4STra/37dVQs4PBrnisqzBpx/MS0s
+   WYUpPFddxKnBHVuTWb4hB5J0NEn3FRsHn7lF7ri0Xn4c+zeJbpRZwoRWT
+   XYTcwIDftQmInREjYmxORXVEXD7lOBDkwP9tukvZanrTrW77x557+Ai6I
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10410"; a="372343457"
+X-IronPort-AV: E=Sophos;i="5.92,278,1650956400"; 
+   d="scan'208";a="372343457"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2022 23:14:49 -0700
+X-IronPort-AV: E=Sophos;i="5.92,278,1650956400"; 
+   d="scan'208";a="624329999"
+Received: from agupta4-mobl3.gar.corp.intel.com ([10.215.155.220])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2022 23:14:46 -0700
+Message-ID: <61311732eeea1f45e85537e911e4bb024c0a30b7.camel@intel.com>
+Subject: Re: [PATCH] intel: thermal: PCH: Drop ACPI_FADT_LOW_POWER_S0 check
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Date:   Sun, 17 Jul 2022 14:14:42 +0800
+In-Reply-To: <12013659.O9o76ZdvQC@kreacher>
+References: <12013659.O9o76ZdvQC@kreacher>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 16 Jul 2022 14:15:51 +0300 Vladimir Oltean wrote:
-> > I'm afraid you are correct. Dave used to occasionally apply RFC patches
-> > which kept reviewers on their toes a little bit (it kept me for sure).
-> > These days patchwork automatically marks patches as RFC based on
-> > the subject, tossing them out of "Action required" queue. So they are
-> > extremely easy to ignore.
-> > 
-> > Perhaps an alternative way of posting would be to write "RFC only,
-> > please don't apply" at the end of the cover letter. Maybe folks will 
-> > at least get thru reading the cover letter then :S  
-> 
-> Again, expressing complaints to me for responding late is misdirected
-> frustration. The fact that I chose to leave my comments only when
-> Russell gave up on waiting for feedback from Andrew doesn't mean I
-> ignored his RFC patches, it just means I didn't want to add noise and
-> ask for minor changes when it wasn't clear that this is the overall
-> final direction that the series would follow. I still have preferences
-> about the way in which this patch set gets accepted, and now seems like
-> the proper moment to express them.
+On Thu, 2022-07-14 at 21:11 +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>=20
+> If ACPI_FADT_LOW_POWER_S0 is not set, this doesn't mean that low-
+> power
+> S0 idle is not usable.=C2=A0 It merely means that using S3 on the given
+> system is more beneficial from the energy saving perspective than
+> using
+> low-power S0 idle, as long as S3 is supported.
 
-Oh, sorry, I wasn't commenting on how things played out for this
-series. I was mostly reflecting on the fact that the automatic patch
-state updates in patchwork have changed how RFC postings can be used 
-on netdev, and it happened without any of us being asked our opinion.
+Agreed.
+
+>=20
+> Suspend-to-idle is still a valid suspend mode if
+> ACPI_FADT_LOW_POWER_S0
+> is not set and the pm_suspend_via_firmware() check in
+> pch_wpt_suspend()
+> is sufficient to distinguish suspend-to-idle from S3, so drop the
+> confusing ACPI_FADT_LOW_POWER_S0 check.
+
+the cooling delay in the suspend callback is to make sure PCH
+temperature won't block S0ix during s2idle. So if S0ix is not
+supported, it is meaningless to invoke the cooling delay during s2idle.
+
+so the problem is that we don't have an indicator for S0ix capability.
+And this also applies to drivers/rtc/rtc-cmos.c, where we use ACPI SCI
+for runtime RTC wakeup instead of HPET interrupt on "S0ix capable"
+platforms because the HPET timer may block S0ix.
+
+thanks,
+rui
+
+>=20
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> =C2=A0drivers/thermal/intel/intel_pch_thermal.c |=C2=A0=C2=A0=C2=A0 8 ---=
+-----
+> =C2=A01 file changed, 8 deletions(-)
+>=20
+> Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
+> +++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
+> @@ -207,14 +207,6 @@ static int pch_wpt_suspend(struct pch_th
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Do not check temperature if=
+ it is not a S0ix capable
+> platform */
+> -#ifdef CONFIG_ACPI
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!(acpi_gbl_FADT.flags & AC=
+PI_FADT_LOW_POWER_S0))
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return 0;
+> -#else
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> -#endif
+> -
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Do not check temperatu=
+re if it is not s2idle */
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (pm_suspend_via_firmwa=
+re())
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+>=20
+>=20
+>=20
+
