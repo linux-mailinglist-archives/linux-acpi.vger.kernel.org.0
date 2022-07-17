@@ -2,134 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9E75774C5
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Jul 2022 08:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B869577802
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Jul 2022 21:39:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232017AbiGQGOv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 Jul 2022 02:14:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
+        id S230242AbiGQTjQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Jul 2022 15:39:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbiGQGOv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Jul 2022 02:14:51 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A95175BB;
-        Sat, 16 Jul 2022 23:14:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658038489; x=1689574489;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=S1WgjQRPa4Uwj335+S4W8dF8LPgNSePYpZLtsiEAM9I=;
-  b=nM8/Os6wETRcSTlnOzaZZ4Od7vhHu4wExXRf8URou+qfqYTHn5rLrz1k
-   ErIhiTPJYq4ptqS8LRVYNo5Y7eJ5+OTsckSANqIsXdjYianwT2qVcmvp2
-   y1dBpFZZ6ztf6opNaAEbd1fYiGaOOzCbL1w3DuBNOtvBHvPl79xiK+91Q
-   F+4FlaCEAw/9TzEZQWrUieov/BjU4STra/37dVQs4PBrnisqzBpx/MS0s
-   WYUpPFddxKnBHVuTWb4hB5J0NEn3FRsHn7lF7ri0Xn4c+zeJbpRZwoRWT
-   XYTcwIDftQmInREjYmxORXVEXD7lOBDkwP9tukvZanrTrW77x557+Ai6I
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10410"; a="372343457"
-X-IronPort-AV: E=Sophos;i="5.92,278,1650956400"; 
-   d="scan'208";a="372343457"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2022 23:14:49 -0700
-X-IronPort-AV: E=Sophos;i="5.92,278,1650956400"; 
-   d="scan'208";a="624329999"
-Received: from agupta4-mobl3.gar.corp.intel.com ([10.215.155.220])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2022 23:14:46 -0700
-Message-ID: <61311732eeea1f45e85537e911e4bb024c0a30b7.camel@intel.com>
+        with ESMTP id S229535AbiGQTjP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Jul 2022 15:39:15 -0400
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 916D9212;
+        Sun, 17 Jul 2022 12:39:13 -0700 (PDT)
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-31e0d4ad6caso28902857b3.10;
+        Sun, 17 Jul 2022 12:39:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CPCaSY0Eo4Egu4Za9o4rdwtMcin5MxefXpC2xwA0s3Y=;
+        b=uO/chpt2QI1GS+MZXJC8lijz7GMoTjvluh7XwP2bPIuK5bKxPavj9VBm/IKyS+RwR+
+         HQWSFAz9BfHSlA5ihoaYpvK3RHOovLJYaiGxMl4SJXdWvozykZUEZn1UDXF3hT1o+QMH
+         fI60HYRSJyR2Lx8cdm9G/NLzkb1gXMKBjjgw40j+rEk/B4CoXtEHrbLhOG+NCDrk/dnh
+         bpDONWnS9Mjy+d2yT9+E2dacUmysOSg5NL7bTHZZL98Kcd4YHnkEanb+xn5MnZSMEJW9
+         f1gXZuXrhclEaOQUVyzAo6Sc1g+nBxjru3ZdPteWgp0EAiDUkggD3ZYRhdjzBZwKhltn
+         Z10A==
+X-Gm-Message-State: AJIora/4HO7azRt3gQNM6fFzQDvyU5mZxNlN0uZKhQOxFoXbOUzAhtc7
+        XcKx8Hh278naF+wkT8NUL2C06BwbglvzlD0dthuIjO39akY=
+X-Google-Smtp-Source: AGRyM1vZy5fjO2CcnECaTla6jfCQu/66ceBy+p3K6R3EJbE5IDi6E70o2+y54qpZGcmMZ9WRwkpuufkm4Nvj4hkOEuI=
+X-Received: by 2002:a81:c24e:0:b0:31e:f02:e18e with SMTP id
+ t14-20020a81c24e000000b0031e0f02e18emr7471675ywg.515.1658086752837; Sun, 17
+ Jul 2022 12:39:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <12013659.O9o76ZdvQC@kreacher> <61311732eeea1f45e85537e911e4bb024c0a30b7.camel@intel.com>
+In-Reply-To: <61311732eeea1f45e85537e911e4bb024c0a30b7.camel@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sun, 17 Jul 2022 21:39:01 +0200
+Message-ID: <CAJZ5v0j+FTX4UF-9Y0BQc2mYXQiphsnkt07CALhF7BPtSdDxgg@mail.gmail.com>
 Subject: Re: [PATCH] intel: thermal: PCH: Drop ACPI_FADT_LOW_POWER_S0 check
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Mario Limonciello <mario.limonciello@amd.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Date:   Sun, 17 Jul 2022 14:14:42 +0800
-In-Reply-To: <12013659.O9o76ZdvQC@kreacher>
-References: <12013659.O9o76ZdvQC@kreacher>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1-0ubuntu1 
-MIME-Version: 1.0
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 2022-07-14 at 21:11 +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->=20
-> If ACPI_FADT_LOW_POWER_S0 is not set, this doesn't mean that low-
-> power
-> S0 idle is not usable.=C2=A0 It merely means that using S3 on the given
-> system is more beneficial from the energy saving perspective than
-> using
-> low-power S0 idle, as long as S3 is supported.
+On Sun, Jul 17, 2022 at 8:14 AM Zhang Rui <rui.zhang@intel.com> wrote:
+>
+> On Thu, 2022-07-14 at 21:11 +0200, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > If ACPI_FADT_LOW_POWER_S0 is not set, this doesn't mean that low-
+> > power
+> > S0 idle is not usable.  It merely means that using S3 on the given
+> > system is more beneficial from the energy saving perspective than
+> > using
+> > low-power S0 idle, as long as S3 is supported.
+>
+> Agreed.
+>
+> >
+> > Suspend-to-idle is still a valid suspend mode if
+> > ACPI_FADT_LOW_POWER_S0
+> > is not set and the pm_suspend_via_firmware() check in
+> > pch_wpt_suspend()
+> > is sufficient to distinguish suspend-to-idle from S3, so drop the
+> > confusing ACPI_FADT_LOW_POWER_S0 check.
+>
+> the cooling delay in the suspend callback is to make sure PCH
+> temperature won't block S0ix during s2idle. So if S0ix is not
+> supported, it is meaningless to invoke the cooling delay during s2idle.
 
-Agreed.
+But there is no way to determine whether or not S0ix is supported.  In
+particular, ACPI_FADT_LOW_POWER_S0 is not one.
 
->=20
-> Suspend-to-idle is still a valid suspend mode if
-> ACPI_FADT_LOW_POWER_S0
-> is not set and the pm_suspend_via_firmware() check in
-> pch_wpt_suspend()
-> is sufficient to distinguish suspend-to-idle from S3, so drop the
-> confusing ACPI_FADT_LOW_POWER_S0 check.
+> so the problem is that we don't have an indicator for S0ix capability.
+> And this also applies to drivers/rtc/rtc-cmos.c, where we use ACPI SCI
+> for runtime RTC wakeup instead of HPET interrupt on "S0ix capable"
+> platforms because the HPET timer may block S0ix.
 
-the cooling delay in the suspend callback is to make sure PCH
-temperature won't block S0ix during s2idle. So if S0ix is not
-supported, it is meaningless to invoke the cooling delay during s2idle.
-
-so the problem is that we don't have an indicator for S0ix capability.
-And this also applies to drivers/rtc/rtc-cmos.c, where we use ACPI SCI
-for runtime RTC wakeup instead of HPET interrupt on "S0ix capable"
-platforms because the HPET timer may block S0ix.
-
-thanks,
-rui
-
->=20
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
-> =C2=A0drivers/thermal/intel/intel_pch_thermal.c |=C2=A0=C2=A0=C2=A0 8 ---=
------
-> =C2=A01 file changed, 8 deletions(-)
->=20
-> Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
-> +++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-> @@ -207,14 +207,6 @@ static int pch_wpt_suspend(struct pch_th
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Do not check temperature if=
- it is not a S0ix capable
-> platform */
-> -#ifdef CONFIG_ACPI
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!(acpi_gbl_FADT.flags & AC=
-PI_FADT_LOW_POWER_S0))
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0return 0;
-> -#else
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> -#endif
-> -
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Do not check temperatu=
-re if it is not s2idle */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (pm_suspend_via_firmwa=
-re())
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return 0;
->=20
->=20
->=20
-
+"S0ix capable" doesn't matter.  What matters is whether or not the
+current transition under way is into S0 or into suspend-to-idle.  In
+the latter case there is no reason to avoid doing whatever is done in
+the expectation that S0ix may be entered going forward.
