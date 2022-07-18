@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54398577FB0
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 12:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 713F8577FB4
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 12:33:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234282AbiGRKcn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jul 2022 06:32:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42318 "EHLO
+        id S234294AbiGRKdS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 06:33:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234230AbiGRKcm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 06:32:42 -0400
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFEC1D33F
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:32:41 -0700 (PDT)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-31dfe25bd49so64606747b3.2
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:32:41 -0700 (PDT)
+        with ESMTP id S234267AbiGRKdR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 06:33:17 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735181DA51
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:33:16 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id n74so20016437yba.3
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:33:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=64V5h6/X7Wjx5m1nkylh2H6thEd31QIKHGVSbZXsoNg=;
-        b=y+Bb11Nn7lbZpi48Ys1bbGVZsZpdwxRUCE6emMk5fmECkUxx56FTwNuAh5XDq3miIl
-         pY7a4VhUtbU08BIN9YWUY1ThRtAWZCBszC31Vfig9C+BKGNXS5sKs06yTIK9S5hax1im
-         zbIyc5MS9NotXbFgCNPRBpMyNIZnGYfxOycR0t1OQiDyEGXYNY9tWn8hHx69KDuU8iYN
-         5CWvXp91eyy5P4HhQ3sBdoENDVtw5oKEgFnU+LxF2HrdY8m2LvgbWodLj89VlMaREDNq
-         XK3MFOdT41xTlKuP4bEythSXGgYw0ASFGZpPAlvq51Z4C4o8UbIvgdbkqRQ+ORVDkNK5
-         Hs8w==
+        bh=nB9TysPxASoCZq2mAu9xXViPEOO/JgqPxrNGpKeDpVM=;
+        b=SBJxEmiH2w/cKdGxjgxmO0ELCL2TKEVUhjnrHf02yQcDhryh8KhJbZjCQLKQGk++Nb
+         8NRjbtRS5fTBMu89pQaD4QQbY4IVRizv3Z4O870kh6S7lm/ldRQVOx5W9p8dE8uF8+q1
+         gqg2Jd/fcZQHcRLuT+wb0O8fOnapWzaZMH5Liowteg/RcA8gHe0WV07PEXwSCJIfgWxk
+         +wdXGDMDIJl3sz5FhRUP/2eq2YXFFYNpj2G+9C20ZrxnjY+gLD7DuEhrz0BMKf+9Ere+
+         RH3XBHlqCJ8O07Lxqjw0ivBFpU9k3qjHLX2kXgQIAzto68wevq5RblZGEO7+W3NA0+fV
+         qOaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=64V5h6/X7Wjx5m1nkylh2H6thEd31QIKHGVSbZXsoNg=;
-        b=BhaVeKn3y3l8H0M4yGIXhGFR8LaXqfejwKrArWDWwTCpdtY0da+JyWntGa0HtoJzOv
-         Wn5PQZ5t7LTJQ+MAmUP5XlQK9ZYGRa/+s/v40ZtcZrKzhP1/AUcYem37e0nQKc7o92C1
-         exK3xjvxQlIQayZHpaKa+IDB01GkHAsEKf9cLwDq/1nG1uxs0ggPoyFMACIseX2KzZ2+
-         Mu3XPGfIWKaHyPW/W2doJtGqVtuAen1TFygiasgXD6aD1kdFDosUOmY8gW5XaivhurzM
-         yid3AgowFzoa5ZwkT+h/UtZLuPRPMd6Adr9j4q6dH5xqvQYMcrMtGHbhwaoB8QVKUr1q
-         qcQg==
-X-Gm-Message-State: AJIora+PdFdZP53pMuMDDBZxfvoNj5Ul+K7IR9ACRe34npcn+d4P1aDR
-        xTxMKhdGYwdKhENdUCLlHh56H9PKL7YyHh3futhgWFrp7R8p7g==
-X-Google-Smtp-Source: AGRyM1uO3lwXmKMJUHBOB5ohsirv0rbElHPlJvBvbUxHx2ntUT21qGZcSxbrFm6wLpSNCS8p96webSHut1HXQ33nOm8=
-X-Received: by 2002:a81:7341:0:b0:31c:c547:ce02 with SMTP id
- o62-20020a817341000000b0031cc547ce02mr29182404ywc.108.1658140360551; Mon, 18
- Jul 2022 03:32:40 -0700 (PDT)
+        bh=nB9TysPxASoCZq2mAu9xXViPEOO/JgqPxrNGpKeDpVM=;
+        b=gP4ALCVQEhW2LNVVC2qGCPh1nJCzuMV3E4FN2sIzwTojTNKghPYyInO7Gs1VOguaK6
+         KqirCCNMOewf0F5gau/h8xd/sMsp28uzaNX/bQWJLmr5XFeqGj0OsMVP+LHAPH7ByoZ2
+         BNPCslnKl9PdCyzb1omQV3S5CgM18MmgNau7RAwSygpmxGv3mlaZYSIiTjOAwrwIgfg9
+         f7Ef5LruNq838+xG5J31XVYxlV5zQ33qgajTeX3MYh8Ug3o/1Mo/SaSSYXoQO6cwNDlK
+         B3E0b8Nd6XWXccmq0L8ZxYRwDHORekkbLoF7UKCYpp7nCWuxgWENO3QPr2Rf9p4cpmr7
+         buXA==
+X-Gm-Message-State: AJIora+fzCbhBSQWqtItl9iftEkFIX+bQLSgqZ6R7trimlfOzTDZaHoY
+        0Nx8uCCfJHEejxjNZf38LTU+8DqRVb31WOOJwK53Zw==
+X-Google-Smtp-Source: AGRyM1vLEixkZHCYiYRq5YltGu2Qn8XImkgcCPCgMkUAGgYU0xegYa5n58mUOA0/a3wp8LIkZmDox8dNhNHDnjcvtHM=
+X-Received: by 2002:a25:8c91:0:b0:670:5c00:7c6a with SMTP id
+ m17-20020a258c91000000b006705c007c6amr1433817ybl.66.1658140395744; Mon, 18
+ Jul 2022 03:33:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220713131421.1527179-1-nuno.sa@analog.com> <20220713131421.1527179-4-nuno.sa@analog.com>
-In-Reply-To: <20220713131421.1527179-4-nuno.sa@analog.com>
+References: <20220713131421.1527179-1-nuno.sa@analog.com> <20220713131421.1527179-5-nuno.sa@analog.com>
+In-Reply-To: <20220713131421.1527179-5-nuno.sa@analog.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 18 Jul 2022 12:32:29 +0200
-Message-ID: <CACRpkdbitDErSCMbKFe0yZB63+uTGwt5ROMbEV_iAPck_RN7sg@mail.gmail.com>
-Subject: Re: [PATCH 3/4] gpiolib: acpi: support bias pull disable
+Date:   Mon, 18 Jul 2022 12:33:04 +0200
+Message-ID: <CACRpkdb7Sko3se4f8mYhyMxpr6rDYWO7_QnfizaHtBgLiVPFJA@mail.gmail.com>
+Subject: Re: [PATCH 4/4] dt-bindings: gpio: add pull-disable flag
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
         linux-gpio@vger.kernel.org,
@@ -64,8 +64,7 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -74,17 +73,12 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Wed, Jul 13, 2022 at 3:13 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> On top of looking at PULL_UP and PULL_DOWN flags, also look at
-> PULL_DISABLE and set the appropriate GPIO flag. The GPIO core will then
-> pass down this to controllers that support it.
+> This extends the flags that can be used in GPIO specifiers to indicate
+> that no bias is intended in the pin.
 >
 > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-Do we have a semantic check that PULLDOWN and PULLUP
-is not used in combination with NOPULL here?
-
-(We should also be checking that PULLDOWN and PULLUP
-are not used simultaneously but that is an unrelated thing.)
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
