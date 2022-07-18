@@ -2,137 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C2755789F2
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 20:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 411535789FF
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 21:01:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233990AbiGRS7i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jul 2022 14:59:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54154 "EHLO
+        id S234391AbiGRTBL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 15:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232986AbiGRS7i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 14:59:38 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1A632B267;
-        Mon, 18 Jul 2022 11:59:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658170777; x=1689706777;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TIEQ4MTYN/3mHVFEK8QSYRaebmDVBch4wfEANQ4Z+F4=;
-  b=OdAZMs5/FV9r4rM3kel/TrlnhkFPe49hMTYeGBKjIwHkeEq2hVoxu6sN
-   ov8KI5oZYP1m13BZEAG3UYBOKybImL2Cuq0HFUSoxKVUG+FVIv8ayDBsz
-   O6SOLBfyAnpdqAt8GufkKSiEgD3EpZjhK+OPzfhIWw3trXG/aHK49AVSi
-   Z/rzcf50beDz08rRbgxgRj/bls8kGC4NVBPp4WKAQXTczSwnwdByKE1eC
-   Uy95zE1/pvG5L1eV8pUQBjXNRCWBNU5SD4WBqOcTJC0OZsjdcnwyDOfnz
-   xhmbThAShT0LJ58bh0dHBmFEittdEeGBsb7+CmG4T5JuSmRA81dXbJorZ
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10412"; a="287446628"
-X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
-   d="scan'208";a="287446628"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 11:59:37 -0700
-X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
-   d="scan'208";a="700140775"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 11:59:30 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oDVxl-001OP6-31;
-        Mon, 18 Jul 2022 21:59:25 +0300
-Date:   Mon, 18 Jul 2022 21:59:25 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin __ipraga <alsi@bang-olufsen.dk>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Subject: Re: [PATCH net-next 5/6] net: dsa: use swnode fixed-link if using
- default params
-Message-ID: <YtWtjYuQ8aLL64Tg@smile.fi.intel.com>
-References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
- <E1oCNlE-006e3z-3T@rmk-PC.armlinux.org.uk>
- <YtHJ5rfxZ+icXrkC@smile.fi.intel.com>
- <YtHd3f22AtrIzZ1K@shell.armlinux.org.uk>
+        with ESMTP id S233852AbiGRTBI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 15:01:08 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C4622F646
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 12:01:07 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-31d85f82f0bso117524787b3.7
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 12:01:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=IQXHlBQ3jHSYUTt89EYBBYMpS/rXYtHBaNUJ6e2ZzB07/ETpvOJM0/ZijryokIEfDh
+         oJG0jiachEiIldTcksV5XzU+dy3csOVeMrzVRYAIpdf4PUrGYfI/KNNvcLIWjvmc8oHa
+         yWKlPWKnOFkuEw2Mq2CzZYpqcRK9kJ+LygeUXE0izxh4s3I+nauj1w40rP+480vJCi+X
+         rAPSoEvo8wXV23cydMjOZnuzBivYToT/OwjRuq1iqX/8Isb8Rqougy46FnOdoQuh9Z/u
+         z7xKihQATs9EIIDqpmGAQl/2n//vpMk3ZDpLHQioaLk/1hVBrL4som/CgeyT77yPFwbn
+         VU6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=u4Qc8ZwGxq9Dt/swZAR5vhJ8SQDYkIdM3vNgR6N0THyvSQpQnDikb325hoUOg/uPPW
+         Ot+DRmLRPx6sSqcQSWH/JyMqWfEJF6IN+/C/YbqvWLwydTGTK60mfx8y+uZq9aovkyv0
+         aFKL7QJOvWgXU1ZZvLwCQtfZkwEtvdlnbzG94qoj9gjiYo1kEFaUjhEbGxAdmXXIuroe
+         N7r3FWY+OTeWacuV76X1gvDkyJok4rJi92bn53wqEaOV0plvEVyAzZeKfZDA/sbXJ/Om
+         Q5GGheEBE6HFkeoUBhWHBRPBvmyjJXPRzDMXhm/qB1xlgXOn4UYuwmqi5iB799zTS8at
+         CRFQ==
+X-Gm-Message-State: AJIora+5+tJ24TegyhB2+/SnEMjZJM+2DC7rYCk0HaxG60U4IDwIL4JA
+        JBC5b8B/0NARGRSeRFr5BftcKgPS/k100IW+bzY=
+X-Google-Smtp-Source: AGRyM1sOF4caZ/Mzb7i1HwUB8dyXYAmjf9y+Pd1nVHRKiUHeMR6opOrMc10oZNu5DLkN2HS0cpkKNGEh0T+MU99Jmes=
+X-Received: by 2002:a81:5747:0:b0:31d:1bb8:65b7 with SMTP id
+ l68-20020a815747000000b0031d1bb865b7mr30830046ywb.168.1658170865217; Mon, 18
+ Jul 2022 12:01:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtHd3f22AtrIzZ1K@shell.armlinux.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6919:4004:b0:cc:50ff:b3d8 with HTTP; Mon, 18 Jul 2022
+ 12:01:04 -0700 (PDT)
+Reply-To: lilywilliam989@gmail.com
+From:   Lily William <sgtalberts@gmail.com>
+Date:   Mon, 18 Jul 2022 11:01:04 -0800
+Message-ID: <CALPTejMFgL0Bg7jCKa7j+5KxVv_jnSM4ZPq-QhHCiUpG_ZswsQ@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 15, 2022 at 10:36:29PM +0100, Russell King (Oracle) wrote:
-> On Fri, Jul 15, 2022 at 11:11:18PM +0300, Andy Shevchenko wrote:
-> > On Fri, Jul 15, 2022 at 05:01:48PM +0100, Russell King (Oracle) wrote:
+Hi Dear,
 
-...
+My name is Dr Lily William from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
 
-> > > Co-developed by Vladimir Oltean and myself.
-> > 
-> > Why not to use
-> > 
-> >   Co-developed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> Ah, that's an official thing. Thanks.
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
 
-Yep, it's even documented in Submitting Patches.
+Thanks
 
-...
-
-> > > +	phy_node = of_parse_phandle(dn, "phy-handle", 0);
-> > 
-> > fwnode in the name, why not to use fwnode APIs?
-> > 
-> > 	fwnode_find_reference();
-> 
-> Marcin has a series converting DSA to use fwnode things - currently DSA
-> does not support ACPI, so converting it to fwnode doesn't make that much
-> sese until the proper ACPI patches get merged, which have now been
-> rebased on this series by Marcin in the expectation that these patches
-> would be merged... so I don't want to tred on Marcin's feet on that.
-
-But it's normal development process...
-
-Anyway, it seems to me that you are using fwnode out of that (with the
-exception of one call). To me it looks that you add a work to him, rather
-than making his life easier, since you know ahead that this is going to be
-converted.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+With love
+Lily
