@@ -2,105 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E98F578018
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 12:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 495BF578249
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 14:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234303AbiGRKsX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jul 2022 06:48:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54198 "EHLO
+        id S233910AbiGRM1G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 08:27:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234305AbiGRKsV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 06:48:21 -0400
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EA301F2E2;
-        Mon, 18 Jul 2022 03:48:18 -0700 (PDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id nd6so8432805qvb.6;
-        Mon, 18 Jul 2022 03:48:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=odInwset3JtekyfvwHYQ7Zjgrovk0OVJ1s+jC7toYFw=;
-        b=LjW3HvpT+uww2s2o3355LRaTe3zeVKWpHflAEtPcwJkQt04/lqcHRGoDlLS08hwCk0
-         hWg15EuDX08T0uC6JlIM48KTXBafqnCr82QwSLf55QIonwrrE6J27rk2SoH5BOMHv+8B
-         TQJ9O6CKDjJN90uvXU2s8EQ0NYJ8m/PJNxBx92FA8yUxdR8Jd59bLUisXsqyFOnwjMU/
-         O03iwUEPR23CAo2yGI2Uq4Yrq6FlY8tyaFcuLOfMQOxteL6oC0g84m397Kt4fST3aA/x
-         7v2p1RYGYfN1zQdqQt3y9HScqM9kUBGxTCPxe/f1I8A3RpqLnFC2pVFLfLH3Om8v3Lc/
-         hJTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=odInwset3JtekyfvwHYQ7Zjgrovk0OVJ1s+jC7toYFw=;
-        b=OzztLjVYSoy/qHJttKu7RBs66E54FVHh8XC62wKarVmtzU59fuOecXDJINmD/AIvLA
-         GghUeBiWYP70nbBpBTyNwVjnlVr5uHgpzeFD56/n2/FX2l0dfOi8V7CvjuKRMr83P4hk
-         F8s1hzqgbh0JcN9XN8kuQrNe3LGS4YQX9HpQlXVBLIeRZGtbyb6o0EKjwiSk/qIcOguw
-         DAeOZ6lbqb/+4JTHi7XnFfxxvU4fgU/dCYPOMRCtq3rNFASkozLdjTPfyoQ1FYNOACXJ
-         Zv3+WRohUlAHu3KX6HobA8BBClDxFsfAwZ9PT9srGnI5xtLKMJfEdKbOmeitIaCGThtn
-         ibCA==
-X-Gm-Message-State: AJIora//dXnACX9Ps2VKI5Rb63N2kFI1AUwyXpkdBe6EJSKvpFz/I1/s
-        tiG3rw1/VjnPtIrqkysRztIiKU4hXex/Ib3Z
-X-Google-Smtp-Source: AGRyM1vzwysDmuzG+cF+FcZfHt6F5DwRuJ9Qdt73Z2c6zAb0Fa+XaeXhNT+gqI+qSQGFCtB5lolBjA==
-X-Received: by 2002:ad4:5be3:0:b0:473:4914:d912 with SMTP id k3-20020ad45be3000000b004734914d912mr20247040qvc.0.1658141297735;
-        Mon, 18 Jul 2022 03:48:17 -0700 (PDT)
-Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id y7-20020a05622a164700b0031eeecd21d6sm2182327qtj.69.2022.07.18.03.48.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Jul 2022 03:48:17 -0700 (PDT)
-Message-ID: <8461b72ae951e4311952052c467fb1275ff9e58a.camel@gmail.com>
-Subject: Re: [PATCH 3/4] gpiolib: acpi: support bias pull disable
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 18 Jul 2022 12:49:19 +0200
-In-Reply-To: <CACRpkdbitDErSCMbKFe0yZB63+uTGwt5ROMbEV_iAPck_RN7sg@mail.gmail.com>
-References: <20220713131421.1527179-1-nuno.sa@analog.com>
-         <20220713131421.1527179-4-nuno.sa@analog.com>
-         <CACRpkdbitDErSCMbKFe0yZB63+uTGwt5ROMbEV_iAPck_RN7sg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.3 
+        with ESMTP id S233407AbiGRM1F (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 08:27:05 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91D5BAF;
+        Mon, 18 Jul 2022 05:27:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658147224; x=1689683224;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=9pmvwK6gZKZsdPvJKC7erTRSJ1Azp96NhdXTB4qIeoo=;
+  b=PsqWSWvhZs1FsjKfD8TmD/8cXT9hvRv8sUqsPVR11JKYhBhzEtOMVeyB
+   wZrCJyvXmTE43gWDrFv/ABEIu4VvfjVZD2QLJuFY3ht88Rr7cCai5OPEh
+   2joA9fYPZ7g7hkq0pUdcCRMGTQREGLFbCS/pM97VMYHdvpi+YyXdmRSMP
+   KSYrHRyThfszqUK2VyOmuNPACBjNcuAzhAcJraquPWx7sKl6mwCJe3YvL
+   McHT/+GJhdwdzCcSiJ7DIVgmZ6mVT5v2p/iPyywdzX7tXq2VFd8wnkkCN
+   eEhoO6aur1fHDkrOBV56Hp/46BwHsjOwUsqmH5ppTsVhnerERFK0k82Wu
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10411"; a="286948011"
+X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
+   d="scan'208";a="286948011"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 05:27:03 -0700
+X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
+   d="scan'208";a="601206977"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 05:26:58 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oDPpu-001OAV-2O;
+        Mon, 18 Jul 2022 15:26:54 +0300
+Date:   Mon, 18 Jul 2022 15:26:54 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Marcin Wojtas <mw@semihalf.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Landen Chao <Landen.Chao@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Grzegorz Bernacki <gjb@semihalf.com>,
+        Grzegorz Jaszczyk <jaz@semihalf.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        upstream@semihalf.com
+Subject: Re: [net-next: PATCH v2 5/8] device property: introduce
+ fwnode_dev_node_match
+Message-ID: <YtVRjvzgmeDjLz1k@smile.fi.intel.com>
+References: <20220715085012.2630214-1-mw@semihalf.com>
+ <20220715085012.2630214-6-mw@semihalf.com>
+ <YtHBvb/kh/Sl0cmz@smile.fi.intel.com>
+ <YtHDHtWU5Wbgknej@smile.fi.intel.com>
+ <CAPv3WKcf7U_KLuxg5zgyQZru52QEAgrHq2dO7dD4JGMMCLq05w@mail.gmail.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPv3WKcf7U_KLuxg5zgyQZru52QEAgrHq2dO7dD4JGMMCLq05w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2022-07-18 at 12:32 +0200, Linus Walleij wrote:
-> On Wed, Jul 13, 2022 at 3:13 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->=20
-> > On top of looking at PULL_UP and PULL_DOWN flags, also look at
-> > PULL_DISABLE and set the appropriate GPIO flag. The GPIO core will
-> > then
-> > pass down this to controllers that support it.
-> >=20
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
->=20
-> Do we have a semantic check that PULLDOWN and PULLUP
-> is not used in combination with NOPULL here?
->=20
-> (We should also be checking that PULLDOWN and PULLUP
-> are not used simultaneously but that is an unrelated thing.)
+On Sat, Jul 16, 2022 at 01:15:55AM +0200, Marcin Wojtas wrote:
+> pt., 15 lip 2022 o 21:42 Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> napisał(a):
+> >
+> > On Fri, Jul 15, 2022 at 10:36:29PM +0300, Andy Shevchenko wrote:
+> > > On Fri, Jul 15, 2022 at 10:50:09AM +0200, Marcin Wojtas wrote:
+> > > > This patch adds a new generic routine fwnode_dev_node_match
+> > > > that can be used e.g. as a callback for class_find_device().
+> > > > It searches for the struct device corresponding to a
+> > > > struct fwnode_handle by iterating over device and
+> > > > its parents.
+> > >
+> > > Implementation
+> > > 1) misses the word 'parent';
+> 
+> I'm not sure. We don't necessarily look for parent device(s). We start
+> with a struct device and if it matches the fwnode, success is returned
+> immediately. Only otherwise we iterate over parent devices to find a
+> match.
 
-I did extended this check:
+Yes, you iterate over parents. 0 iterations doesn't change semantics of
+all cases, right?
 
-https://elixir.bootlin.com/linux/v5.19-rc7/source/drivers/gpio/gpiolib.c#L3=
-948
+> > > 2) located outside of the group of fwnode APIs operating on parents.
+> 
+> I can shift it right below fwnode_get_nth_parent if you prefer.
 
-on patch 1 to make sure that PULLDOWN and PULLUP are not used with
-NOPULL. Is this what you have in mind or is it something else?
+Yes, please do.
 
-- Nuno S=C3=A1
+> > > I would suggest to rename to fwnode_get_next_parent_node() and place
+> > > near to fwnode_get_next_parent_dev() (either before or after, where
+> > > it makes more sense).
+> >
+> > And matching function will be after that:
+> >
+> >         return fwnode_get_next_parent_node(...) != NULL;
+> >
+> > Think about it. Maybe current solution is good enough, just needs better
+> > naming (fwnode_match_parent_node()? Dunno).
+> >
+> > P.S. Actually _get maybe misleading as we won't bump reference counting,
+> >      rather _find?
+> 
+> How about the following name:
+> fwnode_find_dev_match()
+> ?
+
+fwnode_find_parent_dev_match() LGTM, thanks!
+
+You iterate over parents.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
