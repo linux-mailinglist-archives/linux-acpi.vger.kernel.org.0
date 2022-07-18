@@ -2,102 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C24578549
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 16:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44244578682
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 17:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235293AbiGROZR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jul 2022 10:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52240 "EHLO
+        id S233550AbiGRPj5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 11:39:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231416AbiGROZQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 10:25:16 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45852CE13;
-        Mon, 18 Jul 2022 07:25:11 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id b11so21506004eju.10;
-        Mon, 18 Jul 2022 07:25:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=7DdDsGhXcK90ynwzFc8Ey8lHFszMXZo5aRKhgEZd4uk=;
-        b=OSVrgaaNfVM1U1imz3NejJXJRKz2xnHXN89Q1+rhR4nVNvKS6NKENr+a8Db+Q2mXH2
-         J+FoL4gCap1b57EoOBvhTiIkeeq7ZsujMYcqI/4/DRyNBnNzKWPWnA9CDqU2qnW4EsV6
-         nlDTskI7uy8IzD+jMRyUVWzkMH6kwmcfZQYW1t0v86bfCXCGgXn/GbHifkMcxAHXTwz1
-         K4AVARbCPWWWv1f+b1j3maj3KcGBHgMajQPOtsgGOCmhvQtN/0vFLdmoj9OlJCEgP/oO
-         315WJu8lb+uJleeExJzqKdNiGovqS7hN4Zj+etVfb+4v0yzMUKh3D08mAZLlx0wTQ1Cy
-         zgMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=7DdDsGhXcK90ynwzFc8Ey8lHFszMXZo5aRKhgEZd4uk=;
-        b=EgENnTlflzXLjLnvMWQoSKHoEvWuoHCbNbzvXwvJLPee/lHmq2Jm/sfJN+dA+wyBxh
-         hKeAXbKbzvwMdrEEkoZVfeYW87NaL5FO+xRPIEnIhwLZfP3v/Sx3nCqZgG2512B9RhUG
-         gnbjaLvSCwqK3SxEEBjnraLRWTXQq9yFcAxC2d1ZvD9AksrR++jrvRGegwkVO+MLy1IV
-         0x9mXovFBrIQ/Ym06G5PO+MIZhJP/a/Pc14bxgD9Gg/H2GT6XezbUUXC74a47K7wJ9R/
-         Q39LZq9/5OqkIs4lCK0LWV0eBe6sX7vlZ/qIaFXArHy8p9kh3D+Ey45MWFi6vPPhf9H/
-         mb2g==
-X-Gm-Message-State: AJIora+s9JszCw9P31H8NSgPAYGhgFvPe2ZLz6jT4wZ+NVz7qUGgBMgT
-        e4BdRhzqM6v7y9uOGMtTPmw=
-X-Google-Smtp-Source: AGRyM1sEheIFNl3MBseKFin6lSWB6ACjtHJGFOFj4+AFpV+dz3UFgxQDHhyuosVn1sXr8b6XrmMijw==
-X-Received: by 2002:a17:906:ef8b:b0:72b:58da:b115 with SMTP id ze11-20020a170906ef8b00b0072b58dab115mr24890310ejb.417.1658154309632;
-        Mon, 18 Jul 2022 07:25:09 -0700 (PDT)
-Received: from skbuf ([188.25.231.190])
-        by smtp.gmail.com with ESMTPSA id u7-20020a056402110700b0043a6c9e50f4sm8606780edv.29.2022.07.18.07.25.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Jul 2022 07:25:08 -0700 (PDT)
-Date:   Mon, 18 Jul 2022 17:25:05 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>
-Subject: Re: [PATCH net-next 0/6] net: dsa: always use phylink
-Message-ID: <20220718142505.3shv2rwe4fakgsp2@skbuf>
-References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
- <20220715171719.niqcrklpk4ittfvl@skbuf>
- <YtHVLGR0RQ6dWuBS@shell.armlinux.org.uk>
- <20220715160359.2e9dabfe@kernel.org>
- <20220716111551.64rjruz4q4g5uzee@skbuf>
- <YtKkRLD74tqoeBuR@shell.armlinux.org.uk>
- <20220716131345.b2jas3rucsifli7g@skbuf>
- <YtUfg+WYIYYi5J+q@shell.armlinux.org.uk>
- <20220718124512.o3qxiwop7nzfjbfx@skbuf>
- <YtVZ6VI1yvbgSYDg@shell.armlinux.org.uk>
+        with ESMTP id S234295AbiGRPj0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 11:39:26 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2042.outbound.protection.outlook.com [40.107.237.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3302F193D5;
+        Mon, 18 Jul 2022 08:39:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ilFf+nuv730d4Pbp1mqVWRjuqQBV+2HBj4cE6i50gjxujlC3etVSnmeRFV7JBXD3oYnDqmTwvbJ1v5eDY1pvZ8BA67UMkqQ8ZVnS7uiqAEr9TAxy5TnwqhJiPB8Z6C+zQBNPy+qWzgjbpKHUkEr77InfaLqWufkGUcU8Xgh2jb/WvlGxNk2sjwvShHddYe5MQOq5/dR4TqsjZyxt2jW7ZxrAx9pYlqOdiNjXtzb54DyDxIUSg/FXoDyfEuPHp+v4CPn7RLXgiQygKaQGB8atyn2WKdtf/2usyAQIsLbDekMumZ2qfKf/0qJGBGmHjAWorPzm5oS1sRcZu39IruV7wQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1AKNYjSmoN3xpj11gwWsDXJFk5hgeXb/IFZNZ35dKR0=;
+ b=jK+vDED07R2dqYAi1MWaFi4WAvjqFHYBE5oRzs9UvjmIJHCb/PmDJzsS+EYAEwXU/CU7Oksc6whZW8oRjZmDLqDo1sMl81eRywKlHlIG0I9yqo/N9+VAuerZwPC2l9BKqL2JRfBVnRCapyuINKjvES9iwUiClaO0aOawG0lnVw6D/XGR4nxpECWpxxYZRY7fj6kCcXyjF3H88qk0Hv4jpniHHEHuIlgLnRKfUgfvWr52a/PsJfH0h1r2PEAlI8EiJT6wDZh0UnRA6J+PNMV8Gvq9msRwmcDJg0dOiH7UFlYOlg4b3vJ5cWIZKe+UtIjG6SdLpiZKKW0A2+iSDcE82A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1AKNYjSmoN3xpj11gwWsDXJFk5hgeXb/IFZNZ35dKR0=;
+ b=i3QJ8bG7XfC3YaLsOZnu8jYTtmKR/me51fRO4uykVHGyCrK9LNWtcsdhOkd7c815bEo6XrGq62a9Tt/X9nHu0D1quwGzW5NhsoGPGqNok/B8qoqcF09rWfLLGnx2AwRERDHdmofV46BmtSSFx4M1iziXfkPCLhrw0lTe7FS+kh4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by DM5PR12MB1754.namprd12.prod.outlook.com (2603:10b6:3:10f::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5438.21; Mon, 18 Jul
+ 2022 15:39:23 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::1143:10a5:987a:7598]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::1143:10a5:987a:7598%6]) with mapi id 15.20.5438.023; Mon, 18 Jul 2022
+ 15:39:23 +0000
+Message-ID: <8eef6593-ebaf-5b5a-b9b2-c93277d4afaa@amd.com>
+Date:   Mon, 18 Jul 2022 10:39:21 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v6] ACPI: skip IRQ override on AMD Zen platforms
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Chuanhong Guo <gch981213@gmail.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Tighe Donnelly <tighe.donnelly@protonmail.com>,
+        Len Brown <lenb@kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20220712020058.90374-1-gch981213@gmail.com>
+ <CAJZ5v0jjyvWniC8ReZqAgnaoaRm4cr_Vs3pXhddKf9B6+zONLw@mail.gmail.com>
+From:   "Limonciello, Mario" <mario.limonciello@amd.com>
+In-Reply-To: <CAJZ5v0jjyvWniC8ReZqAgnaoaRm4cr_Vs3pXhddKf9B6+zONLw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR18CA0027.namprd18.prod.outlook.com
+ (2603:10b6:610:4f::37) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtVZ6VI1yvbgSYDg@shell.armlinux.org.uk>
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 157c5331-b3f3-4cb3-8b23-08da68d3b019
+X-MS-TrafficTypeDiagnostic: DM5PR12MB1754:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: J9UTiWQRDthjbZQZNW3lpLG5rKegR3MMkh3hH+T6XjfSzNC5N1BLFSX4ukDReIKdlrNGC4zzU7/wvyMYkc70hk8oSETpndhbdKxCHlmaf5l90s7TKhYHvfeDw8AIU+xTolD9H5/MnJBrQpyRPN4E1Lt2wE+hb/Xq1M+Mgqg1HUoRmD1gty9wspNTg37DnU+weNdlxLwHkbyfeMTEO9osYq8pk7w3fiQVXsNi00gbb7541jG4pSjWafjTg2R4OsI43avzGiqqMYD7osUUlCpxInuCusW3+ZTVoNM8zQVsgex9rMkJ08ewbmGK8mCKbe706U9LgjTGsDyKOHDGqXHkzmmjT9EqVppvPqg10gBTUDv80Kqan/O9TDTyJTc9p8xtaOylxp7xsA2nleJv7gcBAixETpKtcAPDz3HQ4ilbT5y/tThtmX9RNX0Qmvf6lYfnFrHZJud41XdSUSfieyntdV686ZIabzrM4p5q4TK4UWy8WFHWVFtPZBm1Z50UXmUd0BO0QLXpBrBDv9xvMNicWafstSzYGk87qw2LXSKJNaf5zMeBCkOffgiZSZm8aaMp8jo5IRSaMD0lMMnwA/3xjiwr0CCxZZdO+coX7et9spX2Dcf/eNR36AwDJj80OfOb42jx8v9Aed/1HrqoUg1NZF4ycrC3EulfdzhSTQx2zf+rHJqwo+z89xoJ9V5hSh2qTmSsurjx0FYmkeA4dSzsOZb8sjWT1llQpriySKyusRH3eeH/oLV1hO8ZvrNxm9iMIK8cAl2R26trhk6l9k4qlREfvvWePqzKgMlBHE3V/UYITiW1Zwkkas9o+EchCXV7DNUYVqfc+fEHVHAOTydrKwY0yzJZ8m5WFaYT5S82GGtyl141/lbn1ivb5BkLNwU6
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(39860400002)(376002)(366004)(396003)(346002)(136003)(8936002)(86362001)(31696002)(4326008)(8676002)(66556008)(66946007)(66476007)(36756003)(54906003)(53546011)(38100700002)(110136005)(6506007)(316002)(26005)(31686004)(83380400001)(41300700001)(186003)(2616005)(478600001)(6512007)(966005)(6486002)(5660300002)(2906002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eW5ETENCSmVqZUpFUGpMSGNDM2x4RGwzd2lpK3BuM2s5WnFuNkZhWUtkK3Yz?=
+ =?utf-8?B?cWJENDFybEczdExIc21RZUM3TnZpMnFURGpyc2NiL2lWUDlBeTRrdENUZE15?=
+ =?utf-8?B?TElxNVVGRUxrTVhlSXVZZTdKTWhkMDc1bkZucmlqaFlxWitQakdMZXBmNXpu?=
+ =?utf-8?B?dlAvTWV4M1Y5aUU5a21hWC90MUk0TVpmZHp2OTdZVGVTaUloUE13bjFUSStU?=
+ =?utf-8?B?S2drN0JlK05HOVl0T3FPMFBva014Q3BCUnpBTWdvSm0yV0p0TTlkK2QwVmdj?=
+ =?utf-8?B?dndWbDFXZkxibVliZXY4dUV2UnFLVkZNalMzR0k4Zm44eWZxMlI3RkdIMjhH?=
+ =?utf-8?B?NW5EV09abnlIakc3YWlDWHI4VjVyZ0xGcWVtZk56aXJuWlIrVE1LRGEwSkh6?=
+ =?utf-8?B?dm5EZjBKQU5kRHZNZVdrbUhYRUxNQnpwcktsR1ZYQmdLWmk4LzVFYXRXMm82?=
+ =?utf-8?B?cFlzZFFEdS9tUVFqb0k2bWg0VjlwbmhsMCtjbmZKRU04Z1l2dWxmSnEzeXZl?=
+ =?utf-8?B?QzVBZDQvd3ZKTnlSVzdOWVd6WXZjcW0xMUxvdmJ4WDZwWlFkaDRmV3J4czU2?=
+ =?utf-8?B?SEZyMEEyRW56azZPZmpuaGdYcUFFMFhOaFlld3N3N2NuNU9LUEs0ZlFTSEM4?=
+ =?utf-8?B?UVpqQTRyU2RuRUdzeVBSeVBJTyswUGJFbHh2Y1dMS2ErQkxEamxBZUN5ZldF?=
+ =?utf-8?B?clJSeFZJS0JGMEtQdGQ3YWRKTXYvSGIwZFUrS1FUR0Q5RG1QWFA3WEZ0NHE0?=
+ =?utf-8?B?Z2NkNHZFSlNvOG5ucGN5UE55UHV1SGdtQjNJSlIwbDhKZ1RqdHZhT2N0WW9p?=
+ =?utf-8?B?WHRmQ0NvVDB4Ty8wNlJhaUIwUzk3UU56dXFXb1pqcWNLKzJoRVdFa2lYcE5R?=
+ =?utf-8?B?VUVYdTkyUXZSSWx0M1pIT3NjVERBWHVhM0IzNWpFZExlYlAxZUxhNnpmcXMw?=
+ =?utf-8?B?azRGNlR4bk5OMEZJTEdSL3FyclhzekduNzhYbVdtWXJpWDRQSWJrUnh0eXZI?=
+ =?utf-8?B?eXNLWVNWZGRIQ2ZOUElWcytpR3ZieU5HLzN3Tk5xWGVoNW9zd3k0TmQrTXhJ?=
+ =?utf-8?B?RUd3NStWUnVsckc0MnU3dEE1WGdCdGdhaHJHcGNseFMzZVMxOUtxbzV5dGZI?=
+ =?utf-8?B?NnNmTEFERHk5dEcxSVNTTHJDU01VcEw2T1djOGN4RHBYa29UakZIN2pLa1RO?=
+ =?utf-8?B?aHczZURXbG5mUHZnR2VoMWxDWStxb2JONGNRRCt0M3hWZUtLQWpYaG94Q3Rp?=
+ =?utf-8?B?LzQ0UFdZckNudGdoS3pKVXpqZjlydUJNQzFUZFUxVUQraFpzbFRqcWlPRGRa?=
+ =?utf-8?B?ODZubGxsZktRRW9FaW9wMnZ3NlFaWEpzWDkwdytDYzVsZWZhbENoNXZVdUFZ?=
+ =?utf-8?B?eTh6UU1VZTEwcGNidG82a0tMK1dndlMwSUdEL3ZaU1JqaDM4R3VnMStsMHhk?=
+ =?utf-8?B?R0dvZzlqSFMvZmdwa1VDMjdSUFAzYi9iVFVCNWtSSWFFMEN4MGV5Qmg1U2FT?=
+ =?utf-8?B?M082bVowMndPZEZ2Qk9jcWZkWW9rc3lsYzJBaWtvbTc0dnljZHd1Rms0WUZM?=
+ =?utf-8?B?ZjdKZjQvM3JPUDlJUlV2Vkl3VXUwcE1ocUhCa09EcGhRR3RUek5mcFpSQ2pT?=
+ =?utf-8?B?bGs1Qm02NnMxUlMvTGJBRE5UeUtFYXB0aUJPa0RSeElyQzQ0RXhScGNYcFp6?=
+ =?utf-8?B?azFCRU43aThyVjVFNU9iY0ZPZ21BTW1tdVVhMDdwYXZxN1RCM1pQTmttS3FG?=
+ =?utf-8?B?czN5aG5LWTZ3clFGNitXQldRK2paRUtxY25LcDRGUzJ6SXR5ZXpwOVVsSkNG?=
+ =?utf-8?B?eVpCZy9Dem9qcDBxZFNVa1JMdmhtUGFwZTc1VmYwOTUySEtqRHhBZFpYYUEw?=
+ =?utf-8?B?eW43dnJpa3ZtSDZldHpKNmdOYnR1N2UzUFQ1OVJKVVhZVjIrYnFuL0FNaEQ4?=
+ =?utf-8?B?UUo2M2VnbGs5cE8vOUd1Z01SWTJjakg2ZFpsZjAwUFFidC9wc3N6VTlzeUI1?=
+ =?utf-8?B?WEQzVDdmVW9ZL1hzcTd6amVWV0s4eVJ3N0dneFJDUVV6OVFoQ2xzWUhHcDdk?=
+ =?utf-8?B?bHdaMVh0c1NhQWR2V3ZHZ0FIODhYSGl0WGNpeXpDMzFxbnZ1NVFPM09FSjRB?=
+ =?utf-8?Q?mvmmBZ+iNPJFplgoyCqUzmSfY?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 157c5331-b3f3-4cb3-8b23-08da68d3b019
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2022 15:39:22.9448
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mRjRMrC7sBnR4lLFqfvAVALbTPaXiiL1z578v8vrVHM+SzZsoy4K3MEFs7lrG4AcPZedP5cUZpAMYTJ/ZDOsfQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1754
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -105,40 +127,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 18, 2022 at 02:02:33PM +0100, Russell King (Oracle) wrote:
-> In the second RFC, I stated:
+On 7/14/2022 13:35, Rafael J. Wysocki wrote:
+> On Tue, Jul 12, 2022 at 4:01 AM Chuanhong Guo <gch981213@gmail.com> wrote:
+>>
+>> IRQ override isn't needed on modern AMD Zen systems.
+>> There's an active low keyboard IRQ on AMD Ryzen 6000 and it will stay
+>> this way on newer platforms. This IRQ override breaks keyboards for
+>> almost all Ryzen 6000 laptops currently on the market.
+>>
+>> Skip this IRQ override for all AMD Zen platforms because this IRQ
+>> override is supposed to be a workaround for buggy ACPI DSDT and we can't
+>> have a long list of all future AMD CPUs/Laptops in the kernel code.
+>> If a device with buggy ACPI DSDT shows up, a separated list containing
+>> just them should be created.
+>>
+>> Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+>> Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
 > 
-> "Some of the questions from the original RFC remain though, so I've
-> included that text below. I'm guessing as they remain unanswered that
-> no one has any opinions on them?"
+> I need an ACK from Mario here.
+
+Sure.  As he mentioned this polarity change is needed going forward.
+So if we end up with a similar regression as the Baytrail attempt to 
+make this generic and need to revert we'll need to find a different 
+heuristic to make it generic on RMB and later.
+
+Acked-by: Mario Limonciello <mario.limonciello@amd.com>
+
+Here's some other tags to pick up too in the commit message.
+
+Tested-by: XiaoYan Li <lxy.lixiaoyan@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216118
+
 > 
-> Clearly, I was soliciting answers from _everyone_ who received this,
-> not just the two people in the To: header.
-(...)
-> This is _not_ the issue I'm raising. I am complaining about the
-> "default_interface" issue that you've only piped up about, despite
-> (a) an explicit question having been asked about that approach, (b) it
-> appearing in not just one, not two, not three but four RFC series sent,
-> and only finally being raised when a non-RFC series was sent.
-> 
-> This whole debarcle could have been avoided with providing feedback at
-> an earlier stage, when I explicitly requested it _several_ times.
+>> ---
+>> Change sice v5: reworked
+>>
+>>   drivers/acpi/resource.c | 10 ++++++++++
+>>   1 file changed, 10 insertions(+)
+>>
+>> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+>> index c2d494784425..510cdec375c4 100644
+>> --- a/drivers/acpi/resource.c
+>> +++ b/drivers/acpi/resource.c
+>> @@ -416,6 +416,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+>>   {
+>>          int i;
+>>
+>> +#ifdef CONFIG_X86
+>> +       /*
+>> +        * IRQ override isn't needed on modern AMD Zen systems and
+>> +        * this override breaks active low IRQs on AMD Ryzen 6000 and
+>> +        * newer systems. Skip it.
+>> +        */
+>> +       if (boot_cpu_has(X86_FEATURE_ZEN))
+>> +               return false;
+>> +#endif
+>> +
+>>          for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
+>>                  const struct irq_override_cmp *entry = &skip_override_table[i];
+>>
+>> --
+>> 2.36.1
+>>
 
-Please stop shoving quotes of your questions in my face, I'm still glad
-I deleted my draft responses to them when they were originally asked,
-because *when* (not *if*) things will have went sideways, I would have
-blamed myself for people wanting to test/respond but not having whom to
-talk to, because you rage quit.
-
-You need to understand that a voluntary reviewer doesn't have a duty to
-respond to you on any certain date, and that I'm not obliged to shut up
-about where to place "default_interface" because I haven't said anything
-about it in the first N series. I was on the fence whether it was even
-worth saying anything about it at all, and the only reason I decided to
-do it was because the patch to change every DSA driver's phylink_get_caps()
-prototype now conflicts with concurrent changes done to drivers, and
-doesn't apply to net-next anyway:
-https://patchwork.kernel.org/project/netdevbpf/patch/E1oCNl3-006e3n-PT@rmk-PC.armlinux.org.uk/
-So I really can't be reasonably accused of wanting to stall this series.
-
-You have no reason whatsoever to pick a fight with me, so please stop it.
