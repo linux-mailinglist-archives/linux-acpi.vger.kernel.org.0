@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7098E577DF1
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 10:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA6F577E00
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 10:53:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233686AbiGRItj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jul 2022 04:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55206 "EHLO
+        id S233313AbiGRIxr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 04:53:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233159AbiGRIti (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 04:49:38 -0400
+        with ESMTP id S229711AbiGRIxq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 04:53:46 -0400
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762C56337;
-        Mon, 18 Jul 2022 01:49:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BCB323;
+        Mon, 18 Jul 2022 01:53:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
         MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=FjFL3Ngh7BaQgnn0nFfHRJwcquVGbPNjf58pM6ZtWcc=; b=zhuBorQxLIFlSzTMHxwxHzwed0
-        uGpnlsSWmzyC63HCEfQJbCHHzhuT7N+WvwQqxZPbe6/qDVzM6T1D7Np+EXkTAsNYa+l7j4Oue/CAd
-        +ggpBNcnRXYPwxuTd5KL/lio9fIiovMY10T4M4WYRx+woFZZTLf/2Er/YfJdJWGi5BnQNG+ev74wp
-        KpNGHtUywKibShhThgpT8otgtn7qiMlKbXsCMXEWK3KRimqjb423L9zkwc410hIF8/mZxhsZCivoO
-        EkBWEb9jj9BQu5hxFjfPVUqLa+iuyzK1KWUZRmvOCUAuhQDfVY/mTPNjwnYeWR8ycOUNGTn0XW0pZ
-        gutZJI3Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33398)
+        bh=ToUKRE4eNm6A2sNEpB2OgcNUP6tRu+NWWWVVE3lb698=; b=axll7zDzOI4zNYGcIznYOr22/b
+        zZLBakwxRpaoKWTIi8Rs4mQFujP8xxWOnylDB8E0KizU/HcmQkqKn+oa4WBQW8DwXVaLTLJl9EU/s
+        rA7wYM+lzml0of/QCDYlICeakokyYcNziX6hHNQ9mvlgsjbE1Od62xR1s7IMGEWgDx2pEJs680Vay
+        YbvI7hIuvwse9JclVDvvD/GEnBhazCgZU7yjzxN/EABM/A28BJOsnGCXIMmkQqv/FDrwuOqX7sNr/
+        ifPhRxlVjyPGjvCW7rYa9qSN8vqQBWn5rbLfYTH26/j500fZPrUk0xRhobryiga/kNPt/RWNB+uFP
+        PiDXOnUA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33400)
         by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <linux@armlinux.org.uk>)
-        id 1oDMR0-0001I0-5Q; Mon, 18 Jul 2022 09:48:58 +0100
+        id 1oDMVK-0001Im-4Z; Mon, 18 Jul 2022 09:53:26 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
         (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1oDMQt-0001po-V9; Mon, 18 Jul 2022 09:48:51 +0100
-Date:   Mon, 18 Jul 2022 09:48:51 +0100
+        id 1oDMVH-0001pv-28; Mon, 18 Jul 2022 09:53:23 +0100
+Date:   Mon, 18 Jul 2022 09:53:23 +0100
 From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
 To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
+Cc:     Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin __ipraga <alsi@bang-olufsen.dk>,
+        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Claudiu Manoil <claudiu.manoil@nxp.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -52,12 +52,12 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Hauke Mehrtens <hauke@hauke-m.de>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
         Kurt Kanzenbach <kurt@linutronix.de>,
         Landen Chao <Landen.Chao@mediatek.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org,
+        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -65,25 +65,20 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Sean Wang <sean.wang@mediatek.com>,
         UNGLinuxDriver@microchip.com,
         Vivien Didelot <vivien.didelot@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Subject: Re: [PATCH net-next 3/6] net: dsa: add support for retrieving the
- interface mode
-Message-ID: <YtUec3GTWTC59sky@shell.armlinux.org.uk>
+        Woojung Huh <woojung.huh@microchip.com>
+Subject: Re: [PATCH net-next 0/6] net: dsa: always use phylink
+Message-ID: <YtUfg+WYIYYi5J+q@shell.armlinux.org.uk>
 References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
- <E1oCNl3-006e3n-PT@rmk-PC.armlinux.org.uk>
- <E1oCNl3-006e3n-PT@rmk-PC.armlinux.org.uk>
- <20220715172444.yins4kb2b6b35aql@skbuf>
- <YtHcpf4otJQS9hTO@shell.armlinux.org.uk>
- <20220715222348.okmeyd55o5u3gkyi@skbuf>
- <YtHw0O5NB6kGkdwV@shell.armlinux.org.uk>
- <20220716105711.bjsh763smf6bfjy2@skbuf>
- <YtKdcxupT+INVAhR@shell.armlinux.org.uk>
- <20220716123608.chdzbvpinso546oh@skbuf>
+ <20220715171719.niqcrklpk4ittfvl@skbuf>
+ <YtHVLGR0RQ6dWuBS@shell.armlinux.org.uk>
+ <20220715160359.2e9dabfe@kernel.org>
+ <20220716111551.64rjruz4q4g5uzee@skbuf>
+ <YtKkRLD74tqoeBuR@shell.armlinux.org.uk>
+ <20220716131345.b2jas3rucsifli7g@skbuf>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220716123608.chdzbvpinso546oh@skbuf>
+In-Reply-To: <20220716131345.b2jas3rucsifli7g@skbuf>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
@@ -94,113 +89,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 16, 2022 at 03:36:08PM +0300, Vladimir Oltean wrote:
-> On Sat, Jul 16, 2022 at 12:13:55PM +0100, Russell King (Oracle) wrote:
-> > > > and is exactly what I'm trying to get rid of, so we have _consistency_
-> > > > in the implementation, to prevent fuckups like I've created by
-> > > > converting many DSA drivers to use phylink_pcs. Any DSA driver that
-> > > > used a PCS for the DSA or CPu port and has been converted to
-> > > > phylink_pcs support has been broken in the last few kernel cycles. I'm
-> > > > trying to address that breakage before converting the Marvell DSA
-> > > > driver - which is the driver that highlighted the problem.
-> > > 
-> > > You are essentially saying that it's of no use to keep in DSA the
-> > > fallback logic of not registering with phylink, because the phylink_pcs
-> > > conversions have broken the defaulting functionality already in all
-> > > other drivers.
+On Sat, Jul 16, 2022 at 04:13:45PM +0300, Vladimir Oltean wrote:
+> On Sat, Jul 16, 2022 at 12:43:00PM +0100, Russell King (Oracle) wrote:
+> > In the first RFC series I sent on the 24 June, I explicitly asked the
+> > following questions:
+> (...)
+> > I even stated: "Please look at the patches and make suggestions on how
+> > we can proceed to clean up this quirk of DSA." and made no mention of
+> > wanting something explicitly from Andrew.
 > > 
-> > Correct, and I don't want these exceptions precisely because it creates
-> > stupid mistakes like the one I've highlighted. If we have one way of
-> > doing something, then development becomes much easier. When we have
-> > multiple different ways, mistakes happen, stuff breaks.
-> 
-> Agree that when we have multiple different ways, mistakes happen and
-> stuff breaks. This is also why I want to avoid the proliferation of the
-> default_interface reporting when most of the drivers were just fine
-> without it. It needs to be opt-in, and checking for the presence of a
-> dedicated function is an easy way to check for that opt-in.
-> 
-> > > I may have missed something, but this is new information to me.
-> > > Specifically, before you've said that it is *this* patch set which would
-> > > risk introducing breakage (by forcing a link down + a phylink creation).
-> > > https://lore.kernel.org/netdev/YsCqFM8qM1h1MKu%2F@shell.armlinux.org.uk/
-> > > What you're saying now directly contradicts that.
+> > Yet, none of those questions were answered.
 > > 
-> > No, it is not contradictory at all.
+> > So no, Jakub's comments are *not* misdirected at all. Go back and read
+> > my June 24th RFC series yourself:
 > > 
-> > There is previous breakage caused by converting DSA drivers to
-> > phylink_pcs - because the PCS code will *not* be called where a driver
-> > makes use of the "default-to-fastest-speed" mechanism, so is likely
-> > broken. Some drivers work around this by doing things manually.
+> > https://lore.kernel.org/all/YrWi5oBFn7vR15BH@shell.armlinux.org.uk/
 > 
-> Marvell conversion to phylink_pcs doesn't count as "previous" breakage
-> if it's not in net-next.
-
-Thank you for stating the obvious. I never claimed it was.
-
-> > This series *also* risks breakage, because it means phylink gets used
-> > in more situations which could confuse drivers - such as those which
-> > have manually brought stuff up and are not expecting phylink to also
-> > do it. Or those which do not fill in the mac_capabilities but do
-> > default to this "fastest-speed" mechanism. Or some other unforseen
-> > scenario.
+> I don't believe I need to justify myself any further for why I didn't
+> leave a comment on any certain day. I left my comments when I believed
+> it was most appropriate for me to intervene (as someone who isn't really
+> affected in any way by the changes, except for generally maintaining
+> what's in net/dsa/, and wanting to keep a clean framework structure).
+> Also, to repeat myself, blaming me for leaving comments, but doing so
+> late, is not really fair. I could have not responded at all, and I
+> wouldn't be having this unpleasant discussion. It begs the question
+> whether you're willing to be held accountable in the same way for the
+> dates on which you respond on RFC patches.
 > 
-> I don't exactly understand the mechanics through which a phylink_pcs
-> conversion would break a driver that used defaulting behavior,
-> but I can only imagine it involves moving code that didn't depend on
-> phylink, to phylink callbacks. It's hard to say whether that happened
-> for any of the phylink_pcs conversions in net-next.
-
-Situation before phylink_pcs conversion:
-- code paths that configure the PCS are integrated with the rest of the
-  driver and would be called where appropriate.
-
-Situation after phylink_pcs conversion:
-- code paths that configure the PCS are no longer integrated with the
-  rest of the driver and are now dependent on phylink being used for
-  them to be called.
-
-If there is no problem with doing this conversion, then why has the
-proposed conversion of mv88e6xxx caused breakage when it was working
-fine previously - it's because of exactly the above.
-
-> But drivers could also have their CPU port working simply because those
-> are internal to an SoC and don't need any software configuration to pass
-> traffic. In their case, there is no breakage caused by the phylink_pcs
-> conversion, but breakage caused by sudden registration of phylink is
-> plausible, if phylink doesn't get the link parameters right.
+> > I've *tried* my best to be kind and collaborative, but I've been
+> > ignored. Now I'm hacked off. This could have been avoided by responding
+> > to my explicit questions sooner, rather than at the -rc6/-rc7 stage of
+> > the show.
 > 
-> And that breakage is preventable. Gradually more drivers could be
-> converted to create a fixed-link software node by printing a warning
-> that they should, and still keep the logic to avoid phylink registration
-> and putting the respective port down. Driver authors might not be very
-> responsive to RFC patch sets, but they do look at new warnings in dmesg
-> and try to see what they're about.
+> I think you should continue to try your best to be kind and collaborative,
+> you weren't provoked or intentionally ignored in any way, and it isn't
+> doing these patches any good.
 
-Are you going to do that conversion then? Good luck trying to find all
-the drivers, sending out series of patches, trying to get people to test
-the changes.
+And yet again, I don't have answers to many of those questions... which
+just shows how broken this process is, and how utterly pointless it is
+0to ask any questions in this area.
 
-> What I'm missing is the proof that the phylink_pcs conversion has broken
-> those kinds of switches, and that it's therefore pointless to keep the
-> existing logic for them. Sorry, but you didn't provide it.
+My conclusion: you don't care one bit to even answer questions until
+there's a chance that patches that you disagree with might be merged,
+and oh my god, you've got to respond to stop that happening because you
+might disagree with something. You can't do the collaborative thing and
+respond when someone asks explicit questions about how things should be
+done.
 
-I don't have evidence that existing drivers have broken because I don't
-have the hardware to test. I only have Marvell DSA switch hardware and
-that is it.
+I'm not going to let this go. I'm really pissed off by this and you
+are the focus of my frustration.
 
-Everything else has to be based on theory because no one bothers to
-respond to my patches, so for 99% of the DSA drivers I'm working in the
-dark - and that makes development an utter shitpile of poo in hell.
-
-As I've said many times, we have NO CLUE which DSA drivers make use of
-this defaulting behaviour - the only one I'm aware of that does is
-mv88e6xxx. It all depends on the firmware description, driver behaviour
-and hardware behaviour. There is not enough information in the kernel 
-to be able to derive this.
-
-If there was a reported regression, then I would be looking to get this
-into the NET tree not the NET-NEXT tree.
+Well, its now too late to do anything about this. This is going to miss
+this cycle. It might get in next cycle, and whoopy do, for a kernel
+that's very likely to be a LTS. Given the lack of testing that sounds
+like a complete and utter disaster. One that was entirely avoidable had
+feedback been given EARLIER in this cycle.
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
