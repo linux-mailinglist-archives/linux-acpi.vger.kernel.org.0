@@ -2,113 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45AF35789AC
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 20:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A79EF5789B2
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 20:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235039AbiGRSmU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 18 Jul 2022 14:42:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42094 "EHLO
+        id S235641AbiGRSnz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 14:43:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbiGRSmT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 14:42:19 -0400
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA5322CDFA;
-        Mon, 18 Jul 2022 11:42:18 -0700 (PDT)
-Received: by mail-yb1-f169.google.com with SMTP id e69so22468214ybh.2;
-        Mon, 18 Jul 2022 11:42:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=C4cwXdJ7L3y4frrr1jRFdIf4YSYSSE+S+nPlQERL2co=;
-        b=XFx1AwvdORaXP82jsF8RAgNUvLCgOxDaDpJ1ncaxDYnvsTZtlIZiNhHXSSZ8E3HjYs
-         cjtPRWR0ytEq4U2Z1ACGYViKwPI09W9sOjUnX+tHw8M/zgp/3EoiC98kaenSVRWKWqTq
-         2U2/GmC0WVh5TKzMoFpAHnmEappf5PWwHeWOrtEcFzqLIBRQ17DWZznPui6qZdUtLWx2
-         NqlcQVaVcqe48iS7mFpR3Vd224QTiijY5uYDGzDmsMhcd64doLgJ4qmaF+zS4y0lYccM
-         xtuAi8K9kY4Wprrirzt0+dhHUObRR8PkKcw6zUuEBh90F0WSgHWu469lM/Sw3QIEZr8F
-         o1Kg==
-X-Gm-Message-State: AJIora9hIJSecvcS9MjS4PmcnFcXgCRdF2RaiDAfxh5dhCsoKsIVm87B
-        C1joZgPD3mG9QcKXoTcNBfWhehWckJft2yLSDYA=
-X-Google-Smtp-Source: AGRyM1vFgT8R1gPsi9sI02Sz99YuHNheKRhHqMzOe17wC/miaaaXd3bzbbiisF892JjtVwpdTR9j6fEc5CrEFeME2VE=
-X-Received: by 2002:a05:6902:154f:b0:66e:e2d3:ce1 with SMTP id
- r15-20020a056902154f00b0066ee2d30ce1mr26320244ybu.365.1658169738067; Mon, 18
- Jul 2022 11:42:18 -0700 (PDT)
+        with ESMTP id S236028AbiGRSny (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 14:43:54 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA67362D3;
+        Mon, 18 Jul 2022 11:43:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658169834; x=1689705834;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KdBF4yjrLuXbz/OvgsIOnMxdr8dPb/kuNCRv0XTho8U=;
+  b=QAH8skE1JqPNmP/hePVKZrVFxvdOfaXt8vNNqU5upJPweT5c3O1QrvT1
+   OQsO6vP9ih1bKFSHpySK94v8Xt7HQaXu82Qgga9ybLoKWexdwvKpuVlQr
+   fIyXIR506pJsiGcMjKsRbbWEL4ZxSPvCsC3dGivNjXeL3EyhPaB65Ihwa
+   boasTUhIR6kKvwqF51eUyJ1OvH9h/5+LvBWhel/abhVYasjoT9cDM04Go
+   MmXsdojkgezMTsUT+jjVxsnjtotnkTMxpDrovx2GOTLBO9cVhrGgbIJli
+   OWdaLjlDc0Hw/0zLq/R+f5bPyVT0HXZ6FmhPOABxJMqZlnJnQ8WhxnGwd
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10412"; a="347984337"
+X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
+   d="scan'208";a="347984337"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 11:43:54 -0700
+X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
+   d="scan'208";a="843374513"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 11:43:46 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oDViY-001OOO-0R;
+        Mon, 18 Jul 2022 21:43:42 +0300
+Date:   Mon, 18 Jul 2022 21:43:41 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alvin __ipraga <alsi@bang-olufsen.dk>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        DENG Qingfang <dqfext@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        George McCollister <george.mccollister@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kurt Kanzenbach <kurt@linutronix.de>,
+        Landen Chao <Landen.Chao@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        UNGLinuxDriver@microchip.com,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Woojung Huh <woojung.huh@microchip.com>,
+        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
+Subject: Re: [PATCH net-next 2/6] software node: allow named software node to
+ be created
+Message-ID: <YtWp3WkpCtfe559l@smile.fi.intel.com>
+References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
+ <E1oCNky-006e3g-KA@rmk-PC.armlinux.org.uk>
+ <YtHGwz4v7VWKhIXG@smile.fi.intel.com>
+ <20220715201715.foea4rifegmnti46@skbuf>
+ <YtHPJNpcN4vNfgT6@smile.fi.intel.com>
+ <20220715204841.pwhvnue2atrkc2fx@skbuf>
+ <YtVSQI5VHtCOTCHc@smile.fi.intel.com>
+ <YtVfppMtW77ICyC5@shell.armlinux.org.uk>
 MIME-Version: 1.0
-References: <20220715173326.3578-1-mario.limonciello@amd.com>
-In-Reply-To: <20220715173326.3578-1-mario.limonciello@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 18 Jul 2022 20:42:02 +0200
-Message-ID: <CAJZ5v0h7G0PLr7NUL-NhB0AJm=-vfN-Os29M+8WjFW-W2gPpkQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: CPPC: Don't require flexible address space if
- X86_FEATURE_CPPC is supported
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Yuan, Perry" <perry.yuan@amd.com>,
-        =?UTF-8?Q?Arek_Ru=C5=9Bniak?= <arek.rusi@gmail.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YtVfppMtW77ICyC5@shell.armlinux.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 15, 2022 at 7:33 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> commit 0651ab90e4ad ("ACPI: CPPC: Check _OSC for flexible address space")
-> changed _CPC probing to require flexible address space to be negotiated
-> for CPPC to work.
->
-> However it was observed that this caused a regression for Arek's ROG
-> Zephyrus G15 GA503QM which previously CPPC worked, but now it stopped
-> working.
->
-> To avoid causing a regression waive this failure when the CPU is known
-> to support CPPC.
->
-> Cc: Pierre Gondois <pierre.gondois@arm.com>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216248
-> Fixes: 0651ab90e4ad ("ACPI: CPPC: Check _OSC for flexible address space")
-> Reported-and-tested-by: Arek Ruśniak <arek.rusi@gmail.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/cppc_acpi.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 6ff1901d7d43..3c6d4ef87be0 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -782,7 +782,8 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->
->                                         if (!osc_cpc_flexible_adr_space_confirmed) {
->                                                 pr_debug("Flexible address space capability not supported\n");
-> -                                               goto out_free;
-> +                                               if (!cpc_supported_by_cpu())
-> +                                                       goto out_free;
->                                         }
->
->                                         addr = ioremap(gas_t->address, gas_t->bit_width/8);
-> @@ -809,7 +810,8 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->                                 }
->                                 if (!osc_cpc_flexible_adr_space_confirmed) {
->                                         pr_debug("Flexible address space capability not supported\n");
-> -                                       goto out_free;
-> +                                       if (!cpc_supported_by_cpu())
-> +                                               goto out_free;
->                                 }
->                         } else {
->                                 if (gas_t->space_id != ACPI_ADR_SPACE_FIXED_HARDWARE || !cpc_ffh_supported()) {
-> --
+On Mon, Jul 18, 2022 at 02:27:02PM +0100, Russell King (Oracle) wrote:
+> On Mon, Jul 18, 2022 at 03:29:52PM +0300, Andy Shevchenko wrote:
+> > On Fri, Jul 15, 2022 at 11:48:41PM +0300, Vladimir Oltean wrote:
+> > > So won't kobject_init_and_add() fail on namespace collision? Is it the
+> > > problem that it's going to fail, or that it's not trivial to statically
+> > > determine whether it'll fail?
+> > > 
+> > > Sorry, but I don't see something actionable about this.
+> > 
+> > I'm talking about validation before a runtime. But if you think that is fine,
+> > let's fail it at runtime, okay, and consume more backtraces in the future.
+> 
+> Is there any sane way to do validation of this namespace before
+> runtime?
 
-Applied as 5.19-rc material, thanks!
+For statically compiled, I think we can do it (to some extent).
+Currently only three drivers, if I'm not mistaken, define software nodes with
+names. It's easy to check that their node names are unique.
+
+When you allow such an API then we might have tracebacks (from sysfs) bout name
+collisions. Not that is something new to kernel (we have seen many of a kind),
+but I prefer, if possible, to validate this before sysfs issues a traceback.
+
+> The problem in this instance is we need a node named "fixed-link" that
+> is attached to the parent node as that is defined in the binding doc,
+> and we're creating swnodes to provide software generated nodes for
+> this binding.
+
+And how you guarantee that it will be only a single one with unique pathname?
+
+For example, you have two DSA cards (or whatever it's called) in the SMP system,
+it mean that there is non-zero probability of coexisting swnodes for them.
+
+> There could be several such nodes scattered around, but in this
+> instance they are very short-lived before they are destroyed, they
+> don't even need to be published to userspace (and its probably a waste
+> of CPU cycles for them to be published there.)
+> 
+> So, for this specific case, is this the best approach, or is there
+> some better way to achieve what we need here?
+
+Honestly, I don't know.
+
+The "workaround" (but it looks to me rather a hack) is to create unique swnode
+and make fixed-link as a child of it.
+
+Or entire concept of the root swnodes (when name is provided) should be
+reconsidered, so somehow we will have a uniqueness so that the entire
+path(s) behind it will be caller-dependent. But this I also don't like.
+
+Maybe Heikki, Sakari, Rafael can share their thoughts...
+
+Just for my learning, why PHY uses "fixed-link" instead of relying on a
+(firmware) graph? It might be the actual solution to your problem.
+
+How graphs are used with swnodes, you may look into IPU3 (Intel Camera)
+glue driver to support devices before MIPI standardisation of the
+respective properties.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
