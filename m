@@ -2,82 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 495BF578249
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 14:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C5E8578257
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 14:30:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233910AbiGRM1G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jul 2022 08:27:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48896 "EHLO
+        id S233840AbiGRMaG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 08:30:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233407AbiGRM1F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 08:27:05 -0400
+        with ESMTP id S233754AbiGRMaF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 08:30:05 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91D5BAF;
-        Mon, 18 Jul 2022 05:27:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2E71E13;
+        Mon, 18 Jul 2022 05:30:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658147224; x=1689683224;
+  t=1658147404; x=1689683404;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=9pmvwK6gZKZsdPvJKC7erTRSJ1Azp96NhdXTB4qIeoo=;
-  b=PsqWSWvhZs1FsjKfD8TmD/8cXT9hvRv8sUqsPVR11JKYhBhzEtOMVeyB
-   wZrCJyvXmTE43gWDrFv/ABEIu4VvfjVZD2QLJuFY3ht88Rr7cCai5OPEh
-   2joA9fYPZ7g7hkq0pUdcCRMGTQREGLFbCS/pM97VMYHdvpi+YyXdmRSMP
-   KSYrHRyThfszqUK2VyOmuNPACBjNcuAzhAcJraquPWx7sKl6mwCJe3YvL
-   McHT/+GJhdwdzCcSiJ7DIVgmZ6mVT5v2p/iPyywdzX7tXq2VFd8wnkkCN
-   eEhoO6aur1fHDkrOBV56Hp/46BwHsjOwUsqmH5ppTsVhnerERFK0k82Wu
+   mime-version:in-reply-to;
+  bh=iD9MNKwEAKGE0wV7TMV/IgNKE43bbdq4a0RjU1vPlEE=;
+  b=cTnEXpCwcIEEIo7knsVt92HIpgsTppO8s66cv3P1oNGW93Dz37hmaojs
+   xvwF46g98FUCigWA33hQ/bch8pk132vwNP/sctndMnh35XKP63G+z3+iY
+   D1hlkp6dqg23S/rmr13G3tbhqjAxbZIN9+jqrcLN2gso/I+mNwkhxVxT9
+   0OlDp+/Esc91huhG5L5duAR89Ic9OdvNWy7hRNqhwlxmL6H+gXN1sNRBD
+   Zz2QTaRpzje1Ov5IOahOT76WpWgerxRHp15ipmL45TCMHlEltYpbyjK5C
+   9nyyfa7miOsJt37JqXbym51UHktFVW7/dpopIbBf4phePTwHAoBDyVKM7
    w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10411"; a="286948011"
+X-IronPort-AV: E=McAfee;i="6400,9594,10411"; a="286948444"
 X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
-   d="scan'208";a="286948011"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 05:27:03 -0700
+   d="scan'208";a="286948444"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 05:30:04 -0700
 X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
-   d="scan'208";a="601206977"
+   d="scan'208";a="655256538"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 05:26:58 -0700
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 05:29:56 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oDPpu-001OAV-2O;
-        Mon, 18 Jul 2022 15:26:54 +0300
-Date:   Mon, 18 Jul 2022 15:26:54 +0300
+        id 1oDPsm-001OAe-1M;
+        Mon, 18 Jul 2022 15:29:52 +0300
+Date:   Mon, 18 Jul 2022 15:29:52 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Marcin Wojtas <mw@semihalf.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sean Wang <sean.wang@mediatek.com>,
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alvin __ipraga <alsi@bang-olufsen.dk>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        DENG Qingfang <dqfext@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        George McCollister <george.mccollister@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kurt Kanzenbach <kurt@linutronix.de>,
         Landen Chao <Landen.Chao@mediatek.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        UNGLinuxDriver@microchip.com,
         Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Grzegorz Bernacki <gjb@semihalf.com>,
-        Grzegorz Jaszczyk <jaz@semihalf.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        upstream@semihalf.com
-Subject: Re: [net-next: PATCH v2 5/8] device property: introduce
- fwnode_dev_node_match
-Message-ID: <YtVRjvzgmeDjLz1k@smile.fi.intel.com>
-References: <20220715085012.2630214-1-mw@semihalf.com>
- <20220715085012.2630214-6-mw@semihalf.com>
- <YtHBvb/kh/Sl0cmz@smile.fi.intel.com>
- <YtHDHtWU5Wbgknej@smile.fi.intel.com>
- <CAPv3WKcf7U_KLuxg5zgyQZru52QEAgrHq2dO7dD4JGMMCLq05w@mail.gmail.com>
+        Woojung Huh <woojung.huh@microchip.com>,
+        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
+Subject: Re: [PATCH net-next 2/6] software node: allow named software node to
+ be created
+Message-ID: <YtVSQI5VHtCOTCHc@smile.fi.intel.com>
+References: <YtGPO5SkMZfN8b/s@shell.armlinux.org.uk>
+ <E1oCNky-006e3g-KA@rmk-PC.armlinux.org.uk>
+ <YtHGwz4v7VWKhIXG@smile.fi.intel.com>
+ <20220715201715.foea4rifegmnti46@skbuf>
+ <YtHPJNpcN4vNfgT6@smile.fi.intel.com>
+ <20220715204841.pwhvnue2atrkc2fx@skbuf>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPv3WKcf7U_KLuxg5zgyQZru52QEAgrHq2dO7dD4JGMMCLq05w@mail.gmail.com>
+In-Reply-To: <20220715204841.pwhvnue2atrkc2fx@skbuf>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -89,56 +97,37 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 16, 2022 at 01:15:55AM +0200, Marcin Wojtas wrote:
-> pt., 15 lip 2022 o 21:42 Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> napisał(a):
-> >
-> > On Fri, Jul 15, 2022 at 10:36:29PM +0300, Andy Shevchenko wrote:
-> > > On Fri, Jul 15, 2022 at 10:50:09AM +0200, Marcin Wojtas wrote:
-> > > > This patch adds a new generic routine fwnode_dev_node_match
-> > > > that can be used e.g. as a callback for class_find_device().
-> > > > It searches for the struct device corresponding to a
-> > > > struct fwnode_handle by iterating over device and
-> > > > its parents.
-> > >
-> > > Implementation
-> > > 1) misses the word 'parent';
+On Fri, Jul 15, 2022 at 11:48:41PM +0300, Vladimir Oltean wrote:
+> On Fri, Jul 15, 2022 at 11:33:40PM +0300, Andy Shevchenko wrote:
+> > On Fri, Jul 15, 2022 at 11:17:15PM +0300, Vladimir Oltean wrote:
+> > > On Fri, Jul 15, 2022 at 10:57:55PM +0300, Andy Shevchenko wrote:
+> > > > On Fri, Jul 15, 2022 at 05:01:32PM +0100, Russell King wrote:
+> > > > > From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> > > > > 
+> > > > > Allow a named software node to be created, which is needed for software
+> > > > > nodes for a fixed-link specification for DSA.
+> > > > 
+> > > > In general I have no objection, but what's worrying me is a possibility to
+> > > > collide in namespace. With the current code the name is generated based on
+> > > > unique IDs, how can we make this one more robust?
+> > > 
+> > > Could you be more clear about the exact concern?
+> > 
+> > Each software node can be created with a name. The hierarchy should be unique,
+> > means that there can't be two or more nodes with the same path (like on file
+> > system or more specifically here, Device Tree). Allowing to pass names we may
+> > end up with the situation when it will be a path collision. Yet, the static
+> > names are easier to check, because one may run `git grep ...` or coccinelle
+> > script to see what's in the kernel.
 > 
-> I'm not sure. We don't necessarily look for parent device(s). We start
-> with a struct device and if it matches the fwnode, success is returned
-> immediately. Only otherwise we iterate over parent devices to find a
-> match.
-
-Yes, you iterate over parents. 0 iterations doesn't change semantics of
-all cases, right?
-
-> > > 2) located outside of the group of fwnode APIs operating on parents.
+> So won't kobject_init_and_add() fail on namespace collision? Is it the
+> problem that it's going to fail, or that it's not trivial to statically
+> determine whether it'll fail?
 > 
-> I can shift it right below fwnode_get_nth_parent if you prefer.
+> Sorry, but I don't see something actionable about this.
 
-Yes, please do.
-
-> > > I would suggest to rename to fwnode_get_next_parent_node() and place
-> > > near to fwnode_get_next_parent_dev() (either before or after, where
-> > > it makes more sense).
-> >
-> > And matching function will be after that:
-> >
-> >         return fwnode_get_next_parent_node(...) != NULL;
-> >
-> > Think about it. Maybe current solution is good enough, just needs better
-> > naming (fwnode_match_parent_node()? Dunno).
-> >
-> > P.S. Actually _get maybe misleading as we won't bump reference counting,
-> >      rather _find?
-> 
-> How about the following name:
-> fwnode_find_dev_match()
-> ?
-
-fwnode_find_parent_dev_match() LGTM, thanks!
-
-You iterate over parents.
+I'm talking about validation before a runtime. But if you think that is fine,
+let's fail it at runtime, okay, and consume more backtraces in the future.
 
 -- 
 With Best Regards,
