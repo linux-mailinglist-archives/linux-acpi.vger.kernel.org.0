@@ -2,59 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 713F8577FB4
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 12:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F5F578006
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 12:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234294AbiGRKdS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jul 2022 06:33:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42540 "EHLO
+        id S233410AbiGRKos (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 06:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234267AbiGRKdR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 06:33:17 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735181DA51
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:33:16 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id n74so20016437yba.3
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:33:16 -0700 (PDT)
+        with ESMTP id S231710AbiGRKor (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 06:44:47 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55165DEA2
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:44:46 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-31e47ac84daso1887417b3.0
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:44:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=nB9TysPxASoCZq2mAu9xXViPEOO/JgqPxrNGpKeDpVM=;
-        b=SBJxEmiH2w/cKdGxjgxmO0ELCL2TKEVUhjnrHf02yQcDhryh8KhJbZjCQLKQGk++Nb
-         8NRjbtRS5fTBMu89pQaD4QQbY4IVRizv3Z4O870kh6S7lm/ldRQVOx5W9p8dE8uF8+q1
-         gqg2Jd/fcZQHcRLuT+wb0O8fOnapWzaZMH5Liowteg/RcA8gHe0WV07PEXwSCJIfgWxk
-         +wdXGDMDIJl3sz5FhRUP/2eq2YXFFYNpj2G+9C20ZrxnjY+gLD7DuEhrz0BMKf+9Ere+
-         RH3XBHlqCJ8O07Lxqjw0ivBFpU9k3qjHLX2kXgQIAzto68wevq5RblZGEO7+W3NA0+fV
-         qOaA==
+        bh=Uc6eWbNciWgCyv7c8q11Fg2PzpQWeHdegtWuP/RJosk=;
+        b=hunoSOBK5o/MgbRCfnof4p/yAizCb87IErb0T+TMW5bjsqJf8adSLBxOtskb/3SYq3
+         v5NHC2GksmyPzVsCugk7JT9c7iWbccDFF8/aL7PWplrqtLLR5NgEh6HvuIszHu2kjnoO
+         RhPU/8A8agWydAQkW8ngj01Y54ZbQDa/XBoBfPm8FgWWSKF/JjImLGXqfpzoR/qhK63R
+         1PqtpT6VFiVT94nSADhTt6K/8O+9hThPGsWTAsvov3OItqG7tzWDczZbNU811Mem1xGt
+         5XvvpKj+PA2h/0wc3vM/rkRmzpm1uIdp7q3vgvXk/LmhF6I167bH8PsJ1cXEpkAT75Jx
+         l35g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nB9TysPxASoCZq2mAu9xXViPEOO/JgqPxrNGpKeDpVM=;
-        b=gP4ALCVQEhW2LNVVC2qGCPh1nJCzuMV3E4FN2sIzwTojTNKghPYyInO7Gs1VOguaK6
-         KqirCCNMOewf0F5gau/h8xd/sMsp28uzaNX/bQWJLmr5XFeqGj0OsMVP+LHAPH7ByoZ2
-         BNPCslnKl9PdCyzb1omQV3S5CgM18MmgNau7RAwSygpmxGv3mlaZYSIiTjOAwrwIgfg9
-         f7Ef5LruNq838+xG5J31XVYxlV5zQ33qgajTeX3MYh8Ug3o/1Mo/SaSSYXoQO6cwNDlK
-         B3E0b8Nd6XWXccmq0L8ZxYRwDHORekkbLoF7UKCYpp7nCWuxgWENO3QPr2Rf9p4cpmr7
-         buXA==
-X-Gm-Message-State: AJIora+fzCbhBSQWqtItl9iftEkFIX+bQLSgqZ6R7trimlfOzTDZaHoY
-        0Nx8uCCfJHEejxjNZf38LTU+8DqRVb31WOOJwK53Zw==
-X-Google-Smtp-Source: AGRyM1vLEixkZHCYiYRq5YltGu2Qn8XImkgcCPCgMkUAGgYU0xegYa5n58mUOA0/a3wp8LIkZmDox8dNhNHDnjcvtHM=
-X-Received: by 2002:a25:8c91:0:b0:670:5c00:7c6a with SMTP id
- m17-20020a258c91000000b006705c007c6amr1433817ybl.66.1658140395744; Mon, 18
- Jul 2022 03:33:15 -0700 (PDT)
+        bh=Uc6eWbNciWgCyv7c8q11Fg2PzpQWeHdegtWuP/RJosk=;
+        b=VKG15wxXP4nkHrQRbegZVv536A6zmlvh2x/4EBy4T3ZiKHtHUhV91b631PClQoan+K
+         ikNh+AhoRfc+gEunwRgDnR+sNuH6hONcG8jcapdG4rG/sWWl0LJnzEqsWBH/vQmu0OZz
+         SPrWqO883YpltGFaVu4+n2by4CjLX5P/L4QdFFKbnhU6+BumqV0/dIurh4z8v7mfZko8
+         G2Y5T1zCRQs6bY2xJEDFngb0wX6QBaE+QoHXg/eodYZaQGbvtoEzq0LIe5ja8wrvVC6+
+         m1JTRMgiTEqrnyOC3SBoDsr18txckHUzJ/+e5t5ugB57ClgDbFABDthpo9389bDtCo7K
+         m3wg==
+X-Gm-Message-State: AJIora9bXxDMAgcjy/zUE85Ldui+AgmW9pNIdXZfXvaQscFKtF1TEmr+
+        TPtSrCsmdpyAS/6QjavBQDpk/UV7A1WqTZTFlw9jtg==
+X-Google-Smtp-Source: AGRyM1syf04DDcAP3vOqEDAUO6jpt6YyrJga4szmgQ60QMX18LG8E4DK3LxuaI7O0RIvV7k/Ho7WmxevzlUIt1owlhY=
+X-Received: by 2002:a81:4809:0:b0:31d:848:4b3b with SMTP id
+ v9-20020a814809000000b0031d08484b3bmr29876705ywa.69.1658141085548; Mon, 18
+ Jul 2022 03:44:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220713131421.1527179-1-nuno.sa@analog.com> <20220713131421.1527179-5-nuno.sa@analog.com>
-In-Reply-To: <20220713131421.1527179-5-nuno.sa@analog.com>
+References: <20220713131421.1527179-1-nuno.sa@analog.com> <20220713131421.1527179-2-nuno.sa@analog.com>
+ <Ys8CpqYhWp7zVNC8@smile.fi.intel.com>
+In-Reply-To: <Ys8CpqYhWp7zVNC8@smile.fi.intel.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 18 Jul 2022 12:33:04 +0200
-Message-ID: <CACRpkdb7Sko3se4f8mYhyMxpr6rDYWO7_QnfizaHtBgLiVPFJA@mail.gmail.com>
-Subject: Re: [PATCH 4/4] dt-bindings: gpio: add pull-disable flag
-To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
-Cc:     linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+Date:   Mon, 18 Jul 2022 12:44:33 +0200
+Message-ID: <CACRpkdbc=ogONYXTM6dbe7sJp6syG0sDFfBi1ZTc0YJtoxbJjg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] gpiolib: add support for bias pull disable
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
         linux-gpio@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
         Frank Rowand <frowand.list@gmail.com>,
@@ -71,14 +72,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 13, 2022 at 3:13 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-
-> This extends the flags that can be used in GPIO specifiers to indicate
-> that no bias is intended in the pin.
+On Wed, Jul 13, 2022 at 7:37 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> On Wed, Jul 13, 2022 at 03:14:18PM +0200, Nuno S=C3=A1 wrote:
+> > This change prepares the gpio core to look at firmware flags and set
+> > 'FLAG_BIAS_DISABLE' if necessary. It works in similar way to
+> > 'GPIO_PULL_DOWN' and 'GPIO_PULL_UP'.
 >
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> ...
+>
+> >       GPIO_PULL_UP                    =3D (1 << 4),
+> >       GPIO_PULL_DOWN                  =3D (1 << 5),
+> > +     GPIO_PULL_DISABLE               =3D (1 << 6),
+>
+> To me it seems superfluous. You have already two flags:
+> PUp
+> PDown
+> When none is set --> Pdisable
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+What happens in the pin control case for some drivers at least is that
+the machine
+comes up with some pull up/downs enabled (by power-on default or from
+the boot loader), and some systems need to explicitly disable these
+pulls.
+
+In these (device tree) cases they set bias-disable; in the device tree, and
+the driver will actively disable any pull up/down.
+
+OK this is maybe not the most elegant system engineering. But some of
+those users are hobbyists and cannot affect what the ASIC or firmware
+is doing, because vendors are not really listening.
+
+Another semantic reason is that pins can also be set to bias-high-impedance=
+;
+which is what "some people" would assume is the default if you disable
+both pull up and pull down. (Yeah ... semantics...)
+
+Device tree also has bias-pull-pin-default; to make things more complicated=
+.
+This should *really* leave it at power-on default. Explicitly.
+
+I think for Nuno's usecase (using a random pin from userspace) the state
+of biasing cannot be assumed, the driver will not change bias to
+disabled just because neither pull up or down is specified, so the driver
+needs an explicit kick saying "disable any bias".
 
 Yours,
 Linus Walleij
