@@ -2,67 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A84FB577FA8
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 12:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACDB7577FAB
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Jul 2022 12:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234044AbiGRK3s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Jul 2022 06:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40906 "EHLO
+        id S234225AbiGRKa4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Jul 2022 06:30:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234140AbiGRK3s (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 06:29:48 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66631BE8A
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:29:46 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id y4so14623707edc.4
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:29:46 -0700 (PDT)
+        with ESMTP id S234230AbiGRKaz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Jul 2022 06:30:55 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB0D1D0D4
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:30:52 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id va17so20451352ejb.0
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Jul 2022 03:30:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=sKM5awpHr7el0GeuVr26/+wwtxAG0q1PHjMwBcOjjts=;
-        b=rutmtYgUq+Ba2+Bv0EZdlEInayTULpWKgLgK1cRDVT4/jmKTMFpDnX0mr/Yt8qFu24
-         RASSdB8BiGTWF6uixdUvJTm1k3kS5IizXE0PZEHuHyJG+WwZrmLqPrfMgeGX3DoumiqF
-         ESargpIDPjE9pFbcu8JMw+TL7trxLKNn2UYsNR+F4IKDV2hNBmQY7KF1zo3thw5vJH3N
-         JqMzS1zRgjCUkJnVi2hpgZ8Yc01fai7/a4Do3+yH94njuU1w6irek2xiXGAe9BY0TREJ
-         DThjBP3p9XC45B1se7KotMA3rFKP0l77CzfU3fme1FBHrKwk3aSpjvATg7zhel1sMyk5
-         J0XQ==
+        bh=+K5PUgLbPOh2pYTqv2OCvpFF3AnVsbVN2Qf3iujLkgE=;
+        b=ro9jXPd9Pj09GtPgs4Slq29N13r6QTF5lHWM9hlY3iOmwP3AQi1/0TxYVTQmvVtXof
+         zRD9Ciq65H+TqfiW9c3FLG+XXeETgEToVCc+XnSV7omdn9Ye1R5s2XJcVQquzL+902Nm
+         Adl4T30kA2m+gMjXTxx6ernJGJ6cndpj/KFs2Wczgip2Y5aD5R2N4XN4szlFQDFEI3cg
+         yjZqgJZ98aRrJmaqImE+gOCI48SpeZiYpFZHiPI2rQWSevA+HZeylnog+yyfeUbwv0bp
+         6oM+1MkApG0cZQZYhgYp0OE0tH8O9splOyY+9oimJfE3EPvrURJkVUqC4pokT8SzN+Xh
+         xtuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=sKM5awpHr7el0GeuVr26/+wwtxAG0q1PHjMwBcOjjts=;
-        b=Zw1D0wjRokenQ+HqxZ/ueq1icZbLe1URmlVSPkxvsSeHkQj2TIYYmqrEKXDP38aWPD
-         Ao++kG+4vbaMxn0zJRli+IYnYsoXuUL+kGz2TcLK/rxL/Eh9te3ZWKyrc1C4SRoY4H8A
-         NiTNjTvanSbqZWZ/aMNB4B7J7UM78KgRZS3uQ8M8eDgN22QDNVKDC+S04PdtqxEDdWvO
-         UVTBCNK83NtUdOSKgVI/t7nL8/0LvxeWeBWwd9cedibAqDT12SuxC53n86arsF4D+d+G
-         tDwGois/IPEc6N96vne+V1wB5giS/GjwwU/sS5lLMrn4G0FQNEDa3hAP65Rcon+eZqYb
-         EiiA==
-X-Gm-Message-State: AJIora9jwaB6raeB7zVCKIG6AsNwRxvGZ3NqrKdDjDQBFhpgj9mjQu/8
-        wi4Vx4PWfvZUiiB4EobXapPeR6nWItOuuqGum96vDw==
-X-Google-Smtp-Source: AGRyM1sQO2Si4Wai7llTNN0MLodyhtS3wCMM8NJdZjyYvK1VZyWIItNJRxT6FoP0UfHh060I+PUOTz/DTjycN3mTVz0=
-X-Received: by 2002:aa7:c0c4:0:b0:43a:20cf:3c68 with SMTP id
- j4-20020aa7c0c4000000b0043a20cf3c68mr36444723edp.172.1658140185369; Mon, 18
- Jul 2022 03:29:45 -0700 (PDT)
+        bh=+K5PUgLbPOh2pYTqv2OCvpFF3AnVsbVN2Qf3iujLkgE=;
+        b=WDRvmqMDrTQHcD+kfLN5LJfAAH8aswIccApLDfiEh9yMARc7ljJMXpTRmUffMpLlK9
+         jg/8BTZgRw5Qfc1s65C9HOV2lBcgu9LiRQoLwY1A7FHrBWgxq0MU2oFbq/NWPbtFcAqB
+         0vtQoawE9Vqgor+T/Q83JNLFreH6FbQEcf0syXW6di3dfEc/mQPTvt2TjpCe6+PE3XdX
+         1fg28tL6di6rkHHLgP3ip6O7XOrLjsEZ6QhajwQMdSrGeAdNj7/r7eWMSQ4j4dW0UV83
+         jgCfkDRYeySJmqX99KD0WkD6o9SjYQUAauXJ9qL1/IhN6SCbTncSSz1Vk5fSxIYJT/LN
+         JrUQ==
+X-Gm-Message-State: AJIora8RKTt4MzRHAOtMEA7CFxKfqnjSvq0+UlcBX/6Nnq1ldHq0BPcv
+        VhfoCxp6njaqjYef2ku5gzA7htQTjKNsnj2jnEhShg==
+X-Google-Smtp-Source: AGRyM1sKXB2UFk9OFv2GXxfvVbshAtkgM3g9E1fKG+ksWF9jTOGEyTSwlQ7S72fQ+Izu1bfHWWz/10Q2nf9gFCZCWTo=
+X-Received: by 2002:a17:906:58c8:b0:6fe:91d5:18d2 with SMTP id
+ e8-20020a17090658c800b006fe91d518d2mr25233550ejs.190.1658140251501; Mon, 18
+ Jul 2022 03:30:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220713131421.1527179-1-nuno.sa@analog.com> <YtAvHMmGay/3HACZ@smile.fi.intel.com>
- <e0638b02bdcd0ee452846b86ce83458173912ef1.camel@gmail.com>
- <YtBnIxh6rDJMwpEm@smile.fi.intel.com> <5d9f9272334177e3ea864467f50095a8709bc0d2.camel@gmail.com>
- <YtFYFbP+xqAUUHZa@smile.fi.intel.com> <88114aeb10f7316cf3c1396179949f2fc351ad8f.camel@gmail.com>
- <CAMRc=Mdz+8yfrATQPJ=uY33k2Dwt29g6vZbP3mSjkB_VAzP5+A@mail.gmail.com> <7aa6f7bc6c528fda0649888d282aef39f1d055d4.camel@gmail.com>
-In-Reply-To: <7aa6f7bc6c528fda0649888d282aef39f1d055d4.camel@gmail.com>
+References: <20220713131421.1527179-1-nuno.sa@analog.com> <20220713131421.1527179-3-nuno.sa@analog.com>
+In-Reply-To: <20220713131421.1527179-3-nuno.sa@analog.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 18 Jul 2022 12:29:34 +0200
-Message-ID: <CACRpkdaZTRwvWJkgSOaCE-281Mq5KXGS9pDaUKuF7O0Jje14CA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] add support for bias pull-disable
-To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+Date:   Mon, 18 Jul 2022 12:30:40 +0200
+Message-ID: <CACRpkdaWSNLfjqKw6Eb3rHtC1LV9C8ENGEBmBQbq11LCXZn-dg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] gpiolib: of: support bias pull disable
+To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
+Cc:     linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
         Frank Rowand <frowand.list@gmail.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Rob Herring <robh+dt@kernel.org>
@@ -78,27 +72,15 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 18, 2022 at 9:50 AM Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Wed, Jul 13, 2022 at 3:13 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> > right in that the character device is the only way to set this mode
-> > ATM and. However I would like to see the first user added together
-> > with the series because adding features nobody uses in the mainline
-> > kernel tree is generally frowned upon and it's also not clear that
-> > anyone actually wants to use it.
+> On top of looking at PULL_UP and PULL_DOWN flags, also look at
+> PULL_DISABLE and set the appropriate GPIO flag. The GPIO core will then
+> pass down this to controllers that support it.
 >
-> Hmm, you mean something like a system's devicetree needing this flag?
-> If so, I don't really have such a thing. I did all my testing on a rpi
-> using overlays.
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-I would assume a driver with a .set_config() responding to this flag?
-
-I actually think some gpio drivers using pin control as back-end
-such as
-drivers/pinctrl/bcm/pinctrl-bcm2835.c
-will do this out-of-the box after this patch but I may be wrong.
-
-To me supporting this on the Rpi driver is a good enough demonstrator
-of the usefulness.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
