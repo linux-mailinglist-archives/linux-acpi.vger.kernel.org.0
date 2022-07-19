@@ -2,124 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFFD357A874
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jul 2022 22:46:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8A357AA20
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 01:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231666AbiGSUqi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Jul 2022 16:46:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59534 "EHLO
+        id S235940AbiGSXCG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Jul 2022 19:02:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230329AbiGSUqi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jul 2022 16:46:38 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355434F1BF;
-        Tue, 19 Jul 2022 13:46:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B79B9B81D3C;
-        Tue, 19 Jul 2022 20:46:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456B2C341C6;
-        Tue, 19 Jul 2022 20:46:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658263594;
-        bh=WKFGjuXRk6oyteotSlWefi1rk9n4LI3dK/a2vIQpaPQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=eSgXBHQxc39Mb7qbp8RzMRW/S4KAFvTtt1Q7x9YbJ6xpb2nE2MK9Q/pbMbWKChYwe
-         OXo6npKiTqswH7YemODJBMfoWF+IDwj8DgYU6IpyHNBzGsxiqU01TJprjmskWlA+le
-         TM2NWikCByNMoePPlRzR8a6zLdljiCkJ/DfiJbv1WHjl9vmr8OX8NN7RcfI6Wpd4uY
-         HCq/RVd+mSpu54UI1Wre7unHq2neWZzafiRsR6TUkoA9q8irLTzGzGICCXLqdNo8WV
-         iPLcBZOvBtHCnZD3KsI2NwlZsmULrE2RA5xdsVeHJjk5xvM+zzYOHxGyK2JnLV3eHm
-         UgIR+hqSUNR2w==
-Date:   Tue, 19 Jul 2022 15:46:32 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Andrey Strachuk <strochuk@ispras.ru>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ldv-project@linuxtesting.org
-Subject: Re: [PATCH] ACPI: remove useless comparisons in
- acpi_pci_link_check_possible(), acpi_pci_link_check_current()
-Message-ID: <20220719204632.GA1562909@bhelgaas>
+        with ESMTP id S237741AbiGSXCE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jul 2022 19:02:04 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D3A5887A
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Jul 2022 16:02:02 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id c131so28566479ybf.9
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Jul 2022 16:02:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=YeEFrOpnueqp49lpSsCtkyhW66cD5QzqZPU5hyS5TkM=;
+        b=IidRqp259LnIGwKSY8eSnwY2pSvVpnXgD6l4DtZ0nS1en5/eIODexxA8HY1P3fOj1G
+         k3L2dqT2adyYNMP0Xveqboy+8rHiXHxkUk7eN+Z4c1u4A1dmYZTv8XeBq3Mcqc8JpY/J
+         Y+FZqCw+ctBHW93xydCMO1T2zbJgKE6zi4yOKnSgCU0wXAb68jTgzbksOw/WF0fuySr4
+         IszSqaPAblIoqFUVbDoenHDcU4oM8zz2T2X2YOFu4paIHinYHYAEpHDagNDILO9VwXpP
+         1+8RZDNcKixJbUOVKzMHhr00ZyE0o1uffduD4Jla0qSaybMZB4f9mMaQZtZwFiKbVkVp
+         7loA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=YeEFrOpnueqp49lpSsCtkyhW66cD5QzqZPU5hyS5TkM=;
+        b=tsd8e8Tve5TOwv3dyhSduJjt/lYYd8BM8Cy8Ippdt03iN3ecNOlqNk8Uz/R+v5spN4
+         9ezqy5Pxnf2KcpqgmhakiAcePpZ9Cp58xkVtPlJpzzidx5r08tU6UU3lsqgHwpJGkf/U
+         SWV/A32AU3sWYJLQ5Mp4LiJahieoK1JaSKzaGtzGCgnNq0/rcJHMC4vlw1TA10qpt3/5
+         kaNXcm8NarNBlGDt2cJimiJwB7FuBM00OoAqLN+EqoyGpjKmYmQZE/jrOULW+V80PL3C
+         26MR9ehRObXabFdWOpsavkgYFyoJEgksctm3e3Yfk4MAtOSUQW0fMl8YbvmJvq1hjoHj
+         Z/zQ==
+X-Gm-Message-State: AJIora9DL7ePJL0Qp5P9BI/6ETKJJ7L+Aq4Pk05TYNgr7EjGzdnfuSLP
+        sQHrGahhnCGWpRzq4UJBrfvvsQ+xjBchx+zYzSg=
+X-Google-Smtp-Source: AGRyM1sl0J4NyfzC2f29bqXT9oPchs8cDVndRHRbS2Q3refz6ns6Y35SIupBWILMCNYHx3pJ+wk7AlhI9UdwA1sMqK0=
+X-Received: by 2002:a25:850b:0:b0:66c:d287:625a with SMTP id
+ w11-20020a25850b000000b0066cd287625amr35727355ybk.31.1658271721069; Tue, 19
+ Jul 2022 16:02:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220719095950.5420-1-strochuk@ispras.ru>
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Sender: belloashawu72@gmail.com
+Received: by 2002:a05:7000:26b1:0:0:0:0 with HTTP; Tue, 19 Jul 2022 16:02:00
+ -0700 (PDT)
+From:   Lisa Williams <lw23675851@gmail.com>
+Date:   Wed, 20 Jul 2022 00:02:00 +0100
+X-Google-Sender-Auth: BO4DmyfvjRINBOwOOpcYOq24sHk
+Message-ID: <CAOjupQKQ6zRjFB_6SefXkEmKaf0_dwC_KfS2LmZFQLFEaDr30A@mail.gmail.com>
+Subject: My name is Dr Lisa Williams
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Since this only affects pci_link.c, I would update the subject to
-match the style of previous commits:
+Hi Dear,
 
-  ACPI/PCI: Remove useless NULL pointer checks
+My name is Dr Lisa Williams from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
 
-On Tue, Jul 19, 2022 at 12:59:50PM +0300, Andrey Strachuk wrote:
-> Local variable 'p' is initialized by an address
-> of field of acpi_resource, so it does not make
-> sense to compare 'p' with NULL.
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
 
-Rewrap to fill 75 columns, which is the typical width of commit logs.
+Thanks
 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Signed-off-by: Andrey Strachuk <strochuk@ispras.ru>
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-
-I think you should drop this Fixes: tag because it's not useful.
-
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
-
-> ---
->  drivers/acpi/pci_link.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-> index 58647051c948..aa1038b8aec4 100644
-> --- a/drivers/acpi/pci_link.c
-> +++ b/drivers/acpi/pci_link.c
-> @@ -95,7 +95,7 @@ static acpi_status acpi_pci_link_check_possible(struct acpi_resource *resource,
->  	case ACPI_RESOURCE_TYPE_IRQ:
->  		{
->  			struct acpi_resource_irq *p = &resource->data.irq;
-> -			if (!p || !p->interrupt_count) {
-> +			if (!p->interrupt_count) {
->  				acpi_handle_debug(handle,
->  						  "Blank _PRS IRQ resource\n");
->  				return AE_OK;
-> @@ -121,7 +121,7 @@ static acpi_status acpi_pci_link_check_possible(struct acpi_resource *resource,
->  		{
->  			struct acpi_resource_extended_irq *p =
->  			    &resource->data.extended_irq;
-> -			if (!p || !p->interrupt_count) {
-> +			if (!p->interrupt_count) {
->  				acpi_handle_debug(handle,
->  						  "Blank _PRS EXT IRQ resource\n");
->  				return AE_OK;
-> @@ -182,7 +182,7 @@ static acpi_status acpi_pci_link_check_current(struct acpi_resource *resource,
->  	case ACPI_RESOURCE_TYPE_IRQ:
->  		{
->  			struct acpi_resource_irq *p = &resource->data.irq;
-> -			if (!p || !p->interrupt_count) {
-> +			if (!p->interrupt_count) {
->  				/*
->  				 * IRQ descriptors may have no IRQ# bits set,
->  				 * particularly those w/ _STA disabled
-> @@ -197,7 +197,7 @@ static acpi_status acpi_pci_link_check_current(struct acpi_resource *resource,
->  		{
->  			struct acpi_resource_extended_irq *p =
->  			    &resource->data.extended_irq;
-> -			if (!p || !p->interrupt_count) {
-> +			if (!p->interrupt_count) {
->  				/*
->  				 * extended IRQ descriptors must
->  				 * return at least 1 IRQ
-> -- 
-> 2.25.1
-> 
+With love
+Lisa
