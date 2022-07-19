@@ -2,78 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91B8D579787
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jul 2022 12:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B29AB5798C0
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jul 2022 13:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236122AbiGSKUe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Jul 2022 06:20:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45446 "EHLO
+        id S233843AbiGSLuX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Jul 2022 07:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236479AbiGSKU2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jul 2022 06:20:28 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E70F13FA5;
-        Tue, 19 Jul 2022 03:20:27 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id kh20so10714123qvb.5;
-        Tue, 19 Jul 2022 03:20:27 -0700 (PDT)
+        with ESMTP id S229895AbiGSLuW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jul 2022 07:50:22 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 140A4959B
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Jul 2022 04:50:21 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id g17so11732139plh.2
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Jul 2022 04:50:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=w2ggDjwTVu+YFp9lbW40/ezM7FTqimjDcgzL0L7cezQ=;
-        b=KDx+k+CwVkTR4lsP3WIXXRHa48gJvs0EjIGVLu6MKO4Xxr0LUeObRr/ycr4eR1atsj
-         5gPDhiJmkiBqB3OZ95f95uIG9PTaIxt2Aw1yy+wPydPpBe8N0tj6Jv14pgbU1pjJ9AQf
-         DozRu96ve+yLf8TQP0xBvK05ir6xXHw2DqVIuxJG7iRpDQoTRUEBiKe0WxWtUXWJlYMi
-         LBt4EhbOc6l9Jsjd6BBkt+ZyYGRse6FaymskBaZhVvPyXrN4AObsOGRGcGYNQOhgb7+I
-         tdhZG4UgRqLNl2bCQM0/SV1uhBWqtXMnfPHNvOYZ1Om6XZ1a8vbvzrluD/GXnW3eOOYT
-         rfwg==
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qafXaXkIM/uHsJQqJP5nDPOn9hfjFKGF8wnaV/Bkdes=;
+        b=tusAWoyw3TsYqhLLXBcTMYpo1xp/IdnAPgB7Z1dyi9njONTu1eYg82N8fG1GIDEY5+
+         ReXJ4EprggsoH0SPnIRE26aQEu8Ve8VOmPz2M/hpYAGDWS5TauLNj3v9BXFG8lAd28tJ
+         z4LYvPRw650AAxwx5IHSEiYYpk/anDTIJ6hhSYVZdu2JJXvW8ZtS8uc8XE+SsCpqeOik
+         nRnKbqUC3x+qHxLZ/jIW6nVT/3Jbzsod7fr5cq9YW3NGz/Xrv6o4lppbwQzbV4zC27N3
+         GDeLdI9nuXOJRYdsAU7LBQCceS/S5BTGyN1QCreL1KcWgNRXX2LIar+oHPfqmFX6qwNX
+         jwcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=w2ggDjwTVu+YFp9lbW40/ezM7FTqimjDcgzL0L7cezQ=;
-        b=HG0WJ0SDv99cnDe1xRS+ck2pKyzsW5+L5Vmay7ae4txcAikG8/0SK1XCTNrRZrQ4f6
-         tDZodY/GGCOBwaEHmIV8xtTv83lV5VIGRMN+uLYYZtFpev02dAWptvnqpVz329sZsYwl
-         sF183+ICcTNOxIftcTFKEqL2ba30AfksJAGEkYfEsQ4xxtDBA5R0Oclef+MDrRI4pkKK
-         LNjZIBbBtS0GEw2gp3ve3IqdGCNTy1gSBWrBdxvKjV+yDADzjFFzVavpG85qW4KX69ve
-         BLh0zDZf9oDgHO3AUy0Ti+8YpRVCNmlMaUH4hdfq6DdfUS7QoQP2bIX/foOl8uMxxWPJ
-         XYAg==
-X-Gm-Message-State: AJIora+hRqd/R5cu4mwAApPPYRLD6oUVebJWTLH2BWPYRbeiD5+toVuF
-        nnq5vrRq9S5erJtoxd868MA=
-X-Google-Smtp-Source: AGRyM1u4lD7kHp+/dXY/ChUfGSPgDGzDqwudNpn31eirT0/l7+rLmDCMYxgsdcSHsSNDhi075Scn4w==
-X-Received: by 2002:a05:6214:19c8:b0:472:f250:2d97 with SMTP id j8-20020a05621419c800b00472f2502d97mr24127371qvc.13.1658226026062;
-        Tue, 19 Jul 2022 03:20:26 -0700 (PDT)
-Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id x2-20020ac87002000000b0031ed3d79556sm10301644qtm.53.2022.07.19.03.20.23
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qafXaXkIM/uHsJQqJP5nDPOn9hfjFKGF8wnaV/Bkdes=;
+        b=mS92LcTCK1ObH/UFOVUv+SmdVEJNwBHJr38D9R+EEtzHtOCkC8Mal0VM0J19IQKiau
+         PW5PlQmp+ZmBvpicLWDM1WJcGX8k9HYcmyCZq/xduqrG7NJWUo+FqwzNOkO8k30AyrK3
+         mII/trfjlDkvlg3iOBzkpk+AJ+kaUwzm9T7NpKd6pMPYh6u/UIKE9XjYlo996J4y8VBh
+         Lep9gK5KhlYacAJmiZog+1AzeZiDQNseYaQ4d46poLuUDlIoBNuDqyvjpoVGzwAtDMN9
+         ilf4HZoFUE+A8VdtpAY6M9ahNKbGo4dPAH00a7dVogoBi5ItAFXsTshJ3f4nNy6Z19uu
+         Wohw==
+X-Gm-Message-State: AJIora/PSa4VbXfEzIhr6oFh1KeDUPIWvHk/aIQiFm/nIr8qqXigL6de
+        F/6IU2gw59SC/9s9QWWxBB94fQ==
+X-Google-Smtp-Source: AGRyM1uLQnncqRk8F0w7HNZ+X3qpphGJmFRIOJpOFskO1lX2aBT2K5cte86IfEZhj9Rm4LxS3RDJYw==
+X-Received: by 2002:a17:902:aa82:b0:16c:4bee:1f90 with SMTP id d2-20020a170902aa8200b0016c4bee1f90mr33458243plr.69.1658231420542;
+        Tue, 19 Jul 2022 04:50:20 -0700 (PDT)
+Received: from n37-155-090.byted.org. ([121.30.179.126])
+        by smtp.gmail.com with ESMTPSA id a3-20020a170902ecc300b0016be4d78792sm11372606plh.257.2022.07.19.04.50.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Jul 2022 03:20:25 -0700 (PDT)
-Message-ID: <6539cb490bfc6fd0956505e9bcb51f84596b932e.camel@gmail.com>
-Subject: Re: [PATCH 0/4] add support for bias pull-disable
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 19 Jul 2022 12:21:27 +0200
-In-Reply-To: <CAMRc=Mcgydibw_GXNS_S6=gFZuojo5bBb8ELUc1tTQhbQ2V7hA@mail.gmail.com>
-References: <20220713131421.1527179-1-nuno.sa@analog.com>
-         <CAMRc=Mf1w7DCGMAku0wPHAhTtDWoWkWOfvxkx=_b1pKp8U8yOg@mail.gmail.com>
-         <14af555c630654d0a780dc3bf9ecca6f29dcf61a.camel@gmail.com>
-         <CAMRc=Mcgydibw_GXNS_S6=gFZuojo5bBb8ELUc1tTQhbQ2V7hA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.3 
+        Tue, 19 Jul 2022 04:50:19 -0700 (PDT)
+From:   Qifu Zhang <zhangqifu@bytedance.com>
+To:     rafael@kernel.org
+Cc:     lenb@kernel.org, jarkko@kernel.org, tony.luck@intel.com,
+        dave.hansen@linux.intel.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qifu Zhang <zhangqifu@bytedance.com>
+Subject: [PATCH] Documentation: ACPI: EINJ: Fix obsolete example
+Date:   Tue, 19 Jul 2022 19:50:13 +0800
+Message-Id: <20220719115013.744751-1-zhangqifu@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,86 +67,28 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2022-07-19 at 11:14 +0200, Bartosz Golaszewski wrote:
-> On Tue, Jul 19, 2022 at 10:51 AM Nuno S=C3=A1 <noname.nuno@gmail.com>
-> wrote:
-> >=20
-> > On Tue, 2022-07-19 at 10:25 +0200, Bartosz Golaszewski wrote:
-> > > On Wed, Jul 13, 2022 at 3:13 PM Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > wrote:
-> > > >=20
-> > > > The gpio core looks at 'FLAG_BIAS_DISABLE' in preparation of
-> > > > calling the
-> > > > gpiochip 'set_config()' hook. However, AFAICT, there's no way
-> > > > that
-> > > > this
-> > > > flag is set because there's no support for it in firwmare code.
-> > > > Moreover,
-> > > > in 'gpiod_configure_flags()', only pull-ups and pull-downs are
-> > > > being
-> > > > handled.
-> > > >=20
-> > > > On top of this, there are some users that are looking at
-> > > > 'PIN_CONFIG_BIAS_DISABLE' in the 'set_config()' hook. So,
-> > > > unless
-> > > > I'm
-> > > > missing something, it looks like this was never working for
-> > > > these
-> > > > chips.
-> > > >=20
-> > > > Note that the ACPI case is only compiled tested. At first
-> > > > glance,
-> > > > it seems
-> > > > the current patch is enough but i'm not really sure...
-> > > >=20
-> > > > As a side note, this came to my attention during this patchset
-> > > > [1]
-> > > > (and, ofr OF,=C2=A0 was tested with it).
-> > > >=20
-> > > > [1]:
-> > > > https://lore.kernel.org/linux-input/20220708093448.42617-5-nuno.sa@=
-analog.com/
-> > > >=20
-> > > > Nuno S=C3=A1 (4):
-> > > > =C2=A0 gpiolib: add support for bias pull disable
-> > > > =C2=A0 gpiolib: of: support bias pull disable
-> > > > =C2=A0 gpiolib: acpi: support bias pull disable
-> > > > =C2=A0 dt-bindings: gpio: add pull-disable flag
-> > > >=20
-> > > > =C2=A0drivers/gpio/gpiolib-acpi.c=C2=A0=C2=A0=C2=A0=C2=A0 | 3 +++
-> > > > =C2=A0drivers/gpio/gpiolib-of.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- | 7 +++++++
-> > > > =C2=A0drivers/gpio/gpiolib.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 | 8 ++++++--
-> > > > =C2=A0include/dt-bindings/gpio/gpio.h | 3 +++
-> > > > =C2=A0include/linux/gpio/machine.h=C2=A0=C2=A0=C2=A0 | 1 +
-> > > > =C2=A0include/linux/of_gpio.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 1 +
-> > > > =C2=A06 files changed, 21 insertions(+), 2 deletions(-)
-> > > >=20
-> > > > --
-> > > > 2.37.0
-> > > >=20
-> > >=20
-> > > Series applied, thanks!
-> >=20
-> > Hi Bart,
-> >=20
-> > I was actually planning to spin a v2 with your suggestion for the
-> > naming of the new define... Did you changed it while applying or
-> > should
-> > I still send it? Or (last option), we just leave it like this :)?
-> >=20
-> > - Nuno S=C3=A1
->=20
-> Yeah, I'm alright with it how it is after a second though: uAPI uses
-> the BIAS_PULL_UP/DOWN/DISABLE notation while the in-kernel API uses
-> the same scheme but without the BIAS prefix. Unless you want to
-> change
-> something else - let's keep it as you first submitted it.
->=20
+Since commit 488dac0c9237 ("libfs: fix error cast of negative value in
+simple_attr_write()"), the EINJ debugfs interface no longer accepts
+negative values as input. Attempt to do so will result in EINVAL.
 
-Alright, works for me...
+Signed-off-by: Qifu Zhang <zhangqifu@bytedance.com>
+---
+ Documentation/firmware-guide/acpi/apei/einj.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- Nuno S=C3=A1
+diff --git a/Documentation/firmware-guide/acpi/apei/einj.rst b/Documentation/firmware-guide/acpi/apei/einj.rst
+index 55e2331a6438..d6b61d22f525 100644
+--- a/Documentation/firmware-guide/acpi/apei/einj.rst
++++ b/Documentation/firmware-guide/acpi/apei/einj.rst
+@@ -168,7 +168,7 @@ An error injection example::
+   0x00000008	Memory Correctable
+   0x00000010	Memory Uncorrectable non-fatal
+   # echo 0x12345000 > param1		# Set memory address for injection
+-  # echo $((-1 << 12)) > param2		# Mask 0xfffffffffffff000 - anywhere in this page
++  # echo 0xfffffffffffff000 > param2		# Mask - anywhere in this page
+   # echo 0x8 > error_type			# Choose correctable memory error
+   # echo 1 > error_inject			# Inject now
+ 
+-- 
+2.20.1
 
