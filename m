@@ -2,217 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E0457958E
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jul 2022 10:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BA33579591
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jul 2022 10:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237105AbiGSIus (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Jul 2022 04:50:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55994 "EHLO
+        id S237070AbiGSIvL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Jul 2022 04:51:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237092AbiGSIui (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jul 2022 04:50:38 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F46FD20;
-        Tue, 19 Jul 2022 01:50:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658220637; x=1689756637;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2JAJzcpzppdk8+5vwNAE1GhAxpYQx+69osAyMGcV9+w=;
-  b=LznMufkKV6tn+AsL8Pcp6zDsJmcxF1WbpzngdeuHIFYVyCRVq+nxXMkT
-   CAurvrK5QZIVmkJIVHoZ6ACy+TlsF5NiembV77ZLSTq2+U8dAiZaoF7XS
-   kwFCOVjd9F9YEsWa8xuQMqLoHc7vb5abwOCw7F9VyOy4R+hb3YSkf7ko1
-   2j/Dpdp5fqOlUcCbm0xpXWrrAYeNvDWSsIOQNLeKAa7Z20P0Mz8sU2QRf
-   2WO2SKlyxebHwaJBhyLJwvsi8Vd1AgGbYBB+J3CXIvPJLGu8JuODicL6Y
-   jfq+brmZ4GKFdpAqXoKQ/aYhr03BCkivhpwp0bPA63cymBSrLB8IsaVHr
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10412"; a="283999834"
-X-IronPort-AV: E=Sophos;i="5.92,283,1650956400"; 
-   d="scan'208";a="283999834"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2022 01:50:37 -0700
-X-IronPort-AV: E=Sophos;i="5.92,283,1650956400"; 
-   d="scan'208";a="700361257"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2022 01:50:29 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 9E6EB202EA;
-        Tue, 19 Jul 2022 11:50:27 +0300 (EEST)
-Date:   Tue, 19 Jul 2022 08:50:27 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin __ipraga <alsi@bang-olufsen.dk>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Subject: Re: [PATCH net-next 2/6] software node: allow named software node to
- be created
-Message-ID: <YtZwU9BKAO/WSRmK@paasikivi.fi.intel.com>
-References: <YtHGwz4v7VWKhIXG@smile.fi.intel.com>
- <20220715201715.foea4rifegmnti46@skbuf>
- <YtHPJNpcN4vNfgT6@smile.fi.intel.com>
- <20220715204841.pwhvnue2atrkc2fx@skbuf>
- <YtVSQI5VHtCOTCHc@smile.fi.intel.com>
- <YtVfppMtW77ICyC5@shell.armlinux.org.uk>
- <YtWp3WkpCtfe559l@smile.fi.intel.com>
- <YtWwbMucEyO+W8/Y@shell.armlinux.org.uk>
- <YtW9goFpOLGvIDog@smile.fi.intel.com>
- <YtXE0idsKe6FZ+n4@shell.armlinux.org.uk>
+        with ESMTP id S235935AbiGSIvJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jul 2022 04:51:09 -0400
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF5260EF;
+        Tue, 19 Jul 2022 01:51:08 -0700 (PDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id m10so6692492qvu.4;
+        Tue, 19 Jul 2022 01:51:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=E6lM1chF28a0Zk3AHgaEtJ0vFiuldQCbVsy6yH3hEqc=;
+        b=UmZrt4bq2Pq1GzNsMdv30nN312q78u9rNLLL46w2mAv3oeKz29rRNkzuFKzea1NthY
+         DuyxnvXn2RwZ+RR+bWGOdp2ZZgu6EWkX+jzOhudklQIbP7Tx4Fa8ZZFcfS/DvKcPjVDH
+         grK1cYnCkW+xFFfx5/KlSMPz2GLH0KbKilzSSZSTfh1eXI7yyRqvokWn0jqZQqbq10Fl
+         K+4QRRkaKJq695sQbSKUecegLs/0pwI8v2gpuOH/XH2pSHGzhtqB+vt0FaQUPIK1XE85
+         nQhbbl1cRjjNS+4EeaKyZJeLAUVFhoEXD6EiINZyiZ1NzV0LIFsxm+EhcE7+HF4LjmKb
+         NRFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=E6lM1chF28a0Zk3AHgaEtJ0vFiuldQCbVsy6yH3hEqc=;
+        b=QgxB53yV8W3ZjjfDzN6RtbiquekCeHS+1IN95jQBsXMer5sn0remrdHhPaGdqZWT5D
+         CcXg89qjpl/MJCyAKSH8PIry2hq0boVqNvrUfZZpMgzq5fL2CU3TD5j6bjnn5xGNw5mn
+         UbKqbS3okWnhaz5CjV3k1zP2gRyw4sdIBaO/SJH4O5QJU+88+SFdJItzwdCCB0LNOKse
+         N3KSruObZCcPQPfyV2ft7eAacoJm71kxyqjv4JpT331H00DjmFRdzIDWJa8PY5GOtHMP
+         t54/xg5Cg//HUmVjOALV/TmEAUItr+UxjYUlwU5/Ll9NnKMgxYnRAAx3/o36SUs+udsP
+         VpUg==
+X-Gm-Message-State: AJIora9xzZYaiRJEfq3h19jS7VuSDaNlNB85UKgMiHpL2024/H2UDSzw
+        4JBp9y3s/JOKlei/Xr9Jubc=
+X-Google-Smtp-Source: AGRyM1u+49dGx2fFB4Gtqc/9zoYMu2f8ZbfFh6pDAAzYJZyrrVb+ekA4umc1NfD/jFy0R7d3Ov4TqQ==
+X-Received: by 2002:a05:6214:246f:b0:473:4eba:93fb with SMTP id im15-20020a056214246f00b004734eba93fbmr23273971qvb.15.1658220667907;
+        Tue, 19 Jul 2022 01:51:07 -0700 (PDT)
+Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
+        by smtp.gmail.com with ESMTPSA id w18-20020a05620a0e9200b006b5ed1eccc5sm4375957qkm.44.2022.07.19.01.51.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Jul 2022 01:51:07 -0700 (PDT)
+Message-ID: <14af555c630654d0a780dc3bf9ecca6f29dcf61a.camel@gmail.com>
+Subject: Re: [PATCH 0/4] add support for bias pull-disable
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 19 Jul 2022 10:52:09 +0200
+In-Reply-To: <CAMRc=Mf1w7DCGMAku0wPHAhTtDWoWkWOfvxkx=_b1pKp8U8yOg@mail.gmail.com>
+References: <20220713131421.1527179-1-nuno.sa@analog.com>
+         <CAMRc=Mf1w7DCGMAku0wPHAhTtDWoWkWOfvxkx=_b1pKp8U8yOg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.3 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtXE0idsKe6FZ+n4@shell.armlinux.org.uk>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Russell, Andy,
+On Tue, 2022-07-19 at 10:25 +0200, Bartosz Golaszewski wrote:
+> On Wed, Jul 13, 2022 at 3:13 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+> >=20
+> > The gpio core looks at 'FLAG_BIAS_DISABLE' in preparation of
+> > calling the
+> > gpiochip 'set_config()' hook. However, AFAICT, there's no way that
+> > this
+> > flag is set because there's no support for it in firwmare code.
+> > Moreover,
+> > in 'gpiod_configure_flags()', only pull-ups and pull-downs are
+> > being
+> > handled.
+> >=20
+> > On top of this, there are some users that are looking at
+> > 'PIN_CONFIG_BIAS_DISABLE' in the 'set_config()' hook. So, unless
+> > I'm
+> > missing something, it looks like this was never working for these
+> > chips.
+> >=20
+> > Note that the ACPI case is only compiled tested. At first glance,
+> > it seems
+> > the current patch is enough but i'm not really sure...
+> >=20
+> > As a side note, this came to my attention during this patchset [1]
+> > (and, ofr OF,=C2=A0 was tested with it).
+> >=20
+> > [1]:
+> > https://lore.kernel.org/linux-input/20220708093448.42617-5-nuno.sa@anal=
+og.com/
+> >=20
+> > Nuno S=C3=A1 (4):
+> > =C2=A0 gpiolib: add support for bias pull disable
+> > =C2=A0 gpiolib: of: support bias pull disable
+> > =C2=A0 gpiolib: acpi: support bias pull disable
+> > =C2=A0 dt-bindings: gpio: add pull-disable flag
+> >=20
+> > =C2=A0drivers/gpio/gpiolib-acpi.c=C2=A0=C2=A0=C2=A0=C2=A0 | 3 +++
+> > =C2=A0drivers/gpio/gpiolib-of.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 7=
+ +++++++
+> > =C2=A0drivers/gpio/gpiolib.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 8 ++++++--
+> > =C2=A0include/dt-bindings/gpio/gpio.h | 3 +++
+> > =C2=A0include/linux/gpio/machine.h=C2=A0=C2=A0=C2=A0 | 1 +
+> > =C2=A0include/linux/of_gpio.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 1 +
+> > =C2=A06 files changed, 21 insertions(+), 2 deletions(-)
+> >=20
+> > --
+> > 2.37.0
+> >=20
+>=20
+> Series applied, thanks!
 
-On Mon, Jul 18, 2022 at 09:38:42PM +0100, Russell King (Oracle) wrote:
-> On Mon, Jul 18, 2022 at 11:07:30PM +0300, Andy Shevchenko wrote:
-> > On Mon, Jul 18, 2022 at 08:11:40PM +0100, Russell King (Oracle) wrote:
-> > > Good point - I guess we at least need to attach the swnode parent to the
-> > > device so its path is unique, because right now that isn't the case. I'm
-> > > guessing that:
-> > > 
-> > >         new_port_fwnode = fwnode_create_software_node(port_props, NULL);
-> > > 
-> > > will create something at the root of the swnode tree, and then:
-> > > 
-> > >         fixed_link_fwnode = fwnode_create_named_software_node(fixed_link_props,
-> > >                                                               new_port_fwnode,
-> > >                                                               "fixed-link");
-> > > 
-> > > will create a node with a fixed name. I guess it in part depends what
-> > > pathname the first node gets (which we don't specify.) I'm not familiar
-> > > with the swnode code to know what happens with the naming for the first
-> > > node.
-> > 
-> > First node's name will be unique which is guaranteed by IDA framework. If we
-> > have already 2B nodes, then yes, it would be problematic (but 2^31 ought to be
-> > enough :-).
-> > 
-> > > However, it seems sensible to me to attach the first node to the device
-> > > node, thus giving it a unique fwnode path. Does that solve the problem
-> > > in swnode land?
-> > 
-> > Yes, but in the driver you will have that as child of the device, analogue in DT
-> > 
-> >   my_root_node { // equal the level of device node you attach it to
-> > 	  fixed-link {
-> > 	  }
-> >   }
-> > 
-> > (Sorry, I don't know the DT syntax by heart, but I hope you got the idea.)
-> 
-> Yes, that looks about right.
-> 
-> What we're attempting to do here is create the swnode equivalent of this
-> DT description:
-> 
-> 	some_node {
-> 		phy-mode = "foo";
-> 
-> 		fixed-link {
-> 			speed = X;
-> 			full-duplex;
-> 		};
-> 	};
-> 
-> and the some_node fwnode handle gets passed into phylink for it to
-> parse - we never attach it to the firmware tree itself. Once phylink
-> has parsed it, we destroy the swnode tree since it's no longer useful.
-> 
-> This would get used in this situation as an example:
-> 
-> 	switch@4 {
-> 		compatible = "marvell,mv88e6085";
-> 
-> 		ports {
-> 			port@0 {
-> 				reg = <0>;
-> 				phy-mode = "internal";
-> 				phy-handle = <&sw_phy_0>;
-> 			};
-> 			...
-> 			port@5 {
-> 				reg = <5>;
-> 				label = "cpu";
-> 				ethernet = <&eth1>;
-> 			};
-> 		};
-> 	};
-> 
-> The DSA driver knows the capabilities of the chip, so it knows what the
-> fastest "phy-mode" and speed would be, and whether full or half duplex
-> are supported.
-> 
-> We need to get this information into phylink some how, and my initial
-> approach was to add a new function to phylink to achieve that.
-> 
-> We would normally have passed the "port@5" node to phylink, just as we
-> pass the "port@0" node. However, because the "port@5" operates as a
-> fixed-link as determined by the hardware/driver, we need some way to
-> get that into phylink.
-> 
-> So, Vladimir's approach is to create a swnode tree that reflects the
-> DT layout, and rather than passing the "port@5" as a fwnode to phylink,
-> we instead pass that "some_node" swnode instead. Phylink then uses
-> normal fwnode APIs to parse the swnode tree it's been given, resulting
-> in it picking up the fixed-link specification as if it had been in the
-> original DT.
-> 
-> We don't augment the existing firmware tree for "port@5", we are
-> effectively creating a small sub-tree and using it as a subsitute
-> description.
-> 
-> I hope that clarifies what is going on here and why.
+Hi Bart,=20
 
-Basically what your patch is doing is adding a helper function that creates
-an fwnode with a given name. This functionality was there previously through
-software_node_register_nodes(), with node allocation responsibility residing
-on the caller. It's used e.g. here:
-drivers/media/pci/intel/ipu3/cio2-bridge.c .
+I was actually planning to spin a v2 with your suggestion for the
+naming of the new define... Did you changed it while applying or should
+I still send it? Or (last option), we just leave it like this :)?
 
-The larger question is perhaps when can you safely remove software nodes.
-And which of these two APIs would be preferred. I haven't checked how many
-users each has. There's no refcounting nor locking for software nodes, so
-once made visible to the rest of the kernel, they're always expected to be
-there, unchanged, or at least it needs to be known when they can be removed.
-
--- 
-Kind regards,
-
-Sakari Ailus
+- Nuno S=C3=A1
