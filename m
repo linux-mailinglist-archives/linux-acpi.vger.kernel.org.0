@@ -2,188 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CEC157A618
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jul 2022 20:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFFD357A874
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Jul 2022 22:46:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231274AbiGSSJS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Jul 2022 14:09:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37914 "EHLO
+        id S231666AbiGSUqi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Jul 2022 16:46:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239902AbiGSSJN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jul 2022 14:09:13 -0400
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D71D64BD12;
-        Tue, 19 Jul 2022 11:09:10 -0700 (PDT)
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-31e45527da5so51116817b3.5;
-        Tue, 19 Jul 2022 11:09:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CikpHCl4xPyO8is9wHqOqxHcI8760q8zSFqXKzAbPgs=;
-        b=VYn92H9JkPruIh8+OkI9qgg8nLYfIhTZfq/ubCcaHyuiBcY5NIe/fuHpKQm87rlif5
-         yiznei26XE00yJnZxIcKwB/8GbsmxylMUsi9g5MShDnLemR09ztwJZxS0JtWC/Sef+WL
-         CEFbvt2DxqxTuVjhoaNYbevqmorH/wNbIAgzNiRiL4Wv8FIvJEkCSllJ1krf3lwSr1MX
-         ZwHWBN/zU9+o2WxOIHVrI/CJIDR1603DhGXQmWmJV8fEjD4HlSvvdU3J6Jbn2+RgopR6
-         EMZ5G6f5fD4RYPsPBWmrx2dWFj/27HiU3dPiXvJ7lRDMqu5yCdwkeDfdd0nFyVsXs8dv
-         q3uA==
-X-Gm-Message-State: AJIora/XD5939S4UzJ0NT38M63qOlIQ1PMvrurNcRL/tr2V2TxnwUw2x
-        xVmjfVLuzqjFK3WUHOHta9U/FogF93Xko+xMwgw=
-X-Google-Smtp-Source: AGRyM1vcWamIl/VSKZo+egAOoPQHNlsA/Z1+NJiXk1joCz1whK76iRN6s0LQMmw86Z/2x2D1dYhR4A1NaybZNBuYvr0=
-X-Received: by 2002:a81:1a11:0:b0:31e:4549:d667 with SMTP id
- a17-20020a811a11000000b0031e4549d667mr8722237ywa.196.1658254150128; Tue, 19
- Jul 2022 11:09:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220707125329.378277-1-jaz@semihalf.com> <20220707125329.378277-2-jaz@semihalf.com>
-In-Reply-To: <20220707125329.378277-2-jaz@semihalf.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 19 Jul 2022 20:08:59 +0200
-Message-ID: <CAJZ5v0gdCN3P52ko44LQMqWJvDArHxZ7p4aSiQamML7aG_kRAA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] suspend: extend S2Idle ops by new notify handler
-To:     Grzegorz Jaszczyk <jaz@semihalf.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dmy@semihalf.com, Mario Limonciello <mario.limonciello@amd.com>,
-        Sean Christopherson <seanjc@google.com>, dbehr@google.com,
-        upstream@semihalf.com, zide.chen@intel.corp-partner.google.com,
+        with ESMTP id S230329AbiGSUqi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Jul 2022 16:46:38 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355434F1BF;
+        Tue, 19 Jul 2022 13:46:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B79B9B81D3C;
+        Tue, 19 Jul 2022 20:46:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456B2C341C6;
+        Tue, 19 Jul 2022 20:46:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658263594;
+        bh=WKFGjuXRk6oyteotSlWefi1rk9n4LI3dK/a2vIQpaPQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=eSgXBHQxc39Mb7qbp8RzMRW/S4KAFvTtt1Q7x9YbJ6xpb2nE2MK9Q/pbMbWKChYwe
+         OXo6npKiTqswH7YemODJBMfoWF+IDwj8DgYU6IpyHNBzGsxiqU01TJprjmskWlA+le
+         TM2NWikCByNMoePPlRzR8a6zLdljiCkJ/DfiJbv1WHjl9vmr8OX8NN7RcfI6Wpd4uY
+         HCq/RVd+mSpu54UI1Wre7unHq2neWZzafiRsR6TUkoA9q8irLTzGzGICCXLqdNo8WV
+         iPLcBZOvBtHCnZD3KsI2NwlZsmULrE2RA5xdsVeHJjk5xvM+zzYOHxGyK2JnLV3eHm
+         UgIR+hqSUNR2w==
+Date:   Tue, 19 Jul 2022 15:46:32 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Andrey Strachuk <strochuk@ispras.ru>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Sachi King <nakato@nakato.io>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        "open list:X86 PLATFORM DRIVERS" 
-        <platform-driver-x86@vger.kernel.org>,
-        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
-        <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ldv-project@linuxtesting.org
+Subject: Re: [PATCH] ACPI: remove useless comparisons in
+ acpi_pci_link_check_possible(), acpi_pci_link_check_current()
+Message-ID: <20220719204632.GA1562909@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220719095950.5420-1-strochuk@ispras.ru>
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 7, 2022 at 2:56 PM Grzegorz Jaszczyk <jaz@semihalf.com> wrote:
->
-> Currently the LPS0 prepare_late callback is aimed to run as the very
-> last thing before entering the S2Idle state from LPS0 perspective,
-> nevertheless between this call and the system actually entering the
-> S2Idle state there are several places where the suspension process could
-> be canceled.
+Since this only affects pci_link.c, I would update the subject to
+match the style of previous commits:
 
-And why is this a problem?
+  ACPI/PCI: Remove useless NULL pointer checks
 
-The cancellation will occur only if there is a wakeup signal that
-would otherwise cause one of the CPUs to exit the idle state.  Such a
-wakeup signal can appear after calling the new notifier as well, so
-why does it make a difference?
+On Tue, Jul 19, 2022 at 12:59:50PM +0300, Andrey Strachuk wrote:
+> Local variable 'p' is initialized by an address
+> of field of acpi_resource, so it does not make
+> sense to compare 'p' with NULL.
 
-> In order to notify VMM about guest entering suspend, extend the S2Idle
-> ops by new notify callback, which will be really invoked as a very last
-> thing before guest actually enters S2Idle state.
+Rewrap to fill 75 columns, which is the typical width of commit logs.
 
-It is not guaranteed that "suspend" (defined as all CPUs entering idle
-states) will be actually entered even after this "last step".
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Signed-off-by: Andrey Strachuk <strochuk@ispras.ru>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 
-> Additionally extend the acpi_s2idle_dev_ops by notify() callback so
-> any driver can hook into it and allow to implement its own notification.
->
-> Taking advantage of e.g. existing acpi_s2idle_dev_ops's prepare/restore
-> hooks is not an option since it will not allow to prevent race
-> conditions:
-> - VM0 enters s2idle
-> - host notes about VM0 is in s2idle
-> - host continues with system suspension but in the meantime VM0 exits
-> s2idle and sends notification but it is already too late (VM could not
-> even send notification on time).
+I think you should drop this Fixes: tag because it's not useful.
 
-Too late for what?
+Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
 
-> Introducing notify() as a very last step before the system enters S2Idle
-> together with an assumption that the VMM has control over guest
-> resumption allows preventing mentioned races.
-
-How does it do that?
-
-It looks like you want suspend-to-idle to behave like S3 and it won't.
-
-> Signed-off-by: Grzegorz Jaszczyk <jaz@semihalf.com>
 > ---
->  drivers/acpi/x86/s2idle.c | 11 +++++++++++
->  include/linux/acpi.h      |  1 +
->  include/linux/suspend.h   |  1 +
->  kernel/power/suspend.c    |  4 ++++
->  4 files changed, 17 insertions(+)
->
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index 2963229062f8..d5aff194c736 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -520,10 +520,21 @@ void acpi_s2idle_restore_early(void)
->                                         lps0_dsm_func_mask, lps0_dsm_guid);
->  }
->
-> +static void acpi_s2idle_notify(void)
-> +{
-> +       struct acpi_s2idle_dev_ops *handler;
-> +
-> +       list_for_each_entry(handler, &lps0_s2idle_devops_head, list_node) {
-> +               if (handler->notify)
-> +                       handler->notify();
-> +       }
-> +}
-> +
->  static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 = {
->         .begin = acpi_s2idle_begin,
->         .prepare = acpi_s2idle_prepare,
->         .prepare_late = acpi_s2idle_prepare_late,
-> +       .notify = acpi_s2idle_notify,
->         .wake = acpi_s2idle_wake,
->         .restore_early = acpi_s2idle_restore_early,
->         .restore = acpi_s2idle_restore,
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 4f82a5bc6d98..b32c4baed99b 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1068,6 +1068,7 @@ struct acpi_s2idle_dev_ops {
->         struct list_head list_node;
->         void (*prepare)(void);
->         void (*restore)(void);
-> +       void (*notify)(void);
->  };
->  int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg);
->  void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg);
-> diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-> index 70f2921e2e70..16ef7f9d9a03 100644
-> --- a/include/linux/suspend.h
-> +++ b/include/linux/suspend.h
-> @@ -191,6 +191,7 @@ struct platform_s2idle_ops {
->         int (*begin)(void);
->         int (*prepare)(void);
->         int (*prepare_late)(void);
-> +       void (*notify)(void);
->         bool (*wake)(void);
->         void (*restore_early)(void);
->         void (*restore)(void);
-> diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-> index 827075944d28..6ba211b94ed1 100644
-> --- a/kernel/power/suspend.c
-> +++ b/kernel/power/suspend.c
-> @@ -100,6 +100,10 @@ static void s2idle_enter(void)
->
->         /* Push all the CPUs into the idle loop. */
->         wake_up_all_idle_cpus();
-> +
-> +       if (s2idle_ops && s2idle_ops->notify)
-> +               s2idle_ops->notify();
-> +
->         /* Make the current CPU wait so it can enter the idle loop too. */
->         swait_event_exclusive(s2idle_wait_head,
->                     s2idle_state == S2IDLE_STATE_WAKE);
-> --
-> 2.37.0.rc0.161.g10f37bed90-goog
->
+>  drivers/acpi/pci_link.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
+> index 58647051c948..aa1038b8aec4 100644
+> --- a/drivers/acpi/pci_link.c
+> +++ b/drivers/acpi/pci_link.c
+> @@ -95,7 +95,7 @@ static acpi_status acpi_pci_link_check_possible(struct acpi_resource *resource,
+>  	case ACPI_RESOURCE_TYPE_IRQ:
+>  		{
+>  			struct acpi_resource_irq *p = &resource->data.irq;
+> -			if (!p || !p->interrupt_count) {
+> +			if (!p->interrupt_count) {
+>  				acpi_handle_debug(handle,
+>  						  "Blank _PRS IRQ resource\n");
+>  				return AE_OK;
+> @@ -121,7 +121,7 @@ static acpi_status acpi_pci_link_check_possible(struct acpi_resource *resource,
+>  		{
+>  			struct acpi_resource_extended_irq *p =
+>  			    &resource->data.extended_irq;
+> -			if (!p || !p->interrupt_count) {
+> +			if (!p->interrupt_count) {
+>  				acpi_handle_debug(handle,
+>  						  "Blank _PRS EXT IRQ resource\n");
+>  				return AE_OK;
+> @@ -182,7 +182,7 @@ static acpi_status acpi_pci_link_check_current(struct acpi_resource *resource,
+>  	case ACPI_RESOURCE_TYPE_IRQ:
+>  		{
+>  			struct acpi_resource_irq *p = &resource->data.irq;
+> -			if (!p || !p->interrupt_count) {
+> +			if (!p->interrupt_count) {
+>  				/*
+>  				 * IRQ descriptors may have no IRQ# bits set,
+>  				 * particularly those w/ _STA disabled
+> @@ -197,7 +197,7 @@ static acpi_status acpi_pci_link_check_current(struct acpi_resource *resource,
+>  		{
+>  			struct acpi_resource_extended_irq *p =
+>  			    &resource->data.extended_irq;
+> -			if (!p || !p->interrupt_count) {
+> +			if (!p->interrupt_count) {
+>  				/*
+>  				 * extended IRQ descriptors must
+>  				 * return at least 1 IRQ
+> -- 
+> 2.25.1
+> 
