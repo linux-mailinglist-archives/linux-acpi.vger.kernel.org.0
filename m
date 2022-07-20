@@ -2,93 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 841C657B421
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 11:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0425457B6DB
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 14:56:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229898AbiGTJr4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jul 2022 05:47:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
+        id S232975AbiGTM4C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jul 2022 08:56:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbiGTJr4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jul 2022 05:47:56 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C34765598;
-        Wed, 20 Jul 2022 02:47:53 -0700 (PDT)
-Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPS id 6116840D403D;
-        Wed, 20 Jul 2022 09:47:49 +0000 (UTC)
-From:   Andrey Strachuk <strochuk@ispras.ru>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Andrey Strachuk <strochuk@ispras.ru>,
+        with ESMTP id S229618AbiGTM4C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jul 2022 08:56:02 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 668AC252;
+        Wed, 20 Jul 2022 05:56:01 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1BA311576;
+        Wed, 20 Jul 2022 05:56:01 -0700 (PDT)
+Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E830F3F70D;
+        Wed, 20 Jul 2022 05:55:58 -0700 (PDT)
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ldv-project@linuxtesting.org
-Subject: [PATCH v2] ACPI/PCI: Remove useless NULL pointer checks
-Date:   Wed, 20 Jul 2022 12:47:43 +0300
-Message-Id: <20220720094743.471304-1-strochuk@ispras.ru>
-X-Mailer: git-send-email 2.25.1
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org,
+        Guenter Roeck <linux@roeck-us.net>, linux-acpi@vger.kernel.org,
+        Conor Dooley <conor.dooley@microchip.com>,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ionela Voinescu <ionela.voinescu@arm.com>
+Subject: [PATCH v3 0/3] arch_topology/cacheinfo: Fixes for v5.20
+Date:   Wed, 20 Jul 2022 13:55:37 +0100
+Message-Id: <20220720-arch_topo_fixes-v3-0-43d696288e84@arm.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Local variable 'p' is initialized by an address
-of field of acpi_resource, so it does not make
-sense to compare 'p' with NULL.
+These are fixes for the cacheinfo/arch_topology updates containing [0]
+queued currently in the -next via [3].
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 
-Signed-off-by: Andrey Strachuk <strochuk@ispras.ru>
 ---
- drivers/acpi/pci_link.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Changes in v3 from v2[2]:
+	- Dropped mapping and unmapping of PPTT at runtime using
+	  acpi_{get,put}_table() to avoid "BUG: sleeping function
+	  called from invalid context"
+	- Added tested-by from Geert
 
-diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-index 58647051c948..aa1038b8aec4 100644
---- a/drivers/acpi/pci_link.c
-+++ b/drivers/acpi/pci_link.c
-@@ -95,7 +95,7 @@ static acpi_status acpi_pci_link_check_possible(struct acpi_resource *resource,
- 	case ACPI_RESOURCE_TYPE_IRQ:
- 		{
- 			struct acpi_resource_irq *p = &resource->data.irq;
--			if (!p || !p->interrupt_count) {
-+			if (!p->interrupt_count) {
- 				acpi_handle_debug(handle,
- 						  "Blank _PRS IRQ resource\n");
- 				return AE_OK;
-@@ -121,7 +121,7 @@ static acpi_status acpi_pci_link_check_possible(struct acpi_resource *resource,
- 		{
- 			struct acpi_resource_extended_irq *p =
- 			    &resource->data.extended_irq;
--			if (!p || !p->interrupt_count) {
-+			if (!p->interrupt_count) {
- 				acpi_handle_debug(handle,
- 						  "Blank _PRS EXT IRQ resource\n");
- 				return AE_OK;
-@@ -182,7 +182,7 @@ static acpi_status acpi_pci_link_check_current(struct acpi_resource *resource,
- 	case ACPI_RESOURCE_TYPE_IRQ:
- 		{
- 			struct acpi_resource_irq *p = &resource->data.irq;
--			if (!p || !p->interrupt_count) {
-+			if (!p->interrupt_count) {
- 				/*
- 				 * IRQ descriptors may have no IRQ# bits set,
- 				 * particularly those w/ _STA disabled
-@@ -197,7 +197,7 @@ static acpi_status acpi_pci_link_check_current(struct acpi_resource *resource,
- 		{
- 			struct acpi_resource_extended_irq *p =
- 			    &resource->data.extended_irq;
--			if (!p || !p->interrupt_count) {
-+			if (!p->interrupt_count) {
- 				/*
- 				 * extended IRQ descriptors must
- 				 * return at least 1 IRQ
+Changes in v2[2] from v1[1]:
+        - Changed the cacheinfo per-cpu allocation to be atomic
+	  to fix possible "BUG: sleeping function called from invalid context"
+        - Added all the received tags
+
+[0] https://lore.kernel.org/all/20220704101605.1318280-1-sudeep.holla@arm.com
+[1] https://lore.kernel.org/all/20220713133344.1201247-1-sudeep.holla@arm.com
+[2] https://lore.kernel.org/all/20220715102609.2160689-1-sudeep.holla@arm.com
+[3] https://lore.kernel.org/all/20220706124644.2276077-1-sudeep.holla@arm.com
+
+---
+Sudeep Holla (3):
+      cacheinfo: Use atomic allocation for percpu cache attributes
+      ACPI: PPTT: Leave the table mapped for the runtime usage
+      arch_topology: Fix cache attributes detection in the CPU hotplug path
+
+ drivers/acpi/pptt.c          | 102 ++++++++++++++++++++-----------------------
+ drivers/base/arch_topology.c |  16 +++----
+ drivers/base/cacheinfo.c     |   2 +-
+ 3 files changed, 54 insertions(+), 66 deletions(-)
+---
+base-commit: 7128af87c7f1c30cd6cebe0b012cc25872c689e2
+change-id: 20220720-arch_topo_fixes-d91d43827aeb
+
+Best regards,
 -- 
-2.25.1
+Regards,
+Sudeep
 
