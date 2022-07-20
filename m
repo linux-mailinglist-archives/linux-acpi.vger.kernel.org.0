@@ -2,277 +2,394 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D877857B720
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 15:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E7E757B732
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 15:20:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230208AbiGTNQB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jul 2022 09:16:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45058 "EHLO
+        id S230312AbiGTNUA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jul 2022 09:20:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbiGTNQA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jul 2022 09:16:00 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F283D42AEE
-        for <linux-acpi@vger.kernel.org>; Wed, 20 Jul 2022 06:15:58 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id w7so2476811plp.5
-        for <linux-acpi@vger.kernel.org>; Wed, 20 Jul 2022 06:15:58 -0700 (PDT)
+        with ESMTP id S229994AbiGTNT7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jul 2022 09:19:59 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4388481FD;
+        Wed, 20 Jul 2022 06:19:53 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id v21so14932481plo.0;
+        Wed, 20 Jul 2022 06:19:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=lRJzGTSvek7GJtqjVxkMPUXoL7u0ATvi3E1mmuy/3CU=;
-        b=NDFCsQeOJ/AVUlPdU66yqPvBBfdC098ZJOUY2vdeSSV87HzuDcrHny9IiKqYJSiBOK
-         PDe59Hlm++/a6H0ZXfzDDznnepCs0jd2CYRXHThMCPro3NB+jQusN6cGcAhrigGA0MfP
-         LsmdMyFHQPxBvoiDQfdkhxIr17xbBo73a8bwE0i+3X9CR7HHlcNNGIX3M/NTF1XBTkOY
-         zoTconFuiKZBgKTmDdm4XKy5HFwtCpy8yCMGsAAu9hTdKa5XxeWFNRkfcZhjKmk6pOGY
-         tqGCHbhXky68/cm4y/btYpMjE03B4EtBBcP9DwkmKfnLgHC6cVW+Jvr5nYTAKjtoj1ya
-         4C1g==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=tk4oMrpzapWWhoI3Kig5dOA0vlyKb6/i+EOqjgC5cCU=;
+        b=pQntbHItc5MVnlIvmA0KJD5lIHl648MGkmwsPTxum8yDwQjSop+uHi++PtOZkCYi7n
+         EgxQwhqjN7qcglRkdra7pxQtaFomBMbtYftoiSVVlnzfNoaBLYTLhgKn3sYI+2EdXf6O
+         h6U1ZeaogPNQIy57v05WrHDLFWUiIeUmR4fS1tPeQjF3/oxFqOnHXVkYUWZF02XHGpVN
+         niyciBIdRPzdVcEoY8gg3lRZPFxS6jRZY9i7DN98k2qpQJ5sK5dyLW5FdrwrX1b0/zRu
+         MuMQ0wqS2NE1LVfEBijlNYf2GC7F7MTeUnHLUY4p5Sz/CExHxgDkOYoYrL9++bLtjfpy
+         e2Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=lRJzGTSvek7GJtqjVxkMPUXoL7u0ATvi3E1mmuy/3CU=;
-        b=VxgQots9CDQoUUI3xoIA3vmjbUMvY6PZdph/3S40mCgDWuZRTfrg6uEbuG/1F0Fusj
-         W8v5O60c0y8mLrov/0OQzf8Gfhn9XqNp23+r/aW1hc2o+DxOS14qR6ry/ygOLqCKdwzS
-         Fd8MBBcqUdD01F8zosyIrV+ETYrr25sjzTUkRIyw/bVDTQEcmjKytASI95t97xc2XCgj
-         R/V0VDxEKHbUtmmkfg1wftI5Iiy9coEblcc5UGR/kQiPfvprM2bclT75v4CsaVtTqASB
-         1oObGOTT+5gUlOqQZVFMBrlLer4ALB96IOHGOF4MNO1zaTVV7R6RpYJcMOMQxXE/l6tu
-         wCeA==
-X-Gm-Message-State: AJIora8lcJgYuPTXVbv8Bw590IcvG+6l3Elyl7w+xKF7hWkNkUiHtIXg
-        P7EwZ8ui+Z9/Q3v9cgGGMDuk6ZvwvXxxMAQFo1tpVA==
-X-Google-Smtp-Source: AGRyM1sXpFAFNacWkhLEpkPvcyT2szo8ybUzxnY+mhcIJN1snIgeXra8sHiN97Kgr7nTponT8K8oaVcVzopirG9hgWM=
-X-Received: by 2002:a17:902:da89:b0:16c:49ee:9e71 with SMTP id
- j9-20020a170902da8900b0016c49ee9e71mr38184677plx.71.1658322958318; Wed, 20
- Jul 2022 06:15:58 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=tk4oMrpzapWWhoI3Kig5dOA0vlyKb6/i+EOqjgC5cCU=;
+        b=TBr/XyaUE2zTUxQnQH2WZHDxF8X467/hjYzSm1gAXmdOZsIt4JOncENQlOl4BW7N/S
+         aAyHqPMAMqnknokHc8Gf0THB2aOAGu0M1OsDFjugjBuEVjkmMqeAKNh7j6+sX9Ybq5jr
+         2NUSWx/7Yv5uz3exwU7gBWC9eO1bLzc/otZDTF3+HmhUmLwmVCaX78WG1oEf/vroSKWE
+         r/272MJTiRTWAdR6XycNvKBCMEDkbzcfnPz+rj+IyhORwLTwnQm5kLQoQUzusgJmNx3E
+         uUlTbVvSCfnYaGwcMcI6vC3TSV6qpP9DipB3q4laAVPR3NmK8honhP933pqKdFvULZgV
+         gpDQ==
+X-Gm-Message-State: AJIora9UJV4NQjoR7b/Zgz+Y4HEUyKBLDl/loySZS0JevBZjI4Y+gm6K
+        EACTznY8+SL6SrktpAwR+oc2uDeMBBWZqw==
+X-Google-Smtp-Source: AGRyM1uzmJLBbqdg3uG1g61oePzcT8xAPw/4xhbfrBIxelPixRjac8AbChKR5CIBlccSSFRlyue9aA==
+X-Received: by 2002:a17:902:ea09:b0:16c:3f7a:adf7 with SMTP id s9-20020a170902ea0900b0016c3f7aadf7mr39051912plg.103.1658323192919;
+        Wed, 20 Jul 2022 06:19:52 -0700 (PDT)
+Received: from localhost ([2409:10:24a0:4700:e8ad:216a:2a9d:6d0c])
+        by smtp.gmail.com with ESMTPSA id l16-20020a63ea50000000b0041a13b1d451sm6468900pgk.59.2022.07.20.06.19.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Jul 2022 06:19:52 -0700 (PDT)
+From:   Stafford Horne <shorne@gmail.com>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Stafford Horne <shorne@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Pierre Morel <pmorel@linux.ibm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Nick Child <nick.child@ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: [PATCH v4 1/3] PCI: Remove pci_get_legacy_ide_irq and asm-generic/pci.h
+Date:   Wed, 20 Jul 2022 22:19:32 +0900
+Message-Id: <20220720131934.373932-2-shorne@gmail.com>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220720131934.373932-1-shorne@gmail.com>
+References: <20220720131934.373932-1-shorne@gmail.com>
 MIME-Version: 1.0
-References: <20220707125329.378277-1-jaz@semihalf.com> <20220707125329.378277-2-jaz@semihalf.com>
- <CAJZ5v0gdCN3P52ko44LQMqWJvDArHxZ7p4aSiQamML7aG_kRAA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gdCN3P52ko44LQMqWJvDArHxZ7p4aSiQamML7aG_kRAA@mail.gmail.com>
-From:   Grzegorz Jaszczyk <jaz@semihalf.com>
-Date:   Wed, 20 Jul 2022 15:15:47 +0200
-Message-ID: <CAH76GKO9sxnuLM--x6sg7m3bC_NgvLA94N6jHA-+5gW741-ByQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] suspend: extend S2Idle ops by new notify handler
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Dmytro Maluka <dmy@semihalf.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Dominik Behr <dbehr@google.com>, upstream@semihalf.com,
-        Zide Chen <zide.chen@intel.corp-partner.google.com>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Sachi King <nakato@nakato.io>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        "open list:X86 PLATFORM DRIVERS" 
-        <platform-driver-x86@vger.kernel.org>,
-        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
-        <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-wt., 19 lip 2022 o 20:09 Rafael J. Wysocki <rafael@kernel.org> napisa=C5=82=
-(a):
->
-> On Thu, Jul 7, 2022 at 2:56 PM Grzegorz Jaszczyk <jaz@semihalf.com> wrote=
-:
-> >
-> > Currently the LPS0 prepare_late callback is aimed to run as the very
-> > last thing before entering the S2Idle state from LPS0 perspective,
-> > nevertheless between this call and the system actually entering the
-> > S2Idle state there are several places where the suspension process coul=
-d
-> > be canceled.
->
-> And why is this a problem?
->
-> The cancellation will occur only if there is a wakeup signal that
-> would otherwise cause one of the CPUs to exit the idle state.  Such a
-> wakeup signal can appear after calling the new notifier as well, so
-> why does it make a difference?
+The definition of the pci header function pci_get_legacy_ide_irq is only
+used in platforms that support PNP.  So many of the architecutres where
+it is defined do not use it.  This also means we can remove
+asm-generic/pci.h as all it provides is a definition of
+pci_get_legacy_ide_irq.
 
-It could also occur due to suspend_test. Additionally with new
-notifier we could get notification when the system wakes up from
-s2idle_loop and immediately goes to sleep again (due to e.g.
-acpi_s2idle_wake condition not being met) - in this case relying on
-prepare_late callback is not possible since it is not called in this
-path.
+Where referenced, replace the usage of pci_get_legacy_ide_irq with the
+libata.h macros ATA_PRIMARY_IRQ and ATA_SECONDARY_IRQ which provide the
+same functionality.  This allows removing pci_get_legacy_ide_irq from
+headers where it is no longer used.
 
->
-> > In order to notify VMM about guest entering suspend, extend the S2Idle
-> > ops by new notify callback, which will be really invoked as a very last
-> > thing before guest actually enters S2Idle state.
->
-> It is not guaranteed that "suspend" (defined as all CPUs entering idle
-> states) will be actually entered even after this "last step".
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Pierre Morel <pmorel@linux.ibm.com>
+Co-developed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+---
 
-Since this whole patchset is aimed at notifying the host about a guest
-entering s2idle state, reaching this step can be considered as a
-suspend "entry point" for VM IMO. It is because we are talking about
-the vCPU not the real CPU. Therefore it seems to me, that even if some
-other vCPUs could still get some wakeup signal they will not be able
-to kick (through s2idle_wake->swake_up_one(&s2idle_wait_head);) the
-original vCPU which entered s2idle_loop, triggered the new notifier
-and is halted due to handling vCPU exit (and was about to trigger
-swait_event_exclusive). So it will prevent the VM's resume process
-from being started.
+Since v3:
+ - Further remove the definictions of pci_get_legacy_ide_irq from x86 and use
+   the libata macros.
+ - Add Acked-bys.
 
->
-> > Additionally extend the acpi_s2idle_dev_ops by notify() callback so
-> > any driver can hook into it and allow to implement its own notification=
-.
-> >
-> > Taking advantage of e.g. existing acpi_s2idle_dev_ops's prepare/restore
-> > hooks is not an option since it will not allow to prevent race
-> > conditions:
-> > - VM0 enters s2idle
-> > - host notes about VM0 is in s2idle
-> > - host continues with system suspension but in the meantime VM0 exits
-> > s2idle and sends notification but it is already too late (VM could not
-> > even send notification on time).
->
-> Too late for what?
+ arch/alpha/include/asm/pci.h   |  6 ------
+ arch/arm/include/asm/pci.h     |  5 -----
+ arch/arm64/include/asm/pci.h   |  6 ------
+ arch/ia64/include/asm/pci.h    |  6 ------
+ arch/m68k/include/asm/pci.h    |  2 --
+ arch/mips/include/asm/pci.h    |  6 ------
+ arch/parisc/include/asm/pci.h  |  5 -----
+ arch/powerpc/include/asm/pci.h |  1 -
+ arch/s390/include/asm/pci.h    |  1 -
+ arch/sh/include/asm/pci.h      |  6 ------
+ arch/sparc/include/asm/pci.h   |  9 ---------
+ arch/x86/include/asm/pci.h     |  3 ---
+ arch/xtensa/include/asm/pci.h  |  3 ---
+ drivers/pnp/resource.c         |  5 +++--
+ include/asm-generic/pci.h      | 17 -----------------
+ 15 files changed, 3 insertions(+), 78 deletions(-)
+ delete mode 100644 include/asm-generic/pci.h
 
-Too late to cancel the host suspend process, which thinks that the VM
-is in s2idle state while it isn't.
+diff --git a/arch/alpha/include/asm/pci.h b/arch/alpha/include/asm/pci.h
+index cf6bc1e64d66..6312656279d7 100644
+--- a/arch/alpha/include/asm/pci.h
++++ b/arch/alpha/include/asm/pci.h
+@@ -56,12 +56,6 @@ struct pci_controller {
+ 
+ /* IOMMU controls.  */
+ 
+-/* TODO: integrate with include/asm-generic/pci.h ? */
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	return channel ? 15 : 14;
+-}
+-
+ #define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
+ 
+ static inline int pci_proc_domain(struct pci_bus *bus)
+diff --git a/arch/arm/include/asm/pci.h b/arch/arm/include/asm/pci.h
+index 68e6f25784a4..5916b88d4c94 100644
+--- a/arch/arm/include/asm/pci.h
++++ b/arch/arm/include/asm/pci.h
+@@ -22,11 +22,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ #define HAVE_PCI_MMAP
+ #define ARCH_GENERIC_PCI_MMAP_RESOURCE
+ 
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	return channel ? 15 : 14;
+-}
+-
+ extern void pcibios_report_status(unsigned int status_mask, int warn);
+ 
+ #endif /* __KERNEL__ */
+diff --git a/arch/arm64/include/asm/pci.h b/arch/arm64/include/asm/pci.h
+index b33ca260e3c9..0aebc3488c32 100644
+--- a/arch/arm64/include/asm/pci.h
++++ b/arch/arm64/include/asm/pci.h
+@@ -23,12 +23,6 @@
+ extern int isa_dma_bridge_buggy;
+ 
+ #ifdef CONFIG_PCI
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	/* no legacy IRQ on arm64 */
+-	return -ENODEV;
+-}
+-
+ static inline int pci_proc_domain(struct pci_bus *bus)
+ {
+ 	return 1;
+diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
+index 8c163d1d0189..fa8f545c24c9 100644
+--- a/arch/ia64/include/asm/pci.h
++++ b/arch/ia64/include/asm/pci.h
+@@ -63,10 +63,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ 	return (pci_domain_nr(bus) != 0);
+ }
+ 
+-#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	return channel ? isa_irq_to_vector(15) : isa_irq_to_vector(14);
+-}
+-
+ #endif /* _ASM_IA64_PCI_H */
+diff --git a/arch/m68k/include/asm/pci.h b/arch/m68k/include/asm/pci.h
+index 5a4bc223743b..ccdfa0dc8413 100644
+--- a/arch/m68k/include/asm/pci.h
++++ b/arch/m68k/include/asm/pci.h
+@@ -2,8 +2,6 @@
+ #ifndef _ASM_M68K_PCI_H
+ #define _ASM_M68K_PCI_H
+ 
+-#include <asm-generic/pci.h>
+-
+ #define	pcibios_assign_all_busses()	1
+ 
+ #define	PCIBIOS_MIN_IO		0x00000100
+diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+index 9ffc8192adae..3fd6e22c108b 100644
+--- a/arch/mips/include/asm/pci.h
++++ b/arch/mips/include/asm/pci.h
+@@ -139,10 +139,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ /* Do platform specific device initialization at pci_enable_device() time */
+ extern int pcibios_plat_dev_init(struct pci_dev *dev);
+ 
+-/* Chances are this interrupt is wired PC-style ...  */
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	return channel ? 15 : 14;
+-}
+-
+ #endif /* _ASM_PCI_H */
+diff --git a/arch/parisc/include/asm/pci.h b/arch/parisc/include/asm/pci.h
+index f14465b84de4..127ed5021ae3 100644
+--- a/arch/parisc/include/asm/pci.h
++++ b/arch/parisc/include/asm/pci.h
+@@ -162,11 +162,6 @@ extern void pcibios_init_bridge(struct pci_dev *);
+ #define PCIBIOS_MIN_IO          0x10
+ #define PCIBIOS_MIN_MEM         0x1000 /* NBPG - but pci/setup-res.c dies */
+ 
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	return channel ? 15 : 14;
+-}
+-
+ #define HAVE_PCI_MMAP
+ #define ARCH_GENERIC_PCI_MMAP_RESOURCE
+ 
+diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
+index 915d6ee4b40a..f9da506751bb 100644
+--- a/arch/powerpc/include/asm/pci.h
++++ b/arch/powerpc/include/asm/pci.h
+@@ -39,7 +39,6 @@
+ #define pcibios_assign_all_busses() \
+ 	(pci_has_flag(PCI_REASSIGN_ALL_BUS))
+ 
+-#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+ {
+ 	if (ppc_md.pci_get_legacy_ide_irq)
+diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
+index fdb9745ee998..5889ddcbc374 100644
+--- a/arch/s390/include/asm/pci.h
++++ b/arch/s390/include/asm/pci.h
+@@ -6,7 +6,6 @@
+ #include <linux/mutex.h>
+ #include <linux/iommu.h>
+ #include <linux/pci_hotplug.h>
+-#include <asm-generic/pci.h>
+ #include <asm/pci_clp.h>
+ #include <asm/pci_debug.h>
+ #include <asm/sclp.h>
+diff --git a/arch/sh/include/asm/pci.h b/arch/sh/include/asm/pci.h
+index ad22e88c6657..54c30126ea17 100644
+--- a/arch/sh/include/asm/pci.h
++++ b/arch/sh/include/asm/pci.h
+@@ -88,10 +88,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ 	return hose->need_domain_info;
+ }
+ 
+-/* Chances are this interrupt is wired PC-style ...  */
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	return channel ? 15 : 14;
+-}
+-
+ #endif /* __ASM_SH_PCI_H */
+diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
+index 4deddf430e5d..0c58f65bd172 100644
+--- a/arch/sparc/include/asm/pci.h
++++ b/arch/sparc/include/asm/pci.h
+@@ -40,13 +40,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ #define get_pci_unmapped_area get_fb_unmapped_area
+ #endif /* CONFIG_SPARC64 */
+ 
+-#if defined(CONFIG_SPARC64) || defined(CONFIG_LEON_PCI)
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	return PCI_IRQ_NONE;
+-}
+-#else
+-#include <asm-generic/pci.h>
+-#endif
+-
+ #endif /* ___ASM_SPARC_PCI_H */
+diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
+index f3fd5928bcbb..736793d65bcb 100644
+--- a/arch/x86/include/asm/pci.h
++++ b/arch/x86/include/asm/pci.h
+@@ -105,9 +105,6 @@ static inline void early_quirks(void) { }
+ 
+ extern void pci_iommu_alloc(void);
+ 
+-/* generic pci stuff */
+-#include <asm-generic/pci.h>
+-
+ #ifdef CONFIG_NUMA
+ /* Returns the node based on pci bus */
+ static inline int __pcibus_to_node(const struct pci_bus *bus)
+diff --git a/arch/xtensa/include/asm/pci.h b/arch/xtensa/include/asm/pci.h
+index 8e2b48a268db..b56de9635b6c 100644
+--- a/arch/xtensa/include/asm/pci.h
++++ b/arch/xtensa/include/asm/pci.h
+@@ -43,7 +43,4 @@
+ #define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
+ #define arch_can_pci_mmap_io()		1
+ 
+-/* Generic PCI */
+-#include <asm-generic/pci.h>
+-
+ #endif	/* _XTENSA_PCI_H */
+diff --git a/drivers/pnp/resource.c b/drivers/pnp/resource.c
+index 2fa0f7d55259..8f7695624c8c 100644
+--- a/drivers/pnp/resource.c
++++ b/drivers/pnp/resource.c
+@@ -17,6 +17,7 @@
+ #include <asm/dma.h>
+ #include <asm/irq.h>
+ #include <linux/pci.h>
++#include <linux/libata.h>
+ #include <linux/ioport.h>
+ #include <linux/init.h>
+ 
+@@ -322,8 +323,8 @@ static int pci_dev_uses_irq(struct pnp_dev *pnp, struct pci_dev *pci,
+ 		 * treat the compatibility IRQs as busy.
+ 		 */
+ 		if ((progif & 0x5) != 0x5)
+-			if (pci_get_legacy_ide_irq(pci, 0) == irq ||
+-			    pci_get_legacy_ide_irq(pci, 1) == irq) {
++			if (ATA_PRIMARY_IRQ(pci) == irq ||
++			    ATA_SECONDARY_IRQ(pci) == irq) {
+ 				pnp_dbg(&pnp->dev, "  legacy IDE device %s "
+ 					"using irq %d\n", pci_name(pci), irq);
+ 				return 1;
+diff --git a/include/asm-generic/pci.h b/include/asm-generic/pci.h
+deleted file mode 100644
+index 6bb3cd3d695a..000000000000
+--- a/include/asm-generic/pci.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * linux/include/asm-generic/pci.h
+- *
+- *  Copyright (C) 2003 Russell King
+- */
+-#ifndef _ASM_GENERIC_PCI_H
+-#define _ASM_GENERIC_PCI_H
+-
+-#ifndef HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+-static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+-{
+-	return channel ? 15 : 14;
+-}
+-#endif /* HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ */
+-
+-#endif /* _ASM_GENERIC_PCI_H */
+-- 
+2.36.1
 
->
-> > Introducing notify() as a very last step before the system enters S2Idl=
-e
-> > together with an assumption that the VMM has control over guest
-> > resumption allows preventing mentioned races.
->
-> How does it do that?
-
-At the moment when VM triggers this new notifier we trap on MMIO
-access and the VMM handles vCPU exit (so the vCPU is "halted").
-Therefore the VMM could control when it finishes such handling and
-releases the vCPU again.
-
-Maybe adding some more context will be helpful. This patchset was
-aimed for two different scenarios actually:
-1) Host is about to enter the suspend state and needs first to suspend
-VM with all pass-through devices. In this case the host waits for
-s2idle notification from the guest and when it receives it, it
-continues with its own suspend process.
-2) Guest could be a "privileged" one (in terms of VMM) and when the
-guest enters s2idle state it notifies the host, which in turn triggers
-the suspend process of the host.
-
->
-> It looks like you want suspend-to-idle to behave like S3 and it won't.
-
-In a way, yes, we compensate for the lack of something like PM1_CNT to
-trap on for detecting that the guest is suspending.
-We could instead force the guest to use S3 but IMO it is undesirable,
-since it generally does make a difference which suspend mode is used
-in the guest, s2idle or S3, e.g some drivers check which suspend type
-is used and based on that behaves differently during suspend. One of
-the example is:
-https://elixir.bootlin.com/linux/v5.18.12/source/drivers/gpu/drm/amd/amdgpu=
-/amdgpu_drv.c#L2323
-https://elixir.bootlin.com/linux/v5.18.12/source/drivers/gpu/drm/amd/amdgpu=
-/amdgpu_acpi.c#L1069
-https://elixir.bootlin.com/linux/v5.18.12/source/drivers/gpu/drm/amd/amdgpu=
-/amdgpu_gfx.c#L583
-
-Thank you,
-Grzegorz
-
-
-
-
-
-
-
-
->
-> > Signed-off-by: Grzegorz Jaszczyk <jaz@semihalf.com>
-> > ---
-> >  drivers/acpi/x86/s2idle.c | 11 +++++++++++
-> >  include/linux/acpi.h      |  1 +
-> >  include/linux/suspend.h   |  1 +
-> >  kernel/power/suspend.c    |  4 ++++
-> >  4 files changed, 17 insertions(+)
-> >
-> > diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> > index 2963229062f8..d5aff194c736 100644
-> > --- a/drivers/acpi/x86/s2idle.c
-> > +++ b/drivers/acpi/x86/s2idle.c
-> > @@ -520,10 +520,21 @@ void acpi_s2idle_restore_early(void)
-> >                                         lps0_dsm_func_mask, lps0_dsm_gu=
-id);
-> >  }
-> >
-> > +static void acpi_s2idle_notify(void)
-> > +{
-> > +       struct acpi_s2idle_dev_ops *handler;
-> > +
-> > +       list_for_each_entry(handler, &lps0_s2idle_devops_head, list_nod=
-e) {
-> > +               if (handler->notify)
-> > +                       handler->notify();
-> > +       }
-> > +}
-> > +
-> >  static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 =3D {
-> >         .begin =3D acpi_s2idle_begin,
-> >         .prepare =3D acpi_s2idle_prepare,
-> >         .prepare_late =3D acpi_s2idle_prepare_late,
-> > +       .notify =3D acpi_s2idle_notify,
-> >         .wake =3D acpi_s2idle_wake,
-> >         .restore_early =3D acpi_s2idle_restore_early,
-> >         .restore =3D acpi_s2idle_restore,
-> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> > index 4f82a5bc6d98..b32c4baed99b 100644
-> > --- a/include/linux/acpi.h
-> > +++ b/include/linux/acpi.h
-> > @@ -1068,6 +1068,7 @@ struct acpi_s2idle_dev_ops {
-> >         struct list_head list_node;
-> >         void (*prepare)(void);
-> >         void (*restore)(void);
-> > +       void (*notify)(void);
-> >  };
-> >  int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg);
-> >  void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg);
-> > diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-> > index 70f2921e2e70..16ef7f9d9a03 100644
-> > --- a/include/linux/suspend.h
-> > +++ b/include/linux/suspend.h
-> > @@ -191,6 +191,7 @@ struct platform_s2idle_ops {
-> >         int (*begin)(void);
-> >         int (*prepare)(void);
-> >         int (*prepare_late)(void);
-> > +       void (*notify)(void);
-> >         bool (*wake)(void);
-> >         void (*restore_early)(void);
-> >         void (*restore)(void);
-> > diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-> > index 827075944d28..6ba211b94ed1 100644
-> > --- a/kernel/power/suspend.c
-> > +++ b/kernel/power/suspend.c
-> > @@ -100,6 +100,10 @@ static void s2idle_enter(void)
-> >
-> >         /* Push all the CPUs into the idle loop. */
-> >         wake_up_all_idle_cpus();
-> > +
-> > +       if (s2idle_ops && s2idle_ops->notify)
-> > +               s2idle_ops->notify();
-> > +
-> >         /* Make the current CPU wait so it can enter the idle loop too.=
- */
-> >         swait_event_exclusive(s2idle_wait_head,
-> >                     s2idle_state =3D=3D S2IDLE_STATE_WAKE);
-> > --
-> > 2.37.0.rc0.161.g10f37bed90-goog
-> >
