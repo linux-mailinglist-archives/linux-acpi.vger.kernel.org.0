@@ -2,109 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E7E757B732
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 15:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C30957B975
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 17:22:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230312AbiGTNUA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jul 2022 09:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46848 "EHLO
+        id S232956AbiGTPWX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jul 2022 11:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbiGTNT7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jul 2022 09:19:59 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4388481FD;
-        Wed, 20 Jul 2022 06:19:53 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id v21so14932481plo.0;
-        Wed, 20 Jul 2022 06:19:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=tk4oMrpzapWWhoI3Kig5dOA0vlyKb6/i+EOqjgC5cCU=;
-        b=pQntbHItc5MVnlIvmA0KJD5lIHl648MGkmwsPTxum8yDwQjSop+uHi++PtOZkCYi7n
-         EgxQwhqjN7qcglRkdra7pxQtaFomBMbtYftoiSVVlnzfNoaBLYTLhgKn3sYI+2EdXf6O
-         h6U1ZeaogPNQIy57v05WrHDLFWUiIeUmR4fS1tPeQjF3/oxFqOnHXVkYUWZF02XHGpVN
-         niyciBIdRPzdVcEoY8gg3lRZPFxS6jRZY9i7DN98k2qpQJ5sK5dyLW5FdrwrX1b0/zRu
-         MuMQ0wqS2NE1LVfEBijlNYf2GC7F7MTeUnHLUY4p5Sz/CExHxgDkOYoYrL9++bLtjfpy
-         e2Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=tk4oMrpzapWWhoI3Kig5dOA0vlyKb6/i+EOqjgC5cCU=;
-        b=TBr/XyaUE2zTUxQnQH2WZHDxF8X467/hjYzSm1gAXmdOZsIt4JOncENQlOl4BW7N/S
-         aAyHqPMAMqnknokHc8Gf0THB2aOAGu0M1OsDFjugjBuEVjkmMqeAKNh7j6+sX9Ybq5jr
-         2NUSWx/7Yv5uz3exwU7gBWC9eO1bLzc/otZDTF3+HmhUmLwmVCaX78WG1oEf/vroSKWE
-         r/272MJTiRTWAdR6XycNvKBCMEDkbzcfnPz+rj+IyhORwLTwnQm5kLQoQUzusgJmNx3E
-         uUlTbVvSCfnYaGwcMcI6vC3TSV6qpP9DipB3q4laAVPR3NmK8honhP933pqKdFvULZgV
-         gpDQ==
-X-Gm-Message-State: AJIora9UJV4NQjoR7b/Zgz+Y4HEUyKBLDl/loySZS0JevBZjI4Y+gm6K
-        EACTznY8+SL6SrktpAwR+oc2uDeMBBWZqw==
-X-Google-Smtp-Source: AGRyM1uzmJLBbqdg3uG1g61oePzcT8xAPw/4xhbfrBIxelPixRjac8AbChKR5CIBlccSSFRlyue9aA==
-X-Received: by 2002:a17:902:ea09:b0:16c:3f7a:adf7 with SMTP id s9-20020a170902ea0900b0016c3f7aadf7mr39051912plg.103.1658323192919;
-        Wed, 20 Jul 2022 06:19:52 -0700 (PDT)
-Received: from localhost ([2409:10:24a0:4700:e8ad:216a:2a9d:6d0c])
-        by smtp.gmail.com with ESMTPSA id l16-20020a63ea50000000b0041a13b1d451sm6468900pgk.59.2022.07.20.06.19.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 06:19:52 -0700 (PDT)
-From:   Stafford Horne <shorne@gmail.com>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Stafford Horne <shorne@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Pierre Morel <pmorel@linux.ibm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Nick Child <nick.child@ibm.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: [PATCH v4 1/3] PCI: Remove pci_get_legacy_ide_irq and asm-generic/pci.h
-Date:   Wed, 20 Jul 2022 22:19:32 +0900
-Message-Id: <20220720131934.373932-2-shorne@gmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220720131934.373932-1-shorne@gmail.com>
-References: <20220720131934.373932-1-shorne@gmail.com>
+        with ESMTP id S229742AbiGTPWW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jul 2022 11:22:22 -0400
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2072.outbound.protection.outlook.com [40.107.93.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F1595A2EF;
+        Wed, 20 Jul 2022 08:22:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ErjJaRjpGSvUhj/Khq1ne8PMbXogimHG2BfdB14/L3n0MwR63Kb5A52yUBkvyY5LrmigXNb/doTvSfb2is7+SoPbv4VLy4maaxc3zAnSSUsdvNpg+ah/gS4kFryVjIoBcfNVTGDxz0tnKH+BeZ/wiMVMDGjYSizHQSmdsQzcA3+XY6yu84gaZ/QwekoJORd344o6RZHfSPsCqIJjqLof1CeKXtiBFa/M2MpqMJirsfM2vlptltjtsGBSFT1FmNcO7sdxJAu8q8pk1aL1pbSJ3tIUACsgH/sQRq7lsGTF/jGIfwIcyt3pSlIvbwOkT8cL4pyvGgobZLcNB3zR76RwrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aqcMFr1jCSEMstv3OyvsERAu7f/lcpHLHDSDkQ1ApFE=;
+ b=ofTxydvaMj8R8l+lW7+WWOp11h1wA52HKcbG21b7pRnn5v5Kte0obtP5nBxr1NJQUD6YuhZfk3B+Q1Fgxo0caTsnm5gMO/SMMYN3zIDSaC46AU/KaqV1cg1i/HteCfxLl57MVnlNkT60zlYY47AqOhzYuLXtxkfSx7ZOQ6DhaYt7VInxJUY/8ZhAIuxdSWQjjYAuWtafQJjf+bfb9SPNNhPlyWoy7tVjmUypp/VaSQYRY7zVMgr/kE6k0zTCPNJ5w0vfmrGiq9EadkLF3v1tOXMsByW8BBk/U+OCL4CHZetJWJD/NXvvGfOAv/yJ3jHEM+q+V4dxc1V8XiK1jlcDdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aqcMFr1jCSEMstv3OyvsERAu7f/lcpHLHDSDkQ1ApFE=;
+ b=WpwXnsiN79IeAOtsPsoHus6alOqCD2Obw42tCFXLlCnduFRUZSQ99jxViIiLK8eEnuGHIdQocHwkJ4BqEr0IcRLqw4sUr9/q39HlyVRYctcn6Ma3DjeE2N4Od8mbG7IftGqQ3Zs/KEnYlUbNU7cpG91sRGUOFw5uGQr56l6EKyQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by BN9PR12MB5305.namprd12.prod.outlook.com (2603:10b6:408:102::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5438.17; Wed, 20 Jul
+ 2022 15:22:18 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::1143:10a5:987a:7598]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::1143:10a5:987a:7598%6]) with mapi id 15.20.5438.023; Wed, 20 Jul 2022
+ 15:22:18 +0000
+Message-ID: <352edf44-5983-403f-b8f8-5dfbd92ea32d@amd.com>
+Date:   Wed, 20 Jul 2022 10:22:15 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [RFC PATCH 1/2] suspend: extend S2Idle ops by new notify handler
+Content-Language: en-US
+To:     Grzegorz Jaszczyk <jaz@semihalf.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Dmytro Maluka <dmy@semihalf.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Dominik Behr <dbehr@google.com>, upstream@semihalf.com,
+        Zide Chen <zide.chen@intel.corp-partner.google.com>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Sachi King <nakato@nakato.io>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:X86 PLATFORM DRIVERS" 
+        <platform-driver-x86@vger.kernel.org>,
+        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
+        <linux-pm@vger.kernel.org>
+References: <20220707125329.378277-1-jaz@semihalf.com>
+ <20220707125329.378277-2-jaz@semihalf.com>
+ <CAJZ5v0gdCN3P52ko44LQMqWJvDArHxZ7p4aSiQamML7aG_kRAA@mail.gmail.com>
+ <CAH76GKO9sxnuLM--x6sg7m3bC_NgvLA94N6jHA-+5gW741-ByQ@mail.gmail.com>
+From:   "Limonciello, Mario" <mario.limonciello@amd.com>
+In-Reply-To: <CAH76GKO9sxnuLM--x6sg7m3bC_NgvLA94N6jHA-+5gW741-ByQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR14CA0057.namprd14.prod.outlook.com
+ (2603:10b6:610:56::37) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: bbba6f2b-0c3f-4606-648c-08da6a63a259
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5305:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hYHJV2EqD5yo+2NVnasNljmCiA8wTXKBLW2Lm5BpObJ+qED1avfIDcjMBp/naCV8pjEZAy1i/9pkGixJ6yf+yBv9i6ZXhnJ1I1SyZwwDXZEV+dikWUD2Tvc252/uSPInD2Z/N10wV416PuyhKv/KFR/qhW1EsLO8kPdE3mBekKBLIKLtND/7w6ZNOLt/4f8qNBJeEoER8KHyPjdSXxIMSmUepA2az1b/QusJAF/YhDct1BqfTiTnfsgerpDOdAiIekBkg6PJSKLh+XyQYLIWtW/Ka7ZjUA4LGvyfgdBEVwSUPjjvGQAPoKIXEkHYTbTq0l0bvDkBh2sVKPpUVGXiQNr5QYu9LISM4lwoCYb5wI+Brc7eXNn3i6PS6cQN9PUjC2MhPv6qvWmgImCc756sY5j8457MP5U1AQvRWnnBojJ3xuiLkiL7QYWY6xpwbE3bO0QoTwmfkLglEFz8hlsiyfNz7KDat5jYpnnal2M0DhhBlXmwxUIidUp7DBLJcbba37rIBRpj7X2soc0wJOtLJtu9/SZRs/hHnnM3ME/gx5sYPZOkBDGBtcdXp1rfZiXuBqkkNSPljCXu3eYe0CS2YpoFsOVtz1udGr2ddVEbiTl8B9vK3ngtQRrMsS7oSrrTgNQO71TeXRF+n+q1eqnxwTHTjcBJFPXMFqHj/noZxM2bZKsCCb8GApUvI9e1lbxhijAuswGNMbCQMRUkFKjeIDrokDKH9UMqJXPQh8WbhlDXHSp7AY7WrJJcrQOxRUUSUbT8TSOjvJUAlY3kFNk/m5KXgMBz9bge/JcNYzDwgOedwNgRizhTQVKZlngYyKrV90Nj6ii14ATSdm3+WxPsaFhUpV0EK/53KFMqPbX6MA/5lEt0MGb6weTQf10wujP+9xLGF6bpJLUkEAFrEtsjag==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(366004)(136003)(376002)(346002)(39860400002)(478600001)(6486002)(966005)(186003)(86362001)(66476007)(26005)(2906002)(6506007)(36756003)(8676002)(110136005)(316002)(41300700001)(45080400002)(6666004)(31696002)(54906003)(31686004)(66946007)(4326008)(83380400001)(66556008)(2616005)(6512007)(7416002)(8936002)(5660300002)(15650500001)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZXlVMGd5dXlvV21EVU9kalk2TWRpSDFRYTRTd1kyODZ3ME9rQ3dzRThqcURp?=
+ =?utf-8?B?aDV5QXZpVGswVHYxdjJyNmhSTTJiWG01Z0RWQmR2M1J4RTVGUjRrQ1hmZ0dj?=
+ =?utf-8?B?MHRreXQreThwaFhuQndxYkJLRzBxQ0ZoRXpnTkE5cGQyVTlQSldTLzVFK245?=
+ =?utf-8?B?OXd3NGFwR2hqc0w3b0RpRng4SUJocXZadmZORWdZemx2V0c1T2RPZHhGb09D?=
+ =?utf-8?B?Q1JMWjRKdEhtbi9DckovMUxnZ3QyalFONUljTmhpWkhONjRMZVNYMlRHT3lq?=
+ =?utf-8?B?eUxVWUhkdXZnM3JSTXhqb3ZuNWlqU0d0S3ZKYW96RWY4RmxTYnNMd1YwUEhI?=
+ =?utf-8?B?RktUYjlvQW5wczQwREk5WkRncDJNY1Y0TnlISlY1R3VvekxFU3l6cHhTQ3JF?=
+ =?utf-8?B?NnFYeXkyMFlZcWlqSForNHg2Si9pd1F6Z3BEazkxU3hPb0NJa2VsMHpHekxz?=
+ =?utf-8?B?Q2RIUG9OVmovRnpvMTNFcTNEblZYRitqMlBaT0pMMnE0blNrUWcrMURxZ2Rs?=
+ =?utf-8?B?eUhDSXdwZ1dDNWd4WGR0RzNEZ0dnZjZtdENiTHRCMitoZHAzcTE0M3JJMUJF?=
+ =?utf-8?B?am1TUVFjQmdUeEZNQi9QNjQvS2U5Qk1OMUJ2Tjc5NUFWelFWRk9VZHYxc21v?=
+ =?utf-8?B?TkNvRUZYUlA1b3hnVVR0ek1aL2pPRGlnZWppQXZpUllsclB0WWM3ZnFTQk1p?=
+ =?utf-8?B?enJoV3JCTG0rY1J5UWdmbGc2NDkyUXhXQ01wSnNaSyt6eGZRZEErem1MNzd1?=
+ =?utf-8?B?RzNldG1XNDdnMjRTU0dhZnk0d2ZVTXVQc1VDOGtMUEtRNzFYU2thNFRBdlNk?=
+ =?utf-8?B?N0RuMXRSQnZMdXdZVlNpRUtya2dab2haVTRnTUV3dmhCZDIwd3QwaGZEQ3B0?=
+ =?utf-8?B?ZkFaeUZYRFF1aVdZVGhmSzJrdWVCQnc3TGw3MDZzZzJFdFdoUFNqSVkzMzJM?=
+ =?utf-8?B?YXBXdVRlOU42czkvSEpjcUdVTXNaOUFLQVNxS0JLTEdOOHhlMEtkM0JIMlh0?=
+ =?utf-8?B?RW5ub3VrdWxuVDhtMFV4YmdwTlppTm5WY083ZzB2c1IrQTVVQW1KQldwRmwy?=
+ =?utf-8?B?YllEa0p3T0lwOFlPR1VCWmFNNEFSMUlUYTRnSEZmWGZPZnk0QWdaVS9qRFZa?=
+ =?utf-8?B?S2pXT1M3RDNZbXRmV0t2MTRZeEdXVUx4RHNYZ0N2dExHc2dsbW91azhzNyt3?=
+ =?utf-8?B?b2U3MVd5N2doZHNZTGJvNjF3a1hUSStlWTljcCtVZHhRbFVqWGNacjlCSEFW?=
+ =?utf-8?B?UzllOTduRVlCTjZSUlRWWEY0ZmoxMHhXcmovanNzenR2UG1hdTkrNjFWeU04?=
+ =?utf-8?B?NUQrVkJNRVRrRXNEVzRuVWFoVFpVZVdpNmRDMks1VHVlazJyaGcxeE9wbnJP?=
+ =?utf-8?B?RkJEbGRUb0tUb0N0U2hpRWJCSXJtSmlWbHN2d2FwMFloTjFCSUZMbkQxUk1i?=
+ =?utf-8?B?L2k3WFJ1d1M1ZGpJNldlOEZEaWpRdGRPYmV5WTRUbnIvRzRyVlpCZmRtOC9u?=
+ =?utf-8?B?ZCt1ZnVUSDF5ZlRobm9PMHZ2cGNqVzhJOUdDcWNVVTdZVzFBcUY5QWJZMzl1?=
+ =?utf-8?B?Wk9JanhHVytleTZDSGlNU1RFc2hwYkxrUWo2ajRaR3BsV1MwRDJTdFhSWkdD?=
+ =?utf-8?B?d1ZIUGszVndpTkRmZmxpaHprUnZrMkUwcHFNNmJ6UUpjUHRYVTY3VkNvbWM4?=
+ =?utf-8?B?bHNaYjVtYlo5RjhVanpoQ25GTDJqMENBbk54NFU1Nk5WTTk1c0dMaytTSmVx?=
+ =?utf-8?B?SnZ2QWUyZ1pEd3JiNFFudG8yOXBkN3cyTkNSbis3MXMrdlRLMC9Na1ZMaHNu?=
+ =?utf-8?B?VjVYay9SYXVkSlYrZG5aaXQ0dW5Bai9lcDBDZm1DQWFZQWkyak9CVXU1aU0y?=
+ =?utf-8?B?TUh3bEpnVW1mWVI5R1NoSjRZNmZCMEJEWmovMTF2YytDSzJpUk1oMzU0eGd0?=
+ =?utf-8?B?NDZFdzNXUWxDQUhOcExYRzhObENwQk1KVmQ3WFppZ0NHTlJha3dlM3lMU1Ax?=
+ =?utf-8?B?UXV5NmlNMU5zZS8rdFJyOFhxa2p6MlE5MHhCNU5qQXlkN2VuOHdwNGhYYjVK?=
+ =?utf-8?B?c2RXY2MyNEFlcXpOOEdRdnE1dHdoTWwrdUhaTXFPV0dZUHdyUzVaUFdHeVho?=
+ =?utf-8?Q?ygljFS7gH7njJ6lJDoGEuh2jJ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbba6f2b-0c3f-4606-648c-08da6a63a259
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2022 15:22:18.5982
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vb0OzfTbo5p7Pi3g6afqUv0NEx7sjrdJI+RCDds8QSSODEvuK7q2nrRSRAe+9fxAiPrAGR5ME1+ebji7xbf8+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5305
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -112,284 +140,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The definition of the pci header function pci_get_legacy_ide_irq is only
-used in platforms that support PNP.  So many of the architecutres where
-it is defined do not use it.  This also means we can remove
-asm-generic/pci.h as all it provides is a definition of
-pci_get_legacy_ide_irq.
+>> It looks like you want suspend-to-idle to behave like S3 and it won't.
+> 
+> In a way, yes, we compensate for the lack of something like PM1_CNT to
+> trap on for detecting that the guest is suspending.
+> We could instead force the guest to use S3 but IMO it is undesirable,
+> since it generally does make a difference which suspend mode is used
+> in the guest, s2idle or S3, e.g some drivers check which suspend type
+> is used and based on that behaves differently during suspend. One of
+> the example is:
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Felixir.bootlin.com%2Flinux%2Fv5.18.12%2Fsource%2Fdrivers%2Fgpu%2Fdrm%2Famd%2Famdgpu%2Famdgpu_drv.c%23L2323&amp;data=05%7C01%7Cmario.limonciello%40amd.com%7C7bdd972291324d03847e08da6a51ff4f%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637939197694682503%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=5M1sn3iRybQzSFi3ojQ4YTJuW41DlgJNl5sxbWEvLBQ%3D&amp;reserved=0
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Felixir.bootlin.com%2Flinux%2Fv5.18.12%2Fsource%2Fdrivers%2Fgpu%2Fdrm%2Famd%2Famdgpu%2Famdgpu_acpi.c%23L1069&amp;data=05%7C01%7Cmario.limonciello%40amd.com%7C7bdd972291324d03847e08da6a51ff4f%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637939197694682503%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=fIrLmZAgpIRPYO4to4uYUoBSEWXmz1lr%2BTnR14kAfvM%3D&amp;reserved=0
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Felixir.bootlin.com%2Flinux%2Fv5.18.12%2Fsource%2Fdrivers%2Fgpu%2Fdrm%2Famd%2Famdgpu%2Famdgpu_gfx.c%23L583&amp;data=05%7C01%7Cmario.limonciello%40amd.com%7C7bdd972291324d03847e08da6a51ff4f%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637939197694682503%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=SNsbmpV4HrgA%2Bkff4JzRodNDzKvwM5tnkGDvrKO44dc%3D&amp;reserved=0
+> 
 
-Where referenced, replace the usage of pci_get_legacy_ide_irq with the
-libata.h macros ATA_PRIMARY_IRQ and ATA_SECONDARY_IRQ which provide the
-same functionality.  This allows removing pci_get_legacy_ide_irq from
-headers where it is no longer used.
+Actually I recently was suggesting a change to add this detection to 
+another driver to set a policy and Rafael pushed back.  He's actively 
+removing it from other places in the kernel.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Pierre Morel <pmorel@linux.ibm.com>
-Co-developed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Stafford Horne <shorne@gmail.com>
----
+For amdgpu stuff you pointed above, are you wanting to pass through the 
+PCIe GPU device to a guest and then suspend that guest? Or is this just 
+illustrative?
 
-Since v3:
- - Further remove the definictions of pci_get_legacy_ide_irq from x86 and use
-   the libata macros.
- - Add Acked-bys.
+For a dGPU I would expect it works, but I don't think passing an APU's 
+GPU PCIe endpoint would functionally work (there were bugs reported on 
+this I recall).
 
- arch/alpha/include/asm/pci.h   |  6 ------
- arch/arm/include/asm/pci.h     |  5 -----
- arch/arm64/include/asm/pci.h   |  6 ------
- arch/ia64/include/asm/pci.h    |  6 ------
- arch/m68k/include/asm/pci.h    |  2 --
- arch/mips/include/asm/pci.h    |  6 ------
- arch/parisc/include/asm/pci.h  |  5 -----
- arch/powerpc/include/asm/pci.h |  1 -
- arch/s390/include/asm/pci.h    |  1 -
- arch/sh/include/asm/pci.h      |  6 ------
- arch/sparc/include/asm/pci.h   |  9 ---------
- arch/x86/include/asm/pci.h     |  3 ---
- arch/xtensa/include/asm/pci.h  |  3 ---
- drivers/pnp/resource.c         |  5 +++--
- include/asm-generic/pci.h      | 17 -----------------
- 15 files changed, 3 insertions(+), 78 deletions(-)
- delete mode 100644 include/asm-generic/pci.h
-
-diff --git a/arch/alpha/include/asm/pci.h b/arch/alpha/include/asm/pci.h
-index cf6bc1e64d66..6312656279d7 100644
---- a/arch/alpha/include/asm/pci.h
-+++ b/arch/alpha/include/asm/pci.h
-@@ -56,12 +56,6 @@ struct pci_controller {
- 
- /* IOMMU controls.  */
- 
--/* TODO: integrate with include/asm-generic/pci.h ? */
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? 15 : 14;
--}
--
- #define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
- 
- static inline int pci_proc_domain(struct pci_bus *bus)
-diff --git a/arch/arm/include/asm/pci.h b/arch/arm/include/asm/pci.h
-index 68e6f25784a4..5916b88d4c94 100644
---- a/arch/arm/include/asm/pci.h
-+++ b/arch/arm/include/asm/pci.h
-@@ -22,11 +22,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- #define HAVE_PCI_MMAP
- #define ARCH_GENERIC_PCI_MMAP_RESOURCE
- 
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? 15 : 14;
--}
--
- extern void pcibios_report_status(unsigned int status_mask, int warn);
- 
- #endif /* __KERNEL__ */
-diff --git a/arch/arm64/include/asm/pci.h b/arch/arm64/include/asm/pci.h
-index b33ca260e3c9..0aebc3488c32 100644
---- a/arch/arm64/include/asm/pci.h
-+++ b/arch/arm64/include/asm/pci.h
-@@ -23,12 +23,6 @@
- extern int isa_dma_bridge_buggy;
- 
- #ifdef CONFIG_PCI
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	/* no legacy IRQ on arm64 */
--	return -ENODEV;
--}
--
- static inline int pci_proc_domain(struct pci_bus *bus)
- {
- 	return 1;
-diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
-index 8c163d1d0189..fa8f545c24c9 100644
---- a/arch/ia64/include/asm/pci.h
-+++ b/arch/ia64/include/asm/pci.h
-@@ -63,10 +63,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- 	return (pci_domain_nr(bus) != 0);
- }
- 
--#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? isa_irq_to_vector(15) : isa_irq_to_vector(14);
--}
--
- #endif /* _ASM_IA64_PCI_H */
-diff --git a/arch/m68k/include/asm/pci.h b/arch/m68k/include/asm/pci.h
-index 5a4bc223743b..ccdfa0dc8413 100644
---- a/arch/m68k/include/asm/pci.h
-+++ b/arch/m68k/include/asm/pci.h
-@@ -2,8 +2,6 @@
- #ifndef _ASM_M68K_PCI_H
- #define _ASM_M68K_PCI_H
- 
--#include <asm-generic/pci.h>
--
- #define	pcibios_assign_all_busses()	1
- 
- #define	PCIBIOS_MIN_IO		0x00000100
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index 9ffc8192adae..3fd6e22c108b 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -139,10 +139,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- /* Do platform specific device initialization at pci_enable_device() time */
- extern int pcibios_plat_dev_init(struct pci_dev *dev);
- 
--/* Chances are this interrupt is wired PC-style ...  */
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? 15 : 14;
--}
--
- #endif /* _ASM_PCI_H */
-diff --git a/arch/parisc/include/asm/pci.h b/arch/parisc/include/asm/pci.h
-index f14465b84de4..127ed5021ae3 100644
---- a/arch/parisc/include/asm/pci.h
-+++ b/arch/parisc/include/asm/pci.h
-@@ -162,11 +162,6 @@ extern void pcibios_init_bridge(struct pci_dev *);
- #define PCIBIOS_MIN_IO          0x10
- #define PCIBIOS_MIN_MEM         0x1000 /* NBPG - but pci/setup-res.c dies */
- 
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? 15 : 14;
--}
--
- #define HAVE_PCI_MMAP
- #define ARCH_GENERIC_PCI_MMAP_RESOURCE
- 
-diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
-index 915d6ee4b40a..f9da506751bb 100644
---- a/arch/powerpc/include/asm/pci.h
-+++ b/arch/powerpc/include/asm/pci.h
-@@ -39,7 +39,6 @@
- #define pcibios_assign_all_busses() \
- 	(pci_has_flag(PCI_REASSIGN_ALL_BUS))
- 
--#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
- static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- {
- 	if (ppc_md.pci_get_legacy_ide_irq)
-diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
-index fdb9745ee998..5889ddcbc374 100644
---- a/arch/s390/include/asm/pci.h
-+++ b/arch/s390/include/asm/pci.h
-@@ -6,7 +6,6 @@
- #include <linux/mutex.h>
- #include <linux/iommu.h>
- #include <linux/pci_hotplug.h>
--#include <asm-generic/pci.h>
- #include <asm/pci_clp.h>
- #include <asm/pci_debug.h>
- #include <asm/sclp.h>
-diff --git a/arch/sh/include/asm/pci.h b/arch/sh/include/asm/pci.h
-index ad22e88c6657..54c30126ea17 100644
---- a/arch/sh/include/asm/pci.h
-+++ b/arch/sh/include/asm/pci.h
-@@ -88,10 +88,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- 	return hose->need_domain_info;
- }
- 
--/* Chances are this interrupt is wired PC-style ...  */
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? 15 : 14;
--}
--
- #endif /* __ASM_SH_PCI_H */
-diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
-index 4deddf430e5d..0c58f65bd172 100644
---- a/arch/sparc/include/asm/pci.h
-+++ b/arch/sparc/include/asm/pci.h
-@@ -40,13 +40,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- #define get_pci_unmapped_area get_fb_unmapped_area
- #endif /* CONFIG_SPARC64 */
- 
--#if defined(CONFIG_SPARC64) || defined(CONFIG_LEON_PCI)
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return PCI_IRQ_NONE;
--}
--#else
--#include <asm-generic/pci.h>
--#endif
--
- #endif /* ___ASM_SPARC_PCI_H */
-diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
-index f3fd5928bcbb..736793d65bcb 100644
---- a/arch/x86/include/asm/pci.h
-+++ b/arch/x86/include/asm/pci.h
-@@ -105,9 +105,6 @@ static inline void early_quirks(void) { }
- 
- extern void pci_iommu_alloc(void);
- 
--/* generic pci stuff */
--#include <asm-generic/pci.h>
--
- #ifdef CONFIG_NUMA
- /* Returns the node based on pci bus */
- static inline int __pcibus_to_node(const struct pci_bus *bus)
-diff --git a/arch/xtensa/include/asm/pci.h b/arch/xtensa/include/asm/pci.h
-index 8e2b48a268db..b56de9635b6c 100644
---- a/arch/xtensa/include/asm/pci.h
-+++ b/arch/xtensa/include/asm/pci.h
-@@ -43,7 +43,4 @@
- #define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
- #define arch_can_pci_mmap_io()		1
- 
--/* Generic PCI */
--#include <asm-generic/pci.h>
--
- #endif	/* _XTENSA_PCI_H */
-diff --git a/drivers/pnp/resource.c b/drivers/pnp/resource.c
-index 2fa0f7d55259..8f7695624c8c 100644
---- a/drivers/pnp/resource.c
-+++ b/drivers/pnp/resource.c
-@@ -17,6 +17,7 @@
- #include <asm/dma.h>
- #include <asm/irq.h>
- #include <linux/pci.h>
-+#include <linux/libata.h>
- #include <linux/ioport.h>
- #include <linux/init.h>
- 
-@@ -322,8 +323,8 @@ static int pci_dev_uses_irq(struct pnp_dev *pnp, struct pci_dev *pci,
- 		 * treat the compatibility IRQs as busy.
- 		 */
- 		if ((progif & 0x5) != 0x5)
--			if (pci_get_legacy_ide_irq(pci, 0) == irq ||
--			    pci_get_legacy_ide_irq(pci, 1) == irq) {
-+			if (ATA_PRIMARY_IRQ(pci) == irq ||
-+			    ATA_SECONDARY_IRQ(pci) == irq) {
- 				pnp_dbg(&pnp->dev, "  legacy IDE device %s "
- 					"using irq %d\n", pci_name(pci), irq);
- 				return 1;
-diff --git a/include/asm-generic/pci.h b/include/asm-generic/pci.h
-deleted file mode 100644
-index 6bb3cd3d695a..000000000000
---- a/include/asm-generic/pci.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * linux/include/asm-generic/pci.h
-- *
-- *  Copyright (C) 2003 Russell King
-- */
--#ifndef _ASM_GENERIC_PCI_H
--#define _ASM_GENERIC_PCI_H
--
--#ifndef HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? 15 : 14;
--}
--#endif /* HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ */
--
--#endif /* _ASM_GENERIC_PCI_H */
--- 
-2.36.1
-
+That code path you point out only has special handling for APU when 
+headed to S0ix and that's because the GPU driver happens to be where the 
+control point is for some common silicon functions.  If the bug I 
+mentioned about PCIe passthrough of the APU GPU endpoint to the guest is 
+fixed and the guest needs to do s0ix when the host doesn't we're going 
+to have other breakage to worry about because of that common silicon 
+functionality I mentioned.
