@@ -2,143 +2,184 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFC4557BAE9
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 17:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 991D157BBAA
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Jul 2022 18:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232572AbiGTPzK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Jul 2022 11:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60136 "EHLO
+        id S234213AbiGTQo4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Jul 2022 12:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232402AbiGTPzJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jul 2022 11:55:09 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F35FFFA
-        for <linux-acpi@vger.kernel.org>; Wed, 20 Jul 2022 08:55:08 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id y141so16849358pfb.7
-        for <linux-acpi@vger.kernel.org>; Wed, 20 Jul 2022 08:55:08 -0700 (PDT)
+        with ESMTP id S234284AbiGTQoz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Jul 2022 12:44:55 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF17166BA3;
+        Wed, 20 Jul 2022 09:44:54 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id va17so34160706ejb.0;
+        Wed, 20 Jul 2022 09:44:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
+        d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=PxGJvhLtJuqRKmxgyWTr3dyw5v1u+NUlBmHboKdNo9s=;
-        b=mWWCpocdFnO3thggu3OhtEeoCRaOv3M5lOueJvcCQTDYgBpsXplJkCW9pyIUUD1KJo
-         E1hjJYf//4wroHUvXHMsE89HyiUxh2cadFeyDwjm8H3bp+YubwWJMW6md4/xf7QxpeLT
-         OiI539zgmrx3amHbiNUlt4Y+2Acmt60Q3rRp4hqagxGPa1rW250S91jBO3DN3OGjk+pC
-         R5s9iq+e7RljNkCwuICuNxnAv6/U+3x+1uLG5epJ7fNFAjbHsg7h/uj+sQjR3AoxAHlk
-         4MFxlyk0PIdFFqfJnyzfhaozFX7vBmRSO8fReDtFSyaRdislkq+L19Vf2qT05MkQc8Zf
-         9Vig==
+         :cc;
+        bh=F9ujADQ+6uUfQiUV6k7zVP85W+q012PovkMlFhLl5HM=;
+        b=d2EXNwdPsm25Qgdijm5q1GXRv8EiDfoGUINDo0Flpw2N7x5JtmHtOe0WaEdCm98EAe
+         t3hkPqmQrOjbBvB7Z5mbwNmBthJWYoIjACjajMToaVw7rOjoD+iQGvvAn3+P4k5W1SrT
+         9UgQHOMfD4yzE7KaC1G1UgNKlTFuTAv16Fw50Qhc3XcMuDJWPKbHWYo7wHfzQs6YhOZJ
+         8BKDG2XwGvwyy3g2lHnvQYnUsRywZOvu2nOUysOYJ/+/3T/SKO9nn4oH1zeXZ3Y+Gwqm
+         KHngpg4Y9vEIz5TlYDh/I9uVpbSqxngH/ECwiKjpoPBJ2WHCpttiajyOgA7YKgKJ/SMA
+         2fcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=PxGJvhLtJuqRKmxgyWTr3dyw5v1u+NUlBmHboKdNo9s=;
-        b=1pAruCYfFmzf2l9kgNVVz6UjpUsvQkUFhCH2v7OGRzYMLETbAdcd9P+czywqdLccv0
-         fpweV28ZtaAA/NKA1WSDMsRNb3Rt6HRUxtbsmDhr18nnJ3BW7rsPrGFOJJ3cjKFA6Y9e
-         hFxcAv/PqOh6dxywEgBn/aXRqga20p8rpLHd8plwmFjkD7aa4dUrg+PiXoeee/DP4Mwm
-         o3hfMd+77C/I9YM84ioDgK00D6BlpH0wT3IFtplWgODZNnkg5bdjQY/z7J/8SyYq1m18
-         W+Oqc6N3gfbbKnwuNqUr/yFzOu+PF0EhHzDarMtjHoBWRPSQrFQJUUvpwxQHuiA4FoQj
-         vGRg==
-X-Gm-Message-State: AJIora/+ODmvQw5aZWH4x8NkHxVQOm6pZ9FrPLKWmHBg44a41bEE/DQq
-        K5JaKo0QLZgJtzv5hVFtsb4GBCCpHI2ou3hmLvTcDQ==
-X-Google-Smtp-Source: AGRyM1ul7/N7Zqa3MQFIdsZV6cTIm2wPxyfvuArvrrqMeepFbTobVgzG+U4Ck6m1AkuT7qqmt0jbBh1ZDj00OgWkUwU=
-X-Received: by 2002:a63:e946:0:b0:41a:7350:6cd5 with SMTP id
- q6-20020a63e946000000b0041a73506cd5mr1530570pgj.247.1658332507848; Wed, 20
- Jul 2022 08:55:07 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=F9ujADQ+6uUfQiUV6k7zVP85W+q012PovkMlFhLl5HM=;
+        b=MyLevScf4MXnoB5BR/Nnwl9N1Ws10uxzonHYg/b9bUJ6LEs0yPH1iuf6S0fXQSsc5l
+         uFpvoXSkD87VZfBmLGtbnpVEKaHVzGC1VgSps3s25hpOcTqDxEOm4dEQy7YSyILfUFNm
+         6vlFwwChEgOZ3Y/pHHpx1NhuXlovvYvOErmkBvgn0+C4fiBnwZiXio68LGPis90eM40I
+         /OSZ3+ePCzR/1SeRC0lPL0EuYRuHDigpBSCNPtV5eHsdBexB7UzoCObgy64sIela0gsh
+         3eKRZVRLrScIexwn46l6MzIWdCaThm0hM1eEoqyF9GWmdsxGWPsWDwJtttTLeKTIAMtY
+         UBfQ==
+X-Gm-Message-State: AJIora9VqgS6smwG9f2Ji4QsdxR4+aei1p0enFaKbWmAusH1rEfdJToO
+        dCN2I+IYC7FmqO5nVj4mWwE3HQc+IJ/KHx+/c18=
+X-Google-Smtp-Source: AGRyM1sMxt5iIjJZaHAcJFwgzttrLeRyTn4gfiagli7Ckr/UFny44wo4mpiuF1Hvpy0Bw61iBdTMjqkWK1dZtDrLtxI=
+X-Received: by 2002:a17:907:2722:b0:72b:6a93:bf9a with SMTP id
+ d2-20020a170907272200b0072b6a93bf9amr34535266ejl.424.1658335493336; Wed, 20
+ Jul 2022 09:44:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220707125329.378277-1-jaz@semihalf.com> <20220707125329.378277-2-jaz@semihalf.com>
- <CAJZ5v0gdCN3P52ko44LQMqWJvDArHxZ7p4aSiQamML7aG_kRAA@mail.gmail.com>
- <CAH76GKO9sxnuLM--x6sg7m3bC_NgvLA94N6jHA-+5gW741-ByQ@mail.gmail.com> <352edf44-5983-403f-b8f8-5dfbd92ea32d@amd.com>
-In-Reply-To: <352edf44-5983-403f-b8f8-5dfbd92ea32d@amd.com>
-From:   Grzegorz Jaszczyk <jaz@semihalf.com>
-Date:   Wed, 20 Jul 2022 17:54:56 +0200
-Message-ID: <CAH76GKNie4m=SOEEJGks+CEyR9=aB+dJzDA1wxTuUo=uUjmZog@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] suspend: extend S2Idle ops by new notify handler
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Dmytro Maluka <dmy@semihalf.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Dominik Behr <dbehr@google.com>, upstream@semihalf.com,
-        Zide Chen <zide.chen@intel.corp-partner.google.com>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+References: <20220712193910.439171-1-hdegoede@redhat.com> <20220712193910.439171-4-hdegoede@redhat.com>
+In-Reply-To: <20220712193910.439171-4-hdegoede@redhat.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Wed, 20 Jul 2022 12:44:41 -0400
+Message-ID: <CADnq5_PcpwtgdBrn7_1B4Fq5CNGbkSO94c5Qzf8NfbnpwBqHAw@mail.gmail.com>
+Subject: Re: [PATCH v2 03/29] drm/amdgpu: Don't register backlight when
+ another backlight should be used
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
+        Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Pan@freedesktop.org, Xinhui <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Sachi King <nakato@nakato.io>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        "open list:X86 PLATFORM DRIVERS" 
-        <platform-driver-x86@vger.kernel.org>,
-        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
-        <linux-pm@vger.kernel.org>
+        Lukas Wunner <lukas@wunner.de>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>, linux-acpi@vger.kernel.org,
+        David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-=C5=9Br., 20 lip 2022 o 17:22 Limonciello, Mario
-<mario.limonciello@amd.com> napisa=C5=82(a):
+On Tue, Jul 12, 2022 at 3:39 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> >> It looks like you want suspend-to-idle to behave like S3 and it won't.
-> >
-> > In a way, yes, we compensate for the lack of something like PM1_CNT to
-> > trap on for detecting that the guest is suspending.
-> > We could instead force the guest to use S3 but IMO it is undesirable,
-> > since it generally does make a difference which suspend mode is used
-> > in the guest, s2idle or S3, e.g some drivers check which suspend type
-> > is used and based on that behaves differently during suspend. One of
-> > the example is:
-> > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Feli=
-xir.bootlin.com%2Flinux%2Fv5.18.12%2Fsource%2Fdrivers%2Fgpu%2Fdrm%2Famd%2Fa=
-mdgpu%2Famdgpu_drv.c%23L2323&amp;data=3D05%7C01%7Cmario.limonciello%40amd.c=
-om%7C7bdd972291324d03847e08da6a51ff4f%7C3dd8961fe4884e608e11a82d994e183d%7C=
-0%7C0%7C637939197694682503%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQ=
-IjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3D5M1s=
-n3iRybQzSFi3ojQ4YTJuW41DlgJNl5sxbWEvLBQ%3D&amp;reserved=3D0
-> > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Feli=
-xir.bootlin.com%2Flinux%2Fv5.18.12%2Fsource%2Fdrivers%2Fgpu%2Fdrm%2Famd%2Fa=
-mdgpu%2Famdgpu_acpi.c%23L1069&amp;data=3D05%7C01%7Cmario.limonciello%40amd.=
-com%7C7bdd972291324d03847e08da6a51ff4f%7C3dd8961fe4884e608e11a82d994e183d%7=
-C0%7C0%7C637939197694682503%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJ=
-QIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DfIr=
-LmZAgpIRPYO4to4uYUoBSEWXmz1lr%2BTnR14kAfvM%3D&amp;reserved=3D0
-> > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Feli=
-xir.bootlin.com%2Flinux%2Fv5.18.12%2Fsource%2Fdrivers%2Fgpu%2Fdrm%2Famd%2Fa=
-mdgpu%2Famdgpu_gfx.c%23L583&amp;data=3D05%7C01%7Cmario.limonciello%40amd.co=
-m%7C7bdd972291324d03847e08da6a51ff4f%7C3dd8961fe4884e608e11a82d994e183d%7C0=
-%7C0%7C637939197694682503%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQI=
-joiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DSNsbm=
-pV4HrgA%2Bkff4JzRodNDzKvwM5tnkGDvrKO44dc%3D&amp;reserved=3D0
-> >
+> Before this commit when we want userspace to use the acpi_video backlight
+> device we register both the GPU's native backlight device and acpi_video's
+> firmware acpi_video# backlight device. This relies on userspace preferring
+> firmware type backlight devices over native ones.
 >
-> Actually I recently was suggesting a change to add this detection to
-> another driver to set a policy and Rafael pushed back.  He's actively
-> removing it from other places in the kernel.
+> Registering 2 backlight devices for a single display really is
+> undesirable, don't register the GPU's native backlight device when
+> another backlight device should be used.
 >
-> For amdgpu stuff you pointed above, are you wanting to pass through the
-> PCIe GPU device to a guest and then suspend that guest? Or is this just
-> illustrative?
+> Changes in v2:
+> - To avoid linker errors when amdgpu is builtin and video_detect.c is in
+>   a module, select ACPI_VIDEO and its deps if ACPI && X86 are enabled.
+>   When these are not set, ACPI_VIDEO is disabled, ensuring the stubs
+>   from acpi/video.h will be used.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-Just illustrative. I am not focused on amdgpu stuff right now.
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 
-Thank you,
-Grzegorz
-
+> ---
+>  drivers/gpu/drm/Kconfig                           | 6 ++++++
+>  drivers/gpu/drm/amd/amdgpu/atombios_encoders.c    | 7 +++++++
+>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 7 +++++++
+>  3 files changed, 20 insertions(+)
 >
-> For a dGPU I would expect it works, but I don't think passing an APU's
-> GPU PCIe endpoint would functionally work (there were bugs reported on
-> this I recall).
+> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> index aaa7ad1f0614..d65119860760 100644
+> --- a/drivers/gpu/drm/Kconfig
+> +++ b/drivers/gpu/drm/Kconfig
+> @@ -258,6 +258,12 @@ config DRM_AMDGPU
+>         select HWMON
+>         select BACKLIGHT_CLASS_DEVICE
+>         select INTERVAL_TREE
+> +       # amdgpu depends on ACPI_VIDEO when X86 and ACPI are both enabled
+> +       # for select to work, ACPI_VIDEO's dependencies must also be selected
+> +       select INPUT if ACPI && X86
+> +       select X86_PLATFORM_DEVICES if ACPI && X86
+> +       select ACPI_WMI if ACPI && X86
+> +       select ACPI_VIDEO if ACPI && X86
+>         help
+>           Choose this option if you have a recent AMD Radeon graphics card.
 >
-> That code path you point out only has special handling for APU when
-> headed to S0ix and that's because the GPU driver happens to be where the
-> control point is for some common silicon functions.  If the bug I
-> mentioned about PCIe passthrough of the APU GPU endpoint to the guest is
-> fixed and the guest needs to do s0ix when the host doesn't we're going
-> to have other breakage to worry about because of that common silicon
-> functionality I mentioned.
+> diff --git a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+> index fa7421afb9a6..abf209e36fca 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+> @@ -26,6 +26,8 @@
+>
+>  #include <linux/pci.h>
+>
+> +#include <acpi/video.h>
+> +
+>  #include <drm/drm_crtc_helper.h>
+>  #include <drm/amdgpu_drm.h>
+>  #include "amdgpu.h"
+> @@ -184,6 +186,11 @@ void amdgpu_atombios_encoder_init_backlight(struct amdgpu_encoder *amdgpu_encode
+>         if (!(adev->mode_info.firmware_flags & ATOM_BIOS_INFO_BL_CONTROLLED_BY_GPU))
+>                 return;
+>
+> +       if (!acpi_video_backlight_use_native()) {
+> +               DRM_INFO("Skipping amdgpu atom DIG backlight registration\n");
+> +               return;
+> +       }
+> +
+>         pdata = kmalloc(sizeof(struct amdgpu_backlight_privdata), GFP_KERNEL);
+>         if (!pdata) {
+>                 DRM_ERROR("Memory allocation failed\n");
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> index 5eb111d35793..3b03a95e59a8 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> @@ -86,6 +86,8 @@
+>  #include <drm/drm_audio_component.h>
+>  #include <drm/drm_gem_atomic_helper.h>
+>
+> +#include <acpi/video.h>
+> +
+>  #include "ivsrcid/dcn/irqsrcs_dcn_1_0.h"
+>
+>  #include "dcn/dcn_1_0_offset.h"
+> @@ -4050,6 +4052,11 @@ amdgpu_dm_register_backlight_device(struct amdgpu_display_manager *dm)
+>         amdgpu_dm_update_backlight_caps(dm, dm->num_of_edps);
+>         dm->brightness[dm->num_of_edps] = AMDGPU_MAX_BL_LEVEL;
+>
+> +       if (!acpi_video_backlight_use_native()) {
+> +               DRM_INFO("Skipping amdgpu DM backlight registration\n");
+> +               return;
+> +       }
+> +
+>         props.max_brightness = AMDGPU_MAX_BL_LEVEL;
+>         props.brightness = AMDGPU_MAX_BL_LEVEL;
+>         props.type = BACKLIGHT_RAW;
+> --
+> 2.36.0
+>
