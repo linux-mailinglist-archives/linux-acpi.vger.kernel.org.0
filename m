@@ -2,57 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04C5D57C82B
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jul 2022 11:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C1857C83C
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jul 2022 11:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232345AbiGUJyU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jul 2022 05:54:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52408 "EHLO
+        id S232326AbiGUJ4J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jul 2022 05:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229663AbiGUJyT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 05:54:19 -0400
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A21A81B04;
-        Thu, 21 Jul 2022 02:54:18 -0700 (PDT)
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-31e560aa854so11469737b3.6;
-        Thu, 21 Jul 2022 02:54:18 -0700 (PDT)
+        with ESMTP id S230506AbiGUJ4I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 05:56:08 -0400
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2955C1F2D3;
+        Thu, 21 Jul 2022 02:56:07 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 64so1873981ybt.12;
+        Thu, 21 Jul 2022 02:56:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iTJfNbacNs72Ij4X/S7T9wZZgS4I9cYRvxKbLI1wpAs=;
-        b=YnpSd7KKl/Z0xpMNKUGkW8s7zl139mC87bQ2zNAf15TzhQOQNSmDF0u5EZYCbJslmt
-         UcZC8s3Sfoms887MG6OnhVev9WD6NDvdnBn+owWRJa6tsC65fhSre1QX0Y3ir5dvN/Nr
-         aYTd8Pn7pRNMIb8Y6ZFgYpD/ncohtCa/e6XoR2JRV6e6OpaKpk0lKahMTQvbXRv0JkIN
-         UAv3q8Hk59d+87d/CyN1gMb6yoTraYc5SA/BVqOQl4C6/54AoMtYl/9n7wSW9av5JqWA
-         35uInn/S9lL+0TPQOZ2Smq7M2k5MCg6L0gLbr/Pgl0lA8x4wUY+tat7OckzDZaYRyk5g
-         KuHg==
-X-Gm-Message-State: AJIora9q0c0UULaokglkdWB7ypCKSU50vn5dRHRn2Qi3p5hPQylxjV9b
-        hbHrz+auw1klk1607OfGuDPWSx5DmZr5sNoLsbg=
-X-Google-Smtp-Source: AGRyM1tGJGvJH4lyIFuh4q9T0AcAsnMIfyWz0d7qz0qCCso3kBQcxWQBTlIfYJvS/hWYgsjCDGac9oVZPnBiFYj4OUc=
-X-Received: by 2002:a81:89c3:0:b0:31e:6908:f857 with SMTP id
- z186-20020a8189c3000000b0031e6908f857mr8348503ywf.149.1658397257668; Thu, 21
- Jul 2022 02:54:17 -0700 (PDT)
+        bh=ANVQjRLj94qjQOscYLBb9UlJmEmjYMw+jneTE9rf+Lg=;
+        b=jVg1KHKuSp7fNToa6sQizCLxerUw82cA0o7L2liXbAdC7N8kcA2THFToDxfPfyev+3
+         XULgDCbnt9Y7fBrygrQlM9oMVkUKV4ol0vEDS8d2Nr89B6Yyh01Pz+XBNYKXZu1lp5EF
+         K0vCEqwwJdGMMf1JcCMASfubu+CTiQIpm5ysbsFWrhefi2HzysW6hl/XzwW9GSif2xPU
+         YI/MbykRnWCgj+RFnGeAZ8xbkeQxL1baFGF/c6xWiRmyi+GUeang1iZ2a+2Vi5DR3nhJ
+         ubk/We23abVQ27lBDj34FGJyJkIM2jyUgETQI3NMP+AqAZzTF5WLAL56Bl0Fj89snL9U
+         s8HA==
+X-Gm-Message-State: AJIora9fP4sIGhIabwuHcMrLDbs0EMsweH7PDUJ1ngd7ayW5eTaKjY/B
+        Po5jzgUD0kSW965D2jTXM9EV6jab57MXXPnxUDLfVF6W
+X-Google-Smtp-Source: AGRyM1t8kFQjQEDBkr07pO16L3OXL1cNKoJ1y/rLmHj/g8TgqsT4OJy2z2Wny8VxGZcQFsLVkuoLWVLyBG1u3U7oigA=
+X-Received: by 2002:a05:6902:1541:b0:670:ac02:58c3 with SMTP id
+ r1-20020a056902154100b00670ac0258c3mr4661901ybu.622.1658397366294; Thu, 21
+ Jul 2022 02:56:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220720-arch_topo_fixes-v3-0-43d696288e84@arm.com> <20220720-arch_topo_fixes-v3-2-43d696288e84@arm.com>
-In-Reply-To: <20220720-arch_topo_fixes-v3-2-43d696288e84@arm.com>
+References: <20220720131934.373932-1-shorne@gmail.com> <20220720131934.373932-2-shorne@gmail.com>
+In-Reply-To: <20220720131934.373932-2-shorne@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 21 Jul 2022 11:54:05 +0200
-Message-ID: <CAJZ5v0jizZELraQsS0gP0ALL60wyhT2F-7no5p5KKmg7Spi6uw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] ACPI: PPTT: Leave the table mapped for the runtime usage
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Thu, 21 Jul 2022 11:55:54 +0200
+Message-ID: <CAJZ5v0ghRHcJ-6dAxBMq55tbftnvdMrKvi1Kq-ZDZF1g7KzLyA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] PCI: Remove pci_get_legacy_ide_irq and asm-generic/pci.h
+To:     Stafford Horne <shorne@gmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Pierre Morel <pmorel@linux.ibm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Pierre Gondois <pierre.gondois@arm.com>,
+        Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Nick Child <nick.child@ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-alpha@vger.kernel.org,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Guenter Roeck <linux@roeck-us.net>,
+        linux-ia64@vger.kernel.org,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ionela Voinescu <ionela.voinescu@arm.com>
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -64,233 +104,289 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 20, 2022 at 2:56 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
+On Wed, Jul 20, 2022 at 3:20 PM Stafford Horne <shorne@gmail.com> wrote:
 >
-> Currently, everytime an information needs to be fetched from the PPTT,
-> the table is mapped via acpi_get_table() and unmapped after the use via
-> acpi_put_table() which is fine. However we do this at runtime especially
-> when the CPU is hotplugged out and plugged in back since we re-populate
-> the cache topology and other information.
+> The definition of the pci header function pci_get_legacy_ide_irq is only
+> used in platforms that support PNP.  So many of the architecutres where
+> it is defined do not use it.  This also means we can remove
+> asm-generic/pci.h as all it provides is a definition of
+> pci_get_legacy_ide_irq.
 >
-> However, with the support to fetch LLC information from the PPTT in the
-> cpuhotplug path which is executed in the atomic context, it is preferred
-> to avoid mapping and unmapping of the PPTT for every single use as the
-> acpi_get_table() might sleep waiting for a mutex.
+> Where referenced, replace the usage of pci_get_legacy_ide_irq with the
+> libata.h macros ATA_PRIMARY_IRQ and ATA_SECONDARY_IRQ which provide the
+> same functionality.  This allows removing pci_get_legacy_ide_irq from
+> headers where it is no longer used.
 >
-> In order to avoid the same, the table is needs to just mapped once on
-> the boot CPU and is never unmapped allowing it to be used at runtime
-> with out the hassle of mapping and unmapping the table.
->
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
->
-> --
->
-> Hi Rafael,
->
-> Sorry to bother you again on this PPTT changes. Guenter reported an issue
-> with lockdep enabled in -next that include my cacheinfo/arch_topology changes
-> to utilise LLC from PPTT in the CPU hotplug path.
->
-> Please ack the change once you are happy so that I can get it merged with
-> other fixes via Greg's tree.
-
-OK
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Acked-by: Pierre Morel <pmorel@linux.ibm.com>
+> Co-developed-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Stafford Horne <shorne@gmail.com>
 
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
+> ---
 >
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index dd3222a15c9c..c91342dcbcd6 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -533,21 +533,37 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
->         return -ENOENT;
->  }
+> Since v3:
+>  - Further remove the definictions of pci_get_legacy_ide_irq from x86 and use
+>    the libata macros.
+>  - Add Acked-bys.
 >
-> +
-> +static struct acpi_table_header *acpi_get_pptt(void)
-> +{
-> +       static struct acpi_table_header *pptt;
-> +       acpi_status status;
-> +
-> +       /*
-> +        * PPTT will be used at runtime on every CPU hotplug in path, so we
-> +        * don't need to call acpi_put_table() to release the table mapping.
-> +        */
-> +       if (!pptt) {
-> +               status = acpi_get_table(ACPI_SIG_PPTT, 0, &pptt);
-> +               if (ACPI_FAILURE(status))
-> +                       acpi_pptt_warn_missing();
-> +       }
-> +
-> +       return pptt;
-> +}
-> +
->  static int find_acpi_cpu_topology_tag(unsigned int cpu, int level, int flag)
->  {
->         struct acpi_table_header *table;
-> -       acpi_status status;
->         int retval;
+>  arch/alpha/include/asm/pci.h   |  6 ------
+>  arch/arm/include/asm/pci.h     |  5 -----
+>  arch/arm64/include/asm/pci.h   |  6 ------
+>  arch/ia64/include/asm/pci.h    |  6 ------
+>  arch/m68k/include/asm/pci.h    |  2 --
+>  arch/mips/include/asm/pci.h    |  6 ------
+>  arch/parisc/include/asm/pci.h  |  5 -----
+>  arch/powerpc/include/asm/pci.h |  1 -
+>  arch/s390/include/asm/pci.h    |  1 -
+>  arch/sh/include/asm/pci.h      |  6 ------
+>  arch/sparc/include/asm/pci.h   |  9 ---------
+>  arch/x86/include/asm/pci.h     |  3 ---
+>  arch/xtensa/include/asm/pci.h  |  3 ---
+>  drivers/pnp/resource.c         |  5 +++--
+>  include/asm-generic/pci.h      | 17 -----------------
+>  15 files changed, 3 insertions(+), 78 deletions(-)
+>  delete mode 100644 include/asm-generic/pci.h
 >
-> -       status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
-> -       if (ACPI_FAILURE(status)) {
-> -               acpi_pptt_warn_missing();
-> +       table = acpi_get_pptt();
-> +       if (!table)
->                 return -ENOENT;
-> -       }
-> +
->         retval = topology_get_acpi_cpu_tag(table, cpu, level, flag);
->         pr_debug("Topology Setup ACPI CPU %d, level %d ret = %d\n",
->                  cpu, level, retval);
-> -       acpi_put_table(table);
+> diff --git a/arch/alpha/include/asm/pci.h b/arch/alpha/include/asm/pci.h
+> index cf6bc1e64d66..6312656279d7 100644
+> --- a/arch/alpha/include/asm/pci.h
+> +++ b/arch/alpha/include/asm/pci.h
+> @@ -56,12 +56,6 @@ struct pci_controller {
 >
->         return retval;
->  }
-> @@ -568,16 +584,13 @@ static int find_acpi_cpu_topology_tag(unsigned int cpu, int level, int flag)
->  static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
->  {
->         struct acpi_table_header *table;
-> -       acpi_status status;
->         u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
->         struct acpi_pptt_processor *cpu_node = NULL;
->         int ret = -ENOENT;
+>  /* IOMMU controls.  */
 >
-> -       status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
-> -       if (ACPI_FAILURE(status)) {
-> -               acpi_pptt_warn_missing();
-> -               return ret;
-> -       }
-> +       table = acpi_get_pptt();
-> +       if (!table)
-> +               return -ENOENT;
->
->         if (table->revision >= rev)
->                 cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
-> @@ -585,8 +598,6 @@ static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
->         if (cpu_node)
->                 ret = (cpu_node->flags & flag) != 0;
->
-> -       acpi_put_table(table);
+> -/* TODO: integrate with include/asm-generic/pci.h ? */
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       return channel ? 15 : 14;
+> -}
 > -
->         return ret;
->  }
+>  #define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
 >
-> @@ -605,18 +616,15 @@ int acpi_find_last_cache_level(unsigned int cpu)
->         u32 acpi_cpu_id;
->         struct acpi_table_header *table;
->         int number_of_levels = 0;
-> -       acpi_status status;
-> +
-> +       table = acpi_get_pptt();
-> +       if (!table)
-> +               return -ENOENT;
+>  static inline int pci_proc_domain(struct pci_bus *bus)
+> diff --git a/arch/arm/include/asm/pci.h b/arch/arm/include/asm/pci.h
+> index 68e6f25784a4..5916b88d4c94 100644
+> --- a/arch/arm/include/asm/pci.h
+> +++ b/arch/arm/include/asm/pci.h
+> @@ -22,11 +22,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>  #define HAVE_PCI_MMAP
+>  #define ARCH_GENERIC_PCI_MMAP_RESOURCE
 >
->         pr_debug("Cache Setup find last level CPU=%d\n", cpu);
->
->         acpi_cpu_id = get_acpi_id_for_cpu(cpu);
-> -       status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
-> -       if (ACPI_FAILURE(status)) {
-> -               acpi_pptt_warn_missing();
-> -       } else {
-> -               number_of_levels = acpi_find_cache_levels(table, acpi_cpu_id);
-> -               acpi_put_table(table);
-> -       }
-> +       number_of_levels = acpi_find_cache_levels(table, acpi_cpu_id);
->         pr_debug("Cache Setup find last level level=%d\n", number_of_levels);
->
->         return number_of_levels;
-> @@ -638,20 +646,16 @@ int acpi_find_last_cache_level(unsigned int cpu)
->  int cache_setup_acpi(unsigned int cpu)
->  {
->         struct acpi_table_header *table;
-> -       acpi_status status;
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       return channel ? 15 : 14;
+> -}
 > -
-> -       pr_debug("Cache Setup ACPI CPU %d\n", cpu);
+>  extern void pcibios_report_status(unsigned int status_mask, int warn);
 >
-> -       status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
-> -       if (ACPI_FAILURE(status)) {
-> -               acpi_pptt_warn_missing();
-> +       table = acpi_get_pptt();
-> +       if (!table)
->                 return -ENOENT;
-> -       }
-> +
-> +       pr_debug("Cache Setup ACPI CPU %d\n", cpu);
+>  #endif /* __KERNEL__ */
+> diff --git a/arch/arm64/include/asm/pci.h b/arch/arm64/include/asm/pci.h
+> index b33ca260e3c9..0aebc3488c32 100644
+> --- a/arch/arm64/include/asm/pci.h
+> +++ b/arch/arm64/include/asm/pci.h
+> @@ -23,12 +23,6 @@
+>  extern int isa_dma_bridge_buggy;
 >
->         cache_setup_acpi_cpu(table, cpu);
-> -       acpi_put_table(table);
->
-> -       return status;
-> +       return 0;
->  }
->
->  /**
-> @@ -730,50 +734,38 @@ int find_acpi_cpu_topology_package(unsigned int cpu)
->  int find_acpi_cpu_topology_cluster(unsigned int cpu)
->  {
->         struct acpi_table_header *table;
-> -       acpi_status status;
->         struct acpi_pptt_processor *cpu_node, *cluster_node;
->         u32 acpi_cpu_id;
->         int retval;
->         int is_thread;
->
-> -       status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
-> -       if (ACPI_FAILURE(status)) {
-> -               acpi_pptt_warn_missing();
-> +       table = acpi_get_pptt();
-> +       if (!table)
->                 return -ENOENT;
-> -       }
->
->         acpi_cpu_id = get_acpi_id_for_cpu(cpu);
->         cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
-> -       if (cpu_node == NULL || !cpu_node->parent) {
-> -               retval = -ENOENT;
-> -               goto put_table;
-> -       }
-> +       if (!cpu_node || !cpu_node->parent)
-> +               return -ENOENT;
->
->         is_thread = cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD;
->         cluster_node = fetch_pptt_node(table, cpu_node->parent);
-> -       if (cluster_node == NULL) {
-> -               retval = -ENOENT;
-> -               goto put_table;
-> -       }
-> +       if (!cluster_node)
-> +               return -ENOENT;
-> +
->         if (is_thread) {
-> -               if (!cluster_node->parent) {
-> -                       retval = -ENOENT;
-> -                       goto put_table;
-> -               }
-> +               if (!cluster_node->parent)
-> +                       return -ENOENT;
-> +
->                 cluster_node = fetch_pptt_node(table, cluster_node->parent);
-> -               if (cluster_node == NULL) {
-> -                       retval = -ENOENT;
-> -                       goto put_table;
-> -               }
-> +               if (!cluster_node)
-> +                       return -ENOENT;
->         }
->         if (cluster_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID)
->                 retval = cluster_node->acpi_processor_id;
->         else
->                 retval = ACPI_PTR_DIFF(cluster_node, table);
->
-> -put_table:
-> -       acpi_put_table(table);
+>  #ifdef CONFIG_PCI
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       /* no legacy IRQ on arm64 */
+> -       return -ENODEV;
+> -}
 > -
->         return retval;
+>  static inline int pci_proc_domain(struct pci_bus *bus)
+>  {
+>         return 1;
+> diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
+> index 8c163d1d0189..fa8f545c24c9 100644
+> --- a/arch/ia64/include/asm/pci.h
+> +++ b/arch/ia64/include/asm/pci.h
+> @@ -63,10 +63,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>         return (pci_domain_nr(bus) != 0);
 >  }
 >
+> -#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       return channel ? isa_irq_to_vector(15) : isa_irq_to_vector(14);
+> -}
+> -
+>  #endif /* _ASM_IA64_PCI_H */
+> diff --git a/arch/m68k/include/asm/pci.h b/arch/m68k/include/asm/pci.h
+> index 5a4bc223743b..ccdfa0dc8413 100644
+> --- a/arch/m68k/include/asm/pci.h
+> +++ b/arch/m68k/include/asm/pci.h
+> @@ -2,8 +2,6 @@
+>  #ifndef _ASM_M68K_PCI_H
+>  #define _ASM_M68K_PCI_H
 >
+> -#include <asm-generic/pci.h>
+> -
+>  #define        pcibios_assign_all_busses()     1
+>
+>  #define        PCIBIOS_MIN_IO          0x00000100
+> diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+> index 9ffc8192adae..3fd6e22c108b 100644
+> --- a/arch/mips/include/asm/pci.h
+> +++ b/arch/mips/include/asm/pci.h
+> @@ -139,10 +139,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>  /* Do platform specific device initialization at pci_enable_device() time */
+>  extern int pcibios_plat_dev_init(struct pci_dev *dev);
+>
+> -/* Chances are this interrupt is wired PC-style ...  */
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       return channel ? 15 : 14;
+> -}
+> -
+>  #endif /* _ASM_PCI_H */
+> diff --git a/arch/parisc/include/asm/pci.h b/arch/parisc/include/asm/pci.h
+> index f14465b84de4..127ed5021ae3 100644
+> --- a/arch/parisc/include/asm/pci.h
+> +++ b/arch/parisc/include/asm/pci.h
+> @@ -162,11 +162,6 @@ extern void pcibios_init_bridge(struct pci_dev *);
+>  #define PCIBIOS_MIN_IO          0x10
+>  #define PCIBIOS_MIN_MEM         0x1000 /* NBPG - but pci/setup-res.c dies */
+>
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       return channel ? 15 : 14;
+> -}
+> -
+>  #define HAVE_PCI_MMAP
+>  #define ARCH_GENERIC_PCI_MMAP_RESOURCE
+>
+> diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
+> index 915d6ee4b40a..f9da506751bb 100644
+> --- a/arch/powerpc/include/asm/pci.h
+> +++ b/arch/powerpc/include/asm/pci.h
+> @@ -39,7 +39,6 @@
+>  #define pcibios_assign_all_busses() \
+>         (pci_has_flag(PCI_REASSIGN_ALL_BUS))
+>
+> -#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+>  static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+>  {
+>         if (ppc_md.pci_get_legacy_ide_irq)
+> diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
+> index fdb9745ee998..5889ddcbc374 100644
+> --- a/arch/s390/include/asm/pci.h
+> +++ b/arch/s390/include/asm/pci.h
+> @@ -6,7 +6,6 @@
+>  #include <linux/mutex.h>
+>  #include <linux/iommu.h>
+>  #include <linux/pci_hotplug.h>
+> -#include <asm-generic/pci.h>
+>  #include <asm/pci_clp.h>
+>  #include <asm/pci_debug.h>
+>  #include <asm/sclp.h>
+> diff --git a/arch/sh/include/asm/pci.h b/arch/sh/include/asm/pci.h
+> index ad22e88c6657..54c30126ea17 100644
+> --- a/arch/sh/include/asm/pci.h
+> +++ b/arch/sh/include/asm/pci.h
+> @@ -88,10 +88,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>         return hose->need_domain_info;
+>  }
+>
+> -/* Chances are this interrupt is wired PC-style ...  */
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       return channel ? 15 : 14;
+> -}
+> -
+>  #endif /* __ASM_SH_PCI_H */
+> diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
+> index 4deddf430e5d..0c58f65bd172 100644
+> --- a/arch/sparc/include/asm/pci.h
+> +++ b/arch/sparc/include/asm/pci.h
+> @@ -40,13 +40,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>  #define get_pci_unmapped_area get_fb_unmapped_area
+>  #endif /* CONFIG_SPARC64 */
+>
+> -#if defined(CONFIG_SPARC64) || defined(CONFIG_LEON_PCI)
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       return PCI_IRQ_NONE;
+> -}
+> -#else
+> -#include <asm-generic/pci.h>
+> -#endif
+> -
+>  #endif /* ___ASM_SPARC_PCI_H */
+> diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
+> index f3fd5928bcbb..736793d65bcb 100644
+> --- a/arch/x86/include/asm/pci.h
+> +++ b/arch/x86/include/asm/pci.h
+> @@ -105,9 +105,6 @@ static inline void early_quirks(void) { }
+>
+>  extern void pci_iommu_alloc(void);
+>
+> -/* generic pci stuff */
+> -#include <asm-generic/pci.h>
+> -
+>  #ifdef CONFIG_NUMA
+>  /* Returns the node based on pci bus */
+>  static inline int __pcibus_to_node(const struct pci_bus *bus)
+> diff --git a/arch/xtensa/include/asm/pci.h b/arch/xtensa/include/asm/pci.h
+> index 8e2b48a268db..b56de9635b6c 100644
+> --- a/arch/xtensa/include/asm/pci.h
+> +++ b/arch/xtensa/include/asm/pci.h
+> @@ -43,7 +43,4 @@
+>  #define ARCH_GENERIC_PCI_MMAP_RESOURCE 1
+>  #define arch_can_pci_mmap_io()         1
+>
+> -/* Generic PCI */
+> -#include <asm-generic/pci.h>
+> -
+>  #endif /* _XTENSA_PCI_H */
+> diff --git a/drivers/pnp/resource.c b/drivers/pnp/resource.c
+> index 2fa0f7d55259..8f7695624c8c 100644
+> --- a/drivers/pnp/resource.c
+> +++ b/drivers/pnp/resource.c
+> @@ -17,6 +17,7 @@
+>  #include <asm/dma.h>
+>  #include <asm/irq.h>
+>  #include <linux/pci.h>
+> +#include <linux/libata.h>
+>  #include <linux/ioport.h>
+>  #include <linux/init.h>
+>
+> @@ -322,8 +323,8 @@ static int pci_dev_uses_irq(struct pnp_dev *pnp, struct pci_dev *pci,
+>                  * treat the compatibility IRQs as busy.
+>                  */
+>                 if ((progif & 0x5) != 0x5)
+> -                       if (pci_get_legacy_ide_irq(pci, 0) == irq ||
+> -                           pci_get_legacy_ide_irq(pci, 1) == irq) {
+> +                       if (ATA_PRIMARY_IRQ(pci) == irq ||
+> +                           ATA_SECONDARY_IRQ(pci) == irq) {
+>                                 pnp_dbg(&pnp->dev, "  legacy IDE device %s "
+>                                         "using irq %d\n", pci_name(pci), irq);
+>                                 return 1;
+> diff --git a/include/asm-generic/pci.h b/include/asm-generic/pci.h
+> deleted file mode 100644
+> index 6bb3cd3d695a..000000000000
+> --- a/include/asm-generic/pci.h
+> +++ /dev/null
+> @@ -1,17 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0 */
+> -/*
+> - * linux/include/asm-generic/pci.h
+> - *
+> - *  Copyright (C) 2003 Russell King
+> - */
+> -#ifndef _ASM_GENERIC_PCI_H
+> -#define _ASM_GENERIC_PCI_H
+> -
+> -#ifndef HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -       return channel ? 15 : 14;
+> -}
+> -#endif /* HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ */
+> -
+> -#endif /* _ASM_GENERIC_PCI_H */
 > --
-> b4 0.10.0-dev-54fef
+> 2.36.1
+>
