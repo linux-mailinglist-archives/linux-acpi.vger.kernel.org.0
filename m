@@ -2,33 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBA857D6CD
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jul 2022 00:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 658BA57D697
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jul 2022 00:11:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234123AbiGUWVN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 21 Jul 2022 18:21:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33014 "EHLO
+        id S229739AbiGUWL4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 21 Jul 2022 18:11:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233887AbiGUWVB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 18:21:01 -0400
+        with ESMTP id S230392AbiGUWLz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 18:11:55 -0400
+X-Greylist: delayed 96 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 21 Jul 2022 15:11:51 PDT
 Received: from mail.britanica-edu.org (mail.britanica-edu.org [46.249.65.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D137095B2E
-        for <linux-acpi@vger.kernel.org>; Thu, 21 Jul 2022 15:20:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E35DE951D7
+        for <linux-acpi@vger.kernel.org>; Thu, 21 Jul 2022 15:11:51 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by mail.britanica-edu.org (Postfix) with ESMTP id 065207B409E8;
-        Fri, 22 Jul 2022 01:09:44 +0300 (EEST)
+        by mail.britanica-edu.org (Postfix) with ESMTP id 1AA057B40929;
+        Fri, 22 Jul 2022 01:11:40 +0300 (EEST)
 X-Virus-Scanned: amavisd-new at britanica-edu.org
 Received: from mail.britanica-edu.org ([127.0.0.1])
         by localhost (mail.britanica-edu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id wp1VPwbllbbm; Fri, 22 Jul 2022 01:09:43 +0300 (EEST)
+        with ESMTP id kbq5N4wlJGcV; Fri, 22 Jul 2022 01:11:39 +0300 (EEST)
 Received: from mail.britanica-edu.org (mail.britanica-edu.org [192.168.0.99])
-        by mail.britanica-edu.org (Postfix) with ESMTP id 80CC07B4077A;
-        Fri, 22 Jul 2022 01:09:38 +0300 (EEST)
-Date:   Fri, 22 Jul 2022 01:09:38 +0300 (EEST)
+        by mail.britanica-edu.org (Postfix) with ESMTP id 14AE17B409A1;
+        Fri, 22 Jul 2022 01:11:35 +0300 (EEST)
+Date:   Fri, 22 Jul 2022 01:11:35 +0300 (EEST)
 From:   Silvana Tenreyro <tea.dimitrova@britanica-edu.org>
 Reply-To: Silvana Tenreyro <silvanatenreyro1480@gmail.com>
 Subject: VERTRAULICHKEIT
-Message-ID: <fb5d999e-25d1-4609-b4a6-3ccb09f678cb@mail>
+Message-ID: <b58bcd10-484d-4338-8365-e834112e2c69@mail>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
