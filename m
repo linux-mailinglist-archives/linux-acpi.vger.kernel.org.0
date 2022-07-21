@@ -2,332 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB67057D5FB
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jul 2022 23:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9226057D618
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jul 2022 23:36:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233591AbiGUVak (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jul 2022 17:30:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48648 "EHLO
+        id S233756AbiGUVgw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jul 2022 17:36:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233181AbiGUVah (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 17:30:37 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2068.outbound.protection.outlook.com [40.107.223.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0A520BE2;
-        Thu, 21 Jul 2022 14:30:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ka8WdyI+eJ0q7ORHFdR128nRj5D298tZK+Jhl12pAJF7QzGDU5YDYNLaZ8jZpE+ghRnXgm1Cz695RYSSt1KzJfXof+YS7JGNW3URqg6E3bjSuAlE7pFvDoHnVOEkJRVfGJXD0tHn2Mrwe5lSmxvU8okK7HZ24ROev266DCspqnHtqRVKVXYAFT6c1qOpODKodY8JgWwKYakLrIgY4IFRvHYIPaWrBb90TJQDmX45gJSFJqzrCxl4VWosbOfF/l57g9A/S1Bvmlr1QNU3Vf0xVywivtZTMC9nNV+wkqvW4OMB1W9hRNbmZYffxXIorr5D3oad0/3ZOrRO5xancAyAdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X+FA4NbIgKPhRa9ACnIqMnuvv17qvKqyb1ljimlsKf4=;
- b=XAm/g+lSr0sCKXAlEmSvIGCCgsiAs5AgDtr6laQiiNSenQhlEvowOBAuSjKN4xQIRyP3F0MrF9xSm+mjQTOKjJayDtL8UNxfWieSldv/m39gRdlccZk5yGTAnhKowWeQcZi3fUs9nLTp4guXbTpvC6ZdpmASOep2HrC04+Nz8MI24DCSb9BdYq7YbpJiiAZ6/fKFXQVwn0Ak3f8i74u7QBruq4vI6Rgrp6DM13ruWi+WOG1IA5fvMEQqDLRZ6xOuTujx1Dvps0G9RECmpVfWUhUKVncbrjf71RaBGdOsKtURzpbW8ZjL6iov/m0UywdP9SiYCvBx0yUGYHQMrI0gjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X+FA4NbIgKPhRa9ACnIqMnuvv17qvKqyb1ljimlsKf4=;
- b=Th5Z1UF24AxjacA6HGQgRG1+touWpY0yKzSG9yt4WMLlClE8h6JpEACUFXIb+Cl1QqKKA9XDsc26qIOffjlArqqvSQGf7c6LyvsE2kxtkYpxP5QqSi5ptKPC/dIvFcRcxl+rTb7IqyFGHXlR5v1Hnkl88wSSIWh+8ef4cs7Z+bXFVIInpfW8imQxO6n3HakzN31beM2Y0bwhk4wNVcEnG6w+AMd6b9z4UcI91jdJhlxnhMlxPHpOkLmzi8LfsxrD5/+zpF36D4MN/LGVWlOAS1uXRaxXUoGNaKzD9LAtfk0W+V/g6hFg02RXgrFCcYpcP3HpyWElKsAEImb7ZOWeTw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB2763.namprd12.prod.outlook.com (2603:10b6:5:48::16) by
- DM5PR1201MB0044.namprd12.prod.outlook.com (2603:10b6:4:54::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5438.20; Thu, 21 Jul 2022 21:30:35 +0000
-Received: from DM6PR12MB2763.namprd12.prod.outlook.com
- ([fe80::d043:c95a:cf42:cff4]) by DM6PR12MB2763.namprd12.prod.outlook.com
- ([fe80::d043:c95a:cf42:cff4%7]) with mapi id 15.20.5438.023; Thu, 21 Jul 2022
- 21:30:35 +0000
-Message-ID: <20e4ffcf-2a3a-e671-5f98-1602b78df3cb@nvidia.com>
-Date:   Thu, 21 Jul 2022 16:30:28 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2 01/29] ACPI: video: Add
- acpi_video_backlight_use_native() helper
-Content-Language: en-US
-From:   Daniel Dadap <ddadap@nvidia.com>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Xinhui <Xinhui.Pan@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-References: <20220712193910.439171-1-hdegoede@redhat.com>
- <20220712193910.439171-2-hdegoede@redhat.com>
- <641cb059-48f5-5f05-5ec2-610f1215391c@nvidia.com>
-In-Reply-To: <641cb059-48f5-5f05-5ec2-610f1215391c@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA9PR13CA0045.namprd13.prod.outlook.com
- (2603:10b6:806:22::20) To DM6PR12MB2763.namprd12.prod.outlook.com
- (2603:10b6:5:48::16)
+        with ESMTP id S233613AbiGUVgv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 17:36:51 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921E49361D;
+        Thu, 21 Jul 2022 14:36:50 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id m16so3734541edb.11;
+        Thu, 21 Jul 2022 14:36:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=dM5Ipf0pW1sHVngWhRmQL54mzB8rAPcDkpMU7YZORbY=;
+        b=YKlJAtoD5oh1nsR0YPD1gVhOOVqZwjfJsbU0n9t/2F31hZclspGY6Q32l6wCZkocOk
+         J/OpNHXVKk+fIKTwr2bqIgEqJ5VvKzjUC+MZ6OmmRke3gGX0eZQY2McRWxovhGwGwGVd
+         lv1Qj5j4cvOTCmYteGyvhdubnCMPLEaWzWk/jfGRGjvwqsoAkV4wUoULICAdAKKPU+3z
+         MMhYK72GQfqua/zlYpiAJz0Ve9VfpeAurr7E1opw5HoRfuGGYs7/fa0TSsqQL7cWzlxO
+         t9Fki9V1GWMct3KOIQdamrCsvOHL9cmMpmxtE108K5lma4eGcVCvuERxCNLMYmb9Y6bG
+         0rTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dM5Ipf0pW1sHVngWhRmQL54mzB8rAPcDkpMU7YZORbY=;
+        b=6yc6lWn6GEbF+vkBjxVrHM5+W1m92GFJGLWdA2TgMlVBCf7aGVTs9UJlFRh/5MNsev
+         S0FmbWaA+zmvthR8X40VfqMbs98ijt5KFv3jHpkpV07tRACEW1NTkOTscCHAM047hdxl
+         7ePV2XMhF0RJl9gbqu/Ez6AKTf541mo/+6Hb+wWTPzZ8RdGlDpqC4vNTWZMQ8fcRSDz9
+         W6j9sR5DN5Ubaul6fzBwAg5d84qXFtr5iseUnCzM/+beIKDVAx4qLukzysB56LBJgYCD
+         XeYXDOON2bN6K5WaDdNhQ8e0JaY7Dv2LGfHf9Vz5HdK1Sbhya6BV7ptW3iq7rMbI5flR
+         arvQ==
+X-Gm-Message-State: AJIora9gjB+Ea1HJpifz1+7mzSBDN/hLcerA6MrGYsEh04r8cgwMsxa5
+        PHLXyYm3BDDcEqhpHoFMuEA=
+X-Google-Smtp-Source: AGRyM1sxaAiodhN6poRONOUpx0euQaN7KbvX4J+AQGA8IzCf1dbLoXzyqULJnieH2nqRe23rhJf9TQ==
+X-Received: by 2002:a05:6402:4442:b0:43b:c866:21be with SMTP id o2-20020a056402444200b0043bc86621bemr432882edb.28.1658439409047;
+        Thu, 21 Jul 2022 14:36:49 -0700 (PDT)
+Received: from skbuf ([188.25.231.115])
+        by smtp.gmail.com with ESMTPSA id b21-20020a17090630d500b0072aa1313f5csm1219613ejb.201.2022.07.21.14.36.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Jul 2022 14:36:48 -0700 (PDT)
+Date:   Fri, 22 Jul 2022 00:36:45 +0300
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alvin __ipraga <alsi@bang-olufsen.dk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        DENG Qingfang <dqfext@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        George McCollister <george.mccollister@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kurt Kanzenbach <kurt@linutronix.de>,
+        Landen Chao <Landen.Chao@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        UNGLinuxDriver@microchip.com,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Woojung Huh <woojung.huh@microchip.com>
+Subject: Re: [PATCH net-next 3/6] net: dsa: add support for retrieving the
+ interface mode
+Message-ID: <20220721213645.57ne2jf7f6try4ec@skbuf>
+References: <20220716123608.chdzbvpinso546oh@skbuf>
+ <YtUec3GTWTC59sky@shell.armlinux.org.uk>
+ <20220720224447.ygoto4av7odsy2tj@skbuf>
+ <20220721134618.axq3hmtckrumpoy6@skbuf>
+ <Ytlol8ApI6O2wy99@shell.armlinux.org.uk>
+ <20220721151533.3zomvnfogshk5ze3@skbuf>
+ <20220721192145.1f327b2a@dellmb>
+ <20220721192145.1f327b2a@dellmb>
+ <20220721182216.z4vdaj4zfb6w3emo@skbuf>
+ <YtnBmFm8Jhokgp7Q@shell.armlinux.org.uk>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ed02d4d0-c4a3-436c-0431-08da6b603f59
-X-MS-TrafficTypeDiagnostic: DM5PR1201MB0044:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PTQWCJpB01f8jXqdP39gQwyDNpZHyqU3+V28vShBuwRVX9r7kDaEq3yRMZUIy/ze0o1zzYgZ/tvg78K2mNRLvqzJv4S7iSEJcECr9KPsq0PCtx5tuQtlCU8i4ulcpvX5DNL+6xXh4a10VeSPyADvPeFV6pbA+ih+cOfgcqjvlYsgTJwa7c2snGMDo3TDB8oppugJ3x6k5wouysC9Yom21Uz5OWxHJxVLyL5cYfD9v+V9tZigfP2lu7uRcnjV87O0+KZ0KSr4ELB0RHrDgRvP1GPD/sG+1G15ZJRlXngYMoNyl9vBBmfHC+5WGrjql+eqE271D44YG3gC9sfstRH9USell0tMR7MSUTrfPdQ6KbDgKgkluqIIpbGCfl5jDHdjX7t8mGH+INFzLmD+dQyfVc6U6e7p7QVeWBae33C86577cp07yoofrcfzAsJeQOoi9iJqQNs3DVIIAJuVpe47D4ioVfa27a9YBQ+FJTmOwNeeUKqvMdsbYR/UuyXFy0iMC35rl6cOBezIXvwGgPxFvxNee4aSE1h8GHMlwdUe1XXLmHLViBVM+LDvWVCqik//LdlV4XYwbAhWw9bojPzQiB2JPaZ9AQnIlc97iJZ3Gc3cuCg+iozXN1lw+3mGBb9XbiIz6UYGsOXEpfpnFL1KaHmYlXfjAdASX52Ofy2EO29++FqowV8w9Ge9vt7sIRWugswlwlkHQM5wiYtjE3nJXUAJW0ZAG1uE1aqJybZUj7EPUtT6q/EveZvXGQry10AjTpQbhsic0gcGN8WVCyOfKC/YlUjkKgTNYctRNvteCv9KN1nIeKDHOlmqSZBPyO54KKWrlgB99Wejtvm4jZcCScnMyLMS4KrxPMoy2O5po3o=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2763.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(39860400002)(366004)(346002)(136003)(376002)(53546011)(8676002)(6666004)(6486002)(83380400001)(66946007)(41300700001)(26005)(66476007)(31696002)(86362001)(2906002)(186003)(8936002)(66556008)(478600001)(6506007)(6512007)(2616005)(54906003)(7416002)(36756003)(5660300002)(31686004)(316002)(4326008)(110136005)(38100700002)(921005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aElvbGNjTmYzVlVZb0sveC9Vd0N4OHFSWFpwOHAwS01zRHlTMG1VV1ZtRU8w?=
- =?utf-8?B?KzRxbGxmcFVsZk9XUWhqRnpmTDFUWEZnZVpIM2xNSHdpalZnREdWeERicEJt?=
- =?utf-8?B?QlA4UEtya0lSc0RvcVdSSXYxVExTOE4yWENNajVjT1pNTUZHYjROdmpvcUtM?=
- =?utf-8?B?c21FSDJlL1c0bzh6L1ozYkJGQVBMekdvNno4UmpLeFUrcTFkTzJzSzR2V3hE?=
- =?utf-8?B?SXl3NzRzN09lai9DWWlwWk9LVHIxYlRJNWlSQUFhL1NBYmovakh6RysrZThu?=
- =?utf-8?B?U2JvWmpraDNQa3YyRCt2NnZsekYxaDlsVUhxTldIZ3pNdVYvVlJMekpqdGJw?=
- =?utf-8?B?QWFLSlpzTzByZjVWZUJubms2SFpVTnBGYkExU1g4d1pWcVNhVFppbzU5Rkht?=
- =?utf-8?B?SzhldWZaUmtVUlQzUTNubk9GNTdMcEtEOFpXZlZEbDd3blFpZ1JRSUZETVRh?=
- =?utf-8?B?L0FQNUtqRlAwN3V3M1ZVTUtlYk5QbjZTVGFCRUFGeWtLRm1lYkhqbGhySE43?=
- =?utf-8?B?ZVdwSUQ0aklsQWVNbnV1Wlp0NGVxSXNjbkdBYS9BdXFDVTNQMTJyZFV1VU4z?=
- =?utf-8?B?cllGS1ZqNlRicE1NZTVpbmM1QWZqZm15TEdqK1JYT3RFajdMK2duc2VsYTNt?=
- =?utf-8?B?TTlBT1Y3UHZpRE4zR3AyU2RHR1EybkJiTzR3UWUycjVuM0tkbGlDYWNwSmdQ?=
- =?utf-8?B?VVhPNW9OSmppbm1aTitLUngySmcycHh4T3lEVGx6MHpXaUtBVm5mRG5wRnN0?=
- =?utf-8?B?cmNlUjZtS0svdVZPc2dQZDA1bVdUa29naWg2eGkzc0p6clFCcXJiU2x4K2tG?=
- =?utf-8?B?dDIvYzZSdWZJa3YvZEI5dE9JcEp3eGxrSG0vYjJVSWJqUE96bWd5d3lQRVpP?=
- =?utf-8?B?a3dSb2hGYTlUWXdXOHpZeWxOeFN1QUVQcUE2bHdvVlFFdkhkRG9IK1lvYjhh?=
- =?utf-8?B?NGRmVGpheTlPTGhheFZBMXlMU3YwamZoZ0RuQTFlcUd1TExhL0RONFpiKzBn?=
- =?utf-8?B?N0pKNHhrWVFhcjFwZlI2cnoxbjBtbkNWOXYwSUx3amdxTjlEMHRkVlJQNDJv?=
- =?utf-8?B?aWVQMkZwRFJDSmxOMTBFL041RVh4WlNCOEFPU2pSK2txb2doZnNsem00KzB1?=
- =?utf-8?B?QzJjWkR3cGZsRk92cnE0VUZWS00xeHE3ckt1L1lIQmI5UnNLeXp6QjJoOEZN?=
- =?utf-8?B?MmIwMFNYYThSMGgyU3BzeCtqL2l1b0pDS2xKMzBtTlIybjVOaTd3Tm5oZlRT?=
- =?utf-8?B?QzljdG5EL3pkV1RQajNNaVdlRVVDTVhKc3l0N0FjZnZqTlJleVFmek5iVjk3?=
- =?utf-8?B?QmFmclllNzNIK1VodXhKT200TDBoZ05Vb2x4dTd4OE5Qa1J4ZjlNdWVxbGlZ?=
- =?utf-8?B?OGNoMGpZanQvOHJPNm4xcWlhSFYzZWh6WGJDVWZLMjFjZTI3b0dPYXEzU01l?=
- =?utf-8?B?dTR3TTZiVWdCL0haNmwrTXRlTFpHek45V1RXRlAzOWlrNms5NzJ0aHVWelhH?=
- =?utf-8?B?MFpqcWZyOUJwZ0xWRFdjUURJQTl5RmR1bW1YbWhoZ0JKRjdyaCtTQnBldXpw?=
- =?utf-8?B?ZVJmUmlyS2NMTDBvUHdhc3AxNE5sNjg1cVNMNDlkVGtPQ3BmRWRrQzlyZzBE?=
- =?utf-8?B?a09lLzkxeS8zR25CR0Z1NHRlWHdnQlJLOXovQ0pteXV4cm1ON3A0c2Z5YWpl?=
- =?utf-8?B?cGpDZjZHYUNxcnZ4MnNHeWE0SjRMYkJjMTFOQmdLT1dqNHNqVUdHMUxCNThq?=
- =?utf-8?B?YVlpRERnbEJNMmdDb2pnQXhxTE1UTnJpamxHOXQ0MCtSdVBubjBQaTNjRmxQ?=
- =?utf-8?B?RTIwUnp6YzZZT21OMjJhY0Y0OTg1bDNQR1lrelVTZDc4VFphcHhKOW1GdlJw?=
- =?utf-8?B?eWVtRXdsSlZDRnRhaVJob3FLRVVLYmcrS3F0ZG4xYnBYUGtUcnkwMzZyV2xN?=
- =?utf-8?B?akVNSkI4TldGMmVvVHAxTWZ4SHNHNDVyd2hDVmpDY1BiOU9DNGxYWkg1ZHBw?=
- =?utf-8?B?Nk1ZTmk1MHJWajh6bkhHOEJEbk9YNktPdDlTeVF1M1B3dVVPeHhwVUFvb1Rj?=
- =?utf-8?B?TFhsTFNzUHE1dWg5MVBYZENKYlAxT210elV1OUxYQ2xYZG55VHBuNFY5dlNt?=
- =?utf-8?Q?5OCn+Uum5zQ8bYoUJ8P5bMZT5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed02d4d0-c4a3-436c-0431-08da6b603f59
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2763.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2022 21:30:35.2364
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rAHuWVl8VvsyWDzeBo/u06ShMNXTTBe9Skq/+gN2WCIzke1HLtQkPJai3/2a4djBDhzAM2Zf1IeCxUNeWJECHA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR1201MB0044
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YtnBmFm8Jhokgp7Q@shell.armlinux.org.uk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Jul 21, 2022 at 10:14:00PM +0100, Russell King (Oracle) wrote:
+> > > So currently we try to enable C37 AN in 2500base-x mode, although
+> > > the standard says that it shouldn't be there, and it shouldn't be there
+> > > presumably because they want it to work with C73 AN.
+> > > 
+> > > I don't know how to solve this issue. Maybe declare a new PHY interface
+> > > mode constant, 2500base-x-no-c37-an ?
+> > 
+> > So this is essentially what I'm asking, and you didn't necessarily fully
+> > answer. I take it that there exist Marvell switches which enable in-band
+> > autoneg for 2500base-x and switches which don't, and managed = "in-band-status"
+> > has nothing to do with that decision. Right?
+> 
+> I think we're getting a little too het up over this.
 
-On 7/21/22 16:24, Daniel Dadap wrote:
->
-> On 7/12/22 14:38, Hans de Goede wrote:
->> ATM on x86 laptops where we want userspace to use the acpi_video 
->> backlight
->> device we often register both the GPU's native backlight device and
->> acpi_video's firmware acpi_video# backlight device. This relies on
->> userspace preferring firmware type backlight devices over native 
->> ones, but
->> registering 2 backlight devices for a single display really is 
->> undesirable.
->>
->> On x86 laptops where the native GPU backlight device should be used,
->> the registering of other backlight devices is avoided by their drivers
->> using acpi_video_get_backlight_type() and only registering their 
->> backlight
->> if the return value matches their type.
->>
->> acpi_video_get_backlight_type() uses
->> backlight_device_get_by_type(BACKLIGHT_RAW) to determine if a native
->> driver is available and will never return native if this returns
->> false. This means that the GPU's native backlight registering code
->> cannot just call acpi_video_get_backlight_type() to determine if it
->> should register its backlight, since acpi_video_get_backlight_type() 
->> will
->> never return native until the native backlight has already registered.
->>
->> To fix this add a new internal native function parameter to
->> acpi_video_get_backlight_type(), which when set to true will make
->> acpi_video_get_backlight_type() behave as if a native backlight has
->> already been registered.
->>
->> And add a new acpi_video_backlight_use_native() helper, which sets this
->> to true, for use in native GPU backlight code.
->>
->> Changes in v2:
->> - Replace adding a native parameter to 
->> acpi_video_get_backlight_type() with
->>    adding a new acpi_video_backlight_use_native() helper.
->>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>   drivers/acpi/video_detect.c | 24 ++++++++++++++++++++----
->>   include/acpi/video.h        |  5 +++++
->>   2 files changed, 25 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
->> index becc198e4c22..4346c990022d 100644
->> --- a/drivers/acpi/video_detect.c
->> +++ b/drivers/acpi/video_detect.c
->> @@ -17,8 +17,9 @@
->>    * Otherwise vendor specific drivers like thinkpad_acpi, asus-laptop,
->>    * sony_acpi,... can take care about backlight brightness.
->>    *
->> - * Backlight drivers can use acpi_video_get_backlight_type() to 
->> determine
->> - * which driver should handle the backlight.
->> + * Backlight drivers can use acpi_video_get_backlight_type() to 
->> determine which
->> + * driver should handle the backlight. RAW/GPU-driver backlight 
->> drivers must
->> + * use the acpi_video_backlight_use_native() helper for this.
->>    *
->>    * If CONFIG_ACPI_VIDEO is neither set as "compiled in" (y) nor as 
->> a module (m)
->>    * this file will not be compiled and 
->> acpi_video_get_backlight_type() will
->> @@ -548,9 +549,10 @@ static int acpi_video_backlight_notify(struct 
->> notifier_block *nb,
->>    * Arguably the native on win8 check should be done first, but that 
->> would
->>    * be a behavior change, which may causes issues.
->>    */
->> -enum acpi_backlight_type acpi_video_get_backlight_type(void)
->> +static enum acpi_backlight_type __acpi_video_get_backlight_type(bool 
->> native)
->>   {
->>       static DEFINE_MUTEX(init_mutex);
->> +    static bool native_available;
->>       static bool init_done;
->>       static long video_caps;
->>   @@ -570,6 +572,8 @@ enum acpi_backlight_type 
->> acpi_video_get_backlight_type(void)
->>               backlight_notifier_registered = true;
->>           init_done = true;
->>       }
->> +    if (native)
->> +        native_available = true;
->>       mutex_unlock(&init_mutex);
->>         if (acpi_backlight_cmdline != acpi_backlight_undef)
->> @@ -581,13 +585,25 @@ enum acpi_backlight_type 
->> acpi_video_get_backlight_type(void)
->>       if (!(video_caps & ACPI_VIDEO_BACKLIGHT))
->>           return acpi_backlight_vendor;
->>   -    if (acpi_osi_is_win8() && 
->> backlight_device_get_by_type(BACKLIGHT_RAW))
->> +    if (acpi_osi_is_win8() &&
->> +        (native_available || 
->> backlight_device_get_by_type(BACKLIGHT_RAW)))
->>           return acpi_backlight_native;
->>         return acpi_backlight_video;
->
->
-> So I ran into a minor problem when testing the NVIDIA proprietary 
-> driver against this change set, after checking 
-> acpi_video_backlight_use_native() before registering the NVIDIA 
-> proprietary driver's backlight handler. Namely, for the case where a 
-> user installs the NVIDIA proprietary driver after the video.ko has 
-> already registered its backlight handler, we end up with both the 
-> firmware and native handlers registered simultaneously, since the ACPI 
-> video driver no longer unregisters its backlight handler. In this 
-> state, desktop environments end up preferring the registered but 
-> non-functional firmware handler from video.ko. (Manually twiddling the 
-> sysfs interface for the native NVIDIA handler works fine.) When 
-> rebooting the system after installing the NVIDIA proprietary driver, 
-> it is able to register its native handler before the delayed work to 
-> register the ACPI video backlight handler fires, so we end up with 
-> only one (native) handler, and userspace is happy.
->
-> Maybe this will be moot later on, when the existing sysfs interface is 
-> deprecated, and it probably isn't a huge deal, since a reboot fixes 
-> things (I imagine installing an in-tree DRM/KMS driver on an already 
-> running kernel isn't really a thing, which is why this isn't a problem 
-> with the in-tree drivers), but would it make sense to unregister the 
-> ACPI video backlight handler here before returning 
-> acpi_backlight_native? That way, we'll briefly end up with zero 
-> backlight handlers rather than briefly ending up with two of them. Not 
-> sure if that's really any better, though.
->
+No, I think it's relevant to this patch set.
 
-Thinking about this a little more, maybe it's better not to overly 
-complicate things, and just assert that users of the NVIDIA proprietary 
-driver will need to reboot after installation in order to get the 
-backlight working, at least until we get further along in this effort 
-and the backlight interface transitions to the DRM connector property 
-you have proposed.
+> We have 1000base-X where, when we're not using in-band-status, we don't
+> use autoneg (some drivers that weren't caught in review annoyingly do
+> still use autoneg, but they shouldn't). We ignore the ethtool autoneg
+> bit.
+> 
+> We also have 1000base-X where we're using in-band-status, and we then
+> respect the ethtool autoneg bit.
+> 
+> So, wouldn't it be logical if 2500base-X were implemented the same way,
+> and on setups where 2500base-X does not support clause 37 AN, we
+> clear the ethtool autoneg bit? If we have 2500base-X being used as the
+> media link, surely this is the right behaviour?
 
+The ethtool autoneg bit is only relevant when the PCS is the last thing
+before the medium. But if the SERDES protocol connects the MAC to the PHY,
+or the MAC to another MAC (such as the case here, CPU or DSA ports),
+there won't be any ethtool bit to take into consideration, and that's
+where my question is. Is there any expected correlation between enabling
+in-band autoneg and the presence or absence of managed = "in-band-status"?
 
->
->>   }
->> +
->> +enum acpi_backlight_type acpi_video_get_backlight_type(void)
->> +{
->> +    return __acpi_video_get_backlight_type(false);
->> +}
->>   EXPORT_SYMBOL(acpi_video_get_backlight_type);
->>   +bool acpi_video_backlight_use_native(void)
->> +{
->> +    return __acpi_video_get_backlight_type(true) == 
->> acpi_backlight_native;
->> +}
->> +EXPORT_SYMBOL(acpi_video_backlight_use_native);
->> +
->>   /*
->>    * Set the preferred backlight interface type based on DMI info.
->>    * This function allows DMI blacklists to be implemented by external
->> diff --git a/include/acpi/video.h b/include/acpi/video.h
->> index db8548ff03ce..4705e339c252 100644
->> --- a/include/acpi/video.h
->> +++ b/include/acpi/video.h
->> @@ -56,6 +56,7 @@ extern void acpi_video_unregister(void);
->>   extern int acpi_video_get_edid(struct acpi_device *device, int type,
->>                      int device_id, void **edid);
->>   extern enum acpi_backlight_type acpi_video_get_backlight_type(void);
->> +extern bool acpi_video_backlight_use_native(void);
->>   extern void acpi_video_set_dmi_backlight_type(enum 
->> acpi_backlight_type type);
->>   /*
->>    * Note: The value returned by 
->> acpi_video_handles_brightness_key_presses()
->> @@ -77,6 +78,10 @@ static inline enum acpi_backlight_type 
->> acpi_video_get_backlight_type(void)
->>   {
->>       return acpi_backlight_vendor;
->>   }
->> +static inline bool acpi_video_backlight_use_native(void)
->> +{
->> +    return true;
->> +}
->>   static inline void acpi_video_set_dmi_backlight_type(enum 
->> acpi_backlight_type type)
->>   {
->>   }
+> (This has implications for the rate adaption case, since the 2500base-X
+> link is not the media, and therefore the state of the autoneg bit
+> shouldn't apply to the 2500base-X link.)
+
+This is closer to what I was interested in knowing, but still not that.
