@@ -2,52 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AF9C57CEAE
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jul 2022 17:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7D8457CEB2
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jul 2022 17:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbiGUPMr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jul 2022 11:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58876 "EHLO
+        id S229475AbiGUPO5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jul 2022 11:14:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229616AbiGUPMq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 11:12:46 -0400
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA07876E89;
-        Thu, 21 Jul 2022 08:12:45 -0700 (PDT)
-Received: by mail-yb1-f171.google.com with SMTP id l11so3220062ybu.13;
-        Thu, 21 Jul 2022 08:12:45 -0700 (PDT)
+        with ESMTP id S229471AbiGUPO5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 11:14:57 -0400
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283987B359
+        for <linux-acpi@vger.kernel.org>; Thu, 21 Jul 2022 08:14:56 -0700 (PDT)
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-31e1ecea074so20487397b3.8
+        for <linux-acpi@vger.kernel.org>; Thu, 21 Jul 2022 08:14:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8M1nirNTiuqHscQWbBFugbLXKUqQTiiZndKuM5c0HjA=;
-        b=ohhn+jEUAfS6VY2AQBx0QVAQkmEC0OzcwnhnkDysy5cnZaNsoN5SZ6YbHs3rKyR2P4
-         vu41sjEe9ptoyMd3VGlhyP1HFWt7ywkpIY+ycqW45zfUXeKRrrEWycagma3WhA3ptUkh
-         6g014U+SSP3cLBvdh9I4oGUVoRXgQbt9QVLMhsiwx6pQJkKuoGO8CqSgaX+tXmLsbZGI
-         1TkaOXn51J3lVp0u0gKHSOEaQdWRZ0IjBV/YBeXP1bSJFJN6k0cjHnCh0M6BQuCbBjy6
-         m+45oVd0ATCPvh8vKVJkBvG6UprlpeNdqmtjpwcvD4yK1IGbFTmWNTUYyxgGYPx6qGJV
-         0+pg==
-X-Gm-Message-State: AJIora+IkUCP5ZEAeFUQgZbud+GGt/iW4uJ+g1wd56OupNmzi50a92gE
-        JjWiEdapxQTs7zOdyDf44pxbxCxHO0saCbE3MQfmihih
-X-Google-Smtp-Source: AGRyM1tvHclDKZjwe5xPrRwEqXONCS6N+q7O6Z1j1BsG1r3Iw+tI15jWFRZyumgEAkXx4TDxUrFWOTU0bOPiDP6nVF4=
-X-Received: by 2002:a05:6902:1207:b0:66e:f2d2:6e91 with SMTP id
- s7-20020a056902120700b0066ef2d26e91mr43366462ybu.153.1658416364750; Thu, 21
- Jul 2022 08:12:44 -0700 (PDT)
+        bh=cfdmD61lk9cCTrzpyE3aykMysUZbdv2fKAgxoTbG2fQ=;
+        b=IEmTbYenDxKBYjmEGjnNm8jw3Cc4XRvt+qqTdchfWKzlY5GRImkZGaI587+xOIs7bz
+         mnKWqj60GALVmEQQXn0OXnfa4VYNVxK+QjG2tAZHkYizf7MypVfyIPx875eU0CIlh+kg
+         tkh2mex0wZJyXUzkd4fEdOsL/Dk9zmnzFmERiK/hi1K0aOuMFJlzUvzHYSHkbydjPd1t
+         zDg/AVAEb2odXw+oc7vB0RShqBn/NkLkwPI3Z7TZmDrX7QSvA6NpNMLzo9iANi6mgp21
+         dMvLB+bX9nOH2g6MzMxRKTTnYb21pF5Qp3SKiBNIYbpYugLzEUmCjluBY72XNtSrHZ/W
+         Kn6A==
+X-Gm-Message-State: AJIora9rGNMlSynruHAV8RdOmrtQNZMatlR6l3vyWCXBdgAIRNLz5wJm
+        rwASHlNRNVUQn4G/qt7agr6xFEp7CGlfN5Oc3dc=
+X-Google-Smtp-Source: AGRyM1sLPW8Qi0lP8VpmGfuNta9SnhXGsXEtzrOtco8QDOhOeHaWhy/5IjQSdMSAbHftU8LfAIO2STDQh1hO551P+Ko=
+X-Received: by 2002:a0d:df09:0:b0:31e:78f8:32d0 with SMTP id
+ i9-20020a0ddf09000000b0031e78f832d0mr5508195ywe.19.1658416495383; Thu, 21 Jul
+ 2022 08:14:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220712020058.90374-1-gch981213@gmail.com> <CAJZ5v0jjyvWniC8ReZqAgnaoaRm4cr_Vs3pXhddKf9B6+zONLw@mail.gmail.com>
- <8eef6593-ebaf-5b5a-b9b2-c93277d4afaa@amd.com>
-In-Reply-To: <8eef6593-ebaf-5b5a-b9b2-c93277d4afaa@amd.com>
+References: <20220711112606.3050368-1-sakari.ailus@linux.intel.com>
+ <20220711112606.3050368-8-sakari.ailus@linux.intel.com> <CAJZ5v0gQuGYjH=twZKcy0FmsK6vVyboN0ubOXZqHVVNfyuP1PQ@mail.gmail.com>
+ <YtJwD/BspZxoJySJ@paasikivi.fi.intel.com>
+In-Reply-To: <YtJwD/BspZxoJySJ@paasikivi.fi.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 21 Jul 2022 17:12:33 +0200
-Message-ID: <CAJZ5v0isLQVX3EqsokFthY5ka=V4Vse9T52s3EGSv41FKM1iGw@mail.gmail.com>
-Subject: Re: [PATCH v6] ACPI: skip IRQ override on AMD Zen platforms
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Chuanhong Guo <gch981213@gmail.com>
+Date:   Thu, 21 Jul 2022 17:14:44 +0200
+Message-ID: <CAJZ5v0h5-JyES4_kWCFf9EAhqa+VKZGobST2zX0+Z1PsWB0H3Q@mail.gmail.com>
+Subject: Re: [PATCH v4 7/8] ACPI: property: Add support for parsing buffer
+ property UUID
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        Len Brown <lenb@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
+        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -59,70 +58,27 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 18, 2022 at 5:39 PM Limonciello, Mario
-<mario.limonciello@amd.com> wrote:
+On Sat, Jul 16, 2022 at 10:00 AM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
 >
-> On 7/14/2022 13:35, Rafael J. Wysocki wrote:
-> > On Tue, Jul 12, 2022 at 4:01 AM Chuanhong Guo <gch981213@gmail.com> wrote:
-> >>
-> >> IRQ override isn't needed on modern AMD Zen systems.
-> >> There's an active low keyboard IRQ on AMD Ryzen 6000 and it will stay
-> >> this way on newer platforms. This IRQ override breaks keyboards for
-> >> almost all Ryzen 6000 laptops currently on the market.
-> >>
-> >> Skip this IRQ override for all AMD Zen platforms because this IRQ
-> >> override is supposed to be a workaround for buggy ACPI DSDT and we can't
-> >> have a long list of all future AMD CPUs/Laptops in the kernel code.
-> >> If a device with buggy ACPI DSDT shows up, a separated list containing
-> >> just them should be created.
-> >>
-> >> Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-> >> Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
+> Hi Rafael,
+>
+> Thanks for the review.
+>
+> On Fri, Jul 15, 2022 at 07:59:21PM +0200, Rafael J. Wysocki wrote:
+> > On Mon, Jul 11, 2022 at 1:24 PM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
+> > >
+> > > Add support for newly added buffer property UUID, as defined in the DSD
+> > > guide.
 > >
-> > I need an ACK from Mario here.
+> > A link to the DSD guide and a more specific reference to the relevant
+> > part of it (eg. section number) would be handy.
 >
-> Sure.  As he mentioned this polarity change is needed going forward.
-> So if we end up with a similar regression as the Baytrail attempt to
-> make this generic and need to revert we'll need to find a different
-> heuristic to make it generic on RMB and later.
+> That would be 3.3
+> <URL:https://github.com/UEFI/DSD-Guide/blob/main/src/dsd-guide.adoc#buffer-data-extension-uuid>.
 >
-> Acked-by: Mario Limonciello <mario.limonciello@amd.com>
->
-> Here's some other tags to pick up too in the commit message.
->
-> Tested-by: XiaoYan Li <lxy.lixiaoyan@gmail.com>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216118
+> I'll add that for v5.
 
-Applied as 5.20 material with the above tags added, thanks!
-
-> >> ---
-> >> Change sice v5: reworked
-> >>
-> >>   drivers/acpi/resource.c | 10 ++++++++++
-> >>   1 file changed, 10 insertions(+)
-> >>
-> >> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> >> index c2d494784425..510cdec375c4 100644
-> >> --- a/drivers/acpi/resource.c
-> >> +++ b/drivers/acpi/resource.c
-> >> @@ -416,6 +416,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
-> >>   {
-> >>          int i;
-> >>
-> >> +#ifdef CONFIG_X86
-> >> +       /*
-> >> +        * IRQ override isn't needed on modern AMD Zen systems and
-> >> +        * this override breaks active low IRQs on AMD Ryzen 6000 and
-> >> +        * newer systems. Skip it.
-> >> +        */
-> >> +       if (boot_cpu_has(X86_FEATURE_ZEN))
-> >> +               return false;
-> >> +#endif
-> >> +
-> >>          for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
-> >>                  const struct irq_override_cmp *entry = &skip_override_table[i];
-> >>
-> >> --
-> >> 2.36.1
-> >>
->
+The rest of the patches in the series look fine to me, so please just
+send an update of this one.
