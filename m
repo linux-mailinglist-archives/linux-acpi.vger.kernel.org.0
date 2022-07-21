@@ -2,173 +2,226 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1A2857D2AC
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jul 2022 19:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A24957D319
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Jul 2022 20:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbiGURlP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jul 2022 13:41:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37396 "EHLO
+        id S229693AbiGUSQZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Jul 2022 14:16:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiGURlP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 13:41:15 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C351804B1;
-        Thu, 21 Jul 2022 10:41:13 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 57a2f1e4dff59ed9; Thu, 21 Jul 2022 19:41:12 +0200
-Received: from kreacher.localnet (unknown [213.134.181.148])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 7008866CD1E;
-        Thu, 21 Jul 2022 19:41:11 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Prashanth Prakash <pprakash@codeaurora.org>
-Subject: [PATCH] ACPI: CPPC: Do not prevent CPPC from working in the future
-Date:   Thu, 21 Jul 2022 19:41:10 +0200
-Message-ID: <12041179.O9o76ZdvQC@kreacher>
+        with ESMTP id S229671AbiGUSQZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 14:16:25 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAD6E481FB;
+        Thu, 21 Jul 2022 11:16:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ko/ecmmHmwqq0NBK1EGja/+qrA547dXPD160U10AvfU=; b=H7A1QYw3UiBwcvwGleWFgG6vqR
+        8MymHBVDUonn6FgmkbsxQ720UY+rgXmu0joP150qTGpHSaWg03+jKDktxmpiOI3vAxeFu4wKXyZ/n
+        V54xaQNUPF0+tDClv0DOu56hg6vlq0Ga131rOzvLvUcEni+BIQ+43V7JCHCSw+1k80v11lnZxLV8F
+        /pvS5zI2aKh/hhWxSwXGIAOKjCmqE6OniA97HkAa2vbaQjuds6BAzfF/ExwTPFCfI5mYLBBbZb00V
+        6MN4xAoGuMADbFw7VQ/JtSPQ3lnyYTjtuSEwI6QCK/tLFdSPJkYTQdD4ujJVVqlkTi2ixTXHNaHSO
+        FAZeRlhg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33488)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1oEaiQ-0005pP-2P; Thu, 21 Jul 2022 19:16:02 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1oEaiL-00053h-1h; Thu, 21 Jul 2022 19:15:57 +0100
+Date:   Thu, 21 Jul 2022 19:15:57 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
+Cc:     Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alvin __ipraga <alsi@bang-olufsen.dk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        DENG Qingfang <dqfext@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        George McCollister <george.mccollister@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kurt Kanzenbach <kurt@linutronix.de>,
+        Landen Chao <Landen.Chao@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        UNGLinuxDriver@microchip.com,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Woojung Huh <woojung.huh@microchip.com>
+Subject: Re: [PATCH net-next 3/6] net: dsa: add support for retrieving the
+ interface mode
+Message-ID: <YtmX3cD8nUqftHDY@shell.armlinux.org.uk>
+References: <YtHw0O5NB6kGkdwV@shell.armlinux.org.uk>
+ <20220716105711.bjsh763smf6bfjy2@skbuf>
+ <YtKdcxupT+INVAhR@shell.armlinux.org.uk>
+ <20220716123608.chdzbvpinso546oh@skbuf>
+ <YtUec3GTWTC59sky@shell.armlinux.org.uk>
+ <20220720224447.ygoto4av7odsy2tj@skbuf>
+ <20220721134618.axq3hmtckrumpoy6@skbuf>
+ <Ytlol8ApI6O2wy99@shell.armlinux.org.uk>
+ <20220721151533.3zomvnfogshk5ze3@skbuf>
+ <20220721192145.1f327b2a@dellmb>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.181.148
-X-CLIENT-HOSTNAME: 213.134.181.148
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrudelkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepvddufedrudefgedrudekuddrudegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukedurddugeekpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgv
- lhdrtghomhdprhgtphhtthhopehvihhrvghshhdrkhhumhgrrheslhhinhgrrhhordhorhhgpdhrtghpthhtohepphhprhgrkhgrshhhsegtohguvggruhhrohhrrgdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220721192145.1f327b2a@dellmb>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Thu, Jul 21, 2022 at 07:21:45PM +0200, Marek Behún wrote:
+> On Thu, 21 Jul 2022 18:15:33 +0300
+> Vladimir Oltean <olteanv@gmail.com> wrote:
+> 
+> > On Thu, Jul 21, 2022 at 03:54:15PM +0100, Russell King (Oracle) wrote:
+> > > Yes, which is why I said on July 7th:
+> > > 
+> > > "So I also don't see a problem - sja1105 rejects DTs that fail to
+> > > describe a port using at least one of a phy-handle, a fixed-link, or
+> > > a managed in-band link, and I don't think it needs to do further
+> > > validation, certainly not for the phy describing properties that
+> > > the kernel has chosen to deprecate for new implementations."
+> > > 
+> > > I had assumed you knew of_phy_is_fixed_link() returns true in this
+> > > case. Do you now see that sja1105's validation is close enough
+> > > (except for the legacy phy phandle properties which we don't care
+> > > about),  
+> > 
+> > This is why your comment struck me as odd for mentioning managed in-band.
+> > 
+> > > and thus do we finally have agreement on this point?  
+> > 
+> > Yes we do.
+> > 
+> > > > On the other hand I found arm64/boot/dts/marvell/cn9130-crb.dtsi, where
+> > > > the switch, a "marvell,mv88e6190"-compatible (can't determine going just
+> > > > by that what it actually is) has this:
+> > > > 
+> > > > 			port@a {
+> > > > 				reg = <10>;
+> > > > 				label = "cpu";
+> > > > 				ethernet = <&cp0_eth0>;
+> > > > 			};  
+> > > 
+> > > Port 10 on 88E6393X supports 10GBASE-R, and maybe one day someone will
+> > > get around to implementing USXGMII. This description relies upon this
+> > > defaulting behaviour - as Andrew has described, this has been entirely
+> > > normal behaviour with mv88e6xxx.
+> > >   
+> > > > To illustrate how odd the situation is, I am able to follow the phandle
+> > > > to the CPU port and find a comment that it's a 88E6393X, and that the
+> > > > CPU port uses managed = "in-band-status":
+> > > > 
+> > > > &cp0_eth0 {
+> > > > 	/* This port is connected to 88E6393X switch */
+> > > > 	status = "okay";
+> > > > 	phy-mode = "10gbase-r";
+> > > > 	managed = "in-band-status";
+> > > > 	phys = <&cp0_comphy4 0>;
+> > > > };  
+> > > 
+> > > 10GBASE-R has no in-band signalling per-se, so the only effect this has
+> > > on the phylink instance on the CPU side is to read the status from the
+> > > PCS as it does for any other in-band mode. In the case of 10GBASE-R, the
+> > > only retrievable parameter is the link up/down status. This is no
+> > > different from a 10GBASE-R based fibre link in that regard.  
+> > 
+> > Is there any formal definition for what managed = "in-band-status"
+> > actually means? Is it context-specific depending on phy-mode?
+> > In the case of SGMII, would it also mean that clause 37 exchange would
+> > also take place (and its absence would mean it wouldn't), or does it
+> > mean just that, that the driver should read the status from the PCS?
+> > 
+> > > A fixed link on the other hand would not read status from the PCS but
+> > > would assume that the link is always up.
+> > >   
+> > > > Open question: is it sane to even do what we're trying here, to create a
+> > > > fixed-link for port@a (which makes the phylink instance use MLO_AN_FIXED)
+> > > > when &cp0_eth0 uses MLO_AN_INBAND? My simple mind thinks that if all
+> > > > involved drivers were to behave correctly and not have bugs that cancel
+> > > > out other bugs, the above device tree shouldn't work. The host port
+> > > > would expect a clause 37 base page exchange to take place, the switch
+> > > > wouldn't send any in-band information, and the SERDES lane would never
+> > > > transition to data mode. To fix the above, we'd really need to chase the
+> > > > "ethernet" phandle and attempt to mimic what the DSA master did. This is
+> > > > indeed logic that never existed before, and I don't particularly feel
+> > > > like adding it. How far do we want to go? It seems like never-ending
+> > > > insanity the more I look at it.  
+> > > 
+> > > 10GBASE-R doesn't support clause 37 AN. 10GBASE-KR does support
+> > > inband AN, but it's a different clause and different format.  
+> > 
+> > I thought it wouldn't, but then I was led to believe, after seeing it
+> > here, that just the hardware I'm working with doesn't. How about
+> > 2500base-x in Marvell, is there any base page exchange, or is this still
+> > only about retrieving link status from the PCS?
+> 
+> Marvell documentation says that 2500base-x does not implement inband
+> AN.
+> 
+> But when it was first implemented, for some reason it was thought that
+> 2500base-x is just 1000base-x at 2.5x speed, and 1000base-x does
+> support inband AN. Also it worked during tests for both switches and
+> SOC NICs, so it was enabled.
 
-There is a problem with the current revision checks in
-is_cppc_supported() that they essentially prevent the CPPC support
-from working if a new _CPC package format revision being a proper
-superset of the v3 and only causing _CPC to return a package with more
-entries (while retaining the types and meaning of the entries defined by
-the v3) is introduced in the future and used by the platform firmware.
+It comes from Marvell NETA and PP2 documentation, which clearly states
+that when a port is operating in 1000base-X mode, autonegotiation must
+be enabled. It then implements 2500base-X by up-clocking the Serdes by
+2.5x.
 
-In that case, as long as the number of entries in the _CPC return
-package is at least CPPC_V3_NUM_ENT, it should be perfectly fine to
-use the v3 support code and disregard the additional package entries
-added by the new package format revision.
+Therefore, to get 2500base-X using 1000base-X mode on these devices, it
+follows that autonegotiation must be enabled. Since phylink's origins
+are for these devices, and 2500base-X was not standardised at the time,
+and there was no documentation online to describe what 2500base-X
+actually was, a decision had to be made, and the logical thing to do
+at that point was to support AN, especially as one can use it to
+negotiate pause modes.
 
-For this reason, drop is_cppc_supported() altogether, put the revision
-checks directly into acpi_cppc_processor_probe() so they are easier to
-follow and rework them to take the case mentioned above into account.
+Note that NETA and PP2 have never supported half-duplex on 1G or 2.5G
+speeds, so the clause 37 negotiation has only ever dealt with pause
+modes, and again, it seemed logical and sensible at the time to allow
+pause modes to still be negotiated at 2500base-X speed. Especially as
+one can use FibreChannel SFPs to link two machines together using
+2500base-X in the same way that you can link them together using
+1000base-X.
 
-Fixes: 4773e77cdc9b ("ACPI / CPPC: Add support for CPPC v3")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/cppc_acpi.c |   54 ++++++++++++++++++++---------------------------
- include/acpi/cppc_acpi.h |    2 -
- 2 files changed, 25 insertions(+), 31 deletions(-)
+Had manufacturers been more open with their documentation, and had they
+used a common term, maybe this could have been different, but in an
+information vacuum, decisions have to be made, even if they turn out to
+be wrong later on - but we have to live with those consequences.
 
-Index: linux-pm/drivers/acpi/cppc_acpi.c
-===================================================================
---- linux-pm.orig/drivers/acpi/cppc_acpi.c
-+++ linux-pm/drivers/acpi/cppc_acpi.c
-@@ -618,33 +618,6 @@ static int pcc_data_alloc(int pcc_ss_id)
- 	return 0;
- }
- 
--/* Check if CPPC revision + num_ent combination is supported */
--static bool is_cppc_supported(int revision, int num_ent)
--{
--	int expected_num_ent;
--
--	switch (revision) {
--	case CPPC_V2_REV:
--		expected_num_ent = CPPC_V2_NUM_ENT;
--		break;
--	case CPPC_V3_REV:
--		expected_num_ent = CPPC_V3_NUM_ENT;
--		break;
--	default:
--		pr_debug("Firmware exports unsupported CPPC revision: %d\n",
--			revision);
--		return false;
--	}
--
--	if (expected_num_ent != num_ent) {
--		pr_debug("Firmware exports %d entries. Expected: %d for CPPC rev:%d\n",
--			num_ent, expected_num_ent, revision);
--		return false;
--	}
--
--	return true;
--}
--
- /*
-  * An example CPC table looks like the following.
-  *
-@@ -733,7 +706,6 @@ int acpi_cppc_processor_probe(struct acp
- 			 cpc_obj->type, pr->id);
- 		goto out_free;
- 	}
--	cpc_ptr->num_entries = num_ent;
- 
- 	/* Second entry should be revision. */
- 	cpc_obj = &out_obj->package.elements[1];
-@@ -744,10 +716,32 @@ int acpi_cppc_processor_probe(struct acp
- 			 cpc_obj->type, pr->id);
- 		goto out_free;
- 	}
--	cpc_ptr->version = cpc_rev;
- 
--	if (!is_cppc_supported(cpc_rev, num_ent))
-+	if (cpc_rev < CPPC_V2_REV) {
-+		pr_debug("Unsupported _CPC Revision (%d) for CPU:%d\n", cpc_rev,
-+			 pr->id);
- 		goto out_free;
-+	}
-+
-+	/*
-+	 * Disregard _CPC if the number of entries in the return pachage is not
-+	 * as expected, but support future revisions being proper supersets of
-+	 * the v3 and only causing more entries to be returned by _CPC.
-+	 */
-+	if ((cpc_rev == CPPC_V2_REV && num_ent != CPPC_V2_NUM_ENT) ||
-+	    (cpc_rev == CPPC_V3_REV && num_ent != CPPC_V3_NUM_ENT) ||
-+	    (cpc_rev > CPPC_V3_REV && num_ent <= CPPC_V3_NUM_ENT)) {
-+		pr_debug("Unexpected number of _CPC return package entries (%d) for CPU:%d\n",
-+			 num_ent, pr->id);
-+		goto out_free;
-+	}
-+	if (cpc_rev > CPPC_V3_REV) {
-+		num_ent = CPPC_V3_NUM_ENT;
-+		cpc_rev = CPPC_V3_REV;
-+	}
-+
-+	cpc_ptr->num_entries = num_ent;
-+	cpc_ptr->version = cpc_rev;
- 
- 	/* Iterate through remaining entries in _CPC */
- 	for (i = 2; i < num_ent; i++) {
-Index: linux-pm/include/acpi/cppc_acpi.h
-===================================================================
---- linux-pm.orig/include/acpi/cppc_acpi.h
-+++ linux-pm/include/acpi/cppc_acpi.h
-@@ -17,7 +17,7 @@
- #include <acpi/pcc.h>
- #include <acpi/processor.h>
- 
--/* Support CPPCv2 and CPPCv3  */
-+/* CPPCv2 and CPPCv3 support */
- #define CPPC_V2_REV	2
- #define CPPC_V3_REV	3
- #define CPPC_V2_NUM_ENT	21
+As I've stated before, I know I'm not alone in this - there are SFPs
+that support 2500base-X (particularly GPON SFPs) that appear to expect
+caluse 37 AN on 2500base-X, since the Armada 3700 uDPU product is
+designed to work with them and it was a requirement to have a working
+2.5G connection between the NETA interfaces and the GPON SFPs. And as
+I say, NETA wants AN enabled.
 
-
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
