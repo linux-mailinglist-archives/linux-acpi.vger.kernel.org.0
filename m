@@ -2,488 +2,451 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E590A57E9E9
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Jul 2022 00:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57FE257EA51
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Jul 2022 01:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237176AbiGVWlU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Jul 2022 18:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
+        id S231777AbiGVXi3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Jul 2022 19:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237093AbiGVWlC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jul 2022 18:41:02 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76AFAA8952;
-        Fri, 22 Jul 2022 15:39:38 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id ss3so10787728ejc.11;
-        Fri, 22 Jul 2022 15:39:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SCIfLHRilSVARYAnKntWH0eWDAY/YIifl2pwBJ48Xcg=;
-        b=pNlk5uj1juo5th8sz1EcjU7HHLiktAi8JL1ltlInGl+uGwsu+ojWI7HxdEboJt87hM
-         B9sA417XmtObSJXVCkMB91laT1NrSutSJBgcSfso3MvT9dvtII937mzq2BN+Op45CgBD
-         M0CSZfvKLwjg7m5t4CCtsz+yDGpKP265U1chM/n5VGc8L47NVTNWxZh1tmU5uEAy2GVq
-         w8klKSV+pKs5L3aXV+Lqf/xcmbaVDIK868eDd15UEBCG441kwEST63F/vPMBRjoQvWR0
-         DPjPTQdOVuU6ll8zMmCWypHik1EwKJsDu2Su9Evh9+wMtQ9YlvwX/SjKiksrOUToZne9
-         bUhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SCIfLHRilSVARYAnKntWH0eWDAY/YIifl2pwBJ48Xcg=;
-        b=B31Uux7SrxVKpHc+IBebU0RUe/qXDUdgYDAtWjRakVbBlVcGcOzI8ZCPutG/No8Gxt
-         Hh6uY4slQuSrGWyfLMQTgXyrLXUHLCbp5LPuVDY8Xb2hDZyeguu+hV/MYpDWdlm6q2e3
-         rev2VbfHUe0Ox/VfZxAe2bkVMtRdI0618zJZz2d8SzhYhf+JjkWUQP4e3qUpTk2LrNO4
-         nPBjtHy5AaSP2KPK2QRvXEYqYFBovUHKvuLWRwglaKM4wpfB0moLR+dYymJvbBlFYIAH
-         tLIiuEAZi+uIAHfXVfe22o6Vx/FdrcJfJnA4uAe+DaS4LcjCZ9E6dCKMQtPv9yonX6OY
-         JOCA==
-X-Gm-Message-State: AJIora+O4BZFPsbp3Nv2UjKiA/GfDOVqMEhfm9ocGV4T3gKfpJX+Enj0
-        t1H+KjP6VNMWTUyPjFLNLVg=
-X-Google-Smtp-Source: AGRyM1teCUXOn6Gq6vH6tia+wR4Z3XGKf8xLDBoY6esTK8NiEwU20u/c7G0/XowCcVoGCw8LNFtTTA==
-X-Received: by 2002:a17:907:2ccc:b0:72b:6907:fce6 with SMTP id hg12-20020a1709072ccc00b0072b6907fce6mr1590457ejc.115.1658529576656;
-        Fri, 22 Jul 2022 15:39:36 -0700 (PDT)
-Received: from skbuf ([188.25.231.115])
-        by smtp.gmail.com with ESMTPSA id nc19-20020a1709071c1300b00722d5b26ecesm2462199ejc.205.2022.07.22.15.39.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Jul 2022 15:39:36 -0700 (PDT)
-Date:   Sat, 23 Jul 2022 01:39:32 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alvin __ipraga <alsi@bang-olufsen.dk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
+        with ESMTP id S229611AbiGVXi2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jul 2022 19:38:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3418C8E5;
+        Fri, 22 Jul 2022 16:38:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 65158B82B1C;
+        Fri, 22 Jul 2022 23:38:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EC5C341CA;
+        Fri, 22 Jul 2022 23:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658533104;
+        bh=McSqP94KWRevQHkCeK9y2ojZI5ZwfWiMyOnTof4VG6A=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=t4UyYJRPp5zbDSHqtRxl8U+SV4WCw4HHtixAgeOLizMQOyqbVMYjovNXDlBQSX3YL
+         cLdbIqr72MCf3qgl3QujY6RwW6QefDiBEwjm8aFsGqTZhPA4iAzcJp6/+4QLt0rDfo
+         CrBP4V3XLc7VytO5u+Ll2kW77y2qSmQjgjAACq83G2SIcpWyWdc2XC4vacgDD+ZKpy
+         8VuCjBGynrbCtWJeJ4Va0vVIwvn4HcAeJgK4KUpTYpJTNEYPNVe5K9yboKGl9tc1pY
+         f9E/ufRQU7k0IjMVgeoKz+M/yVELq5EfrNme6lqU0PZpVwOQATy/HAvGSWAoGM/srS
+         S1XsmVSOWtqQA==
+Date:   Fri, 22 Jul 2022 18:38:21 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Stafford Horne <shorne@gmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Pierre Morel <pmorel@linux.ibm.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
-        DENG Qingfang <dqfext@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        George McCollister <george.mccollister@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
-        Landen Chao <Landen.Chao@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        UNGLinuxDriver@microchip.com,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>
-Subject: Re: [PATCH net-next 3/6] net: dsa: add support for retrieving the
- interface mode
-Message-ID: <20220722223932.poxim3sxz62lhcuf@skbuf>
-References: <YtnBmFm8Jhokgp7Q@shell.armlinux.org.uk>
- <20220721213645.57ne2jf7f6try4ec@skbuf>
- <YtpfmF37FmfY6BV5@shell.armlinux.org.uk>
- <20220722105238.qhfq5myqa4ixkvy4@skbuf>
- <YtqNkSDLRDtuooy/@shell.armlinux.org.uk>
- <20220722124629.7y3p7nt6jmm5hecq@skbuf>
- <YtqjFKUTsH4CK0L+@shell.armlinux.org.uk>
- <20220722165600.lldukpdflv7cjp4j@skbuf>
- <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
- <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
+        Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Nick Child <nick.child@ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v6 1/4] PCI: Remove pci_get_legacy_ide_irq and
+ asm-generic/pci.h
+Message-ID: <20220722233821.GA1979844@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
- <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220722214944.831438-2-shorne@gmail.com>
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 22, 2022 at 10:20:05PM +0100, Russell King (Oracle) wrote:
-> > > > What is hard for me to comprehend is how we ever came to conclude that
-> > > > for SERDES protocols where clause 37 is possible (2500base-x should be
-> > > > part of this group), managed = "in-band-status" does not imply in-band
-> > > > autoneg, considering the mvneta precedent.
-> > > 
-> > > That is a recent addition, since the argument was made that when using
-> > > a 1000base-X fibre transceiver, using ethtool to disable autoneg is a
-> > > reasonable thing to do - and something that was supported with
-> > > mvneta_ethtool_set_link_ksettings() as it stands at the point in the
-> > > commit above.
-> > 
-> > I'm sorry, I don't understand. What is the recent addition, and recent
-> > relative to what? The 2500base-x link mode? Ok, but this is only
-> > tangentially related to the point overall, more below.
+On Sat, Jul 23, 2022 at 06:49:41AM +0900, Stafford Horne wrote:
+> The definition of the pci header function pci_get_legacy_ide_irq is only
+> used in platforms that support PNP.  So many of the architecutres where
+> it is defined do not use it.  This also means we can remove
+> asm-generic/pci.h as all it provides is a definition of
+> pci_get_legacy_ide_irq.
 > 
-> I'm talking about how we handle 1000base-X autoneg - specifically this
-> commit:
+> Where referenced, replace the usage of pci_get_legacy_ide_irq with the
+> libata.h macros ATA_PRIMARY_IRQ and ATA_SECONDARY_IRQ which provide the
+> same functionality.  This allows removing pci_get_legacy_ide_irq from
+> headers where it is no longer used.
 > 
-> 92817dad7dcb net: phylink: Support disabling autonegotiation for PCS
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Acked-by: Pierre Morel <pmorel@linux.ibm.com>
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Co-developed-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Stafford Horne <shorne@gmail.com>
+
+I applied all 4 patches in this series to pci/header-cleanup-immutable
+for v5.20.
+
+https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git/log/?h=pci/header-cleanup-immutable
+
+> ---
+>  arch/alpha/include/asm/pci.h   |  6 ------
+>  arch/arm/include/asm/pci.h     |  5 -----
+>  arch/arm64/include/asm/pci.h   |  6 ------
+>  arch/csky/include/asm/pci.h    |  6 ------
+>  arch/ia64/include/asm/pci.h    |  6 ------
+>  arch/m68k/include/asm/pci.h    |  2 --
+>  arch/mips/include/asm/pci.h    |  6 ------
+>  arch/parisc/include/asm/pci.h  |  5 -----
+>  arch/powerpc/include/asm/pci.h |  1 -
+>  arch/riscv/include/asm/pci.h   |  6 ------
+>  arch/s390/include/asm/pci.h    |  1 -
+>  arch/sh/include/asm/pci.h      |  6 ------
+>  arch/sparc/include/asm/pci.h   |  9 ---------
+>  arch/um/include/asm/pci.h      |  8 --------
+>  arch/x86/include/asm/pci.h     |  3 ---
+>  arch/xtensa/include/asm/pci.h  |  3 ---
+>  drivers/pnp/resource.c         |  5 +++--
+>  include/asm-generic/pci.h      | 17 -----------------
+>  18 files changed, 3 insertions(+), 98 deletions(-)
+>  delete mode 100644 include/asm-generic/pci.h
 > 
-> where we can be in 1000base-X with managed = "in-band-status" but we
-> have autoneg disabled. I thought that is what you were referring to.
-
-So the correction you're persistently trying to make is:
-managed = "in-band-status" does *not* necessarily imply in-band autoneg
-being enabled, because the user can still run "ethtool -s eth0 autoneg off"
-?
-
-Yeah, ok, I wasn't trying to build any argument upon ethtool being able
-to toggle autoneg. You can disable it, but it should still come up as
-enabled. What I was saying was as a (possibly too generic) response to
-this:
-
-| | The way I understand what you're saying is that there is no guarantee
-| | that the DSA master and CPU port will agree whether to use in-band
-| | autoneg or not here (and implicitly, there is no guarantee that this
-| | link will work):
-| |
-| |       &eth0 {
-| |               phy-mode = "2500base-x";
-| |               managed = "in-band-status";
-| |       };
-| |
-| |       &switch_cpu_port {
-| |               ethernet = <&eth0>;
-| |               phy-mode = "2500base-x";
-| |               managed = "in-band-status";
-| |       };
-| 
-| Today, there is no guarantee - because it depends on how people have
-| chosen to implement 2500base-X, and whether the hardware requires the
-| use of in-band AN or prohibits it. This is what happens when stuff
-| isn't standardised - one ends up with differing implementations doing
-| different things, and this has happened not _only_ at hardware level
-| but also software level as well.
-
-If there is no guarantee that the above will (at least try) to use in-band
-autoneg, it means that there is someone who decided, when he coded up
-the driver, that managed = "in-band-status" doesn't imply using in-band
-autoneg. That's what I was complaining about: I don't understand how we
-got here. In turn, this came from an observation about the inband/10gbase-r
-not having any actual in-band autoneg (more about this at the very end).
-
-> As for 2500base-X, I had been raising the issue of AN in the past, for
-> example (have I said it's really difficult to find old emails even with
-> google?):
+> diff --git a/arch/alpha/include/asm/pci.h b/arch/alpha/include/asm/pci.h
+> index cf6bc1e64d66..6312656279d7 100644
+> --- a/arch/alpha/include/asm/pci.h
+> +++ b/arch/alpha/include/asm/pci.h
+> @@ -56,12 +56,6 @@ struct pci_controller {
+>  
+>  /* IOMMU controls.  */
+>  
+> -/* TODO: integrate with include/asm-generic/pci.h ? */
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	return channel ? 15 : 14;
+> -}
+> -
+>  #define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
+>  
+>  static inline int pci_proc_domain(struct pci_bus *bus)
+> diff --git a/arch/arm/include/asm/pci.h b/arch/arm/include/asm/pci.h
+> index 68e6f25784a4..5916b88d4c94 100644
+> --- a/arch/arm/include/asm/pci.h
+> +++ b/arch/arm/include/asm/pci.h
+> @@ -22,11 +22,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>  #define HAVE_PCI_MMAP
+>  #define ARCH_GENERIC_PCI_MMAP_RESOURCE
+>  
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	return channel ? 15 : 14;
+> -}
+> -
+>  extern void pcibios_report_status(unsigned int status_mask, int warn);
+>  
+>  #endif /* __KERNEL__ */
+> diff --git a/arch/arm64/include/asm/pci.h b/arch/arm64/include/asm/pci.h
+> index b33ca260e3c9..0aebc3488c32 100644
+> --- a/arch/arm64/include/asm/pci.h
+> +++ b/arch/arm64/include/asm/pci.h
+> @@ -23,12 +23,6 @@
+>  extern int isa_dma_bridge_buggy;
+>  
+>  #ifdef CONFIG_PCI
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	/* no legacy IRQ on arm64 */
+> -	return -ENODEV;
+> -}
+> -
+>  static inline int pci_proc_domain(struct pci_bus *bus)
+>  {
+>  	return 1;
+> diff --git a/arch/csky/include/asm/pci.h b/arch/csky/include/asm/pci.h
+> index ebc765b1f78b..0535f1aaae38 100644
+> --- a/arch/csky/include/asm/pci.h
+> +++ b/arch/csky/include/asm/pci.h
+> @@ -18,12 +18,6 @@
+>  extern int isa_dma_bridge_buggy;
+>  
+>  #ifdef CONFIG_PCI
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	/* no legacy IRQ on csky */
+> -	return -ENODEV;
+> -}
+> -
+>  static inline int pci_proc_domain(struct pci_bus *bus)
+>  {
+>  	/* always show the domain in /proc */
+> diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
+> index 8c163d1d0189..fa8f545c24c9 100644
+> --- a/arch/ia64/include/asm/pci.h
+> +++ b/arch/ia64/include/asm/pci.h
+> @@ -63,10 +63,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>  	return (pci_domain_nr(bus) != 0);
+>  }
+>  
+> -#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	return channel ? isa_irq_to_vector(15) : isa_irq_to_vector(14);
+> -}
+> -
+>  #endif /* _ASM_IA64_PCI_H */
+> diff --git a/arch/m68k/include/asm/pci.h b/arch/m68k/include/asm/pci.h
+> index 5a4bc223743b..ccdfa0dc8413 100644
+> --- a/arch/m68k/include/asm/pci.h
+> +++ b/arch/m68k/include/asm/pci.h
+> @@ -2,8 +2,6 @@
+>  #ifndef _ASM_M68K_PCI_H
+>  #define _ASM_M68K_PCI_H
+>  
+> -#include <asm-generic/pci.h>
+> -
+>  #define	pcibios_assign_all_busses()	1
+>  
+>  #define	PCIBIOS_MIN_IO		0x00000100
+> diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+> index 9ffc8192adae..3fd6e22c108b 100644
+> --- a/arch/mips/include/asm/pci.h
+> +++ b/arch/mips/include/asm/pci.h
+> @@ -139,10 +139,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>  /* Do platform specific device initialization at pci_enable_device() time */
+>  extern int pcibios_plat_dev_init(struct pci_dev *dev);
+>  
+> -/* Chances are this interrupt is wired PC-style ...  */
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	return channel ? 15 : 14;
+> -}
+> -
+>  #endif /* _ASM_PCI_H */
+> diff --git a/arch/parisc/include/asm/pci.h b/arch/parisc/include/asm/pci.h
+> index f14465b84de4..127ed5021ae3 100644
+> --- a/arch/parisc/include/asm/pci.h
+> +++ b/arch/parisc/include/asm/pci.h
+> @@ -162,11 +162,6 @@ extern void pcibios_init_bridge(struct pci_dev *);
+>  #define PCIBIOS_MIN_IO          0x10
+>  #define PCIBIOS_MIN_MEM         0x1000 /* NBPG - but pci/setup-res.c dies */
+>  
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	return channel ? 15 : 14;
+> -}
+> -
+>  #define HAVE_PCI_MMAP
+>  #define ARCH_GENERIC_PCI_MMAP_RESOURCE
+>  
+> diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
+> index 915d6ee4b40a..f9da506751bb 100644
+> --- a/arch/powerpc/include/asm/pci.h
+> +++ b/arch/powerpc/include/asm/pci.h
+> @@ -39,7 +39,6 @@
+>  #define pcibios_assign_all_busses() \
+>  	(pci_has_flag(PCI_REASSIGN_ALL_BUS))
+>  
+> -#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+>  static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+>  {
+>  	if (ppc_md.pci_get_legacy_ide_irq)
+> diff --git a/arch/riscv/include/asm/pci.h b/arch/riscv/include/asm/pci.h
+> index 7fd52a30e605..a7b8f0d0df7f 100644
+> --- a/arch/riscv/include/asm/pci.h
+> +++ b/arch/riscv/include/asm/pci.h
+> @@ -23,12 +23,6 @@
+>  extern int isa_dma_bridge_buggy;
+>  
+>  #ifdef CONFIG_PCI
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	/* no legacy IRQ on risc-v */
+> -	return -ENODEV;
+> -}
+> -
+>  static inline int pci_proc_domain(struct pci_bus *bus)
+>  {
+>  	/* always show the domain in /proc */
+> diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
+> index fdb9745ee998..5889ddcbc374 100644
+> --- a/arch/s390/include/asm/pci.h
+> +++ b/arch/s390/include/asm/pci.h
+> @@ -6,7 +6,6 @@
+>  #include <linux/mutex.h>
+>  #include <linux/iommu.h>
+>  #include <linux/pci_hotplug.h>
+> -#include <asm-generic/pci.h>
+>  #include <asm/pci_clp.h>
+>  #include <asm/pci_debug.h>
+>  #include <asm/sclp.h>
+> diff --git a/arch/sh/include/asm/pci.h b/arch/sh/include/asm/pci.h
+> index ad22e88c6657..54c30126ea17 100644
+> --- a/arch/sh/include/asm/pci.h
+> +++ b/arch/sh/include/asm/pci.h
+> @@ -88,10 +88,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>  	return hose->need_domain_info;
+>  }
+>  
+> -/* Chances are this interrupt is wired PC-style ...  */
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	return channel ? 15 : 14;
+> -}
+> -
+>  #endif /* __ASM_SH_PCI_H */
+> diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
+> index 4deddf430e5d..0c58f65bd172 100644
+> --- a/arch/sparc/include/asm/pci.h
+> +++ b/arch/sparc/include/asm/pci.h
+> @@ -40,13 +40,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+>  #define get_pci_unmapped_area get_fb_unmapped_area
+>  #endif /* CONFIG_SPARC64 */
+>  
+> -#if defined(CONFIG_SPARC64) || defined(CONFIG_LEON_PCI)
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	return PCI_IRQ_NONE;
+> -}
+> -#else
+> -#include <asm-generic/pci.h>
+> -#endif
+> -
+>  #endif /* ___ASM_SPARC_PCI_H */
+> diff --git a/arch/um/include/asm/pci.h b/arch/um/include/asm/pci.h
+> index da13fd5519ef..26b96c02ef61 100644
+> --- a/arch/um/include/asm/pci.h
+> +++ b/arch/um/include/asm/pci.h
+> @@ -11,14 +11,6 @@
+>  
+>  extern int isa_dma_bridge_buggy;
+>  
+> -#ifdef CONFIG_PCI
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	/* no legacy IRQs */
+> -	return -ENODEV;
+> -}
+> -#endif
+> -
+>  #ifdef CONFIG_PCI_DOMAINS
+>  static inline int pci_proc_domain(struct pci_bus *bus)
+>  {
+> diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
+> index f3fd5928bcbb..736793d65bcb 100644
+> --- a/arch/x86/include/asm/pci.h
+> +++ b/arch/x86/include/asm/pci.h
+> @@ -105,9 +105,6 @@ static inline void early_quirks(void) { }
+>  
+>  extern void pci_iommu_alloc(void);
+>  
+> -/* generic pci stuff */
+> -#include <asm-generic/pci.h>
+> -
+>  #ifdef CONFIG_NUMA
+>  /* Returns the node based on pci bus */
+>  static inline int __pcibus_to_node(const struct pci_bus *bus)
+> diff --git a/arch/xtensa/include/asm/pci.h b/arch/xtensa/include/asm/pci.h
+> index 8e2b48a268db..b56de9635b6c 100644
+> --- a/arch/xtensa/include/asm/pci.h
+> +++ b/arch/xtensa/include/asm/pci.h
+> @@ -43,7 +43,4 @@
+>  #define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
+>  #define arch_can_pci_mmap_io()		1
+>  
+> -/* Generic PCI */
+> -#include <asm-generic/pci.h>
+> -
+>  #endif	/* _XTENSA_PCI_H */
+> diff --git a/drivers/pnp/resource.c b/drivers/pnp/resource.c
+> index 2fa0f7d55259..8f7695624c8c 100644
+> --- a/drivers/pnp/resource.c
+> +++ b/drivers/pnp/resource.c
+> @@ -17,6 +17,7 @@
+>  #include <asm/dma.h>
+>  #include <asm/irq.h>
+>  #include <linux/pci.h>
+> +#include <linux/libata.h>
+>  #include <linux/ioport.h>
+>  #include <linux/init.h>
+>  
+> @@ -322,8 +323,8 @@ static int pci_dev_uses_irq(struct pnp_dev *pnp, struct pci_dev *pci,
+>  		 * treat the compatibility IRQs as busy.
+>  		 */
+>  		if ((progif & 0x5) != 0x5)
+> -			if (pci_get_legacy_ide_irq(pci, 0) == irq ||
+> -			    pci_get_legacy_ide_irq(pci, 1) == irq) {
+> +			if (ATA_PRIMARY_IRQ(pci) == irq ||
+> +			    ATA_SECONDARY_IRQ(pci) == irq) {
+>  				pnp_dbg(&pnp->dev, "  legacy IDE device %s "
+>  					"using irq %d\n", pci_name(pci), irq);
+>  				return 1;
+> diff --git a/include/asm-generic/pci.h b/include/asm-generic/pci.h
+> deleted file mode 100644
+> index 6bb3cd3d695a..000000000000
+> --- a/include/asm-generic/pci.h
+> +++ /dev/null
+> @@ -1,17 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0 */
+> -/*
+> - * linux/include/asm-generic/pci.h
+> - *
+> - *  Copyright (C) 2003 Russell King
+> - */
+> -#ifndef _ASM_GENERIC_PCI_H
+> -#define _ASM_GENERIC_PCI_H
+> -
+> -#ifndef HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+> -static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> -{
+> -	return channel ? 15 : 14;
+> -}
+> -#endif /* HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ */
+> -
+> -#endif /* _ASM_GENERIC_PCI_H */
+> -- 
+> 2.36.1
 > 
-> https://lwn.net/ml/netdev/20200618140623.GC1551@shell.armlinux.org.uk/
-
-Why is this old conversation relevant? You said you suspect the hardware
-is capable of AN at 2500base-x. It isn't - I had tested that on LS1028A
-when I wrote the comment, and the check - all part of the code that was
-being moved.
-
-> and eventually I stopped caring about it, as it became pointless to
-> raise it anymore when we had an established mixture of behaviours. This
-> is why we have ended up with PCS drivers configuring for no AN for a
-> firmware description of:
 > 
-> 	managed = "in-band-status";
-> 	phy-mode = "2500base-x";
-
-Sorry, I don't get why?
-
-> and hence now have unclean semantics for this - some such as mvneta
-> and mvpp2 will have AN enabled. Others such as pcs-lynx will not.
-
-You mean in general, or with the firmware description you posted above?
-Because the Lynx PCS does the best it can (considering it does this from
-a function that returns void) to complain that you shouldn't put
-MLO_AN_INBAND for 2500base-x.
-
-static void lynx_pcs_link_up_2500basex(struct mdio_device *pcs,
-				       unsigned int mode,
-				       int speed, int duplex)
-{
-	u16 if_mode = 0;
-
-	if (mode == MLO_AN_INBAND) {
-		dev_err(&pcs->dev, "AN not supported for 2500BaseX\n");
-		return;
-	}
-
-I noticed just earlier today that I made a blunder while upstreaming some
-riser cards for some LS1028A-QDS development boards, and I did just that
-(left 2500base-x with in-band-status). But the system just errors out.
-I need to boot a board and fix that up. They're just NXP development
-systems so not a big issue. Otherwise I'm not aware of what you're
-talking about.
-
-> However, both will request link status from the PCS side and use that
-> to determine whether the link is up, and use the parameters that the
-> PCS code returns for the link. Since 2500base-X can only operate at
-> 2.5G, PCS code always reports SPEED_2500, and as half duplex is
-> virtually never supported above 1G, DUPLEX_FULL.
-
-If you're saying this just because Lynx implements pcs_get_state for
-2500base-x, it's extremely likely that this simply originates from
-vsc9959_pcs_link_state_2500basex(), which was deleted in ocelot in
-commit 588d05504d2d ("net: dsa: ocelot: use the Lynx PCS helpers in
-Felix and Seville"), and it was always dead code. It wasn't the only
-dead code, remember commit b4c2354537b4 ("net: dsa: felix: delete
-.phylink_mac_an_restart code").
-
-Since the Lynx PCS prints error messages in inband/2500base-x mode,
-and so did Felix/Ocelot before the code became common, I'm pretty sure
-no one relies on this mode.
-
-> > > > And why would we essentially redefine its meaning by stating that no,
-> > > > it is only about the status, not about the autoneg, even though the
-> > > > status comes from the autoneg for these protocols.
-> > > 
-> > > I'm not sure I understand what you're getting at there.
-> > 
-> > Sorry if I haven't made my point clear.
-> > 
-> > My point is that drivers may have more restrictive interpretations of
-> > managed = "in-band-status", and the current logic of automatically
-> > create a fixed-link for DSA's CPU ports is going to cause problems when
-> > matched up with a DSA master that expects in-band autoneg for whatever
-> > SERDES protocol.
-> > 
-> > What I'd like to happen as a result is that no DSA driver except Marvell
-> > opts into this by default, and no driver opts into it without its maintainer
-> > understanding the implications. Otherwise we're going to normalize the
-> > expectation that a managed = "in-band-status" DSA master should be able
-> > to interoperate with a fixed-link CPU port, but during this discussion
-> > there was no argument being brought that a strict interpretation of
-> > "in-band-status" as "enable autoneg" is incorrect in any way.
-> 
-> I still don't understand your point - because you seem to be conflating
-> two different things (at least as I understand it.)
-> 
-> We have this:
-> 
-> 		port@N {
-> 			reg = <N>;
-> 			label = "cpu";
-> 			ethernet = <&ethX>;
-> 		};
-> 
-> This specifies that the port operates at whatever interface mode and
-> settings gives the maximum speed. There is no mention of a "managed"
-> property, and therefore (Andrew, correct me if I'm wrong) in-band
-> negotiation is not expected to be used.
-> 
-> The configuration of the ethX parameters on the other end of the link
-> are up to the system integrator to get right, and the actual behaviour
-> would depend on the ethernet driver. As I've said in previous emails,
-> there is such a thing as "AN bypass" that can be implemented,
-
-Not everyone has AN bypass, try to assume that no one except mvneta does.
-
-> and it can default to be enabled, and drivers can ignore that such a
-> bit even exists. So, it's possible that even with "managed" set to
-> "in-band-status" in DT, a link to such a DSA switch will still come up
-> even though we've requested in DT for AN to be used.
-> 
-> If an ethernet driver is implemented to strictly require in-band AN in
-> this case, then the link won't come up, and the system integrator would
-> have to debug the problem.
-> 
-> I think this is actually true on Clearfog - if one specifies the CPU
-> port as I have above, and requests in-band on the host ethernet, then
-> the link doesn't come up, because mvneta turns off AN bypass.
-
-So what am I conflating in this case?
-
-> > Thanks for this explanation, if nothing else, it seems to support the
-> > way in which I was interpreting managed = "in-band-status" to mean
-> > "enable in-band autoneg", but to be clear, I wasn't debating something
-> > about the way in which mvneta was doing things. But rather, I was
-> > debating why would *other* drivers do things differently such as to come
-> > to expect that a fixed-link master + an in-band-status CPU port, or the
-> > other way around, may be compatible with each other.
-> 
-> Please note that phylink makes a DT specification including both a
-> fixed-link descriptor and a managed in-band-status property illegal
-> because these are two different modes of operating the link, and they
-> conflict with each other.
-
-Ok, thank you for this information which I already knew, what is the context?
-
-> The fact that the of_fixed_link_whateveritwas() function (sorry I can't
-> remember the name) returns true for both indicating that they're both
-
-of_phy_is_fixed_link()
-
-> fixed-link is a historic artifact that has not been changed. As the
-> fixed-PHY code supporting that way was dropped, I suppose that should
-> have been cleaned up at some point, but I never got around to it
-> (remember, development in this space is a very slow process.) There
-> were always more pressing matters to be dealt with.
-> 
-> Maybe we should now make of_fixed_link_whateveritwas() no longer return
-> true, and introduce of_managed_in_band() or something like that which
-> drivers can test that separately. I'm not sure it's worth the driver
-> churn to make such a change, I'm not sure what the benefit would be.
-
-If we were to split of_phy_is_fixed_link() into of_phy_is_fixed_link()
-and of_managed_in_band(), we'd effectively need to replace every
-instance of "if (of_phy_is_fixed_link(np))" with
-"if (of_phy_is_fixed_link(dp) || of_managed_in_band(np))" unless
-instructed otherwise by maintainers. And maintainers will think:
-"whoa, I had no idea...". Indeed, there are better uses of time.
-
-> > Then I studied MVNETA_GMAC_AUTONEG_CONFIG and I noticed that the bit
-> > you're talking about, MVNETA_GMAC_AN_BYPASS_ENABLE (bit 3) is indeed set
-> > by default (the driver doesn't set it).
-> 
-> Correct - because of history, and changing it could break setups that
-> have been working since before DT. The driver has never changed the
-> bypass bit, so playing with that when phylink was introduced risked
-> regressions.
-
-No, as mentioned, it's good that it exists, just please don't come to
-assume that everyone has something like it, and use it as a justification
-that hey, I can create a fixed-link willy-nilly, and that will disable
-in-band AN on the switch side, and then the system integrator will come
-to debug, he'll see what happened there and he'll enable the AN bypass
-bit in his other driver. That's not what's going to happen.
-
-> > So what this is telling me is that mvneta has some built-in resilience
-> > to in-band autoneg mismatches, via MVNETA_GMAC_AN_BYPASS_ENABLE. But that
-> > (a) doesn't make it valid to mix and match a fixed-link with a managed =
-> >     "in-band-status" mode
-> > (b) doesn't mean it's unspecified whether managed = "in-band-status"
-> >     should dictate whether to enable in-band autoneg or not
-> > (c) doesn't mean that other devices/drivers support "AN bypass" to save
-> >     the day and make an invalid DT description appear to work just fine
-> > 
-> > This further supports my idea that we should make a better attempt of
-> > matching the DSA master's mode with the node we're faking in DSA for
-> > phylink. For Marvell hardware you or Andrew are surely more knowledgeable
-> > to be able to say whether that's needed right now or not. But in the
-> > general case please don't push this to everyone, it just muddies the
-> > waters.
-> 
-> I really don't get this.
-> 
-> For a mv88e6xxx port which supports 1000base-X, with these patches
-> applied, then these are all effectively equivalent:
-> 
-> 		port@N {
-> 			reg = <N>;
-> 			label = "cpu";
-> 			ethernet = <&ethX>;
-> 		};
-> 
-> 		port@N {
-> 			reg = <N>;
-> 			label = "cpu";
-> 			ethernet = <&ethX>;
-> 			phy-mode = "1000base-x";
-> 		};
-> 
-> 		port@N {
-> 			reg = <N>;
-> 			label = "cpu";
-> 			ethernet = <&ethX>;
-> 			fixed-link {
-> 				speed = <1000>;
-> 				full-duplex;
-> 			};
-> 		};
-> 
-> 		port@N {
-> 			reg = <N>;
-> 			label = "cpu";
-> 			ethernet = <&ethX>;
-> 			phy-mode = "1000base-x";
-> 			fixed-link {
-> 				speed = <1000>;
-> 				full-duplex;
-> 			};
-> 		};
-> 
-> and all _should_ lead to inband AN being disabled.
-> 
-> That is my understanding of Andrew's statements on the defaulting
-> parameters for both the inter-switch and CPU ports. (Maybe Andrew can
-> clarify whether this is correct or not.)
-> 
-> However, this would not equivalent to any of the above:
-> 
-> 		port@N {
-> 			reg = <N>;
-> 			label = "cpu";
-> 			ethernet = <&ethX>;
-> 			managed = "in-band-status";
-> 		};
-> 
-> The reason this is not equivalent is - as you've recently spotted -
-> of_phy_is_fixed_link() will return true, and therefore phylink gets
-> passed the above node to work with - and we do not generate a swnode
-> fixed-link stanza for it. The behaviour in this case is completely
-> unaffected by these patches.
-
-Thank you for this explanation, it is correct and I don't disagree with it.
-
-> If a DSA driver defaults to AN enabled on the DSA/CPU ports, and makes
-> use of the defaulting firmware description, then this will break with
-> these patches, since we setup a fixed-link specifier that states that
-> no AN should be used.
-
-Bingo, you hit the nail on the head. I was saying that we don't know
-whether in-band should be used or not. We could take as a vague hint the
-managed = 'in-band-status' property of the DSA master. Additionally,
-if the DSA master is mvneta-like, in-band AN could be broken and no one
-might even notice. But chances are it might not be mvneta-like.
-Only you or Andrew know the chances of that, and maybe you're willing to
-take the gamble of unconditionally creating a fixed-link (no in-band AN)
-as you're doing now, when in fact, correctness and all, a managed =
-"in-band-status" OF property is what should have been auto-created.
-My feedback is - if you're willing to take that gamble, do it just for
-mv88e6xxx and the boards that got integrated into, I'm not willing to
-opt other drivers into it.
-
-> That's why I've been trying to get these tested, and that's why
-> there's a risk with them. However, that's got nothing to do with
-> whether the driver implements filling in this new "default_interface"
-> field.
-> 
-> We could go delving into the node pointed to by the phandle and retrieve
-> whatever parameters from there, but that is an entirely new behaviour
-> and would be a functional change to the behaviour that Andrew has been
-> promoting - and is itself not free of a risk of regressions caused by
-> that approach. What if there's an interface converter in the path between
-> the# CPU ethernet device and the DSA that hasn't needed to be described?
-> Digging out the phy-mode from the CPU side could be the wrong thing to
-> do.
-> 
-> Then there's the question whether DSA should have been validating that
-> the description on both ends of the link are compatible with each other.
-> The problem with that is just the same as the above - an undescribed
-> interface converter would make such validation problematical.
-
-Not on both ends, but individual drivers could validate their own
-bindings to be perfectly honest with you. I think we should prioritize
-on that. If driver maintainers don't know that there are defaulting DT
-blobs in the wild, don't give them ideas.
-
-> So, I don't think we could rely on the description on the other end of
-> the link to be capable of describing the setup on the DSA port end.
-
-If you go back in our conversation, I wasn't saying you should, either.
-It was just a comment about the impossibility of the situation - it's is
-a guessing game that shouldn't in any circumstance be generalized and
-will never become perfect. I've been saying this a million times.
-Move to phylink no more than what you need; assume everything else
-works; add validation to what you don't have proof uses defaulting mode;
-wait.
-
-Now consider what originally triggered me. cn9130-crb.dtsi has a
-defaulting CPU port of a 6393X, where the DSA master uses inband/10gbase-r
-mode. What is DSA even supposed to make of that, beats me, if it were to
-hypothetically follow the 'ethernet' phandle to determine whether the
-master wants in-band AN or doesn't...
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
