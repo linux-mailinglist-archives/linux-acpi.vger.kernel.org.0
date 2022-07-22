@@ -2,43 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA79F57E2FD
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jul 2022 16:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1A8D57E2F3
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jul 2022 16:19:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230059AbiGVOV7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Jul 2022 10:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53580 "EHLO
+        id S234879AbiGVOTS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Jul 2022 10:19:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229959AbiGVOV7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jul 2022 10:21:59 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCE56406;
-        Fri, 22 Jul 2022 07:21:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=hLPlQqZjJSQKPGHb0YS9zkev/y0pH7c+d/jPKAb2GH0=; b=Eipa470pMb32q7EeATriUghX+/
-        KITuXZ9S4vCLTY46DmqjDyGpM7vOaTX373ELSkiENYVCUbx37ijqPkd2wE1e8eoZ/NXZn+FVtqsz4
-        5A2IXJfCRbSu4HpYZz1TJWAO/I1puYiooK+eEk4qyILtT2gAbRvdqAuK7BuODcMliMa/h6kELMlhy
-        wIVeKCswUAQFHcWin+dBmP6pOsTdfWz2RcKi3eUrlLuied06chsOSAqrvqr18tEZk2V7nQqkCA3Ei
-        o6d+sBhp7fmyprsdGAzuuaiZSBcNf0kpciA3v0JXXoXb2tvk2/APeeqctcks5LlC1MElSVoNmw11j
-        u8LOPsqw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33510)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1oErYE-0006sX-48; Fri, 22 Jul 2022 13:14:38 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1oErY1-0005of-0U; Fri, 22 Jul 2022 13:14:25 +0100
-Date:   Fri, 22 Jul 2022 13:14:24 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
+        with ESMTP id S233520AbiGVOTQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jul 2022 10:19:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3F8A7226;
+        Fri, 22 Jul 2022 07:19:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6F8D62081;
+        Fri, 22 Jul 2022 14:19:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC1BC341C6;
+        Fri, 22 Jul 2022 14:19:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658499554;
+        bh=MgM+cMYk0Gwmsorh6Dk3GwZiuKflFl6TUd0K9p3ouY8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Tk+CA2QiUv36zE/2P71sfKE8mgSSzorJmuK4eGnDVWK+KOUE/+4XO5atBa5trjoOj
+         cX9Y6OP+ZLMBGOweqfMsnYrU9JV525ddvk8aL/pXlv0nM5YLrewVkaD2BejT8RGjAd
+         Sa30cmL5iy3nwEJ6atHxstiOpPcWpluwd49AHp6Jyzbj/594tGCtZOBRhbaLfWTB65
+         Q8Vj2x5i8hhTgVSpnf8+7YxT7rD5Te9OXPAhw9HWkPmbfPSp6kryu2V56YMepFWThm
+         szunL7kxT3osMyMyyyzlUXQz/ihcKjbqH0qQvVuBLAm5sZOnaPUeyRdlVeI+B8PZim
+         fvQtP9ucycmxA==
+Date:   Fri, 22 Jul 2022 16:19:05 +0200
+From:   Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Alvin __ipraga <alsi@bang-olufsen.dk>,
@@ -69,55 +65,50 @@ Cc:     Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
         Woojung Huh <woojung.huh@microchip.com>
 Subject: Re: [PATCH net-next 3/6] net: dsa: add support for retrieving the
  interface mode
-Message-ID: <YtqUoOiiAez2Kmd5@shell.armlinux.org.uk>
-References: <Ytlol8ApI6O2wy99@shell.armlinux.org.uk>
- <20220721151533.3zomvnfogshk5ze3@skbuf>
- <20220721192145.1f327b2a@dellmb>
- <20220721192145.1f327b2a@dellmb>
- <20220721182216.z4vdaj4zfb6w3emo@skbuf>
- <YtnBmFm8Jhokgp7Q@shell.armlinux.org.uk>
- <20220721213645.57ne2jf7f6try4ec@skbuf>
- <YtpfmF37FmfY6BV5@shell.armlinux.org.uk>
- <20220722105238.qhfq5myqa4ixkvy4@skbuf>
- <YtqNkSDLRDtuooy/@shell.armlinux.org.uk>
+Message-ID: <20220722161905.5d54685d@dellmb>
+In-Reply-To: <YtqkxklImfR9gW1Z@shell.armlinux.org.uk>
+References: <20220716123608.chdzbvpinso546oh@skbuf>
+        <YtUec3GTWTC59sky@shell.armlinux.org.uk>
+        <20220720224447.ygoto4av7odsy2tj@skbuf>
+        <20220721134618.axq3hmtckrumpoy6@skbuf>
+        <Ytlol8ApI6O2wy99@shell.armlinux.org.uk>
+        <20220721151533.3zomvnfogshk5ze3@skbuf>
+        <20220721192145.1f327b2a@dellmb>
+        <20220721192145.1f327b2a@dellmb>
+        <20220721182216.z4vdaj4zfb6w3emo@skbuf>
+        <20220722145936.497ac73f@dellmb>
+        <YtqkxklImfR9gW1Z@shell.armlinux.org.uk>
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtqNkSDLRDtuooy/@shell.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 22, 2022 at 12:44:17PM +0100, Russell King (Oracle) wrote:
-> Given that this managed property was introduced for mvneta, mvneta's
-> implementation of it is the best reference we have to work out what
-> the intentions of it were beyond the commit text.
-> 
-> With in-band mode enabled, mvneta makes use of a fixed-link PHY, and
-> updates the fixed-link PHY with the status from its GMAC block (which
-> is the combined PCS+MAC).
-> 
-> So, when in-band mode is specified, the results from SGMII or 1000base-X
-> negotiation are read from the MAC side of the link, pushed into the
-> fixed-PHY, which then are reflected back into the driver via the usual
-> phylib adjust_link().
+On Fri, 22 Jul 2022 14:23:18 +0100
+"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
 
-... and I should have said that this is exactly why in-band mode is
-treated as a fixed-link, even though it's nothing of the sort. It makes
-use of the infrastructure that was present at the time (fixed-phy) to
-implement this feature of reading the link status from the PCS/MAC end
-of the link.
+> On Fri, Jul 22, 2022 at 02:59:36PM +0200, Marek Beh=C3=BAn wrote:
+> >   The 2.5GBASE-X PCS does not support Clause 37 Auto-Negotiation.
+> >   Hence, the 1000BASE-X PCS is expected to have its Clause 37
+> >   Auto-Negotiation functionality disabled so that the /C/ ordered set
+> >   will not be transmitted. If a 2.5GBASE-X PCS receives /C/ ordered
+> >   set, then undefined behavior may occur.
+> >   ... =20
+>=20
+> The reason that's probably stated is because there hasn't been any
+> standardisation of it, different implementations behave differently,
+> so they can't define a standard behaviour without breaking what's
+> already out there.
 
-It may not have been the best design, but it's an evolved design based
-on the code that was available and what people thought at the time (and
-pre-dates my involvement with mvneta in mainline.)
+I think they are also considering clause 73 AN, which is supported with
+1000base-KX (if I am not mistaken). Maybe the intention was to use
+clause 73 with >1G speeds, and so they've forbid clause 37 on
+2500base-x.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
