@@ -2,129 +2,181 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D908457D8CA
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jul 2022 04:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C489357DA2D
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Jul 2022 08:21:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbiGVC74 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Jul 2022 22:59:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59690 "EHLO
+        id S231584AbiGVGVM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Jul 2022 02:21:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229997AbiGVC7z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 21 Jul 2022 22:59:55 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E21D39965A;
-        Thu, 21 Jul 2022 19:59:54 -0700 (PDT)
+        with ESMTP id S229547AbiGVGVM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Jul 2022 02:21:12 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BB2B237F6;
+        Thu, 21 Jul 2022 23:21:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658458795; x=1689994795;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=jf5a6eJbd1i8i4tKIsKNe30GC5A0Ds+xBn3mTnf2sZk=;
-  b=SujsOjXPrsVzGM6/P8A+Qf8sflaBKQe2np/vpNC38Y4V2JXLH4+AvTjW
-   LAVPJeF+NcOKjps0U0dNIUjl84hDrfKBzBbIVY7u3kPcPPARV3GsVGDka
-   tCb3QJ336yhz5PXDc24mZW+o6CmTqE863H5H/eAyNQPgwFSNtSqljvkzR
-   tSphqFBDj/tImRSKqe9LVL35yqpx/+l+K5mxZRbx7ORfRdALTsdWtSKCN
-   T5OI/6400VPAVfuSotk7H6WEK6rbMGMc2lhRZagRfSJzz3gHFabEnsBtA
-   4jn25WJ+uxaJnKLCxDlJG4vW6clfypct13mk5u+VYQwuzmDP+7jAtOEgK
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10415"; a="287978444"
+  t=1658470871; x=1690006871;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=h4H/Zx6LklP4XR6ejecTuQCa5GmpUXVBaolU3VL7Erc=;
+  b=GVamgSV0ApJWtOa7FKkXZRCqcii9nsGghSxlR3rH6af2DOFuIlPw7z48
+   zKU0U2RD1Cv46+SypbdqOhQxEsuxaID06mSUUeUx4FBCOXrU8WXVplGv+
+   e0/mRKv/NXC6Kay06LlH52i1uFz/naxuJsrx+XvMXRG9JUwZOw70+9p0m
+   lMMDZVmkEYuj01ag1g9EbcOpXr7xtWKW55qyKMfObIBGJbJHmZCcEfdqq
+   VVladwrwEuidj9qfLMYl5YiN8PO0SOalMNAb2yP2JSua91+bbP+kWiU5r
+   j1budkMm08754jgqWLV61dVl144uTteMGNXoxyxLmS9aej5SSaAaJqvTq
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10415"; a="348948853"
 X-IronPort-AV: E=Sophos;i="5.93,184,1654585200"; 
-   d="scan'208";a="287978444"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2022 19:59:54 -0700
-X-ExtLoop1: 1
+   d="scan'208";a="348948853"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2022 23:21:10 -0700
 X-IronPort-AV: E=Sophos;i="5.93,184,1654585200"; 
-   d="scan'208";a="775100917"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orsmga005.jf.intel.com with ESMTP; 21 Jul 2022 19:59:54 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Thu, 21 Jul 2022 19:59:53 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Thu, 21 Jul 2022 19:59:53 -0700
-Received: from fmsmsx611.amr.corp.intel.com ([10.18.126.91]) by
- fmsmsx611.amr.corp.intel.com ([10.18.126.91]) with mapi id 15.01.2375.028;
- Thu, 21 Jul 2022 19:59:53 -0700
-From:   "Zhang, Rui" <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: RE: [PATCH] intel: thermal: PCH: Drop ACPI_FADT_LOW_POWER_S0 check
-Thread-Topic: [PATCH] intel: thermal: PCH: Drop ACPI_FADT_LOW_POWER_S0 check
-Thread-Index: AQHYl7WLPGVORxB/C0KdIx9UYpBjiK2DFQsAgABanYCABk5YYA==
-Date:   Fri, 22 Jul 2022 02:59:53 +0000
-Message-ID: <65fe502db8174defba0f21958499cab0@intel.com>
-References: <12013659.O9o76ZdvQC@kreacher>
- <61311732eeea1f45e85537e911e4bb024c0a30b7.camel@intel.com>
- <CAJZ5v0j+FTX4UF-9Y0BQc2mYXQiphsnkt07CALhF7BPtSdDxgg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0j+FTX4UF-9Y0BQc2mYXQiphsnkt07CALhF7BPtSdDxgg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.6.500.17
-x-originating-ip: [10.108.32.68]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+   d="scan'208";a="626439407"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2022 23:21:02 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 8778B20359;
+        Fri, 22 Jul 2022 09:21:00 +0300 (EEST)
+Date:   Fri, 22 Jul 2022 06:21:00 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alvin __ipraga <alsi@bang-olufsen.dk>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        DENG Qingfang <dqfext@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        George McCollister <george.mccollister@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kurt Kanzenbach <kurt@linutronix.de>,
+        Landen Chao <Landen.Chao@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        UNGLinuxDriver@microchip.com,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Woojung Huh <woojung.huh@microchip.com>,
+        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
+Subject: Re: [PATCH net-next 2/6] software node: allow named software node to
+ be created
+Message-ID: <YtpBzCf+Vc3yWSUF@paasikivi.fi.intel.com>
+References: <YtHPJNpcN4vNfgT6@smile.fi.intel.com>
+ <20220715204841.pwhvnue2atrkc2fx@skbuf>
+ <YtVSQI5VHtCOTCHc@smile.fi.intel.com>
+ <YtVfppMtW77ICyC5@shell.armlinux.org.uk>
+ <YtWp3WkpCtfe559l@smile.fi.intel.com>
+ <YtWwbMucEyO+W8/Y@shell.armlinux.org.uk>
+ <YtW9goFpOLGvIDog@smile.fi.intel.com>
+ <YtXE0idsKe6FZ+n4@shell.armlinux.org.uk>
+ <YtZwU9BKAO/WSRmK@paasikivi.fi.intel.com>
+ <20220720225652.4uo6fcdcunenej3j@skbuf>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220720225652.4uo6fcdcunenej3j@skbuf>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmFmYWVsIEouIFd5c29j
-a2kgPHJhZmFlbEBrZXJuZWwub3JnPg0KPiBTZW50OiBNb25kYXksIEp1bHkgMTgsIDIwMjIgMzoz
-OSBBTQ0KPiBUbzogWmhhbmcsIFJ1aSA8cnVpLnpoYW5nQGludGVsLmNvbT4NCj4gQ2M6IFJhZmFl
-bCBKLiBXeXNvY2tpIDxyandAcmp3eXNvY2tpLm5ldD47IExpbnV4IFBNIDxsaW51eC0NCj4gcG1A
-dmdlci5rZXJuZWwub3JnPjsgTGludXggQUNQSSA8bGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc+
-OyBMS01MIDxsaW51eC0NCj4ga2VybmVsQHZnZXIua2VybmVsLm9yZz47IE1hcmlvIExpbW9uY2ll
-bGxvIDxtYXJpby5saW1vbmNpZWxsb0BhbWQuY29tPjsNCj4gU3Jpbml2YXMgUGFuZHJ1dmFkYSA8
-c3Jpbml2YXMucGFuZHJ1dmFkYUBsaW51eC5pbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFU
-Q0hdIGludGVsOiB0aGVybWFsOiBQQ0g6IERyb3AgQUNQSV9GQURUX0xPV19QT1dFUl9TMA0KPiBj
-aGVjaw0KPiBJbXBvcnRhbmNlOiBIaWdoDQo+IA0KPiBPbiBTdW4sIEp1bCAxNywgMjAyMiBhdCA4
-OjE0IEFNIFpoYW5nIFJ1aSA8cnVpLnpoYW5nQGludGVsLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBP
-biBUaHUsIDIwMjItMDctMTQgYXQgMjE6MTEgKzAyMDAsIFJhZmFlbCBKLiBXeXNvY2tpIHdyb3Rl
-Og0KPiA+ID4gRnJvbTogUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbC5qLnd5c29ja2lAaW50ZWwu
-Y29tPg0KPiA+ID4NCj4gPiA+IElmIEFDUElfRkFEVF9MT1dfUE9XRVJfUzAgaXMgbm90IHNldCwg
-dGhpcyBkb2Vzbid0IG1lYW4gdGhhdCBsb3ctDQo+ID4gPiBwb3dlcg0KPiA+ID4gUzAgaWRsZSBp
-cyBub3QgdXNhYmxlLiAgSXQgbWVyZWx5IG1lYW5zIHRoYXQgdXNpbmcgUzMgb24gdGhlIGdpdmVu
-DQo+ID4gPiBzeXN0ZW0gaXMgbW9yZSBiZW5lZmljaWFsIGZyb20gdGhlIGVuZXJneSBzYXZpbmcg
-cGVyc3BlY3RpdmUgdGhhbg0KPiA+ID4gdXNpbmcgbG93LXBvd2VyIFMwIGlkbGUsIGFzIGxvbmcg
-YXMgUzMgaXMgc3VwcG9ydGVkLg0KPiA+DQo+ID4gQWdyZWVkLg0KPiA+DQo+ID4gPg0KPiA+ID4g
-U3VzcGVuZC10by1pZGxlIGlzIHN0aWxsIGEgdmFsaWQgc3VzcGVuZCBtb2RlIGlmDQo+ID4gPiBB
-Q1BJX0ZBRFRfTE9XX1BPV0VSX1MwDQo+ID4gPiBpcyBub3Qgc2V0IGFuZCB0aGUgcG1fc3VzcGVu
-ZF92aWFfZmlybXdhcmUoKSBjaGVjayBpbg0KPiA+ID4gcGNoX3dwdF9zdXNwZW5kKCkNCj4gPiA+
-IGlzIHN1ZmZpY2llbnQgdG8gZGlzdGluZ3Vpc2ggc3VzcGVuZC10by1pZGxlIGZyb20gUzMsIHNv
-IGRyb3AgdGhlDQo+ID4gPiBjb25mdXNpbmcgQUNQSV9GQURUX0xPV19QT1dFUl9TMCBjaGVjay4N
-Cj4gPg0KPiA+IHRoZSBjb29saW5nIGRlbGF5IGluIHRoZSBzdXNwZW5kIGNhbGxiYWNrIGlzIHRv
-IG1ha2Ugc3VyZSBQQ0gNCj4gPiB0ZW1wZXJhdHVyZSB3b24ndCBibG9jayBTMGl4IGR1cmluZyBz
-MmlkbGUuIFNvIGlmIFMwaXggaXMgbm90DQo+ID4gc3VwcG9ydGVkLCBpdCBpcyBtZWFuaW5nbGVz
-cyB0byBpbnZva2UgdGhlIGNvb2xpbmcgZGVsYXkgZHVyaW5nIHMyaWRsZS4NCj4gDQo+IEJ1dCB0
-aGVyZSBpcyBubyB3YXkgdG8gZGV0ZXJtaW5lIHdoZXRoZXIgb3Igbm90IFMwaXggaXMgc3VwcG9y
-dGVkLiAgSW4NCj4gcGFydGljdWxhciwgQUNQSV9GQURUX0xPV19QT1dFUl9TMCBpcyBub3Qgb25l
-Lg0KPiANCj4gPiBzbyB0aGUgcHJvYmxlbSBpcyB0aGF0IHdlIGRvbid0IGhhdmUgYW4gaW5kaWNh
-dG9yIGZvciBTMGl4IGNhcGFiaWxpdHkuDQo+ID4gQW5kIHRoaXMgYWxzbyBhcHBsaWVzIHRvIGRy
-aXZlcnMvcnRjL3J0Yy1jbW9zLmMsIHdoZXJlIHdlIHVzZSBBQ1BJIFNDSQ0KPiA+IGZvciBydW50
-aW1lIFJUQyB3YWtldXAgaW5zdGVhZCBvZiBIUEVUIGludGVycnVwdCBvbiAiUzBpeCBjYXBhYmxl
-Ig0KPiA+IHBsYXRmb3JtcyBiZWNhdXNlIHRoZSBIUEVUIHRpbWVyIG1heSBibG9jayBTMGl4Lg0K
-PiANCj4gIlMwaXggY2FwYWJsZSIgZG9lc24ndCBtYXR0ZXIuICBXaGF0IG1hdHRlcnMgaXMgd2hl
-dGhlciBvciBub3QgdGhlIGN1cnJlbnQNCj4gdHJhbnNpdGlvbiB1bmRlciB3YXkgaXMgaW50byBT
-MCBvciBpbnRvIHN1c3BlbmQtdG8taWRsZS4gIEluIHRoZSBsYXR0ZXIgY2FzZQ0KPiB0aGVyZSBp
-cyBubyByZWFzb24gdG8gYXZvaWQgZG9pbmcgd2hhdGV2ZXIgaXMgZG9uZSBpbiB0aGUgZXhwZWN0
-YXRpb24gdGhhdA0KPiBTMGl4IG1heSBiZSBlbnRlcmVkIGdvaW5nIGZvcndhcmQuDQoNCk9rYXku
-IEl0IGlzIG5vdCBwZXJmZWN0IGJ1dCB3ZSBoYXZlIHRvIGxpdmUgd2l0aCB0aGlzLg0KDQpBY2tl
-ZC1ieTogWmhhbmcgUnVpIDxydWkuemhhbmdAaW50ZWwuY29tPg0K
+Hi Vladimir,
+
+On Thu, Jul 21, 2022 at 01:56:52AM +0300, Vladimir Oltean wrote:
+> Hi Sakari,
+> 
+> On Tue, Jul 19, 2022 at 08:50:27AM +0000, Sakari Ailus wrote:
+> > Basically what your patch is doing is adding a helper function that creates
+> > an fwnode with a given name. This functionality was there previously through
+> > software_node_register_nodes(), with node allocation responsibility residing
+> > on the caller. It's used e.g. here:
+> > drivers/media/pci/intel/ipu3/cio2-bridge.c .
+> > 
+> > The larger question is perhaps when can you safely remove software nodes.
+> > And which of these two APIs would be preferred. I haven't checked how many
+> > users each has. There's no refcounting nor locking for software nodes, so
+> > once made visible to the rest of the kernel, they're always expected to be
+> > there, unchanged, or at least it needs to be known when they can be removed.
+> 
+> Just for my clarity, are you saying that this printf selftest is
+> violating the software nodes' expectation to always be there unchanged
+> and never be removed?
+
+No. This is the other case, i.e. it's known the nodes can be removed.
+
+> 
+> static void __init fwnode_pointer(void)
+> {
+> 	const struct software_node softnodes[] = {
+> 		{ .name = "first", },
+> 		{ .name = "second", .parent = &softnodes[0], },
+> 		{ .name = "third", .parent = &softnodes[1], },
+> 		{ NULL /* Guardian */ }
+> 	};
+> 	const char * const full_name = "first/second/third";
+> 	const char * const full_name_second = "first/second";
+> 	const char * const second_name = "second";
+> 	const char * const third_name = "third";
+> 	int rval;
+> 
+> 	rval = software_node_register_nodes(softnodes);
+> 	if (rval) {
+> 		pr_warn("cannot register softnodes; rval %d\n", rval);
+> 		return;
+> 	}
+> 
+> 	test(full_name_second, "%pfw", software_node_fwnode(&softnodes[1]));
+> 	test(full_name, "%pfw", software_node_fwnode(&softnodes[2]));
+> 	test(full_name, "%pfwf", software_node_fwnode(&softnodes[2]));
+> 	test(second_name, "%pfwP", software_node_fwnode(&softnodes[1]));
+> 	test(third_name, "%pfwP", software_node_fwnode(&softnodes[2]));
+> 
+> 	software_node_unregister_nodes(softnodes);
+> }
+> 
+> The use case in this patch set is essentially equivalent to what printf
+> does: exposing the software nodes to the rest of the kernel and to user
+> space is probably not necessary, it's just that we need to call a
+> function that parses their structure (essentially an equivalent to
+> calling "test" above). Could you indicate whether there is a better
+> alternative of doing this?
+
+I'm actually not suggesting to do otherwise. What I wanted to say was that
+it'd be best to settle with a single API to create software nodes while
+keeping in mind serialising access to the data structure as well as
+the lifetime of the software nodes.
+
+This patch is adding another API function to register software nodes which
+expands the scope of another that effectively did not allow sub-nodes.
+Lifetime management currently doesn't really exist for ACPI nodes (device
+or data) and only exists in somewhat unsatisfactory form for DT nodes. That
+might be still the best model for software nodes.
+
+Perhaps the API this patch adds is nicer to use than
+software_node_register_nodes() and better lends itself for adding
+refcounting later on.
+
+I wonder what Andy or Heikki think.
+
+-- 
+Kind regards,
+
+Sakari Ailus
