@@ -2,56 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FB7957EF46
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Jul 2022 15:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 282F557F094
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Jul 2022 19:27:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234852AbiGWNox (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 23 Jul 2022 09:44:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58432 "EHLO
+        id S231846AbiGWR1J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 23 Jul 2022 13:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236223AbiGWNov (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 23 Jul 2022 09:44:51 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53BFE220CF;
-        Sat, 23 Jul 2022 06:44:50 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id j22so12998194ejs.2;
-        Sat, 23 Jul 2022 06:44:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=49amiazncfe+YGfCcsE1Umxq5UaZUxFQiGQFBx6ze1c=;
-        b=GLIzSCflcbjXQKRTFNrUPUCwiNVLFsPGiGJTuboZnWUsmIuIflEZO+CT6K5TmH7rbn
-         RCzLCwDXGvlTP9QmVPo3bhZjTFjnw/SlnMR3uqYCjusfuTisFXtgjvYyt2ZGulp8HT2Y
-         d9fa7k1valp+ReEH69JJtiBLmn5fDHE1Ik89gedHUzegG2JyLzkrpHQ9bFP6j9qrukPy
-         CoJMS8qw+MSB9+LSt20cGAS9do5ANXxYx47Y9pXZq3dQrE5YnNCBi0gLefo7XJTpTTm+
-         QXCMZ7J1bsXPgvFdumg8YVyJAJEPNqeKR8e54kAhIAuZPjBEzyz+Qb318dbcFAsChVL7
-         wEmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=49amiazncfe+YGfCcsE1Umxq5UaZUxFQiGQFBx6ze1c=;
-        b=vfupcyaKS0ShCjyPPiXfc3jw6dPaMMBhgM7gn61kqhJtkA0snBSjbhu5n+09nOlnlw
-         zbOLA1JsLCutdN6PGUQLHdSinESFi2gOSKi8ymb4gUD8vL0w0vzY7yvy5seEuSBIfuPQ
-         l4LoO8rpVI6Q7FQv29GaIbFikcGTQQGtS5nbVZIAOBbkRPgSyJXtZbvQSsUhmrgyo18Z
-         yHUx8QJzG6mO9XZUHcLpWkOcGMnURkNP9g4esh8VRqI6hFTU3OMhAUyM3dQmXLvWMybv
-         pO71jWQ4DteiQ7JwZ7XhCMM4a8rHs1a1K5qpbq5nYywlTsPBcJf9I2diOrCq+qjjZuNy
-         m69g==
-X-Gm-Message-State: AJIora+HKA2TI9TRDZ66VcS8n2D8f/YcJO/pUgvCW0d27QCoyEwFKP3H
-        7YGCm0hVHuRcGynEIE2eU74=
-X-Google-Smtp-Source: AGRyM1uVkPV5hLTPJLLcAQ9tlPKSclPGRO6ACvn74IDvvQ5HKYpLnh7Bs/psd8uUthI973Mvf4L3mQ==
-X-Received: by 2002:a17:907:9608:b0:72f:4b13:c66c with SMTP id gb8-20020a170907960800b0072f4b13c66cmr3445161ejc.531.1658583888669;
-        Sat, 23 Jul 2022 06:44:48 -0700 (PDT)
-Received: from skbuf ([188.25.231.115])
-        by smtp.gmail.com with ESMTPSA id 16-20020a170906301000b0072efb6c9697sm3171067ejz.101.2022.07.23.06.44.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Jul 2022 06:44:47 -0700 (PDT)
-Date:   Sat, 23 Jul 2022 16:44:44 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
+        with ESMTP id S230005AbiGWR1J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 23 Jul 2022 13:27:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1D8318E08;
+        Sat, 23 Jul 2022 10:27:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 358D960DF1;
+        Sat, 23 Jul 2022 17:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46EAC341C0;
+        Sat, 23 Jul 2022 17:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658597226;
+        bh=JtBO3HEfqLTQtzCzKW/NxyX2wNsOWUNYTzoUck7xXUg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ol8Q+QJNjYLHFhh7Zd5YnD3B56Am/wMVZhZXBQlXQPz5SJSxXfgah+RpIuL6onO6g
+         1PD+1kdTuEsOmaRqVfHmqdlcSjYn/3lSCqojrr07uvrWXV1zRkFaQoE4f4Xr8H+GJJ
+         F89q5D3fcYU1N4PBilj1GP3EPCRYuGUa5IXtO8yd06kzCoRYEwBd0wwcT33yCmT+Nm
+         WLsq69QANKcmIoDxRCU9KgccbmiBw1pJEDNbkzWBliUktplyEwwsLKaH30p0sap4+i
+         JNRZIg6UuILNjKLJHhlTrBKIxMPAOenTVET6Nm/vEVIZ8TOuNr2OO29ZC6m3xSMCFF
+         NJtdLHfAm7EtA==
+Date:   Sat, 23 Jul 2022 19:26:55 +0200
+From:   Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
+To:     Vladimir Oltean <olteanv@gmail.com>,
+        "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Alvin __ipraga <alsi@bang-olufsen.dk>,
@@ -82,111 +66,102 @@ Cc:     Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
         Woojung Huh <woojung.huh@microchip.com>
 Subject: Re: [PATCH net-next 3/6] net: dsa: add support for retrieving the
  interface mode
-Message-ID: <20220723134444.e65w3zq6pg43fcm4@skbuf>
-References: <YtpfmF37FmfY6BV5@shell.armlinux.org.uk>
- <20220722105238.qhfq5myqa4ixkvy4@skbuf>
- <YtqNkSDLRDtuooy/@shell.armlinux.org.uk>
- <20220722124629.7y3p7nt6jmm5hecq@skbuf>
- <YtqjFKUTsH4CK0L+@shell.armlinux.org.uk>
- <20220722165600.lldukpdflv7cjp4j@skbuf>
- <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
- <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
- <20220722223932.poxim3sxz62lhcuf@skbuf>
- <YtufRO+oeQgmQi57@shell.armlinux.org.uk>
+Message-ID: <20220723192655.46de7cae@thinkpad>
+In-Reply-To: <20220722223932.poxim3sxz62lhcuf@skbuf>
+References: <YtnBmFm8Jhokgp7Q@shell.armlinux.org.uk>
+        <20220721213645.57ne2jf7f6try4ec@skbuf>
+        <YtpfmF37FmfY6BV5@shell.armlinux.org.uk>
+        <20220722105238.qhfq5myqa4ixkvy4@skbuf>
+        <YtqNkSDLRDtuooy/@shell.armlinux.org.uk>
+        <20220722124629.7y3p7nt6jmm5hecq@skbuf>
+        <YtqjFKUTsH4CK0L+@shell.armlinux.org.uk>
+        <20220722165600.lldukpdflv7cjp4j@skbuf>
+        <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
+        <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
+        <20220722223932.poxim3sxz62lhcuf@skbuf>
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtufRO+oeQgmQi57@shell.armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 23, 2022 at 08:12:04AM +0100, Russell King (Oracle) wrote:
-> > > > Thanks for this explanation, if nothing else, it seems to support the
-> > > > way in which I was interpreting managed = "in-band-status" to mean
-> > > > "enable in-band autoneg", but to be clear, I wasn't debating something
-> > > > about the way in which mvneta was doing things. But rather, I was
-> > > > debating why would *other* drivers do things differently such as to come
-> > > > to expect that a fixed-link master + an in-band-status CPU port, or the
-> > > > other way around, may be compatible with each other.
-> > > 
-> > > Please note that phylink makes a DT specification including both a
-> > > fixed-link descriptor and a managed in-band-status property illegal
-> > > because these are two different modes of operating the link, and they
-> > > conflict with each other.
-> > 
-> > Ok, thank you for this information which I already knew, what is the context?
+On Sat, 23 Jul 2022 01:39:32 +0300
+Vladimir Oltean <olteanv@gmail.com> wrote:
+
+> You mean in general, or with the firmware description you posted above?
+> Because the Lynx PCS does the best it can (considering it does this from
+> a function that returns void) to complain that you shouldn't put
+> MLO_AN_INBAND for 2500base-x.
 > 
-> FFS. You're the one who's writing emails to me that include *both*
-> "fixed-link" and "in-band-status" together. I'm pointing out that
-> specifying that in DT for a port together is not permitted.
+> static void lynx_pcs_link_up_2500basex(struct mdio_device *pcs,
+> 				       unsigned int mode,
+> 				       int speed, int duplex)
+> {
+> 	u16 if_mode = 0;
 > 
-> And here I give up reading this email. Sorry, I'm too frustrated
-> with this nitpicking, and too frustrated with spending hours writing a
-> reply only to have it torn apart.
+> 	if (mode == MLO_AN_INBAND) {
+> 		dev_err(&pcs->dev, "AN not supported for 2500BaseX\n");
+> 		return;
+> 	}
+> 
+> I noticed just earlier today that I made a blunder while upstreaming some
+> riser cards for some LS1028A-QDS development boards, and I did just that
+> (left 2500base-x with in-band-status). But the system just errors out.
+> I need to boot a board and fix that up. They're just NXP development
+> systems so not a big issue. Otherwise I'm not aware of what you're
+> talking about.
+> 
+> > However, both will request link status from the PCS side and use that
+> > to determine whether the link is up, and use the parameters that the
+> > PCS code returns for the link. Since 2500base-X can only operate at
+> > 2.5G, PCS code always reports SPEED_2500, and as half duplex is
+> > virtually never supported above 1G, DUPLEX_FULL.  
+> 
+> If you're saying this just because Lynx implements pcs_get_state for
+> 2500base-x, it's extremely likely that this simply originates from
+> vsc9959_pcs_link_state_2500basex(), which was deleted in ocelot in
+> commit 588d05504d2d ("net: dsa: ocelot: use the Lynx PCS helpers in
+> Felix and Seville"), and it was always dead code. It wasn't the only
+> dead code, remember commit b4c2354537b4 ("net: dsa: felix: delete
+> .phylink_mac_an_restart code").
+> 
+> Since the Lynx PCS prints error messages in inband/2500base-x mode,
+> and so did Felix/Ocelot before the code became common, I'm pretty sure
+> no one relies on this mode.
 
-This is becoming toxic. You've imagined that when I was talking about
-mixing fixed-link and managed = "in-band-status" I was referring to this
-kind of DSA port OF node:
+Does Lynx PCS support 1000base-x with AN? Because if so, it may be
+possible to somehow hack working AN for 2500base-x, as I managed it for
+88E6393X in the commit I mentioned (by configuring 1000base-x and then
+hacking the PHY speed to 2.5x).
 
-	port@N {
-		managed = "in-band-status";
+Anyway, I am now looking at the standards, and it seems that all the X
+and R have K variant: 1000base-kx, 2500base-kx, 5gbase-kr and
+10gbase-kr. These modes have mandatory clause 73 autonegotiation.
 
-		fixed-link {
-			speed = <1000>;
-			full-duplex;
-		};
-	};
+So either we need to add these as different modes of the
+phy_interface_t type, or we need to differentiate whether clause 37 or
+clause 73 AN should be used by another property.
 
-Now you're thinking I'm retarded because you've politely told me the above
-is invalid, and you're wondering why I'm still talking despite of that.
+But since 1000base-x supports clause 37 and 1000base-kx clause 73, the
+one property that we have, managed="in-band-status" is not enough, if
+we keep calling both modes '1000base-x'.
 
-Well guess what, I've never once mentioned this kind of invalid OF node,
-I'm not the one who's writing emails to you that include
-"both fixed-link and in-band-status together", yet in your mind the fact
-that you may have misunderstood isn't even a possibility. What I'm
-talking about is TWO OF nodes, one like this:
+So maybe we really need to add K variants as separate
+PHY_INTERFACE_MODED_ constants. That way we can keep assuming clause 37
+for 2500base-x, and try to implement it for as much drivers as
+possible, by hacking it up...
 
-	master: ethernet@N: {
-		managed = "in-band-status";
-	};
+And I still don't understand this clause 73 AN at all. For example, if
+one PHY supports only up to 2.5g speeds, will it complete AN with
+another PHY that supports up to 10g speeds, if the second PHY will
+(maybe?) try at higher frequency?
 
-	switch_cpu_port: port@N: {
-		ethernet = <&master>;
+Marek
 
-		fixed-link {
-			speed = <1000>;
-			full-duplex;
-		};
-	};
-
-It is *these* two that need to agree on in-band autoneg, when the "fixed-link"
-of switch_cpu_port was created using software nodes, damn it. Andrew
-said that it isn't specified whether in-band autoneg is used or not.
-It was even repeated for the millionth time in the continuation of my
-email, which you should have read instead of frustrating yourself for a
-stupid reason again.
-
-If you think I'm making this up and I *was* talking about in-band-status
-and fixed-link together in the same node, go ahead and search back where
-I've said that, or even implied that. But don't blame me when you'll get
-frustrated again that you won't find it. I re-read what I said once
-yesterday and once today.
-
-That's where our communication problem is, you're politely trying to
-tell your conversation partner that he's an idiot and he JUST DOESN'T
-WANT TO UNDERSTAND, DAMN IT.
-
-In any case, it looks like it's time to remove myself from this conversation.
-I am going to propose a patch shortly which adds validation in DSA for
-the OF nodes of DSA and CPU ports, and opts some drivers out of it.
-I'm going to opt into validation as many drivers as reasonably possible.
-You'll then have to work with the driver maintainers who opted out of
-it. I'm not one of them, so you won't have to work with me. Beyond that,
-I just don't care and I had enough. I have other things to do too.
