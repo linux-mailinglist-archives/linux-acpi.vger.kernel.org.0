@@ -2,42 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE9E57EC63
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Jul 2022 09:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FB7957EF46
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Jul 2022 15:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231783AbiGWHNV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 23 Jul 2022 03:13:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39214 "EHLO
+        id S234852AbiGWNox (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 23 Jul 2022 09:44:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229728AbiGWHNU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 23 Jul 2022 03:13:20 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA3CE0F9;
-        Sat, 23 Jul 2022 00:13:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=/yFpbi2PQFvsU2FBSncbCiZSApnDaiRDxq8vxsMzG4M=; b=D7BwgEjIPeVQoCQNqC/aSIZVNa
-        iTgki+jmrXsv1lmX7tfDaeNCg7RdFKwVhfBlLIcpjcdgCJhlFOTUsiDvD5yYdOin/6ji+ZNCX0UTl
-        NN0nKrQqN5nJipwGHTjVRiFSOEPksOL7VJKMMZV7pPMZtylItMhLel+c+/6LyNPXW7hJlSWCLmPSQ
-        QV6THsKQTfC8cVe0Jvrqh3+xFZRKdQXZvCzDeSMG9o520botVn+oKzBBHoIdjDpBZSaremsYU88p1
-        AFCuvO84DD+zil+QEl5y+usTZ3/XRJDcFc5X3k2NS18lhcF0dSUNQcw0I/OVR/f/Ov5j8OeUXMQ+Y
-        5G0pKfMQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33526)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1oF9JR-00009k-IZ; Sat, 23 Jul 2022 08:12:33 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1oF9Iy-0006aw-KH; Sat, 23 Jul 2022 08:12:04 +0100
-Date:   Sat, 23 Jul 2022 08:12:04 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+        with ESMTP id S236223AbiGWNov (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 23 Jul 2022 09:44:51 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53BFE220CF;
+        Sat, 23 Jul 2022 06:44:50 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id j22so12998194ejs.2;
+        Sat, 23 Jul 2022 06:44:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=49amiazncfe+YGfCcsE1Umxq5UaZUxFQiGQFBx6ze1c=;
+        b=GLIzSCflcbjXQKRTFNrUPUCwiNVLFsPGiGJTuboZnWUsmIuIflEZO+CT6K5TmH7rbn
+         RCzLCwDXGvlTP9QmVPo3bhZjTFjnw/SlnMR3uqYCjusfuTisFXtgjvYyt2ZGulp8HT2Y
+         d9fa7k1valp+ReEH69JJtiBLmn5fDHE1Ik89gedHUzegG2JyLzkrpHQ9bFP6j9qrukPy
+         CoJMS8qw+MSB9+LSt20cGAS9do5ANXxYx47Y9pXZq3dQrE5YnNCBi0gLefo7XJTpTTm+
+         QXCMZ7J1bsXPgvFdumg8YVyJAJEPNqeKR8e54kAhIAuZPjBEzyz+Qb318dbcFAsChVL7
+         wEmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=49amiazncfe+YGfCcsE1Umxq5UaZUxFQiGQFBx6ze1c=;
+        b=vfupcyaKS0ShCjyPPiXfc3jw6dPaMMBhgM7gn61kqhJtkA0snBSjbhu5n+09nOlnlw
+         zbOLA1JsLCutdN6PGUQLHdSinESFi2gOSKi8ymb4gUD8vL0w0vzY7yvy5seEuSBIfuPQ
+         l4LoO8rpVI6Q7FQv29GaIbFikcGTQQGtS5nbVZIAOBbkRPgSyJXtZbvQSsUhmrgyo18Z
+         yHUx8QJzG6mO9XZUHcLpWkOcGMnURkNP9g4esh8VRqI6hFTU3OMhAUyM3dQmXLvWMybv
+         pO71jWQ4DteiQ7JwZ7XhCMM4a8rHs1a1K5qpbq5nYywlTsPBcJf9I2diOrCq+qjjZuNy
+         m69g==
+X-Gm-Message-State: AJIora+HKA2TI9TRDZ66VcS8n2D8f/YcJO/pUgvCW0d27QCoyEwFKP3H
+        7YGCm0hVHuRcGynEIE2eU74=
+X-Google-Smtp-Source: AGRyM1uVkPV5hLTPJLLcAQ9tlPKSclPGRO6ACvn74IDvvQ5HKYpLnh7Bs/psd8uUthI973Mvf4L3mQ==
+X-Received: by 2002:a17:907:9608:b0:72f:4b13:c66c with SMTP id gb8-20020a170907960800b0072f4b13c66cmr3445161ejc.531.1658583888669;
+        Sat, 23 Jul 2022 06:44:48 -0700 (PDT)
+Received: from skbuf ([188.25.231.115])
+        by smtp.gmail.com with ESMTPSA id 16-20020a170906301000b0072efb6c9697sm3171067ejz.101.2022.07.23.06.44.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Jul 2022 06:44:47 -0700 (PDT)
+Date:   Sat, 23 Jul 2022 16:44:44 +0300
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
         Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -69,9 +82,8 @@ Cc:     Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
         Woojung Huh <woojung.huh@microchip.com>
 Subject: Re: [PATCH net-next 3/6] net: dsa: add support for retrieving the
  interface mode
-Message-ID: <YtufRO+oeQgmQi57@shell.armlinux.org.uk>
-References: <20220721213645.57ne2jf7f6try4ec@skbuf>
- <YtpfmF37FmfY6BV5@shell.armlinux.org.uk>
+Message-ID: <20220723134444.e65w3zq6pg43fcm4@skbuf>
+References: <YtpfmF37FmfY6BV5@shell.armlinux.org.uk>
  <20220722105238.qhfq5myqa4ixkvy4@skbuf>
  <YtqNkSDLRDtuooy/@shell.armlinux.org.uk>
  <20220722124629.7y3p7nt6jmm5hecq@skbuf>
@@ -80,178 +92,101 @@ References: <20220721213645.57ne2jf7f6try4ec@skbuf>
  <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
  <YtsUhdg3a2rT3NJC@shell.armlinux.org.uk>
  <20220722223932.poxim3sxz62lhcuf@skbuf>
+ <YtufRO+oeQgmQi57@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220722223932.poxim3sxz62lhcuf@skbuf>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <YtufRO+oeQgmQi57@shell.armlinux.org.uk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 23, 2022 at 01:39:32AM +0300, Vladimir Oltean wrote:
-> On Fri, Jul 22, 2022 at 10:20:05PM +0100, Russell King (Oracle) wrote:
-> > > > > What is hard for me to comprehend is how we ever came to conclude that
-> > > > > for SERDES protocols where clause 37 is possible (2500base-x should be
-> > > > > part of this group), managed = "in-band-status" does not imply in-band
-> > > > > autoneg, considering the mvneta precedent.
-> > > > 
-> > > > That is a recent addition, since the argument was made that when using
-> > > > a 1000base-X fibre transceiver, using ethtool to disable autoneg is a
-> > > > reasonable thing to do - and something that was supported with
-> > > > mvneta_ethtool_set_link_ksettings() as it stands at the point in the
-> > > > commit above.
+On Sat, Jul 23, 2022 at 08:12:04AM +0100, Russell King (Oracle) wrote:
+> > > > Thanks for this explanation, if nothing else, it seems to support the
+> > > > way in which I was interpreting managed = "in-band-status" to mean
+> > > > "enable in-band autoneg", but to be clear, I wasn't debating something
+> > > > about the way in which mvneta was doing things. But rather, I was
+> > > > debating why would *other* drivers do things differently such as to come
+> > > > to expect that a fixed-link master + an in-band-status CPU port, or the
+> > > > other way around, may be compatible with each other.
 > > > 
-> > > I'm sorry, I don't understand. What is the recent addition, and recent
-> > > relative to what? The 2500base-x link mode? Ok, but this is only
-> > > tangentially related to the point overall, more below.
+> > > Please note that phylink makes a DT specification including both a
+> > > fixed-link descriptor and a managed in-band-status property illegal
+> > > because these are two different modes of operating the link, and they
+> > > conflict with each other.
 > > 
-> > I'm talking about how we handle 1000base-X autoneg - specifically this
-> > commit:
-> > 
-> > 92817dad7dcb net: phylink: Support disabling autonegotiation for PCS
-> > 
-> > where we can be in 1000base-X with managed = "in-band-status" but we
-> > have autoneg disabled. I thought that is what you were referring to.
+> > Ok, thank you for this information which I already knew, what is the context?
 > 
-> So the correction you're persistently trying to make is:
-> managed = "in-band-status" does *not* necessarily imply in-band autoneg
-> being enabled, because the user can still run "ethtool -s eth0 autoneg off"
-> ?
-
-Correct.
-
-> | | The way I understand what you're saying is that there is no guarantee
-> | | that the DSA master and CPU port will agree whether to use in-band
-> | | autoneg or not here (and implicitly, there is no guarantee that this
-> | | link will work):
-> | |
-> | |       &eth0 {
-> | |               phy-mode = "2500base-x";
-> | |               managed = "in-band-status";
-> | |       };
-> | |
-> | |       &switch_cpu_port {
-> | |               ethernet = <&eth0>;
-> | |               phy-mode = "2500base-x";
-> | |               managed = "in-band-status";
-> | |       };
-> | 
-> | Today, there is no guarantee - because it depends on how people have
-> | chosen to implement 2500base-X, and whether the hardware requires the
-> | use of in-band AN or prohibits it. This is what happens when stuff
-> | isn't standardised - one ends up with differing implementations doing
-> | different things, and this has happened not _only_ at hardware level
-> | but also software level as well.
+> FFS. You're the one who's writing emails to me that include *both*
+> "fixed-link" and "in-band-status" together. I'm pointing out that
+> specifying that in DT for a port together is not permitted.
 > 
-> If there is no guarantee that the above will (at least try) to use in-band
-> autoneg, it means that there is someone who decided, when he coded up
-> the driver, that managed = "in-band-status" doesn't imply using in-band
-> autoneg. That's what I was complaining about: I don't understand how we
-> got here. In turn, this came from an observation about the inband/10gbase-r
-> not having any actual in-band autoneg (more about this at the very end).
+> And here I give up reading this email. Sorry, I'm too frustrated
+> with this nitpicking, and too frustrated with spending hours writing a
+> reply only to have it torn apart.
 
-We got here through cases such as the one I pointed out where I tried
-to highlight the issue. Maybe something happened in the pcs-lynx case,
-it's pretty hard to find the history via google now, because searching
-there does not give all the different versions of the patch set.
+This is becoming toxic. You've imagined that when I was talking about
+mixing fixed-link and managed = "in-band-status" I was referring to this
+kind of DSA port OF node:
 
-Maybe it was some other PCS, I don't know. Same problem, searching
-google is very patchy at finding the various versions of patchsets
-that were submitted.
+	port@N {
+		managed = "in-band-status";
 
-All I know is that at some point I gave up pointing the issue out.
+		fixed-link {
+			speed = <1000>;
+			full-duplex;
+		};
+	};
 
-pcs-lynx today does issue an error. pcs-xpcs doesn't, it just turns
-off AN no matter what. I can't find the history via google for that.
+Now you're thinking I'm retarded because you've politely told me the above
+is invalid, and you're wondering why I'm still talking despite of that.
 
-> > and eventually I stopped caring about it, as it became pointless to
-> > raise it anymore when we had an established mixture of behaviours. This
-> > is why we have ended up with PCS drivers configuring for no AN for a
-> > firmware description of:
-> > 
-> > 	managed = "in-band-status";
-> > 	phy-mode = "2500base-x";
-> 
-> Sorry, I don't get why?
+Well guess what, I've never once mentioned this kind of invalid OF node,
+I'm not the one who's writing emails to you that include
+"both fixed-link and in-band-status together", yet in your mind the fact
+that you may have misunderstood isn't even a possibility. What I'm
+talking about is TWO OF nodes, one like this:
 
-Why what? Why I stopped caring about this issue? Or Why we ended up
-with drivers configuring the above without AN? I think for the latter
-I've explained how we got here. For the former, it's the feeling that
-my comments were being ignored or just lead to arguments, so I stopped
-bothering.
+	master: ethernet@N: {
+		managed = "in-band-status";
+	};
 
-> > I still don't understand your point - because you seem to be conflating
-> > two different things (at least as I understand it.)
-> > 
-> > We have this:
-> > 
-> > 		port@N {
-> > 			reg = <N>;
-> > 			label = "cpu";
-> > 			ethernet = <&ethX>;
-> > 		};
-> > 
-> > This specifies that the port operates at whatever interface mode and
-> > settings gives the maximum speed. There is no mention of a "managed"
-> > property, and therefore (Andrew, correct me if I'm wrong) in-band
-> > negotiation is not expected to be used.
-> > 
-> > The configuration of the ethX parameters on the other end of the link
-> > are up to the system integrator to get right, and the actual behaviour
-> > would depend on the ethernet driver. As I've said in previous emails,
-> > there is such a thing as "AN bypass" that can be implemented,
-> 
-> Not everyone has AN bypass, try to assume that no one except mvneta does.
+	switch_cpu_port: port@N: {
+		ethernet = <&master>;
 
-I think I said "can be implemented", meaning not everyone does.
+		fixed-link {
+			speed = <1000>;
+			full-duplex;
+		};
+	};
 
-> > and it can default to be enabled, and drivers can ignore that such a
-> > bit even exists. So, it's possible that even with "managed" set to
-> > "in-band-status" in DT, a link to such a DSA switch will still come up
-> > even though we've requested in DT for AN to be used.
-> > 
-> > If an ethernet driver is implemented to strictly require in-band AN in
-> > this case, then the link won't come up, and the system integrator would
-> > have to debug the problem.
-> > 
-> > I think this is actually true on Clearfog - if one specifies the CPU
-> > port as I have above, and requests in-band on the host ethernet, then
-> > the link doesn't come up, because mvneta turns off AN bypass.
-> 
-> So what am I conflating in this case?
+It is *these* two that need to agree on in-band autoneg, when the "fixed-link"
+of switch_cpu_port was created using software nodes, damn it. Andrew
+said that it isn't specified whether in-band autoneg is used or not.
+It was even repeated for the millionth time in the continuation of my
+email, which you should have read instead of frustrating yourself for a
+stupid reason again.
 
-You seem to think that the above DT stanza can end up with in-band AN
-enabled.
+If you think I'm making this up and I *was* talking about in-band-status
+and fixed-link together in the same node, go ahead and search back where
+I've said that, or even implied that. But don't blame me when you'll get
+frustrated again that you won't find it. I re-read what I said once
+yesterday and once today.
 
-> > > Thanks for this explanation, if nothing else, it seems to support the
-> > > way in which I was interpreting managed = "in-band-status" to mean
-> > > "enable in-band autoneg", but to be clear, I wasn't debating something
-> > > about the way in which mvneta was doing things. But rather, I was
-> > > debating why would *other* drivers do things differently such as to come
-> > > to expect that a fixed-link master + an in-band-status CPU port, or the
-> > > other way around, may be compatible with each other.
-> > 
-> > Please note that phylink makes a DT specification including both a
-> > fixed-link descriptor and a managed in-band-status property illegal
-> > because these are two different modes of operating the link, and they
-> > conflict with each other.
-> 
-> Ok, thank you for this information which I already knew, what is the context?
+That's where our communication problem is, you're politely trying to
+tell your conversation partner that he's an idiot and he JUST DOESN'T
+WANT TO UNDERSTAND, DAMN IT.
 
-FFS. You're the one who's writing emails to me that include *both*
-"fixed-link" and "in-band-status" together. I'm pointing out that
-specifying that in DT for a port together is not permitted.
-
-And here I give up reading this email. Sorry, I'm too frustrated
-with this nitpicking, and too frustrated with spending hours writing a
-reply only to have it torn apart.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+In any case, it looks like it's time to remove myself from this conversation.
+I am going to propose a patch shortly which adds validation in DSA for
+the OF nodes of DSA and CPU ports, and opts some drivers out of it.
+I'm going to opt into validation as many drivers as reasonably possible.
+You'll then have to work with the driver maintainers who opted out of
+it. I'm not one of them, so you won't have to work with me. Beyond that,
+I just don't care and I had enough. I have other things to do too.
