@@ -2,55 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59667582DE1
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jul 2022 19:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED9858314F
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jul 2022 19:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229939AbiG0REq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jul 2022 13:04:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55672 "EHLO
+        id S242810AbiG0R4r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Jul 2022 13:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241309AbiG0REC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jul 2022 13:04:02 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A9E6E2DB;
-        Wed, 27 Jul 2022 09:38:55 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id va17so32548539ejb.0;
-        Wed, 27 Jul 2022 09:38:54 -0700 (PDT)
+        with ESMTP id S242922AbiG0R4e (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jul 2022 13:56:34 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EAFF9C279;
+        Wed, 27 Jul 2022 10:01:00 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id z22so22234564edd.6;
+        Wed, 27 Jul 2022 10:00:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ipHXah2drN1ztV/qFRrJg6iGYe+5yo1q7EilyB1MV54=;
-        b=oscMZj9/5l585E43z0ceX2e56hA2FeFafLwYq+rT+Ga/38O31b7pw7AGdOgnlZCp3K
-         KVeQTolwwmIlNdtz4GHcfpJjZKw/4iO5bdg5qeelrYcx/gMCt6iIxx8D1u0ero2+UL1t
-         0tLlPdNQqlhzabFWy+a36q0lF5Dy0Kl2cmhyPwiB9ECqMitHRnP0/GaIF1DuOf17JhfP
-         ddSeKX6lSCBtYqbW4BLqH714Ag6yJJ4h00CzNdX+MTtbHyQBHSW9kgiPLuWsh0L5ASre
-         pdZkE1eiS6EZefEJsJDmVZ54HEB6Z6Qu21b0QFEGFuL7cltLcEtySNnQgTN7ik0XHurF
-         OmZA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=E87C+NlfCXvLpu0xuiimJX9d0y6Hhjgvfv+tefp2zBQ=;
+        b=Cd4p940ZUF4xOgn2nYp6lHdne9lyf/AsO7bXQVzkOE/6TE/wm7RrHRkhYxn+adrUBm
+         4kbvTIyTbwGLOZlMH0u1haSU8NLMrl4atnJe0uwWG3v58TBYpENxIp7JTdMAf6tlGZcd
+         Y+/oKGiUcdcrPacY9Bt3mLErgIhKg38I4f3pIcIMCnNLd06qihxaO6rk0oTJ5rb/TxHU
+         bnQt9ym4lP3lSBUV482yuecSHJxJJUwuAu4rw5cnKFuyO5cEsPaLb6NsWEmhMy6u+hAL
+         dUtzr+yjWVgXmLCgZJ4wgxUXAv13Mnhwmn040Thkz6BjP4GcEITwTYfY1eIJWdHqvrn5
+         9BaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ipHXah2drN1ztV/qFRrJg6iGYe+5yo1q7EilyB1MV54=;
-        b=k4eZ3w8QbwZx0zTJrSFZ7VwCT/qSzO1+iYL1xH3hkopJ4zTE3zjatKAQcFvyUqscz+
-         ux0N9Re626F2JnAQeLkqA88bF5/9Cy+4xWilWe6QJZUM/E+z/IDuaxjBIs5So29p3Wja
-         r/FBlAUyMcqQIPIIGacrhy2qEutWe/uMFZ9jLJJLiANN45VWs9LGhPD9qiij+hz3wyLn
-         olvs2RVzQ557j06+JTX6ojKecQfwVV655tOpbMQ7TERn/KPuIMPTRUOUS9q3/LjqlWzs
-         MGtEc/73hA/G8PnP8il1mmbrjWruhaIq91yFCsuq1P6JpJpdELjkjZdH9lCLN+r/Uv+p
-         MdlA==
-X-Gm-Message-State: AJIora8CQl2Ds7umt5c5sC0hwz124Ee1xHs3Jkh34otMLDtzfxcMzGVs
-        Xe8r9QMLPCrglQLPGoCmGd4=
-X-Google-Smtp-Source: AGRyM1uDjvm2zAG/PSoErEmq90918CkkiQuU0zpUrVSOeP2VeZuH8ZgY0NMtTfmAPNs8g2BkXZVpyw==
-X-Received: by 2002:a17:907:a40b:b0:72b:64e3:4c5e with SMTP id sg11-20020a170907a40b00b0072b64e34c5emr18516200ejc.612.1658939932706;
-        Wed, 27 Jul 2022 09:38:52 -0700 (PDT)
-Received: from skbuf ([188.25.231.115])
-        by smtp.gmail.com with ESMTPSA id fu3-20020a170907b00300b0072f47838640sm7803355ejc.71.2022.07.27.09.38.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 09:38:51 -0700 (PDT)
-Date:   Wed, 27 Jul 2022 19:38:48 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=E87C+NlfCXvLpu0xuiimJX9d0y6Hhjgvfv+tefp2zBQ=;
+        b=LCIlCISNk7SU2k9TKyS5ov3QMrAFHYh/TkGKXBcO8LvxSrfssA9FZq3YOFRNCje049
+         NAM2sHbWMHeedGwXABxplP3JD6K6+21jeXJ6NNjH7NqEwYHl/xCj4JKFrmhMYAGhH2un
+         3EtdmsXIW1XdN9nkWRcTatd4gRWQuONrsSboOXDd+gLT/9usK0G8zYWqKv0UaXUnOUbS
+         Vmp/Yhjz29mt6+ZniRKjkJt7mSWPe4FESFYtJpjKZBv9vPG2VyFedVgdC9oMZZlr1JMz
+         r+/CsDy7tOdlwIQ8VLA0fBpv9EZhjYJZd8DKjoaBQN14GbxnfF6FZHAOp6cXztWH/q74
+         oLOA==
+X-Gm-Message-State: AJIora9r1E3/Oj8oX8p6/SxGlC3Sx7ef3T2Y6+mywDHdjfBBhwBYZLOA
+        5B2x/jYrPCLxSi3m4V7OdseILCtaAQ6CSI238zY=
+X-Google-Smtp-Source: AGRyM1t8/S9koTsfhnO7lR7P6+hZGiz8DclxfuSxow2UeYoZzjdOI0eIy57iEtDcw1iZGBwwH6kxynA9aXl8g8eJ814=
+X-Received: by 2002:a05:6402:40c3:b0:43b:d65a:cbf7 with SMTP id
+ z3-20020a05640240c300b0043bd65acbf7mr24290878edb.380.1658941258507; Wed, 27
+ Jul 2022 10:00:58 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220727064321.2953971-1-mw@semihalf.com> <20220727064321.2953971-7-mw@semihalf.com>
+ <20220727143147.u6yd6wqslilspyhw@skbuf> <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
+In-Reply-To: <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 27 Jul 2022 19:00:21 +0200
+Message-ID: <CAHp75Vfn+tfuzxU31kVxp3sMAoT=ve3tcfDv84Omm-1tqvW3+w@mail.gmail.com>
+Subject: Re: [net-next: PATCH v3 6/8] net: core: switch to fwnode_find_net_device_by_node()
 To:     Marcin Wojtas <mw@semihalf.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Cc:     Vladimir Oltean <olteanv@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         netdev <netdev@vger.kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -72,17 +76,8 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Tomasz Nowicki <tn@semihalf.com>,
         Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
         upstream@semihalf.com
-Subject: Re: [net-next: PATCH v3 6/8] net: core: switch to
- fwnode_find_net_device_by_node()
-Message-ID: <20220727163848.f4e2b263zz3vl2hc@skbuf>
-References: <20220727064321.2953971-1-mw@semihalf.com>
- <20220727064321.2953971-7-mw@semihalf.com>
- <20220727143147.u6yd6wqslilspyhw@skbuf>
- <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -93,36 +88,32 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 27, 2022 at 05:18:16PM +0200, Marcin Wojtas wrote:
+On Wed, Jul 27, 2022 at 5:24 PM Marcin Wojtas <mw@semihalf.com> wrote:
+> =C5=9Br., 27 lip 2022 o 16:31 Vladimir Oltean <olteanv@gmail.com> napisa=
+=C5=82(a):
+> > On Wed, Jul 27, 2022 at 08:43:19AM +0200, Marcin Wojtas wrote:
+
+...
+
+> > > +     dev =3D class_find_device(&net_class, NULL, fwnode, fwnode_find=
+_parent_dev_match);
+> >
+> > This needs to maintain compatibility with DSA masters that have
+> > dev->of_node but don't have dev->fwnode populated.
+>
 > Do you mean a situation analogous to what I addressed in:
 > [net-next: PATCH v3 4/8] net: mvpp2: initialize port fwnode pointer
 > ?
-
-Not sure if "analogous" is the right word. My estimation is that the
-overwhelmingly vast majority of DSA masters can be found by DSA simply
-due to the SET_NETDEV_DEV() call that the Ethernet drivers need to make
-anyway.  I see that mvpp2 also needed commit c4053ef32208 ("net: mvpp2:
-initialize port of_node pointer"), but that isn't needed in general, and
-I can't tell you exactly why it is needed there, I don't know enough
-about the mvpp2 driver.
-
+>
 > I found indeed a couple of drivers that may require a similar change
 > (e.g. dpaa2).
-
-There I can tell you why the dpaa2-mac code mangles with net_dev->dev.of_node,
-but I'd rather not go into an explanation that essentially doesn't matter.
-The point is that you'd be mistaken to think that only the drivers which
-touch the net device's ->dev->of_node are the ones that need updating
-for your series to not cause regressions.
-
+>
 > IMO we have 2 options:
 > - update these drivers
-> - add some kind of fallback? If yes, I am wondering about an elegant
-> solution - maybe add an extra check inside
-> fwnode_find_parent_dev_match?
-> 
-> What would you suggest?
 
-Fixing fwnode_find_parent_dev_match(), of course. This change broke DSA
-on my LS1028A system (master in drivers/net/ethernet/freescale/enetc/)
-and LS1021A (master in drivers/net/ethernet/freescale/gianfar.c).
+Not Vladimir here, but my 2cents that update is best and elegant, it
+can be done even before this series.
+
+--=20
+With Best Regards,
+Andy Shevchenko
