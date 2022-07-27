@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4FD1582447
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jul 2022 12:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B207B582568
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jul 2022 13:30:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231217AbiG0K2o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jul 2022 06:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33942 "EHLO
+        id S231513AbiG0LaN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Jul 2022 07:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbiG0K2o (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jul 2022 06:28:44 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB0843332;
-        Wed, 27 Jul 2022 03:28:43 -0700 (PDT)
+        with ESMTP id S231430AbiG0LaK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jul 2022 07:30:10 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C2D5481F3;
+        Wed, 27 Jul 2022 04:30:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658917723; x=1690453723;
+  t=1658921405; x=1690457405;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=RrV1tcJSu8Z7rFc6jziP1hGDQZbJGn8+5xabDMaGm1I=;
-  b=Zx58KOKcnSK5uglwKp0vdA3HOfPf5sF9lGuh3dHORhG7FCTcCOAh95tq
-   Qw/pfM8gdsetcK4TYFwErH2eyT5V/6YUQraJZw6gkCeiCCMnstsYIHZVd
-   1TzcWHv4uzISzL+IhJKXkrvPSi8VHKdrjPfK02tmxm2PHuaooNpxgkdZH
-   k1SBTKtfACs6fyiw/3f/yJbOAgbvHVqy1TigCPoqvMkm1RQnvwkY3V0g3
-   0sTaQinwDm+B0v7MTPD/lZTMajcSMqar3p8ARDTP11lca0bJMnmuTm8DW
-   2D/Sfy8N0h/O2sTdoKtxrvshJZZs0G5Jo91kXkwHnnkOkX2koFhfWs7Zw
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10420"; a="289392832"
+  bh=XPTr1oCZhpKzQckO4AnCHv7mocNz5VPet32kxXw3ndA=;
+  b=nAcems6VJynBPj/o8Cksjsag5FPFtXulemepugrhlGt4zwTgunQhHEW/
+   gBhyonrq0tLfhnnzrPtSbFKDGIJcsmnxNtjut4yTi3Rn6rVJJ7ehHHQCS
+   /FqKdPOvRPcJGnic1ExndSOcZSkb0/aLsy7mHI3RDFJOo04gUPMhO4XeJ
+   fpxXDJ99+S18c6dCkaQslPHPoxAP8zjCbPZ9yG07cw26jUDh2PJkbAEY2
+   4FuPAnJQyJmkSvz3A83ft6azAR2yS5YflzuZiKwIQ7MaIsbGWBlz32D3H
+   aWfCa7TeGYDbZIwv9sJCX3lp5rmw8vOTKKl/9Q0eGG9pSbtKI5RsPeZGe
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10420"; a="267976633"
 X-IronPort-AV: E=Sophos;i="5.93,195,1654585200"; 
-   d="scan'208";a="289392832"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2022 03:28:43 -0700
+   d="scan'208";a="267976633"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2022 04:30:03 -0700
 X-IronPort-AV: E=Sophos;i="5.93,195,1654585200"; 
-   d="scan'208";a="742603318"
+   d="scan'208";a="668298396"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2022 03:28:37 -0700
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2022 04:29:58 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oGeHK-001cRI-0x;
-        Wed, 27 Jul 2022 13:28:34 +0300
-Date:   Wed, 27 Jul 2022 13:28:34 +0300
+        id 1oGfEg-001cVp-3D;
+        Wed, 27 Jul 2022 14:29:54 +0300
+Date:   Wed, 27 Jul 2022 14:29:54 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Marcin Wojtas <mw@semihalf.com>
 Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
@@ -51,18 +51,17 @@ Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
         gjb@semihalf.com, jaz@semihalf.com, tn@semihalf.com,
         Samer.El-Haj-Mahmoud@arm.com, upstream@semihalf.com
-Subject: Re: [net-next: PATCH v3 2/8] net: mdio: switch fixed-link PHYs API
- to fwnode_
-Message-ID: <YuETUjgDzKjvM6lb@smile.fi.intel.com>
+Subject: Re: [net-next: PATCH v3 3/8] net: dsa: switch to device_/fwnode_ APIs
+Message-ID: <YuEhsqjq5eN6gGO6@smile.fi.intel.com>
 References: <20220727064321.2953971-1-mw@semihalf.com>
- <20220727064321.2953971-3-mw@semihalf.com>
+ <20220727064321.2953971-4-mw@semihalf.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220727064321.2953971-3-mw@semihalf.com>
+In-Reply-To: <20220727064321.2953971-4-mw@semihalf.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,67 +69,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 27, 2022 at 08:43:15AM +0200, Marcin Wojtas wrote:
-> fixed-link PHYs API is used by DSA and a number of drivers
-> and was depending on of_. Switch to fwnode_ so to make it
-> hardware description agnostic and allow to be used in ACPI
-> world as well.
+On Wed, Jul 27, 2022 at 08:43:16AM +0200, Marcin Wojtas wrote:
+> In order to support both DT and ACPI in future, modify the generic DSA
+> code to use device_/fwnode_ equivalent routines. Drop using port's 'dn'
+> field and use only fwnode - update all dependent drivers.
+> 
+> Because support for more generic fwnode is added, replace '_of' suffix
+> with '_fw' in related routines. No functional change is introduced by
+> this patch.
 
 ...
 
-> +	/* Old binding */
-> +	len = fwnode_property_count_u32(fwnode, "fixed-link");
-> +	if (len == 5)
-> +		return true;
-> +
-> +	return false;
+>  static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
+>  {
+> -	struct device_node *phy_handle = NULL;
+> +	struct fwnode_handle *phy_handle = NULL;
+>  	struct dsa_switch *ds = chip->ds;
+>  	phy_interface_t mode;
+>  	struct dsa_port *dp;
+> @@ -3499,15 +3499,15 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
+>  
+>  	if (chip->info->ops->serdes_set_tx_amplitude) {
+>  		if (dp)
+> -			phy_handle = of_parse_phandle(dp->dn, "phy-handle", 0);
+> +			phy_handle = fwnode_find_reference(dp->fwnode, "phy-handle", 0);
+>  
+> -		if (phy_handle && !of_property_read_u32(phy_handle,
+> -							"tx-p2p-microvolt",
+> -							&tx_amp))
+> +		if (!IS_ERR(phy_handle) && !fwnode_property_read_u32(phy_handle,
+> +								     "tx-p2p-microvolt",
+> +								     &tx_amp))
+>  			err = chip->info->ops->serdes_set_tx_amplitude(chip,
+>  								port, tx_amp);
+> -		if (phy_handle) {
+> -			of_node_put(phy_handle);
+> +		if (!IS_ERR(phy_handle)) {
+> +			fwnode_handle_put(phy_handle);
+>  			if (err)
+>  				return err;
+>  		}
 
-Can be
+I believe after 002752af7b89 ("device property: Allow error pointer to be
+passed to fwnode APIs") you may simplify above like:
 
-	return len == 5;
+		if (!fwnode_property_read_u32(phy_handle, "tx-p2p-microvolt",
+					      &tx_amp))
+			err = chip->info->ops->serdes_set_tx_amplitude(chip,
+								port, tx_amp);
+		else
+			err = 0;
+		fwnode_handle_put(phy_handle);
+		if (err)
+			return err;
 
-or
-
-	return fwnode_...(...) == 5;
-
-Original also good, so up to you,
-
-...
-
-> +		if (fwnode_property_read_u32(fixed_link_node, "speed",
-> +					     &status.speed)) {
-> +			fwnode_handle_put(fixed_link_node);
-> +			return -EINVAL;
-> +		}
-
-Why shadowing actual error code?
-
-Either
-
-	ret = fwnode_...(...);
-	if (ret) {
-		...
-		return ret;
-	}
-
-or add a comment explaining the above magic transformations.
-
-...
-
-> +	/* Old binding */
-> +	if (fwnode_property_read_u32_array(fwnode, "fixed-link", fixed_link_prop,
-> +					   ARRAY_SIZE(fixed_link_prop)) == 0) {
-> +		status.link = 1;
-> +		status.duplex = fixed_link_prop[1];
-> +		status.speed  = fixed_link_prop[2];
-> +		status.pause  = fixed_link_prop[3];
-> +		status.asym_pause = fixed_link_prop[4];
-> +		goto register_phy;
-> +	}
-> +
-> +	return -ENODEV;
-
-Ditto.
+It also possible you can do refactoring before/after this one.
 
 -- 
 With Best Regards,
