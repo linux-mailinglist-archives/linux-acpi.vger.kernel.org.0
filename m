@@ -2,64 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 806C85846A6
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jul 2022 21:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47F6D5846BA
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jul 2022 22:06:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232029AbiG1TuM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Jul 2022 15:50:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34704 "EHLO
+        id S232821AbiG1T4P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Jul 2022 15:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231590AbiG1TuL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jul 2022 15:50:11 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0910E1147
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Jul 2022 12:50:09 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-10dc1b16c12so3585066fac.6
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Jul 2022 12:50:09 -0700 (PDT)
+        with ESMTP id S232135AbiG1T4O (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jul 2022 15:56:14 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045911EAF8;
+        Thu, 28 Jul 2022 12:56:13 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id l23so4906967ejr.5;
+        Thu, 28 Jul 2022 12:56:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=spQC5DgL3oN87S+iC1PglEQ45W/HemORZipZMoLzdbo=;
-        b=Z3pjI6O9fsHjdX0fd0JMIbiPAuKOZ/jbEfl+8fap+JTqPS44WCC2h0P3V5kbBPb8+x
-         arHLTqP0WBbd1ANzqmqVf3CJdfq4Eu3ef4vNfoui4p1Udt5gPsH7EG0SqQOaR3IhuH8N
-         D3/Xkt0ez0WrkBj88iC2DELqeI5DtwtnnjysXHyjGzp17v1YBh3wthJ3nNjclGdJYO1P
-         Rr3s7wCu9ShcLlg/vhVslWrAbQltfKGVxZZe7rTTele1mdU0JwPiLZ4+1kn7b1VLu1uc
-         lu/QZxTE8JLiSmEFJHk/7HPfs3bC86fobhGfCdZvzOfJXVmhd69YkZPhH/detcDK9qZz
-         tHGw==
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=23Sd2xIN82EOQiIuRt3XKUvtySER7Ov5KCo8A2pZCxQ=;
+        b=eRc66/m/Ka3NjiL1/fpNSKWbDrz+VmeP2irbB7BFtueB5plSi8IreX3VViYAs79GqE
+         lNj55MGf567i22ireDjqURmbbcVE7o3R3za0lnOYgQoKQMPRq+2lRe2M9RdzIeZ879Zv
+         eUeocDrC1PTlLxOHua1f3+XZwNbbdLf5sQjkt1SkA3JeNOjMrZsnr6s6wfl8Y8k+VsOi
+         RSIVyGcfuyAoNHYumDf55wwvmZ2Gug+JugboqXDstgaH6+xnTixm4rJ9gGfCHxCY9ZZQ
+         2qCZxvcLtZdtsIOrPG8IXKwWsWpCKwVQgcyOGx8aVPL0vhz+o0ZW2/gf8rwTQUNMa/vj
+         UrBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=spQC5DgL3oN87S+iC1PglEQ45W/HemORZipZMoLzdbo=;
-        b=d9jHG2acVOwytkq6hteI7oAuU+uCPVguTPnDK5rLcFAY0UtSPiMJWD9QrMizZI9cbe
-         MjvMXHRllwiLGlCn6+8Sv6tLnPDSaoUgyFho8tZU6r6nFQd8FkIfIFv9af1hUpkWk2yE
-         BHH1WlL/MWowilZydN435N8joGmBpxBbhKhF1ODqNnjqHjAOKU/XszIYAflypFZjlioZ
-         5SsxioVk0Mp39y6cUATcRsZGIw94yQ1bx+pstmDZaxvxTsuEfXITpshEHIzrw9yEUWv4
-         uoYqQdFepNMwlz6X4ovYFRC4DyLyX1eVYeUjEcYk89W007gYRllR32LDeM2NxYnGeuMG
-         3D5Q==
-X-Gm-Message-State: AJIora8ASRsKPfka1QYxPwVjKUYXyXD8pqq5S2FVpq4LrMSDc79+vO2p
-        Xd+9LeAdaUX4Noc9DeyMVfcVRnAubAxtdQ3pKoa1Yg==
-X-Google-Smtp-Source: AGRyM1vSA2JOkaQqBtH9qzmnpbRJvsTC0Bp3SA27Hwqk66QdtarAJd6bAmkwBF0NfeyH35IKczAxtPrwNVBfqOoDbk8=
-X-Received: by 2002:a05:6870:a182:b0:10b:efbe:e65d with SMTP id
- a2-20020a056870a18200b0010befbee65dmr519829oaf.5.1659037807922; Thu, 28 Jul
- 2022 12:50:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220727064321.2953971-1-mw@semihalf.com> <20220727064321.2953971-7-mw@semihalf.com>
- <20220727143147.u6yd6wqslilspyhw@skbuf> <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
- <20220727163848.f4e2b263zz3vl2hc@skbuf> <CAPv3WKe+e6sFd6+7eoZbA2iRTPhBorD+mk6W+kJr-f9P8SFh+w@mail.gmail.com>
- <CAHp75VfGfKx1fggoE7wf4ndmUv4FEVfV=-EaO0ypescmNqDFkw@mail.gmail.com>
- <CAPv3WKeXtwJRPSaERzo+so+_ZAPSNk5RjxzE+N7u-uNUTMaeKA@mail.gmail.com>
- <20220728091643.m6c5d36pseenrw6l@skbuf> <CAPv3WKd0rbwN2AyGRSG1hUji3KzCdG2S=HfCxk7=Ut3VbmPXGA@mail.gmail.com>
- <20220728191630.wjmm4mfbhrvbolqq@skbuf>
-In-Reply-To: <20220728191630.wjmm4mfbhrvbolqq@skbuf>
-From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Thu, 28 Jul 2022 21:49:58 +0200
-Message-ID: <CAPv3WKdKj+7d03EQ5rCdmqYgK3hKNV7YEYJ8OqaN5pzM5j2ZvA@mail.gmail.com>
-Subject: Re: [net-next: PATCH v3 6/8] net: core: switch to fwnode_find_net_device_by_node()
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=23Sd2xIN82EOQiIuRt3XKUvtySER7Ov5KCo8A2pZCxQ=;
+        b=f0X8ehdC9vW9hu1vqACt+CjgwxaDrkOJoEJWEvnQo7CYJgxXYWyIDW0ztCZU+HPh0h
+         QuVei8qyfUjmUdxQxr3ZBSNmDzv4waWvdBMCywFj5jviqyT6bhYRW8/fnPjJNf99Bpkr
+         U1iOv2Wh08A4UB5prVmIiwaKj+VtT1Hntia4KHvOSUjXeEDvPSMOMR9yzPnsG9PZwpL1
+         CLSppXVt0ezKbT+igBx4dDnKXA3E18eFqIQwgXsi9pMt3RA65iIW8j/A1T6o3rN+c6b7
+         pCUWHyshezu3hhwPUxxhUH/NSuUMrd/d0z6pflPprBbOoorFFQ6nLK1TTB4Tn6aXME21
+         VBlg==
+X-Gm-Message-State: AJIora8aDQUsW/882o9sdyh0KY8wNVO/2OrSexHohTXj9FDXP/j2zhTO
+        RI5UM2hXuxBO/kp+8Qh52/o=
+X-Google-Smtp-Source: AGRyM1tEQQwG4tTrX1oCSTbRWTjQdzqZ1trLdx4tt/8E8oLonnzoxo+N6/fwnicyr8jg4L+itB0Y0Q==
+X-Received: by 2002:a17:907:3e0e:b0:72b:568f:7fa7 with SMTP id hp14-20020a1709073e0e00b0072b568f7fa7mr379038ejc.119.1659038171184;
+        Thu, 28 Jul 2022 12:56:11 -0700 (PDT)
+Received: from skbuf ([188.25.231.115])
+        by smtp.gmail.com with ESMTPSA id k10-20020aa7d8ca000000b0043cb1a83c9fsm1197998eds.71.2022.07.28.12.56.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Jul 2022 12:56:10 -0700 (PDT)
+Date:   Thu, 28 Jul 2022 22:56:07 +0300
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Marcin Wojtas <mw@semihalf.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         netdev <netdev@vger.kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -80,47 +71,120 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Grzegorz Jaszczyk <jaz@semihalf.com>,
         Tomasz Nowicki <tn@semihalf.com>,
         Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        "upstream@semihalf.com" <upstream@semihalf.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        upstream@semihalf.com
+Subject: Re: [net-next: PATCH v3 6/8] net: core: switch to
+ fwnode_find_net_device_by_node()
+Message-ID: <20220728195607.co75o3k2ggjlszlw@skbuf>
+References: <20220727064321.2953971-1-mw@semihalf.com>
+ <20220727064321.2953971-7-mw@semihalf.com>
+ <20220727143147.u6yd6wqslilspyhw@skbuf>
+ <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
+ <20220727163848.f4e2b263zz3vl2hc@skbuf>
+ <CAPv3WKe+e6sFd6+7eoZbA2iRTPhBorD+mk6W+kJr-f9P8SFh+w@mail.gmail.com>
+ <20220727211112.kcpbxbql3tw5q5sx@skbuf>
+ <CAPv3WKcc2i6HsraP3OSrFY0YiBOAHwBPxJUErg_0p7mpGjn3Ug@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPv3WKcc2i6HsraP3OSrFY0YiBOAHwBPxJUErg_0p7mpGjn3Ug@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-czw., 28 lip 2022 o 21:16 Vladimir Oltean <olteanv@gmail.com> napisa=C5=82(=
-a):
->
-> On Thu, Jul 28, 2022 at 06:56:48PM +0200, Marcin Wojtas wrote:
-> > There was a regression even for OF in v1, but after switching to
-> > device_match_fwnode() it works indeed. Anyway patch v4 is imo useful,
-> > I'll only reword the commit message.
->
-> Do you mean patch 4 or patch v4? If patch 4, of course it's useful, but
+On Thu, Jul 28, 2022 at 08:47:58AM +0200, Marcin Wojtas wrote:
+> > The 'label' property of a port was optional, you've made it mandatory by accident.
+> > It is used only by DSA drivers that register using platform data.
+> 
+> Thanks for spotting that, I will make it optional again.
+> 
+> > (side note, I can't believe you actually have a 'label' property for the
+> > CPU port and how many people are in the same situation as you; you know
+> > it isn't used for anything, right? how do we stop the cargo cult?)
+> 
+> Well, given these results:
+> ~/git/linux : git grep 'label = \"cpu\"' arch/arm/boot/dts/ | wc -l
+> 79
+> ~/git/linux : git grep 'label = \"cpu\"' arch/arm64/boot/dts/ | wc -l
+> 14
+> 
+> It's not a surprise I also have it defined in the platforms I test. I
+> agree it doesn't serve any purpose in terms of creating the devices in
+> DSA with DT, but it IMO increases readability of the description at
+> least.
 
-Patch 4/8 in v4 :) I'm working on it right now to submit asap.
+We've glided over this way too easily, so I'll repeat this thing I've said:
 
-> not for avoiding a regression with OF (case in which I drop all my claims
-> made earlier about fw_find_net_device_by_node), but rather to actually
+| One can have udev rules that assign names to Ethernet ports. I think
+| that is even encouraged; some of the things in DSA predate the
+| establishment of some best practices.
 
-Change in the mvpp2 driver:
--       dev->dev.of_node =3D port_node;
-+       device_set_node(&dev->dev, port_fwnode);
-is desired and correct anyway, so as a low-cost change I think it can
-be included in this series (which is in fact preparation-to-ACPI
-support). I will update the commit message. accordingly.
+I know I'm not exactly "upfront" by saying this at v3 rather than earlier,
+but I haven't had the time and I still don't have as much as I'd like.
+Sorry for that.
 
-> get something working with actual ACPI (although perhaps not in this
-> series, you'll need to add ACPI IDs in the mv88e6xxx driver some time
+Please don't jump to sending v4 just yet, and please don't expect that
+this patch set will make it for the upcoming 5.20 release candidates.
 
-v1 added all of this, but we agreed that ACPI-specific bits should be
-sent separately later, after extending the ACPI Specification.
+ACPI is a whole new world and I don't think we want to mass-migrate each
+and every OF binding that DSA has to the generic fwnode form, at least
+not without having a serious discussion about it.
 
-> later as well, maybe you could focus this series just on converting DSA
-> to play nice with fwnodes). If you're already thinking about the v4 of
-> this patch set, I'll respond to that in a separate email shortly.
+The 'label' thing is actually one of the things that I'm seriously
+considering skipping parsing if this is an ACPI system, simply because
+best practices are different today than they were when the OF bindings
+were created.
+
+There's also the change that validates that phylink has the fwnode
+properties it needs to work properly:
+https://patchwork.kernel.org/project/netdevbpf/patch/20220723164635.1621911-1-vladimir.oltean@nxp.com/
+
+Please don't even think that the DSA fwnode conversion will be merged
+before the validation patch (sorry, I'm not saying this to block you,
+I'm saying this because I don't want DSA to start with zero-day baggage
+on ACPI).
+
+And even when the validation patch gets merged, you'll need to adapt it
+to fwnode because that's what will be required syntactically, but we'll
+only go through the motions of calling of_device_compatible_match() for
+the OF case. With ACPI, every driver will opt into strict validation,
+that's non negotiable.
+
+And then there are some other issues we've learned about, with the DT
+bindings that specific drivers such as mv88e6xxx and realtek-smi have.
+I'll give you more details once we get to the actual mv88e6xxx
+conversion to ACPI; currently my memory lacks some of the precise
+details of how come mv88e6xxx came to not observe the issue but
+realtek-smi did. Anyway, the issue was that fw_devlink causes the
+internal PHYs to probe with the generic rather than the specific PHY
+driver, if interrupts are being used (and provided by the switch as
+'interrupt-controller').
+
+It can be debated what exactly is at fault there, although one
+interpretation can be that the DT bindings themselves are to blame,
+for describing a circular dependency between a parent and a child.
+I've been suggesting the authors of new drivers to take an alternative
+approach and describe the switch chip as a MFD, with only the actual
+switching component being probed by DSA and the rest being separate
+drivers:
+https://lore.kernel.org/all/20211204022037.dkipkk42qet4u7go@skbuf/T/
+
+You'll say, ok but don't we have to keep maintaining mv8e6xxx OF bindings
+functional with fw_devlink too anyway, so what benefit would there be if
+for ACPI we'd split the exact same monolithic driver into a MFD?
+And maybe you have a point, I don't know, I haven't actually tried to
+look at the code and see if it could be restructured cleanly to probe
+and work in both cases.
+
+The bottom line is that if you haven't received too much review for your
+series until now, I suspect it's because none of the DSA maintainers
+cropped a large enough chunk of time yet to actually clarify things for
+themselves. I don't consider the things I've pointed out here to be a
+'review' in the proper sense, they're just cases I'm thinking about in
+the back of my mind where we should learn from past mistakes.
+I'll revisit when I will have come to some conclusions.
