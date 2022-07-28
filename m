@@ -2,103 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45A645840FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jul 2022 16:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A04658447C
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jul 2022 18:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbiG1OXX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Jul 2022 10:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52048 "EHLO
+        id S231959AbiG1Q5E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Jul 2022 12:57:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231379AbiG1OXW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jul 2022 10:23:22 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3D385C344
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Jul 2022 07:23:21 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id e132so1665994pgc.5
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Jul 2022 07:23:21 -0700 (PDT)
+        with ESMTP id S229747AbiG1Q5D (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jul 2022 12:57:03 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F6D75721B
+        for <linux-acpi@vger.kernel.org>; Thu, 28 Jul 2022 09:56:59 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-10e634ecfe6so3014290fac.8
+        for <linux-acpi@vger.kernel.org>; Thu, 28 Jul 2022 09:56:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=kCSqCOP5NnmgqzMKAvoC+xj8lkHVueu0SPSEqGKA1Ew=;
-        b=jhshiq4+diWhUqdzg9crL6G9IpwmGj43lEs/91L9dXdyaKWdEMBsPr0oKa2zj/yZcX
-         iNpnJmsC4CFarsZZqhDYhgvwgqoSwHqOMIapEr8FAEVwB4MIroytm9DT1412B7YEKzW2
-         DDlrnl8sU+EWXtb92eopinKDYTPFHAMWzEi1lzQw3/XkLuF5aRlyuq46zI8cO05jKGpc
-         YCBlhvdStHcvOkBm4GUOQPMOZqWtoRnloTTDGdv3qVEUo8Cl+WkcbDEvPjbjLJLKnRb5
-         AxfhmWXB409FwbNsfMNENl8Z+sYMClpVh2HDe/m8al8JjMCOZ6JUXTDvHhdv7gpd16XD
-         o5/w==
+        d=semihalf.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=+neT7drnhUVN6IEwt5cqIrCpyz1zNkYGzrU5Sn+25po=;
+        b=N/sgs+QuFpuUwFiUZBjJm6IQrlOlMhIiDya+kN2jqxag5eodzaya5QHHvG90yHGR6J
+         ilM6y/ORThHfyVxS8edWpoQPrqBRXQiG9Wo7TpM26TPXMMvOZWJFi4ILQ1s/nARzg30c
+         Jz9kIepJRc+HYrdrE5UP2EoKTLpt++h1/3cnDxUP7bFAR+uGKhL2Cb4OQdr2JkMAR1xf
+         yaN/x3fcTzhubwXLDbPNia9IbwL/tUfDyMNVSoYLqEjY9NvkcrtSTP4CJbHyx1luCNbk
+         5aW0yJzTpZ5Q1duc0tw4HOY+tlAl9w1M1fcmapGLnqz6FyOj+iSeG7NOC/mY1Y9kvowb
+         izaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=kCSqCOP5NnmgqzMKAvoC+xj8lkHVueu0SPSEqGKA1Ew=;
-        b=WWelrrDzXjM3lOlQ9DAdfjw5m+PJ59gS9MJVlOs/6JAsInHhczlEloUX8FMxw2mEmO
-         ziqjLdKZBHoiCNXz/oSMiDnhfhrDbehbgNfm2GrHD//5ZiCV63YBNUBIaLKFKQiGeVOf
-         jcy0tUvfqgixYicnaN81wa6niNNtFwOqke52JrFtbxLkCG1t78NeXygBISXtDOrnraAM
-         GL+V8P7fKzeujLfDtrQb5V3rDkSRRlgHjed0hGvM+1ZWqz3xchRRQEmlyw4Pb7ZL3VfR
-         BuKCKOgg/e/BszZr3rDG0yblcwLVkJaUPeghcWUpXZKios1NCI7jeoo+uu9Lb6ltltvM
-         IN3A==
-X-Gm-Message-State: AJIora/KxpDzOtVRXnksqkvLccslX+eJAfMxErAP3A9R0SZ1D2kdEz95
-        wkWaIXsh/wI1eBmrSNLF3UyZWUdcv4xMYGOSnBU=
-X-Google-Smtp-Source: AGRyM1uusxWGi9yoSyo3nmXVxdPfzcm6B6Pxp2Yuj+z2RHPKUecQmi7GmH0oWbGNugjJzrMpfN7S+SDdCwJi6MGFSFM=
-X-Received: by 2002:a05:6a00:27a4:b0:52a:e490:3f8d with SMTP id
- bd36-20020a056a0027a400b0052ae4903f8dmr27174000pfb.45.1659018201609; Thu, 28
- Jul 2022 07:23:21 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=+neT7drnhUVN6IEwt5cqIrCpyz1zNkYGzrU5Sn+25po=;
+        b=Hm2Wry+burvwjMxz7iEv2NuRt2BOy1T2gFiVe0Id/fJgYyoBbLjd6jciLaR7F3J358
+         cpZpMU7cqJP3wu3jXe4AI3qMRNoZz37NfEdmrsNk4v+Nl+BihqAWJTiWyNfOykNhhnd1
+         csFJ5VW28ngkGxy7vic8+CK4nnSbU4KX2G6dLJtACg5NOYh7BC+QHTnoeHJBWadydDvS
+         GOlP0hCrd2ZDIwfvHp7uI+J8kmmUWdyEIdXEDsPcLap4zYpEWsBcqunO2WvkBpY6v4/L
+         B3Y4hzKlHSqZCUy5Md9c3fbsuOAE0HH6V3lXNk8k/jwaSXwYT7zCX0RfVUd4OXgafs4K
+         SYLQ==
+X-Gm-Message-State: AJIora+IQtWavUmsXPeH6UkAjxGMNmckOx4p0bK8PyGDAKy1gK1BunA/
+        tYZksRMt/M/PlussMB9tZ0nJOn3ZnvfpiTr297pY7w==
+X-Google-Smtp-Source: AGRyM1s2wYwcYRLI1t8oGbHlSkYF7nki9R79iqP4GkO+sJM610lF9/jDXBRf6KuYUgt99I2pgHY/3R8xIXBCqcBgUmo=
+X-Received: by 2002:a05:6870:4186:b0:101:17ef:d966 with SMTP id
+ y6-20020a056870418600b0010117efd966mr173601oac.97.1659027418891; Thu, 28 Jul
+ 2022 09:56:58 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a17:90a:678e:0:0:0:0 with HTTP; Thu, 28 Jul 2022 07:23:21
- -0700 (PDT)
-Reply-To: lisarobinsongift02@gmail.com
-From:   Lisa Robinson <benjaminkitavi49@gmail.com>
-Date:   Thu, 28 Jul 2022 17:23:21 +0300
-Message-ID: <CAEwLOJVmkUTptDt_a4QchXapWb+LLjtoyv5NbtqQm-UdGCRagA@mail.gmail.com>
-Subject: Donation
-To:     undisclosed-recipients:;
+References: <20220727064321.2953971-1-mw@semihalf.com> <20220727064321.2953971-7-mw@semihalf.com>
+ <20220727143147.u6yd6wqslilspyhw@skbuf> <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
+ <20220727163848.f4e2b263zz3vl2hc@skbuf> <CAPv3WKe+e6sFd6+7eoZbA2iRTPhBorD+mk6W+kJr-f9P8SFh+w@mail.gmail.com>
+ <CAHp75VfGfKx1fggoE7wf4ndmUv4FEVfV=-EaO0ypescmNqDFkw@mail.gmail.com>
+ <CAPv3WKeXtwJRPSaERzo+so+_ZAPSNk5RjxzE+N7u-uNUTMaeKA@mail.gmail.com> <20220728091643.m6c5d36pseenrw6l@skbuf>
+In-Reply-To: <20220728091643.m6c5d36pseenrw6l@skbuf>
+From:   Marcin Wojtas <mw@semihalf.com>
+Date:   Thu, 28 Jul 2022 18:56:48 +0200
+Message-ID: <CAPv3WKd0rbwN2AyGRSG1hUji3KzCdG2S=HfCxk7=Ut3VbmPXGA@mail.gmail.com>
+Subject: Re: [net-next: PATCH v3 6/8] net: core: switch to fwnode_find_net_device_by_node()
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Landen Chao <Landen.Chao@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Grzegorz Bernacki <gjb@semihalf.com>,
+        Grzegorz Jaszczyk <jaz@semihalf.com>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        "upstream@semihalf.com" <upstream@semihalf.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.7791]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:541 listed in]
-        [list.dnswl.org]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [benjaminkitavi49[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [lisarobinsongift02[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [benjaminkitavi49[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---=20
-You were chosen by God to receive my Grant Donation of 1.200.000,00 =E2=82=
-=AC
-Please contact: Mrs Lisa Robinson via email:
-lisarobinsongift02@gmail.com
-Surname:
-Country:
-WhatsApp phone number:
+czw., 28 lip 2022 o 11:16 Vladimir Oltean <olteanv@gmail.com> napisa=C5=82(=
+a):
+>
+> On Thu, Jul 28, 2022 at 08:52:04AM +0200, Marcin Wojtas wrote:
+> > Yes, indeed. After recent update, I think we can assume the current
+> > implementation of fwnode_find_parent_dev_match should work fine with
+> > all existing cases.
+>
+> What you should really be fixing is the commit message of patch 4,
+> that's what threw me off:
+>
+> | As a preparation to switch the DSA subsystem from using
+> | of_find_net_device_by_node() to its more generic fwnode_
+> | equivalent, the port's device structure should be updated
+> | with its fwnode pointer, similarly to of_node - see analogous
+> | commit c4053ef32208 ("net: mvpp2: initialize port of_node pointer").
+> |
+> | This patch is required to prevent a regression before updating
+> | the DSA API on boards that connect the mvpp2 port to switch,
+> | such as Clearfog GT-8K or CN913x CEx7 Evaluation Board.
+>
+> There's no regression to speak of. DSA didn't work with ACPI before, and
+> fwnode_find_net_device_by_node() still works with the plain dev->of_node
+> assignment.
+
+There was a regression even for OF in v1, but after switching to
+device_match_fwnode() it works indeed. Anyway patch v4 is imo useful,
+I'll only reword the commit message.
+
+Thanks,
+Marcin
