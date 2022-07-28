@@ -2,54 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 695795834D2
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Jul 2022 23:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3F075838F9
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Jul 2022 08:48:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbiG0V1f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Jul 2022 17:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51978 "EHLO
+        id S230043AbiG1GsM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Jul 2022 02:48:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229543AbiG0V1e (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Jul 2022 17:27:34 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCCD05C972;
-        Wed, 27 Jul 2022 14:27:33 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id bp15so33736524ejb.6;
-        Wed, 27 Jul 2022 14:27:33 -0700 (PDT)
+        with ESMTP id S233587AbiG1GsL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Jul 2022 02:48:11 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D954A58B75
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Jul 2022 23:48:09 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id h125so1440776oif.8
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Jul 2022 23:48:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=dHk/nIZIen1AdZIuJjh0VLKLPwk90ODmGxgfoYUv0pM=;
-        b=NUintwL8++PesHsw3v01wuUfAC4+ztcOw7Zb1LqLX3JL7NNi58TqpeHWbfZ7vVY4j6
-         HNweitKxjbV7snOL9vBxB09RXpcmFxl/ro1TGnC9vNHRrCn4Nzyip9vERGIvOBZE5Flg
-         HJc0tmAMEQyjG9JTsxhqWOJQ0IDLMc32g4xCTxn0jFuknDyCGSEprBTNokSfT6+J9d2g
-         Q0Viwkn3ckuATa0ywSJJ/tSp7lsedI1KyfuVlH0Z1iWifwYf44WRu0ZeM5cvs7NWfVfG
-         JCTueRN835o9aA1tfpzKaS9iZi6jNMqkyfPfLaxwn/tBpDbY3mrHfRPeYZS4II7ReX+x
-         dQqQ==
+        d=semihalf.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=HgwlQG4Lhx8whx7o14FpfCX9iHMs/wtL+rv0oLousaM=;
+        b=Lp+CwaWO4nw6MMzfwGVjyhC14OxkQxYBsfkzHny0qQnxwHloJEKmoVOZZGAnkpqHIo
+         uPz7OhI2Ic2ymiyTnvboWdPU590QzG5fUzNr+WKNARr+TzbLjGgFWQ/p7hUrFF8nFmel
+         lVePTIE766U+suinIq5Dr+2BJyEjSSWTtii+TZy7gpNA7A2yhvSCuVG68jZotyQuPM5N
+         5wvHmRNNkYHFFUKJazcwGEdIiwB8YuXKJ4tqQl+mQwb83tv7ycMPIqg50Kqc75VENa0M
+         /kinDCpvUbgdEsMvqGP72oKu3x5tXmULOSw37vS4i1lRdAYXdBZaVrY0dtx/bE8ljZ6s
+         ts7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=dHk/nIZIen1AdZIuJjh0VLKLPwk90ODmGxgfoYUv0pM=;
-        b=mB9Kgk6POtp+MfWGsQptycI2bKtsm7dh9Mr8h2YLfpUcF+lMk9QoKCfMeUDTdgO/FK
-         XCjss8w6MAExu7i6KSx+g/cWadIqK6Nkl7O8AHODRG8qS8hf3nv2rscWur+RThJjBRu3
-         4P4JrlJK8b3Y2RSfRVmGepnKhXdYUTozUlRCQXRLbxh0Y+059eNZqiJ5nNy/e1tUOpj4
-         eQnRAq4kUGeT+zuMJROguFhpj+D1I1zbOO2XgqsAyCsi7KzWCtjx/LMEeimt7KYuCGN3
-         mvFln38Ao9lsiBMpp+xvFOoXIBNUMogrEqnT2WyHPbVtbiIlOU5WnqcCfzkuYL2gkgzV
-         ouvw==
-X-Gm-Message-State: AJIora8TQBD8TMYP/mvuIz6fp4hzA5+IAUg4+YodT1q6zlLb+/zm/3PF
-        FgC5EnWxxAB2TkmfWLt4Twg=
-X-Google-Smtp-Source: AGRyM1tZTJ6VoFWUEsrjg8ZdZdjWjNpwMczEJ2oNxZ5eZgqUIFB015mHYH5m704ibrPyhECQdRAccg==
-X-Received: by 2002:a17:906:93e8:b0:72b:6923:a0b9 with SMTP id yl8-20020a17090693e800b0072b6923a0b9mr18572531ejb.244.1658957252154;
-        Wed, 27 Jul 2022 14:27:32 -0700 (PDT)
-Received: from skbuf ([188.25.231.115])
-        by smtp.gmail.com with ESMTPSA id y3-20020aa7ccc3000000b0043577da51f1sm10888831edt.81.2022.07.27.14.27.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 14:27:31 -0700 (PDT)
-Date:   Thu, 28 Jul 2022 00:27:28 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Marcin Wojtas <mw@semihalf.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=HgwlQG4Lhx8whx7o14FpfCX9iHMs/wtL+rv0oLousaM=;
+        b=jNe0qjOqYDgmBWNHbDdB56bAOq1JV016P8tzaAe727v4GUf/VD6ACNlS/HmDUr7RFR
+         H7/qxazMeOURT8J+eppzqZEv3FwgamEXesOd7aiZ9VnNuvZ6ASA5qZ0U7YSzFqCifoNx
+         zKjW/vDVf9GmoqINSDfsrAxuwb3sAq6rdQc+oPvYgEuzE3TcHomN3wav81JneipOk4s6
+         YwExVXNNOXWLsEimCUoqHWAQMMJwDaTn7OcC0YES1EjLDwOJ/APMvzlQbr51UYW9wiYl
+         aTqlUeUK8DOS86oCLoVBAcas2vRzG/dpgwr/2pybBpFADoLR50umDt6yRjsLksSwVpUQ
+         lTWA==
+X-Gm-Message-State: AJIora/OSUl4D+8LcV8EQewzxZggYJlWR+CEupKXuS6Fp67am8tYz+d3
+        ElHgof3x33dEZPswa/w429HVsaRYucSPUPQQiIt2dw==
+X-Google-Smtp-Source: AGRyM1thjZdUodZ96oXemTgQ1CJj0swEyhRb1esz/G34MlrxNe5eFkNSWTLvfNptPZrVZ1gJ5qWeseaVefgcm/2KvEU=
+X-Received: by 2002:aca:ba86:0:b0:33a:c6f7:3001 with SMTP id
+ k128-20020acaba86000000b0033ac6f73001mr3375710oif.5.1658990889029; Wed, 27
+ Jul 2022 23:48:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220727064321.2953971-1-mw@semihalf.com> <20220727064321.2953971-7-mw@semihalf.com>
+ <20220727143147.u6yd6wqslilspyhw@skbuf> <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
+ <20220727163848.f4e2b263zz3vl2hc@skbuf> <CAPv3WKe+e6sFd6+7eoZbA2iRTPhBorD+mk6W+kJr-f9P8SFh+w@mail.gmail.com>
+ <20220727211112.kcpbxbql3tw5q5sx@skbuf>
+In-Reply-To: <20220727211112.kcpbxbql3tw5q5sx@skbuf>
+From:   Marcin Wojtas <mw@semihalf.com>
+Date:   Thu, 28 Jul 2022 08:47:58 +0200
+Message-ID: <CAPv3WKcc2i6HsraP3OSrFY0YiBOAHwBPxJUErg_0p7mpGjn3Ug@mail.gmail.com>
+Subject: Re: [net-next: PATCH v3 6/8] net: core: switch to fwnode_find_net_device_by_node()
+To:     Vladimir Oltean <olteanv@gmail.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         netdev <netdev@vger.kernel.org>,
@@ -72,41 +77,122 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Tomasz Nowicki <tn@semihalf.com>,
         Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
         upstream@semihalf.com
-Subject: Re: [net-next: PATCH v3 6/8] net: core: switch to
- fwnode_find_net_device_by_node()
-Message-ID: <20220727212728.hgf7vbasmup4i2il@skbuf>
-References: <20220727064321.2953971-1-mw@semihalf.com>
- <20220727064321.2953971-7-mw@semihalf.com>
- <20220727143147.u6yd6wqslilspyhw@skbuf>
- <CAPv3WKc88KQN=athEqBg=Z5Bd1SC3QSOPZpDH7dfuYGHhR+oVg@mail.gmail.com>
- <20220727163848.f4e2b263zz3vl2hc@skbuf>
- <CAPv3WKe+e6sFd6+7eoZbA2iRTPhBorD+mk6W+kJr-f9P8SFh+w@mail.gmail.com>
- <20220727211112.kcpbxbql3tw5q5sx@skbuf>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220727211112.kcpbxbql3tw5q5sx@skbuf>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 28, 2022 at 12:11:12AM +0300, Vladimir Oltean wrote:
-> The 'label' property of a port was optional, you've made it mandatory by accident.
+=C5=9Br., 27 lip 2022 o 23:11 Vladimir Oltean <olteanv@gmail.com> napisa=C5=
+=82(a):
+>
+> On Wed, Jul 27, 2022 at 07:40:00PM +0200, Marcin Wojtas wrote:
+> > SET_NETDEV_DEV() fills net_device->dev.parent with &pdev->dev
+> > and in most cases it is sufficient apparently it is sufficient for
+> > fwnode_find_parent_dev_match (at least tests with mvneta case proves
+> > it's fine).
+>
+> Indeed, mvneta works, which is a plain old platform device that hasn't
+> even been converted to fwnode, so why don't the others?
+>
+> Well, as it turns out, it's one of the cases where I spoke to soon,
+> thinking I knew what was the problem why probing failed, before actually
+> debugging.
+>
+> I thought there was no dmesg output from DSA at all, which would have
+> indicated an eternal -EPROBE_DEFER situation. But there's one tiny line
+> I had overlooked:
+>
+> [    5.094013] mscc_felix 0000:00:00.5: error -EINVAL: Failed to register=
+ DSA switch
+>
+> This comes from here:
+>
+> static int dsa_port_parse_fw(struct dsa_port *dp, struct fwnode_handle *f=
+wnode)
+> {
+>         struct fwnode_handle *ethernet =3D fwnode_find_reference(fwnode, =
+"ethernet", 0);
+>         bool link =3D fwnode_property_present(fwnode, "link");
+>         const char *name =3D NULL;
+>         int ret;
+>
+>         ret =3D fwnode_property_read_string(fwnode, "label", &name);
+> //      if (ret)
+> //              return ret;
+>
+>         dp->fwnode =3D fwnode;
+>
+> The 'label' property of a port was optional, you've made it mandatory by =
+accident.
 > It is used only by DSA drivers that register using platform data.
 
-I didn't mean to say exactly this, the second phrase was an addition
-through which I tried to make it clear that the "cpu" label *is* used,
-but only by the drivers using platform data. With OF it's not, neither
-that nor label = "dsa". We have other means of recognizing a CPU or DSA
-port, by the 'ethernet' and/or 'dsa' phandles.
+Thanks for spotting that, I will make it optional again.
 
-Additionally, the label is optional even for user port. One can have
-udev rules that assign names to Ethernet ports. I think that is even
-encouraged; some of the things in DSA predate the establishment of some
-best practices.
+>
+> (side note, I can't believe you actually have a 'label' property for the
+> CPU port and how many people are in the same situation as you; you know
+> it isn't used for anything, right? how do we stop the cargo cult?)
+>
+
+Well, given these results:
+~/git/linux : git grep 'label =3D \"cpu\"' arch/arm/boot/dts/ | wc -l
+79
+~/git/linux : git grep 'label =3D \"cpu\"' arch/arm64/boot/dts/ | wc -l
+14
+
+It's not a surprise I also have it defined in the platforms I test. I
+agree it doesn't serve any purpose in terms of creating the devices in
+DSA with DT, but it IMO increases readability of the description at
+least.
+
+> > Can you please check applying following diff:
+> >
+> > --- a/drivers/base/property.c
+> > +++ b/drivers/base/property.c
+> > @@ -695,20 +695,22 @@ EXPORT_SYMBOL_GPL(fwnode_get_nth_parent);
+> >   * The routine can be used e.g. as a callback for class_find_device().
+> >   *
+> >   * Returns: %1 - match is found
+> >   *          %0 - match not found
+> >   */
+> >  int fwnode_find_parent_dev_match(struct device *dev, const void *data)
+> >  {
+> >         for (; dev; dev =3D dev->parent) {
+> >                 if (device_match_fwnode(dev, data))
+> >                         return 1;
+> > +               else if (device_match_of_node(dev, to_of_node(data))
+> > +                       return 1;
+> >         }
+> >
+> >         return 0;
+> >  }
+> >  EXPORT_SYMBOL_GPL(fwnode_find_parent_dev_match);
+>
+> So, nothing to do with device_match_fwnode() failing, that would have
+> been strange, come to think about it. Sorry for the noise here.
+>
+
+Great, thank you for confirmation.
+
+> But looking at the deeper implementation of dev_fwnode() as:
+>
+> struct fwnode_handle *dev_fwnode(struct device *dev)
+> {
+>         return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+>                 of_fwnode_handle(dev->of_node) : dev->fwnode;
+> }
+>
+> I wonder, why did you have to modify mvpp2? It looks at dev->of_node
+> prior to returning dev->fwnode. It should work.
+
+When I boot with ACPI, the dev->of_node becomes NULL. With DT it's fine as-=
+is.
+
+Best regards,
+Marcin
