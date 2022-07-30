@@ -2,133 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3420E5852CC
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Jul 2022 17:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5835858E5
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Jul 2022 08:46:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236704AbiG2Pgt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 Jul 2022 11:36:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38778 "EHLO
+        id S230457AbiG3Gq5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 30 Jul 2022 02:46:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237071AbiG2Pgo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 Jul 2022 11:36:44 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2061.outbound.protection.outlook.com [40.107.244.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A018688A;
-        Fri, 29 Jul 2022 08:36:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gvwVkDxShns79GLs6f+LTJi6flKMLCocgeWAiFtfgjBWGkUCuCtxJzuxj2oRl/vRNkHTFtxvv0FF0zfkQkJdV4Ng4Q/DVtSF9vF9cRjOGvQ+VEU4znefmEqvjtPezmWGfNyMnHqqechFTMjqYhw/GCoEMYzz9CT6W1oBT8abb95QGenwFLU3dv1wd47MuDSKhct0v+1id3GFh/fJh8HNoONizawHujFcijmGaD4LTE5we4lWVuiSmDZUxrmsAA4dk4HoZYr7dJ+x7S2vYtDnDbZJ90yR7qyOxpA1/8T0szI9ON307JNZEpHnudU+U7NiQdUUSm3dbgcSMIi9LzF6jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S2FIhRaBuRAB0tkV6ZfOQqI0+Vk9NZvzVPc10iqR/Hs=;
- b=jONGWdMHbBx5QQ+RlhfLcnvg/2jA8moC05uJ0m0/e7ictxcmRC1IlEJb1xbtonUUBSeZyG0Qqs89gybv3fDXqTw+HtPNzMd5flKSrSu8zaDMMYrabxdw+c/rMk3XjXWbal+WyMV2LSZkbmu8B2a07PiIt8RobXWkDSQgjHWLLFN+/CO1wO4nDb0+hlcFEIrh0BQ0dIqt793uaDuMGn4sg0A1wrO7BDbHAOBBkaPuMDKb35vTNUYbY2ywvXKkZ09pLtCVoWLBJkjFWJKIDAcIhdTBAHZbgzAcSgq/9JZgF1TUR/sazlf5VLBinhKKpZTLV4T9eJlf1atpk4YElNuO5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S2FIhRaBuRAB0tkV6ZfOQqI0+Vk9NZvzVPc10iqR/Hs=;
- b=kPi3OxIAECY2chzmX+jckBXXt9IH776XBCrGsPi847YFtRY4NUcw4bo6ZWcq+K/+qrXlh5mbbd5YckjokovpPIToYWIDi/siEYAT9DKbJuf22XFRnm34jA6FY2C6oOvXtmPE+CBZKb7g3cDr1kEOO+gLwrozQ528txHJZYijUvU=
-Received: from DM6PR06CA0037.namprd06.prod.outlook.com (2603:10b6:5:54::14) by
- SA1PR12MB6728.namprd12.prod.outlook.com (2603:10b6:806:257::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5482.6; Fri, 29 Jul
- 2022 15:36:42 +0000
-Received: from DM6NAM11FT010.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:54:cafe::92) by DM6PR06CA0037.outlook.office365.com
- (2603:10b6:5:54::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.24 via Frontend
- Transport; Fri, 29 Jul 2022 15:36:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT010.mail.protection.outlook.com (10.13.172.222) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5482.10 via Frontend Transport; Fri, 29 Jul 2022 15:36:42 +0000
-Received: from ethanolx5619host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Fri, 29 Jul
- 2022 10:36:30 -0500
-From:   Jay Lu <jaylu102@amd.com>
-To:     <jaylu102@amd.com>, <linux-kernel@vger.kernel.org>,
-        <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-        <tony.luck@intel.com>, <bp@alien8.de>,
-        <dave.hansen@linux.intel.com>, <jarkko@kernel.org>,
-        <xueshuai@linux.alibaba.com>
-CC:     <terry.bowman@amd.com>, <yazen.ghannam@amd.com>,
-        <smita.koralahallichannabasappa@amd.com>, <robert.richter@amd.com>,
-        <linux-acpi@vger.kernel.org>, <jayakumar.govindankalivu@amd.com>
-Subject: [PATCH 3/3] ACPI, APEI, EINJ: Add support for new CXL error types
-Date:   Fri, 29 Jul 2022 10:35:50 -0500
-Message-ID: <20220729153550.181209-4-jaylu102@amd.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220729153550.181209-1-jaylu102@amd.com>
-References: <20220729153550.181209-1-jaylu102@amd.com>
+        with ESMTP id S229599AbiG3Gq4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 30 Jul 2022 02:46:56 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3779560D1;
+        Fri, 29 Jul 2022 23:46:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1659163616; x=1690699616;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=agZBMiWJhTx0JPr8cNEQVxPQGftu22InmQ99LUpKtdA=;
+  b=LGg4tqwaDRtDPw63sxLUKvxaYNtS6mvXL2RqcZVVwPOhPaYpMO4pWJKK
+   rvFCeThpuslZz6UFEUOYmpKRuTJBGGemCltpOldrdsQ/qwH0z1e/lf34V
+   hQVo9p9AvwkLHs8vQxgjgQD21AvccmKKql/fnIjUaCn5wURFrUsQNUE+2
+   Ru/APN5JKoG7V8vE/kH3gppHWdaSMIMcBOKBaqLblm/4nfSmIS8e96JJb
+   9yd72r5SmQR0v3wqB9g5e9l+cSZijHRXFrIHq9jl1NRD8UcZirubrC/I5
+   0mQ+0yPaHxVaryW38KRY5Xv8IvvCDx7eUaf/oK3tS70TJMD5JveEDLzay
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10423"; a="290100824"
+X-IronPort-AV: E=Sophos;i="5.93,203,1654585200"; 
+   d="scan'208";a="290100824"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2022 23:46:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,203,1654585200"; 
+   d="scan'208";a="690947440"
+Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 29 Jul 2022 23:46:54 -0700
+Received: from kbuild by e0eace57cfef with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oHgFR-000CYC-1m;
+        Sat, 30 Jul 2022 06:46:53 +0000
+Date:   Sat, 30 Jul 2022 14:45:56 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ c58a7ee9d020676ef0f04782cc0ca5d0b0889df9
+Message-ID: <62e4d3a4.gZtMY9Jhc1oCkQVv%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4d00e37b-4d3b-44a6-2ec2-08da717822ed
-X-MS-TrafficTypeDiagnostic: SA1PR12MB6728:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +QYS3gv9qkY3EwJP5Ja2N1GjXwvq+68dj+7SD+nnE4CYV0xHlbAd6qUXlmJSrblHc2qs/OVg2dd4NClh316FWJDYjBb/P1Lx52uYOkR/Iz5q76tyxaZxXLGA7i2XPfKcwALdYJuKkNS9IBjX7PFffrigAVHeaaUqAVtgNiNXFGOAn4eInhiAepSNKM2aYrzp9IZDeZhzfmmM8O0sfx+gzhwjPrZQ/DWz4RswcSCau8VM4GCoOMBP6Nha+zDRsuG26qjAUA/qhIMPrYF3wHj81Gpv6xg5/5U9KVfJ5Pzc3ENz+pCtoaxb8alY0j6b4DBhS1ecE3IwvykaZL5PpiteS9OVm7RdAH0mfhk5EtDCUXoSCLpBSSBFmNj0gPwvKGL5ibma1hOTk9K7INYPAR9ppP2vH+OnJ24UtmJ8JT4CoFQbWXpO9YBYX6RGLiceqv1DFWOCUdUFuoDuFQLMJk09Ek+yNfIZynSvUMiXQ/0U8CnMRlyTF++AqYp7caxEOuCHxJKbcEAw+c6b7wZMsFtJ0X54g9/KLx4kosQc1nG48zi52vYdWTAsaODRRKTN81bJCK3P0y9zQeBRV605vzHoJYL6j9Y70KF9R0ba8ad2FpwO/dAX+gCQdFtyyTuch9kMAUaK5ZRLGnvrwTBd8ban69lpm8Mqe7IIr9UyxjPEKLpNLkdW4Ss/OtKBwm00UG5EGAkFirCR/9XhoqA4UnUZ5iAX6udCNGsXXtfsNx7zpjI3NlxZQk8WkVvFy8ntszIdLB6kW4hHLcvbv+lZ2xRzPMU9Z7uz2MdiWdjUgxgK3VLjymzmcGeyi+ZwLD25o3jg7MhHlaIZDSuMivvVt0TnN0L8AM1E2MWbHB2yWFZRGpE=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230016)(4636009)(136003)(39860400002)(346002)(396003)(376002)(40470700004)(36840700001)(46966006)(478600001)(70206006)(70586007)(4326008)(36860700001)(8936002)(82740400003)(83380400001)(16526019)(8676002)(36756003)(7416002)(54906003)(110136005)(316002)(2906002)(6666004)(5660300002)(7696005)(2616005)(426003)(41300700001)(1076003)(336012)(356005)(921005)(40480700001)(40460700003)(26005)(81166007)(82310400005)(186003)(47076005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2022 15:36:42.0767
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d00e37b-4d3b-44a6-2ec2-08da717822ed
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT010.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6728
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-EINJ module allows new CXL error types to be passed through sysfs
-interface, but it doesn't advertise new CXL error types in sysfs.
-Update EINJ so that it displays new CXL errors.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: c58a7ee9d020676ef0f04782cc0ca5d0b0889df9  Merge branch 'pm-cpuidle-next' into bleeding-edge
 
-Signed-off-by: Jay Lu <jaylu102@amd.com>
----
- drivers/acpi/apei/einj.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+elapsed time: 710m
 
-diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-index a68103280f74..4aed0eab329e 100644
---- a/drivers/acpi/apei/einj.c
-+++ b/drivers/acpi/apei/einj.c
-@@ -582,6 +582,12 @@ static const char * const einj_error_type_string[] = {
- 	"0x00000200\tPlatform Correctable\n",                           /* bit 9  */
- 	"0x00000400\tPlatform Uncorrectable non-fatal\n",               /* bit 10 */
- 	"0x00000800\tPlatform Uncorrectable fatal\n",                   /* bit 11 */
-+	"0x00001000\tCXL.cache Protocol Correctable\n",                 /* bit 12 */
-+	"0x00002000\tCXL.cache Protocol Uncorrectable non-fatal\n",     /* bit 13 */
-+	"0x00004000\tCXL.cache Protocol Uncorrectable fatal\n",         /* bit 14 */
-+	"0x00008000\tCXL.mem Protocol Correctable\n",                   /* bit 15 */
-+	"0x00010000\tCXL.mem Protocol Uncorrectable non-fatal\n",       /* bit 16 */
-+	"0x00020000\tCXL.mem Protocol Uncorrectable fatal\n",           /* bit 17 */
- };
- 
- static int available_error_type_show(struct seq_file *m, void *v)
+configs tested: 60
+configs skipped: 5
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                  randconfig-r043-20220729
+x86_64                              defconfig
+i386                                defconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+i386                             allyesconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+arc                              allyesconfig
+powerpc                           allnoconfig
+alpha                            allyesconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a006
+powerpc                          allmodconfig
+x86_64                        randconfig-a011
+m68k                             allyesconfig
+x86_64                        randconfig-a015
+mips                             allyesconfig
+sh                               allmodconfig
+i386                          randconfig-a014
+m68k                             allmodconfig
+i386                          randconfig-a012
+i386                          randconfig-a016
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+i386                          randconfig-a001
+i386                          randconfig-a003
+x86_64                           rhel-8.3-syz
+i386                          randconfig-a005
+arm                                 defconfig
+ia64                             allmodconfig
+arc                               allnoconfig
+alpha                             allnoconfig
+riscv                             allnoconfig
+csky                              allnoconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+arm                           sunxi_defconfig
+sparc64                             defconfig
+
+clang tested configs:
+hexagon              randconfig-r041-20220729
+riscv                randconfig-r042-20220729
+hexagon              randconfig-r045-20220729
+s390                 randconfig-r044-20220729
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+mips                           mtx1_defconfig
+powerpc                          g5_defconfig
+mips                           ip28_defconfig
+powerpc                  mpc866_ads_defconfig
+
 -- 
-2.27.0
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
