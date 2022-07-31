@@ -2,198 +2,230 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5ECF585CA4
-	for <lists+linux-acpi@lfdr.de>; Sun, 31 Jul 2022 01:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F3BA585E12
+	for <lists+linux-acpi@lfdr.de>; Sun, 31 Jul 2022 10:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230500AbiG3Xpe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 30 Jul 2022 19:45:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52212 "EHLO
+        id S232176AbiGaIRX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 31 Jul 2022 04:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233302AbiG3Xpd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 30 Jul 2022 19:45:33 -0400
-Received: from server.lespinasse.org (server.lespinasse.org [63.205.204.226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF717DFAB;
-        Sat, 30 Jul 2022 16:45:30 -0700 (PDT)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
- d=lespinasse.org; i=@lespinasse.org; q=dns/txt; s=srv-79-ed;
- t=1659224730; h=date : from : to : cc : subject : message-id :
- references : mime-version : content-type : in-reply-to : from;
- bh=nAVqtDkPyoGTnjQOsobKhENqaeU5rNiWFfP8mKVev5k=;
- b=HFFhCK7R4iKO9dp7xadnNvlJ3TFgnIFCD+mWF8YiQOWKhEk/dwPTWNRYWGC9XfN1WRDf2
- g306xaRkvMw+dqoAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lespinasse.org;
- i=@lespinasse.org; q=dns/txt; s=srv-79-rsa; t=1659224730; h=date :
- from : to : cc : subject : message-id : references : mime-version :
- content-type : in-reply-to : from;
- bh=nAVqtDkPyoGTnjQOsobKhENqaeU5rNiWFfP8mKVev5k=;
- b=xEm4vrS+nhrfg16KlTSOz6xKHVgl2anxivbQOaQ8iyITrSIXx3k7S+7DNm3/9PE3/hP5/
- weBfs5WCmns8PrJOUh5+LyucC170rSw2K/NgNrAjDpputAJGflo+dG36LsXYxD+GZSSZKbP
- Pj/N5DYITgz/J3aBedmEOjvEEcNa6ityOyI32KA+gNj6htWosOb+QOsIsRx/2q9SXnXOMQE
- CoO7nRU+J2kcBx1HiMTnfjr/eN+QixQZGT0tRp8own4vN9hl237pUBRGLyuycFtncUUh4v4
- MsO6ge1ke2qwlIabxdvLZxjhahuiQC5BaBfCoCYkudJkUo4tS5HM55MrUsVw==
-Received: by server.lespinasse.org (Postfix, from userid 1000)
-        id F117B160977; Sat, 30 Jul 2022 16:45:29 -0700 (PDT)
-Date:   Sat, 30 Jul 2022 16:45:29 -0700
-From:   Michel Lespinasse <michel@lespinasse.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Michel Lespinasse <michel@lespinasse.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, vgupta@kernel.org,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        ulli.kroll@googlemail.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        bcain@quicinc.com, Huacai Chen <chenhuacai@kernel.org>,
-        kernel@xen0n.name, Geert Uytterhoeven <geert@linux-m68k.org>,
-        sammy@sammy.net, Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi,
-        Stafford Horne <shorne@gmail.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        David Miller <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        anton.ivanov@cambridgegreys.com,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, acme@kernel.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        jolsa@kernel.org, namhyung@kernel.org,
-        Juergen Gross <jgross@suse.com>, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, Len Brown <lenb@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Anup Patel <anup@brainfault.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Petr Mladek <pmladek@suse.com>, senozhatsky@chromium.org,
-        John Ogness <john.ogness@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        quic_neeraju@quicinc.com, Josh Triplett <josh@joshtriplett.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Benjamin Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-snps-arc@lists.infradead.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        openrisc@lists.librecores.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-s390@vger.kernel.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>, rcu@vger.kernel.org,
-        rh0@fb.com
-Subject: Re: [PATCH 04/36] cpuidle,intel_idle: Fix CPUIDLE_FLAG_IRQ_ENABLE
-Message-ID: <20220730234529.GC1587@lespinasse.org>
-References: <20220608142723.103523089@infradead.org>
- <20220608144516.172460444@infradead.org>
- <20220725194306.GA14746@lespinasse.org>
- <20220728172053.GA3607379@paulmck-ThinkPad-P17-Gen-1>
- <20220729102458.GA1695@lespinasse.org>
- <CAJZ5v0gyPtX=ksCibo2ZN_BztCqUn9KRtRu+gsJ5KetB_1MwEQ@mail.gmail.com>
- <20220730094800.GB1587@lespinasse.org>
- <CAJZ5v0hXVjsWab=qYZfXBTqcjkpWV0CFT9_oQBKQ28rFG3_VLw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hXVjsWab=qYZfXBTqcjkpWV0CFT9_oQBKQ28rFG3_VLw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232459AbiGaIRW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 31 Jul 2022 04:17:22 -0400
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B3C3411839;
+        Sun, 31 Jul 2022 01:17:20 -0700 (PDT)
+Received: from localhost.localdomain.localdomain (unknown [10.2.5.46])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxz9OIOuZiN1lGAA--.9906S2;
+        Sun, 31 Jul 2022 16:17:12 +0800 (CST)
+From:   Jianmin Lv <lvjianmin@loongson.cn>
+To:     lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com,
+        rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI / scan: Support multiple dma windows with different offsets
+Date:   Sun, 31 Jul 2022 16:17:11 +0800
+Message-Id: <1659255431-22796-1-git-send-email-lvjianmin@loongson.cn>
+X-Mailer: git-send-email 1.8.3.1
+X-CM-TRANSID: AQAAf9Dxz9OIOuZiN1lGAA--.9906S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxuFWkKFW3Zw1UuryfXr48Crg_yoW7Zw1rp3
+        WvgFy3Gr47tr4DWw4kAr45uw15Z345u3yxurW8G3sakr9Fgr1DJFsrA34jka4rAFyqkr4x
+        ZF4qqFyrCF4jvF7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUklb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+        cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
+        AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
+        6r1j6r4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxV
+        W8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xf
+        McIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7
+        v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28I
+        cVCjz48v1sIEY20_XrWUJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+        0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
+        0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+        WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE14v26r1j6r4U
+        MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU5fhL5UUUU
+        U==
+X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 30, 2022 at 09:52:34PM +0200, Rafael J. Wysocki wrote:
-> On Sat, Jul 30, 2022 at 11:48 AM Michel Lespinasse
-> <michel@lespinasse.org> wrote:
-> > I'm not sure if that was the patch you meant to send though, as it
-> > seems it's only adding a tracepoint so shouldn't make any difference
-> > if I'm not actually using the tracepoint ?
-> 
-> You are right, it looks like I pasted a link to a different patch by
-> mistake.  Sorry about that.
-> 
-> I meant this one:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?h=pm&id=d295ad34f236c3518634fb6403d4c0160456e470
-> 
-> which will appear in the final 5.19.
+For DT, of_dma_get_range returns bus_dma_region typed dma regions,
+which makes multiple dma windows with different offset available
+for translation between dma address and cpu address.
 
-Thanks. I can confirm that this patch fixes the boot time debug
-warnings for me. And I see that linus already merged it, nice!
+But for ACPI, acpi_dma_get_range doesn't return similar dma regions,
+causing no path for setting dev->dma_range_map conveniently. So the
+patch changes acpi_dma_get_range and returns bus_dma_region typed
+dma regions according to of_dma_get_range.
 
---
-Michel "walken" Lespinasse.
+After changing acpi_dma_get_range, original part of internal code
+only available for ARM is moved to acpi_arch_dma_setup for remaining
+unchanged.
+
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+
+diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
+index f16739a..840f918 100644
+--- a/drivers/acpi/arm64/dma.c
++++ b/drivers/acpi/arm64/dma.c
+@@ -9,6 +9,7 @@ void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+ 	int ret;
+ 	u64 end, mask;
+ 	u64 dmaaddr = 0, size = 0, offset = 0;
++	const struct bus_dma_region *map = NULL;
+ 
+ 	/*
+ 	 * If @dev is expected to be DMA-capable then the bus code that created
+@@ -26,10 +27,37 @@ void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+ 	else
+ 		size = 1ULL << 32;
+ 
+-	ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
++	ret = acpi_dma_get_range(dev, &map);
+ 	if (ret == -ENODEV)
+ 		ret = iort_dma_get_ranges(dev, &size);
+ 	if (!ret) {
++		const struct bus_dma_region *r = map;
++		u64 len, dma_start, dma_end = 0;
++
++		/* determine the overall bounds of all dma regions */
++		for (dma_start = U64_MAX; r->size; r++) {
++			if (offset && r->offset != offset) {
++				dev_warn(dev, "Can't handle multiple windows with different offsets\n");
++				return;
++			}
++			offset = r->offset;
++
++			/* Take lower and upper limits */
++			if (r->dma_start < dma_start)
++				dma_start = r->dma_start;
++			if (r->dma_start + r->size - 1 > dma_end)
++				dma_end = r->dma_start + r->size - 1;
++		}
++
++		if (dma_start >= dma_end) {
++			dev_dbg(dev, "Invalid DMA regions configuration\n");
++			return;
++		}
++
++		dmaaddr = dma_start;
++		len = dma_end - dma_start;
++		size = max(len, len + 1);
++
+ 		/*
+ 		 * Limit coherent and dma mask based on size retrieved from
+ 		 * firmware.
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 762b61f..8961b51 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -20,6 +20,7 @@
+ #include <linux/platform_data/x86/apple.h>
+ #include <linux/pgtable.h>
+ #include <linux/crc32.h>
++#include <linux/dma-direct.h>
+ 
+ #include "internal.h"
+ 
+@@ -1492,15 +1493,15 @@ enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
+  *
+  * Return 0 on success, < 0 on failure.
+  */
+-int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
+-		       u64 *size)
++int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
+ {
+ 	struct acpi_device *adev;
+ 	LIST_HEAD(list);
+ 	struct resource_entry *rentry;
+ 	int ret;
+ 	struct device *dma_dev = dev;
+-	u64 len, dma_start = U64_MAX, dma_end = 0, dma_offset = 0;
++	int num_ranges = 0;
++	struct bus_dma_region *r;
+ 
+ 	/*
+ 	 * Walk the device tree chasing an ACPI companion with a _DMA
+@@ -1525,31 +1526,31 @@ int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
+ 
+ 	ret = acpi_dev_get_dma_resources(adev, &list);
+ 	if (ret > 0) {
++		list_for_each_entry(rentry, &list, node)
++			num_ranges++;
++
++		r = kcalloc(num_ranges + 1, sizeof(*r), GFP_KERNEL);
++		if (!r) {
++			ret = -ENOMEM;
++			goto out;
++		}
++
++		*map = r;
++
+ 		list_for_each_entry(rentry, &list, node) {
+-			if (dma_offset && rentry->offset != dma_offset) {
++			if (rentry->res->start >= rentry->res->end) {
+ 				ret = -EINVAL;
+-				dev_warn(dma_dev, "Can't handle multiple windows with different offsets\n");
++				dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
+ 				goto out;
+ 			}
+-			dma_offset = rentry->offset;
+-
+-			/* Take lower and upper limits */
+-			if (rentry->res->start < dma_start)
+-				dma_start = rentry->res->start;
+-			if (rentry->res->end > dma_end)
+-				dma_end = rentry->res->end;
+-		}
+ 
+-		if (dma_start >= dma_end) {
+-			ret = -EINVAL;
+-			dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
+-			goto out;
++			r->cpu_start = rentry->res->start;
++			r->dma_start = rentry->res->start - rentry->offset;
++			r->size = rentry->res->end - rentry->res->start + 1;
++			r->offset = rentry->offset;
++			r++;
+ 		}
+ 
+-		*dma_addr = dma_start - dma_offset;
+-		len = dma_end - dma_start;
+-		*size = max(len, len + 1);
+-		*offset = dma_offset;
+ 	}
+  out:
+ 	acpi_dev_free_resource_list(&list);
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 0dc1ea0b..e106073 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -611,8 +611,7 @@ struct acpi_pci_root {
+ int acpi_iommu_fwspec_init(struct device *dev, u32 id,
+ 			   struct fwnode_handle *fwnode,
+ 			   const struct iommu_ops *ops);
+-int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
+-		       u64 *size);
++int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map);
+ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
+ 			   const u32 *input_id);
+ static inline int acpi_dma_configure(struct device *dev,
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 44975c1..f806092 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -974,8 +974,7 @@ static inline enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
+ 	return DEV_DMA_NOT_SUPPORTED;
+ }
+ 
+-static inline int acpi_dma_get_range(struct device *dev, u64 *dma_addr,
+-				     u64 *offset, u64 *size)
++static inline int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
+ {
+ 	return -ENODEV;
+ }
+-- 
+1.8.3.1
+
