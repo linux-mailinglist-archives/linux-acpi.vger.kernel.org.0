@@ -2,142 +2,232 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E677586B1F
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Aug 2022 14:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36607586C37
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Aug 2022 15:47:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234871AbiHAMpz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Aug 2022 08:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43736 "EHLO
+        id S231922AbiHANrU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Aug 2022 09:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234985AbiHAMph (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Aug 2022 08:45:37 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C75446DA8
-        for <linux-acpi@vger.kernel.org>; Mon,  1 Aug 2022 05:32:54 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id l4so13946943wrm.13
-        for <linux-acpi@vger.kernel.org>; Mon, 01 Aug 2022 05:32:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:references:date:in-reply-to:message-id
-         :user-agent:mime-version;
-        bh=nQEpMirCobOsOWattp713R2f+EJsY/28eyyRhLTxB+E=;
-        b=1MBkA4LqiF8fI0dfhCjDcznALsi41csR8RWo8B2vXIaEqFfOsFRqiHCRFevYzqX8lq
-         tdSDgz5bwsQG79hc3kd4cKyzpweWaDLj5euZHMZ8Q9zdEYqsShIHDKDFttv68frF9K51
-         8F5YFa7BDVVbtQov0QIiY5bRRnf8WJxlf6auhTUNV9Po0xjI+/zxML6w8lS1N1rA5T3e
-         2v+pH+AERHtt+02YqoXwVpiKGavKriiDMsM2ynRux63XWQdHX37BU//YBoiIm55BZ0X7
-         RJq13GSYT2uWpGCrcFYjI2eWBsvW5nfLl9VW3XHlujK3xt5LVd9Ii05ttsfsiRg4YDAN
-         gAtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
-         :message-id:user-agent:mime-version;
-        bh=nQEpMirCobOsOWattp713R2f+EJsY/28eyyRhLTxB+E=;
-        b=g6SQpoyBtE27OEN1F5VxwMxo9nOfYXn6/UgPvVOB4HVdQJLQMrWIEBj/MJoOiFIDTL
-         8Ndl1LKWcTxCNzsM3ZERznU1PBLnmYtCF4GKrGG0QgikJc31e0/OnroK5NnT182YJ3TY
-         2Tl4bWi/2WElJ+6/P00i/ZXH+lz9YYRuyLSf/nzTot2hmEVNsdJP54lWFkOYVWmxEaKZ
-         xdwaRdqfSBcBpTW08qndyoXeIcRQUqggMkyJb7rdULqo4+gWtpAyD663YlNso7WM+BUS
-         8cbeksFZwESikLWTQgZsrC3+9f2+grOR9EPGZLtbB+aohxPV7qSWLxwqx+8vY47/SisZ
-         PXGQ==
-X-Gm-Message-State: ACgBeo1Q0i2vPazr5VACYQsUn8FrIiF65r7zuEyiwzmGDnNQ8ZBtgPXp
-        6OaXpzBWKvMBF7B0QbQziW9Ycg==
-X-Google-Smtp-Source: AA6agR7944sGCx6WI3LpU8LVDq4T/AE2Sxg90GKPb2BHCCrbdYHuOAn49HeQwObUPDO+UkB9PjVvcA==
-X-Received: by 2002:adf:db4c:0:b0:21e:ef46:af22 with SMTP id f12-20020adfdb4c000000b0021eef46af22mr9755067wrj.424.1659357172791;
-        Mon, 01 Aug 2022 05:32:52 -0700 (PDT)
-Received: from localhost ([109.180.234.208])
-        by smtp.gmail.com with ESMTPSA id e13-20020a5d65cd000000b0020fcaba73bcsm11806263wrw.104.2022.08.01.05.32.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Aug 2022 05:32:52 -0700 (PDT)
-From:   Punit Agrawal <punit.agrawal@bytedance.com>
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     Punit Agrawal <punit.agrawal@bytedance.com>,
-        linux-pm@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-        viresh.kumar@linaro.org, robert.moore@intel.com, devel@acpica.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] ACPI: CPPC: Disable FIE if registers in PCC regions
-References: <20220728221043.4161903-1-jeremy.linton@arm.com>
-        <20220728221043.4161903-2-jeremy.linton@arm.com>
-        <871qu4krb4.fsf@stealth>
-        <a0bdc45a-c5c6-65ba-1ab8-e52dd26652d7@arm.com>
-Date:   Mon, 01 Aug 2022 13:32:51 +0100
-In-Reply-To: <a0bdc45a-c5c6-65ba-1ab8-e52dd26652d7@arm.com> (Jeremy Linton's
-        message of "Fri, 29 Jul 2022 10:20:46 -0500")
-Message-ID: <87tu6wjg98.fsf@stealth>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        with ESMTP id S231920AbiHANrS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Aug 2022 09:47:18 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 609843C15E;
+        Mon,  1 Aug 2022 06:47:17 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 165362F3;
+        Mon,  1 Aug 2022 15:47:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1659361634;
+        bh=hakE9baT3VAUiu6XnLdOhuh12fgbguPKu1+hf+3jyJs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PfoX4lqLDhqf808avF1b13xtJErabYIuBiyOuEFr5V8OYPeSYXWAdKfzbMl3TXxek
+         phZ1y+1hbwAuYRiTJWrWNU7AmLsUbnVypY+4l8fwur0SjuhpQevj5ZEAV6ncjY/ZuE
+         Et2F6ZDqr5FqKUQm3gUBa6Oc1yHIEdITU7vUL934=
+Date:   Mon, 1 Aug 2022 16:47:10 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Tomasz Figa <tfiga@chromium.org>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Paul Elder <paul.elder@ideasonboard.com>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        "Paul J. Murphy" <paul.j.murphy@intel.com>,
+        Martina Krasteva <martinax.krasteva@intel.com>,
+        Shawn Tu <shawnx.tu@intel.com>, Arec Kao <arec.kao@intel.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Jimmy Su <jimmy.su@intel.com>,
+        Martin Kepplinger <martink@posteo.de>,
+        Daniel Scally <djrscally@gmail.com>,
+        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        linux-media@vger.kernel.org, rafael@kernel.org,
+        linux-acpi@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
+        bingbu.cao@intel.com, andriy.shevchenko@intel.com,
+        "hidenorik@chromium.org" <hidenorik@chromium.org>,
+        jacopo mondi <jacopo@jmondi.org>
+Subject: Re: [PATCH v2] media: ov5640: Use runtime PM
+Message-ID: <YufZXoUSWzOqoVfZ@pendragon.ideasonboard.com>
+References: <Yi3rQGmeXQD70Tkh@pendragon.ideasonboard.com>
+ <Yi3z2nR8j+ee4E4m@paasikivi.fi.intel.com>
+ <Yi38zOHsh68FrrKK@pendragon.ideasonboard.com>
+ <Yi+e/IK+eVpKit/F@paasikivi.fi.intel.com>
+ <Yi+gEVB0FuOcY5qn@pendragon.ideasonboard.com>
+ <Yi+vdvMeXqb/BvKo@paasikivi.fi.intel.com>
+ <YkMDfvuhAvsrjbON@pendragon.ideasonboard.com>
+ <YlfplRQYDYhFvc5U@paasikivi.fi.intel.com>
+ <CAAFQd5C7-OuNpnduwKpZXFUPQKDeqkz2xkvP+JBBs+aNjB87FQ@mail.gmail.com>
+ <CAAFQd5Bgx2u6quaCobrKEFjMPqP1S-HihCo-XP0k_OhAEUDm-g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAFQd5Bgx2u6quaCobrKEFjMPqP1S-HihCo-XP0k_OhAEUDm-g@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Jeremy Linton <jeremy.linton@arm.com> writes:
+On Mon, Aug 01, 2022 at 04:23:54PM +0900, Tomasz Figa wrote:
+> [Fixed Jacopo's email address.]
+> 
+> On Mon, Aug 1, 2022 at 4:17 PM Tomasz Figa <tfiga@chromium.org> wrote:
+> >
+> > On Thu, Apr 14, 2022 at 6:30 PM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
+> > >
+> > > Hi Laurent,
+> > >
+> > > On Tue, Mar 29, 2022 at 04:02:54PM +0300, Laurent Pinchart wrote:
+> > > > Hi Sakari,
+> > > >
+> > > > On Mon, Mar 14, 2022 at 11:11:18PM +0200, Sakari Ailus wrote:
+> > > > > On Mon, Mar 14, 2022 at 10:05:37PM +0200, Laurent Pinchart wrote:
+> > > > > ...
+> > > > > > > > Yes, after reading the version register (or doing any other harware
+> > > > > > > > access). Actually the full code would be
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >       pm_runtime_enable(dev);
+> > > > > > > >       pm_runtime_resume_and_get(dev);
+> > > > > > > >
+> > > > > > > >       /* Hardware access */
+> > > > > > > >
+> > > > > > > >       pm_runtime_set_autosuspend_delay(dev, 1000);
+> > > > > > > >       pm_runtime_use_autosuspend(dev);
+> > > > > > > >       pm_runtime_put_autosuspend(dev);
+> > > > > > > >
+> > > > > > > > (plus error handling).
+> > > > > > > >
+> > > > > > > > If the probe function doesn't need to access the hardware, then
+> > > > > > > > the above becomes
+> > > > > > > >
+> > > > > > > >       pm_runtime_enable(dev);
+> > > > > > > >       pm_runtime_set_autosuspend_delay(dev, 1000);
+> > > > > > > >       pm_runtime_use_autosuspend(dev);
+> > > > > > > >
+> > > > > > > > instead of having to power up the device just in case !PM.
+> > > > > > > >
+> > > > > > > > > Also the latter only works on DT-based systems so it's not an option for
+> > > > > > > > > most of the drivers.
+> > > >
+> > > > Does the former work on ACPI systems ?
+> > >
+> > > Yes (i.e. the one that was above the quoted text).
+> > >
+> > > >
+> > > > > > > > How so, what's wrong with the above for ACPI-based system ?
+> > > > > > >
+> > > > > > > I涎 devices are already powered on for probe on ACPI based systems.
+> > > > > >
+> > > > > > Not through RPM I suppose ?
+> > > > >
+> > > > > Runtime PM isn't involved, this takes place in the ACPI framework (via
+> > > > > dev_pm_domain_attach() called in i2c_device_probe()).
+> > > >
+> > > > How can we fix this ? It may have made sense a long time ago, but it's
+> > > > making RPM handling way too difficult in I2C drivers now. We need
+> > > > something better instead of continuing to rely on cargo-cult for probe
+> > > > functions. Most drivers are broken.
+> > >
+> > > Some could be broken, there's no question of that. A lot of drivers support
+> > > either ACPI or DT, too, so not _that_ many need to work with both. Albeit
+> > > that number is probably increasing constantly for the same devices are used
+> > > on both.
+> > >
+> > > Then there are drivers that prefer not powering on the device in probe (see
+> > > <URL:https://lore.kernel.org/linux-acpi/20210210230800.30291-2-sakari.ailus@linux.intel.com/T/>),
+> > > it gets complicated to support all the combinatios of DT/ACPI (with or
+> > > without the flag / property for waiving powering device on for probe) and
+> > > CONFIG_PM enabled/disabled.
+> > >
+> > > What I think could be done to add a flag for drivers that handle power on
+> > > their own, or perhaps rather change how I2C_DRV_ACPI_WAIVE_D0_PROBE flag
+> > > works. Right now it expects a property on the device but that check could
+> > > be moved to existing drivers using the flag. Not many drivers are currently
+> > > using the flag. I think this would simplify driver implementation as both
+> > > firmware interfaces would work the same way in this respect.
+> > >
+> > > You'd have to change one driver at a time, and people should be encouraged
+> > > to write new drivers with that flag. Or add the flag to all existing
+> > > drivers and not accept new ones with it.
+> > >
+> > > These devices I think are all I涎 but my understanding is that such
+> > > differences exist elsewhere in the kernel, too. If they are to be
+> > > addressed, it would probably be best to have a unified approach towards it.
+> > >
+> > > Added a few more people and lists to cc.
+> >
+> > + Hidenori from my team for visibility.
+> >
+> > I think we may want to take a step back and first define the problem
+> > itself. To do that, let's take a look separately at DT and ACPI cases
+> > (is platform data still relevant? are there any other firmware
+> > interfaces that deal with I2C devices?).
+> > For simplicity, let's forget about the ACPI waived power on in probe.
+> >
+> > DT:
+> >  1) hardware state unknown when probe is called
+> >  2) claim any independently managed resources (e.g. GPIOs)
+> >  3) enable runtime PM
+> >  4) if driver wants to access the hardware:
+> >     a) runtime PM get
+> >     b) enable any independently controlled resources (e.g. reset GPIO)
 
-> Hi,
->
-> On 7/29/22 07:59, Punit Agrawal wrote:
->> Hi Jeremy,
->> One comment / query below.
->> Jeremy Linton <jeremy.linton@arm.com> writes:
->> 
->>> PCC regions utilize a mailbox to set/retrieve register values used by
->>> the CPPC code. This is fine as long as the operations are
->>> infrequent. With the FIE code enabled though the overhead can range
->>> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
->>> based machines.
->>>
->>> So, before enabling FIE assure none of the registers used by
->>> cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
->>> enable a module parameter which can also disable it at boot or module
->>> reload.
->>>
->>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
->>> ---
->>>   drivers/acpi/cppc_acpi.c       | 41 ++++++++++++++++++++++++++++++++++
->>>   drivers/cpufreq/cppc_cpufreq.c | 19 ++++++++++++----
->>>   include/acpi/cppc_acpi.h       |  5 +++++
->>>   3 files changed, 61 insertions(+), 4 deletions(-)
->>>
->> [...]
->> 
->>> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
->>> index 24eaf0ec344d..ed607e27d6bb 100644
->>> --- a/drivers/cpufreq/cppc_cpufreq.c
->>> +++ b/drivers/cpufreq/cppc_cpufreq.c
->> [...]
->> 
->>> @@ -229,7 +233,12 @@ static void __init cppc_freq_invariance_init(void)
->>>   	};
->>>   	int ret;
->>>   -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
->>> +	if (cppc_perf_ctrs_in_pcc()) {
->>> +		pr_debug("FIE not enabled on systems with registers in PCC\n");
->> The message should probably be promoted to a pr_info() and exposed
->> as
->> part of the kernel logs. It is a change in the default behaviour we've
->> had until now. The message will provide some hint about why it was
->> disabled.
->> Thoughts?
->
-> I personally flip flopped between making it pr_info or pr_debug and
-> settled on debug because no one else was complaining about the
-> cppc_fie consumption. Which to me, meant that the users of platforms
-> utilizing PCC regions weren't sensitive to the problem, or weren't yet
-> running a distro/kernel with it enabled, or any number of other
-> reasons why the problem wasn't getting more attention. Mostly I
-> concluded the FIE code hadn't shown up in "enterprise" distros yet..
+A small precision here, the resource handling is usually done in the
+runtime PM resume/suspend handlers.
 
-I too was thinking that likely enterprise users haven't started digging
-into the performance impact of enabling frequency invariance.
+> >     c) [do access]
+> >     d) disable any independently controlled resources
+> >     e) runtime PM put
+> >  5) after probe returns, regulators, clocks (and other similarly
+> >     managed resources) would be force disabled if their enable count is 0
+> >  6) hardware state is off (after the runtime PM state settles)
+> >
+> > ACPI:
+> >  1) hardware state is active when probe is called
+> >  2) [n/a]
+> >  3) tell runtime PM framework that the state is active and then enable
+> >     runtime PM
+> >  4) if driver wants to access the hardware:
+> >     a) runtime PM get
+> >     b) [n/a]
+> >     c) [do access]
+> >     d) [n/a]
+> >     e) runtime PM put
+> >  5) [n/a]
+> >  6) hardware state is off (after the runtime PM state settles)
+> >
+> > It seems like the relevant difference here is that for ACPI, the
+> > driver needs to know that the initial state is active and also relay
+> > this knowledge to the runtime PM subsystem. If we could make the ACPI
+> > PM domain work the same way as regulators and clocks and eventually
+> > power off some time later when the enable count is 0, then perhaps we
+> > could avoid the problem in the first place?
 
-> But, yah, if no one is going to complain about the extra messages
-> pr_info() is a better plan.
+Two additional questions if we're brainstorming this:
 
-Thanks! I'll look out for the updated patch.
+- Why is the I2C device hardware state active when probe is called, and
+  would there be a way to change that (that is, beside the obvious issue
+  that the transition could be painful, are there any other reasons to
+  keep the status quo) ?
 
-FIE was designed to improve load balancing (and arguably fairness
-too). Hopefully, the message will aid users in looking more closely and
-complain to system vendor / upstream if it matters to their workloads.
+- If we have to keep this difference between the ACPI and DT models, how
+  can we handle them in core code instead of drivers ? In particular,
+  how could code core inform the RPM framework about the initial device
+  state instead of leaving it to the driver ?
+
+There's large set of RPM-related calls that have to be performed at
+probe time in a very specific order, interleaved with manual power
+handling. That is way over the threshold of what can be reasonably
+expected from driver developers. I don't care much how it's done, but
+this has to be dumbed down to make it dead simple in drivers.
+
+-- 
+Regards,
+
+Laurent Pinchart
