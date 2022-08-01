@@ -2,230 +2,237 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3BA585E12
-	for <lists+linux-acpi@lfdr.de>; Sun, 31 Jul 2022 10:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D208E586590
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Aug 2022 09:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232176AbiGaIRX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 31 Jul 2022 04:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38034 "EHLO
+        id S229537AbiHAHRS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Aug 2022 03:17:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232459AbiGaIRW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 31 Jul 2022 04:17:22 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B3C3411839;
-        Sun, 31 Jul 2022 01:17:20 -0700 (PDT)
-Received: from localhost.localdomain.localdomain (unknown [10.2.5.46])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxz9OIOuZiN1lGAA--.9906S2;
-        Sun, 31 Jul 2022 16:17:12 +0800 (CST)
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-To:     lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com,
-        rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI / scan: Support multiple dma windows with different offsets
-Date:   Sun, 31 Jul 2022 16:17:11 +0800
-Message-Id: <1659255431-22796-1-git-send-email-lvjianmin@loongson.cn>
-X-Mailer: git-send-email 1.8.3.1
-X-CM-TRANSID: AQAAf9Dxz9OIOuZiN1lGAA--.9906S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxuFWkKFW3Zw1UuryfXr48Crg_yoW7Zw1rp3
-        WvgFy3Gr47tr4DWw4kAr45uw15Z345u3yxurW8G3sakr9Fgr1DJFsrA34jka4rAFyqkr4x
-        ZF4qqFyrCF4jvF7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUklb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-        cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
-        AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
-        6r1j6r4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxV
-        W8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xf
-        McIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7
-        v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28I
-        cVCjz48v1sIEY20_XrWUJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-        0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-        0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-        WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE14v26r1j6r4U
-        MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU5fhL5UUUU
-        U==
-X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229514AbiHAHRS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Aug 2022 03:17:18 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F342F3AB2D
+        for <linux-acpi@vger.kernel.org>; Mon,  1 Aug 2022 00:17:16 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id i4so7834877qvv.7
+        for <linux-acpi@vger.kernel.org>; Mon, 01 Aug 2022 00:17:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=1uS6E7ZkRa/baG5pTg79vAqfBuGnhvLh8VZy1wWJZEc=;
+        b=kYzh7dP8lUBSGmUhcjMxp7hP9XAYdopEURRCzi9HAiLo0czTrc1L98p5+v8d8P0G4K
+         M1MiCpX1s6n9xvbZ32X2kORjCmVKdbw0ByP+cM/C6auLETpOJ82dm7CzwH0nj2635TfU
+         nO6F+7GmaDY3aaEaKglchBGx2jrvKz5ZEJ0BU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=1uS6E7ZkRa/baG5pTg79vAqfBuGnhvLh8VZy1wWJZEc=;
+        b=aq7UTDE4xRrv82bm4hOUX3rlF42/XR+qanY+ausVa3+MjMlrShoFU16SnBNbQFOQvD
+         riTE2t2U9G6m1bIwDgrsE6YO37sWLSpl13U+2NmGGwlKdv3pqHPGGquc+aPGmZkA2bZQ
+         J9bz5OCpHFCLgnypDeMit8rxMemXjHAHDSGLQOwW8SWZmlqbIJdRyzr73/EvKh8x+Yzz
+         D8taSDtabkixhUUJt0oe9MUaEfRL7efTwxIP3hi3krmI7Op9m03RldaTKA20Y3qbikH2
+         ABqrhVN8SNpAjI/B6YsjbLhKUPChA3Owo6xz8lu1iKjhAjwmRAGBkNeXKyXdnzG2eCiB
+         LwnA==
+X-Gm-Message-State: ACgBeo3LqiCfgsMMeRVKuagPaVoBJS2MDq1bTkF64rOTXLZaDrdqYtJC
+        MpseBbD5RmSAtFQvH0sD4db/Ufd1OxAT/w==
+X-Google-Smtp-Source: AA6agR7RTVPkbVEXAHh6P+ybU4cCeH03kAb47K8hCB7STIWP7MytsymL5amwQ4PWEBvkM8WRomcbsw==
+X-Received: by 2002:ad4:5747:0:b0:474:3abe:4260 with SMTP id q7-20020ad45747000000b004743abe4260mr12494950qvx.54.1659338235646;
+        Mon, 01 Aug 2022 00:17:15 -0700 (PDT)
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com. [209.85.219.175])
+        by smtp.gmail.com with ESMTPSA id t14-20020a37ea0e000000b006b58fce19dasm8003954qkj.20.2022.08.01.00.17.13
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Aug 2022 00:17:13 -0700 (PDT)
+Received: by mail-yb1-f175.google.com with SMTP id i62so15803946yba.5
+        for <linux-acpi@vger.kernel.org>; Mon, 01 Aug 2022 00:17:13 -0700 (PDT)
+X-Received: by 2002:a25:abc6:0:b0:674:2b0c:5a88 with SMTP id
+ v64-20020a25abc6000000b006742b0c5a88mr11146946ybi.296.1659338232719; Mon, 01
+ Aug 2022 00:17:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <YitLit9LC2zlOfdh@paasikivi.fi.intel.com> <YitMt7hVA2okuQ8x@pendragon.ideasonboard.com>
+ <YitPaq2yYnrKsq4f@paasikivi.fi.intel.com> <Yi3rQGmeXQD70Tkh@pendragon.ideasonboard.com>
+ <Yi3z2nR8j+ee4E4m@paasikivi.fi.intel.com> <Yi38zOHsh68FrrKK@pendragon.ideasonboard.com>
+ <Yi+e/IK+eVpKit/F@paasikivi.fi.intel.com> <Yi+gEVB0FuOcY5qn@pendragon.ideasonboard.com>
+ <Yi+vdvMeXqb/BvKo@paasikivi.fi.intel.com> <YkMDfvuhAvsrjbON@pendragon.ideasonboard.com>
+ <YlfplRQYDYhFvc5U@paasikivi.fi.intel.com>
+In-Reply-To: <YlfplRQYDYhFvc5U@paasikivi.fi.intel.com>
+From:   Tomasz Figa <tfiga@chromium.org>
+Date:   Mon, 1 Aug 2022 16:17:01 +0900
+X-Gmail-Original-Message-ID: <CAAFQd5C7-OuNpnduwKpZXFUPQKDeqkz2xkvP+JBBs+aNjB87FQ@mail.gmail.com>
+Message-ID: <CAAFQd5C7-OuNpnduwKpZXFUPQKDeqkz2xkvP+JBBs+aNjB87FQ@mail.gmail.com>
+Subject: Re: [PATCH v2] media: ov5640: Use runtime PM
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Paul Elder <paul.elder@ideasonboard.com>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        "Paul J. Murphy" <paul.j.murphy@intel.com>,
+        Martina Krasteva <martinax.krasteva@intel.com>,
+        Shawn Tu <shawnx.tu@intel.com>, Arec Kao <arec.kao@intel.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Jimmy Su <jimmy.su@intel.com>,
+        Martin Kepplinger <martink@posteo.de>,
+        Daniel Scally <djrscally@gmail.com>,
+        Jacopo Mondi <jmondi@jmondi.org>,
+        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        linux-media@vger.kernel.org, rafael@kernel.org,
+        linux-acpi@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
+        bingbu.cao@intel.com, andriy.shevchenko@intel.com,
+        "hidenorik@chromium.org" <hidenorik@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-For DT, of_dma_get_range returns bus_dma_region typed dma regions,
-which makes multiple dma windows with different offset available
-for translation between dma address and cpu address.
+On Thu, Apr 14, 2022 at 6:30 PM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Laurent,
+>
+> On Tue, Mar 29, 2022 at 04:02:54PM +0300, Laurent Pinchart wrote:
+> > Hi Sakari,
+> >
+> > On Mon, Mar 14, 2022 at 11:11:18PM +0200, Sakari Ailus wrote:
+> > > On Mon, Mar 14, 2022 at 10:05:37PM +0200, Laurent Pinchart wrote:
+> > > ...
+> > > > > > Yes, after reading the version register (or doing any other har=
+ware
+> > > > > > access). Actually the full code would be
+> > > > > >
+> > > > > >
+> > > > > >       pm_runtime_enable(dev);
+> > > > > >       pm_runtime_resume_and_get(dev);
+> > > > > >
+> > > > > >       /* Hardware access */
+> > > > > >
+> > > > > >       pm_runtime_set_autosuspend_delay(dev, 1000);
+> > > > > >       pm_runtime_use_autosuspend(dev);
+> > > > > >       pm_runtime_put_autosuspend(dev);
+> > > > > >
+> > > > > > (plus error handling).
+> > > > > >
+> > > > > > If the probe function doesn't need to access the hardware, then
+> > > > > > the above becomes
+> > > > > >
+> > > > > >       pm_runtime_enable(dev);
+> > > > > >       pm_runtime_set_autosuspend_delay(dev, 1000);
+> > > > > >       pm_runtime_use_autosuspend(dev);
+> > > > > >
+> > > > > > instead of having to power up the device just in case !PM.
+> > > > > >
+> > > > > > > Also the latter only works on DT-based systems so it's not an=
+ option for
+> > > > > > > most of the drivers.
+> >
+> > Does the former work on ACPI systems ?
+>
+> Yes (i.e. the one that was above the quoted text).
+>
+> >
+> > > > > > How so, what's wrong with the above for ACPI-based system ?
+> > > > >
+> > > > > I=E6=B6=8E devices are already powered on for probe on ACPI based=
+ systems.
+> > > >
+> > > > Not through RPM I suppose ?
+> > >
+> > > Runtime PM isn't involved, this takes place in the ACPI framework (vi=
+a
+> > > dev_pm_domain_attach() called in i2c_device_probe()).
+> >
+> > How can we fix this ? It may have made sense a long time ago, but it's
+> > making RPM handling way too difficult in I2C drivers now. We need
+> > something better instead of continuing to rely on cargo-cult for probe
+> > functions. Most drivers are broken.
+>
+> Some could be broken, there's no question of that. A lot of drivers suppo=
+rt
+> either ACPI or DT, too, so not _that_ many need to work with both. Albeit
+> that number is probably increasing constantly for the same devices are us=
+ed
+> on both.
+>
+> Then there are drivers that prefer not powering on the device in probe (s=
+ee
+> <URL:https://lore.kernel.org/linux-acpi/20210210230800.30291-2-sakari.ail=
+us@linux.intel.com/T/>),
+> it gets complicated to support all the combinatios of DT/ACPI (with or
+> without the flag / property for waiving powering device on for probe) and
+> CONFIG_PM enabled/disabled.
+>
+> What I think could be done to add a flag for drivers that handle power on
+> their own, or perhaps rather change how I2C_DRV_ACPI_WAIVE_D0_PROBE flag
+> works. Right now it expects a property on the device but that check could
+> be moved to existing drivers using the flag. Not many drivers are current=
+ly
+> using the flag. I think this would simplify driver implementation as both
+> firmware interfaces would work the same way in this respect.
+>
+> You'd have to change one driver at a time, and people should be encourage=
+d
+> to write new drivers with that flag. Or add the flag to all existing
+> drivers and not accept new ones with it.
+>
+> These devices I think are all I=E6=B6=8E but my understanding is that suc=
+h
+> differences exist elsewhere in the kernel, too. If they are to be
+> addressed, it would probably be best to have a unified approach towards i=
+t.
+>
+> Added a few more people and lists to cc.
 
-But for ACPI, acpi_dma_get_range doesn't return similar dma regions,
-causing no path for setting dev->dma_range_map conveniently. So the
-patch changes acpi_dma_get_range and returns bus_dma_region typed
-dma regions according to of_dma_get_range.
++ Hidenori from my team for visibility.
 
-After changing acpi_dma_get_range, original part of internal code
-only available for ARM is moved to acpi_arch_dma_setup for remaining
-unchanged.
+I think we may want to take a step back and first define the problem
+itself. To do that, let's take a look separately at DT and ACPI cases
+(is platform data still relevant? are there any other firmware
+interfaces that deal with I2C devices?).
+For simplicity, let's forget about the ACPI waived power on in probe.
 
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+DT:
+ 1) hardware state unknown when probe is called
+ 2) claim any independently managed resources (e.g. GPIOs)
+ 3) enable runtime PM
+ 4) if driver wants to access the hardware:
+    a) runtime PM get
+    b) enable any independently controlled resources (e.g. reset GPIO)
+    c) [do access]
+    d) disable any independently controlled resources
+    e) runtime PM put
+ 5) after probe returns, regulators, clocks (and other similarly
+managed resources) would be force disabled if their enable count is 0
+ 6) hardware state is off (after the runtime PM state settles)
 
-diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
-index f16739a..840f918 100644
---- a/drivers/acpi/arm64/dma.c
-+++ b/drivers/acpi/arm64/dma.c
-@@ -9,6 +9,7 @@ void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
- 	int ret;
- 	u64 end, mask;
- 	u64 dmaaddr = 0, size = 0, offset = 0;
-+	const struct bus_dma_region *map = NULL;
- 
- 	/*
- 	 * If @dev is expected to be DMA-capable then the bus code that created
-@@ -26,10 +27,37 @@ void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
- 	else
- 		size = 1ULL << 32;
- 
--	ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
-+	ret = acpi_dma_get_range(dev, &map);
- 	if (ret == -ENODEV)
- 		ret = iort_dma_get_ranges(dev, &size);
- 	if (!ret) {
-+		const struct bus_dma_region *r = map;
-+		u64 len, dma_start, dma_end = 0;
-+
-+		/* determine the overall bounds of all dma regions */
-+		for (dma_start = U64_MAX; r->size; r++) {
-+			if (offset && r->offset != offset) {
-+				dev_warn(dev, "Can't handle multiple windows with different offsets\n");
-+				return;
-+			}
-+			offset = r->offset;
-+
-+			/* Take lower and upper limits */
-+			if (r->dma_start < dma_start)
-+				dma_start = r->dma_start;
-+			if (r->dma_start + r->size - 1 > dma_end)
-+				dma_end = r->dma_start + r->size - 1;
-+		}
-+
-+		if (dma_start >= dma_end) {
-+			dev_dbg(dev, "Invalid DMA regions configuration\n");
-+			return;
-+		}
-+
-+		dmaaddr = dma_start;
-+		len = dma_end - dma_start;
-+		size = max(len, len + 1);
-+
- 		/*
- 		 * Limit coherent and dma mask based on size retrieved from
- 		 * firmware.
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 762b61f..8961b51 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -20,6 +20,7 @@
- #include <linux/platform_data/x86/apple.h>
- #include <linux/pgtable.h>
- #include <linux/crc32.h>
-+#include <linux/dma-direct.h>
- 
- #include "internal.h"
- 
-@@ -1492,15 +1493,15 @@ enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
-  *
-  * Return 0 on success, < 0 on failure.
-  */
--int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
--		       u64 *size)
-+int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
- {
- 	struct acpi_device *adev;
- 	LIST_HEAD(list);
- 	struct resource_entry *rentry;
- 	int ret;
- 	struct device *dma_dev = dev;
--	u64 len, dma_start = U64_MAX, dma_end = 0, dma_offset = 0;
-+	int num_ranges = 0;
-+	struct bus_dma_region *r;
- 
- 	/*
- 	 * Walk the device tree chasing an ACPI companion with a _DMA
-@@ -1525,31 +1526,31 @@ int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
- 
- 	ret = acpi_dev_get_dma_resources(adev, &list);
- 	if (ret > 0) {
-+		list_for_each_entry(rentry, &list, node)
-+			num_ranges++;
-+
-+		r = kcalloc(num_ranges + 1, sizeof(*r), GFP_KERNEL);
-+		if (!r) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+
-+		*map = r;
-+
- 		list_for_each_entry(rentry, &list, node) {
--			if (dma_offset && rentry->offset != dma_offset) {
-+			if (rentry->res->start >= rentry->res->end) {
- 				ret = -EINVAL;
--				dev_warn(dma_dev, "Can't handle multiple windows with different offsets\n");
-+				dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
- 				goto out;
- 			}
--			dma_offset = rentry->offset;
--
--			/* Take lower and upper limits */
--			if (rentry->res->start < dma_start)
--				dma_start = rentry->res->start;
--			if (rentry->res->end > dma_end)
--				dma_end = rentry->res->end;
--		}
- 
--		if (dma_start >= dma_end) {
--			ret = -EINVAL;
--			dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
--			goto out;
-+			r->cpu_start = rentry->res->start;
-+			r->dma_start = rentry->res->start - rentry->offset;
-+			r->size = rentry->res->end - rentry->res->start + 1;
-+			r->offset = rentry->offset;
-+			r++;
- 		}
- 
--		*dma_addr = dma_start - dma_offset;
--		len = dma_end - dma_start;
--		*size = max(len, len + 1);
--		*offset = dma_offset;
- 	}
-  out:
- 	acpi_dev_free_resource_list(&list);
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 0dc1ea0b..e106073 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -611,8 +611,7 @@ struct acpi_pci_root {
- int acpi_iommu_fwspec_init(struct device *dev, u32 id,
- 			   struct fwnode_handle *fwnode,
- 			   const struct iommu_ops *ops);
--int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
--		       u64 *size);
-+int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map);
- int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
- 			   const u32 *input_id);
- static inline int acpi_dma_configure(struct device *dev,
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 44975c1..f806092 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -974,8 +974,7 @@ static inline enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
- 	return DEV_DMA_NOT_SUPPORTED;
- }
- 
--static inline int acpi_dma_get_range(struct device *dev, u64 *dma_addr,
--				     u64 *offset, u64 *size)
-+static inline int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
- {
- 	return -ENODEV;
- }
--- 
-1.8.3.1
+ACPI:
+ 1) hardware state is active when probe is called
+ 2) [n/a]
+ 3) tell runtime PM framework that the state is active and then enable
+runtime PM
+ 4) if driver wants to access the hardware:
+    a) runtime PM get
+    b) [n/a]
+    c) [do access]
+    d) [n/a]
+    e) runtime PM put
+ 5) [n/a]
+ 6) hardware state is off (after the runtime PM state settles)
 
+It seems like the relevant difference here is that for ACPI, the
+driver needs to know that the initial state is active and also relay
+this knowledge to the runtime PM subsystem. If we could make the ACPI
+PM domain work the same way as regulators and clocks and eventually
+power off some time later when the enable count is 0, then perhaps we
+could avoid the problem in the first place?
+
+Best regards,
+Tomasz
