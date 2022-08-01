@@ -2,232 +2,288 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36607586C37
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Aug 2022 15:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E185E5871B2
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Aug 2022 21:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231922AbiHANrU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Aug 2022 09:47:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44028 "EHLO
+        id S234606AbiHATtA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 1 Aug 2022 15:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231920AbiHANrS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Aug 2022 09:47:18 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 609843C15E;
-        Mon,  1 Aug 2022 06:47:17 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 165362F3;
-        Mon,  1 Aug 2022 15:47:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1659361634;
-        bh=hakE9baT3VAUiu6XnLdOhuh12fgbguPKu1+hf+3jyJs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PfoX4lqLDhqf808avF1b13xtJErabYIuBiyOuEFr5V8OYPeSYXWAdKfzbMl3TXxek
-         phZ1y+1hbwAuYRiTJWrWNU7AmLsUbnVypY+4l8fwur0SjuhpQevj5ZEAV6ncjY/ZuE
-         Et2F6ZDqr5FqKUQm3gUBa6Oc1yHIEdITU7vUL934=
-Date:   Mon, 1 Aug 2022 16:47:10 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tomasz Figa <tfiga@chromium.org>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Paul Elder <paul.elder@ideasonboard.com>,
-        Steve Longerbeam <slongerbeam@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        "Paul J. Murphy" <paul.j.murphy@intel.com>,
-        Martina Krasteva <martinax.krasteva@intel.com>,
-        Shawn Tu <shawnx.tu@intel.com>, Arec Kao <arec.kao@intel.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Jimmy Su <jimmy.su@intel.com>,
-        Martin Kepplinger <martink@posteo.de>,
-        Daniel Scally <djrscally@gmail.com>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-        linux-media@vger.kernel.org, rafael@kernel.org,
-        linux-acpi@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
-        bingbu.cao@intel.com, andriy.shevchenko@intel.com,
-        "hidenorik@chromium.org" <hidenorik@chromium.org>,
-        jacopo mondi <jacopo@jmondi.org>
-Subject: Re: [PATCH v2] media: ov5640: Use runtime PM
-Message-ID: <YufZXoUSWzOqoVfZ@pendragon.ideasonboard.com>
-References: <Yi3rQGmeXQD70Tkh@pendragon.ideasonboard.com>
- <Yi3z2nR8j+ee4E4m@paasikivi.fi.intel.com>
- <Yi38zOHsh68FrrKK@pendragon.ideasonboard.com>
- <Yi+e/IK+eVpKit/F@paasikivi.fi.intel.com>
- <Yi+gEVB0FuOcY5qn@pendragon.ideasonboard.com>
- <Yi+vdvMeXqb/BvKo@paasikivi.fi.intel.com>
- <YkMDfvuhAvsrjbON@pendragon.ideasonboard.com>
- <YlfplRQYDYhFvc5U@paasikivi.fi.intel.com>
- <CAAFQd5C7-OuNpnduwKpZXFUPQKDeqkz2xkvP+JBBs+aNjB87FQ@mail.gmail.com>
- <CAAFQd5Bgx2u6quaCobrKEFjMPqP1S-HihCo-XP0k_OhAEUDm-g@mail.gmail.com>
+        with ESMTP id S235052AbiHATs7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Aug 2022 15:48:59 -0400
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685A832068;
+        Mon,  1 Aug 2022 12:48:57 -0700 (PDT)
+Received: by mail-yb1-f176.google.com with SMTP id y127so20624758yby.8;
+        Mon, 01 Aug 2022 12:48:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=egmRs92oP4TdMekylU+TV/79gXiOhc1WUfIIgb3vhM8=;
+        b=1OZxXZcXxROqosYLLFEMQlqHUn2oD33TwbqqJUkF14PWL2bVrQQhSnRZzkcHZhI6mo
+         z0srG8LK2NIF+FDLYoVcmjPd51fPpYgDUg5R+Zd91wx4cPLrrCKsKTt6FYbqlTo1nHsn
+         4u0WTTnMTGhdAPamB5RiNk/c100OSMzWyvQMwQFUKVcxwKjLXkFtWpa06BQmBQrvYobi
+         xTsNdc5xPEtZ8gtpYkoMC/gfYzDda1kQYnDX9mH6GqTzLRzjpI+F0FJzGUfJ8miKythK
+         PuZdvhnBOpumhr7A2Q9+WYhwRjEzggFDQ+miP5dTDwS6+odK6qp2cKM3gvRl08f49Ueh
+         IyfQ==
+X-Gm-Message-State: ACgBeo14SNxAoTFbhBQLcia1s8SNgqolbYa4LUHGL2/CCX1Kjm5MnX3q
+        I//vHWlu7Mp1Hm9pfV6Sy1TMcp/uQcL9IcPNJOPGaC/T+r+E2w==
+X-Google-Smtp-Source: AA6agR7Iv9myO84oeSF50C24Y8EbYJ8yccva8g+RlxgyexF9qLopjNZyad7AelFL0Xyj7oWNvje5BfNtCqN8a01cPyo=
+X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
+ z15-20020a25664f000000b0066cd0f436ccmr12319448ybm.482.1659383336315; Mon, 01
+ Aug 2022 12:48:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAFQd5Bgx2u6quaCobrKEFjMPqP1S-HihCo-XP0k_OhAEUDm-g@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 1 Aug 2022 21:48:40 +0200
+Message-ID: <CAJZ5v0jsKLQLf-UXyTNSjhYYSMo3XjjF6fNSW_Dbzbrzi3+NSg@mail.gmail.com>
+Subject: [GIT PULL] ACPI updates for v5.20-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 01, 2022 at 04:23:54PM +0900, Tomasz Figa wrote:
-> [Fixed Jacopo's email address.]
-> 
-> On Mon, Aug 1, 2022 at 4:17 PM Tomasz Figa <tfiga@chromium.org> wrote:
-> >
-> > On Thu, Apr 14, 2022 at 6:30 PM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > >
-> > > Hi Laurent,
-> > >
-> > > On Tue, Mar 29, 2022 at 04:02:54PM +0300, Laurent Pinchart wrote:
-> > > > Hi Sakari,
-> > > >
-> > > > On Mon, Mar 14, 2022 at 11:11:18PM +0200, Sakari Ailus wrote:
-> > > > > On Mon, Mar 14, 2022 at 10:05:37PM +0200, Laurent Pinchart wrote:
-> > > > > ...
-> > > > > > > > Yes, after reading the version register (or doing any other harware
-> > > > > > > > access). Actually the full code would be
-> > > > > > > >
-> > > > > > > >
-> > > > > > > >       pm_runtime_enable(dev);
-> > > > > > > >       pm_runtime_resume_and_get(dev);
-> > > > > > > >
-> > > > > > > >       /* Hardware access */
-> > > > > > > >
-> > > > > > > >       pm_runtime_set_autosuspend_delay(dev, 1000);
-> > > > > > > >       pm_runtime_use_autosuspend(dev);
-> > > > > > > >       pm_runtime_put_autosuspend(dev);
-> > > > > > > >
-> > > > > > > > (plus error handling).
-> > > > > > > >
-> > > > > > > > If the probe function doesn't need to access the hardware, then
-> > > > > > > > the above becomes
-> > > > > > > >
-> > > > > > > >       pm_runtime_enable(dev);
-> > > > > > > >       pm_runtime_set_autosuspend_delay(dev, 1000);
-> > > > > > > >       pm_runtime_use_autosuspend(dev);
-> > > > > > > >
-> > > > > > > > instead of having to power up the device just in case !PM.
-> > > > > > > >
-> > > > > > > > > Also the latter only works on DT-based systems so it's not an option for
-> > > > > > > > > most of the drivers.
-> > > >
-> > > > Does the former work on ACPI systems ?
-> > >
-> > > Yes (i.e. the one that was above the quoted text).
-> > >
-> > > >
-> > > > > > > > How so, what's wrong with the above for ACPI-based system ?
-> > > > > > >
-> > > > > > > I涎 devices are already powered on for probe on ACPI based systems.
-> > > > > >
-> > > > > > Not through RPM I suppose ?
-> > > > >
-> > > > > Runtime PM isn't involved, this takes place in the ACPI framework (via
-> > > > > dev_pm_domain_attach() called in i2c_device_probe()).
-> > > >
-> > > > How can we fix this ? It may have made sense a long time ago, but it's
-> > > > making RPM handling way too difficult in I2C drivers now. We need
-> > > > something better instead of continuing to rely on cargo-cult for probe
-> > > > functions. Most drivers are broken.
-> > >
-> > > Some could be broken, there's no question of that. A lot of drivers support
-> > > either ACPI or DT, too, so not _that_ many need to work with both. Albeit
-> > > that number is probably increasing constantly for the same devices are used
-> > > on both.
-> > >
-> > > Then there are drivers that prefer not powering on the device in probe (see
-> > > <URL:https://lore.kernel.org/linux-acpi/20210210230800.30291-2-sakari.ailus@linux.intel.com/T/>),
-> > > it gets complicated to support all the combinatios of DT/ACPI (with or
-> > > without the flag / property for waiving powering device on for probe) and
-> > > CONFIG_PM enabled/disabled.
-> > >
-> > > What I think could be done to add a flag for drivers that handle power on
-> > > their own, or perhaps rather change how I2C_DRV_ACPI_WAIVE_D0_PROBE flag
-> > > works. Right now it expects a property on the device but that check could
-> > > be moved to existing drivers using the flag. Not many drivers are currently
-> > > using the flag. I think this would simplify driver implementation as both
-> > > firmware interfaces would work the same way in this respect.
-> > >
-> > > You'd have to change one driver at a time, and people should be encouraged
-> > > to write new drivers with that flag. Or add the flag to all existing
-> > > drivers and not accept new ones with it.
-> > >
-> > > These devices I think are all I涎 but my understanding is that such
-> > > differences exist elsewhere in the kernel, too. If they are to be
-> > > addressed, it would probably be best to have a unified approach towards it.
-> > >
-> > > Added a few more people and lists to cc.
-> >
-> > + Hidenori from my team for visibility.
-> >
-> > I think we may want to take a step back and first define the problem
-> > itself. To do that, let's take a look separately at DT and ACPI cases
-> > (is platform data still relevant? are there any other firmware
-> > interfaces that deal with I2C devices?).
-> > For simplicity, let's forget about the ACPI waived power on in probe.
-> >
-> > DT:
-> >  1) hardware state unknown when probe is called
-> >  2) claim any independently managed resources (e.g. GPIOs)
-> >  3) enable runtime PM
-> >  4) if driver wants to access the hardware:
-> >     a) runtime PM get
-> >     b) enable any independently controlled resources (e.g. reset GPIO)
+Hi Linus,
 
-A small precision here, the resource handling is usually done in the
-runtime PM resume/suspend handlers.
+Please pull from the tag
 
-> >     c) [do access]
-> >     d) disable any independently controlled resources
-> >     e) runtime PM put
-> >  5) after probe returns, regulators, clocks (and other similarly
-> >     managed resources) would be force disabled if their enable count is 0
-> >  6) hardware state is off (after the runtime PM state settles)
-> >
-> > ACPI:
-> >  1) hardware state is active when probe is called
-> >  2) [n/a]
-> >  3) tell runtime PM framework that the state is active and then enable
-> >     runtime PM
-> >  4) if driver wants to access the hardware:
-> >     a) runtime PM get
-> >     b) [n/a]
-> >     c) [do access]
-> >     d) [n/a]
-> >     e) runtime PM put
-> >  5) [n/a]
-> >  6) hardware state is off (after the runtime PM state settles)
-> >
-> > It seems like the relevant difference here is that for ACPI, the
-> > driver needs to know that the initial state is active and also relay
-> > this knowledge to the runtime PM subsystem. If we could make the ACPI
-> > PM domain work the same way as regulators and clocks and eventually
-> > power off some time later when the enable count is 0, then perhaps we
-> > could avoid the problem in the first place?
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.20-rc1
 
-Two additional questions if we're brainstorming this:
+with top-most commit 6352f3478a95cc413ecfee4fdb3300009fd3679a
 
-- Why is the I2C device hardware state active when probe is called, and
-  would there be a way to change that (that is, beside the obvious issue
-  that the transition could be painful, are there any other reasons to
-  keep the status quo) ?
+ Merge branches 'acpi-video', 'acpi-pci' and 'acpi-docs'
 
-- If we have to keep this difference between the ACPI and DT models, how
-  can we handle them in core code instead of drivers ? In particular,
-  how could code core inform the RPM framework about the initial device
-  state instead of leaving it to the driver ?
+on top of commit e0dccc3b76fb35bb257b4118367a883073d7390e
 
-There's large set of RPM-related calls that have to be performed at
-probe time in a very specific order, interleaved with manual power
-handling. That is way over the threshold of what can be reasonably
-expected from driver developers. I don't care much how it's done, but
-this has to be dumbed down to make it dead simple in drivers.
+ Linux 5.19-rc8
 
--- 
-Regards,
+to receive ACPI updates for 5.20-rc1.
 
-Laurent Pinchart
+These rework the handling of ACPI device objects to use the driver
+core facilities for managing child ones instead of some questionable
+home-grown ways without the requisite locking and reference counting,
+clean up the EC driver, improve suspend-to-idle handling on x86, add
+some systems to the ACPI backlight quirk list, fix some assorted
+issues, clean up code and improve documentation.
+
+Specifics:
+
+ - Use facilities provided by the driver core and some additional
+   helpers to handle the children of a given ACPI device object in
+   multiple places instead of using the children and node list heads in
+   struct acpi_device which is error prone (Rafael Wysocki).
+
+ - Fix ACPI-related device reference counting issue in the hisi_lpc bus
+   driver (Yang Yingliang).
+
+ - Drop the children and node list heads that are not needed any more
+   from struct acpi_device (Rafael Wysocki).
+
+ - Drop driver member from struct acpi_device (Uwe Kleine-König).
+
+ - Drop redundant check from acpi_device_remove() (Uwe Kleine-König).
+
+ - Prepare the CPPC library for handling backwards-compatible future
+   _CPC return package formats gracefully (Rafael Wysocki).
+
+ - Clean up the ACPI EC driver after previous changes in it (Hans
+   de Goede).
+
+ - Drop leftover acpi_processor_get_limit_info() declaration (Riwen
+   Lu).
+
+ - Split out thermal initialization from ACPI PSS (Riwen Lu).
+
+ - Annotate more functions in the ACPI CPU idle driver to live in the
+   cpuidle section (Guilherme G. Piccoli).
+
+ - Fix _EINJ vs "special purpose" EFI memory regions (Dan Williams).
+
+ - Implement a better fix to avoid spamming the console with old error
+   logs (Tony Luck).
+
+ - Fix typo in a comment in the APEI code (Xiang wangx).
+
+ - Save NVS memory during transitions into S3 on Lenovo G40-45 (Manyi
+   Li).
+
+ - Add support for upcoming AMD uPEP device ID AMDI008 to the ACPI
+   suspend-to-idle driver for x86 platforms (Shyam Sundar S K).
+
+ - Clean up checks related to the ACPI_FADT_LOW_POWER_S0 platform flag
+   in the LPIT table driver and the suspend-to-idle driver for x86
+   platforms (Rafael Wysocki).
+
+ - Print information messages regarding declared LPS0 idle support in
+   the platform firmware (Rafael Wysocki).
+
+ - Fix missing check in register_device_clock() in the ACPI driver for
+   Intel SoCs (huhai).
+
+ - Fix ACS setup in the VIOT table parser (Eric Auger).
+
+ - Skip IRQ override on AMD Zen platforms where it's harmful (Chuanhong
+   Guo).
+
+ - Use native backlight on Dell Inspiron N4010 (Hans de Goede).
+
+ - Use native backlight on some TongFang devices (Werner Sembach).
+
+ - Drop X86 dependency from the ACPI backlight driver Kconfig (Riwen
+   Lu).
+
+ - Shorten the quirk list in the ACPI backlight driver by identifying
+   Clevo by board_name only (Werner Sembach).
+
+ - Remove useless NULL pointer checks from 2 ACPI PCI link management
+   functions (Andrey Strachuk).
+
+ - Fix obsolete example in the ACPI EINJ documentation (Qifu Zhang).
+
+ - Update links and references to _DSD-related documents (Sudeep
+   Holla).
+
+Thanks!
+
+
+---------------
+
+Andrey Strachuk (1):
+      ACPI/PCI: Remove useless NULL pointer checks
+
+Chuanhong Guo (1):
+      ACPI: resource: skip IRQ override on AMD Zen platforms
+
+Dan Williams (1):
+      ACPI: APEI: Fix _EINJ vs EFI_MEMORY_SP
+
+Eric Auger (1):
+      ACPI: VIOT: Fix ACS setup
+
+Guilherme G. Piccoli (1):
+      ACPI: processor/idle: Annotate more functions to live in cpuidle section
+
+Hans de Goede (5):
+      ACPI: EC: Remove duplicate ThinkPad X1 Carbon 6th entry from DMI quirks
+      ACPI: EC: Drop the EC_FLAGS_IGNORE_DSDT_GPE quirk
+      ACPI: EC: Re-use boot_ec when possible even when
+EC_FLAGS_TRUST_DSDT_GPE is set
+      ACPI: EC: Drop unused ident initializers from dmi_system_id tables
+      ACPI: video: Use native backlight on Dell Inspiron N4010
+
+Manyi Li (1):
+      ACPI: PM: save NVS memory for Lenovo G40-45
+
+Qifu Zhang (1):
+      Documentation: ACPI: EINJ: Fix obsolete example
+
+Rafael J. Wysocki (21):
+      ACPI: glue: Use acpi_dev_for_each_child()
+      ACPI: glue: Introduce acpi_dev_has_children()
+      ACPI: glue: Introduce acpi_find_child_by_adr()
+      thunderbolt: ACPI: Replace tb_acpi_find_port() with
+acpi_find_child_by_adr()
+      USB: ACPI: Replace usb_acpi_find_port() with acpi_find_child_by_adr()
+      ACPI: container: Use acpi_dev_for_each_child()
+      ACPI: property: Use acpi_dev_for_each_child() for child lookup
+      ACPI: bus: Export acpi_dev_for_each_child() to modules
+      ACPI: video: Use acpi_dev_for_each_child()
+      ACPI: bus: Introduce acpi_dev_for_each_child_reverse()
+      ACPI: scan: Walk ACPI device's children using driver core
+      platform/x86/thinkpad_acpi: Use acpi_dev_for_each_child()
+      soundwire: Use acpi_dev_for_each_child()
+      ACPI / MMC: PM: Unify fixing up device power
+      mfd: core: Use acpi_dev_for_each_child()
+      hisi_lpc: Use acpi_dev_for_each_child()
+      ACPI: bus: Drop unused list heads from struct acpi_device
+      Revert "ACPI / PM: LPIT: Register sysfs attributes based on FADT"
+      ACPI: PM: s2idle: Use LPS0 idle if ACPI_FADT_LOW_POWER_S0 is unset
+      ACPI: PM: x86: Print messages regarding LPS0 idle support
+      ACPI: CPPC: Do not prevent CPPC from working in the future
+
+Riwen Lu (3):
+      ACPI: video: Drop X86 dependency from Kconfig
+      ACPI: processor: Split out thermal initialization from ACPI PSS
+      ACPI: processor: Drop leftover acpi_processor_get_limit_info() declaration
+
+Shyam Sundar S K (1):
+      ACPI: PM: s2idle: Add support for upcoming AMD uPEP HID AMDI008
+
+Sudeep Holla (1):
+      Documentation: ACPI: Update links and references to DSD related docs
+
+Tony Luck (1):
+      ACPI: APEI: Better fix to avoid spamming the console with old error logs
+
+Uwe Kleine-König (2):
+      ACPI: bus: Drop redundant check in acpi_device_remove()
+      ACPI: bus: Drop driver member of struct acpi_device
+
+Werner Sembach (2):
+      ACPI: video: Force backlight native for some TongFang devices
+      ACPI: video: Shortening quirk list by identifying Clevo by board_name only
+
+Xiang wangx (1):
+      ACPI: APEI: Fix double word in a comment
+
+Yang Yingliang (1):
+      bus: hisi_lpc: fix missing platform_device_put() in hisi_lpc_acpi_probe()
+
+huhai (1):
+      ACPI: LPSS: Fix missing check in register_device_clock()
+
+---------------
+
+ .../firmware-guide/acpi/DSD-properties-rules.rst   |  11 +-
+ Documentation/firmware-guide/acpi/apei/einj.rst    |   2 +-
+ drivers/acpi/Kconfig                               |   4 +-
+ drivers/acpi/Makefile                              |   5 +-
+ drivers/acpi/acpi_lpit.c                           |   6 -
+ drivers/acpi/acpi_lpss.c                           |   3 +
+ drivers/acpi/acpi_video.c                          |  41 ++---
+ drivers/acpi/apei/apei-base.c                      |   2 +-
+ drivers/acpi/apei/bert.c                           |  31 +++-
+ drivers/acpi/apei/einj.c                           |   2 +
+ drivers/acpi/bus.c                                 |  47 +++--
+ drivers/acpi/container.c                           |  17 +-
+ drivers/acpi/cppc_acpi.c                           |  54 +++---
+ drivers/acpi/device_pm.c                           |  22 +++
+ drivers/acpi/device_sysfs.c                        |   2 +-
+ drivers/acpi/ec.c                                  | 140 +++++---------
+ drivers/acpi/glue.c                                | 133 ++++++++++----
+ drivers/acpi/pci_link.c                            |   8 +-
+ drivers/acpi/processor_driver.c                    |  72 +-------
+ drivers/acpi/processor_idle.c                      |   6 +-
+ drivers/acpi/processor_thermal.c                   |  54 ++++++
+ drivers/acpi/property.c                            |  45 ++---
+ drivers/acpi/resource.c                            |  10 +
+ drivers/acpi/scan.c                                |  70 +++----
+ drivers/acpi/sleep.c                               |  11 ++
+ drivers/acpi/video_detect.c                        |  63 +++++--
+ drivers/acpi/viot.c                                |  26 ++-
+ drivers/acpi/x86/s2idle.c                          |  17 +-
+ drivers/bus/hisi_lpc.c                             | 204 ++++++++++-----------
+ drivers/mfd/mfd-core.c                             |  31 +++-
+ drivers/mmc/host/sdhci-acpi.c                      |   7 +-
+ drivers/mmc/host/sdhci-pci-core.c                  |  11 +-
+ drivers/platform/x86/thinkpad_acpi.c               |  53 +++---
+ drivers/soundwire/slave.c                          | 117 +++++++-----
+ drivers/thunderbolt/acpi.c                         |  29 +--
+ drivers/usb/core/usb-acpi.c                        |  18 +-
+ include/acpi/acpi_bus.h                            |   9 +-
+ include/acpi/cppc_acpi.h                           |   2 +-
+ include/acpi/processor.h                           |   9 +-
+ include/linux/acpi_viot.h                          |   2 +
+ 40 files changed, 748 insertions(+), 648 deletions(-)
