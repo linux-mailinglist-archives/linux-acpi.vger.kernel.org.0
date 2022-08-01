@@ -2,255 +2,231 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B68E5871CB
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Aug 2022 21:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EFBF587282
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Aug 2022 22:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234307AbiHATxh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Aug 2022 15:53:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42052 "EHLO
+        id S234182AbiHAUwx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Aug 2022 16:52:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232649AbiHATxg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Aug 2022 15:53:36 -0400
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3C6762E1;
-        Mon,  1 Aug 2022 12:53:35 -0700 (PDT)
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-32269d60830so120390717b3.2;
-        Mon, 01 Aug 2022 12:53:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc;
-        bh=0v6TbsxxrY2rW0RsMJwBCQ0Z1bJeBDSjf5C1NGUUv9U=;
-        b=SSPU9nqGBUlS6JqwE81fs4R9cJuMwE5u6Fz3HW7nGqS457phkOO/zQE3I15xY5YkGf
-         wi+quFAEmiuiiiZINgOjeVPOU5WADlTfll9G+fUm+m97SZpaRHmuGj70RO8Z2XnGXYJj
-         l6Gxak6K+IjuvhlIhkx6CLu4K8kVblyL71QRWCDyicmY6j9RN8yEh/xsj0mM+VZikQjD
-         SPeCFN/uuG7ycljoUH317JabJlqrYtU9P/oqszaySRfoE40TPpZuXxT3EbLSDJ70dD/o
-         KBFAsZj0CrBmvsgI9hmmE3dN0remzLDrEcyzDN4aGCRe1fTm+0Pm/QmtyHtVIKq9V9Sl
-         m9NQ==
-X-Gm-Message-State: ACgBeo0VfJix8MUUsrK159SoNW9k9n0eC537yBBFXC3Cf/at3R3MNd8I
-        KSoD1Ij45HanMxDr0g51Se/hn73k3TGAu03I9JwytxsAVpU/5w==
-X-Google-Smtp-Source: AA6agR5qyI2WP0GnZStHyUT2dYQho0ujsdtPbdORfj58jWveOLDhl8yZTBFUO5/t/v6dgIJSl7fWAxFnyFnkxSSTGaw=
-X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
- b145-20020a811b97000000b002db640f49d8mr14333553ywb.326.1659383614932; Mon, 01
- Aug 2022 12:53:34 -0700 (PDT)
+        with ESMTP id S234079AbiHAUwx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Aug 2022 16:52:53 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B700032EF5;
+        Mon,  1 Aug 2022 13:52:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1659387170; x=1690923170;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Q080o7ke6jEv77NTqadDBXECQjH5oskETOi0vYy1iSs=;
+  b=dZadDSboDlW5DKttx+jp3amN4H+pf02JdSpOMMyFMn6WNTa7LoA1hCsn
+   jMUs8xXIlmFfUcmqUZFJKxj+RenwfQY/l8DB0Mc2ZJs7UhPOBGchLvHzY
+   isj3PSASUh75J92oVaKFszBfXoVwrzLtsmvvxzr5GNhdoj/OITXb89MmE
+   nIEs0TlTKSI7yN4UskjSfVWHD3ykPknBkXOFLIuBx9c79YXDooktxp2KP
+   N0mAKiYcl6QnsMB4Ym1RbjZPZBwB1vPnjK4PZuBh9ZCtZVsAUh7tBTG2X
+   4j4rqn0prbaJIfAcxIhOXCCmE5HNkPr3O4cR/0viGI+UoY4wco4G9iSpD
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10426"; a="286807599"
+X-IronPort-AV: E=Sophos;i="5.93,209,1654585200"; 
+   d="scan'208";a="286807599"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2022 13:39:39 -0700
+X-IronPort-AV: E=Sophos;i="5.93,209,1654585200"; 
+   d="scan'208";a="577925699"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2022 13:39:33 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id EDF28203B7;
+        Mon,  1 Aug 2022 23:39:30 +0300 (EEST)
+Date:   Mon, 1 Aug 2022 20:39:30 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Tomasz Figa <tfiga@chromium.org>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Paul Elder <paul.elder@ideasonboard.com>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        "Paul J. Murphy" <paul.j.murphy@intel.com>,
+        Martina Krasteva <martinax.krasteva@intel.com>,
+        Shawn Tu <shawnx.tu@intel.com>, Arec Kao <arec.kao@intel.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Jimmy Su <jimmy.su@intel.com>,
+        Martin Kepplinger <martink@posteo.de>,
+        Daniel Scally <djrscally@gmail.com>,
+        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        linux-media@vger.kernel.org, rafael@kernel.org,
+        linux-acpi@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
+        bingbu.cao@intel.com, andriy.shevchenko@intel.com,
+        "hidenorik@chromium.org" <hidenorik@chromium.org>,
+        jacopo mondi <jacopo@jmondi.org>
+Subject: Re: [PATCH v2] media: ov5640: Use runtime PM
+Message-ID: <Yug6Apa23KghjCVW@paasikivi.fi.intel.com>
+References: <Yi3rQGmeXQD70Tkh@pendragon.ideasonboard.com>
+ <Yi3z2nR8j+ee4E4m@paasikivi.fi.intel.com>
+ <Yi38zOHsh68FrrKK@pendragon.ideasonboard.com>
+ <Yi+e/IK+eVpKit/F@paasikivi.fi.intel.com>
+ <Yi+gEVB0FuOcY5qn@pendragon.ideasonboard.com>
+ <Yi+vdvMeXqb/BvKo@paasikivi.fi.intel.com>
+ <YkMDfvuhAvsrjbON@pendragon.ideasonboard.com>
+ <YlfplRQYDYhFvc5U@paasikivi.fi.intel.com>
+ <CAAFQd5C7-OuNpnduwKpZXFUPQKDeqkz2xkvP+JBBs+aNjB87FQ@mail.gmail.com>
+ <CAAFQd5Bgx2u6quaCobrKEFjMPqP1S-HihCo-XP0k_OhAEUDm-g@mail.gmail.com>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 1 Aug 2022 21:53:19 +0200
-Message-ID: <CAJZ5v0hX=o5nCmYgLekz_XMRfQcdPyFjC+=+BqEAvetNGD3ASw@mail.gmail.com>
-Subject: [GIT PULL] Thermal control updates for v5.20-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAFQd5Bgx2u6quaCobrKEFjMPqP1S-HihCo-XP0k_OhAEUDm-g@mail.gmail.com>
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+Hi Tomasz,
 
-Please pull from the tag
+On Mon, Aug 01, 2022 at 04:23:54PM +0900, Tomasz Figa wrote:
+> [Fixed Jacopo's email address.]
+> 
+> On Mon, Aug 1, 2022 at 4:17 PM Tomasz Figa <tfiga@chromium.org> wrote:
+> >
+> > On Thu, Apr 14, 2022 at 6:30 PM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
+> > >
+> > > Hi Laurent,
+> > >
+> > > On Tue, Mar 29, 2022 at 04:02:54PM +0300, Laurent Pinchart wrote:
+> > > > Hi Sakari,
+> > > >
+> > > > On Mon, Mar 14, 2022 at 11:11:18PM +0200, Sakari Ailus wrote:
+> > > > > On Mon, Mar 14, 2022 at 10:05:37PM +0200, Laurent Pinchart wrote:
+> > > > > ...
+> > > > > > > > Yes, after reading the version register (or doing any other harware
+> > > > > > > > access). Actually the full code would be
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >       pm_runtime_enable(dev);
+> > > > > > > >       pm_runtime_resume_and_get(dev);
+> > > > > > > >
+> > > > > > > >       /* Hardware access */
+> > > > > > > >
+> > > > > > > >       pm_runtime_set_autosuspend_delay(dev, 1000);
+> > > > > > > >       pm_runtime_use_autosuspend(dev);
+> > > > > > > >       pm_runtime_put_autosuspend(dev);
+> > > > > > > >
+> > > > > > > > (plus error handling).
+> > > > > > > >
+> > > > > > > > If the probe function doesn't need to access the hardware, then
+> > > > > > > > the above becomes
+> > > > > > > >
+> > > > > > > >       pm_runtime_enable(dev);
+> > > > > > > >       pm_runtime_set_autosuspend_delay(dev, 1000);
+> > > > > > > >       pm_runtime_use_autosuspend(dev);
+> > > > > > > >
+> > > > > > > > instead of having to power up the device just in case !PM.
+> > > > > > > >
+> > > > > > > > > Also the latter only works on DT-based systems so it's not an option for
+> > > > > > > > > most of the drivers.
+> > > >
+> > > > Does the former work on ACPI systems ?
+> > >
+> > > Yes (i.e. the one that was above the quoted text).
+> > >
+> > > >
+> > > > > > > > How so, what's wrong with the above for ACPI-based system ?
+> > > > > > >
+> > > > > > > I涎 devices are already powered on for probe on ACPI based systems.
+> > > > > >
+> > > > > > Not through RPM I suppose ?
+> > > > >
+> > > > > Runtime PM isn't involved, this takes place in the ACPI framework (via
+> > > > > dev_pm_domain_attach() called in i2c_device_probe()).
+> > > >
+> > > > How can we fix this ? It may have made sense a long time ago, but it's
+> > > > making RPM handling way too difficult in I2C drivers now. We need
+> > > > something better instead of continuing to rely on cargo-cult for probe
+> > > > functions. Most drivers are broken.
+> > >
+> > > Some could be broken, there's no question of that. A lot of drivers support
+> > > either ACPI or DT, too, so not _that_ many need to work with both. Albeit
+> > > that number is probably increasing constantly for the same devices are used
+> > > on both.
+> > >
+> > > Then there are drivers that prefer not powering on the device in probe (see
+> > > <URL:https://lore.kernel.org/linux-acpi/20210210230800.30291-2-sakari.ailus@linux.intel.com/T/>),
+> > > it gets complicated to support all the combinatios of DT/ACPI (with or
+> > > without the flag / property for waiving powering device on for probe) and
+> > > CONFIG_PM enabled/disabled.
+> > >
+> > > What I think could be done to add a flag for drivers that handle power on
+> > > their own, or perhaps rather change how I2C_DRV_ACPI_WAIVE_D0_PROBE flag
+> > > works. Right now it expects a property on the device but that check could
+> > > be moved to existing drivers using the flag. Not many drivers are currently
+> > > using the flag. I think this would simplify driver implementation as both
+> > > firmware interfaces would work the same way in this respect.
+> > >
+> > > You'd have to change one driver at a time, and people should be encouraged
+> > > to write new drivers with that flag. Or add the flag to all existing
+> > > drivers and not accept new ones with it.
+> > >
+> > > These devices I think are all I涎 but my understanding is that such
+> > > differences exist elsewhere in the kernel, too. If they are to be
+> > > addressed, it would probably be best to have a unified approach towards it.
+> > >
+> > > Added a few more people and lists to cc.
+> >
+> > + Hidenori from my team for visibility.
+> >
+> > I think we may want to take a step back and first define the problem
+> > itself. To do that, let's take a look separately at DT and ACPI cases
+> > (is platform data still relevant? are there any other firmware
+> > interfaces that deal with I2C devices?).
+> > For simplicity, let's forget about the ACPI waived power on in probe.
+> >
+> > DT:
+> >  1) hardware state unknown when probe is called
+> >  2) claim any independently managed resources (e.g. GPIOs)
+> >  3) enable runtime PM
+> >  4) if driver wants to access the hardware:
+> >     a) runtime PM get
+> >     b) enable any independently controlled resources (e.g. reset GPIO)
+> >     c) [do access]
+> >     d) disable any independently controlled resources
+> >     e) runtime PM put
+> >  5) after probe returns, regulators, clocks (and other similarly
+> > managed resources) would be force disabled if their enable count is 0
+> >  6) hardware state is off (after the runtime PM state settles)
+> >
+> > ACPI:
+> >  1) hardware state is active when probe is called
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-5.20-rc1
+This isn't a property of ACPI as such, but rather what I²C core does
+to ACPI devices before calling probe (or after remove).
 
-with top-most commit da9d01794e31714a90a38e395c14723fb46f90b0
+> >  2) [n/a]
+> >  3) tell runtime PM framework that the state is active and then enable
+> > runtime PM
+> >  4) if driver wants to access the hardware:
+> >     a) runtime PM get
+> >     b) [n/a]
+> >     c) [do access]
+> >     d) [n/a]
+> >     e) runtime PM put
+> >  5) [n/a]
+> >  6) hardware state is off (after the runtime PM state settles)
+> >
+> > It seems like the relevant difference here is that for ACPI, the
+> > driver needs to know that the initial state is active and also relay
+> > this knowledge to the runtime PM subsystem. If we could make the ACPI
+> > PM domain work the same way as regulators and clocks and eventually
+> > power off some time later when the enable count is 0, then perhaps we
+> > could avoid the problem in the first place?
 
- Merge tag 'thermal-v5.20-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/thermal/linux
+-- 
+Regards,
 
-on top of commit 32346491ddf24599decca06190ebca03ff9de7f8
-
- Linux 5.19-rc6
-
-to receive thermal control updates for 5.20-rc1.
-
-These start a rework of the handling of trip points in the thermal
-core, improve the cpufreq/devfreq cooling device handling, update
-some thermal control drivers and the tmon utility and clean up code.
-
-Specifics:
-
- - Consolidate the thermal core code by beginning to move the thermal
-   trip structure from the thermal OF code as a generic structure to be
-   used by the different sensors when registering a thermal zone
-   (Daniel Lezcano).
-
- - Make per cpufreq / devfreq cooling device ops instead of using a
-   global variable, fix comments and rework the trace information
-   (Lukasz Luba).
-
- - Add the include/dt-bindings/thermal.h under the area covered by the
-   thermal maintainer in the MAINTAINERS file (Lukas Bulwahn).
-
- - Improve the error output by giving the sensor identification when a
-   thermal zone failed to initialize, the DT bindings by changing the
-   positive logic and adding the r8a779f0 support on the rcar3 (Wolfram
-   Sang).
-
- - Convert the QCom tsens DT binding to the dtsformat format (Krzysztof
-   Kozlowski).
-
- - Remove the pointless get_trend() function in the QCom, Ux500 and
-   tegra thermal drivers, along with the unused DROP_FULL and
-   RAISE_FULL trends definitions. Simplify the code by using clamp()
-   macros (Daniel Lezcano).
-
- - Fix ref_table memory leak at probe time on the k3_j72xx bandgap
-   (Bryan Brattlof).
-
- - Fix array underflow in prep_lookup_table (Dan Carpenter).
-
- - Add static annotation to the k3_j72xx_bandgap_j7* data structure
-   (Jin Xiaoyun).
-
- - Fix typos in comments detected on sun8i by Coccinelle (Julia
-   Lawall).
-
- - Fix typos in comments on rzg2l (Biju Das).
-
- - Remove as unnecessary call to dev_err() as the error is already
-   printed by the failing function on u8500 (Yang Li).
-
- - Register the thermal zones as hwmon sensors for the Qcom thermal
-   sensors (Dmitry Baryshkov).
-
- - Fix 'tmon' tool compilation issue by adding phtread.h include
-   (Markus Mayer).
-
- - Fix typo in the comments for the 'tmon' tool (Slark Xiao).
-
- - Make the thermal core use ida_alloc()/free() directly instead of
-   ida_simple_get()/ida_simple_remove() that have been deprecated
-   (keliu).
-
- - Drop ACPI_FADT_LOW_POWER_S0 check from the Intel PCH thermal control
-   driver (Rafael Wysocki).
-
-Thanks!
-
-
----------------
-
-Biju Das (1):
-      thermal/drivers/rzg2l: Fix comments
-
-Bryan Brattlof (1):
-      thermal/drivers/k3_j72xx_bandgap: Fix ref_table memory leak during probe
-
-Dan Carpenter (1):
-      thermal/drivers/k3_j72xx_bandgap: Fix array underflow in
-prep_lookup_table()
-
-Daniel Lezcano (16):
-      thermal/drivers/qcom: Remove get_trend function
-      thermal/drivers/tegra: Remove get_trend function
-      thermal/drivers/u8500: Remove the get_trend function
-      thermal/core: Use clamp() helper in the stepwise governor
-      thermal/core: Remove DROP_FULL and RAISE_FULL
-      thermal/core: Avoid calling ->get_trip_temp() unnecessarily
-      thermal/core: Remove duplicate information when an error occurs
-      thermal/of: Replace device node match with device node search
-      thermal/of: Remove the device node pointer for thermal_trip
-      thermal/of: Move thermal_trip structure to thermal.h
-      thermal/core: Remove unneeded EXPORT_SYMBOLS
-      thermal/core: Move thermal_set_delay_jiffies to static
-      thermal/core: Rename 'trips' to 'num_trips'
-      thermal/core: Add thermal_trip in thermal_zone
-      thermal/of: Use thermal trips stored in the thermal zone
-      thermal/of: Initialize trip points separately
-
-Dmitry Baryshkov (2):
-      thermal/drivers/qcom/temp-alarm: Register thermal zones as hwmon sensors
-      thermal/drivers/qcom/spmi-adc-tm5: Register thermal zones as hwmon sensors
-
-Jason Wang (1):
-      thermal/ti-soc-thermal: Fix comment typo
-
-Jiang Jian (1):
-      thermal: intel: x86_pkg_temp_thermal: Drop duplicate 'is' from comment
-
-Jin Xiaoyun (1):
-      thermal/drivers/k3_j72xx_bandgap: Make
-k3_j72xx_bandgap_j721e_data and k3_j72xx_bandgap_j7200_data static
-
-Julia Lawall (1):
-      thermal/drivers/sun8i: Fix typo in comment
-
-Krzysztof Kozlowski (1):
-      dt-bindings: thermal: qcom,spmi-temp-alarm: convert to dtschema
-
-Lukas Bulwahn (1):
-      MAINTAINERS: add include/dt-bindings/thermal to THERMAL
-
-Lukasz Luba (4):
-      drivers/thermal/cpufreq_cooling: Use private callback ops for
-each cooling device
-      drivers/thermal/cpufreq_cooling : Refactor
-thermal_power_cpu_get_power tracing
-      drivers/thermal/cpufreq_cooling: Update outdated comments
-      drivers/thermal/devfreq_cooling: Extend the
-devfreq_cooling_device with ops
-
-Markus Mayer (1):
-      thermal/tools/tmon: Include pthread and time headers in tmon.h
-
-Rafael J. Wysocki (1):
-      intel: thermal: PCH: Drop ACPI_FADT_LOW_POWER_S0 check
-
-Slark Xiao (1):
-      thermal/tools/tmon: Fix typo 'the the' in comment
-
-Wolfram Sang (3):
-      drivers/thermal/rcar_gen3_thermal: Improve logging during probe
-      dt-bindings: thermal: rcar-gen3-thermal: use positive logic
-      dt-bindings: thermal: rcar-gen3-thermal: Add r8a779f0 support
-
-Yang Li (1):
-      thermal/drivers/u8500: Remove unnecessary print function dev_err()
-
-keliu (1):
-      thermal: Directly use ida_alloc()/free()
-
----------------
-
- .../bindings/thermal/qcom,spmi-temp-alarm.yaml     |  85 +++++++++
- .../bindings/thermal/qcom-spmi-temp-alarm.txt      |  51 ------
- .../bindings/thermal/rcar-gen3-thermal.yaml        |  36 ++--
- MAINTAINERS                                        |   1 +
- drivers/thermal/cpufreq_cooling.c                  |  77 +++-----
- drivers/thermal/db8500_thermal.c                   |  34 +---
- drivers/thermal/devfreq_cooling.c                  |  27 +--
- drivers/thermal/gov_fair_share.c                   |   6 +-
- drivers/thermal/gov_power_allocator.c              |   4 +-
- drivers/thermal/gov_step_wise.c                    |  26 +--
- drivers/thermal/intel/intel_pch_thermal.c          |   8 -
- drivers/thermal/intel/x86_pkg_temp_thermal.c       |   2 +-
- drivers/thermal/k3_j72xx_bandgap.c                 |  13 +-
- drivers/thermal/qcom/qcom-spmi-adc-tm5.c           |   5 +
- drivers/thermal/qcom/qcom-spmi-temp-alarm.c        |   5 +
- drivers/thermal/qcom/tsens.c                       |  12 --
- drivers/thermal/qcom/tsens.h                       |   2 -
- drivers/thermal/rcar_gen3_thermal.c                |   4 +-
- drivers/thermal/rzg2l_thermal.c                    |  18 +-
- drivers/thermal/sun8i_thermal.c                    |   2 +-
- drivers/thermal/tegra/soctherm.c                   |  32 ----
- drivers/thermal/tegra/tegra30-tsensor.c            |   2 +-
- drivers/thermal/thermal_core.c                     |  79 ++++----
- drivers/thermal/thermal_core.h                     |  15 --
- drivers/thermal/thermal_helpers.c                  |  13 +-
- drivers/thermal/thermal_netlink.c                  |   2 +-
- drivers/thermal/thermal_of.c                       | 201 ++++++++++++---------
- drivers/thermal/thermal_sysfs.c                    |  22 +--
- drivers/thermal/ti-soc-thermal/ti-bandgap.c        |   2 +-
- include/linux/thermal.h                            |  26 ++-
- include/trace/events/thermal.h                     |  28 +--
- tools/thermal/tmon/pid.c                           |   2 +-
- tools/thermal/tmon/tmon.h                          |   3 +
- 33 files changed, 397 insertions(+), 448 deletions(-)
+Sakari Ailus
