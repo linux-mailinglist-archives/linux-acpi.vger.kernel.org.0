@@ -2,248 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 476FC58A07B
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Aug 2022 20:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9161B58A4BE
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Aug 2022 04:32:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239973AbiHDS0h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Aug 2022 14:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57910 "EHLO
+        id S234619AbiHECc3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Aug 2022 22:32:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbiHDS0f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Aug 2022 14:26:35 -0400
+        with ESMTP id S231175AbiHECc2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Aug 2022 22:32:28 -0400
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 957336BD73;
-        Thu,  4 Aug 2022 11:26:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7998417A84;
+        Thu,  4 Aug 2022 19:32:26 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D0A6A113E;
-        Thu,  4 Aug 2022 11:26:33 -0700 (PDT)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 046BA3F73B;
-        Thu,  4 Aug 2022 11:26:31 -0700 (PDT)
-Message-ID: <a26d8edc-a3a6-8f95-0e7a-c9f60ee04462@arm.com>
-Date:   Thu, 4 Aug 2022 19:26:27 +0100
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BEA0C113E;
+        Thu,  4 Aug 2022 19:32:26 -0700 (PDT)
+Received: from entos-ampere-02.shanghai.arm.com (entos-ampere-02.shanghai.arm.com [10.169.212.215])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2F7DD3F73B;
+        Thu,  4 Aug 2022 19:32:21 -0700 (PDT)
+From:   Jia He <justin.he@arm.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>
+Cc:     Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-edac@vger.kernel.org, Jia He <justin.he@arm.com>
+Subject: [PATCH] ACPI: APEI: move edac_init ahead of ghes platform drv register
+Date:   Fri,  5 Aug 2022 02:32:00 +0000
+Message-Id: <20220805023200.154634-1-justin.he@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] ACPI / scan: Support multiple dma windows with different
- offsets
-Content-Language: en-GB
-To:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Jianmin Lv <lvjianmin@loongson.cn>
-Cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
-        lenb@kernel.org, robert.moore@intel.com,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <1659255431-22796-1-git-send-email-lvjianmin@loongson.cn>
- <e12706ef-70de-08b6-ada0-818d03b8c2f5@loongson.cn>
- <YuvJLxa5zsMj1pGf@lpieralisi>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <YuvJLxa5zsMj1pGf@lpieralisi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 04/08/2022 2:27 pm, Lorenzo Pieralisi wrote:
-> [+Robin]
-> 
-> On Thu, Aug 04, 2022 at 05:59:23PM +0800, Jianmin Lv wrote:
->> Hi, all
->>
->> Can anybody help to review the patch, or I missed somebody else?
-> 
-> I will review the patch - added Robin since it affects the DMA
-> ranges handling.
+Commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in
+apci_init()") introduced a bug that invoking ghes_edac_register()
+before edac_init(). Because at that time, the bus "edac" hasn't been
+registered, this created sysfs /devices/mc0 instead of
+/sys/devices/system/edac/mc/mc0 and caused a sysfs dup splat on an
+Ampere eMag server:
+ sysfs: cannot create duplicate filename '/devices/mc0'
+ CPU: 19 PID: 1 Comm: swapper/0 Not tainted 5.19.0+ #138
+ random: crng init done
+ Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
+ Call trace:
+  sysfs_warn_dup+0x6c/0x88
+  sysfs_create_dir_ns+0xec/0x108
+  kobject_add_internal+0xc0/0x328
+  kobject_add+0x94/0x108
+  device_add+0x104/0x8b0
+  pmu_dev_alloc+0xb4/0x128
+  perf_pmu_register+0x308/0x438
+  xgene_pmu_dev_add+0x168/0x2c8
+  acpi_pmu_dev_add+0x1f0/0x370
+  acpi_ns_walk_namespace+0x16c/0x1ec
+  acpi_walk_namespace+0xb0/0xf8
+  xgene_pmu_probe+0x6b8/0x8a0
+  platform_probe+0x70/0xe0
+  really_probe+0x164/0x3b0
+  __driver_probe_device+0x11c/0x190
+  driver_probe_device+0x44/0xf8
+  __driver_attach+0xc4/0x1b8
+  bus_for_each_dev+0x78/0xd0
+  driver_attach+0x2c/0x38
+  bus_add_driver+0x150/0x240
+  driver_register+0x6c/0x128
+  __platform_driver_register+0x30/0x40
+  xgene_pmu_driver_init+0x24/0x30
+  do_one_initcall+0x50/0x248
+  kernel_init_freeable+0x284/0x328
+  kernel_init+0x2c/0x140
+  ret_from_fork+0x10/0x20
+ kobject_add_internal failed for mc0 with -EEXIST, don't try to register things with the same name in the same
 
-Thanks Lorenzo!
+This patch fixes it by moving edac_init() into acpi_ghes_init() and ahead of
+platform_driver_register().
 
-> 
-> Lorenzo
-> 
->> Thanks!
->>
->> On 2022/7/31 下午4:17, Jianmin Lv wrote:
->>> For DT, of_dma_get_range returns bus_dma_region typed dma regions,
->>> which makes multiple dma windows with different offset available
->>> for translation between dma address and cpu address.
->>>
->>> But for ACPI, acpi_dma_get_range doesn't return similar dma regions,
->>> causing no path for setting dev->dma_range_map conveniently. So the
->>> patch changes acpi_dma_get_range and returns bus_dma_region typed
->>> dma regions according to of_dma_get_range.
->>>
->>> After changing acpi_dma_get_range, original part of internal code
->>> only available for ARM is moved to acpi_arch_dma_setup for remaining
->>> unchanged.
+Fixes: dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
+Signed-off-by: Jia He <justin.he@arm.com>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+---
+ drivers/acpi/apei/ghes.c   | 1 +
+ drivers/edac/edac_module.c | 3 +--
+ include/linux/edac.h       | 1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-This seems a bit silly. If we've finally done the work to parse a proper 
-dma_range_map, we can use it; no need to artificially maintain the old 
-dma_pfn_offset limitation. TBH I wouldn't even preserve the dmaaddr and 
-size calculations as they are either, just set dev->bus_dma_limit based 
-on the highest entry in the map, and pass 0 and U64_MAX to 
-arch_setup_dma_ops() since those are basically meaningless now (I plan 
-to remove them entirely once I unpick the IOMMU setup).
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index d91ad378c00d..1127dfffeeb0 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1462,6 +1462,7 @@ void __init acpi_ghes_init(void)
+ 	int rc;
+ 
+ 	sdei_init();
++	edac_init();
+ 
+ 	if (acpi_disabled)
+ 		return;
+diff --git a/drivers/edac/edac_module.c b/drivers/edac/edac_module.c
+index 32a931d0cb71..34ada2064b36 100644
+--- a/drivers/edac/edac_module.c
++++ b/drivers/edac/edac_module.c
+@@ -99,7 +99,7 @@ EXPORT_SYMBOL_GPL(edac_get_sysfs_subsys);
+  * edac_init
+  *      module initialization entry point
+  */
+-static int __init edac_init(void)
++int __init edac_init(void)
+ {
+ 	int err = 0;
+ 
+@@ -160,7 +160,6 @@ static void __exit edac_exit(void)
+ /*
+  * Inform the kernel of our entry and exit points
+  */
+-subsys_initcall(edac_init);
+ module_exit(edac_exit);
+ 
+ MODULE_LICENSE("GPL");
+diff --git a/include/linux/edac.h b/include/linux/edac.h
+index e730b3468719..104b22c2c177 100644
+--- a/include/linux/edac.h
++++ b/include/linux/edac.h
+@@ -30,6 +30,7 @@ struct device;
+ 
+ extern int edac_op_state;
+ 
++int __init edac_init(void);
+ struct bus_type *edac_get_sysfs_subsys(void);
+ 
+ static inline void opstate_init(void)
+-- 
+2.25.1
 
-Thanks,
-Robin.
-
->>> Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
->>>
->>> diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
->>> index f16739a..840f918 100644
->>> --- a/drivers/acpi/arm64/dma.c
->>> +++ b/drivers/acpi/arm64/dma.c
->>> @@ -9,6 +9,7 @@ void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
->>>    	int ret;
->>>    	u64 end, mask;
->>>    	u64 dmaaddr = 0, size = 0, offset = 0;
->>> +	const struct bus_dma_region *map = NULL;
->>>    	/*
->>>    	 * If @dev is expected to be DMA-capable then the bus code that created
->>> @@ -26,10 +27,37 @@ void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
->>>    	else
->>>    		size = 1ULL << 32;
->>> -	ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
->>> +	ret = acpi_dma_get_range(dev, &map);
->>>    	if (ret == -ENODEV)
->>>    		ret = iort_dma_get_ranges(dev, &size);
->>>    	if (!ret) {
->>> +		const struct bus_dma_region *r = map;
->>> +		u64 len, dma_start, dma_end = 0;
->>> +
->>> +		/* determine the overall bounds of all dma regions */
->>> +		for (dma_start = U64_MAX; r->size; r++) {
->>> +			if (offset && r->offset != offset) {
->>> +				dev_warn(dev, "Can't handle multiple windows with different offsets\n");
->>> +				return;
->>> +			}
->>> +			offset = r->offset;
->>> +
->>> +			/* Take lower and upper limits */
->>> +			if (r->dma_start < dma_start)
->>> +				dma_start = r->dma_start;
->>> +			if (r->dma_start + r->size - 1 > dma_end)
->>> +				dma_end = r->dma_start + r->size - 1;
->>> +		}
->>> +
->>> +		if (dma_start >= dma_end) {
->>> +			dev_dbg(dev, "Invalid DMA regions configuration\n");
->>> +			return;
->>> +		}
->>> +
->>> +		dmaaddr = dma_start;
->>> +		len = dma_end - dma_start;
->>> +		size = max(len, len + 1);
->>> +
->>>    		/*
->>>    		 * Limit coherent and dma mask based on size retrieved from
->>>    		 * firmware.
->>> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
->>> index 762b61f..8961b51 100644
->>> --- a/drivers/acpi/scan.c
->>> +++ b/drivers/acpi/scan.c
->>> @@ -20,6 +20,7 @@
->>>    #include <linux/platform_data/x86/apple.h>
->>>    #include <linux/pgtable.h>
->>>    #include <linux/crc32.h>
->>> +#include <linux/dma-direct.h>
->>>    #include "internal.h"
->>> @@ -1492,15 +1493,15 @@ enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
->>>     *
->>>     * Return 0 on success, < 0 on failure.
->>>     */
->>> -int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
->>> -		       u64 *size)
->>> +int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
->>>    {
->>>    	struct acpi_device *adev;
->>>    	LIST_HEAD(list);
->>>    	struct resource_entry *rentry;
->>>    	int ret;
->>>    	struct device *dma_dev = dev;
->>> -	u64 len, dma_start = U64_MAX, dma_end = 0, dma_offset = 0;
->>> +	int num_ranges = 0;
->>> +	struct bus_dma_region *r;
->>>    	/*
->>>    	 * Walk the device tree chasing an ACPI companion with a _DMA
->>> @@ -1525,31 +1526,31 @@ int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
->>>    	ret = acpi_dev_get_dma_resources(adev, &list);
->>>    	if (ret > 0) {
->>> +		list_for_each_entry(rentry, &list, node)
->>> +			num_ranges++;
->>> +
->>> +		r = kcalloc(num_ranges + 1, sizeof(*r), GFP_KERNEL);
->>> +		if (!r) {
->>> +			ret = -ENOMEM;
->>> +			goto out;
->>> +		}
->>> +
->>> +		*map = r;
->>> +
->>>    		list_for_each_entry(rentry, &list, node) {
->>> -			if (dma_offset && rentry->offset != dma_offset) {
->>> +			if (rentry->res->start >= rentry->res->end) {
->>>    				ret = -EINVAL;
->>> -				dev_warn(dma_dev, "Can't handle multiple windows with different offsets\n");
->>> +				dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
->>>    				goto out;
->>>    			}
->>> -			dma_offset = rentry->offset;
->>> -
->>> -			/* Take lower and upper limits */
->>> -			if (rentry->res->start < dma_start)
->>> -				dma_start = rentry->res->start;
->>> -			if (rentry->res->end > dma_end)
->>> -				dma_end = rentry->res->end;
->>> -		}
->>> -		if (dma_start >= dma_end) {
->>> -			ret = -EINVAL;
->>> -			dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
->>> -			goto out;
->>> +			r->cpu_start = rentry->res->start;
->>> +			r->dma_start = rentry->res->start - rentry->offset;
->>> +			r->size = rentry->res->end - rentry->res->start + 1;
->>> +			r->offset = rentry->offset;
->>> +			r++;
->>>    		}
->>> -		*dma_addr = dma_start - dma_offset;
->>> -		len = dma_end - dma_start;
->>> -		*size = max(len, len + 1);
->>> -		*offset = dma_offset;
->>>    	}
->>>     out:
->>>    	acpi_dev_free_resource_list(&list);
->>> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
->>> index 0dc1ea0b..e106073 100644
->>> --- a/include/acpi/acpi_bus.h
->>> +++ b/include/acpi/acpi_bus.h
->>> @@ -611,8 +611,7 @@ struct acpi_pci_root {
->>>    int acpi_iommu_fwspec_init(struct device *dev, u32 id,
->>>    			   struct fwnode_handle *fwnode,
->>>    			   const struct iommu_ops *ops);
->>> -int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
->>> -		       u64 *size);
->>> +int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map);
->>>    int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
->>>    			   const u32 *input_id);
->>>    static inline int acpi_dma_configure(struct device *dev,
->>> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
->>> index 44975c1..f806092 100644
->>> --- a/include/linux/acpi.h
->>> +++ b/include/linux/acpi.h
->>> @@ -974,8 +974,7 @@ static inline enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
->>>    	return DEV_DMA_NOT_SUPPORTED;
->>>    }
->>> -static inline int acpi_dma_get_range(struct device *dev, u64 *dma_addr,
->>> -				     u64 *offset, u64 *size)
->>> +static inline int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
->>>    {
->>>    	return -ENODEV;
->>>    }
->>>
->>
