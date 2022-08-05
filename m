@@ -2,110 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1609658AEA1
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Aug 2022 19:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F3158AEDA
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Aug 2022 19:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236261AbiHERIV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Aug 2022 13:08:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60246 "EHLO
+        id S238346AbiHER1g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Aug 2022 13:27:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231585AbiHERIU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Aug 2022 13:08:20 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC60D3CBCB;
-        Fri,  5 Aug 2022 10:08:17 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id 123so4710825ybv.7;
-        Fri, 05 Aug 2022 10:08:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=0hkyQR/P6tkKTyA1L+y5V9deL6+UATBvdrUuSMJew0U=;
-        b=8JRd/lkrCOu3hRP4RzSuDivhE38TXq185YM6hGTGEdAKl/EzM1vrCb0rUtti+0L6KG
-         EUdRvmbb0t51trSqer8aqEaM+Gx2E5PWrkZqBMHBlVKDiCRMuWtfhkPjj/seHExoWSu8
-         AhU+413wp9Zz7Y8B1yDNMib3bzx86VwuG5wrMMHgQO0FNSxBWW5gd8HU10jkbL9RPyuM
-         Ql5VBJf6cLwHWldt4TtSpjDeQIgZg4ejQMZHF+3feCSxm26M6CXkXofnEoIdTFHQAocc
-         fzLOZBDcE9D3f2atpARxEB4mNizgIXJFV8J1xysEKMZYdvMeV+h/ir2kbIJNZiDCjXG1
-         mFaQ==
-X-Gm-Message-State: ACgBeo3wjCMHFPGtfVUZysC7Ls8/OP+oHi22gkazZZpattgWWG4V+2Nj
-        Fh/IbF3bqSFPCDaIn2cq8FRfI62YW8f+B9kBfOg=
-X-Google-Smtp-Source: AA6agR7OOxmn5DzC9Hls1wBqCFIQ7cNtxZK7yQCmGxofvLM47vaHV4/Ss8lGiWgJeQvJdrIwF2wvCj/qmkxWbgdEgQQ=
-X-Received: by 2002:a5b:40a:0:b0:677:a43b:dcd3 with SMTP id
- m10-20020a5b040a000000b00677a43bdcd3mr5716170ybp.622.1659719296723; Fri, 05
- Aug 2022 10:08:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <12042830.O9o76ZdvQC@kreacher> <1c7fa65d-47ab-b064-9087-648bcfbf4ab5@amd.com>
-In-Reply-To: <1c7fa65d-47ab-b064-9087-648bcfbf4ab5@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 5 Aug 2022 19:08:05 +0200
-Message-ID: <CAJZ5v0ie7B=GvhbfBsi7Zxu+=YzYKUqvUNs6dNZQfT3CRm=KPg@mail.gmail.com>
-Subject: Re: [PATCH] i2c: ACPI: Do not check ACPI_FADT_LOW_POWER_S0
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        with ESMTP id S232674AbiHER1f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Aug 2022 13:27:35 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75E7A186F7;
+        Fri,  5 Aug 2022 10:27:34 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
+ id de963a4a6f2d3e75; Fri, 5 Aug 2022 19:27:32 +0200
+Received: from kreacher.localnet (public-gprs522492.centertel.pl [31.61.160.61])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id C219866CECD;
+        Fri,  5 Aug 2022 19:27:31 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-input <linux-input@vger.kernel.org>,
-        "rrangel@chromium.org" <rrangel@chromium.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
+        Zhang Rui <rui.zhang@intel.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-rtc@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>
+Subject: [PATCH] rtc: rtc-cmos: Do not check ACPI_FADT_LOW_POWER_S0
+Date:   Fri, 05 Aug 2022 19:27:30 +0200
+Message-ID: <4771532.31r3eYUQgx@kreacher>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-CLIENT-IP: 31.61.160.61
+X-CLIENT-HOSTNAME: public-gprs522492.centertel.pl
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrvdefuddgudduiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepfedurdeiuddrudeitddriedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepfedurdeiuddrudeitddriedupdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeekpdhrtghpthhtoheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrrdiiuhhmmhhosehtohifvghrthgvtghhrdhithdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
+ pehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhrthgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 5, 2022 at 6:59 PM Limonciello, Mario
-<mario.limonciello@amd.com> wrote:
->
-> On 8/5/2022 11:51, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
-> > use low-power S0 idle on the given platform than S3 (provided that
-> > the latter is supported) and it doesn't preclude using either of
-> > them (which of them will be used depends on the choices made by user
-> > space).
-> >
-> > Because of that, ACPI_FADT_LOW_POWER_S0 is generally not sufficient
-> > for making decisions in device drivers and so i2c_hid_acpi_probe()
-> > should not use it.
-> >
-> > Moreover, Linux always supports suspend-to-idle, so if a given
-> > device can wake up the system from suspend-to-idle, then it can be
-> > marked as wakeup capable unconditionally, so make that happen in
-> > i2c_hid_acpi_probe().
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> +Raul
-> +Hans
-> +KH
->
-> Raul had a patch that was actually going to just tear out this code
-> entirely:
-> https://lkml.kernel.org/lkml/20211220163823.1.Ie20ca47a26d3ea68124d8197b67bb1344c67f650@changeid/
->
-> As part of that patch series discussion another suggestion had
-> transpired
-> (https://patchwork.kernel.org/project/linux-input/patch/20211220163823.2.Id022caf53d01112188308520915798f08a33cd3e@changeid/#24681016):
->
-> ```
-> if ((acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0) &&
->             !adev->flags.power_manageable) {
->                  device_set_wakeup_capable(dev, true);
->                  device_set_wakeup_enable(dev, false);
->          }
-> ```
->
-> If this is being changed, maybe consider that suggestion to
-> check `adev->flags.power_manageable`.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Fair enough, I'll send a v2 with this check added.
+The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
+use low-power S0 idle on the given platform than S3 (provided that
+the latter is supported) and it doesn't preclude using either of
+them (which of them will be used depends on the choices made by user
+space).
+
+For this reason, there is no benefit from checking that flag in
+use_acpi_alarm_quirks().
+
+First off, it cannot be a bug to do S3 with use_acpi_alarm set,
+because S3 can be used on systems with ACPI_FADT_LOW_POWER_S0 and it
+must work if really supported, so the ACPI_FADT_LOW_POWER_S0 check is
+not needed to protect the S3-capable systems from failing.
+
+Second, suspend-to-idle can be carried out on a system with
+ACPI_FADT_LOW_POWER_S0 unset and it is expected to work, so if setting
+use_acpi_alarm is needed to handle that case correctly, it should be
+set regardless of the ACPI_FADT_LOW_POWER_S0 value.
+
+Accodringly, drop the ACPI_FADT_LOW_POWER_S0 check from
+use_acpi_alarm_quirks().
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/rtc/rtc-cmos.c |    3 ---
+ 1 file changed, 3 deletions(-)
+
+Index: linux-pm/drivers/rtc/rtc-cmos.c
+===================================================================
+--- linux-pm.orig/drivers/rtc/rtc-cmos.c
++++ linux-pm/drivers/rtc/rtc-cmos.c
+@@ -1260,9 +1260,6 @@ static void use_acpi_alarm_quirks(void)
+ 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
+ 		return;
+ 
+-	if (!(acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0))
+-		return;
+-
+ 	if (!is_hpet_enabled())
+ 		return;
+ 
+
+
+
