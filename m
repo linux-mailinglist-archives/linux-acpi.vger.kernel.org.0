@@ -2,181 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D25EE58AEE0
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Aug 2022 19:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36ADB58B016
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Aug 2022 20:55:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238307AbiHER3n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Aug 2022 13:29:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44080 "EHLO
+        id S237004AbiHESz3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Aug 2022 14:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231281AbiHER3m (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Aug 2022 13:29:42 -0400
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2066.outbound.protection.outlook.com [40.107.102.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46422183BE;
-        Fri,  5 Aug 2022 10:29:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=S26jVAF3EtSspLjSmzn8QrbQQ+x2tK3pIsZuCUbTPBg3C6H6GBUb+dqDPuTne98rw1wMkyyWDO1yMEOnfU6CEYZ+KDF+aueJHWIabnthuxJkG/7ShAfr1Z1Xjh1T2mH2dHYzGWorbU/2eCEibs58vIC45bdFoPlhuFUPLjozTxQOsFk7qER1GPlKxBoez+CjoCYGPwcLCbBis+YOW3ZGEKQtPjbckPhw+T3RtL9Y+Kviv4NpOlJYjxvsjmGDhYZRrQlOT/doq+30iQQnQELtZRepsumOb3qmoDQrr7fsbSuHc5kX04vcrlYQY/klxQy61jomKxD+hWEz5czYg9akNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nw3pLmbOG2xdCTz3gDkLexOPsWMWnmGxKNUBQwIqxvY=;
- b=Z5S94Yyh/mPccRyCKVeMP8VALWo67WUxgdALabj8Hc6ti+mldZjDsNfNq5IvYYI+lEUE3LTTm8THrUZsFhBI8OPla/rOWz841bRe0KO0lDYMnUQ6MByOgObFxEiDs7c0poXTNF6lEHjeKNi8V3qtoYcOOLffA9O0d2444WchczMWb3T7loygzb9ajrshHi7lZ6AZu4GcPZu10TPb/0UoiwWJABluZTowniRDNihXfl/g2i8OMa3flK3dZ5rbZMnPipxRRC0h/dwkXsEcLFzVCh7blkWCMpLRUxh+X+1MZlypfTWDEge+F5d21ThSXrIpXT1FU6zsSehWzCOt3zxrfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nw3pLmbOG2xdCTz3gDkLexOPsWMWnmGxKNUBQwIqxvY=;
- b=oJW+S+S654YLsRXM9Vzjr0tIKCumB5im90MdaSy/BdamMGKytT/0izIrqgrVRigWw1PgEoyBVPyZgBjB+LoKzy62zlx87SRUnLUfsYlAI5yWabD4BHLm3D3MIp1q/l2uzOlYA5mS5uL+u6CM4bAO8TVoNNnBov1XxUXk0P8fFuM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by MW2PR12MB4681.namprd12.prod.outlook.com (2603:10b6:302:12::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.14; Fri, 5 Aug
- 2022 17:29:37 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::4489:9a98:ef82:6c67]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::4489:9a98:ef82:6c67%3]) with mapi id 15.20.5504.016; Fri, 5 Aug 2022
- 17:29:36 +0000
-Message-ID: <f253a352-caf3-49fb-17d3-0265b472d4c6@amd.com>
-Date:   Fri, 5 Aug 2022 12:29:34 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] rtc: rtc-cmos: Do not check ACPI_FADT_LOW_POWER_S0
+        with ESMTP id S236448AbiHESz0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Aug 2022 14:55:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6D40E65AC
+        for <linux-acpi@vger.kernel.org>; Fri,  5 Aug 2022 11:55:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1659725723;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=BDp276yUUX4Aq7Lw1Vcvvjg+TcgvBmhKuGUKBBWce3s=;
+        b=Eoolt+gEQJN8hZmMW9R5fz8keUwsphsj2Lce3uIMUX68GpSslxKdf/sNJnSFQtvEiZCmz/
+        Wvdy3gkDY1nLiKOBrRAy/gJJEhTSBfqqSFjjxXFpPrNyCpe58ZW7CJP+SCKCGmlHtINq+P
+        R0O8Huim+sqjjsgaJMD+2w/x7h89Ai4=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-94-DEhn2KGBPbOFZjc-Alr5-Q-1; Fri, 05 Aug 2022 14:54:58 -0400
+X-MC-Unique: DEhn2KGBPbOFZjc-Alr5-Q-1
+Received: by mail-ed1-f72.google.com with SMTP id i5-20020a05640242c500b0043e50334109so2105309edc.1
+        for <linux-acpi@vger.kernel.org>; Fri, 05 Aug 2022 11:54:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=BDp276yUUX4Aq7Lw1Vcvvjg+TcgvBmhKuGUKBBWce3s=;
+        b=UcCpSmtFQ/Hl0kOxCdTuaZw5TM+OyBhMZ0yPH26hEu7jq3MX+Ewi/+soXkGinA0Gtq
+         LeGbZjOvuzyh550njitAxr2+DQYhK2eHVJQQhvxtMhZQcG6WJnOo8UeJRWB0CuGKamLv
+         ZNeKbCUU2G2FxopvOwKPfuWzVfLpgVhf9u/3+b7lwhXDGDTu8GXPZKYlHq8otWwxim90
+         hWT7FWe03aY0tVDeVy1FMaXZ66cqRdCwNb9YQWtfLqkLwlkjkNKDgPjJm24WONJzKuZb
+         TlZQQ4CkGYQ15Kxoompxcxb+HFxMmF3KARAUJ+LUflp3qoY6KGr3ruGj5Y/SykXqu9Xp
+         NmKg==
+X-Gm-Message-State: ACgBeo0NggQK0IAxsaEqOt02rq47ZhB1KDRiKvKTvt9httdemjo/GMBS
+        6Q7gSqA9Tn/7fVrsLlxyAbV2khGthLCXf5JyQy+OQrO5m/12HFi9l+/Eq7TsmjEt0DhEO3IGPP7
+        ZDVX7HoS4IBIOHmzLmzvzVQ==
+X-Received: by 2002:a05:6402:5510:b0:43a:76ff:b044 with SMTP id fi16-20020a056402551000b0043a76ffb044mr7952585edb.197.1659725687515;
+        Fri, 05 Aug 2022 11:54:47 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR6vSDUmuhy8SNVKrSUvHQBCekrCrZpuX/JqEMaS4y/X5mw8bYCugwAR6VtXtJYgmQagU0KKgw==
+X-Received: by 2002:a05:6402:5510:b0:43a:76ff:b044 with SMTP id fi16-20020a056402551000b0043a76ffb044mr7952572edb.197.1659725687344;
+        Fri, 05 Aug 2022 11:54:47 -0700 (PDT)
+Received: from [192.168.43.127] ([109.38.137.199])
+        by smtp.gmail.com with ESMTPSA id u25-20020aa7d999000000b0043bc19efc15sm300898eds.28.2022.08.05.11.54.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Aug 2022 11:54:46 -0700 (PDT)
+Message-ID: <a2d2b61e-87c0-ee39-ea4e-3c575da0a66c@redhat.com>
+Date:   Fri, 5 Aug 2022 20:54:45 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH] i2c: ACPI: Do not check ACPI_FADT_LOW_POWER_S0
 Content-Language: en-US
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Alessandro Zummo <a.zummo@towertech.it>,
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, linux-rtc@vger.kernel.org,
-        Linux PM <linux-pm@vger.kernel.org>
-References: <4771532.31r3eYUQgx@kreacher>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <4771532.31r3eYUQgx@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-input <linux-input@vger.kernel.org>,
+        "rrangel@chromium.org" <rrangel@chromium.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+References: <12042830.O9o76ZdvQC@kreacher>
+ <1c7fa65d-47ab-b064-9087-648bcfbf4ab5@amd.com>
+ <CAJZ5v0ie7B=GvhbfBsi7Zxu+=YzYKUqvUNs6dNZQfT3CRm=KPg@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAJZ5v0ie7B=GvhbfBsi7Zxu+=YzYKUqvUNs6dNZQfT3CRm=KPg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR05CA0005.namprd05.prod.outlook.com (2603:10b6:610::18)
- To MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4aa752a1-510a-45ab-5a15-08da770811b8
-X-MS-TrafficTypeDiagnostic: MW2PR12MB4681:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +4JR4N+wy5jK4EyI1PmP1WopqT3IhYt4ZaqrGBC22Jn8W75/r0z+PXvrVbzcI5tF+9SZmV2GXdgilJB2A5HUfX8DT6IQ8O8E+Ot1ixoJtyN5yM/+McUmRfQFNFmTqWlQsKRhK2KgNIs8lNGQ5Or/EYQ6F0oB4+Vjw3sxd02eewk7iMl9lUU8HvwVpNDL9EvE+R7IQrabY4VBg9ECIHz8L28dDw3mjgO1Nge5NRnngEUQFCqz5XYqjW65Sj4y9ai6i45o+IUD6uKx/jBKhnqbHWNLnWmFGpVhYlhTwQMzcLIn3nvR5/95WMqPuTL74gOIWai8yrGMA+5Y2VgX9YzTvZeg2YahklBDtM5ai6AZmqp7gN9xdbmLErh5VBGqFlY1+F7NwhipfvjlKZiv40bYArqpaFJVi5nrRBDjQmnj8d9Yz9oejl/DIpYHEA1VyPKwpJZdzQRqRE0454fKkvOR7cVMGaWx1MCaFL2TW0/v6KRxM5INuBRoJOS3OVLBS4n82wa5PlcwegxdthbN+jCNS33sLw1LQHe4LkGCNiBrLV31tp1UesumvWuECABXN7Dgg6SCpsWT1RFuFpl0Tw0cjdXz/aqUd5G2Ywe0R9B9ArTGK5scGcT+7usHcsmxmZYCOO6ri7t+bD2zkjaUnrmkgl9MCBEYWl4GRys4mJURDoXdj4s2qaeMsA74plQSEODGKm42PqHJkU0eFnPuAq3C2zRmGDaGTSGwAbsuhCnKV7nxTJI5RtcvwtxjH22s/iSYf9tAEJq8pUV8ZdgLHvfXmpsxZ25hVHoakAbXvv1R0nmQh4rkVN21jH5lZhFjXr1jgHpLdAJh1jMeO67JnlYF5ulGy5Vg1FlTBjgSymYXEgnZWfa65kGJ2UCDEVPUBvbx
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(39860400002)(396003)(346002)(366004)(376002)(38100700002)(31696002)(53546011)(86362001)(6506007)(2906002)(316002)(36756003)(31686004)(41300700001)(8936002)(26005)(54906003)(6486002)(6512007)(83380400001)(84970400001)(8676002)(66476007)(66556008)(66946007)(110136005)(478600001)(2616005)(186003)(4326008)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WGQvSzNQRUxpR2ZIZjg5TUF5RjI3ZVRhRzhCV2dmS3FReE9nQmdIRllHd1Z6?=
- =?utf-8?B?SnlSYTZETzROZWJiREVGeXJpbVg5MTJ1V3JvT3BINXNSZ3M5TWpLRWVuNDFB?=
- =?utf-8?B?aE9MV3owbWRvOUsyWFJ4V0dUcE8wY21tWGQxeFBxbFhzMDJPQTdCd3ZrZjhm?=
- =?utf-8?B?eEsxTFRHeDNvOS8yanMrNk83cGxNMnplb1lSZkdJUHY0UWFHbmFlangrMWhh?=
- =?utf-8?B?YXJWQ2VDN2JnMW1OdTdTY01NeURBa3NJdEZXQzV1MkdnRjVLTDN1ZWEvbEp1?=
- =?utf-8?B?d2FrcGwrR0h5RXpaZHhMYTdQZlhNK1dPWW8xcHVtelNUVk9oMlJVaExKWHV3?=
- =?utf-8?B?WmZzaDJCdDVsMUsrMDRLZmxhdHFiekRSVm9rRnNlS3o5OTlFQVdQMXZTZEQ5?=
- =?utf-8?B?d25lOWZuTEhXYWRSNkcxNFgxQjRmWis2Q1B6amNDaDArazFIM1g3bTJnc3U5?=
- =?utf-8?B?RUhidys0ZU8rRTZtZVZiSzhyYndEZkNGdmlsMXVLSGw5cWRhSm9uOC82blQw?=
- =?utf-8?B?MXFBdE1JbGprbWU1UnpWeXdpTUN4MzRIMmF4TkxQK0hDK3pUT0pHNDR4TFNt?=
- =?utf-8?B?dldwalYwbTNMYzR3WjlReE9pVXIzZnYrdWdHRm4vOEFpZGFJbkZkSVlESGZ6?=
- =?utf-8?B?YUFwcE9DMGhPdW9pZUxtd2xiVGJFeUFkNmlDbE9JUStYc2dxWXU1L1RORUFn?=
- =?utf-8?B?SlZNVkNPVHFaVUhiM2RSWkFiL3NYOUIrRVVqSWtjRk0rSTcwYlUzbjlzaW52?=
- =?utf-8?B?NkZXZHlwcGRibWhIQlN3N2plZjI3TkJ1SUFvVFRlTGFvR0pkckFnNmk2NFZi?=
- =?utf-8?B?d3dyZXRaRTlmaTlabW8vQnovVFVadDd5ZnB4bHoxQ01UMlFtakFoMkVoVEgx?=
- =?utf-8?B?eW5TdFplK0ROclZ1WUVYTFJVenpmallDdUE5QW5DR1ZpMVlVaWo0LzArdlJz?=
- =?utf-8?B?Vm5zZlhDNmliQ240QXkyT3ZFTGphWnNOdUpldHc5UXdPekNsTDBIb2o3L2N6?=
- =?utf-8?B?TGtzdmUyYVo0UHB0T3BjVzFjcEdOVHk2RDZ1WUM1d0F5SHlvR2lCOEFhWVpT?=
- =?utf-8?B?ZjlhNHZXUnJVSTRMQW5uc0NjN2UraElvWUZ0ZWhUMk5JN3VxZGZLWmsySVcy?=
- =?utf-8?B?VVQybjc1UmZ4aEhEamk5UzZxWDZpRG01OXlZWXJ6NjRTSkU1ZXVmaTNnVzFj?=
- =?utf-8?B?d2pWbHFYRXlqQ0RNMkxteVFLRVVBckJyWVFFaFJjdDZKWHIyTDFyMEpQUkVE?=
- =?utf-8?B?MTI1dGlaMmZhL2lxK3U1eS9hcUh0MFQrRVlQMzJEeU5HNXRZelNSQUUrdEhZ?=
- =?utf-8?B?aVg0eW9HMm45RkpZZUE5dFhETWZqcVoxNnFnSk5XdGhSdzRjeitHM1g5RGRQ?=
- =?utf-8?B?UGJoeitkU1h1enp1TjBIU2tNL0g1L2pFdU5mWmVRT2tpdkp1Q2t5YjNTblJu?=
- =?utf-8?B?N1dYQVI4SFc2enlySk1ZVFI2dlVFNm5uMWRyUlNYVkt2N0h0UWNUU2dqTmVW?=
- =?utf-8?B?M3dIcWtUNjk1THZ1azhkNUlRb2J0bWJaOHFHRWNjYmhvTDdod3I2bWtoT2Fk?=
- =?utf-8?B?UmNHaEVmdFA4SDN0UUJqbFVSa2E4cUFkQm9uVFhBY3pnWEJhbFNzd2t3alRM?=
- =?utf-8?B?WEpEZHBwNU9rcFd5OVVvZXJkWmFXV0lSTmxKRklOcG5MaE9DRjIrRGs0UG9h?=
- =?utf-8?B?L1dFTkRtMWJDeEpNRW5Ga0lyYVU0anV6Y2o2WFExZjJ0alNPZFRiZ0NWUWJD?=
- =?utf-8?B?bzlUaGZPSnVEaW1IcEVxVXBEZkxTblpJZlhVTzZPSGVJZ2NCcFBGR0JXcU5L?=
- =?utf-8?B?NXlWS2pncitrMWxneFdOenorRnJyc2lDVmVNYTROdTl3TDZrNm9PL3NOU1Bq?=
- =?utf-8?B?S0tmQ0JFRjYxejNqVVZEQytucjRQVXJKU0RGdzNCTC91UjRWTEtHNytMMjFQ?=
- =?utf-8?B?YVZraDlHT2JseWN6SUY1Ym9sMC9aRzlZVnZmYkVkQkJ1SzRxV2ZlMVhhZGJ1?=
- =?utf-8?B?b09vMVArdXh3SnBvNXRraHNKdDhYSjJWMXJqaVh1RHlOVHBpMjJEc2dVYkI4?=
- =?utf-8?B?R2lRVm8zVk5tS29yQkdhTjBod3lDdUVUVVlBTmhZWENJdzdhekVpSE5FS0Zw?=
- =?utf-8?Q?rOExe6gKQv6ikKOGsn6kRckoI?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4aa752a1-510a-45ab-5a15-08da770811b8
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2022 17:29:36.8178
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: scISQqz7jl82EZUbmTw8NvV5Bj/UzSBGwiu2ezM8U60d871Md+PIxYvAc/jCTqqppKLcxOIIQ4S3aj9VGY9W7Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR12MB4681
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 8/5/2022 12:27, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
-> use low-power S0 idle on the given platform than S3 (provided that
-> the latter is supported) and it doesn't preclude using either of
-> them (which of them will be used depends on the choices made by user
-> space).
-> 
-> For this reason, there is no benefit from checking that flag in
-> use_acpi_alarm_quirks().
-> 
-> First off, it cannot be a bug to do S3 with use_acpi_alarm set,
-> because S3 can be used on systems with ACPI_FADT_LOW_POWER_S0 and it
-> must work if really supported, so the ACPI_FADT_LOW_POWER_S0 check is
-> not needed to protect the S3-capable systems from failing.
-> 
-> Second, suspend-to-idle can be carried out on a system with
-> ACPI_FADT_LOW_POWER_S0 unset and it is expected to work, so if setting
-> use_acpi_alarm is needed to handle that case correctly, it should be
-> set regardless of the ACPI_FADT_LOW_POWER_S0 value.
-> 
-> Accodringly, drop the ACPI_FADT_LOW_POWER_S0 check from
+Hi,
 
-s/Accodringly/ ccordingly/
+On 8/5/22 19:08, Rafael J. Wysocki wrote:
+> On Fri, Aug 5, 2022 at 6:59 PM Limonciello, Mario
+> <mario.limonciello@amd.com> wrote:
+>>
+>> On 8/5/2022 11:51, Rafael J. Wysocki wrote:
+>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>
+>>> The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
+>>> use low-power S0 idle on the given platform than S3 (provided that
+>>> the latter is supported) and it doesn't preclude using either of
+>>> them (which of them will be used depends on the choices made by user
+>>> space).
+>>>
+>>> Because of that, ACPI_FADT_LOW_POWER_S0 is generally not sufficient
+>>> for making decisions in device drivers and so i2c_hid_acpi_probe()
+>>> should not use it.
+>>>
+>>> Moreover, Linux always supports suspend-to-idle, so if a given
+>>> device can wake up the system from suspend-to-idle, then it can be
+>>> marked as wakeup capable unconditionally, so make that happen in
+>>> i2c_hid_acpi_probe().
+>>>
+>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>
+>> +Raul
+>> +Hans
+>> +KH
+>>
+>> Raul had a patch that was actually going to just tear out this code
+>> entirely:
+>> https://lkml.kernel.org/lkml/20211220163823.1.Ie20ca47a26d3ea68124d8197b67bb1344c67f650@changeid/
+>>
+>> As part of that patch series discussion another suggestion had
+>> transpired
+>> (https://patchwork.kernel.org/project/linux-input/patch/20211220163823.2.Id022caf53d01112188308520915798f08a33cd3e@changeid/#24681016):
+>>
+>> ```
+>> if ((acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0) &&
+>>             !adev->flags.power_manageable) {
+>>                  device_set_wakeup_capable(dev, true);
+>>                  device_set_wakeup_enable(dev, false);
+>>          }
+>> ```
+>>
+>> If this is being changed, maybe consider that suggestion to
+>> check `adev->flags.power_manageable`.
+> 
+> Fair enough, I'll send a v2 with this check added.
 
-> use_acpi_alarm_quirks().
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Re-reading the original thread:
+https://lkml.kernel.org/lkml/20211220163823.1.Ie20ca47a26d3ea68124d8197b67bb1344c67f650@changeid/T/#u
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+The conclusion there was that the :
 
-> ---
->   drivers/rtc/rtc-cmos.c |    3 ---
->   1 file changed, 3 deletions(-)
-> 
-> Index: linux-pm/drivers/rtc/rtc-cmos.c
-> ===================================================================
-> --- linux-pm.orig/drivers/rtc/rtc-cmos.c
-> +++ linux-pm/drivers/rtc/rtc-cmos.c
-> @@ -1260,9 +1260,6 @@ static void use_acpi_alarm_quirks(void)
->   	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
->   		return;
->   
-> -	if (!(acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0))
-> -		return;
-> -
->   	if (!is_hpet_enabled())
->   		return;
->   
-> 
-> 
-> 
+                 device_set_wakeup_capable(dev, true);
+                 device_set_wakeup_enable(dev, false);
+
+Calls should be made conditional on the IRQ being
+marked ExclusiveAndWake instead of the ACPI_FADT_LOW_POWER_S0
+check.
+
+Regards,
+
+Hans
 
