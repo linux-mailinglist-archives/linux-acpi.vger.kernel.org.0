@@ -2,333 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC2BA58AB00
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Aug 2022 14:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 041BD58ABBC
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Aug 2022 15:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232174AbiHEMqR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Aug 2022 08:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
+        id S236298AbiHENlf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Aug 2022 09:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231492AbiHEMqQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Aug 2022 08:46:16 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6D1D813D28;
-        Fri,  5 Aug 2022 05:46:15 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A77E311FB;
-        Fri,  5 Aug 2022 05:46:15 -0700 (PDT)
-Received: from [10.57.74.3] (unknown [10.57.74.3])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 768BB3F67D;
-        Fri,  5 Aug 2022 05:46:13 -0700 (PDT)
-Message-ID: <c43edf84-c93d-e695-e3db-4592cdc8a3d1@arm.com>
-Date:   Fri, 5 Aug 2022 13:46:07 +0100
+        with ESMTP id S229640AbiHENle (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Aug 2022 09:41:34 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2044.outbound.protection.outlook.com [40.107.11.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3FEDDF44
+        for <linux-acpi@vger.kernel.org>; Fri,  5 Aug 2022 06:41:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GUbm7/BIqdufKKvMsQFtJimoCi1OaCUyMh4SXirP991+npFZtdv/X28klWgoRP5DIuX0htdfvsbIWHpZeSD8obE0JiKbtj2QtGNreYeTwfm4miF/RQXWc0ujJOba4bz2gehVCn8vh24PvG0xJ5yKcd8l1uHGm9Euy4Q9z6NcA931KjKYkj8sR1ZF9aDXaYfdZDEwVsHKTtrXFfdcjw1B/8d1wflZB5WiKL5cRM1j4jlngfRTroK0J3M5/PcgIPYAPcd+xzjgeKrzzrW748sNReZ9OHT3f2INSC9d7LjORAiPmicD0wS1zoEyRAQGMyb5x3OgSNI/Qe0N3oEWaH33vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LzG2nuyt5ZrU5N/a7RYOmeRzm1sx8Ab2gRsoYeJLJ1A=;
+ b=QeXJOkUmZ+rBaXdY7WjSnQkykiQ7UsVSfU+QjLCMlxA1NZE6A9v3k1lUzNfqNgF2wVME37nEGilMdveuehwYO92LjV13/gixY7ceXJNyNvn5iGd1QoxWyhXHX6zpaeA32i2ow5dkyL/OQjzM1zktSUExXyc/wS/+C2iWQ1Kcalp2ZANEQmWHFberltP+75uUsIyiP6rAap8GrpMUM2qQkbhQoQRRta3oxWMYkBHoYMdH0hkUTH8N1j6vwN2rBh0glpqeebKnN9wx4VrVI0y4kB3WF2BL5s2U0offvIgYO0QBonzEbPRy23k2a4MMNiA9mSzLQefCjAinkytPy7nPhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=phabrix.com; dmarc=pass action=none header.from=phabrix.com;
+ dkim=pass header.d=phabrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phabrix.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LzG2nuyt5ZrU5N/a7RYOmeRzm1sx8Ab2gRsoYeJLJ1A=;
+ b=nR9P4e6TaJOH9wss3XNA1glN6QRSxNrmehiprIqhRiMwpMuPvVe9GI9mPZj6vbB0VyiFeOYz/NHc3gTs+eNXLHQo354YqQKBrdW9QlRa29thrwuCZ+JSCXY6gZIWAOnRF5gSu/yKCgm0nmguQC5elPOD0ZJwAybJM5ziBAN78L4=
+Received: from CWXP265MB4508.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:179::5)
+ by LO4P265MB6170.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:27b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.14; Fri, 5 Aug
+ 2022 13:41:30 +0000
+Received: from CWXP265MB4508.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::a58f:5b1b:89bd:4f62]) by CWXP265MB4508.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::a58f:5b1b:89bd:4f62%4]) with mapi id 15.20.5504.016; Fri, 5 Aug 2022
+ 13:41:30 +0000
+From:   Chris Pringle <Chris.Pringle@phabrix.com>
+To:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: MFD ASL for KEMPLD
+Thread-Topic: MFD ASL for KEMPLD
+Thread-Index: AdiozwPse+4XCDExTTOdRTDKAJ3e/w==
+Date:   Fri, 5 Aug 2022 13:41:30 +0000
+Message-ID: <CWXP265MB45086577824516B96F8DEB4CEB9E9@CWXP265MB4508.GBRP265.PROD.OUTLOOK.COM>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=phabrix.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 892df1b5-6538-468c-ed37-08da76e83437
+x-ms-traffictypediagnostic: LO4P265MB6170:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: WRiCIIE9UYvELRyLhHGKWjOL69x70mnnz82l0XX7ayh5t2+FpRFln4/eYeHxzAtci38hawyj9jkyRRnBlwqIErMBMpu20/ueyU5pWhUJtlcAj7ZO/SlAJYY/O/ayhFloQhKQv+6cVKfB+bSsc1nf8P59qaIJhWdRmkVE4kyI7lsffTIivQ3SGczTYBv7WnZf/2H9nZ3w2aJyTl56KyDg2AtOJyWYRkpDDWyyG3trFdyEeBataX6z2lPXvZ4LuM8+1pGiZnZEkqlIKXSuli6frwBp+gb9jYRnOpfGio2IzdeLi0QkYx0W+qMURB9XCsrHgX3O7g02dxVJHt+nZWP1QmsHT0jBqsnmQOU1nOJSamjU2oVfE1zS2YTOH16LR33wgHrhAFSW4zJyXzHyDJG83ROGv0BBUvPhgoDsZEndow9HEPYruIcwqn99FOo93IEXwhkVWxwVPB0XUX706A2/+rgmmuViSCPAMoHc4vk2bZ5FePEdsvTgnzRf9ppqLM0/hbXsnuZ2X2IrJjiURNmd5kEEbXeZ5N/m0c6lKPVj5aEj4zmbIm16ACkrvvLg7EGpatj7MMkG2nvRiZhoeb6evrsOAO6kN1qOvwoQdiAXN0yryddRIzNQ1VqvYXquuGKsL6DlNzxyEvjrV7lkKaYFoJPrY1mewEy7EHmOQqsTO7Z7NMfn3wfrpBzOSqM4u1Sqqiqh2fvwbUn9hNIu1dTRA8J+6IHGQtQEryuaytxeLAif+/KLMfRtozfPyGTqHAMZodwapht+eANU3bOcNjfbCLiseCJ6J/MN9yJdUvNxA6ntsEF2JGvlKseRqc1GTowU
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWXP265MB4508.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(396003)(366004)(346002)(39840400004)(376002)(136003)(8676002)(5660300002)(64756008)(66476007)(66446008)(66556008)(76116006)(316002)(66946007)(55016003)(122000001)(52536014)(6916009)(2906002)(3480700007)(8936002)(86362001)(38070700005)(33656002)(38100700002)(478600001)(71200400001)(41300700001)(6506007)(83380400001)(9686003)(7696005)(26005)(186003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Bs5/ZOaJ+2PKfWW7I1iqUQRfdqpiOAP2N00niUwY9n0sJJ/XdxX3ycE60CHJ?=
+ =?us-ascii?Q?yKNsjEHRVJmQL6D2R/1lfOgrk7oK4B24i0qlGR8DBe/0GQe1MQQId703S4de?=
+ =?us-ascii?Q?a3uG5BbPAcPrE1u96Myhek35t/U1KxS4QlpbRYs2O/gzkOinczS3zl7jb4hv?=
+ =?us-ascii?Q?3UNbJl0+9ynZ6x3fceksSOjhCiRnMbhxQxpUnf6TGQLhWB+dGumWzapnZZBF?=
+ =?us-ascii?Q?oZ7Ml5TmqYF30W/zeIVqCRUWhWNc9KE0O5ui/063Whl9n9e76fe4quxzK2Gc?=
+ =?us-ascii?Q?ckl9g7kk4OxIIYnYpFASQLJxMTCBEsoHA/rMJoAz1otZecTAjH9115Nd+3KA?=
+ =?us-ascii?Q?O9xYGkmcQ9zNsS7MBjbSTjbY+6GNyee/McPq9N7Z/gpd/wZ04atEavWmOh8C?=
+ =?us-ascii?Q?JBHp1PNKO/H7ZtkLCv1riNW4vI3HeFD6gvdrlNTk6ebAxi3lWR7T4uOCdr3E?=
+ =?us-ascii?Q?VO4fy6u20NT69/SEHh0klT7LgHsPL4e4Pnxd/yLsfKTSGUzrZJCjzWvCIIvc?=
+ =?us-ascii?Q?/RVf6M5bnVmcTHrTTy5PUYL+iNVR8nDTFwTx2m2r3fNydkwlGfI/5yEJTQon?=
+ =?us-ascii?Q?rtJCntjc45T3LCU6l3x6RsqdWzxqwMNb3yQWU4g/snF1CX2GyvkyDldo8pee?=
+ =?us-ascii?Q?afw2KhL7PBkFJzwDR+UweTWhRfO5rCsbocLipidxoIOkJJ5UCVKUlwfrLMcU?=
+ =?us-ascii?Q?4mWtDNSluJz2F0pHU2OSwFKKFe1aofR3oxI5Is76rJMsoG2I6r+xKKu6y6+G?=
+ =?us-ascii?Q?cL7SgZK+4mgrxzovyYk7fIMwn0pWAKHki3ztaqU1HDlqQ/346QJ2L6R/06Jk?=
+ =?us-ascii?Q?Dlg2dfh3TSkIi0otU5Fdwy6rs4pJZmJp5Xpge0YcD9ZZ1i37FxUWiHnMA/rD?=
+ =?us-ascii?Q?42uBe3juUhYNAI3zgJF7AYBfwIRy4b7ZTRdnK4G33qSQGsA7d8R2NXR6EWlY?=
+ =?us-ascii?Q?RM7YNdteOpM8mOcncTHory47MbW31hVGifWXH2wi1pY8n/vXyRrHAp2wJW45?=
+ =?us-ascii?Q?XP+JJ+YP/BcDBSFChdu3il6sQSByykM8/7tMCced/svh1A8Z8o49HCRNrf/x?=
+ =?us-ascii?Q?InwiOlIiAGDGqIH1IAlITOSvSjPQQERWMRQCLJxjG++AlPQ/bR1WcMmLrvlD?=
+ =?us-ascii?Q?zSwQvY6izl6xUWV3hPzGuNbekWsSrgq8gxPhq3UWWWeyZqWw/21NmZWukmGm?=
+ =?us-ascii?Q?5IekL/Qubb+JZnN6P8mBpft+EiT5vUS0nqFsr9f8cnM90q9gEVNWE3Ym1jVD?=
+ =?us-ascii?Q?lMEJvomDWTPN59dvro87bXx0VAR1UHvihG5+coWeHV+cDdMpp2z3RwbG/nua?=
+ =?us-ascii?Q?1dn/UJNHyJvrGpvNootREWwD7TFFxMnghedJSQkE69cJNOFVuNO0Svg8ugt2?=
+ =?us-ascii?Q?L0I4MX6gXDVLyjOU9vFDX5/mn9yOuSIYXV0wZRCVA66u2tWQDs3L/5GYPPFj?=
+ =?us-ascii?Q?2thbpe82ogDg9G4/UyBljFbYJj+Y2B4XKaAVwYMwhVo12+XkOb+1EhJJnd+5?=
+ =?us-ascii?Q?WRWOmJopLPHvVBlUtxoMubN/Hvj0ZCfpDCzEyuhSm44hb6m19RzYlgM78WHh?=
+ =?us-ascii?Q?vSf8Ui78ME4Fa0Zs1q+n2rm0YkBtwjs3cT9+TCud?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH V2 1/2] ACPI / scan: Support multiple dma windows with
- different offsets
-Content-Language: en-GB
-To:     Jianmin Lv <lvjianmin@loongson.cn>, lpieralisi@kernel.org,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
-        lenb@kernel.org, robert.moore@intel.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <1659684674-40612-1-git-send-email-lvjianmin@loongson.cn>
- <1659684674-40612-2-git-send-email-lvjianmin@loongson.cn>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <1659684674-40612-2-git-send-email-lvjianmin@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: phabrix.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CWXP265MB4508.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 892df1b5-6538-468c-ed37-08da76e83437
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2022 13:41:30.6604
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 20a0d659-dc6e-4307-9c1e-97f93b0e3d90
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: irFXvry4ZOkTRXZ8R5UZdJs1tYeBGJDECJ2kxTeNaik+8swRiQhWjJDsrqQoYDfDKILlDayUAf198+KoaVQXzpDYF9iMnfgBG9x0wrhtOjI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6170
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_FILL_THIS_FORM_SHORT,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022-08-05 08:31, Jianmin Lv wrote:
-> For DT, of_dma_get_range returns bus_dma_region typed dma regions,
-> which makes multiple dma windows with different offset available
-> for translation between dma address and cpu address.
-> 
-> But for ACPI, acpi_dma_get_range doesn't return similar dma regions,
-> causing no path for setting dev->dma_range_map conveniently. So the
-> patch changes acpi_dma_get_range and returns bus_dma_region typed
-> dma regions according to of_dma_get_range.
-> 
-> After changing acpi_dma_get_range, acpi_arch_dma_setup is changed for
-> ARM64, where original dma_addr and size are removed, and pass 0 and
-> U64_MAX for dma_base and size of arch_setup_dma_ops.
+Hi Folks,
 
-Hmm, I realise the reasoning behind this exists largely in my head, so 
-for the benefit of everyone else we should perhaps clarify that these 
-arguments are now redundant, so this is a simplification consistent with 
-what other ACPI architectures also pass to iommu_setup_dma_ops().
+I've been trying to use an ASL to help me add a bunch of I2C devices to my =
+platform; to start with, I'd like to just add an I2C MUX, but have so far b=
+een unable to get the kernel to add my I2C device. I suspect this might hav=
+e something to do with the I2C adapter being under a MFD driver, but am hop=
+ing I might be able to get a few pointers from here to help me get this wor=
+king.
 
-> Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-> ---
->   drivers/acpi/arm64/dma.c | 44 +++++++++++++++++++++++++++++++++-----------
->   drivers/acpi/scan.c      | 48 ++++++++++++++++++++++++------------------------
->   include/acpi/acpi_bus.h  |  3 +--
->   include/linux/acpi.h     |  7 +++----
->   4 files changed, 61 insertions(+), 41 deletions(-)
-> 
-> diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
-> index f16739a..64a41b2 100644
-> --- a/drivers/acpi/arm64/dma.c
-> +++ b/drivers/acpi/arm64/dma.c
-> @@ -4,11 +4,12 @@
->   #include <linux/device.h>
->   #include <linux/dma-direct.h>
->   
-> -void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
-> +void acpi_arch_dma_setup(struct device *dev)
->   {
->   	int ret;
->   	u64 end, mask;
-> -	u64 dmaaddr = 0, size = 0, offset = 0;
-> +	u64 size = 0;
-> +	const struct bus_dma_region *map = NULL;
->   
->   	/*
->   	 * If @dev is expected to be DMA-capable then the bus code that created
-> @@ -26,7 +27,33 @@ void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
->   	else
->   		size = 1ULL << 32;
->   
-> -	ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
-> +	ret = acpi_dma_get_range(dev, &map);
-> +	if (!ret) {
-> +		const struct bus_dma_region *r = map;
-> +		u64 dma_start, dma_end = 0;
-> +
-> +		/* determine the overall bounds of all dma regions */
-> +		for (dma_start = U64_MAX; r->size; r++) {
-> +
-> +			/* Take lower and upper limits */
-> +			if (r->dma_start < dma_start)
-> +				dma_start = r->dma_start;
+I've defined the following ASL:
 
-dma_start now only serves as an overcomplicated way to tell if the list 
-was empty, so we don't need it...
+#define I2C_SPEED 100000
+#define ACPI_DT_NAMESPACE_HID "PRP0001"
 
-> +			if (r->dma_start + r->size - 1 > dma_end)
-> +				dma_end = r->dma_start + r->size - 1;
-> +		}
-> +
-> +		if (dma_start >= dma_end) {
-> +			dev_dbg(dev, "Invalid DMA regions configuration\n");
-> +			return;
+DefinitionBlock ("example.aml", "SSDT", 5, "vendor", "board", 1)
+{
+	External (\_SB.PCI0.SBRG.CPLD, DeviceObj)
 
-...but we also don't need this check anway - either there was at least 
-one valid resource, so dma_end is now set to something sensible, or 
-there were none, in which case the implementation of 
-acpi_dma_get_range() here returns success while leaving map == NULL, so 
-we've already crashed dereferencing r->size.
+	Scope (\_SB.PCI0.SBRG.CPLD)
+	{
+		Device (MUX0)
+		{
+			Name (_HID, ACPI_DT_NAMESPACE_HID)
+			Name (_DDN, "NXP PCA9546 I2C Mux")
 
-> +		}
-> +
-> +		mask = DMA_BIT_MASK(ilog2(dma_end) + 1);
-> +		dev->bus_dma_limit = dma_end;
-> +		dev->dma_range_map = map;
-> +		dev->coherent_dma_mask = min(dev->coherent_dma_mask, mask);
-> +		*dev->dma_mask = min(*dev->dma_mask, mask);
+			Name (_CRS, ResourceTemplate()
+			{
+				I2cSerialBus(0x77, ControllerInitiated, I2C_SPEED , AddressingMode7Bit,=
+ "\\_SB.PCI0.SBRG.CPLD", 0x00, ResourceConsumer,,)
+			})
 
-Don't duplicate all this, just set "size = dma_end + 1" so the existing 
-code below picks it up.
+			Name (_DSD, Package ()=20
+			{
+				ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+				Package ()=20
+				{
+					Package () { "compatible", "nxp,pca9546" },
+				}
+			})
+		}
+	}
+}
 
-> +	}
-> +
->   	if (ret == -ENODEV)
->   		ret = iort_dma_get_ranges(dev, &size);
->   	if (!ret) {
-> @@ -34,17 +61,12 @@ void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
->   		 * Limit coherent and dma mask based on size retrieved from
->   		 * firmware.
->   		 */
-> -		end = dmaaddr + size - 1;
-> +		end = size - 1;
->   		mask = DMA_BIT_MASK(ilog2(end) + 1);
->   		dev->bus_dma_limit = end;
->   		dev->coherent_dma_mask = min(dev->coherent_dma_mask, mask);
->   		*dev->dma_mask = min(*dev->dma_mask, mask);
-> -	}
->   
-> -	*dma_addr = dmaaddr;
-> -	*dma_size = size;
-> -
-> -	ret = dma_direct_set_offset(dev, dmaaddr + offset, dmaaddr, size);
-> -
-> -	dev_dbg(dev, "dma_offset(%#08llx)%s\n", offset, ret ? " failed!" : "");
-> +		ret = dma_direct_set_offset(dev, 0, 0, size);
+I'm able to load the corresponding aml by 'cat'ing into /sys/kernel/config/=
+acpi/table/mytable/aml. This loads without any errors, and I can see my new=
+ node appear in /sys:
 
-Don't call this - we're setting dev->dma_range_map now, so it will only 
-scream and fail (or do nothing if there's no offset).
+root@694b71 [x86]:~# ls /sys/bus/acpi/devices/KEM0001\:00/
+PRP0001:00/     modalias        physical_node/  physical_node2/ physical_no=
+de4/ status          uevent
+hid             path            physical_node1/ physical_node3/ power/     =
+     subsystem/      uid
+root@694b71 [x86]:~# ls /sys/bus/acpi/devices/KEM0001\:00/PRP0001\:00/
+hid  modalias  path  power  subsystem  uevent
 
-> +	}
->   }
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 762b61f..736517e 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -20,6 +20,7 @@
->   #include <linux/platform_data/x86/apple.h>
->   #include <linux/pgtable.h>
->   #include <linux/crc32.h>
-> +#include <linux/dma-direct.h>
->   
->   #include "internal.h"
->   
-> @@ -1492,15 +1493,15 @@ enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
->    *
->    * Return 0 on success, < 0 on failure.
->    */
+Unfortunately, it doesn't add the i2c device and the I2C address (0x77) rem=
+ains unclaimed:
+root@694b71 [x86]:~# i2cdetect -y 0
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- 0c -- -- --=20
+10: -- -- -- -- 14 15 16 -- 18 19 1a 1b -- 1d -- --=20
+20: 20 -- -- 23 24 -- -- -- -- -- -- -- -- -- -- 2f=20
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --=20
+40: -- -- -- -- 44 45 46 -- -- -- 4a 4b -- 4d -- --=20
+50: 50 51 -- -- -- 55 -- -- -- -- -- -- -- -- -- --=20
+60: 60 -- -- -- -- -- -- -- -- -- -- -- -- -- -- --=20
+70: -- -- -- -- -- -- -- 77                        =20
 
-Don't forget to update the kerneldoc as well.
+The I2C adapter is from drivers/i2c/busses/i2c-kempld.c, which is loaded by=
+ drivers/mfd/kempld-core.c.=20
 
-> -int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
-> -		       u64 *size)
-> +int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
->   {
->   	struct acpi_device *adev;
->   	LIST_HEAD(list);
->   	struct resource_entry *rentry;
->   	int ret;
->   	struct device *dma_dev = dev;
-> -	u64 len, dma_start = U64_MAX, dma_end = 0, dma_offset = 0;
-> +	int num_ranges = 0;
-> +	struct bus_dma_region *r;
->   
->   	/*
->   	 * Walk the device tree chasing an ACPI companion with a _DMA
-> @@ -1525,31 +1526,31 @@ int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
->   
->   	ret = acpi_dev_get_dma_resources(adev, &list);
->   	if (ret > 0) {
-> +		list_for_each_entry(rentry, &list, node)
-> +			num_ranges++;
+I can manually add the device (successfully) by echo'ing the appropriate li=
+ne into i2c-1/new_device, but this isn't the approach I want to take for ad=
+ding I2C devices to this platform, particularly as some of them will requir=
+e a number of configuration elements that are normally set via a device tre=
+e (on OF platforms).
 
-We already have the number of resources in ret.
-
-Looking at this, I also now wonder if we're doing the right thing if the 
-object is present but contains no resources. The spec isn't clear 
-whether that's even really valid, but if it is, is it meaningful? It 
-seems we'd currently consider an empty object equivalent to no object, 
-but if anything it should perhaps be interpreted as the opposite, i.e. 
-that no DMA is possible because the bus does not decode any ranges. Is 
-anyone more familiar with the intent of the spec here?
+Any thoughts on what I might be doing wrong here? Or what changes I might n=
+eed to make to the existing drivers to make this work?
 
 Thanks,
-Robin.
-
-> +
-> +		r = kcalloc(num_ranges + 1, sizeof(*r), GFP_KERNEL);
-> +		if (!r) {
-> +			ret = -ENOMEM;
-> +			goto out;
-> +		}
-> +
-> +		*map = r;
-> +
->   		list_for_each_entry(rentry, &list, node) {
-> -			if (dma_offset && rentry->offset != dma_offset) {
-> +			if (rentry->res->start >= rentry->res->end) {
->   				ret = -EINVAL;
-> -				dev_warn(dma_dev, "Can't handle multiple windows with different offsets\n");
-> +				dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
->   				goto out;
->   			}
-> -			dma_offset = rentry->offset;
-> -
-> -			/* Take lower and upper limits */
-> -			if (rentry->res->start < dma_start)
-> -				dma_start = rentry->res->start;
-> -			if (rentry->res->end > dma_end)
-> -				dma_end = rentry->res->end;
-> -		}
->   
-> -		if (dma_start >= dma_end) {
-> -			ret = -EINVAL;
-> -			dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
-> -			goto out;
-> +			r->cpu_start = rentry->res->start;
-> +			r->dma_start = rentry->res->start - rentry->offset;
-> +			r->size = rentry->res->end - rentry->res->start + 1;
-> +			r->offset = rentry->offset;
-> +			r++;
->   		}
->   
-> -		*dma_addr = dma_start - dma_offset;
-> -		len = dma_end - dma_start;
-> -		*size = max(len, len + 1);
-> -		*offset = dma_offset;
->   	}
->    out:
->   	acpi_dev_free_resource_list(&list);
-> @@ -1639,20 +1640,19 @@ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
->   			  const u32 *input_id)
->   {
->   	const struct iommu_ops *iommu;
-> -	u64 dma_addr = 0, size = 0;
->   
->   	if (attr == DEV_DMA_NOT_SUPPORTED) {
->   		set_dma_ops(dev, &dma_dummy_ops);
->   		return 0;
->   	}
->   
-> -	acpi_arch_dma_setup(dev, &dma_addr, &size);
-> +	acpi_arch_dma_setup(dev);
->   
->   	iommu = acpi_iommu_configure_id(dev, input_id);
->   	if (PTR_ERR(iommu) == -EPROBE_DEFER)
->   		return -EPROBE_DEFER;
->   
-> -	arch_setup_dma_ops(dev, dma_addr, size,
-> +	arch_setup_dma_ops(dev, 0, U64_MAX,
->   				iommu, attr == DEV_DMA_COHERENT);
->   
->   	return 0;
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 0dc1ea0b..e106073 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -611,8 +611,7 @@ struct acpi_pci_root {
->   int acpi_iommu_fwspec_init(struct device *dev, u32 id,
->   			   struct fwnode_handle *fwnode,
->   			   const struct iommu_ops *ops);
-> -int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
-> -		       u64 *size);
-> +int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map);
->   int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
->   			   const u32 *input_id);
->   static inline int acpi_dma_configure(struct device *dev,
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 44975c1..34e0545 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -280,12 +280,12 @@ int acpi_table_parse_madt(enum acpi_madt_type id,
->   
->   #ifdef CONFIG_ARM64
->   void acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa);
-> -void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size);
-> +void acpi_arch_dma_setup(struct device *dev);
->   #else
->   static inline void
->   acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa) { }
->   static inline void
-> -acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size) { }
-> +acpi_arch_dma_setup(struct device *dev) { }
->   #endif
->   
->   int acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma);
-> @@ -974,8 +974,7 @@ static inline enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
->   	return DEV_DMA_NOT_SUPPORTED;
->   }
->   
-> -static inline int acpi_dma_get_range(struct device *dev, u64 *dma_addr,
-> -				     u64 *offset, u64 *size)
-> +static inline int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
->   {
->   	return -ENODEV;
->   }
+Chris
