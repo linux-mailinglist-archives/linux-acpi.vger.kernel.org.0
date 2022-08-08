@@ -2,119 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46DF058CF6B
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Aug 2022 22:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82DB958CF72
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Aug 2022 22:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244118AbiHHUxp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Aug 2022 16:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36024 "EHLO
+        id S244222AbiHHU50 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Aug 2022 16:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237173AbiHHUxo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Aug 2022 16:53:44 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 830F515FD1;
-        Mon,  8 Aug 2022 13:53:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659992023; x=1691528023;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1Ue2xN40eUBwKJ8OkKXT1hJPXDlo2/nde1JLXmk8FQ0=;
-  b=JRy9JnRdmx0Ol6vN/h9Rz9SDrbOYz7nKUQwFOk/Dq+O2PIFPUgwgO42v
-   tV0OGCMxWrudP5V8h6YN5PloEtQOlowdSNR4DlaBk7gwnLIvCGfT7RDz5
-   CU4FFLNcdYcFVydxQh43z61l9fZxwnJMgrlwrZQxlwvZg8mI2S277IGo+
-   IEfc3Q9F87RIy9B2tOv3oF3EF75jT+iCVLt4TWKnGqe/6kmWWZaK/VUc8
-   +93faYhO6I47XanyDRrF5Y0IiJEzyKixxNSrGw34VhNQRo5o3yyZA+bYW
-   XwX3cZPgDYsm39AxVBIY5kECH9KyiS1Zy6c51PEahqPgbV4TNC+OsNP0E
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10433"; a="354690526"
-X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
-   d="scan'208";a="354690526"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 13:53:35 -0700
-X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
-   d="scan'208";a="850224595"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 13:53:32 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 00C38200F1;
-        Mon,  8 Aug 2022 23:53:30 +0300 (EEST)
-Date:   Mon, 8 Aug 2022 20:53:30 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-acpi@vger.kernel.org, lkp@lists.01.org, lkp@intel.com,
-        kernel test robot <oliver.sang@intel.com>
-Subject: Re: [ACPI] 1d52f10917: BUG:KASAN:use-after-free_in_strlen
-Message-ID: <YvF3ynw8CmisQAR6@paasikivi.fi.intel.com>
-References: <Yu+z9IMoxRrDTjpd@xsang-OptiPlex-9020>
- <57f48ba3-d01c-f3d8-8e33-65d3cd9a349e@intel.com>
+        with ESMTP id S236488AbiHHU5Z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Aug 2022 16:57:25 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37D1B15FDE;
+        Mon,  8 Aug 2022 13:57:24 -0700 (PDT)
+Received: from zn.tnic (p200300ea971b98cb329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98cb:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6F33D1EC0324;
+        Mon,  8 Aug 2022 22:57:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1659992238;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=p0Nu/U4H8SmixYd5feGWYPr4UgnChBbHs5iDPvH3yWI=;
+        b=ZqNVh2bzSe9ugQMduDliBm/D6gtyRvcD9lshalZwzblLAwOSiw++v3PvvFI5UTiDaKeB1C
+        hY0a1bfABftejmpxJ8DtII7t3CEF2oJ3elghXxJSnC28CdjWginuoRFpt6NtuXxP9fr+2q
+        Rv/CKyy7VpkanZnUc7QBhsqm3ogaCkk=
+Date:   Mon, 8 Aug 2022 22:57:11 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Kani, Toshi" <toshi.kani@hpe.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:EDAC-CORE" <linux-edac@vger.kernel.org>
+Subject: Re: [PATCH] ACPI: APEI: move edac_init ahead of ghes platform drv
+ register
+Message-ID: <YvF4p01WJGGUwIJC@zn.tnic>
+References: <20220805023200.154634-1-justin.he@arm.com>
+ <CAJZ5v0gUbKYaxRcZsYO6eq7vLgKdgfdLdoL_Hzmd6r-JczkVPg@mail.gmail.com>
+ <YvFX9vTilqMpsF9u@zn.tnic>
+ <PH7PR84MB1838379B8C2DF488DE729A9182639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <57f48ba3-d01c-f3d8-8e33-65d3cd9a349e@intel.com>
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <PH7PR84MB1838379B8C2DF488DE729A9182639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On Mon, Aug 08, 2022 at 08:40:18PM +0000, Kani, Toshi wrote:
+> This allows ghes_edac_register() to run before edac_init(), and sets
+> edac_mc_owner to prevent chipset-specific edac driver
 
-On Mon, Aug 08, 2022 at 06:54:49PM +0200, Rafael J. Wysocki wrote:
-> Hi Sakari,
-> 
-> On 8/7/2022 2:45 PM, kernel test robot wrote:
-> > 
-> > Greeting,
-> > 
-> > FYI, we noticed the following commit (built with gcc-11):
-> > 
-> > commit: 1d52f10917a751f90e269a0ed9b6cca60dbe0300 ("ACPI: property: Tie data nodes to acpi handles")
-> > https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
-> > 
-> > in testcase: xsave-test
-> > version: xsave-test-x86_64-c2e44fa-1_20220609
-> > with following parameters:
-> > 
-> > 	ucode: 0xec
-> > 
-> > 
-> > 
-> > on test machine: 12 threads 1 sockets Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz with 16G memory
-> > 
-> > caused below changes (please refer to attached dmesg/kmsg for entire log/backtrace):
-> > 
-> > 
-> > 
-> > If you fix the issue, kindly add following tag
-> > Reported-by: kernel test robot <oliver.sang@intel.com>
-> 
-> The crash below occurs right after a "Can't tag data node" message from
-> acpi_tie_nondev_subnodes() and I'm really unsure why acpi_attach_data() has
-> failed here, because none of the arguments is NULL.
-> 
-> Can you have a look at this, please?
+So this is the important part: how does it get decided which EDAC driver
+to load? The chipset-specific one or the FW glue one?
 
-Thanks for forwarding this to me.
-
-Faulty error handling code appears to be the direct cause for the crash. It
-releases buf.pointer which was still being used by the properties --- even
-if tagging data nodes failed (for whatever reason).
-
-It'd be cool if someone could send me DSDT/SSDT from this machine. I wonder
-if there's a data node that is referred to from more than one location, and
-whether that could lead to two references to the same acpi_handle. I'd hope
-this could be disallowed in DSD Guide.
-
-I'll send a patch soon.
+User, policy, etc?
 
 -- 
-Kind regards,
+Regards/Gruss,
+    Boris.
 
-Sakari Ailus
+https://people.kernel.org/tglx/notes-about-netiquette
