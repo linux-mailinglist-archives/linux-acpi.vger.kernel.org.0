@@ -2,106 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69C9958CD91
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Aug 2022 20:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0321258CDBB
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Aug 2022 20:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236560AbiHHSYG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Aug 2022 14:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53576 "EHLO
+        id S243775AbiHHShx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Aug 2022 14:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235668AbiHHSYF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Aug 2022 14:24:05 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50311167ED;
-        Mon,  8 Aug 2022 11:24:03 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 5004380e3bf39139; Mon, 8 Aug 2022 20:24:01 +0200
-Received: from kreacher.localnet (unknown [213.134.181.149])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S243759AbiHHShw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Aug 2022 14:37:52 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C1DB4A8;
+        Mon,  8 Aug 2022 11:37:51 -0700 (PDT)
+Received: from zn.tnic (p200300ea971b98cb329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98cb:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 9891466CEE1;
-        Mon,  8 Aug 2022 20:24:00 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Alessandro Zummo <a.zummo@towertech.it>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        linux-rtc@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>
-Subject: [PATCH v2] rtc: rtc-cmos: Do not check ACPI_FADT_LOW_POWER_S0
-Date:   Mon, 08 Aug 2022 20:23:59 +0200
-Message-ID: <12054246.O9o76ZdvQC@kreacher>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1C0511EC02F2;
+        Mon,  8 Aug 2022 20:37:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1659983866;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=Gm75dV4vaxgEXtIynICvPrQ4BQCxKD/GAjPvUjjADp4=;
+        b=VfokCVNxpzgsLJFTGBLbxabWb+0VonVp8CklMqYva2rBp/PXqR6NuKDle0GuY2ad74DDQE
+        5m84vpdCcosdRIDIAWKF1ixCGhUZusc9vnfNYezkTiHznk2utf6+XPjQ0FhEnwQctCBNew
+        9IgAbhcxIIvTHsafqDsWHXc8L+xSfJ0=
+Date:   Mon, 8 Aug 2022 20:37:42 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:EDAC-CORE" <linux-edac@vger.kernel.org>,
+        Toshi Kani <toshi.kani@hpe.com>
+Subject: Re: [PATCH] ACPI: APEI: move edac_init ahead of ghes platform drv
+ register
+Message-ID: <YvFX9vTilqMpsF9u@zn.tnic>
+References: <20220805023200.154634-1-justin.he@arm.com>
+ <CAJZ5v0gUbKYaxRcZsYO6eq7vLgKdgfdLdoL_Hzmd6r-JczkVPg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.181.149
-X-CLIENT-HOSTNAME: 213.134.181.149
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrvdefkedguddvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepvddufedrudefgedrudekuddrudegleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukedurddugeelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeekpdhrtghpthhtoheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdiiuhhmmhhosehtohifvghrthgvtghhrdhithdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
- rhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhrthgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gUbKYaxRcZsYO6eq7vLgKdgfdLdoL_Hzmd6r-JczkVPg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
++ Toshi.
 
-The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
-use low-power S0 idle on the given platform than S3 (provided that
-the latter is supported) and it doesn't preclude using either of
-them (which of them will be used depends on the choices made by user
-space).
+On Mon, Aug 08, 2022 at 08:17:58PM +0200, Rafael J. Wysocki wrote:
+> This effectively makes EDAC depend on GHES which may not be always
+> valid AFAICS.
 
-For this reason, there is no benefit from checking that flag in
-use_acpi_alarm_quirks().
+Yes, and this has been getting on my nerves since forever.
 
-First off, it cannot be a bug to do S3 with use_acpi_alarm set,
-because S3 can be used on systems with ACPI_FADT_LOW_POWER_S0 and it
-must work if really supported, so the ACPI_FADT_LOW_POWER_S0 check is
-not needed to protect the S3-capable systems from failing.
+The GHES code which does collect all those errors *forces* the
+registration of an EDAC module which does only the reporting.
 
-Second, suspend-to-idle can be carried out on a system with
-ACPI_FADT_LOW_POWER_S0 unset and it is expected to work, so if setting
-use_acpi_alarm is needed to handle that case correctly, it should be
-set regardless of the ACPI_FADT_LOW_POWER_S0 value.
+Which cannot be any more backwards.
 
-Accordingly, drop the ACPI_FADT_LOW_POWER_S0 check from
-use_acpi_alarm_quirks().
+What should happen is, GHES inits and starts working on the errors.
+Then, at some point later, ghes_edac loads and starts reporting whatever
+it gets. If there's no EDAC module, it doesn't report them. The same way
+MCA works.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
----
+That's it.
 
--> v2:
-   * Fix typo in the changelog.
-   * Add R-by tag from Mario.
+And then ghes_edac can be made a normal module again and we can get rid
+of this insanity.
 
----
- drivers/rtc/rtc-cmos.c |    3 ---
- 1 file changed, 3 deletions(-)
+Jia, willing to try it?
 
-Index: linux-pm/drivers/rtc/rtc-cmos.c
-===================================================================
---- linux-pm.orig/drivers/rtc/rtc-cmos.c
-+++ linux-pm/drivers/rtc/rtc-cmos.c
-@@ -1260,9 +1260,6 @@ static void use_acpi_alarm_quirks(void)
- 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
- 		return;
- 
--	if (!(acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0))
--		return;
--
- 	if (!is_hpet_enabled())
- 		return;
- 
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
 
-
+https://people.kernel.org/tglx/notes-about-netiquette
