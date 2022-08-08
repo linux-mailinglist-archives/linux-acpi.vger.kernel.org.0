@@ -2,111 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E69ED58CF81
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Aug 2022 23:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A54658CF99
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Aug 2022 23:20:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236912AbiHHVMH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Aug 2022 17:12:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44850 "EHLO
+        id S236481AbiHHVUv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Aug 2022 17:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236304AbiHHVMF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Aug 2022 17:12:05 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9099917AB0;
-        Mon,  8 Aug 2022 14:12:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659993124; x=1691529124;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ZtSgYuDbaBj2/G6ilDZHPwxBLmBXYG5l1URDjs2uSy8=;
-  b=kFMPbR5TriyGjb3UWxUu5t/nDq33BTLkr0BKWbU34uFCFUqz6pEBGtuz
-   r0MtPcLD1mtY7HW3EzqEzrQXlJTefRPK4gm1sf7g6QaU1G1yA6SiDy+6+
-   k+VHGKQgWuPXXQovByTOKsyGF2eCf6CEARealBfIxWa+v0JZF3ZR1FbdO
-   aTOXwEnyhW+sw7UCHziDJd4dpgapkxLefd+bU8/RUc5zHPclf4dwk2D61
-   xYEdLqIQwWswRZW+MvKOR4bM0t+3nqbR20oTGdf9w8SG+jb60mSidB64C
-   5OQBskGD7+kji/UFLEjn460dr9P3uinxaknap6T8OV11fkpzM40QExQ+v
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10433"; a="352420977"
-X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
-   d="scan'208";a="352420977"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 14:11:51 -0700
-X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
-   d="scan'208";a="601225610"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 14:11:50 -0700
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id F16BD202EA;
-        Tue,  9 Aug 2022 00:11:47 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1oLA2n-004QVL-Ac; Tue, 09 Aug 2022 00:12:13 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-acpi@vger.kernel.org, lkp@lists.01.org, lkp@intel.com,
-        kernel test robot <oliver.sang@intel.com>
-Subject: [PATCH 1/1] ACPI: property: Fix error handling in acpi_init_properties()
-Date:   Tue,  9 Aug 2022 00:12:13 +0300
-Message-Id: <20220808211213.1055148-1-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S234943AbiHHVUv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Aug 2022 17:20:51 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B64A10C6;
+        Mon,  8 Aug 2022 14:20:50 -0700 (PDT)
+Received: from zn.tnic (p200300ea971b98cb329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98cb:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D8CFD1EC0324;
+        Mon,  8 Aug 2022 23:20:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1659993644;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=VKz3TuJsbjKFpzwrCuzHBmcLaX5F/ZQS4dNV5XPuhTU=;
+        b=LK/SakEYyTZPpnpc+0fMrGaJJQcTlHbuxHAD1E8BuOE2IMSraPzsdIrXX5PUN+FA3CCvRq
+        FoKPFTD21QGSPTGE/zftq41h0GU4d9bAEUCbfMR/ESEhX2zmg3JvrKy0F/p1qyuwvp2JNc
+        3yvj1GY+IyQLbswZQvzaVMT2xZZM+Uk=
+Date:   Mon, 8 Aug 2022 23:20:39 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Kani, Toshi" <toshi.kani@hpe.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:EDAC-CORE" <linux-edac@vger.kernel.org>
+Subject: Re: [PATCH] ACPI: APEI: move edac_init ahead of ghes platform drv
+ register
+Message-ID: <YvF+J/dfyOEVSbSQ@zn.tnic>
+References: <20220805023200.154634-1-justin.he@arm.com>
+ <CAJZ5v0gUbKYaxRcZsYO6eq7vLgKdgfdLdoL_Hzmd6r-JczkVPg@mail.gmail.com>
+ <YvFX9vTilqMpsF9u@zn.tnic>
+ <PH7PR84MB1838379B8C2DF488DE729A9182639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
+ <YvF4p01WJGGUwIJC@zn.tnic>
+ <PH7PR84MB1838492812F5ABAA4BB54D9982639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <PH7PR84MB1838492812F5ABAA4BB54D9982639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-buf.pointer, memory for storing _DSD data and nodes, was released if either
-parsing properties or, as recently added, attaching data node tags failed.
-Alas, properties were still left pointing to this memory if parsing
-properties were successful but attaching data node tags failed.
+On Mon, Aug 08, 2022 at 09:11:52PM +0000, Kani, Toshi wrote:
+> Whichever loaded first wins.
 
-Fix this by separating error handling for the two, and leaving properties
-intact if data nodes cannot be tagged for a reason or another.
+That I know.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
-Hi Rafael,
+The question is, which one *should* win each time.
 
-This should fix the immediate problem. It needs to be figured out why data
-node tagging doesn't work sometimes but that can wait.
+IOW, on which platforms should ghes_edac load and on which the
+chipset-one?
 
- drivers/acpi/property.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+I'm guessing the answer is the plat_list...
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 9711482014a6..201a5a9b2671 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -566,13 +566,13 @@ void acpi_init_properties(struct acpi_device *adev)
- 					&adev->data, acpi_fwnode_handle(adev)))
- 		adev->data.pointer = buf.pointer;
- 
--	if (!adev->data.pointer ||
--	    !acpi_tie_nondev_subnodes(&adev->data)) {
--		acpi_untie_nondev_subnodes(&adev->data);
-+	if (!adev->data.pointer) {
- 		acpi_handle_debug(adev->handle, "Invalid _DSD data, skipping\n");
- 		ACPI_FREE(buf.pointer);
-+	} else {
-+		if (!acpi_tie_nondev_subnodes(&adev->data))
-+			acpi_untie_nondev_subnodes(&adev->data);
- 	}
--
-  out:
- 	if (acpi_of && !adev->flags.of_compatible_ok)
- 		acpi_handle_info(adev->handle,
 -- 
-2.30.2
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
