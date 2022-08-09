@@ -2,135 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FDD758D3FE
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Aug 2022 08:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CBB058D4CC
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Aug 2022 09:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238570AbiHIGot (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Aug 2022 02:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51964 "EHLO
+        id S239709AbiHIHk7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 Aug 2022 03:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238518AbiHIGos (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Aug 2022 02:44:48 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6DB201B6;
-        Mon,  8 Aug 2022 23:44:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660027485; x=1691563485;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=dExwSIWLQG4fAZxi/foT2PEZFM/JrpjVCycSyFAiDhc=;
-  b=iWz/G4r59GhjoZmACPrx3+kQ6xkw6jgapilTUm2GXXhLIob8TdGZt63G
-   vYqQY480kh5DIMLQ32QKZr8EyyL+Yk6tU2tlYbWo6kDwIxrgsqm+qO/Ho
-   KXraTiRh4pA87n92KDZz2ta2axYjwtvSw8VBDZAqHb7xRWTZp96h8RHuL
-   qissUhOAmaJEImuqVMOfpks91JSsRwaPwKcIO1c/KAGeponPKokQU3IAr
-   St21sT48sGEJELGaQbLnYCb6sJTUP+mfl3ms3iKT3sUuUAzLMzjU6oki2
-   36vwRxcReF9s+jLaIRNTvsxjaV1f12mDZU+uaiH0MeC/QGDxlsfBcvEer
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10433"; a="292007275"
-X-IronPort-AV: E=Sophos;i="5.93,223,1654585200"; 
-   d="scan'208";a="292007275"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 23:44:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,223,1654585200"; 
-   d="scan'208";a="731029611"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 08 Aug 2022 23:44:43 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oLIyo-000Mo9-1g;
-        Tue, 09 Aug 2022 06:44:42 +0000
-Date:   Tue, 09 Aug 2022 14:43:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 2c461d8f205740fbdcbb8f7c72ea3468d89c7b1e
-Message-ID: <62f2022d.h43xFjfErjTiFA43%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S239657AbiHIHk7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Aug 2022 03:40:59 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25CD72AC5;
+        Tue,  9 Aug 2022 00:40:58 -0700 (PDT)
+Received: from zn.tnic (p200300ea971b98cb329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98cb:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B3A811EC02F2;
+        Tue,  9 Aug 2022 09:40:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1660030852;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=JiahcPpB59A40BPkMd4ywQfXiGMzQEuPTAmeoaPvrR0=;
+        b=AxCUusDkULZu1GoSEEuXeDN1rdPahnGEXVDoAdw9eTSQ47tyuwT++kQ5nfkdGbIhq42aQE
+        ewF1uTytCojXGdWi4sfyCRwjv6ReBomKCE2nHg2ZzR4T6eaI6zJzu/w7Vg4+sXUn34RcjW
+        XOYO62SiHhZuIyhR9/qdi3kmSc3UjBw=
+Date:   Tue, 9 Aug 2022 09:40:47 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Kani, Toshi" <toshi.kani@hpe.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:EDAC-CORE" <linux-edac@vger.kernel.org>
+Subject: Re: [PATCH] ACPI: APEI: move edac_init ahead of ghes platform drv
+ register
+Message-ID: <YvIPf/m3hU46S9Ik@zn.tnic>
+References: <20220805023200.154634-1-justin.he@arm.com>
+ <CAJZ5v0gUbKYaxRcZsYO6eq7vLgKdgfdLdoL_Hzmd6r-JczkVPg@mail.gmail.com>
+ <YvFX9vTilqMpsF9u@zn.tnic>
+ <PH7PR84MB1838379B8C2DF488DE729A9182639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
+ <YvF4p01WJGGUwIJC@zn.tnic>
+ <PH7PR84MB1838492812F5ABAA4BB54D9982639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
+ <YvF+J/dfyOEVSbSQ@zn.tnic>
+ <PH7PR84MB1838BF4F8B56EF1E24FCF1DC82639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <PH7PR84MB1838BF4F8B56EF1E24FCF1DC82639@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 2c461d8f205740fbdcbb8f7c72ea3468d89c7b1e  Merge branch 'acpi-tables' into bleeding-edge
+On Mon, Aug 08, 2022 at 09:36:13PM +0000, Kani, Toshi wrote:
+> Platforms with ACPI GHES support should use ghes_edac. This is the
+> case on Arm. The x86 side has additional platform ID check to protect
+> from legacy buggy GHES FW existed before ghes_edac enablement.
 
-elapsed time: 721m
+Sounds to me like we should put all that logic in ghes.c and out of
+ghes_edac and the EDAC drivers will query it by doing upon load:
 
-configs tested: 53
-configs skipped: 2
+<edac_driver>_init:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+	if (ghes_edac_driver_is_preferred())
+		return -ENODEV;
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-i386                 randconfig-a001-20220808
-i386                 randconfig-a002-20220808
-i386                 randconfig-a003-20220808
-i386                 randconfig-a004-20220808
-i386                 randconfig-a005-20220808
-i386                 randconfig-a006-20220808
-x86_64                              defconfig
-i386                                defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-powerpc                           allnoconfig
-i386                             allyesconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-arm                                 defconfig
-sh                               allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-x86_64               randconfig-a003-20220808
-arc                              allyesconfig
-x86_64               randconfig-a004-20220808
-x86_64                    rhel-8.3-kselftests
-arc                  randconfig-r043-20220808
-alpha                            allyesconfig
-x86_64               randconfig-a001-20220808
-x86_64                           rhel-8.3-syz
-x86_64               randconfig-a005-20220808
-x86_64               randconfig-a002-20220808
-x86_64               randconfig-a006-20220808
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-arm                              allyesconfig
-ia64                             allmodconfig
-arm64                            allyesconfig
+And then ghes_edac can become a normal driver module again.
 
-clang tested configs:
-hexagon              randconfig-r045-20220808
-riscv                randconfig-r042-20220808
-hexagon              randconfig-r041-20220808
-s390                 randconfig-r044-20220808
-x86_64               randconfig-a013-20220808
-x86_64               randconfig-a015-20220808
-x86_64               randconfig-a016-20220808
-x86_64               randconfig-a012-20220808
-x86_64               randconfig-a011-20220808
-x86_64               randconfig-a014-20220808
-i386                 randconfig-a013-20220808
-i386                 randconfig-a012-20220808
-i386                 randconfig-a014-20220808
-i386                 randconfig-a011-20220808
-i386                 randconfig-a016-20220808
-i386                 randconfig-a015-20220808
+Thx.
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
