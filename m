@@ -2,104 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5932058F06F
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 18:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75E7C58F07B
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 18:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232819AbiHJQaX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Aug 2022 12:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58358 "EHLO
+        id S232401AbiHJQeD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Aug 2022 12:34:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232411AbiHJQaW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Aug 2022 12:30:22 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960FA1DA7B;
-        Wed, 10 Aug 2022 09:30:21 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id 15-20020a17090a098f00b001f305b453feso2710008pjo.1;
-        Wed, 10 Aug 2022 09:30:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc;
-        bh=vufaLke+Y9C89yfo1scfSCBU7Vp0KeQxf8BAAfrZOJE=;
-        b=OylVwTohrej7zPKGOwHnYwuXSw9/G5QWILPZzXbeuMut1OO+Hjrto4A6wGNsY5FMgV
-         a0V449p9II9Fh4YjOh2s7FWvhiscr/GF70/T2Xs9rVQou/HMzD+mp9jYnNMXbUOwlj2j
-         +rYwwbSHxMQchGn/XSLAN+v8WWNBHgvSd+3h0ynpSLm5hESx8Rg3LlBsUPrFfuaSY7v2
-         hmWLUthAI3QdJGj82tMB4yEU798bEslMyHowCSWk2UwTmGdes8r2JFQwqYo22kkSyVFl
-         GUlfr6wvAcYK1ntbo+zEHtc9exNAD9ZL/ZgeVGTTaA4A6Wagit/savUGUtuMi0oskROD
-         A9uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc;
-        bh=vufaLke+Y9C89yfo1scfSCBU7Vp0KeQxf8BAAfrZOJE=;
-        b=DV3B9vwyv4El2aXpYnSwSIJwfVMcvHRlMpofzi7mKZyqDY3HVaRZTmjkS6TfZKH5Uy
-         jslFHaSDv1Tva4xpZzjdaxuyiyuWakn3XEC00FNKwFHeHkjCgpHWr3VZwZrW1YDv5mv5
-         Vb1Ug1jkrsMPec3F9QAzacGsConfSpW1JjYynMDktjFDdnBT1dMP4DIL6W3SGZB4xnRJ
-         jcOl/FO5oDTrdznyGjiC9y3/qu/JESfZ9X5oys55kgBzn/UArod+HCGEfEuJ3VP7Xdif
-         MzB7Fl+HJfgddrn24Jm+renI+9IG/FChmCeR4glbIO7qp0ua8ojwcx8TJOWIrhWD5TmX
-         QJrg==
-X-Gm-Message-State: ACgBeo3WRzp0+nugWqzeAixvTh6OPKh+8o80ljaXjHWuez2e4ZLV5LNo
-        5951p95Y0oilXUK8iwC05uG3qFWjqH0=
-X-Google-Smtp-Source: AA6agR5+mp0MTJWz54wqhnOlm+q8JR+cdwomVm/VefBywcbOpwIrEeKHB9YaC21NCg+b8Kjt4E2fKA==
-X-Received: by 2002:a17:902:d2c8:b0:16e:ea4e:36e0 with SMTP id n8-20020a170902d2c800b0016eea4e36e0mr29257389plc.37.1660149021086;
-        Wed, 10 Aug 2022 09:30:21 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l11-20020a17090b078b00b001f4d4a1b494sm1873037pjz.7.2022.08.10.09.30.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Aug 2022 09:30:20 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <ce384ba2-2801-b820-3e96-cfd5636c3c71@roeck-us.net>
-Date:   Wed, 10 Aug 2022 09:30:19 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v1 1/5] ACPI: Rename acpi_bus_get/put_acpi_device()
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+        with ESMTP id S230006AbiHJQeC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Aug 2022 12:34:02 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49AD182773;
+        Wed, 10 Aug 2022 09:34:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F3265B81D4B;
+        Wed, 10 Aug 2022 16:34:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F52C433C1;
+        Wed, 10 Aug 2022 16:33:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660149239;
+        bh=TRHMkHy9TA2+R7Xo/cWt/GmZaVkYtJda3sygZr6n63E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZSqQDDuiRdorik9Pb/NCrx0oD2vlusIm0ixMcVKD77THj9qllEU6gMdB/rlZFKxQQ
+         1Y84PCd6G6/7azkAfGdqfXgZzJND6/e58nAYqDyze40HJN1++ciHIcfRGJyQBAYuRW
+         6C1oabpSKxGzXSH5QSw6SARyENrzNOAaYPdknnBcv+QKEN++KIEGoP0RR770PAqTO5
+         9d8jAGGh68yTeeux7Cm/nL71Im6g4uuE5CmShu8fZ2SYjddUgdjId4DQte/DzZ1qnz
+         pnZtzkHZEmCzy0Z54lVQP6EydD/q1GdGE4oq9kx+/kr8okcbgl4QiLKtvM3Rfl9NEL
+         MFbx0aVJuS5Tg==
+Date:   Wed, 10 Aug 2022 17:33:53 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux PM <linux-pm@vger.kernel.org>,
-        linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>
-References: <12036348.O9o76ZdvQC@kreacher> <4763162.31r3eYUQgx@kreacher>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <4763162.31r3eYUQgx@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        linux-hyperv@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH v1 5/5][RFT] ACPI: Drop parent field from struct
+ acpi_device
+Message-ID: <YvPd8ewNOKdwMmR4@sirena.org.uk>
+References: <12036348.O9o76ZdvQC@kreacher>
+ <2196460.iZASKD2KPV@kreacher>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Da0Ami2fDuAHDI9p"
+Content-Disposition: inline
+In-Reply-To: <2196460.iZASKD2KPV@kreacher>
+X-Cookie: First pull up, then pull down.
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 8/10/22 09:14, Rafael J. Wysocki wrote:
+
+--Da0Ami2fDuAHDI9p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Aug 10, 2022 at 06:23:05PM +0200, Rafael J. Wysocki wrote:
 > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Because acpi_bus_get_acpi_device() is completely analogous to
-> acpi_fetch_acpi_dev(), rename it to acpi_get_acpi_dev() and
-> add a kerneldoc comment to it.
-> 
-> Accordingly, rename acpi_bus_put_acpi_device() to acpi_put_acpi_dev()
-> and update all of the users of these two functions.
-> 
-> While at it, move the acpi_fetch_acpi_dev() header next to the
-> acpi_get_acpi_dev() header in the header file holding them.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->   drivers/acpi/bus.c               |    6 +++---
->   drivers/acpi/device_pm.c         |    4 ++--
->   drivers/acpi/irq.c               |    4 ++--
->   drivers/acpi/scan.c              |   21 ++++++++++++++++-----
->   drivers/hwmon/acpi_power_meter.c |    2 +-
+>=20
+> The parent field in struct acpi_device is, in fact, redundant,
+> because the dev.parent field in it effectively points to the same
+> object and it is used by the driver core.
 
-For hwmon:
+Acked-by: Mark Brown <broonie@kernel.org>
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+--Da0Ami2fDuAHDI9p
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmLz3fAACgkQJNaLcl1U
+h9B8rQf/XtDVCaLNgxkwWhsW926hQ9+EvneuFPFiVGjVW+lbegON2gRrPeUWs8sS
+sC4GBIsaf1GiG5D6xQGh5Iq36TE60sjclNLk2WTG6eHppigATRVgiTwiwOnVDn4h
+IBqOYP3xauYkNpiX1QK91vc5Lh90Lh+W/B81A1RqbDaJIlNrihrFgezUZQ9Klwlm
+9lsOupKTe9TeDOdtv8xgq8fuHk9K+K28SmkPEDEg49UVhCUbx05BuPDoyOtmn+RP
+/+hKik8ajLZUd2qUg0VmM0dRNX3GnQiGQC5dAmLnF63o9XIWcu4x3XYQPHEAwy5L
+Aj0k8+2YrOgVHxyNIrsVmg01YaZIWg==
+=2BJY
+-----END PGP SIGNATURE-----
+
+--Da0Ami2fDuAHDI9p--
