@@ -2,106 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FDE558E2D4
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 00:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBBD158E6E6
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 08:01:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbiHIWQR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 Aug 2022 18:16:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37316 "EHLO
+        id S230433AbiHJGB0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Aug 2022 02:01:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229686AbiHIWPJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 Aug 2022 18:15:09 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76282DFC6
-        for <linux-acpi@vger.kernel.org>; Tue,  9 Aug 2022 15:15:04 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id f192so12014575pfa.9
-        for <linux-acpi@vger.kernel.org>; Tue, 09 Aug 2022 15:15:04 -0700 (PDT)
+        with ESMTP id S230453AbiHJGAx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Aug 2022 02:00:53 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7392BE53
+        for <linux-acpi@vger.kernel.org>; Tue,  9 Aug 2022 23:00:48 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-31f46b4759bso118248777b3.0
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Aug 2022 23:00:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
-        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
-         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
-         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
-         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
-         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
-         O1Rw==
+        d=google.com; s=20210112;
+        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc;
+        bh=TCO2xyxVuPd3/tBUV+s0EeQJwLyZQsGvsrrIoFAUabA=;
+        b=BvFe715tdJHTFzLiuUTS/Q7VYOCApMDwcI0d8adcuT6VY23Mzv0LjVB/oCe1EYUH6I
+         GrUEBHGuCyX9om+3m+2zl2rmB8DHkIoDhCoJHkxwfbcimGGF2Au9Yt8rAFlE5vLE4zOT
+         FBke0i6x4PfWRbfl2D3iR0cCU4z0WmA3iKlcfcXB0BYjlIhk2JqckwGp1G7FtAQR48/7
+         pqJ0XtbeVUishXdC4XToLF9FWmAVWf/m/3RJfH4tl7k3Jd+oE21AZHO7Wt0qAh9vtQ8/
+         piA6XmFBChiJiUmunvUDrKZvlyy2Mu3J3SrWw8IQ6KPqPhlxUX1s7KWZK+OvnRu3v5v3
+         Y72Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
-        b=X/t+0SLohTCTqNtNGXlMkk7xXJjghlATL3gEX5ArjG24NJ/6PFMBs5du9u9K8el+33
-         dWeBBj/dv+XKNO0+XyHA4b7IkUyfbFL513nowPmVnpxAIzNjpEJiFF+9McAdAiTm0mg5
-         E3EWHVLnX7Ip96TzNLQunjbLwWZnn6V3NPNXV/t10TqWvfx0EsSbazq5LR5sc9WFzBRX
-         wU9ojjm7m5DoRnSFYB6YCDwLHDAOo8aBahRizQ+LlTYlIcYxbw8swaCRpYUkdhjFzLdd
-         xD3rsxTg6ESCO8LSnSMG5lpo1mqFTZP4dyN0p0nqDuaRAmlPJmdv04khGWlAkkB9Pqi7
-         LUqQ==
-X-Gm-Message-State: ACgBeo2LK/9ENsvg1ObL4CIsOS/3egnDjDejnJa5Drmdroz2zibezV5D
-        hi9Vi8BsOeRWg2LwjOwgXjii5W3DvajWpp02YaM=
-X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
-X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
- v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
- Aug 2022 15:15:03 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
- 15:15:03 -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Dr. Ali Moses" <alimoses07@gmail.com>
-Date:   Tue, 9 Aug 2022 15:15:03 -0700
-Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
+        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
+         :from:to:cc;
+        bh=TCO2xyxVuPd3/tBUV+s0EeQJwLyZQsGvsrrIoFAUabA=;
+        b=M8GM6YKqD8uLqSdKY+N29lsoOfXBxD7GbjrYgJkdmlPSErBteane5Sf6MWGgSUL6eZ
+         j0wbFvCzq9KbL3q+Q/bKtGdbb7Ev0/R7oqiPTJUqgpNN+IRybeDg1qNRA0fLN9aaPOwu
+         fC2Yt4Mk3zgs3XbBmvg+CZ0sGXseLd53zfe8CF3HdR4H2nhAGMKeMKkhJIfK1HI1lxpd
+         acqVyfs6ScKnMJalmm6raKRW7nOmyjL8Cgzm0In0t9r/GdIpDml3kVY6ZhwblWEE/4IE
+         DSLegtuIOzUmVP/pM6RlAB847A1d512wEn49wXieuzwQVarSct5VknY8w4HRQ8sq5MVy
+         OMsQ==
+X-Gm-Message-State: ACgBeo0O/wXda/IWdPg3trkqALVVkuLp2Uz4cY+XUU23QTXozu/U8zji
+        bEDGx5/9FwA9UtQ9wYpzT8bJIabK8ed8R30=
+X-Google-Smtp-Source: AA6agR4Luo9mfYOGUmow5n6t7VfAyPObtMuTRPi8OYX4fTwH65RIMuWKTPOsfnkREdcPNXAbTsM3U3vFPMT0E+A=
+X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:f21:76ca:766f:e0ab])
+ (user=saravanak job=sendgmr) by 2002:a25:7613:0:b0:67a:700a:f9e1 with SMTP id
+ r19-20020a257613000000b0067a700af9e1mr23778556ybc.53.1660111247299; Tue, 09
+ Aug 2022 23:00:47 -0700 (PDT)
+Date:   Tue,  9 Aug 2022 23:00:29 -0700
+Message-Id: <20220810060040.321697-1-saravanak@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.37.1.559.g78731f0fdb-goog
+Subject: [PATCH v1 0/9] fw_devlink improvements
+From:   Saravana Kannan <saravanak@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>
+Cc:     Saravana Kannan <saravanak@google.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:42b listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [alimoses07[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [wijh555[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [alimoses07[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+This patch series improves fw_devlink in the following ways:
+
+1. It no longer cares about a fwnode having a "compatible" property. It
+   figures this our more dynamically. The only expectation is that
+   fwnode that are converted to devices actually get probed by a driver
+   for the dependencies to be enforced correctly.
+
+2. Finer grained dependency tracking. fw_devlink will now create device
+   links from the consumer to the actual resource's device (if it has one,
+   Eg: gpio_device) instead of the parent supplier device. This improves
+   things like async suspend/resume ordering, potentially remove the need
+   for frameworks to create device links, more parallelized async probing,
+   and better sync_state() tracking.
+
+3. Handle hardware/software quirks where a child firmware node gets
+   populated as a device before its parent firmware node AND actually
+   supplies a non-optional resource to the parent firmware node's
+   device.
+
+4. Way more robust at cycle handling (see patch for the insane cases).
+
+5. Stops depending on OF_POPULATED to figure out some corner cases.
+
+6. Simplifies the work that needs to be done by the firmware specific
+   code.
+
+This took way too long to get done due to typo bugs I had in my rewrite or
+corner cases I had to find and handle. But it's fairly well tested at this
+point and I expect this to work properly.
+
+Abel & Doug,
+
+This should fix your cyclic dependency issues with your display. Can you
+give it a shot please?
+
+Alexander,
+
+This should fix your issue where the power domain device not having a
+compatible property. Can you give it a shot please?
+
+Tony,
+
+This should handle the odd case of the child being the supplier of the
+parent. Can you please give this a shot? I want to make sure the cycle
+detection code handles this properly and treats it like it's NOT a cycle.
+
+Geert,
+
+Can you test the renesas stuff I changed please? They should continue
+working like before. Any other sanity test on other hardware would be
+great too.
+
+Sudeep,
+
+I don't think there are any unfixed issues you had reported in my other
+patches that this series might fix, but it'll be nice if you could give
+this a sanity test.
+
+Guenter,
+
+I don't think this will fix the issue you reported in the amba patch, but
+it's worth a shot because it improves a bunch of corner case handling. So
+it might be better at handling whatever corner cases you might have in the
+qemu platforms.
+
+Thanks,
+Saravana
+
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: John Stultz <jstultz@google.com>
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+
+Saravana Kannan (9):
+  driver core: fw_devlink: Don't purge child fwnode's consumer links
+  driver core: fw_devlink: Improve check for fwnode with no
+    device/driver
+  soc: renesas: Move away from using OF_POPULATED for fw_devlink
+  gpiolib: Clear the gpio_device's fwnode initialized flag before adding
+  driver core: fw_devlink: Add DL_FLAG_CYCLE support to device links
+  driver core: fw_devlink: Allow marking a fwnode link as being part of
+    a cycle
+  driver core: fw_devlink: Consolidate device link flag computation
+  driver core: fw_devlink: Make cycle detection more robust
+  of: property: Simplify of_link_to_phandle()
+
+ drivers/base/core.c             | 437 +++++++++++++++++++++-----------
+ drivers/gpio/gpiolib.c          |   6 +
+ drivers/of/property.c           |  84 +-----
+ drivers/soc/renesas/rcar-sysc.c |   2 +-
+ include/linux/device.h          |   1 +
+ include/linux/fwnode.h          |  12 +-
+ 6 files changed, 323 insertions(+), 219 deletions(-)
+
 -- 
-Hello,
-We the Board Directors believe you are in good health, doing great and
-with the hope that this mail will meet you in good condition, We are
-privileged and delighted to reach you via email" And we are urgently
-waiting to hear from you. and again your number is not connecting.
+2.37.1.559.g78731f0fdb-goog
 
-My regards,
-Dr. Ali Moses..
-
-Sincerely,
-Prof. Chin Guang
