@@ -2,33 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 757D958EE82
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 16:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26C8358EF71
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 17:32:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229631AbiHJOiX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Aug 2022 10:38:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
+        id S230219AbiHJPcI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Aug 2022 11:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232460AbiHJOiG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Aug 2022 10:38:06 -0400
+        with ESMTP id S229924AbiHJPcH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Aug 2022 11:32:07 -0400
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 68511558C4;
-        Wed, 10 Aug 2022 07:37:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EB455658C;
+        Wed, 10 Aug 2022 08:32:04 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E75C623A;
-        Wed, 10 Aug 2022 07:37:58 -0700 (PDT)
-Received: from [10.57.13.63] (unknown [10.57.13.63])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C7843F67D;
-        Wed, 10 Aug 2022 07:37:56 -0700 (PDT)
-Message-ID: <a7248e0c-f8cc-a7f1-f241-75faa7219961@arm.com>
-Date:   Wed, 10 Aug 2022 15:37:54 +0100
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6E00A1424;
+        Wed, 10 Aug 2022 08:32:05 -0700 (PDT)
+Received: from [10.57.42.77] (unknown [10.57.42.77])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 73B813F67D;
+        Wed, 10 Aug 2022 08:32:02 -0700 (PDT)
+Message-ID: <2d0fc5d7-d484-f64c-fe50-18d18ad95fa2@arm.com>
+Date:   Wed, 10 Aug 2022 17:32:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
+ Thunderbird/91.11.0
 Subject: Re: [PATCH v2 1/1] ACPI: CPPC: Disable FIE if registers in PCC
  regions
 Content-Language: en-US
-To:     Jeremy Linton <jeremy.linton@arm.com>
+To:     Lukasz Luba <lukasz.luba@arm.com>,
+        Jeremy Linton <jeremy.linton@arm.com>
 Cc:     rafael@kernel.org, lenb@kernel.org, viresh.kumar@linaro.org,
         robert.moore@intel.com, devel@acpica.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -39,8 +40,9 @@ References: <20220728221043.4161903-1-jeremy.linton@arm.com>
  <20220728221043.4161903-2-jeremy.linton@arm.com>
  <3a5e7abd-9361-11ba-978d-8e8bae00ea31@arm.com>
  <4da7cd19-4b98-9360-922f-d625c4ec55e0@arm.com>
-From:   Lukasz Luba <lukasz.luba@arm.com>
-In-Reply-To: <4da7cd19-4b98-9360-922f-d625c4ec55e0@arm.com>
+ <a7248e0c-f8cc-a7f1-f241-75faa7219961@arm.com>
+From:   Pierre Gondois <pierre.gondois@arm.com>
+In-Reply-To: <a7248e0c-f8cc-a7f1-f241-75faa7219961@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
@@ -54,56 +56,71 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-On 8/10/22 15:30, Jeremy Linton wrote:
-> Hi,
+On 8/10/22 16:37, Lukasz Luba wrote:
 > 
-> On 8/10/22 07:29, Lukasz Luba wrote:
->> Hi Jeremy,
->>
->> +CC Valentin since he might be interested in this finding
->> +CC Ionela, Dietmar
->>
->> I have a few comments for this patch.
->>
->>
->> On 7/28/22 23:10, Jeremy Linton wrote:
->>> PCC regions utilize a mailbox to set/retrieve register values used by
->>> the CPPC code. This is fine as long as the operations are
->>> infrequent. With the FIE code enabled though the overhead can range
->>> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
->>> based machines.
->>>
->>> So, before enabling FIE assure none of the registers used by
->>> cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
->>> enable a module parameter which can also disable it at boot or module
->>> reload.
->>>
->>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
->>> ---
->>>   drivers/acpi/cppc_acpi.c       | 41 ++++++++++++++++++++++++++++++++++
->>>   drivers/cpufreq/cppc_cpufreq.c | 19 ++++++++++++----
->>>   include/acpi/cppc_acpi.h       |  5 +++++
->>>   3 files changed, 61 insertions(+), 4 deletions(-)
->>
->>
->> 1. You assume that all platforms would have this big overhead when
->>     they have the PCC regions for this purpose.
->>     Do we know which version of HW mailbox have been implemented
->>     and used that have this 2-11% overhead in a platform?
->>     Do also more recent MHU have such issues, so we could block
->>     them by default (like in your code)?
 > 
-> I posted that other email before being awake and conflated MHU with AMU 
-> (which could potentially expose the values directly). But the CPPC code 
-> isn't aware of whether a MHU or some other mailbox is in use. Either 
-> way, its hard to imagine a general mailbox with a doorbell/wait for 
-> completion handshake will ever be fast enough to consider running at the 
-> granularity this code is running at. If there were a case like that, the 
-> kernel would have to benchmark it at runtime to differentiate it from 
-> something that is talking over a slow link to a slowly responding mgmt 
-> processor.
+> On 8/10/22 15:30, Jeremy Linton wrote:
+>> Hi,
+>>
+>> On 8/10/22 07:29, Lukasz Luba wrote:
+>>> Hi Jeremy,
+>>>
+>>> +CC Valentin since he might be interested in this finding
+>>> +CC Ionela, Dietmar
+>>>
+>>> I have a few comments for this patch.
+>>>
+>>>
+>>> On 7/28/22 23:10, Jeremy Linton wrote:
+>>>> PCC regions utilize a mailbox to set/retrieve register values used by
+>>>> the CPPC code. This is fine as long as the operations are
+>>>> infrequent. With the FIE code enabled though the overhead can range
+>>>> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
+>>>> based machines.
+>>>>
+>>>> So, before enabling FIE assure none of the registers used by
+>>>> cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
+>>>> enable a module parameter which can also disable it at boot or module
+>>>> reload.
+>>>>
+>>>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+>>>> ---
+>>>>    drivers/acpi/cppc_acpi.c       | 41 ++++++++++++++++++++++++++++++++++
+>>>>    drivers/cpufreq/cppc_cpufreq.c | 19 ++++++++++++----
+>>>>    include/acpi/cppc_acpi.h       |  5 +++++
+>>>>    3 files changed, 61 insertions(+), 4 deletions(-)
+>>>
+>>>
+>>> 1. You assume that all platforms would have this big overhead when
+>>>      they have the PCC regions for this purpose.
+>>>      Do we know which version of HW mailbox have been implemented
+>>>      and used that have this 2-11% overhead in a platform?
+>>>      Do also more recent MHU have such issues, so we could block
+>>>      them by default (like in your code)?
+>>
+>> I posted that other email before being awake and conflated MHU with AMU
+>> (which could potentially expose the values directly). But the CPPC code
+>> isn't aware of whether a MHU or some other mailbox is in use. Either
+>> way, its hard to imagine a general mailbox with a doorbell/wait for
+>> completion handshake will ever be fast enough to consider running at the
+>> granularity this code is running at. If there were a case like that, the
+>> kernel would have to benchmark it at runtime to differentiate it from
+>> something that is talking over a slow link to a slowly responding mgmt
+>> processor.
+> 
+> Exactly, I'm afraid the same, that we would never get such fast
+> mailbox-based platform. Newer platforms would just use AMU, so
+> completely different code and no one would even bother to test if
+> their HW mailbox is fast-enough for this FIE purpose ;)
 
-Exactly, I'm afraid the same, that we would never get such fast
-mailbox-based platform. Newer platforms would just use AMU, so
-completely different code and no one would even bother to test if
-their HW mailbox is fast-enough for this FIE purpose ;)
+To add some platform information, the following platforms are using
+CPPC through PCC channels (so mailboxes):
+- Cavium ThunderX2
+- Ampere eMAG
+- Ampere Altra
+
+Fwiw, I can confirm the cppc_fie kthread can represent a significant load,
+with a utilization between 2% and 30%.
+
+Regards,
+Pierre
