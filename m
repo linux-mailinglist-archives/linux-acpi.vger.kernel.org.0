@@ -2,53 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBBD158E6E6
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 08:01:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A47B58E6EA
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 08:02:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbiHJGB0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Aug 2022 02:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59800 "EHLO
+        id S231153AbiHJGB1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Aug 2022 02:01:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230453AbiHJGAx (ORCPT
+        with ESMTP id S231134AbiHJGAx (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Aug 2022 02:00:53 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7392BE53
-        for <linux-acpi@vger.kernel.org>; Tue,  9 Aug 2022 23:00:48 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-31f46b4759bso118248777b3.0
-        for <linux-acpi@vger.kernel.org>; Tue, 09 Aug 2022 23:00:48 -0700 (PDT)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3CE1160
+        for <linux-acpi@vger.kernel.org>; Tue,  9 Aug 2022 23:00:51 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-31f58599ad3so119778167b3.20
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Aug 2022 23:00:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc;
-        bh=TCO2xyxVuPd3/tBUV+s0EeQJwLyZQsGvsrrIoFAUabA=;
-        b=BvFe715tdJHTFzLiuUTS/Q7VYOCApMDwcI0d8adcuT6VY23Mzv0LjVB/oCe1EYUH6I
-         GrUEBHGuCyX9om+3m+2zl2rmB8DHkIoDhCoJHkxwfbcimGGF2Au9Yt8rAFlE5vLE4zOT
-         FBke0i6x4PfWRbfl2D3iR0cCU4z0WmA3iKlcfcXB0BYjlIhk2JqckwGp1G7FtAQR48/7
-         pqJ0XtbeVUishXdC4XToLF9FWmAVWf/m/3RJfH4tl7k3Jd+oE21AZHO7Wt0qAh9vtQ8/
-         piA6XmFBChiJiUmunvUDrKZvlyy2Mu3J3SrWw8IQ6KPqPhlxUX1s7KWZK+OvnRu3v5v3
-         Y72Q==
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:from:to:cc;
+        bh=yrSVoQ6qAYfctoHLwpmXbxKbM2DM2+R0yDzKfNT+j3U=;
+        b=izJdAflNpJVWEHox4ERNJay3x/S/To+x9+9KV2R1NX8mVvLkWbAu6pJiC9H/0M2NLn
+         ocfw4JmzrHQavKYT18YDK+gRqRMLcmdMUlfVbEdUf1j5kocdA8ySJfeFlofn11B2cfFz
+         L++awHGTPcRZ7ppPUyPRLd9hJzIs+EpLqWOSJazPVt5H2lMeAtFzeElMKf++YUZJHiLb
+         isRQVJNIFzGeSCHAvXXWt4EwTkNgXEVtj5u56DjinNjAVlJDGrYeypA2UodBtn4uxhAR
+         g5j/JPv9wvCk1M9zcUEHPTHcUKe5W/ChBf53weBSEyaV0ZknXYDa9svnM+XwA9IPjEhH
+         CkhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
-         :from:to:cc;
-        bh=TCO2xyxVuPd3/tBUV+s0EeQJwLyZQsGvsrrIoFAUabA=;
-        b=M8GM6YKqD8uLqSdKY+N29lsoOfXBxD7GbjrYgJkdmlPSErBteane5Sf6MWGgSUL6eZ
-         j0wbFvCzq9KbL3q+Q/bKtGdbb7Ev0/R7oqiPTJUqgpNN+IRybeDg1qNRA0fLN9aaPOwu
-         fC2Yt4Mk3zgs3XbBmvg+CZ0sGXseLd53zfe8CF3HdR4H2nhAGMKeMKkhJIfK1HI1lxpd
-         acqVyfs6ScKnMJalmm6raKRW7nOmyjL8Cgzm0In0t9r/GdIpDml3kVY6ZhwblWEE/4IE
-         DSLegtuIOzUmVP/pM6RlAB847A1d512wEn49wXieuzwQVarSct5VknY8w4HRQ8sq5MVy
-         OMsQ==
-X-Gm-Message-State: ACgBeo0O/wXda/IWdPg3trkqALVVkuLp2Uz4cY+XUU23QTXozu/U8zji
-        bEDGx5/9FwA9UtQ9wYpzT8bJIabK8ed8R30=
-X-Google-Smtp-Source: AA6agR4Luo9mfYOGUmow5n6t7VfAyPObtMuTRPi8OYX4fTwH65RIMuWKTPOsfnkREdcPNXAbTsM3U3vFPMT0E+A=
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:x-gm-message-state:from:to:cc;
+        bh=yrSVoQ6qAYfctoHLwpmXbxKbM2DM2+R0yDzKfNT+j3U=;
+        b=rvZq5Uk9cn4lsVUAF7jsS7ZNp/T3Ln8+3YGeJ8gOrLg0um99+p/Y0qSmeAUtA6e6wf
+         8wjNVneE+Oag6ui/IA3k4sh/z5JYfUXDorNWN8dz60WdW8QlQRfHi9xVVq87Vq5Nredh
+         KByfYaZwpNsUTagVcoNAa4VRVrfQAasKqQ2j4Rk0jtyT/TstgOLmGtNfI0oa1a3Xq4Rd
+         Qvn1inWsSigMvX8LAkUuT4PRWY40SoZIxC5cJ5oWHDFnBSDMyFKCollp16SV3w4jA11f
+         y7HhehJq9qXYkn285CVSFxEfHtHiAsUiC0a+2dIF1ytSlkfYVH+GuTfiUF4bOEgq5N7d
+         2TZQ==
+X-Gm-Message-State: ACgBeo3NDp5f6v/exuJzJkK4seiAxA1xPOE6AbYJW42w7Ju37ZHl2UJi
+        cn7tIcAn2gd7L2NXtuaNa9SUsUqnr0qklwA=
+X-Google-Smtp-Source: AA6agR6oBnWJI1pwT9B0nAdocGFOqlZelz8ZvTX+uF4itGLdhkdgHLvMyL5bD42EBVo8bfxVt++iHuhLW/lxloY=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:f21:76ca:766f:e0ab])
- (user=saravanak job=sendgmr) by 2002:a25:7613:0:b0:67a:700a:f9e1 with SMTP id
- r19-20020a257613000000b0067a700af9e1mr23778556ybc.53.1660111247299; Tue, 09
- Aug 2022 23:00:47 -0700 (PDT)
-Date:   Tue,  9 Aug 2022 23:00:29 -0700
-Message-Id: <20220810060040.321697-1-saravanak@google.com>
+ (user=saravanak job=sendgmr) by 2002:a25:8101:0:b0:676:c7fd:2143 with SMTP id
+ o1-20020a258101000000b00676c7fd2143mr22340191ybk.364.1660111250277; Tue, 09
+ Aug 2022 23:00:50 -0700 (PDT)
+Date:   Tue,  9 Aug 2022 23:00:30 -0700
+In-Reply-To: <20220810060040.321697-1-saravanak@google.com>
+Message-Id: <20220810060040.321697-2-saravanak@google.com>
 Mime-Version: 1.0
+References: <20220810060040.321697-1-saravanak@google.com>
 X-Mailer: git-send-email 2.37.1.559.g78731f0fdb-goog
-Subject: [PATCH v1 0/9] fw_devlink improvements
+Subject: [PATCH v1 1/9] driver core: fw_devlink: Don't purge child fwnode's
+ consumer links
 From:   Saravana Kannan <saravanak@google.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -86,104 +90,171 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch series improves fw_devlink in the following ways:
+When a device X is bound successfully to a driver, if it has a child
+firmware node Y that doesn't have a struct device created by then, we
+delete fwnode links where the child firmware node Y is the supplier. We
+did this to avoid blocking the consumers of the child firmware node Y
+from deferring probe indefinitely.
 
-1. It no longer cares about a fwnode having a "compatible" property. It
-   figures this our more dynamically. The only expectation is that
-   fwnode that are converted to devices actually get probed by a driver
-   for the dependencies to be enforced correctly.
+While that a step in the right direction, it's better to make the
+consumers of the child firmware node Y to be consumers of the device X
+because device X is probably implementing whatever functionality is
+represented by child firmware node Y. By doing this, we capture the
+device dependencies more accurately and ensure better
+probe/suspend/resume ordering.
 
-2. Finer grained dependency tracking. fw_devlink will now create device
-   links from the consumer to the actual resource's device (if it has one,
-   Eg: gpio_device) instead of the parent supplier device. This improves
-   things like async suspend/resume ordering, potentially remove the need
-   for frameworks to create device links, more parallelized async probing,
-   and better sync_state() tracking.
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+---
+ drivers/base/core.c | 91 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 74 insertions(+), 17 deletions(-)
 
-3. Handle hardware/software quirks where a child firmware node gets
-   populated as a device before its parent firmware node AND actually
-   supplies a non-optional resource to the parent firmware node's
-   device.
-
-4. Way more robust at cycle handling (see patch for the insane cases).
-
-5. Stops depending on OF_POPULATED to figure out some corner cases.
-
-6. Simplifies the work that needs to be done by the firmware specific
-   code.
-
-This took way too long to get done due to typo bugs I had in my rewrite or
-corner cases I had to find and handle. But it's fairly well tested at this
-point and I expect this to work properly.
-
-Abel & Doug,
-
-This should fix your cyclic dependency issues with your display. Can you
-give it a shot please?
-
-Alexander,
-
-This should fix your issue where the power domain device not having a
-compatible property. Can you give it a shot please?
-
-Tony,
-
-This should handle the odd case of the child being the supplier of the
-parent. Can you please give this a shot? I want to make sure the cycle
-detection code handles this properly and treats it like it's NOT a cycle.
-
-Geert,
-
-Can you test the renesas stuff I changed please? They should continue
-working like before. Any other sanity test on other hardware would be
-great too.
-
-Sudeep,
-
-I don't think there are any unfixed issues you had reported in my other
-patches that this series might fix, but it'll be nice if you could give
-this a sanity test.
-
-Guenter,
-
-I don't think this will fix the issue you reported in the amba patch, but
-it's worth a shot because it improves a bunch of corner case handling. So
-it might be better at handling whatever corner cases you might have in the
-qemu platforms.
-
-Thanks,
-Saravana
-
-Cc: Abel Vesa <abel.vesa@linaro.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-
-Saravana Kannan (9):
-  driver core: fw_devlink: Don't purge child fwnode's consumer links
-  driver core: fw_devlink: Improve check for fwnode with no
-    device/driver
-  soc: renesas: Move away from using OF_POPULATED for fw_devlink
-  gpiolib: Clear the gpio_device's fwnode initialized flag before adding
-  driver core: fw_devlink: Add DL_FLAG_CYCLE support to device links
-  driver core: fw_devlink: Allow marking a fwnode link as being part of
-    a cycle
-  driver core: fw_devlink: Consolidate device link flag computation
-  driver core: fw_devlink: Make cycle detection more robust
-  of: property: Simplify of_link_to_phandle()
-
- drivers/base/core.c             | 437 +++++++++++++++++++++-----------
- drivers/gpio/gpiolib.c          |   6 +
- drivers/of/property.c           |  84 +-----
- drivers/soc/renesas/rcar-sysc.c |   2 +-
- include/linux/device.h          |   1 +
- include/linux/fwnode.h          |  12 +-
- 6 files changed, 323 insertions(+), 219 deletions(-)
-
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 753e7cca0f40..6f575c2a24ad 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -53,11 +53,12 @@ static LIST_HEAD(deferred_sync);
+ static unsigned int defer_sync_state_count = 1;
+ static DEFINE_MUTEX(fwnode_link_lock);
+ static bool fw_devlink_is_permissive(void);
++static void __fw_devlink_link_to_consumers(struct device *dev);
+ static bool fw_devlink_drv_reg_done;
+ static bool fw_devlink_best_effort;
+ 
+ /**
+- * fwnode_link_add - Create a link between two fwnode_handles.
++ * __fwnode_link_add - Create a link between two fwnode_handles.
+  * @con: Consumer end of the link.
+  * @sup: Supplier end of the link.
+  *
+@@ -73,22 +74,18 @@ static bool fw_devlink_best_effort;
+  * Attempts to create duplicate links between the same pair of fwnode handles
+  * are ignored and there is no reference counting.
+  */
+-int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
++static int __fwnode_link_add(struct fwnode_handle *con,
++			     struct fwnode_handle *sup)
+ {
+ 	struct fwnode_link *link;
+-	int ret = 0;
+-
+-	mutex_lock(&fwnode_link_lock);
+ 
+ 	list_for_each_entry(link, &sup->consumers, s_hook)
+ 		if (link->consumer == con)
+-			goto out;
++			return 0;
+ 
+ 	link = kzalloc(sizeof(*link), GFP_KERNEL);
+-	if (!link) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
++	if (!link)
++		return -ENOMEM;
+ 
+ 	link->supplier = sup;
+ 	INIT_LIST_HEAD(&link->s_hook);
+@@ -99,9 +96,17 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
+ 	list_add(&link->c_hook, &con->suppliers);
+ 	pr_debug("%pfwP Linked as a fwnode consumer to %pfwP\n",
+ 		 con, sup);
+-out:
+-	mutex_unlock(&fwnode_link_lock);
+ 
++	return 0;
++}
++
++int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
++{
++	int ret = 0;
++
++	mutex_lock(&fwnode_link_lock);
++	ret = __fwnode_link_add(con, sup);
++	mutex_unlock(&fwnode_link_lock);
+ 	return ret;
+ }
+ 
+@@ -180,6 +185,51 @@ void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode)
+ }
+ EXPORT_SYMBOL_GPL(fw_devlink_purge_absent_suppliers);
+ 
++/**
++ * __fwnode_links_move_consumers - Move consumer from @from to @to fwnode_handle
++ * @from: move consumers away from this fwnode
++ * @to: move consumers to this fwnode
++ *
++ * Move all consumer links from @from fwnode to @to fwnode.
++ */
++static void __fwnode_links_move_consumers(struct fwnode_handle *from,
++					  struct fwnode_handle *to)
++{
++	struct fwnode_link *link, *tmp;
++
++	list_for_each_entry_safe(link, tmp, &from->consumers, s_hook) {
++		__fwnode_link_add(link->consumer, to);
++		__fwnode_link_del(link);
++	}
++}
++
++/**
++ * __fw_devlink_pickup_dangling_consumers - Pick up dangling consumers
++ * @fwnode: fwnode from which to pick up dangling consumers
++ * @new_sup: fwnode of new supplier
++ *
++ * If the @fwnode has a corresponding struct device and the device supports
++ * probing (that is, added to a bus), then we want to let fw_devlink create
++ * MANAGED device links to this device, so leave @fwnode and its descendant's
++ * fwnode links alone.
++ *
++ * Otherwise, move its consumers to the new supplier @new_sup.
++ */
++static void __fw_devlink_pickup_dangling_consumers(struct fwnode_handle *fwnode,
++						   struct fwnode_handle *new_sup)
++{
++	struct fwnode_handle *child;
++
++	if (fwnode->dev && fwnode->dev->bus)
++		return;
++
++	fwnode->flags |= FWNODE_FLAG_NOT_DEVICE;
++	__fwnode_links_move_consumers(fwnode, new_sup);
++
++	fwnode_for_each_available_child_node(fwnode, child)
++		__fw_devlink_pickup_dangling_consumers(child, new_sup);
++}
++
+ #ifdef CONFIG_SRCU
+ static DEFINE_MUTEX(device_links_lock);
+ DEFINE_STATIC_SRCU(device_links_srcu);
+@@ -1266,16 +1316,23 @@ void device_links_driver_bound(struct device *dev)
+ 	 * them. So, fw_devlink no longer needs to create device links to any
+ 	 * of the device's suppliers.
+ 	 *
+-	 * Also, if a child firmware node of this bound device is not added as
+-	 * a device by now, assume it is never going to be added and make sure
+-	 * other devices don't defer probe indefinitely by waiting for such a
+-	 * child device.
++	 * Also, if a child firmware node of this bound device is not added as a
++	 * device by now, assume it is never going to be added. Make this bound
++	 * device the fallback supplier to the dangling consumers of the child
++	 * firmware node because this bound device is probably implementing the
++	 * child firmware node functionality and we don't want the dangling
++	 * consumers to defer probe indefinitely waiting for a device for the
++	 * child firmware node.
+ 	 */
+ 	if (dev->fwnode && dev->fwnode->dev == dev) {
+ 		struct fwnode_handle *child;
+ 		fwnode_links_purge_suppliers(dev->fwnode);
++		mutex_lock(&fwnode_link_lock);
+ 		fwnode_for_each_available_child_node(dev->fwnode, child)
+-			fw_devlink_purge_absent_suppliers(child);
++			__fw_devlink_pickup_dangling_consumers(child,
++							       dev->fwnode);
++		__fw_devlink_link_to_consumers(dev);
++		mutex_unlock(&fwnode_link_lock);
+ 	}
+ 	device_remove_file(dev, &dev_attr_waiting_for_supplier);
+ 
 -- 
 2.37.1.559.g78731f0fdb-goog
 
