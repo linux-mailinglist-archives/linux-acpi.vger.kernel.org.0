@@ -2,46 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B1C458F1B4
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 19:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA6F58F213
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Aug 2022 20:04:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231424AbiHJRn2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Aug 2022 13:43:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48290 "EHLO
+        id S233005AbiHJSEY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Aug 2022 14:04:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231285AbiHJRn1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Aug 2022 13:43:27 -0400
+        with ESMTP id S232482AbiHJSEX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Aug 2022 14:04:23 -0400
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 744ED832FC;
-        Wed, 10 Aug 2022 10:43:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5600A2AE1E;
+        Wed, 10 Aug 2022 11:04:21 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2E1F11FB;
-        Wed, 10 Aug 2022 10:43:26 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE9BA11FB;
+        Wed, 10 Aug 2022 11:04:21 -0700 (PDT)
 Received: from [192.168.122.164] (U203867.austin.arm.com [10.118.30.29])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0FD303F67D;
-        Wed, 10 Aug 2022 10:43:26 -0700 (PDT)
-Message-ID: <167502fa-d0ac-c834-170f-0f0d4e912819@arm.com>
-Date:   Wed, 10 Aug 2022 12:43:25 -0500
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DBC0E3F5A1;
+        Wed, 10 Aug 2022 11:04:20 -0700 (PDT)
+Message-ID: <151b17e9-5342-69e0-aea3-ec5b14bf5d83@arm.com>
+Date:   Wed, 10 Aug 2022 13:04:20 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-From:   Jeremy Linton <jeremy.linton@arm.com>
 Subject: Re: [PATCH v2 1/1] ACPI: CPPC: Disable FIE if registers in PCC
  regions
-To:     Ionela Voinescu <ionela.voinescu@arm.com>,
-        Lukasz Luba <lukasz.luba@arm.com>
+Content-Language: en-US
+To:     Lukasz Luba <lukasz.luba@arm.com>
 Cc:     rafael@kernel.org, lenb@kernel.org, viresh.kumar@linaro.org,
         robert.moore@intel.com, devel@acpica.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-pm@vger.kernel.org, vschneid@redhat.com,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>
 References: <20220728221043.4161903-1-jeremy.linton@arm.com>
  <20220728221043.4161903-2-jeremy.linton@arm.com>
- <3a5e7abd-9361-11ba-978d-8e8bae00ea31@arm.com> <YvOpy69JkluN4ITK@arm.com>
-Content-Language: en-US
-In-Reply-To: <YvOpy69JkluN4ITK@arm.com>
+ <3a5e7abd-9361-11ba-978d-8e8bae00ea31@arm.com>
+ <6f565c2d-e7cb-f5a2-0b38-995c9cd2deec@arm.com>
+ <64ba1dfb-a475-e667-b59d-57e5d1e5ff1f@arm.com>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <64ba1dfb-a475-e667-b59d-57e5d1e5ff1f@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
@@ -53,125 +55,115 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 8/10/22 07:51, Ionela Voinescu wrote:
-> Hi folks,
+On 8/10/22 09:32, Lukasz Luba wrote:
 > 
-> On Wednesday 10 Aug 2022 at 13:29:08 (+0100), Lukasz Luba wrote:
->> Hi Jeremy,
+> 
+> On 8/10/22 15:08, Jeremy Linton wrote:
+>> Hi,
 >>
->> +CC Valentin since he might be interested in this finding
->> +CC Ionela, Dietmar
->>
->> I have a few comments for this patch.
->>
->>
->> On 7/28/22 23:10, Jeremy Linton wrote:
->>> PCC regions utilize a mailbox to set/retrieve register values used by
->>> the CPPC code. This is fine as long as the operations are
->>> infrequent. With the FIE code enabled though the overhead can range
->>> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
->>> based machines.
+>> On 8/10/22 07:29, Lukasz Luba wrote:
+>>> Hi Jeremy,
 >>>
->>> So, before enabling FIE assure none of the registers used by
->>> cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
->>> enable a module parameter which can also disable it at boot or module
->>> reload.
+>>> +CC Valentin since he might be interested in this finding
+>>> +CC Ionela, Dietmar
 >>>
->>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
->>> ---
->>>    drivers/acpi/cppc_acpi.c       | 41 ++++++++++++++++++++++++++++++++++
->>>    drivers/cpufreq/cppc_cpufreq.c | 19 ++++++++++++----
->>>    include/acpi/cppc_acpi.h       |  5 +++++
->>>    3 files changed, 61 insertions(+), 4 deletions(-)
+>>> I have a few comments for this patch.
+>>>
+>>>
+>>> On 7/28/22 23:10, Jeremy Linton wrote:
+>>>> PCC regions utilize a mailbox to set/retrieve register values used by
+>>>> the CPPC code. This is fine as long as the operations are
+>>>> infrequent. With the FIE code enabled though the overhead can range
+>>>> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
+>>>> based machines.
+>>>>
+>>>> So, before enabling FIE assure none of the registers used by
+>>>> cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
+>>>> enable a module parameter which can also disable it at boot or module
+>>>> reload.
+>>>>
+>>>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+>>>> ---
+>>>>   drivers/acpi/cppc_acpi.c       | 41 
+>>>> ++++++++++++++++++++++++++++++++++
+>>>>   drivers/cpufreq/cppc_cpufreq.c | 19 ++++++++++++----
+>>>>   include/acpi/cppc_acpi.h       |  5 +++++
+>>>>   3 files changed, 61 insertions(+), 4 deletions(-)
+>>>
+>>>
+>>> 1. You assume that all platforms would have this big overhead when
+>>>     they have the PCC regions for this purpose.
+>>>     Do we know which version of HW mailbox have been implemented
+>>>     and used that have this 2-11% overhead in a platform?
+>>>     Do also more recent MHU have such issues, so we could block
+>>>     them by default (like in your code)?
+>>
+>> Well, the mailbox nature of PCC pretty much assures its "slow", 
+>> relative the alternative of providing an actual register.  If a 
+>> platform provides direct access to say MHU registers, then of course 
+>> they won't actually be in a PCC region and the FIE will remain on.
 >>
 >>
->> 1. You assume that all platforms would have this big overhead when
->>     they have the PCC regions for this purpose.
->>     Do we know which version of HW mailbox have been implemented
->>     and used that have this 2-11% overhead in a platform?
->>     Do also more recent MHU have such issues, so we could block
->>     them by default (like in your code)?
+>>>
+>>> 2. I would prefer to simply change the default Kconfig value to 'n' for
+>>>     the ACPI_CPPC_CPUFREQ_FIE, instead of creating a runtime
+>>>     check code which disables it.
+>>>     We have probably introduce this overhead for older platforms with
+>>>     this commit:
 >>
->> 2. I would prefer to simply change the default Kconfig value to 'n' for
->>     the ACPI_CPPC_CPUFREQ_FIE, instead of creating a runtime
->>     check code which disables it.
->>     We have probably introduce this overhead for older platforms with
->>     this commit:
+>> The problem here is that these ACPI kernels are being shipped as 
+>> single images in distro's which expect them to run on a wide range of 
+>> platforms (including x86/amd in this case), and preform optimally on 
+>> all of them.
 >>
->> commit 4c38f2df71c8e33c0b64865992d693f5022eeaad
->> Author: Viresh Kumar <viresh.kumar@linaro.org>
->> Date:   Tue Jun 23 15:49:40 2020 +0530
->>
->>      cpufreq: CPPC: Add support for frequency invariance
->>
->>
->>
->> If the test server with this config enabled performs well
->> in the stress-tests, then on production server the config may be
->> set to 'y' (or 'm' and loaded).
->>
->> I would vote to not add extra code, which then after a while might be
->> decided to bw extended because actually some HW is actually capable (so
->> we could check in runtime and enable it). IMO this create an additional
->> complexity in our diverse configuration/tunnable space in our code.
->>
+>> So the 'n' option basically is saying that the latest FIE code doesn't 
+>> provide a befit anywhere?
 > 
-> I agree that having CONFIG_ACPI_CPPC_CPUFREQ_FIE default to no is the
-> simpler solution but it puts the decision in the hands of platform
-> providers which might result in this functionality not being used most
-> of the times, if at all. This being said, the use of CPPC counters is
-> meant as a last resort for FIE, if the platform does not have AMUs. This
-> is why I recommended this to default to no in the review of the original
-> patches.
+> How we define the 'benefit' here - it's a better task utilization.
+> How much better it would be vs. previous approach with old-style FIE?
 > 
-> But I don't see these runtime options as adding a lot of complexity
-> and therefore agree with the idea of this patch, versus the config
-> change above, with two design comments:
->   - Rather than having a check for fie_disabled in multiple init and exit
->     functions I think the code should be slightly redesigned to elegantly
->     bail out of most functions if cppc_freq_invariance_init() failed.
+> TBH, I haven't found any test results from the development of the patch
+> set. Maybe someone could point me to the test results which bring
+> this benefit of better utilization.
+> 
+> In the RFC I could find that statement [1]:
+> 
+> "This is tested with some hacks, as I didn't have access to the right
+> hardware, on the ARM64 hikey board to check the overall functionality
+> and that works fine."
+> 
+> There should be a rule that such code is tested on a real server with
+> many CPUs under some stress-test.
+> 
+> Ionela do you have some test results where this new FIE feature
+> introduces some better & meaningful accuracy improvement to the
+> tasks utilization?
+> 
+> With this overhead measured on a real server platform I think
+> it's not worth to keep it 'y' in default.
+> 
+> The design is heavy, as stated in the commit message:
+> "    On an invocation of cppc_scale_freq_tick(), we schedule an irq work
+>      (since we reach here from hard-irq context), which then schedules a
+>      normal work item and cppc_scale_freq_workfn() updates the per_cpu
+>      arch_freq_scale variable based on the counter updates since the last
+>      tick.
+> "
+> 
+> As you said Jeremy, this mailbox would always be with overhead. IMO
+> untill we cannot be sure we have some powerful new HW mailbox, this
+> feature should be disabled.
 
-I'm not sure what that would look like, I will have to mess with it a 
-bit more, but as you can see its really just the two init entry points 
-(one for the module, and one for the registered cpufreq), and their 
-associated exit's which I'm not sure I see a way to simplify that short 
-of maybe creating a second cpufreq_driver table, which replaces the 
-.init calls with ones which include cppc_cpufreq_cpu_fie_init. The 
-alternative is runtime setting the .init to switch between an init with 
-FIE and one without. I'm not sure that clarifies what is happening in 
-the code, and I thought in general dynamic runtime dispatch was to be 
-avoided in the ACPI code when possible. Neither choice of course affects 
-actual runtime because they are both firing during module load/unload.
 
+Right, the design of the feature would be completely different if it 
+were a simple register read to get the delivered perf avoiding all the 
+jumping around you quoted.
 
->   - Given the multiple options to disable this functionality (config,
->     PCC check), I don't see a need for a module parameter or runtime user
->     input, unless we make that overwrite all previous decisions, as in: if
->     CONFIG_ACPI_CPPC_CPUFREQ_FIE=y, even if cppc_perf_ctrs_in_pcc(), if
->     the fie_disabled module parameter is no, then counters should be used
->     for FIE.
-
-Tristating the module parameter with default=detect, ON, OFF is a 
-reasonable idea, and one I considered, but ignored because in the hisi 
-quirk case even with ON it will have to be OFF, so it really ends up 
-with 4 states default=detect, request ON, ON, OFF.
-
-I'm good with any of this if people feel strongly about it.
+Which sorta implies that its not really fixable as is, which IMHO means 
+that 'n' isn't really strong enough, it should probably be under 
+CONFIG_EXPERT as well if such a change were made to discourage its use.
 
 > 
-> Thanks,
-> Ionela.
-> 
-> 
->> When we don't compile-in this, we should fallback to old-style
->> FIE, which has been used on these old platforms.
->>
->> BTW (I have to leave it here) the first-class solution for those servers
->> is to implement AMU counters, so the overhead to retrieve this info is
->> really low.
->>
->> Regards,
->> Lukasz
+> [1] 
+> https://lore.kernel.org/lkml/cover.1594289009.git.viresh.kumar@linaro.org/
 
-
-Thanks for looking at this!
