@@ -2,65 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B909259112F
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 15:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD239591135
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 15:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238006AbiHLNIg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Aug 2022 09:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56132 "EHLO
+        id S237181AbiHLNLg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Aug 2022 09:11:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbiHLNIg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 09:08:36 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15DF89923
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Aug 2022 06:08:34 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id n4so1146313wrp.10
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Aug 2022 06:08:34 -0700 (PDT)
+        with ESMTP id S231698AbiHLNLf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 09:11:35 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62616C13C
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Aug 2022 06:11:33 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id l4so1143258wrm.13
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Aug 2022 06:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:user-agent:message-id:in-reply-to:date:references
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
          :subject:cc:to:from:from:to:cc;
-        bh=nE/YksI/TrTd0HJkGRCbsxN0/Q7VNi+G+yHlFaV4rdg=;
-        b=cx+88nfu9Bq4Xhw4QJlzINSAm53bc1vafAFJIcLT8QLNnYQuz07AaolI2SMsGslLj2
-         aFNlpzPwnD7eoHQypdh6JldNBT0pPMtmVw/rrK/ZwlHwHjJTU+UkHa6Afd84rM9XY8mr
-         X0k9FyTmgHaYRLyYDHnPx9bm71tEz+XzBsgfmWMV6X5dAnkyxrMadPV9TNL2+gdnFyGz
-         qajW7ZQ3+H38K870C62QQpbz6SD34M/I80mFT1cs1anx+OEApDL7R48Ozp+96kBxpHN6
-         Olx2e70wiACUnf31/3awuT8nK7JStJPbixPCCt/aOFlioSZ4IOvftpBKcY6A/B2NL51d
-         A6Uw==
+        bh=oBbits87Sh54Pv6OEfDdfWZYrwVvKln+o+HoHPpBNT0=;
+        b=s4ddTScLTJaDLUFkiZ3TBa3nJtFTnumXRrFoezKDY9/HeFWIew4zitQN4HCRxdSuMN
+         AI1TlchQml2Nbne0zQcQvvVkELdYXXjY9CRNmdUMpNH1ZIQCr0iTGvM4zW7BH74GccBr
+         LZM0Stq/nIwqOeEWQuxBUSxqFsxd4FqhzRhZapA9vGlCIj466gdc66fFKTY57C01wlVx
+         YawjSwDBzBtyktrL9O/Colyw1wBIFwJiYCVVJ6bhrWLll9yerrK+kByLaITALFhvlzSk
+         IH1Zxzo+3qkM1G8YTG1HfSGfNNUK5T41HOVE1g+P8JThNJeigd5Ka01AzXV0G+hcDFD9
+         jO2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:user-agent:message-id:in-reply-to:date:references
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
          :subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=nE/YksI/TrTd0HJkGRCbsxN0/Q7VNi+G+yHlFaV4rdg=;
-        b=Hr8vp07shkf/xjuCxHryCw4M+HZhbV92Ib7h41DQxUfFthXGNsDRZ2SQNN9gC18Uum
-         Wks9AIx5SPTjZ2/2Es+6/bWbYGoJeu18ZbLes8ZJ1deVqz8W5IBGh0MN8TAX9I9sPW2B
-         7OcDPdGLiIQ5OpgNeKnVxPH75vfHDg7WwaswEiXMoMlXU+ZVqdiym4fkRq7bsM2AzBwR
-         zv7+C5hWSX6Ul8gEH1+lX1kWVi56626WDHPlRZ3c2XfNFpEh5kCBmQGI2dcsccknf80u
-         O4xYRZsOrtOkb0/bIigg9KpHNX+qJrwmqkTIOazwUIgliMrYTtGXJhF12rHEathlmSSy
-         c2GQ==
-X-Gm-Message-State: ACgBeo15HyfHhgT62vkZacax7aBrvArgKTCZBw+9khlzJY8tW7ypLHSn
-        p6PXojpXAtVhtd06kZ2BADuYbw==
-X-Google-Smtp-Source: AA6agR4IM6yACIzgVOhZNfMvn4VAPSBXozEbqHJmfIgFAN7W1HE5KRpQ3mocYJWa0z1wOOyorucoHQ==
-X-Received: by 2002:adf:dc87:0:b0:21e:ecad:a6bc with SMTP id r7-20020adfdc87000000b0021eecada6bcmr2098755wrj.218.1660309713144;
-        Fri, 12 Aug 2022 06:08:33 -0700 (PDT)
+        bh=oBbits87Sh54Pv6OEfDdfWZYrwVvKln+o+HoHPpBNT0=;
+        b=EMBuusVz6/EUbkzAoLXY1Sl5LOTbmlNbwQ3TKSljrVoehkgr/8xCf7TZ+jcNuC/rV0
+         9Lf7JCul0NVZzP1IYhAJfHywSMHtK/5Em2OyE0rYjnlAgKJWD1n6GUc8omdlvHWx50Wa
+         iDGVcujMF4+bAF7Co6kWkFrhG5oJZ5/aY3L8GOV5lAHGtoDXkxmtRE3j89Ke/uQuu6t1
+         rUMU+hdS/AKJOFaqpNEmEscfMZ2SEuo2sLPKIxJvJ/oVTloBEH8N5seFlTWtiwIUEMBu
+         Pnhtv1YHabbRlvgebE2JOT5irDR6OxAhOHzd43lE23lfHiZsu3jUryMPd+YtD7W7/6q0
+         pMog==
+X-Gm-Message-State: ACgBeo0krIK/h6TFfZnXgurjtXbrXY1y6va020z3NtFZ/74Bu66/9TrZ
+        3aequSh2cPVrWRd/2FHlLKKzgQ==
+X-Google-Smtp-Source: AA6agR6AuxoJ9bwmQi0vU/ySTcZsqisySBUe5l5ptauxg9gq8coDfUkOE+L1t6nDa3qVGWnjHUlVsA==
+X-Received: by 2002:adf:f346:0:b0:21f:13ec:cacf with SMTP id e6-20020adff346000000b0021f13eccacfmr2080589wrp.525.1660309892485;
+        Fri, 12 Aug 2022 06:11:32 -0700 (PDT)
 Received: from localhost ([109.180.234.208])
-        by smtp.gmail.com with ESMTPSA id q25-20020a1ce919000000b003a3170a7af9sm2878102wmc.4.2022.08.12.06.08.32
+        by smtp.gmail.com with ESMTPSA id e17-20020adfa451000000b0021e30e9e44asm2000849wra.53.2022.08.12.06.11.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Aug 2022 06:08:32 -0700 (PDT)
+        Fri, 12 Aug 2022 06:11:31 -0700 (PDT)
 From:   Punit Agrawal <punit.agrawal@bytedance.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v1 2/5] ACPI: scan: Rename acpi_bus_get_parent() and
- rearrange it
-References: <12036348.O9o76ZdvQC@kreacher> <2252770.ElGaqSPkdT@kreacher>
-Date:   Fri, 12 Aug 2022 14:08:31 +0100
-In-Reply-To: <2252770.ElGaqSPkdT@kreacher> (Rafael J. Wysocki's message of
-        "Wed, 10 Aug 2022 18:15:24 +0200")
-Message-ID: <87edxlk3sg.fsf@stealth>
+Subject: Re: [PATCH v1 0/5] ACPI: Device enumeration rearrangements and
+ parent field elimination
+In-Reply-To: <12036348.O9o76ZdvQC@kreacher> (Rafael J. Wysocki's message of
+        "Wed, 10 Aug 2022 18:11:58 +0200")
+References: <12036348.O9o76ZdvQC@kreacher>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+Date:   Fri, 12 Aug 2022 14:11:31 +0100
+Message-ID: <875yixk3ng.fsf@stealth>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -72,75 +72,28 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Rafael,
+
 "Rafael J. Wysocki" <rjw@rjwysocki.net> writes:
 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Hi All,
 >
-> The acpi_bus_get_parent() name doesn't really reflect the
-> purpose of the function so change it to a more accurate
-> acpi_find_parent_acpi_dev().
+> There are still opportunities to clean up the ACPI support code and
+> this series is part of the effort in that direction.
 >
-> While at it, rearrange the code inside that function the make it
+> It makes changes without functional impact (AFAICS) to the core ACPI
+> code related to devices and to some of its users.
+>
+> Please refer to the patch changelogs for details.
 
-Typo:                                                  to
+Other than the single typo I noticed in Patch 2, the changes look good!
 
-> easier to read.
->
-> No intentional functional impact.
->
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  drivers/acpi/scan.c |   24 ++++++++++++++----------
->  1 file changed, 14 insertions(+), 10 deletions(-)
->
-> Index: linux-pm/drivers/acpi/scan.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/scan.c
-> +++ linux-pm/drivers/acpi/scan.c
-> @@ -816,10 +816,9 @@ static const char * const acpi_honor_dep
->  	NULL
->  };
->  
-> -static struct acpi_device *acpi_bus_get_parent(acpi_handle handle)
-> +static struct acpi_device *acpi_find_parent_acpi_dev(acpi_handle handle)
->  {
-> -	struct acpi_device *device;
-> -	acpi_status status;
-> +	struct acpi_device *adev;
->  
->  	/*
->  	 * Fixed hardware devices do not appear in the namespace and do not
-> @@ -830,13 +829,18 @@ static struct acpi_device *acpi_bus_get_
->  		return acpi_root;
->  
->  	do {
-> -		status = acpi_get_parent(handle, &handle);
-> -		if (ACPI_FAILURE(status))
-> -			return status == AE_NULL_ENTRY ? NULL : acpi_root;
-> +		acpi_status status;
->  
-> -		device = acpi_fetch_acpi_dev(handle);
-> -	} while (!device);
-> -	return device;
-> +		status = acpi_get_parent(handle, &handle);
-> +		if (ACPI_FAILURE(status)) {
-> +			if (status != AE_NULL_ENTRY)
-> +				return acpi_root;
-> +
-> +			return NULL;
-> +		}
-> +		adev = acpi_fetch_acpi_dev(handle);
-> +	} while (!adev);
-> +	return adev;
->  }
->  
->  acpi_status
-> @@ -1777,7 +1781,7 @@ void acpi_init_device_object(struct acpi
->  	INIT_LIST_HEAD(&device->pnp.ids);
->  	device->device_type = type;
->  	device->handle = handle;
-> -	device->parent = acpi_bus_get_parent(handle);
-> +	device->parent = acpi_find_parent_acpi_dev(handle);
->  	fwnode_init(&device->fwnode, &acpi_device_fwnode_ops);
->  	acpi_set_device_status(device, ACPI_STA_DEFAULT);
->  	acpi_device_get_busid(device);
+If it helps,
+
+Reviewed-by: Punit Agrawal <punit.agrawal@bytedance.com>
+
+Thanks,
+Punit
+
+[...]
+
