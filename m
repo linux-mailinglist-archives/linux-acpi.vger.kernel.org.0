@@ -2,84 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F721591274
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 16:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AFC15912D0
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 17:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236979AbiHLOqc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Aug 2022 10:46:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39796 "EHLO
+        id S238341AbiHLPPF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Aug 2022 11:15:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237430AbiHLOqb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 10:46:31 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 948F29A94A;
-        Fri, 12 Aug 2022 07:46:30 -0700 (PDT)
-Received: from zn.tnic (p200300ea971b98b3329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98b3:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 384A61EC064C;
-        Fri, 12 Aug 2022 16:46:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1660315585;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=ZE4cCkZbxROOHz/5wltDy/Y6nvpYXY5aOAOz/2fLJ44=;
-        b=Yi0gsn4GR+2/dcxTJLGyvLnJquvCP2enYPktmOSY+yKWcnm9WSOPESeLz7O7AHCumNC+C1
-        ZldSCK0EOgHk4x0Xj2bGHWB3W5e7c3NnpsoAWSNihzNiTLwhFQ84SAYtxGNc9yDAGni/zx
-        jvizcxgz9sWb2+CsjxtOhLEUfJjtF5Q=
-Date:   Fri, 12 Aug 2022 16:46:24 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jia He <justin.he@arm.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-edac@vger.kernel.org, devel@acpica.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, toshi.kani@hpe.com
-Subject: Re: [PATCH 1/2] efi/cper: export several helpers for ghes edac to use
-Message-ID: <YvZnwIMonymPDJSw@zn.tnic>
-References: <20220811091713.10427-1-justin.he@arm.com>
- <20220811091713.10427-2-justin.he@arm.com>
+        with ESMTP id S239189AbiHLPO6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 11:14:58 -0400
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D67A7A81;
+        Fri, 12 Aug 2022 08:14:57 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id l22so1522314wrz.7;
+        Fri, 12 Aug 2022 08:14:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=EoiVDV1BpkQyac6N0M+0zVwSj3WK1AdJP/ntOJZkbiI=;
+        b=y+C6TXoGy+311Sk25HndUdD8oAFpkGvgecJybzjCxB2DZEJQOrZkmUmsuPiqCI7MYK
+         nSygq/qCXeJkAetWuNZmVuqOLpfhIkZiyi0PUksGqaPvRgPGMfD10an0EY1LnHsiXQo3
+         O3MX5M+fD8ovdchs7GRBFr/RjXfv9rE6CclRf8ZPdwZZaUuagAc1rHUclt2hzaABqtgV
+         0DxTl0Fku6UTlBwX4KzWQb/yr0gAf2i6NiI1nzzKmlpxYe/1XLlsSFgdZ9rMt22tu9qo
+         66s+eu6aVCvbHc7D2a0LxigsTFTjugt752viL8GosJrhBi95OmTwhQLQb8GaCWykYqH+
+         4V5w==
+X-Gm-Message-State: ACgBeo3nSzT4v8Au/HSgM27ms/en+vyPUdFXUwwqxZ0TRMQD9/M4YbuF
+        uRzVSSMdxMhAvLRLVTR7DZDdfh1pZ9g=
+X-Google-Smtp-Source: AA6agR67pF4bd0Gg+R7FFH9Fs1c0QAkU7YjmSu0wWkZPvc1aU+z3yNTU4l0akoiHi1cnVXOTwkrsNw==
+X-Received: by 2002:a05:6000:18a3:b0:21f:d6a4:1aec with SMTP id b3-20020a05600018a300b0021fd6a41aecmr2444780wri.468.1660317296338;
+        Fri, 12 Aug 2022 08:14:56 -0700 (PDT)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id h41-20020a05600c49a900b003a5260b8392sm3938969wmp.23.2022.08.12.08.14.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Aug 2022 08:14:56 -0700 (PDT)
+Date:   Fri, 12 Aug 2022 15:14:54 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Mark Brown <broonie@kernel.org>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        linux-hyperv@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH v1 5/5][RFT] ACPI: Drop parent field from struct
+ acpi_device
+Message-ID: <20220812151454.fqt2gknsoqjco4mz@liuwe-devbox-debian-v2>
+References: <12036348.O9o76ZdvQC@kreacher>
+ <2196460.iZASKD2KPV@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220811091713.10427-2-justin.he@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <2196460.iZASKD2KPV@kreacher>
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 11, 2022 at 09:17:12AM +0000, Jia He wrote:
-> Before modularizing the ghes_edac codes, we need to export several efi/cper
+On Wed, Aug 10, 2022 at 06:23:05PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The parent field in struct acpi_device is, in fact, redundant,
+> because the dev.parent field in it effectively points to the same
+> object and it is used by the driver core.
+> 
+> Accordingly, the parent field can be dropped from struct acpi_device
+> and for this purpose define acpi_dev_parent() to retrieve the parent
+> struct acpi_device pointer from the dev.parent field in struct
+> acpi_device.  Next, update all of the users of the parent field
+> in struct acpi_device to use acpi_dev_parent() instead of it and
+> drop it.
+> 
+> While at it, drop the ACPI_IS_ROOT_DEVICE() macro that is only used
+> in one place in a confusing way.
+> 
+> No intentional functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> 
+> I may have missed some places where adev->parent is used directly, so
+> if that's happened, please let me know (I'm assuming that 0-day will
+> pick up this patch and run it through all of the relevant configs
+> anyway).
+> 
+> ---
+[...]
+>  drivers/hv/vmbus_drv.c       |    3 ++-
 
-Who's we?
-
-Please use passive voice in your commit message: no "we" or "I", etc,
-and describe your changes in imperative mood.
-
-Also, pls read section "2) Describe your changes" in
-Documentation/process/submitting-patches.rst for more details.
-
-Also, see section "Changelog" in
-Documentation/process/maintainer-tip.rst
-
-Bottom line is: personal pronouns are ambiguous in text, especially with
-so many parties/companies/etc developing the kernel so let's avoid them
-please.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Acked-by: Wei Liu <wei.liu@kernel.org>
