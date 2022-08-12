@@ -2,106 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AFC15912D0
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 17:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8D1B59160C
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 21:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238341AbiHLPPF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Aug 2022 11:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35976 "EHLO
+        id S229760AbiHLTmc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Aug 2022 15:42:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239189AbiHLPO6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 11:14:58 -0400
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D67A7A81;
-        Fri, 12 Aug 2022 08:14:57 -0700 (PDT)
-Received: by mail-wr1-f54.google.com with SMTP id l22so1522314wrz.7;
-        Fri, 12 Aug 2022 08:14:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=EoiVDV1BpkQyac6N0M+0zVwSj3WK1AdJP/ntOJZkbiI=;
-        b=y+C6TXoGy+311Sk25HndUdD8oAFpkGvgecJybzjCxB2DZEJQOrZkmUmsuPiqCI7MYK
-         nSygq/qCXeJkAetWuNZmVuqOLpfhIkZiyi0PUksGqaPvRgPGMfD10an0EY1LnHsiXQo3
-         O3MX5M+fD8ovdchs7GRBFr/RjXfv9rE6CclRf8ZPdwZZaUuagAc1rHUclt2hzaABqtgV
-         0DxTl0Fku6UTlBwX4KzWQb/yr0gAf2i6NiI1nzzKmlpxYe/1XLlsSFgdZ9rMt22tu9qo
-         66s+eu6aVCvbHc7D2a0LxigsTFTjugt752viL8GosJrhBi95OmTwhQLQb8GaCWykYqH+
-         4V5w==
-X-Gm-Message-State: ACgBeo3nSzT4v8Au/HSgM27ms/en+vyPUdFXUwwqxZ0TRMQD9/M4YbuF
-        uRzVSSMdxMhAvLRLVTR7DZDdfh1pZ9g=
-X-Google-Smtp-Source: AA6agR67pF4bd0Gg+R7FFH9Fs1c0QAkU7YjmSu0wWkZPvc1aU+z3yNTU4l0akoiHi1cnVXOTwkrsNw==
-X-Received: by 2002:a05:6000:18a3:b0:21f:d6a4:1aec with SMTP id b3-20020a05600018a300b0021fd6a41aecmr2444780wri.468.1660317296338;
-        Fri, 12 Aug 2022 08:14:56 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id h41-20020a05600c49a900b003a5260b8392sm3938969wmp.23.2022.08.12.08.14.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Aug 2022 08:14:56 -0700 (PDT)
-Date:   Fri, 12 Aug 2022 15:14:54 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Mark Brown <broonie@kernel.org>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        linux-hyperv@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH v1 5/5][RFT] ACPI: Drop parent field from struct
- acpi_device
-Message-ID: <20220812151454.fqt2gknsoqjco4mz@liuwe-devbox-debian-v2>
-References: <12036348.O9o76ZdvQC@kreacher>
- <2196460.iZASKD2KPV@kreacher>
+        with ESMTP id S236815AbiHLTmb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 15:42:31 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33CA6B285C;
+        Fri, 12 Aug 2022 12:42:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1660333351; x=1691869351;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UVh9wGe4sOwL5XUI0lWCSw73ZdAjh9fY5902G/5LxJ4=;
+  b=b1m4teSDulRi26HrMogOC7ryV2mbr0bmqdJSetENJujF4g0+J9XJWQ7k
+   yuhSHMrl3d86Chuc/rvlGm9xXAENb/8kIDSGBTFQnINmGcfHUWtkDcY7x
+   bwF0S94vql9+tW14ZmhdfavSDKcGtSWEbeImxFxF23ry49Si/RRbOyNgQ
+   GRaR8sBPdc4h6hKcmeA/gsZflTrv56YtnFm347r2Fj2ABZaMF9mJf5WYE
+   f+1TQ+gmM0AKQaKJl5JKeIie5o/NKy72vTpMUt6fv3fL+eb3S/GGKmKRt
+   SG7nU7hJiuU8ZOodYplw4gueqZFJbVIU45b3S0s3wRpcYKE3aBI8s3HOI
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10437"; a="271447681"
+X-IronPort-AV: E=Sophos;i="5.93,233,1654585200"; 
+   d="scan'208";a="271447681"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2022 12:42:30 -0700
+X-IronPort-AV: E=Sophos;i="5.93,233,1654585200"; 
+   d="scan'208";a="556636122"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2022 12:42:28 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id D3F5420371;
+        Fri, 12 Aug 2022 22:42:26 +0300 (EEST)
+Date:   Fri, 12 Aug 2022 19:42:26 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Stefan Binding <sbinding@opensource.cirrus.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@opensource.cirrus.com
+Subject: Re: [PATCH v1] ACPI: Property: Fix type detection of unified integer
+ reading functions
+Message-ID: <YvatIg1ywD5EkxTk@paasikivi.fi.intel.com>
+References: <20220812130645.14710-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2196460.iZASKD2KPV@kreacher>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20220812130645.14710-1-sbinding@opensource.cirrus.com>
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 10, 2022 at 06:23:05PM +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> The parent field in struct acpi_device is, in fact, redundant,
-> because the dev.parent field in it effectively points to the same
-> object and it is used by the driver core.
-> 
-> Accordingly, the parent field can be dropped from struct acpi_device
-> and for this purpose define acpi_dev_parent() to retrieve the parent
-> struct acpi_device pointer from the dev.parent field in struct
-> acpi_device.  Next, update all of the users of the parent field
-> in struct acpi_device to use acpi_dev_parent() instead of it and
-> drop it.
-> 
-> While at it, drop the ACPI_IS_ROOT_DEVICE() macro that is only used
-> in one place in a confusing way.
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
-> 
-> I may have missed some places where adev->parent is used directly, so
-> if that's happened, please let me know (I'm assuming that 0-day will
-> pick up this patch and run it through all of the relevant configs
-> anyway).
-> 
-> ---
-[...]
->  drivers/hv/vmbus_drv.c       |    3 ++-
+Hi Stefan,
 
-Acked-by: Wei Liu <wei.liu@kernel.org>
+On Fri, Aug 12, 2022 at 02:06:45PM +0100, Stefan Binding wrote:
+> The current code expects the type of the value to be an integer type,
+> instead the value passed to the macro is a pointer.
+> Ensure the size comparison uses the correct pointer type to choose the
+> max value, instead of using the integer type.
+> 
+> Fixes: 923044133367 ("ACPI: property: Unify integer value reading functions")
+> 
+> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+> ---
+>  drivers/acpi/property.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 7b3ad8ed2f4e..b1d4a8db89df 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -1043,10 +1043,10 @@ static int acpi_data_prop_read_single(const struct acpi_device_data *data,
+>  				break;					\
+>  			}						\
+>  			if (__items[i].integer.value > _Generic(__val,	\
+> -								u8: U8_MAX, \
+> -								u16: U16_MAX, \
+> -								u32: U32_MAX, \
+> -								u64: U64_MAX, \
+> +								u8 *: U8_MAX, \
+> +								u16 *: U16_MAX, \
+> +								u32 *: U32_MAX, \
+> +								u64 *: U64_MAX, \
+>  								default: 0U)) { \
+>  				ret = -EOVERFLOW;			\
+>  				break;					\
+
+Thanks for the patch.
+
+I prefer this fix over the other as it uses the pointer type (rather than
+value at a given index). Both have the same effect though.
+
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+-- 
+Kind regards,
+
+Sakari Ailus
