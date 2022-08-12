@@ -2,213 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04F23590CE0
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 09:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2243C590E5A
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 11:47:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236599AbiHLHxC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Aug 2022 03:53:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57212 "EHLO
+        id S237771AbiHLJrR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Aug 2022 05:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236480AbiHLHxB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 03:53:01 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C4F1A6C21;
-        Fri, 12 Aug 2022 00:53:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A56B4B82379;
-        Fri, 12 Aug 2022 07:52:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04642C433D6;
-        Fri, 12 Aug 2022 07:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660290777;
-        bh=f0o0pMxtVzQm3Qr+b9Pp02UbmH5a+lA4Mfcvlcflx4g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oaRzvcMubjodHew41yHRJzH21zJDe+uUZPjdSgI9JtP8+O2jAFD8pKuhHcwCodcSS
-         36rgmtjZ/o9wDrloFKlPssCwcxqHQkJVsJp3W5zIvapjfRO/7IL5yRqWzhQyn88bUz
-         gk9p7z7DDv/vKRMaGHe3MY3q4aGz3mUSV6H5HMvjc3VttwoIhni56WbdIVpfjD1JCI
-         dM06Wef15Mnbtc4uz1u3+/9vE9DWO9QeRcltVK/PemFj7Z9Yhzjz25tGMvlar3O9o7
-         dpA3JvYJeXFzGq+10ehmJ6thSxXfkJ+WlTUs1v9t39X92+8klg2wG5D9i6I6U5UXw+
-         sREOdhRjNUJRw==
-Date:   Fri, 12 Aug 2022 09:52:50 +0200
-From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Jianmin Lv <lvjianmin@loongson.cn>, guohanjun@huawei.com,
-        sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
-        robert.moore@intel.com, linux-kernel@vger.kernel.org,
+        with ESMTP id S232876AbiHLJrQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 05:47:16 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D71B1321;
+        Fri, 12 Aug 2022 02:47:14 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 9093080E1;
+        Fri, 12 Aug 2022 09:40:29 +0000 (UTC)
+Date:   Fri, 12 Aug 2022 12:47:12 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH V2 1/2] ACPI / scan: Support multiple dma windows with
- different offsets
-Message-ID: <YvYG0i0XJSlwP1Wb@lpieralisi>
-References: <1659684674-40612-1-git-send-email-lvjianmin@loongson.cn>
- <1659684674-40612-2-git-send-email-lvjianmin@loongson.cn>
- <c43edf84-c93d-e695-e3db-4592cdc8a3d1@arm.com>
+Subject: Re: [PATCH v1 9/9] of: property: Simplify of_link_to_phandle()
+Message-ID: <YvYhoGdemyKEx++d@atomide.com>
+References: <20220810060040.321697-1-saravanak@google.com>
+ <20220810060040.321697-10-saravanak@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c43edf84-c93d-e695-e3db-4592cdc8a3d1@arm.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220810060040.321697-10-saravanak@google.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 05, 2022 at 01:46:07PM +0100, Robin Murphy wrote:
+Hi,
 
-[...]
-
-> > -int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
-> > -		       u64 *size)
-> > +int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
-> >   {
-> >   	struct acpi_device *adev;
-> >   	LIST_HEAD(list);
-> >   	struct resource_entry *rentry;
-> >   	int ret;
-> >   	struct device *dma_dev = dev;
-> > -	u64 len, dma_start = U64_MAX, dma_end = 0, dma_offset = 0;
-> > +	int num_ranges = 0;
-> > +	struct bus_dma_region *r;
-> >   	/*
-> >   	 * Walk the device tree chasing an ACPI companion with a _DMA
-> > @@ -1525,31 +1526,31 @@ int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
-> >   	ret = acpi_dev_get_dma_resources(adev, &list);
-> >   	if (ret > 0) {
-> > +		list_for_each_entry(rentry, &list, node)
-> > +			num_ranges++;
+* Saravana Kannan <saravanak@google.com> [220810 05:54]:
+> The driver core now:
+> - Has the parent device of a supplier pick up the consumers if the
+>   supplier never has a device created for it.
+> - Ignores a supplier if the supplier has no parent device and will never
+>   be probed by a driver
 > 
-> We already have the number of resources in ret.
+> And already prevents creating a device link with the consumer as a
+> supplier of a parent.
 > 
-> Looking at this, I also now wonder if we're doing the right thing if the
-> object is present but contains no resources. The spec isn't clear whether
-> that's even really valid, but if it is, is it meaningful? It seems we'd
-> currently consider an empty object equivalent to no object, but if anything
-> it should perhaps be interpreted as the opposite, i.e. that no DMA is
-> possible because the bus does not decode any ranges. Is anyone more familiar
-> with the intent of the spec here?
+> So, we no longer need to find the "compatible" node of the supplier or
+> do any other checks in of_link_to_phandle(). We simply need to make sure
+> that the supplier is available in DT.
 
-I think we are currently considering no object differently from an
-empty object, since for no object we would return -ENODEV in
-acpi_dma_get_range(), we would not even get to parsing the resources
-(and return 0) and we would fall back to checking IORT to gather the
-DMA address space size.
+This patch fixes booting for me, so it should be applied as a fix and
+tagged with:
 
-I think you are right, we should change the behaviour if an object
-is present but it has no resources though, by reading the specs an
-empty _DMA object implies no DMA is possible and that's not what
-we are doing at the moment (hopefully there is no firmware out
-there with such a set-up but there is only one way to discover it).
+Fixes: 5a46079a9645 ("PM: domains: Delete usage of driver_deferred_probe_check_state()")
 
-This behavioural change should be a separate patch obviously for
-bisectability (and a possible revert).
+If there are dependencies to the other patches in this series, it might
+make sense to revert commit 5a46079a9645 instead.
 
-Lorenzo
+Anyways, thanks for fixing the issue, for this patch:
 
-> Thanks,
-> Robin.
-> 
-> > +
-> > +		r = kcalloc(num_ranges + 1, sizeof(*r), GFP_KERNEL);
-> > +		if (!r) {
-> > +			ret = -ENOMEM;
-> > +			goto out;
-> > +		}
-> > +
-> > +		*map = r;
-> > +
-> >   		list_for_each_entry(rentry, &list, node) {
-> > -			if (dma_offset && rentry->offset != dma_offset) {
-> > +			if (rentry->res->start >= rentry->res->end) {
-> >   				ret = -EINVAL;
-> > -				dev_warn(dma_dev, "Can't handle multiple windows with different offsets\n");
-> > +				dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
-> >   				goto out;
-> >   			}
-> > -			dma_offset = rentry->offset;
-> > -
-> > -			/* Take lower and upper limits */
-> > -			if (rentry->res->start < dma_start)
-> > -				dma_start = rentry->res->start;
-> > -			if (rentry->res->end > dma_end)
-> > -				dma_end = rentry->res->end;
-> > -		}
-> > -		if (dma_start >= dma_end) {
-> > -			ret = -EINVAL;
-> > -			dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
-> > -			goto out;
-> > +			r->cpu_start = rentry->res->start;
-> > +			r->dma_start = rentry->res->start - rentry->offset;
-> > +			r->size = rentry->res->end - rentry->res->start + 1;
-> > +			r->offset = rentry->offset;
-> > +			r++;
-> >   		}
-> > -		*dma_addr = dma_start - dma_offset;
-> > -		len = dma_end - dma_start;
-> > -		*size = max(len, len + 1);
-> > -		*offset = dma_offset;
-> >   	}
-> >    out:
-> >   	acpi_dev_free_resource_list(&list);
-> > @@ -1639,20 +1640,19 @@ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
-> >   			  const u32 *input_id)
-> >   {
-> >   	const struct iommu_ops *iommu;
-> > -	u64 dma_addr = 0, size = 0;
-> >   	if (attr == DEV_DMA_NOT_SUPPORTED) {
-> >   		set_dma_ops(dev, &dma_dummy_ops);
-> >   		return 0;
-> >   	}
-> > -	acpi_arch_dma_setup(dev, &dma_addr, &size);
-> > +	acpi_arch_dma_setup(dev);
-> >   	iommu = acpi_iommu_configure_id(dev, input_id);
-> >   	if (PTR_ERR(iommu) == -EPROBE_DEFER)
-> >   		return -EPROBE_DEFER;
-> > -	arch_setup_dma_ops(dev, dma_addr, size,
-> > +	arch_setup_dma_ops(dev, 0, U64_MAX,
-> >   				iommu, attr == DEV_DMA_COHERENT);
-> >   	return 0;
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index 0dc1ea0b..e106073 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -611,8 +611,7 @@ struct acpi_pci_root {
-> >   int acpi_iommu_fwspec_init(struct device *dev, u32 id,
-> >   			   struct fwnode_handle *fwnode,
-> >   			   const struct iommu_ops *ops);
-> > -int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
-> > -		       u64 *size);
-> > +int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map);
-> >   int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
-> >   			   const u32 *input_id);
-> >   static inline int acpi_dma_configure(struct device *dev,
-> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> > index 44975c1..34e0545 100644
-> > --- a/include/linux/acpi.h
-> > +++ b/include/linux/acpi.h
-> > @@ -280,12 +280,12 @@ int acpi_table_parse_madt(enum acpi_madt_type id,
-> >   #ifdef CONFIG_ARM64
-> >   void acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa);
-> > -void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size);
-> > +void acpi_arch_dma_setup(struct device *dev);
-> >   #else
-> >   static inline void
-> >   acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa) { }
-> >   static inline void
-> > -acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size) { }
-> > +acpi_arch_dma_setup(struct device *dev) { }
-> >   #endif
-> >   int acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma);
-> > @@ -974,8 +974,7 @@ static inline enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
-> >   	return DEV_DMA_NOT_SUPPORTED;
-> >   }
-> > -static inline int acpi_dma_get_range(struct device *dev, u64 *dma_addr,
-> > -				     u64 *offset, u64 *size)
-> > +static inline int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
-> >   {
-> >   	return -ENODEV;
-> >   }
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Tony Lindgren <tony@atomide.com>
+
+For the process, looks like the earlier series got merged despite the
+issues reported. And we had non-booting Linux next for at least some SoCs
+for weeks. And now we are about to have a non-booting -rc1 unless things
+get fixed fast. Annoying glitches, sigh..
+
+Regards,
+
+Tony
+
