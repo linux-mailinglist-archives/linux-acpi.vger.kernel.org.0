@@ -2,75 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8E9559160E
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Aug 2022 21:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC2A35917D7
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Aug 2022 02:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232177AbiHLTnN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Aug 2022 15:43:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41442 "EHLO
+        id S236581AbiHMAhr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Aug 2022 20:37:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230519AbiHLTnM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 15:43:12 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B6FB284C;
-        Fri, 12 Aug 2022 12:43:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660333391; x=1691869391;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xqK/+icunJCZt2VI8tuzs8qaXCK4YP5dQGeyPsd/HYA=;
-  b=O/iS0YN//9zZfXhB/RihAZDn94qEfVVqkZayG5Cl47tnNGzvdmLeNNdM
-   2d059jubx+lY75sthQeCLg9EomTbRTZr0inHOqsmvdiNI6eSITMm0C2qr
-   8hwQmJsIefwb76dCi1F8ZQOUV6RDdLtVxJSqaR1SMF96cfhUE7eVN8Cna
-   kiWNzn2rsJSsTCZQ70nW7nPmQujK5UWn/Ho4HtUdmEM7svuhZHOb9PwwQ
-   e1NB0uQdpuCX110R1zqkr4X+D2JGpHur5DW34jm5YyDm1W5pjVNsqpdFM
-   z7z5xHdU0IMgmJrks+FWMDi7k5GEl7iYowOrx1NMfUesFwdHFXQkBXx5C
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10437"; a="377966326"
-X-IronPort-AV: E=Sophos;i="5.93,233,1654585200"; 
-   d="scan'208";a="377966326"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2022 12:43:10 -0700
-X-IronPort-AV: E=Sophos;i="5.93,233,1654585200"; 
-   d="scan'208";a="851672941"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2022 12:43:08 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id B962B20371;
-        Fri, 12 Aug 2022 22:43:06 +0300 (EEST)
-Date:   Fri, 12 Aug 2022 19:43:06 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Stefan Binding <sbinding@opensource.cirrus.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@opensource.cirrus.com
-Subject: Re: [PATCH v1] ACPI: Property: Fix type detection of unified integer
- reading functions
-Message-ID: <YvatSoqXEtI7oqUO@paasikivi.fi.intel.com>
-References: <20220812130645.14710-1-sbinding@opensource.cirrus.com>
- <YvatIg1ywD5EkxTk@paasikivi.fi.intel.com>
+        with ESMTP id S236310AbiHMAhq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Aug 2022 20:37:46 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D24A895B
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Aug 2022 17:37:43 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id o15so3797110yba.10
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Aug 2022 17:37:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=uEJMlpNek7i3LOabGfVfDJzU9omVsDJB8WJ8KQU8dlQ=;
+        b=Sve28P4PqhXjk4ce663qu3BvVMqDHjCi61dQeacdpv1MmyLZIemKSXmz1ouaidH+nD
+         DCGdK5i4Ch7HgoQYu2+MuRZb1hdCO0/FPhd9qeDOqxjkVCHGg2R+Gnyeg0Iehbqrq3fI
+         BhTdclcBc6ylCKogS/Xb+6Ruw4y4rGUEfX4OWrb5LgSN7uaBCCsL7CaIRVhf/yoCdZwY
+         5yStn2+EnssoA4TZt9WEjTFainIwqSVJQcvvM/z7JPDA18RNrlU1B40NxbCV3SSxlaB9
+         fAzavnCk0q+JcNw+3GICKmVdS44T263eRwHsX5a+YURPIwUo3W7ZuZzltZC4DnsAXB3j
+         CY9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=uEJMlpNek7i3LOabGfVfDJzU9omVsDJB8WJ8KQU8dlQ=;
+        b=3WX3+jDUwz5fCI2Ze+lmm5wAz1zzbZetAqyyosN38tfsnfBnljJmxmg5MTUp055TBZ
+         /uptjw9448WV4R0ecvV/6iNEalV2+r4N8/0Wy4dZymWm4wZtyvwUQIFXdOIl5J9tvDRD
+         sIqSm8ka7YHwCp2KeYQo8II2yeOd+1elkRNpA92AiSBxwWOwIwSMlTtaZMbqqMTwik50
+         +7NcFn1gJ336QIFAzPiRod6bSb0jM4qS4hYVlU+C0Iz3QuaYZJbVI1JZ0RmN4F+gQRDR
+         rOQVn4k5htI5lgiHELOVmB1oR7kjN789ACyqj2sDH3m38E9NqutSWIue2JYTXlkoMBk6
+         nMAA==
+X-Gm-Message-State: ACgBeo0/QQL6YjS8CXylPeJ+ykbTPxyCe3elK8FIO7U5ZmUbxbR1goeX
+        bqqP9VzuspOGAFJkcJiUKaujYYIijqdhEwa0LCnmew==
+X-Google-Smtp-Source: AA6agR60geMZ3H7nVfNHvTy7tQRFJxetMdVj0FGkYr3EoFl8eIXK86kZZzELtTaeP+s+WgwLZRZMnfoqUVBwXNCqVYY=
+X-Received: by 2002:a05:6902:2cb:b0:684:aebe:49ab with SMTP id
+ w11-20020a05690202cb00b00684aebe49abmr2097251ybh.242.1660351061876; Fri, 12
+ Aug 2022 17:37:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YvatIg1ywD5EkxTk@paasikivi.fi.intel.com>
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220810060040.321697-1-saravanak@google.com> <20220810060040.321697-10-saravanak@google.com>
+ <YvYhoGdemyKEx++d@atomide.com>
+In-Reply-To: <YvYhoGdemyKEx++d@atomide.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 12 Aug 2022 17:37:05 -0700
+Message-ID: <CAGETcx_SdxJKV56jGSx8GbmA4y_zaoP6z8n8xKZGZbCcmewvDQ@mail.gmail.com>
+Subject: Re: [PATCH v1 9/9] of: property: Simplify of_link_to_phandle()
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 12, 2022 at 07:42:26PM +0000, Sakari Ailus wrote:
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+On Fri, Aug 12, 2022 at 2:47 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> Hi,
+>
+> * Saravana Kannan <saravanak@google.com> [220810 05:54]:
+> > The driver core now:
+> > - Has the parent device of a supplier pick up the consumers if the
+> >   supplier never has a device created for it.
+> > - Ignores a supplier if the supplier has no parent device and will never
+> >   be probed by a driver
+> >
+> > And already prevents creating a device link with the consumer as a
+> > supplier of a parent.
+> >
+> > So, we no longer need to find the "compatible" node of the supplier or
+> > do any other checks in of_link_to_phandle(). We simply need to make sure
+> > that the supplier is available in DT.
+>
+> This patch fixes booting for me, so it should be applied as a fix and
+> tagged with:
+>
+> Fixes: 5a46079a9645 ("PM: domains: Delete usage of driver_deferred_probe_check_state()")
+>
+> If there are dependencies to the other patches in this series, it might
+> make sense to revert commit 5a46079a9645 instead.
 
-Should have been:
+Yes, there are dependencies on the rest of the patches in this series.
+For linux-next, I think we should pick up this series once we get more
+Tested-bys.
 
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+ So if 5a46079a9645 is causing any regression in stable branches, we
+should pick up the revert series [1] instead of this series we are
+replying to.
 
--- 
-Sakari Ailus
+[1] - https://lore.kernel.org/all/20220727185012.3255200-1-saravanak@google.com/
+
+> Anyways, thanks for fixing the issue, for this patch:
+>
+> Reviewed-by: Tony Lindgren <tony@atomide.com>
+> Tested-by: Tony Lindgren <tony@atomide.com>
+
+Thanks!
+
+> For the process, looks like the earlier series got merged despite the
+> issues reported.
+
+If I'm not mistaken, the issues were reported after the series got
+picked up. And the series got some tested-by s before it was picked
+up. And once it's in git history, we obviously can't drop it.
+
+> And we had non-booting Linux next for at least some SoCs
+> for weeks. And now we are about to have a non-booting -rc1 unless things
+> get fixed fast. Annoying glitches, sigh..
+
+Sorry for breaking some boards -- so mean "creative" corner cases :)
+
+This rewrite is way more flexible (removes a lot of limitations in
+fw_devlink) and hopefully this handles all the corner cases. We'll
+see.
+
+-Saravana
