@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BEEF59223F
-	for <lists+linux-acpi@lfdr.de>; Sun, 14 Aug 2022 17:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F27E5592272
+	for <lists+linux-acpi@lfdr.de>; Sun, 14 Aug 2022 17:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241356AbiHNPpT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 14 Aug 2022 11:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50898 "EHLO
+        id S241585AbiHNPrc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 14 Aug 2022 11:47:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241426AbiHNPoU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 14 Aug 2022 11:44:20 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 515075580;
-        Sun, 14 Aug 2022 08:33:58 -0700 (PDT)
+        with ESMTP id S241957AbiHNPqv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 14 Aug 2022 11:46:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1291C914;
+        Sun, 14 Aug 2022 08:35:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AFAE0B80B43;
-        Sun, 14 Aug 2022 15:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CE1C433D7;
-        Sun, 14 Aug 2022 15:33:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 474B2B80B83;
+        Sun, 14 Aug 2022 15:35:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADDDC433C1;
+        Sun, 14 Aug 2022 15:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660491235;
-        bh=DDjUZxl2V2JdEZSkI5b5kOsibxbKLbbmvroI1QTDkPw=;
+        s=k20201202; t=1660491310;
+        bh=YN7hsJzAs5oj+GODhyYpaGyRXv7Zw0L+eTzt7H41l3c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fSfDl37CbG8hqu6lLLsUWUCNmclu6537Mf1+3MBWUy+wWmSREZNlxe7dHtnrBbBNJ
-         PHAsgUTG/ifqH5i+Prnqd1i13Lem9HQH1RtFvQKrb+ryFIMLlDHfXOrFiEALPPiVvT
-         h4c2hvGdgPiOWO6IEzLEiOLNPy66X+Zymrcrubd76PxWd82i/9JPcyRxDrCVpXbJw0
-         mks8vNrr+3OKPJUzJVVssS0LUGqV8195ZkUFe4czl+bcg7TRk08n6FjtueJkranx00
-         aC6VYXI1JIL5W1PVlkSm0fpsa1YpRZUV5MFQnJ/g7HCdC50hGECGaZRz4bBp7qPDJP
-         eEPyn7gggKg2A==
+        b=OmJQaC4uOH44yHVwbwPv9I29VK8xNOxg5IvoufaGmIkUSB6yLaG9Q5U5j/tM0AP9+
+         QwSdbochadW0+EEv/UTClDgqW6kTnVk2kx2M5JqV1ubTEbaZRgvIllxPZ7oGegcdOl
+         r6SKhb5a3Cvp6Vk3pEAVPP8mU2/4swrkG1T0ps1NXp1//uC5iiDgtPuTRqJh2VpeF9
+         701e/RVGO2lyk8FhYcHmIejb7pWy5uLikxxwYiXWA4UVASG7XXUaBoWuy33e5PWX32
+         YCJF7MAq0goM55b4VEllHN9XxjcOybeoi6mMkqcUbNz1KdB8ETEA6QbVXRmoep4Lc3
+         YEiWRXlmH7fmQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Huacai Chen <chenhuacai@loongson.cn>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 30/46] PCI/ACPI: Guard ARM64-specific mcfg_quirks
-Date:   Sun, 14 Aug 2022 11:32:31 -0400
-Message-Id: <20220814153247.2378312-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 20/31] PCI/ACPI: Guard ARM64-specific mcfg_quirks
+Date:   Sun, 14 Aug 2022 11:34:20 -0400
+Message-Id: <20220814153431.2379231-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220814153247.2378312-1-sashal@kernel.org>
-References: <20220814153247.2378312-1-sashal@kernel.org>
+In-Reply-To: <20220814153431.2379231-1-sashal@kernel.org>
+References: <20220814153431.2379231-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,7 +73,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
-index 53cab975f612..63b98eae5e75 100644
+index 95f23acd5b80..2709ef2b0351 100644
 --- a/drivers/acpi/pci_mcfg.c
 +++ b/drivers/acpi/pci_mcfg.c
 @@ -41,6 +41,8 @@ struct mcfg_fixup {
@@ -85,7 +85,7 @@ index 53cab975f612..63b98eae5e75 100644
  #define AL_ECAM(table_id, rev, seg, ops) \
  	{ "AMAZON", table_id, rev, seg, MCFG_BUS_ANY, ops }
  
-@@ -169,6 +171,7 @@ static struct mcfg_fixup mcfg_quirks[] = {
+@@ -162,6 +164,7 @@ static struct mcfg_fixup mcfg_quirks[] = {
  	ALTRA_ECAM_QUIRK(1, 13),
  	ALTRA_ECAM_QUIRK(1, 14),
  	ALTRA_ECAM_QUIRK(1, 15),
