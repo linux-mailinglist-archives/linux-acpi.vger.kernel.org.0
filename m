@@ -2,57 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2848F593624
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 21:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 995DB59380A
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 21:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243192AbiHOSja (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Aug 2022 14:39:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50686 "EHLO
+        id S240902AbiHOSmX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Aug 2022 14:42:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240615AbiHOSiu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 14:38:50 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899D03CBC8
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 11:23:47 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-32fd97c199fso68584027b3.6
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 11:23:47 -0700 (PDT)
+        with ESMTP id S240804AbiHOSkN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 14:40:13 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE7113DBFB
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 11:24:12 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-328303afa6eso93440247b3.10
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 11:24:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=Db07G664QdLJL7hbwp7/beOMmf/kBhPqwkUaOy2LwyA=;
-        b=Di5ahuQuUij88dNg/KRUmAKM+aFc4DdrWzvkGo1ivcBnErb9f9it3ced1tX8E1HOnW
-         rLig4vd67w+IDyEGKnA/hiBFKa9SIJo5ovpK9oXEVP3+LRX4wdHl8OBPIMq1rc/4kQNy
-         rLg4IV9NvfkwSDqTHNxE49YD7M/s3X5ncxvBEWc9+/vl3EoxqEMe1PMLKgVLDHqstm4G
-         joJwp2cMBAozP1CUx+KJTNs7dLtt12cRxqdp9lmed/H3XsNHEmXKmwhjuo5TeIJHjYNH
-         eTAkc55YhPGHXbscGy9mPpSlEynn8yRw1Pw5EJDngyR94hoEJzRHIGRMOuHmABb4er0F
-         FE6Q==
+        bh=BJt/vOP9OHL0y+jrzm5cg2sCaG+27wsaXcgILhgn7lo=;
+        b=p5i2uxjK2NzMF+6PIEOLJxbFor9NpM8loKbuBWNdYO5TWdrtkHdgD/du41IQW6+PjG
+         AbEW1vxV3zYLc1nK4Er6j8q1ZlcyqWbgeHKCT8HBFBhFplvn+iSTAsGzFfS3Qk1YpWdH
+         l70Fy/+CAa3SCs0eCx+hFGYG8vbueikjPrrZDuYi5VGHfeL/oDpaGwYwzF7U6d4mT3G4
+         ZX1BI5kKPewL+vCx6YML/AQ46tisemqNuM/TLnprheAuNFkjoidWQ3BHdwR1o/WT+a9q
+         AVF2DI5Nv3FWGggxRWvspruaWnDLJLPovT7bn/ehMNzJDYfIHV2wBuxYHNqtTxme5CQG
+         2EfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=Db07G664QdLJL7hbwp7/beOMmf/kBhPqwkUaOy2LwyA=;
-        b=R9JA8d3Wdedi/gkYtOlWKxgU1qp4Czq3pDPLVxSxRizZhHAajsT31ulPLIsGjxcdAk
-         jdYc/VAwXEj0A3mralLS4Sado6C8zzb65a6rHH4DfjZhnH4WkJo+DO4DfzU+EN3W1lBx
-         spptuo/gFWhmoS5X79yZBe8J63Y+uQN9nsoDb4/aA/2uK4oL7SkHk+uNScgOeSwxYrpl
-         fEtuotNOLTyL2okePp06RLwAYDpQMuMAfmzl/+AlmqMfwV4GKT/qwlzCSpr+73CDXLI8
-         4K5RP9FO5aciwLfwUInl7qp5WJkNfA+1aHNgAhrrCQQTSoht+KNk6m+oUiS4zEVjESbH
-         BX4w==
-X-Gm-Message-State: ACgBeo0z2gVkRliVoT2lqAAomUWWOgNNYiM157wJB3ZQjLnEuYkjnrzu
-        abZlxjFizCCPm2eI3MsjEWS/QmWZs6tLgebXCieMxw==
-X-Google-Smtp-Source: AA6agR4wzhsMjeR70OWMz+XaTgfrMhs+/iH3OP2Hd6MDBv3+PPxfDZUE0dnmuD2HQ3WDLtnmiP5GDkAha3prRqse7F4=
-X-Received: by 2002:a25:d353:0:b0:67b:7758:b051 with SMTP id
- e80-20020a25d353000000b0067b7758b051mr11716143ybf.563.1660587826134; Mon, 15
- Aug 2022 11:23:46 -0700 (PDT)
+        bh=BJt/vOP9OHL0y+jrzm5cg2sCaG+27wsaXcgILhgn7lo=;
+        b=pjrVwXYW2LcKCweasQQDdrWWaEe32/rE5MS5D9k1RHYqebHCgjBpy9OvKtTB+vRKIn
+         KXcSrL+kNCdez2moxPHaC2GnaO+PrUjpVtTmzmL6YRmPpT8yPP3BGhqgtiM6PWdtWb3b
+         YSSsQJ0WAnYmsy9l0h7OvwdjgDIdPtcL5QASt2gVLRGLUqIv5ppibW4HCIcDPe/srcNn
+         wvo7NBK2BX9MQZpW2kW4HZhXyOQpqFyaCTUvyLSiEfRKrK1KmK1wsCZpEU3m1oUDWSg9
+         q+CiyaLV/fi233G8WGGiPu6ZTBNRwVre6HXkYB+TV173NJB7/U9u0+uexYx+HblU2qjf
+         HT2Q==
+X-Gm-Message-State: ACgBeo1+nVEqKmuvKvFuIQP+C43tG1EN2Sa3C3Pn5uCLYrAGplTIFKBf
+        Mdw3XDvVaZ66HxnWY5tRW2pDxk6CLOP0Ns5hT+tz1A==
+X-Google-Smtp-Source: AA6agR45xoYO6Hu5/U+BI3ADwqpB9ej+KA64Yt7nhN1oYI2fH7yVe/vv25x6B4XIjaCcCmIdDBDKwXtcWBGPauCLrBc=
+X-Received: by 2002:a81:998c:0:b0:326:5dab:df3f with SMTP id
+ q134-20020a81998c000000b003265dabdf3fmr14329271ywg.126.1660587851957; Mon, 15
+ Aug 2022 11:24:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220810060040.321697-1-saravanak@google.com> <YvYiF36M09dX9ASm@atomide.com>
- <CAGETcx-t0O0B+5i0FWwm5w2=ccOD5zVAaUvgQoP8PT9SOT_btw@mail.gmail.com> <Yvog4K0barAvvVeb@atomide.com>
-In-Reply-To: <Yvog4K0barAvvVeb@atomide.com>
+References: <20220810060040.321697-1-saravanak@google.com> <YvonlAwXAoXTUTZe@linaro.org>
+In-Reply-To: <YvonlAwXAoXTUTZe@linaro.org>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 15 Aug 2022 11:23:09 -0700
-Message-ID: <CAGETcx-k+ca5uG42XvW5yiK8RWDYfeRs9va5boqnp33s45AGRg@mail.gmail.com>
+Date:   Mon, 15 Aug 2022 11:23:36 -0700
+Message-ID: <CAGETcx8AApnpQOsKgGoC=WyLCWH4AzpQQ-qNpu41F+czxi=_pQ@mail.gmail.com>
 Subject: Re: [PATCH v1 0/9] fw_devlink improvements
-To:     Tony Lindgren <tony@atomide.com>
+To:     Abel Vesa <abel.vesa@linaro.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -65,8 +64,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
+        Len Brown <lenb@kernel.org>,
         Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         John Stultz <jstultz@google.com>,
@@ -80,56 +80,127 @@ X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 15, 2022 at 3:33 AM Tony Lindgren <tony@atomide.com> wrote:
+On Mon, Aug 15, 2022 at 4:01 AM Abel Vesa <abel.vesa@linaro.org> wrote:
 >
-> * Saravana Kannan <saravanak@google.com> [220813 00:45]:
-> > On Fri, Aug 12, 2022 at 2:49 AM Tony Lindgren <tony@atomide.com> wrote:
-> > >
-> > > * Saravana Kannan <saravanak@google.com> [220810 05:54]:
-> > > > Tony,
-> > > >
-> > > > This should handle the odd case of the child being the supplier of the
-> > > > parent. Can you please give this a shot? I want to make sure the cycle
-> > > > detection code handles this properly and treats it like it's NOT a cycle.
-> > >
-> > > Yup, this series works for me, so feel free to add:
-> > >
-> > > Tested-by: Tony Lindgren <tony@atomide.com>
+> On 22-08-09 23:00:29, Saravana Kannan wrote:
+> > This patch series improves fw_devlink in the following ways:
 > >
-> > Thanks for testing!
+> > 1. It no longer cares about a fwnode having a "compatible" property. It
+> >    figures this our more dynamically. The only expectation is that
+> >    fwnode that are converted to devices actually get probed by a driver
+> >    for the dependencies to be enforced correctly.
 > >
-> > Btw, out of curiosity, how many different boards did you test this on?
-> > IIRC you had an issue only in one board, right? Not to say I didn't
-> > break anything else, I'm just trying to see how much confidence we
-> > have on this series so far. I'm hoping the rest of the folks I listed
-> > in the email will get around to testing this series.
+> > 2. Finer grained dependency tracking. fw_devlink will now create device
+> >    links from the consumer to the actual resource's device (if it has one,
+> >    Eg: gpio_device) instead of the parent supplier device. This improves
+> >    things like async suspend/resume ordering, potentially remove the need
+> >    for frameworks to create device links, more parallelized async probing,
+> >    and better sync_state() tracking.
+> >
+> > 3. Handle hardware/software quirks where a child firmware node gets
+> >    populated as a device before its parent firmware node AND actually
+> >    supplies a non-optional resource to the parent firmware node's
+> >    device.
+> >
+> > 4. Way more robust at cycle handling (see patch for the insane cases).
+> >
+> > 5. Stops depending on OF_POPULATED to figure out some corner cases.
+> >
+> > 6. Simplifies the work that needs to be done by the firmware specific
+> >    code.
+> >
+> > This took way too long to get done due to typo bugs I had in my rewrite or
+> > corner cases I had to find and handle. But it's fairly well tested at this
+> > point and I expect this to work properly.
+> >
+> > Abel & Doug,
+> >
+> > This should fix your cyclic dependency issues with your display. Can you
+> > give it a shot please?
 >
-> Sorry if I was not clear earlier. The issue affects several generations
-> of TI 32-bit SoCs at least, not just one board.
+> Tested the specific case we discussed about here:
+> https://lore.kernel.org/all/CAGETcx8F0wP+RA0KpjOJeZfc=DVG-MbM_=SkRHD4UhD2ReL7Kw@mail.gmail.com/raw
+>
+> Thanks for fixing this.
+>
+> Tested-by: Abel Vesa <abel.vesa@linaro.org>
 
-But this series fixes the issues for all of them or are you still
-seeing some broken boot with this series?
+Thanks!
 
 -Saravana
 
 >
-> > > I have some concerns though on how do we get a working -rc1 with the
-> > > earlier series applied? See the comments in the last patch of this
-> > > series.
 > >
-> > I tried to reply, but not sure if it helps. We'll continue the discussion there.
->
-> Ack.
->
-> Tony
->
-> --
-> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
->
+> > Alexander,
+> >
+> > This should fix your issue where the power domain device not having a
+> > compatible property. Can you give it a shot please?
+> >
+> > Tony,
+> >
+> > This should handle the odd case of the child being the supplier of the
+> > parent. Can you please give this a shot? I want to make sure the cycle
+> > detection code handles this properly and treats it like it's NOT a cycle.
+> >
+> > Geert,
+> >
+> > Can you test the renesas stuff I changed please? They should continue
+> > working like before. Any other sanity test on other hardware would be
+> > great too.
+> >
+> > Sudeep,
+> >
+> > I don't think there are any unfixed issues you had reported in my other
+> > patches that this series might fix, but it'll be nice if you could give
+> > this a sanity test.
+> >
+> > Guenter,
+> >
+> > I don't think this will fix the issue you reported in the amba patch, but
+> > it's worth a shot because it improves a bunch of corner case handling. So
+> > it might be better at handling whatever corner cases you might have in the
+> > qemu platforms.
+> >
+> > Thanks,
+> > Saravana
+> >
+> > Cc: Abel Vesa <abel.vesa@linaro.org>
+> > Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > Cc: Tony Lindgren <tony@atomide.com>
+> > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> > Cc: John Stultz <jstultz@google.com>
+> > Cc: Doug Anderson <dianders@chromium.org>
+> > Cc: Guenter Roeck <linux@roeck-us.net>
+> >
+> > Saravana Kannan (9):
+> >   driver core: fw_devlink: Don't purge child fwnode's consumer links
+> >   driver core: fw_devlink: Improve check for fwnode with no
+> >     device/driver
+> >   soc: renesas: Move away from using OF_POPULATED for fw_devlink
+> >   gpiolib: Clear the gpio_device's fwnode initialized flag before adding
+> >   driver core: fw_devlink: Add DL_FLAG_CYCLE support to device links
+> >   driver core: fw_devlink: Allow marking a fwnode link as being part of
+> >     a cycle
+> >   driver core: fw_devlink: Consolidate device link flag computation
+> >   driver core: fw_devlink: Make cycle detection more robust
+> >   of: property: Simplify of_link_to_phandle()
+> >
+> >  drivers/base/core.c             | 437 +++++++++++++++++++++-----------
+> >  drivers/gpio/gpiolib.c          |   6 +
+> >  drivers/of/property.c           |  84 +-----
+> >  drivers/soc/renesas/rcar-sysc.c |   2 +-
+> >  include/linux/device.h          |   1 +
+> >  include/linux/fwnode.h          |  12 +-
+> >  6 files changed, 323 insertions(+), 219 deletions(-)
+> >
+> > --
+> > 2.37.1.559.g78731f0fdb-goog
+> >
