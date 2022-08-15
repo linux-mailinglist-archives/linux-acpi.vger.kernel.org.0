@@ -2,122 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9FC35928C6
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 06:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E615929AB
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 08:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232402AbiHOE2Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Aug 2022 00:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54680 "EHLO
+        id S231251AbiHOGhx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Aug 2022 02:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230237AbiHOE2P (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 00:28:15 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8335512772;
-        Sun, 14 Aug 2022 21:28:14 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id gj1so6048364pjb.0;
-        Sun, 14 Aug 2022 21:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=AxntZ5boEdqFqlgnkvj7nx9yV31SjrqxErxj02VUkgI=;
-        b=EiZ46NWgWvaPrWGZpEefUGH8iyYRrNyxPcZFIYYXH1N8zjQloB6tCImzZpIVPLxywV
-         vvyyCkK9dDeDt7iSwYZs5PMf3Bp037GUBrBFN01bWAJ72NpP06EtdZlV1FKXm653cwX1
-         wo8o5GLfryMyJ+1ZnsFNTEeTf+sdzRGnYhiiFAJbNzKyCg7cKOTj46KZPv9lhejF+hys
-         +f0JYi+/ciwR5SdnaOiW3IGj7nqdcuHuml0Nonjl2N2YXx4U61l5YaMx4ic3xRYZWWQO
-         0F+OC0HTjyGxpiJOuxcqqEGO1U3lt/938nOLcJ09iB5MjBqOQuLp7rZmVVIdZOKk/eEe
-         m0Vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=AxntZ5boEdqFqlgnkvj7nx9yV31SjrqxErxj02VUkgI=;
-        b=g/fcRF4hGHBbIe2wP0x+Am+GHCkgqdtghjvSdJk4/pKMfitHXsUfrZM9TII2DEIvhd
-         L/k8V5sNGaxKSUx3uXImTgR+Yw4EqCUWgtqUSBho/k0FhO9lI5tRsI+zCUR6/rk6Uyml
-         3rcuARDEUIfmrbuxX2yxTnY/D/9gVxoujKIJJZMCUMiJQHQY1gborxoAzoMEfLf/phO7
-         ggeNaPUKylWqKbpYekODw310vLB9Bcr3qiA9KANb0VUw0d07XcwqqwfAJ/0Sm+ZIAAvN
-         NEgCNxbBhcwp5Q4q2/O5yqJfPT2T1SXJb27MyiMeqNHcTxVNndwOsvfOs4ZjY0F19fEe
-         pJRQ==
-X-Gm-Message-State: ACgBeo1A2zgoAHipwCKRf3x+qpUvHhsPGDLfuySZ3OknxqU2kaXWLVNN
-        dszM3bWKDj3H60S8jNPidBg=
-X-Google-Smtp-Source: AA6agR6MAp7+b/8FUDKU99TCqhom1gNdLqL4D9vAA6/sxWFPfnKjoyXgKgGz0y5SYQ1WL0Q+KddeKA==
-X-Received: by 2002:a17:90b:4b91:b0:1f4:e116:8f1 with SMTP id lr17-20020a17090b4b9100b001f4e11608f1mr16664416pjb.121.1660537693908;
-        Sun, 14 Aug 2022 21:28:13 -0700 (PDT)
-Received: from [192.168.0.110] ([103.159.189.148])
-        by smtp.gmail.com with ESMTPSA id e6-20020a170902d38600b001709b9d292esm6118545pld.268.2022.08.14.21.28.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Aug 2022 21:28:13 -0700 (PDT)
-Message-ID: <54dd86bd-416b-3048-9bd0-368afa3aaf2f@gmail.com>
-Date:   Mon, 15 Aug 2022 10:28:05 +0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [RFC PATCH] Soundwire: Initialize multi_link with fwnode props
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        with ESMTP id S230455AbiHOGhw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 02:37:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3389019C2E;
+        Sun, 14 Aug 2022 23:37:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E228CB80C87;
+        Mon, 15 Aug 2022 06:37:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743EAC433D7;
+        Mon, 15 Aug 2022 06:37:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1660545468;
+        bh=i3Lhu29DAuR1+5toOtx6WUN5Q9/XjYipUqxecRURQhc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dOLsO0eWL1louTh1erlzYfiyxe3e1GCuC6rITTMB6BAFW0KYj4VI2sod/q921wwgf
+         qgeNPTQAt9VclhBL3OLkn0QO3EDriXGrjbiBwZf5gf4gjsOO8njLu3nhbLUBuuPqQE
+         mSU/BTQYvSJzrPgD6m1fVkeJrGXt3Yx+Tzq0GG6U=
+Date:   Mon, 15 Aug 2022 08:37:44 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Khalid Masum <khalid.masum.92@gmail.com>
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
         linux-kernel-mentees@lists.linuxfoundation.org,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Sanyog Kale <sanyog.r.kale@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
         Len Brown <lenb@kernel.org>
+Subject: Re: [RFC PATCH] Soundwire: Initialize multi_link with fwnode props
+Message-ID: <YvnpuK8phVyF7053@kroah.com>
 References: <20220814080416.7531-1-khalid.masum.92@gmail.com>
- <CAHp75Ve4UaLsUknGKm14_-f5=qsq1s_Ws+j6h0kAY5_XMkSmQw@mail.gmail.com>
-From:   Khalid Masum <khalid.masum.92@gmail.com>
-In-Reply-To: <CAHp75Ve4UaLsUknGKm14_-f5=qsq1s_Ws+j6h0kAY5_XMkSmQw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+ <YvjEIjXg7KxtTT/0@kroah.com>
+ <cc6560c3-98c2-bdb5-cfc3-b39d3675382e@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cc6560c3-98c2-bdb5-cfc3-b39d3675382e@gmail.com>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 8/15/22 00:46, Andy Shevchenko wrote:
-> On Sun, Aug 14, 2022 at 11:31 AM Khalid Masum <khalid.masum.92@gmail.com> wrote:
->>
->> According to the TODO, In sw_bus_master_add, bus->multi_link is to be
->> populated with properties from FW node props. Make this happen by
->> creating a new fwnode_handle flag FWNODE_FLAG_MULTI_LINKED and use
->> the flag to store the multi_link value from intel_link_startup. Use
->> this flag to initialize bus->multi_link.
-> 
-> ...
-> 
->>          /*
->>           * Initialize multi_link flag
->> -        * TODO: populate this flag by reading property from FW node
->>           */
->> -       bus->multi_link = false;
->> +       bus->multi_link = (fwnode->flags & FWNODE_FLAG_MULTI_LINKED)
->> +               == FWNODE_FLAG_MULTI_LINKED;
-> 
-> NAK (as far as I understood the context of the comment and the change itself).
-> 
-> These flags are for devlink, we do not mix FW properties with those
-> internal flags anyhow. The comment suggests that this should be az
-> property. Also commit message doesn't explain the relation to devlink.
-> 
-That is a good information to know. Thanks.
+On Mon, Aug 15, 2022 at 10:08:07AM +0600, Khalid Masum wrote:
+> On 8/14/22 15:45, Greg KH wrote:
+> > On Sun, Aug 14, 2022 at 02:04:15PM +0600, Khalid Masum wrote:
+> > > According to the TODO, In sw_bus_master_add, bus->multi_link is to be
+> > > populated with properties from FW node props. Make this happen by
+> > > creating a new fwnode_handle flag FWNODE_FLAG_MULTI_LINKED and use
+> > > the flag to store the multi_link value from intel_link_startup. Use
+> > > this flag to initialize bus->multi_link.
+> > > 
+> > > Signed-off-by: Khalid Masum <khalid.masum.92@gmail.com>
+> > > ---
+> > > I do not think adding a new flag for fwnode_handle is a good idea.
+> > > So, what would be the best way to initialize bus->multilink with
+> > > fwnode props?
+> > > 
+> > >    -- Khalid Masum
+> > > 
+> > >   drivers/soundwire/bus.c   | 4 ++--
+> > >   drivers/soundwire/intel.c | 1 +
+> > >   include/linux/fwnode.h    | 1 +
+> > >   3 files changed, 4 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
+> > > index a2bfb0434a67..80df1672c60b 100644
+> > > --- a/drivers/soundwire/bus.c
+> > > +++ b/drivers/soundwire/bus.c
+> > > @@ -74,9 +74,9 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
+> > >   	/*
+> > >   	 * Initialize multi_link flag
+> > > -	 * TODO: populate this flag by reading property from FW node
+> > >   	 */
+> > > -	bus->multi_link = false;
+> > > +	bus->multi_link = (fwnode->flags & FWNODE_FLAG_MULTI_LINKED)
+> > > +		== FWNODE_FLAG_MULTI_LINKED;
 
-I shall try to find out if I can somehow get multi_link's value from 
-fwnode in any other way and look into devlink in the process.
+I missed that this was an if statement here, please write this to be
+more obvious and readable.
 
-If you have any suggestions regarding this TODO, please let me know.
+> > >   	if (bus->ops->read_prop) {
+> > >   		ret = bus->ops->read_prop(bus);
+> > >   		if (ret < 0) {
+> > > diff --git a/drivers/soundwire/intel.c b/drivers/soundwire/intel.c
+> > > index 505c5ef061e3..034d1c523ddf 100644
+> > > --- a/drivers/soundwire/intel.c
+> > > +++ b/drivers/soundwire/intel.c
+> > > @@ -1347,6 +1347,7 @@ int intel_link_startup(struct auxiliary_device *auxdev)
+> > >   		 */
+> > >   		bus->multi_link = true;
+> > >   		bus->hw_sync_min_links = 1;
+> > > +		dev->fwnode->flags |= FWNODE_FLAG_MULTI_LINKED;
+> > >   	}
+> > >   	/* Initialize shim, controller */
+> > > diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> > > index 9a81c4410b9f..446a52744953 100644
+> > > --- a/include/linux/fwnode.h
+> > > +++ b/include/linux/fwnode.h
+> > > @@ -32,6 +32,7 @@ struct device;
+> > >   #define FWNODE_FLAG_NOT_DEVICE			BIT(1)
+> > >   #define FWNODE_FLAG_INITIALIZED			BIT(2)
+> > >   #define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	BIT(3)
+> > > +#define FWNODE_FLAG_MULTI_LINKED		BIT(4)
+> > 
+> > What does this commit actually change?
+> 
+> The new flag will lets us save if the device has multilink in fwnode_handle
+> whenever needed.
+> Then for soundwire/intel, save the multi_link flag into fwnode during
+> startup.
+> Later at master_add, as written in todo, initialize the multilink flag with
+> fwnode's flag property.
 
-Thanks,
-   -- Khalid Masum
+And what does that allow to happen?  What changes with all of this?
+
+thanks,
+
+greg k-h
