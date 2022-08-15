@@ -2,166 +2,331 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25886592F0D
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 14:39:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D282C592F32
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 14:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240687AbiHOMjb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Aug 2022 08:39:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49756 "EHLO
+        id S242372AbiHOMsU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Aug 2022 08:48:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232239AbiHOMja (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 08:39:30 -0400
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 511C2237DD;
-        Mon, 15 Aug 2022 05:39:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1660567167; x=1692103167;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZoeSgVqYecYa8dOXcwGrIo4k9Ip/Bxok4jHfP0iqk0s=;
-  b=RxRiPoIBIcCDT1kDI/YX1hV7vf8ExuPtme+aHhJIqCHSN8ma928khbT0
-   Eez9zl6oULI6EzEc1HCuHizcE+GVmv55luGurc9EbZ7aaPlBIjOysGqpU
-   K0TDS1l28lWsFi7tNBeVCKOwDp9uzgJdVd2sBxjhVQvA4IsSlqLFmxFKi
-   fSuMJjCIYbpIdkhUOo298dO4riLw/bMH6swlbwPo5Zr7+ckxEepLwxfo6
-   X8+2yFDghGyJZElnIjW8hvzznBoL2jke5nlQbGUn0py3/ptpTWXuopu39
-   ncLvisAFh8kMFtxWy0k1/8xxG6CFbGDqHe4aDHoEx36J4yQOckGtnQS8u
-   A==;
-X-IronPort-AV: E=Sophos;i="5.93,238,1654552800"; 
-   d="scan'208";a="25605305"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 15 Aug 2022 14:39:24 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Mon, 15 Aug 2022 14:39:24 +0200
-X-PGP-Universal: processed;
-        by tq-pgp-pr1.tq-net.de on Mon, 15 Aug 2022 14:39:24 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1660567164; x=1692103164;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZoeSgVqYecYa8dOXcwGrIo4k9Ip/Bxok4jHfP0iqk0s=;
-  b=SRYuP5tro2Iq3C5Ct21jG0BwrComttqC0+848iBBB5Rxzj5oLDsXCf6s
-   JF4ghFCSvsmxuLGW+HEaie5rlZKfJbykLh2zr/AmAuAzLYPXuzbyhFC8c
-   gVFgpEOhr6GMabGQXphj25oizxKT7ZQSl5xHXv10/G2N7Zum0ngCeXUYZ
-   lwclTWC/9linzmcWvJdWWPLJW5J6c86I/hUkkZGJxOkWPNCEcb3lOsqqZ
-   Ja81xBdUzxOJ3b50lS6fahYhKG2h614sQKfCxRzqb5jM9n0H1BmEjivYd
-   x3YI1hJlrFdY9QQBKUFPSoSXGqhZOCT240LZiirg3gv82dbhYXSgcNs0U
-   g==;
-X-IronPort-AV: E=Sophos;i="5.93,238,1654552800"; 
-   d="scan'208";a="25605304"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 15 Aug 2022 14:39:24 +0200
-Received: from steina-w.localnet (unknown [10.123.49.11])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        with ESMTP id S230516AbiHOMsU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 08:48:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 038E112747;
+        Mon, 15 Aug 2022 05:48:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id DCF8A280056;
-        Mon, 15 Aug 2022 14:39:23 +0200 (CEST)
-From:   Alexander Stein <alexander.stein@ew.tq-group.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        by ams.source.kernel.org (Postfix) with ESMTPS id A76AAB80EA4;
+        Mon, 15 Aug 2022 12:48:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20608C433C1;
+        Mon, 15 Aug 2022 12:48:12 +0000 (UTC)
+From:   Huacai Chen <chenhuacai@loongson.cn>
+To:     Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 0/9] fw_devlink improvements
-Date:   Mon, 15 Aug 2022 14:39:23 +0200
-Message-ID: <3601760.iIbC2pHGDl@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20220810060040.321697-1-saravanak@google.com>
-References: <20220810060040.321697-1-saravanak@google.com>
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Cc:     loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>,
+        Jianmin Lv <lvjianmin@loongson.cn>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 1/2] LoongArch: Add CPU HWMon platform driver
+Date:   Mon, 15 Aug 2022 20:48:02 +0800
+Message-Id: <20220815124803.3332991-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Saravana,
+This add CPU HWMon (temperature sensor) platform driver for Loongson-3.
 
-Am Mittwoch, 10. August 2022, 08:00:29 CEST schrieb Saravana Kannan:
-> Alexander,
-> 
-> This should fix your issue where the power domain device not having a
-> compatible property. Can you give it a shot please?
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ drivers/platform/Kconfig               |   3 +
+ drivers/platform/Makefile              |   1 +
+ drivers/platform/loongarch/Kconfig     |  26 ++++
+ drivers/platform/loongarch/Makefile    |   1 +
+ drivers/platform/loongarch/cpu_hwmon.c | 195 +++++++++++++++++++++++++
+ 5 files changed, 226 insertions(+)
+ create mode 100644 drivers/platform/loongarch/Kconfig
+ create mode 100644 drivers/platform/loongarch/Makefile
+ create mode 100644 drivers/platform/loongarch/cpu_hwmon.c
 
-thanks for the update. Unfortunately this does not work:
-
-> [    0.774838] PM: Added domain provider from /soc@0/bus@30000000/
-gpc@303a0000/pgc/power-domain@0
-> [    0.775100] imx-pgc imx-pgc-domain.1: __genpd_dev_pm_attach() failed to 
-find PM domain: -2
-> [    0.775324] PM: Added domain provider from /soc@0/bus@30000000/
-gpc@303a0000/pgc/power-domain@2
-> [    0.775601] PM: Added domain provider from /soc@0/bus@30000000/
-gpc@303a0000/pgc/power-domain@3
-> [    0.775842] PM: Added domain provider from /soc@0/bus@30000000/
-gpc@303a0000/pgc/power-domain@4
-> [    0.776642] PM: Added domain provider from /soc@0/bus@30000000/
-gpc@303a0000/pgc/power-domain@7
-> [    0.776897] PM: Added domain provider from /soc@0/bus@30000000/
-gpc@303a0000/pgc/power-domain@8
-> [    0.777158] PM: Added domain provider from /soc@0/bus@30000000/
-gpc@303a0000/pgc/power-domain@9
-> [    0.777405] PM: Added domain provider from /soc@0/bus@30000000/
-gpc@303a0000/pgc/power-domain@a
-> [    0.779342] genpd genpd:0:38320000.blk-ctrl: __genpd_dev_pm_attach() 
-failed to find PM domain: -2
-> [    0.779422] imx8m-blk-ctrl 38320000.blk-ctrl: error -ENODEV: failed to 
-attach power domain "bus"
-> [    0.848785] etnaviv-gpu 38000000.gpu: __genpd_dev_pm_attach() failed to 
-find PM domain: -2
-> [    1.114220] pfuze100-regulator 0-0008: Full layer: 2, Metal layer: 1
-> [    1.122267] pfuze100-regulator 0-0008: FAB: 0, FIN: 0
-> [    1.132970] pfuze100-regulator 0-0008: pfuze100 found.
-> [    1.157011] imx-gpcv2 303a0000.gpc: Failed to create device link with 
-0-0008
-> [    1.164094] imx-gpcv2 303a0000.gpc: Failed to create device link with 
-0-0008
-
-The required power-supply for the power domains is still not yet available.
-Does this series require some other patches as well?
-
-Whats worse, starting with commit 9/9 [of: property: Simplify 
-of_link_to_phandle()], other drivers fail to probe waiting for pinctrl to be 
-available.
-> $ cat /sys/kernel/debug/devices_deferred
-> gpio-leds       platform: wait for supplier gpioledgrp
-> extcon-usbotg0  platform: wait for supplier usb0congrp
-> gpio-keys       platform: wait for supplier gpiobuttongrp
-> regulator-otg-vbus      platform: wait for supplier reggotgvbusgrp
-> regulator-vdd-arm       platform: wait for supplier dvfsgrp
-
-Apparently for some reason they are not probed again, once the pinctrl driver 
-probed.
-
-Best reagrds,
-Alexander
-
-
+diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
+index b437847b6237..9c68e2def2cb 100644
+--- a/drivers/platform/Kconfig
++++ b/drivers/platform/Kconfig
+@@ -2,6 +2,9 @@
+ if MIPS
+ source "drivers/platform/mips/Kconfig"
+ endif
++if LOONGARCH
++source "drivers/platform/loongarch/Kconfig"
++endif
+ 
+ source "drivers/platform/goldfish/Kconfig"
+ 
+diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
+index 4de08ef4ec9d..41640172975a 100644
+--- a/drivers/platform/Makefile
++++ b/drivers/platform/Makefile
+@@ -4,6 +4,7 @@
+ #
+ 
+ obj-$(CONFIG_X86)		+= x86/
++obj-$(CONFIG_LOONGARCH)		+= loongarch/
+ obj-$(CONFIG_MELLANOX_PLATFORM)	+= mellanox/
+ obj-$(CONFIG_MIPS)		+= mips/
+ obj-$(CONFIG_OLPC_EC)		+= olpc/
+diff --git a/drivers/platform/loongarch/Kconfig b/drivers/platform/loongarch/Kconfig
+new file mode 100644
+index 000000000000..a1542843b0ad
+--- /dev/null
++++ b/drivers/platform/loongarch/Kconfig
+@@ -0,0 +1,26 @@
++#
++# LoongArch Platform Specific Drivers
++#
++
++menuconfig LOONGARCH_PLATFORM_DEVICES
++	bool "LoongArch Platform Specific Device Drivers"
++	default LOONGARCH
++	help
++	  Say Y here to get to see options for device drivers of various
++	  LoongArch platforms, including vendor-specific laptop/desktop
++	  extension and hardware monitor drivers. This option itself does
++	  not add any kernel code.
++
++	  If you say N, all options in this submenu will be skipped and disabled.
++
++if LOONGARCH_PLATFORM_DEVICES
++
++config CPU_HWMON
++	bool "Loongson CPU HWMon Driver"
++	depends on MACH_LOONGSON64
++	select HWMON
++	default y
++	help
++	  Loongson-3A/3B/3C CPU HWMon (temperature sensor) driver.
++
++endif # LOONGARCH_PLATFORM_DEVICES
+diff --git a/drivers/platform/loongarch/Makefile b/drivers/platform/loongarch/Makefile
+new file mode 100644
+index 000000000000..8dfd03924c37
+--- /dev/null
++++ b/drivers/platform/loongarch/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
+diff --git a/drivers/platform/loongarch/cpu_hwmon.c b/drivers/platform/loongarch/cpu_hwmon.c
+new file mode 100644
+index 000000000000..3673c850f66c
+--- /dev/null
++++ b/drivers/platform/loongarch/cpu_hwmon.c
+@@ -0,0 +1,195 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2022 Loongson Technology Corporation Limited
++ */
++#include <linux/module.h>
++#include <linux/reboot.h>
++#include <linux/jiffies.h>
++#include <linux/hwmon.h>
++#include <linux/hwmon-sysfs.h>
++
++#include <asm/loongson.h>
++
++int loongson3_cpu_temp(int cpu)
++{
++	u32 reg;
++
++	reg = iocsr_read32(LOONGARCH_IOCSR_CPUTEMP) & 0xff;
++
++	return (int)((s8)reg) * 1000;
++}
++EXPORT_SYMBOL(loongson3_cpu_temp);
++
++static int nr_packages;
++static struct device *cpu_hwmon_dev;
++
++static ssize_t cpu_temp_label(struct device *dev,
++			struct device_attribute *attr, char *buf)
++{
++	int id = (to_sensor_dev_attr(attr))->index - 1;
++	return sprintf(buf, "CPU %d Temperature\n", id);
++}
++
++static ssize_t get_cpu_temp(struct device *dev,
++			struct device_attribute *attr, char *buf)
++{
++	int id = (to_sensor_dev_attr(attr))->index - 1;
++	int value = loongson3_cpu_temp(id);
++	return sprintf(buf, "%d\n", value);
++}
++
++static SENSOR_DEVICE_ATTR(temp1_input, 0444, get_cpu_temp, NULL, 1);
++static SENSOR_DEVICE_ATTR(temp1_label, 0444, cpu_temp_label, NULL, 1);
++static SENSOR_DEVICE_ATTR(temp2_input, 0444, get_cpu_temp, NULL, 2);
++static SENSOR_DEVICE_ATTR(temp2_label, 0444, cpu_temp_label, NULL, 2);
++static SENSOR_DEVICE_ATTR(temp3_input, 0444, get_cpu_temp, NULL, 3);
++static SENSOR_DEVICE_ATTR(temp3_label, 0444, cpu_temp_label, NULL, 3);
++static SENSOR_DEVICE_ATTR(temp4_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp4_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp5_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp5_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp6_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp6_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp7_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp7_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp8_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp8_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp9_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp9_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp10_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp10_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp11_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp11_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp12_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp12_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp13_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp13_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp14_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp14_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp15_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp15_label, 0444, cpu_temp_label, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp16_input, 0444, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp16_label, 0444, cpu_temp_label, NULL, 4);
++
++static struct attribute *cpu_hwmon_attributes[] = {
++	&sensor_dev_attr_temp1_input.dev_attr.attr,
++	&sensor_dev_attr_temp1_label.dev_attr.attr,
++	&sensor_dev_attr_temp2_input.dev_attr.attr,
++	&sensor_dev_attr_temp2_label.dev_attr.attr,
++	&sensor_dev_attr_temp3_input.dev_attr.attr,
++	&sensor_dev_attr_temp3_label.dev_attr.attr,
++	&sensor_dev_attr_temp4_input.dev_attr.attr,
++	&sensor_dev_attr_temp4_label.dev_attr.attr,
++	&sensor_dev_attr_temp5_input.dev_attr.attr,
++	&sensor_dev_attr_temp5_label.dev_attr.attr,
++	&sensor_dev_attr_temp6_input.dev_attr.attr,
++	&sensor_dev_attr_temp6_label.dev_attr.attr,
++	&sensor_dev_attr_temp7_input.dev_attr.attr,
++	&sensor_dev_attr_temp7_label.dev_attr.attr,
++	&sensor_dev_attr_temp8_input.dev_attr.attr,
++	&sensor_dev_attr_temp8_label.dev_attr.attr,
++	&sensor_dev_attr_temp9_input.dev_attr.attr,
++	&sensor_dev_attr_temp9_label.dev_attr.attr,
++	&sensor_dev_attr_temp10_input.dev_attr.attr,
++	&sensor_dev_attr_temp10_label.dev_attr.attr,
++	&sensor_dev_attr_temp11_input.dev_attr.attr,
++	&sensor_dev_attr_temp11_label.dev_attr.attr,
++	&sensor_dev_attr_temp12_input.dev_attr.attr,
++	&sensor_dev_attr_temp12_label.dev_attr.attr,
++	&sensor_dev_attr_temp13_input.dev_attr.attr,
++	&sensor_dev_attr_temp13_label.dev_attr.attr,
++	&sensor_dev_attr_temp14_input.dev_attr.attr,
++	&sensor_dev_attr_temp14_label.dev_attr.attr,
++	&sensor_dev_attr_temp15_input.dev_attr.attr,
++	&sensor_dev_attr_temp15_label.dev_attr.attr,
++	&sensor_dev_attr_temp16_input.dev_attr.attr,
++	&sensor_dev_attr_temp16_label.dev_attr.attr,
++	NULL
++};
++static umode_t cpu_hwmon_is_visible(struct kobject *kobj,
++				    struct attribute *attr, int i)
++{
++	int id = i / 2;
++
++	if (id < nr_packages)
++		return attr->mode;
++	return 0;
++}
++
++static struct attribute_group cpu_hwmon_group = {
++	.attrs = cpu_hwmon_attributes,
++	.is_visible = cpu_hwmon_is_visible,
++};
++
++static const struct attribute_group *cpu_hwmon_groups[] = {
++	&cpu_hwmon_group,
++	NULL
++};
++
++static int cpu_initial_threshold = 72000;
++static int cpu_thermal_threshold = 96000;
++module_param(cpu_thermal_threshold, int, 0644);
++MODULE_PARM_DESC(cpu_thermal_threshold, "cpu thermal threshold (96000 (default))");
++
++static struct delayed_work thermal_work;
++
++static void do_thermal_timer(struct work_struct *work)
++{
++	int i, value, temp_max = 0;
++
++	for (i=0; i<nr_packages; i++) {
++		value = loongson3_cpu_temp(i);
++		if (value > temp_max)
++			temp_max = value;
++	}
++
++	if (temp_max <= cpu_thermal_threshold)
++		schedule_delayed_work(&thermal_work, msecs_to_jiffies(5000));
++	else
++		orderly_poweroff(true);
++}
++
++static int __init loongson_hwmon_init(void)
++{
++	int i, value, temp_max = 0;
++
++	pr_info("Loongson Hwmon Enter...\n");
++
++	nr_packages = loongson_sysconf.nr_cpus /
++		loongson_sysconf.cores_per_package;
++
++	cpu_hwmon_dev = hwmon_device_register_with_groups(NULL, "cpu_hwmon",
++							  NULL, cpu_hwmon_groups);
++	if (IS_ERR(cpu_hwmon_dev)) {
++		pr_err("hwmon_device_register fail!\n");
++		return PTR_ERR(cpu_hwmon_dev);
++	}
++
++	for (i = 0; i < nr_packages; i++) {
++		value = loongson3_cpu_temp(i);
++		if (value > temp_max)
++			temp_max = value;
++	}
++
++	pr_info("Initial CPU temperature is %d (highest).\n", temp_max);
++	if (temp_max > cpu_initial_threshold)
++		cpu_thermal_threshold += temp_max - cpu_initial_threshold;
++
++	INIT_DEFERRABLE_WORK(&thermal_work, do_thermal_timer);
++	schedule_delayed_work(&thermal_work, msecs_to_jiffies(20000));
++
++	return 0;
++}
++
++static void __exit loongson_hwmon_exit(void)
++{
++	cancel_delayed_work_sync(&thermal_work);
++	hwmon_device_unregister(cpu_hwmon_dev);
++}
++
++module_init(loongson_hwmon_init);
++module_exit(loongson_hwmon_exit);
++
++MODULE_AUTHOR("Huacai Chen <chenhuacai@loongson.cn>");
++MODULE_DESCRIPTION("Loongson CPU Hwmon driver");
++MODULE_LICENSE("GPL");
+-- 
+2.31.1
 
