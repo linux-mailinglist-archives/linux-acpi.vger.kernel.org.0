@@ -2,60 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 540BD592BCB
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 12:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B999592BA7
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 12:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242226AbiHOJ5n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Aug 2022 05:57:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48766 "EHLO
+        id S230419AbiHOKSQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Aug 2022 06:18:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241988AbiHOJ5m (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 05:57:42 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802161C925
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 02:57:41 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id gk3so12671681ejb.8
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 02:57:41 -0700 (PDT)
+        with ESMTP id S231222AbiHOKSP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 06:18:15 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08C01262
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 03:18:13 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id dc19so12741153ejb.12
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 03:18:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=r1NsrzieKJbz0xeysq9ijMttBXf0JDgLn0ohifJ6FV0=;
-        b=gFptx6rdf1WmUqIRWVe+56U/Fl2x7Vlevj+kn9aSdpUpmlTGT8zizF89evlAIXSLr0
-         qcp4N/y8VKls98M6J9BBaplfbsqSiDbFZuWf/4hACiKKSOAj6QuMMsxoRfyLjRCS5ynX
-         BWgAPx00uVspe9NbSXzukFJptl4K6fbbFVi56ECvPsX9N45wwEt6GA7TRgYueiGoIbMe
-         N4YA5FtvIMKaIU/XuIm+47VmJ99k7WMAhXmNwaVK1qMMcmUI18SymK23LPQ4RCIGRy2p
-         627xhWBGUoql2p8Lz/bjmhKdXNE6u+YdFOiEN7OT2QnaPqX9PwFExEDljV42PTk4A6EH
-         Nk/w==
+        bh=Z/Q6CR/SPVatWHvELppezc+4y+wJNMFxgASHSY0j6L8=;
+        b=LZYgfKev6RocfwUGd1BJiz6YldfHaiiTV/6nFJ/11T+sRz/1rNAF5gd/sF6sOnc078
+         77vT0vBbNJMI9ggsauNYhnfqhG2A8MYGjZfKJpPTTMaxvIZbZXYIdRz7EUcEJWcwwnq5
+         sZyDGZLTdGHRdGkxVkyoAh2IXctUnV0sAfdZbriRSOoCyqjw6kjdBwMcd3Y8zPqTlakO
+         3DKDlmKvBJ08QofUVtjf5kRHqx9Q9YQWgEGv3qrXO7FGY1WvewahlebrCfrFdZK/eVWQ
+         dBrhTsTCixSYkkRbZhpTBKZPKabgaGOvy+4irPPLDMzsUPB5ho5+yg6RTz+oupM8W2sL
+         ZuRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=r1NsrzieKJbz0xeysq9ijMttBXf0JDgLn0ohifJ6FV0=;
-        b=Y3/DbS2Iw2g+eLZZ8S6yLhdx4qw+Hm2yjUdJgZiNwni83g8fHppIoTlIl/iRWEZhJn
-         4FE5RBP0deWzhqtALKbf27aV3LjOkYOLFimNEfXYAR/Rtk2BgHsSHXV5bZQWKJ5pK1t7
-         DZQyJ5U+Aras0Gu0fbUnrR67uWATy/a2RYy+ZoTceMPnVsVKNigKNJQKMKeDgRVF9SW0
-         +0xtSjIOUKIhrAAZ38ic44UHdfwYxB19/UcHPbzwbAlvYkQCS3JrI3mRk5N+CZjyhntv
-         lQ6UJPfZYapfd46fCVtnklMWnIA5I0C87el95CXXeSj1QDwWiZXzCpHnnC7hKxGZCCAR
-         +vMw==
-X-Gm-Message-State: ACgBeo3QoS8ICNPSgirAlPw/doR3RLDMInn96845vuQMo7QPEMlhPZ82
-        mguLxM6YBlwtMcB+ycbBQz2ZC170VlG+VPQOlxURng==
-X-Google-Smtp-Source: AA6agR42gGHsKm0sw1MEgLwBiUC1pxf/08kt1kKkLbCwyDpNq+KcaYcUtN0ZKxYuGENxjoXyk9gWqGn/QTO3a8wYKnE=
-X-Received: by 2002:a17:907:7254:b0:731:61c6:ecf9 with SMTP id
- ds20-20020a170907725400b0073161c6ecf9mr10009999ejc.101.1660557460076; Mon, 15
- Aug 2022 02:57:40 -0700 (PDT)
+        bh=Z/Q6CR/SPVatWHvELppezc+4y+wJNMFxgASHSY0j6L8=;
+        b=eMWWknrOjDWWwxuJcNgA8RMnxOYFCE3Wp+ewU4CROGrUA5/PdX13E6YV+CDzoiZLb0
+         CQHhyMudZbPBya1rth3vlK9O2kqJj/K5EGjNU1nT2aHftRwIAnOa3bvTeBhd2oUKompm
+         C2kViJQJ8qqzmp1Vz3deYJTxoTv6z2yIEnrj4k1CrrQ71yJPSHXyllJGPRg25alHvuVI
+         1fBPdNiAQwUg3ikFtv9634Nj00u2KSoz8vPnBonbTAJHhlYnDTcZUy5PSrN/ZXEYbmID
+         0L68CRfNUONe4GICVfwPLNkG6Sc9aMWYd3H2OvU1KMnU4AQprervPr83Y6IwCTUNGZxs
+         XARA==
+X-Gm-Message-State: ACgBeo0jzjuqCJJXsnzUU8UrM8HgAcXpb/23cLe9H1hgcziOwyg1L4UV
+        c6AAbbZrWJv/HNvmVpMJa/Ebgbi2n6UGCMwaxpELIg==
+X-Google-Smtp-Source: AA6agR79URV926F8kY2eT9PNM8ZDigqw2rjbQGExeYIT68Gp4fZdnPbdF/t1q5U1y/6qHYnCKzkJczS6ilwv6NFzXKE=
+X-Received: by 2002:a17:907:2721:b0:731:2aeb:7940 with SMTP id
+ d1-20020a170907272100b007312aeb7940mr10409876ejl.448.1660558691411; Mon, 15
+ Aug 2022 03:18:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220810060040.321697-1-saravanak@google.com> <20220810060040.321697-5-saravanak@google.com>
-In-Reply-To: <20220810060040.321697-5-saravanak@google.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 15 Aug 2022 11:57:29 +0200
-Message-ID: <CAMRc=Md=8TQf=EPKaTbOUF2=fuXVzC_dvV1SUo3Y2Tx-5hnzew@mail.gmail.com>
-Subject: Re: [PATCH v1 4/9] gpiolib: Clear the gpio_device's fwnode
- initialized flag before adding
+References: <20220810060040.321697-1-saravanak@google.com> <CAGETcx_nVXbHzZ3+_aR4SZtSnSBU=Rfp8Qm2jOs7zGZRaH_88A@mail.gmail.com>
+In-Reply-To: <CAGETcx_nVXbHzZ3+_aR4SZtSnSBU=Rfp8Qm2jOs7zGZRaH_88A@mail.gmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Mon, 15 Aug 2022 15:47:59 +0530
+Message-ID: <CA+G9fYuUbEiGNpVsSsVcSmB3azaYKs8WrSCP1z1wx6dJKhB5Jw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/9] fw_devlink improvements
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
@@ -72,53 +72,133 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         John Stultz <jstultz@google.com>,
         Doug Anderson <dianders@chromium.org>,
         Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 10, 2022 at 8:00 AM Saravana Kannan <saravanak@google.com> wrote:
+On Sun, 14 Aug 2022 at 11:29, Saravana Kannan <saravanak@google.com> wrote:
 >
-> Registering an irqdomain sets the flag for the fwnode. But having the
-> flag set when a device is added is interpreted by fw_devlink to mean the
-> device has already been initialized and will never probe. This prevents
-> fw_devlink from creating device links with the gpio_device as a
-> supplier. So, clear the flag before adding the device.
+> +Naresh Kamboju
 >
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  drivers/gpio/gpiolib.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> On Tue, Aug 9, 2022 at 11:00 PM Saravana Kannan <saravanak@google.com> wrote:
+> >
+> > This patch series improves fw_devlink in the following ways:
+> >
+> > 1. It no longer cares about a fwnode having a "compatible" property. It
+> >    figures this our more dynamically. The only expectation is that
+> >    fwnode that are converted to devices actually get probed by a driver
+> >    for the dependencies to be enforced correctly.
+> >
+> > 2. Finer grained dependency tracking. fw_devlink will now create device
+> >    links from the consumer to the actual resource's device (if it has one,
+> >    Eg: gpio_device) instead of the parent supplier device. This improves
+> >    things like async suspend/resume ordering, potentially remove the need
+> >    for frameworks to create device links, more parallelized async probing,
+> >    and better sync_state() tracking.
+> >
+> > 3. Handle hardware/software quirks where a child firmware node gets
+> >    populated as a device before its parent firmware node AND actually
+> >    supplies a non-optional resource to the parent firmware node's
+> >    device.
+> >
+> > 4. Way more robust at cycle handling (see patch for the insane cases).
+> >
+> > 5. Stops depending on OF_POPULATED to figure out some corner cases.
+> >
+> > 6. Simplifies the work that needs to be done by the firmware specific
+> >    code.
+> >
+> > This took way too long to get done due to typo bugs I had in my rewrite or
+> > corner cases I had to find and handle. But it's fairly well tested at this
+> > point and I expect this to work properly.
+> >
+> > Abel & Doug,
+> >
+> > This should fix your cyclic dependency issues with your display. Can you
+> > give it a shot please?
+> >
+> > Alexander,
+> >
+> > This should fix your issue where the power domain device not having a
+> > compatible property. Can you give it a shot please?
+> >
+> > Tony,
+> >
+> > This should handle the odd case of the child being the supplier of the
+> > parent. Can you please give this a shot? I want to make sure the cycle
+> > detection code handles this properly and treats it like it's NOT a cycle.
+> >
+> > Geert,
+> >
+> > Can you test the renesas stuff I changed please? They should continue
+> > working like before. Any other sanity test on other hardware would be
+> > great too.
+> >
+> > Sudeep,
+> >
+> > I don't think there are any unfixed issues you had reported in my other
+> > patches that this series might fix, but it'll be nice if you could give
+> > this a sanity test.
+> >
+> > Guenter,
+> >
+> > I don't think this will fix the issue you reported in the amba patch, but
+> > it's worth a shot because it improves a bunch of corner case handling. So
+> > it might be better at handling whatever corner cases you might have in the
+> > qemu platforms.
 >
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index cc9c0a12259e..1d57d6f24632 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -522,6 +522,12 @@ static int gpiochip_setup_dev(struct gpio_device *gdev)
->  {
->         int ret;
+> Hi Naresh,
 >
-> +       /*
-> +        * If fwnode doesn't belong to another device, it's safe to clear its
-> +        * initialized flag.
-> +        */
-> +       if (!gdev->dev.fwnode->dev)
-> +               fwnode_dev_initialized(gdev->dev.fwnode, false);
->         ret = gcdev_register(gdev, gpio_devt);
->         if (ret)
->                 return ret;
-> --
-> 2.37.1.559.g78731f0fdb-goog
->
+> Thanks for testing these patches in the other thread. Mind giving your
+> tested-by here? I know you tested these patches in X15, but were there
+> also other boards these patches were tested on as part of the run?
 
-Acked-by: Bartosz Golaszewski <brgl@bgdev.pl>
+I have tested your patches and boot is successful on x15 device and Juno-r2.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+
+> > Cc: Abel Vesa <abel.vesa@linaro.org>
+> > Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > Cc: Tony Lindgren <tony@atomide.com>
+> > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> > Cc: John Stultz <jstultz@google.com>
+> > Cc: Doug Anderson <dianders@chromium.org>
+> > Cc: Guenter Roeck <linux@roeck-us.net>
+> >
+> > Saravana Kannan (9):
+> >   driver core: fw_devlink: Don't purge child fwnode's consumer links
+> >   driver core: fw_devlink: Improve check for fwnode with no
+> >     device/driver
+> >   soc: renesas: Move away from using OF_POPULATED for fw_devlink
+> >   gpiolib: Clear the gpio_device's fwnode initialized flag before adding
+> >   driver core: fw_devlink: Add DL_FLAG_CYCLE support to device links
+> >   driver core: fw_devlink: Allow marking a fwnode link as being part of
+> >     a cycle
+> >   driver core: fw_devlink: Consolidate device link flag computation
+> >   driver core: fw_devlink: Make cycle detection more robust
+> >   of: property: Simplify of_link_to_phandle()
+> >
+> >  drivers/base/core.c             | 437 +++++++++++++++++++++-----------
+> >  drivers/gpio/gpiolib.c          |   6 +
+> >  drivers/of/property.c           |  84 +-----
+> >  drivers/soc/renesas/rcar-sysc.c |   2 +-
+> >  include/linux/device.h          |   1 +
+> >  include/linux/fwnode.h          |  12 +-
+> >  6 files changed, 323 insertions(+), 219 deletions(-)
+> >
+> > --
+> > 2.37.1.559.g78731f0fdb-goog
+
+- Naresh
