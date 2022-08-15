@@ -2,201 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 002A2592DB0
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 13:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61883592EB7
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 14:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230509AbiHOLCF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Aug 2022 07:02:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47168 "EHLO
+        id S232036AbiHOMLG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Aug 2022 08:11:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242006AbiHOLBx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 07:01:53 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8D14240B2
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 04:01:44 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id bs25so8672328wrb.2
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 04:01:44 -0700 (PDT)
+        with ESMTP id S232167AbiHOMKy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 08:10:54 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C0C3897;
+        Mon, 15 Aug 2022 05:10:53 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id t22so6794560pjy.1;
+        Mon, 15 Aug 2022 05:10:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=6FKn295pNYev8Mu4mgt0CdguxgwFOhEuSmCWwqRDYlY=;
-        b=mHwiulbbPxH4SDlPz4iXxByR1+Xl1Rz234T5ygdWXAANUzpvxRqQNfOR9z5kTBGyKY
-         zIYJxVkOfmUmD4iNK7NEem28989mXbvExX9Ho+iGlpo8ZmCbkxXlRBLGfwbqxby+6UOl
-         jdOYXegykYxiJM7NwMt1BLM1dEby1JE0BG1VTmV/ErNnL3gnnm6EtD6VbbSbFy1YdQGl
-         gfCjPXNoWmdEkFQ7SGKkMPIYxtaDfITluHVuQyE9nAMQC0Cw3D+X5RA40IrNpCsqjaaC
-         4eadhBdQIf2+NjvAeGzCqFQYdtRa8xPfaTCIvqOD8oGBC1B2yNNsxRGGGIqDY2uj6xvP
-         By4g==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=w0Mjm1yI3tFxRPUURdrFm5SP6GE+L3QToY/2DXzlvgk=;
+        b=lGLY3FpDa9kFxeJRGunbWRcIA04Z1farW0ZsA8fkYWIVVBBg/f86rbsJfSD3ibtX0M
+         U3dt1gpti5wKm97ffMpCka3KZBy+ikdjeUGkST3VTMXiF4k540cNl27zZdH/fYK0/d1B
+         cuPYbQfwuhy28GZnC+9uAhPZIARXBXPKfTqVbMuSMaCet8U4wyD4mmQta79XcxQsoUXq
+         hF7U4RiikpUDxqfnn1npFWQQu9ywiyis3iSuwl+XwcgH/UHnO6HoPEyjxJdI0w+w+CZC
+         lyW02uvt+kaJYNdLfa6qROGaANZB5EMRQAPYncThTOMLD/GaYh3TEqYgbRf1I56lnRvt
+         PLFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=6FKn295pNYev8Mu4mgt0CdguxgwFOhEuSmCWwqRDYlY=;
-        b=xARuoSFYpCMLNIyEJIICaYjNbLZvuZ7bi/FzINCOcHlMiD/Hi55XlwcUuVbhG7Vy9z
-         sjxadazXnUw/zGislBMIY9icwpHygdGwsL9+gMYc5175IozKCZkcYr6bQ62mcnBmJftr
-         JmML0edY3iVG+hxRzu/ZurKlcUVgMS9+MQbdVRuiaStML1GxLpcQsm2mUvPh8I8CxoN/
-         CnLGYOGZrTuZSdqV+u0YPapd+vyFQQxydrbevPqiTrl4cWatHneGFIexvZFmtaq4WloZ
-         R/o5LlP5+VQC3SCeWhx3Lufm4XocLCRy18bJ60HZPTfiVU1xlQxnWjYhx1+lsqManB5w
-         gU/g==
-X-Gm-Message-State: ACgBeo0Z1NQDot23Fd1zPACp/IHqFnio0C3WFs1UZc2Ardicdhww3J3P
-        STiLCVvlKOEWEOqMDbWDv/cHdA==
-X-Google-Smtp-Source: AA6agR5pHfwtw3hqi+PnolqtHH6VPX8PopBTpNA+hz9toNY0+VpTIGZVS/G7CImtyNr5yOYI3nYCaw==
-X-Received: by 2002:a5d:4912:0:b0:220:6633:104f with SMTP id x18-20020a5d4912000000b002206633104fmr8488827wrq.625.1660561303286;
-        Mon, 15 Aug 2022 04:01:43 -0700 (PDT)
-Received: from linaro.org ([94.52.112.99])
-        by smtp.gmail.com with ESMTPSA id n6-20020a05600c4f8600b003a5bd9448e5sm9240829wmq.28.2022.08.15.04.01.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Aug 2022 04:01:42 -0700 (PDT)
-Date:   Mon, 15 Aug 2022 14:01:40 +0300
-From:   Abel Vesa <abel.vesa@linaro.org>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=w0Mjm1yI3tFxRPUURdrFm5SP6GE+L3QToY/2DXzlvgk=;
+        b=Qqt2BwfKQibaJ91EZO5poUjwtM2SDhUGMneQEFVMvxOvh/UdGh8tCs2TqkT6hTCp67
+         Zui9BQoSBJDjqPu5yYRi9lntha6iv+Or6P/C8ZDsZcS7pObDPUvpa5qjcHZoyBEI3JoL
+         dVnYuBt9v9rqwrdciOo2ImWvbCohlif/Kok46vSgPJVwi5MskGg4P0ACjUMrQxMsYh/h
+         8jDKsrs4+o45YKcgJD9RNdw+U6oIj2sbX5fqlPdkiGUDmHgQ05NKPoeMTXZ9v/8IW1vD
+         09MTB8823iyvCy08lCn7OPU4a4RY0WKlklVFuc92Sd7H3P4H2l0lm7qR1hVpKtPtkZnx
+         QLeQ==
+X-Gm-Message-State: ACgBeo1IB+o7reb9Olk6kUjZpUuA3DmvObSlelfWpP+2vO1trApsvlWp
+        tW7DLA4hTzoTA4MYu6zIROiTdRLI8zoqLFHd
+X-Google-Smtp-Source: AA6agR4syNM8Z3sSCzQzhZW2WNyv5yIvr0ICRxqdKmutKqGSYqWka1B4xOFbsbHO3K5TcK8hKP8oJw==
+X-Received: by 2002:a17:90b:380d:b0:1f5:2c6d:7de8 with SMTP id mq13-20020a17090b380d00b001f52c6d7de8mr27495438pjb.18.1660565452735;
+        Mon, 15 Aug 2022 05:10:52 -0700 (PDT)
+Received: from [192.168.0.110] ([103.159.189.152])
+        by smtp.gmail.com with ESMTPSA id fh3-20020a17090b034300b001ef87123615sm4421101pjb.37.2022.08.15.05.10.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Aug 2022 05:10:51 -0700 (PDT)
+Message-ID: <2f0d50a1-b9d0-577f-d718-459ae0b1ba77@gmail.com>
+Date:   Mon, 15 Aug 2022 18:10:43 +0600
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [RFC PATCH] Soundwire: Initialize multi_link with fwnode props
+Content-Language: en-US
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 0/9] fw_devlink improvements
-Message-ID: <YvonlAwXAoXTUTZe@linaro.org>
-References: <20220810060040.321697-1-saravanak@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220810060040.321697-1-saravanak@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+References: <20220814080416.7531-1-khalid.masum.92@gmail.com>
+ <CAHp75Ve4UaLsUknGKm14_-f5=qsq1s_Ws+j6h0kAY5_XMkSmQw@mail.gmail.com>
+ <54dd86bd-416b-3048-9bd0-368afa3aaf2f@gmail.com>
+ <741edbf0-5835-eb89-bb6a-69d7e0d00e36@linux.intel.com>
+From:   Khalid Masum <khalid.masum.92@gmail.com>
+In-Reply-To: <741edbf0-5835-eb89-bb6a-69d7e0d00e36@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 22-08-09 23:00:29, Saravana Kannan wrote:
-> This patch series improves fw_devlink in the following ways:
+On 8/15/22 14:16, Pierre-Louis Bossart wrote:
 > 
-> 1. It no longer cares about a fwnode having a "compatible" property. It
->    figures this our more dynamically. The only expectation is that
->    fwnode that are converted to devices actually get probed by a driver
->    for the dependencies to be enforced correctly.
 > 
-> 2. Finer grained dependency tracking. fw_devlink will now create device
->    links from the consumer to the actual resource's device (if it has one,
->    Eg: gpio_device) instead of the parent supplier device. This improves
->    things like async suspend/resume ordering, potentially remove the need
->    for frameworks to create device links, more parallelized async probing,
->    and better sync_state() tracking.
+> On 8/15/22 06:28, Khalid Masum wrote:
+>> On 8/15/22 00:46, Andy Shevchenko wrote:
+>>> On Sun, Aug 14, 2022 at 11:31 AM Khalid Masum
+>>> <khalid.masum.92@gmail.com> wrote:
+>>>>
+>>>> According to the TODO, In sw_bus_master_add, bus->multi_link is to be
+>>>> populated with properties from FW node props. Make this happen by
+>>>> creating a new fwnode_handle flag FWNODE_FLAG_MULTI_LINKED and use
+>>>> the flag to store the multi_link value from intel_link_startup. Use
+>>>> this flag to initialize bus->multi_link.
+>>>
+>>> ...
+>>>
+>>>>           /*
+>>>>            * Initialize multi_link flag
+>>>> -        * TODO: populate this flag by reading property from FW node
+>>>>            */
+>>>> -       bus->multi_link = false;
+>>>> +       bus->multi_link = (fwnode->flags & FWNODE_FLAG_MULTI_LINKED)
+>>>> +               == FWNODE_FLAG_MULTI_LINKED;
+>>>
+>>> NAK (as far as I understood the context of the comment and the change
+>>> itself).
+>>>
+>>> These flags are for devlink, we do not mix FW properties with those
+>>> internal flags anyhow. The comment suggests that this should be az
+>>> property. Also commit message doesn't explain the relation to devlink.
+>>>
+>> That is a good information to know. Thanks.
+>>
+>> I shall try to find out if I can somehow get multi_link's value from
+>> fwnode in any other way and look into devlink in the process.
+>>
+>> If you have any suggestions regarding this TODO, please let me know.
 > 
-> 3. Handle hardware/software quirks where a child firmware node gets
->    populated as a device before its parent firmware node AND actually
->    supplies a non-optional resource to the parent firmware node's
->    device.
+> The suggestion is to remove the TODO and leave the code as is: the
+> capabilities enabled for multi-link are required as part of the
+> programming sequences, even when a stream uses a single link we still
+> use the syncArm/syncGo sequences.
 > 
-> 4. Way more robust at cycle handling (see patch for the insane cases).
-> 
-> 5. Stops depending on OF_POPULATED to figure out some corner cases.
-> 
-> 6. Simplifies the work that needs to be done by the firmware specific
->    code.
-> 
-> This took way too long to get done due to typo bugs I had in my rewrite or
-> corner cases I had to find and handle. But it's fairly well tested at this
-> point and I expect this to work properly.
-> 
-> Abel & Doug,
-> 
-> This should fix your cyclic dependency issues with your display. Can you
-> give it a shot please?
+> Please don't change this.
 
-Tested the specific case we discussed about here:
-https://lore.kernel.org/all/CAGETcx8F0wP+RA0KpjOJeZfc=DVG-MbM_=SkRHD4UhD2ReL7Kw@mail.gmail.com/raw
+Thanks for the suggestion! I shall send a patch with the TODO removed, 
+leaving the code as is.
 
-Thanks for fixing this.
+   -- Khalid Masum
 
-Tested-by: Abel Vesa <abel.vesa@linaro.org>
-
-> 
-> Alexander,
-> 
-> This should fix your issue where the power domain device not having a
-> compatible property. Can you give it a shot please?
-> 
-> Tony,
-> 
-> This should handle the odd case of the child being the supplier of the
-> parent. Can you please give this a shot? I want to make sure the cycle
-> detection code handles this properly and treats it like it's NOT a cycle.
-> 
-> Geert,
-> 
-> Can you test the renesas stuff I changed please? They should continue
-> working like before. Any other sanity test on other hardware would be
-> great too.
-> 
-> Sudeep,
-> 
-> I don't think there are any unfixed issues you had reported in my other
-> patches that this series might fix, but it'll be nice if you could give
-> this a sanity test.
-> 
-> Guenter,
-> 
-> I don't think this will fix the issue you reported in the amba patch, but
-> it's worth a shot because it improves a bunch of corner case handling. So
-> it might be better at handling whatever corner cases you might have in the
-> qemu platforms.
-> 
-> Thanks,
-> Saravana
-> 
-> Cc: Abel Vesa <abel.vesa@linaro.org>
-> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: John Stultz <jstultz@google.com>
-> Cc: Doug Anderson <dianders@chromium.org>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> 
-> Saravana Kannan (9):
->   driver core: fw_devlink: Don't purge child fwnode's consumer links
->   driver core: fw_devlink: Improve check for fwnode with no
->     device/driver
->   soc: renesas: Move away from using OF_POPULATED for fw_devlink
->   gpiolib: Clear the gpio_device's fwnode initialized flag before adding
->   driver core: fw_devlink: Add DL_FLAG_CYCLE support to device links
->   driver core: fw_devlink: Allow marking a fwnode link as being part of
->     a cycle
->   driver core: fw_devlink: Consolidate device link flag computation
->   driver core: fw_devlink: Make cycle detection more robust
->   of: property: Simplify of_link_to_phandle()
-> 
->  drivers/base/core.c             | 437 +++++++++++++++++++++-----------
->  drivers/gpio/gpiolib.c          |   6 +
->  drivers/of/property.c           |  84 +-----
->  drivers/soc/renesas/rcar-sysc.c |   2 +-
->  include/linux/device.h          |   1 +
->  include/linux/fwnode.h          |  12 +-
->  6 files changed, 323 insertions(+), 219 deletions(-)
-> 
-> -- 
-> 2.37.1.559.g78731f0fdb-goog
-> 
