@@ -2,177 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3F15592EEA
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 14:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25886592F0D
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 14:39:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242201AbiHOMbA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Aug 2022 08:31:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42286 "EHLO
+        id S240687AbiHOMjb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Aug 2022 08:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242525AbiHOMa4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 08:30:56 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8651F6544;
-        Mon, 15 Aug 2022 05:30:54 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id k14so6539119pfh.0;
-        Mon, 15 Aug 2022 05:30:54 -0700 (PDT)
+        with ESMTP id S232239AbiHOMja (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 08:39:30 -0400
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 511C2237DD;
+        Mon, 15 Aug 2022 05:39:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=8N0tZJ261i5HWc8SMb6PjhSY6p7VWzYFeTIP4nzrRk8=;
-        b=b1VEzYtVLOWAkOAKzwtxHu0/dhDervAoBVp+iDeFrqBqqYvQgea5BC9AleuQ7U6n83
-         pFbAzPEp4GiLFrrCVvV4qFxOhbUlQ4WMDyCuzCqOOwxwljV/c9auB3Tkj8eoW8aOTyys
-         vIE6Th4LpTQMdHdli/19h0T4vFhtYAoSmEskq/n/QZh7rhaRwxKe0nRbciC21MvB8S/2
-         HWlWBwS1b3GYCeQ6fw1ptUyJcXq1BYZVi2plVVIZbN95g/4usQEerhG3FCsEr8EgAbTV
-         eWYKn2umZVbwM3L+EvzsLxrUXsrwfyznDHa75rdFrMXWVHrtc3uD5VaYEZFoU60hl99w
-         LpeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=8N0tZJ261i5HWc8SMb6PjhSY6p7VWzYFeTIP4nzrRk8=;
-        b=gFhfDY7M70X55w3udF3eiKx1ta5n9QFjGxvn4ACYNqRdHX/76UVa0V6GdDMjJ/kGmD
-         2w8alHkQGNtG/lC5Etm8nMLJxTYqVJA+7h/089R8MVBLWya+hMULQVssHLsiwtqQFNZp
-         h5i1ObfwMJJV23eikDQzVSdQ4miaRon9J3nknrza9rRNUdACkiq3zu1nX4k4eQ7+IeCt
-         b816f/v4PIvcph5YYHaBq6D9etp0ay4y2eaSMmMfjWt5ktzEWD8C3twyhT/S3zzCzF8X
-         hQZ7zGfgZp9kzgjorgTPwd4RkHqisEKM9MCL29gQTSmlzdti62/DPAjXI5LPavzC+iYo
-         sAEw==
-X-Gm-Message-State: ACgBeo3pMq2EauqeGIn2wy5GHR4+4QUrAuQFtkkmA2uY7vKXfAGRKuA0
-        KOrDPBRUU5OhMqF6sRv5sGA=
-X-Google-Smtp-Source: AA6agR6n+V5MTGdGpk2hwvi18leQKPRw9rMleuhjBbyrOaibWzPzTsNiVU8zXcFHe6aFt9r5FDsqRQ==
-X-Received: by 2002:a05:6a00:c96:b0:52e:979c:dd63 with SMTP id a22-20020a056a000c9600b0052e979cdd63mr16400289pfv.50.1660566653967;
-        Mon, 15 Aug 2022 05:30:53 -0700 (PDT)
-Received: from [192.168.0.110] ([103.159.189.152])
-        by smtp.gmail.com with ESMTPSA id z25-20020a656659000000b00419b66846fcsm5726173pgv.91.2022.08.15.05.30.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Aug 2022 05:30:53 -0700 (PDT)
-Message-ID: <9b993aa6-f432-89f6-9195-05b584398df2@gmail.com>
-Date:   Mon, 15 Aug 2022 18:30:44 +0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [RFC PATCH] Soundwire: Initialize multi_link with fwnode props
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1660567167; x=1692103167;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ZoeSgVqYecYa8dOXcwGrIo4k9Ip/Bxok4jHfP0iqk0s=;
+  b=RxRiPoIBIcCDT1kDI/YX1hV7vf8ExuPtme+aHhJIqCHSN8ma928khbT0
+   Eez9zl6oULI6EzEc1HCuHizcE+GVmv55luGurc9EbZ7aaPlBIjOysGqpU
+   K0TDS1l28lWsFi7tNBeVCKOwDp9uzgJdVd2sBxjhVQvA4IsSlqLFmxFKi
+   fSuMJjCIYbpIdkhUOo298dO4riLw/bMH6swlbwPo5Zr7+ckxEepLwxfo6
+   X8+2yFDghGyJZElnIjW8hvzznBoL2jke5nlQbGUn0py3/ptpTWXuopu39
+   ncLvisAFh8kMFtxWy0k1/8xxG6CFbGDqHe4aDHoEx36J4yQOckGtnQS8u
+   A==;
+X-IronPort-AV: E=Sophos;i="5.93,238,1654552800"; 
+   d="scan'208";a="25605305"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 15 Aug 2022 14:39:24 +0200
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Mon, 15 Aug 2022 14:39:24 +0200
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Mon, 15 Aug 2022 14:39:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1660567164; x=1692103164;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ZoeSgVqYecYa8dOXcwGrIo4k9Ip/Bxok4jHfP0iqk0s=;
+  b=SRYuP5tro2Iq3C5Ct21jG0BwrComttqC0+848iBBB5Rxzj5oLDsXCf6s
+   JF4ghFCSvsmxuLGW+HEaie5rlZKfJbykLh2zr/AmAuAzLYPXuzbyhFC8c
+   gVFgpEOhr6GMabGQXphj25oizxKT7ZQSl5xHXv10/G2N7Zum0ngCeXUYZ
+   lwclTWC/9linzmcWvJdWWPLJW5J6c86I/hUkkZGJxOkWPNCEcb3lOsqqZ
+   Ja81xBdUzxOJ3b50lS6fahYhKG2h614sQKfCxRzqb5jM9n0H1BmEjivYd
+   x3YI1hJlrFdY9QQBKUFPSoSXGqhZOCT240LZiirg3gv82dbhYXSgcNs0U
+   g==;
+X-IronPort-AV: E=Sophos;i="5.93,238,1654552800"; 
+   d="scan'208";a="25605304"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 15 Aug 2022 14:39:24 +0200
+Received: from steina-w.localnet (unknown [10.123.49.11])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id DCF8A280056;
+        Mon, 15 Aug 2022 14:39:23 +0200 (CEST)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Len Brown <lenb@kernel.org>
-References: <20220814080416.7531-1-khalid.masum.92@gmail.com>
- <YvjEIjXg7KxtTT/0@kroah.com> <cc6560c3-98c2-bdb5-cfc3-b39d3675382e@gmail.com>
- <YvnpuK8phVyF7053@kroah.com>
-From:   Khalid Masum <khalid.masum.92@gmail.com>
-In-Reply-To: <YvnpuK8phVyF7053@kroah.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 0/9] fw_devlink improvements
+Date:   Mon, 15 Aug 2022 14:39:23 +0200
+Message-ID: <3601760.iIbC2pHGDl@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20220810060040.321697-1-saravanak@google.com>
+References: <20220810060040.321697-1-saravanak@google.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 8/15/22 12:37, Greg KH wrote:
-> On Mon, Aug 15, 2022 at 10:08:07AM +0600, Khalid Masum wrote:
->> On 8/14/22 15:45, Greg KH wrote:
->>> On Sun, Aug 14, 2022 at 02:04:15PM +0600, Khalid Masum wrote:
->>>> According to the TODO, In sw_bus_master_add, bus->multi_link is to be
->>>> populated with properties from FW node props. Make this happen by
->>>> creating a new fwnode_handle flag FWNODE_FLAG_MULTI_LINKED and use
->>>> the flag to store the multi_link value from intel_link_startup. Use
->>>> this flag to initialize bus->multi_link.
->>>>
->>>> Signed-off-by: Khalid Masum <khalid.masum.92@gmail.com>
->>>> ---
->>>> I do not think adding a new flag for fwnode_handle is a good idea.
->>>> So, what would be the best way to initialize bus->multilink with
->>>> fwnode props?
->>>>
->>>>     -- Khalid Masum
->>>>
->>>>    drivers/soundwire/bus.c   | 4 ++--
->>>>    drivers/soundwire/intel.c | 1 +
->>>>    include/linux/fwnode.h    | 1 +
->>>>    3 files changed, 4 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
->>>> index a2bfb0434a67..80df1672c60b 100644
->>>> --- a/drivers/soundwire/bus.c
->>>> +++ b/drivers/soundwire/bus.c
->>>> @@ -74,9 +74,9 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
->>>>    	/*
->>>>    	 * Initialize multi_link flag
->>>> -	 * TODO: populate this flag by reading property from FW node
->>>>    	 */
->>>> -	bus->multi_link = false;
->>>> +	bus->multi_link = (fwnode->flags & FWNODE_FLAG_MULTI_LINKED)
->>>> +		== FWNODE_FLAG_MULTI_LINKED;
-> 
-> I missed that this was an if statement here, please write this to be
-> more obvious and readable.
-> 
->>>>    	if (bus->ops->read_prop) {
->>>>    		ret = bus->ops->read_prop(bus);
->>>>    		if (ret < 0) {
->>>> diff --git a/drivers/soundwire/intel.c b/drivers/soundwire/intel.c
->>>> index 505c5ef061e3..034d1c523ddf 100644
->>>> --- a/drivers/soundwire/intel.c
->>>> +++ b/drivers/soundwire/intel.c
->>>> @@ -1347,6 +1347,7 @@ int intel_link_startup(struct auxiliary_device *auxdev)
->>>>    		 */
->>>>    		bus->multi_link = true;
->>>>    		bus->hw_sync_min_links = 1;
->>>> +		dev->fwnode->flags |= FWNODE_FLAG_MULTI_LINKED;
->>>>    	}
->>>>    	/* Initialize shim, controller */
->>>> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
->>>> index 9a81c4410b9f..446a52744953 100644
->>>> --- a/include/linux/fwnode.h
->>>> +++ b/include/linux/fwnode.h
->>>> @@ -32,6 +32,7 @@ struct device;
->>>>    #define FWNODE_FLAG_NOT_DEVICE			BIT(1)
->>>>    #define FWNODE_FLAG_INITIALIZED			BIT(2)
->>>>    #define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	BIT(3)
->>>> +#define FWNODE_FLAG_MULTI_LINKED		BIT(4)
->>>
->>> What does this commit actually change?
->>
->> The new flag will lets us save if the device has multilink in fwnode_handle
->> whenever needed.
->> Then for soundwire/intel, save the multi_link flag into fwnode during
->> startup.
->> Later at master_add, as written in todo, initialize the multilink flag with
->> fwnode's flag property.
-> 
-> And what does that allow to happen?  What changes with all of this?
+Hello Saravana,
 
-As suggested by Pierre-Louis Bossart these changes are not necessary and 
-the TODO is to be removed. Earlier my intention was to create a new flag 
-that lets us know whether multi_link is to be read from 
-sdw_bus_master_add just as instructed in TODO.
-
-I shall send another patch, that removes the TODO, as suggested by 
-Pierre-Louis Bossart.
+Am Mittwoch, 10. August 2022, 08:00:29 CEST schrieb Saravana Kannan:
+> Alexander,
 > 
-> thanks,
-> 
-> greg k-h
+> This should fix your issue where the power domain device not having a
+> compatible property. Can you give it a shot please?
 
-thanks,
-   -- Khalid Masum
+thanks for the update. Unfortunately this does not work:
+
+> [    0.774838] PM: Added domain provider from /soc@0/bus@30000000/
+gpc@303a0000/pgc/power-domain@0
+> [    0.775100] imx-pgc imx-pgc-domain.1: __genpd_dev_pm_attach() failed to 
+find PM domain: -2
+> [    0.775324] PM: Added domain provider from /soc@0/bus@30000000/
+gpc@303a0000/pgc/power-domain@2
+> [    0.775601] PM: Added domain provider from /soc@0/bus@30000000/
+gpc@303a0000/pgc/power-domain@3
+> [    0.775842] PM: Added domain provider from /soc@0/bus@30000000/
+gpc@303a0000/pgc/power-domain@4
+> [    0.776642] PM: Added domain provider from /soc@0/bus@30000000/
+gpc@303a0000/pgc/power-domain@7
+> [    0.776897] PM: Added domain provider from /soc@0/bus@30000000/
+gpc@303a0000/pgc/power-domain@8
+> [    0.777158] PM: Added domain provider from /soc@0/bus@30000000/
+gpc@303a0000/pgc/power-domain@9
+> [    0.777405] PM: Added domain provider from /soc@0/bus@30000000/
+gpc@303a0000/pgc/power-domain@a
+> [    0.779342] genpd genpd:0:38320000.blk-ctrl: __genpd_dev_pm_attach() 
+failed to find PM domain: -2
+> [    0.779422] imx8m-blk-ctrl 38320000.blk-ctrl: error -ENODEV: failed to 
+attach power domain "bus"
+> [    0.848785] etnaviv-gpu 38000000.gpu: __genpd_dev_pm_attach() failed to 
+find PM domain: -2
+> [    1.114220] pfuze100-regulator 0-0008: Full layer: 2, Metal layer: 1
+> [    1.122267] pfuze100-regulator 0-0008: FAB: 0, FIN: 0
+> [    1.132970] pfuze100-regulator 0-0008: pfuze100 found.
+> [    1.157011] imx-gpcv2 303a0000.gpc: Failed to create device link with 
+0-0008
+> [    1.164094] imx-gpcv2 303a0000.gpc: Failed to create device link with 
+0-0008
+
+The required power-supply for the power domains is still not yet available.
+Does this series require some other patches as well?
+
+Whats worse, starting with commit 9/9 [of: property: Simplify 
+of_link_to_phandle()], other drivers fail to probe waiting for pinctrl to be 
+available.
+> $ cat /sys/kernel/debug/devices_deferred
+> gpio-leds       platform: wait for supplier gpioledgrp
+> extcon-usbotg0  platform: wait for supplier usb0congrp
+> gpio-keys       platform: wait for supplier gpiobuttongrp
+> regulator-otg-vbus      platform: wait for supplier reggotgvbusgrp
+> regulator-vdd-arm       platform: wait for supplier dvfsgrp
+
+Apparently for some reason they are not probed again, once the pinctrl driver 
+probed.
+
+Best reagrds,
+Alexander
+
+
 
