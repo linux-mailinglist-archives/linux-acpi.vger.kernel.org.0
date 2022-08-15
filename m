@@ -2,57 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7EAA595194
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Aug 2022 07:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D99F59519E
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Aug 2022 07:04:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233412AbiHPFBv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Aug 2022 01:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40986 "EHLO
+        id S231894AbiHPFEA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Aug 2022 01:04:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234734AbiHPFB1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Aug 2022 01:01:27 -0400
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 811115005F
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 13:56:44 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-3246910dac3so102820637b3.12
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 13:56:44 -0700 (PDT)
+        with ESMTP id S233062AbiHPFDm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Aug 2022 01:03:42 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071A3C6E9A
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 14:01:34 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-31f443e276fso103565057b3.1
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 14:01:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=D0fn3micXKWrfIVT3rhbLog8MKgivLXDeSRBFlVQCe0=;
-        b=pWNCA5tjhz3ifbg/zoi8mxeHNbQqyS6Wr+tkXqszwau/3juKJt1cJiDeWd/xTUYikf
-         3m+lUs8TRS/ONqZP2kr37pSkam/ltj8dFUHNbQSVUtOocrZd8kNivuozAsPDZGUebja5
-         8qoXrSub6bi/48WY6kMdn5wD62DzaKBuNTtBjPgC1vqE2ofoH7+pemKiSTDhtCXK+BKg
-         tM0mwmFWdjDKI5x8PolzvWsp9Wa9f7ueMXN26rQ8TanPpj13nakHNrDAbc0WTCILPcKm
-         sITU3U2AXFoq3SQH3e7W+zw/P6tvdNfqQuIWIBXSOdodHIwUTxZT8vAAFSIly2OhmtPn
-         X4/w==
+        bh=elGV48BlDszZRuy8S9+m13PY1kqIqtWfREXP+EXFmrg=;
+        b=r8NjbapBTS67+vpVF7+sCFfdYsvuzVpSbreXNSPasBnVSUXsEkW2Tdiy0vBzbOigcM
+         qkHezPAEwRYmAfuMzU7q6qw4S5wZy3KRTtCpEP69ti5057pFT/Te3P5tEFe+xNHwZC+m
+         Tf3GeanOn8C43ORFxDvYPY4oID2CctIoeScmjdwsfdlI5xtnUMR9bJ2JRxwTzOdhN6B/
+         Q2jJ//9GPDv5iPdQrFBgt1hXlMV7dlgnVz+CxBkfIXZqtN0HMa5iF1fqfIMMDJHs3IbN
+         gHVjl6QzTSIciKflXKOAYtOtwqyjwYxUfM2HGX2gXXOcMk2jxDLBXTVALHOUX/KDTSv6
+         vfmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=D0fn3micXKWrfIVT3rhbLog8MKgivLXDeSRBFlVQCe0=;
-        b=HJvanz6DiyOvrPVkCPvu+Db9QcUggbAtqnFtjpcnT0AEqOmmHAB7dz/EUK8aRh/3W9
-         39jzgjZhZSOu2pxUdQZMa7irN4zLVUmQFVLkCzXinXi+Ezoh/4tZ5xoQj1NDOETBfFWc
-         eXSzYTQmhrONlV+EXQ/mezvYKLOwbE+lPi/8VaqrEMk0JAwhIXszVYqjcmxRQYdojQwf
-         ykn3d8vjVlSaxz9XDEr4Z+vbBk3OcxaQzN1cf+JUFxpahFtpT9KpP42G0x36FKz5OuMr
-         WVdWJpPc58VE00uOGJZjTvEpYvEdHQ5RzyPJY2LtilVeQYpUAk1BymHuH2/Oj0wUCHWT
-         KRgQ==
-X-Gm-Message-State: ACgBeo3fLFt9tLwOKoNuyQFNtmuUK0RmK338zq6+12cVHOs0wnHMZG+W
-        BDljO4poTUiZNE30I62+0p4CxFLdO5wOQv7dEXnVQA==
-X-Google-Smtp-Source: AA6agR4LEloPmUVOkPnMV81xQJEVCPf91bSwXVvWmCOFrRCoq8LfZMc0EKGNipgQdo+jv9Jrr6eZZKs9QGFjnp+Twkw=
-X-Received: by 2002:a0d:efc1:0:b0:32a:8e40:cd70 with SMTP id
- y184-20020a0defc1000000b0032a8e40cd70mr14737568ywe.83.1660597003258; Mon, 15
- Aug 2022 13:56:43 -0700 (PDT)
+        bh=elGV48BlDszZRuy8S9+m13PY1kqIqtWfREXP+EXFmrg=;
+        b=kwPfFvDFAdcoiO5TgTxqq70bYbDw3ZY0a09RsOsy3kBR8L10rM8LqXAImqkD+tGkck
+         qnZ2Gkd9OX3XljWESlZOsXvo5ulbcfz3A5bTyZ7lCN2+Ld/fnV2r+QNJ59J2zWIYBM09
+         xjsVSlHAF7a3esMda0p4vr3e08XBaApkn545bhsmQxiT4Q14pdIr1uw5bPwsx7jRlSFI
+         rkvTV+GAxMKBsgGG59H5bs2KEMv5AOytedNqTFQCVPtdeka2MbmSWz3MCnPjsCxuwiF7
+         NHRnRJ3Sl6+IW10rJUgbMeSnyvbbIscAYIvdSjeGjA1C6xx76G2FegxdW9s29acROafk
+         XFYA==
+X-Gm-Message-State: ACgBeo1DTR6KrKM+2wD0b56rijlLH0MRBJ90iUegA0D9dhsDsrFUd0r/
+        cwtSIJ5uQw3p+nd6fCymYHCe0UaFzuP9D+zH1tPYqg==
+X-Google-Smtp-Source: AA6agR41q4yHanMi1A+gXLO08ia/kXxxT1OUdvxPqS+JZ3AYLwYDjl7erHXWMxbaY8NeTp1jebE8Ei5/XTiAHc+ZS+o=
+X-Received: by 2002:a25:6612:0:b0:670:7c81:3aa6 with SMTP id
+ a18-20020a256612000000b006707c813aa6mr13305548ybc.530.1660597293043; Mon, 15
+ Aug 2022 14:01:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220810060040.321697-1-saravanak@google.com> <3601760.iIbC2pHGDl@steina-w>
- <CAGETcx_tSndU0xerz=DF9JQxYFRC2aaxyOE-bR2JpM0L0ht=sw@mail.gmail.com>
-In-Reply-To: <CAGETcx_tSndU0xerz=DF9JQxYFRC2aaxyOE-bR2JpM0L0ht=sw@mail.gmail.com>
+References: <20220810060040.321697-1-saravanak@google.com> <20220810060040.321697-10-saravanak@google.com>
+ <YvYhoGdemyKEx++d@atomide.com> <CAGETcx_SdxJKV56jGSx8GbmA4y_zaoP6z8n8xKZGZbCcmewvDQ@mail.gmail.com>
+ <YvoglKDbsDLHq2S0@atomide.com>
+In-Reply-To: <YvoglKDbsDLHq2S0@atomide.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 15 Aug 2022 13:56:07 -0700
-Message-ID: <CAGETcx-JUV1nj8wBJrTPfyvM7=Mre5j_vkVmZojeiumUGG6QZQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/9] fw_devlink improvements
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+Date:   Mon, 15 Aug 2022 14:00:57 -0700
+Message-ID: <CAGETcx-wz0k13K2fOjTN9RfuMzUPti=UQqY5Mq9XYLK8vudYng@mail.gmail.com>
+Subject: Re: [PATCH v1 9/9] of: property: Simplify of_link_to_phandle()
+To:     Tony Lindgren <tony@atomide.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -66,7 +67,7 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         John Stultz <jstultz@google.com>,
@@ -87,149 +88,55 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 15, 2022 at 12:17 PM Saravana Kannan <saravanak@google.com> wrote:
+On Mon, Aug 15, 2022 at 3:31 AM Tony Lindgren <tony@atomide.com> wrote:
 >
-> On Mon, Aug 15, 2022 at 5:39 AM Alexander Stein
-> <alexander.stein@ew.tq-group.com> wrote:
-> >
-> > Hello Saravana,
-> >
-> > Am Mittwoch, 10. August 2022, 08:00:29 CEST schrieb Saravana Kannan:
-> > > Alexander,
+> * Saravana Kannan <saravanak@google.com> [220813 00:30]:
+> > On Fri, Aug 12, 2022 at 2:47 AM Tony Lindgren <tony@atomide.com> wrote:
 > > >
-> > > This should fix your issue where the power domain device not having a
-> > > compatible property. Can you give it a shot please?
+> > > Hi,
+> > >
+> > > * Saravana Kannan <saravanak@google.com> [220810 05:54]:
+> > > > The driver core now:
+> > > > - Has the parent device of a supplier pick up the consumers if the
+> > > >   supplier never has a device created for it.
+> > > > - Ignores a supplier if the supplier has no parent device and will never
+> > > >   be probed by a driver
+> > > >
+> > > > And already prevents creating a device link with the consumer as a
+> > > > supplier of a parent.
+> > > >
+> > > > So, we no longer need to find the "compatible" node of the supplier or
+> > > > do any other checks in of_link_to_phandle(). We simply need to make sure
+> > > > that the supplier is available in DT.
+> > >
+> > > This patch fixes booting for me, so it should be applied as a fix and
+> > > tagged with:
+> > >
+> > > Fixes: 5a46079a9645 ("PM: domains: Delete usage of driver_deferred_probe_check_state()")
+> > >
+> > > If there are dependencies to the other patches in this series, it might
+> > > make sense to revert commit 5a46079a9645 instead.
 > >
-> > thanks for the update. Unfortunately this does not work:
+> > Yes, there are dependencies on the rest of the patches in this series.
+> > For linux-next, I think we should pick up this series once we get more
+> > Tested-bys.
 > >
-> > > [    0.774838] PM: Added domain provider from /soc@0/bus@30000000/
-> > gpc@303a0000/pgc/power-domain@0
-> > > [    0.775100] imx-pgc imx-pgc-domain.1: __genpd_dev_pm_attach() failed to
-> > find PM domain: -2
-> > > [    0.775324] PM: Added domain provider from /soc@0/bus@30000000/
-> > gpc@303a0000/pgc/power-domain@2
-> > > [    0.775601] PM: Added domain provider from /soc@0/bus@30000000/
-> > gpc@303a0000/pgc/power-domain@3
-> > > [    0.775842] PM: Added domain provider from /soc@0/bus@30000000/
-> > gpc@303a0000/pgc/power-domain@4
-> > > [    0.776642] PM: Added domain provider from /soc@0/bus@30000000/
-> > gpc@303a0000/pgc/power-domain@7
-> > > [    0.776897] PM: Added domain provider from /soc@0/bus@30000000/
-> > gpc@303a0000/pgc/power-domain@8
-> > > [    0.777158] PM: Added domain provider from /soc@0/bus@30000000/
-> > gpc@303a0000/pgc/power-domain@9
-> > > [    0.777405] PM: Added domain provider from /soc@0/bus@30000000/
-> > gpc@303a0000/pgc/power-domain@a
-> > > [    0.779342] genpd genpd:0:38320000.blk-ctrl: __genpd_dev_pm_attach()
-> > failed to find PM domain: -2
-> > > [    0.779422] imx8m-blk-ctrl 38320000.blk-ctrl: error -ENODEV: failed to
-> > attach power domain "bus"
-> > > [    0.848785] etnaviv-gpu 38000000.gpu: __genpd_dev_pm_attach() failed to
-> > find PM domain: -2
-> > > [    1.114220] pfuze100-regulator 0-0008: Full layer: 2, Metal layer: 1
-> > > [    1.122267] pfuze100-regulator 0-0008: FAB: 0, FIN: 0
-> > > [    1.132970] pfuze100-regulator 0-0008: pfuze100 found.
-> > > [    1.157011] imx-gpcv2 303a0000.gpc: Failed to create device link with
-> > 0-0008
-> > > [    1.164094] imx-gpcv2 303a0000.gpc: Failed to create device link with
-> > 0-0008
-> >
-> > The required power-supply for the power domains is still not yet available.
-> > Does this series require some other patches as well?
+> >  So if 5a46079a9645 is causing any regression in stable branches, we
+> > should pick up the revert series [1] instead of this series we are
+> > replying to.
 >
-> Ah sorry, yeah, this needs additional patches. The one I gave in the
-> other thread when I debugged this and I also noticed another issue.
-> Here's the combined diff of what's needed. Can you add this on top of
-> the series and test it?
->
-> diff --git a/drivers/irqchip/irq-imx-gpcv2.c b/drivers/irqchip/irq-imx-gpcv2.c
-> index b9c22f764b4d..8a0e82067924 100644
-> --- a/drivers/irqchip/irq-imx-gpcv2.c
-> +++ b/drivers/irqchip/irq-imx-gpcv2.c
-> @@ -283,6 +283,7 @@ static int __init imx_gpcv2_irqchip_init(struct
-> device_node *node,
->          * later the GPC power domain driver will not be skipped.
->          */
->         of_node_clear_flag(node, OF_POPULATED);
-> +       fwnode_dev_initialized(domain->fwnode, false);
->         return 0;
->  }
->
-> diff --git a/drivers/soc/imx/gpcv2.c b/drivers/soc/imx/gpcv2.c
-> index 6383a4edc360..181fbfe5bd4d 100644
-> --- a/drivers/soc/imx/gpcv2.c
-> +++ b/drivers/soc/imx/gpcv2.c
-> @@ -1513,6 +1513,7 @@ static int imx_gpcv2_probe(struct platform_device *pdev)
->
->                 pd_pdev->dev.parent = dev;
->                 pd_pdev->dev.of_node = np;
-> +               pd_pdev->dev.fwnode = of_fwnode_handle(np);
->
->                 ret = platform_device_add(pd_pdev);
->                 if (ret) {
->
-> With this patch, I'd really expect the power domain dependency to be
-> handled correctly.
->
-> > Whats worse, starting with commit 9/9 [of: property: Simplify
-> > of_link_to_phandle()], other drivers fail to probe waiting for pinctrl to be
-> > available.
->
-> Heh, Patch 9/9 and all its other dependencies in this series was to
-> fix your use case. Ironic that it's causing you more issues.
->
-> > > $ cat /sys/kernel/debug/devices_deferred
-> > > gpio-leds       platform: wait for supplier gpioledgrp
-> > > extcon-usbotg0  platform: wait for supplier usb0congrp
-> > > gpio-keys       platform: wait for supplier gpiobuttongrp
-> > > regulator-otg-vbus      platform: wait for supplier reggotgvbusgrp
-> > > regulator-vdd-arm       platform: wait for supplier dvfsgrp
-> >
-> > Apparently for some reason they are not probed again, once the pinctrl driver
-> > probed.
->
-> I'm hoping that this is just some issue due to the missing patch
-> above, but doesn't sound like it if you say that the pinctrl ended up
-> probing eventually.
->
-> So when device_links_driver_bound() calls
-> __fw_devlink_pickup_dangling_consumers(), it should have picked up the
-> consumers of node like gpiobuttongrp and moved it to the pinctrl
-> device. And right after that we call __fw_devlink_link_to_consumers()
-> that would have created the device links. And then right after that,
-> we go through all the consumers and add them to the deferred probe
-> list. After that deferred probe should have run... either because it's
-> enabled at late_initcall() or because a new device probed
-> successfully.
->
-> Can you check which one of my expectations isn't true in your case?
+> Agreed we should apply the reverts in [1] for v6.0-rc series. At least
+> several generations of the TI 32-bit ARM SoCs are failing to boot
+> otherwise.
 
-Actually I have a hypothesis on what might be happening. It could be a
-case of the consumer device getting added after the supplier has been
-initialized.
+Actually I wasn't clear in my earlier email. I meant to say "releases
+branches", as in 5.19.xxx and not "stable branches". So for 5.19.xxx
+we'd pick up these reverts.
 
-If the patch above doesn't fix everything, can you add this diff on
-top of the patch above and see if that fixes everything? If it fixes
-the pinctrl issue, can you check my hypothesis be checking in what
-order the devices get added and get probed?
+And for v6.0-rc if my other patch series [1] fixes the issue, I'd
+rather apply [1] than this series. Because this series is meant to be
+temporary (I'll be reverting this in the future).
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 2f012e826986..866755d8ad95 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2068,7 +2068,11 @@ static int fw_devlink_create_devlink(struct device *con,
-                device_links_write_unlock();
-        }
+-Saravana
 
--       sup_dev = get_dev_from_fwnode(sup_handle);
-+       if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
-+               sup_dev = fwnode_get_next_parent_dev(sup_handle);
-+       else
-+               sup_dev = get_dev_from_fwnode(sup_handle);
-+
-        if (sup_dev) {
-                /*
-                 * If it's one of those drivers that don't actually bind to
-
-Thanks,
-Saravana
+[1] - https://lore.kernel.org/lkml/20220810060040.321697-1-saravanak@google.com/
