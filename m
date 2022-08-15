@@ -2,125 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C451E59345A
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 20:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2848F593624
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Aug 2022 21:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232852AbiHOR7j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Aug 2022 13:59:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39260 "EHLO
+        id S243192AbiHOSja (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Aug 2022 14:39:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232924AbiHOR7P (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 13:59:15 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B742873A;
-        Mon, 15 Aug 2022 10:58:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660586330; x=1692122330;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GoWX3NVW176iA4DRV5DnnuWj5qZvqeRzOQoj6JSiaI4=;
-  b=I8trxM/3j8dTeVxjpCf6TLl+UA+fdTW39q2CLGl4ZMv6JVs4+jQq4fvp
-   N4X9JJRZIgyGRXrzGD/g+FJLh6tMF2mGvJ4smVnAb7vnL7WsR+JUH4GFK
-   zMqMctqF3WfKLO0Y2/cY9H+KGK4t+g41HxFxujSO2m7w1hLeuTaDvTHDD
-   oRAx4ZWnqF+sBw8yh8AzaP7bOw7Mu2xBfm1h0i5urdT1pAd7dLLTPEBqd
-   SW7huwlqkB28+NSCw49T+MEtydYzW8c1Is7am78Muy2y2EUlhsd9IuGJu
-   VkcHCIN7QaGjsk/mQ2pKqWJ/bm28Jr4cHkbUcELerwjaQwY6mqzEfxH8g
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10440"; a="293297275"
-X-IronPort-AV: E=Sophos;i="5.93,238,1654585200"; 
-   d="scan'208";a="293297275"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2022 10:58:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,238,1654585200"; 
-   d="scan'208";a="749015252"
-Received: from lkp-server02.sh.intel.com (HELO 3d2a4d02a2a9) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 15 Aug 2022 10:58:38 -0700
-Received: from kbuild by 3d2a4d02a2a9 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oNeMH-00019B-1p;
-        Mon, 15 Aug 2022 17:58:37 +0000
-Date:   Tue, 16 Aug 2022 01:58:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Huacai Chen <chenhuacai@loongson.cn>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Cc:     kbuild-all@lists.01.org, loongarch@lists.linux.dev,
-        linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: Re: [PATCH 1/2] LoongArch: Add CPU HWMon platform driver
-Message-ID: <202208160121.FAZ06e7K-lkp@intel.com>
-References: <20220815124803.3332991-1-chenhuacai@loongson.cn>
+        with ESMTP id S240615AbiHOSiu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 Aug 2022 14:38:50 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899D03CBC8
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 11:23:47 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-32fd97c199fso68584027b3.6
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Aug 2022 11:23:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=Db07G664QdLJL7hbwp7/beOMmf/kBhPqwkUaOy2LwyA=;
+        b=Di5ahuQuUij88dNg/KRUmAKM+aFc4DdrWzvkGo1ivcBnErb9f9it3ced1tX8E1HOnW
+         rLig4vd67w+IDyEGKnA/hiBFKa9SIJo5ovpK9oXEVP3+LRX4wdHl8OBPIMq1rc/4kQNy
+         rLg4IV9NvfkwSDqTHNxE49YD7M/s3X5ncxvBEWc9+/vl3EoxqEMe1PMLKgVLDHqstm4G
+         joJwp2cMBAozP1CUx+KJTNs7dLtt12cRxqdp9lmed/H3XsNHEmXKmwhjuo5TeIJHjYNH
+         eTAkc55YhPGHXbscGy9mPpSlEynn8yRw1Pw5EJDngyR94hoEJzRHIGRMOuHmABb4er0F
+         FE6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=Db07G664QdLJL7hbwp7/beOMmf/kBhPqwkUaOy2LwyA=;
+        b=R9JA8d3Wdedi/gkYtOlWKxgU1qp4Czq3pDPLVxSxRizZhHAajsT31ulPLIsGjxcdAk
+         jdYc/VAwXEj0A3mralLS4Sado6C8zzb65a6rHH4DfjZhnH4WkJo+DO4DfzU+EN3W1lBx
+         spptuo/gFWhmoS5X79yZBe8J63Y+uQN9nsoDb4/aA/2uK4oL7SkHk+uNScgOeSwxYrpl
+         fEtuotNOLTyL2okePp06RLwAYDpQMuMAfmzl/+AlmqMfwV4GKT/qwlzCSpr+73CDXLI8
+         4K5RP9FO5aciwLfwUInl7qp5WJkNfA+1aHNgAhrrCQQTSoht+KNk6m+oUiS4zEVjESbH
+         BX4w==
+X-Gm-Message-State: ACgBeo0z2gVkRliVoT2lqAAomUWWOgNNYiM157wJB3ZQjLnEuYkjnrzu
+        abZlxjFizCCPm2eI3MsjEWS/QmWZs6tLgebXCieMxw==
+X-Google-Smtp-Source: AA6agR4wzhsMjeR70OWMz+XaTgfrMhs+/iH3OP2Hd6MDBv3+PPxfDZUE0dnmuD2HQ3WDLtnmiP5GDkAha3prRqse7F4=
+X-Received: by 2002:a25:d353:0:b0:67b:7758:b051 with SMTP id
+ e80-20020a25d353000000b0067b7758b051mr11716143ybf.563.1660587826134; Mon, 15
+ Aug 2022 11:23:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220815124803.3332991-1-chenhuacai@loongson.cn>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220810060040.321697-1-saravanak@google.com> <YvYiF36M09dX9ASm@atomide.com>
+ <CAGETcx-t0O0B+5i0FWwm5w2=ccOD5zVAaUvgQoP8PT9SOT_btw@mail.gmail.com> <Yvog4K0barAvvVeb@atomide.com>
+In-Reply-To: <Yvog4K0barAvvVeb@atomide.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Mon, 15 Aug 2022 11:23:09 -0700
+Message-ID: <CAGETcx-k+ca5uG42XvW5yiK8RWDYfeRs9va5boqnp33s45AGRg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/9] fw_devlink improvements
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Huacai,
+On Mon, Aug 15, 2022 at 3:33 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Saravana Kannan <saravanak@google.com> [220813 00:45]:
+> > On Fri, Aug 12, 2022 at 2:49 AM Tony Lindgren <tony@atomide.com> wrote:
+> > >
+> > > * Saravana Kannan <saravanak@google.com> [220810 05:54]:
+> > > > Tony,
+> > > >
+> > > > This should handle the odd case of the child being the supplier of the
+> > > > parent. Can you please give this a shot? I want to make sure the cycle
+> > > > detection code handles this properly and treats it like it's NOT a cycle.
+> > >
+> > > Yup, this series works for me, so feel free to add:
+> > >
+> > > Tested-by: Tony Lindgren <tony@atomide.com>
+> >
+> > Thanks for testing!
+> >
+> > Btw, out of curiosity, how many different boards did you test this on?
+> > IIRC you had an issue only in one board, right? Not to say I didn't
+> > break anything else, I'm just trying to see how much confidence we
+> > have on this series so far. I'm hoping the rest of the folks I listed
+> > in the email will get around to testing this series.
+>
+> Sorry if I was not clear earlier. The issue affects several generations
+> of TI 32-bit SoCs at least, not just one board.
 
-I love your patch! Perhaps something to improve:
+But this series fixes the issues for all of them or are you still
+seeing some broken boot with this series?
 
-[auto build test WARNING on soc/for-next]
-[also build test WARNING on linus/master v6.0-rc1 next-20220815]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+-Saravana
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Huacai-Chen/LoongArch-Add-CPU-HWMon-platform-driver/20220815-205142
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
-config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20220816/202208160121.FAZ06e7K-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/159dd6fa1dd6a1f121ca589031959f9ef7db640d
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Huacai-Chen/LoongArch-Add-CPU-HWMon-platform-driver/20220815-205142
-        git checkout 159dd6fa1dd6a1f121ca589031959f9ef7db640d
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=loongarch SHELL=/bin/bash drivers/platform/loongarch/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> drivers/platform/loongarch/cpu_hwmon.c:13:5: warning: no previous prototype for 'loongson3_cpu_temp' [-Wmissing-prototypes]
-      13 | int loongson3_cpu_temp(int cpu)
-         |     ^~~~~~~~~~~~~~~~~~
-
-
-vim +/loongson3_cpu_temp +13 drivers/platform/loongarch/cpu_hwmon.c
-
-    12	
-  > 13	int loongson3_cpu_temp(int cpu)
-    14	{
-    15		u32 reg;
-    16	
-    17		reg = iocsr_read32(LOONGARCH_IOCSR_CPUTEMP) & 0xff;
-    18	
-    19		return (int)((s8)reg) * 1000;
-    20	}
-    21	EXPORT_SYMBOL(loongson3_cpu_temp);
-    22	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+>
+> > > I have some concerns though on how do we get a working -rc1 with the
+> > > earlier series applied? See the comments in the last patch of this
+> > > series.
+> >
+> > I tried to reply, but not sure if it helps. We'll continue the discussion there.
+>
+> Ack.
+>
+> Tony
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>
