@@ -2,308 +2,287 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B46A0596121
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Aug 2022 19:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6D5F5962B7
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Aug 2022 20:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236000AbiHPR2j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Aug 2022 13:28:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58222 "EHLO
+        id S236666AbiHPSwk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Aug 2022 14:52:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235770AbiHPR2U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Aug 2022 13:28:20 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3EB06639B;
-        Tue, 16 Aug 2022 10:28:18 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8EBE153B;
-        Tue, 16 Aug 2022 10:28:18 -0700 (PDT)
-Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E39B33F67D;
-        Tue, 16 Aug 2022 10:28:15 -0700 (PDT)
-From:   Robin Murphy <robin.murphy@arm.com>
-To:     joro@8bytes.org
-Cc:     will@kernel.org, catalin.marinas@arm.com, jean-philippe@linaro.org,
-        inki.dae@samsung.com, sw0312.kim@samsung.com,
-        kyungmin.park@samsung.com, tglx@linutronix.de, maz@kernel.org,
-        alex.williamson@redhat.com, cohuck@redhat.com,
-        iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Subject: [PATCH 3/3] iommu/dma: Make header private
-Date:   Tue, 16 Aug 2022 18:28:05 +0100
-Message-Id: <b237e06c56a101f77af142a54b629b27aa179d22.1660668998.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.36.1.dirty
-In-Reply-To: <cover.1660668998.git.robin.murphy@arm.com>
-References: <cover.1660668998.git.robin.murphy@arm.com>
+        with ESMTP id S236556AbiHPSwj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Aug 2022 14:52:39 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998CA85FFB
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Aug 2022 11:52:36 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-32fd97c199fso150328237b3.6
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Aug 2022 11:52:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=OqCx5/xCl6tw3i280dCLBLdpEzPrO+4Ppd9zzQXnvR4=;
+        b=EAtl/HpJc7VUakyS2l7F7l5WxouXonrEy4tRWTKdcqphZcO/6j0KYh4oMPHn4LDqx3
+         Nvfd9NHuPBg0Mrgp8z4wPpczL+amquWmEHQO1Vn///bnqnOcob55OGlvHsE7mJx5lzEq
+         Nk07nvDuJvdoYUla/x+tPkAc3zvO6LFrE1NsLL1F8E9Mf0Be6iaPkyn6pwan4Zayp/Cm
+         LTHo7T+52U8qLtITmXWY8f48Scl0Zf9WBzdQSPlH3z8UfmHxfnEW3L76YMWBBTq0k/vS
+         yP2B2ZZckNH0p9MMZ0FIio/iwUTNTlhAGtkm5nERfTvotBYkCYweTDI43lqD4US+zhjQ
+         0Y0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=OqCx5/xCl6tw3i280dCLBLdpEzPrO+4Ppd9zzQXnvR4=;
+        b=CMtxJ6ki5WpEZWpvd2e61wpieoF0NMpmnCCa8gJg+VCFs7hSE74CgXKsS/0smJmFMg
+         exY/uNCh0jfLl1b7iN7EMgt8FMBA82OIy8hc+9dPZJfXAlDDZsipDFWVTM3teYqbihCO
+         VZ09Op8JyrVNIk+2YhpsmKlwspnxtMlpxCMcLbBZm/00J7/NyUoQWUIn72hGuAsE2CCm
+         oYKgf4n2lHUVYbtBzRyq3IsB0vsl8ZU96J39TLcVFfahm4hvppS3CUH8lqJo7Jqo7HvP
+         B5ZKtEgdha72VuYB//MuTQ8UmIaVWtXjYsSo8j41dMKY8QIkk2+Y1I9BhsUQN8oT+xO0
+         WD8w==
+X-Gm-Message-State: ACgBeo1XJ1lLZPMuGQzsurqx2U5jIC+479pZN1tfIKgpIHwDEIKU7RTy
+        KlT38SFdsjfoio3JFk8i3etbvcvLrkDeA/21Th44Sg==
+X-Google-Smtp-Source: AA6agR6J9TNMQ9jspfYwg5KJAH6/4SjoX34GYoyO2fv483iqNZrR2zcvNvroKG2SEh9Xzh/thAi1bP5yxRi8XjdbSUQ=
+X-Received: by 2002:a81:50d4:0:b0:31f:5f85:566a with SMTP id
+ e203-20020a8150d4000000b0031f5f85566amr18183057ywb.218.1660675955611; Tue, 16
+ Aug 2022 11:52:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220810060040.321697-1-saravanak@google.com> <CAGETcx_tSndU0xerz=DF9JQxYFRC2aaxyOE-bR2JpM0L0ht=sw@mail.gmail.com>
+ <CAGETcx-JUV1nj8wBJrTPfyvM7=Mre5j_vkVmZojeiumUGG6QZQ@mail.gmail.com> <8296964.NyiUUSuA9g@steina-w>
+In-Reply-To: <8296964.NyiUUSuA9g@steina-w>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Tue, 16 Aug 2022 11:51:59 -0700
+Message-ID: <CAGETcx882GejPk4cPhSRzruUYvPZLHDyORWz2i7xP9uw6eAmzg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/9] fw_devlink improvements
+To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that dma-iommu.h only contains internal interfaces, make it
-private to the IOMMU subsytem.
+On Tue, Aug 16, 2022 at 12:17 AM Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> Hello Saravana,
+>
+> Am Montag, 15. August 2022, 22:56:07 CEST schrieb Saravana Kannan:
+> > On Mon, Aug 15, 2022 at 12:17 PM Saravana Kannan <saravanak@google.com>
+> wrote:
+> > > On Mon, Aug 15, 2022 at 5:39 AM Alexander Stein
+> > >
+> > > <alexander.stein@ew.tq-group.com> wrote:
+> > > > Hello Saravana,
+> > > >
+> > > > Am Mittwoch, 10. August 2022, 08:00:29 CEST schrieb Saravana Kannan:
+> > > > > Alexander,
+> > > > >
+> > > > > This should fix your issue where the power domain device not having a
+> > > > > compatible property. Can you give it a shot please?
+> > > >
+> > > > thanks for the update. Unfortunately this does not work:
+> > > > > [    0.774838] PM: Added domain provider from /soc@0/bus@30000000/
+> > > >
+> > > > gpc@303a0000/pgc/power-domain@0
+> > > >
+> > > > > [    0.775100] imx-pgc imx-pgc-domain.1: __genpd_dev_pm_attach()
+> > > > > failed to
+> > > >
+> > > > find PM domain: -2
+> > > >
+> > > > > [    0.775324] PM: Added domain provider from /soc@0/bus@30000000/
+> > > >
+> > > > gpc@303a0000/pgc/power-domain@2
+> > > >
+> > > > > [    0.775601] PM: Added domain provider from /soc@0/bus@30000000/
+> > > >
+> > > > gpc@303a0000/pgc/power-domain@3
+> > > >
+> > > > > [    0.775842] PM: Added domain provider from /soc@0/bus@30000000/
+> > > >
+> > > > gpc@303a0000/pgc/power-domain@4
+> > > >
+> > > > > [    0.776642] PM: Added domain provider from /soc@0/bus@30000000/
+> > > >
+> > > > gpc@303a0000/pgc/power-domain@7
+> > > >
+> > > > > [    0.776897] PM: Added domain provider from /soc@0/bus@30000000/
+> > > >
+> > > > gpc@303a0000/pgc/power-domain@8
+> > > >
+> > > > > [    0.777158] PM: Added domain provider from /soc@0/bus@30000000/
+> > > >
+> > > > gpc@303a0000/pgc/power-domain@9
+> > > >
+> > > > > [    0.777405] PM: Added domain provider from /soc@0/bus@30000000/
+> > > >
+> > > > gpc@303a0000/pgc/power-domain@a
+> > > >
+> > > > > [    0.779342] genpd genpd:0:38320000.blk-ctrl:
+> > > > > __genpd_dev_pm_attach()
+> > > >
+> > > > failed to find PM domain: -2
+> > > >
+> > > > > [    0.779422] imx8m-blk-ctrl 38320000.blk-ctrl: error -ENODEV: failed
+> > > > > to
+> > > >
+> > > > attach power domain "bus"
+> > > >
+> > > > > [    0.848785] etnaviv-gpu 38000000.gpu: __genpd_dev_pm_attach()
+> > > > > failed to
+> > > >
+> > > > find PM domain: -2
+> > > >
+> > > > > [    1.114220] pfuze100-regulator 0-0008: Full layer: 2, Metal layer:
+> > > > > 1
+> > > > > [    1.122267] pfuze100-regulator 0-0008: FAB: 0, FIN: 0
+> > > > > [    1.132970] pfuze100-regulator 0-0008: pfuze100 found.
+> > > > > [    1.157011] imx-gpcv2 303a0000.gpc: Failed to create device link
+> > > > > with
+> > > >
+> > > > 0-0008
+> > > >
+> > > > > [    1.164094] imx-gpcv2 303a0000.gpc: Failed to create device link
+> > > > > with
+> > > >
+> > > > 0-0008
+> > > >
+> > > > The required power-supply for the power domains is still not yet
+> > > > available.
+> > > > Does this series require some other patches as well?
+> > >
+> > > Ah sorry, yeah, this needs additional patches. The one I gave in the
+> > > other thread when I debugged this and I also noticed another issue.
+> > > Here's the combined diff of what's needed. Can you add this on top of
+> > > the series and test it?
+> > >
+> > > diff --git a/drivers/irqchip/irq-imx-gpcv2.c
+> > > b/drivers/irqchip/irq-imx-gpcv2.c index b9c22f764b4d..8a0e82067924 100644
+> > > --- a/drivers/irqchip/irq-imx-gpcv2.c
+> > > +++ b/drivers/irqchip/irq-imx-gpcv2.c
+> > > @@ -283,6 +283,7 @@ static int __init imx_gpcv2_irqchip_init(struct
+> > > device_node *node,
+> > >
+> > >          * later the GPC power domain driver will not be skipped.
+> > >          */
+> > >
+> > >         of_node_clear_flag(node, OF_POPULATED);
+> > >
+> > > +       fwnode_dev_initialized(domain->fwnode, false);
+> > >
+> > >         return 0;
+> > >
+> > >  }
+> > >
+> > > diff --git a/drivers/soc/imx/gpcv2.c b/drivers/soc/imx/gpcv2.c
+> > > index 6383a4edc360..181fbfe5bd4d 100644
+> > > --- a/drivers/soc/imx/gpcv2.c
+> > > +++ b/drivers/soc/imx/gpcv2.c
+> > > @@ -1513,6 +1513,7 @@ static int imx_gpcv2_probe(struct platform_device
+> > > *pdev)>
+> > >                 pd_pdev->dev.parent = dev;
+> > >                 pd_pdev->dev.of_node = np;
+> > >
+> > > +               pd_pdev->dev.fwnode = of_fwnode_handle(np);
+> > >
+> > >                 ret = platform_device_add(pd_pdev);
+> > >                 if (ret) {
+> > >
+> > > With this patch, I'd really expect the power domain dependency to be
+> > > handled correctly.
+> > >
+> > > > Whats worse, starting with commit 9/9 [of: property: Simplify
+> > > > of_link_to_phandle()], other drivers fail to probe waiting for pinctrl
+> > > > to be available.
+> > >
+> > > Heh, Patch 9/9 and all its other dependencies in this series was to
+> > > fix your use case. Ironic that it's causing you more issues.
+> > >
+> > > > > $ cat /sys/kernel/debug/devices_deferred
+> > > > > gpio-leds       platform: wait for supplier gpioledgrp
+> > > > > extcon-usbotg0  platform: wait for supplier usb0congrp
+> > > > > gpio-keys       platform: wait for supplier gpiobuttongrp
+> > > > > regulator-otg-vbus      platform: wait for supplier reggotgvbusgrp
+> > > > > regulator-vdd-arm       platform: wait for supplier dvfsgrp
+> > > >
+> > > > Apparently for some reason they are not probed again, once the pinctrl
+> > > > driver probed.
+> > >
+> > > I'm hoping that this is just some issue due to the missing patch
+> > > above, but doesn't sound like it if you say that the pinctrl ended up
+> > > probing eventually.
+> > >
+> > > So when device_links_driver_bound() calls
+> > > __fw_devlink_pickup_dangling_consumers(), it should have picked up the
+> > > consumers of node like gpiobuttongrp and moved it to the pinctrl
+> > > device. And right after that we call __fw_devlink_link_to_consumers()
+> > > that would have created the device links. And then right after that,
+> > > we go through all the consumers and add them to the deferred probe
+> > > list. After that deferred probe should have run... either because it's
+> > > enabled at late_initcall() or because a new device probed
+> > > successfully.
+> > >
+> > > Can you check which one of my expectations isn't true in your case?
+> >
+> > Actually I have a hypothesis on what might be happening. It could be a
+> > case of the consumer device getting added after the supplier has been
+> > initialized.
+> >
+> > If the patch above doesn't fix everything, can you add this diff on
+> > top of the patch above and see if that fixes everything? If it fixes
+> > the pinctrl issue, can you check my hypothesis be checking in what
+> > order the devices get added and get probed?
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 2f012e826986..866755d8ad95 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -2068,7 +2068,11 @@ static int fw_devlink_create_devlink(struct device
+> > *con, device_links_write_unlock();
+> >         }
+> >
+> > -       sup_dev = get_dev_from_fwnode(sup_handle);
+> > +       if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
+> > +               sup_dev = fwnode_get_next_parent_dev(sup_handle);
+> > +       else
+> > +               sup_dev = get_dev_from_fwnode(sup_handle);
+> > +
+> >         if (sup_dev) {
+> >                 /*
+> >                  * If it's one of those drivers that don't actually bind to
+> >
+>
+> And with this change my pinctrl probing is fixed as well!
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
- drivers/acpi/viot.c                          |  1 -
- drivers/gpu/drm/exynos/exynos_drm_dma.c      |  1 -
- drivers/iommu/amd/iommu.c                    |  2 +-
- drivers/iommu/apple-dart.c                   |  3 ++-
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c  |  2 +-
- drivers/iommu/arm/arm-smmu/arm-smmu.c        |  2 +-
- drivers/iommu/dma-iommu.c                    |  3 ++-
- {include/linux => drivers/iommu}/dma-iommu.h | 17 +----------------
- drivers/iommu/intel/iommu.c                  |  2 +-
- drivers/iommu/iommu.c                        |  3 ++-
- drivers/iommu/virtio-iommu.c                 |  3 ++-
- 11 files changed, 13 insertions(+), 26 deletions(-)
- rename {include/linux => drivers/iommu}/dma-iommu.h (67%)
+Thanks for testing these! I'll roll these into v2 of the series.
 
-diff --git a/drivers/acpi/viot.c b/drivers/acpi/viot.c
-index 6132092dab2a..ed752cbbe636 100644
---- a/drivers/acpi/viot.c
-+++ b/drivers/acpi/viot.c
-@@ -19,7 +19,6 @@
- #define pr_fmt(fmt) "ACPI: VIOT: " fmt
- 
- #include <linux/acpi_viot.h>
--#include <linux/dma-iommu.h>
- #include <linux/fwnode.h>
- #include <linux/iommu.h>
- #include <linux/list.h>
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_dma.c b/drivers/gpu/drm/exynos/exynos_drm_dma.c
-index d819ee69dfb7..7012aa8ed4c6 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_dma.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_dma.c
-@@ -4,7 +4,6 @@
- // Author: Inki Dae <inki.dae@samsung.com>
- // Author: Andrzej Hajda <a.hajda@samsung.com>
- 
--#include <linux/dma-iommu.h>
- #include <linux/dma-map-ops.h>
- #include <linux/iommu.h>
- #include <linux/platform_device.h>
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 2df1bfa884e5..b339bf13259d 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -18,7 +18,6 @@
- #include <linux/scatterlist.h>
- #include <linux/dma-map-ops.h>
- #include <linux/dma-direct.h>
--#include <linux/dma-iommu.h>
- #include <linux/iommu-helper.h>
- #include <linux/delay.h>
- #include <linux/amd-iommu.h>
-@@ -40,6 +39,7 @@
- #include <asm/dma.h>
- 
- #include "amd_iommu.h"
-+#include "../dma-iommu.h"
- #include "../irq_remapping.h"
- 
- #define CMD_SET_TYPE(cmd, t) ((cmd)->data[1] |= ((t) << 28))
-diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
-index ed6b5fa538af..716f34a768b1 100644
---- a/drivers/iommu/apple-dart.c
-+++ b/drivers/iommu/apple-dart.c
-@@ -15,7 +15,6 @@
- #include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/dev_printk.h>
--#include <linux/dma-iommu.h>
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
-@@ -33,6 +32,8 @@
- #include <linux/swab.h>
- #include <linux/types.h>
- 
-+#include "dma-iommu.h"
-+
- #define DART_MAX_STREAMS 16
- #define DART_MAX_TTBR 4
- #define MAX_DARTS_PER_DEVICE 2
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index c13b46a15dcb..f1785e518a90 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -14,7 +14,6 @@
- #include <linux/bitops.h>
- #include <linux/crash_dump.h>
- #include <linux/delay.h>
--#include <linux/dma-iommu.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
- #include <linux/io-pgtable.h>
-@@ -29,6 +28,7 @@
- #include <linux/platform_device.h>
- 
- #include "arm-smmu-v3.h"
-+#include "../../dma-iommu.h"
- #include "../../iommu-sva-lib.h"
- 
- static bool disable_bypass = true;
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-index 2cece34f4824..c30f82c19240 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-@@ -21,7 +21,6 @@
- #include <linux/acpi_iort.h>
- #include <linux/bitfield.h>
- #include <linux/delay.h>
--#include <linux/dma-iommu.h>
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
-@@ -40,6 +39,7 @@
- #include <linux/fsl/mc.h>
- 
- #include "arm-smmu.h"
-+#include "../../dma-iommu.h"
- 
- /*
-  * Apparently, some Qualcomm arm64 platforms which appear to expose their SMMU
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 6809b33ac9df..9297b741f5e8 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -13,7 +13,6 @@
- #include <linux/crash_dump.h>
- #include <linux/device.h>
- #include <linux/dma-direct.h>
--#include <linux/dma-iommu.h>
- #include <linux/dma-map-ops.h>
- #include <linux/gfp.h>
- #include <linux/huge_mm.h>
-@@ -30,6 +29,8 @@
- #include <linux/swiotlb.h>
- #include <linux/vmalloc.h>
- 
-+#include "dma-iommu.h"
-+
- struct iommu_dma_msi_page {
- 	struct list_head	list;
- 	dma_addr_t		iova;
-diff --git a/include/linux/dma-iommu.h b/drivers/iommu/dma-iommu.h
-similarity index 67%
-rename from include/linux/dma-iommu.h
-rename to drivers/iommu/dma-iommu.h
-index e83de4f1f3d6..c6d0235feb6e 100644
---- a/include/linux/dma-iommu.h
-+++ b/drivers/iommu/dma-iommu.h
-@@ -5,15 +5,10 @@
- #ifndef __DMA_IOMMU_H
- #define __DMA_IOMMU_H
- 
--#include <linux/errno.h>
--#include <linux/types.h>
-+#include <linux/iommu.h>
- 
- #ifdef CONFIG_IOMMU_DMA
--#include <linux/dma-mapping.h>
--#include <linux/iommu.h>
--#include <linux/msi.h>
- 
--/* Domain management interface for IOMMU drivers */
- int iommu_get_dma_cookie(struct iommu_domain *domain);
- void iommu_put_dma_cookie(struct iommu_domain *domain);
- 
-@@ -21,16 +16,10 @@ int iommu_dma_init_fq(struct iommu_domain *domain);
- 
- void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list);
- 
--void iommu_dma_free_cpu_cached_iovas(unsigned int cpu,
--		struct iommu_domain *domain);
--
- extern bool iommu_dma_forcedac;
- 
- #else /* CONFIG_IOMMU_DMA */
- 
--struct iommu_domain;
--struct device;
--
- static inline int iommu_dma_init_fq(struct iommu_domain *domain)
- {
- 	return -EINVAL;
-@@ -45,9 +34,5 @@ static inline void iommu_put_dma_cookie(struct iommu_domain *domain)
- {
- }
- 
--static inline void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
--{
--}
--
- #endif	/* CONFIG_IOMMU_DMA */
- #endif	/* __DMA_IOMMU_H */
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 9441c070c811..4375d1ee9389 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -15,7 +15,6 @@
- 
- #include <linux/crash_dump.h>
- #include <linux/dma-direct.h>
--#include <linux/dma-iommu.h>
- #include <linux/dmi.h>
- #include <linux/intel-svm.h>
- #include <linux/memory.h>
-@@ -26,6 +25,7 @@
- #include <linux/tboot.h>
- 
- #include "iommu.h"
-+#include "../dma-iommu.h"
- #include "../irq_remapping.h"
- #include "../iommu-sva-lib.h"
- #include "pasid.h"
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 07eda7c41aee..862d4e73efd2 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -8,7 +8,6 @@
- 
- #include <linux/amba/bus.h>
- #include <linux/device.h>
--#include <linux/dma-iommu.h>
- #include <linux/kernel.h>
- #include <linux/bits.h>
- #include <linux/bug.h>
-@@ -30,6 +29,8 @@
- #include <linux/cc_platform.h>
- #include <trace/events/iommu.h>
- 
-+#include "dma-iommu.h"
-+
- static struct kset *iommu_group_kset;
- static DEFINE_IDA(iommu_group_ida);
- 
-diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
-index bdae3939260a..e355cb5d1e5b 100644
---- a/drivers/iommu/virtio-iommu.c
-+++ b/drivers/iommu/virtio-iommu.c
-@@ -8,7 +8,6 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #include <linux/delay.h>
--#include <linux/dma-iommu.h>
- #include <linux/dma-map-ops.h>
- #include <linux/freezer.h>
- #include <linux/interval_tree.h>
-@@ -23,6 +22,8 @@
- 
- #include <uapi/linux/virtio_iommu.h>
- 
-+#include "dma-iommu.h"
-+
- #define MSI_IOVA_BASE			0x8000000
- #define MSI_IOVA_LENGTH			0x100000
- 
--- 
-2.36.1.dirty
+Glad to see I've fixed all the issues I set out to fix. Now to figure
+out what other corner cases I've missed.
 
+-Saravana
