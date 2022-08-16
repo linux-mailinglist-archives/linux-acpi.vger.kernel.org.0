@@ -2,102 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 770A6595977
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Aug 2022 13:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E15595AEF
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Aug 2022 13:55:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235320AbiHPLJK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Aug 2022 07:09:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44368 "EHLO
+        id S233350AbiHPLzh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Aug 2022 07:55:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235232AbiHPLIk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Aug 2022 07:08:40 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 752DBD398E;
-        Tue, 16 Aug 2022 03:16:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660644997; x=1692180997;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=EtlYtiwteZxWDMzq7m+ATAtdiv2Skwb0e3zLFg2zc58=;
-  b=bMo8Xr+kIfXW+5F6mupDnNVk8P8Wy2KWATOdiKWlvf9r+W+bgzwbtfeV
-   SRDVfv62gmt8MiUPymnvvswcp+1B4eSnzLs4I26JbCrrLrP5n6/xM0k9O
-   fIJyyXmwig+pWbsOdcqPsnvQDSQ2UHSQ08HdS9+01j22Je6XIv1YRCapT
-   dtBZJlR7I9ilczx5aWzUcDzqOLAr9ZWPKSbC5ldAYwISi+7UAUGm5oAin
-   3yJjVgjpHgAHcaODYTIh6Oc1Cppc9/dhF01AarbHDx/MM8fEUFSA0EV3J
-   JbdKt484r6Lz475NFCgbLrKkgKbbRxaBazoSWYVBDeIVCirU1Jrd+9mNe
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10440"; a="279141302"
-X-IronPort-AV: E=Sophos;i="5.93,240,1654585200"; 
-   d="scan'208";a="279141302"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2022 03:16:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,240,1654585200"; 
-   d="scan'208";a="749260795"
-Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 16 Aug 2022 03:16:31 -0700
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Utkarsh Patel <utkarsh.h.patel@intel.com>, rajmohan.mani@intel.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Subject: [PATCH 6/6] usb: typec: intel_pmc_mux: Use the helper acpi_dev_get_memory_resources()
-Date:   Tue, 16 Aug 2022 13:16:29 +0300
-Message-Id: <20220816101629.69054-7-heikki.krogerus@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220816101629.69054-1-heikki.krogerus@linux.intel.com>
-References: <20220816101629.69054-1-heikki.krogerus@linux.intel.com>
+        with ESMTP id S233569AbiHPLy4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Aug 2022 07:54:56 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B6F1FC;
+        Tue, 16 Aug 2022 04:33:39 -0700 (PDT)
+Received: from fraeml744-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4M6TRy3SbYz67tfn;
+        Tue, 16 Aug 2022 19:28:46 +0800 (CST)
+Received: from lhrpeml500003.china.huawei.com (7.191.162.67) by
+ fraeml744-chm.china.huawei.com (10.206.15.225) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 16 Aug 2022 13:33:36 +0200
+Received: from localhost.localdomain (10.69.192.58) by
+ lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 16 Aug 2022 12:33:34 +0100
+From:   John Garry <john.garry@huawei.com>
+To:     <lenb@kernel.org>, <rafael@kernel.org>, <andy.shevchenko@gmail.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linuxarm@huawei.com>, John Garry <john.garry@huawei.com>
+Subject: [PATCH PoC 0/3] ACPI/PNP/HISI_LPC: Refactor ACPI platform code for reuse
+Date:   Tue, 16 Aug 2022 19:27:21 +0800
+Message-ID: <1660649244-146842-1-git-send-email-john.garry@huawei.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.58]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ lhrpeml500003.china.huawei.com (7.191.162.67)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-It removes the need to check the resource data type
-separately.
+This series attempts to refactor the ACPI platform device creation code
+such that it may reused in the HiSilicon LPC driver. The topic was
+recently discussed at the following:
+https://lore.kernel.org/lkml/CAJZ5v0hkiOqhWyOcd2vjj-tcyHWB-cK=Dae-3sifhRfcbKWWGg@mail.gmail.com/
 
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- drivers/usb/typec/mux/intel_pmc_mux.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+So first off I'll say that I am not advocating pursing the changes in this
+series, but just wanted to share to show others how it would look.
 
-diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
-index a8e273fe204ab..e1f4df7238bf4 100644
---- a/drivers/usb/typec/mux/intel_pmc_mux.c
-+++ b/drivers/usb/typec/mux/intel_pmc_mux.c
-@@ -569,15 +569,6 @@ static int pmc_usb_register_port(struct pmc_usb *pmc, int index,
- 	return ret;
- }
- 
--static int is_memory(struct acpi_resource *res, void *data)
--{
--	struct resource_win win = {};
--	struct resource *r = &win.res;
--
--	return !(acpi_dev_resource_memory(res, r) ||
--		 acpi_dev_resource_address_space(res, &win));
--}
--
- /* IOM ACPI IDs and IOM_PORT_STATUS_OFFSET */
- static const struct acpi_device_id iom_acpi_ids[] = {
- 	/* TigerLake */
-@@ -611,7 +602,7 @@ static int pmc_usb_probe_iom(struct pmc_usb *pmc)
- 		return -ENODEV;
- 
- 	INIT_LIST_HEAD(&resource_list);
--	ret = acpi_dev_get_resources(adev, &resource_list, is_memory, NULL);
-+	ret = acpi_dev_get_memory_resources(adev, &resource_list);
- 	if (ret < 0)
- 		return ret;
- 
+Apart from requiring PNP driver changes, the API in
+acpi_create_platform_device_ops() ain't pretty. And also the PNP change
+means that the LPC uart changes from ttyS1 -> ttyS0, which would be a
+nuisance for anyone still using a board which uses the LPC UART.
+
+I have a separate change to show how the HiSilicon LPC driver would look
+by using platform_device_register_full() instead, and it is a lot neater:
+https://github.com/hisilicon/kernel-dev/commits/private-topic-lpc-6.0-platform-full
+
+Anyway, the commit messages should describe anything else needed to be
+known.
+
+Please share any comments, thanks.
+
+John Garry (3):
+  ACPI / PNP: Don't add enumeration_by_parent devices
+  ACPI: platform: Refactor acpi_create_platform_device()
+  bus: hisi_lpc: Use acpi_create_platform_device_ops()
+
+ drivers/acpi/acpi_platform.c |  37 ++++++--
+ drivers/bus/hisi_lpc.c       | 165 +++++++++++++++--------------------
+ drivers/pnp/pnpacpi/core.c   |  13 ++-
+ include/linux/acpi.h         |  17 +++-
+ 4 files changed, 122 insertions(+), 110 deletions(-)
+
 -- 
-2.35.1
+2.35.3
 
