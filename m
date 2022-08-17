@@ -2,287 +2,210 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6D5F5962B7
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Aug 2022 20:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7E9B5966E4
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Aug 2022 03:41:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236666AbiHPSwk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Aug 2022 14:52:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45550 "EHLO
+        id S234711AbiHQBk5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Aug 2022 21:40:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236556AbiHPSwj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Aug 2022 14:52:39 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998CA85FFB
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Aug 2022 11:52:36 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-32fd97c199fso150328237b3.6
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Aug 2022 11:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=OqCx5/xCl6tw3i280dCLBLdpEzPrO+4Ppd9zzQXnvR4=;
-        b=EAtl/HpJc7VUakyS2l7F7l5WxouXonrEy4tRWTKdcqphZcO/6j0KYh4oMPHn4LDqx3
-         Nvfd9NHuPBg0Mrgp8z4wPpczL+amquWmEHQO1Vn///bnqnOcob55OGlvHsE7mJx5lzEq
-         Nk07nvDuJvdoYUla/x+tPkAc3zvO6LFrE1NsLL1F8E9Mf0Be6iaPkyn6pwan4Zayp/Cm
-         LTHo7T+52U8qLtITmXWY8f48Scl0Zf9WBzdQSPlH3z8UfmHxfnEW3L76YMWBBTq0k/vS
-         yP2B2ZZckNH0p9MMZ0FIio/iwUTNTlhAGtkm5nERfTvotBYkCYweTDI43lqD4US+zhjQ
-         0Y0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=OqCx5/xCl6tw3i280dCLBLdpEzPrO+4Ppd9zzQXnvR4=;
-        b=CMtxJ6ki5WpEZWpvd2e61wpieoF0NMpmnCCa8gJg+VCFs7hSE74CgXKsS/0smJmFMg
-         exY/uNCh0jfLl1b7iN7EMgt8FMBA82OIy8hc+9dPZJfXAlDDZsipDFWVTM3teYqbihCO
-         VZ09Op8JyrVNIk+2YhpsmKlwspnxtMlpxCMcLbBZm/00J7/NyUoQWUIn72hGuAsE2CCm
-         oYKgf4n2lHUVYbtBzRyq3IsB0vsl8ZU96J39TLcVFfahm4hvppS3CUH8lqJo7Jqo7HvP
-         B5ZKtEgdha72VuYB//MuTQ8UmIaVWtXjYsSo8j41dMKY8QIkk2+Y1I9BhsUQN8oT+xO0
-         WD8w==
-X-Gm-Message-State: ACgBeo1XJ1lLZPMuGQzsurqx2U5jIC+479pZN1tfIKgpIHwDEIKU7RTy
-        KlT38SFdsjfoio3JFk8i3etbvcvLrkDeA/21Th44Sg==
-X-Google-Smtp-Source: AA6agR6J9TNMQ9jspfYwg5KJAH6/4SjoX34GYoyO2fv483iqNZrR2zcvNvroKG2SEh9Xzh/thAi1bP5yxRi8XjdbSUQ=
-X-Received: by 2002:a81:50d4:0:b0:31f:5f85:566a with SMTP id
- e203-20020a8150d4000000b0031f5f85566amr18183057ywb.218.1660675955611; Tue, 16
- Aug 2022 11:52:35 -0700 (PDT)
+        with ESMTP id S237611AbiHQBk4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Aug 2022 21:40:56 -0400
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C511896775;
+        Tue, 16 Aug 2022 18:40:54 -0700 (PDT)
+Received: from pps.filterd (m0134424.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27H1OQZ6012265;
+        Wed, 17 Aug 2022 01:39:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pps0720;
+ bh=bSBitafHSfYw1eWOScUITOqxmGh1rcepp4NI+GssMOU=;
+ b=NAzbimI2KlNO5+JuIlP9RAanIG/LqZF6/XfpExwlda3xZQrKNvYe3SpUmgQcGvEKQ/PT
+ ufuIoXRn+LtaNkckaH3PQuS6/66yhLtHuRwKhxMAXzjdztmYcxNtkbbL3jkjRcwv+Kop
+ jtl9hmRK6WbHd/QzbkO5isbieh1A8bjzhi0/iwFME/IPXiatSi8mJvSrKGk2qPYbnup4
+ Z+uFMIKkxvvJSMoVSf0sDaRiyoxEHwRjZxDGSd1S65CbE7M/hhnAwd2HCN8wjLDfUomC
+ 8D/3uBZAl3CvkRXOpghJZ8Vhwq8H4I0wLnIRZyWY2MNWwUPxwNUum1HpRj/d/CRp3N3w hg== 
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3j0nre8f9c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 17 Aug 2022 01:39:58 +0000
+Received: from p1wg14926.americas.hpqcorp.net (unknown [10.119.18.115])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 7078FD282;
+        Wed, 17 Aug 2022 01:39:56 +0000 (UTC)
+Received: from p1wg14927.americas.hpqcorp.net (10.119.18.117) by
+ p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Tue, 16 Aug 2022 13:39:35 -1200
+Received: from p1wg14919.americas.hpqcorp.net (16.230.19.122) by
+ p1wg14927.americas.hpqcorp.net (10.119.18.117) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15
+ via Frontend Transport; Tue, 16 Aug 2022 13:39:35 -1200
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (192.58.206.38)
+ by edge.it.hpe.com (16.230.19.122) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Tue, 16 Aug 2022 13:39:35 -1200
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gEWgBcDVFDt8ekwkOuBY5hFrgKhmZ6+e9fueATcpjpzFuPzJcNSfo430r22UqjrKF7Zvg5NfC5jx1D8LKAr/GzdjYOZYKgcgIrqZ63o+Hes2pfHlgJWlE2tf2Bou9xzkwvGO7TPSmbmcj4S/4y63gTgWf3nKC2IekGBWnxNgSHKtOoyCfbN/S62+rRkXahVHimyie62V6/SCD1ww6q/2fx/9jp+kcUT8PLdP6Na6/eQGtyKc/n9aQl0a6Pc0cCCAZ94sodrgCu9qsUFt6PbtRR/2Cvu6FLiAzllr/58CGPIUlhNSYv70ZPCit2Pu9/KPfKjocahJycUj1vKk2BBvuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bSBitafHSfYw1eWOScUITOqxmGh1rcepp4NI+GssMOU=;
+ b=RZv3BYD096Jx1brLZU9yzsfWbX4Mu80ToQwpeq/DP3SZjdrkqYPkK2Byj5byx37eC4bTkSphKr/nvrFQFzeg9L9hr08QaLtrGY2o0a2zuAW8gVVjVObcepHDkn+0q4kQv+fX8P44BRrsqUafL3QM+1MpMUODsbJSyrUDZ+eL05H1sVXvh0ebEzrbvnAmhfbs+qIWR8jHAthdnnrMujCOWFfNQtaFHgwcBW0erDgCRpAKHDaCd57oLRaK1YFh9EaswOk0QkcnqLMnJcGzUictr0tv262CufAYMD4nIJoHSabwkXK6WrbARZw4yOwno91QTxbSvGaMpo6o36OCdsn0SQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
+ header.d=hpe.com; arc=none
+Received: from PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:510:154::8)
+ by MW5PR84MB1523.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:303:1c1::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.27; Wed, 17 Aug
+ 2022 01:39:32 +0000
+Received: from PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::dcac:1265:7a54:ee2d]) by PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::dcac:1265:7a54:ee2d%8]) with mapi id 15.20.5525.011; Wed, 17 Aug 2022
+ 01:39:32 +0000
+From:   "Kani, Toshi" <toshi.kani@hpe.com>
+To:     Justin He <Justin.He@arm.com>, Borislav Petkov <bp@alien8.de>
+CC:     Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        James Morse <James.Morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        nd <nd@arm.com>, "stable@kernel.org" <stable@kernel.org>
+Subject: RE: [PATCH 2/2] EDAC/ghes: Modularize ghes_edac driver to remove the
+ dependency on ghes
+Thread-Topic: [PATCH 2/2] EDAC/ghes: Modularize ghes_edac driver to remove the
+ dependency on ghes
+Thread-Index: AQHYrWP5SAOmNkRRRk2vGxqNR/QEGq2rWbeAgAV49oCAAW4e0A==
+Date:   Wed, 17 Aug 2022 01:39:32 +0000
+Message-ID: <PH7PR84MB1838203B478319EA45167BB4826A9@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
+References: <20220811091713.10427-1-justin.he@arm.com>
+ <20220811091713.10427-3-justin.he@arm.com> <YvZnrTrXhRn8FV3I@zn.tnic>
+ <DBBPR08MB45389A9DB098F1AC14C19074F76B9@DBBPR08MB4538.eurprd08.prod.outlook.com>
+In-Reply-To: <DBBPR08MB45389A9DB098F1AC14C19074F76B9@DBBPR08MB4538.eurprd08.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c1dff84c-9e21-4d24-f21a-08da7ff155a4
+x-ms-traffictypediagnostic: MW5PR84MB1523:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: /oxNOl+Y2JP+6RTL63dRdFbI2zfO5pIPDufFeeJ0VbDUGKQVGjnSjT1Xdq5UEaUYLBfMWQpi1GknC3yF7l9w5ZKYULdEhqaaq/c2RG7ZR5r/I43zWMwLbV4y7tviwDP+D+43zTgZ5rQOk9xzw/Yy/rZWXPjmtm2sK8o0Ae/uTt7H1/xZnH3IE5uzuBhRzOFl2kOrk3wDE+X0ggeCEWAisbu7o/gXHcrfnqVCP/nRKWrf8ODWPBJuoOnQ1DyQ91CpGk0UTS65hWmLRUXUSMQ+lQ9ldI7Aod+739t0PxUOjHLNTdjhZe688PGcGLPXhmFTXVAXNKtDj6g1iUWkwhFUBhuiRffVEKziHb7voNU7svoa/1GesPd4vnkSpFGIo5Qj4EfjEgSNgdfybkZ9I3cyhWieEaUD80apqnrFfj+HsTLb1Gb+WFeeFtwfhQY7p5yyNobdJ5loDv5MZfFg06/pmf9q/Rzb0uV931twFPiqkJI2RBXqLnGwVU/kyov1mhrDR/+np1RwxufqDMKtDevrVi5Ua1sS86xzuDuwYdAnGD9C+Omus/B2w6ztmPwr5lXgmbY/DwADwbqqTklQf6+s9RSrOwQCkccJycI24acZ7t/nlMUKostr+qnXx0tbP58KWif6XTeS5g6d4CYTnsW9qxCZxJJ6kPDXheviuFyrIlNKaZkF70we/MmVxSBXhyIrgDwlRzvSEWjxIjx1plgp2AtVN69e7bY+UZj0P/VaxtS+XrhS+doF0jgWC2HRYFcSY2S8VtpvjahbnscEUw0U3p7Z13ayywtMtvtbEimt2m8B0jHAAoloAwJAqvzXI0Js
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(396003)(136003)(346002)(366004)(376002)(39860400002)(316002)(7416002)(8676002)(4326008)(64756008)(8936002)(66446008)(55016003)(52536014)(66476007)(86362001)(5660300002)(66556008)(76116006)(66946007)(83380400001)(38070700005)(54906003)(186003)(110136005)(82960400001)(478600001)(38100700002)(71200400001)(53546011)(41300700001)(122000001)(9686003)(7696005)(2906002)(6506007)(33656002)(26005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?THZaTU4xM3VkYkN6L2NqV1BYREJ1TFp1ODFsRzQvT3d3MHFZVjRFNGRZRHk0?=
+ =?utf-8?B?VE9MYjh2Z3lYNXhTSE5XcXNZcWxuVDdtb2RNbHNBZ09sOGhXVEg0Y2RlNEZs?=
+ =?utf-8?B?WVFDMUNoMnZ6eHF4RWdHNWY3VUJENThCWWU4VFpwSWZQWVVEdXRnL2MvYVNo?=
+ =?utf-8?B?OXdEMmx5SVZEclBueHkxYjFZK1dHOFlpa2RzQzJHVXJMUWpQc3dxKzV2dUtJ?=
+ =?utf-8?B?NGU1Um1ZazJ1MW1GbUQyaGl5WEZNK1NSWU55YVFqbVA4RHozS0xQMk00RDg2?=
+ =?utf-8?B?d0gzQjRSNWdIK050UWE5cllZU2VBazNBemlUa0FoVG9QTE1HaVdzeVh5dmNp?=
+ =?utf-8?B?QTBObWJXWGMxamxSVWRCNi9DRjJRUnBEMXo3UjRPVkZIQW1QZjg1eUFramJk?=
+ =?utf-8?B?VGpyZ3cwdjJnZVV3QUFaa3YwazBENDVpSGp0NFI1V1FFSVh1L1RlcW9kd1Jx?=
+ =?utf-8?B?cEd4dEJyYmx1QklyTHdBUC9uMWVYVmlTa0FXQ1FWbHFxOVEwcklXTDFiNFcv?=
+ =?utf-8?B?ZEFHc2R2NDZDMnRFdThKMTZ2MDVnUUg3a3NiQ1lDVHNRd1dTMHkzdURZMG40?=
+ =?utf-8?B?S29WaVF3TkFDU2ZFZEdIMktNMitaRzE0QUNBdWEvTnE5Z3VzS3NyVlh6UGJh?=
+ =?utf-8?B?NG43bEdrbi81L0lGQW5jUUU2ZjltNDNLQ0tibVAxVVhYYkJMaTNFTlZjK00w?=
+ =?utf-8?B?RUtsZHlKa0E1a2p3dHQ0WWV2VzkzaC9zZ2Vpa0R1NW5XWVVFdnJpQmVqZis3?=
+ =?utf-8?B?Tmc1andSTjZHbXFYWXZsUW1MbTRra2dSMlliMW1IYzhBMkx0Nnd1eDM2RmxE?=
+ =?utf-8?B?QkdJRzNndFp5b05LUldqNlg4a1pFSUdWMEtTMmQ4WUlWS0oxTWJ1TG1Qa2Vh?=
+ =?utf-8?B?SFBFOC9QVzQydjl3U21aTGxYUE5nWDF1NW5wSjRyWTIvemVMakw0RWs4clVt?=
+ =?utf-8?B?OVIrMWdkc2h5WlB1V2F0eHF1L25vZDRzeDRoUTRxK2ZLS2RyUTJxbCtickM4?=
+ =?utf-8?B?Q2pxaDFOcWtRckZaei94UElRTkFWY29TTWxBb3VaeGFDMnZvdlY5S0EwM21Z?=
+ =?utf-8?B?cjJXVDgxeCtHMWUxS0lMUHA0NFJkeFh4Ri9mN3R5UTlSTlZQRU1qeERlYVRi?=
+ =?utf-8?B?VmltRkpDekthajhuTlBrbWlsL3pGaVFnTEFUK3BveFhrWk16eTd5Wm5tdzNY?=
+ =?utf-8?B?Mnhna2xFSnZreE9iMloyZWVCZ1hlU1pEZVFPQnRUS2s4RWpDL05QSThNd0hu?=
+ =?utf-8?B?Uy8wd0xsZVQvYStKOTdvbXY1WE02TnViUHJoTUxIVm9BcXU2NDlScDFlbytG?=
+ =?utf-8?B?Tm42UVkwWWJ5WCtTTGJLQ2I2cTY4dkRPaFBQMUdZNVUydzhraXRIaHJpTVZk?=
+ =?utf-8?B?RG1IYU1EWndJeHRXU2EyK3U4c25JUVFLRGw0OUxHb0VxS0VTZFlINVEwdUlQ?=
+ =?utf-8?B?WWlsRXpWNzlyRmdVNy9PTUM5M3VxZjRQUXhIZERONG9HclNhUnhWcjFlTWhX?=
+ =?utf-8?B?MXQ4bTlId0RteTdpbWVLKzVtWDZrN1IyRm1VZ3Y5WlQyOEc5R3NiaEVhRSs1?=
+ =?utf-8?B?Q3p6dHB0cjJBaUc1N05pZVB5NWViVVNjK0dLeEN2Z0NHUE1tRnEyV2JPWmtx?=
+ =?utf-8?B?a0VBTWNSaUVMUllQdTE0MTRtUk1ZbDFXM1V0UGF6WW5UZi9aQmwzQzc5QnFM?=
+ =?utf-8?B?d2Qza1AvSkJQRU5IQTZKRGsyQ0ZnTzFrNk9LRUtYME1BRlQyM0NIVEhBd0xI?=
+ =?utf-8?B?OHBPZ0pQOE9HSTNnS1ZpclZSNWpkTVhVaFJSUG5nMHVrUGNZdTVSdVBpbWQ0?=
+ =?utf-8?B?Z1IveVNScE0xeUNMSlZqRFhsdXg4d0s1RnVEb0xHczBwVUlzZS8zSWtpajV0?=
+ =?utf-8?B?TUNNZGYwdksxTnE4NVVxcnVPaDVheE9vQUI1UHNuNXBLRUNNUkh1Z01Pd0NV?=
+ =?utf-8?B?SXpOVm42bGlnUHRnWVRZRmRCNmtaY3ZRaUYvTEwrRjNMQzNTMDZpLzlNVmo1?=
+ =?utf-8?B?YWU5ZUp1dTFIOForbUFXQ3NBUEh1aXB3bGV2aEc1VkxQTW5kNGVCTmJMVU02?=
+ =?utf-8?B?bXo3RUkvaUZVcTFzVEFxdjRZVVpVSVU2TXdkRWlmMFl4WUFWQjVvVWVCdE9B?=
+ =?utf-8?Q?HhewsSSTpNTfcEJZtiVe/nePL?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20220810060040.321697-1-saravanak@google.com> <CAGETcx_tSndU0xerz=DF9JQxYFRC2aaxyOE-bR2JpM0L0ht=sw@mail.gmail.com>
- <CAGETcx-JUV1nj8wBJrTPfyvM7=Mre5j_vkVmZojeiumUGG6QZQ@mail.gmail.com> <8296964.NyiUUSuA9g@steina-w>
-In-Reply-To: <8296964.NyiUUSuA9g@steina-w>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 16 Aug 2022 11:51:59 -0700
-Message-ID: <CAGETcx882GejPk4cPhSRzruUYvPZLHDyORWz2i7xP9uw6eAmzg@mail.gmail.com>
-Subject: Re: [PATCH v1 0/9] fw_devlink improvements
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: c1dff84c-9e21-4d24-f21a-08da7ff155a4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Aug 2022 01:39:32.6753
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zuuCua8Wlh+wUZVc6vOPMOxZGj13lTlbi6JV1QTaaAf+p6Jt2GvZUchfmj/nl8nDEKwYEDgcNPXZwbwIRut/Bg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR84MB1523
+X-OriginatorOrg: hpe.com
+X-Proofpoint-GUID: No-SPMIoNeWAEhM45QR9zR7BsSwsN3VM
+X-Proofpoint-ORIG-GUID: No-SPMIoNeWAEhM45QR9zR7BsSwsN3VM
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-16_08,2022-08-16_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 impostorscore=0 malwarescore=0 bulkscore=0 spamscore=0
+ mlxscore=0 clxscore=1015 phishscore=0 mlxlogscore=907 priorityscore=1501
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208170004
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 16, 2022 at 12:17 AM Alexander Stein
-<alexander.stein@ew.tq-group.com> wrote:
->
-> Hello Saravana,
->
-> Am Montag, 15. August 2022, 22:56:07 CEST schrieb Saravana Kannan:
-> > On Mon, Aug 15, 2022 at 12:17 PM Saravana Kannan <saravanak@google.com>
-> wrote:
-> > > On Mon, Aug 15, 2022 at 5:39 AM Alexander Stein
-> > >
-> > > <alexander.stein@ew.tq-group.com> wrote:
-> > > > Hello Saravana,
-> > > >
-> > > > Am Mittwoch, 10. August 2022, 08:00:29 CEST schrieb Saravana Kannan:
-> > > > > Alexander,
-> > > > >
-> > > > > This should fix your issue where the power domain device not having a
-> > > > > compatible property. Can you give it a shot please?
-> > > >
-> > > > thanks for the update. Unfortunately this does not work:
-> > > > > [    0.774838] PM: Added domain provider from /soc@0/bus@30000000/
-> > > >
-> > > > gpc@303a0000/pgc/power-domain@0
-> > > >
-> > > > > [    0.775100] imx-pgc imx-pgc-domain.1: __genpd_dev_pm_attach()
-> > > > > failed to
-> > > >
-> > > > find PM domain: -2
-> > > >
-> > > > > [    0.775324] PM: Added domain provider from /soc@0/bus@30000000/
-> > > >
-> > > > gpc@303a0000/pgc/power-domain@2
-> > > >
-> > > > > [    0.775601] PM: Added domain provider from /soc@0/bus@30000000/
-> > > >
-> > > > gpc@303a0000/pgc/power-domain@3
-> > > >
-> > > > > [    0.775842] PM: Added domain provider from /soc@0/bus@30000000/
-> > > >
-> > > > gpc@303a0000/pgc/power-domain@4
-> > > >
-> > > > > [    0.776642] PM: Added domain provider from /soc@0/bus@30000000/
-> > > >
-> > > > gpc@303a0000/pgc/power-domain@7
-> > > >
-> > > > > [    0.776897] PM: Added domain provider from /soc@0/bus@30000000/
-> > > >
-> > > > gpc@303a0000/pgc/power-domain@8
-> > > >
-> > > > > [    0.777158] PM: Added domain provider from /soc@0/bus@30000000/
-> > > >
-> > > > gpc@303a0000/pgc/power-domain@9
-> > > >
-> > > > > [    0.777405] PM: Added domain provider from /soc@0/bus@30000000/
-> > > >
-> > > > gpc@303a0000/pgc/power-domain@a
-> > > >
-> > > > > [    0.779342] genpd genpd:0:38320000.blk-ctrl:
-> > > > > __genpd_dev_pm_attach()
-> > > >
-> > > > failed to find PM domain: -2
-> > > >
-> > > > > [    0.779422] imx8m-blk-ctrl 38320000.blk-ctrl: error -ENODEV: failed
-> > > > > to
-> > > >
-> > > > attach power domain "bus"
-> > > >
-> > > > > [    0.848785] etnaviv-gpu 38000000.gpu: __genpd_dev_pm_attach()
-> > > > > failed to
-> > > >
-> > > > find PM domain: -2
-> > > >
-> > > > > [    1.114220] pfuze100-regulator 0-0008: Full layer: 2, Metal layer:
-> > > > > 1
-> > > > > [    1.122267] pfuze100-regulator 0-0008: FAB: 0, FIN: 0
-> > > > > [    1.132970] pfuze100-regulator 0-0008: pfuze100 found.
-> > > > > [    1.157011] imx-gpcv2 303a0000.gpc: Failed to create device link
-> > > > > with
-> > > >
-> > > > 0-0008
-> > > >
-> > > > > [    1.164094] imx-gpcv2 303a0000.gpc: Failed to create device link
-> > > > > with
-> > > >
-> > > > 0-0008
-> > > >
-> > > > The required power-supply for the power domains is still not yet
-> > > > available.
-> > > > Does this series require some other patches as well?
-> > >
-> > > Ah sorry, yeah, this needs additional patches. The one I gave in the
-> > > other thread when I debugged this and I also noticed another issue.
-> > > Here's the combined diff of what's needed. Can you add this on top of
-> > > the series and test it?
-> > >
-> > > diff --git a/drivers/irqchip/irq-imx-gpcv2.c
-> > > b/drivers/irqchip/irq-imx-gpcv2.c index b9c22f764b4d..8a0e82067924 100644
-> > > --- a/drivers/irqchip/irq-imx-gpcv2.c
-> > > +++ b/drivers/irqchip/irq-imx-gpcv2.c
-> > > @@ -283,6 +283,7 @@ static int __init imx_gpcv2_irqchip_init(struct
-> > > device_node *node,
-> > >
-> > >          * later the GPC power domain driver will not be skipped.
-> > >          */
-> > >
-> > >         of_node_clear_flag(node, OF_POPULATED);
-> > >
-> > > +       fwnode_dev_initialized(domain->fwnode, false);
-> > >
-> > >         return 0;
-> > >
-> > >  }
-> > >
-> > > diff --git a/drivers/soc/imx/gpcv2.c b/drivers/soc/imx/gpcv2.c
-> > > index 6383a4edc360..181fbfe5bd4d 100644
-> > > --- a/drivers/soc/imx/gpcv2.c
-> > > +++ b/drivers/soc/imx/gpcv2.c
-> > > @@ -1513,6 +1513,7 @@ static int imx_gpcv2_probe(struct platform_device
-> > > *pdev)>
-> > >                 pd_pdev->dev.parent = dev;
-> > >                 pd_pdev->dev.of_node = np;
-> > >
-> > > +               pd_pdev->dev.fwnode = of_fwnode_handle(np);
-> > >
-> > >                 ret = platform_device_add(pd_pdev);
-> > >                 if (ret) {
-> > >
-> > > With this patch, I'd really expect the power domain dependency to be
-> > > handled correctly.
-> > >
-> > > > Whats worse, starting with commit 9/9 [of: property: Simplify
-> > > > of_link_to_phandle()], other drivers fail to probe waiting for pinctrl
-> > > > to be available.
-> > >
-> > > Heh, Patch 9/9 and all its other dependencies in this series was to
-> > > fix your use case. Ironic that it's causing you more issues.
-> > >
-> > > > > $ cat /sys/kernel/debug/devices_deferred
-> > > > > gpio-leds       platform: wait for supplier gpioledgrp
-> > > > > extcon-usbotg0  platform: wait for supplier usb0congrp
-> > > > > gpio-keys       platform: wait for supplier gpiobuttongrp
-> > > > > regulator-otg-vbus      platform: wait for supplier reggotgvbusgrp
-> > > > > regulator-vdd-arm       platform: wait for supplier dvfsgrp
-> > > >
-> > > > Apparently for some reason they are not probed again, once the pinctrl
-> > > > driver probed.
-> > >
-> > > I'm hoping that this is just some issue due to the missing patch
-> > > above, but doesn't sound like it if you say that the pinctrl ended up
-> > > probing eventually.
-> > >
-> > > So when device_links_driver_bound() calls
-> > > __fw_devlink_pickup_dangling_consumers(), it should have picked up the
-> > > consumers of node like gpiobuttongrp and moved it to the pinctrl
-> > > device. And right after that we call __fw_devlink_link_to_consumers()
-> > > that would have created the device links. And then right after that,
-> > > we go through all the consumers and add them to the deferred probe
-> > > list. After that deferred probe should have run... either because it's
-> > > enabled at late_initcall() or because a new device probed
-> > > successfully.
-> > >
-> > > Can you check which one of my expectations isn't true in your case?
-> >
-> > Actually I have a hypothesis on what might be happening. It could be a
-> > case of the consumer device getting added after the supplier has been
-> > initialized.
-> >
-> > If the patch above doesn't fix everything, can you add this diff on
-> > top of the patch above and see if that fixes everything? If it fixes
-> > the pinctrl issue, can you check my hypothesis be checking in what
-> > order the devices get added and get probed?
-> >
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index 2f012e826986..866755d8ad95 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -2068,7 +2068,11 @@ static int fw_devlink_create_devlink(struct device
-> > *con, device_links_write_unlock();
-> >         }
-> >
-> > -       sup_dev = get_dev_from_fwnode(sup_handle);
-> > +       if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
-> > +               sup_dev = fwnode_get_next_parent_dev(sup_handle);
-> > +       else
-> > +               sup_dev = get_dev_from_fwnode(sup_handle);
-> > +
-> >         if (sup_dev) {
-> >                 /*
-> >                  * If it's one of those drivers that don't actually bind to
-> >
->
-> And with this change my pinctrl probing is fixed as well!
-
-Thanks for testing these! I'll roll these into v2 of the series.
-
-Glad to see I've fixed all the issues I set out to fix. Now to figure
-out what other corner cases I've missed.
-
--Saravana
+T24gTW9uZGF5LCBBdWd1c3QgMTUsIDIwMjIgODoyMCBQTSwgSnVzdGluIEhlIHdyb3RlOg0KPiBJ
+IGFzc3VtZSB0aGF0IGFsbCB0aG9zZSBlZGFjIGRyaXZlcnMgd2hpY2ggdXNlZCBvd25lciBjaGVj
+a2luZyBhcmUNCj4gaW1wYWN0ZWQsIHJpZ2h0PyBTbyB0aGUgaW1wYWN0ZWQgbGlzdCBzaG91bGQg
+YmU6DQo+IGRyaXZlcnMvZWRhYy9wbmQyX2VkYWMuYzoxNTMyOiAgaWYgKG93bmVyICYmIHN0cm5j
+bXAob3duZXIsDQo+IEVEQUNfTU9EX1NUUiwgc2l6ZW9mKEVEQUNfTU9EX1NUUikpKQ0KPiBkcml2
+ZXJzL2VkYWMvc2JfZWRhYy5jOjM1MTM6ICAgIGlmIChvd25lciAmJiBzdHJuY21wKG93bmVyLA0K
+PiBFREFDX01PRF9TVFIsIHNpemVvZihFREFDX01PRF9TVFIpKSkNCj4gZHJpdmVycy9lZGFjL2Ft
+ZDY0X2VkYWMuYzo0MzMzOiBpZiAob3duZXIgJiYgc3RybmNtcChvd25lciwNCj4gRURBQ19NT0Rf
+U1RSLCBzaXplb2YoRURBQ19NT0RfU1RSKSkpDQo+IGRyaXZlcnMvZWRhYy9pMTBubV9iYXNlLmM6
+NTUyOiAgaWYgKG93bmVyICYmIHN0cm5jbXAob3duZXIsDQo+IEVEQUNfTU9EX1NUUiwgc2l6ZW9m
+KEVEQUNfTU9EX1NUUikpKQ0KPiBkcml2ZXJzL2VkYWMvc2t4X2Jhc2UuYzo2NTc6ICAgIGlmIChv
+d25lciAmJiBzdHJuY21wKG93bmVyLA0KPiBFREFDX01PRF9TVFIsIHNpemVvZihFREFDX01PRF9T
+VFIpKSkNCj4gZHJpdmVycy9lZGFjL2lnZW42X2VkYWMuYzoxMjc1OiBpZiAob3duZXIgJiYgc3Ry
+bmNtcChvd25lciwNCj4gRURBQ19NT0RfU1RSLCBzaXplb2YoRURBQ19NT0RfU1RSKSkpDQoNClll
+cywgYnV0IHRoZSBpbXBhY3QgaXMgbm90IG5lY2Vzc2FyaWx5IGxpbWl0ZWQgdG8gdGhlc2UgbW9k
+dWxlcy4NCg0KVGhlIGN1cnJlbnQgbW9kZWwgd29ya3MgYXMgZm9sbG93czoNCiAxLiBnaGVzX3By
+b2JlKCkgY2FsbGluZyBnaGVzX2VkYWNfcmVnaXN0ZXIoKSBzZXRzIHRoZSBvd25lciB0bw0KZ2hl
+c19lZGFjLg0KIDIuIGNoaXBzZXQtc3BlY2lmaWMgZWRhYyBkcml2ZXJzIGNoZWNrcyB0aGUgb3du
+ZXIuDQogMy4gZWRhY19tY19hZGRfbWNfd2l0aF9ncm91cHMoKSBhbHNvIGNoZWNrcyB0aGUgb3du
+ZXIuDQoNCkhlbmNlLCBjaGVjayAjMyBlbmZvcmNlcyAjMSAoZ2hlc19lZGFjKSBldmVuIGlmIHRo
+ZXJlIGlzIGFuIGVkYWMNCmRyaXZlciB3L28gY2hlY2sgIzIuICBJIGRvIG5vdCBrbm93IGlmIHN1
+Y2ggY2FzZSBleGlzdHMgdGhvdWdoLg0KDQo+IEZ1cnRoZXJtb3JlLCBzaG91bGQgSSB0b3RhbGx5
+IHJlbW92ZSB0aGUgb3duZXIgY2hlY2sgaW4gYWJvdmUgZHJpdmVyDQo+IFhYX2luaXQoKT8gQmVj
+YXVzZSBhZnRlciB0aGUgbmV3IGhlbHBlciBnaGVzX2dldF9kZXZpY2UoKSBjaGVja2luZywgdGhv
+c2UNCj4gZHJpdmVycyBjYW4ndCBiZSBpbml0aWFsaXplZCBhZnRlciBnaGVzX2VkYWMgaXMgbG9h
+ZGVkLiBJZiBnaGVzX2VkYWMgaXMgTk9UDQo+IGxvYWRlZCwgdGhlIGVkYWNfbWNfb3duZXIgY2hl
+Y2sgaW4gZWRhY19tY19hZGRfbWNfd2l0aF9ncm91cHMoKSBjYW4NCj4gZ3VhcmFudGVlIHRoYXQg
+dGhlcmUgaXMgb25seSBvbmUgcmVndWxhciBlZGFjIGRyaXZlci4NCj4gDQo+IFdoYXQgZG8geW91
+IHRoaW5rIG9mIGl0Pw0KDQpJIHRoaW5rIGEgbmV3IGNoZWNrIHdpdGggZ2hlc19nZXRfZGV2aWNl
+KCkgY2FuIHJlcGxhY2UgdGhlIG93bmVyIGNoZWNrDQppbiB4eF9pbml0KCkuDQoNClRoYW5rcywN
+ClRvc2hpDQo=
