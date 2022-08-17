@@ -2,98 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23948596B9F
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Aug 2022 10:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A7FE596E56
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Aug 2022 14:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234696AbiHQIuL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Aug 2022 04:50:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50466 "EHLO
+        id S236708AbiHQMTQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 Aug 2022 08:19:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230514AbiHQIuL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Aug 2022 04:50:11 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D0406A489;
-        Wed, 17 Aug 2022 01:50:10 -0700 (PDT)
-Received: from zn.tnic (p200300ea971b9855329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9855:329c:23ff:fea6:a903])
+        with ESMTP id S238988AbiHQMTP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Aug 2022 08:19:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E920369F7D;
+        Wed, 17 Aug 2022 05:19:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BFF501EC04F0;
-        Wed, 17 Aug 2022 10:50:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1660726204;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=1Nc9t7mJDNJm7tX2tDtri09eHBfV+Ex+cKn6gDnLpQc=;
-        b=GcbLLw8ZpGKMrGQvsebCopv6bxKAXNMYcNfrs/TS+KIQqjHHVTyMTCVsFZ8if02hCMOvYR
-        aNEOyZ/tUNxQbGU9Y+dJCxmS1HzRbnYVUvKQswbw1s/TfpbCdWF71i138SESUjd56D1C0n
-        L0ynhx3AO0JdOJsu3Jwtf+RshCVT0Sw=
-Date:   Wed, 17 Aug 2022 10:50:00 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Kani, Toshi" <toshi.kani@hpe.com>
-Cc:     Justin He <Justin.He@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        nd <nd@arm.com>, "stable@kernel.org" <stable@kernel.org>
-Subject: Re: [PATCH 2/2] EDAC/ghes: Modularize ghes_edac driver to remove the
- dependency on ghes
-Message-ID: <YvyruNX+BUi+O3Df@zn.tnic>
-References: <20220811091713.10427-1-justin.he@arm.com>
- <20220811091713.10427-3-justin.he@arm.com>
- <YvZnrTrXhRn8FV3I@zn.tnic>
- <DBBPR08MB45389A9DB098F1AC14C19074F76B9@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <PH7PR84MB1838203B478319EA45167BB4826A9@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <PH7PR84MB1838203B478319EA45167BB4826A9@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F67260B82;
+        Wed, 17 Aug 2022 12:19:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD7FC433D6;
+        Wed, 17 Aug 2022 12:19:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660738752;
+        bh=BBTXORGlFEwLgbRuxkkzNMEk2vrtwEdIFHOCs3ywN/0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=pR/Fqpc4qFciyFif+Rz7Y2QU1wPblmLNOUD0NN87Gmz8UpPn1g3rm0bAXA5dTfs33
+         AqfH02QQfopKJx5JzziZnxrQDP4xohcoSzhk5Hp8ItmrhQjEXbPV5gX2RDTRJuH1AY
+         b8Gu8UAdLP4Gj2DHWLrRICkNKd3q/C76ls5hom4lTX20h7Pt9rSFEG8gtl/3Qrb6kZ
+         xFcHDLZK/FNXRKWKYuBfTMETBatSkKQhZCjqR4g0xTQEoDWP2kRbg+uJ38bYhRWLzA
+         T/V2c978rL/8qyhb9ZGzLsBMGgNmzZhjUY9CFNjE3j2TD48GpL6XIbwc/TYAHYJcTB
+         5xvlEqfxQY6PA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1oOI0s-003j3K-Hy;
+        Wed, 17 Aug 2022 13:19:10 +0100
+Date:   Wed, 17 Aug 2022 13:19:10 +0100
+Message-ID: <87r11fvz9d.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     joro@8bytes.org, will@kernel.org, catalin.marinas@arm.com,
+        jean-philippe@linaro.org, inki.dae@samsung.com,
+        sw0312.kim@samsung.com, kyungmin.park@samsung.com,
+        tglx@linutronix.de, alex.williamson@redhat.com, cohuck@redhat.com,
+        iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [PATCH 2/3] iommu/dma: Move public interfaces to linux/iommu.h
+In-Reply-To: <9cd99738f52094e6bed44bfee03fa4f288d20695.1660668998.git.robin.murphy@arm.com>
+References: <cover.1660668998.git.robin.murphy@arm.com>
+        <9cd99738f52094e6bed44bfee03fa4f288d20695.1660668998.git.robin.murphy@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: robin.murphy@arm.com, joro@8bytes.org, will@kernel.org, catalin.marinas@arm.com, jean-philippe@linaro.org, inki.dae@samsung.com, sw0312.kim@samsung.com, kyungmin.park@samsung.com, tglx@linutronix.de, alex.williamson@redhat.com, cohuck@redhat.com, iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 01:39:32AM +0000, Kani, Toshi wrote:
-> Yes, but the impact is not necessarily limited to these modules.
+On Tue, 16 Aug 2022 18:28:04 +0100,
+Robin Murphy <robin.murphy@arm.com> wrote:
+> 
+> The iommu-dma layer is now mostly encapsulated by iommu_dma_ops, with
+> only a couple more public interfaces left pertaining to MSI integration.
+> Since these depend on the main IOMMU API header anyway, move their
+> declarations there, taking the opportunity to update the half-baked
+> comments to proper kerneldoc along the way.
+> 
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+> 
+> Note that iommu_setup_dma_ops() should also become internal in a future
+> phase of the great IOMMU API upheaval - for now as the last bit of true
+> arch code glue I consider it more "necessarily exposed" than "public".
+> 
+>  arch/arm64/mm/dma-mapping.c       |  2 +-
+>  drivers/iommu/dma-iommu.c         | 15 ++++++++++--
+>  drivers/irqchip/irq-gic-v2m.c     |  2 +-
+>  drivers/irqchip/irq-gic-v3-its.c  |  2 +-
+>  drivers/irqchip/irq-gic-v3-mbi.c  |  2 +-
+>  drivers/irqchip/irq-ls-scfg-msi.c |  2 +-
+>  drivers/vfio/vfio_iommu_type1.c   |  1 -
+>  include/linux/dma-iommu.h         | 40 -------------------------------
+>  include/linux/iommu.h             | 36 ++++++++++++++++++++++++++++
+>  9 files changed, 54 insertions(+), 48 deletions(-)
 
-The impact is limited only to the modules which would otherwise
-potentially load on a HP system which advertizes as "HPE ", "Server ".
+For the irqchip side:
 
-You're the only user of ghes_edac. So please state which drivers you
-want blocked from loading on those platforms and where ghes_edac should
-load instead.
+Acked-by: Marc Zyngier <maz@kernel.org>
 
-From looking at
-
-  301375e76432 ("EDAC: Add owner check to the x86 platform drivers")
-
-it is 4 drivers.
-
-> I think a new check with ghes_get_device() can replace the owner check
-> in xx_init().
-
-The owner thing should not be touched now - it can be a cleanup ontop if
-you - Justin - feel like doing it afterwards.
-
-Thx.
+	M.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Without deviation from the norm, progress is not possible.
