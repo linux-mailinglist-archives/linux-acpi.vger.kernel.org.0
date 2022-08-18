@@ -2,82 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BD3C598627
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Aug 2022 16:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8204E5986B2
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Aug 2022 17:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343542AbiHROjH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Aug 2022 10:39:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36988 "EHLO
+        id S1343950AbiHRPAx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Aug 2022 11:00:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343538AbiHROjG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Aug 2022 10:39:06 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FB741CB21;
-        Thu, 18 Aug 2022 07:39:05 -0700 (PDT)
-Received: from zn.tnic (p200300ea971b98ec329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98ec:329c:23ff:fea6:a903])
+        with ESMTP id S1343943AbiHRPAv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Aug 2022 11:00:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBFFB32BA4;
+        Thu, 18 Aug 2022 08:00:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B9A951EC0575;
-        Thu, 18 Aug 2022 16:38:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1660833539;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=g2YL7kh6clXEuknks5MxIzMwgBzNRg9SU8LpO1P7yIE=;
-        b=UUPNhVpC1nJs8S6GR9rbE/LCJ5GGypAQXnws+gBg8kpr0anG6hrMsxpKD3JOAYD+5jPAce
-        RblEzbEkn40zlzyyz95apBsukGMkp6Y6gfOfgThZtHGefttQmdKNjYIrlNQ6+Trz2usFaX
-        qRUHlNVpUkfrxN57kjKdGmbzi2nF0m4=
-Date:   Thu, 18 Aug 2022 16:38:55 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jia He <justin.he@arm.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-edac@vger.kernel.org, devel@acpica.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        toshi.kani@hpe.com, nd@arm.com
-Subject: Re: [PATCH v2 1/7] efi/cper: export several helpers for ghes edac to
- use
-Message-ID: <Yv5O/9WZ6sKwKWF8@zn.tnic>
-References: <20220817143458.335938-1-justin.he@arm.com>
- <20220817143458.335938-2-justin.he@arm.com>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4D302B821CE;
+        Thu, 18 Aug 2022 15:00:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E77C433D7;
+        Thu, 18 Aug 2022 15:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1660834846;
+        bh=w6/ETLvl6ZG2+0UlR1OeUzSwR5sjy2rVzbgpetE7Jao=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jyemUVkbI7r0kIO7aSwt8dj+8DwO9ot3ryBxDCUv3IuhyBu7QbX65Dj2DoBUJ1aRA
+         IfTgDRH5H5dfm0lkURf6lstrZgWK2sl1EOE9JhkVrS5pkqvYeaNAjcc/Bnorgjord9
+         ZMme4Z1TfbRACGT2vZdJ12ucPykQdtRzPaslvb/c=
+Date:   Thu, 18 Aug 2022 17:00:44 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Saravana Kannan <saravanak@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 0/9] fw_devlink improvements
+Message-ID: <Yv5UHLOk9jh8KB6c@kroah.com>
+References: <20220810060040.321697-1-saravanak@google.com>
+ <YvYiF36M09dX9ASm@atomide.com>
+ <CAGETcx-t0O0B+5i0FWwm5w2=ccOD5zVAaUvgQoP8PT9SOT_btw@mail.gmail.com>
+ <Yvog4K0barAvvVeb@atomide.com>
+ <CAGETcx-k+ca5uG42XvW5yiK8RWDYfeRs9va5boqnp33s45AGRg@mail.gmail.com>
+ <Yv3kqoMo3R/7onlw@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220817143458.335938-2-justin.he@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <Yv3kqoMo3R/7onlw@atomide.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 02:34:52PM +0000, Jia He wrote:
-> Subject: Re: [PATCH v2 1/7] efi/cper: export several helpers for ghes edac to use
+On Thu, Aug 18, 2022 at 10:05:14AM +0300, Tony Lindgren wrote:
+> Hi,
+> 
+> * Saravana Kannan <saravanak@google.com> [220815 18:16]:
+> > On Mon, Aug 15, 2022 at 3:33 AM Tony Lindgren <tony@atomide.com> wrote:
+> > >
+> > > * Saravana Kannan <saravanak@google.com> [220813 00:45]:
+> > > > On Fri, Aug 12, 2022 at 2:49 AM Tony Lindgren <tony@atomide.com> wrote:
+> > > > >
+> > > > > * Saravana Kannan <saravanak@google.com> [220810 05:54]:
+> > > > > > Tony,
+> > > > > >
+> > > > > > This should handle the odd case of the child being the supplier of the
+> > > > > > parent. Can you please give this a shot? I want to make sure the cycle
+> > > > > > detection code handles this properly and treats it like it's NOT a cycle.
+> > > > >
+> > > > > Yup, this series works for me, so feel free to add:
+> > > > >
+> > > > > Tested-by: Tony Lindgren <tony@atomide.com>
+> > > >
+> > > > Thanks for testing!
+> > > >
+> > > > Btw, out of curiosity, how many different boards did you test this on?
+> > > > IIRC you had an issue only in one board, right? Not to say I didn't
+> > > > break anything else, I'm just trying to see how much confidence we
+> > > > have on this series so far. I'm hoping the rest of the folks I listed
+> > > > in the email will get around to testing this series.
+> > >
+> > > Sorry if I was not clear earlier. The issue affects several generations
+> > > of TI 32-bit SoCs at least, not just one board.
+> > 
+> > But this series fixes the issues for all of them or are you still
+> > seeing some broken boot with this series?
+> 
+> Yes. However, I'm now getting confused what exactly you're proposing to fix
+> the regressions for v6.0-rc series.
 
-"ghes_edac"
+So am I :(
 
-> Before the ghes_edac codes are modularized, export several efi/cper helpers
+> I'd like to see just the fixes series for v6.0-rc series. With proper fixes
+> tags, and possibly reverts.
 
-"Before ghes_edac can be turned back into a proper module again, export
-several helpers which are going to be used by it."
+Agreed, that would help out a lot here.
 
-Thx.
+> Then discussing patches for Linux next can be done based on the fixes :)
 
--- 
-Regards/Gruss,
-    Boris.
+Agreed.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+I'll drop this whole series from my queue now and wait for a new one.
+
+thanks,
+
+greg k-h
