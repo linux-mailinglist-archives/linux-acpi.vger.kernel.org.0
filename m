@@ -2,59 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D638597E41
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Aug 2022 07:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02CE4597EE6
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Aug 2022 09:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240770AbiHRFwA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Aug 2022 01:52:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40788 "EHLO
+        id S243766AbiHRHFT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Aug 2022 03:05:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240278AbiHRFwA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Aug 2022 01:52:00 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4218D3FF
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Aug 2022 22:51:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660801919; x=1692337919;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=asLX2sOvbrl8mZI3P167CjDFKIM3GosI4/UOYSp+kGo=;
-  b=BqS24zssT1CCm2TXgiaBo/cp+6HpbIzbNoVRQHSshnsJyi5UZ3Bon5od
-   /Y0JaGLRBlIyqCPCBEvwSLN8qSXAvx57n8725PInUki4qolKFpjFa+Yxc
-   hM+/1je0euw/rrmC3DLSEaW4a/YcZah7pqlOCMRrD4AAwrhz7sciFmT2Z
-   8p/DQWcVMcI2AMTk2r8gRz+/yEctuvrYrJhPE+WOl9s4xpsMd+0TqY0Ro
-   7zGizQgpqmh90wbP3zoX2deTCHSk932Nebdmga0wcQZA2zrwQlfGSDh3G
-   Yaz5qlsyo+juAIm/PK3UwXvj4BPaVx1ZLB2GJQJZZxqKxpxm1ZVjx447n
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10442"; a="318689854"
-X-IronPort-AV: E=Sophos;i="5.93,245,1654585200"; 
-   d="scan'208";a="318689854"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2022 22:51:59 -0700
-X-IronPort-AV: E=Sophos;i="5.93,245,1654585200"; 
-   d="scan'208";a="733934034"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2022 22:51:58 -0700
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id DE6A620212;
-        Thu, 18 Aug 2022 08:51:55 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1oOYRg-0001x3-Ek; Thu, 18 Aug 2022 08:51:56 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     rafael@kernel.org
-Subject: [PATCH 1/1] ACPI: Fix acpi_dev_state_d0() documentation
-Date:   Thu, 18 Aug 2022 08:51:56 +0300
-Message-Id: <20220818055156.7456-1-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S243770AbiHRHFS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Aug 2022 03:05:18 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 38E80876BF;
+        Thu, 18 Aug 2022 00:05:16 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id BA069807E;
+        Thu, 18 Aug 2022 06:58:18 +0000 (UTC)
+Date:   Thu, 18 Aug 2022 10:05:14 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 0/9] fw_devlink improvements
+Message-ID: <Yv3kqoMo3R/7onlw@atomide.com>
+References: <20220810060040.321697-1-saravanak@google.com>
+ <YvYiF36M09dX9ASm@atomide.com>
+ <CAGETcx-t0O0B+5i0FWwm5w2=ccOD5zVAaUvgQoP8PT9SOT_btw@mail.gmail.com>
+ <Yvog4K0barAvvVeb@atomide.com>
+ <CAGETcx-k+ca5uG42XvW5yiK8RWDYfeRs9va5boqnp33s45AGRg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx-k+ca5uG42XvW5yiK8RWDYfeRs9va5boqnp33s45AGRg@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,30 +62,47 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The documentation for acpi_dev_state_d0() referred to
-Documentation/firmware-guide/acpi/low-power-probe.rst that does not exist,
-the right file name is Documentation/firmware-guide/acpi/non-d0-probe.rst.
-Fix this.
+Hi,
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
- drivers/acpi/device_pm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+* Saravana Kannan <saravanak@google.com> [220815 18:16]:
+> On Mon, Aug 15, 2022 at 3:33 AM Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > * Saravana Kannan <saravanak@google.com> [220813 00:45]:
+> > > On Fri, Aug 12, 2022 at 2:49 AM Tony Lindgren <tony@atomide.com> wrote:
+> > > >
+> > > > * Saravana Kannan <saravanak@google.com> [220810 05:54]:
+> > > > > Tony,
+> > > > >
+> > > > > This should handle the odd case of the child being the supplier of the
+> > > > > parent. Can you please give this a shot? I want to make sure the cycle
+> > > > > detection code handles this properly and treats it like it's NOT a cycle.
+> > > >
+> > > > Yup, this series works for me, so feel free to add:
+> > > >
+> > > > Tested-by: Tony Lindgren <tony@atomide.com>
+> > >
+> > > Thanks for testing!
+> > >
+> > > Btw, out of curiosity, how many different boards did you test this on?
+> > > IIRC you had an issue only in one board, right? Not to say I didn't
+> > > break anything else, I'm just trying to see how much confidence we
+> > > have on this series so far. I'm hoping the rest of the folks I listed
+> > > in the email will get around to testing this series.
+> >
+> > Sorry if I was not clear earlier. The issue affects several generations
+> > of TI 32-bit SoCs at least, not just one board.
+> 
+> But this series fixes the issues for all of them or are you still
+> seeing some broken boot with this series?
 
-diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index 130b5f4a50a3d..fc5ffdb544cae 100644
---- a/drivers/acpi/device_pm.c
-+++ b/drivers/acpi/device_pm.c
-@@ -1438,7 +1438,7 @@ EXPORT_SYMBOL_GPL(acpi_storage_d3);
-  * not valid to ask for the ACPI power state of the device in that time frame.
-  *
-  * This function is intended to be used in a driver's probe or remove
-- * function. See Documentation/firmware-guide/acpi/low-power-probe.rst for
-+ * function. See Documentation/firmware-guide/acpi/non-d0-probe.rst for
-  * more information.
-  */
- bool acpi_dev_state_d0(struct device *dev)
--- 
-2.30.2
+Yes. However, I'm now getting confused what exactly you're proposing to fix
+the regressions for v6.0-rc series.
 
+I'd like to see just the fixes series for v6.0-rc series. With proper fixes
+tags, and possibly reverts.
+
+Then discussing patches for Linux next can be done based on the fixes :)
+
+Regards,
+
+Tony
