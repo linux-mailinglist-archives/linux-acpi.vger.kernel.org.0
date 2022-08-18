@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F278598B7F
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Aug 2022 20:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 544D1598B7B
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Aug 2022 20:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345278AbiHRSoI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Aug 2022 14:44:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36898 "EHLO
+        id S1344872AbiHRSoQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Aug 2022 14:44:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345255AbiHRSnn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Aug 2022 14:43:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3BBB4E620
-        for <linux-acpi@vger.kernel.org>; Thu, 18 Aug 2022 11:43:35 -0700 (PDT)
+        with ESMTP id S241671AbiHRSn5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Aug 2022 14:43:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECA453F335
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Aug 2022 11:43:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1660848215;
+        s=mimecast20190719; t=1660848223;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oaLtfbWG5E2dC3VyniY6vl4e+aUQP74aSxAs2H77GhU=;
-        b=Lm4GYjDCt7kOzLPMctJ6aiDLJLeM7EE+NoCZuC7FRhrPCrDMbOnmzOisGlRZfWgcmpvCB9
-        EN5KjMWHpu/4/tLRHIovLB79ErpRex8HwvyY86a2KH1Q/xyTbUjfsqTB2KxPZitv/TTHPr
-        e6SsWXIqItlD0rsrJffIUSQ/TLtEsuA=
+        bh=hEJ8SXloggM3M2XutUR+tagT8o5Og49UCIlmmB2kvDg=;
+        b=Pn6CpMnMQ9/8X0RMAb7wwO9yK2euMiLhi09jrK8EPQ9ovPQXAp8opnxLLgU5OjQ5lZFs3x
+        blQUJ0xySmmVN8vmZqPS+JYplJ5AE5JftEifG6OdarCFX2wRK9dzN81b1sPKPa6SSQmHSi
+        e7K70x/Y4ib7zHdlNSbklgJ8i2mBxT4=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-439-16PAaeHZOfG5rkg7MwEZ-g-1; Thu, 18 Aug 2022 14:43:28 -0400
-X-MC-Unique: 16PAaeHZOfG5rkg7MwEZ-g-1
+ us-mta-412-MYdS7txrO8-_M9phFCn_lA-1; Thu, 18 Aug 2022 14:43:32 -0400
+X-MC-Unique: MYdS7txrO8-_M9phFCn_lA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40A773815D28;
-        Thu, 18 Aug 2022 18:43:27 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 166083815D28;
+        Thu, 18 Aug 2022 18:43:31 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.39.192.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9E858492C3B;
-        Thu, 18 Aug 2022 18:43:23 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7767C492C3B;
+        Thu, 18 Aug 2022 18:43:27 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
         Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
@@ -62,16 +62,16 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Subject: [PATCH v3 03/31] drm/amdgpu: Don't register backlight when another backlight should be used (v3)
-Date:   Thu, 18 Aug 2022 20:42:34 +0200
-Message-Id: <20220818184302.10051-4-hdegoede@redhat.com>
+Subject: [PATCH v3 04/31] drm/radeon: Don't register backlight when another backlight should be used (v3)
+Date:   Thu, 18 Aug 2022 20:42:35 +0200
+Message-Id: <20220818184302.10051-5-hdegoede@redhat.com>
 In-Reply-To: <20220818184302.10051-1-hdegoede@redhat.com>
 References: <20220818184302.10051-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -103,20 +103,20 @@ Changes in v3:
 Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/gpu/drm/Kconfig                           | 7 +++++++
- drivers/gpu/drm/amd/amdgpu/atombios_encoders.c    | 7 +++++++
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 7 +++++++
+ drivers/gpu/drm/Kconfig                         | 7 +++++++
+ drivers/gpu/drm/radeon/atombios_encoders.c      | 7 +++++++
+ drivers/gpu/drm/radeon/radeon_legacy_encoders.c | 7 +++++++
  3 files changed, 21 insertions(+)
 
 diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 0b2ad7212ee6..95ca33938b4a 100644
+index 95ca33938b4a..0471505e951d 100644
 --- a/drivers/gpu/drm/Kconfig
 +++ b/drivers/gpu/drm/Kconfig
-@@ -259,6 +259,13 @@ config DRM_AMDGPU
+@@ -234,6 +234,13 @@ config DRM_RADEON
+ 	select HWMON
  	select BACKLIGHT_CLASS_DEVICE
  	select INTERVAL_TREE
- 	select DRM_BUDDY
-+	# amdgpu depends on ACPI_VIDEO when ACPI is enabled, for select to work
++	# radeon depends on ACPI_VIDEO when ACPI is enabled, for select to work
 +	# ACPI_VIDEO's dependencies must also be selected.
 +	select INPUT if ACPI
 +	select ACPI_VIDEO if ACPI
@@ -124,58 +124,58 @@ index 0b2ad7212ee6..95ca33938b4a 100644
 +	select X86_PLATFORM_DEVICES if ACPI && X86
 +	select ACPI_WMI if ACPI && X86
  	help
- 	  Choose this option if you have a recent AMD Radeon graphics card.
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-index fa7421afb9a6..b4e3cedceaf8 100644
---- a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-+++ b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-@@ -26,6 +26,8 @@
- 
- #include <linux/pci.h>
+ 	  Choose this option if you have an ATI Radeon graphics card.  There
+ 	  are both PCI and AGP versions.  You don't need to choose this to
+diff --git a/drivers/gpu/drm/radeon/atombios_encoders.c b/drivers/gpu/drm/radeon/atombios_encoders.c
+index c93040e60d04..2b01edea8fe8 100644
+--- a/drivers/gpu/drm/radeon/atombios_encoders.c
++++ b/drivers/gpu/drm/radeon/atombios_encoders.c
+@@ -32,6 +32,8 @@
+ #include <drm/drm_file.h>
+ #include <drm/radeon_drm.h>
  
 +#include <acpi/video.h>
 +
- #include <drm/drm_crtc_helper.h>
- #include <drm/amdgpu_drm.h>
- #include "amdgpu.h"
-@@ -184,6 +186,11 @@ void amdgpu_atombios_encoder_init_backlight(struct amdgpu_encoder *amdgpu_encode
- 	if (!(adev->mode_info.firmware_flags & ATOM_BIOS_INFO_BL_CONTROLLED_BY_GPU))
+ #include "atom.h"
+ #include "radeon_atombios.h"
+ #include "radeon.h"
+@@ -209,6 +211,11 @@ void radeon_atom_backlight_init(struct radeon_encoder *radeon_encoder,
+ 	if (!(rdev->mode_info.firmware_flags & ATOM_BIOS_INFO_BL_CONTROLLED_BY_GPU))
  		return;
  
 +	if (!acpi_video_backlight_use_native()) {
-+		drm_info(dev, "Skipping amdgpu atom DIG backlight registration\n");
++		drm_info(dev, "Skipping radeon atom DIG backlight registration\n");
 +		return;
 +	}
 +
- 	pdata = kmalloc(sizeof(struct amdgpu_backlight_privdata), GFP_KERNEL);
+ 	pdata = kmalloc(sizeof(struct radeon_backlight_privdata), GFP_KERNEL);
  	if (!pdata) {
  		DRM_ERROR("Memory allocation failed\n");
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 85fdd6baf803..66fca99d287e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -90,6 +90,8 @@
- #include <drm/drm_gem_atomic_helper.h>
- #include <drm/drm_plane_helper.h>
+diff --git a/drivers/gpu/drm/radeon/radeon_legacy_encoders.c b/drivers/gpu/drm/radeon/radeon_legacy_encoders.c
+index 1a66fb969ee7..0cd32c65456c 100644
+--- a/drivers/gpu/drm/radeon/radeon_legacy_encoders.c
++++ b/drivers/gpu/drm/radeon/radeon_legacy_encoders.c
+@@ -33,6 +33,8 @@
+ #include <drm/drm_util.h>
+ #include <drm/radeon_drm.h>
  
 +#include <acpi/video.h>
 +
- #include "ivsrcid/dcn/irqsrcs_dcn_1_0.h"
- 
- #include "dcn/dcn_1_0_offset.h"
-@@ -4029,6 +4031,11 @@ amdgpu_dm_register_backlight_device(struct amdgpu_display_manager *dm)
- 	amdgpu_dm_update_backlight_caps(dm, dm->num_of_edps);
- 	dm->brightness[dm->num_of_edps] = AMDGPU_MAX_BL_LEVEL;
+ #include "radeon.h"
+ #include "radeon_asic.h"
+ #include "radeon_legacy_encoders.h"
+@@ -387,6 +389,11 @@ void radeon_legacy_backlight_init(struct radeon_encoder *radeon_encoder,
+ 		return;
+ #endif
  
 +	if (!acpi_video_backlight_use_native()) {
-+		drm_info(adev_to_drm(dm->adev), "Skipping amdgpu DM backlight registration\n");
++		drm_info(dev, "Skipping radeon legacy LVDS backlight registration\n");
 +		return;
 +	}
 +
- 	props.max_brightness = AMDGPU_MAX_BL_LEVEL;
- 	props.brightness = AMDGPU_MAX_BL_LEVEL;
- 	props.type = BACKLIGHT_RAW;
+ 	pdata = kmalloc(sizeof(struct radeon_backlight_privdata), GFP_KERNEL);
+ 	if (!pdata) {
+ 		DRM_ERROR("Memory allocation failed\n");
 -- 
 2.37.2
 
