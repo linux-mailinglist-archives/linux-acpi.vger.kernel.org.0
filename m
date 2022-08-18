@@ -2,86 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E0F598C67
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Aug 2022 21:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB7E5598C9B
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Aug 2022 21:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245677AbiHRTMy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Aug 2022 15:12:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41652 "EHLO
+        id S1345100AbiHRTcJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Aug 2022 15:32:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240608AbiHRTMx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Aug 2022 15:12:53 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50CB1C6948;
-        Thu, 18 Aug 2022 12:12:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CDFD3B823E5;
-        Thu, 18 Aug 2022 19:12:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1A1C433C1;
-        Thu, 18 Aug 2022 19:12:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1660849969;
-        bh=Xo4hTvNR0cypUl1rvNXLIgHT1qK0Tu+nac3EmkuNcFU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rMqhnxp8MllYPWvKyVTOEcgtlV5P1z29Y5dsaowynW3Q3Cti7QrHjZmQUO8B4O16t
-         zn0S7Zbdvhn4UASs7DHAm0O9M8j8F5H72clZJVsLhVquGG0L1X0cLo4R2TcKWO4sy6
-         DG51Jrh+O0jI37U7QC/jgqlwvgx3F+0D5C8Yybk4=
-Date:   Thu, 18 Aug 2022 21:12:46 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Utkarsh Patel <utkarsh.h.patel@intel.com>,
-        rajmohan.mani@intel.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 0/6] ACPI: New helper function
- acpi_dev_get_memory_resources() and a new ACPI ID
-Message-ID: <Yv6PLl4aLPzHTJTQ@kroah.com>
-References: <20220816101629.69054-1-heikki.krogerus@linux.intel.com>
+        with ESMTP id S1344420AbiHRTcH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Aug 2022 15:32:07 -0400
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9596CCD515;
+        Thu, 18 Aug 2022 12:32:06 -0700 (PDT)
+Received: by mail-qv1-xf30.google.com with SMTP id e4so1927397qvr.2;
+        Thu, 18 Aug 2022 12:32:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=ZHL1SaOfTZwhkFNWux6oDTIukBmh5Rw8CgMxZD3ua8c=;
+        b=AbDJN9AxMRmLZ8JJ5l8Y2eM4TbWOABWiFeE7GhdkEIgIqFUMYJy2B2Qjv1RxJOI/NE
+         SqCFXmz76ZwmkiIdLoar1f4v2m+EGuQVo6Rad74wqzowd9QJseuPLkSgQcfTFSJZB+/Q
+         xe9b8NQ7SSmI9GbVidHVYt+aEr2VsTPPAzLnjCFUmpD7+LuwCn+Oyv78IXMndIMnOPTk
+         R1/E8prTrloSVsZ7p28BT3f4H7oDwTxupDslBXFxaVZ0tRc7HMKeDNoE5YfE3Ibu3JU3
+         cRsTG9w62moOn3VnNTEimtVMbRX4vBlx5cvCSelb4CrNyXoR3uywVADvMWvqgJ8LRxsz
+         LaOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=ZHL1SaOfTZwhkFNWux6oDTIukBmh5Rw8CgMxZD3ua8c=;
+        b=rlUYtooTYmjNnasxl+/RsoBcq8QDvZXyrgFyLo9mJCjjN9+i9Yre/0B9dK/Ta6Jf+z
+         OXeehmnkZz/HwoZdPtDLftwTcKQMhuy8/G9YKWJTyfeM61SAP/pCjLmpbm2jcXA533JB
+         hQ88POi+buFgdlWi+t9fPAIr+rzTu64KwkruE16SfwIScTb369vfvEbdHYhUHgwzOAkJ
+         3vNcQNk3xgnmVbWTmxqFgDkHqFvAMNNPo0DYoUazGw03m9Mbt489hAzL3S/LZlS0AU1M
+         LJcmEzgw+deHMW5m6aKgDyf+MQRvxVOQ4aT6CzMqqHoCG7e+Y/MkLsSSVv5NPakcW95q
+         mglQ==
+X-Gm-Message-State: ACgBeo0MqOILt0H1SklgyLo/RbI3+hj/LFOl33Z4ZJAzox+IddDRb44Z
+        Eg1tSeWl5QOkUg9lEml4c2f24FkIT904HcNbipA=
+X-Google-Smtp-Source: AA6agR7DsUyIy8z9pnKhTv4DVJV1xfIJ7l1QotKfRYP+mLCNG8Km1SnaZo55f7x2s5XPILlKQimFdetU1yHZbHXY8zE=
+X-Received: by 2002:a05:6214:d07:b0:476:c32f:f4f4 with SMTP id
+ 7-20020a0562140d0700b00476c32ff4f4mr3873033qvh.11.1660851125672; Thu, 18 Aug
+ 2022 12:32:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220816101629.69054-1-heikki.krogerus@linux.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <1660649244-146842-1-git-send-email-john.garry@huawei.com> <1660649244-146842-2-git-send-email-john.garry@huawei.com>
+In-Reply-To: <1660649244-146842-2-git-send-email-john.garry@huawei.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 18 Aug 2022 22:31:29 +0300
+Message-ID: <CAHp75Vc4vT==hB=svhDBhSpNFCQXwzZ1RMxy4mQspFhmSjQ03g@mail.gmail.com>
+Subject: Re: [PATCH PoC 1/3] ACPI / PNP: Don't add enumeration_by_parent devices
+To:     John Garry <john.garry@huawei.com>
+Cc:     Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 16, 2022 at 01:16:23PM +0300, Heikki Krogerus wrote:
-> Hi,
-> 
-> The helper function returns all memory resources described for a
-> device regardless of the ACPI descriptor type (as long as it's
-> memory), but the first patch introduces new ACPI ID for the IOM
-> controller on Intel Meteor Lake and also separately modifies the
-> driver so that it can get the memory resource from Address Space
-> Resource Descriptor.
-> 
-> An alternative would have been to introduce that helper function first
-> so we would not need to modify the driver when the new ID is added,
-> but then the helper would also need to be applied to the stable kernel
-> releases, and that does not feel necessary or appropriate in this
-> case, at least not IMO.
-> 
-> So that's why I'm proposing here that we first add the ID, and only
-> after that introduce the helper, and only for mainline. That way the
-> patch introducing the ID is the only that goes to the stable releases.
-> 
-> If that's okay, and these don't have any other problems, I assume it's
-> OK if Rafael takes all of these, including the ID?
+On Tue, Aug 16, 2022 at 2:33 PM John Garry <john.garry@huawei.com> wrote:
+>
+> For ACPI devices with the enumeration_by_parent flag set, we expect the
+> parent device to enumerate the device after the ACPI scan.
+>
+> This patch does partially the same for devices which are enumerated as PNP
+> devices.
+>
+> We still want PNP scan code to create the per-ACPI device PNP device, but
+> hold off adding the device to allow the parent to do this optionally.
+>
+> Flag acpi_device.driver_data is used as temp store as a reference to the
+> PNP device for the parent.
+>
+> A note on impact of this change:
+>
+> For the  hisi_lpc driver, for the UART ACPI node we have a binding like:
+>
+>  Device (LPC0.CON0) {
+>     Name (_HID, "HISI1031")
+>     Name (_CID, "PNP0501")
+>     Name (LORS, ResourceTemplate() {
+>       QWordIO (
+>
+> We have the compat and hid string. The ACPI/PNP code matches the compat
+> string first, and creates the PNP device. In doing so, the acpi_device
+> created has physical_node_count member set in acpi_bind_one().
+>
+> The hisi_lpc driver also creates a platform device serial device for uart,
+> which is the actual uart which we want to use - see
+> hisi_lpc_acpi_add_child(). That function does not check
+> physical_node_count value, but acpi_create_platform_device() does check it.
+> So if we were to move hisi_lpc_acpi_add_child() across to use
+> acpi_create_platform_device(), then the change in this patch is required to
+> not create the PNP binding (so that physical_node_count is not set from
+> PNP probe).
 
-I took the id now, for 6.0-final as it seems to be totally independant
-of the other commits (otherwise you would not have tagged it for the
-stable tree.)
+Hmm... The flag, as I interpret it, is equal to "the device in
+question is a peripheral device to the non-discoverable bus, such as
+SPI, I2C or UART". I.o.w. I do not see how PNP suits here. So, from my
+point of view it seems like an abuse of the flag. Not sure the current
+state of affairs in ACPI glue layer regarding this, though.
 
-The remainder should probably be resent and send through the acpi tree.
-
-thanks,
-
-greg k-h
+-- 
+With Best Regards,
+Andy Shevchenko
