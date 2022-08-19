@@ -2,73 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 634E359A484
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Aug 2022 20:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03D6959A532
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Aug 2022 20:07:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352751AbiHSRhY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Aug 2022 13:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39348 "EHLO
+        id S1350236AbiHSSEe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Aug 2022 14:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354589AbiHSRhF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Aug 2022 13:37:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB871636C1
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Aug 2022 09:55:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1660928010;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=VrwhfTQqr6P4JRBEzwUmYbwPttj1236XlsUYmPjdNQ8=;
-        b=YoAJLPyXdS9/J6rAAPqGsAUlgREay1ctvEEG7x16DnnuJgyewZT58H/Tnj1IiXwzn8mYEI
-        ydNlxNuhDaj7EHG0tjoyFrQiLc3yDSe0Z6D8nAbx/3lvX9KvPkdrJ0Mkq3iB8FLu74YnG5
-        dFNS5wUS1Spj6CYYGkunYByevaAdDf0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-407-ka1q0AiMNx6mUcRxAxSoXw-1; Fri, 19 Aug 2022 12:47:23 -0400
-X-MC-Unique: ka1q0AiMNx6mUcRxAxSoXw-1
-Received: by mail-qk1-f197.google.com with SMTP id x22-20020a05620a259600b006b552a69231so4143053qko.18
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Aug 2022 09:47:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=VrwhfTQqr6P4JRBEzwUmYbwPttj1236XlsUYmPjdNQ8=;
-        b=dRqFk7gfzJPi80WeRuqiSpzDoOXebNhKwmn27dPQ2oohOFN3ODATt2pKHof8ZdwgPT
-         VSopWG4Y4yrtJyUw4hStcoR2TPGsTwxc733W7ohRLVuwX48m4KrBJrUcLuUY9UwzxT/I
-         Ca/xi5caTk22A+n7+NXA03oMz2YS9WRSxLjOoIkm3fMNoOomlAEKNfcP7TuwgA+tKJlr
-         /uLxvw4tYcbEYzIbFAtqWHiTQMsQ1IXj6cUhuq5sqTeSjhgd2Xs2ImfqxigtglGbWcKl
-         T/E/JaHVkPqEuG0yA1UfvhJ5JPpxm/bEFtEkH6Rmlnl57q36Ukt/pClYnBcxKVh3jPtE
-         6HXQ==
-X-Gm-Message-State: ACgBeo2LFNj02pWvUH+Zxt4BR4JFFj9ZHZ+JqAFFRVO9omJwVjSFGXsq
-        Uy3YypCShGqtm3ybmp3N+92g2QymEBZjPKbsTAafHSGQoRxqBOEpT/o8QKW5IdHVmkd+CZy3Si8
-        yLOZjlSpm/75DKJShpN6Al85X9APteEINdrza9g==
-X-Received: by 2002:a05:622a:230e:b0:343:616b:1f88 with SMTP id ck14-20020a05622a230e00b00343616b1f88mr7063172qtb.457.1660927643002;
-        Fri, 19 Aug 2022 09:47:23 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR7qut1LrrQWGjcPDsYvVH+1BCUDPF0pO9Zy0QOF4jCXEP/wH5wJ1NEUdNovM81WFHd4qek7A2XGFUg8OaLf1gc=
-X-Received: by 2002:a05:622a:230e:b0:343:616b:1f88 with SMTP id
- ck14-20020a05622a230e00b00343616b1f88mr7063158qtb.457.1660927642800; Fri, 19
- Aug 2022 09:47:22 -0700 (PDT)
+        with ESMTP id S1350077AbiHSSEF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Aug 2022 14:04:05 -0400
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF96A118CB5;
+        Fri, 19 Aug 2022 10:50:10 -0700 (PDT)
+Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
+        by mx0a-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27JHk5ku022214;
+        Fri, 19 Aug 2022 17:48:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pps0720;
+ bh=RnwnYghEwQeP0XjAHe5hGKq5zloA1y4JTzPC+mj35eM=;
+ b=Fzx0vPqm6CDyhm59L9T+LtlePi2IOW0qz7t5KKLkbjIR1490p1z0znB07gryaW8ztW2K
+ 9zMZmQvWlaXX0YzcatkqDihGPU+iCYdfKO39t9Xj2KfVIiHMuBOFIVjRe5yNg6lRQJoI
+ qZnu/UQe4cp66OgvXLyrquTeiOjRr5UmE5EM2Yfopl3z70H2FezR3ksvMC6m63nIwQ0Y
+ QLvuwKBjXhHfNweOVkWISnkYIwQGwcot/TOKf3TFqtdzMUz+0HY4JLzhCag6kSsAJaAz
+ NGyEZkrWUREHMyqa7l406OLOkuivmWvM4jbWw46GVaBOH2Vd1gB9GBFJ1bC0rFiT8bVp vw== 
+Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
+        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3j2e4h94bf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Aug 2022 17:48:58 +0000
+Received: from p1wg14926.americas.hpqcorp.net (unknown [10.119.18.115])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 638ED804CAE;
+        Fri, 19 Aug 2022 17:48:45 +0000 (UTC)
+Received: from p1wg14923.americas.hpqcorp.net (10.119.18.111) by
+ p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Fri, 19 Aug 2022 05:48:42 -1200
+Received: from p1wg14920.americas.hpqcorp.net (16.230.19.123) by
+ p1wg14923.americas.hpqcorp.net (10.119.18.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15
+ via Frontend Transport; Fri, 19 Aug 2022 05:48:42 -1200
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (192.58.206.38)
+ by edge.it.hpe.com (16.230.19.123) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Fri, 19 Aug 2022 05:48:41 -1200
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iTkvcuYc9aQ89qLMsD/Hm8vcNle9ZyHWuV6dRATVA78ucOvSkxRDmD17NYJJVuu/5z6r2kmNLm4LMtG0Arrw214ZGGrHlSt+SMFmmqzLQ9B6W2Q60+wbU98+EqF6zFnQmCE2zcLSy4mj3kX9FLnMplOXroHlDw08KUnWupPGe9dgqniEYQRxWAq3LOwKee0zL4hSRxs68AhwATST2HINHYd87+muqML1fZK2sNADr7XgyXQ14C+PQPIvi6ZOJ5c74e3Lyy6Cuaj2GZcZDIow2GjKEXwfBTOwWIzr4j2J2kl3wF9LS6ssXjygYTtNu7YFJuoNuhlKAgyM+FKbj+143w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RnwnYghEwQeP0XjAHe5hGKq5zloA1y4JTzPC+mj35eM=;
+ b=IKYQ0GctAs0D1w3WxiHnBViN9RecUFJhO8djX83dyX86clk+jvkXrcrtKZXvz3rxrljElLkRTKMPNkZvOQ2clZvdxHlFTg+iSANT4kl0KNSxmeaqCbJMVVqTZkaPH5Dim6qUNddDtij0yVx6d0cYCOeF71um0JRKMxOQL16ZZVVK9DJx1ROAYEYSjZuQ0JZPTZcq17rjWiJqp+zyWxnuhM4KSqo/Tgl4WUmUV1DsUl44O3A4Hri+AMVR782b+aqBWKucNUaNwwkPuECSBk6SvLX6mdwornEEF0QkUomkNFbrn7woqkDgXMy7jSBMyazpv/WM481hE+IGwCJpPnHDSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
+ header.d=hpe.com; arc=none
+Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4c::19) by
+ IA1PR84MB3057.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:208:3ef::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.17; Fri, 19 Aug
+ 2022 17:48:39 +0000
+Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::2033:298b:4062:29e6]) by DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::2033:298b:4062:29e6%5]) with mapi id 15.20.5546.016; Fri, 19 Aug 2022
+ 17:48:39 +0000
+From:   "Kani, Toshi" <toshi.kani@hpe.com>
+To:     Justin He <Justin.He@arm.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        nd <nd@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: RE: [PATCH v2 5/7] EDAC/ghes: Prevent chipset-specific edac from
+ loading after ghes_edac is registered
+Thread-Topic: [PATCH v2 5/7] EDAC/ghes: Prevent chipset-specific edac from
+ loading after ghes_edac is registered
+Thread-Index: AQHYskazgdaGLeNebEWQzyv29780RK21ZjbQgACj04CAAE7iUA==
+Date:   Fri, 19 Aug 2022 17:48:39 +0000
+Message-ID: <DM4PR84MB1853B213F2F45E495D9D6446826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
+References: <20220817143458.335938-1-justin.he@arm.com>
+ <20220817143458.335938-6-justin.he@arm.com>
+ <DM4PR84MB18538A56870A280CDC4637A7826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
+ <DBBPR08MB453891E87563F1BBE291248AF76C9@DBBPR08MB4538.eurprd08.prod.outlook.com>
+In-Reply-To: <DBBPR08MB453891E87563F1BBE291248AF76C9@DBBPR08MB4538.eurprd08.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: de165599-b7a7-4320-5658-08da820b0cba
+x-ms-traffictypediagnostic: IA1PR84MB3057:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: fMiuKEKVmaS0hYDxs/Nz6X6IZd7hu4uQVdTPQFSIdyd/2IkE22CAgGnrF7FSWxAxcegZRzBkXDEAhDUeR8AOsqJvdDouf6mIjuDGt4EpY6tKLyF4k5yehRkZ4UOJtCZDlYWndsd5/0hzdENIlBIJ1O0s5wUW0Yxk7I/c76WTdikoS9sOt3lkSv/go2vbirAlUjY8h9wPoKEy8o+n+mDHzHDOFTS9xBFLaHY6TOtxwgN9ZxgwYTjuLlK/XNIknjuPAZVnnj8rGQB8bsPQsErnMeVLhtEEzwHemWBHwN56pIXjiC2PsMUXA4ZHk5LjrpHxK6FFKBfCD4dhlY655772MUz+5dmZbHpRc5VHUMuOoY/J74xjqzo+pEd/a/dDm+lcy+/v88x3VsGhLbAaRZU5XmJWTaAcJ6t9bTVcod0Oijy6SQ9NMSl0geq0t/6Bg+A1KgRozk32zoG9Hxekt5jTAWqK5g1ruaewSSgG7k92/XnO7yeHie6iM/bZkR4ggKaJtV/VZNOFPdXetzeQX7N8eD5mSlf+y1U1Mj6LRRRnUoKKATr+kchQv2jdJXVM6EYRahaPzca4ijSMi7kpfBYyUaf+g1tmz5AZnmfLGSlv2vOQAI3G2YB/vPrr5gmbIWT/DW7/aTPyXShcKyASyUgzdfIj+CyATgw4EAt/AKVupieDu24wLiDiq3e1hslelA4BIUoGwXxK8IiMiBi0C7LOKZOO2g/SzLhUTvOu1ixvsbdROuL9GBBPctgaYdGg8r9HQfRG1cs6/SrFzGWqlFPawg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(366004)(39860400002)(136003)(376002)(396003)(346002)(6506007)(122000001)(316002)(4326008)(8676002)(38100700002)(66556008)(7696005)(33656002)(5660300002)(53546011)(66946007)(2906002)(41300700001)(7416002)(66476007)(64756008)(82960400001)(76116006)(66446008)(8936002)(38070700005)(478600001)(9686003)(71200400001)(52536014)(26005)(86362001)(186003)(83380400001)(6916009)(55016003)(54906003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?QOQLc18eDNEeBfzGevGzsDDvfsJLc43vwLL2s9IEJCaaip/mLnpzdqUnmndJ?=
+ =?us-ascii?Q?bCkfcgo6JzGhAsn2NjTtv7EzqK2643r5aT6alf7dx751ASdjjPOhLh8OiiSU?=
+ =?us-ascii?Q?0xAWeuZoZa+5adBv8RYvppCr8+Tl7ZhdA9An1trHp2qDvtQfRzsodovuVtmE?=
+ =?us-ascii?Q?hqHC//uwEBn+r0sn/T0kxuJnKmwZZQQYwcawQsBUM1kQ/FvYqxEdIRLvS8AA?=
+ =?us-ascii?Q?s9kvKZLhJRPQ8cKgL9wHYGvx1+tIfXZHahUkjIKO8z/w6PJ5bkj1hFh0THsk?=
+ =?us-ascii?Q?SaKUjncJE/qQ2GAuaKjKIfCESz73L5jaoe8LBwAAC+pJ0IN40wM+o2k4I0tL?=
+ =?us-ascii?Q?Le/tk4l0hpTRkFhSqJPotKkLwcOQtwrMW9UOt3penONMZvTgd/8AtNMdbDxm?=
+ =?us-ascii?Q?p7Geeb8RH6nvXp3pqaMVWJv9TI9T/PrV0l6p67YdmrD96+A3P+OIvysXRKD7?=
+ =?us-ascii?Q?GeU2TPk5L0sqrUDRoI/EauD8jJeGvA9/wG1zuJnUpl4y3v1LUx9Fiptj65Ky?=
+ =?us-ascii?Q?118BC5iUhGMYvbscCPtFndKaJk0vsDGi8ZW5cK9o7Av0iBUFQcVJq7T5InJY?=
+ =?us-ascii?Q?yHeYBwC2ChC6vj8r4LK/HkfT4z4NEHDQU+O7fo7liisDa66jq3uIUdmnqqJt?=
+ =?us-ascii?Q?BVBNDqjhqATVbO+7XvUKCFQqqyEsI957pVLZ1emnjkniKJTEhOCBlxhQjJR3?=
+ =?us-ascii?Q?eXjM4yHtIhhP+fzIWafy57NLTJ0QXxBPwmAphlYVzVypSzQJ2hmOVyM8RUsK?=
+ =?us-ascii?Q?Mi81HEtNr83JLxnX20vIGIpFbyLy5UWrb0QRepnGMsF+d7Dx7Tkg6fzOlTYp?=
+ =?us-ascii?Q?WF/b+KNb315xvX2CKS80hlx1iduj9ec2NEmqmhu4bxTSkiBm91VIdZkrFb4Y?=
+ =?us-ascii?Q?0qbCfUYByg3Or7If3AwKJHTrtF5fURAZ2+tFZp0eeIsuVXlsI6FZN+HYxird?=
+ =?us-ascii?Q?pTIq+S1UhIhj1I0Led72fOLlQFXiE1q3AJ/ZG9bWTQUfcAa3SXG002h12biw?=
+ =?us-ascii?Q?K0vjv3t/XuBkDsW54D5k0zCq15Kkth9k6/MSnf46rIxpvRDl3hOiejpTdjGD?=
+ =?us-ascii?Q?ODBPIha+ayER2IOFyRCzlJVZ8P8qYE41Uu+fp2jwrbotlpVfJHUNrbnUu9V4?=
+ =?us-ascii?Q?HVnRGVuS4jl7TIzhKZHYibC6Gq37BKi4MqJHt7+zD+zDiE69pnx2aWX3VMJ2?=
+ =?us-ascii?Q?grHddff32G3t3DCAz7M9XuWGnKZER0X5Jb6Ba5z3RVJNPE71rRbhiZ3lkb4T?=
+ =?us-ascii?Q?VutEIsrhwcoPx1OXfVJZe9zSo7ancd6PlROd3AAXQvVB4/Jh2uKjZJ3DOn1B?=
+ =?us-ascii?Q?uvcw/XJF0AihTiJeTft86GaBqoJgE1f8cnOpbbE3UJZZGFJHX8vU3SQyHFza?=
+ =?us-ascii?Q?jCL7benSDwzaEW7ZjFFe3BW5cQmG77aFuoswp4kUofq9ktOYJWXB19Xu5l+/?=
+ =?us-ascii?Q?z+HGztFvl94AsCgTmIqIrGhiI3DaHpGM3H/xyKXWKDM6zicL+MgZimmvYyQB?=
+ =?us-ascii?Q?w9SlEbhUGmhFSK0Cs5MRQjrnJpmce+XapnVrQstu9U78zz7P0U3nKCjSmePC?=
+ =?us-ascii?Q?wK/dWnNzRBjCk4rrZZgKlxJcQvAbYUf1C7AXu6at?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20220819142519.5684-1-mario.limonciello@amd.com>
- <CACO55tuw_2QWFMr0t6-JfUiQ4M7V3ZMKC7jHYTyERypaU3TekQ@mail.gmail.com>
- <57cf9b61-82f4-f6d4-7f43-c3f94de7aaf3@amd.com> <CACO55tuRZOyoo79sgnewETF50Unzm_uksGtaB24Y93pej+2vgA@mail.gmail.com>
- <40d13998-f6e2-27a3-c83a-cd977e45f02a@amd.com>
-In-Reply-To: <40d13998-f6e2-27a3-c83a-cd977e45f02a@amd.com>
-From:   Karol Herbst <kherbst@redhat.com>
-Date:   Fri, 19 Aug 2022 18:47:11 +0200
-Message-ID: <CACO55ts3SjBjdF-fDNsg3NwCFZAsZSiTpPAF3PX2bM6wGxZ8eg@mail.gmail.com>
-Subject: Re: [RFC 0/2] Stop the abuse of Linux-* _OSI strings
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Lyude Paul <lyude@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, rafael@kernel.org,
-        Len Brown <lenb@kernel.org>, nouveau@lists.freedesktop.org,
-        hdegoede@redhat.com, ddadap@nvidia.com,
-        kai.heng.feng@canonical.com, Dell.Client.Kernel@dell.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: de165599-b7a7-4320-5658-08da820b0cba
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2022 17:48:39.5511
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: oEIdjatB/o+SGyZcnXvLJJxS7XJRx8BDep/Xaw+5O1ZJHbMAD5QRd8EmAA0SwvOOOWu4kRL68TIWisYP04+QBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR84MB3057
+X-OriginatorOrg: hpe.com
+X-Proofpoint-GUID: jn70Yokz6HMmy1uYzqVXMqCJxEQ8gYrv
+X-Proofpoint-ORIG-GUID: jn70Yokz6HMmy1uYzqVXMqCJxEQ8gYrv
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-19_10,2022-08-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 phishscore=0 mlxlogscore=999 priorityscore=1501
+ bulkscore=0 suspectscore=0 mlxscore=0 clxscore=1015 spamscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2207270000 definitions=main-2208190065
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,99 +172,73 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 19, 2022 at 6:43 PM Limonciello, Mario
-<mario.limonciello@amd.com> wrote:
->
-> On 8/19/2022 11:37, Karol Herbst wrote:
-> > On Fri, Aug 19, 2022 at 6:00 PM Limonciello, Mario
-> > <mario.limonciello@amd.com> wrote:
-> >>
-> >> On 8/19/2022 10:44, Karol Herbst wrote:
-> >>> On Fri, Aug 19, 2022 at 4:25 PM Mario Limonciello
-> >>> <mario.limonciello@amd.com> wrote:
-> >>>>
-> >>>> 3 _OSI strings were introduced in recent years that were intended
-> >>>> to workaround very specific problems found on specific systems.
-> >>>>
-> >>>> The idea was supposed to be that these quirks were only used on
-> >>>> those systems, but this proved to be a bad assumption.  I've found
-> >>>> at least one system in the wild where the vendor using the _OSI
-> >>>> string doesn't match the _OSI string and the neither does the use.
-> >>>>
-> >>>> So this brings a good time to review keeping those strings in the kernel.
-> >>>> There are 3 strings that were introduced:
-> >>>>
-> >>>> Linux-Dell-Video
-> >>>> -> Intended for systems with NVIDIA cards that didn't support RTD3
-> >>>> Linux-Lenovo-NV-HDMI-Audio
-> >>>> -> Intended for powering on NVIDIA HDMI device
-> >>>> Linux-HPI-Hybrid-Graphics
-> >>>> -> Intended for changing dGPU output
-> >>>>
-> >>>> AFAIK the first string is no longer relevant as nouveau now supports
-> >>>> RTD3.  If that's wrong, this can be changed for the series.
-> >>>>
-> >>>
-> >>> Nouveau always supported RTD3, because that's mainly a kernel feature.
-> >>> When those were introduced we simply had a bug only hit on a few
-> >>> systems. And instead of helping us to debug this, this workaround was
-> >>> added :( We were not even asked about this.
-> >>
-> >> My apologies, I was certainly part of the impetus for this W/A in the
-> >> first place while I was at my previous employer.  Your comment
-> >> re-affirms to me that at least the first patch is correct.
-> >>
+On Friday, August 19, 2022 4:35 AM, Justin He wrote:
+> > > @@ -1382,6 +1395,7 @@ static int ghes_probe(struct platform_device
+> > > *ghes_dev)
+> > >  	platform_set_drvdata(ghes_dev, ghes);
+> > >
+> > >  	ghes->dev =3D &ghes_dev->dev;
+> > > +	set_ghes_devs_registered(false);
 > >
-> > Yeah, no worries. I just hope that people in the future will
-> > communicate such things.
+> > This does not look right to me.
 > >
-> > Anyway, there are a few issues with the runpm stuff left, and looking
-> > at what nvidia does in their open driver makes me wonder if we might
-> > need a bigger overhaul of runpm. They do apply bridge/host controller
-> > specific workarounds and I suspect some of them are related here as
-> > the workaround I came up with in nouveau can be seen in 434fdb51513bf.
->
-> But this overhaul shouldn't gate removing this _OSI string, or you think
-> it should?
->
-
-Hard to tell. If there are affected systems but have those _OSI
-strings in place so it's hidden, this would be annoying, but then we
-might have more pointers on what's actually broken. Anyway, we don't
-need those workarounds and rather a real fix for all those issues. And
-I suspect the real fix is to apply specific workarounds for specific
-systems.
-
+> > The condition of using ghes_edac is (ghes-present) && (ghes-preferred),
+> > where:
+> >  - ghes-present is latched on ghes_probe()
+> >  - ghes-preferred is true if the platform-check passes.
 > >
-> > But also having access to documentation/specification from what Nvidia
-> > is doing would be quite helpful. We know that on some really new AMD
-> > systems we run into new issues and this needs some investigation. I
-> > simply don't access to any laptops where this problem can be seen.
+> > ghes_get_device() introduced in the previous patch works as the
+> > ghes-preferred check.
 > >
->
-> Do you mean there are specifically remaining issues on AMD APU + NVIDIA
-> dGPU systems?  Any public bugs by chance?
->
-> Depending on what these are I'm happy to try to help with at least
-> access.  If we have them maybe we can try to make the right connections
-> to get some hardware to you, or at least remotely access it.
->
+> > We cannot use ghes_edac registration as the ghes-present check in this
+> > scheme since it is deferred to module_init().
+>=20
+> What is the logic for ghes-present check? In this patch, I assumed it is =
+equal to
+> "ghes_edac devices have been registered". Seems it is not correct.
 
-https://gitlab.freedesktop.org/drm/nouveau/-/issues/108
+Using (ghes_edac-registered) is a wrong check in this scheme
+since ghes_edac registration is deferred.  This check is fine in
+the current scheme since ghes_edac gets registered before
+any other chipset-specific edac drivers.
 
-there might be more though, but this should be a good start.
+> But should we consider the case as follows:
+> What if sbridge_init () is invoked before ghes_edac_init()? i.e. Should w=
+e get
+> sb_edac driver selected when ghes_edac is not loaded yet (e.g. on HPE)?
 
-> >>>
-> >>> I am a bit curious about the other two though as I am not even sure
-> >>> they are needed at all as we put other work arounds in place. @Lyude
-> >>> Paul might know more about these.
-> >>>
-> >>
-> >> If the other two really aren't needed anymore, then yeah we should just
-> >> tear all 3 out.  If that's the direction we go, I would appreciate some
-> >> commit IDs to reference in the commit message for tearing them out so
-> >> that if they end up backporting to stable we know how far they should go.
-> >>
-> >
->
+No.  The point is that ghes_edac driver needs to be selected,
+"regardless of the module ordering", on a system with GHES
+present & preferred.
 
+Note that this new scheme leads to the following condition
+change:=20
+- Current: (ghes-present) && (ghes-preferred) && (ghes_edac registered)
+- New: (ghes-present) && (ghes-preferred)
+
+The option I suggested previously keeps the current condition,
+but this new scheme does not for better modularity.
+
+What this means is that if ghes_edac is not enabled (but ghes
+is enabled) on a system with GHES present & preferred, no edac
+driver gets registered.  This change is fine from my (HPE) perspective
+and should be fine for other GHES systems.  GHES systems have
+chipset-specific edac driver in FW.  OS-based chipset-specific edac
+driver is not necessary and may lead to a conflict of chipset register
+ownership.
+
+> > I'd suggest the following changes:
+> > - Update ghes_get_device() to check a flag latched on ghes_probe().
+>=20
+> Still need your elaborating about the details of the flag. i.e. When is t=
+his flag
+> latched? When is it unlatched?
+
+This flag is a static variable, say ghes_present, which is set to false ini=
+tially.
+ghes_probe() sets it to true.  ghes_edac_preferred() (aka. ghes_get_device)
+checks this flag at beginning and returns false if this flag is false.  It =
+does not
+get unlatched since ACPI GHES table is static.
+
+Toshi
