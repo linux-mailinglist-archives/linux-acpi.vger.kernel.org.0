@@ -2,197 +2,283 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E0559A67C
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Aug 2022 21:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9511E59A810
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Aug 2022 00:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351437AbiHSTiH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Aug 2022 15:38:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37294 "EHLO
+        id S229529AbiHSWC5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Aug 2022 18:02:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351516AbiHSTiF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Aug 2022 15:38:05 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25C711233C;
-        Fri, 19 Aug 2022 12:38:04 -0700 (PDT)
-Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27JJaj7i006153;
-        Fri, 19 Aug 2022 19:37:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pps0720;
- bh=Z14qp+QW9Tdq4XHkcAuA2glfC4kd6dCL5rJtKjxmgpU=;
- b=KxwCnAbSBvF6390SmanARHmG+aPfc8htt62c5LA3eFs6nOk44KzBsmJsTvEJZwEUWA0e
- UGt4P1Hrm1Y0cm6VqwjkeiYFl0veiOrk/YheKoBI0gByb0TSm8q/UxTdhrlUDFahPvhy
- bpRbWbLJNJK7+VkBq4k008wx8UetzbkX8DSsCPOEO0ac+fQgsAgOtlSWeqiHLY0+CM7X
- IOEVs6/j0n2pYARMYeGyTJT52aeDGSxUh/ggFyVH231J8+teVnuez9cYMdmeNutiJt+7
- h+DUDjigpNJMCUROVxW4STcbcDXPM1cPhMvvSN4XsUsqdXNuwqt0YKtYF3Za3FfCPGob Ag== 
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3j2gu2003m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 19 Aug 2022 19:37:22 +0000
-Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 40A4CD2E2;
-        Fri, 19 Aug 2022 19:37:21 +0000 (UTC)
-Received: from p1wg14927.americas.hpqcorp.net (10.119.18.117) by
- p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 19 Aug 2022 07:37:21 -1200
-Received: from p1wg14926.americas.hpqcorp.net (10.119.18.115) by
- p1wg14927.americas.hpqcorp.net (10.119.18.117) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 19 Aug 2022 07:37:20 -1200
-Received: from p1wg14921.americas.hpqcorp.net (16.230.19.124) by
- p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15
- via Frontend Transport; Fri, 19 Aug 2022 07:37:20 -1200
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (192.58.206.38)
- by edge.it.hpe.com (16.230.19.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 19 Aug 2022 07:37:20 -1200
+        with ESMTP id S231598AbiHSWC4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Aug 2022 18:02:56 -0400
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2073.outbound.protection.outlook.com [40.107.95.73])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02D8FBB01A;
+        Fri, 19 Aug 2022 15:02:53 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T/ZlXZI8UhTNRI+7fDqgBlJLhK3PYfRctraBqgBIrGMifzaIuX01PEMKNE5DsFAUY6IDUSQE7xbfXViK7Fn6pD8N5gU2DWRMh3zwLQNp6gzcPq/XhmCfyil+01u31rgTBgd3K4yH6XWQ7XB2G7I7zYVme3Wrii/IaPtUNsYyToqNVgXYWajmNc5ZAgWpDv7kUnV5KJxSkbttpYk4BwoahxF7hEQY1CvgYb2QZOO8pihUd1UH2GiojMzLSqWat04FRkuI6aejZDKAn84NFbEgeZVZ650w0kvZQP+t2G9lO42xjNZ/E2Kolub+xYaz0EzHrJwl+tGAh8CvCa8dxQ/1QA==
+ b=adChdzo9/l/ASCY6l/j4IJx2T2wWv0aiZVr8lJMKZFBfBV1PT8d6erlc6sUqMk6Yys9pF83IeRPpQj7pKn3qn6Qoojba6RKh1/y0VLDRlIsGp1XmUYJ7Gi3/ud01Z+aX+fD2LxNaS11H0LbGusZ1mXA07jBj2PpcZnwIsCkikNXcF4ZTuwWXnKpMaCRSV1yuV0VobPilNQM2YR7EV+8qE63zEqbtLG23jwPJ7BLlfiqFIZHuU9SCxC3rQZQCLqIkDlphz7DESS/8hW9hScnIntlDy6jlGcWhrlIWy5Of1QZuXtlYp6OWOPZEpVUtIv4bPOVblDFrxwdGnjSp+Q6MgA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z14qp+QW9Tdq4XHkcAuA2glfC4kd6dCL5rJtKjxmgpU=;
- b=fQyXsGW4rU2AEMtif95YdHXycoDA79vq0x8aDlZVcRgAaf//YAwYQPoP64qO4zV3ISJvEWf451lPmLDh98F7+YYwx7uWtaXSDHmqhNjLni4Oqw3df8AlIRFY0PpmOebQo75Ut7zw2w9J3swoqqWz1zy3648PtXhAMfzVbeDaZlkITxleut6fVnWKdVw5yunzwO4f3D+Rj7KQifyAwXKH7mXpU2UkfrlN8Djd3wZ+ZFfzbYAgndnItdDj3Mercpev2/yeHn5jvjnGQnNq0p/S7iuZlUoZj+HKUl7BUEhf4EakTb4USHSaWx954KDkj+dCOSowq0qaTszuxvKOEXvx1A==
+ bh=crVUCIv2ZEg7L3KCkq82zLoaqspG7ekJ/1OV2BvG+4E=;
+ b=TfyNnhgHfxAmDxifVz7esA6ONpnPc4evvAhPWv1KreAhFfPy8TWTau5tPAVL/fRz9sRSx++Xw4DJRrRIBCYrF/6ZJwR3oKXBTMLLTHLOK01L0N8rkDr5SUMfQHtv6QAkBDdiQ31+q2naQj36+M09FDicmNnz4f+n2XBgtqNfUTeSZdTLaoFOh2Li+lF+sIEFqhqD9i5vqO/U04AsaXhpWmC67ZugtniI2NWE4KTRCQfhXzAURem0gSE0EiA6v8rDULlphkyWbJCTW9pJW7ZsTSQhR6+ap1KKnF2oq3zZ8D8yvDvWrNGCz3ecThVPCJ1Z/VDugPOGA9Gnjs2+98RFMA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
- header.d=hpe.com; arc=none
-Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4c::19) by
- DM4PR84MB1973.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4c::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5546.18; Fri, 19 Aug 2022 19:37:18 +0000
-Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6]) by DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6%5]) with mapi id 15.20.5546.016; Fri, 19 Aug 2022
- 19:37:18 +0000
-From:   "Kani, Toshi" <toshi.kani@hpe.com>
-To:     Borislav Petkov <bp@alien8.de>
-CC:     Justin He <Justin.He@arm.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        nd <nd@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: RE: [PATCH v2 5/7] EDAC/ghes: Prevent chipset-specific edac from
- loading after ghes_edac is registered
-Thread-Topic: [PATCH v2 5/7] EDAC/ghes: Prevent chipset-specific edac from
- loading after ghes_edac is registered
-Thread-Index: AQHYskazgdaGLeNebEWQzyv29780RK21ZjbQgACj04CAAE7iUIAANdmAgAADCCCAAAKzAIAAAGBAgAALBwCAAAFVQA==
-Date:   Fri, 19 Aug 2022 19:37:18 +0000
-Message-ID: <DM4PR84MB18530617E40AEC74145CD788826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20220817143458.335938-1-justin.he@arm.com>
- <20220817143458.335938-6-justin.he@arm.com>
- <DM4PR84MB18538A56870A280CDC4637A7826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
- <DBBPR08MB453891E87563F1BBE291248AF76C9@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <DM4PR84MB1853B213F2F45E495D9D6446826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
- <Yv/Wm/Zf0kdGgT33@zn.tnic>
- <DM4PR84MB185306C2C0DE95FF408173BA826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
- <Yv/batVmSf7PDRcL@zn.tnic>
- <DM4PR84MB185311667EA26C06348F6074826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
- <Yv/k+kcj6rRNRzkm@zn.tnic>
-In-Reply-To: <Yv/k+kcj6rRNRzkm@zn.tnic>
-Accept-Language: en-US
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=crVUCIv2ZEg7L3KCkq82zLoaqspG7ekJ/1OV2BvG+4E=;
+ b=kwTKhnNR5w2AEKSNslxOZVcFSTWvAq7ycYiPtjzVdXYysXFMvntE/SGxs8UMAwUYMwUBFDGPuQ/3s7U+yQrouLdNF4lKCxsQ7aB92YXTwNzUWVZMl/Or9Nl0v0K9o9BirK4Vw24Arc+wgC82lZIbvLCVAI8GeT6cp4BjluHifYrhYywNIuIwI30N2Cw/51kYgxdj3Pq5mRy/eGw7mn3VMRo7UtlPPYyfgX5csBkfX5BYx8l7Rz2aTpPpgZJ5J6udx5RqJKdB7OrznVPpcJZAPefEnwP3grxuZWWf44/9B1v8e7n3giwXclJKJ8yhCgEq2Mly94W3OIPFAew3WkrDDA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB2763.namprd12.prod.outlook.com (2603:10b6:5:48::16) by
+ BYAPR12MB2920.namprd12.prod.outlook.com (2603:10b6:a03:139::27) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.18; Fri, 19 Aug
+ 2022 22:02:51 +0000
+Received: from DM6PR12MB2763.namprd12.prod.outlook.com
+ ([fe80::6012:2e0d:2697:8b02]) by DM6PR12MB2763.namprd12.prod.outlook.com
+ ([fe80::6012:2e0d:2697:8b02%3]) with mapi id 15.20.5546.016; Fri, 19 Aug 2022
+ 22:02:50 +0000
+Subject: Re: [RFC 2/2] ACPI: OSI: Deprecate some abused _OSI strings
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        rafael@kernel.org, Len Brown <lenb@kernel.org>
+Cc:     kherbst@redhat.com, nouveau@lists.freedesktop.org,
+        hdegoede@redhat.com, kai.heng.feng@canonical.com,
+        Dell.Client.Kernel@dell.com
+References: <20220819142519.5684-1-mario.limonciello@amd.com>
+ <20220819142519.5684-3-mario.limonciello@amd.com>
+From:   Daniel Dadap <ddadap@nvidia.com>
+Message-ID: <b2ee7875-506d-860f-114f-5dd2103e0998@nvidia.com>
+Date:   Fri, 19 Aug 2022 17:02:47 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
+In-Reply-To: <20220819142519.5684-3-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b06ea7a8-6638-44f3-e12d-08da821a3a69
-x-ms-traffictypediagnostic: DM4PR84MB1973:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ynp3AnrKWTcOA383Bj9kNn1CtJx6uLhkuYhvcPspSMrSxk1gM9rY0OdddtQzQxzw+DRqbcwQ/MF6VTqLECREyozztpoGuHvcMhslxrnI0zGixcyqFXFN8PaFe/vN+7I+qOUKqRzTBx/745/GgUSxxft9kZVwKsVhIgh7dCHZUhrtHEvJveIxLVobtGgryIhzPDUOWyKsPVfPTml8X3mDJ65rz6TiOzOalwfc7yWGtuhL9qWGbVF5okTRDmsSMSKj/BR0kAV+/TbFw7eqI0IUqlZPdaQiofqoAjqnZEdJh8wrE42NAcMuXPkRG7+8uLh/s2/MaR5VW6YMUEBIS3FFDp+w8IS/5ygm2xjMuM0tSR3Oz+DvdDcxxz6fBoyl72bx07X14N3pTfcZMc3YsQDH/cZLWKIHcBp4bvxrvgOAHDn3vosxadmHnwEUMdJ56Tc+QxqKrAiqoaSmZXjcS0Prnh7givP59Rr+uOXOQ09Uianhs4YxCRWmTVTKcFP+E7NA9anC+ozKvz0TL6xTXcS3/sWCnqjCgGGORi3AoB+kW4etSWu5gZadMH+ZxbKdY466XaxK3zMVv06SkEVLecEMpwWLufYr5NvmQOw2H8vAQmbIQjJ2aW61VtwUrfHOeDIzsuV/9jndC9yxJhPkWDjxUIuqkMOD5GZ4Kyji5yi6JKxUuU2a7o8kck5UJGkVv2cT27hJoKfWrpM6GpoITucE5Q9HzwlPQznxcWlKhRw9dLgvU9yffw4FGT+xOMi0I63jGEyopc1Nhv17fT0JJfnoBQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(39860400002)(366004)(136003)(396003)(346002)(376002)(76116006)(7696005)(6506007)(71200400001)(53546011)(5660300002)(52536014)(186003)(558084003)(66446008)(33656002)(66556008)(66476007)(4326008)(86362001)(64756008)(66946007)(26005)(9686003)(8676002)(55016003)(2906002)(82960400001)(38070700005)(83380400001)(7416002)(41300700001)(54906003)(6916009)(8936002)(122000001)(316002)(478600001)(38100700002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WlhYb25yWUhkZWVsQkZaNUx5MjJucUNGY2tGQjFUZWl5VUlxeTNnZnlOVkxO?=
- =?utf-8?B?WmRCbWRRejVqZ2xubElvZ1FUWEEvSmlzNXZ5T3BOM2hqMXdmMW5HUDdVNXF5?=
- =?utf-8?B?aUNzcDlOQ25kNDlCUUJNMnEveWFaQW5NbEQyQXJ2QTFYdFZ3a292eUdmZGMw?=
- =?utf-8?B?WE45OEUrdzFJRjdCR1FSamZDelpyZzZuTzFqZEJpeHJNVzhVRnpLODg1Q3Ar?=
- =?utf-8?B?QTZiSlFiUXNiYnlHZTRZOHA4TSt4VVZzekw2OU5Kc0FoQ0VnRzFJQUZUSHRV?=
- =?utf-8?B?cUd3dDhaTzVGZ3F2cE5wRHpwaXR4WktTYU9za0RLMXJlWFAwb1J4VndpaERC?=
- =?utf-8?B?aWVqVUk0aFpBblJwNW5qV0JmSnBmS240cWxNQy9xSzFsOEhmRFRXeEprbDg0?=
- =?utf-8?B?b2R5YmMrVVAxNlV1QkJ2dnNqMjNTczF2NUljRytLRzVaWDgySWlQck5zeTd2?=
- =?utf-8?B?bGZjeVRXejhUY1R6S0tKY21wdEpDYlJtTFFLMkJ6akgyWDhpaFhZWHJ6dGRW?=
- =?utf-8?B?MmV0NDkzRitHTzVHR21BeDhpbmhwLzZXRDVjSE03ZEttWUppUWhhMXNGN2p2?=
- =?utf-8?B?YW11VkhhV055RnM3bXBMVFplKzV5MVVrTWtseFduZGFRWWFKV040ZmprT09u?=
- =?utf-8?B?eVJOZjk4SEdRaFJ2cUxxVU9NcEhzdHoxcFYxOTg4amhpekYzRDRtRW1RdldS?=
- =?utf-8?B?VG9ZQkZDWkVOV3k5VTJIRDY0ak1yY05nSUV5TkFaR284cUpoanlnRGpzS2lN?=
- =?utf-8?B?R0ZOOEZUTDF2ZGU1TXU0ZkdMWnJmMVVLTmhIRlNweXJuQlRsaWZHOTl4a0NX?=
- =?utf-8?B?VkhCR1M5Z2pCTi80MHBjTWZJSXZKd2ZhUW5pck1PSmpNY3dBRkNmUGlaQS9I?=
- =?utf-8?B?ODVYMTROZFRlYW01amE3TnZNUjRHQTRMVkNNdlo3WEZIVEFBYWZZYVVKTVNa?=
- =?utf-8?B?aTFldVZueE9NOUQ4bEE0bVhRQjRUbC9ZRU9ra1hPRUZBa2hrRG1oUnl3cDhS?=
- =?utf-8?B?cVhJTUh0TU1VZ3M4RUhkNEpoUVY5OHFlRlBYakxWNmhqR1hGdkwyMkttWXpk?=
- =?utf-8?B?bWxNZHVjRlkzeXVRdkJVTmZLQ2Y1QmtrZGZ2Z1UvTTc3UWtxWHFiNlMvVEdE?=
- =?utf-8?B?U09FaTRjTHhqelpLeS9lTkZaZEZCMnN2dkUwUmNiQTJ1cGJ3dXRKcnMwY1Vq?=
- =?utf-8?B?OVNHR2cxWTBTOGVUQXAzODM4OGJETUlyWmFucVlWYWtzRCtCaEkrQktuQWd6?=
- =?utf-8?B?ZTN3Y1BhZjRUZHJzTk9CRE5GUzg4dERzaGdHdXcybW9jYXJxcGhmeGFHVUVa?=
- =?utf-8?B?WGd2TE9oQmpzemJqY0VDL0JoeGNqUkNvK3dhWGJsQzloUE9vYlMwRDFoR1NF?=
- =?utf-8?B?VXZDZDU2TFY0MXgzQTZHVGNqQ3lPWXk1Q2ZQVWw0L2tYN1g2bTB4RUVZRnkz?=
- =?utf-8?B?clMvVWFOckUzQjkrWlB5YitFclkwTXMvV3hpcFdkNTVCbDZ5Q0k1N1VsQ2tR?=
- =?utf-8?B?QjZBNmtETTRKZHNxSFo3YTd6VHNoZVNGV3F3NmtuWURubUNKYUFsY0dxT0xv?=
- =?utf-8?B?N0t3R01QcU1pTmI3Nm13SDNVQ0ovdkpFUWxISDVqV3NoN3ZQb0s3cFlzdW1P?=
- =?utf-8?B?Yk5jaDQ3SDA3ZmRkQXJvMmYrOG5JOWpUNFFVcDgwU29kUGZiTGVHU3c2MTQv?=
- =?utf-8?B?NnhWTnZ2c2lzQ29MemhKblppMmE4MzZ1cHBEdHgxZXJjWmhacDZ0Z2gwWDRN?=
- =?utf-8?B?L0F3SnpzY0tyZmxWYmVNZkpiaHpsY0Nnc2F4LzBWaUJYYk9yU3FtZVB4bG5x?=
- =?utf-8?B?L3FQMXJQU3Y5djdPTTdnSTEzU3F4Z2g2U1pVKzdqZTFqd051WHZleWZSbWhV?=
- =?utf-8?B?U1ZhL2dQZXg5cjlrcnl0Q3E5dWdTb2FiSGpLKzUvWGpsUzJ2RkZWRG54Vmo2?=
- =?utf-8?B?N2dLUW9CVzBTK0w4NE9CQWpUd0tJWDA5dzdhQjlwYnYyWkJzUXVpSlBWcFkx?=
- =?utf-8?B?TjRmNHBxWWJxZDl4d1FaSFkvcTBveU5vZDREeEl0VnBUbW0yRTJjSWxEd2Nq?=
- =?utf-8?B?enZwYUhrR21lMFZIZHE2UGExTnEzRVlXc1YyZElsVWRrUFdNZ2toZkxMcS9t?=
- =?utf-8?Q?6cy5X/Nv5/oKrbBnFVKwPhdzS?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-ClientProxiedBy: SA9PR13CA0142.namprd13.prod.outlook.com
+ (2603:10b6:806:27::27) To DM6PR12MB2763.namprd12.prod.outlook.com
+ (2603:10b6:5:48::16)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 5bb1390a-95e3-42dd-26c3-08da822e8f01
+X-MS-TrafficTypeDiagnostic: BYAPR12MB2920:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Ukdt1zF8RvSO4C8mir32Srl0BAsuGr0zCYFMfULc3ndalU6VvH1VgKy8X719rWTHJZKeRCiZEVEJMMQ1JdIUH39JGUkm5uAeAIiK8awpEEQepOB7nzpL+Kx1brTcD0pzplcZeBodd41003Ia8O9fjucqLhaIbNnj5aewToqfV/W+XQUfXFtL6OuxSh9ijRFmcqKJdh0JqGgtsbbiW6DmhABEgtk2hcz/6w1Fzz18rbmLXNRKsNnjHAA9CBsm5NkZ3cekIikSUNJVYjVIruDQ+5arPMdzP3RoCK/RF6/Lq8E/42e8IZoi0A6roLYjhcKCN8VxabWQDefOZXyxt2wxut5TpdK/e/nvsl9UUuHNOytKqAsbGKmme/GpgogrNX1mxUZ5h034uLkmn9UfoKC4Sbr/LPDSaa47KdLwpLvkKUu+llVUAS4T+n49WvjS+niyCr5diTYc6YiZsZ2otvV/VGckK3p5/UD3h07tI4t51BiqIT62DtvfxOpTbusV2am/BSSZGwCgOtbL6MTgJhF8zAq2xbe+IYeBzgsf19iAPzs8zeSL1Bbl5QCXD1JnSaYcO2gbITF8zHAu9tgF4jyxeVTLl7NVS5Sa6uRzmg9DFaOUBdpyP0XtVIMmg52u1Uilzmn9TE+p6m9vYZWMeQSbmojvSRGsI9hVOWeRULz4KpY3qt4ibohm01F20VUoMqH1XcLAcpBW7fvfOkvYBW9hqe2IBdNGsMNj4Zir7q0y9gHe9L+Sn+IgiZ7CNWcVL0+8kUUK0+ToQfjikEv5x2HoMGG9jH8ErCeq0m5+1lGYOtg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2763.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(376002)(39860400002)(346002)(396003)(366004)(53546011)(26005)(6512007)(6506007)(31696002)(41300700001)(86362001)(6666004)(36756003)(31686004)(2616005)(186003)(83380400001)(478600001)(6486002)(8676002)(5660300002)(4326008)(66556008)(110136005)(316002)(66946007)(7416002)(66476007)(8936002)(38100700002)(2906002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aUZ6aWpiZWYzdmY0TzZhMU1peCt4TjZ6UjVkc2lzY0RyY2tNb3ZvcjdFYXZK?=
+ =?utf-8?B?V1I3a0xvT0lCWllPamxacXBNcWRmNEVFcXUwdFFXa3dZZ2hFV3NlMk5aaHp5?=
+ =?utf-8?B?QURYSC9rSDZjNW94OHVROW1KZkVDSHpHNVcraEkxTDY2WmYya0hGeUNTV25i?=
+ =?utf-8?B?UExhRjB6VHEyNzdrbG5tOWZwelJzempRQksrVW81Z2lKaEgxVjRORHRnOE5H?=
+ =?utf-8?B?eGVmOXF1MTZDUk5nNms3SkxyUE4wQ25JdW9IRnlSSkhCVWVjZkZtWTkzU3NY?=
+ =?utf-8?B?cEtha2FOOXE5UFU3WDVjL2JGVlNwWElrbm1sNkozZVoyLzRKUXAvNG1Mb1kw?=
+ =?utf-8?B?R3FvTkg3dnR4dmJGcDNmSlU3ZHNzRzhUb2ZqdWJMSEtKQ29iVzByZTkrVlRk?=
+ =?utf-8?B?OWpkK0dFa3RjemNIY2RVRVFhVXYzL2FsSGFVUGFUWEdQanZESnVYQ0xZVHox?=
+ =?utf-8?B?NWtZb3dZMDRUU3RvUHhOaXpCczdwbTBOU3QwR3BxMXcwOWxQc2tURHNGSGsz?=
+ =?utf-8?B?NWVaWVIxVmgreHd4anc1Nko4ZW16U0RrMjVyS0JKa3hoLzlwQ1NRSldEQlFy?=
+ =?utf-8?B?akhJdUxWdmNONG11UWFnd0F6YTBpVzFIVjBsV1FXSDVNYVZnTXhxMVhnVkR0?=
+ =?utf-8?B?WHdZNUpFVkREQlhxcWFFdzNIdzBzY0M1TGJNcHV6N1VIcnNlUVQ1d2dEWGU4?=
+ =?utf-8?B?L2lRZDBpbktTWHR3UzdDVTBDdEZ2RXkzZHJHQytXL0tORVBVZjUwWk5JdkR4?=
+ =?utf-8?B?aVRoczRxdWNqd3ZNa1lZWE5PUDg0WG44UGQ5YllubnpYd3NhMXVVZVdINmd1?=
+ =?utf-8?B?RWpyNU5WZTlIeVBJd0hXb05aZ0ZUYm5zd0J6RDlreE9mbXNKdXVseW1xNjVv?=
+ =?utf-8?B?dzVGWjJNNWtSYk5DTTZpUEl6cVZBMGZUSDE4bGxCV203cG5pSWYraTExR2tQ?=
+ =?utf-8?B?UHpDYlJ4akFDeFdOblcxY0VDa2xIOEZta28xVlFqNFFNVVV6Y0ZlVnNCbGVY?=
+ =?utf-8?B?MWM0aWZSOUxLUEhxRk9LdHFiNGlYV2ZBQS9RNHVLQVp6NDZEL0pQMk9EbkRo?=
+ =?utf-8?B?eGFWeFdkM3k4bGQwU2IxRExWbnNKSk8vRXZ5a2duYk8zb1FQTkVBengrY2ov?=
+ =?utf-8?B?MmZqOHhVY2RSa3VDMkRLQ1RrSGM4eDRmMXZ0bDlSMmpZZ1NyRTBpbG80VGla?=
+ =?utf-8?B?bE9QY2hnNUdqNlhFN3NVMkVGQTMwMWoxWUV3VUxRNXI0SmY2RjVnTVUySE9D?=
+ =?utf-8?B?STRBK3h4V0UrYlVuekhKcEFoalNQSVZ2dUErZEEwMUFpOVB2cEtWc081amZY?=
+ =?utf-8?B?V1VWc3BxanRpTWt4S1VsbXRma3htWUVPNUFDQmtlT0lFVFl2N3VVeWNGaTEr?=
+ =?utf-8?B?R1hxTGJQK1ptcysrd2ZrRTU3aTZRSHRtL1VuNCtMdGRxKzJiMVdvQWo3dmhw?=
+ =?utf-8?B?R3RDb3dEZmV2SzYrZVpZNnRMUTkxbEdrVnI0VE5wU2l6WUlVNVAxT3FQaWE4?=
+ =?utf-8?B?M1liUGw1R2VKZ0ZSbFI3QU5GUDlCNmYxUE5jTm05QU5OYUIwZWNIS01qa0x0?=
+ =?utf-8?B?NlNDNXFPeGhuNk9GOEFwWkV6dXJlTEhlTUhxTkRhZkNyampNaGdHSGx2bjBn?=
+ =?utf-8?B?aWtvcjA4WDFiTUlVQkdLZ0c3ZTFsMGNKelpJTDhtRkphazBJdXR1SUNERHdV?=
+ =?utf-8?B?WG80MlpxTWNmdStsMHpORnlZRWJtMEd6aXc4ZWo1eWVrWlkwQi9EdlIvdlI2?=
+ =?utf-8?B?TUZ1NUY0SHRkdzhtRG5kNGJwZityOS83cGo0RmZ2K0V4Z25Iem02ZUZxRWQv?=
+ =?utf-8?B?UDBCL1FZK3pJUy91M0ZiQkl2d1I4NmhZOVdXMjlNQWs2dWYzSEh2ZFNRSHd4?=
+ =?utf-8?B?YWQwNS9ZTmNGQU4vd21Mc1B2Z2s2d2wrVkhmU1N4dDlGRWxQR3p0ZEhsc2Z2?=
+ =?utf-8?B?dWZqM1l2L1Q2RWFXMDhnNE1UQzA1T094Ull2RW1VZ04vU29TTnRYWW12bWcw?=
+ =?utf-8?B?NVM3NW1uSG5Bekt3S2I3WmJCVEttdmdxQUh2UWZCQzhFOTUxT290eTJzM2Fn?=
+ =?utf-8?B?NktYNzlHU3IxSnMzbEcrd0hlaE5keWlGTFZQcTZxVFphZWxCaWovaS9EY3BD?=
+ =?utf-8?Q?qQoCFWD7qoZR8GK3vlhKMz9nh?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5bb1390a-95e3-42dd-26c3-08da822e8f01
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2763.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b06ea7a8-6638-44f3-e12d-08da821a3a69
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2022 19:37:18.6811
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2022 22:02:50.7232
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ym/Flz8I392R+agNQWG7OPba18gm491Vc2xFs46zCDli3UqB3uBhEfzjVKBvewS1F47MvO4MMoVcprQxz1NG0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR84MB1973
-X-OriginatorOrg: hpe.com
-X-Proofpoint-GUID: vtXnBXPseQBpwj3w4mG9NsUGAYKkFkZ6
-X-Proofpoint-ORIG-GUID: vtXnBXPseQBpwj3w4mG9NsUGAYKkFkZ6
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-19_10,2022-08-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- malwarescore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- mlxlogscore=694 mlxscore=0 adultscore=0 phishscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208190072
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uix37S1Xe3dX1zJRn1s6LIvWucSgLjTsyIBEQBei3J3PzRZSEQ80JIK7Gl5WeRdJUjOu1dIEpFvPTGTw0M5ykg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2920
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-T24gRnJpZGF5LCBBdWd1c3QgMTksIDIwMjIgMTozMSBQTSwgQm9yaXNsYXYgUGV0a292IHdyb3Rl
-Og0KPiA+IFdoZW4gdGhlIHN5c3RlbSBkb2VzIG5vdCBpbXBsZW1lbnQgQUNQSSBHSEVTIHRhYmxl
-LA0KPiA+IHdoaWNoIEkgc3VwcG9zZSBpcyBtb3N0IG9mIHRoZSBjYXNlIG9uIEFSTS4NCj4gDQo+
-IFRoYXQgc2hvdWxkIGJlIGRldGVjdGVkIGluIGdoZXNfZ2V0X2RldmljZXMoKSAtIGp1c3QgbGlr
-ZSBvbiB4ODYuDQoNCkFncmVlZC4gIEFuZCB0aGF0IGlzIHRoZSBjaGVjayB0byBnaGVzX3ByZXNl
-bnQgZmxhZy4uLg0KDQpUb3NoaQ0K
+
+On 8/19/22 9:25 AM, Mario Limonciello wrote:
+> The Linux-Lenovo-NV-HDMI-Audio and Linux-HPI-Hybrid-Graphics have
+> been seen in the wild being abused by other vendors.  If these use
+> cases are still needed for modern laptops, they should be done via
+> kernel drivers instead.
+>
+> As we can't have nice things, mark these strings to only be applied
+> to laptops from 2022 or earlier.  This should avoid breaking any
+> older laptops.  In the future if the kernel drivers need to call
+> Linux-only ASL for any reason, it could be a custom _DSM used only
+> for Linux or something similar. This approach allows kernel developers
+> to control whether to stop calling the ASL when the deficiency by
+> the kernel is resolved.
+>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>   Documentation/firmware-guide/acpi/osi.rst | 24 ++++++++++-------------
+>   drivers/acpi/osi.c                        | 22 +++++++++++++++------
+>   2 files changed, 26 insertions(+), 20 deletions(-)
+>
+> diff --git a/Documentation/firmware-guide/acpi/osi.rst b/Documentation/firmware-guide/acpi/osi.rst
+> index 05869c0045d7..392b982741fe 100644
+> --- a/Documentation/firmware-guide/acpi/osi.rst
+> +++ b/Documentation/firmware-guide/acpi/osi.rst
+> @@ -41,26 +41,22 @@ But it is likely that they will all eventually be added.
+>   What should an OEM do if they want to support Linux and Windows
+>   using the same BIOS image?  Often they need to do something different
+>   for Linux to deal with how Linux is different from Windows.
+> -Here the BIOS should ask exactly what it wants to know:
+>   
+> +In this case, the OEM should create custom ASL to be executed by the
+> +Linux kernel and changes to Linux kernel drivers to execute this custom
+> +ASL.  The easiest way to accomplish this is to introduce a device specific
+> +method (_DSM) that is called from the Linux kernel.
+> +
+> +In the past the kernel used to support something like:
+>   _OSI("Linux-OEM-my_interface_name")
+>   where 'OEM' is needed if this is an OEM-specific hook,
+>   and 'my_interface_name' describes the hook, which could be a
+>   quirk, a bug, or a bug-fix.
+>   
+> -In addition, the OEM should send a patch to upstream Linux
+> -via the linux-acpi@vger.kernel.org mailing list.  When that patch
+> -is checked into Linux, the OS will answer "YES" when the BIOS
+> -on the OEM's system uses _OSI to ask if the interface is supported
+> -by the OS.  Linux distributors can back-port that patch for Linux
+> -pre-installs, and it will be included by all distributions that
+> -re-base to upstream.  If the distribution can not update the kernel binary,
+> -they can also add an acpi_osi=Linux-OEM-my_interface_name
+> -cmdline parameter to the boot loader, as needed.
+> -
+> -If the string refers to a feature where the upstream kernel
+> -eventually grows support, a patch should be sent to remove
+> -the string when that support is added to the kernel.
+> +However this was discovered to be abused by other BIOS vendors to change
+> +completely unrelated code on completely unrelated systems.  As such it's
+> +been deprecated and any old hooks will not be activated on systems from
+> +2023 or later.
+>   
+>   That was easy.  Read on, to find out how to do it wrong.
+>   
+> diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+> index c2f6b2f553d9..18c339c3f277 100644
+> --- a/drivers/acpi/osi.c
+> +++ b/drivers/acpi/osi.c
+> @@ -25,6 +25,7 @@
+>   struct acpi_osi_entry {
+>   	char string[OSI_STRING_LENGTH_MAX];
+>   	bool enable;
+> +	unsigned int max_bios_year;
+>   };
+>   
+>   static struct acpi_osi_config {
+> @@ -40,25 +41,29 @@ static struct acpi_osi_config {
+>   static struct acpi_osi_config osi_config;
+>   static struct acpi_osi_entry
+>   osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
+> -	{"Module Device", true},
+> -	{"Processor Device", true},
+> -	{"3.0 _SCP Extensions", true},
+> -	{"Processor Aggregator Device", true},
+> +	{"Module Device", true, 0},
+> +	{"Processor Device", true, 0},
+> +	{"3.0 _SCP Extensions", true, 0},
+> +	{"Processor Aggregator Device", true, 0},
+
+
+Since you're going to have to update this whole table anyway, maybe it 
+would be more self-documenting if you used named initializers? e.g.:
+
+{ .string = "Module Device", .enable = true, .max_bios_year = 0 },
+
+For that matter, do we really need to explicitly set max_bios_year in 
+entries that don't use it? They're all zero-initialized anyway due to 
+the static declaration.
+
+
+>   	/*
+>   	 * Linux-Lenovo-NV-HDMI-Audio is used by BIOS to power on NVidia's HDMI
+>   	 * audio device which is turned off for power-saving in Windows OS.
+>   	 * This power management feature observed on some Lenovo Thinkpad
+>   	 * systems which will not be able to output audio via HDMI without
+>   	 * a BIOS workaround.
+> +	 *
+> +	 * This _OSI string is only applied to systems from 2022 or earlier.
+>   	 */
+> -	{"Linux-Lenovo-NV-HDMI-Audio", true},
+> +	{"Linux-Lenovo-NV-HDMI-Audio", true, 2022},
+
+
+Oof. I remember this one. Setting it to this year seems a bit generous, 
+as IIUC systems haven't shipped with this feature in a few years, so 
+there shouldn't be anything legitimately needing this key in recent 
+years, but if it's been found being abused in the wild as you say, I 
+suppose it's safer to not break things, even if they're being naughty.
+
+
+>   	/*
+>   	 * Linux-HPI-Hybrid-Graphics is used by BIOS to enable dGPU to
+>   	 * output video directly to external monitors on HP Inc. mobile
+>   	 * workstations as Nvidia and AMD VGA drivers provide limited
+>   	 * hybrid graphics supports.
+> +	 *
+> +	 * This _OSI string is only applied to systems from 2022 or earlier.
+>   	 */
+> -	{"Linux-HPI-Hybrid-Graphics", true},
+> +	{"Linux-HPI-Hybrid-Graphics", true, 2022},
+>   };
+>   
+>   static u32 acpi_osi_handler(acpi_string interface, u32 supported)
+> @@ -122,9 +127,11 @@ void __init acpi_osi_setup(char *str)
+>   		osi = &osi_setup_entries[i];
+>   		if (!strcmp(osi->string, str)) {
+>   			osi->enable = enable;
+> +			osi->max_bios_year = 0;
+>   			break;
+>   		} else if (osi->string[0] == '\0') {
+>   			osi->enable = enable;
+> +			osi->max_bios_year = 0;
+>   			strncpy(osi->string, str, OSI_STRING_LENGTH_MAX);
+>   			break;
+>   		}
+> @@ -225,6 +232,9 @@ static void __init acpi_osi_setup_late(void)
+>   		str = osi->string;
+>   		if (*str == '\0')
+>   			break;
+> +		if (osi->max_bios_year &&
+> +		    dmi_get_bios_year() > osi->max_bios_year)
+> +			continue;
+>   		if (osi->enable) {
+>   			status = acpi_install_interface(str);
+>   			if (ACPI_SUCCESS(status))
