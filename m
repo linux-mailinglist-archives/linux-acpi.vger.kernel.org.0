@@ -2,128 +2,282 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE28C5996DE
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Aug 2022 10:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67A7F5997FD
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Aug 2022 11:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346644AbiHSIKe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Aug 2022 04:10:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40970 "EHLO
+        id S1347874AbiHSIvC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Aug 2022 04:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347457AbiHSIKT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Aug 2022 04:10:19 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53EF6E5899;
-        Fri, 19 Aug 2022 01:10:18 -0700 (PDT)
-Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4M8Dnn0Ntsz67kgW;
-        Fri, 19 Aug 2022 16:05:17 +0800 (CST)
-Received: from lhrpeml500003.china.huawei.com (7.191.162.67) by
- fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 19 Aug 2022 10:10:03 +0200
-Received: from [10.195.34.98] (10.195.34.98) by lhrpeml500003.china.huawei.com
- (7.191.162.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 19 Aug
- 2022 09:10:03 +0100
-Message-ID: <dd41c5c3-ee16-821c-afd4-ddda4443bc78@huawei.com>
-Date:   Fri, 19 Aug 2022 09:10:03 +0100
+        with ESMTP id S1347848AbiHSIvA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Aug 2022 04:51:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E11C9CCE2C
+        for <linux-acpi@vger.kernel.org>; Fri, 19 Aug 2022 01:50:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1660899057;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vaSY+tNBDRdmPJJk42Xq6cmC4UlTPsxy/Q1PYsGVS90=;
+        b=T+E6GDR4U2PxjO/5Y6teuOpM19hYzeG+4jTZB03HVU/2n0Rrtj0gDO/XhIE1GgiYSE+kHt
+        IodWkLgf/7hRpXYkZbGfJF/42E9uXPF3h/VDWAyHBFAtl5Wbi4B5N4irKbJ8a2KrYbvDd/
+        QhuCgIoV7zsGhtucPbrEHVPqmQXD4DY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-621-Ws4F7h3YMCyLZ2z-Z3gmjg-1; Fri, 19 Aug 2022 04:50:56 -0400
+X-MC-Unique: Ws4F7h3YMCyLZ2z-Z3gmjg-1
+Received: by mail-ej1-f69.google.com with SMTP id nb10-20020a1709071c8a00b006e8f89863ceso1263681ejc.18
+        for <linux-acpi@vger.kernel.org>; Fri, 19 Aug 2022 01:50:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=vaSY+tNBDRdmPJJk42Xq6cmC4UlTPsxy/Q1PYsGVS90=;
+        b=Rbdc7D1AKxq044obaxAGwChpo6XW01tcon3v+NheHwzOtA5f3ld04aoknxQBN77dzE
+         4ju+Ne4RqaaX6sJOfOfk3tXWj2KLocataI1vD21UoYh1p5R/+R0BAdxGm5RjDVfUfoDA
+         7tpiZ2J2YUx7/0w9SjA6e0kXBHMJTqTtNmrQ4iKqoYomBfXXJ5xWH0DKNweCZXuVhLtY
+         eMk4fboFznulKDMtVqxqNk3EVmaVejPWcqy7shTSNQ0cE2MDHcq08LcvHSROL7eLyOey
+         qH16GDyy0rJ436j5mpjAEEBRMJAOqunpVtBRmhcoya9JQze8Yjw2rPHk5vYKf1PYpB4S
+         wwfw==
+X-Gm-Message-State: ACgBeo1+fJjwqRo48mQsYIoHxvT0ox/g/kOy55Lqj08j1Sks3qmNXNzv
+        TcgYg21m3xaWR7KSiMAaPus3gG4OcR3vsuNh1BFxhsIIQyfP9qwKBrDsy24nCfWi5FhyY0jrBX9
+        GHH2F8/sn3lAdt8aJXjoCZQ==
+X-Received: by 2002:a17:907:2be3:b0:730:6866:a9b1 with SMTP id gv35-20020a1709072be300b007306866a9b1mr4225849ejc.693.1660899055081;
+        Fri, 19 Aug 2022 01:50:55 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR48FC9IVvstbH2Etz1W95N0KTZoVu5XhQIlRV5gYjBWBm/vAQoJQiOB2bHkSUcrgd8AyFQnxQ==
+X-Received: by 2002:a17:907:2be3:b0:730:6866:a9b1 with SMTP id gv35-20020a1709072be300b007306866a9b1mr4225833ejc.693.1660899054740;
+        Fri, 19 Aug 2022 01:50:54 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id s18-20020a1709062ed200b00722e50dab2csm1999671eji.109.2022.08.19.01.50.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Aug 2022 01:50:53 -0700 (PDT)
+Message-ID: <72f20ebb-f3bc-9b5a-438a-4d7bcd696097@redhat.com>
+Date:   Fri, 19 Aug 2022 10:50:52 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH PoC 2/3] ACPI: platform: Refactor
- acpi_create_platform_device()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linuxarm <linuxarm@huawei.com>
-References: <1660649244-146842-1-git-send-email-john.garry@huawei.com>
- <1660649244-146842-3-git-send-email-john.garry@huawei.com>
- <CAHp75VdhCovo1uT3oxQAymEO9X+29oDet7LjYkLvpmj+r15Tfg@mail.gmail.com>
-From:   John Garry <john.garry@huawei.com>
-In-Reply-To: <CAHp75VdhCovo1uT3oxQAymEO9X+29oDet7LjYkLvpmj+r15Tfg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.195.34.98]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500003.china.huawei.com (7.191.162.67)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v3 09/31] ACPI: video: Make backlight class device
+ registration a separate step (v2)
+Content-Language: en-US
+To:     Daniel Dadap <ddadap@nvidia.com>, Ben Skeggs <bskeggs@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Xinhui <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+References: <20220818184302.10051-1-hdegoede@redhat.com>
+ <20220818184302.10051-10-hdegoede@redhat.com>
+ <b177636d-bc68-cd25-4a28-8131ef4625fe@nvidia.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <b177636d-bc68-cd25-4a28-8131ef4625fe@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 18/08/2022 20:41, Andy Shevchenko wrote:
-> On Tue, Aug 16, 2022 at 2:33 PM John Garry <john.garry@huawei.com> wrote:
+Hi,
+
+On 8/18/22 22:07, Daniel Dadap wrote:
+> 
+> On 8/18/22 1:42 PM, Hans de Goede wrote:
+>> On x86/ACPI boards the acpi_video driver will usually initialize before
+>> the kms driver (except i915). This causes /sys/class/backlight/acpi_video0
+>> to show up and then the kms driver registers its own native backlight
+>> device after which the drivers/acpi/video_detect.c code unregisters
+>> the acpi_video0 device (when acpi_video_get_backlight_type()==native).
 >>
->> There is commonality between acpi_create_platform_device() and
->> hisi_lpc_acpi_add_child(), in that it covers 2x main steps:
->> - Read resources for the acpi_device
->> - Create platform device
+>> This means that userspace briefly sees 2 devices and the disappearing of
+>> acpi_video0 after a brief time confuses the systemd backlight level
+>> save/restore code, see e.g.:
+>> https://bbs.archlinux.org/viewtopic.php?id=269920
 >>
->> Refactor acpi_create_platform_device() so that it may be reused by
->> hisi_lpc_acpi_add_child() to reduce duplication.
+>> To fix this make backlight class device registration a separate step
+>> done by a new acpi_video_register_backlight() function. The intend is for
+>> this to be called by the drm/kms driver *after* it is done setting up its
+>> own native backlight device. So that acpi_video_get_backlight_type() knows
+>> if a native backlight will be available or not at acpi_video backlight
+>> registration time, avoiding the add + remove dance.
+>>
+>> Note the new acpi_video_register_backlight() function is also called from
+>> a delayed work to ensure that the acpi_video backlight devices does get
+>> registered if necessary even if there is no drm/kms driver or when it is
+>> disabled.
+>>
+>> Changes in v2:
+>> - Make register_backlight_delay a module parameter, mainly so that it can
+>>    be disabled by Nvidia binary driver users
+>>
+>> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>   drivers/acpi/acpi_video.c | 50 ++++++++++++++++++++++++++++++++++++---
+>>   include/acpi/video.h      |  2 ++
+>>   2 files changed, 49 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+>> index 8545bf94866f..09dd86f86cf3 100644
+>> --- a/drivers/acpi/acpi_video.c
+>> +++ b/drivers/acpi/acpi_video.c
+>> @@ -73,6 +73,16 @@ module_param(device_id_scheme, bool, 0444);
+>>   static int only_lcd = -1;
+>>   module_param(only_lcd, int, 0444);
+>>   +/*
+>> + * Display probing is known to take up to 5 seconds, so delay the fallback
+>> + * backlight registration by 5 seconds + 3 seconds for some extra margin.
+>> + */
+>> +static int register_backlight_delay = 8;
+>> +module_param(register_backlight_delay, int, 0444);
 > 
-> ...
 > 
->> + * acpi_create_platform_device_ops - Create platform device for ACPI device node
-> 
-> Not sure I understand why _ops is a suffix for the function. I would
-> expect _ops to be a data struct where the ->xlate() and perhaps other
-> callbacks may be collected. It may be that I have missed that portion
-> in the previous discussion.
+> Would it make sense to make this parameter writable from userspace, e.g. so that it can be set by a udev rule rather than relying on a riskier kernel command line edit? Then again, that probably makes things more complicated, since you'd have to check the parameter again when the worker fires, and changing the parameter to a non-zero value from either zero or a different non-zero value would be too weird. And making a separate writable parameter to allow userspace to turn the worker into a noop despite it being enabled when the kernel was initially loaded seems wrong, too.
 
-ok, maybe I can put all the members into a struct, but I don't think 
-that it improves the overall code too much.
+Right, you have pretty much described yourself why making this parameter
+runtime configurable is not really feasible :)
+
+Regards,
+
+Hans
+
+
 
 > 
-> ...
 > 
->> +       if (name)
->> +               pdevinfo.name = name;
->> +       else
->> +               pdevinfo.name = dev_name(&adev->dev);
-> 
->> +       pdevinfo.data = data;
->> +       pdevinfo.size_data = size_data;
-> 
-> It rather reminds me of platform device registration full with this
-> device info. May be what you need is
-> struct acpi_platfrom_device_info {
->    properties;
->    name;
->    id;
->    ->xlate();
->    ...
-> };
-> 
-> ?
-> 
-> ...
-> 
->> +struct platform_device *acpi_create_platform_device_ops(
->> +                               struct acpi_device *adev,
->> +                               const char *name,
->> +                               const struct property_entry *properties,
->> +                               void *data, size_t size_data,
->> +                               int (*xlat)(struct acpi_device *adev,
->> +                                           struct resource *res,
->> +                                           void *data, size_t size_data),
->> +                               int id);
-> 
-> ...because this looks  a bit too much from the amount of parameters
-> point of view.
+>> +MODULE_PARM_DESC(register_backlight_delay,
+>> +    "Delay in seconds before doing fallback (non GPU driver triggered) "
+>> +    "backlight registration, set to 0 to disable.");
+>> +
+>>   static bool may_report_brightness_keys;
+>>   static int register_count;
+>>   static DEFINE_MUTEX(register_count_mutex);
+>> @@ -81,6 +91,9 @@ static LIST_HEAD(video_bus_head);
+>>   static int acpi_video_bus_add(struct acpi_device *device);
+>>   static int acpi_video_bus_remove(struct acpi_device *device);
+>>   static void acpi_video_bus_notify(struct acpi_device *device, u32 event);
+>> +static void acpi_video_bus_register_backlight_work(struct work_struct *ignored);
+>> +static DECLARE_DELAYED_WORK(video_bus_register_backlight_work,
+>> +                acpi_video_bus_register_backlight_work);
+>>   void acpi_video_detect_exit(void);
+>>     /*
+>> @@ -1859,8 +1872,6 @@ static int acpi_video_bus_register_backlight(struct acpi_video_bus *video)
+>>       if (video->backlight_registered)
+>>           return 0;
+>>   -    acpi_video_run_bcl_for_osi(video);
+>> -
+>>       if (acpi_video_get_backlight_type() != acpi_backlight_video)
+>>           return 0;
+>>   @@ -2086,7 +2097,11 @@ static int acpi_video_bus_add(struct acpi_device *device)
+>>       list_add_tail(&video->entry, &video_bus_head);
+>>       mutex_unlock(&video_list_lock);
+>>   -    acpi_video_bus_register_backlight(video);
+>> +    /*
+>> +     * The userspace visible backlight_device gets registered separately
+>> +     * from acpi_video_register_backlight().
+>> +     */
+>> +    acpi_video_run_bcl_for_osi(video);
+>>       acpi_video_bus_add_notify_handler(video);
+>>         return 0;
+>> @@ -2125,6 +2140,11 @@ static int acpi_video_bus_remove(struct acpi_device *device)
+>>       return 0;
+>>   }
+>>   +static void acpi_video_bus_register_backlight_work(struct work_struct *ignored)
+>> +{
+>> +    acpi_video_register_backlight();
+>> +}
+>> +
+>>   static int __init is_i740(struct pci_dev *dev)
+>>   {
+>>       if (dev->device == 0x00D1)
+>> @@ -2235,6 +2255,18 @@ int acpi_video_register(void)
+>>        */
+>>       register_count = 1;
+>>   +    /*
+>> +     * acpi_video_bus_add() skips registering the userspace visible
+>> +     * backlight_device. The intend is for this to be registered by the
+>> +     * drm/kms driver calling acpi_video_register_backlight() *after* it is
+>> +     * done setting up its own native backlight device. The delayed work
+>> +     * ensures that acpi_video_register_backlight() always gets called
+>> +     * eventually, in case there is no drm/kms driver or it is disabled.
+>> +     */
+>> +    if (register_backlight_delay)
+>> +        schedule_delayed_work(&video_bus_register_backlight_work,
+>> +                      register_backlight_delay * HZ);
+>> +
+>>   leave:
+>>       mutex_unlock(&register_count_mutex);
+>>       return ret;
+>> @@ -2245,6 +2277,7 @@ void acpi_video_unregister(void)
+>>   {
+>>       mutex_lock(&register_count_mutex);
+>>       if (register_count) {
+>> +        cancel_delayed_work_sync(&video_bus_register_backlight_work);
+>>           acpi_bus_unregister_driver(&acpi_video_bus);
+>>           register_count = 0;
+>>           may_report_brightness_keys = false;
+>> @@ -2253,6 +2286,17 @@ void acpi_video_unregister(void)
+>>   }
+>>   EXPORT_SYMBOL(acpi_video_unregister);
+>>   +void acpi_video_register_backlight(void)
+>> +{
+>> +    struct acpi_video_bus *video;
+>> +
+>> +    mutex_lock(&video_list_lock);
+>> +    list_for_each_entry(video, &video_bus_head, entry)
+>> +        acpi_video_bus_register_backlight(video);
+>> +    mutex_unlock(&video_list_lock);
+>> +}
+>> +EXPORT_SYMBOL(acpi_video_register_backlight);
+>> +
+>>   void acpi_video_unregister_backlight(void)
+>>   {
+>>       struct acpi_video_bus *video;
+>> diff --git a/include/acpi/video.h b/include/acpi/video.h
+>> index 4705e339c252..0625806d3bbd 100644
+>> --- a/include/acpi/video.h
+>> +++ b/include/acpi/video.h
+>> @@ -53,6 +53,7 @@ enum acpi_backlight_type {
+>>   #if IS_ENABLED(CONFIG_ACPI_VIDEO)
+>>   extern int acpi_video_register(void);
+>>   extern void acpi_video_unregister(void);
+>> +extern void acpi_video_register_backlight(void);
+>>   extern int acpi_video_get_edid(struct acpi_device *device, int type,
+>>                      int device_id, void **edid);
+>>   extern enum acpi_backlight_type acpi_video_get_backlight_type(void);
+>> @@ -69,6 +70,7 @@ extern int acpi_video_get_levels(struct acpi_device *device,
+>>   #else
+>>   static inline int acpi_video_register(void) { return -ENODEV; }
+>>   static inline void acpi_video_unregister(void) { return; }
+>> +static inline void acpi_video_register_backlight(void) { return; }
+>>   static inline int acpi_video_get_edid(struct acpi_device *device, int type,
+>>                         int device_id, void **edid)
+>>   {
 > 
 
-ok, agreed.
-
-But even if we improve this code, the hisi_lpc changes are quite large 
-and unwieldly.
-
-Thanks,
-John
