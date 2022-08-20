@@ -2,77 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 056BD59AA6D
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Aug 2022 03:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D52D59ACFB
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Aug 2022 11:39:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241975AbiHTBPP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Aug 2022 21:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41522 "EHLO
+        id S1344400AbiHTJha (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 20 Aug 2022 05:37:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240928AbiHTBPO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Aug 2022 21:15:14 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D354D176
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Aug 2022 18:15:13 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id e19so4867335pju.1
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Aug 2022 18:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc;
-        bh=GyIdygXpERIYq0zhovmgdDSjsG4Trhk4Rphv5GwxReI=;
-        b=h/CAcJeeszRSUpsHRrWjNL8ehsLBFUel5BIrCu13Hr3XLNeFnDXWiRLI+HZXbBHkf/
-         MCu/HP/5KOKDzmk7zBgLD6PyndhQCFa+D7EGkjsm8/G2vlq4Xiv7sTlNDNbxOkILuSFr
-         VICrSwy44DZZ/zr5FT2SDtRgbGT5C6eRoXN3I+G3ngO38XrtUJUpbenxHKbjn8muKEAP
-         DBTCPtyP5HzmsZsXoX5ejMFZegUoiFZeWx9oYs5Aqww7pXSJt2mRVDpozhWAm1G+dO5A
-         dhhLEPyA9NdDz3urCzZiWZW2iBQIx3hP+0knkunFXxOaFjHM9cl3ze8ZEOZ4Y1quqFgt
-         kpHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=GyIdygXpERIYq0zhovmgdDSjsG4Trhk4Rphv5GwxReI=;
-        b=OT5tGfTIDvMrdpINlCIzDuVlCZPGxzKca12qUdxLrlz4V+F9HhCMfAzPi4oQXH4h26
-         Ric/umm2xN8NiMWtsMJ8azLoajtIY7LZBBVP+aIiRVI1ZrY/Inoh/p3x/AS3pkl0ZgFC
-         UWpAEt+301sMeeFOpDaAZRf8vUxv/LDQz8tFt6twzVSJjKXpoSyIa/q5yu2keYuwgLJX
-         9Q5m9WVnnolnIeKL93395PHhGC/J5P7KpLUmF6XDopqq5248ds/IoWKjhKuuGq5CNV1u
-         1l57nyzVYfFT8TJG37U8BMGeYMlC44SOVWf1Y91R0VDc2F9AVF01Ezb7a5y+jVigYAYR
-         +fFA==
-X-Gm-Message-State: ACgBeo2FZw4Rt2N+TrRunG6zS2vg9bFxgGabjvXZAVtuS3nrQDP38f/I
-        GwC+Qk63+/0Ibf2vJ3aKsKXMBx/sP0m2s/oBVGE=
-X-Google-Smtp-Source: AA6agR5CF+zwedWTQwMvyc2fr0r7Pa6iCsCeofF3rvOFFM3c26m5Am9XejyMXw/VysVlih/IaNNqhF6KDmBrp+lOKM8=
-X-Received: by 2002:a17:902:bd08:b0:16e:e00c:dd48 with SMTP id
- p8-20020a170902bd0800b0016ee00cdd48mr9884483pls.93.1660958112962; Fri, 19 Aug
- 2022 18:15:12 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a17:902:d4d2:b0:16e:fde3:172d with HTTP; Fri, 19 Aug 2022
- 18:15:12 -0700 (PDT)
-Reply-To: aseanvietnam55@gmail.com
-From:   ASEAN VIETNAM <yawoarouna@gmail.com>
-Date:   Sat, 20 Aug 2022 01:15:12 +0000
-Message-ID: <CABoxYe0pCOJFX=V3PiuPwXpDjC+EyAWHjNh7ZrirhDHjafRnMg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+        with ESMTP id S245125AbiHTJh0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 20 Aug 2022 05:37:26 -0400
+Received: from xry111.site (xry111.site [89.208.246.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DBFD201B4;
+        Sat, 20 Aug 2022 02:37:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
+        s=default; t=1660988244;
+        bh=NbS47qUpS5b3B94luHG1GnOEBxFKcFZNFyfnGjSxWwE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=ghGjnt7GlseJs/DuNwSCDVrTcnlKG4vJ9xgTQAk9sv2pBoVdBUTcOic0y1dOOSJH8
+         b0VFVSruf2uzUS62RNw3yxgvzjAxHueBPqJDB7ut953GRdeF00IGq9pHHX2zrNbsyE
+         nELEYKwRUYLpwStXmjmP4Qv8GnaTZzjWbg5KzhDo=
+Received: from localhost.localdomain (xry111.site [IPv6:2001:470:683e::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
+        (Client did not present a certificate)
+        (Authenticated sender: xry111@xry111.site)
+        by xry111.site (Postfix) with ESMTPSA id A41F6669F1;
+        Sat, 20 Aug 2022 05:37:20 -0400 (EDT)
+Message-ID: <27081961433ca26e01af8709fa04e4a6ee755690.camel@xry111.site>
+Subject: Re: [PATCH V2 1/2] LoongArch: Add CPU HWMon platform driver
+From:   Xi Ruoyao <xry111@xry111.site>
+To:     Huacai Chen <chenhuacai@kernel.org>,
+        Jianmin Lv <lvjianmin@loongson.cn>
+Cc:     Huacai Chen <chenhuacai@loongson.cn>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>, loongarch@lists.linux.dev,
+        linux-arch <linux-arch@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date:   Sat, 20 Aug 2022 17:37:18 +0800
+In-Reply-To: <CAAhV-H6OaMOnhddiY2WSjiag5sFwAG6gab2m22nZonjnUbCN9w@mail.gmail.com>
+References: <20220818042208.2896457-1-chenhuacai@loongson.cn>
+         <98d716a4-04de-ff32-1bbc-cac576989a87@loongson.cn>
+         <ce96bcc9bf0aa24d1be5a91d07e6e7515c4d0c33.camel@xry111.site>
+         <5d338fcd-d225-6fe1-1b94-0fce94a3fb0f@loongson.cn>
+         <CAAhV-H6OaMOnhddiY2WSjiag5sFwAG6gab2m22nZonjnUbCN9w@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+User-Agent: Evolution 3.45.2 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
+        PDS_OTHER_BAD_TLD,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, 2022-08-19 at 18:12 +0800, Huacai Chen wrote:
+> Hi, all,
+>=20
+> If ACPI TZ is widely configured, this patch can be dropped, but I
+> found most users don't have ACPI TZ in their machines.
+
+I know almost nothing about ACPI.  Can ACPI TZ be provided by a firmware
+update, or it needs a hardware modification (rewire the PCB or replace
+some chip)?  If only a firmware change is needed we can inform the
+firmware team to implement it (currently UEFI-compliant firmware is
+still at beta stage anyway).
+
+
 --=20
-Hello,
-
-You have an important message get back to me for more information.
-
-Mr. Le Luong Minh
-(Ph=C3=B3 C=E1=BB=A5c Ng=C3=A2n kh=E1=BB=91) Deputy Department of the Treas=
-ury
-Vietnam.
+Xi Ruoyao <xry111@xry111.site>
+School of Aerospace Science and Technology, Xidian University
