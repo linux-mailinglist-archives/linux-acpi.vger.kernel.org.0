@@ -2,72 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03A7E59BE5A
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Aug 2022 13:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B428659BF44
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Aug 2022 14:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233923AbiHVLVU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Aug 2022 07:21:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47434 "EHLO
+        id S233758AbiHVMI7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Aug 2022 08:08:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233910AbiHVLVR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Aug 2022 07:21:17 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B281F63E;
-        Mon, 22 Aug 2022 04:21:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=ktMzlSFdVQYUGp03litM44l4Gx4FNd+6ZShF2nft75g=; b=ljTOP2NOOOEPk/1TF0QWa2ajJK
-        KqVDEbmCr3KQ/zmtQkDGm+QLYYN700ufnjfEvy1vtpoJ4aVO/lgj72RIHglIaG925iWDmeOjw3dKV
-        czsJEaLgSURBV5wXu11GNsq/cyf4fehp4tVZce8bAqBR2CAwf6z35O0JglOYWn5R/jhd5UDHOoHgb
-        Y2cfZz3F+KsGqv4Q4FR7ewbMpiTTX0ulhL4skI3GErKOcf0l/8usRywD9U9tl7oQsoQoAtvEPS+W6
-        GeeraySviOpmiP/U4zpRidJB9qXKKrL/8KB2RW1gBml8txR18tMwhdxARX18wedHD0OKaP1CQVC0A
-        BSGHMG1w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oQ5UQ-0087Er-3k; Mon, 22 Aug 2022 11:21:06 +0000
-Date:   Mon, 22 Aug 2022 04:21:06 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     joro@8bytes.org, will@kernel.org, catalin.marinas@arm.com,
-        jean-philippe@linaro.org, inki.dae@samsung.com,
-        sw0312.kim@samsung.com, kyungmin.park@samsung.com,
-        tglx@linutronix.de, maz@kernel.org, alex.williamson@redhat.com,
-        cohuck@redhat.com, iommu@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Subject: Re: [PATCH 2/3] iommu/dma: Move public interfaces to linux/iommu.h
-Message-ID: <YwNmosMGZdGtY3LX@infradead.org>
-References: <cover.1660668998.git.robin.murphy@arm.com>
- <9cd99738f52094e6bed44bfee03fa4f288d20695.1660668998.git.robin.murphy@arm.com>
+        with ESMTP id S232460AbiHVMI5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 Aug 2022 08:08:57 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8A75B175A9;
+        Mon, 22 Aug 2022 05:08:55 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 47C0012FC;
+        Mon, 22 Aug 2022 05:08:58 -0700 (PDT)
+Received: from [10.57.14.241] (unknown [10.57.14.241])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 11DA13F718;
+        Mon, 22 Aug 2022 05:08:52 -0700 (PDT)
+Message-ID: <638e0a6e-10d2-8552-a61f-c4c001a2cbe9@arm.com>
+Date:   Mon, 22 Aug 2022 13:08:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9cd99738f52094e6bed44bfee03fa4f288d20695.1660668998.git.robin.murphy@arm.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v4 2/2] cpufreq: CPPC: Change FIE default
+Content-Language: en-US
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, viresh.kumar@linaro.org,
+        robert.moore@intel.com, punit.agrawal@bytedance.com,
+        ionela.voinescu@arm.com, pierre.gondois@arm.com,
+        linux-kernel@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20220819162547.141333-1-jeremy.linton@arm.com>
+ <20220819162547.141333-3-jeremy.linton@arm.com>
+From:   Lukasz Luba <lukasz.luba@arm.com>
+In-Reply-To: <20220819162547.141333-3-jeremy.linton@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index 70393fbb57ed..79cb6eb560a8 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -1059,4 +1059,40 @@ void iommu_debugfs_setup(void);
->  static inline void iommu_debugfs_setup(void) {}
->  #endif
->  
-> +#ifdef CONFIG_IOMMU_DMA
-> +#include <linux/msi.h>
 
-I don't think msi.h is actually needed here.
 
-Just make the struct msi_desc and struct msi_msg forward declarations
-unconditional and we should be fine.
+On 8/19/22 17:25, Jeremy Linton wrote:
+> FIE is mostly implemented as PCC mailboxes on arm machines.  This was
+> enabled by default without any data suggesting that it does anything
+> but hurt system performance. Lets change the default to 'n' until
+> hardware appears which clearly benefits.
+> 
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> ---
+>   drivers/cpufreq/Kconfig.arm | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/cpufreq/Kconfig.arm b/drivers/cpufreq/Kconfig.arm
+> index 954749afb5fe..ad66d8f15db0 100644
+> --- a/drivers/cpufreq/Kconfig.arm
+> +++ b/drivers/cpufreq/Kconfig.arm
+> @@ -22,7 +22,7 @@ config ACPI_CPPC_CPUFREQ
+>   config ACPI_CPPC_CPUFREQ_FIE
+>   	bool "Frequency Invariance support for CPPC cpufreq driver"
+>   	depends on ACPI_CPPC_CPUFREQ && GENERIC_ARCH_TOPOLOGY
+> -	default y
+> +	default n
+>   	help
+>   	  This extends frequency invariance support in the CPPC cpufreq driver,
+>   	  by using CPPC delivered and reference performance counters.
+
+LGTM
+
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
