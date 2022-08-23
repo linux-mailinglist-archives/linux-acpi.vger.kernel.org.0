@@ -2,137 +2,210 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5185459D286
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Aug 2022 09:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95AF059E562
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Aug 2022 16:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241151AbiHWHoT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Aug 2022 03:44:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55244 "EHLO
+        id S241584AbiHWOxU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 23 Aug 2022 10:53:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241066AbiHWHoS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Aug 2022 03:44:18 -0400
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2050.outbound.protection.outlook.com [40.92.99.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D40642F1;
-        Tue, 23 Aug 2022 00:44:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BOVONaTwF+RwCihyRyGUrvgez/agsohVyz7tCIV9RdjX6LCBnfYGU4UhPYBsNJErsCxeq/eRUqa1BQU4tMfEqcrqu3t7HAqiKuEykV//Z5xWXquksFRpnzNbr9k/2KdTjPNXZwPUD/WWEKkKUmlMcXfE5nze1yg9eIN/A91AJx5bsFm9VzeFpsGGKMecpwO0cjVx9ICkOcJhMnRytl799cL7ydRIIj2qPdSV2JFs8jxU2q5V2TKZ3yGKyzR/whnQ14PhaCHtCaOonbDPS+++rvtCTdARlIFx4bWNH1F3d5QBTT0LsGji3XzzeBWrevkBY1fxea3IQXPSh/lR5BqRog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dYWqBtU45I4EQkd+Dbg4pnygsbhlRMw7LJlSRTag6Fk=;
- b=CXHCWlRQrNsosllUgIoMyP9+tpK6wup/waerDoFVSRnq2PNeH9+6KXWB6HAOsu9vqU1ZzLHj09wi6+YyQRf/ZNvftV87Z1fAUY245fibKKVvXsnsD2NX7ogrQZiSNSK4NZJrPESC+dHPOJxAcDnnY4v+wGdIhTTDisySOKkUcf3Ui9FnyHb0y6hrcXsIPFz8JPG0Q+YMtR6n9Rz9dv9ftGWiHxWztpGZQzw023Z7C6WrYDpv3GhH6m0wtqa/20JvVmiKwFJwwma/ybC9lDlUVLeAJFnRvLApzz8muZ8/OM0xsqmLch3KaM2mjFYWBEExbLlj3Kfn71tqhkT5sUgf2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dYWqBtU45I4EQkd+Dbg4pnygsbhlRMw7LJlSRTag6Fk=;
- b=MttYetpuk4FJTU0XZOJ/n/sjfrwy/K0Pq8hdNRZAWxd6xFeda9HIiZjkUP7kdT6AZRDZdja5++gE9H8SKPm8jDFIqI3GgQ8q0r1cF8QyCQ0hK/L5uceMTDU0o+/wNsgWGfCpvVlOgfxcprTjt4IRrp3oO4Z+VeH2eHMBBQBSv6MOVmtPIVwLbeKuLbjF+4J7ygJAa708BFePmoQLmbSvfpS+OFR5iW4UmJZtVAFce2zLepaGPhyIslyFMqBcrpNobrsR+muFPJRf6VKIg/HxrzgTbLhW+ElnAINFVmVgKow0kls4lxlrEGWEDrQ6YodZIWm2uqdDYqAw44jz7xHPvg==
-Received: from TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:248::14)
- by TYAP286MB0281.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:8040::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5546.16; Tue, 23 Aug
- 2022 07:44:14 +0000
-Received: from TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
- ([fe80::45d6:a31c:aef3:a3e2]) by TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
- ([fe80::45d6:a31c:aef3:a3e2%4]) with mapi id 15.20.5546.023; Tue, 23 Aug 2022
- 07:44:14 +0000
-From:   Riwen Lu <luriwen@hotmail.com>
-To:     rafael@kernel.org, rui.zhang@intel.com, lenb@kernel.org,
-        jeremy.linton@arm.com
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Riwen Lu <luriwen@kylinos.cn>,
-        Jeremy Linton <Jeremy.Linton@arm.com>
-Subject: [PATCH v1] ACPI: processor: Remove freq Qos request for all CPUs
-Date:   Tue, 23 Aug 2022 15:43:42 +0800
-Message-ID: <TYWP286MB2601183235622B29FAF707B5B1709@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN:  [qpx019S2UVF9r51+UW40f+C0o4Aku9XsQoCDB5Zel5Q=]
-X-ClientProxiedBy: SG2PR06CA0222.apcprd06.prod.outlook.com
- (2603:1096:4:68::30) To TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:248::14)
-X-Microsoft-Original-Message-ID: <20220823074342.425830-1-luriwen@hotmail.com>
+        with ESMTP id S241667AbiHWOv6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Aug 2022 10:51:58 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B10FB2F6531;
+        Tue, 23 Aug 2022 05:15:21 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-334dc616f86so373537967b3.8;
+        Tue, 23 Aug 2022 05:15:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
+        bh=3sJI0e88Gdga53n7WRzAKoSv8TehdpeQCz7sliezLF8=;
+        b=zJOOPn7n1sk6cMmXpMlzvADYQt3q9xwWE/vX0aODG3VPugauZRo4A9hDVuszsq4gEA
+         7qm7mHcAyEehaVCvuFT09cC2nkB2SLhk2H5+0qxVlcLzTRiSr9GkGlqjyxXP+Vx2eulX
+         XK5gbVQnzu9+1sSLBN1Z3/3Twko66t9MVmM8YLXi2t+4y0MKzLGK1Mbs6/NTH1DhE48h
+         Fn1yJ9ujisekeR/lVEf88OCwDJW4RgsO2Y94fFlDsEqG965Inb6VuuK0l8FIihR3AxiC
+         Xaw0biXrtvd60nIp96a7aplDpQ/pFGV8rt6txMny7Oc+/enD485W6quDYDCQHLY3XTB6
+         v+Rg==
+X-Gm-Message-State: ACgBeo1lm+tUOEiCTQ5aKMCyP+eMYTiiJbzb8svrEO8HnTOtbUAZJnBl
+        PFXMago+juoZCEEorOUaE4qetC8xnYcQZJvcRGU=
+X-Google-Smtp-Source: AA6agR4kXWqD4dZieplfuZs3m9Y4A0afC7hYgsa7pnUUs9JQWPRAbdjqUcyHzJ9Xt27P8GBPq4S6yCUCFS5XkbWACms=
+X-Received: by 2002:a0d:e701:0:b0:336:90d7:c67a with SMTP id
+ q1-20020a0de701000000b0033690d7c67amr25342695ywe.7.1661256829971; Tue, 23 Aug
+ 2022 05:13:49 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 75babf41-0838-4294-261d-08da84db4654
-X-MS-TrafficTypeDiagnostic: TYAP286MB0281:EE_
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JYtZHdbt5zxD7CYSB6lBkQXLpfkdjdofPIYiZ+fPv/5e1Szf5vkOruHkXEcDUSUPE6Ts2MOHXWLdcVSD2BmOnhDUIHbNSXgjmlNnB4MrW/A31+zjR9N04gq7FRfdi7Hplzj7eNUcMjNiLaxnrgaxtDtr9R83rfbWcpeFpuA68qH5P53bEbnedhHBzjG5g7h0Mbv8xT1OWInN0eX7Yr7cRlcS1b+4MzTq0NVe2Z0JimrV5LqsQALYOhrFOcBVtou9UJgKK7wfTAJF3vtVfNBe41A2/w0cuPcYEYbwr7NUfpem/IyMyi4eIaJeQwq3O58Ulz8hc7okyuQ5rb9hptLHyI2U+bcvJikGCGNlUF780RO89R9W2uA1DZG5iAzH9fX9WF8feAx36PVCcbc/3UHXE6+K1pGdsMSFFc/7EBCi/ljwDLD8Hgw9ZV0bj/TiZRaE2Ie56t/LLOhPpZgoiB01ffcZUkwaO5ZffW9h7XRUpuGFM+wpTt4/mKOicmAeNKcB7oAh7VHleT9Lt3x3+lRdeCNRcEIs2gsNj042QADuUGoaVF0V08rVM9tE3qxKhXYWOA9s5TSAH2u8IIKZLJfzFIxE5nC4vW8Wl93Rx+OugISTRgG9TL81cK28qcolWVYeehuov4QrfY3kC+DgEF2Vtg==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OBUsMaa7t2THVHhqCN2tZEDY/2yl1ocaxUa8MfmAX+qokxIjgQ4KA+szLdQu?=
- =?us-ascii?Q?JjW94CunACfE8EsLOA7Iutzxk8BJf0DLZR2jUbs794oMhpYUcDyFbQIzhe9N?=
- =?us-ascii?Q?ZqKVKJm3MdfU1P/xcVLjI79L+/QGmKDI87QmysTfzUAnSsT2xrzw1sNxeDEO?=
- =?us-ascii?Q?/16/jZaogLVRQaVXC9+AebVNFd10twNvp20ivLoGjgnpLMhFQuvij3dy+4rM?=
- =?us-ascii?Q?x4BFdrCqi29H4rEWqH9BA13n6oizXLgmae0FvOkwqWDD3ql4bgScJw7lglYb?=
- =?us-ascii?Q?x8EM7/vSxpUE9mwSTkuXsWqK4VZ0/1HQkb6kRb1ETXl2UPniRL/R/P7XNW22?=
- =?us-ascii?Q?PP/WX2vNOtcLe0cogCRTtfNKe3KBhGPEvLQfUvmemlZrmLGVy5yPcm0k7JKo?=
- =?us-ascii?Q?Y6Yf+U2o64s7gMYHsk6o6gGFBmkBA/vc5umdYvfKhKk0spBY1xMomQfJ6byT?=
- =?us-ascii?Q?a+PsveDxtYRXNS/r7o4cW4R7exxdfmMbpwQ4e453DpYMf8/lVyV9syKLyahB?=
- =?us-ascii?Q?DvxQeV9dJ8GT6hd0NkTyhPAmhP/INBoi06bDAJIyeYFrqY+IDYJ9ZTNt5jkI?=
- =?us-ascii?Q?8VgT6O0ie4E5EhYG/64KFKwmGkpqW3Y+ULqHV+C87dF3vUoz/+oqYn3QYxro?=
- =?us-ascii?Q?ne+eiuSkTBDfS8mHGDbygzJYotHoSRnOAGOtmWaa6Ed+qqwTi8CQPdlN5GpY?=
- =?us-ascii?Q?35Pnr+dVWp7HD/uKqjPfNeWRVoXlPwtaTcS4IcgvVnvUwbJhBDoXBoZYyXQ5?=
- =?us-ascii?Q?rzZW3u+v7Xat3XTLwrzcNzGeUN6NyIeZuTNRhPGn2y95YHt6BU5AmaYW/apQ?=
- =?us-ascii?Q?9LOvSRC0LhRwau/JPcZGs07gqwWaTA9w+c9xO8d0Dx8JvY7aftuJS7OR++al?=
- =?us-ascii?Q?ec+XVn5Lj/z8kyI/3E1lYve1os7NI0tIyoVDpeQ7DQ/KiTCwr3gMcBetnmWX?=
- =?us-ascii?Q?YwVyIt/eKRv9Hv+OXPfFpcXcdwpZvNlc4rYFzKnmiM0sSVbd6oIO8Fdqt+UC?=
- =?us-ascii?Q?M5Bi4bDIWXbCAhcEPlEw8NeLiQM02o0NvdaV1rzZf7faU3ccrdUoJhJadY/F?=
- =?us-ascii?Q?3c9wPzKkl9k/yBJ7ci2emc1kMfetjpCidMrRRzjcFBdJ6jhnHIZfstRjjejo?=
- =?us-ascii?Q?lZysnFsoSN9qGt9dvlNRlZcTNB1XtPU8vwA9MG2mQY7fYlRzTZuqomI+5q/d?=
- =?us-ascii?Q?QepQZdkmo+IDaRcsNbDdV29FbFZCtiA0I053zbH1ILNCltQt4Mv0p5uqrm4o?=
- =?us-ascii?Q?4wC1poBL370wi/qjwZ5TSJDsgN3GK6ebtYrZ7yaXXg=3D=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-05f45.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75babf41-0838-4294-261d-08da84db4654
-X-MS-Exchange-CrossTenant-AuthSource: TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2022 07:44:14.1626
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAP286MB0281
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <TYWP286MB2601965DDE4D251807F70415B1AF9@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+ <6e61d429-9020-53f3-458e-bb265d47b8f4@arm.com> <TYWP286MB26016A8EF8040BE37DE9A27BB1719@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+ <CAJZ5v0gx+eY-wOHmVip4VTCwjco=_yeSX5t76q39dUKyB7vBiw@mail.gmail.com>
+ <TYWP286MB2601BBED3F396FD334CE3266B1709@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+ <TYWP286MB2601932308C37E9ABC224FB0B1709@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+In-Reply-To: <TYWP286MB2601932308C37E9ABC224FB0B1709@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 23 Aug 2022 14:13:39 +0200
+Message-ID: <CAJZ5v0iV_J1=R0Dwku-MCcMiFu3VLTeSGO0djbqVsNZ41EmJ1Q@mail.gmail.com>
+Subject: Re: Bug: Re: [PATCH v3] ACPI: Split out processor thermal register
+ from ACPI PSS
+To:     Riwen Lu <luriwen@hotmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Len Brown <lenb@kernel.org>,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Punit Agrawal <punit.agrawal@bytedance.com>,
+        Riwen Lu <luriwen@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Riwen Lu <luriwen@kylinos.cn>
+On Tue, Aug 23, 2022 at 6:33 AM Riwen Lu <luriwen@hotmail.com> wrote:
+>
+> 在 2022/8/23 09:15, Riwen Lu 写道:
+> > 在 2022/8/22 20:25, Rafael J. Wysocki 写道:
+> >> On Mon, Aug 22, 2022 at 10:19 AM Riwen Lu <luriwen@hotmail.com> wrote:
+> >>>
+> >>> 在 2022/8/19 04:23, Jeremy Linton 写道:
+> >>>> Hi,
+> >>>>
+> >>>> On 6/16/22 21:51, Riwen Lu wrote:
+> >>>>> From: Riwen Lu <luriwen@kylinos.cn>
+> >>>>>
+> >>>>> Commit 239708a3af44 ("ACPI: Split out ACPI PSS from ACPI Processor
+> >>>>> driver"), moves processor thermal registration to
+> >>>>> acpi_pss_perf_init(),
+> >>>>> which doesn't get executed if ACPI_CPU_FREQ_PSS is not enabled.
+> >>>>>
+> >>>>> As ARM64 supports P-states using CPPC, it should be possible to also
+> >>>>> support processor passive cooling even if PSS is not enabled. Split
+> >>>>> out the processor thermal cooling register from ACPI PSS to support
+> >>>>> this, and move it into a separate function in processor_thermal.c.
+> >>>>
+> >>>> It appears this commit 7fdc74da940d ACPI: processor: Split out thermal
+> >>>> initialization from ACPI PSS
+> >>>>
+> >>>> Is causing the following:
+> >>>>      41.341659] ------------[ cut here ]------------
+> >>>> [   41.346280] freq_qos_remove_request() called for unknown object
+> >>>> [   41.352251] WARNING: CPU: 3 PID: 1089 at kernel/power/qos.c:597
+> >>>> freq_qos_remove_request+0xa4/0xc4
+> >>>> [   41.361152] Modules linked in: nf_nat_tftp nft_objref
+> >>>> nf_conntrack_tftp nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
+> >>>> nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
+> >>>> nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set
+> >>>> nf_tables nfnetlink qrtr bnep sunrpc vfat fat btsdio brcmfmac hci_uart
+> >>>> btqca cfg80211 bs
+> >>>> [   41.413245] CPU: 3 PID: 1089 Comm: rmmod Not tainted
+> >>>> 6.0.0-rc1MINI+ #237
+> >>>> [   41.419951] Hardware name: Raspberry Pi Foundation Raspberry Pi 4
+> >>>> Model B/Raspberry Pi 4 Model B, BIOS EDK2-DEV 07/18/2022
+> >>>> [   41.430990] pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS
+> >>>> BTYPE=--)
+> >>>> [   41.437955] pc : freq_qos_remove_request+0xa4/0xc4
+> >>>> [   41.442752] lr : freq_qos_remove_request+0xa4/0xc4
+> >>>> [   41.447550] sp : ffff80000a4bbb60
+> >>>> [   41.450862] x29: ffff80000a4bbb60 x28: ffff07858798a1c0 x27:
+> >>>> 0000000000000000
+> >>>> [   41.458012] x26: 0000000000000000 x25: ffffdf6ade80f850 x24:
+> >>>> ffff07858b07d200
+> >>>> [   41.465158] x23: ffffdf6ade812cb0 x22: ffff07858b07d000 x21:
+> >>>> ffffdf6ade80f850
+> >>>> [   41.472303] x20: ffffdf6ade26b998 x19: ffff0785809ba5a8 x18:
+> >>>> ffffffffffffffff
+> >>>> [   41.479447] x17: 0000000000000000 x16: ffffdf6adcc25320 x15:
+> >>>> 0000000000000006
+> >>>> [   41.486592] x14: 0000000000000000 x13: 7463656a626f206e x12:
+> >>>> 776f6e6b6e752072
+> >>>> [   41.493736] x11: 00000000ffffdfff x10: ffffdf6ade8fd520 x9 :
+> >>>> ffffdf6adcae53ac
+> >>>> [   41.500881] x8 : 000000000002ffe8 x7 : c0000000ffffdfff x6 :
+> >>>> 0000000000000001
+> >>>> [   41.508026] x5 : 0000000000000000 x4 : ffff07863b7ac450 x3 :
+> >>>> ffff07863b7b8bb0
+> >>>> [   41.515170] x2 : 0000000000000001 x1 : ffff281b5d54f000 x0 :
+> >>>> 0000000000000033
+> >>>> [   41.522315] Call trace:
+> >>>> [   41.524759]  freq_qos_remove_request+0xa4/0xc4
+> >>>> [   41.529210]  acpi_thermal_cpufreq_exit+0x90/0xb0
+> >>>> [   41.533834]  acpi_processor_notifier+0x74/0x90
+> >>>> [   41.538281]  blocking_notifier_call_chain+0x78/0xb0
+> >>>> [   41.543161]  cpufreq_policy_free+0x154/0x1e0
+> >>>> [   41.547438]  cpufreq_remove_dev+0xc0/0x10c
+> >>>> [   41.551538]  subsys_interface_unregister+0xf0/0xfc
+> >>>> [   41.556335]  cpufreq_unregister_driver+0x54/0x120
+> >>>> [   41.561043]  cppc_cpufreq_exit+0x28/0xd2c [cppc_cpufreq]
+> >>>> [   41.566370]  __do_sys_delete_module.constprop.0+0x150/0x2bc
+> >>>> [   41.571947]  __arm64_sys_delete_module+0x20/0x30
+> >>>> [   41.576567]  invoke_syscall+0x50/0x120
+> >>>> [   41.580318]  el0_svc_common.constprop.0+0x4c/0xf4
+> >>>> [   41.585023]  do_el0_svc+0x38/0x4c
+> >>>> [   41.588338]  el0_svc+0x34/0xdc
+> >>>> [   41.591394]  el0t_64_sync_handler+0x11c/0x150
+> >>>> [   41.595752]  el0t_64_sync+0x190/0x194
+> >>>> [   41.599416] ---[ end trace 0000000000000000 ]---
+> >>>>
+> >>>> When the cppc_cpufreq driver is rmmod'ed from a running machine that
+> >>>> has
+> >>>> both CPPC and a thermal zone. I reverted and bisected it, and in both
+> >>>> cases the splat above goes away.
+> >>>
+> >>> Did you enable the option ACPI_CPU_FREQ_PSS ? When I reverted the commit
+> >>> 7fdc74da940d and enable ACPI_CPU_FREQ_PSS, the warning above also
+> >>> appears.
+> >>
+> >> AFAICS, this option is enabled automatically on all architectures
+> >> other than ARM64 when the ACPI processor driver is enabled, so I'm not
+> >> sure what you mean.
+> >
+> > I mean the commit 7fdc74da940d is not the real cause of the warning
+> > reported by Jeremy Linton. And Jeremy Linton‘s hardware is Raspberry Pi
+> > 4, arm platform.
+> >
+> > I've debugged it in arm64 machine that has both CPPC and a thermal zone:
+> > If the processor thermal registered, and rmmod the cppc_cpufreq driver,
+> > the warning Jeremy Linton reported appears. Otherwise, there is no warning.
+> >
+> > I'll continue to debug why it cause warnings.
+> >
+> > Thanks.
+>
+> Hi,
+>      I've figured out why it happens.
+>
+>      In func acpi_thermal_cpufreq_exit, it get struct acpi_processor *pr
+> through policy->cpu, then the qos of it would be removed multi times if
+> the policy has related to multi cpus.
+>      It seems commit a1bb46c36ce3 ("ACPI: processor: Add QoS requests
+> for all CPUs") forgot to change the code from policy->cpu to each cpu.
 
-The freq Qos request would be removed repeatedly if the cpufreq policy
-relates to more than one CPU. Then, it would cause the "called for unknown
-object" warning.
+Right.
 
-Remove the freq Qos request for each CPU relates to the cpufreq policy,
-instead of removing repeatedly for the last CPU of it.
+> Apply the diff below, the warning disappears.
+> diff --git a/drivers/acpi/processor_thermal.c
+> b/drivers/acpi/processor_thermal.c
+> index db6ac540e924..e534fd49a67e 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -151,7 +151,7 @@ void acpi_thermal_cpufreq_exit(struct cpufreq_policy
+> *policy)
+>          unsigned int cpu;
+>
+>          for_each_cpu(cpu, policy->related_cpus) {
+> -               struct acpi_processor *pr = per_cpu(processors,
+> policy->cpu);
+> +               struct acpi_processor *pr = per_cpu(processors, cpu);
+>
+>                  if (pr)
+>                          freq_qos_remove_request(&pr->thermal_req);
+>
 
-Fixes: a1bb46c36ce3 ("ACPI: processor: Add QoS requests for all CPUs")
-Reported-by: Jeremy Linton <Jeremy.Linton@arm.com>
-Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
----
- drivers/acpi/processor_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
-index db6ac540e924..e534fd49a67e 100644
---- a/drivers/acpi/processor_thermal.c
-+++ b/drivers/acpi/processor_thermal.c
-@@ -151,7 +151,7 @@ void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
- 	unsigned int cpu;
- 
- 	for_each_cpu(cpu, policy->related_cpus) {
--		struct acpi_processor *pr = per_cpu(processors, policy->cpu);
-+		struct acpi_processor *pr = per_cpu(processors, cpu);
- 
- 		if (pr)
- 			freq_qos_remove_request(&pr->thermal_req);
--- 
-2.25.1
-
+Yeah, good catch!
