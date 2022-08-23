@@ -2,47 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2985059EB11
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Aug 2022 20:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7C459EB25
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Aug 2022 20:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230158AbiHWScp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Aug 2022 14:32:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46000 "EHLO
+        id S232012AbiHWSfu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Aug 2022 14:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230503AbiHWSc0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Aug 2022 14:32:26 -0400
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B9DC10A76E
-        for <linux-acpi@vger.kernel.org>; Tue, 23 Aug 2022 09:53:49 -0700 (PDT)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-3246910dac3so394734677b3.12
-        for <linux-acpi@vger.kernel.org>; Tue, 23 Aug 2022 09:53:49 -0700 (PDT)
+        with ESMTP id S233216AbiHWSfW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Aug 2022 14:35:22 -0400
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60363333;
+        Tue, 23 Aug 2022 09:58:19 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-324ec5a9e97so395293337b3.7;
+        Tue, 23 Aug 2022 09:58:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=NCk5kO2oY1yzOyTcQEaeipuJczC4lYTBO6dlH6jUCHQ=;
-        b=2qazrMOJtAfEeCoj1of6dy0R5mvkXgF4uZbVUImSlBNqQ0N1VFDZwtdlS8HqqQQ4cj
-         XJAGoxc+8rBrWUYiIYSrbjEJrj7lyXC34pvNqDkgpzThbdnvphrJFnB895alTZeMqKz3
-         LdMoOpzaqiXG3bfPvRgHoGCX0fR6aKj3BuU68V/cmFkdLzAjxjsQfvNwrQ81jBJ5e+g3
-         aOfc77hkwIuw2UKw3Zo6DiY4ELG9eXV2JyuuImmb5uMIQSdsViZQYb5pdETRXOK4VDAt
-         2IAOSOvzCFRvkHHX6IzzKOSjCYimbhUcFhox7BB2PjlA9OPImpjDWwUCmKEgb4alW5W7
-         NHHg==
-X-Gm-Message-State: ACgBeo2dEaB0a8pgv/Y00ISrJcgjEZ3XUhUTQrV/4GTDsyjhKoOFnFhZ
-        tuHrmf6yfuXO+DC2utg+3Tl2HAROysNwg5Ehw3w=
-X-Google-Smtp-Source: AA6agR6qRa51eiAcmslrU1djpt/18+gdIAefZULhMwSqJHYjEpFhXHDFCg1A1IUomdw0F+bd31ESHOkxsO4jrcK2cjE=
-X-Received: by 2002:a81:4850:0:b0:33c:922b:5739 with SMTP id
- v77-20020a814850000000b0033c922b5739mr9104860ywa.515.1661273628544; Tue, 23
- Aug 2022 09:53:48 -0700 (PDT)
+        bh=Yrkfc16+mfEM4x9y9bsw0D4I9UYk2b6HtWw8z6hU6Hc=;
+        b=4CW682MAE/ihG+pzBpfMT8imkn4oaOEgjvR96gp94CcJn96gTyzYBBe7haAUzu7b92
+         5pA7wVSuYGsq4O1Jcp75a0kB2mpS5iicv9WHV2i+L7nrt0HwFQimZpzvcrWgVXZmZww7
+         2511NbopsnHQPnHAauSuvea4KroE2BsDX2u4BkvPBqZttmSUwH35PHoSr0/QshXntWNM
+         h0vepNhytyfVGc0H/Fjto5uCsuLTwMVV/avsPUxyA3oL4wYXpAG97FOc4sNKzLPu5mYu
+         cNIvumqTqwPoj190pyeCdxfuXOlx+vbDowNRDpcQ34I7LPezHuJ/VhvMMALJ6srtfHyZ
+         H+cg==
+X-Gm-Message-State: ACgBeo16a+JTV5qgB3ywF1Wkbx7Np/abA4Vx8pn/M8Bv1L0J+IV0n7Tq
+        j1eCLJklorRiItqn3jCP6i9nAfvli8IYLWghzSiZ/Zw7
+X-Google-Smtp-Source: AA6agR4FUn6Pmyx6+Pdvyk5F1zjEDkt9eAsf2aDzzDOiPDy0SnAjwGKKcJqWy7tuIPUNPAU+b84uCIKSRBAjYe2BNPM=
+X-Received: by 2002:a25:ec0c:0:b0:690:d092:2d56 with SMTP id
+ j12-20020a25ec0c000000b00690d0922d56mr23479069ybh.622.1661273898565; Tue, 23
+ Aug 2022 09:58:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220818055156.7456-1-sakari.ailus@linux.intel.com>
-In-Reply-To: <20220818055156.7456-1-sakari.ailus@linux.intel.com>
+References: <20220818205955.6504-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20220818205955.6504-1-wsa+renesas@sang-engineering.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 23 Aug 2022 18:53:37 +0200
-Message-ID: <CAJZ5v0gdZzYbv88Jsx9PzB1GDF5+ZyzKq-8JW=-UPAocfHm+tQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ACPI: Fix acpi_dev_state_d0() documentation
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 23 Aug 2022 18:58:07 +0200
+Message-ID: <CAJZ5v0iub-bjSdnSmT3mXZ+2wAOeJVHnMnUQ1K5DNGK+O-F_xA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: move from strlcpy with unused retval to strscpy
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -54,33 +56,114 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 18, 2022 at 7:52 AM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
+On Thu, Aug 18, 2022 at 11:00 PM Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 >
-> The documentation for acpi_dev_state_d0() referred to
-> Documentation/firmware-guide/acpi/low-power-probe.rst that does not exist,
-> the right file name is Documentation/firmware-guide/acpi/non-d0-probe.rst.
-> Fix this.
+> Follow the advice of the below link and prefer 'strscpy' in this
+> subsystem. Conversion is 1:1 because the return value is not used.
+> Generated by a coccinelle script.
 >
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 > ---
->  drivers/acpi/device_pm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/bus.c            | 4 ++--
+>  drivers/acpi/processor_idle.c | 8 ++++----
+>  drivers/acpi/utils.c          | 6 +++---
+>  3 files changed, 9 insertions(+), 9 deletions(-)
 >
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index 130b5f4a50a3d..fc5ffdb544cae 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -1438,7 +1438,7 @@ EXPORT_SYMBOL_GPL(acpi_storage_d3);
->   * not valid to ask for the ACPI power state of the device in that time frame.
->   *
->   * This function is intended to be used in a driver's probe or remove
-> - * function. See Documentation/firmware-guide/acpi/low-power-probe.rst for
-> + * function. See Documentation/firmware-guide/acpi/non-d0-probe.rst for
->   * more information.
->   */
->  bool acpi_dev_state_d0(struct device *dev)
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index c0d20d997891..1d29f5dc7d79 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -802,7 +802,7 @@ static bool acpi_of_modalias(struct acpi_device *adev,
+>
+>         str = obj->string.pointer;
+>         chr = strchr(str, ',');
+> -       strlcpy(modalias, chr ? chr + 1 : str, len);
+> +       strscpy(modalias, chr ? chr + 1 : str, len);
+>
+>         return true;
+>  }
+> @@ -822,7 +822,7 @@ void acpi_set_modalias(struct acpi_device *adev, const char *default_id,
+>                        char *modalias, size_t len)
+>  {
+>         if (!acpi_of_modalias(adev, modalias, len))
+> -               strlcpy(modalias, default_id, len);
+> +               strscpy(modalias, default_id, len);
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_set_modalias);
+>
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index 16a1663d02d4..1778016ea895 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -787,7 +787,7 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
+>
+>                 state = &drv->states[count];
+>                 snprintf(state->name, CPUIDLE_NAME_LEN, "C%d", i);
+> -               strlcpy(state->desc, cx->desc, CPUIDLE_DESC_LEN);
+> +               strscpy(state->desc, cx->desc, CPUIDLE_DESC_LEN);
+>                 state->exit_latency = cx->latency;
+>                 state->target_residency = cx->latency * latency_factor;
+>                 state->enter = acpi_idle_enter;
+> @@ -956,7 +956,7 @@ static int acpi_processor_evaluate_lpi(acpi_handle handle,
+>
+>                 obj = pkg_elem + 9;
+>                 if (obj->type == ACPI_TYPE_STRING)
+> -                       strlcpy(lpi_state->desc, obj->string.pointer,
+> +                       strscpy(lpi_state->desc, obj->string.pointer,
+>                                 ACPI_CX_DESC_LEN);
+>
+>                 lpi_state->index = state_idx;
+> @@ -1022,7 +1022,7 @@ static bool combine_lpi_states(struct acpi_lpi_state *local,
+>         result->arch_flags = parent->arch_flags;
+>         result->index = parent->index;
+>
+> -       strlcpy(result->desc, local->desc, ACPI_CX_DESC_LEN);
+> +       strscpy(result->desc, local->desc, ACPI_CX_DESC_LEN);
+>         strlcat(result->desc, "+", ACPI_CX_DESC_LEN);
+>         strlcat(result->desc, parent->desc, ACPI_CX_DESC_LEN);
+>         return true;
+> @@ -1196,7 +1196,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
+>
+>                 state = &drv->states[i];
+>                 snprintf(state->name, CPUIDLE_NAME_LEN, "LPI-%d", i);
+> -               strlcpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
+> +               strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
+>                 state->exit_latency = lpi->wake_latency;
+>                 state->target_residency = lpi->min_residency;
+>                 if (lpi->arch_flags)
+> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+> index 5a7b8065e77f..4acd6f7d1395 100644
+> --- a/drivers/acpi/utils.c
+> +++ b/drivers/acpi/utils.c
+> @@ -878,7 +878,7 @@ bool acpi_dev_present(const char *hid, const char *uid, s64 hrv)
+>         struct acpi_dev_match_info match = {};
+>         struct device *dev;
+>
+> -       strlcpy(match.hid[0].id, hid, sizeof(match.hid[0].id));
+> +       strscpy(match.hid[0].id, hid, sizeof(match.hid[0].id));
+>         match.uid = uid;
+>         match.hrv = hrv;
+>
+> @@ -911,7 +911,7 @@ acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const cha
+>         struct acpi_dev_match_info match = {};
+>         struct device *dev;
+>
+> -       strlcpy(match.hid[0].id, hid, sizeof(match.hid[0].id));
+> +       strscpy(match.hid[0].id, hid, sizeof(match.hid[0].id));
+>         match.uid = uid;
+>         match.hrv = hrv;
+>
+> @@ -961,7 +961,7 @@ EXPORT_SYMBOL(acpi_video_backlight_string);
+>
+>  static int __init acpi_backlight(char *str)
+>  {
+> -       strlcpy(acpi_video_backlight_string, str,
+> +       strscpy(acpi_video_backlight_string, str,
+>                 sizeof(acpi_video_backlight_string));
+>         return 1;
+>  }
 > --
 
-Applied as 6.0-rc material, thanks!
+Applied as 6.1 material, thanks!
