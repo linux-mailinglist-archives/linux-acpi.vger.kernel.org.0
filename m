@@ -2,87 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B519959E98B
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Aug 2022 19:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A03759EAAF
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Aug 2022 20:14:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbiHWR0l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Aug 2022 13:26:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56122 "EHLO
+        id S233839AbiHWSNE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Aug 2022 14:13:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236555AbiHWR0A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Aug 2022 13:26:00 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1955FDF645;
-        Tue, 23 Aug 2022 08:04:35 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DDA95113E;
-        Tue, 23 Aug 2022 08:04:38 -0700 (PDT)
-Received: from [192.168.122.164] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03F553F70D;
-        Tue, 23 Aug 2022 08:04:34 -0700 (PDT)
-Message-ID: <4abccfc9-fbaf-8683-5641-f4b767f3f913@arm.com>
-Date:   Tue, 23 Aug 2022 10:04:34 -0500
+        with ESMTP id S231896AbiHWSMo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Aug 2022 14:12:44 -0400
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD0416E896;
+        Tue, 23 Aug 2022 09:25:16 -0700 (PDT)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-3376851fe13so360342757b3.6;
+        Tue, 23 Aug 2022 09:25:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=e1ByaHgjT5aI+pkPeAiB/CuoKQTWUEVfvmAhYGOVHzY=;
+        b=UpztGszl4Wk+OEvdstrECX4nGznd/K/1k7PPcYYUWr15a00jm6biTrLYpOoKZdQFBj
+         Ergw/levxJRrWU9QWSgZ22f0zduysxtthR30+25BPmxW89+EUQx4haA+p+rK29ge5aCF
+         g21lnU+6ryAEEhbS3cav/aPQReR9LsMvvWFNSVgmjIzh4/2gOrCSoLfk6fJK7tBHnNVj
+         34OXubS0it7qwTIFalfXLlhxx+VQf/b2cSuzKgJYcqolmPPcvUW7Vw4r+pNo5TK4DYQR
+         FFkvov5J2Roi9J9BBZN4eCSUmHgW4HPJdPRd//O2W3e3TwBpsiICx2DPw8RDuIbtl0mY
+         kZMw==
+X-Gm-Message-State: ACgBeo0GwCqwp+LMKfiAYBAeATG0t06KNDhVvhd7b32ouCaiq0qrv66V
+        4l5sgtZ07yN7yfaSctLXrkximLMv+jp6DfllbmIHxTON
+X-Google-Smtp-Source: AA6agR4ufkdeFlSVd0hEGz/ZxKyiVvu1D9etm5aEB4P1tHJPl+mKMBJ35SUVfBRAP1kGsBOnUtpamNoW7FA41r623lU=
+X-Received: by 2002:a0d:f647:0:b0:328:317c:9069 with SMTP id
+ g68-20020a0df647000000b00328317c9069mr25955261ywf.301.1661271916000; Tue, 23
+ Aug 2022 09:25:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v1] ACPI: processor: Remove freq Qos request for all CPUs
-Content-Language: en-US
-To:     Riwen Lu <luriwen@hotmail.com>, rafael@kernel.org,
-        rui.zhang@intel.com, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Riwen Lu <luriwen@kylinos.cn>
-References: <TYWP286MB2601183235622B29FAF707B5B1709@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-From:   Jeremy Linton <jeremy.linton@arm.com>
-In-Reply-To: <TYWP286MB2601183235622B29FAF707B5B1709@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <12036348.O9o76ZdvQC@kreacher> <875yixk3ng.fsf@stealth>
+In-Reply-To: <875yixk3ng.fsf@stealth>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 23 Aug 2022 18:25:04 +0200
+Message-ID: <CAJZ5v0jeZZLP9nPWrEwxct61UnabrMqifZZgcBbLy0u8-z4xmg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/5] ACPI: Device enumeration rearrangements and parent
+ field elimination
+To:     Punit Agrawal <punit.agrawal@bytedance.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Fri, Aug 12, 2022 at 3:11 PM Punit Agrawal
+<punit.agrawal@bytedance.com> wrote:
+>
+> Hi Rafael,
+>
+> "Rafael J. Wysocki" <rjw@rjwysocki.net> writes:
+>
+> > Hi All,
+> >
+> > There are still opportunities to clean up the ACPI support code and
+> > this series is part of the effort in that direction.
+> >
+> > It makes changes without functional impact (AFAICS) to the core ACPI
+> > code related to devices and to some of its users.
+> >
+> > Please refer to the patch changelogs for details.
+>
+> Other than the single typo I noticed in Patch 2,
 
-On 8/23/22 02:43, Riwen Lu wrote:
-> From: Riwen Lu <luriwen@kylinos.cn>
-> 
-> The freq Qos request would be removed repeatedly if the cpufreq policy
-> relates to more than one CPU. Then, it would cause the "called for unknown
-> object" warning.
-> 
-> Remove the freq Qos request for each CPU relates to the cpufreq policy,
-> instead of removing repeatedly for the last CPU of it.
-> 
-> Fixes: a1bb46c36ce3 ("ACPI: processor: Add QoS requests for all CPUs")
-> Reported-by: Jeremy Linton <Jeremy.Linton@arm.com>
-> Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
-> ---
->   drivers/acpi/processor_thermal.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
-> index db6ac540e924..e534fd49a67e 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -151,7 +151,7 @@ void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
->   	unsigned int cpu;
->   
->   	for_each_cpu(cpu, policy->related_cpus) {
-> -		struct acpi_processor *pr = per_cpu(processors, policy->cpu);
-> +		struct acpi_processor *pr = per_cpu(processors, cpu);
->   
->   		if (pr)
->   			freq_qos_remove_request(&pr->thermal_req);
+I've fixed that one while applying the patch.
 
-This appears to have fixed the module unloading problem. I haven't seen 
-any newer issues either so:
+> the changes look good!
+>
+> If it helps,
+>
+> Reviewed-by: Punit Agrawal <punit.agrawal@bytedance.com>
 
-Tested-by: Jeremy Linton <jeremy.linton@arm.com>
-
-
-Thanks,
-
+Thank you!
