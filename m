@@ -2,88 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A15E559E845
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Aug 2022 19:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B519959E98B
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Aug 2022 19:33:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244653AbiHWQ55 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Aug 2022 12:57:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53052 "EHLO
+        id S229541AbiHWR0l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Aug 2022 13:26:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244673AbiHWQ5T (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Aug 2022 12:57:19 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01B05140CAC;
-        Tue, 23 Aug 2022 06:28:05 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id f8c4d1ad43365a18; Tue, 23 Aug 2022 15:28:03 +0200
-Received: from kreacher.localnet (unknown [213.134.169.58])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 001D466D0AC;
-        Tue, 23 Aug 2022 15:28:02 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Tomasz Figa <tfiga@chromium.org>
-Subject: [PATCH] ACPI: PM: Fix up documentation reference
-Date:   Tue, 23 Aug 2022 15:28:02 +0200
-Message-ID: <5852809.lOV4Wx5bFT@kreacher>
+        with ESMTP id S236555AbiHWR0A (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Aug 2022 13:26:00 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1955FDF645;
+        Tue, 23 Aug 2022 08:04:35 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DDA95113E;
+        Tue, 23 Aug 2022 08:04:38 -0700 (PDT)
+Received: from [192.168.122.164] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03F553F70D;
+        Tue, 23 Aug 2022 08:04:34 -0700 (PDT)
+Message-ID: <4abccfc9-fbaf-8683-5641-f4b767f3f913@arm.com>
+Date:   Tue, 23 Aug 2022 10:04:34 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.169.58
-X-CLIENT-HOSTNAME: 213.134.169.58
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrvdeiledgieegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppedvudefrddufeegrdduieelrdehkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduieelrdehkedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgt
- ohhmpdhrtghpthhtohepshgrkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepthhfihhgrgestghhrhhomhhiuhhmrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v1] ACPI: processor: Remove freq Qos request for all CPUs
+Content-Language: en-US
+To:     Riwen Lu <luriwen@hotmail.com>, rafael@kernel.org,
+        rui.zhang@intel.com, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Riwen Lu <luriwen@kylinos.cn>
+References: <TYWP286MB2601183235622B29FAF707B5B1709@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <TYWP286MB2601183235622B29FAF707B5B1709@TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi,
 
-The acpi_dev_state_d0() kerneldoc comment should refer to
-non-d0-probe.rst which is there in the tree instead of
-low-power-probe.rst which is not.  Fix it up.
+On 8/23/22 02:43, Riwen Lu wrote:
+> From: Riwen Lu <luriwen@kylinos.cn>
+> 
+> The freq Qos request would be removed repeatedly if the cpufreq policy
+> relates to more than one CPU. Then, it would cause the "called for unknown
+> object" warning.
+> 
+> Remove the freq Qos request for each CPU relates to the cpufreq policy,
+> instead of removing repeatedly for the last CPU of it.
+> 
+> Fixes: a1bb46c36ce3 ("ACPI: processor: Add QoS requests for all CPUs")
+> Reported-by: Jeremy Linton <Jeremy.Linton@arm.com>
+> Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
+> ---
+>   drivers/acpi/processor_thermal.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
+> index db6ac540e924..e534fd49a67e 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -151,7 +151,7 @@ void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
+>   	unsigned int cpu;
+>   
+>   	for_each_cpu(cpu, policy->related_cpus) {
+> -		struct acpi_processor *pr = per_cpu(processors, policy->cpu);
+> +		struct acpi_processor *pr = per_cpu(processors, cpu);
+>   
+>   		if (pr)
+>   			freq_qos_remove_request(&pr->thermal_req);
 
-While at it, adjust the formatting of that comment to save space.
+This appears to have fixed the module unloading problem. I haven't seen 
+any newer issues either so:
 
-No functional impact.
-
-Fixes: b82a7df4a7f3 ("ACPI: Add a convenience function to tell a device is in D0 state")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/device_pm.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-Index: linux-pm/drivers/acpi/device_pm.c
-===================================================================
---- linux-pm.orig/drivers/acpi/device_pm.c
-+++ linux-pm/drivers/acpi/device_pm.c
-@@ -1460,9 +1460,8 @@ EXPORT_SYMBOL_GPL(acpi_storage_d3);
-  * passed to acpi_device_set_power() and before that function returns, so it is
-  * not valid to ask for the ACPI power state of the device in that time frame.
-  *
-- * This function is intended to be used in a driver's probe or remove
-- * function. See Documentation/firmware-guide/acpi/low-power-probe.rst for
-- * more information.
-+ * This function is intended to be used in a driver's probe or remove function.
-+ * See Documentation/firmware-guide/acpi/non-d0-probe.rst for more information.
-  */
- bool acpi_dev_state_d0(struct device *dev)
- {
+Tested-by: Jeremy Linton <jeremy.linton@arm.com>
 
 
+Thanks,
 
