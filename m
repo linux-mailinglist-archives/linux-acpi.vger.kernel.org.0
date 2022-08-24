@@ -2,242 +2,253 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6838C59FED5
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 17:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 423DD59FF2A
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 18:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236232AbiHXPwk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 11:52:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54700 "EHLO
+        id S233460AbiHXQLM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 12:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236946AbiHXPwj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 11:52:39 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0251372FC9;
-        Wed, 24 Aug 2022 08:52:37 -0700 (PDT)
-Received: from zn.tnic (p200300ea971b9859329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9859:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 34B1D1EC056A;
-        Wed, 24 Aug 2022 17:52:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1661356352;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=PBu2N2uipsqYRGU8bx2yq7gJv2+9Y2U5mdyTj0+/pTM=;
-        b=NB6YSRe/Ed3rUtDV9uiZDCWOh1AmqVaLjJr7swohSQBgEXc9Ml8+K+1qPwkVzabBT+Lz+T
-        0msrtdaC0S4A2mcX1OGqoxMuRHKbJNsW4RW5QLHEAY54tdqwlaA3FCXV6qpt2FqWjsiKmf
-        lRgsjSTC8LFhYEx4jgXYcDjls9XERvQ=
-Date:   Wed, 24 Aug 2022 17:52:31 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jia He <justin.he@arm.com>
-Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, "Paul E. McKenney" <paulmck@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        linux-doc@vger.kernel.org
-Subject: Re: [RESEND PATCH v3 4/9] EDAC/ghes: Move ghes_edac.force_load to
- setup parameter
-Message-ID: <YwZJP25sfKcfw9eT@zn.tnic>
-References: <20220822154048.188253-1-justin.he@arm.com>
- <20220822154048.188253-5-justin.he@arm.com>
+        with ESMTP id S237923AbiHXQLL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 12:11:11 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5BADA7676E;
+        Wed, 24 Aug 2022 09:11:10 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DB81106F;
+        Wed, 24 Aug 2022 09:11:14 -0700 (PDT)
+Received: from [192.168.122.164] (U203867.austin.arm.com [10.118.30.29])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E0F753FAF5;
+        Wed, 24 Aug 2022 09:11:09 -0700 (PDT)
+Message-ID: <2cfad670-9b3a-38c4-4d0f-45173da35d95@arm.com>
+Date:   Wed, 24 Aug 2022 11:11:09 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220822154048.188253-5-justin.he@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v3 1/2] ACPI: CPPC: Disable FIE if registers in PCC
+ regions
+Content-Language: en-US
+To:     Lukasz Luba <lukasz.luba@arm.com>
+Cc:     rafael@kernel.or, lenb@kernel.org, viresh.kumar@linaro.org,
+        robert.moore@intel.com, punit.agrawal@bytedance.com,
+        ionela.voinescu@arm.com, pierre.gondois@arm.com,
+        linux-kernel@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Morten Rasmussen <morten.rasmussen@arm.com>,
+        Souvik Chakravarty <souvik.chakravarty@arm.com>
+References: <20220818211619.4193362-1-jeremy.linton@arm.com>
+ <20220818211619.4193362-2-jeremy.linton@arm.com>
+ <59f3ba6f-b657-2da2-cb2a-9736e1488908@arm.com>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <59f3ba6f-b657-2da2-cb2a-9736e1488908@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 22, 2022 at 03:40:43PM +0000, Jia He wrote:
-> ghes_edac_init() is too late to set this module flag ghes_edac.force_load.
-> Also, other edac drivers should not be able to control this flag.
+Hi,
+
+On 8/24/22 09:41, Lukasz Luba wrote:
+> Hi Jeremy,
 > 
-> Move this flag to setup parameter in ghes.
+> +CC Dietmar, Morten and Souvik
 > 
-> Suggested-by: Toshi Kani <toshi.kani@hpe.com>
-> Signed-off-by: Jia He <justin.he@arm.com>
-> ---
->  .../admin-guide/kernel-parameters.txt         |  5 +++
->  drivers/acpi/apei/ghes.c                      | 24 +++++++++++-
->  drivers/edac/ghes_edac.c                      | 38 +++++++------------
->  include/acpi/ghes.h                           |  7 +++-
->  4 files changed, 46 insertions(+), 28 deletions(-)
+> On 8/18/22 22:16, Jeremy Linton wrote:
+>> PCC regions utilize a mailbox to set/retrieve register values used by
+>> the CPPC code. This is fine as long as the operations are
+>> infrequent. With the FIE code enabled though the overhead can range
+>> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
+>> based machines.
+>>
+>> So, before enabling FIE assure none of the registers used by
+>> cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
+>> enable a module parameter which can also disable it at boot or module
+>> reload.
+>>
+>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+>> ---
+>>   drivers/acpi/cppc_acpi.c       | 41 ++++++++++++++++++++++++++++++++++
+>>   drivers/cpufreq/cppc_cpufreq.c | 31 +++++++++++++++++++++----
+>>   include/acpi/cppc_acpi.h       |  5 +++++
+>>   3 files changed, 73 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+>> index 1e15a9f25ae9..c840bf606b30 100644
+>> --- a/drivers/acpi/cppc_acpi.c
+>> +++ b/drivers/acpi/cppc_acpi.c
+>> @@ -1240,6 +1240,47 @@ int cppc_get_perf_caps(int cpunum, struct 
+>> cppc_perf_caps *perf_caps)
+>>   }
+>>   EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
+>> +/**
+>> + * cppc_perf_ctrs_in_pcc - Check if any perf counters are in a PCC 
+>> region.
+>> + *
+>> + * CPPC has flexibility about how counters describing CPU perf are 
+>> delivered.
+>> + * One of the choices is PCC regions, which can have a high access 
+>> latency. This
+>> + * routine allows callers of cppc_get_perf_ctrs() to know this ahead 
+>> of time.
+>> + *
+>> + * Return: true if any of the counters are in PCC regions, false 
+>> otherwise
+>> + */
+>> +bool cppc_perf_ctrs_in_pcc(void)
+>> +{
+>> +    int cpu;
+>> +
+>> +    for_each_present_cpu(cpu) {
+>> +        struct cpc_register_resource *ref_perf_reg;
+>> +        struct cpc_desc *cpc_desc;
+>> +
+>> +        cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+>> +
+>> +        if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+>> +            CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+>> +            CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
+>> +            return true;
+>> +
+>> +
+>> +        ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+>> +
+>> +        /*
+>> +         * If reference perf register is not supported then we should
+>> +         * use the nominal perf value
+>> +         */
+>> +        if (!CPC_SUPPORTED(ref_perf_reg))
+>> +            ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+>> +
+>> +        if (CPC_IN_PCC(ref_perf_reg))
+>> +            return true;
+>> +    }
 > 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index d7f30902fda0..a5f0ee0d7727 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -1593,6 +1593,11 @@
->  			When zero, profiling data is discarded and associated
->  			debugfs files are removed at module unload time.
->  
-> +	ghes_edac_force= [X86] Skip the platform check and forcibly load the
+> Do we have a platform which returns false here?
 
-So there already is ghes.disable which is using the module param thing.
-Why don't you do that too?
+I'm not aware of one, but I don't have access to every bit of HW either.
 
-> +			ghes_edac modules.
 
-"module" - singular.
+> 
+>> +    return false;
+>> +}
+>> +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+>> +
+>>   /**
+>>    * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
+>>    * @cpunum: CPU from which to read counters.
+>> diff --git a/drivers/cpufreq/cppc_cpufreq.c 
+>> b/drivers/cpufreq/cppc_cpufreq.c
+>> index 24eaf0ec344d..32fcb0bf74a4 100644
+>> --- a/drivers/cpufreq/cppc_cpufreq.c
+>> +++ b/drivers/cpufreq/cppc_cpufreq.c
+>> @@ -63,7 +63,15 @@ static struct cppc_workaround_oem_info wa_info[] = {
+>>   static struct cpufreq_driver cppc_cpufreq_driver;
+>> +static enum {
+>> +    FIE_UNSET = -1,
+>> +    FIE_ENABLED,
+>> +    FIE_DISABLED
+>> +} fie_disabled = FIE_UNSET;
+>> +
+>>   #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
+>> +module_param(fie_disabled, int, 0444);
+>> +MODULE_PARM_DESC(fie_disabled, "Disable Frequency Invariance Engine 
+>> (FIE)");
+> 
+> Why we need the modules support?
+> I would drop this, since the fie_disabled would be set properly when
+> needed. The code would be cleaner (more below).
 
-> +			Format: <bool>
-> +			default: false (0)
-> +
->  	goldfish	[X86] Enable the goldfish android emulator platform.
->  			Don't use this when you are not running on the
->  			android emulator
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 9c52183e3ad9..e17e0ee8f842 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -94,6 +94,26 @@
->  #define FIX_APEI_GHES_SDEI_CRITICAL	__end_of_fixed_addresses
->  #endif
->  
-> +/*
-> + * "ghes_edac_force=1" forcibly loads ghes_edac and skips the platform
-> + * check.
-> + */
-> +bool __read_mostly ghes_edac_force;
-> +EXPORT_SYMBOL(ghes_edac_force);
-> +
-> +static int __init setup_ghes_edac_load(char *str)
-> +{
-> +	if (str)
-> +		if (!strcmp("true", str) || !strcmp("1", str))
-> +			ghes_edac_force = true;
-> +
-> +	if (!IS_ENABLED(CONFIG_X86))
-> +		ghes_edac_force = true;
-> +
-> +	return 1;
-> +}
-> +__setup("ghes_edac_force=", setup_ghes_edac_load);
+Well the original version was simpler, but I tend to agree with Ionela 
+who proposed this version in a previous review. The module param at this 
+point is a debugging/testing statment since it allows the user to force 
+FIE on or off independent of the PCC decision. Until we have a clear 
+statment about how/when/where this feature is useful, having the ability 
+to make the choice dynamically at runtime is quite useful and less 
+intrusive than having multiple kernels/modules on the machine with the 
+config option flipped, and requiring a reboot.
 
-Why all that?
+> 
+>>   /* Frequency invariance support */
+>>   struct cppc_freq_invariance {
+>> @@ -158,7 +166,7 @@ static void cppc_cpufreq_cpu_fie_init(struct 
+>> cpufreq_policy *policy)
+>>       struct cppc_freq_invariance *cppc_fi;
+>>       int cpu, ret;
+>> -    if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+>> +    if (fie_disabled)
+>>           return;
+>>       for_each_cpu(cpu, policy->cpus) {
+>> @@ -199,7 +207,7 @@ static void cppc_cpufreq_cpu_fie_exit(struct 
+>> cpufreq_policy *policy)
+>>       struct cppc_freq_invariance *cppc_fi;
+>>       int cpu;
+>> -    if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+>> +    if (fie_disabled)
+>>           return;
+>>       /* policy->cpus will be empty here, use related_cpus instead */
+>> @@ -229,7 +237,21 @@ static void __init cppc_freq_invariance_init(void)
+>>       };
+>>       int ret;
+>> -    if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+>> +    switch (fie_disabled) {
+>> +    /* honor user request */
+>> +    case FIE_DISABLED:
+>> +    case FIE_ENABLED:
+> 
+> This module's over-write doesn't look 'clean'.
+> Is it OK to allow a user to go with the poor performing
+> system (likely on many platforms)? Or we assume that there are
+> platforms which has a bit faster mailboxes and they already
+> have the FIE issue impacting task's utilization measurements.
 
-Isn't specifying
+I think with this patch applied we aren't any worse than before, but 
+that is based on the fact that I've not seen a machine that has actual 
+CPPC hardware registers (rather than mailboxes).
 
-ghes.edac_force_load
+So I think your suggesting that we will then have to revisit the code 
+(to maybe avoid all the cppc_fie task/etc overhead) if a machine appears 
+with hardware registers. And I tend to sorta agree, but that is what the 
+second patch is for :) which will likely be what most distro's end up 
+applying on generic kernels.
 
-on the kernel command line enough? I.e., you don't need to parse the
-passed in option - just the presence of the parameter is enough.
+> 
+> It looks like we are not sure about the solution. On one hand
+> we implement those checks in the cppc_perf_ctrs_in_pcc()
+> which could set the flag, but on the other hand we allow user
+> to decide. IMO this creates diversity that we are not able to control.
+> It creates another tunable knob in the kernel, which then is forgotten
+> to check.
 
-> +
->  static ATOMIC_NOTIFIER_HEAD(ghes_report_chain);
->  
->  static inline bool is_hest_type_generic_v2(struct ghes *ghes)
-> @@ -1517,13 +1537,13 @@ static struct acpi_platform_list plat_list[] = {
->  	{ } /* End */
->  };
->  
-> -struct list_head *ghes_get_devices(bool force)
-> +struct list_head *ghes_get_devices(void)
->  {
->  	int idx = -1;
->  
->  	if (IS_ENABLED(CONFIG_X86)) {
->  		idx = acpi_match_platform_list(plat_list);
-> -		if (idx < 0 && !force)
-> +		if (idx < 0 && !ghes_edac_force)
->  			return NULL;
->  	}
->  
-> diff --git a/drivers/edac/ghes_edac.c b/drivers/edac/ghes_edac.c
-> index bb3ea42ba70b..6a2b54cc7240 100644
-> --- a/drivers/edac/ghes_edac.c
-> +++ b/drivers/edac/ghes_edac.c
-> @@ -54,10 +54,6 @@ static DEFINE_MUTEX(ghes_reg_mutex);
->   */
->  static DEFINE_SPINLOCK(ghes_lock);
->  
-> -/* "ghes_edac.force_load=1" skips the platform check */
-> -static bool __read_mostly force_load;
-> -module_param(force_load, bool, 0);
-> -
->  static bool system_scanned;
->  
->  static struct list_head *ghes_devs;
-> @@ -437,23 +433,12 @@ static int ghes_edac_register(struct device *dev)
->  	mci->ctl_name = "ghes_edac";
->  	mci->dev_name = "ghes";
->  
-> -	if (fake) {
-> -		pr_info("This system has a very crappy BIOS: It doesn't even list the DIMMS.\n");
-> -		pr_info("Its SMBIOS info is wrong. It is doubtful that the error report would\n");
-> -		pr_info("work on such system. Use this driver with caution\n");
-> -	} else if (force_load) {
-> -		pr_info("This EDAC driver relies on BIOS to enumerate memory and get error reports.\n");
-> -		pr_info("Unfortunately, not all BIOSes reflect the memory layout correctly.\n");
-> -		pr_info("So, the end result of using this driver varies from vendor to vendor.\n");
-> -		pr_info("If you find incorrect reports, please contact your hardware vendor\n");
-> -		pr_info("to correct its BIOS.\n");
-> -		pr_info("This system has %d DIMM sockets.\n", ghes_hw.num_dimms);
-> -	}
-> -
->  	if (!fake) {
->  		struct dimm_info *src, *dst;
->  		int i = 0;
->  
-> +		pr_info("This system has %d DIMM sockets.\n", ghes_hw.num_dimms);
-> +
->  		mci_for_each_dimm(mci, dst) {
->  			src = &ghes_hw.dimms[i];
->  
+Your average user will never turn this knob, and if they do, its likely 
+to solve a problem, or test for performace. The fact that we aren't 100% 
+sure of where/when this feature is useful is the argument for making it 
+a tunable.
 
-This hunk...
 
-> @@ -478,6 +463,17 @@ static int ghes_edac_register(struct device *dev)
->  	} else {
->  		struct dimm_info *dimm = edac_get_dimm(mci, 0, 0, 0);
->  
-> +		pr_info("This system has a very crappy BIOS: It doesn't even list the DIMMS.\n");
-> +		pr_info("Its SMBIOS info is wrong. It is doubtful that the error report would\n");
-> +		pr_info("work on such system. Use this driver with caution\n");
-> +
-> +		if (ghes_edac_force) {
-> +			pr_info("This EDAC driver relies on BIOS to enumerate memory and get\n");
-> +			pr_info("error reports. Unfortunately, not all BIOSes reflect the\n");
-> +			pr_info("memory layout correctly. If you find incorrect reports, please\n");
-> +			pr_info("contact your hardware vendor for its in correct BIOS.\n");
-> +		}
-> +
->  		dimm->nr_pages = 1;
->  		dimm->grain = 128;
->  		dimm->mtype = MEM_UNKNOWN;
+> 
+> I still haven't seen information that the old FIE was an issue on those
+> servers and had impact on task utilization measurements. This should be
+> a main requirement for this new feature. This would be after we proved
+> that the utilization problem was due to the FIE and not something else 
+> (like uArch variation or workload variation).
+> 
+> IMO let's revert the ACPI_CPPC_CPUFREQ_FIE. When we get data that
+> FIE is an issue on those servers we can come back to this topic.
 
-... and this hunk look unrelated to what this patch is doing. What are
-they for?
+I don't really have an opinion about this, maybe someone else can 
+comment :)
 
-Thx.
+Although, with both of these patches applied we can kick the decision 
+down the road and revisit it in a couple years, and maybe have a clearer 
+view.
 
--- 
-Regards/Gruss,
-    Boris.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
+
