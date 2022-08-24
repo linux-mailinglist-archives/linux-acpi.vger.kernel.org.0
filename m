@@ -2,208 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 341F259FD70
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 16:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A671559FD74
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 16:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238106AbiHXOlm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 10:41:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56014 "EHLO
+        id S238546AbiHXOmU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 10:42:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234558AbiHXOlm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 10:41:42 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 055207437C;
-        Wed, 24 Aug 2022 07:41:41 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0F1023A;
-        Wed, 24 Aug 2022 07:41:44 -0700 (PDT)
-Received: from [10.57.15.162] (unknown [10.57.15.162])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 268853F67D;
-        Wed, 24 Aug 2022 07:41:37 -0700 (PDT)
-Message-ID: <59f3ba6f-b657-2da2-cb2a-9736e1488908@arm.com>
-Date:   Wed, 24 Aug 2022 15:41:36 +0100
+        with ESMTP id S231224AbiHXOmS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 10:42:18 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C84453039;
+        Wed, 24 Aug 2022 07:42:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661352137; x=1692888137;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=OhsDaWbsEJUhliaArsNuOKtaQMM8fP5ySs6yGdRcm7I=;
+  b=Nr25DNy24WucI1IYkbMd+oi2y6ugcw+ZR+l40O202DN7SBWgOw4eGBiC
+   bBWZTJDtM5HwwsNxD/eiWDGYaktczN1kF2wIiydtZWdQoNjYQXxUulMQb
+   qiNROnfVQr97Pas80zJrNPLegSAl1MpGy4JJ8KiS4HzkBN5Y0U+dalkFU
+   p6wzHJCYHxkHWCkSnQANfTHuJMw+i3NXJK7g+urslhdkuLD/B6Jpv2ToN
+   Z2PObz4od5WaOZ+gWKRNEtWq8/3r+KPM4Q+Vd1cG0nuZ3MG9qJOgeQH9U
+   7JZOzko+H5nqGsG0WUK1JohJlQg7v7lxbX7pBz+ByRrWWW/s9yVLew82w
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10449"; a="274373175"
+X-IronPort-AV: E=Sophos;i="5.93,260,1654585200"; 
+   d="scan'208";a="274373175"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2022 07:42:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,260,1654585200"; 
+   d="scan'208";a="937934527"
+Received: from lkp-server02.sh.intel.com (HELO 34e741d32628) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 24 Aug 2022 07:42:15 -0700
+Received: from kbuild by 34e741d32628 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oQraB-0000cx-0h;
+        Wed, 24 Aug 2022 14:42:15 +0000
+Date:   Wed, 24 Aug 2022 22:41:55 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org,
+        Punit Agrawal <punit.agrawal@bytedance.com>
+Subject: [rafael-pm:bleeding-edge 12/27] drivers/acpi/acpi_amba.c:100:17:
+ error: 'struct acpi_device' has no member named 'parent'
+Message-ID: <202208242233.FPqG2d3S-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v3 1/2] ACPI: CPPC: Disable FIE if registers in PCC
- regions
-Content-Language: en-US
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     rafael@kernel.or, lenb@kernel.org, viresh.kumar@linaro.org,
-        robert.moore@intel.com, punit.agrawal@bytedance.com,
-        ionela.voinescu@arm.com, pierre.gondois@arm.com,
-        linux-kernel@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Morten Rasmussen <morten.rasmussen@arm.com>,
-        Souvik Chakravarty <souvik.chakravarty@arm.com>
-References: <20220818211619.4193362-1-jeremy.linton@arm.com>
- <20220818211619.4193362-2-jeremy.linton@arm.com>
-From:   Lukasz Luba <lukasz.luba@arm.com>
-In-Reply-To: <20220818211619.4193362-2-jeremy.linton@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jeremy,
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   19c67c2579a54d65fea2ce802328ac3d0547b95c
+commit: c097c05812636fef5d73b8a68444e4d885559929 [12/27] ACPI: Drop parent field from struct acpi_device
+config: arm64-allyesconfig (https://download.01.org/0day-ci/archive/20220824/202208242233.FPqG2d3S-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=c097c05812636fef5d73b8a68444e4d885559929
+        git remote add rafael-pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+        git fetch --no-tags rafael-pm bleeding-edge
+        git checkout c097c05812636fef5d73b8a68444e4d885559929
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/
 
-+CC Dietmar, Morten and Souvik
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-On 8/18/22 22:16, Jeremy Linton wrote:
-> PCC regions utilize a mailbox to set/retrieve register values used by
-> the CPPC code. This is fine as long as the operations are
-> infrequent. With the FIE code enabled though the overhead can range
-> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
-> based machines.
-> 
-> So, before enabling FIE assure none of the registers used by
-> cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
-> enable a module parameter which can also disable it at boot or module
-> reload.
-> 
-> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> ---
->   drivers/acpi/cppc_acpi.c       | 41 ++++++++++++++++++++++++++++++++++
->   drivers/cpufreq/cppc_cpufreq.c | 31 +++++++++++++++++++++----
->   include/acpi/cppc_acpi.h       |  5 +++++
->   3 files changed, 73 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 1e15a9f25ae9..c840bf606b30 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1240,6 +1240,47 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
->   }
->   EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
->   
-> +/**
-> + * cppc_perf_ctrs_in_pcc - Check if any perf counters are in a PCC region.
-> + *
-> + * CPPC has flexibility about how counters describing CPU perf are delivered.
-> + * One of the choices is PCC regions, which can have a high access latency. This
-> + * routine allows callers of cppc_get_perf_ctrs() to know this ahead of time.
-> + *
-> + * Return: true if any of the counters are in PCC regions, false otherwise
-> + */
-> +bool cppc_perf_ctrs_in_pcc(void)
-> +{
-> +	int cpu;
-> +
-> +	for_each_present_cpu(cpu) {
-> +		struct cpc_register_resource *ref_perf_reg;
-> +		struct cpc_desc *cpc_desc;
-> +
-> +		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
-> +
-> +		if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
-> +		    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
-> +		    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
-> +			return true;
-> +
-> +
-> +		ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
-> +
-> +		/*
-> +		 * If reference perf register is not supported then we should
-> +		 * use the nominal perf value
-> +		 */
-> +		if (!CPC_SUPPORTED(ref_perf_reg))
-> +			ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
-> +
-> +		if (CPC_IN_PCC(ref_perf_reg))
-> +			return true;
-> +	}
+All errors (new ones prefixed by >>):
 
-Do we have a platform which returns false here?
+   drivers/acpi/acpi_amba.c: In function 'amba_handler_attach':
+>> drivers/acpi/acpi_amba.c:100:17: error: 'struct acpi_device' has no member named 'parent'
+     100 |         if (adev->parent)
+         |                 ^~
+   drivers/acpi/acpi_amba.c:101:68: error: 'struct acpi_device' has no member named 'parent'
+     101 |                 dev->dev.parent = acpi_get_first_physical_node(adev->parent);
+         |                                                                    ^~
+--
+   drivers/perf/arm_dsu_pmu.c: In function 'dsu_pmu_acpi_get_cpus':
+>> drivers/perf/arm_dsu_pmu.c:657:33: error: 'struct acpi_device' has no member named 'parent'
+     657 |                         acpi_dev->parent == ACPI_COMPANION(dev)->parent)
+         |                                 ^~
+   drivers/perf/arm_dsu_pmu.c:657:64: error: 'struct acpi_device' has no member named 'parent'
+     657 |                         acpi_dev->parent == ACPI_COMPANION(dev)->parent)
+         |                                                                ^~
+--
+   drivers/perf/qcom_l3_pmu.c: In function 'qcom_l3_cache_pmu_probe':
+>> drivers/perf/qcom_l3_pmu.c:745:31: error: 'struct acpi_device' has no member named 'parent'
+     745 |                       acpi_dev->parent->pnp.unique_id, acpi_dev->pnp.unique_id);
+         |                               ^~
 
-> +	return false;
-> +}
-> +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
-> +
->   /**
->    * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
->    * @cpunum: CPU from which to read counters.
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index 24eaf0ec344d..32fcb0bf74a4 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -63,7 +63,15 @@ static struct cppc_workaround_oem_info wa_info[] = {
->   
->   static struct cpufreq_driver cppc_cpufreq_driver;
->   
-> +static enum {
-> +	FIE_UNSET = -1,
-> +	FIE_ENABLED,
-> +	FIE_DISABLED
-> +} fie_disabled = FIE_UNSET;
-> +
->   #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
-> +module_param(fie_disabled, int, 0444);
-> +MODULE_PARM_DESC(fie_disabled, "Disable Frequency Invariance Engine (FIE)");
 
-Why we need the modules support?
-I would drop this, since the fie_disabled would be set properly when
-needed. The code would be cleaner (more below).
+vim +100 drivers/acpi/acpi_amba.c
 
->   
->   /* Frequency invariance support */
->   struct cppc_freq_invariance {
-> @@ -158,7 +166,7 @@ static void cppc_cpufreq_cpu_fie_init(struct cpufreq_policy *policy)
->   	struct cppc_freq_invariance *cppc_fi;
->   	int cpu, ret;
->   
-> -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> +	if (fie_disabled)
->   		return;
->   
->   	for_each_cpu(cpu, policy->cpus) {
-> @@ -199,7 +207,7 @@ static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
->   	struct cppc_freq_invariance *cppc_fi;
->   	int cpu;
->   
-> -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> +	if (fie_disabled)
->   		return;
->   
->   	/* policy->cpus will be empty here, use related_cpus instead */
-> @@ -229,7 +237,21 @@ static void __init cppc_freq_invariance_init(void)
->   	};
->   	int ret;
->   
-> -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> +	switch (fie_disabled) {
-> +	/* honor user request */
-> +	case FIE_DISABLED:
-> +	case FIE_ENABLED:
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   47  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   48  static int amba_handler_attach(struct acpi_device *adev,
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   49  				const struct acpi_device_id *id)
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   50  {
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   51  	struct amba_device *dev;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   52  	struct resource_entry *rentry;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   53  	struct list_head resource_list;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   54  	bool address_found = false;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   55  	int irq_no = 0;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   56  	int ret;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   57  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   58  	/* If the ACPI node already has a physical device attached, skip it. */
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   59  	if (adev->physical_node_count)
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   60  		return 0;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   61  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   62  	dev = amba_device_alloc(dev_name(&adev->dev), 0, 0);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   63  	if (!dev) {
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   64  		dev_err(&adev->dev, "%s(): amba_device_alloc() failed\n",
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   65  			__func__);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   66  		return -ENOMEM;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   67  	}
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   68  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   69  	INIT_LIST_HEAD(&resource_list);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   70  	ret = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   71  	if (ret < 0)
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   72  		goto err_free;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   73  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   74  	list_for_each_entry(rentry, &resource_list, node) {
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   75  		switch (resource_type(rentry->res)) {
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   76  		case IORESOURCE_MEM:
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   77  			if (!address_found) {
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   78  				dev->res = *rentry->res;
+7718629432676b Liguang Zhang  2021-06-29   79  				dev->res.name = dev_name(&dev->dev);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   80  				address_found = true;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   81  			}
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   82  			break;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   83  		case IORESOURCE_IRQ:
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   84  			if (irq_no < AMBA_NR_IRQS)
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   85  				dev->irq[irq_no++] = rentry->res->start;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   86  			break;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   87  		default:
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   88  			dev_warn(&adev->dev, "Invalid resource\n");
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   89  			break;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   90  		}
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   91  	}
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   92  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   93  	acpi_dev_free_resource_list(&resource_list);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   94  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   95  	/*
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   96  	 * If the ACPI node has a parent and that parent has a physical device
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   97  	 * attached to it, that physical device should be the parent of
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   98  	 * the amba device we are about to create.
+6ce2e188a6ae33 Graeme Gregory 2016-01-20   99  	 */
+6ce2e188a6ae33 Graeme Gregory 2016-01-20 @100  	if (adev->parent)
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  101  		dev->dev.parent = acpi_get_first_physical_node(adev->parent);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  102  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  103  	ACPI_COMPANION_SET(&dev->dev, adev);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  104  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  105  	ret = amba_device_add(dev, &iomem_resource);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  106  	if (ret) {
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  107  		dev_err(&adev->dev, "%s(): amba_device_add() failed (%d)\n",
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  108  		       __func__, ret);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  109  		goto err_free;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  110  	}
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  111  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  112  	return 1;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  113  
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  114  err_free:
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  115  	amba_device_put(dev);
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  116  	return ret;
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  117  }
+6ce2e188a6ae33 Graeme Gregory 2016-01-20  118  
 
-This module's over-write doesn't look 'clean'.
-Is it OK to allow a user to go with the poor performing
-system (likely on many platforms)? Or we assume that there are
-platforms which has a bit faster mailboxes and they already
-have the FIE issue impacting task's utilization measurements.
+:::::: The code at line 100 was first introduced by commit
+:::::: 6ce2e188a6ae339340d9bbf5bb0b81db20454353 ACPI / scan: AMBA bus probing support
 
-It looks like we are not sure about the solution. On one hand
-we implement those checks in the cppc_perf_ctrs_in_pcc()
-which could set the flag, but on the other hand we allow user
-to decide. IMO this creates diversity that we are not able to control.
-It creates another tunable knob in the kernel, which then is forgotten
-to check.
+:::::: TO: Graeme Gregory <graeme.gregory@linaro.org>
+:::::: CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-I still haven't seen information that the old FIE was an issue on those
-servers and had impact on task utilization measurements. This should be
-a main requirement for this new feature. This would be after we proved
-that the utilization problem was due to the FIE and not something else 
-(like uArch variation or workload variation).
-
-IMO let's revert the ACPI_CPPC_CPUFREQ_FIE. When we get data that
-FIE is an issue on those servers we can come back to this topic.
-
-Regards,
-Lukasz
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
