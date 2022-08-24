@@ -2,203 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1E295A0129
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 20:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 025555A014F
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 20:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239423AbiHXSMY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 14:12:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44430 "EHLO
+        id S240584AbiHXSX4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 14:23:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240454AbiHXSMW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 14:12:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CB36D9DA
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 11:12:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1661364739;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zQ3qZtEYF9kIZvb5A1H9IxOTwvdPfHqi1+4CI8j2JWY=;
-        b=cmdcz3/aE0EiHKXTs/dw6orYmLpo06czB4O9H4wnuNSGtXKOy0KDB04XEUPLOaLLyvYQdZ
-        CUXuNaIMxkJsDMd34BhU/AjxGGSp10EyRIX9H6ZFoZzGTDnZl7RNHCLKXEf72DnzGCgiOh
-        kGMBtbPO7pmMDzafMxB5eGhR8I5Qps0=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-670-esXXTUrVO4m83W9uhCOgJg-1; Wed, 24 Aug 2022 14:12:18 -0400
-X-MC-Unique: esXXTUrVO4m83W9uhCOgJg-1
-Received: by mail-qk1-f199.google.com with SMTP id bi16-20020a05620a319000b006bc2334be53so7337027qkb.14
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 11:12:18 -0700 (PDT)
+        with ESMTP id S240573AbiHXSXz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 14:23:55 -0400
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF5E796B6;
+        Wed, 24 Aug 2022 11:23:53 -0700 (PDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id m2so5934337qvq.11;
+        Wed, 24 Aug 2022 11:23:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=yK26ITzqXq21qe37kX2FSO/m5ELFXUKoDF4JXVSf2Yk=;
+        b=MvM8l4jybyLdDHdEzRIMNyw4AOmrePmypzWB/zttf9T0J7PG9J4Wx7dBNTuzVXoDk6
+         Pts/G2fqgF/JQaMqB8fJCMqJ+beuAsVHD6sSwZSkmpwHWjs16E2IT4XNIe6Q6fgb30Zs
+         ZcGIpsoNniM9EIH/+Zb37nJErUfqlUsOccOHh0uSZMEY0dSlyAXKjLqlO75Yqdtv7OO1
+         dYCSyGktFrnrMS7HOVtlvTOS/XCbqoto8P5Sqf35hN1TiAKL6A/vNI3F+nGX8XYj/qRm
+         v0nFEnMlNMqnOzVrB+gBsvrsuai6QZJ7YhzoDyRlAbIr6vHxT20Zg8tQelGuhq4BeT5z
+         iqhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=zQ3qZtEYF9kIZvb5A1H9IxOTwvdPfHqi1+4CI8j2JWY=;
-        b=P1l2hPNhfiMzKtNnSOO36uJAqn+VPt/x8K4Y0XzH5kkJAxKb2PurEieornV43vUk+V
-         j/F2HSPt84AdnMa7Eouv20PsAuMDCJkTiaGKpeSBwlMAJ3EmtN1Hf1lS0jGwSakWBBVC
-         cSEAcKFHWJh1+c3dsswWHnylU11JxwP4hDhGyy2/Ya7YMU4G6Qgzd681bdgNWuM3mdVz
-         83YkxidjJN6FhboX8BOBQPDtBeSueMFuKoq6A+bFDHn96T0LSe/4N76x273G+s/D4ua0
-         dzX//70kEheelVyFbRjBz5GPN3eZm+zeBT0ldMy7Nd3N21gbOVKpjtGMnZ6mVx/ny+Cq
-         A9LQ==
-X-Gm-Message-State: ACgBeo2PMUso+IrYPa3oDXIYKEcoqodR49USq/vHfhw1M7RCt5FI9mwH
-        WKzyVMSfP2hau7G/XL3aSG+sKqjacoUtoTqe30GJ1pUSYg5V7p9ZuvbbMjoJekXyMB4y7cpX3y3
-        BnxhWrW96sAtDV1h+iLoYuA==
-X-Received: by 2002:a05:6214:27ee:b0:496:f17b:7459 with SMTP id jt14-20020a05621427ee00b00496f17b7459mr338528qvb.101.1661364737700;
-        Wed, 24 Aug 2022 11:12:17 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR4SOi3GajklItGmlUgJlLLhtanN0frscFinRBtNfwg/Jh8eIC0ruh9bVuC+aRmJv5zCKqZZxQ==
-X-Received: by 2002:a05:6214:27ee:b0:496:f17b:7459 with SMTP id jt14-20020a05621427ee00b00496f17b7459mr338488qvb.101.1661364737427;
-        Wed, 24 Aug 2022 11:12:17 -0700 (PDT)
-Received: from [192.168.8.139] (pool-100-0-245-4.bstnma.fios.verizon.net. [100.0.245.4])
-        by smtp.gmail.com with ESMTPSA id u4-20020a05620a454400b006bbe7ded98csm12598653qkp.112.2022.08.24.11.12.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Aug 2022 11:12:16 -0700 (PDT)
-Message-ID: <341368d96c5c3bdbcab48d48a0d9b702a930ea05.camel@redhat.com>
-Subject: Re: [PATCH v4 31/31] drm/todo: Add entry about dealing with
- brightness control on devices with > 1 panel
-From:   Lyude Paul <lyude@redhat.com>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>,
-        Daniel Dadap <ddadap@nvidia.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Pan Xinhui <Xinhui.Pan@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Date:   Wed, 24 Aug 2022 14:12:15 -0400
-In-Reply-To: <20220824121523.1291269-32-hdegoede@redhat.com>
-References: <20220824121523.1291269-1-hdegoede@redhat.com>
-         <20220824121523.1291269-32-hdegoede@redhat.com>
-Organization: Red Hat Inc.
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=yK26ITzqXq21qe37kX2FSO/m5ELFXUKoDF4JXVSf2Yk=;
+        b=ew9wNes9zgcyGDsrd9Bi5eQkrcA/8ts6AbnCGm2s70xB4jHBeqa7W8sd89pDIeu4ni
+         0kQjTxsT6Kr/pmoRhJBNYNF9t2tHzFre8+a/zev+qyeMUtz/jJiOeIgQwhyquGxk/rxH
+         vCSqCT6gPXnlBS5xODD1yH7QLVBrHtaGS/qvfgEegPBboL9iU/OhsqrPSXyvO8ONTbYU
+         uWmm0Pi/DRMUicCK8RzGy+tRxV26S1KJ6qwEu4UTZ61fj9FeukNgyQteQQOgkBfLC6YA
+         4whmgZyiQirpwur0//6LYLmBBSYNjWN4GUplGGvjhioFLIy4P532lEiy6q16+eFWsO23
+         +chw==
+X-Gm-Message-State: ACgBeo1mIcw8u4OkCzInhBa79wJxYpkEWa69GAeKXIONalRajjGPESHV
+        k2dXehjKwsFSnqdhqVbuCyZM91nFx3GNbXlw/FU=
+X-Google-Smtp-Source: AA6agR7WR+Chq5aALN21nOJ8KtaVCyeyYnWxi+FloTWgbk+pFsOcnv1Pvt3w71jsFBNxphNxwDKQxBn+Vf6P77yzICI=
+X-Received: by 2002:ad4:4eaf:0:b0:496:ac46:2d9c with SMTP id
+ ed15-20020ad44eaf000000b00496ac462d9cmr345077qvb.82.1661365432794; Wed, 24
+ Aug 2022 11:23:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <12036348.O9o76ZdvQC@kreacher> <2196460.iZASKD2KPV@kreacher> <5857822.lOV4Wx5bFT@kreacher>
+In-Reply-To: <5857822.lOV4Wx5bFT@kreacher>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 24 Aug 2022 21:23:16 +0300
+Message-ID: <CAHp75VcjxUjH4p_NOEQjOuFO8LcSdUU_stEvfWvtbQc8hfud0w@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] ACPI: Drop parent field from struct acpi_device
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Mark Brown <broonie@kernel.org>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Linux on Hyper-V List <linux-hyperv@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
+On Wed, Aug 24, 2022 at 8:13 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> The parent field in struct acpi_device is, in fact, redundant,
+> because the dev.parent field in it effectively points to the same
+> object and it is used by the driver core.
+>
+> Accordingly, the parent field can be dropped from struct acpi_device
+> and for this purpose define acpi_dev_parent() to retrieve a parent
+> struct acpi_device pointer from the dev.parent field in struct
+> acpi_device.  Next, update all of the users of the parent field
+> in struct acpi_device to use acpi_dev_parent() instead of it and
+> drop it.
+>
+> While at it, drop the ACPI_IS_ROOT_DEVICE() macro that is only used
+> in one place in a confusing way.
+>
+> No intentional functional impact.
 
-On Wed, 2022-08-24 at 14:15 +0200, Hans de Goede wrote:
-> Add an entry summarizing the discussion about dealing with brightness
-> control on devices with more then 1 internal panel.
-> 
-> The original discussion can be found here:
-> https://lore.kernel.org/dri-devel/20220517152331.16217-1-hdegoede@redhat.com/
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  Documentation/gpu/todo.rst | 68 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 68 insertions(+)
-> 
-> diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-> index 7634c27ac562..393d218e4a0c 100644
-> --- a/Documentation/gpu/todo.rst
-> +++ b/Documentation/gpu/todo.rst
-> @@ -679,6 +679,74 @@ Contact: Sam Ravnborg
->  
->  Level: Advanced
->  
-> +Brightness handling on devices with multiple internal panels
-> +============================================================
-> +
-> +On x86/ACPI devices there can be multiple backlight firmware interfaces:
-> +(ACPI) video, vendor specific and others. As well as direct/native (PWM)
-> +register programming by the KMS driver.
-> +
-> +To deal with this backlight drivers used on x86/ACPI call
-> +acpi_video_get_backlight_type() which has heuristics (+quirks) to select
-> +which backlight interface to use; and backlight drivers which do not match
-> +the returned type will not register themselves, so that only one backlight
-> +device gets registered (in a single GPU setup, see below).
-> +
-> +At the moment this more or less assumes that there will only
-> +be 1 (internal) panel on a system.
-> +
-> +On systems with 2 panels this may be a problem, depending on
-> +what interface acpi_video_get_backlight_type() selects:
-> +
-> +1. native: in this case the KMS driver is expected to know which backlight
-> +   device belongs to which output so everything should just work.
-> +2. video: this does support controlling multiple backlights, but some work
-> +   will need to be done to get the output <-> backlight device mapping
-> +
-> +The above assumes both panels will require the same backlight interface type.
-> +Things will break on systems with multiple panels where the 2 panels need
-> +a different type of control. E.g. one panel needs ACPI video backlight control,
-> +where as the other is using native backlight control. Currently in this case
-> +only one of the 2 required backlight devices will get registered, based on
-> +the acpi_video_get_backlight_type() return value.
-> +
-> +If this (theoretical) case ever shows up, then supporting this will need some
-> +work. A possible solution here would be to pass a device and connector-name
-> +to acpi_video_get_backlight_type() so that it can deal with this.
-> +
-> +Note in a way we already have a case where userspace sees 2 panels,
-> +in dual GPU laptop setups with a mux. On those systems we may see
-> +either 2 native backlight devices; or 2 native backlight devices.
-> +
-> +Userspace already has code to deal with this by detecting if the related
-> +panel is active (iow which way the mux between the GPU and the panels
-> +points) and then uses that backlight device. Userspace here very much
-> +assumes a single panel though. It picks only 1 of the 2 backlight devices
-> +and then only uses that one.
-> +
-> +Note that all userspace code (that I know off) is currently hardcoded
-> +to assume a single panel.
-> +
-> +Before the recent changes to not register multiple (e.g. video + native)
-> +/sys/class/backlight devices for a single panel (on a single GPU laptop),
-> +userspace would see multiple backlight devices all controlling the same
-> +backlight.
-> +
-> +To deal with this userspace had to always picks one preferred device under
-> +/sys/class/backlight and will ignore the others. So to support brightness
-> +control on multiple panels userspace will need to be updated too.
-> +
-> +There are plans to allow brightness control through the KMS API by adding
-> +a "display brightness" property to drm_connector objects for panels. This
-> +solves a number of issues with the /sys/class/backlight API, including not
-> +being able to map a sysfs backlight device to a specific connector. Any
-> +userspace changes to add support for brightness control on devices with
-> +multiple panels really should build on top of this new KMS property.
-> +
-> +Contact: Hans de Goede
-> +
-> +Level: Advanced
-> +
->  Outside DRM
->  ===========
->  
+Side note: Should we not convert these to use acpi_dev_parent()?
+
+https://elixir.bootlin.com/linux/v6.0-rc2/source/drivers/acpi/property.c#L1271
+https://elixir.bootlin.com/linux/v6.0-rc2/source/drivers/bus/hisi_lpc.c#L397
 
 -- 
-Cheers,
- Lyude Paul (she/her)
- Software Engineer at Red Hat
-
+With Best Regards,
+Andy Shevchenko
