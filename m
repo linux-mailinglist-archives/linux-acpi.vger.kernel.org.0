@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7A2359F992
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 14:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5743359F995
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 14:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237024AbiHXMSx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 08:18:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
+        id S237296AbiHXMTB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 08:19:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237356AbiHXMSA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 08:18:00 -0400
+        with ESMTP id S237405AbiHXMSI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 08:18:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C891841992
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 05:17:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35C2176941
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 05:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1661343465;
+        s=mimecast20190719; t=1661343471;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pPWkXqG/dkFynN2yzybx6rf6xgee1LF0KIfwbNO4jV8=;
-        b=HeUzBzhVROamSWYNV4SI0PmAUg0UpRNevqr7J0sDTUM8RkRbFaPbj/i08xU44q63abYecD
-        jw/jyjtoH3vaBv1G5Ghw6/6nNkXEeupV+LrZlGKjJ1UpwNrDrKSE2QYMc7KPNdZ4erb7qy
-        rb9OJIqPFj49PUQ/RWJFx+8lV/IZkNM=
+        bh=3SH44BXwktH40KCcDZ9+emR32b1FaNxTyVmnyphrNZ0=;
+        b=EdrT0ZDQV7iuA1B8bBkqBP6HeChdcAeWym63QV+BAXp0A4uJTs55BX0ykBz8NKrLLtZ+xc
+        vzbpHaQm9trugz86IzkJ096ZAT6N56UMNuUrddCWvFvhyfJSDSXnexcAefsuDQRBvNJrOd
+        nl3zyhHZUxpdEjwOdbftlG590RmKehs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-623-xo5zdgXaNje8d4LNwok-xw-1; Wed, 24 Aug 2022 08:17:42 -0400
-X-MC-Unique: xo5zdgXaNje8d4LNwok-xw-1
+ us-mta-467-IKvpAhDKN6GmZ58lZ6bPGA-1; Wed, 24 Aug 2022 08:17:48 -0400
+X-MC-Unique: IKvpAhDKN6GmZ58lZ6bPGA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9828285A58B;
-        Wed, 24 Aug 2022 12:17:41 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E1C4811E83;
+        Wed, 24 Aug 2022 12:17:45 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.39.193.103])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B0E08C15BB3;
-        Wed, 24 Aug 2022 12:17:37 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CF5DCC15BBA;
+        Wed, 24 Aug 2022 12:17:41 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
         Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
@@ -61,11 +61,10 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
         intel-gfx <intel-gfx@lists.freedesktop.org>,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v4 30/31] ACPI: video: Fix indentation of video_detect_dmi_table[] entries
-Date:   Wed, 24 Aug 2022 14:15:22 +0200
-Message-Id: <20220824121523.1291269-31-hdegoede@redhat.com>
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH v4 31/31] drm/todo: Add entry about dealing with brightness control on devices with > 1 panel
+Date:   Wed, 24 Aug 2022 14:15:23 +0200
+Message-Id: <20220824121523.1291269-32-hdegoede@redhat.com>
 In-Reply-To: <20220824121523.1291269-1-hdegoede@redhat.com>
 References: <20220824121523.1291269-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -81,126 +80,96 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The video_detect_dmi_table[] uses an unusual indentation for
-before the ".name = ..." named struct initializers.
+Add an entry summarizing the discussion about dealing with brightness
+control on devices with more then 1 internal panel.
 
-Instead of being indented with an extra tab compared to
-the previous line's '{' these are indented to with only
-a single space to allow for long DMI_MATCH() lines without
-wrapping.
+The original discussion can be found here:
+https://lore.kernel.org/dri-devel/20220517152331.16217-1-hdegoede@redhat.com/
 
-But over time some entries did not event have the single space
-indent in front of the ".name = ..." lines.
-
-Make things consistent by using a single space indent for these
-lines everywhere.
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/video_detect.c | 48 ++++++++++++++++++-------------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ Documentation/gpu/todo.rst | 68 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 789d5913c178..db2474fe58ac 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -142,17 +142,17 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		},
- 	},
- 	{
--	.callback = video_detect_force_vendor,
--	/* Asus UL30VT */
--	.matches = {
-+	 .callback = video_detect_force_vendor,
-+	 /* Asus UL30VT */
-+	 .matches = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK Computer Inc."),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "UL30VT"),
- 		},
- 	},
- 	{
--	.callback = video_detect_force_vendor,
--	/* Asus UL30A */
--	.matches = {
-+	 .callback = video_detect_force_vendor,
-+	 /* Asus UL30A */
-+	 .matches = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK Computer Inc."),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "UL30A"),
- 		},
-@@ -198,9 +198,9 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		},
- 	},
- 	{
--	.callback = video_detect_force_vendor,
--	/* GIGABYTE GB-BXBT-2807 */
--	.matches = {
-+	 .callback = video_detect_force_vendor,
-+	 /* GIGABYTE GB-BXBT-2807 */
-+	 .matches = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "GB-BXBT-2807"),
- 		},
-@@ -233,17 +233,17 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		},
- 	},
- 	{
--	.callback = video_detect_force_vendor,
--	/* Sony VPCEH3U1E */
--	.matches = {
-+	 .callback = video_detect_force_vendor,
-+	 /* Sony VPCEH3U1E */
-+	 .matches = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "Sony Corporation"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "VPCEH3U1E"),
- 		},
- 	},
- 	{
--	.callback = video_detect_force_vendor,
--	/* Xiaomi Mi Pad 2 */
--	.matches = {
-+	 .callback = video_detect_force_vendor,
-+	 /* Xiaomi Mi Pad 2 */
-+	 .matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
- 		},
-@@ -551,25 +551,25 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		},
- 	},
- 	{
--	.callback = video_detect_force_native,
--	/* ASUSTeK COMPUTER INC. GA401 */
--	.matches = {
-+	 .callback = video_detect_force_native,
-+	 /* ASUSTeK COMPUTER INC. GA401 */
-+	 .matches = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "GA401"),
- 		},
- 	},
- 	{
--	.callback = video_detect_force_native,
--	/* ASUSTeK COMPUTER INC. GA502 */
--	.matches = {
-+	 .callback = video_detect_force_native,
-+	 /* ASUSTeK COMPUTER INC. GA502 */
-+	 .matches = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "GA502"),
- 		},
- 	},
- 	{
--	.callback = video_detect_force_native,
--	/* ASUSTeK COMPUTER INC. GA503 */
--	.matches = {
-+	 .callback = video_detect_force_native,
-+	 /* ASUSTeK COMPUTER INC. GA503 */
-+	 .matches = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "GA503"),
- 		},
+diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
+index 7634c27ac562..393d218e4a0c 100644
+--- a/Documentation/gpu/todo.rst
++++ b/Documentation/gpu/todo.rst
+@@ -679,6 +679,74 @@ Contact: Sam Ravnborg
+ 
+ Level: Advanced
+ 
++Brightness handling on devices with multiple internal panels
++============================================================
++
++On x86/ACPI devices there can be multiple backlight firmware interfaces:
++(ACPI) video, vendor specific and others. As well as direct/native (PWM)
++register programming by the KMS driver.
++
++To deal with this backlight drivers used on x86/ACPI call
++acpi_video_get_backlight_type() which has heuristics (+quirks) to select
++which backlight interface to use; and backlight drivers which do not match
++the returned type will not register themselves, so that only one backlight
++device gets registered (in a single GPU setup, see below).
++
++At the moment this more or less assumes that there will only
++be 1 (internal) panel on a system.
++
++On systems with 2 panels this may be a problem, depending on
++what interface acpi_video_get_backlight_type() selects:
++
++1. native: in this case the KMS driver is expected to know which backlight
++   device belongs to which output so everything should just work.
++2. video: this does support controlling multiple backlights, but some work
++   will need to be done to get the output <-> backlight device mapping
++
++The above assumes both panels will require the same backlight interface type.
++Things will break on systems with multiple panels where the 2 panels need
++a different type of control. E.g. one panel needs ACPI video backlight control,
++where as the other is using native backlight control. Currently in this case
++only one of the 2 required backlight devices will get registered, based on
++the acpi_video_get_backlight_type() return value.
++
++If this (theoretical) case ever shows up, then supporting this will need some
++work. A possible solution here would be to pass a device and connector-name
++to acpi_video_get_backlight_type() so that it can deal with this.
++
++Note in a way we already have a case where userspace sees 2 panels,
++in dual GPU laptop setups with a mux. On those systems we may see
++either 2 native backlight devices; or 2 native backlight devices.
++
++Userspace already has code to deal with this by detecting if the related
++panel is active (iow which way the mux between the GPU and the panels
++points) and then uses that backlight device. Userspace here very much
++assumes a single panel though. It picks only 1 of the 2 backlight devices
++and then only uses that one.
++
++Note that all userspace code (that I know off) is currently hardcoded
++to assume a single panel.
++
++Before the recent changes to not register multiple (e.g. video + native)
++/sys/class/backlight devices for a single panel (on a single GPU laptop),
++userspace would see multiple backlight devices all controlling the same
++backlight.
++
++To deal with this userspace had to always picks one preferred device under
++/sys/class/backlight and will ignore the others. So to support brightness
++control on multiple panels userspace will need to be updated too.
++
++There are plans to allow brightness control through the KMS API by adding
++a "display brightness" property to drm_connector objects for panels. This
++solves a number of issues with the /sys/class/backlight API, including not
++being able to map a sysfs backlight device to a specific connector. Any
++userspace changes to add support for brightness control on devices with
++multiple panels really should build on top of this new KMS property.
++
++Contact: Hans de Goede
++
++Level: Advanced
++
+ Outside DRM
+ ===========
+ 
 -- 
 2.37.2
 
