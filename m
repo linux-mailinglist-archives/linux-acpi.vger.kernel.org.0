@@ -2,105 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 420E259F491
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 09:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C661D59F55D
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 10:33:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235216AbiHXHxX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 03:53:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34868 "EHLO
+        id S229551AbiHXIdb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 04:33:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235461AbiHXHxT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 03:53:19 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F82D83F31;
-        Wed, 24 Aug 2022 00:53:11 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id x14-20020a17090a8a8e00b001fb61a71d99so763221pjn.2;
-        Wed, 24 Aug 2022 00:53:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=hlUCh9xjyN+gejZCmRefDyKkk5ypIdW9rzghdKaRkZw=;
-        b=bwUNjjgObbmyLEH7lfNn4t9diFSgWGeiqt+V4mB92M8UpbtGv3YnpY4cATn44U0Z+C
-         CWIQULITTbYdnlUsXVapXPCMu74yAmttCRQyR3q+fwWKj+/jKFX1DgP6rYMVV5VXsE1Z
-         vDaxV8GQkRVOd5JPHVhA+TFtG6VyrKETaOAayyetnxo1lVdfA224fI9VcHuZ52cIJLBN
-         MnzoZa1zTz1R8GOk6B6GmjDdCystOQHjJ5PJD2SMp406ewOowqKjnK7QAG0fu2JvrjD6
-         41WnxBaKxJB7V3mMhGqgIPIsJ2h6WIRCZNMwKE5NGhclNeip9OkS+9ur7AeW45tlgVxa
-         l2gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=hlUCh9xjyN+gejZCmRefDyKkk5ypIdW9rzghdKaRkZw=;
-        b=hCLcTzPSglyQqymbAN686H26gIjpNi0b7fqt4cz6vJk0Xcxu0YAhkUgJZlRdY1e4ft
-         oWePKoopQG7E9W7+RknYTTdNPXfSVL6zMf8sfPASX2kfn57ZKaM+0oxe61lxuvXe816J
-         eQr2Oczd6mM1+Yu/I4tlUEycyWpdccjRfoji03YmG7jBuTeHltZY4zRly02aYVVWfmBp
-         Hc4xic7BcT7Xd27KXYB0NrUlOQtLTp7hR+qlznmrEvYUcbRfqaCWZugAVImzB8IUWzLc
-         rbAeCUSaWumXMngA6IkhZ8n4M4NgObCpgOIVW7JmKdxRliCEpwwpVX5jFoQYy6gZZ9yi
-         NKqg==
-X-Gm-Message-State: ACgBeo3/nNki+3QnHv/MaHiSLsnkHZZZulbVOa0EbTlhvpmdFZ6OtlyA
-        zdr52+EiVI78vC4RH1GofxxWhreXYp8=
-X-Google-Smtp-Source: AA6agR5Egopn98B3/3bTy6SflR+cuCFFwvdd6+aCPaoLFGkcesPvIAX51ElaqeM4w8AISqX/5JNmmw==
-X-Received: by 2002:a17:902:ea0d:b0:172:ce60:1d4f with SMTP id s13-20020a170902ea0d00b00172ce601d4fmr19656642plg.68.1661327590583;
-        Wed, 24 Aug 2022 00:53:10 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id i72-20020a62874b000000b0053715de411asm2268194pfe.138.2022.08.24.00.53.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Aug 2022 00:53:10 -0700 (PDT)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: ye.xingchen@zte.com.cn
-To:     rafael@kernel.org
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ye xingchen <ye.xingchen@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH linux-next] ACPI: bus: Remove the unneeded result variable
-Date:   Wed, 24 Aug 2022 07:53:06 +0000
-Message-Id: <20220824075306.221472-1-ye.xingchen@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S232621AbiHXIda (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 04:33:30 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F1003D5B9;
+        Wed, 24 Aug 2022 01:33:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661330009; x=1692866009;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tVYV8x5KqSC9OSZo8dHmjJz6cGc4M/c0VgmXCI9d7qs=;
+  b=d/hcibLeRwq0wjwGPCPm3DXDLmMym9XGVV0wWsSWfjuUl0xH/d5w0yPe
+   J2KWSxMeyE0FXIKT4vRvUaORqIyUoLtuRhGEq7bLmyCChX9wXhTa7nUZz
+   zcGFSWfPJGkt0eSKTXJBBNzEa2ZGaS/Lzt6Qbn8uvMw6OkEe0Dm+OjzNR
+   bg8up/YJ0ZEasM+qHxtf9PcNIiMKTWKSrzoJkQCba5mmOwDQYf781DG5c
+   7DKu7uPnXcbYuwBEAZFlt9aLOo/HXYKpN13bnM1eOKCEEyfFcs01EELgY
+   lMfo6R7yvC1mZRmgR3d3sgk3ewyUJRSiKA+yDykYjUAbUYrLh9oGgfzY/
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10448"; a="292649768"
+X-IronPort-AV: E=Sophos;i="5.93,260,1654585200"; 
+   d="scan'208";a="292649768"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2022 01:33:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,260,1654585200"; 
+   d="scan'208";a="735799593"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 24 Aug 2022 01:33:11 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id DC93A19D; Wed, 24 Aug 2022 11:33:25 +0300 (EEST)
+Date:   Wed, 24 Aug 2022 11:33:25 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Tomasz Figa <tfiga@chromium.org>
+Subject: Re: [PATCH] ACPI: PM: Fix up documentation reference
+Message-ID: <YwXiVUigUmesHRuS@black.fi.intel.com>
+References: <5852809.lOV4Wx5bFT@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5852809.lOV4Wx5bFT@kreacher>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: ye xingchen <ye.xingchen@zte.com.cn>
+On Tue, Aug 23, 2022 at 03:28:02PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The acpi_dev_state_d0() kerneldoc comment should refer to
+> non-d0-probe.rst which is there in the tree instead of
+> low-power-probe.rst which is not.  Fix it up.
+> 
+> While at it, adjust the formatting of that comment to save space.
+> 
+> No functional impact.
+> 
+> Fixes: b82a7df4a7f3 ("ACPI: Add a convenience function to tell a device is in D0 state")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Return the value from driver_register() directly instead of storing it
- in another redundant variable.
-
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
----
- drivers/acpi/bus.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index c0d20d997891..661a63ea3248 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -973,16 +973,13 @@ EXPORT_SYMBOL_GPL(acpi_driver_match_device);
-  */
- int acpi_bus_register_driver(struct acpi_driver *driver)
- {
--	int ret;
--
- 	if (acpi_disabled)
- 		return -ENODEV;
- 	driver->drv.name = driver->name;
- 	driver->drv.bus = &acpi_bus_type;
- 	driver->drv.owner = driver->owner;
- 
--	ret = driver_register(&driver->drv);
--	return ret;
-+	return driver_register(&driver->drv);
- }
- 
- EXPORT_SYMBOL(acpi_bus_register_driver);
--- 
-2.25.1
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
