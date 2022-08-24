@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3D4B59F930
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 14:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0998559F931
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 14:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237211AbiHXMPu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 08:15:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50982 "EHLO
+        id S235856AbiHXMPz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 08:15:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236646AbiHXMPr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 08:15:47 -0400
+        with ESMTP id S237231AbiHXMPu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 08:15:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F4D60697
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 05:15:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B98960697
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 05:15:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1661343345;
+        s=mimecast20190719; t=1661343348;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2LGuumILEA2qNbafHDIZDVaN41hQ4SWAtDdYKtqphk4=;
-        b=RKsU/fy15pos4oshMxKltEa4tCWU41AyDA9hQxPR0svt+etB1TFPr6jBYZM3hkgaRrdWh3
-        SbwWtDhmxD+VXR0QZmfkrZIe6JAD50j7WVd8axJjRmtf48YQnbc6hERrKYqgTQc6x1KUPD
-        X8nRF1yn7jnJEbn+JHRf05RmJuGcaJs=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=Fez5JurfKkdDHmkN5O68TIQTTlcqRFGtraUyOgljYGY=;
+        b=K40HM0jB5t15POSd8EB8jxu83tMZ7ZPtnkMNGzC1Ai+tEkk6AV1QyCQ0JJ7+z2Yn+vTDT/
+        gPNIhliCu0kBLP+uKLZDwtCVS6hJrqfO7zDnAwKdMhgITCbmSvF87bUnBQlgQU9ATF51kV
+        zbsHGhqBgi9GuTJadjFHlTz3Kua7YPU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-446-0KfpApaxOK2E6mZSPBZ2Gw-1; Wed, 24 Aug 2022 08:15:42 -0400
-X-MC-Unique: 0KfpApaxOK2E6mZSPBZ2Gw-1
+ us-mta-510-cNAXySJINM6P_8HiGuvrAw-1; Wed, 24 Aug 2022 08:15:46 -0400
+X-MC-Unique: cNAXySJINM6P_8HiGuvrAw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E7DA53C10223;
-        Wed, 24 Aug 2022 12:15:40 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E7F40101AA47;
+        Wed, 24 Aug 2022 12:15:44 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.39.193.103])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 12531C15BB3;
-        Wed, 24 Aug 2022 12:15:36 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2BC71C15BB3;
+        Wed, 24 Aug 2022 12:15:41 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
         Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
@@ -61,11 +61,10 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
         intel-gfx <intel-gfx@lists.freedesktop.org>,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v4 01/31] ACPI: video: Add acpi_video_backlight_use_native() helper
-Date:   Wed, 24 Aug 2022 14:14:53 +0200
-Message-Id: <20220824121523.1291269-2-hdegoede@redhat.com>
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH v4 02/31] drm/i915: Don't register backlight when another backlight should be used
+Date:   Wed, 24 Aug 2022 14:14:54 +0200
+Message-Id: <20220824121523.1291269-3-hdegoede@redhat.com>
 In-Reply-To: <20220824121523.1291269-1-hdegoede@redhat.com>
 References: <20220824121523.1291269-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -73,7 +72,7 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,131 +80,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ATM on x86 laptops where we want userspace to use the acpi_video backlight
-device we often register both the GPU's native backlight device and
-acpi_video's firmware acpi_video# backlight device. This relies on
-userspace preferring firmware type backlight devices over native ones, but
-registering 2 backlight devices for a single display really is undesirable.
+Before this commit when we want userspace to use the acpi_video backlight
+device we register both the GPU's native backlight device and acpi_video's
+firmware acpi_video# backlight device. This relies on userspace preferring
+firmware type backlight devices over native ones.
 
-On x86 laptops where the native GPU backlight device should be used,
-the registering of other backlight devices is avoided by their drivers
-using acpi_video_get_backlight_type() and only registering their backlight
-if the return value matches their type.
+Registering 2 backlight devices for a single display really is
+undesirable, don't register the GPU's native backlight device when
+another backlight device should be used.
 
-acpi_video_get_backlight_type() uses
-backlight_device_get_by_type(BACKLIGHT_RAW) to determine if a native
-driver is available and will never return native if this returns
-false. This means that the GPU's native backlight registering code
-cannot just call acpi_video_get_backlight_type() to determine if it
-should register its backlight, since acpi_video_get_backlight_type() will
-never return native until the native backlight has already registered.
-
-To fix this add a new internal native function parameter to
-acpi_video_get_backlight_type(), which when set to true will make
-acpi_video_get_backlight_type() behave as if a native backlight has
-already been registered.
-
-And add a new acpi_video_backlight_use_native() helper, which sets this
-to true, for use in native GPU backlight code.
-
-Changes in v2:
-- Replace adding a native parameter to acpi_video_get_backlight_type() with
-  adding a new acpi_video_backlight_use_native() helper.
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/video_detect.c | 24 ++++++++++++++++++++----
- include/acpi/video.h        |  5 +++++
- 2 files changed, 25 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_backlight.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 5d7f38016a24..5f105eaa7d30 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -17,8 +17,9 @@
-  * Otherwise vendor specific drivers like thinkpad_acpi, asus-laptop,
-  * sony_acpi,... can take care about backlight brightness.
-  *
-- * Backlight drivers can use acpi_video_get_backlight_type() to determine
-- * which driver should handle the backlight.
-+ * Backlight drivers can use acpi_video_get_backlight_type() to determine which
-+ * driver should handle the backlight. RAW/GPU-driver backlight drivers must
-+ * use the acpi_video_backlight_use_native() helper for this.
-  *
-  * If CONFIG_ACPI_VIDEO is neither set as "compiled in" (y) nor as a module (m)
-  * this file will not be compiled and acpi_video_get_backlight_type() will
-@@ -571,9 +572,10 @@ static int acpi_video_backlight_notify(struct notifier_block *nb,
-  * Arguably the native on win8 check should be done first, but that would
-  * be a behavior change, which may causes issues.
-  */
--enum acpi_backlight_type acpi_video_get_backlight_type(void)
-+static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
- {
- 	static DEFINE_MUTEX(init_mutex);
-+	static bool native_available;
- 	static bool init_done;
- 	static long video_caps;
+diff --git a/drivers/gpu/drm/i915/display/intel_backlight.c b/drivers/gpu/drm/i915/display/intel_backlight.c
+index 681ebcda97ad..a4dd7924e0c1 100644
+--- a/drivers/gpu/drm/i915/display/intel_backlight.c
++++ b/drivers/gpu/drm/i915/display/intel_backlight.c
+@@ -8,6 +8,8 @@
+ #include <linux/pwm.h>
+ #include <linux/string_helpers.h>
  
-@@ -593,6 +595,8 @@ enum acpi_backlight_type acpi_video_get_backlight_type(void)
- 			backlight_notifier_registered = true;
- 		init_done = true;
- 	}
-+	if (native)
-+		native_available = true;
- 	mutex_unlock(&init_mutex);
- 
- 	if (acpi_backlight_cmdline != acpi_backlight_undef)
-@@ -604,13 +608,25 @@ enum acpi_backlight_type acpi_video_get_backlight_type(void)
- 	if (!(video_caps & ACPI_VIDEO_BACKLIGHT))
- 		return acpi_backlight_vendor;
- 
--	if (acpi_osi_is_win8() && backlight_device_get_by_type(BACKLIGHT_RAW))
-+	if (acpi_osi_is_win8() &&
-+	    (native_available || backlight_device_get_by_type(BACKLIGHT_RAW)))
- 		return acpi_backlight_native;
- 
- 	return acpi_backlight_video;
- }
++#include <acpi/video.h>
 +
-+enum acpi_backlight_type acpi_video_get_backlight_type(void)
-+{
-+	return __acpi_video_get_backlight_type(false);
-+}
- EXPORT_SYMBOL(acpi_video_get_backlight_type);
+ #include "intel_backlight.h"
+ #include "intel_backlight_regs.h"
+ #include "intel_connector.h"
+@@ -952,6 +954,11 @@ int intel_backlight_device_register(struct intel_connector *connector)
  
-+bool acpi_video_backlight_use_native(void)
-+{
-+	return __acpi_video_get_backlight_type(true) == acpi_backlight_native;
-+}
-+EXPORT_SYMBOL(acpi_video_backlight_use_native);
+ 	WARN_ON(panel->backlight.max == 0);
+ 
++	if (!acpi_video_backlight_use_native()) {
++		DRM_INFO("Skipping intel_backlight registration\n");
++		return 0;
++	}
 +
- /*
-  * Set the preferred backlight interface type based on DMI info.
-  * This function allows DMI blacklists to be implemented by external
-diff --git a/include/acpi/video.h b/include/acpi/video.h
-index db8548ff03ce..4705e339c252 100644
---- a/include/acpi/video.h
-+++ b/include/acpi/video.h
-@@ -56,6 +56,7 @@ extern void acpi_video_unregister(void);
- extern int acpi_video_get_edid(struct acpi_device *device, int type,
- 			       int device_id, void **edid);
- extern enum acpi_backlight_type acpi_video_get_backlight_type(void);
-+extern bool acpi_video_backlight_use_native(void);
- extern void acpi_video_set_dmi_backlight_type(enum acpi_backlight_type type);
- /*
-  * Note: The value returned by acpi_video_handles_brightness_key_presses()
-@@ -77,6 +78,10 @@ static inline enum acpi_backlight_type acpi_video_get_backlight_type(void)
- {
- 	return acpi_backlight_vendor;
- }
-+static inline bool acpi_video_backlight_use_native(void)
-+{
-+	return true;
-+}
- static inline void acpi_video_set_dmi_backlight_type(enum acpi_backlight_type type)
- {
- }
+ 	memset(&props, 0, sizeof(props));
+ 	props.type = BACKLIGHT_RAW;
+ 
 -- 
 2.37.2
 
