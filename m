@@ -2,96 +2,216 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C68D59F8ED
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 14:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80D5F59F92E
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 14:15:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233892AbiHXMAH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 08:00:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46092 "EHLO
+        id S232759AbiHXMPr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 08:15:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236034AbiHXMAG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 08:00:06 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1A435F99
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 05:00:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661342404; x=1692878404;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=MBP4w9jMSdM+17hreP0BHnGTaQ6EC34BqAkNx8Aobrk=;
-  b=PPxHcpcP+8axJikeQOQqxG0RrDUOXoWFLNh7WlJ6H9WJYBan0RNWI7c2
-   T5F1m1DCgPcwO7pMs7xxU+4437VPpbfbsESuJBB4z7lIfwnbyw6Ptf0nF
-   YkCITiwcnjA4hPlD9FQ0QioI8MefQ/s4GE/QsD7pUVR4GUhbPSK2dYCBs
-   Y36sN8akLz0NTOTw8lE5XHZMb0PA/flHkDc5of6pShu78Lx01ImDLl6Ll
-   ACQ/Q+erxy4oisWfOa/N7hhxHO2S+aiIlPJ5i/nPd93Hq2JmM7P5FUSol
-   c0cbPY3q1N9+bJGlfnswxNe6l/kGi2ovIHM6SdfRsic1KGsyl8a2XzWnw
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10448"; a="294729812"
-X-IronPort-AV: E=Sophos;i="5.93,260,1654585200"; 
-   d="scan'208";a="294729812"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2022 04:59:48 -0700
-X-IronPort-AV: E=Sophos;i="5.93,260,1654585200"; 
-   d="scan'208";a="642831474"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2022 04:59:47 -0700
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 4AF8D202AC;
-        Wed, 24 Aug 2022 14:59:45 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1oQp36-008Gns-TR; Wed, 24 Aug 2022 14:59:56 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-Subject: [PATCH 1/1] ACPI: property: Ignore already existing data node tags
-Date:   Wed, 24 Aug 2022 14:59:56 +0300
-Message-Id: <20220824115956.1971171-1-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S237325AbiHXMPn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 08:15:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E515A89E
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 05:15:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1661343341;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=XuX8j1Jb0th5Nr5Sma6YpihUjb+UUTKrqxwD44wEPgc=;
+        b=dvDLa17nXu31q9swHiH8BGYQ2VOid9tOmSxRhnOBTl9Hb0VWeg4249a+Cn/iECWBorYBUE
+        fQ2Vi8y7iLwALeqprHxtUmmrSlsQGuERNVURk/2z5dleNOUPmjgKZn/20G53LH6EDvaXT8
+        7LD8IGHSB4wLi4mfycVxDrMYNf3JCWY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-156-IB18Y2XuNZyu781RhRUDxg-1; Wed, 24 Aug 2022 08:15:37 -0400
+X-MC-Unique: IB18Y2XuNZyu781RhRUDxg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0409101A54E;
+        Wed, 24 Aug 2022 12:15:36 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.193.103])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 269EDC15BBA;
+        Wed, 24 Aug 2022 12:15:32 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
+        Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Pan@vger.kernel.org, Xinhui <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH v4 00/31] drm/kms: Stop registering multiple /sys/class/backlight devs for a single display
+Date:   Wed, 24 Aug 2022 14:14:52 +0200
+Message-Id: <20220824121523.1291269-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ACPI node pointers are attached to data node handles, in order to resolve
-string references to them. _DSD guide allows the same node to be reached
-from multiple parent nodes, leading the node enumeration algorithm to each
-such nodes more than once. As attached data already already exists,
-attaching data with the same tag will fail. Address this problem by
-ignoring nodes that have been already tagged.
+Hi All,
 
-Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
-Reported-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
----
- drivers/acpi/property.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+As mentioned in my RFC titled "drm/kms: control display brightness through
+drm_connector properties":
+https://lore.kernel.org/dri-devel/0d188965-d809-81b5-74ce-7d30c49fee2d@redhat.com/
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 7b3ad8ed2f4e6..fa97b31214a83 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -370,7 +370,7 @@ static bool acpi_tie_nondev_subnodes(struct acpi_device_data *data)
- 		bool ret;
- 
- 		status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
--		if (ACPI_FAILURE(status)) {
-+		if (ACPI_FAILURE(status) && status != AE_ALREADY_EXISTS) {
- 			acpi_handle_err(dn->handle, "Can't tag data node\n");
- 			return false;
- 		}
+The first step towards this is to deal with some existing technical debt
+in backlight handling on x86/ACPI boards, specifically we need to stop
+registering multiple /sys/class/backlight devs for a single display.
+
+This series implements my RFC describing my plan for these cleanups:
+https://lore.kernel.org/dri-devel/98519ba0-7f18-201a-ea34-652f50343158@redhat.com/
+
+Changes in version 4:
+- Minor tweaks to nvidia-wmi-ec-backlight changes
+- Add nouveau_acpi_* wrappers around used include/acpi/video.h functions to
+  fix unresolved symbol errors on non X86
+
+Changes in version 3:
+- ACPI_VIDEO can now be enabled on non X86 too, adjust various Kconfig changes
+- Make the delay before doing fallback acpi_video backlight registration
+  a module option (patch 9)
+- Move the nvidia-wmi-ec-backlight fw API definitions to a shared header
+- Add a "acpi_video_get_backlight_type() == acpi_backlight_nvidia_wmi_ec"
+  check to the nvidia-wmi-ec-backlight driver (patch 19)
+
+Changes in version 2:
+- Introduce acpi_video_backlight_use_native() helper
+- Finishes the refactoring, addressing all the bits from the "Other issues"
+  section of the refactor RFC
+
+Note the i915 patches (patch 2 and 12 still need a review/ack, and
+I've dropped the previouw review of the nouveau patches because of
+changes there. Please review.
+
+This series as submitted is based on drm-tip for CI purposes.
+I also have an immutable branch based on 6.0-rc1 with these
+same patches available here:
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=backlight-detect-refactor-v4
+assuming the i915 patches also pass review I hope to send out
+a pull-request to all involved subsystems based on this branch soon.
+
+Regards,
+
+Hans
+
+
+Hans de Goede (31):
+  ACPI: video: Add acpi_video_backlight_use_native() helper
+  drm/i915: Don't register backlight when another backlight should be
+    used
+  drm/amdgpu: Don't register backlight when another backlight should be
+    used (v3)
+  drm/radeon: Don't register backlight when another backlight should be
+    used (v3)
+  drm/nouveau: Don't register backlight when another backlight should be
+    used (v2)
+  ACPI: video: Drop backlight_device_get_by_type() call from
+    acpi_video_get_backlight_type()
+  ACPI: video: Remove acpi_video_bus from list before tearing it down
+  ACPI: video: Simplify acpi_video_unregister_backlight()
+  ACPI: video: Make backlight class device registration a separate step
+    (v2)
+  ACPI: video: Remove code to unregister acpi_video backlight when a
+    native backlight registers
+  drm/i915: Call acpi_video_register_backlight() (v2)
+  drm/nouveau: Register ACPI video backlight when nv_backlight
+    registration fails (v2)
+  drm/amdgpu: Register ACPI video backlight when skipping amdgpu
+    backlight registration
+  drm/radeon: Register ACPI video backlight when skipping radeon
+    backlight registration
+  platform/x86: nvidia-wmi-ec-backlight: Move fw interface definitions
+    to a header (v2)
+  ACPI: video: Refactor acpi_video_get_backlight_type() a bit
+  ACPI: video: Add Nvidia WMI EC brightness control detection (v3)
+  ACPI: video: Add Apple GMUX brightness control detection
+  platform/x86: nvidia-wmi-ec-backlight: Use
+    acpi_video_get_backlight_type()
+  platform/x86: apple-gmux: Stop calling acpi/video.h functions
+  platform/x86: toshiba_acpi: Stop using
+    acpi_video_set_dmi_backlight_type()
+  platform/x86: acer-wmi: Move backlight DMI quirks to
+    acpi/video_detect.c
+  platform/x86: asus-wmi: Drop DMI chassis-type check from backlight
+    handling
+  platform/x86: asus-wmi: Move acpi_backlight=vendor quirks to ACPI
+    video_detect.c
+  platform/x86: asus-wmi: Move acpi_backlight=native quirks to ACPI
+    video_detect.c
+  platform/x86: samsung-laptop: Move acpi_backlight=[vendor|native]
+    quirks to ACPI video_detect.c
+  ACPI: video: Remove acpi_video_set_dmi_backlight_type()
+  ACPI: video: Drop "Samsung X360" acpi_backlight=native quirk
+  ACPI: video: Drop NL5x?U, PF4NU1F and PF5?U?? acpi_backlight=native
+    quirks
+  ACPI: video: Fix indentation of video_detect_dmi_table[] entries
+  drm/todo: Add entry about dealing with brightness control on devices
+    with > 1 panel
+
+ Documentation/gpu/todo.rst                    |  68 +++
+ MAINTAINERS                                   |   1 +
+ drivers/acpi/Kconfig                          |   1 +
+ drivers/acpi/acpi_video.c                     |  64 ++-
+ drivers/acpi/video_detect.c                   | 428 +++++++++++-------
+ drivers/gpu/drm/Kconfig                       |  14 +
+ .../gpu/drm/amd/amdgpu/atombios_encoders.c    |  14 +-
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   9 +
+ drivers/gpu/drm/gma500/Kconfig                |   2 +
+ drivers/gpu/drm/i915/Kconfig                  |   2 +
+ .../gpu/drm/i915/display/intel_backlight.c    |   7 +
+ drivers/gpu/drm/i915/display/intel_display.c  |   8 +
+ drivers/gpu/drm/i915/display/intel_panel.c    |   3 +
+ drivers/gpu/drm/i915/i915_drv.h               |   2 +
+ drivers/gpu/drm/nouveau/nouveau_acpi.c        |  10 +
+ drivers/gpu/drm/nouveau/nouveau_acpi.h        |   4 +
+ drivers/gpu/drm/nouveau/nouveau_backlight.c   |  13 +
+ drivers/gpu/drm/radeon/atombios_encoders.c    |   7 +
+ drivers/gpu/drm/radeon/radeon_encoders.c      |  11 +-
+ .../gpu/drm/radeon/radeon_legacy_encoders.c   |   7 +
+ drivers/platform/x86/Kconfig                  |   1 +
+ drivers/platform/x86/acer-wmi.c               |  66 ---
+ drivers/platform/x86/apple-gmux.c             |   3 -
+ drivers/platform/x86/asus-nb-wmi.c            |  21 -
+ drivers/platform/x86/asus-wmi.c               |  13 -
+ drivers/platform/x86/asus-wmi.h               |   2 -
+ drivers/platform/x86/eeepc-wmi.c              |  25 +-
+ .../platform/x86/nvidia-wmi-ec-backlight.c    |  82 +---
+ drivers/platform/x86/samsung-laptop.c         |  87 ----
+ drivers/platform/x86/toshiba_acpi.c           |  16 -
+ include/acpi/video.h                          |   9 +-
+ .../x86/nvidia-wmi-ec-backlight.h             |  76 ++++
+ 32 files changed, 570 insertions(+), 506 deletions(-)
+ create mode 100644 include/linux/platform_data/x86/nvidia-wmi-ec-backlight.h
+
 -- 
-2.30.2
+2.37.2
 
