@@ -2,62 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1855A0120
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 20:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E295A0129
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 20:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240377AbiHXSLl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 14:11:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42120 "EHLO
+        id S239423AbiHXSMY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 14:12:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240427AbiHXSLi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 14:11:38 -0400
+        with ESMTP id S240454AbiHXSMW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 14:12:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B186C5FF67
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 11:11:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CB36D9DA
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 11:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1661364694;
+        s=mimecast20190719; t=1661364739;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7Iz5hZYykHc8fiPWbr2FurkIYzVNEHVdT24iSBVPjAY=;
-        b=XABvJYUXno3EU1di2KoGTBfkXgR2QrNTBWghp5Xj3LGEITn5TPQGVdxOAD1x24os+oPMQ6
-        tJop/OvsdYJgWEjOcycylZJgUgjI9Edf2sz85GRq6hp5LtiRs3vAP0rlC5bexpZRwXMZi2
-        haC63/fXxQwPtCSm0ArYxczlsbmc3qI=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=zQ3qZtEYF9kIZvb5A1H9IxOTwvdPfHqi1+4CI8j2JWY=;
+        b=cmdcz3/aE0EiHKXTs/dw6orYmLpo06czB4O9H4wnuNSGtXKOy0KDB04XEUPLOaLLyvYQdZ
+        CUXuNaIMxkJsDMd34BhU/AjxGGSp10EyRIX9H6ZFoZzGTDnZl7RNHCLKXEf72DnzGCgiOh
+        kGMBtbPO7pmMDzafMxB5eGhR8I5Qps0=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-660-e901zweGOZ67DgToPiyv1Q-1; Wed, 24 Aug 2022 14:11:33 -0400
-X-MC-Unique: e901zweGOZ67DgToPiyv1Q-1
-Received: by mail-qt1-f200.google.com with SMTP id h13-20020ac87d4d000000b00342f6c363afso13362723qtb.9
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 11:11:33 -0700 (PDT)
+ us-mta-670-esXXTUrVO4m83W9uhCOgJg-1; Wed, 24 Aug 2022 14:12:18 -0400
+X-MC-Unique: esXXTUrVO4m83W9uhCOgJg-1
+Received: by mail-qk1-f199.google.com with SMTP id bi16-20020a05620a319000b006bc2334be53so7337027qkb.14
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 11:12:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:user-agent:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc;
-        bh=7Iz5hZYykHc8fiPWbr2FurkIYzVNEHVdT24iSBVPjAY=;
-        b=0U2/CkRTq7xulkKQIL2AJmfl1Bdl5WoDZ8NYOAnrflNjFLRLkO9yCYESTGTL7BLrKf
-         3CMKgxAG/JsHEz/Sv4dWJFVVIE3CH9uSqeBhDtPvkxQO1TvIVdf8Zy40clsyq4VbkKmN
-         ufypMEBYgvq7a6NoNJAcVET3pfjXIl2kAheOD1W5SwA839RCiG8jT/hTH/oa+kBvZNf1
-         WoNdoHJkyGdRwMzxoSmGR2BO5Xkx0feaMunZw1gFFioPQ/8yH0vcOIQbIOZaY21eH2o4
-         Muqi32Y/nZiQq+7HX5dNIuKgSzd3EYa3ayUoF7i+NI83UhsW6x5ViekGOgawsdzZcmQ8
-         337A==
-X-Gm-Message-State: ACgBeo1QQ60hdIXpx8wshxsCL/CrVbqzM6J8A9Dt8Y9rpdzH6njxQ61v
-        x3qO1OOfIK21AxGZY8h1y2PalpvEqJ7Tug3eD6pjYPhSzfuHhgaSxUzv2HrQzKav1HpIvl8Azq1
-        kKFpEMroDWcmND/rU+f1byg==
-X-Received: by 2002:a0c:e34d:0:b0:496:d21e:da0f with SMTP id a13-20020a0ce34d000000b00496d21eda0fmr356249qvm.104.1661364692972;
-        Wed, 24 Aug 2022 11:11:32 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR5yZfLMMwova0GLIKlzkippPXyfVI1iypDQik96PZEELSzHNsWUSq6kjGN73O12uk25lSgHzw==
-X-Received: by 2002:a0c:e34d:0:b0:496:d21e:da0f with SMTP id a13-20020a0ce34d000000b00496d21eda0fmr356221qvm.104.1661364692747;
-        Wed, 24 Aug 2022 11:11:32 -0700 (PDT)
+        bh=zQ3qZtEYF9kIZvb5A1H9IxOTwvdPfHqi1+4CI8j2JWY=;
+        b=P1l2hPNhfiMzKtNnSOO36uJAqn+VPt/x8K4Y0XzH5kkJAxKb2PurEieornV43vUk+V
+         j/F2HSPt84AdnMa7Eouv20PsAuMDCJkTiaGKpeSBwlMAJ3EmtN1Hf1lS0jGwSakWBBVC
+         cSEAcKFHWJh1+c3dsswWHnylU11JxwP4hDhGyy2/Ya7YMU4G6Qgzd681bdgNWuM3mdVz
+         83YkxidjJN6FhboX8BOBQPDtBeSueMFuKoq6A+bFDHn96T0LSe/4N76x273G+s/D4ua0
+         dzX//70kEheelVyFbRjBz5GPN3eZm+zeBT0ldMy7Nd3N21gbOVKpjtGMnZ6mVx/ny+Cq
+         A9LQ==
+X-Gm-Message-State: ACgBeo2PMUso+IrYPa3oDXIYKEcoqodR49USq/vHfhw1M7RCt5FI9mwH
+        WKzyVMSfP2hau7G/XL3aSG+sKqjacoUtoTqe30GJ1pUSYg5V7p9ZuvbbMjoJekXyMB4y7cpX3y3
+        BnxhWrW96sAtDV1h+iLoYuA==
+X-Received: by 2002:a05:6214:27ee:b0:496:f17b:7459 with SMTP id jt14-20020a05621427ee00b00496f17b7459mr338528qvb.101.1661364737700;
+        Wed, 24 Aug 2022 11:12:17 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR4SOi3GajklItGmlUgJlLLhtanN0frscFinRBtNfwg/Jh8eIC0ruh9bVuC+aRmJv5zCKqZZxQ==
+X-Received: by 2002:a05:6214:27ee:b0:496:f17b:7459 with SMTP id jt14-20020a05621427ee00b00496f17b7459mr338488qvb.101.1661364737427;
+        Wed, 24 Aug 2022 11:12:17 -0700 (PDT)
 Received: from [192.168.8.139] (pool-100-0-245-4.bstnma.fios.verizon.net. [100.0.245.4])
-        by smtp.gmail.com with ESMTPSA id p11-20020ac8740b000000b00342fcdc2d46sm12833255qtq.56.2022.08.24.11.11.30
+        by smtp.gmail.com with ESMTPSA id u4-20020a05620a454400b006bbe7ded98csm12598653qkp.112.2022.08.24.11.12.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Aug 2022 11:11:31 -0700 (PDT)
-Message-ID: <ad03096816395dbfd8113fca51b4ff374f36255f.camel@redhat.com>
-Subject: Re: [PATCH v4 12/31] drm/nouveau: Register ACPI video backlight
- when nv_backlight registration fails (v2)
+        Wed, 24 Aug 2022 11:12:16 -0700 (PDT)
+Message-ID: <341368d96c5c3bdbcab48d48a0d9b702a930ea05.camel@redhat.com>
+Subject: Re: [PATCH v4 31/31] drm/todo: Add entry about dealing with
+ brightness control on devices with > 1 panel
 From:   Lyude Paul <lyude@redhat.com>
 To:     Hans de Goede <hdegoede@redhat.com>,
         Ben Skeggs <bskeggs@redhat.com>,
@@ -84,10 +84,10 @@ Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
-Date:   Wed, 24 Aug 2022 14:11:30 -0400
-In-Reply-To: <20220824121523.1291269-13-hdegoede@redhat.com>
+Date:   Wed, 24 Aug 2022 14:12:15 -0400
+In-Reply-To: <20220824121523.1291269-32-hdegoede@redhat.com>
 References: <20220824121523.1291269-1-hdegoede@redhat.com>
-         <20220824121523.1291269-13-hdegoede@redhat.com>
+         <20220824121523.1291269-32-hdegoede@redhat.com>
 Organization: Red Hat Inc.
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
@@ -95,8 +95,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -106,88 +106,95 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 Reviewed-by: Lyude Paul <lyude@redhat.com>
 
 On Wed, 2022-08-24 at 14:15 +0200, Hans de Goede wrote:
-> Typically the acpi_video driver will initialize before nouveau, which
-> used to cause /sys/class/backlight/acpi_video0 to get registered and then
-> nouveau would register its own nv_backlight device later. After which
-> the drivers/acpi/video_detect.c code unregistered the acpi_video0 device
-> to avoid there being 2 backlight devices.
+> Add an entry summarizing the discussion about dealing with brightness
+> control on devices with more then 1 internal panel.
 > 
-> This means that userspace used to briefly see 2 devices and the
-> disappearing of acpi_video0 after a brief time confuses the systemd
-> backlight level save/restore code, see e.g.:
-> https://bbs.archlinux.org/viewtopic.php?id=269920
-> 
-> To fix this the ACPI video code has been modified to make backlight class
-> device registration a separate step, relying on the drm/kms driver to
-> ask for the acpi_video backlight registration after it is done setting up
-> its native backlight device.
-> 
-> Add a call to the new acpi_video_register_backlight() when native backlight
-> device registration has failed / was skipped to ensure that there is a
-> backlight device available before the drm_device gets registered with
-> userspace.
-> 
-> Changes in v2:
-> - Add nouveau_acpi_video_register_backlight() wrapper to avoid unresolved
->   symbol errors on non X86
+> The original discussion can be found here:
+> https://lore.kernel.org/dri-devel/20220517152331.16217-1-hdegoede@redhat.com/
 > 
 > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/gpu/drm/nouveau/nouveau_acpi.c      | 5 +++++
->  drivers/gpu/drm/nouveau/nouveau_acpi.h      | 2 ++
->  drivers/gpu/drm/nouveau/nouveau_backlight.c | 7 +++++++
->  3 files changed, 14 insertions(+)
+>  Documentation/gpu/todo.rst | 68 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 68 insertions(+)
 > 
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/nouveau/nouveau_acpi.c
-> index 1592c9cd7750..8cf096f841a9 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
-> @@ -391,3 +391,8 @@ bool nouveau_acpi_video_backlight_use_native(void)
->  {
->  	return acpi_video_backlight_use_native();
->  }
-> +
-> +void nouveau_acpi_video_register_backlight(void)
-> +{
-> +	acpi_video_register_backlight();
-> +}
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.h b/drivers/gpu/drm/nouveau/nouveau_acpi.h
-> index 3c666c30dfca..e39dd8b94b8b 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_acpi.h
-> +++ b/drivers/gpu/drm/nouveau/nouveau_acpi.h
-> @@ -12,6 +12,7 @@ void nouveau_unregister_dsm_handler(void);
->  void nouveau_switcheroo_optimus_dsm(void);
->  void *nouveau_acpi_edid(struct drm_device *, struct drm_connector *);
->  bool nouveau_acpi_video_backlight_use_native(void);
-> +void nouveau_acpi_video_register_backlight(void);
->  #else
->  static inline bool nouveau_is_optimus(void) { return false; };
->  static inline bool nouveau_is_v1_dsm(void) { return false; };
-> @@ -20,6 +21,7 @@ static inline void nouveau_unregister_dsm_handler(void) {}
->  static inline void nouveau_switcheroo_optimus_dsm(void) {}
->  static inline void *nouveau_acpi_edid(struct drm_device *dev, struct drm_connector *connector) { return NULL; }
->  static inline bool nouveau_acpi_video_backlight_use_native(void) { return true; }
-> +static inline void nouveau_acpi_video_register_backlight(void) {}
->  #endif
+> diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
+> index 7634c27ac562..393d218e4a0c 100644
+> --- a/Documentation/gpu/todo.rst
+> +++ b/Documentation/gpu/todo.rst
+> @@ -679,6 +679,74 @@ Contact: Sam Ravnborg
 >  
->  #endif
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-> index d2b8f8c13db4..a614582779ca 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-> @@ -436,6 +436,13 @@ nouveau_backlight_init(struct drm_connector *connector)
+>  Level: Advanced
 >  
->  fail_alloc:
->  	kfree(bl);
-> +	/*
-> +	 * If we get here we have an internal panel, but no nv_backlight,
-> +	 * try registering an ACPI video backlight device instead.
-> +	 */
-> +	if (ret == 0)
-> +		nouveau_acpi_video_register_backlight();
+> +Brightness handling on devices with multiple internal panels
+> +============================================================
 > +
->  	return ret;
->  }
+> +On x86/ACPI devices there can be multiple backlight firmware interfaces:
+> +(ACPI) video, vendor specific and others. As well as direct/native (PWM)
+> +register programming by the KMS driver.
+> +
+> +To deal with this backlight drivers used on x86/ACPI call
+> +acpi_video_get_backlight_type() which has heuristics (+quirks) to select
+> +which backlight interface to use; and backlight drivers which do not match
+> +the returned type will not register themselves, so that only one backlight
+> +device gets registered (in a single GPU setup, see below).
+> +
+> +At the moment this more or less assumes that there will only
+> +be 1 (internal) panel on a system.
+> +
+> +On systems with 2 panels this may be a problem, depending on
+> +what interface acpi_video_get_backlight_type() selects:
+> +
+> +1. native: in this case the KMS driver is expected to know which backlight
+> +   device belongs to which output so everything should just work.
+> +2. video: this does support controlling multiple backlights, but some work
+> +   will need to be done to get the output <-> backlight device mapping
+> +
+> +The above assumes both panels will require the same backlight interface type.
+> +Things will break on systems with multiple panels where the 2 panels need
+> +a different type of control. E.g. one panel needs ACPI video backlight control,
+> +where as the other is using native backlight control. Currently in this case
+> +only one of the 2 required backlight devices will get registered, based on
+> +the acpi_video_get_backlight_type() return value.
+> +
+> +If this (theoretical) case ever shows up, then supporting this will need some
+> +work. A possible solution here would be to pass a device and connector-name
+> +to acpi_video_get_backlight_type() so that it can deal with this.
+> +
+> +Note in a way we already have a case where userspace sees 2 panels,
+> +in dual GPU laptop setups with a mux. On those systems we may see
+> +either 2 native backlight devices; or 2 native backlight devices.
+> +
+> +Userspace already has code to deal with this by detecting if the related
+> +panel is active (iow which way the mux between the GPU and the panels
+> +points) and then uses that backlight device. Userspace here very much
+> +assumes a single panel though. It picks only 1 of the 2 backlight devices
+> +and then only uses that one.
+> +
+> +Note that all userspace code (that I know off) is currently hardcoded
+> +to assume a single panel.
+> +
+> +Before the recent changes to not register multiple (e.g. video + native)
+> +/sys/class/backlight devices for a single panel (on a single GPU laptop),
+> +userspace would see multiple backlight devices all controlling the same
+> +backlight.
+> +
+> +To deal with this userspace had to always picks one preferred device under
+> +/sys/class/backlight and will ignore the others. So to support brightness
+> +control on multiple panels userspace will need to be updated too.
+> +
+> +There are plans to allow brightness control through the KMS API by adding
+> +a "display brightness" property to drm_connector objects for panels. This
+> +solves a number of issues with the /sys/class/backlight API, including not
+> +being able to map a sysfs backlight device to a specific connector. Any
+> +userspace changes to add support for brightness control on devices with
+> +multiple panels really should build on top of this new KMS property.
+> +
+> +Contact: Hans de Goede
+> +
+> +Level: Advanced
+> +
+>  Outside DRM
+>  ===========
 >  
 
 -- 
