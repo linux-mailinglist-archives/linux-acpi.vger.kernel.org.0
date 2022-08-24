@@ -2,68 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5851159FA67
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 14:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DDD859FA71
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Aug 2022 14:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232564AbiHXMtx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 08:49:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48974 "EHLO
+        id S235867AbiHXMvH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Aug 2022 08:51:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235982AbiHXMtx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 08:49:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D0D2CDF9
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 05:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1661345390;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wC5Z2C/PK6NcUw1f++1+B+zqmXR0UZybCJvVZVgpOUU=;
-        b=M4QU1nmc4Vsg74/I4DJa2X18ox0g+0nkttPaUyfQ5s6RNOqTexR1yTM9DoPBH15eeIpRDk
-        L3Q4N0iRUYwqPrYZgJFFxWVRwDmNc7J54jxy33ihn3nR7dtDvq2XoHYOHGXIk2E56iwj9n
-        zGK5cQB0as95b0eMhjCGewRazkhCKlA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-504-NMbs7c11NheIi0ynnqDryg-1; Wed, 24 Aug 2022 08:49:49 -0400
-X-MC-Unique: NMbs7c11NheIi0ynnqDryg-1
-Received: by mail-ej1-f72.google.com with SMTP id hb37-20020a170907162500b0073d7f7fbbbfso2983080ejc.17
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 05:49:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=wC5Z2C/PK6NcUw1f++1+B+zqmXR0UZybCJvVZVgpOUU=;
-        b=4RMGWFmmDXGUtVLxFFhURHV208itcBmUGB0UYm9oh+f2Avp++an70opXix9/kgv4SC
-         kNWsyucZBPiByxWzKybut/gv+B78dKQIES5TlKa5HaTpP0Z9J4l7jCgPa700kD26NWMA
-         LuXb9R8LivRB/twukKFf61LjT1kPgQISlxVUUKbtjMjKIgzl+8776JpiDbsH5hNXSmSs
-         R5XqexNGPmmwD/GLmxnheMqq9HsxCRo8BoG9J0ARCN77IKhON1+U4kJNsaoGHUPQ/Vot
-         3fsj+ai/j44cUPvbPvbKkCY3llhcc0mqvfAYSVC124ghpIf0WvrmHS5V64xzKwPjsXEQ
-         q/bQ==
-X-Gm-Message-State: ACgBeo0gr2s4OTSHHicfv5T68Es0yBgm5F9YhWdzPns+s5lFgafwdP/4
-        QBp+/pkexJWrIhINQO+e46VfSzv1jAvU62dcFHJVQfL8LNsiouWtbSq7SK7Tu95YV+i2xTDhPLE
-        MU9Vcw4tWTAQL604RfZ+aPw==
-X-Received: by 2002:a17:907:8317:b0:731:2189:7f4d with SMTP id mq23-20020a170907831700b0073121897f4dmr2797112ejc.468.1661345388241;
-        Wed, 24 Aug 2022 05:49:48 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR7LUjqu0rvL8O6CJd+R/NNz3ck80tOf12k72l8wmeciZQsEIJBktllD4PXgxW3LjrTA+ksdIw==
-X-Received: by 2002:a17:907:8317:b0:731:2189:7f4d with SMTP id mq23-20020a170907831700b0073121897f4dmr2797084ejc.468.1661345388005;
-        Wed, 24 Aug 2022 05:49:48 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id 2-20020a170906328200b0073c9d68ca0dsm1107366ejw.133.2022.08.24.05.49.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Aug 2022 05:49:47 -0700 (PDT)
-Message-ID: <7660855c-6307-a321-5250-cc8a51075bda@redhat.com>
-Date:   Wed, 24 Aug 2022 14:49:46 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v4 11/31] drm/i915: Call acpi_video_register_backlight()
- (v2)
-Content-Language: en-US
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        with ESMTP id S237189AbiHXMvG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 08:51:06 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2F78670D;
+        Wed, 24 Aug 2022 05:51:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661345465; x=1692881465;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=gVDfDPEiVT6OL8hq48CmnNY2PbGIUK+1rwU/ND+ln1c=;
+  b=U1cCwS59In011IEF8X5m5tpA2PN7fPTXlVbSidh3TjTAVvIIWxVHy+n4
+   7NraAPh2Vwgx3iiLubJKboM/qn4HXyhH5nYTKsIotIrOQMjzt8nJZxzvP
+   rkk7B8+FSY0q+8S8LnVKPDKk7UloYWi161JF0vYShQMu34d+hMZCMjy5l
+   za4NLov7Xf4rSAeipyw6M4Ukpl3jSbMQax4j1Ve9PzVQKsYxSoqUtAz2R
+   Wgno5fOoIF0mwjFWvTTJa0R0nKsc3CDEuIYBQe9lZH6SlrWLl+dtN+Deb
+   B1aL47wP5cEzsuQf4fQYcVWzUrO4kERjPGhketn3wBBX+4DZBuZX8Uyu1
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10448"; a="320012758"
+X-IronPort-AV: E=Sophos;i="5.93,260,1654585200"; 
+   d="scan'208";a="320012758"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2022 05:51:05 -0700
+X-IronPort-AV: E=Sophos;i="5.93,260,1654585200"; 
+   d="scan'208";a="670487177"
+Received: from zlim2-mobl.gar.corp.intel.com (HELO localhost) ([10.252.52.23])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2022 05:50:58 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
         Ben Skeggs <bskeggs@redhat.com>,
         Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
         Daniel Dadap <ddadap@nvidia.com>,
@@ -74,138 +48,90 @@ To:     Jani Nikula <jani.nikula@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
         Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
         "Pan, Xinhui" <Xinhui.Pan@amd.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Lukas Wunner <lukas@wunner.de>,
         Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@kernel.org>
-Cc:     nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
+        Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
         intel-gfx <intel-gfx@lists.freedesktop.org>,
         dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v4 02/31] drm/i915: Don't register backlight when
+ another backlight should be used
+In-Reply-To: <20220824121523.1291269-3-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <20220824121523.1291269-1-hdegoede@redhat.com>
- <20220824121523.1291269-12-hdegoede@redhat.com> <87y1vdizau.fsf@intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <87y1vdizau.fsf@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+ <20220824121523.1291269-3-hdegoede@redhat.com>
+Date:   Wed, 24 Aug 2022 15:50:56 +0300
+Message-ID: <87v8qhiz4f.fsf@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, 24 Aug 2022, Hans de Goede <hdegoede@redhat.com> wrote:
+> Before this commit when we want userspace to use the acpi_video backlight
+> device we register both the GPU's native backlight device and acpi_video's
+> firmware acpi_video# backlight device. This relies on userspace preferring
+> firmware type backlight devices over native ones.
+>
+> Registering 2 backlight devices for a single display really is
+> undesirable, don't register the GPU's native backlight device when
+> another backlight device should be used.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/gpu/drm/i915/display/intel_backlight.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_backlight.c b/drivers/gpu/drm/i915/display/intel_backlight.c
+> index 681ebcda97ad..a4dd7924e0c1 100644
+> --- a/drivers/gpu/drm/i915/display/intel_backlight.c
+> +++ b/drivers/gpu/drm/i915/display/intel_backlight.c
+> @@ -8,6 +8,8 @@
+>  #include <linux/pwm.h>
+>  #include <linux/string_helpers.h>
+>  
+> +#include <acpi/video.h>
+> +
+>  #include "intel_backlight.h"
+>  #include "intel_backlight_regs.h"
+>  #include "intel_connector.h"
+> @@ -952,6 +954,11 @@ int intel_backlight_device_register(struct intel_connector *connector)
+>  
+>  	WARN_ON(panel->backlight.max == 0);
+>  
+> +	if (!acpi_video_backlight_use_native()) {
+> +		DRM_INFO("Skipping intel_backlight registration\n");
 
-On 8/24/22 14:47, Jani Nikula wrote:
-> On Wed, 24 Aug 2022, Hans de Goede <hdegoede@redhat.com> wrote:
->> On machins without an i915 opregion the acpi_video driver immediately
->> probes the ACPI video bus and used to also immediately register
->> acpi_video# backlight devices when supported.
->>
->> Once the drm/kms driver then loaded later and possibly registered
->> a native backlight device then the drivers/acpi/video_detect.c code
->> unregistered the acpi_video0 device to avoid there being 2 backlight
->> devices (when acpi_video_get_backlight_type()==native).
->>
->> This means that userspace used to briefly see 2 devices and the
->> disappearing of acpi_video0 after a brief time confuses the systemd
->> backlight level save/restore code, see e.g.:
->> https://bbs.archlinux.org/viewtopic.php?id=269920
->>
->> To fix this the ACPI video code has been modified to make backlight class
->> device registration a separate step, relying on the drm/kms driver to
->> ask for the acpi_video backlight registration after it is done setting up
->> its native backlight device.
->>
->> Add a call to the new acpi_video_register_backlight() after the i915 calls
->> acpi_video_register() (after setting up the i915 opregion) so that the
->> acpi_video backlight devices get registered on systems where the i915
->> native backlight device is not registered.
->>
->> Changes in v2:
->> -Only call acpi_video_register_backlight() when a panel is detected
->>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>  drivers/gpu/drm/i915/display/intel_display.c | 8 ++++++++
->>  drivers/gpu/drm/i915/display/intel_panel.c   | 3 +++
->>  drivers/gpu/drm/i915/i915_drv.h              | 2 ++
->>  3 files changed, 13 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
->> index 6103b02c081f..2bb53efdb149 100644
->> --- a/drivers/gpu/drm/i915/display/intel_display.c
->> +++ b/drivers/gpu/drm/i915/display/intel_display.c
->> @@ -9088,6 +9088,14 @@ void intel_display_driver_register(struct drm_i915_private *i915)
->>  	/* Must be done after probing outputs */
->>  	intel_opregion_register(i915);
->>  	acpi_video_register();
->> +	/*
->> +	 * Only call this if i915 is driving the internal panel. If the internal
->> +	 * panel is not driven by i915 then another GPU driver may still register
->> +	 * a native backlight driver later and this should only be called after
->> +	 * any native backlights have been registered.
->> +	 */
->> +	if (i915->have_panel)
->> +		acpi_video_register_backlight();
-> 
-> Apologies for procrastinating the review.
-> 
-> Please let's not add new flags like have_panel to i915; we're trying to
-> clean it up instead.
-> 
-> The code here needs to iterate over the connectors to decide. Maybe
-> better abstracted a function.
+Could use drm_info with drm_device.
 
-So something like add a i915_have_panel() helper which iterates over all
-the connectors and then of 1 of them is of the LVDS / eDP / DSI type
-return true ?
+Either way,
 
-Regards,
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-Hans
+and ack for merging via whichever tree suits you best.
 
 
+> +		return 0;
+> +	}
+> +
+>  	memset(&props, 0, sizeof(props));
+>  	props.type = BACKLIGHT_RAW;
 
->>  	intel_audio_init(i915);
->>  
->> diff --git a/drivers/gpu/drm/i915/display/intel_panel.c b/drivers/gpu/drm/i915/display/intel_panel.c
->> index 237a40623dd7..4536c527f50c 100644
->> --- a/drivers/gpu/drm/i915/display/intel_panel.c
->> +++ b/drivers/gpu/drm/i915/display/intel_panel.c
->> @@ -646,8 +646,11 @@ intel_panel_mode_valid(struct intel_connector *connector,
->>  
->>  int intel_panel_init(struct intel_connector *connector)
->>  {
->> +	struct drm_i915_private *dev_priv = to_i915(connector->base.dev);
->>  	struct intel_panel *panel = &connector->panel;
->>  
->> +	dev_priv->have_panel = true;
->> +
->>  	intel_backlight_init_funcs(panel);
->>  
->>  	drm_dbg_kms(connector->base.dev,
->> diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
->> index 69ce6db6a7c1..14b0dcaf25c2 100644
->> --- a/drivers/gpu/drm/i915/i915_drv.h
->> +++ b/drivers/gpu/drm/i915/i915_drv.h
->> @@ -756,6 +756,8 @@ struct drm_i915_private {
->>  
->>  	bool ipc_enabled;
->>  
->> +	bool have_panel;
->> +
->>  	struct intel_audio_private audio;
->>  
->>  	struct i915_pmu pmu;
-> 
-
+-- 
+Jani Nikula, Intel Open Source Graphics Center
