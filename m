@@ -2,147 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2754C5A09BC
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 09:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 962215A0A2C
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 09:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233749AbiHYHQe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Aug 2022 03:16:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33080 "EHLO
+        id S233215AbiHYH0Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Aug 2022 03:26:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236760AbiHYHQd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 03:16:33 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6B5760E1;
-        Thu, 25 Aug 2022 00:16:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661411792; x=1692947792;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Nwp6Cji46dnwi4Sj4t8zoF/G6jVn4T/F1m727vVwp3g=;
-  b=TZajrgNfOhhASr6eOMOuWUefuiz1v3ks2n89NZr1o0OT/KJSNfUyIcwh
-   c7yjZjIY/oiBygXYmC9g5E44ld9vTjFQNDkKePtqCx/yGI+fQqcCye5/0
-   7qcxuqM9s2twXU2cENfGZYoaVX/eGjr/OOKgTV1Q+8GstbDge70T/M7gK
-   Xew6XfUty5waYmkFu/OBG0WlZxcmMll4arRCa/Pb6ygifP4ty0YuA8OtF
-   FxBV9kKqIzOKICuClsMPBmxnlSxR2vvffABZJnWxPmpEk5cFoSqrXty24
-   ljuS5oRt/UhrINQCv4aR6Ec/lSv6s4SPYCPG3L26YRZ9f30hJo3/w/DSW
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10449"; a="294947194"
-X-IronPort-AV: E=Sophos;i="5.93,262,1654585200"; 
-   d="scan'208";a="294947194"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2022 00:16:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,262,1654585200"; 
-   d="scan'208";a="938218217"
-Received: from lkp-server02.sh.intel.com (HELO 34e741d32628) ([10.239.97.151])
-  by fmsmga005.fm.intel.com with ESMTP; 25 Aug 2022 00:16:30 -0700
-Received: from kbuild by 34e741d32628 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oR76L-0001rq-2O;
-        Thu, 25 Aug 2022 07:16:29 +0000
-Date:   Thu, 25 Aug 2022 15:15:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 47c90d37e626efa4e7925e8e306993b9cbdada30
-Message-ID: <630721a3.Ckrtddp0YFN/Y6zl%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S237489AbiHYHZ4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 03:25:56 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071B3A2AA7;
+        Thu, 25 Aug 2022 00:25:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 4A1B7CE25F6;
+        Thu, 25 Aug 2022 07:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15B2C433D6;
+        Thu, 25 Aug 2022 07:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661412329;
+        bh=raOy4Yn3E+DdufgeOAQn1fCgFIUBZVSXQY1vthuQZ0o=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Y/HCkq6IyZIIxGa/lWMmoN5kNtGAEaEDt4EuzrewZNSErAmM71CPx99PTmGi5GtpG
+         8d5rfQyr2lG7p7FS1Wb5KobjDyvnXfiTyFIyU0RPxVa6ssdxejogj+oavLUxm324pX
+         SKraYhX+/+rP+/U/SLgV7n65odzggcNABItwFp38KIj13dPG2Dtrk6nFjnxjDaFFDt
+         94r04MwC1FIOhTuMe09IT6iomsN2NgIE9qZyBlYQWPdfdNyscNEz0W1/Nm72gI9sbo
+         2Tg2ZNzV8npDOqRcgOiKf3xoTIoFuxPVRoeb+boNMnAPokFzR7nBBSzNqxvQg9im2m
+         o0kbmJ9HLIe4g==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     sbinding@opensource.cirrus.com
+Cc:     andriy.shevchenko@intel.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@opensource.cirrus.com,
+        rafael@kernel.org, sakari.ailus@linux.intel.com,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v1] ACPI: Property: Fix type detection of unified integer reading functions
+Date:   Thu, 25 Aug 2022 09:25:05 +0200
+Message-Id: <20220825072505.316002-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220812130645.14710-1-sbinding@opensource.cirrus.com>
+References: <20220812130645.14710-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1664; i=ardb@kernel.org; h=from:subject; bh=raOy4Yn3E+DdufgeOAQn1fCgFIUBZVSXQY1vthuQZ0o=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjByPQGLjCijOjO/FyM/H9lntnWXG5F4x/nvT3Ufkv xQVQlrGJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYwcj0AAKCRDDTyI5ktmPJDLoDA C4oMlru2DIvBCdCcUQY494b9Qviel2j1CKAc4vYAxSz97KvJORpQMpVEW/xzDiWSxhA5DGKBUDjFJG bpJbTuEeYUqBpUr+dM4K5FSR3RaLy8XUOWdL7Ip197qoSpwDoK+TLqT2Rcjg0aSwlV5cPXizHcl14E tFzbzmiaaTX/Pj9rcD3POvq/aVsXSLsPyi8w10rBc33yRA23mfGl/P0s7JGJexQ+5gGeJncZohFcxV mOnivBIwph0X0xqHRR7EEud9cq9rv+RQ0hS5BwnZJZvHex0pBvzAznjdhAbCJpao66origns7wuc9N IfBH8GjYnpNnffhulrj0fl1TIiUjNiOzvDoITAe7x1AaSVaYPJxZy8s42Z8wCd7qXwnsvoMZ0KVz0q RFkRlLw2Ts3IQdZWqKpmJ/N1F5hlvh88snNND//02HNi+aHV5TxGN2rGraSBei4azUllW9kVUDhZDb IlZ5VfJ4x0NfG2GIOBwF4rUDTC1BROZ6G5cxiDdk0AnaQ=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 47c90d37e626efa4e7925e8e306993b9cbdada30  Merge branch 'acpi-dev' into bleeding-edge
+> The current code expects the type of the value to be an integer type,
+> instead the value passed to the macro is a pointer.
+> Ensure the size comparison uses the correct pointer type to choose the
+> max value, instead of using the integer type.
+> 
+> Fixes: 923044133367 ("ACPI: property: Unify integer value reading functions")
+> 
+> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
 
-elapsed time: 722m
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-configs tested: 64
-configs skipped: 2
+Can we get this queued up and sent out please? This is breaking some ACPI arm64
+systems, which use device properties for their MAC addresses.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Some grumbling about the original patch below.
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-i386                                defconfig
-i386                          randconfig-a001
-arc                  randconfig-r043-20220824
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-i386                          randconfig-a003
-i386                          randconfig-a014
-riscv                randconfig-r042-20220824
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-m68k                             allmodconfig
-powerpc                           allnoconfig
-m68k                             allyesconfig
-i386                          randconfig-a005
-s390                 randconfig-r044-20220824
-i386                          randconfig-a012
-x86_64                        randconfig-a015
-i386                          randconfig-a016
-arm                                 defconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-arm                              allyesconfig
-arm64                            allyesconfig
-i386                             allyesconfig
-sh                               allmodconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-x86_64                    rhel-8.3-kselftests
-loongarch                         allnoconfig
-arc                                 defconfig
-loongarch                           defconfig
-alpha                               defconfig
-s390                                defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-ia64                             allmodconfig
-arc                               allnoconfig
-alpha                             allnoconfig
-riscv                             allnoconfig
-csky                              allnoconfig
+> ---
+>  drivers/acpi/property.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 7b3ad8ed2f4e..b1d4a8db89df 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -1043,10 +1043,10 @@ static int acpi_data_prop_read_single(const struct acpi_device_data *data,
+>  				break;					\
+>  			}						\
+>  			if (__items[i].integer.value > _Generic(__val,	\
+> -								u8: U8_MAX, \
+> -								u16: U16_MAX, \
+> -								u32: U32_MAX, \
+> -								u64: U64_MAX, \
+> +								u8 *: U8_MAX, \
+> +								u16 *: U16_MAX, \
+> +								u32 *: U32_MAX, \
+> +								u64 *: U64_MAX, \
+>  								default: 0U)) { \
 
-clang tested configs:
-i386                          randconfig-a013
-hexagon              randconfig-r041-20220824
-i386                          randconfig-a011
-x86_64                        randconfig-a012
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-hexagon              randconfig-r045-20220824
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a015
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
+Why is there a default here? Having one is what hides the fact that the patch was completely broken.
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+>  				ret = -EOVERFLOW;			\
+>  				break;					\
+> 
+
+Also, I must ask: given how broken the original patch is, I suppose no testing whatsoever was done? 
+
+Thanks,
+Ard.
+
