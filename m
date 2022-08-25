@@ -2,113 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E2245A18AE
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 20:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD96E5A18C4
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 20:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233141AbiHYSUe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Aug 2022 14:20:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56778 "EHLO
+        id S243357AbiHYS04 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Aug 2022 14:26:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243374AbiHYSU3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 14:20:29 -0400
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A20E013;
-        Thu, 25 Aug 2022 11:20:28 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-333a4a5d495so562252267b3.10;
-        Thu, 25 Aug 2022 11:20:28 -0700 (PDT)
+        with ESMTP id S241669AbiHYS0z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 14:26:55 -0400
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 259F758DFB;
+        Thu, 25 Aug 2022 11:26:55 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-32a09b909f6so563788087b3.0;
+        Thu, 25 Aug 2022 11:26:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=uig/6MYAR36rD59j8Vi6nTWfQhMgr5YARco48vJAMTI=;
-        b=cbVCdRjUxjvwjmNdVw+cGh6ca64YosBMdE4zgX9E4dtg1rw7aH+O4jINArJ0PQj7SM
-         xHyK87VZK5LpvLMm5Mm7PLIL3jl4QBAy0bb8+3Un8n7C6LBfr0rwya8BfWRtfL7+v7Io
-         kjfnl0ZuiZq2QaGNDmA/nrMWBJ/yCwBYkHcihmynYPGpLj5563oewHMhZB5XOFRY95RK
-         loZ2fUSad/ApvQsFNfltStM4RUBTAgctwamFt31yAyEkssmWOCqHW3t7X/zk6mfZYMUf
-         SnXxvhoZEWrHmOLyGrbHGk9PAHGkaCHMFmeYnpkHXngTStLYL18A76HwuYWPoFfzg+HC
-         nYAA==
-X-Gm-Message-State: ACgBeo3cnhcMpj+1KqG+5OHm7wAkn0R044DbuHaKvuALAyDOkYq5wGJj
-        /TZ3DsFvPbqmLaAOfH5yUAGyxyNT8AcssFdZM2I=
-X-Google-Smtp-Source: AA6agR7qzCbl13Mm9e8JxxntHyv9wGkANy9di366zSW3SCCGjr0uQd6hZbQWdeTFC4Rf0dy5fw0tVnA6ltCE0hcrePk=
-X-Received: by 2002:a25:ec0c:0:b0:690:d092:2d56 with SMTP id
- j12-20020a25ec0c000000b00690d0922d56mr4105726ybh.622.1661451627618; Thu, 25
- Aug 2022 11:20:27 -0700 (PDT)
+        bh=r7wf1VgQcXbb9wfHksSmuRqPiTwtCYwRKi+1g4SftOU=;
+        b=x4BLn8BkdZtRJ05BlL0taz6+E5x0Cc8MUq2/vObVTnzAxjQQrEiPGqP2fN9sSFudT4
+         rInyKR+Etb53PFxDG70ybzpuFZnWPO9Dzt9OCq8IPvVXMa7GaECHzMXk2eI/MPMhQy1a
+         8elBW8gNBPTu8Ud0Lw0hbIRrjfgfTSUurxwwWqCQWe8LMPcq878G3olDfj9oPSvAoD5L
+         zucCSCD5FKOsIalRFUyv1OftZpIRAI9vEO9SYTLFnYXb+ZQoCCFqTWFOtaPFa0pUybHv
+         y7LoRmF5vX15IC4aRRI3hmUWFsCkFM/TXeaG4yKTsdtsvgk7IK93joMbbJvgCVvtrQkZ
+         JugQ==
+X-Gm-Message-State: ACgBeo2ygJNTrhIb3LAlfXnnuAPanAs6U6+vsimeFPvkBiV3ZbJHdqKg
+        ILxt8FOHF7KDmnJdj3BBX2XH9TB+nBYSsxYO2H0yM7dYtnY=
+X-Google-Smtp-Source: AA6agR6hx6NbJ3M7caaSE8E42oIFRqV8l9eqO6ZQxBU4y9XV7Pb0FnmgSCwZiGDWFD69sTVESFeDkCfTJOoEXlU1wKM=
+X-Received: by 2002:a25:b749:0:b0:68f:171f:96bd with SMTP id
+ e9-20020a25b749000000b0068f171f96bdmr4577792ybm.137.1661452014375; Thu, 25
+ Aug 2022 11:26:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220823185134.14464-1-mario.limonciello@amd.com>
- <20220823185134.14464-2-mario.limonciello@amd.com> <CAAd53p6MfBaRTTNJ5mAFU6XfDndLFJihLHKdrbq8Nq-27LArjg@mail.gmail.com>
- <MN0PR12MB6101DE7A18DC0343AEBE89C5E2739@MN0PR12MB6101.namprd12.prod.outlook.com>
-In-Reply-To: <MN0PR12MB6101DE7A18DC0343AEBE89C5E2739@MN0PR12MB6101.namprd12.prod.outlook.com>
+References: <5607133.DvuYhMxLoT@kreacher> <ecb5a2dd-47b2-e5e1-5254-42bd5d018578@amd.com>
+In-Reply-To: <ecb5a2dd-47b2-e5e1-5254-42bd5d018578@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 25 Aug 2022 20:20:16 +0200
-Message-ID: <CAJZ5v0gdn7+EyQ7Br5WxT8pDr4+Y+Fgc274-at5-CZfQ572QKg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ACPI: OSI: Remove Linux-Dell-Video _OSI string
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "ddadap@nvidia.com" <ddadap@nvidia.com>,
-        "Dell.Client.Kernel@dell.com" <Dell.Client.Kernel@dell.com>,
-        "kherbst@redhat.com" <kherbst@redhat.com>,
-        Lyude Paul <lyude@redhat.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Thu, 25 Aug 2022 20:26:43 +0200
+Message-ID: <CAJZ5v0in-me017RoR8yRMMXmbBofr6u9o2_WMGh38cpiy3cG3w@mail.gmail.com>
+Subject: Re: [PATCH v2] ata: ahci: Do not check ACPI_FADT_LOW_POWER_S0
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 24, 2022 at 8:28 PM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
+On Thu, Aug 25, 2022 at 8:17 PM Limonciello, Mario
+<mario.limonciello@amd.com> wrote:
 >
-> [Public]
+> On 8/25/2022 13:01, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
+> > use low-power S0 idle on the given platform than S3 (provided that
+> > the latter is supported) and it doesn't preclude using either of
+> > them (which of them will be used depends on the choices made by user
+> > space).
+> >
+> > For this reason, there is no benefit from checking that flag in
+> > ahci_update_initial_lpm_policy().
+> >
+> > First off, it cannot be a bug to do S3 with policy set to either
+> > ATA_LPM_MIN_POWER_WITH_PARTIAL or ATA_LPM_MIN_POWER, because S3 can be
+> > used on systems with ACPI_FADT_LOW_POWER_S0 set and it must work if
+> > really supported, so the ACPI_FADT_LOW_POWER_S0 check is not needed to
+> > protect the S3-capable systems from failing.
+> >
+> > Second, suspend-to-idle can be carried out on a system with
+> > ACPI_FADT_LOW_POWER_S0 unset and it is expected to work, so if setting
+> > policy to either ATA_LPM_MIN_POWER_WITH_PARTIAL or ATA_LPM_MIN_POWER is
+> > needed to handle that case correctly, it should be done regardless of
+> > the ACPI_FADT_LOW_POWER_S0 value.
+> >
+> > Accordingly, drop the ACPI_FADT_LOW_POWER_S0 check from
+> > ahci_update_initial_lpm_policy() along with the CONFIG_ACPI #ifdef
+> > around it that is not necessary any more.
 >
+> Looking at the source commit for this behavior:
 >
+> b1a9585cc396 ("ata: ahci: Enable DEVSLP by default on x86 with SLP_S0")
 >
-> > -----Original Message-----
-> > From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > Sent: Wednesday, August 24, 2022 09:17
-> > To: Limonciello, Mario <Mario.Limonciello@amd.com>
-> > Cc: rafael@kernel.org; Len Brown <lenb@kernel.org>;
-> > nouveau@lists.freedesktop.org; hdegoede@redhat.com;
-> > ddadap@nvidia.com; Dell.Client.Kernel@dell.com; kherbst@redhat.com;
-> > Lyude Paul <lyude@redhat.com>; linux-acpi@vger.kernel.org; linux-
-> > kernel@vger.kernel.org
-> > Subject: Re: [PATCH 1/4] ACPI: OSI: Remove Linux-Dell-Video _OSI string
-> >
-> > On Wed, Aug 24, 2022 at 2:51 AM Mario Limonciello
-> > <mario.limonciello@amd.com> wrote:
-> > >
-> > > This string was introduced because drivers for NVIDIA hardware
-> > > had bugs supporting RTD3 in the past.  Thoes bugs have been fixed
-> > > by commit 5775b843a619 ("PCI: Restore config space on runtime resume
-> > > despite being unbound"). so vendors shouldn't be using this string
-> > > to modify ASL anymore.
-> >
-> > Add some backgrounds on what happened.
-> >
-> > Before proprietary NVIDIA driver supports RTD3, Ubuntu has a mechanism
-> > that can switch PRIME on and off, though it requires to logout/login
-> > to make the library switch happen.
-> > When the PRIME is off, the mechanism unload NVIDIA driver and put the
-> > device to D3cold, but GPU never came back to D0 again. So ODM use the
-> > _OSI to expose an old _DSM method to switch the power on/off.
-> >
-> > The issue is fixed by the said commit so we can discard the workaround now.
-> >
+> It was trying to set a policy tied to when the system is defaulting to
+> suspend to idle.
 >
-> Thanks for that.  If this series needs to spin I'll roll that into the commit message.
-> Otherwise perhaps Rafael can pick up some of it if he thinks it makes sense to include.
+> To try to match the spirit of the original request but not tying it to
+> the FADT, how about using pm_suspend_default_s2idle()?
 
-I've applied the series (as 6.1 material) and included the information
-above into the changelog of the first patch.  I've also edited the
-changelogs of the other patches somewhat.
-
-Thanks!
+The user can switch to "default S3" later anyway, so this wouldn't
+help more than the check being dropped.
