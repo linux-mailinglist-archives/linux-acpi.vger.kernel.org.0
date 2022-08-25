@@ -2,70 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 119D95A17BE
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 19:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 626585A17C1
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 19:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233424AbiHYRM3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Aug 2022 13:12:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
+        id S241604AbiHYRN5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Aug 2022 13:13:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230523AbiHYRM2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 13:12:28 -0400
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C76AA3EA
-        for <linux-acpi@vger.kernel.org>; Thu, 25 Aug 2022 10:12:27 -0700 (PDT)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-33db4e5ab43so76486677b3.4
-        for <linux-acpi@vger.kernel.org>; Thu, 25 Aug 2022 10:12:27 -0700 (PDT)
+        with ESMTP id S241271AbiHYRN5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 13:13:57 -0400
+Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9E2BBA42
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Aug 2022 10:13:55 -0700 (PDT)
+Received: by mail-vs1-xe31.google.com with SMTP id n125so21524784vsc.5
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Aug 2022 10:13:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=3esi+ryUnskgrLf/IQjvl/6RpEjamoWLTnhJpCTsxu0=;
+        b=pD6mnTSJTnTurnRbfAI0zS3b9Ra/TPxnAX+16yFGw1VEcybz4woeBsEb89Tp3aWcRq
+         1kAv2kSpQpKToWuyGMngUULeZCOzBZvcyoWTS8tvtrGbKg12cMXXdjyoRiszoZ9viZiZ
+         dMAGHXMxMCeqR3dzUmtMD9qML7Vih+InX/C0WrwnfkMoeJUejPIv3siw6vrlE3eeYjlG
+         hQgI2zPlJC9GaYzHRa08fKCfStGoYrVyUKT/DTfMlK7nOn3v6P2XNb60nk6gSraaCQkT
+         FB7yqnAY1Eb3GbKcaipOlAnE0iWSNezFeLM96bT+kHN5dcC8VqyR1tJD5u+t+AJb5Ob9
+         EEmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=n19QbGSaYSCERQMILiEVtLj82t7BkcHcu0BvmJ/GnXM=;
-        b=CHUAcdyHBwsGZZqjYjyTthG28+q2f/d/ZdIOOIs2wJ9yzaNncAmR4Cup5l7E0i8pA8
-         /6Yt36DvTOyMt5soD2dfC9ibotA83Xx9QCZxTbYhkm+t5Pre9rmgAaRr//VNrbV1u3Vs
-         GnxHXR6wIlk7oflMGOC9K9uIQPefo+1KXDLaFoREbc3M9Womj0NT+209jtcPAyg60Z9F
-         Kw8HmsKjiAsKTZ4L1giv1FLXPfZ7MBDWzLFvQSAseMx5rEj5OlgRWUA7yisfin1PcAmb
-         BGC/Z96WrMr7f4QsusbKv43kuaG/PKkg1VMrFPQ/t618rO/IvBlIqlVTwU30SLKq4e99
-         dJ7A==
-X-Gm-Message-State: ACgBeo0bwI+AKbSQwlP5WIJLCw9YwQtdIz5W492WZZvQfidjO7VI99go
-        WjW1Y+iROFCiIR/krpzpk1JMcNi8AtkuKkQ2/EI=
-X-Google-Smtp-Source: AA6agR6+Gr9mhc1PdO26YTwh3pGKhcTPOdvoQF2XECaB8u/zzFalnRk/cx6LtkDeYpoEO2lDXBQ75QT760ACZ9Cpbeo=
-X-Received: by 2002:a25:c204:0:b0:692:72b9:a778 with SMTP id
- s4-20020a25c204000000b0069272b9a778mr4222508ybf.81.1661447546816; Thu, 25 Aug
- 2022 10:12:26 -0700 (PDT)
+        bh=3esi+ryUnskgrLf/IQjvl/6RpEjamoWLTnhJpCTsxu0=;
+        b=ojNDWXYaZedKNJ+UNQRkC4r3MJHwdYd6Rf+e/2tOBf+rkprJ0694tx7ry6gUejikwb
+         NVJdvjKVsozvNmMRl+Eh+Y4G+DDX1APSRwSsgCmts2T0JhCXW4JkNySprkFkLTJgrZA9
+         Nh88YEE0YxAdFggS1eqPskBQDFjty7JDGSP68Po6Ks5hzPQ56r5fF8obb8kvVbW4exTh
+         0pay1OOiTLzJTN7SFhA3VH8NvaHT4qJ5U832QkOlBfNRTVLqLRd62BzPD7kTRPiF0Guo
+         2DzUV8VifbQZieK1fkUDuUuMB5QW6z6/keXMVU8iHPcJ34abH7S3LOUnditgmWExhVs7
+         gulw==
+X-Gm-Message-State: ACgBeo3WbYgStVSgh97uHOIp6wAzZxQ1XmBr7Tu0vJxXUEV4eOGDcILj
+        f04ZyQP4LOnzJsjIEzp9jnTvQyhwSgYQtbtWteU=
+X-Google-Smtp-Source: AA6agR42YeUHq5svEPNIlYk4iw3F9YbuGOed/bOzI461DSdBDXaeKPsz79u2/kwVODWCHEse1HkclhiJw1e/HJ8qJZE=
+X-Received: by 2002:a67:c09c:0:b0:390:9073:1122 with SMTP id
+ x28-20020a67c09c000000b0039090731122mr1949527vsi.85.1661447634917; Thu, 25
+ Aug 2022 10:13:54 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAHp75VczhmTTdMbj7z2DOPm+k4SWGzuLF8NyJ2FWHwhfg9HJ1Q@mail.gmail.com>
  <CAJZ5v0j=90uhWRcVWKVyDhEuVNWw-W28RoKkCwxpzNd3NLC9mg@mail.gmail.com>
  <CAHp75VdfMF_AyONneSMHzmX_cU_tEa97EhL43iu07+9BvFO_ZA@mail.gmail.com>
  <CAJZ5v0g+tBAC87EtOK1E+C-J3k9depNTMGMQ3CmcWnHaCidzXQ@mail.gmail.com> <69897481-88bc-2c7a-8862-65fbc40fc0b6@redhat.com>
 In-Reply-To: <69897481-88bc-2c7a-8862-65fbc40fc0b6@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 25 Aug 2022 19:12:15 +0200
-Message-ID: <CAJZ5v0ggAgAQqR4uF-So_7ZUDafBnD8GG9ox3C0waO4jpjmygw@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 25 Aug 2022 20:13:18 +0300
+Message-ID: <CAHp75Ve4PhSLihi13oSOx88czMuxpWx18bm7SToEHLJ0SD5fVQ@mail.gmail.com>
 Subject: Re: ACPI ID list termination
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 25, 2022 at 7:09 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
+On Thu, Aug 25, 2022 at 8:09 PM Hans de Goede <hdegoede@redhat.com> wrote:
 > On 8/25/22 19:03, Rafael J. Wysocki wrote:
 > > On Thu, Aug 25, 2022 at 6:48 PM Andy Shevchenko
 > > <andy.shevchenko@gmail.com> wrote:
-> >>
 > >> On Thu, Aug 25, 2022 at 3:48 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 > >>> On Thu, Aug 25, 2022 at 2:38 PM Andy Shevchenko
 > >>> <andy.shevchenko@gmail.com> wrote:
@@ -124,38 +130,9 @@ On Thu, Aug 25, 2022 at 7:09 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
 > So in both terminators above id[] will be set to 0 and there is
 > no problem other then the style being inconsistent.
->
->
-> >
-> > OK, I see.  id->id[0] doesn't work if id->id is NULL which it is in
-> > the second case.
-> >
-> > I think it doesn't crash in practice, because it's always called when
-> > there's a match.
-> >
-> > Anyway, something like this would fix it, wouldn't it:
-> >
-> > ---
-> >  drivers/acpi/bus.c |    4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > Index: linux-pm/drivers/acpi/bus.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/bus.c
-> > +++ linux-pm/drivers/acpi/bus.c
-> > @@ -868,8 +868,8 @@ static bool __acpi_match_device(struct a
-> >      list_for_each_entry(hwid, &device->pnp.ids, list) {
-> >          /* First, check the ACPI/PNP IDs provided by the caller. */
-> >          if (acpi_ids) {
-> > -            for (id = acpi_ids; id->id[0] || id->cls; id++) {
-> > -                if (id->id[0] && !strcmp((char *)id->id, hwid->id))
-> > +            for (id = acpi_ids; (id->id && id->id[0]) || id->cls; id++) {
-> > +                if (id->id && id->id[0] && !strcmp((char *)id->id, hwid->id))
-> >                      goto out_acpi_match;
-> >                  if (id->cls && __acpi_match_device_cls(id, hwid))
-> >                      goto out_acpi_match;
-> >
->
-> This change is not necessary, see above.
 
-You're right and I forgot about it.
+Ah, that's the part I missed, thanks, Hans! It was good move to Cc you.
+
+-- 
+With Best Regards,
+Andy Shevchenko
