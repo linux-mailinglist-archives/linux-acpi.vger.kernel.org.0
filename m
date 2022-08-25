@@ -2,103 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A64E75A0A37
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 09:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 941295A0A77
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 09:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235518AbiHYH1v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Aug 2022 03:27:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48056 "EHLO
+        id S237465AbiHYHlM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Aug 2022 03:41:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235663AbiHYH1u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 03:27:50 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99474266;
-        Thu, 25 Aug 2022 00:27:48 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id m10-20020a17090a730a00b001fa986fd8eeso4064960pjk.0;
-        Thu, 25 Aug 2022 00:27:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=qKOr3DMPndOCat2irEJB9Q52jID8xwcmfDfhmMWCtTo=;
-        b=Vsbt9La98r+vRe+WqdSyAGFCskx2ijdSe0VPwhFZL8Wpl4Et9WglLaJ7FISDpryrB0
-         bjg4cOn6FGrciHIlZZO6TWZK/bkPgU4bqdDKEC9HPmKh52QhOs4wx+T6P+dioNSPPO9d
-         RXHQNi3xvQx2tSA0TcBzHQ4bsU8Wse16irOUsGSApZ/lFsccdofMYYuWDMBZuiEqJf6O
-         LUkO1UOt966kZHRrQOJRrbg2/pVnp/3Vet72vpRAuj0Ip0NtHDe/PETenLZHsKqMG357
-         zEqaWMJgvK34R0qQa7zlLILDD+15bFmFtC6bybgE8/YFYn0NAhZ8D6mrvoqsWGOdssiI
-         M4BQ==
+        with ESMTP id S236411AbiHYHlM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 03:41:12 -0400
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB919D8DA;
+        Thu, 25 Aug 2022 00:41:11 -0700 (PDT)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-334dc616f86so519543337b3.8;
+        Thu, 25 Aug 2022 00:41:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=qKOr3DMPndOCat2irEJB9Q52jID8xwcmfDfhmMWCtTo=;
-        b=6uAVOwGoAs9cShJabqow3GofyGFcVctELyqGSnj1WZKEhQej2XV515xgriwpTcsaTb
-         u7JrChQFiVF/i2AlTD28oc78EYGaxB8gpiiKter/t7nJutKCswVXKZglybQ9wIu+U/5Z
-         /IW/lKps1ecdllubAchWHP7xZDz6KSDV+RjskMXSLQRPk54JGrup3KR7F/DOe3siA7pi
-         J5JlRXj+jh3QH3OY6OW3Is4bgCqWnreImOi/AievBRBzc4j8It8IMVBqXLDULdE7XseN
-         vZ3WegSq3LPDPFuk1/KgMiOWCBfh0lJMtcILE/Kx2+Mmi3fUBka9dqwt9zb2HbtJtwKk
-         fTXw==
-X-Gm-Message-State: ACgBeo2y8cAd7pMwJev7FzwyMV5Le8OvFtl6xJopn/ynkO9exIWSwQ0d
-        08lPMVIvVUws2c1rG98/TOs=
-X-Google-Smtp-Source: AA6agR7D3OwM+2i+6XVsc2c3Ac3qP417Ykw0jCC4ImW4Fls1vV/M06DKfib/3v/IXTrelFUozAkLyA==
-X-Received: by 2002:a17:902:edc3:b0:172:8ae3:9778 with SMTP id q3-20020a170902edc300b001728ae39778mr2540155plk.72.1661412468100;
-        Thu, 25 Aug 2022 00:27:48 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id c6-20020aa79526000000b005365aee486bsm10129655pfp.192.2022.08.25.00.27.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Aug 2022 00:27:47 -0700 (PDT)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: ye.xingchen@zte.com.cn
-To:     rafael@kernel.org
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ye xingchen <ye.xingchen@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH linux-next] ACPI: EC: Remove the unneeded result variable
-Date:   Thu, 25 Aug 2022 07:27:44 +0000
-Message-Id: <20220825072744.229231-1-ye.xingchen@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=lsPADIwuzKOCMFK6M4YgS9lTJNBP+zcjWWbReC7RB/A=;
+        b=SVjQsyS7WRA2euAsVhYICssKntu9VAx0murnk8NxrIB+Y7gKyO1HtOvXYaub6Vbgk1
+         ru4Q1sgm4oWX6LFcY7DoRH+Gu+WVL0qTki+K+IscPQDWFqGip3K5HUcR5id9vgxJ45hH
+         7CsHCIvzYSvUtlsz7B0J+lotq0MvRcCH0tilUr+hoCdG/b6f9aM8NT5C5wNv/U+qpQiw
+         W7VkSoqNPDcXWsxE3bpePlKSm2I+B0KEOH+sYS7CKzwRa6oTrWHPKu+xt5sbTK1e33KD
+         vQygM3tJZ/72hpJ27bVyOF1s9fC8PPhml4iQbOKKOrcesMCnllmQWwWO1SEGJJVKHyQE
+         a1SA==
+X-Gm-Message-State: ACgBeo0xIC1vyeH25HLbYOMpGQVtuaBDU9Ay8k1CtEcljzvdPL76HlKN
+        dhoCMmU/xpfL96NDgUrhiLLe53orm/wkmfEd4Xw=
+X-Google-Smtp-Source: AA6agR5vg15i0MMWs9ercrSH/mWnOepLpvi0PrDDBVEc3AbUQzFb4ifgjMZbW0br8kxx40px9fyIq2/vvsIN+J6r9BU=
+X-Received: by 2002:a25:664f:0:b0:66c:d0f4:36cc with SMTP id
+ z15-20020a25664f000000b0066cd0f436ccmr2255530ybm.482.1661413270290; Thu, 25
+ Aug 2022 00:41:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220812130645.14710-1-sbinding@opensource.cirrus.com> <20220825072505.316002-1-ardb@kernel.org>
+In-Reply-To: <20220825072505.316002-1-ardb@kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 25 Aug 2022 09:40:58 +0200
+Message-ID: <CAJZ5v0iyRAzx=HjWko=QJ7iXv_Ftwsx+yjnA2MuN4KVZo9wWew@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: Property: Fix type detection of unified integer
+ reading functions
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     Stefan Binding <sbinding@opensource.cirrus.com>,
+        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        patches@opensource.cirrus.com,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: ye xingchen <ye.xingchen@zte.com.cn>
+On Thu, Aug 25, 2022 at 9:25 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> > The current code expects the type of the value to be an integer type,
+> > instead the value passed to the macro is a pointer.
+> > Ensure the size comparison uses the correct pointer type to choose the
+> > max value, instead of using the integer type.
+> >
+> > Fixes: 923044133367 ("ACPI: property: Unify integer value reading functions")
+> >
+> > Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+>
+> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+>
+> Can we get this queued up and sent out please? This is breaking some ACPI arm64
+> systems, which use device properties for their MAC addresses.
 
-Return the value acpi_ec_write() directly instead of storing it in
-another redundant variable.
+It is in my queue for -rc3.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
----
- drivers/acpi/ec.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+> Some grumbling about the original patch below.
+>
+> > ---
+> >  drivers/acpi/property.c | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> > index 7b3ad8ed2f4e..b1d4a8db89df 100644
+> > --- a/drivers/acpi/property.c
+> > +++ b/drivers/acpi/property.c
+> > @@ -1043,10 +1043,10 @@ static int acpi_data_prop_read_single(const struct acpi_device_data *data,
+> >                               break;                                  \
+> >                       }                                               \
+> >                       if (__items[i].integer.value > _Generic(__val,  \
+> > -                                                             u8: U8_MAX, \
+> > -                                                             u16: U16_MAX, \
+> > -                                                             u32: U32_MAX, \
+> > -                                                             u64: U64_MAX, \
+> > +                                                             u8 *: U8_MAX, \
+> > +                                                             u16 *: U16_MAX, \
+> > +                                                             u32 *: U32_MAX, \
+> > +                                                             u64 *: U64_MAX, \
+> >                                                               default: 0U)) { \
+>
+> Why is there a default here? Having one is what hides the fact that the patch was completely broken.
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index c95e535035a0..9b42628cf21b 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -917,14 +917,10 @@ EXPORT_SYMBOL(ec_read);
- 
- int ec_write(u8 addr, u8 val)
- {
--	int err;
--
- 	if (!first_ec)
- 		return -ENODEV;
- 
--	err = acpi_ec_write(first_ec, addr, val);
--
--	return err;
-+	return acpi_ec_write(first_ec, addr, val);
- }
- EXPORT_SYMBOL(ec_write);
- 
--- 
-2.25.1
+Sakari?
+
+> >                               ret = -EOVERFLOW;                       \
+> >                               break;                                  \
+> >
+>
+> Also, I must ask: given how broken the original patch is, I suppose no testing whatsoever was done?
