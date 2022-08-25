@@ -2,113 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 707695A17A1
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 19:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC3C5A17AF
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 19:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbiHYREl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Aug 2022 13:04:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53316 "EHLO
+        id S230239AbiHYRIi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Aug 2022 13:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbiHYREk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 13:04:40 -0400
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D82BB8F14;
-        Thu, 25 Aug 2022 10:04:40 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-33dc345ad78so46094187b3.3;
-        Thu, 25 Aug 2022 10:04:40 -0700 (PDT)
+        with ESMTP id S229804AbiHYRIh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 13:08:37 -0400
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB06FB14EB
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Aug 2022 10:08:35 -0700 (PDT)
+Received: by mail-vs1-xe30.google.com with SMTP id k10so16469122vsr.4
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Aug 2022 10:08:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=79Lf7jO2XEzFSz7UpnU4dxbeJARa7GlytPwlsEJ2cjs=;
+        b=BGzxeT7VPVY4xkMqp+KLj43v4fpIX+iYE/SLCVZ8bG55AqkEuFa5WrVxhP0iaFqE5k
+         LY+62ny/ocTtNyDoKrzOKnHdNitBC8zBBMapqLMHsnMSG7laxuCuEFZOQ1/jTQBtyggf
+         q+iWlaq+94ayU5D0n74mItyLRzBO07nfmKq+st8PGEq67vuuoA4uU0MeRiTUcUJR12zN
+         WnVrYsWNYthLCAWnDvc7ctqOx2Ni+GPW98ilZ4k+DLeVHKw6IDOalA8KAlKqahivC1Xq
+         liEQV6g3vnBpGJ14rjZY3lUQVYQFrbbo4W4dbbPet16kL8Us0HykOM98fKyT+Th97Lu7
+         yK6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=VFddRmqhRJ8PwkmV4UOCyBvme8R3q7QB95c/CoXiGVs=;
-        b=JGJeZHviJA+SwWEzh8B2WFCNOHiIFiLBXJEorcOPBAXxuKOeDbiZ7kLcmT4h80Mxlj
-         lJePewQzi+gYk9QzVtd93rRkY9gxkrymRymHqvBkac5aelGZyzshahEUsU3Cxowq22tp
-         rT1w0Q2T40tWe9jGyZ+4smoHBqLZGeByUBZfxFYA8FPcpfLcCv+1tXCxUNsdbYdMweTE
-         UJhiNbIsQVBB5mUmumg4H9HdM8xlMGGIII6FZ50HPU7Kueqx5h0RRogrdv+eI0L+zdmD
-         o7xheAOb+l0qcMWcokNuOOhUXF7X5IL0QpaU0HLh58yQnKPwwRyj0r2iMqtOLxSA4Tv+
-         Lvfw==
-X-Gm-Message-State: ACgBeo3YkyDhzaXsq/M9ZKuOWQmiwBg32RqNq0C6gfsF3COxo9pOlRUi
-        b/gFyfmfJ7Nzu4g1V2Ns7XXgmWDsR5mUs38ZB7SGzbgy
-X-Google-Smtp-Source: AA6agR6Xf2sZVdk6BlJPihHOyBkXnUI50kUBBQJkESXxdhD3nWpQKxz6Qoj7soiG5b+v/Co9JspHUU6Q1opzhU+u2u0=
-X-Received: by 2002:a81:4850:0:b0:33c:922b:5739 with SMTP id
- v77-20020a814850000000b0033c922b5739mr4768143ywa.515.1661447079090; Thu, 25
- Aug 2022 10:04:39 -0700 (PDT)
+        bh=79Lf7jO2XEzFSz7UpnU4dxbeJARa7GlytPwlsEJ2cjs=;
+        b=xu32ez2H/0FaFxwJege1dGwR0YzVgRTFF+Vsw3zAWpJzTe88aZ7TNHOAYfIH1gJtJ1
+         Do/bnwvmDaWWOdpSd7NHScI6HHnhob6CY+GZbYH94FpBb0/KUFEKQ9cq9YnITT5cWo1n
+         3xRCuN6W/+0ZSugRSSPg36iz5jWG78b/wwkHrtUeKkBZ72D1j8pV6NFU4MMgiewEKKvi
+         fsq8r29E64iomdf/6mNlKykgGWNpAHTCO9CGf+Chh0+1LYDVBr05cJuKfpsB/FK2WXgT
+         eCUUKuHJrofZaRdahXJx5+01Fn/hzQO+RhflR+muephRBNR1PypbhSWdeSf1xQ9XDErm
+         hy+g==
+X-Gm-Message-State: ACgBeo0ompkv6iX0GuGAgF1fRsalqdAAe12I9vfyK6A5fyQCSwFQP9d3
+        Cd9cqlTRuHwi0gSYvVz+9VkqLSJIWw3CCLqGRW9XaWE8TWP5GQ==
+X-Google-Smtp-Source: AA6agR7g+xQrCpyAjrrgZyNDS2EGyYyl3MRKpji7qQ4oPJ+RBXICRRS0qq7MQXz8S9EYDrynHToVir5TBsuPtVHH/JY=
+X-Received: by 2002:a67:c09c:0:b0:390:9073:1122 with SMTP id
+ x28-20020a67c09c000000b0039090731122mr1943001vsi.85.1661447314752; Thu, 25
+ Aug 2022 10:08:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220825164103.27694-1-andriy.shevchenko@linux.intel.com> <20220825164103.27694-5-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220825164103.27694-5-andriy.shevchenko@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 25 Aug 2022 19:04:28 +0200
-Message-ID: <CAJZ5v0if_gZpibSWx5mfoVpGXtF0sGe7MY+eRQJr09ONX0Q1rQ@mail.gmail.com>
-Subject: Re: [PATCH v1 5/5] ACPI: bus: Use the matching table, if ACPI driver
- has it
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
+References: <CAHp75VczhmTTdMbj7z2DOPm+k4SWGzuLF8NyJ2FWHwhfg9HJ1Q@mail.gmail.com>
+ <CAJZ5v0j=90uhWRcVWKVyDhEuVNWw-W28RoKkCwxpzNd3NLC9mg@mail.gmail.com>
+ <CAHp75VdfMF_AyONneSMHzmX_cU_tEa97EhL43iu07+9BvFO_ZA@mail.gmail.com> <CAJZ5v0g+tBAC87EtOK1E+C-J3k9depNTMGMQ3CmcWnHaCidzXQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0g+tBAC87EtOK1E+C-J3k9depNTMGMQ3CmcWnHaCidzXQ@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 25 Aug 2022 20:07:57 +0300
+Message-ID: <CAHp75VecV9KKFZJDAQJjomBP3oCCJfjqts6OYRk337uGLrWVoQ@mail.gmail.com>
+Subject: Re: ACPI ID list termination
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 25, 2022 at 6:41 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, Aug 25, 2022 at 8:04 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> In case we have an ACPI driver, check its ID table for matching,
-> This allows to use some generic device property APIs in such
-> drivers.
+> On Thu, Aug 25, 2022 at 6:48 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> >
+> > On Thu, Aug 25, 2022 at 3:48 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > > On Thu, Aug 25, 2022 at 2:38 PM Andy Shevchenko
+> > > <andy.shevchenko@gmail.com> wrote:
+> > > >
+> > > > I have stumbled over __acpi_match_device() implementation and noticed
+> > > > different types of termination of the struct acpi_device_id (ACPI ID
+> > > > list), i.e. '{ }' vs. '{"", 0}'.
+> > > >
+> > > > As I read the code of the above mentioned function, I see that it
+> > > > dereferences the id field without NULL check. This means we are quite
+> > > > lucky (somebody before guarantees the match) we have no crash here.
+> > >
+> > > I'm not sure what you mean.
+> > >
+> > > In __acpi_match_device() id is a pointer used for walking the acpi_ids
+> > > table (if not NULL).  Its initial value is the acpi_ids value and it's
+> > > incremented in every step, so it cannot be NULL.
+> > >
+> > > The loop is terminated if both the first byte of the device ID field
+> >
+> > ^^^ (1)
+> >
+> > > and the cls field in the current row are both zeros, so both
+> > > termination markers in use should work.
+> > >
+> > > Or am I missing anything?
+> >
+> > Yes. The ID field itself is _dereferenced_ w/o NULL check. So, compare
+> > two ID lists:
+> >
+> > FIRST:
+> >   { "A", 1 },
+> >   { "B", 2 },
+> >   { "", 0}
+> >
+> > SECOND:
+> >   { "A", 1 },
+> >   { "B", 2 },
+> >   { }
+> >
+> > They are different in the terminator and the above mentioned function
+> > simply will crash the kernel if no match is found. Of course I might
+> > miss something, but as I said it seems we are simply lucky that
+> > somebody else (platform / device core code?) does our job.
+>
+> OK, I see.  id->id[0] doesn't work if id->id is NULL which it is in
+> the second case.
+>
+> I think it doesn't crash in practice, because it's always called when
+> there's a match.
+>
+> Anyway, something like this would fix it, wouldn't it:
 
-No new provisions for ACPI drivers, please.
+Yep, that's what I had in my mind, but was in doubt about the case in
+general. Hence the discussion. Yet, w/o this patch prevents us to call
+the mentioned match functions when there is no guarantee that match is
+there. That said, you may add my
 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+to the below patch when formally sent.
+
 > ---
->  drivers/acpi/bus.c | 20 ++++++++++++++++++--
->  1 file changed, 18 insertions(+), 2 deletions(-)
+>  drivers/acpi/bus.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 3c0f2d050d47..17c98e826bde 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -1049,14 +1049,30 @@ static const void *acpi_of_device_get_match_data(const struct device *dev)
->         return match->data;
->  }
->
-> +static const struct acpi_device_id *acpi_device_get_ids(const struct device *dev)
-> +{
-> +       if (dev->driver->acpi_match_table)
-> +               return dev->driver->acpi_match_table;
-> +
-> +       if (dev_is_acpi(dev)) {
-> +               struct acpi_driver *drv = to_acpi_driver(dev->driver);
-> +
-> +               if (drv->ids)
-> +                       return drv->ids;
-> +       }
-> +
-> +       return NULL;
-> +}
-> +
->  const void *acpi_device_get_match_data(const struct device *dev)
->  {
-> +       const struct acpi_device_id *ids = acpi_device_get_ids(dev);
->         const struct acpi_device_id *match;
->
-> -       if (!dev->driver->acpi_match_table)
-> +       if (!ids)
->                 return acpi_of_device_get_match_data(dev);
->
-> -       match = acpi_match_device(dev->driver->acpi_match_table, dev);
-> +       match = acpi_match_device(ids, dev);
->         if (!match)
->                 return NULL;
->
-> --
-> 2.35.1
->
+> Index: linux-pm/drivers/acpi/bus.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/bus.c
+> +++ linux-pm/drivers/acpi/bus.c
+> @@ -868,8 +868,8 @@ static bool __acpi_match_device(struct a
+>      list_for_each_entry(hwid, &device->pnp.ids, list) {
+>          /* First, check the ACPI/PNP IDs provided by the caller. */
+>          if (acpi_ids) {
+> -            for (id = acpi_ids; id->id[0] || id->cls; id++) {
+> -                if (id->id[0] && !strcmp((char *)id->id, hwid->id))
+> +            for (id = acpi_ids; (id->id && id->id[0]) || id->cls; id++) {
+> +                if (id->id && id->id[0] && !strcmp((char *)id->id, hwid->id))
+>                      goto out_acpi_match;
+>                  if (id->cls && __acpi_match_device_cls(id, hwid))
+>                      goto out_acpi_match;
+
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
