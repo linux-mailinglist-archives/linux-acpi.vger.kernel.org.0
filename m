@@ -2,91 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA9E5A0ED2
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 13:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59EAE5A0EF1
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 13:23:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240031AbiHYLRP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Aug 2022 07:17:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53752 "EHLO
+        id S241501AbiHYLW6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Aug 2022 07:22:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237854AbiHYLRL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 07:17:11 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EAFAEDA3;
-        Thu, 25 Aug 2022 04:17:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661426230; x=1692962230;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=z5RouuAve2+jxGRgV1TIbVlWtMgQgmKAmpebOxdUZwU=;
-  b=KQkhTVM8Jaj3bFzcqbgXj7v6PD/PGsoRcbBS/QQ36GC/XB21V+7YPSGA
-   YE6g5m4cFOeRQoQIhM63JZzxpz8zVuo8GUNEVsjgjmdQtozPGQah9m+Gv
-   HYWlqyaYCF/YH1peGGcj4N0DYzCfRXLqk0xlKV9439ELVkQfR13L8gzgW
-   KGE7uz8X5z7QXWWmQYTsv2Fn24ziS+Jyen5gn4o6sj4YncTyZUWB0ZCkV
-   yF435BpSPJEaYX+rJpwx/Jso5Tf5NuHhrDA2HMXB0k1LGY/4D4n7PQOL5
-   l/AkP9mxCArY+80tLGmW3RFgm5GP3Yr4eAPYGLlCBF5KczuvdHDYzkbdZ
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10449"; a="281183062"
-X-IronPort-AV: E=Sophos;i="5.93,262,1654585200"; 
-   d="scan'208";a="281183062"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2022 04:17:06 -0700
-X-IronPort-AV: E=Sophos;i="5.93,262,1654585200"; 
-   d="scan'208";a="736225192"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2022 04:17:04 -0700
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 63F2A20531;
-        Thu, 25 Aug 2022 14:17:02 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1oRArM-00Ch8J-3Z; Thu, 25 Aug 2022 14:17:16 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        sbinding@opensource.cirrus.com, andriy.shevchenko@intel.com,
-        patches@opensource.cirrus.com, rafael@kernel.org
-Subject: [PATCH 1/1] acpi: Remove default association from integer maximum values
-Date:   Thu, 25 Aug 2022 14:17:15 +0300
-Message-Id: <20220825111715.3025694-1-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S241502AbiHYLWy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 07:22:54 -0400
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98440AF0D5;
+        Thu, 25 Aug 2022 04:22:53 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-33db4e5ab43so50450307b3.4;
+        Thu, 25 Aug 2022 04:22:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=zBAuYd6aZRMYP844dVDfOezCZkLQikm7pyO5BZEXKKI=;
+        b=JzMqRCkVM9VsRkdpF4v2tDsQJ7EDhByun+gvctBM/gnN8oGe+g4ft9OI3ok210bluK
+         z5D1xpj7e0ObikgznTXY57lsMxsRNmiyXNX+JeFAek+2cgBV8KdC6LNQJ+fRVJgpy6/V
+         grPZA3TxTQqmsiCLREc93EDdYjecspdcXPkdl2vfr7hCr0jvRs0ppAXrjEQ7/GfOU45K
+         kh0jumTtWDQna8mUm+OXmM1QJhgr6OS5eYm2DEl9oIhmWj+rkQGZmFpFVcTRnorXsVY3
+         wGXmznMLJZh669Q2i1N9kEriZtH70qM0zPDzBdpw8yjo6I7us9EOCeTjgzhM1UtScNNe
+         t3uw==
+X-Gm-Message-State: ACgBeo0RzbJGCJcAuELhvrFnCeY+23Qzd1XAoRiVLpoAKELLU2XOXQyE
+        Sy20RM1u4Mpc/aGYlwRPsSUk/kEet4thb6noR7Lm2a1+
+X-Google-Smtp-Source: AA6agR6RKiwnjg0hA/QPVGn7rIdPTz+QbBVSW+tdchz15JNQtcfsiMul8ktR7HFomkZ7s43z4KN+FNjEXqFI7U1eWds=
+X-Received: by 2002:a25:8d84:0:b0:695:836a:fcaf with SMTP id
+ o4-20020a258d84000000b00695836afcafmr2755715ybl.633.1661426572692; Thu, 25
+ Aug 2022 04:22:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220825090347.30555-1-junming@nfschina.com>
+In-Reply-To: <20220825090347.30555-1-junming@nfschina.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 25 Aug 2022 13:22:41 +0200
+Message-ID: <CAJZ5v0jVpCiwscgVQqS3yEwGaHUCPzR9pNDjt6qY6U4jJubt_A@mail.gmail.com>
+Subject: Re: [PATCH] tools: Delete the initialization value
+To:     shijm <junming@nfschina.com>
+Cc:     Len Brown <lenb@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Remove the default association from integer maximum value checks. It is
-not necessary and has caused a bug in other associations being unnoticed.
+On Thu, Aug 25, 2022 at 11:04 AM shijm <junming@nfschina.com> wrote:
+>
+> From: Shi junming <junming@nfschina.com>
+>
+> From the perspective of commpier,delete the initialization value
 
-Fixes: 923044133367 ("ACPI: property: Unify integer value reading functions")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
- drivers/acpi/property.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+I'm not sure what this means.
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 91d0e75859d37..d4c168ce428ca 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1046,8 +1046,7 @@ static int acpi_data_prop_read_single(const struct acpi_device_data *data,
- 								u8 *: U8_MAX, \
- 								u16 *: U16_MAX, \
- 								u32 *: U32_MAX, \
--								u64 *: U64_MAX, \
--								default: 0U)) { \
-+								u64 *: U64_MAX)) { \
- 				ret = -EOVERFLOW;			\
- 				break;					\
- 			}						\
--- 
-2.30.2
+The initialization is unnecessary, because the variable in question is
+always assigned a new value before reading it.  Is that what you
+wanted to say?
 
+> Signed-off-by: Shi junming <junming@nfschina.com>
+> ---
+>  tools/power/acpi/tools/pfrut/pfrut.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
+> index d79c335594b2..52aa0351533c 100644
+> --- a/tools/power/acpi/tools/pfrut/pfrut.c
+> +++ b/tools/power/acpi/tools/pfrut/pfrut.c
+> @@ -190,7 +190,7 @@ int main(int argc, char *argv[])
+>         void *addr_map_capsule;
+>         struct stat st;
+>         char *log_buf;
+> -       int ret = 0;
+> +       int ret;
+>
+>         if (getuid() != 0) {
+>                 printf("Please run the tool as root - Exiting.\n");
+> --
+> 2.18.2
+>
