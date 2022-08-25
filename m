@@ -2,169 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59C815A04FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 02:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2754C5A09BC
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Aug 2022 09:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbiHYANl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Aug 2022 20:13:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44968 "EHLO
+        id S233749AbiHYHQe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Aug 2022 03:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbiHYANk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 Aug 2022 20:13:40 -0400
-Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B22579A5D
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 17:13:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1661386419; x=1692922419;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZxFoJwFCqkeM4fdVl9Td19awIMtIqaYzS3bftceHRAU=;
-  b=jj93o/3jyVjHLX2rvCmHlhYWToKwioM9YPkqRjyRVKu8FxEim2V84aeM
-   CuEvlpHg/5HFrtjBw5q1T4zz1xe+biqpIiPaijrcpgnXoBvJ00f2rbwKE
-   e5P+8+qSQjwhoP2or6cuHdG7lVf7iGXcDPPBdc4FuokJhdzJKxx/uKHX2
-   Lv9FPhP+n2wa4JFzoh4IRWUpv7iY1RZ9KH0DJK6KQANs97fSmI8NPvufg
-   DH1Y8IMsokqx7waIMSixXUhjsSDsXS2aJf9SqEPD43KPLKM7qk1IigaBR
-   T/lY/3TN/M7fyiHenMHF3kQqAxWcWP/H0LFjM50csskHyy6Jgcq0wq5Js
-   g==;
-X-IronPort-AV: E=Sophos;i="5.93,261,1654531200"; 
-   d="scan'208";a="214736155"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 25 Aug 2022 08:13:39 +0800
-IronPort-SDR: tdTzyS7h61P/R2yxx5rokx2/l1ums1qxXuxgeeo6CFtRCLpxJ63nghq93i21CX3pJd/gDKeB8O
- fkYekITN3DpZcYy/rA1mn6+rYVwLAwbFLgnCXJHPy1X7Atn7em4jJgO5YhL81Zo3idt/8+DDxU
- BiPYwiLDYn2NHiQENdGTBe2KvJMsrBaaq20t5ceY0gdBxAAbwQRXWYZR7JuW+bJqKSWAEwtDN0
- 8wGl20glxsjtHXQtubGFoxRkCu+o8Ur1lQbq2/ZO8lZ7mP6qckOBaLsq6w85vJGIwN69OmvHOG
- eG3zFmvvSlzitr09rR1OLXBL
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 24 Aug 2022 16:28:55 -0700
-IronPort-SDR: Y/N7FFpIKBM8cBLAfAmO5RHXLmbiqtmgJC/ZdiqSZqcZQ+PexVNj9WuKIJFLPKiaWa1//w8k7D
- BfY5tOMIoQNglEW+BNCdT1lHVnQDaQBDSGM4Z3+lMCBODqjiHlo81I6P8gx49wpKjeX9gaxfK7
- /uO9Rg0ojOoqsNOpKIYTRTmLS3iu4OeZrFf+hOkAp/CBVHcONhF9W3W9ThmO/QgSeZd4qKZSnw
- wQPIbw+I9cCEukHQzyI4nF1rLxyxlNZVM/y+pI93p95oTEyAhqhT5CjFcZfQYRNwWGWc5gPI3y
- WHM=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 24 Aug 2022 17:13:39 -0700
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4MCk2q55rKz1Rwnl
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Aug 2022 17:13:39 -0700 (PDT)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1661386418; x=1663978419; bh=ZxFoJwFCqkeM4fdVl9Td19awIMtIqaYzS3b
-        ftceHRAU=; b=WWOMyHZ15SN4LXUX1Fqz8+FW0JbsUukS9VgmrAzlA1AQ+A//PDg
-        UmetpVDU31ijxhykte7VTwF7JW9wOe1wWkT4nA5R9ikcyCUeqORsXOaT9Diez0wm
-        bzg3yyWMRoGkGpHKvEVFypZdeFOUx4ZQSaxHtc9YpYyHqBieg5wtnK90Yo3cXbcD
-        Rlyd74UpuUl7bwVQR6Ethy0FPLvCX1OQ5AHQoznhIi2PvRXv/PEg2TRXtBvFECMH
-        eorlTJ3+/xF0FELcz8FQyLcNpmTpevx0yWTThWwIeZ+HK4qXtWfT7hh5sauL3hZb
-        DlPyiNQvzMHp42H24pZun1M7FOvQwZLUPyg==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id JwdfBhMwSpuP for <linux-acpi@vger.kernel.org>;
-        Wed, 24 Aug 2022 17:13:38 -0700 (PDT)
-Received: from [10.89.82.240] (c02drav6md6t.dhcp.fujisawa.hgst.com [10.89.82.240])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4MCk2n6nSZz1RtVk;
-        Wed, 24 Aug 2022 17:13:37 -0700 (PDT)
-Message-ID: <5b7fe985-6e5a-1d26-dc48-ac5000929e94@opensource.wdc.com>
-Date:   Wed, 24 Aug 2022 17:13:36 -0700
+        with ESMTP id S236760AbiHYHQd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 Aug 2022 03:16:33 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6B5760E1;
+        Thu, 25 Aug 2022 00:16:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661411792; x=1692947792;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Nwp6Cji46dnwi4Sj4t8zoF/G6jVn4T/F1m727vVwp3g=;
+  b=TZajrgNfOhhASr6eOMOuWUefuiz1v3ks2n89NZr1o0OT/KJSNfUyIcwh
+   c7yjZjIY/oiBygXYmC9g5E44ld9vTjFQNDkKePtqCx/yGI+fQqcCye5/0
+   7qcxuqM9s2twXU2cENfGZYoaVX/eGjr/OOKgTV1Q+8GstbDge70T/M7gK
+   Xew6XfUty5waYmkFu/OBG0WlZxcmMll4arRCa/Pb6ygifP4ty0YuA8OtF
+   FxBV9kKqIzOKICuClsMPBmxnlSxR2vvffABZJnWxPmpEk5cFoSqrXty24
+   ljuS5oRt/UhrINQCv4aR6Ec/lSv6s4SPYCPG3L26YRZ9f30hJo3/w/DSW
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10449"; a="294947194"
+X-IronPort-AV: E=Sophos;i="5.93,262,1654585200"; 
+   d="scan'208";a="294947194"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2022 00:16:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,262,1654585200"; 
+   d="scan'208";a="938218217"
+Received: from lkp-server02.sh.intel.com (HELO 34e741d32628) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 25 Aug 2022 00:16:30 -0700
+Received: from kbuild by 34e741d32628 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oR76L-0001rq-2O;
+        Thu, 25 Aug 2022 07:16:29 +0000
+Date:   Thu, 25 Aug 2022 15:15:47 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 47c90d37e626efa4e7925e8e306993b9cbdada30
+Message-ID: <630721a3.Ckrtddp0YFN/Y6zl%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.12.0
-Subject: Re: [PATCH] ATA: ACPI: Do not check ACPI_FADT_LOW_POWER_S0
-Content-Language: en-US
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-ide@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <4426478.LvFx2qVVIh@kreacher>
- <9c479bb6-bb57-9b5a-2fa5-7b4d1b840245@opensource.wdc.com>
- <0b70fc12-6217-147f-c663-a1035738cf7d@amd.com>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <0b70fc12-6217-147f-c663-a1035738cf7d@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/08/24 16:55, Mario Limonciello wrote:
-> On 8/24/22 18:54, Damien Le Moal wrote:
->> On 2022/08/24 10:29, Rafael J. Wysocki wrote:
->>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>
->> The patch title should be "ata: ahci: ..."
->>
->>>
->>> The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
->>> use low-power S0 idle on the given platform than S3 (provided that
->>> the latter is supported) and it doesn't preclude using either of
->>> them (which of them will be used depends on the choices made by user
->>> space).
->>>
->>> For this reason, there is no benefit from checking that flag in
->>> ahci_update_initial_lpm_policy().
->>>
->>> First off, it cannot be a bug to do S3 with policy set to either
->>> ATA_LPM_MIN_POWER_WITH_PARTIAL or ATA_LPM_MIN_POWER, because S3 can be
->>> used on systems with ACPI_FADT_LOW_POWER_S0 set and it must work if
->>> really supported, so the ACPI_FADT_LOW_POWER_S0 check is not needed to
->>> protect the S3-capable systems from failing.
->>>
->>> Second, suspend-to-idle can be carried out on a system with
->>> ACPI_FADT_LOW_POWER_S0 unset and it is expected to work, so if setting
->>> policy to either ATA_LPM_MIN_POWER_WITH_PARTIAL or ATA_LPM_MIN_POWER is
->>> needed to handle that case correctly, it should be done regardless of
->>> the ACPI_FADT_LOW_POWER_S0 value.
->>>
->>> Accordingly, drop the ACPI_FADT_LOW_POWER_S0 check from
->>> ahci_update_initial_lpm_policy().
->>>
->>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>> ---
->>>   drivers/ata/ahci.c |    3 +--
->>>   1 file changed, 1 insertion(+), 2 deletions(-)
->>>
->>> Index: linux-pm/drivers/ata/ahci.c
->>> ===================================================================
->>> --- linux-pm.orig/drivers/ata/ahci.c
->>> +++ linux-pm/drivers/ata/ahci.c
->>> @@ -1610,8 +1610,7 @@ static void ahci_update_initial_lpm_poli
->>>   	}
->>>   
->>>   #ifdef CONFIG_ACPI
->>> -	if (policy > ATA_LPM_MED_POWER &&
->>> -	    (acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0)) {
->>> +	if (policy > ATA_LPM_MED_POWER) {
-> 
-> If making this change, perhaps the #ifdef CONFIG_ACPI can drop too.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 47c90d37e626efa4e7925e8e306993b9cbdada30  Merge branch 'acpi-dev' into bleeding-edge
 
-Indeed.
+elapsed time: 722m
 
-> 
->>>   		if (hpriv->cap & HOST_CAP_PART)
->>>   			policy = ATA_LPM_MIN_POWER_WITH_PARTIAL;
->>>   		else if (hpriv->cap & HOST_CAP_SSC)
->>>
->>>
->>>
->>
->>
-> 
+configs tested: 64
+configs skipped: 2
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+i386                                defconfig
+i386                          randconfig-a001
+arc                  randconfig-r043-20220824
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+i386                          randconfig-a003
+i386                          randconfig-a014
+riscv                randconfig-r042-20220824
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+m68k                             allmodconfig
+powerpc                           allnoconfig
+m68k                             allyesconfig
+i386                          randconfig-a005
+s390                 randconfig-r044-20220824
+i386                          randconfig-a012
+x86_64                        randconfig-a015
+i386                          randconfig-a016
+arm                                 defconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+arm                              allyesconfig
+arm64                            allyesconfig
+i386                             allyesconfig
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+loongarch                         allnoconfig
+arc                                 defconfig
+loongarch                           defconfig
+alpha                               defconfig
+s390                                defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+ia64                             allmodconfig
+arc                               allnoconfig
+alpha                             allnoconfig
+riscv                             allnoconfig
+csky                              allnoconfig
+
+clang tested configs:
+i386                          randconfig-a013
+hexagon              randconfig-r041-20220824
+i386                          randconfig-a011
+x86_64                        randconfig-a012
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+hexagon              randconfig-r045-20220824
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a015
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
 
 -- 
-Damien Le Moal
-Western Digital Research
+0-DAY CI Kernel Test Service
+https://01.org/lkp
