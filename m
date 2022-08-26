@@ -2,191 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF6225A2FFB
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Aug 2022 21:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA9B35A3174
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Aug 2022 23:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343791AbiHZTbX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Aug 2022 15:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33954 "EHLO
+        id S1345319AbiHZVtz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Aug 2022 17:49:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343559AbiHZTbW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Aug 2022 15:31:22 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6106DFB50;
-        Fri, 26 Aug 2022 12:31:21 -0700 (PDT)
-Received: from pps.filterd (m0134420.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27QIZ8GC003882;
-        Fri, 26 Aug 2022 19:30:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pps0720;
- bh=dpVPfnAH3DoyCG/QAE/i9UBOp4zU+X43dNY2Jo03m14=;
- b=cRlRUjBW0aIirbcyt8wTCgGfJlO2Qdv9FHydg+ftm037QpWrplXIb2ShnRr9FXPd8zKy
- rZNsUCA9yGBQc6E67sWvGpjepjYN0l9WDLVUpIFWymp+h/u5gx8gEmiXryeWqD+fqrmi
- 63tLbkLNXjHyb9GZmq1ikc0IZB0Cx1yWp8pp1Ai4mOmk8cTGjZwQ8seHkp1GHeaHMswq
- z6SWcKjId5hJZ2vtRxfKj9tY+L6myQfsu/fZQaOefefBNaDgoYTLkZ5pOdC4EQNkLMCZ
- /cqVXb9FI9F9yf1UhMum+ipneveR+kRvcjiPnjnJl/QPs9bfDPZBcY+CAet8eejcpcDc Yw== 
-Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3j73jjraef-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 26 Aug 2022 19:30:33 +0000
-Received: from p1wg14924.americas.hpqcorp.net (unknown [10.119.18.113])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by p1lg14881.it.hpe.com (Postfix) with ESMTPS id F0417804C87;
-        Fri, 26 Aug 2022 19:30:31 +0000 (UTC)
-Received: from p1wg14928.americas.hpqcorp.net (10.119.18.116) by
- p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 26 Aug 2022 07:30:22 -1200
-Received: from p1wg14926.americas.hpqcorp.net (10.119.18.115) by
- p1wg14928.americas.hpqcorp.net (10.119.18.116) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 26 Aug 2022 07:30:22 -1200
-Received: from p1wg14919.americas.hpqcorp.net (16.230.19.122) by
- p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15
- via Frontend Transport; Fri, 26 Aug 2022 07:30:22 -1200
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (192.58.206.38)
- by edge.it.hpe.com (16.230.19.122) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 26 Aug 2022 07:30:21 -1200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DoVM7l+r6KKd4SlMq3N+odRnQ1eNKhtrEcMgWnv0yS2N20qCDKKUMJm3J7y90FSvWL8HubWz4KTK6eiYWoN8D8JfL1tPJCDlw6Y5iQupDyysy/3XWNyASJmgG2iAHNQLeKhQDPYuvUvMm+A5GhwPylkK/yq++i4/zUDxCe2Gpu8aaPkNYwyqdH0fn+ozdvyDKwMGN0aP1tl0T4TYcN7PyxwT61q9nLqbDDsXYuK+JRM7Xx6oOQoQJJyiXE4OP+F4tIyySyFW5panaeuF+W70QTWx2Kx9ktAKPCoedh3FWMU6wCDkunXoJPVakN9mD8q7rygxTm/P4uZs1SB+JsZzVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dpVPfnAH3DoyCG/QAE/i9UBOp4zU+X43dNY2Jo03m14=;
- b=WdZ9Ywgnta/nLwH7UYKkzE0h7V/IXx0IOsp69G25FSYzqhmxRjH8OACvowHHfqIJyJmEsTFcs5kgaAkYSLw1V09h/ZVZAOALZgDQw3T21DihprNZFP2Rv0quW5dCKfP7wL7ELa2qJvtUhtRXEp+mTwf3Xh16knz4W6mtj28Fju+r2cKhDVGCcw9LPXdxHZvaG8+pewxALQPsk4eFPEdyovCC5Kk39bERor/Y2FyY0cm4LAzu5B9rWoMF8XTOGYK3m0STP4yrLLUv9N/XSYfsoNSJXQ/LtnFWmtPSkjX0wtQTV/8Z+q2hVp875c1U8Mg0jXnblhyN14Xj9Lg/4Hl00w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
- header.d=hpe.com; arc=none
-Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4c::19) by
- PH7PR84MB3225.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:510:1ab::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Fri, 26 Aug
- 2022 19:30:19 +0000
-Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6]) by DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6%5]) with mapi id 15.20.5546.016; Fri, 26 Aug 2022
- 19:30:19 +0000
-From:   "Kani, Toshi" <toshi.kani@hpe.com>
-To:     Justin He <Justin.He@arm.com>, Borislav Petkov <bp@alien8.de>
-CC:     Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "Robert Richter" <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        nd <nd@arm.com>, "Paul E. McKenney" <paulmck@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "stable@kernel.org" <stable@kernel.org>
-Subject: RE: [RESEND PATCH v3 3/9] EDAC/ghes: Make ghes_edac a proper module
- to remove the dependency on ghes
-Thread-Topic: [RESEND PATCH v3 3/9] EDAC/ghes: Make ghes_edac a proper module
- to remove the dependency on ghes
-Thread-Index: AQHYtj5tQS6+//pDoEmz8BwtIUrts62+MkUAgAFbnICAAgjg0A==
-Date:   Fri, 26 Aug 2022 19:30:19 +0000
-Message-ID: <DM4PR84MB185308834381DD3316D506A782759@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20220822154048.188253-1-justin.he@arm.com>
- <20220822154048.188253-4-justin.he@arm.com> <YwZFqHvcEzVpAxzn@zn.tnic>
- <DBBPR08MB45384B8C447B9B4B29D07011F7729@DBBPR08MB4538.eurprd08.prod.outlook.com>
-In-Reply-To: <DBBPR08MB45384B8C447B9B4B29D07011F7729@DBBPR08MB4538.eurprd08.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 77b9e383-bc36-4996-a5e1-08da8799696a
-x-ms-traffictypediagnostic: PH7PR84MB3225:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: rQGYeYHfj36LCrwVBZsCMDPRc6mR852ZBbKIBS0Uzsy2p4ccGHoEjCNxbCRfTQiE3qBGabByyw84uKhAUGlCfIDdUghkxHy/AFRc4bfjU+gPwvmCRkq4XQXQ9M/cenkuuutTtrLZJJUJhWKgUvY6wMIt7cRuyLuws9XhZBjaqsZHgMWxVmGTWptVxtoiZUFhY3EsaaE66eKnldUhkVexDuexcfuVFY/DnCp+MVJIuFqvUQUZsBrHhK3QRYBsZb7s0d9nU3LkAWmaEglA9i6rAzhD7/YeSq3UPPAO77R6WSHh0iTtAxLhmzTidlgW0S8PZtgtF8Tvn//6fJvOJiZYPIjxqge/KrD+JY3NF5kkHnIQlJMaNkrA1hOGGjSwFg8v+vIAEFYYD3AnNw7h4bdLRXntjdpAnCdhVJleHg/TUZxgcSypJc6HYVyTJ1rlckq2qarFj+voEI9Np9gpIItkzTdNHfA4qnsTj2NaZ1EaDgFsnYqBUQoWtESZsHT1mkS0Kmu9o+sWY07WVncyQE50KnK2lw0Qn7mlSXJNL6vSF+H2T7qq+ygMpA88D7QK0bm/2gL+K34ZoDl813io08/ezqxo7WjObrfQBFwrm8KnPK8iYZHU4rih5SimO9XIxqpiaIc7I+u/mSCgx5oLE717DMn1XeBeawpEynU+xpMtsQhxmXiqAhlfiDgyOtWLsLD2q/4+AeDCYki441auybnAtj1+H5FYB3+D1dnUlEwDDqdwyt27oeThVy9SSbNVs4N6GF0KLYGYdBNzqGbpd6tnuA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(136003)(376002)(39860400002)(396003)(366004)(346002)(5660300002)(64756008)(2906002)(54906003)(82960400001)(66476007)(83380400001)(316002)(7696005)(38070700005)(6506007)(110136005)(186003)(71200400001)(55016003)(66556008)(76116006)(52536014)(8676002)(66446008)(122000001)(8936002)(38100700002)(4326008)(7406005)(26005)(9686003)(41300700001)(53546011)(4744005)(478600001)(66946007)(7416002)(86362001)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Z2lsaEE1UGI0TzVpNUFWdWN6M3E0S0RRUXpJZ3hDY011ZlNQK040aXQ3emtr?=
- =?utf-8?B?bFY1TFhzUENieTJqaDNZZ1ZuTjRjaklDRFVTTTN4WU5HK0tta2NvOERLMm9H?=
- =?utf-8?B?Y1NtUWpPWm9sT2JvOGZ2aDh2ajFkaGxEZ1dKZzJxMHFaSFZlYW5zTk45Y1lj?=
- =?utf-8?B?MHZObXN4SDVjdTRlcjFrRVlPQkpZeGtycm5ocDBGNDUvaytTbEpNNGhJUThY?=
- =?utf-8?B?SVZkaXNpSlRGRjlzM3ZNWUlYWU9jZ3U2RTh4V0RzV3IycDBoblhES3F6RW1s?=
- =?utf-8?B?d014b1BHRlB0UjFENkRJVGQ0ZVBPOUZBZDFUb2RObEQwaU1RT3dXMENiVnhC?=
- =?utf-8?B?NTBSZDJaYnh5bHltcHZFdDcxeHpxM1hicmpDYmtvLzhvSjBheXhIblhyMjFz?=
- =?utf-8?B?ZkQ1SkxYQ3V6elJGeW1YRmluVWVKaUNXV21aSVF1cUwwV094eCs5ekhqQlhM?=
- =?utf-8?B?RTU1dWhlc0cwaDZFSXNYWjVBdmdrK2JlQ3FucjlqT3Q3dEp2Y1B2U3dzdVhR?=
- =?utf-8?B?YmhiRG81bmh0RU8ybm80SHBjajBiOWQzMzB2VHBVNjZHUURMbXdZMzdmQUVQ?=
- =?utf-8?B?bXdLMnNlaEFqUjRZN2xHMEppUDlIeGpsemFjeEtkNFVVTitrYUtyelNLc2pZ?=
- =?utf-8?B?cVc4Y0lhL3lZUjAyWHI1SmNib045cW5TNjhpTUJaR25qbmEwQ3poNjVpRXFN?=
- =?utf-8?B?Wm5zYUR1RXRGN2duTzBlR1JSWmI5VVhoZTlyTVd2dENNYVBDNU5MblBGdk5D?=
- =?utf-8?B?YzNiSk1SV3RZRS8wQmhDTjd5dzYyOTZkVGRxTGhjUlJWK1hWQW9TZVl1YzYx?=
- =?utf-8?B?YTVmM2FsWW5sRy9nT3F2R2JvMDRBRUxlYmVkNlo5OWRCWldSSHZDQ0phOW1X?=
- =?utf-8?B?L01rRFJmTTlQNFZZTitTQkI5NUxWQVNjQkZpRGtZUCtZcnhHclN4TzB2WmZW?=
- =?utf-8?B?QnZnV2t6U2pZSmxkT1JTZTlTOXVJMm5WVkFiOWhCSGFMOHU2aCt6QUFyN0w5?=
- =?utf-8?B?T2U1d1pLbmFCUzYyOVNFTGR3ODJ4U3FGVGlXaG55TXlDbSt4M1RFZmNZbkVD?=
- =?utf-8?B?OUx1SVdHYW1ST3Z4RjJqSXFXdzdaNXIrb1dydDQ1QXJDWE9nc21rWHloYnRM?=
- =?utf-8?B?OVowMzNwTVp6cXZKSHJneWUxMktUVnV3RHNnZTZ5eW4xclZMbGhEVjEyOWJZ?=
- =?utf-8?B?Y0VHcXZnK0h0dXRmdjlkd25MaVhWOVUxNTV2eTJsS2FoeXBkWEVkWm9VUUpk?=
- =?utf-8?B?WFdhSkxlUklHNlhQZVpCNStqNFR1dG9DUVRiT3FQaHhCbW1nZzJVUUZGeEJI?=
- =?utf-8?B?QWRpNlYrVVJCOU5KUnFCbTZBR0FuUm9QcVVtUGJJWTQ5OU1jS2xzeHc1ZGhF?=
- =?utf-8?B?NDdiWmFhdlFFRmNVbk5jQjEzdkNHMzFONzU0ZDF6U1grTTNoMWRpd0V5V053?=
- =?utf-8?B?aEtFcjF1MnJFN1ZqMi9QS3hZN3g0UnFFVm1FQ2NZeW5zMzhzUnV4dS8vZEpv?=
- =?utf-8?B?M0l6cTl6OFUzSDNLdjdMbDE5Z2pWZVNrM1RGVWYzK0FVcG4rLy9kWmJDNFh4?=
- =?utf-8?B?aTUwSEZNTklGYjBRM1BFNVdtKzJjQzRCVGNxQTg3b0pYRHRzVGM0ckMwT2h4?=
- =?utf-8?B?cDF1OCt5YWc0OEtaelhoRkdVV0pWdDhzZUh4N3VOWm5CSC81VHlTL2FhV3E2?=
- =?utf-8?B?UUNwemJmL1hKWG1OZ0lzSUtNcVNPSmxKeFB2ekhFK1ViWDRab2pLbXpOSmE0?=
- =?utf-8?B?M0NlczZGVUFMb3d1YWcrR0d3Mit6RGRnMjhQeEV6OEhZbTJieWswc0pDZng0?=
- =?utf-8?B?NXc2d3NsdFFQL05TMFpqbmJKd1VIM2hUOVJUdytPSmFrQXNraFJyM05CKytF?=
- =?utf-8?B?aUI5NGFUS1paaWIzalVYZDY4NnlKYXRPUG1IYkJoU0NlTVpkMDA0TTFxSE51?=
- =?utf-8?B?S3lhRU5kMVJNQUlOeUR1eDBlVXBBbkVudldHREs5Tk5oQTV5M2hnL0JUVVh0?=
- =?utf-8?B?cFAvVG5NVk9vYmhnUlEyMVYrRmJoRXVoYjdHN3FNcXhaU3pGZW5idDdHMlc3?=
- =?utf-8?B?ZVpNYTV3aUVBSUQ3LzNGd0w4STlOc1hYa3pCaHB0RVc2aWlIaXkvR0tDMi9Q?=
- =?utf-8?Q?JdCKS8VztuJcFUuasEi+0ylIu?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S1343791AbiHZVta (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Aug 2022 17:49:30 -0400
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2001AE9905
+        for <linux-acpi@vger.kernel.org>; Fri, 26 Aug 2022 14:48:38 -0700 (PDT)
+Received: by mail-qt1-x82a.google.com with SMTP id x5so2261407qtv.9
+        for <linux-acpi@vger.kernel.org>; Fri, 26 Aug 2022 14:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=IxFQvG8uCDNWfOw4XKW76il4dfl0HaGEva3keb0z0fc=;
+        b=iSpsXSQHohS4/3ld/K/EJJ3fu7p0M/ym/KZ9P84gjCtQTisLl0uc+udZl4PcGZiroN
+         ECjHNIvFpuFmqHTl203if+F0+fLgqxvjTBKmycWTPWcvSrC6iFmQbW+HZl9n9A9FrcNt
+         IUn+3rzkAPoKjJBQXmI7r0IMbwGNggWtdIq/c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=IxFQvG8uCDNWfOw4XKW76il4dfl0HaGEva3keb0z0fc=;
+        b=7yVN5I7TYPisVusg3vfnNHtljeO/2xPgqi4fpHAen+uEgPp3FVzaaDyDq9A/9zqj10
+         Dt32BstwqejW+DCVt5hfro6DSqN071e+rpxYOw61gmjkKq7OrnVocvovQtwo7OTCHSTr
+         Z71RAMWZWSVDFlYTH17LgnDADjkleZnZj4yd8+mSDKd0eFlCXDXew7Mg9QdcJDC+/m9s
+         tRx14cIUvGbCpGbGlNdEof/QtB5s4fFSm5+nhbXcXC5z8VDqiokE3n21E5A4sWXxEN+3
+         2/5wmOiHCQ49Kqq/xvGC13GkwpHxLGzvU4DpfdjzgycioijBC07LE2fkTSU+3ytlVvlt
+         xOcA==
+X-Gm-Message-State: ACgBeo3oKxAK311ihjoK+bbXpahDrA89mMrJataXsa90fYRdzj1a2+rO
+        qY62sLLivfQMutqY5omgTJQ3K+I5QXf6zg==
+X-Google-Smtp-Source: AA6agR6G7nrb6UwT8TRxeUciqDyZb8FMk1Jb8E4y/tbYzhiaMLk4Ij42tUuHwA2piGD7nuFPHjbViQ==
+X-Received: by 2002:a05:622a:1001:b0:343:6004:9a25 with SMTP id d1-20020a05622a100100b0034360049a25mr1376921qte.479.1661550516872;
+        Fri, 26 Aug 2022 14:48:36 -0700 (PDT)
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com. [209.85.160.180])
+        by smtp.gmail.com with ESMTPSA id bj11-20020a05620a190b00b006b60d5a7205sm596738qkb.51.2022.08.26.14.48.35
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Aug 2022 14:48:36 -0700 (PDT)
+Received: by mail-qt1-f180.google.com with SMTP id j17so2254700qtp.12
+        for <linux-acpi@vger.kernel.org>; Fri, 26 Aug 2022 14:48:35 -0700 (PDT)
+X-Received: by 2002:a05:622a:1196:b0:342:f7a9:a138 with SMTP id
+ m22-20020a05622a119600b00342f7a9a138mr1432696qtk.344.1661550515375; Fri, 26
+ Aug 2022 14:48:35 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77b9e383-bc36-4996-a5e1-08da8799696a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2022 19:30:19.4221
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dTnMphV30HdkJmloyznp7kmx/bhtfnv/CQChQBDFZC+HryuNPp+yKGEVlnHoTj1vH+fdx7PlXbZ8rOmJaOr1+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR84MB3225
-X-OriginatorOrg: hpe.com
-X-Proofpoint-ORIG-GUID: XCp9gQu-1WKv3l6jB-7Smsyd-eeiYwox
-X-Proofpoint-GUID: XCp9gQu-1WKv3l6jB-7Smsyd-eeiYwox
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-26_10,2022-08-25_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- malwarescore=0 impostorscore=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=999
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208260078
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <12042830.O9o76ZdvQC@kreacher> <1c7fa65d-47ab-b064-9087-648bcfbf4ab5@amd.com>
+ <CAJZ5v0ie7B=GvhbfBsi7Zxu+=YzYKUqvUNs6dNZQfT3CRm=KPg@mail.gmail.com>
+ <a2d2b61e-87c0-ee39-ea4e-3c575da0a66c@redhat.com> <CAHQZ30DjkyDT8KbsHzfwiyg6Tst9EFhtCnjx3MmwbWRerzW_6A@mail.gmail.com>
+ <CAJZ5v0gXizr6szRA09fNYC0njUv-Dg7kDSu9FtmfDRgX2n45wg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gXizr6szRA09fNYC0njUv-Dg7kDSu9FtmfDRgX2n45wg@mail.gmail.com>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Fri, 26 Aug 2022 15:48:24 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30CNORQMD=URhEv3mCV8ELGYs8W6Z2tSqrLiUbxUbikauA@mail.gmail.com>
+Message-ID: <CAHQZ30CNORQMD=URhEv3mCV8ELGYs8W6Z2tSqrLiUbxUbikauA@mail.gmail.com>
+Subject: Re: [PATCH] i2c: ACPI: Do not check ACPI_FADT_LOW_POWER_S0
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-input <linux-input@vger.kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Tim Van Patten <timvp@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -194,18 +84,130 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-T24gVGh1cnNkYXksIEF1Z3VzdCAyNSwgMjAyMiA2OjIxIEFNLCBKdXN0aW4gSGUgd3JvdGU6DQo+
-ID4gPiBAQCAtNTY2LDMgKzU0OSwzNSBAQCB2b2lkIGdoZXNfZWRhY191bnJlZ2lzdGVyKHN0cnVj
-dCBnaGVzICpnaGVzKQ0KPiA+ID4gIHVubG9jazoNCj4gPiA+ICAJbXV0ZXhfdW5sb2NrKCZnaGVz
-X3JlZ19tdXRleCk7DQo+ID4gPiAgfQ0KPiA+ID4gKw0KPiA+ID4gK3N0YXRpYyBpbnQgX19pbml0
-IGdoZXNfZWRhY19pbml0KHZvaWQpIHsNCj4gPiA+ICsJc3RydWN0IGdoZXMgKmcsICpnX3RtcDsN
-Cj4gPiA+ICsNCj4gPiA+ICsJaWYgKCFJU19FTkFCTEVEKENPTkZJR19YODYpKQ0KPiA+ID4gKwkJ
-Zm9yY2VfbG9hZCA9IHRydWU7DQo+ID4NCj4gPiBObywgdGhpcyBpcyBub3QgaG93IHRoaXMgd29y
-a3MuDQo+ID4NCj4gPiA+ICsJZ2hlc19kZXZzID0gZ2hlc19nZXRfZGV2aWNlcyhmb3JjZV9sb2Fk
-KTsNCj4gPiA+ICsJaWYgKCFnaGVzX2RldnMpDQo+ID4gPiArCQlyZXR1cm4gLUVOT0RFVjsNCj4g
-Pg0KPiA+IFlvdSBzaW1wbHkgbmVlZCB0byBjaGVjayBmb3JjZV9sb2FkIGhlcmUuDQo+ID4NCj4g
-DQo+IE9rYXksIGhlbmNlIHNob3VsZCBJIGV4cG9ydCB0aGUgKmdoZXNfZGV2cyogaW4gZ2hlcz8N
-Cg0KSXQgZG9lcyBub3QgbWF0dGVyLiAgVGhpcyBzZXJpZXMgdGhlbiBtb3ZlcyB0aGUgZm9yY2Vf
-bG9hZCBjaGVjaw0KdG8gZ2hlc19lZGFjX3ByZWZlcnJlZCgpLiAgSXQgaXMgY29uZnVzaW5nIGZv
-ciByZXZpZXdlcnMuLi4NClBsZWFzZSBkaXZpZGUgcGF0Y2hlcyBiYXNlZCBvbiB0aGUgZmluYWwg
-ZGVzaWduLiANCg0KVG9zaGkNCg0KIA0K
+So after tracing a bunch of code, I finally got a solution that I
+think will work. I just uploaded the patch train here:
+https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/3858568.
+I'll push it to the mailing list once I do a bit more testing.
+
+Do we need to support setting the wake_irq for systems that don't use
+DT or ACPI? Ideally I would drop the following block:
+
+if (!dev->of_node && !has_acpi_companion(dev)) {
+    device_init_wakeup(dev, true);
+    dev_pm_set_wake_irq(dev, client->irq);
+}
+
+There are also a few other i2c drivers that need cleanup:
+* https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/third_party/kernel/v5.15/drivers/mfd/max8925-i2c.c;l=218
+* https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/third_party/kernel/v5.15/drivers/input/touchscreen/elants_i2c.c;l=1629
+* https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/third_party/kernel/v5.15/drivers/input/touchscreen/raydium_i2c_ts.c;l=1190
+
+I can send CLs to delete the enable_irq_wake calls from those drivers
+if we don't need to support non-DT/non-ACPI boards. Or I can send CLs
+to add the boiler plate from above. Do we even need the `disable_irq`
+calls in the suspend handlers or can the PM subsystem take care of
+that?
+
+Do we also need to handle reading the wake bit from Interrupt/IRQ ACPI
+resources? Can those actually wake the system? On AMD platforms the
+IO-APIC/PIC can't actually wake the system. It either needs to be an
+ACPI GPE or the GPIO controller. If we do need to support it, I can
+add some more plumbing.
+
+Thanks!
+
+
+On Mon, Aug 8, 2022 at 11:10 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Sat, Aug 6, 2022 at 4:20 AM Raul Rangel <rrangel@chromium.org> wrote:
+> >
+> > I do plan on coming back and updating those patches. I got derailed
+> > with other priorities.
+>
+> I'll leave it to you then.  I'm mostly interested in dropping the
+> misguided ACPI_FADT_LOW_POWER_S0 check.
+>
+> > But as Hans pointed out, we wanted to use
+> > `ExclusiveAndWake` to make the decision since not all IRQs can be wake
+> > sources while in s0i3.
+>
+> S0i3 is still S0, so all of the interrupts that work in S0 will still work.
+>
+> What really matters is whether or not enable_irq_wake() is called for
+> the given IRQ, but I'm not sufficiently familiar with the code in
+> question to comment on it any further without thorough investigation.
+>
+> And of course the device needs to be able to generate interrupts in
+> the first place and if it is power-manageable by ACPI, I would just
+> leave the wakeup handling to the generic ACPI code.
+>
+> >
+> > On Fri, Aug 5, 2022 at 12:54 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > On 8/5/22 19:08, Rafael J. Wysocki wrote:
+> > > > On Fri, Aug 5, 2022 at 6:59 PM Limonciello, Mario
+> > > > <mario.limonciello@amd.com> wrote:
+> > > >>
+> > > >> On 8/5/2022 11:51, Rafael J. Wysocki wrote:
+> > > >>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >>>
+> > > >>> The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
+> > > >>> use low-power S0 idle on the given platform than S3 (provided that
+> > > >>> the latter is supported) and it doesn't preclude using either of
+> > > >>> them (which of them will be used depends on the choices made by user
+> > > >>> space).
+> > > >>>
+> > > >>> Because of that, ACPI_FADT_LOW_POWER_S0 is generally not sufficient
+> > > >>> for making decisions in device drivers and so i2c_hid_acpi_probe()
+> > > >>> should not use it.
+> > > >>>
+> > > >>> Moreover, Linux always supports suspend-to-idle, so if a given
+> > > >>> device can wake up the system from suspend-to-idle, then it can be
+> > > >>> marked as wakeup capable unconditionally, so make that happen in
+> > > >>> i2c_hid_acpi_probe().
+> > > >>>
+> > > >>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >>
+> > > >> +Raul
+> > > >> +Hans
+> > > >> +KH
+> > > >>
+> > > >> Raul had a patch that was actually going to just tear out this code
+> > > >> entirely:
+> > > >> https://lkml.kernel.org/lkml/20211220163823.1.Ie20ca47a26d3ea68124d8197b67bb1344c67f650@changeid/
+> > > >>
+> > > >> As part of that patch series discussion another suggestion had
+> > > >> transpired
+> > > >> (https://patchwork.kernel.org/project/linux-input/patch/20211220163823.2.Id022caf53d01112188308520915798f08a33cd3e@changeid/#24681016):
+> > > >>
+> > > >> ```
+> > > >> if ((acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0) &&
+> > > >>             !adev->flags.power_manageable) {
+> > > >>                  device_set_wakeup_capable(dev, true);
+> > > >>                  device_set_wakeup_enable(dev, false);
+> > > >>          }
+> > > >> ```
+> > > >>
+> > > >> If this is being changed, maybe consider that suggestion to
+> > > >> check `adev->flags.power_manageable`.
+> > > >
+> > > > Fair enough, I'll send a v2 with this check added.
+> > >
+> > > Re-reading the original thread:
+> > > https://lkml.kernel.org/lkml/20211220163823.1.Ie20ca47a26d3ea68124d8197b67bb1344c67f650@changeid/T/#u
+> > >
+> > > The conclusion there was that the :
+> > >
+> > >                  device_set_wakeup_capable(dev, true);
+> > >                  device_set_wakeup_enable(dev, false);
+> > >
+> > > Calls should be made conditional on the IRQ being
+> > > marked ExclusiveAndWake instead of the ACPI_FADT_LOW_POWER_S0
+> > > check.
+> > >
+> > > Regards,
+> > >
+> > > Hans
+> > >
