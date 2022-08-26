@@ -2,212 +2,262 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA9B35A3174
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Aug 2022 23:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE7C5A3229
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Aug 2022 00:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345319AbiHZVtz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Aug 2022 17:49:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54162 "EHLO
+        id S1345102AbiHZWnZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Aug 2022 18:43:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343791AbiHZVta (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Aug 2022 17:49:30 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2001AE9905
-        for <linux-acpi@vger.kernel.org>; Fri, 26 Aug 2022 14:48:38 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id x5so2261407qtv.9
-        for <linux-acpi@vger.kernel.org>; Fri, 26 Aug 2022 14:48:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=IxFQvG8uCDNWfOw4XKW76il4dfl0HaGEva3keb0z0fc=;
-        b=iSpsXSQHohS4/3ld/K/EJJ3fu7p0M/ym/KZ9P84gjCtQTisLl0uc+udZl4PcGZiroN
-         ECjHNIvFpuFmqHTl203if+F0+fLgqxvjTBKmycWTPWcvSrC6iFmQbW+HZl9n9A9FrcNt
-         IUn+3rzkAPoKjJBQXmI7r0IMbwGNggWtdIq/c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=IxFQvG8uCDNWfOw4XKW76il4dfl0HaGEva3keb0z0fc=;
-        b=7yVN5I7TYPisVusg3vfnNHtljeO/2xPgqi4fpHAen+uEgPp3FVzaaDyDq9A/9zqj10
-         Dt32BstwqejW+DCVt5hfro6DSqN071e+rpxYOw61gmjkKq7OrnVocvovQtwo7OTCHSTr
-         Z71RAMWZWSVDFlYTH17LgnDADjkleZnZj4yd8+mSDKd0eFlCXDXew7Mg9QdcJDC+/m9s
-         tRx14cIUvGbCpGbGlNdEof/QtB5s4fFSm5+nhbXcXC5z8VDqiokE3n21E5A4sWXxEN+3
-         2/5wmOiHCQ49Kqq/xvGC13GkwpHxLGzvU4DpfdjzgycioijBC07LE2fkTSU+3ytlVvlt
-         xOcA==
-X-Gm-Message-State: ACgBeo3oKxAK311ihjoK+bbXpahDrA89mMrJataXsa90fYRdzj1a2+rO
-        qY62sLLivfQMutqY5omgTJQ3K+I5QXf6zg==
-X-Google-Smtp-Source: AA6agR6G7nrb6UwT8TRxeUciqDyZb8FMk1Jb8E4y/tbYzhiaMLk4Ij42tUuHwA2piGD7nuFPHjbViQ==
-X-Received: by 2002:a05:622a:1001:b0:343:6004:9a25 with SMTP id d1-20020a05622a100100b0034360049a25mr1376921qte.479.1661550516872;
-        Fri, 26 Aug 2022 14:48:36 -0700 (PDT)
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com. [209.85.160.180])
-        by smtp.gmail.com with ESMTPSA id bj11-20020a05620a190b00b006b60d5a7205sm596738qkb.51.2022.08.26.14.48.35
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Aug 2022 14:48:36 -0700 (PDT)
-Received: by mail-qt1-f180.google.com with SMTP id j17so2254700qtp.12
-        for <linux-acpi@vger.kernel.org>; Fri, 26 Aug 2022 14:48:35 -0700 (PDT)
-X-Received: by 2002:a05:622a:1196:b0:342:f7a9:a138 with SMTP id
- m22-20020a05622a119600b00342f7a9a138mr1432696qtk.344.1661550515375; Fri, 26
- Aug 2022 14:48:35 -0700 (PDT)
+        with ESMTP id S230416AbiHZWnX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Aug 2022 18:43:23 -0400
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507FD8E47D;
+        Fri, 26 Aug 2022 15:43:21 -0700 (PDT)
+Received: from pps.filterd (m0148664.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27QK86pb009372;
+        Fri, 26 Aug 2022 22:42:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pps0720;
+ bh=j7kU0ZPnxkOj3cwZnn5N4hrHgR+Bh2n1GCTcH5f1oMw=;
+ b=Jw+q4u4PMbASk8y9fyW0ZupfJi7z7WivLirL6BBNRRBbNlFe1dh23LoblGWMLJyPDJsp
+ bT75vzPeCrrII3yjS1XBJwsutE2cPxatpZYhvpoiW318660PjTA0+evCPvSvx+1F5QVG
+ ahgTL2GEwyouxouKwrQeURZ+JaUIoIVIYpguCAmx2DKPCJ6OVITNNq7aaIuasOnGqd9v
+ P7azHO5fCE2yZorao57FDNaQ8ebB4xapJoCvpeXR6dNnGwopNMA3vxvMkNF/97qtzImA
+ lt1Lg5dig5m4RcejLD093ibsynvm2VcyLLWu+v498Wye/pJpfYa3y6tGAShK2x4w0BFW Gw== 
+Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
+        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3j74xgrvhc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 26 Aug 2022 22:42:41 +0000
+Received: from p1wg14926.americas.hpqcorp.net (unknown [10.119.18.115])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 2C8B18000B9;
+        Fri, 26 Aug 2022 22:42:36 +0000 (UTC)
+Received: from p1wg14925.americas.hpqcorp.net (10.119.18.114) by
+ p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Fri, 26 Aug 2022 10:42:21 -1200
+Received: from p1wg14919.americas.hpqcorp.net (16.230.19.122) by
+ p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15
+ via Frontend Transport; Fri, 26 Aug 2022 10:42:21 -1200
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (192.58.206.38)
+ by edge.it.hpe.com (16.230.19.122) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Fri, 26 Aug 2022 10:42:21 -1200
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BBwpide6NpF3uiJoHypObNbz1Wxc1cE23FzezNz9L8iogWIcwewjXOm+Uy5hAVHIkp9p1w8/5eTJeK8tMqTixtYhdWF3c70M77nLojr95mXJpeKvizH/CRJdjZmXEP4UbjTGU3yWoYpedd/eE6JLRWQxBgYPLxINQciEiLhIFqGMB76PTD518X5m+dAi9bU9D/eSPUWOptwe0KBbzNsGTSIe83/Xqt70IhhdxXw5MTisJXPQAm9iwHtVc4un5x0iv6kFYvIjYAXEiydSboritnb9dqrJIU7hVSQRXrhLT2pdpRdDpofrqjDYJtXeANOy4BEb4xMaM0Jkx/hk/pmZgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j7kU0ZPnxkOj3cwZnn5N4hrHgR+Bh2n1GCTcH5f1oMw=;
+ b=MyhKtyybZLMEyjn3LtNSODMugkICUFt7Msj+zLnE4uno2yoBalH1U/hoNy1Hop/1NGJrLA/p3T1BBFiCFptIG17+EkZd8pKLly2cyV9p4BaoIc3YgF+YLuqewzR1xrK6/h9XLusloHatvhFuHwsC+wqLPs6irqbt3tpzZoG5PaQr1rn/usv0fYrEl4qJpcotdVEmkKB2aOHcDrum0pvJ84EKIOEqmVvdaSwi+jT9EAa8Nii/T7BMQ7L0toqTXwYfT5qL4Ilh4pViNLUNkB3Qq6HH594/8gu3hyP/PMD4ZiuKONqM9Cm2YpFGJ4qCNv3FL4hedRL3VD2GX7g4fUOXbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
+ header.d=hpe.com; arc=none
+Received: from MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:303:1c4::18)
+ by SJ0PR84MB1650.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:a03:431::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.14; Fri, 26 Aug
+ 2022 22:42:13 +0000
+Received: from MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::1cc2:4b7b:f4c5:fbb4]) by MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::1cc2:4b7b:f4c5:fbb4%5]) with mapi id 15.20.5525.011; Fri, 26 Aug 2022
+ 22:42:13 +0000
+From:   "Elliott, Robert (Servers)" <elliott@hpe.com>
+To:     Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        Jan Luebbe <jlu@pengutronix.de>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        "Kani, Toshi" <toshi.kani@hpe.com>
+CC:     Ard Biesheuvel <ardb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "nd@arm.com" <nd@arm.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Neeraj Upadhyay" <quic_neeraju@quicinc.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Muchun Song <songmuchun@bytedance.com>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "stable@kernel.org" <stable@kernel.org>
+Subject: RE: [RESEND PATCH v3 3/9] EDAC/ghes: Make ghes_edac a proper module
+ to remove the dependency on ghes
+Thread-Topic: [RESEND PATCH v3 3/9] EDAC/ghes: Make ghes_edac a proper module
+ to remove the dependency on ghes
+Thread-Index: AQHYtj4QY1WIruQcBEWj6kcOv43zB63BtmGw
+Date:   Fri, 26 Aug 2022 22:42:13 +0000
+Message-ID: <MW5PR84MB1842F7107770654C46CB0311AB759@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
+References: <20220822154048.188253-1-justin.he@arm.com>
+ <20220822154048.188253-4-justin.he@arm.com>
+In-Reply-To: <20220822154048.188253-4-justin.he@arm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: cd2cb38b-9af6-4fd0-4d8a-08da87b43878
+x-ms-traffictypediagnostic: SJ0PR84MB1650:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 6sNEJWosog9dz2pMlIgLpNmg8uhPOk/+eJVbKLiNzmkIOMzMNsN7kwzpJky//mVmX5WR16YDnjafzkFXdG0Uzu00jD2uO1uD987SgQ2g2z1GaGUlfC5KeXuudAljZJQn4ksxNfz5y7mXOGHJBOBOjtjLK7XV8f9Mz39R3D4Hafg2/E2m1FP+vfxlnK8b3TxmFs8yMZJE3shbxNfyiktwEXnhmbeYvsJ/eIRul+bOHj67EJP5E8f54Sd0zZOShLEzWwlUiOrEwuaLFALPgqYUgEm02S5rVLIc7t3yFlRBpk8F2leUpa145sOMZPr8jAOVr1/WNzImlU+UC6sMIvC8VcY33iXW4wCDgK8nuE34zAYdMMTf0tp3Y+91ctfTWsVzawG2s+H1/+w1s3g6svI/URwyevJ6BhiSn5jq127EkoWBsf5i/XFLXx5PyDQxNpyAf5QIlyBSZMLkf054X96Dy6QIWkYPDzlcFysFL3WqWDE99R6GFzoTtOj4lFq4qfY4hc7wqrzm6vmqPXiXkrEn+bCUWFJYhrDHLWqhQ1pSez4jAQMKyURykqgFe/R6/ZjyDSIepTf+SmuBGgZp5Ft5O14JzdDY7r8EAQ0aa3/yv2v+0YtFqhukq5yjSrgIw6oQb9L69yaoGeVcnxRMqo/yq49tlJ5d2MkFeUC7stc0meybcNK81AWPv7RIcHj9QZy/QdlhAPQEGiQNlj7tkGadKLMSDTPsMmtOH6fO8FkDuumuhsfRB2UD/nciYI7eC68g3EvJYs4UIrCuYgQutdZOc2sgLRtQdWt1MLAWyRkwbbQ=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(39860400002)(366004)(376002)(136003)(396003)(346002)(64756008)(26005)(66476007)(38100700002)(7696005)(6506007)(41300700001)(122000001)(53546011)(66446008)(9686003)(66556008)(55016003)(8936002)(8676002)(5660300002)(86362001)(7406005)(33656002)(66946007)(7416002)(52536014)(2906002)(4326008)(76116006)(110136005)(478600001)(38070700005)(186003)(83380400001)(921005)(54906003)(316002)(71200400001)(82960400001)(6636002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?YW5FJ6QOI/QWJxIdyR0VOZTpxmxg8R3MfybxODQS/4xHSZaCP2CTmgDwSOlu?=
+ =?us-ascii?Q?ANhxGYWdE3m0rBy54aRRClnx4PRgeo6NfYK5X5YfgMLG2SDTa/KJFlySV+3G?=
+ =?us-ascii?Q?eveRwlxRkRL3EZfKOiu/0v6vKJ7QuUvSd+O8029yTibjsd1gBwfQPEydz0iM?=
+ =?us-ascii?Q?DgyrzH4P1OW1fSqV+cO6j+uvrKubWJ/nwR+FHyPDq1iq3HXbupIR6triGv7G?=
+ =?us-ascii?Q?mhV1DtI9DK36LYAPqFfwPFrhNfEyEJqY9pBB1e9khgkjMdHFjezE5awQdzWx?=
+ =?us-ascii?Q?bbK0stANNCwGK0ndXAMCuJwkGCHD0D4RyqZkyAekV4ebpmCryw/KBWznlpZ0?=
+ =?us-ascii?Q?GKL4Jl0bZ5K7CIxcgOtGpgm9K8ZsfR//wBtRj5/IAKqkyk7WcVtjwKepArU8?=
+ =?us-ascii?Q?Ie+uIqy9O8NFr3vMfwCYwB7HVJ8oWgBXCKC6260hDBd23hFZ0SJcSrXv98Jf?=
+ =?us-ascii?Q?ZBXmoJLgehCk1k+5KfaeJfvAz2NgrBG89nJxe4h3lORgBQyuXTcgYBq48iIe?=
+ =?us-ascii?Q?67g4d4FGBKF5mKcCeFtEifX6Cr+fL/m2smK7A9M3XoTaXXkAwbEzHWq1gHVu?=
+ =?us-ascii?Q?v201fU5zIjf0LhX2gmHWRPm1TVwduNgjl6k8/TsDQBATyESZuAsHTw/feA/+?=
+ =?us-ascii?Q?XxqZA4Fcn+ysXH+kZDlzWLqhUURi32QH+K2vOqX0ER1UyVlP7caBCA2xK2RT?=
+ =?us-ascii?Q?XdE+Ro+egpznfBE4a0DjqIqe266JRS96LtCiVTELg/7xbTLDg8cZJ2lH9+Ie?=
+ =?us-ascii?Q?UZIB3QK5nUli54daAfSdxKqEM0PlDoFoP3HfYHpB6AVnifJ9KhA9yIWOLB8k?=
+ =?us-ascii?Q?vPMtK7LwG8dTkwtj4GIFmM++FDTfq6hWykfVCRdmE+Tg9jxd1FULPS0F+VtI?=
+ =?us-ascii?Q?6f/XtzJBRbKuCDLXlMG7BkSYFtrjVspdI13nLz+xCO7G7xGKFM7nJ6XL/XDk?=
+ =?us-ascii?Q?H3w2KzGoWZry/v6PcmND5bHi8RuvwozEP3xMvZDcMggbY5gkjqv8HjLF046I?=
+ =?us-ascii?Q?q30ZzNZobTYHPCrfYhw1uAtsdiXmJCO482uGMUrtgwjVwLTBvWRbEgj8X1y0?=
+ =?us-ascii?Q?rQkJ61DPWhNb8bnkbuEoEsloLokLt0h4fVDkgD8UNbozBsJYr2ixZJ48dPwq?=
+ =?us-ascii?Q?LQy10WNIVxPXTQbHx9sBfGRf3kNEoUabF4Luq9+r73sUkbnRgFBXnReVwuxo?=
+ =?us-ascii?Q?HHHYXQVMVoW9ZqY8SQZBq/PMzV0ZJL+BA/2heM6bbonYgiWAe4rDgSJMBRZV?=
+ =?us-ascii?Q?+EXwv3lZnluy66IIN8Sde5zWZmXqoVNrtYbXFdSo2JDIvyXtZLMFJVnb9F7V?=
+ =?us-ascii?Q?d7/3yu44x93bdvJbAy6x2BZdzdIKCnV7161SHLeB/z0bZ0Q1lwOO14eODkr+?=
+ =?us-ascii?Q?NAPfHjzgiTL0RR8vceZf9ZtHFZ6a2LK/HZnx6qd+cjXiy6/DpMDtO2cJEEWh?=
+ =?us-ascii?Q?KWGHTSKxLjTM6UxrxDUevD23asiyt1kLY6zMq38x7YcsZHv5pbxPkRHkNof4?=
+ =?us-ascii?Q?la/ozkfUTIzlNgA90KzIR+tKb2tnnjz20gbwiRcakRrs8lHtvYE7Sm+lJopo?=
+ =?us-ascii?Q?jqKARBDGXyKeMCSnDu8=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <12042830.O9o76ZdvQC@kreacher> <1c7fa65d-47ab-b064-9087-648bcfbf4ab5@amd.com>
- <CAJZ5v0ie7B=GvhbfBsi7Zxu+=YzYKUqvUNs6dNZQfT3CRm=KPg@mail.gmail.com>
- <a2d2b61e-87c0-ee39-ea4e-3c575da0a66c@redhat.com> <CAHQZ30DjkyDT8KbsHzfwiyg6Tst9EFhtCnjx3MmwbWRerzW_6A@mail.gmail.com>
- <CAJZ5v0gXizr6szRA09fNYC0njUv-Dg7kDSu9FtmfDRgX2n45wg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gXizr6szRA09fNYC0njUv-Dg7kDSu9FtmfDRgX2n45wg@mail.gmail.com>
-From:   Raul Rangel <rrangel@chromium.org>
-Date:   Fri, 26 Aug 2022 15:48:24 -0600
-X-Gmail-Original-Message-ID: <CAHQZ30CNORQMD=URhEv3mCV8ELGYs8W6Z2tSqrLiUbxUbikauA@mail.gmail.com>
-Message-ID: <CAHQZ30CNORQMD=URhEv3mCV8ELGYs8W6Z2tSqrLiUbxUbikauA@mail.gmail.com>
-Subject: Re: [PATCH] i2c: ACPI: Do not check ACPI_FADT_LOW_POWER_S0
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-input <linux-input@vger.kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Tim Van Patten <timvp@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd2cb38b-9af6-4fd0-4d8a-08da87b43878
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2022 22:42:13.6993
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MoLRdne2KrQx781MGEzDkxbfqdbGud5yjukz1jufzYvRGqiDgLAPc6Kc2VbjqgCa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR84MB1650
+X-OriginatorOrg: hpe.com
+X-Proofpoint-ORIG-GUID: xZpK39fHTlepzJEh2ZBh5UBQB8AEcpnL
+X-Proofpoint-GUID: xZpK39fHTlepzJEh2ZBh5UBQB8AEcpnL
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-26_12,2022-08-25_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=680
+ malwarescore=0 clxscore=1011 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2207270000 definitions=main-2208260089
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-So after tracing a bunch of code, I finally got a solution that I
-think will work. I just uploaded the patch train here:
-https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/3858568.
-I'll push it to the mailing list once I do a bit more testing.
-
-Do we need to support setting the wake_irq for systems that don't use
-DT or ACPI? Ideally I would drop the following block:
-
-if (!dev->of_node && !has_acpi_companion(dev)) {
-    device_init_wakeup(dev, true);
-    dev_pm_set_wake_irq(dev, client->irq);
-}
-
-There are also a few other i2c drivers that need cleanup:
-* https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/third_party/kernel/v5.15/drivers/mfd/max8925-i2c.c;l=218
-* https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/third_party/kernel/v5.15/drivers/input/touchscreen/elants_i2c.c;l=1629
-* https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/third_party/kernel/v5.15/drivers/input/touchscreen/raydium_i2c_ts.c;l=1190
-
-I can send CLs to delete the enable_irq_wake calls from those drivers
-if we don't need to support non-DT/non-ACPI boards. Or I can send CLs
-to add the boiler plate from above. Do we even need the `disable_irq`
-calls in the suspend handlers or can the PM subsystem take care of
-that?
-
-Do we also need to handle reading the wake bit from Interrupt/IRQ ACPI
-resources? Can those actually wake the system? On AMD platforms the
-IO-APIC/PIC can't actually wake the system. It either needs to be an
-ACPI GPE or the GPIO controller. If we do need to support it, I can
-add some more plumbing.
-
-Thanks!
 
 
-On Mon, Aug 8, 2022 at 11:10 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Sat, Aug 6, 2022 at 4:20 AM Raul Rangel <rrangel@chromium.org> wrote:
-> >
-> > I do plan on coming back and updating those patches. I got derailed
-> > with other priorities.
->
-> I'll leave it to you then.  I'm mostly interested in dropping the
-> misguided ACPI_FADT_LOW_POWER_S0 check.
->
-> > But as Hans pointed out, we wanted to use
-> > `ExclusiveAndWake` to make the decision since not all IRQs can be wake
-> > sources while in s0i3.
->
-> S0i3 is still S0, so all of the interrupts that work in S0 will still work.
->
-> What really matters is whether or not enable_irq_wake() is called for
-> the given IRQ, but I'm not sufficiently familiar with the code in
-> question to comment on it any further without thorough investigation.
->
-> And of course the device needs to be able to generate interrupts in
-> the first place and if it is power-manageable by ACPI, I would just
-> leave the wakeup handling to the generic ACPI code.
->
-> >
-> > On Fri, Aug 5, 2022 at 12:54 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> > >
-> > > Hi,
-> > >
-> > > On 8/5/22 19:08, Rafael J. Wysocki wrote:
-> > > > On Fri, Aug 5, 2022 at 6:59 PM Limonciello, Mario
-> > > > <mario.limonciello@amd.com> wrote:
-> > > >>
-> > > >> On 8/5/2022 11:51, Rafael J. Wysocki wrote:
-> > > >>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >>>
-> > > >>> The ACPI_FADT_LOW_POWER_S0 flag merely means that it is better to
-> > > >>> use low-power S0 idle on the given platform than S3 (provided that
-> > > >>> the latter is supported) and it doesn't preclude using either of
-> > > >>> them (which of them will be used depends on the choices made by user
-> > > >>> space).
-> > > >>>
-> > > >>> Because of that, ACPI_FADT_LOW_POWER_S0 is generally not sufficient
-> > > >>> for making decisions in device drivers and so i2c_hid_acpi_probe()
-> > > >>> should not use it.
-> > > >>>
-> > > >>> Moreover, Linux always supports suspend-to-idle, so if a given
-> > > >>> device can wake up the system from suspend-to-idle, then it can be
-> > > >>> marked as wakeup capable unconditionally, so make that happen in
-> > > >>> i2c_hid_acpi_probe().
-> > > >>>
-> > > >>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >>
-> > > >> +Raul
-> > > >> +Hans
-> > > >> +KH
-> > > >>
-> > > >> Raul had a patch that was actually going to just tear out this code
-> > > >> entirely:
-> > > >> https://lkml.kernel.org/lkml/20211220163823.1.Ie20ca47a26d3ea68124d8197b67bb1344c67f650@changeid/
-> > > >>
-> > > >> As part of that patch series discussion another suggestion had
-> > > >> transpired
-> > > >> (https://patchwork.kernel.org/project/linux-input/patch/20211220163823.2.Id022caf53d01112188308520915798f08a33cd3e@changeid/#24681016):
-> > > >>
-> > > >> ```
-> > > >> if ((acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0) &&
-> > > >>             !adev->flags.power_manageable) {
-> > > >>                  device_set_wakeup_capable(dev, true);
-> > > >>                  device_set_wakeup_enable(dev, false);
-> > > >>          }
-> > > >> ```
-> > > >>
-> > > >> If this is being changed, maybe consider that suggestion to
-> > > >> check `adev->flags.power_manageable`.
-> > > >
-> > > > Fair enough, I'll send a v2 with this check added.
-> > >
-> > > Re-reading the original thread:
-> > > https://lkml.kernel.org/lkml/20211220163823.1.Ie20ca47a26d3ea68124d8197b67bb1344c67f650@changeid/T/#u
-> > >
-> > > The conclusion there was that the :
-> > >
-> > >                  device_set_wakeup_capable(dev, true);
-> > >                  device_set_wakeup_enable(dev, false);
-> > >
-> > > Calls should be made conditional on the IRQ being
-> > > marked ExclusiveAndWake instead of the ACPI_FADT_LOW_POWER_S0
-> > > check.
-> > >
-> > > Regards,
-> > >
-> > > Hans
-> > >
+> -----Original Message-----
+> From: Jia He <justin.he@arm.com>
+> Sent: Monday, August 22, 2022 10:41 AM
+> Subject: [RESEND PATCH v3 3/9] EDAC/ghes: Make ghes_edac a proper module =
+to
+> remove the dependency on ghes
+
+1. I suggest adding:
+    MODULE_ALIAS("acpi*")
+
+so udev will automatically load the module on any system with ACPI.=20
+
+> drivers/edac/Kconfig
+> config EDAC_GHES
+> +	tristate "Output ACPI APEI/GHES BIOS detected errors via EDAC"
+
+2. I suggest:
+    tristate "APEI (ACPI Platform Error Interfaces) GHES (Generic Hardware =
+Error Source)"
+
+That's in a menu of EDAC drivers, so no suffix is needed.
+
+3. The Kconfig help text needs some updates, since the drivers are now orde=
+ring
+themselves to avoid race conditions.
+
+Current:
+          Not all machines support hardware-driven error report. Some of th=
+ose
+          provide a BIOS-driven error report mechanism via ACPI, using the
+          APEI/GHES driver. By enabling this option, the error reports prov=
+ided
+          by GHES are sent to userspace via the EDAC API.
+
+          When this option is enabled, it will disable the hardware-driven
+          mechanisms, if a GHES BIOS is detected, entering into the
+          "Firmware First" mode.
+
+          It should be noticed that keeping both GHES and a hardware-driven
+          error mechanism won't work well, as BIOS will race with OS, while
+          reading the error registers. So, if you want to not use "Firmware
+          first" GHES error mechanism, you should disable GHES either at
+          compilation time or by passing "ghes.disable=3D1" Kernel paramete=
+r
+          at boot time.
+
+          In doubt, say 'Y'.
+
+Suggestion:
+  Support for error detection and correction based on APEI (ACPI Platform
+  Error Interfaces), which allows system firmware to report hardware errors=
+=20
+  via the HEST (Hardware Error Source Table) using GHES (Generic Hardware
+  Error Source) records. Some systems perform "firmware first" processing
+  of errors before reporting them.
+
+  This module is supported in systems supporting GHES. If the architecture
+  is x86, the module only loads if the platform is listed in a known-good
+  platform list (see drivers/edac/ghes_edac.c) or if ghes.force_load=3D1
+  is specified on the kernel command line).
+
+
+4. In the help text for each module that looks for GHES and refuses to load=
+=20
+(e.g., EDAC_AMD64), add a sentence:
+
+  This module does not load on a system supporting ACPI GHES.
+
+> drivers/acpi/apei/ghes.c
+> +MODULE_DESCRIPTION("Output ACPI APEI/GHES BIOS detected errors module vi=
+a EDAC");
+
+5. I suggest:
+    MODULE_DESCRIPTION("APEI (ACPI Platform Error Interfaces) GHES (Generic=
+ Hardware Error Source) EDAC driver")
+
+
