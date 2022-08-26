@@ -2,63 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F3A5A2D22
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Aug 2022 19:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB9E5A2D2E
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Aug 2022 19:17:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233141AbiHZRMq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Aug 2022 13:12:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33606 "EHLO
+        id S231765AbiHZRQa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Aug 2022 13:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230468AbiHZRMp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Aug 2022 13:12:45 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF25DCE4AC;
-        Fri, 26 Aug 2022 10:12:44 -0700 (PDT)
+        with ESMTP id S232757AbiHZRQ3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Aug 2022 13:16:29 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C574DB6A;
+        Fri, 26 Aug 2022 10:16:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661533964; x=1693069964;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BhJRRUFziUNzOcXvUZjv5pQU3PXRrJozjSPAvlt9I7g=;
-  b=MRBRzzYN9f8oqKJFOAVeUSfgCWehmzpGa1tCinf1jACr/IRpSK3YsJ5c
-   t7PTzei1+UYBC7iBHVBEDwFWTlpVmiad9BqzZCL2KewD6cO6RNB6Oz1FT
-   VrCUt8NoF+aZU7Z5xy9aTRBedOTQbwfrYnZ8Q04dbibYVzkuM3nO9ntim
-   Jc4AtMw5LkJhsvXi82D6YXbG5fyPLkK4l92xbo0QVwIl6xZSnNChWT7Tw
-   LcRW1STjk2gYfnyPqQSsQMyIJk04IjAYJguTlCaKVgFad8a1SVNLKmioh
-   OVP3doqBrzvCir5DcK3P4J67CO1NfsHqfhmx4OJFaDSXlDJAoutY4QnN5
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10451"; a="294559754"
+  t=1661534188; x=1693070188;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FfFIK+JFW+0b6Ao4zVJ5GS+N8o3sRHua/8mxgsHvrCg=;
+  b=lx0Q3EEF9HFiE3vT3PRUqBUx1Z9je10zqmER7r8bN/hfBKSqsax5nWk7
+   3Qjc84djbSSF0HCmi7ACKFGVoeToCA98ee5Kf18bZW2HxHJR34+U5ddh+
+   ttlYRRYuYI92xgLZ7fVsukqP1VOjQ67tkzgCfrx2hmrDiDj9lQM6VAChO
+   JYA4qiwjZiUv+lOTuj4MIO4/WZHwmMV3qrJnoIQ3rTW9uGx4mL9o/W7dq
+   HQHfu1Slf3fLIX+tQ6rIAQFkNEfdRu+TI2O6etVJyr1R6w25r+5Milz9j
+   16KELDUiAEod/vzhh9K/3Y5B3K/wpL3dzb2ytKshow0nxQ0BNOEdoVh5d
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10451"; a="292134231"
 X-IronPort-AV: E=Sophos;i="5.93,265,1654585200"; 
-   d="scan'208";a="294559754"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2022 10:12:44 -0700
+   d="scan'208";a="292134231"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2022 10:16:28 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,265,1654585200"; 
-   d="scan'208";a="587369245"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2022 10:12:42 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oRcsq-003z9s-0C;
-        Fri, 26 Aug 2022 20:12:40 +0300
-Date:   Fri, 26 Aug 2022 20:12:39 +0300
+   d="scan'208";a="699914142"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 26 Aug 2022 10:16:26 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 2C5E719D; Fri, 26 Aug 2022 20:16:41 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v1 5/5] ACPI: bus: Use the matching table, if ACPI driver
- has it
-Message-ID: <Ywj/Bxvv+Dtt/Dy0@smile.fi.intel.com>
-References: <20220825164103.27694-1-andriy.shevchenko@linux.intel.com>
- <20220825164103.27694-5-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0if_gZpibSWx5mfoVpGXtF0sGe7MY+eRQJr09ONX0Q1rQ@mail.gmail.com>
- <CAHp75VcQkyCOo9jkKKmu=zgHgQiHD96QhTa9Ann3syTaVnBokQ@mail.gmail.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 1/2] ACPI: bus: Drop kernel doc annotation from acpi_bus_notify()
+Date:   Fri, 26 Aug 2022 20:16:34 +0300
+Message-Id: <20220826171635.15652-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VcQkyCOo9jkKKmu=zgHgQiHD96QhTa9Ann3syTaVnBokQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -69,27 +61,34 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 25, 2022 at 08:17:11PM +0300, Andy Shevchenko wrote:
-> On Thu, Aug 25, 2022 at 8:05 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > On Thu, Aug 25, 2022 at 6:41 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > In case we have an ACPI driver, check its ID table for matching,
-> > > This allows to use some generic device property APIs in such
-> > > drivers.
-> >
-> > No new provisions for ACPI drivers, please.
-> 
-> OK! I will think about how to refactor a driver in question, so it
-> won't need this kind of trick. Meanwhile patches 1-3 can be applied
-> independently, if you have no objections.
+The description for acpi_bus_notify() is quite far from what
+kernel doc expects. It complains about this:
 
-I see that you applied an equivalent patch to what I had here as patch 3.
-Taking into account rejection of patches 4 and 5 I will send a v2 with
-patch 1 and (modified due to drop of the 5) 2 for your convenience.
+  Function parameter or member 'handle' not described in 'acpi_bus_notify'
+  Function parameter or member 'type' not described in 'acpi_bus_notify'
+  Function parameter or member 'data' not described in 'acpi_bus_notify'
 
+Fix this by dropping kernel doc annotation.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v2: no changes
+ drivers/acpi/bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index f60d4dc45c1f..f3e868d35144 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -456,7 +456,7 @@ static void acpi_bus_osc_negotiate_usb_control(void)
+                              Notification Handling
+    -------------------------------------------------------------------------- */
+ 
+-/**
++/*
+  * acpi_bus_notify
+  * ---------------
+  * Callback for all 'system-level' device notifications (values 0x00-0x7F).
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.35.1
 
