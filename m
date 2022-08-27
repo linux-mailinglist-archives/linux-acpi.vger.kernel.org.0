@@ -2,60 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EAC95A37F3
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Aug 2022 15:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2605A37FE
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Aug 2022 15:51:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231514AbiH0Nm0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Aug 2022 09:42:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55260 "EHLO
+        id S231337AbiH0NtT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Aug 2022 09:49:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231391AbiH0NmY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Aug 2022 09:42:24 -0400
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0572E2408C;
-        Sat, 27 Aug 2022 06:42:24 -0700 (PDT)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-333a4a5d495so97420747b3.10;
-        Sat, 27 Aug 2022 06:42:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc;
-        bh=9gJkjTGEZU9ZOB2WMExjMNuesjVOq7C3vZk82DKgQyc=;
-        b=H+w0fc4C56QDdlnsH91zVlHNRbjHy31CNaHSo3+UDHRf+N/dj2dUvWjSZzyTZ+IXuR
-         /7eEAZNZzeLIejACewXx3J6vBuWmNU/7Ce65Gk88S1SGy6Sc6TpwyTzrxOnlDcxQgU4G
-         RxzpM2xXb2Yv/CoswV71GJrGFnnN4Qwwxp0MSF9zM+YFbv8xG/kUKk2oTHVrOAfBNVsa
-         QBEPsi2dgJ7SjBHF7jzHYO6k5AX/yrZslKnxoERHxrrH0xL2EuxKM9/pcu61gnAvguet
-         tnKu3UFgcEZSTzPvBonfsPalGcXPG5pnyMSLBKGRc3YdXFthPyllRjLJA4/FmEOjKRn5
-         kbbA==
+        with ESMTP id S230282AbiH0NtS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Aug 2022 09:49:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE932F008
+        for <linux-acpi@vger.kernel.org>; Sat, 27 Aug 2022 06:49:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1661608156;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/jIgEpXuaoymkW5N3a0Hu7x+XyenaU/Bk7Z7wFNDdX8=;
+        b=hVhAx3GktSRNDrJVC3tCyNKO9BCkhLI62XKOm7WzOMx0jdK23FXCM2RTHco2WEX/cJJUM0
+        okyMuu8OlsbitY8Zx739CCy4UjGijR9MF5XDg2YblWp/JAD7gv/hNhCIuo5Vg0z7LT3WOT
+        KcH2YK7ruIHm4w8cOQaLWA7MMjqq3b0=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-308-Vd9w7FcMORGXfZeo2ISOXg-1; Sat, 27 Aug 2022 09:49:13 -0400
+X-MC-Unique: Vd9w7FcMORGXfZeo2ISOXg-1
+Received: by mail-ed1-f70.google.com with SMTP id y14-20020a056402440e00b0044301c7ccd9so2744027eda.19
+        for <linux-acpi@vger.kernel.org>; Sat, 27 Aug 2022 06:49:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc;
-        bh=9gJkjTGEZU9ZOB2WMExjMNuesjVOq7C3vZk82DKgQyc=;
-        b=oFO3T5V5gHE2yMThJU5VgAcUlV2ff8KRT3VE10SdkzibBrkJV/fFtEGq+eSaZqbzZ1
-         g1A+NM1v/F9KeoY/v8UVfUDxWeSGscAOz5FhznkiQAi2O6agh4FgmGaSXJVQCVmtP2ib
-         fO0HarlwGnp1up2IIOqk9yBAP/KfwsSaSJGEgYUyvtnZy8bxsNTkf33joTK9/aQYXh7R
-         ZFmqtJa4H5olTIR6+K20E/iBnL9TOcrEa5hOiBJyCaMKiSs0cEBphbbagY4fQ0eGmLGh
-         BlhkL/yCHEM5y5UDCUzwCk7It3UPyUhbPYwtViHgFDbmzAsTk8C6tEx3iuyUYfEl7kEP
-         ZbrA==
-X-Gm-Message-State: ACgBeo3k9NvQ4s/hpO8iwW9HxzJn7gIVgE1s5rWXWtk1Oio8gAf5NIa1
-        U6nViZhmK4IropXVEfS6uBMsUUiHzGri6UUl0vFs1qbhYqM=
-X-Google-Smtp-Source: AA6agR7Z7R3cfNn0+9UD8Fiu4StynBTli+vD60DP0II7NPIOsS4na+4kpey2JW0vNEyNapbrHtN8/Y+44jr8/1GHr4Q=
-X-Received: by 2002:a25:ec0c:0:b0:690:d092:2d56 with SMTP id
- j12-20020a25ec0c000000b00690d0922d56mr3076972ybh.622.1661607743294; Sat, 27
- Aug 2022 06:42:23 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=/jIgEpXuaoymkW5N3a0Hu7x+XyenaU/Bk7Z7wFNDdX8=;
+        b=IpgRuL31WWkomW5wA4IYgXPMrGL9qotb6FSZnTcieATUo5cZOERw4dCb+w5GGcDD8B
+         GrzpY2A9k/JScD8NNHnt9aVwLc6/dndMY+9Upqpjj0rN0+t4fVAcGXTe1uw17LGhFUPQ
+         R/Shomn2+/2HEQ/Ojh15ykNUih4iQDi+daDpEO87EYYV/Jd++EBIhgjNu4rJ09iOnwoG
+         X0kopjEYkIW1EXPauPwI1kCwKytDmS+CvC32VouQ7oC89K35lpQtcVoeD58toRKZO5zK
+         r+S0E+KTl7/hKdb4YWYLUXwjdutmspCAEJkSQSFGB+po6G+kZRKt9xEjb0hdQdxjqsLC
+         5y4w==
+X-Gm-Message-State: ACgBeo1GgyIeKZ02W3uJg4R23UJ2tmKJtj//QApBfu3MfA6+Ay1hd4hb
+        6e/vBb1jdPzAOOKB19PsK+BqcEwnIn3/tQ1HfxEjF46BjL2of3vD2sWgUjMBeq/hyL/EUNireoc
+        8Bab7ah+cB3fK6ZrEaAr63A==
+X-Received: by 2002:a17:906:4fd0:b0:73d:be5b:2b50 with SMTP id i16-20020a1709064fd000b0073dbe5b2b50mr8226745ejw.679.1661608152408;
+        Sat, 27 Aug 2022 06:49:12 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR7K14/SEEeEbN8RtcMLTqIPg0jA9i5arN3T5f95cc32RN+iWa+G3gyr4vpTEnGJuzrcieA1Nw==
+X-Received: by 2002:a17:906:4fd0:b0:73d:be5b:2b50 with SMTP id i16-20020a1709064fd000b0073dbe5b2b50mr8226735ejw.679.1661608152183;
+        Sat, 27 Aug 2022 06:49:12 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id z5-20020aa7cf85000000b0043cbdb16fbbsm2800317edx.24.2022.08.27.06.49.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Aug 2022 06:49:11 -0700 (PDT)
+Message-ID: <91260f39-27d9-222b-53e7-41ab4bb412a3@redhat.com>
+Date:   Sat, 27 Aug 2022 15:49:10 +0200
 MIME-Version: 1.0
-From:   =?UTF-8?Q?Rafa=C5=82_Wysocki?= <rjwysocki@gmail.com>
-Date:   Sat, 27 Aug 2022 15:42:12 +0200
-Message-ID: <CAJZ5v0gzTEAf6NGQAsrG=AiWEXgBtD40gvGEp7BDzQxyXhC9BQ@mail.gmail.com>
-Subject: [GIT PULL] Thermal control fixes for v6.0-rc3
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 1/1] ACPI: video: Add Toshiba Satellite/Portege Z830 quirk
+Content-Language: en-US
+To:     Arvid Norlander <lkml@vorpal.se>, linux-acpi@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+References: <20220824184950.631520-1-lkml@vorpal.se>
+ <20220824184950.631520-2-lkml@vorpal.se>
+ <d097b844-8fe4-3469-2137-9e8407348175@redhat.com>
+ <3863cad2-1910-b377-011b-4970eeb68e13@vorpal.se>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <3863cad2-1910-b377-011b-4970eeb68e13@vorpal.se>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,51 +83,87 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+hI,
 
-Please pull from the tag
+On 8/27/22 13:23, Arvid Norlander wrote:
+> Hi,
+> 
+> On 2022-08-26 13:46, Hans de Goede wrote:
+>> Hi All,
+>>
+>> [...]
+>>
+>> Arvid, I wonder if instead of using disable_backlight_sysfs_if
+>> you can try:
+>>
+>> 0. Remove disable_backlight_sysfs_if from cmdline / quirk
+>> 1. Adding acpi_backlight=native to the kernel commandline
+>> 2. In toshiba_acpi_resume() add a HCI_PANEL_POWER_ON PANEL_ON
+>>
+>> and see if that also fixes things ?
+>>
+> Yes, this works.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.0-rc3
+Great, thank you for testing this!
 
-with top-most commit 3bf1b1571224e713f1a186de21b2204c06f1cb5e
+In hindsight the disable_backlight_sysfs_if flag was a mistake
+and I should have fixed this differently (I wrote the code adding
+that flag).  And now it is sorta getting in the way of cleaning
+up the backlight handling. So IMHO removing disable_backlight_sysfs_if
+is the best thing to do here.
 
- Merge branch 'thermal-core'
+> I do not have a patch for this (I assume it
+> would involve creating quirk tables, checking for support for
+> HCI_PANEL_POWER_ON, etc). I simply hard coded the call in for
+> the test. I very much doubt I will have time to code this in
+> the near future as well.
 
-on top of commit 1c23f9e627a7b412978b4e852793c5e3c3efc555
+No problem I will prepare a patch series for you to test. Note
+this will be on top of my other backlight cleanups, so I
+will just send you an email pointing to a git branch to tes,
+I hope this will be ok?
 
- Linux 6.0-rc2
+> However, do we know what the other Toshiba's that need this
+> quirk also supports HCI_PANEL_POWER_ON? I obviously can only
+> test the Z830 that I own.
 
-to receive thermal control fixes for 6.0-rc3.
+It seems that all models which need this are all from the same
+generation so I would expect the same fix to work. If I get
+regression reports from users after my cleanup series lands
+I can then take a closer look at the DSDT tables of the
+other models if necessary.
 
-They fix two issues introduced recently and one driver problem leading
-to a NULL pointer dereference in some cases.
+Regards,
 
-Specifics:
-
- - Add missing EXPORT_SYMBOL_GPL in the thermal core and add back the
-   required 'trips' property to the thermal zone DT bindings (Daniel
-   Lezcano).
-
- - Prevent the int340x_thermal driver from crashing when a package
-   with a buffer of 0 length is returned by an ACPI control method
-   evaluated by it (Lee, Chun-Yi).
-
-Thanks!
+Hans
 
 
----------------
 
-Daniel Lezcano (2):
-      thermal/core: Add missing EXPORT_SYMBOL_GPL
-      dt-bindings: thermal: Fix missing required property
 
-Lee, Chun-Yi (1):
-      thermal/int340x_thermal: handle data_vault when the value is ZERO_SIZE_PTR
+> 
+>> If that is the case then we can:
+>>
+>> 1. Move the DMI quirks for disable_backlight_sysfs_if
+>>    from acpi_video.c to video_detect.c to force native
+>>    mode by quirk
+>> 2. Add the DMI table with the models needing this to
+>>    toshiba_acpi.c and then based on that call
+>>    HCI_PANEL_POWER_ON PANEL_ON on resume from there
+>> 3. Since there are no more quirks using it, remove the
+>>    disable_backlight_sysfs_if hack / workaround from
+>>    acpi_video.c
+>>
+>> This will give a nice-cleanup of the generic acpi_video.c
+>> code moving the toshiba specific fixup to toshiba_acpi
+>> where it really belongs.
+>>
+>> Regards,
+>>
+>> Hans
+>>
+>>
+> 
+> Best regards,
+> Arvid Norlander
+> 
 
----------------
-
- Documentation/devicetree/bindings/thermal/thermal-zones.yaml | 1 +
- drivers/thermal/intel/int340x_thermal/int3400_thermal.c      | 9 +++++----
- drivers/thermal/thermal_core.c                               | 1 +
- 3 files changed, 7 insertions(+), 4 deletions(-)
