@@ -2,115 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EB9D5A37E0
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Aug 2022 15:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9241B5A37F0
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Aug 2022 15:39:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbiH0NTj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Aug 2022 09:19:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57600 "EHLO
+        id S232802AbiH0Njn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Aug 2022 09:39:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229677AbiH0NTi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Aug 2022 09:19:38 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B587198A;
-        Sat, 27 Aug 2022 06:19:37 -0700 (PDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MFHJc4yxCzkWV9;
-        Sat, 27 Aug 2022 21:16:00 +0800 (CST)
-Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 27 Aug 2022 21:19:35 +0800
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 27 Aug 2022 21:19:34 +0800
-Subject: Re: [PATCH v2 5/5] ACPI: Drop parent field from struct acpi_device
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-CC:     LKML <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Andreas Noever" <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        <linux-hyperv@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>, "Will Deacon" <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "Konrad Dybcio" <konrad.dybcio@somainline.org>
-References: <12036348.O9o76ZdvQC@kreacher> <2196460.iZASKD2KPV@kreacher>
- <5857822.lOV4Wx5bFT@kreacher>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <a0cab176-3c3a-707a-02c3-74ffc1b4926e@huawei.com>
-Date:   Sat, 27 Aug 2022 21:19:33 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        with ESMTP id S231577AbiH0Njn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Aug 2022 09:39:43 -0400
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B85A32B8B;
+        Sat, 27 Aug 2022 06:39:42 -0700 (PDT)
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-324ec5a9e97so97616477b3.7;
+        Sat, 27 Aug 2022 06:39:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc;
+        bh=T9+HQLzrIDsU5QNLiDsdH0Nj22g6zUGsbNi5IX8RcwI=;
+        b=Se5GnqpTvBjyz9oIvoRndFD1C3n7/c0XCFtnIbBeOdeLveBavA5mBwY6z4Pmfsaj61
+         3zkA9kK1wYWILQB2H+FVzgg0YGR2mPBQ3IQlH8XJaYgG5IoOuePlaIEUuBAcLZQYfe3F
+         adPNbwuzre/QCYIe5Utll1o/icVK7dDkhy+t5QPLRRk1X3RRlBQXNhgeTFHOdjJ6VBTs
+         0US7PdgzTgxJKsuoYjQ1cubrHTA9L0UtIt9axnGMKcNxuwcaSTOgrdFa1Rm0xxpVSaVe
+         6HFqB1jIK+YsFNzdYbmlBiTYGiB1Vy65GjnWVZNnylc2VCgHDZRH5JvK44tcK+WIhf0n
+         tLSw==
+X-Gm-Message-State: ACgBeo1sRg+nkl0YvWFDhSD0wNi+8wLTXlNneZWmSJUigq+4GIqLBF5L
+        J7XxFAyjR8U03gUX9nEBSTWcuUu7gONzXrwGj1zOn4QuRrM=
+X-Google-Smtp-Source: AA6agR4C3JqsjNNgvmr1O21r2/DRaP9kFjIBCFfCT6ks1nzzdB+ieQj/ePX2+0pmF+Bv2YBU4ZkH98pBUqJ+58dLhAU=
+X-Received: by 2002:a0d:c841:0:b0:33d:bf96:f823 with SMTP id
+ k62-20020a0dc841000000b0033dbf96f823mr3717177ywd.326.1661607581213; Sat, 27
+ Aug 2022 06:39:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <5857822.lOV4Wx5bFT@kreacher>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.247]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 27 Aug 2022 15:39:30 +0200
+Message-ID: <CAJZ5v0jnkSjtMff7uEKTCHLENMJYDd26BEjjZ3XK7fZMxHtd=Q@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.0-rc3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi Linus,
 
-On 2022/8/25 0:59, Rafael J. Wysocki wrote:
-> Index: linux-pm/include/acpi/acpi_bus.h
-> ===================================================================
-> --- linux-pm.orig/include/acpi/acpi_bus.h
-> +++ linux-pm/include/acpi/acpi_bus.h
-> @@ -365,7 +365,6 @@ struct acpi_device {
->   	int device_type;
->   	acpi_handle handle;		/* no handle for fixed hardware */
->   	struct fwnode_handle fwnode;
-> -	struct acpi_device *parent;
->   	struct list_head wakeup_list;
->   	struct list_head del_list;
->   	struct acpi_device_status status;
-> @@ -458,6 +457,14 @@ static inline void *acpi_driver_data(str
->   #define to_acpi_device(d)	container_of(d, struct acpi_device, dev)
->   #define to_acpi_driver(d)	container_of(d, struct acpi_driver, drv)
->   
-> +static inline struct acpi_device *acpi_dev_parent(struct acpi_device *adev)
-> +{
-> +	if (adev->dev.parent)
-> +		return to_acpi_device(adev->dev.parent);
-> +
-> +	return NULL;
-> +}
-> +
->   static inline void acpi_set_device_status(struct acpi_device *adev, u32 sta)
->   {
->   	*((u32 *)&adev->status) = sta;
-> @@ -478,6 +485,7 @@ void acpi_initialize_hp_context(struct a
->   /* acpi_device.dev.bus == &acpi_bus_type */
->   extern struct bus_type acpi_bus_type;
->   
-> +struct acpi_device *acpi_dev_parent(struct acpi_device *adev);
+Please pull from the tag
 
-We have a static inline function above, is it duplicated here?
-Or did I miss some use cases?
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.0-rc3
 
-Thanks
-Hanjun
+with top-most commit 2413a85200ee9cbed40d12c6e3b856752b089790
+
+ Merge branch 'acpi-processor' into acpi
+
+on top of commit 1c23f9e627a7b412978b4e852793c5e3c3efc555
+
+ Linux 6.0-rc2
+
+to receive ACPI fixes for 6.0-rc3.
+
+These fix issues introduced by recent changes related to the handling of
+ACPI device properties and a coding mistake in the exit path of the ACPI
+processor driver.
+
+Specifics:
+
+ - Prevent acpi_thermal_cpufreq_exit() from attempting to remove
+   the same frequency QoS request for multiple times (Riwen Lu).
+
+ - Fix type detection for integer ACPI device properties (Stefan
+   Binding).
+
+ - Avoid emitting false-positive warnings when processing ACPI
+   device properties and drop the useless default case from the
+   acpi_copy_property_array_uint() macro (Sakari Ailus).
+
+Thanks!
+
+
+---------------
+
+Riwen Lu (1):
+      ACPI: processor: Remove freq Qos request for all CPUs
+
+Sakari Ailus (2):
+      ACPI: property: Ignore already existing data node tags
+      ACPI: property: Remove default association from integer maximum values
+
+Stefan Binding (1):
+      ACPI: property: Fix type detection of unified integer reading functions
+
+---------------
+
+ drivers/acpi/processor_thermal.c |  2 +-
+ drivers/acpi/property.c          | 11 +++++------
+ 2 files changed, 6 insertions(+), 7 deletions(-)
