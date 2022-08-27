@@ -2,104 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 056955A3758
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Aug 2022 13:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2B6B5A377B
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Aug 2022 13:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230283AbiH0LXv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Aug 2022 07:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56462 "EHLO
+        id S233618AbiH0Lpy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Aug 2022 07:45:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbiH0LXu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Aug 2022 07:23:50 -0400
-Received: from vorpal.se (vorpal.se [151.236.221.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A9625C7B
-        for <linux-acpi@vger.kernel.org>; Sat, 27 Aug 2022 04:23:49 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id E32F514629;
-        Sat, 27 Aug 2022 11:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1661599427; bh=l84oPLz+UtilctO7UzUWcjkd2vRQtRIHAVkvKVWjyeI=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=FocpkHmxUBIf0vOlJSoM/rp8PiukMHt2DweinGRSbsxXuJeNnGdtGXPNO6FEm8sky
-         X3uwgKweYyHPxo9pvs4P1YG6naUGSSqc9cOlwO1RxlttuSz1D7izlrZTJksAyc/BZZ
-         nh4Yfu9bwxk8J3HuGkvxpETm0hj+Kj3pKolpFaLrG5y0By4ll3HeR0FkkygtCidy0z
-         Vchif/dMR4WCY3bVm9KVvehkociuP6VtqUN8C5U/Z29MwexVLdAMhNhE6/sgYnDL+f
-         e+gGoWApEhQlLsPsyYQlIptdqXEPNXTmrmQnS12VUIyQF5ohrZoWISGn3Ykyd4RsfH
-         sw+qhtYmh92vw==
-Message-ID: <3863cad2-1910-b377-011b-4970eeb68e13@vorpal.se>
-Date:   Sat, 27 Aug 2022 13:23:46 +0200
+        with ESMTP id S234713AbiH0Lph (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Aug 2022 07:45:37 -0400
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EEF61711;
+        Sat, 27 Aug 2022 04:45:36 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-33dc345ad78so93881197b3.3;
+        Sat, 27 Aug 2022 04:45:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=GvJNLP40OETwZADaZTLkmY5BZ1XY428/Y6jRF2MfT/k=;
+        b=0koRWWQDBIvEzDAEdB5RogGcJ1LplpwttddKxaSIeoleYBsQRseoWnayqMTrAxAeZl
+         VHYb7RmVD7pRKOfl3QvYJZAzhTsmLsIlUdBeF386fe7s7ekm/ydsMiSoHZHd7K+8aImF
+         nMcXYdYj0qTwiX55bqF64IBt4Mbd0UiSK3WdpuyHh92vscfAGzL/ovgOZjquvqWXZFYs
+         SxMXHG27Wi7uh3bcFnx5T6LbLd6tFIcsuFlJ2ZUJxdFA94EUPrTKQOJbkbCmWshFOm3Q
+         7sOz9aiwz7SHa4La6BOWeR9L8Aj4B0xmdhDSKxuaj0gmej/PMxh3bLM8siqsOeW/34BE
+         TW8A==
+X-Gm-Message-State: ACgBeo0vc5Af9BjRuVEGaDdrl+iYWqNibmXni8YahfIeVgsZeajXgGHp
+        MNK3D6PWzm0jS4BlM6oFEL8129F/dvZ8LSHY9TzCVkbN
+X-Google-Smtp-Source: AA6agR5XYU4nV2W34akQ3kEUoN5fw+2xswF7OURWDVx/e91zb6NiPrGIEiBZcSiSPc1sExcVdtcMAgMBp27BHQA4Pu4=
+X-Received: by 2002:a25:b749:0:b0:68f:171f:96bd with SMTP id
+ e9-20020a25b749000000b0068f171f96bdmr3163102ybm.137.1661600735335; Sat, 27
+ Aug 2022 04:45:35 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 1/1] ACPI: video: Add Toshiba Satellite/Portege Z830 quirk
-Content-Language: en-US
-To:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
+References: <20220825164103.27694-1-andriy.shevchenko@linux.intel.com>
+ <20220825164103.27694-5-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0if_gZpibSWx5mfoVpGXtF0sGe7MY+eRQJr09ONX0Q1rQ@mail.gmail.com>
+ <CAHp75VcQkyCOo9jkKKmu=zgHgQiHD96QhTa9Ann3syTaVnBokQ@mail.gmail.com> <Ywj/Bxvv+Dtt/Dy0@smile.fi.intel.com>
+In-Reply-To: <Ywj/Bxvv+Dtt/Dy0@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 27 Aug 2022 13:45:22 +0200
+Message-ID: <CAJZ5v0iM9oZivWj6qbMfD8n2exwy7Xi=NVRZFFuam7y9Hk3cfw@mail.gmail.com>
+Subject: Re: [PATCH v1 5/5] ACPI: bus: Use the matching table, if ACPI driver
+ has it
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Len Brown <lenb@kernel.org>
-References: <20220824184950.631520-1-lkml@vorpal.se>
- <20220824184950.631520-2-lkml@vorpal.se>
- <d097b844-8fe4-3469-2137-9e8407348175@redhat.com>
-From:   Arvid Norlander <lkml@vorpal.se>
-In-Reply-To: <d097b844-8fe4-3469-2137-9e8407348175@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Fri, Aug 26, 2022 at 7:12 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Thu, Aug 25, 2022 at 08:17:11PM +0300, Andy Shevchenko wrote:
+> > On Thu, Aug 25, 2022 at 8:05 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > > On Thu, Aug 25, 2022 at 6:41 PM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > >
+> > > > In case we have an ACPI driver, check its ID table for matching,
+> > > > This allows to use some generic device property APIs in such
+> > > > drivers.
+> > >
+> > > No new provisions for ACPI drivers, please.
+> >
+> > OK! I will think about how to refactor a driver in question, so it
+> > won't need this kind of trick. Meanwhile patches 1-3 can be applied
+> > independently, if you have no objections.
+>
+> I see that you applied an equivalent patch to what I had here as patch 3.
+> Taking into account rejection of patches 4 and 5 I will send a v2 with
+> patch 1 and (modified due to drop of the 5) 2 for your convenience.
 
-On 2022-08-26 13:46, Hans de Goede wrote:
-> Hi All,
-> 
-> [...]
-> 
-> Arvid, I wonder if instead of using disable_backlight_sysfs_if
-> you can try:
-> 
-> 0. Remove disable_backlight_sysfs_if from cmdline / quirk
-> 1. Adding acpi_backlight=native to the kernel commandline
-> 2. In toshiba_acpi_resume() add a HCI_PANEL_POWER_ON PANEL_ON
-> 
-> and see if that also fixes things ?
-> 
-Yes, this works. I do not have a patch for this (I assume it
-would involve creating quirk tables, checking for support for
-HCI_PANEL_POWER_ON, etc). I simply hard coded the call in for
-the test. I very much doubt I will have time to code this in
-the near future as well.
-
-However, do we know what the other Toshiba's that need this
-quirk also supports HCI_PANEL_POWER_ON? I obviously can only
-test the Z830 that I own.
-
-> If that is the case then we can:
-> 
-> 1. Move the DMI quirks for disable_backlight_sysfs_if
->    from acpi_video.c to video_detect.c to force native
->    mode by quirk
-> 2. Add the DMI table with the models needing this to
->    toshiba_acpi.c and then based on that call
->    HCI_PANEL_POWER_ON PANEL_ON on resume from there
-> 3. Since there are no more quirks using it, remove the
->    disable_backlight_sysfs_if hack / workaround from
->    acpi_video.c
-> 
-> This will give a nice-cleanup of the generic acpi_video.c
-> code moving the toshiba specific fixup to toshiba_acpi
-> where it really belongs.
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-
-Best regards,
-Arvid Norlander
-
+Appreciated, thanks!
