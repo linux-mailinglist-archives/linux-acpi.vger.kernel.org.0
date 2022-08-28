@@ -2,60 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DAB35A3D10
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Aug 2022 11:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 744085A3FAF
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Aug 2022 22:51:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbiH1J56 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 28 Aug 2022 05:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
+        id S229491AbiH1Uva (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 Aug 2022 16:51:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbiH1J44 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Aug 2022 05:56:56 -0400
-X-Greylist: delayed 400 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 28 Aug 2022 02:56:55 PDT
-Received: from cloudhost-4892685.us-midwest-2.nxcli.net (cloudhost-4892685.us-midwest-2.nxcli.net [199.189.224.219])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B48BE5467C
-        for <linux-acpi@vger.kernel.org>; Sun, 28 Aug 2022 02:56:55 -0700 (PDT)
-Received: (qmail 24940 invoked by uid 10062); 28 Aug 2022 09:50:14 +0000
-To:     linux-acpi@vger.kernel.org
-Subject: Forbes: Willst du reich werden? Fahre fort
-X-PHP-Originating-Script: 10062:PHPMailer.php
-Date:   Sun, 28 Aug 2022 09:50:14 +0000
-From:   Construction <info@yourdomain.com>
-Reply-To: info@yourdomain.com
-Message-ID: <GtN7FWJY4Zl5BFvDVgdMXRHLe23f5iusQ9X8w6tPVd8@techrakers.com>
-X-Mailer: PHPMailer 6.6.0 (https://github.com/PHPMailer/PHPMailer)
+        with ESMTP id S229445AbiH1Uv3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Aug 2022 16:51:29 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9125521A;
+        Sun, 28 Aug 2022 13:51:27 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id 142so6406589pfu.10;
+        Sun, 28 Aug 2022 13:51:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=CZ1UYy559cJCnBfDARk3iy3GbnYwC4JJkHYcAm3KtAk=;
+        b=qlkmgsnPFrDWXw7R17q9Xam4a/9+loTfNOvjbxoALnGSrdxbs+b+2LNpFCPCn56cMk
+         A5G2YaRlnj6hmNucVKac4qNmUHQ/sY5583oATT0gU5SMjjAQa/1GolH2efOyg7R4E30m
+         vr4JOz16u+IKNHjBGsOVNs60/zgEhjgtVS7G0azJ4W5QjrQBJW0f0GeDX8PsLslaXJmW
+         2nnjr9yIZ0NLuW6KikN1MmVW7A45ylV0ut+NuJVroB8nffLrPhoP/nycGh9bE8HyCaQB
+         sNIHPOxvb++wke7MMu8rcx41eLGgV5Mr6JLFSTdXgi4eql8c0RE/Wypfsh9YIMgeSoRA
+         kmfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=CZ1UYy559cJCnBfDARk3iy3GbnYwC4JJkHYcAm3KtAk=;
+        b=69k+8glelkaAstV99mbVspZirYJT6PMwVtoUbRZllflrRkx1ff3Lw5AM1lKHi53QJw
+         d7Hra5XcOpYuqrXKXOOgsJRHe+fe3uoio3uFHaID26SlsHGlKVRQiaiNIBqT9QmuO0G3
+         Y6IJD6z3zk2Kb69YaFscpqtBUs4yn0pnCqvz6u+GUqmFPHm0kKNpzVD5yLpx15V1tYnP
+         qLPzXkj6mqKx5i1K+xOMHY2QsByUNoJkX/IWLdWcy0+Ndbw8kDiUHe7cZFs4LPIwyc9k
+         rn/l3iU16nejZFvjDBRAjnfy8QU4WvxJ+HIxs3RBEVPr9OL8Ea3p7aIwvckEGWbiEshJ
+         C57Q==
+X-Gm-Message-State: ACgBeo19wyTnkCCSYY++ALc+4NRulJ/XekUZApvOCnQ7auPfblPPt3Eq
+        1xmkxPkKDGQh1kmBbyDXwhKanBEWpbJrmg==
+X-Google-Smtp-Source: AA6agR5TSUA12VygsTLXxLORGx6tufeN4gnBGLGB3bg4qebvu1iP0FQFoCGmX40kO/Rn3PhFfVNK5w==
+X-Received: by 2002:a63:1e61:0:b0:41c:45d:7d50 with SMTP id p33-20020a631e61000000b0041c045d7d50mr10987636pgm.507.1661719886873;
+        Sun, 28 Aug 2022 13:51:26 -0700 (PDT)
+Received: from localhost.localdomain (lily-optiplex-3070.dynamic.ucsd.edu. [2607:f720:1300:3033::1:4dd])
+        by smtp.googlemail.com with ESMTPSA id l23-20020a639857000000b0041a615381d5sm4982312pgo.4.2022.08.28.13.51.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Aug 2022 13:51:26 -0700 (PDT)
+From:   Li Zhong <floridsleeves@gmail.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, mario.limonciello@amd.com,
+        hdegoede@redhat.com, Shyam-sundar.S-k@amd.com,
+        mika.westerberg@linux.intel.com, nakato@nakato.io,
+        lily <floridsleeves@gmail.com>
+Subject: [PATCH v1] drivers/acpi/x86: check return null pointer from acpi_evaluate_dsm()
+Date:   Sun, 28 Aug 2022 13:51:20 -0700
+Message-Id: <20220828205120.1956222-1-floridsleeves@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,
-        HEADER_FROM_DIFFERENT_DOMAINS,LOTS_OF_MONEY,RCVD_IN_VALIDITY_RPBL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_DBL_SPAM,
-        URIBL_PH_SURBL autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: booclothing.com]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.6 URIBL_PH_SURBL Contains an URL listed in the PH SURBL blocklist
-        *      [URIs: booclothing.com]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [199.189.224.219 listed in bl.score.senderscore.com]
-        *  0.2 HEADER_FROM_DIFFERENT_DOMAINS From and EnvelopeFrom 2nd level
-        *      mail domains are different
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Message Body:
-Millionen von Dollar in Kryptowahrung in nur wenigen Monaten http://bitcoin-price-ive.booclothing.com/dayli-news-2354
+From: lily <floridsleeves@gmail.com>
 
---
-This e-mail was sent from a contact form on Construction (http://yourdomain.com/)
+Check return value from acpi_evaluate_dsm(). Only do ACPI_FREE() when
+out_obj is not NULL pointers.
+
+Signed-off-by: Li Zhong <floridsleeves@gmail.com>
+---
+ drivers/acpi/x86/s2idle.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+index f9ac12b778e6..1b449d3cfbf7 100644
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -328,7 +328,8 @@ static void acpi_sleep_run_lps0_dsm(unsigned int func, unsigned int func_mask, g
+ 
+ 	out_obj = acpi_evaluate_dsm(lps0_device_handle, &dsm_guid,
+ 					rev_id, func, NULL);
+-	ACPI_FREE(out_obj);
++	if (!out_obj)
++		ACPI_FREE(out_obj);
+ 
+ 	acpi_handle_debug(lps0_device_handle, "_DSM function %u evaluation %s\n",
+ 			  func, out_obj ? "successful" : "failed");
+-- 
+2.25.1
 
