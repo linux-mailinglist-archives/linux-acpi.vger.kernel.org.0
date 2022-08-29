@@ -2,88 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4915A4EA2
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Aug 2022 15:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E0F5A4EEF
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Aug 2022 16:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbiH2N4p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Aug 2022 09:56:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37934 "EHLO
+        id S230176AbiH2OOt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Aug 2022 10:14:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiH2N4p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Aug 2022 09:56:45 -0400
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECE4878BF3;
-        Mon, 29 Aug 2022 06:56:43 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-324ec5a9e97so197085167b3.7;
-        Mon, 29 Aug 2022 06:56:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=3YIHAMs9pgw+Yp7yjbhjkMtpbycGfkcjXzGQS2DX2Vc=;
-        b=iGqcCMc8KUwP/pwgKfiOZC3Ake3kAGVnaz1tL4u9r+WQPtHX1jwQp/2/58cXBOnMgn
-         9IwBY0PRD8j3g8rVfkLuX16+kfTDi79KjvwOqomUhPFfGTYiwo7Asd4C7mCiTwM3YGtZ
-         2KGhhPZDUULi21KwnieZlD4f3pKQ20CMvqYHBLIQ9phZU5UppbzL+DXHxwB4EeuAVHkK
-         cQuivsR759FSTTe3dYWYC0dchVn61/alcFJrYOBDtJGP4h1g6WOzCCIIQg/vW6vNlWUW
-         o8xCBdTyKLogKBeNN27G+XBwolm2qDayyR+JSY5SMaqBeFySPCUs3wVqBW7Rl1vJr3Wa
-         Tigw==
-X-Gm-Message-State: ACgBeo1wQgYNYz4fptoNwXupMzD3QOdiDmHJ5v1Q60TFTt0mGNSxLEyq
-        MJoASz4uTSOMgxAEmQUiQ5uBndV0dP3hRm4Jm74=
-X-Google-Smtp-Source: AA6agR5+EUb2uc+dTmziugS6p+AnBf6wM0lsn55c1khVjxysDdTqUR3/kWdFM/ukHARUYNz0ovAoxMVH54iia/dCzwI=
-X-Received: by 2002:a25:b749:0:b0:68f:171f:96bd with SMTP id
- e9-20020a25b749000000b0068f171f96bdmr8962217ybm.137.1661781403216; Mon, 29
- Aug 2022 06:56:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220828205416.1957305-1-floridsleeves@gmail.com>
-In-Reply-To: <20220828205416.1957305-1-floridsleeves@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 29 Aug 2022 15:56:32 +0200
-Message-ID: <CAJZ5v0jrQwBh3ToZc-7J69qDJEAZ8+wXPzqjZ+zpxB4a69W-Ng@mail.gmail.com>
-Subject: Re: [PATCH v1] drivers/acpi/processor_idle: check the return value of acpi_fetch_acpi_dev()
-To:     Li Zhong <floridsleeves@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        with ESMTP id S230144AbiH2OOr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Aug 2022 10:14:47 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A14AC9;
+        Mon, 29 Aug 2022 07:14:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661782484; x=1693318484;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=n5lFkFMiDHmXDh+teOu5BNnWiyJQmubHjavTDdvL20s=;
+  b=kURI0VAzfXpsQ/fF5XT3thXKBAtp80MKQVQw180a56YM13Twg+E0wHW+
+   cKfu5ca3MmNmxrJJxHyQmvizDOjavhPV7MoWQRPYkAI/heaDqZ5KjevDJ
+   FqQYQioUvm+GzA5WkoEbUB9LklVRB6w+qD6cOL5nF5qiKez3oHXZ6kssM
+   Q2SnugTeUsZaX1cxs2T6tsAFKe7okGGdU1idgzys+l1jRmueynOU1m7pS
+   3QRQSQX5QK1c+8IER3oU1Xnk2U0hUe1bAuaXb1sPOmWnff9lc3jWZnbtO
+   iFM8TZ4hU0adx3cvr1F48Uj8mTrzdcyrBPw/vyIvBU7XrMasUemcrHBR8
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10454"; a="274651484"
+X-IronPort-AV: E=Sophos;i="5.93,272,1654585200"; 
+   d="scan'208";a="274651484"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2022 07:10:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,272,1654585200"; 
+   d="scan'208";a="787089908"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 29 Aug 2022 07:10:50 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 9C19D19D; Mon, 29 Aug 2022 17:11:04 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Subject: [PATCH v1 1/4] ACPI: platform: Get rid of redundant 'else'
+Date:   Mon, 29 Aug 2022 17:10:57 +0300
+Message-Id: <20220829141100.63934-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Aug 28, 2022 at 10:54 PM Li Zhong <floridsleeves@gmail.com> wrote:
->
-> The return value of acpi_fetch_acpi_dev() could be NULL, which will
-> cause null pointer dereference if used in acpi_device_hid().
+In the snippets like the following
 
-That's true.
+	if (...)
+		return / goto / break / continue ...;
+	else
+		...
 
-> Signed-off-by: Li Zhong <floridsleeves@gmail.com>
-> ---
->  drivers/acpi/processor_idle.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 16a1663d02d4..519f8f741da3 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -1117,6 +1117,8 @@ static int acpi_processor_get_lpi_info(struct acpi_processor *pr)
->         status = acpi_get_parent(handle, &pr_ahandle);
->         while (ACPI_SUCCESS(status)) {
->                 d = acpi_fetch_acpi_dev(pr_ahandle);
-> +               if (!d)
-> +                       break;
+the 'else' is redundant. Get rid of it.
 
-But shouldn't this be continue?
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/acpi_platform.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->                 handle = pr_ahandle;
->
->                 if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
-> --
-> 2.25.1
->
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index 1a1c78b23fba..75e26528056d 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -114,9 +114,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 
+ 	INIT_LIST_HEAD(&resource_list);
+ 	count = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
+-	if (count < 0) {
++	if (count < 0)
+ 		return NULL;
+-	} else if (count > 0) {
++	if (count > 0) {
+ 		resources = kcalloc(count, sizeof(struct resource),
+ 				    GFP_KERNEL);
+ 		if (!resources) {
+-- 
+2.35.1
+
