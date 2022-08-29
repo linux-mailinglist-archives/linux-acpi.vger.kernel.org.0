@@ -2,128 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB2A65A40E2
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Aug 2022 04:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FB55A4151
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Aug 2022 05:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbiH2CLP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 28 Aug 2022 22:11:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
+        id S229765AbiH2DIi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 Aug 2022 23:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbiH2CLP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Aug 2022 22:11:15 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C2C82BB32;
-        Sun, 28 Aug 2022 19:11:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661739074; x=1693275074;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wKDcFe66lT4ug9hfNULlB7hplFGh+Yopi+wGiirwzZQ=;
-  b=fqQ4hmSV4jvizWjjV6HFwFTDFsa0KF78Y1dc9da7/MVilfrKWMqmZZx5
-   GuMB0ed8nQYo5fxBMiDDcX9k32DWmeF6CwKHbJK9Z+ms7rkS2zDmSNN7I
-   dAWTrEN4p2AXj0DEvXfCnIo9Iltn7RSc+NdTVy55H1bC1Jzi8JpSeq5Pz
-   mPWs1TpzRpFBbxrGpMlydpGGaGPse9CB7DbX5NaBsfLobUEa24GixnnwL
-   GIb7zY9VQgjK0Z3yq5+7DAdzP0tZq/V6DX2A8RLsRfQeenaHu9TXJUlOR
-   wq5PDM3kGxBNU2lsZO/6QsMEzOgVM4fCJTCP17NdMdlGXE3wZ+GPhTNDH
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10453"; a="295567564"
-X-IronPort-AV: E=Sophos;i="5.93,271,1654585200"; 
-   d="scan'208";a="295567564"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2022 19:11:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,271,1654585200"; 
-   d="scan'208";a="587985382"
-Received: from lkp-server01.sh.intel.com (HELO b2bbdd52f619) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 28 Aug 2022 19:11:10 -0700
-Received: from kbuild by b2bbdd52f619 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oSUF4-00003H-0z;
-        Mon, 29 Aug 2022 02:11:10 +0000
-Date:   Mon, 29 Aug 2022 10:10:40 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org, hdegoede@redhat.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH 1/4] ACPI: s2idle: Add a new ->enter() callback for
- platform_s2idle_ops
-Message-ID: <202208291045.mtIt51vk-lkp@intel.com>
-References: <20220828222121.4951-2-mario.limonciello@amd.com>
+        with ESMTP id S229773AbiH2DIa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Aug 2022 23:08:30 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61133F1DF
+        for <linux-acpi@vger.kernel.org>; Sun, 28 Aug 2022 20:08:16 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id r6so5272310qtx.6
+        for <linux-acpi@vger.kernel.org>; Sun, 28 Aug 2022 20:08:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fusetak.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=XFPVDLt22Mf+eywEhtbrRGQZP+BqmzTLYoHmyhTVdSw=;
+        b=fcbB/iInZapQUJ2oYudpXbpXZpEX3NIzrhQSi0gN5gKzpw6P/juoLEESyKTdrZ5d8d
+         /YDB/uh3pG+lKkCmMcb+js/fZaWQxXk+ZmvGcDleQ0hk9SvRIAzQyN4A8vPmcsRfRmZX
+         l8Kl3+ah2OGElogYljWy3pnzOQ/GGAfo4fHFLXCTel8CVKmRuTkExVT2mbHnm3cMhqhk
+         LZuogQqdTh9vpe6QSHPwouC3tTlAtK8C6zjibQNA96wGAj9Zw1v4tvCbTot+W+jYwhoo
+         Sqy+Fnre0Sw3zmNjNnaX6jGnRqjRjxIxqC/SQsWPUgkLME1j+LYPHYUtM+DS+b99ny7P
+         QCkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=XFPVDLt22Mf+eywEhtbrRGQZP+BqmzTLYoHmyhTVdSw=;
+        b=L4lekn+pDAKCG8CQp8Bf5MMTOvdjKTOItwV8s8l0Q2EJhqVcdLYEh2HA8yDSPQGHXH
+         dfYmujaCQUmWXZFPDaiupHIc6Fi/d0Tfj4tx4j8xEOd3WQoby797pBeUyhGwGpA773hn
+         qPH7yTKweRySAi0Xn7/eTmt77VTjpJctbIYvgbtK4Xr1Ivvs7xTqDQNdoy8Qu2BDMf/h
+         S5YVkKYV93Tt/Jyp2YYshJlPqhkwknz5ykMeb1dSNEi2/Ft/4fEQQqb+NyxFNRgLJWKB
+         eTcqt2Wgh0BcmMR1MWxWIP2SE1TMf1aWTf5j4ELjuau+5qanjSMKh7b12owV/DrUvBxT
+         iCzw==
+X-Gm-Message-State: ACgBeo1qokU21Xcr4xZMFVBGcFqEyOEQYOtWzKo/VYV0AehIZLbN8Gw+
+        O/KgX7k+FKHm8aDOXlbEGkOBvLB2aD54ZgDk
+X-Google-Smtp-Source: AA6agR7hLwZ29c1VezpHHkk+bMHwJXVH/dx7lvm8lqxW0VcnNRQnAaL+1jCUrBfQ7E506itw19MPJA==
+X-Received: by 2002:a05:622a:130d:b0:344:8f5c:2cda with SMTP id v13-20020a05622a130d00b003448f5c2cdamr8589786qtk.685.1661742480648;
+        Sun, 28 Aug 2022 20:08:00 -0700 (PDT)
+Received: from fusetakDesktop.internal.fusetak.net (cpe84948c2a9a83-cm84948c2a9a80.cpe.net.fido.ca. [72.140.25.213])
+        by smtp.gmail.com with ESMTPSA id s16-20020ac85290000000b0034305a91aaesm4457940qtn.83.2022.08.28.20.07.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Aug 2022 20:08:00 -0700 (PDT)
+From:   Tamim Khan <tamim@fusetak.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     lenb@kernel.org, rafael@kernel.org, linux-kernel@vger.kernel.org,
+        Tamim Khan <tamim@fusetak.com>,
+        Hui Wang <hui.wang@canonical.com>,
+        Sunand <sunandchakradhar@gmail.com>
+Subject: [PATCH] ACPI: Skip IRQ override on Asus Vivobook K3402ZA/K3502ZA
+Date:   Sun, 28 Aug 2022 23:04:19 -0400
+Message-Id: <20220829030417.236471-1-tamim@fusetak.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220828222121.4951-2-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mario,
+In the ACPI DSDT table for Asus VivoBook K3402ZA/K3502ZA
+IRQ 1 is described as ActiveLow; however, the kernel overrides
+it to Edge_High. This prevents the internal keyboard from working
+on these laptops. In order to fix this add these laptops to the
+skip_override_table so that the kernel does not override IRQ 1 to
+Edge_High.
 
-Thank you for the patch! Perhaps something to improve:
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=216158
+Reviewed-by: Hui Wang <hui.wang@canonical.com>
+Tested-by: Tamim Khan <tamim@fusetak.com>
+Tested-by: Sunand <sunandchakradhar@gmail.com>
+Signed-off-by: Tamim Khan <tamim@fusetak.com>
+---
+This patch is very similar to the fix implemented for keyboards on 
+Medion laptops in 892a012699fc0b91a2ed6309078936191447f480 
+(ACPI: resources: Add DMI-based legacy IRQ override quirk) and 
+1b26ae40092b43bb6e9c5df376227382b390b953 (ACPI: resources: Add one 
+more Medion model in IRQ override quirk) and has been reviewed by the
+author of those commits. It has also been tested by myself on a K3502ZA 
+and by someone else with a K3402ZA to verify that this patch allows
+the internal keyboard to work.
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on linus/master v6.0-rc3 next-20220826]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+ drivers/acpi/resource.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/Add-some-extra-debugging-mechanisms-for-s0i3/20220829-062334
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: x86_64-randconfig-a011-20220829 (https://download.01.org/0day-ci/archive/20220829/202208291045.mtIt51vk-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/af6400b51370a2bc04906697aeec5a938e6ee446
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Mario-Limonciello/Add-some-extra-debugging-mechanisms-for-s0i3/20220829-062334
-        git checkout af6400b51370a2bc04906697aeec5a938e6ee446
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/acpi/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> drivers/acpi/x86/s2idle.c:489:6: warning: no previous prototype for function 'acpi_s2idle_enter' [-Wmissing-prototypes]
-   void acpi_s2idle_enter(void)
-        ^
-   drivers/acpi/x86/s2idle.c:489:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   void acpi_s2idle_enter(void)
-   ^
-   static 
-   1 warning generated.
-
-
-vim +/acpi_s2idle_enter +489 drivers/acpi/x86/s2idle.c
-
-   488	
- > 489	void acpi_s2idle_enter(void)
-   490	{
-   491		struct acpi_s2idle_dev_ops *handler;
-   492	
-   493		if (!lps0_device_handle || sleep_no_lps0)
-   494			return;
-   495	
-   496		list_for_each_entry(handler, &lps0_s2idle_devops_head, list_node) {
-   497			if (handler->enter)
-   498				handler->enter();
-   499		}
-   500	}
-   501	
-
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 510cdec375c4..2ebc85233bac 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -399,6 +399,24 @@ static const struct dmi_system_id medion_laptop[] = {
+ 	{ }
+ };
+ 
++static const struct dmi_system_id asus_laptop[] = {
++	{
++		.ident = "Asus Vivobook K3402ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "K3402ZA"),
++		},
++	},
++	{
++		.ident = "Asus Vivobook K3502ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
++		},
++	},
++	{ }
++};
++
+ struct irq_override_cmp {
+ 	const struct dmi_system_id *system;
+ 	unsigned char irq;
+@@ -409,6 +427,7 @@ struct irq_override_cmp {
+ 
+ static const struct irq_override_cmp skip_override_table[] = {
+ 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
++	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
+ };
+ 
+ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.37.2
+
