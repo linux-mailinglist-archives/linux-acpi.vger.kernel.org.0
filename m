@@ -2,169 +2,369 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 941CA5A4556
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Aug 2022 10:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10F1D5A4709
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Aug 2022 12:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229549AbiH2Il0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Aug 2022 04:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52886 "EHLO
+        id S229929AbiH2KV5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Aug 2022 06:21:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbiH2IlY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Aug 2022 04:41:24 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D4C44540
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Aug 2022 01:41:23 -0700 (PDT)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27T7Ts1H023539;
-        Mon, 29 Aug 2022 08:41:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : content-type : mime-version; s=corp-2022-7-12;
- bh=ZgYA+jEGfaRrjp2WISYMm7zCAsgal4U0TK1xS7ETZLM=;
- b=WSfClcVX7c69ueZIAihpv1ODcrnx1yeVARnsUTFTz6NFvupLfYvqyZkUpFbocLLM9VBm
- 4816UYHUyTjWk1cyC1uuHFAel8b15gvnRhy2ad+1ASjH5aWdBboUCN0RqOLL/i4QjqdV
- hFuBAcVZRw/AmA7/d8+TdxfzXNqEIaN0ujFOHt9jLhNdWwvyeaNojYvDbX/n17ZZYHw7
- LF33heqLxTAvdpeb8wQkQPRxhZ4FlX3kdjg7oFxiKBr6JzQjVZVvajGmBFqygTETbj//
- qpkYdkcUBvtMFlkvwRJ+31TYLsmK1no6Wbt5yz7whMUKD4HrwOH/PH39C9l8yoaQTD0L oQ== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3j79v0jrgu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 29 Aug 2022 08:41:22 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 27T8PNEZ033518;
-        Mon, 29 Aug 2022 08:41:21 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2043.outbound.protection.outlook.com [104.47.66.43])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3j79q200w0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 29 Aug 2022 08:41:21 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LOTDgPgBEmsDvFhbrN4WTKB2cjox6VD/ci3Op4ledP+tfZkGBi1lxBzkYhoJLMg446xnshqSaYo00SJBhCeo9bYPY9A/dwNnys0zSMedJ8hxuKWhAUq4rSvJ4bcMtdjBDvSiP64pNE8QS3t/vbSceins2Dmj7+xZqJX0r2HXj9xM3aEE9vFCmJkRKXlPOG2P+pgIbuVLrhseZdjDOpibIy4uQ5sFzNroXaxkfSor/DzVw2x1299CFxp1ZYKLnpyhrv+T7Rgu9eVLMP9Myz007LHnqGs1+Zs6Z+GwZ1DwzvhFWbrX2BfLIWE4KE+VehsPTmdKQzVyc7ZuVNyKix6/MA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZgYA+jEGfaRrjp2WISYMm7zCAsgal4U0TK1xS7ETZLM=;
- b=jRS7XtJvBDGUoSaThjBukl+IfOpvAcdtF4pyF50M96Ll9tukBDwm9HbrE+JTM1643NkS3d+5561VIaybRoUP2I6JTUCVm8Q0W8nAy3DQpo7OzRAPSS1QioqVMYPg8CooQA2SbGzF3qvbmepr+MHThPT/lt9fpzgX/6ETtE8x4z8wxnqfUnB5hDdYwNQB+6XLMIB33HpL6GaREbgtO1zZDqDsq1N/HLogKYiBK2OLLn49vm/BMHnldRtdkX8Pw3gKbFBk6/66hRHtjf0gZc3B1zkvBwnik/TIaH0Bfk+PI4XPU01ua0EsLsT5Yy/wiCrcxepebqsyK5k5Vt/blO6TTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S229504AbiH2KV5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Aug 2022 06:21:57 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C7C45981
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Aug 2022 03:21:55 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id z20so7582641ljq.3
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Aug 2022 03:21:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZgYA+jEGfaRrjp2WISYMm7zCAsgal4U0TK1xS7ETZLM=;
- b=Vbe2WEh7r69nfDe6BBBPIqkNEeOSptabowHrEdqCwe9bc8NMuj3Z6cfszZXdVZA4bFosWvKmLd2/Rr6AKzoXlUCwUrToV5Pa46Y5Oed3ZTYIOVgFV39yD0e6B+I237j1yZPQRNE+Y7Ehxu53AhEOzhrHD4WPWiDTfA8wqlnIxn4=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by BLAPR10MB4962.namprd10.prod.outlook.com
- (2603:10b6:208:327::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Mon, 29 Aug
- 2022 08:41:18 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::209e:de4d:68ea:c026]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::209e:de4d:68ea:c026%3]) with mapi id 15.20.5566.021; Mon, 29 Aug 2022
- 08:41:18 +0000
-Date:   Mon, 29 Aug 2022 11:41:09 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     rafael.j.wysocki@intel.com
-Cc:     linux-acpi@vger.kernel.org
-Subject: [bug report] ACPI: Drop parent field from struct acpi_device
-Message-ID: <Ywx7pdtirM9DWMps@kili>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-ClientProxiedBy: ZR0P278CA0017.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:16::27) To MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28)
+        d=semihalf.com; s=google;
+        h=content-transfer-encoding:cc:to:subject:from:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc;
+        bh=6I1BqOYVMOO9SZHVbCEJEdhVmTH6bYRSkaiIj2t2s3M=;
+        b=FnBHSjDBWP/ew+2swiPkwSsdyzlb8BdicEjpgR0lGMqtnj0Fv2Dmdi9wwVrxtBemK5
+         WR8v8W5J5cjU6m6BV3S2R6bF0uo1Vu8Wx0Zm+B/pM+1CJ6iraEGmGD8+ABoGWVPW1hqs
+         5n5Eox0i/DlG6AagCkaFR5t1OJnBfugck8JiBAL+DDHZDR1HOvs4bbdW76EJ5yOYnWFk
+         x4p50r+t5k6QdAV9VfiQ/3zO3SXUe+4m7kdwiwHCJ3x13zmOC/o3lVGbvVFmkUQssO5C
+         rUnjaCuhm8YqtverPlkV+D9gcbChri6vILzat0GZorbikb/8jCKSy3tNYSoEL6tjj744
+         ILFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:from:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc;
+        bh=6I1BqOYVMOO9SZHVbCEJEdhVmTH6bYRSkaiIj2t2s3M=;
+        b=421+5zPuHv7SbJA2F9zLzrd/MjM4Bb473s2lwyq8Cu5OCijCi0VfP2ZfnTavecn5Sr
+         T0ktvdEgF28SyQaevBqIIfWtRuC5J8k0FS1uo+WArObmt85UgtDDmprumwUEURJMAd2O
+         BQBCiiDOErtnjBPsZ9hCfFPHHur/xcPR0cN+ZNviz/SvgaB6DzhRSJTMRDFM1nujfza1
+         F2oILq+aCXubc/lE4UhlIVjkcgE6Q7MIWP+9HFCVeG27jMMYURAyl3mL1gKyI9z2raZK
+         Hy6V2k6VumLRPhQDnF0MUbQ9P43hYi7/UvZa/LGwWaNOKrXTKt38q2fkRAs5MX6Ayuet
+         gL7w==
+X-Gm-Message-State: ACgBeo0xCGJXAkVMqGE7zbH5kA4dSfkBR216H9qzMEx7Py1+HMsKv3vR
+        J6eRVydiUOLWGztohrP8MiySv/kXG1ZRdpQH
+X-Google-Smtp-Source: AA6agR4QzP3rW2cMCXlpfkUS4hwwhmcMzeowxYEYApFovazQ9ZNFA2wW2q2sN78XdcSm1jSJTUkG4Q==
+X-Received: by 2002:a2e:a812:0:b0:261:8f2d:9530 with SMTP id l18-20020a2ea812000000b002618f2d9530mr5040381ljq.251.1661768513839;
+        Mon, 29 Aug 2022 03:21:53 -0700 (PDT)
+Received: from [10.77.100.217] ([83.142.187.85])
+        by smtp.gmail.com with ESMTPSA id u9-20020a056512040900b0048a982ad0a8sm1241440lfk.23.2022.08.29.03.21.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Aug 2022 03:21:53 -0700 (PDT)
+Message-ID: <1cf5ec82-0f1e-3bc7-4367-dcba1ee0f64d@semihalf.com>
+Date:   Mon, 29 Aug 2022 12:21:52 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 43235365-a759-492f-ba3d-08da899a3dfe
-X-MS-TrafficTypeDiagnostic: BLAPR10MB4962:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: xwKQ8LqksyhNhDP51ti9TKac1l6QcfeyfLKBj/eF+kCzq8n0/XT+NjJSRO26p5R1VDP/8AX4KK+PVddlW0gVWsbDA5+KXJQNTCRWsRW5SSYh+lZTU0m/0/D7raxpTHYxchcASc4jNm7+AKOv67AITVwSb3YvIo9WfXkUG1moqkeX7QU2CVA/VRhN8Y14Q/BXFCYRh+9uoNG4GlMGKbjc5w1Y6TzUPXFLmcT3E6ib0Gpr8+Mr34JWzHgoJbu0/OS4M565pwrsA9V5j8IOSErYnYqsOWcGMtFhy3wdXeNwVPM5zMFaeX0A1i6ck3amxuqeH/zgWF3CmHumOVRUjZ8TltPkLcyYm4N0IKlI7lMUTeaI+1wbr2H5n8k4+09kWRI1VSoT9RTN2GFl8C2Nk/bpeYwc4aTNUDQwMBUQfyCitM18A0skJqlVn7utAroUBzUuSodRROZXpi9nLuOZh4+JxTZfDbJ76QCni+hTk7XIQ2dE6UJdXwMdyXm7BhVwBBsXztercOd/PbOFylDoAAcIf8PgqyEU8hToKxNrb1tylwv7tTgboZFPwmAMY8z4/JH63EgzvaACiW5ensMe3mND/jwiEttMVnk9h9FT7chUL/sRXyWqjN4GJ1S4TPiSdflCStvKf1zU9R2+m1h7yb/Vk/lT6ul1qgdQ+hgDgjd4D8NQv4zgCjPce5f8YlYBFQBRTRq6WnJ0bW/DT/eXCoxpZJaN0wqBFhSrxedlooQwZvIYTInGttMOTABE2la8WsikUvhzaukuSZiw7y7jhbrDiw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(346002)(366004)(136003)(376002)(39860400002)(396003)(6512007)(9686003)(26005)(6916009)(316002)(38100700002)(38350700002)(6506007)(8676002)(6486002)(8936002)(6666004)(66946007)(66556008)(44832011)(41300700001)(2906002)(4744005)(52116002)(33716001)(186003)(66476007)(4326008)(478600001)(86362001)(83380400001)(5660300002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jsDs/LKlp9MkBOrc14TPDMGQh/vrL+mHbw50n6PGnC74LatuqPWlfrHYm1pv?=
- =?us-ascii?Q?V3BGSPBGz17XmG2OHzIyVNkvTEIB1ssx/CQA2PuJJpuCFNotjRYTFbIG0qya?=
- =?us-ascii?Q?t01R4AjQDVK1NnLiBckhsaPTm5lX9QnXITs2JTbIMxfGEa3xeEc44F06NgM9?=
- =?us-ascii?Q?egMvk7PqX7DCJMAT1Ar4ATOrbiG6bGc640+1K9jbyQ78v95Hbi0+xNOWPiDG?=
- =?us-ascii?Q?CPLcLRx2C5dNKgND/S3C7iTOVemFs6/vMQbleqcOu7MPhvwEd9Kr5jfu7yqj?=
- =?us-ascii?Q?5ZvByY0Qf5t0qZ5WmfBEiu8aZJOIPDakwSBpuBQK6uH6bd3CnlHTw1ramYo+?=
- =?us-ascii?Q?qoy1TkYhWpl1zkQVfO4Em5byib6RATUZBSuvaZwNAyeGSc0f+0vaOz+LN8Ds?=
- =?us-ascii?Q?D2Vx6SM+K8ht9pGgLVw2d/xNph5GPCw0LNBVX1LJQ0v1ZeGtEzqto+MC6yeB?=
- =?us-ascii?Q?pC1OL4SR0wkMrxTz8Zci1RwblblQIHRWGvzK5QhADJYrKGFb+5mQCvJQ274B?=
- =?us-ascii?Q?3Nt0smDw0ptQ5k8b30Qw5FPIpba9EoSCbIZ93MXJYnieOvsZwEZ6vWFb1SsP?=
- =?us-ascii?Q?fy95Wk2XDv3gqsajQwJG6mb8Dc90hFyPkYawh8EiV8lv5AAstMs778/YVgIe?=
- =?us-ascii?Q?Zezg6vfK+C6KZGupVHRJHR4vgcsb6bfwLTppvKvKTVpqDMkBmnbab0Fw9wVC?=
- =?us-ascii?Q?Q4O2lbrbPTEOOgxV/j+vkoBglJLKLb4QIHy4aRCvIx5759TnGXHFWx6U5xQf?=
- =?us-ascii?Q?JrGhfregRbjXdIA0ZAFQjq43ea/QCkfKGCHOTVHqDa866cSlIzeqbnGTK+W9?=
- =?us-ascii?Q?sN/jYVU64X4+8qx5RpwYuOqZYJRIWe8rRLE1KVVTHv4qPHI12+pps/aoqEnJ?=
- =?us-ascii?Q?Ws87KTjrExZNIfk6mERll66Xhc3gUMbtqqOygRonw7P8Ip6N9N3Roa0wr48Y?=
- =?us-ascii?Q?2mQocCdwIqYm62MRsOmPjFa7ig385EVeCxktlTOTA4QVH4c217JUVub8JBdY?=
- =?us-ascii?Q?8Z1YoVJJwlCMHGiyOM/OjmKfVuRnJpMI/hfK1AmTd3+DL8qyjFDYOu/XfI6s?=
- =?us-ascii?Q?GmKsvt7Na4WlludK4mn3tApXmX1EmO+80QJzBZnEJGkG+P50pCBaOdsS5s6G?=
- =?us-ascii?Q?Dt5sEVD0rDViwm0QEpVhwOACGo9Ftd6jcTRST1/WDoKsWrJRVPIyPOZTFYrY?=
- =?us-ascii?Q?u5br5wtt1qTfItGM8hMWWKAKLfGCGFhwlpy/IDuQlqYWBTwpP4THiAKfk/qC?=
- =?us-ascii?Q?zS7PB9ID+mHsP/myxZsRf+ofap4f5c8SUR8WSyh4KSxobYN6lWU2Di7nnrx7?=
- =?us-ascii?Q?8Eb/FHBd5obJmSHajnANGtSx2O6UFPzMnCt0teGsI6SsyKyXKuQmjpx/AuUg?=
- =?us-ascii?Q?WCzeprEkBYfFE0sAkBlP36bgNeXfC4dVgFrATR1m0ZWKSME6T809EWcQbHyW?=
- =?us-ascii?Q?l6m4Rb4jw51UIEF3yBNgD/9X1XdOgYheZY8xn3jZsn7QMyne96A9TtYzCIDG?=
- =?us-ascii?Q?Hcvpznu1TLZJo6hbnMlonm8of5JQ5crTl8CnBtcAoKxZMxmoB8AStmF++zNk?=
- =?us-ascii?Q?EssYJvLNkzZVH3lsRp/jki01Kb+KjbegxIIRu9Kzc1cMPTXidydWJEluxiah?=
- =?us-ascii?Q?Dw=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43235365-a759-492f-ba3d-08da899a3dfe
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2022 08:41:18.5669
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P2vXskaG1s96zqjPshd2lLvOCEdDCm/i9X+9BuCjAEbEEZATaJom3VxaXj4VXIqJp3ghuo317mYx4AVr4SbPYy5ssUTGu7pI3n6AVlfTAZ8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB4962
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-29_04,2022-08-25_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 mlxscore=0
- spamscore=0 mlxlogscore=718 phishscore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
- definitions=main-2208290042
-X-Proofpoint-GUID: nNb9TbrqSRiJxk6BZr8dIybjc3TCbqtC
-X-Proofpoint-ORIG-GUID: nNb9TbrqSRiJxk6BZr8dIybjc3TCbqtC
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Content-Language: en-US
+From:   =?UTF-8?Q?Marek_Ma=c5=9blanka?= <mm@semihalf.com>
+Subject: [PATCH] ACPICA: Synchronize disabling wake mask and servicing wake-up
+ IRQ
+To:     linux-acpi@vger.kernel.org
+Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, upstream@semihalf.com, mm@semihalf.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Rafael J. Wysocki,
+The GPE interrupts that are the wake-up source are "turned off" by clear
+the “enable_for_wake” flag when the kernel resumes (suspend_enter() ->
+acpi_s2idle_restore() -> acpi_disable_wakeup_devices() ->
+acpi_set_gpe_wake_mask()). On the resume path the kernel also resumes
+the interrupts (suspend_enter() -> dpm_resume_noirq() -> resume_irqs())
+which process the GPE interrupt that woke-up the kernel (... ->
+acpi_irq() -> acpi_ev_sci_xrupt_handler() -> acpi_ev_gpe_detect() -> …).
+The GPE interrupt routine stops in the acpi_ev_gpe_detect () function
+when the "enable_for_wake" flag is cleared.
 
-This is a semi-automatic email about new static checker warnings.
+As the interrupt servicing might work simultaneously on SMP, it’s
+possible that the “enable_for_wake” flag can be cleared before the GPE
+interrupt gets chances to be processed. It might happen when the CPU
+processed other IRQ before the GPE IRQ that woke up the device.
 
-The patch 62fcb99bdf10: "ACPI: Drop parent field from struct
-acpi_device" from Aug 24, 2022, leads to the following Smatch
-complaint:
+This issue is seen on low-end Chromebooks with two cores CPU when HPET
+IRQ is triggered while resuming the device and is processed before the
+ACPI GPE interrupt on the same CPU core.
 
-    drivers/acpi/device_pm.c:166 acpi_device_set_power()
-    warn: variable dereferenced before check 'device' (see line 162)
+Before clear the enable_for_wake flag we need to make sure that the
+specific wake-up GPE IRQ block was processed.
 
-drivers/acpi/device_pm.c
-   161	{
-   162		struct acpi_device *parent = acpi_dev_parent(device);
-                                                             ^^^^^^
-Dereverence
+Signed-off-by: Marek Maslanka <mm@semihalf.com>
+---
+ drivers/acpi/acpica/aclocal.h |   3 +
+ drivers/acpi/acpica/evgpe.c   |   8 +++
+ drivers/acpi/acpica/evxfgpe.c | 123 ++++++++++++++++++++++++++++++++++
+ drivers/acpi/scan.c           |   1 +
+ drivers/acpi/wakeup.c         |   3 +
+ include/acpi/acpixf.h         |   9 +++
+ 6 files changed, 147 insertions(+)
 
-   163		int target_state = state;
-   164		int result = 0;
-   165	
-   166		if (!device || !device->flags.power_manageable
-                    ^^^^^^^
-Checked too late.
-
-   167		    || (state < ACPI_STATE_D0) || (state > ACPI_STATE_D3_COLD))
-   168			return -EINVAL;
-
-regards,
-dan carpenter
+diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
+index 901b1543b869..2925055e8546 100644
+--- a/drivers/acpi/acpica/aclocal.h
++++ b/drivers/acpi/acpica/aclocal.h
+@@ -10,6 +10,8 @@
+ #ifndef __ACLOCAL_H__
+ #define __ACLOCAL_H__
+ 
++#include <linux/wait.h>
++
+ /* acpisrc:struct_defs -- for acpisrc conversion */
+ 
+ #define ACPI_SERIALIZED                 0xFF
+@@ -471,6 +473,7 @@ struct acpi_gpe_register_info {
+ 	u8 enable_for_run;	/* GPEs to keep enabled when running */
+ 	u8 mask_for_run;	/* GPEs to keep masked when running */
+ 	u8 enable_mask;		/* Current mask of enabled GPEs */
++	wait_queue_head_t wake_mask_wq;	/* Waitqueue to sync disabling wakeup mask bit */
+ };
+ 
+ /*
+diff --git a/drivers/acpi/acpica/evgpe.c b/drivers/acpi/acpica/evgpe.c
+index a6bb480d631c..3bfb08b5b0a9 100644
+--- a/drivers/acpi/acpica/evgpe.c
++++ b/drivers/acpi/acpica/evgpe.c
+@@ -355,6 +355,7 @@ u32 acpi_ev_gpe_detect(struct acpi_gpe_xrupt_info *gpe_xrupt_list)
+ 	acpi_cpu_flags flags;
+ 	u32 i;
+ 	u32 j;
++	u8 gpe_can_wake;
+ 
+ 	ACPI_FUNCTION_NAME(ev_gpe_detect);
+ 
+@@ -408,6 +409,8 @@ u32 acpi_ev_gpe_detect(struct acpi_gpe_xrupt_info *gpe_xrupt_list)
+ 				continue;
+ 			}
+ 
++			gpe_can_wake = 0;
++
+ 			/* Now look at the individual GPEs in this byte register */
+ 
+ 			for (j = 0; j < ACPI_GPE_REGISTER_WIDTH; j++) {
+@@ -420,6 +423,7 @@ u32 acpi_ev_gpe_detect(struct acpi_gpe_xrupt_info *gpe_xrupt_list)
+ 						ACPI_GPE_REGISTER_WIDTH) + j];
+ 				gpe_number =
+ 				    j + gpe_register_info->base_gpe_number;
++				gpe_can_wake |= gpe_event_info->flags & ACPI_GPE_CAN_WAKE;
+ 				acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
+ 				int_status |=
+ 				    acpi_ev_detect_gpe(gpe_device,
+@@ -427,6 +431,10 @@ u32 acpi_ev_gpe_detect(struct acpi_gpe_xrupt_info *gpe_xrupt_list)
+ 						       gpe_number);
+ 				flags = acpi_os_acquire_lock(acpi_gbl_gpe_lock);
+ 			}
++
++			/* Notify the wakeup GPE event has been processed */
++			if (gpe_register_info->enable_for_wake && gpe_can_wake)
++				wake_up(&gpe_register_info->wake_mask_wq);
+ 		}
+ 
+ 		gpe_block = gpe_block->next;
+diff --git a/drivers/acpi/acpica/evxfgpe.c b/drivers/acpi/acpica/evxfgpe.c
+index 340947e412bb..16eac034abfa 100644
+--- a/drivers/acpi/acpica/evxfgpe.c
++++ b/drivers/acpi/acpica/evxfgpe.c
+@@ -17,6 +17,9 @@
+ #define _COMPONENT          ACPI_EVENTS
+ ACPI_MODULE_NAME("evxfgpe")
+ 
++/* How long to wait for the GPE status flag to be set */
++#define ACPI_WAIT_GPE_STATUS_FLAG_MS 500
++
+ #if (!ACPI_REDUCED_HARDWARE)	/* Entire module */
+ /*******************************************************************************
+  *
+@@ -242,6 +245,50 @@ acpi_status acpi_set_gpe(acpi_handle gpe_device, u32 gpe_number, u8 action)
+ 
+ ACPI_EXPORT_SYMBOL(acpi_set_gpe)
+ 
++/*******************************************************************************
++ *
++ * FUNCTION:    acpi_init_gpe_wake_wq
++ *
++ * PARAMETERS:  gpe_device          - Parent GPE Device. NULL for GPE0/GPE1
++ *              gpe_number          - GPE level within the GPE block
++ *
++ * RETURN:      Status
++ *
++ * DESCRIPTION: Init wake waitqueue for GPE.
++ *
++ ******************************************************************************/
++acpi_status acpi_init_gpe_wake_wq(acpi_handle gpe_device, u32 gpe_number)
++{
++	struct acpi_gpe_event_info *gpe_event_info;
++	struct acpi_gpe_register_info *gpe_register_info;
++	acpi_status status = AE_BAD_PARAMETER;
++	acpi_cpu_flags flags;
++
++	ACPI_FUNCTION_TRACE(acpi_init_gpe_wake_wq);
++
++	flags = acpi_os_acquire_lock(acpi_gbl_gpe_lock);
++
++	/* Ensure that we have a valid GPE number */
++
++	gpe_event_info = acpi_ev_get_gpe_event_info(gpe_device, gpe_number);
++	if (gpe_event_info) {
++		gpe_register_info = gpe_event_info->register_info;
++		if (gpe_register_info) {
++			init_waitqueue_head(&gpe_register_info->wake_mask_wq);
++			status = AE_OK;
++		} else {
++			ACPI_WARNING((AE_INFO,
++				      "GPE 0x%x doesn't have a register info",
++				      gpe_number));
++			status = AE_NOT_EXIST;
++		}
++	}
++
++	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
++	return_ACPI_STATUS(status);
++}
++ACPI_EXPORT_SYMBOL(acpi_init_gpe_wake_wq)
++
+ /*******************************************************************************
+  *
+  * FUNCTION:    acpi_mask_gpe
+@@ -637,6 +684,82 @@ acpi_get_gpe_status(acpi_handle gpe_device,
+ 
+ ACPI_EXPORT_SYMBOL(acpi_get_gpe_status)
+ 
++static u8
++acpi_is_gpe_status_set(acpi_handle gpe_device, u32 gpe_number)
++{
++	acpi_event_status event_status;
++
++	acpi_get_gpe_status(gpe_device, gpe_number, &event_status);
++	return event_status & ACPI_EVENT_FLAG_STATUS_SET;
++}
++
++/*******************************************************************************
++ *
++ * FUNCTION:    acpi_wait_for_gpe_status_flag
++ *
++ * PARAMETERS:  gpe_device          - Parent GPE Device. NULL for GPE0/GPE1
++ *              gpe_number          - GPE level within the GPE block
++ *
++ * RETURN:      Status
++ *
++ * DESCRIPTION: Wait for clear the status bit in wakeup mask
++ *
++ ******************************************************************************/
++acpi_status
++acpi_wait_for_gpe_status_flag(acpi_handle gpe_device, u32 gpe_number)
++{
++	acpi_status status = AE_OK;
++	struct acpi_gpe_event_info *gpe_event_info;
++	struct acpi_gpe_register_info *gpe_register_info;
++	acpi_cpu_flags flags;
++	int timeout;
++	int wait_ms;
++
++	ACPI_FUNCTION_TRACE(acpi_wait_for_gpe_status_flag);
++
++	flags = acpi_os_acquire_lock(acpi_gbl_gpe_lock);
++
++	/* Ensure that we have a valid GPE number */
++
++	gpe_event_info = acpi_ev_get_gpe_event_info(gpe_device, gpe_number);
++	if (!gpe_event_info) {
++		status = AE_BAD_PARAMETER;
++		goto unlock_and_exit;
++	}
++
++	if (!(gpe_event_info->flags & ACPI_GPE_CAN_WAKE)) {
++		status = AE_TYPE;
++		goto unlock_and_exit;
++	}
++
++	gpe_register_info = gpe_event_info->register_info;
++	if (!gpe_register_info) {
++		status = AE_NOT_EXIST;
++		goto unlock_and_exit;
++	}
++
++	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
++
++	wait_ms = msecs_to_jiffies(ACPI_WAIT_GPE_STATUS_FLAG_MS);
++	timeout = wait_event_timeout(gpe_register_info->wake_mask_wq,
++				     !acpi_is_gpe_status_set(gpe_device,
++							     gpe_number),
++				     wait_ms);
++	if (timeout == 0) {
++		ACPI_WARNING((AE_INFO,
++			      "Time limit exceeded while waiting for GPE 0x%x status flag",
++			      gpe_number));
++		status = AE_TIME;
++	}
++
++	return_ACPI_STATUS(status);
++
++unlock_and_exit:
++	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
++	return_ACPI_STATUS(status);
++}
++ACPI_EXPORT_SYMBOL(acpi_wait_for_gpe_status_flag)
++
+ /*******************************************************************************
+  *
+  * FUNCTION:    acpi_gispatch_gpe
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 42cec8120f18..26ba59545ceb 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -952,6 +952,7 @@ static bool acpi_wakeup_gpe_init(struct acpi_device *device)
+ 			if (wakeup->sleep_state == ACPI_STATE_S5)
+ 				wakeup->sleep_state = ACPI_STATE_S4;
+ 		}
++		acpi_init_gpe_wake_wq(wakeup->gpe_device, wakeup->gpe_number);
+ 		acpi_mark_gpe_for_wake(wakeup->gpe_device, wakeup->gpe_number);
+ 		device_set_wakeup_capable(&device->dev, true);
+ 		return true;
+diff --git a/drivers/acpi/wakeup.c b/drivers/acpi/wakeup.c
+index b02bf770aead..044429e69f86 100644
+--- a/drivers/acpi/wakeup.c
++++ b/drivers/acpi/wakeup.c
+@@ -72,6 +72,9 @@ void acpi_disable_wakeup_devices(u8 sleep_state)
+ 			 || dev->wakeup.prepare_count))
+ 			continue;
+ 
++		acpi_wait_for_gpe_status_flag(dev->wakeup.gpe_device,
++					      dev->wakeup.gpe_number);
++
+ 		acpi_set_gpe_wake_mask(dev->wakeup.gpe_device, dev->wakeup.gpe_number,
+ 				ACPI_GPE_DISABLE);
+ 
+diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+index 67c0b9e734b6..cc4b43caa872 100644
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -728,6 +728,10 @@ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+ 				acpi_finish_gpe(acpi_handle gpe_device,
+ 						u32 gpe_number))
+ 
++ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
++				acpi_init_gpe_wake_wq(acpi_handle gpe_device,
++						u32 gpe_number))
++
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+ 				acpi_mask_gpe(acpi_handle gpe_device,
+ 					      u32 gpe_number, u8 is_masked))
+@@ -741,6 +745,11 @@ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+ 							parent_device,
+ 							acpi_handle gpe_device,
+ 							u32 gpe_number))
++
++ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
++				 acpi_wait_for_gpe_status_flag(acpi_handle gpe_device,
++							u32 gpe_number))
++
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+ 				 acpi_set_gpe_wake_mask(acpi_handle gpe_device,
+ 							u32 gpe_number,
+-- 
+2.37.2.672.g94769d06f0-goog
