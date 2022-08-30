@@ -2,73 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D11175A59ED
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Aug 2022 05:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2029C5A5B3C
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Aug 2022 07:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229940AbiH3D2L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Aug 2022 23:28:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59790 "EHLO
+        id S229818AbiH3FpD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Aug 2022 01:45:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbiH3D1t (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Aug 2022 23:27:49 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39083A573D
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Aug 2022 20:27:43 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id x80so5918825pgx.0
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Aug 2022 20:27:43 -0700 (PDT)
+        with ESMTP id S229550AbiH3FpA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Aug 2022 01:45:00 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01C3E13F51
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Aug 2022 22:44:59 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id o4so10092970pjp.4
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Aug 2022 22:44:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc;
-        bh=McuXcOgRlIT69jbtsKdNiVloP2lEB4pZKRYZsVxXQoQ=;
-        b=zFr1/S5oRfcKoHS1Lgf6cTntybtW9AIh1OHLiFFkKp4yGZPCv57suQINkIcq4fZCbh
-         FwNaDtZ1opvQlapaJxnDAchvx8GCHrlV3zwKzk63kjwxp/0CwRjyIrLUUUD7dsqWbTLP
-         x7j6FuLFoEyzTxDi7+mqidf04orpSOc0g5U6e/A5FVeagu16Fy4Ukg5baiTE4KBgMAnc
-         zwAWUEn5RvxPN/WDMEX+801UKfP6V53plY58hitr81BWuKr5P7Phs5+vxv4XVUP7LILc
-         SWzWWdVoDVHWJy256jgruVDWxP5Ezi+LlRSSjgKDaBaQ59Cvb2GvtBafu5S38pe25cDB
-         OkdQ==
+        bh=OZrB1r5czbXocki1k9M1K47PMyoT2lGbE+m2as71vbM=;
+        b=Mre5u/psT8WNvzhuroGVULvJC5NMcDvaLlPHw2b1cX5H0SYPShdXYNuemxzcakUpoW
+         iM1stJwHC9wP5S66wY/0Q62lLnSgoJw2+Y9VCUjLayiacdnaWMSGwkQTr/TadtSp4din
+         9ZelUQ14tNa9fKomTov7Hnqh3bFyysgpjRdzVX4TW08PmJ04wc7XvmuKl/cepCquiPh2
+         zAa4t0cj/JBeO/wOkq6xZf4JISIZUkzkzo4ptzCnvCEl6XP2HavtSoQZR3Slh5GzkNRT
+         y5pxjw3RAc/WxPVBLVGb3qNYRk0CiWq3bfOMvt1tsQkG1qrZZyfaQSdNiSnGUSxIzhTO
+         K6vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=McuXcOgRlIT69jbtsKdNiVloP2lEB4pZKRYZsVxXQoQ=;
-        b=6H8G1PMcQYYfn+GjbVdlz2r0+uDu3vF+2XYJvZLuUrF09Pr6aFcbXzOvDnFgdnz7FQ
-         Np7VvDnoEfCJF3EF2WglPKDCXQmizCQ9n7je5rXXcY4srCPFq7yphK+q0/d7C4cL26iv
-         pOQQelInzGXkpbUQbRwRtgSUOWsOfNb1E+Cb+oJKS4R8Fj74YuEHzHhZwfajlCrAqzDQ
-         RpdPns9sE2VjWaGAw3ZA2NxbAHKgaCYiIfXsEaUFAQF8QvH1A+vR/thZ2c7FCqVl1P2A
-         fYPC+5jzWiYlqFxcbBipdvrtTxDCbrOkLWh/eQvM7VTG1ZRNSwmdg6dfhsq7rIwKu0Aj
-         XKew==
-X-Gm-Message-State: ACgBeo073Qu8Gb6zDYYTlzT6k1ibhsniHE2AmyPKv8PUt54+JN2oWned
-        tD7b4yGnIsLm6j5nKiFLBSaVaA==
-X-Google-Smtp-Source: AA6agR73e0QiuRwvysMfySjmFUqjEBga3EdkZnzq6VbKU2f++ujIAWqktXqsqavXCzU2qhgTQWDLBQ==
-X-Received: by 2002:a63:e07:0:b0:429:8604:d9ad with SMTP id d7-20020a630e07000000b004298604d9admr16142796pgl.586.1661830062332;
-        Mon, 29 Aug 2022 20:27:42 -0700 (PDT)
+        bh=OZrB1r5czbXocki1k9M1K47PMyoT2lGbE+m2as71vbM=;
+        b=WnjFpdg320laYnOxhA4zby7l1i2VgEnaTWAEKr3Ze+RFtHkAfGbez3ohVk9ZdfR1by
+         6gVoPZmSnJVipy3rKrHbjxugcInu4ytf/GFWQ03b47tVxZB0I3vpmWoTAjOBCx1AkEcE
+         ufkeb/WDQgLA4sgvmw3boPvas9nV7RWPXpNLF6nMz9bbAVR8LsVsVKCR9oAXJV2nOgM+
+         XMvKwk7WchXgI5PXjOopu+KrWobvHKP2MH2vUC3XZElZH/YuWrEAZHi5S0kd8eFdt4ri
+         4nBKBCUYVK/yvfYSn6tmnibFy3inyvx+cJpk9sSNeK3UciMeJ4wXjjyP2pmRDczaLPKR
+         MTRw==
+X-Gm-Message-State: ACgBeo3vk9h48gedAFuftbuRsRZD1TIKrUPX+gHvi1Qvjuk/Mp+YTLjd
+        1/Hm3Tz0x23DzTYWG8EYeXlaIQ==
+X-Google-Smtp-Source: AA6agR5BViIHecxmZ6xtzj9KH/goF9PYHSdULnv0XdS2by1e/G3zHkzh1+Dg0Qc1q0AVHKyxFlAiZA==
+X-Received: by 2002:a17:902:8f87:b0:172:83b5:d771 with SMTP id z7-20020a1709028f8700b0017283b5d771mr19656028plo.159.1661838298529;
+        Mon, 29 Aug 2022 22:44:58 -0700 (PDT)
 Received: from localhost ([122.171.18.80])
-        by smtp.gmail.com with ESMTPSA id w1-20020a170902ca0100b00174be817124sm3494843pld.221.2022.08.29.20.27.41
+        by smtp.gmail.com with ESMTPSA id k4-20020a17090a3cc400b001fada871e97sm7631907pjd.13.2022.08.29.22.44.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Aug 2022 20:27:41 -0700 (PDT)
-Date:   Tue, 30 Aug 2022 08:57:39 +0530
+        Mon, 29 Aug 2022 22:44:57 -0700 (PDT)
+Date:   Tue, 30 Aug 2022 11:14:55 +0530
 From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Lukasz Luba <lukasz.luba@arm.com>, vincent.guittot@linaro.org
-Cc:     Jeremy Linton <jeremy.linton@arm.com>, rafael@kernel.or,
-        lenb@kernel.org, robert.moore@intel.com,
-        punit.agrawal@bytedance.com, ionela.voinescu@arm.com,
-        pierre.gondois@arm.com, linux-kernel@vger.kernel.org,
-        devel@acpica.org, linux-pm@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
+To:     Lukasz Luba <lukasz.luba@arm.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.or, lenb@kernel.org,
+        robert.moore@intel.com, punit.agrawal@bytedance.com,
+        ionela.voinescu@arm.com, pierre.gondois@arm.com,
+        linux-kernel@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Morten Rasmussen <morten.rasmussen@arm.com>,
-        Souvik Chakravarty <souvik.chakravarty@arm.com>
-Subject: Re: [PATCH v3 1/2] ACPI: CPPC: Disable FIE if registers in PCC
- regions
-Message-ID: <20220830032739.m4jw2tcjrdmxvid7@vireshk-i7>
+        Souvik Chakravarty <souvik.chakravarty@arm.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        vincent.guittot@linaro.org
+Subject: Re: [PATCH v3 2/2] cpufreq: CPPC: Change FIE default
+Message-ID: <20220830054455.pezg63zqxg6az77n@vireshk-i7>
 References: <20220818211619.4193362-1-jeremy.linton@arm.com>
- <20220818211619.4193362-2-jeremy.linton@arm.com>
- <59f3ba6f-b657-2da2-cb2a-9736e1488908@arm.com>
+ <20220818211619.4193362-3-jeremy.linton@arm.com>
+ <20220824061430.3aflygc4gno5j47y@vireshk-i7>
+ <0d49c40d-02af-5190-76b0-e88f3622ab7a@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <59f3ba6f-b657-2da2-cb2a-9736e1488908@arm.com>
+In-Reply-To: <0d49c40d-02af-5190-76b0-e88f3622ab7a@arm.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
@@ -79,155 +80,63 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+Vincent.
+On 24-08-22, 15:04, Lukasz Luba wrote:
+> On 8/24/22 07:14, Viresh Kumar wrote:
+> > On 18-08-22, 16:16, Jeremy Linton wrote:
+> > > FIE is mostly implemented as PCC mailboxes on arm machines.  This was
+> > > enabled by default without any data suggesting that it does anything
+> > > but hurt system performance. Lets change the default to 'n' until
+> > > hardware appears which clearly benefits.
+> > > 
+> > > Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> > > ---
+> > >   drivers/cpufreq/Kconfig.arm | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/cpufreq/Kconfig.arm b/drivers/cpufreq/Kconfig.arm
+> > > index 954749afb5fe..ad66d8f15db0 100644
+> > > --- a/drivers/cpufreq/Kconfig.arm
+> > > +++ b/drivers/cpufreq/Kconfig.arm
+> > > @@ -22,7 +22,7 @@ config ACPI_CPPC_CPUFREQ
+> > >   config ACPI_CPPC_CPUFREQ_FIE
+> > >   	bool "Frequency Invariance support for CPPC cpufreq driver"
+> > >   	depends on ACPI_CPPC_CPUFREQ && GENERIC_ARCH_TOPOLOGY
+> > > -	default y
+> > > +	default n
+> > >   	help
+> > >   	  This extends frequency invariance support in the CPPC cpufreq driver,
+> > >   	  by using CPPC delivered and reference performance counters.
+> > 
+> > Why is this required after we have the first patch in ?
+> > 
 
-On 24-08-22, 15:41, Lukasz Luba wrote:
-> Hi Jeremy,
+Well, my question was for the way the patches were added. If we are
+disabling the feature based on platform, then there is no need to
+disable the feature by default.
+
+> There are a few issues with this ACPI_CPPC_CPUFREQ_FIE solution:
+> 1. The design is very heavy and that kernel thread can be ~512 util
+>    (that's what we have been told by one of our partners from servers'
+>    world)
+> 2. The HW & FW design is not suited for this task. Newer HW will just
+>    have AMU counters (on Arm64) for FIE
+> 3. The patches haven't been tested in terms of performance overhead
+>    AFAIK. Although, it affects existing Arm64 servers with their
+>    workloads.
+> 4. AFAIK non of our server partners wasn't complaining about issues with
+>    old FIE mechanism.
 > 
-> +CC Dietmar, Morten and Souvik
+> In our team we are not allowed to send code that we cannot prove in many
+> ways.
 > 
-> On 8/18/22 22:16, Jeremy Linton wrote:
-> > PCC regions utilize a mailbox to set/retrieve register values used by
-> > the CPPC code. This is fine as long as the operations are
-> > infrequent. With the FIE code enabled though the overhead can range
-> > from 2-11% of system CPU overhead (ex: as measured by top) on Arm
-> > based machines.
-> > 
-> > So, before enabling FIE assure none of the registers used by
-> > cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
-> > enable a module parameter which can also disable it at boot or module
-> > reload.
-> > 
-> > Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> > ---
-> >   drivers/acpi/cppc_acpi.c       | 41 ++++++++++++++++++++++++++++++++++
-> >   drivers/cpufreq/cppc_cpufreq.c | 31 +++++++++++++++++++++----
-> >   include/acpi/cppc_acpi.h       |  5 +++++
-> >   3 files changed, 73 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> > index 1e15a9f25ae9..c840bf606b30 100644
-> > --- a/drivers/acpi/cppc_acpi.c
-> > +++ b/drivers/acpi/cppc_acpi.c
-> > @@ -1240,6 +1240,47 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
-> >   }
-> >   EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
-> > +/**
-> > + * cppc_perf_ctrs_in_pcc - Check if any perf counters are in a PCC region.
-> > + *
-> > + * CPPC has flexibility about how counters describing CPU perf are delivered.
-> > + * One of the choices is PCC regions, which can have a high access latency. This
-> > + * routine allows callers of cppc_get_perf_ctrs() to know this ahead of time.
-> > + *
-> > + * Return: true if any of the counters are in PCC regions, false otherwise
-> > + */
-> > +bool cppc_perf_ctrs_in_pcc(void)
-> > +{
-> > +	int cpu;
-> > +
-> > +	for_each_present_cpu(cpu) {
-> > +		struct cpc_register_resource *ref_perf_reg;
-> > +		struct cpc_desc *cpc_desc;
-> > +
-> > +		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
-> > +
-> > +		if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
-> > +		    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
-> > +		    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
-> > +			return true;
-> > +
-> > +
-> > +		ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
-> > +
-> > +		/*
-> > +		 * If reference perf register is not supported then we should
-> > +		 * use the nominal perf value
-> > +		 */
-> > +		if (!CPC_SUPPORTED(ref_perf_reg))
-> > +			ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
-> > +
-> > +		if (CPC_IN_PCC(ref_perf_reg))
-> > +			return true;
-> > +	}
-> 
-> Do we have a platform which returns false here?
-> 
-> > +	return false;
-> > +}
-> > +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
-> > +
-> >   /**
-> >    * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
-> >    * @cpunum: CPU from which to read counters.
-> > diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> > index 24eaf0ec344d..32fcb0bf74a4 100644
-> > --- a/drivers/cpufreq/cppc_cpufreq.c
-> > +++ b/drivers/cpufreq/cppc_cpufreq.c
-> > @@ -63,7 +63,15 @@ static struct cppc_workaround_oem_info wa_info[] = {
-> >   static struct cpufreq_driver cppc_cpufreq_driver;
-> > +static enum {
-> > +	FIE_UNSET = -1,
-> > +	FIE_ENABLED,
-> > +	FIE_DISABLED
-> > +} fie_disabled = FIE_UNSET;
-> > +
-> >   #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
-> > +module_param(fie_disabled, int, 0444);
-> > +MODULE_PARM_DESC(fie_disabled, "Disable Frequency Invariance Engine (FIE)");
-> 
-> Why we need the modules support?
-> I would drop this, since the fie_disabled would be set properly when
-> needed. The code would be cleaner (more below).
-> 
-> >   /* Frequency invariance support */
-> >   struct cppc_freq_invariance {
-> > @@ -158,7 +166,7 @@ static void cppc_cpufreq_cpu_fie_init(struct cpufreq_policy *policy)
-> >   	struct cppc_freq_invariance *cppc_fi;
-> >   	int cpu, ret;
-> > -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> > +	if (fie_disabled)
-> >   		return;
-> >   	for_each_cpu(cpu, policy->cpus) {
-> > @@ -199,7 +207,7 @@ static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
-> >   	struct cppc_freq_invariance *cppc_fi;
-> >   	int cpu;
-> > -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> > +	if (fie_disabled)
-> >   		return;
-> >   	/* policy->cpus will be empty here, use related_cpus instead */
-> > @@ -229,7 +237,21 @@ static void __init cppc_freq_invariance_init(void)
-> >   	};
-> >   	int ret;
-> > -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> > +	switch (fie_disabled) {
-> > +	/* honor user request */
-> > +	case FIE_DISABLED:
-> > +	case FIE_ENABLED:
-> 
-> This module's over-write doesn't look 'clean'.
-> Is it OK to allow a user to go with the poor performing
-> system (likely on many platforms)? Or we assume that there are
-> platforms which has a bit faster mailboxes and they already
-> have the FIE issue impacting task's utilization measurements.
-> 
-> It looks like we are not sure about the solution. On one hand
-> we implement those checks in the cppc_perf_ctrs_in_pcc()
-> which could set the flag, but on the other hand we allow user
-> to decide. IMO this creates diversity that we are not able to control.
-> It creates another tunable knob in the kernel, which then is forgotten
-> to check.
-> 
-> I still haven't seen information that the old FIE was an issue on those
-> servers and had impact on task utilization measurements. This should be
-> a main requirement for this new feature. This would be after we proved
-> that the utilization problem was due to the FIE and not something else (like
-> uArch variation or workload variation).
-> 
-> IMO let's revert the ACPI_CPPC_CPUFREQ_FIE. When we get data that
-> FIE is an issue on those servers we can come back to this topic.
-> 
-> Regards,
-> Lukasz
+> I would just not compile this at all (or even revert this feature).
+> If someone compiled in this by accident - make sure we disable it
+> after checks like in the patch 1/2. I'll add also some comments
+> to that patch.
+
+If we don't really want the feature, which is open for discussion
+(added Vincent to have a look as well), then we better mark it BROKEN
+in Kconfig.
 
 -- 
 viresh
