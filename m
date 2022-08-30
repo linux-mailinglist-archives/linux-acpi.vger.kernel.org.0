@@ -2,59 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 038235A7177
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Aug 2022 01:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E96555A717D
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Aug 2022 01:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230309AbiH3XQ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Aug 2022 19:16:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
+        id S231793AbiH3XQr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Aug 2022 19:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231586AbiH3XQR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Aug 2022 19:16:17 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E56A5A892
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Aug 2022 16:16:16 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id e195so4642037iof.1
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Aug 2022 16:16:16 -0700 (PDT)
+        with ESMTP id S231684AbiH3XQ0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Aug 2022 19:16:26 -0400
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5D6B58528
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Aug 2022 16:16:17 -0700 (PDT)
+Received: by mail-il1-x12a.google.com with SMTP id l6so5279359ilk.13
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Aug 2022 16:16:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=6Cki2zIPGx1POrukQe/HlbUkh63Uf8/m2v1IMF/IUTs=;
-        b=kZW7YJ0imUUssdJmbimewISxSqiEqn1g+K9BJsvsguQF1wnXRBDeyDZgNxj8mJMP0T
-         eF9bl5BneyyKx+/HBQ5vra8CsSlE/2vPZ5MPryjGJpTk5GTqkkR6ZAbikV4ZKsOPq6nO
-         JkgB34Qhk6z0IA9OvLVnZtLWpvwaSyLNF7+3s=
+        bh=+Zr3ySvWsAbTk84Odn6RLHHn6wzrbctElmly11wkN94=;
+        b=iLHDN+YCP6SEeigDXR6QMVNZFzSVxBxLEqWFEgoiIaApBvqp2Talh4Hx2+dYlXR7Jg
+         sKyZE385q5vEsw6K/Q8Fuww3vSMn1euFi9t/lIKKrqqbkqRKE7VJ+YSobkQmze6jdN59
+         8uNPyKYMmbP/2VRiezTaqz6binp1k6h3Wm+Ig=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=6Cki2zIPGx1POrukQe/HlbUkh63Uf8/m2v1IMF/IUTs=;
-        b=hIJKKGgRChDQpYiV5y1cz/MnQA+tAyZzc0pp1BlKRCug7fvb5pHoJuUrdrn27hK6zd
-         9GnK0klaqegIDIc/kxJ0Mjj20eK2rK2UsHaQlwZV11B3Fe4bnJnpVa07Hu7TQKsRvKa9
-         4CFNF5a5qHghK9jO04IoDaY1gsi5bbn5ASW8NUaBBtW+fSQfkHxpZu6kQ0O2yWAEcwhc
-         L0gRnGSbFam+daFggDwfXpoRITHBriM6qN41s4m3E9ox0DzoTVPVo4aHb6bMLzTvKbRA
-         g0NYkc1eh8Csd5sHLQnU+OUC+rP3AGDYgWwu3o2bUBLsT0sn731O5ucC+f0gSGZ3IAGG
-         X4Hw==
-X-Gm-Message-State: ACgBeo0cDEhP8lkooVTHdTJHJtFVjQ9W37OcPt/ePat9LFp/Q6U62tw+
-        RbwIZpHg9NygXnd1gnY/PlAcOJ0mwLz0aQ==
-X-Google-Smtp-Source: AA6agR4PPQ3OCABkevBsd5VZPlwvnQiE50aYZTYSDtxDRq0jTTRX2BRq62coRRChds8lZXfAaYPaMQ==
-X-Received: by 2002:a02:ce92:0:b0:34a:5b83:a0df with SMTP id y18-20020a02ce92000000b0034a5b83a0dfmr2521090jaq.307.1661901375405;
-        Tue, 30 Aug 2022 16:16:15 -0700 (PDT)
+        bh=+Zr3ySvWsAbTk84Odn6RLHHn6wzrbctElmly11wkN94=;
+        b=7lxVMs0zgkviI97qPzLwteDrZZ36OcE/p9tv14zfPG4OObjgHS/dHe4C4L+0dLFfZg
+         S0g2XGtvtS7im/dXXYnb4dwq21yFyMZVMRFsUfKdYN3XEi7NU5s42N+ZWYa7Yh3LiM0d
+         bMcHKbYN7coHkdXN06Pz01EykWoNnGuIgQgAqvKv3E/qaMCPEsIm01EieFABsMMHKfD9
+         fc9wrjlmnflm69vGU6cYW1kFPT9Tw68SdZFwBY2rYDAeWDUKQPjETeRXngAkUPexorIB
+         LGWmU/qSC+K27zuRa5e1rI+yZHlUC1ST8LIMR4pY87ouv3XDBZJIXF8xuy/DM0cIbKsh
+         xqGw==
+X-Gm-Message-State: ACgBeo0x/eeK1j8VaTtCe1trOb3lOVs6GAcs78L9IhBRh4Fz9c/pUwPs
+        jHr0ckYqlGizuaaXpSeWSMKWiVkM7T6kPw==
+X-Google-Smtp-Source: AA6agR7EnYpMbsonCArvzFQ6q8M1F4HNUWE8hMQhf14cPNEIMWVzS2p0V6Na5vd2QXE/tx8fjaV4Yg==
+X-Received: by 2002:a05:6e02:1a41:b0:2eb:7762:f42e with SMTP id u1-20020a056e021a4100b002eb7762f42emr1374216ilv.151.1661901376420;
+        Tue, 30 Aug 2022 16:16:16 -0700 (PDT)
 Received: from rrangel920.bld.corp.google.com (h24-56-189-219.arvdco.broadband.dynamic.tds.net. [24.56.189.219])
-        by smtp.gmail.com with ESMTPSA id z30-20020a056602081e00b0068b1858c81asm6165821iow.13.2022.08.30.16.16.14
+        by smtp.gmail.com with ESMTPSA id z30-20020a056602081e00b0068b1858c81asm6165821iow.13.2022.08.30.16.16.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Aug 2022 16:16:15 -0700 (PDT)
+        Tue, 30 Aug 2022 16:16:16 -0700 (PDT)
 From:   Raul E Rangel <rrangel@chromium.org>
 To:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org
 Cc:     hdegoede@redhat.com, mario.limonciello@amd.com, timvp@google.com,
         rafael@kernel.org, Raul E Rangel <rrangel@chromium.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
+        Alistair Francis <alistair@alistair23.me>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>, Rob Herring <robh@kernel.org>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 4/8] i2c: acpi: Use ACPI GPIO wake capability bit to set wake_irq
-Date:   Tue, 30 Aug 2022 17:15:37 -0600
-Message-Id: <20220830171332.4.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid>
+Subject: [PATCH 5/8] HID: i2c-hid: acpi: Stop setting wakeup_capable
+Date:   Tue, 30 Aug 2022 17:15:38 -0600
+Message-Id: <20220830171332.5.I2efb7f551e0aa2dc4c53b5fd5bbea91a1cdd9b32@changeid>
 X-Mailer: git-send-email 2.37.2.672.g94769d06f0-goog
 In-Reply-To: <20220830231541.1135813-1-rrangel@chromium.org>
 References: <20220830231541.1135813-1-rrangel@chromium.org>
@@ -62,7 +63,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,127 +71,29 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Device tree already has a mechanism to pass the wake_irq. It does this
-by looking for the wakeup-source property and setting the
-I2C_CLIENT_WAKE flag. This CL adds the ACPI equivalent. It uses at the
-ACPI GpioInt wake flag to determine if the interrupt can be used to wake
-the system. Previously the i2c drivers had to make assumptions and
-blindly enable the wake IRQ. This can cause spurious wake events. e.g.,
-If there is a device with an Active Low interrupt and the device gets
-powered off while suspending, the interrupt line will go low since it's
-no longer powered and wake the system. For this reason we should respect
-the board designers wishes and honor the wake bit defined on the
-GpioInt.
-
-This change does not cover the ACPI Interrupt or IRQ resources.
+This is now handled by the i2c-core driver.
 
 Signed-off-by: Raul E Rangel <rrangel@chromium.org>
 ---
 
- drivers/i2c/i2c-core-acpi.c |  8 ++++++--
- drivers/i2c/i2c-core-base.c | 17 +++++++++++------
- drivers/i2c/i2c-core.h      |  4 ++--
- 3 files changed, 19 insertions(+), 10 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-acpi.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index c762a879c4cc6b..cfe82a6ba3ef28 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -182,12 +182,13 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
- /**
-  * i2c_acpi_get_irq - get device IRQ number from ACPI
-  * @client: Pointer to the I2C client device
-+ * @wake_capable: Set to 1 if the IRQ is wake capable
-  *
-  * Find the IRQ number used by a specific client device.
-  *
-  * Return: The IRQ number or an error code.
-  */
--int i2c_acpi_get_irq(struct i2c_client *client)
-+int i2c_acpi_get_irq(struct i2c_client *client, int *wake_capable)
- {
- 	struct acpi_device *adev = ACPI_COMPANION(&client->dev);
- 	struct list_head resource_list;
-@@ -196,6 +197,9 @@ int i2c_acpi_get_irq(struct i2c_client *client)
+diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
+index b96ae15e0ad917..375c77c3db74d9 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
++++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
+@@ -105,11 +105,6 @@ static int i2c_hid_acpi_probe(struct i2c_client *client)
  
- 	INIT_LIST_HEAD(&resource_list);
+ 	acpi_device_fix_up_power(adev);
  
-+	if (wake_capable)
-+		*wake_capable = 0;
-+
- 	ret = acpi_dev_get_resources(adev, &resource_list,
- 				     i2c_acpi_add_resource, &irq);
- 	if (ret < 0)
-@@ -204,7 +208,7 @@ int i2c_acpi_get_irq(struct i2c_client *client)
- 	acpi_dev_free_resource_list(&resource_list);
- 
- 	if (irq == -ENOENT)
--		irq = acpi_dev_gpio_irq_get(adev, 0);
-+		irq = acpi_dev_gpio_irq_get_wake(adev, 0, wake_capable);
- 
- 	return irq;
- }
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 91007558bcb260..88f4ef76235f4e 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -468,6 +468,7 @@ static int i2c_device_probe(struct device *dev)
- 	struct i2c_client	*client = i2c_verify_client(dev);
- 	struct i2c_driver	*driver;
- 	int status;
-+	int acpi_wake_capable = 0;
- 
- 	if (!client)
- 		return 0;
-@@ -487,7 +488,7 @@ static int i2c_device_probe(struct device *dev)
- 			if (irq == -EINVAL || irq == -ENODATA)
- 				irq = of_irq_get(dev->of_node, 0);
- 		} else if (ACPI_COMPANION(dev)) {
--			irq = i2c_acpi_get_irq(client);
-+			irq = i2c_acpi_get_irq(client, &acpi_wake_capable);
- 		}
- 		if (irq == -EPROBE_DEFER) {
- 			status = irq;
-@@ -513,13 +514,17 @@ static int i2c_device_probe(struct device *dev)
- 		goto put_sync_adapter;
- 	}
- 
--	if (client->flags & I2C_CLIENT_WAKE) {
-+	if (client->flags & I2C_CLIENT_WAKE || acpi_wake_capable) {
- 		int wakeirq;
- 
--		wakeirq = of_irq_get_byname(dev->of_node, "wakeup");
--		if (wakeirq == -EPROBE_DEFER) {
--			status = wakeirq;
--			goto put_sync_adapter;
-+		if (acpi_wake_capable) {
-+			wakeirq = client->irq;
-+		} else {
-+			wakeirq = of_irq_get_byname(dev->of_node, "wakeup");
-+			if (wakeirq == -EPROBE_DEFER) {
-+				status = wakeirq;
-+				goto put_sync_adapter;
-+			}
- 		}
- 
- 		device_init_wakeup(&client->dev, true);
-diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
-index 87e2c914f1c57b..8e336638a0cd2e 100644
---- a/drivers/i2c/i2c-core.h
-+++ b/drivers/i2c/i2c-core.h
-@@ -61,11 +61,11 @@ static inline int __i2c_check_suspended(struct i2c_adapter *adap)
- #ifdef CONFIG_ACPI
- void i2c_acpi_register_devices(struct i2c_adapter *adap);
- 
--int i2c_acpi_get_irq(struct i2c_client *client);
-+int i2c_acpi_get_irq(struct i2c_client *client, int *wake_capable);
- #else /* CONFIG_ACPI */
- static inline void i2c_acpi_register_devices(struct i2c_adapter *adap) { }
- 
--static inline int i2c_acpi_get_irq(struct i2c_client *client)
-+static inline int i2c_acpi_get_irq(struct i2c_client *client, int *wake_capable)
- {
- 	return 0;
+-	if (acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0) {
+-		device_set_wakeup_capable(dev, true);
+-		device_set_wakeup_enable(dev, false);
+-	}
+-
+ 	return i2c_hid_core_probe(client, &ihid_acpi->ops,
+ 				  hid_descriptor_address, 0);
  }
 -- 
 2.37.2.672.g94769d06f0-goog
