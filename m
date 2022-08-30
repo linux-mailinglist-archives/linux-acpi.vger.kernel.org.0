@@ -2,220 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A084A5A66A0
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Aug 2022 16:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A56825A6712
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Aug 2022 17:14:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229985AbiH3OuY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Aug 2022 10:50:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53574 "EHLO
+        id S229688AbiH3POL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Aug 2022 11:14:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229709AbiH3OuU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Aug 2022 10:50:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD49E28E11
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Aug 2022 07:50:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1661871015;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HMgyN7KKHWBc6kUGC15Kytgi5k1dgZDjjbRIKs56ZQU=;
-        b=BOSa+Dc4GloHThDZM0g8zR1jOomt84dJfsUuhzT1seLvZK0B3sEp22NmGhhkLBiUHAXv2a
-        bSfUGfhBlXB50x44Y+ubi0qef638AFR3fj+zExzyVotOsQFK3CFso6IVI43wREgkIuQclj
-        +cgLllq1T2iUqrVHfctok0b+pkX9H7U=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-400-QH1AluJFNzOex-KUf6YJNA-1; Tue, 30 Aug 2022 10:50:13 -0400
-X-MC-Unique: QH1AluJFNzOex-KUf6YJNA-1
-Received: by mail-ej1-f71.google.com with SMTP id ho13-20020a1709070e8d00b00730a655e173so4014106ejc.8
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Aug 2022 07:50:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=HMgyN7KKHWBc6kUGC15Kytgi5k1dgZDjjbRIKs56ZQU=;
-        b=FXB5Yzgom+sfGLaJZLb1ZLW8TvMtCiJnvseJbizZVn+tIxAVnLc7Wumph/6S9aShYv
-         RowzJD31JvsdchGqZvluISx4+ll9luONTXJLibQDP/ZmgY9UinDJbkw31z4q88oYYeWD
-         wMpSYdDKklarkxl8riUeeBcB+GdlJw2UNNXwKWWdSjkGg6c6P8hdzYbey7mIe2Fprvq4
-         kdfPK57TFS8AuykFVBWLlPqbsIw2zAvO1Pchj1ZXXG//bvRMqCucgy1HmO3MomtYdocw
-         Sf24TrUN6w2lzeev2M7o6YgvTquymbLYJeUVmx9ltcf2xJDEwZA8s8T3zEs6YnOekhsv
-         xQ+g==
-X-Gm-Message-State: ACgBeo016qRmCHnzRihznP7MSthdcwp00PW0/etfRPS0+Yx8/kraDiL9
-        2KXf+slJU8yKI9RYljUsvxU7C9E8i/tiPF0cE9mGRn9l5qTA4AVKrCFQrYTGkA5Ylq/CS5LXP6p
-        KRUVHlAq9OL1mpoZHcRAuPQ==
-X-Received: by 2002:a17:907:75ea:b0:73d:daa0:3cbe with SMTP id jz10-20020a17090775ea00b0073ddaa03cbemr15573482ejc.662.1661871012674;
-        Tue, 30 Aug 2022 07:50:12 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR5omIkQ2qHqLmuqgyMe1PNn8uLAHaQevnuGthpAqxbWhHzzxKNQ3+sDD48V+F3pjaJ0FAceAQ==
-X-Received: by 2002:a17:907:75ea:b0:73d:daa0:3cbe with SMTP id jz10-20020a17090775ea00b0073ddaa03cbemr15573463ejc.662.1661871012430;
-        Tue, 30 Aug 2022 07:50:12 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id e26-20020a170906315a00b007417041fb2bsm3576629eje.116.2022.08.30.07.50.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Aug 2022 07:50:11 -0700 (PDT)
-Message-ID: <6ecd5694-cb60-dda2-5092-cf14920c5877@redhat.com>
-Date:   Tue, 30 Aug 2022 16:50:11 +0200
+        with ESMTP id S229608AbiH3POL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Aug 2022 11:14:11 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFBF122BD3;
+        Tue, 30 Aug 2022 08:14:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661872449; x=1693408449;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MZ2ZerYuF3A2KgxxfSjNdhOa11NynO633L1K+Ai+Uz0=;
+  b=cMw3OyAn6N4dEtGDxEAaQT3Dlr85eJtz8Oka3BwzjS+SlZZW42olMRTE
+   28CINRO+tv/5h0DDF26Qs1oMbeJMb+RQQSlfru5nB1mvuBeZOiTXE2Rvy
+   jm0Hwf90GlaFTL9Jkbqu6L4cbeZNZnG9SK2fKFu2z4bneCknVgilJ2ERN
+   RkRY6x/NJLp2LNSx/3HbzAEYqNSXFWs2WPFGjR9HQFF0ywgXw+9woHy+4
+   8OjW+Gqczmcn/DVemHOEJ1IxwgI9EYCSP0oaOVBkgdg1vORhsjCVBDFol
+   EuSf3m17DxzdcMT7cY3nfmb47Bw1lkDQdOHwhFonVhEeoUnEkGBTjKXul
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10455"; a="381499167"
+X-IronPort-AV: E=Sophos;i="5.93,275,1654585200"; 
+   d="scan'208";a="381499167"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 08:14:08 -0700
+X-IronPort-AV: E=Sophos;i="5.93,275,1654585200"; 
+   d="scan'208";a="644863987"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 08:14:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oT2wF-0060Qb-29;
+        Tue, 30 Aug 2022 18:14:03 +0300
+Date:   Tue, 30 Aug 2022 18:14:03 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH v1 1/2] ACPI: PMIC: Use sizeof() instead of hard coded
+ value
+Message-ID: <Yw4pO+0+pVAsoG2n@smile.fi.intel.com>
+References: <20220830135532.28992-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 1/4] ACPI: s2idle: Add a new ->check() callback for
- platform_s2idle_ops
-Content-Language: en-US
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-References: <20220829162953.5947-1-mario.limonciello@amd.com>
- <20220829162953.5947-2-mario.limonciello@amd.com>
- <CAJZ5v0iF1_MUptawLL4DD0RqZpysH2B+Pk5sj_=gLv9AOVdy=Q@mail.gmail.com>
- <88b5f4aa-d238-efb6-82fd-e227c42cc10c@amd.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <88b5f4aa-d238-efb6-82fd-e227c42cc10c@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220830135532.28992-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Tue, Aug 30, 2022 at 04:55:31PM +0300, Andy Shevchenko wrote:
+> It's better to use sizeof() of a given buffer than spreading
+> a hard coded value.
 
-On 8/30/22 13:42, Limonciello, Mario wrote:
-> On 8/30/2022 06:39, Rafael J. Wysocki wrote:
->> On Mon, Aug 29, 2022 at 6:29 PM Mario Limonciello
->> <mario.limonciello@amd.com> wrote:
->>>
->>> On some platforms it is found that Linux more aggressively enters s2idle
->>> than Windows enters Modern Standby and this uncovers some synchronization
->>> issues for the platform.  To aid in debugging this class of problems in
->>> the future, add support for an extra optional callback intended for
->>> drivers to emit extra debugging.
->>>
->>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>
->> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>
->> and I'm assuming that this is for Hans.
-> 
-> Thanks, and yeah I think it makes more sense for this to go through platform-x86.
+It seems I have noticed more to convert. But I will wait for
+others to comment on the published version.
 
-Ok, I will review 2-4 and merge the entire series
-through platform-x86.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Regards,
-
-Hans
-
-
-> 
->>
->>> ---
->>> v2->v3:
->>>   * Rename to *check
->>> v1->v2:
->>>   * Add a prototype for `acpi_s2idle_enter`
->>>
->>>   drivers/acpi/sleep.h      |  1 +
->>>   drivers/acpi/x86/s2idle.c | 14 ++++++++++++++
->>>   include/linux/acpi.h      |  1 +
->>>   include/linux/suspend.h   |  1 +
->>>   kernel/power/suspend.c    |  3 +++
->>>   5 files changed, 20 insertions(+)
->>>
->>> diff --git a/drivers/acpi/sleep.h b/drivers/acpi/sleep.h
->>> index 7fe41ee489d6..d960a238be4e 100644
->>> --- a/drivers/acpi/sleep.h
->>> +++ b/drivers/acpi/sleep.h
->>> @@ -18,6 +18,7 @@ static inline acpi_status acpi_set_waking_vector(u32 wakeup_address)
->>>   extern int acpi_s2idle_begin(void);
->>>   extern int acpi_s2idle_prepare(void);
->>>   extern int acpi_s2idle_prepare_late(void);
->>> +extern void acpi_s2idle_check(void);
->>>   extern bool acpi_s2idle_wake(void);
->>>   extern void acpi_s2idle_restore_early(void);
->>>   extern void acpi_s2idle_restore(void);
->>> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
->>> index f9ac12b778e6..474aa46f82f6 100644
->>> --- a/drivers/acpi/x86/s2idle.c
->>> +++ b/drivers/acpi/x86/s2idle.c
->>> @@ -486,6 +486,19 @@ int acpi_s2idle_prepare_late(void)
->>>          return 0;
->>>   }
->>>
->>> +void acpi_s2idle_check(void)
->>> +{
->>> +       struct acpi_s2idle_dev_ops *handler;
->>> +
->>> +       if (!lps0_device_handle || sleep_no_lps0)
->>> +               return;
->>> +
->>> +       list_for_each_entry(handler, &lps0_s2idle_devops_head, list_node) {
->>> +               if (handler->check)
->>> +                       handler->check();
->>> +       }
->>> +}
->>> +
->>>   void acpi_s2idle_restore_early(void)
->>>   {
->>>          struct acpi_s2idle_dev_ops *handler;
->>> @@ -527,6 +540,7 @@ static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 = {
->>>          .begin = acpi_s2idle_begin,
->>>          .prepare = acpi_s2idle_prepare,
->>>          .prepare_late = acpi_s2idle_prepare_late,
->>> +       .check = acpi_s2idle_check,
->>>          .wake = acpi_s2idle_wake,
->>>          .restore_early = acpi_s2idle_restore_early,
->>>          .restore = acpi_s2idle_restore,
->>> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
->>> index 6f64b2f3dc54..acaa2ddc067d 100644
->>> --- a/include/linux/acpi.h
->>> +++ b/include/linux/acpi.h
->>> @@ -1075,6 +1075,7 @@ acpi_status acpi_os_prepare_extended_sleep(u8 sleep_state,
->>>   struct acpi_s2idle_dev_ops {
->>>          struct list_head list_node;
->>>          void (*prepare)(void);
->>> +       void (*check)(void);
->>>          void (*restore)(void);
->>>   };
->>>   int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg);
->>> diff --git a/include/linux/suspend.h b/include/linux/suspend.h
->>> index 70f2921e2e70..03ed42ed2c7f 100644
->>> --- a/include/linux/suspend.h
->>> +++ b/include/linux/suspend.h
->>> @@ -191,6 +191,7 @@ struct platform_s2idle_ops {
->>>          int (*begin)(void);
->>>          int (*prepare)(void);
->>>          int (*prepare_late)(void);
->>> +       void (*check)(void);
->>>          bool (*wake)(void);
->>>          void (*restore_early)(void);
->>>          void (*restore)(void);
->>> diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
->>> index 827075944d28..c6272d466e58 100644
->>> --- a/kernel/power/suspend.c
->>> +++ b/kernel/power/suspend.c
->>> @@ -136,6 +136,9 @@ static void s2idle_loop(void)
->>>                          break;
->>>                  }
->>>
->>> +               if (s2idle_ops && s2idle_ops->check)
->>> +                       s2idle_ops->check();
->>> +
->>>                  s2idle_enter();
->>>          }
->>>
->>> -- 
->>> 2.34.1
->>>
-> 
 
