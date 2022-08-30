@@ -2,63 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A56825A6712
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Aug 2022 17:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A7525A67CC
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Aug 2022 17:57:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbiH3POL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Aug 2022 11:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
+        id S229437AbiH3P5U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Aug 2022 11:57:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiH3POL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Aug 2022 11:14:11 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFBF122BD3;
-        Tue, 30 Aug 2022 08:14:09 -0700 (PDT)
+        with ESMTP id S230326AbiH3P5R (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Aug 2022 11:57:17 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C097B6D70;
+        Tue, 30 Aug 2022 08:57:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661872449; x=1693408449;
+  t=1661875036; x=1693411036;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=MZ2ZerYuF3A2KgxxfSjNdhOa11NynO633L1K+Ai+Uz0=;
-  b=cMw3OyAn6N4dEtGDxEAaQT3Dlr85eJtz8Oka3BwzjS+SlZZW42olMRTE
-   28CINRO+tv/5h0DDF26Qs1oMbeJMb+RQQSlfru5nB1mvuBeZOiTXE2Rvy
-   jm0Hwf90GlaFTL9Jkbqu6L4cbeZNZnG9SK2fKFu2z4bneCknVgilJ2ERN
-   RkRY6x/NJLp2LNSx/3HbzAEYqNSXFWs2WPFGjR9HQFF0ywgXw+9woHy+4
-   8OjW+Gqczmcn/DVemHOEJ1IxwgI9EYCSP0oaOVBkgdg1vORhsjCVBDFol
-   EuSf3m17DxzdcMT7cY3nfmb47Bw1lkDQdOHwhFonVhEeoUnEkGBTjKXul
+  bh=nyO3eXpBciEJYkjPPepKRjcZ/w25Y4N/Ho+bxQPdMgU=;
+  b=HVAiyw3OSK0shxnPWsNOmHWfLJ48EqFUWhcWqIHsSToWNhlSaVwLPU2I
+   7FZ3U2rS3KRIxLl/OU3DTtbt7Cut63sO6ZcbMBW/P+QHmh2DzyHLKZT8o
+   XeiUcfjuXhf+MlSS/D+nVzsPd/UqQYG697PX2U2mKm+gkobwC0MzCVzC8
+   ckyLeWKLIKOHk+KZ1IqLzsJ4/8dU6eZpsP3flBol+uQpK4l8siWMEFgtI
+   zQjXPrzVfQ++4HniD//YBGA7Zh0xbDcD+jxfN6QqyzolAUWS5vDYGjNzU
+   pxcNt4DMftG8gt0Fwk+9Kj4R7rVbxTstKOAFOxAnCFOz0lFh8DwNEZv/w
    g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10455"; a="381499167"
+X-IronPort-AV: E=McAfee;i="6500,9779,10455"; a="282185430"
 X-IronPort-AV: E=Sophos;i="5.93,275,1654585200"; 
-   d="scan'208";a="381499167"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 08:14:08 -0700
+   d="scan'208";a="282185430"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 08:57:16 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,275,1654585200"; 
-   d="scan'208";a="644863987"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 08:14:06 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oT2wF-0060Qb-29;
-        Tue, 30 Aug 2022 18:14:03 +0300
-Date:   Tue, 30 Aug 2022 18:14:03 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
+   d="scan'208";a="672920904"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga008.fm.intel.com with ESMTP; 30 Aug 2022 08:57:14 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id C86B2AD; Tue, 30 Aug 2022 18:57:28 +0300 (EEST)
+Date:   Tue, 30 Aug 2022 18:57:28 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>
 Subject: Re: [PATCH v1 1/2] ACPI: PMIC: Use sizeof() instead of hard coded
  value
-Message-ID: <Yw4pO+0+pVAsoG2n@smile.fi.intel.com>
+Message-ID: <Yw4zaBJu81SvkFMM@black.fi.intel.com>
 References: <20220830135532.28992-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20220830135532.28992-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -68,12 +66,7 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Tue, Aug 30, 2022 at 04:55:31PM +0300, Andy Shevchenko wrote:
 > It's better to use sizeof() of a given buffer than spreading
 > a hard coded value.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-It seems I have noticed more to convert. But I will wait for
-others to comment on the published version.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
