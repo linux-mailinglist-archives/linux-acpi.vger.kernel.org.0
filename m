@@ -2,98 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEA6E5A7B13
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Aug 2022 12:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A2CF5A7B59
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Aug 2022 12:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230379AbiHaKLx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 31 Aug 2022 06:11:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44578 "EHLO
+        id S230141AbiHaK2F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 Aug 2022 06:28:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230332AbiHaKLs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Aug 2022 06:11:48 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986DDB943B;
-        Wed, 31 Aug 2022 03:11:43 -0700 (PDT)
-Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MHg1R4Vbhz67yJP;
-        Wed, 31 Aug 2022 18:11:07 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 31 Aug 2022 12:11:41 +0200
-Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Wed, 31 Aug
- 2022 11:11:40 +0100
-Date:   Wed, 31 Aug 2022 11:11:39 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     Robert Richter <rrichter@amd.com>
-CC:     Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ben Widawsky <bwidawsk@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Bjorn Helgaas" <bhelgaas@google.com>,
+        with ESMTP id S229921AbiHaK2D (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Aug 2022 06:28:03 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D81BCCD6;
+        Wed, 31 Aug 2022 03:27:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661941679; x=1693477679;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fNYVpN/NsMsBfAGs/hbgZ3dMWqsJF2rw5nX56s7ZTL0=;
+  b=nESgRqcWuW1SMq7Uk4UKA5SE3QW3BEEy2paVt/qjpz6TD0dd7WhtWhQ3
+   CNKSoCaeMWPO4GslKd0XOnAVJhhWDm2O+fomBsv0dRTgP+iqh0+LQ1iXj
+   xRtAhjRlYMKRYKnY6/hkR4KxnxFAPRuT9ImvzJyE60/6QYgmXiIRQWCZU
+   adGavMD+NajWMkSXlf+EkU98A+EXTof5D51Az9QHqGyF8hE0zbFLVIGKD
+   wkhz+t+F/qhGMkiDNaklUGGDtktOsronDRANLPeQ6O0yYsDcAAGR4Mm73
+   tH1jpeTmbyYg0ErAMFlzH5KEC4xiS6/vTaigky3lPvPlfi4w4+f4lErZA
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10455"; a="275166261"
+X-IronPort-AV: E=Sophos;i="5.93,277,1654585200"; 
+   d="scan'208";a="275166261"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2022 03:27:58 -0700
+X-IronPort-AV: E=Sophos;i="5.93,277,1654585200"; 
+   d="scan'208";a="680381338"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2022 03:27:56 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oTKwr-006KhY-2N;
+        Wed, 31 Aug 2022 13:27:53 +0300
+Date:   Wed, 31 Aug 2022 13:27:53 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     'Mika Westerberg' <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 06/15] PCI/ACPI: Link host bridge to its ACPI fw node
-Message-ID: <20220831111139.0000560f@huawei.com>
-In-Reply-To: <20220831081603.3415-7-rrichter@amd.com>
-References: <20220831081603.3415-1-rrichter@amd.com>
-        <20220831081603.3415-7-rrichter@amd.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v2 2/3] ACPI: PMIC: Replace open coded be16_to_cpu()
+Message-ID: <Yw83qaJVhoUdUgap@smile.fi.intel.com>
+References: <20220830171155.42962-1-andriy.shevchenko@linux.intel.com>
+ <20220830171155.42962-2-andriy.shevchenko@linux.intel.com>
+ <Yw71GqF5x7u16yom@black.fi.intel.com>
+ <Yw8rPW39Vif4yVAf@smile.fi.intel.com>
+ <8989df1c-8fa7-be27-c2f0-e528604e474a@redhat.com>
+ <Yw8uiAv95LbBh2FD@black.fi.intel.com>
+ <bce5d03cd5ea4aa78ed679399dde0759@AcuMS.aculab.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.42]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bce5d03cd5ea4aa78ed679399dde0759@AcuMS.aculab.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 31 Aug 2022 10:15:54 +0200
-Robert Richter <rrichter@amd.com> wrote:
+On Wed, Aug 31, 2022 at 10:06:09AM +0000, David Laight wrote:
+> From: Mika Westerberg
+> > Sent: 31 August 2022 10:49
+> > On Wed, Aug 31, 2022 at 11:37:21AM +0200, Hans de Goede wrote:
+> > > On 8/31/22 11:34, Andy Shevchenko wrote:
+> > > > On Wed, Aug 31, 2022 at 08:43:54AM +0300, Mika Westerberg wrote:
+> > > >> On Tue, Aug 30, 2022 at 08:11:54PM +0300, Andy Shevchenko wrote:
+> > > >>> -#define VR_MODE_DISABLED        0
+> > > >>> -#define VR_MODE_AUTO            BIT(0)
+> > > >>> -#define VR_MODE_NORMAL          BIT(1)
+> > > >>> -#define VR_MODE_SWITCH          BIT(2)
+> > > >>> -#define VR_MODE_ECO             (BIT(0)|BIT(1))
+> > > >>> +#define PMIC_REG_MASK		GENMASK(11, 0)
+> > > >>> +
+> > > >>> +#define VR_MODE_DISABLED        (0 << 0)
+> > > >>> +#define VR_MODE_AUTO            (1 << 0)
+> > > >>> +#define VR_MODE_NORMAL          (2 << 0)
+> > > >>> +#define VR_MODE_ECO             (3 << 0)
+> > > >>> +#define VR_MODE_SWITCH          (4 << 0)
+> > > >>
+> > > >> IMHO this one is worse than what it was.
+> > > >
+> > > > I'm not sure why. Here is obvious wrong use of BIT() macro against
+> > > > plain numbers. I can split it into a separate change with an explanation
+> > > > of why it's better. But I think it doesn't worth the churn.
+> > >
+> > > FWIW I'm with Andy here, the VR_MODE_ECO clearly is trying
+> > > to just say 3, so this is just a plain enum for values 0-4 and
+> > > as such should not use the BIT macros.
+> > 
+> > Yeah, enum would look better but the << 0 just makes me confused ;-)
+> 
+> No idea what that code is doing.
+> The values are all used to initialise a .bit structure member.
+> So maybe BIT() is right.
+> The _ECO value isn't used at all.
+> 
+> Deeper analysis may be needed.
 
-> A lookup of a host bridge's corresponding acpi device (struct
-> acpi_device) is not possible, for example:
-> 
-> 	adev = ACPI_COMPANION(&host_bridge->dev);
-> 
-> This could be useful to find a host bridge's fwnode handle and to
-> determine and call additional host bridge ACPI parameters and methods
-> such as HID/CID or _UID.
-> 
-> Make this work by linking the host bridge to its ACPI fw node.
-> 
-> Signed-off-by: Robert Richter <rrichter@amd.com>
+So, can you do that since you already started?
 
-Seems sensible to me, though I'm not an expert in this are of the code.
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
-> ---
->  drivers/acpi/pci_root.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index d57cf8454b93..846c979e4c29 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -1083,6 +1083,7 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
->  		goto out_release_info;
->  
->  	host_bridge = to_pci_host_bridge(bus->bridge);
-> +	host_bridge->dev.fwnode = acpi_fwnode_handle(device);
->  	if (!(root->osc_control_set & OSC_PCI_EXPRESS_NATIVE_HP_CONTROL))
->  		host_bridge->native_pcie_hotplug = 0;
->  	if (!(root->osc_control_set & OSC_PCI_SHPC_NATIVE_HP_CONTROL))
 
