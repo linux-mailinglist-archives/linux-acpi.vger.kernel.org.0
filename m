@@ -2,384 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9990D5A8571
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Aug 2022 20:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B13FA5A85EB
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Aug 2022 20:43:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232844AbiHaSYk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 31 Aug 2022 14:24:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46938 "EHLO
+        id S231138AbiHaSnb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 Aug 2022 14:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233120AbiHaSYI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Aug 2022 14:24:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4F8162A98
-        for <linux-acpi@vger.kernel.org>; Wed, 31 Aug 2022 11:20:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1661969968;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fuWmRIFXw6Kcx2QVIeEOdLQrgVopjQQArfDzeESZeK0=;
-        b=Z82mZ2tBIu14J1xwdIsMU1n6OhuXslBlMnBjXTNxh1/5sXkuDHcOfhT3BRnBONlC0AyPaP
-        53HtSleqhwzxNsmNF9Bb18fPPOSYJTCKqdxcvYpzi8VnHTmOMlu+05KNJZM6iQlbQF7ZTv
-        W8LhmZ3RLRvmwtudQhYbKL9erTuP0lU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-141-hdMz7dorMdmfEXOXI40new-1; Wed, 31 Aug 2022 14:19:27 -0400
-X-MC-Unique: hdMz7dorMdmfEXOXI40new-1
-Received: by mail-ej1-f71.google.com with SMTP id qw34-20020a1709066a2200b00730ca5a94bfso5667642ejc.3
-        for <linux-acpi@vger.kernel.org>; Wed, 31 Aug 2022 11:19:26 -0700 (PDT)
+        with ESMTP id S233099AbiHaSnF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Aug 2022 14:43:05 -0400
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD25260C6;
+        Wed, 31 Aug 2022 11:42:48 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id 193so5453713ybc.10;
+        Wed, 31 Aug 2022 11:42:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=fuWmRIFXw6Kcx2QVIeEOdLQrgVopjQQArfDzeESZeK0=;
-        b=1ijSq9ZuVvOUaOJkD7FfJVKzklQXsbA4TJLEsh8Gc+UmVDeCoiCXGy6EdIoiPJ/tdx
-         o+5G/NoxpdYLWg3a2c37BLgquGc6FMfIlUcOITBJOG7iHDrERQZUB1ebdcx9vUJHnxGb
-         tJ69bWDaRsV+IiD+SeQqhlHLBnNbrd4v/5glHQ+5V/eyW3kI6f5ICANet0TaeMwcF4q9
-         tE9HJ7gp+Vob6CYqpp/JpV4ThSNlthqVX5SpQLlD6Z24zo2GH535R63E+8TEUivyBMka
-         7vPQvHegoN2E+oyRydnrpkYe9hhTmlzxSjN+Yj14i+Dt5oDhiJYLLxeZnhAKWoYkVQT3
-         0tEg==
-X-Gm-Message-State: ACgBeo1QpKCjgNEg5fzYBKJ0nD+VABULM3G5a/fq1GDI9D+OjOaMGcKz
-        +mZ4qhMljYS0bB4uWDTHwP/T8MUWgskJ/BpjJSQObDhy4F0DlfLLeBcOgFzdug/SxcnwwQ2ckS1
-        ghvOegjkpQk0oQ4xWOX/nyA==
-X-Received: by 2002:a17:907:271b:b0:730:aa8e:74eb with SMTP id w27-20020a170907271b00b00730aa8e74ebmr21498426ejk.478.1661969965349;
-        Wed, 31 Aug 2022 11:19:25 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6QPZk+7Ics045VzKPECvzAAPIToksBM93AHo5H6j0ow5wPCe8uGoWPAWEdacvZugQ4Y4ZWpw==
-X-Received: by 2002:a17:907:271b:b0:730:aa8e:74eb with SMTP id w27-20020a170907271b00b00730aa8e74ebmr21498411ejk.478.1661969965088;
-        Wed, 31 Aug 2022 11:19:25 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id z23-20020aa7d417000000b0044687e93f74sm9340737edq.43.2022.08.31.11.19.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Aug 2022 11:19:24 -0700 (PDT)
-Message-ID: <4f388bda-b991-0ab6-4098-4f5dbabe57fb@redhat.com>
-Date:   Wed, 31 Aug 2022 20:19:24 +0200
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=xzoGBbwJ3ZwrByKi856TIQu0OrENwqVUhnhirrGF5H4=;
+        b=LfVse99iLmoMvSxqMbl686kNuMq/rDAS4UUXmVTpzLNJAYy/J2GDCWAbnPlmPiXp0t
+         lbgeLK9j2DfpHqa4nSBzy5guSEiYoJEZAf2bSAIB1HlPrVeOeHYo2N2Y+wbVcy85+n4s
+         wJ4MwfYHziTGAE8MJUTasRZfQ06LXtZ3yOXSe78l3qgFXym7G0JhHiTuUaamwmF1I7O+
+         /dfHFN4kkTP/VXUXs46WGMli3WPxGp9HTGfa8Dz729bOpIIQBSPgpyCWdL5rEF7q6g+O
+         SbLts6MNZwa+741fvM5wV0ZdL35BIWnVwFUkoS2Kr07pfUQ5m+66ACbsBJQMOxbJBL76
+         x5hA==
+X-Gm-Message-State: ACgBeo1NtiC3ZoxlxBLLdhCOuC8arwEDgVLcHAqXD/7L97oqV9yh9E3u
+        0p+jbKE/y5S7OF+zVNGfkMESkJCnY74DDjTYPyY=
+X-Google-Smtp-Source: AA6agR5JV1SYkvRX2LsVp9PLMmZQmg2hGokpEhZ7ZDChQbEa3WUq26eyLEcZjnDVTue2K3C+snPMP2110a5dT5nsZjY=
+X-Received: by 2002:a25:2785:0:b0:69b:b1d2:fd05 with SMTP id
+ n127-20020a252785000000b0069bb1d2fd05mr12156875ybn.81.1661971367951; Wed, 31
+ Aug 2022 11:42:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 2/3] ACPI: PMIC: Replace open coded be16_to_cpu()
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220830231541.1135813-1-rrangel@chromium.org>
+ <20220830171332.1.Id022caf53d01112188308520915798f08a33cd3e@changeid>
+ <CAJZ5v0h10wrurjYG50dA+pCfRtNDqN=c8odQ0p6HJRnOyJh7KA@mail.gmail.com> <CAHQZ30BTYEYEAGjwsbuiYuYGhpFtQy_AEP66v3trdTzY_DRUOQ@mail.gmail.com>
+In-Reply-To: <CAHQZ30BTYEYEAGjwsbuiYuYGhpFtQy_AEP66v3trdTzY_DRUOQ@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 31 Aug 2022 20:42:36 +0200
+Message-ID: <CAJZ5v0gS6U6v-CEPNhgoj=f5E3q1T_Z8vOe2qokyHw4qeVhTsQ@mail.gmail.com>
+Subject: Re: [PATCH 1/8] Input: elan_i2c - Use PM subsystem to manage wake irq
+To:     Raul Rangel <rrangel@chromium.org>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-References: <20220831135749.78743-1-andriy.shevchenko@linux.intel.com>
- <20220831135749.78743-2-andriy.shevchenko@linux.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220831135749.78743-2-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Tim Van Patten <timvp@google.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "jingle.wu" <jingle.wu@emc.com.tw>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Aug 31, 2022 at 8:14 PM Raul Rangel <rrangel@chromium.org> wrote:
+>
+> On Wed, Aug 31, 2022 at 12:01 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Wed, Aug 31, 2022 at 1:16 AM Raul E Rangel <rrangel@chromium.org> wrote:
+> > >
+> > > The Elan I2C touchpad driver is currently manually managing the wake
+> > > IRQ. This change removes the explicit enable_irq_wake/disable_irq_wake
+> > > and instead relies on the PM subsystem. This is done by calling
+> > > dev_pm_set_wake_irq.
+> > >
+> > > i2c_device_probe already calls dev_pm_set_wake_irq when using device
+> > > tree, so it's only required when using ACPI. The net result is that this
+> > > change should be a no-op. i2c_device_remove also already calls
+> > > dev_pm_clear_wake_irq, so we don't need to do that in this driver.
+> > >
+> > > I tested this on an ACPI system where the touchpad doesn't have _PRW
+> > > defined. I verified I can still wake the system and that the wake source
+> > > was the touchpad IRQ GPIO.
+> > >
+> > > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+> >
+>
+>
+> > I like this a lot, but the assumption in the wakeirq code is that the
+> > IRQ in question will be dedicated for signaling wakeup.  Does it hold
+> > here?
+>
+> The wakeirq code defines two methods: `dev_pm_set_wake_irq` and
+> `dev_pm_set_dedicated_wake_irq`.
+> The latter is used when you have a dedicated wakeup signal. In this
+> driver it's currently assumed
+> that the IRQ and the wake IRQ are the same, so I used `dev_pm_set_wake_irq`.
+>
+> This change in theory also fixes a bug where you define a dedicated
+> wake irq in DT, but
+> then the driver enables the `client->irq` as a wake source. In
+> practice this doesn't happen
+> since the elan touchpads only have a single IRQ line.
 
-On 8/31/22 15:57, Andy Shevchenko wrote:
-> It's easier to understand the nature of a data type when
-> it's written explicitly. With that, replace open coded
-> endianess conversion.
-> 
-> As a side effect it fixes the returned value of
-> intel_crc_pmic_update_aux() since ACPI PMIC core code
-> expects negative or zero and never uses positive one.
-> 
-> While at it, use macros from bits.h to reduce a room for mistake.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> ---
-> v3: added tag (Mika)
->  drivers/acpi/pmic/intel_pmic_bxtwc.c    | 50 +++++++++++--------------
->  drivers/acpi/pmic/intel_pmic_bytcrc.c   | 20 +++++++---
->  drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 13 ++++---
->  drivers/acpi/pmic/intel_pmic_xpower.c   | 10 +++--
->  4 files changed, 51 insertions(+), 42 deletions(-)
-> 
-> diff --git a/drivers/acpi/pmic/intel_pmic_bxtwc.c b/drivers/acpi/pmic/intel_pmic_bxtwc.c
-> index e247615189fa..90a2e62a37e4 100644
-> --- a/drivers/acpi/pmic/intel_pmic_bxtwc.c
-> +++ b/drivers/acpi/pmic/intel_pmic_bxtwc.c
-> @@ -7,19 +7,20 @@
->  
->  #include <linux/init.h>
->  #include <linux/acpi.h>
-> +#include <linux/bits.h>
-> +#include <linux/byteorder/generic.h>
->  #include <linux/mfd/intel_soc_pmic.h>
->  #include <linux/regmap.h>
->  #include <linux/platform_device.h>
->  #include "intel_pmic.h"
->  
-> -#define WHISKEY_COVE_ALRT_HIGH_BIT_MASK 0x0F
-> -#define WHISKEY_COVE_ADC_HIGH_BIT(x)	(((x & 0x0F) << 8))
-> -#define WHISKEY_COVE_ADC_CURSRC(x)	(((x & 0xF0) >> 4))
-> -#define VR_MODE_DISABLED        0
-> -#define VR_MODE_AUTO            BIT(0)
-> -#define VR_MODE_NORMAL          BIT(1)
-> -#define VR_MODE_SWITCH          BIT(2)
-> -#define VR_MODE_ECO             (BIT(0)|BIT(1))
-> +#define PMIC_REG_MASK		GENMASK(11, 0)
-> +
-> +#define VR_MODE_DISABLED        (0 << 0)
-> +#define VR_MODE_AUTO            (1 << 0)
-> +#define VR_MODE_NORMAL          (2 << 0)
-> +#define VR_MODE_ECO             (3 << 0)
-> +#define VR_MODE_SWITCH          (4 << 0)
->  #define VSWITCH2_OUTPUT         BIT(5)
->  #define VSWITCH1_OUTPUT         BIT(4)
->  #define VUSBPHY_CHARGE          BIT(1)
-> @@ -297,25 +298,20 @@ static int intel_bxtwc_pmic_update_power(struct regmap *regmap, int reg,
->  
->  static int intel_bxtwc_pmic_get_raw_temp(struct regmap *regmap, int reg)
->  {
-> -	unsigned int val, adc_val, reg_val;
-> -	u8 temp_l, temp_h, cursrc;
->  	unsigned long rlsb;
->  	static const unsigned long rlsb_array[] = {
->  		0, 260420, 130210, 65100, 32550, 16280,
->  		8140, 4070, 2030, 0, 260420, 130210 };
-> +	unsigned int adc_val, reg_val;
-> +	__be16 buf;
->  
-> -	if (regmap_read(regmap, reg, &val))
-> +	if (regmap_bulk_read(regmap, reg - 1, &buf, sizeof(buf)))
->  		return -EIO;
-> -	temp_l = (u8) val;
->  
-> -	if (regmap_read(regmap, (reg - 1), &val))
-> -		return -EIO;
-> -	temp_h = (u8) val;
+OK, thanks!
 
-Hmm, you are changing the order of the register
-reads here. The old code is doing:
+Please feel free to add
 
-	read(reg);
-	read(reg -1);
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Where as the new code is doing:
+to the patch.
 
-	read(reg -1);
-	read(reg);
-
-The order matters since typically upon reading the
-low byte, the high bits will get latched so that
-the next read of the high bytes uses the bits
-from the same x-bits value as the low 8 bits.
-
-This avoids things like:
-
-1. Entire register value (all bits) 0x0ff
-2. Read reg with low 8 bits, read 0x0ff
-3. Entire register value becomes 0x100
-4. Read reg with high bits
-5. Combined value now reads as 0x1ff
-
-I have no idea if the bxtwc PMIC latches
-the bits, but giving the lack of documentation
-it would IMHO be better to not change the reading order.
-
-Regards,
-
-Hans
-
-
-
-
-> +	reg_val = be16_to_cpu(buf);
->  
-> -	reg_val = temp_l | WHISKEY_COVE_ADC_HIGH_BIT(temp_h);
-> -	cursrc = WHISKEY_COVE_ADC_CURSRC(temp_h);
-> -	rlsb = rlsb_array[cursrc];
-> -	adc_val = reg_val * rlsb / 1000;
-> +	rlsb = rlsb_array[reg_val >> 12];
-> +	adc_val = (reg_val & PMIC_REG_MASK) * rlsb / 1000;
->  
->  	return adc_val;
->  }
-> @@ -325,7 +321,9 @@ intel_bxtwc_pmic_update_aux(struct regmap *regmap, int reg, int raw)
->  {
->  	u32 bsr_num;
->  	u16 resi_val, count = 0, thrsh = 0;
-> -	u8 alrt_h, alrt_l, cursel = 0;
-> +	u16 mask = PMIC_REG_MASK;
-> +	__be16 buf;
-> +	u8 cursel;
->  
->  	bsr_num = raw;
->  	bsr_num /= (1 << 5);
-> @@ -336,15 +334,11 @@ intel_bxtwc_pmic_update_aux(struct regmap *regmap, int reg, int raw)
->  	thrsh = raw / (1 << (4 + cursel));
->  
->  	resi_val = (cursel << 9) | thrsh;
-> -	alrt_h = (resi_val >> 8) & WHISKEY_COVE_ALRT_HIGH_BIT_MASK;
-> -	if (regmap_update_bits(regmap,
-> -				reg - 1,
-> -				WHISKEY_COVE_ALRT_HIGH_BIT_MASK,
-> -				alrt_h))
-> -		return -EIO;
->  
-> -	alrt_l = (u8)resi_val;
-> -	return regmap_write(regmap, reg, alrt_l);
-> +	if (regmap_bulk_read(regmap, reg - 1, &buf, sizeof(buf)))
-> +		return -EIO;
-> +	buf = cpu_to_be16((be16_to_cpu(buf) & ~mask) | (resi_val & mask));
-> +	return regmap_bulk_write(regmap, reg - 1, &buf, sizeof(buf));
->  }
->  
->  static int
-> diff --git a/drivers/acpi/pmic/intel_pmic_bytcrc.c b/drivers/acpi/pmic/intel_pmic_bytcrc.c
-> index 9ea79f210965..ce647bc46978 100644
-> --- a/drivers/acpi/pmic/intel_pmic_bytcrc.c
-> +++ b/drivers/acpi/pmic/intel_pmic_bytcrc.c
-> @@ -6,6 +6,8 @@
->   */
->  
->  #include <linux/acpi.h>
-> +#include <linux/bits.h>
-> +#include <linux/byteorder/generic.h>
->  #include <linux/init.h>
->  #include <linux/mfd/intel_soc_pmic.h>
->  #include <linux/platform_device.h>
-> @@ -14,6 +16,8 @@
->  
->  #define PWR_SOURCE_SELECT	BIT(1)
->  
-> +#define PMIC_REG_MASK		GENMASK(9, 0)
-> +
->  #define PMIC_A0LOCK_REG		0xc5
->  
->  static struct pmic_table power_table[] = {
-> @@ -219,23 +223,27 @@ static int intel_crc_pmic_update_power(struct regmap *regmap, int reg,
->  
->  static int intel_crc_pmic_get_raw_temp(struct regmap *regmap, int reg)
->  {
-> -	int temp_l, temp_h;
-> +	__be16 buf;
->  
->  	/*
->  	 * Raw temperature value is 10bits: 8bits in reg
->  	 * and 2bits in reg-1: bit0,1
->  	 */
-> -	if (regmap_read(regmap, reg, &temp_l) ||
-> -	    regmap_read(regmap, reg - 1, &temp_h))
-> +	if (regmap_bulk_read(regmap, reg - 1, &buf, sizeof(buf)))
->  		return -EIO;
->  
-> -	return temp_l | (temp_h & 0x3) << 8;
-> +	return be16_to_cpu(buf) & PMIC_REG_MASK;
->  }
->  
->  static int intel_crc_pmic_update_aux(struct regmap *regmap, int reg, int raw)
->  {
-> -	return regmap_write(regmap, reg, raw) ||
-> -		regmap_update_bits(regmap, reg - 1, 0x3, raw >> 8) ? -EIO : 0;
-> +	u16 mask = PMIC_REG_MASK;
-> +	__be16 buf;
-> +
-> +	if (regmap_bulk_read(regmap, reg - 1, &buf, sizeof(buf)))
-> +		return -EIO;
-> +	buf = cpu_to_be16((be16_to_cpu(buf) & ~mask) | (raw & mask));
-> +	return regmap_bulk_write(regmap, reg - 1, &buf, sizeof(buf));
->  }
->  
->  static int intel_crc_pmic_get_policy(struct regmap *regmap,
-> diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> index 6c2a6da430ed..1e80969c4d89 100644
-> --- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> +++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> @@ -8,12 +8,16 @@
->   */
->  
->  #include <linux/acpi.h>
-> +#include <linux/bits.h>
-> +#include <linux/byteorder/generic.h>
->  #include <linux/init.h>
->  #include <linux/mfd/intel_soc_pmic.h>
->  #include <linux/platform_device.h>
->  #include "intel_pmic.h"
->  
->  /* registers stored in 16bit BE (high:low, total 10bit) */
-> +#define PMIC_REG_MASK		GENMASK(9, 0)
-> +
->  #define CHTDC_TI_VBAT		0x54
->  #define CHTDC_TI_DIETEMP	0x56
->  #define CHTDC_TI_BPTHERM	0x58
-> @@ -73,7 +77,7 @@ static int chtdc_ti_pmic_get_power(struct regmap *regmap, int reg, int bit,
->  	if (regmap_read(regmap, reg, &data))
->  		return -EIO;
->  
-> -	*value = data & 1;
-> +	*value = data & BIT(0);
->  	return 0;
->  }
->  
-> @@ -85,13 +89,12 @@ static int chtdc_ti_pmic_update_power(struct regmap *regmap, int reg, int bit,
->  
->  static int chtdc_ti_pmic_get_raw_temp(struct regmap *regmap, int reg)
->  {
-> -	u8 buf[2];
-> +	__be16 buf;
->  
-> -	if (regmap_bulk_read(regmap, reg, buf, sizeof(buf)))
-> +	if (regmap_bulk_read(regmap, reg, &buf, sizeof(buf)))
->  		return -EIO;
->  
-> -	/* stored in big-endian */
-> -	return ((buf[0] & 0x03) << 8) | buf[1];
-> +	return be16_to_cpu(buf) & PMIC_REG_MASK;
->  }
->  
->  static const struct intel_pmic_opregion_data chtdc_ti_pmic_opregion_data = {
-> diff --git a/drivers/acpi/pmic/intel_pmic_xpower.c b/drivers/acpi/pmic/intel_pmic_xpower.c
-> index 33c5e85294cd..3c7380ec8203 100644
-> --- a/drivers/acpi/pmic/intel_pmic_xpower.c
-> +++ b/drivers/acpi/pmic/intel_pmic_xpower.c
-> @@ -6,11 +6,15 @@
->   */
->  
->  #include <linux/acpi.h>
-> +#include <linux/bits.h>
-> +#include <linux/byteorder/generic.h>
->  #include <linux/init.h>
->  #include <linux/mfd/axp20x.h>
->  #include <linux/regmap.h>
->  #include <linux/platform_device.h>
-> +
->  #include <asm/iosf_mbi.h>
-> +
->  #include "intel_pmic.h"
->  
->  #define XPOWER_GPADC_LOW	0x5b
-> @@ -218,7 +222,7 @@ static int intel_xpower_pmic_update_power(struct regmap *regmap, int reg,
->  static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
->  {
->  	int ret, adc_ts_pin_ctrl;
-> -	u8 buf[2];
-> +	__be16 buf;
->  
->  	/*
->  	 * The current-source used for the battery temp-sensor (TS) is shared
-> @@ -255,9 +259,9 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
->  	if (ret)
->  		return ret;
->  
-> -	ret = regmap_bulk_read(regmap, AXP288_GP_ADC_H, buf, sizeof(buf));
-> +	ret = regmap_bulk_read(regmap, AXP288_GP_ADC_H, &buf, sizeof(buf));
->  	if (ret == 0)
-> -		ret = (buf[0] << 4) + ((buf[1] >> 4) & 0x0f);
-> +		ret = be16_to_cpu(buf) >> 4;
->  
->  	if (adc_ts_pin_ctrl & AXP288_ADC_TS_CURRENT_ON_OFF_MASK) {
->  		regmap_update_bits(regmap, AXP288_ADC_TS_PIN_CTRL,
-
+> >
+> > > ---
+> > >
+> > >  drivers/input/mouse/elan_i2c_core.c | 12 ++++--------
+> > >  1 file changed, 4 insertions(+), 8 deletions(-)
+> > >
+> > > diff --git a/drivers/input/mouse/elan_i2c_core.c b/drivers/input/mouse/elan_i2c_core.c
+> > > index e1758d5ffe4218..7d997d2b56436b 100644
+> > > --- a/drivers/input/mouse/elan_i2c_core.c
+> > > +++ b/drivers/input/mouse/elan_i2c_core.c
+> > > @@ -33,6 +33,7 @@
+> > >  #include <linux/jiffies.h>
+> > >  #include <linux/completion.h>
+> > >  #include <linux/of.h>
+> > > +#include <linux/pm_wakeirq.h>
+> > >  #include <linux/property.h>
+> > >  #include <linux/regulator/consumer.h>
+> > >  #include <asm/unaligned.h>
+> > > @@ -86,8 +87,6 @@ struct elan_tp_data {
+> > >         u16                     fw_page_size;
+> > >         u32                     fw_signature_address;
+> > >
+> > > -       bool                    irq_wake;
+> > > -
+> > >         u8                      min_baseline;
+> > >         u8                      max_baseline;
+> > >         bool                    baseline_ready;
+> > > @@ -1337,8 +1336,10 @@ static int elan_probe(struct i2c_client *client,
+> > >          * Systems using device tree should set up wakeup via DTS,
+> > >          * the rest will configure device as wakeup source by default.
+> > >          */
+> > > -       if (!dev->of_node)
+> > > +       if (!dev->of_node) {
+> > >                 device_init_wakeup(dev, true);
+> > > +               dev_pm_set_wake_irq(dev, client->irq);
+> > > +       }
+> > >
+> > >         return 0;
+> > >  }
+> > > @@ -1362,8 +1363,6 @@ static int __maybe_unused elan_suspend(struct device *dev)
+> > >
+> > >         if (device_may_wakeup(dev)) {
+> > >                 ret = elan_sleep(data);
+> > > -               /* Enable wake from IRQ */
+> > > -               data->irq_wake = (enable_irq_wake(client->irq) == 0);
+> > >         } else {
+> > >                 ret = elan_set_power(data, false);
+> > >                 if (ret)
+> > > @@ -1394,9 +1393,6 @@ static int __maybe_unused elan_resume(struct device *dev)
+> > >                         dev_err(dev, "error %d enabling regulator\n", error);
+> > >                         goto err;
+> > >                 }
+> > > -       } else if (data->irq_wake) {
+> > > -               disable_irq_wake(client->irq);
+> > > -               data->irq_wake = false;
+> > >         }
+> > >
+> > >         error = elan_set_power(data, true);
+> > > --
+> > > 2.37.2.672.g94769d06f0-goog
+> > >
