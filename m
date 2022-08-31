@@ -2,54 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3FE55A7F25
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Aug 2022 15:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1792E5A7F61
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Aug 2022 15:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231782AbiHaNoW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 31 Aug 2022 09:44:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36668 "EHLO
+        id S229915AbiHaN5m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 Aug 2022 09:57:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231897AbiHaNoP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Aug 2022 09:44:15 -0400
-Received: from vorpal.se (vorpal.se [151.236.221.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1381D124A
-        for <linux-acpi@vger.kernel.org>; Wed, 31 Aug 2022 06:44:10 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id 15E13142D4;
-        Wed, 31 Aug 2022 13:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1661953448; bh=HKk3f41Y4Roi0bsePunhLGMmO/fsxwHf7+iaDMZOn9I=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=AJqnFJTGuMORwL7QSR2UdIEOcz1gmarN/4YlI4ioBrp13WNqMobaDBn0hsrJRfAxX
-         3OjCtrJtzHWbpOm5apKyNN5m2AQhrcVEpUjhqDvzDZo8RVPPEfo4rY0Ng7RCO/WD2g
-         xdk0Kt3Twn9U3Uipi1aaxEDTzLBY8NwQipDkuVwmnkcEmNQNBSSE+MI+Ho/tatz499
-         4CD9hlhhcLeR0YPXXvjl+j5NmmMmxqkVxsYPlSXh3AgZaOhpCRS7KJBsFDLySq96cH
-         V09FvKwbVFEjIC0vARjcdJwkAJbe8eld4rfJ47x70qNOtt0F/5+qIlLgXVZaVol7oI
-         N3TPyTy0Tg/UA==
-Message-ID: <918639a6-3cb0-5b8d-73b2-7eed623002a0@vorpal.se>
-Date:   Wed, 31 Aug 2022 15:44:07 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 1/1] ACPI: video: Add Toshiba Satellite/Portege Z830 quirk
-Content-Language: en-US
-To:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
+        with ESMTP id S229635AbiHaN5k (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 Aug 2022 09:57:40 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB90D5EAD;
+        Wed, 31 Aug 2022 06:57:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661954259; x=1693490259;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dtL+8Cys9Oexa2+abpB8VdNGZHy6gFiiShpIowTcEGw=;
+  b=V0V0LK8SS/I5/3znce7CCRCSZKnVpae2CWsNsoUOlpA1sRaXNY8FMwwf
+   SCey28JGP+b6kq7YfIRAfnBgwHDDLoaFZMWb+gDUfiHo2R6XaM2zXbQKv
+   +RnsA2cH4G7X9ifNLAzUqjbZBgBQ+qzp5zjBFhLTAjk8VTsZVUQ2y9oMp
+   6BV8PAVtRQMRBEWDsUtuL3u/+zzSYjTVSyo5w6CnBBe+OxXEHKMjqB5cK
+   H1TDzt092ay+PiM0VbWil0hgdSrxOU2+XIzFvHROfP9slxF4Okj/QjQ7q
+   G+DMalPG4HN3/FnquOqvslW1GC3s+1hfBQ2VgepyBjtXamqGRshA9MxSL
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10456"; a="381748176"
+X-IronPort-AV: E=Sophos;i="5.93,278,1654585200"; 
+   d="scan'208";a="381748176"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2022 06:57:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,278,1654585200"; 
+   d="scan'208";a="940441946"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga005.fm.intel.com with ESMTP; 31 Aug 2022 06:57:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id DEFB1174; Wed, 31 Aug 2022 16:57:50 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-References: <20220824184950.631520-1-lkml@vorpal.se>
- <20220824184950.631520-2-lkml@vorpal.se>
- <d097b844-8fe4-3469-2137-9e8407348175@redhat.com>
- <3863cad2-1910-b377-011b-4970eeb68e13@vorpal.se>
- <91260f39-27d9-222b-53e7-41ab4bb412a3@redhat.com>
- <9640be14-b478-5887-9057-de2796eccd6b@redhat.com>
- <ef3046e5-f402-3d33-8d94-4d9f87ceadd5@vorpal.se>
- <68b1c4fd-56a4-8de6-62ec-98bd6ef8b169@redhat.com>
-From:   Arvid Norlander <lkml@vorpal.se>
-In-Reply-To: <68b1c4fd-56a4-8de6-62ec-98bd6ef8b169@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH v3 1/3] ACPI: PMIC: Use sizeof() instead of hard coded value
+Date:   Wed, 31 Aug 2022 16:57:47 +0300
+Message-Id: <20220831135749.78743-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,50 +62,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+It's better to use sizeof() of a given buffer than spreading
+a hard coded value.
 
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+v3: added tag (Mika)
+ drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 2 +-
+ drivers/acpi/pmic/intel_pmic_xpower.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-On 2022-08-29 20:58, Hans de Goede wrote:
-> Hi,
-> 
-> On 8/29/22 20:30, Arvid Norlander wrote:
->> Hi,
->>
->> On 2022-08-29 16:12, Hans de Goede wrote:
->>> Hi,
->>>
->>
->> <snip>
->>
->>>
->>> Arvid, here is a git branch with my backlight-refactor for you
->>> to test:
->>>
->>> https://github.com/jwrdegoede/linux-sunxi/commits/backlight-refactor-for-arvid
->>>
->>> If you can give this a test spin (without any special kernel
->>> commandline options) then that would be great.
->>
->> I'll set up a PKGBUILD and get this built (I'm building on other computers).
->> It may take a couple of days before I get around to that however. I hope
->> this is okay with you.
-> 
-> Yes that is fine, thank you.
+diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+index 418eec523025..6c2a6da430ed 100644
+--- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
++++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+@@ -87,7 +87,7 @@ static int chtdc_ti_pmic_get_raw_temp(struct regmap *regmap, int reg)
+ {
+ 	u8 buf[2];
+ 
+-	if (regmap_bulk_read(regmap, reg, buf, 2))
++	if (regmap_bulk_read(regmap, reg, buf, sizeof(buf)))
+ 		return -EIO;
+ 
+ 	/* stored in big-endian */
+diff --git a/drivers/acpi/pmic/intel_pmic_xpower.c b/drivers/acpi/pmic/intel_pmic_xpower.c
+index 61bbe4c24d87..33c5e85294cd 100644
+--- a/drivers/acpi/pmic/intel_pmic_xpower.c
++++ b/drivers/acpi/pmic/intel_pmic_xpower.c
+@@ -255,7 +255,7 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_bulk_read(regmap, AXP288_GP_ADC_H, buf, 2);
++	ret = regmap_bulk_read(regmap, AXP288_GP_ADC_H, buf, sizeof(buf));
+ 	if (ret == 0)
+ 		ret = (buf[0] << 4) + ((buf[1] >> 4) & 0x0f);
+ 
+-- 
+2.35.1
 
-Just and update to let you know that your tree works, at least for suspend.
-
-I'm not set up to test hibernation (using swap file on btrfs). Nor do I
-know if it even works on this laptop. It has some sort of auto hibernate
-feature in BIOS called Intel Rapid Start. It supposedly auto transitions to
-hibernation after being asleep for a while. I have not looked into if this
-is supported on Linux, and what setup would be required to support it in
-that case.
-
-> 
-> Regards,
-> 
-> Hans
-> 
-
-Best regards,
-Arvid Norlander
