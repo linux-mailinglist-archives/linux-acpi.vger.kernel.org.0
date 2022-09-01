@@ -2,45 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3AC05A8EE8
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Sep 2022 08:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 510015A915B
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Sep 2022 09:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbiIAG6A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Sep 2022 02:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45396 "EHLO
+        id S233437AbiIAH5X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Sep 2022 03:57:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233038AbiIAG56 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Sep 2022 02:57:58 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9BEB0A3D0F;
-        Wed, 31 Aug 2022 23:57:57 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 828C580A8;
-        Thu,  1 Sep 2022 06:50:31 +0000 (UTC)
-Date:   Thu, 1 Sep 2022 09:57:55 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Raul Rangel <rrangel@chromium.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Tim Van Patten <timvp@google.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "jingle.wu" <jingle.wu@emc.com.tw>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/8] Input: elan_i2c - Use PM subsystem to manage wake irq
-Message-ID: <YxBX8+7VwyHZc0+5@atomide.com>
-References: <20220830231541.1135813-1-rrangel@chromium.org>
- <20220830171332.1.Id022caf53d01112188308520915798f08a33cd3e@changeid>
- <CAJZ5v0h10wrurjYG50dA+pCfRtNDqN=c8odQ0p6HJRnOyJh7KA@mail.gmail.com>
- <CAHQZ30BTYEYEAGjwsbuiYuYGhpFtQy_AEP66v3trdTzY_DRUOQ@mail.gmail.com>
- <CAJZ5v0gS6U6v-CEPNhgoj=f5E3q1T_Z8vOe2qokyHw4qeVhTsQ@mail.gmail.com>
+        with ESMTP id S233484AbiIAH5U (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Sep 2022 03:57:20 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8E92C9E8D;
+        Thu,  1 Sep 2022 00:57:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662019038; x=1693555038;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aM7RmM5oLdR57n0tmAUEZLSoOLEkDuToJf2Jbm2ZbqU=;
+  b=NSSWQqpnkil0Zt+bz1Z2MluH7CCnsweQaCLohg9AEqnaQk3iwMFL2y8z
+   Z6i+22WpfQen+6s6tPyINCxcvgjbiLu+uScSkb45oT0mSa+JNv+uqaCEp
+   Hyd0Xoui199Xaf3JfCu/UMOWyeni7Es0xDTBV7tyAMhePJ47F2X0U+Q0s
+   +Q8EiEarNygbFm3QDH772aafbcKT0mtFAsTzaYsGVrFlNtMd5JjmuiX/v
+   osKQbnx6mDg18sEE0xs/4ZLdLJlkmUVxUqyFTPwZtDy62EZf3uQnD4r4n
+   dwlLbKz7bL3dKmPgVBnjEWhG43Z8GQerZMByBFUR8I9Idf27NYGIYoHXh
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10456"; a="278664690"
+X-IronPort-AV: E=Sophos;i="5.93,280,1654585200"; 
+   d="scan'208";a="278664690"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2022 00:57:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,280,1654585200"; 
+   d="scan'208";a="738399823"
+Received: from lkp-server02.sh.intel.com (HELO b138c9e8658c) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 01 Sep 2022 00:57:16 -0700
+Received: from kbuild by b138c9e8658c with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oTf4e-00005o-0U;
+        Thu, 01 Sep 2022 07:57:16 +0000
+Date:   Thu, 01 Sep 2022 15:56:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ f569faad1ef4d4f88432e6d5efba2562e0d1bc1f
+Message-ID: <631065a0.1f0caBq0YvTQRxgc%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0gS6U6v-CEPNhgoj=f5E3q1T_Z8vOe2qokyHw4qeVhTsQ@mail.gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,55 +63,74 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-* Rafael J. Wysocki <rafael@kernel.org> [220831 18:35]:
-> On Wed, Aug 31, 2022 at 8:14 PM Raul Rangel <rrangel@chromium.org> wrote:
-> >
-> > On Wed, Aug 31, 2022 at 12:01 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > On Wed, Aug 31, 2022 at 1:16 AM Raul E Rangel <rrangel@chromium.org> wrote:
-> > > >
-> > > > The Elan I2C touchpad driver is currently manually managing the wake
-> > > > IRQ. This change removes the explicit enable_irq_wake/disable_irq_wake
-> > > > and instead relies on the PM subsystem. This is done by calling
-> > > > dev_pm_set_wake_irq.
-> > > >
-> > > > i2c_device_probe already calls dev_pm_set_wake_irq when using device
-> > > > tree, so it's only required when using ACPI. The net result is that this
-> > > > change should be a no-op. i2c_device_remove also already calls
-> > > > dev_pm_clear_wake_irq, so we don't need to do that in this driver.
-> > > >
-> > > > I tested this on an ACPI system where the touchpad doesn't have _PRW
-> > > > defined. I verified I can still wake the system and that the wake source
-> > > > was the touchpad IRQ GPIO.
-> > > >
-> > > > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-> > >
-> >
-> >
-> > > I like this a lot, but the assumption in the wakeirq code is that the
-> > > IRQ in question will be dedicated for signaling wakeup.  Does it hold
-> > > here?
-> >
-> > The wakeirq code defines two methods: `dev_pm_set_wake_irq` and
-> > `dev_pm_set_dedicated_wake_irq`.
-> > The latter is used when you have a dedicated wakeup signal. In this
-> > driver it's currently assumed
-> > that the IRQ and the wake IRQ are the same, so I used `dev_pm_set_wake_irq`.
-> >
-> > This change in theory also fixes a bug where you define a dedicated
-> > wake irq in DT, but
-> > then the driver enables the `client->irq` as a wake source. In
-> > practice this doesn't happen
-> > since the elan touchpads only have a single IRQ line.
-> 
-> OK, thanks!
-> 
-> Please feel free to add
-> 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> to the patch.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: f569faad1ef4d4f88432e6d5efba2562e0d1bc1f  Merge branch 'thermal-core' into bleeding-edge
 
-Looks good to me too:
+elapsed time: 722m
 
-Reviewed-by: Tony Lindgren <tony@atomide.com>
+configs tested: 53
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                  randconfig-r043-20220831
+s390                 randconfig-r044-20220831
+riscv                randconfig-r042-20220831
+x86_64                              defconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                               rhel-8.3
+x86_64                        randconfig-a015
+alpha                            allyesconfig
+arc                              allyesconfig
+sh                               allmodconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                           allyesconfig
+i386                                defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+m68k                             allyesconfig
+i386                          randconfig-a014
+m68k                             allmodconfig
+x86_64                           rhel-8.3-syz
+x86_64                           rhel-8.3-kvm
+i386                          randconfig-a012
+i386                          randconfig-a016
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+arm                                 defconfig
+x86_64                        randconfig-a006
+i386                             allyesconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+ia64                             allmodconfig
+
+clang tested configs:
+hexagon              randconfig-r041-20220831
+hexagon              randconfig-r045-20220831
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
