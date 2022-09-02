@@ -2,75 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A39115AA5B5
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Sep 2022 04:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2793B5AA8D6
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Sep 2022 09:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235428AbiIBCXZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Sep 2022 22:23:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34442 "EHLO
+        id S233931AbiIBHjg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Sep 2022 03:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235297AbiIBCXC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Sep 2022 22:23:02 -0400
-X-Greylist: delayed 373 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 01 Sep 2022 19:22:12 PDT
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47128AD9A7;
-        Thu,  1 Sep 2022 19:22:11 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
-        by mailout3.hostsharing.net (Postfix) with ESMTPS id 2E0BE10029E5D;
-        Fri,  2 Sep 2022 04:15:54 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id C678D60EB3DC;
-        Fri,  2 Sep 2022 04:15:53 +0200 (CEST)
-X-Mailbox-Line: From a6030c5943ccd2965261a92320b1ae1adb909116 Mon Sep 17 00:00:00 2001
-Message-Id: <a6030c5943ccd2965261a92320b1ae1adb909116.1662084833.git.lukas@wunner.de>
-In-Reply-To: <202209020412.Ts31BZrs-lkp@intel.com>
-References: <202209020412.Ts31BZrs-lkp@intel.com>
-From:   Lukas Wunner <lukas@wunner.de>
-Date:   Fri, 2 Sep 2022 04:15:55 +0200
-Subject: [PATCH] ACPI / property: Silence missing-declarations warning in
- apple.c
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S233218AbiIBHje (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Sep 2022 03:39:34 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64AF6B8F02;
+        Fri,  2 Sep 2022 00:38:16 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id 145so1120662pfw.4;
+        Fri, 02 Sep 2022 00:38:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=WkR9LaSKiyJhtlTTWqMUWeVX6Mln5pRmeIixpHeSGbc=;
+        b=UcMpMc1Kcy3O9+Qc0m7+xjCFZ4XPruIw9U3cyOACsPf2/js7J9BrKgZ31g6rsm3+Ei
+         FLfdQeSqTXbXk8/aHm9FLoQQqVJSRN2X70HECxx9zjxrrnZFffErQZV3hLn47lYDi6et
+         e0mQSDo9gd513Fyx9JVs+qw3hR5Qa0V2C2dZmuH4ZSPksQC4BCOoqIzYnJ9z0DPO7HXs
+         xn05vGCvCx19VOo/6wTPnsR+2WciCIL8ot5B4TOwa04jVmrmX728oTDLkgiN+UymEq1b
+         QAIXQxoLSIhakaUZZJ+9YnwaXasIhR0IVRqLFSbcSa13hEQSqQeevomPXkjd/VK3ZEWk
+         5JNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=WkR9LaSKiyJhtlTTWqMUWeVX6Mln5pRmeIixpHeSGbc=;
+        b=KTR0Q7ieheEYUVlLeyBWIs/N7LNzkEfRemPQjoocfZJRSpYub+mHHl4mKtTGGGOppa
+         kxfwX9+gINXxhChoLUW0F/8oP3Usv8tohyz2gqrBZd7HG9OkPW4dvLneNCdwLaRlP2qq
+         xRnZtk6s0jHF3ujic1IFRtOeUfGZvcCEFCakHefgVC4gf1T7D3a5QrgH5fJaN25crSk9
+         WSFE+3daiixdUQKnwQv5TmmBpVGC63fROTC5UDBWYIwjwLyhiQ72qvd/vaYHDiitVU79
+         DKltssMwUJjU4SueD7zy0GyMcmIadzZzEpbr9CcOEt4Rr8DQDyJqif8hjhZLRrWGjmMC
+         adgQ==
+X-Gm-Message-State: ACgBeo1lesFQp8Q5c9LVT9d0/cZ2jY8Km/6n8EumRMy0bTMOoNzo++1F
+        5G+rXfMYhzN7ebR/IlnVAvk1TKXYIDk=
+X-Google-Smtp-Source: AA6agR7Rg6Dfva7zK/SAy8pg1Ez2Vf07BTbYdHwqsP4MSnQ8uQ+CJ/X7JT0MdHbjIZzxdYn5MeE1ZA==
+X-Received: by 2002:a65:6ccf:0:b0:42b:20e8:5b8a with SMTP id g15-20020a656ccf000000b0042b20e85b8amr28449731pgw.500.1662104295633;
+        Fri, 02 Sep 2022 00:38:15 -0700 (PDT)
+Received: from localhost.localdomain (lily-optiplex-3070.dynamic.ucsd.edu. [2607:f720:1300:3033::1:4dd])
+        by smtp.googlemail.com with ESMTPSA id i9-20020a170902c94900b0016ecc7d5297sm862930pla.292.2022.09.02.00.38.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Sep 2022 00:38:15 -0700 (PDT)
+From:   Li Zhong <floridsleeves@gmail.com>
+To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org,
+        Li Zhong <floridsleeves@gmail.com>
+Subject: [PATCH v1] drivers/acpi/processor_idle: check the return value of acpi_fetch_acpi_dev()
+Date:   Fri,  2 Sep 2022 00:37:30 -0700
+Message-Id: <20220902073730.2207819-1-floridsleeves@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Silence an annoying message emitted for W=1 builds:
+The return value of acpi_fetch_acpi_dev() could be NULL, which will
+cause null pointer dereference if used in acpi_device_hid().
 
-drivers/acpi/x86/apple.c:30:6: warning: no previous declaration for 'acpi_extract_apple_properties' [-Wmissing-declarations]
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Li Zhong <floridsleeves@gmail.com>
 ---
- drivers/acpi/x86/apple.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/processor_idle.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/x86/apple.c b/drivers/acpi/x86/apple.c
-index c285c91a5e9c..8812ecd03d55 100644
---- a/drivers/acpi/x86/apple.c
-+++ b/drivers/acpi/x86/apple.c
-@@ -8,6 +8,7 @@
- #include <linux/bitmap.h>
- #include <linux/platform_data/x86/apple.h>
- #include <linux/uuid.h>
-+#include "../internal.h"
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 16a1663d02d4..519f8f741da3 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1117,6 +1117,8 @@ static int acpi_processor_get_lpi_info(struct acpi_processor *pr)
+ 	status = acpi_get_parent(handle, &pr_ahandle);
+ 	while (ACPI_SUCCESS(status)) {
+ 		d = acpi_fetch_acpi_dev(pr_ahandle);
++		if (!d)
++			break;
+ 		handle = pr_ahandle;
  
- /* Apple _DSM device properties GUID */
- static const guid_t apple_prp_guid =
+ 		if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
 -- 
-2.36.1
+2.25.1
 
