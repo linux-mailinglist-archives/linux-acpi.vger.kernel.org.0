@@ -2,252 +2,209 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B2A95AAC04
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Sep 2022 12:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEDC75AB1F6
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Sep 2022 15:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235495AbiIBKEB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Sep 2022 06:04:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54468 "EHLO
+        id S237941AbiIBNqa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Sep 2022 09:46:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232681AbiIBKEA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Sep 2022 06:04:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC3C1A5C6C
-        for <linux-acpi@vger.kernel.org>; Fri,  2 Sep 2022 03:03:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1662113038;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=j/Gz871G0r3DaRFYqQ3S5WxV9Ql0JYSdOHTdwlcxNcA=;
-        b=a7tcqXXbfoHwllvVYv9YVCp3DK0TOmajtXtqCN9mEGZJ5vnf+lisFarEyiiiYMl8dKYvIe
-        GVQIRNYiAOcVjjvOzDrDf2yHeXyAaZdlocNelJLgo/1qDY+Uoz5HwaXmx7/tYOaOHPxRdL
-        3rzgZEe9LkaQ/L+TQhDztFhRyR+xZu0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-213-Yo-hSnJuM96Nz6ggwhz8EA-1; Fri, 02 Sep 2022 06:03:57 -0400
-X-MC-Unique: Yo-hSnJuM96Nz6ggwhz8EA-1
-Received: by mail-ed1-f71.google.com with SMTP id x21-20020a05640226d500b0044856301c62so1081650edd.12
-        for <linux-acpi@vger.kernel.org>; Fri, 02 Sep 2022 03:03:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=j/Gz871G0r3DaRFYqQ3S5WxV9Ql0JYSdOHTdwlcxNcA=;
-        b=a+Shf9XUNT/1ojfQDNl+Wbh/Ju/h+XBuy1lRXm1jgauDQxyGUmwxepJIVKRZ2Dw7PR
-         89FsHz2cviDej4QmeHXc7vHhP5Qw2ydgzY3PWEUPSOOocX4aH0i390EmMjZsZAwGxlXx
-         dPa55WHuoNnxb7IDUe1mMUCEXR0ciepQKljvpekzKykT+OF0jDK39Lu8iOidjdxTzgHe
-         V1Sgu3iFHjbyizMqck9JWOHxtIkvWINfBY6J3c2+e/DYe9xjiqC28pf5KKm0Jo0EkvZu
-         AIT0TWQr4l6Ls0rV4rSUiAvHkk1tqlWj+uHxVz0fFHM2FJdXfH+7aXwm0B1dKVRvouz3
-         5bfg==
-X-Gm-Message-State: ACgBeo3vnm3jaZCx6/i9fp5sgwBFYlktYCDXlZcTjGYdfM3qhkwOI9Go
-        x01pEmJcZsYoegjWcoWwaHY3Lx7xHreZ3k6R+3gKmG/9f/YQPGmAOXC25KZ5JIUe34aShZZhtzj
-        UZ061SqSd1UzDCu9n+gb0bQ==
-X-Received: by 2002:a17:907:7242:b0:742:7c5:46b5 with SMTP id ds2-20020a170907724200b0074207c546b5mr13219661ejc.274.1662113036038;
-        Fri, 02 Sep 2022 03:03:56 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6KMGdyE0O48VAyeBV+XNMPxY0b6N8xa9jewEIGRQh4cmFCQ1tG2cO7SGa9seJ0ddSfBRugKA==
-X-Received: by 2002:a17:907:7242:b0:742:7c5:46b5 with SMTP id ds2-20020a170907724200b0074207c546b5mr13219641ejc.274.1662113035689;
-        Fri, 02 Sep 2022 03:03:55 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id g26-20020a50ec1a000000b0044604ad8b41sm1087334edr.23.2022.09.02.03.03.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Sep 2022 03:03:55 -0700 (PDT)
-Message-ID: <8d81852a-91d0-1760-a6a7-086316a0b4d6@redhat.com>
-Date:   Fri, 2 Sep 2022 12:03:54 +0200
+        with ESMTP id S237979AbiIBNpx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Sep 2022 09:45:53 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABB7FC11A;
+        Fri,  2 Sep 2022 06:21:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662124899; x=1693660899;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=/NRcLs2FH7Yj/TRPNvW19fp4y9VVTFA7hNnEtx6+aXw=;
+  b=AlJPF+VjBkHA6UhqciTORr4UgnF+vuC2UsqNtVuPw5QtiGU21RwocZIo
+   JelJOIKYOxhSTZsd7XVbcoqnQdc787u2zfXobjHt1f9fEm8vdRvQdqVPU
+   Ni4nkrOBYRH9GXDShfcLIa1tjOCRvHDRI7Q7j2i5GRbYgWCC0oUf9qQaw
+   Q1SwGaV57ICNXQQKOX0cnsPzkocMweTikUov8KF3Hj5150ZCIMAKwl11G
+   isvQpkQ4kOHe55Ml3H2Ix7XjlEoPNDuwxv/gnU+39QI8VLtEDCvMrYMP5
+   76MnqXvn28ZTRQXc6MQWP1ZoaHa+LEdPqT2QvwQClOOylkC2Tmxf/LNqn
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10457"; a="276378482"
+X-IronPort-AV: E=Sophos;i="5.93,283,1654585200"; 
+   d="scan'208";a="276378482"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2022 06:20:39 -0700
+X-IronPort-AV: E=Sophos;i="5.93,283,1654585200"; 
+   d="scan'208";a="674351857"
+Received: from svandene-mobl.ger.corp.intel.com (HELO localhost) ([10.252.55.245])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2022 06:20:32 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, nouveau@lists.freedesktop.org,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@redhat.com>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v5 11/31] drm/i915: Call acpi_video_register_backlight()
+ (v3)
+In-Reply-To: <20220825143726.269890-12-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20220825143726.269890-1-hdegoede@redhat.com>
+ <20220825143726.269890-12-hdegoede@redhat.com>
+Date:   Fri, 02 Sep 2022 16:20:21 +0300
+Message-ID: <87k06lewve.fsf@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 2/3] ACPI: PMIC: Replace open coded be16_to_cpu()
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-References: <20220831135749.78743-1-andriy.shevchenko@linux.intel.com>
- <20220831135749.78743-2-andriy.shevchenko@linux.intel.com>
- <4f388bda-b991-0ab6-4098-4f5dbabe57fb@redhat.com>
- <Yw+0jGdk2pIQSoOT@smile.fi.intel.com>
- <073c2dce-bd03-9dfe-539f-203b6fb7eeaf@redhat.com>
- <YxHUIBaEwG3pxGnT@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <YxHUIBaEwG3pxGnT@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Thu, 25 Aug 2022, Hans de Goede <hdegoede@redhat.com> wrote:
+> On machins without an i915 opregion the acpi_video driver immediately
+> probes the ACPI video bus and used to also immediately register
+> acpi_video# backlight devices when supported.
+>
+> Once the drm/kms driver then loaded later and possibly registered
+> a native backlight device then the drivers/acpi/video_detect.c code
+> unregistered the acpi_video0 device to avoid there being 2 backlight
+> devices (when acpi_video_get_backlight_type()==native).
+>
+> This means that userspace used to briefly see 2 devices and the
+> disappearing of acpi_video0 after a brief time confuses the systemd
+> backlight level save/restore code, see e.g.:
+> https://bbs.archlinux.org/viewtopic.php?id=269920
+>
+> To fix this the ACPI video code has been modified to make backlight class
+> device registration a separate step, relying on the drm/kms driver to
+> ask for the acpi_video backlight registration after it is done setting up
+> its native backlight device.
+>
+> Add a call to the new acpi_video_register_backlight() after the i915 calls
+> acpi_video_register() (after setting up the i915 opregion) so that the
+> acpi_video backlight devices get registered on systems where the i915
+> native backlight device is not registered.
+>
+> Changes in v2:
+> -Only call acpi_video_register_backlight() when a panel is detected
+>
+> Changes in v3:
+> -Add a new intel_acpi_video_register() helper which checks if a panel
+>  is present and then calls acpi_video_register_backlight()
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-On 9/2/22 12:00, Andy Shevchenko wrote:
-> On Thu, Sep 01, 2022 at 11:02:11AM +0200, Hans de Goede wrote:
->> On 8/31/22 21:20, Andy Shevchenko wrote:
->>> On Wed, Aug 31, 2022 at 08:19:24PM +0200, Hans de Goede wrote:
->>>> On 8/31/22 15:57, Andy Shevchenko wrote:
-> 
-> ...
-> 
->>>>> -	if (regmap_read(regmap, (reg - 1), &val))
->>>>> -		return -EIO;
->>>>> -	temp_h = (u8) val;
->>>>
->>>> Hmm, you are changing the order of the register
->>>> reads here. The old code is doing:
->>>>
->>>> 	read(reg);
->>>> 	read(reg -1);
->>>>
->>>> Where as the new code is doing:
->>>>
->>>> 	read(reg -1);
->>>> 	read(reg);
->>>>
->>>> The order matters since typically upon reading the
->>>> low byte, the high bits will get latched so that
->>>> the next read of the high bytes uses the bits
->>>> from the same x-bits value as the low 8 bits.
->>>>
->>>> This avoids things like:
->>>>
->>>> 1. Entire register value (all bits) 0x0ff
->>>> 2. Read reg with low 8 bits, read 0x0ff
->>>> 3. Entire register value becomes 0x100
->>>> 4. Read reg with high bits
->>>> 5. Combined value now reads as 0x1ff
->>>>
->>>> I have no idea if the bxtwc PMIC latches
->>>> the bits, but giving the lack of documentation
->>>> it would IMHO be better to not change the reading order.
->>>
->>> Interestingly documentation suggests otherwise, e.g.:
->>>
->>> THRMZN0H_REG
->>> Battery Thermal Zone 0 Limit Register High
->>> Offset 044H
->>>
->>> Description
->>>
->>> Z0HYS	  Temperature hysteresis value for TCOLD threshold
->>>
->>> Z0CURHYS  Battery ChargerTemperature Zone Current hysteresis for TCOLD (MSBs)
->>> 	  3 bits of the battery charger temperature zone current hysteresis for zones 0/1.
->>>
->>> TCOLD_H	  Battery ChargerTemperature Zone Threshold for TCOLD (MSBs)
->>> 	  Upper 1 bit of the battery charger temperature zone threshold for zones 0/1.
->>> 	  Writes to THRMZN0H (and all thermal zone registers) are not committed until
->>> 	  THRMZN0L (lower byte) is written to.
->>> 	  Write Before: THRMZN0L_REG.TCOLD_L
->>>
->>> (Note the last description)
->>
->> I see, but that is about writes and the write path was already
->> first doing a read + write of reg - 1, followed by writing
->> reg 1. So for the write path this patch does not introduce
->> any functional changes. But what about the read path, is read
->> latching the same or does it need the inverse order of writes?
->>
->> Note I think it is likely the read order for proper latching
->> is likely also first high then low, but it would be good to check.
->> If that is indeed the case then this would actually be a bugfix,
->> not just a cleanup.
->>
->> Also you have only checked for 1 of the 4 PMICs you are making
->> changes to in this patch?
->>
->> The commit message suggests this code change does not cause any
->> functional changes, but as discussed it actually does make changes,
->> so this should be in the commit message.
->>
->> Talking about making changes to 4 PMICs unlike patch 1 and 3 the changes
->> in this one are not trivial so IMHO this should be split into 1 patch
->> per PMIC. This has 3 advantages:
->>
->> 1. It makes reviewing easier, during my initial review I stopped
->> at the intel_bxtwc_pmic changes not even realizing more was coming...
->>
->> 2. This makes properly describing the actual functional changes
->> in the commit message a lot easier, otherwise the commit msg
->> is going to become somewhat messy.
->>
->> 3. This will also make reverting things easier if something does
->> break (even if it is just for testing if these changes are the cause
->> of the breakage).
->>
->> ###
->>
->> So I've been taking a closer look at these changes and here are some
->> more remarks:
->>
->> intel_crc_pmic_get_raw_temp() you are again changing the order
->> in which the 2 (low/high) registers are read. This needs to be
->> checked and mentioned in the commit message.
->>
->> intel_crc_pmic_update_aux() unlike the intel_pmic_bxtwc.c
->> equivalent in this case your changes do switch the write-order,
->> assuming the same write order as in bxtwc should be used
->> this would actually be another bugfix.
->>
->> For intel_pmic_chtdc_ti.c this does seems to be purely a refactor.
->>
->> For intel_pmic_xpower.c the original code actually seems
->> to be wrong, the datasheet says:
->>
->> REG 5AH: GPADC pin input ADC data, highest 8bit
->> Bit 7-0 GPADC pin input ADC data, highest 8bit
->>
->> REG 5BH: GPADC pin input ADC data, lowest 4bit
->> Bit 7-4 Reserved
->> Bit 3-0 GPADC pin input ADC data, lowest 4bit
-> 
->> So it looks like instead of your patch we actually need
-> 
-> Not instead, but probably as a prerequisite fix.
+Apologies for the delay. I truly appreciate the effort you've put into
+this series, and I'm looking forward to seeing the next steps in drm!
 
-Since there is a hole in the bits:
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-    high-byte           low-byte
-bit 11 10 9 8 7 6 5 4   r r r r 3 2 1 0
-
-r = reserved
-
-I don't think we can use be16_to_cpu here at all.
+And ack for merging via whichever tree you think best.
 
 
-> 
->> the following fix:
->>
->> --- a/drivers/acpi/pmic/intel_pmic_xpower.c
->> +++ b/drivers/acpi/pmic/intel_pmic_xpower.c
->> @@ -257,7 +257,7 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
->>  
->>  	ret = regmap_bulk_read(regmap, AXP288_GP_ADC_H, buf, 2);
->>  	if (ret == 0)
->> -		ret = (buf[0] << 4) + ((buf[1] >> 4) & 0x0f);
->> +		ret = (buf[0] << 4) | (buf[1] & 0x0f);
->>  
->>  	if (adc_ts_pin_ctrl & AXP288_ADC_TS_CURRENT_ON_OFF_MASK) {
->>  		regmap_update_bits(regmap, AXP288_ADC_TS_PIN_CTRL,
->>
->> I will try to make some time to check this on actual hw to see if
->> the code or the doc is right soon-ish
-> 
-> Thanks for your review and explanations. I will split pure cleanups and resend
-> with Mika's tag, and will see what I can do about the rest (considering
-> availability of the documentation and it's fullness).
+> ---
+>  drivers/gpu/drm/i915/display/intel_acpi.c    | 27 ++++++++++++++++++++
+>  drivers/gpu/drm/i915/display/intel_acpi.h    |  3 +++
+>  drivers/gpu/drm/i915/display/intel_display.c |  2 +-
+>  3 files changed, 31 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_acpi.c b/drivers/gpu/drm/i915/display/intel_acpi.c
+> index e78430001f07..9df78e7caa2b 100644
+> --- a/drivers/gpu/drm/i915/display/intel_acpi.c
+> +++ b/drivers/gpu/drm/i915/display/intel_acpi.c
+> @@ -7,6 +7,7 @@
+>  
+>  #include <linux/pci.h>
+>  #include <linux/acpi.h>
+> +#include <acpi/video.h>
+>  
+>  #include "i915_drv.h"
+>  #include "intel_acpi.h"
+> @@ -331,3 +332,29 @@ void intel_acpi_assign_connector_fwnodes(struct drm_i915_private *i915)
+>  	 */
+>  	fwnode_handle_put(fwnode);
+>  }
+> +
+> +void intel_acpi_video_register(struct drm_i915_private *i915)
+> +{
+> +	struct drm_connector_list_iter conn_iter;
+> +	struct drm_connector *connector;
+> +
+> +	acpi_video_register();
+> +
+> +	/*
+> +	 * If i915 is driving an internal panel without registering its native
+> +	 * backlight handler try to register the acpi_video backlight.
+> +	 * For panels not driven by i915 another GPU driver may still register
+> +	 * a native backlight later and acpi_video_register_backlight() should
+> +	 * only be called after any native backlights have been registered.
+> +	 */
+> +	drm_connector_list_iter_begin(&i915->drm, &conn_iter);
+> +	drm_for_each_connector_iter(connector, &conn_iter) {
+> +		struct intel_panel *panel = &to_intel_connector(connector)->panel;
+> +
+> +		if (panel->backlight.funcs && !panel->backlight.device) {
+> +			acpi_video_register_backlight();
+> +			break;
+> +		}
+> +	}
+> +	drm_connector_list_iter_end(&conn_iter);
+> +}
+> diff --git a/drivers/gpu/drm/i915/display/intel_acpi.h b/drivers/gpu/drm/i915/display/intel_acpi.h
+> index 4a760a2baed9..6a0007452f95 100644
+> --- a/drivers/gpu/drm/i915/display/intel_acpi.h
+> +++ b/drivers/gpu/drm/i915/display/intel_acpi.h
+> @@ -14,6 +14,7 @@ void intel_unregister_dsm_handler(void);
+>  void intel_dsm_get_bios_data_funcs_supported(struct drm_i915_private *i915);
+>  void intel_acpi_device_id_update(struct drm_i915_private *i915);
+>  void intel_acpi_assign_connector_fwnodes(struct drm_i915_private *i915);
+> +void intel_acpi_video_register(struct drm_i915_private *i915);
+>  #else
+>  static inline void intel_register_dsm_handler(void) { return; }
+>  static inline void intel_unregister_dsm_handler(void) { return; }
+> @@ -23,6 +24,8 @@ static inline
+>  void intel_acpi_device_id_update(struct drm_i915_private *i915) { return; }
+>  static inline
+>  void intel_acpi_assign_connector_fwnodes(struct drm_i915_private *i915) { return; }
+> +static inline
+> +void intel_acpi_video_register(struct drm_i915_private *i915) { return; }
+>  #endif /* CONFIG_ACPI */
+>  
+>  #endif /* __INTEL_ACPI_H__ */
+> diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+> index 6103b02c081f..129a13375101 100644
+> --- a/drivers/gpu/drm/i915/display/intel_display.c
+> +++ b/drivers/gpu/drm/i915/display/intel_display.c
+> @@ -9087,7 +9087,7 @@ void intel_display_driver_register(struct drm_i915_private *i915)
+>  
+>  	/* Must be done after probing outputs */
+>  	intel_opregion_register(i915);
+> -	acpi_video_register();
+> +	intel_acpi_video_register(i915);
+>  
+>  	intel_audio_init(i915);
 
-Thanks.
-
-Regards,
-
-Hans
-
+-- 
+Jani Nikula, Intel Open Source Graphics Center
