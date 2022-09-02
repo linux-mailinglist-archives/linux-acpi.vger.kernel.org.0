@@ -2,58 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2793B5AA8D6
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Sep 2022 09:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD1F5AA8E4
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Sep 2022 09:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233931AbiIBHjg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Sep 2022 03:39:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43688 "EHLO
+        id S235127AbiIBHmI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Sep 2022 03:42:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233218AbiIBHje (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Sep 2022 03:39:34 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64AF6B8F02;
-        Fri,  2 Sep 2022 00:38:16 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id 145so1120662pfw.4;
-        Fri, 02 Sep 2022 00:38:16 -0700 (PDT)
+        with ESMTP id S235360AbiIBHmH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Sep 2022 03:42:07 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1857EB95B2;
+        Fri,  2 Sep 2022 00:42:04 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id n65-20020a17090a5ac700b001fbb4fad865so1390284pji.1;
+        Fri, 02 Sep 2022 00:42:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date;
-        bh=WkR9LaSKiyJhtlTTWqMUWeVX6Mln5pRmeIixpHeSGbc=;
-        b=UcMpMc1Kcy3O9+Qc0m7+xjCFZ4XPruIw9U3cyOACsPf2/js7J9BrKgZ31g6rsm3+Ei
-         FLfdQeSqTXbXk8/aHm9FLoQQqVJSRN2X70HECxx9zjxrrnZFffErQZV3hLn47lYDi6et
-         e0mQSDo9gd513Fyx9JVs+qw3hR5Qa0V2C2dZmuH4ZSPksQC4BCOoqIzYnJ9z0DPO7HXs
-         xn05vGCvCx19VOo/6wTPnsR+2WciCIL8ot5B4TOwa04jVmrmX728oTDLkgiN+UymEq1b
-         QAIXQxoLSIhakaUZZJ+9YnwaXasIhR0IVRqLFSbcSa13hEQSqQeevomPXkjd/VK3ZEWk
-         5JNQ==
+        bh=Z0YY5SlVj7HcaFNWbRM+lhVkfrb4GMSpXziny001FcU=;
+        b=hqgsjhzB1o8wTQ602kSCRkczNJTT09e/8jNlx/ixm2EajvVGpQFqhJHgATya/tI37W
+         vxGKayvxCiJ0zzj5yVPiEgKCYRm09/SUMoDpBPsk/3GWY/h2po5+g6lRZ3zApF/y7vxq
+         raGH4A4DHR5zxJXGS6tMXoig5IQGRrFfQgcYOyOyd2AMbX1PF6sCVtsfUPur55XsjdGn
+         xFEm4bAaJVfCYr4svO5GJnPgID0NFy0FQObArBDduLnmEQMjwH5RHTVZ8qTZQuQrUzDV
+         1g2fLKht502RUlfm3qx2Zu1oahkaw6ulVPDE/F3HCwgdV9DVxsgH0CQvrRp00c1jYcMO
+         YJoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=WkR9LaSKiyJhtlTTWqMUWeVX6Mln5pRmeIixpHeSGbc=;
-        b=KTR0Q7ieheEYUVlLeyBWIs/N7LNzkEfRemPQjoocfZJRSpYub+mHHl4mKtTGGGOppa
-         kxfwX9+gINXxhChoLUW0F/8oP3Usv8tohyz2gqrBZd7HG9OkPW4dvLneNCdwLaRlP2qq
-         xRnZtk6s0jHF3ujic1IFRtOeUfGZvcCEFCakHefgVC4gf1T7D3a5QrgH5fJaN25crSk9
-         WSFE+3daiixdUQKnwQv5TmmBpVGC63fROTC5UDBWYIwjwLyhiQ72qvd/vaYHDiitVU79
-         DKltssMwUJjU4SueD7zy0GyMcmIadzZzEpbr9CcOEt4Rr8DQDyJqif8hjhZLRrWGjmMC
-         adgQ==
-X-Gm-Message-State: ACgBeo1lesFQp8Q5c9LVT9d0/cZ2jY8Km/6n8EumRMy0bTMOoNzo++1F
-        5G+rXfMYhzN7ebR/IlnVAvk1TKXYIDk=
-X-Google-Smtp-Source: AA6agR7Rg6Dfva7zK/SAy8pg1Ez2Vf07BTbYdHwqsP4MSnQ8uQ+CJ/X7JT0MdHbjIZzxdYn5MeE1ZA==
-X-Received: by 2002:a65:6ccf:0:b0:42b:20e8:5b8a with SMTP id g15-20020a656ccf000000b0042b20e85b8amr28449731pgw.500.1662104295633;
-        Fri, 02 Sep 2022 00:38:15 -0700 (PDT)
+        bh=Z0YY5SlVj7HcaFNWbRM+lhVkfrb4GMSpXziny001FcU=;
+        b=UfqdiBuRI9uEFoooZP7HvqXUQ4/ohn5mSPK9PcViP6554g6WbLiEhQpnoCj8B8CYhR
+         A83e8zkjbsmsgtMOHXBD7iK8IsxmRVCfp/yem//Im1uSO9i7GPM2b/U+SdTHmfKj8ZwM
+         mkZWGNTQcr6CXnlop/enUaDs760fqYQy0Z9rFEMkxg2y56hWta0Px8zAfzabmmHyBSCQ
+         Y0cFy4d2EN1KqqU7FUiGstHL221JfsxF+lrfC7zywGcKmA6/gBKVXYOj9NDNuVrEl2Sd
+         ZNJKSROcK5ZgoORCRXqswlPbMmB/uZqBCS+BF2MTjJZIAdcSM/gCgV+8YYpXbDULqDwr
+         Io4Q==
+X-Gm-Message-State: ACgBeo2Uzr7yygCEW5KHsRnVl8Ieu/MGzFVZ51OAvU/+QOAfiBKMppnd
+        5PfoK6/24NeP+yLNo6NXxI2BHphJVbY=
+X-Google-Smtp-Source: AA6agR44WL03ikpEw2iC0BP9uX0OPoF5iXx+3bxru1JRr0ztgOTQx1b6r6p2JiOhIyeXNg1wRLUlug==
+X-Received: by 2002:a17:903:1209:b0:16b:81f6:e952 with SMTP id l9-20020a170903120900b0016b81f6e952mr35888420plh.48.1662104523554;
+        Fri, 02 Sep 2022 00:42:03 -0700 (PDT)
 Received: from localhost.localdomain (lily-optiplex-3070.dynamic.ucsd.edu. [2607:f720:1300:3033::1:4dd])
-        by smtp.googlemail.com with ESMTPSA id i9-20020a170902c94900b0016ecc7d5297sm862930pla.292.2022.09.02.00.38.14
+        by smtp.googlemail.com with ESMTPSA id p3-20020aa79e83000000b005371689d70fsm941905pfq.120.2022.09.02.00.42.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Sep 2022 00:38:15 -0700 (PDT)
+        Fri, 02 Sep 2022 00:42:03 -0700 (PDT)
 From:   Li Zhong <floridsleeves@gmail.com>
 To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     rafael@kernel.org, lenb@kernel.org,
-        Li Zhong <floridsleeves@gmail.com>
-Subject: [PATCH v1] drivers/acpi/processor_idle: check the return value of acpi_fetch_acpi_dev()
-Date:   Fri,  2 Sep 2022 00:37:30 -0700
-Message-Id: <20220902073730.2207819-1-floridsleeves@gmail.com>
+Cc:     rafael@kernel.org, Li Zhong <floridsleeves@gmail.com>
+Subject: [PATCH v1] drivers/acpi/acpi_video: check return value of acpi_get_parent()
+Date:   Fri,  2 Sep 2022 00:41:44 -0700
+Message-Id: <20220902074144.2209674-1-floridsleeves@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,27 +66,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The return value of acpi_fetch_acpi_dev() could be NULL, which will
-cause null pointer dereference if used in acpi_device_hid().
+Check return status of acpi_get_parent() to confirm whether it fails.
 
 Signed-off-by: Li Zhong <floridsleeves@gmail.com>
 ---
- drivers/acpi/processor_idle.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/acpi_video.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 16a1663d02d4..519f8f741da3 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1117,6 +1117,8 @@ static int acpi_processor_get_lpi_info(struct acpi_processor *pr)
- 	status = acpi_get_parent(handle, &pr_ahandle);
- 	while (ACPI_SUCCESS(status)) {
- 		d = acpi_fetch_acpi_dev(pr_ahandle);
-+		if (!d)
-+			break;
- 		handle = pr_ahandle;
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 5cbe2196176d..5fca9a39b1a4 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
++	// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  *  video.c - ACPI Video Driver
+  *
+@@ -1753,6 +1753,7 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
+ 	int result;
+ 	static int count;
+ 	char *name;
++	acpi_status status;
  
- 		if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
+ 	result = acpi_video_init_brightness(device);
+ 	if (result)
+@@ -1766,8 +1767,9 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
+ 		return;
+ 	count++;
+ 
+-	acpi_get_parent(device->dev->handle, &acpi_parent);
+-
++	status = acpi_get_parent(device->dev->handle, &acpi_parent);
++	if (ACPI_FAILURE(status))
++		return;
+ 	pdev = acpi_get_pci_dev(acpi_parent);
+ 	if (pdev) {
+ 		parent = &pdev->dev;
 -- 
 2.25.1
 
