@@ -2,48 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E06825AC0BD
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 20:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23DB25AC0CB
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 20:33:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231708AbiICS0z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Sep 2022 14:26:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37356 "EHLO
+        id S231653AbiICSdU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Sep 2022 14:33:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbiICS0z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 14:26:55 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD8AE42AE8
-        for <linux-acpi@vger.kernel.org>; Sat,  3 Sep 2022 11:26:53 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id 202so2823449ybe.13
-        for <linux-acpi@vger.kernel.org>; Sat, 03 Sep 2022 11:26:53 -0700 (PDT)
+        with ESMTP id S231719AbiICSdQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 14:33:16 -0400
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C48558F3;
+        Sat,  3 Sep 2022 11:33:12 -0700 (PDT)
+Received: by mail-yb1-f173.google.com with SMTP id e126so679105ybh.1;
+        Sat, 03 Sep 2022 11:33:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=c2u7bnsZ8XRnTuNhDkMsoT3UOTRQ1PU9dR0sFmS+Kt8=;
-        b=bvsPM78tNmUigFLqZtjRTYQU7LLJ8+nKqxgQkp/mjFxlZZkDTvvU+ThAt9zu7BhTbr
-         kfgJxWrA/6KpDeIlp5j4GRjlYaAqtewEQSP0QAkki8Z1q7GIZF6MgUy9538nwuAEN/Pr
-         FcEsQWgJLSfkBMQCAwXFWhFbEofo21jnFzCGIhNhSnHTxQiFU2mhASltPgdpO7sb7yST
-         Rvr3JVtXpICKF0C6aSvGBd1MlrI/L9sx8mDhs8FcEgQr+2V6wdiD88lLUqsCC8EC6Y5Z
-         RQ/Wq+Vf22P8dMJPr9bl/oe3KnbsCmf0q7d611cRroaIp74eom9Aqi9NPW8qHjlFUQ+o
-         c6dg==
-X-Gm-Message-State: ACgBeo3HBWnU7UK3yffxOpbCkdzvfZzEjJhEGZjoPN0usz3bredkNYe1
-        QhoLC83/hGSaSFaFqgqmG3fSzk4Vfld/hY4tnE8=
-X-Google-Smtp-Source: AA6agR6CkoZQq7jsH17uE6LiG8nDoTmAfN/jlfZ8IhbtJ4ZyGBQxpmZuhCvq5PiPIQZ4JbPQ9ovH11s7FJb7SCdqEnI=
-X-Received: by 2002:a25:2785:0:b0:69b:b1d2:fd05 with SMTP id
- n127-20020a252785000000b0069bb1d2fd05mr22994817ybn.81.1662229613011; Sat, 03
- Sep 2022 11:26:53 -0700 (PDT)
+        bh=Q9iXspB/AOKZB0tpJddHuEq0bJG5RPx5NNXdeYJsIbE=;
+        b=q9owDeS+sgWYn/aDiOdT0HAupsJJ5is87fYwisnjsEy5cLncQffGfyIihefq5PRRHN
+         FtEhEgAE2EkpSh9TDFbVCdGuWJWJGizcQ88gGfeuCWV+YLv+OcdO4BMxBaoNXKBtqzt7
+         GGmlRRP9puYqZi68lRjO+p3u3+MWMBTYvvHoED8M5n88HkQqWwDBbjX3I18ZULiyor/i
+         YdXbf6YUv6DMUMCvWPr2YXaG5k/nj1faxoldbskiv1Hpv3ejz27erENi4/TP1g7vY7Ka
+         bVoLiB0cY0w/r48BEiAeeKvYHaMKTer6MWoByjJ2jnmT5dlLqSI2vSltBGA++ksV+fZj
+         fKKw==
+X-Gm-Message-State: ACgBeo1OrE8lPlKbafSMAJC++vYjWc7v4rh34RGkqIo24aXqjYdLur9h
+        BsPBMrueY1GRwSZ8beuNzvUkIwCO3P3O3AJy7wgfJfZE
+X-Google-Smtp-Source: AA6agR7x5dmEYsR3uUtBzTLtJ47W01LCYmJZHUC/sA2d/N/tS7TLrk+vIkDHwq4i8KPC3z8fguk9RwPeeZD//fA2Bcw=
+X-Received: by 2002:a25:d154:0:b0:6a8:cfcc:49e8 with SMTP id
+ i81-20020a25d154000000b006a8cfcc49e8mr1888772ybg.482.1662229992141; Sat, 03
+ Sep 2022 11:33:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <1661346073-730819-1-git-send-email-dmtrmonakhov@yandex-team.ru>
-In-Reply-To: <1661346073-730819-1-git-send-email-dmtrmonakhov@yandex-team.ru>
+References: <20220825072744.229231-1-ye.xingchen@zte.com.cn>
+In-Reply-To: <20220825072744.229231-1-ye.xingchen@zte.com.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 3 Sep 2022 20:26:42 +0200
-Message-ID: <CAJZ5v0iZB1D0HGm9oX1n-ECj=eriKts8Ua3+YKr4b1DpdB4+sQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: Add BERT error log footer
-To:     Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 3 Sep 2022 20:33:01 +0200
+Message-ID: <CAJZ5v0jJ1Lzk4ZJ3QWpwQiJot0T2Jx0e8=0iXGYGU7+0gvgPXw@mail.gmail.com>
+Subject: Re: [PATCH linux-next] ACPI: EC: Remove the unneeded result variable
+To:     cgel.zte@gmail.com
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ye xingchen <ye.xingchen@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -55,30 +58,41 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 24, 2022 at 3:02 PM Dmitry Monakhov
-<dmtrmonakhov@yandex-team.ru> wrote:
+On Thu, Aug 25, 2022 at 9:27 AM <cgel.zte@gmail.com> wrote:
 >
-> Print total number of records found during BERT log parsing.
-> This also simplify dmesg parser implementation for BERT events.
+> From: ye xingchen <ye.xingchen@zte.com.cn>
 >
-> Signed-off-by: Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
+> Return the value acpi_ec_write() directly instead of storing it in
+> another redundant variable.
 >
-> diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
-> index 45973aa6e06d..c23eb75866d0 100644
-> --- a/drivers/acpi/apei/bert.c
-> +++ b/drivers/acpi/apei/bert.c
-> @@ -90,6 +90,9 @@ static void __init bert_print_all(struct acpi_bert_region *region,
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+> ---
+>  drivers/acpi/ec.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
 >
->         if (skipped)
->                 pr_info(HW_ERR "Skipped %d error records\n", skipped);
-> +
-> +       if (printed + skipped)
-> +               pr_info("Total records found: %d\n", printed + skipped);
+> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+> index c95e535035a0..9b42628cf21b 100644
+> --- a/drivers/acpi/ec.c
+> +++ b/drivers/acpi/ec.c
+> @@ -917,14 +917,10 @@ EXPORT_SYMBOL(ec_read);
+>
+>  int ec_write(u8 addr, u8 val)
+>  {
+> -       int err;
+> -
+>         if (!first_ec)
+>                 return -ENODEV;
+>
+> -       err = acpi_ec_write(first_ec, addr, val);
+> -
+> -       return err;
+> +       return acpi_ec_write(first_ec, addr, val);
 >  }
+>  EXPORT_SYMBOL(ec_write);
 >
->  static int __init setup_bert_disable(char *str)
 > --
 
-Applied as 6.1 material with an ACK from Tony.
+Applied as 6.1 material with some edits in the subject and changelog.
 
 Thanks!
