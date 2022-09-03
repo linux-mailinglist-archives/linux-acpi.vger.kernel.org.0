@@ -2,49 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18A1F5AC0EC
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 20:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31F045AC0F1
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 20:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229624AbiICSyt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Sep 2022 14:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51206 "EHLO
+        id S232054AbiICS4w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Sep 2022 14:56:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbiICSyt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 14:54:49 -0400
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 251C9193CA;
-        Sat,  3 Sep 2022 11:54:48 -0700 (PDT)
-Received: by mail-yb1-f169.google.com with SMTP id 202so2881445ybe.13;
-        Sat, 03 Sep 2022 11:54:48 -0700 (PDT)
+        with ESMTP id S231905AbiICS4v (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 14:56:51 -0400
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0124253039;
+        Sat,  3 Sep 2022 11:56:50 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-344fc86d87cso27557807b3.3;
+        Sat, 03 Sep 2022 11:56:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=c2u8J3e6VWb+BJya6Kv1BbnFoz2femQjTxZJArvM/N0=;
-        b=Tslxu42YP74NEGXdYVj4/VZGT3UKLtLi0kRDy7KiQn7RD5t9QXp6jgHIE6jn6PO+bp
-         Z+mzXc0eirpYmRRTHJx2krTZpFzcLJ38v29yKolst1J2WPVlsJy9yPcjGU+rgUICoHqJ
-         b65YjZau8yKsKU27yvquH2ZLkItSUaLGEi7b7GsulN37aCoEVtyroisCd1n4cjYqAdM+
-         ukkl+iB2FN3Q6cE00L3QGWzj4I2zw1cb8SKBn2cz2A9HVUzTvlIS2ERnSx1a3QO8pfPy
-         dk3JjXRMLrF8jxoC8Rada5jvevQyZDvW9jNs9rVnzWwhPSgRlwP7OcokhC1A0mbvgKeC
-         lbuQ==
-X-Gm-Message-State: ACgBeo1WMj8TFw3iFQlew2BgvZi66Qx0eZYqKWvd9A0yyaOIuKh1cB6J
-        PM5OJkaXboDLyclEymL/KLolvok8012hqu+XlnbYPxMz
-X-Google-Smtp-Source: AA6agR56QRT8XFU2RNWpZ9enfUA6I+xPDm5x89hd8la9xofTrximH4goCU+VQBtVboB5wh3qaLrNJ9jKuptajTYrG58=
-X-Received: by 2002:a25:2785:0:b0:69b:b1d2:fd05 with SMTP id
- n127-20020a252785000000b0069bb1d2fd05mr23048084ybn.81.1662231287387; Sat, 03
- Sep 2022 11:54:47 -0700 (PDT)
+        bh=k3aPelvksG7Dd9zWdqlGhSnmSXk+Wnv0ZCgCIZwJ+f0=;
+        b=vhhAQ9FNyO4opvCLoP2haEVN56bifwAxFQgNNv1XUWINxmSN8IoEu33k+R4oE4fwtx
+         2HjzNNyI5yEu+WJf4GkMjFv2LV1tPAxfnCbnmbBo5CKMxwY4tq6CVVG8WNL/ZrXVs2se
+         iVBTHbEI8dxdcXELqoxlTlxWEqc4fRt3s4gMedrpj75GhvONaC/BxNW0kWBSUbW+kam/
+         UiLBlH4imqwCi8338UzOuUCQZuHmlab7ILc8BYBoHV8iepmdHiR072L2te/Wtp90nT2F
+         IIf2/j0e8J3VoVjQ0o2nc0YakfRI+zqDGPFi7hdkmLyksRBHl0UpjkAyzctrBpPznWRU
+         iJgw==
+X-Gm-Message-State: ACgBeo2uMkwbiG8tjPhMo/oK2gu/poKU3wcb1tHo4U70ViRaa3BC1Z+z
+        a+mMElIktMea5K/QR1OCTizStuci2SBXj8DBBD3//mS5
+X-Google-Smtp-Source: AA6agR4fzkDRBM1gRJdHewWs2rje07jCubxT/0t6gpASp2fSRyJV5ktEkaoescdv4MhszJip0HF4fGPOuFv+A9IcRvE=
+X-Received: by 2002:a0d:da83:0:b0:329:9c04:fe6d with SMTP id
+ c125-20020a0dda83000000b003299c04fe6dmr32687635ywe.196.1662231409261; Sat, 03
+ Sep 2022 11:56:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220831140327.79149-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220831140327.79149-1-andriy.shevchenko@linux.intel.com>
+References: <1662026651-172787-1-git-send-email-john.garry@huawei.com> <CAHp75VdObOKv0aamL3+d8A7f3Asxj0SnOXtV5TYAUDAC_s3Mpg@mail.gmail.com>
+In-Reply-To: <CAHp75VdObOKv0aamL3+d8A7f3Asxj0SnOXtV5TYAUDAC_s3Mpg@mail.gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 3 Sep 2022 20:54:36 +0200
-Message-ID: <CAJZ5v0jRPmq--RRNHLNR+b+MfrefXexBdTXEuZitg0-VbB6omA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] ACPI: platform: Get rid of redundant 'else'
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
+Date:   Sat, 3 Sep 2022 20:56:37 +0200
+Message-ID: <CAJZ5v0haL5qM+_k-vR8oSLHCytKTHhAVdqQru+fqL6RFBAAasw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: platform: Use PLATFORM_DEVID_NONE in acpi_create_platform_device()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        John Garry <john.garry@huawei.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -56,40 +57,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 31, 2022 at 4:03 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, Sep 1, 2022 at 12:25 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> In the snippets like the following
+> On Thu, Sep 1, 2022 at 1:10 PM John Garry <john.garry@huawei.com> wrote:
+> >
+> > Instead of hardcoding the value for the id, use PLATFORM_DEVID_NONE.
 >
->         if (...)
->                 return / goto / break / continue ...;
->         else
->                 ...
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 >
-> the 'else' is redundant. Get rid of it.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> v2: no changes
->  drivers/acpi/acpi_platform.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 1a1c78b23fba..75e26528056d 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -114,9 +114,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->
->         INIT_LIST_HEAD(&resource_list);
->         count = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
-> -       if (count < 0) {
-> +       if (count < 0)
->                 return NULL;
-> -       } else if (count > 0) {
-> +       if (count > 0) {
->                 resources = kcalloc(count, sizeof(struct resource),
->                                     GFP_KERNEL);
->                 if (!resources) {
-> --
+> > Signed-off-by: John Garry <john.garry@huawei.com>
+> >
+> > diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+> > index de3cbf152dee..d33334c9b8e5 100644
+> > --- a/drivers/acpi/acpi_platform.c
+> > +++ b/drivers/acpi/acpi_platform.c
+> > @@ -140,7 +140,7 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+> >         pdevinfo.parent = adev->parent ?
+> >                 acpi_get_first_physical_node(adev->parent) : NULL;
+> >         pdevinfo.name = dev_name(&adev->dev);
+> > -       pdevinfo.id = -1;
+> > +       pdevinfo.id = PLATFORM_DEVID_NONE;
+> >         pdevinfo.res = resources;
+> >         pdevinfo.num_res = count;
+> >         pdevinfo.fwnode = acpi_fwnode_handle(adev);
+> > --
 
-Whole series applied as 6.1 material, thanks!
+Applied as 6.1 material, thanks!
