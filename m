@@ -2,50 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31F045AC0F1
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 20:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 493065AC100
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 21:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232054AbiICS4w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Sep 2022 14:56:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55350 "EHLO
+        id S230007AbiICTAj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Sep 2022 15:00:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbiICS4v (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 14:56:51 -0400
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0124253039;
-        Sat,  3 Sep 2022 11:56:50 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-344fc86d87cso27557807b3.3;
-        Sat, 03 Sep 2022 11:56:49 -0700 (PDT)
+        with ESMTP id S229648AbiICTAi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 15:00:38 -0400
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF513D5A6;
+        Sat,  3 Sep 2022 12:00:38 -0700 (PDT)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-324ec5a9e97so41755697b3.7;
+        Sat, 03 Sep 2022 12:00:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=k3aPelvksG7Dd9zWdqlGhSnmSXk+Wnv0ZCgCIZwJ+f0=;
-        b=vhhAQ9FNyO4opvCLoP2haEVN56bifwAxFQgNNv1XUWINxmSN8IoEu33k+R4oE4fwtx
-         2HjzNNyI5yEu+WJf4GkMjFv2LV1tPAxfnCbnmbBo5CKMxwY4tq6CVVG8WNL/ZrXVs2se
-         iVBTHbEI8dxdcXELqoxlTlxWEqc4fRt3s4gMedrpj75GhvONaC/BxNW0kWBSUbW+kam/
-         UiLBlH4imqwCi8338UzOuUCQZuHmlab7ILc8BYBoHV8iepmdHiR072L2te/Wtp90nT2F
-         IIf2/j0e8J3VoVjQ0o2nc0YakfRI+zqDGPFi7hdkmLyksRBHl0UpjkAyzctrBpPznWRU
-         iJgw==
-X-Gm-Message-State: ACgBeo2uMkwbiG8tjPhMo/oK2gu/poKU3wcb1tHo4U70ViRaa3BC1Z+z
-        a+mMElIktMea5K/QR1OCTizStuci2SBXj8DBBD3//mS5
-X-Google-Smtp-Source: AA6agR4fzkDRBM1gRJdHewWs2rje07jCubxT/0t6gpASp2fSRyJV5ktEkaoescdv4MhszJip0HF4fGPOuFv+A9IcRvE=
-X-Received: by 2002:a0d:da83:0:b0:329:9c04:fe6d with SMTP id
- c125-20020a0dda83000000b003299c04fe6dmr32687635ywe.196.1662231409261; Sat, 03
- Sep 2022 11:56:49 -0700 (PDT)
+        bh=ibwnT0cqW7ADmxA6K2xllH0o+FjvNmoCUtXkTE8svNo=;
+        b=OxfXsHwpqmKATS6m4FFtxYhBTSZbCcl2PLrRPYjN2T6FKJt/qhJ+QUJnvrwuZaZabM
+         9GtF/iuNMBO3vf6EDuTb7FFVWS/0p0JCStwkip/pAsWLiUyfuw6pP1aMzuD2tzndG3Ub
+         gSXGfDSqf5tjIWZjCgf46nzT1de2mJKB7UyhLTxO/+cQIpR/DrwsPG4w8KwNwBBWR4rJ
+         U4suBgfFnfIJzmPioYAwlUx/eJ11iUCADRm2vXTDDBYOp3x9NOt27Av7c8jvZezsJgdt
+         8Am9H56sAMdiHwz6sSLjWQaJ2mW/1xr1tJT3Hv3uICetTCRf5En4Gf5B6lutHPMbPHZ2
+         cx8g==
+X-Gm-Message-State: ACgBeo2eEE1ZVkmPKLV2hzBgDrOr8SPNYWV0GtVv7ANQ6ySIKYklYwQM
+        3+D/D8tu/hL7AQBTCFRPifNqECjiYeqoOVpB/+I=
+X-Google-Smtp-Source: AA6agR7sHIA8jeuw/V/G2pAEJ3ErQ0yEJVn+RxOKLyZgPT+3Xoci2MvmS4WwW2zidMxkAylE3LY2zAHnY6dGDztMk0M=
+X-Received: by 2002:a81:4850:0:b0:33c:922b:5739 with SMTP id
+ v77-20020a814850000000b0033c922b5739mr32073228ywa.515.1662231637489; Sat, 03
+ Sep 2022 12:00:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <1662026651-172787-1-git-send-email-john.garry@huawei.com> <CAHp75VdObOKv0aamL3+d8A7f3Asxj0SnOXtV5TYAUDAC_s3Mpg@mail.gmail.com>
-In-Reply-To: <CAHp75VdObOKv0aamL3+d8A7f3Asxj0SnOXtV5TYAUDAC_s3Mpg@mail.gmail.com>
+References: <202209020412.Ts31BZrs-lkp@intel.com> <a6030c5943ccd2965261a92320b1ae1adb909116.1662084833.git.lukas@wunner.de>
+ <YxHRSPUWtQdP1w/4@smile.fi.intel.com>
+In-Reply-To: <YxHRSPUWtQdP1w/4@smile.fi.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 3 Sep 2022 20:56:37 +0200
-Message-ID: <CAJZ5v0haL5qM+_k-vR8oSLHCytKTHhAVdqQru+fqL6RFBAAasw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: platform: Use PLATFORM_DEVID_NONE in acpi_create_platform_device()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        John Garry <john.garry@huawei.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
+Date:   Sat, 3 Sep 2022 21:00:26 +0200
+Message-ID: <CAJZ5v0g3ybQr7zmgW2FVPQkCgP-ezjgUwz_ro_3q2KgzOpCs9w@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / property: Silence missing-declarations warning in apple.c
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, kbuild-all@lists.01.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -57,30 +58,34 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 1, 2022 at 12:25 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+On Fri, Sep 2, 2022 at 11:50 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Thu, Sep 1, 2022 at 1:10 PM John Garry <john.garry@huawei.com> wrote:
+> On Fri, Sep 02, 2022 at 04:15:55AM +0200, Lukas Wunner wrote:
+> > Silence an annoying message emitted for W=1 builds:
 > >
-> > Instead of hardcoding the value for the id, use PLATFORM_DEVID_NONE.
+> > drivers/acpi/x86/apple.c:30:6: warning: no previous declaration for 'acpi_extract_apple_properties' [-Wmissing-declarations]
 >
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 >
-> > Signed-off-by: John Garry <john.garry@huawei.com>
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> > ---
+> >  drivers/acpi/x86/apple.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > >
-> > diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> > index de3cbf152dee..d33334c9b8e5 100644
-> > --- a/drivers/acpi/acpi_platform.c
-> > +++ b/drivers/acpi/acpi_platform.c
-> > @@ -140,7 +140,7 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
-> >         pdevinfo.parent = adev->parent ?
-> >                 acpi_get_first_physical_node(adev->parent) : NULL;
-> >         pdevinfo.name = dev_name(&adev->dev);
-> > -       pdevinfo.id = -1;
-> > +       pdevinfo.id = PLATFORM_DEVID_NONE;
-> >         pdevinfo.res = resources;
-> >         pdevinfo.num_res = count;
-> >         pdevinfo.fwnode = acpi_fwnode_handle(adev);
+> > diff --git a/drivers/acpi/x86/apple.c b/drivers/acpi/x86/apple.c
+> > index c285c91a5e9c..8812ecd03d55 100644
+> > --- a/drivers/acpi/x86/apple.c
+> > +++ b/drivers/acpi/x86/apple.c
+> > @@ -8,6 +8,7 @@
+> >  #include <linux/bitmap.h>
+> >  #include <linux/platform_data/x86/apple.h>
+> >  #include <linux/uuid.h>
+> > +#include "../internal.h"
+> >
+> >  /* Apple _DSM device properties GUID */
+> >  static const guid_t apple_prp_guid =
 > > --
 
 Applied as 6.1 material, thanks!
