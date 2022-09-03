@@ -2,110 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C27D5ABF4C
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 16:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E06825AC0BD
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 20:26:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230011AbiICOUP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Sep 2022 10:20:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60090 "EHLO
+        id S231708AbiICS0z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Sep 2022 14:26:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229741AbiICOUO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 10:20:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63EAA52FD9;
-        Sat,  3 Sep 2022 07:20:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F2A17B80966;
-        Sat,  3 Sep 2022 14:20:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E69C43470;
-        Sat,  3 Sep 2022 14:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662214810;
-        bh=0aD+VSuyqXxSIVEFulDlAaMzWs8mG1JCiPYrFvQbHqk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=nXtwWlB287xOlDtpAHhVfl9tPu1xM3cR2NWG5pr9+m3HgOkV32Ou69hgAeGG7anmP
-         9vgQpEnwRDQdGij523rA5e3A6+g6VWHQfONrCeiZBbg8sCWW719hUzFtWf/E7+ICPh
-         YbGrLEsasbuQNEZc2LTc1tjCKOoyVSsGh10qw0qvvZk65xVoGL6WQofHN9cV3PXKXf
-         h9R2KOJKUHBiCOfc9twQPCvhHq5RWxVCGQ/rSJrJ9Xvrv667EDXCdteNQRwhnHqmDq
-         rXPZk0LklN7vT1GjywGscy8ifC+1ThJlqEGxLoum+VF06pyrsf84aszxg5mAly9Y/J
-         q/QWXeq+oz3og==
-Received: by mail-vk1-f172.google.com with SMTP id c2so2240942vkm.9;
-        Sat, 03 Sep 2022 07:20:10 -0700 (PDT)
-X-Gm-Message-State: ACgBeo3SXKi3/Qvvt1kXEmBWO1MaL+GKh//Fx/4BZ8q73eSGNe2OdQRw
-        GUa3Gl9eDtwnmtjD87c+ArY4v7gAyGkHkiPPs0w=
-X-Google-Smtp-Source: AA6agR4DjVYs1Z7O7YPPXaanoHXU3FRdvt+fv4WSmMa7CoMVispaaGhUAL5QcuLgVa9t520FJ2ydXbrkcTwKD8AFeaQ=
-X-Received: by 2002:ac5:cd82:0:b0:397:7f8d:95f7 with SMTP id
- i2-20020ac5cd82000000b003977f8d95f7mr2019923vka.18.1662214809526; Sat, 03 Sep
- 2022 07:20:09 -0700 (PDT)
+        with ESMTP id S229628AbiICS0z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 14:26:55 -0400
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD8AE42AE8
+        for <linux-acpi@vger.kernel.org>; Sat,  3 Sep 2022 11:26:53 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id 202so2823449ybe.13
+        for <linux-acpi@vger.kernel.org>; Sat, 03 Sep 2022 11:26:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=c2u7bnsZ8XRnTuNhDkMsoT3UOTRQ1PU9dR0sFmS+Kt8=;
+        b=bvsPM78tNmUigFLqZtjRTYQU7LLJ8+nKqxgQkp/mjFxlZZkDTvvU+ThAt9zu7BhTbr
+         kfgJxWrA/6KpDeIlp5j4GRjlYaAqtewEQSP0QAkki8Z1q7GIZF6MgUy9538nwuAEN/Pr
+         FcEsQWgJLSfkBMQCAwXFWhFbEofo21jnFzCGIhNhSnHTxQiFU2mhASltPgdpO7sb7yST
+         Rvr3JVtXpICKF0C6aSvGBd1MlrI/L9sx8mDhs8FcEgQr+2V6wdiD88lLUqsCC8EC6Y5Z
+         RQ/Wq+Vf22P8dMJPr9bl/oe3KnbsCmf0q7d611cRroaIp74eom9Aqi9NPW8qHjlFUQ+o
+         c6dg==
+X-Gm-Message-State: ACgBeo3HBWnU7UK3yffxOpbCkdzvfZzEjJhEGZjoPN0usz3bredkNYe1
+        QhoLC83/hGSaSFaFqgqmG3fSzk4Vfld/hY4tnE8=
+X-Google-Smtp-Source: AA6agR6CkoZQq7jsH17uE6LiG8nDoTmAfN/jlfZ8IhbtJ4ZyGBQxpmZuhCvq5PiPIQZ4JbPQ9ovH11s7FJb7SCdqEnI=
+X-Received: by 2002:a25:2785:0:b0:69b:b1d2:fd05 with SMTP id
+ n127-20020a252785000000b0069bb1d2fd05mr22994817ybn.81.1662229613011; Sat, 03
+ Sep 2022 11:26:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1662190009.git.zhoubinbin@loongson.cn> <6d01148014a62d8d412790dc8442af40368c6f8f.1662190009.git.zhoubinbin@loongson.cn>
- <bf3e7516c351f793de08d5311aff10c379720798.camel@xry111.site>
-In-Reply-To: <bf3e7516c351f793de08d5311aff10c379720798.camel@xry111.site>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Sat, 3 Sep 2022 22:19:57 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4QXyaK+H-vMsDgXY+9J1FONKzEi-fm37J9NOr0n+tqOg@mail.gmail.com>
-Message-ID: <CAAhV-H4QXyaK+H-vMsDgXY+9J1FONKzEi-fm37J9NOr0n+tqOg@mail.gmail.com>
-Subject: Re: [PATCH 2/7] LoongArch: Enable LS2X RTC in loongson3_defconfig
-To:     Xi Ruoyao <xry111@xry111.site>
-Cc:     Binbin Zhou <zhoubinbin@loongson.cn>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        linux-rtc@vger.kernel.org,
-        "open list:MIPS" <linux-mips@vger.kernel.org>,
-        devicetree@vger.kernel.org, loongarch@lists.linux.dev,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        WANG Xuerui <git@xen0n.name>
+References: <1661346073-730819-1-git-send-email-dmtrmonakhov@yandex-team.ru>
+In-Reply-To: <1661346073-730819-1-git-send-email-dmtrmonakhov@yandex-team.ru>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 3 Sep 2022 20:26:42 +0200
+Message-ID: <CAJZ5v0iZB1D0HGm9oX1n-ECj=eriKts8Ua3+YKr4b1DpdB4+sQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: Add BERT error log footer
+To:     Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Ruoyao,
-
-On Sat, Sep 3, 2022 at 6:45 PM Xi Ruoyao <xry111@xry111.site> wrote:
+On Wed, Aug 24, 2022 at 3:02 PM Dmitry Monakhov
+<dmtrmonakhov@yandex-team.ru> wrote:
 >
-> On Sat, 2022-09-03 at 17:34 +0800, Binbin Zhou wrote:
-> > This is now supported, enable for Loongson-3 systems.
-> > Other systems are unaffected.
-> >
-> > Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-> > Cc: Huacai Chen <chenhuacai@kernel.org>
-> > Cc: WANG Xuerui <git@xen0n.name>
-> > Cc: loongarch@lists.linux.dev
-> > ---
-> >  arch/loongarch/configs/loongson3_defconfig | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/arch/loongarch/configs/loongson3_defconfig
-> > b/arch/loongarch/configs/loongson3_defconfig
-> > index 4083d3051109..b240bc4e2021 100644
-> > --- a/arch/loongarch/configs/loongson3_defconfig
-> > +++ b/arch/loongarch/configs/loongson3_defconfig
-> > @@ -660,6 +660,7 @@ CONFIG_USB_GADGET=y
-> >  CONFIG_INFINIBAND=m
-> >  CONFIG_RTC_CLASS=y
-> >  CONFIG_RTC_DRV_EFI=y
-> > +CONFIG_RTC_DRV_LS2X=y
+> Print total number of records found during BERT log parsing.
+> This also simplify dmesg parser implementation for BERT events.
 >
-> We already have RTC_DRV_EFI=y, IIUC this means we leave LS7A RTC for the
-> firmware to drive and operate it through EFI service.  So is this really
-> needed for LoongArch systems?  And if we enable both RTC_DRV_EFI and
-> RTC_DRV_LS2X, will some bad thing (a conflict) happen?
-Don't worry, please. EFI RTC depends on EFI runtime, so we need an
-available RTC if EFI runtime is disabled (by command line or any other
-reasons). On the other hand, multi RTCs can perfectly co-exist, they
-will be rtc0 and rtc1 under sysfs and rtc0 is the default one.
-
-Huacai
+> Signed-off-by: Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
 >
+> diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
+> index 45973aa6e06d..c23eb75866d0 100644
+> --- a/drivers/acpi/apei/bert.c
+> +++ b/drivers/acpi/apei/bert.c
+> @@ -90,6 +90,9 @@ static void __init bert_print_all(struct acpi_bert_region *region,
+>
+>         if (skipped)
+>                 pr_info(HW_ERR "Skipped %d error records\n", skipped);
+> +
+> +       if (printed + skipped)
+> +               pr_info("Total records found: %d\n", printed + skipped);
+>  }
+>
+>  static int __init setup_bert_disable(char *str)
 > --
-> Xi Ruoyao <xry111@xry111.site>
-> School of Aerospace Science and Technology, Xidian University
->
+
+Applied as 6.1 material with an ACK from Tony.
+
+Thanks!
