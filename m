@@ -2,90 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 493065AC100
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 21:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3809A5AC1AA
+	for <lists+linux-acpi@lfdr.de>; Sun,  4 Sep 2022 01:04:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230007AbiICTAj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Sep 2022 15:00:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35364 "EHLO
+        id S231446AbiICXEE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Sep 2022 19:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbiICTAi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 15:00:38 -0400
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF513D5A6;
-        Sat,  3 Sep 2022 12:00:38 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-324ec5a9e97so41755697b3.7;
-        Sat, 03 Sep 2022 12:00:38 -0700 (PDT)
+        with ESMTP id S230391AbiICXED (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 19:04:03 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 515094A10D;
+        Sat,  3 Sep 2022 16:04:02 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id n65-20020a17090a5ac700b001fbb4fad865so5412729pji.1;
+        Sat, 03 Sep 2022 16:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=N5clPe5lVC3TDguE3nbHaBibca5uw8kzSOg1ZNJ98mk=;
+        b=fpnXIei2gVJWC+0so8sk1ItqpBrUIpDKP7IOrV18ajuiz6k4xXw6ZLJ539uTImXWSI
+         yB74XrwyKuSBPi34OmN8uZj/lm4cWH/oXjSFKpronLwdaHkNIiejnG1Bjn7tQyafNJCW
+         iNOfdR0+/h4sJWZ+C2ER8rf18MPsJkurujMQqE3S0H4icc0mBV5KZNnyolDFDuYQGdj8
+         x4VTRmFW3szjeMdkOd3sWG50aZB00YxJzUKszSAWSaXesu+9vNQvd4mqbFUcUsmJ+Lz7
+         DME7m0HCOFCp5qnXV8D+7UgtEtJfi1o3wylmxAmKX9FuFZp/pLEOcZiGGxv8/YGeLSM4
+         IqZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=ibwnT0cqW7ADmxA6K2xllH0o+FjvNmoCUtXkTE8svNo=;
-        b=OxfXsHwpqmKATS6m4FFtxYhBTSZbCcl2PLrRPYjN2T6FKJt/qhJ+QUJnvrwuZaZabM
-         9GtF/iuNMBO3vf6EDuTb7FFVWS/0p0JCStwkip/pAsWLiUyfuw6pP1aMzuD2tzndG3Ub
-         gSXGfDSqf5tjIWZjCgf46nzT1de2mJKB7UyhLTxO/+cQIpR/DrwsPG4w8KwNwBBWR4rJ
-         U4suBgfFnfIJzmPioYAwlUx/eJ11iUCADRm2vXTDDBYOp3x9NOt27Av7c8jvZezsJgdt
-         8Am9H56sAMdiHwz6sSLjWQaJ2mW/1xr1tJT3Hv3uICetTCRf5En4Gf5B6lutHPMbPHZ2
-         cx8g==
-X-Gm-Message-State: ACgBeo2eEE1ZVkmPKLV2hzBgDrOr8SPNYWV0GtVv7ANQ6ySIKYklYwQM
-        3+D/D8tu/hL7AQBTCFRPifNqECjiYeqoOVpB/+I=
-X-Google-Smtp-Source: AA6agR7sHIA8jeuw/V/G2pAEJ3ErQ0yEJVn+RxOKLyZgPT+3Xoci2MvmS4WwW2zidMxkAylE3LY2zAHnY6dGDztMk0M=
-X-Received: by 2002:a81:4850:0:b0:33c:922b:5739 with SMTP id
- v77-20020a814850000000b0033c922b5739mr32073228ywa.515.1662231637489; Sat, 03
- Sep 2022 12:00:37 -0700 (PDT)
+        bh=N5clPe5lVC3TDguE3nbHaBibca5uw8kzSOg1ZNJ98mk=;
+        b=CUZe78lMK+8Xw6YL1EXTz6F/9TZn6j3U8q+gWCzU7lT7/s4KcXQkbLj8+ZSlqFLPR+
+         PMNK1sZXV2dtohVNR9mVE+N2vZuoRWQ2q5cyArNtQwZvExyoj2maF7u00qRAKivWocfv
+         F2MSISxcBVWwI4ca588hCI2MQ3RPNrPZiaoreBHD8jmLnz7JSV/mzdyMh3K3NqHXxfp/
+         JNQ773WdwNVrojwTNVnwWtF2AoNOXljMB3RVc6DJSGdc7NbqBoYcUf8P6vCiZ/7xTAD6
+         WE9K7+XpN+dHxeroy9vZ7poAHJ4Rak33PQWZnGKsSC3xedtIWM0iMxpRxbG94Anua0LT
+         eZSw==
+X-Gm-Message-State: ACgBeo3T58aQHDty8o8s5pkSktv+gUDsTNXgvgYWbyqZ7X6PiXOqiJII
+        +lCMAPxdY73jo39QkX27UzljALuIYtV1SYrqvRoxXrvDA/eOEg==
+X-Google-Smtp-Source: AA6agR4kYx+rBmRCzoeybgc9H+dn/UxyajKjCI7AL/hnZfZLZcnW6KE5SZXjhpImMwN2psoUWG7ExhMHhtt4G9ibnPQ=
+X-Received: by 2002:a17:90b:33c9:b0:1fe:5861:7a0f with SMTP id
+ lk9-20020a17090b33c900b001fe58617a0fmr11781214pjb.187.1662246241727; Sat, 03
+ Sep 2022 16:04:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <202209020412.Ts31BZrs-lkp@intel.com> <a6030c5943ccd2965261a92320b1ae1adb909116.1662084833.git.lukas@wunner.de>
- <YxHRSPUWtQdP1w/4@smile.fi.intel.com>
-In-Reply-To: <YxHRSPUWtQdP1w/4@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 3 Sep 2022 21:00:26 +0200
-Message-ID: <CAJZ5v0g3ybQr7zmgW2FVPQkCgP-ezjgUwz_ro_3q2KgzOpCs9w@mail.gmail.com>
-Subject: Re: [PATCH] ACPI / property: Silence missing-declarations warning in apple.c
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, kbuild-all@lists.01.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+References: <20220828205416.1957305-1-floridsleeves@gmail.com> <CAJZ5v0jrQwBh3ToZc-7J69qDJEAZ8+wXPzqjZ+zpxB4a69W-Ng@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jrQwBh3ToZc-7J69qDJEAZ8+wXPzqjZ+zpxB4a69W-Ng@mail.gmail.com>
+From:   Li Zhong <floridsleeves@gmail.com>
+Date:   Sat, 3 Sep 2022 16:03:50 -0700
+Message-ID: <CAMEuxRryb0L6O92r-qzJ8VaBEpW+cghhoZFi6+RtFfDtDWD3sA@mail.gmail.com>
+Subject: Re: [PATCH v1] drivers/acpi/processor_idle: check the return value of acpi_fetch_acpi_dev()
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 2, 2022 at 11:50 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Mon, Aug 29, 2022 at 6:56 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> On Fri, Sep 02, 2022 at 04:15:55AM +0200, Lukas Wunner wrote:
-> > Silence an annoying message emitted for W=1 builds:
+> On Sun, Aug 28, 2022 at 10:54 PM Li Zhong <floridsleeves@gmail.com> wrote:
 > >
-> > drivers/acpi/x86/apple.c:30:6: warning: no previous declaration for 'acpi_extract_apple_properties' [-Wmissing-declarations]
+> > The return value of acpi_fetch_acpi_dev() could be NULL, which will
+> > cause null pointer dereference if used in acpi_device_hid().
 >
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> That's true.
 >
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> > Signed-off-by: Li Zhong <floridsleeves@gmail.com>
 > > ---
-> >  drivers/acpi/x86/apple.c | 1 +
-> >  1 file changed, 1 insertion(+)
+> >  drivers/acpi/processor_idle.c | 2 ++
+> >  1 file changed, 2 insertions(+)
 > >
-> > diff --git a/drivers/acpi/x86/apple.c b/drivers/acpi/x86/apple.c
-> > index c285c91a5e9c..8812ecd03d55 100644
-> > --- a/drivers/acpi/x86/apple.c
-> > +++ b/drivers/acpi/x86/apple.c
-> > @@ -8,6 +8,7 @@
-> >  #include <linux/bitmap.h>
-> >  #include <linux/platform_data/x86/apple.h>
-> >  #include <linux/uuid.h>
-> > +#include "../internal.h"
-> >
-> >  /* Apple _DSM device properties GUID */
-> >  static const guid_t apple_prp_guid =
-> > --
+> > diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> > index 16a1663d02d4..519f8f741da3 100644
+> > --- a/drivers/acpi/processor_idle.c
+> > +++ b/drivers/acpi/processor_idle.c
+> > @@ -1117,6 +1117,8 @@ static int acpi_processor_get_lpi_info(struct acpi_processor *pr)
+> >         status = acpi_get_parent(handle, &pr_ahandle);
+> >         while (ACPI_SUCCESS(status)) {
+> >                 d = acpi_fetch_acpi_dev(pr_ahandle);
+> > +               if (!d)
+> > +                       break;
+>
+> But shouldn't this be continue?
+>
 
-Applied as 6.1 material, thanks!
+I think here is break instead of continue because if we use continue, variable
+status will not change. Then the while condition will stay true and loop
+forever.
+
+> >                 handle = pr_ahandle;
+> >
+> >                 if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
+> > --
+> > 2.25.1
+> >
