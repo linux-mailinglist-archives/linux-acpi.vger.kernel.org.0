@@ -2,88 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F0675ABE92
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 12:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DADF45ABF43
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 16:15:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiICKpm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Sep 2022 06:45:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56630 "EHLO
+        id S231280AbiICOPx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Sep 2022 10:15:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiICKpm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 06:45:42 -0400
-Received: from xry111.site (xry111.site [89.208.246.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 121215AA09
-        for <linux-acpi@vger.kernel.org>; Sat,  3 Sep 2022 03:45:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-        s=default; t=1662201937;
-        bh=NpdQCn4KmvmvSGsHfe8yzzWa+Ld9oIfoQgHzoFTZQdk=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=XtVwm3DmdJIuAhl9nNhc+5P9Xd9cDGFUSX17CTClO14WWZv36RoG347rydVcAu1t4
-         06QImuBntf1os11mm61CnnaFqr8qxhF5XmlBD9ir9qTR3gjfBN8wbLyTA0wAXc+OZ8
-         dt29W3c69LGyIxOZFkw67Ie5ltchQxK79+9j8euE=
-Received: from [IPv6:240e:358:1104:1500:dc73:854d:832e:4] (unknown [IPv6:240e:358:1104:1500:dc73:854d:832e:4])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
-        (Client did not present a certificate)
-        (Authenticated sender: xry111@xry111.site)
-        by xry111.site (Postfix) with ESMTPSA id 0861D667F7;
-        Sat,  3 Sep 2022 06:45:30 -0400 (EDT)
-Message-ID: <bf3e7516c351f793de08d5311aff10c379720798.camel@xry111.site>
-Subject: Re: [PATCH 2/7] LoongArch: Enable LS2X RTC in loongson3_defconfig
-From:   Xi Ruoyao <xry111@xry111.site>
-To:     Binbin Zhou <zhoubinbin@loongson.cn>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        linux-rtc@vger.kernel.org
-Cc:     linux-mips@vger.kernel.org, devicetree@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <git@xen0n.name>
-Date:   Sat, 03 Sep 2022 18:45:22 +0800
-In-Reply-To: <6d01148014a62d8d412790dc8442af40368c6f8f.1662190009.git.zhoubinbin@loongson.cn>
-References: <cover.1662190009.git.zhoubinbin@loongson.cn>
-         <6d01148014a62d8d412790dc8442af40368c6f8f.1662190009.git.zhoubinbin@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.45.2 
+        with ESMTP id S231179AbiICOPv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 10:15:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB0546DAB;
+        Sat,  3 Sep 2022 07:15:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C90BDB801BF;
+        Sat,  3 Sep 2022 14:15:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810F9C433C1;
+        Sat,  3 Sep 2022 14:15:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662214546;
+        bh=/jP8MIyDHUYJ8U6z6dijSBnbvT/6bOxlL9l4q7SCjIE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Vmg6+/RGxAjjT8tBBM2A/0QujfJq9FLMt6fdyGlWDkUWHYVkpG7LwVZ8QHehi6LoP
+         aTS/O3tzmjDp3TbqSfODHJWhpjrdAncizb/LVOB5DMHp52EfecJ+jNX8URczcjdw9L
+         uzHjoVdR5AV0IJMyRmOlrVPDSw+YgdEqSdFUs3FI2Y4FK+nCyK3Sb7DGRGF5GVdK3M
+         pRS+tGuCo0ai6ht/ZmNIQ2lkmayyG4DLFHN4zw8G0+ghGUp7ffxLPYF/wc+hZh/ocf
+         qLQ7iK+Kb6hP6hG5BKI5d7LOZ6g+UN8iAsmATZkhyzcO0sAmHIr+MClg6pIo6fb2uQ
+         b1cryDuUhoM+Q==
+Received: by mail-vs1-f54.google.com with SMTP id d126so4725720vsd.13;
+        Sat, 03 Sep 2022 07:15:46 -0700 (PDT)
+X-Gm-Message-State: ACgBeo3ikny5BXX32+9BCbT6Aer112TJRrPqlNotxilqVNbVlyC8g1e+
+        vrrGcEDSgBvkq1w9VNvEj5fmNuTdGH8XpNWiNcc=
+X-Google-Smtp-Source: AA6agR4Mm5CDbSVzGUuU9Le1jrraNppoFx9hZxmyR0Mx07jBrk3YAqwYjgTaCXwombY3RjovNF6IxEXvdbwQRT1wnl0=
+X-Received: by 2002:a05:6102:390d:b0:387:78b9:bf9c with SMTP id
+ e13-20020a056102390d00b0038778b9bf9cmr12500187vsu.43.1662214545467; Sat, 03
+ Sep 2022 07:15:45 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
-        PDS_OTHER_BAD_TLD,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <cover.1662190009.git.zhoubinbin@loongson.cn>
+In-Reply-To: <cover.1662190009.git.zhoubinbin@loongson.cn>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Sat, 3 Sep 2022 22:15:33 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5+7_o1znvnOdbASwxL09NxSr6vAFpiZZC16DHGtt5f9w@mail.gmail.com>
+Message-ID: <CAAhV-H5+7_o1znvnOdbASwxL09NxSr6vAFpiZZC16DHGtt5f9w@mail.gmail.com>
+Subject: Re: [PATCH 0/7] rtc: ls2x: Add support for the Loongson-2K/LS7A RTC
+To:     Binbin Zhou <zhoubinbin@loongson.cn>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>, linux-rtc@vger.kernel.org,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        devicetree@vger.kernel.org, loongarch@lists.linux.dev,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Qing Zhang <zhangqing@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 2022-09-03 at 17:34 +0800, Binbin Zhou wrote:
-> This is now supported, enable for Loongson-3 systems.
-> Other systems are unaffected.
->=20
-> Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <git@xen0n.name>
-> Cc: loongarch@lists.linux.dev
-> ---
-> =C2=A0arch/loongarch/configs/loongson3_defconfig | 1 +
-> =C2=A01 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/loongarch/configs/loongson3_defconfig
-> b/arch/loongarch/configs/loongson3_defconfig
-> index 4083d3051109..b240bc4e2021 100644
-> --- a/arch/loongarch/configs/loongson3_defconfig
-> +++ b/arch/loongarch/configs/loongson3_defconfig
-> @@ -660,6 +660,7 @@ CONFIG_USB_GADGET=3Dy
-> =C2=A0CONFIG_INFINIBAND=3Dm
-> =C2=A0CONFIG_RTC_CLASS=3Dy
-> =C2=A0CONFIG_RTC_DRV_EFI=3Dy
-> +CONFIG_RTC_DRV_LS2X=3Dy
+Hi, Binbin,
 
-We already have RTC_DRV_EFI=3Dy, IIUC this means we leave LS7A RTC for the
-firmware to drive and operate it through EFI service.  So is this really
-needed for LoongArch systems?  And if we enable both RTC_DRV_EFI and
-RTC_DRV_LS2X, will some bad thing (a conflict) happen?
+On Sat, Sep 3, 2022 at 5:35 PM Binbin Zhou <zhoubinbin@loongson.cn> wrote:
+>
+> Hi all:
+>
+> The initial DT-base ls2x rtc driver was written by Wang Xuerui, he has
+> released five versions of patchset before, and all related mail records
+> are shown below if you are interested:
+>
+> https://lore.kernel.org/all/?q=ls2x-rtc
+>
+> In this series of patches, based on the code above, I have added the
+> following support:
+>
+> 1. Add ACPI-related support, as Loongson-3 + LS7A is now ACPI-base
+>    by default on LoonArch;
+> 2. Add rtc alarm/walarm related functions.
+>
+> Unfortunately, I have only tested the Loongson-3A4000+LS7A1000/LS7A2000
+> under LoongArch architecture.
+I think Loongson-3A4000 should be Loongson-3A5000 here. And I think
+Qing Zhang can help us to test on Loongson-2K platform.
 
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+Huacai
+>
+> NOTE:
+> The related functions of rtc alarm/walarm depend on ACPI registers, so rtc
+> alarm may not be available on the DT-base environment. Such as Loongson-2k/3
+> under MIPS.
+>
+> Thanks.
+>
+> Binbin Zhou (2):
+>   rtc: ls2x: Add support for the Loongson-2K/LS7A RTC
+>   LoongArch: Enable LS2X RTC in loongson3_defconfig
+>
+> WANG Xuerui (5):
+>   dt-bindings: rtc: Add bindings for LS2X RTC
+>   MIPS: Loongson64: DTS: Add RTC support to LS7A
+>   MIPS: Loongson: Enable LS2X RTC in loongson3_defconfig
+>   MIPS: Loongson64: DTS: Add RTC support to Loongson-2K
+>   MIPS: Loongson: Enable LS2X RTC in loongson2k_defconfig
+>
+>  .../devicetree/bindings/rtc/trivial-rtc.yaml  |   2 +
+>  arch/loongarch/configs/loongson3_defconfig    |   1 +
+>  .../boot/dts/loongson/loongson64-2k1000.dtsi  |   5 +
+>  arch/mips/boot/dts/loongson/ls7a-pch.dtsi     |   5 +
+>  arch/mips/configs/loongson2k_defconfig        |   1 +
+>  arch/mips/configs/loongson3_defconfig         |   1 +
+>  drivers/rtc/Kconfig                           |  11 +
+>  drivers/rtc/Makefile                          |   1 +
+>  drivers/rtc/rtc-ls2x.c                        | 366 ++++++++++++++++++
+>  9 files changed, 393 insertions(+)
+>  create mode 100644 drivers/rtc/rtc-ls2x.c
+>
+> --
+> 2.31.1
+>
+>
