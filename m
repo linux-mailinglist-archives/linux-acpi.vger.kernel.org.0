@@ -2,142 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC46A5AC0D2
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 20:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76BC95AC0E3
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Sep 2022 20:43:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232324AbiICSkX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Sep 2022 14:40:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58534 "EHLO
+        id S232816AbiICSne (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Sep 2022 14:43:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232351AbiICSkU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 14:40:20 -0400
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796EF1A802;
-        Sat,  3 Sep 2022 11:40:17 -0700 (PDT)
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-344fc86d87cso27377477b3.3;
-        Sat, 03 Sep 2022 11:40:17 -0700 (PDT)
+        with ESMTP id S233014AbiICSnV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 14:43:21 -0400
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E79A55A2F3;
+        Sat,  3 Sep 2022 11:43:07 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-33dce2d4bc8so41714767b3.4;
+        Sat, 03 Sep 2022 11:43:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=T1/52acLzPH3fpYJ42n+mkhnZLrM5YDLaNq5+3CgHSI=;
-        b=xQ//ZkXVI4Fz0UPYUDhhm6EwXb/+6VCMW4xQJRc8whheAzQmFFf3N6bev4hFj6Cnrt
-         2J1KAXI/LfdH1Rz4LnSwfiNtp0HUjSdq3y801G2HHFV7Qrsof/R7AVyYX+oMrzjoSpOS
-         TMeMszg1ZMFIkiez8ZfTGgJDXrTJs3lvG2wSgo+ON9/jYteIdyfY225TmN93AFJctngi
-         B0r2pQHEG0WjsFSIjSa/xQktYleEDcDu0F3p1OxD6aXeZRJBB1dXH6cSU+xvABG9x0gS
-         fpgwasmOoswPuC0liZo7FnG8Ok0XNLUGaclcsgYadMuFjZ/jjv4o99txB34d8VEAc+mA
-         2jug==
-X-Gm-Message-State: ACgBeo2VReVWeq6geeDSuNFGZTbmi1EGolEygyO7mEZQjOvBzu8seFAf
-        zzbMmQ66Qyb1bFOgQXcV8WxbJ9Z5mRoh02pkC9w=
-X-Google-Smtp-Source: AA6agR7CujmcoTp0MTGrl5SwCHLmkkm7/pH0C663H6K9zq5b+i3WV8/i04haCcENfbsLI2j61ox4Or9HrsZ8DVxvjeE=
-X-Received: by 2002:a0d:c841:0:b0:33d:bf96:f823 with SMTP id
- k62-20020a0dc841000000b0033dbf96f823mr31304559ywd.326.1662230416723; Sat, 03
- Sep 2022 11:40:16 -0700 (PDT)
+        bh=HwYOgy3zjOIkUemctgk5rYZBZTmWSTF6W5pZxZvAJgQ=;
+        b=6DXtTvyAfhrXKNHu8fam1Ys0tS5VnN4PY5eLjpst7AjLv9WWv6dUAgYTiOcbqRXqwH
+         fvLobn9c0B7TbJl5igG9WoON+1d8BD7+uZJ8kSoFyVZW8AjSZTNRlxhxzxMo0FxN+UMS
+         iYJJqH8G2anTmCBQF3E6/xITzy+CNLr7aZekQKif4cT1EtooHpj67Y87hXixJcUoXsUN
+         1s2r26my1kF7+fsUbeC2X4Lcl+rlFXCqk/wVobqwncuQ6tLtEGIpy5xpuEZ9G+5Wb7Nk
+         xEwdWEwPQMln0FIIpyz+gU3vj5fcXnWLGBukRqh3uNV2CvKQiA4YT1bWEOBJ0dW6hDa8
+         hyvg==
+X-Gm-Message-State: ACgBeo2Cnu00mvxN8yn+Xn5aCp8cGIzMAWwmEqtKCW47kD5rY9+7DCLu
+        qxTxC/tMgrGzvwky6s+aoEQCQEloDPEwMSwsYmE=
+X-Google-Smtp-Source: AA6agR5hTZSytWkFK60t4lqd3xPUE1Kkrp5WF+DjNbCz9cnaCaGumC2NHors5Mf8d+bn8AFN4GwRC/sg1xazozUYhoA=
+X-Received: by 2002:a81:4850:0:b0:33c:922b:5739 with SMTP id
+ v77-20020a814850000000b0033c922b5739mr32031824ywa.515.1662230586823; Sat, 03
+ Sep 2022 11:43:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220826151457.7c13a407@endymion.delvare> <CAHp75VdBv4EkDgTwHSxNhA91b8FMwaMvvoeWZOaxJVcvwRQ4vg@mail.gmail.com>
-In-Reply-To: <CAHp75VdBv4EkDgTwHSxNhA91b8FMwaMvvoeWZOaxJVcvwRQ4vg@mail.gmail.com>
+References: <20220826171635.15652-1-andriy.shevchenko@linux.intel.com> <20220826171635.15652-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20220826171635.15652-2-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 3 Sep 2022 20:40:04 +0200
-Message-ID: <CAJZ5v0hhnaZ4WaduU1x8y3oCWLQt3UPFhuFSqZU14+K99bkAHg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: docs: enumeration: Fix a few typos and wording mistakes
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jean Delvare <jdelvare@suse.de>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+Date:   Sat, 3 Sep 2022 20:42:55 +0200
+Message-ID: <CAJZ5v0g93SH6ty2J=36jOV0fs+KoGc8h5DtbU=FU0S-yNiAQGg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] ACPI: bus: Refactor ACPI matching functions for
+ better readability
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 26, 2022 at 5:31 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+On Fri, Aug 26, 2022 at 7:16 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Fri, Aug 26, 2022 at 4:14 PM Jean Delvare <jdelvare@suse.de> wrote:
-> >
-> > "sturct" -> "struct"
-> > "similar than with" -> "similar to"
-> > Missing comma, "it" and "to"
+> With temporary variables for OF and ACPI IDs, it's easier to read
+> the code. No functional change intended.
 >
-> Makes sense to me, thanks!
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+> v2: refactored another function (due to drop the rest of the series)
+>  drivers/acpi/bus.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
 >
-> > Signed-off-by: Jean Delvare <jdelvare@suse.de>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > ---
-> >  Documentation/firmware-guide/acpi/enumeration.rst |   16 ++++++++--------
-> >  1 file changed, 8 insertions(+), 8 deletions(-)
-> >
-> > --- linux-5.19.orig/Documentation/firmware-guide/acpi/enumeration.rst   2022-08-26 12:46:35.307949217 +0200
-> > +++ linux-5.19/Documentation/firmware-guide/acpi/enumeration.rst        2022-08-26 15:02:50.245981296 +0200
-> > @@ -21,7 +21,7 @@ In order to support this and re-use the
-> >    - Devices behind real busses where there is a connector resource
-> >      are represented as struct spi_device or struct i2c_device. Note
-> >      that standard UARTs are not busses so there is no struct uart_device,
-> > -    although some of them may be represented by sturct serdev_device.
-> > +    although some of them may be represented by struct serdev_device.
-> >
-> >  As both ACPI and Device Tree represent a tree of devices (and their
-> >  resources) this implementation follows the Device Tree way as much as
-> > @@ -205,7 +205,7 @@ enumerated once spi_register_master() is
-> >                 }
-> >                 ...
-> >
-> > -The SPI device drivers only need to add ACPI IDs in a similar way than with
-> > +The SPI device drivers only need to add ACPI IDs in a similar way to
-> >  the platform device drivers. Below is an example where we add ACPI support
-> >  to at25 SPI eeprom driver (this is meant for the above ACPI snippet)::
-> >
-> > @@ -362,7 +362,7 @@ These GPIO numbers are controller relati
-> >  specifies the path to the controller. In order to use these GPIOs in Linux
-> >  we need to translate them to the corresponding Linux GPIO descriptors.
-> >
-> > -There is a standard GPIO API for that and is documented in
-> > +There is a standard GPIO API for that and it is documented in
-> >  Documentation/admin-guide/gpio/.
-> >
-> >  In the above example we can get the corresponding two GPIO descriptors with
-> > @@ -538,8 +538,8 @@ information.
-> >  PCI hierarchy representation
-> >  ============================
-> >
-> > -Sometimes could be useful to enumerate a PCI device, knowing its position on the
-> > -PCI bus.
-> > +Sometimes it could be useful to enumerate a PCI device, knowing its position on
-> > +the PCI bus.
-> >
-> >  For example, some systems use PCI devices soldered directly on the mother board,
-> >  in a fixed position (ethernet, Wi-Fi, serial ports, etc.). In this conditions it
-> > @@ -550,7 +550,7 @@ To identify a PCI device, a complete hie
-> >  the chipset root port to the final device, through all the intermediate
-> >  bridges/switches of the board.
-> >
-> > -For example, let us assume to have a system with a PCIe serial port, an
-> > +For example, let's assume we have a system with a PCIe serial port, an
-> >  Exar XR17V3521, soldered on the main board. This UART chip also includes
-> >  16 GPIOs and we want to add the property ``gpio-line-names`` [1] to these pins.
-> >  In this case, the ``lspci`` output for this component is::
-> > @@ -593,8 +593,8 @@ To describe this Exar device on the PCI
-> >
-> >         Bus: 0 - Device: 14 - Function: 1
-> >
-> > -To find this information is necessary disassemble the BIOS ACPI tables, in
-> > -particular the DSDT (see also [2])::
-> > +To find this information, it is necessary to disassemble the BIOS ACPI tables,
-> > +in particular the DSDT (see also [2])::
-> >
-> >         mkdir ~/tables/
-> >         cd ~/tables/
-> >
-> >
-> > --
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index f3e868d35144..d466c8195314 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -925,12 +925,13 @@ static const void *acpi_of_device_get_match_data(const struct device *dev)
+>
+>  const void *acpi_device_get_match_data(const struct device *dev)
+>  {
+> +       const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
+>         const struct acpi_device_id *match;
+>
+> -       if (!dev->driver->acpi_match_table)
+> +       if (!acpi_ids)
+>                 return acpi_of_device_get_match_data(dev);
+>
+> -       match = acpi_match_device(dev->driver->acpi_match_table, dev);
+> +       match = acpi_match_device(acpi_ids, dev);
+>         if (!match)
+>                 return NULL;
+>
+> @@ -948,14 +949,13 @@ EXPORT_SYMBOL(acpi_match_device_ids);
+>  bool acpi_driver_match_device(struct device *dev,
+>                               const struct device_driver *drv)
+>  {
+> -       if (!drv->acpi_match_table)
+> -               return acpi_of_match_device(ACPI_COMPANION(dev),
+> -                                           drv->of_match_table,
+> -                                           NULL);
+> -
+> -       return __acpi_match_device(acpi_companion_match(dev),
+> -                                  drv->acpi_match_table, drv->of_match_table,
+> -                                  NULL, NULL);
+> +       const struct acpi_device_id *acpi_ids = drv->acpi_match_table;
+> +       const struct of_device_id *of_ids = drv->of_match_table;
+> +
+> +       if (!acpi_ids)
+> +               return acpi_of_match_device(ACPI_COMPANION(dev), of_ids, NULL);
+> +
+> +       return __acpi_match_device(acpi_companion_match(dev), acpi_ids, of_ids, NULL, NULL);
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_driver_match_device);
+>
+> --
 
-Applied as 6.1 material, thanks!
+Applied along with the [1/2] as 6.1 material, thanks!
