@@ -2,105 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3809A5AC1AA
-	for <lists+linux-acpi@lfdr.de>; Sun,  4 Sep 2022 01:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 806C95AC36F
+	for <lists+linux-acpi@lfdr.de>; Sun,  4 Sep 2022 10:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231446AbiICXEE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Sep 2022 19:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52952 "EHLO
+        id S233340AbiIDI1P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 4 Sep 2022 04:27:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230391AbiICXED (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Sep 2022 19:04:03 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 515094A10D;
-        Sat,  3 Sep 2022 16:04:02 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id n65-20020a17090a5ac700b001fbb4fad865so5412729pji.1;
-        Sat, 03 Sep 2022 16:04:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=N5clPe5lVC3TDguE3nbHaBibca5uw8kzSOg1ZNJ98mk=;
-        b=fpnXIei2gVJWC+0so8sk1ItqpBrUIpDKP7IOrV18ajuiz6k4xXw6ZLJ539uTImXWSI
-         yB74XrwyKuSBPi34OmN8uZj/lm4cWH/oXjSFKpronLwdaHkNIiejnG1Bjn7tQyafNJCW
-         iNOfdR0+/h4sJWZ+C2ER8rf18MPsJkurujMQqE3S0H4icc0mBV5KZNnyolDFDuYQGdj8
-         x4VTRmFW3szjeMdkOd3sWG50aZB00YxJzUKszSAWSaXesu+9vNQvd4mqbFUcUsmJ+Lz7
-         DME7m0HCOFCp5qnXV8D+7UgtEtJfi1o3wylmxAmKX9FuFZp/pLEOcZiGGxv8/YGeLSM4
-         IqZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=N5clPe5lVC3TDguE3nbHaBibca5uw8kzSOg1ZNJ98mk=;
-        b=CUZe78lMK+8Xw6YL1EXTz6F/9TZn6j3U8q+gWCzU7lT7/s4KcXQkbLj8+ZSlqFLPR+
-         PMNK1sZXV2dtohVNR9mVE+N2vZuoRWQ2q5cyArNtQwZvExyoj2maF7u00qRAKivWocfv
-         F2MSISxcBVWwI4ca588hCI2MQ3RPNrPZiaoreBHD8jmLnz7JSV/mzdyMh3K3NqHXxfp/
-         JNQ773WdwNVrojwTNVnwWtF2AoNOXljMB3RVc6DJSGdc7NbqBoYcUf8P6vCiZ/7xTAD6
-         WE9K7+XpN+dHxeroy9vZ7poAHJ4Rak33PQWZnGKsSC3xedtIWM0iMxpRxbG94Anua0LT
-         eZSw==
-X-Gm-Message-State: ACgBeo3T58aQHDty8o8s5pkSktv+gUDsTNXgvgYWbyqZ7X6PiXOqiJII
-        +lCMAPxdY73jo39QkX27UzljALuIYtV1SYrqvRoxXrvDA/eOEg==
-X-Google-Smtp-Source: AA6agR4kYx+rBmRCzoeybgc9H+dn/UxyajKjCI7AL/hnZfZLZcnW6KE5SZXjhpImMwN2psoUWG7ExhMHhtt4G9ibnPQ=
-X-Received: by 2002:a17:90b:33c9:b0:1fe:5861:7a0f with SMTP id
- lk9-20020a17090b33c900b001fe58617a0fmr11781214pjb.187.1662246241727; Sat, 03
- Sep 2022 16:04:01 -0700 (PDT)
+        with ESMTP id S233146AbiIDI1L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 4 Sep 2022 04:27:11 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9026141D3A;
+        Sun,  4 Sep 2022 01:27:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662280029; x=1693816029;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Ju+KKLx57zu2A9etoqVou1Lket7t8L7FHT+HvTOQKf8=;
+  b=MWZj+q8GjZKefOsEilmoqLU7BAQ2CgEKo+jzI8sdV0lDGTR9LP0jsCgW
+   6H+VCAkJDDlg6RMqq9wq6AROBluv5x+s7ZUXILLmuug0AeExD6EGP4YQb
+   +iSAYUlMmoIh0SzRK1fuGb9oJ6NSTE7DrVdSbp+f+a80NfHo6nyYxhZTZ
+   ob8CYgX5zu2RbZnC+b2ugIeic9KdSPFpq7L0Tfk59MnAg0RQYF1Nu2Nit
+   7zwdJZStW2lmFx0KsuqHjDsYQfO62olHEiTT6K8HSJxZHnYKl+HyNc4+w
+   slOX2Qk/boUGaz8o4Jk1sRJeJzleLk6j6F4x0fKk5JidzUY596+xtQeVs
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10459"; a="297008980"
+X-IronPort-AV: E=Sophos;i="5.93,288,1654585200"; 
+   d="scan'208";a="297008980"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2022 01:26:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,288,1654585200"; 
+   d="scan'208";a="858654103"
+Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 04 Sep 2022 01:26:40 -0700
+Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oUkxj-0002oi-1o;
+        Sun, 04 Sep 2022 08:26:39 +0000
+Date:   Sun, 04 Sep 2022 16:26:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ bbc77c8d9661c790806ca96ca01a356275b6a684
+Message-ID: <63146128.Wj6a7OWDbwzShZ3i%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220828205416.1957305-1-floridsleeves@gmail.com> <CAJZ5v0jrQwBh3ToZc-7J69qDJEAZ8+wXPzqjZ+zpxB4a69W-Ng@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jrQwBh3ToZc-7J69qDJEAZ8+wXPzqjZ+zpxB4a69W-Ng@mail.gmail.com>
-From:   Li Zhong <floridsleeves@gmail.com>
-Date:   Sat, 3 Sep 2022 16:03:50 -0700
-Message-ID: <CAMEuxRryb0L6O92r-qzJ8VaBEpW+cghhoZFi6+RtFfDtDWD3sA@mail.gmail.com>
-Subject: Re: [PATCH v1] drivers/acpi/processor_idle: check the return value of acpi_fetch_acpi_dev()
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 29, 2022 at 6:56 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Sun, Aug 28, 2022 at 10:54 PM Li Zhong <floridsleeves@gmail.com> wrote:
-> >
-> > The return value of acpi_fetch_acpi_dev() could be NULL, which will
-> > cause null pointer dereference if used in acpi_device_hid().
->
-> That's true.
->
-> > Signed-off-by: Li Zhong <floridsleeves@gmail.com>
-> > ---
-> >  drivers/acpi/processor_idle.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> > index 16a1663d02d4..519f8f741da3 100644
-> > --- a/drivers/acpi/processor_idle.c
-> > +++ b/drivers/acpi/processor_idle.c
-> > @@ -1117,6 +1117,8 @@ static int acpi_processor_get_lpi_info(struct acpi_processor *pr)
-> >         status = acpi_get_parent(handle, &pr_ahandle);
-> >         while (ACPI_SUCCESS(status)) {
-> >                 d = acpi_fetch_acpi_dev(pr_ahandle);
-> > +               if (!d)
-> > +                       break;
->
-> But shouldn't this be continue?
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: bbc77c8d9661c790806ca96ca01a356275b6a684  Merge branch 'acpi-properties' into bleeding-edge
 
-I think here is break instead of continue because if we use continue, variable
-status will not change. Then the while condition will stay true and loop
-forever.
+elapsed time: 724m
 
-> >                 handle = pr_ahandle;
-> >
-> >                 if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
-> > --
-> > 2.25.1
-> >
+configs tested: 80
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+arm                                 defconfig
+i386                                defconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a013
+x86_64                               rhel-8.3
+x86_64                           rhel-8.3-kvm
+x86_64                           allyesconfig
+arc                              allyesconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+alpha                            allyesconfig
+x86_64                        randconfig-a011
+i386                          randconfig-a014
+x86_64                    rhel-8.3-kselftests
+arm                              allyesconfig
+i386                          randconfig-a005
+x86_64                        randconfig-a002
+x86_64                        randconfig-a015
+m68k                             allyesconfig
+arm64                            allyesconfig
+x86_64                           rhel-8.3-syz
+i386                          randconfig-a012
+m68k                             allmodconfig
+x86_64                          rhel-8.3-func
+i386                          randconfig-a016
+x86_64                         rhel-8.3-kunit
+arm                           u8500_defconfig
+x86_64                        randconfig-a006
+m68k                       m5475evb_defconfig
+mips                      fuloong2e_defconfig
+x86_64                        randconfig-a004
+csky                              allnoconfig
+i386                             allyesconfig
+sparc64                          alldefconfig
+arm                         assabet_defconfig
+sh                           se7722_defconfig
+ia64                             allmodconfig
+microblaze                      mmu_defconfig
+sh                           se7712_defconfig
+arm                         lpc18xx_defconfig
+mips                       bmips_be_defconfig
+sparc                               defconfig
+alpha                             allnoconfig
+arm                      integrator_defconfig
+riscv                             allnoconfig
+arc                  randconfig-r043-20220904
+parisc64                         alldefconfig
+sh                            shmin_defconfig
+ia64                      gensparse_defconfig
+arc                               allnoconfig
+riscv                randconfig-r042-20220904
+s390                 randconfig-r044-20220904
+loongarch                         allnoconfig
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+loongarch                           defconfig
+i386                          randconfig-c001
+
+clang tested configs:
+x86_64                        randconfig-a014
+i386                          randconfig-a013
+x86_64                        randconfig-a016
+i386                          randconfig-a002
+x86_64                        randconfig-a012
+i386                          randconfig-a011
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a001
+i386                          randconfig-a015
+x86_64                        randconfig-a003
+arm                   milbeaut_m10v_defconfig
+x86_64                        randconfig-a005
+powerpc                 mpc8272_ads_defconfig
+hexagon              randconfig-r045-20220904
+powerpc                          g5_defconfig
+hexagon              randconfig-r041-20220904
+riscv                          rv32_defconfig
+x86_64                        randconfig-k001
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
