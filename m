@@ -2,153 +2,243 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 296265AD31C
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Sep 2022 14:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DB4A5AD417
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Sep 2022 15:38:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238296AbiIEMlT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Sep 2022 08:41:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57594 "EHLO
+        id S237697AbiIENiM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 5 Sep 2022 09:38:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237874AbiIEMkw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Sep 2022 08:40:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54EE71EC57
-        for <linux-acpi@vger.kernel.org>; Mon,  5 Sep 2022 05:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1662381259;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=4naWzf0KsRJ6dx07+NrqeUWePCTniyPuTVHrxTSNt0U=;
-        b=Ut0TU/ykWJ9nvMP054GRR4wS9AecDXFjdtP4Q73QjoxG81+5UDovx2Fp+VQhSspezgTvl4
-        wbssFTcpL+org93n59BUArkIXkyvZbLahkU3/lfJp3KAZGIqxwo6CnslrWAlaFtmDNVrDE
-        AJypJiUa2tOpQNlJ/lklEr8WLv/y8y4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-484-G9PtIKngMG2172TjmUHB3Q-1; Mon, 05 Sep 2022 08:34:16 -0400
-X-MC-Unique: G9PtIKngMG2172TjmUHB3Q-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C7F2C101A56C;
-        Mon,  5 Sep 2022 12:34:15 +0000 (UTC)
-Received: from x1.localdomain.com (unknown [10.39.195.12])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 996B240CF8EF;
-        Mon,  5 Sep 2022 12:34:14 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: tables: FPDT: Don't call acpi_os_map_memory() on invalid phys address
-Date:   Mon,  5 Sep 2022 14:34:12 +0200
-Message-Id: <20220905123412.465162-1-hdegoede@redhat.com>
+        with ESMTP id S238078AbiIENiE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Sep 2022 09:38:04 -0400
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E6C4D4CB;
+        Mon,  5 Sep 2022 06:37:52 -0700 (PDT)
+Received: by mail-yb1-f172.google.com with SMTP id 130so7248067ybz.9;
+        Mon, 05 Sep 2022 06:37:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=/d95nRqkRbEGLw+fX9p+TIH6MACF5W6pHgpWCiqctb8=;
+        b=vkOFrih3VCgNHYZsE0/jnyCdXP3ei1AwJI3HJW3G7Fls8tqBaFKkUvNIVQ7T50A2zZ
+         Itc0CspNbZkffsgwRuFMF4pQmZEH2RSK5bHz4pX+TyPhm2PNMilV5s7Jvipeb7WlrvyM
+         9Ru5/BYBVDCdZWU5pXNYjBAFQ9klm/jFox/ECshHKqSxl+/PTCFsb0lCBGq8lqso/Apx
+         BddijtCreu9mCWm8U/nCG9kxT9JKpjPYhU/A1K9mzc1an+KZTv9lmj6Yqumk+WoxDqSh
+         d1aXOaIez6EzPC5KNx6oIATHv31lec1wSwyNZMrK+eobponYufevHx4I+WRBadeqhesJ
+         H9Fg==
+X-Gm-Message-State: ACgBeo0v2R47vj6/HxTbxHp/B2ci4tLxMs52B+KwA6BY5urmzwA2lllX
+        3ePwkv70ia/Pd1vmJGFFkxItA+rb+TVBxp1fMb96iysi
+X-Google-Smtp-Source: AA6agR5fQubAc6h3HgvkHs9EUOYKFONPZhi3+SzSgV9pT3VhRa5xnmo0Rq9dnXIVMJQMlfZ/FGkZKuuj2kkM1J31brw=
+X-Received: by 2002:a25:b749:0:b0:68f:171f:96bd with SMTP id
+ e9-20020a25b749000000b0068f171f96bdmr34809638ybm.137.1662385024861; Mon, 05
+ Sep 2022 06:37:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220905090005.333429-1-hdegoede@redhat.com> <20220905090005.333429-3-hdegoede@redhat.com>
+In-Reply-To: <20220905090005.333429-3-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 5 Sep 2022 15:36:53 +0200
+Message-ID: <CAJZ5v0hFSTFYCQZpGK+-S15N5tD=uiJUbQKGAxGtFBiCVPDarA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ACPI: video: Change disable_backlight_sysfs_if quirks
+ to acpi_backlight=native
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Arvid Norlander <lkml@vorpal.se>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On a Packard Bell Dot SC (Intel Atom N2600 model) there is a FPDT table
-which contains invalid physical addresses, with high bits set which fall
-outside the range of the CPU-s supported physical address range.
+On Mon, Sep 5, 2022 at 11:00 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Some Toshibas have a broken acpi-video interface for brightness control
+> and need a special firmware call on resume to turn the panel back on.
+> So far these have been using the disable_backlight_sysfs_if workaround
+> to deal with this.
+>
+> The recent x86/acpi backlight refactoring has broken this workaround:
+> 1. This workaround relies on acpi_video_get_backlight_type() returning
+>    acpi_video so that the acpi_video code actually runs; and
+> 2. this relies on the actual native GPU driver to offer the sysfs
+>    backlight interface to userspace.
+>
+> After the refactor this breaks since the native driver will no
+> longer register its backlight-device if acpi_video_get_backlight_type()
+> does not return native and making it return native breaks 1.
+>
+> Keeping the acpi_video backlight handling on resume active, while not
+> using it to set the brightness, is necessary because it does a _BCM
+> call on resume which is necessary to turn the panel back on on resume.
+>
+> Looking at the DSDT shows that this _BCM call results in a Toshiba
+> HCI_SET HCI_LCD_BRIGHTNESS call, which turns the panel back on.
+>
+> This kind of special vendor specific handling really belongs in
+> the vendor specific acpi driver. An earlier patch in this series
+> modifies toshiba_acpi to make the necessary HCI_SET call on resume
+> on affected models.
+>
+> With toshiba_acpi taking care of the HCI_SET call on resume,
+> the acpi_video code no longer needs to call _BCM on resume.
+>
+> So instead of using the (now broken) disable_backlight_sysfs_if
+> workaround, simply setting acpi_backlight=native to disable
+> the broken apci-video interface is sufficient fix things now.
+>
+> After this there are no more users of the disable_backlight_sysfs_if
+> flag and as discussed above the flag also no longer works as intended,
+> so remove the disable_backlight_sysfs_if flag entirely.
+>
+> Fixes: b1d36e73cc1c ("drm/i915: Don't register backlight when another backlight should be used (v2)")
+> Tested-by: Arvid Norlander <lkml@vorpal.se>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-Calling acpi_os_map_memory() on such an invalid phys address leads to
-the below WARN_ON in ioremap triggering resulting in an oops/stacktrace.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Add code to verify the physical address before calling acpi_os_map_memory()
-to fix / avoid the oops.
-
-[    1.226900] ioremap: invalid physical address 3001000000000000
-[    1.226949] ------------[ cut here ]------------
-[    1.226962] WARNING: CPU: 1 PID: 1 at arch/x86/mm/ioremap.c:200 __ioremap_caller.cold+0x43/0x5f
-[    1.226996] Modules linked in:
-[    1.227016] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.0.0-rc3+ #490
-[    1.227029] Hardware name: Packard Bell dot s/SJE01_CT, BIOS V1.10 07/23/2013
-[    1.227038] RIP: 0010:__ioremap_caller.cold+0x43/0x5f
-[    1.227054] Code: 96 00 00 e9 f8 af 24 ff 89 c6 48 c7 c7 d8 0c 84 99 e8 6a 96 00 00 e9 76 af 24 ff 48 89 fe 48 c7 c7 a8 0c 84 99 e8 56 96 00 00 <0f> 0b e9 60 af 24 ff 48 8b 34 24 48 c7 c7 40 0d 84 99 e8 3f 96 00
-[    1.227067] RSP: 0000:ffffb18c40033d60 EFLAGS: 00010286
-[    1.227084] RAX: 0000000000000032 RBX: 3001000000000000 RCX: 0000000000000000
-[    1.227095] RDX: 0000000000000001 RSI: 00000000ffffdfff RDI: 00000000ffffffff
-[    1.227105] RBP: 3001000000000000 R08: 0000000000000000 R09: ffffb18c40033c18
-[    1.227115] R10: 0000000000000003 R11: ffffffff99d62fe8 R12: 0000000000000008
-[    1.227124] R13: 0003001000000000 R14: 0000000000001000 R15: 3001000000000000
-[    1.227135] FS:  0000000000000000(0000) GS:ffff913a3c080000(0000) knlGS:0000000000000000
-[    1.227146] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.227156] CR2: 0000000000000000 CR3: 0000000018c26000 CR4: 00000000000006e0
-[    1.227167] Call Trace:
-[    1.227176]  <TASK>
-[    1.227185]  ? acpi_os_map_iomem+0x1c9/0x1e0
-[    1.227215]  ? kmem_cache_alloc_trace+0x187/0x370
-[    1.227254]  acpi_os_map_iomem+0x1c9/0x1e0
-[    1.227288]  acpi_init_fpdt+0xa8/0x253
-[    1.227308]  ? acpi_debugfs_init+0x1f/0x1f
-[    1.227339]  do_one_initcall+0x5a/0x300
-[    1.227406]  ? rcu_read_lock_sched_held+0x3f/0x80
-[    1.227442]  kernel_init_freeable+0x28b/0x2cc
-[    1.227512]  ? rest_init+0x170/0x170
-[    1.227538]  kernel_init+0x16/0x140
-[    1.227552]  ret_from_fork+0x1f/0x30
-[    1.227639]  </TASK>
-[    1.227647] irq event stamp: 186819
-[    1.227656] hardirqs last  enabled at (186825): [<ffffffff98184a6e>] __up_console_sem+0x5e/0x70
-[    1.227672] hardirqs last disabled at (186830): [<ffffffff98184a53>] __up_console_sem+0x43/0x70
-[    1.227686] softirqs last  enabled at (186576): [<ffffffff980fbc9d>] __irq_exit_rcu+0xed/0x160
-[    1.227701] softirqs last disabled at (186569): [<ffffffff980fbc9d>] __irq_exit_rcu+0xed/0x160
-[    1.227715] ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/acpi_fpdt.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
-index 6922a44b3ce7..a2056c4c8cb7 100644
---- a/drivers/acpi/acpi_fpdt.c
-+++ b/drivers/acpi/acpi_fpdt.c
-@@ -143,6 +143,23 @@ static const struct attribute_group boot_attr_group = {
- 
- static struct kobject *fpdt_kobj;
- 
-+#if defined CONFIG_X86 && defined CONFIG_PHYS_ADDR_T_64BIT
-+#include <linux/processor.h>
-+static bool fpdt_address_valid(u64 address)
-+{
-+	/*
-+	 * On some systems the table contains invalid addresses
-+	 * with unsuppored high address bits set, check for this.
-+	 */
-+	return !(address >> boot_cpu_data.x86_phys_bits);
-+}
-+#else
-+static bool fpdt_address_valid(u64 address)
-+{
-+	return true;
-+}
-+#endif
-+
- static int fpdt_process_subtable(u64 address, u32 subtable_type)
- {
- 	struct fpdt_subtable_header *subtable_header;
-@@ -151,6 +168,11 @@ static int fpdt_process_subtable(u64 address, u32 subtable_type)
- 	u32 length, offset;
- 	int result;
- 
-+	if (!fpdt_address_valid(address)) {
-+		pr_info(FW_BUG "invalid physical address: 0x%llx!\n", address);
-+		return -EINVAL;
-+	}
-+
- 	subtable_header = acpi_os_map_memory(address, sizeof(*subtable_header));
- 	if (!subtable_header)
- 		return -ENOMEM;
--- 
-2.36.1
-
+> ---
+>  drivers/acpi/acpi_video.c   | 48 -------------------------------------
+>  drivers/acpi/video_detect.c | 35 +++++++++++++++++++++++++++
+>  2 files changed, 35 insertions(+), 48 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> index a7c3d11e0dac..99894fbcf4e3 100644
+> --- a/drivers/acpi/acpi_video.c
+> +++ b/drivers/acpi/acpi_video.c
+> @@ -47,9 +47,6 @@ module_param(brightness_switch_enabled, bool, 0644);
+>  static bool allow_duplicates;
+>  module_param(allow_duplicates, bool, 0644);
+>
+> -static int disable_backlight_sysfs_if = -1;
+> -module_param(disable_backlight_sysfs_if, int, 0444);
+> -
+>  #define REPORT_OUTPUT_KEY_EVENTS               0x01
+>  #define REPORT_BRIGHTNESS_KEY_EVENTS           0x02
+>  static int report_key_events = -1;
+> @@ -394,14 +391,6 @@ static int video_set_bqc_offset(const struct dmi_system_id *d)
+>         return 0;
+>  }
+>
+> -static int video_disable_backlight_sysfs_if(
+> -       const struct dmi_system_id *d)
+> -{
+> -       if (disable_backlight_sysfs_if == -1)
+> -               disable_backlight_sysfs_if = 1;
+> -       return 0;
+> -}
+> -
+>  static int video_set_device_id_scheme(const struct dmi_system_id *d)
+>  {
+>         device_id_scheme = true;
+> @@ -474,40 +463,6 @@ static const struct dmi_system_id video_dmi_table[] = {
+>                 },
+>         },
+>
+> -       /*
+> -        * Some machines have a broken acpi-video interface for brightness
+> -        * control, but still need an acpi_video_device_lcd_set_level() call
+> -        * on resume to turn the backlight power on.  We Enable backlight
+> -        * control on these systems, but do not register a backlight sysfs
+> -        * as brightness control does not work.
+> -        */
+> -       {
+> -        /* https://bugzilla.kernel.org/show_bug.cgi?id=21012 */
+> -        .callback = video_disable_backlight_sysfs_if,
+> -        .ident = "Toshiba Portege R700",
+> -        .matches = {
+> -               DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
+> -               DMI_MATCH(DMI_PRODUCT_NAME, "PORTEGE R700"),
+> -               },
+> -       },
+> -       {
+> -        /* https://bugs.freedesktop.org/show_bug.cgi?id=82634 */
+> -        .callback = video_disable_backlight_sysfs_if,
+> -        .ident = "Toshiba Portege R830",
+> -        .matches = {
+> -               DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
+> -               DMI_MATCH(DMI_PRODUCT_NAME, "PORTEGE R830"),
+> -               },
+> -       },
+> -       {
+> -        /* https://bugzilla.kernel.org/show_bug.cgi?id=21012 */
+> -        .callback = video_disable_backlight_sysfs_if,
+> -        .ident = "Toshiba Satellite R830",
+> -        .matches = {
+> -               DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
+> -               DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE R830"),
+> -               },
+> -       },
+>         /*
+>          * Some machine's _DOD IDs don't have bit 31(Device ID Scheme) set
+>          * but the IDs actually follow the Device ID Scheme.
+> @@ -1770,9 +1725,6 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
+>         if (result)
+>                 return;
+>
+> -       if (disable_backlight_sysfs_if > 0)
+> -               return;
+> -
+>         name = kasprintf(GFP_KERNEL, "acpi_video%d", count);
+>         if (!name)
+>                 return;
+> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+> index db2474fe58ac..0d9064a9804c 100644
+> --- a/drivers/acpi/video_detect.c
+> +++ b/drivers/acpi/video_detect.c
+> @@ -610,6 +610,41 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+>                 },
+>         },
+>
+> +       /*
+> +        * These Toshibas have a broken acpi-video interface for brightness
+> +        * control. They also have an issue where the panel is off after
+> +        * suspend until a special firmware call is made to turn it back
+> +        * on. This is handled by the toshiba_acpi kernel module, so that
+> +        * module must be enabled for these models to work correctly.
+> +        */
+> +       {
+> +        /* https://bugzilla.kernel.org/show_bug.cgi?id=21012 */
+> +        .callback = video_detect_force_native,
+> +        /* Toshiba Portégé R700 */
+> +        .matches = {
+> +               DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
+> +               DMI_MATCH(DMI_PRODUCT_NAME, "PORTEGE R700"),
+> +               },
+> +       },
+> +       {
+> +        /* Portégé: https://bugs.freedesktop.org/show_bug.cgi?id=82634 */
+> +        /* Satellite: https://bugzilla.kernel.org/show_bug.cgi?id=21012 */
+> +        .callback = video_detect_force_native,
+> +        /* Toshiba Satellite/Portégé R830 */
+> +        .matches = {
+> +               DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
+> +               DMI_MATCH(DMI_PRODUCT_NAME, "R830"),
+> +               },
+> +       },
+> +       {
+> +        .callback = video_detect_force_native,
+> +        /* Toshiba Satellite/Portégé Z830 */
+> +        .matches = {
+> +               DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
+> +               DMI_MATCH(DMI_PRODUCT_NAME, "Z830"),
+> +               },
+> +       },
+> +
+>         /*
+>          * Desktops which falsely report a backlight and which our heuristics
+>          * for this do not catch.
+> --
+> 2.36.1
+>
