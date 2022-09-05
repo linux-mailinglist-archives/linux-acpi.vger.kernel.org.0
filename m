@@ -2,162 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 806C95AC36F
-	for <lists+linux-acpi@lfdr.de>; Sun,  4 Sep 2022 10:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 089A85AC8ED
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Sep 2022 04:57:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233340AbiIDI1P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 4 Sep 2022 04:27:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59710 "EHLO
+        id S229480AbiIEC4K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 4 Sep 2022 22:56:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233146AbiIDI1L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 4 Sep 2022 04:27:11 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9026141D3A;
-        Sun,  4 Sep 2022 01:27:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662280029; x=1693816029;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Ju+KKLx57zu2A9etoqVou1Lket7t8L7FHT+HvTOQKf8=;
-  b=MWZj+q8GjZKefOsEilmoqLU7BAQ2CgEKo+jzI8sdV0lDGTR9LP0jsCgW
-   6H+VCAkJDDlg6RMqq9wq6AROBluv5x+s7ZUXILLmuug0AeExD6EGP4YQb
-   +iSAYUlMmoIh0SzRK1fuGb9oJ6NSTE7DrVdSbp+f+a80NfHo6nyYxhZTZ
-   ob8CYgX5zu2RbZnC+b2ugIeic9KdSPFpq7L0Tfk59MnAg0RQYF1Nu2Nit
-   7zwdJZStW2lmFx0KsuqHjDsYQfO62olHEiTT6K8HSJxZHnYKl+HyNc4+w
-   slOX2Qk/boUGaz8o4Jk1sRJeJzleLk6j6F4x0fKk5JidzUY596+xtQeVs
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10459"; a="297008980"
-X-IronPort-AV: E=Sophos;i="5.93,288,1654585200"; 
-   d="scan'208";a="297008980"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2022 01:26:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,288,1654585200"; 
-   d="scan'208";a="858654103"
-Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 04 Sep 2022 01:26:40 -0700
-Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oUkxj-0002oi-1o;
-        Sun, 04 Sep 2022 08:26:39 +0000
-Date:   Sun, 04 Sep 2022 16:26:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- bbc77c8d9661c790806ca96ca01a356275b6a684
-Message-ID: <63146128.Wj6a7OWDbwzShZ3i%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S235590AbiIEC4I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 4 Sep 2022 22:56:08 -0400
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CF3BC2CDF5;
+        Sun,  4 Sep 2022 19:56:03 -0700 (PDT)
+Received: from [10.20.42.105] (unknown [10.20.42.105])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8Dxvms6ZRVj2GcRAA--.60790S3;
+        Mon, 05 Sep 2022 10:55:54 +0800 (CST)
+Subject: Re: [PATCH V3 0/2] DMA: update acpi_dma_get_range to return dma map
+ regions
+From:   Jianmin Lv <lvjianmin@loongson.cn>
+To:     lpieralisi@kernel.org, robin.murphy@arm.com, chenhuacai@loongson.cn
+Cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
+        lenb@kernel.org, robert.moore@intel.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        loongarch@lists.linux.dev
+References: <20220830030139.29899-1-lvjianmin@loongson.cn>
+Message-ID: <7ef64254-ed0f-be33-71c1-3f78bdf31238@loongson.cn>
+Date:   Mon, 5 Sep 2022 10:55:54 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220830030139.29899-1-lvjianmin@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Dxvms6ZRVj2GcRAA--.60790S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZrW7Gr1kZFWkuFyDCryfWFg_yoW8GrWrpF
+        yfCrsxGr1UKrWfJry3Aw1Uur1Yqw1fA34xJFZrtrykJF1jvr17JryUJ3WxZFyUAFy7Wr40
+        qF98Ja4rGF1UAw7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUBS1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+        IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
+        z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4
+        CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_
+        Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwI
+        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7I2V7IY
+        0VAS07AlzVAYIcxG8wCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaV
+        Av8VW5Wr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC2
+        0s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMI
+        IF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF
+        0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
+        Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
+X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: bbc77c8d9661c790806ca96ca01a356275b6a684  Merge branch 'acpi-properties' into bleeding-edge
+Hi, all,
 
-elapsed time: 724m
+Is there anything else in this patch series that needs to be modified?
 
-configs tested: 80
-configs skipped: 2
+Thanks.
+Jianmin.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-arm                                 defconfig
-i386                                defconfig
-powerpc                           allnoconfig
-x86_64                        randconfig-a013
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-kvm
-x86_64                           allyesconfig
-arc                              allyesconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-alpha                            allyesconfig
-x86_64                        randconfig-a011
-i386                          randconfig-a014
-x86_64                    rhel-8.3-kselftests
-arm                              allyesconfig
-i386                          randconfig-a005
-x86_64                        randconfig-a002
-x86_64                        randconfig-a015
-m68k                             allyesconfig
-arm64                            allyesconfig
-x86_64                           rhel-8.3-syz
-i386                          randconfig-a012
-m68k                             allmodconfig
-x86_64                          rhel-8.3-func
-i386                          randconfig-a016
-x86_64                         rhel-8.3-kunit
-arm                           u8500_defconfig
-x86_64                        randconfig-a006
-m68k                       m5475evb_defconfig
-mips                      fuloong2e_defconfig
-x86_64                        randconfig-a004
-csky                              allnoconfig
-i386                             allyesconfig
-sparc64                          alldefconfig
-arm                         assabet_defconfig
-sh                           se7722_defconfig
-ia64                             allmodconfig
-microblaze                      mmu_defconfig
-sh                           se7712_defconfig
-arm                         lpc18xx_defconfig
-mips                       bmips_be_defconfig
-sparc                               defconfig
-alpha                             allnoconfig
-arm                      integrator_defconfig
-riscv                             allnoconfig
-arc                  randconfig-r043-20220904
-parisc64                         alldefconfig
-sh                            shmin_defconfig
-ia64                      gensparse_defconfig
-arc                               allnoconfig
-riscv                randconfig-r042-20220904
-s390                 randconfig-r044-20220904
-loongarch                         allnoconfig
-sh                               allmodconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-loongarch                           defconfig
-i386                          randconfig-c001
+On 2022/8/30 上午11:01, Jianmin Lv wrote:
+> The patch series changed acpi_dma_get_range to return dma regions
+> as of_dma_get_range, so that dev->dma_range_map can be initialized
+> conveniently.
+> 
+> And acpi_arch_dma_setup for ARM64 is changed wih removing dma_base
+> and size from it's parameters.
+> 
+> Remove ARCH_HAS_PHYS_TO_DMA for LoongArch and use generic
+> phys_to_dma/dma_to_phys in include/linux/dma-direct.h.
+> 
+> V1 -> V2
+> - Removed dma_base and size from acpi_arch_dma_setup' parameters
+> - Add patch to remove ARCH_HAS_PHYS_TO_DMA for LoongArch
+> 
+> V2 -> V3
+> - Add kerneldoc for acpi_dma_get_range changing
+> - Remove redundant code in acpi_arch_dma_setup, and check map
+> 
+> 
+> Jianmin Lv (2):
+>    ACPI / scan: Support multiple dma windows with different offsets
+>    LoongArch: Remove ARCH_HAS_PHYS_TO_DMA
+> 
+>   arch/loongarch/Kconfig        |  1 -
+>   arch/loongarch/kernel/dma.c   | 52 +++++++++++++++++-------------------------
+>   arch/loongarch/kernel/setup.c |  2 +-
+>   drivers/acpi/arm64/dma.c      | 29 ++++++++++++++---------
+>   drivers/acpi/scan.c           | 53 +++++++++++++++++++------------------------
+>   include/acpi/acpi_bus.h       |  3 +--
+>   include/linux/acpi.h          | 12 ++++++----
+>   7 files changed, 71 insertions(+), 81 deletions(-)
+> 
 
-clang tested configs:
-x86_64                        randconfig-a014
-i386                          randconfig-a013
-x86_64                        randconfig-a016
-i386                          randconfig-a002
-x86_64                        randconfig-a012
-i386                          randconfig-a011
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a001
-i386                          randconfig-a015
-x86_64                        randconfig-a003
-arm                   milbeaut_m10v_defconfig
-x86_64                        randconfig-a005
-powerpc                 mpc8272_ads_defconfig
-hexagon              randconfig-r045-20220904
-powerpc                          g5_defconfig
-hexagon              randconfig-r041-20220904
-riscv                          rv32_defconfig
-x86_64                        randconfig-k001
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
