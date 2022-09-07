@@ -2,69 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE27C5B046C
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Sep 2022 14:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89EA65B06E7
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Sep 2022 16:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbiIGMzz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Sep 2022 08:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39090 "EHLO
+        id S230328AbiIGOdR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Sep 2022 10:33:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbiIGMzu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Sep 2022 08:55:50 -0400
-X-Greylist: delayed 400 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Sep 2022 05:55:49 PDT
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 826AC5FF5A;
-        Wed,  7 Sep 2022 05:55:47 -0700 (PDT)
-Received: from 8bytes.org (p4ff2bb62.dip0.t-ipconnect.de [79.242.187.98])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.8bytes.org (Postfix) with ESMTPSA id E4F5524000A;
-        Wed,  7 Sep 2022 14:49:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-        s=default; t=1662554947;
-        bh=yGOX5Lwpalcu82yNs8ayh8dOtcer41jlk77UdSRJHzA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uE78GVEgI4yTOR9KWvlR6IpZa67YTCKueETuj+yYYkM1pR/p3SMYfJwUC1JIQlv2e
-         2ntTjhAKoTFc7sIl+Vu7+2KELvGsyWVaHSJ3AqSumJvsfUrT3HcwqC38Dl7VcnwroB
-         8BFi6rWMsQWaBAZ6yGKr4LVWwTh2MQqqZIfvRsznMzAr1tqMQ4wbun1jLc6Q3oK5qR
-         4cEjQ7+thJq/JFFPPZao/wMUvReiwhSBhAhxKOJVjYvypVQZSPwSzv7INhTevRqlKz
-         tyLofbz/SQzQ1doEpWKl93VLrcpVkkQeTqcmZ4zf7b9+DgCzs3P+Ahm8FeqJQInzIE
-         YZOdibS6/esUA==
-Date:   Wed, 7 Sep 2022 14:49:05 +0200
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     will@kernel.org, catalin.marinas@arm.com, jean-philippe@linaro.org,
-        inki.dae@samsung.com, sw0312.kim@samsung.com,
-        kyungmin.park@samsung.com, tglx@linutronix.de, maz@kernel.org,
-        alex.williamson@redhat.com, cohuck@redhat.com,
-        iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [PATCH 0/3] iommu/dma: Some housekeeping
-Message-ID: <YxiTQRbsoJDG2QZJ@8bytes.org>
-References: <cover.1660668998.git.robin.murphy@arm.com>
+        with ESMTP id S229761AbiIGOc7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Sep 2022 10:32:59 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B90CB3B1B
+        for <linux-acpi@vger.kernel.org>; Wed,  7 Sep 2022 07:32:27 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id z21so9966172edi.1
+        for <linux-acpi@vger.kernel.org>; Wed, 07 Sep 2022 07:32:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=UtFlTSGHQz81OSpK49QGakNczTrN7BvVDcdecb2PlQLSH6U6g6YnfIOwEhF4HyopVw
+         xF3rEa1JazWxVmoA4IZ4APHTWslJfRg5yYhTgDCuueeGynL8ZQ8rlmQ1XFto97Lt71ZJ
+         j3Ra7mPDPEuM/14t68TI6JbC26x0Okvn0tFLgQTeFpImczwoq6TYczyXFG/k8mY/UwUL
+         n4rphtthc3JujA/DBbZnDH2NqlI3e1mX42kS7zoBsDbrZwgnwP4UWzhHEqiLlccbumw3
+         Wu+X+CCk1Fp6KNp6XYfEMT802FX63wwwnC1iqf8dYPeJE0BVyNRj/Y77DpMb+lFAEfsS
+         NjnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=OvESX9WY9+QJ6zBRuax0FifPmGLN+VaN/DV9PBlVRbMp7JkLVUE9Fk0XqhQ4ryndLs
+         VZ72J7FPG6hE2SphLecNxfAXKo7DRYiLAJAd07TitS40o7w4yRhBJ2NOI2Hj3hOKgrhK
+         4FwvXZoAhX1WdXRcEPVExdavF2OP7YQsrxDLbFR6S/+Sx9FDLkQHUtzD9fexBSGjnhx7
+         4DS2ZVGFztQRsstMhW1DGLaZvpnk7QddvHsXn9mXnF5CtpxcuINYHy9CBLWEXBMRT+pE
+         kTzK/3N2ZR+R9VxyopILuOkDUvZxB+h9HyNrC9Ojnnn1KMpaQv9e0ZcccjfHvCefZdwJ
+         2muw==
+X-Gm-Message-State: ACgBeo2+DIwlaa+mBKPmcvItUF82cgmpK2hIlAPlfzVXnMCNbmdXyrgA
+        9I1x8nrgeN9o4uevjRVmskgy3lwwvSm8AGTu1YE=
+X-Google-Smtp-Source: AA6agR4u/dbCsJbsVZIBLL6h1UPerJ2TE45jgxUgoCjVrPyl8+wsl025ctgdSe/t/2vkl2wcEplmUnwM80u8Z9eZepA=
+X-Received: by 2002:a05:6402:51d1:b0:44b:ea34:6c0a with SMTP id
+ r17-20020a05640251d100b0044bea346c0amr3314952edd.369.1662561145430; Wed, 07
+ Sep 2022 07:32:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1660668998.git.robin.murphy@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:32:24 -0700 (PDT)
+Reply-To: lumar.casey@outlook.com
+From:   LUMAR CASEY <miriankushrat@gmail.com>
+Date:   Wed, 7 Sep 2022 16:32:24 +0200
+Message-ID: <CAO4StN1OR4tXWWJAZ10p+-rJJ7qOsU8FxVS9cWv=PiegDVtnsA@mail.gmail.com>
+Subject: ATTENTION/PROPOSAL
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:544 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [miriankushrat[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 16, 2022 at 06:28:02PM +0100, Robin Murphy wrote:
-> Robin Murphy (3):
->   iommu/dma: Clean up Kconfig
->   iommu/dma: Move public interfaces to linux/iommu.h
->   iommu/dma: Make header private
+ATTENTION
 
-Applied, thanks.
+BUSINESS PARTNER,
 
->  include/linux/dma-iommu.h                   | 93 ---------------------
+I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
+MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
+PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
+DIPLOMATIC OUTLET.
 
-Squashed the updated file path in MAINTAINERS into the last patch.
+I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
+PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
+YOUR COUNTRY.
+
+I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
+
+REGARDS,
+
+LUMAR CASEY
