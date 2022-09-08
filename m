@@ -2,159 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 966A95B1F71
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Sep 2022 15:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0B5F5B1FE3
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Sep 2022 16:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231738AbiIHNmX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Sep 2022 09:42:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60062 "EHLO
+        id S232280AbiIHOAO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Sep 2022 10:00:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbiIHNmW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Sep 2022 09:42:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC93E72D2
-        for <linux-acpi@vger.kernel.org>; Thu,  8 Sep 2022 06:42:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1662644540;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dY7UGDgAaThf/zGLCo78Nc7H8PVWh9/Q5L5/T8dTqWI=;
-        b=aZt3pEaxQzlnRIFmRJbiD+vzhCbgfdM+EP6o0kAv1yRBAPbiAxbp2k4kbcnVUEgOAm9GcH
-        X2JpznQo1K0YFAv3BkBxddJbe4ZP48+0qsoMfZ8FebCpqJ6iKfqWfUGa0oHhJirR01aqf6
-        eg5WODeQfJ3U67s01DzsEOJPwWUEe14=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-568-tTSj9F74M52iN4XOBvRqzg-1; Thu, 08 Sep 2022 09:42:19 -0400
-X-MC-Unique: tTSj9F74M52iN4XOBvRqzg-1
-Received: by mail-ej1-f72.google.com with SMTP id hp14-20020a1709073e0e00b00741a2093c4aso6537196ejc.20
-        for <linux-acpi@vger.kernel.org>; Thu, 08 Sep 2022 06:42:19 -0700 (PDT)
+        with ESMTP id S232369AbiIHN7w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Sep 2022 09:59:52 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7DB114A5D
+        for <linux-acpi@vger.kernel.org>; Thu,  8 Sep 2022 06:59:08 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id n23-20020a7bc5d7000000b003a62f19b453so1751933wmk.3
+        for <linux-acpi@vger.kernel.org>; Thu, 08 Sep 2022 06:59:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:user-agent:message-id:in-reply-to:date:references
+         :subject:cc:to:from:from:to:cc:subject:date;
+        bh=M7E92wCvpAtXrboLofbMwI8QDT7eWvJxh9Ed8UPR9FE=;
+        b=rRHfSMHKzdPj0NBj/1WqdWtWFmpy0W4vezr8XGDbiuBih4zftWjVCgKCGalK0y7VyK
+         MO/6ZmTPvjYRqe+0u9ejiyUOQOQejMDa2H7LDA6vl8VIC6Ru3MocSx10fxu1riNDC+n4
+         Gi2dPhiF/dQMMlH7sLxvkA7fYoRaSfimqGC4u3xDBFajX57v9FXt9N70BlS9GyxMhbeb
+         /H7KJ53cZNPCooK9X4r8iH6pR0S4QVuP9f2ojyB3GMMmeq69LrEPqhnPnHagrSynhXq8
+         rvQK36kj1istg+2eDx319GK80QKmv2J0vw1pFmFPoC7elFZxnMjZhMfQiDJqx22tnMuB
+         h79A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=dY7UGDgAaThf/zGLCo78Nc7H8PVWh9/Q5L5/T8dTqWI=;
-        b=bZ0i3o+ZykDhVJ+7OTNah5CwUe5m2Dr7VgUzHcMq9PvKT8DD17zusG3m1cQ9g/nWob
-         xGo3xzkJ0rv0g0aYfhcp60EVL18wG+G7mXyVxeH3ZLwNnal/5KGnGflWa3DgdtcxlW4E
-         QQgxPdarbv5v3zTKmVKJ3ewd3D/i6tPtrzcCkVaYz/sGaW9f1HE9Npf5/gIm1xOcTgCz
-         WFL0NXXcmqOUOjC04APsuuGXoFA6kksCj1maDoJ62NR6H38Vxhai52slhcmif5+rjrIa
-         OQPpITWZsXQeORGdldCuh7Y2F3h8Zh0tO1OH1HP28WqA2kDVTC4nVUf84I30WtpbV3Vo
-         ysAw==
-X-Gm-Message-State: ACgBeo3SSrAuwiWkE44FwgmtIRI6Ik45Xn3XwlAQLz8ixYexYwMQNXBh
-        3ZIrsj+7pd8bfB2FrWUTymn6dTfAjKMoEeRbzRXeX5aD9PUdoMhZNkBxRXwGMq5kRXz6dY471/e
-        d5RDYe8omXMiEHlEVYTEqYg==
-X-Received: by 2002:a17:907:96a3:b0:740:a894:f with SMTP id hd35-20020a17090796a300b00740a894000fmr6136608ejc.460.1662644538479;
-        Thu, 08 Sep 2022 06:42:18 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR5AC4iFP8kH6lKh83PspsOpkpVkUS6JN8xBfUD/yEuKwkju+iQLnwP+Y88hQIIWETucCSz8UQ==
-X-Received: by 2002:a17:907:96a3:b0:740:a894:f with SMTP id hd35-20020a17090796a300b00740a894000fmr6136591ejc.460.1662644538255;
-        Thu, 08 Sep 2022 06:42:18 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id bm9-20020a0564020b0900b0044ec76521a1sm5837844edb.55.2022.09.08.06.42.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Sep 2022 06:42:17 -0700 (PDT)
-Message-ID: <767b4c6c-c860-b490-4e85-34c6677de456@redhat.com>
-Date:   Thu, 8 Sep 2022 15:42:17 +0200
+        h=mime-version:user-agent:message-id:in-reply-to:date:references
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=M7E92wCvpAtXrboLofbMwI8QDT7eWvJxh9Ed8UPR9FE=;
+        b=77cBHA1nMf1gjMpN81WRJqjI6mZAqv/W/hfDaa9/ywdcO27DtHVlosGa9f0z5Sv0o3
+         ODtveWjvJHcOg4HhHEfdm2fCx4RRZi8+chyAHEkiDlcbeIpwLrceLgMuYsdN6AoLYGgk
+         CdJOuO5kLILkeX8ynlFOPfnkjpvyc1dgEB88w3PfnyD3HkvtQVNdm3svhraNXDTBig/n
+         Yd9IR66pRx3vQgPBQznTEKCDVcikQX15Y9GDPt4PYrwg/T7q1shgn38S4jQDtwVK43nI
+         k3AserdI/Wrbi02S1gTt6yQIEIt26DmwuB5VFjxnNfkkcYmdqWHv6mlSTC4W6MR54HEr
+         zcjQ==
+X-Gm-Message-State: ACgBeo3DopCW83I2C27W8oH5lixZkTIADr18GqEnCGUoHxlwnKxY8kgn
+        ScTvuJT694qZQEU9oygTQdKPrg==
+X-Google-Smtp-Source: AA6agR5Y1ue2R4SpA013wGrxxP837wnkH1/ZIs48DYRN0QAmnqT3NJV5vcMPuyb7/Gk+sbz2YUi6gw==
+X-Received: by 2002:a05:600c:3217:b0:3a6:8235:4f6f with SMTP id r23-20020a05600c321700b003a682354f6fmr2328042wmp.96.1662645547031;
+        Thu, 08 Sep 2022 06:59:07 -0700 (PDT)
+Received: from localhost ([95.148.15.66])
+        by smtp.gmail.com with ESMTPSA id g13-20020a05600c4ecd00b003a4c6e67f01sm3196979wmq.6.2022.09.08.06.59.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Sep 2022 06:59:06 -0700 (PDT)
+From:   Punit Agrawal <punit.agrawal@bytedance.com>
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        viresh.kumar@linaro.org, robert.moore@intel.com,
+        punit.agrawal@bytedance.com, lukasz.luba@arm.com,
+        ionela.voinescu@arm.com, pierre.gondois@arm.com,
+        linux-kernel@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] ACPI: CPPC: Disable FIE if registers in PCC regions
+References: <20220819162547.141333-1-jeremy.linton@arm.com>
+        <20220819162547.141333-2-jeremy.linton@arm.com>
+Date:   Thu, 08 Sep 2022 14:59:05 +0100
+In-Reply-To: <20220819162547.141333-2-jeremy.linton@arm.com> (Jeremy Linton's
+        message of "Fri, 19 Aug 2022 11:25:46 -0500")
+Message-ID: <87pmg6arx2.fsf@stealth>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v2 8/8] efi/dev-path-parser: Refactor _UID handling to use
- acpi_dev_uid_to_integer()
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        devel@acpica.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        Khalil Blaiech <kblaiech@nvidia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Robert Moore <robert.moore@intel.com>,
-        Wolfram Sang <wsa@kernel.org>
-References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
- <20220908132910.62122-9-andriy.shevchenko@linux.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220908132910.62122-9-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Jeremy,
 
-On 9/8/22 15:29, Andy Shevchenko wrote:
-> ACPI utils provide acpi_dev_uid_to_integer() helper to extract _UID as
-> an integer. Use it instead of custom approach.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+I missed the previous version (holidays) but hopefully still in time for
+this one. A query / comment below.
 
-Thanks, patch looks good to me:
+Jeremy Linton <jeremy.linton@arm.com> writes:
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
+> PCC regions utilize a mailbox to set/retrieve register values used by
+> the CPPC code. This is fine as long as the operations are
+> infrequent. With the FIE code enabled though the overhead can range
+> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
+> based machines.
+>
+> So, before enabling FIE assure none of the registers used by
+> cppc_get_perf_ctrs() are in the PCC region. Furthermore lets also
+> enable a module parameter which can also disable it at boot or module
+> reload.
+>
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
 > ---
->  drivers/firmware/efi/dev-path-parser.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/firmware/efi/dev-path-parser.c b/drivers/firmware/efi/dev-path-parser.c
-> index eb9c65f97841..f80d87c199c3 100644
-> --- a/drivers/firmware/efi/dev-path-parser.c
-> +++ b/drivers/firmware/efi/dev-path-parser.c
-> @@ -15,9 +15,11 @@
->  static long __init parse_acpi_path(const struct efi_dev_path *node,
->  				   struct device *parent, struct device **child)
->  {
-> -	char hid[ACPI_ID_LEN], uid[11]; /* UINT_MAX + null byte */
->  	struct acpi_device *adev;
->  	struct device *phys_dev;
-> +	char hid[ACPI_ID_LEN];
-> +	u64 uid;
-> +	int ret;
+>  drivers/acpi/cppc_acpi.c       | 41 ++++++++++++++++++++++++++++++++++
+>  drivers/cpufreq/cppc_cpufreq.c | 31 +++++++++++++++++++++----
+>  include/acpi/cppc_acpi.h       |  5 +++++
+>  3 files changed, 73 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 1e15a9f25ae9..c840bf606b30 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1240,6 +1240,47 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+>  }
+>  EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
 >  
->  	if (node->header.length != 12)
->  		return -EINVAL;
-> @@ -27,12 +29,12 @@ static long __init parse_acpi_path(const struct efi_dev_path *node,
->  		'A' + ((node->acpi.hid >>  5) & 0x1f) - 1,
->  		'A' + ((node->acpi.hid >>  0) & 0x1f) - 1,
->  			node->acpi.hid >> 16);
-> -	sprintf(uid, "%u", node->acpi.uid);
+> +/**
+> + * cppc_perf_ctrs_in_pcc - Check if any perf counters are in a PCC region.
+> + *
+> + * CPPC has flexibility about how counters describing CPU perf are delivered.
+> + * One of the choices is PCC regions, which can have a high access latency. This
+> + * routine allows callers of cppc_get_perf_ctrs() to know this ahead of time.
+> + *
+> + * Return: true if any of the counters are in PCC regions, false otherwise
+> + */
+> +bool cppc_perf_ctrs_in_pcc(void)
+> +{
+> +	int cpu;
+> +
+> +	for_each_present_cpu(cpu) {
+> +		struct cpc_register_resource *ref_perf_reg;
+> +		struct cpc_desc *cpc_desc;
+> +
+> +		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+> +
+> +		if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+> +		    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+> +		    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
+> +			return true;
+> +
+> +
+> +		ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+> +
+> +		/*
+> +		 * If reference perf register is not supported then we should
+> +		 * use the nominal perf value
+> +		 */
+> +		if (!CPC_SUPPORTED(ref_perf_reg))
+> +			ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+> +
+> +		if (CPC_IN_PCC(ref_perf_reg))
+> +			return true;
+> +	}
+> +	return false;
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+> +
+>  /**
+>   * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
+>   * @cpunum: CPU from which to read counters.
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index 24eaf0ec344d..32fcb0bf74a4 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -63,7 +63,15 @@ static struct cppc_workaround_oem_info wa_info[] = {
 >  
->  	for_each_acpi_dev_match(adev, hid, NULL, -1) {
-> -		if (adev->pnp.unique_id && !strcmp(adev->pnp.unique_id, uid))
-> +		ret = acpi_dev_uid_to_integer(adev, &uid);
-> +		if (ret == 0 && node->acpi.uid == uid)
->  			break;
-> -		if (!adev->pnp.unique_id && node->acpi.uid == 0)
-> +		if (ret == -ENODATA && node->acpi.uid == 0)
->  			break;
->  	}
->  	if (!adev)
+>  static struct cpufreq_driver cppc_cpufreq_driver;
+>  
+> +static enum {
+> +	FIE_UNSET = -1,
+> +	FIE_ENABLED,
+> +	FIE_DISABLED
+> +} fie_disabled = FIE_UNSET;
+> +
+>  #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
+> +module_param(fie_disabled, int, 0444);
+> +MODULE_PARM_DESC(fie_disabled, "Disable Frequency Invariance Engine (FIE)");
+>  
+>  /* Frequency invariance support */
+>  struct cppc_freq_invariance {
+> @@ -158,7 +166,7 @@ static void cppc_cpufreq_cpu_fie_init(struct cpufreq_policy *policy)
+>  	struct cppc_freq_invariance *cppc_fi;
+>  	int cpu, ret;
+>  
+> -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+> +	if (fie_disabled)
+>  		return;
+
+With this change, if FIE is enabled, the rest of the function will run
+even if the hisi workaround is enabled. Not sure if that is an
+intentional change. The same applies to similar other changes in the
+patch as well.
+
+The rest of the changes look ok.
+
+[...]
 
