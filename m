@@ -2,80 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8085B3EFD
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 20:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1044C5B3F28
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 20:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229631AbiIISrb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Sep 2022 14:47:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49954 "EHLO
+        id S229767AbiIIS7Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Sep 2022 14:59:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbiIISr2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 14:47:28 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0948C9C23C
-        for <linux-acpi@vger.kernel.org>; Fri,  9 Sep 2022 11:47:28 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id c4so2174337iof.3
-        for <linux-acpi@vger.kernel.org>; Fri, 09 Sep 2022 11:47:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=tY2acVbA/Ha3+2EN4QAjkpHBg/SdpbP2hwHDbNpf9bw=;
-        b=ODw3NcxqU5t/spePY1O2k2TkXmXTPzngWZ+jzGxk48CMeQWHZCm43xP09J0X8msJpw
-         RAUkVxddDp2KODf4+zE1ChALe0wbOMml+kErKuzJ/uLWeR04yvJD6RwIfEjgdK2Z0g9Q
-         9o3ic/nQgpcfaq3PozndHUEK3yIhuLu7ebECI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=tY2acVbA/Ha3+2EN4QAjkpHBg/SdpbP2hwHDbNpf9bw=;
-        b=dFB/0fjBTaBYLEBTZ3xKjXhKwMm0mm6eI1mVOwXSUdyXKSJNXr+/WUDdiMa14zq20A
-         CuoWTPM1b002wu2AM6ISy6k9BjvRAH3ZVnpN3uc+XMZVJvQeTuzxZYKecR//n2nLLOQ/
-         P8gDFnqW3KUtFYycGRHBpUWmptZMrthezpGOOdvqgkY/c9Z0ZHFIR/mdUHazXch5YX4Y
-         VXJolxqBT5qYWOKTtfp83oPnlWNlh+Y2aNsCceZv7bbbPyycvzzkafMUkKcVqwweSZVM
-         HJq84WKYdIGi7kXuzCf0wrDotwQedStbofx6sLGHm3TwVJ5JiRH1i/bIzLjSqR3XxUxD
-         SRvg==
-X-Gm-Message-State: ACgBeo1STX2Jx8UYrg4CvvS7qg4AxxDMCYdVsv8zCUMK+L0D/X1tuivc
-        zicY40UyGHDvHsWJJXYWckYvGe+mrEz8ZA==
-X-Google-Smtp-Source: AA6agR7MFxoPiE6uWEAhmSwuzkAQhk8HCM14MjKj5mVmHvTfNtCwSorjBOP7lhm6urd2BsIVlAExxw==
-X-Received: by 2002:a5d:9141:0:b0:69c:67a4:90ba with SMTP id y1-20020a5d9141000000b0069c67a490bamr4744606ioq.154.1662749246720;
-        Fri, 09 Sep 2022 11:47:26 -0700 (PDT)
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com. [209.85.166.51])
-        by smtp.gmail.com with ESMTPSA id u14-20020a056e02110e00b002eb0e5b561dsm425420ilk.15.2022.09.09.11.47.23
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Sep 2022 11:47:23 -0700 (PDT)
-Received: by mail-io1-f51.google.com with SMTP id y187so2204008iof.0
-        for <linux-acpi@vger.kernel.org>; Fri, 09 Sep 2022 11:47:23 -0700 (PDT)
-X-Received: by 2002:a05:6602:2d4f:b0:689:5bba:dc99 with SMTP id
- d15-20020a0566022d4f00b006895bbadc99mr7410102iow.7.1662749242176; Fri, 09 Sep
- 2022 11:47:22 -0700 (PDT)
+        with ESMTP id S229712AbiIIS7P (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 14:59:15 -0400
+X-Greylist: delayed 398 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Sep 2022 11:59:14 PDT
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.148])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53918134C2A
+        for <linux-acpi@vger.kernel.org>; Fri,  9 Sep 2022 11:59:13 -0700 (PDT)
+Received: (wp-smtpd smtp.tlen.pl 30323 invoked from network); 9 Sep 2022 20:52:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1662749551; bh=rhc+jh270C6y48dYxDcsrTYB2Su6SjfOeGKqnqcbuxM=;
+          h=From:To:Cc:Subject;
+          b=EcMbmoAfRb0BLxxLWXTvPuBPCFAcDSLnwUK9esK3ofezJyq5X4mf7l40X6QBtA0eG
+           jRr8r0IZggaIw4u56Cbx7wDxg77rZWkUpbM2n6pcB22niYgcZQEH+Y9Fxri2tUA7af
+           +v3BAwqW3OOt0y2/6B9oCPDIptGcaZzjdq0b7EhQ=
+Received: from aafh243.neoplus.adsl.tpnet.pl (HELO localhost.localdomain) (mat.jonczyk@o2.pl@[83.4.137.243])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with SMTP
+          for <linux-kernel@vger.kernel.org>; 9 Sep 2022 20:52:30 +0200
+From:   =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+To:     linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@suse.de>
+Subject: [PATCH] acpi,pci: handle duplicate IRQ routing entries returned from _PRT
+Date:   Fri,  9 Sep 2022 20:51:52 +0200
+Message-Id: <20220909185152.1102948-1-mat.jonczyk@o2.pl>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220830231541.1135813-1-rrangel@chromium.org>
- <20220830171332.4.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid>
- <YxftNQrRx3fwsobk@google.com> <CAHQZ30DPmn1hN+xfck7CgOGLcze0jtHxxWnq7yVVL0Q_DzG6UQ@mail.gmail.com>
- <98559c23-cc22-3b85-2102-0cc760240804@redhat.com> <CAHQZ30ACZ-1UtgbXwEc+tFRvW-KpDg87Q4nj5Dwysz2BB26yiQ@mail.gmail.com>
- <CAJZ5v0iyF98fBgGFyvj_huVkyKvn4O0_WhA=-wC2VCG6A4DdjQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iyF98fBgGFyvj_huVkyKvn4O0_WhA=-wC2VCG6A4DdjQ@mail.gmail.com>
-From:   Raul Rangel <rrangel@chromium.org>
-Date:   Fri, 9 Sep 2022 12:47:11 -0600
-X-Gmail-Original-Message-ID: <CAHQZ30DY9aYBoW303qW+hkegYV0BbKFO6LkCuHKnHNxZ3QoLYw@mail.gmail.com>
-Message-ID: <CAHQZ30DY9aYBoW303qW+hkegYV0BbKFO6LkCuHKnHNxZ3QoLYw@mail.gmail.com>
-Subject: Re: [PATCH 4/8] i2c: acpi: Use ACPI GPIO wake capability bit to set wake_irq
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Tim Van Patten <timvp@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 81955f944ecd7771366ceed4b99a02a3
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [AXMU]                               
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -84,115 +54,253 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-It looks like `i2c_acpi_get_irq` and `platform_get_irq_optional` are
-doing pretty much the same thing. Can we replace `i2c_acpi_get_irq`
-and switch over to `platform_get_irq_optional`? Is it possible to get
-a `platform_device` from an `i2c_client`?
+On some platforms, the ACPI _PRT function returns duplicate interrupt
+routing entries. Linux uses the first matching entry, but sometimes the
+second matching entry contains the correct interrupt vector.
 
-On Thu, Sep 8, 2022 at 9:23 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Thu, Sep 8, 2022 at 4:40 PM Raul Rangel <rrangel@chromium.org> wrote:
-> >
-> > On Wed, Sep 7, 2022 at 2:12 AM Hans de Goede <hdegoede@redhat.com> wrote:
-> > >
-> > > Hi,
-> > >
-> > > On 9/7/22 04:00, Raul Rangel wrote:
-> > > > On Tue, Sep 6, 2022 at 7:00 PM Dmitry Torokhov
-> > > > <dmitry.torokhov@gmail.com> wrote:
-> > > >>
-> > > >> On Tue, Aug 30, 2022 at 05:15:37PM -0600, Raul E Rangel wrote:
-> > > >>> Device tree already has a mechanism to pass the wake_irq. It does this
-> > > >>> by looking for the wakeup-source property and setting the
-> > > >>> I2C_CLIENT_WAKE flag. This CL adds the ACPI equivalent. It uses at the
-> > > >>> ACPI GpioInt wake flag to determine if the interrupt can be used to wake
-> > > >>> the system. Previously the i2c drivers had to make assumptions and
-> > > >>> blindly enable the wake IRQ. This can cause spurious wake events. e.g.,
-> > > >>> If there is a device with an Active Low interrupt and the device gets
-> > > >>> powered off while suspending, the interrupt line will go low since it's
-> > > >>> no longer powered and wake the system. For this reason we should respect
-> > > >>> the board designers wishes and honor the wake bit defined on the
-> > > >>> GpioInt.
-> > > >>>
-> > > >>> This change does not cover the ACPI Interrupt or IRQ resources.
-> > > >>>
-> > > >>> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-> > > >>> ---
-> > > >>>
-> > > >>>  drivers/i2c/i2c-core-acpi.c |  8 ++++++--
-> > > >>>  drivers/i2c/i2c-core-base.c | 17 +++++++++++------
-> > > >>>  drivers/i2c/i2c-core.h      |  4 ++--
-> > > >>>  3 files changed, 19 insertions(+), 10 deletions(-)
-> > > >>>
-> > > >>> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> > > >>> index c762a879c4cc6b..cfe82a6ba3ef28 100644
-> > > >>> --- a/drivers/i2c/i2c-core-acpi.c
-> > > >>> +++ b/drivers/i2c/i2c-core-acpi.c
-> > > >>> @@ -182,12 +182,13 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
-> > > >>>  /**
-> > > >>>   * i2c_acpi_get_irq - get device IRQ number from ACPI
-> > > >>>   * @client: Pointer to the I2C client device
-> > > >>> + * @wake_capable: Set to 1 if the IRQ is wake capable
-> > > >>>   *
-> > > >>>   * Find the IRQ number used by a specific client device.
-> > > >>>   *
-> > > >>>   * Return: The IRQ number or an error code.
-> > > >>>   */
-> > > >>> -int i2c_acpi_get_irq(struct i2c_client *client)
-> > > >>> +int i2c_acpi_get_irq(struct i2c_client *client, int *wake_capable)
-> > > >>>  {
-> > > >>>       struct acpi_device *adev = ACPI_COMPANION(&client->dev);
-> > > >>>       struct list_head resource_list;
-> > > >>> @@ -196,6 +197,9 @@ int i2c_acpi_get_irq(struct i2c_client *client)
-> > > >>>
-> > > >>>       INIT_LIST_HEAD(&resource_list);
-> > > >>>
-> > > >>> +     if (wake_capable)
-> > > >>> +             *wake_capable = 0;
-> > > >>> +
-> > > >>>       ret = acpi_dev_get_resources(adev, &resource_list,
-> > > >>>                                    i2c_acpi_add_resource, &irq);
-> > > >>
-> > > >
-> > > >
-> > > >> You also need to handle "Interrupt(..., ...AndWake)" case here. I would
-> > > >> look into maybe defining
-> > > >>
-> > > >> #define IORESOURCE_IRQ_WAKECAPABLE      (1<<6)
-> > > >>
-> > > >> in include/linux/ioport.h and plumbing it through from ACPI layer.
-> > > >>
-> > > >> Thanks.
-> > > >
-> > > > AFAIK the Intel (Not 100% certain) and AMD IO-APIC's can't actually
-> > > > wake a system from suspend/suspend-to-idle.
-> > >
-> > > That may be true for S3 suspend (it sounds about right) there
-> > > certainly is no way to "arm for wakeup" on the APIC, but with
-> > > s2idle all IRQs which are not explicitly disabled by the OS
-> > > still function normally so there any IRQ can be a wakeup
-> > > source (AFAIK).
->
-> That's true.
->
-> Moreover, even for S3 there are transitions into it and there may be
-> wakeup interrupts taking place during those transitions.  Those may be
-> any IRQs too.
->
-> > > And even with S3 suspend I think some IRQs can act as wakeup,
-> > > but that is configured by the BIOS then and not something which
-> > > linux can enable/disable. E.g IIRC the parent IRQ of the GPIO
-> > > controllers on x86 is an APIC IRQ ...
->
-> It's more about how the system is wired up AFAICS.  Basically, in
-> order to wake up the system from S3, the given IRQ needs to be
-> physically attached to an input that will trigger the platform wakeup
-> logic while in S3.
->
-> > >
-> >
-> > SGTM. I wanted to make sure there was interest before I invested the
-> > time in adding the functionality. Hopefully I can push up a new patch
-> > set tomorrow.
->
-> Sounds good. :-)
+This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
+SMBus controller. This controller was nonfunctional unless its interrupt
+usage was disabled (using the "disable_features=0x10" module parameter).
+
+After investigation, it turned out that the driver was using an
+incorrect interrupt vector: in lspci output for this device there was:
+        Interrupt: pin B routed to IRQ 19
+but after running i2cdetect (without using any i2c-i801 module
+parameters) the following was logged to dmesg:
+
+        [...]
+        [  132.248657] i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
+        [  132.248669] i801_smbus 0000:00:1f.3: Transaction timeout
+        [  132.452649] i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
+        [  132.452662] i801_smbus 0000:00:1f.3: Transaction timeout
+        [  132.467682] irq 17: nobody cared (try booting with the "irqpoll" option)
+
+The existence of duplicate entries returned from _PRT was confirmed in
+the ACPI DSTD table, which contains:
+
+	Name (API0, Package (0x1D)
+	{
+		Package (0x04)
+		{
+		0x001FFFFF,
+		0x01,
+		0x00,
+		0x13
+		},
+
+		Package (0x04)
+		{
+		0x001FFFFF,
+		0x00,
+		0x00,
+		0x10
+		},
+
+		Package (0x04)
+		{
+		0x001FFFFF,
+		0x01,
+		0x00,
+		0x11
+		},
+
+		[...]
+	})
+	Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
+	{
+		Local0 = API0 /* \_SB_.PCI0.API0 */
+		If (!GPIC)
+		{
+		Local0 = PIC0 /* \_SB_.PCI0.PIC0 */
+		}
+
+		Return (Local0)
+	}
+
+Linux used the first matching entry, which was incorrect. In order not
+to disrupt existing systems, use the first matching entry unless the
+pci=prtlast kernel parameter is used or a Dell Latitude E6500 laptop is
+detected.
+
+Disclaimer: there is nothing really interesting connected to the SMBus
+controller on this laptop, but this change may help other systems.
+
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Borislav Petkov <bp@suse.de>
+---
+ .../admin-guide/kernel-parameters.txt         |  8 ++
+ drivers/acpi/pci_irq.c                        | 89 ++++++++++++++++++-
+ drivers/pci/pci.c                             |  9 ++
+ 3 files changed, 102 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 426fa892d311..2ff351db10b8 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4190,6 +4190,14 @@
+ 				bridge windows. This is the default on modern
+ 				hardware. If you need to use this, please report
+ 				a bug to <linux-pci@vger.kernel.org>.
++		prtlast		If the _PRT ACPI method returns duplicate
++				IRQ routing entries, use the last matching entry
++				for a given device. If the platform may be
++				affected by this problem, an error message is
++				printed to dmesg - this parameter is
++				ineffective otherwise. If you need to use this,
++				please report a bug to
++				<linux-pci@vger.kernel.org>.
+ 		routeirq	Do IRQ routing for all PCI devices.
+ 				This is normally done in pci_enable_device(),
+ 				so this option is a temporary workaround
+diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+index 08e15774fb9f..5cead840de0b 100644
+--- a/drivers/acpi/pci_irq.c
++++ b/drivers/acpi/pci_irq.c
+@@ -196,12 +196,73 @@ static int acpi_pci_irq_check_entry(acpi_handle handle, struct pci_dev *dev,
+ 	return 0;
+ }
+ 
++extern bool pci_prtlast;
++
++static const struct dmi_system_id pci_prtlast_dmi[] = {
++	{
++		.ident = "Dell Latitude E6500",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Latitude E6500"),
++		},
++	},
++	{ }
++};
++
++static bool acpi_pci_prt_use_last(struct acpi_prt_entry *curr,
++				  const char *current_source,
++				  const char *previous_match_source,
++				  int previous_match_index)
++{
++	bool ret;
++	const struct dmi_system_id *id;
++	const int msg_bufsize = 512;
++	char *msg = kmalloc(msg_bufsize, GFP_KERNEL);
++
++	if (!msg)
++		return false;
++
++	snprintf(msg, msg_bufsize,
++		 FW_BUG
++		 "ACPI _PRT returned duplicate IRQ routing entries for PCI device "
++		 "%04x:%02x:%02x[INT%c]: %s[%d] and %s[%d]. ",
++		 curr->id.segment, curr->id.bus, curr->id.device,
++		 pin_name(curr->pin),
++		 previous_match_source, previous_match_index,
++		 current_source, curr->index);
++
++	id = dmi_first_match(pci_prtlast_dmi);
++
++	if (id) {
++		pr_warn("%s%s detected, using last entry.\n",
++			msg, id->ident);
++
++		ret = true;
++	} else if (pci_prtlast) {
++		pr_err(
++"%sUsing last entry, as directed on the command line. If this helps, report a bug.\n",
++		       msg);
++
++		ret = true;
++	} else {
++		pr_err("%sIf necessary, use \"pci=prtlast\" and report a bug.\n",
++		       msg);
++
++		ret = false;
++	}
++
++	kfree(msg);
++	return ret;
++}
++
+ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
+-			  int pin, struct acpi_prt_entry **entry_ptr)
++			  int pin, struct acpi_prt_entry **entry_ptr_out)
+ {
+ 	acpi_status status;
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	struct acpi_pci_routing_table *entry;
++	struct acpi_prt_entry *match = NULL;
++	const char *match_source = NULL;
+ 	acpi_handle handle = NULL;
+ 
+ 	if (dev->bus->bridge)
+@@ -219,13 +280,33 @@ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
+ 
+ 	entry = buffer.pointer;
+ 	while (entry && (entry->length > 0)) {
+-		if (!acpi_pci_irq_check_entry(handle, dev, pin,
+-						 entry, entry_ptr))
+-			break;
++		struct acpi_prt_entry *curr;
++
++		if (!acpi_pci_irq_check_entry(handle, dev, pin, entry, &curr)) {
++			if (!match) {
++				// first match
++				match = curr;
++				match_source = entry->source;
++			} else if (!acpi_pci_prt_use_last(curr,
++							  entry->source,
++							  match_source,
++							  match->index)) {
++				// duplicates found, use first entry
++				kfree(curr);
++			} else {
++				// duplicates found, use last entry
++				kfree(match);
++				match = curr;
++				match_source = entry->source;
++			}
++		}
++
+ 		entry = (struct acpi_pci_routing_table *)
+ 		    ((unsigned long)entry + entry->length);
+ 	}
+ 
++	*entry_ptr_out = match;
++
+ 	kfree(buffer.pointer);
+ 	return 0;
+ }
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 95bc329e74c0..a14a2e4e4197 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -155,6 +155,11 @@ static bool pci_bridge_d3_disable;
+ /* Force bridge_d3 for all PCIe ports */
+ static bool pci_bridge_d3_force;
+ 
++#ifdef CONFIG_ACPI
++/* Use the last matching entry from the table returned by the _PRT ACPI method. */
++bool pci_prtlast;
++#endif
++
+ static int __init pcie_port_pm_setup(char *str)
+ {
+ 	if (!strcmp(str, "off"))
+@@ -6896,6 +6901,10 @@ static int __init pci_setup(char *str)
+ 				pci_add_flags(PCI_SCAN_ALL_PCIE_DEVS);
+ 			} else if (!strncmp(str, "disable_acs_redir=", 18)) {
+ 				disable_acs_redir_param = str + 18;
++#ifdef CONFIG_ACPI
++			} else if (!strncmp(str, "prtlast", 7)) {
++				pci_prtlast = true;
++#endif
+ 			} else {
+ 				pr_err("PCI: Unknown option `%s'\n", str);
+ 			}
+
+base-commit: 7e18e42e4b280c85b76967a9106a13ca61c16179
+-- 
+2.25.1
+
