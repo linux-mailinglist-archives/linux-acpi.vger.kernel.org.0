@@ -2,52 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9B95B3DF7
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 19:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E945B3E13
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 19:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230108AbiIIR3s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Sep 2022 13:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34862 "EHLO
+        id S229698AbiIIRlS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Sep 2022 13:41:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230098AbiIIR3r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 13:29:47 -0400
-Received: from vorpal.se (unknown [IPv6:2a01:7e00::f03c:91ff:fe73:398e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB8DF58B;
-        Fri,  9 Sep 2022 10:29:32 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id 8B1F4142D4;
-        Fri,  9 Sep 2022 17:29:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1662744555; bh=YxV1bcA7852pBmchzb8H20s3XoEh/vN7giCg2FvWDIA=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=G7fb4E9lTq9AWL3QhRnWulJ3xuCqmB2rRwItoppeaUwPtsMPTZrK3lda7TBkE3tMd
-         otB2o1SxijJbKOv6s6Hu6+0SJDzyzmrdvhvlFdakxT7rvt0mqrLu1VQ1wdC4PX936n
-         WaftnGfBlI7nH3g9OSWzKc095A6u/1nEvq9AL8pRy0Y+x+2EsWCBfMy/jabC+lsyCu
-         z3cVNAkshqWnsn009u3iQH0Hzwq8MlbtMXHfw4vfJfpY9lw1MRLfVeSPxO12DLPwLL
-         3MB7AHH90kX4HGmu/Tg5lFJJUNDsfCWZU8L0d2BOhs0S9JFiKV/UAzk93GpKCH8kLF
-         06w+qWzhFEOmA==
-Message-ID: <ee77aadf-8adc-c812-55ae-c534fb523de5@vorpal.se>
-Date:   Fri, 9 Sep 2022 19:29:14 +0200
+        with ESMTP id S229610AbiIIRlR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 13:41:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11BA996FC6
+        for <linux-acpi@vger.kernel.org>; Fri,  9 Sep 2022 10:41:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1662745275;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9M0kqItM9plhK1KFlZ7clm4OCYC2Cx+YQmfHN1M/8m0=;
+        b=PBhCF+mi/wkqreGcWNdBY8rTybWRMFtG3HnhQOxMf0fkOlj3n/D4xp7JXIB1dD3Ww+h0Eb
+        ObJwy8glMgcfwQNoFxxbIgsfGqJQEQm0U7wtLOYrBGdAYoCHxtxAqS95MuBFPr65UiUrIQ
+        bU9kMpJQffGNHD2Z1F+xYDzBVWCS/5A=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-325-M5RAB3lPPsGZ8cETt05SDw-1; Fri, 09 Sep 2022 13:41:13 -0400
+X-MC-Unique: M5RAB3lPPsGZ8cETt05SDw-1
+Received: by mail-ej1-f70.google.com with SMTP id nc21-20020a1709071c1500b0076120d57502so1361438ejc.18
+        for <linux-acpi@vger.kernel.org>; Fri, 09 Sep 2022 10:41:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=9M0kqItM9plhK1KFlZ7clm4OCYC2Cx+YQmfHN1M/8m0=;
+        b=PkDh8PCkHgjumQQqA6sQAi/vuDL7Box1BfDfitfdSVclh9+qpUTkBggP2BkVOXCDHP
+         uLP9UTnlqegWGpob7cjgkAVL7ws5jFMaMzUmvBIoV5dC3+I6h9gxpohdFWk/qmshC/lH
+         YWyicD++PiAGlyPuyypoMiqZBOBpLDDsaNH90/QjtvNFrLxkyx0VFi5g5Alj9aT5oqoI
+         6+KouvliMYPjOV/Ga6seXsFl+4MGDomplbntPaSW3nou8M2XiszR3prMBUx18cCZ5uMR
+         USeNzdZj3aCqIIyjyQj9DfINZ/P5oHJipw+vbWxcaTOn/g9lJ3h6NrRgT5Er7fd7kKMV
+         3C1g==
+X-Gm-Message-State: ACgBeo1zB4t9A6nkSq3NjYWpPnm9WgwWRiUhy16vo2XTt96Juqei6sR0
+        litr/WsXDP3WBx4PfsTymHzFyGvJmemplwO5pzyqnvRh6pAH3cRfy8rSMATmEKhcPXzNlr7Wd7A
+        uX7jzhm/HmrTvYEpgL7w1/Q==
+X-Received: by 2002:a17:907:8686:b0:773:6f77:f110 with SMTP id qa6-20020a170907868600b007736f77f110mr7484569ejc.547.1662745272372;
+        Fri, 09 Sep 2022 10:41:12 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR5g51v7A56nWF33hp1ZuydAQ3ObgUmrUx/xmVtZgT9K967VFJqOVfKnbXLU2WP1/VDl9oIEHQ==
+X-Received: by 2002:a17:907:8686:b0:773:6f77:f110 with SMTP id qa6-20020a170907868600b007736f77f110mr7484555ejc.547.1662745272116;
+        Fri, 09 Sep 2022 10:41:12 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:2a07:3a01:67e5:daf9:cec0:df6? (2001-1c00-2a07-3a01-67e5-daf9-cec0-0df6.cable.dynamic.v6.ziggo.nl. [2001:1c00:2a07:3a01:67e5:daf9:cec0:df6])
+        by smtp.gmail.com with ESMTPSA id b4-20020aa7df84000000b0044dbecdcd29sm729398edy.12.2022.09.09.10.41.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Sep 2022 10:41:11 -0700 (PDT)
+Message-ID: <43c52d4c-3355-6699-7ad9-02a62e63fbd9@redhat.com>
+Date:   Fri, 9 Sep 2022 19:41:11 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
 Subject: Re: [PATCH v2 1/2] drivers/platform: toshiba_acpi: Call
  HCI_PANEL_POWER_ON on resume on some models
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
+Content-Language: en-US
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Arvid Norlander <lkml@vorpal.se>,
         Mark Gross <mgross@linux.intel.com>
 Cc:     linux-acpi@vger.kernel.org, Andy Shevchenko <andy@infradead.org>,
         platform-driver-x86@vger.kernel.org
 References: <20220909153239.34606-1-hdegoede@redhat.com>
-Content-Language: en-US
-From:   Arvid Norlander <lkml@vorpal.se>
+From:   Hans de Goede <hdegoede@redhat.com>
 In-Reply-To: <20220909153239.34606-1-hdegoede@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,NICE_REPLY_A,NO_DNS_FOR_FROM,RCVD_IN_SBL_CSS,RCVD_IN_XBL,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR,T_SPF_TEMPERROR autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -56,12 +85,7 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-Given the changes, do you want me to test this again? If so, on what branch?
-
-Best regards,
-Arvid Norlander
-
-On 2022-09-09 17:32, Hans de Goede wrote:
+On 9/9/22 17:32, Hans de Goede wrote:
 > Some Toshibas have a broken acpi-video interface for brightness control, so
 > far these have been using a special workaround in drivers/acpi/acpi_video.c
 > which gets activated by the disable_backlight_sysfs_if module-param/quirks.
@@ -96,6 +120,17 @@ On 2022-09-09 17:32, Hans de Goede wrote:
 > Changes in v2:
 > - Add a turn_on_panel_on_resume module parameter to allow overriding
 >   the DMI quirk based setting
+
+I have added these 2 patches to my review-hans (soon to be for-next)
+branch now.
+
+Regards,
+
+Hans
+
+
+
+
 > ---
 >  drivers/platform/x86/toshiba_acpi.c | 50 +++++++++++++++++++++++++++++
 >  1 file changed, 50 insertions(+)
