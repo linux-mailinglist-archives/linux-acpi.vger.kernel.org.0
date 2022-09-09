@@ -2,56 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7566C5B30CE
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 09:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AFEB5B314F
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 10:06:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbiIIHrk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Sep 2022 03:47:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44356 "EHLO
+        id S229862AbiIIIEz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Sep 2022 04:04:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231432AbiIIHrP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 03:47:15 -0400
+        with ESMTP id S229622AbiIIIEy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 04:04:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4387E290D;
-        Fri,  9 Sep 2022 00:43:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C80193B977;
+        Fri,  9 Sep 2022 01:04:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA1BE61ED4;
-        Fri,  9 Sep 2022 07:42:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D795EC433D7;
-        Fri,  9 Sep 2022 07:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1662709376;
-        bh=fX3uAg8WI8sIS3BxSEy1dFAlMXqykzIyR3bPWIiiy5Q=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6654A61EFD;
+        Fri,  9 Sep 2022 08:04:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75658C433D6;
+        Fri,  9 Sep 2022 08:04:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662710691;
+        bh=a1cYy5MrT3rsObddkZ5SvOhpaU4KtFmno4KfYtVj8Xg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I9MJfu/DyopZa2FrUTmYMsJLSqL4s07q/tY2zzTNmMMYpBIMFKpCddCHUschDpy27
-         A6u8V5jeBRM/Aqd/GxAIZvNo73euiWznVWH8zfWUtMDthIlEduk/Coa80E3AQ11+yj
-         1lwf1BAGErjSRmykkjR2NCLyhKCoMPtfsl28KXxE=
-Date:   Fri, 9 Sep 2022 09:42:53 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        whitehat002 <hackyzh002@gmail.com>
-Subject: Re: [PATCH] PCI/ACPI: do not reference a pci device after it has
- been released
-Message-ID: <YxrufXoPZnKCxqRP@kroah.com>
-References: <20220428142854.1065953-1-gregkh@linuxfoundation.org>
- <20220428155858.GA14614@bhelgaas>
- <Ymq/W+KcWD9DKQr/@kroah.com>
- <CAJZ5v0hCiO6_deYnUK-5pfqE+fy1XLSUiBvkBgWw2nbqu9ggXA@mail.gmail.com>
- <CAJZ5v0itRry98=7X=NOmituD3VH=GYdY3REtrhx3ubH0wf=ckw@mail.gmail.com>
- <YrnHrF8WLy4296Z1@kroah.com>
- <CAJZ5v0hfdnRg0EqG2Zcp9=Kjq+P1NC45iudatisVL_G=QjOC+A@mail.gmail.com>
+        b=am4NbRnsoHr+0A8vcwv0XHWU0b+BxgCE2O20ksCk5uDUOlVL/OaPRJvnrdYTE7l+v
+         lyMmCTIKkCdVwi5IMVXB/+Nac32pqEXrkINMqz88oAk/07686msx+m9hBpumRxASwz
+         sAaOOTatfSCjwPEqrx9z6E8FyPGS7itc6BEvT69gm9CgEyKV1lOa5iZH0SVjhAGxBR
+         QT+AGYi0uUpyOZkYNukudD6SYAWU2OUzTSwUZ87FL8yzgEciRVrzNHBPzcTSReYg+W
+         wIX2NVCa/RBmMAcQbvPZkZO4WNIOGqHAJ6k5fmHWyynPL95y8LJZK77LxkhBk8y26p
+         sOWd+CLheXNtw==
+Date:   Fri, 9 Sep 2022 10:04:44 +0200
+From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
+To:     Jianmin Lv <lvjianmin@loongson.cn>
+Cc:     Robin Murphy <robin.murphy@arm.com>, chenhuacai@loongson.cn,
+        guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
+        lenb@kernel.org, robert.moore@intel.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        loongarch@lists.linux.dev
+Subject: Re: [PATCH V3 1/2] ACPI / scan: Support multiple dma windows with
+ different offsets
+Message-ID: <YxrznBoBQycR8xCA@lpieralisi>
+References: <20220830030139.29899-1-lvjianmin@loongson.cn>
+ <20220830030139.29899-2-lvjianmin@loongson.cn>
+ <435e1283-9ff6-f089-6436-3c31a178fd60@arm.com>
+ <66baf6f8-0f18-e0a6-4ed4-e2f783497d2d@loongson.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hfdnRg0EqG2Zcp9=Kjq+P1NC45iudatisVL_G=QjOC+A@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <66baf6f8-0f18-e0a6-4ed4-e2f783497d2d@loongson.cn>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -62,123 +61,54 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 27, 2022 at 06:37:06PM +0200, Rafael J. Wysocki wrote:
-> On Mon, Jun 27, 2022 at 5:07 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Thu, Apr 28, 2022 at 10:30:38PM +0200, Rafael J. Wysocki wrote:
-> > > On Thu, Apr 28, 2022 at 10:15 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > > >
-> > > > On Thu, Apr 28, 2022 at 6:22 PM Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Thu, Apr 28, 2022 at 10:58:58AM -0500, Bjorn Helgaas wrote:
-> > > > > > On Thu, Apr 28, 2022 at 04:28:53PM +0200, Greg Kroah-Hartman wrote:
-> > > > > > > In acpi_get_pci_dev(), the debugging message for when a PCI bridge is
-> > > > > > > not found uses a pointer to a pci device whose reference has just been
-> > > > > > > dropped.  The chance that this really is a device that is now been
-> > > > > > > removed from the system is almost impossible to happen, but to be safe,
-> > > > > > > let's print out the debugging message based on the acpi root device
-> > > > > > > which we do have a valid reference to at the moment.
-> > > > > >
-> > > > > > This code was added by 497fb54f578e ("ACPI / PCI: Fix NULL pointer
-> > > > > > dereference in acpi_get_pci_dev() (rev. 2)").  Not sure if it's worth
-> > > > > > a Fixes: tag.
-> > > > >
-> > > > > Can't hurt, I'll add it for the v2 based on this review.
-> > > > >
-> > > > > >
-> > > > > > acpi_get_pci_dev() is used by only five callers, three of which are
-> > > > > > video/backlight related.  I'm always skeptical of one-off interfaces
-> > > > > > like this, but I don't know enough to propose any refactoring or other
-> > > > > > alternatives.
-> > > > > >
-> > > > > > I'll leave this for Rafael, but if I were applying I would silently
-> > > > > > touch up the subject to match convention:
-> > > > > >
-> > > > > >   PCI/ACPI: Do not reference PCI device after it has been released
-> > > > >
-> > > > > Much simpler, thanks.
-> > > > >
-> > > > > >
-> > > > > > > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > > > > > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > > > > > Cc: Len Brown <lenb@kernel.org>
-> > > > > > > Cc: linux-pci@vger.kernel.org
-> > > > > > > Cc: linux-acpi@vger.kernel.org
-> > > > > > > Reported-by: whitehat002 <hackyzh002@gmail.com>
-> > > > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > > > > ---
-> > > > > > >  drivers/acpi/pci_root.c | 3 ++-
-> > > > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > > > >
-> > > > > > > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> > > > > > > index 6f9e75d14808..ecda378dbc09 100644
-> > > > > > > --- a/drivers/acpi/pci_root.c
-> > > > > > > +++ b/drivers/acpi/pci_root.c
-> > > > > > > @@ -303,7 +303,8 @@ struct pci_dev *acpi_get_pci_dev(acpi_handle handle)
-> > > > > > >              * case pdev->subordinate will be NULL for the parent.
-> > > > > > >              */
-> > > > > > >             if (!pbus) {
-> > > > > > > -                   dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
-> > > > > > > +                   dev_dbg(&root->device->dev,
-> > > > > > > +                           "dev %d, function %d is not a PCI-to-PCI bridge\n", dev, fn);
-> > > > > >
-> > > > > > This should use "%02x.%d" to be consistent with the dev_set_name() in
-> > > > > > pci_setup_device().
-> > > > >
-> > > > > Ah, missed that, will change it and send out a new version tomorrow.
-> > > >
-> > > > I would make the change below (modulo the gmail-induced wthite space
-> > > > breakage), though.
-> > >
-> > > That said ->
-> > >
-> > > > ---
-> > > >  drivers/acpi/pci_root.c |    5 +++--
-> > > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > > >
-> > > > Index: linux-pm/drivers/acpi/pci_root.c
-> > > > ===================================================================
-> > > > --- linux-pm.orig/drivers/acpi/pci_root.c
-> > > > +++ linux-pm/drivers/acpi/pci_root.c
-> > > > @@ -295,8 +295,6 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
-> > > >              break;
-> > > >
-> > > >          pbus = pdev->subordinate;
-> > > > -        pci_dev_put(pdev);
-> > > > -
-> > > >          /*
-> > > >           * This function may be called for a non-PCI device that has a
-> > > >           * PCI parent (eg. a disk under a PCI SATA controller).  In that
-> > > > @@ -304,9 +302,12 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
-> > > >           */
-> > > >          if (!pbus) {
-> > > >              dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
-> > > > +            pci_dev_put(pdev);
-> > > >              pdev = NULL;
-> > > >              break;
-> > > >          }
-> > > > +
-> > > > +        pci_dev_put(pdev);
-> > >
-> > > -> we are going to use pbus after this and it is pdev->subordinate
-> > > which cannot survive without pdev AFAICS.
-> > >
-> > > Are we not concerned about this case?
-> >
-> > Good point.
-> >
-> > whitehat002, any ideas?  You found this issue but it really looks like
-> > it is not anything that can ever be hit, so how far do you want to go to
-> > unwind it?
+On Tue, Sep 06, 2022 at 08:40:48PM +0800, Jianmin Lv wrote:
 > 
-> I have an idea, sorry for the delay here.
 > 
-> I should be ready to post something tomorrow.
+> On 2022/9/5 下午8:20, Robin Murphy wrote:
+> > On 2022-08-30 04:01, Jianmin Lv wrote:
+> > > For DT, of_dma_get_range returns bus_dma_region typed dma regions,
+> > > which makes multiple dma windows with different offset available
+> > > for translation between dma address and cpu address.
+> > > 
+> > > But for ACPI, acpi_dma_get_range doesn't return similar dma regions,
+> > > causing no path for setting dev->dma_range_map conveniently. So the
+> > > patch changes acpi_dma_get_range and returns bus_dma_region typed
+> > > dma regions according to of_dma_get_range.
+> > > 
+> > > After changing acpi_dma_get_range, acpi_arch_dma_setup is changed for
+> > > ARM64, where original dma_addr and size are removed as these
+> > > arguments are now redundant, and pass 0 and U64_MAX for dma_base
+> > > and size of arch_setup_dma_ops, so this is a simplification consistent
+> > > with what other ACPI architectures also pass to iommu_setup_dma_ops().
+> > 
+> > Other than a micro-nit that acpi_dma_get_range() could probably use
+> > resource_size(),
+> > 
+> 
+> Ok, thanks, I'll use resource_size() in acpi_dma_get_range().
 
-Was this ever posted?
+Are you reposting this shortly ? We are almost at -rc5, it would
+be good if we can proceed promptly.
 
-thanks,
+Thanks,
+Lorenzo
 
-greg k-h
+> > Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+> > 
+> > It took me longer than I care to admit to figure out where the implicit
+> > declaration of struct bus_dma_region in the scope of acpi.h and
+> > acpi_bus.h comes from, but in the end I guess it's sufficiently
+> > well-defined by the C spec to be reliable.
+> > 
+> > Thanks for getting this done!
+> > 
+> 
+> It's a pleasure!
+> 
+> 
+> > Robin.
+> > 
+> 
+> [...]
+> 
+> 
