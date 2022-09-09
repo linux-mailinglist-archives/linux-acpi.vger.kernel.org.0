@@ -2,128 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04AF45B33B7
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 11:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20B6E5B33FF
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 11:31:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230494AbiIIJZj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Sep 2022 05:25:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44668 "EHLO
+        id S231126AbiIIJaj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Sep 2022 05:30:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbiIIJZS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 05:25:18 -0400
+        with ESMTP id S231936AbiIIJaP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 05:30:15 -0400
 Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EA389136CC7;
-        Fri,  9 Sep 2022 02:23:51 -0700 (PDT)
-Received: from [10.20.42.105] (unknown [10.20.42.105])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxBOL7BRtjBU0VAA--.19960S3;
-        Fri, 09 Sep 2022 17:23:08 +0800 (CST)
-Subject: Re: [PATCH V3 1/2] ACPI / scan: Support multiple dma windows with
- different offsets
-To:     Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc:     Robin Murphy <robin.murphy@arm.com>, chenhuacai@loongson.cn,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7059813CB1B;
+        Fri,  9 Sep 2022 02:28:25 -0700 (PDT)
+Received: from loongson-pc.loongson.cn (unknown [10.20.42.105])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxBOIrBxtjH04VAA--.19971S2;
+        Fri, 09 Sep 2022 17:28:11 +0800 (CST)
+From:   Jianmin Lv <lvjianmin@loongson.cn>
+To:     lpieralisi@kernel.org, robin.murphy@arm.com, chenhuacai@loongson.cn
+Cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
         lenb@kernel.org, robert.moore@intel.com,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         loongarch@lists.linux.dev
-References: <20220830030139.29899-1-lvjianmin@loongson.cn>
- <20220830030139.29899-2-lvjianmin@loongson.cn>
- <435e1283-9ff6-f089-6436-3c31a178fd60@arm.com>
- <66baf6f8-0f18-e0a6-4ed4-e2f783497d2d@loongson.cn>
- <YxrznBoBQycR8xCA@lpieralisi>
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-Message-ID: <53c47160-ccee-a565-34cf-a7e5143744ed@loongson.cn>
-Date:   Fri, 9 Sep 2022 17:23:07 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Subject: [PATCH V4 0/2] DMA: update acpi_dma_get_range to return dma map regions 
+Date:   Fri,  9 Sep 2022 17:28:09 +0800
+Message-Id: <20220909092811.22627-1-lvjianmin@loongson.cn>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <YxrznBoBQycR8xCA@lpieralisi>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxBOL7BRtjBU0VAA--.19960S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr1UAr45CF4kCw43ZrW3GFg_yoW8CryUpa
-        48G3W3Gr4Dtrs3Cr4vqw15Zry0vry3Cr4fXrW8Aw1kArn0gr1Svr48J3sYkFWq9a47Gw18
-        ZFs0qas3ZF15AwUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUBI1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+X-CM-TRANSID: AQAAf8DxBOIrBxtjH04VAA--.19971S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF4UKF4xtr1ftF1xXF4xZwb_yoW8Jw4DpF
+        9a9r43Gr1UKrZxJry3Aw1rZw15Xw1fZry7Ga9rK34kJF4jvr17Jry8Z3WxCa4UAa47Gr40
+        qF98Ja45WF1UAwUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUU921xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
         w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
         IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
         z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-        6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-        1lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IE
-        e2xFo4CEbIxvr21lc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
-        0_XrWUJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-        xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-        IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-        6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-        CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbXdbUUUUUU==
+        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r10
+        6r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxE
+        wVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26ryrJr1UJwCFx2IqxVCFs4
+        IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
+        MI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJV
+        WUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
+        6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
+        BIdaVFxhVjvjDU0xZFpf9x0JUZa9-UUUUU=
 X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+The patch series changed acpi_dma_get_range to return dma regions
+as of_dma_get_range, so that dev->dma_range_map can be initialized
+conveniently.
 
+And acpi_arch_dma_setup for ARM64 is changed wih removing dma_base
+and size from it's parameters.
 
-On 2022/9/9 下午4:04, Lorenzo Pieralisi wrote:
-> On Tue, Sep 06, 2022 at 08:40:48PM +0800, Jianmin Lv wrote:
->>
->>
->> On 2022/9/5 下午8:20, Robin Murphy wrote:
->>> On 2022-08-30 04:01, Jianmin Lv wrote:
->>>> For DT, of_dma_get_range returns bus_dma_region typed dma regions,
->>>> which makes multiple dma windows with different offset available
->>>> for translation between dma address and cpu address.
->>>>
->>>> But for ACPI, acpi_dma_get_range doesn't return similar dma regions,
->>>> causing no path for setting dev->dma_range_map conveniently. So the
->>>> patch changes acpi_dma_get_range and returns bus_dma_region typed
->>>> dma regions according to of_dma_get_range.
->>>>
->>>> After changing acpi_dma_get_range, acpi_arch_dma_setup is changed for
->>>> ARM64, where original dma_addr and size are removed as these
->>>> arguments are now redundant, and pass 0 and U64_MAX for dma_base
->>>> and size of arch_setup_dma_ops, so this is a simplification consistent
->>>> with what other ACPI architectures also pass to iommu_setup_dma_ops().
->>>
->>> Other than a micro-nit that acpi_dma_get_range() could probably use
->>> resource_size(),
->>>
->>
->> Ok, thanks, I'll use resource_size() in acpi_dma_get_range().
-> 
-> Are you reposting this shortly ? We are almost at -rc5, it would
-> be good if we can proceed promptly.
-> 
-> Thanks,
-> Lorenzo
-> 
-Ok, I'll send V4 today.
+Remove ARCH_HAS_PHYS_TO_DMA for LoongArch and use generic
+phys_to_dma/dma_to_phys in include/linux/dma-direct.h.
 
-Thanks,
-Jianmin
+V1 -> V2
+- Removed dma_base and size from acpi_arch_dma_setup' parameters
+- Add patch to remove ARCH_HAS_PHYS_TO_DMA for LoongArch
 
->>> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
->>>
->>> It took me longer than I care to admit to figure out where the implicit
->>> declaration of struct bus_dma_region in the scope of acpi.h and
->>> acpi_bus.h comes from, but in the end I guess it's sufficiently
->>> well-defined by the C spec to be reliable.
->>>
->>> Thanks for getting this done!
->>>
->>
->> It's a pleasure!
->>
->>
->>> Robin.
->>>
->>
->> [...]
->>
->>
+V2 -> V3
+- Add kerneldoc for acpi_dma_get_range changing
+- Remove redundant code in acpi_arch_dma_setup, and check map
+
+V3 -> V4
+- Change title to "Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA"
+- Use resource_size() to get size 
+
+Jianmin Lv (2):
+  ACPI / scan: Support multiple dma windows with different offsets
+  LoongArch: Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA
+
+ arch/loongarch/Kconfig        |  1 -
+ arch/loongarch/kernel/dma.c   | 52 ++++++++++++++--------------------
+ arch/loongarch/kernel/setup.c |  2 +-
+ drivers/acpi/arm64/dma.c      | 29 +++++++++++--------
+ drivers/acpi/scan.c           | 53 +++++++++++++++--------------------
+ include/acpi/acpi_bus.h       |  3 +-
+ include/linux/acpi.h          | 12 ++++----
+ 7 files changed, 71 insertions(+), 81 deletions(-)
+
+-- 
+2.31.1
 
