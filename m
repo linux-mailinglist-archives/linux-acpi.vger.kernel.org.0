@@ -2,42 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F6F85B3471
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 11:50:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B03495B33CA
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 11:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231769AbiIIJtz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Sep 2022 05:49:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
+        id S231597AbiIIJYt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Sep 2022 05:24:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230489AbiIIJtt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 05:49:49 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9654EC74;
-        Fri,  9 Sep 2022 02:49:46 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F22DF15DB;
-        Fri,  9 Sep 2022 02:49:52 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A785D3F73D;
-        Fri,  9 Sep 2022 02:49:45 -0700 (PDT)
-Date:   Fri, 9 Sep 2022 10:49:43 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Rafael Mendonca <rafaelmendsr@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: PCC: Fix memory leak in address space setup
-Message-ID: <20220909094943.7nasdznnbwmg3oeb@bogus>
-References: <20220909021348.472674-1-rafaelmendsr@gmail.com>
- <YxqmJLCQrK39Mx3O@macondo>
+        with ESMTP id S231555AbiIIJYO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 05:24:14 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3EC51177AC;
+        Fri,  9 Sep 2022 02:23:09 -0700 (PDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MP9Qs26TTzmV5k;
+        Fri,  9 Sep 2022 17:18:45 +0800 (CST)
+Received: from dggpemm100009.china.huawei.com (7.185.36.113) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 9 Sep 2022 17:22:23 +0800
+Received: from huawei.com (10.175.113.32) by dggpemm100009.china.huawei.com
+ (7.185.36.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 9 Sep
+ 2022 17:22:22 +0800
+From:   Liu Shixin <liushixin2@huawei.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Liu Shixin <liushixin2@huawei.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH] ACPI: HMAT: remove unused dev_fmt() and redundant prefixing 'HMAT'
+Date:   Fri, 9 Sep 2022 17:56:24 +0800
+Message-ID: <20220909095624.3719051-1-liushixin2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YxqmJLCQrK39Mx3O@macondo>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.32]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm100009.china.huawei.com (7.185.36.113)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,46 +51,121 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 08, 2022 at 11:34:12PM -0300, Rafael Mendonca wrote:
-> On Thu, Sep 08, 2022 at 11:13:47PM -0300, Rafael Mendonca wrote:
-> > The allocated memory for the pcc_data struct doesn't get freed under an
-> > error path in pcc_mbox_request_channel() or acpi_os_ioremap().
-> > 
-> > Fixes: 77e2a04745ff8 ("ACPI: PCC: Implement OperationRegion handler for the PCC Type 3 subtype")
-> > Signed-off-by: Rafael Mendonca <rafaelmendsr@gmail.com>
-> > ---
-> >  drivers/acpi/acpi_pcc.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
-> > index a12b55d81209..fe5ab0fdc3bf 100644
-> > --- a/drivers/acpi/acpi_pcc.c
-> > +++ b/drivers/acpi/acpi_pcc.c
-> > @@ -63,6 +63,7 @@ acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
-> >  	if (IS_ERR(data->pcc_chan)) {
-> >  		pr_err("Failed to find PCC channel for subspace %d\n",
-> >  		       ctx->subspace_id);
-> > +		kfree(data);
-> >  		return AE_NOT_FOUND;
-> >  	}
-> >  
-> > @@ -72,6 +73,7 @@ acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
-> >  	if (!data->pcc_comm_addr) {
-> >  		pr_err("Failed to ioremap PCC comm region mem for %d\n",
-> >  		       ctx->subspace_id);
-> 
-> I was wondering if pcc_mbox_free_channel() should be called here as well
-> in case of acpi_os_ioremap() failure.
-> 
+Remove unused macro dev_pmt() and redundant prefixing 'HMAT' from pr_*() calls.
 
-Yes please. There are not modules and shouldn't matter much but it is good
-to have it for correctness.
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+---
+ drivers/acpi/numa/hmat.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-Thanks for finding and fixing this. Also please add the fixes tag in next
-version.
-
-Fixes: 77e2a04745ff ("ACPI: PCC: Implement OperationRegion handler for the PCC Type 3 subtype")
-
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index c3d783aca196..23f49a2f4d14 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -9,7 +9,6 @@
+  */
+ 
+ #define pr_fmt(fmt) "acpi/hmat: " fmt
+-#define dev_fmt(fmt) "acpi/hmat: " fmt
+ 
+ #include <linux/acpi.h>
+ #include <linux/bitops.h>
+@@ -302,7 +301,7 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+ 	u8 type, mem_hier;
+ 
+ 	if (hmat_loc->header.length < sizeof(*hmat_loc)) {
+-		pr_notice("HMAT: Unexpected locality header length: %u\n",
++		pr_notice("Unexpected locality header length: %u\n",
+ 			 hmat_loc->header.length);
+ 		return -EINVAL;
+ 	}
+@@ -314,12 +313,12 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+ 	total_size = sizeof(*hmat_loc) + sizeof(*entries) * ipds * tpds +
+ 		     sizeof(*inits) * ipds + sizeof(*targs) * tpds;
+ 	if (hmat_loc->header.length < total_size) {
+-		pr_notice("HMAT: Unexpected locality header length:%u, minimum required:%u\n",
++		pr_notice("Unexpected locality header length:%u, minimum required:%u\n",
+ 			 hmat_loc->header.length, total_size);
+ 		return -EINVAL;
+ 	}
+ 
+-	pr_info("HMAT: Locality: Flags:%02x Type:%s Initiator Domains:%u Target Domains:%u Base:%lld\n",
++	pr_info("Locality: Flags:%02x Type:%s Initiator Domains:%u Target Domains:%u Base:%lld\n",
+ 		hmat_loc->flags, hmat_data_type(type), ipds, tpds,
+ 		hmat_loc->entry_base_unit);
+ 
+@@ -363,13 +362,13 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+ 	u32 attrs;
+ 
+ 	if (cache->header.length < sizeof(*cache)) {
+-		pr_notice("HMAT: Unexpected cache header length: %u\n",
++		pr_notice("Unexpected cache header length: %u\n",
+ 			 cache->header.length);
+ 		return -EINVAL;
+ 	}
+ 
+ 	attrs = cache->cache_attributes;
+-	pr_info("HMAT: Cache: Domain:%u Size:%llu Attrs:%08x SMBIOS Handles:%d\n",
++	pr_info("Cache: Domain:%u Size:%llu Attrs:%08x SMBIOS Handles:%d\n",
+ 		cache->memory_PD, cache->cache_size, attrs,
+ 		cache->number_of_SMBIOShandles);
+ 
+@@ -424,24 +423,24 @@ static int __init hmat_parse_proximity_domain(union acpi_subtable_headers *heade
+ 	struct memory_target *target = NULL;
+ 
+ 	if (p->header.length != sizeof(*p)) {
+-		pr_notice("HMAT: Unexpected address range header length: %u\n",
++		pr_notice("Unexpected address range header length: %u\n",
+ 			 p->header.length);
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (hmat_revision == 1)
+-		pr_info("HMAT: Memory (%#llx length %#llx) Flags:%04x Processor Domain:%u Memory Domain:%u\n",
++		pr_info("Memory (%#llx length %#llx) Flags:%04x Processor Domain:%u Memory Domain:%u\n",
+ 			p->reserved3, p->reserved4, p->flags, p->processor_PD,
+ 			p->memory_PD);
+ 	else
+-		pr_info("HMAT: Memory Flags:%04x Processor Domain:%u Memory Domain:%u\n",
++		pr_info("Memory Flags:%04x Processor Domain:%u Memory Domain:%u\n",
+ 			p->flags, p->processor_PD, p->memory_PD);
+ 
+ 	if ((hmat_revision == 1 && p->flags & ACPI_HMAT_MEMORY_PD_VALID) ||
+ 	    hmat_revision > 1) {
+ 		target = find_mem_target(p->memory_PD);
+ 		if (!target) {
+-			pr_debug("HMAT: Memory Domain missing from SRAT\n");
++			pr_debug("Memory Domain missing from SRAT\n");
+ 			return -EINVAL;
+ 		}
+ 	}
+@@ -449,7 +448,7 @@ static int __init hmat_parse_proximity_domain(union acpi_subtable_headers *heade
+ 		int p_node = pxm_to_node(p->processor_PD);
+ 
+ 		if (p_node == NUMA_NO_NODE) {
+-			pr_debug("HMAT: Invalid Processor Domain\n");
++			pr_debug("Invalid Processor Domain\n");
+ 			return -EINVAL;
+ 		}
+ 		target->processor_pxm = p->processor_PD;
+@@ -840,7 +839,7 @@ static __init int hmat_init(void)
+ 	case 2:
+ 		break;
+ 	default:
+-		pr_notice("Ignoring HMAT: Unknown revision:%d\n", hmat_revision);
++		pr_notice("Ignoring: Unknown revision:%d\n", hmat_revision);
+ 		goto out_put;
+ 	}
+ 
+@@ -848,7 +847,7 @@ static __init int hmat_init(void)
+ 		if (acpi_table_parse_entries(ACPI_SIG_HMAT,
+ 					     sizeof(struct acpi_table_hmat), i,
+ 					     hmat_parse_subtable, 0) < 0) {
+-			pr_notice("Ignoring HMAT: Invalid table");
++			pr_notice("Ignoring: Invalid table");
+ 			goto out_put;
+ 		}
+ 	}
 -- 
-Regards,
-Sudeep
+2.25.1
+
