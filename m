@@ -2,131 +2,291 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E03E5B401D
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 21:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6AB55B4156
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Sep 2022 23:18:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231862AbiIITrc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Sep 2022 15:47:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56514 "EHLO
+        id S230293AbiIIVSx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Sep 2022 17:18:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231865AbiIITrP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 15:47:15 -0400
-Received: from vorpal.se (unknown [IPv6:2a01:7e00::f03c:91ff:fe73:398e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42FC2102A;
-        Fri,  9 Sep 2022 12:44:25 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id 645D4142D4;
-        Fri,  9 Sep 2022 19:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1662752648; bh=GP+MSYE65OoUV9voAxXbxbEJEZlFVVgEIaFmMVF8Yak=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=HXQCdkESwt/vmeF1dEnHdwWcklLRJ4LcpzzyxWIingsiqCplRVu/9Fhqg7t6nnLxR
-         8dvWjBvZv03/CejPVKaVMXSBIlgZrY6xuUljYEPP2tdyDsdVbH0F9xiviG124DpzVT
-         UUcM2RMjFwk0kDhOEJ8IVQCq8PfjtBFey2jJ2gIVItSnHmCSS54xIsjmfLsRlN5IDt
-         5OuXXNSyIFQ8T1Cx2KU2mtbnBEnRWuGglkPbYmhcJbjtu5Fvq4H0a4NetgdSVDM7zL
-         lfqYZYezzuINirzaLO/CYUwwqMGNtssvZ7N4wHozEYsR4EHd2A67wwG/D3eLpjRBpM
-         fl/FRaCNOk0iw==
-Message-ID: <7b55c9ed-e25b-fb8d-ad62-426ffbeeef6d@vorpal.se>
-Date:   Fri, 9 Sep 2022 21:44:07 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH v2 1/2] drivers/platform: toshiba_acpi: Call
- HCI_PANEL_POWER_ON on resume on some models
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        with ESMTP id S229949AbiIIVSw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Sep 2022 17:18:52 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F0D129C66;
+        Fri,  9 Sep 2022 14:18:50 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
+ id c0f8f35c6b42e9b1; Fri, 9 Sep 2022 23:18:48 +0200
+Received: from kreacher.localnet (89-77-51-84.dynamic.chello.pl [89.77.51.84])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id C10E166D48A;
+        Fri,  9 Sep 2022 23:18:47 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Mark Gross <mgross@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, Andy Shevchenko <andy@infradead.org>,
-        platform-driver-x86@vger.kernel.org
-References: <20220909153239.34606-1-hdegoede@redhat.com>
- <ee77aadf-8adc-c812-55ae-c534fb523de5@vorpal.se>
- <cc8ae460-9ebd-6c47-a938-eb515ce42104@redhat.com>
- <de8a1f37-414d-3a06-0b56-54b0daa4a250@vorpal.se>
- <0a3cc313-2f7d-ed99-392f-92cad2838a1d@redhat.com>
-Content-Language: en-US
-From:   Arvid Norlander <lkml@vorpal.se>
-In-Reply-To: <0a3cc313-2f7d-ed99-392f-92cad2838a1d@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,NICE_REPLY_A,RCVD_IN_SBL_CSS,RCVD_IN_XBL,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR,T_SPF_TEMPERROR autolearn=no
-        autolearn_force=no version=3.4.6
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        whitehat002 <hackyzh002@gmail.com>
+Subject: Re: [PATCH] PCI/ACPI: do not reference a pci device after it has been released
+Date:   Fri, 09 Sep 2022 23:18:46 +0200
+Message-ID: <5870387.lOV4Wx5bFT@kreacher>
+In-Reply-To: <YxrufXoPZnKCxqRP@kroah.com>
+References: <20220428142854.1065953-1-gregkh@linuxfoundation.org> <CAJZ5v0hfdnRg0EqG2Zcp9=Kjq+P1NC45iudatisVL_G=QjOC+A@mail.gmail.com> <YxrufXoPZnKCxqRP@kroah.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 89.77.51.84
+X-CLIENT-HOSTNAME: 89-77-51-84.dynamic.chello.pl
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfedthedgudeifecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepkeelrdejjedrhedurdekgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrjeejrdehuddrkeegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeelpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
+ vghlrdhorhhgpdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhptghisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgrtghkhiiihhdttddvsehgmhgrihhlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Friday, September 9, 2022 9:42:53 AM CEST Greg Kroah-Hartman wrote:
+> On Mon, Jun 27, 2022 at 06:37:06PM +0200, Rafael J. Wysocki wrote:
+> > On Mon, Jun 27, 2022 at 5:07 PM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Thu, Apr 28, 2022 at 10:30:38PM +0200, Rafael J. Wysocki wrote:
+> > > > On Thu, Apr 28, 2022 at 10:15 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > > > >
+> > > > > On Thu, Apr 28, 2022 at 6:22 PM Greg Kroah-Hartman
+> > > > > <gregkh@linuxfoundation.org> wrote:
+> > > > > >
+> > > > > > On Thu, Apr 28, 2022 at 10:58:58AM -0500, Bjorn Helgaas wrote:
+> > > > > > > On Thu, Apr 28, 2022 at 04:28:53PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > > > In acpi_get_pci_dev(), the debugging message for when a PCI bridge is
+> > > > > > > > not found uses a pointer to a pci device whose reference has just been
+> > > > > > > > dropped.  The chance that this really is a device that is now been
+> > > > > > > > removed from the system is almost impossible to happen, but to be safe,
+> > > > > > > > let's print out the debugging message based on the acpi root device
+> > > > > > > > which we do have a valid reference to at the moment.
+> > > > > > >
+> > > > > > > This code was added by 497fb54f578e ("ACPI / PCI: Fix NULL pointer
+> > > > > > > dereference in acpi_get_pci_dev() (rev. 2)").  Not sure if it's worth
+> > > > > > > a Fixes: tag.
+> > > > > >
+> > > > > > Can't hurt, I'll add it for the v2 based on this review.
+> > > > > >
+> > > > > > >
+> > > > > > > acpi_get_pci_dev() is used by only five callers, three of which are
+> > > > > > > video/backlight related.  I'm always skeptical of one-off interfaces
+> > > > > > > like this, but I don't know enough to propose any refactoring or other
+> > > > > > > alternatives.
+> > > > > > >
+> > > > > > > I'll leave this for Rafael, but if I were applying I would silently
+> > > > > > > touch up the subject to match convention:
+> > > > > > >
+> > > > > > >   PCI/ACPI: Do not reference PCI device after it has been released
+> > > > > >
+> > > > > > Much simpler, thanks.
+> > > > > >
+> > > > > > >
+> > > > > > > > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > > > > > > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > > > > > > > Cc: Len Brown <lenb@kernel.org>
+> > > > > > > > Cc: linux-pci@vger.kernel.org
+> > > > > > > > Cc: linux-acpi@vger.kernel.org
+> > > > > > > > Reported-by: whitehat002 <hackyzh002@gmail.com>
+> > > > > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > > > > > ---
+> > > > > > > >  drivers/acpi/pci_root.c | 3 ++-
+> > > > > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > > > > >
+> > > > > > > > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> > > > > > > > index 6f9e75d14808..ecda378dbc09 100644
+> > > > > > > > --- a/drivers/acpi/pci_root.c
+> > > > > > > > +++ b/drivers/acpi/pci_root.c
+> > > > > > > > @@ -303,7 +303,8 @@ struct pci_dev *acpi_get_pci_dev(acpi_handle handle)
+> > > > > > > >              * case pdev->subordinate will be NULL for the parent.
+> > > > > > > >              */
+> > > > > > > >             if (!pbus) {
+> > > > > > > > -                   dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
+> > > > > > > > +                   dev_dbg(&root->device->dev,
+> > > > > > > > +                           "dev %d, function %d is not a PCI-to-PCI bridge\n", dev, fn);
+> > > > > > >
+> > > > > > > This should use "%02x.%d" to be consistent with the dev_set_name() in
+> > > > > > > pci_setup_device().
+> > > > > >
+> > > > > > Ah, missed that, will change it and send out a new version tomorrow.
+> > > > >
+> > > > > I would make the change below (modulo the gmail-induced wthite space
+> > > > > breakage), though.
+> > > >
+> > > > That said ->
+> > > >
+> > > > > ---
+> > > > >  drivers/acpi/pci_root.c |    5 +++--
+> > > > >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > > > >
+> > > > > Index: linux-pm/drivers/acpi/pci_root.c
+> > > > > ===================================================================
+> > > > > --- linux-pm.orig/drivers/acpi/pci_root.c
+> > > > > +++ linux-pm/drivers/acpi/pci_root.c
+> > > > > @@ -295,8 +295,6 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
+> > > > >              break;
+> > > > >
+> > > > >          pbus = pdev->subordinate;
+> > > > > -        pci_dev_put(pdev);
+> > > > > -
+> > > > >          /*
+> > > > >           * This function may be called for a non-PCI device that has a
+> > > > >           * PCI parent (eg. a disk under a PCI SATA controller).  In that
+> > > > > @@ -304,9 +302,12 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
+> > > > >           */
+> > > > >          if (!pbus) {
+> > > > >              dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
+> > > > > +            pci_dev_put(pdev);
+> > > > >              pdev = NULL;
+> > > > >              break;
+> > > > >          }
+> > > > > +
+> > > > > +        pci_dev_put(pdev);
+> > > >
+> > > > -> we are going to use pbus after this and it is pdev->subordinate
+> > > > which cannot survive without pdev AFAICS.
+> > > >
+> > > > Are we not concerned about this case?
+> > >
+> > > Good point.
+> > >
+> > > whitehat002, any ideas?  You found this issue but it really looks like
+> > > it is not anything that can ever be hit, so how far do you want to go to
+> > > unwind it?
+> > 
+> > I have an idea, sorry for the delay here.
+> > 
+> > I should be ready to post something tomorrow.
+> 
+> Was this ever posted?
 
-On 2022-09-09 21:20, Hans de Goede wrote:
-> Hi,
-> 
-> On 9/9/22 20:32, Arvid Norlander wrote:
->> Hi,
->>
->> On 2022-09-09 19:42, Hans de Goede wrote:
->>> Hi,
->>>
->>> On 9/9/22 19:29, Arvid Norlander wrote:
->>>> Hi,
->>>>
->>>> Given the changes, do you want me to test this again? If so, on what branch?
->>>
->>> I have just pushed this new version + all your pending toshiba_acpi patches
->>> to my review-hans branch:
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans\
->>>
->>> If you can give this branch a quick test and let me know if everything works
->>> as expected that would be great.
->>
->> My changes (battery charge threshold, fan HWMON support, ECO LED work as
->> expected.
->>
->> Display does come on after resume. Unfortunately the computer also
->> completely locks up (I can't even switch from X to a VT). SSH is dead.
->> When I suspend with a VT active the cursor is no longer blinking on resume.
->> So something else is severly broken in this version and I cannot fully test
->> this.
->>
->> I notice your tree is based on rc1. I was previously testing with 5.19 as
->> well as rc2 and newer. Is it possible this is a bug from mainline?
-> 
-> Ah yes, sorry about that. There is a scsi bug which causes any sata
-> disks to become inaccessible after suspend/resume in rc1.
-> 
-> If you cherry pick this commit on top of my tree the problem should be gone:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=785538bfdd682c8e962341d585f9b88262a0475e
+No, it wasn't.  Sorry for the glacial pace here.
 
-This fixed it. Resume works properly, as does backlight controls after resume.
+So the idea is based on the observation that the PCI device returned by the current
+code in acpi_get_pci_dev() needs to be registered, so if it corresponds to an ACPI
+device object, the struct acpi_device representing it must be registered too and,
+moreover, it should be the ACPI companion of that PCI device.  Thus it should be
+sufficient to look for it in the ACPI device object's list of physical nodes
+corresponding to it.  Hence, the patch below.
 
-Tested-by: Arvid Norlander <lkml@vorpal.se>
-(For the relevant toshiba_acpi patches)
+I actually can't test it right now (or even compile it for that matter), but
+I'll put it in order tomorrow.
 
-However I notice that the laptop is hung for about a second after resume. I
-had not noticed this before. But I went back and checked on 5.19 and it
-happens there too, so presumably I just ended up being hyper-aware about
-resume issues after this...
+---
+ drivers/acpi/pci_root.c |   82 +++++++++---------------------------------------
+ 1 file changed, 16 insertions(+), 66 deletions(-)
 
-> 
->> Or is
->> it something introduced by your tree? I'm wondering it it would be easier
->> to first rebase your tree on the latest RC rather than trying to bisect it
->> as is.
->>
->> Or the easiest test is perhaps: Does suspend and resume with this tree work
->> on your computer? I remember hearing that there were SATA issues in early
->> 6.0-rcs (don't remember the details), the Toshiba uses mSATA.
-> 
-> Right, see above.
-> 
-> Regards,
-> 
-> Hans
-> 
+Index: linux-pm/drivers/acpi/pci_root.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/pci_root.c
++++ linux-pm/drivers/acpi/pci_root.c
+@@ -312,76 +312,26 @@ struct acpi_handle_node {
+  */
+ struct pci_dev *acpi_get_pci_dev(acpi_handle handle)
+ {
+-	int dev, fn;
+-	unsigned long long adr;
+-	acpi_status status;
+-	acpi_handle phandle;
+-	struct pci_bus *pbus;
+-	struct pci_dev *pdev = NULL;
+-	struct acpi_handle_node *node, *tmp;
+-	struct acpi_pci_root *root;
+-	LIST_HEAD(device_list);
+-
+-	/*
+-	 * Walk up the ACPI CA namespace until we reach a PCI root bridge.
+-	 */
+-	phandle = handle;
+-	while (!acpi_is_root_bridge(phandle)) {
+-		node = kzalloc(sizeof(struct acpi_handle_node), GFP_KERNEL);
+-		if (!node)
+-			goto out;
+-
+-		INIT_LIST_HEAD(&node->node);
+-		node->handle = phandle;
+-		list_add(&node->node, &device_list);
+-
+-		status = acpi_get_parent(phandle, &phandle);
+-		if (ACPI_FAILURE(status))
+-			goto out;
+-	}
+-
+-	root = acpi_pci_find_root(phandle);
+-	if (!root)
+-		goto out;
+-
+-	pbus = root->bus;
+-
+-	/*
+-	 * Now, walk back down the PCI device tree until we return to our
+-	 * original handle. Assumes that everything between the PCI root
+-	 * bridge and the device we're looking for must be a P2P bridge.
+-	 */
+-	list_for_each_entry(node, &device_list, node) {
+-		acpi_handle hnd = node->handle;
+-		status = acpi_evaluate_integer(hnd, "_ADR", NULL, &adr);
+-		if (ACPI_FAILURE(status))
+-			goto out;
+-		dev = (adr >> 16) & 0xffff;
+-		fn  = adr & 0xffff;
+-
+-		pdev = pci_get_slot(pbus, PCI_DEVFN(dev, fn));
+-		if (!pdev || hnd == handle)
+-			break;
+-
+-		pbus = pdev->subordinate;
+-		pci_dev_put(pdev);
+-
+-		/*
+-		 * This function may be called for a non-PCI device that has a
+-		 * PCI parent (eg. a disk under a PCI SATA controller).  In that
+-		 * case pdev->subordinate will be NULL for the parent.
+-		 */
+-		if (!pbus) {
+-			dev_dbg(&pdev->dev, "Not a PCI-to-PCI bridge\n");
+-			pdev = NULL;
++	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
++	struct acpi_device_physical_node *pn;
++	struct device *pci_dev = NULL;
++
++	if (!adev)
++		return NULL;
++
++	mutex_lock(&adev->physical_node_lock);
++
++	list_for_each_entry(pn, &acpi_dev->physical_node_list, node) {
++		if (dev_is_pci(pn->dev)) {
++			pci_dev = to_pci_dev(pn->dev);
+ 			break;
+ 		}
++			
+ 	}
+-out:
+-	list_for_each_entry_safe(node, tmp, &device_list, node)
+-		kfree(node);
+ 
+-	return pdev;
++	mutex_unlock(&adev->physical_node_lock);
++
++	return pci_dev;
+ }
+ EXPORT_SYMBOL_GPL(acpi_get_pci_dev);
+ 
 
-Best regards,
-Arvid Norlander
+
+
