@@ -2,56 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 183395B4764
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Sep 2022 17:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D2C35B476E
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Sep 2022 18:11:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbiIJPvW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 10 Sep 2022 11:51:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
+        id S229586AbiIJQLC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 10 Sep 2022 12:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbiIJPvW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Sep 2022 11:51:22 -0400
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F15F4456F;
-        Sat, 10 Sep 2022 08:51:21 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-3450990b0aeso51479037b3.12;
-        Sat, 10 Sep 2022 08:51:21 -0700 (PDT)
+        with ESMTP id S229552AbiIJQLB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Sep 2022 12:11:01 -0400
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520ED638E;
+        Sat, 10 Sep 2022 09:10:59 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id a67so6872630ybb.3;
+        Sat, 10 Sep 2022 09:10:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=4JzkWMW1R9Eqdlm4Wh2PefNJgbAts1pyGK7y7lGC84U=;
-        b=icbGbe4lYMyQyBnGa7bBh7ijNhmDweHujsOmWEh1s8vPbnX63oxRmGBcEMvhaE1gSi
-         VG0qaQwbpSOQLhXpql34WQQKp24AcWpQbSsHscd7faVJSYJJNkUD+BOgv9NREH3yoXor
-         9ETEY8L7QQ+/Nn9H3LduPc6kA22d2D2/cSfUlPQ+dRQT1YDMOeO6Q2kvs8+kyTV9cQF9
-         QQDdCa6txljIpL8+eBCwAxLeXdKrX74gwmpLiuIMu7KvNCCcLgpQOrPwvGnx4Xl6isud
-         AuNnURLcp3ioyvHCbXUT9JfJkvjj7bCwADQE3pHXWmClwjld6K9CYmDDO4t6LEW/kAG1
-         YEWg==
-X-Gm-Message-State: ACgBeo3jkiTr91juitPvGCjnFwOu4j3RmkZ0bGzV/Uf2t9a0XqbSLSzG
-        j7MpLqpsghQRDxHuCiqz8uS7nAvU1sor3FlOg1g=
-X-Google-Smtp-Source: AA6agR7vNfpKlHg1wDlGylGX1vEbU2ecUiyXe3OAAbcAErrVomfcsiqR741iFQzrIo/8Fq/sZ8d2u9hD6df7v5y885A=
-X-Received: by 2002:a81:48c6:0:b0:345:4835:f62e with SMTP id
- v189-20020a8148c6000000b003454835f62emr16388588ywa.149.1662825080637; Sat, 10
- Sep 2022 08:51:20 -0700 (PDT)
+        bh=zHbX9+Jwy8L2oKNcGKzxX15MKHHqOVzM3+4CA7qaqzc=;
+        b=R0gORb/5LgTQkP7TbQ4oxkL1bFf3QvBHuviqBTyDndAJ2D74/P9miMdUm3leaSVS2W
+         EGP5E8zrxfTYT9MVT4ha1w9NOxTke7uHOqyMd0Zpw6H0Et2wJI0/CBF8HcRM/1NbpjFJ
+         qPiTzq/ienvaJ3t8hqI7J5k/U9w1XdaaDpYOFvGXbKorVjQHUdQzMz928domiMwLduHg
+         3mmsCzZ3qLgikAxO5Gy3J6gLrineJxCAW0k8wdS6dEe7TAQH7GQbgQiLcunj8hgdRBSZ
+         XiWCO5TXHAEX4xgdUO/An9CaB125BCEic/pg3/4ImP+fcd4+Wb7FXOUEWVjvIoZJ1igQ
+         jlHA==
+X-Gm-Message-State: ACgBeo31DoGKaP9G0ZZFwC5qL1AXzIyhPyqb1iyZoV6XpSq5vLPS7d9q
+        nsB6GGfKe9gwyLSsf9IO6hYO9qeSzoD3E0CUOgc=
+X-Google-Smtp-Source: AA6agR5nimTW8pOVuM5dooWZmN1fJHZMRpKjJEUZwyQdOXD7ZZhT/7FPQPw7oXHX6NprC/CWX0SiSDCTEQnqlN4B+uo=
+X-Received: by 2002:a25:d154:0:b0:6a8:cfcc:49e8 with SMTP id
+ i81-20020a25d154000000b006a8cfcc49e8mr15553274ybg.482.1662826258551; Sat, 10
+ Sep 2022 09:10:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220831033123.301988-1-ye.xingchen@zte.com.cn>
-In-Reply-To: <20220831033123.301988-1-ye.xingchen@zte.com.cn>
+References: <20220828205416.1957305-1-floridsleeves@gmail.com>
+In-Reply-To: <20220828205416.1957305-1-floridsleeves@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 10 Sep 2022 17:51:09 +0200
-Message-ID: <CAJZ5v0gFPgGAO_w8yRrHVO+JBZu1BAo-YdU8iOBv2PfwKuAseA@mail.gmail.com>
-Subject: Re: [PATCH linux-next] ACPI: APEI: Remove the unneeded result variable
-To:     cgel.zte@gmail.com
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>, Len Brown <lenb@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
+Date:   Sat, 10 Sep 2022 18:10:47 +0200
+Message-ID: <CAJZ5v0hdbvZALerJHXViDypvFGOZNK7bTPiJd8KVZa2VE-355w@mail.gmail.com>
+Subject: Re: [PATCH v1] drivers/acpi/processor_idle: check the return value of acpi_fetch_acpi_dev()
+To:     Li Zhong <floridsleeves@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -63,40 +56,29 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 31, 2022 at 5:31 AM <cgel.zte@gmail.com> wrote:
+On Sun, Aug 28, 2022 at 10:54 PM Li Zhong <floridsleeves@gmail.com> wrote:
 >
-> From: ye xingchen <ye.xingchen@zte.com.cn>
+> The return value of acpi_fetch_acpi_dev() could be NULL, which will
+> cause null pointer dereference if used in acpi_device_hid().
 >
-> Return the value erst_get_record_id_begin() directly instead of storing it
->  in another redundant variable.
->
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+> Signed-off-by: Li Zhong <floridsleeves@gmail.com>
 > ---
->  drivers/acpi/apei/erst.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
+>  drivers/acpi/processor_idle.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
-> index 31b077eedb58..247989060e29 100644
-> --- a/drivers/acpi/apei/erst.c
-> +++ b/drivers/acpi/apei/erst.c
-> @@ -1020,14 +1020,10 @@ static int reader_pos;
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index 16a1663d02d4..519f8f741da3 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -1117,6 +1117,8 @@ static int acpi_processor_get_lpi_info(struct acpi_processor *pr)
+>         status = acpi_get_parent(handle, &pr_ahandle);
+>         while (ACPI_SUCCESS(status)) {
+>                 d = acpi_fetch_acpi_dev(pr_ahandle);
+> +               if (!d)
+> +                       break;
+>                 handle = pr_ahandle;
 >
->  static int erst_open_pstore(struct pstore_info *psi)
->  {
-> -       int rc;
-> -
->         if (erst_disable)
->                 return -ENODEV;
->
-> -       rc = erst_get_record_id_begin(&reader_pos);
-> -
-> -       return rc;
-> +       return erst_get_record_id_begin(&reader_pos);
->  }
->
->  static int erst_close_pstore(struct pstore_info *psi)
+>                 if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
 > --
 
-Can you please combine this patch with the other analogous one you
-sent for APEI?
+Applied (with some edits in the subject and changelog) as 6.1 material, thanks!
