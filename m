@@ -2,135 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F4495B4C45
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Sep 2022 08:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFDE25B4CD8
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Sep 2022 11:06:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229792AbiIKGCm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 11 Sep 2022 02:02:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
+        id S229760AbiIKJGv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 11 Sep 2022 05:06:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbiIKGCl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 11 Sep 2022 02:02:41 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF4528E3A;
-        Sat, 10 Sep 2022 23:02:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662876161; x=1694412161;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=X3nGh2deOmHXffMmBLBZLiWJ36kF5JOTAJZQciA1cg8=;
-  b=n/EDAmfiUdXOxMoNDromksGNixPvu20Ovag7jHV87K7wsd/dlJtF/rzE
-   5U5BMtJYxcCFev+fuGomrf9NEuwUO6DoUqtzjgkQqRB46YBXuvOKBp51b
-   lHEYCBBVD9oYWhuGt/AzZOmlJn5WA6MJKk5gQiG9Cpy03L6WAPrg8ULlh
-   rA73/leD0g4er3wXoVudWsIQfneQsL3l0ecDm0cwxtzZ5cq2DcJEa8THx
-   QkK3HHhHmxNiionHbiPi4uijLgGvuU+JCrAw76qd60+96bH3k+PrdUJbM
-   Pdnqb/GyMBOeLzXLS892nMzpH7Pq7HOBLX/ptfnHeF3m47wHbwAhAA/MP
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10466"; a="383992869"
-X-IronPort-AV: E=Sophos;i="5.93,307,1654585200"; 
-   d="scan'208";a="383992869"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2022 23:02:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,307,1654585200"; 
-   d="scan'208";a="758039261"
-Received: from lkp-server02.sh.intel.com (HELO 4011df4f4fd3) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 10 Sep 2022 23:02:39 -0700
-Received: from kbuild by 4011df4f4fd3 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oXG3C-00012t-2V;
-        Sun, 11 Sep 2022 06:02:38 +0000
-Date:   Sun, 11 Sep 2022 14:02:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 58968b7be786652f48f712147e6f71831cfe684e
-Message-ID: <631d79e8.yiStyYaa6aEvt0eJ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229677AbiIKJGu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 11 Sep 2022 05:06:50 -0400
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C4C06BCAD;
+        Sun, 11 Sep 2022 02:06:48 -0700 (PDT)
+Received: from loongson-pc.loongson.cn (unknown [10.20.42.105])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8Dx_2sbpR1jFrsWAA--.22738S2;
+        Sun, 11 Sep 2022 17:06:35 +0800 (CST)
+From:   Jianmin Lv <lvjianmin@loongson.cn>
+To:     lpieralisi@kernel.org, robin.murphy@arm.com, chenhuacai@loongson.cn
+Cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
+        lenb@kernel.org, robert.moore@intel.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        loongarch@lists.linux.dev
+Subject: [PATCH V5 0/2] DMA: update acpi_dma_get_range to return dma map regions 
+Date:   Sun, 11 Sep 2022 17:06:33 +0800
+Message-Id: <20220911090635.5559-1-lvjianmin@loongson.cn>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Dx_2sbpR1jFrsWAA--.22738S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF4UKF4xtr1ftF1xur43Awb_yoW8XrykpF
+        9a9rsxJr45KrZxJry3Aw1rZr15Xw1fZryxGa9rK34kJF1jvr17Jry8Z3WxCa4UAF9rGr40
+        qF98Ja45WF1UAwUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUU9F1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+        IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+        jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c
+        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_
+        JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK
+        6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_XrWUJr1UMxC20s026xCaFV
+        Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+        x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
+        1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+        JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
+        sGvfC2KfnxnUUI43ZEXa7VU1a9aPUUUUU==
+X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 58968b7be786652f48f712147e6f71831cfe684e  Merge branch 'pm-cpufreq' into bleeding-edge
+The patch series changed acpi_dma_get_range to return dma regions
+as of_dma_get_range, so that dev->dma_range_map can be initialized
+conveniently.
 
-elapsed time: 723m
+And acpi_arch_dma_setup for ARM64 is changed wih removing dma_base
+and size from it's parameters.
 
-configs tested: 53
-configs skipped: 2
+Remove ARCH_HAS_PHYS_TO_DMA for LoongArch and use generic
+phys_to_dma/dma_to_phys in include/linux/dma-direct.h.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+V1 -> V2
+- Removed dma_base and size from acpi_arch_dma_setup' parameters
+- Add patch to remove ARCH_HAS_PHYS_TO_DMA for LoongArch
 
-gcc tested configs:
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                        randconfig-a002
-i386                          randconfig-a001
-x86_64                        randconfig-a004
-i386                          randconfig-a003
-x86_64                        randconfig-a006
-i386                          randconfig-a005
-x86_64                           allyesconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-i386                                defconfig
-arc                              allyesconfig
-arc                  randconfig-r043-20220911
-alpha                            allyesconfig
-i386                          randconfig-a014
-s390                 randconfig-r044-20220911
-riscv                randconfig-r042-20220911
-i386                          randconfig-a012
-i386                          randconfig-a016
-i386                             allyesconfig
-x86_64                        randconfig-a013
-m68k                             allyesconfig
-powerpc                           allnoconfig
-x86_64                        randconfig-a011
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-powerpc                          allmodconfig
-m68k                             allmodconfig
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a015
-x86_64                    rhel-8.3-kselftests
-arm                                 defconfig
-mips                             allyesconfig
-x86_64                           rhel-8.3-syz
-sh                               allmodconfig
-ia64                             allmodconfig
-arm                              allyesconfig
-arm64                            allyesconfig
+V2 -> V3
+- Add kerneldoc for acpi_dma_get_range changing
+- Remove redundant code in acpi_arch_dma_setup, and check map
 
-clang tested configs:
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a002
-i386                          randconfig-a004
-x86_64                        randconfig-a005
-i386                          randconfig-a006
-hexagon              randconfig-r041-20220911
-i386                          randconfig-a013
-hexagon              randconfig-r045-20220911
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-a016
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
+V3 -> V4
+- Change title to "Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA"
+- Use resource_size() to get size 
+
+V4 -> V5
+- Change commit log for patch: Support multiple dma windows with different offsets
+- Remove a unnecessary blank line
+- Fix a bug of acpi_dma_get_range
+
+Jianmin Lv (2):
+  ACPI / scan: Support multiple dma windows with different offsets
+  LoongArch: Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA
+
+ arch/loongarch/Kconfig        |  1 -
+ arch/loongarch/kernel/dma.c   | 52 ++++++++++++++--------------------
+ arch/loongarch/kernel/setup.c |  2 +-
+ drivers/acpi/arm64/dma.c      | 28 ++++++++++--------
+ drivers/acpi/scan.c           | 53 +++++++++++++++--------------------
+ include/acpi/acpi_bus.h       |  3 +-
+ include/linux/acpi.h          | 12 ++++----
+ 7 files changed, 70 insertions(+), 81 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.31.1
+
