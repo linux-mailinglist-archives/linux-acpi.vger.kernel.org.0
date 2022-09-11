@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 956EC5B50EE
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Sep 2022 21:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF445B50F1
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Sep 2022 21:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbiIKTuR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S229499AbiIKTuR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Sun, 11 Sep 2022 15:50:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40130 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiIKTuP (ORCPT
+        with ESMTP id S229492AbiIKTuP (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Sun, 11 Sep 2022 15:50:15 -0400
 Received: from vorpal.se (unknown [151.236.221.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802E021E1F;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80AE521E27;
         Sun, 11 Sep 2022 12:50:00 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id E6D25147DF;
-        Sun, 11 Sep 2022 19:49:43 +0000 (UTC)
+Received: by vorpal.se (Postfix) with ESMTPSA id D42B4147E0;
+        Sun, 11 Sep 2022 19:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1662925784; bh=dMCK44BNynJDu8c8gyT1BDnfM3qjsKG3OUE/8o/opg8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=fEQCt02bt2Z4yIvChexqLTVWeNz1sjDyVD9quat9Roz1chAHAAm2BzzbSDiZYu40B
-         qrRHsPQfFiA09T6ZMq7HZq4e8GccW6oJoer5Ncd6NfNDecQGqMywTHB9zVQ420EOUi
-         FwAPl31Slkv3H0+2+re6ufBtGTFtT14EDsKFqom+gRB859Q3kQQVKjud5SpPRdQi1d
-         MK4r4P0ekEW8+f2koS5L6KqGErt5LXf9q2DSXckjI0THBI4uLKWKvBbudjVIY3EJmY
-         qn6T8b368PCNXdYJOozz/ULWwFXOSuYWmhFMwFWEnTwRDK4UpHL6hzWSxpJmjfYvth
-         GIubHMbicM9hA==
+        t=1662925787; bh=a4+Uiq9oNYFLSB0X+3ZnD6NYbxsSyA6xdKPJh6N0odY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ilAZhRBfsMPkBQHkKdcbLYKDRrLAVLA5WDEpkg/dM4RPFbJyhZDH4CESCZDyaB50r
+         WDPBtcT1WLTULA/jVrM/PtNZg7elRU43mH91qPCvoc6x53udRzYFSVSy3auVDqRq62
+         eR/IQGOREiLXQ/5V68N1DlhO0XA+TsYk2k0yptXfFGYa10nYs7Y0dmYx4iSDdQWFxU
+         gCOZSEn5Vdz4Djfj4OmKKa5wuRBqR6knkFu+XF7QfBSUD1Eo339L5z53KvK8Po43x2
+         gUhB4X90qylvs0/HmJiR959O19ZVAJRKXUMSWfRa7viF2elz0huv5ewya4Pf43nf/e
+         UWQeUINA7/gLQ==
 From:   Arvid Norlander <lkml@vorpal.se>
 To:     platform-driver-x86@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
@@ -32,10 +32,12 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         linux-input@vger.kernel.org, Azael Avalos <coproscefalo@gmail.com>,
         Arvid Norlander <lkml@vorpal.se>
-Subject: [PATCH RFC 0/2] Quickstart buttons driver and Toshiba Z830
-Date:   Sun, 11 Sep 2022 21:49:32 +0200
-Message-Id: <20220911194934.558019-1-lkml@vorpal.se>
+Subject: [PATCH RFC 1/2] staging: quickstart: Add ACPI quickstart button (PNP0C32) driver
+Date:   Sun, 11 Sep 2022 21:49:33 +0200
+Message-Id: <20220911194934.558019-2-lkml@vorpal.se>
 X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20220911194934.558019-1-lkml@vorpal.se>
+References: <20220911194934.558019-1-lkml@vorpal.se>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
@@ -47,213 +49,467 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+This is loosly based on a previous staging driver that was removed. See
+links below for more info on that driver. The original commit ID was
+0be013e3dc2ee79ffab8a438bbb4e216837e3d52.
 
-In the following patch series I implement support for three buttons on
-the Toshiba Satellite/Portege Z830 (same laptop, different markets).
+However, here a completely different approach is taken to the user space
+API (which should solve the issues the original driver had). Each PNP0C32
+device is a button, and each such button gets a separate input device
+associated with it (instead of a shared platform input device).
 
-These buttons work via a PNP0C32 ACPI device. Hans de Goede pointed out
-an old and flawed attempt to implement this as a staging driver.
+The button ID (as read from ACPI method GHID) is provided via a sysfs file
+"button_id".
 
-With that staging driver as a starting point I have now implemented proper
-support. I believe I have fixed the flaws with the original staging driver.
-As it required almost a complete rewrite I have decided to present it as a
-new driver instead of starting with a revert commit to restore the old
-driver and then apply fixes on top.
+If the button caused a wakeup it will "latch" the "wakeup_cause" sysfs file
+to true. This can be reset by a user space process.
 
-The specification for PNP0C32 devices exist as a Microsoft specification.
-It was previously available on their web site, but seems to have been taken
-down during the last month. I had a local copy and I have uploaded it to
-archive.org. It is available here for anyone interested (including a
-conversion of the docx to PDF):
-
-https://archive.org/details/microsoft-acpi-dirapplaunch
-
-The old emails about support for these buttons can be found at:
-https://marc.info/?l=linux-acpi&m=120550727131007
-https://lkml.org/lkml/2010/5/28/327
-
-Table of contents:
-1. Summary of standard
-2. Issues
-2.1. Issue 1: Wake support
-2.2. Issue 2: Button identification
-2.3. Issue 3: GHID: 64-bit values?
-2.4. Issue 4: MAINTAINERS?
-2.5. Issue 5: Where does the driver go?
-3. User space API
-3.1. Input device
-3.2. Sysfs file: button_id (Read only)
-3.3. Sysfs file: wakeup_cause (Read write)
-4. HCI_HOTKEY_EVENT register (toshiba_acpi)
-
-
-1. Summary of standard
-======================
-
-Here is a brief high level summary of the standard for PNP0C32. See
-https://archive.org/details/microsoft-acpi-dirapplaunch for the full
-standard.
-
-PNP0C32 devices are "Direct Application Launch" buttons. The idea is that
-they should work while the laptop is in various sleep modes (or even off).
-The Z830 does not support waking from any sleep mode using these buttons,
-it only supports them while it is awake.
-
-Each PNP0C32 device represents a single button. Their meaning is completely
-vendor defined. On Windows you can either:
-* Make them launch an application when pressed (defined in the registry)
-* Or an application can subscribe to specific Window messages to get
-  notified when they are pressed (this is how they are used by the Toshiba
-  software).
-
-2. Issues
-=========
-Unfortunately there are a few issues where I would like some input.
-
-On top of that I'm sure there are lots of issues as I'm fairly new to
-kernel programming!
-
-2.1. Issue 1: Wake support
-------------
-This is untested as the Toshiba Z830 that I have simply does not support
-this part in the firmware. I left the old behaviour in and only adapted it
-slightly.
-
-The driver adds a sysfs file "wakeup_cause" to each PNP0C32 device
-(inspired by old approach) that would read "true" after causing the wakeup.
-It would be up to user space query this and reset the value to false.
-This is basically what the old staging driver did, only moved from an
-(un-needed) platform driver to each ACPI driver.
-
-As I cannot test it (the Z830 does not support the wakeup part of the spec)
-I'm more inclined to just drop this feature, especially if the current
-approach is suboptimal. It would then be up to someone else to implement
-this in the future.
-
-2.2. Issue 2: Button identification
-------------
-There is NO generic way to know what the buttons are "supposed" to do.
-Each button has a vendor defined ID (an 8-, 16- or 32-bit unsigned integer).
-This ID can be read with the GHID ACPI method.
-
-As such I map all these to KEY_UNKNOWN. Then suitable hwdb entries can be
-created for udev that remap these to some sort of meaningful values.
-
-Here is an example hwdb file I created for my laptop:
-$ cat /etc/udev/hwdb.d/quickstart.hwdb 
-evdev:name:Quickstart Button 1:dmi:bvn*:bvr*:bd*:svnTOSHIBA:pn*Z830:*
- KEYBOARD_KEY_01=prog1
-
-evdev:name:Quickstart Button 2:dmi:bvn*:bvr*:bd*:svnTOSHIBA:pn*Z830:*
- KEYBOARD_KEY_01=prog2
-
-evdev:name:Quickstart Button 3:dmi:bvn*:bvr*:bd*:svnTOSHIBA:pn*Z830:*
- KEYBOARD_KEY_01=touchpad_toggle
-
-As can be seen I always use the scancode 1 here. Would it be better to use
-the ID from GHID instead? This can be an arbitrary 32-bit value.
-
-Note also that prog1 and prog2 are poor approximations of the real buttons.
-In reality the buttons are "Eco mode" and "Open Windows Mobility center on
-screen about switching to projection mode". However Linux seem to lack
-suitable key definitions for these.
-
-2.3. Issue 3: GHID: 64-bit values?
-------------
-The old staging driver had support for GHID returning a 64-bit value. It is
-not clear to me why, as it is not mentioned in the specification. I could
-not find anything when reading the old emails either. As such, I'm unsure
-if I should drop it. The variable this gets stored to is just 32-bit
-anyway.
-
-If we decide to use GHID for scancode (see "Issue 2"), 64-bit values
-might be a problem, as the scan code field is only 32 bits.
-
-2.4. Issue 4: MAINTAINERS?
-------------
-I got this from checkpatch.pl:
-WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
-
-I'm not sure? Advice would be welcome.
-
-2.5. Issue 5: Where does the driver go?
-------------
-For now, I have left this in staging as with the original driver. I'm not
-sure if this is the right approach. Apart from the question of wakeup
-handling, I believe the driver to be feature-complete. Advise is welcome. 
-
-
-3. User space API
-=================
-Currently the user space API is as a sparse keymap input device, plus two
-unique sysfs files. Discussion on this is welcome!
-
-3.1. Input device
-----------------
-The device produces KEY_UNKNOWN events when the button is pressed, with
-the scan code 1. We could change the scan code to the button ID reported
-by ACPI via GHID. See also "Issue 2" and "Issue 3" above.
-
-3.2. Sysfs file: button_id (Read only)
--------------------------
-This file can be read to get the button ID as reported by GHID. It is
-returned in human readable ASCII with a trailing newline.
-
-3.3. Sysfs file: wakeup_cause (Read write)
------------------------------
-Will return "true\n" when read after the button was the wakeup cause.
-This is latched until user space writes "false" to the file.
-
-See also "Issue 1" above. If this is not a suitable interface I'm inclined
-to just drop the wakeup handling entirely.
-
-
-4. HCI_HOTKEY_EVENT register (toshiba_acpi)
-============================
-To enable quickstart hotkeys, the HCI_HOTKEY_EVENT (0x1e) register needs
-to be set correctly by toshiba_acpi. toshiba_acpi currently sets this to
-HCI_HOTKEY_ENABLE (0x9) on the Z830. This is not suitable.
-
-* Windows drivers reads the register then sets it to 0x5. Presumably there
-  is some logic going on there.
-* HCI_GET on HCI_HOTKEY_EVENT returns 0xf before first call to set it when
-  booting Linux on this laptop.
-* From my testing any value between 1 and 7 (inclusive) gives the correct
-  behaviour for the quickstart buttons. However, for normal hotkeys to work
-  in toshiba_acpi, only values with the least significant bit set work.
-
-Toshiba_acpi already detects some laptops using SCI_KBD_FUNCTION_KEYS. That
-call is not supported on this laptop (return status TOS_NOT_SUPPORTED).
-
-It is not clear to me how to detect when to use the 0x5 value. In the
-attached patch I use a quirk table to enable this. There may be a better
-way to do it.
-
-Best regards,
-Arvid Norlander
-
-Note! This series is based off the review-hans branch.
-
-Arvid Norlander (2):
-  staging: quickstart: Add ACPI quickstart button (PNP0C32) driver
-  platform/x86: toshiba_acpi: Add quirk for buttons on Z830
-
- drivers/platform/x86/toshiba_acpi.c     |  31 +-
+Link: https://marc.info/?l=linux-acpi&m=120550727131007
+Link: https://lkml.org/lkml/2010/5/28/327
+Signed-off-by: Arvid Norlander <lkml@vorpal.se>
+---
  drivers/staging/Kconfig                 |   2 +
  drivers/staging/Makefile                |   1 +
  drivers/staging/quickstart/Kconfig      |  12 +
  drivers/staging/quickstart/Makefile     |   1 +
  drivers/staging/quickstart/quickstart.c | 376 ++++++++++++++++++++++++
- 6 files changed, 422 insertions(+), 1 deletion(-)
+ 5 files changed, 392 insertions(+)
  create mode 100644 drivers/staging/quickstart/Kconfig
  create mode 100644 drivers/staging/quickstart/Makefile
  create mode 100644 drivers/staging/quickstart/quickstart.c
 
-
-base-commit: b8bad0fbf4366928266eb9fba7430a011edc321e
-prerequisite-patch-id: 5b404f0b72a3a4a5d38250578956213c8c7733bd
-prerequisite-patch-id: be8533cbf34f7aa97f9d59a26a5edb6691096403
+diff --git a/drivers/staging/Kconfig b/drivers/staging/Kconfig
+index 3bd80f9695ac..db89ffbcd1ad 100644
+--- a/drivers/staging/Kconfig
++++ b/drivers/staging/Kconfig
+@@ -50,6 +50,8 @@ source "drivers/staging/iio/Kconfig"
+ 
+ source "drivers/staging/sm750fb/Kconfig"
+ 
++source "drivers/staging/quickstart/Kconfig"
++
+ source "drivers/staging/emxx_udc/Kconfig"
+ 
+ source "drivers/staging/nvec/Kconfig"
+diff --git a/drivers/staging/Makefile b/drivers/staging/Makefile
+index 1d9ae39fea14..cb92880f7db5 100644
+--- a/drivers/staging/Makefile
++++ b/drivers/staging/Makefile
+@@ -16,6 +16,7 @@ obj-$(CONFIG_VT6656)		+= vt6656/
+ obj-$(CONFIG_VME_BUS)		+= vme_user/
+ obj-$(CONFIG_IIO)		+= iio/
+ obj-$(CONFIG_FB_SM750)		+= sm750fb/
++obj-$(CONFIG_ACPI_QUICKSTART)	+= quickstart/
+ obj-$(CONFIG_USB_EMXX)		+= emxx_udc/
+ obj-$(CONFIG_MFD_NVEC)		+= nvec/
+ obj-$(CONFIG_STAGING_BOARD)	+= board/
+diff --git a/drivers/staging/quickstart/Kconfig b/drivers/staging/quickstart/Kconfig
+new file mode 100644
+index 000000000000..e1cf1810e967
+--- /dev/null
++++ b/drivers/staging/quickstart/Kconfig
+@@ -0,0 +1,12 @@
++config ACPI_QUICKSTART
++	tristate "ACPI Quickstart key driver"
++	depends on ACPI
++	depends on INPUT
++	select INPUT_SPARSEKMAP
++	help
++	  Say Y here if you have a platform that supports the ACPI
++	  quickstart key protocol.
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called quickstart.
++
+diff --git a/drivers/staging/quickstart/Makefile b/drivers/staging/quickstart/Makefile
+new file mode 100644
+index 000000000000..290e0e476797
+--- /dev/null
++++ b/drivers/staging/quickstart/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_ACPI_QUICKSTART)		+= quickstart.o
+diff --git a/drivers/staging/quickstart/quickstart.c b/drivers/staging/quickstart/quickstart.c
+new file mode 100644
+index 000000000000..8d76472c6b7f
+--- /dev/null
++++ b/drivers/staging/quickstart/quickstart.c
+@@ -0,0 +1,376 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ *  quickstart.c - ACPI Direct App Launch driver
++ *
++ *  Copyright (C) 2022 Arvid Norlander <lkml@vorapal.se>
++ *  Copyright (C) 2007-2010 Angelo Arrifano <miknix@gmail.com>
++ *
++ *  Information gathered from disassembled dsdt and from here:
++ *  <https://archive.org/details/microsoft-acpi-dirapplaunch>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ */
++
++#define QUICKSTART_VERSION "1.04"
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/types.h>
++#include <linux/acpi.h>
++#include <linux/input.h>
++#include <linux/input/sparse-keymap.h>
++
++MODULE_AUTHOR("Arvid Norlander <lkml@vorpal.se>");
++MODULE_AUTHOR("Angelo Arrifano");
++MODULE_DESCRIPTION("ACPI Direct App Launch driver");
++MODULE_LICENSE("GPL");
++
++#define QUICKSTART_ACPI_DEVICE_NAME	"quickstart"
++#define QUICKSTART_ACPI_CLASS		"quickstart"
++#define QUICKSTART_ACPI_HID		"PNP0C32"
++
++/*
++ * There will be two events:
++ * 0x02 - A hot button was pressed while device was off/sleeping.
++ * 0x80 - A hot button was pressed while device was up.
++ */
++#define QUICKSTART_EVENT_WAKE		0x02
++#define QUICKSTART_EVENT_RUNTIME	0x80
++
++/*
++ * Each PNP0C32 device is an individual button. This structure
++ * keeps track of data associated with said device.
++ */
++struct quickstart_acpi {
++	struct acpi_device *acpi_dev;
++	struct input_dev *input_device;
++	struct quickstart_button *button;
++	/* Name of button for debug messages */
++	char *name;
++	/* ID of button as returned by GHID */
++	u32 id;
++	/* Flags for cleanup */
++	unsigned int input_registered : 1;
++	unsigned int sysfs_created : 1;
++	/* Track if a wakeup event was received */
++	unsigned int wakeup_cause : 1;
++	/* Name of input device */
++	char input_name[32];
++	/* Physical path for the input device */
++	char phys[32];
++};
++
++/*
++ * Knowing what these buttons do require system specific knowledge.
++ * This could be done by matching on DMI data in a long quirk table.
++ * However, it is easier to leave it up to user space to figure this out.
++ *
++ * Using for example udev hwdb the scancode 0x1 can be remapped suitably.
++ */
++static const struct key_entry quickstart_keymap[] = {
++	{ KE_KEY, 0x1, { KEY_UNKNOWN } },
++	{ KE_END, 0 },
++};
++
++static ssize_t wakeup_cause_show(struct device *dev,
++				 struct device_attribute *attr, char *buf)
++{
++	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
++
++	return scnprintf(buf, PAGE_SIZE, "%s\n",
++			 (quickstart->wakeup_cause ? "true" : "false"));
++}
++
++static ssize_t wakeup_cause_store(struct device *dev,
++				  struct device_attribute *attr,
++				  const char *buf, size_t count)
++{
++	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
++
++	if (count < 2)
++		return -EINVAL;
++
++	if (strncasecmp(buf, "false", 4) != 0)
++		return -EINVAL;
++
++	quickstart->wakeup_cause = false;
++	return count;
++}
++static DEVICE_ATTR_RW(wakeup_cause);
++
++static ssize_t button_id_show(struct device *dev, struct device_attribute *attr,
++			      char *buf)
++{
++	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
++
++	return scnprintf(buf, PAGE_SIZE, "%d\n", quickstart->id);
++}
++static DEVICE_ATTR_RO(button_id);
++
++/* ACPI Driver functions */
++static void quickstart_acpi_notify(struct acpi_device *acpi_dev, u32 event)
++{
++	struct quickstart_acpi *quickstart = acpi_driver_data(acpi_dev);
++
++	if (!quickstart)
++		return;
++
++	switch (event) {
++	case QUICKSTART_EVENT_WAKE:
++		quickstart->wakeup_cause = true;
++		break;
++	case QUICKSTART_EVENT_RUNTIME:
++		if (!sparse_keymap_report_event(quickstart->input_device, 0x1,
++						1, true)) {
++			pr_info("Key handling error\n");
++		}
++		break;
++	default:
++		pr_err("Unexpected ACPI event notify (%u)\n", event);
++		break;
++	}
++}
++
++/*
++ * The GHID ACPI method is used to indicate the "role" of the button.
++ * However, all the meanings of these values are vendor defined.
++ *
++ * We do however expose this value to user space.
++ */
++static int quickstart_acpi_ghid(struct quickstart_acpi *quickstart)
++{
++	acpi_status status;
++	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
++	int ret = 0;
++	union acpi_object *obj = NULL;
++
++	/*
++	 * This returns a buffer telling the button usage ID,
++	 * and triggers pending notify events (The ones before booting).
++	 */
++	status = acpi_evaluate_object(quickstart->acpi_dev->handle, "GHID",
++				      NULL, &buffer);
++	if (ACPI_FAILURE(status)) {
++		pr_err("%s GHID method failed\n", quickstart->name);
++		return -EINVAL;
++	}
++	obj = buffer.pointer;
++
++	/*
++	 * GHID returns buffers, sanity check that is the case.
++	 */
++	if (obj->type != ACPI_TYPE_BUFFER) {
++		pr_err("%s GHID did not return buffer\n", quickstart->name);
++		return -EINVAL;
++	}
++
++	/*
++	 * Quoting the specification:
++	 * "The GHID method can return a BYTE, WORD, or DWORD.
++	 *  The value must be encoded in little-endian byte
++	 *  order (least significant byte first)."
++	 */
++	switch (obj->buffer.length) {
++	case 1:
++		quickstart->id = *(u8 *)obj->buffer.pointer;
++		break;
++	case 2:
++		quickstart->id = le16_to_cpu(*(u16 *)obj->buffer.pointer);
++		break;
++	case 4:
++		quickstart->id = le32_to_cpu(*(u32 *)obj->buffer.pointer);
++		break;
++	case 8:
++		quickstart->id = le64_to_cpu(*(u64 *)obj->buffer.pointer);
++		break;
++	default:
++		pr_err("%s GHID method returned buffer of unexpected length %lu\n",
++		       quickstart->name, (unsigned long)obj->buffer.length);
++		ret = -EINVAL;
++		break;
++	}
++
++	kfree(buffer.pointer);
++
++	return ret;
++}
++
++static int quickstart_acpi_config(struct quickstart_acpi *quickstart)
++{
++	char *bid = acpi_device_bid(quickstart->acpi_dev);
++	char *name;
++
++	name = kmalloc(strlen(bid) + 1, GFP_KERNEL);
++	if (!name)
++		return -ENOMEM;
++
++	quickstart->name = name;
++	strcpy(quickstart->name, bid);
++
++	return 0;
++}
++
++static struct attribute *quickstart_attributes[] = {
++	&dev_attr_wakeup_cause.attr,
++	&dev_attr_button_id.attr,
++	NULL,
++};
++
++static const struct attribute_group quickstart_attr_group = {
++	.attrs = quickstart_attributes,
++};
++
++static int quickstart_acpi_remove(struct acpi_device *acpi_dev)
++{
++	struct quickstart_acpi *quickstart;
++
++	if (!acpi_dev)
++		return -EINVAL;
++
++	quickstart = acpi_driver_data(acpi_dev);
++	if (!quickstart)
++		return -EINVAL;
++
++	if (quickstart->sysfs_created)
++		sysfs_remove_group(&quickstart->acpi_dev->dev.kobj,
++				   &quickstart_attr_group);
++
++	kfree(quickstart->name);
++	quickstart->name = NULL;
++
++	kfree(quickstart);
++
++	return 0;
++}
++
++static int quickstart_acpi_add(struct acpi_device *acpi_dev)
++{
++	int ret;
++	struct quickstart_acpi *quickstart;
++
++	if (!acpi_dev)
++		return -EINVAL;
++
++	quickstart = kzalloc(sizeof(*quickstart), GFP_KERNEL);
++	if (!quickstart)
++		return -ENOMEM;
++
++	/*
++	 * This must be set early for proper cleanup on error handling path.
++	 * After this point generic error handling can be used.
++	 */
++	acpi_dev->driver_data = quickstart;
++	quickstart->acpi_dev = acpi_dev;
++	dev_set_drvdata(&acpi_dev->dev, quickstart);
++
++	strcpy(acpi_device_name(acpi_dev), QUICKSTART_ACPI_DEVICE_NAME);
++	strcpy(acpi_device_class(acpi_dev), QUICKSTART_ACPI_CLASS);
++
++	/* Initialize device name */
++	ret = quickstart_acpi_config(quickstart);
++	if (ret < 0)
++		goto error;
++
++	/* Retrieve the GHID ID */
++	ret = quickstart_acpi_ghid(quickstart);
++	if (ret < 0)
++		goto error;
++
++	/* Set up sysfs entries */
++	ret = sysfs_create_group(&quickstart->acpi_dev->dev.kobj,
++				 &quickstart_attr_group);
++	if (ret) {
++		quickstart->sysfs_created = 0;
++		pr_err("Unable to setup sysfs entries\n");
++		goto error;
++	}
++	quickstart->sysfs_created = !ret;
++
++	/* Set up input device */
++	quickstart->input_device =
++		devm_input_allocate_device(&quickstart->acpi_dev->dev);
++	if (!quickstart->input_device) {
++		ret = -ENOMEM;
++		goto error;
++	}
++	ret = sparse_keymap_setup(quickstart->input_device, quickstart_keymap,
++				  NULL);
++	if (ret)
++		goto error;
++
++	snprintf(quickstart->input_name, sizeof(quickstart->phys),
++		 "Quickstart Button %u", quickstart->id);
++	snprintf(quickstart->phys, sizeof(quickstart->phys),
++		 QUICKSTART_ACPI_DEVICE_NAME "/input%u", quickstart->id);
++
++	quickstart->input_device->name = quickstart->input_name;
++	quickstart->input_device->phys = quickstart->phys;
++	quickstart->input_device->id.bustype = BUS_HOST;
++
++	ret = input_register_device(quickstart->input_device);
++	if (ret) {
++		quickstart->input_registered = 0;
++		pr_err("Unable to register input device\n");
++		goto error;
++	}
++	quickstart->input_registered = !ret;
++
++	return 0;
++error:
++	quickstart_acpi_remove(acpi_dev);
++	return ret;
++}
++
++static const struct acpi_device_id quickstart_device_ids[] = {
++	{ QUICKSTART_ACPI_HID, 0 },
++	{ "", 0 },
++};
++MODULE_DEVICE_TABLE(acpi, quickstart_device_ids);
++
++static struct acpi_driver quickstart_acpi_driver = {
++	.name	= "quickstart",
++	.owner	= THIS_MODULE,
++	.class	= QUICKSTART_ACPI_CLASS,
++	.ids	= quickstart_device_ids,
++	.flags	= ACPI_DRIVER_ALL_NOTIFY_EVENTS,
++	.ops	= {
++		.add = quickstart_acpi_add,
++		.remove = quickstart_acpi_remove,
++		.notify = quickstart_acpi_notify
++	},
++};
++
++/* Module functions */
++static void quickstart_exit(void)
++{
++	acpi_bus_unregister_driver(&quickstart_acpi_driver);
++}
++
++static int __init quickstart_init(void)
++{
++	int ret;
++
++	/* ACPI driver register */
++	ret = acpi_bus_register_driver(&quickstart_acpi_driver);
++	if (ret)
++		return ret;
++
++	pr_info("ACPI Direct App Launch ver %s\n", QUICKSTART_VERSION);
++
++	return 0;
++}
++
++module_init(quickstart_init);
++module_exit(quickstart_exit);
 -- 
 2.37.3
 
