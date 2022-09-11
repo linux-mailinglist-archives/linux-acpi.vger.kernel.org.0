@@ -2,103 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D29F5B477F
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Sep 2022 18:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F4495B4C45
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Sep 2022 08:02:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229546AbiIJQcY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 10 Sep 2022 12:32:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55120 "EHLO
+        id S229792AbiIKGCm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 11 Sep 2022 02:02:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbiIJQcX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Sep 2022 12:32:23 -0400
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD624A83E;
-        Sat, 10 Sep 2022 09:32:22 -0700 (PDT)
-Received: by mail-yb1-f177.google.com with SMTP id f131so6899551ybf.7;
-        Sat, 10 Sep 2022 09:32:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=GkMFjVtDr0W10OJLyjB1PHKjRI7ZFioNTd0VYLRMl94=;
-        b=ThoRLvkIbjrCWL0q+TFVOHf3eGbii09QgZZ8+fnloYa65GmvZoYZxXRfi4dIf/o3/X
-         CHxXNCVetlaCzlNPH7RHeluIxXBW9UaWGxJbq44/RtWKjnWMdCJeIjeGpTxtZk7sC3XY
-         FC1+bATa/yirJyG/f0TfPtNbPuBdAW51Y4xNJXJOabOT0rud7KCnxWelfVT3WcqdnVvi
-         S/MvEcHpaC+v+YF47p1//uEddmEbtpH4EW44HoPAx6nua0qW6qe+AO4eBtEhW/IhMKDt
-         EtzYW5sIUxU/qV5nqC5OKkZTZ9vMESj0n6S0HZwEROc08lB3wnnH38cngZo5+KpEIQns
-         iUaQ==
-X-Gm-Message-State: ACgBeo09Bstel6aHIS4x5EoDtJZ7DCW8jizVZ0Jd0dyvtaTwHiRyqD8t
-        l7KDxBTL2gsd8LWoF2CLf5zUIJz+v4ZKxTCZ4bs=
-X-Google-Smtp-Source: AA6agR4n7pXTzaWGoZwbXMPbML7j3aWjxBABW4Ue2CuqwFbK1YnZzMiGo3Y8jNXuTBWAX9gMGWr6mCabLDZaslxS/Ik=
-X-Received: by 2002:a25:2f0c:0:b0:6a8:f230:12ed with SMTP id
- v12-20020a252f0c000000b006a8f23012edmr15745127ybv.633.1662827541557; Sat, 10
- Sep 2022 09:32:21 -0700 (PDT)
+        with ESMTP id S229716AbiIKGCl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 11 Sep 2022 02:02:41 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF4528E3A;
+        Sat, 10 Sep 2022 23:02:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662876161; x=1694412161;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=X3nGh2deOmHXffMmBLBZLiWJ36kF5JOTAJZQciA1cg8=;
+  b=n/EDAmfiUdXOxMoNDromksGNixPvu20Ovag7jHV87K7wsd/dlJtF/rzE
+   5U5BMtJYxcCFev+fuGomrf9NEuwUO6DoUqtzjgkQqRB46YBXuvOKBp51b
+   lHEYCBBVD9oYWhuGt/AzZOmlJn5WA6MJKk5gQiG9Cpy03L6WAPrg8ULlh
+   rA73/leD0g4er3wXoVudWsIQfneQsL3l0ecDm0cwxtzZ5cq2DcJEa8THx
+   QkK3HHhHmxNiionHbiPi4uijLgGvuU+JCrAw76qd60+96bH3k+PrdUJbM
+   Pdnqb/GyMBOeLzXLS892nMzpH7Pq7HOBLX/ptfnHeF3m47wHbwAhAA/MP
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10466"; a="383992869"
+X-IronPort-AV: E=Sophos;i="5.93,307,1654585200"; 
+   d="scan'208";a="383992869"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2022 23:02:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,307,1654585200"; 
+   d="scan'208";a="758039261"
+Received: from lkp-server02.sh.intel.com (HELO 4011df4f4fd3) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 10 Sep 2022 23:02:39 -0700
+Received: from kbuild by 4011df4f4fd3 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oXG3C-00012t-2V;
+        Sun, 11 Sep 2022 06:02:38 +0000
+Date:   Sun, 11 Sep 2022 14:02:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 58968b7be786652f48f712147e6f71831cfe684e
+Message-ID: <631d79e8.yiStyYaa6aEvt0eJ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com> <YxnwMLvgQAPOkeeK@smile.fi.intel.com>
-In-Reply-To: <YxnwMLvgQAPOkeeK@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 10 Sep 2022 18:32:10 +0200
-Message-ID: <CAJZ5v0j5FO+OcX6VdiR-tuDCrHFwErquxzZGUu3ZLQ1G57T-+Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/8] ACPI: unify _UID handling as integer
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        Khalil Blaiech <kblaiech@nvidia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Robert Moore <robert.moore@intel.com>,
-        Wolfram Sang <wsa@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 8, 2022 at 3:38 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Thu, Sep 08, 2022 at 04:29:02PM +0300, Andy Shevchenko wrote:
-> > This series is about unification on how we handle ACPI _UID when
-> > it's known to be an integer-in-the-string.
-> >
-> > The idea of merging either all via ACPI tree, or taking ACPI stuff
-> > for the v6.1 while the rest may be picked up later on by respective
-> > maintainers separately
->
-> >(currently all depends on Wolfram, other
-> > patches have got the tags from the maintainers).
->
-> I stand corrected, the perf patch is not tagged yet.
->
-> > Partially compile-tested (x86-64).
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 58968b7be786652f48f712147e6f71831cfe684e  Merge branch 'pm-cpufreq' into bleeding-edge
 
-Tentatively applied as 6.1 material.
+elapsed time: 723m
 
-If there are updates, we'll make changes as they go.
+configs tested: 53
+configs skipped: 2
 
-Thanks!
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                        randconfig-a002
+i386                          randconfig-a001
+x86_64                        randconfig-a004
+i386                          randconfig-a003
+x86_64                        randconfig-a006
+i386                          randconfig-a005
+x86_64                           allyesconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+i386                                defconfig
+arc                              allyesconfig
+arc                  randconfig-r043-20220911
+alpha                            allyesconfig
+i386                          randconfig-a014
+s390                 randconfig-r044-20220911
+riscv                randconfig-r042-20220911
+i386                          randconfig-a012
+i386                          randconfig-a016
+i386                             allyesconfig
+x86_64                        randconfig-a013
+m68k                             allyesconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a011
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+powerpc                          allmodconfig
+m68k                             allmodconfig
+x86_64                           rhel-8.3-kvm
+x86_64                        randconfig-a015
+x86_64                    rhel-8.3-kselftests
+arm                                 defconfig
+mips                             allyesconfig
+x86_64                           rhel-8.3-syz
+sh                               allmodconfig
+ia64                             allmodconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+
+clang tested configs:
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+i386                          randconfig-a002
+i386                          randconfig-a004
+x86_64                        randconfig-a005
+i386                          randconfig-a006
+hexagon              randconfig-r041-20220911
+i386                          randconfig-a013
+hexagon              randconfig-r045-20220911
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
