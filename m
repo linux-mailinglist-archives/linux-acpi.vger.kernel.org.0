@@ -2,141 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8E55B50F5
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Sep 2022 21:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30A345B51B7
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 00:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbiIKTu3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 11 Sep 2022 15:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40488 "EHLO
+        id S229759AbiIKW6X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 11 Sep 2022 18:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbiIKTuZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 11 Sep 2022 15:50:25 -0400
-Received: from vorpal.se (unknown [151.236.221.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B5E27B35;
-        Sun, 11 Sep 2022 12:50:15 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id D67E4147E1;
-        Sun, 11 Sep 2022 19:49:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1662925789; bh=EjX3Rg73KBeN14SjHX82ygQM0k4y/OXVynbrjRmSMt4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EoWS+GEyUq6175t18Pmey7kYHnPaXuTZlSalTcBAvtQeJFl21ffXWZbWMyeBSvala
-         idoF1UBdsiuUhlJaJjnO1tTVuSlKTTYEoazl/aj+WnazkfCwbinajjnljwe3bgDNJz
-         vRxqJm3qa2+zFa3OwVibkTcNlV9qmMq7+FJrMN2stdgZLpNPYIltEfMbk9ZHLrII24
-         9zHUl1tC58B6PnJeymB4/wEjshu72T0bSmeDoh7fLrzJf3JZd8T30RgoFj0pgltlqO
-         1VVnOgqq88XxRhDlz856LDwXcfdNST5w1i6kMYTYpMCryD6EwGLr8JyV5oiLwRbyUR
-         FWld8K8V0Dv8w==
-From:   Arvid Norlander <lkml@vorpal.se>
-To:     platform-driver-x86@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        Len Brown <lenb@kernel.org>,
+        with ESMTP id S229815AbiIKW6W (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 11 Sep 2022 18:58:22 -0400
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D066321E14
+        for <linux-acpi@vger.kernel.org>; Sun, 11 Sep 2022 15:58:20 -0700 (PDT)
+Date:   Sun, 11 Sep 2022 22:58:05 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1662937096; x=1663196296;
+        bh=GxW/Dm6QATFPOvatiT3Z7C68ZBjpnugyoRHAYt6E2B8=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=TnfOzs7mKEtD8SEQdFpVu37Bro+iSSANfUPWcl+XqXxvuZEJDmrGaBP9oPWLLPX2+
+         6PoBGozA6f5zT5d44Pt5StlOCHwDDIX3xj11+Czv+6azJFBGQb8S9eDcLibNt7Vmkz
+         WdYGCMEnwskvzW700/Qk6W2QG+2Vgid9zQWFD+W6JVIbNOHDA828idb3w9gmD/g9cN
+         gcW4ydwrYFVm/D4Rx3YlR/X8RfsB9xDowvusch0HeJP8bvgOfhZrouWh7bLA0ozw9+
+         JWY7IfhIIVYXPZNo0Le6/TAMcGHTC9XoePoTolN5F8cJvjeQM2cJRsETqh15No5cuc
+         7vvmCl/vUKbwg==
+To:     Arvid Norlander <lkml@vorpal.se>
+From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc:     platform-driver-x86@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-input@vger.kernel.org, Azael Avalos <coproscefalo@gmail.com>,
-        Arvid Norlander <lkml@vorpal.se>
-Subject: [PATCH RFC 2/2] platform/x86: toshiba_acpi: Add quirk for buttons on Z830
-Date:   Sun, 11 Sep 2022 21:49:34 +0200
-Message-Id: <20220911194934.558019-3-lkml@vorpal.se>
-X-Mailer: git-send-email 2.37.3
+        linux-input@vger.kernel.org, Azael Avalos <coproscefalo@gmail.com>
+Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Subject: Re: [PATCH RFC 0/2] Quickstart buttons driver and Toshiba Z830
+Message-ID: <n4eOueQW9oL86xdHuyF_thrcz7rwRvVavkwXIM1_BfIZcDwQjWDSoPTDMppNhfHxhISs_hVTTbBOolGV2plbmfkWv6V61Uv_hR7l1dzwzYA=@protonmail.com>
 In-Reply-To: <20220911194934.558019-1-lkml@vorpal.se>
 References: <20220911194934.558019-1-lkml@vorpal.se>
+Feedback-ID: 20568564:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR,T_SPF_TEMPERROR
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Z830 has some buttons that will only work properly as "quickstart"
-buttons. To enable them in that mode, a value between 1 and 7 must be
-used for HCI_HOTKEY_EVENT. Windows uses 0x5 on this laptop so use that for
-maximum predictability and compatibility.
 
-As there is not yet a known way of auto detection, this patch uses a DMI
-quirk table. A module parameter is exposed to allow setting this on other
-models for testing.
+2022. szeptember 11., vas=C3=A1rnap 21:49 keltez=C3=A9ssel, Arvid Norlander=
+ =C3=ADrta:
 
-Signed-off-by: Arvid Norlander <lkml@vorpal.se>
----
- drivers/platform/x86/toshiba_acpi.c | 31 ++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+> [...]
+>
+> 1. Summary of standard
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Here is a brief high level summary of the standard for PNP0C32. See
+> https://archive.org/details/microsoft-acpi-dirapplaunch for the full
+> standard.
+>
+> PNP0C32 devices are "Direct Application Launch" buttons. The idea is that
+> they should work while the laptop is in various sleep modes (or even off)=
+.
+> The Z830 does not support waking from any sleep mode using these buttons,
+> it only supports them while it is awake.
+>
 
-diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
-index 9f1394b73895..dce1f5049bf8 100644
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -58,6 +58,11 @@ module_param(turn_on_panel_on_resume, int, 0644);
- MODULE_PARM_DESC(turn_on_panel_on_resume,
- 	"Call HCI_PANEL_POWER_ON on resume (-1 = auto, 0 = no, 1 = yes");
- 
-+static int hci_hotkey_quickstart = -1;
-+module_param(hci_hotkey_quickstart, int, 0644);
-+MODULE_PARM_DESC(hci_hotkey_quickstart,
-+	"Call HCI_HOTKEY_EVENT with value 0x5 for quickstart button support (-1 = auto, 0 = no, 1 = yes");
-+
- #define TOSHIBA_WMI_EVENT_GUID "59142400-C6A3-40FA-BADB-8A2652834100"
- 
- /* Scan code for Fn key on TOS1900 models */
-@@ -137,6 +142,7 @@ MODULE_PARM_DESC(turn_on_panel_on_resume,
- #define HCI_ACCEL_MASK			0x7fff
- #define HCI_ACCEL_DIRECTION_MASK	0x8000
- #define HCI_HOTKEY_DISABLE		0x0b
-+#define HCI_HOTKEY_ENABLE_QUICKSTART	0x05
- #define HCI_HOTKEY_ENABLE		0x09
- #define HCI_HOTKEY_SPECIAL_FUNCTIONS	0x10
- #define HCI_LCD_BRIGHTNESS_BITS		3
-@@ -2731,10 +2737,15 @@ static int toshiba_acpi_enable_hotkeys(struct toshiba_acpi_dev *dev)
- 		return -ENODEV;
- 
- 	/*
-+	 * Enable quickstart buttons if supported.
-+	 *
- 	 * Enable the "Special Functions" mode only if they are
- 	 * supported and if they are activated.
- 	 */
--	if (dev->kbd_function_keys_supported && dev->special_functions)
-+	if (hci_hotkey_quickstart)
-+		result = hci_write(dev, HCI_HOTKEY_EVENT,
-+				   HCI_HOTKEY_ENABLE_QUICKSTART);
-+	else if (dev->kbd_function_keys_supported && dev->special_functions)
- 		result = hci_write(dev, HCI_HOTKEY_EVENT,
- 				   HCI_HOTKEY_SPECIAL_FUNCTIONS);
- 	else
-@@ -3287,6 +3298,21 @@ static const struct dmi_system_id turn_on_panel_on_resume_dmi_ids[] = {
- 	},
- };
- 
-+/*
-+ * Some Toshibas use "quickstart" keys. On these, HCI_HOTKEY_EVENT must use
-+ * the value HCI_HOTKEY_ENABLE_QUICKSTART.
-+ */
-+static const struct dmi_system_id hci_hotkey_quickstart_dmi_ids[] = {
-+	{
-+	 /* Toshiba Satellite/Portégé Z830 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "Z830"),
-+		},
-+	},
-+};
-+
-+
- static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- {
- 	struct toshiba_acpi_dev *dev;
-@@ -3447,6 +3473,9 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- 	if (turn_on_panel_on_resume == -1)
- 		turn_on_panel_on_resume = dmi_check_system(turn_on_panel_on_resume_dmi_ids);
- 
-+	if (hci_hotkey_quickstart == -1)
-+		hci_hotkey_quickstart = dmi_check_system(hci_hotkey_quickstart_dmi_ids);
-+
- 	toshiba_wwan_available(dev);
- 	if (dev->wwan_supported)
- 		toshiba_acpi_setup_wwan_rfkill(dev);
--- 
-2.37.3
+Hi
 
+I might be way off here, but could it not be that one has to enable/allow
+the device to be able to wake the system up? Or did you test it on windows
+as well and it did not work there either?
+
+
+Regards,
+Barnab=C3=A1s P=C5=91cze
+
+> Each PNP0C32 device represents a single button. Their meaning is complete=
+ly
+> vendor defined. On Windows you can either:
+> * Make them launch an application when pressed (defined in the registry)
+> * Or an application can subscribe to specific Window messages to get
+> notified when they are pressed (this is how they are used by the Toshiba
+> software).
+> [...]
