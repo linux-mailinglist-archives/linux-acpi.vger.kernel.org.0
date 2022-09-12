@@ -2,94 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7445B625C
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 22:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 544F85B6327
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 23:56:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229956AbiILUt7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Sep 2022 16:49:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47988 "EHLO
+        id S229762AbiILV4d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Sep 2022 17:56:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbiILUtz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 16:49:55 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 511F9E0E7;
-        Mon, 12 Sep 2022 13:49:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0A6B1B80CBF;
-        Mon, 12 Sep 2022 20:49:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA50C43470;
-        Mon, 12 Sep 2022 20:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663015790;
-        bh=UgN3+C6I2jy2LKJA5gbgkhfH1TYB7W6z2KdhdYv0SFQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WQ1/QN61hES59nfphrDpfQHbiETTHjQ1u/9WWfBXhtONVcoDgM0fZMqzL12MN4s9c
-         jpbXLtrceBTPSnE/8wP1tA5NgdoxCMxyMpSskjZiMA94WALAITC1A6U0S0E+4nRJ9r
-         VtQnoHOQKfX9QRR1QrNRftv3O5D/F226oQCLRzxcktNGi/buiuO/rJTajaor/JgKKd
-         NcA/wXhHP2miGvZO9vFw0RxJYrNSS9d+9StY4rmW0h02KUPmw8aE1bD7ze0WETbt1g
-         coDE+j2kl/XWVQL9u03AKm5N5Eaj03FvG79EBXJC/cQChmjxq8X2Cb1Y7vbzy0rF+S
-         +vnvTxa0BjUog==
-Date:   Mon, 12 Sep 2022 21:49:47 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        devel@acpica.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        Khalil Blaiech <kblaiech@nvidia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Robert Moore <robert.moore@intel.com>
-Subject: Re: [PATCH v2 5/8] i2c: mlxbf: Refactor _UID handling to use
- acpi_dev_uid_to_integer()
-Message-ID: <Yx+ba9u7pUASjsOh@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org, devel@acpica.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        Khalil Blaiech <kblaiech@nvidia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Robert Moore <robert.moore@intel.com>
-References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
- <20220908132910.62122-6-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S230060AbiILV42 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 17:56:28 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2DBC4DB19;
+        Mon, 12 Sep 2022 14:56:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+        bh=qeScmlSI8Hi8VVYRvf9aNKdlS+V7Mh8b/pcQ1tMazl4=; b=h0TIXi8rk3Oq+o1oppxN9crjkW
+        I6+Vy0ALGJv3j1R0EsfAgysvp9GJC0NXpqoh+4uyIyyscGZuw56P5cfq14tRXa6Fy04uPsbiotmR7
+        g3vZ/sl1+OsiYl32F0lPYvjvhZH6Z4pJPaPytub1uV0IjDFk+EageOIjDC3+Qq/aPISDnEaLZ0fIC
+        pgR25ntwkSeL8ul/g47jKm342pdTw1C3vtmgiv7ULwodTPnh+SbQHTiQQ30Kcys+ofQwql2B5pGVA
+        LEJk1740hi5XuHAnSCcJkPZrLVI0pcACUQbP+QTtZOYQwzdR/Xi0OTIJMzasxIxEUIXbaD1YcHue2
+        zXSP2PpQ==;
+Received: from [2601:1c0:6280:3f0::a6b3]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1oXrPY-00EPu2-Lx; Mon, 12 Sep 2022 21:56:13 +0000
+Message-ID: <b1b794b4-f6c3-7697-5d5a-b811809a9313@infradead.org>
+Date:   Mon, 12 Sep 2022 14:56:10 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="a0qCJfjONDTI+fsG"
-Content-Disposition: inline
-In-Reply-To: <20220908132910.62122-6-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH 5/5] platform/x86: dell: Add new dell-wmi-ddv driver
+Content-Language: en-US
+To:     Armin Wolf <W_Armin@gmx.de>, hdegoede@redhat.com,
+        markgross@kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
+        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
+        productdev@system76.com, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220912125342.7395-1-W_Armin@gmx.de>
+ <20220912125342.7395-6-W_Armin@gmx.de>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220912125342.7395-6-W_Armin@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,40 +56,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi--
 
---a0qCJfjONDTI+fsG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 9/12/22 05:53, Armin Wolf wrote:
+> diff --git a/drivers/platform/x86/dell/Kconfig b/drivers/platform/x86/dell/Kconfig
+> index 25421e061c47..209e63e347e2 100644
+> --- a/drivers/platform/x86/dell/Kconfig
+> +++ b/drivers/platform/x86/dell/Kconfig
+> @@ -189,6 +189,19 @@ config DELL_WMI_DESCRIPTOR
+>  	default n
+>  	depends on ACPI_WMI
+> 
+> +config DELL_WMI_DDV
+> +	tristate "Dell WMI sensors Support"
+> +	default m
 
-On Thu, Sep 08, 2022 at 04:29:07PM +0300, Andy Shevchenko wrote:
-> ACPI utils provide acpi_dev_uid_to_integer() helper to extract _UID as
-> an integer. Use it instead of custom approach.
->=20
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+You should (try to) justify default m, otherwise just
+don't have a default for it.
 
-Acked-by: Wolfram Sang <wsa@kernel.org>
+> +	depends on ACPI_BATTERY
+> +	depends on ACPI_WMI
+> +	help
+> +	  This option adds support for WMI-based sensors like
+> +	  battery temperature sensors found on some Dell notebooks.
+> +	  It also supports reading of the batteries ePPID.
+> +
+> +	  To compile this drivers as a module, choose M here: the module will
+> +	  be called dell-wmi-ddv.
 
-
---a0qCJfjONDTI+fsG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmMfm2sACgkQFA3kzBSg
-KbbJahAAlddNw8oAIOtzHCY+oWXUoegf6GauKe69t1C+izLWXeOmRubobDgpPdVX
-W2Ys5JH2bOhl509CZYHG+4D+QOeO7AKcMhF+ZRoip6bBtTnq0bN07PDwjEztkaU2
-9BGDci1XgEr0Y4S2GY3/BJTFXVBuLx+iAMngQrXzv9CGLliggW/GUrHoKCdZkIH9
-9CuIIu4sd4FTfCWXvp3ehN7KMRNtUueW6nRvrFycxUmQSNMdMzAX9FY/1mQSFwEP
-arR6FPpwqafToNlyQoYx538SC/iL3LDGRhZHlpRsAus3gOVeCNmb4Wg+3OcKK8JE
-xJETvOwONGo5JCjylOUEmR0A/c3CxinldJ8WQ/3Z7/t3cVW1PzMX7aeFrB3oZB08
-p3ZbqspitutuBoVWY8PhOPtPsytCq7LRoMm3M5WtxDYp5JvYGMg3hS7Z0s7Cn4C5
-Bu8KHnYlZc6vzAFO5+6TitF6CR3tt+Q2itM92vbbCWdesVdQg4c2hbsbeYx0Zkew
-ulEg/xGbDmyvYWlcojjMhFwRJ3DfJ/kL+0KeCZOenXeyVpk7cDZR45One4S1BX3e
-f+f3Unf4Os7ScPyOA8S23aPwJZHH9+A3exYzO4g5l2lvgmZS/f34I+p9m4xnKIva
-tvD2jxk7pJz3eePXV9z1NSNv+oikQeou/3RvWyJ899OnDGsknas=
-=npcM
------END PGP SIGNATURE-----
-
---a0qCJfjONDTI+fsG--
+-- 
+~Randy
