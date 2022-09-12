@@ -2,111 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F226D5B588B
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 12:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D38AE5B5A83
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 14:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229754AbiILKjN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Sep 2022 06:39:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37704 "EHLO
+        id S229542AbiILMyA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Sep 2022 08:54:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbiILKjL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 06:39:11 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CAED21241;
-        Mon, 12 Sep 2022 03:39:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662979151; x=1694515151;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=w3vFwdYLxWsQ9bEvrr+2hHC3zOoyKWcZ+8GtDAo7dCU=;
-  b=FUx8SQDi+VRECKMNKEnrPkpJ8h77lUkDB8/1EhzRLRgCAce1DSqj4Ind
-   BPryJaJGJCURHbm3FycsO0pHttBthL2JYA3Gc3pyWRDDVwFzFM057WQ/0
-   q5e6cwGM4zx5BpkcOPdjxOeoA9PF0iigpQA+r5z5sc18qGcSg7Yxi+Lvs
-   02wmm6NEf9vXY/qVbeDUhq6JUtaIxBdRlMjKO2DYAH3LZfb+aLw9OE1B8
-   xcOSLczz7hBLTMW+a9Akn5SICrseaiOI62IR4CP3zubvMvh3b6Qoh2Ku7
-   M2uIDcFwt2hl7feJvxAJDH/pr7tI4wMYII6D4GU7+zKl+blDsBia4UnCg
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10467"; a="359558492"
-X-IronPort-AV: E=Sophos;i="5.93,310,1654585200"; 
-   d="scan'208";a="359558492"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 03:39:10 -0700
-X-IronPort-AV: E=Sophos;i="5.93,310,1654585200"; 
-   d="scan'208";a="719712154"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 03:39:04 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oXgqC-001Irg-2C;
-        Mon, 12 Sep 2022 13:39:00 +0300
-Date:   Mon, 12 Sep 2022 13:39:00 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Len Brown <lenb@kernel.org>, Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        Khalil Blaiech <kblaiech@nvidia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Robert Moore <robert.moore@intel.com>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: Re: [PATCH v2 0/8] ACPI: unify _UID handling as integer
-Message-ID: <Yx8MRPxPrNG1XRqV@smile.fi.intel.com>
-References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
- <YxnwMLvgQAPOkeeK@smile.fi.intel.com>
- <CAJZ5v0j5FO+OcX6VdiR-tuDCrHFwErquxzZGUu3ZLQ1G57T-+Q@mail.gmail.com>
+        with ESMTP id S229512AbiILMx7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 08:53:59 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5C938698;
+        Mon, 12 Sep 2022 05:53:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1662987224;
+        bh=95JIk+nlCdCOT/oR0LRrrmD4ccWWrV8jyvKWVBS9DT4=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=Vb4Yq7CPnawXCxXbOj45oBr1eKauq2ddERPPxYrzElUMoREjAct1LSttpABT0AMSr
+         vSPYJ9Z88uzI8DmBV4Qqas0A4QV7WEeIxrSSQZSVz9I77UysUd4hhBGWg0352XzWga
+         iYtbG/Sn7XIWG4Yo6j+/F6gpj0WLxcIfYN3HbCrw=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1N8GQy-1pT6nA2ASG-014Ebo; Mon, 12 Sep 2022 14:53:44 +0200
+From:   Armin Wolf <W_Armin@gmx.de>
+To:     hdegoede@redhat.com, markgross@kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
+        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
+        productdev@system76.com, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] platform/x86: dell: Add new dell-wmi-ddv driver
+Date:   Mon, 12 Sep 2022 14:53:37 +0200
+Message-Id: <20220912125342.7395-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0j5FO+OcX6VdiR-tuDCrHFwErquxzZGUu3ZLQ1G57T-+Q@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:q2Fl1nJ8G/jxhgS7uLyaRurElsMZWilswTbSWp73FjyQXX/Pmhf
+ 0YvZVJWLmShpKvTUyvgjzv/U0qF7IiT7oJXe0uN7BWWtJRSGjsHE4Ub+1dFU7XO0wqasHd7
+ s07F9D3E/y6oBWZDNU7J2OEwBNneMhsdWoibETmRWVnuA64enondcCAgkctuwX+BhHcUDY4
+ 73yHz5Vai5RCRnUcNgRHw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:p7YrqshLByU=:FuaodLwb78ccs7+/QdD/xX
+ jBApjhdFa84ZrkHQX6K+gm3DYjIdSJ5wWtCYv4DNa3V8CWdH71a8qlCkfmr0qzxfwkMfOdZQR
+ QbAcJe/qZDeP9yjRh/4NwfgmGyLK7bgkBaG83i3bA9C4O7RUvtPht5TeaZmEf5H/kq+KTBeKu
+ 5zDJDeZLqgbT/wxh4rbw+AfGFdsi8EarTJndoRJomg2z9fi+qcHHEt8n5Qm5eJcZdvm0S2d+E
+ KFdan3Y64IBG7p5si0Qd4AItN0Z7z0WljEGVvoPU9xg/C1VPwc4dUdHN6w5qwPScK4eMveA9+
+ pR6OPgQQrxtpTOmX2UK0+V5Vt9boNobceJRyu7710gU8A/Q97HM69qN+rk4JwVyuddY8rlilG
+ pL+tiJtnsGotEtags4PgdXs7RfXrS7IYi8cdTv1ihqBF44Hy50kXEI0S/nmcv8gmIrF3+1D+/
+ XvkGdO59kY66aeNj7WxvEVBGWsfzt9xHfVuj3BZ5wUcVRsEIxFNXwIJLofE/7Te1aH6e5a+jo
+ g0aAoCi6DJq4fwyqgtl+oefLcBXTNhfVTsLpQO9YRqDRuNwSBt5e8tGuTDNfn5hSfUVM9FiKn
+ QCBi4okWftVtxArWxI8ySSjohrFSUOnTV7zU+ZCJRTW4mn9ROMcV7f1uMYjvAkzeshA1jdPq2
+ 6DCyc75Zhs20XfhsgClepyOHregte8baMsU/t6v5FwT+nbut/o7xNveOWGxhbLt0Bo/xh/Ovk
+ bmW8IDuL73B8YdXfpqBQXt0x8u96YdH+Z8mxI+kulL2SqCJa+wnt1E4xfaEXXIMRUOHdP7cdu
+ H2fxD10AYtQmnXtWYZbnddXBV+BX7glCAqzcm+Ym0n4NLUthvg9Ns08xQI9snovXgg2xG1PXj
+ 7eiJkBiI1t4UBPpDfmXlYTU1tC6lRJuJoA6Pb67akmje9pEsqsqcisVbhr+ubMEdUZ+9eGIN0
+ sBLaurUpnu9b3mKDZW/tWQFJl+He4MoolnqHTbPot86ZUc+XRvTN5hQamzmrARb7AF+rkdhR7
+ VMxo9Lxy2RCpCIWl/O0/zAQF3XC9khIITtA7acrvJR/MNZakTULXWbIGtsPJildwqi3cnCyVn
+ kvxoxJh5zqPSJR3duA0DCw1X3k37hHyZdxFJC/RrhX7bt/QmhJ3Jdad1SNidDoUMinbsLaqHI
+ vI0Cvym3NEqgMCygwGhtPnXN4b
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Sep 10, 2022 at 06:32:10PM +0200, Rafael J. Wysocki wrote:
-> On Thu, Sep 8, 2022 at 3:38 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
+This patch series adds a new driver for a WMI interface found in
+many newer Dell machines. This interface allows to read battery
+properties like temperature and the ePPID (Dell-specific), while
+also providing fan and thermal sensor information.
 
-...
+The interface does support multiple batteries which are indetified
+by an "index", which appears to be the batteries ACPI UID. Since
+the interface also appears to omit any bounts checking of the
+index, the ACPI battery hook mechanism is used to discover batteries.
 
-> Tentatively applied as 6.1 material.
+Since the information returned when querying fan/thermal sensor
+information is currently unknown, a debugfs entry is created to
+allow for easier reverse engineering. The interface is likely
+to be replaced by a proper hwmon interface in the future.
 
-Thanks!
+Since the driver can potentially be instantiated mutplie times,
+the ACPI battery hook mechanism had to be extended.
 
-> If there are updates, we'll make changes as they go.
+The first two patches allow that battery hooks are not unloaded
+if they return an error when a battery was added, so that they
+can safely return -ENODEV.
 
-There is one at least to fix a warning in the perf patch. Should I resend
-a fixed patch, just a fix, or entire series with a fixed patch?
+The next two patches extend the battery hook mechanism to better
+support drivers which can be instantiated mupltible times.
 
+The last patch finally adds the new driver. It was called
+dell-wmi-ddv since the interface is called "DDV" by Dell software,
+likely meaning "Dell Data Vault".
 
--- 
-With Best Regards,
-Andy Shevchenko
+The driver was tested, together with the changes made to the
+ACPI battery driver, on a Dell Inspiron 3505. Other drivers
+already using the battery hook mechanism where changed as well,
+but could only be compile-tested due to missing hardware.
 
+Armin Wolf (5):
+  ACPI: battery: Do not unload battery hooks on single error
+  ACPI: battery: Simplify battery_hook_unregister()
+  ACPI: battery: Allow battery hooks to be registered multiple times.
+  ACPI: battery: Allow for passing data to battery hooks.
+  platform/x86: dell: Add new dell-wmi-ddv driver
+
+ .../ABI/testing/debugfs-dell-wmi-ddv          |  21 +
+ .../ABI/testing/sysfs-platform-dell-wmi-ddv   |  16 +
+ MAINTAINERS                                   |   7 +
+ drivers/acpi/battery.c                        |  59 ++-
+ drivers/platform/x86/asus-wmi.c               |  20 +-
+ drivers/platform/x86/dell/Kconfig             |  13 +
+ drivers/platform/x86/dell/Makefile            |   1 +
+ drivers/platform/x86/dell/dell-wmi-ddv.c      | 365 ++++++++++++++++++
+ drivers/platform/x86/huawei-wmi.c             |  15 +-
+ drivers/platform/x86/lg-laptop.c              |  14 +-
+ drivers/platform/x86/system76_acpi.c          |  22 +-
+ drivers/platform/x86/thinkpad_acpi.c          |  15 +-
+ drivers/platform/x86/wmi.c                    |   1 +
+ include/acpi/battery.h                        |  12 +-
+ 14 files changed, 504 insertions(+), 77 deletions(-)
+ create mode 100644 Documentation/ABI/testing/debugfs-dell-wmi-ddv
+ create mode 100644 Documentation/ABI/testing/sysfs-platform-dell-wmi-ddv
+ create mode 100644 drivers/platform/x86/dell/dell-wmi-ddv.c
+
+=2D-
+2.30.2
 
