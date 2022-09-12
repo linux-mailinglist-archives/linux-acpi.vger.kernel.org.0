@@ -2,53 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 544F85B6327
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 23:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 241FB5B6353
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 00:13:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229762AbiILV4d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Sep 2022 17:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43410 "EHLO
+        id S229575AbiILWNp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Sep 2022 18:13:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230060AbiILV42 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 17:56:28 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2DBC4DB19;
-        Mon, 12 Sep 2022 14:56:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=qeScmlSI8Hi8VVYRvf9aNKdlS+V7Mh8b/pcQ1tMazl4=; b=h0TIXi8rk3Oq+o1oppxN9crjkW
-        I6+Vy0ALGJv3j1R0EsfAgysvp9GJC0NXpqoh+4uyIyyscGZuw56P5cfq14tRXa6Fy04uPsbiotmR7
-        g3vZ/sl1+OsiYl32F0lPYvjvhZH6Z4pJPaPytub1uV0IjDFk+EageOIjDC3+Qq/aPISDnEaLZ0fIC
-        pgR25ntwkSeL8ul/g47jKm342pdTw1C3vtmgiv7ULwodTPnh+SbQHTiQQ30Kcys+ofQwql2B5pGVA
-        LEJk1740hi5XuHAnSCcJkPZrLVI0pcACUQbP+QTtZOYQwzdR/Xi0OTIJMzasxIxEUIXbaD1YcHue2
-        zXSP2PpQ==;
-Received: from [2601:1c0:6280:3f0::a6b3]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oXrPY-00EPu2-Lx; Mon, 12 Sep 2022 21:56:13 +0000
-Message-ID: <b1b794b4-f6c3-7697-5d5a-b811809a9313@infradead.org>
-Date:   Mon, 12 Sep 2022 14:56:10 -0700
+        with ESMTP id S230138AbiILWNo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 18:13:44 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8B34DB73
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Sep 2022 15:13:41 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id l6so5276354ilk.13
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Sep 2022 15:13:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=WtBz2ZjAbdVsCXaJ14UBh6dPKQNQTEXbXV+WGkY+jwg=;
+        b=nfBNhUl+5qqTsJR9FKSY2gYY9fcN0IrZCSEpHl+lpRb/6P9ffCToyjYvaHnUQTneH2
+         0s6d7JIfEG3LJ2CuHlrfcg2lwaYvYAXOm+BfilrDAIFQDpaecYlgWf9V3OvQSIJ7hub2
+         bCLpWIF4W6FmS40ggFgGwjD1YL2JGLpYRqHK4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=WtBz2ZjAbdVsCXaJ14UBh6dPKQNQTEXbXV+WGkY+jwg=;
+        b=47bNOarlX8uWQW0FxCV0HUgUORVAm0HQxy88Zr3b+3uz5KU/wH43q2cGRMeqaVEQrS
+         3Aa8guHSpkuJK/EnOg1rWhN+QF6K3fIqjQSM5sp4AqgYH4cBQUCKkzDf1g/Xb9rkQiXA
+         T+bBo9tvVULRhG0CuybA6EYZ6BeSuOhqQEihDimbW++M8+oxW4+obWPo7cASrsFjKgxd
+         zzH4PBqD2FDLhy732TETxZemrp5rk4bPKIwF+JwEo94g0nTbb96Tigk8BGpSXKGHFH4r
+         DdnyEuUvnr3MiBtdhInmJliE2rE9cpQ8Vcz+erCVmx0HOf5cJK4p9xbuw9SifHjFtT95
+         Q5Bw==
+X-Gm-Message-State: ACgBeo3ES5m0oLJiu0zQ3dTWdQ2PH6O9XMKS1Jnoj6BWNKV78/tEsnLQ
+        gIcOGwL8zoN1EdiejUE9P5kD4R9dDnmTAxnu
+X-Google-Smtp-Source: AA6agR6Mhax5MMnlQWw37OVm7KiDOL5L2o75oFtVGCDfR+WbrOVoGhj25OvXnu4kb3JI1EKMPCKW0w==
+X-Received: by 2002:a05:6e02:214b:b0:2ec:f24f:5272 with SMTP id d11-20020a056e02214b00b002ecf24f5272mr11230667ilv.169.1663020819876;
+        Mon, 12 Sep 2022 15:13:39 -0700 (PDT)
+Received: from rrangel920.bld.corp.google.com (h24-56-189-219.arvdco.broadband.dynamic.tds.net. [24.56.189.219])
+        by smtp.gmail.com with ESMTPSA id 18-20020a056e020cb200b002f16e7021f6sm4077334ilg.22.2022.09.12.15.13.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Sep 2022 15:13:38 -0700 (PDT)
+From:   Raul E Rangel <rrangel@chromium.org>
+To:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org
+Cc:     andriy.shevchenko@linux.intel.com, jingle.wu@emc.com.tw,
+        mario.limonciello@amd.com, timvp@google.com,
+        linus.walleij@linaro.org, hdegoede@redhat.com, rafael@kernel.org,
+        Raul E Rangel <rrangel@chromium.org>,
+        Alistair Francis <alistair@alistair23.me>,
+        Angela Czubak <acz@semihalf.com>,
+        Asmaa Mnebhi <asmaa@nvidia.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Thompson <davthompson@nvidia.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Johnny Chuang <johnny.chuang.emc@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Len Brown <lenb@kernel.org>, Lu Wei <luwei32@huawei.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Terry Bowman <terry.bowman@amd.com>,
+        Wolfram Sang <wsa@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH v2 00/13] acpi: i2c: Use SharedAndWake and ExclusiveAndWake to enable wake irq
+Date:   Mon, 12 Sep 2022 16:13:04 -0600
+Message-Id: <20220912221317.2775651-1-rrangel@chromium.org>
+X-Mailer: git-send-email 2.37.2.789.g6183377224-goog
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [PATCH 5/5] platform/x86: dell: Add new dell-wmi-ddv driver
-Content-Language: en-US
-To:     Armin Wolf <W_Armin@gmx.de>, hdegoede@redhat.com,
-        markgross@kernel.org
-Cc:     rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
-        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
-        productdev@system76.com, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220912125342.7395-1-W_Armin@gmx.de>
- <20220912125342.7395-6-W_Armin@gmx.de>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20220912125342.7395-6-W_Armin@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,33 +92,114 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi--
 
-On 9/12/22 05:53, Armin Wolf wrote:
-> diff --git a/drivers/platform/x86/dell/Kconfig b/drivers/platform/x86/dell/Kconfig
-> index 25421e061c47..209e63e347e2 100644
-> --- a/drivers/platform/x86/dell/Kconfig
-> +++ b/drivers/platform/x86/dell/Kconfig
-> @@ -189,6 +189,19 @@ config DELL_WMI_DESCRIPTOR
->  	default n
->  	depends on ACPI_WMI
-> 
-> +config DELL_WMI_DDV
-> +	tristate "Dell WMI sensors Support"
-> +	default m
+Today, i2c drivers are making the assumption that their IRQs can also
+be used as wake IRQs. This isn't always the case and it can lead to
+spurious wakes. This has recently started to affect AMD Chromebooks.
+With the introduction of
+d62bd5ce12d7 ("pinctrl: amd: Implement irq_set_wake"), the AMD GPIO
+controller gained the capability to set the wake bit on each GPIO. The
+ACPI specification defines two ways to inform the system if a device is
+wake capable:
+1) The _PRW object defines the GPE that can be used to wake the system.
+2) Setting ExclusiveAndWake or SharedAndWake in the _CRS GpioInt.
 
-You should (try to) justify default m, otherwise just
-don't have a default for it.
+Currently only the first method is supported. The i2c drivers don't have
+any indication that the IRQ is wake capable, so they guess. This causes
+spurious interrupts, for example:
+* We have an ACPI HID device that has `_PR0` and `_PR3`. It doesn't have
+  `_PRW` or `ExclusiveAndWake` so that means the device can't wake the
+  system.
+* The IRQ line is active level low for this device and is pulled up by
+  the power resource defined in `_PR0`/`_PR3`.
+* The i2c driver will (incorrectly) arm the GPIO for wake by calling
+  `enable_irq_wake` as part of its suspend hook.
+* ACPI will power down the device since it doesn't have a wake GPE
+  associated with it.
+* When the device is powered down, the IRQ line will drop, and it will
+  trigger a wake event.
 
-> +	depends on ACPI_BATTERY
-> +	depends on ACPI_WMI
-> +	help
-> +	  This option adds support for WMI-based sensors like
-> +	  battery temperature sensors found on some Dell notebooks.
-> +	  It also supports reading of the batteries ePPID.
-> +
-> +	  To compile this drivers as a module, choose M here: the module will
-> +	  be called dell-wmi-ddv.
+See the following debug log:
+[   42.335804] PM: Suspending system (s2idle)
+[   42.340186] amd_gpio AMD0030:00: RX: Setting wake for pin 89 to enable
+[   42.467736]     power-0416 __acpi_power_off      : Power resource [PR00] turned off
+[   42.467739] device_pm-0280 device_set_power      : Device [H05D] transitioned to D3cold
+[   42.475210] PM: pm_system_irq_wakeup: 11 triggered pinctrl_amd
+[   42.535293] PM: Wakeup unrelated to ACPI SCI
+[   42.535294] PM: resume from suspend-to-idle
+
+In order to fix this, we need to take into account the wake capable bit
+defined on the Interrupt/GpioInt. This is accomplished by:
+* Migrating some of the i2c drivers over to using the PM subsystem to
+  manage the wake IRQ.
+* Expose the wake_capable bit from the ACPI Interrupt/GpioInt resource
+  to the  i2c core.
+* Use the wake_capable bit in the i2c core to call
+  `dev_pm_set_wake_irq`. This reuses the existing device tree flow.
+* Make the i2c drivers stop calling `dev_pm_set_wake_irq` since it's now
+  handled by the i2c core.
+* Make the ACPI device PM system aware of the wake_irq. This is
+  necessary so the device doesn't incorrectly get powered down when a
+  wake_irq is enabled.
+
+I've tested this code with various combinations of having _PRW,
+ExclusiveAndWake and power resources all defined or not defined, but it
+would be great if others could test this out on their hardware.
+
+I'm sure this will surface some devices where the IRQs were not
+correctly marked as wake capable. Ideally the firmware can be fixed, but
+if not we can work around this in the kernel by providing a board
+specific `struct i2c_board_info` with the `I2C_CLIENT_WAKE` flag set.
+See `chromeos_laptop.c` for an example of matching DMI properties and
+setting the `I2C_CLIENT_WAKE` override.
+
+Thanks,
+Raul
+
+Changes in v2:
+- Added elants_i2c to series
+- Added raydium_ts_i2c to series
+- Fixed call site in mlxbf_gige_probe
+- Added ability to extract wake bit from Interrupt/IRQ resources
+- Look at wake_cabple bit for IRQ/Interrupt resources
+- I chose not to keep the legacy code around since systems without DT or ACPI should be rare.
+
+Raul E Rangel (13):
+  HID: i2c-hid: Use PM subsystem to manage wake irq
+  Input: elan_i2c - Use PM subsystem to manage wake irq
+  Input: elants_i2c - Use PM subsystem to manage wake irq
+  Input: raydium_ts_i2c - Use PM subsystem to manage wake irq
+  gpiolib: acpi: Add wake_capable parameter to acpi_dev_gpio_irq_get_by
+  ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
+  i2c: acpi: Use ACPI wake capability bit to set wake_irq
+  ACPI: PM: Take wake IRQ into consideration when entering
+    suspend-to-idle
+  HID: i2c-hid: acpi: Stop setting wakeup_capable
+  HID: i2c-hid: Don't set wake_capable and wake_irq
+  Input: elan_i2c - Don't set wake_capable and wake_irq
+  Input: elants_i2c - Don't set wake_capable and wake_irq
+  Input: raydium_ts_i2c - Don't set wake_capable and wake_irq
+
+ drivers/acpi/device_pm.c                      | 19 +++++++++-
+ drivers/acpi/irq.c                            | 11 ++++--
+ drivers/acpi/resource.c                       | 24 ++++++++----
+ drivers/gpio/gpio-pca953x.c                   |  3 +-
+ drivers/gpio/gpiolib-acpi.c                   | 11 +++++-
+ drivers/gpio/gpiolib-acpi.h                   |  2 +
+ drivers/hid/i2c-hid/i2c-hid-acpi.c            |  5 ---
+ drivers/hid/i2c-hid/i2c-hid-core.c            | 24 ++----------
+ drivers/i2c/i2c-core-acpi.c                   | 37 ++++++++++++++-----
+ drivers/i2c/i2c-core-base.c                   |  6 ++-
+ drivers/i2c/i2c-core.h                        |  4 +-
+ drivers/input/mouse/elan_i2c_core.c           | 15 +-------
+ drivers/input/touchscreen/elants_i2c.c        | 13 +------
+ drivers/input/touchscreen/raydium_i2c_ts.c    |  7 +---
+ .../mellanox/mlxbf_gige/mlxbf_gige_main.c     |  3 +-
+ drivers/pnp/pnpacpi/rsparser.c                |  9 +++--
+ include/linux/acpi.h                          | 17 +++++++--
+ include/linux/ioport.h                        |  3 +-
+ 18 files changed, 121 insertions(+), 92 deletions(-)
 
 -- 
-~Randy
+2.37.2.789.g6183377224-goog
+
