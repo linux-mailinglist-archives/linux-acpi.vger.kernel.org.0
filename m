@@ -2,52 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE3185B5C87
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 16:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2291F5B5C8F
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 16:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbiILOm7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Sep 2022 10:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51554 "EHLO
+        id S229514AbiILOoY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Sep 2022 10:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230365AbiILOmV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 10:42:21 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 63EDC3A17B;
-        Mon, 12 Sep 2022 07:42:04 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8E34C113E;
-        Mon, 12 Sep 2022 07:42:10 -0700 (PDT)
-Received: from entos-ampere-02.shanghai.arm.com (entos-ampere-02.shanghai.arm.com [10.169.212.212])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B0DBA3F73D;
-        Mon, 12 Sep 2022 07:41:57 -0700 (PDT)
-From:   Jia He <justin.he@arm.com>
-To:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, Jia He <justin.he@arm.com>
-Subject: [PATCH v6 8/8] EDAC/igen6: Return consistent errno when another edac driver is enabled
-Date:   Mon, 12 Sep 2022 14:40:05 +0000
-Message-Id: <20220912144005.212624-9-justin.he@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220912144005.212624-1-justin.he@arm.com>
-References: <20220912144005.212624-1-justin.he@arm.com>
+        with ESMTP id S230005AbiILOoQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 10:44:16 -0400
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA5F37F8E
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Sep 2022 07:44:12 -0700 (PDT)
+Received: by mail-pg1-x52d.google.com with SMTP id 78so8466754pgb.13
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Sep 2022 07:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=sukhJYoCgew7uoZYP/s1sBJhXsmmbRwwbMiHWcpxCak=;
+        b=hq7HUPwF2uqkoez9+BCSmqUdhwINWlBe4+cCDRS8h8xUs38ncizG1c+KxCaOJplpbQ
+         Rp4RxQhvwkZ0GzFcSQrVkj7Pz61BMy0jFgvLV+8Pag5VDLbXYFGY/yBOIOZv56sWbifI
+         Hm8zxbxX0Iy3aEkx+X49AoosQlokWYultOhdLAwxeK1U26Iq2P4vWOIHbBZ8TTskTvwt
+         QYfykZ2jvz1Exmz8gA+IStgOD4sAIHjPdCXVfG4hkzciCTa0s1OKTr5v8SLTiApu75HV
+         sYlauglGjpmwBXQx9IBOyzPuZrQjifJlE3u7Lc+6dkwzIUko6mCs+ep6QEcJHhuGiFAN
+         N5pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=sukhJYoCgew7uoZYP/s1sBJhXsmmbRwwbMiHWcpxCak=;
+        b=U70CxOIx1iv7aWzeig9z9YQvav1WyXvJlBqmg0CoJjeoaL7mDzOGB+1TVTWcqsoAra
+         rEppIyrjfZHKyYHQihLO2w4ZJy+z4Fma8secp6YWUIMwJAE5eI4OXc0uFHnixHGwedEx
+         pR+V9d8Z+KWB50dr9mDYa0/N0Ul98erLBEN8bKNvtfHjJZojHNvTlyuRdzHeHBF4I5AZ
+         q61gOc2OgAyzblZxRR2OdehLyY5K///yQNhpWwG8g0jhWzFD95PXIQ9KO80cwHvbaUhg
+         MawFoMHwGc81PnKLF88FNO/bjJkOHTRGvAOHC0jTCCMMYaSLehG5H95BBYvhaXIO6cIS
+         K0gg==
+X-Gm-Message-State: ACgBeo1n1mQrflTD3k63pjBV2kmKNRVSTVPczHPWd9l/CHkGTwUFwbDu
+        7/0CCU3H/QesnDZ7rK1qvniHXyV+HL2mcUemhX2hqw==
+X-Google-Smtp-Source: AA6agR7O6vDovGN26sVycLXUycIV5F7LTGHgOYYaxmyct5XRK9tv/Z6ndqSmcU2nA+P8JaEQXq6wd8nolTZXNjmGx40=
+X-Received: by 2002:a63:201c:0:b0:434:8bd6:87e1 with SMTP id
+ g28-20020a63201c000000b004348bd687e1mr24208310pgg.394.1662993851476; Mon, 12
+ Sep 2022 07:44:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220707125329.378277-1-jaz@semihalf.com> <20220707125329.378277-2-jaz@semihalf.com>
+ <CAJZ5v0gdCN3P52ko44LQMqWJvDArHxZ7p4aSiQamML7aG_kRAA@mail.gmail.com>
+ <CAH76GKO9sxnuLM--x6sg7m3bC_NgvLA94N6jHA-+5gW741-ByQ@mail.gmail.com> <CAH76GKMw2rAnQOSFqReG1sEC=sdncWOJHNXn-Rp2Gx1oUZR3ZQ@mail.gmail.com>
+In-Reply-To: <CAH76GKMw2rAnQOSFqReG1sEC=sdncWOJHNXn-Rp2Gx1oUZR3ZQ@mail.gmail.com>
+From:   Grzegorz Jaszczyk <jaz@semihalf.com>
+Date:   Mon, 12 Sep 2022 16:44:00 +0200
+Message-ID: <CAH76GKMtMi-Bp9h_49t5TBwF1cT0AQE=4H+4E+a4SK+cJ4JJ6A@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] suspend: extend S2Idle ops by new notify handler
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Dmytro Maluka <dmy@semihalf.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Dominik Behr <dbehr@google.com>, upstream@semihalf.com,
+        Zide Chen <zide.chen@intel.corp-partner.google.com>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Sachi King <nakato@nakato.io>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:X86 PLATFORM DRIVERS" 
+        <platform-driver-x86@vger.kernel.org>,
+        "open list:HIBERNATION (aka Software Suspend, aka swsusp)" 
+        <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,28 +83,138 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Only a single edac driver can be enabled for EDAC MC. The igen6_init()
-should be returned with EBUSY instead of ENODEV, which is consistent with
-other edac drivers.
+Hi Rafael,
 
-Signed-off-by: Jia He <justin.he@arm.com>
----
- drivers/edac/igen6_edac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Gentle ping
 
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index 4ac6d0c533ec..4646cb72b9f8 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -1276,7 +1276,7 @@ static int __init igen6_init(void)
- 
- 	owner = edac_get_owner();
- 	if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
--		return -ENODEV;
-+		return -EBUSY;
- 
- 	edac_op_state = EDAC_OPSTATE_NMI;
- 
--- 
-2.25.1
+Best regards,
+Grzegorz
 
+pon., 22 sie 2022 o 11:26 Grzegorz Jaszczyk <jaz@semihalf.com> napisa=C5=82=
+(a):
+>
+> Hi Rafael,
+>
+> Could you please kindly comment on the above?
+>
+> Thank you in advance,
+> Grzegorz
+>
+> =C5=9Br., 20 lip 2022 o 15:15 Grzegorz Jaszczyk <jaz@semihalf.com> napisa=
+=C5=82(a):
+> >
+> > wt., 19 lip 2022 o 20:09 Rafael J. Wysocki <rafael@kernel.org> napisa=
+=C5=82(a):
+> > >
+> > > On Thu, Jul 7, 2022 at 2:56 PM Grzegorz Jaszczyk <jaz@semihalf.com> w=
+rote:
+> > > >
+> > > > Currently the LPS0 prepare_late callback is aimed to run as the ver=
+y
+> > > > last thing before entering the S2Idle state from LPS0 perspective,
+> > > > nevertheless between this call and the system actually entering the
+> > > > S2Idle state there are several places where the suspension process =
+could
+> > > > be canceled.
+> > >
+> > > And why is this a problem?
+> > >
+> > > The cancellation will occur only if there is a wakeup signal that
+> > > would otherwise cause one of the CPUs to exit the idle state.  Such a
+> > > wakeup signal can appear after calling the new notifier as well, so
+> > > why does it make a difference?
+> >
+> > It could also occur due to suspend_test. Additionally with new
+> > notifier we could get notification when the system wakes up from
+> > s2idle_loop and immediately goes to sleep again (due to e.g.
+> > acpi_s2idle_wake condition not being met) - in this case relying on
+> > prepare_late callback is not possible since it is not called in this
+> > path.
+> >
+> > >
+> > > > In order to notify VMM about guest entering suspend, extend the S2I=
+dle
+> > > > ops by new notify callback, which will be really invoked as a very =
+last
+> > > > thing before guest actually enters S2Idle state.
+> > >
+> > > It is not guaranteed that "suspend" (defined as all CPUs entering idl=
+e
+> > > states) will be actually entered even after this "last step".
+> >
+> > Since this whole patchset is aimed at notifying the host about a guest
+> > entering s2idle state, reaching this step can be considered as a
+> > suspend "entry point" for VM IMO. It is because we are talking about
+> > the vCPU not the real CPU. Therefore it seems to me, that even if some
+> > other vCPUs could still get some wakeup signal they will not be able
+> > to kick (through s2idle_wake->swake_up_one(&s2idle_wait_head);) the
+> > original vCPU which entered s2idle_loop, triggered the new notifier
+> > and is halted due to handling vCPU exit (and was about to trigger
+> > swait_event_exclusive). So it will prevent the VM's resume process
+> > from being started.
+> >
+> > >
+> > > > Additionally extend the acpi_s2idle_dev_ops by notify() callback so
+> > > > any driver can hook into it and allow to implement its own notifica=
+tion.
+> > > >
+> > > > Taking advantage of e.g. existing acpi_s2idle_dev_ops's prepare/res=
+tore
+> > > > hooks is not an option since it will not allow to prevent race
+> > > > conditions:
+> > > > - VM0 enters s2idle
+> > > > - host notes about VM0 is in s2idle
+> > > > - host continues with system suspension but in the meantime VM0 exi=
+ts
+> > > > s2idle and sends notification but it is already too late (VM could =
+not
+> > > > even send notification on time).
+> > >
+> > > Too late for what?
+> >
+> > Too late to cancel the host suspend process, which thinks that the VM
+> > is in s2idle state while it isn't.
+> >
+> > >
+> > > > Introducing notify() as a very last step before the system enters S=
+2Idle
+> > > > together with an assumption that the VMM has control over guest
+> > > > resumption allows preventing mentioned races.
+> > >
+> > > How does it do that?
+> >
+> > At the moment when VM triggers this new notifier we trap on MMIO
+> > access and the VMM handles vCPU exit (so the vCPU is "halted").
+> > Therefore the VMM could control when it finishes such handling and
+> > releases the vCPU again.
+> >
+> > Maybe adding some more context will be helpful. This patchset was
+> > aimed for two different scenarios actually:
+> > 1) Host is about to enter the suspend state and needs first to suspend
+> > VM with all pass-through devices. In this case the host waits for
+> > s2idle notification from the guest and when it receives it, it
+> > continues with its own suspend process.
+> > 2) Guest could be a "privileged" one (in terms of VMM) and when the
+> > guest enters s2idle state it notifies the host, which in turn triggers
+> > the suspend process of the host.
+> >
+> > >
+> > > It looks like you want suspend-to-idle to behave like S3 and it won't=
+.
+> >
+> > In a way, yes, we compensate for the lack of something like PM1_CNT to
+> > trap on for detecting that the guest is suspending.
+> > We could instead force the guest to use S3 but IMO it is undesirable,
+> > since it generally does make a difference which suspend mode is used
+> > in the guest, s2idle or S3, e.g some drivers check which suspend type
+> > is used and based on that behaves differently during suspend. One of
+> > the example is:
+> > https://elixir.bootlin.com/linux/v5.18.12/source/drivers/gpu/drm/amd/am=
+dgpu/amdgpu_drv.c#L2323
+> > https://elixir.bootlin.com/linux/v5.18.12/source/drivers/gpu/drm/amd/am=
+dgpu/amdgpu_acpi.c#L1069
+> > https://elixir.bootlin.com/linux/v5.18.12/source/drivers/gpu/drm/amd/am=
+dgpu/amdgpu_gfx.c#L583
+> >
+> > Thank you,
+> > Grzegorz
