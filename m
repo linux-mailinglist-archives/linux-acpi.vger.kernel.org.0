@@ -2,74 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 649035B5E71
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 18:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 773055B5F3A
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 19:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbiILQm0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Sep 2022 12:42:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34640 "EHLO
+        id S230123AbiILRYI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Sep 2022 13:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbiILQm0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 12:42:26 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B2693E747;
-        Mon, 12 Sep 2022 09:42:24 -0700 (PDT)
-Date:   Mon, 12 Sep 2022 16:42:16 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1663000941; x=1663260141;
-        bh=8Z6sOvoR0Mf6iacQoRSQnQtm2aSwmES8KBfExntrpTQ=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=oxcvinPpZ4pIgnr3U2EL1coduF7WuQA4cYNoLMJZn99xdBg9ik5zNZm9qQiZNNBzw
-         Jswp6clwVpmTx9TusCrLyYtCX3HNPd9U9Ns+pQOmXH/epsG7524Do4p9/9iNs9zGne
-         Rq/VttL6PE+nqVK7eJ89G5VHOWwPxcxx7CLY1BBddFgHTeDWLHdH2PO7QqF6i39qRz
-         tMV+YXbqW+ObC/MuPGryWwGaCGWFxX58HZruLh+0HGAq9bYLZf0YDfLfYtEp+z0NQo
-         MnM98DnRwXc1rJ4nYCFdq9kFW18Y1+uM4eILMgVSRt1hjT39C1WU+T1hyuxsGjQdpD
-         owWdIxxcA+xnA==
-To:     Armin Wolf <W_Armin@gmx.de>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc:     hdegoede@redhat.com, markgross@kernel.org, rafael@kernel.org,
-        lenb@kernel.org, hmh@hmh.eng.br, matan@svgalib.org,
-        corentin.chary@gmail.com, jeremy@system76.com,
-        productdev@system76.com, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [PATCH 3/5] ACPI: battery: Allow battery hooks to be registered multiple times.
-Message-ID: <wY3UHtenNt5tmQSMtoDLmzNxvJ7B56SLwlhguYfg6rqC71dDDCYypvSqvS0SUhRJwsel8wBEy3yeS8rDlJCOii24Llo0XKU34IcSn5WNwg8=@protonmail.com>
-In-Reply-To: <20220912125342.7395-4-W_Armin@gmx.de>
-References: <20220912125342.7395-1-W_Armin@gmx.de> <20220912125342.7395-4-W_Armin@gmx.de>
-Feedback-ID: 20568564:user:proton
+        with ESMTP id S230124AbiILRYG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 13:24:06 -0400
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2065.outbound.protection.outlook.com [40.107.95.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6BC13FA14;
+        Mon, 12 Sep 2022 10:24:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=i0jCeeeFB5tAJdBkaaxmpvlvu0C/9QVAM4crXhfoWIAEC7dSYijCXYY7umczMm3F50frQ4xYngsejDR1EkysWToRZjOvk6A85JPe+4MpCq6BHryvmVarImWuFOdZHEv5bgwrjKa42GtL8oOTBSOWR92kvmk3Z42owj79vcpjT2u5PcSSBzOcI2otVJy+qUD+IhsXbNa1baaRF36TAg0nNIYOsvubUgsp826zqXSNbkILxkPC4T7VixpnXsLXwn/qzcjwBfS2L1pwMahIUUP1Gay1K+QsGbbLhMz5Z526YbE5FAKnV/VQY5TdwSViN66hd6wTWpgAYzwVE93YoevkXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5T4D5tSw/47yKHcVLVUaL5vGiwVfH+pvrRiX3aBpFNU=;
+ b=EVHf0bpiSGLAUsBwCXjc/iqwXSU4WBPZz+6H4o2HSI3akVA9gs0k770ecXJntAD63r3sTnN8J2Df/txz0yO7JkUkcSg+XfVX6KgQHU+CWZoARdeoFkc0cUAMA2wJoBss6nVpVEWE1hzniv8n5/wjtj/pn7Ppv0YroPGgtUnTtEPPE5O1fMrKeG6yB44VF5eJx0pWCno3j3xDNLthoaGS4LPrKZ/1E/jgR6ZzVxxWhpVUxNyEi/17okRJprcZC5LU/5kvQ9R76FLuKKfDYVs8IDDLhg8XqTh81oPAJpUY9Gs4RvrOqLHCsfOVchoz+dBMM0HH9X9VOFGG/gRU2SRQaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5T4D5tSw/47yKHcVLVUaL5vGiwVfH+pvrRiX3aBpFNU=;
+ b=1jvAwqm4c5eYmn9Nu5N5/V2FsF0nKE2RCGlPM9PgLeOCrT93qtx17V3vSeNifyz/DSIeCq0Di48T9uP/zSPmhLWf8jtAl6x1TcFuk0F+H7k2W2wcNSUGfsd0Z86iK5YcxEnxcP2eVNKN0PHNzK/QO7eMcmEu6aIjSKQWeqM7NEs=
+Received: from BN8PR04CA0028.namprd04.prod.outlook.com (2603:10b6:408:70::41)
+ by DM4PR12MB5037.namprd12.prod.outlook.com (2603:10b6:5:39a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.18; Mon, 12 Sep
+ 2022 17:23:58 +0000
+Received: from BN8NAM11FT115.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:70:cafe::f2) by BN8PR04CA0028.outlook.office365.com
+ (2603:10b6:408:70::41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.14 via Frontend
+ Transport; Mon, 12 Sep 2022 17:23:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT115.mail.protection.outlook.com (10.13.177.151) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5612.13 via Frontend Transport; Mon, 12 Sep 2022 17:23:58 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Mon, 12 Sep
+ 2022 12:23:57 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     <rafael@kernel.org>
+CC:     <catalin@antebit.com>, <philipp.zabel@gmail.com>,
+        <travisghansen@yahoo.com>, <Shyam-sundar.S-k@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 0/6] Fixups for s2idle on various Rembrandt laptops
+Date:   Mon, 12 Sep 2022 12:23:54 -0500
+Message-ID: <20220912172401.22301-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT115:EE_|DM4PR12MB5037:EE_
+X-MS-Office365-Filtering-Correlation-Id: cc45aea3-2966-4c66-0c15-08da94e393c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: W7nVAyhWjhaPS5yLxatpRgl/bT990Sq03Lnwjkxex1STQGrl8AEWBpbhlDqhYCEmaouJBl6kcl8ACiu0gNe5NJx3GEC0BarvWFieqVqjIP/aGkwJvia9jr4g30b3NaIH+BFkwds9r1MMiqnmf4+qHpkUKrjLXDSAjfNLrXScynfWNjun79pC+eEjBzlmozcah3PPCstSNlZiNAhN4bt2i8nYLu2rT33RabVG2tV+pf0jQZ2naDQG7vh4CPchP1R7le6Y2EBlH9RI3VA6Dxi5SNZa8OrHzQZU98DDNFlfobp2aIxZzUMEzy1XrG4/y+R46U+c+H8v4jkRepYg2jDTgocGdoQKSbNcX/wy3SkheJqvj6rcdkGkZ4DG8haAdZQqNM75NxbpxTt8fyi5RcILwqV6vt+szQ3vv63fBjHKSjHKHOQ/i3OdRfpekdGxJgiuoYLFs/27/N7PneUtxpuNiF33L4EwvE3Q/8er2qwU+gE5fTfqbxETw+0FT6VQ6aobK3kualBOodSkxZ4QkyW1/CAGEHEOB257wMUru9QvN2tbFOcZrWuKHo5+Z+ozO+PHlCnoooSTp4Ha8LjiyGKWzO1AGz/c7h8CaVzIKQP+1sTwXEySuKv/79QzxF1ZZzWN9YKhllnI5I5OCQ3O84XljfRRDqYamVEB7U1xk5MjENuDKvwtEW0sjEjnx8/5w8BIRUypgEQbzSa0mQI3WWPqNMAT/ftVFCD1NjaEhp0ZopDMX1HgBwHhyAOXTz9KlnsOowwWwCM4F9cD1A9ZOeerECjt6n3VQN1DaAJLqTaEBBh9hEY1pxBH2jJMbTIg7UXD
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(376002)(346002)(39860400002)(136003)(396003)(451199015)(40470700004)(36840700001)(46966006)(2906002)(70206006)(40480700001)(70586007)(426003)(336012)(316002)(8676002)(47076005)(16526019)(40460700003)(86362001)(81166007)(6916009)(36756003)(7696005)(478600001)(4326008)(36860700001)(45080400002)(44832011)(2616005)(83380400001)(54906003)(82740400003)(5660300002)(8936002)(6666004)(186003)(1076003)(356005)(82310400005)(41300700001)(26005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2022 17:23:58.3020
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc45aea3-2966-4c66-0c15-08da94e393c2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT115.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5037
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+It was reported that an ASUS Rembrandt laptop has problems with seemingly
+unrelated ACPI events after resuming from s2idle. Debugging the issue
+proved it's because ASUS has ASL that is only called when using the
+Microsoft GUID, not the AMD GUID.
 
-2022. szeptember 12., h=C3=A9tf=C5=91 14:53 keltez=C3=A9ssel, Armin Wolf =
-=C3=ADrta:
+This is a bug from ASUS firmware but this series reworks the s2idle
+handling for AMD to allow accounting for this in a quirk.
 
-> Registering multiple instances of a battery hook is beneficial
-> for drivers which can be instantiated multiple times. Until now,
-> this would mean that such a driver would have to implement some
-> logic to manage battery hooks.
->=20
-> Extend the battery hook handling instead.
+Additionally as this is a problem that may pop up again on other models
+add a module parameter that can be used to try the Microsoft GUID on a
+given system.
 
-I think this is already possible by embedding the acpi_battery_hook
-object inside the driver's device specific data object, no?
+This module parameter intentionally applies to both Intel and AMD systems
+as the same problem could potentially exist on Intel systems that support
+both the Intel GUID or the Microsoft GUID.
 
-Regards,
-Barnab=C3=A1s P=C5=91cze
+v1->v2:
+ * Add two more systems that are reported to be helped by this series.
 
+Mario Limonciello (6):
+  acpi/x86: s2idle: Move _HID handling for AMD systems into structures
+  acpi/x86: s2idle: If a new AMD _HID is missing assume Rembrandt
+  acpi/x86: s2idle: Add module parameter to prefer Microsoft GUID
+  acpi/x86: s2idle: Add a quirk for ASUS TUF Gaming A17 FA707RE
+  acpi/x86: s2idle: Add a quirk for ASUS ROG Zephyrus G14
+  acpi/x86: s2idle: Add a quirk for Lenovo Slim 7 Pro 14ARH7
 
-> [...]
+ drivers/acpi/x86/s2idle.c | 124 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 100 insertions(+), 24 deletions(-)
+
+-- 
+2.34.1
+
