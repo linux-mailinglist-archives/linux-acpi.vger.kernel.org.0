@@ -2,107 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD465B5F4C
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 19:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C37335B6246
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Sep 2022 22:37:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230138AbiILRaE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Sep 2022 13:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39298 "EHLO
+        id S229456AbiILUhf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Sep 2022 16:37:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230123AbiILRaD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 13:30:03 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079EE19030;
-        Mon, 12 Sep 2022 10:30:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1663003786;
-        bh=le7Hd+CVZKvyI8cRoUEmz4/qdEQPFqmPQE68nCfLxLM=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=ZzZRaZD0OOQhPNBE1Kx31W1LmPDgyJY7AekTLtg7jMdjMx47K7QU8MlBXyGQfdVB9
-         DjgRt3wyvFHVQU0oCfLsa+d656MzSQWhFhTWUuLduV5d4ldxTt74DnXq1kpQ1Yjj0v
-         Vt2MPj/r79HOXzDl8uK/YTLfuzOrX8pb+p4RhGCE=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mt79P-1pMAyp2PIP-00tQ2Q; Mon, 12
- Sep 2022 19:29:46 +0200
-Subject: Re: [PATCH 3/5] ACPI: battery: Allow battery hooks to be registered
- multiple times.
-To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
-Cc:     hdegoede@redhat.com, markgross@kernel.org, rafael@kernel.org,
-        lenb@kernel.org, hmh@hmh.eng.br, matan@svgalib.org,
-        corentin.chary@gmail.com, jeremy@system76.com,
-        productdev@system76.com, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220912125342.7395-1-W_Armin@gmx.de>
- <20220912125342.7395-4-W_Armin@gmx.de>
- <wY3UHtenNt5tmQSMtoDLmzNxvJ7B56SLwlhguYfg6rqC71dDDCYypvSqvS0SUhRJwsel8wBEy3yeS8rDlJCOii24Llo0XKU34IcSn5WNwg8=@protonmail.com>
-From:   Armin Wolf <W_Armin@gmx.de>
-Message-ID: <155062a9-8d1a-e771-1bee-35580b1b2b73@gmx.de>
-Date:   Mon, 12 Sep 2022 19:29:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S229880AbiILUhf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Sep 2022 16:37:35 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D2A54A102;
+        Mon, 12 Sep 2022 13:37:34 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 11439106F;
+        Mon, 12 Sep 2022 13:37:40 -0700 (PDT)
+Received: from mammon-tx2.austin.arm.com (mammon-tx2.austin.arm.com [10.118.28.62])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 72D7C3F73B;
+        Mon, 12 Sep 2022 13:37:33 -0700 (PDT)
+From:   Jeremy Linton <jeremy.linton@arm.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, viresh.kumar@linaro.org,
+        robert.moore@intel.com, punit.agrawal@bytedance.com,
+        lukasz.luba@arm.com, ionela.voinescu@arm.com,
+        pierre.gondois@arm.com, linux-kernel@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org,
+        Jeremy Linton <jeremy.linton@arm.com>
+Subject: [PATCH v5 0/1] Disable FIE on machines with slow counters
+Date:   Mon, 12 Sep 2022 15:37:21 -0500
+Message-Id: <20220912203722.205185-1-jeremy.linton@arm.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-In-Reply-To: <wY3UHtenNt5tmQSMtoDLmzNxvJ7B56SLwlhguYfg6rqC71dDDCYypvSqvS0SUhRJwsel8wBEy3yeS8rDlJCOii24Llo0XKU34IcSn5WNwg8=@protonmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
-X-Provags-ID: V03:K1:bdj8FMZD7tMIwPC/ksvUpRNyQqCwV+ldwI02o5ILod4hUEQk+h8
- DXozwhFh1pceb3/GkW+EliRwkhZ0dQoHDQHdzvX5YOKNwazFsL97Sj5DXPs54boLWtqChUR
- 35Yd7ufis5GjcM675xncg1kyMATEDolQWAKXusvcGDnRoop6YTEm1Ev/mFIXco7Ng0MKauI
- AUqhW/FCOMSsH1FmddhCQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:hEjY63qmLik=:+zINZNHgvC4OyF4g8553NF
- 6rTG7ChLVVn67f8lRi9ILSeSWERRAUXEyr8sPkv+/bnyJ9C3a8bwhLWvX/JqLg0pjxHhfe9MS
- Qhxk+8/AvrnxKyc912+JsyAHSza7w/lKwA2d+MeTuwtTpKCLQ/zpHd0XhJ5jiqsNt4gteEp2Z
- aa+/q5pAxvpTy+S/wQ24bcAzQ80vJ6Pju5iMJKX+8SW5RF2ReXZJ7Ve/LpG35iWZDN/CWBluF
- oukfm4q338k7FVXB5UYPb0xFgwDDmIqRfeo8aK+ewS0I7/O60yYDdo4XwArrmR08xxHiqxZnM
- SnUxHx6ojHMLQ04NO5srMwAQH+B+SBKxZhDpknTUUd96tIUz0VB3CTMa9cbtr5HB0jUXnSqNC
- D5kgc1oxA0TxKyiYMC3RSBS52Nv7vmL4hQuuRCoEukBFm0yZ3PyiaLfXZMn/wlmQ1NjE36l/J
- ux/JrFUPI6YNiDXUOGb4jdjw4zig3VJ+OxlEcR26lTmMrw3Bs1ah1lNsNg+P22jIXOLWH9u2G
- roJ99gw5caI14HTTrJTjtUG0GsBWzT6F1L/lwUSUiWKj5+3l9qGmjpG/ljFpeDeD0uRJYa4oB
- J3MVs+2VHfSKTkbs025lNhgXcw2qpBBPyOL7DrD1vMTiTKA/KEKNWwWPMIV7xhw6XSNLeUOLJ
- 4PJGc9TpMHKNp+WtklOwtX51y4UY9T/V8wqyQzPJwKsbJyO7u1Z8+KARhtctyAJz4r4Li+wyU
- 92xgYWySgWMrTT8hfs0K1w8CXJp5Hyfid/jcf7qRX2yTHjp/shplRG6u8xaosUjt3VF8ozM2D
- +MvtMXvBBD9t5tLK9F7gXMN5i2OYjRh5U7v/njWob5MqGGSi9d2u8ptD3GkPgORGQHPjVciWg
- Ih2MkiWlF8xvpYmn2z2WHuTQZyQRID2e8cBC5EnNe6Ezamp+hhmv4WgIR5xSeNZojoY4WwQh3
- TYO9+mjFM5TfBqKpOxSr3AuWrIps7T6xV0VXKqztij1P/YAfsYRjBbTY6v3qtn/YAg6pshm44
- AC2ycw5r/W+7hALgUTSUERh+aqUEwCVuybvV8PVWsPl6r9p9OzkZdPxeMHRzA1s3Lgz6k32IZ
- Iikwvs2fox6nwHuxv8AGKJ25yIzvBepbauEbo525tUjZTf++8KBd2HkQ4mVIhkvfHkRP+ktGC
- TaFn5Y22rsLQtTiHL482EFjM+2
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am 12.09.22 um 18:42 schrieb Barnab=C3=A1s P=C5=91cze:
+FIE assumes the delivered/relative perf registers are fast to read so
+it goes ahead and hits them quite frequently. On a couple of Arm
+platforms though they end up in PCC regions which require mailbox
+handshaking with other parts of the platform.
 
-> Hi
->
-> 2022. szeptember 12., h=C3=A9tf=C5=91 14:53 keltez=C3=A9ssel, Armin Wolf=
- =C3=ADrta:
->
->> Registering multiple instances of a battery hook is beneficial
->> for drivers which can be instantiated multiple times. Until now,
->> this would mean that such a driver would have to implement some
->> logic to manage battery hooks.
->>
->> Extend the battery hook handling instead.
-> I think this is already possible by embedding the acpi_battery_hook
-> object inside the driver's device specific data object, no?
->
-> Regards,
-> Barnab=C3=A1s P=C5=91cze
->
->
-Yes, it indeed is. However afaik it is not possible to pass instance-speci=
-fic
-data to such an embedded battery hook. It could be possible by passing the
-battery hook as an argument to add_battery()/remove_battery() and using co=
-ntainer_of(),
-but in my opinion this would be too much of a quick hack.
+This results in a lot of overhead in the cppc_fie task. As such lets
+runtime disable FIE if we detect it enabled on one of those platforms.
+Lastly, allow the user to override this decision via a module parameter.
 
->> [...]
+v1->v2:
+	Apply Rafael's review comments.
+	Move the MODULE_PARAM into the ifdef
+	Fix compiler warning when ACPI_CPPC_LIB is disabled.
+v2->v3:
+	Tristate the module param so FIE can be forced on/off
+	Bump pr_debug to pr_info if FIE is disabled due to PCC regions
+	Switch ACPI_CPPC_CPUFREQ_FIE off by default
+v3->v4:
+	No functional change, resend due to email addr issues
+
+v4->v5:
+	Minor whitespace, comment wording, if/case conversion
+	Drop the ACPI_CPPC_CPUFREQ_FIE disable config change added in v3
+
+Jeremy Linton (1):
+  ACPI: CPPC: Disable FIE if registers in PCC regions
+
+ drivers/acpi/cppc_acpi.c       | 42 ++++++++++++++++++++++++++++++++++
+ drivers/cpufreq/cppc_cpufreq.c | 25 ++++++++++++++++----
+ include/acpi/cppc_acpi.h       |  5 ++++
+ 3 files changed, 68 insertions(+), 4 deletions(-)
+
+-- 
+2.37.1
+
