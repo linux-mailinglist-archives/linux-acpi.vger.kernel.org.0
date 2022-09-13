@@ -2,112 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51D875B75D8
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 17:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA7115B76F8
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 18:58:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236211AbiIMP5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Sep 2022 11:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43052 "EHLO
+        id S231370AbiIMQ5p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Sep 2022 12:57:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232885AbiIMP4k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 11:56:40 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0221190804;
-        Tue, 13 Sep 2022 07:56:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1663080893;
-        bh=U0tula8yRud0hiUX24/mkl4hRNvGNNA+ZwYJr5fT4uo=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=MAd1HedjtbTbGo4XZRk0DIoCM4CkyuXs6fFN+HlxygkaW0oQuJRGBAnaKKSiYqrTr
-         ypeTt9vpJ/C7KmZ/UY+ugCu+EvBsRVdy8FKF74IAW31xWzeUVtybM9hXq+pnSPlWeA
-         UU/N6jO+y++F++Jc0tSUCznqs2JVTIV6sTtxz3XM=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MUowV-1ohI8k2p2f-00QiCV; Tue, 13
- Sep 2022 16:40:47 +0200
-Subject: Re: [PATCH 5/5] platform/x86: dell: Add new dell-wmi-ddv driver
-To:     Randy Dunlap <rdunlap@infradead.org>, hdegoede@redhat.com,
-        markgross@kernel.org
-Cc:     rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
-        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
-        productdev@system76.com, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220912125342.7395-1-W_Armin@gmx.de>
- <20220912125342.7395-6-W_Armin@gmx.de>
- <b1b794b4-f6c3-7697-5d5a-b811809a9313@infradead.org>
-From:   Armin Wolf <W_Armin@gmx.de>
-Message-ID: <2aae0ae9-9608-675a-ec0c-6e7526e57363@gmx.de>
-Date:   Tue, 13 Sep 2022 16:40:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S232146AbiIMQ5Z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 12:57:25 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C51C13F8E;
+        Tue, 13 Sep 2022 08:49:39 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-122-187.nat.spd-mgts.ru [109.252.122.187])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: dmitry.osipenko)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 8A16B6601F9C;
+        Tue, 13 Sep 2022 16:17:18 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1663082239;
+        bh=XkZJpiv5PF0uDye6OFManEG8kZH5pOgK7EHrRYw8g3w=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=KEKfydIL3dWx62K5QaMFEu8a8m88Q5fbP6ncw+3u4dBvpS7CIwhzG6hLPzyIXXzuy
+         UtyepaA6pRJKKFiJnt5mvNMAFpZTpZhMukim8zelsdW+EEXluCZSf2e4Xp95YD/EEY
+         KepVNnRonAwvEUmqfYE5LcFxbcsNFRyjnRiTQ6s/O9gfyf8ck7fW9B15HqzfihOlTk
+         E5WdJom+DJ9jU4JuTzuU4zsF91b4AyRugWmAoB9wnKiGQjN6H0+eRK+rmc0a1Nl6N9
+         mo4j9JY/i7k8Mu30RzLXa4CQjTUnX4b8yOV8F+oGSazSmtzSH60edgfVSIboGpdZdZ
+         OyDKHPCy1Q1tQ==
+Message-ID: <44e3e1be-363b-f19b-4907-6990d2f5b24c@collabora.com>
+Date:   Tue, 13 Sep 2022 18:17:15 +0300
 MIME-Version: 1.0
-In-Reply-To: <b1b794b4-f6c3-7697-5d5a-b811809a9313@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH v3 2/2] PM: ACPI: reboot: Reinstate S5 for reboot
 Content-Language: en-US
-X-Provags-ID: V03:K1:U/bnJaxu8PFOXaOsXf6noN79WqSKTJkiOModm0klG0aSDhc4FUo
- GJf3IVNAboRMzsoyBd4IGTVc2ULCXZk6hxYtTLhbEnnlsyCViVxuRM8xWIiQYENgqkXjEHg
- ZmCr/+ugGjxOAQIpvuuilIMw5v5juB8mhodbk4X4MtZgdhopFvNPk81f2JucDHTZ0H4bwfx
- O/uZ6ytPV4a7T/4eLb3vA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:v1hu79n6g3A=:7hxnlMm5oBFokuwPlaFOI3
- xlf6+Ktocvwi4l2bH9pNmOUtVQqc2zBiX7lfihetRnDVA8XK5lgwOivm/FITSnUImCgq8sbEe
- qas7RBErSavvKSjppwMM+RsEGu7jV3UbaLUhLth1BvudPWzmi+VGCb6h+LjmM0bh/DP0ePN42
- FbQ5nHvlNASKELMy/5i00mFlidNTqv5KvoTW7oF9TW1Nzod4YNJuwxnuHY/UZ0MMmUTbw0BCN
- y6w+DGxGM/7386CGyBUrTRWVQwEYZwrH/kWgQpmjVBGGPB2cHqWd2hggQjGXouu0IeBj0FZ/9
- FQ1Zz17yajmPmIoSD2dE804FLHHQCJ52R6k3sMd0w3v9gC+4ZY2gVQTWXpsa5EAXmDhjBYomC
- 6nKh3Brt6gCaL7B8nkPfDtZOBSBBUGgrUCta60AfmQjVNDLgeekIVlVClnpKEsrlg91lL6BcV
- PHHWbTr78hkhT7ih1J7K2fJVANxLXbF3CbrGf0wUjmo9vspmdN6SWCzNG02NGP/D6a0YiHtJu
- yKemQcJjtKKH+aNxjxUkIDHeeBpFp/RU2BhSsRuSffRWF4W+rswOcVNNF40KCMthEdKak35J8
- nMNKcgvpuxclXENQ2DcW8G5MC6VaPTAaMWCBcB9B9jniS7VzP8Coo7KQWeN+Ae+WtD66grY/F
- 0ROIu6GTf0sgyGncxclpltHWJFqYtuPHRcF56sq082U5c9TIlNI7U4/SW0UNeTfMk/NZRCV1+
- ciGubgzW876lnAIGOmoJzbX3F+a9KoJb13RsgsblbR3kBQlcDFqvmAPczS/Hzgky/rfKUDXhd
- gglbhhjPMRtbtfSWd/NYsUyp7I0fPYiHc2NCoCIKrYxKWigG7d5L7/5yGXkLVnmzpot4kqzL1
- drP2tPQDdwLMbSdoyjybtRTKmOkFS0n0GJE5n7YKoHfqyIrv6870ZjUK8jCVPrU6JwLhtegpy
- Wl/5uc6vsFv2PTY5DzG+/THQfGMTiY6IezF1jYpnYFCLKeingmlXywNfmtnos10w1m9LNDErl
- LFosOzxV0gmLExeq/oSQjoVnSqoZOdnFrhLexuNiP5pfYyxxWloIsd4cip/e7TXsOe/N63fWP
- +I1CzWKwLsY4SocI+fRVFSiQu85Mkg6lWkoDk9Se1im56HJiu/F+lZexqkvaLnWoC3gWoBm31
- RisjLgWlRJu0djdqgy39mMCDm/
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        rafael.j.wysocki@intel.com, lenb@kernel.org
+Cc:     Josef Bacik <josef@toxicpanda.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220913062042.1977790-1-kai.heng.feng@canonical.com>
+ <20220913062042.1977790-2-kai.heng.feng@canonical.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20220913062042.1977790-2-kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am 12.09.22 um 23:56 schrieb Randy Dunlap:
+On 9/13/22 09:20, Kai-Heng Feng wrote:
+> Commit d60cd06331a3 ("PM: ACPI: reboot: Use S5 for reboot") caused Dell
+> PowerEdge r440 hangs at reboot.
+> 
+> The issue is fixed by commit 2ca1c94ce0b6 ("tg3: Disable tg3 device on
+> system reboot to avoid triggering AER"), so use the new sysoff API to
+> reinstate S5 for reboot on ACPI-based systems.
+> 
+> Cc: Josef Bacik <josef@toxicpanda.com>
+> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
+> v3:
+>  - Use new API to invoke ACPI S5.
+> 
+> v2:
+>  - Use do_kernel_power_off_prepare() instead.
+> 
+>  drivers/acpi/sleep.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index ad4b2987b3d6e..dce5460902eed 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -1088,6 +1088,10 @@ int __init acpi_sleep_init(void)
+>  		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
+>  					 SYS_OFF_PRIO_FIRMWARE,
+>  					 acpi_power_off, NULL);
+> +
+> +		register_sys_off_handler(SYS_OFF_MODE_RESTART_PREPARE,
+> +					 SYS_OFF_PRIO_FIRMWARE,
+> +					 acpi_power_off_prepare, NULL);
 
-> Hi--
->
-> On 9/12/22 05:53, Armin Wolf wrote:
->> diff --git a/drivers/platform/x86/dell/Kconfig b/drivers/platform/x86/dell/Kconfig
->> index 25421e061c47..209e63e347e2 100644
->> --- a/drivers/platform/x86/dell/Kconfig
->> +++ b/drivers/platform/x86/dell/Kconfig
->> @@ -189,6 +189,19 @@ config DELL_WMI_DESCRIPTOR
->>   	default n
->>   	depends on ACPI_WMI
->>
->> +config DELL_WMI_DDV
->> +	tristate "Dell WMI sensors Support"
->> +	default m
-> You should (try to) justify default m, otherwise just
-> don't have a default for it.
+Maybe you could add a small comment to the code explaining why
+acpi_power_off_prepare is used for restarting?
 
-I have chosen default m since many other Dell platform drivers are being
-default m. Since this driver is not essential for normal operation,
-i will drop default m then.
+Is it safe to use S5 on restart for all devices in general?
 
-Armin Wolf
+-- 
+Best regards,
+Dmitry
 
->> +	depends on ACPI_BATTERY
->> +	depends on ACPI_WMI
->> +	help
->> +	  This option adds support for WMI-based sensors like
->> +	  battery temperature sensors found on some Dell notebooks.
->> +	  It also supports reading of the batteries ePPID.
->> +
->> +	  To compile this drivers as a module, choose M here: the module will
->> +	  be called dell-wmi-ddv.
