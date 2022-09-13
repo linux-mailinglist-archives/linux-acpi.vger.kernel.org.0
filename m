@@ -2,67 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A5675B7A37
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 20:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190D85B7A65
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 21:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232873AbiIMSxE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Sep 2022 14:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42724 "EHLO
+        id S233029AbiIMTBq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Sep 2022 15:01:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232982AbiIMSw2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 14:52:28 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B12344561;
-        Tue, 13 Sep 2022 11:38:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=Nhmtl5U4i4aIMPF1bl0Sfg+C74cfK2TnIe+LlE37uRU=; b=eK0RlLHEjCIF0rUTBXogwTMNSv
-        IfpEnispYRuoUd9lahWonBcV7K9cdHI6PIehPePhbfbRsFa/b7lcN6npUcyF61eOuZMVQbjEAEzm3
-        AqpLwwOfknRGzfWmhClsPzpCvtGSPSs1mVQ+nWmpu4tMYAxrJ8NyyB14k6Q40vA2aqm1E5qBBu72N
-        59SstCz0pagKKcI63IKdWDEGjBPrOUOxtma1dmuW5iNKyhJG3F32oYdKqQS5uhj4nu0WVptuxc8fM
-        A6asMYDS2YyJXpmGCigZD2zcCFAvDFKtttW8X/3ZQ4AIv1QwiRyh4y2tus454mkIMCTdDuSyqLGiE
-        XzTjTmAA==;
-Received: from [2601:1c0:6280:3f0::a6b3]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oYAnB-00EnsI-7s; Tue, 13 Sep 2022 18:37:53 +0000
-Message-ID: <e324fb96-bbf9-5ec6-78f3-9f298dac0644@infradead.org>
-Date:   Tue, 13 Sep 2022 11:37:52 -0700
+        with ESMTP id S233030AbiIMTBY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 15:01:24 -0400
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC8FFD08
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Sep 2022 11:56:55 -0700 (PDT)
+Received: by mail-il1-x135.google.com with SMTP id d16so6757980ils.8
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Sep 2022 11:56:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=LtAYZje0M68/s1r4tHyDwDNi40n/sG8DGVF2ayd5a6Y=;
+        b=QWyBZ80Zq0ZcdHrZPzyM5kzKrK2LeLxgmwqnRm3WBzlsmowMa86coHFuZ7UFnXdydh
+         1vrWYRjtGsfas8YhI08LVyrhnKYueEF8m0Hds0exJ3LwcENGYuHpKvwZVWp/HUVH0R3N
+         xB3Z7vHhZ0Jrlc61V0COnfQLcjdNUkByn2cGs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=LtAYZje0M68/s1r4tHyDwDNi40n/sG8DGVF2ayd5a6Y=;
+        b=GbB3w5hJEKQkWRQZSvbaRYMxDR5Xdh6u1twXWw57jCqBI5JixWrX7k8OdmFgXT33oW
+         ULO5qPwRHcKcLBysYc6gek6mKCDMvBUITkwQw9tv4BOAjxVDk6mZM3yrxD/kxcC24v6S
+         Kr/C9p0+O7yjvfnwE5FoyV0LCjU7PSpy8GltrrV2nMj6p2GLid5f8ZS87Fp+hE26fv2b
+         t7FgTDJls+djuqBAEcXQZ8+j/XePRJ7eEzqQDpzHSTZTaERgh6nFQMwuEDDYOVoNg8jT
+         C8NAxC2KKjnEp5lFOsCWSisU1upBBqEHceuB9N3tT8RsywWmnb8m8eazVCSW1w4+qaiE
+         m93w==
+X-Gm-Message-State: ACgBeo3C8KMDYpK3R/6JzYeX5yO4som6tr/9k7fN4GYroP76+emTLSto
+        eNd1VVbOccw4njEr9ydZM6kHnV9WppbvHg==
+X-Google-Smtp-Source: AA6agR76BfuioU8w+4Zjv02naXQlh9/UOozD/CpttSsQ8Hhic+xb0fG5w1yj7umgllA9OrYJlJrPMw==
+X-Received: by 2002:a92:c247:0:b0:2eb:92e8:9083 with SMTP id k7-20020a92c247000000b002eb92e89083mr13764530ilo.303.1663095413352;
+        Tue, 13 Sep 2022 11:56:53 -0700 (PDT)
+Received: from mail-io1-f51.google.com (mail-io1-f51.google.com. [209.85.166.51])
+        by smtp.gmail.com with ESMTPSA id d14-20020a056e02214e00b002eb52f831f6sm5416105ilv.57.2022.09.13.11.56.52
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Sep 2022 11:56:52 -0700 (PDT)
+Received: by mail-io1-f51.google.com with SMTP id c4so10430598iof.3
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Sep 2022 11:56:52 -0700 (PDT)
+X-Received: by 2002:a02:9509:0:b0:349:b6cb:9745 with SMTP id
+ y9-20020a029509000000b00349b6cb9745mr16993260jah.281.1663095412005; Tue, 13
+ Sep 2022 11:56:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [PATCH 5/5] platform/x86: dell: Add new dell-wmi-ddv driver
-Content-Language: en-US
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Armin Wolf <W_Armin@gmx.de>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "markgross@kernel.org" <markgross@kernel.org>
-Cc:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "hmh@hmh.eng.br" <hmh@hmh.eng.br>,
-        "matan@svgalib.org" <matan@svgalib.org>,
-        "corentin.chary@gmail.com" <corentin.chary@gmail.com>,
-        "jeremy@system76.com" <jeremy@system76.com>,
-        "productdev@system76.com" <productdev@system76.com>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20220912125342.7395-1-W_Armin@gmx.de>
- <20220912125342.7395-6-W_Armin@gmx.de>
- <b1b794b4-f6c3-7697-5d5a-b811809a9313@infradead.org>
- <2aae0ae9-9608-675a-ec0c-6e7526e57363@gmx.de>
- <MN0PR12MB6101CE9055DC152A6E96B2EDE2479@MN0PR12MB6101.namprd12.prod.outlook.com>
- <7224d38e-9b51-0f81-e113-72f065909ea0@infradead.org>
- <4ec6d46f-b5c9-3c47-a102-6356e72c5225@amd.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <4ec6d46f-b5c9-3c47-a102-6356e72c5225@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220912221317.2775651-1-rrangel@chromium.org>
+ <20220912160931.v2.7.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid>
+ <YyC9N62JaMGaeanf@smile.fi.intel.com> <CAHQZ30DAr_BwH03=bG9tfCSGW+-he-c-4PPeJMOqH28cVcKDoA@mail.gmail.com>
+ <YyDNAw+ur177ayY0@smile.fi.intel.com>
+In-Reply-To: <YyDNAw+ur177ayY0@smile.fi.intel.com>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Tue, 13 Sep 2022 12:56:37 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30DP1asiMj7hoebQQvGqE36sBDjaFmp3ju3eUEF1PruFeg@mail.gmail.com>
+Message-ID: <CAHQZ30DP1asiMj7hoebQQvGqE36sBDjaFmp3ju3eUEF1PruFeg@mail.gmail.com>
+Subject: Re: [PATCH v2 07/13] i2c: acpi: Use ACPI wake capability bit to set wake_irq
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        "jingle.wu" <jingle.wu@emc.com.tw>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Tim Van Patten <timvp@google.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,86 +85,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Sep 13, 2022 at 12:33 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Tue, Sep 13, 2022 at 12:07:53PM -0600, Raul Rangel wrote:
+> > On Tue, Sep 13, 2022 at 11:26 AM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > >
+> > > On Mon, Sep 12, 2022 at 04:13:11PM -0600, Raul E Rangel wrote:
+> > > > Device tree already has a mechanism to pass the wake_irq. It does this
+> > > > by looking for the wakeup-source property and setting the
+> > > > I2C_CLIENT_WAKE flag. This CL adds the ACPI equivalent. It uses the
+> > > > ACPI interrupt wake flag to determine if the interrupt can be used to
+> > > > wake the system. Previously the i2c drivers had to make assumptions and
+> > > > blindly enable the wake IRQ. This can cause spurious wake events. e.g.,
+> > > > If there is a device with an Active Low interrupt and the device gets
+> > > > powered off while suspending, the interrupt line will go low since it's
+> > > > no longer powered and wakes the system. For this reason we should
+> > > > respect the board designers wishes and honor the wake bit defined on the
+> > > > interrupt.
+> >
+> > >
+> > > > +                     if (irq > 0 && acpi_wake_capable)
+> > > > +                             client->flags |= I2C_CLIENT_WAKE;
+> > >
+> > > Why do we need a parameter and can't simply set this flag inside the callee?
+> >
+> > Are you suggesting `i2c_acpi_get_irq` modify the `client->flags`? IMO
+> > that's a little surprising since the I wouldn't expect a `get`
+> > function to modify it's parameters. I'm fine implementing it if others
+> > agree though.
+>
 
 
-On 9/13/22 11:30, Limonciello, Mario wrote:
-> On 9/13/2022 13:27, Randy Dunlap wrote:
->>
->>
->> On 9/13/22 09:08, Limonciello, Mario wrote:
->>> [Public]
->>>
->>>
->>>
->>>> -----Original Message-----
->>>> From: Armin Wolf <W_Armin@gmx.de>
->>>> Sent: Tuesday, September 13, 2022 09:41
->>>> To: Randy Dunlap <rdunlap@infradead.org>; hdegoede@redhat.com;
->>>> markgross@kernel.org
->>>> Cc: rafael@kernel.org; lenb@kernel.org; hmh@hmh.eng.br;
->>>> matan@svgalib.org; corentin.chary@gmail.com; jeremy@system76.com;
->>>> productdev@system76.com; platform-driver-x86@vger.kernel.org; linux-
->>>> acpi@vger.kernel.org; linux-kernel@vger.kernel.org
->>>> Subject: Re: [PATCH 5/5] platform/x86: dell: Add new dell-wmi-ddv driver
->>>>
->>>> Am 12.09.22 um 23:56 schrieb Randy Dunlap:
->>>>
->>>>> Hi--
->>>>>
->>>>> On 9/12/22 05:53, Armin Wolf wrote:
->>>>>> diff --git a/drivers/platform/x86/dell/Kconfig
->>>> b/drivers/platform/x86/dell/Kconfig
->>>>>> index 25421e061c47..209e63e347e2 100644
->>>>>> --- a/drivers/platform/x86/dell/Kconfig
->>>>>> +++ b/drivers/platform/x86/dell/Kconfig
->>>>>> @@ -189,6 +189,19 @@ config DELL_WMI_DESCRIPTOR
->>>>>>        default n
->>>>>>        depends on ACPI_WMI
->>>>>>
->>>>>> +config DELL_WMI_DDV
->>>>>> +    tristate "Dell WMI sensors Support"
->>>>>> +    default m
->>>>> You should (try to) justify default m, otherwise just
->>>>> don't have a default for it.
->>>>
->>>> I have chosen default m since many other Dell platform drivers are being
->>>> default m. Since this driver is not essential for normal operation,
->>>> i will drop default m then.
->>>
->>> Actually Dell drivers directory are a bit unique in this regard.  There is a special
->>> top level boolean.  I would suggest to keep it as is.
->>>
->>> Take a look at:
->>> menuconfig X86_PLATFORM_DRIVERS_DELL
->>>
->>
->> So all of those "default m" and "default y" drivers are *needed*
->> as opposed to desirable?
->>
-> 
-> It was supposed to be a convenience option, it's first introduced in f1e1ea516721d1.
-> 
-> So if you have a Dell laptop you set the one option and then get defaults for all those modules.
+> This is similar to what of_i2c_get_board_info() does, no?
+> Note: _get_ there.
+>
 
-oh well. whatever.
-
-thanks.
-
->>>>
->>>> Armin Wolf
->>>>
->>>>>> +    depends on ACPI_BATTERY
->>>>>> +    depends on ACPI_WMI
->>>>>> +    help
->>>>>> +      This option adds support for WMI-based sensors like
->>>>>> +      battery temperature sensors found on some Dell notebooks.
->>>>>> +      It also supports reading of the batteries ePPID.
->>>>>> +
->>>>>> +      To compile this drivers as a module, choose M here: the module will
->>>>>> +      be called dell-wmi-ddv.
->>
->> thanks.
-> 
-
--- 
-~Randy
+`*info` is an out parameter in that case. Ideally I would have
+`i2c_acpi_get_irq`, `acpi_dev_gpio_irq_get_wake`,
+`platform_get_irq_optional`, and `i2c_dev_irq_from_resources` all
+return a `struct irq_info {int irq; bool wake_capable;}`. This would
+be a larger change though.
