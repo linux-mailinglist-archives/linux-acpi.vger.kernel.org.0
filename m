@@ -2,67 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E92655B78CA
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 19:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 476D85B78BA
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 19:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229876AbiIMRtO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Sep 2022 13:49:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46856 "EHLO
+        id S233530AbiIMRto (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Sep 2022 13:49:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233638AbiIMRs2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 13:48:28 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67656785BB;
-        Tue, 13 Sep 2022 09:46:36 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id ge9so383250pjb.1;
-        Tue, 13 Sep 2022 09:46:36 -0700 (PDT)
+        with ESMTP id S233748AbiIMRtA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 13:49:00 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4867D72B79;
+        Tue, 13 Sep 2022 09:47:38 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id q63so11846440pga.9;
+        Tue, 13 Sep 2022 09:47:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=1i7O2Iok1YRMIALmDKILSSa+PDHh/TMXb1061x3zYsE=;
-        b=CnBAUl1bzznqlLH+uIrXNiplMZxlYvpJAvAQjQKLJnvplkOZ2ynXM+0h7XW+HluZ2w
-         qy76aDA63qVxDizV+hCBWv04bup9GqEVooYu/yevF4+tJwFeq8Zpiv1AXRTMlDCerIve
-         SZs1dNNwRC8Ux7M9IKhF42mUNRdOkiRt3iSpQLYspStIdifZuYs4tq53kILQhnA+MCOg
-         Az9PX0hUE+Ge2HyXVHDa0ixVyi/G2nDNUb2nEtVc6P4igWrlLrNSgEgZn7kvDlcBRjFE
-         QI3dm2LL9W6aacDBHgLhi8GoFbpjTVfurem7XBNjxde8VNzzf2wYhznDTLfqXvZjb+UG
-         a7aQ==
+        bh=D4rCZb+iPS0AAktlhveT3fs/5yKc7ISq+k7dnPQkKd8=;
+        b=i8negqvLt2R8KY9w9wqi8vPztcyWrrqzIDzd986MVmmejKXk+ZolzF2/hHu262RRp/
+         qk8vMQrop9oXkM0t4gW6Rs8K48C98tIeaZHo9YP1pYT6c0LszhdLx3n4j9x4eP0BGUfN
+         KCvuNrn6lycRZ7Zxp/1levOSrHO1xGC4m/t/AUAE3WKx6XsmHrlaBd46LdlpXz1tvNcC
+         xdi8b/OAVXQ2Fw4bkihwlxUZ7Pt0nvUxaHg0VgTmbU/7TedpkpFGPRcuyW0jA2/KXZ9r
+         MzzcFhEq7AoEzTbN/WHxSoQ+w4tu9eVG/o1Xv7gQ0LEUgp9tMQIAO1DPp+59dwZzTwtv
+         3B/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=1i7O2Iok1YRMIALmDKILSSa+PDHh/TMXb1061x3zYsE=;
-        b=MAPBC3+YwVslnWfWLCB9wgjhx5h/Oecqbz+KYcTOTYn/CtrgfsfOaBCXTgl3I70L9Z
-         j05tkm2gkhZSJVFupxgdSl2TlEpbmfWyFgo82UGvEQK74VpEZIlltKh+FAcAiSirMtrN
-         7JsRzAlp5egh1Tw8Asv59bT5UHNEFYBltRH2W3SOyQrTI2PX4k3L+cD/HCkzj3Pc/hxZ
-         HRFHL+PBycNRkoU7QH98j8OaO4pe+Sl01c/95ZUfr4ybIMxWIaHgD7B35MHGphLlMhlv
-         CSQm0b80pKq2pPCqdLFND6i1Fd2ROvXULkUFbjhnZ7lncJeLUWhgJoUC0mT4VzI8fSOk
-         vHSw==
-X-Gm-Message-State: ACgBeo2PbEFNcw/gaXCKVzXx6An/0YzwVYoKK/2VOqX0KBfnLSrkt5Tu
-        m2UQ4GckFIv6dzseFDRHywc=
-X-Google-Smtp-Source: AA6agR4xPFrTrwyEEGXJ0Po8UDRoOtBoEVgShqdqgx8z0EOiVUuaPegyx7QTzcMyskiHU7zkotfZrw==
-X-Received: by 2002:a17:902:e881:b0:178:2a6f:bc72 with SMTP id w1-20020a170902e88100b001782a6fbc72mr12859092plg.93.1663087595868;
-        Tue, 13 Sep 2022 09:46:35 -0700 (PDT)
+        bh=D4rCZb+iPS0AAktlhveT3fs/5yKc7ISq+k7dnPQkKd8=;
+        b=O0wfJVPdc2ufgL++OXBn2dhN2u1eXmSF7Yjyx9Wubwe0Axdu8OcYmMaGPJqUcXa2Nz
+         z4g12RPS8AtpcHpFfe794UF4B3iVG4dd4i5W4gsNV1QgNrkEUvzdw0W0n01wzFStBdZN
+         v0zmUZ9nTSp2V+KsMjB0A879I+RRcewjYtXIsXnZDt11pTJDYexxIWcN3sOGGvfDnwdZ
+         pB6k23elv/aGM8MOU77V/1tE6EIOzKHfnFjFcWJl2deVeePgm2QjlnqroWtsXbuKkJNX
+         +Xzm02/GBo8QrFM2jNCu9OHmvuq5QZdMQEA1kFCLvbfWaVOTqP0yXgHy9pY//CqeBNoo
+         Xfkw==
+X-Gm-Message-State: ACgBeo3Khge4nuMuF+Pz8ND/DYi8i2iBWtttlUtbSTW+W7iIztGlVFak
+        GJ0Y5beaVUY3au7J0ufEv20=
+X-Google-Smtp-Source: AA6agR6mbUfC1D8cN9Gdd5dsjJkDKpBLm0fcx8aLbmjjlBsidfHoaeLzTUFZ/3oIbTrFu0TO12p4UA==
+X-Received: by 2002:a05:6a00:2404:b0:53b:ea5:ea4e with SMTP id z4-20020a056a00240400b0053b0ea5ea4emr33640816pfh.11.1663087657783;
+        Tue, 13 Sep 2022 09:47:37 -0700 (PDT)
 Received: from rog ([2a0a:edc0:0:701:a220:c777:e1f2:5de1])
-        by smtp.gmail.com with ESMTPSA id y1-20020a17090264c100b001782580ce9csm6707664pli.249.2022.09.13.09.46.29
+        by smtp.gmail.com with ESMTPSA id s18-20020a170902c65200b00176d8e33601sm8518657pls.203.2022.09.13.09.47.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Sep 2022 09:46:35 -0700 (PDT)
-Date:   Tue, 13 Sep 2022 18:46:25 +0200
+        Tue, 13 Sep 2022 09:47:37 -0700 (PDT)
+Date:   Tue, 13 Sep 2022 18:47:27 +0200
 From:   Philipp Zabel <philipp.zabel@gmail.com>
 To:     Mario Limonciello <mario.limonciello@amd.com>
 Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
         catalin@antebit.com, travisghansen@yahoo.com,
         Shyam-sundar.S-k@amd.com, Len Brown <lenb@kernel.org>,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] acpi/x86: s2idle: If a new AMD _HID is missing
- assume Rembrandt
-Message-ID: <YyCz4V0xNyHyt80q@rog>
+Subject: Re: [PATCH v2 3/6] acpi/x86: s2idle: Add module parameter to prefer
+ Microsoft GUID
+Message-ID: <YyC0H7QhKl96ihwJ@rog>
 References: <20220912172401.22301-1-mario.limonciello@amd.com>
- <20220912172401.22301-3-mario.limonciello@amd.com>
+ <20220912172401.22301-4-mario.limonciello@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220912172401.22301-3-mario.limonciello@amd.com>
+In-Reply-To: <20220912172401.22301-4-mario.limonciello@amd.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -73,34 +73,16 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am Mon, Sep 12, 2022 at 12:23:56PM -0500 schrieb Mario Limonciello:
-> A mistake was made that only AMDI0007 was set to rev of "2", but
-> it should have been also set for AMDI008. If an ID is missing from
-> the _HID table, then assume it matches Rembrandt behavior.
+Am Mon, Sep 12, 2022 at 12:23:57PM -0500 schrieb Mario Limonciello:
+> OEMs have made some mistakes in the past for the AMD GUID support
+> and not populated the method properly.  To add an escape hatch for
+> this problem introduce a module parameter that can force using
+> the Microsoft GUID.
 > 
-> This implicitly means that if any other behavior changes happen
-> in the future missing IDs must be added to that table.
+> This is intentionally introduced to both Intel and AMD codepaths
+> to allow using the parameter as a debugging tactic on either.
 > 
-> Tested-by: catalin@antebit.com
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/x86/s2idle.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index a7757551f750..a8256e5a0e8a 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -412,7 +412,7 @@ static int lps0_device_attach(struct acpi_device *adev,
->  		if (dev_id != NULL)
->  			data = (const struct amd_lps0_hid_device_data *) dev_id->driver_data;
->  		else
-> -			return 0;
-> +			data = &amd_rembrandt;
-
-Ah, please disregard my suggestion in the previous patch. I'd still use:
-
-		if (dev_id)
 
 Reviewed-by: Philipp Zabel <philipp.zabel@gmail.com>
 Tested-by: Philipp Zabel <philipp.zabel@gmail.com> # GA402RJ
