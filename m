@@ -2,82 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE3445B6EDA
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 16:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D875B75D8
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 17:57:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232438AbiIMOGC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Sep 2022 10:06:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
+        id S236211AbiIMP5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Sep 2022 11:57:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232380AbiIMOF6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 10:05:58 -0400
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09F3E19001;
-        Tue, 13 Sep 2022 07:05:56 -0700 (PDT)
-Received: from [141.14.220.45] (g45.guest.molgen.mpg.de [141.14.220.45])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id 162B261EA1932;
-        Tue, 13 Sep 2022 16:05:53 +0200 (CEST)
-Message-ID: <02604223-af8a-a86f-8873-19a4dbb3035b@molgen.mpg.de>
-Date:   Tue, 13 Sep 2022 16:05:52 +0200
+        with ESMTP id S232885AbiIMP4k (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 11:56:40 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0221190804;
+        Tue, 13 Sep 2022 07:56:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1663080893;
+        bh=U0tula8yRud0hiUX24/mkl4hRNvGNNA+ZwYJr5fT4uo=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=MAd1HedjtbTbGo4XZRk0DIoCM4CkyuXs6fFN+HlxygkaW0oQuJRGBAnaKKSiYqrTr
+         ypeTt9vpJ/C7KmZ/UY+ugCu+EvBsRVdy8FKF74IAW31xWzeUVtybM9hXq+pnSPlWeA
+         UU/N6jO+y++F++Jc0tSUCznqs2JVTIV6sTtxz3XM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MUowV-1ohI8k2p2f-00QiCV; Tue, 13
+ Sep 2022 16:40:47 +0200
+Subject: Re: [PATCH 5/5] platform/x86: dell: Add new dell-wmi-ddv driver
+To:     Randy Dunlap <rdunlap@infradead.org>, hdegoede@redhat.com,
+        markgross@kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
+        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
+        productdev@system76.com, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220912125342.7395-1-W_Armin@gmx.de>
+ <20220912125342.7395-6-W_Armin@gmx.de>
+ <b1b794b4-f6c3-7697-5d5a-b811809a9313@infradead.org>
+From:   Armin Wolf <W_Armin@gmx.de>
+Message-ID: <2aae0ae9-9608-675a-ec0c-6e7526e57363@gmx.de>
+Date:   Tue, 13 Sep 2022 16:40:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
+In-Reply-To: <b1b794b4-f6c3-7697-5d5a-b811809a9313@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-To:     linux-acpi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Dell.Client.Kernel@dell.com,
-        Hans de Goede <hdegoede@redhat.com>
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: boot performance: ACPI delays in boot up of Alder Lake laptop (Dell
- XPS 13 9315)
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:U/bnJaxu8PFOXaOsXf6noN79WqSKTJkiOModm0klG0aSDhc4FUo
+ GJf3IVNAboRMzsoyBd4IGTVc2ULCXZk6hxYtTLhbEnnlsyCViVxuRM8xWIiQYENgqkXjEHg
+ ZmCr/+ugGjxOAQIpvuuilIMw5v5juB8mhodbk4X4MtZgdhopFvNPk81f2JucDHTZ0H4bwfx
+ O/uZ6ytPV4a7T/4eLb3vA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:v1hu79n6g3A=:7hxnlMm5oBFokuwPlaFOI3
+ xlf6+Ktocvwi4l2bH9pNmOUtVQqc2zBiX7lfihetRnDVA8XK5lgwOivm/FITSnUImCgq8sbEe
+ qas7RBErSavvKSjppwMM+RsEGu7jV3UbaLUhLth1BvudPWzmi+VGCb6h+LjmM0bh/DP0ePN42
+ FbQ5nHvlNASKELMy/5i00mFlidNTqv5KvoTW7oF9TW1Nzod4YNJuwxnuHY/UZ0MMmUTbw0BCN
+ y6w+DGxGM/7386CGyBUrTRWVQwEYZwrH/kWgQpmjVBGGPB2cHqWd2hggQjGXouu0IeBj0FZ/9
+ FQ1Zz17yajmPmIoSD2dE804FLHHQCJ52R6k3sMd0w3v9gC+4ZY2gVQTWXpsa5EAXmDhjBYomC
+ 6nKh3Brt6gCaL7B8nkPfDtZOBSBBUGgrUCta60AfmQjVNDLgeekIVlVClnpKEsrlg91lL6BcV
+ PHHWbTr78hkhT7ih1J7K2fJVANxLXbF3CbrGf0wUjmo9vspmdN6SWCzNG02NGP/D6a0YiHtJu
+ yKemQcJjtKKH+aNxjxUkIDHeeBpFp/RU2BhSsRuSffRWF4W+rswOcVNNF40KCMthEdKak35J8
+ nMNKcgvpuxclXENQ2DcW8G5MC6VaPTAaMWCBcB9B9jniS7VzP8Coo7KQWeN+Ae+WtD66grY/F
+ 0ROIu6GTf0sgyGncxclpltHWJFqYtuPHRcF56sq082U5c9TIlNI7U4/SW0UNeTfMk/NZRCV1+
+ ciGubgzW876lnAIGOmoJzbX3F+a9KoJb13RsgsblbR3kBQlcDFqvmAPczS/Hzgky/rfKUDXhd
+ gglbhhjPMRtbtfSWd/NYsUyp7I0fPYiHc2NCoCIKrYxKWigG7d5L7/5yGXkLVnmzpot4kqzL1
+ drP2tPQDdwLMbSdoyjybtRTKmOkFS0n0GJE5n7YKoHfqyIrv6870ZjUK8jCVPrU6JwLhtegpy
+ Wl/5uc6vsFv2PTY5DzG+/THQfGMTiY6IezF1jYpnYFCLKeingmlXywNfmtnos10w1m9LNDErl
+ LFosOzxV0gmLExeq/oSQjoVnSqoZOdnFrhLexuNiP5pfYyxxWloIsd4cip/e7TXsOe/N63fWP
+ +I1CzWKwLsY4SocI+fRVFSiQu85Mkg6lWkoDk9Se1im56HJiu/F+lZexqkvaLnWoC3gWoBm31
+ RisjLgWlRJu0djdqgy39mMCDm/
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Linux folks,
+Am 12.09.22 um 23:56 schrieb Randy Dunlap:
 
+> Hi--
+>
+> On 9/12/22 05:53, Armin Wolf wrote:
+>> diff --git a/drivers/platform/x86/dell/Kconfig b/drivers/platform/x86/dell/Kconfig
+>> index 25421e061c47..209e63e347e2 100644
+>> --- a/drivers/platform/x86/dell/Kconfig
+>> +++ b/drivers/platform/x86/dell/Kconfig
+>> @@ -189,6 +189,19 @@ config DELL_WMI_DESCRIPTOR
+>>   	default n
+>>   	depends on ACPI_WMI
+>>
+>> +config DELL_WMI_DDV
+>> +	tristate "Dell WMI sensors Support"
+>> +	default m
+> You should (try to) justify default m, otherwise just
+> don't have a default for it.
 
-Just a heads-up, on the Dell XPS 13 9315 over half a second during boot 
-seem to be due to delays in firmware provided ACPI/ASL.
+I have chosen default m since many other Dell platform drivers are being
+default m. Since this driver is not essential for normal operation,
+i will drop default m then.
 
-     […]
-     [    0.000000] DMI: Dell Inc. XPS 9315/02GGG1, BIOS 1.1.3 05/11/2022
-     […]
-     [    0.220268] ACPI: PM: Power Resource [D3C]
-     [    0.472079] ACPI: PM: Power Resource [PIN]
-     […]
-     [    0.512316] pci 0000:00:07.1:   bridge window [mem
-0x74000000-0x960fffff]
-     [    0.512319] pci 0000:00:07.1:   bridge window [mem
-0x6040000000-0x6075ffffff 64bit pref]
-     [    0.888002] ACPI: EC: interrupt unblocked
-     [    0.888002] ACPI: EC: event unblocked
-     [    0.888062] ACPI: EC: EC_CMD/EC_SC=0x934, EC_DATA=0x930
-     [    0.888062] ACPI: EC: GPE=0x6e
-     […]
+Armin Wolf
 
-I created two bug reports [1][2] for each of these delays. 
-Unfortunately, the device is used in production by a user, so I can’t do 
-any testing.
-
-Linux taking less than 0.5 seconds to execute on modern consumer 
-hardware still should be a goal in my opinion.
-
-
-Kind regards,
-
-Paul
-
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=216481
-[2]: https://bugzilla.kernel.org/show_bug.cgi?id=216482
+>> +	depends on ACPI_BATTERY
+>> +	depends on ACPI_WMI
+>> +	help
+>> +	  This option adds support for WMI-based sensors like
+>> +	  battery temperature sensors found on some Dell notebooks.
+>> +	  It also supports reading of the batteries ePPID.
+>> +
+>> +	  To compile this drivers as a module, choose M here: the module will
+>> +	  be called dell-wmi-ddv.
