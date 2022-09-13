@@ -2,103 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA7115B76F8
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 18:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D0A5B770F
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 19:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231370AbiIMQ5p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Sep 2022 12:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57076 "EHLO
+        id S231266AbiIMRBY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Sep 2022 13:01:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232146AbiIMQ5Z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 12:57:25 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C51C13F8E;
-        Tue, 13 Sep 2022 08:49:39 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-122-187.nat.spd-mgts.ru [109.252.122.187])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 8A16B6601F9C;
-        Tue, 13 Sep 2022 16:17:18 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1663082239;
-        bh=XkZJpiv5PF0uDye6OFManEG8kZH5pOgK7EHrRYw8g3w=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=KEKfydIL3dWx62K5QaMFEu8a8m88Q5fbP6ncw+3u4dBvpS7CIwhzG6hLPzyIXXzuy
-         UtyepaA6pRJKKFiJnt5mvNMAFpZTpZhMukim8zelsdW+EEXluCZSf2e4Xp95YD/EEY
-         KepVNnRonAwvEUmqfYE5LcFxbcsNFRyjnRiTQ6s/O9gfyf8ck7fW9B15HqzfihOlTk
-         E5WdJom+DJ9jU4JuTzuU4zsF91b4AyRugWmAoB9wnKiGQjN6H0+eRK+rmc0a1Nl6N9
-         mo4j9JY/i7k8Mu30RzLXa4CQjTUnX4b8yOV8F+oGSazSmtzSH60edgfVSIboGpdZdZ
-         OyDKHPCy1Q1tQ==
-Message-ID: <44e3e1be-363b-f19b-4907-6990d2f5b24c@collabora.com>
-Date:   Tue, 13 Sep 2022 18:17:15 +0300
+        with ESMTP id S229968AbiIMRBD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 13:01:03 -0400
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5EC98C033
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Sep 2022 08:52:06 -0700 (PDT)
+Received: by mail-io1-xd31.google.com with SMTP id c4so9983636iof.3
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Sep 2022 08:52:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date;
+        bh=CGLCtRbWwRCAf6WmqGJBYksHAfnT5oX5xIBwMzUyvqg=;
+        b=Gjb/1drlC0T1KT6qKQp+EOjvuce3jT3ddBuZmCIhUCD1JjfynIXluqq+ydAE0YYAmG
+         p+5JnSpv26BEqUDuJzeFgV+cDv+pcrHfjXDLRRItnLSsP1xlI5YcJEZJ7pEhDX8zjIh3
+         cRbSM6dRKjNE1AtZwiNsW22tXNeNU6ZbagvXk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=CGLCtRbWwRCAf6WmqGJBYksHAfnT5oX5xIBwMzUyvqg=;
+        b=pqCX4DUDW6EUjIhlvqRi8uUd0AmoTQIfQy4n/4Dl9QxiFG2A3X5rEiPG7NG2y3AKfZ
+         CKRWF13Y2DMVHiK+kodBXUaRBfjzxE0nht2DFF5C+ruS9ldgseQV2RY//vfPOpnPt4bE
+         qkSPmc9HuUmHvNPPKM46fHXLftONaoGluvHp3SA7Z9yBsg3lrL9t4RQqMoQYegMl3COn
+         2hDeYn8yynasiYGmvQANwSZ+kiWEJRFhwCqvqmGFFgDpTMJv0AmM7hDpd5iwarhaUDfe
+         LvCtkT7etbMczAqC2MZETOUQ6hYNvtUQRhSkHRYiWRYEh+3zbBcTtz/UwEuPbq7+HGRu
+         S5dQ==
+X-Gm-Message-State: ACgBeo2i7EIVj+6P6LAK4jq9TNhVBZjcesM4oLEjF+9vwNignn+JqUOc
+        0lPePr0bUuA3Y1qzJ+9ZOy3kbwoDraQYEQ==
+X-Google-Smtp-Source: AA6agR40/qfLd3DJjJGXA79tniZ/5Z/RXjBlDRXvLmXIAfG9lOjoavKhkUvj+TD5jhBDhd6h+drWtg==
+X-Received: by 2002:a02:9f8f:0:b0:35a:153f:e085 with SMTP id a15-20020a029f8f000000b0035a153fe085mr8451820jam.287.1663084322691;
+        Tue, 13 Sep 2022 08:52:02 -0700 (PDT)
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com. [209.85.166.181])
+        by smtp.gmail.com with ESMTPSA id v8-20020a056602058800b006a10d068d39sm4893360iox.41.2022.09.13.08.52.00
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Sep 2022 08:52:00 -0700 (PDT)
+Received: by mail-il1-f181.google.com with SMTP id y15so6468498ilq.4
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Sep 2022 08:52:00 -0700 (PDT)
+X-Received: by 2002:a05:6e02:12a8:b0:2ea:f53a:2d06 with SMTP id
+ f8-20020a056e0212a800b002eaf53a2d06mr12701463ilr.223.1663084320106; Tue, 13
+ Sep 2022 08:52:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [PATCH v3 2/2] PM: ACPI: reboot: Reinstate S5 for reboot
-Content-Language: en-US
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        rafael.j.wysocki@intel.com, lenb@kernel.org
-Cc:     Josef Bacik <josef@toxicpanda.com>,
+References: <20220912221317.2775651-1-rrangel@chromium.org>
+ <20220912160931.v2.7.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid> <YyAxBtAD2wL91quT@shikoro>
+In-Reply-To: <YyAxBtAD2wL91quT@shikoro>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Tue, 13 Sep 2022 09:51:48 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30Dw8XvNyok-BJ=oQEROC+Z6hfK8D93YHS4v-KGZymNXZw@mail.gmail.com>
+Message-ID: <CAHQZ30Dw8XvNyok-BJ=oQEROC+Z6hfK8D93YHS4v-KGZymNXZw@mail.gmail.com>
+Subject: Re: [PATCH v2 07/13] i2c: acpi: Use ACPI wake capability bit to set wake_irq
+To:     Wolfram Sang <wsa@kernel.org>,
+        Raul E Rangel <rrangel@chromium.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "jingle.wu" <jingle.wu@emc.com.tw>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Tim Van Patten <timvp@google.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220913062042.1977790-1-kai.heng.feng@canonical.com>
- <20220913062042.1977790-2-kai.heng.feng@canonical.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <20220913062042.1977790-2-kai.heng.feng@canonical.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 9/13/22 09:20, Kai-Heng Feng wrote:
-> Commit d60cd06331a3 ("PM: ACPI: reboot: Use S5 for reboot") caused Dell
-> PowerEdge r440 hangs at reboot.
-> 
-> The issue is fixed by commit 2ca1c94ce0b6 ("tg3: Disable tg3 device on
-> system reboot to avoid triggering AER"), so use the new sysoff API to
-> reinstate S5 for reboot on ACPI-based systems.
-> 
-> Cc: Josef Bacik <josef@toxicpanda.com>
-> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> ---
-> v3:
->  - Use new API to invoke ACPI S5.
-> 
-> v2:
->  - Use do_kernel_power_off_prepare() instead.
-> 
->  drivers/acpi/sleep.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> index ad4b2987b3d6e..dce5460902eed 100644
-> --- a/drivers/acpi/sleep.c
-> +++ b/drivers/acpi/sleep.c
-> @@ -1088,6 +1088,10 @@ int __init acpi_sleep_init(void)
->  		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
->  					 SYS_OFF_PRIO_FIRMWARE,
->  					 acpi_power_off, NULL);
-> +
-> +		register_sys_off_handler(SYS_OFF_MODE_RESTART_PREPARE,
-> +					 SYS_OFF_PRIO_FIRMWARE,
-> +					 acpi_power_off_prepare, NULL);
+On Tue, Sep 13, 2022 at 1:28 AM Wolfram Sang <wsa@kernel.org> wrote:
+>
+> On Mon, Sep 12, 2022 at 04:13:11PM -0600, Raul E Rangel wrote:
+> > Device tree already has a mechanism to pass the wake_irq. It does this
+> > by looking for the wakeup-source property and setting the
+> > I2C_CLIENT_WAKE flag. This CL adds the ACPI equivalent. It uses the
+> > ACPI interrupt wake flag to determine if the interrupt can be used to
+> > wake the system. Previously the i2c drivers had to make assumptions and
+> > blindly enable the wake IRQ. This can cause spurious wake events. e.g.,
+> > If there is a device with an Active Low interrupt and the device gets
+> > powered off while suspending, the interrupt line will go low since it's
+> > no longer powered and wakes the system. For this reason we should
+> > respect the board designers wishes and honor the wake bit defined on the
+> > interrupt.
+>
+> I'll let the I2C ACPI maintainers deal with the technical details
+> because they are the experts here, yet one minor thing hits my eye:
+>
 
-Maybe you could add a small comment to the code explaining why
-acpi_power_off_prepare is used for restarting?
+> > +             irq_ctx.irq = acpi_dev_gpio_irq_get_wake(
+> > +                     adev, 0, &irq_ctx.wake_capable);
+>
+> That line split looks weird with the open parens at the end of line 1.
+>
+Ah, looks like I missed `clang-format` on that line. I can fix it in
+the next revision.
 
-Is it safe to use S5 on restart for all devices in general?
-
--- 
-Best regards,
-Dmitry
-
+Thanks
