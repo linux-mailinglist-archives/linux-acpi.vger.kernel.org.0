@@ -2,109 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C98F5B78D6
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 19:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 549EB5B7924
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 20:09:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231439AbiIMRwB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Sep 2022 13:52:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47484 "EHLO
+        id S232356AbiIMSHe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Sep 2022 14:07:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231443AbiIMRvk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 13:51:40 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB10857F9;
-        Tue, 13 Sep 2022 09:50:15 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id c198so12303296pfc.13;
-        Tue, 13 Sep 2022 09:50:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=C/Zpre7KVq932UhCKk2b8U74PyD3gWhFjpSTlExGJKo=;
-        b=kNFu3fVmyF76kXXgisnaNtqCCgCvCofZWNlRryAy45oKUnno1ZmYeGfrcL7XJJ4Uzo
-         KuYlcAndeJmoZaZjsRMne1mpRucbxAUg4QWNtSLWbK4EWNY/hr1+eI4DTJh+aoRIaYJE
-         yaZovKB6KvVeNcNnlhX8r0PPdyGujK4sza9iMyN+VV8jzVKd8tmWnYFV8bsdxYn+VGmC
-         3AYwRFZe4eBCIZov6AS4y/ooi9FwEGW802ovnky/lH3maY0FJwtHj8qfOnkcwVkT5gCx
-         aWh3CGi8rKLofyemrSXuzVRAKpSOYu+m4gFaQL/zVzMZnnrHr5RFglTpXtrNm5f0Yef/
-         iSmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=C/Zpre7KVq932UhCKk2b8U74PyD3gWhFjpSTlExGJKo=;
-        b=Y3NUoTSPtz171IS5wKD5uo35FCZtbM+qMrWaS8jZflTVIYP/hpsdD8VsRLhoUl8LmY
-         TmEwFCzAkHiNpqB21DwstfSIPVFAN+Hb4Y6OH45LNkQfCGBXkZEtK7UMZCQXavvnfKQb
-         8nekmqfxg+ogZ713MtbadBari749XcjvxsoGMvl9w0DiMYhP3iI/Zqb9I3RJHxKAlxNC
-         hjE1ziVInJcZf2TgWtYyMTlVjqM4KNeaGyVisoSdKm60W09PgabtXi3ZMlqshznwmL6u
-         1rrXzP1DdE/HEglcDEwRzxbWGEeDYhnDorrC0p9XDXFz8z3/q7PIo8OHv89l+TAZ9Ems
-         xQ7g==
-X-Gm-Message-State: ACgBeo1nqh9sYKcy0KfPGeu+N6evlACaZm3vz/2WXlvri2ax0DMEBBnB
-        RTB3O/0SzBnZYdT9XZmcXg4=
-X-Google-Smtp-Source: AA6agR6FazlqsHgyQOy58ovOrNGJZwWwn6mCwACT6p/fAUAIOC3di22kmXKFHplJuKmMlvsiyBcY9Q==
-X-Received: by 2002:a63:8a4a:0:b0:439:49b3:6586 with SMTP id y71-20020a638a4a000000b0043949b36586mr2418825pgd.44.1663087814628;
-        Tue, 13 Sep 2022 09:50:14 -0700 (PDT)
-Received: from rog ([2a0a:edc0:0:701:a220:c777:e1f2:5de1])
-        by smtp.gmail.com with ESMTPSA id ch12-20020a17090af40c00b001fbbbe38387sm1981538pjb.10.2022.09.13.09.50.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Sep 2022 09:50:14 -0700 (PDT)
-Date:   Tue, 13 Sep 2022 18:50:03 +0200
-From:   Philipp Zabel <philipp.zabel@gmail.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
-        catalin@antebit.com, travisghansen@yahoo.com,
-        Shyam-sundar.S-k@amd.com, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 5/6] acpi/x86: s2idle: Add a quirk for ASUS ROG
- Zephyrus G14
-Message-ID: <YyC0u0nedouZemfq@rog>
-References: <20220912172401.22301-1-mario.limonciello@amd.com>
- <20220912172401.22301-6-mario.limonciello@amd.com>
+        with ESMTP id S231370AbiIMSHN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 14:07:13 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC89C5C;
+        Tue, 13 Sep 2022 10:11:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663089068; x=1694625068;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eLee7VFB2i1ceBLF9tn9Hcf09OVD35DhU3XPQpEwR8Q=;
+  b=Xk2XovAetQwKysJI4InYFil4Ovsh9BQEhAkEtTfcuWSSFSgiX7CdwaSD
+   RoEZV5wvwaS7Vh2TqAtgi49096zVnS+mB/6wUV6vrZKkA2WbP+OwFQB6z
+   G9sfo+X32Iwj9xKY+wgJW61GDw1VS9Fy+qFcHeAT2DAsj8sMWm7rz55ua
+   FDV9+38tFr5UOD+md0v1KqGh26kEaDNj1XYluvcaw3U1xw5nQHkJ5rx8h
+   Oqk4JP9IRg/UpJA3wiOhYXhIDjGjfnxv3wOhZ1EmZJcODtdh2lTdEMZNf
+   PUggf7mmYek/XaDB7YInc72/VRMceMY3IsyFOzmacCKZ3c1g72EpByMFD
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="359920022"
+X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
+   d="scan'208";a="359920022"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 10:11:05 -0700
+X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
+   d="scan'208";a="758871608"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 10:11:00 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oY9R3-001quU-0X;
+        Tue, 13 Sep 2022 20:10:57 +0300
+Date:   Tue, 13 Sep 2022 20:10:56 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Raul E Rangel <rrangel@chromium.org>
+Cc:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
+        jingle.wu@emc.com.tw, mario.limonciello@amd.com, timvp@google.com,
+        linus.walleij@linaro.org, hdegoede@redhat.com, rafael@kernel.org,
+        Asmaa Mnebhi <asmaa@nvidia.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Thompson <davthompson@nvidia.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Lu Wei <luwei32@huawei.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Paolo Abeni <pabeni@redhat.com>, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 05/13] gpiolib: acpi: Add wake_capable parameter to
+ acpi_dev_gpio_irq_get_by
+Message-ID: <YyC5oEH6NKCMTzzt@smile.fi.intel.com>
+References: <20220912221317.2775651-1-rrangel@chromium.org>
+ <20220912160931.v2.5.I4ff95ba7e884a486d7814ee888bf864be2ebdef4@changeid>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220912172401.22301-6-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220912160931.v2.5.I4ff95ba7e884a486d7814ee888bf864be2ebdef4@changeid>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am Mon, Sep 12, 2022 at 12:23:59PM -0500 schrieb Mario Limonciello:
-> ASUS ROG Zephyrus G14 is affected by the same BIOS bug as ASUS TUF
-> Gaming A17 where important ASL is not called in the AMD code path.
-> Use the Microsoft codepath instead.
-> 
-> Reported-and-suggested-by: Philipp Zabel <philipp.zabel@gmail.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v1->v2:
->  * New patch
-> ---
->  drivers/acpi/x86/s2idle.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index 9ee734e0c3c5..4bdc7133d2ea 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -420,6 +420,14 @@ static const struct dmi_system_id s2idle_dmi_table[] __initconst = {
->  			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS TUF Gaming A17"),
->  		},
->  	},
-> +	{
-> +		/* ASUS ROG Zephyrus G14 (2022) */
-> +		.callback = lps0_prefer_microsoft,
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "ROG Zephyrus G14 GA402"),
-> +		},
-> +	},
+On Mon, Sep 12, 2022 at 04:13:09PM -0600, Raul E Rangel wrote:
+> The ACPI spec defines the SharedAndWake and ExclusiveAndWake share type
+> keywords. This is an indication that the GPIO IRQ can also be used as a
+> wake source. This change exposes the wake_capable bit so drivers can
+> correctly enable wake functionality instead of making an assumption.
 
-Tested-by: Philipp Zabel <philipp.zabel@gmail.com>
+...
 
-regards
-Philipp
+> -	ret = acpi_dev_gpio_irq_get_by(ACPI_COMPANION(dev), "irq-gpios", 0);
+> +	ret = acpi_dev_gpio_irq_get_by(ACPI_COMPANION(dev), "irq-gpios", 0,
+> +				       NULL);
+>  	if (ret < 0)
+>  		return ret;
+
+Looking at these changes, can't we first introduce
+
+	int acpi_dev_gpio_irq_get_by_name(struct acpi_device *adev, const char *name);
+
+convert users, and then add wake stuff to the basic function.
+In such case you will make less invasive main part of the idea.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
