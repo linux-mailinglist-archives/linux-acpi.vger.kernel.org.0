@@ -2,67 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A688A5B78CF
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 19:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C98F5B78D6
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Sep 2022 19:52:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233665AbiIMRvA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Sep 2022 13:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48394 "EHLO
+        id S231439AbiIMRwB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Sep 2022 13:52:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233672AbiIMRud (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 13:50:33 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B32183F19;
-        Tue, 13 Sep 2022 09:49:08 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id l10so12408479plb.10;
-        Tue, 13 Sep 2022 09:49:08 -0700 (PDT)
+        with ESMTP id S231443AbiIMRvk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Sep 2022 13:51:40 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB10857F9;
+        Tue, 13 Sep 2022 09:50:15 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id c198so12303296pfc.13;
+        Tue, 13 Sep 2022 09:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=GVXCUV/wOiE0NHoGAs/99JLUBeN3Hj+ppGXrhVQZl+I=;
-        b=gAVkJ3PYgu4p8T1V2J1lWmKZxg1ls3m6IbbXhLorzCQZv//M6Ey/tigi2iV1pgT4ot
-         rAJiA25gpbOCKOr8qj4r7Y19hDORDOAk6BNI7giYlDhhM6bZUu1fjRgeIVT01qOD+QLA
-         SzW0x9sRMlmohBsaim5FCDArnLtSf8pB/z9n7VIqedFeYxING15i/HV56o3eM+M8V7vC
-         bNXnJH3aiSCDKOwNivGOhi9JIYlRmhCyTbDlfP3zwcZb95TdL/HrzNcCkz2vTYJ4cIxT
-         d4iUyx85Yvp18qUmVstBMWoqKEMGlxkx0FGCxo0gWNdLW4ZdLnhlhIW0fr0Lvkz9n/v5
-         gBQg==
+        bh=C/Zpre7KVq932UhCKk2b8U74PyD3gWhFjpSTlExGJKo=;
+        b=kNFu3fVmyF76kXXgisnaNtqCCgCvCofZWNlRryAy45oKUnno1ZmYeGfrcL7XJJ4Uzo
+         KuYlcAndeJmoZaZjsRMne1mpRucbxAUg4QWNtSLWbK4EWNY/hr1+eI4DTJh+aoRIaYJE
+         yaZovKB6KvVeNcNnlhX8r0PPdyGujK4sza9iMyN+VV8jzVKd8tmWnYFV8bsdxYn+VGmC
+         3AYwRFZe4eBCIZov6AS4y/ooi9FwEGW802ovnky/lH3maY0FJwtHj8qfOnkcwVkT5gCx
+         aWh3CGi8rKLofyemrSXuzVRAKpSOYu+m4gFaQL/zVzMZnnrHr5RFglTpXtrNm5f0Yef/
+         iSmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=GVXCUV/wOiE0NHoGAs/99JLUBeN3Hj+ppGXrhVQZl+I=;
-        b=eKjs6zeBN5/lfviPDR6WwywqVcveMo8VlJsmpVP5S9CIYEUjMioxig/rMV7jYpq85e
-         fCV5cpMXsFLg1NEbT5qyScTyvFDTfZMhwMaq8rC7DRJPWexe5WI3MQiuNxmdW7Jdc9CQ
-         BW92VmZquKLBAvbIOjiRewI7eNNKHfoQD5OB5VNp8xWa0B/nArJFJZm49AZGNSujOmhr
-         7NhFcVEW9Whc1xLiByJkwJoW6GhrYC0JdRuorZPwTrppWoR/URsWC+XGP/tN13FaFMOu
-         A3n23Yi8aMtw5P6/EyL9qIRXmVu3ucjg3l9jcAU3IbiSA625MzTvy5ZMsGfuVJK9BwQA
-         2qiA==
-X-Gm-Message-State: ACgBeo1/Oi8sSbMwu4f5zYsSclu8wCa29f90IKZYgacdJoH4meRS3Q4Q
-        vlH8EdifnJVE/0Mt0opr+DI=
-X-Google-Smtp-Source: AA6agR4oEFpqoZCjDCo9GNqbqYhIqpX7aUoN53E2h0Ur+D0ovTh2WtvmWB1If2bnWApv7pR5S6jhyw==
-X-Received: by 2002:a17:902:7295:b0:176:a0d8:77e3 with SMTP id d21-20020a170902729500b00176a0d877e3mr32386431pll.0.1663087747839;
-        Tue, 13 Sep 2022 09:49:07 -0700 (PDT)
+        bh=C/Zpre7KVq932UhCKk2b8U74PyD3gWhFjpSTlExGJKo=;
+        b=Y3NUoTSPtz171IS5wKD5uo35FCZtbM+qMrWaS8jZflTVIYP/hpsdD8VsRLhoUl8LmY
+         TmEwFCzAkHiNpqB21DwstfSIPVFAN+Hb4Y6OH45LNkQfCGBXkZEtK7UMZCQXavvnfKQb
+         8nekmqfxg+ogZ713MtbadBari749XcjvxsoGMvl9w0DiMYhP3iI/Zqb9I3RJHxKAlxNC
+         hjE1ziVInJcZf2TgWtYyMTlVjqM4KNeaGyVisoSdKm60W09PgabtXi3ZMlqshznwmL6u
+         1rrXzP1DdE/HEglcDEwRzxbWGEeDYhnDorrC0p9XDXFz8z3/q7PIo8OHv89l+TAZ9Ems
+         xQ7g==
+X-Gm-Message-State: ACgBeo1nqh9sYKcy0KfPGeu+N6evlACaZm3vz/2WXlvri2ax0DMEBBnB
+        RTB3O/0SzBnZYdT9XZmcXg4=
+X-Google-Smtp-Source: AA6agR6FazlqsHgyQOy58ovOrNGJZwWwn6mCwACT6p/fAUAIOC3di22kmXKFHplJuKmMlvsiyBcY9Q==
+X-Received: by 2002:a63:8a4a:0:b0:439:49b3:6586 with SMTP id y71-20020a638a4a000000b0043949b36586mr2418825pgd.44.1663087814628;
+        Tue, 13 Sep 2022 09:50:14 -0700 (PDT)
 Received: from rog ([2a0a:edc0:0:701:a220:c777:e1f2:5de1])
-        by smtp.gmail.com with ESMTPSA id s15-20020a170902ea0f00b00176dc67df44sm7255343plg.132.2022.09.13.09.49.01
+        by smtp.gmail.com with ESMTPSA id ch12-20020a17090af40c00b001fbbbe38387sm1981538pjb.10.2022.09.13.09.50.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Sep 2022 09:49:07 -0700 (PDT)
-Date:   Tue, 13 Sep 2022 18:48:57 +0200
+        Tue, 13 Sep 2022 09:50:14 -0700 (PDT)
+Date:   Tue, 13 Sep 2022 18:50:03 +0200
 From:   Philipp Zabel <philipp.zabel@gmail.com>
 To:     Mario Limonciello <mario.limonciello@amd.com>
 Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
         catalin@antebit.com, travisghansen@yahoo.com,
         Shyam-sundar.S-k@amd.com, Len Brown <lenb@kernel.org>,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] acpi/x86: s2idle: Add a quirk for ASUS TUF Gaming
- A17 FA707RE
-Message-ID: <YyC0eeVzI/MQsOPx@rog>
+Subject: Re: [PATCH v2 5/6] acpi/x86: s2idle: Add a quirk for ASUS ROG
+ Zephyrus G14
+Message-ID: <YyC0u0nedouZemfq@rog>
 References: <20220912172401.22301-1-mario.limonciello@amd.com>
- <20220912172401.22301-5-mario.limonciello@amd.com>
+ <20220912172401.22301-6-mario.limonciello@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220912172401.22301-5-mario.limonciello@amd.com>
+In-Reply-To: <20220912172401.22301-6-mario.limonciello@amd.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -73,72 +73,38 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am Mon, Sep 12, 2022 at 12:23:58PM -0500 schrieb Mario Limonciello:
-> ASUS TUF Gaming A17 FA707RE has problems with ACPI events after
-> s2idle resume.  It's from a missing call to an ASL method in AMD
-> the s2idle calling path. Force the system to use the Microsoft
-> Modern Standby calling path instead.
+Am Mon, Sep 12, 2022 at 12:23:59PM -0500 schrieb Mario Limonciello:
+> ASUS ROG Zephyrus G14 is affected by the same BIOS bug as ASUS TUF
+> Gaming A17 where important ASL is not called in the AMD code path.
+> Use the Microsoft codepath instead.
 > 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216101
-> Reported-and-tested-by: catalin@antebit.com
+> Reported-and-suggested-by: Philipp Zabel <philipp.zabel@gmail.com>
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
 > v1->v2:
->  * Fixup for __init
+>  * New patch
 > ---
->  drivers/acpi/x86/s2idle.c | 26 +++++++++++++++++++++++++-
->  1 file changed, 25 insertions(+), 1 deletion(-)
+>  drivers/acpi/x86/s2idle.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
 > diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index a9b0f2b54a1c..9ee734e0c3c5 100644
+> index 9ee734e0c3c5..4bdc7133d2ea 100644
 > --- a/drivers/acpi/x86/s2idle.c
 > +++ b/drivers/acpi/x86/s2idle.c
-> @@ -17,6 +17,7 @@
->  
->  #include <linux/acpi.h>
->  #include <linux/device.h>
-> +#include <linux/dmi.h>
->  #include <linux/suspend.h>
->  
->  #include "../sleep.h"
-> @@ -400,6 +401,28 @@ static const struct acpi_device_id amd_hid_ids[] = {
->  	{}
->  };
->  
-> +static int lps0_prefer_microsoft(const struct dmi_system_id *id)
-> +{
-> +	pr_debug("Preferring Microsoft GUID.\n");
-> +	prefer_microsoft_guid = true;
-> +	return 0;
-> +}
-> +
-> +static const struct dmi_system_id s2idle_dmi_table[] __initconst = {
+> @@ -420,6 +420,14 @@ static const struct dmi_system_id s2idle_dmi_table[] __initconst = {
+>  			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS TUF Gaming A17"),
+>  		},
+>  	},
 > +	{
-> +		/*
-> +		 * ASUS TUF Gaming A17 FA707RE
-> +		 * https://bugzilla.kernel.org/show_bug.cgi?id=216101
-> +		 */
+> +		/* ASUS ROG Zephyrus G14 (2022) */
 > +		.callback = lps0_prefer_microsoft,
 > +		.matches = {
 > +			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS TUF Gaming A17"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "ROG Zephyrus G14 GA402"),
 > +		},
 > +	},
-> +	{}
-> +};
-> +
->  static int lps0_device_attach(struct acpi_device *adev,
->  			      const struct acpi_device_id *not_used)
->  {
-> @@ -566,8 +589,9 @@ static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 = {
->  	.end = acpi_s2idle_end,
->  };
->  
-> -void acpi_s2idle_setup(void)
-> +void __init acpi_s2idle_setup(void)
 
-Reviewed-by: Philipp Zabel <philipp.zabel@gmail.com>
-Tested-by: Philipp Zabel <philipp.zabel@gmail.com> # GA402RJ
+Tested-by: Philipp Zabel <philipp.zabel@gmail.com>
 
 regards
 Philipp
