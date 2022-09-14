@@ -2,145 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2175B8747
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 13:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05CF25B8A61
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 16:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229575AbiINL3j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Sep 2022 07:29:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39120 "EHLO
+        id S229484AbiINOYW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Sep 2022 10:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229872AbiINL3h (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 07:29:37 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B19FEB;
-        Wed, 14 Sep 2022 04:29:36 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 151235C002F;
-        Wed, 14 Sep 2022 07:29:36 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Wed, 14 Sep 2022 07:29:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm2; t=1663154976; x=1663241376; bh=nQu2SC9skj
-        3zvKgRAY+OE/EsK7UjSaSgeju0QfEt0Cs=; b=sI6+pKkRrFiyWe0Di0vUI4Elub
-        WU2WZ16qg5NsAIf4cYxne5RPHmLNkNbOnTap31OE31Ikj6KyXkxyRBvzyARaAhH1
-        4WaF17Vp33VyqXlgHWVeTnX5TE8blIAtgT28busRsPYDhgksEk1HjeCc08Wvga+t
-        bskfWscIPId4Ly552s6iPRxZIfV693nUdEISY1m1C6cuM/CBHr2clsj2w6waZpUc
-        kcNd7KZM3nEz3ZczPhAysdEw9m6h8AG4IDnT16cTpd7wxRGIT51rselgZprVkbNo
-        cV2i7Zr6x+DVMwNNIE9IhKXuFhnjxru5j7vvcHFaD2a37X7XKXbzwbCoWkvw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1663154976; x=1663241376; bh=nQu2SC9skj3zvKgRAY+OE/EsK7Uj
-        SaSgeju0QfEt0Cs=; b=tB/hgMgRkBvvDe2Larr5g2Xf2i8pcNlw8zMWLcyXqMtz
-        RB6o4uF3NQfWxsrTx4foH9n8N0buQUyc78NvdvGkG4UlhuwObb4DLW7+hBTGHLOI
-        lz+e2Q5CLfsdCvSDgB0+WnUG5qLcyw1qIvyWSVO2MWJgapsJp1mP+Gu2aPma6Ict
-        WXXqlCMcwpPIUC+xd91w/xzze6dFXsOtXBwdztItwSbghsQjRH2NPHQVRhFBnZ6q
-        dY908u0Y4DOR5UQPGpXG3/WuBqpOiYl5lrcVVme9qasVWakJqRmTomu16NE1d1XL
-        GnsoGxdlzWy+uNseiD8/XdR6ysJ9+BdoSF2XaJiEiw==
-X-ME-Sender: <xms:H7shYy-z-Sy-s0CYkYhiWGEo-Fk_sa4yzpFsShmbVmcw8NKVEim-Ow>
-    <xme:H7shYyuhl7apl0uzCWtoXaLVdsY3vIuHlVJPZVfymPsr4NqTL0cxTJskRvonuk2hn
-    j43Mbjcps8eNMsiwoQ>
-X-ME-Received: <xmr:H7shY4CZYM4ETUI7hJOe8i-3Bo9XlCMwvu1ooLO0z2Jo5DxvZAi390_OMsGo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeduiedggeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihi
-    mhgvucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucggtffrrg
-    htthgvrhhnpeetfefffefgkedtfefgledugfdtjeefjedvtddtkeetieffjedvgfehheff
-    hfevudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hmrgigihhmvgestggvrhhnohdrthgvtghh
-X-ME-Proxy: <xmx:H7shY6fH7W_BVuQc_Pv1wOCbe0JZZwDcqIOQjR9ElV0d0XyvT8FDFA>
-    <xmx:H7shY3PQ1WXtryglSTdW3rrdTj3tpcFZXxBJFYoc6JJb0xJRVeA8nQ>
-    <xmx:H7shY0mvO9oKdlpqejxArcWaOLnY7GbsVZO4bMdJEo1YmlDQ9Owr_w>
-    <xmx:ILshY6hp7U4y67xd1z7aW61uMylQ-NOWf_PLrKUGCD3bAJEil6TFPg>
-Feedback-ID: i8771445c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 14 Sep 2022 07:29:34 -0400 (EDT)
-Date:   Wed, 14 Sep 2022 12:29:33 +0100
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
-        Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        Xinhui <Xinhui.Pan@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@redhat.com>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [GIT PULL] Immutable backlight-detect-refactor branch between
- acpi, drm-* and pdx86
-Message-ID: <20220914112933.64ovljgsrv2l25rs@penduick>
-References: <261afe3d-7790-e945-adf6-a2c96c9b1eff@redhat.com>
+        with ESMTP id S230161AbiINOXm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 10:23:42 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E8604F1B9
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 07:23:41 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id br15-20020a056830390f00b0061c9d73b8bdso10430505otb.6
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 07:23:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=T/W399ugEDVZD4m/kuU/Ot70q1nwjtLdgh28FGL9vuI=;
+        b=aTeT17jIkygmWeAvV0hUJ9RK0Y7BOMxPPRvu2Zb+Wj3oDMBARAGTLh+QpXOerih+At
+         fFF66M3tONgatwL27Hy8mmC9FRh8f6XbDC3g3p9mOthMy78QpROEBT1VKKJdwtAthpLH
+         NkFU/vOxzZRgT6eNUzqXmiknkEuJ1cjpD/Nlf/Tz3yZLaFk0Fr9GDUSp6icnSOkTWJN6
+         kamFu2QL2fGNiI2NP5q6zkySnGeWP9ICXfINfr4f8bYxrnCN1i5OL0Co5W0apoPY2pmN
+         VdrvVvm1lpfUE7u/1TY5M0fnPbTIfqJXGt/rBAQIotyNhzbigzSXN/hmgqP9tRqN4Wsn
+         zqYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=T/W399ugEDVZD4m/kuU/Ot70q1nwjtLdgh28FGL9vuI=;
+        b=0rhBlRsJDQXSUbtvsoSW31gxZa6879iwAnwqo10eT1fX4XT+UH11CEaL2MTq6g2Aen
+         LVFa/YZG23+j+E6h7I8Ye0q3OzOwBd1WmD2pl//rOlfgfMUhXADQMbY+9uZAbRRcOAKl
+         G13tNnMBRK5ip+DARLbqheo56eNA81CjVpyW5bM++aIovKw9OsZX2peemHJmd4iXvrXw
+         1/gAcH08I6DGy4cN9tcdiF9IVgDX4NGoGXd6/hYCIwUSogrbVcegR2fvMt4nirdWv17i
+         mb1No1RRMXjJfsNjTbI+P+/FnCi7QXm0YYFlZ/0kPMJyulIbFCl0D531ovDqcljDDrAR
+         eYbw==
+X-Gm-Message-State: ACgBeo2g+mCwUGzOyqjuP/amh3t3Hdb9l8a4FWQx606wZVAtra9WdlQO
+        A3SSPXl7vnIfZRjwvc582EIghqzD/UscravC3cQ=
+X-Google-Smtp-Source: AA6agR6MreNcoc3OLEybXhazHAES5NYSAM694cN2xPX/OJfm2aEw8A8dU7h0U4l4qRwVi4gT5ur/LmNluSqCMtOpbwA=
+X-Received: by 2002:a05:6830:111a:b0:655:bcad:f65d with SMTP id
+ w26-20020a056830111a00b00655bcadf65dmr8920425otq.133.1663165420829; Wed, 14
+ Sep 2022 07:23:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hy5cszh57lz34buf"
-Content-Disposition: inline
-In-Reply-To: <261afe3d-7790-e945-adf6-a2c96c9b1eff@redhat.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:6830:168b:0:0:0:0 with HTTP; Wed, 14 Sep 2022 07:23:40
+ -0700 (PDT)
+Reply-To: sgtkaylam28@gmail.com
+From:   sgt kayla manthey <tchasrazak7@gmail.com>
+Date:   Wed, 14 Sep 2022 14:23:40 +0000
+Message-ID: <CALHSC9K-18V5-KdHQGw_JSdwp+mvUjcLOPYmZ7mVTa_zqV1tUw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:332 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4977]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [tchasrazak7[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [tchasrazak7[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [sgtkaylam28[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
---hy5cszh57lz34buf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Hans,
-
-On Mon, Sep 05, 2022 at 10:35:47AM +0200, Hans de Goede wrote:
-> Hi All,
->=20
-> Now that all patches have been reviewed/acked here is an immutable backli=
-ght-detect-refactor
-> branch with 6.0-rc1 + the v5 patch-set, for merging into the relevant (ac=
-pi, drm-* and pdx86)
-> subsystems.
->=20
-> Please pull this branch into the relevant subsystems.
->=20
-> I will merge this into the review-hans branch of the pdx86 git tree today=
- and
-> from there it will move to for-next once the builders have successfully b=
-uild-tested
-> the merge.
-
-I merged it into drm-misc-next, thanks!
-Maxime
-
---hy5cszh57lz34buf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABMIAB0WIQTXEe0+DlZaRlgM8LOIQ8rmN6G3ywUCYyG7HQAKCRCIQ8rmN6G3
-yxexAQD6R+v7rkQb0GeB4b/P6qIJ8gkrhQhlZLrmcPYoUuwldAD/fLehBZhVa7TE
-ohzG1kghzg7S8i2Op8YPG+18dMDqoTU=
-=37BB
------END PGP SIGNATURE-----
-
---hy5cszh57lz34buf--
+-- 
+Hi,
+Did get my previous letter? Write me back
