@@ -2,106 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37A575B8BBF
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 17:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 873C65B8DA7
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 18:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229965AbiINP0y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Sep 2022 11:26:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36102 "EHLO
+        id S229861AbiINQ7G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Sep 2022 12:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbiINP0t (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 11:26:49 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE1B68053F
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 08:26:48 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id 3so10733460qka.5
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 08:26:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=8sVnRYf4lRZtHclJFM/PYgijezwVHsVwJUa/M1F9Nfw=;
-        b=aU+pRvep+sXGVRr01+jPV7M1KGeUuIOdGm/7Imgv2e35rdbyXzmARUq1pX7NbUK31d
-         P7JnZtuwOHE1Y3V+NSrCkrjcfy/IVgYVBkLzYROVFEJ2rN4QRKzlug+IhDRBgsnblfD/
-         z6gvdEo890XqggiMeBDVIPT5KAcHLF/iLDo5o=
+        with ESMTP id S229491AbiINQ7F (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 12:59:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68ACB237D1
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 09:59:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1663174743;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8eAE9HpKpIVvmOEFXUeeAc8cv8ndkWqJta1h5pXlw4I=;
+        b=JRX6sNjmMfJzkxfv3BjTG4v7rsCEzoac8YmwIjYVahEWu5LGrqQf2/FVacGIj2XG7Zy5Ht
+        ZOB2mNBz7l7CCE013tTg80x4NNm65wmjWIykX7MlP7R8UE2RmDhvIp7u/ddf6IHSFVGILJ
+        QCqY0+OG+mkK0gOJIBH9m9MsYsyIIB8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-643-SjyJihi4N_eP-ss75cLm4w-1; Wed, 14 Sep 2022 12:59:02 -0400
+X-MC-Unique: SjyJihi4N_eP-ss75cLm4w-1
+Received: by mail-wm1-f71.google.com with SMTP id q10-20020a1ce90a000000b003a60123678aso5625106wmc.6
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 09:59:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=8sVnRYf4lRZtHclJFM/PYgijezwVHsVwJUa/M1F9Nfw=;
-        b=qzUJ5x/no2IwwrtBpY3FGVTNi3t+szrusqcDA1QHf8HNxJV2Nd7tc5xzcXkc2/Tr7b
-         oVHM6/DBwff2ntoxpKORkqhNkVzTtyzb11KceiKcEPgSvb+rpi1HFoFC9rpokqMacp/6
-         0obOIrhj9MW63vCVp7OGChAZ+FqENtl2a3opL4JSqYu8nOevvU9FYnas0MeQ9DVkBOm5
-         TgeIyjk9KdNm4dZd1VVWgFkJyQlNRbD/hiUmgBw+i86Lq41jJng7rKiiHKFe1UtbxWcC
-         sx9Q5dfCtEEfMB0Gh1g6kwa8CsGu4kkyords+zs/W2ez+sskL4qQVNEeQHajLGuzqZ7d
-         Fcdw==
-X-Gm-Message-State: ACgBeo3qu597cUCqRxSO3fJwf46XuF7vc6rjDCyfLhElI232abA0XsOu
-        tsEEb8T+7S+CivMjyFSKQ+B8z5ZHmimT1Q==
-X-Google-Smtp-Source: AA6agR7n4xum2zgoGHnoLoWhyC0cBFnyI9aorm1ST9uFXgyiaB4tBf7SKAPUDVVlboKVbxm4Oq8N7w==
-X-Received: by 2002:a05:620a:4623:b0:6ce:59b8:a175 with SMTP id br35-20020a05620a462300b006ce59b8a175mr8651412qkb.210.1663169207493;
-        Wed, 14 Sep 2022 08:26:47 -0700 (PDT)
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com. [209.85.160.174])
-        by smtp.gmail.com with ESMTPSA id u13-20020a05620a430d00b006b953a7929csm2079826qko.73.2022.09.14.08.26.46
-        for <linux-acpi@vger.kernel.org>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=8eAE9HpKpIVvmOEFXUeeAc8cv8ndkWqJta1h5pXlw4I=;
+        b=4C+Z3VjeusBZJNpRMGAExpzbaTdm4uP3cns8o1VXDfb+LaTm0HE/i+HfzfFr33+KvC
+         LRFY+0SXjZnBmVJltdia6fY1lRnXiWQMJCBdZJHdE+j4OmCiVm8JTK67Ii+Wz1aS+Kil
+         Cf95RWIlRiAy0YEmvnN1X4jvLsrdVLGdKqsCaPtgMs7h22EZg5nsugJPDP/WNrWx21a+
+         4CBQBy/+oPwozskw5/fDS13R9DWUX7fyo5gRYOVy8p4pGw/XZYpv4uxtQSuYde/bO7jQ
+         prWIXt7uDwsX2Qh/2buvGyaiMIY794r7u2NEChq1ESfhqOzkFpHt6PoIiHpPigWz9Ujw
+         54SQ==
+X-Gm-Message-State: ACgBeo2j4v+neIRvFmJzjIMLbUBgSiFkCWEoTQ8HKrWD6nz1qOAKDrJP
+        4HsttoEkrIF0Z2Ckoooe/NHt+b8w1r26IIHRVwOhefGV44KNG66VrNam9xUYL9774+szQaUOgFT
+        0qFZ8Np6I3i7qPAdyZXQAbA==
+X-Received: by 2002:adf:f211:0:b0:228:d6a4:3510 with SMTP id p17-20020adff211000000b00228d6a43510mr21648595wro.448.1663174741047;
+        Wed, 14 Sep 2022 09:59:01 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR4/hMrbSSVrICYCjqMv7OHktLT/ShhknRc4TABv3IGMoKgXGV5RhWzuT4s56YrRzLlwdjxauA==
+X-Received: by 2002:adf:f211:0:b0:228:d6a4:3510 with SMTP id p17-20020adff211000000b00228d6a43510mr21648581wro.448.1663174740767;
+        Wed, 14 Sep 2022 09:59:00 -0700 (PDT)
+Received: from [172.16.38.152] ([185.122.133.20])
+        by smtp.gmail.com with ESMTPSA id m23-20020a05600c3b1700b003b477532e66sm6954615wms.2.2022.09.14.09.58.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Sep 2022 08:26:47 -0700 (PDT)
-Received: by mail-qt1-f174.google.com with SMTP id j10so8610668qtv.4
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 08:26:46 -0700 (PDT)
-X-Received: by 2002:a02:9509:0:b0:349:b6cb:9745 with SMTP id
- y9-20020a029509000000b00349b6cb9745mr18869971jah.281.1663168880396; Wed, 14
- Sep 2022 08:21:20 -0700 (PDT)
+        Wed, 14 Sep 2022 09:58:59 -0700 (PDT)
+Message-ID: <2b7693c4-b04e-425a-2f87-c4b12fa2f63b@redhat.com>
+Date:   Wed, 14 Sep 2022 17:58:58 +0100
 MIME-Version: 1.0
-References: <20220912221317.2775651-1-rrangel@chromium.org>
- <20220912160931.v2.5.I4ff95ba7e884a486d7814ee888bf864be2ebdef4@changeid> <YyFs5q67RYR2aAy7@black.fi.intel.com>
-In-Reply-To: <YyFs5q67RYR2aAy7@black.fi.intel.com>
-From:   Raul Rangel <rrangel@chromium.org>
-Date:   Wed, 14 Sep 2022 09:21:08 -0600
-X-Gmail-Original-Message-ID: <CAHQZ30CU2-YtOfGYXJq3c=-1ttyw=hKZvViOfWGAKkxXO1C5Gw@mail.gmail.com>
-Message-ID: <CAHQZ30CU2-YtOfGYXJq3c=-1ttyw=hKZvViOfWGAKkxXO1C5Gw@mail.gmail.com>
-Subject: Re: [PATCH v2 05/13] gpiolib: acpi: Add wake_capable parameter to acpi_dev_gpio_irq_get_by
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "jingle.wu" <jingle.wu@emc.com.tw>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Tim Van Patten <timvp@google.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Asmaa Mnebhi <asmaa@nvidia.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Thompson <davthompson@nvidia.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Lu Wei <luwei32@huawei.com>, Paolo Abeni <pabeni@redhat.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [GIT PULL] Immutable backlight-detect-refactor branch between
+ acpi, drm-* and pdx86
+Content-Language: en-US
+To:     Maxime Ripard <maxime@cerno.tech>
+Cc:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
+        Lyude <lyude@redhat.com>, Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Xinhui <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        nouveau@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@redhat.com>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+References: <261afe3d-7790-e945-adf6-a2c96c9b1eff@redhat.com>
+ <20220914112933.64ovljgsrv2l25rs@penduick>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220914112933.64ovljgsrv2l25rs@penduick>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 13, 2022 at 11:55 PM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> Hi,
->
-> On Mon, Sep 12, 2022 at 04:13:09PM -0600, Raul E Rangel wrote:
-> > +int acpi_dev_gpio_irq_get_by(struct acpi_device *adev, const char *name,
-> > +                          int index, int *wake_capable)
->
-> Here too bool.
+Hi,
 
-I've incorporated both of your suggestions. I instead added
-`acpi_dev_gpio_irq_wake_get_by` as the basic function and left
-`acpi_dev_gpio_irq_get_by` the same. THis way I don't have to update
-any of the callers.
+On 9/14/22 12:29, Maxime Ripard wrote:
+> Hi Hans,
+> 
+> On Mon, Sep 05, 2022 at 10:35:47AM +0200, Hans de Goede wrote:
+>> Hi All,
+>>
+>> Now that all patches have been reviewed/acked here is an immutable backlight-detect-refactor
+>> branch with 6.0-rc1 + the v5 patch-set, for merging into the relevant (acpi, drm-* and pdx86)
+>> subsystems.
+>>
+>> Please pull this branch into the relevant subsystems.
+>>
+>> I will merge this into the review-hans branch of the pdx86 git tree today and
+>> from there it will move to for-next once the builders have successfully build-tested
+>> the merge.
+> 
+> I merged it into drm-misc-next, thanks!
+
+Great, thank you!
+
+Regards,
+
+Hans
+
