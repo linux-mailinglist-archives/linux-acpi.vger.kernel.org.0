@@ -2,277 +2,291 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 639F45B8FD9
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 23:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6555B8FE0
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 23:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbiINVAu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Sep 2022 17:00:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53774 "EHLO
+        id S229436AbiINVEj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Sep 2022 17:04:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbiINVAt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 17:00:49 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88A86754B3
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 14:00:47 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id z191so13366396iof.10
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 14:00:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=F0XVjfoKHP+OTYQ82bFgm1NTW9Uts87VD6ivnlOEVVk=;
-        b=T828Zm1P4W0m3y/FZrxNIRdJ04GyBvfBtyrjBpQ6PS3iRh4EoUYJ33eF85iXwdakkb
-         Lor83qEZOLy8+rL0dFH3dXrcjWptShSbcG1g4/T30sJkXkwoNkZshdhhgXfX38SzxOea
-         /nl5dOJNmmr4aBteO5lEgPZaqG+rXsJ7HEOmU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=F0XVjfoKHP+OTYQ82bFgm1NTW9Uts87VD6ivnlOEVVk=;
-        b=6Na6oZoUgnQIDWxd84adrUOjNM3n9pAVNJXosaFC/Is0igJJ0uZ57HhTSz1Q+3vw9Q
-         uoyIVrLKOf9t3dKNXQK4yq0BAWi5xjLRYCUA+kidxb5l4UsKtRFUgCCmDD1EjedB5/S+
-         S0Fi9LD0DdwXngINgyYb0iv6cMrkUtlE6+NAMGnc4kth4qfQsl5uvMqHMHPnJWoMv70I
-         2DvCvHSrbIds5d1RjhdZK8WVtsUFo/8xe8UmlD31jT6gNhuCRWLmxjZbe9YRLJqQgz9y
-         FxV+WiiYXj20w+/tHuGHVvSPrAxRUwowT4SNLK5cdmC8LFxZdYcB7UqqTYup4JmoyIC2
-         hRRQ==
-X-Gm-Message-State: ACgBeo31E+Zz06YWEe+goGTacMCtL7Rn45Gw155KLPmNeG7PBlGQP9Mm
-        B1N+jPVKv9gzkGan/19M8Cmed38RW8wm3g==
-X-Google-Smtp-Source: AA6agR49iUzh2MIssQL/RtUOUsYsEbF8LDrhwNH8QT2GxJMhQs1IHf5lsOws5+SFRLij2JOkINJX7w==
-X-Received: by 2002:a05:6638:3821:b0:35a:1973:ae9 with SMTP id i33-20020a056638382100b0035a19730ae9mr10536922jav.313.1663189246197;
-        Wed, 14 Sep 2022 14:00:46 -0700 (PDT)
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com. [209.85.166.49])
-        by smtp.gmail.com with ESMTPSA id e16-20020a056602159000b0068994e773e7sm7213342iow.26.2022.09.14.14.00.45
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Sep 2022 14:00:45 -0700 (PDT)
-Received: by mail-io1-f49.google.com with SMTP id d8so10304139iof.11
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 14:00:45 -0700 (PDT)
-X-Received: by 2002:a05:6638:4110:b0:35a:6d6b:57f7 with SMTP id
- ay16-20020a056638411000b0035a6d6b57f7mr1984073jab.134.1663189244533; Wed, 14
- Sep 2022 14:00:44 -0700 (PDT)
+        with ESMTP id S229487AbiINVEi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 17:04:38 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 468FEDFEE;
+        Wed, 14 Sep 2022 14:04:34 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7121D1576;
+        Wed, 14 Sep 2022 14:04:40 -0700 (PDT)
+Received: from [10.57.18.118] (unknown [10.57.18.118])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B48C83F73B;
+        Wed, 14 Sep 2022 14:04:32 -0700 (PDT)
+Message-ID: <22464516-0235-dddf-09e4-6f4580b04869@arm.com>
+Date:   Wed, 14 Sep 2022 22:04:28 +0100
 MIME-Version: 1.0
-References: <20220912221317.2775651-1-rrangel@chromium.org>
- <20220912160931.v2.7.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid> <YyFslxMchzntebVb@black.fi.intel.com>
-In-Reply-To: <YyFslxMchzntebVb@black.fi.intel.com>
-From:   Raul Rangel <rrangel@chromium.org>
-Date:   Wed, 14 Sep 2022 15:00:20 -0600
-X-Gmail-Original-Message-ID: <CAHQZ30AhQOxUBtbs8enUnGkBbtPYAN=_6vDV-9CcuMLMypZhtg@mail.gmail.com>
-Message-ID: <CAHQZ30AhQOxUBtbs8enUnGkBbtPYAN=_6vDV-9CcuMLMypZhtg@mail.gmail.com>
-Subject: Re: [PATCH v2 07/13] i2c: acpi: Use ACPI wake capability bit to set wake_irq
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "jingle.wu" <jingle.wu@emc.com.tw>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Tim Van Patten <timvp@google.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 2/2] iommu/amd: Fix ill-formed ivrs_ioapic, ivrs_hpet and
+ ivrs_acpihid options
+Content-Language: en-GB
+To:     Kim Phillips <kim.phillips@amd.com>, iommu@lists.linux.dev,
+        joro@8bytes.org
+Cc:     suravee.suthikulpanit@amd.com, vasant.hegde@amd.com,
+        Mike Day <michael.day@amd.com>, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20220914190330.60779-1-kim.phillips@amd.com>
+ <20220914190330.60779-2-kim.phillips@amd.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20220914190330.60779-2-kim.phillips@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 13, 2022 at 11:54 PM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> Hi,
->
-> On Mon, Sep 12, 2022 at 04:13:11PM -0600, Raul E Rangel wrote:
-> > Device tree already has a mechanism to pass the wake_irq. It does this
-> > by looking for the wakeup-source property and setting the
-> > I2C_CLIENT_WAKE flag. This CL adds the ACPI equivalent. It uses the
-> > ACPI interrupt wake flag to determine if the interrupt can be used to
-> > wake the system. Previously the i2c drivers had to make assumptions and
-> > blindly enable the wake IRQ. This can cause spurious wake events. e.g.,
-> > If there is a device with an Active Low interrupt and the device gets
-> > powered off while suspending, the interrupt line will go low since it's
-> > no longer powered and wakes the system. For this reason we should
-> > respect the board designers wishes and honor the wake bit defined on the
-> > interrupt.
-> >
-> > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-> > ---
-> >
-> > Changes in v2:
-> > - Look at wake_cabple bit for IRQ/Interrupt resources
-> >
-> >  drivers/i2c/i2c-core-acpi.c | 37 ++++++++++++++++++++++++++++---------
-> >  drivers/i2c/i2c-core-base.c |  6 +++++-
-> >  drivers/i2c/i2c-core.h      |  4 ++--
-> >  3 files changed, 35 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> > index c762a879c4cc6b..c3d69b287df824 100644
-> > --- a/drivers/i2c/i2c-core-acpi.c
-> > +++ b/drivers/i2c/i2c-core-acpi.c
-> > @@ -137,6 +137,11 @@ static const struct acpi_device_id i2c_acpi_ignored_device_ids[] = {
-> >       {}
-> >  };
-> >
+On 2022-09-14 20:03, Kim Phillips wrote:
+> Currently, these options cause the following libkmod error:
+> 
+> libkmod: ERROR ../libkmod/libkmod-config.c:489 kcmdline_parse_result: \
+> 	Ignoring bad option on kernel command line while parsing module \
+> 	name: 'ivrs_xxxx[XX:XX'
+> 
+> Fix by introducing a new parameter format for these options and
+> throw a warning for the deprecated format.
+> 
+> Users are still allowed to omit the PCI Segment if zero.
+> 
+> Adding a Link: to the reason why we're modding the syntax parsing
+> in the driver and not in libkmod.
+> 
+> Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/linux-modules/20200310082308.14318-2-lucas.demarchi@intel.com/
+> Reported-by: Kim Phillips <kim.phillips@amd.com>
+> Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+> ---
+>   .../admin-guide/kernel-parameters.txt         | 27 +++++--
+>   drivers/iommu/amd/init.c                      | 79 +++++++++++++------
+>   2 files changed, 76 insertions(+), 30 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index d7f30902fda0..23666104ab9b 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -2294,7 +2294,13 @@
+>   			Provide an override to the IOAPIC-ID<->DEVICE-ID
+>   			mapping provided in the IVRS ACPI table.
+>   			By default, PCI segment is 0, and can be omitted.
+> -			For example:
 
-> > +struct i2c_acpi_irq_context {
-> > +     int irq;
-> > +     int wake_capable;
->
-> Why not bool?
->
-SGTM
+I wonder if it might be helpful to cross-reference the "pci=" option and 
+spell out the general "<id>@<pci_dev>" format?
+
+> +
+> +			For example, to map IOAPIC-ID decimal 10 to
+> +			PCI segment 0x1 and PCI device 00:14.0,
+> +			write the parameter as:
+> +				ivrs_ioapic=10@0001:00:14.0
+> +
+> +			Deprecated formats:
+>   			* To map IOAPIC-ID decimal 10 to PCI device 00:14.0
+>   			  write the parameter as:
+>   				ivrs_ioapic[10]=00:14.0
+
+...then we could just say that there's also a deprecated 
+"ivrs_ioapic[<id>]=<pci_dev>" form. But then maybe it's hard to 
+concisely express that the [] are literal here rather than denoting an 
+optional value like everywhere else, Hmm...
+
+Anyway, my underlying thought here is that providing an equally detailed 
+example of what people shouldn't use as of what they should seems 
+somewhat at odds with the message that they shouldn't be using it.
+
+> @@ -2306,7 +2312,13 @@
+>   			Provide an override to the HPET-ID<->DEVICE-ID
+>   			mapping provided in the IVRS ACPI table.
+>   			By default, PCI segment is 0, and can be omitted.
+> -			For example:
+> +
+> +			For example, to map HPET-ID decimal 10 to
+> +			PCI segment 0x1 and PCI device 00:14.0,
+> +			write the parameter as:
+> +				ivrs_ioapic=10@0001:00:14.0
+> +
+> +			Deprecated formats:
+>   			* To map HPET-ID decimal 0 to PCI device 00:14.0
+>   			  write the parameter as:
+>   				ivrs_hpet[0]=00:14.0
+> @@ -2317,15 +2329,20 @@
+>   	ivrs_acpihid	[HW,X86-64]
+>   			Provide an override to the ACPI-HID:UID<->DEVICE-ID
+>   			mapping provided in the IVRS ACPI table.
+> +			By default, PCI segment is 0, and can be omitted.
+>   
+>   			For example, to map UART-HID:UID AMD0020:0 to
+>   			PCI segment 0x1 and PCI device ID 00:14.5,
+>   			write the parameter as:
+> -				ivrs_acpihid[0001:00:14.5]=AMD0020:0
+> +				ivrs_acpihid=AMD0020:0@0001:00:14.5
+>   
+> -			By default, PCI segment is 0, and can be omitted.
+> -			For example, PCI device 00:14.5 write the parameter as:
+> +			Deprecated formats:
+> +			* To map UART-HID:UID AMD0020:0 to PCI segment is 0,
+> +			  PCI device ID 00:14.5, write the parameter as:
+>   				ivrs_acpihid[00:14.5]=AMD0020:0
+> +			* To map UART-HID:UID AMD0020:0 to PCI segment 0x1 and
+> +			  PCI device ID 00:14.5, write the parameter as:
+> +				ivrs_acpihid[0001:00:14.5]=AMD0020:0
+>   
+>   	js=		[HW,JOY] Analog joystick
+>   			See Documentation/input/joydev/joystick.rst.
+> diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+> index ef0e1a4b5a11..13c6b581549c 100644
+> --- a/drivers/iommu/amd/init.c
+> +++ b/drivers/iommu/amd/init.c
+> @@ -3385,18 +3385,24 @@ static int __init parse_amd_iommu_options(char *str)
+>   static int __init parse_ivrs_ioapic(char *str)
+>   {
+>   	u32 seg = 0, bus, dev, fn;
+> -	int ret, id, i;
+> +	int id, i;
+>   	u32 devid;
+>   
+> -	ret = sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn);
+> -	if (ret != 4) {
+> -		ret = sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn);
+> -		if (ret != 5) {
+> -			pr_err("Invalid command line: ivrs_ioapic%s\n", str);
+> -			return 1;
+> -		}
+> +	if (sscanf(str, "=%d@%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
+> +	    sscanf(str, "=", &id, &seg, &bus, &dev, &fn) == 5)
+> +		goto found;
+> +
+> +	if (sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
+> +	    sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn) == 5) {
+> +		pr_warn("Deprecated option : ivrs_ioapic%s\n", str);
+
+ From a user PoV this message seems unfairly confusing, since it's not 
+actually the option that's deprecated, it's the format of the value of 
+the option...
+
+> +		pr_warn("Please see kernel parameters document and update the option.\n");
+
+...and having messages split across multiple lines that get interleaved 
+with other output, and are twice as wordy to be unhelpful than to simply 
+say what was expected, is even less pleasant.
+
+I'd suggest:
+
+		pr_warn("ivrs_ioapic%s option format deprecated; use 
+ivrs_ioapic=%d@%04x:%02x:%02x.%d instead\n",
+			str, id, seg, bus, dev, fn);
+
+which is concise* and consistent with how other deprecated IOMMU options 
+are reported; It's not like we didn't understand what was passed, so we 
+may as well make it as easy as copy-paste for the user to do what we're 
+asking. Similarly for the others below.
+
+Thanks,
+Robin.
 
 
-> Also perhaps 'wakeable'?
->
+*Yes, it's a fairly long line. Screens are wide these days.
 
-I kept it as wake_capable since I want to keep some consistency with
-the ACPI nodes.
-
-> > +};
-> > +
-> >  static int i2c_acpi_do_lookup(struct acpi_device *adev,
-> >                             struct i2c_acpi_lookup *lookup)
-> >  {
-> > @@ -170,11 +175,14 @@ static int i2c_acpi_do_lookup(struct acpi_device *adev,
-> >
-> >  static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
-> >  {
-> > -     int *irq = data;
-> > +     struct i2c_acpi_irq_context *irq_ctx = data;
-> >       struct resource r;
-> >
-> > -     if (*irq <= 0 && acpi_dev_resource_interrupt(ares, 0, &r))
-> > -             *irq = i2c_dev_irq_from_resources(&r, 1);
-> > +     if (irq_ctx->irq <= 0 && acpi_dev_resource_interrupt(ares, 0, &r)) {
-> > +             irq_ctx->irq = i2c_dev_irq_from_resources(&r, 1);
-> > +             irq_ctx->wake_capable =
-> > +                     r.flags & IORESOURCE_IRQ_WAKECAPABLE ? 1 : 0;
->
-> Then you can just do this:
->
->                 irq_ctx->wakeable = r.flags & IORESOURCE_IRQ_WAKECAPABLE;
->
-> > +     }
-> >
-> >       return 1; /* No need to add resource to the list */
-> >  }
-> > @@ -182,31 +190,42 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
-> >  /**
-> >   * i2c_acpi_get_irq - get device IRQ number from ACPI
-> >   * @client: Pointer to the I2C client device
-> > + * @wake_capable: Set to 1 if the IRQ is wake capable
-> >   *
-> >   * Find the IRQ number used by a specific client device.
-> >   *
-> >   * Return: The IRQ number or an error code.
-> >   */
-> > -int i2c_acpi_get_irq(struct i2c_client *client)
-> > +int i2c_acpi_get_irq(struct i2c_client *client, int *wake_capable)
->
-> bool here too
->
-> >  {
-> >       struct acpi_device *adev = ACPI_COMPANION(&client->dev);
-> >       struct list_head resource_list;
-> > -     int irq = -ENOENT;
-> > +     struct i2c_acpi_irq_context irq_ctx = {
-> > +             .irq = -ENOENT,
-> > +             .wake_capable = 0,
-> > +     };
-> >       int ret;
-> >
-> >       INIT_LIST_HEAD(&resource_list);
-> >
-> > +     if (wake_capable)
-> > +             *wake_capable = 0;
->
-> I think it is better to touch this only after the function succeeds so..
->
-> > +
-> >       ret = acpi_dev_get_resources(adev, &resource_list,
-> > -                                  i2c_acpi_add_resource, &irq);
-> > +                                  i2c_acpi_add_resource, &irq_ctx);
-> >       if (ret < 0)
-> >               return ret;
-> >
-> >       acpi_dev_free_resource_list(&resource_list);
-> >
-> > -     if (irq == -ENOENT)
-> > -             irq = acpi_dev_gpio_irq_get(adev, 0);
-> > +     if (irq_ctx.irq == -ENOENT)
-> > +             irq_ctx.irq = acpi_dev_gpio_irq_get_wake(
-> > +                     adev, 0, &irq_ctx.wake_capable);
-> > +
-> > +     if (wake_capable)
-> > +             *wake_capable = irq_ctx.wake_capable;
->
-> ... here only.
->
-> >
-> > -     return irq;
-> > +     return irq_ctx.irq;
-> >  }
-> >
-> >  static int i2c_acpi_get_info(struct acpi_device *adev,
-> > diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> > index 91007558bcb260..97315b41550213 100644
-> > --- a/drivers/i2c/i2c-core-base.c
-> > +++ b/drivers/i2c/i2c-core-base.c
-> > @@ -468,6 +468,7 @@ static int i2c_device_probe(struct device *dev)
-> >       struct i2c_client       *client = i2c_verify_client(dev);
-> >       struct i2c_driver       *driver;
-> >       int status;
-> > +     int acpi_wake_capable = 0;
->
-> You can declare this in the below block instead.
->
-> >
-> >       if (!client)
-> >               return 0;
-> > @@ -487,7 +488,10 @@ static int i2c_device_probe(struct device *dev)
-> >                       if (irq == -EINVAL || irq == -ENODATA)
-> >                               irq = of_irq_get(dev->of_node, 0);
-> >               } else if (ACPI_COMPANION(dev)) {
->
->                         bool wakeable;
->
-> > -                     irq = i2c_acpi_get_irq(client);
-> > +                     irq = i2c_acpi_get_irq(client, &acpi_wake_capable);
-> > +
->                         if (irq > 0 && wakeable)
->                                 client->flags |= I2C_CLIENT_WAKE;
-> >               }
-> >               if (irq == -EPROBE_DEFER) {
-> >                       status = irq;
-> > diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
-> > index 87e2c914f1c57b..8e336638a0cd2e 100644
-> > --- a/drivers/i2c/i2c-core.h
-> > +++ b/drivers/i2c/i2c-core.h
-> > @@ -61,11 +61,11 @@ static inline int __i2c_check_suspended(struct i2c_adapter *adap)
-> >  #ifdef CONFIG_ACPI
-> >  void i2c_acpi_register_devices(struct i2c_adapter *adap);
-> >
-> > -int i2c_acpi_get_irq(struct i2c_client *client);
-> > +int i2c_acpi_get_irq(struct i2c_client *client, int *wake_capable);
-> >  #else /* CONFIG_ACPI */
-> >  static inline void i2c_acpi_register_devices(struct i2c_adapter *adap) { }
-> >
-> > -static inline int i2c_acpi_get_irq(struct i2c_client *client)
-> > +static inline int i2c_acpi_get_irq(struct i2c_client *client, int *wake_capable)
-> >  {
-> >       return 0;
-> >  }
-> > --
-> > 2.37.2.789.g6183377224-goog
-
-I'll push out another patch series with all the latest changes.
-
-Thanks for the reviews everyone.
+> +		goto found;
+>   	}
+>   
+> +	pr_err("Invalid command line: ivrs_ioapic%s\n", str);
+> +	return 1;
+> +
+> +found:
+>   	if (early_ioapic_map_size == EARLY_MAP_SIZE) {
+>   		pr_err("Early IOAPIC map overflow - ignoring ivrs_ioapic%s\n",
+>   			str);
+> @@ -3417,18 +3423,24 @@ static int __init parse_ivrs_ioapic(char *str)
+>   static int __init parse_ivrs_hpet(char *str)
+>   {
+>   	u32 seg = 0, bus, dev, fn;
+> -	int ret, id, i;
+> +	int id, i;
+>   	u32 devid;
+>   
+> -	ret = sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn);
+> -	if (ret != 4) {
+> -		ret = sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn);
+> -		if (ret != 5) {
+> -			pr_err("Invalid command line: ivrs_hpet%s\n", str);
+> -			return 1;
+> -		}
+> +	if (sscanf(str, "=%d@%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
+> +	    sscanf(str, "=%d@%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn) == 5)
+> +		goto found;
+> +
+> +	if (sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
+> +	    sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn) == 5) {
+> +		pr_warn("Deprecated option : ivrs_hpet%s\n", str);
+> +		pr_warn("Please see kernel parameters document and update the option.\n");
+> +		goto found;
+>   	}
+>   
+> +	pr_err("Invalid command line: ivrs_hpet%s\n", str);
+> +	return 1;
+> +
+> +found:
+>   	if (early_hpet_map_size == EARLY_MAP_SIZE) {
+>   		pr_err("Early HPET map overflow - ignoring ivrs_hpet%s\n",
+>   			str);
+> @@ -3449,19 +3461,36 @@ static int __init parse_ivrs_hpet(char *str)
+>   static int __init parse_ivrs_acpihid(char *str)
+>   {
+>   	u32 seg = 0, bus, dev, fn;
+> -	char *hid, *uid, *p;
+> +	char *hid, *uid, *p, *addr;
+>   	char acpiid[ACPIHID_UID_LEN + ACPIHID_HID_LEN] = {0};
+> -	int ret, i;
+> -
+> -	ret = sscanf(str, "[%x:%x.%x]=%s", &bus, &dev, &fn, acpiid);
+> -	if (ret != 4) {
+> -		ret = sscanf(str, "[%x:%x:%x.%x]=%s", &seg, &bus, &dev, &fn, acpiid);
+> -		if (ret != 5) {
+> -			pr_err("Invalid command line: ivrs_acpihid(%s)\n", str);
+> -			return 1;
+> +	int i;
+> +
+> +	addr = strchr(str, '@');
+> +	if (!addr) {
+> +		if (sscanf(str, "[%x:%x.%x]=%s", &bus, &dev, &fn, acpiid) == 4 ||
+> +		    sscanf(str, "[%x:%x:%x.%x]=%s", &seg, &bus, &dev, &fn, acpiid) == 5) {
+> +			pr_warn("Deprecated option: ivrs_acpihid%s\n", str);
+> +			pr_warn("Please see kernel parameters document and update the option.\n");
+> +			goto found;
+>   		}
+> +		goto not_found;
+>   	}
+>   
+> +	/* We have the '@', make it the terminator to get just the acpiid */
+> +	*addr++ = 0;
+> +
+> +	if (sscanf(str, "=%s", acpiid) != 1)
+> +		goto not_found;
+> +
+> +	if (sscanf(addr, "%x:%x.%x", &bus, &dev, &fn) == 3 ||
+> +	    sscanf(addr, "%x:%x:%x.%x", &seg, &bus, &dev, &fn) == 4)
+> +		goto found;
+> +
+> +not_found:
+> +	pr_err("Invalid command line: ivrs_acpihid%s\n", str);
+> +	return 1;
+> +
+> +found:
+>   	p = acpiid;
+>   	hid = strsep(&p, ":");
+>   	uid = p;
