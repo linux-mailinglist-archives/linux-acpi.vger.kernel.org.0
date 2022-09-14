@@ -2,58 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9C15B906E
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 00:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C150B5B9137
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 01:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229622AbiINWL6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Sep 2022 18:11:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47440 "EHLO
+        id S229786AbiINX6L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Sep 2022 19:58:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbiINWL5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 18:11:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D16A57549B;
-        Wed, 14 Sep 2022 15:11:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B7F161F29;
-        Wed, 14 Sep 2022 22:11:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857A0C433C1;
-        Wed, 14 Sep 2022 22:11:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663193515;
-        bh=BnF2TDVtyS4VX+tPuDmdHeBCBzqU3dUaX5kwgHda+aU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=ELJbhuqiVk0GA+wGBAYt3n8AAd+xCNeUhE739AZh36lVPK7bpqCrLtnyRAE2ohAXq
-         tGaHrDDbi1rvT+6zbfM9eudmCj8Frfv1ixDeEO8LfVaY1oszD+W6iEuBeFz8SpZKk0
-         YoaYlodrzKSd/Y5QABchVT3jutLRXR0R806R3t3hgkbFi9Y+K6wtJJ3HCDsBGUyIQ+
-         yegosUXNApXlrMwb5Brynz2SGdj2oHh4wlOBZuzNZAbUnZoUx/xeup0N8YSXsLliat
-         dBUg3JYsYwUiTPgzUxaRm7Ovpf0gGaDc+4yu5ONzEQ2LRypzF567//Ln4oQpPbCXYc
-         R1/6Zf2yj1sJw==
-Date:   Wed, 14 Sep 2022 17:11:54 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Robert Richter <rrichter@amd.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ben Widawsky <bwidawsk@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-cxl@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        with ESMTP id S229729AbiINX6J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 19:58:09 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75D4889827
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 16:58:07 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id p3so3809854iof.13
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 16:58:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=FyJik6ROpZ2yeD7GwjWvgb+hf71qfzTeOYJCVjcO18E=;
+        b=AQYtOB79mXFZIDXHSD41sUTom6ptHeMRcAqbDiFIANz0083xLdmpUx1aAtJmlmkDKw
+         zUtCSgGmQEaVUEG3LdTYQvhvX1BcHO1//j42FW+RI5MS2sN7fhf4ATm+YXcw42AORlBP
+         vnA3/s5NRrE5se7p5MAb6Xb5rWAg1XjEJrvkM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=FyJik6ROpZ2yeD7GwjWvgb+hf71qfzTeOYJCVjcO18E=;
+        b=GI/aWotgY7hEOc1rukWUB/spj8QV8PHDtHX3fdzsUQS1PLh94Irm0/CJESYh40gqUJ
+         5qgNRR8iPw3ngsjfmPfhQJdAgZSZAzym285x73DmmlOsGFEcjMyZMJdwPvc2Jz9W+pCk
+         nGzIlnQoWppodXf7tRViHQKX3PUrx3ZIdYe+VwEUN4KYMwdH8km1QKnGX6g57KTWcikK
+         TaZ8OhuXXM9vaKQ8aNoD8aVb9SFGQIimtofvw9MqcjT1h55bl8WH/7XHb4pBWbanvxk0
+         KIgLBS+6l97wC4fzrT1N6+4hQWlpgj77N1md/sUXi6WwmW5XDAeALgYGmOPzFDIG9bFv
+         FYfw==
+X-Gm-Message-State: ACgBeo3x5ZuovItSYChL1ybIc8j3wawB0lSPP2VBtGrwOCOFPdys1yiJ
+        VGUJWA3aJypkB8WOVTf4NQ+yru9ZJ4Gb9AHM
+X-Google-Smtp-Source: AA6agR5l5JDc0WxLOnDg27N8mDa0GrAsluUuxtmOHbHVeqpn8JgYWVDDPebvIshXEgDuAIqJMyr11Q==
+X-Received: by 2002:a05:6638:2501:b0:35a:3675:fe2c with SMTP id v1-20020a056638250100b0035a3675fe2cmr8924188jat.35.1663199885958;
+        Wed, 14 Sep 2022 16:58:05 -0700 (PDT)
+Received: from rrangel920.bld.corp.google.com (h24-56-189-219.arvdco.broadband.dynamic.tds.net. [24.56.189.219])
+        by smtp.gmail.com with ESMTPSA id a14-20020a027a0e000000b0034c0e8829c0sm353721jac.0.2022.09.14.16.58.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Sep 2022 16:58:05 -0700 (PDT)
+From:   Raul E Rangel <rrangel@chromium.org>
+To:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org
+Cc:     jingle.wu@emc.com.tw, rafael@kernel.org,
+        andriy.shevchenko@linux.intel.com, mario.limonciello@amd.com,
+        hdegoede@redhat.com, linus.walleij@linaro.org, timvp@google.com,
+        dmitry.torokhov@gmail.com, Raul E Rangel <rrangel@chromium.org>,
+        Alistair Francis <alistair@alistair23.me>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Angela Czubak <acz@semihalf.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Johnny Chuang <johnny.chuang.emc@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Len Brown <lenb@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 06/15] PCI/ACPI: Link host bridge to its ACPI fw node
-Message-ID: <20220914221154.GA710889@bhelgaas>
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Radoslaw Biernacki <biernacki@google.com>,
+        Rob Herring <robh@kernel.org>,
+        Terry Bowman <terry.bowman@amd.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 00/13] acpi: i2c: Use SharedAndWake and ExclusiveAndWake to enable wake irq
+Date:   Wed, 14 Sep 2022 17:57:48 -0600
+Message-Id: <20220914235801.1731478-1-rrangel@chromium.org>
+X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YxsTfVdOgc9sOOVm@rric.localdomain>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,36 +88,120 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 09, 2022 at 12:20:45PM +0200, Robert Richter wrote:
-> On 08.09.22 12:45:16, Dan Williams wrote:
-> > Rafael J. Wysocki wrote:
-> > > On Thu, Sep 8, 2022 at 8:05 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > > >
-> > > > Robert Richter wrote:
-> > > > > A lookup of a host bridge's corresponding acpi device (struct
-> > > > > acpi_device) is not possible, for example:
-> > > > >
-> > > > >       adev = ACPI_COMPANION(&host_bridge->dev);
-> > > > >
-> > > > > This could be useful to find a host bridge's fwnode handle and to
-> > > > > determine and call additional host bridge ACPI parameters and methods
-> > > > > such as HID/CID or _UID.
+Today, i2c drivers are making the assumption that their IRQs can also
+be used as wake IRQs. This isn't always the case and it can lead to
+spurious wakes. This has recently started to affect AMD Chromebooks.
+With the introduction of
+d62bd5ce12d7 ("pinctrl: amd: Implement irq_set_wake"), the AMD GPIO
+controller gained the capability to set the wake bit on each GPIO. The
+ACPI specification defines two ways to inform the system if a device is
+wake capable:
+1) The _PRW object defines the GPE that can be used to wake the system.
+2) Setting ExclusiveAndWake or SharedAndWake in the _CRS GpioInt.
 
-> ...
-> No, it is x86. And true, it is set. So this series is actually working
-> without this patch. It can be dropped.
-> 
-> Now, I just checked my logs. The reason I was adding this is that
-> during code development I modified the code to have bridge->dev.parent
-> set. Then, the fwnode is not linked. I later dropped that change but
-> kept this patch.
+Currently only the first method is supported. The i2c drivers don't have
+any indication that the IRQ is wake capable, so they guess. This causes
+spurious interrupts, for example:
+* We have an ACPI HID device that has `_PR0` and `_PR3`. It doesn't have
+  `_PRW` or `ExclusiveAndWake` so that means the device can't wake the
+  system.
+* The IRQ line is active level low for this device and is pulled up by
+  the power resource defined in `_PR0`/`_PR3`.
+* The i2c driver will (incorrectly) arm the GPIO for wake by calling
+  `enable_irq_wake` as part of its suspend hook.
+* ACPI will power down the device since it doesn't have a wake GPE
+  associated with it.
+* When the device is powered down, the IRQ line will drop, and it will
+  trigger a wake event.
 
-If this patch does the same thing as the ACPI_COMPANION_SET() in
-several pcibios_root_bridge_prepare() implementations, I would love to
-keep this patch, which does it in a generic place, and drop the
-corresponding code from those arch-specific functions.
+See the following debug log:
+[   42.335804] PM: Suspending system (s2idle)
+[   42.340186] amd_gpio AMD0030:00: RX: Setting wake for pin 89 to enable
+[   42.467736]     power-0416 __acpi_power_off      : Power resource [PR00] turned off
+[   42.467739] device_pm-0280 device_set_power      : Device [H05D] transitioned to D3cold
+[   42.475210] PM: pm_system_irq_wakeup: 11 triggered pinctrl_amd
+[   42.535293] PM: Wakeup unrelated to ACPI SCI
+[   42.535294] PM: resume from suspend-to-idle
 
-But I don't understand the fwnode stuff well enough to know if this is
-feasible.
+In order to fix this, we need to take into account the wake capable bit
+defined on the Interrupt/GpioInt. This is accomplished by:
+* Migrating some of the i2c drivers over to using the PM subsystem to
+  manage the wake IRQ.
+* Expose the wake_capable bit from the ACPI Interrupt/GpioInt resource
+  to the  i2c core.
+* Use the wake_capable bit in the i2c core to call
+  `dev_pm_set_wake_irq`. This reuses the existing device tree flow.
+* Make the i2c drivers stop calling `dev_pm_set_wake_irq` since it's now
+  handled by the i2c core.
+* Make the ACPI device PM system aware of the wake_irq. This is
+  necessary so the device doesn't incorrectly get powered down when a
+  wake_irq is enabled.
 
-Bjorn
+I've tested this code with various combinations of having _PRW,
+ExclusiveAndWake and power resources all defined or not defined, but it
+would be great if others could test this out on their hardware.
+
+I'm sure this will surface some devices where the IRQs were not
+correctly marked as wake capable. Ideally the firmware can be fixed, but
+if not we can work around this in the kernel by providing a board
+specific `struct i2c_board_info` with the `I2C_CLIENT_WAKE` flag set.
+See `chromeos_laptop.c` for an example of matching DMI properties and
+setting the `I2C_CLIENT_WAKE` override.
+
+Thanks,
+Raul
+
+Changes in v3:
+- Kept `acpi_dev_gpio_irq_get_by` unchanged to avoid having to touch
+  unrelated drivers.
+- Converted wake_capable parameter to bool.
+- Fixed bad indent
+- Convert wake_capable to bool
+- Only update wake_capable pointer once
+- Move wake_capable local into local block
+
+Changes in v2:
+- Added elants_i2c to series
+- Added raydium_ts_i2c to series
+- Fixed call site in mlxbf_gige_probe
+- Added ability to extract wake bit from Interrupt/IRQ resources
+- Look at wake_cabple bit for IRQ/Interrupt resources
+- I chose not to keep the legacy code around since systems without DT or ACPI should be rare.
+
+Raul E Rangel (13):
+  HID: i2c-hid: Use PM subsystem to manage wake irq
+  Input: elan_i2c - Use PM subsystem to manage wake irq
+  Input: elants_i2c - Use PM subsystem to manage wake irq
+  Input: raydium_ts_i2c - Use PM subsystem to manage wake irq
+  gpiolib: acpi: Add wake_capable variants of acpi_dev_gpio_irq_get
+  ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
+  i2c: acpi: Use ACPI wake capability bit to set wake_irq
+  ACPI: PM: Take wake IRQ into consideration when entering
+    suspend-to-idle
+  HID: i2c-hid: acpi: Stop setting wakeup_capable
+  HID: i2c-hid: Don't set wake_capable and wake_irq
+  Input: elan_i2c - Don't set wake_capable and wake_irq
+  Input: elants_i2c - Don't set wake_capable and wake_irq
+  Input: raydium_ts_i2c - Don't set wake_capable and wake_irq
+
+ drivers/acpi/device_pm.c                   | 19 +++++++++++--
+ drivers/acpi/irq.c                         | 11 ++++++--
+ drivers/acpi/resource.c                    | 24 +++++++++++-----
+ drivers/gpio/gpiolib-acpi.c                | 17 +++++++++--
+ drivers/gpio/gpiolib-acpi.h                |  2 ++
+ drivers/hid/i2c-hid/i2c-hid-acpi.c         |  5 ----
+ drivers/hid/i2c-hid/i2c-hid-core.c         | 24 ++--------------
+ drivers/i2c/i2c-core-acpi.c                | 33 ++++++++++++++++------
+ drivers/i2c/i2c-core-base.c                |  8 +++++-
+ drivers/i2c/i2c-core.h                     |  4 +--
+ drivers/input/mouse/elan_i2c_core.c        | 15 +---------
+ drivers/input/touchscreen/elants_i2c.c     | 13 ++-------
+ drivers/input/touchscreen/raydium_i2c_ts.c |  7 +----
+ drivers/pnp/pnpacpi/rsparser.c             |  9 ++++--
+ include/linux/acpi.h                       | 25 ++++++++++++----
+ include/linux/ioport.h                     |  3 +-
+ 16 files changed, 126 insertions(+), 93 deletions(-)
+
+-- 
+2.37.3.968.ga6b4b080e4-goog
+
