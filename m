@@ -2,98 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05CF25B8A61
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 16:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A575B8BBF
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 17:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbiINOYW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Sep 2022 10:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
+        id S229965AbiINP0y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Sep 2022 11:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230161AbiINOXm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 10:23:42 -0400
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E8604F1B9
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 07:23:41 -0700 (PDT)
-Received: by mail-ot1-x332.google.com with SMTP id br15-20020a056830390f00b0061c9d73b8bdso10430505otb.6
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 07:23:41 -0700 (PDT)
+        with ESMTP id S230244AbiINP0t (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 11:26:49 -0400
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE1B68053F
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 08:26:48 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id 3so10733460qka.5
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 08:26:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=T/W399ugEDVZD4m/kuU/Ot70q1nwjtLdgh28FGL9vuI=;
-        b=aTeT17jIkygmWeAvV0hUJ9RK0Y7BOMxPPRvu2Zb+Wj3oDMBARAGTLh+QpXOerih+At
-         fFF66M3tONgatwL27Hy8mmC9FRh8f6XbDC3g3p9mOthMy78QpROEBT1VKKJdwtAthpLH
-         NkFU/vOxzZRgT6eNUzqXmiknkEuJ1cjpD/Nlf/Tz3yZLaFk0Fr9GDUSp6icnSOkTWJN6
-         kamFu2QL2fGNiI2NP5q6zkySnGeWP9ICXfINfr4f8bYxrnCN1i5OL0Co5W0apoPY2pmN
-         VdrvVvm1lpfUE7u/1TY5M0fnPbTIfqJXGt/rBAQIotyNhzbigzSXN/hmgqP9tRqN4Wsn
-         zqYQ==
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=8sVnRYf4lRZtHclJFM/PYgijezwVHsVwJUa/M1F9Nfw=;
+        b=aU+pRvep+sXGVRr01+jPV7M1KGeUuIOdGm/7Imgv2e35rdbyXzmARUq1pX7NbUK31d
+         P7JnZtuwOHE1Y3V+NSrCkrjcfy/IVgYVBkLzYROVFEJ2rN4QRKzlug+IhDRBgsnblfD/
+         z6gvdEo890XqggiMeBDVIPT5KAcHLF/iLDo5o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=T/W399ugEDVZD4m/kuU/Ot70q1nwjtLdgh28FGL9vuI=;
-        b=0rhBlRsJDQXSUbtvsoSW31gxZa6879iwAnwqo10eT1fX4XT+UH11CEaL2MTq6g2Aen
-         LVFa/YZG23+j+E6h7I8Ye0q3OzOwBd1WmD2pl//rOlfgfMUhXADQMbY+9uZAbRRcOAKl
-         G13tNnMBRK5ip+DARLbqheo56eNA81CjVpyW5bM++aIovKw9OsZX2peemHJmd4iXvrXw
-         1/gAcH08I6DGy4cN9tcdiF9IVgDX4NGoGXd6/hYCIwUSogrbVcegR2fvMt4nirdWv17i
-         mb1No1RRMXjJfsNjTbI+P+/FnCi7QXm0YYFlZ/0kPMJyulIbFCl0D531ovDqcljDDrAR
-         eYbw==
-X-Gm-Message-State: ACgBeo2g+mCwUGzOyqjuP/amh3t3Hdb9l8a4FWQx606wZVAtra9WdlQO
-        A3SSPXl7vnIfZRjwvc582EIghqzD/UscravC3cQ=
-X-Google-Smtp-Source: AA6agR6MreNcoc3OLEybXhazHAES5NYSAM694cN2xPX/OJfm2aEw8A8dU7h0U4l4qRwVi4gT5ur/LmNluSqCMtOpbwA=
-X-Received: by 2002:a05:6830:111a:b0:655:bcad:f65d with SMTP id
- w26-20020a056830111a00b00655bcadf65dmr8920425otq.133.1663165420829; Wed, 14
- Sep 2022 07:23:40 -0700 (PDT)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=8sVnRYf4lRZtHclJFM/PYgijezwVHsVwJUa/M1F9Nfw=;
+        b=qzUJ5x/no2IwwrtBpY3FGVTNi3t+szrusqcDA1QHf8HNxJV2Nd7tc5xzcXkc2/Tr7b
+         oVHM6/DBwff2ntoxpKORkqhNkVzTtyzb11KceiKcEPgSvb+rpi1HFoFC9rpokqMacp/6
+         0obOIrhj9MW63vCVp7OGChAZ+FqENtl2a3opL4JSqYu8nOevvU9FYnas0MeQ9DVkBOm5
+         TgeIyjk9KdNm4dZd1VVWgFkJyQlNRbD/hiUmgBw+i86Lq41jJng7rKiiHKFe1UtbxWcC
+         sx9Q5dfCtEEfMB0Gh1g6kwa8CsGu4kkyords+zs/W2ez+sskL4qQVNEeQHajLGuzqZ7d
+         Fcdw==
+X-Gm-Message-State: ACgBeo3qu597cUCqRxSO3fJwf46XuF7vc6rjDCyfLhElI232abA0XsOu
+        tsEEb8T+7S+CivMjyFSKQ+B8z5ZHmimT1Q==
+X-Google-Smtp-Source: AA6agR7n4xum2zgoGHnoLoWhyC0cBFnyI9aorm1ST9uFXgyiaB4tBf7SKAPUDVVlboKVbxm4Oq8N7w==
+X-Received: by 2002:a05:620a:4623:b0:6ce:59b8:a175 with SMTP id br35-20020a05620a462300b006ce59b8a175mr8651412qkb.210.1663169207493;
+        Wed, 14 Sep 2022 08:26:47 -0700 (PDT)
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com. [209.85.160.174])
+        by smtp.gmail.com with ESMTPSA id u13-20020a05620a430d00b006b953a7929csm2079826qko.73.2022.09.14.08.26.46
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Sep 2022 08:26:47 -0700 (PDT)
+Received: by mail-qt1-f174.google.com with SMTP id j10so8610668qtv.4
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 08:26:46 -0700 (PDT)
+X-Received: by 2002:a02:9509:0:b0:349:b6cb:9745 with SMTP id
+ y9-20020a029509000000b00349b6cb9745mr18869971jah.281.1663168880396; Wed, 14
+ Sep 2022 08:21:20 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6830:168b:0:0:0:0 with HTTP; Wed, 14 Sep 2022 07:23:40
- -0700 (PDT)
-Reply-To: sgtkaylam28@gmail.com
-From:   sgt kayla manthey <tchasrazak7@gmail.com>
-Date:   Wed, 14 Sep 2022 14:23:40 +0000
-Message-ID: <CALHSC9K-18V5-KdHQGw_JSdwp+mvUjcLOPYmZ7mVTa_zqV1tUw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+References: <20220912221317.2775651-1-rrangel@chromium.org>
+ <20220912160931.v2.5.I4ff95ba7e884a486d7814ee888bf864be2ebdef4@changeid> <YyFs5q67RYR2aAy7@black.fi.intel.com>
+In-Reply-To: <YyFs5q67RYR2aAy7@black.fi.intel.com>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Wed, 14 Sep 2022 09:21:08 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30CU2-YtOfGYXJq3c=-1ttyw=hKZvViOfWGAKkxXO1C5Gw@mail.gmail.com>
+Message-ID: <CAHQZ30CU2-YtOfGYXJq3c=-1ttyw=hKZvViOfWGAKkxXO1C5Gw@mail.gmail.com>
+Subject: Re: [PATCH v2 05/13] gpiolib: acpi: Add wake_capable parameter to acpi_dev_gpio_irq_get_by
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "jingle.wu" <jingle.wu@emc.com.tw>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Tim Van Patten <timvp@google.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Asmaa Mnebhi <asmaa@nvidia.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Thompson <davthompson@nvidia.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Lu Wei <luwei32@huawei.com>, Paolo Abeni <pabeni@redhat.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:332 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4977]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [tchasrazak7[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [tchasrazak7[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [sgtkaylam28[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-Hi,
-Did get my previous letter? Write me back
+On Tue, Sep 13, 2022 at 11:55 PM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+>
+> Hi,
+>
+> On Mon, Sep 12, 2022 at 04:13:09PM -0600, Raul E Rangel wrote:
+> > +int acpi_dev_gpio_irq_get_by(struct acpi_device *adev, const char *name,
+> > +                          int index, int *wake_capable)
+>
+> Here too bool.
+
+I've incorporated both of your suggestions. I instead added
+`acpi_dev_gpio_irq_wake_get_by` as the basic function and left
+`acpi_dev_gpio_irq_get_by` the same. THis way I don't have to update
+any of the callers.
