@@ -2,59 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B42505B913C
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 01:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4F445B913A
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 01:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbiINX6O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Sep 2022 19:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45008 "EHLO
+        id S229716AbiINX6R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Sep 2022 19:58:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbiINX6L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 19:58:11 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC04E89820
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 16:58:09 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id v128so13626876ioe.12
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 16:58:09 -0700 (PDT)
+        with ESMTP id S229814AbiINX6M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 19:58:12 -0400
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A6E89824
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 16:58:11 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id r134so13649653iod.8
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 16:58:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=FeCM68gkQ9FF2bI4ULoqKrlayWCcShzPlt5I44au1/c=;
-        b=WwUIlBW2sig7QIamYBwg73LnJKD+Q9o8vhKwbMERgHTclYfel0/TF852uzMVCFjU3l
-         BjnIrrNSZXJ0OF5+ZRPoyjG/jDcPrNwFP5trRbFuko7skJuGhClIWa1EqXS7ByWBQ2zI
-         kVzWFLH1uTj9JPViW5z8GNxNaKXwLCsIFpYPQ=
+        bh=uLFsVomnZ3NOv94HIF7hfztjoJa5WoPp5LmQm5BO1Bo=;
+        b=EpH8pFpdO3xx3hvO3BSYcXVAywxj6PJQIgEpmQ6BF6AGJ2bg7E/C4hcBZ0rilevnND
+         uW7yaSxKjUSoRUYuNLkKMMquKKgHpXLOwDFJnQL0HYx79jBHtdfC7sqv2bfxvUfdLfxl
+         Tqtwjn91EwT3rQdk9dJSboqBGHankwVOk4gkw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=FeCM68gkQ9FF2bI4ULoqKrlayWCcShzPlt5I44au1/c=;
-        b=OB/IwZmJMHTMc2X9TufdhfNTfRGgp/kmoU+Jhl53ywOWG6ijhJ1ySywLATxuEfZFcZ
-         kgbEWXv6nL9k55+3dR87S4WCnFCW8Zlecso46vmgKOoJXc6FxGUg45+zxgbjgJQtHCqD
-         6vtuaTJdGgcdAW7mbrugtFzcQsso4K6AvktJNoh+noltn9x6COMT1mdZjO4c7cOQUJj2
-         ce0uekkCZev3kdKYLHdDTVUdvAku3GsHajqzMOBd80w81lxnUaSsKUa+W7Hfc0RAYJli
-         sQZW7u9mFU5BANIbG10/rXR+yku1CyaFhA3xowT8bIe8b37+yb9lSXqGzh7yS8sHCuQq
-         71Bw==
-X-Gm-Message-State: ACgBeo31nj8bsLk3hJxqldMOZs1LToZmUsUrIuQg0TxA1AETMM9qDb0l
-        C6OY7159KJsSQaPKHPfcHgd3MhEj7zxuplAA
-X-Google-Smtp-Source: AA6agR7uCyzIsdzm4G24LKdVf+tpy2liBA3YlXhpjZjCHqSBfRdi/8ekYE4tng2DP3z6nBBdASTu6g==
-X-Received: by 2002:a05:6638:264b:b0:35a:79c0:932d with SMTP id n11-20020a056638264b00b0035a79c0932dmr735569jat.116.1663199889258;
-        Wed, 14 Sep 2022 16:58:09 -0700 (PDT)
+        bh=uLFsVomnZ3NOv94HIF7hfztjoJa5WoPp5LmQm5BO1Bo=;
+        b=B+gv7o+5Xnl+NAYW+BdqkDmJIenUgMEZEtM3QXXrayYTXAzejBAXbmN2giJqBqnl2H
+         abTML6p/OStEjEV4jocOA9/wcgrOGXKvUez+FBoFIG/ygdeaMMLE5b1w/F4r9GUvhGLS
+         TzjKiqyC42WAD2kh92zcty6xEjtdB8gugtDOnedJh/JoW4MJPIKuSTBJkKgw9W5UaKZU
+         tLMd/BHosWQ0L2fQGZrCX+mg3PAwvB6MX1Qg9WfoJSpQKwSCaUy+N548r4RXyCFDnHeG
+         gIbYKc3ij2xwVVspv7ePwYgYZWcnLqwTTA2Pq6+EW3dd/2d+IHrYphK7Yvx7xdVvJaS+
+         Z9bg==
+X-Gm-Message-State: ACgBeo3CDfY41Z9oWvvVMwBxBNsluZ/5TSb5eOitXbwxcV+C0nLZUGuU
+        rUGJrzmVElgSnMjDCIhsmwimRBvu3GYj5WL9
+X-Google-Smtp-Source: AA6agR7cbKJmmVVP/0cwP0lPpWKLXXVbFI05Uy6WXiwVFJ056epbGbRbQNZdBbMOM4ZuMsl3Ric7lw==
+X-Received: by 2002:a05:6602:408c:b0:6a1:3fda:5633 with SMTP id bl12-20020a056602408c00b006a13fda5633mr7407200iob.194.1663199891047;
+        Wed, 14 Sep 2022 16:58:11 -0700 (PDT)
 Received: from rrangel920.bld.corp.google.com (h24-56-189-219.arvdco.broadband.dynamic.tds.net. [24.56.189.219])
-        by smtp.gmail.com with ESMTPSA id a14-20020a027a0e000000b0034c0e8829c0sm353721jac.0.2022.09.14.16.58.07
+        by smtp.gmail.com with ESMTPSA id a14-20020a027a0e000000b0034c0e8829c0sm353721jac.0.2022.09.14.16.58.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Sep 2022 16:58:08 -0700 (PDT)
+        Wed, 14 Sep 2022 16:58:10 -0700 (PDT)
 From:   Raul E Rangel <rrangel@chromium.org>
 To:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org
 Cc:     jingle.wu@emc.com.tw, rafael@kernel.org,
         andriy.shevchenko@linux.intel.com, mario.limonciello@amd.com,
         hdegoede@redhat.com, linus.walleij@linaro.org, timvp@google.com,
         dmitry.torokhov@gmail.com, Raul E Rangel <rrangel@chromium.org>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Douglas Anderson <dianders@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Johnny Chuang <johnny.chuang.emc@gmail.com>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 02/13] Input: elan_i2c - Use PM subsystem to manage wake irq
-Date:   Wed, 14 Sep 2022 17:57:50 -0600
-Message-Id: <20220914155914.v3.2.Id022caf53d01112188308520915798f08a33cd3e@changeid>
+Subject: [PATCH v3 03/13] Input: elants_i2c - Use PM subsystem to manage wake irq
+Date:   Wed, 14 Sep 2022 17:57:51 -0600
+Message-Id: <20220914155914.v3.3.I5862429ee3e4de0f9ad5ba01ce07ad99eec10cf0@changeid>
 X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
 In-Reply-To: <20220914235801.1731478-1-rrangel@chromium.org>
 References: <20220914235801.1731478-1-rrangel@chromium.org>
@@ -70,7 +74,7 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Elan I2C touchpad driver is currently manually managing the wake
+The Elan I2C touchscreen driver is currently manually managing the wake
 IRQ. This change removes the explicit enable_irq_wake/disable_irq_wake
 and instead relies on the PM subsystem. This is done by calling
 dev_pm_set_wake_irq.
@@ -81,46 +85,40 @@ There could be some device tree systems that have incorrectly declared
 `wake` capabilities, so this change will set the wake irq if one is
 missing. This matches the previous behavior.
 
-I tested this on an ACPI system where the touchpad doesn't have _PRW
-defined. I verified I can still wake the system and that the wake source
-was the touchpad IRQ GPIO.
-
 Signed-off-by: Raul E Rangel <rrangel@chromium.org>
 ---
 
 (no changes since v2)
 
 Changes in v2:
-- Set the wake_irq when not configured by the i2c-core. This is
-  different than v1, where the wake_irq was only set for non DT systems.
+- Added elants_i2c to series
 
- drivers/input/mouse/elan_i2c_core.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/input/touchscreen/elants_i2c.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/input/mouse/elan_i2c_core.c b/drivers/input/mouse/elan_i2c_core.c
-index e1758d5ffe4218..3947474e93d16a 100644
---- a/drivers/input/mouse/elan_i2c_core.c
-+++ b/drivers/input/mouse/elan_i2c_core.c
-@@ -33,6 +33,7 @@
- #include <linux/jiffies.h>
- #include <linux/completion.h>
+diff --git a/drivers/input/touchscreen/elants_i2c.c b/drivers/input/touchscreen/elants_i2c.c
+index a56f042adf9d82..80e16b533c452a 100644
+--- a/drivers/input/touchscreen/elants_i2c.c
++++ b/drivers/input/touchscreen/elants_i2c.c
+@@ -36,6 +36,7 @@
+ #include <linux/input/touchscreen.h>
+ #include <linux/acpi.h>
  #include <linux/of.h>
 +#include <linux/pm_wakeirq.h>
- #include <linux/property.h>
+ #include <linux/gpio/consumer.h>
  #include <linux/regulator/consumer.h>
- #include <asm/unaligned.h>
-@@ -86,8 +87,6 @@ struct elan_tp_data {
- 	u16			fw_page_size;
- 	u32			fw_signature_address;
+ #include <linux/uuid.h>
+@@ -180,7 +181,6 @@ struct elants_data {
+ 	u8 cmd_resp[HEADER_SIZE];
+ 	struct completion cmd_done;
  
--	bool			irq_wake;
--
- 	u8			min_baseline;
- 	u8			max_baseline;
- 	bool			baseline_ready;
-@@ -1340,6 +1339,15 @@ static int elan_probe(struct i2c_client *client,
- 	if (!dev->of_node)
- 		device_init_wakeup(dev, true);
+-	bool wake_irq_enabled;
+ 	bool keep_power_in_suspend;
+ 
+ 	/* Must be last to be used for DMA operations */
+@@ -1582,6 +1582,15 @@ static int elants_i2c_probe(struct i2c_client *client)
+ 	if (!client->dev.of_node)
+ 		device_init_wakeup(&client->dev, true);
  
 +	/*
 +	 * The wake IRQ should be declared via device tree instead of assuming
@@ -128,31 +126,30 @@ index e1758d5ffe4218..3947474e93d16a 100644
 +	 * will be removed once the i2c-core supports querying ACPI for wake
 +	 * capabilities.
 +	 */
-+	if (!dev->power.wakeirq)
-+		dev_pm_set_wake_irq(dev, client->irq);
++	if (!client->dev.power.wakeirq)
++		dev_pm_set_wake_irq(&client->dev, client->irq);
 +
- 	return 0;
- }
- 
-@@ -1362,8 +1370,6 @@ static int __maybe_unused elan_suspend(struct device *dev)
+ 	error = devm_device_add_group(&client->dev, &elants_attribute_group);
+ 	if (error) {
+ 		dev_err(&client->dev, "failed to create sysfs attributes: %d\n",
+@@ -1626,7 +1635,7 @@ static int __maybe_unused elants_i2c_suspend(struct device *dev)
+ 		 * The device will automatically enter idle mode
+ 		 * that has reduced power consumption.
+ 		 */
+-		ts->wake_irq_enabled = (enable_irq_wake(client->irq) == 0);
++		return 0;
+ 	} else if (ts->keep_power_in_suspend) {
+ 		for (retry_cnt = 0; retry_cnt < MAX_RETRIES; retry_cnt++) {
+ 			error = elants_i2c_send(client, set_sleep_cmd,
+@@ -1655,8 +1664,6 @@ static int __maybe_unused elants_i2c_resume(struct device *dev)
+ 	int error;
  
  	if (device_may_wakeup(dev)) {
- 		ret = elan_sleep(data);
--		/* Enable wake from IRQ */
--		data->irq_wake = (enable_irq_wake(client->irq) == 0);
- 	} else {
- 		ret = elan_set_power(data, false);
- 		if (ret)
-@@ -1394,9 +1400,6 @@ static int __maybe_unused elan_resume(struct device *dev)
- 			dev_err(dev, "error %d enabling regulator\n", error);
- 			goto err;
- 		}
--	} else if (data->irq_wake) {
--		disable_irq_wake(client->irq);
--		data->irq_wake = false;
- 	}
- 
- 	error = elan_set_power(data, true);
+-		if (ts->wake_irq_enabled)
+-			disable_irq_wake(client->irq);
+ 		elants_i2c_sw_reset(client);
+ 	} else if (ts->keep_power_in_suspend) {
+ 		for (retry_cnt = 0; retry_cnt < MAX_RETRIES; retry_cnt++) {
 -- 
 2.37.3.968.ga6b4b080e4-goog
 
