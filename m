@@ -2,49 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 364B45B8EE0
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 20:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 318EF5B8EEA
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Sep 2022 20:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbiINS1e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Sep 2022 14:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37786 "EHLO
+        id S229642AbiINSdi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Sep 2022 14:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229695AbiINS1c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 14:27:32 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C8167F12F;
-        Wed, 14 Sep 2022 11:27:29 -0700 (PDT)
-Date:   Wed, 14 Sep 2022 18:27:15 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1663180046; x=1663439246;
-        bh=398dxQIvPKYdjnkWKOwJbWXWYGg+0dVLHBf87D2TXrU=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID;
-        b=iUJ5opnhjtS4ZMQJFgSZyFukiD+gDhRQ207Ru3fNFn+mHZrY2/EGsrYfo0vBMqTgA
-         cf8quHDl4BJJDPoNK+u9C2k4O/+uxty+338sSD55vA7iljR5AM7Pg/tQUQZLKVdpBA
-         YKp6mqP8Cq130lL8FU6jtoQ6+d0uLoC2Rv4A65BfNJttl0vVfAJ2+ZpyDuSitPzaxb
-         eIVmEYIEeZRpoupcpzRIKBjwDEiXs5UdGNtAgb8Dbh2KnUPZJ7JHn3OBwjIbrpB3Va
-         jAB+IKxHWewmPLYSYynEjmRIITOSgJXIGDNnkwBDQ0q6vnByb4AVRpGCW32aMoqZ/1
-         kgUR/lINWg/Ew==
-To:     Arvid Norlander <lkml@vorpal.se>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc:     platform-driver-x86@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-input@vger.kernel.org, Azael Avalos <coproscefalo@gmail.com>
-Subject: Re: [PATCH RFC 1/2] staging: quickstart: Add ACPI quickstart button (PNP0C32) driver
-Message-ID: <drXHqh3nyou52BleUraC71bm5y1IXzb1kfROkRvfC-PXNoNbaxfYrq8Lj-_8aS4pFl0RHy7ts9fkz-uw_dMy0jaf5Yx8Rw5InWgZduKnojE=@protonmail.com>
-In-Reply-To: <20220911194934.558019-2-lkml@vorpal.se>
-References: <20220911194934.558019-1-lkml@vorpal.se> <20220911194934.558019-2-lkml@vorpal.se>
-Feedback-ID: 20568564:user:proton
+        with ESMTP id S229686AbiINSdf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Sep 2022 14:33:35 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EE3E77563
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 11:33:33 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id i7so4045682ioa.5
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 11:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=vSj623uSHxO0oVI/Q9wO/OKZArt2x1BaVoPyjdenhVw=;
+        b=be+8kTLNJULJ2PK8PDlYNxkvOH9mMmtB2rahv3H4TKnEDphAAkmXCOE/IJeod6Hn7s
+         5bfrqzY55uo+WMDgfUuRTLnl3LQV0KqxaKo9Hoaec6URvxcr4+Uuej3n9eNHdHp4OrQy
+         hhupSd3M3qkMCC7pUEhaLICCpyPOIsfS/nENA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=vSj623uSHxO0oVI/Q9wO/OKZArt2x1BaVoPyjdenhVw=;
+        b=ur3+nbGfpA4Ot9/qHhs8CDu3EWisIY7HO9a4Eycvq+aabRWCRFNc60dt/qj/GhowW3
+         xpo3sdwI/hPFE0dMa3ECfFITUaCOxvot5csWAHycTwjGtGnv3zNkTBvFRP/KrmYFbzp2
+         Fm2NFjVqonAgHKAE/s0lIBL/PNVtotBz+HQ3vDYOc9zXI76XsjMY7RH27nV7tnnkqRDK
+         poeTOb/gmdRHRrentz9d9xnrQMQTnX/WCxBvZ7KodRPobqrVNTXJf3N4pdhpN1qL6OOG
+         0zjMQotuKEGJ7ZoB+IZVFoKYKMvU2hIpeU9X9Ueb78Sp3SA3u6gPPn+675liUkjmDt5l
+         /rHQ==
+X-Gm-Message-State: ACgBeo3poCzHmdk+eCBcD9u+1Mnd3OE7emfwuHPthhRyzz5oqNe8hWiY
+        TeG1QHJoLWXqY4HKqcYNNCDXEoPWu1yCnQ==
+X-Google-Smtp-Source: AA6agR5+v33N+tELv06TBrYzbefRcUG1+QhD2qVDoMSDBA8E46XvlgRyxycDFRwB+fTe0lZQ89d9mA==
+X-Received: by 2002:a05:6638:2496:b0:35a:36ca:b188 with SMTP id x22-20020a056638249600b0035a36cab188mr8165609jat.257.1663180412139;
+        Wed, 14 Sep 2022 11:33:32 -0700 (PDT)
+Received: from mail-il1-f177.google.com (mail-il1-f177.google.com. [209.85.166.177])
+        by smtp.gmail.com with ESMTPSA id h10-20020a056602154a00b006a0d4a46588sm2064933iow.49.2022.09.14.11.33.29
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Sep 2022 11:33:30 -0700 (PDT)
+Received: by mail-il1-f177.google.com with SMTP id l6so8431043ilk.13
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Sep 2022 11:33:29 -0700 (PDT)
+X-Received: by 2002:a05:6e02:2189:b0:2f1:92d4:6b22 with SMTP id
+ j9-20020a056e02218900b002f192d46b22mr14224475ila.210.1663180409089; Wed, 14
+ Sep 2022 11:33:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220912221317.2775651-1-rrangel@chromium.org>
+ <20220912160931.v2.7.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid>
+ <YyC9N62JaMGaeanf@smile.fi.intel.com> <CAHQZ30DAr_BwH03=bG9tfCSGW+-he-c-4PPeJMOqH28cVcKDoA@mail.gmail.com>
+ <YyDNAw+ur177ayY0@smile.fi.intel.com> <CAHQZ30DP1asiMj7hoebQQvGqE36sBDjaFmp3ju3eUEF1PruFeg@mail.gmail.com>
+ <YyGh6Yjbb/5rkh35@smile.fi.intel.com>
+In-Reply-To: <YyGh6Yjbb/5rkh35@smile.fi.intel.com>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Wed, 14 Sep 2022 12:33:17 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30Dsk2ikhctYSk_eP=1qcOOn_tjgtCftPOqQFkHNfQwBsg@mail.gmail.com>
+Message-ID: <CAHQZ30Dsk2ikhctYSk_eP=1qcOOn_tjgtCftPOqQFkHNfQwBsg@mail.gmail.com>
+Subject: Re: [PATCH v2 07/13] i2c: acpi: Use ACPI wake capability bit to set wake_irq
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        "jingle.wu" <jingle.wu@emc.com.tw>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Tim Van Patten <timvp@google.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,443 +86,47 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+> > > This is similar to what of_i2c_get_board_info() does, no?
+> > > Note: _get_ there.
+> >
+> > `*info` is an out parameter in that case. Ideally I would have
+> > `i2c_acpi_get_irq`, `acpi_dev_gpio_irq_get_wake`,
+> > `platform_get_irq_optional`, and `i2c_dev_irq_from_resources` all
+> > return a `struct irq_info {int irq; bool wake_capable;}`. This would
+> > be a larger change though.
+>
+> Seems the ACPI analogue is i2c_acpi_fill_info(). Can we do it there?
+>
 
-2022. szeptember 11., vas=C3=A1rnap 21:49 keltez=C3=A9ssel, Arvid Norlander=
- =C3=ADrta:
+So I originally had that thought, but decided against it to avoid
+changing too many things,
+but since you brought it up, I thought I would try it.
 
-> This is loosly based on a previous staging driver that was removed. See
-> links below for more info on that driver. The original commit ID was
-> 0be013e3dc2ee79ffab8a438bbb4e216837e3d52.
->=20
-> However, here a completely different approach is taken to the user space
-> API (which should solve the issues the original driver had). Each PNP0C32
-> device is a button, and each such button gets a separate input device
-> associated with it (instead of a shared platform input device).
->=20
-> The button ID (as read from ACPI method GHID) is provided via a sysfs fil=
-e
-> "button_id".
->=20
-> If the button caused a wakeup it will "latch" the "wakeup_cause" sysfs fi=
-le
-> to true. This can be reset by a user space process.
->=20
-> Link: https://marc.info/?l=3Dlinux-acpi&m=3D120550727131007
-> Link: https://lkml.org/lkml/2010/5/28/327
-> Signed-off-by: Arvid Norlander <lkml@vorpal.se>
-> [...]
-> +#define QUICKSTART_VERSION "1.04"
-> +
-> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/init.h>
-> +#include <linux/types.h>
-> +#include <linux/acpi.h>
-> +#include <linux/input.h>
-> +#include <linux/input/sparse-keymap.h>
-> +
-> +MODULE_AUTHOR("Arvid Norlander <lkml@vorpal.se>");
-> +MODULE_AUTHOR("Angelo Arrifano");
-> +MODULE_DESCRIPTION("ACPI Direct App Launch driver");
-> +MODULE_LICENSE("GPL");
-> +
-> +#define QUICKSTART_ACPI_DEVICE_NAME=09"quickstart"
-> +#define QUICKSTART_ACPI_CLASS=09=09"quickstart"
-> +#define QUICKSTART_ACPI_HID=09=09"PNP0C32"
-> +
-> +/*
-> + * There will be two events:
-> + * 0x02 - A hot button was pressed while device was off/sleeping.
-> + * 0x80 - A hot button was pressed while device was up.
-> + */
-> +#define QUICKSTART_EVENT_WAKE=09=090x02
-> +#define QUICKSTART_EVENT_RUNTIME=090x80
-> +
-> +/*
-> + * Each PNP0C32 device is an individual button. This structure
-> + * keeps track of data associated with said device.
-> + */
-> +struct quickstart_acpi {
-> +=09struct acpi_device *acpi_dev;
-> +=09struct input_dev *input_device;
-> +=09struct quickstart_button *button;
-> +=09/* Name of button for debug messages */
-> +=09char *name;
-> +=09/* ID of button as returned by GHID */
-> +=09u32 id;
-> +=09/* Flags for cleanup */
-> +=09unsigned int input_registered : 1;
+So I moved the GPIO lookup into `i2c_acpi_do_lookup`, but it failed
+spectacularly.
+I've linked some logs of both cases. grep for `RX:` to see my logging messages.
 
-This member is set, but never read.
+* https://0paste.com/393416 - Logs with IRQ lookup happening in
+`i2c_acpi_do_lookup`
+    * We can see that `i2c_acpi_do_lookup` gets called in three cases
+         1) Early on from i2c_acpi_notify when the I2C ACPI nodes are
+first created
+         2) From `i2c_dw_adjust_bus_speed` as part of `dw_i2c_plat_probe`
+         3) From `i2c_register_adapter` as part of `i2c_dw_probe_master`.
+    * What happens is that all of these calls happen before the GPIO
+chip has been registered.
+      This means that `acpi_dev_gpio_irq_get` will return `-EPROBE_DEFER`. This
+      messes something up in the i2c init sequence and the devices are never
+      probed again.
+    * You can see the `amd gpio driver loaded` message after all the
+i2c probing.
+* https://0paste.com/393420 - Logs of a normal boot
+    * Here we can see the GPIO controller registers early
+    * We can see the i2c devices being probed by `__driver_attach_async_helper`.
+      I'm guessing the device was enqueued as part of `i2c_acpi_register_device`
+      early on and it gets probed later.
 
-
-> +=09unsigned int sysfs_created : 1;
-> +=09/* Track if a wakeup event was received */
-> +=09unsigned int wakeup_cause : 1;
-> +=09/* Name of input device */
-> +=09char input_name[32];
-> +=09/* Physical path for the input device */
-> +=09char phys[32];
-> +};
-> +
-> +/*
-> + * Knowing what these buttons do require system specific knowledge.
-> + * This could be done by matching on DMI data in a long quirk table.
-> + * However, it is easier to leave it up to user space to figure this out=
-.
-> + *
-> + * Using for example udev hwdb the scancode 0x1 can be remapped suitably=
-.
-> + */
-> +static const struct key_entry quickstart_keymap[] =3D {
-> +=09{ KE_KEY, 0x1, { KEY_UNKNOWN } },
-> +=09{ KE_END, 0 },
-> +};
-> +
-> +static ssize_t wakeup_cause_show(struct device *dev,
-> +=09=09=09=09 struct device_attribute *attr, char *buf)
-> +{
-> +=09struct quickstart_acpi *quickstart =3D dev_get_drvdata(dev);
-> +
-> +=09return scnprintf(buf, PAGE_SIZE, "%s\n",
-> +=09=09=09 (quickstart->wakeup_cause ? "true" : "false"));
-
-Please use `sysfs_emit()` preferably. And I think it would be easier to use=
- 0/1
-instead of true/false. And you could use `kstrtobool()` in the _store() fun=
-ction.
-
-
-> +}
-> +
-> +static ssize_t wakeup_cause_store(struct device *dev,
-> +=09=09=09=09  struct device_attribute *attr,
-> +=09=09=09=09  const char *buf, size_t count)
-> +{
-> +=09struct quickstart_acpi *quickstart =3D dev_get_drvdata(dev);
-> +
-> +=09if (count < 2)
-> +=09=09return -EINVAL;
-> +
-> +=09if (strncasecmp(buf, "false", 4) !=3D 0)
-> +=09=09return -EINVAL;
-> +
-> +=09quickstart->wakeup_cause =3D false;
-> +=09return count;
-> +}
-> +static DEVICE_ATTR_RW(wakeup_cause);
-> +
-> +static ssize_t button_id_show(struct device *dev, struct device_attribut=
-e *attr,
-> +=09=09=09      char *buf)
-> +{
-> +=09struct quickstart_acpi *quickstart =3D dev_get_drvdata(dev);
-> +
-> +=09return scnprintf(buf, PAGE_SIZE, "%d\n", quickstart->id);
-
-Since it is unsigned `%u` would probably be better.
-
-
-> +}
-> +static DEVICE_ATTR_RO(button_id);
-> +
-> +/* ACPI Driver functions */
-> +static void quickstart_acpi_notify(struct acpi_device *acpi_dev, u32 eve=
-nt)
-> +{
-> +=09struct quickstart_acpi *quickstart =3D acpi_driver_data(acpi_dev);
-> +
-> +=09if (!quickstart)
-> +=09=09return;
-> +
-> +=09switch (event) {
-> +=09case QUICKSTART_EVENT_WAKE:
-> +=09=09quickstart->wakeup_cause =3D true;
-> +=09=09break;
-> +=09case QUICKSTART_EVENT_RUNTIME:
-> +=09=09if (!sparse_keymap_report_event(quickstart->input_device, 0x1,
-> +=09=09=09=09=09=091, true)) {
-> +=09=09=09pr_info("Key handling error\n");
-> +=09=09}
-> +=09=09break;
-> +=09default:
-> +=09=09pr_err("Unexpected ACPI event notify (%u)\n", event);
-> +=09=09break;
-> +=09}
-> +}
-> +
-> +/*
-> + * The GHID ACPI method is used to indicate the "role" of the button.
-> + * However, all the meanings of these values are vendor defined.
-> + *
-> + * We do however expose this value to user space.
-> + */
-> +static int quickstart_acpi_ghid(struct quickstart_acpi *quickstart)
-> +{
-> +=09acpi_status status;
-> +=09struct acpi_buffer buffer =3D { ACPI_ALLOCATE_BUFFER, NULL };
-> +=09int ret =3D 0;
-> +=09union acpi_object *obj =3D NULL;
-> +
-> +=09/*
-> +=09 * This returns a buffer telling the button usage ID,
-> +=09 * and triggers pending notify events (The ones before booting).
-> +=09 */
-> +=09status =3D acpi_evaluate_object(quickstart->acpi_dev->handle, "GHID",
-> +=09=09=09=09      NULL, &buffer);
-> +=09if (ACPI_FAILURE(status)) {
-> +=09=09pr_err("%s GHID method failed\n", quickstart->name);
-> +=09=09return -EINVAL;
-> +=09}
-> +=09obj =3D buffer.pointer;
-> +
-> +=09/*
-> +=09 * GHID returns buffers, sanity check that is the case.
-> +=09 */
-> +=09if (obj->type !=3D ACPI_TYPE_BUFFER) {
-> +=09=09pr_err("%s GHID did not return buffer\n", quickstart->name);
-> +=09=09return -EINVAL;
-
-`buffer.pointer` is not freed here. Since you know the maximum size, you co=
-uld
-consider using an on-stack buffer.
-
-
-> +=09}
-> +
-> +=09/*
-> +=09 * Quoting the specification:
-> +=09 * "The GHID method can return a BYTE, WORD, or DWORD.
-> +=09 *  The value must be encoded in little-endian byte
-> +=09 *  order (least significant byte first)."
-> +=09 */
-> +=09switch (obj->buffer.length) {
-> +=09case 1:
-> +=09=09quickstart->id =3D *(u8 *)obj->buffer.pointer;
-> +=09=09break;
-> +=09case 2:
-> +=09=09quickstart->id =3D le16_to_cpu(*(u16 *)obj->buffer.pointer);
-
-Probably does not matter here, but I personally like to use `get_unaligned_=
-leN()`
-because those functions just always work.
-
-
-> +=09=09break;
-> +=09case 4:
-> +=09=09quickstart->id =3D le32_to_cpu(*(u32 *)obj->buffer.pointer);
-> +=09=09break;
-> +=09case 8:
-> +=09=09quickstart->id =3D le64_to_cpu(*(u64 *)obj->buffer.pointer);
-> +=09=09break;
-> +=09default:
-> +=09=09pr_err("%s GHID method returned buffer of unexpected length %lu\n"=
-,
-> +=09=09       quickstart->name, (unsigned long)obj->buffer.length);
-> +=09=09ret =3D -EINVAL;
-> +=09=09break;
-> +=09}
-> +
-> +=09kfree(buffer.pointer);
-> +
-> +=09return ret;
-> +}
-> +
-> +static int quickstart_acpi_config(struct quickstart_acpi *quickstart)
-> +{
-> +=09char *bid =3D acpi_device_bid(quickstart->acpi_dev);
-> +=09char *name;
-> +
-> +=09name =3D kmalloc(strlen(bid) + 1, GFP_KERNEL);
-> +=09if (!name)
-> +=09=09return -ENOMEM;
-> +
-> +=09quickstart->name =3D name;
-> +=09strcpy(quickstart->name, bid);
-
-You could use `kstrdup()` here, but you could probably even use `devm_kstrd=
-up()`
-and then this function could be entirely removed.
-
-
-> +
-> +=09return 0;
-> +}
-> +
-> +static struct attribute *quickstart_attributes[] =3D {
-> +=09&dev_attr_wakeup_cause.attr,
-> +=09&dev_attr_button_id.attr,
-> +=09NULL,
-> +};
-> +
-> +static const struct attribute_group quickstart_attr_group =3D {
-> +=09.attrs =3D quickstart_attributes,
-> +};
-> +
-> +static int quickstart_acpi_remove(struct acpi_device *acpi_dev)
-> +{
-> +=09struct quickstart_acpi *quickstart;
-> +
-> +=09if (!acpi_dev)
-> +=09=09return -EINVAL;
-> +
-> +=09quickstart =3D acpi_driver_data(acpi_dev);
-> +=09if (!quickstart)
-> +=09=09return -EINVAL;
-> +
-> +=09if (quickstart->sysfs_created)
-> +=09=09sysfs_remove_group(&quickstart->acpi_dev->dev.kobj,
-> +=09=09=09=09   &quickstart_attr_group);
-> +
-> +=09kfree(quickstart->name);
-> +=09quickstart->name =3D NULL;
-> +
-> +=09kfree(quickstart);
-> +
-> +=09return 0;
-> +}
-> +
-> +static int quickstart_acpi_add(struct acpi_device *acpi_dev)
-> +{
-> +=09int ret;
-> +=09struct quickstart_acpi *quickstart;
-> +
-> +=09if (!acpi_dev)
-> +=09=09return -EINVAL;
-> +
-> +=09quickstart =3D kzalloc(sizeof(*quickstart), GFP_KERNEL);
-
-Have you considered `devm_kzalloc()`?
-
-
-> +=09if (!quickstart)
-> +=09=09return -ENOMEM;
-> +
-> +=09/*
-> +=09 * This must be set early for proper cleanup on error handling path.
-> +=09 * After this point generic error handling can be used.
-> +=09 */
-> +=09acpi_dev->driver_data =3D quickstart;
-> +=09quickstart->acpi_dev =3D acpi_dev;
-> +=09dev_set_drvdata(&acpi_dev->dev, quickstart);
-> +
-> +=09strcpy(acpi_device_name(acpi_dev), QUICKSTART_ACPI_DEVICE_NAME);
-> +=09strcpy(acpi_device_class(acpi_dev), QUICKSTART_ACPI_CLASS);
-> +
-> +=09/* Initialize device name */
-> +=09ret =3D quickstart_acpi_config(quickstart);
-> +=09if (ret < 0)
-> +=09=09goto error;
-> +
-> +=09/* Retrieve the GHID ID */
-> +=09ret =3D quickstart_acpi_ghid(quickstart);
-> +=09if (ret < 0)
-> +=09=09goto error;
-> +
-> +=09/* Set up sysfs entries */
-> +=09ret =3D sysfs_create_group(&quickstart->acpi_dev->dev.kobj,
-> +=09=09=09=09 &quickstart_attr_group);
-
-You could use `devm_device_add_group()`. And then the `sysfs_created` membe=
-r
-could be removed.
-
-
-> +=09if (ret) {
-> +=09=09quickstart->sysfs_created =3D 0;
-> +=09=09pr_err("Unable to setup sysfs entries\n");
-> +=09=09goto error;
-> +=09}
-> +=09quickstart->sysfs_created =3D !ret;
-> +
-> +=09/* Set up input device */
-> +=09quickstart->input_device =3D
-> +=09=09devm_input_allocate_device(&quickstart->acpi_dev->dev);
-> +=09if (!quickstart->input_device) {
-> +=09=09ret =3D -ENOMEM;
-> +=09=09goto error;
-> +=09}
-> +=09ret =3D sparse_keymap_setup(quickstart->input_device, quickstart_keym=
-ap,
-> +=09=09=09=09  NULL);
-> +=09if (ret)
-> +=09=09goto error;
-> +
-> +=09snprintf(quickstart->input_name, sizeof(quickstart->phys),
-> +=09=09 "Quickstart Button %u", quickstart->id);
-> +=09snprintf(quickstart->phys, sizeof(quickstart->phys),
-> +=09=09 QUICKSTART_ACPI_DEVICE_NAME "/input%u", quickstart->id);
-> +
-> +=09quickstart->input_device->name =3D quickstart->input_name;
-> +=09quickstart->input_device->phys =3D quickstart->phys;
-> +=09quickstart->input_device->id.bustype =3D BUS_HOST;
-> +
-> +=09ret =3D input_register_device(quickstart->input_device);
-> +=09if (ret) {
-> +=09=09quickstart->input_registered =3D 0;
-> +=09=09pr_err("Unable to register input device\n");
-> +=09=09goto error;
-> +=09}
-> +=09quickstart->input_registered =3D !ret;
-> +
-> +=09return 0;
-> +error:
-> +=09quickstart_acpi_remove(acpi_dev);
-> +=09return ret;
-> +}
-> +
-> +static const struct acpi_device_id quickstart_device_ids[] =3D {
-> +=09{ QUICKSTART_ACPI_HID, 0 },
-> +=09{ "", 0 },
-> +};
-> +MODULE_DEVICE_TABLE(acpi, quickstart_device_ids);
-> +
-> +static struct acpi_driver quickstart_acpi_driver =3D {
-> +=09.name=09=3D "quickstart",
-> +=09.owner=09=3D THIS_MODULE,
-> +=09.class=09=3D QUICKSTART_ACPI_CLASS,
-> +=09.ids=09=3D quickstart_device_ids,
-> +=09.flags=09=3D ACPI_DRIVER_ALL_NOTIFY_EVENTS,
-> +=09.ops=09=3D {
-> +=09=09.add =3D quickstart_acpi_add,
-> +=09=09.remove =3D quickstart_acpi_remove,
-> +=09=09.notify =3D quickstart_acpi_notify
-> +=09},
-> +};
-> +
-> +/* Module functions */
-> +static void quickstart_exit(void)
-> +{
-> +=09acpi_bus_unregister_driver(&quickstart_acpi_driver);
-> +}
-> +
-> +static int __init quickstart_init(void)
-> +{
-> +=09int ret;
-> +
-> +=09/* ACPI driver register */
-> +=09ret =3D acpi_bus_register_driver(&quickstart_acpi_driver);
-> +=09if (ret)
-> +=09=09return ret;
-> +
-> +=09pr_info("ACPI Direct App Launch ver %s\n", QUICKSTART_VERSION);
-> +
-> +=09return 0;
-> +}
-> +
-> +module_init(quickstart_init);
-> +module_exit(quickstart_exit);
-
-You could use the `module_acpi_driver()` macro to generate the init/exit me=
-thods.
-
-
-> --
-> 2.37.3
-
-
-Regards,
-Barnab=C3=A1s P=C5=91cze
+I could try moving the gpio lookup into `i2c_acpi_get_info`, but I
+think that suffers from the
+same problem, the stack can't handle a PROBE_DEFER. So I think we need to keep
+the lookup in `i2c_device_probe` for the PROBE_DEFER logic to work correctly.
