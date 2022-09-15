@@ -2,127 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CBC55B9F64
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 18:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833575BA0CF
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 20:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbiIOQLh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Sep 2022 12:11:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34288 "EHLO
+        id S229471AbiIOSXc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Sep 2022 14:23:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbiIOQLf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Sep 2022 12:11:35 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B522D9A947
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 09:11:34 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id t65so17757108pgt.2
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 09:11:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date;
-        bh=qabPFsKsVzBs/IAmyQMB7q/BmTmNWLyFuHa1qxS6Sh0=;
-        b=qKZ4uhroibyA/kbyJWXPnExJXjgtUGAwIBN9HJmGnAYuFHc9pHofi0mFV6R7LAQa6+
-         69Fc5SVxfAgQRJNI8H9DU3S+4ByKwkBcDuTArTdgUrk7xdy0t5tJ0D369UnyNPCRbcmR
-         cgCEyq0OfpckdJ5wt1Axz6umAj0yfGG7d6F92tzKjWXNpk2v6AHTX5jP8n9XBS59uc8P
-         sa/3823e0flLKONJIPvHIPpJnwv6nk0gnVc3z/GbsXwX/egPY70fjaYF88o3Qo40l1a9
-         RZq1hQdKI0+Z5qxMlE51mLHBl4uQUPs21hfCXkmLARaLY1SD3UWKFd8moNekhop6Tng0
-         /ekw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date;
-        bh=qabPFsKsVzBs/IAmyQMB7q/BmTmNWLyFuHa1qxS6Sh0=;
-        b=uq7zefgkqxhjLk21zS5cavsi/x8cExzsbUR1ZgZ0D7NW4DvwOZl0R9TssYYCf1eHHN
-         xRDAaIOzTykULdIQ8OzcXW8MMLUMRQ17amKU83yUJ2RQT1mSdUz2MAPzYnvIGTlk9Q1R
-         njDNVX7p0K5gRCaqJ/KHdzhPcKHItYGrCD3+EAgal+JAUz87oqxvY+RlDtn1Co0Akvlj
-         uYPQ0H0biW+QS5MftuOCadE2KJYgBKPDGapr4mcGG4xjWmxjaPrI4vH6eQqqou15Y3p2
-         UJ1tSih2ZS7bSbaGG3dvbrBl5A80DeYfrrtO4KZ93nkmwy9v42rLANA80pp70Fxy+c3m
-         +EyQ==
-X-Gm-Message-State: ACrzQf098GmUP0yxaOpcKAv9TLmjR/e3NfEgHlgpl+o99MLrLKTx0iQc
-        pwbw98n+/76SXwSJO5LqipPx8rx/gf4bvIhyukk=
-X-Google-Smtp-Source: AMsMyM6+ZRoMxZaiuT/EK7sOt4bZSW5rcp+f670tgtTFsKu8gQ6/Ns2qfdTeJv4CSbOPUPfIXHZ1DTzV2E14qlpbII4=
-X-Received: by 2002:a65:63c3:0:b0:42b:5b03:ce57 with SMTP id
- n3-20020a6563c3000000b0042b5b03ce57mr522542pgv.436.1663258293835; Thu, 15 Sep
- 2022 09:11:33 -0700 (PDT)
+        with ESMTP id S229501AbiIOSXb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Sep 2022 14:23:31 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2075.outbound.protection.outlook.com [40.107.92.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19C2C1D0;
+        Thu, 15 Sep 2022 11:23:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C2/ZuSI3mnZ6DVJ4REnMbJwgDSqZdv1OhRPOEAz3ZHFLV+Wy5GknaBq9B+N9JXitAdtc1loTQdFEF3R38oe8pnmZDdVB9i5E2xIp4khSfxDYgiQJPGbcpuXkeYAa9ghNQNtmKq+uP47r9duj9/iMtJcxuvIxyrCs6yVdSdS5EHD03PWiDrPnOnZbIHRysTHAigvJ5K1YIiLvAtPz0OwuyoKs5j8hbYtBeF+GuXXiYp+EHGfacWqs+mkbLDXjRe2MuCy1az3Cqemm8ADWsOibOV1hWwipngBjMLHVnw3vlwGRSb5MT0xR3uLekNqC3pnpW0Rpq9ebkiiw+9QOM5WuCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b45p/arZe3QwMBsG0aylw02+MUnkRzkTnZVNSRYZ0tY=;
+ b=inLg82uogtoUM9u02iXZ/ukfqTOvXPMVqqS73oJ8VpY1wIoxAmeZsjGJd8uDp4F2W0hYa8/V3uXQmBJEHsxUppGQ93NJ1OR/zM2z2NXJ+t0WaqS7GjdXDbPM0BwR6QWV7yQKMyB39dn87w06md7V9SrCSWzzYygk4wifLxZQ9Nv1VeN8MYSPq+ym2r00aOt0IFJwYTg9OZnbvED4BF5pogoMWQioPHsFoCw9CH7JVbqK0TUSbXj4in71iiPXSCxUccPLdZ+eUdjATksor1ARqH8yUA4VDq01N28jFfevs27tlQNSFCOaahcY0UC7l4PW8Jv2VfKKUUHN7ZpXzvtCBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b45p/arZe3QwMBsG0aylw02+MUnkRzkTnZVNSRYZ0tY=;
+ b=x57ElTVQMKOpOfvGA5+tYVe9EkE8mFMzRk7O0K7rEpKecXNJHxXg6fPabgEk9JJMas63mtLyvJfZLbrMPLVGcyEYWQge3dtxZDqMclKzV9131Zvtmv8HfX1EPz0X4WXGHQaA+Abn0YGvGZbEMwDfXPaNPO7kUHg7e+GDg0Wd22U=
+Received: from MW4PR03CA0164.namprd03.prod.outlook.com (2603:10b6:303:8d::19)
+ by SJ0PR12MB6927.namprd12.prod.outlook.com (2603:10b6:a03:483::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.20; Thu, 15 Sep
+ 2022 18:23:28 +0000
+Received: from CO1NAM11FT091.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:8d:cafe::d6) by MW4PR03CA0164.outlook.office365.com
+ (2603:10b6:303:8d::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.15 via Frontend
+ Transport; Thu, 15 Sep 2022 18:23:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT091.mail.protection.outlook.com (10.13.175.146) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5632.12 via Frontend Transport; Thu, 15 Sep 2022 18:23:27 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Thu, 15 Sep
+ 2022 13:23:26 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     <mario.limonciello@amd.com>, <linux-kernel@vger.kernel.org>
+CC:     Hans de Goede <hdegoede@redhat.com>,
+        Luya Tshimbalanga <luya@fedoraproject.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>
+Subject: [PATCH] ACPI / x86: Add a quirk for Dell Inspiron 14 2-in-1 for StorageD3Enable
+Date:   Thu, 15 Sep 2022 13:23:14 -0500
+Message-ID: <20220915182315.276-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a17:902:ce8b:b0:177:eb6c:b271 with HTTP; Thu, 15 Sep 2022
- 09:11:33 -0700 (PDT)
-From:   moonlee park <moonleepark4@gmail.com>
-Date:   Thu, 15 Sep 2022 09:11:33 -0700
-Message-ID: <CAK1kscZ7rpXdXSVafoHYVO3H8PH3mSgE=73BL-eB5JpzT7Pf5g@mail.gmail.com>
-Subject: LOOKING FOWARD TO YOUR RESPOND
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_80,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FORM_FRAUD_5,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,MONEY_FORM_SHORT,
-        MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_FILL_THIS_FORM_SHORT,UNDISC_MONEY,URG_BIZ autolearn=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT091:EE_|SJ0PR12MB6927:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7f2b3373-c0bb-4801-dace-08da97476299
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hWkxrLM1SmX0sDDSpROshjdFpw1AfUSvhKkGhmNXAYzdwz0pTJsb1bmgHVmsN+MjDkYSBo1GTFN8vCxugBw1LY5eEuv8A/aDSSinrNDrb86hJnpDtMD4p7n+DL1+FsFWXYmi6zPV5zscJM9QrWuN09iYnfrjc7uHMahRRA+mB/41lcLh/J8Aq8phBvFVcxSXp747F0K/OMgPdyOJ+myxdCFtPrzerVpx1L0tFjJZ4GdCbbgobTkiQ+6a22CImpHjNCIzxlhB8a4zxrutHIh59Uu5vopEzGF1sgfDynJxqgYH3bWDNgEaFAieqqdX/YyVEVXjihB0S6Q1EHJRYebky7kRWYIlRksWqg4nRBTfvPhJP0bgXL3LUms6rSDKMedmMSFpx6yj1o1sfsIABp+EXGAs8JH0GZgODTqhq3c9Nu4YW5D9ak69JziFWEabNrgS/Cmj88teMup1UEgRp+X9wpglxDjolvFnt78p4okBWFXeD2JfFJazG5VKS8YKetSjk1AvJrkMbpTe94X0GVZpDfSzihmzXtEAI5p+Tm6mdDsbSQGOQEcHESTlytLKTL1gR5bzFIbeENlMggz8p05X3uoXkWtxbl6b/zdNqt0hDYv0ghn6GB8OFQv/w8YOB0yaMY6/2ACpsZwKo089akcmDlzCzrwdyv9WaLHioSm4nx68U6YntISTENcfcVPiQJkX4Cmnh34cMNi7w0PC4srfo94lJS0TuQGF1ubs5vis4VrAa9Gx/y/INj2RP6SE1kgbBKYdIN1IwRt7YsH9685gWcFGgTPYas3+sT/x7LOTKzG1GqKWzx50QGOFn6ZpXc1s2LdIqHtzy85q3PqfWh4kvw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(376002)(136003)(346002)(39860400002)(396003)(451199015)(40470700004)(36840700001)(46966006)(26005)(41300700001)(7696005)(6666004)(44832011)(5660300002)(186003)(40460700003)(82740400003)(86362001)(4326008)(81166007)(2906002)(426003)(16526019)(36756003)(478600001)(336012)(83380400001)(54906003)(1076003)(8676002)(966005)(47076005)(82310400005)(70206006)(2616005)(8936002)(70586007)(356005)(40480700001)(110136005)(36860700001)(316002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2022 18:23:27.7194
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7f2b3373-c0bb-4801-dace-08da97476299
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT091.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6927
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:541 listed in]
-        [list.dnswl.org]
-        *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
-        *      [score: 0.8411]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [moonleepark4[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [moonleepark4[at]gmail.com]
-        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        *  0.0 MILLION_USD BODY: Talks about millions of dollars
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.6 URG_BIZ Contains urgent matter
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  1.0 FREEMAIL_REPLY From and body contain different freemails
-        *  0.0 T_FILL_THIS_FORM_SHORT Fill in a short form with personal
-        *      information
-        *  1.4 MONEY_FORM_SHORT Lots of money if you fill out a short form
-        *  0.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
-        *  0.0 MONEY_FRAUD_5 Lots of money and many fraud phrases
-        *  0.2 FORM_FRAUD_5 Fill a form and many fraud phrases
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Please let me use this medium to create a mutual conversation with you
-seeking for your acceptance on investing in your country under your
-management as my  business partner, My name is Aisha  Gaddafi and
-presently living in Oman, i am a Widow and single Mother with three
-Children, the only biological Daughter of late Libyan President (Late
-Colonel Muammar Gaddafi) and presently i am under political asylum
-protection by the Omani Government.
+Dell Inspiron 14 2-in-1 has two ACPI nodes under GPP1 both with _ADR of
+0, both without _HID.  It's ambiguous which the kernel should take, but
+it seems to take "DEV0".  Unfortunately "DEV0" is missing the device
+property `StorageD3Enable` which is present on "NVME".
 
-I have funds worth " Seven Million Five Hundred Thousand United State
-Dollars" [$7.500.000.00 US Dollars] which I want to entrust to you for
-investment projects in your country. If you are willing to handle this
-project on my behalf, kindly reply urgent to enable me provide you
-more details to start the transfer process, I will appreciate your
-urgent response through my private email address below:
+To avoid this causing problems for suspend, add a quirk for this system
+to behave like `StorageD3Enable` property was found.
 
-aishagaddafiaisha20@gmail.com
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216440
+Reported-and-tested-by: Luya Tshimbalanga <luya@fedoraproject.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+I had attempted to modify the heuristics for when two ACPI devices
+have the same _ADR to prefer the one with a _DSD, but this wasn't enough
+of a help. As the ACPI node doesn't contain anything valuable besides
+the _DSD, it seems that a quirk for the system is a fine enough solution.
 
-You can know more through the BBC news links below:
+ drivers/acpi/x86/utils.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-http://www.bbc.com/news/world-africa-19966059
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 664070fc8349..d7cdd8406c84 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -207,9 +207,26 @@ static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+ 	{}
+ };
+ 
++static const struct dmi_system_id force_storage_d3_dmi[] = {
++	{
++		/*
++		 * _ADR is ambiguous between GPP1.DEV0 and GPP1.NVME
++		 * but .NVME is needed to get StorageD3Enable node
++		 * https://bugzilla.kernel.org/show_bug.cgi?id=216440
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
++		}
++	},
++	{}
++};
++
+ bool force_storage_d3(void)
+ {
+-	return x86_match_cpu(storage_d3_cpu_ids);
++	const struct dmi_system_id *dmi_id = dmi_first_match(force_storage_d3_dmi);
++
++	return dmi_id || x86_match_cpu(storage_d3_cpu_ids);
+ }
+ 
+ /*
+-- 
+2.34.1
 
-
-Thanks
-Yours Truly Aisha
-aishagaddafiaisha20@gmail.com
