@@ -2,94 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 833575BA0CF
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 20:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8F9A5BA26A
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 23:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbiIOSXc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Sep 2022 14:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49116 "EHLO
+        id S229550AbiIOVln (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Sep 2022 17:41:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiIOSXb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Sep 2022 14:23:31 -0400
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2075.outbound.protection.outlook.com [40.107.92.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19C2C1D0;
-        Thu, 15 Sep 2022 11:23:30 -0700 (PDT)
+        with ESMTP id S229572AbiIOVlm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Sep 2022 17:41:42 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2068.outbound.protection.outlook.com [40.107.237.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5531152E70;
+        Thu, 15 Sep 2022 14:41:32 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C2/ZuSI3mnZ6DVJ4REnMbJwgDSqZdv1OhRPOEAz3ZHFLV+Wy5GknaBq9B+N9JXitAdtc1loTQdFEF3R38oe8pnmZDdVB9i5E2xIp4khSfxDYgiQJPGbcpuXkeYAa9ghNQNtmKq+uP47r9duj9/iMtJcxuvIxyrCs6yVdSdS5EHD03PWiDrPnOnZbIHRysTHAigvJ5K1YIiLvAtPz0OwuyoKs5j8hbYtBeF+GuXXiYp+EHGfacWqs+mkbLDXjRe2MuCy1az3Cqemm8ADWsOibOV1hWwipngBjMLHVnw3vlwGRSb5MT0xR3uLekNqC3pnpW0Rpq9ebkiiw+9QOM5WuCQ==
+ b=c+I823g4WYjdC4Jgb6foDdbW7XE1EorabGDhzv+Sr4iSxiLI3m38NmbQ+ZeM8fbT1DA/EiK5TumlcwyuzIBtWx+Xgs72xOdhzGFxCvwTrDB1kMVDR6d1Pzkamk1mlVv1SidWUGwmLQheKhEr56y9kDnYMA/wJJFR1U/n8xLurSEYhaGjsF+KpYIioYoZsDTr33wE9nHHxZMozihbdkE2SypxPaQGTxe1zpj/FqQcq4BSPQw0C0Vi/WVfAsiO/USgj/RAXcQTSl2QziCpIq2oGDckZVJqS/hTZUiPeF6OQkATOHdotG9/MsnAbS44a+oGSAcC3iChPvnVTcr5tgIsqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b45p/arZe3QwMBsG0aylw02+MUnkRzkTnZVNSRYZ0tY=;
- b=inLg82uogtoUM9u02iXZ/ukfqTOvXPMVqqS73oJ8VpY1wIoxAmeZsjGJd8uDp4F2W0hYa8/V3uXQmBJEHsxUppGQ93NJ1OR/zM2z2NXJ+t0WaqS7GjdXDbPM0BwR6QWV7yQKMyB39dn87w06md7V9SrCSWzzYygk4wifLxZQ9Nv1VeN8MYSPq+ym2r00aOt0IFJwYTg9OZnbvED4BF5pogoMWQioPHsFoCw9CH7JVbqK0TUSbXj4in71iiPXSCxUccPLdZ+eUdjATksor1ARqH8yUA4VDq01N28jFfevs27tlQNSFCOaahcY0UC7l4PW8Jv2VfKKUUHN7ZpXzvtCBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
+ bh=+XtCGV2Qp5ceQWDKlZkLE1b5pwvhEdm/3f2v0nGRU2s=;
+ b=m0uLNLQZQgZGCMURW3rCHDke3PVU2tQLGRekl4JVKpHxJJLgbjzGzVrysGwm0EsZGZ6jnvdFgtnkuDLJGms48pJCy2O/j0ltdWXu43gW7Ze9ZYz+faIMcx+1dh9knQ1d1m0wexDTxOl+5wmldXFdJjZz6Ixnrk2iRPBqvmY+A3G73yQxSQlowoynXDgLvrFESRvmlxH3ES6S5B0fRB47YrehsKfRobXeJME6GXSeC2c224R27XPL3GMh3mVnbScsj7OFamXgMF5xH7aCpINLmQfJlGKpYnzsBjpDLgzLPdIDMhkjCbc4IuGgeshFoi/BMNQVGIamiyCSOEOw4kSWrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b45p/arZe3QwMBsG0aylw02+MUnkRzkTnZVNSRYZ0tY=;
- b=x57ElTVQMKOpOfvGA5+tYVe9EkE8mFMzRk7O0K7rEpKecXNJHxXg6fPabgEk9JJMas63mtLyvJfZLbrMPLVGcyEYWQge3dtxZDqMclKzV9131Zvtmv8HfX1EPz0X4WXGHQaA+Abn0YGvGZbEMwDfXPaNPO7kUHg7e+GDg0Wd22U=
-Received: from MW4PR03CA0164.namprd03.prod.outlook.com (2603:10b6:303:8d::19)
- by SJ0PR12MB6927.namprd12.prod.outlook.com (2603:10b6:a03:483::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.20; Thu, 15 Sep
- 2022 18:23:28 +0000
-Received: from CO1NAM11FT091.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:8d:cafe::d6) by MW4PR03CA0164.outlook.office365.com
- (2603:10b6:303:8d::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.15 via Frontend
- Transport; Thu, 15 Sep 2022 18:23:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT091.mail.protection.outlook.com (10.13.175.146) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5632.12 via Frontend Transport; Thu, 15 Sep 2022 18:23:27 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Thu, 15 Sep
- 2022 13:23:26 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <mario.limonciello@amd.com>, <linux-kernel@vger.kernel.org>
-CC:     Hans de Goede <hdegoede@redhat.com>,
-        Luya Tshimbalanga <luya@fedoraproject.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>
-Subject: [PATCH] ACPI / x86: Add a quirk for Dell Inspiron 14 2-in-1 for StorageD3Enable
-Date:   Thu, 15 Sep 2022 13:23:14 -0500
-Message-ID: <20220915182315.276-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+ bh=+XtCGV2Qp5ceQWDKlZkLE1b5pwvhEdm/3f2v0nGRU2s=;
+ b=W2hMAUmoDO8r1NHKmVoHmqLr214idpS1LnGgTy5KmJU+ydIfQ6Mb9ivUzVUjJEiSLc+C7s7uQ/wjnEEdTQA0IGL/1Iqc260mGcp/XT4khpFyE0bDfHtGd0VNend5q3ggmZmzY/hkjxW+sh1Zo6KRP/KYVNnzr+y+x2paN+1ovQk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6263.namprd12.prod.outlook.com (2603:10b6:8:95::17) by
+ SN7PR12MB7228.namprd12.prod.outlook.com (2603:10b6:806:2ab::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5612.20; Thu, 15 Sep 2022 21:41:30 +0000
+Received: from DS7PR12MB6263.namprd12.prod.outlook.com
+ ([fe80::184c:bf06:be40:27c9]) by DS7PR12MB6263.namprd12.prod.outlook.com
+ ([fe80::184c:bf06:be40:27c9%7]) with mapi id 15.20.5632.016; Thu, 15 Sep 2022
+ 21:41:30 +0000
+Message-ID: <4871fc14-0a6b-92f2-1b6a-2e6537fa42ad@amd.com>
+Date:   Thu, 15 Sep 2022 16:41:27 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Content-Language: en-US
+To:     Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+        joro@8bytes.org
+Cc:     suravee.suthikulpanit@amd.com, vasant.hegde@amd.com,
+        Mike Day <michael.day@amd.com>, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20220914190330.60779-1-kim.phillips@amd.com>
+ <20220914190330.60779-2-kim.phillips@amd.com>
+ <22464516-0235-dddf-09e4-6f4580b04869@arm.com>
+From:   Kim Phillips <kim.phillips@amd.com>
+Subject: Re: [PATCH 2/2] iommu/amd: Fix ill-formed ivrs_ioapic, ivrs_hpet and
+ ivrs_acpihid options
+In-Reply-To: <22464516-0235-dddf-09e4-6f4580b04869@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
+X-ClientProxiedBy: MN2PR05CA0012.namprd05.prod.outlook.com
+ (2603:10b6:208:c0::25) To DS7PR12MB6263.namprd12.prod.outlook.com
+ (2603:10b6:8:95::17)
+MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT091:EE_|SJ0PR12MB6927:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f2b3373-c0bb-4801-dace-08da97476299
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6263:EE_|SN7PR12MB7228:EE_
+X-MS-Office365-Filtering-Correlation-Id: f65f0d71-8321-47a8-3d7e-08da97630c74
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hWkxrLM1SmX0sDDSpROshjdFpw1AfUSvhKkGhmNXAYzdwz0pTJsb1bmgHVmsN+MjDkYSBo1GTFN8vCxugBw1LY5eEuv8A/aDSSinrNDrb86hJnpDtMD4p7n+DL1+FsFWXYmi6zPV5zscJM9QrWuN09iYnfrjc7uHMahRRA+mB/41lcLh/J8Aq8phBvFVcxSXp747F0K/OMgPdyOJ+myxdCFtPrzerVpx1L0tFjJZ4GdCbbgobTkiQ+6a22CImpHjNCIzxlhB8a4zxrutHIh59Uu5vopEzGF1sgfDynJxqgYH3bWDNgEaFAieqqdX/YyVEVXjihB0S6Q1EHJRYebky7kRWYIlRksWqg4nRBTfvPhJP0bgXL3LUms6rSDKMedmMSFpx6yj1o1sfsIABp+EXGAs8JH0GZgODTqhq3c9Nu4YW5D9ak69JziFWEabNrgS/Cmj88teMup1UEgRp+X9wpglxDjolvFnt78p4okBWFXeD2JfFJazG5VKS8YKetSjk1AvJrkMbpTe94X0GVZpDfSzihmzXtEAI5p+Tm6mdDsbSQGOQEcHESTlytLKTL1gR5bzFIbeENlMggz8p05X3uoXkWtxbl6b/zdNqt0hDYv0ghn6GB8OFQv/w8YOB0yaMY6/2ACpsZwKo089akcmDlzCzrwdyv9WaLHioSm4nx68U6YntISTENcfcVPiQJkX4Cmnh34cMNi7w0PC4srfo94lJS0TuQGF1ubs5vis4VrAa9Gx/y/INj2RP6SE1kgbBKYdIN1IwRt7YsH9685gWcFGgTPYas3+sT/x7LOTKzG1GqKWzx50QGOFn6ZpXc1s2LdIqHtzy85q3PqfWh4kvw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(376002)(136003)(346002)(39860400002)(396003)(451199015)(40470700004)(36840700001)(46966006)(26005)(41300700001)(7696005)(6666004)(44832011)(5660300002)(186003)(40460700003)(82740400003)(86362001)(4326008)(81166007)(2906002)(426003)(16526019)(36756003)(478600001)(336012)(83380400001)(54906003)(1076003)(8676002)(966005)(47076005)(82310400005)(70206006)(2616005)(8936002)(70586007)(356005)(40480700001)(110136005)(36860700001)(316002)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: +8zE7cdWa9I2yQaJwxilITEErKbzGt1skwhv/f/KxD2wNlhbY4ayq4i2W+iswe77mXFcpo7qJ11fERvX6ILZgRw2vfx9yjDS2GhzXNQFnZlWa02Aj5c8nzwqJFZy+hImlabozAB4FEnmp4YnZjblWvMBwRUTYeoVqvbJ9rwGdD9L9jJwl+BIqgxdaXu/xayJs2aYnzmc2VNV9prN+cIpgPfETYaz19zwafAunT2X/WR+vC5tsY+UzwsoxDaBMHa7kyUTzH5c3t+uTAGtRFZnN3OihNzpO4/LUToxGrMFLcBmlubq4BOk6XxGsiXazNFt+mdOEWGv+XXszoKCaMQ+aw1oh/qtOOZlaw5Grw4TzQqT1wAmTRaAIBREzl+foyk9UfYo0VLBp2buDOJu9pMkkm+bXJLStzIdINRYo3P7hs4z79x4Bq2o5AM+T/cqNFPmiVFa39kY+q1/EN5RvY9/YZmW+LkDm3V44b0FznaHIh4pqSDKKxtprq+K7tCgXhZZSCzULxz1S1sPu/ZTosFy3OEkwG4P6Ltv0QI3wbmyUq4uRja0YMwbEJGs8tRNqCEQDG2g53ymwpcoa2OQV/siH4Hm/CzGe9+q5ost7l4i40zLWLWjOrzVCmKrEJ3N23hgvXmHaOOQqTGofrgOp8oclQAtsgJAymWXS2o0+LlP8JOSzKjopfyuLgov9qSBzsh6yCEf6eWI0JsJbFwoFN33uIKxf4Zd7eaYvlum1hIp8wUguqPLda2Ndw0Wd9aaxSuVngdr7qMtXIQ6/WBQHAby+H5A/AoTDqgdxd4ItnUuIto=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6263.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(136003)(346002)(396003)(39860400002)(376002)(451199015)(86362001)(8676002)(2616005)(4326008)(478600001)(6512007)(66946007)(66556008)(6506007)(2906002)(53546011)(31686004)(44832011)(83380400001)(38100700002)(316002)(6666004)(5660300002)(36756003)(8936002)(31696002)(6486002)(66476007)(186003)(26005)(41300700001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aVVFUG55MldYVE9QSlFDYytDa2NXSUhUQi9sbkZVNjZXWVFYMFUzYUJ3dEp6?=
+ =?utf-8?B?OUhkNE5vb3o4MERCZEVvME03RFdhdnd3bll2Z1pkM1crc1ZGenplT285Y2Nz?=
+ =?utf-8?B?ZWVNdEkrL0ZSRmVvaVcrYyt5VjZJVGlGV1htUUx6N2NTVFBQb3JzTTRGemRa?=
+ =?utf-8?B?dzJNY2JqUVpzcUpJMUlySHRLYnZQV3VuNnF5K2d0NjAzejZGM01ONFEwVlhv?=
+ =?utf-8?B?Y2FyMk9TdHNhZ29vQVFoeUw1eFNlL1FPNi81MW5jQTdya2EyVXV2Z2hUVWZI?=
+ =?utf-8?B?ZXVKc3oxbWh4ZEpTaGlPbXJwRmFVVXQya0ZUUjlnMnBnNmIxVit0Ny9Ka1Fl?=
+ =?utf-8?B?UUE4alZuRzgvZjFXUTExdE56VHdjSHdCejhtWTc0dnJnZ2tLRlRVR2RZNzZv?=
+ =?utf-8?B?ZmllZ2ZXeHRBVU9uektHUTc0Z0RjMi9rL2pMOUw4WkhTUHVVOG0zLy9PeW1y?=
+ =?utf-8?B?ZjBPKzVFN3VuSW14UUlMeUI2ZmpNcUlsbGRrUUYvdTkyQVB2ckxCdnNiQkIx?=
+ =?utf-8?B?T1ZhNmxGc3dmZnZaQzJucUlwTVAwTHlpbGpoVUxsU3JMcjhhUFZTL2NYMU40?=
+ =?utf-8?B?dkJMeXBES1BNRkxFM0pVbWQ4bzFWdEdwY2tySlZWdzJoSWpXdDlZWDliVjJv?=
+ =?utf-8?B?cGMyeFZJOHdnYmlHQ0NXMUxLMDdiMmhUdTZtVHVZNzNTUkpkRXhSRE9mb1V4?=
+ =?utf-8?B?dHIxNFdUOVA3OE9lNmN2NndzT2R5cXBtS0tnSGhmR0cwNzNTOEVDQVQ0MVRP?=
+ =?utf-8?B?MVFmK1FLMU9tVXNVUUtnODJlRytsQ2VlS3Vwc1JsaGVXY2I4Ni8xQnpuT0Qx?=
+ =?utf-8?B?SnBKd2NyWGdwdHNMdmFUZTNTSUlNdzlsc05rbk5HODVWUTBZNXlYdHZNV0lE?=
+ =?utf-8?B?VlBhcUFWc2w5cmx5ak1aVjZtNFRSQ014SVgvQzJ3ZEpoU3FwbTNRS0l0QTgy?=
+ =?utf-8?B?cFlWZXRNRDgzak9vRkNwRzlnVUZZejdGaERaY08vckx4ZDZtRzdBQ2J6ZHZ3?=
+ =?utf-8?B?djhPRnBTNDVZUkR0endDMXhna2Nldnk3OE9xcVNYejhoN053S3Mwc2h6RXJM?=
+ =?utf-8?B?OEkzdzhNbi9pc2xyUFlBZHhxdXgzVFFPVmhnR3pXTEMvcE5qSXJ1dHlnZ252?=
+ =?utf-8?B?eURWWGxyM042ZjJXVHV0R3VVR3lNSW9abUhqY3RxdXFHenpnb2ptTk8vbDRD?=
+ =?utf-8?B?bldQYzJmTDVSV3pWUHFWOCtzc0xySGppNlFJSzB0dDIyKzhQeEpDWndFM2Rz?=
+ =?utf-8?B?Z1hkN3BjZ2puWEpuNW5VWCt6dExmd2FrNFFSQ0Y1YmZqS0ZtQ3RrSitaZzIy?=
+ =?utf-8?B?aXdpdlJiY1lhQ0kzeGZnQ201WDh2c0ZhOHo2K3RCcnNMK1lKN3IyOE1vR01B?=
+ =?utf-8?B?MDdkd0VnT1B4bGYrS1U3d3R4cjB2VFZQd2RnN2tERmpHdWJSZHRLSGM2V1VH?=
+ =?utf-8?B?MkFOWFFoOTdKUW42SFkwNFdEak50Q04yaWRNbWErdzVMVjZOeDNqaENZMnN2?=
+ =?utf-8?B?OFFKaFQrTjFOZFVHcDd0WGVnbEtSN0xoQ0YrVU55Wlo3anE0UUJFeTlGOWYx?=
+ =?utf-8?B?b1pKQTduTEg5Y1NyRTBDYko3UGVhbnZtOWhLOG45MmFCSjBIa3dTZHl1b3hS?=
+ =?utf-8?B?WHEzcGRnd1JSU2dOVzRDdkdweUVuZnU0aWtQdmZxMVAwQ3NydFE0UWl4dkdn?=
+ =?utf-8?B?TFNBUWlPakp3SHdoUDlKUDVmZWI4dnVFZ1M3djBRTldKdW1KZGRhMjh6SmFj?=
+ =?utf-8?B?SFkwNVB4dkx0NXJmWlVXUnc0RTEyVVEreXJINC9TcWhGeXh2VXRQblJadGhi?=
+ =?utf-8?B?Q1hNQ1ppaGFQREJnUlQvWS91ZlBBSjdmNVduS3EwNEYrUDdUUkRpUzdSN1Zo?=
+ =?utf-8?B?RHFnT2NoVGY5M0p0Yk1pNE5BTE1zZ2prWno2WHBvUTA0dUVKeDQvSkRENi9Q?=
+ =?utf-8?B?NWhSSmJURmoyOTVHZW1KZHArSXF5d2VsVHNIakc1QnExSmprYlozS2VCamhH?=
+ =?utf-8?B?RWhNU0FKc1JxNGNaM09GRkNLMkVzSWxNU2kzNllpWkgvMWFxZlMrNDhPOW8w?=
+ =?utf-8?B?cDZ1bGxEY3VrR1NsRE5oZ0lLVFMvSXlYV2x1U2JxTFN6UCttT0wrWCthUzdD?=
+ =?utf-8?Q?i147BQ683PzWHv+CmP+azi39A?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2022 18:23:27.7194
+X-MS-Exchange-CrossTenant-Network-Message-Id: f65f0d71-8321-47a8-3d7e-08da97630c74
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6263.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2022 21:41:30.3160
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f2b3373-c0bb-4801-dace-08da97476299
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT091.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6927
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rBr7uQo3UA1G93xQ9tRz7DYcbE4CKm6bSW1tzE4AQsya/Vm+eCevjs3qyNSiZ/lltX4HLRD5Zb95AVQfV+nSRg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7228
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -98,58 +127,111 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dell Inspiron 14 2-in-1 has two ACPI nodes under GPP1 both with _ADR of
-0, both without _HID.  It's ambiguous which the kernel should take, but
-it seems to take "DEV0".  Unfortunately "DEV0" is missing the device
-property `StorageD3Enable` which is present on "NVME".
+On 9/14/22 4:04 PM, Robin Murphy wrote:
+> On 2022-09-14 20:03, Kim Phillips wrote:
+>> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+>> index d7f30902fda0..23666104ab9b 100644
+>> --- a/Documentation/admin-guide/kernel-parameters.txt
+>> +++ b/Documentation/admin-guide/kernel-parameters.txt
+>> @@ -2294,7 +2294,13 @@
+>>               Provide an override to the IOAPIC-ID<->DEVICE-ID
+>>               mapping provided in the IVRS ACPI table.
+>>               By default, PCI segment is 0, and can be omitted.
+>> -            For example:
+> 
+> I wonder if it might be helpful to cross-reference the "pci=" option and spell out the general "<id>@<pci_dev>" format?
 
-To avoid this causing problems for suspend, add a quirk for this system
-to behave like `StorageD3Enable` property was found.
+I wouldn't want to reference pci= because pci= contents
+suggest a whole slew of other options that may make users
+wonder about what may also be available under ivrs_*=.
+Also, pci= syntax may change without ivrs_*= syntax
+changing, and since they have 0 code in common, that
+would be bad.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216440
-Reported-and-tested-by: Luya Tshimbalanga <luya@fedoraproject.org>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-I had attempted to modify the heuristics for when two ACPI devices
-have the same _ADR to prefer the one with a _DSD, but this wasn't enough
-of a help. As the ACPI node doesn't contain anything valuable besides
-the _DSD, it seems that a quirk for the system is a fine enough solution.
+>> +
+>> +            For example, to map IOAPIC-ID decimal 10 to
+>> +            PCI segment 0x1 and PCI device 00:14.0,
+>> +            write the parameter as:
+>> +                ivrs_ioapic=10@0001:00:14.0
+>> +
+>> +            Deprecated formats:
+>>               * To map IOAPIC-ID decimal 10 to PCI device 00:14.0
+>>                 write the parameter as:
+>>                   ivrs_ioapic[10]=00:14.0
+> 
+> ...then we could just say that there's also a deprecated "ivrs_ioapic[<id>]=<pci_dev>" form. But then maybe it's hard to concisely express that the [] are literal here rather than denoting an optional value like everywhere else, Hmm...
 
- drivers/acpi/x86/utils.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+Yeah, in ivrs_*[<id>]=, <id> is now optional, too.
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 664070fc8349..d7cdd8406c84 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -207,9 +207,26 @@ static const struct x86_cpu_id storage_d3_cpu_ids[] = {
- 	{}
- };
- 
-+static const struct dmi_system_id force_storage_d3_dmi[] = {
-+	{
-+		/*
-+		 * _ADR is ambiguous between GPP1.DEV0 and GPP1.NVME
-+		 * but .NVME is needed to get StorageD3Enable node
-+		 * https://bugzilla.kernel.org/show_bug.cgi?id=216440
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
-+		}
-+	},
-+	{}
-+};
-+
- bool force_storage_d3(void)
- {
--	return x86_match_cpu(storage_d3_cpu_ids);
-+	const struct dmi_system_id *dmi_id = dmi_first_match(force_storage_d3_dmi);
-+
-+	return dmi_id || x86_match_cpu(storage_d3_cpu_ids);
- }
- 
- /*
--- 
-2.34.1
+> Anyway, my underlying thought here is that providing an equally detailed example of what people shouldn't use as of what they should seems somewhat at odds with the message that they shouldn't be using it.
 
+The old syntax has been around since 2016, and because
+of the Fixes: and stable, I think the rationale here is
+we want to make sure users of the old syntax that the
+old syntax is still possible.
+
+Maybe stable is too much for patch 2/2 though.
+
+>> @@ -2306,7 +2312,13 @@
+>>               Provide an override to the HPET-ID<->DEVICE-ID
+>>               mapping provided in the IVRS ACPI table.
+>>               By default, PCI segment is 0, and can be omitted.
+>> -            For example:
+>> +
+>> +            For example, to map HPET-ID decimal 10 to
+>> +            PCI segment 0x1 and PCI device 00:14.0,
+>> +            write the parameter as:
+>> +                ivrs_ioapic=10@0001:00:14.0
+>> +
+>> +            Deprecated formats:
+>>               * To map HPET-ID decimal 0 to PCI device 00:14.0
+>>                 write the parameter as:
+>>                   ivrs_hpet[0]=00:14.0
+
+[There's a cut-n-paste bug here: I made ivrs_ioapic= -> ivrs_hpet=.]
+
+>> +++ b/drivers/iommu/amd/init.c
+>> @@ -3385,18 +3385,24 @@ static int __init parse_amd_iommu_options(char *str)
+>>   static int __init parse_ivrs_ioapic(char *str)
+>>   {
+>>       u32 seg = 0, bus, dev, fn;
+>> -    int ret, id, i;
+>> +    int id, i;
+>>       u32 devid;
+>> -    ret = sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn);
+>> -    if (ret != 4) {
+>> -        ret = sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn);
+>> -        if (ret != 5) {
+>> -            pr_err("Invalid command line: ivrs_ioapic%s\n", str);
+>> -            return 1;
+>> -        }
+>> +    if (sscanf(str, "=%d@%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
+>> +        sscanf(str, "=", &id, &seg, &bus, &dev, &fn) == 5)
+>> +        goto found;
+>> +
+>> +    if (sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
+>> +        sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn) == 5) {
+>> +        pr_warn("Deprecated option : ivrs_ioapic%s\n", str);
+> 
+>  From a user PoV this message seems unfairly confusing, since it's not actually the option that's deprecated, it's the format of the value of the option...
+
+That could depend on what one considers is on the LHS vs RHS of the '='...
+
+>> +        pr_warn("Please see kernel parameters document and update the option.\n");
+> 
+> ...and having messages split across multiple lines that get interleaved with other output, and are twice as wordy to be unhelpful than to simply say what was expected, is even less pleasant.
+
+This isn't common, but yes.
+
+> I'd suggest:
+> 
+>          pr_warn("ivrs_ioapic%s option format deprecated; use ivrs_ioapic=%d@%04x:%02x:%02x.%d instead\n",
+>              str, id, seg, bus, dev, fn);
+> 
+> which is concise* and consistent with how other deprecated IOMMU options are reported; It's not like we didn't understand what was passed, so we may as well make it as easy as copy-paste for the user to do what we're asking. Similarly for the others below.
+
+Granted, done.
+
+Thanks,
+
+Kim
