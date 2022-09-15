@@ -2,244 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6092D5B9F27
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 17:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CBC55B9F64
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Sep 2022 18:11:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbiIOPtI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Sep 2022 11:49:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
+        id S229774AbiIOQLh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Sep 2022 12:11:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbiIOPtH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Sep 2022 11:49:07 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB2F45F46
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 08:49:06 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id g8so12593222iob.0
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 08:49:06 -0700 (PDT)
+        with ESMTP id S229769AbiIOQLf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Sep 2022 12:11:35 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B522D9A947
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 09:11:34 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id t65so17757108pgt.2
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 09:11:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=RbcmCrt9MgNwVtS84rioFN6K+2EnzOOlimgTAZwP98I=;
-        b=ZWfyszh5ASkbDN5lS0dfsNxWt9+T9r+fI0UExDTPZRhVQuglIZnwGXd9pcrBMwT+DF
-         trkp5ZM/q57uF+azefdt/8dxoYLykqpa37Jz+ZulL03PsWodP3IVhsgjqanPo4bG8iPT
-         htWBYNR5phBWSyLHfrPJuwYCya2nS+S7SWHcg=
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date;
+        bh=qabPFsKsVzBs/IAmyQMB7q/BmTmNWLyFuHa1qxS6Sh0=;
+        b=qKZ4uhroibyA/kbyJWXPnExJXjgtUGAwIBN9HJmGnAYuFHc9pHofi0mFV6R7LAQa6+
+         69Fc5SVxfAgQRJNI8H9DU3S+4ByKwkBcDuTArTdgUrk7xdy0t5tJ0D369UnyNPCRbcmR
+         cgCEyq0OfpckdJ5wt1Axz6umAj0yfGG7d6F92tzKjWXNpk2v6AHTX5jP8n9XBS59uc8P
+         sa/3823e0flLKONJIPvHIPpJnwv6nk0gnVc3z/GbsXwX/egPY70fjaYF88o3Qo40l1a9
+         RZq1hQdKI0+Z5qxMlE51mLHBl4uQUPs21hfCXkmLARaLY1SD3UWKFd8moNekhop6Tng0
+         /ekw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=RbcmCrt9MgNwVtS84rioFN6K+2EnzOOlimgTAZwP98I=;
-        b=R3/lG1WW9ehWDlZhPbryqCjs+/GdtyeYi+oaL0yN6SqF7X7owGWlMIfsIjR7o0vlkv
-         C7BYAawuLP42xMRUtVrLy6jJ08ijL23KtwqMmqGXk+YG0zb5N1A7I2fAvOr4MldS6KuR
-         N0W6dxgYMTgLuyjsI0lNTLUwc3IMasoxCHABiO/9Y75NSSWciDTMgmTO0oR9Ek2gyCYZ
-         9d25+R229cPSyhyOhhODnfvKFn6rYCchgUzEd1SKmY5wU0d1gKvlz9JR1Wyn5QbO2OR+
-         LN7OtPp/qdAkswOJhdv25dzQfAl3NI7INMPzAStdDfAkgMy6TbmqaiLoRJsdSBjPmeaN
-         MT4w==
-X-Gm-Message-State: ACrzQf1TCRZOyrWQCeZWZxIvXvTrfgnyNL0q6MdRvim/L3HbE5msKjY2
-        rj/hR4otJFXVZb09AYJ8VVyIQDDy0LdfUA==
-X-Google-Smtp-Source: AMsMyM4Rb6hNosOXPB8XOTRWE26WoFFZqamoowIIt5Wmux3EW+5mn1fjHioDZHFE+fkyBUDeQG1uTg==
-X-Received: by 2002:a05:6638:3a10:b0:356:703d:2ce5 with SMTP id cn16-20020a0566383a1000b00356703d2ce5mr325917jab.112.1663256945382;
-        Thu, 15 Sep 2022 08:49:05 -0700 (PDT)
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com. [209.85.166.41])
-        by smtp.gmail.com with ESMTPSA id g6-20020a92c7c6000000b002eae6cf8898sm8019273ilk.30.2022.09.15.08.49.03
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Sep 2022 08:49:04 -0700 (PDT)
-Received: by mail-io1-f41.google.com with SMTP id h194so13422630iof.4
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 08:49:03 -0700 (PDT)
-X-Received: by 2002:a05:6638:4110:b0:35a:6d6b:57f7 with SMTP id
- ay16-20020a056638411000b0035a6d6b57f7mr326227jab.134.1663256942370; Thu, 15
- Sep 2022 08:49:02 -0700 (PDT)
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=qabPFsKsVzBs/IAmyQMB7q/BmTmNWLyFuHa1qxS6Sh0=;
+        b=uq7zefgkqxhjLk21zS5cavsi/x8cExzsbUR1ZgZ0D7NW4DvwOZl0R9TssYYCf1eHHN
+         xRDAaIOzTykULdIQ8OzcXW8MMLUMRQ17amKU83yUJ2RQT1mSdUz2MAPzYnvIGTlk9Q1R
+         njDNVX7p0K5gRCaqJ/KHdzhPcKHItYGrCD3+EAgal+JAUz87oqxvY+RlDtn1Co0Akvlj
+         uYPQ0H0biW+QS5MftuOCadE2KJYgBKPDGapr4mcGG4xjWmxjaPrI4vH6eQqqou15Y3p2
+         UJ1tSih2ZS7bSbaGG3dvbrBl5A80DeYfrrtO4KZ93nkmwy9v42rLANA80pp70Fxy+c3m
+         +EyQ==
+X-Gm-Message-State: ACrzQf098GmUP0yxaOpcKAv9TLmjR/e3NfEgHlgpl+o99MLrLKTx0iQc
+        pwbw98n+/76SXwSJO5LqipPx8rx/gf4bvIhyukk=
+X-Google-Smtp-Source: AMsMyM6+ZRoMxZaiuT/EK7sOt4bZSW5rcp+f670tgtTFsKu8gQ6/Ns2qfdTeJv4CSbOPUPfIXHZ1DTzV2E14qlpbII4=
+X-Received: by 2002:a65:63c3:0:b0:42b:5b03:ce57 with SMTP id
+ n3-20020a6563c3000000b0042b5b03ce57mr522542pgv.436.1663258293835; Thu, 15 Sep
+ 2022 09:11:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220914235801.1731478-1-rrangel@chromium.org>
- <20220914155914.v3.7.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid> <YyMCcNl2zU4/xEHN@black.fi.intel.com>
-In-Reply-To: <YyMCcNl2zU4/xEHN@black.fi.intel.com>
-From:   Raul Rangel <rrangel@chromium.org>
-Date:   Thu, 15 Sep 2022 09:48:50 -0600
-X-Gmail-Original-Message-ID: <CAHQZ30A2Tpst-WKj-u_rmrnV69Dby3j0+mFBKorzF4YMBySqBw@mail.gmail.com>
-Message-ID: <CAHQZ30A2Tpst-WKj-u_rmrnV69Dby3j0+mFBKorzF4YMBySqBw@mail.gmail.com>
-Subject: Re: [PATCH v3 07/13] i2c: acpi: Use ACPI wake capability bit to set wake_irq
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        "jingle.wu" <jingle.wu@emc.com.tw>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Tim Van Patten <timvp@google.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
+Received: by 2002:a17:902:ce8b:b0:177:eb6c:b271 with HTTP; Thu, 15 Sep 2022
+ 09:11:33 -0700 (PDT)
+From:   moonlee park <moonleepark4@gmail.com>
+Date:   Thu, 15 Sep 2022 09:11:33 -0700
+Message-ID: <CAK1kscZ7rpXdXSVafoHYVO3H8PH3mSgE=73BL-eB5JpzT7Pf5g@mail.gmail.com>
+Subject: LOOKING FOWARD TO YOUR RESPOND
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_80,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FORM_FRAUD_5,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,MONEY_FORM_SHORT,
+        MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_SHORT,UNDISC_MONEY,URG_BIZ autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:541 listed in]
+        [list.dnswl.org]
+        *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
+        *      [score: 0.8411]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [moonleepark4[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [moonleepark4[at]gmail.com]
+        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        *  0.0 MILLION_USD BODY: Talks about millions of dollars
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.6 URG_BIZ Contains urgent matter
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  1.0 FREEMAIL_REPLY From and body contain different freemails
+        *  0.0 T_FILL_THIS_FORM_SHORT Fill in a short form with personal
+        *      information
+        *  1.4 MONEY_FORM_SHORT Lots of money if you fill out a short form
+        *  0.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+        *  0.0 MONEY_FRAUD_5 Lots of money and many fraud phrases
+        *  0.2 FORM_FRAUD_5 Fill a form and many fraud phrases
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 15, 2022 at 4:46 AM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> On Wed, Sep 14, 2022 at 05:57:55PM -0600, Raul E Rangel wrote:
-> > Device tree already has a mechanism to pass the wake_irq. It does this
-> > by looking for the wakeup-source property and setting the
-> > I2C_CLIENT_WAKE flag. This CL adds the ACPI equivalent. It uses the
-> > ACPI interrupt wake flag to determine if the interrupt can be used to
-> > wake the system. Previously the i2c drivers had to make assumptions and
-> > blindly enable the wake IRQ. This can cause spurious wake events. e.g.,
-> > If there is a device with an Active Low interrupt and the device gets
-> > powered off while suspending, the interrupt line will go low since it's
-> > no longer powered and wakes the system. For this reason we should
-> > respect the board designers wishes and honor the wake bit defined on the
-> > interrupt.
-> >
-> > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-> > ---
-> >
-> > Changes in v3:
-> > - Convert wake_capable to bool
-> > - Only update wake_capable pointer once
-> > - Move wake_capable local into local block
-> >
-> > Changes in v2:
-> > - Look at wake_cabple bit for IRQ/Interrupt resources
-> >
-> >  drivers/i2c/i2c-core-acpi.c | 33 ++++++++++++++++++++++++---------
-> >  drivers/i2c/i2c-core-base.c |  8 +++++++-
-> >  drivers/i2c/i2c-core.h      |  4 ++--
-> >  3 files changed, 33 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> > index c762a879c4cc6b..b3d68a9659ff4f 100644
-> > --- a/drivers/i2c/i2c-core-acpi.c
-> > +++ b/drivers/i2c/i2c-core-acpi.c
-> > @@ -137,6 +137,11 @@ static const struct acpi_device_id i2c_acpi_ignored_device_ids[] = {
-> >       {}
-> >  };
-> >
-> > +struct i2c_acpi_irq_context {
-> > +     int irq;
-> > +     bool wake_capable;
-> > +};
-> > +
-> >  static int i2c_acpi_do_lookup(struct acpi_device *adev,
-> >                             struct i2c_acpi_lookup *lookup)
-> >  {
-> > @@ -170,11 +175,14 @@ static int i2c_acpi_do_lookup(struct acpi_device *adev,
-> >
-> >  static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
-> >  {
-> > -     int *irq = data;
-> > +     struct i2c_acpi_irq_context *irq_ctx = data;
-> >       struct resource r;
-> >
+Please let me use this medium to create a mutual conversation with you
+seeking for your acceptance on investing in your country under your
+management as my  business partner, My name is Aisha  Gaddafi and
+presently living in Oman, i am a Widow and single Mother with three
+Children, the only biological Daughter of late Libyan President (Late
+Colonel Muammar Gaddafi) and presently i am under political asylum
+protection by the Omani Government.
 
-> > -     if (*irq <= 0 && acpi_dev_resource_interrupt(ares, 0, &r))
-> > -             *irq = i2c_dev_irq_from_resources(&r, 1);
-> > +     if (irq_ctx->irq <= 0 && acpi_dev_resource_interrupt(ares, 0, &r)) {
-> > +             irq_ctx->irq = i2c_dev_irq_from_resources(&r, 1);
-> > +             irq_ctx->wake_capable =
-> > +                     !!(r.flags & IORESOURCE_IRQ_WAKECAPABLE);
->
-> You don't need the !!() here. Just
->
->                 irq_ctx->wake_capable = r.flags & IORESOURCE_IRQ_WAKECAPABLE;
->
-You know, I learned something new today! I was concerned about this
-setting `wake_capable` to something that wasn't 0 or 1, but apparently
-this is handled by the compiler!
+I have funds worth " Seven Million Five Hundred Thousand United State
+Dollars" [$7.500.000.00 US Dollars] which I want to entrust to you for
+investment projects in your country. If you are willing to handle this
+project on my behalf, kindly reply urgent to enable me provide you
+more details to start the transfer process, I will appreciate your
+urgent response through my private email address below:
 
-http://port70.net/~nsz/c/c11/n1570.html#6.3.1.2
+aishagaddafiaisha20@gmail.com
 
-> 6.3.1.2 Boolean type
-> When any scalar value is converted to _Bool, the result is 0 if the value compares equal to 0; otherwise, the result is 1.
+You can know more through the BBC news links below:
 
-Whoah!
+http://www.bbc.com/news/world-africa-19966059
 
-> > +     }
-> >
-> >       return 1; /* No need to add resource to the list */
-> >  }
-> > @@ -182,31 +190,38 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
-> >  /**
-> >   * i2c_acpi_get_irq - get device IRQ number from ACPI
-> >   * @client: Pointer to the I2C client device
-> > + * @wake_capable: Set to true if the IRQ is wake capable
-> >   *
-> >   * Find the IRQ number used by a specific client device.
-> >   *
-> >   * Return: The IRQ number or an error code.
-> >   */
-> > -int i2c_acpi_get_irq(struct i2c_client *client)
-> > +int i2c_acpi_get_irq(struct i2c_client *client, bool *wake_capable)
-> >  {
-> >       struct acpi_device *adev = ACPI_COMPANION(&client->dev);
-> >       struct list_head resource_list;
-> > -     int irq = -ENOENT;
-> > +     struct i2c_acpi_irq_context irq_ctx = {
-> > +             .irq = -ENOENT,
-> > +     };
-> >       int ret;
-> >
-> >       INIT_LIST_HEAD(&resource_list);
-> >
-> >       ret = acpi_dev_get_resources(adev, &resource_list,
-> > -                                  i2c_acpi_add_resource, &irq);
-> > +                                  i2c_acpi_add_resource, &irq_ctx);
-> >       if (ret < 0)
-> >               return ret;
-> >
-> >       acpi_dev_free_resource_list(&resource_list);
-> >
-> > -     if (irq == -ENOENT)
-> > -             irq = acpi_dev_gpio_irq_get(adev, 0);
-> > +     if (irq_ctx.irq == -ENOENT)
-> > +             irq_ctx.irq = acpi_dev_gpio_irq_wake_get(adev, 0,
-> > +                                                      &irq_ctx.wake_capable);
-> > +
-> > +     if (wake_capable)
-> > +             *wake_capable = irq_ctx.wake_capable;
-> >
-> > -     return irq;
-> > +     return irq_ctx.irq;
-> >  }
-> >
-> >  static int i2c_acpi_get_info(struct acpi_device *adev,
-> > diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> > index 91007558bcb260..c4debd46c6340f 100644
-> > --- a/drivers/i2c/i2c-core-base.c
-> > +++ b/drivers/i2c/i2c-core-base.c
-> > @@ -487,8 +487,14 @@ static int i2c_device_probe(struct device *dev)
-> >                       if (irq == -EINVAL || irq == -ENODATA)
-> >                               irq = of_irq_get(dev->of_node, 0);
-> >               } else if (ACPI_COMPANION(dev)) {
-> > -                     irq = i2c_acpi_get_irq(client);
-> > +                     bool wake_capable;
-> > +
-> > +                     irq = i2c_acpi_get_irq(client, &wake_capable);
-> > +
->
-> Drop the empty line here.
-Done
 
->
-> > +                     if (irq > 0 && wake_capable)
-> > +                             client->flags |= I2C_CLIENT_WAKE;
-> >               }
-> > +
->
-> Unrelated whitespace change.
-Done
-
->
-> With those fixed feel free to add,
->
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-
-Added, thanks!
+Thanks
+Yours Truly Aisha
+aishagaddafiaisha20@gmail.com
