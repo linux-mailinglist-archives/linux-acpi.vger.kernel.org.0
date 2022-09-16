@@ -2,90 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 593335BA63A
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Sep 2022 07:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 752AF5BA857
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Sep 2022 10:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbiIPFFx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Sep 2022 01:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43496 "EHLO
+        id S230135AbiIPInL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Sep 2022 04:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229809AbiIPFFs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Sep 2022 01:05:48 -0400
-Received: from out30-56.freemail.mail.aliyun.com (out30-56.freemail.mail.aliyun.com [115.124.30.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A8F34DF15;
-        Thu, 15 Sep 2022 22:05:44 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0VPvZJaU_1663304738;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VPvZJaU_1663304738)
-          by smtp.aliyun-inc.com;
-          Fri, 16 Sep 2022 13:05:41 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        jarkko@kernel.org, naoya.horiguchi@nec.com, linmiaohe@huawei.com,
-        akpm@linux-foundation.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        cuibixuan@linux.alibaba.com, baolin.wang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com, xueshuai@linux.alibaba.com
-Subject: [PATCH] ACPI: APEI: do not add task_work for outside context error
-Date:   Fri, 16 Sep 2022 13:05:35 +0800
-Message-Id: <20220916050535.26625-1-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230424AbiIPInI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Sep 2022 04:43:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4E1A6C66
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Sep 2022 01:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1663317785;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=VbO+Lm6okm9qbgHERmbkye329u238iBYwsZHrrR1iRI=;
+        b=OnwSxhtdl2UgS2UgZx2L2extSk3R2OEVxZb5OPEnhP8jXoDagKfYFprNsFNCTLE79TatOk
+        b/wAL8cEmGW/tzWFJ0uWGVNJgP7rCZJaqdNqdbuR+4jOuMogPCCxWHo4gyB3wKJtOPVPXH
+        jnHC13pCqsalh480NYIMZgrD5G/bsCo=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-671-Xk7a2KHwP8SfPFCQ45V_sg-1; Fri, 16 Sep 2022 04:43:04 -0400
+X-MC-Unique: Xk7a2KHwP8SfPFCQ45V_sg-1
+Received: by mail-ed1-f70.google.com with SMTP id y1-20020a056402358100b00451b144e23eso10754245edc.18
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Sep 2022 01:43:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=VbO+Lm6okm9qbgHERmbkye329u238iBYwsZHrrR1iRI=;
+        b=71Kuko2hN8OAR+FagdD7u980iThm4X6q4twnNBfgZlq59/GFsdhxA4/E1tKLWHszUs
+         mlSqXenZLzD3ftuJrvoRYaJp8xAS1mJK5QoBq/SKY0kSzSwhYz6WEkxj4dPL1dnxni13
+         vIZom7TbpthzGfOZIAE4TpnRtquHs2Km12z76ae5JhKiepqT869s1UgEu0GnrNSm/Q9U
+         URc/NXz+bYA97jb+sJNePf6FjgsP80ru7jO8PkIaNT/lZbVLrLydTLLP7kZ4DJrm2q1o
+         QxrxASretQcUJBDeIeVgUg4j5pAQTxZ22OtDAkAX7YkG3cwNnlr6ITrSHQfHNwnx/piT
+         i3FQ==
+X-Gm-Message-State: ACrzQf253UQk/2ad8osQmpyU2eDx1SHGsy2Xm0s5n8e5caRbyLsITuSH
+        l7GxDBF5DLlaNkCohMiTqDSgNqqCV4TA3qhySi98dS1FXgoYKW1vQ1SfCneps4xYbnPQPDocYxb
+        wl+VBvQHdBBKyPMJ5elaB1Q==
+X-Received: by 2002:a17:906:9bce:b0:770:2600:2cef with SMTP id de14-20020a1709069bce00b0077026002cefmr2695255ejc.611.1663317783705;
+        Fri, 16 Sep 2022 01:43:03 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM759gvZBCB6O2D2gJJ1AFr4bzGtpik89lSSdGx3I+fQrZSmG1RYEyHiJYSHpT68QQAT/44CcQ==
+X-Received: by 2002:a17:906:9bce:b0:770:2600:2cef with SMTP id de14-20020a1709069bce00b0077026002cefmr2695243ejc.611.1663317783518;
+        Fri, 16 Sep 2022 01:43:03 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id s1-20020a056402014100b0044e8d0682b2sm13047094edu.71.2022.09.16.01.43.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Sep 2022 01:43:02 -0700 (PDT)
+Message-ID: <42663baa-2d8c-a45a-a33e-571119ec12aa@redhat.com>
+Date:   Fri, 16 Sep 2022 10:43:01 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH] ACPI / x86: Add a quirk for Dell Inspiron 14 2-in-1 for
+ StorageD3Enable
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Luya Tshimbalanga <luya@fedoraproject.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+References: <20220915182315.276-1-mario.limonciello@amd.com>
+Content-Language: en-US
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220915182315.276-1-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If an error is detected as a result of user-space process accessing a
-corrupt memory location, the CPU may take an abort. Then the platform
-firmware reports kernel via NMI like notifications, e.g. NOTIFY_SEA,
-NOTIFY_SOFTWARE_DELEGATED, etc.
+Hi,
 
-For NMI like notifications, commit 7f17b4a121d0 ("ACPI: APEI: Kick the
-memory_failure() queue for synchronous errors") keep track of whether
-memory_failure() work was queued, and make task_work pending to flush out
-the queue so that the work is processed before return to user-space.
+On 9/15/22 20:23, Mario Limonciello wrote:
+> Dell Inspiron 14 2-in-1 has two ACPI nodes under GPP1 both with _ADR of
+> 0, both without _HID.  It's ambiguous which the kernel should take, but
+> it seems to take "DEV0".  Unfortunately "DEV0" is missing the device
+> property `StorageD3Enable` which is present on "NVME".
+> 
+> To avoid this causing problems for suspend, add a quirk for this system
+> to behave like `StorageD3Enable` property was found.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216440
+> Reported-and-tested-by: Luya Tshimbalanga <luya@fedoraproject.org>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-The code use init_mm to check whether the error occurs in user space:
+Thanks, patch looks good to me:
 
-    if (current->mm != &init_mm)
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-The condition is always true, becase _nobody_ ever has "init_mm" as a real
-VM any more and should generally just do
+Regards,
 
-    if (current->mm)
+Hans
 
-as described in active_mm.rst documentation.
 
-Then if an error is detected outside of the current execution context (e.g.
-when detected by a background scrubber), do not add task_work as the
-original patch intends to do.
-
-Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index d91ad378c00d..80ad530583c9 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -985,7 +985,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 				ghes_estatus_cache_add(generic, estatus);
- 		}
- 
--		if (task_work_pending && current->mm != &init_mm) {
-+		if (task_work_pending && current->mm) {
- 			estatus_node->task_work.func = ghes_kick_task_work;
- 			estatus_node->task_work_cpu = smp_processor_id();
- 			ret = task_work_add(current, &estatus_node->task_work,
--- 
-2.20.1.12.g72788fdb
+> ---
+> I had attempted to modify the heuristics for when two ACPI devices
+> have the same _ADR to prefer the one with a _DSD, but this wasn't enough
+> of a help. As the ACPI node doesn't contain anything valuable besides
+> the _DSD, it seems that a quirk for the system is a fine enough solution.
+> 
+>  drivers/acpi/x86/utils.c | 19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> index 664070fc8349..d7cdd8406c84 100644
+> --- a/drivers/acpi/x86/utils.c
+> +++ b/drivers/acpi/x86/utils.c
+> @@ -207,9 +207,26 @@ static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+>  	{}
+>  };
+>  
+> +static const struct dmi_system_id force_storage_d3_dmi[] = {
+> +	{
+> +		/*
+> +		 * _ADR is ambiguous between GPP1.DEV0 and GPP1.NVME
+> +		 * but .NVME is needed to get StorageD3Enable node
+> +		 * https://bugzilla.kernel.org/show_bug.cgi?id=216440
+> +		 */
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
+> +		}
+> +	},
+> +	{}
+> +};
+> +
+>  bool force_storage_d3(void)
+>  {
+> -	return x86_match_cpu(storage_d3_cpu_ids);
+> +	const struct dmi_system_id *dmi_id = dmi_first_match(force_storage_d3_dmi);
+> +
+> +	return dmi_id || x86_match_cpu(storage_d3_cpu_ids);
+>  }
+>  
+>  /*
 
