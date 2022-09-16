@@ -2,104 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 244735BA5F5
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Sep 2022 06:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593335BA63A
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Sep 2022 07:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbiIPEdu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Sep 2022 00:33:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57464 "EHLO
+        id S229479AbiIPFFx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Sep 2022 01:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbiIPEdh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Sep 2022 00:33:37 -0400
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480A2A024A;
-        Thu, 15 Sep 2022 21:33:36 -0700 (PDT)
-Received: from HP-EliteBook-840-G7.. (111-71-63-204.emome-ip.hinet.net [111.71.63.204])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 48ACD3FDDB;
-        Fri, 16 Sep 2022 04:33:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1663302814;
-        bh=prBpj7C9jqQogczh9/Q5N69YHwbujqAamyJ+7rRBut4=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=nswuJ0QBhoy0LCET6ewmH0qbn4R5RhFjouolpcGhIfCF5lNchd3ZCpoTaaKdThBzp
-         ZI+8hlf73m0ysWxpxDxxEw4rCv2bBXzv9vtREePs0jBhZBayUhUChbN/8pkKiyxrmF
-         re5w86PB03QfG8QAeDppycoDb7SDtSFYuYgmfA9LkspjGXGAnDgQUDjTVZAKtgB2l/
-         ypqgz8kd9nc9IeUxA6iuskQuGFbU568BKl3HTPt9EhisoEenu5mE0Eqp7NiNsyEZPj
-         dsZZ4rTSn4OSFdiDlkc9h5eDcHzjRvY0LwXVCWYlj3n3K9oJkQmZg13Bp8SbY54C6H
-         kyNxwnBVaoLFA==
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     rafael.j.wysocki@intel.com, lenb@kernel.org
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 2/2] PM: ACPI: reboot: Reinstate S5 for reboot
-Date:   Fri, 16 Sep 2022 12:33:17 +0800
-Message-Id: <20220916043319.119716-2-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220916043319.119716-1-kai.heng.feng@canonical.com>
-References: <20220916043319.119716-1-kai.heng.feng@canonical.com>
+        with ESMTP id S229809AbiIPFFs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Sep 2022 01:05:48 -0400
+Received: from out30-56.freemail.mail.aliyun.com (out30-56.freemail.mail.aliyun.com [115.124.30.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A8F34DF15;
+        Thu, 15 Sep 2022 22:05:44 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0VPvZJaU_1663304738;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VPvZJaU_1663304738)
+          by smtp.aliyun-inc.com;
+          Fri, 16 Sep 2022 13:05:41 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        jarkko@kernel.org, naoya.horiguchi@nec.com, linmiaohe@huawei.com,
+        akpm@linux-foundation.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        cuibixuan@linux.alibaba.com, baolin.wang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com, xueshuai@linux.alibaba.com
+Subject: [PATCH] ACPI: APEI: do not add task_work for outside context error
+Date:   Fri, 16 Sep 2022 13:05:35 +0800
+Message-Id: <20220916050535.26625-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit d60cd06331a3 ("PM: ACPI: reboot: Use S5 for reboot") caused Dell
-PowerEdge r440 hangs at reboot.
+If an error is detected as a result of user-space process accessing a
+corrupt memory location, the CPU may take an abort. Then the platform
+firmware reports kernel via NMI like notifications, e.g. NOTIFY_SEA,
+NOTIFY_SOFTWARE_DELEGATED, etc.
 
-The issue is fixed by commit 2ca1c94ce0b6 ("tg3: Disable tg3 device on
-system reboot to avoid triggering AER"), so use the new sysoff API to
-reinstate S5 for reboot on ACPI-based systems.
+For NMI like notifications, commit 7f17b4a121d0 ("ACPI: APEI: Kick the
+memory_failure() queue for synchronous errors") keep track of whether
+memory_failure() work was queued, and make task_work pending to flush out
+the queue so that the work is processed before return to user-space.
 
-Using S5 for reboot is default behavior under Windows, "A full shutdown
-(S5) occurs when a system restart is requested" [1].
+The code use init_mm to check whether the error occurs in user space:
 
-[1] https://docs.microsoft.com/en-us/windows/win32/power/system-power-state
+    if (current->mm != &init_mm)
 
-Cc: Josef Bacik <josef@toxicpanda.com>
-Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+The condition is always true, becase _nobody_ ever has "init_mm" as a real
+VM any more and should generally just do
+
+    if (current->mm)
+
+as described in active_mm.rst documentation.
+
+Then if an error is detected outside of the current execution context (e.g.
+when detected by a background scrubber), do not add task_work as the
+original patch intends to do.
+
+Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
-v4:
- - Add comment and add more info to commit message.
-v3:
- - Use new API to invoke ACPI S5.
-v2:
- - Use do_kernel_power_off_prepare() instead.
+ drivers/acpi/apei/ghes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/acpi/sleep.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index ad4b2987b3d6e..0b557c0d405ef 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -1088,6 +1088,14 @@ int __init acpi_sleep_init(void)
- 		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
- 					 SYS_OFF_PRIO_FIRMWARE,
- 					 acpi_power_off, NULL);
-+
-+		/*
-+		 * Windows uses S5 for reboot, so some BIOSes depend on it to
-+		 * perform proper reboot.
-+		 */
-+		register_sys_off_handler(SYS_OFF_MODE_RESTART_PREPARE,
-+					 SYS_OFF_PRIO_FIRMWARE,
-+					 acpi_power_off_prepare, NULL);
- 	} else {
- 		acpi_no_s5 = true;
- 	}
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index d91ad378c00d..80ad530583c9 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -985,7 +985,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
+ 				ghes_estatus_cache_add(generic, estatus);
+ 		}
+ 
+-		if (task_work_pending && current->mm != &init_mm) {
++		if (task_work_pending && current->mm) {
+ 			estatus_node->task_work.func = ghes_kick_task_work;
+ 			estatus_node->task_work_cpu = smp_processor_id();
+ 			ret = task_work_add(current, &estatus_node->task_work,
 -- 
-2.37.2
+2.20.1.12.g72788fdb
 
