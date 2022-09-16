@@ -2,551 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FEA15BAE48
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Sep 2022 15:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E044D5BB20C
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Sep 2022 20:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229987AbiIPNgr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Sep 2022 09:36:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47130 "EHLO
+        id S229655AbiIPS0W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Sep 2022 14:26:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbiIPNgp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Sep 2022 09:36:45 -0400
-Received: from vorpal.se (vorpal.se [151.236.221.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1763AC26A;
-        Fri, 16 Sep 2022 06:36:36 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id 7A54C147E0;
-        Fri, 16 Sep 2022 13:36:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1663335395; bh=7e6A48/pa44LVd/S8+GoF1rZGDzPfndFMWDf73mWw+c=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=HRDn/Mo8UyAh8EaYz1aBI05rzSNlMgkaOdFmuBSQLnB1tZkpOcJvIWUo2mTDygOMF
-         WELVlcQ/0BTK6OrhZIa+ovg2wOVI0r75gvpRoXJZTun02+IqVtV1ox+M5BFDTEBJN6
-         C3yWUi4sGeRZQEkYVcPtB9mMsXFalpEm0EqMeV6taaPHh1zLuLrDH3PLywlaPWXB4u
-         SKVJuo5fhfUCTWFKE52tu7NcZYyVO3f99F4szTbqltAaxYHYRKdMDeAB03JHm4FVj+
-         x+rEljqFDrIy5cwiTJDiFtRmdYiNpYZNI2JK9SfOwlTPWWpyuzCayYV8MTpbyOQzZd
-         rCz8PR2jo3XMQ==
-Message-ID: <be888665-396f-c8a0-04ad-b91433cbf03c@vorpal.se>
-Date:   Fri, 16 Sep 2022 15:36:33 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH RFC 1/2] staging: quickstart: Add ACPI quickstart button
- (PNP0C32) driver
-Content-Language: en-US
-To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
-Cc:     platform-driver-x86@vger.kernel.org,
+        with ESMTP id S229599AbiIPS0V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Sep 2022 14:26:21 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2087.outbound.protection.outlook.com [40.107.92.87])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A7BB4E8D;
+        Fri, 16 Sep 2022 11:26:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XP4qxwdwPNz4RusU+say+zwHpmSW1E2pqY9qfQIDb7xH1IxOeWlwpzDPKOu30tmj1jWwrEDw/+vgVaT1brICZfYpB9XlkL2aRjzkXQLLxLBa7AcNkmefH2C628kh+dEVkfqcEE6OiYQw/IpxDpqECeu+y4AZFPdFUs2yfDXRM3eIfFVkPzbl2NQ+OAGwF78YdDTUmYUnX4c64aua/oLxL3Tcr1wIQlZ0yzwBYk3ap+KpqaVjfRrMoYriOEpC8ACF6sZCQbH42+1w99eHfoTXLC03myWgtqME/Zm8uf7f3WDaeZ9MnJ+xxVNP6FNCGKWMQXEjW2abDDaQhc5lAYDkeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0Us7N/QSuHQnzyOwQg4A487ax+zBoqjncvimXDfqEc0=;
+ b=f9n2PE0TRSY2GrGlET4xA4pEMacj413aORzW03lBUip4BZrcd5KQbmsjz3gqKSvSaERAUIR0XDhcdUtqnpgeDlAg0p6Qy5uRpgl6r8sNPjyZs9yHywzJNMQu58OmLA5kKSUk+hNIEgJi1Q0WyVBXHdvoHCtDsc4GIitYVXFPkEZwY6UudA09mBWf0O3H1LtWiDxHv2NuYW+rlDatxW2Yi40i+Cw/2pTWbTPP4vW4djyQTMpD6vYQdRIho67tXuGqtfaIItlnaYzDF2KMQ4ksRQaA1MOQDXkEBoKNrN7DSHrxd7j8/mf8T3BZwLhXzGinfPOKiqT5c0ZG+e2DFcjbIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0Us7N/QSuHQnzyOwQg4A487ax+zBoqjncvimXDfqEc0=;
+ b=yAEl2bwtEeVoQFJr9kdlTyf4ftqyx3J1KKGuLVm675NznOPZbxYP4pEyJi1leQm1aokFkMg3UAWiCD2Xb6dnW8xKZIhKr4EsXGaYYzuDFc/+lP7sfFF/MECu+AjX1hDYpJlyY44yU3EGa/uK492YC1sag0wNoCHxsM7uCV4Svco=
+Received: from MW4PR04CA0121.namprd04.prod.outlook.com (2603:10b6:303:84::6)
+ by SA1PR12MB7104.namprd12.prod.outlook.com (2603:10b6:806:29e::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.15; Fri, 16 Sep
+ 2022 18:26:18 +0000
+Received: from CO1PEPF00001A63.namprd05.prod.outlook.com
+ (2603:10b6:303:84:cafe::68) by MW4PR04CA0121.outlook.office365.com
+ (2603:10b6:303:84::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.16 via Frontend
+ Transport; Fri, 16 Sep 2022 18:26:18 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF00001A63.mail.protection.outlook.com (10.167.241.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5612.12 via Frontend Transport; Fri, 16 Sep 2022 18:26:18 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Fri, 16 Sep
+ 2022 13:26:16 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     <rafael@kernel.org>
+CC:     <travisghansen@yahoo.com>, <catalin@antebit.com>,
+        <Shyam-sundar.S-k@amd.com>,
+        Matthew Anderson <ruinairas1992@gmail.com>,
+        <philipp.zabel@gmail.com>, "Sebastian S ." <iam@decentr.al>,
         Hans de Goede <hdegoede@redhat.com>,
-        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-input@vger.kernel.org, Azael Avalos <coproscefalo@gmail.com>
-References: <20220911194934.558019-1-lkml@vorpal.se>
- <20220911194934.558019-2-lkml@vorpal.se>
- <drXHqh3nyou52BleUraC71bm5y1IXzb1kfROkRvfC-PXNoNbaxfYrq8Lj-_8aS4pFl0RHy7ts9fkz-uw_dMy0jaf5Yx8Rw5InWgZduKnojE=@protonmail.com>
-From:   Arvid Norlander <lkml@vorpal.se>
-In-Reply-To: <drXHqh3nyou52BleUraC71bm5y1IXzb1kfROkRvfC-PXNoNbaxfYrq8Lj-_8aS4pFl0RHy7ts9fkz-uw_dMy0jaf5Yx8Rw5InWgZduKnojE=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
+        Mario Limonciello <mario.limonciello@amd.com>,
+        "Len Brown" <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 0/7] Fixups for s2idle on various Rembrandt laptops
+Date:   Fri, 16 Sep 2022 13:26:02 -0500
+Message-ID: <20220916182609.3039-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00001A63:EE_|SA1PR12MB7104:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6b87b0f-344c-4eb4-d7db-08da9810f297
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xOGLjkhV69geGEq3jcdp+kbk1TlWDZOOsUYHiOFby1bMmrxN/xJhRM2xArRbVPa5+Ng9Cb0BxT64QG7EWr9ixARTJR750hykda+o/lI7CUg746P8nSt+2olQymBerH5s3jHZ3MOdOG0uIiaDAMGP3iYSn9iqgrfl2xBGGg65RYVkQ+B3hge95iCDsR5JceN462pBzDlpCSS2oHf4zix7v13T6+0mmjKTU3lnf4OUSmz+fJGOtcQ1AvP1K7lnTlQrmnv2GzXytMGWA4yKmhCbjHuIH9NNOm6p0GnsKspcHs18MkkSNqs2EwrcASiXAz9CxpTlIzgd2eLNRX89GVFkcRHYJ8jT3Wsp02l+feewH+7WuzUNy9aODwzW8+efMZlkt7+9UQYS41yWMTHzDBndS4Y5IIVdQ0eO2tvNOwgRlsih9lNuU1x679XVoPmttZyevVfmsQNEUFv6Xfgxfb6oVUrBgRG8htIJ0Bz7L5rBPUMDF2UjGYINlsosFOkFkszFOgggPGiT7T+ys5wLotTCbM/75das0io2yLwZxw86ELuLQ3VL0fbCto4hueDCm+I3/I5Rwv7VmXGUAqwFseLd0dHmR7eXSX28dwN4t5Y1G0uoaJqb3Q5VJNMHOcirdzGnWZawflXEDbQTP7kW5WWwvIlB+DIsDk0zLLZ/2ni82YRAYh0ztBZYBEGayvFBHrwLMLsQZtX3kGX/nhKoCW1XfmZVMiOVkBDyKzgjcREgyqrvM+pGfILRf6DGpZuG0M3pBNXv9WDZMlQoENYzSETUkyXSPJQU7D9yz9OOurkXaZ2okp+CeK7n2diG4brGWpqq
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(136003)(396003)(376002)(346002)(39860400002)(451199015)(36840700001)(40470700004)(46966006)(356005)(81166007)(26005)(36860700001)(40480700001)(40460700003)(2906002)(36756003)(186003)(16526019)(47076005)(7416002)(2616005)(44832011)(5660300002)(83380400001)(8936002)(426003)(41300700001)(1076003)(336012)(6666004)(70206006)(70586007)(4326008)(8676002)(82310400005)(7696005)(86362001)(478600001)(82740400003)(316002)(6916009)(45080400002)(54906003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2022 18:26:18.1563
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6b87b0f-344c-4eb4-d7db-08da9810f297
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF00001A63.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7104
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+It was reported that an ASUS Rembrandt laptop has problems with seemingly
+unrelated ACPI events after resuming from s2idle. Debugging the issue
+proved it's because ASUS has ASL that is only called when using the
+Microsoft GUID, not the AMD GUID.
 
-On 2022-09-14 20:27, Barnabás Pőcze wrote:
-> Hi
-> 
-> 2022. szeptember 11., vasárnap 21:49 keltezéssel, Arvid Norlander írta:
-> 
->> This is loosly based on a previous staging driver that was removed. See
->> links below for more info on that driver. The original commit ID was
->> 0be013e3dc2ee79ffab8a438bbb4e216837e3d52.
->>
->> However, here a completely different approach is taken to the user space
->> API (which should solve the issues the original driver had). Each PNP0C32
->> device is a button, and each such button gets a separate input device
->> associated with it (instead of a shared platform input device).
->>
->> The button ID (as read from ACPI method GHID) is provided via a sysfs file
->> "button_id".
->>
->> If the button caused a wakeup it will "latch" the "wakeup_cause" sysfs file
->> to true. This can be reset by a user space process.
->>
->> Link: https://marc.info/?l=linux-acpi&m=120550727131007
->> Link: https://lkml.org/lkml/2010/5/28/327
->> Signed-off-by: Arvid Norlander <lkml@vorpal.se>
->> [...]
->> +#define QUICKSTART_VERSION "1.04"
->> +
->> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->> +
->> +#include <linux/kernel.h>
->> +#include <linux/module.h>
->> +#include <linux/init.h>
->> +#include <linux/types.h>
->> +#include <linux/acpi.h>
->> +#include <linux/input.h>
->> +#include <linux/input/sparse-keymap.h>
->> +
->> +MODULE_AUTHOR("Arvid Norlander <lkml@vorpal.se>");
->> +MODULE_AUTHOR("Angelo Arrifano");
->> +MODULE_DESCRIPTION("ACPI Direct App Launch driver");
->> +MODULE_LICENSE("GPL");
->> +
->> +#define QUICKSTART_ACPI_DEVICE_NAME	"quickstart"
->> +#define QUICKSTART_ACPI_CLASS		"quickstart"
->> +#define QUICKSTART_ACPI_HID		"PNP0C32"
->> +
->> +/*
->> + * There will be two events:
->> + * 0x02 - A hot button was pressed while device was off/sleeping.
->> + * 0x80 - A hot button was pressed while device was up.
->> + */
->> +#define QUICKSTART_EVENT_WAKE		0x02
->> +#define QUICKSTART_EVENT_RUNTIME	0x80
->> +
->> +/*
->> + * Each PNP0C32 device is an individual button. This structure
->> + * keeps track of data associated with said device.
->> + */
->> +struct quickstart_acpi {
->> +	struct acpi_device *acpi_dev;
->> +	struct input_dev *input_device;
->> +	struct quickstart_button *button;
->> +	/* Name of button for debug messages */
->> +	char *name;
->> +	/* ID of button as returned by GHID */
->> +	u32 id;
->> +	/* Flags for cleanup */
->> +	unsigned int input_registered : 1;
-> 
-> This member is set, but never read.
+This is a bug from ASUS firmware but this series reworks the s2idle
+handling for AMD to allow accounting for this in a quirk.
 
-Right, I switched to the devm_ version, so I believe it is no longer
-needed. I'll remove it.
+Additionally as this is a problem that may pop up again on other models
+add a module parameter that can be used to try the Microsoft GUID on a
+given system.
 
-> 
-> 
->> +	unsigned int sysfs_created : 1;
->> +	/* Track if a wakeup event was received */
->> +	unsigned int wakeup_cause : 1;
->> +	/* Name of input device */
->> +	char input_name[32];
->> +	/* Physical path for the input device */
->> +	char phys[32];
->> +};
->> +
->> +/*
->> + * Knowing what these buttons do require system specific knowledge.
->> + * This could be done by matching on DMI data in a long quirk table.
->> + * However, it is easier to leave it up to user space to figure this out.
->> + *
->> + * Using for example udev hwdb the scancode 0x1 can be remapped suitably.
->> + */
->> +static const struct key_entry quickstart_keymap[] = {
->> +	{ KE_KEY, 0x1, { KEY_UNKNOWN } },
->> +	{ KE_END, 0 },
->> +};
->> +
->> +static ssize_t wakeup_cause_show(struct device *dev,
->> +				 struct device_attribute *attr, char *buf)
->> +{
->> +	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
->> +
->> +	return scnprintf(buf, PAGE_SIZE, "%s\n",
->> +			 (quickstart->wakeup_cause ? "true" : "false"));
-> 
-> Please use `sysfs_emit()` preferably. And I think it would be easier to use 0/1
-> instead of true/false. And you could use `kstrtobool()` in the _store() function.
+This module parameter intentionally applies to both Intel and AMD systems
+as the same problem could potentially exist on Intel systems that support
+both the Intel GUID or the Microsoft GUID.
 
-Thanks! As I'm new to kernel development it is sometimes hard to know the
-proper API. While there is some API documentation for the most part I have
-not found any good tutorials or overviews. Basically you have to know what
-you are looking for already in order to find it.
+v2->v3:
+ * Add more systems
+v1->v2:
+ * Add two more systems that are reported to be helped by this series.
 
-Thus I have taken to looking at existing drivers and copying the patterns
-from those. However it is very hard to know what drivers use the currently
-preferred patterns, and which ones use legacy patterns. Better documentation
-would be great.
+Mario Limonciello (7):
+  acpi/x86: s2idle: Move _HID handling for AMD systems into structures
+  acpi/x86: s2idle: If a new AMD _HID is missing assume Rembrandt
+  acpi/x86: s2idle: Add module parameter to prefer Microsoft GUID
+  acpi/x86: s2idle: Add a quirk for ASUS TUF Gaming A17 FA707RE
+  acpi/x86: s2idle: Add a quirk for ASUS ROG Zephyrus G14
+  acpi/x86: s2idle: Add a quirk for Lenovo Slim 7 Pro 14ARH7
+  acpi/x86: s2idle: Add a quirk for ASUSTeK COMPUTER INC. ROG Flow X13
 
-> 
-> 
->> +}
->> +
->> +static ssize_t wakeup_cause_store(struct device *dev,
->> +				  struct device_attribute *attr,
->> +				  const char *buf, size_t count)
->> +{
->> +	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
->> +
->> +	if (count < 2)
->> +		return -EINVAL;
->> +
->> +	if (strncasecmp(buf, "false", 4) != 0)
->> +		return -EINVAL;
->> +
->> +	quickstart->wakeup_cause = false;
->> +	return count;
->> +}
->> +static DEVICE_ATTR_RW(wakeup_cause);
->> +
->> +static ssize_t button_id_show(struct device *dev, struct device_attribute *attr,
->> +			      char *buf)
->> +{
->> +	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
->> +
->> +	return scnprintf(buf, PAGE_SIZE, "%d\n", quickstart->id);
-> 
-> Since it is unsigned `%u` would probably be better.
+ drivers/acpi/x86/s2idle.c | 136 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 112 insertions(+), 24 deletions(-)
 
-Good catch! Thanks. I wonder why I didn't get any -Wformat warnings about
-this?
+-- 
+2.34.1
 
-> 
-> 
->> +}
->> +static DEVICE_ATTR_RO(button_id);
->> +
->> +/* ACPI Driver functions */
->> +static void quickstart_acpi_notify(struct acpi_device *acpi_dev, u32 event)
->> +{
->> +	struct quickstart_acpi *quickstart = acpi_driver_data(acpi_dev);
->> +
->> +	if (!quickstart)
->> +		return;
->> +
->> +	switch (event) {
->> +	case QUICKSTART_EVENT_WAKE:
->> +		quickstart->wakeup_cause = true;
->> +		break;
->> +	case QUICKSTART_EVENT_RUNTIME:
->> +		if (!sparse_keymap_report_event(quickstart->input_device, 0x1,
->> +						1, true)) {
->> +			pr_info("Key handling error\n");
->> +		}
->> +		break;
->> +	default:
->> +		pr_err("Unexpected ACPI event notify (%u)\n", event);
->> +		break;
->> +	}
->> +}
->> +
->> +/*
->> + * The GHID ACPI method is used to indicate the "role" of the button.
->> + * However, all the meanings of these values are vendor defined.
->> + *
->> + * We do however expose this value to user space.
->> + */
->> +static int quickstart_acpi_ghid(struct quickstart_acpi *quickstart)
->> +{
->> +	acpi_status status;
->> +	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
->> +	int ret = 0;
->> +	union acpi_object *obj = NULL;
->> +
->> +	/*
->> +	 * This returns a buffer telling the button usage ID,
->> +	 * and triggers pending notify events (The ones before booting).
->> +	 */
->> +	status = acpi_evaluate_object(quickstart->acpi_dev->handle, "GHID",
->> +				      NULL, &buffer);
->> +	if (ACPI_FAILURE(status)) {
->> +		pr_err("%s GHID method failed\n", quickstart->name);
->> +		return -EINVAL;
->> +	}
->> +	obj = buffer.pointer;
->> +
->> +	/*
->> +	 * GHID returns buffers, sanity check that is the case.
->> +	 */
->> +	if (obj->type != ACPI_TYPE_BUFFER) {
->> +		pr_err("%s GHID did not return buffer\n", quickstart->name);
->> +		return -EINVAL;
-> 
-> `buffer.pointer` is not freed here. Since you know the maximum size, you could
-> consider using an on-stack buffer.
-
-Good catch! I thought about onstack buffer but couldn't get it working.
-However I believe I was confused by the API at the point, and didn't
-realise that "acpi_buffer" is not in fact the same as a buffer object in
-ACPI. So it might be worth trying again.
-
-> 
-> 
->> +	}
->> +
->> +	/*
->> +	 * Quoting the specification:
->> +	 * "The GHID method can return a BYTE, WORD, or DWORD.
->> +	 *  The value must be encoded in little-endian byte
->> +	 *  order (least significant byte first)."
->> +	 */
->> +	switch (obj->buffer.length) {
->> +	case 1:
->> +		quickstart->id = *(u8 *)obj->buffer.pointer;
->> +		break;
->> +	case 2:
->> +		quickstart->id = le16_to_cpu(*(u16 *)obj->buffer.pointer);
-> 
-> Probably does not matter here, but I personally like to use `get_unaligned_leN()`
-> because those functions just always work.
-
-This goes back to the whole "I know what I want to do, but I don't know
-what the API is named, lets see what others are doing." thing I mentioned
-above.
-
-As you said, this is probably fine, as I doubt anyone has used this ACPI
-standard on anything except x86, where unaligned reads are fine. Even the
-whole endianness conversion will *probably* never come up in practise for
-this driver.
-
-> 
-> 
->> +		break;
->> +	case 4:
->> +		quickstart->id = le32_to_cpu(*(u32 *)obj->buffer.pointer);
->> +		break;
->> +	case 8:
->> +		quickstart->id = le64_to_cpu(*(u64 *)obj->buffer.pointer);
->> +		break;
->> +	default:
->> +		pr_err("%s GHID method returned buffer of unexpected length %lu\n",
->> +		       quickstart->name, (unsigned long)obj->buffer.length);
->> +		ret = -EINVAL;
->> +		break;
->> +	}
->> +
->> +	kfree(buffer.pointer);
->> +
->> +	return ret;
->> +}
->> +
->> +static int quickstart_acpi_config(struct quickstart_acpi *quickstart)
->> +{
->> +	char *bid = acpi_device_bid(quickstart->acpi_dev);
->> +	char *name;
->> +
->> +	name = kmalloc(strlen(bid) + 1, GFP_KERNEL);
->> +	if (!name)
->> +		return -ENOMEM;
->> +
->> +	quickstart->name = name;
->> +	strcpy(quickstart->name, bid);
-> 
-> You could use `kstrdup()` here, but you could probably even use `devm_kstrdup()`
-> and then this function could be entirely removed.
-
-Again, we are back to copying patterns from other drivers. Would be great
-if there was a way to know which drivers were following current guidelines.
-Maybe each subsystem could have a "model" driver, that they could point to
-for current best practices?
-
-However, I realised there is in fact no need to store a copy at all. We can
-just define
-
-#define quickstart_name(dev) acpi_device_bid(dev->acpi_dev)
-
-and use that. As acpi_device_bid is itself just a macro that returns a
-member.
-
-> 
-> 
->> +
->> +	return 0;
->> +}
->> +
->> +static struct attribute *quickstart_attributes[] = {
->> +	&dev_attr_wakeup_cause.attr,
->> +	&dev_attr_button_id.attr,
->> +	NULL,
->> +};
->> +
->> +static const struct attribute_group quickstart_attr_group = {
->> +	.attrs = quickstart_attributes,
->> +};
->> +
->> +static int quickstart_acpi_remove(struct acpi_device *acpi_dev)
->> +{
->> +	struct quickstart_acpi *quickstart;
->> +
->> +	if (!acpi_dev)
->> +		return -EINVAL;
->> +
->> +	quickstart = acpi_driver_data(acpi_dev);
->> +	if (!quickstart)
->> +		return -EINVAL;
->> +
->> +	if (quickstart->sysfs_created)
->> +		sysfs_remove_group(&quickstart->acpi_dev->dev.kobj,
->> +				   &quickstart_attr_group);
->> +
->> +	kfree(quickstart->name);
->> +	quickstart->name = NULL;
->> +
->> +	kfree(quickstart);
->> +
->> +	return 0;
->> +}
->> +
->> +static int quickstart_acpi_add(struct acpi_device *acpi_dev)
->> +{
->> +	int ret;
->> +	struct quickstart_acpi *quickstart;
->> +
->> +	if (!acpi_dev)
->> +		return -EINVAL;
->> +
->> +	quickstart = kzalloc(sizeof(*quickstart), GFP_KERNEL);
-> 
-> Have you considered `devm_kzalloc()`?
-
-Again no. In this case it didn't come from copying something, but from
-the old quickstart driver code from 2010.
-
-I'm switching to this devm_ stuff, seems awesome.
-
-> 
-> 
->> +	if (!quickstart)
->> +		return -ENOMEM;
->> +
->> +	/*
->> +	 * This must be set early for proper cleanup on error handling path.
->> +	 * After this point generic error handling can be used.
->> +	 */
->> +	acpi_dev->driver_data = quickstart;
->> +	quickstart->acpi_dev = acpi_dev;
->> +	dev_set_drvdata(&acpi_dev->dev, quickstart);
->> +
->> +	strcpy(acpi_device_name(acpi_dev), QUICKSTART_ACPI_DEVICE_NAME);
->> +	strcpy(acpi_device_class(acpi_dev), QUICKSTART_ACPI_CLASS);
->> +
->> +	/* Initialize device name */
->> +	ret = quickstart_acpi_config(quickstart);
->> +	if (ret < 0)
->> +		goto error;
->> +
->> +	/* Retrieve the GHID ID */
->> +	ret = quickstart_acpi_ghid(quickstart);
->> +	if (ret < 0)
->> +		goto error;
->> +
->> +	/* Set up sysfs entries */
->> +	ret = sysfs_create_group(&quickstart->acpi_dev->dev.kobj,
->> +				 &quickstart_attr_group);
-> 
-> You could use `devm_device_add_group()`. And then the `sysfs_created` member
-> could be removed.
-
-Oh, nice.
-
-> 
-> 
->> +	if (ret) {
->> +		quickstart->sysfs_created = 0;
->> +		pr_err("Unable to setup sysfs entries\n");
->> +		goto error;
->> +	}
->> +	quickstart->sysfs_created = !ret;
->> +
->> +	/* Set up input device */
->> +	quickstart->input_device =
->> +		devm_input_allocate_device(&quickstart->acpi_dev->dev);
->> +	if (!quickstart->input_device) {
->> +		ret = -ENOMEM;
->> +		goto error;
->> +	}
->> +	ret = sparse_keymap_setup(quickstart->input_device, quickstart_keymap,
->> +				  NULL);
->> +	if (ret)
->> +		goto error;
->> +
->> +	snprintf(quickstart->input_name, sizeof(quickstart->phys),
->> +		 "Quickstart Button %u", quickstart->id);
->> +	snprintf(quickstart->phys, sizeof(quickstart->phys),
->> +		 QUICKSTART_ACPI_DEVICE_NAME "/input%u", quickstart->id);
->> +
->> +	quickstart->input_device->name = quickstart->input_name;
->> +	quickstart->input_device->phys = quickstart->phys;
->> +	quickstart->input_device->id.bustype = BUS_HOST;
->> +
->> +	ret = input_register_device(quickstart->input_device);
->> +	if (ret) {
->> +		quickstart->input_registered = 0;
->> +		pr_err("Unable to register input device\n");
->> +		goto error;
->> +	}
->> +	quickstart->input_registered = !ret;
->> +
->> +	return 0;
->> +error:
->> +	quickstart_acpi_remove(acpi_dev);
->> +	return ret;
->> +}
->> +
->> +static const struct acpi_device_id quickstart_device_ids[] = {
->> +	{ QUICKSTART_ACPI_HID, 0 },
->> +	{ "", 0 },
->> +};
->> +MODULE_DEVICE_TABLE(acpi, quickstart_device_ids);
->> +
->> +static struct acpi_driver quickstart_acpi_driver = {
->> +	.name	= "quickstart",
->> +	.owner	= THIS_MODULE,
->> +	.class	= QUICKSTART_ACPI_CLASS,
->> +	.ids	= quickstart_device_ids,
->> +	.flags	= ACPI_DRIVER_ALL_NOTIFY_EVENTS,
->> +	.ops	= {
->> +		.add = quickstart_acpi_add,
->> +		.remove = quickstart_acpi_remove,
->> +		.notify = quickstart_acpi_notify
->> +	},
->> +};
->> +
->> +/* Module functions */
->> +static void quickstart_exit(void)
->> +{
->> +	acpi_bus_unregister_driver(&quickstart_acpi_driver);
->> +}
->> +
->> +static int __init quickstart_init(void)
->> +{
->> +	int ret;
->> +
->> +	/* ACPI driver register */
->> +	ret = acpi_bus_register_driver(&quickstart_acpi_driver);
->> +	if (ret)
->> +		return ret;
->> +
->> +	pr_info("ACPI Direct App Launch ver %s\n", QUICKSTART_VERSION);
->> +
->> +	return 0;
->> +}
->> +
->> +module_init(quickstart_init);
->> +module_exit(quickstart_exit);
-> 
-> You could use the `module_acpi_driver()` macro to generate the init/exit methods.
-
-Nice!
-
-> 
-> 
->> --
->> 2.37.3
-> 
-> 
-> Regards,
-> Barnabás Pőcze
-
-I have fixed these locally, and will submit a new patch at the beginning of
-next week. I was hoping to get some feedback on the open questions in the
-cover letter before that, but right now that doesn't seem likely to happen.
-
-Best regards,
-Arvid Norlander
