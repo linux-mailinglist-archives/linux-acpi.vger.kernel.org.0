@@ -2,133 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E60665BA367
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Sep 2022 02:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CBFD5BA3CC
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Sep 2022 03:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229503AbiIPADd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Sep 2022 20:03:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49340 "EHLO
+        id S229716AbiIPBRg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Sep 2022 21:17:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbiIPADc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Sep 2022 20:03:32 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC78652DF7
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 17:03:30 -0700 (PDT)
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 594DA3F37D
-        for <linux-acpi@vger.kernel.org>; Fri, 16 Sep 2022 00:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1663286608;
-        bh=XEszTMy4BSHlQ6vsVLVwlRpHC94G5PPukl5GrIlhufc=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=op9ioO+/qKLFb+pdwjCY1/mLvhPhFGplNYUVYFc+ogDvc7gJlDvdj2/W7iOkH/f8o
-         VyS+kt6DM+YaC9x3se7tUwaV51sb3VAne2RcFfhA8OKGVc64u8DqcKqiB/N521+GBt
-         uvhiAwmRMHIk0TLA24E8GT+OrMKEBBb11mwg1/L4QsH4fun/QeEjvq05zJEpHeHiSA
-         QG9XqYjP27CjNpKJpHrfX4iPCh6OsfHW63SJIMVdp5R7eAU5WI9nDWfx6Hwu2fb8WM
-         aU8MPMLfWl+rmAXc3uFX84NykAs5cGtNl2Q0Twdwa4PDu2N0wsbKzVNAWT3pX+HLAs
-         CueWE+Fq2BNIg==
-Received: by mail-wr1-f71.google.com with SMTP id d30-20020adfa41e000000b00228c0e80c49so5171617wra.21
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Sep 2022 17:03:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=XEszTMy4BSHlQ6vsVLVwlRpHC94G5PPukl5GrIlhufc=;
-        b=N7WD9DyATX31PBmvBtPuCxQIgoFpbXK06nyGHXlEXmF3keUhsHIGmca8JR2+6ykOHM
-         csS7SOiaJanZ+OYQiNwrXmBowVdQO4rtkGhvNhQMW6EnJxrIN9Sd8TPTXfSfjlJhlCjA
-         93aybSaFvyukGSIHstpI50oxYbCZlqEl2gF0oek2+ELFgOyCfRC/lfH+DJAgvHqiqKC0
-         01MZniZUZ/1fdEBVyZQsmSa4hCCWJeXNTTfzvDTSvY7ntK+1+mQ1wVgkm+AQLfVPW/3P
-         TxwtDoiSn39KimOagMyJZwDqhdVH4JoAtTpbuseWu+ke2hQPRBOlz7u+5fq5tvEnhxfC
-         cnuw==
-X-Gm-Message-State: ACgBeo2sqnc9Yyk+LNMK6lcuPKGFeqP1D4lKKC16UP5wMTV7jnadamOh
-        vbxOIab9Wwg/lUr59cWasIdYSHCQ1FRES0he1wz8doPWqr7POmGwVNsYqS5bfdcG2s8rcv5tBv3
-        ZVbiYnC3TuQQ2sO5oUPuAyD0XNyBkYm/9/KUhadu0FzwyTv064MwF2Rg=
-X-Received: by 2002:a05:600c:1e20:b0:3b4:86e4:6857 with SMTP id ay32-20020a05600c1e2000b003b486e46857mr8494591wmb.167.1663286607765;
-        Thu, 15 Sep 2022 17:03:27 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR7juhqsS6LzVQTpv3uXvCGHlwMXNamNlOnD9rBc/A7aqL4qDPZQ+zmIBT6G25WHWodqDyB1pZ/RgkioU/6K/10=
-X-Received: by 2002:a05:600c:1e20:b0:3b4:86e4:6857 with SMTP id
- ay32-20020a05600c1e2000b003b486e46857mr8494570wmb.167.1663286607472; Thu, 15
- Sep 2022 17:03:27 -0700 (PDT)
+        with ESMTP id S229480AbiIPBRe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Sep 2022 21:17:34 -0400
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01hn2218.outbound.protection.outlook.com [52.100.223.218])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B15DC77568;
+        Thu, 15 Sep 2022 18:17:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RHySZeo98zLAwkITHSwPOge6SSbyoF/vFDx/cKEARd4nmrRUOmaSPM8pIHbqzmlDLRbjibhyaLAYmI7AkkwSG9iSkOigyn359W/cTnhm0/9h/B0gs2j8NrCLx2MVjuczky6wLrhlG8TkCM/8yOtLUYHq7+z6y/DtXlTyvnlEs/+vaVAHgby880SqEFaDOIIzZ0wqTQBrThySnaxf2F6HFuVoX5phritkOGDLpoc/8aOBL1LI1KR/KB8uKpmNteHoxJducIlkwyVRrLywJS7od5WTS5aFVtVB7X3pc8oIuPIhFDvrKbpVfK8HJJ7MuzXB0STb0ls/LxW3/LFCRMw6kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Bs10Md+15nMnyayKLyd22Uv+/ZH79IcFcpzuzGLq1Fg=;
+ b=bpmMSIp5G22sxE9TFGf3Y9jM7FoQkhc9QTz2BGdoOa0zPFDGnkdNtAJGBmASV8pc0AagJ6eZsaQyRoP4b7EadpllopNOaT53oonw+ijWMVcHAuSI19VWaJhd1rckafas8cyVlYAe2urgvi6uhoQsrFtAk4oseH0qrzZLvTbiMGFVVGRPkZ0a5z5RUvFavxzXZSA2JZLWvJbVP9LeXZtrxdqtuwl9yY1XiGLkOvQWgYaBCU5mZgoUvN7KX1XdwzfomUmPDz9/9vyjSzG4WavshywAyTog8hGvexdzcNDz5lO1Rvazivo4rXQVCjfLzIEf3QnmQ6S49RK9YA63JXx86A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 45.14.71.5) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=t4.cims.jp;
+ dmarc=bestguesspass action=none header.from=t4.cims.jp; dkim=none (message
+ not signed); arc=none (0)
+Received: from TYCPR01CA0122.jpnprd01.prod.outlook.com (2603:1096:400:26d::11)
+ by SI2PR04MB4137.apcprd04.prod.outlook.com (2603:1096:4:f8::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5612.16; Fri, 16 Sep 2022 01:17:32 +0000
+Received: from TYZAPC01FT053.eop-APC01.prod.protection.outlook.com
+ (2603:1096:400:26d:cafe::65) by TYCPR01CA0122.outlook.office365.com
+ (2603:1096:400:26d::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.19 via Frontend
+ Transport; Fri, 16 Sep 2022 01:17:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 45.14.71.5)
+ smtp.mailfrom=t4.cims.jp; dkim=none (message not signed)
+ header.d=none;dmarc=bestguesspass action=none header.from=t4.cims.jp;
+Received-SPF: Pass (protection.outlook.com: domain of t4.cims.jp designates
+ 45.14.71.5 as permitted sender) receiver=protection.outlook.com;
+ client-ip=45.14.71.5; helo=User; pr=M
+Received: from mail.prasarana.com.my (58.26.8.158) by
+ TYZAPC01FT053.mail.protection.outlook.com (10.118.152.149) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5632.12 via Frontend Transport; Fri, 16 Sep 2022 01:17:31 +0000
+Received: from MRL-EXH-02.prasarana.com.my (10.128.66.101) by
+ MRL-EXH-01.prasarana.com.my (10.128.66.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.14; Fri, 16 Sep 2022 09:16:51 +0800
+Received: from User (45.14.71.5) by MRL-EXH-02.prasarana.com.my
+ (10.128.66.101) with Microsoft SMTP Server id 15.1.2176.14 via Frontend
+ Transport; Fri, 16 Sep 2022 09:16:21 +0800
+Reply-To: <rhashimi202222@kakao.com>
+From:   Consultant Swift Capital Loans Ltd <info@t4.cims.jp>
+Subject: I hope you are doing well, and business is great!
+Date:   Fri, 16 Sep 2022 09:17:03 +0800
 MIME-Version: 1.0
-References: <20220913062042.1977790-1-kai.heng.feng@canonical.com>
- <20220913062042.1977790-2-kai.heng.feng@canonical.com> <44e3e1be-363b-f19b-4907-6990d2f5b24c@collabora.com>
-In-Reply-To: <44e3e1be-363b-f19b-4907-6990d2f5b24c@collabora.com>
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Fri, 16 Sep 2022 08:03:16 +0800
-Message-ID: <CAAd53p5gYAP4X4AFBf9kGnwFaREucUn2J20U0nw9zjv+nh+=Cw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] PM: ACPI: reboot: Reinstate S5 for reboot
-To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc:     rafael.j.wysocki@intel.com, lenb@kernel.org,
-        Josef Bacik <josef@toxicpanda.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <0135ac95-8929-4d45-8a5f-93547c102f2e@MRL-EXH-02.prasarana.com.my>
+To:     Undisclosed recipients:;
+X-EOPAttributedMessage: 0
+X-MS-Exchange-SkipListedInternetSender: ip=[45.14.71.5];domain=User
+X-MS-Exchange-ExternalOriginalInternetSender: ip=[45.14.71.5];domain=User
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYZAPC01FT053:EE_|SI2PR04MB4137:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ea11b2e-dba3-4db4-6365-08da97813ab5
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-SenderADCheck: 0
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: =?windows-1251?Q?27C4NJfFKZgDG5cHZywkbuN9AlsZ/R+LT2SDpH3esd6rzewy/uF5Ikd2?=
+ =?windows-1251?Q?QHN4fwZjm9vXHH6VXw67j1K6Ejx5yiIsp1K12ZkN4FjFIckxyZX3rLAM?=
+ =?windows-1251?Q?EJ8d9siWYXQQQNC2JVEfxo163pwfnju6ybc0PAAgFLuzDAF7272+mcVB?=
+ =?windows-1251?Q?paA/8YnGaZ0RHR3NdmRVKuAAncQJ4ibGuuTwzFP82pz4u0qcox3t6eg3?=
+ =?windows-1251?Q?uU3qw0L9gcm+mVrcCyLkDhVyTdCw4EE/E4p015Vd0PmyE1tm5gcYq1XY?=
+ =?windows-1251?Q?FI81i37wggWd8CryMy5w68/YZ3L/FBlS3vQHxyA6i9yJxiQVlY1mngjb?=
+ =?windows-1251?Q?g2xRwI9MEnRG2ei5gOylrviz5ajsUs8X6iYTKEWDGf2c5avE242BIwwZ?=
+ =?windows-1251?Q?cTDsd8uXdtyj19Kmc3YinX9bjY7aYGyBydlF1yxbZibj0mtUkxoMFrVl?=
+ =?windows-1251?Q?NAdkzB7z/PLD7+u70tjgLQNVWU8+aZwpTSGgO1Pd+dsuNzKELTFZJaG8?=
+ =?windows-1251?Q?kDHlCqfd1aRz+Ch/fgi2sVGIJPx0YNZE7wHH7emXnkXtAfyp0VFMiQlV?=
+ =?windows-1251?Q?jn9RMokVhMHqWPt1v3EGxDm2szo9gI2S/NZn3ImT0Tw6ogSfRti7TTKR?=
+ =?windows-1251?Q?RfbtOoOrjZ/Klo7ylF+OcqPNByQbjzusVZb5x3gYtWJ1JPbBZl35qYgw?=
+ =?windows-1251?Q?YnSLzDag3iDgguj2uVS//uU+7R+jKoya2S4Ixlsu717lNB+P6qmEBfee?=
+ =?windows-1251?Q?qugQYBsvC9JjdcJhw8lXIPUHuO3AhfSfSnEZcTz2w3G7hC6RQsi21kcY?=
+ =?windows-1251?Q?aF7+vOQ5yWEiIlNULc2cGf1ozwrB+IwFA0qRYMWQ4g2Up95rWMm9ZWM8?=
+ =?windows-1251?Q?1uXF1QS2EaFBD5/xLWYTjDjW7HZkwaytLDUqs8OmTStcQi6USnsdYy1E?=
+ =?windows-1251?Q?RpSRZo6fZ1Cfd3nbYZWHgWWWGlhTNw0Gv9e2IceeZpTxx8ZFqvlPpCO8?=
+ =?windows-1251?Q?9+XPTQ3GticBsqpY+ewFLNqRpdPfvdpc3ejOt++uQTR0AUAYHM/LXC+F?=
+ =?windows-1251?Q?Cn7iYoZhAA2fskt23RA9Zpc3NjYwFfGe0cgfaha9Vm5m/yEeLUpFM1w3?=
+ =?windows-1251?Q?nUrlMn5+tFhwxOH7URRD3oFSgZMumPzXSUc606LkMzWa93WIYXLVLIVp?=
+ =?windows-1251?Q?2tIzt0ApJNxGoIV+QZiSP4YPCUzPAJ72WwQaEvuNn9DPqSJf7mLzPpI3?=
+ =?windows-1251?Q?PFm8G6B78oAOPemwEoj0/vVH6F9HxM3hTNTYSS0/9Rl2Ayr7W4TBTVwk?=
+ =?windows-1251?Q?xa4JChRApsohZw0FNkQa4v7eSHUVYXYCrIlj7G3/69Bh9f02?=
+X-Forefront-Antispam-Report: CIP:58.26.8.158;CTRY:JP;LANG:en;SCL:5;SRV:;IPV:NLI;SFV:SPM;H:User;PTR:45.14.71.5.static.xtom.com;CAT:OSPM;SFS:(13230022)(4636009)(376002)(396003)(136003)(39860400002)(346002)(451199015)(40470700004)(82310400005)(40480700001)(32650700002)(31686004)(86362001)(70586007)(70206006)(8936002)(5660300002)(336012)(956004)(498600001)(8676002)(7416002)(7366002)(31696002)(7406005)(81166007)(4744005)(156005)(316002)(35950700001)(32850700003)(41300700001)(36906005)(2906002)(40460700003)(6666004)(82740400003)(26005)(109986005)(9686003)(66899012)(2700400008);DIR:OUT;SFP:1501;
+X-OriginatorOrg: myprasarana.onmicrosoft.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2022 01:17:31.6325
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ea11b2e-dba3-4db4-6365-08da97813ab5
+X-MS-Exchange-CrossTenant-Id: 3cbb2ff2-27fb-4993-aecf-bf16995e64c0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3cbb2ff2-27fb-4993-aecf-bf16995e64c0;Ip=[58.26.8.158];Helo=[mail.prasarana.com.my]
+X-MS-Exchange-CrossTenant-AuthSource: TYZAPC01FT053.eop-APC01.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR04MB4137
+X-Spam-Status: Yes, score=6.2 required=5.0 tests=AXB_XMAILER_MIMEOLE_OL_024C2,
+        AXB_X_FF_SEZ_S,BAYES_50,FORGED_MUA_OUTLOOK,FSL_CTYPE_WIN1251,
+        FSL_NEW_HELO_USER,HEADER_FROM_DIFFERENT_DOMAINS,NSL_RCVD_FROM_USER,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [52.100.223.218 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5181]
+        *  0.0 NSL_RCVD_FROM_USER Received from User
+        *  0.0 FSL_CTYPE_WIN1251 Content-Type only seen in 419 spam
+        *  3.2 AXB_X_FF_SEZ_S Forefront sez this is spam
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  0.2 HEADER_FROM_DIFFERENT_DOMAINS From and EnvelopeFrom 2nd level
+        *      mail domains are different
+        *  0.0 AXB_XMAILER_MIMEOLE_OL_024C2 Yet another X header trait
+        *  0.0 FSL_NEW_HELO_USER Spam's using Helo and User
+        *  1.9 FORGED_MUA_OUTLOOK Forged mail pretending to be from MS Outlook
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 13, 2022 at 11:17 PM Dmitry Osipenko
-<dmitry.osipenko@collabora.com> wrote:
->
-> On 9/13/22 09:20, Kai-Heng Feng wrote:
-> > Commit d60cd06331a3 ("PM: ACPI: reboot: Use S5 for reboot") caused Dell
-> > PowerEdge r440 hangs at reboot.
-> >
-> > The issue is fixed by commit 2ca1c94ce0b6 ("tg3: Disable tg3 device on
-> > system reboot to avoid triggering AER"), so use the new sysoff API to
-> > reinstate S5 for reboot on ACPI-based systems.
-> >
-> > Cc: Josef Bacik <josef@toxicpanda.com>
-> > Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> > v3:
-> >  - Use new API to invoke ACPI S5.
-> >
-> > v2:
-> >  - Use do_kernel_power_off_prepare() instead.
-> >
-> >  drivers/acpi/sleep.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> > index ad4b2987b3d6e..dce5460902eed 100644
-> > --- a/drivers/acpi/sleep.c
-> > +++ b/drivers/acpi/sleep.c
-> > @@ -1088,6 +1088,10 @@ int __init acpi_sleep_init(void)
-> >               register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
-> >                                        SYS_OFF_PRIO_FIRMWARE,
-> >                                        acpi_power_off, NULL);
-> > +
-> > +             register_sys_off_handler(SYS_OFF_MODE_RESTART_PREPARE,
-> > +                                      SYS_OFF_PRIO_FIRMWARE,
-> > +                                      acpi_power_off_prepare, NULL);
->
-> Maybe you could add a small comment to the code explaining why
-> acpi_power_off_prepare is used for restarting?
+Hello,
 
-Will do.
+I hope you are doing well, and business is great!
+However, if you need working capital to further grow and expand your business, we may be a perfect fit for you. I am Ms. Kaori Ichikawa Swift Capital Loans Ltd Consultant, Our loans are NOT based on your personal credit, and NO collateral is required.
 
->
-> Is it safe to use S5 on restart for all devices in general?
+We are a Direct Lender who can approve your loan today, and fund as Early as Tomorrow.
 
-S5 should be used, but it may expose some driver bugs like the one
-mentioned in the commit message.
+Once your reply I will send you the official website to complete your application
 
-Kai-Heng
+Waiting for your reply.
 
->
-> --
-> Best regards,
-> Dmitry
->
+Regards
+Ms. Kaori Ichikawa
+Consultant Swift Capital Loans Ltd
