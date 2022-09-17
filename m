@@ -2,96 +2,776 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 353845BB614
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Sep 2022 06:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B2365BB6C5
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Sep 2022 08:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229497AbiIQEY7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Sep 2022 00:24:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42644 "EHLO
+        id S229379AbiIQGyE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Sep 2022 02:54:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbiIQEY6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Sep 2022 00:24:58 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CC443E72
-        for <linux-acpi@vger.kernel.org>; Fri, 16 Sep 2022 21:24:54 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id z20so28034923ljq.3
-        for <linux-acpi@vger.kernel.org>; Fri, 16 Sep 2022 21:24:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date;
-        bh=aV/tr1Tbe9aO+1NiuYMI6/qbsTacwaTMKUCbpc9zdIc=;
-        b=ewGi3q/3NS5CK4LP2Mj5k2NgE4V44hHHVKK4U+Y0dHUSMvM09cMU9rk65odH1tN1Pf
-         hGnd+J7tpeTC1aEeslzgjQskexFzULhRacqL3q4LHZnRR5Qw6tcGkMqcX7eh/V8wflRH
-         4y6La7dbYT9+BWeVXjoo2nEwwjjPuLXG6TCasVxzjI7W9WJVoa7dakanRpfqy3CVqXUS
-         qp0PJke7POmBJoQWaAAnntFG5ZFi5OD8gZC/mTJOhfqvtkISwP5+w/41enb2qWfv4hnV
-         dRtvOZZ4itP+4W600JIeVb+usNno7/BLgTjvbnk/J1mHjv36B7aOeK4NwP3lYwr1Tq8y
-         qNAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=aV/tr1Tbe9aO+1NiuYMI6/qbsTacwaTMKUCbpc9zdIc=;
-        b=wEVPLSTXKYYGP2CWWSq1fGT0Q2m+BJ1+RrtDKxBmYm7fkvzCZNeXSVuk4uuPfDXuUa
-         KTAGk2V7lEufs+z5SezoUXnsfNF/yC6ObvdlY6/p5AGkrhvY1Sy49hhpBDZaiLoIN7lN
-         5gtRvbBcqYidpUm3nx9vZG1Tl1uuYU5+4KD1VMtK/EUk5NzqkPGggeSIyllk7FWTtNwJ
-         hmNlMHTnO+BJa8Pyls2MrUf/rB5UNBb8RCk9PY8dhTx0CqOF1kOvJ+V+BXuEs5llkbmm
-         izj2mqYJlUOg4rPmTSzmqaJWArgG75Mmlj3jXsatzucDdmRRvhmToyaT5KHb6gW5LhDz
-         3y/w==
-X-Gm-Message-State: ACrzQf0JIZFbo+rCm1SxTvJq0j8S26Nru7h6Oj+nMU/M78lws96V/bg5
-        +9E7YYSWdhkad56UFdleLggmUtCjhvGgAwWFlJo=
-X-Google-Smtp-Source: AMsMyM4EOTZDV2htTTYe+WipYEz6kJbuN/mLAlFQXvIRXTRk4jsxNb6BFnswxWQOUSGcH4WFFNPzCEzVzQRjEO0iFDI=
-X-Received: by 2002:a05:651c:198e:b0:25e:6d28:3a0f with SMTP id
- bx14-20020a05651c198e00b0025e6d283a0fmr2445774ljb.321.1663388691953; Fri, 16
- Sep 2022 21:24:51 -0700 (PDT)
+        with ESMTP id S229450AbiIQGyD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Sep 2022 02:54:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5340C2A96C;
+        Fri, 16 Sep 2022 23:54:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D213B60FD2;
+        Sat, 17 Sep 2022 06:54:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12209C433D6;
+        Sat, 17 Sep 2022 06:53:55 +0000 (UTC)
+From:   Huacai Chen <chenhuacai@loongson.cn>
+To:     Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>
+Cc:     loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>,
+        Jianmin Lv <lvjianmin@loongson.cn>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH V3] LoongArch: Add ACPI-based generic laptop driver
+Date:   Sat, 17 Sep 2022 14:52:50 +0800
+Message-Id: <20220917065250.1671718-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-From:   Mrs Olivia Philip <mrsoliviaphilip208@gmail.com>
-Date:   Sat, 17 Sep 2022 05:24:58 +0100
-Message-ID: <CAO2rEeXtSuPp-jS4=4SKdri11E+F6ku4g0mbPUZVnOkmrkfr=w@mail.gmail.com>
-Subject: Mrs. Olivia Philip
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_80,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,MONEY_FRAUD_5,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Trusting Friend in God,
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as big surprise. Actually, I came
-across your E-mail from my personal search and I decided to contact
-you with believe you will be honest to fulfill my final wish before I
-die.
-Meanwhile, I am Mrs. Olivia Philip, 73 years, from USA, I am childless
-and I am suffering from a pro-long cancer ill health and from all
-indication my condition is critical, my doctors have confirmed that I
-may not live beyond two months from now for the reason that tumor has
-reached a critical stage which has defiled all forms of medical
-treatment. Since my days are numbered, I=E2=80=99ve decided willingly to
-fulfill my long-time promise to donate the sum Five Million Five
-Hundred  And Twenty-Five Thousand United States
-Dollars US$5,525,000) remaining in my foreign bank account over 9
-years due to my health problem. This fund was obtained by me when I
-was dealing on Gold.
+From: Jianmin Lv <lvjianmin@loongson.cn>
 
-My promise is to help the widows, handicapped, orphans and
-underprivileged to build technical school and hospital for their
-well-being. If you will be obedient to assist me fulfill my promise as
-I said here kindly email me back to enable me introduce you to my bank
-management as the foreign beneficiary & trustee to my deposit fund to
-enable them check whether it will be possible to transfer my fund to
-you for this Charity work of God. I have been trying to handle this
-project for the past 4 years by myself hoping I will get better, but I
-have seen that it won=E2=80=99t be possible anymore.
+This add ACPI-based generic laptop driver for Loongson-3. Some of the
+codes are derived from drivers/platform/x86/thinkpad_acpi.c.
 
-Please get back to me if you can handle the project for more details.
-God Bless you
-Mrs. Olivia Philip
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+V2: Fix problems pointed out by Arnd.
+V3: Use platform driver instead of acpi driver.
+
+ drivers/platform/Kconfig                    |   3 +
+ drivers/platform/Makefile                   |   1 +
+ drivers/platform/loongarch/Kconfig          |  30 +
+ drivers/platform/loongarch/Makefile         |   1 +
+ drivers/platform/loongarch/generic-laptop.c | 627 ++++++++++++++++++++
+ 5 files changed, 662 insertions(+)
+ create mode 100644 drivers/platform/loongarch/Kconfig
+ create mode 100644 drivers/platform/loongarch/Makefile
+ create mode 100644 drivers/platform/loongarch/generic-laptop.c
+
+diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
+index b437847b6237..9c68e2def2cb 100644
+--- a/drivers/platform/Kconfig
++++ b/drivers/platform/Kconfig
+@@ -2,6 +2,9 @@
+ if MIPS
+ source "drivers/platform/mips/Kconfig"
+ endif
++if LOONGARCH
++source "drivers/platform/loongarch/Kconfig"
++endif
+ 
+ source "drivers/platform/goldfish/Kconfig"
+ 
+diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
+index 4de08ef4ec9d..41640172975a 100644
+--- a/drivers/platform/Makefile
++++ b/drivers/platform/Makefile
+@@ -4,6 +4,7 @@
+ #
+ 
+ obj-$(CONFIG_X86)		+= x86/
++obj-$(CONFIG_LOONGARCH)		+= loongarch/
+ obj-$(CONFIG_MELLANOX_PLATFORM)	+= mellanox/
+ obj-$(CONFIG_MIPS)		+= mips/
+ obj-$(CONFIG_OLPC_EC)		+= olpc/
+diff --git a/drivers/platform/loongarch/Kconfig b/drivers/platform/loongarch/Kconfig
+new file mode 100644
+index 000000000000..c2b15f0628b4
+--- /dev/null
++++ b/drivers/platform/loongarch/Kconfig
+@@ -0,0 +1,30 @@
++#
++# LoongArch Platform Specific Drivers
++#
++
++menuconfig LOONGARCH_PLATFORM_DEVICES
++	bool "LoongArch Platform Specific Device Drivers"
++	default LOONGARCH
++	help
++	  Say Y here to get to see options for device drivers of various
++	  LoongArch platforms, including vendor-specific laptop/desktop
++	  extension and hardware monitor drivers. This option itself does
++	  not add any kernel code.
++
++	  If you say N, all options in this submenu will be skipped and disabled.
++
++if LOONGARCH_PLATFORM_DEVICES
++
++config GENERIC_LAPTOP
++	tristate "Generic Loongson-3 Laptop Driver"
++	depends on ACPI
++	depends on BACKLIGHT_CLASS_DEVICE
++	depends on INPUT
++	depends on MACH_LOONGSON64
++	select INPUT_EVDEV
++	select INPUT_SPARSEKMAP
++	default y
++	help
++	  ACPI-based Loongson-3 family laptops generic driver.
++
++endif # LOONGARCH_PLATFORM_DEVICES
+diff --git a/drivers/platform/loongarch/Makefile b/drivers/platform/loongarch/Makefile
+new file mode 100644
+index 000000000000..3fc44f06125a
+--- /dev/null
++++ b/drivers/platform/loongarch/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_GENERIC_LAPTOP) += generic-laptop.o
+diff --git a/drivers/platform/loongarch/generic-laptop.c b/drivers/platform/loongarch/generic-laptop.c
+new file mode 100644
+index 000000000000..4198c0542711
+--- /dev/null
++++ b/drivers/platform/loongarch/generic-laptop.c
+@@ -0,0 +1,627 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ *  Generic Loongson processor based LAPTOP/ALL-IN-ONE driver
++ *
++ *  Jianmin Lv <lvjianmin@loongson.cn>
++ *  Huacai Chen <chenhuacai@loongson.cn>
++ *
++ * Copyright (C) 2022 Loongson Technology Corporation Limited
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/acpi.h>
++#include <linux/backlight.h>
++#include <linux/device.h>
++#include <linux/input.h>
++#include <linux/input/sparse-keymap.h>
++#include <linux/platform_device.h>
++#include <linux/string.h>
++#include <linux/types.h>
++#include <acpi/video.h>
++
++/* 1. Driver-wide structs and misc. variables */
++
++/* ACPI HIDs */
++#define LOONGSON_ACPI_EC_HID	"PNP0C09"
++#define LOONGSON_ACPI_HKEY_HID	"LOON0000"
++
++#define ACPI_LAPTOP_VERSION "1.0"
++#define ACPI_LAPTOP_NAME "loongson-laptop"
++#define ACPI_LAPTOP_DESC "Loongson Laptop/all-in-one ACPI Driver"
++#define ACPI_LAPTOP_FILE ACPI_LAPTOP_NAME "_acpi"
++#define ACPI_LAPTOP_DRVR_NAME ACPI_LAPTOP_FILE
++#define ACPI_LAPTOP_ACPI_EVENT_PREFIX "loongson"
++
++#define MAX_ACPI_ARGS			3
++#define GENERIC_HOTKEY_MAP_MAX		64
++
++#define GENERIC_EVENT_TYPE_OFF		12
++#define GENERIC_EVENT_TYPE_MASK		0xF000
++#define GENERIC_EVENT_CODE_MASK		0x0FFF
++
++struct generic_sub_driver {
++	u32 type;
++	char *name;
++	acpi_handle *handle;
++	struct acpi_device *device;
++	struct platform_driver *driver;
++	int (*init)(struct generic_sub_driver *sub_driver);
++	void (*notify)(struct generic_sub_driver *sub_driver, u32 event);
++	u8 acpi_notify_installed;
++};
++
++static u32 input_device_registered;
++static struct input_dev *generic_inputdev;
++
++static acpi_handle hotkey_handle;
++static struct key_entry hotkey_keycode_map[GENERIC_HOTKEY_MAP_MAX];
++
++static int loongson_laptop_backlight_update(struct backlight_device *bd);
++
++/* 2. ACPI Helpers and device model */
++
++static int acpi_evalf(acpi_handle handle, int *res, char *method, char *fmt, ...)
++{
++	char res_type;
++	char *fmt0 = fmt;
++	va_list ap;
++	int success, quiet;
++	acpi_status status;
++	struct acpi_object_list params;
++	struct acpi_buffer result, *resultp;
++	union acpi_object in_objs[MAX_ACPI_ARGS], out_obj;
++
++	if (!*fmt) {
++		pr_err("acpi_evalf() called with empty format\n");
++		return 0;
++	}
++
++	if (*fmt == 'q') {
++		quiet = 1;
++		fmt++;
++	} else
++		quiet = 0;
++
++	res_type = *(fmt++);
++
++	params.count = 0;
++	params.pointer = &in_objs[0];
++
++	va_start(ap, fmt);
++	while (*fmt) {
++		char c = *(fmt++);
++		switch (c) {
++		case 'd':	/* int */
++			in_objs[params.count].integer.value = va_arg(ap, int);
++			in_objs[params.count++].type = ACPI_TYPE_INTEGER;
++			break;
++			/* add more types as needed */
++		default:
++			pr_err("acpi_evalf() called with invalid format character '%c'\n", c);
++			va_end(ap);
++			return 0;
++		}
++	}
++	va_end(ap);
++
++	if (res_type != 'v') {
++		result.length = sizeof(out_obj);
++		result.pointer = &out_obj;
++		resultp = &result;
++	} else
++		resultp = NULL;
++
++	status = acpi_evaluate_object(handle, method, &params, resultp);
++
++	switch (res_type) {
++	case 'd':		/* int */
++		success = (status == AE_OK && out_obj.type == ACPI_TYPE_INTEGER);
++		if (success && res)
++			*res = out_obj.integer.value;
++		break;
++	case 'v':		/* void */
++		success = status == AE_OK;
++		break;
++		/* add more types as needed */
++	default:
++		pr_err("acpi_evalf() called with invalid format character '%c'\n", res_type);
++		return 0;
++	}
++
++	if (!success && !quiet)
++		pr_err("acpi_evalf(%s, %s, ...) failed: %s\n",
++		       method, fmt0, acpi_format_exception(status));
++
++	return success;
++}
++
++static int hotkey_status_get(int *status)
++{
++	if (!acpi_evalf(hotkey_handle, status, "GSWS", "d"))
++		return -EIO;
++
++	return 0;
++}
++
++static void dispatch_acpi_notify(acpi_handle handle, u32 event, void *data)
++{
++	struct generic_sub_driver *sub_driver = data;
++
++	if (!sub_driver || !sub_driver->notify)
++		return;
++	sub_driver->notify(sub_driver, event);
++}
++
++static int __init setup_acpi_notify(struct generic_sub_driver *sub_driver)
++{
++	acpi_status status;
++
++	if (!*sub_driver->handle)
++		return 0;
++
++	sub_driver->device = acpi_fetch_acpi_dev(*sub_driver->handle);
++	if (!sub_driver->device) {
++		pr_err("acpi_fetch_acpi_dev(%s) failed\n", sub_driver->name);
++		return -ENODEV;
++	}
++
++	sub_driver->device->driver_data = sub_driver;
++	sprintf(acpi_device_class(sub_driver->device), "%s/%s",
++		ACPI_LAPTOP_ACPI_EVENT_PREFIX, sub_driver->name);
++
++	status = acpi_install_notify_handler(*sub_driver->handle,
++			sub_driver->type, dispatch_acpi_notify, sub_driver);
++	if (ACPI_FAILURE(status)) {
++		if (status == AE_ALREADY_EXISTS) {
++			pr_notice("Another device driver is already "
++				  "handling %s events\n", sub_driver->name);
++		} else {
++			pr_err("acpi_install_notify_handler(%s) failed: %s\n",
++			       sub_driver->name, acpi_format_exception(status));
++		}
++		return -ENODEV;
++	}
++	sub_driver->acpi_notify_installed = 1;
++
++	return 0;
++}
++
++static int loongson_hotkey_suspend(struct device *dev)
++{
++	return 0;
++}
++
++static int loongson_hotkey_resume(struct device *dev)
++{
++	int status = 0;
++	struct key_entry ke;
++	struct backlight_device *bd;
++
++	/*
++	 * Only if the firmware supports SW_LID event model, we can handle the
++	 * event. This is for the consideration of development board without EC.
++	 */
++	if (test_bit(SW_LID, generic_inputdev->swbit)) {
++		if (hotkey_status_get(&status) < 0)
++			return -EIO;
++		/*
++		 * The input device sw element records the last lid status.
++		 * When the system is awakened by other wake-up sources,
++		 * the lid event will also be reported. The judgment of
++		 * adding SW_LID bit which in sw element can avoid this
++		 * case.
++		 *
++		 * Input system will drop lid event when current lid event
++		 * value and last lid status in the same. So laptop driver
++		 * doesn't report repeated events.
++		 *
++		 * Lid status is generally 0, but hardware exception is
++		 * considered. So add lid status confirmation.
++		 */
++		if (test_bit(SW_LID, generic_inputdev->sw) && !(status & (1 << SW_LID))) {
++			ke.type = KE_SW;
++			ke.sw.value = (u8)status;
++			ke.sw.code = SW_LID;
++			sparse_keymap_report_entry(generic_inputdev, &ke, 1, true);
++		}
++	}
++
++	bd = backlight_device_get_by_type(BACKLIGHT_PLATFORM);
++	if (bd) {
++		loongson_laptop_backlight_update(bd) ?
++		pr_warn("Loongson_backlight: resume brightness failed") :
++		pr_info("Loongson_backlight: resume brightness %d\n", bd->props.brightness);
++	}
++
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(loongson_hotkey_pm,
++		loongson_hotkey_suspend, loongson_hotkey_resume);
++
++static int loongson_hotkey_probe(struct platform_device *pdev)
++{
++	hotkey_handle = ACPI_HANDLE(&pdev->dev);
++
++	if (!hotkey_handle)
++		return -ENODEV;
++
++	return 0;
++}
++
++static const struct acpi_device_id loongson_htk_device_ids[] = {
++	{LOONGSON_ACPI_HKEY_HID, 0},
++	{"", 0},
++};
++
++static struct platform_driver loongson_hotkey_driver = {
++	.probe		= loongson_hotkey_probe,
++	.driver		= {
++		.name	= "loongson-hotkey",
++		.owner	= THIS_MODULE,
++		.pm	= pm_ptr(&loongson_hotkey_pm),
++		.acpi_match_table = ACPI_PTR(loongson_htk_device_ids),
++	},
++};
++
++static int hotkey_map(void)
++{
++	u32 index;
++	acpi_status status;
++	struct acpi_buffer buf;
++	union acpi_object *pack;
++
++	buf.length = ACPI_ALLOCATE_BUFFER;
++	status = acpi_evaluate_object_typed(hotkey_handle, "KMAP", NULL, &buf, ACPI_TYPE_PACKAGE);
++	if (status != AE_OK) {
++		pr_err("ACPI exception: %s\n", acpi_format_exception(status));
++		return -1;
++	}
++	pack = buf.pointer;
++	for (index = 0; index < pack->package.count; index++) {
++		union acpi_object *element, *sub_pack;
++
++		sub_pack = &pack->package.elements[index];
++
++		element = &sub_pack->package.elements[0];
++		hotkey_keycode_map[index].type = element->integer.value;
++		element = &sub_pack->package.elements[1];
++		hotkey_keycode_map[index].code = element->integer.value;
++		element = &sub_pack->package.elements[2];
++		hotkey_keycode_map[index].keycode = element->integer.value;
++	}
++
++	return 0;
++}
++
++static int hotkey_backlight_set(bool enable)
++{
++	if (!acpi_evalf(hotkey_handle, NULL, "VCBL", "vd", enable ? 1 : 0))
++		return -EIO;
++
++	return 0;
++}
++
++static int ec_get_brightness(void)
++{
++	int status = 0;
++
++	if (!hotkey_handle)
++		return -ENXIO;
++
++	if (!acpi_evalf(hotkey_handle, &status, "ECBG", "d"))
++		return -EIO;
++
++	if (status < 0)
++		return status;
++
++	return status;
++}
++
++static int ec_set_brightness(int level)
++{
++
++	int ret = 0;
++
++	if (!hotkey_handle)
++		return -ENXIO;
++
++	if (!acpi_evalf(hotkey_handle, NULL, "ECBS", "vd", level))
++		ret = -EIO;
++
++	return ret;
++}
++
++static int ec_backlight_level(u8 level)
++{
++	int status = 0;
++
++	if (!hotkey_handle)
++		return -ENXIO;
++
++	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
++		return -EIO;
++
++	if ((status < 0) || (level > status))
++		return status;
++
++	if (!acpi_evalf(hotkey_handle, &status, "ECSL", "d"))
++		return -EIO;
++
++	if ((status < 0) || (level < status))
++		return status;
++
++	return level;
++}
++
++static int loongson_laptop_backlight_update(struct backlight_device *bd)
++{
++	int lvl = ec_backlight_level(bd->props.brightness);
++
++	if (lvl < 0)
++		return -EIO;
++	if (ec_set_brightness(lvl))
++		return -EIO;
++
++	return 0;
++}
++
++static int loongson_laptop_get_brightness(struct backlight_device *bd)
++{
++	u8 level;
++
++	level = ec_get_brightness();
++	if (level < 0)
++		return -EIO;
++
++	return level;
++}
++
++static const struct backlight_ops backlight_laptop_ops = {
++	.update_status = loongson_laptop_backlight_update,
++	.get_brightness = loongson_laptop_get_brightness,
++};
++
++static int laptop_backlight_register(void)
++{
++	int status = 0;
++	struct backlight_properties props;
++
++	memset(&props, 0, sizeof(props));
++
++	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
++		return -EIO;
++
++	props.brightness = 1;
++	props.max_brightness = status;
++	props.type = BACKLIGHT_PLATFORM;
++
++	backlight_device_register("loongson_laptop",
++				NULL, NULL, &backlight_laptop_ops, &props);
++
++	return 0;
++}
++
++int loongson_laptop_turn_on_backlight(void)
++{
++	int status;
++	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
++	struct acpi_object_list args = { 1, &arg0 };
++
++	arg0.integer.value = 1;
++	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
++	if (ACPI_FAILURE(status)) {
++		pr_info("Loongson lvds error: 0x%x\n", status);
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++int loongson_laptop_turn_off_backlight(void)
++{
++	int status;
++	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
++	struct acpi_object_list args = { 1, &arg0 };
++
++	arg0.integer.value = 0;
++	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
++	if (ACPI_FAILURE(status)) {
++		pr_info("Loongson lvds error: 0x%x\n", status);
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static int __init event_init(struct generic_sub_driver *sub_driver)
++{
++	int ret;
++
++	ret = hotkey_map();
++	if (ret < 0) {
++		pr_err("Failed to parse keymap from DSDT\n");
++		return ret;
++	}
++
++	ret = sparse_keymap_setup(generic_inputdev, hotkey_keycode_map, NULL);
++	if (ret < 0) {
++		pr_err("Failed to setup input device keymap\n");
++		input_free_device(generic_inputdev);
++
++		return ret;
++	}
++
++	/*
++	 * This hotkey driver handle backlight event when
++	 * acpi_video_get_backlight_type() gets acpi_backlight_vendor
++	 */
++	if (acpi_video_get_backlight_type() != acpi_backlight_vendor)
++		hotkey_backlight_set(false);
++	else
++		hotkey_backlight_set(true);
++
++	pr_info("ACPI: enabling firmware HKEY event interface...\n");
++
++	return ret;
++}
++
++static void event_notify(struct generic_sub_driver *sub_driver, u32 event)
++{
++	int type, scan_code;
++	struct key_entry *ke = NULL;
++
++	scan_code = event & GENERIC_EVENT_CODE_MASK;
++	type = (event & GENERIC_EVENT_TYPE_MASK) >> GENERIC_EVENT_TYPE_OFF;
++	ke = sparse_keymap_entry_from_scancode(generic_inputdev, scan_code);
++	if (ke) {
++		if (type == KE_SW) {
++			int status = 0;
++
++			if (hotkey_status_get(&status) < 0)
++				return;
++
++			ke->sw.value = !!(status & (1 << ke->sw.code));
++		}
++		sparse_keymap_report_entry(generic_inputdev, ke, 1, true);
++	}
++}
++
++/* 3. Infrastructure */
++
++static void generic_subdriver_exit(struct generic_sub_driver *sub_driver);
++
++static int __init generic_subdriver_init(struct generic_sub_driver *sub_driver)
++{
++	int ret;
++
++	BUG_ON(!sub_driver);
++
++	if (!sub_driver || !sub_driver->driver)
++		return -EINVAL;
++
++	ret = platform_driver_register(sub_driver->driver);
++	if (ret)
++		return -EINVAL;
++
++	if (sub_driver->init)
++		sub_driver->init(sub_driver);
++
++	if (sub_driver->notify) {
++		ret = setup_acpi_notify(sub_driver);
++		if (ret == -ENODEV) {
++			ret = 0;
++			goto err_out;
++		}
++		if (ret < 0)
++			goto err_out;
++	}
++
++	return 0;
++
++err_out:
++	generic_subdriver_exit(sub_driver);
++	return (ret < 0) ? ret : 0;
++}
++
++static void generic_subdriver_exit(struct generic_sub_driver *sub_driver)
++{
++
++	if (sub_driver->acpi_notify_installed) {
++		acpi_remove_notify_handler(*sub_driver->handle,
++					   sub_driver->type, dispatch_acpi_notify);
++		sub_driver->acpi_notify_installed = 0;
++	}
++}
++
++static struct generic_sub_driver generic_sub_drivers[] __refdata = {
++	{
++		.name = "hotkey",
++		.init = event_init,
++		.notify = event_notify,
++		.handle = &hotkey_handle,
++		.type = ACPI_DEVICE_NOTIFY,
++		.driver = &loongson_hotkey_driver,
++	},
++};
++
++static int __init generic_acpi_laptop_init(void)
++{
++	bool ec_found;
++	int i, ret, status;
++
++	if (acpi_disabled)
++		return -ENODEV;
++
++	/* The EC device is required */
++	ec_found = acpi_dev_found(LOONGSON_ACPI_EC_HID);
++	if (!ec_found)
++		return -ENODEV;
++
++	/* Enable SCI for EC */
++	acpi_write_bit_register(ACPI_BITREG_SCI_ENABLE, 1);
++
++	generic_inputdev = input_allocate_device();
++	if (!generic_inputdev) {
++		pr_err("Unable to allocate input device\n");
++		return -ENOMEM;
++	}
++
++	/* Prepare input device, but don't register */
++	generic_inputdev->name =
++		"Loongson Generic Laptop/All-in-one Extra Buttons";
++	generic_inputdev->phys = ACPI_LAPTOP_DRVR_NAME "/input0";
++	generic_inputdev->id.bustype = BUS_HOST;
++	generic_inputdev->dev.parent = NULL;
++
++	/* Init subdrivers */
++	for (i = 0; i < ARRAY_SIZE(generic_sub_drivers); i++) {
++		ret = generic_subdriver_init(&generic_sub_drivers[i]);
++		if (ret < 0) {
++			input_free_device(generic_inputdev);
++			return ret;
++		}
++	}
++
++	ret = input_register_device(generic_inputdev);
++	if (ret < 0) {
++		input_free_device(generic_inputdev);
++		pr_err("Unable to register input device\n");
++		return ret;
++	}
++
++	input_device_registered = 1;
++
++	if (acpi_evalf(hotkey_handle, &status, "ECBG", "d")) {
++		pr_info("Loongson Laptop used, init brightness is 0x%x\n", status);
++		ret = laptop_backlight_register();
++		if (ret < 0)
++			pr_err("Loongson Laptop: laptop-backlight device register failed\n");
++	}
++
++	return 0;
++}
++
++static void __exit generic_acpi_laptop_exit(void)
++{
++	if (generic_inputdev) {
++		if (input_device_registered)
++			input_unregister_device(generic_inputdev);
++		else
++			input_free_device(generic_inputdev);
++	}
++}
++
++module_init(generic_acpi_laptop_init);
++module_exit(generic_acpi_laptop_exit);
++
++MODULE_ALIAS("platform:acpi-laptop");
++MODULE_AUTHOR("Jianmin Lv <lvjianmin@loongson.cn>");
++MODULE_AUTHOR("Huacai Chen <chenhuacai@loongson.cn>");
++MODULE_DESCRIPTION(ACPI_LAPTOP_DESC);
++MODULE_VERSION(ACPI_LAPTOP_VERSION);
++MODULE_LICENSE("GPL");
+-- 
+2.31.1
+
