@@ -2,214 +2,267 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A1E5BB6FC
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Sep 2022 09:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12E525BB770
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Sep 2022 11:10:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbiIQHfr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Sep 2022 03:35:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42576 "EHLO
+        id S229757AbiIQJKW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Sep 2022 05:10:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbiIQHfq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Sep 2022 03:35:46 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 689BB2BB29;
-        Sat, 17 Sep 2022 00:35:44 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id C63385C012F;
-        Sat, 17 Sep 2022 03:35:40 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Sat, 17 Sep 2022 03:35:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ljones.dev; h=cc
-        :cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm3; t=1663400140; x=
-        1663486540; bh=gJqSfk3x4iCLYnv4jz2aPipU4stPswF3s9O1AXaEIk8=; b=K
-        yeSiCLFwNgP7EFHvr5MCLdJEupXTgKLk22HkEww0btUlIV7goZWBaYt4N3jK2AAQ
-        PwlpZJ1a5ZnyBHZnqNi5Hvce5/3iCCGyjrFtzlAJBn9dNKjcsJNHh9HTfBwh0loI
-        LU3g+n5gyBBDehX2J6s+x3SLWL7GI981BdAv7hRAfFTfuQujKJcRIN9CHq11ZWsH
-        E8AA/5DOqT6tPyi07l38yUvIYYLqxWegfJ88tcn1V/eXr0cBXHdl+6HUOoSlEezS
-        A6FLxaZa4kY5oKhZQjN6dCu/ZPlC9VDxYkPx6/8YrPRUL+bkSVZYN7Y1gBc4iAKW
-        ci1ob87whdreFCTlstFYQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1663400140; x=
-        1663486540; bh=gJqSfk3x4iCLYnv4jz2aPipU4stPswF3s9O1AXaEIk8=; b=P
-        pJkwH0oLvafZS1o1BVtojvUbuXWAUM2x8m+zzfn7TQ8JdRPZy0w/c/yUS7PgRves
-        FbWvf2Q+4Cq5Mpm51hhrdm1TDBfi8w4mxS3tVteKS85uqcFiS0pCMHVXN/UdCMd1
-        Tb/NW4f05PMaGGyL+F1n3309YaycxvQ3yp9U6K/3qSorhVrd6dpVUPgZFjW8Gt1S
-        /5rtayDR/FgzbIXsyLjYCK3GVW8j7eRjcDX/7a6l0MoXuqisZ/t+ax1wneTT38Kh
-        z9KdPykqjcYjKipAqR2okXSynYJDy6NJPNRZqXqCgHO2P9Xcoiy9xabSF2bOHY0k
-        2Dcl87+Dy40dUrj6wAt3w==
-X-ME-Sender: <xms:zHglY_KBuHqRUDZwm-b5QKRPNysMIO5LDXGwh4ifCix1nka8DnCK0Q>
-    <xme:zHglYzLcXPRtjJqxS1o7-XP1KlGoenyHj5Jifqef2K4HEE29EaqgLG3ecPWKeM3v7
-    oQ08qVYf0_iLQvCZu8>
-X-ME-Received: <xmr:zHglY3sF18rGG3jhgpxYgQ1D-7ANAp20mNjEfaBonVj6PsK8HaC6YzcF8dt3qJi3RQ7jCw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedvuddguddvudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefkuffhvfevffgjfhgtgfgfggesthhqredttderjeenucfhrhhomhepnfhu
-    khgvucflohhnvghsuceolhhukhgvsehljhhonhgvshdruggvvheqnecuggftrfgrthhtvg
-    hrnhepteegteefhefhteegleejudfffffghfekleeijeeugfffteeiudefvdetteeuuedv
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehluhhkvgeslhhjohhnvghsrdguvghv
-X-ME-Proxy: <xmx:zHglY4ZDwYgKEkuh7blhyMc33orS7MBycfnTcFhKXhyAirm7L6YUFg>
-    <xmx:zHglY2bov4wxjFAD0h5Gsp8NmS4Q2lhTVZbAD3fqTL8D3O0rNZZ8mg>
-    <xmx:zHglY8AzcIvvpUSlw8GfdIuLTmEvEVY6g-oIOr28WSmo7B6EQaXwHw>
-    <xmx:zHglY9VrhnqhyFNbJcgPwgT8yDVym_kgr5OnOZ8XOMY0oI6MUf5CHQ>
-Feedback-ID: i5ec1447f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 17 Sep 2022 03:35:36 -0400 (EDT)
-Message-ID: <a5f1976a3b8e905a09ebb08f3baad0996101c5bb.camel@ljones.dev>
-Subject: Re: [PATCH 4/4] acpi/x86: s2idle: Add a quirk for ASUS TUF Gaming
- A17 FA707RE
-From:   Luke Jones <luke@ljones.dev>
-To:     Mario Limonciello <mario.limonciello@amd.com>, rafael@kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     catalin@antebit.com, Shyam-sundar.S-k@amd.com,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Date:   Sat, 17 Sep 2022 19:35:27 +1200
-In-Reply-To: <20220909180509.638-5-mario.limonciello@amd.com>
-References: <20220909180509.638-1-mario.limonciello@amd.com>
-         <20220909180509.638-5-mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.45.3 (by Flathub.org)) 
+        with ESMTP id S229635AbiIQJKM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Sep 2022 05:10:12 -0400
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCCBE1F2F4
+        for <linux-acpi@vger.kernel.org>; Sat, 17 Sep 2022 02:10:08 -0700 (PDT)
+Received: (wp-smtpd smtp.tlen.pl 2064 invoked from network); 17 Sep 2022 11:10:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1663405805; bh=bdpWMldszljR9IIl+SiHjMb2AqiP59bitQfYai6g6Gs=;
+          h=From:To:Cc:Subject;
+          b=miQ/uhsAqKHFrHhaYizz7E9AhPT90d3buuS12qv+3sTlF+jVmQbNPTW0zuvaLuFM/
+           hwCGeeG9ppK2kvDgYsHDH9egn97z5HJ51QQgD6MYWNowIcACX4RJVAdbKkn7utm/6r
+           sCiVS0/RIxDP1v7RcPNR1FkTt7eya5Sl720/6sNc=
+Received: from aafb69.neoplus.adsl.tpnet.pl (HELO localhost.localdomain) (mat.jonczyk@o2.pl@[83.4.131.69])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with SMTP
+          for <linux-kernel@vger.kernel.org>; 17 Sep 2022 11:10:05 +0200
+From:   =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+To:     linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@suse.de>
+Subject: [PATCH v2] acpi,pci: handle duplicate IRQ routing entries returned from _PRT
+Date:   Sat, 17 Sep 2022 11:09:44 +0200
+Message-Id: <20220917090944.110885-1-mat.jonczyk@o2.pl>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 4cb65835fd21cc6015c53d8ff4cb259a
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 000000A [YVO0]                               
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mario,
+On some platforms, the ACPI _PRT function returns duplicate interrupt
+routing entries. Linux uses the first matching entry, but sometimes the
+second matching entry contains the correct interrupt vector.
 
-On Fri, 2022-09-09 at 13:05 -0500, Mario Limonciello wrote:
-> ASUS TUF Gaming A17 FA707RE has problems with ACPI events after
-> s2idle resume.=C2=A0 It's from a missing call to an ASL method in AMD
-> the s2idle calling path. Force the system to use the Microsoft
-> Modern Standby calling path instead.
->=20
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216101
-> Reported-and-tested-by: catalin@antebit.com
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> =C2=A0drivers/acpi/x86/s2idle.c | 24 ++++++++++++++++++++++++
-> =C2=A01 file changed, 24 insertions(+)
->=20
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index a9b0f2b54a1c..6a2c94fdbeae 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -17,6 +17,7 @@
-> =C2=A0
-> =C2=A0#include <linux/acpi.h>
-> =C2=A0#include <linux/device.h>
-> +#include <linux/dmi.h>
-> =C2=A0#include <linux/suspend.h>
-> =C2=A0
-> =C2=A0#include "../sleep.h"
-> @@ -400,6 +401,28 @@ static const struct acpi_device_id amd_hid_ids[]
-> =3D {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{}
-> =C2=A0};
-> =C2=A0
-> +static int lps0_prefer_microsoft(const struct dmi_system_id *id)
-> +{
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0pr_debug("Preferring Microsoft=
- GUID.\n");
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prefer_microsoft_guid =3D true=
-;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> +}
-> +
-> +static const struct dmi_system_id s2idle_dmi_table[] __initconst =3D {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0/*
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 * ASUS TUF Gaming A17 FA707RE
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 * https://bugzilla.kernel.org/show_bug.cgi?id=3D216101
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 */
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0.callback =3D lps0_prefer_microsoft,
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0.matches =3D {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0DMI_MATCH=
-(DMI_SYS_VENDOR, "ASUSTeK COMPUTER
-> INC."),
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0DMI_MATCH=
-(DMI_PRODUCT_NAME, "ASUS TUF Gaming
-> A17"),
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0},
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0},
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{}
-> +};
-> +
-> =C2=A0static int lps0_device_attach(struct acpi_device *adev,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct acpi_device_id *not_used)
-> =C2=A0{
-> @@ -568,6 +591,7 @@ static const struct platform_s2idle_ops
-> acpi_s2idle_ops_lps0 =3D {
-> =C2=A0
-> =C2=A0void acpi_s2idle_setup(void)
-> =C2=A0{
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dmi_check_system(s2idle_dmi_ta=
-ble);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0acpi_scan_add_handler(&lp=
-s0_handler);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0s2idle_set_ops(&acpi_s2id=
-le_ops_lps0);
-> =C2=A0}
+This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
+SMBus controller. This controller was nonfunctional unless its interrupt
+usage was disabled (using the "disable_features=0x10" module parameter).
 
-I'm confirming that this works for another laptop with the same issue -
-the GA402R series.
+After investigation, it turned out that the driver was using an
+incorrect interrupt vector: in lspci output for this device there was:
+        Interrupt: pin B routed to IRQ 19
+but after running i2cdetect (without using any i2c-i801 module
+parameters) the following was logged to dmesg:
 
-The diff as follows (I'm unsure of how best to submit this as it is
-dependant on your work - I don't need attribution for this):
+        [...]
+        [  132.248657] i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
+        [  132.248669] i801_smbus 0000:00:1f.3: Transaction timeout
+        [  132.452649] i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
+        [  132.452662] i801_smbus 0000:00:1f.3: Transaction timeout
+        [  132.467682] irq 17: nobody cared (try booting with the "irqpoll" option)
 
+Existence of duplicate entries in a table returned by the _PRT method
+was confirmed by disassembling the ACPI DSTD table.
 
- drivers/acpi/x86/s2idle.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Linux used the first matching entry, which was incorrect. In order not
+to disrupt existing systems, use the first matching entry unless the
+pci=prtlast kernel parameter is used or a Dell Latitude E6500 laptop is
+detected.
 
-diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-index e2b73809ab50..0c8348de5cbc 100644
---- a/drivers/acpi/x86/s2idle.c
-+++ b/drivers/acpi/x86/s2idle.c
-@@ -420,6 +420,17 @@ static const struct dmi_system_id
-s2idle_dmi_table[] __initconst =3D {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS TUF Gaming
-A17"),
- 		},
- 	},
+Disclaimer: there is nothing really interesting connected to the SMBus
+controller on this laptop, but this change may help other systems.
+
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Borislav Petkov <bp@suse.de>
+
+---
+v2: do not quote the disassembled ACPI DSDT table - for copyright reasons.
+---
+ .../admin-guide/kernel-parameters.txt         |  8 ++
+ drivers/acpi/pci_irq.c                        | 89 ++++++++++++++++++-
+ drivers/pci/pci.c                             |  9 ++
+ 3 files changed, 102 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 426fa892d311..2ff351db10b8 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4190,6 +4190,14 @@
+ 				bridge windows. This is the default on modern
+ 				hardware. If you need to use this, please report
+ 				a bug to <linux-pci@vger.kernel.org>.
++		prtlast		If the _PRT ACPI method returns duplicate
++				IRQ routing entries, use the last matching entry
++				for a given device. If the platform may be
++				affected by this problem, an error message is
++				printed to dmesg - this parameter is
++				ineffective otherwise. If you need to use this,
++				please report a bug to
++				<linux-pci@vger.kernel.org>.
+ 		routeirq	Do IRQ routing for all PCI devices.
+ 				This is normally done in pci_enable_device(),
+ 				so this option is a temporary workaround
+diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+index 08e15774fb9f..5cead840de0b 100644
+--- a/drivers/acpi/pci_irq.c
++++ b/drivers/acpi/pci_irq.c
+@@ -196,12 +196,73 @@ static int acpi_pci_irq_check_entry(acpi_handle handle, struct pci_dev *dev,
+ 	return 0;
+ }
+ 
++extern bool pci_prtlast;
++
++static const struct dmi_system_id pci_prtlast_dmi[] = {
 +	{
-+		/*
-+		 * ASUS ROG Zephyrus G14 GA402R<variant> series
-+		 * These laptops have a similar issue to the FA707RE
-+		 */
-+		.callback =3D lps0_prefer_microsoft,
-+		.matches =3D {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER
-INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "ROG Zephyrus G14
-GA402R"),
++		.ident = "Dell Latitude E6500",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Latitude E6500"),
 +		},
 +	},
- 	{}
- };
-=20
---=20
-2.37.3
++	{ }
++};
++
++static bool acpi_pci_prt_use_last(struct acpi_prt_entry *curr,
++				  const char *current_source,
++				  const char *previous_match_source,
++				  int previous_match_index)
++{
++	bool ret;
++	const struct dmi_system_id *id;
++	const int msg_bufsize = 512;
++	char *msg = kmalloc(msg_bufsize, GFP_KERNEL);
++
++	if (!msg)
++		return false;
++
++	snprintf(msg, msg_bufsize,
++		 FW_BUG
++		 "ACPI _PRT returned duplicate IRQ routing entries for PCI device "
++		 "%04x:%02x:%02x[INT%c]: %s[%d] and %s[%d]. ",
++		 curr->id.segment, curr->id.bus, curr->id.device,
++		 pin_name(curr->pin),
++		 previous_match_source, previous_match_index,
++		 current_source, curr->index);
++
++	id = dmi_first_match(pci_prtlast_dmi);
++
++	if (id) {
++		pr_warn("%s%s detected, using last entry.\n",
++			msg, id->ident);
++
++		ret = true;
++	} else if (pci_prtlast) {
++		pr_err(
++"%sUsing last entry, as directed on the command line. If this helps, report a bug.\n",
++		       msg);
++
++		ret = true;
++	} else {
++		pr_err("%sIf necessary, use \"pci=prtlast\" and report a bug.\n",
++		       msg);
++
++		ret = false;
++	}
++
++	kfree(msg);
++	return ret;
++}
++
+ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
+-			  int pin, struct acpi_prt_entry **entry_ptr)
++			  int pin, struct acpi_prt_entry **entry_ptr_out)
+ {
+ 	acpi_status status;
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	struct acpi_pci_routing_table *entry;
++	struct acpi_prt_entry *match = NULL;
++	const char *match_source = NULL;
+ 	acpi_handle handle = NULL;
+ 
+ 	if (dev->bus->bridge)
+@@ -219,13 +280,33 @@ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
+ 
+ 	entry = buffer.pointer;
+ 	while (entry && (entry->length > 0)) {
+-		if (!acpi_pci_irq_check_entry(handle, dev, pin,
+-						 entry, entry_ptr))
+-			break;
++		struct acpi_prt_entry *curr;
++
++		if (!acpi_pci_irq_check_entry(handle, dev, pin, entry, &curr)) {
++			if (!match) {
++				// first match
++				match = curr;
++				match_source = entry->source;
++			} else if (!acpi_pci_prt_use_last(curr,
++							  entry->source,
++							  match_source,
++							  match->index)) {
++				// duplicates found, use first entry
++				kfree(curr);
++			} else {
++				// duplicates found, use last entry
++				kfree(match);
++				match = curr;
++				match_source = entry->source;
++			}
++		}
++
+ 		entry = (struct acpi_pci_routing_table *)
+ 		    ((unsigned long)entry + entry->length);
+ 	}
+ 
++	*entry_ptr_out = match;
++
+ 	kfree(buffer.pointer);
+ 	return 0;
+ }
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 95bc329e74c0..a14a2e4e4197 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -155,6 +155,11 @@ static bool pci_bridge_d3_disable;
+ /* Force bridge_d3 for all PCIe ports */
+ static bool pci_bridge_d3_force;
+ 
++#ifdef CONFIG_ACPI
++/* Use the last matching entry from the table returned by the _PRT ACPI method. */
++bool pci_prtlast;
++#endif
++
+ static int __init pcie_port_pm_setup(char *str)
+ {
+ 	if (!strcmp(str, "off"))
+@@ -6896,6 +6901,10 @@ static int __init pci_setup(char *str)
+ 				pci_add_flags(PCI_SCAN_ALL_PCIE_DEVS);
+ 			} else if (!strncmp(str, "disable_acs_redir=", 18)) {
+ 				disable_acs_redir_param = str + 18;
++#ifdef CONFIG_ACPI
++			} else if (!strncmp(str, "prtlast", 7)) {
++				pci_prtlast = true;
++#endif
+ 			} else {
+ 				pr_err("PCI: Unknown option `%s'\n", str);
+ 			}
+
+base-commit: 7e18e42e4b280c85b76967a9106a13ca61c16179
+-- 
+2.25.1
 
