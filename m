@@ -2,309 +2,212 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C30925BD183
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 17:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 962695BD18A
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 17:59:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230135AbiISP5T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Sep 2022 11:57:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45116 "EHLO
+        id S230372AbiISP71 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Sep 2022 11:59:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229749AbiISP5S (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 11:57:18 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2054.outbound.protection.outlook.com [40.107.244.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF65910544;
-        Mon, 19 Sep 2022 08:57:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NhOOe4EiocUMCCZso36NSn+Zfmq3nMqD32PTQRKA0iWo47o+gvvizRH9MGPFnZovYQ9HwxQjWhk2RjhvVFjx1asflbdWQHTmEj1/A+Yn4gprUEzLTHAf7Fg9gO33MyB8lI3JYDTX+Ojw+V+db2uW1O5QggQTxEWwftbEnGGsv189xRNymyKjvSSjYhhusUm9gWSBnHf/pLR9SVM2GsmEbp2+5DTxpuzFmSaWW0x8zGkQRSHvsVQqOFmUQeThBu4++xU1mf332kUQfhikYGskkmxBGSNkJ8wvBcmhI6zp36gWu8LTNkWna4VjOvNtNtE/nUeYTDfNuz6e3cniNfawrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OzcmikmZ3O8qk+Tp6UNoyLo2uEXUGdDF7nXUHRdSzwE=;
- b=JPWxPLA1HenoJ8G4KSMPSOqwgdRR3mkm0mnd0nWKy2oMEqE7Q5+SOqtY51c1gT9uAnR6Uq5wzOScLYNyVd+TZ5ZmkPdiyqm/d9iTieN1udgDG8LtbDXda58u8+aRCgfMUP7sIVoiPSchwy99DO9/lBXV2ri1y9tJgFPRO09vZOapvYhGF7sYH1yNfjyOrTn1zlJ4dg2GRTOAM5XqXWUF613Tk5UnM45logWtig7L5wqbW/+X7rejHE8zlGjuBbeb5z2aUDcgce5hOc5wBXJWw/pgBAg1gq6A4a6+JxGB4quw8fzuiIm9abFjlohz8Pc6PHapUbRaVjjxgA7oYTQe1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OzcmikmZ3O8qk+Tp6UNoyLo2uEXUGdDF7nXUHRdSzwE=;
- b=Vsq1N/Lpi4NblSl4prSdcqn7QbVFPMnWs6f8Krqsjgj2szuSw7uyl4nWPTXEuEcfpwlvkmp7+Crz+XOgn2jhF9U1vuJtD800naeQLQhNEr8V/72rCqkILkrcS1/idgzp0T7nQ68m3dCf4r08hvaNM0/pIHEBqwOxfAVrx4mOmfs=
-Received: from MW4PR03CA0175.namprd03.prod.outlook.com (2603:10b6:303:8d::30)
- by DS7PR12MB6358.namprd12.prod.outlook.com (2603:10b6:8:95::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.18; Mon, 19 Sep
- 2022 15:57:15 +0000
-Received: from CO1NAM11FT085.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:8d:cafe::a5) by MW4PR03CA0175.outlook.office365.com
- (2603:10b6:303:8d::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.21 via Frontend
- Transport; Mon, 19 Sep 2022 15:57:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT085.mail.protection.outlook.com (10.13.174.137) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5632.12 via Frontend Transport; Mon, 19 Sep 2022 15:57:14 +0000
-Received: from fritz.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Mon, 19 Sep
- 2022 10:57:06 -0500
-From:   Kim Phillips <kim.phillips@amd.com>
-To:     <iommu@lists.linux.dev>, <joro@8bytes.org>
-CC:     <robin.murphy@arm.com>, <suravee.suthikulpanit@amd.com>,
-        <vasant.hegde@amd.com>, Mike Day <michael.day@amd.com>,
-        <linux-acpi@vger.kernel.org>, Kim Phillips <kim.phillips@amd.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2 2/2] iommu/amd: Fix ill-formed ivrs_ioapic, ivrs_hpet and ivrs_acpihid options
-Date:   Mon, 19 Sep 2022 10:56:38 -0500
-Message-ID: <20220919155638.391481-2-kim.phillips@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220919155638.391481-1-kim.phillips@amd.com>
-References: <20220919155638.391481-1-kim.phillips@amd.com>
+        with ESMTP id S229792AbiISP7Y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 11:59:24 -0400
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2856812AD1
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:59:19 -0700 (PDT)
+Received: by mail-io1-xd35.google.com with SMTP id z191so23245915iof.10
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:59:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=KaD1pWaUPMswQsrZWHX8uZWCGX8Pw+yumugltNensJI=;
+        b=gwHzFhk0QuvT2H7Vj2faGgZRTHBrcXLRk2VZouECherRj3HQbRZ4kUhtRYvg/d8BhO
+         zUXSQpnEuux5hcBDaWt59boUlVYL9hK7UWw01Ei4BPI85Qur5PnnhOpVbhHy7qo/9IId
+         XwfXM7fBqsWn0RQAr5ebv4EDaE7CG2HU8GilM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=KaD1pWaUPMswQsrZWHX8uZWCGX8Pw+yumugltNensJI=;
+        b=hyjcXIzHtJAJqulSkAkJsp3LXYt8RX81YpcCr0UIWejN1p1+hBBEO2qBP/Z4SMBpdy
+         hewh2rEmASQ29TF96sVr29M5sLK4DmuswPsgqSXGUJfdKvRx91rnESf43modgG8KbHLG
+         mPUNQNnEmsXF3WMEPMsz/gcx28Uh0I0oiYdSuBZxD/xr/LwPYuxC5TLsTh0x/XZ2WM8W
+         DEIYvPK7qiuKUg7yJXv2eESo6OHKhHWFEcnmtODJBPyH7+1Yz18qni49eXaMfQNEHFxR
+         2SpzHDBwLjfm849V3AndiP6y2rbXM2IYcVeXhGWk1sVoYHXxy+tpYz+etkEDYXqhmItW
+         oLtw==
+X-Gm-Message-State: ACrzQf3soYOTtijQhutny4C7XSUBNBPNXDEitfb8A7w8MDGzW4wXF2zN
+        2Ps7POmUeLZvr3Nr81Mfy9PDOdgf4R5Z9o09
+X-Google-Smtp-Source: AMsMyM74lntwz3roPwRqRUn67N0qYgUb2HpK5DgHz6zzjvg/ge+Ib34/0PiuP6w+yq7yqVa6upfIHw==
+X-Received: by 2002:a05:6602:164b:b0:6a2:83c0:d3f5 with SMTP id y11-20020a056602164b00b006a283c0d3f5mr6255836iow.77.1663603158973;
+        Mon, 19 Sep 2022 08:59:18 -0700 (PDT)
+Received: from rrangel920.bld.corp.google.com (h24-56-189-219.arvdco.broadband.dynamic.tds.net. [24.56.189.219])
+        by smtp.gmail.com with ESMTPSA id t70-20020a025449000000b00349fb9b1abesm5634154jaa.106.2022.09.19.08.59.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Sep 2022 08:59:18 -0700 (PDT)
+From:   Raul E Rangel <rrangel@chromium.org>
+To:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org
+Cc:     timvp@google.com, hdegoede@redhat.com,
+        andriy.shevchenko@linux.intel.com, rafael@kernel.org,
+        mario.limonciello@amd.com, jingle.wu@emc.com.tw,
+        mika.westerberg@linux.intel.com, dmitry.torokhov@gmail.com,
+        linus.walleij@linaro.org, Raul E Rangel <rrangel@chromium.org>,
+        Alistair Francis <alistair@alistair23.me>,
+        Angela Czubak <acz@semihalf.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Johnny Chuang <johnny.chuang.emc@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Len Brown <lenb@kernel.org>, Rob Herring <robh@kernel.org>,
+        Terry Bowman <terry.bowman@amd.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 00/13] acpi: i2c: Use SharedAndWake and ExclusiveAndWake to enable wake irq
+Date:   Mon, 19 Sep 2022 09:59:02 -0600
+Message-Id: <20220919155916.1044219-1-rrangel@chromium.org>
+X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT085:EE_|DS7PR12MB6358:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4404d3c7-6259-440a-e4b9-08da9a579f34
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Wa8FvQun4ezEBUVy3t3T12UsaTQn2R+Zy0iQZAWgka11og+LKz1zkGzCrpLk6F+CnkQHarHBwHyXmiDI8ynL1X5jGexvY46369OQ9Y5J7DlG+ozxniKliOzf+41bxoWSHwAA0htrYqdxdPe2XqM1AN9OZPXVptDci8NhnAGXiKjCXHGD5u9yWUaZycnaqUcABxk096UlzjLzrzaENdhHmOHKhKFZMzyWStC+ckkGmvsZcbekwar4EwO+2ILj4qAO7o5WFmn10f8qzcocbO2ONUnzBnfaP9w4YONuGJbr+Hrrcg8d0eymw1yo7Ci4bdqbcbCyejHT9/DOhF3kCDIZMt1H+8PNUTY8ptZSx7mGOhA29WMucXbjElMFv3RR48X6byFf13VpmFtgeE2QHsNP22qnVnLgpFcN+uoYEiYjswWZUhVnDxKE+SftO4CBG0ycmC7gUsSsmCKLo0hYE+sH5/TFuzyjrMK60gEgOtKr4jcrOqRx1ncJyY9Layh2vfg/1JB5wDGpDrpVj+bLCRKr4/346R+guLm8w+6jM58pAhxevBgQxQknkk6gOWpdEz9ZiaunxR3MbMjfe2X6rG1hjawAv1DlzHPfc0LiNsSI1bYkyB5bKeM2GrcLeJ/fFTcySzblp9zSjwLj85WliSyUqD5PX7Xa2YgVIS54ZlsW2MDosH+Qg6VtilOGrIyxjKgc5iOd5s2jcDaarfmXWwmdqTiMNg58rQXp6ZDRwJrZYDSkai41M4Tg2+isYQbPm01Y9OX9btfbBqVkKXl0JX/PrnwTx0fIFR2nsSBMzJwCN9p43pW0xUgNBo6Yb3C8SjxnjvvZOFGCVFDK5ZhJApByNA==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(346002)(39860400002)(376002)(136003)(396003)(451199015)(40470700004)(46966006)(36840700001)(36860700001)(44832011)(4326008)(36756003)(478600001)(110136005)(966005)(70206006)(70586007)(54906003)(41300700001)(7696005)(6666004)(86362001)(2616005)(8936002)(82310400005)(81166007)(26005)(356005)(336012)(40460700003)(16526019)(83380400001)(5660300002)(40480700001)(82740400003)(8676002)(316002)(186003)(1076003)(47076005)(426003)(2906002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2022 15:57:14.8347
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4404d3c7-6259-440a-e4b9-08da9a579f34
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT085.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6358
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently, these options cause the following libkmod error:
+Today, i2c drivers are making the assumption that their IRQs can also
+be used as wake IRQs. This isn't always the case and it can lead to
+spurious wakes. This has recently started to affect AMD Chromebooks.
+With the introduction of
+d62bd5ce12d7 ("pinctrl: amd: Implement irq_set_wake"), the AMD GPIO
+controller gained the capability to set the wake bit on each GPIO. The
+ACPI specification defines two ways to inform the system if a device is
+wake capable:
+1) The _PRW object defines the GPE that can be used to wake the system.
+2) Setting ExclusiveAndWake or SharedAndWake in the _CRS GpioInt.
 
-libkmod: ERROR ../libkmod/libkmod-config.c:489 kcmdline_parse_result: \
-	Ignoring bad option on kernel command line while parsing module \
-	name: 'ivrs_xxxx[XX:XX'
+Currently only the first method is supported. The i2c drivers don't have
+any indication that the IRQ is wake capable, so they guess. This causes
+spurious interrupts, for example:
+* We have an ACPI HID device that has `_PR0` and `_PR3`. It doesn't have
+  `_PRW` or `ExclusiveAndWake` so that means the device can't wake the
+  system.
+* The IRQ line is active level low for this device and is pulled up by
+  the power resource defined in `_PR0`/`_PR3`.
+* The i2c driver will (incorrectly) arm the GPIO for wake by calling
+  `enable_irq_wake` as part of its suspend hook.
+* ACPI will power down the device since it doesn't have a wake GPE
+  associated with it.
+* When the device is powered down, the IRQ line will drop, and it will
+  trigger a wake event.
 
-Fix by introducing a new parameter format for these options and
-throw a warning for the deprecated format.
+See the following debug log:
+[   42.335804] PM: Suspending system (s2idle)
+[   42.340186] amd_gpio AMD0030:00: RX: Setting wake for pin 89 to enable
+[   42.467736]     power-0416 __acpi_power_off      : Power resource [PR00] turned off
+[   42.467739] device_pm-0280 device_set_power      : Device [H05D] transitioned to D3cold
+[   42.475210] PM: pm_system_irq_wakeup: 11 triggered pinctrl_amd
+[   42.535293] PM: Wakeup unrelated to ACPI SCI
+[   42.535294] PM: resume from suspend-to-idle
 
-Users are still allowed to omit the PCI Segment if zero.
+In order to fix this, we need to take into account the wake capable bit
+defined on the Interrupt/GpioInt. This is accomplished by:
+* Migrating some of the i2c drivers over to using the PM subsystem to
+  manage the wake IRQ.
+* Expose the wake_capable bit from the ACPI Interrupt/GpioInt resource
+  to the  i2c core.
+* Use the wake_capable bit in the i2c core to call
+  `dev_pm_set_wake_irq`. This reuses the existing device tree flow.
+* Make the i2c drivers stop calling `dev_pm_set_wake_irq` since it's now
+  handled by the i2c core.
+* Make the ACPI device PM system aware of the wake_irq. This is
+  necessary so the device doesn't incorrectly get powered down when a
+  wake_irq is enabled.
 
-Adding a Link: to the reason why we're modding the syntax parsing
-in the driver and not in libkmod.
+I've tested this code with various combinations of having _PRW,
+ExclusiveAndWake and power resources all defined or not defined, but it
+would be great if others could test this out on their hardware.
 
-Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-modules/20200310082308.14318-2-lucas.demarchi@intel.com/
-Reported-by: Kim Phillips <kim.phillips@amd.com>
-Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
----
-v2:
- - Address Robin Murphy's comment:  Have deprecated users see:
-   "option format deprecated; use ivrs_ioapic=%d@%04x:%02x:%02x.%d instead"
- - Fix cut-n-paste bug: ivrs_ioapic= -> ivrs_hpet=
+I'm sure this will surface some devices where the IRQs were not
+correctly marked as wake capable. Ideally the firmware can be fixed, but
+if not we can work around this in the kernel by providing a board
+specific `struct i2c_board_info` with the `I2C_CLIENT_WAKE` flag set.
+See `chromeos_laptop.c` for an example of matching DMI properties and
+setting the `I2C_CLIENT_WAKE` override.
 
- .../admin-guide/kernel-parameters.txt         | 27 +++++--
- drivers/iommu/amd/init.c                      | 79 +++++++++++++------
- 2 files changed, 76 insertions(+), 30 deletions(-)
+Thanks,
+Raul
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index d7f30902fda0..77f780ad343e 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2294,7 +2294,13 @@
- 			Provide an override to the IOAPIC-ID<->DEVICE-ID
- 			mapping provided in the IVRS ACPI table.
- 			By default, PCI segment is 0, and can be omitted.
--			For example:
-+
-+			For example, to map IOAPIC-ID decimal 10 to
-+			PCI segment 0x1 and PCI device 00:14.0,
-+			write the parameter as:
-+				ivrs_ioapic=10@0001:00:14.0
-+
-+			Deprecated formats:
- 			* To map IOAPIC-ID decimal 10 to PCI device 00:14.0
- 			  write the parameter as:
- 				ivrs_ioapic[10]=00:14.0
-@@ -2306,7 +2312,13 @@
- 			Provide an override to the HPET-ID<->DEVICE-ID
- 			mapping provided in the IVRS ACPI table.
- 			By default, PCI segment is 0, and can be omitted.
--			For example:
-+
-+			For example, to map HPET-ID decimal 10 to
-+			PCI segment 0x1 and PCI device 00:14.0,
-+			write the parameter as:
-+				ivrs_hpet=10@0001:00:14.0
-+
-+			Deprecated formats:
- 			* To map HPET-ID decimal 0 to PCI device 00:14.0
- 			  write the parameter as:
- 				ivrs_hpet[0]=00:14.0
-@@ -2317,15 +2329,20 @@
- 	ivrs_acpihid	[HW,X86-64]
- 			Provide an override to the ACPI-HID:UID<->DEVICE-ID
- 			mapping provided in the IVRS ACPI table.
-+			By default, PCI segment is 0, and can be omitted.
- 
- 			For example, to map UART-HID:UID AMD0020:0 to
- 			PCI segment 0x1 and PCI device ID 00:14.5,
- 			write the parameter as:
--				ivrs_acpihid[0001:00:14.5]=AMD0020:0
-+				ivrs_acpihid=AMD0020:0@0001:00:14.5
- 
--			By default, PCI segment is 0, and can be omitted.
--			For example, PCI device 00:14.5 write the parameter as:
-+			Deprecated formats:
-+			* To map UART-HID:UID AMD0020:0 to PCI segment is 0,
-+			  PCI device ID 00:14.5, write the parameter as:
- 				ivrs_acpihid[00:14.5]=AMD0020:0
-+			* To map UART-HID:UID AMD0020:0 to PCI segment 0x1 and
-+			  PCI device ID 00:14.5, write the parameter as:
-+				ivrs_acpihid[0001:00:14.5]=AMD0020:0
- 
- 	js=		[HW,JOY] Analog joystick
- 			See Documentation/input/joydev/joystick.rst.
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index ef0e1a4b5a11..6601b677c250 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3385,18 +3385,24 @@ static int __init parse_amd_iommu_options(char *str)
- static int __init parse_ivrs_ioapic(char *str)
- {
- 	u32 seg = 0, bus, dev, fn;
--	int ret, id, i;
-+	int id, i;
- 	u32 devid;
- 
--	ret = sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn);
--	if (ret != 4) {
--		ret = sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn);
--		if (ret != 5) {
--			pr_err("Invalid command line: ivrs_ioapic%s\n", str);
--			return 1;
--		}
-+	if (sscanf(str, "=%d@%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
-+	    sscanf(str, "=%d@%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn) == 5)
-+		goto found;
-+
-+	if (sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
-+	    sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn) == 5) {
-+		pr_warn("ivrs_ioapic%s option format deprecated; use ivrs_ioapic=%d@%04x:%02x:%02x.%d instead\n",
-+			str, id, seg, bus, dev, fn);
-+		goto found;
- 	}
- 
-+	pr_err("Invalid command line: ivrs_ioapic%s\n", str);
-+	return 1;
-+
-+found:
- 	if (early_ioapic_map_size == EARLY_MAP_SIZE) {
- 		pr_err("Early IOAPIC map overflow - ignoring ivrs_ioapic%s\n",
- 			str);
-@@ -3417,18 +3423,24 @@ static int __init parse_ivrs_ioapic(char *str)
- static int __init parse_ivrs_hpet(char *str)
- {
- 	u32 seg = 0, bus, dev, fn;
--	int ret, id, i;
-+	int id, i;
- 	u32 devid;
- 
--	ret = sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn);
--	if (ret != 4) {
--		ret = sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn);
--		if (ret != 5) {
--			pr_err("Invalid command line: ivrs_hpet%s\n", str);
--			return 1;
--		}
-+	if (sscanf(str, "=%d@%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
-+	    sscanf(str, "=%d@%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn) == 5)
-+		goto found;
-+
-+	if (sscanf(str, "[%d]=%x:%x.%x", &id, &bus, &dev, &fn) == 4 ||
-+	    sscanf(str, "[%d]=%x:%x:%x.%x", &id, &seg, &bus, &dev, &fn) == 5) {
-+		pr_warn("ivrs_hpet%s option format deprecated; use ivrs_hpet=%d@%04x:%02x:%02x.%d instead\n",
-+			str, id, seg, bus, dev, fn);
-+		goto found;
- 	}
- 
-+	pr_err("Invalid command line: ivrs_hpet%s\n", str);
-+	return 1;
-+
-+found:
- 	if (early_hpet_map_size == EARLY_MAP_SIZE) {
- 		pr_err("Early HPET map overflow - ignoring ivrs_hpet%s\n",
- 			str);
-@@ -3449,19 +3461,36 @@ static int __init parse_ivrs_hpet(char *str)
- static int __init parse_ivrs_acpihid(char *str)
- {
- 	u32 seg = 0, bus, dev, fn;
--	char *hid, *uid, *p;
-+	char *hid, *uid, *p, *addr;
- 	char acpiid[ACPIHID_UID_LEN + ACPIHID_HID_LEN] = {0};
--	int ret, i;
--
--	ret = sscanf(str, "[%x:%x.%x]=%s", &bus, &dev, &fn, acpiid);
--	if (ret != 4) {
--		ret = sscanf(str, "[%x:%x:%x.%x]=%s", &seg, &bus, &dev, &fn, acpiid);
--		if (ret != 5) {
--			pr_err("Invalid command line: ivrs_acpihid(%s)\n", str);
--			return 1;
-+	int i;
-+
-+	addr = strchr(str, '@');
-+	if (!addr) {
-+		if (sscanf(str, "[%x:%x.%x]=%s", &bus, &dev, &fn, acpiid) == 4 ||
-+		    sscanf(str, "[%x:%x:%x.%x]=%s", &seg, &bus, &dev, &fn, acpiid) == 5) {
-+			pr_warn("ivrs_acpihid%s option format deprecated; use ivrs_acpihid=%s@%04x:%02x:%02x.%d instead\n",
-+				str, acpiid, seg, bus, dev, fn);
-+			goto found;
- 		}
-+		goto not_found;
- 	}
- 
-+	/* We have the '@', make it the terminator to get just the acpiid */
-+	*addr++ = 0;
-+
-+	if (sscanf(str, "=%s", acpiid) != 1)
-+		goto not_found;
-+
-+	if (sscanf(addr, "%x:%x.%x", &bus, &dev, &fn) == 3 ||
-+	    sscanf(addr, "%x:%x:%x.%x", &seg, &bus, &dev, &fn) == 4)
-+		goto found;
-+
-+not_found:
-+	pr_err("Invalid command line: ivrs_acpihid%s\n", str);
-+	return 1;
-+
-+found:
- 	p = acpiid;
- 	hid = strsep(&p, ":");
- 	uid = p;
+Changes in v4:
+- Added Reviewed-by
+- Reformatted with 96 char limit
+- Removed unnecessary !!
+- Removed unrelated white space change
+- Renamed i2c_acpi_add_resource to i2c_acpi_add_irq_resource
+- Expanded logic in i2c_acpi_add_i2c_resource to make it easier to read
+
+Changes in v3:
+- Kept `acpi_dev_gpio_irq_get_by` unchanged to avoid having to touch
+  unrelated drivers.
+- Converted wake_capable parameter to bool.
+- Fixed bad indent
+- Convert wake_capable to bool
+- Only update wake_capable pointer once
+- Move wake_capable local into local block
+
+Changes in v2:
+- Added elants_i2c to series
+- Added raydium_ts_i2c to series
+- Fixed call site in mlxbf_gige_probe
+- Added ability to extract wake bit from Interrupt/IRQ resources
+- Look at wake_cabple bit for IRQ/Interrupt resources
+- I chose not to keep the legacy code around since systems without DT or ACPI should be rare.
+
+Raul E Rangel (13):
+  HID: i2c-hid: Use PM subsystem to manage wake irq
+  Input: elan_i2c - Use PM subsystem to manage wake irq
+  Input: elants_i2c - Use PM subsystem to manage wake irq
+  Input: raydium_ts_i2c - Use PM subsystem to manage wake irq
+  gpiolib: acpi: Add wake_capable variants of acpi_dev_gpio_irq_get
+  ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
+  i2c: acpi: Use ACPI wake capability bit to set wake_irq
+  ACPI: PM: Take wake IRQ into consideration when entering
+    suspend-to-idle
+  HID: i2c-hid: acpi: Stop setting wakeup_capable
+  HID: i2c-hid: Don't set wake_capable and wake_irq
+  Input: elan_i2c - Don't set wake_capable and wake_irq
+  Input: elants_i2c - Don't set wake_capable and wake_irq
+  Input: raydium_ts_i2c - Don't set wake_capable and wake_irq
+
+ drivers/acpi/device_pm.c                   | 19 +++++++++--
+ drivers/acpi/irq.c                         |  8 +++--
+ drivers/acpi/resource.c                    | 23 ++++++++++----
+ drivers/gpio/gpiolib-acpi.c                | 15 +++++++--
+ drivers/gpio/gpiolib-acpi.h                |  2 ++
+ drivers/hid/i2c-hid/i2c-hid-acpi.c         |  5 ---
+ drivers/hid/i2c-hid/i2c-hid-core.c         | 24 ++------------
+ drivers/i2c/i2c-core-acpi.c                | 37 ++++++++++++++++------
+ drivers/i2c/i2c-core-base.c                |  6 +++-
+ drivers/i2c/i2c-core.h                     |  4 +--
+ drivers/input/mouse/elan_i2c_core.c        | 15 +--------
+ drivers/input/touchscreen/elants_i2c.c     | 13 ++------
+ drivers/input/touchscreen/raydium_i2c_ts.c |  7 +---
+ drivers/pnp/pnpacpi/rsparser.c             |  7 ++--
+ include/linux/acpi.h                       | 23 +++++++++++---
+ include/linux/ioport.h                     |  3 +-
+ 16 files changed, 117 insertions(+), 94 deletions(-)
+
 -- 
-2.34.1
+2.37.3.968.ga6b4b080e4-goog
 
