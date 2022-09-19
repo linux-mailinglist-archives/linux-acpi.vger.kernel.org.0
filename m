@@ -2,341 +2,338 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED9E05BD0B8
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 17:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDB755BD100
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 17:31:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbiISPWh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Sep 2022 11:22:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44028 "EHLO
+        id S230244AbiISPbY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Sep 2022 11:31:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230125AbiISPWK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 11:22:10 -0400
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C880C25;
-        Mon, 19 Sep 2022 08:21:27 -0700 (PDT)
-Received: by mail-qk1-f173.google.com with SMTP id q11so17656501qkc.12;
-        Mon, 19 Sep 2022 08:21:27 -0700 (PDT)
+        with ESMTP id S230188AbiISPbI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 11:31:08 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D084032BB9
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:31:06 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id g8so20527395iob.0
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:31:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=TJtbFKRoGiqIeIUx0M4B9tZ4pfPeod5mEoLdwUysHys=;
+        b=BiwYyDqhE0F49clj/AW/ikyBuNMX6gxBY/CFZUt//iTCGt3exdRQT1Ti9iiBoR6F5j
+         Jc4qylZx+Rd7Dpdy0TTaQ3n5h9JmOwwQ+svZmMhhg5mePMSv3fc8+mKFTe6kpZJ4o/eg
+         /por1H5C9hfLDxwNQkX6Xc1/KEzOprlv4yV1E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=zwk8/QhMZpatQGQHcLa6CxC1A70tMAO9HDHY25D5feE=;
-        b=seiQiH7oSb1o4bKfTfhPNtyABHn9SIpDT+BCJEyKS2ufotknqwNpdADiJT3lR5JHyk
-         PcrkFUhV0mxkxTw2QEPHLmVjny2b5wb95WE4wrC8jXYEvRHYHQgY7nXJsXp1VjNErWDW
-         qwAiYgZGtb1n9RZucbvLX/RRQ/bs1KiA1m7dJ78BzMsqbvlBF0xbn5cHOM0HghJr89Gl
-         BkCAdJtV+jWvdu2+DUE0EcrhiMl1WuIAVkIVQXeullRcJli7p0/iat2prsfWoeK7GjTH
-         SFzQxnNVAEPFWuXOW8g1VEpndUEAZNTKjevjzoX9uJy3+ZTnx0DTdsm7wyh834tzRzMO
-         xQZQ==
-X-Gm-Message-State: ACrzQf0efWM6jvkl7l16vaJXUlbSH/d4jS+7jyVOzUx4T9p3OGuYR/Eb
-        4PnPlbdy6XiP2txJ2sOg7rYSEQGZR/aqvbawP9E=
-X-Google-Smtp-Source: AMsMyM5cgrHdHMwYAR2D2ZjqABuHY9UEfVqKvTwIhmR6+N901HRJWzEi9ZfhaQwzx+J2b350jxNOS+DoidFDWdYllGY=
-X-Received: by 2002:a05:620a:46ac:b0:6ce:3e55:fc21 with SMTP id
- bq44-20020a05620a46ac00b006ce3e55fc21mr12973834qkb.285.1663600885830; Mon, 19
- Sep 2022 08:21:25 -0700 (PDT)
+        bh=TJtbFKRoGiqIeIUx0M4B9tZ4pfPeod5mEoLdwUysHys=;
+        b=ALvmPcMBCZWN6nblFaZs6AbQ6EJfed+XIV2c+NfVaJb5lb2EpzeexUcoSSUMMY7vwY
+         MQP3VC/QuSJOSMNPXSpwU6AOjGT/yiz9dj9snlZrfxlxMVUJbps8CVv8NBYEmNI94V9F
+         v+DeoV8nYAszZB6VzByvkkmZqFRCHNdlx0fTsaASH1rIlNw5Uq4s/PJdccOUV43FU+Ea
+         +GMCkU+lcOWohaUHdMmJW+4LruO9eBBGriEVhpajtgHtePVfN5SoTu7o1/d2ftJxEb0I
+         FcLKv0m9gMZ3fHkIrD3crKhK+YQBg2n9dJX9QGplHLS5bCtJ8KhIrPvmocO6OH1ockkC
+         FvwA==
+X-Gm-Message-State: ACrzQf1zAfh6ARbqbVhh4qTEhqtReLbEzGjSfxGNHyWOt7qpLEYNvriW
+        dilfLg0hT+SAtwNKTzLx4WUJqOwtermxTQ==
+X-Google-Smtp-Source: AMsMyM4XR1+xj9qcZY4D6/+wrAv5vj3r+H5OJ9hyPgGthu3//y6DNSJfGXyiPnKk2Cbn6/yBpAaDOw==
+X-Received: by 2002:a05:6638:2686:b0:35a:413a:b7a0 with SMTP id o6-20020a056638268600b0035a413ab7a0mr8418240jat.224.1663601465507;
+        Mon, 19 Sep 2022 08:31:05 -0700 (PDT)
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com. [209.85.166.169])
+        by smtp.gmail.com with ESMTPSA id x4-20020a056e021bc400b002eacd14e68esm12007214ilv.71.2022.09.19.08.31.04
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Sep 2022 08:31:05 -0700 (PDT)
+Received: by mail-il1-f169.google.com with SMTP id a9so15010622ilh.1
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:31:04 -0700 (PDT)
+X-Received: by 2002:a05:6e02:2189:b0:2f1:92d4:6b22 with SMTP id
+ j9-20020a056e02218900b002f192d46b22mr6968781ila.210.1663601464513; Mon, 19
+ Sep 2022 08:31:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220919095939.761690562@infradead.org>
-In-Reply-To: <20220919095939.761690562@infradead.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 19 Sep 2022 17:21:12 +0200
-Message-ID: <CAJZ5v0h3y-MRzHmbzrr6B4vBxkkw07LOdCVmBqSS4JDhtGSKXg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/44] cpuidle,rcu: Clean up the mess
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     richard.henderson@linaro.org,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, vgupta@kernel.org,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        ulli.kroll@googlemail.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        bcain@quicinc.com, Huacai Chen <chenhuacai@kernel.org>,
-        kernel@xen0n.name, Geert Uytterhoeven <geert@linux-m68k.org>,
-        sammy@sammy.net, Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi,
-        Stafford Horne <shorne@gmail.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        David Miller <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        anton.ivanov@cambridgegreys.com,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, acme@kernel.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        jolsa@kernel.org, namhyung@kernel.org,
-        Juergen Gross <jgross@suse.com>, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
+References: <20220914235801.1731478-1-rrangel@chromium.org>
+ <20220914155914.v3.6.I8092e417a8152475d13d8d638eb4c5d8ea12ac7b@changeid> <Yyg8UGRItbO4Abvb@smile.fi.intel.com>
+In-Reply-To: <Yyg8UGRItbO4Abvb@smile.fi.intel.com>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Mon, 19 Sep 2022 09:30:53 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30Axy2epgvB4oHAEmEiU14mQn5Q9FUa1NBiEVvMe4ZSwMw@mail.gmail.com>
+Message-ID: <CAHQZ30Axy2epgvB4oHAEmEiU14mQn5Q9FUa1NBiEVvMe4ZSwMw@mail.gmail.com>
+Subject: Re: [PATCH v3 06/13] ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        "jingle.wu" <jingle.wu@emc.com.tw>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tim Van Patten <timvp@google.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Anup Patel <anup@brainfault.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Atish Patra <atishp@atishpatra.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Christoph Lameter <cl@linux.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Petr Mladek <pmladek@suse.com>, senozhatsky@chromium.org,
-        John Ogness <john.ogness@linutronix.de>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Benjamin Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        vschneid@redhat.com, Frederic Weisbecker <fweisbec@gmail.com>,
-        ryabinin.a.a@gmail.com, Alexander Potapenko <glider@google.com>,
-        andreyknvl@gmail.com, Dmitry Vyukov <dvyukov@google.com>,
-        vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        linux-alpha@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-snps-arc@lists.infradead.org,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        openrisc@lists.librecores.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-s390@vger.kernel.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        kasan-dev@googlegroups.com
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Len Brown <lenb@kernel.org>,
+        Terry Bowman <terry.bowman@amd.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 19, 2022 at 12:17 PM Peter Zijlstra <peterz@infradead.org> wrote:
+On Mon, Sep 19, 2022 at 3:54 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> Hi All!
+> On Wed, Sep 14, 2022 at 05:57:54PM -0600, Raul E Rangel wrote:
+> > ACPI IRQ/Interrupt resources contain a bit that describes if the
+> > interrupt should wake the system. This change exposes that bit via
+> > a new IORESOURCE_IRQ_WAKECAPABLE flag. Drivers should check this flag
+> > before arming an IRQ to wake the system.
 >
-> At long last, a respin of the cpuidle vs rcu cleanup patches.
->
-> v1: https://lkml.kernel.org/r/20220608142723.103523089@infradead.org
->
-> These here patches clean up the mess that is cpuidle vs rcuidle.
->
-> At the end of the ride there's only on RCU_NONIDLE user left:
->
->   arch/arm64/kernel/suspend.c:            RCU_NONIDLE(__cpu_suspend_exit());
->
-> and 'one' trace_*_rcuidle() user:
->
->   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, caller_addr);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, caller_addr);
->   kernel/trace/trace_preemptirq.c:                trace_preempt_enable_rcuidle(a0, a1);
->   kernel/trace/trace_preemptirq.c:                trace_preempt_disable_rcuidle(a0, a1);
->
-> However this last is all in deprecated code that should be unused for GENERIC_ENTRY.
->
-> I've touched a lot of code that I can't test and I might've broken something by
-> accident. In particular the whole ARM cpuidle stuff was quite involved.
->
-> Please all; have a look where you haven't already.
->
->
-> New since v1:
->
->  - rebase on top of Frederic's rcu-context-tracking rename fest
->  - more omap goodness as per the last discusion (thanks Tony!)
->  - removed one more RCU_NONIDLE() from arm64/risc-v perf code
->  - ubsan/kasan fixes
->  - intel_idle module-param for testing
->  - a bunch of extra __always_inline, because compilers are silly.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> From code perspective it's straightforward, so
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> (take a look into nit-picks, though)
 
-for the whole set and let me know if you want me to merge any of these
-through cpuidle.
-
+I went ahead and re-ran clang-format with a 96 char limit, then I
+manually applied the rest of the nits.
 Thanks!
 
 >
-> ---
->  arch/alpha/kernel/process.c               |  1 -
->  arch/alpha/kernel/vmlinux.lds.S           |  1 -
->  arch/arc/kernel/process.c                 |  3 ++
->  arch/arc/kernel/vmlinux.lds.S             |  1 -
->  arch/arm/include/asm/vmlinux.lds.h        |  1 -
->  arch/arm/kernel/process.c                 |  1 -
->  arch/arm/kernel/smp.c                     |  6 +--
->  arch/arm/mach-gemini/board-dt.c           |  3 +-
->  arch/arm/mach-imx/cpuidle-imx6q.c         |  4 +-
->  arch/arm/mach-imx/cpuidle-imx6sx.c        |  5 ++-
->  arch/arm/mach-omap2/common.h              |  6 ++-
->  arch/arm/mach-omap2/cpuidle34xx.c         | 16 +++++++-
->  arch/arm/mach-omap2/cpuidle44xx.c         | 29 +++++++-------
->  arch/arm/mach-omap2/omap-mpuss-lowpower.c | 12 +++++-
->  arch/arm/mach-omap2/pm.h                  |  2 +-
->  arch/arm/mach-omap2/pm24xx.c              | 51 +-----------------------
->  arch/arm/mach-omap2/pm34xx.c              | 14 +++++--
->  arch/arm/mach-omap2/pm44xx.c              |  2 +-
->  arch/arm/mach-omap2/powerdomain.c         | 10 ++---
->  arch/arm64/kernel/idle.c                  |  1 -
->  arch/arm64/kernel/smp.c                   |  4 +-
->  arch/arm64/kernel/vmlinux.lds.S           |  1 -
->  arch/csky/kernel/process.c                |  1 -
->  arch/csky/kernel/smp.c                    |  2 +-
->  arch/csky/kernel/vmlinux.lds.S            |  1 -
->  arch/hexagon/kernel/process.c             |  1 -
->  arch/hexagon/kernel/vmlinux.lds.S         |  1 -
->  arch/ia64/kernel/process.c                |  1 +
->  arch/ia64/kernel/vmlinux.lds.S            |  1 -
->  arch/loongarch/kernel/idle.c              |  1 +
->  arch/loongarch/kernel/vmlinux.lds.S       |  1 -
->  arch/m68k/kernel/vmlinux-nommu.lds        |  1 -
->  arch/m68k/kernel/vmlinux-std.lds          |  1 -
->  arch/m68k/kernel/vmlinux-sun3.lds         |  1 -
->  arch/microblaze/kernel/process.c          |  1 -
->  arch/microblaze/kernel/vmlinux.lds.S      |  1 -
->  arch/mips/kernel/idle.c                   |  8 ++--
->  arch/mips/kernel/vmlinux.lds.S            |  1 -
->  arch/nios2/kernel/process.c               |  1 -
->  arch/nios2/kernel/vmlinux.lds.S           |  1 -
->  arch/openrisc/kernel/process.c            |  1 +
->  arch/openrisc/kernel/vmlinux.lds.S        |  1 -
->  arch/parisc/kernel/process.c              |  2 -
->  arch/parisc/kernel/vmlinux.lds.S          |  1 -
->  arch/powerpc/kernel/idle.c                |  5 +--
->  arch/powerpc/kernel/vmlinux.lds.S         |  1 -
->  arch/riscv/kernel/process.c               |  1 -
->  arch/riscv/kernel/vmlinux-xip.lds.S       |  1 -
->  arch/riscv/kernel/vmlinux.lds.S           |  1 -
->  arch/s390/kernel/idle.c                   |  1 -
->  arch/s390/kernel/vmlinux.lds.S            |  1 -
->  arch/sh/kernel/idle.c                     |  1 +
->  arch/sh/kernel/vmlinux.lds.S              |  1 -
->  arch/sparc/kernel/leon_pmc.c              |  4 ++
->  arch/sparc/kernel/process_32.c            |  1 -
->  arch/sparc/kernel/process_64.c            |  3 +-
->  arch/sparc/kernel/vmlinux.lds.S           |  1 -
->  arch/um/kernel/dyn.lds.S                  |  1 -
->  arch/um/kernel/process.c                  |  1 -
->  arch/um/kernel/uml.lds.S                  |  1 -
->  arch/x86/boot/compressed/vmlinux.lds.S    |  1 +
->  arch/x86/coco/tdx/tdcall.S                | 15 +------
->  arch/x86/coco/tdx/tdx.c                   | 25 ++++--------
->  arch/x86/events/amd/brs.c                 | 13 +++----
->  arch/x86/include/asm/fpu/xcr.h            |  4 +-
->  arch/x86/include/asm/irqflags.h           | 11 ++----
->  arch/x86/include/asm/mwait.h              | 14 +++----
->  arch/x86/include/asm/nospec-branch.h      |  2 +-
->  arch/x86/include/asm/paravirt.h           |  6 ++-
->  arch/x86/include/asm/perf_event.h         |  2 +-
->  arch/x86/include/asm/shared/io.h          |  4 +-
->  arch/x86/include/asm/shared/tdx.h         |  1 -
->  arch/x86/include/asm/special_insns.h      |  8 ++--
->  arch/x86/include/asm/xen/hypercall.h      |  2 +-
->  arch/x86/kernel/cpu/bugs.c                |  2 +-
->  arch/x86/kernel/fpu/core.c                |  4 +-
->  arch/x86/kernel/paravirt.c                | 14 ++++++-
->  arch/x86/kernel/process.c                 | 65 +++++++++++++++----------------
->  arch/x86/kernel/vmlinux.lds.S             |  1 -
->  arch/x86/lib/memcpy_64.S                  |  5 +--
->  arch/x86/lib/memmove_64.S                 |  4 +-
->  arch/x86/lib/memset_64.S                  |  4 +-
->  arch/x86/xen/enlighten_pv.c               |  2 +-
->  arch/x86/xen/irq.c                        |  2 +-
->  arch/xtensa/kernel/process.c              |  1 +
->  arch/xtensa/kernel/vmlinux.lds.S          |  1 -
->  drivers/acpi/processor_idle.c             | 36 ++++++++++-------
->  drivers/base/power/runtime.c              | 24 ++++++------
->  drivers/clk/clk.c                         |  8 ++--
->  drivers/cpuidle/cpuidle-arm.c             |  1 +
->  drivers/cpuidle/cpuidle-big_little.c      |  8 +++-
->  drivers/cpuidle/cpuidle-mvebu-v7.c        |  7 ++++
->  drivers/cpuidle/cpuidle-psci.c            | 10 +++--
->  drivers/cpuidle/cpuidle-qcom-spm.c        |  1 +
->  drivers/cpuidle/cpuidle-riscv-sbi.c       | 10 +++--
->  drivers/cpuidle/cpuidle-tegra.c           | 21 +++++++---
->  drivers/cpuidle/cpuidle.c                 | 21 +++++-----
->  drivers/cpuidle/dt_idle_states.c          |  2 +-
->  drivers/cpuidle/poll_state.c              | 10 ++++-
->  drivers/idle/intel_idle.c                 | 19 +++++----
->  drivers/perf/arm_pmu.c                    | 11 +-----
->  drivers/perf/riscv_pmu_sbi.c              |  8 +---
->  include/asm-generic/vmlinux.lds.h         |  9 ++---
->  include/linux/compiler_types.h            |  8 +++-
->  include/linux/cpu.h                       |  3 --
->  include/linux/cpuidle.h                   | 34 ++++++++++++++++
->  include/linux/cpumask.h                   |  4 +-
->  include/linux/percpu-defs.h               |  2 +-
->  include/linux/sched/idle.h                | 40 ++++++++++++++-----
->  include/linux/thread_info.h               | 18 ++++++++-
->  include/linux/tracepoint.h                | 13 ++++++-
->  kernel/cpu_pm.c                           |  9 -----
->  kernel/printk/printk.c                    |  2 +-
->  kernel/sched/idle.c                       | 47 +++++++---------------
->  kernel/time/tick-broadcast-hrtimer.c      | 29 ++++++--------
->  kernel/time/tick-broadcast.c              |  6 ++-
->  kernel/trace/trace.c                      |  3 ++
->  lib/ubsan.c                               |  5 ++-
->  mm/kasan/kasan.h                          |  4 ++
->  mm/kasan/shadow.c                         | 38 ++++++++++++++++++
->  tools/objtool/check.c                     | 17 ++++++++
->  121 files changed, 511 insertions(+), 420 deletions(-)
+> From the functional perspective AFAIU it's appreciated, but I'm not
+> a guru in this domain to tell.
+>
+> > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+> > ---
+> >
+> > Changes in v3:
+> > - Fixed bad indent
+> >
+> > Changes in v2:
+> > - Added ability to extract wake bit from Interrupt/IRQ resources
+> >
+> >  drivers/acpi/irq.c             | 11 ++++++++---
+> >  drivers/acpi/resource.c        | 24 +++++++++++++++++-------
+> >  drivers/pnp/pnpacpi/rsparser.c |  9 ++++++---
+> >  include/linux/acpi.h           |  3 ++-
+> >  include/linux/ioport.h         |  3 ++-
+> >  5 files changed, 35 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
+> > index dabe45eba055d1..5483cf9a28e3a0 100644
+> > --- a/drivers/acpi/irq.c
+> > +++ b/drivers/acpi/irq.c
+> > @@ -147,6 +147,7 @@ struct acpi_irq_parse_one_ctx {
+> >   * @polarity: polarity attributes of hwirq
+> >   * @polarity: polarity attributes of hwirq
+> >   * @shareable: shareable attributes of hwirq
+> > + * @wake_capable: wake capable attribute of hwirq
+> >   * @ctx: acpi_irq_parse_one_ctx updated by this function
+> >   *
+> >   * Description:
+> > @@ -156,12 +157,14 @@ struct acpi_irq_parse_one_ctx {
+> >  static inline void acpi_irq_parse_one_match(struct fwnode_handle *fwnode,
+> >                                           u32 hwirq, u8 triggering,
+> >                                           u8 polarity, u8 shareable,
+> > +                                         u8 wake_capable,
+> >                                           struct acpi_irq_parse_one_ctx *ctx)
+> >  {
+> >       if (!fwnode)
+> >               return;
+> >       ctx->rc = 0;
+> > -     *ctx->res_flags = acpi_dev_irq_flags(triggering, polarity, shareable);
+> > +     *ctx->res_flags = acpi_dev_irq_flags(triggering, polarity, shareable,
+> > +                                          wake_capable);
+>
+> Can be on one line.
+>
+> >       ctx->fwspec->fwnode = fwnode;
+> >       ctx->fwspec->param[0] = hwirq;
+> >       ctx->fwspec->param[1] = acpi_dev_get_irq_type(triggering, polarity);
+> > @@ -204,7 +207,8 @@ static acpi_status acpi_irq_parse_one_cb(struct acpi_resource *ares,
+> >               fwnode = acpi_get_gsi_domain_id(irq->interrupts[ctx->index]);
+> >               acpi_irq_parse_one_match(fwnode, irq->interrupts[ctx->index],
+> >                                        irq->triggering, irq->polarity,
+> > -                                      irq->shareable, ctx);
+> > +                                      irq->shareable, irq->wake_capable,
+> > +                                      ctx);
+>
+> Ditto.
+>
+> >               return AE_CTRL_TERMINATE;
+> >       case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
+> >               eirq = &ares->data.extended_irq;
+> > @@ -218,7 +222,8 @@ static acpi_status acpi_irq_parse_one_cb(struct acpi_resource *ares,
+> >                                                     eirq->interrupts[ctx->index]);
+> >               acpi_irq_parse_one_match(fwnode, eirq->interrupts[ctx->index],
+> >                                        eirq->triggering, eirq->polarity,
+> > -                                      eirq->shareable, ctx);
+> > +                                      eirq->shareable, eirq->wake_capable,
+> > +                                      ctx);
+>
+> Ditto.
+>
+> >               return AE_CTRL_TERMINATE;
+> >       }
+> >
+> > diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> > index 510cdec375c4d8..6a1c008a348902 100644
+> > --- a/drivers/acpi/resource.c
+> > +++ b/drivers/acpi/resource.c
+> > @@ -336,8 +336,10 @@ EXPORT_SYMBOL_GPL(acpi_dev_resource_ext_address_space);
+> >   * @triggering: Triggering type as provided by ACPI.
+> >   * @polarity: Interrupt polarity as provided by ACPI.
+> >   * @shareable: Whether or not the interrupt is shareable.
+> > + * @wake_capable: Wake capability as provided by ACPI.
+> >   */
+> > -unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable)
+> > +unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable,
+> > +                              u8 wake_capable)
+>
+> Ditto.
+>
+> >  {
+> >       unsigned long flags;
+> >
+> > @@ -351,6 +353,9 @@ unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable)
+> >       if (shareable == ACPI_SHARED)
+> >               flags |= IORESOURCE_IRQ_SHAREABLE;
+> >
+> > +     if (wake_capable == ACPI_WAKE_CAPABLE)
+> > +             flags |= IORESOURCE_IRQ_WAKECAPABLE;
+> > +
+> >       return flags | IORESOURCE_IRQ;
+> >  }
+> >  EXPORT_SYMBOL_GPL(acpi_dev_irq_flags);
+> > @@ -442,7 +447,7 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+> >
+> >  static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+> >                                    u8 triggering, u8 polarity, u8 shareable,
+> > -                                  bool check_override)
+> > +                                  u8 wake_capable, bool check_override)
+> >  {
+> >       int irq, p, t;
+> >
+> > @@ -475,7 +480,8 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+> >               }
+> >       }
+> >
+> > -     res->flags = acpi_dev_irq_flags(triggering, polarity, shareable);
+> > +     res->flags = acpi_dev_irq_flags(triggering, polarity, shareable,
+> > +                                     wake_capable);
+>
+> Ditto.
+>
+> >       irq = acpi_register_gsi(NULL, gsi, triggering, polarity);
+> >       if (irq >= 0) {
+> >               res->start = irq;
+> > @@ -523,7 +529,8 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+> >               }
+> >               acpi_dev_get_irqresource(res, irq->interrupts[index],
+> >                                        irq->triggering, irq->polarity,
+> > -                                      irq->shareable, true);
+> > +                                      irq->shareable, irq->wake_capable,
+> > +                                      true);
+> >               break;
+> >       case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
+> >               ext_irq = &ares->data.extended_irq;
+> > @@ -532,9 +539,12 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+> >                       return false;
+> >               }
+> >               if (is_gsi(ext_irq))
+> > -                     acpi_dev_get_irqresource(res, ext_irq->interrupts[index],
+> > -                                      ext_irq->triggering, ext_irq->polarity,
+> > -                                      ext_irq->shareable, false);
+> > +                     acpi_dev_get_irqresource(res,
+> > +                                              ext_irq->interrupts[index],
+> > +                                              ext_irq->triggering,
+> > +                                              ext_irq->polarity,
+> > +                                              ext_irq->shareable,
+> > +                                              ext_irq->wake_capable, false);
+>
+> Maybe false on the next line to split FW parameters from pure software ones?
+>
+> >               else
+> >                       irqresource_disabled(res, 0);
+> >               break;
+> > diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
+> > index da78dc77aed32e..55b28fc0a94042 100644
+> > --- a/drivers/pnp/pnpacpi/rsparser.c
+> > +++ b/drivers/pnp/pnpacpi/rsparser.c
+> > @@ -206,7 +206,8 @@ static acpi_status pnpacpi_allocated_resource(struct acpi_resource *res,
+> >               if (i >= 0) {
+> >                       flags = acpi_dev_irq_flags(gpio->triggering,
+> >                                                  gpio->polarity,
+> > -                                                gpio->shareable);
+> > +                                                gpio->shareable,
+> > +                                                gpio->wake_capable);
+> >               } else {
+> >                       flags = IORESOURCE_DISABLED;
+> >               }
+> > @@ -315,7 +316,8 @@ static __init void pnpacpi_parse_irq_option(struct pnp_dev *dev,
+> >               if (p->interrupts[i])
+> >                       __set_bit(p->interrupts[i], map.bits);
+> >
+> > -     flags = acpi_dev_irq_flags(p->triggering, p->polarity, p->shareable);
+> > +     flags = acpi_dev_irq_flags(p->triggering, p->polarity, p->shareable,
+> > +                                p->wake_capable);
+> >       pnp_register_irq_resource(dev, option_flags, &map, flags);
+> >  }
+> >
+> > @@ -339,7 +341,8 @@ static __init void pnpacpi_parse_ext_irq_option(struct pnp_dev *dev,
+> >               }
+> >       }
+> >
+> > -     flags = acpi_dev_irq_flags(p->triggering, p->polarity, p->shareable);
+> > +     flags = acpi_dev_irq_flags(p->triggering, p->polarity, p->shareable,
+> > +                                p->wake_capable);
+>
+> One line?
+>
+> >       pnp_register_irq_resource(dev, option_flags, &map, flags);
+> >  }
+> >
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index d3121cef6cc3bc..9f7947ee1b006f 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -495,7 +495,8 @@ bool acpi_dev_resource_address_space(struct acpi_resource *ares,
+> >                                    struct resource_win *win);
+> >  bool acpi_dev_resource_ext_address_space(struct acpi_resource *ares,
+> >                                        struct resource_win *win);
+> > -unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable);
+> > +unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable,
+> > +                              u8 wake_capable);
+>
+> One line?
+>
+> >  unsigned int acpi_dev_get_irq_type(int triggering, int polarity);
+> >  bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+> >                                struct resource *res);
+> > diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+> > index 616b683563a970..3baeea4d903bfd 100644
+> > --- a/include/linux/ioport.h
+> > +++ b/include/linux/ioport.h
+> > @@ -79,7 +79,8 @@ struct resource {
+> >  #define IORESOURCE_IRQ_HIGHLEVEL     (1<<2)
+> >  #define IORESOURCE_IRQ_LOWLEVEL              (1<<3)
+> >  #define IORESOURCE_IRQ_SHAREABLE     (1<<4)
+> > -#define IORESOURCE_IRQ_OPTIONAL      (1<<5)
+> > +#define IORESOURCE_IRQ_OPTIONAL              (1<<5)
+> > +#define IORESOURCE_IRQ_WAKECAPABLE   (1<<6)
+> >
+> >  /* PnP DMA specific bits (IORESOURCE_BITS) */
+> >  #define IORESOURCE_DMA_TYPE_MASK     (3<<0)
+> > --
+> > 2.37.3.968.ga6b4b080e4-goog
+> >
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
 >
