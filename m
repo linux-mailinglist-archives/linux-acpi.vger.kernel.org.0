@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54EFD5BCF5E
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 16:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91AA85BCF87
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 16:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229578AbiISOnl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Sep 2022 10:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52932 "EHLO
+        id S230135AbiISOtv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Sep 2022 10:49:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230161AbiISOnb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 10:43:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283011144F;
-        Mon, 19 Sep 2022 07:43:29 -0700 (PDT)
+        with ESMTP id S229570AbiISOtt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 10:49:49 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 773E06178;
+        Mon, 19 Sep 2022 07:49:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A57E76181B;
-        Mon, 19 Sep 2022 14:43:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DF7C433C1;
-        Mon, 19 Sep 2022 14:43:27 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id DB543CE0B27;
+        Mon, 19 Sep 2022 14:49:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2B3C433C1;
+        Mon, 19 Sep 2022 14:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663598608;
-        bh=D+NoVno96UrWEE2gn7tpItGkEKOt+jvRjziVTjece0Q=;
+        s=k20201202; t=1663598985;
+        bh=L+UDv5mvX4qY9Lj3t+UbJ+Tw18xN3dy1wuBzIzgEsiI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=f2RIwdWtaC1gU/c1iv3f/GeLucEzNWn7ccmc4GkJFGI8QfQfyUHofdECc2rWD4nFT
-         0GaftLgfVcd1PQZdiEvRWN1bWq4LSfCyq8T7EO2jtq161kguk1vIObBbG692peFow3
-         xVyXo7iCyJmHMqd+S086gL1tfeYNp+V+xCIDAmfixXqTqubgg5nU77xLOKigezj3PM
-         DaLeuiIZfTliZOGY4J1mUhwhazJJvjrhlr1eHMdV/EpxzQpUfj4SYRIitJ/3QvhoFT
-         kXsev9FMLepyLeGkyRUFuM4yf7vwnZr8XA/FTgCZNB/ut+W0bJKqkVzf3mVq0/5WFi
-         97mYIEcc35h6A==
-Date:   Mon, 19 Sep 2022 16:43:24 +0200
+        b=gguXnCN7R4mesgt80Rz1q6+nMltiCh9YFLbLacD9XX8i9153zAMu/C9J6wrlypmHV
+         C4O9/qad5/YnQHvxjMyAN1Xipx5RZeehydBte2IQ7IAgdOnvuph5RzwpWx9gT397CC
+         3XfNp+JBSCdgKQhvk4OORlssabEFBx1hzL8bQQnUxL7VKxJlF+BxEn4pc6GlZy8Ifh
+         1FPiwurZd8pb6cerOXJc5zrW3lkNSSADMghj6TUHyvQmunBRfq7eu+Okq1vapEVrsS
+         fiALbj72WkMAGlX2gGJsjQ17QfFOCStzMhTFJhfkANMdrWO19f7Yl0T7ppwQ8kBeZH
+         yiSmIlHS8YsmA==
+Date:   Mon, 19 Sep 2022 16:49:41 +0200
 From:   Frederic Weisbecker <frederic@kernel.org>
 To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
@@ -93,31 +93,59 @@ Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
         linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v2 09/44] cpuidle,omap3: Push RCU-idle into driver
-Message-ID: <20220919144324.GA62117@lothringen>
+Subject: Re: [PATCH v2 08/44] cpuidle,imx6: Push RCU-idle into driver
+Message-ID: <20220919144941.GA62211@lothringen>
 References: <20220919095939.761690562@infradead.org>
- <20220919101520.936337959@infradead.org>
+ <20220919101520.869531945@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220919101520.936337959@infradead.org>
+In-Reply-To: <20220919101520.869531945@infradead.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 19, 2022 at 11:59:48AM +0200, Peter Zijlstra wrote:
-> Doing RCU-idle outside the driver, only to then teporarily enable it
-> again before going idle is daft.
+On Mon, Sep 19, 2022 at 11:59:47AM +0200, Peter Zijlstra wrote:
+> Doing RCU-idle outside the driver, only to then temporarily enable it
+> again, at least twice, before going idle is daft.
 > 
 > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Tony Lindgren <tony@atomide.com>
-> Tested-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  arch/arm/mach-imx/cpuidle-imx6sx.c |    5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> --- a/arch/arm/mach-imx/cpuidle-imx6sx.c
+> +++ b/arch/arm/mach-imx/cpuidle-imx6sx.c
+> @@ -47,7 +47,9 @@ static int imx6sx_enter_wait(struct cpui
+>  		cpu_pm_enter();
+>  		cpu_cluster_pm_enter();
+>  
+> +		ct_idle_enter();
+>  		cpu_suspend(0, imx6sx_idle_finish);
+> +		ct_idle_exit();
+>  
+>  		cpu_cluster_pm_exit();
+>  		cpu_pm_exit();
+> @@ -87,7 +89,8 @@ static struct cpuidle_driver imx6sx_cpui
+>  			 */
+>  			.exit_latency = 300,
+>  			.target_residency = 500,
+> -			.flags = CPUIDLE_FLAG_TIMER_STOP,
+> +			.flags = CPUIDLE_FLAG_TIMER_STOP |
+> +				 CPUIDLE_FLAG_RCU_IDLE,
+>  			.enter = imx6sx_enter_wait,
 
-Ok now with the cpu_pm_*() informations that makes sense:
+There is a second one below that also uses imx6sx_enter_wait.
 
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Thanks.
+
+>  			.name = "LOW-POWER-IDLE",
+>  			.desc = "ARM power off",
+> 
+> 
