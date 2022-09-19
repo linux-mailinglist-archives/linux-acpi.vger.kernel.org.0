@@ -2,284 +2,356 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A25B5BC9EA
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 12:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB6B5BCA41
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 13:08:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbiISKvT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Sep 2022 06:51:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41616 "EHLO
+        id S229561AbiISLI0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Sep 2022 07:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbiISKuy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 06:50:54 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93FBA237E6;
-        Mon, 19 Sep 2022 03:45:54 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 47D1122187;
-        Mon, 19 Sep 2022 10:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1663584353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
+        with ESMTP id S229877AbiISLIZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 07:08:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461BDB1C9
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 04:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1663585703;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TPY7EEFMWVrZdYCxqqnTs3va11awHySIxzPGii1FR0M=;
-        b=pcs8WC6C8N5NT2mpr02B5yJH+LTCvsIeYhCodeQGG/gLeD9Ve1ZmOFpkpwgw4V+wtja7aY
-        RddPku1MGLIpjFQcO9qKlpCVJhYCWu9Pg3CcPENFblbq3F4iOpEH9QM9LSmS5Ghy2jXKlf
-        wzEuCcR+PKVNegczAeY+9+l4n3MbDsI=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 85A4E13A96;
-        Mon, 19 Sep 2022 10:45:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id T0GyHlxIKGNkeAAAMHmgww
-        (envelope-from <jgross@suse.com>); Mon, 19 Sep 2022 10:45:48 +0000
-Message-ID: <41916640-cf05-c00d-95fa-1e0099741f4c@suse.com>
-Date:   Mon, 19 Sep 2022 12:45:47 +0200
+        bh=jwyU2KnuE+2XvBMTG3lUyXjwxhJE1NI7m29fH5pw0Co=;
+        b=Xu4FjHf+EGa1nqrcxa4YFmI1yWNgftTNQ/ig2mvlJQk91LdQQq+/d4EjlXpIxsWug9mvlS
+        LORrzx3QagnEQByBd0G5C/AVV4T9aT8bGnZyFJT0v3XnyjN9LAhv6251AdaFBNtFbSIAXb
+        dgvxoi2eL2v6d5by3Nry+1ygoD8r0cQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-341-H9i44_kEP7mcLtmbZ-zu5A-1; Mon, 19 Sep 2022 07:08:22 -0400
+X-MC-Unique: H9i44_kEP7mcLtmbZ-zu5A-1
+Received: by mail-ej1-f72.google.com with SMTP id du20-20020a17090772d400b0077df99c5ab3so8123352ejc.3
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 04:08:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=jwyU2KnuE+2XvBMTG3lUyXjwxhJE1NI7m29fH5pw0Co=;
+        b=LChtGRgboY0mBBX1ndGla+W+ZrnYHm+rCKhcBSlyW9weLqziJUTWRBKATgdql4RDkz
+         6eRgdu+E0soxoFq/FTei9/a2wGJKwSs8pKp4f2VqmpbXv81NzSLaIXVhjN1WaE2uXIwd
+         wyl+472P2BZABL6Yi1lp/RuBWBUFUzh0HUqwaG0WrlLyj0vN+TO3VkMMzEluo7Iy5+cH
+         g7ViapiUacCQ4igfLlHn80wts1kT6NkksZvDuW2i0Grw+vXpJW+57bHzy8zJvcIuMwmZ
+         nKY1sUGBmjyHyMIKIwNCx3aaPmJo2akhah4r2vYJcYtoDkOgMyWgHrbZRbpH72N7aEWI
+         YvSw==
+X-Gm-Message-State: ACrzQf2xBH7zBSNKzCXksIH8GzTMMGCVLtSHc+FIiXzZBWEYLOs1oVWV
+        gGgNKtegwz1lg9b9XibHiyPhoiLVUvqlqVXO+EyoJIoh+PDcn1Oc5cYGSJd8edvEna3PUvTwb/0
+        0QN3ikbsRmE19ICAzhqd0xw==
+X-Received: by 2002:aa7:c792:0:b0:453:98b7:213c with SMTP id n18-20020aa7c792000000b0045398b7213cmr9733753eds.159.1663585701152;
+        Mon, 19 Sep 2022 04:08:21 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM6qRPJbqMLzWIF5o6Bz9+pNwdb52w7wMQDBAImSbvrcpq5cqyDuCg7z+HurZxw1TprXyrk4WA==
+X-Received: by 2002:aa7:c792:0:b0:453:98b7:213c with SMTP id n18-20020aa7c792000000b0045398b7213cmr9733727eds.159.1663585700862;
+        Mon, 19 Sep 2022 04:08:20 -0700 (PDT)
+Received: from [10.40.98.142] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id p24-20020a056402075800b0045081dc93dfsm20033362edy.78.2022.09.19.04.08.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Sep 2022 04:08:20 -0700 (PDT)
+Message-ID: <2f76bf4d-4e7a-14fb-2247-5eb55112ad8e@redhat.com>
+Date:   Mon, 19 Sep 2022 12:08:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v2 30/44] cpuidle,xenpv: Make more PARAVIRT_XXL noinstr
- clean
+ Thunderbird/102.2.1
+Subject: Re: [PATCH 4/5] ACPI: battery: Allow for passing data to battery
+ hooks.
 Content-Language: en-US
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
-        anup@brainfault.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
-        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
-        cl@linux.com, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, fweisbec@gmail.com,
-        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-        dvyukov@google.com, vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20220919095939.761690562@infradead.org>
- <20220919101522.358582588@infradead.org>
-From:   Juergen Gross <jgross@suse.com>
-In-Reply-To: <20220919101522.358582588@infradead.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------uN7TNqTnDntgyCDMTfJPdXrr"
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+To:     Armin Wolf <W_Armin@gmx.de>, markgross@kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
+        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
+        productdev@system76.com, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220912125342.7395-1-W_Armin@gmx.de>
+ <20220912125342.7395-5-W_Armin@gmx.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220912125342.7395-5-W_Armin@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------uN7TNqTnDntgyCDMTfJPdXrr
-Content-Type: multipart/mixed; boundary="------------bVxl0sFTg1HlWc0dYJ02yXYs";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
- mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
- ulli.kroll@googlemail.com, linus.walleij@linaro.org, shawnguo@kernel.org,
- Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
- festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com, khilman@kernel.org,
- catalin.marinas@arm.com, will@kernel.org, guoren@kernel.org,
- bcain@quicinc.com, chenhuacai@kernel.org, kernel@xen0n.name,
- geert@linux-m68k.org, sammy@sammy.net, monstr@monstr.eu,
- tsbogend@alpha.franken.de, dinguyen@kernel.org, jonas@southpole.se,
- stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
- James.Bottomley@HansenPartnership.com, deller@gmx.de, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
- davem@davemloft.net, richard@nod.at, anton.ivanov@cambridgegreys.com,
- johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- acme@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
- jolsa@kernel.org, namhyung@kernel.org, srivatsa@csail.mit.edu,
- amakhalov@vmware.com, pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
- chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org, lenb@kernel.org,
- pavel@ucw.cz, gregkh@linuxfoundation.org, mturquette@baylibre.com,
- sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
- sudeep.holla@arm.com, agross@kernel.org, bjorn.andersson@linaro.org,
- konrad.dybcio@somainline.org, anup@brainfault.org, thierry.reding@gmail.com,
- jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com, atishp@atishpatra.org,
- Arnd Bergmann <arnd@arndb.de>, yury.norov@gmail.com,
- andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
- dennis@kernel.org, tj@kernel.org, cl@linux.com, rostedt@goodmis.org,
- pmladek@suse.com, senozhatsky@chromium.org, john.ogness@linutronix.de,
- juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
- bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
- vschneid@redhat.com, fweisbec@gmail.com, ryabinin.a.a@gmail.com,
- glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
- vincenzo.frascino@arm.com, Andrew Morton <akpm@linux-foundation.org>,
- jpoimboe@kernel.org, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-omap@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-xtensa@linux-xtensa.org,
- linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com
-Message-ID: <41916640-cf05-c00d-95fa-1e0099741f4c@suse.com>
-Subject: Re: [PATCH v2 30/44] cpuidle,xenpv: Make more PARAVIRT_XXL noinstr
- clean
-References: <20220919095939.761690562@infradead.org>
- <20220919101522.358582588@infradead.org>
-In-Reply-To: <20220919101522.358582588@infradead.org>
+Hi,
 
---------------bVxl0sFTg1HlWc0dYJ02yXYs
-Content-Type: multipart/mixed; boundary="------------DqMcUwZmmixeMRf078SIWWNm"
+On 9/12/22 13:53, Armin Wolf wrote:
+> Since a driver may register multiple instances of a
+> battery hook, passing data to each instance is
+> convenient.
+> 
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 
---------------DqMcUwZmmixeMRf078SIWWNm
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Thanks, patch looks good to me:
 
-T24gMTkuMDkuMjIgMTI6MDAsIFBldGVyIFppamxzdHJhIHdyb3RlOg0KPiB2bWxpbnV4Lm86
-IHdhcm5pbmc6IG9ianRvb2w6IGFjcGlfaWRsZV9lbnRlcl9zMmlkbGUrMHhkZTogY2FsbCB0
-byB3YmludmQoKSBsZWF2ZXMgLm5vaW5zdHIudGV4dCBzZWN0aW9uDQo+IHZtbGludXgubzog
-d2FybmluZzogb2JqdG9vbDogZGVmYXVsdF9pZGxlKzB4NDogY2FsbCB0byBhcmNoX3NhZmVf
-aGFsdCgpIGxlYXZlcyAubm9pbnN0ci50ZXh0IHNlY3Rpb24NCj4gdm1saW51eC5vOiB3YXJu
-aW5nOiBvYmp0b29sOiB4ZW5fc2FmZV9oYWx0KzB4YTogY2FsbCB0byBIWVBFUlZJU09SX3Nj
-aGVkX29wLmNvbnN0cHJvcC4wKCkgbGVhdmVzIC5ub2luc3RyLnRleHQgc2VjdGlvbg0KPiAN
-Cj4gU2lnbmVkLW9mZi1ieTogUGV0ZXIgWmlqbHN0cmEgKEludGVsKSA8cGV0ZXJ6QGluZnJh
-ZGVhZC5vcmc+DQo+IFJldmlld2VkLWJ5OiBTcml2YXRzYSBTLiBCaGF0IChWTXdhcmUpIDxz
-cml2YXRzYUBjc2FpbC5taXQuZWR1Pg0KDQpSZXZpZXdlZC1ieTogSnVlcmdlbiBHcm9zcyA8
-amdyb3NzQHN1c2UuY29tPg0KDQoNCkp1ZXJnZW4NCg0K
---------------DqMcUwZmmixeMRf078SIWWNm
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+Regards,
 
-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
-jR/i1DG86lem3iBDXzXsZDn8R38=3D
-=3D2wuH
------END PGP PUBLIC KEY BLOCK-----
+Hans
 
---------------DqMcUwZmmixeMRf078SIWWNm--
 
---------------bVxl0sFTg1HlWc0dYJ02yXYs--
+> ---
+>  drivers/acpi/battery.c               | 11 ++++++-----
+>  drivers/platform/x86/asus-wmi.c      |  7 ++++---
+>  drivers/platform/x86/huawei-wmi.c    |  6 +++---
+>  drivers/platform/x86/lg-laptop.c     |  6 +++---
+>  drivers/platform/x86/system76_acpi.c |  6 +++---
+>  drivers/platform/x86/thinkpad_acpi.c |  6 +++---
+>  include/acpi/battery.h               |  7 ++++---
+>  7 files changed, 26 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 15bb5d868a56..396a7324216c 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -696,7 +696,7 @@ void battery_hook_unregister(struct acpi_battery_hook *hook)
+>  	mutex_lock(&hook_mutex);
+> 
+>  	list_for_each_entry(battery, &acpi_battery_list, list) {
+> -		hook->ops->remove_battery(battery->bat);
+> +		hook->ops->remove_battery(hook->data, battery->bat);
+>  	}
+>  	list_del(&hook->list);
+> 
+> @@ -706,7 +706,7 @@ void battery_hook_unregister(struct acpi_battery_hook *hook)
+>  }
+>  EXPORT_SYMBOL_GPL(battery_hook_unregister);
+> 
+> -struct acpi_battery_hook *battery_hook_register(const char *name,
+> +struct acpi_battery_hook *battery_hook_register(const char *name, void *data,
+>  						const struct acpi_battery_hook_ops *ops)
+>  {
+>  	struct acpi_battery_hook *hook = kzalloc(sizeof(*hook), GFP_KERNEL);
+> @@ -716,6 +716,7 @@ struct acpi_battery_hook *battery_hook_register(const char *name,
+>  		return ERR_PTR(-ENOMEM);
+> 
+>  	hook->name = name;
+> +	hook->data = data;
+>  	hook->ops = ops;
+> 
+>  	mutex_lock(&hook_mutex);
+> @@ -728,7 +729,7 @@ struct acpi_battery_hook *battery_hook_register(const char *name,
+>  	 * its attributes.
+>  	 */
+>  	list_for_each_entry(battery, &acpi_battery_list, list) {
+> -		hook->ops->add_battery(battery->bat);
+> +		hook->ops->add_battery(hook->data, battery->bat);
+>  	}
+>  	pr_info("new extension: %s\n", hook->name);
+> 
+> @@ -758,7 +759,7 @@ static void battery_hook_add_battery(struct acpi_battery *battery)
+>  	 * during the battery module initialization.
+>  	 */
+>  	list_for_each_entry_safe(hook_node, tmp, &battery_hook_list, list) {
+> -		hook_node->ops->add_battery(battery->bat);
+> +		hook_node->ops->add_battery(hook_node->data, battery->bat);
+>  	}
+>  	mutex_unlock(&hook_mutex);
+>  }
+> @@ -773,7 +774,7 @@ static void battery_hook_remove_battery(struct acpi_battery *battery)
+>  	 * custom attributes from the battery.
+>  	 */
+>  	list_for_each_entry(hook, &battery_hook_list, list) {
+> -		hook->ops->remove_battery(battery->bat);
+> +		hook->ops->remove_battery(hook->data, battery->bat);
+>  	}
+>  	/* Then, just remove the battery from the list */
+>  	list_del(&battery->list);
+> diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+> index 37d8649418f4..18afcf38931f 100644
+> --- a/drivers/platform/x86/asus-wmi.c
+> +++ b/drivers/platform/x86/asus-wmi.c
+> @@ -882,7 +882,7 @@ static ssize_t charge_control_end_threshold_show(struct device *device,
+> 
+>  static DEVICE_ATTR_RW(charge_control_end_threshold);
+> 
+> -static int asus_wmi_battery_add(struct power_supply *battery)
+> +static int asus_wmi_battery_add(void *data, struct power_supply *battery)
+>  {
+>  	/* The WMI method does not provide a way to specific a battery, so we
+>  	 * just assume it is the first battery.
+> @@ -909,7 +909,7 @@ static int asus_wmi_battery_add(struct power_supply *battery)
+>  	return 0;
+>  }
+> 
+> -static int asus_wmi_battery_remove(struct power_supply *battery)
+> +static int asus_wmi_battery_remove(void *data, struct power_supply *battery)
+>  {
+>  	device_remove_file(&battery->dev,
+>  			   &dev_attr_charge_control_end_threshold);
+> @@ -924,7 +924,8 @@ static const struct acpi_battery_hook_ops battery_hook_ops = {
+>  static void asus_wmi_battery_init(struct asus_wmi *asus)
+>  {
+>  	if (asus_wmi_dev_is_present(asus, ASUS_WMI_DEVID_RSOC)) {
+> -		asus->hook = battery_hook_register("ASUS Battery Extension", &battery_hook_ops);
+> +		asus->hook = battery_hook_register("ASUS Battery Extension", NULL,
+> +						   &battery_hook_ops);
+>  	}
+>  }
+> 
+> diff --git a/drivers/platform/x86/huawei-wmi.c b/drivers/platform/x86/huawei-wmi.c
+> index 6fd02b25a97b..f23806299c1a 100644
+> --- a/drivers/platform/x86/huawei-wmi.c
+> +++ b/drivers/platform/x86/huawei-wmi.c
+> @@ -469,7 +469,7 @@ static DEVICE_ATTR_RW(charge_control_start_threshold);
+>  static DEVICE_ATTR_RW(charge_control_end_threshold);
+>  static DEVICE_ATTR_RW(charge_control_thresholds);
+> 
+> -static int huawei_wmi_battery_add(struct power_supply *battery)
+> +static int huawei_wmi_battery_add(void *data, struct power_supply *battery)
+>  {
+>  	int err = 0;
+> 
+> @@ -484,7 +484,7 @@ static int huawei_wmi_battery_add(struct power_supply *battery)
+>  	return err;
+>  }
+> 
+> -static int huawei_wmi_battery_remove(struct power_supply *battery)
+> +static int huawei_wmi_battery_remove(void *data, struct power_supply *battery)
+>  {
+>  	device_remove_file(&battery->dev, &dev_attr_charge_control_start_threshold);
+>  	device_remove_file(&battery->dev, &dev_attr_charge_control_end_threshold);
+> @@ -507,7 +507,7 @@ static void huawei_wmi_battery_setup(struct device *dev)
+>  		return;
+>  	}
+> 
+> -	huawei->hook = battery_hook_register("Huawei Battery Extension",
+> +	huawei->hook = battery_hook_register("Huawei Battery Extension", NULL,
+>  					     &huawei_wmi_battery_hook_ops);
+>  	device_create_file(dev, &dev_attr_charge_control_thresholds);
+>  }
+> diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
+> index d8a61a07313e..f1abb1924150 100644
+> --- a/drivers/platform/x86/lg-laptop.c
+> +++ b/drivers/platform/x86/lg-laptop.c
+> @@ -547,7 +547,7 @@ static DEVICE_ATTR_RW(fn_lock);
+>  static DEVICE_ATTR_RW(charge_control_end_threshold);
+>  static DEVICE_ATTR_RW(battery_care_limit);
+> 
+> -static int lg_battery_add(struct power_supply *battery)
+> +static int lg_battery_add(void *data, struct power_supply *battery)
+>  {
+>  	if (device_create_file(&battery->dev,
+>  			       &dev_attr_charge_control_end_threshold))
+> @@ -556,7 +556,7 @@ static int lg_battery_add(struct power_supply *battery)
+>  	return 0;
+>  }
+> 
+> -static int lg_battery_remove(struct power_supply *battery)
+> +static int lg_battery_remove(void *data, struct power_supply *battery)
+>  {
+>  	device_remove_file(&battery->dev,
+>  			   &dev_attr_charge_control_end_threshold);
+> @@ -750,7 +750,7 @@ static int acpi_add(struct acpi_device *device)
+>  	led_classdev_register(&pf_device->dev, &tpad_led);
+> 
+>  	wmi_input_setup();
+> -	hook = battery_hook_register("LG Battery Extension", &battery_hook_ops);
+> +	hook = battery_hook_register("LG Battery Extension", NULL, &battery_hook_ops);
+> 
+>  	return 0;
+> 
+> diff --git a/drivers/platform/x86/system76_acpi.c b/drivers/platform/x86/system76_acpi.c
+> index 1ec22db32bd0..9414b9491806 100644
+> --- a/drivers/platform/x86/system76_acpi.c
+> +++ b/drivers/platform/x86/system76_acpi.c
+> @@ -255,7 +255,7 @@ static struct attribute *system76_battery_attrs[] = {
+> 
+>  ATTRIBUTE_GROUPS(system76_battery);
+> 
+> -static int system76_battery_add(struct power_supply *battery)
+> +static int system76_battery_add(void *data, struct power_supply *battery)
+>  {
+>  	// System76 EC only supports 1 battery
+>  	if (strcmp(battery->desc->name, "BAT0") != 0)
+> @@ -267,7 +267,7 @@ static int system76_battery_add(struct power_supply *battery)
+>  	return 0;
+>  }
+> 
+> -static int system76_battery_remove(struct power_supply *battery)
+> +static int system76_battery_remove(void *data, struct power_supply *battery)
+>  {
+>  	device_remove_groups(&battery->dev, system76_battery_groups);
+>  	return 0;
+> @@ -280,7 +280,7 @@ static const struct acpi_battery_hook_ops system76_battery_hook_ops = {
+> 
+>  static void system76_battery_init(struct system76_data *data)
+>  {
+> -	data->hook = battery_hook_register("System76 Battery Extension",
+> +	data->hook = battery_hook_register("System76 Battery Extension", NULL,
+>  					   &system76_battery_hook_ops);
+>  }
+> 
+> diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+> index 8adafc3c31fa..6008d88e0727 100644
+> --- a/drivers/platform/x86/thinkpad_acpi.c
+> +++ b/drivers/platform/x86/thinkpad_acpi.c
+> @@ -9898,7 +9898,7 @@ ATTRIBUTE_GROUPS(tpacpi_battery);
+> 
+>  /* ACPI battery hooking */
+> 
+> -static int tpacpi_battery_add(struct power_supply *battery)
+> +static int tpacpi_battery_add(void *data, struct power_supply *battery)
+>  {
+>  	int batteryid = tpacpi_battery_get_id(battery->desc->name);
+> 
+> @@ -9909,7 +9909,7 @@ static int tpacpi_battery_add(struct power_supply *battery)
+>  	return 0;
+>  }
+> 
+> -static int tpacpi_battery_remove(struct power_supply *battery)
+> +static int tpacpi_battery_remove(void *data, struct power_supply *battery)
+>  {
+>  	device_remove_groups(&battery->dev, tpacpi_battery_groups);
+>  	return 0;
+> @@ -9943,7 +9943,7 @@ static int __init tpacpi_battery_init(struct ibm_init_struct *ibm)
+>  					battery_quirk_table,
+>  					ARRAY_SIZE(battery_quirk_table));
+> 
+> -	battery_info.hook = battery_hook_register("ThinkPad Battery Extension",
+> +	battery_info.hook = battery_hook_register("ThinkPad Battery Extension", NULL,
+>  						  &battery_hook_ops);
+> 
+>  	return 0;
+> diff --git a/include/acpi/battery.h b/include/acpi/battery.h
+> index b3c81abada1e..cca401b793b2 100644
+> --- a/include/acpi/battery.h
+> +++ b/include/acpi/battery.h
+> @@ -11,17 +11,18 @@
+>  #define ACPI_BATTERY_NOTIFY_THRESHOLD   0x82
+> 
+>  struct acpi_battery_hook_ops {
+> -	int (*add_battery)(struct power_supply *battery);
+> -	int (*remove_battery)(struct power_supply *battery);
+> +	int (*add_battery)(void *data, struct power_supply *battery);
+> +	int (*remove_battery)(void *data, struct power_supply *battery);
+>  };
+> 
+>  struct acpi_battery_hook {
+>  	const char *name;
+>  	const struct acpi_battery_hook_ops *ops;
+> +	void *data;
+>  	struct list_head list;
+>  };
+> 
+> -struct acpi_battery_hook *battery_hook_register(const char *name,
+> +struct acpi_battery_hook *battery_hook_register(const char *name, void *data,
+>  						const struct acpi_battery_hook_ops *hook);
+>  void battery_hook_unregister(struct acpi_battery_hook *hook);
+> 
+> --
+> 2.30.2
+> 
 
---------------uN7TNqTnDntgyCDMTfJPdXrr
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmMoSFwFAwAAAAAACgkQsN6d1ii/Ey/T
-hwf/eGOkDCDy7F9Ra0L0GOLdv4GeCljWmcvbdITwnsuB7hQz/+M0V2k7PvSN/ISQ4Vf6Jn+jdWqe
-BIXXQbgSPEGvf145/zXXKI4Z/CR603o4j00ul4vrymonw4oMQfSU6XSgHQPxxoPF3hdqavHf2w48
-1DJPJ8whPxq8qCNOIZt3O0NWTtIKi2fdc7Gpw4aouzNtdCNdCQKzLjhN1LpTcokA22BVdYBG2wMF
-ZkBuZgDmH0auDXsstAEU8aSublQibxzVadACIUCRvtXxxTSXCujB3IoT9CgcYyav5uxi9nNvOEsp
-f9YTwuEzNv1IhRffytywrjyBDZdbHXFDZM0kU7zKkA==
-=9mzX
------END PGP SIGNATURE-----
-
---------------uN7TNqTnDntgyCDMTfJPdXrr--
