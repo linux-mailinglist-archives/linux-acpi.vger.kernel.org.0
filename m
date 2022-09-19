@@ -2,63 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDB755BD100
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 17:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE88A5BD130
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 17:39:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230244AbiISPbY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Sep 2022 11:31:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38796 "EHLO
+        id S229727AbiISPjI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Sep 2022 11:39:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230188AbiISPbI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 11:31:08 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D084032BB9
-        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:31:06 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id g8so20527395iob.0
-        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:31:06 -0700 (PDT)
+        with ESMTP id S229577AbiISPjI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 11:39:08 -0400
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEA9231EE1
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:39:03 -0700 (PDT)
+Received: by mail-io1-xd2e.google.com with SMTP id r134so23195632iod.8
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:39:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=TJtbFKRoGiqIeIUx0M4B9tZ4pfPeod5mEoLdwUysHys=;
-        b=BiwYyDqhE0F49clj/AW/ikyBuNMX6gxBY/CFZUt//iTCGt3exdRQT1Ti9iiBoR6F5j
-         Jc4qylZx+Rd7Dpdy0TTaQ3n5h9JmOwwQ+svZmMhhg5mePMSv3fc8+mKFTe6kpZJ4o/eg
-         /por1H5C9hfLDxwNQkX6Xc1/KEzOprlv4yV1E=
+        bh=BX7NuzQ6XgAPzRdnKZ+P3fDJ1+/q78cG6We8i9CBSbc=;
+        b=BDV0fOA4UWJzf7YXD7DEM9JCmyp3gP414pyuW6wGq3ERmQkzQyIx8kaUZRrG849JVV
+         izx74sgrQJZbdI6D9S3QS0KEtV4ouzSjz3E/ypCO1vxDH6BPvEOugRL54JSS6e5g+zYl
+         RDDP1Jd0lWgRkZeTsIN7v28nC1GfBfxBjLGi8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=TJtbFKRoGiqIeIUx0M4B9tZ4pfPeod5mEoLdwUysHys=;
-        b=ALvmPcMBCZWN6nblFaZs6AbQ6EJfed+XIV2c+NfVaJb5lb2EpzeexUcoSSUMMY7vwY
-         MQP3VC/QuSJOSMNPXSpwU6AOjGT/yiz9dj9snlZrfxlxMVUJbps8CVv8NBYEmNI94V9F
-         v+DeoV8nYAszZB6VzByvkkmZqFRCHNdlx0fTsaASH1rIlNw5Uq4s/PJdccOUV43FU+Ea
-         +GMCkU+lcOWohaUHdMmJW+4LruO9eBBGriEVhpajtgHtePVfN5SoTu7o1/d2ftJxEb0I
-         FcLKv0m9gMZ3fHkIrD3crKhK+YQBg2n9dJX9QGplHLS5bCtJ8KhIrPvmocO6OH1ockkC
-         FvwA==
-X-Gm-Message-State: ACrzQf1zAfh6ARbqbVhh4qTEhqtReLbEzGjSfxGNHyWOt7qpLEYNvriW
-        dilfLg0hT+SAtwNKTzLx4WUJqOwtermxTQ==
-X-Google-Smtp-Source: AMsMyM4XR1+xj9qcZY4D6/+wrAv5vj3r+H5OJ9hyPgGthu3//y6DNSJfGXyiPnKk2Cbn6/yBpAaDOw==
-X-Received: by 2002:a05:6638:2686:b0:35a:413a:b7a0 with SMTP id o6-20020a056638268600b0035a413ab7a0mr8418240jat.224.1663601465507;
-        Mon, 19 Sep 2022 08:31:05 -0700 (PDT)
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com. [209.85.166.169])
-        by smtp.gmail.com with ESMTPSA id x4-20020a056e021bc400b002eacd14e68esm12007214ilv.71.2022.09.19.08.31.04
+        bh=BX7NuzQ6XgAPzRdnKZ+P3fDJ1+/q78cG6We8i9CBSbc=;
+        b=AkElkzMAPOALc8P7/97ABgPhir9QJ9kB4o51lUbGX+0eKCipfGPF/1y/fFFiZjtliq
+         ln7NiUZHEXvGXxkX+twI6c9ism9W4MeJblOugAoQ+rNbc5y6pd7igOrDFAb3elOlKTsv
+         b+6ZfS3djn46GdgO9W1hR/e8Tv/A9vdbx1VP1uIE86Fdt6Wz+OisDPtkQVdzRzLmQ6Tq
+         xkbWCqpibv1EeOpaG/GADbR+YnGwOcbjU/gqyKXj5KYu4jr+ReNzdR8PQboAlfvKiXbO
+         raLEH5tgfa7a4QO5fK6LhnZj81/3rDDreLHMrAh4pjiWRMP970Ple4pBr2mvc175FJhF
+         ohFw==
+X-Gm-Message-State: ACrzQf1Wn8lQ+W73Y5NowuN4/GbXKTMrTbO5a4wheeA4wth1WHm4jvt8
+        YFjvVGhvkRmLmkENgVhvku0jsXIV6yx6hg==
+X-Google-Smtp-Source: AMsMyM7X8RKsIF6eU45fLdnwdMEIvYA/y05l0av8b5bpt2RSvw4t5GK1g+d0W+hrUzz/JGiaC0UNqg==
+X-Received: by 2002:a05:6602:13c8:b0:669:c3de:776f with SMTP id o8-20020a05660213c800b00669c3de776fmr6813872iov.124.1663601943095;
+        Mon, 19 Sep 2022 08:39:03 -0700 (PDT)
+Received: from mail-io1-f51.google.com (mail-io1-f51.google.com. [209.85.166.51])
+        by smtp.gmail.com with ESMTPSA id d60-20020a0285c2000000b0035675cdb75esm5578930jai.31.2022.09.19.08.39.02
         for <linux-acpi@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 08:31:05 -0700 (PDT)
-Received: by mail-il1-f169.google.com with SMTP id a9so15010622ilh.1
-        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:31:04 -0700 (PDT)
-X-Received: by 2002:a05:6e02:2189:b0:2f1:92d4:6b22 with SMTP id
- j9-20020a056e02218900b002f192d46b22mr6968781ila.210.1663601464513; Mon, 19
- Sep 2022 08:31:04 -0700 (PDT)
+        Mon, 19 Sep 2022 08:39:02 -0700 (PDT)
+Received: by mail-io1-f51.google.com with SMTP id d8so20131622iof.11
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 08:39:02 -0700 (PDT)
+X-Received: by 2002:a05:6638:4110:b0:35a:6d6b:57f7 with SMTP id
+ ay16-20020a056638411000b0035a6d6b57f7mr8368005jab.134.1663601942057; Mon, 19
+ Sep 2022 08:39:02 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220914235801.1731478-1-rrangel@chromium.org>
- <20220914155914.v3.6.I8092e417a8152475d13d8d638eb4c5d8ea12ac7b@changeid> <Yyg8UGRItbO4Abvb@smile.fi.intel.com>
-In-Reply-To: <Yyg8UGRItbO4Abvb@smile.fi.intel.com>
+ <20220914155914.v3.7.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid> <Yyg8XZHrPZaKcWHa@smile.fi.intel.com>
+In-Reply-To: <Yyg8XZHrPZaKcWHa@smile.fi.intel.com>
 From:   Raul Rangel <rrangel@chromium.org>
-Date:   Mon, 19 Sep 2022 09:30:53 -0600
-X-Gmail-Original-Message-ID: <CAHQZ30Axy2epgvB4oHAEmEiU14mQn5Q9FUa1NBiEVvMe4ZSwMw@mail.gmail.com>
-Message-ID: <CAHQZ30Axy2epgvB4oHAEmEiU14mQn5Q9FUa1NBiEVvMe4ZSwMw@mail.gmail.com>
-Subject: Re: [PATCH v3 06/13] ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
+Date:   Mon, 19 Sep 2022 09:38:51 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30C3AhB4avt2--Wz5b0NpwCRP80QybE9J6cCqq24Zx5rZA@mail.gmail.com>
+Message-ID: <CAHQZ30C3AhB4avt2--Wz5b0NpwCRP80QybE9J6cCqq24Zx5rZA@mail.gmail.com>
+Subject: Re: [PATCH v3 07/13] i2c: acpi: Use ACPI wake capability bit to set wake_irq
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         linux-input <linux-input@vger.kernel.org>,
@@ -69,16 +69,15 @@ Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Tim Van Patten <timvp@google.com>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Len Brown <lenb@kernel.org>,
-        Terry Bowman <terry.bowman@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -88,246 +87,195 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Mon, Sep 19, 2022 at 3:54 AM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Wed, Sep 14, 2022 at 05:57:54PM -0600, Raul E Rangel wrote:
-> > ACPI IRQ/Interrupt resources contain a bit that describes if the
-> > interrupt should wake the system. This change exposes that bit via
-> > a new IORESOURCE_IRQ_WAKECAPABLE flag. Drivers should check this flag
-> > before arming an IRQ to wake the system.
+> On Wed, Sep 14, 2022 at 05:57:55PM -0600, Raul E Rangel wrote:
+> > Device tree already has a mechanism to pass the wake_irq. It does this
+> > by looking for the wakeup-source property and setting the
+> > I2C_CLIENT_WAKE flag. This CL adds the ACPI equivalent. It uses the
+> > ACPI interrupt wake flag to determine if the interrupt can be used to
+> > wake the system. Previously the i2c drivers had to make assumptions and
+> > blindly enable the wake IRQ. This can cause spurious wake events. e.g.,
+> > If there is a device with an Active Low interrupt and the device gets
+> > powered off while suspending, the interrupt line will go low since it's
+> > no longer powered and wakes the system. For this reason we should
+> > respect the board designers wishes and honor the wake bit defined on the
+> > interrupt.
 >
-
-> From code perspective it's straightforward, so
+> Okay, let's go with this variant, but I'm afraid that in time we may come up
+> to the proposed (generic structure for ACPI IRQ parameters which can be used
+> in a few places).
+>
 > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> (take a look into nit-picks, though)
-
-I went ahead and re-ran clang-format with a 96 char limit, then I
-manually applied the rest of the nits.
-Thanks!
-
->
-> From the functional perspective AFAIU it's appreciated, but I'm not
-> a guru in this domain to tell.
 >
 > > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
 > > ---
 > >
 > > Changes in v3:
-> > - Fixed bad indent
+> > - Convert wake_capable to bool
+> > - Only update wake_capable pointer once
+> > - Move wake_capable local into local block
 > >
 > > Changes in v2:
-> > - Added ability to extract wake bit from Interrupt/IRQ resources
+> > - Look at wake_cabple bit for IRQ/Interrupt resources
 > >
-> >  drivers/acpi/irq.c             | 11 ++++++++---
-> >  drivers/acpi/resource.c        | 24 +++++++++++++++++-------
-> >  drivers/pnp/pnpacpi/rsparser.c |  9 ++++++---
-> >  include/linux/acpi.h           |  3 ++-
-> >  include/linux/ioport.h         |  3 ++-
-> >  5 files changed, 35 insertions(+), 15 deletions(-)
+> >  drivers/i2c/i2c-core-acpi.c | 33 ++++++++++++++++++++++++---------
+> >  drivers/i2c/i2c-core-base.c |  8 +++++++-
+> >  drivers/i2c/i2c-core.h      |  4 ++--
+> >  3 files changed, 33 insertions(+), 12 deletions(-)
 > >
-> > diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-> > index dabe45eba055d1..5483cf9a28e3a0 100644
-> > --- a/drivers/acpi/irq.c
-> > +++ b/drivers/acpi/irq.c
-> > @@ -147,6 +147,7 @@ struct acpi_irq_parse_one_ctx {
-> >   * @polarity: polarity attributes of hwirq
-> >   * @polarity: polarity attributes of hwirq
-> >   * @shareable: shareable attributes of hwirq
-> > + * @wake_capable: wake capable attribute of hwirq
-> >   * @ctx: acpi_irq_parse_one_ctx updated by this function
-> >   *
-> >   * Description:
-> > @@ -156,12 +157,14 @@ struct acpi_irq_parse_one_ctx {
-> >  static inline void acpi_irq_parse_one_match(struct fwnode_handle *fwnode,
-> >                                           u32 hwirq, u8 triggering,
-> >                                           u8 polarity, u8 shareable,
-> > +                                         u8 wake_capable,
-> >                                           struct acpi_irq_parse_one_ctx *ctx)
-> >  {
-> >       if (!fwnode)
-> >               return;
-> >       ctx->rc = 0;
-> > -     *ctx->res_flags = acpi_dev_irq_flags(triggering, polarity, shareable);
-> > +     *ctx->res_flags = acpi_dev_irq_flags(triggering, polarity, shareable,
-> > +                                          wake_capable);
->
-> Can be on one line.
->
-> >       ctx->fwspec->fwnode = fwnode;
-> >       ctx->fwspec->param[0] = hwirq;
-> >       ctx->fwspec->param[1] = acpi_dev_get_irq_type(triggering, polarity);
-> > @@ -204,7 +207,8 @@ static acpi_status acpi_irq_parse_one_cb(struct acpi_resource *ares,
-> >               fwnode = acpi_get_gsi_domain_id(irq->interrupts[ctx->index]);
-> >               acpi_irq_parse_one_match(fwnode, irq->interrupts[ctx->index],
-> >                                        irq->triggering, irq->polarity,
-> > -                                      irq->shareable, ctx);
-> > +                                      irq->shareable, irq->wake_capable,
-> > +                                      ctx);
->
-> Ditto.
->
-> >               return AE_CTRL_TERMINATE;
-> >       case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
-> >               eirq = &ares->data.extended_irq;
-> > @@ -218,7 +222,8 @@ static acpi_status acpi_irq_parse_one_cb(struct acpi_resource *ares,
-> >                                                     eirq->interrupts[ctx->index]);
-> >               acpi_irq_parse_one_match(fwnode, eirq->interrupts[ctx->index],
-> >                                        eirq->triggering, eirq->polarity,
-> > -                                      eirq->shareable, ctx);
-> > +                                      eirq->shareable, eirq->wake_capable,
-> > +                                      ctx);
->
-> Ditto.
->
-> >               return AE_CTRL_TERMINATE;
-> >       }
+> > diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+> > index c762a879c4cc6b..b3d68a9659ff4f 100644
+> > --- a/drivers/i2c/i2c-core-acpi.c
+> > +++ b/drivers/i2c/i2c-core-acpi.c
+> > @@ -137,6 +137,11 @@ static const struct acpi_device_id i2c_acpi_ignored_device_ids[] = {
+> >       {}
+> >  };
 > >
-> > diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> > index 510cdec375c4d8..6a1c008a348902 100644
-> > --- a/drivers/acpi/resource.c
-> > +++ b/drivers/acpi/resource.c
-> > @@ -336,8 +336,10 @@ EXPORT_SYMBOL_GPL(acpi_dev_resource_ext_address_space);
-> >   * @triggering: Triggering type as provided by ACPI.
-> >   * @polarity: Interrupt polarity as provided by ACPI.
-> >   * @shareable: Whether or not the interrupt is shareable.
-> > + * @wake_capable: Wake capability as provided by ACPI.
-> >   */
-> > -unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable)
-> > +unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable,
-> > +                              u8 wake_capable)
->
-> Ditto.
->
-> >  {
-> >       unsigned long flags;
-> >
-> > @@ -351,6 +353,9 @@ unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable)
-> >       if (shareable == ACPI_SHARED)
-> >               flags |= IORESOURCE_IRQ_SHAREABLE;
-> >
-> > +     if (wake_capable == ACPI_WAKE_CAPABLE)
-> > +             flags |= IORESOURCE_IRQ_WAKECAPABLE;
+> > +struct i2c_acpi_irq_context {
+> > +     int irq;
+> > +     bool wake_capable;
+> > +};
 > > +
-> >       return flags | IORESOURCE_IRQ;
-> >  }
-> >  EXPORT_SYMBOL_GPL(acpi_dev_irq_flags);
-> > @@ -442,7 +447,7 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
-> >
-> >  static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
-> >                                    u8 triggering, u8 polarity, u8 shareable,
-> > -                                  bool check_override)
-> > +                                  u8 wake_capable, bool check_override)
+> >  static int i2c_acpi_do_lookup(struct acpi_device *adev,
+> >                             struct i2c_acpi_lookup *lookup)
 > >  {
-> >       int irq, p, t;
+> > @@ -170,11 +175,14 @@ static int i2c_acpi_do_lookup(struct acpi_device *adev,
 > >
-> > @@ -475,7 +480,8 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
-> >               }
-> >       }
+> >  static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
+> >  {
+> > -     int *irq = data;
+> > +     struct i2c_acpi_irq_context *irq_ctx = data;
+> >       struct resource r;
 > >
-> > -     res->flags = acpi_dev_irq_flags(triggering, polarity, shareable);
-> > +     res->flags = acpi_dev_irq_flags(triggering, polarity, shareable,
-> > +                                     wake_capable);
+> > -     if (*irq <= 0 && acpi_dev_resource_interrupt(ares, 0, &r))
+> > -             *irq = i2c_dev_irq_from_resources(&r, 1);
+> > +     if (irq_ctx->irq <= 0 && acpi_dev_resource_interrupt(ares, 0, &r)) {
+> > +             irq_ctx->irq = i2c_dev_irq_from_resources(&r, 1);
+> > +             irq_ctx->wake_capable =
+> > +                     !!(r.flags & IORESOURCE_IRQ_WAKECAPABLE);
+> > +     }
+
 >
-> Ditto.
+> Maybe
 >
-> >       irq = acpi_register_gsi(NULL, gsi, triggering, polarity);
-> >       if (irq >= 0) {
-> >               res->start = irq;
-> > @@ -523,7 +529,8 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
-> >               }
-> >               acpi_dev_get_irqresource(res, irq->interrupts[index],
-> >                                        irq->triggering, irq->polarity,
-> > -                                      irq->shareable, true);
-> > +                                      irq->shareable, irq->wake_capable,
-> > +                                      true);
-> >               break;
-> >       case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
-> >               ext_irq = &ares->data.extended_irq;
-> > @@ -532,9 +539,12 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
-> >                       return false;
-> >               }
-> >               if (is_gsi(ext_irq))
-> > -                     acpi_dev_get_irqresource(res, ext_irq->interrupts[index],
-> > -                                      ext_irq->triggering, ext_irq->polarity,
-> > -                                      ext_irq->shareable, false);
-> > +                     acpi_dev_get_irqresource(res,
-> > +                                              ext_irq->interrupts[index],
-> > +                                              ext_irq->triggering,
-> > +                                              ext_irq->polarity,
-> > +                                              ext_irq->shareable,
-> > +                                              ext_irq->wake_capable, false);
+>         if (irq_ctx->irq > 0)
+>                 return 1;
 >
-> Maybe false on the next line to split FW parameters from pure software ones?
+>         if (!acpi_dev_resource_interrupt(ares, 0, &r))
+>                 return 1;
 >
-> >               else
-> >                       irqresource_disabled(res, 0);
-> >               break;
-> > diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
-> > index da78dc77aed32e..55b28fc0a94042 100644
-> > --- a/drivers/pnp/pnpacpi/rsparser.c
-> > +++ b/drivers/pnp/pnpacpi/rsparser.c
-> > @@ -206,7 +206,8 @@ static acpi_status pnpacpi_allocated_resource(struct acpi_resource *res,
-> >               if (i >= 0) {
-> >                       flags = acpi_dev_irq_flags(gpio->triggering,
-> >                                                  gpio->polarity,
-> > -                                                gpio->shareable);
-> > +                                                gpio->shareable,
-> > +                                                gpio->wake_capable);
-> >               } else {
-> >                       flags = IORESOURCE_DISABLED;
-> >               }
-> > @@ -315,7 +316,8 @@ static __init void pnpacpi_parse_irq_option(struct pnp_dev *dev,
-> >               if (p->interrupts[i])
-> >                       __set_bit(p->interrupts[i], map.bits);
+>         irq_ctx->irq = i2c_dev_irq_from_resources(&r, 1);
+>         irq_ctx->wake_capable = !!(r.flags & IORESOURCE_IRQ_WAKECAPABLE);
+>
+> ?
+>
+> >       return 1; /* No need to add resource to the list */
+> >  }
+>
+
+Done
+
+> Also not sure why the callback is not called i2c_acpi_add_irq_resource().
+> But it probably can be done in a separate change.
+>
+
+I had the same thought. I went ahead and added it into this change
+since I already
+refactored the logic like you suggested above.
+
+> > @@ -182,31 +190,38 @@ static int i2c_acpi_add_resource(struct acpi_resource *ares, void *data)
+> >  /**
+> >   * i2c_acpi_get_irq - get device IRQ number from ACPI
+> >   * @client: Pointer to the I2C client device
+> > + * @wake_capable: Set to true if the IRQ is wake capable
+> >   *
+> >   * Find the IRQ number used by a specific client device.
+> >   *
+> >   * Return: The IRQ number or an error code.
+> >   */
+> > -int i2c_acpi_get_irq(struct i2c_client *client)
+> > +int i2c_acpi_get_irq(struct i2c_client *client, bool *wake_capable)
+> >  {
+> >       struct acpi_device *adev = ACPI_COMPANION(&client->dev);
+> >       struct list_head resource_list;
+> > -     int irq = -ENOENT;
+> > +     struct i2c_acpi_irq_context irq_ctx = {
+> > +             .irq = -ENOENT,
+> > +     };
+> >       int ret;
 > >
-> > -     flags = acpi_dev_irq_flags(p->triggering, p->polarity, p->shareable);
-> > +     flags = acpi_dev_irq_flags(p->triggering, p->polarity, p->shareable,
-> > +                                p->wake_capable);
-> >       pnp_register_irq_resource(dev, option_flags, &map, flags);
+> >       INIT_LIST_HEAD(&resource_list);
+> >
+> >       ret = acpi_dev_get_resources(adev, &resource_list,
+> > -                                  i2c_acpi_add_resource, &irq);
+> > +                                  i2c_acpi_add_resource, &irq_ctx);
+> >       if (ret < 0)
+> >               return ret;
+> >
+> >       acpi_dev_free_resource_list(&resource_list);
+> >
+> > -     if (irq == -ENOENT)
+> > -             irq = acpi_dev_gpio_irq_get(adev, 0);
+> > +     if (irq_ctx.irq == -ENOENT)
+> > +             irq_ctx.irq = acpi_dev_gpio_irq_wake_get(adev, 0,
+> > +                                                      &irq_ctx.wake_capable);
+> > +
+> > +     if (wake_capable)
+> > +             *wake_capable = irq_ctx.wake_capable;
+> >
+> > -     return irq;
+> > +     return irq_ctx.irq;
 > >  }
 > >
-> > @@ -339,7 +341,8 @@ static __init void pnpacpi_parse_ext_irq_option(struct pnp_dev *dev,
+> >  static int i2c_acpi_get_info(struct acpi_device *adev,
+> > diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> > index 91007558bcb260..c4debd46c6340f 100644
+> > --- a/drivers/i2c/i2c-core-base.c
+> > +++ b/drivers/i2c/i2c-core-base.c
+> > @@ -487,8 +487,14 @@ static int i2c_device_probe(struct device *dev)
+> >                       if (irq == -EINVAL || irq == -ENODATA)
+> >                               irq = of_irq_get(dev->of_node, 0);
+> >               } else if (ACPI_COMPANION(dev)) {
+> > -                     irq = i2c_acpi_get_irq(client);
+> > +                     bool wake_capable;
+> > +
+> > +                     irq = i2c_acpi_get_irq(client, &wake_capable);
+>
+> > +
+>
+> Unneeded blank line.
+>
+Done
+
+> > +                     if (irq > 0 && wake_capable)
+> > +                             client->flags |= I2C_CLIENT_WAKE;
 > >               }
-> >       }
+>
+> > +
+>
+> Ditto. (This even looks like a stray change)
+>
+Done
+> >               if (irq == -EPROBE_DEFER) {
+> >                       status = irq;
+> >                       goto put_sync_adapter;
+> > diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
+> > index 87e2c914f1c57b..1247e6e6e97517 100644
+> > --- a/drivers/i2c/i2c-core.h
+> > +++ b/drivers/i2c/i2c-core.h
+> > @@ -61,11 +61,11 @@ static inline int __i2c_check_suspended(struct i2c_adapter *adap)
+> >  #ifdef CONFIG_ACPI
+> >  void i2c_acpi_register_devices(struct i2c_adapter *adap);
 > >
-> > -     flags = acpi_dev_irq_flags(p->triggering, p->polarity, p->shareable);
-> > +     flags = acpi_dev_irq_flags(p->triggering, p->polarity, p->shareable,
-> > +                                p->wake_capable);
->
-> One line?
->
-> >       pnp_register_irq_resource(dev, option_flags, &map, flags);
+> > -int i2c_acpi_get_irq(struct i2c_client *client);
+> > +int i2c_acpi_get_irq(struct i2c_client *client, bool *wake_capable);
+> >  #else /* CONFIG_ACPI */
+> >  static inline void i2c_acpi_register_devices(struct i2c_adapter *adap) { }
+> >
+> > -static inline int i2c_acpi_get_irq(struct i2c_client *client)
+> > +static inline int i2c_acpi_get_irq(struct i2c_client *client, bool *wake_capable)
+> >  {
+> >       return 0;
 > >  }
-> >
-> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> > index d3121cef6cc3bc..9f7947ee1b006f 100644
-> > --- a/include/linux/acpi.h
-> > +++ b/include/linux/acpi.h
-> > @@ -495,7 +495,8 @@ bool acpi_dev_resource_address_space(struct acpi_resource *ares,
-> >                                    struct resource_win *win);
-> >  bool acpi_dev_resource_ext_address_space(struct acpi_resource *ares,
-> >                                        struct resource_win *win);
-> > -unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable);
-> > +unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable,
-> > +                              u8 wake_capable);
->
-> One line?
->
-> >  unsigned int acpi_dev_get_irq_type(int triggering, int polarity);
-> >  bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
-> >                                struct resource *res);
-> > diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-> > index 616b683563a970..3baeea4d903bfd 100644
-> > --- a/include/linux/ioport.h
-> > +++ b/include/linux/ioport.h
-> > @@ -79,7 +79,8 @@ struct resource {
-> >  #define IORESOURCE_IRQ_HIGHLEVEL     (1<<2)
-> >  #define IORESOURCE_IRQ_LOWLEVEL              (1<<3)
-> >  #define IORESOURCE_IRQ_SHAREABLE     (1<<4)
-> > -#define IORESOURCE_IRQ_OPTIONAL      (1<<5)
-> > +#define IORESOURCE_IRQ_OPTIONAL              (1<<5)
-> > +#define IORESOURCE_IRQ_WAKECAPABLE   (1<<6)
-> >
-> >  /* PnP DMA specific bits (IORESOURCE_BITS) */
-> >  #define IORESOURCE_DMA_TYPE_MASK     (3<<0)
 > > --
 > > 2.37.3.968.ga6b4b080e4-goog
 > >
@@ -337,3 +285,6 @@ Thanks!
 > Andy Shevchenko
 >
 >
+
+I'll send out a V4 series in a few minutes with all the latest changes.
+Thanks!
