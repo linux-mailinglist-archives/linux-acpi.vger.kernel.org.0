@@ -2,163 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61CD55BC88E
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 12:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29ADF5BC9D9
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Sep 2022 12:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231740AbiISKV7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Sep 2022 06:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50032 "EHLO
+        id S230084AbiISKtr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Sep 2022 06:49:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230432AbiISKRw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 06:17:52 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C8A122B00;
-        Mon, 19 Sep 2022 03:17:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
-        Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-        Content-ID:Content-Description:In-Reply-To;
-        bh=QoMAr3LApQWawpgafmfgLtjlo5s7sxEjoowggy+JX/o=; b=kEL0jdoeDuXpIUENKRvpLsR2sv
-        0zAz+fP+mIxElsrdbbO1xpXzDOap+WRebbmPNQ1ONsvisMt1NH+BXft1IZG51vqSfudHX4+LIHrSX
-        GpuYNjx2dLnu7Z5tT3hUgpnBnHxsdHEDHmwnC8iDVR8fYaQ5EQ9prZ7UiulCISmqAQGiWbvfv/Fka
-        7RqUHmLKy9t6tMrFWsMxzBo+91RuvQ9ccepql5V9ZWkf8+nomRELgmwDvAsaOBzjxLtdWQ+/I4CgT
-        5P697PEJZAJaRZ4DYe+zb/QXGU0PQvLAotVDC2hCkaErqtdMBvS+goXfu3YsSUVpKgdBiM2Lkvw/S
-        lfEPmrfw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oaDqB-004bEl-2D; Mon, 19 Sep 2022 10:17:27 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A7CD5302F92;
-        Mon, 19 Sep 2022 12:16:25 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-        id AFEB12BABC0C7; Mon, 19 Sep 2022 12:16:22 +0200 (CEST)
-Message-ID: <20220919101523.312333837@infradead.org>
-User-Agent: quilt/0.66
-Date:   Mon, 19 Sep 2022 12:00:23 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     peterz@infradead.org
-Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
-        gregkh@linuxfoundation.org, mturquette@baylibre.com,
-        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
-        anup@brainfault.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
-        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
-        cl@linux.com, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, fweisbec@gmail.com,
-        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-        dvyukov@google.com, vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: [PATCH v2 44/44] arm64,riscv,perf: Remove RCU_NONIDLE() usage
-References: <20220919095939.761690562@infradead.org>
+        with ESMTP id S229865AbiISKtI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Sep 2022 06:49:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99D0426AE6
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 03:42:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1663584130;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JSVojkQBpDH2ShcQLnYMDETdr3XUdR9J9jflqCVySAY=;
+        b=N8O8jYUSHOavVWjyUNP9wcDpJhquX8o88xX3moP1y5UGsMck8zT7/ybL2twfQi1oiOrGOW
+        btHZUMoZ8t+iva6IFPvULMuzurftrcOB0orulyVLCwZ2G2ZXc7/PELQ6orui9qWTICIotM
+        aZeI/ODLy9Xe3Ep48kDYPZ9gnMjKtWs=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-222-l0NG9Wm5NiG0GgYAsswx1g-1; Mon, 19 Sep 2022 06:42:09 -0400
+X-MC-Unique: l0NG9Wm5NiG0GgYAsswx1g-1
+Received: by mail-ed1-f72.google.com with SMTP id i17-20020a05640242d100b0044f18a5379aso20350557edc.21
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Sep 2022 03:42:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=JSVojkQBpDH2ShcQLnYMDETdr3XUdR9J9jflqCVySAY=;
+        b=s9aSsoXsc8MSkA9safAeSpBYriKqF0FJCno72CqEke7DZJp5MHX0Hk/dd//M7bnnKG
+         2e9nw4RGENTVeBsqdsv4F/L9/GTzDPorGrSEoLZuQ9z+sX9+967jdOBzQxRF2Bc5E2Rh
+         zToWAibMuBjWT2Z5+P/sBuon6X9gM9OPUotEtrS5RTyHQKAeyCJCl3yhwOrZiJzK4xmJ
+         jVZC5sp1QC6ggOuwnS2Yh7/cQ8vxAcoZ/uvtGL/tgtpRZACPHTdksboGKSXVqnR0TMNO
+         aAL0HHhmjtq93+ut8c4jpqJfxG3bZ2GrbTb0O3qirKSBQp+hML+PcwI8BUtQeBsGZ/Ml
+         TNVA==
+X-Gm-Message-State: ACrzQf2yQ+toNleSYjnaRhwff1qkGUc8YcQQLD0i6KpZMZ+LR2KOAGh8
+        MT7+i8xrcjIBDtjAvOSKEfWEam0D3jMkwljcA8CuN+VFCy0ModPJ9qLY/LzI60/7qhpDHkbMpct
+        AmyAvByyhus94YwIVgw7+xw==
+X-Received: by 2002:a17:906:9b87:b0:733:1795:2855 with SMTP id dd7-20020a1709069b8700b0073317952855mr12730727ejc.156.1663584128566;
+        Mon, 19 Sep 2022 03:42:08 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM5E9hdTB/zsLiGdHYHGyIfVoWOwYCxo8G7tzx2zblspy+LiFeQDC3v4aeLe3BLK8FnDMRB/wA==
+X-Received: by 2002:a17:906:9b87:b0:733:1795:2855 with SMTP id dd7-20020a1709069b8700b0073317952855mr12730715ejc.156.1663584128354;
+        Mon, 19 Sep 2022 03:42:08 -0700 (PDT)
+Received: from [10.40.98.142] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id bs11-20020a170906d1cb00b00738467f743dsm9924874ejb.5.2022.09.19.03.42.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Sep 2022 03:42:07 -0700 (PDT)
+Message-ID: <f8fa6d10-6eb1-7fa7-80eb-ea190d29ba4a@redhat.com>
+Date:   Mon, 19 Sep 2022 11:42:07 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH 1/5] ACPI: battery: Do not unload battery hooks on single
+ error
+Content-Language: en-US
+To:     Armin Wolf <W_Armin@gmx.de>, markgross@kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
+        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
+        productdev@system76.com, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220912125342.7395-1-W_Armin@gmx.de>
+ <20220912125342.7395-2-W_Armin@gmx.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220912125342.7395-2-W_Armin@gmx.de>
 Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The PM notifiers should no longer be ran with RCU disabled (per the
-previous patches), as such this hack is no longer required either.
+Hi,
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- drivers/perf/arm_pmu.c       |   11 +----------
- drivers/perf/riscv_pmu_sbi.c |    8 +-------
- 2 files changed, 2 insertions(+), 17 deletions(-)
+On 9/12/22 13:53, Armin Wolf wrote:
+> Currently, battery hooks are being unloaded if they return
+> an error when adding a single battery.
+> This however also causes the removal of successfully added
+> hooks if they return -ENODEV for a single unsupported
+> battery.
+> 
+> Do not unload battery hooks in such cases since the hook
+> handles any cleanup actions.
+> 
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 
---- a/drivers/perf/arm_pmu.c
-+++ b/drivers/perf/arm_pmu.c
-@@ -762,17 +762,8 @@ static void cpu_pm_pmu_setup(struct arm_
- 		case CPU_PM_ENTER_FAILED:
- 			 /*
- 			  * Restore and enable the counter.
--			  * armpmu_start() indirectly calls
--			  *
--			  * perf_event_update_userpage()
--			  *
--			  * that requires RCU read locking to be functional,
--			  * wrap the call within RCU_NONIDLE to make the
--			  * RCU subsystem aware this cpu is not idle from
--			  * an RCU perspective for the armpmu_start() call
--			  * duration.
- 			  */
--			RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
-+			armpmu_start(event, PERF_EF_RELOAD);
- 			break;
- 		default:
- 			break;
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -747,14 +747,8 @@ static int riscv_pm_pmu_notify(struct no
- 		case CPU_PM_ENTER_FAILED:
- 			/*
- 			 * Restore and enable the counter.
--			 *
--			 * Requires RCU read locking to be functional,
--			 * wrap the call within RCU_NONIDLE to make the
--			 * RCU subsystem aware this cpu is not idle from
--			 * an RCU perspective for the riscv_pmu_start() call
--			 * duration.
- 			 */
--			RCU_NONIDLE(riscv_pmu_start(event, PERF_EF_RELOAD));
-+			riscv_pmu_start(event, PERF_EF_RELOAD);
- 			break;
- 		default:
- 			break;
+Maybe instead of removing all error checking, allow -ENODEV
+and behave as before when the error is not -ENODEV ?
 
+Otherwise we should probably make the add / remove callbacks
+void to indicate that any errors are ignored.
+
+Rafael, do you have any opinion on this?
+
+Regards,
+
+Hans
+
+> ---
+>  drivers/acpi/battery.c | 24 +++---------------------
+>  1 file changed, 3 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 306513fec1e1..e59c261c7c59 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -724,20 +724,10 @@ void battery_hook_register(struct acpi_battery_hook *hook)
+>  	 * its attributes.
+>  	 */
+>  	list_for_each_entry(battery, &acpi_battery_list, list) {
+> -		if (hook->add_battery(battery->bat)) {
+> -			/*
+> -			 * If a add-battery returns non-zero,
+> -			 * the registration of the extension has failed,
+> -			 * and we will not add it to the list of loaded
+> -			 * hooks.
+> -			 */
+> -			pr_err("extension failed to load: %s", hook->name);
+> -			__battery_hook_unregister(hook, 0);
+> -			goto end;
+> -		}
+> +		hook->add_battery(battery->bat);
+>  	}
+>  	pr_info("new extension: %s\n", hook->name);
+> -end:
+> +
+>  	mutex_unlock(&hook_mutex);
+>  }
+>  EXPORT_SYMBOL_GPL(battery_hook_register);
+> @@ -762,15 +752,7 @@ static void battery_hook_add_battery(struct acpi_battery *battery)
+>  	 * during the battery module initialization.
+>  	 */
+>  	list_for_each_entry_safe(hook_node, tmp, &battery_hook_list, list) {
+> -		if (hook_node->add_battery(battery->bat)) {
+> -			/*
+> -			 * The notification of the extensions has failed, to
+> -			 * prevent further errors we will unload the extension.
+> -			 */
+> -			pr_err("error in extension, unloading: %s",
+> -					hook_node->name);
+> -			__battery_hook_unregister(hook_node, 0);
+> -		}
+> +		hook_node->add_battery(battery->bat);
+>  	}
+>  	mutex_unlock(&hook_mutex);
+>  }
+> --
+> 2.30.2
+> 
 
