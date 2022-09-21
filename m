@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54FD05C0317
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Sep 2022 18:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC8F65C034B
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Sep 2022 18:02:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232077AbiIUQAm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Sep 2022 12:00:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56046 "EHLO
+        id S232301AbiIUQCB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Sep 2022 12:02:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232659AbiIUQAN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Sep 2022 12:00:13 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53C2BAE74
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 08:53:40 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id b23so5397969iof.2
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 08:53:39 -0700 (PDT)
+        with ESMTP id S232766AbiIUQA2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Sep 2022 12:00:28 -0400
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E53458DDF
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 08:53:53 -0700 (PDT)
+Received: by mail-il1-x134.google.com with SMTP id i16so333701ilq.0
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 08:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=BLdt6ZhvGr0RaD7VzP2mPYzzyAyFxpk+jb6URS+dUyM=;
-        b=NW0DxOZCIOhi7D7pIYBZmi1MjcIGOGN5aKSPvNUUuHsu91/a4vEXXoU9yoKtVcVFy1
-         KdBLpQG6bfggGEj+YyGfdWIl7h49HmUDstUFnDxLcYrTNuZABzYm54SCfyQ65BqaDLVZ
-         NEk5ON3+abjpYKgiOp6c76ILaDUJNeCAz8ecg=
+        bh=H54d0G6AAErtN9paRV2+6Wo2Il0gAFeOcBLywRUXXa0=;
+        b=aPT4P7qoRZWdL5Bmar/LZHlelSGaUIcO+KvnefvZmwjLeCnKyFua9Sdj/jZ3OYL968
+         cQxDi+jSWtUu8TdBqWCYELC8kdx3qAM2gxeRYH8iHLqWA9+l0/9xs6ERSCp/n70oZaHw
+         z/ZVSYsY35pX3YiNhdheaP4Q62BbzLzk4j470=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=BLdt6ZhvGr0RaD7VzP2mPYzzyAyFxpk+jb6URS+dUyM=;
-        b=tjA9EpxDBPaufvX236P9AWSXvefvAW6uIeJs1uK5TchQaPON8KLOGszvv1WER2fAnn
-         TwsZdBQnohnrWljp4Kt0Oucwdi5WIS4TiG1PBzyzmRBBYb0cwzIG36zf9cNsY379Xt8f
-         M/Xm6T5TL/98/mrbbHyl8nXWnFP2/NniwZjOekYmiJAoxgW73ejrZHNthNkOHRXxfKoI
-         fAun2H8alHx2nXNTIe2d4DD5bGPeec5MOssvtOMnZ+32PF9bXckFBRFwV5NeriFYAdrF
-         zHGmU7/u2TYlXTPLQQtudcZaCkdZiHsPXSMTu1GiTyVMRFYwwfYDk+eg6uE2C/vyk1AH
-         XHvA==
-X-Gm-Message-State: ACrzQf1MgA2AXk4Ur869A9QN8XwmT7b6GG6PvWRiOPXNfOhOQd7W2TQM
-        D+rU/Cvmjhgtd6c+JX+wo02hpVyOg9Dm/Q==
-X-Google-Smtp-Source: AMsMyM7Imln63wm+6aXB+OaGfTzsZGZphFcReZdUZOOOW5iAvoeaP8vqNuJMBYexE48ezn3l+879nw==
-X-Received: by 2002:a05:6638:3a1a:b0:35a:26bc:8856 with SMTP id cn26-20020a0566383a1a00b0035a26bc8856mr13100319jab.47.1663775540394;
-        Wed, 21 Sep 2022 08:52:20 -0700 (PDT)
+        bh=H54d0G6AAErtN9paRV2+6Wo2Il0gAFeOcBLywRUXXa0=;
+        b=ym9q8B5otzNYoIy/B0ipApcTN16zreWnFVyVlYt6lEEp11QRkf0yt0CrYIGdPeDNcD
+         vGf7LQMxLjIFJbSebfZ3DDkixzv1D8jzxzS1F4/FZes/oqtUd+sz4SLlenY26lOVPnLZ
+         /0NTAgr1xNqoaffC+7z8LtJeKIiiYvQicXZWii8rZBj+cjkVl8DfVrdF8SlNuWof6Yox
+         v5qRwLVtSab06xnWQORO1RGG/YSiQey2Nvk3e6UgpCUwfJuvHv//5bghgTpagkW14cLs
+         kypkhMVKMrnid9RXG0SWz17kwxIhbsTC/PL4qSL1806+/Lil836Y0WQLoV++IYf9kmUF
+         sfFQ==
+X-Gm-Message-State: ACrzQf1GcJmrxbjbymYatvCPy/bd7ckuPAyVAQr9KVU/hQIfjCtmRvyd
+        4u2yQ717+y6rYeHBcwPKP/YiSjtKqxTIzQ==
+X-Google-Smtp-Source: AMsMyM7LF80A56RG5rA5mp7cs5aIJCOrf0Zc81Hwi3Jug3DDAhNSylTY9RpImJUvdn25Fw0A8rtlVg==
+X-Received: by 2002:a92:c546:0:b0:2f1:ceaf:89f8 with SMTP id a6-20020a92c546000000b002f1ceaf89f8mr12931327ilj.195.1663775542631;
+        Wed, 21 Sep 2022 08:52:22 -0700 (PDT)
 Received: from rrangel920.bld.corp.google.com (h24-56-189-219.arvdco.broadband.dynamic.tds.net. [24.56.189.219])
-        by smtp.gmail.com with ESMTPSA id c14-20020a023b0e000000b0035a8d644a31sm1148061jaa.117.2022.09.21.08.52.19
+        by smtp.gmail.com with ESMTPSA id c14-20020a023b0e000000b0035a8d644a31sm1148061jaa.117.2022.09.21.08.52.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 08:52:20 -0700 (PDT)
+        Wed, 21 Sep 2022 08:52:22 -0700 (PDT)
 From:   Raul E Rangel <rrangel@chromium.org>
 To:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org
 Cc:     rafael@kernel.org, timvp@google.com,
@@ -52,13 +52,10 @@ Cc:     rafael@kernel.org, timvp@google.com,
         dmitry.torokhov@gmail.com, jingle.wu@emc.com.tw,
         hdegoede@redhat.com, mario.limonciello@amd.com,
         linus.walleij@linaro.org, Raul E Rangel <rrangel@chromium.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Alistair Francis <alistair@alistair23.me>,
-        Jiri Kosina <jikos@kernel.org>, Rob Herring <robh@kernel.org>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v5 09/13] HID: i2c-hid: acpi: Stop setting wakeup_capable
-Date:   Wed, 21 Sep 2022 09:52:01 -0600
-Message-Id: <20220921094736.v5.9.I2efb7f551e0aa2dc4c53b5fd5bbea91a1cdd9b32@changeid>
+Subject: [PATCH v5 11/13] Input: elan_i2c - Don't set wake_capable and wake_irq
+Date:   Wed, 21 Sep 2022 09:52:03 -0600
+Message-Id: <20220921094736.v5.11.I7309b8f322082437b93581c6e2953886eeb998d7@changeid>
 X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
 In-Reply-To: <20220921155205.1332614-1-rrangel@chromium.org>
 References: <20220921155205.1332614-1-rrangel@chromium.org>
@@ -66,42 +63,54 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This is now handled by the i2c-core driver.
+The i2c-core will now handle setting the wake_irq and wake capability
+for DT and ACPI systems.
 
 Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-Acked-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 ---
 
-Changes in v5:
-- Added Acked-by: Benjamin Tissoires
+(no changes since v2)
 
- drivers/hid/i2c-hid/i2c-hid-acpi.c | 5 -----
- 1 file changed, 5 deletions(-)
+Changes in v2:
+- I chose not to keep the legacy code around since systems without DT or ACPI should be rare.
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-index b96ae15e0ad917..375c77c3db74d9 100644
---- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-@@ -105,11 +105,6 @@ static int i2c_hid_acpi_probe(struct i2c_client *client)
+ drivers/input/mouse/elan_i2c_core.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/drivers/input/mouse/elan_i2c_core.c b/drivers/input/mouse/elan_i2c_core.c
+index 3947474e93d16a..b25b94aba3e88e 100644
+--- a/drivers/input/mouse/elan_i2c_core.c
++++ b/drivers/input/mouse/elan_i2c_core.c
+@@ -1332,22 +1332,6 @@ static int elan_probe(struct i2c_client *client,
+ 		}
+ 	}
  
- 	acpi_device_fix_up_power(adev);
- 
--	if (acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0) {
--		device_set_wakeup_capable(dev, true);
--		device_set_wakeup_enable(dev, false);
--	}
+-	/*
+-	 * Systems using device tree should set up wakeup via DTS,
+-	 * the rest will configure device as wakeup source by default.
+-	 */
+-	if (!dev->of_node)
+-		device_init_wakeup(dev, true);
 -
- 	return i2c_hid_core_probe(client, &ihid_acpi->ops,
- 				  hid_descriptor_address, 0);
+-	/*
+-	 * The wake IRQ should be declared via device tree instead of assuming
+-	 * the IRQ can wake the system. This is here for legacy reasons and
+-	 * will be removed once the i2c-core supports querying ACPI for wake
+-	 * capabilities.
+-	 */
+-	if (!dev->power.wakeirq)
+-		dev_pm_set_wake_irq(dev, client->irq);
+-
+ 	return 0;
  }
+ 
 -- 
 2.37.3.968.ga6b4b080e4-goog
 
