@@ -2,112 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4FBE5C0538
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Sep 2022 19:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAFC5E4ED5
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Sep 2022 20:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbiIURYc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Sep 2022 13:24:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47946 "EHLO
+        id S229673AbiIUSYB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Sep 2022 14:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbiIURYb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Sep 2022 13:24:31 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5771BE
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 10:24:28 -0700 (PDT)
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 0E7BB3F337
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 17:24:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1663781067;
-        bh=9piyT/VCnJlMmHymPvmNLYxbTaKtOFLio9F+8h9hJ9c=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=uRzvoVjcl871kW1r3aqyrkmqv2OKBponIPV7J7xTHutTOuOTA7Ku6msdy4MFgF4l8
-         W47y7WDSp49/HsrbWBBc9ggE38s00keGollHQvHsxFK+bh1x+7GlOwMhIgDtB1SyaC
-         x0yyCpZut4ZJiMzg1w8qSbs1sz3rT1EZoQoBDZmfHhFsVf9tyhmb8j0+EnlVwm6yBm
-         d4cfd7U+DJddgaag/RWAQZUhguHXPLrgT3s02qVP/EmqmY1rfF4sJmigQEC2oG5xT3
-         JYFvBDXudgPeXiWXswGRykcJrHUN2O0howmupSDuhphnn5SN44jT24uE2PAaHeq2jv
-         g5RyiGHqV5Lwg==
-Received: by mail-pg1-f198.google.com with SMTP id w1-20020a63d741000000b0042c254a4ccdso3795841pgi.15
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 10:24:26 -0700 (PDT)
+        with ESMTP id S229521AbiIUSX7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Sep 2022 14:23:59 -0400
+Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3B3A0241;
+        Wed, 21 Sep 2022 11:23:57 -0700 (PDT)
+Received: by mail-vk1-xa33.google.com with SMTP id g85so3644381vkf.10;
+        Wed, 21 Sep 2022 11:23:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date;
+        bh=+eAo7BDyj6rqLjBqJp5X0j6DhBCMrJif3f40JY/Uy7s=;
+        b=kutqZRMFdJuMiHLv0dWs/IkHYRC+xE8RV150VKytMpk2z5ZDFUBkG6X+qCNdzVF4rj
+         dXi5H4Zi0xugPLM5IurwU/I9Oon2Za6GpLWEMBOqcsCgY/02jDWQxqeTHKIo9Cqb0QhL
+         1PBX6J7sW9ywaSergyJEe9TtpFa9dU6UUnQA09zOyaZKgf+P+8tnXfIkHkWXOmObodmO
+         87kQtBCxHqmObTl8fxT8TBRSAvF/KdygwNlMQ8OHqFUOnjqrJHjBRPGCoeQjiN1+sZEH
+         k7nhvii49/ZcGvLnr0Sa9c88A06miVuu+b00e+CnulJah2CtoENIce8j2gf1uF5qYssU
+         1jWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=9piyT/VCnJlMmHymPvmNLYxbTaKtOFLio9F+8h9hJ9c=;
-        b=dFmE07tg03URdzGPObkgt0QZLyUdBrx4sHCsMTJN0X5x7dYkp61MBy5vrEU5Dc4wjB
-         S1EjxftexbofX6ln1LvuyN9r7U+zI4vSNNDp/ox1yRHeq/lYVsk7Yfpaf0hE0EyCvMpt
-         wdWo3AmRUTcsZCWjwVN5WycVLGDqoezYL9tbQ8Ar1sgG3oCqYWIu6mjepCpUFouDNT3F
-         e/HTnOGaHeaPKAcftDsY3tFNJXUqXnoCe7Wzukm1GmRWhhOl10vYuZd55K0/gIWeFPCC
-         bSlSNbu7V1x2V6f7twJ9wTv8BJDW2u18We5KEFdzOIFTvFDVphHnsaUVnGBXEK6sK5iK
-         3sng==
-X-Gm-Message-State: ACrzQf1H2eoqXgibUsW9kzaViNJVO5j/em381y0rwqjulx7EY7ieEDsT
-        cmH/+xlcoudmhuM7zLC0Z3h17BLjasB8t9fbo8mb+ggLjTyIayBRPcd8WHLVDpaleJVTUi9015O
-        yrweVRTIfr5m0uOITrfNe3lKScUbXxxlGPKBpqpA=
-X-Received: by 2002:a17:902:d4c1:b0:176:b795:c639 with SMTP id o1-20020a170902d4c100b00176b795c639mr5717731plg.154.1663781065317;
-        Wed, 21 Sep 2022 10:24:25 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM4WX1aYTbIwRcfCVN4W588CV/XvjYWHcK6PVkEXvP4qjobX++S8B4HCEEzInRCAY75VXKnmwQ==
-X-Received: by 2002:a17:902:d4c1:b0:176:b795:c639 with SMTP id o1-20020a170902d4c100b00176b795c639mr5717712plg.154.1663781065065;
-        Wed, 21 Sep 2022 10:24:25 -0700 (PDT)
-Received: from workstation.canonical.bluequartz.xyz (c-68-84-194-247.hsd1.az.comcast.net. [68.84.194.247])
-        by smtp.gmail.com with ESMTPSA id b8-20020a170902650800b00178a9b193cfsm2310861plk.140.2022.09.21.10.24.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 10:24:24 -0700 (PDT)
-From:   Kellen Renshaw <kellen.renshaw@canonical.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-        hui.wang@canonical.com, kellen.renshaw@canonical.com
-Subject: [PATCH] ACPI: resources: Add ASUS model S5402ZA to quirks
-Date:   Wed, 21 Sep 2022 10:24:22 -0700
-Message-Id: <20220921172422.650880-1-kellen.renshaw@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=+eAo7BDyj6rqLjBqJp5X0j6DhBCMrJif3f40JY/Uy7s=;
+        b=CmnVB3Thw/B0I7nY43K+hhclT9ty1oSBLXxZFUmg2l4cj4k+31wxxHvoM7lIYN2Bfp
+         fXkDYEzRftzEKSPK0i6IgT2uFsRhpWiEcyGPhnd0Yh48LsAbiHl1MS4w0PDqb6g9nY6s
+         qei6JRkYVCHhuQKfi0/gURqlxWldfCvOuv3LNSDT00pHUnXRDBofEH7sicfwnZyhZU/v
+         HnkRNIv4kWcPzVWLSiHJxRjkhGmC2jXpV2CF9uU48cdbBq8GsmCQOjXDa4v7VpwFXtTH
+         GI1QEPW8Gy5u5VyI05oXNq77SKAynjBSpp8/5sRec0OpmycyapNnAzfHpbFkbN+EdmPV
+         p8Uw==
+X-Gm-Message-State: ACrzQf2Tu0oQn+5MomtRDP3/uH+H0YzXBN9MaEMp9zYzxED6qgBiaFJl
+        Or6bKPOYiTbToBlWI53Ibgu1fIh1gzqmlfGH3PU=
+X-Google-Smtp-Source: AMsMyM46IWYtfcmTEWdwAgUz+nhVqCEhKTsB1hlNV9/ILqNsWTEcrcBWt6flzOj8YeLVklpUukBY2WxB7A0pWflitzM=
+X-Received: by 2002:a1f:b60b:0:b0:39e:d666:d9de with SMTP id
+ g11-20020a1fb60b000000b0039ed666d9demr11068795vkf.8.1663784636888; Wed, 21
+ Sep 2022 11:23:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Marko <marko.cekrlic.26@gmail.com>
+Date:   Wed, 21 Sep 2022 20:23:46 +0200
+Message-ID: <CAF9VpL4ZavjF9pwbRC_mj7+YAajgCJXTBdnnwNK3gHSS2VUxYw@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] acpi/x86: s2idle: Add a quirk for ASUS ROG
+ Zephyrus G14
+To:     mario.limonciello@amd.com
+Cc:     Shyam-sundar.S-k@amd.com, catalin@antebit.com, hdegoede@redhat.com,
+        iam@decentr.al, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, philipp.zabel@gmail.com,
+        rafael@kernel.org, ruinairas1992@gmail.com, travisghansen@yahoo.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Asus Vivobook S5402ZA has the same keyboard issue as Asus Vivobook 
-K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
-should be Active_Low.
+This patch fixed fans and speakers on top of my ASUS Zephyrus
+G14 GA402RJ laptop not working after resuming from suspend.
 
-This patch adds the S5402ZA model to the quirk list.
-
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=216158
-Tested-by: Kellen Renshaw <kellen.renshaw@canonical.com>
-Signed-off-by: Kellen Renshaw <kellen.renshaw@canonical.com>
----
-Follows e12dee373673 (ACPI: resource: Skip IRQ override on Asus Vivobook 
-K3402ZA/K3502ZA).
-
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 8b4faec8cae7..5d688e546239 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -414,6 +414,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus Vivobook S5402ZA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
-+		},
-+	},
- 	{ }
- };
- 
--- 
-2.25.1
-
+Tested-by: Marko Cekrlic <marko.cekrlic.26@gmail.com>
