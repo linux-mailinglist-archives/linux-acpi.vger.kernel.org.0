@@ -2,107 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08CC85C03E5
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Sep 2022 18:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4FBE5C0538
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Sep 2022 19:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232206AbiIUQRK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Sep 2022 12:17:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48926 "EHLO
+        id S229630AbiIURYc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Sep 2022 13:24:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232154AbiIUQQk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Sep 2022 12:16:40 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF6E7A98E8
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 09:01:28 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id e67so247973pgc.12
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 09:01:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=uhn02vEcgNMuC4NDL/sdnIiKkA3NV83noPVamoKM5ng=;
-        b=J+m/6s3OweW7a/eo9st4eaQgCj5FBjVxWu4cd0CaPO5cml8TYlNkg/w5YMuvK+r+GQ
-         wzhrojO6SeTZXM/fmsxo/ctc7AJ+AoKGqVMF18GQ8VM2foK5SHjyhGHiByVZJBVAX1i1
-         obzlAwJ08YXB3oRiWQZ0lmKoLJMRn+Pegtamw=
+        with ESMTP id S229523AbiIURYb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Sep 2022 13:24:31 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5771BE
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 10:24:28 -0700 (PDT)
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 0E7BB3F337
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 17:24:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1663781067;
+        bh=9piyT/VCnJlMmHymPvmNLYxbTaKtOFLio9F+8h9hJ9c=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=uRzvoVjcl871kW1r3aqyrkmqv2OKBponIPV7J7xTHutTOuOTA7Ku6msdy4MFgF4l8
+         W47y7WDSp49/HsrbWBBc9ggE38s00keGollHQvHsxFK+bh1x+7GlOwMhIgDtB1SyaC
+         x0yyCpZut4ZJiMzg1w8qSbs1sz3rT1EZoQoBDZmfHhFsVf9tyhmb8j0+EnlVwm6yBm
+         d4cfd7U+DJddgaag/RWAQZUhguHXPLrgT3s02qVP/EmqmY1rfF4sJmigQEC2oG5xT3
+         JYFvBDXudgPeXiWXswGRykcJrHUN2O0howmupSDuhphnn5SN44jT24uE2PAaHeq2jv
+         g5RyiGHqV5Lwg==
+Received: by mail-pg1-f198.google.com with SMTP id w1-20020a63d741000000b0042c254a4ccdso3795841pgi.15
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Sep 2022 10:24:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=uhn02vEcgNMuC4NDL/sdnIiKkA3NV83noPVamoKM5ng=;
-        b=hN5cD93YQtDh5tXCme5PT4eYj11o3WSn29sMApM2461vW4ta55/fiDPazT8oiKsL3R
-         U6Eq+J39XPngVtLZkOcVMrrzG2lzXAZ7FoKTqh0bBdr/67UZ6uUf5onl83Y5MiDd1yIP
-         7z0wypoVftP1uI1h394KwyAfn0WY1Ig+n6JPkTP/KeSJCqYMuqOR/nMnuXvEeSv/LxxC
-         SHmeXT3ZNGnFw+N6x82EEO967cMNX5pXTAwEkidHQo0wrIX6AEbGrK5z5NUfBT2ncg2L
-         Y8AVNKFixpNYcV3RtnTqdcCvNCCi2owiay5kdvqeC0rOU1RVqsKsUrEflA4kOE8pSppn
-         D6vw==
-X-Gm-Message-State: ACrzQf2jCdVd16o6OmY7AbzVZOHh1QPlsGGFM0O9m81BtlIjhZHXKw0a
-        r14ba1f/zzBhF3nmGJoDayjwAKdISZWwuQ==
-X-Google-Smtp-Source: AMsMyM5y+0hpMGJsf2ExwaciR2mijAedWncBixNTzl39icNIG8bLyvsSsOzqJ1lKOuRVy46al2qq4w==
-X-Received: by 2002:a05:6e02:20ce:b0:2f3:4a1f:3db4 with SMTP id 14-20020a056e0220ce00b002f34a1f3db4mr12919850ilq.278.1663775545355;
-        Wed, 21 Sep 2022 08:52:25 -0700 (PDT)
-Received: from rrangel920.bld.corp.google.com (h24-56-189-219.arvdco.broadband.dynamic.tds.net. [24.56.189.219])
-        by smtp.gmail.com with ESMTPSA id c14-20020a023b0e000000b0035a8d644a31sm1148061jaa.117.2022.09.21.08.52.24
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=9piyT/VCnJlMmHymPvmNLYxbTaKtOFLio9F+8h9hJ9c=;
+        b=dFmE07tg03URdzGPObkgt0QZLyUdBrx4sHCsMTJN0X5x7dYkp61MBy5vrEU5Dc4wjB
+         S1EjxftexbofX6ln1LvuyN9r7U+zI4vSNNDp/ox1yRHeq/lYVsk7Yfpaf0hE0EyCvMpt
+         wdWo3AmRUTcsZCWjwVN5WycVLGDqoezYL9tbQ8Ar1sgG3oCqYWIu6mjepCpUFouDNT3F
+         e/HTnOGaHeaPKAcftDsY3tFNJXUqXnoCe7Wzukm1GmRWhhOl10vYuZd55K0/gIWeFPCC
+         bSlSNbu7V1x2V6f7twJ9wTv8BJDW2u18We5KEFdzOIFTvFDVphHnsaUVnGBXEK6sK5iK
+         3sng==
+X-Gm-Message-State: ACrzQf1H2eoqXgibUsW9kzaViNJVO5j/em381y0rwqjulx7EY7ieEDsT
+        cmH/+xlcoudmhuM7zLC0Z3h17BLjasB8t9fbo8mb+ggLjTyIayBRPcd8WHLVDpaleJVTUi9015O
+        yrweVRTIfr5m0uOITrfNe3lKScUbXxxlGPKBpqpA=
+X-Received: by 2002:a17:902:d4c1:b0:176:b795:c639 with SMTP id o1-20020a170902d4c100b00176b795c639mr5717731plg.154.1663781065317;
+        Wed, 21 Sep 2022 10:24:25 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM4WX1aYTbIwRcfCVN4W588CV/XvjYWHcK6PVkEXvP4qjobX++S8B4HCEEzInRCAY75VXKnmwQ==
+X-Received: by 2002:a17:902:d4c1:b0:176:b795:c639 with SMTP id o1-20020a170902d4c100b00176b795c639mr5717712plg.154.1663781065065;
+        Wed, 21 Sep 2022 10:24:25 -0700 (PDT)
+Received: from workstation.canonical.bluequartz.xyz (c-68-84-194-247.hsd1.az.comcast.net. [68.84.194.247])
+        by smtp.gmail.com with ESMTPSA id b8-20020a170902650800b00178a9b193cfsm2310861plk.140.2022.09.21.10.24.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 08:52:25 -0700 (PDT)
-From:   Raul E Rangel <rrangel@chromium.org>
-To:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org
-Cc:     rafael@kernel.org, timvp@google.com,
-        mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
-        dmitry.torokhov@gmail.com, jingle.wu@emc.com.tw,
-        hdegoede@redhat.com, mario.limonciello@amd.com,
-        linus.walleij@linaro.org, Raul E Rangel <rrangel@chromium.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v5 13/13] Input: raydium_ts_i2c - Don't set wake_capable and wake_irq
-Date:   Wed, 21 Sep 2022 09:52:05 -0600
-Message-Id: <20220921094736.v5.13.Ia0b24ab02c22125c5fd686cc25872bd26c27ac23@changeid>
-X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
-In-Reply-To: <20220921155205.1332614-1-rrangel@chromium.org>
-References: <20220921155205.1332614-1-rrangel@chromium.org>
+        Wed, 21 Sep 2022 10:24:24 -0700 (PDT)
+From:   Kellen Renshaw <kellen.renshaw@canonical.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        hui.wang@canonical.com, kellen.renshaw@canonical.com
+Subject: [PATCH] ACPI: resources: Add ASUS model S5402ZA to quirks
+Date:   Wed, 21 Sep 2022 10:24:22 -0700
+Message-Id: <20220921172422.650880-1-kellen.renshaw@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The i2c-core will now handle setting the wake_irq and wake capability
-for DT and ACPI systems.
+The Asus Vivobook S5402ZA has the same keyboard issue as Asus Vivobook 
+K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
+should be Active_Low.
 
-Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+This patch adds the S5402ZA model to the quirk list.
+
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=216158
+Tested-by: Kellen Renshaw <kellen.renshaw@canonical.com>
+Signed-off-by: Kellen Renshaw <kellen.renshaw@canonical.com>
 ---
+Follows e12dee373673 (ACPI: resource: Skip IRQ override on Asus Vivobook 
+K3402ZA/K3502ZA).
 
-(no changes since v1)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- drivers/input/touchscreen/raydium_i2c_ts.c | 9 ---------
- 1 file changed, 9 deletions(-)
-
-diff --git a/drivers/input/touchscreen/raydium_i2c_ts.c b/drivers/input/touchscreen/raydium_i2c_ts.c
-index 66c5b577b791d4..88d187dc5d325f 100644
---- a/drivers/input/touchscreen/raydium_i2c_ts.c
-+++ b/drivers/input/touchscreen/raydium_i2c_ts.c
-@@ -1185,15 +1185,6 @@ static int raydium_i2c_probe(struct i2c_client *client,
- 		return error;
- 	}
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 8b4faec8cae7..5d688e546239 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -414,6 +414,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
+ 		},
+ 	},
++	{
++		.ident = "Asus Vivobook S5402ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
++		},
++	},
+ 	{ }
+ };
  
--	/*
--	 * The wake IRQ should be declared via device tree instead of assuming
--	 * the IRQ can wake the system. This is here for legacy reasons and
--	 * will be removed once the i2c-core supports querying ACPI for wake
--	 * capabilities.
--	 */
--	if (!client->dev.power.wakeirq)
--		dev_pm_set_wake_irq(&client->dev, client->irq);
--
- 	error = devm_device_add_group(&client->dev,
- 				   &raydium_i2c_attribute_group);
- 	if (error) {
 -- 
-2.37.3.968.ga6b4b080e4-goog
+2.25.1
 
