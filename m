@@ -2,71 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BAFC5E4ED5
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Sep 2022 20:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1A245E53F1
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Sep 2022 21:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbiIUSYB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Sep 2022 14:24:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56810 "EHLO
+        id S229630AbiIUTsU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Sep 2022 15:48:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbiIUSX7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Sep 2022 14:23:59 -0400
-Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3B3A0241;
-        Wed, 21 Sep 2022 11:23:57 -0700 (PDT)
-Received: by mail-vk1-xa33.google.com with SMTP id g85so3644381vkf.10;
-        Wed, 21 Sep 2022 11:23:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date;
-        bh=+eAo7BDyj6rqLjBqJp5X0j6DhBCMrJif3f40JY/Uy7s=;
-        b=kutqZRMFdJuMiHLv0dWs/IkHYRC+xE8RV150VKytMpk2z5ZDFUBkG6X+qCNdzVF4rj
-         dXi5H4Zi0xugPLM5IurwU/I9Oon2Za6GpLWEMBOqcsCgY/02jDWQxqeTHKIo9Cqb0QhL
-         1PBX6J7sW9ywaSergyJEe9TtpFa9dU6UUnQA09zOyaZKgf+P+8tnXfIkHkWXOmObodmO
-         87kQtBCxHqmObTl8fxT8TBRSAvF/KdygwNlMQ8OHqFUOnjqrJHjBRPGCoeQjiN1+sZEH
-         k7nhvii49/ZcGvLnr0Sa9c88A06miVuu+b00e+CnulJah2CtoENIce8j2gf1uF5qYssU
-         1jWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date;
-        bh=+eAo7BDyj6rqLjBqJp5X0j6DhBCMrJif3f40JY/Uy7s=;
-        b=CmnVB3Thw/B0I7nY43K+hhclT9ty1oSBLXxZFUmg2l4cj4k+31wxxHvoM7lIYN2Bfp
-         fXkDYEzRftzEKSPK0i6IgT2uFsRhpWiEcyGPhnd0Yh48LsAbiHl1MS4w0PDqb6g9nY6s
-         qei6JRkYVCHhuQKfi0/gURqlxWldfCvOuv3LNSDT00pHUnXRDBofEH7sicfwnZyhZU/v
-         HnkRNIv4kWcPzVWLSiHJxRjkhGmC2jXpV2CF9uU48cdbBq8GsmCQOjXDa4v7VpwFXtTH
-         GI1QEPW8Gy5u5VyI05oXNq77SKAynjBSpp8/5sRec0OpmycyapNnAzfHpbFkbN+EdmPV
-         p8Uw==
-X-Gm-Message-State: ACrzQf2Tu0oQn+5MomtRDP3/uH+H0YzXBN9MaEMp9zYzxED6qgBiaFJl
-        Or6bKPOYiTbToBlWI53Ibgu1fIh1gzqmlfGH3PU=
-X-Google-Smtp-Source: AMsMyM46IWYtfcmTEWdwAgUz+nhVqCEhKTsB1hlNV9/ILqNsWTEcrcBWt6flzOj8YeLVklpUukBY2WxB7A0pWflitzM=
-X-Received: by 2002:a1f:b60b:0:b0:39e:d666:d9de with SMTP id
- g11-20020a1fb60b000000b0039ed666d9demr11068795vkf.8.1663784636888; Wed, 21
- Sep 2022 11:23:56 -0700 (PDT)
+        with ESMTP id S229560AbiIUTsU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Sep 2022 15:48:20 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03FFCA0254;
+        Wed, 21 Sep 2022 12:48:19 -0700 (PDT)
+Received: from zn.tnic (p200300ea9733e77f329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e77f:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 90A921EC04E4;
+        Wed, 21 Sep 2022 21:48:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1663789693;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=RQsSCmnaA3tja2xxzLfdQayRM2Puy3vWH21v7at91H8=;
+        b=BhqYk4Apw3euLWYnEfH1ZSXzy2nIQwCIItrx7JT1KgUH3QjrHXIXwWuIKzq4Jp6WS8bd4z
+        Ne0pLLDtHIF4r/o5rdtQyGdAlvopxks92MXl007Unbp6yDIM5qBV9U6fGkSyK2T0K+xpNr
+        FYsrp7QrFQ3xsziRJslwmeUfYvzN32Y=
+Date:   Wed, 21 Sep 2022 21:48:13 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     K Prateek Nayak <kprateek.nayak@amd.com>,
+        linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        dave.hansen@linux.intel.com, tglx@linutronix.de, andi@lisas.de,
+        puwen@hygon.cn, mario.limonciello@amd.com, rui.zhang@intel.com,
+        gpiccoli@igalia.com, daniel.lezcano@linaro.org,
+        ananth.narayan@amd.com, gautham.shenoy@amd.com,
+        Calvin Ong <calvin.ong@amd.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev
+Subject: Re: [PATCH] ACPI: processor_idle: Skip dummy wait for processors
+ based on the Zen microarchitecture
+Message-ID: <YytqfVUCWfv0XyZO@zn.tnic>
+References: <20220921063638.2489-1-kprateek.nayak@amd.com>
+ <YysnE8rcZAOOj28A@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-From:   Marko <marko.cekrlic.26@gmail.com>
-Date:   Wed, 21 Sep 2022 20:23:46 +0200
-Message-ID: <CAF9VpL4ZavjF9pwbRC_mj7+YAajgCJXTBdnnwNK3gHSS2VUxYw@mail.gmail.com>
-Subject: Re: [PATCH v3 5/7] acpi/x86: s2idle: Add a quirk for ASUS ROG
- Zephyrus G14
-To:     mario.limonciello@amd.com
-Cc:     Shyam-sundar.S-k@amd.com, catalin@antebit.com, hdegoede@redhat.com,
-        iam@decentr.al, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, philipp.zabel@gmail.com,
-        rafael@kernel.org, ruinairas1992@gmail.com, travisghansen@yahoo.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <YysnE8rcZAOOj28A@hirez.programming.kicks-ass.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch fixed fans and speakers on top of my ASUS Zephyrus
-G14 GA402RJ laptop not working after resuming from suspend.
+On Wed, Sep 21, 2022 at 05:00:35PM +0200, Peter Zijlstra wrote:
+> On Wed, Sep 21, 2022 at 12:06:38PM +0530, K Prateek Nayak wrote:
+> > Processors based on the Zen microarchitecture support IOPORT based deeper
+> > C-states. 
+> 
+> I've just gotta ask; why the heck are you using IO port based idle
+> states in 2022 ?!?! You have have MWAIT, right?
 
-Tested-by: Marko Cekrlic <marko.cekrlic.26@gmail.com>
+They have both. And both is Intel technology. And as I'm sure you
+know AMD can't do their own thing - they kinda have to follow Intel.
+Unfortunately.
+
+Are you saying modern Intel chipsets don't do IO-based C-states anymore?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
