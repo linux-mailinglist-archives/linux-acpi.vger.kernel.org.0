@@ -2,146 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9068E5E6CF7
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 22:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEA865E6E55
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 23:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229663AbiIVUXE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Sep 2022 16:23:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47984 "EHLO
+        id S229977AbiIVVVi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Sep 2022 17:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229728AbiIVUXD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 16:23:03 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44781110EE3;
-        Thu, 22 Sep 2022 13:22:59 -0700 (PDT)
+        with ESMTP id S229716AbiIVVVh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 17:21:37 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66033110B33;
+        Thu, 22 Sep 2022 14:21:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663878179; x=1695414179;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OFzLjRJCU6cKjDYxboR7rQMxdY3lYv9nZojoR5dDW9A=;
-  b=mJ+qLuXixye9ljY6AZVoNXbJduXtszhYNO9LQgrL/+RZDyliO+fn38R8
-   BpISZCWis1VyAaE+Ivcduos5vtwKXJdN10tp/SKhsu9S6E8ParX+0Cf96
-   Zh5ddpKM8UE5O/EzL6RLFz8mmuKYyOaNu93QpIZ33+0YfGDk3MIUda16w
-   Ep9UoQ+V5hsn7axpov/5Grd4LojTG9GmC1Jj2l0P0jlgjKD+I8JN4IFYk
-   48wDY7RXqNHnJkfcHcpbZT8srPHvjK0dHpTssuXKpEoAxKGmFJ4v1jCLN
-   KnhtNfjb3CwkFgsGeGKx/LFPIxlO3iSepr5qSUBUfhy2W97DZ3iGOsncI
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10478"; a="280790917"
+  t=1663881694; x=1695417694;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=65P9S+8C98ViN8zBsdNHof0LZXir7wuugXfH7l4deP0=;
+  b=c+2qdmVFxSiNvmTJC+4klJryHQ76jlxE0SH6OxV3H56uTU3QA14viBNL
+   Aiqdr0fwUYX/0v8I9+WEZlszuECiN5WUarapklLTMy6YCBDHRMeuccSsF
+   xUkRViGeWRWg6Y3OStrYvRjwTGA+YOAbM15CyJ8XeEjbjkfMB3P2yOsiK
+   6/qfgOYMrQeY+bFWXSgzwqTbHMVBjMYR3jInAq/WPrnSwnr7jYOzeR4UX
+   eb2Sxg0YNP5Ab0ZyZFQRPSt2axWonKXGiqU7CKfF1ZwsUFtxFbVTijtW2
+   eieuDPRX7uKVQKMVlzVFT77/SzFSYkwOs3nYQr3W3neUawCPPIYmv4vhv
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10478"; a="283528373"
 X-IronPort-AV: E=Sophos;i="5.93,337,1654585200"; 
-   d="scan'208";a="280790917"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 13:22:59 -0700
+   d="scan'208";a="283528373"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 14:21:33 -0700
 X-IronPort-AV: E=Sophos;i="5.93,337,1654585200"; 
-   d="scan'208";a="762350047"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 13:22:57 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id C7F462007A;
-        Thu, 22 Sep 2022 23:22:54 +0300 (EEST)
-Date:   Thu, 22 Sep 2022 20:22:54 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v1 1/1] device property: Add const qualifier to
- device_get_match_data() parameter
-Message-ID: <YyzEHk2TTcsIO0ha@paasikivi.fi.intel.com>
-References: <20220922135410.49694-1-andriy.shevchenko@linux.intel.com>
+   d="scan'208";a="723860570"
+Received: from sponnura-mobl1.amr.corp.intel.com (HELO [10.209.58.200]) ([10.209.58.200])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 14:21:32 -0700
+Message-ID: <4d61b9c0-ee00-c5f6-bef1-622b80c79714@intel.com>
+Date:   Thu, 22 Sep 2022 14:21:31 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220922135410.49694-1-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] ACPI: processor_idle: Skip dummy wait for processors
+ based on the Zen microarchitecture
+Content-Language: en-US
+To:     Andreas Mohr <andi@lisas.de>
+Cc:     K Prateek Nayak <kprateek.nayak@amd.com>,
+        linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        dave.hansen@linux.intel.com, bp@alien8.de, tglx@linutronix.de,
+        puwen@hygon.cn, mario.limonciello@amd.com, peterz@infradead.org,
+        rui.zhang@intel.com, gpiccoli@igalia.com,
+        daniel.lezcano@linaro.org, ananth.narayan@amd.com,
+        gautham.shenoy@amd.com, Calvin Ong <calvin.ong@amd.com>,
+        stable@vger.kernel.org, regressions@lists.linux.dev
+References: <20220921063638.2489-1-kprateek.nayak@amd.com>
+ <20e78a49-25df-c83d-842e-1d624655cfd7@intel.com>
+ <0885eecb-042f-3b74-2965-7d657de59953@amd.com>
+ <88c17568-8694-940a-0f1f-9d345e8dcbdb@intel.com>
+ <Yyy6l94G0O2B7Yh1@rhlx01.hs-esslingen.de>
+ <YyzBLc+OFIN2BMz5@rhlx01.hs-esslingen.de>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <YyzBLc+OFIN2BMz5@rhlx01.hs-esslingen.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
-
-Thanks for cc'ing me.
-
-On Thu, Sep 22, 2022 at 04:54:10PM +0300, Andy Shevchenko wrote:
-> Add const qualifier to the device_get_match_data() parameter.
-> Some of the future users may utilize this function without
-> forcing the type.
-
-From const to non-const? This is what this patch does, right?
-
+On 9/22/22 13:10, Andreas Mohr wrote:
+>   (- but then what about other more modern chipsets?)
 > 
-> All the same, dev_fwnode() may be used with a const qualifier.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/base/property.c  | 4 ++--
->  include/linux/property.h | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index ed6f449f8e5c..4d6278a84868 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -17,7 +17,7 @@
->  #include <linux/property.h>
->  #include <linux/phy.h>
->  
-> -struct fwnode_handle *dev_fwnode(struct device *dev)
-> +struct fwnode_handle *dev_fwnode(const struct device *dev)
+> --> we need to achieve (hopefully sufficiently precisely) a solution which
+> takes into account Zen3 STPCLK# improvements while
+> preserving "accepted" behaviour/requirements on *all* STPCLK#-hampered chipsets
+> ("STPCLK# I/O wait is default/traditional handling"?).
 
-If you have const struct device pointer, then the embedded fwnode handle in
-that object sure is const, too. Isn't it?
+Ideally, sure.  But, we're talking about theoretically regressing the
+idle behavior of some indeterminate set of old systems, the majority of
+which are sitting in a puddle of capacitor goo at the bottom of a
+landfill right now.  This is far from an ideal situation.
 
-If you really have const struct device pointer (where do you?), then I'd
-suggest to add another function, dev_fwnode_const() that is otherwise the
-same except the argument as well as the return value are const.
+FWIW, I'd much rather do something like
 
-Or alternatively define it as a macro and use _Generic()?
+	if ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD) &&
+	    (boot_cpu_data.x86_model >= 0xF))
+		return;
 
->  {
->  	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
->  		of_fwnode_handle(dev->of_node) : dev->fwnode;
-> @@ -1200,7 +1200,7 @@ int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
->  }
->  EXPORT_SYMBOL(fwnode_graph_parse_endpoint);
->  
-> -const void *device_get_match_data(struct device *dev)
-> +const void *device_get_match_data(const struct device *dev)
->  {
->  	return fwnode_call_ptr_op(dev_fwnode(dev), device_get_match_data, dev);
->  }
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index a5b429d623f6..117cc200c656 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -32,7 +32,7 @@ enum dev_dma_attr {
->  	DEV_DMA_COHERENT,
->  };
->  
-> -struct fwnode_handle *dev_fwnode(struct device *dev);
-> +struct fwnode_handle *dev_fwnode(const struct device *dev);
->  
->  bool device_property_present(struct device *dev, const char *propname);
->  int device_property_read_u8_array(struct device *dev, const char *propname,
-> @@ -387,7 +387,7 @@ bool device_dma_supported(struct device *dev);
->  
->  enum dev_dma_attr device_get_dma_attr(struct device *dev);
->  
-> -const void *device_get_match_data(struct device *dev);
-> +const void *device_get_match_data(const struct device *dev);
->  
->  int device_get_phy_mode(struct device *dev);
->  int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
+	inl(slow_whatever);
 
--- 
-Regards,
+than a Zen check.  AMD has, as far as I know, been a lot more sequential
+and sane about model numbers than Intel, and there are some AMD model
+number range checks in the codebase today.
 
-Sakari Ailus
+A check like this would also be _relatively_ future-proof in the case
+that X86_FEATURE_ZEN stops getting set on future AMD CPUs.  That's a lot
+more likely than AMD going and reusing a <0xF model.
