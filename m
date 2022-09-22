@@ -2,91 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CECCB5E6CC4
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 22:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9068E5E6CF7
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 22:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbiIVUK2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Sep 2022 16:10:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58126 "EHLO
+        id S229663AbiIVUXE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Sep 2022 16:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbiIVUK1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 16:10:27 -0400
-X-Greylist: delayed 1684 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 22 Sep 2022 13:10:23 PDT
-Received: from rhlx01.hs-esslingen.de (rhlx01.hs-esslingen.de [129.143.116.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CF1BC995D;
-        Thu, 22 Sep 2022 13:10:22 -0700 (PDT)
-Received: by rhlx01.hs-esslingen.de (Postfix, from userid 102)
-        id 17836277FBA8; Thu, 22 Sep 2022 22:10:21 +0200 (CEST)
-Date:   Thu, 22 Sep 2022 22:10:21 +0200
-From:   Andreas Mohr <andi@lisas.de>
-To:     Andreas Mohr <andi@lisas.de>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        K Prateek Nayak <kprateek.nayak@amd.com>,
-        linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        dave.hansen@linux.intel.com, bp@alien8.de, tglx@linutronix.de,
-        puwen@hygon.cn, mario.limonciello@amd.com, peterz@infradead.org,
-        rui.zhang@intel.com, gpiccoli@igalia.com,
-        daniel.lezcano@linaro.org, ananth.narayan@amd.com,
-        gautham.shenoy@amd.com, Calvin Ong <calvin.ong@amd.com>,
-        stable@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [PATCH] ACPI: processor_idle: Skip dummy wait for processors
- based on the Zen microarchitecture
-Message-ID: <YyzBLc+OFIN2BMz5@rhlx01.hs-esslingen.de>
-References: <20220921063638.2489-1-kprateek.nayak@amd.com>
- <20e78a49-25df-c83d-842e-1d624655cfd7@intel.com>
- <0885eecb-042f-3b74-2965-7d657de59953@amd.com>
- <88c17568-8694-940a-0f1f-9d345e8dcbdb@intel.com>
- <Yyy6l94G0O2B7Yh1@rhlx01.hs-esslingen.de>
+        with ESMTP id S229728AbiIVUXD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 16:23:03 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44781110EE3;
+        Thu, 22 Sep 2022 13:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663878179; x=1695414179;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OFzLjRJCU6cKjDYxboR7rQMxdY3lYv9nZojoR5dDW9A=;
+  b=mJ+qLuXixye9ljY6AZVoNXbJduXtszhYNO9LQgrL/+RZDyliO+fn38R8
+   BpISZCWis1VyAaE+Ivcduos5vtwKXJdN10tp/SKhsu9S6E8ParX+0Cf96
+   Zh5ddpKM8UE5O/EzL6RLFz8mmuKYyOaNu93QpIZ33+0YfGDk3MIUda16w
+   Ep9UoQ+V5hsn7axpov/5Grd4LojTG9GmC1Jj2l0P0jlgjKD+I8JN4IFYk
+   48wDY7RXqNHnJkfcHcpbZT8srPHvjK0dHpTssuXKpEoAxKGmFJ4v1jCLN
+   KnhtNfjb3CwkFgsGeGKx/LFPIxlO3iSepr5qSUBUfhy2W97DZ3iGOsncI
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10478"; a="280790917"
+X-IronPort-AV: E=Sophos;i="5.93,337,1654585200"; 
+   d="scan'208";a="280790917"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 13:22:59 -0700
+X-IronPort-AV: E=Sophos;i="5.93,337,1654585200"; 
+   d="scan'208";a="762350047"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 13:22:57 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id C7F462007A;
+        Thu, 22 Sep 2022 23:22:54 +0300 (EEST)
+Date:   Thu, 22 Sep 2022 20:22:54 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v1 1/1] device property: Add const qualifier to
+ device_get_match_data() parameter
+Message-ID: <YyzEHk2TTcsIO0ha@paasikivi.fi.intel.com>
+References: <20220922135410.49694-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Yyy6l94G0O2B7Yh1@rhlx01.hs-esslingen.de>
-X-Priority: none
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220922135410.49694-1-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 22, 2022 at 09:42:15PM +0200, Andreas Mohr wrote:
-> So one can see where my profiling effort went
-> (*optimizing* things, not degrading them)
-> --> hints that current Zen3-originating effort is not
-> about a regression in the "regression bug" sense -
-> merely a (albeit rather appreciable/sizeable... congrats!)
-> performance deterioration vs.
-> an optimal (currently non-achieved) software implementation state
-> (also: of PORT-based handling [vs. MWAIT], mind you!).
+Hi Andy,
 
-I'd like to add a word of caution here:
+Thanks for cc'ing me.
 
-AFAIK power management (here: ACPI Cx) handling generally is
-about a painful *tradeoff* between
-achieving best-possible performance (that's
-the respectable Zen3 32MB/s vs. 33MB/s argument) and
-achieving maximum power savings.
-We all know that one can configure the system for
-non-idle mode (idle=poll cmdline?) and
-achieve record numbers in performance (...*and* power consumption - ouch!).
+On Thu, Sep 22, 2022 at 04:54:10PM +0300, Andy Shevchenko wrote:
+> Add const qualifier to the device_get_match_data() parameter.
+> Some of the future users may utilize this function without
+> forcing the type.
 
-Current decision/implementation aspects AFAICS:
-- why is the Zen3 config used here choosing
-  less-favourable(?) PORT-based operation mode?
-- Zen3 is said to not have the STPCLK# issue
-  (- but then what about other more modern chipsets?)
+From const to non-const? This is what this patch does, right?
 
---> we need to achieve (hopefully sufficiently precisely) a solution which
-takes into account Zen3 STPCLK# improvements while
-preserving "accepted" behaviour/requirements on *all* STPCLK#-hampered chipsets
-("STPCLK# I/O wait is default/traditional handling"?).
+> 
+> All the same, dev_fwnode() may be used with a const qualifier.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/base/property.c  | 4 ++--
+>  include/linux/property.h | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index ed6f449f8e5c..4d6278a84868 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -17,7 +17,7 @@
+>  #include <linux/property.h>
+>  #include <linux/phy.h>
+>  
+> -struct fwnode_handle *dev_fwnode(struct device *dev)
+> +struct fwnode_handle *dev_fwnode(const struct device *dev)
 
-Greetings
+If you have const struct device pointer, then the embedded fwnode handle in
+that object sure is const, too. Isn't it?
 
-Andreas Mohr
+If you really have const struct device pointer (where do you?), then I'd
+suggest to add another function, dev_fwnode_const() that is otherwise the
+same except the argument as well as the return value are const.
+
+Or alternatively define it as a macro and use _Generic()?
+
+>  {
+>  	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+>  		of_fwnode_handle(dev->of_node) : dev->fwnode;
+> @@ -1200,7 +1200,7 @@ int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+>  }
+>  EXPORT_SYMBOL(fwnode_graph_parse_endpoint);
+>  
+> -const void *device_get_match_data(struct device *dev)
+> +const void *device_get_match_data(const struct device *dev)
+>  {
+>  	return fwnode_call_ptr_op(dev_fwnode(dev), device_get_match_data, dev);
+>  }
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index a5b429d623f6..117cc200c656 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -32,7 +32,7 @@ enum dev_dma_attr {
+>  	DEV_DMA_COHERENT,
+>  };
+>  
+> -struct fwnode_handle *dev_fwnode(struct device *dev);
+> +struct fwnode_handle *dev_fwnode(const struct device *dev);
+>  
+>  bool device_property_present(struct device *dev, const char *propname);
+>  int device_property_read_u8_array(struct device *dev, const char *propname,
+> @@ -387,7 +387,7 @@ bool device_dma_supported(struct device *dev);
+>  
+>  enum dev_dma_attr device_get_dma_attr(struct device *dev);
+>  
+> -const void *device_get_match_data(struct device *dev);
+> +const void *device_get_match_data(const struct device *dev);
+>  
+>  int device_get_phy_mode(struct device *dev);
+>  int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
 
 -- 
-GNU/Linux. It's not the software that's free, it's you.
+Regards,
+
+Sakari Ailus
