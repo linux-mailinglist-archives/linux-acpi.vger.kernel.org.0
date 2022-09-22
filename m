@@ -2,36 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58CDD5E673B
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 17:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C8A5E679C
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 17:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230374AbiIVPgb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Sep 2022 11:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44040 "EHLO
+        id S231986AbiIVPxn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Sep 2022 11:53:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230213AbiIVPgb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 11:36:31 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F51B100A8D;
-        Thu, 22 Sep 2022 08:36:30 -0700 (PDT)
-Received: from zn.tnic (p200300ea9733e7fe329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7fe:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 84D9B1EC03EA;
-        Thu, 22 Sep 2022 17:36:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1663860984;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=wRMP9slYyN0/QDW1WIR4Q0VabXcD/EBlo0OElvXvF1M=;
-        b=P9oPtr/R8OYSyNe2qXmpk0vA3zKYyaaOGV85o6RKATj0lPSE0L86zkRGg+NGRBPTBYMsBx
-        x6TR1a2rIucS1tovgxro51vEOkKkMxxoFXue7hc69IdkCqdIfZ3b0POcCScmdP1V3WhmwN
-        PJOBRFSrmCJuett0M62R6ujii54McQc=
-Date:   Thu, 22 Sep 2022 17:36:20 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
+        with ESMTP id S231713AbiIVPxa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 11:53:30 -0400
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963AD45F6C;
+        Thu, 22 Sep 2022 08:53:29 -0700 (PDT)
+Received: by mail-qv1-f51.google.com with SMTP id g4so7106536qvo.3;
+        Thu, 22 Sep 2022 08:53:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=vD0+VxiAGurIOKv6AW3dsyvyb0Nd5x0MkeebHLF5GZY=;
+        b=RVo/ccidPJXz4f4vELxxPcPFwgdY/+PUCGKapOiq2qasI7UXtmq6wf848HhuDcyNkA
+         SbKd2mu+LglmnqDAtz8xRM/ajErxU+e7n0U+JqaN3zRnCyy4+DPKTWC+w1QVICKyznkM
+         Oqr+zZPKmDkn1NC2drokHNGRnjIENr0mFMbWxAA4+QXd78vhcxkoq/Q+I6jq+MKb62FS
+         Wv+3n5Xw8JBhvy+ldWX1P4t+0J4v+a/puSJhpDFd/yiu2HvEdYH1szrbveRwd1JJgTqQ
+         TWaDLbdWkckXF9vEWNbqjcZabSCkTQKqrJLiW80LG4CqEBuiYxA09BFJLdvvQ6kh8/N1
+         Stqw==
+X-Gm-Message-State: ACrzQf1zSYXLTRnrX9Tc+gYJKR9Ndx4bN1E4mR06kwvs6O6rFd593Xrh
+        IDRjrFUaP+t9uNSTN2aOgKqFYSm1v6VzFDY2h2w=
+X-Google-Smtp-Source: AMsMyM7uV5oXIb+tahsXXoQim6m4K48OLfD7owDsxQLXf2RDEqng6L3d0fltb2aUF4yFYR35Ezp55+QqlvRaTemITlA=
+X-Received: by 2002:a05:6214:1cc9:b0:496:aa2c:c927 with SMTP id
+ g9-20020a0562141cc900b00496aa2cc927mr3110108qvd.15.1663862008742; Thu, 22 Sep
+ 2022 08:53:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220921063638.2489-1-kprateek.nayak@amd.com> <YysnE8rcZAOOj28A@hirez.programming.kicks-ass.net>
+ <YytqfVUCWfv0XyZO@zn.tnic> <YywaAcTdLSuDlRfl@hirez.programming.kicks-ass.net>
+ <CAJZ5v0i9P-srVxrSPZOkXhKVCA2vEQqm5B4ZZifS=ivpwv+A-w@mail.gmail.com> <YyyA9AV9qiPxmmpb@zn.tnic>
+In-Reply-To: <YyyA9AV9qiPxmmpb@zn.tnic>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 22 Sep 2022 17:53:17 +0200
+Message-ID: <CAJZ5v0i0NzJfRuqcuJQC3J5moaEikoRusquCybAz0T8dMy8gCw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: processor_idle: Skip dummy wait for processors
+ based on the Zen microarchitecture
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         K Prateek Nayak <kprateek.nayak@amd.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
@@ -47,35 +61,23 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         ananth.narayan@amd.com, gautham.shenoy@amd.com,
         Calvin Ong <calvin.ong@amd.com>,
         Stable <stable@vger.kernel.org>, regressions@lists.linux.dev
-Subject: Re: [PATCH] ACPI: processor_idle: Skip dummy wait for processors
- based on the Zen microarchitecture
-Message-ID: <YyyA9AV9qiPxmmpb@zn.tnic>
-References: <20220921063638.2489-1-kprateek.nayak@amd.com>
- <YysnE8rcZAOOj28A@hirez.programming.kicks-ass.net>
- <YytqfVUCWfv0XyZO@zn.tnic>
- <YywaAcTdLSuDlRfl@hirez.programming.kicks-ass.net>
- <CAJZ5v0i9P-srVxrSPZOkXhKVCA2vEQqm5B4ZZifS=ivpwv+A-w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0i9P-srVxrSPZOkXhKVCA2vEQqm5B4ZZifS=ivpwv+A-w@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 22, 2022 at 05:21:21PM +0200, Rafael J. Wysocki wrote:
-> Well, it can be forced to use ACPI idle instead.
+On Thu, Sep 22, 2022 at 5:36 PM Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Thu, Sep 22, 2022 at 05:21:21PM +0200, Rafael J. Wysocki wrote:
+> > Well, it can be forced to use ACPI idle instead.
+>
+> Yeah, I did that earlier. The dummy IO read in question costs ~3K on
+> average on my Coffeelake box here.
 
-Yeah, I did that earlier. The dummy IO read in question costs ~3K on
-average on my Coffeelake box here.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Well, that's the cost of forcing something non-default.
