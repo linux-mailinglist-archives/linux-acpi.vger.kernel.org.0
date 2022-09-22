@@ -2,80 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F72C5E5DEA
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 10:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 403125E5E08
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 10:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230186AbiIVItZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Sep 2022 04:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52852 "EHLO
+        id S231252AbiIVIzf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Sep 2022 04:55:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbiIVItY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 04:49:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E0B46AE82
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Sep 2022 01:49:23 -0700 (PDT)
+        with ESMTP id S230125AbiIVIzU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 04:55:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D9568285C
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Sep 2022 01:55:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1663836562;
+        s=mimecast20190719; t=1663836918;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RPdA7w9nalhVXxot1oY+v+I3XEFa4g11czVtLBfespg=;
-        b=cemK65raOSCLWG5hqnZ+QmcNiRa/iwxURVvMKTVQuOzag/33SYiZIv+OW9H/WSjKItk9gf
-        zvOc+Q3pbPg1iPVPi/LtGNTc9m12uNnGeToLE1dQV0ab1ZIzvos8nx663hVmd3xSQU1o/C
-        zTFQKM4ZqedevP+Pg43BNJnMyP6KsVs=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=EdiDAJTCMAzX+ykt41hEleL0+IM5Y5eQhfHjMQrLPXI=;
+        b=HiITEncCcELPWOLYjqzlUmfWmneAel+VCSMZvrUrp0Vg+KaAPtOMHkvOYUmEm1Qn8JyGgs
+        9fYHPNSWsYYR5Pu+mzSzlI0/BrRer2335VHpcilLIgThxyQR5QCZ1l6q/PtIXnhGxb0LfS
+        Qx/W3yVWfCoKLZPQDOebVs38hBBlqzo=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-333-ZFHCYp9KM-ugFb_qNZWF1A-1; Thu, 22 Sep 2022 04:49:17 -0400
-X-MC-Unique: ZFHCYp9KM-ugFb_qNZWF1A-1
-Received: by mail-ej1-f69.google.com with SMTP id nb35-20020a1709071ca300b007805be52049so4174085ejc.17
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Sep 2022 01:49:17 -0700 (PDT)
+ us-mta-134-ZfM8luooMHyPBpmNo_biCw-1; Thu, 22 Sep 2022 04:55:17 -0400
+X-MC-Unique: ZfM8luooMHyPBpmNo_biCw-1
+Received: by mail-ed1-f70.google.com with SMTP id c6-20020a05640227c600b004521382116dso6297190ede.22
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Sep 2022 01:55:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=RPdA7w9nalhVXxot1oY+v+I3XEFa4g11czVtLBfespg=;
-        b=LNat55s2zbILLMgP6Afy2p2hF+R/RskLdR4Na6yYmfPaqn70ts8vht9un8LxIM6Vy1
-         B1PwM6kdZe/nQyi/4BQCCe2JQrdz58FAFmvhPGpQuvBHB5quI8NMTrvkEE9wEHeiIJF9
-         zlfTCDDyns7ZOUB20HEmJy0wsovXXXsPzSeq5ZqaNUZHdBfkYlUzGkfFXjSh+g7Gfr3S
-         En7K4ruXoZfQR094Al5Ok9ijki01Nk3cteLIPXpROJVaFWtwAHxq3ZfBGffaGXU1MWMW
-         rZH0z6bJkQUavPQ10k3nMAydVis78fhKb6XL0I869f1bZUMNsW4xoM27PthbWxhIhhnq
-         WVtA==
-X-Gm-Message-State: ACrzQf0fbWlMYDNA9FflmSKftkdXf4hkKCrXyPDPXABI1z8884xea9yL
-        6LzOqnigr7bJeU4trjWVCpDG55kY7r+NdmsociVetz6mFcF5fHT/TWSwbsHgWOlo7zGrGR2Gqfz
-        zzSVWjVf+Z6+Qwpt9XJE/cA==
-X-Received: by 2002:a17:906:9b89:b0:780:62a5:462c with SMTP id dd9-20020a1709069b8900b0078062a5462cmr1854884ejc.119.1663836556721;
-        Thu, 22 Sep 2022 01:49:16 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM4ZILcK7tzV0QZQ0C0dHQCZ3h9+66RMaTT4SI0bpAwupZb5fJ1j7htX6OBeC6hMuTylF6oHzA==
-X-Received: by 2002:a17:906:9b89:b0:780:62a5:462c with SMTP id dd9-20020a1709069b8900b0078062a5462cmr1854869ejc.119.1663836556515;
-        Thu, 22 Sep 2022 01:49:16 -0700 (PDT)
+        bh=EdiDAJTCMAzX+ykt41hEleL0+IM5Y5eQhfHjMQrLPXI=;
+        b=Fa5eXnnTUo3HQ0/TtfCi5BcJ975mkgGtwPbkiu2JjmECXNAXYHEyNBUlZ7rL6UXXg1
+         wnjijjue7Q36t5JNImVKnjcXL/5Eex8gIRfm3s3N+wh2EISh9hwl3xl1IJwNeRyFChJG
+         ke36gCNQWdnpnIve4JBWElsPXjPdhs/1BCDRQsv6h9M2mKVq1nXxW2SKTHWZ3YtZptBb
+         usfF8k/b+n+fwYoFy+davZJODaWB55lYiesGM7hsOBhipKb35AuWeGe47FaorpPcIfT8
+         cAFG/pzik5hmzVOm9H2paBN8HSv7LoeO422sOfM4s14DVJ404UdhAqoEyMALZAUcFGIH
+         4k+g==
+X-Gm-Message-State: ACrzQf2rl+cOOFpbOTggS0h+w+bF8TauiAHvgWXa8pn2BjGzxYnVUZgy
+        TKlfMm+BBF6ru0OQ4/KCqOq7WVBfdU/wkkeQbim7xlTc2kHxzmml0dx8CQUuT2lg3cBDhFW6w4t
+        yGwMa+bqEBTyraVgUAhnyhA==
+X-Received: by 2002:a17:907:802:b0:781:8017:b2df with SMTP id wv2-20020a170907080200b007818017b2dfmr1873872ejb.606.1663836916053;
+        Thu, 22 Sep 2022 01:55:16 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM50x+2ek7YQDMVLHqoIQ0g6AvEXVXfaH5QJjBYK801HTXDjnpZl4u3C+Wgw3wumDVlPyD2ckA==
+X-Received: by 2002:a17:907:802:b0:781:8017:b2df with SMTP id wv2-20020a170907080200b007818017b2dfmr1873857ejb.606.1663836915873;
+        Thu, 22 Sep 2022 01:55:15 -0700 (PDT)
 Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id u17-20020a50c2d1000000b0044e8d0682b2sm3360949edf.71.2022.09.22.01.49.15
+        by smtp.gmail.com with ESMTPSA id a10-20020a50ff0a000000b00454546561cfsm3203909edu.82.2022.09.22.01.55.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Sep 2022 01:49:16 -0700 (PDT)
-Message-ID: <47119a2a-323c-89ca-21c8-5bfcbb796bf5@redhat.com>
-Date:   Thu, 22 Sep 2022 10:49:15 +0200
+        Thu, 22 Sep 2022 01:55:15 -0700 (PDT)
+Message-ID: <b3855fe0-4b85-a442-1835-3e62456b3206@redhat.com>
+Date:   Thu, 22 Sep 2022 10:55:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.1
-Subject: Re: [PATCH v3 3/5] platform/x86: int3472: Support multiple clock
- consumers
+Subject: Re: [PATCH v3 0/5] Add multiple-consumer support to int3472-tps68470
+ driver
 Content-Language: en-US
 To:     Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
         linux-clk@vger.kernel.org, platform-driver-x86@vger.kernel.org
 Cc:     rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
         sboyd@kernel.org, markgross@kernel.org, robert.moore@intel.com
 References: <20220921230439.768185-1-djrscally@gmail.com>
- <20220921230439.768185-4-djrscally@gmail.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220921230439.768185-4-djrscally@gmail.com>
+In-Reply-To: <20220921230439.768185-1-djrscally@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,189 +82,60 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi All,
 
 On 9/22/22 01:04, Daniel Scally wrote:
-> At present, the tps68470.c only supports a single clock consumer when
-> passing platform data to the clock driver. In some devices multiple
-> sensors depend on the clock provided by a single TPS68470 and so all
-> need to be able to acquire the clock. Support passing multiple
-> consumers as platform data.
+> Hello all
 > 
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+> At the moment there are a few places in the int3472-tps68470 driver that are
+> limited to just working with a single consuming device dependent on the PMIC.
+> There are systems where multiple camera sensors share a single TPS68470, so
+> we need to extend the driver to support them. This requires a couple of tweaks
+> to the ACPI functions to fetch dependent devices, which also assumes that only
+> a single dependent will be found.
+> 
+> The v2 for this series was some time ago...it's kept falling to the back of my
+> to-do list so I've only just gotten round to it; sorry about that. v2 here:
+> 
+> https://lore.kernel.org/linux-acpi/20220327161344.50477-1-djrscally@gmail.com/
 
-Note this one already has a review + ack from Stephen Boyd for
-merging this through the pdx86 tree (from v1 of the series):
+Rafael, I would like to merge this through the pdx86 tree may I have your
+ack for patches 1 + 2 for this. As a reminder (since it has been a while)
+here are your review remarks to v2 of patch 1:
 
-https://lore.kernel.org/platform-driver-x86/20220225004943.AA8EDC340EF@smtp.kernel.org/
+https://lore.kernel.org/platform-driver-x86/CAJZ5v0i2ciLHP-=8eQcZc0v0xCzhKHKpxLC=Kgv6W5E_5=HQJA@mail.gmail.com/
 
+(which both seem to have been addressed)
 
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-
+AFAICT you did not have any remarks for v2 of patch 2.
 
 Regards,
 
 Hans
 
+p.s.
+
+Dan, if I want to give the IR cam a test run on my own Surface Go (version 1)
+I guess I may need a sensor driver? Where can I find that sensor driver and
+what do I need in userspace to test this ?
 
 
 
-
-> ---
-> Changes since v2:
+> Daniel Scally (5):
+>   ACPI: scan: Add acpi_dev_get_next_consumer_dev()
+>   ACPI: bus: Add iterator for dependent devices
+>   platform/x86: int3472: Support multiple clock consumers
+>   platform/x86: int3472: Support multiple gpio lookups in board data
+>   platform/x86: int3472: Add board data for Surface Go2 IR camera
 > 
-> 	- None
+>  drivers/acpi/scan.c                           | 40 +++++++---
+>  drivers/clk/clk-tps68470.c                    | 13 +++-
+>  drivers/platform/x86/intel/int3472/common.c   |  2 +-
+>  drivers/platform/x86/intel/int3472/tps68470.c | 76 ++++++++++++++++---
+>  drivers/platform/x86/intel/int3472/tps68470.h |  3 +-
+>  .../x86/intel/int3472/tps68470_board_data.c   | 54 ++++++++++++-
+>  include/acpi/acpi_bus.h                       | 15 +++-
+>  include/linux/platform_data/tps68470.h        |  7 +-
+>  8 files changed, 177 insertions(+), 33 deletions(-)
 > 
->  drivers/clk/clk-tps68470.c                    | 13 ++--
->  drivers/platform/x86/intel/int3472/tps68470.c | 59 ++++++++++++++++---
->  include/linux/platform_data/tps68470.h        |  7 ++-
->  3 files changed, 67 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/clk/clk-tps68470.c b/drivers/clk/clk-tps68470.c
-> index e5fbefd6ac2d..38f44b5b9b1b 100644
-> --- a/drivers/clk/clk-tps68470.c
-> +++ b/drivers/clk/clk-tps68470.c
-> @@ -200,7 +200,9 @@ static int tps68470_clk_probe(struct platform_device *pdev)
->  		.flags = CLK_SET_RATE_GATE,
->  	};
->  	struct tps68470_clkdata *tps68470_clkdata;
-> +	struct tps68470_clk_consumer *consumer;
->  	int ret;
-> +	int i;
->  
->  	tps68470_clkdata = devm_kzalloc(&pdev->dev, sizeof(*tps68470_clkdata),
->  					GFP_KERNEL);
-> @@ -223,10 +225,13 @@ static int tps68470_clk_probe(struct platform_device *pdev)
->  		return ret;
->  
->  	if (pdata) {
-> -		ret = devm_clk_hw_register_clkdev(&pdev->dev,
-> -						  &tps68470_clkdata->clkout_hw,
-> -						  pdata->consumer_con_id,
-> -						  pdata->consumer_dev_name);
-> +		for (i = 0; i < pdata->n_consumers; i++) {
-> +			consumer = &pdata->consumers[i];
-> +			ret = devm_clk_hw_register_clkdev(&pdev->dev,
-> +							  &tps68470_clkdata->clkout_hw,
-> +							  consumer->consumer_con_id,
-> +							  consumer->consumer_dev_name);
-> +		}
->  	}
->  
->  	return ret;
-> diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
-> index 22f61b47f9e5..8a684030933d 100644
-> --- a/drivers/platform/x86/intel/int3472/tps68470.c
-> +++ b/drivers/platform/x86/intel/int3472/tps68470.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /* Author: Dan Scally <djrscally@gmail.com> */
->  
-> +#include <linux/acpi.h>
->  #include <linux/i2c.h>
->  #include <linux/kernel.h>
->  #include <linux/mfd/core.h>
-> @@ -95,20 +96,64 @@ static int skl_int3472_tps68470_calc_type(struct acpi_device *adev)
->  	return DESIGNED_FOR_WINDOWS;
->  }
->  
-> +/*
-> + * Return the size of the flexible array member, because we'll need that later
-> + * on to pass .pdata_size to cells.
-> + */
-> +static int
-> +skl_int3472_fill_clk_pdata(struct device *dev, struct tps68470_clk_platform_data **clk_pdata)
-> +{
-> +	struct acpi_device *adev = ACPI_COMPANION(dev);
-> +	struct acpi_device *consumer;
-> +	unsigned int n_consumers = 0;
-> +	const char *sensor_name;
-> +	unsigned int i = 0;
-> +
-> +	for_each_acpi_consumer_dev(adev, consumer)
-> +		n_consumers++;
-> +
-> +	if (!n_consumers) {
-> +		dev_err(dev, "INT3472 seems to have no dependents\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	*clk_pdata = devm_kzalloc(dev, struct_size(*clk_pdata, consumers, n_consumers),
-> +				  GFP_KERNEL);
-> +	if (!*clk_pdata)
-> +		return -ENOMEM;
-> +
-> +	(*clk_pdata)->n_consumers = n_consumers;
-> +	i = 0;
-> +
-> +	for_each_acpi_consumer_dev(adev, consumer) {
-> +		sensor_name = devm_kasprintf(dev, GFP_KERNEL, I2C_DEV_NAME_FORMAT,
-> +					     acpi_dev_name(consumer));
-> +		if (!sensor_name)
-> +			return -ENOMEM;
-> +
-> +		(*clk_pdata)->consumers[i].consumer_dev_name = sensor_name;
-> +		i++;
-> +	}
-> +
-> +	acpi_dev_put(consumer);
-> +
-> +	return n_consumers;
-> +}
-> +
->  static int skl_int3472_tps68470_probe(struct i2c_client *client)
->  {
->  	struct acpi_device *adev = ACPI_COMPANION(&client->dev);
->  	const struct int3472_tps68470_board_data *board_data;
-> -	struct tps68470_clk_platform_data clk_pdata = {};
-> +	struct tps68470_clk_platform_data *clk_pdata;
->  	struct mfd_cell *cells;
->  	struct regmap *regmap;
-> +	int n_consumers;
->  	int device_type;
->  	int ret;
->  
-> -	ret = skl_int3472_get_sensor_adev_and_name(&client->dev, NULL,
-> -						   &clk_pdata.consumer_dev_name);
-> -	if (ret)
-> -		return ret;
-> +	n_consumers = skl_int3472_fill_clk_pdata(&client->dev, &clk_pdata);
-> +	if (n_consumers < 0)
-> +		return n_consumers;
->  
->  	regmap = devm_regmap_init_i2c(client, &tps68470_regmap_config);
->  	if (IS_ERR(regmap)) {
-> @@ -142,8 +187,8 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
->  		 * the clk + regulators must be ready when this happens.
->  		 */
->  		cells[0].name = "tps68470-clk";
-> -		cells[0].platform_data = &clk_pdata;
-> -		cells[0].pdata_size = sizeof(clk_pdata);
-> +		cells[0].platform_data = clk_pdata;
-> +		cells[0].pdata_size = struct_size(clk_pdata, consumers, n_consumers);
->  		cells[1].name = "tps68470-regulator";
->  		cells[1].platform_data = (void *)board_data->tps68470_regulator_pdata;
->  		cells[1].pdata_size = sizeof(struct tps68470_regulator_platform_data);
-> diff --git a/include/linux/platform_data/tps68470.h b/include/linux/platform_data/tps68470.h
-> index 126d082c3f2e..e605a2cab07f 100644
-> --- a/include/linux/platform_data/tps68470.h
-> +++ b/include/linux/platform_data/tps68470.h
-> @@ -27,9 +27,14 @@ struct tps68470_regulator_platform_data {
->  	const struct regulator_init_data *reg_init_data[TPS68470_NUM_REGULATORS];
->  };
->  
-> -struct tps68470_clk_platform_data {
-> +struct tps68470_clk_consumer {
->  	const char *consumer_dev_name;
->  	const char *consumer_con_id;
->  };
->  
-> +struct tps68470_clk_platform_data {
-> +	unsigned int n_consumers;
-> +	struct tps68470_clk_consumer consumers[];
-> +};
-> +
->  #endif
 
