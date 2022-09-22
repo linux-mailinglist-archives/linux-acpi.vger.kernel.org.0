@@ -2,97 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A41C05E6B88
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 21:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1BB15E6C04
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Sep 2022 21:50:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbiIVTKb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Sep 2022 15:10:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54800 "EHLO
+        id S230101AbiIVTub (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Sep 2022 15:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232108AbiIVTKa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 15:10:30 -0400
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2925DAB1B9;
-        Thu, 22 Sep 2022 12:10:28 -0700 (PDT)
-Received: by mail-qk1-f179.google.com with SMTP id q11so6867416qkc.12;
-        Thu, 22 Sep 2022 12:10:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=i2fFh03PmN9dsDrlqa6Na6TJ/xoZxneYKaZlpWqCHQA=;
-        b=QXRkaQZFyhXLSP5u4FyY7F18yANkzZ8nSltCmZB3/cuc4AkIWpkFrquPxrf8zo/RVN
-         SmVo+nB6TMUh/mNq7uN5P8+FSOWNin5j6D8gzWOrK1iecICBwAx8AiRrVqATXQlcze5M
-         GBOP107yUe90vIwkQl9OX16UW+bxunOMQPzheyGe376ZgDfU8eeJfwyTTeJSXbe+h65u
-         DGrpTwg5QSImJsIu9ey0qiezvAvKG2XnjOkXLkxjYBGDqGyiuTBNBGcLIJVPnWaV+Fvn
-         6kif2bfTDDRf06e0+dHgfsq205RS8aZluoR8QqPowxopCSj/v3+kbFtOTQMjKl+iu/Tw
-         sdNg==
-X-Gm-Message-State: ACrzQf1e4n4kjBhMzuuSYy5rgPY1qpyZQCjv7PXKVEWYInSLEyR278nP
-        6XUpDJ6eDvHFahZsfPT+MbWIdNSDLAiykKkPil0=
-X-Google-Smtp-Source: AMsMyM7/jpbQTYmB0SMqjZX3zyneGSbRIfxLeeAiexcVjm9d+NWw6CU5BB3SivnMJxe5iDQC8ZGJLwBWnhHx8IuCV54=
-X-Received: by 2002:a05:620a:46ac:b0:6ce:3e55:fc21 with SMTP id
- bq44-20020a05620a46ac00b006ce3e55fc21mr3205441qkb.285.1663873826996; Thu, 22
- Sep 2022 12:10:26 -0700 (PDT)
+        with ESMTP id S232256AbiIVTu3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Sep 2022 15:50:29 -0400
+Received: from rhlx01.hs-esslingen.de (rhlx01.hs-esslingen.DE [IPv6:2001:7c0:700::10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3982923152
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Sep 2022 12:50:28 -0700 (PDT)
+Received: by rhlx01.hs-esslingen.de (Postfix, from userid 102)
+        id A8BA6277FBA8; Thu, 22 Sep 2022 21:42:15 +0200 (CEST)
+Date:   Thu, 22 Sep 2022 21:42:15 +0200
+From:   Andreas Mohr <andi@lisas.de>
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     K Prateek Nayak <kprateek.nayak@amd.com>,
+        linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        dave.hansen@linux.intel.com, bp@alien8.de, tglx@linutronix.de,
+        andi@lisas.de, puwen@hygon.cn, mario.limonciello@amd.com,
+        peterz@infradead.org, rui.zhang@intel.com, gpiccoli@igalia.com,
+        daniel.lezcano@linaro.org, ananth.narayan@amd.com,
+        gautham.shenoy@amd.com, Calvin Ong <calvin.ong@amd.com>,
+        stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [PATCH] ACPI: processor_idle: Skip dummy wait for processors
+ based on the Zen microarchitecture
+Message-ID: <Yyy6l94G0O2B7Yh1@rhlx01.hs-esslingen.de>
+References: <20220921063638.2489-1-kprateek.nayak@amd.com>
+ <20e78a49-25df-c83d-842e-1d624655cfd7@intel.com>
+ <0885eecb-042f-3b74-2965-7d657de59953@amd.com>
+ <88c17568-8694-940a-0f1f-9d345e8dcbdb@intel.com>
 MIME-Version: 1.0
-References: <20220920094500.11283-1-lihuisong@huawei.com> <20220920094500.11283-3-lihuisong@huawei.com>
- <20220921154319.bsczh2nftuypeucs@bogus>
-In-Reply-To: <20220921154319.bsczh2nftuypeucs@bogus>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 22 Sep 2022 21:10:16 +0200
-Message-ID: <CAJZ5v0gfMCw3N1VJmtNU6WPuzrgen-8OiZYFiZkZowo6cFzHwA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ACPI: PCC: fix Tx done interface in handler
-To:     Sudeep Holla <sudeep.holla@arm.com>,
-        Huisong Li <lihuisong@huawei.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        wanghuiqiang@huawei.com, huangdaode@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <88c17568-8694-940a-0f1f-9d345e8dcbdb@intel.com>
+X-Priority: none
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 5:43 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
->
-> On Tue, Sep 20, 2022 at 05:45:00PM +0800, Huisong Li wrote:
-> > A error, "Client can't run the TX ticker", is printed even if PCC command
-> > executed successfully. This root cause is that PCC handler calls
-> > 'mbox_client_txdone()' which depands on the client can received 'ACK'
-> > packet. But PCC handler detects whether the command is complete through
-> > the Tx ACK interrupt. So this patch fix it.
-> >
->
-> Thanks for fixing this. Someone mentioned about the error and it was in
-> my TODO list.
->
-> I would prefer to reword the subject and commit message as below:
-> "
-> ACPI: PCC: Fix Tx acknowledge in the PCC address space handler
->
-> Currently, mbox_client_txdone() is called from the PCC address space
-> handler and that expects the user the Tx state machine to be controlled
-> by the client which is not the case and the below warning is thrown:
->
->   | PCCT: Client can't run the TX ticker
->
-> Let the controller run the state machine and the end of Tx can be
-> acknowledge by calling mbox_chan_txdone() instead.
-> "
->
-> With that:
->
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Hi,
 
-Applied as 6.1 material along with the [1/2].
+On Thu, Sep 22, 2022 at 10:01:46AM -0700, Dave Hansen wrote:
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index 16a1663d02d4..9f40917c49ef 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -531,10 +531,27 @@ static void wait_for_freeze(void)
+>  	/* No delay is needed if we are in guest */
+>  	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
+>  		return;
+> +	/*
+> +	 * Modern (>=Nehalem) Intel systems use ACPI via intel_idle,
+> +	 * not this code.  Assume that any Intel systems using this
+> +	 * are ancient and may need the dummy wait.  This also assumes
+> +	 * that the motivating chipset issue was Intel-only.
+> +	 */
+> +	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
+> +		return;
+>  #endif
+> -	/* Dummy wait op - must do something useless after P_LVL2 read
+> -	   because chipsets cannot guarantee that STPCLK# signal
+> -	   gets asserted in time to freeze execution properly. */
 
-I used the above text in quotes as the subject and changelog instead
-of the original pieces.
+16 years ago,
+I did my testing on a VIA 8233/8235 chipset (AMD Athlon/Duron) system......
+(plus reading VIA spec PDFs which mentioned "STPCLK#" etc.).
 
-Thanks!
+
+
+
+AFAIR I was doing kernel profiling (via oprofile, IIRC)
+for painful performance hotspots (read: I/O accesses etc.), and
+this was one resulting place which I stumbled over.
+And if I'm not completely mistaken,
+that dummy wait I/O op *was* needed (else "nice" effects)
+on my system (put loud and clear: *non*-Intel).
+
+
+
+So one can see where my profiling effort went
+(*optimizing* things, not degrading them)
+--> hints that current Zen3-originating effort is not
+about a regression in the "regression bug" sense -
+merely a (albeit rather appreciable/sizeable... congrats!)
+performance deterioration vs.
+an optimal (currently non-achieved) software implementation state
+(also: of PORT-based handling [vs. MWAIT], mind you!).
+
+
+I still have that VIA hardware, but inactive
+(had the oh-so-usual capacitors issue :( ).
+
+
+Sorry for sabotaging your current fix efforts ;-) -
+but thank you very much for your work/discussion
+in this very central/hotpath area! (this extends to all of you...)
+
+Greetings
+
+Andreas Mohr
