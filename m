@@ -2,77 +2,240 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF4D15E7FC9
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Sep 2022 18:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 705A75E7FD3
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Sep 2022 18:31:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231627AbiIWQaY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Sep 2022 12:30:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
+        id S232985AbiIWQb1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Sep 2022 12:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbiIWQaY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Sep 2022 12:30:24 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7F9FF1917;
-        Fri, 23 Sep 2022 09:30:22 -0700 (PDT)
-Received: from zn.tnic (p200300ea9733e795329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e795:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 709C11EC0646;
-        Fri, 23 Sep 2022 18:30:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1663950617;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=qw+3y1mCKoDwYTkZXX6OHqjYOHz56e8OXYAVyYAqElg=;
-        b=jEjlAAoMPEhJ7BodIBhX2FOFktAKUxD5mgXRW9COoJFiwG1EZpw1usN2QkQQ84lqkd6e5D
-        RoyIjhH6xytSE9QUa8VTpTO7q43cW5CcL7YYQlnaptzW6wOyYI6UNrtjgjSGx3PmXDmWuJ
-        SvWOAj3APjubsujGZjMuOgmvC5rGoZc=
-Date:   Fri, 23 Sep 2022 18:30:13 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     K Prateek Nayak <kprateek.nayak@amd.com>
-Cc:     linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        dave.hansen@linux.intel.com, tglx@linutronix.de, andi@lisas.de,
-        puwen@hygon.cn, mario.limonciello@amd.com, peterz@infradead.org,
-        rui.zhang@intel.com, gpiccoli@igalia.com,
-        daniel.lezcano@linaro.org, ananth.narayan@amd.com,
-        gautham.shenoy@amd.com, Calvin Ong <calvin.ong@amd.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] x86,acpi: Limit "Dummy wait" workaround to older AMD
- and Intel processors
-Message-ID: <Yy3fFciusHZ2h1GW@zn.tnic>
-References: <20220923153801.9167-1-kprateek.nayak@amd.com>
- <Yy3U0fQ0GZYZnMa1@zn.tnic>
- <f020defb-df73-35ff-5d97-c07773bafb67@amd.com>
+        with ESMTP id S232990AbiIWQbR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Sep 2022 12:31:17 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E63A414A7A7;
+        Fri, 23 Sep 2022 09:31:10 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9487313D5;
+        Fri, 23 Sep 2022 09:31:16 -0700 (PDT)
+Received: from localhost (ionvoi01-desktop.cambridge.arm.com [10.1.196.65])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A0EA53F73B;
+        Fri, 23 Sep 2022 09:31:09 -0700 (PDT)
+Date:   Fri, 23 Sep 2022 17:31:08 +0100
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        viresh.kumar@linaro.org, robert.moore@intel.com,
+        punit.agrawal@bytedance.com, lukasz.luba@arm.com,
+        pierre.gondois@arm.com, linux-kernel@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v5 1/1] ACPI: CPPC: Disable FIE if registers in PCC
+ regions
+Message-ID: <Yy3fTFVyAEx9R/qQ@arm.com>
+References: <20220912203722.205185-1-jeremy.linton@arm.com>
+ <20220912203722.205185-2-jeremy.linton@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f020defb-df73-35ff-5d97-c07773bafb67@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220912203722.205185-2-jeremy.linton@arm.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 23, 2022 at 09:55:02PM +0530, K Prateek Nayak wrote:
-> Yes, I did see the patch, but Andreas replied to Dave's patch attached
-> in v1 saying that he had seen this issue with AMD Athlon on a VIA
-> chipset back in 2006. (https://lore.kernel.org/lkml/Yyy6l94G0O2B7Yh1@rhlx01.hs-esslingen.de/)
-> Therefore, Dave's patch is not sufficient.
+Hi Jeremy,
 
-Well, AFAICT, that box is old and dead. And I'm being told that the AMD
-machines which we care for and which are still alive should not need the
-dummy read.
+On Monday 12 Sep 2022 at 15:37:22 (-0500), Jeremy Linton wrote:
+> PCC regions utilize a mailbox to set/retrieve register values used by
+> the CPPC code. This is fine as long as the operations are
+> infrequent. With the FIE code enabled though the overhead can range
+> from 2-11% of system CPU overhead (ex: as measured by top) on Arm
+> based machines.
+> 
+> So, before enabling FIE assure none of the registers used by
+> cppc_get_perf_ctrs() are in the PCC region. Finally, add a module
+> parameter which can override the PCC region detection at boot or
+> module reload.
+> 
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+>  drivers/acpi/cppc_acpi.c       | 42 ++++++++++++++++++++++++++++++++++
+>  drivers/cpufreq/cppc_cpufreq.c | 25 ++++++++++++++++----
+>  include/acpi/cppc_acpi.h       |  5 ++++
+>  3 files changed, 68 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 1e15a9f25ae9..55693e6f7153 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1240,6 +1240,48 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+>  }
+>  EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
+>  
+> +/**
+> + * cppc_perf_ctrs_in_pcc - Check if any perf counters are in a PCC region.
+> + *
+> + * CPPC has flexibility about how CPU performance counters are accessed.
+> + * One of the choices is PCC regions, which can have a high access latency. This
+> + * routine allows callers of cppc_get_perf_ctrs() to know this ahead of time.
+> + *
+> + * Return: true if any of the counters are in PCC regions, false otherwise
+> + */
+> +bool cppc_perf_ctrs_in_pcc(void)
+> +{
+> +	int cpu;
+> +
+> +	for_each_present_cpu(cpu) {
+> +		struct cpc_register_resource *ref_perf_reg;
+> +		struct cpc_desc *cpc_desc;
+> +
+> +		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+> +
+> +		if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+> +		    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+> +		    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
+> +			return true;
+> +
+> +
+> +		ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+> +
+> +		/*
+> +		 * If reference perf register is not supported then we should
+> +		 * use the nominal perf value
+> +		 */
+> +		if (!CPC_SUPPORTED(ref_perf_reg))
+> +			ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+> +
+> +		if (CPC_IN_PCC(ref_perf_reg))
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+> +
+>  /**
+>   * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
+>   * @cpunum: CPU from which to read counters.
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index 24eaf0ec344d..9e2a48ac5830 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -63,7 +63,15 @@ static struct cppc_workaround_oem_info wa_info[] = {
+>  
+>  static struct cpufreq_driver cppc_cpufreq_driver;
+>  
+> +static enum {
+> +	FIE_UNSET = -1,
+> +	FIE_ENABLED,
+> +	FIE_DISABLED
+> +} fie_disabled = FIE_UNSET;
+> +
+>  #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
+> +module_param(fie_disabled, int, 0444);
 
-Which means, we could try the simple fix first and see who complains.
+Why 'int' and not 'bool' here?
 
--- 
-Regards/Gruss,
-    Boris.
+IIUC, if you use 'bool' the user can pass any int/0/1/y/n/Y/N, which
+will result in fie_disabled properly having either the value 0 or 1
+(or default FIE_UNSET) if a parameter is not passed.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Then
+'if (fie_disabled != FIE_ENABLED && fie_disabled != FIE_DISABLED)'
+can become
+'if (fie_disabled == FIE_UNSET)' or 'if (fie_disabled < 0)'.
+
+I feel I'm missing something, otherwise you would have done this
+already.
+
+Otherwise FWIW, it looks good to me.
+Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
+
+Thanks,
+Ionela.
+
+> +MODULE_PARM_DESC(fie_disabled, "Disable Frequency Invariance Engine (FIE)");
+>  
+>  /* Frequency invariance support */
+>  struct cppc_freq_invariance {
+> @@ -158,7 +166,7 @@ static void cppc_cpufreq_cpu_fie_init(struct cpufreq_policy *policy)
+>  	struct cppc_freq_invariance *cppc_fi;
+>  	int cpu, ret;
+>  
+> -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+> +	if (fie_disabled)
+>  		return;
+>  
+>  	for_each_cpu(cpu, policy->cpus) {
+> @@ -199,7 +207,7 @@ static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
+>  	struct cppc_freq_invariance *cppc_fi;
+>  	int cpu;
+>  
+> -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+> +	if (fie_disabled)
+>  		return;
+>  
+>  	/* policy->cpus will be empty here, use related_cpus instead */
+> @@ -229,7 +237,15 @@ static void __init cppc_freq_invariance_init(void)
+>  	};
+>  	int ret;
+>  
+> -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+> +	if (fie_disabled != FIE_ENABLED && fie_disabled != FIE_DISABLED) {
+> +		fie_disabled = FIE_ENABLED;
+> +		if (cppc_perf_ctrs_in_pcc()) {
+> +			pr_info("FIE not enabled on systems with registers in PCC\n");
+> +			fie_disabled = FIE_DISABLED;
+> +		}
+> +	}
+> +
+> +	if (fie_disabled)
+>  		return;
+>  
+>  	kworker_fie = kthread_create_worker(0, "cppc_fie");
+> @@ -247,7 +263,7 @@ static void __init cppc_freq_invariance_init(void)
+>  
+>  static void cppc_freq_invariance_exit(void)
+>  {
+> -	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+> +	if (fie_disabled)
+>  		return;
+>  
+>  	kthread_destroy_worker(kworker_fie);
+> @@ -936,6 +952,7 @@ static void cppc_check_hisi_workaround(void)
+>  		    wa_info[i].oem_revision == tbl->oem_revision) {
+>  			/* Overwrite the get() callback */
+>  			cppc_cpufreq_driver.get = hisi_cppc_cpufreq_get_rate;
+> +			fie_disabled = FIE_DISABLED;
+>  			break;
+>  		}
+>  	}
+> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> index f73d357ecdf5..c5614444031f 100644
+> --- a/include/acpi/cppc_acpi.h
+> +++ b/include/acpi/cppc_acpi.h
+> @@ -140,6 +140,7 @@ extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
+>  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+>  extern int cppc_set_enable(int cpu, bool enable);
+>  extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
+> +extern bool cppc_perf_ctrs_in_pcc(void);
+>  extern bool acpi_cpc_valid(void);
+>  extern bool cppc_allow_fast_switch(void);
+>  extern int acpi_get_psd_map(unsigned int cpu, struct cppc_cpudata *cpu_data);
+> @@ -173,6 +174,10 @@ static inline int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps)
+>  {
+>  	return -ENOTSUPP;
+>  }
+> +static inline bool cppc_perf_ctrs_in_pcc(void)
+> +{
+> +	return false;
+> +}
+>  static inline bool acpi_cpc_valid(void)
+>  {
+>  	return false;
+> -- 
+> 2.37.1
+> 
