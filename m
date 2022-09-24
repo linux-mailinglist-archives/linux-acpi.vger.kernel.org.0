@@ -2,54 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE4C5E8EC8
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Sep 2022 19:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D7BE5E8ED2
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Sep 2022 19:16:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232545AbiIXRIC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 24 Sep 2022 13:08:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48208 "EHLO
+        id S233785AbiIXRQD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 24 Sep 2022 13:16:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbiIXRIB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Sep 2022 13:08:01 -0400
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A791E25E91;
-        Sat, 24 Sep 2022 10:08:00 -0700 (PDT)
-Received: by mail-qv1-f53.google.com with SMTP id c6so1901722qvn.6;
-        Sat, 24 Sep 2022 10:08:00 -0700 (PDT)
+        with ESMTP id S229735AbiIXRQC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Sep 2022 13:16:02 -0400
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C10383AE54;
+        Sat, 24 Sep 2022 10:16:01 -0700 (PDT)
+Received: by mail-qk1-f173.google.com with SMTP id u28so1915328qku.2;
+        Sat, 24 Sep 2022 10:16:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=V/3GhR988gPDS6E2QDOzA/8y9R+/aGZbwIz06arVHDw=;
-        b=yTOdkapCj3V5WNvIkZf5U7aYUlGUyqzS0zJ+ZziLkVaVqnduqAeY6Tfq4uDOcpkYQs
-         UE+GSEtY4Ijrb5KBtx+7V67Tx/Gaf+ejpSId6nHAcXXKlLTHlj8AR6sHCGWeUaJGAZcS
-         bSJc30owyo/NEFV81vV6tufb/OdrJPZG2e4N/oh88knntuVOiSb5Dj3vJxCZ/Pt/MvXY
-         7raOfmCkNcOjAsxDd70fMpzzox/3Q2sbmNx1LrVLvtHOi41mgYgPo7ZKChFbdeqpE6sC
-         UAY8p/U8R71Jn3E0DKnGbBMhFpj5v9n0VCsFEHA/OHhaaIaF78/bODLpVIMuCh3ffhMN
-         YTfw==
-X-Gm-Message-State: ACrzQf1HM7hWudXcrWyRY9iE9r9CgifuVSsJhqenUWX7oxr+alRPNaWJ
-        laOohoGxFCDjvEzwKaTcVK6T+NDjw7k8Pt05cF0=
-X-Google-Smtp-Source: AMsMyM4uLhgwFaeBlTpnO7Ux4sRZ+3+Xo3VmMtiR+I3wbVBzxzR2JNCThNcNnwzXWrLVBQNaaB3BTVMUN/26CfLw39c=
-X-Received: by 2002:a0c:da14:0:b0:4aa:aad9:e450 with SMTP id
- x20-20020a0cda14000000b004aaaad9e450mr11681294qvj.130.1664039279863; Sat, 24
- Sep 2022 10:07:59 -0700 (PDT)
+        bh=LOKoEroXBklDUC/nOoRK6LpTu77sehbETLRxe7PMdyU=;
+        b=OcZBGcDTk1Lr7EnqVFQuRcsxNMRl+/WWhid/NTzEc6eK72NNrkupuuV3XyndiZP7uF
+         p22o+YzfEUCpP++e1lzh2g6nDVJI+0evrgPZesBB/DFdwy3zl4UzB6d+ehYEQVJkoHqG
+         nQtg3wpf3Chbouua4+tuvZHpzR4bspjmgC30Fkfk3srVCSN6riCiLQODugBu0A5fk230
+         OYR76tk2qtkTmYUfJIjvuVTT/dLlZV4Rum7MMn2SljXh+EL6DLykE3vwe7T8jKM940e4
+         WINr3Qr659HPxyH/P0RP4XM/XT/SN96y0uLBOrEryVZupyahZrLOAiFgcY917eQRDOEg
+         bZKA==
+X-Gm-Message-State: ACrzQf2PENK551zisTtlKPyc/jq2cgfbjaU2YJEMEe9v1muk8WMEAL1i
+        u213nm+AJfL4iuhQAqMVEYsgJ4/KCG5bxj0Bz0s=
+X-Google-Smtp-Source: AMsMyM4Dojtc+cy+QHDOB+k3YM2olfuIdpg/XIF0cetw71mCZ458M5cva4XdVH3mlb8l861IWagzdsttSg1YED6+/H4=
+X-Received: by 2002:a05:620a:4008:b0:6ce:8725:cb7 with SMTP id
+ h8-20020a05620a400800b006ce87250cb7mr9704726qko.480.1664039760942; Sat, 24
+ Sep 2022 10:16:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220921204055.22889-1-mario.limonciello@amd.com>
-In-Reply-To: <20220921204055.22889-1-mario.limonciello@amd.com>
+References: <20220921230439.768185-1-djrscally@gmail.com> <b3855fe0-4b85-a442-1835-3e62456b3206@redhat.com>
+In-Reply-To: <b3855fe0-4b85-a442-1835-3e62456b3206@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 24 Sep 2022 19:07:49 +0200
-Message-ID: <CAJZ5v0jAOWbqdPRDfUeheD2EVZVeUxUwShqMr125Qn4zbMwdAg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/7] Fixups for s2idle on various Rembrandt laptops
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, travisghansen@yahoo.com,
-        catalin@antebit.com, Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Matthew Anderson <ruinairas1992@gmail.com>,
-        Philipp Zabel <philipp.zabel@gmail.com>,
-        "Sebastian S ." <iam@decentr.al>,
-        Hans de Goede <hdegoede@redhat.com>, davidedp91@gmail.com,
-        marko.cekrlic.26@gmail.com, Len Brown <lenb@kernel.org>,
+Date:   Sat, 24 Sep 2022 19:15:49 +0200
+Message-ID: <CAJZ5v0gB=jztBtmcfmuXNiNd2s+ftQRF1fqYHQApFsX_yEvkMQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] Add multiple-consumer support to int3472-tps68470 driver
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        linux-clk <linux-clk@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Robert Moore <robert.moore@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -61,46 +62,68 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 10:40 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Thu, Sep 22, 2022 at 10:55 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> It was reported that an ASUS Rembrandt laptop has problems with seemingly
-> unrelated ACPI events after resuming from s2idle. Debugging the issue
-> proved it's because ASUS has ASL that is only called when using the
-> Microsoft GUID, not the AMD GUID.
+> Hi All,
 >
-> This is a bug from ASUS firmware but this series reworks the s2idle
-> handling for AMD to allow accounting for this in a quirk.
+> On 9/22/22 01:04, Daniel Scally wrote:
+> > Hello all
+> >
+> > At the moment there are a few places in the int3472-tps68470 driver that are
+> > limited to just working with a single consuming device dependent on the PMIC.
+> > There are systems where multiple camera sensors share a single TPS68470, so
+> > we need to extend the driver to support them. This requires a couple of tweaks
+> > to the ACPI functions to fetch dependent devices, which also assumes that only
+> > a single dependent will be found.
+> >
+> > The v2 for this series was some time ago...it's kept falling to the back of my
+> > to-do list so I've only just gotten round to it; sorry about that. v2 here:
+> >
+> > https://lore.kernel.org/linux-acpi/20220327161344.50477-1-djrscally@gmail.com/
 >
-> Additionally as this is a problem that may pop up again on other models
-> add a module parameter that can be used to try the Microsoft GUID on a
-> given system.
+> Rafael, I would like to merge this through the pdx86 tree may I have your
+> ack for patches 1 + 2 for this. As a reminder (since it has been a while)
+> here are your review remarks to v2 of patch 1:
 >
-> This module parameter intentionally applies to both Intel and AMD systems
-> as the same problem could potentially exist on Intel systems that support
-> both the Intel GUID or the Microsoft GUID.
+> https://lore.kernel.org/platform-driver-x86/CAJZ5v0i2ciLHP-=8eQcZc0v0xCzhKHKpxLC=Kgv6W5E_5=HQJA@mail.gmail.com/
 >
-> v3->v4:
->  * Absorb tags
->  * minor URL correction
->  * Rename module parameter per Rafael's request
-> v2->v3:
->  * Add more systems
-> v1->v2:
->  * Add two more systems that are reported to be helped by this series.
+> (which both seem to have been addressed)
 >
-> Mario Limonciello (7):
->   acpi/x86: s2idle: Move _HID handling for AMD systems into structures
->   acpi/x86: s2idle: If a new AMD _HID is missing assume Rembrandt
->   acpi/x86: s2idle: Add module parameter to prefer Microsoft GUID
->   acpi/x86: s2idle: Add a quirk for ASUS TUF Gaming A17 FA707RE
->   acpi/x86: s2idle: Add a quirk for ASUS ROG Zephyrus G14
->   acpi/x86: s2idle: Add a quirk for Lenovo Slim 7 Pro 14ARH7
->   acpi/x86: s2idle: Add a quirk for ASUSTeK COMPUTER INC. ROG Flow X13
+> AFAICT you did not have any remarks for v2 of patch 2.
 
-All applied as 6.1 material, thanks!
+No, I didn't.
 
->  drivers/acpi/x86/s2idle.c | 136 +++++++++++++++++++++++++++++++-------
->  1 file changed, 112 insertions(+), 24 deletions(-)
+However, because acpi_bus_get_acpi_device() becomes
+acpi_get_acpi_dev() in my tree, I think it's better to route this
+material through it, if that's not a problem.
+
+I've tentatively queued it up for 6.1.
+
+Thanks!
+
+> p.s.
 >
-> --
+> Dan, if I want to give the IR cam a test run on my own Surface Go (version 1)
+> I guess I may need a sensor driver? Where can I find that sensor driver and
+> what do I need in userspace to test this ?
+>
+>
+>
+> > Daniel Scally (5):
+> >   ACPI: scan: Add acpi_dev_get_next_consumer_dev()
+> >   ACPI: bus: Add iterator for dependent devices
+> >   platform/x86: int3472: Support multiple clock consumers
+> >   platform/x86: int3472: Support multiple gpio lookups in board data
+> >   platform/x86: int3472: Add board data for Surface Go2 IR camera
+> >
+> >  drivers/acpi/scan.c                           | 40 +++++++---
+> >  drivers/clk/clk-tps68470.c                    | 13 +++-
+> >  drivers/platform/x86/intel/int3472/common.c   |  2 +-
+> >  drivers/platform/x86/intel/int3472/tps68470.c | 76 ++++++++++++++++---
+> >  drivers/platform/x86/intel/int3472/tps68470.h |  3 +-
+> >  .../x86/intel/int3472/tps68470_board_data.c   | 54 ++++++++++++-
+> >  include/acpi/acpi_bus.h                       | 15 +++-
+> >  include/linux/platform_data/tps68470.h        |  7 +-
+> >  8 files changed, 177 insertions(+), 33 deletions(-)
+> >
+>
