@@ -2,97 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E94C5E8E5C
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Sep 2022 18:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E415E8E61
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Sep 2022 18:12:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233405AbiIXQIq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 24 Sep 2022 12:08:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40952 "EHLO
+        id S229798AbiIXQMM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 24 Sep 2022 12:12:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbiIXQIp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Sep 2022 12:08:45 -0400
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C4834D24C
-        for <linux-acpi@vger.kernel.org>; Sat, 24 Sep 2022 09:08:43 -0700 (PDT)
-Received: by mail-qt1-f173.google.com with SMTP id j10so1797493qtv.4
-        for <linux-acpi@vger.kernel.org>; Sat, 24 Sep 2022 09:08:43 -0700 (PDT)
+        with ESMTP id S230017AbiIXQMI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Sep 2022 12:12:08 -0400
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7AF313FB6;
+        Sat, 24 Sep 2022 09:12:04 -0700 (PDT)
+Received: by mail-qk1-f180.google.com with SMTP id c19so1838270qkm.7;
+        Sat, 24 Sep 2022 09:12:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=wU23b1ZrlverzcsZH5b8SQAuQOWIwL4Tndo+bzW+zb4=;
-        b=3bEWUK1siJQ5Ch7kgcruiy1fCx6yj9mS0UUDq+Yi2HXq77cBXvsZUnk8Ou3J0ruhzD
-         IDT8Dbbu7vwplxxqxk5xPaGAEVzbdIXf0lHuWmEbTBDVdMt35nd2e0AKBzweVwIcqNm6
-         pM+yo/+kTaCrLFVWoS4bTFKij6cBFrW/jzqO+GlTkc+eSXqLMckQgSOwQFKEXJy6IWzT
-         YTD8undbXETW6FExM3oTrEJV6wr3EFtHmcZzNMZANUnjR2BWYX6ZDHRTeqB+R4H9S7c/
-         EOMW/doWI9BSfSuq781TWhNbq1l6i6vVWxOQUSOSH+l04z57mOTA66NWMSgOxlauzfhr
-         HNcg==
-X-Gm-Message-State: ACrzQf0grk+5bA7+JQpkUk539ZNm9pFcvpliR/l2q04tYQHtpdB1t+7m
-        hS2+F+eo3tqxwOCKhVbPXK0c1ok2wjDChu3KM0k=
-X-Google-Smtp-Source: AMsMyM4DTuMTqzRcD9sBPxwkOa7um+9oSK9aYvYXwphrtXtkQLU96F2YTitym/U/waF3zp6yFDfGLsQsv7ApT0AzUiI=
-X-Received: by 2002:a05:622a:1a08:b0:35c:d9b5:144b with SMTP id
- f8-20020a05622a1a0800b0035cd9b5144bmr11688806qtb.27.1664035722466; Sat, 24
- Sep 2022 09:08:42 -0700 (PDT)
+        bh=F15BgTFn4WudNgvloadL1dN3rK2rHdLhpPBgO8Ot8K0=;
+        b=ABM5+zZcaMe+0aUX3njUG7KQOyhWPEu2kRj+gkJgd0SQXilV06AZuUZSiZ5KTUvGmq
+         dQg6Igx1wjkF1NBC1HqsXruqViYfmBCbQPVAV/NORjl7mq+4Knjh1a5QhxvrQ1MCRCyI
+         DCCTLZvUWayGaGpnWcfl/RWYmqO0xzJTRAsvl9rR+LN68V+lB+HJQoWIqk3Sf+iEPqq4
+         RXfMOJB8HzaaxOKHP/TpYStKZ5bj/HYxzkqlmGE7+fO2z9KJS431+JUKaSZI5eDAqcXO
+         CxZw57iBqyBTDaMVvg5PN2pGyiXr0dNv2AKnOz8TFau5Hv1Cjfq5a1zXMJiaNc7NMJ3e
+         umLg==
+X-Gm-Message-State: ACrzQf0sw1JLlEt2XUnAbidkiohkjJtTn400tR3cQF9TgG46P+UP545j
+        YWjj+MBWhfn4IQswux8DX0EWBAlYB/FoWoXxUTw=
+X-Google-Smtp-Source: AMsMyM5GS5nhMHgOvE1Fg0q/eefTo0ji37PuMsUrxRuFjBLaMDqjARvSO2nqBoUfPKgFBcKum5NWOaknsBlfVnoWvZ4=
+X-Received: by 2002:a05:620a:46ac:b0:6ce:3e55:fc21 with SMTP id
+ bq44-20020a05620a46ac00b006ce3e55fc21mr9034311qkb.285.1664035923964; Sat, 24
+ Sep 2022 09:12:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220911094535.3226660-1-cuigaosheng1@huawei.com> <20220913224121.GA629552@bhelgaas>
-In-Reply-To: <20220913224121.GA629552@bhelgaas>
+References: <20220915182315.276-1-mario.limonciello@amd.com> <42663baa-2d8c-a45a-a33e-571119ec12aa@redhat.com>
+In-Reply-To: <42663baa-2d8c-a45a-a33e-571119ec12aa@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 24 Sep 2022 18:08:31 +0200
-Message-ID: <CAJZ5v0hKDzBoi8yF1ii5dExPNMCW019OdEcLLW2ydJ93RrbgTA@mail.gmail.com>
-Subject: Re: [PATCH] PNPBIOS: remove unused pnpid32_to_pnpid() declaration
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Gaosheng Cui <cuigaosheng1@huawei.com>
-Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>, bjorn.helgaas@hp.com,
-        rene.herman@gmail.com, Len Brown <len.brown@intel.com>,
+Date:   Sat, 24 Sep 2022 18:11:53 +0200
+Message-ID: <CAJZ5v0g_AFSa010yZ5NrLaQcY7wNy0p_2eJS9pyiEum8LZ7O_g@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / x86: Add a quirk for Dell Inspiron 14 2-in-1 for StorageD3Enable
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Luya Tshimbalanga <luya@fedoraproject.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 14, 2022 at 12:41 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Fri, Sep 16, 2022 at 10:43 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> On Sun, Sep 11, 2022 at 05:45:35PM +0800, Gaosheng Cui wrote:
-> > pnpid32_to_pnpid() has been removed since
-> > commit 25eb846189d2 ("PNP: add pnp_eisa_id_to_string()"),
-> > so remove it.
+> Hi,
 >
-> Woof, I guess I messed that up, sorry :(
+> On 9/15/22 20:23, Mario Limonciello wrote:
+> > Dell Inspiron 14 2-in-1 has two ACPI nodes under GPP1 both with _ADR of
+> > 0, both without _HID.  It's ambiguous which the kernel should take, but
+> > it seems to take "DEV0".  Unfortunately "DEV0" is missing the device
+> > property `StorageD3Enable` which is present on "NVME".
+> >
+> > To avoid this causing problems for suspend, add a quirk for this system
+> > to behave like `StorageD3Enable` property was found.
+> >
+> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=216440
+> > Reported-and-tested-by: Luya Tshimbalanga <luya@fedoraproject.org>
+> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 >
-> I would word the commit log as:
+> Thanks, patch looks good to me:
 >
->   All uses of pnpid32_to_pnpid() were removed by 25eb846189d2 ("PNP:
->   add pnp_eisa_id_to_string()"), so remove the declaration, too.
->
-> Regardless,
->
-> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
 Applied as 6.1 material, thanks!
 
-> > Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
 > > ---
-> >  drivers/pnp/pnpbios/pnpbios.h | 1 -
-> >  1 file changed, 1 deletion(-)
+> > I had attempted to modify the heuristics for when two ACPI devices
+> > have the same _ADR to prefer the one with a _DSD, but this wasn't enough
+> > of a help. As the ACPI node doesn't contain anything valuable besides
+> > the _DSD, it seems that a quirk for the system is a fine enough solution.
 > >
-> > diff --git a/drivers/pnp/pnpbios/pnpbios.h b/drivers/pnp/pnpbios/pnpbios.h
-> > index 2ce739ff9c1a..f3302006842e 100644
-> > --- a/drivers/pnp/pnpbios/pnpbios.h
-> > +++ b/drivers/pnp/pnpbios/pnpbios.h
-> > @@ -153,7 +153,6 @@ extern int  pnpbios_dont_use_current_config;
-> >  extern int pnpbios_parse_data_stream(struct pnp_dev *dev, struct pnp_bios_node * node);
-> >  extern int pnpbios_read_resources_from_node(struct pnp_dev *dev, struct pnp_bios_node *node);
-> >  extern int pnpbios_write_resources_to_node(struct pnp_dev *dev, struct pnp_bios_node *node);
-> > -extern void pnpid32_to_pnpid(u32 id, char *str);
+> >  drivers/acpi/x86/utils.c | 19 ++++++++++++++++++-
+> >  1 file changed, 18 insertions(+), 1 deletion(-)
 > >
-> >  extern void pnpbios_print_status(const char * module, u16 status);
-> >  extern void pnpbios_calls_init(union pnp_bios_install_struct * header);
-> > --
-> > 2.25.1
+> > diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> > index 664070fc8349..d7cdd8406c84 100644
+> > --- a/drivers/acpi/x86/utils.c
+> > +++ b/drivers/acpi/x86/utils.c
+> > @@ -207,9 +207,26 @@ static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+> >       {}
+> >  };
 > >
+> > +static const struct dmi_system_id force_storage_d3_dmi[] = {
+> > +     {
+> > +             /*
+> > +              * _ADR is ambiguous between GPP1.DEV0 and GPP1.NVME
+> > +              * but .NVME is needed to get StorageD3Enable node
+> > +              * https://bugzilla.kernel.org/show_bug.cgi?id=216440
+> > +              */
+> > +             .matches = {
+> > +                     DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> > +                     DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
+> > +             }
+> > +     },
+> > +     {}
+> > +};
+> > +
+> >  bool force_storage_d3(void)
+> >  {
+> > -     return x86_match_cpu(storage_d3_cpu_ids);
+> > +     const struct dmi_system_id *dmi_id = dmi_first_match(force_storage_d3_dmi);
+> > +
+> > +     return dmi_id || x86_match_cpu(storage_d3_cpu_ids);
+> >  }
+> >
+> >  /*
+>
