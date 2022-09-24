@@ -2,123 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E35A85E8E9E
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Sep 2022 18:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6EB15E8EA9
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Sep 2022 18:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233855AbiIXQwe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 24 Sep 2022 12:52:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57190 "EHLO
+        id S233899AbiIXQ4I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 24 Sep 2022 12:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233862AbiIXQwb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Sep 2022 12:52:31 -0400
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66C52D1F4;
-        Sat, 24 Sep 2022 09:52:27 -0700 (PDT)
-Received: by mail-qt1-f170.google.com with SMTP id c11so1824863qtw.8;
-        Sat, 24 Sep 2022 09:52:27 -0700 (PDT)
+        with ESMTP id S229798AbiIXQ4H (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Sep 2022 12:56:07 -0400
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47CD28284D;
+        Sat, 24 Sep 2022 09:56:06 -0700 (PDT)
+Received: by mail-qv1-f42.google.com with SMTP id j8so1863922qvt.13;
+        Sat, 24 Sep 2022 09:56:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=P6Yp7bWFgW/ocrevyMc619Inz7oF6cbIjoDxngEHtYA=;
-        b=Qrul35aIxs7a0HrK1H/sEfQcujOG+dJtnJa/oex0XiG3mZsfct5D/ovvJAKVJpeTxn
-         2sCeV+4QU+6xSCRnyb6q8pd9d6ZSMA6kheaIFpmU6MBsl+AwAd8lMDv2fMFFZb0BnLOR
-         w/Cb6F37YaGhmMrtA7+gvNatoIAbHKlpcZ1JOw3hchRpDhFyuhOUs87xDZJN4m1Rc7eM
-         nQ5nJs7jL32n6w4zcinI2v0NGKb8aBQVRs1ekrxz/+gG8HreJJeQo5i38iggCGMRvsJZ
-         L7dGCZKSKz2QDCj6PgInn0WLTgAJtKyerJGgpSxq+VlSo9HqvW1rwf8nSJjF0kGw0U5X
-         qEPA==
-X-Gm-Message-State: ACrzQf1HxqMXj1rVXK1cPOkLZcD8AFiubk6nkGuTwZoaQuiUkbebKG3m
-        deCG5BkK/t3fS/EdhpuOj03j3NRc60JYsWisH2I=
-X-Google-Smtp-Source: AMsMyM7xeNJROoTBrySCo1JRHAKCLj3mT51z155UY84Z7zgFHGGlCNmlBFrkYNGY7SJNxZ8Q5qP6oYKa4tqNqSSOMsY=
-X-Received: by 2002:a05:622a:11c8:b0:35c:e912:a8ea with SMTP id
- n8-20020a05622a11c800b0035ce912a8eamr11829694qtk.17.1664038346630; Sat, 24
- Sep 2022 09:52:26 -0700 (PDT)
+        bh=2alwuq6T22+l7tsq01aDJyHbKbwXThP2O3Hb5R6vV1k=;
+        b=0XxHv7XKFiwJRKC2biTa27VhWduWPHj5c5o6Mlpag0GBAvhLTHVeTU/yckdxS6+O0S
+         QyM5umhHR6hEtfgGSSWmNllRiY+F1Q3/nBTL6LT3dsFvzSDVd7AUBsHtG56r8zCFhL1R
+         rHBIQOEZead6oO7JWISwmgMWT1M8ymDHoEox54tqoOnGdQrzApUe2bYAH3//gUlSUbf1
+         mcqdDnW3wEUwn0UW8IzteOVwpQZaWHdhKotc6pBGYRGhuOZ47Y6oLsr+hAYSOpUORZe4
+         7WOQG8Z6GQLM4oIEYWWRyQYUzlJXeZ8ytHVlJ5mh05ymP75Gn0BuaZWd8yvHD1NcRxw8
+         v2EQ==
+X-Gm-Message-State: ACrzQf16DO1F6DbBryNC7+YWsd5JYJ38pMcwDB3dJ1l8+iLduUGuxYCp
+        zxkrFGK652dPUFhyLBZWu+I6uNvPc1/PeDj685j6dIrI
+X-Google-Smtp-Source: AMsMyM7e+nM+Fe1kxjW+74yG7wpTMJUfczsapG40d1OOl6rctBor6/OHKirmTh2tqxVkZo3h2ljWJ5iJkpYu3Y1dLF8=
+X-Received: by 2002:a05:6214:f24:b0:4ac:a9fd:8b42 with SMTP id
+ iw4-20020a0562140f2400b004aca9fd8b42mr11467783qvb.22.1664038565511; Sat, 24
+ Sep 2022 09:56:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220921092834.230356-1-ye.xingchen@zte.com.cn>
-In-Reply-To: <20220921092834.230356-1-ye.xingchen@zte.com.cn>
+References: <20220921143244.16282-1-vijayenthiran.subramaniam@arm.com> <20220921144854.ug2adlz4ofglxp7c@bogus>
+In-Reply-To: <20220921144854.ug2adlz4ofglxp7c@bogus>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 24 Sep 2022 18:52:15 +0200
-Message-ID: <CAJZ5v0jVgb3dzqUj5QLgxcJacOxGWqJm4BvyO081cHBpV63XRg@mail.gmail.com>
-Subject: Re: [PATCH linux-next v2] ACPI: APEI: Remove the unneeded result variable
-To:     cgel.zte@gmail.com
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Jakob Koschel <jakobkoschel@gmail.com>,
-        Xiang wangx <wangxiang@cdjrlc.com>,
+Date:   Sat, 24 Sep 2022 18:55:54 +0200
+Message-ID: <CAJZ5v0ikzf22Kgq728vvjpXAgt5fHN4bQwQA=qf=9t99sRwftA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: amba: Add Arm DMA-330 controller to the
+ supported list
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        Vijayenthiran Subramaniam <vijayenthiran.subramaniam@arm.com>
+Cc:     Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        coresight@lists.linaro.org,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        thomas.abraham@arm.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 11:28 AM <cgel.zte@gmail.com> wrote:
+On Wed, Sep 21, 2022 at 4:49 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
 >
-> From: ye xingchen <ye.xingchen@zte.com.cn>
+> On Wed, Sep 21, 2022 at 08:02:44PM +0530, Vijayenthiran Subramaniam wrote:
+> > Add ACPI ID for ARM DMA-330 controller to AMBA id supported list to
+> > allow the probing of the device.
+> >
 >
-> Return the value erst_get_record_id_begin() and apei_exec_write_register()
->  directly instead of storing it in another redundant variable.
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 >
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
-> ---
-> v1 -> v2
-> combine the patchs in APEI.
->  drivers/acpi/apei/apei-base.c | 5 +----
->  drivers/acpi/apei/erst.c      | 6 +-----
->  2 files changed, 2 insertions(+), 9 deletions(-)
+> Rafael,
 >
-> diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-> index 9f49272cad39..9b52482b4ed5 100644
-> --- a/drivers/acpi/apei/apei-base.c
-> +++ b/drivers/acpi/apei/apei-base.c
-> @@ -125,12 +125,9 @@ EXPORT_SYMBOL_GPL(apei_exec_write_register);
->  int apei_exec_write_register_value(struct apei_exec_context *ctx,
->                                    struct acpi_whea_header *entry)
->  {
-> -       int rc;
-> -
->         ctx->value = entry->value;
-> -       rc = apei_exec_write_register(ctx, entry);
->
-> -       return rc;
-> +       return apei_exec_write_register(ctx, entry);
->  }
->  EXPORT_SYMBOL_GPL(apei_exec_write_register_value);
->
-> diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
-> index 31b077eedb58..247989060e29 100644
-> --- a/drivers/acpi/apei/erst.c
-> +++ b/drivers/acpi/apei/erst.c
-> @@ -1020,14 +1020,10 @@ static int reader_pos;
->
->  static int erst_open_pstore(struct pstore_info *psi)
->  {
-> -       int rc;
-> -
->         if (erst_disable)
->                 return -ENODEV;
->
-> -       rc = erst_get_record_id_begin(&reader_pos);
-> -
-> -       return rc;
-> +       return erst_get_record_id_begin(&reader_pos);
->  }
->
->  static int erst_close_pstore(struct pstore_info *psi)
-> --
+> I assume you will pick this up as usual through your tree.
 
-Applied as 6.1 material with some edits in the subject and changelog, thanks!
+Sure.
+
+Applied as 6.1 material with under edited subject, thanks!
