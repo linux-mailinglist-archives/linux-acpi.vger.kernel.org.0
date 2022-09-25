@@ -2,118 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5CF85E9418
-	for <lists+linux-acpi@lfdr.de>; Sun, 25 Sep 2022 17:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2675E9561
+	for <lists+linux-acpi@lfdr.de>; Sun, 25 Sep 2022 20:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230381AbiIYPvB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 25 Sep 2022 11:51:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47172 "EHLO
+        id S229567AbiIYSTx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 25 Sep 2022 14:19:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232628AbiIYPu7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 11:50:59 -0400
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82632C119;
-        Sun, 25 Sep 2022 08:50:58 -0700 (PDT)
-Received: by mail-qt1-f173.google.com with SMTP id h21so2844223qta.3;
-        Sun, 25 Sep 2022 08:50:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=Nxf2CrxXqc9Pl8KiEukPF/0eo12TyS1Rnm/iFQzHhmM=;
-        b=uZAdcrJpUrykuv7WmflLaEvEvt+0nC6J4BIv03aZ15yU0GD3IUwzu4UT9d3MphsguQ
-         q9BgUBR3Q1vQ0WlcwTwQ76lGVqsTXyAQJXnhWc3W6Kg1SgVTPfL6f8W6jsPIrGN2ZgQ1
-         UQRJKc8h1M9yOU0L9a1pOpH+9d3ZAr6wi5Bv1KnY9sX12VZyqkHWnQw9NGDSL7wgfYUh
-         6xzVe2NEKOwuDlx4l4lXLENtn9b41A4iE4h+RXQrpvLjt0+3VK39LeB2olyQCOuEWCnb
-         97ySbx0+syBo8wa5oqb6rOU0PukBYhkLbMjNdRIOmDRBoo5SDAUWhbrF2MjbNY3PnjyX
-         xqDA==
-X-Gm-Message-State: ACrzQf2adDzBzVIUBNXGd+OCk+7PBpCZgG0/MMlylOir8XnJm/g7epAH
-        uwEkg1OXi0b+GSaFS8Nb11Chip7tRBuD6LsQdWw=
-X-Google-Smtp-Source: AMsMyM4F8cbu26Bgthte4Aurv5PJEBVBzXgfaYLN0c4YPu8+mdoV9Zfzz9VmFgNGC+t31Odbjea2oUcyPTrD1AksP6s=
-X-Received: by 2002:a05:622a:620a:b0:35c:bf9e:8748 with SMTP id
- hj10-20020a05622a620a00b0035cbf9e8748mr15070340qtb.494.1664121057185; Sun, 25
- Sep 2022 08:50:57 -0700 (PDT)
+        with ESMTP id S229711AbiIYSTw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 14:19:52 -0400
+Received: from vorpal.se (vorpal.se [151.236.221.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2297664;
+        Sun, 25 Sep 2022 11:19:40 -0700 (PDT)
+Received: by vorpal.se (Postfix) with ESMTPSA id 2101F14018;
+        Sun, 25 Sep 2022 18:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
+        t=1664129975; bh=vXpHh1WxycZll0PW693kDqJWGXiu+rRX1aIK0p8RBS0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=Aeexs23ME2KvxYv56WrVLTlzsz/DvfujqdmI3vvP6xZz8jiN/zST31QtjGos3z5zV
+         g6d5R6lguJ0s2I6MayNSnjuulT50t4hH/pelf2Hejo5+yF+K98Mwb8m6uF1Oxxjp0P
+         cMS+79TnVO3jxCdkfqcv9j+jtKY4JuZskB9V1FBE4aaex0aPFHYfKgrNRK7hPz3mAa
+         nFgP+eVyt5OED4u2sumvaAna08ejhbUZ8CeRG7R1bsOUCSTnfUPB3FsTm2OVY493ud
+         ISLLwJBCvWdm7pSry6HNC9BH8rbVC1jvpwrpBf+bGDUvYhJvLRjx52SLLL5Oi6VT7N
+         wEEUvkD9GPH0A==
+Message-ID: <3095147c-844c-42cf-833b-8a2eae5fcc21@vorpal.se>
+Date:   Sun, 25 Sep 2022 20:19:34 +0200
 MIME-Version: 1.0
-References: <20220916043319.119716-1-kai.heng.feng@canonical.com>
- <20220916043319.119716-2-kai.heng.feng@canonical.com> <CAJZ5v0gTEkZkyKkrjDZk0s+UVR9yPTtBJ_nzG40ZO9kgikFdqw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gTEkZkyKkrjDZk0s+UVR9yPTtBJ_nzG40ZO9kgikFdqw@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sun, 25 Sep 2022 17:50:45 +0200
-Message-ID: <CAJZ5v0h+3ez6=Hf7iJOAv1T7vs9qXudt90iuccDx84gGN=rbcA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] PM: ACPI: reboot: Reinstate S5 for reboot
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH RFC v2 1/2] platform/x86: quickstart: Add ACPI quickstart
+ button (PNP0C32) driver
+To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
+Cc:     platform-driver-x86@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        linux-input@vger.kernel.org, Azael Avalos <coproscefalo@gmail.com>
+References: <20220922182424.934340-1-lkml@vorpal.se>
+ <20220922182424.934340-2-lkml@vorpal.se>
+ <4-mkye9NM7L93IKQAGjd8BmHi1_2zEnx4F8L3AvKk9RsNBtuoS5cpNCKV-nyb1Xpb1jmAZQDdpNlyvjoUfrFKkq4V-EOfXo9b_gRbyC1hSs=@protonmail.com>
+Content-Language: en-US
+From:   Arvid Norlander <lkml@vorpal.se>
+In-Reply-To: <4-mkye9NM7L93IKQAGjd8BmHi1_2zEnx4F8L3AvKk9RsNBtuoS5cpNCKV-nyb1Xpb1jmAZQDdpNlyvjoUfrFKkq4V-EOfXo9b_gRbyC1hSs=@protonmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Sep 24, 2022 at 6:19 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Sep 16, 2022 at 6:33 AM Kai-Heng Feng
-> <kai.heng.feng@canonical.com> wrote:
-> >
-> > Commit d60cd06331a3 ("PM: ACPI: reboot: Use S5 for reboot") caused Dell
-> > PowerEdge r440 hangs at reboot.
-> >
-> > The issue is fixed by commit 2ca1c94ce0b6 ("tg3: Disable tg3 device on
-> > system reboot to avoid triggering AER"), so use the new sysoff API to
-> > reinstate S5 for reboot on ACPI-based systems.
-> >
-> > Using S5 for reboot is default behavior under Windows, "A full shutdown
-> > (S5) occurs when a system restart is requested" [1].
-> >
-> > [1] https://docs.microsoft.com/en-us/windows/win32/power/system-power-state
-> >
-> > Cc: Josef Bacik <josef@toxicpanda.com>
-> > Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> > v4:
-> >  - Add comment and add more info to commit message.
-> > v3:
-> >  - Use new API to invoke ACPI S5.
-> > v2:
-> >  - Use do_kernel_power_off_prepare() instead.
-> >
-> >  drivers/acpi/sleep.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> > index ad4b2987b3d6e..0b557c0d405ef 100644
-> > --- a/drivers/acpi/sleep.c
-> > +++ b/drivers/acpi/sleep.c
-> > @@ -1088,6 +1088,14 @@ int __init acpi_sleep_init(void)
-> >                 register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
-> >                                          SYS_OFF_PRIO_FIRMWARE,
-> >                                          acpi_power_off, NULL);
-> > +
-> > +               /*
-> > +                * Windows uses S5 for reboot, so some BIOSes depend on it to
-> > +                * perform proper reboot.
-> > +                */
-> > +               register_sys_off_handler(SYS_OFF_MODE_RESTART_PREPARE,
-> > +                                        SYS_OFF_PRIO_FIRMWARE,
-> > +                                        acpi_power_off_prepare, NULL);
-> >         } else {
-> >                 acpi_no_s5 = true;
-> >         }
-> > --
->
-> Applied as 6.1 material with some edits in the changelog, thanks!
+Hi,
 
-And dropped due to a build failure.
+Thank you, I have incorperated your feedback in my local branch.
 
-It looks like it depends on patch [1/2], but I haven't seen that one.
+On 2022-09-23 21:24, Barnabás Pőcze wrote:
+> Hi
+> 
+> 2022. szeptember 22., csütörtök 20:24 keltezéssel, Arvid Norlander írta:
+> 
+>> This is loosely based on a previous staging driver that was removed. See
+>> links below for more info on that driver. The original commit ID was
+>> 0be013e3dc2ee79ffab8a438bbb4e216837e3d52.
+>>
+>> However, here a completely different approach is taken to the user space
+>> API (which should solve the issues the original driver had). Each PNP0C32
+>> device is a button, and each such button gets a separate input device
+>> associated with it (instead of a shared platform input device).
+>>
+>> The button ID (as read from ACPI method GHID) is provided via a sysfs file
+>> "button_id".
+>>
+>> If the button caused a wakeup it will "latch" the "wakeup_cause" sysfs file
+>> to true. This can be reset by a user space process.
+>>
+>> Link: https://marc.info/?l=linux-acpi&m=120550727131007
+>> Link: https://lkml.org/lkml/2010/5/28/327
+>> Signed-off-by: Arvid Norlander <lkml@vorpal.se>
+>> ---
+>> [...]
+>> diff --git a/drivers/platform/x86/quickstart.c b/drivers/platform/x86/quickstart.c
+>> new file mode 100644
+>> index 000000000000..ce51abe012f7
+>> --- /dev/null
+>> +++ b/drivers/platform/x86/quickstart.c
+>> @@ -0,0 +1,320 @@
+
+<snip>
+
+>> +
+>> +static ssize_t wakeup_cause_store(struct device *dev,
+>> +				  struct device_attribute *attr,
+>> +				  const char *buf, size_t count)
+>> +{
+>> +	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
+>> +
+>> +	if (count < 2)
+>> +		return -EINVAL;
+>> +
+>> +	if (strncasecmp(buf, "false", 4) != 0)
+>> +		return -EINVAL;
+>> +
+> 
+> If "true"/"false" will be used in the final version, then I think this check
+> currently is too lax. You could use `sysfs_streq()`. And I think the `count < 2`
+> check is not needed.
+
+Regarding the user space API I don't know, that is one of the open
+questions in the cover letter. I have yet to get any feedback on any of
+those questions. That is something that needs to happen before this driver
+can be included. I would appreciate your feedback on those.
+
+<snip>
+
+> 
+> Regards,
+> Barnabás Pőcze
+
+Regards,
+Arvid Norlander
