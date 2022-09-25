@@ -2,125 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B2675E9561
-	for <lists+linux-acpi@lfdr.de>; Sun, 25 Sep 2022 20:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3500B5E96F0
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 01:40:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbiIYSTx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 25 Sep 2022 14:19:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48074 "EHLO
+        id S232933AbiIYXj5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 25 Sep 2022 19:39:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbiIYSTw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 14:19:52 -0400
-Received: from vorpal.se (vorpal.se [151.236.221.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2297664;
-        Sun, 25 Sep 2022 11:19:40 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id 2101F14018;
-        Sun, 25 Sep 2022 18:19:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1664129975; bh=vXpHh1WxycZll0PW693kDqJWGXiu+rRX1aIK0p8RBS0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Aeexs23ME2KvxYv56WrVLTlzsz/DvfujqdmI3vvP6xZz8jiN/zST31QtjGos3z5zV
-         g6d5R6lguJ0s2I6MayNSnjuulT50t4hH/pelf2Hejo5+yF+K98Mwb8m6uF1Oxxjp0P
-         cMS+79TnVO3jxCdkfqcv9j+jtKY4JuZskB9V1FBE4aaex0aPFHYfKgrNRK7hPz3mAa
-         nFgP+eVyt5OED4u2sumvaAna08ejhbUZ8CeRG7R1bsOUCSTnfUPB3FsTm2OVY493ud
-         ISLLwJBCvWdm7pSry6HNC9BH8rbVC1jvpwrpBf+bGDUvYhJvLRjx52SLLL5Oi6VT7N
-         wEEUvkD9GPH0A==
-Message-ID: <3095147c-844c-42cf-833b-8a2eae5fcc21@vorpal.se>
-Date:   Sun, 25 Sep 2022 20:19:34 +0200
+        with ESMTP id S231345AbiIYXj4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 19:39:56 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 364FD12616;
+        Sun, 25 Sep 2022 16:39:54 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 10so8349776lfy.5;
+        Sun, 25 Sep 2022 16:39:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=st3O2pRGPWK1FLJTPBGRuCniY8P/u6abQYJb/fEYuJQ=;
+        b=W3K2NP/a6+oTI8gFEGt5nGGS9enU+0KpjF9MSWpto/y/e8Pqkyk3KdNROeq1VReuw3
+         4tbDUQNzhEsLSU0JCkjVpzqYzoF9pZhg9SvgEiWunM5yC5N0DLguvjWHMxFYGtncW+mc
+         vOragtuGv5wtfYTpeKmAEjfsXd4V6tTTTzaNGi8+qtE32bmF4JD4wQ6frMIJoh9GGTge
+         RAD/AaBmrSAOC5LqiVErhUkwhGjVz5+qH/Z27UJUyGp+GEOEmwJRfc1RTbiWoQbzjL5M
+         mtmY0fn16PQvkz4jleVY/+noMI6YznIJxGIP6waxvJ+sh1wleUqUblTSTP3nNWAH+jkr
+         pZZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=st3O2pRGPWK1FLJTPBGRuCniY8P/u6abQYJb/fEYuJQ=;
+        b=AsP+f8IT85QBbafwbsPWRMd9P/WUw0RjFJYhCQe32abKwsU+vkLttHabZaMLwzTDy6
+         1ZjAi0v0u91x8GQTwFzmemjy8gFOOa9Zf6dMFM9SNI7QjAN/UrkRKlkTwKi9LrBKNa4w
+         aQcL8RJ3UqnzgHmz2m7YwwJNCHvBDIVSU3+4oH4gj+cNvZQ0JBOH+HlAlxRPzW+yd54R
+         cEYz/7zUcz6fsWrbz0RAEPNWvqFYoR0lV0ClnDBF0+uViOUwbLMWWoDiMGVXVt+lt4rw
+         ih5A4pFsqVHngO/i7/CrM8t12pgFgolgB6sGCOkB7oIzxLdXJPMhvibEIRDElwf81w3d
+         +lwQ==
+X-Gm-Message-State: ACrzQf35T3/yVvtE+1LZyKK8CbInZm5zHVGGr7DsU70Tws1Hfm2J422g
+        /T2sP9zLw4tBpuLiTwP5TZI=
+X-Google-Smtp-Source: AMsMyM5aDKQS2b/KY3xFf9M+RoiDx1qfHHYGi1ptQgxDMi9xIzklVjEJFzIiBqGLPRgxtbvB3OmxiQ==
+X-Received: by 2002:a05:6512:2215:b0:49e:ac45:22e1 with SMTP id h21-20020a056512221500b0049eac4522e1mr8247070lfu.33.1664149192424;
+        Sun, 25 Sep 2022 16:39:52 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-124-206.nat.spd-mgts.ru. [109.252.124.206])
+        by smtp.googlemail.com with ESMTPSA id i11-20020ac2522b000000b0048a921664e8sm2351312lfl.37.2022.09.25.16.39.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Sep 2022 16:39:51 -0700 (PDT)
+Message-ID: <f914ceb3-94bd-743c-f8b6-0334086e731a@gmail.com>
+Date:   Mon, 26 Sep 2022 02:39:50 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH RFC v2 1/2] platform/x86: quickstart: Add ACPI quickstart
- button (PNP0C32) driver
-To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
-Cc:     platform-driver-x86@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-input@vger.kernel.org, Azael Avalos <coproscefalo@gmail.com>
-References: <20220922182424.934340-1-lkml@vorpal.se>
- <20220922182424.934340-2-lkml@vorpal.se>
- <4-mkye9NM7L93IKQAGjd8BmHi1_2zEnx4F8L3AvKk9RsNBtuoS5cpNCKV-nyb1Xpb1jmAZQDdpNlyvjoUfrFKkq4V-EOfXo9b_gRbyC1hSs=@protonmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v5 02/31] drm/i915: Don't register backlight when another
+ backlight should be used (v2)
 Content-Language: en-US
-From:   Arvid Norlander <lkml@vorpal.se>
-In-Reply-To: <4-mkye9NM7L93IKQAGjd8BmHi1_2zEnx4F8L3AvKk9RsNBtuoS5cpNCKV-nyb1Xpb1jmAZQDdpNlyvjoUfrFKkq4V-EOfXo9b_gRbyC1hSs=@protonmail.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Pan@freedesktop.org, Xinhui <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>,
+        nouveau@lists.freedesktop.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        David Airlie <airlied@redhat.com>, Len Brown <lenb@kernel.org>
+References: <20220825143726.269890-1-hdegoede@redhat.com>
+ <20220825143726.269890-3-hdegoede@redhat.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+In-Reply-To: <20220825143726.269890-3-hdegoede@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-Thank you, I have incorperated your feedback in my local branch.
-
-On 2022-09-23 21:24, Barnabás Pőcze wrote:
-> Hi
+25.08.2022 17:36, Hans de Goede пишет:
+> Before this commit when we want userspace to use the acpi_video backlight
+> device we register both the GPU's native backlight device and acpi_video's
+> firmware acpi_video# backlight device. This relies on userspace preferring
+> firmware type backlight devices over native ones.
 > 
-> 2022. szeptember 22., csütörtök 20:24 keltezéssel, Arvid Norlander írta:
+> Registering 2 backlight devices for a single display really is
+> undesirable, don't register the GPU's native backlight device when
+> another backlight device should be used.
 > 
->> This is loosely based on a previous staging driver that was removed. See
->> links below for more info on that driver. The original commit ID was
->> 0be013e3dc2ee79ffab8a438bbb4e216837e3d52.
->>
->> However, here a completely different approach is taken to the user space
->> API (which should solve the issues the original driver had). Each PNP0C32
->> device is a button, and each such button gets a separate input device
->> associated with it (instead of a shared platform input device).
->>
->> The button ID (as read from ACPI method GHID) is provided via a sysfs file
->> "button_id".
->>
->> If the button caused a wakeup it will "latch" the "wakeup_cause" sysfs file
->> to true. This can be reset by a user space process.
->>
->> Link: https://marc.info/?l=linux-acpi&m=120550727131007
->> Link: https://lkml.org/lkml/2010/5/28/327
->> Signed-off-by: Arvid Norlander <lkml@vorpal.se>
->> ---
->> [...]
->> diff --git a/drivers/platform/x86/quickstart.c b/drivers/platform/x86/quickstart.c
->> new file mode 100644
->> index 000000000000..ce51abe012f7
->> --- /dev/null
->> +++ b/drivers/platform/x86/quickstart.c
->> @@ -0,0 +1,320 @@
-
-<snip>
-
->> +
->> +static ssize_t wakeup_cause_store(struct device *dev,
->> +				  struct device_attribute *attr,
->> +				  const char *buf, size_t count)
->> +{
->> +	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
->> +
->> +	if (count < 2)
->> +		return -EINVAL;
->> +
->> +	if (strncasecmp(buf, "false", 4) != 0)
->> +		return -EINVAL;
->> +
+> Changes in v2:
+> - Use drm_info(drm_dev,  ...) for log messages
 > 
-> If "true"/"false" will be used in the final version, then I think this check
-> currently is too lax. You could use `sysfs_streq()`. And I think the `count < 2`
-> check is not needed.
-
-Regarding the user space API I don't know, that is one of the open
-questions in the cover letter. I have yet to get any feedback on any of
-those questions. That is something that needs to happen before this driver
-can be included. I would appreciate your feedback on those.
-
-<snip>
-
+> Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/gpu/drm/i915/display/intel_backlight.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> Regards,
-> Barnabás Pőcze
+> diff --git a/drivers/gpu/drm/i915/display/intel_backlight.c b/drivers/gpu/drm/i915/display/intel_backlight.c
+> index 681ebcda97ad..03c7966f68d6 100644
+> --- a/drivers/gpu/drm/i915/display/intel_backlight.c
+> +++ b/drivers/gpu/drm/i915/display/intel_backlight.c
+> @@ -8,6 +8,8 @@
+>  #include <linux/pwm.h>
+>  #include <linux/string_helpers.h>
+>  
+> +#include <acpi/video.h>
+> +
+>  #include "intel_backlight.h"
+>  #include "intel_backlight_regs.h"
+>  #include "intel_connector.h"
+> @@ -952,6 +954,11 @@ int intel_backlight_device_register(struct intel_connector *connector)
+>  
+>  	WARN_ON(panel->backlight.max == 0);
+>  
+> +	if (!acpi_video_backlight_use_native()) {
+> +		drm_info(&i915->drm, "Skipping intel_backlight registration\n");
+> +		return 0;
+> +	}
+> +
+>  	memset(&props, 0, sizeof(props));
+>  	props.type = BACKLIGHT_RAW;
+>  
 
-Regards,
-Arvid Norlander
+This breaks backlight on Acer Chromebook Spin 713 because backlight
+isn't registered anymore. Any ideas how to fix it?
