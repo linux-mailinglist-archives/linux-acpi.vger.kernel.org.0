@@ -2,222 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B8BA5E9175
-	for <lists+linux-acpi@lfdr.de>; Sun, 25 Sep 2022 09:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A9995E91D8
+	for <lists+linux-acpi@lfdr.de>; Sun, 25 Sep 2022 11:23:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230009AbiIYHhn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 25 Sep 2022 03:37:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60826 "EHLO
+        id S229589AbiIYJXI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 25 Sep 2022 05:23:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbiIYHhm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 03:37:42 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A1D03BC4E;
-        Sun, 25 Sep 2022 00:37:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664091461; x=1695627461;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rQNy2xgvmhhAdYWJ2bjD8oJFB1DlxIHW7xpHRLF75zo=;
-  b=KgPzjHg/6xV0HZ8C593PRLJXnfu5/o1tAPsDmHLzJlhAlwGo7jbFe3Ph
-   2BsUSG6lLviizBMdD3L+Yg9By27Dej2ubetkOAqdKpiy4bsJjBaWcaVB5
-   V/qSBlaDe7SmsH7HeygxwKt3x4Fz1fV9M1MH8I2DB1hTa4KGDtlv6nOjP
-   w5qGOSDaa1HAfb34qlthw09GIZSBrhRhf3sDlr07L8OeLTPfAWQurPzI+
-   qDghuiwNytOVov6xVZql10A0bAjIKmJOYeh8voWyUDio7zXUhw4I6366B
-   gZuIR8yFJ76YzFBISTnAabOqH7a2rSScciusJ7BiBI/1ka5WfTjp2ttc8
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10480"; a="364871369"
-X-IronPort-AV: E=Sophos;i="5.93,343,1654585200"; 
-   d="scan'208";a="364871369"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2022 00:37:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,343,1654585200"; 
-   d="scan'208";a="763080918"
-Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Sep 2022 00:37:37 -0700
-Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ocMCn-0007dz-0u;
-        Sun, 25 Sep 2022 07:37:37 +0000
-Date:   Sun, 25 Sep 2022 15:37:02 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
- ecfa396ef37aea5cf4b20db57585af16b110ac6b
-Message-ID: <6330051e.S6XR1bK2uaiN/0Gq%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229554AbiIYJXH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 05:23:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8B528733
+        for <linux-acpi@vger.kernel.org>; Sun, 25 Sep 2022 02:23:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1664097785;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ONaR+TCccbPpPu/c7+KO08GDygkFAs/H7dNqppcGxT4=;
+        b=IgllKdYjBWoQvMwcS6ZuuAQb4EN5cLU9GLsBG3tgBkTgvCNCReRCCxlMkIqe7so2PrLZ9O
+        G3MlmcogOlNWHr/5kOw9vrvU+MXbORYWtJZtvLMNB2ajYwg8HmJA8BjEw8grwaZ4qJ6I1E
+        P3GLnd0FkLmbUPTmWuPN2zCd/mQqH+0=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-75-PQkxCAcQOQyhxUDPAF1zyw-1; Sun, 25 Sep 2022 05:23:03 -0400
+X-MC-Unique: PQkxCAcQOQyhxUDPAF1zyw-1
+Received: by mail-ed1-f72.google.com with SMTP id h13-20020a056402280d00b004528c8400afso3100831ede.6
+        for <linux-acpi@vger.kernel.org>; Sun, 25 Sep 2022 02:23:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=ONaR+TCccbPpPu/c7+KO08GDygkFAs/H7dNqppcGxT4=;
+        b=ewBmoBGsk/y5ONVA+YCmJ/tmfIyFDXzw5+N98NCYOt7RLi4lxIdANBnEkcGgW8cIcj
+         9bvFlm84pSgd8EwF3oI56sv6l3gKTeXj+CCBNH+UaO8+GS/8s5WWqEzj81rx8yZ1aEpT
+         P0XC+6IIzxpS5FMxVZyMl7s4QwUK+hG5lFOzZJbtgzolw5BvyU8UEec+98RMRCjRlOdG
+         waDpMPnPk2CHeuH3ouB7dvbagK20S1SJa3Su1pPtnE8o4DEafb7YA6LHyzV4RCOc8ZT5
+         2WsezdKKL+lt4ndBzaU3RLqJ/djAuW3+ir+vRmNIPiFyh1DDTumVibcJgdiAsY89Sjbr
+         uzBA==
+X-Gm-Message-State: ACrzQf0qVEpwRTj/nbe/onkFfMnKOYaAOlMZmSUt96WFKFDFJk2GM8gD
+        OOkXmJTixd82t7yO8Fm/VpA4e3lFR2kISGd+BafgrZMKbMujtxsMb9JXkWSwmawmnHWkN+IJPwH
+        25Yvzn+YvackVFjzaRxotIA==
+X-Received: by 2002:a05:6402:2926:b0:457:3c2c:4ab with SMTP id ee38-20020a056402292600b004573c2c04abmr752870edb.388.1664097782795;
+        Sun, 25 Sep 2022 02:23:02 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM6ow9sBjVEZHPPBMjM/K0ms0gNeKRGh76tlI/Y3a8SR/nTJM+4Fla1ynEJ6zxk8BhRfU1zswQ==
+X-Received: by 2002:a05:6402:2926:b0:457:3c2c:4ab with SMTP id ee38-20020a056402292600b004573c2c04abmr752862edb.388.1664097782611;
+        Sun, 25 Sep 2022 02:23:02 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id g5-20020a056402320500b00456ddead51asm3778836eda.16.2022.09.25.02.23.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Sep 2022 02:23:02 -0700 (PDT)
+Message-ID: <6c6654c7-bdca-27d9-ad80-a50d4df27426@redhat.com>
+Date:   Sun, 25 Sep 2022 11:23:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH v3 0/5] Add multiple-consumer support to int3472-tps68470
+ driver
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Robert Moore <robert.moore@intel.com>
+References: <20220921230439.768185-1-djrscally@gmail.com>
+ <b3855fe0-4b85-a442-1835-3e62456b3206@redhat.com>
+ <CAJZ5v0gB=jztBtmcfmuXNiNd2s+ftQRF1fqYHQApFsX_yEvkMQ@mail.gmail.com>
+Content-Language: en-US
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAJZ5v0gB=jztBtmcfmuXNiNd2s+ftQRF1fqYHQApFsX_yEvkMQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: ecfa396ef37aea5cf4b20db57585af16b110ac6b  Merge branch 'powercap' into bleeding-edge
+Hi,
 
-Error/Warning reports:
+On 9/24/22 19:15, Rafael J. Wysocki wrote:
+> On Thu, Sep 22, 2022 at 10:55 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Hi All,
+>>
+>> On 9/22/22 01:04, Daniel Scally wrote:
+>>> Hello all
+>>>
+>>> At the moment there are a few places in the int3472-tps68470 driver that are
+>>> limited to just working with a single consuming device dependent on the PMIC.
+>>> There are systems where multiple camera sensors share a single TPS68470, so
+>>> we need to extend the driver to support them. This requires a couple of tweaks
+>>> to the ACPI functions to fetch dependent devices, which also assumes that only
+>>> a single dependent will be found.
+>>>
+>>> The v2 for this series was some time ago...it's kept falling to the back of my
+>>> to-do list so I've only just gotten round to it; sorry about that. v2 here:
+>>>
+>>> https://lore.kernel.org/linux-acpi/20220327161344.50477-1-djrscally@gmail.com/
+>>
+>> Rafael, I would like to merge this through the pdx86 tree may I have your
+>> ack for patches 1 + 2 for this. As a reminder (since it has been a while)
+>> here are your review remarks to v2 of patch 1:
+>>
+>> https://lore.kernel.org/platform-driver-x86/CAJZ5v0i2ciLHP-=8eQcZc0v0xCzhKHKpxLC=Kgv6W5E_5=HQJA@mail.gmail.com/
+>>
+>> (which both seem to have been addressed)
+>>
+>> AFAICT you did not have any remarks for v2 of patch 2.
+> 
+> No, I didn't.
+> 
+> However, because acpi_bus_get_acpi_device() becomes
+> acpi_get_acpi_dev() in my tree, I think it's better to route this
+> material through it, if that's not a problem.
 
-https://lore.kernel.org/linux-acpi/202209250438.1vajrE1K-lkp@intel.com
+Routing it to your tree is fine.
 
-Error/Warning: (recently discovered and may have been fixed)
+> I've tentatively queued it up for 6.1.
 
-drivers/acpi/sleep.c:1096:28: error: use of undeclared identifier 'SYS_OFF_MODE_RESTART_PREPARE'
-drivers/acpi/sleep.c:1096:42: error: 'SYS_OFF_MODE_RESTART_PREPARE' undeclared (first use in this function); did you mean 'SYS_OFF_MODE_RESTART'?
+Great, thank you!
 
-Error/Warning ids grouped by kconfigs:
+Regards,
 
-gcc_recent_errors
-|-- i386-allyesconfig
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- i386-defconfig
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- i386-randconfig-a001
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- i386-randconfig-a003
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- i386-randconfig-a005
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- i386-randconfig-a012
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- i386-randconfig-a014
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- i386-randconfig-a016
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- ia64-allmodconfig
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- ia64-randconfig-r014-20220925
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- loongarch-allyesconfig
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-allmodconfig
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-allyesconfig
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-defconfig
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-randconfig-a002
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-randconfig-a004
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-randconfig-a006
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-randconfig-a011
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-randconfig-a013
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-randconfig-a015
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-rhel-8.3
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-rhel-8.3-kunit
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-|-- x86_64-rhel-8.3-kvm
-|   `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-`-- x86_64-rhel-8.3-syz
-    `-- drivers-acpi-sleep.c:error:SYS_OFF_MODE_RESTART_PREPARE-undeclared-(first-use-in-this-function)
-clang_recent_errors
-|-- i386-randconfig-a002
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- i386-randconfig-a004
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- i386-randconfig-a006
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- i386-randconfig-a011
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- i386-randconfig-a013
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- i386-randconfig-a015
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- x86_64-randconfig-a001
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- x86_64-randconfig-a003
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- x86_64-randconfig-a005
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- x86_64-randconfig-a012
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-|-- x86_64-randconfig-a014
-|   `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
-`-- x86_64-randconfig-a016
-    `-- drivers-acpi-sleep.c:error:use-of-undeclared-identifier-SYS_OFF_MODE_RESTART_PREPARE
+Hans
 
-elapsed time: 725m
 
-configs tested: 58
-configs skipped: 2
 
-gcc tested configs:
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-arm                                 defconfig
-arm64                            allyesconfig
-arc                  randconfig-r043-20220925
-arm                              allyesconfig
-riscv                randconfig-r042-20220925
-s390                 randconfig-r044-20220925
-i386                                defconfig
-i386                             allyesconfig
-arc                                 defconfig
-s390                             allmodconfig
-um                             i386_defconfig
-alpha                               defconfig
-um                           x86_64_defconfig
-s390                                defconfig
-powerpc                          allmodconfig
-mips                             allyesconfig
-s390                             allyesconfig
-powerpc                           allnoconfig
-sh                               allmodconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                              defconfig
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                        randconfig-a006
-x86_64                           rhel-8.3-kvm
-i386                          randconfig-a001
-i386                          randconfig-a003
-x86_64                               rhel-8.3
-x86_64                        randconfig-a013
-i386                          randconfig-a005
-x86_64                        randconfig-a011
-i386                          randconfig-a014
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a016
-x86_64                           allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-m68k                             allyesconfig
-ia64                             allmodconfig
+>> p.s.
+>>
+>> Dan, if I want to give the IR cam a test run on my own Surface Go (version 1)
+>> I guess I may need a sensor driver? Where can I find that sensor driver and
+>> what do I need in userspace to test this ?
+>>
+>>
+>>
+>>> Daniel Scally (5):
+>>>   ACPI: scan: Add acpi_dev_get_next_consumer_dev()
+>>>   ACPI: bus: Add iterator for dependent devices
+>>>   platform/x86: int3472: Support multiple clock consumers
+>>>   platform/x86: int3472: Support multiple gpio lookups in board data
+>>>   platform/x86: int3472: Add board data for Surface Go2 IR camera
+>>>
+>>>  drivers/acpi/scan.c                           | 40 +++++++---
+>>>  drivers/clk/clk-tps68470.c                    | 13 +++-
+>>>  drivers/platform/x86/intel/int3472/common.c   |  2 +-
+>>>  drivers/platform/x86/intel/int3472/tps68470.c | 76 ++++++++++++++++---
+>>>  drivers/platform/x86/intel/int3472/tps68470.h |  3 +-
+>>>  .../x86/intel/int3472/tps68470_board_data.c   | 54 ++++++++++++-
+>>>  include/acpi/acpi_bus.h                       | 15 +++-
+>>>  include/linux/platform_data/tps68470.h        |  7 +-
+>>>  8 files changed, 177 insertions(+), 33 deletions(-)
+>>>
+>>
+> 
 
-clang tested configs:
-hexagon              randconfig-r045-20220925
-hexagon              randconfig-r041-20220925
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a013
-i386                          randconfig-a006
-x86_64                        randconfig-a012
-i386                          randconfig-a011
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a015
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
