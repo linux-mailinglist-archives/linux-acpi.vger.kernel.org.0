@@ -2,141 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 854EA5EA6D4
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 15:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEFFA5EA7B4
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 15:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235285AbiIZNGK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Sep 2022 09:06:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48270 "EHLO
+        id S230311AbiIZNzE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Sep 2022 09:55:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235308AbiIZNFp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 09:05:45 -0400
-Received: from out199-18.us.a.mail.aliyun.com (out199-18.us.a.mail.aliyun.com [47.90.199.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9F1785588;
-        Mon, 26 Sep 2022 04:37:09 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R331e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0VQm8Lu9_1664192107;
-Received: from 30.240.121.51(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VQm8Lu9_1664192107)
-          by smtp.aliyun-inc.com;
-          Mon, 26 Sep 2022 19:35:09 +0800
-Message-ID: <f0735218-7730-c275-8cee-38df9bec427d@linux.alibaba.com>
-Date:   Mon, 26 Sep 2022 19:35:07 +0800
+        with ESMTP id S235122AbiIZNyd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 09:54:33 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 786A580519;
+        Mon, 26 Sep 2022 05:10:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=jOpbznQq1TexzS0cQB6vYt4+4yFj1cmjMb21VcAwnhk=; b=o/sYytLUDM+Vd1vccnhn2XqfHV
+        f6OSdgpiDrbeBWn8ZBEegKKdGzSsdwYXq/KS4EW87EJEVH6wuwN43+curv1WaQ0azzbam0Dr2VfVN
+        YhAtSfbpdw1CQ+SzSUULHaUQuwDS6IC3C/y5016A986PdHReO8D/CxioWTwqR0J+zBlHQOq+2YfNG
+        ck+0O9CPWYGxjYlABBytMWWeBPmD05YWVZsD4PtSA0be5/ZOwBQ4mtwpz6viZn/g8qM3vlUx6NN9y
+        2vG+hDLF/JkAntNvRO8SbIoPSZfGrysx+j61m5RbpTw1aNkY9W6K+5HfeovazTCiUrD8XZIu6Hivg
+        kAonF4JA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1ocmu1-00AQi8-8Q; Mon, 26 Sep 2022 12:08:01 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A6FEE3015B5;
+        Mon, 26 Sep 2022 14:07:56 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 8FC5429A13691; Mon, 26 Sep 2022 14:07:56 +0200 (CEST)
+Date:   Mon, 26 Sep 2022 14:07:56 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     K Prateek Nayak <kprateek.nayak@amd.com>
+Cc:     linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        dave.hansen@linux.intel.com, bp@alien8.de, tglx@linutronix.de,
+        andi@lisas.de, puwen@hygon.cn, mario.limonciello@amd.com,
+        rui.zhang@intel.com, gpiccoli@igalia.com,
+        daniel.lezcano@linaro.org, ananth.narayan@amd.com,
+        gautham.shenoy@amd.com, Calvin Ong <calvin.ong@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] x86,acpi: Limit "Dummy wait" workaround to older AMD
+ and Intel processors
+Message-ID: <YzGWHMIsD7RBhEP+@hirez.programming.kicks-ass.net>
+References: <20220923153801.9167-1-kprateek.nayak@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.13.0
-Subject: Re: [PATCH v2] ACPI: APEI: do not add task_work to kernel thread to
- avoid memory leak
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
-        <naoya.horiguchi@nec.com>, linmiaohe@huawei.com,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stable <stable@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        cuibixuan@linux.alibaba.com, baolin.wang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com
-References: <20220916050535.26625-1-xueshuai@linux.alibaba.com>
- <20220924074953.83064-1-xueshuai@linux.alibaba.com>
- <CAJZ5v0jAZC81Peowy0iKuq+cy68tyn0OK3a--nW=wWMbRojcxg@mail.gmail.com>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <CAJZ5v0jAZC81Peowy0iKuq+cy68tyn0OK3a--nW=wWMbRojcxg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-12.2 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220923153801.9167-1-kprateek.nayak@amd.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, Sep 23, 2022 at 09:08:01PM +0530, K Prateek Nayak wrote:
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index ef4775c6db01..fcd3617ed315 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -460,5 +460,6 @@
+>  #define X86_BUG_MMIO_UNKNOWN		X86_BUG(26) /* CPU is too old and its MMIO Stale Data status is unknown */
+>  #define X86_BUG_RETBLEED		X86_BUG(27) /* CPU is affected by RETBleed */
+>  #define X86_BUG_EIBRS_PBRSB		X86_BUG(28) /* EIBRS is vulnerable to Post Barrier RSB Predictions */
+> +#define X86_BUG_STPCLK			X86_BUG(29) /* STPCLK# signal does not get asserted in time during IOPORT based C-state entry */
+>  
+>  #endif /* _ASM_X86_CPUFEATURES_H */
+> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+> index 48276c0e479d..8cb5887a53a3 100644
+> --- a/arch/x86/kernel/cpu/amd.c
+> +++ b/arch/x86/kernel/cpu/amd.c
+> @@ -988,6 +988,18 @@ static void init_amd(struct cpuinfo_x86 *c)
+>  	if (!cpu_has(c, X86_FEATURE_XENPV))
+>  		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
+>  
+> +	/*
+> +	 * CPUs based on the Zen microarchitecture (Fam 17h onward) can
+> +	 * guarantee that STPCLK# signal is asserted in time after the
+> +	 * P_LVL2 read to freeze execution after an IOPORT based C-state
+> +	 * entry. Among the older AMD processors, there has been at least
+> +	 * one report of an AMD Athlon processor on a VIA chipset
+> +	 * (circa 2006) having this issue. Mark all these older AMD
+> +	 * processor families as being affected.
+> +	 */
+> +	if (c->x86 < 0x17)
+> +		set_cpu_bug(c, X86_BUG_STPCLK);
+> +
+>  	/*
+>  	 * Turn on the Instructions Retired free counter on machines not
+>  	 * susceptible to erratum #1054 "Instructions Retired Performance
+> diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+> index 2d7ea5480ec3..96fe1320c238 100644
+> --- a/arch/x86/kernel/cpu/intel.c
+> +++ b/arch/x86/kernel/cpu/intel.c
+> @@ -696,6 +696,18 @@ static void init_intel(struct cpuinfo_x86 *c)
+>  		((c->x86_model == INTEL_FAM6_ATOM_GOLDMONT)))
+>  		set_cpu_bug(c, X86_BUG_MONITOR);
+>  
+> +	/*
+> +	 * Intel chipsets prior to Nehalem used the ACPI processor_idle
+> +	 * driver for C-state management. Some of these processors that
+> +	 * used IOPORT based C-states could not guarantee that STPCLK#
+> +	 * signal gets asserted in time after P_LVL2 read to freeze
+> +	 * execution properly. Since a clear cut-off point is not known
+> +	 * as to when this bug was solved, mark all the chipsets as
+> +	 * being affected. Only the ones that use IOPORT based C-state
+> +	 * transitions via the acpi_idle driver will be impacted.
+> +	 */
+> +	set_cpu_bug(c, X86_BUG_STPCLK);
+> +
+>  #ifdef CONFIG_X86_64
+>  	if (c->x86 == 15)
+>  		c->x86_cache_alignment = c->x86_clflush_size * 2;
 
+Quiz time:
 
-在 2022/9/25 AM1:17, Rafael J. Wysocki 写道:
-> On Sat, Sep 24, 2022 at 9:50 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
->>
->> If an error is detected as a result of user-space process accessing a
->> corrupt memory location, the CPU may take an abort. Then the platform
->> firmware reports kernel via NMI like notifications, e.g. NOTIFY_SEA,
->> NOTIFY_SOFTWARE_DELEGATED, etc.
->>
->> For NMI like notifications, commit 7f17b4a121d0 ("ACPI: APEI: Kick the
->> memory_failure() queue for synchronous errors") keep track of whether
->> memory_failure() work was queued, and make task_work pending to flush out
->> the queue so that the work is processed before return to user-space.
->>
->> The code use init_mm to check whether the error occurs in user space:
->>
->>     if (current->mm != &init_mm)
->>
->> The condition is always true, becase _nobody_ ever has "init_mm" as a real
->> VM any more.
->>
->> In addition to abort, errors can also be signaled as asynchronous
->> exceptions, such as interrupt and SError. In such case, the interrupted
->> current process could be any kind of thread. When a kernel thread is
->> interrupted, the work ghes_kick_task_work deferred to task_work will never
->> be processed because entry_handler returns to call ret_to_kernel() instead
->> of ret_to_user(). Consequently, the estatus_node alloced from
->> ghes_estatus_pool in ghes_in_nmi_queue_one_entry() will not be freed.
->> After around 200 allocations in our platform, the ghes_estatus_pool will
->> run of memory and ghes_in_nmi_queue_one_entry() returns ENOMEM. As a
->> result, the event failed to be processed.
->>
->>     sdei: event 805 on CPU 113 failed with error: -2
->>
->> Finally, a lot of unhandled events may cause platform firmware to exceed
->> some threshold and reboot.
->>
->> The condition should generally just do
->>
->>     if (current->mm)
->>
->> as described in active_mm.rst documentation.
->>
->> Then if an asynchronous error is detected when a kernel thread is running,
->> (e.g. when detected by a background scrubber), do not add task_work to it
->> as the original patch intends to do.
->>
->> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> 
-> I need the APEI code reviewers to tell me that this is all OK.
+  #define X86_VENDOR_INTEL       0
+  #define X86_VENDOR_CYRIX       1
+  #define X86_VENDOR_AMD         2
+  #define X86_VENDOR_UMC         3
+  #define X86_VENDOR_CENTAUR     5
+  #define X86_VENDOR_TRANSMETA   7
+  #define X86_VENDOR_NSC         8
+  #define X86_VENDOR_HYGON       9
+  #define X86_VENDOR_ZHAOXIN     10
+  #define X86_VENDOR_VORTEX      11
+  #define X86_VENDOR_NUM         12
+  #define X86_VENDOR_UNKNOWN     0xff
 
-Thank you for your reply. OK, let's wait the reviewers comments.
+For how many of the above have you changed behaviour?
 
-Best Regards,
-Shuai
-
-
-> 
->> ---
->> changes since v1:
->> - add description the side effect and give more details
->>
->>  drivers/acpi/apei/ghes.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index d91ad378c00d..80ad530583c9 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -985,7 +985,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->>                                 ghes_estatus_cache_add(generic, estatus);
->>                 }
->>
->> -               if (task_work_pending && current->mm != &init_mm) {
->> +               if (task_work_pending && current->mm) {
->>                         estatus_node->task_work.func = ghes_kick_task_work;
->>                         estatus_node->task_work_cpu = smp_processor_id();
->>                         ret = task_work_add(current, &estatus_node->task_work,
->> --
->> 2.20.1.12.g72788fdb
->>
+Not to mention that this is the gazillion-th time AMD has failed to
+change HYGON in lock-step. That's Zen too -- deal with it.
