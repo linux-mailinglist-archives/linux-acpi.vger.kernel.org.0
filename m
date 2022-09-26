@@ -2,176 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A99D5EB053
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 20:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E5C5EB14F
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 21:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231290AbiIZSmx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Sep 2022 14:42:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47838 "EHLO
+        id S229951AbiIZTaY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Sep 2022 15:30:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231295AbiIZSlx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 14:41:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11AC41982;
-        Mon, 26 Sep 2022 11:41:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2D516120E;
-        Mon, 26 Sep 2022 18:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8346C433D7;
-        Mon, 26 Sep 2022 18:40:49 +0000 (UTC)
-Date:   Mon, 26 Sep 2022 14:41:57 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
-        gregkh@linuxfoundation.org, mturquette@baylibre.com,
-        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
-        anup@brainfault.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
-        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
-        cl@linux.com, pmladek@suse.com, senozhatsky@chromium.org,
-        john.ogness@linutronix.de, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
-        vschneid@redhat.com, fweisbec@gmail.com, ryabinin.a.a@gmail.com,
-        glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
-        vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v2 33/44] ftrace: WARN on rcuidle
-Message-ID: <20220926144157.0406dfbb@gandalf.local.home>
-In-Reply-To: <20220919101522.573936213@infradead.org>
-References: <20220919095939.761690562@infradead.org>
-        <20220919101522.573936213@infradead.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S229749AbiIZTaX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 15:30:23 -0400
+Received: from mail-oa1-x43.google.com (mail-oa1-x43.google.com [IPv6:2001:4860:4864:20::43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF435386B4
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Sep 2022 12:30:22 -0700 (PDT)
+Received: by mail-oa1-x43.google.com with SMTP id 586e51a60fabf-12c8312131fso10609581fac.4
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Sep 2022 12:30:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date;
+        bh=rA5xeXD0TyjUhjvsrx6ejmOzOVqFLC9Uf1Of+5mK/os=;
+        b=gphcxxEMn90zrJiwxd+Tzx4hPLJ6ARFvHuMWuASeYcvRsTXBWJF9nLniPC9na4y2z1
+         9a3iRwQvIgnvaoaeTozFR4byJaOT+pVlJ7o2hQLCqRV2Lsmhx8leX+8RyLg1kYM2oxLR
+         cVVgzwsOJvXG4zHEOeEOwL7vwIfcKnTc7WeZsuI6Ftw0I3pjgCqdhIk1GFsCXHowNwUo
+         +7PTL96GM14NoE9snttptEHJ/Wdgx9Hp+pv2FWsmfv7tbYs2DsNPUwIwXDBY0Wo1RCR3
+         L5TrVdDBagqgP0tmy2lhoshBIW8oM/SHYNY3y3xju5u0fNCMRT6D/IJ0nj/gLcNqCXGY
+         WOWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=rA5xeXD0TyjUhjvsrx6ejmOzOVqFLC9Uf1Of+5mK/os=;
+        b=wTrSmyXK4TgwjSsrsxECNx60AlaSnkqapqXrHaOkeSQRI+3uXIrEU6OVzWnxS65KFz
+         jrKLAJbc0B4CyCbVInvJxzBZfKjAl22xYM811T5HlYUiJnIxY+UfZkx02Nqtadh23vY9
+         mHpP/xoqZ7QodC5i3MHB8Ew1SSLH04jFAMZjNQo6oz1gwr91UQWEUGHOu3s6so11aSt6
+         khn9Mr3o4G2iAGSP5gYc8rq25VrBHtYxujia/MyAV1RSUgjig8gdU6sb2UXOk8+a++QT
+         4iG5cZCyG1bGuuodAlXAHgUh9H7t0Bn4lPfJHxSgVNTYdfx3Kg4WsVvTa4400e8uid2j
+         acpQ==
+X-Gm-Message-State: ACrzQf3ICpOeGZLVo4Dqz1SaAZLr3g6kYhXKJASM5I4beHTSxJKxoxfx
+        pHRrokhuPyG8bqoXEdme53fOPDWP+VUe01vlb3g=
+X-Google-Smtp-Source: AMsMyM6W6PAcWorxaMwG5LQ/ZIUWafx7mO8th7lDN18N4aqQA4KxbYHhmKGLYYDuTS+TYZyDcZ6UU64ckTJ4ghF2CPA=
+X-Received: by 2002:a05:6870:783:b0:11c:7d1c:6ede with SMTP id
+ en3-20020a056870078300b0011c7d1c6edemr151616oab.239.1664220622029; Mon, 26
+ Sep 2022 12:30:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6358:7253:b0:c7:f373:780 with HTTP; Mon, 26 Sep 2022
+ 12:30:21 -0700 (PDT)
+Reply-To: pointerscott009@gmail.com
+From:   Aminuind Aabawa <aminuindabawa00@gmail.com>
+Date:   Mon, 26 Sep 2022 20:30:21 +0100
+Message-ID: <CAP_Jfyq5V1pweG2VSZ=xQe4B=TsvP6Qu5GuwXwCg28oLvXNrOw@mail.gmail.com>
+Subject: =?UTF-8?Q?Bussines_offer_Gesch=C3=A4ftsangebot=2E?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:43 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [pointerscott009[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [aminuindabawa00[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [aminuindabawa00[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+--=20
+Hello, Do you have a projects that need urgent loan??
+Granting out loans today in 10,000 / 500 Million to Interested
+Investors, Companies & Private Individuals.
+Revert back if you interested.
 
-Nit, the subject should have "tracing:" an not "ftrace:" as the former
-encompasses the tracing infrastructure and the latter is for the function
-hook part of that.
 
-On Mon, 19 Sep 2022 12:00:12 +0200
-Peter Zijlstra <peterz@infradead.org> wrote:
-
-> CONFIG_GENERIC_ENTRY disallows any and all tracing when RCU isn't
-> enabled.
-> 
-> XXX if s390 (the only other GENERIC_ENTRY user as of this writing)
-> isn't comfortable with this, we could switch to
-> HAVE_NOINSTR_VALIDATION which is x86_64 only atm.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  include/linux/tracepoint.h |   13 ++++++++++++-
->  kernel/trace/trace.c       |    3 +++
->  2 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> --- a/include/linux/tracepoint.h
-> +++ b/include/linux/tracepoint.h
-> @@ -178,6 +178,16 @@ static inline struct tracepoint *tracepo
->  #endif /* CONFIG_HAVE_STATIC_CALL */
->  
->  /*
-> + * CONFIG_GENERIC_ENTRY archs are expected to have sanitized entry and idle
-> + * code that disallow any/all tracing/instrumentation when RCU isn't watching.
-> + */
-> +#ifdef CONFIG_GENERIC_ENTRY
-> +#define RCUIDLE_COND(rcuidle)	(rcuidle)
-> +#else
-
-Should probably move the below comment to here:
-
- /* srcu can't be used from NMI */
-
-> +#define RCUIDLE_COND(rcuidle)	(rcuidle && in_nmi())
-> +#endif
-> +
-> +/*
->   * it_func[0] is never NULL because there is at least one element in the array
->   * when the array itself is non NULL.
->   */
-> @@ -189,7 +199,8 @@ static inline struct tracepoint *tracepo
->  			return;						\
->  									\
->  		/* srcu can't be used from NMI */			\
-
-And remove the above.
-
--- Steve
-
-> -		WARN_ON_ONCE(rcuidle && in_nmi());			\
-> +		if (WARN_ON_ONCE(RCUIDLE_COND(rcuidle)))		\
-> +			return;						\
->  									\
->  		/* keep srcu and sched-rcu usage consistent */		\
->  		preempt_disable_notrace();				\
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -3104,6 +3104,9 @@ void __trace_stack(struct trace_array *t
->  		return;
->  	}
->  
-> +	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_GENERIC_ENTRY)))
-> +		return;
-> +
->  	/*
->  	 * When an NMI triggers, RCU is enabled via ct_nmi_enter(),
->  	 * but if the above rcu_is_watching() failed, then the NMI
-> 
-
+Hallo, haben Sie Projekte, die dringend einen Kredit ben=C3=B6tigen?
+Vergeben Sie heute Kredite in H=C3=B6he von 10.000 / 500 Millionen an
+interessierte Investoren, Unternehmen und Privatpersonen. Kommen Sie
+zur=C3=BCck, wenn Sie interessiert sind.
