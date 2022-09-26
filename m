@@ -2,92 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66FAD5EB38F
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 23:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 443AB5EB410
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 00:02:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229905AbiIZVtv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Sep 2022 17:49:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33938 "EHLO
+        id S231365AbiIZWCe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Sep 2022 18:02:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbiIZVtu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 17:49:50 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA299792C4;
-        Mon, 26 Sep 2022 14:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664228989; x=1695764989;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7TT080Crbah1HOhPKORs2ZNGlgRDfHlqPppfwXjOuaw=;
-  b=WC3tPOJEDMDsF2094BX8hZxagInet2gwyRd6qMxv46VJILgnRvo3XjYv
-   zKXaurPI/mooTVTFrlhOMPqXn5aAWyVR1ceRRRuKY5LgRMY6ofUteuMWr
-   eR68jX0a8x7XliyoeTjTfhEkSQZiUSM9Z69L3yhE03P8Kg4rfnZhA4ppS
-   HcsbUUx0aM9saKbQIvmQvsyStuU4plxhwBALd2ycJpkdVRLL6o29DRrlo
-   BKo9ojGsmzPHtUeWPMjl8lkn3JQNr4akIk9sXhWMGzRqJL9rVLc01YlrI
-   7l9JZjaAnn3uN7rvkVkkmGJbHYsMB1btkAtTOFG+YrNcHA+bMcDqDp+tK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10482"; a="362982005"
-X-IronPort-AV: E=Sophos;i="5.93,347,1654585200"; 
-   d="scan'208";a="362982005"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2022 14:49:48 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10482"; a="763611668"
-X-IronPort-AV: E=Sophos;i="5.93,347,1654585200"; 
-   d="scan'208";a="763611668"
-Received: from yzhou16-mobl.amr.corp.intel.com (HELO [10.209.44.81]) ([10.209.44.81])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2022 14:49:47 -0700
-Message-ID: <faa01372-07b0-3438-9305-123a3de9cc47@intel.com>
-Date:   Mon, 26 Sep 2022 14:49:46 -0700
+        with ESMTP id S231202AbiIZWCM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 18:02:12 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 280C3E6DED
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Sep 2022 15:02:05 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id q9so7744975pgq.8
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Sep 2022 15:02:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=UWb8wOcddtfIJyUFHBW5IFK0MRMvmDGvIdsfGhwq6fs=;
+        b=dC8LNQiZOc8Y9cleQx7I90Ilxgksx1StItiDqfDAw5kcu+wbT6Svs4BKe6de3VBEa8
+         2Vz0EVtEAeXZQrz5wyhwgRc1V1hk3ZBnZN5xcRPZGY/PEC3WDGhqxxwUHRJQdJVtRYP3
+         f+4j6TzqwFY0fyt3pnKplYB3IrwAqWudnuM18=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=UWb8wOcddtfIJyUFHBW5IFK0MRMvmDGvIdsfGhwq6fs=;
+        b=f0qGbexQBnwTzcK4d/suzkieJnR8tc1TILPcUQfW9bxgodQ06PFQt13JhIY992hTrK
+         ab9U9Q+wt1wbaMLPBi0tpNUimVQIahEZ030iAWZiony8Ikg3wikIno90dRgLLsAnLcxM
+         IKlweU5g7nsFSdxr6uLzJLq9gnex5dsrlRB2L9anM68iq2D7UtOabuqB6LKxGZeTH2H0
+         HzllKygASLj4r6rJmiARLpakkNUQNnzWpQ4FiIZLPIBg/l2OaX28kCBgS3rz5YOtI+Kw
+         AyHtPYZaMytvssFTlE2JBwvZmMs9pr+1FKFqGF6ILRB02+MS4Ga0z7GJhXJByDegd9Yr
+         cSWA==
+X-Gm-Message-State: ACrzQf2FqNyVVDMZVCJFOWOrqbYc1Wn6A5NnlZZc5Z4CBSoem1gVw1PB
+        oNFgCQgGlMz++PDLTr+mqOwLyQ==
+X-Google-Smtp-Source: AMsMyM7++pwLxo9jbIU4Zan+KiWB3G+z82cHwCpvQIpOj2QII3T8ZRtHBoCOWvcGBn2icNismTMwTA==
+X-Received: by 2002:a63:3348:0:b0:439:db24:8b02 with SMTP id z69-20020a633348000000b00439db248b02mr21383347pgz.425.1664229724728;
+        Mon, 26 Sep 2022 15:02:04 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id t15-20020a17090340cf00b001754a3c5404sm11444207pld.212.2022.09.26.15.02.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Sep 2022 15:02:04 -0700 (PDT)
+Date:   Mon, 26 Sep 2022 15:02:03 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Wolfram Sang <wsa@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] i2c: acpi: Replace zero-length array with
+ DECLARE_FLEX_ARRAY() helper
+Message-ID: <202209261502.AA269D2@keescook>
+References: <YzId7dQGWxMyXHEU@work>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] ACPI: processor idle: Practically limit "Dummy wait"
- workaround to old Intel systems
-Content-Language: en-US
-To:     Kim Phillips <kim.phillips@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Mario Limonciello <Mario.Limonciello@amd.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Borislav Petkov <bp@alien8.de>,
-        K Prateek Nayak <kprateek.nayak@amd.com>,
-        linux-acpi@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
-        stable@vger.kernel.org
-References: <20220922184745.3252932-1-dave.hansen@intel.com>
- <78d13a19-2806-c8af-573e-7f2625edfab8@intel.com>
- <54572271-d5ca-820f-911e-19fd9d80ae2c@intel.com>
- <edfe5f4c-70fa-5fcc-868f-497c428445f1@amd.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <edfe5f4c-70fa-5fcc-868f-497c428445f1@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YzId7dQGWxMyXHEU@work>
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 9/23/22 11:36, Kim Phillips wrote:
-> Can it be cc:stable@vger.kernel.org, since it applies cleanly as far
-> back as this v5.4 commit?:
-
-I just sent the pull request to Linus for this fix.  I realized that I
-didn't tag it for stable@.  If it gets applied, I'll send a request for
-it to be picked up for stable@, via "Option 2":
-
-> Option 2
-> ********
+On Mon, Sep 26, 2022 at 04:47:25PM -0500, Gustavo A. R. Silva wrote:
+> Zero-length arrays are deprecated and we are moving towards adopting
+> C99 flexible-array members, instead. So, replace zero-length arrays
+> declarations in anonymous union with the new DECLARE_FLEX_ARRAY()
+> helper macro.
 > 
-> After the patch has been merged to Linus' tree, send an email to
-> stable@vger.kernel.org containing the subject of the patch, the commit ID,
-> why you think it should be applied, and what kernel version you wish it to
-> be applied to.
+> This helper allows for flexible-array members in unions.
+> 
+> Link: https://github.com/KSPP/linux/issues/193
+> Link: https://github.com/KSPP/linux/issues/218
+> Link: https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Sorry about that.
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-- 
+Kees Cook
