@@ -2,94 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 410955EB1B4
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 21:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40F4A5EB1C9
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 22:05:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbiIZT4A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Sep 2022 15:56:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42700 "EHLO
+        id S229789AbiIZUFY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Sep 2022 16:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230247AbiIZTz6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 15:55:58 -0400
-Received: from rhlx01.hs-esslingen.de (rhlx01.hs-esslingen.de [129.143.116.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A75B20F43;
-        Mon, 26 Sep 2022 12:55:55 -0700 (PDT)
-Received: by rhlx01.hs-esslingen.de (Postfix, from userid 102)
-        id 5F0A6223A1A3; Mon, 26 Sep 2022 21:55:52 +0200 (CEST)
-Date:   Mon, 26 Sep 2022 21:55:52 +0200
-From:   Andreas Mohr <andi@lisas.de>
-To:     K Prateek Nayak <kprateek.nayak@amd.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        dave.hansen@linux.intel.com, bp@alien8.de, tglx@linutronix.de,
-        andi@lisas.de, puwen@hygon.cn, mario.limonciello@amd.com,
-        rui.zhang@intel.com, gpiccoli@igalia.com,
-        daniel.lezcano@linaro.org, ananth.narayan@amd.com,
-        gautham.shenoy@amd.com, Calvin Ong <calvin.ong@amd.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] x86,acpi: Limit "Dummy wait" workaround to older AMD
- and Intel processors
-Message-ID: <YzIDyLbGgzEv0wzP@rhlx01.hs-esslingen.de>
-References: <20220923153801.9167-1-kprateek.nayak@amd.com>
- <YzGWHMIsD7RBhEP+@hirez.programming.kicks-ass.net>
- <9875e20e-8363-74ef-349d-d339eddb3cc2@amd.com>
+        with ESMTP id S229716AbiIZUFY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 16:05:24 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA07B2F;
+        Mon, 26 Sep 2022 13:05:22 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
+ id 0eec77df9ed3b791; Mon, 26 Sep 2022 22:05:20 +0200
+Received: from kreacher.localnet (unknown [195.136.19.0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 28B6566D6B6;
+        Mon, 26 Sep 2022 22:05:20 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH] MAINTEINERS: Drop records pointing to 01.org/linux-acpi
+Date:   Mon, 26 Sep 2022 22:05:19 +0200
+Message-ID: <2648886.mvXUDI8C0e@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9875e20e-8363-74ef-349d-d339eddb3cc2@amd.com>
-X-Priority: none
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.0
+X-CLIENT-HOSTNAME: 195.136.19.0
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeegvddgudeghecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffhfekgfeugfdvgfejtdejieekieeiveeuheetteevffeggeeitdevfefhvdeiieenucffohhmrghinheptddurdhorhhgpdhkvghrnhgvlhdrohhrghenucfkphepudelhedrudefiedrudelrddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrddtpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgr
+ nhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Am Mon, Sep 26, 2022 at 10:02:44PM +0530 schrieb K Prateek Nayak:
-> Hello Peter,
-> 
-> On 9/26/2022 5:37 PM, Peter Zijlstra wrote:
-> > For how many of the above have you changed behaviour?
-> 
-> The proposed logic does alter the behavior for x86 chipsets that depend
-> on acpi_idle driver and have IOPORT based C-state. Based on what
-> Rafael and Dave suggested, I have marked all Intel processors to be
-> affected by this bug. In light of Andreas' report, I've also marked
-> all the pre-family 17h AMD processors to be affected by this bug to avoid
-> causing any regression.
-> 
-> It is hard to tell if any other vendor had this bug in their chipsets.
-> Dave's patch does not make this consideration either and limits the
-> dummy operation to only Intel chipsets using acpi_idle driver.
-> (https://lore.kernel.org/all/78d13a19-2806-c8af-573e-7f2625edfab8@intel.com/)
-> If folks reported a regression, I would have been happy to fix it for
-> them.
+The https://01.org/linux-acpi web site has become permanently
+unreachable, so drop the records pointing to it from MAINTAINERS.
 
-Despite certain, umm, controversies, the discussion/patch activities
-appear to be heading into a good direction ;)
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ MAINTAINERS |    2 --
+ 1 file changed, 2 deletions(-)
+
+Index: linux-pm/MAINTAINERS
+===================================================================
+--- linux-pm.orig/MAINTAINERS
++++ linux-pm/MAINTAINERS
+@@ -348,7 +348,6 @@ M:	"Rafael J. Wysocki" <rafael@kernel.or
+ R:	Len Brown <lenb@kernel.org>
+ L:	linux-acpi@vger.kernel.org
+ S:	Supported
+-W:	https://01.org/linux-acpi
+ Q:	https://patchwork.kernel.org/project/linux-acpi/list/
+ B:	https://bugzilla.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+@@ -427,7 +426,6 @@ M:	Rafael J. Wysocki <rafael@kernel.org>
+ R:	Zhang Rui <rui.zhang@intel.com>
+ L:	linux-acpi@vger.kernel.org
+ S:	Supported
+-W:	https://01.org/linux-acpi
+ B:	https://bugzilla.kernel.org
+ F:	drivers/acpi/*thermal*
+ 
 
 
 
-This text somehow prompted me to think of
-whether STPCLK# [quirk] behaviour is
-a property of the CPU family, or the chipset, or actually a combination of it.
-
-Given that [from recollection] VIA 8233/8235 spec PDFs do mention STPCLK#,
-possibly a chipset does have a say in it? (which
-obviously would then mean that
-the kernel's quirk state decision-making would have to be refined)
-
-Minor reference (note 8237, not 8233):
-http://www.chipset-ic.com/datasheet/VT8237.pdf
-  "STPCLK# is asserted by the VT8237R to the CPU to throttle the processor."
-  (and many other STPCLK# mentions there)
-
-Greetings
-
-Andreas Mohr
