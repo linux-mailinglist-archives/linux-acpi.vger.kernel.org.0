@@ -2,84 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C72785EA8B0
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 16:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6762D5EAC1D
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 18:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234930AbiIZOko (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Sep 2022 10:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37086 "EHLO
+        id S235544AbiIZQMD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Sep 2022 12:12:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234918AbiIZOkF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 10:40:05 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1F9AD979E8;
-        Mon, 26 Sep 2022 06:01:18 -0700 (PDT)
-Received: from localhost.localdomain (unknown [112.20.108.220])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8Bx5OGUojFjdz4iAA--.62163S6;
-        Mon, 26 Sep 2022 21:01:11 +0800 (CST)
-From:   Binbin Zhou <zhoubinbin@loongson.cn>
-To:     Wolfram Sang <wsa@kernel.org>,
+        with ESMTP id S235731AbiIZQLc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 12:11:32 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8E3E9D515;
+        Mon, 26 Sep 2022 07:58:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664204340; x=1695740340;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YEk0P4ViopuG0/B7+FIOXKhKwkUp+jx+G5pu26NtHE8=;
+  b=FkiXzVspCFIji4g1dJHAalNEV9RCVdwOm6NCRWYEA/vH06hGDZ6f4I+P
+   Ar3nvgSmZ70A2f6pypRwOWkvGSNhNcIiaHICh+6wvwVo0CZUqlFM6NE6G
+   j1mJkJlLeDHHaLTyh4dYmQGWIpUBhEQBuR9OydaQFYzQdCI60dSaCvOLP
+   jFmUxiomCADhnZefV/eyUlU34unbkuCNJb4cUKFWzEmt90ardcZB15G9w
+   bpUS26ejQw0dJ6XewysaIXbKXo8FX3FPUMpbkJj/mGNnDY3w7HVBXbWHi
+   Jw+j/BIWwfBEM0XRTWTmL0e2tQIbgvrHkIEjRbpp4CET5UyBSPYTrE7Hm
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10482"; a="301949425"
+X-IronPort-AV: E=Sophos;i="5.93,346,1654585200"; 
+   d="scan'208";a="301949425"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2022 07:58:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10482"; a="654292721"
+X-IronPort-AV: E=Sophos;i="5.93,346,1654585200"; 
+   d="scan'208";a="654292721"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga001.jf.intel.com with ESMTP; 26 Sep 2022 07:58:52 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 7EC1F101; Mon, 26 Sep 2022 17:59:10 +0300 (EEST)
+Date:   Mon, 26 Sep 2022 17:59:10 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Binbin Zhou <zhoubinbin@loongson.cn>
+Cc:     Wolfram Sang <wsa@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org
-Cc:     loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
-        WANG Xuerui <kernel@xen0n.name>,
+        linux-i2c@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-acpi@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>,
         Jianmin Lv <lvjianmin@loongson.cn>,
-        Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: [PATCH V2 4/4] LoongArch: Enable LS2X I2C in loongson3_defconfig
-Date:   Mon, 26 Sep 2022 21:00:07 +0800
-Message-Id: <503ee2a1ded618e458a6e99a09fcada49df768c1.1664193316.git.zhoubinbin@loongson.cn>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1664193316.git.zhoubinbin@loongson.cn>
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: Re: [PATCH V2 1/4] i2c: gpio: Add support on ACPI-based system
+Message-ID: <YzG+Pr+jNIWhWQnp@black.fi.intel.com>
 References: <cover.1664193316.git.zhoubinbin@loongson.cn>
+ <f5df899e2218c0cd8cc8782b4a8f157ebb9726bc.1664193316.git.zhoubinbin@loongson.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx5OGUojFjdz4iAA--.62163S6
-X-Coremail-Antispam: 1UD129KBjvdXoW7JF17Kr43Xr47Aw1UCr17Wrg_yoWxKFc_JF
-        y7Kw1kWr48JFZ7W3WIqw4rGw4DA3W7XF1SyFnrZw1xX3Wagr13trWDC3W3Cwn09ayDWr43
-        ZaykAF9F9r18tjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbhxFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAVCq3wA2048vs2
-        IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28E
-        F7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr
-        1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1l
-        e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
-        8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
-        jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK67AK6ry8MxAIw2
-        8IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4l
-        x2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrw
-        CI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI
-        42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z2
-        80aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjg_-JUUUUU==
-X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f5df899e2218c0cd8cc8782b4a8f157ebb9726bc.1664193316.git.zhoubinbin@loongson.cn>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This is now supported, enable for Loongson-3 systems. Other systems are
-affected.
+[+Rafael and Andy]
 
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
----
- arch/loongarch/configs/loongson3_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+Hi,
 
-diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
-index 4083d3051109..7910adf20887 100644
---- a/arch/loongarch/configs/loongson3_defconfig
-+++ b/arch/loongarch/configs/loongson3_defconfig
-@@ -558,6 +558,7 @@ CONFIG_HW_RANDOM_VIRTIO=m
- CONFIG_I2C_CHARDEV=y
- CONFIG_I2C_PIIX4=y
- CONFIG_I2C_GPIO=y
-+CONFIG_I2C_LS2X=y
- CONFIG_SPI=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_GPIO_LOONGSON=y
--- 
-2.31.1
+On Mon, Sep 26, 2022 at 09:00:04PM +0800, Binbin Zhou wrote:
+> Add support for the ACPI-based device registration so that the driver
+> can be also enabled through ACPI table.
+> 
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+> ---
+>  drivers/i2c/busses/i2c-gpio.c | 30 ++++++++++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
+> 
+> diff --git a/drivers/i2c/busses/i2c-gpio.c b/drivers/i2c/busses/i2c-gpio.c
+> index b1985c1667e1..417eb31e0971 100644
+> --- a/drivers/i2c/busses/i2c-gpio.c
+> +++ b/drivers/i2c/busses/i2c-gpio.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/init.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/module.h>
+> +#include <linux/acpi.h>
+>  #include <linux/of.h>
+>  #include <linux/platform_data/i2c-gpio.h>
+>  #include <linux/platform_device.h>
+> @@ -318,6 +319,24 @@ static void of_i2c_gpio_get_props(struct device_node *np,
+>  		of_property_read_bool(np, "i2c-gpio,scl-output-only");
+>  }
+>  
+> +static void acpi_i2c_gpio_get_props(struct device *dev,
+> +				  struct i2c_gpio_platform_data *pdata)
+> +{
+> +	u32 reg;
+> +
+> +	device_property_read_u32(dev, "delay-us", &pdata->udelay);
+> +
+> +	if (!device_property_read_u32(dev, "timeout-ms", &reg))
+> +		pdata->timeout = msecs_to_jiffies(reg);
+> +
+> +	pdata->sda_is_open_drain =
+> +		device_property_read_bool(dev, "sda-open-drain");
+> +	pdata->scl_is_open_drain =
+> +		device_property_read_bool(dev, "scl-open-drain");
+> +	pdata->scl_is_output_only =
+> +		device_property_read_bool(dev, "scl-output-only");
+> +}
 
+Otherwise this patch looks good but I'm concerned because we have two
+kinds of bindings now. The DT one above uses "i2c-gpio,..." and this
+ACPI one uses just "..." so the question is where did these come from?
+Is there already some existing system out there with these bindings or
+they are documented somewhere?
+
+Ideally we would be able to just do:
+
+	pdata->sda_is_open_drain =
+		device_property_read_bool(dev, "i2c-gpio,sda-open-drain");
+
+for any firmware description.
+
+> +
+>  static struct gpio_desc *i2c_gpio_get_desc(struct device *dev,
+>  					   const char *con_id,
+>  					   unsigned int index,
+> @@ -375,6 +394,8 @@ static int i2c_gpio_probe(struct platform_device *pdev)
+>  
+>  	if (np) {
+>  		of_i2c_gpio_get_props(np, pdata);
+> +	} else if (ACPI_COMPANION(dev)) {
+> +		acpi_i2c_gpio_get_props(dev, pdata);
+>  	} else {
+>  		/*
+>  		 * If all platform data settings are zero it is OK
+> @@ -491,10 +512,19 @@ static const struct of_device_id i2c_gpio_dt_ids[] = {
+>  MODULE_DEVICE_TABLE(of, i2c_gpio_dt_ids);
+>  #endif
+>  
+> +#ifdef CONFIG_ACPI
+> +static const struct acpi_device_id i2c_gpio_acpi_match[] = {
+> +	{"LOON0005"}, /*LoongArch*/
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(acpi, i2c_gpio_acpi_match);
+> +#endif
+> +
+>  static struct platform_driver i2c_gpio_driver = {
+>  	.driver		= {
+>  		.name	= "i2c-gpio",
+>  		.of_match_table	= of_match_ptr(i2c_gpio_dt_ids),
+> +		.acpi_match_table = ACPI_PTR(i2c_gpio_acpi_match),
+>  	},
+>  	.probe		= i2c_gpio_probe,
+>  	.remove		= i2c_gpio_remove,
+> -- 
+> 2.31.1
