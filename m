@@ -2,140 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCEE75E9855
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 05:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 892A85E9BD7
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 10:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230128AbiIZD4d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 25 Sep 2022 23:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59266 "EHLO
+        id S233689AbiIZIUI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 26 Sep 2022 04:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbiIZD4c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 23:56:32 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CADC21E32;
-        Sun, 25 Sep 2022 20:56:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664164591; x=1695700591;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=eh086qVFucH8dlz3eoG8NObR7R6ezc7PKEErDjfY2vM=;
-  b=JjT+1ZlgWYmDUt9oYUpvAP64N7HcLGz+JMfVjmsrTMrljVrgFRiGegWa
-   UEQiPEI6iZBLGMmlWl0/imI2QJhdWra5FkysH4AkVDq8/2Ctx62Efr4ul
-   eRTq7eQSbIQFZxQLDWDwb00jnDMbdMxsNakLdh9D9zcqy+ohgGQH0qtUl
-   Ly/iP94ncdHYuyF/0sup8tmyYTOhzGnxVUtR1bocbkkHhNb5J18NpnZR3
-   IKAVPTL7gawtlGa5aYJbcY0TTeHZezSdYDBAUjbOHe/0Rqck3IEbBrMbr
-   KbnloScIII5DVuhnlgzTEFnw9rjWg3DqWxe9QwS/vxdwekr+Fy/luuWaP
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10481"; a="284048494"
-X-IronPort-AV: E=Sophos;i="5.93,345,1654585200"; 
-   d="scan'208";a="284048494"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2022 20:56:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10481"; a="572064473"
-X-IronPort-AV: E=Sophos;i="5.93,345,1654585200"; 
-   d="scan'208";a="572064473"
-Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 25 Sep 2022 20:56:29 -0700
-Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ocfEK-0008f8-0l;
-        Mon, 26 Sep 2022 03:56:28 +0000
-Date:   Mon, 26 Sep 2022 11:56:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 392b72b87ef168779f8651662155dc60e723d491
-Message-ID: <633122d8.gE3EroSeVgRKEsTv%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S233186AbiIZIT6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 04:19:58 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40FE612617
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Sep 2022 01:19:49 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-405-Qb3Og9akNIqbdq-vx1UKdQ-1; Mon, 26 Sep 2022 09:19:46 +0100
+X-MC-Unique: Qb3Og9akNIqbdq-vx1UKdQ-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.38; Mon, 26 Sep
+ 2022 09:19:40 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.040; Mon, 26 Sep 2022 09:19:40 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'K Prateek Nayak' <kprateek.nayak@amd.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "andi@lisas.de" <andi@lisas.de>, "puwen@hygon.cn" <puwen@hygon.cn>,
+        "mario.limonciello@amd.com" <mario.limonciello@amd.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "rui.zhang@intel.com" <rui.zhang@intel.com>,
+        "gpiccoli@igalia.com" <gpiccoli@igalia.com>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "ananth.narayan@amd.com" <ananth.narayan@amd.com>,
+        "gautham.shenoy@amd.com" <gautham.shenoy@amd.com>,
+        Calvin Ong <calvin.ong@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v2] x86,acpi: Limit "Dummy wait" workaround to older AMD
+ and Intel processors
+Thread-Topic: [PATCH v2] x86,acpi: Limit "Dummy wait" workaround to older AMD
+ and Intel processors
+Thread-Index: AQHYz2KQHQ0Aty345ECS39s1ZZ3yPa3xXk7w
+Date:   Mon, 26 Sep 2022 08:19:40 +0000
+Message-ID: <93705b7dab2f4d6db7f4631648daf16f@AcuMS.aculab.com>
+References: <20220923153801.9167-1-kprateek.nayak@amd.com>
+In-Reply-To: <20220923153801.9167-1-kprateek.nayak@amd.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 392b72b87ef168779f8651662155dc60e723d491  Merge branches 'pm-core' and 'powercap' into bleeding-edge
+From: K Prateek Nayak
+> Sent: 23 September 2022 16:38
+....
+> 
+> This workaround is very painful on modern systems with a large number of
+> cores. The "inl()" can take thousands of cycles. Sampling certain
+> workloads with IBS on AMD Zen3 system shows that a significant amount of
+> time is spent in the dummy op, which incorrectly gets accounted as
+> C-State residency. A large C-State residency value can prime the cpuidle
+> governor to recommend a deeper C-State during the subsequent idle
+> instances, starting a vicious cycle, leading to performance degradation
+> on workloads that rapidly switch between busy and idle phases.
+> (For the extent of the performance degradation refer link [2])
 
-elapsed time: 725m
+Isn't that a horrid bug itself?
+Sounds like it affects any code that is doing pio reads of hardware buffers.
+While they are slow they are necessary.
+IIRC any PCIe read into an Altera fpga takes about 128 cycles of the 125MHz
+clock. The Intel cpu I've checked will only execute one concurrent PCIe read
+for each cpu core - so the cpu soon stalls for thousands of clocks.
 
-configs tested: 58
-configs skipped: 2
+> The dummy wait is unnecessary on processors based on the Zen
+> microarchitecture (AMD family 17h+ and HYGON). Skip it to prevent
+> polluting the C-state residency information. Among the pre-family 17h
+> AMD processors, there has been at least one report of an AMD Athlon on a
+> VIA chipset (circa 2006) where this this problem was seen (see [3] for
+> report by Andreas Mohr).
+> 
+> Modern Intel processors use MWAIT based C-States in the intel_idle driver
+> and are not impacted by this code path. For older Intel processors that
+> use the acpi_idle driver, a workaround was suggested by Dave Hansen and
+> Rafael J. Wysocki to regard all Intel chipsets using the IOPORT based
+> C-state management as being affected by this problem (see [4] for
+> workaround proposed).
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Can you use a surrogate (maybe AVX support?) to exclude large groups
+on modern cpu?
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-i386                                defconfig
-arc                  randconfig-r043-20220925
-i386                          randconfig-a001
-i386                          randconfig-a003
-arc                                 defconfig
-powerpc                          allmodconfig
-arm                                 defconfig
-i386                          randconfig-a005
-sh                               allmodconfig
-x86_64                           rhel-8.3-syz
-s390                 randconfig-r044-20220925
-x86_64                         rhel-8.3-kunit
-alpha                               defconfig
-riscv                randconfig-r042-20220925
-mips                             allyesconfig
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a002
-x86_64                        randconfig-a015
-powerpc                           allnoconfig
-x86_64                        randconfig-a013
-x86_64                               rhel-8.3
-arm                              allyesconfig
-s390                             allmodconfig
-x86_64                        randconfig-a011
-i386                          randconfig-a012
-i386                          randconfig-a014
-x86_64                        randconfig-a004
-arm64                            allyesconfig
-i386                          randconfig-a016
-x86_64                        randconfig-a006
-x86_64                           allyesconfig
-s390                                defconfig
-m68k                             allyesconfig
-ia64                             allmodconfig
-i386                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-s390                             allyesconfig
-alpha                            allyesconfig
+Another possibility is that is the io address doesn't really matter
+are there any locations that have moved on-die and are now executed
+much faster than the ISA bus speed of older systems?
+Or do all the 'originally ISA' peripherals still run at ISA speeds?
 
-clang tested configs:
-hexagon              randconfig-r045-20220925
-i386                          randconfig-a002
-hexagon              randconfig-r041-20220925
-i386                          randconfig-a006
-x86_64                        randconfig-a001
-x86_64                        randconfig-a014
-i386                          randconfig-a013
-i386                          randconfig-a004
-i386                          randconfig-a011
-x86_64                        randconfig-a003
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-x86_64                        randconfig-a005
-i386                          randconfig-a015
+	David
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
