@@ -2,146 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3500B5E96F0
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 01:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCEE75E9855
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Sep 2022 05:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232933AbiIYXj5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 25 Sep 2022 19:39:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58786 "EHLO
+        id S230128AbiIZD4d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 25 Sep 2022 23:56:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231345AbiIYXj4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 19:39:56 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 364FD12616;
-        Sun, 25 Sep 2022 16:39:54 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 10so8349776lfy.5;
-        Sun, 25 Sep 2022 16:39:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=st3O2pRGPWK1FLJTPBGRuCniY8P/u6abQYJb/fEYuJQ=;
-        b=W3K2NP/a6+oTI8gFEGt5nGGS9enU+0KpjF9MSWpto/y/e8Pqkyk3KdNROeq1VReuw3
-         4tbDUQNzhEsLSU0JCkjVpzqYzoF9pZhg9SvgEiWunM5yC5N0DLguvjWHMxFYGtncW+mc
-         vOragtuGv5wtfYTpeKmAEjfsXd4V6tTTTzaNGi8+qtE32bmF4JD4wQ6frMIJoh9GGTge
-         RAD/AaBmrSAOC5LqiVErhUkwhGjVz5+qH/Z27UJUyGp+GEOEmwJRfc1RTbiWoQbzjL5M
-         mtmY0fn16PQvkz4jleVY/+noMI6YznIJxGIP6waxvJ+sh1wleUqUblTSTP3nNWAH+jkr
-         pZZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=st3O2pRGPWK1FLJTPBGRuCniY8P/u6abQYJb/fEYuJQ=;
-        b=AsP+f8IT85QBbafwbsPWRMd9P/WUw0RjFJYhCQe32abKwsU+vkLttHabZaMLwzTDy6
-         1ZjAi0v0u91x8GQTwFzmemjy8gFOOa9Zf6dMFM9SNI7QjAN/UrkRKlkTwKi9LrBKNa4w
-         aQcL8RJ3UqnzgHmz2m7YwwJNCHvBDIVSU3+4oH4gj+cNvZQ0JBOH+HlAlxRPzW+yd54R
-         cEYz/7zUcz6fsWrbz0RAEPNWvqFYoR0lV0ClnDBF0+uViOUwbLMWWoDiMGVXVt+lt4rw
-         ih5A4pFsqVHngO/i7/CrM8t12pgFgolgB6sGCOkB7oIzxLdXJPMhvibEIRDElwf81w3d
-         +lwQ==
-X-Gm-Message-State: ACrzQf35T3/yVvtE+1LZyKK8CbInZm5zHVGGr7DsU70Tws1Hfm2J422g
-        /T2sP9zLw4tBpuLiTwP5TZI=
-X-Google-Smtp-Source: AMsMyM5aDKQS2b/KY3xFf9M+RoiDx1qfHHYGi1ptQgxDMi9xIzklVjEJFzIiBqGLPRgxtbvB3OmxiQ==
-X-Received: by 2002:a05:6512:2215:b0:49e:ac45:22e1 with SMTP id h21-20020a056512221500b0049eac4522e1mr8247070lfu.33.1664149192424;
-        Sun, 25 Sep 2022 16:39:52 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-124-206.nat.spd-mgts.ru. [109.252.124.206])
-        by smtp.googlemail.com with ESMTPSA id i11-20020ac2522b000000b0048a921664e8sm2351312lfl.37.2022.09.25.16.39.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 25 Sep 2022 16:39:51 -0700 (PDT)
-Message-ID: <f914ceb3-94bd-743c-f8b6-0334086e731a@gmail.com>
-Date:   Mon, 26 Sep 2022 02:39:50 +0300
+        with ESMTP id S229561AbiIZD4c (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Sep 2022 23:56:32 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CADC21E32;
+        Sun, 25 Sep 2022 20:56:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664164591; x=1695700591;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eh086qVFucH8dlz3eoG8NObR7R6ezc7PKEErDjfY2vM=;
+  b=JjT+1ZlgWYmDUt9oYUpvAP64N7HcLGz+JMfVjmsrTMrljVrgFRiGegWa
+   UEQiPEI6iZBLGMmlWl0/imI2QJhdWra5FkysH4AkVDq8/2Ctx62Efr4ul
+   eRTq7eQSbIQFZxQLDWDwb00jnDMbdMxsNakLdh9D9zcqy+ohgGQH0qtUl
+   Ly/iP94ncdHYuyF/0sup8tmyYTOhzGnxVUtR1bocbkkHhNb5J18NpnZR3
+   IKAVPTL7gawtlGa5aYJbcY0TTeHZezSdYDBAUjbOHe/0Rqck3IEbBrMbr
+   KbnloScIII5DVuhnlgzTEFnw9rjWg3DqWxe9QwS/vxdwekr+Fy/luuWaP
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10481"; a="284048494"
+X-IronPort-AV: E=Sophos;i="5.93,345,1654585200"; 
+   d="scan'208";a="284048494"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2022 20:56:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10481"; a="572064473"
+X-IronPort-AV: E=Sophos;i="5.93,345,1654585200"; 
+   d="scan'208";a="572064473"
+Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 25 Sep 2022 20:56:29 -0700
+Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ocfEK-0008f8-0l;
+        Mon, 26 Sep 2022 03:56:28 +0000
+Date:   Mon, 26 Sep 2022 11:56:08 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 392b72b87ef168779f8651662155dc60e723d491
+Message-ID: <633122d8.gE3EroSeVgRKEsTv%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v5 02/31] drm/i915: Don't register backlight when another
- backlight should be used (v2)
-Content-Language: en-US
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
-        Daniel Dadap <ddadap@nvidia.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Pan@freedesktop.org, Xinhui <Xinhui.Pan@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>,
-        nouveau@lists.freedesktop.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        platform-driver-x86@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        David Airlie <airlied@redhat.com>, Len Brown <lenb@kernel.org>
-References: <20220825143726.269890-1-hdegoede@redhat.com>
- <20220825143726.269890-3-hdegoede@redhat.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-In-Reply-To: <20220825143726.269890-3-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-25.08.2022 17:36, Hans de Goede пишет:
-> Before this commit when we want userspace to use the acpi_video backlight
-> device we register both the GPU's native backlight device and acpi_video's
-> firmware acpi_video# backlight device. This relies on userspace preferring
-> firmware type backlight devices over native ones.
-> 
-> Registering 2 backlight devices for a single display really is
-> undesirable, don't register the GPU's native backlight device when
-> another backlight device should be used.
-> 
-> Changes in v2:
-> - Use drm_info(drm_dev,  ...) for log messages
-> 
-> Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_backlight.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/intel_backlight.c b/drivers/gpu/drm/i915/display/intel_backlight.c
-> index 681ebcda97ad..03c7966f68d6 100644
-> --- a/drivers/gpu/drm/i915/display/intel_backlight.c
-> +++ b/drivers/gpu/drm/i915/display/intel_backlight.c
-> @@ -8,6 +8,8 @@
->  #include <linux/pwm.h>
->  #include <linux/string_helpers.h>
->  
-> +#include <acpi/video.h>
-> +
->  #include "intel_backlight.h"
->  #include "intel_backlight_regs.h"
->  #include "intel_connector.h"
-> @@ -952,6 +954,11 @@ int intel_backlight_device_register(struct intel_connector *connector)
->  
->  	WARN_ON(panel->backlight.max == 0);
->  
-> +	if (!acpi_video_backlight_use_native()) {
-> +		drm_info(&i915->drm, "Skipping intel_backlight registration\n");
-> +		return 0;
-> +	}
-> +
->  	memset(&props, 0, sizeof(props));
->  	props.type = BACKLIGHT_RAW;
->  
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 392b72b87ef168779f8651662155dc60e723d491  Merge branches 'pm-core' and 'powercap' into bleeding-edge
 
-This breaks backlight on Acer Chromebook Spin 713 because backlight
-isn't registered anymore. Any ideas how to fix it?
+elapsed time: 725m
+
+configs tested: 58
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+i386                                defconfig
+arc                  randconfig-r043-20220925
+i386                          randconfig-a001
+i386                          randconfig-a003
+arc                                 defconfig
+powerpc                          allmodconfig
+arm                                 defconfig
+i386                          randconfig-a005
+sh                               allmodconfig
+x86_64                           rhel-8.3-syz
+s390                 randconfig-r044-20220925
+x86_64                         rhel-8.3-kunit
+alpha                               defconfig
+riscv                randconfig-r042-20220925
+mips                             allyesconfig
+x86_64                           rhel-8.3-kvm
+x86_64                        randconfig-a002
+x86_64                        randconfig-a015
+powerpc                           allnoconfig
+x86_64                        randconfig-a013
+x86_64                               rhel-8.3
+arm                              allyesconfig
+s390                             allmodconfig
+x86_64                        randconfig-a011
+i386                          randconfig-a012
+i386                          randconfig-a014
+x86_64                        randconfig-a004
+arm64                            allyesconfig
+i386                          randconfig-a016
+x86_64                        randconfig-a006
+x86_64                           allyesconfig
+s390                                defconfig
+m68k                             allyesconfig
+ia64                             allmodconfig
+i386                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+s390                             allyesconfig
+alpha                            allyesconfig
+
+clang tested configs:
+hexagon              randconfig-r045-20220925
+i386                          randconfig-a002
+hexagon              randconfig-r041-20220925
+i386                          randconfig-a006
+x86_64                        randconfig-a001
+x86_64                        randconfig-a014
+i386                          randconfig-a013
+i386                          randconfig-a004
+i386                          randconfig-a011
+x86_64                        randconfig-a003
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+x86_64                        randconfig-a005
+i386                          randconfig-a015
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
