@@ -2,48 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FA045EC589
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 16:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AD1E5EC58F
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 16:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232982AbiI0OKK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Sep 2022 10:10:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56746 "EHLO
+        id S231699AbiI0OKw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Sep 2022 10:10:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232986AbiI0OJd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 10:09:33 -0400
+        with ESMTP id S232400AbiI0OKf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 10:10:35 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5E691BB21A;
-        Tue, 27 Sep 2022 07:09:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011ADA1D6B;
+        Tue, 27 Sep 2022 07:10:33 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id e61f74234d24f0c6; Tue, 27 Sep 2022 16:09:14 +0200
+ id a065437a81f90f48; Tue, 27 Sep 2022 16:10:32 +0200
 Received: from kreacher.localnet (public-gprs524514.centertel.pl [31.61.168.35])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id E783B66D739;
-        Tue, 27 Sep 2022 16:09:13 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id C4F8866D732;
+        Tue, 27 Sep 2022 16:10:31 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: [Update][PATCH] MAINTEINERS: Drop records pointing to 01.org/linux-acpi
-Date:   Tue, 27 Sep 2022 16:09:13 +0200
-Message-ID: <5618537.DvuYhMxLoT@kreacher>
-In-Reply-To: <2648886.mvXUDI8C0e@kreacher>
-References: <2648886.mvXUDI8C0e@kreacher>
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: [PATCH] ACPI: DPTF: Drop stale link from Kconfig help
+Date:   Tue, 27 Sep 2022 16:10:31 +0200
+Message-ID: <4783608.31r3eYUQgx@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 31.61.168.35
 X-CLIENT-HOSTNAME: public-gprs524514.centertel.pl
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeegiedggeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepleevudevgfdvieeftefhkeevgfekveetueevfeektddujefhieekudetjeegheffnecuffhomhgrihhnpedtuddrohhrghdpkhgvrhhnvghlrdhorhhgnecukfhppeefuddriedurdduieekrdefheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeefuddriedurdduieekrdefhedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhp
- rghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeegiedggeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdeuueevhfegffefjeejueeuuedtgfdtffdthfffhefgveeuhfetffdtueehueeknecuffhomhgrihhnpedtuddrohhrghenucfkphepfedurdeiuddrudeikedrfeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepfedurdeiuddrudeikedrfeehpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdhp
+ mhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,49 +49,29 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Subject: [PATCH] MAINTEINERS: Drop records pointing to 01.org/linux-acpi
 
-The https://01.org/linux-acpi web site has become permanently
-inaccessible, so drop the records pointing to it from MAINTAINERS.
+The web site pointed to from the DPTF Kconfig help is not accessible
+any more, so drop the link to it from there.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
-
-The previous version of this patch was missing one affected entry.
-
----
- MAINTAINERS |    3 ---
+ drivers/acpi/dptf/Kconfig |    3 ---
  1 file changed, 3 deletions(-)
 
-Index: linux-pm/MAINTAINERS
+Index: linux-pm/drivers/acpi/dptf/Kconfig
 ===================================================================
---- linux-pm.orig/MAINTAINERS
-+++ linux-pm/MAINTAINERS
-@@ -348,7 +348,6 @@ M:	"Rafael J. Wysocki" <rafael@kernel.or
- R:	Len Brown <lenb@kernel.org>
- L:	linux-acpi@vger.kernel.org
- S:	Supported
--W:	https://01.org/linux-acpi
- Q:	https://patchwork.kernel.org/project/linux-acpi/list/
- B:	https://bugzilla.kernel.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-@@ -427,7 +426,6 @@ M:	Rafael J. Wysocki <rafael@kernel.org>
- R:	Zhang Rui <rui.zhang@intel.com>
- L:	linux-acpi@vger.kernel.org
- S:	Supported
--W:	https://01.org/linux-acpi
- B:	https://bugzilla.kernel.org
- F:	drivers/acpi/*thermal*
+--- linux-pm.orig/drivers/acpi/dptf/Kconfig
++++ linux-pm/drivers/acpi/dptf/Kconfig
+@@ -11,9 +11,6 @@ menuconfig ACPI_DPTF
+ 	  a coordinated approach for different policies to effect the hardware
+ 	  state of a system.
  
-@@ -10379,7 +10377,6 @@ INTEL MENLOW THERMAL DRIVER
- M:	Sujith Thomas <sujith.thomas@intel.com>
- L:	linux-pm@vger.kernel.org
- S:	Supported
--W:	https://01.org/linux-acpi
- F:	drivers/thermal/intel/intel_menlow.c
+-	  For more information see:
+-	  <https://01.org/intel%C2%AE-dynamic-platform-and-thermal-framework-dptf-chromium-os/overview>
+-
+ if ACPI_DPTF
  
- INTEL P-Unit IPC DRIVER
-
+ config DPTF_POWER
 
 
 
