@@ -2,112 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B88D15EBAAF
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 08:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50CF45EBBF3
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 09:50:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbiI0Gb0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Sep 2022 02:31:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56016 "EHLO
+        id S231305AbiI0Hu0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Sep 2022 03:50:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229834AbiI0GbS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 02:31:18 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3B430979F9;
-        Mon, 26 Sep 2022 23:31:14 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5E7B081BD;
-        Tue, 27 Sep 2022 06:22:54 +0000 (UTC)
-Date:   Tue, 27 Sep 2022 09:31:11 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        khilman@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
-        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
-        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
-        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
-        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        richard@nod.at, anton.ivanov@cambridgegreys.com,
-        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
-        gregkh@linuxfoundation.org, mturquette@baylibre.com,
-        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
-        anup@brainfault.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
-        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
-        cl@linux.com, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, fweisbec@gmail.com,
-        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-        dvyukov@google.com, vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v2 00/44] cpuidle,rcu: Clean up the mess
-Message-ID: <YzKYrx8Kd9SBYcUg@atomide.com>
-References: <20220919095939.761690562@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220919095939.761690562@infradead.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231151AbiI0HuI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 03:50:08 -0400
+Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 115485E304;
+        Tue, 27 Sep 2022 00:49:46 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id B93AB580763;
+        Tue, 27 Sep 2022 03:49:43 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Tue, 27 Sep 2022 03:49:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1664264983; x=1664268583; bh=YDujUhOswI
+        QM3ClSAwD1lSC2w9cFM+FJGSgX/v7CLGU=; b=RHmsHl/6GsrkVx+XhjAEA3zhaK
+        Xwo3uJJjfRMn5BX8uDfvmcxpWSdRC//n0rGrQeMO4Jknyfp+0KQVzj15nKCHmEyy
+        OSfk8RqOxRUa2a8DfaclsRvuueulJkesU7Zd5tM+xoAgaUuzUqpWXZE3V83XfZFM
+        mhCh2hO/xZSRC6BXrtcXY8nRM4gAiv8ATgnIiDjQrkic2p50p+2zt0idZ7TFzFuG
+        SLjwC/O4vo4/sziSkZbU5jLHRLBSrESK7/zeHMEBkfxR3kgtOD6bwdIDWUodTP45
+        Iw+NxXYjHwUw0+AySBIlxtdrlVYZW11uuovh63PTxW+ylKFjfNqaFpKmCi5A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1664264983; x=1664268583; bh=YDujUhOswIQM3ClSAwD1lSC2w9cF
+        M+FJGSgX/v7CLGU=; b=qQjF0ERorHQ2+BYyjfbqv0euVO7j1ILs1Bi8KfSdicej
+        KKqVMwAgwhVO7vHTYfz9KSaPx9APFYLxgM/IJyilI4NfGfEyaC9/2mWxjc3kYXEk
+        h9ytGNMUuN0YsMUM58GrY/rC8Q4hi55QGZAZ3EU43hp4ZEwN2MoBSoiviwfVY4wo
+        U2xOR+t0x21teY1md2RvNcsScKB00FoqO+vkM68ad9AHICQRfYN/MxsrDbK12ILO
+        8LaLEat71wrGc60SseprDRHyDLtoif5a38y5L8OS4sNlOX3mFSYooLF505shxRZZ
+        toV1xwysZED9sgW/hTj7VSKg3H47XoMMcjMCOmseTg==
+X-ME-Sender: <xms:FasyY8oGUf3mlhRoxlN_JnPS5nXag8alcflKpE02bY5oVH0mdw2z5g>
+    <xme:FasyYyp8x117zWAh4YsfgVbSGesRlgbpvjzPTdBrZ3942QGsTfHJALTObzJwexm3Q
+    kbE8gIi3iM4jjvrXp0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeegfedguddvjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:FqsyYxPylQFcM2JOxQx3Z9ir8yfj25aLdTjKOD520D4tXa1-peDdJQ>
+    <xmx:FqsyYz6QvEzR9Av52ZnScvRxHr3N-TONbRZj1o4rHgDEg5VklV1O_g>
+    <xmx:FqsyY77iTA_fChm5OtnQ3eL7iE1QtlbySgLMJ6pZjc1UB3EDD3n0Eg>
+    <xmx:F6syY4E8Lq4on0PE_zX4XB010b5PAxRYBTTiDQEk9S7C-yuxyoqzZA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id DA10DB60086; Tue, 27 Sep 2022 03:49:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-968-g04df58079d-fm-20220921.001-g04df5807
+Mime-Version: 1.0
+Message-Id: <ef6e1e54-5b8d-4a1a-85cb-7f9d3411a371@www.fastmail.com>
+In-Reply-To: <YzG+Pr+jNIWhWQnp@black.fi.intel.com>
+References: <cover.1664193316.git.zhoubinbin@loongson.cn>
+ <f5df899e2218c0cd8cc8782b4a8f157ebb9726bc.1664193316.git.zhoubinbin@loongson.cn>
+ <YzG+Pr+jNIWhWQnp@black.fi.intel.com>
+Date:   Tue, 27 Sep 2022 09:49:21 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Mika Westerberg" <mika.westerberg@linux.intel.com>,
+        "Binbin Zhou" <zhoubinbin@loongson.cn>
+Cc:     "Wolfram Sang" <wsa@kernel.org>,
+        "Andy Shevchenko" <andriy.shevchenko@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
+        linux-i2c@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-acpi@vger.kernel.org, "WANG Xuerui" <kernel@xen0n.name>,
+        "Jianmin Lv" <lvjianmin@loongson.cn>,
+        "Huacai Chen" <chenhuacai@loongson.cn>
+Subject: Re: [PATCH V2 1/4] i2c: gpio: Add support on ACPI-based system
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, Sep 26, 2022, at 4:59 PM, Mika Westerberg wrote:
 
-* Peter Zijlstra <peterz@infradead.org> [220919 10:08]:
-> Hi All!
-> 
-> At long last, a respin of the cpuidle vs rcu cleanup patches.
-> 
-> v1: https://lkml.kernel.org/r/20220608142723.103523089@infradead.org
-> 
-> These here patches clean up the mess that is cpuidle vs rcuidle.
+>> +static void acpi_i2c_gpio_get_props(struct device *dev,
+>> +				  struct i2c_gpio_platform_data *pdata)
+>> +{
+>> +	u32 reg;
+>> +
+>> +	device_property_read_u32(dev, "delay-us", &pdata->udelay);
+>> +
+>> +	if (!device_property_read_u32(dev, "timeout-ms", &reg))
+>> +		pdata->timeout = msecs_to_jiffies(reg);
+>> +
+>> +	pdata->sda_is_open_drain =
+>> +		device_property_read_bool(dev, "sda-open-drain");
+>> +	pdata->scl_is_open_drain =
+>> +		device_property_read_bool(dev, "scl-open-drain");
+>> +	pdata->scl_is_output_only =
+>> +		device_property_read_bool(dev, "scl-output-only");
+>> +}
+>
+> Otherwise this patch looks good but I'm concerned because we have two
+> kinds of bindings now. The DT one above uses "i2c-gpio,..." and this
+> ACPI one uses just "..." so the question is where did these come from?
+> Is there already some existing system out there with these bindings or
+> they are documented somewhere?
 
-I just gave these a quick test and things still work for me. The old
-omap3 off mode during idle still works. No more need to play the
-whack the mole game with RCU-idle :) I did not test on x86, or on other
-ARMs, but considering the test pretty much covered the all the
-affected RCU-idle related paths, where suitable, feel free to add:
+I'm fairly sure it's just a mistake and it should use the regular
+binding. As far as I understand, there are still other incompatible
+changes being made to the firmware on these machines, so it's just
+a matter of updating this part as well.
 
-Tested-by: Tony Lindgren <tony@atomide.com>
+     Arnd
