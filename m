@@ -2,87 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 443AB5EB410
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 00:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 925965EB901
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 05:50:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231365AbiIZWCe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Sep 2022 18:02:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
+        id S229910AbiI0Duf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Sep 2022 23:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbiIZWCM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 18:02:12 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 280C3E6DED
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Sep 2022 15:02:05 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id q9so7744975pgq.8
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Sep 2022 15:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=UWb8wOcddtfIJyUFHBW5IFK0MRMvmDGvIdsfGhwq6fs=;
-        b=dC8LNQiZOc8Y9cleQx7I90Ilxgksx1StItiDqfDAw5kcu+wbT6Svs4BKe6de3VBEa8
-         2Vz0EVtEAeXZQrz5wyhwgRc1V1hk3ZBnZN5xcRPZGY/PEC3WDGhqxxwUHRJQdJVtRYP3
-         f+4j6TzqwFY0fyt3pnKplYB3IrwAqWudnuM18=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=UWb8wOcddtfIJyUFHBW5IFK0MRMvmDGvIdsfGhwq6fs=;
-        b=f0qGbexQBnwTzcK4d/suzkieJnR8tc1TILPcUQfW9bxgodQ06PFQt13JhIY992hTrK
-         ab9U9Q+wt1wbaMLPBi0tpNUimVQIahEZ030iAWZiony8Ikg3wikIno90dRgLLsAnLcxM
-         IKlweU5g7nsFSdxr6uLzJLq9gnex5dsrlRB2L9anM68iq2D7UtOabuqB6LKxGZeTH2H0
-         HzllKygASLj4r6rJmiARLpakkNUQNnzWpQ4FiIZLPIBg/l2OaX28kCBgS3rz5YOtI+Kw
-         AyHtPYZaMytvssFTlE2JBwvZmMs9pr+1FKFqGF6ILRB02+MS4Ga0z7GJhXJByDegd9Yr
-         cSWA==
-X-Gm-Message-State: ACrzQf2FqNyVVDMZVCJFOWOrqbYc1Wn6A5NnlZZc5Z4CBSoem1gVw1PB
-        oNFgCQgGlMz++PDLTr+mqOwLyQ==
-X-Google-Smtp-Source: AMsMyM7++pwLxo9jbIU4Zan+KiWB3G+z82cHwCpvQIpOj2QII3T8ZRtHBoCOWvcGBn2icNismTMwTA==
-X-Received: by 2002:a63:3348:0:b0:439:db24:8b02 with SMTP id z69-20020a633348000000b00439db248b02mr21383347pgz.425.1664229724728;
-        Mon, 26 Sep 2022 15:02:04 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id t15-20020a17090340cf00b001754a3c5404sm11444207pld.212.2022.09.26.15.02.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Sep 2022 15:02:04 -0700 (PDT)
-Date:   Mon, 26 Sep 2022 15:02:03 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Wolfram Sang <wsa@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] i2c: acpi: Replace zero-length array with
- DECLARE_FLEX_ARRAY() helper
-Message-ID: <202209261502.AA269D2@keescook>
-References: <YzId7dQGWxMyXHEU@work>
+        with ESMTP id S229795AbiI0Due (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Sep 2022 23:50:34 -0400
+Received: from out30-42.freemail.mail.aliyun.com (out30-42.freemail.mail.aliyun.com [115.124.30.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA54895EC;
+        Mon, 26 Sep 2022 20:50:30 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R981e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0VQq.GZ1_1664250625;
+Received: from 30.240.121.51(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VQq.GZ1_1664250625)
+          by smtp.aliyun-inc.com;
+          Tue, 27 Sep 2022 11:50:27 +0800
+Message-ID: <79cb9aee-9ad5-00f4-3f7a-9c409f502685@linux.alibaba.com>
+Date:   Tue, 27 Sep 2022 11:50:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YzId7dQGWxMyXHEU@work>
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.13.0
+Subject: Re: [PATCH v2] ACPI: APEI: do not add task_work to kernel thread to
+ avoid memory leak
+Content-Language: en-US
+To:     "Luck, Tony" <tony.luck@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        James Morse <james.morse@arm.com>
+Cc:     Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
+        <naoya.horiguchi@nec.com>,
+        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stable <stable@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
+        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+References: <20220916050535.26625-1-xueshuai@linux.alibaba.com>
+ <20220924074953.83064-1-xueshuai@linux.alibaba.com>
+ <CAJZ5v0jAZC81Peowy0iKuq+cy68tyn0OK3a--nW=wWMbRojcxg@mail.gmail.com>
+ <f0735218-7730-c275-8cee-38df9bec427d@linux.alibaba.com>
+ <SJ1PR11MB6083FC6B8D64933C573CAB64FC529@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <SJ1PR11MB6083FC6B8D64933C573CAB64FC529@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-12.2 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 26, 2022 at 04:47:25PM -0500, Gustavo A. R. Silva wrote:
-> Zero-length arrays are deprecated and we are moving towards adopting
-> C99 flexible-array members, instead. So, replace zero-length arrays
-> declarations in anonymous union with the new DECLARE_FLEX_ARRAY()
-> helper macro.
-> 
-> This helper allows for flexible-array members in unions.
-> 
-> Link: https://github.com/KSPP/linux/issues/193
-> Link: https://github.com/KSPP/linux/issues/218
-> Link: https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
 
--- 
-Kees Cook
+在 2022/9/26 PM11:20, Luck, Tony 写道:
+>>>
+>>> -               if (task_work_pending && current->mm != &init_mm) {
+>>> +               if (task_work_pending && current->mm) {
+>>>                         estatus_node->task_work.func = ghes_kick_task_work;
+>>>                         estatus_node->task_work_cpu = smp_processor_id();
+>>>                         ret = task_work_add(current, &estatus_node->task_work,
+> 
+> It seems that you are getting errors reported while running kernel threads. This fix avoids
+> pointlessly adding "task_work" that will never be processed because kernel threads never
+> return to user mode.
+
+Yes, you are right.
+
+> 
+> But maybe something else needs to be done? The code was, and with this fix still is,
+> taking no action for the error. That doesn't seem right.
+
+Sorry, I don't think so. As far as I know, on Arm platform, hardware error can signal
+exceptions including:
+
+- Synchronous External Abort (SEA), e,g. data abort or instruction abort
+- Asynchronous External Abort (signalled as SErrors), e,g. L2 can generate SError for
+  error responses from the interconnect for a Device or Non-cacheable store
+- Fault Handling and Error Recovery interrupts: DDR mainline/demand/scrubber error interrupt
+
+When the error signals asynchronous exceptions (SError or interrupt), any kind of thread can
+be interrupted, including kernel thread. Because asynchronous exceptions are signaled in
+background, the errors are detected outside of the current execution context.
+
+The GHES driver always queues work to handle memory failure of a page in memory_failure_queue().
+If a kernel thread is interrupted:
+
+- Without this fix, the added task_work will never be processed so that the work will not
+  be canceled.
+- With this fix, the task_work will not be added.
+
+In a conclusion, the error will be handled in a kworker with or without this fix.
+
+The point of fix is that:
+
+- The condition is useless because it is always tree. And I think it is not the original patch
+  intends to do.
+- The current code leads to memory leaks. The estatus_node will not be freed when task_work is
+  added to a kernel thread.
+
+
+> 
+> Are you injecting errors to create this scenario? 
+
+Yes, I am injecting error to create such scenario. After 200 injections, the ghes_estatus_pool
+will run of memory and ghes_in_nmi_queue_one_entry() returns ENOMEM. Finally, a lot of unhandled
+events may cause platform firmware to exceed some threshold and reboot.
+
+> What does your test do?
+
+My injection includes two steps:
+
+- mmap a device memory for userspace in a driver
+- inject uc and trigger write like ras-tools does
+
+I have opened source the code and you can find here[1]. It's forked from your repo and mainly based
+on your code :)
+
+By the way, do you have any plans to extend ras-tools to Arm platform. And is there a mail-list
+for ras-tools? I send a mail to add test cases to ras-tools several weeks ago, but no response.
+May your mailbox regards it as Spam.
+
+
+[1] https://gitee.com/anolis/ras-tools/tree/arm-devel
+
+
+
