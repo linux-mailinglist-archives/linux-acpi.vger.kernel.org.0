@@ -2,125 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E755ECDA4
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 22:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DAD65ECEDC
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 22:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232388AbiI0UCt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Sep 2022 16:02:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52978 "EHLO
+        id S232023AbiI0Upp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Sep 2022 16:45:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbiI0UCH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 16:02:07 -0400
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49A891E1CED;
-        Tue, 27 Sep 2022 13:01:35 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 8B394320030E;
-        Tue, 27 Sep 2022 16:01:19 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Tue, 27 Sep 2022 16:01:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ljones.dev; h=cc
-        :cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm3; t=1664308879; x=
-        1664395279; bh=mICjPnNaqxu4gzadim9OQSUrJ0m9K+Z9yEzI6Vaz0y4=; b=u
-        KMPp6BRC4PbTpzQ+kaD8xQiqpdAF2cwqKoHj3M2c3o6c4nGgfnrfhgAPT1GgTwk8
-        LXDaI45RxDkgORPwPnRJ9ASUfFW0xueuaAACOzUuhfPVfWLYwupRLMd4ZXQVvDFH
-        +bL+DAD7UUnfl+X87GwBAzvY+RiScP5n3YEKuyiQTUFAc37vjxgGvRgtIueS90+i
-        RtDjY1guNofghhKQP43vbDVHYLlUxIxPvfkXMKJEbiSQq5aulY+Im6beOI9bIwNy
-        Ci9n8X9PT7hzUpZFY75XxbWLBLGI7INJEHDci0XUZX7FcpP93yJUdtsbBLDzznHA
-        D6grgvuDrtf3puUQm0LCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1664308879; x=
-        1664395279; bh=mICjPnNaqxu4gzadim9OQSUrJ0m9K+Z9yEzI6Vaz0y4=; b=P
-        X8Amxtdr8CPmwnv/lJvn7dMlW6EpyZwsPfbKmO+XmF//8urpRrLtlekeBn5qHFsI
-        LO8q3A8iLxXVxgVpYtRb3a/FyopAAmZqN7odrz5Ujx9wosnEJbMAmhZlQ4MqhyZV
-        BspBIVvvmrS/iKwXjVfRXdR/zaaRLbDs/TkdvIW4VtVR0BNcie2wyELNdph439H+
-        Tc3dewO8+wOoiDqwwJQIE/LcSh39RjZajj0eq1F9tKSgVTSE/X1L6ZnhoQG2fOBP
-        uQvEDF6SFD0XE+hFAnsbweNEzh1MWrsbAaoGL+vzfmRk2XVbWmxgM9ZDG5O0//w9
-        XR5/uk/5u05YXda2NXYOQ==
-X-ME-Sender: <xms:jVYzY3YIdGvwn1kAwKqvutD0lK1D5ZZYSflhHj0pxeCK4oiSDsfjAQ>
-    <xme:jVYzY2a6v2jiNfKYJEhcrOjUekCeAb1yD2r6repV3V0PZU3J1cP5Ly3pvHdrpr01T
-    CISqA3IPdR5GY011OM>
-X-ME-Received: <xmr:jVYzY59ZghwF9DQwvrGyfs4lmU9vBKSiU56WKLJy4b8VysccbgXUVoaUH7gLhsPWsM-0Mg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeegiedguddulecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefkuffhvfevffgjfhgtgfgfggesthgsredttderjeenucfhrhhomhepnfhu
-    khgvucflohhnvghsuceolhhukhgvsehljhhonhgvshdruggvvheqnecuggftrfgrthhtvg
-    hrnhepfffgfeeiudeutdeftdevudeflefhffdukedttdevtddvveegfeevleeutdetgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheplhhukh
-    gvsehljhhonhgvshdruggvvh
-X-ME-Proxy: <xmx:jVYzY9pufAUipyFx24bxSj1uy7PbNOx68V-V9WhqQvV_tqkfeklbXg>
-    <xmx:jVYzYyrTzpqOfCm_XlTdFu29FOoEEhMVePhCVwjVOL-grxa4tkY3bQ>
-    <xmx:jVYzYzRBZlOclBrJtpyJZuXyV05d3OHu_-rB7LX-T-9mNhhf2jdoXQ>
-    <xmx:j1YzY_QIn0NlgeUIMlxSdXBSUCL0h2gyLNOpuyrHHBXZazzZme9kOg>
-Feedback-ID: i5ec1447f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Sep 2022 16:01:11 -0400 (EDT)
-Message-ID: <3d32f14710b8437d010c146f306d15359a405f1d.camel@ljones.dev>
-Subject: Re: [PATCH v4 7/7] acpi/x86: s2idle: Add a quirk for ASUSTeK
- COMPUTER INC. ROG Flow X13
-From:   Luke Jones <luke@ljones.dev>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        rafael@kernel.org, linux-kernel@vger.kernel.org
-Cc:     travisghansen@yahoo.com, catalin@antebit.com,
-        Shyam-sundar.S-k@amd.com, ruinairas1992@gmail.com,
-        philipp.zabel@gmail.com, iam@decentr.al, hdegoede@redhat.com,
-        davidedp91@gmail.com, marko.cekrlic.26@gmail.com,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Date:   Wed, 28 Sep 2022 09:00:47 +1300
-In-Reply-To: <df22755c-bf4c-9d85-2c7c-a149f8580d05@amd.com>
-References: <20220921204055.22889-1-mario.limonciello@amd.com>
-         <20220921204055.22889-8-mario.limonciello@amd.com>
-         <26bbda5d03f0eadc54dfa0036e24e16ae9134f5e.camel@ljones.dev>
-         <df22755c-bf4c-9d85-2c7c-a149f8580d05@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.46.0 (by Flathub.org)) 
+        with ESMTP id S231784AbiI0Upo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 16:45:44 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F3EF6AA28;
+        Tue, 27 Sep 2022 13:45:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1664311525;
+        bh=g00gTC8uiJd4+HQmwY/X5XAQpW+K8YH6Th4LUw/wOZc=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=CFJynzop0CYlSN35TJaYYZcp/W9E5tRUF491DTDYsgNHl+rfrBwepHFsIKjJD3Rev
+         gAfVOEU520T47Z9CCzvqo8awtG7fE99WJsVXS/+Zg8kwfO6bX0C/MV+wO/kTvooMZd
+         uo7PQmGEt8yH+zqonNYtC5+gE2pEqg4EptB0T6CY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1N5GDv-1pM8pc0O29-011Cza; Tue, 27 Sep 2022 22:45:25 +0200
+From:   Armin Wolf <W_Armin@gmx.de>
+To:     hdegoede@redhat.com, markgross@kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
+        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
+        productdev@system76.com, mario.limonciello@amd.com,
+        pobrn@protonmail.com, coproscefalo@gmail.com,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] platform/x86: dell: Add new dell-wmi-ddv driver
+Date:   Tue, 27 Sep 2022 22:45:19 +0200
+Message-Id: <20220927204521.601887-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:KzhWpbnWktfitIk8P9GXEYUxilNeEsMbxCQOJVDEZuhtG2Wi+SU
+ OyYlYiWH/HJstvWNF7PJuYohwNwa2XhaFdOTSZh8b8TYQH+aBataIlWzm+75PpOqZXqOKZf
+ 4qzT1CU86OxB0h6lvcWXaiqnyzPF+TFBye5+3A/PNzL5IcuM28arx0prxxprvrQhSa79wI7
+ GlRMv/7DtxV1YPJ48QBuw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MikoliPZkXs=:UOEAoeNzdyU17gr4lKqxMN
+ St/jjd+gTwuaEYIcjc46xNH3n/hh55eJqC8w9nb8CCXqk+WBIx4QMH2AtDLwRlnsMpBHWDaZ4
+ y730Lwu9Q+9phEqk38M505Uvp8JFJ72IY+5a0HrPMAP8UHhbzPoC4rGdPl7G6w6k2E1TTFm5Y
+ lqjxEdEQQ/2RiS0jjy2/EWP4WxcBqL/a8OM2NtFPw4+7dRousyIRzh0cvneMrArXfCGInnRkd
+ WE+H4CgtqKEBF8ECORV5yf56dxfKlByi29OUrMyfYhqAZW/3xDfqzwNht0h7pSOPGWQQbmSML
+ d91ocQfyvSycx62ONjHKZhdrwIf6tVQ7qDNkPIsW3K1ISCsWM058YQqzQ4lhPUbIzSt3wlQI9
+ codVgoTKs1OoUTQEQL1j9aYjcEaGpqfw4h5z01cMjOQRrlr+22hNC39u9GkUllysDIxsv/9sk
+ krQlLCqidqAdFIxFCoSs4Iuo3NG8r++SDc9cdLi5iIHmOK3hbdYE2WoBXPYh0xlT45VGuEmL0
+ arAMNQehHbP6HFLjV/ENQOYo8JRqA50FobJTcoA/wXVNAsN4Ar1nXa88KyDkX8Zchuo2hBgye
+ 47wbjz7j5tjrg40E+w3l7L6Fft/97htl5UB5UKmn53ofu/qDVLb9FytBMWu3ZQ7cO+3O/sY5Z
+ jeN6s7XgMMBDIYGXKU6ov6re2AOdYrVNOYXRPw41J66JTwpK+jJUeyyBNPT2D4ArstI7Fky51
+ Ejakkj1t1qmzHQ7HblJxUmxIbmvrrBMCOEB7bjE2azyhSgZgOpWyniYZL2/2dxnVmAil0gR3o
+ LpdJRgZ2ngBNY74TcrpzWJmOp9yM+uc68JLnj2SLxZrO7K4A1NMPwUN4iMZf4PoPJPgNtvSKi
+ z6KE3y70B+NhbqVsY6OSDxLQuLXxb72zY7HOHlmYm059GUzPiZs8CUAHnPnlTkYT41v/ism31
+ WuLA//c/YFmXyY9AD4XNCRM0Po+WvCtAww5YiqNZnqiLX/U++nypGat5YcXwyhYbsvKbkwvDg
+ s/b+5tH2PqmVOXRMKuAa4svQctwtHMlnGtLiN+SW2403oRiKlcNi5JcxzJwTsRAaxY0OSLNpM
+ MsI41k1CbrRlYJXjNI5nMwomwTc6J4QMYluJWrg6SKEK2iIeiB8fOKOOmG7l5RC/gZHBU/ziY
+ /6wj7f/zuTfTrQuALZNFV45nge
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_BL,
+        RCVD_IN_MSPIKE_H2,RCVD_IN_MSPIKE_ZBI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-T24gVHVlLCAyMDIyLTA5LTI3IGF0IDExOjA3IC0wNTAwLCBMaW1vbmNpZWxsbywgTWFyaW8gd3Jv
-dGU6Cj4gT24gOS8yNy8yMDIyIDA0OjA2LCBMdWtlIEpvbmVzIHdyb3RlOgo+ID4gSGVsbG8gTWFy
-aW8sCj4gPiAKPiA+IEkgaGF2ZSBjb25maXJtZWQgdGhhdCBhbm90aGVyIHN1c3BlY3QgQVNVUyBs
-YXB0b3AgcmVxdWlyZXMgdGhlCj4gPiBxdWlyaywKPiA+IHBhdGNoIGlzIGFzIGZvbGxvd3M6Cj4g
-PiAKPiA+IAo+ID4gLS0tCj4gPiDCoCBkcml2ZXJzL2FjcGkveDg2L3MyaWRsZS5jIHwgMTIgKysr
-KysrKysrKysrCj4gPiDCoCAxIGZpbGUgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKQo+ID4gCj4g
-PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL3g4Ni9zMmlkbGUuYyBiL2RyaXZlcnMvYWNwaS94
-ODYvczJpZGxlLmMKPiA+IGluZGV4IDJjZDM4MWY2YzAwMi4uYzgxMWVlZWQ0MmNkIDEwMDY0NAo+
-ID4gLS0tIGEvZHJpdmVycy9hY3BpL3g4Ni9zMmlkbGUuYwo+ID4gKysrIGIvZHJpdmVycy9hY3Bp
-L3g4Ni9zMmlkbGUuYwo+ID4gQEAgLTQyOCw2ICs0MjgsMTYgQEAgc3RhdGljIGNvbnN0IHN0cnVj
-dCBkbWlfc3lzdGVtX2lkCj4gPiBzMmlkbGVfZG1pX3RhYmxlW10gX19pbml0Y29uc3QgPSB7Cj4g
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBETUlfTUFU
-Q0goRE1JX1BST0RVQ1RfTkFNRSwgIlJPRyBaZXBoeXJ1cwo+ID4gRzE0Cj4gPiBHQTQwMiIpLAo+
-ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9LAo+ID4gwqDCoMKgwqDCoMKgwqDC
-oH0sCj4gPiArwqDCoMKgwqDCoMKgwqB7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgLyoKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBBU1VTIFJPRyBGbG93
-IFgxNiAtIEdWNjAxCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICovCj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLmNhbGxiYWNrID0gbHBzMF9wcmVmZXJfbWlj
-cm9zb2Z0LAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5tYXRjaGVzID0gewo+
-ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBETUlfTUFU
-Q0goRE1JX0JPQVJEX1ZFTkRPUiwgIkFTVVNUZUsKPiA+IENPTVBVVEVSCj4gPiBJTkMuIiksCj4g
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoERNSV9NQVRD
-SChETUlfUFJPRFVDVF9OQU1FLCAiR1Y2MDEiKSwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqB9LAo+ID4gK8KgwqDCoMKgwqDCoMKgfSwKPiA+IMKgwqDCoMKgwqDCoMKgwqB7fQo+
-ID4gwqAgfTsKPiA+IMKgIAo+IAo+IEhleSBMdWtlLAo+IAo+IFRoZSBzZXJpZXMgdGhhdCB3YXMg
-dW5kZXIgZGV2ZWxvcG1lbnQgaGFzIGJlZW4gbWVyZ2VkIGZvciA2LjEuwqAgQXQKPiB0aGlzIAo+
-IHBvaW50LCBjYW4geW91IGp1c3QgbWFrZSBhIHByb3BlciBwYXRjaCB3aXRoIGEgUy1vLWIgb24g
-dG9wIG9mIAo+IGxpbnV4LXBtL2JsZWVkaW5nLWVkZ2UgZm9yIHRoZSBuZXcgbW9kZWwgdG8gYWRk
-IHRvIHRoZSBsaXN0IGFuZCBzZW5kCj4gaXQgb3V0Pwo+IAo+IEluIGFkZGl0aW9uIHRvIHRoYXQs
-IGlmIHlvdSBjYW4gcGxlYXNlIGFkZCBhIExpbms6IHRvIHRoZSBhY3BpZHVtcAo+IGFuZCAKPiBk
-bWVzZyBpZiBhdmFpbGFibGU/Cj4gCj4gVGhhbmtzCgpTdXJlIG5vIHByb2JsZW0gYXQgYWxsCg==
+This patch series adds a new driver for a WMI interface found in
+many newer Dell machines. This interface allows to read battery
+properties like temperature and the ePPID (Dell-specific), while
+also providing fan and thermal sensor information.
+
+The interface does support multiple batteries which are indentified
+by an "index", which appears to be the battery ACPI UID. Since
+the interface also appears to omit any bounts checking of the
+index, the ACPI battery hook mechanism is used to discover batteries.
+
+Since the information returned when querying fan/thermal sensor
+information is currently unknown, a debugfs entry is created to
+allow for easier reverse engineering. The interface is likely
+to be replaced by a proper hwmon interface in the future.
+
+Since the driver can potentially be instantiated multiple times,
+the ACPI battery hook mechanism had to be extended.
+
+The first patch passes a pointer to the battery hook to the
+hook callbacks, so that they can access instance-specific data
+with container_of().
+
+The second patch finally adds the new driver. It was called
+dell-wmi-ddv since the interface is called "DDV" by Dell software,
+likely meaning "Dell Data Vault".
+
+The driver was tested, together with the changes made to the
+ACPI battery driver, on a Dell Inspiron 3505. Other drivers
+already using the battery hook mechanism where changed as well,
+but could only be compile-tested due to missing hardware.
+
+=2D--
+Changes in v2:
+- Significantly lower the amount of changes being made to the
+acpi battery driver
+- drop unnecessary ABI description of the temp attribute
+- return 0 when a unsupported battery is found to avoid being
+unloaded
+
+Armin Wolf (2):
+  ACPI: battery: Pass battery hook pointer to hook callbacks
+  platform/x86: dell: Add new dell-wmi-ddv driver
+
+ .../ABI/testing/debugfs-dell-wmi-ddv          |  21 +
+ .../ABI/testing/sysfs-platform-dell-wmi-ddv   |   7 +
+ MAINTAINERS                                   |   7 +
+ drivers/acpi/battery.c                        |   8 +-
+ drivers/platform/x86/asus-wmi.c               |   4 +-
+ drivers/platform/x86/dell/Kconfig             |  13 +
+ drivers/platform/x86/dell/Makefile            |   1 +
+ drivers/platform/x86/dell/dell-wmi-ddv.c      | 361 ++++++++++++++++++
+ drivers/platform/x86/huawei-wmi.c             |   4 +-
+ drivers/platform/x86/lg-laptop.c              |   4 +-
+ drivers/platform/x86/system76_acpi.c          |   4 +-
+ drivers/platform/x86/thinkpad_acpi.c          |   4 +-
+ drivers/platform/x86/toshiba_acpi.c           |   4 +-
+ drivers/platform/x86/wmi.c                    |   1 +
+ include/acpi/battery.h                        |   4 +-
+ 15 files changed, 429 insertions(+), 18 deletions(-)
+ create mode 100644 Documentation/ABI/testing/debugfs-dell-wmi-ddv
+ create mode 100644 Documentation/ABI/testing/sysfs-platform-dell-wmi-ddv
+ create mode 100644 drivers/platform/x86/dell/dell-wmi-ddv.c
+
+=2D-
+2.30.2
 
