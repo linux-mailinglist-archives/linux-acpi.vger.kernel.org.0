@@ -2,91 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39E2E5EC61A
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 16:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 067A65EC702
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 16:56:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232520AbiI0Oag (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Sep 2022 10:30:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51196 "EHLO
+        id S232359AbiI0O4d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Sep 2022 10:56:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231436AbiI0OaL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 10:30:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0376896FFC
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Sep 2022 07:30:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1664289001;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3uRuuRVYQPLT+MslzRnqQghQMFwXG1xwpNvF+0tAnoc=;
-        b=Z078ygnMSFTpAPqS4F5UksFfVb4k0/tQraKludtZijDQrN4dXg303IPJXYLZW/P4xV1ROm
-        gNj0PzyGpWjBbXCPXB4IvrO4rLZMX+zhPEnS9/ROTmiT7GAHrN7dVLrYmQOz+d7Fc//Tz+
-        CLoYGiIWm3HzPQ+Fw2zjleGjF2YRXI4=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-134-rFvmGqsnPrioBIGCpl3WPA-1; Tue, 27 Sep 2022 10:29:59 -0400
-X-MC-Unique: rFvmGqsnPrioBIGCpl3WPA-1
-Received: by mail-ed1-f70.google.com with SMTP id y14-20020a056402440e00b0044301c7ccd9so7898230eda.19
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Sep 2022 07:29:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=3uRuuRVYQPLT+MslzRnqQghQMFwXG1xwpNvF+0tAnoc=;
-        b=IEqtnL6DG2NvgVRnGCLKjnOGSJlcPoDI926a7e3gLevFVIJYTbNkpPft3maZZmSQbh
-         fecJMTqvG64GFz3UfTRe2QUFLORbUA6BPgsXpg8QJsXbZxyHwFD3Xe11twCRGwalFoFb
-         E9OI/NxCXaxLtzPIchmH8lwmIz96PPnirE3zhS+eXZ8SyqYe2BueKHuKqm8lnpneKK3r
-         fYtTuY7eOcjbP4Trb7il/NifAc/SF5Tp3J00aqXe51+jxvbL225MsoMxGeIRmVXyyQmI
-         1ZXC8SOPKg7MPhQMMEagutIKpf1hed8ZCIhw1kKBvY1LMghfmOsATFQ9aSCoBCydvo8b
-         6JiQ==
-X-Gm-Message-State: ACrzQf3bedLGGqoU3W+3RGrnpRqVeWzU0xtv36Btk4vuhdKowjykXzlY
-        RuPJVTKXGXGtrxMa42Ftau5CK6NhNFhxiJ+WnQLOfmA2WRcWN7KdEN73EeRlgNFis+NDozTk33O
-        TMOJ/AkWzQ9oA6M5hiZz3mQ==
-X-Received: by 2002:a17:907:1dcc:b0:77a:c5f3:708b with SMTP id og12-20020a1709071dcc00b0077ac5f3708bmr23278265ejc.331.1664288998233;
-        Tue, 27 Sep 2022 07:29:58 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7oaN+oJNzgoKfTucQ5HgkrI0cpFFC7w+y2x3V1IlKbboxXQKgc1ZkJCZioVwRKc/L5CwFSIw==
-X-Received: by 2002:a17:907:1dcc:b0:77a:c5f3:708b with SMTP id og12-20020a1709071dcc00b0077ac5f3708bmr23278245ejc.331.1664288998021;
-        Tue, 27 Sep 2022 07:29:58 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id r17-20020a17090609d100b00781d411a63csm854954eje.151.2022.09.27.07.29.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Sep 2022 07:29:57 -0700 (PDT)
-Message-ID: <471449b3-cced-d75d-e349-6bec950b0bc1@redhat.com>
-Date:   Tue, 27 Sep 2022 16:29:56 +0200
+        with ESMTP id S232443AbiI0O4J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 10:56:09 -0400
+Received: from vorpal.se (vorpal.se [151.236.221.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18EF160512;
+        Tue, 27 Sep 2022 07:54:58 -0700 (PDT)
+Received: by vorpal.se (Postfix) with ESMTPSA id 6159E14293;
+        Tue, 27 Sep 2022 14:54:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
+        t=1664290485; bh=ZMDF6AxLpFRw30JwNzc+ZPcKjRwkI977PeS1iICmxpE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=YtmnwQ3aLJeB6Gb1K+tFA89yK35/b3WnBMPg+LrP/xda9u9kqkr1Cj4kWih/Yh7fb
+         2gtoge3oUHtLoMOhY5+kMEHGFD5UiNdR8/lTaW+gceKBbMrGdIg2NvswvMZ1JYUd1x
+         mLzk4tRucVEOk93DqymCKQ/y0jKsv2AnIGNaTOpq0nhomyt9AJsNrze4zIx8HSZWmb
+         AZlHkpLpthA00+0wgjzFU1cQJ6PVYd/stB52lOKlgCCJNZgoTwlisOfou0dOpNRo/Q
+         YafydpNQX2LIHDk0pkKr/DKhQnJvbA9ZnchBDRNwPl9FNzBTCmqVnPvmqkriBqpLHl
+         VxIjmO49HSj0Q==
+Message-ID: <d1ec9351-7e5c-0f2d-8a67-f640d1105044@vorpal.se>
+Date:   Tue, 27 Sep 2022 16:54:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [PATCH 1/5] ACPI: battery: Do not unload battery hooks on single
- error
+ Thunderbird/102.3.0
+Subject: Re: [PATCH RFC v2 1/2] platform/x86: quickstart: Add ACPI quickstart
+ button (PNP0C32) driver
 Content-Language: en-US
-To:     Armin Wolf <W_Armin@gmx.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mark Gross <markgross@kernel.org>, Len Brown <lenb@kernel.org>,
-        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-        Matan Ziv-Av <matan@svgalib.org>,
-        Corentin Chary <corentin.chary@gmail.com>,
-        Jeremy Soller <jeremy@system76.com>, productdev@system76.com,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20220912125342.7395-1-W_Armin@gmx.de>
- <20220912125342.7395-2-W_Armin@gmx.de>
- <f8fa6d10-6eb1-7fa7-80eb-ea190d29ba4a@redhat.com>
- <CAJZ5v0jWVMMTjc+KtBRS86f8kYpbPcDCH9JV2ZgeN4f-MSO8rQ@mail.gmail.com>
- <f2af5d01-a2cd-ae96-24c7-d61f5f0d0bc3@gmx.de>
- <f0b17ba6-3d3c-cbc1-ec0d-ec59c73f06f6@gmx.de>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <f0b17ba6-3d3c-cbc1-ec0d-ec59c73f06f6@gmx.de>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>
+Cc:     platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-input@vger.kernel.org, Azael Avalos <coproscefalo@gmail.com>
+References: <20220922182424.934340-1-lkml@vorpal.se>
+ <20220922182424.934340-2-lkml@vorpal.se>
+ <4-mkye9NM7L93IKQAGjd8BmHi1_2zEnx4F8L3AvKk9RsNBtuoS5cpNCKV-nyb1Xpb1jmAZQDdpNlyvjoUfrFKkq4V-EOfXo9b_gRbyC1hSs=@protonmail.com>
+ <3095147c-844c-42cf-833b-8a2eae5fcc21@vorpal.se>
+ <729c5fc1-3bc1-f2f3-9820-a1e84b09aeac@redhat.com>
+From:   Arvid Norlander <lkml@vorpal.se>
+In-Reply-To: <729c5fc1-3bc1-f2f3-9820-a1e84b09aeac@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -95,142 +59,94 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 9/19/22 22:35, Armin Wolf wrote:
-> Am 19.09.22 um 21:12 schrieb Armin Wolf:
+I think something may be slightly broken. I got the below email twice, once in
+reply to where it should be, once as a reply to the cover letter.
+
+Best regards,
+Arvid
+
+On 2022-09-27 15:49, Hans de Goede wrote:
+> Hi,
 > 
->> Am 19.09.22 um 18:27 schrieb Rafael J. Wysocki:
+> On 9/25/22 20:19, Arvid Norlander wrote:
+>> Hi,
 >>
->>> On Mon, Sep 19, 2022 at 12:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>>> Hi,
->>>>
->>>> On 9/12/22 13:53, Armin Wolf wrote:
->>>>> Currently, battery hooks are being unloaded if they return
->>>>> an error when adding a single battery.
->>>>> This however also causes the removal of successfully added
->>>>> hooks if they return -ENODEV for a single unsupported
->>>>> battery.
->>>>>
->>>>> Do not unload battery hooks in such cases since the hook
->>>>> handles any cleanup actions.
->>>>>
->>>>> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->>>> Maybe instead of removing all error checking, allow -ENODEV
->>>> and behave as before when the error is not -ENODEV ?
->>>>
->>>> Otherwise we should probably make the add / remove callbacks
->>>> void to indicate that any errors are ignored.
->>>>
->>>> Rafael, do you have any opinion on this?
->>> IMV this is not a completely safe change, because things may simply
->>> not work in the cases in which an error is returned.
+>> Thank you, I have incorperated your feedback in my local branch.
+>>
+>> On 2022-09-23 21:24, Barnabás Pőcze wrote:
+>>> Hi
 >>>
->>> It would be somewhat better to use a special error code to indicate
->>> "no support" (eg. -ENOTSUPP) and ignore that one only.
+>>> 2022. szeptember 22., csütörtök 20:24 keltezéssel, Arvid Norlander írta:
+>>>
+>>>> This is loosely based on a previous staging driver that was removed. See
+>>>> links below for more info on that driver. The original commit ID was
+>>>> 0be013e3dc2ee79ffab8a438bbb4e216837e3d52.
+>>>>
+>>>> However, here a completely different approach is taken to the user space
+>>>> API (which should solve the issues the original driver had). Each PNP0C32
+>>>> device is a button, and each such button gets a separate input device
+>>>> associated with it (instead of a shared platform input device).
+>>>>
+>>>> The button ID (as read from ACPI method GHID) is provided via a sysfs file
+>>>> "button_id".
+>>>>
+>>>> If the button caused a wakeup it will "latch" the "wakeup_cause" sysfs file
+>>>> to true. This can be reset by a user space process.
+>>>>
+>>>> Link: https://marc.info/?l=linux-acpi&m=120550727131007
+>>>> Link: https://lkml.org/lkml/2010/5/28/327
+>>>> Signed-off-by: Arvid Norlander <lkml@vorpal.se>
+>>>> ---
+>>>> [...]
+>>>> diff --git a/drivers/platform/x86/quickstart.c b/drivers/platform/x86/quickstart.c
+>>>> new file mode 100644
+>>>> index 000000000000..ce51abe012f7
+>>>> --- /dev/null
+>>>> +++ b/drivers/platform/x86/quickstart.c
+>>>> @@ -0,0 +1,320 @@
 >>
->> I would favor -ENODEV then, since it is already used by quiet a few drivers
->> to indicate a unsupported battery.
+>> <snip>
 >>
->> Armin Wolf
+>>>> +
+>>>> +static ssize_t wakeup_cause_store(struct device *dev,
+>>>> +				  struct device_attribute *attr,
+>>>> +				  const char *buf, size_t count)
+>>>> +{
+>>>> +	struct quickstart_acpi *quickstart = dev_get_drvdata(dev);
+>>>> +
+>>>> +	if (count < 2)
+>>>> +		return -EINVAL;
+>>>> +
+>>>> +	if (strncasecmp(buf, "false", 4) != 0)
+>>>> +		return -EINVAL;
+>>>> +
+>>>
+>>> If "true"/"false" will be used in the final version, then I think this check
+>>> currently is too lax. You could use `sysfs_streq()`. And I think the `count < 2`
+>>> check is not needed.
 >>
-> While checking all instances where the battery hook mechanism is currently used,
-> i found out that all but a single battery hook return -ENODEV for all errors they
-> encounter, the exception being the huawei-wmi driver.
-
-Right, so this means that using -ENODEV to not automatically unload the
-extension on error will result in a behavior change for those drivers,
-with possibly unwanted side-effects.
-
-As such I believe that using -ENOTSUP for the case where the extension
-does not work for 1 battery but should still be used for the other
-batter{y|ies} would be better as this preserves the existing behavior
-for existing drivers.
-
-> I do not know the reason for this, but i fear unloading the extension on for
-> example -ENOTSUP will result in similar behavior by hooks wanting to avoid being
-> unloaded on harmless errors.
-
-I am not sure what you are trying to say here. The whole idea is
-to add new behavior for -ENOTSUP to allow drivers to opt out of
-getting their extension unregistered when they return this.
-
-Although I wonder why not just have extensions return 0 when
-they don't want to register any sysfs attr and that not considered
-an error. If it is not considered an error the hook can just
-return 0, which would not require any ACPI battery code changes
-at all. So maybe just returning 0 is the easiest (which is
-also often the best) answer here?
-
-> However, i agree that when ignoring all errors, battery extensions which provide
-> similar attributes may currently delete each others attributes.
-
-AFAIK there are no cases where more then 1 extension driver gets loaded,
-since all the extension drivers are tied to a specific vendor's interfaces
-so we won't e.g. see the thinkpad_acpi driver load on the same laptop as
-where toshiba_acpi also loads.
-
-IOW I think you are trying to solve a problem which does not exist here.
-
-Regards,
-
-Hans
-
-
-
-
+>> Regarding the user space API I don't know, that is one of the open
+>> questions in the cover letter. I have yet to get any feedback on any of
+>> those questions. That is something that needs to happen before this driver
+>> can be included. I would appreciate your feedback on those.
 > 
-> Any idea on how to solve this?
+> I will reply to this question in my general review of the driver.
 > 
-> Armin Wolf
+> Regards,
 > 
->>>>> ---
->>>>>   drivers/acpi/battery.c | 24 +++---------------------
->>>>>   1 file changed, 3 insertions(+), 21 deletions(-)
->>>>>
->>>>> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
->>>>> index 306513fec1e1..e59c261c7c59 100644
->>>>> --- a/drivers/acpi/battery.c
->>>>> +++ b/drivers/acpi/battery.c
->>>>> @@ -724,20 +724,10 @@ void battery_hook_register(struct acpi_battery_hook *hook)
->>>>>         * its attributes.
->>>>>         */
->>>>>        list_for_each_entry(battery, &acpi_battery_list, list) {
->>>>> -             if (hook->add_battery(battery->bat)) {
->>>>> -                     /*
->>>>> -                      * If a add-battery returns non-zero,
->>>>> -                      * the registration of the extension has failed,
->>>>> -                      * and we will not add it to the list of loaded
->>>>> -                      * hooks.
->>>>> -                      */
->>>>> -                     pr_err("extension failed to load: %s", hook->name);
->>>>> -                     __battery_hook_unregister(hook, 0);
->>>>> -                     goto end;
->>>>> -             }
->>>>> +             hook->add_battery(battery->bat);
->>>>>        }
->>>>>        pr_info("new extension: %s\n", hook->name);
->>>>> -end:
->>>>> +
->>>>>        mutex_unlock(&hook_mutex);
->>>>>   }
->>>>>   EXPORT_SYMBOL_GPL(battery_hook_register);
->>>>> @@ -762,15 +752,7 @@ static void battery_hook_add_battery(struct acpi_battery *battery)
->>>>>         * during the battery module initialization.
->>>>>         */
->>>>>        list_for_each_entry_safe(hook_node, tmp, &battery_hook_list, list) {
->>>>> -             if (hook_node->add_battery(battery->bat)) {
->>>>> -                     /*
->>>>> -                      * The notification of the extensions has failed, to
->>>>> -                      * prevent further errors we will unload the extension.
->>>>> -                      */
->>>>> -                     pr_err("error in extension, unloading: %s",
->>>>> -                                     hook_node->name);
->>>>> -                     __battery_hook_unregister(hook_node, 0);
->>>>> -             }
->>>>> +             hook_node->add_battery(battery->bat);
->>>>>        }
->>>>>        mutex_unlock(&hook_mutex);
->>>>>   }
->>>>> -- 
->>>>> 2.30.2
->>>>>
+> Hans
+> 
+> 
+> 
+>>
+>> <snip>
+>>
+>>>
+>>> Regards,
+>>> Barnabás Pőcze
+>>
+>> Regards,
+>> Arvid Norlander
+>>
+> 
 
