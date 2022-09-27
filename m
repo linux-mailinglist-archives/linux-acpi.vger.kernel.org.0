@@ -2,83 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF3FF5EC86A
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 17:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4417D5EC91A
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Sep 2022 18:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232268AbiI0PrN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Sep 2022 11:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56954 "EHLO
+        id S232713AbiI0QJU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Sep 2022 12:09:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbiI0Pqo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 11:46:44 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3862438B5;
-        Tue, 27 Sep 2022 08:44:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1664293461;
-        bh=xapIOah0tx06ZorbO2OBOQdT6JMIjrDJogdiPnNn/+g=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=jVzcNPrCjUtznpRRl8i1wIdrxVOTWjy7GI27X+VbWjmuQS8iU2WXQ5QrfQ+d8tLty
-         +tRKsj3T/5mVcQ86y/vwI8uwOQiSym9nIXOPg8ruFZGWstWxB1vYlDqR0KbnFSVBFW
-         Kw5gUjmxOJuakdZH0gskmZ0MlOLHQyMLnVBHQwKE=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCsQ4-1oURKX1oDw-008p78; Tue, 27
- Sep 2022 17:44:21 +0200
-Subject: Re: [PATCH 1/5] ACPI: battery: Do not unload battery hooks on single
- error
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mark Gross <markgross@kernel.org>, Len Brown <lenb@kernel.org>,
-        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-        Matan Ziv-Av <matan@svgalib.org>,
-        Corentin Chary <corentin.chary@gmail.com>,
-        Jeremy Soller <jeremy@system76.com>, productdev@system76.com,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20220912125342.7395-1-W_Armin@gmx.de>
- <20220912125342.7395-2-W_Armin@gmx.de>
- <f8fa6d10-6eb1-7fa7-80eb-ea190d29ba4a@redhat.com>
- <CAJZ5v0jWVMMTjc+KtBRS86f8kYpbPcDCH9JV2ZgeN4f-MSO8rQ@mail.gmail.com>
- <f2af5d01-a2cd-ae96-24c7-d61f5f0d0bc3@gmx.de>
- <f0b17ba6-3d3c-cbc1-ec0d-ec59c73f06f6@gmx.de>
- <471449b3-cced-d75d-e349-6bec950b0bc1@redhat.com>
-From:   Armin Wolf <W_Armin@gmx.de>
-Message-ID: <f6ac14a8-6403-029e-6179-f8ef0a7d5457@gmx.de>
-Date:   Tue, 27 Sep 2022 17:44:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <471449b3-cced-d75d-e349-6bec950b0bc1@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S233219AbiI0QIq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Sep 2022 12:08:46 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20602.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eab::602])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8EA2A74C6;
+        Tue, 27 Sep 2022 09:07:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BWeSQ9pqMf+sYbO3R5q+m0qz23lNTCTkKqu3YygdeVdhoQ+6QWo29JC03lA5dAD/zPx1iGEBceRO6dGBqPyb2YO5XT3HJ6ddxjHueayZlGUyHxY/9PoaFcAgpt3NvGErMW2WSp+KMDWgJgy+gAQNoEmBLgb0siYiwBEnQYqNUdfu/If08O6pHZ3fp2XS/SxpUYReoQv/at18Fy5lba1L4IvRMnhUtVPBv+3AOM/dJaYJ6lIL/RusxdwXbgVPUP0w6qy7qrhpTXN4mHeDJenib9K9URiaJFznOBYykXMMfhqKBvaj/d9uSw2kcqPxWLo5SWxLBk0x5kLQ6nvi91YJXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tvs3Aupf1ps2+UeNryTA5+qf1vxan1qdJLZ6Ne7bD8Q=;
+ b=F1PHbtm+RZp9/YXB2vg46c8Q4wYQWgPx6ctFIuCx/B4YqbpiKBGX6JWr4+rKO2ULQGDu4l+xq9lLGkX63i2WodqtRcdrXwV1u7fnPh/QienlIS1J0Dh2u2yRE4fwaULzCkMl2fa6Du8yo9vrgLRyVz7s/EIOx7G+KGr6oPjzmVlUjbcoAWy/SnKSWeiQdxh+rsmp9+8ehkUXv3rMqQHHGl5ior324rcIHe348Mp4+Ic89SLYIWrNIAGBUaqrOagx3Q3fEG/4mDTC+nYCK9reDq2PdQaK/+7KGDDJEDp2cg8B4j+srb+UKOdR0NTIxsAlLt+ZjNon/ZDztb7cOSdbfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tvs3Aupf1ps2+UeNryTA5+qf1vxan1qdJLZ6Ne7bD8Q=;
+ b=HX7bJPuYR6iRNmBwwzqVxlrBHkINKi7V+5tDLv74jzk5474BRgp1Qokmwi/EvHVOxMuxkR3VMFh5n5KFxTiBKkxxvuEfDznpSJZSCgzGineoXQup4SN0x+NoNtkZFgI4MkjOpN3AeKWQZph+9MFi/CdNe1rBKZsqemHBMaI4e9I=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by CY5PR12MB6083.namprd12.prod.outlook.com (2603:10b6:930:29::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.25; Tue, 27 Sep
+ 2022 16:07:44 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::76ec:6acf:dd4d:76a3]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::76ec:6acf:dd4d:76a3%8]) with mapi id 15.20.5654.024; Tue, 27 Sep 2022
+ 16:07:44 +0000
+Message-ID: <df22755c-bf4c-9d85-2c7c-a149f8580d05@amd.com>
+Date:   Tue, 27 Sep 2022 11:07:44 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH v4 7/7] acpi/x86: s2idle: Add a quirk for ASUSTeK COMPUTER
+ INC. ROG Flow X13
 Content-Language: en-US
-X-Provags-ID: V03:K1:5MyBv8IKsYLuUsVsJMopstbGuvu343mvzrzSNTs3XpZouvuB+sw
- 41Id43MAQxI3DUcH2Ni9/Ogq+LyWZatySfktIDCOJJBL6UwWRG1/cH2NgEkWSvaNvGgId9f
- d9DC3xV/45bIaUxdfrfLJdE06TKCrXzPJfStc0A4jXrba5KM+5lsGsFu1am2x2YVOGUmamy
- GJjPotM7zMCpkaM2iPGfA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Dj8zzLGJBJ8=:yEiB015XrdNoRKwZ8QnYti
- 2J5lDllNRvJ6Z5Q0FjkuLLlaN2OlVTKzpVpR/ymF/sDHXckj7FhmZPM0HUwOZo0Sk+8PgkXi2
- xg7YYVOOZVW/fV2j/+57tKRO42/P9TPgSd+h4Fp1lKj1JnXNfDLOtc0g43aRIDiQjaiyJwDmk
- teiy5sFa2kc0PFDIW3RPg1hWo31NBeuJe8zj1mUyVIwAUrlG+lv6hIYuo3GBOYW6q5JLY1TVb
- qhQD20nM3oZWe5OAE3mHoaOa/RmAvhu4/dWYx5ug26tzFfgngw2eUMDgjNMuvIdwU8jkx95vS
- axCgPbiEEaomUJrCipIkyGwoJ0tJUQsdv6oRYnX5acxKUtL2kM/WXs4nfgOIOjtyRP/WL8LuB
- 0NJhbvzNgbu/PxS0MbsJk5o8UrZMavA3mSmhz8xNityx6z8YXJaaNVtHPl+U8m+GmFrg3Is9D
- RSsmqDz042udb7TZ2fwcjGZvtnvRkcXy/A8yzo2dYfcZ5sVOYbtlV13ZzCuQ7kL26ZV3sSvvP
- NZbYuHUJgefgN596lcxhIz49vCHdjkapQ1DYWHCYU5QxSAGLWNjesxggIuuMSnQnoHJQDPrhw
- 1ATfwfY2XLDDpGVfAb1Jug8p8hxtOIqGXqa6DEICurOewGl8+H4saIfsnMNv/P9oVWfOs1/ZT
- IdAxECIDEye/0qUFsZrAnkriJATabEWWYsLOh6cslAW2ZYCqQzL5zI0WEphCTS/8xiOe5ahO4
- o/mFx0pTnS5JJtV9oyvZXjwaF8x8hPq143NF26zCbVC6teC51XQfqLTw/d/NUvMSnnHC0yoHr
- 2SeqJbz9EMezMJval78U7lpcRSJ8rIxpssg0gVPuOa+yDytN8Yve+LjAqH+skyq5fKOFs+rHh
- E2+uvk9x1yohwfNvcRhigwk6/1GYeDDTwWEVp2nomSYiHMOOoMbCu91/N24JMpZwUxtgrFj0M
- DyAbFH1zNACxVREPTdBCRSnroDtNFrTr07mvhZJJOZBPdEoHNybwGMO0A0IfWwf3KnkL0/kCO
- OpK1/4pIsGPpqDBfGAESR3M7BVT2s8sVGWEmZ7WN0XbDw0iADaBG7ONZ/KmcnSi3dQmF5M7x2
- Hn3ACkZHZgKsbuyHxe2VFT63QdTAr5ELnS45Dnld57tlofDtC+9Xrb1jCX23o55AAgwqGITww
- RmYbKkjSXhru5vmmaYZUGA00C1
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_H2,RCVD_IN_MSPIKE_ZBI,SPF_HELO_NONE,
+To:     Luke Jones <luke@ljones.dev>, rafael@kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     travisghansen@yahoo.com, catalin@antebit.com,
+        Shyam-sundar.S-k@amd.com, ruinairas1992@gmail.com,
+        philipp.zabel@gmail.com, iam@decentr.al, hdegoede@redhat.com,
+        davidedp91@gmail.com, marko.cekrlic.26@gmail.com,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+References: <20220921204055.22889-1-mario.limonciello@amd.com>
+ <20220921204055.22889-8-mario.limonciello@amd.com>
+ <26bbda5d03f0eadc54dfa0036e24e16ae9134f5e.camel@ljones.dev>
+From:   "Limonciello, Mario" <mario.limonciello@amd.com>
+In-Reply-To: <26bbda5d03f0eadc54dfa0036e24e16ae9134f5e.camel@ljones.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0115.namprd13.prod.outlook.com
+ (2603:10b6:208:2b9::30) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CY5PR12MB6083:EE_
+X-MS-Office365-Filtering-Correlation-Id: fc6b1660-c034-4a34-751e-08daa0a269d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 2kwonnyErBlT7eDLq++8k25ove9CG+V5itqMry97zRoR+Od0V6++8DrJhVR2yveXndnEzX4CBJQmBZrVNotYo4a3kGPssCOjgb8o6uYPzIds4aB9g2rE3yeXtwrNFVB6wdE+eOOkvryIjsPf9cwhPh6BamCLOdKNGsLB8TLKBga9fcojOX/M4o6G2kx15tvw/0Vmt8Y7yDcP6Hl9Z++N1bft0gY1shZKvrtKZVJK1ogCrN6nAfg6b7HTakZmKVi9EovKabMt0C0BVPHKc822r9ALf+z9SNpLoaHEvIKRFfu47kWx/dhogxjcJiOv3kZmAPla9Ca5bQtVvv+8roPtPsDI5qFm7k8tssnh6FyI+yLsI/czEcCuUI33VZiqOihXHdC4FQ4C+pOa7h6bIw3WwN6bzz7AvHHImSAWYJEIPLgZAb39P3DgNfFLVLSoYh0GFkPXGLWgrGgKM7oIxt6ZwDJnhcWhTLThcAndqhSKWFIlNmNOQtaOgBSnHf3jlvTgW1s+TPb1SXVG7bbkI5/nJkT0fUCW6coUqzkLG+bw+an6CkePCkpb4uk6K8KBQAWAbEvdxNN0FBiErDS46tt2p7T8JGOUE8Jin4uvVqVs2NI21CsSbdKTAMyTgML1d20T5p28hFsV3ygX5i0DpMK3PB0Fdfo7PhGYCPrGjNgYYPlGKapKI+xPyBVk1M/Fi/n/m7RDCvvNZ27wTC/nzeHGIDBKvz4dVvwIqR7o6S8Tm+B81jih9gQaqmg9Tv+hwKO7RxynC93wq7kv2Q4cvnEJgf7ckC5D0g7vcDrbUf7XyGg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(376002)(366004)(396003)(136003)(39860400002)(451199015)(316002)(6512007)(6486002)(36756003)(186003)(2616005)(86362001)(31696002)(66556008)(83380400001)(66476007)(4326008)(41300700001)(478600001)(8676002)(66946007)(8936002)(31686004)(53546011)(2906002)(6506007)(45080400002)(26005)(7416002)(5660300002)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?clFIcytzSVVuUnIwdjJJN3B1N3dBdE9VdDFVaGN4TkR3NHVrTHMzQ0N0Rkgr?=
+ =?utf-8?B?dmJsRVJHSGV5c282WGUxOFJqSVhnUDByWVNucFB4Vm5YMnNVT1V2aUxoNmpD?=
+ =?utf-8?B?Vnh3b3Rnak4vTG5qYS8zOG83ZlczSUlMRmRjRUpEVjBYU040UkxTTXFGRThv?=
+ =?utf-8?B?S29wSzUvZExyUjdPdjg4elJYd0RSYWcyV3o4VjU4N3dmVzdySk9hMkZFWEx4?=
+ =?utf-8?B?cFp6dlJmSzN1dzZST29hUEpzcmVSMjBPT0ZBajRSTzRlNFNnQVRpbEtkdGNl?=
+ =?utf-8?B?LzZSTkZPNTJ4V0xVVlczQVEwcjhnUHJLN05BM2s3eDY0aEJuNFBRRUtQM2Rj?=
+ =?utf-8?B?QVdham9zUTVnY2tHczVWKzNqSVdUTG51bEtDSGhQaGYzcXVIV3pCM0lwQm5E?=
+ =?utf-8?B?ZTJNQk9KQ1lvaWtoUEh3bVhVSlYzY01qNUxJY2dRU1BKaTNnR2h0UG12Qng2?=
+ =?utf-8?B?QUdEN1VRZFNRblNsT0pyZkcwajhjMjZocUdVZlZ0NS8wQVhzYldqdzlWcG1S?=
+ =?utf-8?B?ZTBjVlBZa3F5S2FJS21WcllRb2N1WnN2eWhURW5XdE42cHZHVitId3JXbWFv?=
+ =?utf-8?B?MVpjelB0dEJIdVg1bWl6aEF2WVBGcTZDMDZ0VHhBS1dqZnJ0VGRvVDF0NUJU?=
+ =?utf-8?B?L0Fzay9kWFlBZG4yeVlPNG85T0VNRnVTTHFsNGNucmwwb3dHRHBnNjljNzlE?=
+ =?utf-8?B?by94RzhKa093bkNkRkpod0V3OStUVk5STUtleGloa0FkOU1zbTAzK0pMREg2?=
+ =?utf-8?B?NGdhdWlLeGU0VXdaalAyUFFjZ3FIdWswT3ZlOXBINW0xOUJzdnhJSzhzTWJm?=
+ =?utf-8?B?R3NadExEQy9GNlZzcFhHbnlhVWExWGY1MThTT2N6QTNOaVl3VlNSdStXN3o4?=
+ =?utf-8?B?SGdTVUtXYUsrd0hzazRRVGFkNFNxZjNUaEtWVnY0MjFCSGowMnJSM3MyZlJk?=
+ =?utf-8?B?TTJkQjhrdFRXY1krT3ZFbHg4MldwSUlrbDkrRk9lUSszdmFvNENTM004cTRH?=
+ =?utf-8?B?bnNsWktjTXFSRmZhOW9WQzRJc0IvTlNTUExsbjgxVW9iZlM1M2toVGZuRkY2?=
+ =?utf-8?B?QURadjBXT204NzVCcDM2dGh2Sy9abmdaUlZGbTVLR2FjVFFtTytiWSt4RW1D?=
+ =?utf-8?B?cEJHYXByOTJMNW9heWNZcmFUNS9JSDZIcHJOZjVpV3JUVlhaRkV3amp5MTZQ?=
+ =?utf-8?B?T25OUUFyb0xDclkyVWNsQVR2bml5NTNCTjMveGt3L1UvZVZ5VkFPVnpsaXhT?=
+ =?utf-8?B?b3djM0diaE9qVEZoT3cwNHcwU241UGZlTm5lZU9nQVpOUXlreEpaSWVZbTZu?=
+ =?utf-8?B?cS9zOXZVcUgvWmVuNldSUVdvSGNkQW5ON2lyalVWRkZmNHBXVUdoNWloRzJT?=
+ =?utf-8?B?N1RtK0Y3MGdrRUIwZkpMOFNDN3psK0haV2xMMUlxcmlvR2xUdmFKWkYza0k4?=
+ =?utf-8?B?dUVEdFowSjluUEJSOVhySjBoSUdNcHNnb0Rnck5jY1BlUjhyNFpCVitibEtx?=
+ =?utf-8?B?L1RUcHA1Z3lMcHFSMFVXVm92Mmg4aDRrNlpCQjJCMVZjZm5YR0Z6b05CRDdR?=
+ =?utf-8?B?aEpZSG5sdXAyeWxoMVNnZ2VXajNiUjhvWCttOUNtOWxaNHdYbkZmQU1uMU1U?=
+ =?utf-8?B?ZUhYK2xKbWdLRk40NVhHZWpjVTUzUWZGUVhWRzNSY0FkYzdWRWdMN0FwQWFs?=
+ =?utf-8?B?RWNtRjkwenhGSmlvQUM4bGxKaGpHZmd4cEVsNERrcmxCWXdpTk1NZGVNdGVM?=
+ =?utf-8?B?WlJuWjJFaE9DUjhDZkdKZEQ5ZmppMVU3WnlYaW9iZHRHYnNlb1hQSkxnb0Fi?=
+ =?utf-8?B?N1ZDNlltZzdxMzNXbFJYanNrQmd0dXo1Qk5lUFUxVHVHa093THQwbGdnbVNT?=
+ =?utf-8?B?akxsSmZTMmJIUXY4YmtGQzlhdlppaWpndFE5cXhZbEVvNlF3TGNIZCtpR0JE?=
+ =?utf-8?B?b0s1R2libURlTGFGVnpPTlkvRld5amlIUzNtTTZzVDFMZkVPMEs4NG44TmtB?=
+ =?utf-8?B?cGJmZ1BBYlJhcWIvQXNaT0pQSjZ0bjBCbmtsL3lSOU80OTZjcDArRlRqbFQx?=
+ =?utf-8?B?Y2lxanFXVElRVjA4bDFuZG9oUWJEV2dmS0pSY2tBSGlodEtyNDQ4M3R5ZGIw?=
+ =?utf-8?Q?4KwwXlByJk/YUc5usB1I2CgmI?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc6b1660-c034-4a34-751e-08daa0a269d1
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2022 16:07:44.8389
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dYtX9b2q0HviymqNyQC270hne0tX9LVhKCFNzvdiA7iG4n8mZ1yL0DdtqsizYzL1wZA8FOzay3ntxggPGRxCfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6083
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,191 +129,49 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am 27.09.22 um 16:29 schrieb Hans de Goede:
+On 9/27/2022 04:06, Luke Jones wrote:
+> Hello Mario,
+> 
+> I have confirmed that another suspect ASUS laptop requires the quirk,
+> patch is as follows:
+> 
+> 
+> ---
+>   drivers/acpi/x86/s2idle.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
+> 
+> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+> index 2cd381f6c002..c811eeed42cd 100644
+> --- a/drivers/acpi/x86/s2idle.c
+> +++ b/drivers/acpi/x86/s2idle.c
+> @@ -428,6 +428,16 @@ static const struct dmi_system_id
+> s2idle_dmi_table[] __initconst = {
+>   			DMI_MATCH(DMI_PRODUCT_NAME, "ROG Zephyrus G14
+> GA402"),
+>   		},
+>   	},
+> +	{
+> +		/*
+> +		 * ASUS ROG Flow X16 - GV601
+> +		 */
+> +		.callback = lps0_prefer_microsoft,
+> +		.matches = {
+> +			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER
+> INC."),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "GV601"),
+> +		},
+> +	},
+>   	{}
+>   };
+>   
 
-> Hi,
->
-> On 9/19/22 22:35, Armin Wolf wrote:
->> Am 19.09.22 um 21:12 schrieb Armin Wolf:
->>
->>> Am 19.09.22 um 18:27 schrieb Rafael J. Wysocki:
->>>
->>>> On Mon, Sep 19, 2022 at 12:42 PM Hans de Goede <hdegoede@redhat.com> =
-wrote:
->>>>> Hi,
->>>>>
->>>>> On 9/12/22 13:53, Armin Wolf wrote:
->>>>>> Currently, battery hooks are being unloaded if they return
->>>>>> an error when adding a single battery.
->>>>>> This however also causes the removal of successfully added
->>>>>> hooks if they return -ENODEV for a single unsupported
->>>>>> battery.
->>>>>>
->>>>>> Do not unload battery hooks in such cases since the hook
->>>>>> handles any cleanup actions.
->>>>>>
->>>>>> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->>>>> Maybe instead of removing all error checking, allow -ENODEV
->>>>> and behave as before when the error is not -ENODEV ?
->>>>>
->>>>> Otherwise we should probably make the add / remove callbacks
->>>>> void to indicate that any errors are ignored.
->>>>>
->>>>> Rafael, do you have any opinion on this?
->>>> IMV this is not a completely safe change, because things may simply
->>>> not work in the cases in which an error is returned.
->>>>
->>>> It would be somewhat better to use a special error code to indicate
->>>> "no support" (eg. -ENOTSUPP) and ignore that one only.
->>> I would favor -ENODEV then, since it is already used by quiet a few dr=
-ivers
->>> to indicate a unsupported battery.
->>>
->>> Armin Wolf
->>>
->> While checking all instances where the battery hook mechanism is curren=
-tly used,
->> i found out that all but a single battery hook return -ENODEV for all e=
-rrors they
->> encounter, the exception being the huawei-wmi driver.
-> Right, so this means that using -ENODEV to not automatically unload the
-> extension on error will result in a behavior change for those drivers,
-> with possibly unwanted side-effects.
->
-> As such I believe that using -ENOTSUP for the case where the extension
-> does not work for 1 battery but should still be used for the other
-> batter{y|ies} would be better as this preserves the existing behavior
-> for existing drivers.
->
->> I do not know the reason for this, but i fear unloading the extension o=
-n for
->> example -ENOTSUP will result in similar behavior by hooks wanting to av=
-oid being
->> unloaded on harmless errors.
-> I am not sure what you are trying to say here. The whole idea is
-> to add new behavior for -ENOTSUP to allow drivers to opt out of
-> getting their extension unregistered when they return this.
->
-> Although I wonder why not just have extensions return 0 when
-> they don't want to register any sysfs attr and that not considered
-> an error. If it is not considered an error the hook can just
-> return 0, which would not require any ACPI battery code changes
-> at all. So maybe just returning 0 is the easiest (which is
-> also often the best) answer here?
+Hey Luke,
 
-I agree, i will send v2 soon.
+The series that was under development has been merged for 6.1.  At this 
+point, can you just make a proper patch with a S-o-b on top of 
+linux-pm/bleeding-edge for the new model to add to the list and send it out?
 
-Armin Wolf
+In addition to that, if you can please add a Link: to the acpidump and 
+dmesg if available?
 
->> However, i agree that when ignoring all errors, battery extensions whic=
-h provide
->> similar attributes may currently delete each others attributes.
-> AFAIK there are no cases where more then 1 extension driver gets loaded,
-> since all the extension drivers are tied to a specific vendor's interfac=
-es
-> so we won't e.g. see the thinkpad_acpi driver load on the same laptop as
-> where toshiba_acpi also loads.
->
-> IOW I think you are trying to solve a problem which does not exist here.
->
-> Regards,
->
-> Hans
->
->
->
->
->> Any idea on how to solve this?
->>
->> Armin Wolf
->>
->>>>>> ---
->>>>>>  =C2=A0 drivers/acpi/battery.c | 24 +++---------------------
->>>>>>  =C2=A0 1 file changed, 3 insertions(+), 21 deletions(-)
->>>>>>
->>>>>> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
->>>>>> index 306513fec1e1..e59c261c7c59 100644
->>>>>> --- a/drivers/acpi/battery.c
->>>>>> +++ b/drivers/acpi/battery.c
->>>>>> @@ -724,20 +724,10 @@ void battery_hook_register(struct acpi_batter=
-y_hook *hook)
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * its attributes.
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_for_each_entry(battery, =
-&acpi_battery_list, list) {
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 if (hook->add_battery(battery->bat)) {
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * If a add-ba=
-ttery returns non-zero,
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the registr=
-ation of the extension has failed,
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * and we will=
- not add it to the list of loaded
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * hooks.
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_err("extension f=
-ailed to load: %s", hook->name);
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __battery_hook_unre=
-gister(hook, 0);
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto end;
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 }
->>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 hook->add_battery(battery->bat);
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_info("new extension: %s\n"=
-, hook->name);
->>>>>> -end:
->>>>>> +
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mutex_unlock(&hook_mutex);
->>>>>>  =C2=A0 }
->>>>>>  =C2=A0 EXPORT_SYMBOL_GPL(battery_hook_register);
->>>>>> @@ -762,15 +752,7 @@ static void battery_hook_add_battery(struct ac=
-pi_battery *battery)
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * during the battery mo=
-dule initialization.
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_for_each_entry_safe(hook=
-_node, tmp, &battery_hook_list, list) {
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 if (hook_node->add_battery(battery->bat)) {
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The notific=
-ation of the extensions has failed, to
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * prevent fur=
-ther errors we will unload the extension.
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_err("error in ex=
-tension, unloading: %s",
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 hook_node->name);
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __battery_hook_unre=
-gister(hook_node, 0);
->>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 }
->>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 hook_node->add_battery(battery->bat);
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mutex_unlock(&hook_mutex);
->>>>>>  =C2=A0 }
->>>>>> --
->>>>>> 2.30.2
->>>>>>
+Thanks
