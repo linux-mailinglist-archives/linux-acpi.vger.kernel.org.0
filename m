@@ -2,171 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A0E65EDBE2
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Sep 2022 13:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A09D5EDC59
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Sep 2022 14:12:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233387AbiI1Lhm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Sep 2022 07:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41068 "EHLO
+        id S230486AbiI1MMV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Sep 2022 08:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232166AbiI1Lhm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 07:37:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5489F261
-        for <linux-acpi@vger.kernel.org>; Wed, 28 Sep 2022 04:37:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1664365060;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0T5p0Y493/N1/pFQ05/rtmN/mCGm71H3Y3YBZL6Swqk=;
-        b=eRZ3KYfffdOqzw+0qQ9A5eOC33IM5lrHCrkZoIg1KV06iwXErgt0XlI7LrGmJYxLaf9tXu
-        5qEzirTiOcKpE4lzoWuAgVdYE9MgRkLF2Q1y0HLG8/yeArdMqtFyB72zvqWUhtGZ9RNQDU
-        Lk93hpsWhZQFxxez49GCRR9immalOXE=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-626-9IrNm6PtNuOYzfrRVKLcLQ-1; Wed, 28 Sep 2022 07:37:39 -0400
-X-MC-Unique: 9IrNm6PtNuOYzfrRVKLcLQ-1
-Received: by mail-ed1-f69.google.com with SMTP id e15-20020a056402190f00b0044f41e776a0so10016057edz.0
-        for <linux-acpi@vger.kernel.org>; Wed, 28 Sep 2022 04:37:39 -0700 (PDT)
+        with ESMTP id S230140AbiI1MMU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 08:12:20 -0400
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3C778BCB;
+        Wed, 28 Sep 2022 05:12:19 -0700 (PDT)
+Received: by mail-qk1-f174.google.com with SMTP id d17so7664832qko.13;
+        Wed, 28 Sep 2022 05:12:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=0T5p0Y493/N1/pFQ05/rtmN/mCGm71H3Y3YBZL6Swqk=;
-        b=u+yNfBMln0VVDxISgsHWTNvB9GxBWC/wCTm8IjoYW/wYbExLCSgZmd+gwcNsjX2MpN
-         JiTuE1qGb8qzqignpUYMdDCm/hSEcH9JX1n9miaJ7vZiaN+GZlCu4cLZblVqgpDHbGDK
-         scuPfAXMkd627CTMsB3FmDxWHago4YQQcD0dmo7fQbK4WKpM9xnxFm/pMmG2PPzxavmV
-         jBOtwbLBNS9wUCx+AzT864X//u9D4VOvHYFtoaIZ2HlYCQxXryM9wyKlNwfxyXl8TtRP
-         6zE0+QWHvys3YPV8+mFTiTzSEvZqHcJAJPRbuDyofZiBxenRMgPXqKlD8Co9+ndN9PnI
-         BcRg==
-X-Gm-Message-State: ACrzQf1meIUyT0lLmVpso/bDHbHSg50XiMgXGhsKyy02a3YOsNGALBMN
-        fFceGPn1vCkrAJH8tCgnbQ/reVZ+JAeA0bUo73Ab+i70rw4061Gez5xWaSicQe4A1PzDHqOtT3S
-        bcbblMiZUBJex/wBbX2zp0Q==
-X-Received: by 2002:a05:6402:26d3:b0:451:6ca9:bc5e with SMTP id x19-20020a05640226d300b004516ca9bc5emr32273444edd.325.1664365057844;
-        Wed, 28 Sep 2022 04:37:37 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM6J5SyvliErxGF0qTfW1ornZaChW4ObCnJt1VQvxNMBQ1ccJSZzHeSK4pKYUynVHmeoQmY29A==
-X-Received: by 2002:a05:6402:26d3:b0:451:6ca9:bc5e with SMTP id x19-20020a05640226d300b004516ca9bc5emr32273402edd.325.1664365057231;
-        Wed, 28 Sep 2022 04:37:37 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id p14-20020a17090653ce00b0077f20a722dfsm2225594ejo.165.2022.09.28.04.37.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Sep 2022 04:37:36 -0700 (PDT)
-Message-ID: <4e579766-5b95-d44a-c482-e629889b482b@redhat.com>
-Date:   Wed, 28 Sep 2022 13:37:35 +0200
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=CIqGVzBaFaFFR5UclyBFi8HgM/GRxAdQUGRuC1Ped5c=;
+        b=5yTBRQUphVDe+1CBMpc2f8xetTJ695YWR1tbOU8N8EoP7b1LIRkzNc+PLo7gWKPiEn
+         eDM1aBW6gm6qo9MvqOQtMIKggJGX/RN513jSexOrTroDZ37G/VPWILYO+zkcH3qGz/Lj
+         SH/K9KJunU2VqpT2zmxO8/EyxlHk26bkvcLc4YFLWnDcYDZDNg7DSE7+o1+dpC/Z3ohX
+         s+wGrB3Q2ndvGPHXga3Ke53nacua82WQdUail7FWEFZLJQKWDN8+F3KvUqIOP3VHIemX
+         zmC3wiOQTeB6DS6YZa66QCHLXFaLxDX8ztp7O19pK698vCq5/ecZ3iGMU3M8tvrXBkv3
+         Yhpg==
+X-Gm-Message-State: ACrzQf3PqK+xpP6I7GY1i5yKurNSWwjdfbmfYF7idxpIbMgPp//PXkZo
+        P+/fvqBw+bYkE+muL4oUALBnzK/clSlz6e1s7dEMdZuJ/vY=
+X-Google-Smtp-Source: AMsMyM75tbp+YtjShb747Y5XEHihnf4/GsshmS5UZxr0V4F4sqiP8NbWSDqDgZDVRfCw80XTodVOFfu68VgvS8Y3Dt0=
+X-Received: by 2002:a05:620a:2988:b0:6ce:cc3f:73b9 with SMTP id
+ r8-20020a05620a298800b006cecc3f73b9mr21046124qkp.9.1664367138442; Wed, 28 Sep
+ 2022 05:12:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [PATCH v2 0/2] platform/x86: dell: Add new dell-wmi-ddv driver
-Content-Language: en-US, nl
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc:     Armin Wolf <W_Armin@gmx.de>, markgross@kernel.org,
-        rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
-        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
-        productdev@system76.com, mario.limonciello@amd.com,
-        pobrn@protonmail.com, coproscefalo@gmail.com,
-        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220927204521.601887-1-W_Armin@gmx.de>
- <8d976e9c-8fea-8a67-1331-7993705c60d9@redhat.com>
- <YzQmdwTE2XcratWr@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <YzQmdwTE2XcratWr@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220927142822.4095-1-andriy.shevchenko@linux.intel.com> <YzP5UkYKahQR7FtZ@kuha.fi.intel.com>
+In-Reply-To: <YzP5UkYKahQR7FtZ@kuha.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 28 Sep 2022 14:12:02 +0200
+Message-ID: <CAJZ5v0jwQsqRZRX_=9aB-iDMCvp1qx__5P-2jDH9ts-_a3KTnQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/5] device property: Keep dev_fwnode() and
+ dev_fwnode_const() separate
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     Prashant Malani <pmalani@chromium.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>, Daniel Scally <djrscally@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Sep 28, 2022 at 9:36 AM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
+>
+> On Tue, Sep 27, 2022 at 05:28:17PM +0300, Andy Shevchenko wrote:
+> > It's not fully correct to take a const parameter pointer to a struct
+> > and return a non-const pointer to a member of that struct.
+> >
+> > Instead, introduce a const version of the dev_fwnode() API which takes
+> > and returns const pointers and use it where it's applicable.
+> >
+> > Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>
+> For the whole series:
+>
+> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+>
+> > ---
+> >  drivers/base/property.c  | 11 +++++++++--
+> >  include/linux/property.h |  3 ++-
+> >  2 files changed, 11 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/base/property.c b/drivers/base/property.c
+> > index 4d6278a84868..699f1b115e0a 100644
+> > --- a/drivers/base/property.c
+> > +++ b/drivers/base/property.c
+> > @@ -17,13 +17,20 @@
+> >  #include <linux/property.h>
+> >  #include <linux/phy.h>
+> >
+> > -struct fwnode_handle *dev_fwnode(const struct device *dev)
+> > +struct fwnode_handle *dev_fwnode(struct device *dev)
+> >  {
+> >       return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+> >               of_fwnode_handle(dev->of_node) : dev->fwnode;
+> >  }
+> >  EXPORT_SYMBOL_GPL(dev_fwnode);
+> >
+> > +const struct fwnode_handle *dev_fwnode_const(const struct device *dev)
+> > +{
+> > +     return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+> > +             of_fwnode_handle(dev->of_node) : dev->fwnode;
+> > +}
+> > +EXPORT_SYMBOL_GPL(dev_fwnode_const);
+> > +
+> >  /**
+> >   * device_property_present - check if a property of a device is present
+> >   * @dev: Device whose property is being checked
+> > @@ -1202,7 +1209,7 @@ EXPORT_SYMBOL(fwnode_graph_parse_endpoint);
+> >
+> >  const void *device_get_match_data(const struct device *dev)
+> >  {
+> > -     return fwnode_call_ptr_op(dev_fwnode(dev), device_get_match_data, dev);
+> > +     return fwnode_call_ptr_op(dev_fwnode_const(dev), device_get_match_data, dev);
+> >  }
+> >  EXPORT_SYMBOL_GPL(device_get_match_data);
+> >
+> > diff --git a/include/linux/property.h b/include/linux/property.h
+> > index 117cc200c656..ae5d7f8eccf4 100644
+> > --- a/include/linux/property.h
+> > +++ b/include/linux/property.h
+> > @@ -32,7 +32,8 @@ enum dev_dma_attr {
+> >       DEV_DMA_COHERENT,
+> >  };
+> >
+> > -struct fwnode_handle *dev_fwnode(const struct device *dev);
+> > +struct fwnode_handle *dev_fwnode(struct device *dev);
+> > +const struct fwnode_handle *dev_fwnode_const(const struct device *dev);
+> >
+> >  bool device_property_present(struct device *dev, const char *propname);
+> >  int device_property_read_u8_array(struct device *dev, const char *propname,
+> > --
 
-On 9/28/22 12:48, Andy Shevchenko wrote:
-> On Wed, Sep 28, 2022 at 11:52:51AM +0200, Hans de Goede wrote:
->> On 9/27/22 22:45, Armin Wolf wrote:
->>> This patch series adds a new driver for a WMI interface found in
->>> many newer Dell machines. This interface allows to read battery
->>> properties like temperature and the ePPID (Dell-specific), while
->>> also providing fan and thermal sensor information.
->>>
->>> The interface does support multiple batteries which are indentified
->>> by an "index", which appears to be the battery ACPI UID. Since
->>> the interface also appears to omit any bounts checking of the
->>> index, the ACPI battery hook mechanism is used to discover batteries.
->>>
->>> Since the information returned when querying fan/thermal sensor
->>> information is currently unknown, a debugfs entry is created to
->>> allow for easier reverse engineering. The interface is likely
->>> to be replaced by a proper hwmon interface in the future.
->>>
->>> Since the driver can potentially be instantiated multiple times,
->>> the ACPI battery hook mechanism had to be extended.
->>>
->>> The first patch passes a pointer to the battery hook to the
->>> hook callbacks, so that they can access instance-specific data
->>> with container_of().
->>>
->>> The second patch finally adds the new driver. It was called
->>> dell-wmi-ddv since the interface is called "DDV" by Dell software,
->>> likely meaning "Dell Data Vault".
->>>
->>> The driver was tested, together with the changes made to the
->>> ACPI battery driver, on a Dell Inspiron 3505. Other drivers
->>> already using the battery hook mechanism where changed as well,
->>> but could only be compile-tested due to missing hardware.
->>>
->>> ---
->>> Changes in v2:
->>> - Significantly lower the amount of changes being made to the
->>> acpi battery driver
->>> - drop unnecessary ABI description of the temp attribute
->>> - return 0 when a unsupported battery is found to avoid being
->>> unloaded
->>>
->>> Armin Wolf (2):
->>>   ACPI: battery: Pass battery hook pointer to hook callbacks
->>>   platform/x86: dell: Add new dell-wmi-ddv driver
->>
->> Thanks.
->>
->> The new version looks good to me:
->>
->> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->>
->> for the series.
->>
->> Rafael, from my POV this can be merged through either your
->> tree or mine. Feel free to merge this through your tree,
->> or please give your Ack for merging through mine
->> (assuming you are ok with the changes of course).
-> 
-> I gave some comments, but it's up to you if they have to be addressed now or as
-> a follow up.
+So I would like all of you to see the response from Greg to the v2 of
+this patch and provide your input in that thread:
 
-I have answered a couple of your comments.
-
-What remains is very small / trivial. So IMHO this can go in as
-is and then a follow-up patch can be done to address your remaining
-comments. Armin, can you do a follow-up patch addressing Andy's
-remaining comments please?
-
-I guess it also depends on Rafael and if Rafael is ok with taking
-this for 6.1 or if this is going to be 6.2 material.
-
-If this is going to be delayed till 6.2, then we can squash in
-the follow-up patch while merging.
-
-Regards,
-
-Hans
-
-
-
+https://lore.kernel.org/linux-acpi/YzQqcFZtJn90URrJ@kroah.com/T/#u
