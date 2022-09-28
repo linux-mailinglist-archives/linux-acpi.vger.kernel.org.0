@@ -2,113 +2,299 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 775995EDB3A
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Sep 2022 13:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A64AD5EDBD4
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Sep 2022 13:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233671AbiI1LIX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Sep 2022 07:08:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38512 "EHLO
+        id S233331AbiI1LeB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Sep 2022 07:34:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234029AbiI1LH4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 07:07:56 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF14101962;
-        Wed, 28 Sep 2022 04:05:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 1F0AECE1E0E;
-        Wed, 28 Sep 2022 11:05:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A9AC433C1;
-        Wed, 28 Sep 2022 11:05:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1664363123;
-        bh=hjJNq8fnvzNa+xcgY2fbdv63qk0sriuoXr4L9LoZTA4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Jts7knNVMGAXXpFgv3N/rNxUiA7KZtNei74t90zWvg9uR+501l/R99wtdQ5qLxyBp
-         VWWTnwwfGGar9eaUmoHGjgKMy0+zubfVu884PtbNVzPsfUJ7+pw0SBBpgcnGie9xBw
-         +Fsjp4iOt8VzLrLJumsVOitjdom4jx4GpJto38j0=
-Date:   Wed, 28 Sep 2022 13:05:20 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 1/5] device property: Keep dev_fwnode() and
- dev_fwnode_const() separate
-Message-ID: <YzQqcFZtJn90URrJ@kroah.com>
-References: <20220928105746.51208-1-andriy.shevchenko@linux.intel.com>
- <20220928105746.51208-2-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S233190AbiI1LeA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 07:34:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED7388A03
+        for <linux-acpi@vger.kernel.org>; Wed, 28 Sep 2022 04:33:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1664364838;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7VeawPEceN+pwXUUW/zmLlav8YN5wm0rpt26Ow1zsZo=;
+        b=daR44wPRKioS/nH/6kGULGlnjzT3Zu4+3VhiV7yd5bvkRk97BeFa9GoBJELkubLJjTvZY3
+        CaqOZtgUcGXqxZvth8W0DrVcDZLt2m2jwnaq73DGZuaC+sA40G0EVEiSurF2HkRoTDNJG0
+        9BjKt5W56XF7mwD4K8WXLEy8ZMh8Jc4=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-623-lf4HREbkNrKoCGcqMFCwkg-1; Wed, 28 Sep 2022 07:33:57 -0400
+X-MC-Unique: lf4HREbkNrKoCGcqMFCwkg-1
+Received: by mail-ej1-f70.google.com with SMTP id ga36-20020a1709070c2400b007837e12cd7bso4226324ejc.9
+        for <linux-acpi@vger.kernel.org>; Wed, 28 Sep 2022 04:33:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=7VeawPEceN+pwXUUW/zmLlav8YN5wm0rpt26Ow1zsZo=;
+        b=gJfZGRCZ6TeOhB8L5qoEFgursdMmN3Y5YDT+2/MwCUv6esdDiM/vxux+H7/jtB+WlS
+         snRuNb1F+GJkXw3kX+oMaY8p+vP+sAT1xl1rc8P5iOjY/bGMccd2lfNEBRJvayf55B+T
+         gjdKQ/1y8AcGWt3nsvPc0kGVr4TZRJjzEugn9bcCBT18wkjArdRL/NEIRcCtl2MXZAEU
+         /f71nCDcwKdUj2m+yhbp+SPSNkzvke6Wzo83BJF2gfXFxZBjdI/zaNn/u0/to319RKUx
+         6dWkURkSU+pwL1cAm4gduaoO4/+qMSWk1LipERbJxQ7hRT5ioNCs+fDSr5ZYUw38X9Mx
+         5xGQ==
+X-Gm-Message-State: ACrzQf2SeS0kRqoJmcocoj9Ali7TI7QhvuxMIrWKmyGBKoALiKGbdAjR
+        5MFQ8jw/jCDvXxGQ3sCHwMWJBInaVN0C2GhlXTW+kynrP1zaw1GHevc3Pbor6SpgmWsfbg1s44X
+        tV1dhZKK8NGfcOK/gkrfOJQ==
+X-Received: by 2002:a17:907:628f:b0:72f:58fc:3815 with SMTP id nd15-20020a170907628f00b0072f58fc3815mr26800436ejc.719.1664364836242;
+        Wed, 28 Sep 2022 04:33:56 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM4Vgmkd143Xk/e7/oWKmjX1NPF5j5X0zLls0y2CgyjF+3pegkCzVm2mn9sbJ7adTkCjioK9qQ==
+X-Received: by 2002:a17:907:628f:b0:72f:58fc:3815 with SMTP id nd15-20020a170907628f00b0072f58fc3815mr26800415ejc.719.1664364835994;
+        Wed, 28 Sep 2022 04:33:55 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id r10-20020a1709061baa00b00783f32d7eaesm2209172ejg.164.2022.09.28.04.33.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Sep 2022 04:33:55 -0700 (PDT)
+Message-ID: <aaacb093-c5b2-09b4-2ddc-966b3b11544e@redhat.com>
+Date:   Wed, 28 Sep 2022 13:33:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220928105746.51208-2-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.1
+Subject: Re: [PATCH v2 2/2] platform/x86: dell: Add new dell-wmi-ddv driver
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Armin Wolf <W_Armin@gmx.de>
+Cc:     markgross@kernel.org, rafael@kernel.org, lenb@kernel.org,
+        hmh@hmh.eng.br, matan@svgalib.org, corentin.chary@gmail.com,
+        jeremy@system76.com, productdev@system76.com,
+        mario.limonciello@amd.com, pobrn@protonmail.com,
+        coproscefalo@gmail.com, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220927204521.601887-1-W_Armin@gmx.de>
+ <20220927204521.601887-3-W_Armin@gmx.de>
+ <YzQmQw0hEwzXV/iz@smile.fi.intel.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <YzQmQw0hEwzXV/iz@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 01:57:42PM +0300, Andy Shevchenko wrote:
-> It's not fully correct to take a const parameter pointer to a struct
-> and return a non-const pointer to a member of that struct.
+Hi,
+
+On 9/28/22 12:47, Andy Shevchenko wrote:
+> On Tue, Sep 27, 2022 at 10:45:21PM +0200, Armin Wolf wrote:
+>> The dell-wmi-ddv driver adds support for reading
+>> the current temperature and ePPID of ACPI batteries
+>> on supported Dell machines.
+>>
+>> Since the WMI interface used by this driver does not
+>> do any input validation and thus cannot be used for probing,
+>> the driver depends on the ACPI battery extension machanism
+>> to discover batteries.
+>>
+>> The driver also supports a debugfs interface for retrieving
+>> buffers containing fan and thermal sensor information.
+>> Since the meaing of the content of those buffers is currently
+>> unknown, the interface is meant for reverse-engineering and
+>> will likely be replaced with an hwmon interface once the
+>> meaning has been understood.
+>>
+>> The driver was tested on a Dell Inspiron 3505.
 > 
-> Instead, introduce a const version of the dev_fwnode() API which takes
-> and returns const pointers and use it where it's applicable.
+> ...
 > 
-> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/base/property.c  | 11 +++++++++--
->  include/linux/property.h |  3 ++-
->  2 files changed, 11 insertions(+), 3 deletions(-)
+>> +config DELL_WMI_DDV
+>> +	tristate "Dell WMI sensors Support"
 > 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 4d6278a84868..699f1b115e0a 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -17,13 +17,20 @@
->  #include <linux/property.h>
->  #include <linux/phy.h>
->  
-> -struct fwnode_handle *dev_fwnode(const struct device *dev)
-> +struct fwnode_handle *dev_fwnode(struct device *dev)
->  {
->  	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
->  		of_fwnode_handle(dev->of_node) : dev->fwnode;
->  }
->  EXPORT_SYMBOL_GPL(dev_fwnode);
->  
-> +const struct fwnode_handle *dev_fwnode_const(const struct device *dev)
-> +{
-> +	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
-> +		of_fwnode_handle(dev->of_node) : dev->fwnode;
-> +}
-> +EXPORT_SYMBOL_GPL(dev_fwnode_const);
+>> +	default m
+> 
+> Why? (Imagine I have Dell, but old machine)
 
-Ick, no, this is a mess.
+Then you can select N if you really want to.
 
-Either always return a const pointer, or don't.  Ideally always return a
-const pointer, so all we really need is:
+> (And yes, I see that other Kconfig options are using it, but we shall avoid
+>  cargo cult and each default choice like this has to be explained at least.)
 
-const struct fwnode_handle *dev_fwnode(const struct device *dev);
+This has been discussed during the review of v1 already.
 
-right?
+There are quite a few dell modules and the choice has
+been made to put these all behind a dell platform drivers
+options and then default all the individual modules to 'm'.
 
-Yes, it will take some unwinding backwards to get there, but please do
-that instead of having 2 different functions where the parameter type is
-part of the function name.  This isn't the 1980's...
+> ...
+> 
+>> + * dell-wmi-ddv.c -- Linux driver for WMI sensor information on Dell notebooks.
+> 
+> Please, remove file name from the file. This will be an additional burden in
+> the future in case it will be renamed.
+> 
+> ...
+> 
+>> +#include <acpi/battery.h>
+> 
+> Is it required to be the first? Otherwise it seems ACPI specific to me and the
+> general rule is to put inclusions from generic towards custom. I.o.w. can you
+> move it after linux/wmi.h with a blank line in between?
+> 
+>> +#include <linux/acpi.h>
+>> +#include <linux/debugfs.h>
+>> +#include <linux/device.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/kstrtox.h>
+>> +#include <linux/math.h>
+>> +#include <linux/module.h>
+>> +#include <linux/limits.h>
+>> +#include <linux/power_supply.h>
+>> +#include <linux/seq_file.h>
+>> +#include <linux/sysfs.h>
+>> +#include <linux/wmi.h>
+> 
+> ...
+> 
+>> +struct dell_wmi_ddv_data {
+>> +	struct acpi_battery_hook hook;
+>> +	struct device_attribute temp_attr, eppid_attr;
+> 
+> It's hard to read and easy to miss that the data type has two members here.
+> Please, put one member per one line.
+> 
+>> +	struct wmi_device *wdev;
+>> +};
+> 
+> ...
+> 
+>> +	if (obj->type != type) {
+>> +		kfree(obj);
+>> +		return -EIO;
+> 
+> EINVAL?
+> 
+>> +	}
+> 
+> ...
+> 
+>> +	kfree(obj);
+> 
+> I'm wondering what is the best to use in the drivers:
+>  1) kfree()
+>  2) acpi_os_free()
+>  3) ACPI_FREE()
+> 
+> ?
 
-thanks,
+Most ACPI driver code I know of just uses kfree() the other 2
+are more ACPI-core / ACPICA internal helpers.
 
-greg k-h
+
+> 
+> ...
+> 
+>> +static int dell_wmi_ddv_battery_index(struct acpi_device *acpi_dev, u32 *index)
+>> +{
+> 
+>> +	const char *uid_str = acpi_device_uid(acpi_dev);
+>> +
+>> +	if (!uid_str)
+>> +		return -ENODEV;
+> 
+> It will be better for maintaining to have
+> 
+> 	const char *uid_str...;
+> 
+> 	uid_str = ...
+> 	if (!uid_str)
+> 		...
+> 
+>> +	return kstrtou32(uid_str, 10, index);
+>> +}
+> 
+> ...
+> 
+>> +	/* Return 0 instead of error to avoid being unloaded */
+>> +	ret = dell_wmi_ddv_battery_index(to_acpi_device(battery->dev.parent), &index);
+>> +	if (ret < 0)
+>> +		return 0;
+> 
+> How index is used?
+
+index is used in the registered sysfs attr show functions,
+so if this fails then the sysfs attr should not be registered.
+
+> 
+> ...
+> 
+>> +	ret = device_create_file(&battery->dev, &data->temp_attr);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	ret = device_create_file(&battery->dev, &data->eppid_attr);
+>> +	if (ret < 0) {
+>> +		device_remove_file(&battery->dev, &data->temp_attr);
+>> +
+>> +		return ret;
+>> +	}
+> 
+> Why dev_groups member can't be utilized?
+
+Because this is an extension to the ACPI battery driver, IOW
+this adds extra attributes to the power-supply-class device
+registered by the ACPI battery driver. Note that the device
+in this case is managed by the power-supply-class code, so
+there is no access to dev_groups even in the ACPI battery code.
+
+> 
+> ...
+> 
+>> +static void dell_wmi_ddv_debugfs_init(struct wmi_device *wdev)
+> 
+> Strictly speaking this should return int (see below).
+> 
+>> +{
+>> +	struct dentry *entry;
+>> +	char name[64];
+>> +
+>> +	scnprintf(name, ARRAY_SIZE(name), "%s-%s", DRIVER_NAME, dev_name(&wdev->dev));
+>> +	entry = debugfs_create_dir(name, NULL);
+>> +
+>> +	debugfs_create_devm_seqfile(&wdev->dev, "fan_sensor_information", entry,
+>> +				    dell_wmi_ddv_fan_read);
+>> +	debugfs_create_devm_seqfile(&wdev->dev, "thermal_sensor_information", entry,
+>> +				    dell_wmi_ddv_temp_read);
+>> +
+>> +	devm_add_action_or_reset(&wdev->dev, dell_wmi_ddv_debugfs_remove, entry);
+> 
+> return devm...
+> 
+> This is not related to debugfs and there is no rule to avoid checking error
+> codes from devm_add_action_or_reset().
+> 
+>> +}
+> 
+> ...
+> 
+>> +static struct wmi_driver dell_wmi_ddv_driver = {
+>> +	.driver = {
+>> +		.name = DRIVER_NAME,
+> 
+> I would use explicit literal since this is a (semi-) ABI, and having it as
+> a define feels not fully right.
+> 
+>> +	},
+>> +	.id_table = dell_wmi_ddv_id_table,
+>> +	.probe = dell_wmi_ddv_probe,
+>> +};
+> 
+
+
+Regards,
+
+Hans
+
