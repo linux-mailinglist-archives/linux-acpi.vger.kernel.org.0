@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 468765EE92E
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 00:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A90655EE93F
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 00:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233585AbiI1WKq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Sep 2022 18:10:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45998 "EHLO
+        id S234141AbiI1WQr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Sep 2022 18:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233495AbiI1WKp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 18:10:45 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEC472A730;
-        Wed, 28 Sep 2022 15:10:41 -0700 (PDT)
+        with ESMTP id S233818AbiI1WQq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 18:16:46 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274E6CD66A;
+        Wed, 28 Sep 2022 15:16:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1664402995;
-        bh=6IBYOglFVphYzLyS7Cy9i6YsOeXFYUH6ZBhePpREwzk=;
+        s=badeba3b8450; t=1664403305;
+        bh=ibjtVxtpavqCZDVP7y4RI1PBz/mwSGzCcQeKG6o8fQY=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=X0Xdt3BI6W9hoGCzFIpUNbM76q+hGJQ6McZOIPqHCIRHrnUlEQOJcSn16rGstoHQN
-         cOTcFHkV6+FGf/hjaTKpZOJuuo+JeyixhnZR718auH1zW8wjpoPXJpkVOP8tTzeE88
-         48hzqcP1QCJ1yQ02DXdMdZr72du5prTJXNtJ2B9E=
+        b=hrDx7HjzYoAWaDsASGWu0HH3ZiQTaCP1a5rsk1Ki2iQZPWzDRJ/z17Vfh22TRSMm/
+         hRIGdtTLWw/ueCIXQjq4fQ30KWMLNyQuSXa9Nb4SKjCHIT4LbsUNI9F0dgQ/6ITP4S
+         7kgQ0CUzJ4TFUJFqg/uz9rGW2PTLdrFkPKzwukws=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MBlxW-1oW0H12GjM-00C7I2; Thu, 29 Sep 2022 00:09:55 +0200
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MkYXm-1p5c5G3LYs-00lzGi; Thu, 29 Sep 2022 00:15:04 +0200
 From:   Armin Wolf <W_Armin@gmx.de>
 To:     hdegoede@redhat.com, markgross@kernel.org
 Cc:     andriy.shevchenko@intel.com, rafael@kernel.org, lenb@kernel.org,
@@ -33,34 +33,34 @@ Cc:     andriy.shevchenko@intel.com, rafael@kernel.org, lenb@kernel.org,
         mario.limonciello@amd.com, pobrn@protonmail.com,
         coproscefalo@gmail.com, platform-driver-x86@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] platform/x86: dell: Minor style fixes
-Date:   Thu, 29 Sep 2022 00:09:52 +0200
-Message-Id: <20220928220952.2772-1-W_Armin@gmx.de>
+Subject: [PATCH v2] platform/x86: dell-ddv: Minor style fixes
+Date:   Thu, 29 Sep 2022 00:15:01 +0200
+Message-Id: <20220928221501.3823-1-W_Armin@gmx.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:51Ed9uc991NPy61dqt81skN2+lxNAdMCc4CN0jXk+lkQmizRVQE
- R2SfhDNsa1F4/9OUHiuDimO0gjiqH58/EyN1dFpQgx3p4ftsgcPjyWtDQlVY3Vf9meSUcEw
- 7vAn84g79jyGORhzjna8vpIVOWupzwOme5gx0jwaBS8+4xZaUGP8hule9kHgLt4cC2u27O5
- SbkGn5SZIRhjy3d62um9w==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1gMNfHiW/sg=:nV4t9vDBx8l57vTkyCoNRq
- 107MHEYNwldTJ7m3aofqcOhBwmjdSFZNoaa+/CegCOPTMXgdvdVW5Bwk8WXuYMC0cBtx6jaL7
- 2SbJKEuVgwwAyCCaRynTILqXXTrHH18IhZfYtn1NRnnfcNMaq0a0OPf+1EzgL18Um1CSl7xMS
- gL6cmaGelIxNkz1kaP/GoRUAJSv7/LKd+4dXtA/7Cgvw5GAmbWE007IUhbp1TVCVwB3WW0uP0
- Xn378232EkHburjZmdaCOoNC/ZAWMOHcHRCpDSRK/Gr5w/sNBnQ+48kmEiBxGDx+zjEcDuxIA
- DOAZaCe7xz37+Yk8PCQICZO1J8y6L0gsKnIsABnFddVvEDAVAY4wbZM8D/g25QQqQ/y4P0cas
- mJsvBWCGeGcaYOKbqo8CGaEhp0KN5msM7WkP3+u9lBnHwNyKafAosn9U+yurKS+d3OkxMoiB2
- e+HtAh4MC7gnsy9e6G3t9TS1XC9Z7VzWpPbwCQ70rrGvo0nonP01y4dqoaV60GlfCylRrhD+o
- p0RaXhmoWwOYTclsTSOaHrY9w1N9baSJqUIxTAw2kJ8pTkPeZoC+2EYo8LOyXNrJO/5Wic3JW
- T6eU1ZXxgHYKUcxnDXPMBp95ty3UUxMfwRofv1T4Wqljh84Ki+evp9IxKuXfQqk8DwWvwiGJN
- HR1PRFiGWkHEoRF5dgrDAejzU7hkoBvZERtTp11dDPAlESlEELd5m6bfIFH2tH+lkQmGI1/QN
- pGZE4jIAVwglF5USXJ4r74i3P0P++USMl0R1KtpGoroigcB7ig61ekVLW1cwcO6aDNPvLz25G
- fyeVXrKAbBk0OuddzC/QRKv/TrF+eQk1sK51f98a8FENTMxSlCqCm3W6SoaKhixe3tDi/uGhC
- 3pe/xMpeUmag5/KOXTBFYzD2PfCaRDVZXwE0MF/XTMGjZ5IoYFSRqzCtqFQDs1MSHWh5W3P5v
- 81MEJKL095Nl/nuWeM0o4qOzcBeT5JtIBfQV4HHXVKc7oNn+hpidQPjcn8GyWUPLJeuN8b1cT
- bicQVddyAosTcxEMCbaIVB0sVTjCvsE65euPilJ0gOiQa9DiZFwwD9n/qT3lB3KftP/joEmzd
- ekuwO7FIdzXitfAZxia6Dbcm7JhjiE0yNVp2oTrfoNUGsrdC9cMxBNNhjmNYqehSJ+mU4vvRu
- mi2vNYV2w4sieED5MZQIw50IO/
+X-Provags-ID: V03:K1:nj6AwMYL8lgVwhwDheJAZPMH7j8l9XfP4urS0cXxMi7YJxVUm8E
+ n0A83QSE1P2VpTzjqJX3Vy7yLJSA5D9ezlOYvVSOXUn2no36RKDTi0ZBGcJv1e/LhUndhY5
+ MZ/i9FK9P19NEhKKbKkIy9F5u1ML7bSZiqDuphREmGOtGGPeS6wcDcphqsYj/FtWLFFVmEH
+ zf4bfA4KkWHOJ1IgoYiNw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xdckZvpyjd8=:hi0sBfM8Xh9mtue086RGXO
+ 3gPvmUARBZA4+URDKRFDkRXYhDPY83P63Yxe+tsGl2w7xv0YyKWOLDhtVqB3vFDYr4GAhr79K
+ JeXUmiFgvh4TekKSXZUAwyXikwi/PPwgSqHQFjKhEjPVdgMqwL/ZXEs9cJXIzSgSziIUujcTj
+ TPD8A08CT0vXsHoODmBBSOeUR4sFURlCBysIZfpOtlrNaNFc7AfFomwNVJrzbhZVaIf9xErbD
+ 791u3ZCcEyfo4PtEPMDLAt4+++KQJTXyyVC6mb6/AdtJA8pXoLoMcn/we8xUDoDUhvjvK/RdD
+ i72OF6A06pisb4zVjb0cMBHZn6X4ItpN+T7sZ5zXOGGZVkWGfbALL8OWUwoFbcC1sm0c9yKiR
+ WQP92NAEHENgpMY15vJe82Z2xA+O+NdCRFusG5eHqdCWT/CJN2NT9OYNRXP3WRY6cvdvL/H3a
+ KcwwROb5aQiJPL14ZNZ8epJ8rtGcAYDislFIOTwz5IaSYqfeEEwi/vixVGhYximgyzRExcR5U
+ XMcrYuVpNJuOoG7vrTV35yj8IEHpzrEFzDQOQESqmV43B0+snP0tKyPI6/EY768u8qgjXt4zd
+ 1G7va3PaMiAzvo4GvFC6UlCBWPjkjAHz5Kg0kt8giX0PsWCtx2pS2JdKGt4C9twxD80VQ4KOY
+ YqGHxt71zq/ZvNlBC95s0yu5aRHb1/an7GtT2Cv+C4u05MhD1ZEtaAZDkaAggbiYQwr48a5FY
+ 1Qe98sh8SfZTgJi4v1aARK0mMKaiXT+SiRnhfr5QqolBBQBOLlQFGNlX7wR9Og1VPlCEBmYDV
+ aSzctTLwNDu1xrsthU5rsr4o7e2yA9b9mY48VizaQvHDHYvHLSw8BJqbGCkQcGsQzCUiyeYDa
+ zDVNZSTB6pysv3oDIVRSmeeMoP+moMHqqiVYWe5tC2kap71fqUsFuW6VXEj6090vFtoZv27CW
+ /4bae19AC917rY1QS1PXVP05quOa1mfNuQzBa9yHaRHgogodQ78QtCqJEB3OgCuke/g2PNiRT
+ fw7k9Nv2VXJ2cKELW3E11pwxhlzC+9GrdN+s6J60EiXnp4oVxEN2rjmZjLDDJVzudt4eDvXrN
+ brqMJh3Bhj6N/RSLlOCm2+kHsnr7wlmfoxvh+yaWhw34l6xH3JcqPAPAAamY1w3onckklyNnb
+ M9uarj3gTho4/6LIGi0Jk9jNoU
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -76,6 +76,9 @@ code maintainability, no functional changes.
 Tested on a Dell Inspiron 3505.
 
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+Changes in v2:
+- change commit message
 =2D--
  drivers/platform/x86/dell/dell-wmi-ddv.c | 11 +++++++----
  1 file changed, 7 insertions(+), 4 deletions(-)
