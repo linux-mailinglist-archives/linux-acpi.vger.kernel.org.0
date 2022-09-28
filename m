@@ -2,140 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A09D5EDC59
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Sep 2022 14:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D16E95EDE99
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Sep 2022 16:16:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230486AbiI1MMV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Sep 2022 08:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60872 "EHLO
+        id S234300AbiI1OQi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Sep 2022 10:16:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230140AbiI1MMU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 08:12:20 -0400
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3C778BCB;
-        Wed, 28 Sep 2022 05:12:19 -0700 (PDT)
-Received: by mail-qk1-f174.google.com with SMTP id d17so7664832qko.13;
-        Wed, 28 Sep 2022 05:12:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=CIqGVzBaFaFFR5UclyBFi8HgM/GRxAdQUGRuC1Ped5c=;
-        b=5yTBRQUphVDe+1CBMpc2f8xetTJ695YWR1tbOU8N8EoP7b1LIRkzNc+PLo7gWKPiEn
-         eDM1aBW6gm6qo9MvqOQtMIKggJGX/RN513jSexOrTroDZ37G/VPWILYO+zkcH3qGz/Lj
-         SH/K9KJunU2VqpT2zmxO8/EyxlHk26bkvcLc4YFLWnDcYDZDNg7DSE7+o1+dpC/Z3ohX
-         s+wGrB3Q2ndvGPHXga3Ke53nacua82WQdUail7FWEFZLJQKWDN8+F3KvUqIOP3VHIemX
-         zmC3wiOQTeB6DS6YZa66QCHLXFaLxDX8ztp7O19pK698vCq5/ecZ3iGMU3M8tvrXBkv3
-         Yhpg==
-X-Gm-Message-State: ACrzQf3PqK+xpP6I7GY1i5yKurNSWwjdfbmfYF7idxpIbMgPp//PXkZo
-        P+/fvqBw+bYkE+muL4oUALBnzK/clSlz6e1s7dEMdZuJ/vY=
-X-Google-Smtp-Source: AMsMyM75tbp+YtjShb747Y5XEHihnf4/GsshmS5UZxr0V4F4sqiP8NbWSDqDgZDVRfCw80XTodVOFfu68VgvS8Y3Dt0=
-X-Received: by 2002:a05:620a:2988:b0:6ce:cc3f:73b9 with SMTP id
- r8-20020a05620a298800b006cecc3f73b9mr21046124qkp.9.1664367138442; Wed, 28 Sep
- 2022 05:12:18 -0700 (PDT)
+        with ESMTP id S234307AbiI1OQf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 10:16:35 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1002A6AEA;
+        Wed, 28 Sep 2022 07:16:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664374587; x=1695910587;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5vq0qEvR6QMO1awFFXfP8C9KhW0DJh3xkyLxRxj/cK0=;
+  b=f7Fuy25YHJmLufS3jlymFACbfUcgrjjWkTWuzygDGulQ1G6MC/fpHLFs
+   qq4bR/WKjXtsJU5LopIMYGSrnB/uJPlZxrlW5i+Wci17n9ds8VR7tnXK3
+   J6F4HCTsWjX1sOnzrruqU3P5pmocG0jzdYVfpIqmp4AIpQgAPxA7t+dyI
+   8dBBl736N0oyQ0mWcKV9FBNFlq3ec4PYjr/knNgAWIODjPARscKM4bLoV
+   tSQTiYS0+sEy4Sx4zdh/7R+G+1qy7qHI+4u3BBIZYv/theiZX4CAVceLW
+   LpZ9DNbu71fKQFM7s6Zr6Jp1UPkArX/+kQPgQANKCfIpschXF1jj67M1K
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="281329205"
+X-IronPort-AV: E=Sophos;i="5.93,352,1654585200"; 
+   d="scan'208";a="281329205"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2022 07:16:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10484"; a="624163333"
+X-IronPort-AV: E=Sophos;i="5.93,352,1654585200"; 
+   d="scan'208";a="624163333"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 28 Sep 2022 07:16:22 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1odXrI-008xfW-07;
+        Wed, 28 Sep 2022 17:16:20 +0300
+Date:   Wed, 28 Sep 2022 17:16:19 +0300
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Armin Wolf <W_Armin@gmx.de>, markgross@kernel.org,
+        rafael@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
+        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
+        productdev@system76.com, mario.limonciello@amd.com,
+        pobrn@protonmail.com, coproscefalo@gmail.com,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] platform/x86: dell: Add new dell-wmi-ddv driver
+Message-ID: <YzRXM2wN4Z5TYsS9@smile.fi.intel.com>
+References: <20220927204521.601887-1-W_Armin@gmx.de>
+ <20220927204521.601887-3-W_Armin@gmx.de>
+ <YzQmQw0hEwzXV/iz@smile.fi.intel.com>
+ <aaacb093-c5b2-09b4-2ddc-966b3b11544e@redhat.com>
 MIME-Version: 1.0
-References: <20220927142822.4095-1-andriy.shevchenko@linux.intel.com> <YzP5UkYKahQR7FtZ@kuha.fi.intel.com>
-In-Reply-To: <YzP5UkYKahQR7FtZ@kuha.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 28 Sep 2022 14:12:02 +0200
-Message-ID: <CAJZ5v0jwQsqRZRX_=9aB-iDMCvp1qx__5P-2jDH9ts-_a3KTnQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/5] device property: Keep dev_fwnode() and
- dev_fwnode_const() separate
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Prashant Malani <pmalani@chromium.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
-        <linux-usb@vger.kernel.org>, Daniel Scally <djrscally@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaacb093-c5b2-09b4-2ddc-966b3b11544e@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 9:36 AM Heikki Krogerus
-<heikki.krogerus@linux.intel.com> wrote:
->
-> On Tue, Sep 27, 2022 at 05:28:17PM +0300, Andy Shevchenko wrote:
-> > It's not fully correct to take a const parameter pointer to a struct
-> > and return a non-const pointer to a member of that struct.
-> >
-> > Instead, introduce a const version of the dev_fwnode() API which takes
-> > and returns const pointers and use it where it's applicable.
-> >
-> > Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
-> For the whole series:
->
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
->
-> > ---
-> >  drivers/base/property.c  | 11 +++++++++--
-> >  include/linux/property.h |  3 ++-
-> >  2 files changed, 11 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/base/property.c b/drivers/base/property.c
-> > index 4d6278a84868..699f1b115e0a 100644
-> > --- a/drivers/base/property.c
-> > +++ b/drivers/base/property.c
-> > @@ -17,13 +17,20 @@
-> >  #include <linux/property.h>
-> >  #include <linux/phy.h>
-> >
-> > -struct fwnode_handle *dev_fwnode(const struct device *dev)
-> > +struct fwnode_handle *dev_fwnode(struct device *dev)
-> >  {
-> >       return IS_ENABLED(CONFIG_OF) && dev->of_node ?
-> >               of_fwnode_handle(dev->of_node) : dev->fwnode;
-> >  }
-> >  EXPORT_SYMBOL_GPL(dev_fwnode);
-> >
-> > +const struct fwnode_handle *dev_fwnode_const(const struct device *dev)
-> > +{
-> > +     return IS_ENABLED(CONFIG_OF) && dev->of_node ?
-> > +             of_fwnode_handle(dev->of_node) : dev->fwnode;
-> > +}
-> > +EXPORT_SYMBOL_GPL(dev_fwnode_const);
-> > +
-> >  /**
-> >   * device_property_present - check if a property of a device is present
-> >   * @dev: Device whose property is being checked
-> > @@ -1202,7 +1209,7 @@ EXPORT_SYMBOL(fwnode_graph_parse_endpoint);
-> >
-> >  const void *device_get_match_data(const struct device *dev)
-> >  {
-> > -     return fwnode_call_ptr_op(dev_fwnode(dev), device_get_match_data, dev);
-> > +     return fwnode_call_ptr_op(dev_fwnode_const(dev), device_get_match_data, dev);
-> >  }
-> >  EXPORT_SYMBOL_GPL(device_get_match_data);
-> >
-> > diff --git a/include/linux/property.h b/include/linux/property.h
-> > index 117cc200c656..ae5d7f8eccf4 100644
-> > --- a/include/linux/property.h
-> > +++ b/include/linux/property.h
-> > @@ -32,7 +32,8 @@ enum dev_dma_attr {
-> >       DEV_DMA_COHERENT,
-> >  };
-> >
-> > -struct fwnode_handle *dev_fwnode(const struct device *dev);
-> > +struct fwnode_handle *dev_fwnode(struct device *dev);
-> > +const struct fwnode_handle *dev_fwnode_const(const struct device *dev);
-> >
-> >  bool device_property_present(struct device *dev, const char *propname);
-> >  int device_property_read_u8_array(struct device *dev, const char *propname,
-> > --
+On Wed, Sep 28, 2022 at 01:33:53PM +0200, Hans de Goede wrote:
+> On 9/28/22 12:47, Andy Shevchenko wrote:
+> > On Tue, Sep 27, 2022 at 10:45:21PM +0200, Armin Wolf wrote:
 
-So I would like all of you to see the response from Greg to the v2 of
-this patch and provide your input in that thread:
+...
 
-https://lore.kernel.org/linux-acpi/YzQqcFZtJn90URrJ@kroah.com/T/#u
+> >> +	default m
+> > 
+> > Why? (Imagine I have Dell, but old machine)
+> 
+> Then you can select N if you really want to.
+> 
+> > (And yes, I see that other Kconfig options are using it, but we shall avoid
+> >  cargo cult and each default choice like this has to be explained at least.)
+> 
+> This has been discussed during the review of v1 already.
+> 
+> There are quite a few dell modules and the choice has
+> been made to put these all behind a dell platform drivers
+> options and then default all the individual modules to 'm'.
+
+Okay, thanks for pointing out that this was discussed. I was not aware.
+
+...
+
+> >> +	kfree(obj);
+> > 
+> > I'm wondering what is the best to use in the drivers:
+> >  1) kfree()
+> >  2) acpi_os_free()
+> >  3) ACPI_FREE()
+
+> > ?
+> 
+> Most ACPI driver code I know of just uses kfree() the other 2
+> are more ACPI-core / ACPICA internal helpers.
+
+To me 2) would look more consistent, esp. in case if it is extended in
+the future.
+
+...
+
+> >> +	ret = device_create_file(&battery->dev, &data->temp_attr);
+> >> +	if (ret < 0)
+> >> +		return ret;
+> >> +
+> >> +	ret = device_create_file(&battery->dev, &data->eppid_attr);
+> >> +	if (ret < 0) {
+> >> +		device_remove_file(&battery->dev, &data->temp_attr);
+> >> +
+> >> +		return ret;
+> >> +	}
+> > 
+> > Why dev_groups member can't be utilized?
+> 
+> Because this is an extension to the ACPI battery driver, IOW
+> this adds extra attributes to the power-supply-class device
+> registered by the ACPI battery driver. Note that the device
+> in this case is managed by the power-supply-class code, so
+> there is no access to dev_groups even in the ACPI battery code.
+
+Ah, I see now, so we extend the attributes of the 3rd party driver here.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
