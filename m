@@ -2,178 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 650FC5ED4A6
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Sep 2022 08:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDF205ED64A
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Sep 2022 09:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbiI1GUv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Sep 2022 02:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44938 "EHLO
+        id S233678AbiI1Hhd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Sep 2022 03:37:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbiI1GUu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 02:20:50 -0400
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5306B8E4F1;
-        Tue, 27 Sep 2022 23:20:46 -0700 (PDT)
-Received: by mail-wr1-f53.google.com with SMTP id m4so3797806wrr.5;
-        Tue, 27 Sep 2022 23:20:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=shEaMo5orbctUFMK5fzpueKSH5BdWxV9UydPGz0jxeg=;
-        b=dnve9R+l5CrhZHzSaaSKN49PFU66chyW0jJaRQ9jK2tGRQ9kUNpwqWtRBZdb/dBQgl
-         0KDHVlFL1CrY8cqzt8HDWhlvehXUEERLIVddrl6hLiaZi9dNNxapny4r1T4M1XOQG2VH
-         V6UFn7tllEeLtGbufXzZkmO8sHWzcsjXjBMlfxw8Q1vFoEy7Z1ZMgoCsq6X2M2e+rEPm
-         lYj+T6suRb8WcNbwQqME/GLk+Cz93hpgtFaWRW0M7gENuk1BTKFq9opKsy4zTV7QYnGY
-         o/SpdhL942beyQ1JWRd8MIbbGN7HMOIaVvnZT6l2c8WjMz9CZXwsXGjqS4B/BG+bpNpd
-         9TTQ==
-X-Gm-Message-State: ACrzQf11jHD8szlsBZxwVasyYpciQoUu0XK6GUnB+wBV2VPoq+hcsMWA
-        w3YCfcfyjshGYGsxU6gXAOlHdSoqN/I=
-X-Google-Smtp-Source: AMsMyM7OMHDDTym08dnrzI+VycAr6rEoe8+pfB57dO5Ef3jkjjMXXWOCN9CrFx+R9kouvpgOSoijVg==
-X-Received: by 2002:adf:d1c2:0:b0:22a:66ad:2669 with SMTP id b2-20020adfd1c2000000b0022a66ad2669mr19392473wrd.468.1664346044753;
-        Tue, 27 Sep 2022 23:20:44 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
-        by smtp.gmail.com with ESMTPSA id q16-20020a7bce90000000b003b492b30822sm839530wmj.2.2022.09.27.23.20.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Sep 2022 23:20:44 -0700 (PDT)
-Message-ID: <0450c7c0-4787-2aa2-de3e-c71522e467ce@kernel.org>
-Date:   Wed, 28 Sep 2022 08:20:43 +0200
+        with ESMTP id S233701AbiI1Hg7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 03:36:59 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E84A10B22D;
+        Wed, 28 Sep 2022 00:36:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664350573; x=1695886573;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=p2mq9g0p0ey5aQ3uwN1EJXOqXSfkSPpw7+dExmRoAWc=;
+  b=UnvHMP/hIdiSRAJAKoiUs8Oi314ZTepOeL3V5Z1fc1GQDOuXHr0qGEJf
+   su7wc7ZbLQFuu7BlPj7uqH5Ihpm+a04uJu78aPJVC0nqXVJ2CWgjXqwEb
+   93/fJHGR9Q65KA8dq6qyfqSnaOH5EDeoWx41eiE9H4aQcUDeeDkA/CEou
+   MmhefW+Eab+kqB/EOVeCvCEH8K+z45W+oBF/D3T8fnXL1QST13j/RW0vd
+   5bgwV71N24qq1VNBXX42SKL7SLuj0q9P6AoIo0EXOwntlV2cth1GC/CG0
+   1d0A4T6mMo2UGukNm1z/UIYJrcEpesuTvoMWQLBs7u/N+JpmPJO2dosmm
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="281903370"
+X-IronPort-AV: E=Sophos;i="5.93,351,1654585200"; 
+   d="scan'208";a="281903370"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2022 00:35:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="764186416"
+X-IronPort-AV: E=Sophos;i="5.93,351,1654585200"; 
+   d="scan'208";a="764186416"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 28 Sep 2022 00:35:47 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 28 Sep 2022 10:35:46 +0300
+Date:   Wed, 28 Sep 2022 10:35:46 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Prashant Malani <pmalani@chromium.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v1 1/5] device property: Keep dev_fwnode() and
+ dev_fwnode_const() separate
+Message-ID: <YzP5UkYKahQR7FtZ@kuha.fi.intel.com>
+References: <20220927142822.4095-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH v6] ACPI: skip IRQ override on AMD Zen platforms
-Content-Language: en-US
-To:     Chuanhong Guo <gch981213@gmail.com>, linux-acpi@vger.kernel.org
-Cc:     Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20220712020058.90374-1-gch981213@gmail.com>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20220712020058.90374-1-gch981213@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220927142822.4095-1-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 12. 07. 22, 4:00, Chuanhong Guo wrote:
-> IRQ override isn't needed on modern AMD Zen systems.
-> There's an active low keyboard IRQ on AMD Ryzen 6000 and it will stay
-> this way on newer platforms. This IRQ override breaks keyboards for
-> almost all Ryzen 6000 laptops currently on the market.
+On Tue, Sep 27, 2022 at 05:28:17PM +0300, Andy Shevchenko wrote:
+> It's not fully correct to take a const parameter pointer to a struct
+> and return a non-const pointer to a member of that struct.
 > 
-> Skip this IRQ override for all AMD Zen platforms because this IRQ
-> override is supposed to be a workaround for buggy ACPI DSDT and we can't
-> have a long list of all future AMD CPUs/Laptops in the kernel code.
-> If a device with buggy ACPI DSDT shows up, a separated list containing
-> just them should be created.
+> Instead, introduce a const version of the dev_fwnode() API which takes
+> and returns const pointers and use it where it's applicable.
+> 
+> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-This breaks pads on IdeaPad 5 Flex:
-https://bugzilla.suse.com/show_bug.cgi?id=1203794
+For the whole series:
 
- > [    1.058135] hid-generic 0020:1022:0001.0001: hidraw0: SENSOR HUB 
-HID v0.00 Device [hid-amdsfh 1022:0001] on pcie_mp2_amd
- > [    2.038937] i2c_designware AMDI0010:00: controller timed out
- > [    2.146627] i2c_designware AMDI0010:03: controller timed out
- > [    6.166859] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
- > [    8.279604] i2c_designware AMDI0010:03: controller timed out
- > [   12.310897] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
- > [   14.429372] i2c_designware AMDI0010:03: controller timed out
- > [   18.462629] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
- > [   20.579183] i2c_designware AMDI0010:03: controller timed out
- > [   24.598703] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
- > [   25.629071] i2c_hid_acpi i2c-MSFT0001:00: can't add hid device: -61
- > [   25.629430] i2c_hid_acpi: probe of i2c-MSFT0001:00 failed with 
-error -61
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-The diff of good and bad dmesgs:
--ACPI: IRQ 10 override to edge, high
--ACPI: IRQ 6 override to edge, high
-
-The diff of /proc/interrupts:
-      6: ...  IR-IO-APIC    [-6-fasteoi-]    {+6-edge+}      AMDI0010:03
-     10: ...  IR-IO-APIC   [-10-fasteoi-]   {+10-edge+}      AMDI0010:00
-
-And:
-   i2c_designware: /devices/platform/AMDI0010:00
-   i2c_designware: /devices/platform/AMDI0010:03
-
-
-So the if needs to be fine-tuned, apparently. Maybe introduce some list 
-as suggested in the commit log. Based on the below?
-
-DMI says:
-   System Info: #14
-     Manufacturer: "LENOVO"
-     Product: "82RA"
-     Version: "IdeaPad Flex 5 16ALC7"
-     Serial: "PW02359K"
-     UUID: 6b2d54d9-cd80-11ec-83eb-e00af665fbac
-     Wake-up: 0x06 (Power Switch)
-   Board Info: #15
-     Manufacturer: "LENOVO"
-     Product: "LNVNB161216"
-     Version: "SDK0T76463 WIN"
-     Serial: "PW02359K"
-     Asset Tag: "No Asset Tag"
-     Type: 0x0a (Motherboard)
-     Features: 0x09
-       Hosting Board
-       Replaceable
-     Location: "Chassis Location Unknown"
-   Chassis Info: #16
-     Manufacturer: "LENOVO"
-     Version: "IdeaPad Flex 5 16ALC7"
-     Serial: "PW02359K"
-     Asset Tag: "No Asset Tag"
-     Type: 0x1f (Other)
-     Bootup State: 0x03 (Safe)
-     Power Supply State: 0x03 (Safe)
-     Thermal State: 0x01 (Other)
-     Security Status: 0x01 (Other)
-
-> Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-> Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
 > ---
-> Change sice v5: reworked
+>  drivers/base/property.c  | 11 +++++++++--
+>  include/linux/property.h |  3 ++-
+>  2 files changed, 11 insertions(+), 3 deletions(-)
 > 
->   drivers/acpi/resource.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index c2d494784425..510cdec375c4 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -416,6 +416,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
->   {
->   	int i;
->   
-> +#ifdef CONFIG_X86
-> +	/*
-> +	 * IRQ override isn't needed on modern AMD Zen systems and
-> +	 * this override breaks active low IRQs on AMD Ryzen 6000 and
-> +	 * newer systems. Skip it.
-> +	 */
-> +	if (boot_cpu_has(X86_FEATURE_ZEN))
-> +		return false;
-> +#endif
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 4d6278a84868..699f1b115e0a 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -17,13 +17,20 @@
+>  #include <linux/property.h>
+>  #include <linux/phy.h>
+>  
+> -struct fwnode_handle *dev_fwnode(const struct device *dev)
+> +struct fwnode_handle *dev_fwnode(struct device *dev)
+>  {
+>  	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+>  		of_fwnode_handle(dev->of_node) : dev->fwnode;
+>  }
+>  EXPORT_SYMBOL_GPL(dev_fwnode);
+>  
+> +const struct fwnode_handle *dev_fwnode_const(const struct device *dev)
+> +{
+> +	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+> +		of_fwnode_handle(dev->of_node) : dev->fwnode;
+> +}
+> +EXPORT_SYMBOL_GPL(dev_fwnode_const);
 > +
->   	for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
->   		const struct irq_override_cmp *entry = &skip_override_table[i];
->   
+>  /**
+>   * device_property_present - check if a property of a device is present
+>   * @dev: Device whose property is being checked
+> @@ -1202,7 +1209,7 @@ EXPORT_SYMBOL(fwnode_graph_parse_endpoint);
+>  
+>  const void *device_get_match_data(const struct device *dev)
+>  {
+> -	return fwnode_call_ptr_op(dev_fwnode(dev), device_get_match_data, dev);
+> +	return fwnode_call_ptr_op(dev_fwnode_const(dev), device_get_match_data, dev);
+>  }
+>  EXPORT_SYMBOL_GPL(device_get_match_data);
+>  
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 117cc200c656..ae5d7f8eccf4 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -32,7 +32,8 @@ enum dev_dma_attr {
+>  	DEV_DMA_COHERENT,
+>  };
+>  
+> -struct fwnode_handle *dev_fwnode(const struct device *dev);
+> +struct fwnode_handle *dev_fwnode(struct device *dev);
+> +const struct fwnode_handle *dev_fwnode_const(const struct device *dev);
+>  
+>  bool device_property_present(struct device *dev, const char *propname);
+>  int device_property_read_u8_array(struct device *dev, const char *propname,
+> -- 
+> 2.35.1
 
-thanks,
 -- 
-js
-
+heikki
