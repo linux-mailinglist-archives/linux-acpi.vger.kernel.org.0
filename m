@@ -2,144 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 751655EF302
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 12:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEA505EF35C
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 12:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbiI2KGp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Sep 2022 06:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48514 "EHLO
+        id S234971AbiI2KW2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Sep 2022 06:22:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234798AbiI2KGo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 06:06:44 -0400
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45FB142E3B;
-        Thu, 29 Sep 2022 03:06:42 -0700 (PDT)
-Received: by mail-qk1-f170.google.com with SMTP id g2so517148qkk.1;
-        Thu, 29 Sep 2022 03:06:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=0kCa6jTfE848WGHyQOi/qrbS8sATrhTFphLUVNaFX8Q=;
-        b=dTBNP5KKwzaESHxlZTXaKrEibySV9KBWmhcUP//s3H7c3+sfNGJSUOw5xP8W5lvz7x
-         NpQ+qEHFeiVsYlqG1yiwBwSuW2OwLY9AGwcmbFfKbPEA0VSIJtyCv+rWdo7oRltPbqCK
-         Jyn039kJOaBNxw2BxKsqS7yX456/1o8ZH5WpDFGA16iwYxYpRalSv7lfUF4k7mCcNiLC
-         ooUE1yKLNtlS6P2QoaolxfAib7hHN81CM9JHqi7uEhxTxE2gOjFCL+Hq+YGDXNNlG57Z
-         Ovesjsnq03bsTGQWdgDUtVsw8B4/VX6WAAhuG/2GKU6bcUVaLBULl4snCkAe/9neoTwa
-         uNNA==
-X-Gm-Message-State: ACrzQf19y+rW/EH2Frj8e4aQq00Fv0njy2HuAUXhi7PAlG5F1vQqLqOT
-        2qisxNCtx6fJ5gwwHnVDD33hddpEwh7fBNMaZ38=
-X-Google-Smtp-Source: AMsMyM4t+VHeXvfc0oxR5u5rgQbzvQXJbf+Qmt3ftRYCv7lZgD9+ONOm3P8z3DYu0LifaO4xhboMJzl7GEXLC4lSijk=
-X-Received: by 2002:a05:620a:2988:b0:6ce:cc3f:73b9 with SMTP id
- r8-20020a05620a298800b006cecc3f73b9mr1503211qkp.9.1664446001328; Thu, 29 Sep
- 2022 03:06:41 -0700 (PDT)
+        with ESMTP id S235080AbiI2KW0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 06:22:26 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C6194143285
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Sep 2022 03:22:21 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 31BC52309;
+        Thu, 29 Sep 2022 03:22:27 -0700 (PDT)
+Received: from [10.57.65.170] (unknown [10.57.65.170])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3DDE53F73B;
+        Thu, 29 Sep 2022 03:22:19 -0700 (PDT)
+Message-ID: <0862c961-d047-6c5d-e577-62a58b1d1bc5@arm.com>
+Date:   Thu, 29 Sep 2022 11:22:13 +0100
 MIME-Version: 1.0
-References: <20220921155205.1332614-1-rrangel@chromium.org>
- <20220921094736.v5.8.I7d9202463f08373feccd6e8fd87482c4f40ece5d@changeid>
- <CAJZ5v0g57mF-4ZC2ajL5+JE+q9y=fW1G-OXR8tuOk4TYxHPWtQ@mail.gmail.com> <CAHQZ30BZ5jnTY4DQD5mxpnLcLxn5Oo=izB1+f06JOqXU5VGz_A@mail.gmail.com>
-In-Reply-To: <CAHQZ30BZ5jnTY4DQD5mxpnLcLxn5Oo=izB1+f06JOqXU5VGz_A@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 29 Sep 2022 12:06:29 +0200
-Message-ID: <CAJZ5v0gwU81_QX9JJSRyEVY9NABGxczYpp1w6OrOVGrJ8Xdmcg@mail.gmail.com>
-Subject: Re: [PATCH v5 08/13] ACPI: PM: Take wake IRQ into consideration when
- entering suspend-to-idle
-To:     Raul Rangel <rrangel@chromium.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Tim Van Patten <timvp@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "jingle.wu" <jingle.wu@emc.com.tw>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Len Brown <lenb@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH] ACPI/IORT: Update SMMUv3 DeviceID support
+Content-Language: en-GB
+To:     Nicolin Chen <nicolinc@nvidia.com>
+Cc:     lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        will@kernel.org, catalin.marinas@arm.com
+References: <4b3e2ead4f392d1a47a7528da119d57918e5d806.1664392886.git.robin.murphy@arm.com>
+ <YzTe5AaGDauUyzDB@Asurada-Nvidia>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <YzTe5AaGDauUyzDB@Asurada-Nvidia>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 11:10 PM Raul Rangel <rrangel@chromium.org> wrote:
->
-> On Sat, Sep 24, 2022 at 11:00 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Wed, Sep 21, 2022 at 5:52 PM Raul E Rangel <rrangel@chromium.org> wrote:
-> > >
-> > > This change adds support for ACPI devices that use ExclusiveAndWake or
-> > > SharedAndWake in their _CRS GpioInt definition (instead of using _PRW),
-> > > and also provide power resources. Previously the ACPI subsystem had no
-> > > idea if the device had a wake capable interrupt armed. This resulted
-> > > in the ACPI device PM system placing the device into D3Cold, and thus
-> > > cutting power to the device. With this change we will now query the
-> > > _S0W method to figure out the appropriate wake capable D-state.
-> > >
-> > > Signed-off-by: Raul E Rangel <rrangel@chromium.org>
-> > > ---
-> > >
-> > > Changes in v5:
-> > > - Go back to using adev->wakeup.flags.valid to keep the diff cleaner
-> > > - Fix a typo in comment
-> > >
-> > >  drivers/acpi/device_pm.c | 19 +++++++++++++++++--
-> > >  1 file changed, 17 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> > > index 9dce1245689ca2..3111fc426e04fd 100644
-> > > --- a/drivers/acpi/device_pm.c
-> > > +++ b/drivers/acpi/device_pm.c
->
-> > > @@ -681,8 +681,23 @@ static int acpi_dev_pm_get_state(struct device *dev, struct acpi_device *adev,
-> > >                 d_min = ret;
-> > >                 wakeup = device_may_wakeup(dev) && adev->wakeup.flags.valid
-> > >                         && adev->wakeup.sleep_state >= target_state;
-> Just an FYI, I didn't update the code that handles the target state >
-> S0. I need to get a
-> device that has S3 capabilities and the correct firmware to test this.
-> I figure I can do
-> that as a different patch when I have time to test with an S3 device.
+On 2022-09-29 00:55, Nicolin Chen wrote:
+> On Wed, Sep 28, 2022 at 08:21:26PM +0100, Robin Murphy wrote:
+>> External email: Use caution opening links or attachments
+>>
+>>
+>> IORT E.e now allows SMMUv3 nodes to describe the DeviceID for MSIs
+>> independently of wired GSIVs, where the previous oddly-restrictive
+>> definition meant that an SMMU without PRI support had to provide a
+>> DeviceID even if it didn't support MSIs either. Support this, with
+>> the usual temporary flag definition while the real one is making
+>> its way through ACPICA.
+>>
+>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> 
+> All the indentations in this patch are using white spaces vs. tabs,
 
-That's fine.
+That must be something at your end - they're definitely tabs here, and 
+the copy in the lore archives looks right too.
 
-> > > -       } else {
-> > > -               wakeup = adev->wakeup.flags.valid;
-> > > +       } else if (adev->wakeup.flags.valid) {
-> > > +               /* ACPI GPE specified in _PRW. */
-> > > +               wakeup = true;
->
-> >
-> > I would retain the "else" clause as it was and just add a new "else
-> > if" one before it.
-> >
-> Done
+> so it fails at git-apply. I manually fixed them and tested the PATCH
+> by applying a small revision hack to the IORT binaries:
+> 
+> ---------
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index 3269a888fb7a..5a4eef7b937c 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -333,8 +333,20 @@ void __iomem __ref
+>   		return NULL;
+>   	}
+>   
+> -	if (!acpi_permanent_mmap)
+> -		return __acpi_map_table((unsigned long)phys, size);
+> +	if (!acpi_permanent_mmap) {
+> +		virt = __acpi_map_table((unsigned long)phys, size);
+> +		if (!strncmp((char *)virt, "IORT", 4)) {
+> +			u8 *tmp = virt;
+> +			int i = 0x30;
+> +			while (i < size) {
+> +				if (tmp[i] == 0x4) /* SMMUv3 */
+> +					tmp[i + 3] = 0x5; /* Revision */
+> +				i += tmp[i + 1]; /* next node */
+> +				continue;
+> +			}
+> +		}
+> +		return virt;
+> +	}
+>   
+>   	mutex_lock(&acpi_ioremap_lock);
+>   	/* Check if there's a suitable mapping already. */
+> ---------
+> 
+> Once the indentations are fixed,
+> 
+> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
 
-Thanks!
+Thanks for confirming!
+Robin.
 
-> > > +       } else if (device_may_wakeup(dev) && dev->power.wakeirq) {
-> > > +               /*
-> > > +                * The ACPI subsystem doesn't manage the wake bit for IRQs
-> > > +                * defined with ExclusiveAndWake and SharedAndWake. Instead we
-> > > +                * expect them to be managed via the PM subsystem. Drivers
-> > > +                * should call dev_pm_set_wake_irq to register an IRQ as a wake
-> > > +                * source.
-> > > +                *
-> > > +                * If a device has a wake IRQ attached we need to check the
-> > > +                * _S0W method to get the correct wake D-state. Otherwise we
-> > > +                * end up putting the device into D3Cold which will more than
-> > > +                * likely disable wake functionality.
-> > > +                */
-> > > +               wakeup = true;
-> > >         }
-> > >
-> > >         /*
-> > > --
->
-> I'll send out v6 soon unless anyone else has any comments.
+> 
+> Thanks!
+> Nicolin
+> 
+>> ---
+>>   drivers/acpi/arm64/iort.c | 16 ++++++++++++----
+>>   1 file changed, 12 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+>> index ca2aed86b540..51bc3c1d8d42 100644
+>> --- a/drivers/acpi/arm64/iort.c
+>> +++ b/drivers/acpi/arm64/iort.c
+>> @@ -402,6 +402,10 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
+>>          return NULL;
+>>   }
+>>
+>> +#ifndef ACPI_IORT_SMMU_V3_DEVICEID_VALID
+>> +#define ACPI_IORT_SMMU_V3_DEVICEID_VALID (1 << 4)
+>> +#endif
+>> +
+>>   static int iort_get_id_mapping_index(struct acpi_iort_node *node)
+>>   {
+>>          struct acpi_iort_smmu_v3 *smmu;
+>> @@ -418,12 +422,16 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
+>>
+>>                  smmu = (struct acpi_iort_smmu_v3 *)node->node_data;
+>>                  /*
+>> -                * ID mapping index is only ignored if all interrupts are
+>> -                * GSIV based
+>> +                * Until IORT E.e (node rev. 5), the ID mapping index was
+>> +                * defined to be valid unless all interrupts are GSIV-based.
+>>                   */
+>> -               if (smmu->event_gsiv && smmu->pri_gsiv && smmu->gerr_gsiv
+>> -                   && smmu->sync_gsiv)
+>> +               if (node->revision < 5) {
+>> +                       if (smmu->event_gsiv && smmu->pri_gsiv &&
+>> +                           smmu->gerr_gsiv && smmu->sync_gsiv)
+>> +                               return -EINVAL;
+>> +               } else if (!(smmu->flags & ACPI_IORT_SMMU_V3_DEVICEID_VALID)) {
+>>                          return -EINVAL;
+>> +               }
+>>
+>>                  if (smmu->id_mapping_index >= node->mapping_count) {
+>>                          pr_err(FW_BUG "[node %p type %d] ID mapping index overflows valid mappings\n",
+>> --
+>> 2.36.1.dirty
+>>
