@@ -2,158 +2,237 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B685EF622
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 15:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F1725EF6B4
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 15:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235150AbiI2NMp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Sep 2022 09:12:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57558 "EHLO
+        id S234634AbiI2NfH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Sep 2022 09:35:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235091AbiI2NMo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 09:12:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7454E17CA06
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Sep 2022 06:12:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1664457162;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=sGV7gRgiiPI1k1Jo3uPIhv9Soar3LJZC+jfEve4dDB4=;
-        b=fOQoF9MUoRGLwx3SbCgOCqeOHEmiILMYlI1YESK8xAA++hcHoFfFDfhh73F7tP/fCJkURW
-        Xzyjb1SfyjqCPeLMOPhQ0r5N4ilDreIsdCqZ5eSU+03RM6Yfo/kDoJJVdb2CR4tPWxnlTW
-        jBF4TujEYQGS9MjSnTfxWiVw2jKUPdE=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-466-XQWsBbVMOoqrHChz5eABdw-1; Thu, 29 Sep 2022 09:12:41 -0400
-X-MC-Unique: XQWsBbVMOoqrHChz5eABdw-1
-Received: by mail-ed1-f71.google.com with SMTP id w17-20020a056402269100b0045249bc17a9so1255020edd.9
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Sep 2022 06:12:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=sGV7gRgiiPI1k1Jo3uPIhv9Soar3LJZC+jfEve4dDB4=;
-        b=xodbqpYZq5xPI+uGK2kaJkuDgFaVy9qvHXTlexw3EhmNZA6T+k682F2dHSv2mA2CM+
-         Rdt+Ci0b9KczSWAFccZoV60C7HPJrDUxJ7WQo2PBptSmnj2rjGDW/j1okiAj7V/RIqhd
-         n1AwaiQnrN3vAZcQCDUUGY0XrQ97P5h+wDjw6XvCPBm16RvgV0q04NohmGoxnR9mz2yR
-         +8B7maavpwVir0sZ50pQ3JiRk8xSHb0HQNH3U6HA3wWvuiNxD5GdsqusiQjajEiXtrfJ
-         A4gP9dS/Falfdy99qkAzLrYVXj9ZCJfLXjCvQ3mRRIGQBKIZMGakYwcGq3mWlQZo2Flh
-         cFfw==
-X-Gm-Message-State: ACrzQf1grPAP9CedLe5ZtHJYF5otuMkpRrn2fp1OeXnI40FFUSnIL5x9
-        6WGHRmzQ1L9EswOhnx4ynHNri9dP//vWLC26SXVCEig+zOc9nDtVJXiRdxfGCB1Ga7rSn5K0h6Y
-        HIj/fDYGuzEUU1o43m7JvsA==
-X-Received: by 2002:a05:6402:d05:b0:425:b7ab:776e with SMTP id eb5-20020a0564020d0500b00425b7ab776emr3489031edb.142.1664457158897;
-        Thu, 29 Sep 2022 06:12:38 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM4i8Bd1r6kPqSNUiT6wX+4QVZC5MQ19zMfiNEaHT3xYTG+5e3c2Nvv8nvOcg1gUgYoS7xPpSg==
-X-Received: by 2002:a05:6402:d05:b0:425:b7ab:776e with SMTP id eb5-20020a0564020d0500b00425b7ab776emr3488995edb.142.1664457158636;
-        Thu, 29 Sep 2022 06:12:38 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id s10-20020aa7c54a000000b0045723aa48ccsm5439046edr.93.2022.09.29.06.12.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Sep 2022 06:12:38 -0700 (PDT)
-Message-ID: <bf84f13d-f76a-c0ac-8a1f-f4e1b55e6f51@redhat.com>
-Date:   Thu, 29 Sep 2022 15:12:36 +0200
+        with ESMTP id S233674AbiI2NfE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 09:35:04 -0400
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1AD0D4DB35;
+        Thu, 29 Sep 2022 06:35:02 -0700 (PDT)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8AxTWv8njVj0dQjAA--.6155S3;
+        Thu, 29 Sep 2022 21:34:52 +0800 (CST)
+Subject: Re: [PATCH V1 1/2] irqchip/loongson-pch-pic: Support to set irq type
+ for ACPI path
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+        loongarch@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+References: <1660615291-35409-1-git-send-email-lvjianmin@loongson.cn>
+ <1660615291-35409-2-git-send-email-lvjianmin@loongson.cn>
+ <86leq37duw.wl-maz@kernel.org>
+ <71fc2d5b-fc3c-0a2d-65ce-df7d5bb26503@loongson.cn>
+ <86ill67bwt.wl-maz@kernel.org>
+From:   Jianmin Lv <lvjianmin@loongson.cn>
+Message-ID: <ab89a8b3-9b92-6afb-f3d4-660b5826c87f@loongson.cn>
+Date:   Thu, 29 Sep 2022 21:34:52 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [PATCH v2 2/2] platform/x86: dell: Add new dell-wmi-ddv driver
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Armin Wolf <W_Armin@gmx.de>
-Cc:     markgross@kernel.org, rafael@kernel.org, lenb@kernel.org,
-        hmh@hmh.eng.br, matan@svgalib.org, corentin.chary@gmail.com,
-        jeremy@system76.com, productdev@system76.com,
-        mario.limonciello@amd.com, pobrn@protonmail.com,
-        coproscefalo@gmail.com, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220927204521.601887-1-W_Armin@gmx.de>
- <20220927204521.601887-3-W_Armin@gmx.de>
- <YzQmQw0hEwzXV/iz@smile.fi.intel.com>
- <34774c9d-1210-0015-f78e-97fdf717480c@gmx.de>
- <YzVqbSBHm3OrjIaQ@smile.fi.intel.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <YzVqbSBHm3OrjIaQ@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <86ill67bwt.wl-maz@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8AxTWv8njVj0dQjAA--.6155S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxKFW8Cw1kXryfAF1rCF1UAwb_yoW7uFy8pF
+        Wj9FW2yw4kJFyxArn29w18AFyaywnIkrWxWFs8t3WxXrnI9r1xCF17urWruF1vyF4fCr42
+        vr1vvFW7WFy7AFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUBF1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+        IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+        jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+        x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+        GwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4
+        x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCYjI0SjxkI62AI
+        1cAE67vIY487MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r
+        yrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+        7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
+        C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+        04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
+        CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUq38nUUUUU=
+X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
+X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-On 9/29/22 11:50, Andy Shevchenko wrote:
-> On Wed, Sep 28, 2022 at 10:57:16PM +0200, Armin Wolf wrote:
->> Am 28.09.22 um 12:47 schrieb Andy Shevchenko:
->>> On Tue, Sep 27, 2022 at 10:45:21PM +0200, Armin Wolf wrote:
-> 
-> ...
-> 
->>>> +static void dell_wmi_ddv_debugfs_init(struct wmi_device *wdev)
->>> Strictly speaking this should return int (see below).
->>>
->>>> +{
->>>> +	struct dentry *entry;
->>>> +	char name[64];
->>>> +
->>>> +	scnprintf(name, ARRAY_SIZE(name), "%s-%s", DRIVER_NAME, dev_name(&wdev->dev));
->>>> +	entry = debugfs_create_dir(name, NULL);
->>>> +
->>>> +	debugfs_create_devm_seqfile(&wdev->dev, "fan_sensor_information", entry,
->>>> +				    dell_wmi_ddv_fan_read);
->>>> +	debugfs_create_devm_seqfile(&wdev->dev, "thermal_sensor_information", entry,
->>>> +				    dell_wmi_ddv_temp_read);
->>>> +
->>>> +	devm_add_action_or_reset(&wdev->dev, dell_wmi_ddv_debugfs_remove, entry);
->>> return devm...
->>>
->>> This is not related to debugfs and there is no rule to avoid checking error
->>> codes from devm_add_action_or_reset().
->>>
->> According to the documentation of debugfs_create_dir(), drivers should work fine if debugfs
->> initialization fails. Thus the the return value of dell_wmi_ddv_debugfs_init() would be ignored
->> when called, which means that returning an error would serve no purpose.
->> Additionally, devm_add_action_or_reset() automatically executes the cleanup function if devres
->> registration fails, so we do not have to care about that.
-> 
-> The problem with your code that if devm_ call fails and you ain't stop probing
-> the remove-insert module (or unbind-bind) cycle will fail, because of existing
-> (leaked) debugfs dentries.
 
-No it won't if the devm_ call fails then it will directly call
-the passed in handler so in this case we can simply continue
-without debugfs entries (which will have been removed by the
-handler). The directly calling of the action handler on
-failure is the whole difference between devm_add_action()
-and devm_add_action_or_reset()
- 
-So using it this way in the case of a debugfs init function
-is fine.
-
->>>> +		.name = DRIVER_NAME,
->>> I would use explicit literal since this is a (semi-) ABI, and having it as
->>> a define feels not fully right.
+On 2022/9/29 下午5:44, Marc Zyngier wrote:
+> On Wed, 28 Sep 2022 22:35:17 -0400,
+> Jianmin Lv <lvjianmin@loongson.cn> wrote:
 >>
->> The driver name is used in two places (init and debugfs), so having a define for it
->> avoids problems in case someone forgets to change both.
+>> On 2022/9/28 下午10:49, Marc Zyngier wrote:
+>>> On Mon, 15 Aug 2022 22:01:30 -0400,
+>>> Jianmin Lv <lvjianmin@loongson.cn> wrote:
+>>>>
+>>>> For ACPI path, the translate callback used IRQ_TYPE_NONE and ignored
+>>>> the irq type in fwspec->param[1]. For supporting to set type for
+>>>> irqs of the irqdomain, fwspec->param[1] should be used to get irq
+>>>> type.
+>>>>
+>>>> On Loongson platform, the irq trigger type of PCI devices is
+>>>> high level, so high level triggered type is inputed to acpi_register_gsi
+>>>> when create irq mapping for PCI devices.
+>>>>
+>>>> Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+>>>> ---
+>>>>    drivers/acpi/pci_irq.c                 |  3 ++-
+>>>>    drivers/irqchip/irq-loongson-pch-pic.c | 10 ++++++----
+>>>>    2 files changed, 8 insertions(+), 5 deletions(-)
+>>>
+>>> $ ./scripts/get_maintainer.pl drivers/acpi/pci_irq.c
+>>> Bjorn Helgaas <bhelgaas@google.com> (supporter:PCI SUBSYSTEM)
+>>> "Rafael J. Wysocki" <rafael@kernel.org> (supporter:ACPI)
+>>> Len Brown <lenb@kernel.org> (reviewer:ACPI)
+>>> linux-pci@vger.kernel.org (open list:PCI SUBSYSTEM)
+>>> linux-acpi@vger.kernel.org (open list:ACPI)
+>>> linux-kernel@vger.kernel.org (open list)
+>>>
+>>> How about you start Cc-ing some of the relevant people?
+>>>
+>> Ok, thanks, I'll cc relevant people list here.
+>>
+>>>>
+>>>> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+>>>> index 08e1577..34483b3 100644
+>>>> --- a/drivers/acpi/pci_irq.c
+>>>> +++ b/drivers/acpi/pci_irq.c
+>>>> @@ -393,7 +393,8 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
+>>>>    	 * controller and must therefore be considered active high
+>>>>    	 * as default.
+>>>>    	 */
+>>>> -	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
+>>>> +	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ||
+>>>> +		       acpi_irq_model == ACPI_IRQ_MODEL_LPIC ?
+>>>>    				      ACPI_ACTIVE_HIGH : ACPI_ACTIVE_LOW;
+>>>
+>>> The comment just above this only talks about ARM. Should it be
+>>> updated?
+>>
+>> Ok, I'll update the comment.
+>>
+>>
+>>> Is this a limitation of the underlying interrupt controller?
+>>>
+>> It's the limitation that pci interrupt source of LoongArch only sends
+>> high level trigger signal to interrupt controller(though, pci spec
+>> requires asserted low).
 > 
-> Which is exactly what we must prevent developer to do. If changing debugfs it
-> mustn't change the driver name, because the latter is ABI, while the former is
-> not.
+> Right, so this is the opposite problem ARM has.
+> 
+> But is it *always* intended to be built like this? Or is it a one-off
+> for this generation of Loongarch systems, to be fixed at a later time?
+> 
 
-Arguably both are not really ABI. Drivers have been renamed in the past
-without issues for userspace.
+Yes, new generations will always keep this unchanged.
 
-Regards,
+>>
+>>
+>>>>    	char *link = NULL;
+>>>>    	char link_desc[16];
+>>>> diff --git a/drivers/irqchip/irq-loongson-pch-pic.c b/drivers/irqchip/irq-loongson-pch-pic.c
+>>>> index b6f1392..5067010 100644
+>>>> --- a/drivers/irqchip/irq-loongson-pch-pic.c
+>>>> +++ b/drivers/irqchip/irq-loongson-pch-pic.c
+>>>> @@ -177,13 +177,15 @@ static int pch_pic_domain_translate(struct irq_domain *d,
+>>>>    	if (fwspec->param_count < 1)
+>>>>    		return -EINVAL;
+>>>>    -	if (of_node) {
+>>>> +	if (of_node)
+>>>>    		*hwirq = fwspec->param[0] + priv->ht_vec_base;
+>>>> -		*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
+>>>> -	} else {
+>>>> +	else
+>>>>    		*hwirq = fwspec->param[0] - priv->gsi_base;
+>>>> +
+>>>> +	if (fwspec->param_count > 1)
+>>>> +		*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
+>>>> +	else
+>>>>    		*type = IRQ_TYPE_NONE;
+>>>
+>>> Isn't that a change in behaviour if of_node is non-NULL and
+>>> param_count==1?
+>>>
+>>
+>> It seems that current code here has bug that if fwspec->param_count==1
+>> and of_node is non-null, fwspec->param[1] will be accessed, which is
+>> introduced from previous patch(irqchip/loongson-pch-pic: Add ACPI init
+>> support). Before the patch, for non-null of_node, translate
+>> callback(use irq_domain_translate_twocell) will return -EINVAL if
+>> fwspec->param_count < 2.
+>>
+>> For ACPI path, fwspec->param_count can be 1 or 2.
+>>
+>> So in this patch, I'll fix the bug and change the code as following:
+>>
+>>          if (fwspec->param_count < 1)
+>>                  return -EINVAL;
+>>
+>>          if (of_node) {
+>>                  if (fwspec->param_count < 2)
+>>                          return -EINVAL;
+>>
+>>                  *hwirq = fwspec->param[0] + priv->ht_vec_base;
+>>                  *type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
+>>          } else {
+>>                  *hwirq = fwspec->param[0] - priv->gsi_base;
+>>
+>>                  if (fwspec->param_count > 1)
+>>                          *type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
+>>                  else
+>>                          *type = IRQ_TYPE_NONE;
+>>          }
+>>
+>>
+>>>> -	}
+>>>>      	return 0;
+>>>>    }
+>>>
+>>> This irqchip change should probably be a separate patch.
+>>>
+>>
+>> As a separate patch, the input trigger type of pci devices will be low
+>> level because of lacking of workaround to acpi_pci_irq_enable, which
+>> will cause kernel hang, unless the patch of workaround to
+>> acpi_pci_irq_enable is in front of this separated patch.
+> 
+> That seems like a sensible requirement, but I really want to
+> understand whether PCI Loongarch will *always* generate INTx as
+> ACTIVE_HIGH or not. Because if that is ever going to change, we will
+> need a different way to inform the irqchip about the polarity
+> inversion.
+> 
 
-Hans
+Above same. And in future, in case some generation use ACTIVE_LOW, I 
+think we can use use *Source*(means link) with triggering and polarity 
+property in pci route table of DSDT as following code to override 
+ACTIVE_HIGH, rather than *Source index*(gsi).
+
+       if (entry->link)
+             gsi = acpi_pci_link_allocate_irq(entry->link,
+                                               entry->index,
+                                               &triggering, &polarity,
+                                               &link);
+
+
+Because of a lot of machines outside have been shipped with firmware 
+using *Source index*, for compatibility with such firmware, the 
+workaround to acpi_pci_irq_enable is required.
+
+
+> 	M.
+> 
 
