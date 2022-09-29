@@ -2,412 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB56C5EEA8D
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 02:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 464B65EEAAB
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 03:01:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbiI2A3G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Sep 2022 20:29:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52608 "EHLO
+        id S233134AbiI2BBL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Sep 2022 21:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231650AbiI2A3F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 20:29:05 -0400
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2050.outbound.protection.outlook.com [40.107.220.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C883F30A;
-        Wed, 28 Sep 2022 17:29:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KnY1Hy+bD3x6mAEWVhzcLTB3afPkHNyTeJLezfw74HFJor7jecHrfAlhtcuaWXno6JH8P1fdw4TqqlrLh8RGMF+KjAo+RJhS8UmwgruEsgPDn6IdEJ4ve3WBHf+MQehOcZ8FpZik8Ofh1QdRB1D73m02FAeEILVmlGJc4K8UnmRXatMWATR4MVVHtr5+UKjaNTt1PCDxh7cf1ito3aLldm1NG4B8lOObzLblvS0FyKxzVL/gx0OwDvwe4w5NRVQulO4eRPOrTDKC8+0I25HYE0T9iiy57SrumkstPfsXnlrZUY7yPqOIy9oTrWieg3XvKSI/2FpQQhRmMVz8kJw4qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+akvTvhl880RQ+JJoIByXbKbSrj69mKLNtbbs3uwtN4=;
- b=nS5nmW1MSoCVpKYxY5E6D9DEtxqYqVCx8+qvr/cBnad898RvyDlCLGZnf2VqFP+KID11Y7MKJPE6sfh89rHDflZnXqkFRDwIs/Sj5v7yEDoo03pPd8fTW/Niz/nOVINPcO/STULBYpRBmSwve0SvCRhYFAz2tcGbuLGljDSBULfywrnThr1WKTzHAsJ1yt0fe1TwN+DXfym3safAcVT0qs3pop3mWJ7zgKZsdJmTfdgRLGXDkqukPha41QTUcBT3UEojcuDOyXut4aBDeGaWa6Gj2haWOPPM6ahwkLTMyWQffkhKyufqMs2/sXi5MjenUzxI73BVlasouPpQLez+/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+akvTvhl880RQ+JJoIByXbKbSrj69mKLNtbbs3uwtN4=;
- b=pav/0eifzCW7wgRPPZnKF3HAj+FA0j3Z8nRoLr1var86RUO4MyCm9+9dqX+K3+V1E/hXQuPEsDA0DQF62SnuT6LKyat8HjN47JLxwCiq5gM4PUuo6rtG85s6SS/2VJn2FAb+ZCR/wzUW/6lnzHEZI8wIFhL2AaTxGMwkcE6MjHttbMHgk5/NY01avfaZBdnH30ZSpPoaI+jvXE0lw2aba35dpR6pSHAfnwi71RiXl7P5ozLgj2Dnx/52U9MhJcLm6980xkvOkOc1DA4vPe2OGlwjw//e3LHs7l28lC4+p6CknRFQwso/FqWpHq47ubt94379ROMPMWess3kefAqfhQ==
-Received: from MW3PR05CA0016.namprd05.prod.outlook.com (2603:10b6:303:2b::21)
- by CH2PR12MB4310.namprd12.prod.outlook.com (2603:10b6:610:a9::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.17; Thu, 29 Sep
- 2022 00:29:00 +0000
-Received: from CO1NAM11FT111.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:2b:cafe::78) by MW3PR05CA0016.outlook.office365.com
- (2603:10b6:303:2b::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.7 via Frontend
- Transport; Thu, 29 Sep 2022 00:29:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- CO1NAM11FT111.mail.protection.outlook.com (10.13.174.61) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5676.17 via Frontend Transport; Thu, 29 Sep 2022 00:29:00 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.26; Wed, 28 Sep
- 2022 17:28:50 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.29; Wed, 28 Sep 2022 17:28:50 -0700
-Received: from msst-build.nvidia.com (10.127.8.14) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.986.29 via Frontend
- Transport; Wed, 28 Sep 2022 17:28:49 -0700
-From:   Besar Wicaksono <bwicaksono@nvidia.com>
-To:     <rafael@kernel.org>, <lenb@kernel.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <lorenzo.pieralisi@arm.com>,
-        <guohanjun@huawei.com>, <sudeep.holla@arm.com>
-CC:     <linux-tegra@vger.kernel.org>, <treding@nvidia.com>,
-        <jonathanh@nvidia.com>, <vsethi@nvidia.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        "Besar Wicaksono" <bwicaksono@nvidia.com>
-Subject: [PATCH v2] ACPI: ARM Performance Monitoring Unit Table (APMT) initial support
-Date:   Wed, 28 Sep 2022 19:28:34 -0500
-Message-ID: <20220929002834.32664-1-bwicaksono@nvidia.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S229901AbiI2BBK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 21:01:10 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86828F594F;
+        Wed, 28 Sep 2022 18:01:08 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 2FEFC5C00B9;
+        Wed, 28 Sep 2022 21:01:06 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 28 Sep 2022 21:01:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ljones.dev; h=cc
+        :cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm3; t=1664413266; x=
+        1664499666; bh=1bzeay9T/xf/VGzfHLUYmp/sbMPH/2mBk8/Ri+FZl/k=; b=G
+        Ic9RYonaLiQpc2RTPn3KE1cXzv/bXu0ydKaSA+Pu9ZGEA0E88hedJoWWvQ+lYCYj
+        /kS//4jaNJYZwkgYiOOGJCWkaxNI2IcX8mi3cExZkZuGrfD5oGqV63kjqX54nUIR
+        rbZE0tlwnERVv2Fr0CTCfalyfkkaLCDhxTzkJrhoglF8uwnFL5y8CS2zfQuylkBK
+        ZZQkXQv9O8eM3AnjJxuKr0uprLAeIUW1ZBDclaQjg3kp4+LMbfyzS/o2BGiG8K+m
+        iW3vhnMff2I43kRn9kifLPPUao3wxj7zMgMnsDQifnAhnkaJxC7bqnwzrHJNYCIf
+        MB8bBxPEcjsnMGpbBZ8WQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1664413266; x=
+        1664499666; bh=1bzeay9T/xf/VGzfHLUYmp/sbMPH/2mBk8/Ri+FZl/k=; b=P
+        rJApjIy23iRgQygazkXHFrkfeOmc9NCtZXr6Keal0HwyEY63bhppx/9+acrXE5jr
+        X6vcwhcYJdS6CeLEWsdSpoGmzV4K1XKGBNdzugeHPKWdmkN9DJwOwPjFZUyUjeuM
+        tCuiuYr7Yl21mtdloE8BLpaCsU5J7x01hyuZdYUm1+X31biBB68GMSSbU+JpT4Ei
+        jOd9yms9n3BeLVWOG3AMi4n3Z/mNmsJoU0Q3Q/5hxfL5Gyun1HaXGo0mvq31Rg6R
+        r4/An8sWdNdU7p7XhZ84rJlGx2Xm4MBfrOKXe3hxbj2I7X8Q+SvNijml8rmoXi2x
+        OgXbUJzn3vC31rYxJO2dw==
+X-ME-Sender: <xms:Ue40Y2WKmtqCbT9ilrbQSwfLSJKu_slahH7JvHaeI4MCay99Cr0ugw>
+    <xme:Ue40YynHNV-ucaCTO3FrEd8p8p78X2gWc8of58WYeFN6sPWnjRwjm1eSHMUSm-vOG
+    nq5IGuC7glmYd0PIuo>
+X-ME-Received: <xmr:Ue40Y6b6APpq7yUBpizuujPX8Y4dlhq3hEzzsgfAVKvMZ4E0HT9byIQXmHh2wAl7-5wy5Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeegledggedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkffuhffvveffjghftgfgfgggsehtsgertddtreejnecuhfhrohhmpefnuhhk
+    vgculfhonhgvshcuoehluhhkvgeslhhjohhnvghsrdguvghvqeenucggtffrrghtthgvrh
+    hnpeeluddtveejgefgjeekleevjeevjeetgeettdehheffffekheeiveeggedvjeffvden
+    ucffohhmrghinheprhgvugguihhtrdgtohhmpdhfrhgvvgguvghskhhtohhprdhorhhgpd
+    hgihhtlhgrsgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
+    ihhlfhhrohhmpehluhhkvgeslhhjohhnvghsrdguvghv
+X-ME-Proxy: <xmx:Uu40Y9VIh510DJqoxTQT_lB-SaDwZf6tbameG24fvx98wkWblxKjFQ>
+    <xmx:Uu40YwklqbS7BbezZvpLVAHI0J_ruDjFbusroRZ15gBzQRPbOzE6Zg>
+    <xmx:Uu40Yyd3fVYy2UR_mY4ahC9LYt-WFJh5bAZHUoBmjgAsVn6JoXZxmA>
+    <xmx:Uu40Y6j6eGrvZqBH9XtWCnnIB8FWYHTHWaDug0cigb4yOJnG83UH-Q>
+Feedback-ID: i5ec1447f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 28 Sep 2022 21:01:03 -0400 (EDT)
+Message-ID: <f49217c531a61d42d2cf370d2140cf57fe79ec34.camel@ljones.dev>
+Subject: Re: [PATCH 2/2] ACPI: x86: s2idle: Add another ID to
+ s2idle_dmi_table
+From:   Luke Jones <luke@ljones.dev>
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Shyam-sundar.S-k@amd.com, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Date:   Thu, 29 Sep 2022 14:00:53 +1300
+In-Reply-To: <20220928161935.31913-2-mario.limonciello@amd.com>
+References: <20220928161935.31913-1-mario.limonciello@amd.com>
+         <20220928161935.31913-2-mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.46.0 (by Flathub.org)) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT111:EE_|CH2PR12MB4310:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f0182a6-fcd5-47cd-eb26-08daa1b19aae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YYLwxWxyEMu38gCDOAfrjaB8fcbX2qE/wZmE71dqj1lsAyF24e3p8KxU3OZ1OlmHcrGMsIWAvWlc0tRtkWAGm4tfZpc1PBJ81Mh3fiyphq7Qi9wwGiUkaqZbrYC+0B3aOHWw9Ti+AKjCcEaU+BdMqsJ1etmc/mF+UWZZdC3dqJX4ks2UUFe3uqX+YRy8LQ+Cc8/3aUukngtbtTZOx0Oii91tqYb+sx5A4wrhbDw1ub9eM0aryBCNZuBEzS1rLMv4ZCm84FxxPKj4bdldFeYvF0YArpSt4IGLA0x3h+feKuu1tzM7yPn5M8WHI3aGJfJusPLlu/ZVgnHVZ6EgjaKsYE8Wbei+n8VxpIpjfYsFXKxo09UD3iCq+FnuVRoqnrrz5KO7qyfeUzrMGDDa3ZxuZYxFagkhp9Rp+EPJNLdQTqGblsYJlDjDg0rDdxvZMGAXd9MKKnYYi4431KKcSm+b1T+8IuDaivQIOKnvagyeccYc72/VaprdEGnZ4Ic0Su0T+54Qu2EPaZnpoJrOQJN7Puinakq+Hz75qQ1pz/sCaZ4i69Ks4efsGm+RVu2vYYkl940IYaj2duSzffF624DWyyX8oXsN6lOXNAaJjhMHzPpoI//oaJ6V/yrkvUeLLKcc4iKFEP0sxNR7/oZrzmivFEySdp+Is5UnZ2oMvqiiBO1/nSJ9C0B0M4SCx1V646BtcefyroZH2/T9f47HtRSVgv1QbkDnrWPmos4hCC+YTItM97RgRx8oeWlp0lQQlJiL/5hgJQVB0rPJSqn8chWu/MqIibSIhKSoQHe6odeqF58EFTNxrtSz3nwrtZSTI1WIdO7DdtH32XWtje325LeJnJ1DsqgG5HGfMlxyup+Cj6ByOlRqy+PjZstfw1pnwEyC47IBiiJJxlp/rDlw5yEUqA==
-X-Forefront-Antispam-Report: CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230022)(4636009)(396003)(376002)(39860400002)(346002)(136003)(451199015)(40470700004)(36840700001)(46966006)(2906002)(36756003)(7636003)(356005)(41300700001)(8676002)(8936002)(7416002)(4326008)(5660300002)(82310400005)(70206006)(70586007)(54906003)(86362001)(966005)(110136005)(40480700001)(316002)(82740400003)(478600001)(1076003)(26005)(7696005)(6666004)(40460700003)(36860700001)(107886003)(336012)(426003)(47076005)(2616005)(83380400001)(186003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2022 00:29:00.1690
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f0182a6-fcd5-47cd-eb26-08daa1b19aae
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT111.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4310
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ARM Performance Monitoring Unit Table describes the properties of PMU
-support in ARM-based system. The APMT table contains a list of nodes,
-each represents a PMU in the system that conforms to ARM CoreSight PMU
-architecture. The properties of each node include information required
-to access the PMU (e.g. MMIO base address, interrupt number) and also
-identification. For more detailed information, please refer to the
-specification below:
- * APMT: https://developer.arm.com/documentation/den0117/latest
- * ARM Coresight PMU:
-        https://developer.arm.com/documentation/ihi0091/latest
-
-The initial support adds the detection of APMT table and generic
-infrastructure to create platform devices for ARM CoreSight PMUs.
-Similar to IORT the root pointer of APMT is preserved during runtime
-and each PMU platform device is given a pointer to the corresponding
-APMT node.
-
-Signed-off-by: Besar Wicaksono <bwicaksono@nvidia.com>
----
-
-The patch applies on top of
-  https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-  master next-20220524
-
-Changes from v1:
- * Include acpi_apmt.h header file
- * Update the device name. Related driver patch:
-   https://lore.kernel.org/linux-arm-kernel/20220928201830.45637-1-bwicaksono@nvidia.com/
-v1: https://lkml.org/lkml/2022/4/19/1395
-
- arch/arm64/Kconfig          |   1 +
- drivers/acpi/arm64/Kconfig  |   3 +
- drivers/acpi/arm64/Makefile |   1 +
- drivers/acpi/arm64/apmt.c   | 177 ++++++++++++++++++++++++++++++++++++
- drivers/acpi/bus.c          |   2 +
- include/linux/acpi_apmt.h   |  19 ++++
- 6 files changed, 203 insertions(+)
- create mode 100644 drivers/acpi/arm64/apmt.c
- create mode 100644 include/linux/acpi_apmt.h
-
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index aaeb70358979..dbcb09ee29dd 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config ARM64
- 	def_bool y
-+	select ACPI_APMT if ACPI
- 	select ACPI_CCA_REQUIRED if ACPI
- 	select ACPI_GENERIC_GSI if ACPI
- 	select ACPI_GTDT if ACPI
-diff --git a/drivers/acpi/arm64/Kconfig b/drivers/acpi/arm64/Kconfig
-index d4a72835f328..b3ed6212244c 100644
---- a/drivers/acpi/arm64/Kconfig
-+++ b/drivers/acpi/arm64/Kconfig
-@@ -18,3 +18,6 @@ config ACPI_AGDI
- 	  reset command.
- 
- 	  If set, the kernel parses AGDI table and listens for the command.
-+
-+config ACPI_APMT
-+	bool
-diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
-index 7b9e4045659d..e21a9e84e394 100644
---- a/drivers/acpi/arm64/Makefile
-+++ b/drivers/acpi/arm64/Makefile
-@@ -2,4 +2,5 @@
- obj-$(CONFIG_ACPI_AGDI) 	+= agdi.o
- obj-$(CONFIG_ACPI_IORT) 	+= iort.o
- obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
-+obj-$(CONFIG_ACPI_APMT) 	+= apmt.o
- obj-y				+= dma.o
-diff --git a/drivers/acpi/arm64/apmt.c b/drivers/acpi/arm64/apmt.c
-new file mode 100644
-index 000000000000..f55167ca51e7
---- /dev/null
-+++ b/drivers/acpi/arm64/apmt.c
-@@ -0,0 +1,177 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * ARM APMT table support.
-+ * Design document number: ARM DEN0117.
-+ *
-+ * Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.
-+ *
-+ */
-+
-+#define pr_fmt(fmt)	"ACPI: APMT: " fmt
-+
-+#include <linux/acpi.h>
-+#include <linux/acpi_apmt.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/platform_device.h>
-+
-+#define DEV_NAME "arm-cs-arch-pmu"
-+
-+/* There can be up to 3 resources: page 0 and 1 address, and interrupt. */
-+#define DEV_MAX_RESOURCE_COUNT 3
-+
-+/* Root pointer to the mapped APMT table */
-+static struct acpi_table_header *apmt_table;
-+
-+static int __init apmt_init_resources(struct resource *res,
-+					      struct acpi_apmt_node *node)
-+{
-+	int irq, trigger;
-+	int num_res = 0;
-+
-+	res[num_res].start = node->base_address0;
-+	res[num_res].end = node->base_address0 + SZ_4K - 1;
-+	res[num_res].flags = IORESOURCE_MEM;
-+
-+	num_res++;
-+
-+	res[num_res].start = node->base_address1;
-+	res[num_res].end = node->base_address1 + SZ_4K - 1;
-+	res[num_res].flags = IORESOURCE_MEM;
-+
-+	num_res++;
-+
-+	if (node->ovflw_irq != 0) {
-+		trigger = (node->ovflw_irq_flags & ACPI_APMT_OVFLW_IRQ_FLAGS_MODE);
-+		trigger = (trigger == ACPI_APMT_OVFLW_IRQ_FLAGS_MODE_LEVEL) ?
-+			ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
-+		irq = acpi_register_gsi(NULL, node->ovflw_irq, trigger,
-+						ACPI_ACTIVE_HIGH);
-+
-+		if (irq <= 0) {
-+			pr_warn("APMT could not register gsi hwirq %d\n", irq);
-+			return num_res;
-+		}
-+
-+		res[num_res].start = irq;
-+		res[num_res].end = irq;
-+		res[num_res].flags = IORESOURCE_IRQ;
-+
-+		num_res++;
-+	}
-+
-+	return num_res;
-+}
-+
-+/**
-+ * apmt_add_platform_device() - Allocate a platform device for APMT node
-+ * @node: Pointer to device ACPI APMT node
-+ *
-+ * Returns: 0 on success, <0 failure
-+ */
-+static int __init apmt_add_platform_device(struct acpi_apmt_node *node,
-+							struct fwnode_handle *fwnode)
-+{
-+	struct platform_device *pdev;
-+	int ret, count;
-+	struct resource res[DEV_MAX_RESOURCE_COUNT];
-+
-+	pdev = platform_device_alloc(DEV_NAME, PLATFORM_DEVID_AUTO);
-+	if (!pdev)
-+		return -ENOMEM;
-+
-+	memset(res, 0, sizeof(res));
-+
-+	count = apmt_init_resources(res, node);
-+
-+	ret = platform_device_add_resources(pdev, res, count);
-+	if (ret)
-+		goto dev_put;
-+
-+	/*
-+	 * Add a copy of APMT node pointer to platform_data to be used to
-+	 * retrieve APMT data information.
-+	 */
-+	ret = platform_device_add_data(pdev, &node, sizeof(node));
-+	if (ret)
-+		goto dev_put;
-+
-+	pdev->dev.fwnode = fwnode;
-+
-+	ret = platform_device_add(pdev);
-+
-+	if (ret)
-+		goto dev_put;
-+
-+	return 0;
-+
-+dev_put:
-+	platform_device_put(pdev);
-+
-+	return ret;
-+}
-+
-+static int __init apmt_init_platform_devices(void)
-+{
-+	struct acpi_apmt_node *apmt_node;
-+	struct acpi_table_apmt *apmt;
-+	struct fwnode_handle *fwnode;
-+	u64 offset, end;
-+	int ret;
-+
-+	/*
-+	 * apmt_table and apmt both point to the start of APMT table, but
-+	 * have different struct types
-+	 */
-+	apmt = (struct acpi_table_apmt *)apmt_table;
-+	offset = sizeof(*apmt);
-+	end = apmt->header.length;
-+
-+	while (offset < end) {
-+		apmt_node = ACPI_ADD_PTR(struct acpi_apmt_node, apmt,
-+				 offset);
-+
-+		fwnode = acpi_alloc_fwnode_static();
-+		if (!fwnode)
-+			return -ENOMEM;
-+
-+		ret = apmt_add_platform_device(apmt_node, fwnode);
-+		if (ret) {
-+			acpi_free_fwnode_static(fwnode);
-+			return ret;
-+		}
-+
-+		offset += apmt_node->length;
-+	}
-+
-+	return 0;
-+}
-+
-+void __init acpi_apmt_init(void)
-+{
-+	acpi_status status;
-+	int ret;
-+
-+	/**
-+	 * APMT table nodes will be used at runtime after the apmt init,
-+	 * so we don't need to call acpi_put_table() to release
-+	 * the APMT table mapping.
-+	 */
-+	status = acpi_get_table(ACPI_SIG_APMT, 0, &apmt_table);
-+
-+	if (ACPI_FAILURE(status)) {
-+		if (status != AE_NOT_FOUND) {
-+			const char *msg = acpi_format_exception(status);
-+
-+			pr_err("Failed to get APMT table, %s\n", msg);
-+		}
-+
-+		return;
-+	}
-+
-+	ret = apmt_init_platform_devices();
-+	if (ret) {
-+		pr_err("Failed to initialize APMT platform devices, ret: %d\n", ret);
-+		acpi_put_table(apmt_table);
-+	}
-+}
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 86fa61a21826..f9dc5b3d5c55 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -27,6 +27,7 @@
- #include <linux/dmi.h>
- #endif
- #include <linux/acpi_agdi.h>
-+#include <linux/acpi_apmt.h>
- #include <linux/acpi_iort.h>
- #include <linux/acpi_viot.h>
- #include <linux/pci.h>
-@@ -1411,6 +1412,7 @@ static int __init acpi_init(void)
- 	acpi_setup_sb_notify_handler();
- 	acpi_viot_init();
- 	acpi_agdi_init();
-+	acpi_apmt_init();
- 	return 0;
- }
- 
-diff --git a/include/linux/acpi_apmt.h b/include/linux/acpi_apmt.h
-new file mode 100644
-index 000000000000..40bd634d082f
---- /dev/null
-+++ b/include/linux/acpi_apmt.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0
-+ *
-+ * ARM CoreSight PMU driver.
-+ * Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.
-+ *
-+ */
-+
-+#ifndef __ACPI_APMT_H__
-+#define __ACPI_APMT_H__
-+
-+#include <linux/acpi.h>
-+
-+#ifdef CONFIG_ACPI_APMT
-+void acpi_apmt_init(void);
-+#else
-+static inline void acpi_apmt_init(void) { }
-+#endif /* CONFIG_ACPI_APMT */
-+
-+#endif /* __ACPI_APMT_H__ */
-
-base-commit: 09ce5091ff971cdbfd67ad84dc561ea27f10d67a
--- 
-2.17.1
+T24gV2VkLCAyMDIyLTA5LTI4IGF0IDExOjE5IC0wNTAwLCBNYXJpbyBMaW1vbmNpZWxsbyB3cm90
+ZToKPiBJdCdzIHJlcG9ydGVkIHRoYXQgIkFTVVNUZUsgQ09NUFVURVIgSU5DLiBST0cgRmxvdyBY
+MTYgR1Y2MDFSVyIgaGFzCj4gbm9uLWZ1bmN0aW9uYWwgZmFucyBhZnRlciByZXN1bWUgd2hlbiB1
+c2luZyB0aGUgQU1EIGNvZGVwYXRoLsKgIFRoaXMKPiBpc3N1ZSBpcyBmaXhlZCB1c2luZyB0aGUg
+TWljcm9zb2Z0IGNvZGVwYXRoLgo+IAo+IEFkZCB0aGUgMyB2YXJpYW50cyBvZiB0aGlzIHN5c3Rl
+bSB0byB0aGUgTWljcm9zb2Z0IGNvZGVwYXRoIERNSQo+IHRhYmxlLgo+ICogR1Y2MDFSVwo+ICog
+R1Y2MDFSTQo+ICogR1Y2MDFSRQo+IAo+IExpbms6Cj4gaHR0cHM6Ly93d3cucmVkZGl0LmNvbS9y
+L2xpbnV4aGFyZHdhcmUvY29tbWVudHMvd2g1MG5kL2NvbXBhdGliaWxpdHlfcmVwb3J0X2FzdXNf
+cm9nX2Zsb3dfeDE2X2d2NjAxcm0vCj4gTGluazoKPiBodHRwczovL2dpdGxhYi5mcmVlZGVza3Rv
+cC5vcmcvZHJtL2FtZC8tL2lzc3Vlcy8yMTQ4I25vdGVfMTU3MTI0MQo+IFJlcG9ydGVkLWJ5OiBM
+dWtlIEpvbmVzIDxsdWtlQGxqb25lcy5kZXY+Cj4gU2lnbmVkLW9mZi1ieTogTWFyaW8gTGltb25j
+aWVsbG8gPG1hcmlvLmxpbW9uY2llbGxvQGFtZC5jb20+Cj4gLS0tCj4gwqBkcml2ZXJzL2FjcGkv
+eDg2L3MyaWRsZS5jIHwgMTEgKysrKysrKysrKysKPiDCoDEgZmlsZSBjaGFuZ2VkLCAxMSBpbnNl
+cnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS94ODYvczJpZGxlLmMgYi9k
+cml2ZXJzL2FjcGkveDg2L3MyaWRsZS5jCj4gaW5kZXggM2FlMmJhNzRkZTkyLi4wMTU1YzFkMmQ2
+MDggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9hY3BpL3g4Ni9zMmlkbGUuYwo+ICsrKyBiL2RyaXZl
+cnMvYWNwaS94ODYvczJpZGxlLmMKPiBAQCAtNDUxLDYgKzQ1MSwxNyBAQCBzdGF0aWMgY29uc3Qg
+c3RydWN0IGRtaV9zeXN0ZW1faWQKPiBzMmlkbGVfZG1pX3RhYmxlW10gX19pbml0Y29uc3QgPSB7
+Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgRE1JX01B
+VENIKERNSV9QUk9EVUNUX05BTUUsICJST0cgRmxvdyBYMTMKPiBHVjMwMSIpLAo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfSwKPiDCoMKgwqDCoMKgwqDCoMKgfSwKPiArwqDCoMKg
+wqDCoMKgwqB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIEFTVVNUZUsgQ09NUFVURVIgSU5DLiBST0cgRmxvdyBY
+MTYgR1Y2MDFSV19HVjYwMVJXCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqCj4g
+aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9hbWQvLS9pc3N1ZXMvMjE0OAo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgLmNhbGxiYWNrID0gbHBzMF9wcmVmZXJfbWljcm9zb2Z0LAo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAubWF0Y2hlcyA9IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoERNSV9NQVRDSChETUlfU1lTX1ZFTkRPUiwgIkFTVVNU
+ZUsgQ09NUFVURVIKPiBJTkMuIiksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBETUlfTUFUQ0goRE1JX1BST0RVQ1RfTkFNRSwgIlJPRyBGbG93IFgxNgo+
+IEdWNjAxIiksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0sCj4gK8KgwqDCoMKg
+wqDCoMKgfSwKPiDCoMKgwqDCoMKgwqDCoMKge30KPiDCoH07Cj4gwqAKCkhpIE1hcmlvLAoKcmVs
+YXRlZCBkdHMgaGVyZQpodHRwczovL2dpdGxhYi5jb20vYXN1cy1saW51eC9yZXZlcnNlLWVuZ2lu
+ZWVyaW5nLy0vdHJlZS9tYXN0ZXIvR1Y2MDFSCgo=
 
