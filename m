@@ -2,126 +2,256 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 464B65EEAAB
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 03:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6639B5EEBD1
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 04:34:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233134AbiI2BBL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Sep 2022 21:01:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49376 "EHLO
+        id S234542AbiI2Cec (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Sep 2022 22:34:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229901AbiI2BBK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 21:01:10 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86828F594F;
-        Wed, 28 Sep 2022 18:01:08 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 2FEFC5C00B9;
-        Wed, 28 Sep 2022 21:01:06 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Wed, 28 Sep 2022 21:01:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ljones.dev; h=cc
-        :cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm3; t=1664413266; x=
-        1664499666; bh=1bzeay9T/xf/VGzfHLUYmp/sbMPH/2mBk8/Ri+FZl/k=; b=G
-        Ic9RYonaLiQpc2RTPn3KE1cXzv/bXu0ydKaSA+Pu9ZGEA0E88hedJoWWvQ+lYCYj
-        /kS//4jaNJYZwkgYiOOGJCWkaxNI2IcX8mi3cExZkZuGrfD5oGqV63kjqX54nUIR
-        rbZE0tlwnERVv2Fr0CTCfalyfkkaLCDhxTzkJrhoglF8uwnFL5y8CS2zfQuylkBK
-        ZZQkXQv9O8eM3AnjJxuKr0uprLAeIUW1ZBDclaQjg3kp4+LMbfyzS/o2BGiG8K+m
-        iW3vhnMff2I43kRn9kifLPPUao3wxj7zMgMnsDQifnAhnkaJxC7bqnwzrHJNYCIf
-        MB8bBxPEcjsnMGpbBZ8WQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1664413266; x=
-        1664499666; bh=1bzeay9T/xf/VGzfHLUYmp/sbMPH/2mBk8/Ri+FZl/k=; b=P
-        rJApjIy23iRgQygazkXHFrkfeOmc9NCtZXr6Keal0HwyEY63bhppx/9+acrXE5jr
-        X6vcwhcYJdS6CeLEWsdSpoGmzV4K1XKGBNdzugeHPKWdmkN9DJwOwPjFZUyUjeuM
-        tCuiuYr7Yl21mtdloE8BLpaCsU5J7x01hyuZdYUm1+X31biBB68GMSSbU+JpT4Ei
-        jOd9yms9n3BeLVWOG3AMi4n3Z/mNmsJoU0Q3Q/5hxfL5Gyun1HaXGo0mvq31Rg6R
-        r4/An8sWdNdU7p7XhZ84rJlGx2Xm4MBfrOKXe3hxbj2I7X8Q+SvNijml8rmoXi2x
-        OgXbUJzn3vC31rYxJO2dw==
-X-ME-Sender: <xms:Ue40Y2WKmtqCbT9ilrbQSwfLSJKu_slahH7JvHaeI4MCay99Cr0ugw>
-    <xme:Ue40YynHNV-ucaCTO3FrEd8p8p78X2gWc8of58WYeFN6sPWnjRwjm1eSHMUSm-vOG
-    nq5IGuC7glmYd0PIuo>
-X-ME-Received: <xmr:Ue40Y6b6APpq7yUBpizuujPX8Y4dlhq3hEzzsgfAVKvMZ4E0HT9byIQXmHh2wAl7-5wy5Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeegledggedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkffuhffvveffjghftgfgfgggsehtsgertddtreejnecuhfhrohhmpefnuhhk
-    vgculfhonhgvshcuoehluhhkvgeslhhjohhnvghsrdguvghvqeenucggtffrrghtthgvrh
-    hnpeeluddtveejgefgjeekleevjeevjeetgeettdehheffffekheeiveeggedvjeffvden
-    ucffohhmrghinheprhgvugguihhtrdgtohhmpdhfrhgvvgguvghskhhtohhprdhorhhgpd
-    hgihhtlhgrsgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpehluhhkvgeslhhjohhnvghsrdguvghv
-X-ME-Proxy: <xmx:Uu40Y9VIh510DJqoxTQT_lB-SaDwZf6tbameG24fvx98wkWblxKjFQ>
-    <xmx:Uu40YwklqbS7BbezZvpLVAHI0J_ruDjFbusroRZ15gBzQRPbOzE6Zg>
-    <xmx:Uu40Yyd3fVYy2UR_mY4ahC9LYt-WFJh5bAZHUoBmjgAsVn6JoXZxmA>
-    <xmx:Uu40Y6j6eGrvZqBH9XtWCnnIB8FWYHTHWaDug0cigb4yOJnG83UH-Q>
-Feedback-ID: i5ec1447f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Sep 2022 21:01:03 -0400 (EDT)
-Message-ID: <f49217c531a61d42d2cf370d2140cf57fe79ec34.camel@ljones.dev>
-Subject: Re: [PATCH 2/2] ACPI: x86: s2idle: Add another ID to
- s2idle_dmi_table
-From:   Luke Jones <luke@ljones.dev>
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Shyam-sundar.S-k@amd.com, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Date:   Thu, 29 Sep 2022 14:00:53 +1300
-In-Reply-To: <20220928161935.31913-2-mario.limonciello@amd.com>
-References: <20220928161935.31913-1-mario.limonciello@amd.com>
-         <20220928161935.31913-2-mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.46.0 (by Flathub.org)) 
+        with ESMTP id S234197AbiI2CeH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Sep 2022 22:34:07 -0400
+Received: from out199-12.us.a.mail.aliyun.com (out199-12.us.a.mail.aliyun.com [47.90.199.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09764126B60;
+        Wed, 28 Sep 2022 19:33:43 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R871e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0VQy2tsA_1664418817;
+Received: from 30.240.121.51(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VQy2tsA_1664418817)
+          by smtp.aliyun-inc.com;
+          Thu, 29 Sep 2022 10:33:39 +0800
+Message-ID: <f09e6aee-5d7f-62c2-8a6e-d721d8b22699@linux.alibaba.com>
+Date:   Thu, 29 Sep 2022 10:33:36 +0800
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.13.0
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Re: [PATCH v2] ACPI: APEI: do not add task_work to kernel thread to
+ avoid memory leak
+To:     "Luck, Tony" <tony.luck@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        James Morse <james.morse@arm.com>
+Cc:     Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
+        <naoya.horiguchi@nec.com>,
+        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stable <stable@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
+        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+References: <20220916050535.26625-1-xueshuai@linux.alibaba.com>
+ <20220924074953.83064-1-xueshuai@linux.alibaba.com>
+ <CAJZ5v0jAZC81Peowy0iKuq+cy68tyn0OK3a--nW=wWMbRojcxg@mail.gmail.com>
+ <f0735218-7730-c275-8cee-38df9bec427d@linux.alibaba.com>
+ <SJ1PR11MB6083FC6B8D64933C573CAB64FC529@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <79cb9aee-9ad5-00f4-3f7a-9c409f502685@linux.alibaba.com>
+ <SJ1PR11MB60830CBCB42CFF552A2B6CF0FC559@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Content-Language: en-US
+In-Reply-To: <SJ1PR11MB60830CBCB42CFF552A2B6CF0FC559@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-12.2 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-T24gV2VkLCAyMDIyLTA5LTI4IGF0IDExOjE5IC0wNTAwLCBNYXJpbyBMaW1vbmNpZWxsbyB3cm90
-ZToKPiBJdCdzIHJlcG9ydGVkIHRoYXQgIkFTVVNUZUsgQ09NUFVURVIgSU5DLiBST0cgRmxvdyBY
-MTYgR1Y2MDFSVyIgaGFzCj4gbm9uLWZ1bmN0aW9uYWwgZmFucyBhZnRlciByZXN1bWUgd2hlbiB1
-c2luZyB0aGUgQU1EIGNvZGVwYXRoLsKgIFRoaXMKPiBpc3N1ZSBpcyBmaXhlZCB1c2luZyB0aGUg
-TWljcm9zb2Z0IGNvZGVwYXRoLgo+IAo+IEFkZCB0aGUgMyB2YXJpYW50cyBvZiB0aGlzIHN5c3Rl
-bSB0byB0aGUgTWljcm9zb2Z0IGNvZGVwYXRoIERNSQo+IHRhYmxlLgo+ICogR1Y2MDFSVwo+ICog
-R1Y2MDFSTQo+ICogR1Y2MDFSRQo+IAo+IExpbms6Cj4gaHR0cHM6Ly93d3cucmVkZGl0LmNvbS9y
-L2xpbnV4aGFyZHdhcmUvY29tbWVudHMvd2g1MG5kL2NvbXBhdGliaWxpdHlfcmVwb3J0X2FzdXNf
-cm9nX2Zsb3dfeDE2X2d2NjAxcm0vCj4gTGluazoKPiBodHRwczovL2dpdGxhYi5mcmVlZGVza3Rv
-cC5vcmcvZHJtL2FtZC8tL2lzc3Vlcy8yMTQ4I25vdGVfMTU3MTI0MQo+IFJlcG9ydGVkLWJ5OiBM
-dWtlIEpvbmVzIDxsdWtlQGxqb25lcy5kZXY+Cj4gU2lnbmVkLW9mZi1ieTogTWFyaW8gTGltb25j
-aWVsbG8gPG1hcmlvLmxpbW9uY2llbGxvQGFtZC5jb20+Cj4gLS0tCj4gwqBkcml2ZXJzL2FjcGkv
-eDg2L3MyaWRsZS5jIHwgMTEgKysrKysrKysrKysKPiDCoDEgZmlsZSBjaGFuZ2VkLCAxMSBpbnNl
-cnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNwaS94ODYvczJpZGxlLmMgYi9k
-cml2ZXJzL2FjcGkveDg2L3MyaWRsZS5jCj4gaW5kZXggM2FlMmJhNzRkZTkyLi4wMTU1YzFkMmQ2
-MDggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9hY3BpL3g4Ni9zMmlkbGUuYwo+ICsrKyBiL2RyaXZl
-cnMvYWNwaS94ODYvczJpZGxlLmMKPiBAQCAtNDUxLDYgKzQ1MSwxNyBAQCBzdGF0aWMgY29uc3Qg
-c3RydWN0IGRtaV9zeXN0ZW1faWQKPiBzMmlkbGVfZG1pX3RhYmxlW10gX19pbml0Y29uc3QgPSB7
-Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgRE1JX01B
-VENIKERNSV9QUk9EVUNUX05BTUUsICJST0cgRmxvdyBYMTMKPiBHVjMwMSIpLAo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfSwKPiDCoMKgwqDCoMKgwqDCoMKgfSwKPiArwqDCoMKg
-wqDCoMKgwqB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qCj4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIEFTVVNUZUsgQ09NUFVURVIgSU5DLiBST0cgRmxvdyBY
-MTYgR1Y2MDFSV19HVjYwMVJXCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqCj4g
-aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9hbWQvLS9pc3N1ZXMvMjE0OAo+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgLmNhbGxiYWNrID0gbHBzMF9wcmVmZXJfbWljcm9zb2Z0LAo+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAubWF0Y2hlcyA9IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoERNSV9NQVRDSChETUlfU1lTX1ZFTkRPUiwgIkFTVVNU
-ZUsgQ09NUFVURVIKPiBJTkMuIiksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqBETUlfTUFUQ0goRE1JX1BST0RVQ1RfTkFNRSwgIlJPRyBGbG93IFgxNgo+
-IEdWNjAxIiksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0sCj4gK8KgwqDCoMKg
-wqDCoMKgfSwKPiDCoMKgwqDCoMKgwqDCoMKge30KPiDCoH07Cj4gwqAKCkhpIE1hcmlvLAoKcmVs
-YXRlZCBkdHMgaGVyZQpodHRwczovL2dpdGxhYi5jb20vYXN1cy1saW51eC9yZXZlcnNlLWVuZ2lu
-ZWVyaW5nLy0vdHJlZS9tYXN0ZXIvR1Y2MDFSCgo=
+
+
+在 2022/9/28 AM1:47, Luck, Tony 写道:
+> I follow and agree with everything up until:
+> 
+>> In a conclusion, the error will be handled in a kworker with or without this fix.
+
+> 
+> It isn't handled during the interrupt (it can't be).
+
+Yes, it is not handled during the interrupt and it does not have to.
+
+>
+> Who handles the error if the interrupt happens during the execution of a kthread?
+
+As I mentioned, the GHES driver always queues work into workqueue to handle memory
+failure of a page in memory_failure_queue(), so the **worker will be scheduled and
+handle memory failure later**.
+
+> 
+> Can't use the task_work_add() trick to handle it (because this thread never returns to user mode).
+
+Yes, it can not. And this is the key point to fix.
+
+> 
+> So how is the error handled?
+> 
+
+The workflow to handle hardware error is summery as bellow:
+
+-----------------------------------------------------------------------------
+[ghes_sdei_critical_callback: current swapper/3, CPU 3]
+ghes_sdei_critical_callback
+    => __ghes_sdei_callback
+        => ghes_in_nmi_queue_one_entry 		// peak and read estatus
+        => irq_work_queue(&ghes_proc_irq_work) <=> ghes_proc_in_irq // irq_work
+[ghes_sdei_critical_callback: return]
+-----------------------------------------------------------------------------
+[ghes_proc_in_irq: current swapper/3, CPU 3]
+            => ghes_do_proc
+                => ghes_handle_memory_failure
+                    => ghes_do_memory_failure
+                        => memory_failure_queue	 // put work task on current CPU
+                            => if (kfifo_put(&mf_cpu->fifo, entry))
+                                  schedule_work_on(smp_processor_id(), &mf_cpu->work);
+            => task_work_add(current, &estatus_node->task_work, TWA_RESUME); // fix here, always added to current
+[ghes_proc_in_irq: return]
+-----------------------------------------------------------------------------
+// kworker preempts swapper/3 on CPU 3 due to RESCHED flag
+[memory_failure_work_func: current kworker, CPU 3]	
+     => memory_failure_work_func(&mf_cpu->work)
+        => while kfifo_get(&mf_cpu->fifo, &entry);	// until get no work
+            => soft/hard offline
+-----------------------------------------------------------------------------
+
+STEP 0: The firmware notifies hardware error to kernel through is SDEI
+(ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED).
+
+STEP 1: In SDEI callback (or any NMI-like handler), memory from ghes_estatus_pool is
+used to save estatus, and added to the ghes_estatus_llist. The swapper running on
+CPU 3 is interrupted. irq_work_queue() causes ghes_proc_in_irq() to run in IRQ
+context where each estatus in ghes_estatus_llist is processed.
+
+STEP2: In IRQ context, ghes_proc_in_irq() queues memory failure work on current CPU
+in workqueue and add task work to sync with the workqueue.
+
+STEP3: The kworker preempts the current running thread and get CPU 3. Then memory failure
+is processed in kworker.
+
+(STEP4 for user thread: ghes_kick_task_work() is called as task_work to ensure any
+queued workqueue has been done before returning to user-space. The estatus_node is freed.)
+
+If the task work is not added, estatus_node->task_work.func will be NULL, and estatus_node
+is freed in STEP 2.
+
+Hope it helps to make the problem clearer. You can also check the stack dumped in key
+function in above flow.
+
+Best Regards,
+Shuai
+
+
+---------------------------------------------------------------------------------------
+dump_stack() is added in:
+- __ghes_sdei_callback()
+- ghes_proc_in_irq()
+- memory_failure_queue_kick()
+- memory_failure_work_func()
+- memory_failure()
+
+[  485.457761] CPU: 3 PID: 0 Comm: swapper/3 Tainted: G            E      6.0.0-rc5+ #33
+[  485.457769] Hardware name: xxxx
+[  485.457771] Call trace:
+[  485.457772]  dump_backtrace+0xe8/0x12c
+[  485.457779]  show_stack+0x20/0x50
+[  485.457781]  dump_stack_lvl+0x68/0x84
+[  485.457785]  dump_stack+0x18/0x34
+[  485.457787]  __ghes_sdei_callback+0x24/0x64
+[  485.457789]  ghes_sdei_critical_callback+0x5c/0x94
+[  485.457792]  sdei_event_handler+0x28/0x90
+[  485.457795]  do_sdei_event+0x74/0x160
+[  485.457797]  __sdei_handler+0x60/0xf0
+[  485.457799]  __sdei_asm_handler+0xbc/0x18c
+[  485.457801]  cpu_do_idle+0x14/0x80
+[  485.457802]  default_idle_call+0x50/0x114
+[  485.457804]  cpuidle_idle_call+0x16c/0x1c0
+[  485.457806]  do_idle+0xb8/0x110
+[  485.457808]  cpu_startup_entry+0x2c/0x34
+[  485.457809]  secondary_start_kernel+0xf0/0x144
+[  485.457812]  __secondary_switched+0xb0/0xb4
+
+[  485.459513] EDAC MC0: 1 UE multi-symbol chipkill ECC on unknown memory (node:0 card:3 module:0 rank:0 bank_group:0 bank_address:0 device:0 row:624 column:384 chip_id:0 page:0x89c033 offset:0x400 grain:1 - APEI location: node:0 card:3 module:0 rank:0 bank_group:0 bank_address:0 device:0 row:624 column:384 chip_id:0 status(0x0000000000000400): Storage error in DRAM memory)
+[  485.459523] {2}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 2
+[  485.470607] {2}[Hardware Error]: event severity: recoverable
+[  485.476252] {2}[Hardware Error]:  precise tstamp: 2022-09-29 09:31:27
+[  485.482678] {2}[Hardware Error]:  Error 0, type: recoverable
+[  485.488322] {2}[Hardware Error]:   section_type: memory error
+[  485.494052] {2}[Hardware Error]:    error_status: Storage error in DRAM memory (0x0000000000000400)
+[  485.503081] {2}[Hardware Error]:   physical_address: 0x000000089c033400
+[  485.509680] {2}[Hardware Error]:   node:0 card:3 module:0 rank:0 bank_group:0 bank_address:0 device:0 row:624 column:384 chip_id:0
+[  485.521487] {2}[Hardware Error]:   error_type: 5, multi-symbol chipkill ECC
+
+[  485.528439] CPU: 3 PID: 0 Comm: swapper/3 Tainted: G            E      6.0.0-rc5+ #33
+[  485.528440] Hardware name: AlibabaCloud AliServer-Xuanwu2.0AM-02-2UC1P-5B/M, BIOS 1.2.M1.AL.E.132.01 08/23/2022
+[  485.528441] Call trace:
+[  485.528441]  dump_backtrace+0xe8/0x12c
+[  485.528443]  show_stack+0x20/0x50
+[  485.528444]  dump_stack_lvl+0x68/0x84
+[  485.528446]  dump_stack+0x18/0x34
+[  485.528448]  ghes_proc_in_irq+0x220/0x250
+[  485.528450]  irq_work_single+0x30/0x80
+[  485.528453]  irq_work_run_list+0x4c/0x70
+[  485.528455]  irq_work_run+0x28/0x44
+[  485.528457]  do_handle_IPI+0x2b4/0x2f0
+[  485.528459]  ipi_handler+0x24/0x34
+[  485.528461]  handle_percpu_devid_irq+0x90/0x1c4
+[  485.528463]  generic_handle_domain_irq+0x34/0x50
+[  485.528465]  __gic_handle_irq_from_irqson.isra.0+0x130/0x230
+[  485.528468]  gic_handle_irq+0x2c/0x60
+[  485.528469]  call_on_irq_stack+0x2c/0x38
+[  485.528471]  do_interrupt_handler+0x88/0x90
+[  485.528472]  el1_interrupt+0x48/0xb0
+[  485.528475]  el1h_64_irq_handler+0x18/0x24
+[  485.528476]  el1h_64_irq+0x74/0x78
+[  485.528477]  __do_softirq+0xa4/0x358
+[  485.528478]  __irq_exit_rcu+0x110/0x13c
+[  485.528479]  irq_exit_rcu+0x18/0x24
+[  485.528480]  el1_interrupt+0x4c/0xb0
+[  485.528482]  el1h_64_irq_handler+0x18/0x24
+[  485.528483]  el1h_64_irq+0x74/0x78
+[  485.528484]  arch_cpu_idle+0x18/0x40
+[  485.528485]  default_idle_call+0x50/0x114
+[  485.528487]  cpuidle_idle_call+0x16c/0x1c0
+[  485.528488]  do_idle+0xb8/0x110
+[  485.528489]  cpu_startup_entry+0x2c/0x34
+[  485.528491]  secondary_start_kernel+0xf0/0x144
+[  485.528493]  __secondary_switched+0xb0/0xb4
+
+[  485.528511] CPU: 3 PID: 12696 Comm: kworker/3:0 Tainted: G            E      6.0.0-rc5+ #33
+[  485.528513] Hardware name: AlibabaCloud AliServer-Xuanwu2.0AM-02-2UC1P-5B/M, BIOS 1.2.M1.AL.E.132.01 08/23/2022
+[  485.528514] Workqueue: events memory_failure_work_func
+[  485.528518] Call trace:
+[  485.528519]  dump_backtrace+0xe8/0x12c
+[  485.528520]  show_stack+0x20/0x50
+[  485.528521]  dump_stack_lvl+0x68/0x84
+[  485.528523]  dump_stack+0x18/0x34
+[  485.528525]  memory_failure_work_func+0xec/0x180
+[  485.528527]  process_one_work+0x1f4/0x460
+[  485.528528]  worker_thread+0x188/0x3e4
+[  485.528530]  kthread+0xd0/0xd4
+[  485.528532]  ret_from_fork+0x10/0x20
+
+[  485.528533] CPU: 3 PID: 12696 Comm: kworker/3:0 Tainted: G            E      6.0.0-rc5+ #33
+[  485.528534] Hardware name: AlibabaCloud AliServer-Xuanwu2.0AM-02-2UC1P-5B/M, BIOS 1.2.M1.AL.E.132.01 08/23/2022
+[  485.528535] Workqueue: events memory_failure_work_func
+[  485.528537] Call trace:
+[  485.528538]  dump_backtrace+0xe8/0x12c
+[  485.528539]  show_stack+0x20/0x50
+[  485.528540]  dump_stack_lvl+0x68/0x84
+[  485.528541]  dump_stack+0x18/0x34
+[  485.528543]  memory_failure+0x50/0x438
+[  485.528544]  memory_failure_work_func+0x174/0x180
+[  485.528546]  process_one_work+0x1f4/0x460
+[  485.528547]  worker_thread+0x188/0x3e4
+[  485.528548]  kthread+0xd0/0xd4
+[  485.528550]  ret_from_fork+0x10/0x20
+[  485.530622] Memory failure: 0x89c033: recovery action for dirty LRU page: Recovered
+
+
+
+
 
