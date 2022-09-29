@@ -2,237 +2,229 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F1725EF6B4
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 15:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3674D5EFA1C
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Sep 2022 18:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234634AbiI2NfH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Sep 2022 09:35:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55250 "EHLO
+        id S236146AbiI2QTi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Sep 2022 12:19:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233674AbiI2NfE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 09:35:04 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1AD0D4DB35;
-        Thu, 29 Sep 2022 06:35:02 -0700 (PDT)
-Received: from [10.20.42.32] (unknown [10.20.42.32])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8AxTWv8njVj0dQjAA--.6155S3;
-        Thu, 29 Sep 2022 21:34:52 +0800 (CST)
-Subject: Re: [PATCH V1 1/2] irqchip/loongson-pch-pic: Support to set irq type
- for ACPI path
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-        loongarch@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-References: <1660615291-35409-1-git-send-email-lvjianmin@loongson.cn>
- <1660615291-35409-2-git-send-email-lvjianmin@loongson.cn>
- <86leq37duw.wl-maz@kernel.org>
- <71fc2d5b-fc3c-0a2d-65ce-df7d5bb26503@loongson.cn>
- <86ill67bwt.wl-maz@kernel.org>
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-Message-ID: <ab89a8b3-9b92-6afb-f3d4-660b5826c87f@loongson.cn>
-Date:   Thu, 29 Sep 2022 21:34:52 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        with ESMTP id S236138AbiI2QT1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 12:19:27 -0400
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 651881E2745
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Sep 2022 09:19:22 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id p202so1295909iod.6
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Sep 2022 09:19:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MXIVSMuAlBQ+2uSHmUHfHLOHcWF4zJCrevwd/gYh7dQ=;
+        b=dsmioauJSX/3oatV6YYYUCM6wUugxdJ55wkiAT9yEJEv4LIHzw5FG0PgkXOAlwZn59
+         hUKWeM1H6uEW+mxbWtyTrEIKyYQ+ZPeF3hxDEmf7GDwbA7fS/Z6wwuscpoajTudrI39X
+         tquzl4O104NooQFCFGAnjWz4UmvZ4NXm/Y1Wk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MXIVSMuAlBQ+2uSHmUHfHLOHcWF4zJCrevwd/gYh7dQ=;
+        b=zcpjrbOSIlKtsXOBhrg5yC4uWekPOxwfZoQbSpup6EAEexHhecVMDVSEuHQGc3m6Ya
+         rTQWHpCgsNEHLKtyfYu8xAtRvUMicOvPWV5nAlOEVNXBrKeEf+aT+b6fFqG/irrwJaeu
+         zj/ynb6YWkxTmr0SwbjfplutH9zrHf2nAygQg6D5t8ZAYCJCo90aLuZm8VN3UTnusCyj
+         BUEO/ApnOW7O1jg/6SFwtiZYPI9ZsuDKhm2HqlyxhaadTIQX7/davvdVJSEvJSi/SW5z
+         QaOjPxF8BHoThqouXxnDGZNXrtljEEz+7+kln/ICmFjTUa89vZGJBvGGqVlKL5yRLlH0
+         nxhQ==
+X-Gm-Message-State: ACrzQf0hRBcnsAf4dpmlf2S+SASzWLUepiTQQ1/ruJxSg23FvLApisSd
+        t6ayDJ+AtFBT+BTJ3C4istbBCYNrxfx7zHWp
+X-Google-Smtp-Source: AMsMyM48p648vCzLy0mzgB1SpfuUOV6UBxOwCPopt1gMezmSdZkKJCSvUHOMvuMmrY0rMqLArJW7Vw==
+X-Received: by 2002:a05:6638:339e:b0:35a:39e5:ed46 with SMTP id h30-20020a056638339e00b0035a39e5ed46mr2306365jav.12.1664468361129;
+        Thu, 29 Sep 2022 09:19:21 -0700 (PDT)
+Received: from rrangel920.bld.corp.google.com (h24-56-189-219.arvdco.broadband.dynamic.tds.net. [24.56.189.219])
+        by smtp.gmail.com with ESMTPSA id f12-20020a02848c000000b0035aab2f1ab1sm2965451jai.134.2022.09.29.09.19.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Sep 2022 09:19:20 -0700 (PDT)
+From:   Raul E Rangel <rrangel@chromium.org>
+To:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org
+Cc:     andriy.shevchenko@linux.intel.com, dmitry.torokhov@gmail.com,
+        hdegoede@redhat.com, rafael@kernel.org,
+        mika.westerberg@linux.intel.com, mario.limonciello@amd.com,
+        timvp@google.com, linus.walleij@linaro.org, jingle.wu@emc.com.tw,
+        Raul E Rangel <rrangel@chromium.org>,
+        Alistair Francis <alistair@alistair23.me>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Johnny Chuang <johnny.chuang.emc@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Len Brown <lenb@kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Rob Herring <robh@kernel.org>,
+        Terry Bowman <terry.bowman@amd.com>, Tom Rix <trix@redhat.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: [PATCH v6 00/13] acpi: i2c: Use SharedAndWake and ExclusiveAndWake to enable wake irq
+Date:   Thu, 29 Sep 2022 10:19:04 -0600
+Message-Id: <20220929161917.2348231-1-rrangel@chromium.org>
+X-Mailer: git-send-email 2.37.3.998.g577e59143f-goog
 MIME-Version: 1.0
-In-Reply-To: <86ill67bwt.wl-maz@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxTWv8njVj0dQjAA--.6155S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxKFW8Cw1kXryfAF1rCF1UAwb_yoW7uFy8pF
-        Wj9FW2yw4kJFyxArn29w18AFyaywnIkrWxWFs8t3WxXrnI9r1xCF17urWruF1vyF4fCr42
-        vr1vvFW7WFy7AFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUBF1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-        IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-        jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
-        x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
-        GwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4
-        x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCYjI0SjxkI62AI
-        1cAE67vIY487MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r
-        yrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-        7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
-        C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
-        04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
-        CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUq38nUUUUU=
-X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
-X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Today, i2c drivers are making the assumption that their IRQs can also
+be used as wake IRQs. This isn't always the case and it can lead to
+spurious wakes. This has recently started to affect AMD Chromebooks.
+With the introduction of
+d62bd5ce12d7 ("pinctrl: amd: Implement irq_set_wake"), the AMD GPIO
+controller gained the capability to set the wake bit on each GPIO. The
+ACPI specification defines two ways to inform the system if a device is
+wake capable:
+1) The _PRW object defines the GPE that can be used to wake the system.
+2) Setting ExclusiveAndWake or SharedAndWake in the _CRS GpioInt.
 
+Currently only the first method is supported. The i2c drivers don't have
+any indication that the IRQ is wake capable, so they guess. This causes
+spurious interrupts, for example:
+* We have an ACPI HID device that has `_PR0` and `_PR3`. It doesn't have
+  `_PRW` or `ExclusiveAndWake` so that means the device can't wake the
+  system.
+* The IRQ line is active level low for this device and is pulled up by
+  the power resource defined in `_PR0`/`_PR3`.
+* The i2c driver will (incorrectly) arm the GPIO for wake by calling
+  `enable_irq_wake` as part of its suspend hook.
+* ACPI will power down the device since it doesn't have a wake GPE
+  associated with it.
+* When the device is powered down, the IRQ line will drop, and it will
+  trigger a wake event.
 
-On 2022/9/29 下午5:44, Marc Zyngier wrote:
-> On Wed, 28 Sep 2022 22:35:17 -0400,
-> Jianmin Lv <lvjianmin@loongson.cn> wrote:
->>
->> On 2022/9/28 下午10:49, Marc Zyngier wrote:
->>> On Mon, 15 Aug 2022 22:01:30 -0400,
->>> Jianmin Lv <lvjianmin@loongson.cn> wrote:
->>>>
->>>> For ACPI path, the translate callback used IRQ_TYPE_NONE and ignored
->>>> the irq type in fwspec->param[1]. For supporting to set type for
->>>> irqs of the irqdomain, fwspec->param[1] should be used to get irq
->>>> type.
->>>>
->>>> On Loongson platform, the irq trigger type of PCI devices is
->>>> high level, so high level triggered type is inputed to acpi_register_gsi
->>>> when create irq mapping for PCI devices.
->>>>
->>>> Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
->>>> ---
->>>>    drivers/acpi/pci_irq.c                 |  3 ++-
->>>>    drivers/irqchip/irq-loongson-pch-pic.c | 10 ++++++----
->>>>    2 files changed, 8 insertions(+), 5 deletions(-)
->>>
->>> $ ./scripts/get_maintainer.pl drivers/acpi/pci_irq.c
->>> Bjorn Helgaas <bhelgaas@google.com> (supporter:PCI SUBSYSTEM)
->>> "Rafael J. Wysocki" <rafael@kernel.org> (supporter:ACPI)
->>> Len Brown <lenb@kernel.org> (reviewer:ACPI)
->>> linux-pci@vger.kernel.org (open list:PCI SUBSYSTEM)
->>> linux-acpi@vger.kernel.org (open list:ACPI)
->>> linux-kernel@vger.kernel.org (open list)
->>>
->>> How about you start Cc-ing some of the relevant people?
->>>
->> Ok, thanks, I'll cc relevant people list here.
->>
->>>>
->>>> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
->>>> index 08e1577..34483b3 100644
->>>> --- a/drivers/acpi/pci_irq.c
->>>> +++ b/drivers/acpi/pci_irq.c
->>>> @@ -393,7 +393,8 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
->>>>    	 * controller and must therefore be considered active high
->>>>    	 * as default.
->>>>    	 */
->>>> -	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
->>>> +	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ||
->>>> +		       acpi_irq_model == ACPI_IRQ_MODEL_LPIC ?
->>>>    				      ACPI_ACTIVE_HIGH : ACPI_ACTIVE_LOW;
->>>
->>> The comment just above this only talks about ARM. Should it be
->>> updated?
->>
->> Ok, I'll update the comment.
->>
->>
->>> Is this a limitation of the underlying interrupt controller?
->>>
->> It's the limitation that pci interrupt source of LoongArch only sends
->> high level trigger signal to interrupt controller(though, pci spec
->> requires asserted low).
-> 
-> Right, so this is the opposite problem ARM has.
-> 
-> But is it *always* intended to be built like this? Or is it a one-off
-> for this generation of Loongarch systems, to be fixed at a later time?
-> 
+See the following debug log:
+[   42.335804] PM: Suspending system (s2idle)
+[   42.340186] amd_gpio AMD0030:00: RX: Setting wake for pin 89 to enable
+[   42.467736]     power-0416 __acpi_power_off      : Power resource [PR00] turned off
+[   42.467739] device_pm-0280 device_set_power      : Device [H05D] transitioned to D3cold
+[   42.475210] PM: pm_system_irq_wakeup: 11 triggered pinctrl_amd
+[   42.535293] PM: Wakeup unrelated to ACPI SCI
+[   42.535294] PM: resume from suspend-to-idle
 
-Yes, new generations will always keep this unchanged.
+In order to fix this, we need to take into account the wake capable bit
+defined on the Interrupt/GpioInt. This is accomplished by:
+* Migrating some of the i2c drivers over to using the PM subsystem to
+  manage the wake IRQ.
+* Expose the wake_capable bit from the ACPI Interrupt/GpioInt resource
+  to the  i2c core.
+* Use the wake_capable bit in the i2c core to call
+  `dev_pm_set_wake_irq`. This reuses the existing device tree flow.
+* Make the i2c drivers stop calling `dev_pm_set_wake_irq` since it's now
+  handled by the i2c core.
+* Make the ACPI device PM system aware of the wake_irq. This is
+  necessary so the device doesn't incorrectly get powered down when a
+  wake_irq is enabled.
 
->>
->>
->>>>    	char *link = NULL;
->>>>    	char link_desc[16];
->>>> diff --git a/drivers/irqchip/irq-loongson-pch-pic.c b/drivers/irqchip/irq-loongson-pch-pic.c
->>>> index b6f1392..5067010 100644
->>>> --- a/drivers/irqchip/irq-loongson-pch-pic.c
->>>> +++ b/drivers/irqchip/irq-loongson-pch-pic.c
->>>> @@ -177,13 +177,15 @@ static int pch_pic_domain_translate(struct irq_domain *d,
->>>>    	if (fwspec->param_count < 1)
->>>>    		return -EINVAL;
->>>>    -	if (of_node) {
->>>> +	if (of_node)
->>>>    		*hwirq = fwspec->param[0] + priv->ht_vec_base;
->>>> -		*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
->>>> -	} else {
->>>> +	else
->>>>    		*hwirq = fwspec->param[0] - priv->gsi_base;
->>>> +
->>>> +	if (fwspec->param_count > 1)
->>>> +		*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
->>>> +	else
->>>>    		*type = IRQ_TYPE_NONE;
->>>
->>> Isn't that a change in behaviour if of_node is non-NULL and
->>> param_count==1?
->>>
->>
->> It seems that current code here has bug that if fwspec->param_count==1
->> and of_node is non-null, fwspec->param[1] will be accessed, which is
->> introduced from previous patch(irqchip/loongson-pch-pic: Add ACPI init
->> support). Before the patch, for non-null of_node, translate
->> callback(use irq_domain_translate_twocell) will return -EINVAL if
->> fwspec->param_count < 2.
->>
->> For ACPI path, fwspec->param_count can be 1 or 2.
->>
->> So in this patch, I'll fix the bug and change the code as following:
->>
->>          if (fwspec->param_count < 1)
->>                  return -EINVAL;
->>
->>          if (of_node) {
->>                  if (fwspec->param_count < 2)
->>                          return -EINVAL;
->>
->>                  *hwirq = fwspec->param[0] + priv->ht_vec_base;
->>                  *type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
->>          } else {
->>                  *hwirq = fwspec->param[0] - priv->gsi_base;
->>
->>                  if (fwspec->param_count > 1)
->>                          *type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
->>                  else
->>                          *type = IRQ_TYPE_NONE;
->>          }
->>
->>
->>>> -	}
->>>>      	return 0;
->>>>    }
->>>
->>> This irqchip change should probably be a separate patch.
->>>
->>
->> As a separate patch, the input trigger type of pci devices will be low
->> level because of lacking of workaround to acpi_pci_irq_enable, which
->> will cause kernel hang, unless the patch of workaround to
->> acpi_pci_irq_enable is in front of this separated patch.
-> 
-> That seems like a sensible requirement, but I really want to
-> understand whether PCI Loongarch will *always* generate INTx as
-> ACTIVE_HIGH or not. Because if that is ever going to change, we will
-> need a different way to inform the irqchip about the polarity
-> inversion.
-> 
+I've tested this code with various combinations of having _PRW,
+ExclusiveAndWake and power resources all defined or not defined, but it
+would be great if others could test this out on their hardware.
 
-Above same. And in future, in case some generation use ACTIVE_LOW, I 
-think we can use use *Source*(means link) with triggering and polarity 
-property in pci route table of DSDT as following code to override 
-ACTIVE_HIGH, rather than *Source index*(gsi).
+I'm sure this will surface some devices where the IRQs were not
+correctly marked as wake capable. Ideally the firmware can be fixed, but
+if not we can work around this in the kernel by providing a board
+specific `struct i2c_board_info` with the `I2C_CLIENT_WAKE` flag set.
+See `chromeos_laptop.c` for an example of matching DMI properties and
+setting the `I2C_CLIENT_WAKE` override.
 
-       if (entry->link)
-             gsi = acpi_pci_link_allocate_irq(entry->link,
-                                               entry->index,
-                                               &triggering, &polarity,
-                                               &link);
+Thanks,
+Raul
 
+Changes in v6:
+- Return early when irq < 0
+- Refactored to leave else clause
 
-Because of a lot of machines outside have been shipped with firmware 
-using *Source index*, for compatibility with such firmware, the 
-workaround to acpi_pci_irq_enable is required.
+Changes in v5:
+- Added Acked-by: Benjamin Tissoires
+- Removed clang-format white space changes
+- Check irq return value before updating wake_capable pointer
+- Go back to using adev->wakeup.flags.valid to keep the diff cleaner
+- Fix a typo in comment
 
+Changes in v4:
+- Added Reviewed-by
+- Reformatted with 96 char limit
+- Added Reviewed-by
+- Reformatted with 96 char limit
+- Removed unnecessary !!
+- Removed unrelated whitespace change
+- Added Reviewed-by
+- Renamed i2c_acpi_add_resource to i2c_acpi_add_irq_resource
+- Expanded logic in i2c_acpi_add_i2c_resource to make it easier to read
 
-> 	M.
-> 
+Changes in v3:
+- Kept `acpi_dev_gpio_irq_get_by` unchanged to avoid having to touch
+  unrelated drivers.
+- Converted wake_capable parameter to bool.
+- Fixed bad indent
+- Convert wake_capable to bool
+- Only update wake_capable pointer once
+- Move wake_capable local into local block
+
+Changes in v2:
+- Added elants_i2c to series
+- Added raydium_ts_i2c to series
+- Fixed call site in mlxbf_gige_probe
+- Added ability to extract wake bit from Interrupt/IRQ resources
+- Look at wake_cabple bit for IRQ/Interrupt resources
+- I chose not to keep the legacy code around since systems without DT or ACPI should be rare.
+
+Raul E Rangel (13):
+  HID: i2c-hid: Use PM subsystem to manage wake irq
+  Input: elan_i2c - Use PM subsystem to manage wake irq
+  Input: elants_i2c - Use PM subsystem to manage wake irq
+  Input: raydium_ts_i2c - Use PM subsystem to manage wake irq
+  gpiolib: acpi: Add wake_capable variants of acpi_dev_gpio_irq_get
+  ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
+  i2c: acpi: Use ACPI wake capability bit to set wake_irq
+  ACPI: PM: Take wake IRQ into consideration when entering
+    suspend-to-idle
+  HID: i2c-hid: acpi: Stop setting wakeup_capable
+  HID: i2c-hid: Don't set wake_capable and wake_irq
+  Input: elan_i2c - Don't set wake_capable and wake_irq
+  Input: elants_i2c - Don't set wake_capable and wake_irq
+  Input: raydium_ts_i2c - Don't set wake_capable and wake_irq
+
+ drivers/acpi/device_pm.c                   | 15 ++++++++
+ drivers/acpi/irq.c                         |  8 +++--
+ drivers/acpi/resource.c                    | 16 ++++++---
+ drivers/gpio/gpiolib-acpi.c                | 15 ++++++--
+ drivers/gpio/gpiolib-acpi.h                |  2 ++
+ drivers/hid/i2c-hid/i2c-hid-acpi.c         |  5 ---
+ drivers/hid/i2c-hid/i2c-hid-core.c         | 24 ++-----------
+ drivers/i2c/i2c-core-acpi.c                | 40 ++++++++++++++++------
+ drivers/i2c/i2c-core-base.c                |  6 +++-
+ drivers/i2c/i2c-core.h                     |  4 +--
+ drivers/input/mouse/elan_i2c_core.c        | 15 +-------
+ drivers/input/touchscreen/elants_i2c.c     | 13 ++-----
+ drivers/input/touchscreen/raydium_i2c_ts.c |  7 +---
+ drivers/pnp/pnpacpi/rsparser.c             |  7 ++--
+ include/linux/acpi.h                       | 23 ++++++++++---
+ include/linux/ioport.h                     |  3 +-
+ 16 files changed, 113 insertions(+), 90 deletions(-)
+
+-- 
+2.37.3.998.g577e59143f-goog
 
