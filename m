@@ -2,67 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71CCF5F02EC
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Sep 2022 04:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4CC25F0301
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Sep 2022 04:52:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbiI3Cpj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Sep 2022 22:45:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47534 "EHLO
+        id S229715AbiI3Cw4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Sep 2022 22:52:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229584AbiI3Cpi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 22:45:38 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2A7E10B7;
-        Thu, 29 Sep 2022 19:45:37 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id s125so3504378oie.4;
-        Thu, 29 Sep 2022 19:45:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=ormkvRBKI2AfF5opKCYXp3Bxv1cAvtNNbHyCcEt9dLg=;
-        b=m0SKXBGYpikQoqjj2V1cNuUbXIEAWsR41hrVDjBcCxdieWAlacta57yxeaJfW8tl9r
-         j/wZm7GXAH0BRr5p7Yao87XoveOzpwlvnuboHNL2bWy4s4C1jHIdIB5wdHN1J/oiuSbP
-         LzhPY4wyjjRVcoQiEO7UYSp99+6szxN7YB2vDMj0D6jjTeQDkSkSladsIooIOOI/3u65
-         Z9doxpnNbFH975mVQ/Rvf36jpLuDhlJJfAYCCNKh/BMH96BdAD9Q3yv3LN43Mt/BQ47h
-         KaGy5HaKKyP2AteNp4nVg1m/4+YgA6HN+wLf5mv6XX+qmUqUYkVDVB4vnkTAD6SebeDT
-         v9Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=ormkvRBKI2AfF5opKCYXp3Bxv1cAvtNNbHyCcEt9dLg=;
-        b=aEsQeschcbxJqoR+ygI5D7UJCrMVF2FVmc2ipa7xiM18cjON+KPuxzCdnB3hRWmij8
-         19bOkwU8dWb5j6fCWuFmdraKj1FGrDzTdO22ddC7u1blPYOBMWnEkS1mkom9PoV/pyr3
-         aMN1t06FJc7UXl637sFFLPQ2/Ce58tJX8FESJrcKLd/kqLDdMBf0BrHFoxqPftpR2VpF
-         hQuDIkhgc2m4MJSjfhkju3Fdo0YkwDrQ7zzShfZDbXWjzWSLvN/3NgfO1G5lAMnLC/nQ
-         zir0gtyoRlOMw+7VeyH+Y36zWZ3APcL9z/BzBf6D9on4JDs+ErG6cU4G6Cd0uE/FOcwo
-         lLWg==
-X-Gm-Message-State: ACrzQf1san8+N50QvqzH/wJUDK/o0JtqdAzL++64TgQ/fTJZzPe3Ms57
-        qOI7vtvIbMC6dC7K9/ZGpgdvAQCs2A9zPAzsFFfScOUNgHs=
-X-Google-Smtp-Source: AMsMyM7zD6isDJ6UJOQ3QtX+tKpPq685v5+DmwyFUvISrYY5uzUt5EN7FqpxwKlyHaHmngpf2ytPTx+Tcli5lrVpQc8=
-X-Received: by 2002:a05:6808:1b1f:b0:350:9443:d8f5 with SMTP id
- bx31-20020a0568081b1f00b003509443d8f5mr2922195oib.288.1664505936959; Thu, 29
- Sep 2022 19:45:36 -0700 (PDT)
+        with ESMTP id S229498AbiI3Cwy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 22:52:54 -0400
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26EBCE905E;
+        Thu, 29 Sep 2022 19:52:51 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0VR.txtd_1664506365;
+Received: from 30.240.121.51(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VR.txtd_1664506365)
+          by smtp.aliyun-inc.com;
+          Fri, 30 Sep 2022 10:52:47 +0800
+Message-ID: <0f23cee8-9139-742c-a9d1-01674b16d05c@linux.alibaba.com>
+Date:   Fri, 30 Sep 2022 10:52:44 +0800
 MIME-Version: 1.0
-References: <20220712020058.90374-1-gch981213@gmail.com> <0450c7c0-4787-2aa2-de3e-c71522e467ce@kernel.org>
- <498a9097-8ecf-0a47-abbb-8b64fb7ee2de@kernel.org>
-In-Reply-To: <498a9097-8ecf-0a47-abbb-8b64fb7ee2de@kernel.org>
-From:   Chuanhong Guo <gch981213@gmail.com>
-Date:   Fri, 30 Sep 2022 10:45:25 +0800
-Message-ID: <CAJsYDVKXxzOr_UqN-rU06JxbAqs07dzF=8QP_dmebNBDUDfTqg@mail.gmail.com>
-Subject: Re: [PATCH v6] ACPI: skip IRQ override on AMD Zen platforms
-To:     Jiri Slaby <jirislaby@kernel.org>
-Cc:     linux-acpi@vger.kernel.org,
-        Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.13.0
+Subject: Re: [PATCH v2] ACPI: APEI: do not add task_work to kernel thread to
+ avoid memory leak
+Content-Language: en-US
+To:     "Luck, Tony" <tony.luck@intel.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        James Morse <james.morse@arm.com>,
+        baicar@os.amperecomputing.com
+Cc:     Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
+        <naoya.horiguchi@nec.com>,
+        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stable <stable@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
+        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+References: <20220916050535.26625-1-xueshuai@linux.alibaba.com>
+ <20220924074953.83064-1-xueshuai@linux.alibaba.com>
+ <CAJZ5v0jAZC81Peowy0iKuq+cy68tyn0OK3a--nW=wWMbRojcxg@mail.gmail.com>
+ <f0735218-7730-c275-8cee-38df9bec427d@linux.alibaba.com>
+ <SJ1PR11MB6083FC6B8D64933C573CAB64FC529@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <79cb9aee-9ad5-00f4-3f7a-9c409f502685@linux.alibaba.com>
+ <SJ1PR11MB60830CBCB42CFF552A2B6CF0FC559@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <f09e6aee-5d7f-62c2-8a6e-d721d8b22699@linux.alibaba.com>
+ <SJ1PR11MB60837ABF899B5CF1F01D68D1FC579@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <SJ1PR11MB60837ABF899B5CF1F01D68D1FC579@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-14.0 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,61 +66,79 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi!
 
-On Wed, Sep 28, 2022 at 4:31 PM Jiri Slaby <jirislaby@kernel.org> wrote:
-> > This breaks pads on IdeaPad 5 Flex:
-> > https://bugzilla.suse.com/show_bug.cgi?id=1203794
-> >
-> >  > [    1.058135] hid-generic 0020:1022:0001.0001: hidraw0: SENSOR HUB
-> > HID v0.00 Device [hid-amdsfh 1022:0001] on pcie_mp2_amd
-> >  > [    2.038937] i2c_designware AMDI0010:00: controller timed out
-> >  > [    2.146627] i2c_designware AMDI0010:03: controller timed out
-> >  > [    6.166859] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
-> >  > [    8.279604] i2c_designware AMDI0010:03: controller timed out
-> >  > [   12.310897] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
-> >  > [   14.429372] i2c_designware AMDI0010:03: controller timed out
-> >  > [   18.462629] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
-> >  > [   20.579183] i2c_designware AMDI0010:03: controller timed out
-> >  > [   24.598703] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
-> >  > [   25.629071] i2c_hid_acpi i2c-MSFT0001:00: can't add hid device: -61
-> >  > [   25.629430] i2c_hid_acpi: probe of i2c-MSFT0001:00 failed with
-> > error -61
-> >
-> > The diff of good and bad dmesgs:
-> > -ACPI: IRQ 10 override to edge, high
-> > -ACPI: IRQ 6 override to edge, high
-> >
-> > The diff of /proc/interrupts:
-> >       6: ...  IR-IO-APIC    [-6-fasteoi-]    {+6-edge+}      AMDI0010:03
-> >      10: ...  IR-IO-APIC   [-10-fasteoi-]   {+10-edge+}      AMDI0010:00
-> >
-> > And:
-> >    i2c_designware: /devices/platform/AMDI0010:00
-> >    i2c_designware: /devices/platform/AMDI0010:03
 
-Oops...
+在 2022/9/30 AM4:52, Luck, Tony 写道:
+> Thanks for your patient explanations.
 
-> > So the if needs to be fine-tuned, apparently. Maybe introduce some list
-> > as suggested in the commit log. Based on the below?
->
-> Something like the attached. It's:
-> 1) untested yet
-> 2) contains more debug messaging
-> 3) contains both cases for ACPI_ACTIVE_* as I don't know the original
-> polarity
+You are welcome :)
 
-The patch in your attachment looks good to me. But I think
-"lenovo_laptop" is a bit too generic. Maybe name it
-lenovo_82ra instead?
+> 
+>> STEP2: In IRQ context, ghes_proc/_in_irq() queues memory failure work on current CPU
+>> in workqueue and add task work to sync with the workqueue.
+> 
+> Why is there a difference if the interrupted task was a user task vs. a kernel thread?
+> 
+> It seems arbitrary. If the error can be handled in the kernel thread case without
+> a task_work_add() to the current process, can't all errors be handled this way?
 
->
-> I don't know how widely this is spread -- maybe it would be worth a
-> commandline parameter so that people can work around this until this is
-> fixed by a DMI entry permanently?
+I'm afraid not. The kworker in workqueue is asynchronous with ret_to_user() of the
+interrupted task. If we return to user-space before the queued memory_failure() work
+is processed, we will take the fault again when the error is signal by synchronous
+external abort. This loop may cause platform firmware to exceed some threshold and
+reboot.
 
-That's a good idea :)
+When a user task consuming poison data, a synchronous external abort will be signaled,
+for example "einj_mem_uc single" in ras-tools. In such case, the handling flow will
+be like bellow:
 
---
-Regards,
-Chuanhong Guo
+----------------------------------STEP 0-------------------------------------------
+[ghes_sdei_critical_callback: current einj_mem_uc, local cpu]
+ghes_sdei_critical_callback
+    => __ghes_sdei_callback
+        => ghes_in_nmi_queue_one_entry: peak and read estatus
+        => irq_work_queue(&ghes_proc_irq_work) // ghes_proc_in_irq - irq_work
+[ghes_sdei_critical_callback: return]
+-----------------------------------STEP 1------------------------------------------
+[ghes_proc_in_irq: current einj_mem_uc, local cpu]
+            => ghes_do_proc
+                => ghes_handle_memory_failure
+                    => ghes_do_memory_failure
+                        => memory_failure_queue	- put work task on a specific cpu
+                            => if (kfifo_put(&mf_cpu->fifo, entry))
+                                  schedule_work_on(smp_processor_id(), &mf_cpu->work);
+            => task_work_add(current, &estatus_node->task_work, TWA_RESUME);
+[ghes_proc_in_irq: return]
+-----------------------------------STEP 3------------------------------------------
+// kworker preempts einj_mem_uc on local cpu due to RESCHED flag
+[memory_failure_work_func: current kworker, local cpu]	
+     => memory_failure_work_func(&mf_cpu->work)
+        => while kfifo_get(&mf_cpu->fifo, &entry);	// until get no work
+            => soft/hard offline
+------------------------------------STEP 4-----------------------------------------
+[ghes_kick_task_work: current einj_mem_uc, other cpu]
+                => memory_failure_queue_kick
+                    => cancel_work_sync //wait memory_failure_work_func finish
+                    => memory_failure_work_func(&mf_cpu->work)
+                        => kfifo_get(&mf_cpu->fifo, &entry); // no work here
+------------------------------------STEP 5-----------------------------------------
+[current einj_mem_uc returned to userspace]
+                => Killed by SIGBUS
+
+STEP 4 add a task work to ensure the queued memory_failure() work is processed before
+returning to user-space. And the interrupted user will be killed by SIGBUS signal.
+
+If we delete STEP 4, the interrupted user task will return to user space synchronously
+and consume the poison data again.
+
+
+> 
+> The current thread likely has nothing to do with the error. Just a matter of chance
+> on what is running when the NMI is delivered, right?
+
+Yes, the error is actually handled in workqueue. I think the point is that the
+synchronous exception signaled by synchronous external abort must be handled
+synchronously, otherwise, it will be signaled again.
+
+Best Regards,
+Shuai
