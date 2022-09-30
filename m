@@ -2,89 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68AE25F0156
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Sep 2022 01:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71CCF5F02EC
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Sep 2022 04:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbiI2XWt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Sep 2022 19:22:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50088 "EHLO
+        id S229688AbiI3Cpj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Sep 2022 22:45:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbiI2XWq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 19:22:46 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBD9F135044;
-        Thu, 29 Sep 2022 16:22:45 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id v4so2712707pgi.10;
-        Thu, 29 Sep 2022 16:22:45 -0700 (PDT)
+        with ESMTP id S229584AbiI3Cpi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Sep 2022 22:45:38 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2A7E10B7;
+        Thu, 29 Sep 2022 19:45:37 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id s125so3504378oie.4;
+        Thu, 29 Sep 2022 19:45:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=k9iVNCg81C1n4ax6HQVaWzPvcQNvg+2Jo/FvkuXEunA=;
-        b=ZG7Il9MJjhiZYW6rmuir8dLrJp8mtTxzNUqHaNt2KJbdXb0Vqv0ZZwEq4xwit/7/kx
-         hxkzj/nOKCWNHp72GCvO/DCoYljFBbXN3J3vBy/4DJrdwk2amR1P1fOSm3hKsWejd76U
-         lC6h1j4tQfJ9oM03CSqKfETN+fvlytyBlGiw5vXQ6ZEmrG7BA1ISkOg50x7taHsy3tiQ
-         OpCroDSUw+mnxyBOGKwEEuMV4FYnwkyHtdBgcwmHCAyRbwOQH5sYQ4+B23q6EemAOpmE
-         K9dq+jajWeU+uERQ0gYfz1lSFNRLdbgAMsRNs8LcTTmOsD+WfjzKuXR9IcbL2t3/6vtV
-         AWwg==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=ormkvRBKI2AfF5opKCYXp3Bxv1cAvtNNbHyCcEt9dLg=;
+        b=m0SKXBGYpikQoqjj2V1cNuUbXIEAWsR41hrVDjBcCxdieWAlacta57yxeaJfW8tl9r
+         j/wZm7GXAH0BRr5p7Yao87XoveOzpwlvnuboHNL2bWy4s4C1jHIdIB5wdHN1J/oiuSbP
+         LzhPY4wyjjRVcoQiEO7UYSp99+6szxN7YB2vDMj0D6jjTeQDkSkSladsIooIOOI/3u65
+         Z9doxpnNbFH975mVQ/Rvf36jpLuDhlJJfAYCCNKh/BMH96BdAD9Q3yv3LN43Mt/BQ47h
+         KaGy5HaKKyP2AteNp4nVg1m/4+YgA6HN+wLf5mv6XX+qmUqUYkVDVB4vnkTAD6SebeDT
+         v9Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=k9iVNCg81C1n4ax6HQVaWzPvcQNvg+2Jo/FvkuXEunA=;
-        b=x93sHllHFUETSWlhwgbyAyMgtXsMD7R3WxjlO7/gykduPnW87cp4LsmjT5VyWu3jE3
-         8Xkzot2cWPUQEnlfCPde4jA+dgp9UT+606vPmK/IVFZOAVg+PdkihQphHhig32rufSfI
-         QWlpCV5vYFwQHhSNwoPWESQiNtr7cJ26UobbL+uvRsjcPMfAptycyazv+RNV7UZ9ChD0
-         QiAVkRe4dJBRvRt8OGXY3wul13z1BBOzHGWXRzIlmmLkVxSrh4auE0xHlEcNqr9wNkSE
-         GNzPEiOViKgUqWeodM+cAivvHntJ3GjYFsOdwxVRg6+KzpsPQNa+XyrKuLterYE42W7M
-         SH+g==
-X-Gm-Message-State: ACrzQf35rX2r2clpxyoTVbaGQdCRFsuPNxF7LbckgFoqaVtZkFFTsNim
-        tWgmTsA91dANT3gW3T8jYNQ=
-X-Google-Smtp-Source: AMsMyM6cJj++MIqaW87//ChnT4eL4aY2b767/mhIM9iIEtDKUNST2lQzIBwjf2ER9kGasWWjIpHLLA==
-X-Received: by 2002:a63:5243:0:b0:43c:96a:8528 with SMTP id s3-20020a635243000000b0043c096a8528mr4982707pgl.47.1664493765171;
-        Thu, 29 Sep 2022 16:22:45 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:637c:7f23:f348:a9e6])
-        by smtp.gmail.com with ESMTPSA id g3-20020a170902d1c300b0017a00216965sm414776plb.218.2022.09.29.16.22.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Sep 2022 16:22:44 -0700 (PDT)
-Date:   Thu, 29 Sep 2022 16:22:41 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Raul Rangel <rrangel@chromium.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Tim Van Patten <timvp@google.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "jingle.wu" <jingle.wu@emc.com.tw>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Len Brown <lenb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Terry Bowman <terry.bowman@amd.com>, Tom Rix <trix@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        llvm@lists.linux.dev
-Subject: Re: [PATCH v6 06/13] ACPI: resources: Add wake_capable parameter to
- acpi_dev_irq_flags
-Message-ID: <YzYowYJpRTImmg4m@google.com>
-References: <20220929161917.2348231-1-rrangel@chromium.org>
- <20220929093200.v6.6.I8092e417a8152475d13d8d638eb4c5d8ea12ac7b@changeid>
- <CAJZ5v0izHjb8vE0ALyYo9yMOExdpCzG8f7-d5SpQnftqJfTEig@mail.gmail.com>
- <CAHQZ30CJyhPK-OriZ5NZ=GjwNbofaCW6GZ_CvPsL0WiJGsxs-Q@mail.gmail.com>
- <CAJZ5v0gcJRoMSODbTevRdK1zaEZHJcPxvG6XMy9-T_jvwxPFBw@mail.gmail.com>
- <CAHQZ30CQd-0YnQgYG_OJVWn9_aUjvDAuT_DRGsxQF-q+bjr5BA@mail.gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=ormkvRBKI2AfF5opKCYXp3Bxv1cAvtNNbHyCcEt9dLg=;
+        b=aEsQeschcbxJqoR+ygI5D7UJCrMVF2FVmc2ipa7xiM18cjON+KPuxzCdnB3hRWmij8
+         19bOkwU8dWb5j6fCWuFmdraKj1FGrDzTdO22ddC7u1blPYOBMWnEkS1mkom9PoV/pyr3
+         aMN1t06FJc7UXl637sFFLPQ2/Ce58tJX8FESJrcKLd/kqLDdMBf0BrHFoxqPftpR2VpF
+         hQuDIkhgc2m4MJSjfhkju3Fdo0YkwDrQ7zzShfZDbXWjzWSLvN/3NgfO1G5lAMnLC/nQ
+         zir0gtyoRlOMw+7VeyH+Y36zWZ3APcL9z/BzBf6D9on4JDs+ErG6cU4G6Cd0uE/FOcwo
+         lLWg==
+X-Gm-Message-State: ACrzQf1san8+N50QvqzH/wJUDK/o0JtqdAzL++64TgQ/fTJZzPe3Ms57
+        qOI7vtvIbMC6dC7K9/ZGpgdvAQCs2A9zPAzsFFfScOUNgHs=
+X-Google-Smtp-Source: AMsMyM7zD6isDJ6UJOQ3QtX+tKpPq685v5+DmwyFUvISrYY5uzUt5EN7FqpxwKlyHaHmngpf2ytPTx+Tcli5lrVpQc8=
+X-Received: by 2002:a05:6808:1b1f:b0:350:9443:d8f5 with SMTP id
+ bx31-20020a0568081b1f00b003509443d8f5mr2922195oib.288.1664505936959; Thu, 29
+ Sep 2022 19:45:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHQZ30CQd-0YnQgYG_OJVWn9_aUjvDAuT_DRGsxQF-q+bjr5BA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20220712020058.90374-1-gch981213@gmail.com> <0450c7c0-4787-2aa2-de3e-c71522e467ce@kernel.org>
+ <498a9097-8ecf-0a47-abbb-8b64fb7ee2de@kernel.org>
+In-Reply-To: <498a9097-8ecf-0a47-abbb-8b64fb7ee2de@kernel.org>
+From:   Chuanhong Guo <gch981213@gmail.com>
+Date:   Fri, 30 Sep 2022 10:45:25 +0800
+Message-ID: <CAJsYDVKXxzOr_UqN-rU06JxbAqs07dzF=8QP_dmebNBDUDfTqg@mail.gmail.com>
+Subject: Re: [PATCH v6] ACPI: skip IRQ override on AMD Zen platforms
+To:     Jiri Slaby <jirislaby@kernel.org>
+Cc:     linux-acpi@vger.kernel.org,
+        Tighe Donnelly <tighe.donnelly@protonmail.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -92,37 +70,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 29, 2022 at 03:20:12PM -0600, Raul Rangel wrote:
-> On Thu, Sep 29, 2022 at 1:38 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Thu, Sep 29, 2022 at 9:27 PM Raul Rangel <rrangel@chromium.org> wrote:
-> > >
-> > > On Thu, Sep 29, 2022 at 1:18 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > > >
-> > > > On Thu, Sep 29, 2022 at 6:19 PM Raul E Rangel <rrangel@chromium.org> wrote:
-> > > > >
-> > > > > ACPI IRQ/Interrupt resources contain a bit that describes if the
-> > > > > interrupt should wake the system. This change exposes that bit via
-> > > > > a new IORESOURCE_IRQ_WAKECAPABLE flag. Drivers should check this flag
-> > > >
-> > > > I would call this IORESOURCE_IRQ_WAKE which is (a) simpler and easier
-> > > > to read and (b) it sort of matches the "wakeirq" naming convention.
-> > >
-> > > It was Dmitry who originally suggested the name. I personally like the
-> > > CAPABLE in the name. It makes it clear that it's capable of acting as
-> > > a wake source, not to be confused with being enabled as a wake source.
-> >
-> > Well, so be it then.
-> >
-> > As I said elsewhere, I can apply this patch too if that's useful at this point.
-> >
-> 
-> We just need to make sure the ACPI patches 5-8 land before the i2c
-> patches 9-13. The i2c patches 1-4 can land before or after the ACPI
-> changes. I'm not sure how things get coordinated across subsystems.
+Hi!
 
-I am fine with all input stuff going through ACPI tree to ease landing.
-Or I can pick up everything if Rafael and Jiri/Benjamin agree.
+On Wed, Sep 28, 2022 at 4:31 PM Jiri Slaby <jirislaby@kernel.org> wrote:
+> > This breaks pads on IdeaPad 5 Flex:
+> > https://bugzilla.suse.com/show_bug.cgi?id=1203794
+> >
+> >  > [    1.058135] hid-generic 0020:1022:0001.0001: hidraw0: SENSOR HUB
+> > HID v0.00 Device [hid-amdsfh 1022:0001] on pcie_mp2_amd
+> >  > [    2.038937] i2c_designware AMDI0010:00: controller timed out
+> >  > [    2.146627] i2c_designware AMDI0010:03: controller timed out
+> >  > [    6.166859] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
+> >  > [    8.279604] i2c_designware AMDI0010:03: controller timed out
+> >  > [   12.310897] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
+> >  > [   14.429372] i2c_designware AMDI0010:03: controller timed out
+> >  > [   18.462629] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
+> >  > [   20.579183] i2c_designware AMDI0010:03: controller timed out
+> >  > [   24.598703] i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
+> >  > [   25.629071] i2c_hid_acpi i2c-MSFT0001:00: can't add hid device: -61
+> >  > [   25.629430] i2c_hid_acpi: probe of i2c-MSFT0001:00 failed with
+> > error -61
+> >
+> > The diff of good and bad dmesgs:
+> > -ACPI: IRQ 10 override to edge, high
+> > -ACPI: IRQ 6 override to edge, high
+> >
+> > The diff of /proc/interrupts:
+> >       6: ...  IR-IO-APIC    [-6-fasteoi-]    {+6-edge+}      AMDI0010:03
+> >      10: ...  IR-IO-APIC   [-10-fasteoi-]   {+10-edge+}      AMDI0010:00
+> >
+> > And:
+> >    i2c_designware: /devices/platform/AMDI0010:00
+> >    i2c_designware: /devices/platform/AMDI0010:03
 
--- 
-Dmitry
+Oops...
+
+> > So the if needs to be fine-tuned, apparently. Maybe introduce some list
+> > as suggested in the commit log. Based on the below?
+>
+> Something like the attached. It's:
+> 1) untested yet
+> 2) contains more debug messaging
+> 3) contains both cases for ACPI_ACTIVE_* as I don't know the original
+> polarity
+
+The patch in your attachment looks good to me. But I think
+"lenovo_laptop" is a bit too generic. Maybe name it
+lenovo_82ra instead?
+
+>
+> I don't know how widely this is spread -- maybe it would be worth a
+> commandline parameter so that people can work around this until this is
+> fixed by a DMI entry permanently?
+
+That's a good idea :)
+
+--
+Regards,
+Chuanhong Guo
