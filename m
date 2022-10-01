@@ -2,146 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 985435F1BD9
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Oct 2022 12:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 487DD5F2074
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Oct 2022 00:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbiJAKpa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 1 Oct 2022 06:45:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32886 "EHLO
+        id S229636AbiJAWve (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 1 Oct 2022 18:51:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiJAKp3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Oct 2022 06:45:29 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFA863C8F4;
-        Sat,  1 Oct 2022 03:45:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664621128; x=1696157128;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xiVJXuR8P1pRABToUvIhXZW5iUyJHHHG80SpQQPDLxI=;
-  b=bE/wrLbhcKP3DR1+1lxIyqOHynT8jZ0WpAAN8oIdPb2B7l1N8lzb2HxI
-   JebV/UO3lJ9BxXWnuZcvwFJZuYdlSU1ZgP0tjLHRO4FxYhlW8Xf6Jxjmi
-   4CGc6S4bHl/v5drLxG9wDJ3QSBGyCXMksDXlKMLjAsY6X63Bznv6NZSDy
-   mBfMiUQXxxfo2Lfz9Qo1Z/n9Zbr83tWwygAqjNXXabSdTWaW6nDjmFzEe
-   ayqhT8gF3fJVLgeQHcRjitlakSGgmW4pt3M9exmSPYpo3clwf2XjJgCZw
-   YlR3DgjVQUFHHT3LLEP6OSjiQtFct4HivXwH6e+PEhQOvVztlWoIMWIOs
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10486"; a="289527861"
-X-IronPort-AV: E=Sophos;i="5.93,360,1654585200"; 
-   d="scan'208";a="289527861"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2022 03:45:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10486"; a="653835538"
-X-IronPort-AV: E=Sophos;i="5.93,360,1654585200"; 
-   d="scan'208";a="653835538"
-Received: from lkp-server01.sh.intel.com (HELO 14cc182da2d0) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 01 Oct 2022 03:45:26 -0700
-Received: from kbuild by 14cc182da2d0 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oeZzq-00029L-0o;
-        Sat, 01 Oct 2022 10:45:26 +0000
-Date:   Sat, 01 Oct 2022 18:44:45 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 816cee8cb69ed35afedc0a1011493e5f8c6aeead
-Message-ID: <63381a1d.1RMK5Xirt7dxFPZ9%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229686AbiJAWvV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Oct 2022 18:51:21 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C200340E1B;
+        Sat,  1 Oct 2022 15:51:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5D519B80C01;
+        Sat,  1 Oct 2022 22:51:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6130BC433D6;
+        Sat,  1 Oct 2022 22:51:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664664670;
+        bh=hrLQYppdb7CqP7xkSUXXw+Qfwy9vLVycX6g7AnyQiXU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MY83KDh/K1C+sxW/JJ+PABlv1x8mKBQaY6/KL4yDlClyQMCvW/0lPkRrjBCSttgoL
+         CkUkU03dhlFprIdaaXrnSIGppnvivMok9p/1tGBcYOyEOepjJ1kGrUVnnCaRuh4zFJ
+         eS7k+qf+5JzpZA0q+48IV+65wqy5nFS+gjRGe10IJrzEI8YLWcjztAvkz33laBEu+0
+         T2ElLnfWRcpJ3fzulmsThKiZYfcplkvON3y6Y2Q/25oDz/3ItrApUrepYa8tP3ONXW
+         iD/2mAOPjrg/JVe3egZohk31KyxAP3goVrgFmnom+F03AthC6kpqaVHO/CUQkoTAlW
+         yUMfaHSQV8YCQ==
+Date:   Sun, 2 Oct 2022 00:51:06 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Raul E Rangel <rrangel@chromium.org>
+Cc:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, dmitry.torokhov@gmail.com,
+        hdegoede@redhat.com, rafael@kernel.org,
+        mika.westerberg@linux.intel.com, mario.limonciello@amd.com,
+        timvp@google.com, linus.walleij@linaro.org, jingle.wu@emc.com.tw,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 07/13] i2c: acpi: Use ACPI wake capability bit to set
+ wake_irq
+Message-ID: <YzjEWisPFQ312w90@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Raul E Rangel <rrangel@chromium.org>, linux-acpi@vger.kernel.org,
+        linux-input@vger.kernel.org, andriy.shevchenko@linux.intel.com,
+        dmitry.torokhov@gmail.com, hdegoede@redhat.com, rafael@kernel.org,
+        mika.westerberg@linux.intel.com, mario.limonciello@amd.com,
+        timvp@google.com, linus.walleij@linaro.org, jingle.wu@emc.com.tw,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220929161917.2348231-1-rrangel@chromium.org>
+ <20220929093200.v6.7.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="HQTkTiUnVoPhWCYs"
+Content-Disposition: inline
+In-Reply-To: <20220929093200.v6.7.I8af4282adc72eb9f247adcd03676a43893a020a6@changeid>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 816cee8cb69ed35afedc0a1011493e5f8c6aeead  Merge branch 'thermal-core' into bleeding-edge
 
-elapsed time: 979m
+--HQTkTiUnVoPhWCYs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 63
-configs skipped: 2
+On Thu, Sep 29, 2022 at 10:19:11AM -0600, Raul E Rangel wrote:
+> Device tree already has a mechanism to pass the wake_irq. It does this
+> by looking for the wakeup-source property and setting the
+> I2C_CLIENT_WAKE flag. This CL adds the ACPI equivalent. It uses the
+> ACPI interrupt wake flag to determine if the interrupt can be used to
+> wake the system. Previously the i2c drivers had to make assumptions and
+> blindly enable the wake IRQ. This can cause spurious wake events. e.g.,
+> If there is a device with an Active Low interrupt and the device gets
+> powered off while suspending, the interrupt line will go low since it's
+> no longer powered and wakes the system. For this reason we should
+> respect the board designers wishes and honor the wake bit defined on the
+> interrupt.
+>=20
+> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I assume this goes in with the rest of this series, so:
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           rhel-8.3-kvm
-powerpc                           allnoconfig
-x86_64                           rhel-8.3-syz
-powerpc                          allmodconfig
-x86_64                         rhel-8.3-kunit
-arc                                 defconfig
-mips                             allyesconfig
-x86_64                          rhel-8.3-func
-i386                                defconfig
-x86_64                    rhel-8.3-kselftests
-alpha                               defconfig
-s390                             allmodconfig
-arm                                 defconfig
-m68k                             allmodconfig
-s390                                defconfig
-sh                               allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-s390                             allyesconfig
-m68k                             allyesconfig
-x86_64                              defconfig
-arc                  randconfig-r043-20220925
-arm64                            allyesconfig
-riscv                randconfig-r042-20220925
-arm                              allyesconfig
-i386                 randconfig-a001-20220926
-arc                  randconfig-r043-20220926
-x86_64               randconfig-a002-20220926
-s390                 randconfig-r044-20220925
-i386                 randconfig-a002-20220926
-x86_64               randconfig-a005-20220926
-x86_64                               rhel-8.3
-i386                 randconfig-a003-20220926
-x86_64               randconfig-a004-20220926
-x86_64                        randconfig-a013
-x86_64               randconfig-a006-20220926
-x86_64                        randconfig-a011
-i386                 randconfig-a004-20220926
-i386                             allyesconfig
-x86_64               randconfig-a001-20220926
-i386                 randconfig-a005-20220926
-i386                 randconfig-a006-20220926
-x86_64               randconfig-a003-20220926
-x86_64                        randconfig-a015
-x86_64                           allyesconfig
-ia64                             allmodconfig
+Acked-by: Wolfram Sang <wsa@kernel.org>
 
-clang tested configs:
-hexagon              randconfig-r045-20220925
-hexagon              randconfig-r041-20220926
-hexagon              randconfig-r045-20220926
-hexagon              randconfig-r041-20220925
-riscv                randconfig-r042-20220926
-s390                 randconfig-r044-20220926
-i386                 randconfig-a011-20220926
-i386                 randconfig-a015-20220926
-x86_64                        randconfig-a012
-i386                 randconfig-a014-20220926
-i386                 randconfig-a013-20220926
-i386                 randconfig-a016-20220926
-x86_64                        randconfig-a014
-i386                 randconfig-a012-20220926
-x86_64                        randconfig-a016
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+--HQTkTiUnVoPhWCYs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmM4xFkACgkQFA3kzBSg
+KbbtMg/+OeOfIdnhO43tSGXnoUHdJyhiRUBhiHgxZ6tCwJncYH1fBBPBW5hAu2CY
++LD1pDaU5JqerLqTrOd9K/8SOduwPmzP0aOtE3sH0mMDh77pJYri5RacSUI6b+SB
+NC7yQCw6Sgpeht+VWIfe07lvwPZPFe4Mc49vzDEK0tJ859w2LBKOSQc6jfW8GVTY
+zvKtds6bd81I3LC3A1AoPM6p3PzZTuD6SZqEYP8OxAHwyhtv8Le36UL2G9/zACXZ
+X3IHNSCUnMSYder+r0tKAaGvImogEIL9vDjs5rbR6AKwiPu1kHjYDsM9U1UADygP
+xCHlhyanqZnhBt7XyI9Jfb1ah770yO5txqkJGOZ4FUbjbeQvq7rD12sBnt5PI7Vf
+3kDVHavhUtuZwd4QVH6LzJGuvvbndlVH795+Sz0CqLGi2JrsPbJyK2pyUS6rOW6p
+numLwypXGDJ4ymCplMnlONPF9fRxfd3YpvSCzuaZp/6QHr/JTqKBq3buNHHt9VB+
+R2lAow75vsNg605v6vbquQw0OZ+ZH8FMZo81UsnH44Vd6oYpi3w2Ksb7VvK8Z9I4
+vCk5a8tymFk/XI3137GxAwMCKGI269l4JaUQ6haUtALk6vVQ7B4y0ISdbETas8nt
+GaW0TWAYc36Wpw+iq7uRYMwWGqbM9dTSm+21c9MmOoNTH5YLYqA=
+=Xy2M
+-----END PGP SIGNATURE-----
+
+--HQTkTiUnVoPhWCYs--
