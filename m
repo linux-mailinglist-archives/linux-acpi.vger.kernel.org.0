@@ -2,211 +2,176 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D685D5F3217
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Oct 2022 16:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D725A5F3248
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Oct 2022 17:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbiJCOmi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Oct 2022 10:42:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42988 "EHLO
+        id S229990AbiJCPFT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Oct 2022 11:05:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229831AbiJCOmd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Oct 2022 10:42:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7630C2BE35
-        for <linux-acpi@vger.kernel.org>; Mon,  3 Oct 2022 07:42:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1664808151;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ijzRSfCBPzPxAXr5JedZrYL5FA/ZRxpGpev7mxao5IE=;
-        b=U4GAdeeE9h5B6dewA2uvF9KFIDGjwmkuPPOot0yexkzauSKD0oY3TmLuBaG+/aHEhkrYcZ
-        E55nZNESgjTcdJuAM4pWRjwRzjt3PYGkScRwnirCNDn9s/nZyibxg5amvG5jq72LSKZ3ea
-        oi43aT/lfx9ytJFw655Iq+Pd5jajx6k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-284-0iy41l4UMRSZS1caozxRoQ-1; Mon, 03 Oct 2022 10:42:28 -0400
-X-MC-Unique: 0iy41l4UMRSZS1caozxRoQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S230087AbiJCPFS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Oct 2022 11:05:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85EB81400A;
+        Mon,  3 Oct 2022 08:05:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 32A2B85A5B6;
-        Mon,  3 Oct 2022 14:42:28 +0000 (UTC)
-Received: from x1.localdomain.com (unknown [10.39.194.121])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D005740C206B;
-        Mon,  3 Oct 2022 14:42:25 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Andy Shevchenko <andy@kernel.org>, kai.heng.feng@canonical.com,
-        =?UTF-8?q?Johannes=20Pen=C3=9Fel?= <johannespenssel@posteo.net>,
-        linux-acpi@vger.kernel.org, devel@acpica.org
-Subject: [RFC v3 4/4] ACPI: EC: fix ECDT probe ordering issues
-Date:   Mon,  3 Oct 2022 16:42:14 +0200
-Message-Id: <20221003144214.345279-5-hdegoede@redhat.com>
-In-Reply-To: <20221003144214.345279-1-hdegoede@redhat.com>
-References: <20221003144214.345279-1-hdegoede@redhat.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 330D661132;
+        Mon,  3 Oct 2022 15:05:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F02C433D6;
+        Mon,  3 Oct 2022 15:05:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1664809513;
+        bh=kQRY7ykuDbE0o51P8UlIlK+aCXBweDG/nc36XgImZeE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2Pp1KEoROdEhqllwvsisChE7fLM6legHZc2Gh55GhMc68DvAEwW6aijJkqREMA5Pi
+         FETIXJX5dZEP0im+US1hx67Hg7V2Hqi52BzwhzMVSNV8LcQIbi9YR2sqCRXrMJxd2J
+         R9S1y6oRRUuNnYQtO5rJJMNzZ99OvnTaXpWxANhQ=
+Date:   Mon, 3 Oct 2022 17:05:10 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, Daniel Scally <djrscally@gmail.com>
+Subject: Re: [PATCH v2 1/5] device property: Keep dev_fwnode() and
+ dev_fwnode_const() separate
+Message-ID: <Yzr6JjXVQTpky6GM@kroah.com>
+References: <20220928105746.51208-1-andriy.shevchenko@linux.intel.com>
+ <20220928105746.51208-2-andriy.shevchenko@linux.intel.com>
+ <YzQqcFZtJn90URrJ@kroah.com>
+ <Yzb9nXSxvgJ+Mj6z@paasikivi.fi.intel.com>
+ <YzcAh/xtqQM1Qin4@kroah.com>
+ <CAJZ5v0hHPjSN-369pagN3Mnxd1yvc6+4YGb0Kpx3=+aahV=AmQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0hHPjSN-369pagN3Mnxd1yvc6+4YGb0Kpx3=+aahV=AmQ@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ACPI-2.0 says that the EC OpRegion handler must be available immediately
-(like the standard default OpRegion handlers):
+On Mon, Oct 03, 2022 at 01:54:37PM +0200, Rafael J. Wysocki wrote:
+> On Fri, Sep 30, 2022 at 4:43 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Fri, Sep 30, 2022 at 02:30:53PM +0000, Sakari Ailus wrote:
+> > > Hi Greg,
+> > >
+> > > On Wed, Sep 28, 2022 at 01:05:20PM +0200, Greg Kroah-Hartman wrote:
+> > > > On Wed, Sep 28, 2022 at 01:57:42PM +0300, Andy Shevchenko wrote:
+> > > > > It's not fully correct to take a const parameter pointer to a struct
+> > > > > and return a non-const pointer to a member of that struct.
+> > > > >
+> > > > > Instead, introduce a const version of the dev_fwnode() API which takes
+> > > > > and returns const pointers and use it where it's applicable.
+> > > > >
+> > > > > Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > > Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
+> > > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > > > Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > > > > Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > > ---
+> > > > >  drivers/base/property.c  | 11 +++++++++--
+> > > > >  include/linux/property.h |  3 ++-
+> > > > >  2 files changed, 11 insertions(+), 3 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/base/property.c b/drivers/base/property.c
+> > > > > index 4d6278a84868..699f1b115e0a 100644
+> > > > > --- a/drivers/base/property.c
+> > > > > +++ b/drivers/base/property.c
+> > > > > @@ -17,13 +17,20 @@
+> > > > >  #include <linux/property.h>
+> > > > >  #include <linux/phy.h>
+> > > > >
+> > > > > -struct fwnode_handle *dev_fwnode(const struct device *dev)
+> > > > > +struct fwnode_handle *dev_fwnode(struct device *dev)
+> > > > >  {
+> > > > >   return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+> > > > >           of_fwnode_handle(dev->of_node) : dev->fwnode;
+> > > > >  }
+> > > > >  EXPORT_SYMBOL_GPL(dev_fwnode);
+> > > > >
+> > > > > +const struct fwnode_handle *dev_fwnode_const(const struct device *dev)
+> > > > > +{
+> > > > > + return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+> > > > > +         of_fwnode_handle(dev->of_node) : dev->fwnode;
+> > > > > +}
+> > > > > +EXPORT_SYMBOL_GPL(dev_fwnode_const);
+> > > >
+> > > > Ick, no, this is a mess.
+> > > >
+> > > > Either always return a const pointer, or don't.  Ideally always return a
+> > > > const pointer, so all we really need is:
+> > > >
+> > > > const struct fwnode_handle *dev_fwnode(const struct device *dev);
+> > > >
+> > > > right?
+> > > >
+> > > > Yes, it will take some unwinding backwards to get there, but please do
+> > > > that instead of having 2 different functions where the parameter type is
+> > > > part of the function name.  This isn't the 1980's...
+> > >
+> > > The problem with this approach is that sometimes non-const fwnode_handles
+> > > are needed. On OF, for instance, anything that has something to do with
+> > > refcounting requires this. Software nodes as well.
+> >
+> > If they are writable, then yes, let's keep them writable, and not create
+> > two function paths where we have to pick and choose.
+> >
+> > > One option which I suggested earlier was to turn dev_fwnode() into a macro
+> > > and use C11 _Generic() to check whether the device is const or not.
+> >
+> > As much fun as that would be, I don't think it would work well.
+> >
+> > Although, maybe it would, have an example of how that would look?
+> >
+> > I ask as I just went through a large refactoring of the kobject layer to
+> > mark many things const * and I find it a bit "sad" that functions like
+> > this:
+> >         static inline struct device *kobj_to_dev(const struct kobject *kobj)
+> >         {
+> >                 return container_of(kobj, struct device, kobj);
+> >         }
+> > have the ability to take a read-only pointer and spit out a writable one
+> > thanks to the pointer math in container_of() with no one being the
+> > wiser.
+> 
+> Well, is this really a problem?
+> 
+> After all, if an immutable structure is embedded in another one, that
+> doesn't automatically imply that the containing structure has to be
+> immutable too.  Hence, a const pointer to the inner structure doesn't
+> automatically yield a const pointer to the outer one.
 
-Quoting from the ACPI spec version 6.3: "6.5.4 _REG (Region) ...
-2. OSPM must make Embedded Controller operation regions, accessed via
-the Embedded Controllers described in ECDT, available before executing
-any control method. These operation regions may become inaccessible
-after OSPM runs _REG(EmbeddedControl, 0)."
+That is true, but it's a _huge_ hint that we are throwing away here,
+sometimes without even really realizing it.
 
-So acpi_bus_init() calls acpi_ec_ecdt_probe(), which calls
-acpi_install_address_space_handler() to install the EC's OpRegion
-handler, early on.
+Ideally, if you have a const * passed into container_of() you would get
+a const * back, and then, if you _really_ know what you are doing with
+it, feel free to cast it away.  That cast would be a huge sign that
+"hey, something is happening here" and allow people to at least notice
+it, while today, we loose all of that.
 
-This not only installs the OpRegion handler, but also calls the EC's
-_REG method. The _REG method call is a problem because it may rely on
-initialization done by the _INI methods of one of the PCI / _SB root devs,
-see for example: https://bugzilla.kernel.org/show_bug.cgi?id=214899 .
+Let me play around with this a bit.  In talking with the Rust Linux
+developers, a lot of "how do we know if this pointer is immutable or
+not" discussions happen.  With many of our apis, right now we don't know
+that, and perhaps that should change as it would make things not
+necessarily more "safe", but more "obvious" as to what both the intent
+is, and what is actually happening to pointers at times.
 
-Generally speaking _REG methods are executed when the ACPI-device they
-are part of has a driver bound to it. Where as _INI methods must be
-executed at table load time (according to the spec). The problem here
-is that the early acpi_install_address_space_handler() call causes
-the _REG handler to run too early.
+Especially in the mess that is kobjects and struct device where we cast
+pointers around with abandon :)
 
-To allow fixing this the ACPICA code now allows to split the OpRegion
-handler installation and the executing of _REG into 2 separate steps.
+thanks,
 
-This commit uses this ACPICA functionality to fix the EC probe ordering
-by delaying the executing of _REG for ECDT described ECs till the matching
-EC device in the DSDT gets parsed and acpi_ec_add() for it gets called.
-This moves the calling of _REG for the EC on devices with an ECDT to
-the same point in time where it is called on devices without an ECDT table.
-
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214899
-Reported-and-tested-by: Johannes Penßel <johannespenssel@posteo.net>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v3:
-- Rebase on top of v2 ACPICA patches which add 2 new functions for this
-  instead of using a flags argument
----
- drivers/acpi/ec.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 55c503225396..538e521085c3 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -94,6 +94,7 @@ enum {
- 	EC_FLAGS_QUERY_ENABLED,		/* Query is enabled */
- 	EC_FLAGS_EVENT_HANDLER_INSTALLED,	/* Event handler installed */
- 	EC_FLAGS_EC_HANDLER_INSTALLED,	/* OpReg handler installed */
-+	EC_FLAGS_EC_REG_CALLED,		/* OpReg ACPI _REG method called */
- 	EC_FLAGS_QUERY_METHODS_INSTALLED, /* _Qxx handlers installed */
- 	EC_FLAGS_STARTED,		/* Driver is started */
- 	EC_FLAGS_STOPPED,		/* Driver is stopped */
-@@ -1450,6 +1451,7 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
-  * ec_install_handlers - Install service callbacks and register query methods.
-  * @ec: Target EC.
-  * @device: ACPI device object corresponding to @ec.
-+ * @call_reg: If _REG should be called to notify OpRegion availability
-  *
-  * Install a handler for the EC address space type unless it has been installed
-  * already.  If @device is not NULL, also look for EC query methods in the
-@@ -1462,7 +1464,8 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
-  * -EPROBE_DEFER if GPIO IRQ acquisition needs to be deferred,
-  * or 0 (success) otherwise.
-  */
--static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
-+static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
-+			       bool call_reg)
- {
- 	acpi_status status;
- 
-@@ -1470,10 +1473,10 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
- 
- 	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
- 		acpi_ec_enter_noirq(ec);
--		status = acpi_install_address_space_handler(ec->handle,
--							    ACPI_ADR_SPACE_EC,
--							    &acpi_ec_space_handler,
--							    NULL, ec);
-+		status = acpi_install_address_space_handler_no_reg(ec->handle,
-+								   ACPI_ADR_SPACE_EC,
-+								   &acpi_ec_space_handler,
-+								   NULL, ec);
- 		if (ACPI_FAILURE(status)) {
- 			acpi_ec_stop(ec, false);
- 			return -ENODEV;
-@@ -1482,6 +1485,11 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
- 		ec->address_space_handler_holder = ec->handle;
- 	}
- 
-+	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
-+		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
-+		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
-+	}
-+
- 	if (!device)
- 		return 0;
- 
-@@ -1568,11 +1576,11 @@ static void ec_remove_handlers(struct acpi_ec *ec)
- 	}
- }
- 
--static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device)
-+static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool call_reg)
- {
- 	int ret;
- 
--	ret = ec_install_handlers(ec, device);
-+	ret = ec_install_handlers(ec, device, call_reg);
- 	if (ret)
- 		return ret;
- 
-@@ -1637,7 +1645,7 @@ static int acpi_ec_add(struct acpi_device *device)
- 		}
- 	}
- 
--	ret = acpi_ec_setup(ec, device);
-+	ret = acpi_ec_setup(ec, device, true);
- 	if (ret)
- 		goto err;
- 
-@@ -1757,7 +1765,7 @@ void __init acpi_ec_dsdt_probe(void)
- 	 * At this point, the GPE is not fully initialized, so do not to
- 	 * handle the events.
- 	 */
--	ret = acpi_ec_setup(ec, NULL);
-+	ret = acpi_ec_setup(ec, NULL, true);
- 	if (ret) {
- 		acpi_ec_free(ec);
- 		return;
-@@ -1941,7 +1949,7 @@ void __init acpi_ec_ecdt_probe(void)
- 	 * At this point, the namespace is not initialized, so do not find
- 	 * the namespace objects, or handle the events.
- 	 */
--	ret = acpi_ec_setup(ec, NULL);
-+	ret = acpi_ec_setup(ec, NULL, false);
- 	if (ret) {
- 		acpi_ec_free(ec);
- 		goto out;
--- 
-2.37.3
-
+greg k-h
