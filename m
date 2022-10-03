@@ -2,399 +2,260 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D4FA5F36C2
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Oct 2022 21:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CD6D5F36D8
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Oct 2022 22:09:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbiJCTyr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 3 Oct 2022 15:54:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53942 "EHLO
+        id S229629AbiJCUJF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Oct 2022 16:09:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbiJCTyo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Oct 2022 15:54:44 -0400
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 755393884;
-        Mon,  3 Oct 2022 12:54:41 -0700 (PDT)
-Received: by mail-qv1-f43.google.com with SMTP id mg6so2261185qvb.10;
-        Mon, 03 Oct 2022 12:54:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+jOwdzS72b3jXOhEYZB82wXppg1+nnPfXggM06hyyrQ=;
-        b=1qt6mjEYU9AGf2kh2HpQMksRmjuHFrFpjbM71UGlCTP7AhaAo2Sr6ziWZhCjKeesj+
-         0IKN26MBYeRGSplxIOYI3oFceav82fzhvKI73eidoC94YXGCoz3FT8ix8WdaR/ParTCE
-         5pf6R2ADFwWuTxzs8vNpgOmkoQh/nSP2sEqKFkVxst+fnAyoqWy+Lj6ayAPqm5/g5KrJ
-         scYQNr0lWQlbeVNIfsbJC4OeWV8RXUTuIwvFv2jhxxPpllIhhuzRh7xoeqlwek7t0bzT
-         W7o4tZhKKRSvekaKNBQi4xpoJcv9zBaZ+itUckTzPKT/bSY6s8N4qIn7P/wIpqgI12Ex
-         VjPg==
-X-Gm-Message-State: ACrzQf3dF+wcz+BE0bIboTHUpwMOjyjwvfGHTDnDDU/xKaBYRbmUpK/l
-        K63iF5xltZHD8/GoeF5pQ2OvEb23KjEzddSgfUZihWQfgWk=
-X-Google-Smtp-Source: AMsMyM4YpC61W8W6pYCq7o7Q6srPaoH8Om7x1ML6xuv9ATwKtwx5hKzZtHbyvvcVfNmCW9/nrRItylnU88e5O6gdcGA=
-X-Received: by 2002:a0c:9d91:0:b0:4b1:7809:4825 with SMTP id
- s17-20020a0c9d91000000b004b178094825mr11098057qvd.130.1664826880371; Mon, 03
- Oct 2022 12:54:40 -0700 (PDT)
+        with ESMTP id S229486AbiJCUJE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Oct 2022 16:09:04 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 683BB220D6;
+        Mon,  3 Oct 2022 13:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664827743; x=1696363743;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=fwDmqltDP9nwpwjGCWVKOVpQTn+Pfas7Da4E+mK5z2g=;
+  b=TDw/pM2QdIn+Z+eLV2aR6YTAiAqbwFvYXWxVqmZTcnxxl8sA1g//AyqE
+   ym2R3Pm9xAGBpP9veLCnalv8ogL6OrCAoQofMurvvR5t/CcJIBmyynGOY
+   LYHqvi7a94XlEwpgTz44LCP3szHqMntCEQow4acUGtQh3hytSeVTGN/06
+   SczTXmrMmasoan/qRjNtHYFSIfHFKW+I4RjE7hd30gBbuASnSvWaL7iRa
+   mrN6sX5kky7eWgCwl7YZpqjWtCMm8qQYzJfT8tgMvLZ1yUreORxdgg3rJ
+   lpxZdh2gZt7dY3g/bHzyBCcezOr+/WtWow7wtgdKNBDhX64m95JaboRh8
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="302727484"
+X-IronPort-AV: E=Sophos;i="5.93,366,1654585200"; 
+   d="scan'208";a="302727484"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2022 13:09:03 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="686278807"
+X-IronPort-AV: E=Sophos;i="5.93,366,1654585200"; 
+   d="scan'208";a="686278807"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2022 13:09:00 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 470E92026C;
+        Mon,  3 Oct 2022 23:08:58 +0300 (EEST)
+Date:   Mon, 3 Oct 2022 20:08:58 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v2 1/5] device property: Keep dev_fwnode() and
+ dev_fwnode_const() separate
+Message-ID: <YztBWlmdgylsntgM@paasikivi.fi.intel.com>
+References: <20220928105746.51208-1-andriy.shevchenko@linux.intel.com>
+ <20220928105746.51208-2-andriy.shevchenko@linux.intel.com>
+ <YzQqcFZtJn90URrJ@kroah.com>
+ <Yzb9nXSxvgJ+Mj6z@paasikivi.fi.intel.com>
+ <YzcAh/xtqQM1Qin4@kroah.com>
+ <YzrBO2m/b1MHuKny@paasikivi.fi.intel.com>
+ <Yzr6r5XtmPXCoQx7@kroah.com>
+ <YzsLDUhjDCCVRy2G@kroah.com>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 3 Oct 2022 21:54:29 +0200
-Message-ID: <CAJZ5v0iNVCB3PKrquK2RycuZvzQgYz2dODB7hF1jvHm9o3fE3Q@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v6.1-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YzsLDUhjDCCVRy2G@kroah.com>
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
-
-Please pull from the tag
-
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.1-rc1
-
-with top-most commit c8efe77f23d508d62e232de612e739dbf4da4659
-
- Merge branch 'pnp'
-
-on top of commit 521a547ced6477c54b4b0cc206000406c221b4d6
-
- Linux 6.0-rc6
-
-to receive ACPI and PNP updates for 6.1-rc1.
-
-These rearrange the ACPI device object initialization code (to get
-rid of a redundant parent pointer from struct acpi_device among other
-things), unify the _UID handling, drop support for some _OSI strings
-that should not be necessary any more, add new IDs to support more
-hardware and some more quirks, fix a few issues and clean up code all
-over.
-
-Specifics:
-
- - Reimplement acpi_get_pci_dev() using the list of physical devices
-   associated with the given ACPI device object (Rafael Wysocki).
-
- - Rename ACPI device object reference counting functions (Rafael
-   Wysocki).
-
- - Rearrange ACPI device object initialization code (Rafael Wysocki).
-
- - Drop parent field from struct acpi_device (Rafael Wysocki).
-
- - Extend the int3472-tps68470 driver to support multiple consumers
-   of a single TPS68470 along with the requisite framework-level
-   support (Daniel Scally).
-
- - Filter out non-memory resources in is_memory(), add a helper
-   function to find all memory type resources of an ACPI device object
-   and use that function in 3 places (Heikki Krogerus).
-
- - Add IRQ override quirks for Asus Vivobook K3402ZA/K3502ZA and ASUS
-   model S5402ZA (Tamim Khan, Kellen Renshaw).
-
- - Fix acpi_dev_state_d0() kerneldoc (Sakari Ailus).
-
- - Fix up suspend-to-idle support on ASUS Rembrandt laptops (Mario
-   Limonciello).
-
- - Clean up ACPI platform devices support code (Andy Shevchenko, John
-   Garry).
-
- - Clean up ACPI bus management code (Andy Shevchenko, ye xingchen).
-
- - Add support for multiple DMA windows with different offsets to the
-   ACPI device enumeration code and use it on LoongArch (Jianmin Lv).
-
- - Clean up the ACPI LPSS (Intel SoC) driver (Andy Shevchenko).
-
- - Add a quirk for Dell Inspiron 14 2-in-1 for StorageD3Enable (Mario
-   Limonciello).
-
- - Drop unused dev_fmt() and redundant 'HMAT' prefix from the HMAT
-   parsing code (Liu Shixin).
-
- - Make ACPI FPDT parsing code avoid calling acpi_os_map_memory() on
-   invalid physical addresses (Hans de Goede).
-
- - Silence missing-declarations warning related to Apple device
-   properties management (Lukas Wunner).
-
- - Disable frequency invariance in the CPPC library if registers used
-   by cppc_get_perf_ctrs() are accessed via PCC (Jeremy Linton).
-
- - Add ACPI disabled check to acpi_cpc_valid() (Perry Yuan).
-
- - Fix Tx acknowledge in the PCC address space handler (Huisong Li).
-
- - Use wait_for_completion_timeout() for PCC mailbox operations (Huisong
-   Li).
-
- - Release resources on PCC address space setup failure path (Rafael
-   Mendonca).
-
- - Remove unneeded result variables from APEI code (ye xingchen).
-
- - Print total number of records found during BERT log parsing (Dmitry
-   Monakhov).
-
- - Drop support for 3 _OSI strings that should not be necessary any
-   more and update documentation on custom _OSI strings so that adding
-   new ones is not encouraged any more (Mario Limonciello).
-
- - Drop unneeded result variable from ec_write() (ye xingchen).
-
- - Remove the leftover struct acpi_ac_bl from the ACPI AC driver (Hanjun
-   Guo).
-
- - Reorder symbols to get rid of a few forward declarations in the ACPI
-   fan driver (Uwe Kleine-König).
-
- - Add Toshiba Satellite/Portege Z830 ACPI backlight quirk (Arvid
-   Norlander).
-
- - Add ARM DMA-330 controller to the supported list in the ACPI AMBA
-   driver (Vijayenthiran Subramaniam).
-
- - Drop references to non-functional 01.org/linux-acpi web site from
-   MAINTAINERS and Kconfig help texts (Rafael Wysocki).
-
- - Replace strlcpy() with unused retval with strscpy() in the ACPI
-   support code (Wolfram Sang).
-
- - Do not initialize ret in main() in the pfrut utility (Shi junming).
-
- - Drop useless ACPI DSDT override documentation (Rafael Wysocki).
-
- - Fix a few typos and wording mistakes in the ACPI device enumeration
-   documentation (Jean Delvare).
-
- - Introduce acpi_dev_uid_to_integer() to convert a _UID string into an
-   integer value (Andy Shevchenko).
-
- - Use acpi_dev_uid_to_integer() in several places to unify _UID
-   handling (Andy Shevchenko).
-
- - Drop unused pnpid32_to_pnpid() declaration from  PNP code (Gaosheng
-   Cui).
-
-Thanks!
-
-
----------------
-
-Andy Shevchenko (16):
-      ACPI: bus: Drop kernel doc annotation from acpi_bus_notify()
-      ACPI: bus: Refactor ACPI matching functions for better readability
-      ACPI: platform: Get rid of redundant 'else'
-      ACPI: platform: Remove redundant print on -ENOMEM
-      ACPI: platform: Use sizeof(*pointer) instead of sizeof(type)
-      ACPI: platform: Sort forbidden_id_list[] in ascending order
-      ACPI: utils: Add acpi_dev_uid_to_integer() helper to get _UID as integer
-      ACPI: LPSS: Refactor _UID handling to use acpi_dev_uid_to_integer()
-      ACPI: x86: Refactor _UID handling to use acpi_dev_uid_to_integer()
-      i2c: amd-mp2-plat: Refactor _UID handling to use acpi_dev_uid_to_integer()
-      i2c: mlxbf: Refactor _UID handling to use acpi_dev_uid_to_integer()
-      perf: qcom_l2_pmu: Refactor _UID handling to use acpi_dev_uid_to_integer()
-      spi: pxa2xx: Refactor _UID handling to use acpi_dev_uid_to_integer()
-      efi/dev-path-parser: Refactor _UID handling to use
-acpi_dev_uid_to_integer()
-      ACPI: LPSS: Replace loop with first entry retrieval
-      ACPI: LPSS: Deduplicate skipping device in acpi_lpss_create_device()
-
-Arvid Norlander (1):
-      ACPI: video: Add Toshiba Satellite/Portege Z830 quirk
-
-Daniel Scally (5):
-      ACPI: scan: Add acpi_dev_get_next_consumer_dev()
-      ACPI: bus: Add iterator for dependent devices
-      platform/x86: int3472: Support multiple clock consumers
-      platform/x86: int3472: Support multiple gpio lookups in board data
-      platform/x86: int3472: Add board data for Surface Go2 IR camera
-
-Dmitry Monakhov (1):
-      ACPI: APEI: Add BERT error log footer
-
-Gaosheng Cui (1):
-      PNPBIOS: remove unused pnpid32_to_pnpid() declaration
-
-Hanjun Guo (1):
-      ACPI: AC: Remove the leftover struct acpi_ac_bl
-
-Hans de Goede (1):
-      ACPI: tables: FPDT: Don't call acpi_os_map_memory() on invalid
-phys address
-
-Heikki Krogerus (5):
-      ACPI: resource: Filter out the non memory resources in is_memory()
-      ACPI: resource: Add helper function acpi_dev_get_memory_resources()
-      ACPI: APD: Use the helper acpi_dev_get_memory_resources()
-      ACPI: LPSS: Use the helper acpi_dev_get_memory_resources()
-      usb: typec: intel_pmc_mux: Use the helper acpi_dev_get_memory_resources()
-
-Huisong Li (2):
-      ACPI: PCC: replace wait_for_completion()
-      ACPI: PCC: Fix Tx acknowledge in the PCC address space handler
-
-Jean Delvare (1):
-      ACPI: docs: enumeration: Fix a few typos and wording mistakes
-
-Jeremy Linton (1):
-      ACPI: CPPC: Disable FIE if registers in PCC regions
-
-Jianmin Lv (2):
-      ACPI: scan: Support multiple DMA windows with different offsets
-      LoongArch: Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA
-
-John Garry (1):
-      ACPI: platform: Use PLATFORM_DEVID_NONE in acpi_create_platform_device()
-
-Kellen Renshaw (1):
-      ACPI: resource: Add ASUS model S5402ZA to quirks
-
-Liu Shixin (1):
-      ACPI: HMAT: Drop unused dev_fmt() and redundant 'HMAT' prefix
-
-Lukas Wunner (1):
-      ACPI: property: Silence missing-declarations warning in apple.c
-
-Mario Limonciello (14):
-      ACPI: OSI: Remove Linux-Dell-Video _OSI string
-      ACPI: OSI: Remove Linux-Lenovo-NV-HDMI-Audio _OSI string
-      ACPI: OSI: Remove Linux-HPI-Hybrid-Graphics _OSI string
-      ACPI: OSI: Update Documentation on custom _OSI strings
-      ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1 for StorageD3Enable
-      ACPI: x86: s2idle: Move _HID handling for AMD systems into structures
-      ACPI: x86: s2idle: If a new AMD _HID is missing assume Rembrandt
-      ACPI: x86: s2idle: Add module parameter to prefer Microsoft GUID
-      ACPI: x86: s2idle: Add a quirk for ASUS TUF Gaming A17 FA707RE
-      ACPI: x86: s2idle: Add a quirk for ASUS ROG Zephyrus G14
-      ACPI: x86: s2idle: Add a quirk for Lenovo Slim 7 Pro 14ARH7
-      ACPI: x86: s2idle: Add a quirk for ASUSTeK COMPUTER INC. ROG Flow X13
-      ACPI: x86: s2idle: Fix a NULL pointer dereference
-      ACPI: x86: s2idle: Add another ID to s2idle_dmi_table
-
-Perry Yuan (1):
-      ACPI: CPPC: Add ACPI disabled check to acpi_cpc_valid()
-
-Rafael J. Wysocki (13):
-      ACPI: Rename acpi_bus_get/put_acpi_device()
-      ACPI: scan: Rename acpi_bus_get_parent() and rearrange it
-      ACPI: scan: Rearrange initialization of ACPI device objects
-      ACPI: scan: Eliminate __acpi_device_add()
-      ACPI: Drop parent field from struct acpi_device
-      ACPI: PM: Fix NULL argument handling in acpi_device_get/set_power()
-      ACPI: Drop redundant acpi_dev_parent() header
-      ACPI: property: Use acpi_dev_parent()
-      ACPI: PCI: Rework acpi_get_pci_dev()
-      ACPI: DPTF: Drop stale link from Kconfig help
-      ACPI: docs: Drop useless DSDT override documentation
-      ACPI: Kconfig: Drop link to https://01.org/linux-acpi
-      MAINTAINERS: Drop records pointing to 01.org/linux-acpi
-
-Rafael Mendonca (1):
-      ACPI: PCC: Release resources on address space setup failure path
-
-Sakari Ailus (1):
-      ACPI: PM: Fix acpi_dev_state_d0() kerneldoc
-
-Shi junming (1):
-      ACPI: tools: pfrut: Do not initialize ret in main()
-
-Tamim Khan (1):
-      ACPI: resource: Skip IRQ override on Asus Vivobook K3402ZA/K3502ZA
-
-Uwe Kleine-König (1):
-      ACPI: fan: Reorder symbols to get rid of a few forward declarations
-
-Vijayenthiran Subramaniam (1):
-      ACPI: AMBA: Add ARM DMA-330 controller to the supported list
-
-Wolfram Sang (1):
-      ACPI: move from strlcpy() with unused retval to strscpy()
-
-ye xingchen (3):
-      ACPI: bus: Remove the unneeded result variable
-      ACPI: EC: Drop unneeded result variable from ec_write()
-      ACPI: APEI: Remove unneeded result variables
-
----------------
-
- Documentation/admin-guide/acpi/dsdt-override.rst   |  13 --
- Documentation/firmware-guide/acpi/enumeration.rst  |  16 +-
- Documentation/firmware-guide/acpi/osi.rst          |  25 ++-
- MAINTAINERS                                        |   3 -
- arch/loongarch/Kconfig                             |   1 -
- arch/loongarch/kernel/dma.c                        |  52 +++---
- arch/loongarch/kernel/setup.c                      |   2 +-
- drivers/acpi/Kconfig                               |   4 -
- drivers/acpi/ac.c                                  |   5 -
- drivers/acpi/acpi_amba.c                           |   6 +-
- drivers/acpi/acpi_apd.c                            |   9 +-
- drivers/acpi/acpi_fpdt.c                           |  22 +++
- drivers/acpi/acpi_lpss.c                           |  69 ++++----
- drivers/acpi/acpi_pcc.c                            |  28 +++-
- drivers/acpi/acpi_platform.c                       |  22 ++-
- drivers/acpi/acpi_video.c                          |  18 ++-
- drivers/acpi/apei/apei-base.c                      |   5 +-
- drivers/acpi/apei/bert.c                           |   3 +
- drivers/acpi/apei/erst.c                           |   6 +-
- drivers/acpi/arm64/dma.c                           |  28 ++--
- drivers/acpi/bus.c                                 |  37 ++---
- drivers/acpi/cppc_acpi.c                           |  45 ++++++
- drivers/acpi/device_pm.c                           |  38 +++--
- drivers/acpi/dptf/Kconfig                          |   3 -
- drivers/acpi/ec.c                                  |   6 +-
- drivers/acpi/fan_core.c                            |  58 ++++---
- drivers/acpi/internal.h                            |   6 +-
- drivers/acpi/irq.c                                 |   4 +-
- drivers/acpi/numa/hmat.c                           |  25 ++-
- drivers/acpi/osi.c                                 |  24 ---
- drivers/acpi/pci_root.c                            |  75 ++-------
- drivers/acpi/power.c                               |  11 +-
- drivers/acpi/processor_idle.c                      |   8 +-
- drivers/acpi/property.c                            |  13 +-
- drivers/acpi/resource.c                            |  46 ++++++
- drivers/acpi/sbs.c                                 |   2 +-
- drivers/acpi/sbshc.c                               |   2 +-
- drivers/acpi/scan.c                                | 179 +++++++++++----------
- drivers/acpi/utils.c                               |  30 +++-
- drivers/acpi/x86/apple.c                           |   1 +
- drivers/acpi/x86/s2idle.c                          | 147 ++++++++++++++---
- drivers/acpi/x86/utils.c                           |  33 +++-
- drivers/base/arch_topology.c                       |   2 +-
- drivers/clk/clk-tps68470.c                         |  13 +-
- drivers/cpufreq/amd-pstate.c                       |   2 +-
- drivers/cpufreq/cppc_cpufreq.c                     |  27 +++-
- drivers/firmware/efi/dev-path-parser.c             |  10 +-
- drivers/hv/vmbus_drv.c                             |   3 +-
- drivers/hwmon/acpi_power_meter.c                   |   2 +-
- drivers/i2c/busses/i2c-amd-mp2-plat.c              |  27 ++--
- drivers/i2c/busses/i2c-mlxbf.c                     |  20 +--
- drivers/perf/arm_dsu_pmu.c                         |   4 +-
- drivers/perf/qcom_l2_pmu.c                         |  10 +-
- drivers/perf/qcom_l3_pmu.c                         |   3 +-
- drivers/platform/x86/intel/int3472/common.c        |   2 +-
- drivers/platform/x86/intel/int3472/tps68470.c      |  76 +++++++--
- drivers/platform/x86/intel/int3472/tps68470.h      |   3 +-
- .../x86/intel/int3472/tps68470_board_data.c        |  54 ++++++-
- drivers/pnp/pnpbios/pnpbios.h                      |   1 -
- drivers/spi/spi-pxa2xx.c                           |  37 ++---
- drivers/spi/spi.c                                  |   2 +-
- drivers/thunderbolt/acpi.c                         |   2 +-
- drivers/usb/typec/mux/intel_pmc_mux.c              |  11 +-
- include/acpi/acpi_bus.h                            |  34 +++-
- include/acpi/cppc_acpi.h                           |   5 +
- include/linux/acpi.h                               |  18 ++-
- include/linux/platform_data/tps68470.h             |   7 +-
- tools/power/acpi/tools/pfrut/pfrut.c               |   2 +-
- 68 files changed, 904 insertions(+), 603 deletions(-)
+Hi Greg,
+
+On Mon, Oct 03, 2022 at 06:17:17PM +0200, Greg Kroah-Hartman wrote:
+> On Mon, Oct 03, 2022 at 05:07:27PM +0200, Greg Kroah-Hartman wrote:
+> > On Mon, Oct 03, 2022 at 11:02:19AM +0000, Sakari Ailus wrote:
+> > > Hi Greg,
+> > > 
+> > > On Fri, Sep 30, 2022 at 04:43:19PM +0200, Greg Kroah-Hartman wrote:
+> > > > On Fri, Sep 30, 2022 at 02:30:53PM +0000, Sakari Ailus wrote:
+> > > > > Hi Greg,
+> > > > > 
+> > > > > On Wed, Sep 28, 2022 at 01:05:20PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > On Wed, Sep 28, 2022 at 01:57:42PM +0300, Andy Shevchenko wrote:
+> > > > > > > It's not fully correct to take a const parameter pointer to a struct
+> > > > > > > and return a non-const pointer to a member of that struct.
+> > > > > > > 
+> > > > > > > Instead, introduce a const version of the dev_fwnode() API which takes
+> > > > > > > and returns const pointers and use it where it's applicable.
+> > > > > > > 
+> > > > > > > Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > > > > Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
+> > > > > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > > > > > Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > > > > > > Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > > > > ---
+> > > > > > >  drivers/base/property.c  | 11 +++++++++--
+> > > > > > >  include/linux/property.h |  3 ++-
+> > > > > > >  2 files changed, 11 insertions(+), 3 deletions(-)
+> > > > > > > 
+> > > > > > > diff --git a/drivers/base/property.c b/drivers/base/property.c
+> > > > > > > index 4d6278a84868..699f1b115e0a 100644
+> > > > > > > --- a/drivers/base/property.c
+> > > > > > > +++ b/drivers/base/property.c
+> > > > > > > @@ -17,13 +17,20 @@
+> > > > > > >  #include <linux/property.h>
+> > > > > > >  #include <linux/phy.h>
+> > > > > > >  
+> > > > > > > -struct fwnode_handle *dev_fwnode(const struct device *dev)
+> > > > > > > +struct fwnode_handle *dev_fwnode(struct device *dev)
+> > > > > > >  {
+> > > > > > >  	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+> > > > > > >  		of_fwnode_handle(dev->of_node) : dev->fwnode;
+> > > > > > >  }
+> > > > > > >  EXPORT_SYMBOL_GPL(dev_fwnode);
+> > > > > > >  
+> > > > > > > +const struct fwnode_handle *dev_fwnode_const(const struct device *dev)
+> > > > > > > +{
+> > > > > > > +	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+> > > > > > > +		of_fwnode_handle(dev->of_node) : dev->fwnode;
+> > > > > > > +}
+> > > > > > > +EXPORT_SYMBOL_GPL(dev_fwnode_const);
+> > > > > > 
+> > > > > > Ick, no, this is a mess.
+> > > > > > 
+> > > > > > Either always return a const pointer, or don't.  Ideally always return a
+> > > > > > const pointer, so all we really need is:
+> > > > > > 
+> > > > > > const struct fwnode_handle *dev_fwnode(const struct device *dev);
+> > > > > > 
+> > > > > > right?
+> > > > > > 
+> > > > > > Yes, it will take some unwinding backwards to get there, but please do
+> > > > > > that instead of having 2 different functions where the parameter type is
+> > > > > > part of the function name.  This isn't the 1980's...
+> > > > > 
+> > > > > The problem with this approach is that sometimes non-const fwnode_handles
+> > > > > are needed. On OF, for instance, anything that has something to do with
+> > > > > refcounting requires this. Software nodes as well.
+> > > > 
+> > > > If they are writable, then yes, let's keep them writable, and not create
+> > > > two function paths where we have to pick and choose.
+> > > > 
+> > > > > One option which I suggested earlier was to turn dev_fwnode() into a macro
+> > > > > and use C11 _Generic() to check whether the device is const or not.
+> > > > 
+> > > > As much fun as that would be, I don't think it would work well.
+> > > > 
+> > > > Although, maybe it would, have an example of how that would look?
+> > > 
+> > > Similar to what container_of() could be, see below.
+> > > 
+> > > We could also partially revert aade55c86033bee868a93e4bf3843c9c99e84526
+> > > which (also) made dev_fwnode() argument const (which is the source of the
+> > > issue).
+> > > 
+> > > > 
+> > > > I ask as I just went through a large refactoring of the kobject layer to
+> > > > mark many things const * and I find it a bit "sad" that functions like
+> > > > this:
+> > > > 	static inline struct device *kobj_to_dev(const struct kobject *kobj)
+> > > > 	{
+> > > > 		return container_of(kobj, struct device, kobj);
+> > > > 	}
+> > > > have the ability to take a read-only pointer and spit out a writable one
+> > > > thanks to the pointer math in container_of() with no one being the
+> > > > wiser.
+> > > 
+> > > Yeah, container_of() is dangerous, especially in macros. It could of course
+> > > be made safer. Something like this:
+> > > 
+> > > <URL:https://lore.kernel.org/linux-kernel/1495195570-5249-1-git-send-email-sakari.ailus@linux.intel.com/>
+> > > 
+> > > I can respin it, back in 2017 I got no replies.
+> > 
+> > I don't like how we loose the ability to do this in an inline C function
+> > by being forced to do it in a macro (as it makes build errors harder to
+> > understand), but I do like the intent here.
+> > 
+> > Let me play around with this a bit on some "smaller" uses of
+> > container_of() and see how that works...
+> 
+> Odd, this doesn't work for me at all.
+> 
+> I tried the following change:
+> 
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index 424b55df0272..5575c87e6c3b 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -680,11 +680,21 @@ struct device_link {
+>  	bool supplier_preactivated; /* Owned by consumer probe. */
+>  };
+>  
+> -static inline struct device *kobj_to_dev(struct kobject *kobj)
+> +static inline struct device *__kobj_to_dev(struct kobject *kobj)
+>  {
+>  	return container_of(kobj, struct device, kobj);
+>  }
+>  
+> +static inline const struct device *__kobj_to_dev_const(const struct kobject *kobj)
+> +{
+> +	return container_of(kobj, const struct device, kobj);
+> +}
+> +
+> +#define kobj_to_dev(kobj)						\
+> +	_Generic((kobj),						\
+> +		 const struct kobject *: __kobj_to_dev_const(kobj),	\
+> +		 struct kobject *: __kobj_to_dev(kobj))
+> +
+>  /**
+>   * device_iommu_mapped - Returns true when the device DMA is translated
+>   *			 by an IOMMU
+> 
+> 
+> which seems all is fine for normal kobject pointers passed in, but for
+> the first 'const struct kobject *' the compiler hits, I get the
+> following error:
+> 
+>   CC      drivers/base/core.o
+> In file included from ./include/linux/acpi.h:15,
+>                  from drivers/base/core.c:11:
+> drivers/base/core.c: In function ‘dev_attr_show’:
+> drivers/base/core.c:2193:48: error: passing argument 1 of ‘__kobj_to_dev’ discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
+>  2193 |         const struct device *dev = kobj_to_dev(kobj);
+>       |                                                ^~~~
+> ./include/linux/device.h:696:50: note: in definition of macro ‘kobj_to_dev’
+>   696 |                  struct kobject *: __kobj_to_dev(kobj))
+>       |                                                  ^~~~
+> ./include/linux/device.h:683:60: note: expected ‘struct kobject *’ but argument is of type ‘const struct kobject *’
+>   683 | static inline struct device *__kobj_to_dev(struct kobject *kobj)
+>       |                                            ~~~~~~~~~~~~~~~~^~~~
+> 
+> 
+> (note, I faked up a constant pointer just to trip the compiler)
+> 
+> The selection of _Generic() seems not to be working here, any hints?  I tried
+> playing around with 'default' and 'typeof' and the like, but all error out the
+> same way.
+
+Even though only one gets evaluated, it seems the compiler will still
+perform type check on it. I think this problem was partially shared by the
+original patch.
+
+This should work if written as:
+
+#define kobj_to_dev(kobj)						\
+	(_Generic((kobj),						\
+		  const struct kobject *: __kobj_to_dev_const,		\
+		  struct kobject *: __kobj_to_dev)(kobj))
+
+-- 
+Kind regards,
+
+Sakari Ailus
