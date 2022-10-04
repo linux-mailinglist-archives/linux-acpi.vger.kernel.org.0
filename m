@@ -2,130 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 593B55F3E35
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 10:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67DE85F3E3B
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 10:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbiJDIYT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Oct 2022 04:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55700 "EHLO
+        id S229617AbiJDIYs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Oct 2022 04:24:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiJDIYS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 04:24:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89A81C123;
-        Tue,  4 Oct 2022 01:24:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5472D612A4;
-        Tue,  4 Oct 2022 08:24:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAABC433B5;
-        Tue,  4 Oct 2022 08:24:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1664871856;
-        bh=L9ErYNdSZRiqO0Gq2HFs31+nFf9F85V1RMYELu0rytM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iuBI7BAK9J2P1sMpfLs4RR6S1y9bSzjaCWKtm+eMek/hfzFvNn5ECiEh8/v/soei4
-         RxZbawWrBRLOVUb/eSnzf1I0dv5g9K5QV7i4M4KKPp8rT/QUa1smJkENZ9fBUNj818
-         P0/khJwxzcaAYpWpgnks52qWw64eb64+2QY94eOw=
-Date:   Tue, 4 Oct 2022 10:24:13 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 1/5] device property: Keep dev_fwnode() and
- dev_fwnode_const() separate
-Message-ID: <YzvtrXlv5X0LHAxa@kroah.com>
-References: <20220928105746.51208-2-andriy.shevchenko@linux.intel.com>
- <YzQqcFZtJn90URrJ@kroah.com>
- <Yzb9nXSxvgJ+Mj6z@paasikivi.fi.intel.com>
- <YzcAh/xtqQM1Qin4@kroah.com>
- <YzrBO2m/b1MHuKny@paasikivi.fi.intel.com>
- <Yzr6r5XtmPXCoQx7@kroah.com>
- <YzsLDUhjDCCVRy2G@kroah.com>
- <YztBWlmdgylsntgM@paasikivi.fi.intel.com>
- <Yzvm6XF0Ar35XZvT@kroah.com>
- <YzvrVoJ3BBhZmaZT@smile.fi.intel.com>
+        with ESMTP id S230174AbiJDIYm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 04:24:42 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56F962627
+        for <linux-acpi@vger.kernel.org>; Tue,  4 Oct 2022 01:24:38 -0700 (PDT)
+X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="286047362"
+X-IronPort-AV: E=Sophos;i="5.93,367,1654585200"; 
+   d="scan'208";a="286047362"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2022 01:24:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="619030307"
+X-IronPort-AV: E=Sophos;i="5.93,367,1654585200"; 
+   d="scan'208";a="619030307"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 04 Oct 2022 01:24:35 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andy@kernel.org>)
+        id 1ofdE9-001yBW-0I;
+        Tue, 04 Oct 2022 11:24:33 +0300
+Date:   Tue, 4 Oct 2022 11:24:32 +0300
+From:   Andy Shevchenko <andy@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Zhang Rui <rui.zhang@intel.com>, kai.heng.feng@canonical.com,
+        Johannes =?iso-8859-1?Q?Pen=DFel?= <johannespenssel@posteo.net>,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: Re: [RFC v3 4/4] ACPI: EC: fix ECDT probe ordering issues
+Message-ID: <YzvtwCTShC/yYovH@smile.fi.intel.com>
+References: <20221003144214.345279-1-hdegoede@redhat.com>
+ <20221003144214.345279-5-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YzvrVoJ3BBhZmaZT@smile.fi.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20221003144214.345279-5-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_SOFTFAIL autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 04, 2022 at 11:14:14AM +0300, Andy Shevchenko wrote:
-> On Tue, Oct 04, 2022 at 09:55:21AM +0200, Greg Kroah-Hartman wrote:
-> > On Mon, Oct 03, 2022 at 08:08:58PM +0000, Sakari Ailus wrote:
-> > > On Mon, Oct 03, 2022 at 06:17:17PM +0200, Greg Kroah-Hartman wrote:
+On Mon, Oct 03, 2022 at 04:42:14PM +0200, Hans de Goede wrote:
+> ACPI-2.0 says that the EC OpRegion handler must be available immediately
+> (like the standard default OpRegion handlers):
 > 
-> ...
+> Quoting from the ACPI spec version 6.3: "6.5.4 _REG (Region) ...
+
+(Side note: As of today the revision 6.5 of the ACPI specification is
+ available)
+
+> 2. OSPM must make Embedded Controller operation regions, accessed via
+> the Embedded Controllers described in ECDT, available before executing
+> any control method. These operation regions may become inaccessible
+> after OSPM runs _REG(EmbeddedControl, 0)."
 > 
-> > > #define kobj_to_dev(kobj)						\
-> > > 	(_Generic((kobj),						\
-> > > 		  const struct kobject *: __kobj_to_dev_const,		\
-> > > 		  struct kobject *: __kobj_to_dev)(kobj))
-> > 
-> > Ah, doh!  I had the (kobj) part in the wrong place, thanks for that
-> > fix...
-> > 
-> > Ok, this looks better, let me see how well the build breaks with some of
-> > these changes
+> So acpi_bus_init() calls acpi_ec_ecdt_probe(), which calls
+> acpi_install_address_space_handler() to install the EC's OpRegion
+> handler, early on.
 > 
-> I believe I can rewrite my patch like this and then it will be much nicer since
-> we may constify all the rest without calling __dev_fwnode_const() directly.
+> This not only installs the OpRegion handler, but also calls the EC's
+> _REG method. The _REG method call is a problem because it may rely on
+> initialization done by the _INI methods of one of the PCI / _SB root devs,
+> see for example: https://bugzilla.kernel.org/show_bug.cgi?id=214899 .
 > 
-> Are you agree?
+> Generally speaking _REG methods are executed when the ACPI-device they
+> are part of has a driver bound to it. Where as _INI methods must be
+> executed at table load time (according to the spec). The problem here
+> is that the early acpi_install_address_space_handler() call causes
+> the _REG handler to run too early.
+> 
+> To allow fixing this the ACPICA code now allows to split the OpRegion
+> handler installation and the executing of _REG into 2 separate steps.
+> 
+> This commit uses this ACPICA functionality to fix the EC probe ordering
+> by delaying the executing of _REG for ECDT described ECs till the matching
+> EC device in the DSDT gets parsed and acpi_ec_add() for it gets called.
+> This moves the calling of _REG for the EC on devices with an ECDT to
+> the same point in time where it is called on devices without an ECDT table.
 
-Yes, I think this is a much better option, try it and see.  Below is the
-patch I'm running through my build systems at the moment, feel free to
-copy the style for your change as well.
+...
 
-thanks,
+> +	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
+> +		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
 
-greg k-h
+> +		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
+
+Just to be sure: do you need atomic operation here? Does it prevent of any
+kind of races? Because if it had been the case, it would have been done via
+test_and_set_bit() rather than testing and setting separated.
+
+> +	}
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 424b55df0272..023ea50b1916 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -680,11 +680,27 @@ struct device_link {
- 	bool supplier_preactivated; /* Owned by consumer probe. */
- };
- 
--static inline struct device *kobj_to_dev(struct kobject *kobj)
-+static inline struct device *__kobj_to_dev(struct kobject *kobj)
- {
- 	return container_of(kobj, struct device, kobj);
- }
- 
-+static inline const struct device *__kobj_to_dev_const(const struct kobject *kobj)
-+{
-+	return container_of(kobj, const struct device, kobj);
-+}
-+
-+/*
-+ * container_of() will happily take a const * and spit back a non-const * as it
-+ * is just doing pointer math.  But we want to be a bit more careful in the
-+ * driver code, so manually force any const * of a kobject to also be a const *
-+ * to a device.
-+ */
-+#define kobj_to_dev(kobj)					\
-+	_Generic((kobj),					\
-+		 const struct kobject *: __kobj_to_dev_const,	\
-+		 struct kobject *: __kobj_to_dev)(kobj)
-+
- /**
-  * device_iommu_mapped - Returns true when the device DMA is translated
-  *			 by an IOMMU
