@@ -2,68 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6180A5F42BC
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 14:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADC6A5F42EA
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 14:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229453AbiJDMLU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Oct 2022 08:11:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45248 "EHLO
+        id S229489AbiJDM0X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Oct 2022 08:26:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbiJDMLU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 08:11:20 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74BCC13DEA;
-        Tue,  4 Oct 2022 05:11:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 585EDB81916;
-        Tue,  4 Oct 2022 12:11:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920CFC433C1;
-        Tue,  4 Oct 2022 12:11:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1664885473;
-        bh=L1vVhLYxkuI6o2rsPTxLZh+dFFA3mvTMk+Ki9D8adDA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=17keS7AUWaQyo1ujOTVulXTep5iOw7iqxe6KGDOUGGq39fUtr10b1owceTk+hcip+
-         1ZZYcO1VmEQwXVRkM+APzDQ7+GEkDHwaK2YqTw1m7zJJnDJAWx/yE2xMhyKU2bYK5A
-         ouwuKZsMltwgq30tVdtOUT7gPqhQJ0RDx02w8O1I=
-Date:   Tue, 4 Oct 2022 14:11:10 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v3 0/5] device property: Consitify a few APIs and
-Message-ID: <Yzwi3tyAv4IoZdGR@kroah.com>
-References: <20221004092129.19412-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229530AbiJDM0V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 08:26:21 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30880275D0;
+        Tue,  4 Oct 2022 05:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664886381; x=1696422381;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pJJqXUU15EAXOIfixn38k7280kKl8im8nLZUodGU5NI=;
+  b=RiN+LtR2fyMJ0TnyLcdZ9Xxd7NByGB1SWwqtgAbkp4ATaVRnvmb6jqQ9
+   +3F092MND3Udhl5rhOxVETuV/4JNwAPotBQ3MxWcbMOYsIpIU9MlUEkGx
+   +wFEISaq3o5XdkjexdM1SvNJ5Ad+ZOd7+FBpgQhi0g4YmF/VSTVbjAkvk
+   x/Ecj1JgzbKqSiQdX4R8p8071zaQtJnh1rHVemmZwXUXvTBucP2qcIO9+
+   UVLtMlMFaSGxllffZAE/9aT7SnyWa7aVh2LvDJNjXlvqv/K6ZSllt205e
+   xgujZ0JT2zH54eVdmdizFKQtu55p3mY0utndJqRUJY05EuPz7jUjDxjd/
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="300497338"
+X-IronPort-AV: E=Sophos;i="5.93,157,1654585200"; 
+   d="scan'208";a="300497338"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2022 05:26:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="749355160"
+X-IronPort-AV: E=Sophos;i="5.93,157,1654585200"; 
+   d="scan'208";a="749355160"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 04 Oct 2022 05:26:18 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 7EDF7155; Tue,  4 Oct 2022 15:26:37 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Mark Gross <markgross@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [resend, PATCH v1 1/1] platform/x86: int3472: Don't leak reference on error
+Date:   Tue,  4 Oct 2022 15:26:36 +0300
+Message-Id: <20221004122636.61755-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221004092129.19412-1-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 04, 2022 at 12:21:24PM +0300, Andy Shevchenko wrote:
-> The property.h has inconsistency in how we annotate the parameters which
-> are not modified anyhow by the certain APIs. Also dev_fwnode() needs to
-> be rectified in sense of the handling const qualifier.
-> 
-> This series improves the above with only a couple of APIs left for now
-> untouched (PHY, which I believe doesn't belong to property.h to begin
-> with).
+The for_each_acpi_consumer_dev() takes a reference to the iterator
+and if we break a loop we must drop that reference. This usually
+happens when error handling is involved. However it's not the case
+for skl_int3472_fill_clk_pdata().
 
-Looks sane at first glance.  I'll look at it some more once 6.1-rc1 is
-out, thanks.
+Don't leak reference on error by dropping it properly.
 
-greg k-h
+Fixes: 43cf36974d76 ("platform/x86: int3472: Support multiple clock consumers")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+
+resent to include Rafael and linux-acpi@ to the Cc list
+
+ drivers/platform/x86/intel/int3472/tps68470.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
+index f83e9c393f31..5b8d1a9620a5 100644
+--- a/drivers/platform/x86/intel/int3472/tps68470.c
++++ b/drivers/platform/x86/intel/int3472/tps68470.c
+@@ -128,15 +128,15 @@ skl_int3472_fill_clk_pdata(struct device *dev, struct tps68470_clk_platform_data
+ 	for_each_acpi_consumer_dev(adev, consumer) {
+ 		sensor_name = devm_kasprintf(dev, GFP_KERNEL, I2C_DEV_NAME_FORMAT,
+ 					     acpi_dev_name(consumer));
+-		if (!sensor_name)
++		if (!sensor_name) {
++			acpi_dev_put(consumer);
+ 			return -ENOMEM;
++		}
+ 
+ 		(*clk_pdata)->consumers[i].consumer_dev_name = sensor_name;
+ 		i++;
+ 	}
+ 
+-	acpi_dev_put(consumer);
+-
+ 	return n_consumers;
+ }
+ 
+-- 
+2.35.1
+
