@@ -2,105 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADC6A5F42EA
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 14:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06F2D5F4511
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 16:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbiJDM0X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Oct 2022 08:26:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37024 "EHLO
+        id S229791AbiJDODR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Oct 2022 10:03:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiJDM0V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 08:26:21 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30880275D0;
-        Tue,  4 Oct 2022 05:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664886381; x=1696422381;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=pJJqXUU15EAXOIfixn38k7280kKl8im8nLZUodGU5NI=;
-  b=RiN+LtR2fyMJ0TnyLcdZ9Xxd7NByGB1SWwqtgAbkp4ATaVRnvmb6jqQ9
-   +3F092MND3Udhl5rhOxVETuV/4JNwAPotBQ3MxWcbMOYsIpIU9MlUEkGx
-   +wFEISaq3o5XdkjexdM1SvNJ5Ad+ZOd7+FBpgQhi0g4YmF/VSTVbjAkvk
-   x/Ecj1JgzbKqSiQdX4R8p8071zaQtJnh1rHVemmZwXUXvTBucP2qcIO9+
-   UVLtMlMFaSGxllffZAE/9aT7SnyWa7aVh2LvDJNjXlvqv/K6ZSllt205e
-   xgujZ0JT2zH54eVdmdizFKQtu55p3mY0utndJqRUJY05EuPz7jUjDxjd/
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="300497338"
-X-IronPort-AV: E=Sophos;i="5.93,157,1654585200"; 
-   d="scan'208";a="300497338"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2022 05:26:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="749355160"
-X-IronPort-AV: E=Sophos;i="5.93,157,1654585200"; 
-   d="scan'208";a="749355160"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 04 Oct 2022 05:26:18 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 7EDF7155; Tue,  4 Oct 2022 15:26:37 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Daniel Scally <djrscally@gmail.com>,
-        Mark Gross <markgross@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [resend, PATCH v1 1/1] platform/x86: int3472: Don't leak reference on error
-Date:   Tue,  4 Oct 2022 15:26:36 +0300
-Message-Id: <20221004122636.61755-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229515AbiJDODL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 10:03:11 -0400
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74EF5D11D;
+        Tue,  4 Oct 2022 07:03:09 -0700 (PDT)
+Received: by mail-qt1-f175.google.com with SMTP id r20so8152329qtn.12;
+        Tue, 04 Oct 2022 07:03:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J44FSMQt9hxXyZYK2BIhrM49ThEiIJfUS0tSrCeMHvA=;
+        b=1kq9KC9nhIY4T1BEdximrwdpGGZBWW4x41bCmCmrfbmY/2UPYFR4xFZmrviLZuiXFl
+         wDNMb7rZ83FMhemCZhRk0ppNdLuYhl0fJ+ThJU49DgswpR6VTXRQHg3Gu6/mI1HxNye6
+         M/Fq/ahWXDu8W4NquzyVIDXvzVicvxyWnX/w4FITj/gu4JtGJGvbD7ehcBaAvJplusLQ
+         50KSOlD67Gqvmh+hFVRWO+rVAr8P09JohazsvibAHteKb7DsiQqLsIdqJc8jDUucdwDL
+         7LyETkOqRhLX7EU9gndTQCYb7/bsC/wcpwxVGyuzcQj6q3I+4UZvq4tEgHQrlED1nbN0
+         ojBA==
+X-Gm-Message-State: ACrzQf02r+QApr/gUvoWaTtKk3E2MoKV8A25RjnNeyXje8/hBEXu3Rei
+        NcaahWQ/vh3o4O5mrD6ZdNegDCSTly47njHmSPw=
+X-Google-Smtp-Source: AMsMyM4xDFr0ZTm7UK3Wa4Q62y7QkPCbKXgvi1o/2GRsRrxucTq6HEIWk7DVvHxUyyQZFHygQ5MFyzUr4RS/hFiT/e4=
+X-Received: by 2002:a05:622a:11c8:b0:35c:e912:a8ea with SMTP id
+ n8-20020a05622a11c800b0035ce912a8eamr19609035qtk.17.1664892188502; Tue, 04
+ Oct 2022 07:03:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220929070526.143907-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20220929070526.143907-1-kai.heng.feng@canonical.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 4 Oct 2022 16:02:57 +0200
+Message-ID: <CAJZ5v0iqoXK-83BPahwHN35Ar8FgUhqPv+Hsz9BY9nAju3sMOw@mail.gmail.com>
+Subject: Re: [RESEND PATCH v4 1/2] kernel/reboot: Add SYS_OFF_MODE_RESTART_PREPARE
+ mode
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     rafael.j.wysocki@intel.com, lenb@kernel.org,
+        linux-acpi@vger.kernel.org,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        tangmeng <tangmeng@uniontech.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Petr Mladek <pmladek@suse.com>,
+        YueHaibing <yuehaibing@huawei.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The for_each_acpi_consumer_dev() takes a reference to the iterator
-and if we break a loop we must drop that reference. This usually
-happens when error handling is involved. However it's not the case
-for skl_int3472_fill_clk_pdata().
+On Thu, Sep 29, 2022 at 9:06 AM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> Add SYS_OFF_MODE_RESTART_PREPARE callbacks can be invoked before system
+> restart.
+>
+> This is a preparation for next patch.
+>
+> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-Don't leak reference on error by dropping it properly.
+Applied as 6.1-rc material along with the [2/2], thanks!
 
-Fixes: 43cf36974d76 ("platform/x86: int3472: Support multiple clock consumers")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-
-resent to include Rafael and linux-acpi@ to the Cc list
-
- drivers/platform/x86/intel/int3472/tps68470.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
-index f83e9c393f31..5b8d1a9620a5 100644
---- a/drivers/platform/x86/intel/int3472/tps68470.c
-+++ b/drivers/platform/x86/intel/int3472/tps68470.c
-@@ -128,15 +128,15 @@ skl_int3472_fill_clk_pdata(struct device *dev, struct tps68470_clk_platform_data
- 	for_each_acpi_consumer_dev(adev, consumer) {
- 		sensor_name = devm_kasprintf(dev, GFP_KERNEL, I2C_DEV_NAME_FORMAT,
- 					     acpi_dev_name(consumer));
--		if (!sensor_name)
-+		if (!sensor_name) {
-+			acpi_dev_put(consumer);
- 			return -ENOMEM;
-+		}
- 
- 		(*clk_pdata)->consumers[i].consumer_dev_name = sensor_name;
- 		i++;
- 	}
- 
--	acpi_dev_put(consumer);
--
- 	return n_consumers;
- }
- 
--- 
-2.35.1
-
+> ---
+> v4:
+>  - Correct typo in comment.
+> v3:
+>  - New patch.
+>
+>  include/linux/reboot.h |  8 ++++++++
+>  kernel/reboot.c        | 17 +++++++++++++++++
+>  2 files changed, 25 insertions(+)
+>
+> diff --git a/include/linux/reboot.h b/include/linux/reboot.h
+> index e5d9ef886179c..2b6bb593be5b6 100644
+> --- a/include/linux/reboot.h
+> +++ b/include/linux/reboot.h
+> @@ -105,6 +105,14 @@ enum sys_off_mode {
+>          */
+>         SYS_OFF_MODE_POWER_OFF,
+>
+> +       /**
+> +        * @SYS_OFF_MODE_RESTART_PREPARE:
+> +        *
+> +        * Handlers prepare system to be restarted. Handlers are
+> +        * allowed to sleep.
+> +        */
+> +       SYS_OFF_MODE_RESTART_PREPARE,
+> +
+>         /**
+>          * @SYS_OFF_MODE_RESTART:
+>          *
+> diff --git a/kernel/reboot.c b/kernel/reboot.c
+> index 3c35445bf5ad3..3bba88c7ffc6b 100644
+> --- a/kernel/reboot.c
+> +++ b/kernel/reboot.c
+> @@ -243,6 +243,17 @@ void migrate_to_reboot_cpu(void)
+>         set_cpus_allowed_ptr(current, cpumask_of(cpu));
+>  }
+>
+> +/*
+> + *     Notifier list for kernel code which wants to be called
+> + *     to prepare system for restart.
+> + */
+> +static BLOCKING_NOTIFIER_HEAD(restart_prep_handler_list);
+> +
+> +static void do_kernel_restart_prepare(void)
+> +{
+> +       blocking_notifier_call_chain(&restart_prep_handler_list, 0, NULL);
+> +}
+> +
+>  /**
+>   *     kernel_restart - reboot the system
+>   *     @cmd: pointer to buffer containing command to execute for restart
+> @@ -254,6 +265,7 @@ void migrate_to_reboot_cpu(void)
+>  void kernel_restart(char *cmd)
+>  {
+>         kernel_restart_prepare(cmd);
+> +       do_kernel_restart_prepare();
+>         migrate_to_reboot_cpu();
+>         syscore_shutdown();
+>         if (!cmd)
+> @@ -396,6 +408,11 @@ register_sys_off_handler(enum sys_off_mode mode,
+>                 handler->list = &power_off_handler_list;
+>                 break;
+>
+> +       case SYS_OFF_MODE_RESTART_PREPARE:
+> +               handler->list = &restart_prep_handler_list;
+> +               handler->blocking = true;
+> +               break;
+> +
+>         case SYS_OFF_MODE_RESTART:
+>                 handler->list = &restart_handler_list;
+>                 break;
+> --
+> 2.37.2
+>
