@@ -2,55 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05D825F41CC
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 13:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F10855F4225
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 13:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230003AbiJDLNz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Oct 2022 07:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38506 "EHLO
+        id S229922AbiJDLoN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Oct 2022 07:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229970AbiJDLNZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 07:13:25 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7097057263
-        for <linux-acpi@vger.kernel.org>; Tue,  4 Oct 2022 04:13:19 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id h10so9649797plb.2
-        for <linux-acpi@vger.kernel.org>; Tue, 04 Oct 2022 04:13:19 -0700 (PDT)
+        with ESMTP id S229534AbiJDLoL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 07:44:11 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068AE4DF11
+        for <linux-acpi@vger.kernel.org>; Tue,  4 Oct 2022 04:44:09 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id e129so12485320pgc.9
+        for <linux-acpi@vger.kernel.org>; Tue, 04 Oct 2022 04:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=UHE2x7YnT+avJBdJRK8fICu4tqbTB0zv1A8Jd5IOhrw=;
-        b=DQ7AqshQw7pAlndMjmyEf3HDNlexUBF+jB73J+4SoV4OjFHAeL9d93Pkb0EJq27wmV
-         fMsaB2Ugk2jANVVFsgCVCwsCPcqfEpNwL8Phil7GBZGqFbBPLY20X/vyyyMA3GQqxwqr
-         9GitSfUr/lUWnkoEFyKfW1UEPWDsM/lhvI/GgsbbZeTjM/BKXmE2CDDRkoVqqPha6oPu
-         qT7JzbFbc8JYxA1Hnfg8ebCiWushyc4cczI9HWkbShP/pG31SGJukNeZLdU4X/4Dr/J1
-         nBm7WS/ywrZAsUI2kefDBEEPXrA2HSCWcStoD/F24lMd+RQ2O+RyHYdGsKRKL5ywBm+U
-         IhvQ==
+        bh=6ZpUfgQM8l58jAA1FLv6FNtqasscnAngw/MWtVrklhs=;
+        b=Bo9x/OnIeuD4yOxUQBcKmabUSqnMZ0tD37iq/OHVxEJh7l092LYUiEcByhyeKoPqQH
+         6ccMpXG4qRKbkr941fgMrmTCvs7mBDKkmcyZ2TkZ97cu4Erpz6364n3eKpYtT/b1NuAZ
+         pi9UC5KrZS8fHRid7zPrK2EhUttI5OrNRFHSo8P3Mb2tkDzqPas8gU17A3WN+Bdf8SsZ
+         dU9egD++P5XQakRrLuSrsLxcUXmzHPNMQsJfA7zWkxd6pg+zQjqIPz81iRSpYAnZdaFW
+         4XHAdmJUPlV/gsJ01s3Xsj5gKwh9HnkRQU0HSv1IiMZAjlCNlnOhbi1ezx8q34YNlXVA
+         xsfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=UHE2x7YnT+avJBdJRK8fICu4tqbTB0zv1A8Jd5IOhrw=;
-        b=67qNsPtS3kXdZR50jlTLePlxFSuEheoHLgdkye0qE5YXsEoshfgw0jXXbA+MEIjr6h
-         FOaVqOfaI26uaoK2I+zJSOeCQrVEbUWRq6WSUP5pySH8Q8SV4IYVVt65lBKPIYy7cB0u
-         uEylK7jWOVJxySO/ippLMiSLplg8Pg5DliTiZX/KiiXgpUv41FpoY4Q82CZD3czIES+2
-         JoLui1naeWePbiqqQrw3u7gSZVd3lPtDQmt5lUIphYwhqWCLgc312faabtOhEJcE1Ae2
-         UW2lQflhA1BhpD7MIOupKUx9w06nTHtwG57KEv+XwGr6GaNFrfr64XPr2CGbD0XGokNW
-         Zw/Q==
-X-Gm-Message-State: ACrzQf3F/HQqihQFZo8p01OWPJJlOSH9ybtMJ9TNqOK1DQSibw7+hy6v
-        soqLjft7wpFPCNPDCa54CVM/91Uu5p4WFNYRCnpl5A==
-X-Google-Smtp-Source: AMsMyM7BhQDEzGuMq6uijGe+375QPbx+j/BjXkPK0/Xp2Q5WyeWrXvzrh6ljkVul43PLHCDTtENmDZivDluO/kqNLsY=
-X-Received: by 2002:a17:90b:4d07:b0:1ef:521c:f051 with SMTP id
- mw7-20020a17090b4d0700b001ef521cf051mr17237644pjb.164.1664881999182; Tue, 04
- Oct 2022 04:13:19 -0700 (PDT)
+        bh=6ZpUfgQM8l58jAA1FLv6FNtqasscnAngw/MWtVrklhs=;
+        b=wBKOsGBa0uiK+TT2JH0fRpjbtEuYLCAbYmQDEEY2byHUYeMjp7+S1aH1xe4mx7f+pq
+         jO6AzwVO1uQwL7pjCSryHBLg3SKAvtD60DUl4ccLvCFjwqtalyjVBMKh7eAvuhtcJKn2
+         hYsIWsnpJzis0OU7NDbak3BnrX0V0vBa/DdZ7zZiLkW+QSexECt3pOcCQ+gSBRsALbxh
+         CfIHdkiPCrbr8OcxrQ5bN68BVyRDIRb8NuxxK4MsLex5iM1F5J3HV3JocijGgopy354+
+         Gks+8qLeW5Ka58BGTuxJ8KWCK/X+7sYzU/uqL3uJQoIdLUm5xGeh6IYZz1c45VQlPwVD
+         kGog==
+X-Gm-Message-State: ACrzQf2T0AMYdmBvGTNM26k22xBgTOBVXuf5S0mpaqf/FYwFvdEwy6hc
+        2+4jgZ4jBO55+TuX0aYwvUIeeo1OaeouStHoPf5TCw==
+X-Google-Smtp-Source: AMsMyM5om3ildrb6FXKsDICcjLQng8HApyTNXbRFn0vHa6n1wlhKJZOEgXsol3CWajbZfhZ3j9+WO0SV0tqOewvj3U8=
+X-Received: by 2002:a63:464d:0:b0:441:5968:cd0e with SMTP id
+ v13-20020a63464d000000b004415968cd0emr19098981pgk.595.1664883848385; Tue, 04
+ Oct 2022 04:44:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220919095939.761690562@infradead.org> <20220919101522.908560022@infradead.org>
-In-Reply-To: <20220919101522.908560022@infradead.org>
+References: <20220919095939.761690562@infradead.org> <20220919101521.139727471@infradead.org>
+ <CAPDyKFqTWd4W5Ofk76CtC4X43dxBTNHtmY9YzN355-vpviLsPw@mail.gmail.com>
+In-Reply-To: <CAPDyKFqTWd4W5Ofk76CtC4X43dxBTNHtmY9YzN355-vpviLsPw@mail.gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 4 Oct 2022 13:12:42 +0200
-Message-ID: <CAPDyKFqDiqXSi5Gn9eyvhHhqHxJAPAt-HzmEDwYWaGvso2yn=w@mail.gmail.com>
-Subject: Re: [PATCH v2 38/44] cpuidle,powerdomain: Remove trace_.*_rcuidle()
+Date:   Tue, 4 Oct 2022 13:43:31 +0200
+Message-ID: <CAPDyKFqGSt2NFe8aY=6rkp4P-WH7DCO1fmWrcXk4_5XNEvv25w@mail.gmail.com>
+Subject: Re: [PATCH v2 12/44] cpuidle,dt: Push RCU-idle into driver
 To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com,
         linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org,
@@ -123,165 +124,181 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 19 Sept 2022 at 12:17, Peter Zijlstra <peterz@infradead.org> wrote:
+On Tue, 4 Oct 2022 at 13:03, Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> OMAP was the one and only user.
+> On Mon, 19 Sept 2022 at 12:18, Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > Doing RCU-idle outside the driver, only to then temporarily enable it
+> > again before going idle is daft.
+> >
+> > Notably: this converts all dt_init_idle_driver() and
+> > __CPU_PM_CPU_IDLE_ENTER() users for they are inextrably intertwined.
+> >
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 >
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-There are changes to the runtime PM core as part of $subject patch.
-Perhaps move those parts into a separate patch? In any case, the code
-looks good to me.
-
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+This was not (yet) my intention. Please have a look at the comments I
+provided below.
 
 Kind regards
 Uffe
 
-> ---
->  arch/arm/mach-omap2/powerdomain.c |   10 +++++-----
->  drivers/base/power/runtime.c      |   24 ++++++++++++------------
->  2 files changed, 17 insertions(+), 17 deletions(-)
 >
-> --- a/arch/arm/mach-omap2/powerdomain.c
-> +++ b/arch/arm/mach-omap2/powerdomain.c
-> @@ -187,9 +187,9 @@ static int _pwrdm_state_switch(struct po
->                         trace_state = (PWRDM_TRACE_STATES_FLAG |
->                                        ((next & OMAP_POWERSTATE_MASK) << 8) |
->                                        ((prev & OMAP_POWERSTATE_MASK) << 0));
-> -                       trace_power_domain_target_rcuidle(pwrdm->name,
-> -                                                         trace_state,
-> -                                                         raw_smp_processor_id());
-> +                       trace_power_domain_target(pwrdm->name,
-> +                                                 trace_state,
-> +                                                 raw_smp_processor_id());
->                 }
->                 break;
->         default:
-> @@ -541,8 +541,8 @@ int pwrdm_set_next_pwrst(struct powerdom
+> > ---
+> >  arch/arm/mach-omap2/cpuidle34xx.c    |    4 ++--
+> >  drivers/acpi/processor_idle.c        |    2 ++
+> >  drivers/cpuidle/cpuidle-arm.c        |    1 +
+> >  drivers/cpuidle/cpuidle-big_little.c |    8 ++++++--
+> >  drivers/cpuidle/cpuidle-psci.c       |    1 +
+> >  drivers/cpuidle/cpuidle-qcom-spm.c   |    1 +
+> >  drivers/cpuidle/cpuidle-riscv-sbi.c  |    1 +
+> >  drivers/cpuidle/dt_idle_states.c     |    2 +-
+> >  include/linux/cpuidle.h              |    4 ++++
+> >  9 files changed, 19 insertions(+), 5 deletions(-)
+> >
+> > --- a/drivers/acpi/processor_idle.c
+> > +++ b/drivers/acpi/processor_idle.c
+> > @@ -1200,6 +1200,8 @@ static int acpi_processor_setup_lpi_stat
+> >                 state->target_residency = lpi->min_residency;
+> >                 if (lpi->arch_flags)
+> >                         state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+> > +               if (lpi->entry_method == ACPI_CSTATE_FFH)
+> > +                       state->flags |= CPUIDLE_FLAG_RCU_IDLE;
 >
->         if (arch_pwrdm && arch_pwrdm->pwrdm_set_next_pwrst) {
->                 /* Trace the pwrdm desired target state */
-> -               trace_power_domain_target_rcuidle(pwrdm->name, pwrst,
-> -                                                 raw_smp_processor_id());
-> +               trace_power_domain_target(pwrdm->name, pwrst,
-> +                                         raw_smp_processor_id());
->                 /* Program the pwrdm desired target state */
->                 ret = arch_pwrdm->pwrdm_set_next_pwrst(pwrdm, pwrst);
->         }
-> --- a/drivers/base/power/runtime.c
-> +++ b/drivers/base/power/runtime.c
-> @@ -442,7 +442,7 @@ static int rpm_idle(struct device *dev,
->         int (*callback)(struct device *);
->         int retval;
+> I assume the state index here will never be 0?
 >
-> -       trace_rpm_idle_rcuidle(dev, rpmflags);
-> +       trace_rpm_idle(dev, rpmflags);
->         retval = rpm_check_suspend_allowed(dev);
->         if (retval < 0)
->                 ;       /* Conditions are wrong. */
-> @@ -481,7 +481,7 @@ static int rpm_idle(struct device *dev,
->                         dev->power.request_pending = true;
->                         queue_work(pm_wq, &dev->power.work);
->                 }
-> -               trace_rpm_return_int_rcuidle(dev, _THIS_IP_, 0);
-> +               trace_rpm_return_int(dev, _THIS_IP_, 0);
->                 return 0;
->         }
+> If not, it may lead to that acpi_processor_ffh_lpi_enter() may trigger
+> CPU_PM_CPU_IDLE_ENTER_PARAM() to call ct_cpuidle_enter|exit() for an
+> idle-state that doesn't have the CPUIDLE_FLAG_RCU_IDLE bit set.
 >
-> @@ -493,7 +493,7 @@ static int rpm_idle(struct device *dev,
->         wake_up_all(&dev->power.wait_queue);
+> >                 state->enter = acpi_idle_lpi_enter;
+> >                 drv->safe_state_index = i;
+> >         }
+> > --- a/drivers/cpuidle/cpuidle-arm.c
+> > +++ b/drivers/cpuidle/cpuidle-arm.c
+> > @@ -53,6 +53,7 @@ static struct cpuidle_driver arm_idle_dr
+> >          * handler for idle state index 0.
+> >          */
+> >         .states[0] = {
+> > +               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
 >
->   out:
-> -       trace_rpm_return_int_rcuidle(dev, _THIS_IP_, retval);
-> +       trace_rpm_return_int(dev, _THIS_IP_, retval);
->         return retval ? retval : rpm_suspend(dev, rpmflags | RPM_AUTO);
->  }
+> Comparing arm64 and arm32 idle-states/idle-drivers, the $subject
+> series ends up setting the CPUIDLE_FLAG_RCU_IDLE for the ARM WFI idle
+> state (state zero), but only for the arm64 and psci cases (mostly
+> arm64). For arm32 we would need to update the ARM_CPUIDLE_WFI_STATE
+> too, as that is what most arm32 idle-drivers are using. My point is,
+> the code becomes a bit inconsistent.
 >
-> @@ -557,7 +557,7 @@ static int rpm_suspend(struct device *de
->         struct device *parent = NULL;
->         int retval;
+> Perhaps it's easier to avoid setting the CPUIDLE_FLAG_RCU_IDLE bit for
+> all of the ARM WFI idle states, for both arm64 and arm32?
 >
-> -       trace_rpm_suspend_rcuidle(dev, rpmflags);
-> +       trace_rpm_suspend(dev, rpmflags);
+> >                 .enter                  = arm_enter_idle_state,
+> >                 .exit_latency           = 1,
+> >                 .target_residency       = 1,
+> > --- a/drivers/cpuidle/cpuidle-big_little.c
+> > +++ b/drivers/cpuidle/cpuidle-big_little.c
+> > @@ -64,7 +64,8 @@ static struct cpuidle_driver bl_idle_lit
+> >                 .enter                  = bl_enter_powerdown,
+> >                 .exit_latency           = 700,
+> >                 .target_residency       = 2500,
+> > -               .flags                  = CPUIDLE_FLAG_TIMER_STOP,
+> > +               .flags                  = CPUIDLE_FLAG_TIMER_STOP |
+> > +                                         CPUIDLE_FLAG_RCU_IDLE,
+> >                 .name                   = "C1",
+> >                 .desc                   = "ARM little-cluster power down",
+> >         },
+> > @@ -85,7 +86,8 @@ static struct cpuidle_driver bl_idle_big
+> >                 .enter                  = bl_enter_powerdown,
+> >                 .exit_latency           = 500,
+> >                 .target_residency       = 2000,
+> > -               .flags                  = CPUIDLE_FLAG_TIMER_STOP,
+> > +               .flags                  = CPUIDLE_FLAG_TIMER_STOP |
+> > +                                         CPUIDLE_FLAG_RCU_IDLE,
+> >                 .name                   = "C1",
+> >                 .desc                   = "ARM big-cluster power down",
+> >         },
+> > @@ -124,11 +126,13 @@ static int bl_enter_powerdown(struct cpu
+> >                                 struct cpuidle_driver *drv, int idx)
+> >  {
+> >         cpu_pm_enter();
+> > +       ct_idle_enter();
+> >
+> >         cpu_suspend(0, bl_powerdown_finisher);
+> >
+> >         /* signals the MCPM core that CPU is out of low power state */
+> >         mcpm_cpu_powered_up();
+> > +       ct_idle_exit();
+> >
+> >         cpu_pm_exit();
+> >
+> > --- a/drivers/cpuidle/cpuidle-psci.c
+> > +++ b/drivers/cpuidle/cpuidle-psci.c
+> > @@ -357,6 +357,7 @@ static int psci_idle_init_cpu(struct dev
+> >          * PSCI idle states relies on architectural WFI to be represented as
+> >          * state index 0.
+> >          */
+> > +       drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
+> >         drv->states[0].enter = psci_enter_idle_state;
+> >         drv->states[0].exit_latency = 1;
+> >         drv->states[0].target_residency = 1;
+> > --- a/drivers/cpuidle/cpuidle-qcom-spm.c
+> > +++ b/drivers/cpuidle/cpuidle-qcom-spm.c
+> > @@ -72,6 +72,7 @@ static struct cpuidle_driver qcom_spm_id
+> >         .owner = THIS_MODULE,
+> >         .states[0] = {
+> >                 .enter                  = spm_enter_idle_state,
+> > +               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
+> >                 .exit_latency           = 1,
+> >                 .target_residency       = 1,
+> >                 .power_usage            = UINT_MAX,
+> > --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
+> > +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
+> > @@ -332,6 +332,7 @@ static int sbi_cpuidle_init_cpu(struct d
+> >         drv->cpumask = (struct cpumask *)cpumask_of(cpu);
+> >
+> >         /* RISC-V architectural WFI to be represented as state index 0. */
+> > +       drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
+> >         drv->states[0].enter = sbi_cpuidle_enter_state;
+> >         drv->states[0].exit_latency = 1;
+> >         drv->states[0].target_residency = 1;
+> > --- a/drivers/cpuidle/dt_idle_states.c
+> > +++ b/drivers/cpuidle/dt_idle_states.c
+> > @@ -77,7 +77,7 @@ static int init_state_node(struct cpuidl
+> >         if (err)
+> >                 desc = state_node->name;
+> >
+> > -       idle_state->flags = 0;
+> > +       idle_state->flags = CPUIDLE_FLAG_RCU_IDLE;
+> >         if (of_property_read_bool(state_node, "local-timer-stop"))
+> >                 idle_state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+> >         /*
+> > --- a/include/linux/cpuidle.h
+> > +++ b/include/linux/cpuidle.h
+> > @@ -282,14 +282,18 @@ extern s64 cpuidle_governor_latency_req(
+> >         int __ret = 0;                                                  \
+> >                                                                         \
+> >         if (!idx) {                                                     \
+> > +               ct_idle_enter();                                        \
 >
->   repeat:
->         retval = rpm_check_suspend_allowed(dev);
-> @@ -708,7 +708,7 @@ static int rpm_suspend(struct device *de
->         }
+> According to my comment above, we should then drop these calls to
+> ct_idle_enter and ct_idle_exit() here. Right?
 >
->   out:
-> -       trace_rpm_return_int_rcuidle(dev, _THIS_IP_, retval);
-> +       trace_rpm_return_int(dev, _THIS_IP_, retval);
+> >                 cpu_do_idle();                                          \
+> > +               ct_idle_exit();                                         \
+> >                 return idx;                                             \
+> >         }                                                               \
+> >                                                                         \
+> >         if (!is_retention)                                              \
+> >                 __ret =  cpu_pm_enter();                                \
+> >         if (!__ret) {                                                   \
+> > +               ct_idle_enter();                                        \
+> >                 __ret = low_level_idle_enter(state);                    \
+> > +               ct_idle_exit();                                         \
+> >                 if (!is_retention)                                      \
+> >                         cpu_pm_exit();                                  \
+> >         }                                                               \
+> >
 >
->         return retval;
->
-> @@ -760,7 +760,7 @@ static int rpm_resume(struct device *dev
->         struct device *parent = NULL;
->         int retval = 0;
->
-> -       trace_rpm_resume_rcuidle(dev, rpmflags);
-> +       trace_rpm_resume(dev, rpmflags);
->
->   repeat:
->         if (dev->power.runtime_error) {
-> @@ -925,7 +925,7 @@ static int rpm_resume(struct device *dev
->                 spin_lock_irq(&dev->power.lock);
->         }
->
-> -       trace_rpm_return_int_rcuidle(dev, _THIS_IP_, retval);
-> +       trace_rpm_return_int(dev, _THIS_IP_, retval);
->
->         return retval;
->  }
-> @@ -1081,7 +1081,7 @@ int __pm_runtime_idle(struct device *dev
->                 if (retval < 0) {
->                         return retval;
->                 } else if (retval > 0) {
-> -                       trace_rpm_usage_rcuidle(dev, rpmflags);
-> +                       trace_rpm_usage(dev, rpmflags);
->                         return 0;
->                 }
->         }
-> @@ -1119,7 +1119,7 @@ int __pm_runtime_suspend(struct device *
->                 if (retval < 0) {
->                         return retval;
->                 } else if (retval > 0) {
-> -                       trace_rpm_usage_rcuidle(dev, rpmflags);
-> +                       trace_rpm_usage(dev, rpmflags);
->                         return 0;
->                 }
->         }
-> @@ -1202,7 +1202,7 @@ int pm_runtime_get_if_active(struct devi
->         } else {
->                 retval = atomic_inc_not_zero(&dev->power.usage_count);
->         }
-> -       trace_rpm_usage_rcuidle(dev, 0);
-> +       trace_rpm_usage(dev, 0);
->         spin_unlock_irqrestore(&dev->power.lock, flags);
->
->         return retval;
-> @@ -1566,7 +1566,7 @@ void pm_runtime_allow(struct device *dev
->         if (ret == 0)
->                 rpm_idle(dev, RPM_AUTO | RPM_ASYNC);
->         else if (ret > 0)
-> -               trace_rpm_usage_rcuidle(dev, RPM_AUTO | RPM_ASYNC);
-> +               trace_rpm_usage(dev, RPM_AUTO | RPM_ASYNC);
->
->   out:
->         spin_unlock_irq(&dev->power.lock);
-> @@ -1635,7 +1635,7 @@ static void update_autosuspend(struct de
->                         atomic_inc(&dev->power.usage_count);
->                         rpm_resume(dev, 0);
->                 } else {
-> -                       trace_rpm_usage_rcuidle(dev, 0);
-> +                       trace_rpm_usage(dev, 0);
->                 }
->         }
->
->
->
-> _______________________________________________
-> Virtualization mailing list
-> Virtualization@lists.linux-foundation.org
-> https://lists.linuxfoundation.org/mailman/listinfo/virtualization
+> Kind regards
+> Uffe
