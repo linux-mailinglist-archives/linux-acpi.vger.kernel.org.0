@@ -1,140 +1,97 @@
 Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E1BC5F47A4
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 18:33:12 +0200 (CEST)
+Received: from out1.vger.email (unknown [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id BDC895F47D9
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Oct 2022 18:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbiJDQdK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Oct 2022 12:33:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51126 "EHLO
+        id S229757AbiJDQpH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Oct 2022 12:45:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbiJDQdJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 12:33:09 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7775E579;
-        Tue,  4 Oct 2022 09:33:07 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 636df6776db0d94c; Tue, 4 Oct 2022 18:33:05 +0200
-Received: from kreacher.localnet (unknown [213.134.189.18])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 79EDA6665F6;
-        Tue,  4 Oct 2022 18:33:04 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
+        with ESMTP id S229666AbiJDQpG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Oct 2022 12:45:06 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A84813E37
+        for <linux-acpi@vger.kernel.org>; Tue,  4 Oct 2022 09:45:03 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id p36-20020a05600c1da400b003bd24ccae2eso1204313wms.3
+        for <linux-acpi@vger.kernel.org>; Tue, 04 Oct 2022 09:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DA6ATCFI3nwbOwLZFNUBSjoAf7jNM71Mn0lBDKhoxpA=;
+        b=M+3rzufIbKktEhqsxbobcR09mtYJOz7dmxiH4HN2OOB4mDAtKGUaavo+nQRHE4cXft
+         EPP9kdIMQ0hXGSb96bCDe0UPMkiY6nMW22Hoo+hXZMR0Ef3nrvuuwV3obSEYf1dyJ/Z7
+         apONWCTEzydYRJQJtBSgMzyPtx3kb5eYZK6u1ZtY3/Wb5lwVgMmrRny2EdGgaCKR9o7T
+         Q9nqG4c3mDLEIW5YIrcGFx48D2uLilOHxkbe9N/C6vN17mm5oBOe8LvAe+qXzPY6evDC
+         crTy6j1uaF9ZOTA8R26uavBtQuCtucA5KghrCHA9segqx/SJAXD6Z8r32HAAOB0sMhL7
+         WY3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DA6ATCFI3nwbOwLZFNUBSjoAf7jNM71Mn0lBDKhoxpA=;
+        b=YUWz/Y+9bXnm9c/+ow/P6fX+guqow2jBr8ZSKFx4x2BUhNu+8IQIsxjcYMbnWnsIwa
+         EidQWXysVOLZC5ahD28hYdgRMSf8dHjweFnf1Ft1g4XLxsxz/AkLJH6hhKXKEyGqjTFV
+         geHj168VGhJB/wG4Etmd69YtxNEUDKlGT/MPIKngse8RDp3JRNrnj8USl3/mNdD31hiw
+         84DZtESfGHvl+v4G57KHYlkrDx3S9HAiO6vHnxfbLvhTQCIz7HWlvspThhU54uzn8Sx+
+         Zltn3hSmlVW0HtBCsGOt5aYM6Aqvk4afCc4q36JmwHURwXBjRCwrIcIhCAXSuj59ORMk
+         7hTw==
+X-Gm-Message-State: ACrzQf3zPeTIfCdJy6/osTWr0hQ58Wcq3AKn4pNQTFg3dFicANy4cqG2
+        LrWw4iSFDUAmTntjjK/5bxh+Vw==
+X-Google-Smtp-Source: AMsMyM6IL5yWhA0pw4EdLZnURthskQyquD0fHAc2iTZfoc+ZCAi6TW2Ry3WE7xdqN8QKSlSlSztlwA==
+X-Received: by 2002:a7b:c845:0:b0:3b5:5e45:b266 with SMTP id c5-20020a7bc845000000b003b55e45b266mr484982wml.82.1664901901681;
+        Tue, 04 Oct 2022 09:45:01 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:c456:8337:99aa:2667? ([2a05:6e02:1041:c10:c456:8337:99aa:2667])
+        by smtp.googlemail.com with ESMTPSA id y10-20020adffa4a000000b00228da845d4dsm13061257wrr.94.2022.10.04.09.45.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Oct 2022 09:45:01 -0700 (PDT)
+Message-ID: <97e3971b-cb6a-634c-6c58-d4348c52767a@linaro.org>
+Date:   Tue, 4 Oct 2022 18:45:00 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v1 0/3] ACPI: thermal: Clean up simple things
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Zhang Rui <rui.zhang@intel.com>,
         Linux PM <linux-pm@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH v1 3/3] ACPI: thermal: Drop some redundant code
-Date:   Tue, 04 Oct 2022 18:32:52 +0200
-Message-ID: <1831358.tdWV9SEqCh@kreacher>
-In-Reply-To: <12068304.O9o76ZdvQC@kreacher>
 References: <12068304.O9o76ZdvQC@kreacher>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.189.18
-X-CLIENT-HOSTNAME: 213.134.189.18
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeiuddguddtvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepvddufedrudefgedrudekledrudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekledrudekpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeehpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
- pdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <12068304.O9o76ZdvQC@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 04/10/2022 18:28, Rafael J. Wysocki wrote:
+> Hi All,
+> 
+> I've just noticed that the ACPI thermal driver is in a need of extensive
+> cleanup, so here are just a few simple changes in that direction I would
+> like to get out of the table quickly before doing more intrusive stuff.
 
-Drop some redundant initialization of local variables, a redundant
-return statement and a redundant "else" from the ACPI thermal driver.
-
-No functional impact.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/thermal.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
-
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -262,7 +262,7 @@ do {	\
- 
- static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
- {
--	acpi_status status = AE_OK;
-+	acpi_status status;
- 	unsigned long long tmp;
- 	struct acpi_handle_list devices;
- 	int valid = 0;
-@@ -620,8 +620,9 @@ static int thermal_get_crit_temp(struct
- 					tz->trips.critical.temperature,
- 					tz->kelvin_offset);
- 		return 0;
--	} else
--		return -EINVAL;
-+	}
-+
-+	return -EINVAL;
- }
- 
- static int thermal_get_trend(struct thermal_zone_device *thermal,
-@@ -941,7 +942,7 @@ static void acpi_thermal_aml_dependency_
- 
- static int acpi_thermal_get_info(struct acpi_thermal *tz)
- {
--	int result = 0;
-+	int result;
- 
- 	if (!tz)
- 		return -EINVAL;
-@@ -1018,8 +1019,8 @@ static void acpi_thermal_check_fn(struct
- 
- static int acpi_thermal_add(struct acpi_device *device)
- {
--	int result = 0;
--	struct acpi_thermal *tz = NULL;
-+	struct acpi_thermal *tz;
-+	int result;
- 
- 	if (!device)
- 		return -EINVAL;
-@@ -1060,7 +1061,7 @@ end:
- 
- static int acpi_thermal_remove(struct acpi_device *device)
- {
--	struct acpi_thermal *tz = NULL;
-+	struct acpi_thermal *tz;
- 
- 	if (!device || !acpi_driver_data(device))
- 		return -EINVAL;
-@@ -1189,7 +1190,7 @@ static const struct dmi_system_id therma
- 
- static int __init acpi_thermal_init(void)
- {
--	int result = 0;
-+	int result;
- 
- 	dmi_check_system(thermal_dmi_table);
- 
-@@ -1216,8 +1217,6 @@ static void __exit acpi_thermal_exit(voi
- {
- 	acpi_bus_unregister_driver(&acpi_thermal_driver);
- 	destroy_workqueue(acpi_thermal_pm_queue);
--
--	return;
- }
- 
- module_init(acpi_thermal_init);
+I've done some cleanups in the ACPI driver. In order to not have 
+duplicate effort, shall I send in response to this cover letter a RFC 
+series, so we can join our efforts?
 
 
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
