@@ -2,76 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E00625F59FC
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Oct 2022 20:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D31815F5B60
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Oct 2022 23:06:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232214AbiJESlz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Oct 2022 14:41:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43196 "EHLO
+        id S230358AbiJEVGB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Oct 2022 17:06:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230424AbiJESlg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Oct 2022 14:41:36 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FCB980F72;
-        Wed,  5 Oct 2022 11:40:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 04BEEB81F06;
-        Wed,  5 Oct 2022 18:40:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AAFCEC43470;
-        Wed,  5 Oct 2022 18:40:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664995209;
-        bh=BDpXFEAbf4odb5EKqUXdyMM4VTNVj9XzFS8JqeLfAG8=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=TPRz575sDeVhlg0UOMbqZ711x6282gAyrhDIE0gUkTFLbHBh+ip8DcSs8rDlVyDcT
-         f9RyaoCjpMTbV22w0sqYCb9VBJcRzdxNSmfuq1peXc0B03vFH1j3SNHOKxAj0lwhb+
-         Zq5LWzg/N/9SQC8l9JpQvYL3j+a03H+kn+4JVCM+Aa6Fh4Xv0+h/kYXH/pehqL5BDM
-         IliwTiwe8Aytc1ywl47oxb2E6nu8d13dyzLWkxBL4JNEMGxqkUgAjvh36cVShqILtc
-         e1QaNKtDmZusWDrMdV+uadaXX4k8OjxKEdhRHra3kedTtes5rZJ0IXJwfErJoQGo0x
-         01ZWFym1AYkKw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 96FB3E21ED4;
-        Wed,  5 Oct 2022 18:40:09 +0000 (UTC)
-Subject: Re: [GIT PULL] platform-drivers-x86 for 6.1-1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <b23c765b-4999-17a4-d89a-55d6ba72f68d@redhat.com>
-References: <b23c765b-4999-17a4-d89a-55d6ba72f68d@redhat.com>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <b23c765b-4999-17a4-d89a-55d6ba72f68d@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git tags/platform-drivers-x86-v6.1-1
-X-PR-Tracked-Commit-Id: 8d05fc039456517d2c246c7b202891188ba40c4d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 7fb68b6c821be7165d5be5d8801d909912af9159
-Message-Id: <166499520961.1673.4800430495926774854.pr-tracker-bot@kernel.org>
-Date:   Wed, 05 Oct 2022 18:40:09 +0000
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Mark Gross <mark.gross@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi <linux-acpi@vger.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230098AbiJEVGA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Oct 2022 17:06:00 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2156E696F8;
+        Wed,  5 Oct 2022 14:06:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665003960; x=1696539960;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XPc4iUrJQ2pmk/YLXD4nx2V2D8aelG5jLWY8aoFlCP0=;
+  b=fBRKEWyX8rqP2X5GkYj/hNMNEoEtUDv5OsVYJdiY2SuxQPLe/5MeU433
+   yJyYI6mhLa21jBZllbmXYgM6dlcgQVc1rYIUUuPeN7gq7uM3CawpA+YrU
+   50STHtw2X7sNmwpt3sClHFp+E8rvWjQtgHxdAeMBkK85Cjn3NAhO5QQjM
+   eD42qQSA5C/f0tcXAMdoxB/un6XiRn9tG3TwD1ZF5iVf+gBYeTXtQlmmk
+   aFOXbg8haQNjyN37qBsgx1G6XoJx/O5lGnF0aYCX7mj0N+DezRmR6m7hy
+   dPiit+Fu5pRQ9KU78NrdGCda3V58rT7d4Vmeez7gFtwbPYNwr0DIT6ok5
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="304851277"
+X-IronPort-AV: E=Sophos;i="5.95,161,1661842800"; 
+   d="scan'208";a="304851277"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2022 14:05:59 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="624475355"
+X-IronPort-AV: E=Sophos;i="5.95,161,1661842800"; 
+   d="scan'208";a="624475355"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2022 14:05:56 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 0E57520352;
+        Thu,  6 Oct 2022 00:05:54 +0300 (EEST)
+Date:   Wed, 5 Oct 2022 21:05:54 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Qiang Zhao <qiang.zhao@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v2 1/2] device property: Introduce
+ fwnode_device_is_compatible() helper
+Message-ID: <Yz3xsmy/3wlntStv@paasikivi.fi.intel.com>
+References: <20221005152947.71696-1-andriy.shevchenko@linux.intel.com>
+ <20221005152947.71696-2-andriy.shevchenko@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221005152947.71696-2-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Wed, 5 Oct 2022 14:46:47 +0200:
+Hi Andy,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git tags/platform-drivers-x86-v6.1-1
+On Wed, Oct 05, 2022 at 06:29:46PM +0300, Andy Shevchenko wrote:
+> The fwnode_device_is_compatible() helper searches for the
+> given string in the "compatible" string array property and,
+> if found, returns true.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  include/linux/property.h | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 1c26d263d5e4..701570423943 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -55,7 +55,6 @@ int device_property_read_string(struct device *dev, const char *propname,
+>  int device_property_match_string(struct device *dev,
+>  				 const char *propname, const char *string);
+>  
+> -bool fwnode_device_is_available(const struct fwnode_handle *fwnode);
+>  bool fwnode_property_present(const struct fwnode_handle *fwnode,
+>  			     const char *propname);
+>  int fwnode_property_read_u8_array(const struct fwnode_handle *fwnode,
+> @@ -77,6 +76,15 @@ int fwnode_property_read_string(const struct fwnode_handle *fwnode,
+>  				const char *propname, const char **val);
+>  int fwnode_property_match_string(const struct fwnode_handle *fwnode,
+>  				 const char *propname, const char *string);
+> +
+> +bool fwnode_device_is_available(const struct fwnode_handle *fwnode);
+> +
+> +static inline
+> +bool fwnode_device_is_compatible(const struct fwnode_handle *fwnode, const char *compat)
+> +{
+> +	return fwnode_property_match_string(fwnode, "compatible", compat) >= 0;
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/7fb68b6c821be7165d5be5d8801d909912af9159
+fwnode_property_match_string() returns zero on success, therefore >= 0 is
+not needed. I'd just use !fwnode_property_match_string(...).
 
-Thank you!
+For both patches:
+
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+> +}
+> +
+>  int fwnode_property_get_reference_args(const struct fwnode_handle *fwnode,
+>  				       const char *prop, const char *nargs_prop,
+>  				       unsigned int nargs, unsigned int index,
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Regards,
+
+Sakari Ailus
