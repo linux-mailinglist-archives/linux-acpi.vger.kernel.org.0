@@ -2,92 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED4F95F592D
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Oct 2022 19:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E00625F59FC
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Oct 2022 20:41:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230351AbiJERlJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Oct 2022 13:41:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60994 "EHLO
+        id S232214AbiJESlz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Oct 2022 14:41:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230361AbiJERlI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Oct 2022 13:41:08 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941D83640D
-        for <linux-acpi@vger.kernel.org>; Wed,  5 Oct 2022 10:41:05 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-132e9bc5ff4so1624631fac.7
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Oct 2022 10:41:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ET0IoJ6rEVtbRVeWGB0pVw9IcwTsGPczYsuOM1U4f0=;
-        b=EJ6WcTBoO6oU/ezXuBkBYjEbQ7S8KRcou3xsWIrbiRwE9EOHqoC6FTsAgwu07Mfe6Z
-         0beVDIN9DJs7HZ9oYRIYFeffRZ+wggTvShNIAeZ04kK/I7kiVn2nPmIYDHSxv9mrcTmq
-         8i+3y+6uRFx9mVL0EBCbpPWxMRHMnS1wVblHM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9ET0IoJ6rEVtbRVeWGB0pVw9IcwTsGPczYsuOM1U4f0=;
-        b=1RGaDUiFWgvXJU2k71QV9szn2pk1W/A6aJW9gS7q93vswdQCNxasnledhwiWByRJ/k
-         aZ0P2C4kMKC4U6xuagmLp0t9Y/RLKYFLKWioaE8c7fPO6gLVmXZYKfcTXUs6XQX2vy9j
-         2i30aQh3e9DwqjnzPMEq2UvJaj8eGS+xG0/Z0zc5RmYhAJwnFpY94sVRO05M/6M+z8TQ
-         gp6bzvt0AhUk7wJrhXuE5YVygMKHYsi0OCAFgbvizhxZGzwb+zTP5NGphtfHNxHZOFLm
-         HHJrN/LTzdPve4NvpzFlYokjj2wtF0sBD3gdNiPOlxJCQX3WJgUYo13WuNRu4ap8eNuE
-         lB6Q==
-X-Gm-Message-State: ACrzQf12+SDam4U2w57fyV42nHe9pXVeRdSvD9voYXS2DyYoMMGKPh6k
-        JAgtjrF1r6uUWD9Ski5cP1Cdti4jr39Pow==
-X-Google-Smtp-Source: AMsMyM6PFXphCzpe6ElUwcUgBNSzUrMoowXHNd3r1GOwxpk+Wnh+OzBqEbnOPc+akA03miqgBSn4kw==
-X-Received: by 2002:a05:6870:f227:b0:132:f26c:e911 with SMTP id t39-20020a056870f22700b00132f26ce911mr369255oao.279.1664991664450;
-        Wed, 05 Oct 2022 10:41:04 -0700 (PDT)
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com. [209.85.167.172])
-        by smtp.gmail.com with ESMTPSA id r26-20020a056870179a00b0010c727a3c79sm5367130oae.26.2022.10.05.10.41.03
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Oct 2022 10:41:03 -0700 (PDT)
-Received: by mail-oi1-f172.google.com with SMTP id t79so4941490oie.0
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Oct 2022 10:41:03 -0700 (PDT)
-X-Received: by 2002:aca:b957:0:b0:351:4ecf:477d with SMTP id
- j84-20020acab957000000b003514ecf477dmr465391oif.126.1664991663308; Wed, 05
- Oct 2022 10:41:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <b23c765b-4999-17a4-d89a-55d6ba72f68d@redhat.com>
-In-Reply-To: <b23c765b-4999-17a4-d89a-55d6ba72f68d@redhat.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 5 Oct 2022 10:40:45 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whDpj0wAwFK8tDjVUkRoT06ZD-d+OQpojodPPqE_eEcHg@mail.gmail.com>
-Message-ID: <CAHk-=whDpj0wAwFK8tDjVUkRoT06ZD-d+OQpojodPPqE_eEcHg@mail.gmail.com>
+        with ESMTP id S230424AbiJESlg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Oct 2022 14:41:36 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FCB980F72;
+        Wed,  5 Oct 2022 11:40:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 04BEEB81F06;
+        Wed,  5 Oct 2022 18:40:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AAFCEC43470;
+        Wed,  5 Oct 2022 18:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664995209;
+        bh=BDpXFEAbf4odb5EKqUXdyMM4VTNVj9XzFS8JqeLfAG8=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=TPRz575sDeVhlg0UOMbqZ711x6282gAyrhDIE0gUkTFLbHBh+ip8DcSs8rDlVyDcT
+         f9RyaoCjpMTbV22w0sqYCb9VBJcRzdxNSmfuq1peXc0B03vFH1j3SNHOKxAj0lwhb+
+         Zq5LWzg/N/9SQC8l9JpQvYL3j+a03H+kn+4JVCM+Aa6Fh4Xv0+h/kYXH/pehqL5BDM
+         IliwTiwe8Aytc1ywl47oxb2E6nu8d13dyzLWkxBL4JNEMGxqkUgAjvh36cVShqILtc
+         e1QaNKtDmZusWDrMdV+uadaXX4k8OjxKEdhRHra3kedTtes5rZJ0IXJwfErJoQGo0x
+         01ZWFym1AYkKw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 96FB3E21ED4;
+        Wed,  5 Oct 2022 18:40:09 +0000 (UTC)
 Subject: Re: [GIT PULL] platform-drivers-x86 for 6.1-1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <b23c765b-4999-17a4-d89a-55d6ba72f68d@redhat.com>
+References: <b23c765b-4999-17a4-d89a-55d6ba72f68d@redhat.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <b23c765b-4999-17a4-d89a-55d6ba72f68d@redhat.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git tags/platform-drivers-x86-v6.1-1
+X-PR-Tracked-Commit-Id: 8d05fc039456517d2c246c7b202891188ba40c4d
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 7fb68b6c821be7165d5be5d8801d909912af9159
+Message-Id: <166499520961.1673.4800430495926774854.pr-tracker-bot@kernel.org>
+Date:   Wed, 05 Oct 2022 18:40:09 +0000
 To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Andy Shevchenko <andy@infradead.org>,
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Andy Shevchenko <andy@infradead.org>,
         Mark Gross <mark.gross@intel.com>,
         LKML <linux-kernel@vger.kernel.org>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         linux-acpi <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 5, 2022 at 5:46 AM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> There also is a small conflict in drivers/platform/mellanox/mlxreg-lc.c
-> due to a locking fix which landed mid 6.0 mixing unlock + return with
-> goto style exits in error paths. My tree has a fix on top to consistently
-> use the goto style. Here you can just take the version from me tree.
+The pull request you sent on Wed, 5 Oct 2022 14:46:47 +0200:
 
-Ugh.
+> git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git tags/platform-drivers-x86-v6.1-1
 
-Why use goto when a simple 'break' would work for all but the first case?
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/7fb68b6c821be7165d5be5d8801d909912af9159
 
-I took your side rather than clean things up and not being able to
-test the end result, but it does seem pointlessly complicated.
+Thank you!
 
-              Linus
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
