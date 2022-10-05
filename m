@@ -2,106 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5EC85F573F
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Oct 2022 17:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE4F45F5753
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Oct 2022 17:19:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbiJEPOH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Oct 2022 11:14:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47632 "EHLO
+        id S229881AbiJEPTa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Oct 2022 11:19:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230074AbiJEPOH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Oct 2022 11:14:07 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F05E26E2C3;
-        Wed,  5 Oct 2022 08:14:05 -0700 (PDT)
-Received: from zn.tnic (p200300ea9733e7a3329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7a3:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 767291EC0529;
-        Wed,  5 Oct 2022 17:14:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1664982840;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=R3TwZBSPpDKUiyo8k8CnrauVQH4WeXZyWPcE47XsIJk=;
-        b=qKqinGoSJi+3VUWCGlae2nlKs2V2fhVgFevONbjO9DEbdCoMplq60XbnVrfUhQrlhuL634
-        e2Kk8oQrIY8yvOCIA/dGIRrYX0q8RKrB4+XAG/XuesE8yaeD+GWGwQx8i3+Qn3BL8LhFZi
-        p6g8Hp1GV24CTvWxVV3PHdx+vz/DADQ=
-Date:   Wed, 5 Oct 2022 17:13:55 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jia He <justin.he@arm.com>
-Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com
-Subject: Re: [PATCH v7 3/8] EDAC:ghes: Move ghes_edac.force_load to ghes
- module parameter
-Message-ID: <Yz2fM+IbEkKmt8Ct@zn.tnic>
-References: <20220929023726.73727-1-justin.he@arm.com>
- <20220929023726.73727-4-justin.he@arm.com>
+        with ESMTP id S229459AbiJEPT3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Oct 2022 11:19:29 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E5975CC1;
+        Wed,  5 Oct 2022 08:19:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664983169; x=1696519169;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MhpH7OK6hRIKWqO2KUFUVILuqkRWDlod+ealvOdarCM=;
+  b=KMoLY5GH40Hf6JB9XvhphvuMqkM9Dg4i3opOlB+rPT3s5k7MqnJ+oYkp
+   O2jpkLbRQrcKH0vV2Ud0aj+2nJchoX1u1RS/N1mq3G/z2JBXfYxBe4W2Z
+   o+iMYMsgXezdhiCHH4Kyf+pqt+PxW74Dduf0Mb4EI0zjQQycScGSpi8+I
+   sITVTfqtkYJv6AaSqfYxyUqt0uTf4LCbvdPAaJWnBi7//5umVVEK9JIXU
+   Yav+a1eiouO4fLCot1M+W77Wa5pXrm1TGu6w44Nu5BaVJ3jenEvOLK7VI
+   YFGi9pu6/KFeR3g2FirdToWPL4cVCSf8O+CsLCnoqEzYtqFO0C7BlpRRU
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="283554784"
+X-IronPort-AV: E=Sophos;i="5.95,161,1661842800"; 
+   d="scan'208";a="283554784"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2022 08:19:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="602041976"
+X-IronPort-AV: E=Sophos;i="5.95,161,1661842800"; 
+   d="scan'208";a="602041976"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 05 Oct 2022 08:19:24 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1og6B9-002iJB-02;
+        Wed, 05 Oct 2022 18:19:23 +0300
+Date:   Wed, 5 Oct 2022 18:19:22 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH v1 1/2] device property: Introduce
+ fwnode_device_is_compatible() helper
+Message-ID: <Yz2genlaPcji+XKp@smile.fi.intel.com>
+References: <20221005143812.33503-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220929023726.73727-4-justin.he@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20221005143812.33503-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 29, 2022 at 02:37:21AM +0000, Jia He wrote:
-> ghes_edac_register() is too late to set this module flag ghes_edac.force_load.
-> Also, other edac drivers should not be able to control this flag.
-> 
-> Move this flag to the module parameter in ghes instead.
-> 
-> Suggested-by: Toshi Kani <toshi.kani@hpe.com>
-> Signed-off-by: Jia He <justin.he@arm.com>
-> Reviewed-by: Toshi Kani <toshi.kani@hpe.com>
-> ---
->  drivers/acpi/apei/ghes.c |  8 ++++++++
->  drivers/edac/ghes_edac.c | 10 +++-------
->  include/acpi/apei.h      |  2 ++
->  3 files changed, 13 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 8cb65f757d06..b0a6445c6da2 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -109,6 +109,14 @@ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
->  bool ghes_disable;
->  module_param_named(disable, ghes_disable, bool, 0);
->  
-> +/*
-> + * "ghes.edac_force_enable" forcibly enables ghes_edac and skips the platform
-> + * check.
-> + */
-> +bool ghes_edac_force_enable;
-> +EXPORT_SYMBOL(ghes_edac_force_enable);
-> +module_param_named(edac_force_enable, ghes_edac_force_enable, bool, 0);
+On Wed, Oct 05, 2022 at 05:38:11PM +0300, Andy Shevchenko wrote:
+> The fwnode_device_is_compatible() helper searches for the
+> given string in the "compatible" string array property and,
+> if found, returns true.
 
-Why is this exported?
-
-In the exemplary patch I sent you, that thing is static.
+Scratch this, it has some flaws.
 
 -- 
-Regards/Gruss,
-    Boris.
+With Best Regards,
+Andy Shevchenko
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
