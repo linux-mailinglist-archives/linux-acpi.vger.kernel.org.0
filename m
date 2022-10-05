@@ -2,108 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 561345F4EFA
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Oct 2022 06:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B55EA5F4FF6
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Oct 2022 08:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229379AbiJEECW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Oct 2022 00:02:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58272 "EHLO
+        id S229786AbiJEG63 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Oct 2022 02:58:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbiJEECV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Oct 2022 00:02:21 -0400
-Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D0D738A15;
-        Tue,  4 Oct 2022 21:02:20 -0700 (PDT)
-Received: by mail-oo1-xc2b.google.com with SMTP id r15-20020a4abf0f000000b004761c7e6be1so10079242oop.9;
-        Tue, 04 Oct 2022 21:02:20 -0700 (PDT)
+        with ESMTP id S229669AbiJEG62 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Oct 2022 02:58:28 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D75E37285F
+        for <linux-acpi@vger.kernel.org>; Tue,  4 Oct 2022 23:58:26 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id e10-20020a05600c4e4a00b003b4eff4ab2cso510359wmq.4
+        for <linux-acpi@vger.kernel.org>; Tue, 04 Oct 2022 23:58:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=4Na1g4Yf3ptBeqMqg3ahTZjpb1WV+bqLk+OAmb33/RI=;
-        b=RCoMsZgqwdFRC4RVrJW+5m+g48ojGbp+nif+fIy1rNtt9aJ7Vnb4OkgyYF18jPoHh6
-         o6D+zUFj9s7wkuUP6Y0wJvEC1573HqpcBpPEPnVU32qh/rYFo5cgeJrZ0Y0/LQ7OlHrA
-         P7k+sQMlx7v73QzDwFCoI9cxp94DmHZN8ac9y6pFF3sNqRP38JABiGVn7a+QJPPvSYOk
-         iRk/pFTdnevdsvSI1L+ZBRTWRORHozzNo+RUS4Lo5w97X6wCX98/809AW1qaG0OWgwc+
-         CDQstMDuSWBBAMuKvyPx9gQ9mlJORPeNzrYZIY2Pceuiv0lbSV6HqiLwZPWQnDFRxLuF
-         jVkw==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GpP+Iv5ntzm3FcCk+wh0TfpH7Et4pliZwGveGuXYCfE=;
+        b=fExXWoyWE51Zo3b02X43ecerK4SDU9i8ILE6/42Wy0/ejD5K+d6/wDIzVHeL568yTE
+         VsWNZk99ElG9W9lLA+URACEwnmSBjvIWQl85FXc3N1j704KIdLxcV9CsQfZtWrNRQfzg
+         lpYgno1hXWe/xuvNvurfNMxp8jJte/2tpMIJlcaEToAy4km4XvvzQWnSlDQV3mrE7d81
+         RXzoL/PTJ8g4z8VBJQVxjDvO1wd/esTkJ8qu94PIAfz7ctT81ld7tDYCJKuQjxfr1nCc
+         gjoCgNkYGyaGunMqQVVJlncF36BTBA68SKKjudQCTp090udFeLPhLaC19ILlTHuH2dDc
+         Ol4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=4Na1g4Yf3ptBeqMqg3ahTZjpb1WV+bqLk+OAmb33/RI=;
-        b=E714Mt8KZS7HEoWn4QmCeUL4VDrPa/9rHTAQu+9gsl7RMlljZxRSG5kgnXNkfSNiw3
-         t9KVV9U7Ttmk1OXPuBnX2Od4TkJnVps0xW6YQKd4SnTPPl6gg5+8A/4hos7dcNNZKx7P
-         dHX7E7p1yzwXryo+QiSVca8BTYkxHKdSGvZylkUhad6TBJ5f0vUZeIEhLjqQtDOSZix9
-         MdG8lhHdqSVt1dD/go1j8U3pbZdxb6dqD8zB9ZuAuvlOtCQuJyegorZNjyMpqauXMdVH
-         GJ03GFIuJD8sYNoBo0SJyS8Otq2J4MfKST7H0QcLQjU7Is6Kje/E3Z4EOrQnYI00ZBZc
-         I0KA==
-X-Gm-Message-State: ACrzQf1N4vvZnTTHE84dWXen2e4NMd2QxtUru6Kq7uZQnv23EKxqaU4q
-        /yQAAB5joCR/sQuGMjY58UG2KgnfB3FUtLlQdWA=
-X-Google-Smtp-Source: AMsMyM5RFvMMV8el79b9Zf5X69Z9wmc0C3+OXWwbIPrvCWAdz1rgMCIG1AQ8BqNMPN1quoS9GpMCwwkTCVQSA6nkcD4=
-X-Received: by 2002:a05:6820:1888:b0:476:1d00:9d8f with SMTP id
- bm8-20020a056820188800b004761d009d8fmr10519131oob.98.1664942539962; Tue, 04
- Oct 2022 21:02:19 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GpP+Iv5ntzm3FcCk+wh0TfpH7Et4pliZwGveGuXYCfE=;
+        b=SQaTW3zUAg8Clflj7lfuVB45nphARfkUuYjD+pzGHCh3DGmY65qcmouxlYFEUP7ffY
+         1D6aRFzrFMacdOsPcJD4vJuFAV8fZ/i7n8j+CgZjX2NzFKF5J72GLTTiP+d+FUxezPoj
+         e4PqQjA5y3YLTvmVpdvPEdLeEATW/hh6zSgsS1BTTN6JnLKnXc+hCQKyFCi5hLXGE8pN
+         xetoGll32B2UBEoR90kXbSDg/UoKali0Ox2LSpGyhqgPfP9qLbNo+JnOmveVW/9EUVX3
+         qA8UNZKm/8PNO3CmSgfr3jtiFg/8Mt7N88VvdB/O95+k7b5SsHii1iyCxiIGpBnkSMT6
+         Onaw==
+X-Gm-Message-State: ACrzQf0uNMYDEU7D1YLhagdQ0/4rCAcD4dv3365Mj2clplyfi3bNZG1l
+        mQEmvRCeR7d219GYxe/erRYC9sLFP0YA+g==
+X-Google-Smtp-Source: AMsMyM54FdxuY2C3Z9b54QiWHETFd8Cb1sd6ephIRME0+aAg9POuSvO9bGK4KVrJsxwfzf/NPDUiuA==
+X-Received: by 2002:a05:600c:2241:b0:3b4:88aa:dcba with SMTP id a1-20020a05600c224100b003b488aadcbamr2225395wmm.203.1664953105244;
+        Tue, 04 Oct 2022 23:58:25 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:ffcf:b5a4:bbee:42a5? ([2a05:6e02:1041:c10:ffcf:b5a4:bbee:42a5])
+        by smtp.googlemail.com with ESMTPSA id m21-20020a05600c4f5500b003b48dac344esm1043721wmq.43.2022.10.04.23.58.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Oct 2022 23:58:24 -0700 (PDT)
+Message-ID: <c2b8085c-fd5f-0ef8-5343-4fed77c3e5a2@linaro.org>
+Date:   Wed, 5 Oct 2022 08:58:23 +0200
 MIME-Version: 1.0
-References: <20221004103341.12646-1-jirislaby@kernel.org> <MN0PR12MB610136EC41E0D00F0BA7280FE25A9@MN0PR12MB6101.namprd12.prod.outlook.com>
-In-Reply-To: <MN0PR12MB610136EC41E0D00F0BA7280FE25A9@MN0PR12MB6101.namprd12.prod.outlook.com>
-From:   Chuanhong Guo <gch981213@gmail.com>
-Date:   Wed, 5 Oct 2022 12:02:08 +0800
-Message-ID: <CAJsYDVJsuYvAyFWwoW9=K_9otJR9Y61Wfk_w2e_K7WiyWf3Xjw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ACPI: resource: do IRQ override on LENOVO IdeaPad
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Tighe Donnelly <tighe.donnelly@protonmail.com>,
-        Fridrich Strba <fstrba@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v1 1/3] ACPI: thermal: Use white space more consistently
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+References: <12068304.O9o76ZdvQC@kreacher> <4774295.31r3eYUQgx@kreacher>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <4774295.31r3eYUQgx@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi!
+On 04/10/2022 18:31, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The usage of white space in the ACPI thermal driver is not very
+> consistent, so improve that a bit.
+> 
+> While at it, add missing braces to if()/else in a few places.
+> 
+> No functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-On Wed, Oct 5, 2022 at 5:02 AM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
-> [...]
-> >
-> > White-list this specific model in the override_table.
-> >
-> > For this to work, the ZEN test needs to be put below the table walk.
->
-> Unfortunately this is the second case that popped up very recently.
-> Another one is listed here:
-> https://bugzilla.kernel.org/show_bug.cgi?id=216552
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-Now I'm really curious how Windows is able to handle all these vendor crap...
 
-> I don't think we have a good solution to cover the intersection of these bugs.  The
-> existing heuristic to look at legacy syntax and the IOAPIC doesn't work properly
-> on all the Lenovo and ASUS Ryzen 6000 systems, but it does on these other two.
-
-These legacy IRQ declarations are obsolete, but they aren't really wrong.
-Meanwhile the two devices popped up until now both got IRQ declarations which
-don't match the actual device configuration.
-
-> We're going to be adding more to this table either way.  I /suspect/ the better solution
-> is to revert 37c81d9f1d1b and add to the table all those that are broken.
-
-I think we should have a list of only the wrong IRQ declaration and
-apply the fix
-just for them, instead of applying the fix to all devices and skip it
-for selected
-devices the fix breaks.
 
 -- 
-Regards,
-Chuanhong Guo
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
