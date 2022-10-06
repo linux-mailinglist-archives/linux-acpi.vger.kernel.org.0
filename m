@@ -2,108 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C59C45F68C0
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Oct 2022 16:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB9A5F6BD3
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Oct 2022 18:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbiJFOEp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Oct 2022 10:04:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47010 "EHLO
+        id S230410AbiJFQdI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Oct 2022 12:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230465AbiJFOE0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Oct 2022 10:04:26 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA218A7A8C;
-        Thu,  6 Oct 2022 07:04:24 -0700 (PDT)
+        with ESMTP id S229540AbiJFQdH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Oct 2022 12:33:07 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075A5564E9;
+        Thu,  6 Oct 2022 09:33:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665065064; x=1696601064;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dSN5ls+faU5biUqUsahYkwk5ZW36AQkBVswr/zkx8wM=;
-  b=A+MLMgMeB6jBqtao2XHtF/333ZNtwKvVMJb491e4FIyGzD3XrGriVHgN
-   QWsMZlaUYgHfG4hG/WK0Mbq1VM0ai0hJRKOIfqvEqH65Mh3fOWRYDK9dg
-   YxEeprx1OiK3AWTE6m5+S8coCrLeI0RJSJc7c168DJS1e6V8CXMRPSN7P
-   8+6U3Ac+qn4KXXcBwM0AjHEsLYyeBq0IiFVOtYok7Dc2vxovrNqCarkrD
-   LLGKMChxS66Nu/Iq19hjl8arqVkc4JIW4z6TqjaSUqywDY3gkCyDjf1u4
-   nawSB7NImZPmJaJiggY6j305jGC6qhaLGpBxRNb6zhmr5fCWO7kpcz4pO
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="290707470"
+  t=1665073987; x=1696609987;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TJJ/1zxufUxlDmU0djkNFp5wBEou9ApgW5ZqTTd2L0w=;
+  b=ISBPGQHyUrFr/t5XN+M52jzdHt+iye935V5SSm5Rwoi92M8r0pIiXHSs
+   zp9THXq1jXgeYhDlV0EkZ8NLkxrEBFirNd4NEjVeGqOnnccip8O2fsArM
+   RyuBDIhkF0cm0SXhSypiYymKFbi9SvWiUX6EsKgqm+mUn9peQaMDCDm0b
+   yS31izoo1P5RLFO+SjF7RO8KT6a9i/u3EmMzIDW27U0GBLJcWMkmCX2aG
+   3xlKKLW5W2h66gLchq1iDOqRKZBgDqalS2bWiYKfG6uJRkzEAoLSOnvLD
+   FfoszV02tcu7MBWiGPLbyIPbx0AbcZfHgKQ16h8ZPtf60pS8z7vRPo0R+
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="365436581"
 X-IronPort-AV: E=Sophos;i="5.95,164,1661842800"; 
-   d="scan'208";a="290707470"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 07:04:24 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="729157001"
+   d="scan'208";a="365436581"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 09:33:06 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="627078507"
 X-IronPort-AV: E=Sophos;i="5.95,164,1661842800"; 
-   d="scan'208";a="729157001"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 07:04:22 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 4DACD2033F;
-        Thu,  6 Oct 2022 17:04:20 +0300 (EEST)
-Date:   Thu, 6 Oct 2022 14:04:20 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v1 1/1] device property: Fix documentation for
- *_match_string() APIs
-Message-ID: <Yz7gZF2ktEM3JVoJ@paasikivi.fi.intel.com>
-References: <20221006123807.37014-1-andriy.shevchenko@linux.intel.com>
- <Yz7N9b3qibyaPAhJ@paasikivi.fi.intel.com>
- <Yz7QKTrKtjh3RTYg@smile.fi.intel.com>
+   d="scan'208";a="627078507"
+Received: from agluck-desk3.sc.intel.com ([172.25.222.78])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 09:33:06 -0700
+From:   Tony Luck <tony.luck@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>
+Subject: [PATCH] ACPI / extlog: Handle multiple records
+Date:   Thu,  6 Oct 2022 09:32:58 -0700
+Message-Id: <20221006163258.318916-1-tony.luck@intel.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yz7QKTrKtjh3RTYg@smile.fi.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 06, 2022 at 03:55:05PM +0300, Andy Shevchenko wrote:
-> On Thu, Oct 06, 2022 at 12:45:41PM +0000, Sakari Ailus wrote:
-> > On Thu, Oct 06, 2022 at 03:38:07PM +0300, Andy Shevchenko wrote:
-> > > The returned value on success is an index of the matching string,
-> > > starting from 0. Reflect this in the documentation.
-> 
-> > > Fixes: 3f5c8d318785 ("device property: Add fwnode_property_match_string()")
-> 
-> ...
-> 
-> > > - * Return: %0 if the property was found (success),
-> > > + * Return: index, starting from %0, if the property was found (success),
-> > >   *	   %-EINVAL if given arguments are not valid,
-> > >   *	   %-ENODATA if the property does not have a value,
-> > >   *	   %-EPROTO if the property is not an array of strings,
-> > 
-> > There are other error codes that can be returned such as -ENOMEM or what
-> > else may be returned by fwnode_property_read_string_array().
-> > 
-> > I might just refer to fwnode_property_read_string_array() and document here
-> > those specific to these functions.
-> > 
-> > Just FYI... I guess this could be a separate patch, too.
-> 
-> Right, I think we would rather do an incremental change since that will be
-> more intrusive and would not be exactly the fix (improvement?).
+If there is no user space consumer of extlog_mem trace records, then
+Linux properly handles multiple error records in an ELOG block
 
-It's a fix in documentation. It's perhaps unlikely a bug would have been
-introduced because of what was missing.
+	extlog_print()
+	  print_extlog_rcd()
+	    __print_extlog_rcd()
+	      cper_estatus_print()
+		apei_estatus_for_each_section()
 
-> 
-> > Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> 
-> Thanks!
+But the other code path hard codes looking for a single record to
+output a trace record.
 
-You're welcome!
+Fix by using the same apei_estatus_for_each_section() iterator
+to step over all records.
 
+Fixes: 2dfb7d51a61d ("trace, RAS: Add eMCA trace event interface")
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+---
+ drivers/acpi/acpi_extlog.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+index 72f1fb77abcd..4af2cfcbbd2d 100644
+--- a/drivers/acpi/acpi_extlog.c
++++ b/drivers/acpi/acpi_extlog.c
+@@ -12,6 +12,7 @@
+ #include <linux/ratelimit.h>
+ #include <linux/edac.h>
+ #include <linux/ras.h>
++#include <acpi/ghes.h>
+ #include <asm/cpu.h>
+ #include <asm/mce.h>
+ 
+@@ -138,8 +139,8 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
+ 	int	cpu = mce->extcpu;
+ 	struct acpi_hest_generic_status *estatus, *tmp;
+ 	struct acpi_hest_generic_data *gdata;
+-	const guid_t *fru_id = &guid_null;
+-	char *fru_text = "";
++	const guid_t *fru_id;
++	char *fru_text;
+ 	guid_t *sec_type;
+ 	static u32 err_seq;
+ 
+@@ -160,17 +161,23 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
+ 
+ 	/* log event via trace */
+ 	err_seq++;
+-	gdata = (struct acpi_hest_generic_data *)(tmp + 1);
+-	if (gdata->validation_bits & CPER_SEC_VALID_FRU_ID)
+-		fru_id = (guid_t *)gdata->fru_id;
+-	if (gdata->validation_bits & CPER_SEC_VALID_FRU_TEXT)
+-		fru_text = gdata->fru_text;
+-	sec_type = (guid_t *)gdata->section_type;
+-	if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
+-		struct cper_sec_mem_err *mem = (void *)(gdata + 1);
+-		if (gdata->error_data_length >= sizeof(*mem))
+-			trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
+-					       (u8)gdata->error_severity);
++	apei_estatus_for_each_section(estatus, gdata) {
++		if (gdata->validation_bits & CPER_SEC_VALID_FRU_ID)
++			fru_id = (guid_t *)gdata->fru_id;
++		else
++			fru_id = &guid_null;
++		if (gdata->validation_bits & CPER_SEC_VALID_FRU_TEXT)
++			fru_text = gdata->fru_text;
++		else
++			fru_text = "";
++		sec_type = (guid_t *)gdata->section_type;
++		if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
++			struct cper_sec_mem_err *mem = (void *)(gdata + 1);
++
++			if (gdata->error_data_length >= sizeof(*mem))
++				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
++						       (u8)gdata->error_severity);
++		}
+ 	}
+ 
+ out:
 -- 
-Sakari Ailus
+2.37.3
+
