@@ -2,66 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12AE65F6625
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Oct 2022 14:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 480925F6630
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Oct 2022 14:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231194AbiJFMeT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Oct 2022 08:34:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36116 "EHLO
+        id S231194AbiJFMhz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Oct 2022 08:37:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231362AbiJFMeQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Oct 2022 08:34:16 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D69E18B2F;
-        Thu,  6 Oct 2022 05:34:14 -0700 (PDT)
+        with ESMTP id S229942AbiJFMhy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Oct 2022 08:37:54 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6B7B85A8E;
+        Thu,  6 Oct 2022 05:37:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665059654; x=1696595654;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KLPlNjfONSRgkRmAk1/3zUaUpgzi9KonOZUB6whE/kI=;
-  b=dhmZvqh2UDyFPxEe4xaBXs/Pn6QnSOG9iVN0RYIqyG0a30xcFswFXMws
-   KyPQNfE5ljEreAOWfUxs1ENU5vkwSlUV2VUSkvjE64M8dx3oNLMicKIPJ
-   90280pHFEqsVYXxKHQJ1HVBQtOOlNP9BGKs84/0pQzlb8m/BQazocs5/M
-   9FQj8sTWucC8D/20ELIIBfDhxKe1CzdtunvbhlvznOVvPu3rSy303oqde
-   MyKcUf7vcQmI5QrVrwfo85rs6NisUr38Q5RZTO8QwDVWeKelq7ZKKIky/
-   HR6XMJJJ9DYFjrH4fTS2NwLNAQuOUZGwSucwYEYdw1DSCdIBCEqulOz4g
+  t=1665059873; x=1696595873;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cZ1DyGBREhYanUww/M4Cfa6VqXvo80wIheIgHvT9G1c=;
+  b=SESjD++5LPwuY+OSa7y+8HM17FjfmIHhAYJYaXs76w7mRTbdFTTGiOzZ
+   UdI11N0GhOMGa3k07rNgYWXz1gMhhxOlKQeLrXsHyX8A4PngcI9QVyUPq
+   qoJfxuTickbf6tP7bJUguM6VqYStBUMeNKISnCYZMtbCUs+EJ/G29+qx2
+   FH2KXAz8QuGkdQ1oiT5iBSz147HH1Hf7tL3xo/84GsLa4sZKf8y9cfVhy
+   6P8lmLFRghNJcWpkDnktmqc/khjqZsSEtTNBSdp+EAYmZL6vrF6kXYVuh
+   tS/D7kcPIWdcE3OIu0wQwj9feifd3zyeVF3D3YiacFkVLvfBlNF6EVpgk
    w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="303406042"
+X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="301031456"
 X-IronPort-AV: E=Sophos;i="5.95,163,1661842800"; 
-   d="scan'208";a="303406042"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 05:34:14 -0700
+   d="scan'208";a="301031456"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 05:37:53 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="953601835"
+X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="627001100"
 X-IronPort-AV: E=Sophos;i="5.95,163,1661842800"; 
-   d="scan'208";a="953601835"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 06 Oct 2022 05:34:12 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ogQ4o-0038tb-1b;
-        Thu, 06 Oct 2022 15:34:10 +0300
-Date:   Thu, 6 Oct 2022 15:34:10 +0300
+   d="scan'208";a="627001100"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 06 Oct 2022 05:37:51 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 17D4917E; Thu,  6 Oct 2022 15:38:10 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v2 1/2] device property: Introduce
- fwnode_device_is_compatible() helper
-Message-ID: <Yz7LQuf0L29cne3I@smile.fi.intel.com>
-References: <20221005152947.71696-1-andriy.shevchenko@linux.intel.com>
- <20221005152947.71696-2-andriy.shevchenko@linux.intel.com>
- <Yz3xsmy/3wlntStv@paasikivi.fi.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH v1 1/1] device property: Fix documentation for *_match_string() APIs
+Date:   Thu,  6 Oct 2022 15:38:07 +0300
+Message-Id: <20221006123807.37014-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yz3xsmy/3wlntStv@paasikivi.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -71,30 +63,37 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 05, 2022 at 09:05:54PM +0000, Sakari Ailus wrote:
-> On Wed, Oct 05, 2022 at 06:29:46PM +0300, Andy Shevchenko wrote:
+The returned value on success is an index of the matching string,
+starting from 0. Reflect this in the documentation.
 
-...
+Fixes: 3f5c8d318785 ("device property: Add fwnode_property_match_string()")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/base/property.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> fwnode_property_match_string() returns zero on success, therefore >= 0 is
-> not needed. I'd just use !fwnode_property_match_string(...).
-
-No, it's bug in the documentation, thanks to rising an attention,
-I forgot to send a fix for it earlier.
-
-> For both patches:
-> 
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-
-Thanks, but as stated above the condition in my patch is correct.
-It seems due to documentation bug we have some kind of "buggy" code,
-luckily not too many to fix.
-
-That said, I'm not going to resend this until PPC (Freescale) maintainers
-ask for it. Yang, what's your vision on this series?
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 617007a25783..bfed224c5724 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -236,7 +236,7 @@ EXPORT_SYMBOL_GPL(device_property_read_string);
+  * Find a given string in a string array and if it is found return the
+  * index back.
+  *
+- * Return: %0 if the property was found (success),
++ * Return: index, starting from %0, if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+  *	   %-ENODATA if the property does not have a value,
+  *	   %-EPROTO if the property is not an array of strings,
+@@ -457,7 +457,7 @@ EXPORT_SYMBOL_GPL(fwnode_property_read_string);
+  * Find a given string in a string array and if it is found return the
+  * index back.
+  *
+- * Return: %0 if the property was found (success),
++ * Return: index, starting from %0, if the property was found (success),
+  *	   %-EINVAL if given arguments are not valid,
+  *	   %-ENODATA if the property does not have a value,
+  *	   %-EPROTO if the property is not an array of strings,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.35.1
 
