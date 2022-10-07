@@ -2,52 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB9A5F6BD3
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Oct 2022 18:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FFCB5F7534
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Oct 2022 10:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230410AbiJFQdI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Oct 2022 12:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45058 "EHLO
+        id S229581AbiJGIVV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Oct 2022 04:21:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbiJFQdH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Oct 2022 12:33:07 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075A5564E9;
-        Thu,  6 Oct 2022 09:33:06 -0700 (PDT)
+        with ESMTP id S229459AbiJGIVU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Oct 2022 04:21:20 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D9D1ACA32;
+        Fri,  7 Oct 2022 01:21:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665073987; x=1696609987;
-  h=from:to:cc:subject:date:message-id:mime-version:
+  t=1665130879; x=1696666879;
+  h=date:from:to:cc:subject:message-id:mime-version:
    content-transfer-encoding;
-  bh=TJJ/1zxufUxlDmU0djkNFp5wBEou9ApgW5ZqTTd2L0w=;
-  b=ISBPGQHyUrFr/t5XN+M52jzdHt+iye935V5SSm5Rwoi92M8r0pIiXHSs
-   zp9THXq1jXgeYhDlV0EkZ8NLkxrEBFirNd4NEjVeGqOnnccip8O2fsArM
-   RyuBDIhkF0cm0SXhSypiYymKFbi9SvWiUX6EsKgqm+mUn9peQaMDCDm0b
-   yS31izoo1P5RLFO+SjF7RO8KT6a9i/u3EmMzIDW27U0GBLJcWMkmCX2aG
-   3xlKKLW5W2h66gLchq1iDOqRKZBgDqalS2bWiYKfG6uJRkzEAoLSOnvLD
-   FfoszV02tcu7MBWiGPLbyIPbx0AbcZfHgKQ16h8ZPtf60pS8z7vRPo0R+
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="365436581"
-X-IronPort-AV: E=Sophos;i="5.95,164,1661842800"; 
-   d="scan'208";a="365436581"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 09:33:06 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="627078507"
-X-IronPort-AV: E=Sophos;i="5.95,164,1661842800"; 
-   d="scan'208";a="627078507"
-Received: from agluck-desk3.sc.intel.com ([172.25.222.78])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 09:33:06 -0700
-From:   Tony Luck <tony.luck@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>
-Subject: [PATCH] ACPI / extlog: Handle multiple records
-Date:   Thu,  6 Oct 2022 09:32:58 -0700
-Message-Id: <20221006163258.318916-1-tony.luck@intel.com>
-X-Mailer: git-send-email 2.37.3
+  bh=nIFSOQ0AeD8J+eyw5v6soPd9iUsTxrc8o6p2KfkLkDI=;
+  b=SFzG4oYx+n5mggLP7fzD7lStd9HbNB+ARtzRqHiaOd3BnjMs3a0JMdX7
+   RUcCGjp50c6kEiTlSBJvQpNtIhMV65tSEaVDOSgdbE85QN/2QC21lmz9k
+   o8Dm7QRVirLpOpoCUelF8VfdxdFCjRekx+HAPVIlFKn+ZZoPqFCaymNF7
+   Kv55O9o6DYP3Ilxrtz7lAuI3PINQdBTKHUwnVwz8igdsQ2LDPOMIksX51
+   xqKBrTn9AfOnRGAzxzp4gQuIk2FopV8PqCV3YliyKpkmlz50BtWg+Fkql
+   TTDuK3j3pBIA8X7mUGU0pMTLAuhRBVLOt8XNaOtc1wg4/dzA1bLtSOIUk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="305263814"
+X-IronPort-AV: E=Sophos;i="5.95,166,1661842800"; 
+   d="scan'208";a="305263814"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2022 01:21:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="800226070"
+X-IronPort-AV: E=Sophos;i="5.95,166,1661842800"; 
+   d="scan'208";a="800226070"
+Received: from lkp-server01.sh.intel.com (HELO 3c15167049b7) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 07 Oct 2022 01:21:16 -0700
+Received: from kbuild by 3c15167049b7 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ogibb-0000vn-2V;
+        Fri, 07 Oct 2022 08:21:15 +0000
+Date:   Fri, 07 Oct 2022 16:20:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ fa158c045ecf464a6b553980e461db469dc0392f
+Message-ID: <633fe141.cfECPPSqPYg7Z/F8%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -57,85 +63,144 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If there is no user space consumer of extlog_mem trace records, then
-Linux properly handles multiple error records in an ELOG block
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: fa158c045ecf464a6b553980e461db469dc0392f  Merge branch 'acpi-thermal' into linux-next
 
-	extlog_print()
-	  print_extlog_rcd()
-	    __print_extlog_rcd()
-	      cper_estatus_print()
-		apei_estatus_for_each_section()
+elapsed time: 725m
 
-But the other code path hard codes looking for a single record to
-output a trace record.
+configs tested: 123
+configs skipped: 3
 
-Fix by using the same apei_estatus_for_each_section() iterator
-to step over all records.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Fixes: 2dfb7d51a61d ("trace, RAS: Add eMCA trace event interface")
-Signed-off-by: Tony Luck <tony.luck@intel.com>
----
- drivers/acpi/acpi_extlog.c | 33 ++++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+gcc tested configs:
+powerpc                           allnoconfig
+arc                                 defconfig
+um                             i386_defconfig
+s390                             allmodconfig
+um                           x86_64_defconfig
+alpha                               defconfig
+s390                                defconfig
+x86_64                              defconfig
+sh                               allmodconfig
+x86_64                               rhel-8.3
+x86_64               randconfig-a011-20221003
+s390                             allyesconfig
+mips                             allyesconfig
+x86_64               randconfig-a012-20221003
+i386                                defconfig
+x86_64                           rhel-8.3-syz
+powerpc                          allmodconfig
+x86_64               randconfig-a013-20221003
+x86_64                         rhel-8.3-kunit
+x86_64                           allyesconfig
+x86_64                           rhel-8.3-kvm
+i386                 randconfig-a011-20221003
+x86_64               randconfig-a015-20221003
+i386                 randconfig-a012-20221003
+arc                  randconfig-r043-20221006
+x86_64                          rhel-8.3-func
+x86_64               randconfig-a014-20221003
+i386                 randconfig-a013-20221003
+x86_64               randconfig-a016-20221003
+arm                                 defconfig
+i386                 randconfig-a015-20221003
+x86_64                    rhel-8.3-kselftests
+i386                 randconfig-a016-20221003
+i386                 randconfig-a014-20221003
+i386                             allyesconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+m68k                             allmodconfig
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+alpha                            allyesconfig
+arc                              allyesconfig
+ia64                             allmodconfig
+m68k                             allyesconfig
+powerpc                  iss476-smp_defconfig
+sparc                            alldefconfig
+m68k                        stmark2_defconfig
+mips                        bcm47xx_defconfig
+sparc64                             defconfig
+mips                      loongson3_defconfig
+microblaze                          defconfig
+arm64                            alldefconfig
+openrisc                    or1ksim_defconfig
+powerpc                        warp_defconfig
+powerpc                      makalu_defconfig
+csky                             alldefconfig
+arc                      axs103_smp_defconfig
+mips                            gpr_defconfig
+i386                          randconfig-c001
+powerpc                 mpc85xx_cds_defconfig
+powerpc                      tqm8xx_defconfig
+nios2                            alldefconfig
+sh                            migor_defconfig
+powerpc                     tqm8555_defconfig
+powerpc                       eiger_defconfig
+sh                           se7619_defconfig
+m68k                          hp300_defconfig
+arm                        keystone_defconfig
+sh                           se7751_defconfig
+sh                         ap325rxa_defconfig
+mips                          rb532_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+nios2                         3c120_defconfig
+powerpc                  storcenter_defconfig
+powerpc                     mpc83xx_defconfig
+mips                  maltasmvp_eva_defconfig
+mips                         rt305x_defconfig
+xtensa                         virt_defconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+powerpc                    adder875_defconfig
+powerpc                      pcm030_defconfig
+riscv                            allmodconfig
+mips                       bmips_be_defconfig
+sh                              ul2_defconfig
+arc                          axs101_defconfig
+xtensa                              defconfig
+openrisc                 simple_smp_defconfig
+parisc                           allyesconfig
+arm                      integrator_defconfig
+parisc64                            defconfig
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index 72f1fb77abcd..4af2cfcbbd2d 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -12,6 +12,7 @@
- #include <linux/ratelimit.h>
- #include <linux/edac.h>
- #include <linux/ras.h>
-+#include <acpi/ghes.h>
- #include <asm/cpu.h>
- #include <asm/mce.h>
- 
-@@ -138,8 +139,8 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 	int	cpu = mce->extcpu;
- 	struct acpi_hest_generic_status *estatus, *tmp;
- 	struct acpi_hest_generic_data *gdata;
--	const guid_t *fru_id = &guid_null;
--	char *fru_text = "";
-+	const guid_t *fru_id;
-+	char *fru_text;
- 	guid_t *sec_type;
- 	static u32 err_seq;
- 
-@@ -160,17 +161,23 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 
- 	/* log event via trace */
- 	err_seq++;
--	gdata = (struct acpi_hest_generic_data *)(tmp + 1);
--	if (gdata->validation_bits & CPER_SEC_VALID_FRU_ID)
--		fru_id = (guid_t *)gdata->fru_id;
--	if (gdata->validation_bits & CPER_SEC_VALID_FRU_TEXT)
--		fru_text = gdata->fru_text;
--	sec_type = (guid_t *)gdata->section_type;
--	if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
--		struct cper_sec_mem_err *mem = (void *)(gdata + 1);
--		if (gdata->error_data_length >= sizeof(*mem))
--			trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
--					       (u8)gdata->error_severity);
-+	apei_estatus_for_each_section(estatus, gdata) {
-+		if (gdata->validation_bits & CPER_SEC_VALID_FRU_ID)
-+			fru_id = (guid_t *)gdata->fru_id;
-+		else
-+			fru_id = &guid_null;
-+		if (gdata->validation_bits & CPER_SEC_VALID_FRU_TEXT)
-+			fru_text = gdata->fru_text;
-+		else
-+			fru_text = "";
-+		sec_type = (guid_t *)gdata->section_type;
-+		if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
-+			struct cper_sec_mem_err *mem = (void *)(gdata + 1);
-+
-+			if (gdata->error_data_length >= sizeof(*mem))
-+				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
-+						       (u8)gdata->error_severity);
-+		}
- 	}
- 
- out:
+clang tested configs:
+hexagon              randconfig-r045-20221006
+hexagon              randconfig-r041-20221006
+riscv                randconfig-r042-20221006
+s390                 randconfig-r044-20221006
+i386                 randconfig-a003-20221003
+i386                 randconfig-a002-20221003
+i386                 randconfig-a001-20221003
+i386                 randconfig-a004-20221003
+i386                 randconfig-a005-20221003
+i386                 randconfig-a006-20221003
+hexagon              randconfig-r041-20221003
+hexagon              randconfig-r045-20221003
+x86_64               randconfig-a003-20221003
+x86_64               randconfig-a005-20221003
+x86_64               randconfig-a001-20221003
+x86_64               randconfig-a004-20221003
+x86_64               randconfig-a002-20221003
+x86_64               randconfig-a006-20221003
+x86_64                        randconfig-k001
+arm                       cns3420vb_defconfig
+powerpc                   microwatt_defconfig
+mips                malta_qemu_32r6_defconfig
+powerpc                      obs600_defconfig
+arm                          collie_defconfig
+powerpc                 xes_mpc85xx_defconfig
+
 -- 
-2.37.3
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
