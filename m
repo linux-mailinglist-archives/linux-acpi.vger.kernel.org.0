@@ -2,91 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B16475F89BB
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Oct 2022 08:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B744A5F8DFE
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Oct 2022 22:52:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229852AbiJIGow (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 9 Oct 2022 02:44:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58482 "EHLO
+        id S230227AbiJIUwV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 9 Oct 2022 16:52:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbiJIGov (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Oct 2022 02:44:51 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id ACA956451;
-        Sat,  8 Oct 2022 23:44:48 -0700 (PDT)
-Received: from loongson-pc.loongson.cn (unknown [10.20.42.32])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxX+DPbUJjsykpAA--.19711S6;
-        Sun, 09 Oct 2022 14:44:32 +0800 (CST)
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-To:     Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Len Brown <lenb@kernel.org>, rafael@kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH V3 4/4] irqchip/loongson-liointc: Support to set irq type for ACPI path
-Date:   Sun,  9 Oct 2022 14:44:31 +0800
-Message-Id: <20221009064431.18839-5-lvjianmin@loongson.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20221009064431.18839-1-lvjianmin@loongson.cn>
-References: <20221009064431.18839-1-lvjianmin@loongson.cn>
+        with ESMTP id S230190AbiJIUv4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Oct 2022 16:51:56 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45A8F2AC7F;
+        Sun,  9 Oct 2022 13:51:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B51DDB80DC2;
+        Sun,  9 Oct 2022 20:51:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C074C433C1;
+        Sun,  9 Oct 2022 20:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665348709;
+        bh=0yH2tHsi0KT7BCp2zt5FOnIEX15voda8qCVI6xMl8fQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=sbKay6qSKUacpwqNTObFkxIy1P0EQ5qtXdXsKB2eCZUahtGjV6QW17TRP4yt8BJLY
+         ZrPXa5rgp1o+bxx2w4H85RUfKDGFMAPLLY611qSG7DBbFkgY/CWpaln18XJic4GVXS
+         1HCl1qt2td6hjygNB2Dy+jzaPBnqD+h2hoCXUFCVIbfzFp8WDVr+LnUhNdgei3SX2i
+         CV621PCBl5GMmD4Vfg+2jNl/fVsFi1ilYf3EEmlTjXOXLW+aQWuuFQ8Bq3RG1KLhga
+         7cTGhrr+rDCJhtQ45lgXeTNZHTP3JbRpbEyhK4JBJpCvt2TLy8BswH3F8CMx8hUHMj
+         I+GWd9ryzoyIQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Arvid Norlander <lkml@vorpal.se>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.0 07/18] ACPI: video: Add Toshiba Satellite/Portege Z830 quirk
+Date:   Sun,  9 Oct 2022 16:51:24 -0400
+Message-Id: <20221009205136.1201774-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221009205136.1201774-1-sashal@kernel.org>
+References: <20221009205136.1201774-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxX+DPbUJjsykpAA--.19711S6
-X-Coremail-Antispam: 1UD129KBjvdXoW7JrWUCF17WFW5CFy5Zw4UCFg_yoWfKwc_u3
-        yIg3Z3Ga4rZF1xJr97uw1YvrWv9aykW3Wv9F45uasav3y8X343urW7Zw13Ga97Kr10vF97
-        AF1S9rySya47tjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbakFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E
-        87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-        6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxE
-        wVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26ryrJr1UJwCFx2IqxVCFs4
-        IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
-        MI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJV
-        WUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWU
-        JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
-        IYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
-X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-For ACPI path, the xlate callback used IRQ_TYPE_NONE and ignored
-the irq type in intspec[1]. For supporting to set type for
-irqs of the irqdomain, intspec[1] should be used to get irq
-type.
+From: Arvid Norlander <lkml@vorpal.se>
 
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+[ Upstream commit 574160b8548deff8b80b174f03201e94ab8431e2 ]
+
+Toshiba Satellite Z830 needs the quirk video_disable_backlight_sysfs_if
+for proper backlight control after suspend/resume cycles.
+
+Toshiba Portege Z830 is simply the same laptop rebranded for certain
+markets (I looked through the manual to other language sections to confirm
+this) and thus also needs this quirk.
+
+Thanks to Hans de Goede for suggesting this fix.
+
+Link: https://www.spinics.net/lists/platform-driver-x86/msg34394.html
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Arvid Norlander <lkml@vorpal.se>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Arvid Norlander <lkml@vorpal.se>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-liointc.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/acpi/acpi_video.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/irqchip/irq-loongson-liointc.c b/drivers/irqchip/irq-loongson-liointc.c
-index 0da8716f8f24..838c8fa2d868 100644
---- a/drivers/irqchip/irq-loongson-liointc.c
-+++ b/drivers/irqchip/irq-loongson-liointc.c
-@@ -167,7 +167,12 @@ static int liointc_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
- 	if (WARN_ON(intsize < 1))
- 		return -EINVAL;
- 	*out_hwirq = intspec[0] - GSI_MIN_CPU_IRQ;
--	*out_type = IRQ_TYPE_NONE;
-+
-+	if (intsize > 1)
-+		*out_type = intspec[1] & IRQ_TYPE_SENSE_MASK;
-+	else
-+		*out_type = IRQ_TYPE_NONE;
-+
- 	return 0;
- }
- 
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 5cbe2196176d..2a4990733cf0 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -496,6 +496,22 @@ static const struct dmi_system_id video_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE R830"),
+ 		},
+ 	},
++	{
++	 .callback = video_disable_backlight_sysfs_if,
++	 .ident = "Toshiba Satellite Z830",
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Z830"),
++		},
++	},
++	{
++	 .callback = video_disable_backlight_sysfs_if,
++	 .ident = "Toshiba Portege Z830",
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "PORTEGE Z830"),
++		},
++	},
+ 	/*
+ 	 * Some machine's _DOD IDs don't have bit 31(Device ID Scheme) set
+ 	 * but the IDs actually follow the Device ID Scheme.
 -- 
-2.31.1
+2.35.1
 
