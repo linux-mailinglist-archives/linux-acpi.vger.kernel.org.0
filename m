@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C1095F95CE
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Oct 2022 02:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2844C5F95DE
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Oct 2022 02:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232323AbiJJAZk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 9 Oct 2022 20:25:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60222 "EHLO
+        id S232373AbiJJAZm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 9 Oct 2022 20:25:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232762AbiJJAWj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Oct 2022 20:22:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC84A1277B;
-        Sun,  9 Oct 2022 16:56:35 -0700 (PDT)
+        with ESMTP id S232893AbiJJAXv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Oct 2022 20:23:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0826B24F11;
+        Sun,  9 Oct 2022 16:57:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 98120B80DDF;
-        Sun,  9 Oct 2022 23:56:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E6EC43470;
-        Sun,  9 Oct 2022 23:56:32 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AE2F0B80DDF;
+        Sun,  9 Oct 2022 23:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800F4C433C1;
+        Sun,  9 Oct 2022 23:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665359793;
-        bh=pdGMhIrgUGiG/1VDSAW3lZe3G2hQ8vMxmf7VPvD8ZJw=;
+        s=k20201202; t=1665359850;
+        bh=REUjUgwvcu4+DFD4E4q3WS9bQlYkr4ZHkznwpmD8tRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UhRFxyEWdNDPGNxazXt3vlOuj/Mijv9cmnT0oetAxjP77L2Fsh2qKPSPaWoQkyU7f
-         MQ8rX80isQihgByOTLFdb6i51NcdnjyMKhTvO7+yuMfS9lPz18GF0tVY1saHb3cU5I
-         wMgNKXCZ5SND3YkAl6SZhq6PzFIzTUNJqLkrLG8d5spivcGxNFbQT/+4hX8Dsp80Th
-         Z3E8ftOAtCcqfDANu/kGKRVOidg4JWlvcWbf5kF9cSBYkLm1ytLhr8HPuQRY1w9Ebm
-         gWqd+y9ikhBv56U6mM1D6JWTKyZJcvxGMo2CDqnYckc4t7+REM7NzQmLPI5JvMZ4iV
-         lKJPvvQUBFBMw==
+        b=Sn6eDdC7K/TolpZ/3jmH2/jZZpMgEFylKFz75iANImBOBDTz1HkqPrXBT9QO/OjdJ
+         R2/WHl1ff3k8YI6ahFyKF6NftCiHNi8QEQLHEX5lU/s3+lPJJzduSnm9MjTW4/2VR0
+         MEAr2MGyqHKOh6hHisWho4/dnHsRMztn67+jjBt9qh6R07frZaFS3EZSw3ktPzLCWT
+         FqQ1Sp8j/8VJPThanUbwB8RSCB+HT+JgrTAoNw3X+0CFu+/UZzoAU10zd6dJ8nQ0R8
+         aE5I3lhg6G41L6BYNqjngS0tqtAZ74fKXvBSrND0KuFWsK9tBYsTa2xOOn11IAW0Fh
+         i0whgfr2xHI0g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
@@ -38,12 +38,12 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         Arvid Norlander <lkml@vorpal.se>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 11/22] ACPI: video: Change disable_backlight_sysfs_if quirks to acpi_backlight=native
-Date:   Sun,  9 Oct 2022 19:55:29 -0400
-Message-Id: <20221009235540.1231640-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 08/14] ACPI: video: Change disable_backlight_sysfs_if quirks to acpi_backlight=native
+Date:   Sun,  9 Oct 2022 19:57:04 -0400
+Message-Id: <20221009235710.1231937-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221009235540.1231640-1-sashal@kernel.org>
-References: <20221009235540.1231640-1-sashal@kernel.org>
+In-Reply-To: <20221009235710.1231937-1-sashal@kernel.org>
+References: <20221009235710.1231937-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -110,7 +110,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 35 insertions(+), 48 deletions(-)
 
 diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index eb04b2f828ee..befe7b66c3aa 100644
+index 81cd47d29932..4ea81f255183 100644
 --- a/drivers/acpi/acpi_video.c
 +++ b/drivers/acpi/acpi_video.c
 @@ -50,9 +50,6 @@ module_param(brightness_switch_enabled, bool, 0644);
@@ -179,7 +179,7 @@ index eb04b2f828ee..befe7b66c3aa 100644
  	/*
  	 * Some machine's _DOD IDs don't have bit 31(Device ID Scheme) set
  	 * but the IDs actually follow the Device ID Scheme.
-@@ -1764,9 +1719,6 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
+@@ -1760,9 +1715,6 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
  	if (result)
  		return;
  
@@ -190,10 +190,10 @@ index eb04b2f828ee..befe7b66c3aa 100644
  	if (!name)
  		return;
 diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index e39d59ad6496..3a27f2364159 100644
+index 3b972ca53689..21efc98b112d 100644
 --- a/drivers/acpi/video_detect.c
 +++ b/drivers/acpi/video_detect.c
-@@ -500,6 +500,41 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+@@ -463,6 +463,41 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
  		DMI_MATCH(DMI_BOARD_NAME, "PF5LUXG"),
  		},
  	},
