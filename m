@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B4485F8EA6
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Oct 2022 23:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B48CD5F8EBB
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Oct 2022 23:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231331AbiJIVCD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 9 Oct 2022 17:02:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33440 "EHLO
+        id S230360AbiJIVEI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 9 Oct 2022 17:04:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231337AbiJIVBU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Oct 2022 17:01:20 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 980DE31DC1;
-        Sun,  9 Oct 2022 13:56:14 -0700 (PDT)
+        with ESMTP id S231356AbiJIVDL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Oct 2022 17:03:11 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D77037406;
+        Sun,  9 Oct 2022 13:57:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D6A50B80DC2;
-        Sun,  9 Oct 2022 20:54:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5212C433C1;
-        Sun,  9 Oct 2022 20:54:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 836D4B80DC7;
+        Sun,  9 Oct 2022 20:55:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F27C433C1;
+        Sun,  9 Oct 2022 20:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665348898;
-        bh=ZkKl/EsOt+55to666XhPgsn1/N1tcDCZ1GlCuJY/pbg=;
+        s=k20201202; t=1665348911;
+        bh=nMsxlgLRGEX0FtD0r/V/YW2d/mRCby5PdiPhCodz1Z4=;
         h=From:To:Cc:Subject:Date:From;
-        b=B94K7/L54HtJGLy2R+jE4s/i8ACP3FyyE3sbyz5uH/TNXZno2u5dj7ohbVKSnCoo4
-         DPdOqjTADC3h+XYEiKrnlJXLLsB1Mwn571eeTGDYnwsZsFC3dOpytWdWtcsmgsj+W2
-         LKthEyHpdYAbtR/+4FYhcSMKfWKcvu922g06Yxpk5l4eqXbC8+IWCe8s5d+gJ2gNvK
-         moBSsIiR29wBWLmOQbS1hkmkGsoBF2CEoHjGVA4/gYc+qLP1iuO7iYx8q6YIgLZ65L
-         VLnFLZUIu37AkCawRegAeA0BkMpOrnHM94/vjArFD91rtav1VkXuPDWM1seb6SNbVj
-         hfxyP30g+PrHw==
+        b=A9qtf7Qo96MTKFWq1GhqKaLoaX7NW9753yIsio2CFSWLmO8tb5XjT8APs/2jdk6Vi
+         E+8ZfOQAUKOg9K2O+8EKbNH0Y4PefChLMF/VtQp8dZbQEJUJkqWQdtoo2qR62hejLX
+         Mxjgv1DN87H5CtlP77uAJUBYCG8M6n14Mf1qVZXq/SQyHEAEQ9VAe+oepGmTaA86Cz
+         LtHT76mHQMMyMroLg53B4Z50GB2oXHTtpzIDcXAMeqP4vZs1/yLq36SRIPwcsZzwQR
+         MvTF/IRrDjLG3HxoSMzig+oBEnAWM/VQjO2H7XNHg0WbTJv955qV3yuJKVoMKAIoDz
+         BFs5pP7KjcdBw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Arvid Norlander <lkml@vorpal.se>,
@@ -38,9 +38,9 @@ Cc:     Arvid Norlander <lkml@vorpal.se>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 1/6] ACPI: video: Add Toshiba Satellite/Portege Z830 quirk
-Date:   Sun,  9 Oct 2022 16:54:50 -0400
-Message-Id: <20221009205456.1203807-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 1/4] ACPI: video: Add Toshiba Satellite/Portege Z830 quirk
+Date:   Sun,  9 Oct 2022 16:55:05 -0400
+Message-Id: <20221009205508.1204042-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 X-stable: review
@@ -80,10 +80,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+)
 
 diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 5a69260edf80..cc228e5ad2b3 100644
+index ea0573176894..209903c2ee85 100644
 --- a/drivers/acpi/acpi_video.c
 +++ b/drivers/acpi/acpi_video.c
-@@ -511,6 +511,22 @@ static const struct dmi_system_id video_dmi_table[] = {
+@@ -485,6 +485,22 @@ static struct dmi_system_id video_dmi_table[] = {
  		DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE R830"),
  		},
  	},
