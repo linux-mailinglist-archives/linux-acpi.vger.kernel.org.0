@@ -2,149 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52D4C5FA667
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Oct 2022 22:36:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67AF35FA6A2
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Oct 2022 22:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230318AbiJJUgz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Oct 2022 16:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
+        id S230028AbiJJU5I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Oct 2022 16:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbiJJUg2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Oct 2022 16:36:28 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CBF476EF;
-        Mon, 10 Oct 2022 13:34:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665434102; x=1696970102;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mRSCmauuLK12j9ZgWHgwSVdrA7qQISZFro7/4eyJe+s=;
-  b=kq1Ei5QRB4YeAcL2vzDs9GvONMgOt+B2/oYrgvof14vEPMLRhNIlB1Up
-   +XzN/WLlClJkfcjVbNX/Rmq6lpatynJN8Pafs2qLQcL6Cb4Ot7ICemAzC
-   i/RtHzthoehKE268c/WslTEWE9L7WxJFf73NO8fA9NSi6KYlQiQHMxuZi
-   kREVhDdikiEBf5LgNoNSPxwvD6hl2C4PB1oE/BL8JP+mj7jtyID+z4d9B
-   CLWoXFNE0rFc2UiX9m+FJrSS3rOGQE4SN95sleNn8BmWgGqOkgykf6ydi
-   i0O8wrbPwLvKTpK8ymXie+hUnlkChnV5ROrKgMEEu2QNHSF62HofseArC
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10496"; a="291642300"
-X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="291642300"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2022 13:34:34 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10496"; a="621160464"
-X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="621160464"
-Received: from agluck-desk3.sc.intel.com ([172.25.222.78])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2022 13:34:34 -0700
-From:   Tony Luck <tony.luck@intel.com>
+        with ESMTP id S230355AbiJJU4o (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Oct 2022 16:56:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062C65727E;
+        Mon, 10 Oct 2022 13:56:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 976EB61032;
+        Mon, 10 Oct 2022 20:56:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 056F0C433C1;
+        Mon, 10 Oct 2022 20:56:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665435398;
+        bh=s2Ej6XrZFJWQNYQBhzbEoFqG9B/P5d4rZiiqHjCXV7I=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=j/NvsrFHmSZJOTXpXNygoFttOoc1xbntKTOTNTuT91F4baLDgvIS9KDco4ruclNZ/
+         668j4b07RGehm6Muwys7THEl2ba7de/Or//0lk2la6Ld9/X2oLgtSclxz5TpQt2eoZ
+         s8WawM5TPOUYTtrLIWpiMxpLk+cbtorXhNatyfmAuVfD93YOoT6xpsZo4AHhfk6Ii1
+         cWcrbw8lyWfXvPy+VwxpyuS4RyOFlo1ztWb79Igr12rVdw9aUFgLcRxIGPCikBHmZ+
+         75UVpayLSLY6+avvn+ZmNGlhwSq21oSVwYQkVj/JH4WOcS+9xvVdtsu3X1jBocVSc4
+         9V4PtEYaCwrzg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E8F61E43EFE;
+        Mon, 10 Oct 2022 20:56:37 +0000 (UTC)
+Subject: Re: [GIT PULL] More ACPI updates for v6.1-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0jxEKB0521TSXqrJj4D0=2Dm+tXe-RxMff-2exxGLcA6A@mail.gmail.com>
+References: <CAJZ5v0jxEKB0521TSXqrJj4D0=2Dm+tXe-RxMff-2exxGLcA6A@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0jxEKB0521TSXqrJj4D0=2Dm+tXe-RxMff-2exxGLcA6A@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.1-rc1-2
+X-PR-Tracked-Commit-Id: 056a81549c2722f0e7a9cceb7a98728eb1d67434
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 3a1e24fa70a06ab6b087361ffe90d4cb5e1d059d
+Message-Id: <166543539795.11766.9462886223358557510.pr-tracker-bot@kernel.org>
+Date:   Mon, 10 Oct 2022 20:56:37 +0000
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>
-Subject: [PATCH v2] ACPI / extlog: Handle multiple records
-Date:   Mon, 10 Oct 2022 13:34:23 -0700
-Message-Id: <20221010203423.24300-1-tony.luck@intel.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221006163258.318916-1-tony.luck@intel.com>
-References: <20221006163258.318916-1-tony.luck@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If there is no user space consumer of extlog_mem trace records, then
-Linux properly handles multiple error records in an ELOG block
+The pull request you sent on Mon, 10 Oct 2022 19:44:48 +0200:
 
-	extlog_print()
-	  print_extlog_rcd()
-	    __print_extlog_rcd()
-	      cper_estatus_print()
-		apei_estatus_for_each_section()
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.1-rc1-2
 
-But the other code path hard codes looking for a single record to
-output a trace record.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/3a1e24fa70a06ab6b087361ffe90d4cb5e1d059d
 
-Fix by using the same apei_estatus_for_each_section() iterator
-to step over all records.
+Thank you!
 
-Fixes: 2dfb7d51a61d ("trace, RAS: Add eMCA trace event interface")
-Signed-off-by: Tony Luck <tony.luck@intel.com>
----
-
-Changes since v1: Oops. Cut & pasted the apei_estatus_for_each_section()
-line, but forgot to change the argument from "estatus" to "tmp". Need to
-walk the *copy* that was made, not the original because BIOS is allowed to
-stomp on it as soon as it sees block_status has been cleared.
-
- drivers/acpi/acpi_extlog.c | 33 ++++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index 72f1fb77abcd..e648158368a7 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -12,6 +12,7 @@
- #include <linux/ratelimit.h>
- #include <linux/edac.h>
- #include <linux/ras.h>
-+#include <acpi/ghes.h>
- #include <asm/cpu.h>
- #include <asm/mce.h>
- 
-@@ -138,8 +139,8 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 	int	cpu = mce->extcpu;
- 	struct acpi_hest_generic_status *estatus, *tmp;
- 	struct acpi_hest_generic_data *gdata;
--	const guid_t *fru_id = &guid_null;
--	char *fru_text = "";
-+	const guid_t *fru_id;
-+	char *fru_text;
- 	guid_t *sec_type;
- 	static u32 err_seq;
- 
-@@ -160,17 +161,23 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 
- 	/* log event via trace */
- 	err_seq++;
--	gdata = (struct acpi_hest_generic_data *)(tmp + 1);
--	if (gdata->validation_bits & CPER_SEC_VALID_FRU_ID)
--		fru_id = (guid_t *)gdata->fru_id;
--	if (gdata->validation_bits & CPER_SEC_VALID_FRU_TEXT)
--		fru_text = gdata->fru_text;
--	sec_type = (guid_t *)gdata->section_type;
--	if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
--		struct cper_sec_mem_err *mem = (void *)(gdata + 1);
--		if (gdata->error_data_length >= sizeof(*mem))
--			trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
--					       (u8)gdata->error_severity);
-+	apei_estatus_for_each_section(tmp, gdata) {
-+		if (gdata->validation_bits & CPER_SEC_VALID_FRU_ID)
-+			fru_id = (guid_t *)gdata->fru_id;
-+		else
-+			fru_id = &guid_null;
-+		if (gdata->validation_bits & CPER_SEC_VALID_FRU_TEXT)
-+			fru_text = gdata->fru_text;
-+		else
-+			fru_text = "";
-+		sec_type = (guid_t *)gdata->section_type;
-+		if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
-+			struct cper_sec_mem_err *mem = (void *)(gdata + 1);
-+
-+			if (gdata->error_data_length >= sizeof(*mem))
-+				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
-+						       (u8)gdata->error_severity);
-+		}
- 	}
- 
- out:
 -- 
-2.37.3
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
