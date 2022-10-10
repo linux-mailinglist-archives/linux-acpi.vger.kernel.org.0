@@ -2,74 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67AF35FA6A2
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Oct 2022 22:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 804C15FA962
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Oct 2022 02:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbiJJU5I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Oct 2022 16:57:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42540 "EHLO
+        id S229785AbiJKAgF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 10 Oct 2022 20:36:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230355AbiJJU4o (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Oct 2022 16:56:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062C65727E;
-        Mon, 10 Oct 2022 13:56:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 976EB61032;
-        Mon, 10 Oct 2022 20:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 056F0C433C1;
-        Mon, 10 Oct 2022 20:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665435398;
-        bh=s2Ej6XrZFJWQNYQBhzbEoFqG9B/P5d4rZiiqHjCXV7I=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=j/NvsrFHmSZJOTXpXNygoFttOoc1xbntKTOTNTuT91F4baLDgvIS9KDco4ruclNZ/
-         668j4b07RGehm6Muwys7THEl2ba7de/Or//0lk2la6Ld9/X2oLgtSclxz5TpQt2eoZ
-         s8WawM5TPOUYTtrLIWpiMxpLk+cbtorXhNatyfmAuVfD93YOoT6xpsZo4AHhfk6Ii1
-         cWcrbw8lyWfXvPy+VwxpyuS4RyOFlo1ztWb79Igr12rVdw9aUFgLcRxIGPCikBHmZ+
-         75UVpayLSLY6+avvn+ZmNGlhwSq21oSVwYQkVj/JH4WOcS+9xvVdtsu3X1jBocVSc4
-         9V4PtEYaCwrzg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E8F61E43EFE;
-        Mon, 10 Oct 2022 20:56:37 +0000 (UTC)
-Subject: Re: [GIT PULL] More ACPI updates for v6.1-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0jxEKB0521TSXqrJj4D0=2Dm+tXe-RxMff-2exxGLcA6A@mail.gmail.com>
-References: <CAJZ5v0jxEKB0521TSXqrJj4D0=2Dm+tXe-RxMff-2exxGLcA6A@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0jxEKB0521TSXqrJj4D0=2Dm+tXe-RxMff-2exxGLcA6A@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.1-rc1-2
-X-PR-Tracked-Commit-Id: 056a81549c2722f0e7a9cceb7a98728eb1d67434
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 3a1e24fa70a06ab6b087361ffe90d4cb5e1d059d
-Message-Id: <166543539795.11766.9462886223358557510.pr-tracker-bot@kernel.org>
-Date:   Mon, 10 Oct 2022 20:56:37 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229827AbiJKAfk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Oct 2022 20:35:40 -0400
+X-Greylist: delayed 4616 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 10 Oct 2022 17:35:15 PDT
+Received: from correo4.agesic.gub.uy (correo4.agesic.gub.uy [179.27.170.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9421140BCA
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Oct 2022 17:35:15 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by correo4.agesic.gub.uy (Postfix) with ESMTP id 385C72FB3B7E;
+        Mon, 10 Oct 2022 19:40:26 -0300 (-03)
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+        zimbramta01.agesic.gub.uy
+X-Spam-Score: 4.041
+X-Spam-Level: ******
+X-Spam-Status: Yes, score=6.7 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_80,
+        FREEMAIL_FORGED_REPLYTO,RCVD_IN_DNSWL_MED,RCVD_IN_SBL,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+Received: from correo4.agesic.gub.uy ([127.0.0.1])
+        by localhost (zimbramta01.agesic.gub.uy [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id KIWkvNGMkm6L; Mon, 10 Oct 2022 19:40:26 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by correo4.agesic.gub.uy (Postfix) with ESMTP id E50882FB3B46;
+        Mon, 10 Oct 2022 19:40:23 -0300 (-03)
+X-Virus-Scanned: amavisd-new at zimbramta01.agesic.gub.uy
+Received: from correo4.agesic.gub.uy ([127.0.0.1])
+        by localhost (zimbramta01.agesic.gub.uy [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TMB4uzn8EG87; Mon, 10 Oct 2022 19:40:23 -0300 (-03)
+Received: from [103.156.93.66] (unknown [103.156.93.66])
+        by correo4.agesic.gub.uy (Postfix) with ESMTPSA id 2F7F52FB3B66;
+        Mon, 10 Oct 2022 19:40:07 -0300 (-03)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: my subject
+To:     Recipients <aberrutti@inau.gub.uy>
+From:   aberrutti@inau.gub.uy
+Date:   Mon, 10 Oct 2022 15:39:55 -0700
+Reply-To: theschaefflerfound@outlook.com
+Message-Id: <20221010224008.2F7F52FB3B66@correo4.agesic.gub.uy>
+X-Spam-Report: *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
+        *      [score: 0.8940]
+        * -2.3 RCVD_IN_DNSWL_MED RBL: Sender listed at https://www.dnswl.org/,
+        *       medium trust
+        *      [179.27.170.181 listed in list.dnswl.org]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [103.156.93.66 listed in zen.spamhaus.org]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [179.27.170.181 listed in bl.score.senderscore.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+        *  3.5 ADVANCE_FEE_3_NEW Appears to be advance fee fraud (Nigerian
+        *      419)
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Mon, 10 Oct 2022 19:44:48 +0200:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.1-rc1-2
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/3a1e24fa70a06ab6b087361ffe90d4cb5e1d059d
+Congratulations!
 
-Thank you!
+      Dear email user, your email address was randomly selected by the Topaz Ballot system to win the 2022 email lottery draw program of GEORG SCHAEFFLER FOUNDATION, and the amount of €2,000,000.00 has been awarded to you.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+kindly contact us immediately on how to claim your funds.
+
+Thank you,
+GEORG SCHAEFFLER FOUNDATION
+E-mail: support@theschaefflerfoundation.com
