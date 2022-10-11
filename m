@@ -2,83 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 888A45FB082
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Oct 2022 12:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB7455FB1DE
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Oct 2022 13:55:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbiJKKeG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Oct 2022 06:34:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49530 "EHLO
+        id S229552AbiJKLzw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Oct 2022 07:55:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbiJKKeF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Oct 2022 06:34:05 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17FF27F0BC;
-        Tue, 11 Oct 2022 03:34:02 -0700 (PDT)
-Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 90A981EC058B;
-        Tue, 11 Oct 2022 12:33:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1665484437;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=MEGhEG08A2CxT7tMyUIVoUadHr6tAgVCQe8u5A1hQr0=;
-        b=Z/M98r/jxCFrLRfrwDFZPVZUbFoMAPE4b74V7KSqmfwU0rOFZY+3TKqnT0qKEPXrEbx4hj
-        KF2fVoSdLJbZdsUqYeF4T/7FtVrqNpK5Qtl2zUwi3eYwMksfA98QrjoviS6XbtlSuuASuL
-        KJTat5juyOomeL6c+2058UvqZZcH748=
-Date:   Tue, 11 Oct 2022 12:33:53 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jia He <justin.he@arm.com>
-Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
-Message-ID: <Y0VGkUxpqiIzIFzB@zn.tnic>
-References: <20221010023559.69655-1-justin.he@arm.com>
- <20221010023559.69655-7-justin.he@arm.com>
+        with ESMTP id S229451AbiJKLzv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Oct 2022 07:55:51 -0400
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 183C87F26F;
+        Tue, 11 Oct 2022 04:55:51 -0700 (PDT)
+Received: by mail-il1-x135.google.com with SMTP id d14so7018718ilf.2;
+        Tue, 11 Oct 2022 04:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=X9ELJWsFEOA9ZjR8vqRc+1/Kb4xOZiuQUQY31p1h+Q8=;
+        b=DZszs+gH1es+xg6y+a7l0fAdLt1s52gSgAZiIDQumcRtKI4eEhlGm+9JR8DSEWZR7t
+         I8sigBB0KtgDK6bFwuAQbJ6nT2M0FgHcR93WYRgrV9HcCYk4FmCdYeksFA4Q/AoLgGt+
+         3C4/KXreibaj3FvFT4nynzieUW3Hsuk7PVMTZRA/3WrfBnlKy+KUYHcIOaoIgq21QAqF
+         Gp45E8UcByMRn8YstbmTXUQ/c19HZIhtTlxc1jD9CxuyPT7l37ZuBk14F6ZOm3pM/oOt
+         kh3DASTrFByWwriz90Cvt3/a38lVOCpTXRcI4McEVEutLlAVrRouROph3+xL2iHzkU4w
+         wf1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X9ELJWsFEOA9ZjR8vqRc+1/Kb4xOZiuQUQY31p1h+Q8=;
+        b=6gkVtOts6FCpKNKjm9yq+zdRp9YIYULMaQWpcjEJ7TFpfKCID685kEyJZ4mb5oTjyB
+         g7a12GF1xombz1cEnHLe4cu+jnD0H2h+D0iTZkn8NzWCZHu16pB3A6zmw2bK5L2aP1xR
+         HQCw2HCv+4M985PUuVxtYpzpmDpz5uCbC51mIGejlT4bjvCYFczZgyrBpkIa3iIBK6p/
+         +wCWP98tVSmimSlD8qQcdZRNkOdimbKEv6582hjwM1rkMcJtdJ9eHu4rRzVzCRSUdUCz
+         dI0XnlwD8Ga0a+FV2TGS32VET7kcTd7h72Rw7TsjeLECz8lnFq5FBjsUsqYsOL6ftAmA
+         aLUw==
+X-Gm-Message-State: ACrzQf1XC+yN3OhWeF3tVhzCwFr0ISRYZ9ICDIcjVlZvhY7E5iHbz4Wk
+        H2F/083EN5uIX37YlyPFoSWPr/GSWxa8V/aDPpo=
+X-Google-Smtp-Source: AMsMyM5+gu5fEJL3u/z9fh5zuGtorQ255IKQ4OfCeJYH5cGS9UtuhnZ0j68AmjbTrs1kGnaP/bv1mWaQfSHEJHHX7Pc=
+X-Received: by 2002:a05:6e02:b2d:b0:2f9:e735:a010 with SMTP id
+ e13-20020a056e020b2d00b002f9e735a010mr11659127ilu.151.1665489350477; Tue, 11
+ Oct 2022 04:55:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221010023559.69655-7-justin.he@arm.com>
+References: <20221011031843.960217-1-masahiroy@kernel.org>
+In-Reply-To: <20221011031843.960217-1-masahiroy@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 11 Oct 2022 13:55:39 +0200
+Message-ID: <CANiq72k9wAVCbHKVZFE=E3xv+2ZamUMsJ=uV43NxsSUQ4wXGdw@mail.gmail.com>
+Subject: Re: [RFC PATCH] Remove Intel compiler support
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-ia64@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Len Brown <lenb@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Terrell <terrelln@fb.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Tom Rix <trix@redhat.com>, devel@acpica.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 10, 2022 at 02:35:58AM +0000, Jia He wrote:
-> ghes_estatus_caches should be add rcu annotation to avoid sparse warnings.
->    drivers/acpi/apei/ghes.c:733:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
->    drivers/acpi/apei/ghes.c:733:25: sparse:    struct ghes_estatus_cache [noderef] __rcu *
->    drivers/acpi/apei/ghes.c:733:25: sparse:    struct ghes_estatus_cache *
->    drivers/acpi/apei/ghes.c:813:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
->    drivers/acpi/apei/ghes.c:813:25: sparse:    struct ghes_estatus_cache [noderef] __rcu *
->    drivers/acpi/apei/ghes.c:813:25: sparse:    struct ghes_estatus_cache *
-> 
-> unrcu_pointer is to strip the __rcu in cmpxchg.
+On Tue, Oct 11, 2022 at 5:19 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+>  include/linux/compiler-intel.h            |  34 -----
+>  include/linux/compiler_types.h            |   2 -
 
-Is this only to shut up sparse or actually fixing anything?
+You can also remove a few lines from `compiler_attributes.h`:
 
--- 
-Regards/Gruss,
-    Boris.
+    * Optional: not supported by icc
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks for this!
+
+Cheers,
+Miguel
