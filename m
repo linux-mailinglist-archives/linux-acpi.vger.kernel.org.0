@@ -2,94 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB7455FB1DE
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Oct 2022 13:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F9645FB263
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Oct 2022 14:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbiJKLzw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Oct 2022 07:55:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60590 "EHLO
+        id S229688AbiJKM03 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Oct 2022 08:26:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbiJKLzv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Oct 2022 07:55:51 -0400
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 183C87F26F;
-        Tue, 11 Oct 2022 04:55:51 -0700 (PDT)
-Received: by mail-il1-x135.google.com with SMTP id d14so7018718ilf.2;
-        Tue, 11 Oct 2022 04:55:51 -0700 (PDT)
+        with ESMTP id S229464AbiJKM01 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Oct 2022 08:26:27 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE2B237D9;
+        Tue, 11 Oct 2022 05:26:26 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id d7-20020a17090a2a4700b0020d268b1f02so6420905pjg.1;
+        Tue, 11 Oct 2022 05:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=X9ELJWsFEOA9ZjR8vqRc+1/Kb4xOZiuQUQY31p1h+Q8=;
-        b=DZszs+gH1es+xg6y+a7l0fAdLt1s52gSgAZiIDQumcRtKI4eEhlGm+9JR8DSEWZR7t
-         I8sigBB0KtgDK6bFwuAQbJ6nT2M0FgHcR93WYRgrV9HcCYk4FmCdYeksFA4Q/AoLgGt+
-         3C4/KXreibaj3FvFT4nynzieUW3Hsuk7PVMTZRA/3WrfBnlKy+KUYHcIOaoIgq21QAqF
-         Gp45E8UcByMRn8YstbmTXUQ/c19HZIhtTlxc1jD9CxuyPT7l37ZuBk14F6ZOm3pM/oOt
-         kh3DASTrFByWwriz90Cvt3/a38lVOCpTXRcI4McEVEutLlAVrRouROph3+xL2iHzkU4w
-         wf1A==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X1TQOsxy3CXZu68a4jU7nD1cMoJlBD4fQULPrHpX//w=;
+        b=KokdXzHYKxEaGdFUlkO998lAz1wbmBG6aB+gmd6GI2p2cI/GQb3dA7fZdT3fKlZBXw
+         XhRYD19eE3YJ7+xuZJ/WC4dAtUFJXKzm1/2KtTqFOtBhnSvPG0YrQ8hPnaD32ReaIOa3
+         UPzr99k9HBYWD7/Uy+lxsrb2M81k3oQEUporSX+Y1gTj9Ex/bd0M+Z987BabMvi1DnUA
+         MBA5Dn8BgsUUX3CZiDVPB06CJtiaCnBGZHbSqhtSXFUwX1KPmoevQanteqKGbv2cz6Rb
+         lK+yjRPYSY+9xkT2mMZO+sI4xTd97i5mwUGud5uqoazMTOjW1wQgKYfGghKLRkVu/ilF
+         WXMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=X9ELJWsFEOA9ZjR8vqRc+1/Kb4xOZiuQUQY31p1h+Q8=;
-        b=6gkVtOts6FCpKNKjm9yq+zdRp9YIYULMaQWpcjEJ7TFpfKCID685kEyJZ4mb5oTjyB
-         g7a12GF1xombz1cEnHLe4cu+jnD0H2h+D0iTZkn8NzWCZHu16pB3A6zmw2bK5L2aP1xR
-         HQCw2HCv+4M985PUuVxtYpzpmDpz5uCbC51mIGejlT4bjvCYFczZgyrBpkIa3iIBK6p/
-         +wCWP98tVSmimSlD8qQcdZRNkOdimbKEv6582hjwM1rkMcJtdJ9eHu4rRzVzCRSUdUCz
-         dI0XnlwD8Ga0a+FV2TGS32VET7kcTd7h72Rw7TsjeLECz8lnFq5FBjsUsqYsOL6ftAmA
-         aLUw==
-X-Gm-Message-State: ACrzQf1XC+yN3OhWeF3tVhzCwFr0ISRYZ9ICDIcjVlZvhY7E5iHbz4Wk
-        H2F/083EN5uIX37YlyPFoSWPr/GSWxa8V/aDPpo=
-X-Google-Smtp-Source: AMsMyM5+gu5fEJL3u/z9fh5zuGtorQ255IKQ4OfCeJYH5cGS9UtuhnZ0j68AmjbTrs1kGnaP/bv1mWaQfSHEJHHX7Pc=
-X-Received: by 2002:a05:6e02:b2d:b0:2f9:e735:a010 with SMTP id
- e13-20020a056e020b2d00b002f9e735a010mr11659127ilu.151.1665489350477; Tue, 11
- Oct 2022 04:55:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20221011031843.960217-1-masahiroy@kernel.org>
-In-Reply-To: <20221011031843.960217-1-masahiroy@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 11 Oct 2022 13:55:39 +0200
-Message-ID: <CANiq72k9wAVCbHKVZFE=E3xv+2ZamUMsJ=uV43NxsSUQ4wXGdw@mail.gmail.com>
-Subject: Re: [RFC PATCH] Remove Intel compiler support
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ia64@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Len Brown <lenb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Terrell <terrelln@fb.com>,
+        bh=X1TQOsxy3CXZu68a4jU7nD1cMoJlBD4fQULPrHpX//w=;
+        b=tGixSOnLfNLclHqIaZNUiq6mP8I7ELsqySXQy7i3lSrvzFeQP2ihgCY/DvBp6CoTKB
+         EZVJVtJFbAJ4laIi2xI7yuTN4BIIngt2Crdsdtpvm55Vdd3iEIRMWI7Zrxrss17vd1zK
+         eF/CpkfxBzxqF/Wcin8VM2/gmc44ipPIkLYRhK8ykHBAH3Ukn4yRXa62SRas2nHRZ0xj
+         xxxef3UkGfLTIuoOmzXBLlKtiSLU+Mwso4wn7m1Ru2/WvPz9ZYJvoKW6sFEkFo4f4pNG
+         cAjZusgfDjX7OMqoTHgv3nef+xQ04msdOULT4jPoo+xebH92Tn/MZp0IHforlKqBZCoP
+         1r3A==
+X-Gm-Message-State: ACrzQf1xZQZWPCxV4pzwgeV6cD4qur0PVKgKQwOmssB0FEv4GRn70f0V
+        cn9cFTsfNNdKxW7HUfrOC0ezH8s0ukX2xorp
+X-Google-Smtp-Source: AMsMyM4ri/A8WpsiFDhctKFGVdBuvBlxBUBtt5BQ8j5/0Df4HN8/zqICGMtzN2++AvEOuZNt/huJIg==
+X-Received: by 2002:a17:90b:4d0d:b0:1fb:a86d:e752 with SMTP id mw13-20020a17090b4d0d00b001fba86de752mr26705214pjb.120.1665491186204;
+        Tue, 11 Oct 2022 05:26:26 -0700 (PDT)
+Received: from debian.. (subs02-180-214-232-76.three.co.id. [180.214.232.76])
+        by smtp.gmail.com with ESMTPSA id y15-20020a17090264cf00b00178b06fea7asm8475827pli.148.2022.10.11.05.26.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Oct 2022 05:26:25 -0700 (PDT)
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Jonathan Corbet <corbet@lwn.net>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Tom Rix <trix@redhat.com>, devel@acpica.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: [PATCH] Documentation: ACPI: Prune DSDT override documentation from index
+Date:   Tue, 11 Oct 2022 19:26:01 +0700
+Message-Id: <20221011122600.620690-1-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.38.0
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1207; i=bagasdotme@gmail.com; h=from:subject; bh=QGQXGh5Zq2x/CbY8Jk1C22Gb+od/xX2PdajUV74tjQU=; b=owGbwMvMwCH2bWenZ2ig32LG02pJDMmuCce5BdUP3zafcumuuJpHvMeLR39V0jsmCAs/6mixSf78 axd/RykLgxgHg6yYIsukRL6m07uMRC60r3WEmcPKBDKEgYtTACZitYOR4fuaWwc3egY7rYr2N3Up2n E08da2TMeEiTsT3ZUsfl3caM3I8EI7cIv4tIhzX83PPC0T54991lOsvPducbXQs6OfF0S+4gcA
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 11, 2022 at 5:19 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
->  include/linux/compiler-intel.h            |  34 -----
->  include/linux/compiler_types.h            |   2 -
+Commit d206cef03c4827 ("ACPI: docs: Drop useless DSDT override documentation")
+removes useless DSDT override documentation. However, the commit forgets
+to prune the documentation entry from table of contents of ACPI admin
+guide documentation, hence triggers Sphinx warning:
 
-You can also remove a few lines from `compiler_attributes.h`:
+Documentation/admin-guide/acpi/index.rst:8: WARNING: toctree contains reference to nonexisting document 'admin-guide/acpi/dsdt-override'
 
-    * Optional: not supported by icc
+Prune the entry to fix the warning.
 
-Thanks for this!
+Fixes: d206cef03c4827 ("ACPI: docs: Drop useless DSDT override documentation")
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+ Documentation/admin-guide/acpi/index.rst | 1 -
+ 1 file changed, 1 deletion(-)
 
-Cheers,
-Miguel
+diff --git a/Documentation/admin-guide/acpi/index.rst b/Documentation/admin-guide/acpi/index.rst
+index 71277689ad97f4..b078fdb8f4c934 100644
+--- a/Documentation/admin-guide/acpi/index.rst
++++ b/Documentation/admin-guide/acpi/index.rst
+@@ -9,7 +9,6 @@ the Linux ACPI support.
+    :maxdepth: 1
+ 
+    initrd_table_override
+-   dsdt-override
+    ssdt-overlays
+    cppc_sysfs
+    fan_performance_states
+
+base-commit: 27bc50fc90647bbf7b734c3fc306a5e61350da53
+-- 
+An old man doll... just what I always wanted! - Clara
+
