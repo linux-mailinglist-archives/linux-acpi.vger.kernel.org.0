@@ -2,78 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FCA65FC1EA
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Oct 2022 10:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C7645FC4FB
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Oct 2022 14:07:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229793AbiJLIXb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Oct 2022 04:23:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38498 "EHLO
+        id S229675AbiJLMHQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Oct 2022 08:07:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbiJLIX1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Oct 2022 04:23:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6056C3B72B
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Oct 2022 01:23:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1665562998;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jELvjO5QqUILY8VqH/j8XPDV639IFLeW5HNerotSla4=;
-        b=UodexLJa772CmXJ07tDxaZepwNgrGSax1AxwwN7t1aLTbuJoMlhKvUkQChS1PQQUhm0/rJ
-        Cjaz0yF32cHBJPA6bW88i46rDdKlaqtRc4CgSSSbfgsxzDQUmSdGiyPOyDCy+WH3rKIGtG
-        1GDALUO7/UW//DuySGKzKZF7m98gnVA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-314-nfg6YJwBO66mSCQURJfBMA-1; Wed, 12 Oct 2022 04:23:15 -0400
-X-MC-Unique: nfg6YJwBO66mSCQURJfBMA-1
-Received: by mail-ej1-f72.google.com with SMTP id hr29-20020a1709073f9d00b0078333782c48so6988458ejc.10
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Oct 2022 01:23:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jELvjO5QqUILY8VqH/j8XPDV639IFLeW5HNerotSla4=;
-        b=zjD54mzpar9UbH/jS6WYm4LU7Bxwoql6D29G3WlNBC4qnOPiqlb/U9niSp8JjupCMD
-         YIgSABFKJxGeL2rRXK02d6U26fI5HZ4YtogomWFyFNPMgzILtm8JYgznikcpnfhoOCvA
-         5qdKWPCw5vvGswv/PsWemteTHd/D9q08jBT1c13CkIfUxyxWrpE0sH9OsNsmAtjh7QU2
-         1kao/J1G2PufrWvJwF9ZnUcOEyoKB4jKlBXBkHO77lOTbRLwuTUOgi4smY+nCV+icSds
-         a21lWbtUnnf8tP68cul56jGVDVgJe/UKN2g5euS9K9x8ZYWwt49hiPipRjCI8hXJ9M5k
-         T/vg==
-X-Gm-Message-State: ACrzQf18oLloO+7PAzfjEw7VpKIypCqyB/qfDbke9gzI/g4xCkoKSntz
-        VM1hKIqDnCzSa2EWnoTJo4WNUGHModLF1dTtJDU5WVSdL/bRn9RAY5TM0gPNvtZqHojPgdoroUk
-        yguzx6g3s2swE/JfMJaN1Iw==
-X-Received: by 2002:a17:907:3d9e:b0:78d:e7be:1ee8 with SMTP id he30-20020a1709073d9e00b0078de7be1ee8mr4292094ejc.164.1665562994423;
-        Wed, 12 Oct 2022 01:23:14 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7i4nsu+GAVi59ItMezRn1amUyC6vyKNWudRnkv+dBKc/kv00sA71mHTjb6PDHVPMiJbcAilA==
-X-Received: by 2002:a17:907:3d9e:b0:78d:e7be:1ee8 with SMTP id he30-20020a1709073d9e00b0078de7be1ee8mr4292083ejc.164.1665562994177;
-        Wed, 12 Oct 2022 01:23:14 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id l25-20020a50d6d9000000b0045723aa48ccsm10616921edj.93.2022.10.12.01.23.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Oct 2022 01:23:13 -0700 (PDT)
-Message-ID: <a9203d47-5b85-c035-3ec7-973dcb6a840a@redhat.com>
-Date:   Wed, 12 Oct 2022 10:23:12 +0200
+        with ESMTP id S229701AbiJLMHF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Oct 2022 08:07:05 -0400
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-eopbgr140075.outbound.protection.outlook.com [40.107.14.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D54E1ADB5;
+        Wed, 12 Oct 2022 05:06:53 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=pass;
+ b=A0eoEvX+ae6AYmZ+8oNKiNsFf6XFWeLqunzMm0hkx9XDA/iP7Yp1/i4GNicJKIBGEcE9EinD032SRy4xlJ1R1rP7j174GEXPOWta3EMJ34xo1xywFBDAtikIKcE+0gq6K8uY6CxVfJyXsYa3NU5uzxstGJVUbIiNoTHFCDcMbyvjZX8fEYf4lnYKG5c9YuPgbTd7RMctgNds4UBfWKAdSDGJcButt9B51t5B68zXl5aVDgHxSYC3ejMo7B89s1zBMVWQ+iNRtJwnv7XEe2gehi0T8wQKgj2XOOr2E7j9BS5GZvHnLC20DZsFog6Uxr4vQNKA8nxTvNOJ6LLeFkzOCQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yS3nGkCEQdWUu14xVdTFKJLX/bxa2iDAmr3sRt7nAPY=;
+ b=Z3bkWQhe0eZBeWo8XvG8sKDkZBS5zIrzymJ3iQz9l0ubCDWQf9YUpmxktJobyUWD/ju+QpqZaoIvhvcWIOmq6O2VUAGNnWI10xOtiurnXGfMrpi2qh5VbWboE4NNqQz//RWQksCQYXpieLjP4J5PV/9C1eJx9zI09o/VqBqhbcCIpXGdF3FdmyTdSHFkbmOqv/SNXsEaekrHeydCOdyP6oelfq3+n3KPgmMbVibQ3Axw4YBX+uagmGz5gnayRaJi7HmMA2BzRPW84uUkGJ4JCNC80ZA406ZOGxN09LdRaGlhO3undzyFWZNn+2IqaG25FAtpf4Y01gf0O4lcuA2UBg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 63.35.35.123) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=armh.onmicrosoft.com; arc=pass (0
+ oda=1 ltdi=1 spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yS3nGkCEQdWUu14xVdTFKJLX/bxa2iDAmr3sRt7nAPY=;
+ b=U5oweQH0o/vESJemu9lsjLIWge32AmK0gW15K/CJT1Esr01gPgWDI8yOjSwFdf0VMsgEyLxTmtjL8ZPwTbCEKAaz8+zeARsVEcEh4xI8t1me2LIfqnWMU+0YHwhFW82/ZCknogcP8xLEYRgxPc/NSiCU2OVA+Sro2eCovLl+hJw=
+Received: from AS9PR06CA0182.eurprd06.prod.outlook.com (2603:10a6:20b:45d::16)
+ by AS8PR08MB8328.eurprd08.prod.outlook.com (2603:10a6:20b:56d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.24; Wed, 12 Oct
+ 2022 12:05:07 +0000
+Received: from AM7EUR03FT058.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:20b:45d:cafe::92) by AS9PR06CA0182.outlook.office365.com
+ (2603:10a6:20b:45d::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5709.19 via Frontend
+ Transport; Wed, 12 Oct 2022 12:05:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=armh.onmicrosoft.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
+ client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
+ pr=C
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ AM7EUR03FT058.mail.protection.outlook.com (100.127.140.247) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5709.10 via Frontend Transport; Wed, 12 Oct 2022 12:05:06 +0000
+Received: ("Tessian outbound 99ee3885c6d5:v128"); Wed, 12 Oct 2022 12:05:06 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: 87bc3f77c4308b73
+X-CR-MTA-TID: 64aa7808
+Received: from 5fcf26e0a8e6.1
+        by 64aa7808-outbound-1.mta.getcheckrecipient.com id 3F6A06CD-DFB2-4AE2-A723-609DE5862D6F.1;
+        Wed, 12 Oct 2022 12:05:00 +0000
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 5fcf26e0a8e6.1
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Wed, 12 Oct 2022 12:05:00 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VoetS0kJROXLlLpEQadYUVz3rU7RHx3wibir2qPmOXl3aDG7MsZ2Rg1RCcidXOQ4Tji02DD5TxAoYkOVq38kvasAeIPqjqMM4+iRjUWYMmBZYlMCIJd+GY0FX9Yrl2edql0rzjM+NK3NlHc7M8v/BB5S9ylIWjomlcD/kqzCD+WZ4l9hi7NawdThlZ835mY8X5nNE8Dslo8CiWi1U6OzS5xJPJaHszo/TakMjI0D31n8EkRJ/iCBLgnGY+LPtXlhV1BMY+qqhDG8HXEYX27OCZ+syWT/JxQ0XDX1LQI2Y2MV50CCeVWrCgyCR8ASVRsekpwI1OoKYhk7BroLWwE0fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yS3nGkCEQdWUu14xVdTFKJLX/bxa2iDAmr3sRt7nAPY=;
+ b=b/d97sIOu44Ss332vAbl67Pf0eToWBYoQMi7ZdeJEUodMxZf57FcEHAsAQ07IBeAMr0a/kbRz7EEKxp3Fop/Gl5z6a1Y+kzV5ySFvQOI4HLHSdP0Yh+OVGRn08nO5ovnTbnu8oQ3GmsLGG+i+e7EpwNpVdBUK0R6FNr69zKhupDs4A+WZh9x0p+RhgDNphvjP4ZLQFVaWgXQ6P4CzpGrQKQIzU7zh/4sEfwBB/FKcCzgEcsiCpBchHWoIHRMWMTRV/Hoz72uHq1moins8TCnNLRHQ6o+Xvk2fLWh6Mvgt+qJiu5jj8wVxEij2ibkEgtRt5NgefxqrJPqCyIPidg/pA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yS3nGkCEQdWUu14xVdTFKJLX/bxa2iDAmr3sRt7nAPY=;
+ b=U5oweQH0o/vESJemu9lsjLIWge32AmK0gW15K/CJT1Esr01gPgWDI8yOjSwFdf0VMsgEyLxTmtjL8ZPwTbCEKAaz8+zeARsVEcEh4xI8t1me2LIfqnWMU+0YHwhFW82/ZCknogcP8xLEYRgxPc/NSiCU2OVA+Sro2eCovLl+hJw=
+Received: from DBBPR08MB4538.eurprd08.prod.outlook.com (2603:10a6:10:d2::15)
+ by AS8PR08MB8327.eurprd08.prod.outlook.com (2603:10a6:20b:56e::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.24; Wed, 12 Oct
+ 2022 12:04:57 +0000
+Received: from DBBPR08MB4538.eurprd08.prod.outlook.com
+ ([fe80::d98f:f69a:a28c:fbfc]) by DBBPR08MB4538.eurprd08.prod.outlook.com
+ ([fe80::d98f:f69a:a28c:fbfc%7]) with mapi id 15.20.5709.015; Wed, 12 Oct 2022
+ 12:04:57 +0000
+From:   Justin He <Justin.He@arm.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Jan Luebbe <jlu@pengutronix.de>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Kani Toshi <toshi.kani@hpe.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        nd <nd@arm.com>, kernel test robot <lkp@intel.com>
+Subject: RE: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
+Thread-Topic: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
+Thread-Index: AQHY3FE9MI2RuRcaLke0tv5UeBjXAK4JAUiAgAA9Q/CAAAkTAIABZGGQ
+Date:   Wed, 12 Oct 2022 12:04:57 +0000
+Message-ID: <DBBPR08MB4538D5A85F707632ACCB70A4F7229@DBBPR08MB4538.eurprd08.prod.outlook.com>
+References: <20221010023559.69655-1-justin.he@arm.com>
+ <20221010023559.69655-7-justin.he@arm.com> <Y0VGkUxpqiIzIFzB@zn.tnic>
+ <DBBPR08MB4538A9F831FA96545BA35D9FF7239@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <Y0WBklS1XpB5as+m@zn.tnic>
+In-Reply-To: <Y0WBklS1XpB5as+m@zn.tnic>
+Accept-Language: en-US, zh-CN
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+x-ms-traffictypediagnostic: DBBPR08MB4538:EE_|AS8PR08MB8327:EE_|AM7EUR03FT058:EE_|AS8PR08MB8328:EE_
+X-MS-Office365-Filtering-Correlation-Id: 491c5e1c-b276-41f2-f02e-08daac4a0101
+x-checkrecipientrouted: true
+nodisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original: cUnLYHaVNRnAkAxt0Lf1Z0ibNcB9gIQk1ls6sHYDnVXlZigxO2SGN/YlTs9wdGeYSoNHg7o7pdHhxU8j6Y5wS4M++E0afBXyc4W8h7ZjjdvvNVh1hS8Ipvaz3BUmjIIPBsie7T8IKPIEWUSwdkF09onUgu4iosOodqeuEaUbPksDOXU8H4EOhYlMTqnSgXYpqC06mQpKuxY4kaDIIXGqk7XYkXJpNhx65LK5Q4fBfA3AGMm6PRXx1VgdumA5B1Obmr0zkhDxlpklYLD4ofVPmsgIs4NziA3c8Vg2SN7aNuJy2PfaZBHNdWrrZehy3uZBZWJRRL90YAjT6nAU5hrWqXbDVkRLJ5bGAqZ28zDuSEglSwEMrK3GvO6N9d6PjIDNODnzemjACRS6jvmelDYl+nr9vNBhtBRMvyXrvzkJg39X8V9uPJ9eCf5uCBZL42DesOeDOYJDGkSqpIuQC/Upv6ai66TiXTRIptThVbgC5s9OfWQN9p8sMTUtriqlEeuvvOrStNEkwecMbv9+0HSVEhPky55PkOO6GyPVMdP+9hwj551812nUW0dnkB+F9gtXIF+QnN9AokQ/fuIPfyUMeL2AjlfiCTrfbaxjXrBTE+/7c1adRsq0rOBZ/Jc9BCZr9F6KgGZ93lnyG1BcVczJK5AWD9UAYG/K7XTE0rLbavX2tjf5atDQhnDxs8ulZDMQPYcMvH6KE0egeoLkGDbdbmtM2soBnn6GJUPFD17xk4rvQsI/YGNiB+CFdLEz9tL69vN/w+6+3vI2YNVyJd57oNzcQjrwoww5COnADiE19sX8BLQ1lL+Ze8aURNjKA4KN
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR08MB4538.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(136003)(346002)(396003)(39860400002)(376002)(451199015)(7416002)(41300700001)(52536014)(8936002)(5660300002)(2906002)(7696005)(122000001)(478600001)(316002)(53546011)(76116006)(55016003)(64756008)(38100700002)(71200400001)(9686003)(54906003)(86362001)(66446008)(66476007)(8676002)(66556008)(6506007)(6916009)(4326008)(186003)(83380400001)(66946007)(26005)(33656002)(38070700005)(17423001)(156123004);DIR:OUT;SFP:1101;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH] x86/PCI: Disable E820 reserved region clipping for Clevo
- NL4XLU laptops
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>, linuxkernelml@undead.fr,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-References: <20221011174010.GA3001067@bhelgaas>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20221011174010.GA3001067@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8327
+Original-Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: AM7EUR03FT058.eop-EUR03.prod.protection.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 55b6d1c3-d72f-4c50-3ea3-08daac49fb72
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vUW496ciMekxjucS1igRMP/RpreA3H/P0yNfNZRKqWkMeOhyT+iZ4HaD/q/pPg/BGDpib42AWF2UM+VMnSau7Y4qHq6c2QLi/KlDMZzp4Lsa2hXMggLXYWssMrNNRdI7JQS4o/HIJxsQA+SgCdgVMlTSWFfYJW5iNijjWSXnwW8XNxR+joNvM+dFri5S/14pPls56sTwKX3d2DgSLD0wgRjPb5Au/U8M0UkGp+1A261TyuHI9TgBX3qJEHwBUDutiGV7AZimxPHkR2KddCh/fnjMt9DC69s3ZJP4rNPk/Z37dEm+vYx+mnBsUYGYjCxV01XbTaRUpeI4nJQuHm1hnM7YiCIg9YDQ2+PZBYj9KDvjWAPvS55HrMyXyj1+zN2kzUR5nf05OWczdc+mDudJlD8mNjfNYcU17ytgRIANdUlGw108dLK6l13aXCLNKUaEWLKh+uLNeXonBogAQwJVzLxSuKpH/WB2MJZsdCxnixJOINj9bjVoHZzCStlOb/FHH1WfH4tBhvyNwzeRnOT6rvGFJslrvG8SLo6s/e7g4XcS6zS612Vx7ndQZ3Cp7ZfN2gW5sTUEoY/RGuOrImhYgi4czR4e0yipugJAOXmpgkn/sM3PHkQ7bx0CVEN6BF61VFLewwLutmlyIl3B1zmxJQ7xACNDWyBI1P7pfBRJVFKFDMHmD9wo7WoJVXVOOSd1YxehbKEXme+AxlM0XLTmQA9WtQKKELinSxoApwnmHisauUEAWzq6ip2ULiYJUULFbHHMIWNktkUlErDcswFcQdaWR0Lb4mtayPAK5yT059KikQ+N5rAEfZznl/5afncL
+X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(13230022)(4636009)(346002)(39860400002)(136003)(396003)(376002)(451199015)(36840700001)(46966006)(40470700004)(70586007)(450100002)(336012)(33656002)(6506007)(53546011)(316002)(186003)(8676002)(5660300002)(8936002)(47076005)(7696005)(107886003)(2906002)(356005)(70206006)(86362001)(40460700003)(40480700001)(81166007)(6862004)(41300700001)(52536014)(26005)(55016003)(4326008)(83380400001)(36860700001)(54906003)(9686003)(82740400003)(82310400005)(478600001)(17423001)(156123004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2022 12:05:06.9558
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 491c5e1c-b276-41f2-f02e-08daac4a0101
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-AuthSource: AM7EUR03FT058.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8328
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FORGED_SPF_HELO,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_NONE,UNPARSEABLE_RELAY autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,137 +168,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 10/11/22 19:40, Bjorn Helgaas wrote:
-> On Mon, Oct 10, 2022 at 05:02:06PM +0200, Hans de Goede wrote:
->> Clevo NL4XLU barebones have the same E820 reservation covering
->> the entire _CRS 32-bit window issue as the Lenovo *IIL* and
->> Clevo X170KM-G models, relevant dmesg bits (with pci=no_e820):
->>
->>  BIOS-e820: [mem 0x000000005bc50000-0x00000000cfffffff] reserved
->>  pci_bus 0000:00: root bus resource [mem 0x6d800000-0xbfffffff window]
->>
->> Note how the e820 reservation covers the entire PCI root mem window.
->>
->> Add a no_e820 quirk for these models to fix the touchpad not working
->> (due to Linux being unable to assign a PCI BAR for the i2c-controller).
-> 
-> I do plan to apply this, but a little food for thought below.
-> 
-> I explored this issue a little bit with the ACPI/UEFI folks (see
-> https://members.uefi.org/wg/aswg/mail/thread/9265 if you have access).  
-> 
-> One aspect I had glossed over earlier is that on most recent machines,
-> the "E820 map" Linux uses is actually constructed internally by Linux
-> based on the UEFI memory map, and that construction conflates several
-> EFI types into E820_TYPE_RESERVED; see
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/firmware/efi/libstub/x86-stub.c?id=v5.19#n576
-> 
-> We don't have a dmesg log with "efi=debug" for this case, but in most
-> cases where E820 says the entire root mem window is reserved, I think
-> it's because an EfiMemoryMappedIO entry was converted to
-> E820_TYPE_RESERVED.
-> 
-> From a response in the ACPI/UEFI discussion:
-> 
->   The reason EfiMemoryMappedIO[1] exist in the UEFI memory map is to
->   request a virtual mapping for UEFI Runtime Services.
->   
->   For example if the EFI Runtime Service needed to write to FLASH then
->   the NOR FLASH would need a mapping. Also the NOR FLASH controller
->   might also need a mapping and this could include PCI Config Space if
->   needed registers existed in that space.
->   
->   Thus the EfiMemoryMappedIO entries just exist to pass up the
->   EFI_MEMORY_RUNTIME attribute in the UEFI Memory Map. This is the part
->   of the contract for UEFI Runtime Service to use virtual mappings
->   provided by the OS. So from an OS point of view EfiMemoryMappedIO has
->   no other purpose.
->   
->   [1] UEFI: Table 7-5 Memory Type Usage before ExitBootServices() "Used
->   by system firmware to request that a memory-mapped IO region be
->   mapped by the OS to a virtual address so it can be accessed by EFI
->   runtime services."
-> 
-> So the point here is that Linux currently converts EfiMemoryMappedIO
-> to E820_TYPE_RESERVED, and that likely attaches more meaning to those
-> regions than firmware intended.
-> 
-> I'm a little leery of changing that UEFI->E820 conversion because of
-> other possible implications, but it may be that omitting
-> EfiMemoryMappedIO entries from the E820 map and keeping the original
-> "avoid E820 regions" (4dc2287c1805) would also solve this problem.
-
-Actually during my many attempts to fix this I did write a patch
-adding a new E820_TYPE_MMIO to the generated e820-memmap which
-would only show up in the EFI -> E820 entry generation case
-and then used that to not exclude that E820 region, see
-this RFC series:
-
-https://lore.kernel.org/linux-pci/20220214151759.98267-1-hdegoede@redhat.com/
-
-Unfortunately this series caused the same X1 carbon gen2 suspend/resume
-not working problem as the earlier set pci=no_e820 based on a BIOS date cutoff
-attempt which I did earlier and which even briefly was in some -rc kernels
-through Rafael's tree.
-
-I also did another series which used the EfiMemoryMappedIO type as
-an input to heuristics to automatically set pci=no_e820, see:
-
-https://lore.kernel.org/linux-pci/20220228105259.230903-1-hdegoede@redhat.com/
-
-IIRC that patch eventually got replaced by a similar but simpler
-heuristic from you. Which IIRC eventually got dropped again because
-it was causing regressions on some models again.
-
-So we ended up with the current set pci=no_e820 using DMI based quirks +
-try to enable it for all BIOS-es with date >= 2023 approach,
-with the plan to do DMI quirks setting pci=use_e820 if any (buggy)
-2023 BIOS-es show up which need this.
-
-Regards,
-
-Hans
-
-
-
-
-
-
-
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216565
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>  arch/x86/pci/acpi.c | 13 +++++++++++++
->>  1 file changed, 13 insertions(+)
->>
->> diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
->> index 2f82480fd430..45ef65d31a40 100644
->> --- a/arch/x86/pci/acpi.c
->> +++ b/arch/x86/pci/acpi.c
->> @@ -189,6 +189,19 @@ static const struct dmi_system_id pci_crs_quirks[] __initconst = {
->>  			DMI_MATCH(DMI_BOARD_NAME, "X170KM-G"),
->>  		},
->>  	},
->> +
->> +	/*
->> +	 * Clevo NL4XLU barebones have the same E820 reservation covering
->> +	 * the entire _CRS 32-bit window issue as the Lenovo *IIL* models.
->> +	 * See https://bugzilla.kernel.org/show_bug.cgi?id=216565
->> +	 */
->> +	{
->> +		.callback = set_no_e820,
->> +		.ident = "Clevo NL4XLU Barebone",
->> +		.matches = {
->> +			DMI_MATCH(DMI_BOARD_NAME, "NL4XLU"),
->> +		},
->> +	},
->>  	{}
->>  };
->>  
->> -- 
->> 2.37.3
->>
-> 
-
+SGkgQm9yaXNsYXYNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBCb3Jp
+c2xhdiBQZXRrb3YgPGJwQGFsaWVuOC5kZT4NCj4gU2VudDogVHVlc2RheSwgT2N0b2JlciAxMSwg
+MjAyMiAxMDo0NiBQTQ0KPiBUbzogSnVzdGluIEhlIDxKdXN0aW4uSGVAYXJtLmNvbT4NCj4gQ2M6
+IExlbiBCcm93biA8bGVuYkBrZXJuZWwub3JnPjsgSmFtZXMgTW9yc2UgPEphbWVzLk1vcnNlQGFy
+bS5jb20+Ow0KPiBUb255IEx1Y2sgPHRvbnkubHVja0BpbnRlbC5jb20+OyBNYXVybyBDYXJ2YWxo
+byBDaGVoYWINCj4gPG1jaGVoYWJAa2VybmVsLm9yZz47IFJvYmVydCBSaWNodGVyIDxycmljQGtl
+cm5lbC5vcmc+OyBSb2JlcnQgTW9vcmUNCj4gPHJvYmVydC5tb29yZUBpbnRlbC5jb20+OyBRaXV4
+dSBaaHVvIDxxaXV4dS56aHVvQGludGVsLmNvbT47IFlhemVuDQo+IEdoYW5uYW0gPHlhemVuLmdo
+YW5uYW1AYW1kLmNvbT47IEphbiBMdWViYmUgPGpsdUBwZW5ndXRyb25peC5kZT47DQo+IEtodW9u
+ZyBEaW5oIDxraHVvbmdAb3MuYW1wZXJlY29tcHV0aW5nLmNvbT47IEthbmkgVG9zaGkNCj4gPHRv
+c2hpLmthbmlAaHBlLmNvbT47IEFyZCBCaWVzaGV1dmVsIDxhcmRiQGtlcm5lbC5vcmc+Ow0KPiBs
+aW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsN
+Cj4gbGludXgtZWRhY0B2Z2VyLmtlcm5lbC5vcmc7IGRldmVsQGFjcGljYS5vcmc7IFJhZmFlbCBK
+IC4gV3lzb2NraQ0KPiA8cmFmYWVsQGtlcm5lbC5vcmc+OyBTaHVhaSBYdWUgPHh1ZXNodWFpQGxp
+bnV4LmFsaWJhYmEuY29tPjsgSmFya2tvDQo+IFNha2tpbmVuIDxqYXJra29Aa2VybmVsLm9yZz47
+IGxpbnV4LWVmaUB2Z2VyLmtlcm5lbC5vcmc7IG5kIDxuZEBhcm0uY29tPjsNCj4ga2VybmVsIHRl
+c3Qgcm9ib3QgPGxrcEBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjggNi83XSBh
+cGVpL2doZXM6IFVzZSB1bnJjdV9wb2ludGVyIGZvciBjbXB4Y2hnDQo+IA0KPiBPbiBUdWUsIE9j
+dCAxMSwgMjAyMiBhdCAwMjozMjo0OFBNICswMDAwLCBKdXN0aW4gSGUgd3JvdGU6DQo+ID4gTXkg
+b3JpZ2luYWwgcHVycG9zZSBpcyB0byBtYWtlIGl0IHBhc3MgdGhlIHNwYXJzZSBjaGVja2luZy4N
+Cj4gDQo+IFRoZW4gZG8gdGhpcyBwbHMuDQo+IA0KPiBUaGlzIGlzIGEgY29tYmluZWQgZGlmZiAt
+IGRvIGEgc2Vjb25kIHBhdGNoIHdoaWNoIGRvZXMgb25seSByZW1vdmUgdGhlDQo+IHNtcF93bWIo
+KS4gVGhlIHNtcF93bWIoKSB0aGVyZSBpcyBub3QgbmVlZGVkIGFzIHRoZSBjbXB4Y2hnKCkgYWxy
+ZWFkeQ0KPiBpbXBsaWVzIGEgc21wX21iKCkgc28gdGhlcmUncyBubyBuZWVkIGZvciB0aGF0IHNl
+cGFyYXRlLCBleHBsaWNpdCBvbmUuDQo+IA0KSSBoYXZlIGEgY29uY2VybiBhYm91dCB3aGF0IGlm
+IGNtcHhjaGcgZmFpbGVkPyBEbyB3ZSBoYXZlIHRvIHN0aWxsIGd1YXJhbnRlZSB0aGUgb3JkZXJp
+bmcgc2luY2UgY21weGNoZyB3aWxsIG5vdCBpbXBseSBhIHNtcF9tYiBpZiBpdCBmYWlsZWQuDQoN
+CkJlc2lkZXMsIEkgZGlkbid0IGZpbmQgdGhlIHBhaXJlZCBzbXBfbWIgb3Igc21wX3JtYg0KZm9y
+IHRoaXMgc21wX3dtYi4gRG8geW91IGhhdmUgYW55IGlkZWFzPw0KDQotLQ0KQ2hlZXJzLA0KSnVz
+dGluIChKaWEgSGUpDQoNCg0KDQo=
