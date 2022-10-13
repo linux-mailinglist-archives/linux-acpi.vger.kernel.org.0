@@ -2,95 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35D1B5FD44E
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 07:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C1F55FD540
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 08:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbiJMFuq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Oct 2022 01:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38948 "EHLO
+        id S229595AbiJMGxw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Oct 2022 02:53:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbiJMFuq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 01:50:46 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30181EE8AE;
-        Wed, 12 Oct 2022 22:50:45 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id h185so701517pgc.10;
-        Wed, 12 Oct 2022 22:50:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZzglpC5mbRdLW9j3rb/103BSHrz15C42kGNA5aA2nE0=;
-        b=UKSPc/M1Lon+j3O3SOYw9MJ2zanPgvc02TQ5DNxZolQ3mvOy90PA1LQib0AfgFcu5E
-         GeY6zE+OP0Xrh9Zir+qY5XHsS0WUT/Onp0ON8sonvbUDhQM+uGxSYc6kATCNHLCc7wJ3
-         1GBVX0aB+Xjo6UDP/eqrEQ8tmA2IMicrsV0YinLaFLDAhInv7DiorCC/QTmkM44xruA9
-         ofPpkhBVufG0balWVBNZbnK6AAXKQGt3NVQn54oekSXuoXGth0pzyCYb5dyMz9sQ4oEJ
-         gx3E2gtIrH5t+oJeZAx6esgwLPy//+CT2KMUSnx8zIxtGcfenfxaWNvFkWzPVK/s8FFy
-         Gmng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZzglpC5mbRdLW9j3rb/103BSHrz15C42kGNA5aA2nE0=;
-        b=f9e/I5yz8EQHxPHVjJnNGL7D+QrgSbYH7n3TIZ8xcr6IHblYfqZOi9HMX//qAN9UGf
-         hVTicLNBE/D8gUyl/aarKhp7j096q5wCgO7ogjBfV0A7dqL1dcXQKs0tvqfa0hhI2l8K
-         uZQGGH9nHSj+5scfKeHJBf1FW+dqe7XArE5HYRrxPLNZUFr82LZr0K669ws5BcGHI8rO
-         H8BcLvI3nTKfrneGrvWxfhURv+kq0yG5p1CXq38US1/E0rXWbIYMr7yba6MggAoaU1Yy
-         Oow7k3gpx1xZK7eHV5cBky50kir7Gcwkve2+CJpcMbl0czj8cvVhf9fCl/D+2m0SZTX3
-         F7Tw==
-X-Gm-Message-State: ACrzQf3qPTGv0/XQ5fm91OcG6+ul2xrD59PPYjyRVTh5ztcKeUmOMaBk
-        u2S9vAei80rpUtPHJ06qEeYoBEeIOCyNQg==
-X-Google-Smtp-Source: AMsMyM7yzkp2mNyivgowhvxnV39yZ0+ISwIQHG8SkCbYC+HjbN4G6d7iiMoRC0YwNpjL9zq/I8mJfw==
-X-Received: by 2002:a63:ff1b:0:b0:43c:e4ee:e5e0 with SMTP id k27-20020a63ff1b000000b0043ce4eee5e0mr27532658pgi.540.1665640244405;
-        Wed, 12 Oct 2022 22:50:44 -0700 (PDT)
-Received: from localhost (ec2-3-6-129-254.ap-south-1.compute.amazonaws.com. [3.6.129.254])
-        by smtp.gmail.com with ESMTPSA id u9-20020a17090341c900b0017f7bef8cfasm11774337ple.281.2022.10.12.22.50.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Oct 2022 22:50:44 -0700 (PDT)
-From:   pmanank200502@gmail.com
-To:     rafael@kernel.org
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Manank Patel <pmanank200502@gmail.com>
-Subject: [PATCH] ACPI: acpi_pcc.c: Fix unintentional integer overflow
-Date:   Thu, 13 Oct 2022 11:19:48 +0530
-Message-Id: <20221013054947.1355884-1-pmanank200502@gmail.com>
-X-Mailer: git-send-email 2.38.0
+        with ESMTP id S229460AbiJMGxv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 02:53:51 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 338C73B943
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Oct 2022 23:53:50 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ois5w-0002cz-KU; Thu, 13 Oct 2022 08:53:28 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ois5u-001EpU-On; Thu, 13 Oct 2022 08:53:26 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ois5t-007cJL-VJ; Thu, 13 Oct 2022 08:53:25 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>, linux-acpi@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: [PATCH 1/2] ACPI: APEI: Drop unsetting driver data on remove
+Date:   Thu, 13 Oct 2022 08:44:58 +0200
+Message-Id: <20221013064459.121933-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=725; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=T8a43Sp/M4ss1s8Yzq+/Dccpmu46VlGb82k1gc0LM/U=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjR7Pj+Fh5YdtFb4xB/WS5KXM668BWmME0t8XosfRU aLxseb2JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY0ez4wAKCRDB/BR4rcrsCcPvB/ 40O8aLFFo0aLCp49G5Txz0VlMr917e7YMBMIEd0BgIj4ka7aam82sqV82AJBylk59h+DW20eMvpKGA YjArknCgKqry2wVPxoi4OxUoqNCkHPrDs+OSnHmyg0qLJc/2jnhj4wUgp8ZTQzCe1/nYfn/6MC/eca jM9CrZinVYEdypuSN/7br9oXAOTUNlBKoFOlEGdFHv42ZOJcJkolIZx9B82CR3+EVZqNTcm4KvbugK suxrMe9oNoC5lOAuwBUGB3WFlgR1vmLKm3LIMNT/h5MD5+5zOJtrt/lMLs4b30pmUaiTssTt96g4c3 yBGViKCfAZ9xERR3VAdd8RIAlsujtO
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Manank Patel <pmanank200502@gmail.com>
+Since commit 0998d0631001 ("device-core: Ensure drvdata = NULL when no
+driver is bound") the driver core cares for cleaning driver data, so
+don't do it in the driver, too.
 
-Fixed unintentional u32 overflow by casting it to u64 before multiplication.
-
-Signed-off-by: Manank Patel <pmanank200502@gmail.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/acpi/acpi_pcc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/apei/ghes.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
-index ee4ce5ba1fb2..b929d2e5c622 100644
---- a/drivers/acpi/acpi_pcc.c
-+++ b/drivers/acpi/acpi_pcc.c
-@@ -112,7 +112,7 @@ acpi_pcc_address_space_handler(u32 function, acpi_physical_address addr,
- 		 * processor could be much slower to reply. So add an arbitrary
- 		 * amount of wait on top of Nominal.
- 		 */
--		usecs_lat = PCC_CMD_WAIT_RETRIES_NUM * data->pcc_chan->latency;
-+		usecs_lat = PCC_CMD_WAIT_RETRIES_NUM * ((u64) data->pcc_chan->latency);
- 		ret = wait_for_completion_timeout(&data->done,
- 						  usecs_to_jiffies(usecs_lat));
- 		if (ret == 0) {
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index d91ad378c00d..307fbb97a116 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1444,8 +1444,6 @@ static int ghes_remove(struct platform_device *ghes_dev)
+ 
+ 	kfree(ghes);
+ 
+-	platform_set_drvdata(ghes_dev, NULL);
+-
+ 	return 0;
+ }
+ 
+
+base-commit: 4fe89d07dcc2804c8b562f6c7896a45643d34b2f
 -- 
-2.38.0
+2.37.2
 
