@@ -2,50 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F1455FE200
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 20:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AABB95FE223
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 20:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231802AbiJMSuc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Oct 2022 14:50:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53732 "EHLO
+        id S230218AbiJMSyo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Oct 2022 14:54:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232696AbiJMStr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 14:49:47 -0400
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55965DBE6D;
-        Thu, 13 Oct 2022 11:48:34 -0700 (PDT)
-Received: by mail-qt1-x836.google.com with SMTP id g11so2306708qts.1;
-        Thu, 13 Oct 2022 11:48:34 -0700 (PDT)
+        with ESMTP id S230267AbiJMSyT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 14:54:19 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 312B5196B41;
+        Thu, 13 Oct 2022 11:52:34 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id h24so1970178qta.7;
+        Thu, 13 Oct 2022 11:52:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=myRigzNXG3k4UY83qj9yevV968JdHZojuu1Y05TXW7I=;
-        b=s1o8QHWrOxXsNVBRTLhf8b/27CKbESls+s0KXe52jomX44Ix07bPOj7T7K6VCvub5m
-         ebW5RUBUl8W0V6pdgvg8Fsoru1T8f7VJwnaILT0RgZnazw9tcFpiFwk3PldFl6yN2Qxy
-         uYdXuA/NlYMIeJ7HucJPPBz1DyBP3cutYWM24syNB4Qqk77oMAjUzqct4dS7xgTBUyia
-         bPj9uhmNTrY3i9gmw7sVJHm5Tnv1RDvdu3i7dJeMmX0XKBkJ4lMqkzg/yzeFx2tZHe11
-         PPAONgT1jPu2KMkCQk6kBeWili9S1SUcehpCqN10QKKcDZ4fp/aLm7W7FHo9iT3O8zA/
-         ZvVQ==
-X-Gm-Message-State: ACrzQf1G2kNHUGcgO8yTE6J+6PgTte6635t2+jS3g2jQspGARimGjol/
-        yTbaTUx4r0Kv1LvHn8FLtY+yqURYtn+9KW4V/Z0=
-X-Google-Smtp-Source: AMsMyM58cV2G273bYp95dss3gDJzvQYc6JYdmrYwbtjZHdZy/tOT0FZJ78ERZdv5zsMwQy9Pz4Yitrvp3YYZwM6K8QM=
-X-Received: by 2002:ac8:5a07:0:b0:39c:1de3:e75c with SMTP id
- n7-20020ac85a07000000b0039c1de3e75cmr1094335qta.49.1665686758938; Thu, 13 Oct
- 2022 11:45:58 -0700 (PDT)
+        bh=XmkQjLsGTa1MzUj9V4OJ+4Yb6u89KcVySd17USewG7U=;
+        b=eYaJVOvkIMtBzIZfA4LJDtn2BdoljWneeuMreDgn4Na/MElUYBdSM6mSdI2rGJbf8J
+         7fJvh2xrc0yg8jTAh2X+hVAoGteatzNcOcxqkDL5xCys4f51xK22hvWW7Pao3by4Lwua
+         hAyGxppuCRpQAkdP/8VXwH1eNQ/Uz10w6B1My+zfV6eCe8nWtAOPNHNE0+KEwp9/cV0Y
+         3saEpAU+CcPZm6OWlVxfTzrpFDsDLXq7BOlLcgFfmFuEcJfc1k5I+L6iVuHTM3EvaLOQ
+         RZ9JMiIUMbXnEIFfU9EePjS1nzpCZZaf7ShPwZOYizII7vCRFkVrp+X/vRCsnwP9LEv4
+         Cv2w==
+X-Gm-Message-State: ACrzQf1WoAxh+EtpytEGzKfFW5K62ZFwwtYU1TOQOwOkgmqeJVbzoX7X
+        aV0eBEE3vOnSQRpc52oUYeP7A1gC36Tky6YGwQQ=
+X-Google-Smtp-Source: AMsMyM4uCEx0KIHzVLVm2PGrG3UzQ7PmNnyRmRL8CiwYYpQ9LIA/bhLxkuuPMDhDEzMxt2r6BIa2QPu0ulnlK9PwuRk=
+X-Received: by 2002:ac8:5ac1:0:b0:39a:123c:9df5 with SMTP id
+ d1-20020ac85ac1000000b0039a123c9df5mr1099723qtd.27.1665687087910; Thu, 13 Oct
+ 2022 11:51:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221005163253.455910-1-Ashish.Kalra@amd.com>
-In-Reply-To: <20221005163253.455910-1-Ashish.Kalra@amd.com>
+References: <20221004103341.12646-1-jirislaby@kernel.org>
+In-Reply-To: <20221004103341.12646-1-jirislaby@kernel.org>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 13 Oct 2022 20:45:48 +0200
-Message-ID: <CAJZ5v0gsnVTwPX+hrB4-hUtESsBC1dot3vFh_8qe4cb8ChDYtA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: APEI: Fix num_ghes to unsigned int
-To:     Ashish Kalra <Ashish.Kalra@amd.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, robert.moore@intel.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devel@acpica.org
+Date:   Thu, 13 Oct 2022 20:51:15 +0200
+Message-ID: <CAJZ5v0jQvzMh98SO0gZpvPiPWxhumY7e58-4MJRNF1JLRtGDHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI: resource: do IRQ override on LENOVO IdeaPad
+To:     "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc:     rafael.j.wysocki@intel.com, linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Chuanhong Guo <gch981213@gmail.com>,
+        Tighe Donnelly <tighe.donnelly@protonmail.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Fridrich Strba <fstrba@suse.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -57,80 +60,111 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 5, 2022 at 6:33 PM Ashish Kalra <Ashish.Kalra@amd.com> wrote:
+On Tue, Oct 4, 2022 at 12:33 PM Jiri Slaby (SUSE) <jirislaby@kernel.org> wrote:
 >
-> From: Ashish Kalra <ashish.kalra@amd.com>
+> LENOVO IdeaPad Flex 5 is ryzen-5 based and the commit below removed IRQ
+> overriding for those. This broke touchscreen and trackpad:
+>  i2c_designware AMDI0010:00: controller timed out
+>  i2c_designware AMDI0010:03: controller timed out
+>  i2c_hid_acpi i2c-MSFT0001:00: failed to reset device: -61
+>  i2c_designware AMDI0010:03: controller timed out
+>  ...
+>  i2c_hid_acpi i2c-MSFT0001:00: can't add hid device: -61
+>  i2c_hid_acpi: probe of i2c-MSFT0001:00 failed with error -61
 >
-> Change num_ghes from int to unsigned int, preventing an overflow
-> and causing subsequent vmalloc to fail.
+> White-list this specific model in the override_table.
 >
-> The overflow happens in the ghes_estatus_pool_init() when calculating
-> len during execution of the statement below as both multiplication
-> operands here are signed int :
+> For this to work, the ZEN test needs to be put below the table walk.
 >
-> len += (num_ghes * GHES_ESOURCE_PREALLOC_MAX_SIZE);
->
-> The following call trace is observed because of this bug:
->
-> [    9.317108] swapper/0: vmalloc error: size 18446744071562596352, exceeds total pages, mode:0xcc0(GFP_KERNEL), nodemask=(null),cpuset=/,mems_allowed=0-1
-> [    9.317131] Call Trace:
-> [    9.317134]  <TASK>
-> [    9.317137]  dump_stack_lvl+0x49/0x5f
-> [    9.317145]  dump_stack+0x10/0x12
-> [    9.317146]  warn_alloc.cold+0x7b/0xdf
-> [    9.317150]  ? __device_attach+0x16a/0x1b0
-> [    9.317155]  __vmalloc_node_range+0x702/0x740
-> [    9.317160]  ? device_add+0x17f/0x920
-> [    9.317164]  ? dev_set_name+0x53/0x70
-> [    9.317166]  ? platform_device_add+0xf9/0x240
-> [    9.317168]  __vmalloc_node+0x49/0x50
-> [    9.317170]  ? ghes_estatus_pool_init+0x43/0xa0
-> [    9.317176]  vmalloc+0x21/0x30
-> [    9.317177]  ghes_estatus_pool_init+0x43/0xa0
-> [    9.317179]  acpi_hest_init+0x129/0x19c
-> [    9.317185]  acpi_init+0x434/0x4a4
-> [    9.317188]  ? acpi_sleep_proc_init+0x2a/0x2a
-> [    9.317190]  do_one_initcall+0x48/0x200
-> [    9.317195]  kernel_init_freeable+0x221/0x284
-> [    9.317200]  ? rest_init+0xe0/0xe0
-> [    9.317204]  kernel_init+0x1a/0x130
-> [    9.317205]  ret_from_fork+0x22/0x30
-> [    9.317208]  </TASK>
->
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Fixes: 37c81d9f1d1b (ACPI: resource: skip IRQ override on AMD Zen platforms)
+> Link: https://bugzilla.suse.com/show_bug.cgi?id=1203794
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: Chuanhong Guo <gch981213@gmail.com>
+> Cc: Tighe Donnelly <tighe.donnelly@protonmail.com>
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Cc: Fridrich Strba <fstrba@suse.com>
+> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 > ---
->  drivers/acpi/apei/ghes.c | 2 +-
->  include/acpi/ghes.h      | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/acpi/resource.c | 42 +++++++++++++++++++++++++++--------------
+>  1 file changed, 28 insertions(+), 14 deletions(-)
 >
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index d91ad378c00d..6d7c202142a6 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -163,7 +163,7 @@ static void ghes_unmap(void __iomem *vaddr, enum fixed_addresses fixmap_idx)
->         clear_fixmap(fixmap_idx);
->  }
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 514d89656dde..8d13e94bb921 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -424,17 +424,31 @@ static const struct dmi_system_id asus_laptop[] = {
+>         { }
+>  };
 >
-> -int ghes_estatus_pool_init(int num_ghes)
-> +int ghes_estatus_pool_init(unsigned int num_ghes)
+> +static const struct dmi_system_id lenovo_82ra[] = {
+> +       {
+> +               .ident = "LENOVO IdeaPad Flex 5 16ALC7",
+> +               .matches = {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
+> +               },
+> +       },
+> +       { }
+> +};
+> +
+>  struct irq_override_cmp {
+>         const struct dmi_system_id *system;
+>         unsigned char irq;
+>         unsigned char triggering;
+>         unsigned char polarity;
+>         unsigned char shareable;
+> +       bool override;
+>  };
+>
+> -static const struct irq_override_cmp skip_override_table[] = {
+> -       { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
+> -       { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
+> +static const struct irq_override_cmp override_table[] = {
+> +       { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+> +       { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+> +       { lenovo_82ra, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+> +       { lenovo_82ra, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+>  };
+>
+>  static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+> @@ -442,6 +456,17 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
 >  {
->         unsigned long addr, len;
->         int rc;
-> diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-> index 34fb3431a8f3..292a5c40bd0c 100644
-> --- a/include/acpi/ghes.h
-> +++ b/include/acpi/ghes.h
-> @@ -71,7 +71,7 @@ int ghes_register_vendor_record_notifier(struct notifier_block *nb);
->  void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
+>         int i;
+>
+> +       for (i = 0; i < ARRAY_SIZE(override_table); i++) {
+> +               const struct irq_override_cmp *entry = &override_table[i];
+> +
+> +               if (dmi_check_system(entry->system) &&
+> +                   entry->irq == gsi &&
+> +                   entry->triggering == triggering &&
+> +                   entry->polarity == polarity &&
+> +                   entry->shareable == shareable)
+> +                       return entry->override;
+> +       }
+> +
+>  #ifdef CONFIG_X86
+>         /*
+>          * IRQ override isn't needed on modern AMD Zen systems and
+> @@ -452,17 +477,6 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+>                 return false;
 >  #endif
 >
-> -int ghes_estatus_pool_init(int num_ghes);
-> +int ghes_estatus_pool_init(unsigned int num_ghes);
->
->  /* From drivers/edac/ghes_edac.c */
+> -       for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
+> -               const struct irq_override_cmp *entry = &skip_override_table[i];
+> -
+> -               if (dmi_check_system(entry->system) &&
+> -                   entry->irq == gsi &&
+> -                   entry->triggering == triggering &&
+> -                   entry->polarity == polarity &&
+> -                   entry->shareable == shareable)
+> -                       return false;
+> -       }
+> -
+>         return true;
+>  }
 >
 > --
 
-Applied as 6.1 material with some edits in the subject and changelog.
-
-Thanks!
+Applied along with the [2/2] as 6.1-rc material, thanks!
