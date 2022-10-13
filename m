@@ -2,159 +2,209 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5F55FD55A
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 09:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A237D5FD87F
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 13:38:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbiJMHGA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Oct 2022 03:06:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54362 "EHLO
+        id S229556AbiJMLiq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Oct 2022 07:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229701AbiJMHF7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 03:05:59 -0400
-Received: from out30-56.freemail.mail.aliyun.com (out30-56.freemail.mail.aliyun.com [115.124.30.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248E4E8ABD;
-        Thu, 13 Oct 2022 00:05:57 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R971e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0VS2gtbG_1665644752;
-Received: from 30.13.165.162(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VS2gtbG_1665644752)
-          by smtp.aliyun-inc.com;
-          Thu, 13 Oct 2022 15:05:54 +0800
-Message-ID: <8313d192-f103-35fc-2931-de0a8eb927ff@linux.alibaba.com>
-Date:   Thu, 13 Oct 2022 15:05:49 +0800
+        with ESMTP id S229518AbiJMLip (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 07:38:45 -0400
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B0BC4C12;
+        Thu, 13 Oct 2022 04:38:44 -0700 (PDT)
+Received: by mail-qk1-f176.google.com with SMTP id f8so876388qkg.3;
+        Thu, 13 Oct 2022 04:38:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uWN7H2+6MSzS1ZPwajWdcQHk62/gsP/CgW++ecohkHU=;
+        b=3bocm3actAI1etw9mt6eK2YbAOMxyzikpvzEj8orQ0adaEqjjpQZW1gzZ2qxV8jFMR
+         qOrkM30igjOOEgVXR6WecoQ6bZgPRnU/Oz87ZnR5ZMmASyX7FLitN7Hi9E7Jq8+wtpcT
+         gtSmhYCt1kngA/WvdmoV8ikOe2CClK1Jj3JZ7n2Qi1F5VPwO5ia8WvGAw6Bs1pXQ/7MA
+         1iENGjp901guCsijdA4wzZFrCPvhBtyD4yddHxYAwjRetqoaYeWDulFjxFisBGwe3EYH
+         ICmpkk68k5eTUS8G+BkyE565Df4AFVGtQCWsFlMDdGkPi5u4NGtE4u20c2UwZuJwczab
+         1Rww==
+X-Gm-Message-State: ACrzQf19Mj0NgtiuITzz6lVnLEPKKB8z6+Dyeuesocqx6xUBStFpA0TT
+        VFFHBuVdyerQy58U9npS0AXG2NnJAOGgQ/rf5MeaR90zISw=
+X-Google-Smtp-Source: AMsMyM488hY3nbJvSEY2w/yu3ij8jcZa7xeyCHDQ5NtcwtOruuTRb0PgDOzjakcpFJPu4RWlvx7mZUH0igQaPY2kEIU=
+X-Received: by 2002:a05:620a:2988:b0:6ce:cc3f:73b9 with SMTP id
+ r8-20020a05620a298800b006cecc3f73b9mr23607372qkp.9.1665661123781; Thu, 13 Oct
+ 2022 04:38:43 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.13.0
-Subject: Re: [PATCH v2] ACPI: APEI: do not add task_work to kernel thread to
- avoid memory leak
-Content-Language: en-US
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     "Luck, Tony" <tony.luck@intel.com>
-Cc:     Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
-        <naoya.horiguchi@nec.com>,
-        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stable <stable@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
-        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
-References: <20220916050535.26625-1-xueshuai@linux.alibaba.com>
- <20220924074953.83064-1-xueshuai@linux.alibaba.com>
- <CAJZ5v0jAZC81Peowy0iKuq+cy68tyn0OK3a--nW=wWMbRojcxg@mail.gmail.com>
- <f0735218-7730-c275-8cee-38df9bec427d@linux.alibaba.com>
- <SJ1PR11MB6083FC6B8D64933C573CAB64FC529@SJ1PR11MB6083.namprd11.prod.outlook.com>
- <79cb9aee-9ad5-00f4-3f7a-9c409f502685@linux.alibaba.com>
-In-Reply-To: <79cb9aee-9ad5-00f4-3f7a-9c409f502685@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-10.4 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+References: <5629262.DvuYhMxLoT@kreacher> <20221012205757.GA3118709@bhelgaas>
+In-Reply-To: <20221012205757.GA3118709@bhelgaas>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 13 Oct 2022 13:38:31 +0200
+Message-ID: <CAJZ5v0gWG1qVzwSy19SSqFmxL7NZRf1pkLR_buPoyCcj4f0FLw@mail.gmail.com>
+Subject: Re: [PATCH] rtc: rtc-cmos: Fix event handler registration ordering issue
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-rtc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Mel Gorman <mgorman@techsingularity.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Tony,
+On Wed, Oct 12, 2022 at 11:00 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Wed, Oct 12, 2022 at 08:07:01PM +0200, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Because acpi_install_fixed_event_handler() enables the event
+> > automatically on success, it is incorrect to call it before the
+> > handler routine passed to it is ready to handle events.
+> >
+> > Unfortunately, the rtc-cmos driver does exactly the incorrect thing
+> > by calling cmos_wake_setup(), which passes rtc_handler() to
+> > acpi_install_fixed_event_handler(), before cmos_do_probe(), because
+> > rtc_handler() uses dev_get_drvdata() to get to the cmos object
+> > pointer and the driver data pointer is only populated in
+> > cmos_do_probe().
+> >
+> > This leads to a NULL pointer dereference in rtc_handler() on boot
+> > if the RTC fixed event happens to be active at the init time.
+> >
+> > To address this issue, change the initialization ordering of the
+> > driver so that cmos_wake_setup() is always called after a successful
+> > cmos_do_probe() call.
+> >
+> > While at it, change cmos_pnp_probe() to call cmos_do_probe() after
+> > the initial if () statement used for computing the IRQ argument to
+> > be passed to cmos_do_probe() which is cleaner than calling it in
+> > each branch of that if () (local variable "irq" can be of type int,
+> > because it is passed to that function as an argument of type int).
+> >
+> > Note that commit 6492fed7d8c9 ("rtc: rtc-cmos: Do not check
+> > ACPI_FADT_LOW_POWER_S0") caused this issue to affect a larger number
+> > of systems, because previously it only affected systems with
+> > ACPI_FADT_LOW_POWER_S0 set, but it is present regardless of that
+> > commit.
+> >
+> > Fixes: 6492fed7d8c9 ("rtc: rtc-cmos: Do not check ACPI_FADT_LOW_POWER_S0")
+> > Fixes: a474aaedac99 ("rtc-cmos: move wake setup from ACPI glue into RTC driver")
+> > Link: https://lore.kernel.org/linux-acpi/20221010141630.zfzi7mk7zvnmclzy@techsingularity.net/
+> > Reported-by: Mel Gorman <mgorman@techsingularity.net>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+>
+> Yep, I blew it with a474aaedac99, sorry about that.
+>
+> Possibly could call cmos_wake_setup() from cmos_do_probe() instead of
+> from cmos_pnp_probe() and cmos_platform_probe()?
 
-在 2022/9/27 AM11:50, Shuai Xue 写道:
-> 
-> 
-> 在 2022/9/26 PM11:20, Luck, Tony 写道:
->>>>
->>>> -               if (task_work_pending && current->mm != &init_mm) {
->>>> +               if (task_work_pending && current->mm) {
->>>>                         estatus_node->task_work.func = ghes_kick_task_work;
->>>>                         estatus_node->task_work_cpu = smp_processor_id();
->>>>                         ret = task_work_add(current, &estatus_node->task_work,
->>
->> It seems that you are getting errors reported while running kernel threads. This fix avoids
->> pointlessly adding "task_work" that will never be processed because kernel threads never
->> return to user mode.
-> 
-> Yes, you are right.
-> 
->>
->> But maybe something else needs to be done? The code was, and with this fix still is,
->> taking no action for the error. That doesn't seem right.
-> 
-> Sorry, I don't think so. As far as I know, on Arm platform, hardware error can signal
-> exceptions including:
-> 
-> - Synchronous External Abort (SEA), e,g. data abort or instruction abort
-> - Asynchronous External Abort (signalled as SErrors), e,g. L2 can generate SError for
->   error responses from the interconnect for a Device or Non-cacheable store
-> - Fault Handling and Error Recovery interrupts: DDR mainline/demand/scrubber error interrupt
-> 
-> When the error signals asynchronous exceptions (SError or interrupt), any kind of thread can
-> be interrupted, including kernel thread. Because asynchronous exceptions are signaled in
-> background, the errors are detected outside of the current execution context.
-> 
-> The GHES driver always queues work to handle memory failure of a page in memory_failure_queue().
-> If a kernel thread is interrupted:
-> 
-> - Without this fix, the added task_work will never be processed so that the work will not
->   be canceled.
-> - With this fix, the task_work will not be added.
-> 
-> In a conclusion, the error will be handled in a kworker with or without this fix.
-> 
-> The point of fix is that:
-> 
-> - The condition is useless because it is always tree. And I think it is not the original patch
->   intends to do.
-> - The current code leads to memory leaks. The estatus_node will not be freed when task_work is
->   added to a kernel thread.
-> 
-> 
->>
->> Are you injecting errors to create this scenario? 
-> 
-> Yes, I am injecting error to create such scenario. After 200 injections, the ghes_estatus_pool
-> will run of memory and ghes_in_nmi_queue_one_entry() returns ENOMEM. Finally, a lot of unhandled
-> events may cause platform firmware to exceed some threshold and reboot.
-> 
->> What does your test do?
-> 
-> My injection includes two steps:
-> 
-> - mmap a device memory for userspace in a driver
-> - inject uc and trigger write like ras-tools does
-> 
-> I have opened source the code and you can find here[1]. It's forked from your repo and mainly based
-> on your code :)
-> 
-> By the way, do you have any plans to extend ras-tools to Arm platform. And is there a mail-list
-> for ras-tools? I send a mail to add test cases to ras-tools several weeks ago, but no response.
-> May your mailbox regards it as Spam.
-> 
+Sounds good.
 
-Thank you for your review, but I am still having problems with this question.
+I would prefer to send a separate patch for this on top of the
+$subject one, unless Alexandre wants me to do it all in one go.
 
-Do you have any interest to extend ras-tools to Arm platform? I forked a arm-devel branch[1]
-from your repo:
+Alexandre, what's your preference here?  Or would you prefer if I
+pushed this forward?
 
-- port X86 arch specific cases to Arm platform
-- add some common cases like hugetlb, thread and Arm specific cases like prefetch, strb, etc, which
-  are helpful to test hardware and firmware RAS problems we encountered.
+> Then there would be a single call site and it would be closer to the actual dependency on
+> dev_set_drvdata().  Either way is fine with me.
 
-I am pleasure to contribute these code to your upstream repo and looking forward to see a more
-powerful and cross platform tools to inject and debug RAS ability on both X86 and Arm platform.
+OK
 
-I really appreciate your great work, and look forward to your reply. Thank you.
+> Unrelated, but I happened to notice that pnp_irq() returns -1 for
+> failure, and this note suggests that possibly returning 0 would be
+> better:
+>
+>   https://lore.kernel.org/r/CAHk-=wg2Pkb9kbfbstbB91AJA2SF6cySbsgHG-iQMq56j3VTcA@mail.gmail.com
 
-Best Regards,
-Shuai
+Probably.
 
-> [1] https://gitee.com/anolis/ras-tools/tree/arm-devel
+In that case, though, it would be prudent to also explicitly discard
+IRQ resources where start is equal to 0.
 
-
-
-
-
-
+>
+> > ---
+> >  drivers/rtc/rtc-cmos.c |   29 +++++++++++++++++++----------
+> >  1 file changed, 19 insertions(+), 10 deletions(-)
+> >
+> > Index: linux-pm/drivers/rtc/rtc-cmos.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/rtc/rtc-cmos.c
+> > +++ linux-pm/drivers/rtc/rtc-cmos.c
+> > @@ -1352,10 +1352,10 @@ static void cmos_check_acpi_rtc_status(s
+> >
+> >  static int cmos_pnp_probe(struct pnp_dev *pnp, const struct pnp_device_id *id)
+> >  {
+> > -     cmos_wake_setup(&pnp->dev);
+> > +     int irq, ret;
+> >
+> >       if (pnp_port_start(pnp, 0) == 0x70 && !pnp_irq_valid(pnp, 0)) {
+> > -             unsigned int irq = 0;
+> > +             irq = 0;
+> >  #ifdef CONFIG_X86
+> >               /* Some machines contain a PNP entry for the RTC, but
+> >                * don't define the IRQ. It should always be safe to
+> > @@ -1364,13 +1364,17 @@ static int cmos_pnp_probe(struct pnp_dev
+> >               if (nr_legacy_irqs())
+> >                       irq = RTC_IRQ;
+> >  #endif
+> > -             return cmos_do_probe(&pnp->dev,
+> > -                             pnp_get_resource(pnp, IORESOURCE_IO, 0), irq);
+> >       } else {
+> > -             return cmos_do_probe(&pnp->dev,
+> > -                             pnp_get_resource(pnp, IORESOURCE_IO, 0),
+> > -                             pnp_irq(pnp, 0));
+> > +             irq = pnp_irq(pnp, 0);
+> >       }
+> > +
+> > +     ret = cmos_do_probe(&pnp->dev, pnp_get_resource(pnp, IORESOURCE_IO, 0), irq);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     cmos_wake_setup(&pnp->dev);
+> > +
+> > +     return 0;
+> >  }
+> >
+> >  static void cmos_pnp_remove(struct pnp_dev *pnp)
+> > @@ -1454,10 +1458,9 @@ static inline void cmos_of_init(struct p
+> >  static int __init cmos_platform_probe(struct platform_device *pdev)
+> >  {
+> >       struct resource *resource;
+> > -     int irq;
+> > +     int irq, ret;
+> >
+> >       cmos_of_init(pdev);
+> > -     cmos_wake_setup(&pdev->dev);
+> >
+> >       if (RTC_IOMAPPED)
+> >               resource = platform_get_resource(pdev, IORESOURCE_IO, 0);
+> > @@ -1467,7 +1470,13 @@ static int __init cmos_platform_probe(st
+> >       if (irq < 0)
+> >               irq = -1;
+> >
+> > -     return cmos_do_probe(&pdev->dev, resource, irq);
+> > +     ret = cmos_do_probe(&pdev->dev, resource, irq);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     cmos_wake_setup(&pdev->dev);
+> > +
+> > +     return 0;
+> >  }
+> >
+> >  static int cmos_platform_remove(struct platform_device *pdev)
+> >
+> >
+> >
