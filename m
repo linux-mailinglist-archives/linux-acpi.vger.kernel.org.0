@@ -2,172 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EC765FDF32
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 19:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3CC05FE173
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 20:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229459AbiJMRoA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Oct 2022 13:44:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54580 "EHLO
+        id S231916AbiJMSkN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Oct 2022 14:40:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbiJMRoA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 13:44:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CBAFE75F
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Oct 2022 10:43:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1665683037;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QBH16COFaMraurW5BQ03iXqdQmZGNr7B8EEvtpNgiJI=;
-        b=YSWFrNWKtF4kJBsFZ5mWul3+PzIJfX9O5OIeQtWk1tdsyN0tHaCUmfvM0OxuZfz51VhzuU
-        IMAXBpXXBwAe7A+dS0dMDHzdWZ+bTon5HnnY5regVOw+aV21F/5VF1HLGKGMngjRvOBh8X
-        IHWmcCJpaAZ/Tdm04jeF6qoMo4PfXJA=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-176-8pe7Bvd2M7OrCCjMJksnxg-1; Thu, 13 Oct 2022 13:43:56 -0400
-X-MC-Unique: 8pe7Bvd2M7OrCCjMJksnxg-1
-Received: by mail-ej1-f69.google.com with SMTP id hp41-20020a1709073e2900b0078e07dbf280so1232446ejc.7
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Oct 2022 10:43:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QBH16COFaMraurW5BQ03iXqdQmZGNr7B8EEvtpNgiJI=;
-        b=d4OriOJ46gmxSvd2D2A1a1P4Jn66ZLylzi1GSCNNyd3j16jXeZteCwfNJbOiN0cE73
-         jd/l6oIlLax1AAt4+gkt9kctBK65G6b7+e65ULa9Bln8QqoECjLA+PhnM3gq4FpSgYlU
-         JjYmc4iwODAXywbYE+V4qx9eWs/C7bRnkb759uoFKdqmrtz5zEdt3m49HRFZneSlapaN
-         PoUo/M3mU0bROVOT2FLqGeWS2/g969pJvpEeHJ+8L+F8MIYxew6tkXkDEIEkjZfqXgAo
-         elll+yABnIwigId+z/c1yqY14ss9xjyyfzi654rJkhGuaahzBY5mUDexnyUGipYx1vpf
-         pVIw==
-X-Gm-Message-State: ACrzQf0+/A0YjCJ8Rs0p/qAPapv5CZbneoIxyKUscEEeN1fJAhyHIGdV
-        SU0X++EMQRmHk3zZ5nSaH0/GNJHw+omwydmlAdiwz2rQNQ4uT9zfCla0v8ceZHEFKDSdcHx+VWg
-        ZueZSt6mrmQn4Qa7Jnvbl5w==
-X-Received: by 2002:a17:906:730f:b0:783:27c5:f65f with SMTP id di15-20020a170906730f00b0078327c5f65fmr706064ejc.142.1665683035230;
-        Thu, 13 Oct 2022 10:43:55 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM4TI1HGxAYeVRvzihjtOwK6kR/Ee30FGpow5fdE6Sphw8K3mxV7xrKyYQrsqwtODQKUdEfEVQ==
-X-Received: by 2002:a17:906:730f:b0:783:27c5:f65f with SMTP id di15-20020a170906730f00b0078327c5f65fmr706050ejc.142.1665683035032;
-        Thu, 13 Oct 2022 10:43:55 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id t14-20020a05640203ce00b00459e3a3f3ddsm177610edw.79.2022.10.13.10.43.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Oct 2022 10:43:54 -0700 (PDT)
-Message-ID: <fb54891c-cf60-5772-eeb5-28ad6ec2a3ae@redhat.com>
-Date:   Thu, 13 Oct 2022 19:43:53 +0200
+        with ESMTP id S232018AbiJMSjs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 14:39:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7D5E17FD71;
+        Thu, 13 Oct 2022 11:37:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BE05AB82057;
+        Thu, 13 Oct 2022 17:59:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613D9C4347C;
+        Thu, 13 Oct 2022 17:59:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665683948;
+        bh=Spdv+2lrJkBqhfsnk88zlDhBAUgIqFGkLfllL7IN2sg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MIaa8bpmYCGfdVNampNXunlKxIHQPlzD2kWR7n8ok/EkhHLoIuONPR/onhk7QIIIv
+         ctZY4dnYUOnywKvjsz2bAXwUzG7ZM+bmH0ZBq4VSh9T9rI+IG1PjhzXa78/ewVRq+R
+         K0RQ7xo5HX0Pn8CucEX6EFBwmeWgm/Ki89KHJtOX52EOA+QdzsGgRHSMxibYbwGH1D
+         +DwXV5F9ZAQ+K+V64W/u633MX2Ca7yuhNi/NRzykrHL4X4Mf3+VaVGpuWV+ywn5jRQ
+         DfOd1TUmND2CpaZUj57BYTqgvgx/DgtkCyMoOduZjDyTCg+diu1OmnhRq4TvFWzSj1
+         nrY3igcBcs9GQ==
+Date:   Thu, 13 Oct 2022 13:59:07 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Arvid Norlander <lkml@vorpal.se>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.19 06/10] ACPI: video: Change
+ disable_backlight_sysfs_if quirks to acpi_backlight=native
+Message-ID: <Y0hR65HUnNmGz1B4@sashalap>
+References: <20221009235746.1232129-1-sashal@kernel.org>
+ <20221009235746.1232129-6-sashal@kernel.org>
+ <f634ad7f-92f0-ee22-8a9a-51e1852f6826@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [RFC v3 0/4] ACPI[CA]: fix ECDT EC probe ordering issues
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Andy Shevchenko <andy@kernel.org>, kai.heng.feng@canonical.com,
-        =?UTF-8?Q?Johannes_Pen=c3=9fel?= <johannespenssel@posteo.net>,
-        linux-acpi@vger.kernel.org, devel@acpica.org
-References: <20221003144214.345279-1-hdegoede@redhat.com>
- <CAJZ5v0gaCYVTSk2wCBVEj9xXCMjtt=Ce8t88Me1kb_MCAuYfBw@mail.gmail.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0gaCYVTSk2wCBVEj9xXCMjtt=Ce8t88Me1kb_MCAuYfBw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <f634ad7f-92f0-ee22-8a9a-51e1852f6826@redhat.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, Oct 10, 2022 at 09:36:53AM +0200, Hans de Goede wrote:
+>Hi,
+>
+>On 10/10/22 01:57, Sasha Levin wrote:
+>> From: Hans de Goede <hdegoede@redhat.com>
+>>
+>> [ Upstream commit c5b94f5b7819348c59f9949b2b75c341a114cdd4 ]
+>>
+>> Some Toshibas have a broken acpi-video interface for brightness control
+>> and need a special firmware call on resume to turn the panel back on.
+>> So far these have been using the disable_backlight_sysfs_if workaround
+>> to deal with this.
+>>
+>> The recent x86/acpi backlight refactoring has broken this workaround:
+>> 1. This workaround relies on acpi_video_get_backlight_type() returning
+>>    acpi_video so that the acpi_video code actually runs; and
+>> 2. this relies on the actual native GPU driver to offer the sysfs
+>>    backlight interface to userspace.
+>>
+>> After the refactor this breaks since the native driver will no
+>> longer register its backlight-device if acpi_video_get_backlight_type()
+>> does not return native and making it return native breaks 1.
+>>
+>> Keeping the acpi_video backlight handling on resume active, while not
+>> using it to set the brightness, is necessary because it does a _BCM
+>> call on resume which is necessary to turn the panel back on on resume.
+>>
+>> Looking at the DSDT shows that this _BCM call results in a Toshiba
+>> HCI_SET HCI_LCD_BRIGHTNESS call, which turns the panel back on.
+>>
+>> This kind of special vendor specific handling really belongs in
+>> the vendor specific acpi driver. An earlier patch in this series
+>> modifies toshiba_acpi to make the necessary HCI_SET call on resume
+>> on affected models.
+>>
+>> With toshiba_acpi taking care of the HCI_SET call on resume,
+>> the acpi_video code no longer needs to call _BCM on resume.
+>>
+>> So instead of using the (now broken) disable_backlight_sysfs_if
+>> workaround, simply setting acpi_backlight=native to disable
+>> the broken apci-video interface is sufficient fix things now.
+>>
+>> After this there are no more users of the disable_backlight_sysfs_if
+>> flag and as discussed above the flag also no longer works as intended,
+>> so remove the disable_backlight_sysfs_if flag entirely.
+>>
+>> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>> Tested-by: Arvid Norlander <lkml@vorpal.se>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This patch goes hand in hand with:
+>
+>commit 3cb1f40dfdc3 ("drivers/platform: toshiba_acpi: Call HCI_PANEL_POWER_ON on resume on some models")
+>
+>and without that commit also being present it will cause a regression on
+>the quirked Toshiba models.
+>
+>This really is part of the big x86/ACPI backlight handling refactor which
+>has landed in 6.1 and as such is not intended for older kernels, please
+>drop this from the stable series.
 
-On 10/13/22 18:53, Rafael J. Wysocki wrote:
-> Hi Hans,
-> 
-> On Mon, Oct 3, 2022 at 4:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi All,
->>
->> Here is v3 of my series fixing some ECDT EC probe ordering issues which
->> are causing issues om some laptops:
->>
->> https://bugzilla.kernel.org/show_bug.cgi?id=214899
->>
->> This is a RFC because fixing this requires some ACPICA changes which
->> obviously need to go upstream through the ACPICA project:
->> https://github.com/acpica/acpica/pull/786
-> 
-> I've just approved your pull request.
+Will do, thanks!
 
-Thanks.
-
-> Also, as soon as it gets merged, you can resubmit the series with a
-> proper ACPICA  commit ID and I will be able to apply the patches right
-> away then.
-
-Will do.
-
-Regards,
-
-Hans
-
-
-
->> The problem this fixed is best described by the commit message of patch 4:
->>
->> ACPI-2.0 says that the EC OpRegion handler must be available immediately
->> (like the standard default OpRegion handlers):
->>
->> Quoting from the ACPI spec version 6.3: "6.5.4 _REG (Region) ...
->> 2. OSPM must make Embedded Controller operation regions, accessed via
->> the Embedded Controllers described in ECDT, available before executing
->> any control method. These operation regions may become inaccessible
->> after OSPM runs _REG(EmbeddedControl, 0)."
->>
->> So acpi_bus_init() calls acpi_ec_ecdt_probe(), which calls
->> acpi_install_address_space_handler() to install the EC's OpRegion
->> handler, early on.
->>
->> This not only installs the OpRegion handler, but also calls the EC's
->> _REG method. The _REG method call is a problem because it may rely on
->> initialization done by the _INI methods of one of the PCI / _SB root devs,
->> see for example: https://bugzilla.kernel.org/show_bug.cgi?id=214899 .
->>
->> Generally speaking _REG methods are executed when the ACPI-device they
->> are part of has a driver bound to it. Where as _INI methods must be
->> executed at table load time (according to the spec). The problem here
->> is that the early acpi_install_address_space_handler() call causes
->> the _REG handler to run too early.
->>
->> To allow fixing this the ACPICA code now allows to split the OpRegion
->> handler installation and the executing of _REG into 2 separate steps.
->>
->> This commit uses this ACPICA functionality to fix the EC probe ordering
->> by delaying the executing of _REG for ECDT described ECs till the matching
->> EC device in the DSDT gets parsed and acpi_ec_add() for it gets called.
->> This moves the calling of _REG for the EC on devices with an ECDT to
->> the same point in time where it is called on devices without an ECDT table.
->>
->> Changes in v3:
->> - Add a prep patch to fix an indentation issue in Linux' acpixf.h to fix
->>   the patch from ACPICA's script not applying
->> - Add 2 new functions to ACPICA for this instead of a flags argument
->>   1. acpi_install_address_space_handler_no_reg()
->>   2. acpi_execute_reg_methods()
->> - Add a patch to fix EC handler removal in the ECDT case
->>
->> From my pov this series is ready for merging once the ACPICA changes
->> are accepted.
-> 
-> I agree, please resubmit as soon as the upstream ACPICA pull request
-> gets merged.
-> 
-> Thanks!
-> 
-
+-- 
+Thanks,
+Sasha
