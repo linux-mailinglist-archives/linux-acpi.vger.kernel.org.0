@@ -2,125 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3CC05FE173
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 20:40:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40D285FE179
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 20:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231916AbiJMSkN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Oct 2022 14:40:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44486 "EHLO
+        id S232080AbiJMSkY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Oct 2022 14:40:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232018AbiJMSjs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 14:39:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7D5E17FD71;
-        Thu, 13 Oct 2022 11:37:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BE05AB82057;
-        Thu, 13 Oct 2022 17:59:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613D9C4347C;
-        Thu, 13 Oct 2022 17:59:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665683948;
-        bh=Spdv+2lrJkBqhfsnk88zlDhBAUgIqFGkLfllL7IN2sg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MIaa8bpmYCGfdVNampNXunlKxIHQPlzD2kWR7n8ok/EkhHLoIuONPR/onhk7QIIIv
-         ctZY4dnYUOnywKvjsz2bAXwUzG7ZM+bmH0ZBq4VSh9T9rI+IG1PjhzXa78/ewVRq+R
-         K0RQ7xo5HX0Pn8CucEX6EFBwmeWgm/Ki89KHJtOX52EOA+QdzsGgRHSMxibYbwGH1D
-         +DwXV5F9ZAQ+K+V64W/u633MX2Ca7yuhNi/NRzykrHL4X4Mf3+VaVGpuWV+ywn5jRQ
-         DfOd1TUmND2CpaZUj57BYTqgvgx/DgtkCyMoOduZjDyTCg+diu1OmnhRq4TvFWzSj1
-         nrY3igcBcs9GQ==
-Date:   Thu, 13 Oct 2022 13:59:07 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Arvid Norlander <lkml@vorpal.se>, rafael@kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 4.19 06/10] ACPI: video: Change
- disable_backlight_sysfs_if quirks to acpi_backlight=native
-Message-ID: <Y0hR65HUnNmGz1B4@sashalap>
-References: <20221009235746.1232129-1-sashal@kernel.org>
- <20221009235746.1232129-6-sashal@kernel.org>
- <f634ad7f-92f0-ee22-8a9a-51e1852f6826@redhat.com>
+        with ESMTP id S229821AbiJMSjv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 14:39:51 -0400
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524E7CBFEA;
+        Thu, 13 Oct 2022 11:37:49 -0700 (PDT)
+Received: by mail-qt1-f177.google.com with SMTP id h15so2283454qtu.2;
+        Thu, 13 Oct 2022 11:37:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CZmvxazc2sXXNdPho7QU50pFfOmoWil5WJIRMNVjEqw=;
+        b=2y7Tj4TdF4OVWkIvv1oU5YVa2okYkUNOucAgqK+mvA0PdBomdmEcfRpNNOd1xYDBKT
+         jQ++U+nXf4JJ7WDU83qFW3sxnhyEcB2/ZJP6V+P8ssymJ8sFEPZqVJgn1e3LLjle77PH
+         QXFnfvBbCajf6xbvhQtVzZ1lqtNi33H/DBwMidSw1/gH+O7wbfEbwqA4Fzt9nrG2ESaH
+         IvvEYIn0GXwRSBnAz/Yoi195eGIttaPIkH80Kntw4KeYPH17aPhAbobJGUWz/8Tyai3i
+         1LFXCDYWUHlVy/TTErZh57eE7hOh03T/PSFi9QvNza0M9kFRb/WHLUN3wW31D6QRrYee
+         I14g==
+X-Gm-Message-State: ACrzQf1ADNnko6UtqMFPhdDWrBmQC2leS0NsXBWysnbooIMzn29laa1M
+        xbtnPyGmMHRMsPRLy/1ZbFxwemPZ0zs2WPXUCnzI40pW
+X-Google-Smtp-Source: AMsMyM6N+rqJd383wNo0tTFwOWxlQOUXB+NdPnp+xo591oKu26Yb32t9/qC65lbULR/MeM3lMDHuw+Bkc7qA6i6cb8w=
+X-Received: by 2002:a05:620a:468c:b0:6ec:5c7f:8a3d with SMTP id
+ bq12-20020a05620a468c00b006ec5c7f8a3dmr978896qkb.285.1665686194490; Thu, 13
+ Oct 2022 11:36:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <f634ad7f-92f0-ee22-8a9a-51e1852f6826@redhat.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221011122600.620690-1-bagasdotme@gmail.com>
+In-Reply-To: <20221011122600.620690-1-bagasdotme@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 13 Oct 2022 20:36:23 +0200
+Message-ID: <CAJZ5v0jCX=+XwWRwyVv+VxHQHR2buRNLH5Fw19pR4mVpzi95bQ@mail.gmail.com>
+Subject: Re: [PATCH] Documentation: ACPI: Prune DSDT override documentation
+ from index
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 10, 2022 at 09:36:53AM +0200, Hans de Goede wrote:
->Hi,
+On Tue, Oct 11, 2022 at 2:26 PM Bagas Sanjaya <bagasdotme@gmail.com> wrote:
 >
->On 10/10/22 01:57, Sasha Levin wrote:
->> From: Hans de Goede <hdegoede@redhat.com>
->>
->> [ Upstream commit c5b94f5b7819348c59f9949b2b75c341a114cdd4 ]
->>
->> Some Toshibas have a broken acpi-video interface for brightness control
->> and need a special firmware call on resume to turn the panel back on.
->> So far these have been using the disable_backlight_sysfs_if workaround
->> to deal with this.
->>
->> The recent x86/acpi backlight refactoring has broken this workaround:
->> 1. This workaround relies on acpi_video_get_backlight_type() returning
->>    acpi_video so that the acpi_video code actually runs; and
->> 2. this relies on the actual native GPU driver to offer the sysfs
->>    backlight interface to userspace.
->>
->> After the refactor this breaks since the native driver will no
->> longer register its backlight-device if acpi_video_get_backlight_type()
->> does not return native and making it return native breaks 1.
->>
->> Keeping the acpi_video backlight handling on resume active, while not
->> using it to set the brightness, is necessary because it does a _BCM
->> call on resume which is necessary to turn the panel back on on resume.
->>
->> Looking at the DSDT shows that this _BCM call results in a Toshiba
->> HCI_SET HCI_LCD_BRIGHTNESS call, which turns the panel back on.
->>
->> This kind of special vendor specific handling really belongs in
->> the vendor specific acpi driver. An earlier patch in this series
->> modifies toshiba_acpi to make the necessary HCI_SET call on resume
->> on affected models.
->>
->> With toshiba_acpi taking care of the HCI_SET call on resume,
->> the acpi_video code no longer needs to call _BCM on resume.
->>
->> So instead of using the (now broken) disable_backlight_sysfs_if
->> workaround, simply setting acpi_backlight=native to disable
->> the broken apci-video interface is sufficient fix things now.
->>
->> After this there are no more users of the disable_backlight_sysfs_if
->> flag and as discussed above the flag also no longer works as intended,
->> so remove the disable_backlight_sysfs_if flag entirely.
->>
->> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> Tested-by: Arvid Norlander <lkml@vorpal.se>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Commit d206cef03c4827 ("ACPI: docs: Drop useless DSDT override documentation")
+> removes useless DSDT override documentation. However, the commit forgets
+> to prune the documentation entry from table of contents of ACPI admin
+> guide documentation, hence triggers Sphinx warning:
 >
->This patch goes hand in hand with:
+> Documentation/admin-guide/acpi/index.rst:8: WARNING: toctree contains reference to nonexisting document 'admin-guide/acpi/dsdt-override'
 >
->commit 3cb1f40dfdc3 ("drivers/platform: toshiba_acpi: Call HCI_PANEL_POWER_ON on resume on some models")
+> Prune the entry to fix the warning.
 >
->and without that commit also being present it will cause a regression on
->the quirked Toshiba models.
+> Fixes: d206cef03c4827 ("ACPI: docs: Drop useless DSDT override documentation")
+> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> ---
+>  Documentation/admin-guide/acpi/index.rst | 1 -
+>  1 file changed, 1 deletion(-)
 >
->This really is part of the big x86/ACPI backlight handling refactor which
->has landed in 6.1 and as such is not intended for older kernels, please
->drop this from the stable series.
+> diff --git a/Documentation/admin-guide/acpi/index.rst b/Documentation/admin-guide/acpi/index.rst
+> index 71277689ad97f4..b078fdb8f4c934 100644
+> --- a/Documentation/admin-guide/acpi/index.rst
+> +++ b/Documentation/admin-guide/acpi/index.rst
+> @@ -9,7 +9,6 @@ the Linux ACPI support.
+>     :maxdepth: 1
+>
+>     initrd_table_override
+> -   dsdt-override
+>     ssdt-overlays
+>     cppc_sysfs
+>     fan_performance_states
+>
+> base-commit: 27bc50fc90647bbf7b734c3fc306a5e61350da53
+> --
 
-Will do, thanks!
-
--- 
-Thanks,
-Sasha
+Applied as 6.1-rc material, thanks!
