@@ -2,120 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A1F25FD541
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 08:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE5F55FD55A
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Oct 2022 09:06:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229460AbiJMGxw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Oct 2022 02:53:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57466 "EHLO
+        id S229607AbiJMHGA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Oct 2022 03:06:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbiJMGxv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 02:53:51 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113B9326D5
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Oct 2022 23:53:50 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ois5w-0002d0-KZ; Thu, 13 Oct 2022 08:53:28 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ois5v-001EpY-KH; Thu, 13 Oct 2022 08:53:27 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ois5u-007cJP-Tk; Thu, 13 Oct 2022 08:53:26 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>, linux-acpi@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: [PATCH 2/2] ACPI: APEI: Warn loudly on unsuccessful driver unbind
-Date:   Thu, 13 Oct 2022 08:44:59 +0200
-Message-Id: <20221013064459.121933-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20221013064459.121933-1-u.kleine-koenig@pengutronix.de>
-References: <20221013064459.121933-1-u.kleine-koenig@pengutronix.de>
+        with ESMTP id S229701AbiJMHF7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Oct 2022 03:05:59 -0400
+Received: from out30-56.freemail.mail.aliyun.com (out30-56.freemail.mail.aliyun.com [115.124.30.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248E4E8ABD;
+        Thu, 13 Oct 2022 00:05:57 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R971e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0VS2gtbG_1665644752;
+Received: from 30.13.165.162(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VS2gtbG_1665644752)
+          by smtp.aliyun-inc.com;
+          Thu, 13 Oct 2022 15:05:54 +0800
+Message-ID: <8313d192-f103-35fc-2931-de0a8eb927ff@linux.alibaba.com>
+Date:   Thu, 13 Oct 2022 15:05:49 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.13.0
+Subject: Re: [PATCH v2] ACPI: APEI: do not add task_work to kernel thread to
+ avoid memory leak
+Content-Language: en-US
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
+        <naoya.horiguchi@nec.com>,
+        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stable <stable@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
+        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+References: <20220916050535.26625-1-xueshuai@linux.alibaba.com>
+ <20220924074953.83064-1-xueshuai@linux.alibaba.com>
+ <CAJZ5v0jAZC81Peowy0iKuq+cy68tyn0OK3a--nW=wWMbRojcxg@mail.gmail.com>
+ <f0735218-7730-c275-8cee-38df9bec427d@linux.alibaba.com>
+ <SJ1PR11MB6083FC6B8D64933C573CAB64FC529@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <79cb9aee-9ad5-00f4-3f7a-9c409f502685@linux.alibaba.com>
+In-Reply-To: <79cb9aee-9ad5-00f4-3f7a-9c409f502685@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1957; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=atVJuSjcVnfDbW/uDQEir6CC+1Y9UD9A/dVOx9diJ1g=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjR7PnEiDIp11f+0Nawz4yaY1JubYJGw1j8T2wSvuW mw/12JKJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY0ez5wAKCRDB/BR4rcrsCTEYB/ 4piJmq5j181mzKeFR1rGU60K2imMQhByOddMzR7SQMGfknFMjHXAqy+mVZX9tKCtuFx4ugXDhwb+OR yyFr1EPjfcADt5/DLNNmkLiSivVL687bWJUF0MFUEICcBYR3epMA37CPaYTpEnwXGmruHzs3pcIuQy oM3uFDj0QTm6ydwt806v6G0ufVN5pPXak4Jr8z52yV5urlRtTGdAovCtorVMa1NnNCRh3CmhUyb8I/ qlzVSJN6ZNzaPB2wX/MocUJKw2IIuNCUu5Ljil2Ov6ib6N4oH1k3omLcRmys3kDE7p//bsGkKFh+nA aAFCcSv4KpLd+/wOZthlO5YRn/oeBa
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-10.4 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If the remove callback failed, it leaves some unfreed resources behind
-that will never be cleared. I didn't manage to understand the driver
-good enough to judge how critical that really is.
+Hi, Tony,
 
-This patch is part of an effort to change the remove callbacks for
-platform devices to return void in the hope this will prevent the wrong
-assumption that returning an error code from .remove() is proper error
-handling.
+在 2022/9/27 AM11:50, Shuai Xue 写道:
+> 
+> 
+> 在 2022/9/26 PM11:20, Luck, Tony 写道:
+>>>>
+>>>> -               if (task_work_pending && current->mm != &init_mm) {
+>>>> +               if (task_work_pending && current->mm) {
+>>>>                         estatus_node->task_work.func = ghes_kick_task_work;
+>>>>                         estatus_node->task_work_cpu = smp_processor_id();
+>>>>                         ret = task_work_add(current, &estatus_node->task_work,
+>>
+>> It seems that you are getting errors reported while running kernel threads. This fix avoids
+>> pointlessly adding "task_work" that will never be processed because kernel threads never
+>> return to user mode.
+> 
+> Yes, you are right.
+> 
+>>
+>> But maybe something else needs to be done? The code was, and with this fix still is,
+>> taking no action for the error. That doesn't seem right.
+> 
+> Sorry, I don't think so. As far as I know, on Arm platform, hardware error can signal
+> exceptions including:
+> 
+> - Synchronous External Abort (SEA), e,g. data abort or instruction abort
+> - Asynchronous External Abort (signalled as SErrors), e,g. L2 can generate SError for
+>   error responses from the interconnect for a Device or Non-cacheable store
+> - Fault Handling and Error Recovery interrupts: DDR mainline/demand/scrubber error interrupt
+> 
+> When the error signals asynchronous exceptions (SError or interrupt), any kind of thread can
+> be interrupted, including kernel thread. Because asynchronous exceptions are signaled in
+> background, the errors are detected outside of the current execution context.
+> 
+> The GHES driver always queues work to handle memory failure of a page in memory_failure_queue().
+> If a kernel thread is interrupted:
+> 
+> - Without this fix, the added task_work will never be processed so that the work will not
+>   be canceled.
+> - With this fix, the task_work will not be added.
+> 
+> In a conclusion, the error will be handled in a kworker with or without this fix.
+> 
+> The point of fix is that:
+> 
+> - The condition is useless because it is always tree. And I think it is not the original patch
+>   intends to do.
+> - The current code leads to memory leaks. The estatus_node will not be freed when task_work is
+>   added to a kernel thread.
+> 
+> 
+>>
+>> Are you injecting errors to create this scenario? 
+> 
+> Yes, I am injecting error to create such scenario. After 200 injections, the ghes_estatus_pool
+> will run of memory and ghes_in_nmi_queue_one_entry() returns ENOMEM. Finally, a lot of unhandled
+> events may cause platform firmware to exceed some threshold and reboot.
+> 
+>> What does your test do?
+> 
+> My injection includes two steps:
+> 
+> - mmap a device memory for userspace in a driver
+> - inject uc and trigger write like ras-tools does
+> 
+> I have opened source the code and you can find here[1]. It's forked from your repo and mainly based
+> on your code :)
+> 
+> By the way, do you have any plans to extend ras-tools to Arm platform. And is there a mail-list
+> for ras-tools? I send a mail to add test cases to ras-tools several weeks ago, but no response.
+> May your mailbox regards it as Spam.
+> 
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/acpi/apei/ghes.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+Thank you for your review, but I am still having problems with this question.
 
-Hello,
+Do you have any interest to extend ras-tools to Arm platform? I forked a arm-devel branch[1]
+from your repo:
 
-on a side note: The remove callback calls (in some cases) free_irq() for
-a shared interrupt. A requirement in this case is to disable the
-device's interrupt beforehand. It's not obvious (to me that is) that
-said irq is disabled here. This is another opportunity for ugly things
-to happen.
+- port X86 arch specific cases to Arm platform
+- add some common cases like hugetlb, thread and Arm specific cases like prefetch, strb, etc, which
+  are helpful to test hardware and firmware RAS problems we encountered.
 
-Best regards
-Uwe
+I am pleasure to contribute these code to your upstream repo and looking forward to see a more
+powerful and cross platform tools to inject and debug RAS ability on both X86 and Arm platform.
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 307fbb97a116..78d2e4df74ee 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1393,7 +1393,7 @@ static int ghes_probe(struct platform_device *ghes_dev)
- 	return rc;
- }
- 
--static int ghes_remove(struct platform_device *ghes_dev)
-+static int _ghes_remove(struct platform_device *ghes_dev)
- {
- 	int rc;
- 	struct ghes *ghes;
-@@ -1447,6 +1447,21 @@ static int ghes_remove(struct platform_device *ghes_dev)
- 	return 0;
- }
- 
-+static int ghes_remove(struct platform_device *ghes_dev)
-+{
-+	/*
-+	 * If _ghes_remove() returns an error, we're in trouble. Some of the
-+	 * cleanup was skipped then and this will never be catched up. So some
-+	 * resources will stay around, maybe even used although the platform
-+	 * device will be gone.
-+	 */
-+	int err = _ghes_remove(ghes_dev);
-+
-+	WARN_ON(err);
-+
-+	return 0;
-+}
-+
- static struct platform_driver ghes_platform_driver = {
- 	.driver		= {
- 		.name	= "GHES",
--- 
-2.37.2
+I really appreciate your great work, and look forward to your reply. Thank you.
+
+Best Regards,
+Shuai
+
+> [1] https://gitee.com/anolis/ras-tools/tree/arm-devel
+
+
+
+
+
 
