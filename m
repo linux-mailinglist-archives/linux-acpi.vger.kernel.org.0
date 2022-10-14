@@ -2,172 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E79625FF07A
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 16:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB39E5FF0D4
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 17:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbiJNOkV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Oct 2022 10:40:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35412 "EHLO
+        id S229498AbiJNPLb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Oct 2022 11:11:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbiJNOkS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 10:40:18 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928994A10D;
-        Fri, 14 Oct 2022 07:40:12 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id 187so4023614iov.10;
-        Fri, 14 Oct 2022 07:40:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gqNU3jyIKdP2LeNPDch6KlM75RQE0z3FFP6RVfvlhuM=;
-        b=bOZwXqjmw7sX8px0+Lq1iBo8giDDyRK0xiJO9OwdoKqeV1HX0S+EZc16NmoDZ3CreO
-         E3MsKXQNl8pOLt9wKYBMoUbK8LMoUsAhlVXPRyC3f/gN4Jhi9BrrjbNAspvqnLGhRNRi
-         67pzpwb+iThnF6UR0j3G/qaIxYxN0kn8C80RC3s1jnu899Zj4TgbKzaQgAB9ReHmRjcP
-         XrdIZgeVELwuXJEq7d9BEfq7PGtbOhbzc2+ObHITZOjbGju5C7nmlA5elNU1ObdBPamj
-         StKKbp+pt2rm7wAgOIJKzscSzTIZgFDpxUDFoXX7coX+Hq/+qzDa8Ki3cZiAi5jKCYZk
-         R5lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gqNU3jyIKdP2LeNPDch6KlM75RQE0z3FFP6RVfvlhuM=;
-        b=T1A9zeMOVz3u8HlogQ7adtD5wdK91XpPFuyTcMO2Szx7AxLNDuXa9h5HTu+5D1McgK
-         B7aaQTnuqQGzGywTy6nKgym7VLfA/a+/z4F2FVS6qqctdg64S9c8daXb6c1eTG/9RRN8
-         xUIXxAHDZc9aK5wP+YIBvEWBlYPLrSdb1Z/sXLTwjS0Qc98Nkx8mg8GBN62OWy0zoDbc
-         jcjuP/SXOURDZ5oEkzKwA/Dvte1x0W9tRUPYtIzqp6nalyGPeyXbMmhuDPGA8jkhKwB7
-         gXoMLX/Q4pCxLzUlSVgxm3u968ZR1Tounq2CJoBayRFE2tlKyIsrjlLQWa39yraMiw8n
-         yeEA==
-X-Gm-Message-State: ACrzQf0IQDh7H/5zf0TLsl34D2cZza5MyxQjR2aYijiIbxDmDG15/Y3R
-        snNDd8bCnTsv4oCb3/9umNFVwMMUw3NHkK91RvE=
-X-Google-Smtp-Source: AMsMyM7FQagympQoF02w3NjUUBCYlwsxqfgUO0qOaLc+FgBJvwDwQYVryxvfwBHP7BeFHYosXU5c9eiwuRqFCvXiKUI=
-X-Received: by 2002:a05:6602:1509:b0:69b:35ba:4720 with SMTP id
- g9-20020a056602150900b0069b35ba4720mr2422187iow.155.1665758411053; Fri, 14
- Oct 2022 07:40:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20221011171427.58891-1-masahiroy@kernel.org>
-In-Reply-To: <20221011171427.58891-1-masahiroy@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 14 Oct 2022 16:39:59 +0200
-Message-ID: <CANiq72kvaPGr=2S6J7q7gfEg_CauHUfhuLmABpktfUPfK+_Hvg@mail.gmail.com>
-Subject: Re: [PATCH v2] Remove Intel compiler support
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Nick Terrell <terrelln@fb.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ia64@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Len Brown <lenb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        with ESMTP id S229646AbiJNPLa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 11:11:30 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E7851A17;
+        Fri, 14 Oct 2022 08:11:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=hh+wBzcQrEQZd7oz4Q6gVYf4bZRMf51ALRJ27tTdtW4=; b=O/3G50wblRrnpDUyXmoXXLdlvN
+        crK8xdQtjqyx9tcej2PjhhSOzwaNegLchL7oSwsEmqYB+ml5y9xnCmQ+6p/t0PTC/H5QMVIRkf6wD
+        6GysgvUSXdUKvXQXiGSelKTbedcn0KeEBe5DCYp/LFESXcqF7cfQIAOklb2ycjT/U0P8rkrDaWnFY
+        Su77dGhlHJU3xefgPElAZrdZPS72kKbOH43+1irKcyGJ3x5vylvyhemIGtLztJOJECn7afhNa6ehl
+        8xbhIAIN7S3DsNvipbSO9EP25If9ZfJJTNQZgY1h6wTYyyu6wW7orhUyVQs6J1agFVaL8DwZiXsyR
+        jb6saz0Q==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1ojMKy-003RBT-3t; Fri, 14 Oct 2022 15:11:00 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 29E6430008D;
+        Fri, 14 Oct 2022 17:10:57 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 913BB2C1ACA78; Fri, 14 Oct 2022 17:10:57 +0200 (CEST)
+Date:   Fri, 14 Oct 2022 17:10:57 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Justin He <Justin.He@arm.com>, Borislav Petkov <bp@alien8.de>,
+        Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
         Robert Moore <robert.moore@intel.com>,
-        Tom Rix <trix@redhat.com>, devel@acpica.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Jan Luebbe <jlu@pengutronix.de>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Kani Toshi <toshi.kani@hpe.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
+Message-ID: <Y0l8AeQCrMLYW6g3@hirez.programming.kicks-ass.net>
+References: <20221010023559.69655-1-justin.he@arm.com>
+ <20221010023559.69655-7-justin.he@arm.com>
+ <Y0VGkUxpqiIzIFzB@zn.tnic>
+ <DBBPR08MB4538A9F831FA96545BA35D9FF7239@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <Y0WBklS1XpB5as+m@zn.tnic>
+ <DBBPR08MB4538D5A85F707632ACCB70A4F7229@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <Y0gUpoaUBKw/jjaD@zn.tnic>
+ <CAMj1kXGtTRaKCKJnsJ9XcRus+H16mO3TGsz+TFJLraOyvfciCA@mail.gmail.com>
+ <DBBPR08MB453845A7A15596F6FE96DBC9F7249@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <CAMj1kXHrP_P79ObKPFFgpN-X7gN+zaN1vKbsQZTJGvm=Uoav3g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHrP_P79ObKPFFgpN-X7gN+zaN1vKbsQZTJGvm=Uoav3g@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 11, 2022 at 7:16 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
-> index 898b3458b24a..9221302f6ae8 100644
-> --- a/include/linux/compiler_attributes.h
-> +++ b/include/linux/compiler_attributes.h
-> @@ -64,16 +64,10 @@
->   * compiler should see some alignment anyway, when the return value is
->   * massaged by 'flags = ptr & 3; ptr &= ~3;').
->   *
-> - * Optional: not supported by icc
-> - *
->   *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-assume_005faligned-function-attribute
->   * clang: https://clang.llvm.org/docs/AttributeReference.html#assume-aligned
->   */
-> -#if __has_attribute(__assume_aligned__)
-> -# define __assume_aligned(a, ...)       __attribute__((__assume_aligned__(a, ## __VA_ARGS__)))
-> -#else
-> -# define __assume_aligned(a, ...)
-> -#endif
-> +#define __assume_aligned(a, ...)        __attribute__((__assume_aligned__(a, ## __VA_ARGS__)))
+On Fri, Oct 14, 2022 at 04:31:37PM +0200, Ard Biesheuvel wrote:
+> +       if (slot != -1) {
+> +               /*
+> +                * Use release semantics to ensure that ghes_estatus_cached()
+> +                * running on another CPU will see the updated cache fields if
+> +                * it can see the new value of the pointer.
+> +                */
+> +               victim = xchg_release(ghes_estatus_caches + slot,
+> +                                     RCU_INITIALIZER(new_cache));
+> +
+> +               /*
+> +                * At this point, victim may point to a cached item different
+> +                * from the one based on which we selected the slot. Instead of
+> +                * going to the loop again to pick another slot, let's just
+> +                * drop the other item anyway: this may cause a false cache
+> +                * miss later on, but that won't cause any problems.
+> +                */
+> +               if (victim) {
+> +                       call_rcu(&rcu_dereference(victim)->rcu,
+> +                                ghes_estatus_cache_rcu_free);
+		}
 
-Thanks for cleaning the conditional inclusion here. I double-checked
-it is indeed available for both GCC and Clang current minimum versions
-just in case: https://godbolt.org/z/PxaqeEdcE.
+I think you can use unrcu_pointer() here instead, there should not be a
+data dependency since the ->rcu member itself should be otherwise unused
+(and if it were, we wouldn't care about its previous content anyway).
 
-> diff --git a/lib/zstd/common/compiler.h b/lib/zstd/common/compiler.h
-> index f5a9c70a228a..c281a6430cd4 100644
-> --- a/lib/zstd/common/compiler.h
-> +++ b/lib/zstd/common/compiler.h
-> @@ -116,7 +116,7 @@
->
->  /* vectorization
->   * older GCC (pre gcc-4.3 picked as the cutoff) uses a different syntax */
-> -#if !defined(__INTEL_COMPILER) && !defined(__clang__) && defined(__GNUC__)
-> +#if !defined(__clang__) && defined(__GNUC__)
->  #  if (__GNUC__ == 4 && __GNUC_MINOR__ > 3) || (__GNUC__ >= 5)
->  #    define DONT_VECTORIZE __attribute__((optimize("no-tree-vectorize")))
->  #  else
+But only Alpha cares about that distinction anyway, so *shrug*.
 
-These files come from upstream Zstandard -- should we keep those lines
-to minimize divergence?
-https://github.com/facebook/zstd/blob/v1.4.10/lib/common/compiler.h#L154.
+While I much like the xchg() variant; I still don't really fancy the
+verbage the sparse nonsense makes us do.
 
-Commit e0c1b49f5b67 ("lib: zstd: Upgrade to latest upstream zstd
-version 1.4.10") is the latest upgrade, and says:
+		victim = xchg_release(&ghes_estatus_caches[slot], new_cache);
+		if (victim)
+			call_rcu(&victim->rcu, ghes_estatus_cache_rcu_free);
 
-    This patch is 100% generated from upstream zstd commit 20821a46f412 [0].
+is much nicer code.
 
-    This patch is very large because it is transitioning from the custom
-    kernel zstd to using upstream directly. The new zstd follows upstreams
-    file structure which is different. Future update patches will be much
-    smaller because they will only contain the changes from one upstream
-    zstd release.
+Over all; I'd simply ignore sparse (I often do).
 
-So I think Nick would prefer to keep the changes as minimal as
-possible with respect to upstream.
-
-Further reading seems to suggest this is the case, e.g. see this
-commit upstream that introduces a space to match the kernel:
-https://github.com/facebook/zstd/commit/b53da1f6f499f0d44c5f40795b080d967b24e5fa.
-
-> diff --git a/lib/zstd/compress/zstd_fast.c b/lib/zstd/compress/zstd_fast.c
-> index 96b7d48e2868..800f3865119f 100644
-> --- a/lib/zstd/compress/zstd_fast.c
-> +++ b/lib/zstd/compress/zstd_fast.c
-> @@ -80,13 +80,6 @@ ZSTD_compressBlock_fast_generic(
->      }
->
->      /* Main Search Loop */
-> -#ifdef __INTEL_COMPILER
-> -    /* From intel 'The vector pragma indicates that the loop should be
-> -     * vectorized if it is legal to do so'. Can be used together with
-> -     * #pragma ivdep (but have opted to exclude that because intel
-> -     * warns against using it).*/
-> -    #pragma vector always
-> -#endif
->      while (ip1 < ilimit) {   /* < instead of <=, because check at ip0+2 */
->          size_t mLength;
->          BYTE const* ip2 = ip0 + 2;
-
-Ditto: https://github.com/facebook/zstd/blob/v1.4.10/lib/compress/zstd_fast.c#L83.
-
-Apart from the zstd divergence which I am not sure about, everything
-looks good to me!
-
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-
-Cheers,
-Miguel
+> +       }
+>         rcu_read_unlock();
+>  }
