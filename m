@@ -2,109 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35EFD5FE861
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 07:22:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36A575FEBDA
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 11:41:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbiJNFWK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Oct 2022 01:22:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55092 "EHLO
+        id S230131AbiJNJlB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Oct 2022 05:41:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbiJNFWK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 01:22:10 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B458B18DD68
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Oct 2022 22:22:08 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id t25so1840805qkm.2
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Oct 2022 22:22:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fusetak.com; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xvq6COBVSTfbYZTgM9nsSbGTWL8sS0GZEuGYYpV920s=;
-        b=C5BAcB6hRyfeZGtyZ3xYtRxwpMYeB9CCY4IznSecTW8CPhxLu8RVWEYIcGzG38ys+A
-         B08xdDkUR87ajPHyENWg8dyabJwP2Qh9ejPV9aMeTlpSlJlPuIFw8Ku9Dgd52AELleOa
-         ulT8pTgNSz7XX5w5wdBuenlu0wszMPB6me3+Vh8WrRLoscOEE8uSAWrDv2MsLHZVOpLB
-         Grr7s+6T3QP2mf6Ce3+9gw53wsMBefDFEFl1qEEmWEV9vSeVMDhxCaJJonLG18krGRi7
-         BTWMhZe3Mf+x06cm7eDsgApRmd9WFlpFsDEewV5ATpR6Q3U6HzPOZRMHJfXuY4ncvoB/
-         nVoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xvq6COBVSTfbYZTgM9nsSbGTWL8sS0GZEuGYYpV920s=;
-        b=h9OFBxBvoQM9qhH5Xx+bO6yzKJt5gAHOcHKBPZeiITpzl9ZJ8Ovnb5zMv+8CnTjNwK
-         9RnPhg6fcxI9cPmPKAsoY9WsaepoYgc9/4DiBaq7IfRfJOpsrvfz9gXUSXFd6L0AHXt/
-         jVrTADdWVWxd4TiI02FwnkULi/v3ykIYr9mRY+rgExZJFf9p6OQyXEv3pJWG7ngM7HZG
-         NkANsJ0EuhUu/xTGfrdF3CPzA49uMSVjsJ5g3BMyiJiwkTFSaw1lfbPGHKvumz9vfrcT
-         +SqxbYTfZCPVgnY5bZRnFi/DCwo0XL8ZPa7c4cLaqjVDQs79LN8RMzNKBVV2kRp1X7/Y
-         xUfQ==
-X-Gm-Message-State: ACrzQf2fdbxEqlKZwN7ptJ429IMte+a3UJwkSDXA5NyYjUpTa9opMlJJ
-        yZ6HBc8t74mHLraixFpIKT345DxDfCtvTbjJ
-X-Google-Smtp-Source: AMsMyM4ZULZXmb5y3yKXQ8CdN+TYbBcMboZ2GEqmSF/vVh415/CbjOmzz5XMPHRGtT0VLrooMUPvUg==
-X-Received: by 2002:ae9:ef04:0:b0:6ea:adcf:4c02 with SMTP id d4-20020ae9ef04000000b006eaadcf4c02mr2501199qkg.779.1665724927271;
-        Thu, 13 Oct 2022 22:22:07 -0700 (PDT)
-Received: from fusetakDesktop.internal.fusetak.net (cpef81d0f843c33-cmf81d0f843c30.cpe.net.fido.ca. [72.140.107.91])
-        by smtp.gmail.com with ESMTPSA id r20-20020ae9d614000000b006ce2c3c48ebsm1541519qkk.77.2022.10.13.22.22.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Oct 2022 22:22:06 -0700 (PDT)
-From:   Tamim Khan <tamim@fusetak.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     lenb@kernel.org, rafael@kernel.org, linux-kernel@vger.kernel.org,
-        Tamim Khan <tamim@fusetak.com>, Dzmitry <wrkedm@gmail.com>
-Subject: [PATCH] ACPI: resource: Skip IRQ override on Asus Vivobook S5602ZA
-Date:   Fri, 14 Oct 2022 01:19:31 -0400
-Message-Id: <20221014051931.155483-1-tamim@fusetak.com>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S230126AbiJNJk7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 05:40:59 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDAD95300D;
+        Fri, 14 Oct 2022 02:40:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A6AD3B822A2;
+        Fri, 14 Oct 2022 09:40:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B061C43143;
+        Fri, 14 Oct 2022 09:40:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665740453;
+        bh=AncuZXGLT2khpBBT4J1GOXDx/f4gLmzsl4pImnV0mo4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=AfG6aqIZ0bDgkg9n+xvPg19glPTnvvS2zpoq3nY73tIkS3Q/ta6wBFyk8HvGHSxdN
+         FcTNfjg6IIchxl3B8kUbEpeR0SN6v34KZhY+n6nj0ZhNndF1VE0B22xdwKtGlny3CS
+         6ZNi2FwJ/Vig88OLGblWSS5xYm7dBLIrLcbInVIqath+EJvGknnm1ThrkdKHH14eoA
+         DZH1q/W6w7eBe/z5uwC3xHQX1gqu+IaXaRdaCZpy6m6qFVpYoNgYUbIPzYWIwTcnHD
+         dhWMFmi5VJJKt3XZHPgNPJHNrhV9EZ01ecVsRzbBpvH8wiKUEx0VylxKQselb5/bCf
+         uKu5zZspB2ASA==
+Received: by mail-lf1-f45.google.com with SMTP id b1so6352390lfs.7;
+        Fri, 14 Oct 2022 02:40:53 -0700 (PDT)
+X-Gm-Message-State: ACrzQf1CGEwlBJLeUSeXRBVZDOAvFw9a3a+JScJJgphVTo/ztERbFWrn
+        bzvCeHKonNK3CstTm7IX31g3TzaKDpB5o/R3XjA=
+X-Google-Smtp-Source: AMsMyM7qjZ3CZSPyze/S46oOGpxLxLLOdR2le548sw16cpjxD43ujYyF+tssFYA6iJm2BupjSNvcTEqVicplpQT1fBc=
+X-Received: by 2002:a05:6512:3119:b0:4a2:d749:ff82 with SMTP id
+ n25-20020a056512311900b004a2d749ff82mr1498182lfb.637.1665740451016; Fri, 14
+ Oct 2022 02:40:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20221010023559.69655-1-justin.he@arm.com> <20221010023559.69655-7-justin.he@arm.com>
+ <Y0VGkUxpqiIzIFzB@zn.tnic> <DBBPR08MB4538A9F831FA96545BA35D9FF7239@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <Y0WBklS1XpB5as+m@zn.tnic> <DBBPR08MB4538D5A85F707632ACCB70A4F7229@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <Y0gUpoaUBKw/jjaD@zn.tnic> <CAMj1kXGtTRaKCKJnsJ9XcRus+H16mO3TGsz+TFJLraOyvfciCA@mail.gmail.com>
+ <Y0hAuBkmiUGfCs8/@hirez.programming.kicks-ass.net> <Y0hN+Cd8ZT1d9f7e@zn.tnic>
+In-Reply-To: <Y0hN+Cd8ZT1d9f7e@zn.tnic>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 14 Oct 2022 11:40:39 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGQmo9xstNY9B8Mp2gujXLTqCsV1u3PQKLtHg-WpWeLDA@mail.gmail.com>
+Message-ID: <CAMj1kXGQmo9xstNY9B8Mp2gujXLTqCsV1u3PQKLtHg-WpWeLDA@mail.gmail.com>
+Subject: Re: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Huang Ying <ying.huang@intel.com>,
+        Justin He <Justin.He@arm.com>, Len Brown <lenb@kernel.org>,
+        James Morse <James.Morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Jan Luebbe <jlu@pengutronix.de>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Kani Toshi <toshi.kani@hpe.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        nd <nd@arm.com>, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Like the Asus Vivobook K3402ZA/K3502ZA/S5402ZA Asus Vivobook S5602ZA
-has an ACPI DSDT table the describes IRQ 1 as ActiveLow while the kernel
-overrides it to Edge_High. This prevents the keyboard on this laptop
-from working. To fix this add this laptop to the skip_override_table so
-that the kernel does not override IRQ 1.
+On Thu, 13 Oct 2022 at 19:42, Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Thu, Oct 13, 2022 at 06:45:44PM +0200, Peter Zijlstra wrote:
+> > Borislav is thinking too much x86. Failed cmpxchg() does indeed not
+> > imply any memory ordering for all architectures -- and while the memory
+> > clobber (aka. barrier()) is equivalent to an smp_wmb() on x86, that most
+> > certainly doesn't hold for non x86 code.
+>
+> Right, but the patch was addied by an Intel person, CCed:
+>
+> 152cef40a808 ("ACPI, APEI, GHES, Error records content based throttle")a
+>
+> So I don't think he was thinking about ARM when doing that.
+>
+> And that commit message doesn't say one whit why that memory barrier is
+> needed there.
+>
+> Reading that comment, it sounds like he wanted a hw memory barrier -
+> MFENCE - but I don't see how normal data dependency wouldn't enforce the proper order
+> already...
+>
+> So that barrier looks out of place there.
+>
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216579
-Tested-by: Dzmitry <wrkedm@gmail.com>
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
----
-This patch is similar to e12dee3736731e24b1e7367f87d66ac0fcd73ce7
-(ACPI: resource: Skip IRQ override on Asus Vivobook K3402ZA/K3502Z) and
-6e5cbe7c4b41824e500acbb42411da692d1435f1 (ACPI: resource: Add ASUS model
-S5402ZA to quirks) and just adds another Asus Vivobook that has the
-same IRQ override problem
+The cache struct pointer should not be published until after the
+struct itself is fully populated. So on the producer side, some kind
+of hardware barrier is definitely needed, or the struct may appear
+half-baked to other cores that can read the updated pointer.
 
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+But as Peter points out, cmpxchg() itself has the required barrier
+semantics already, so the separate smp_wmb() is likely unnecessary.
+And as I suggested earlier, a full barrier is not necessary so we
+could relax this to cmpxchg_release() if desired.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 6f9489edfb4e..0270421d12db 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -425,6 +425,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus Vivobook S5602ZA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
-+		},
-+	},
- 	{ }
- };
- 
--- 
-2.37.2
+OTOH the code seems to be working fine as is, so why modify it at all?
+(apart from the purely cosmetic changes)
 
+> Btw, this is the next perfect example why I'm asking people to write
+> proper commit messages so that when we do git archeology later, we can
+> figure out why something was done the way it has been.
+>
+> And in this case, we can't. ;-\
+>
+> Because writing proper commit messages is for losers. Yeah, right.</sarcasm>
+>
+
+Yeah, agree there.
