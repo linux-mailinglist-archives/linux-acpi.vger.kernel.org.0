@@ -2,120 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5BAE5FF201
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 18:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A8EB5FF42B
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 21:40:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229991AbiJNQGp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Oct 2022 12:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52768 "EHLO
+        id S230036AbiJNTki (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Oct 2022 15:40:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbiJNQGp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 12:06:45 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCB719420A
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Oct 2022 09:06:43 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ojNCd-0001FW-1f; Fri, 14 Oct 2022 18:06:27 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ojNCb-001W1F-PY; Fri, 14 Oct 2022 18:06:25 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ojNCb-007w70-3S; Fri, 14 Oct 2022 18:06:25 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
-Subject: [PATCH] ACPI: AGDI: Improve error reporting for problems during .remove()
-Date:   Fri, 14 Oct 2022 18:06:23 +0200
-Message-Id: <20221014160623.467195-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S229964AbiJNTkh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 15:40:37 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45298A837C;
+        Fri, 14 Oct 2022 12:40:36 -0700 (PDT)
+Received: from zn.tnic (p200300ea9733e7ed329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7ed:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 70C4B1EC0745;
+        Fri, 14 Oct 2022 21:40:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1665776430;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=gS8YSB+heQVRjPD7iCJnDYGh7BxBWDNwHZ4jNTcuxBU=;
+        b=M13u7k0pbfrU8wuADrTQVEqpeI8Y0B1I2VnJS6/MfDuTuPQeeTjPsITS+TOuwdYOTpOdCR
+        K+MtYZU6CRQJI6NenTPCibhr5fig4MWHCBgylAWQ+84EBneoWZYlZ5gpswz3V/6bhYznaT
+        z9QvCCxrpJZxIHRAtnhiDcRJ9c6TXEY=
+Date:   Fri, 14 Oct 2022 21:40:26 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Huang Ying <ying.huang@intel.com>,
+        Justin He <Justin.He@arm.com>, Len Brown <lenb@kernel.org>,
+        James Morse <James.Morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Jan Luebbe <jlu@pengutronix.de>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Kani Toshi <toshi.kani@hpe.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        nd <nd@arm.com>, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
+Message-ID: <Y0m7KpdSAi6wIgfb@zn.tnic>
+References: <20221010023559.69655-7-justin.he@arm.com>
+ <Y0VGkUxpqiIzIFzB@zn.tnic>
+ <DBBPR08MB4538A9F831FA96545BA35D9FF7239@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <Y0WBklS1XpB5as+m@zn.tnic>
+ <DBBPR08MB4538D5A85F707632ACCB70A4F7229@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <Y0gUpoaUBKw/jjaD@zn.tnic>
+ <CAMj1kXGtTRaKCKJnsJ9XcRus+H16mO3TGsz+TFJLraOyvfciCA@mail.gmail.com>
+ <Y0hAuBkmiUGfCs8/@hirez.programming.kicks-ass.net>
+ <Y0hN+Cd8ZT1d9f7e@zn.tnic>
+ <CAMj1kXGQmo9xstNY9B8Mp2gujXLTqCsV1u3PQKLtHg-WpWeLDA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1962; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=bcSCjGDaMicMoVHsmrxJg21//gzyQbiwls29wgz3bJs=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjSYj7fZ5B6M0Qx5T1rmKYuU/r8Tlet1+bduZ8O2Us j8dRyp+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY0mI+wAKCRDB/BR4rcrsCemXB/ 9xw8DkVVaQBm/4NUA+JJZ8ee+nLh/UGXezwD62uXtTRmoF8zzCYRG5e7BvZWphXmoKSRR+1ACeotta iQRg135YS9On0dS2kYfPqtoQss3El5BLYTIu2UavHVnX/O11lMroJUj+r8TYi4Iv9+GY6LCCLPc0ch VF3MvrcPxLrN4f79fV7HqM5Sfu9NoikyxXvTBE5Ng/au0/zdF2bNYO4WBIbk7IGM2uIFNuAZekWFcR tIAfIu6RhNl962PBKPMKcNpT8FOV3RXwdA6uOEpxz3y0Y8GQKqCd8tbFq/5hiPlmA4/02Kqn4VvKRV uP1jUM3VG/O9Q20fF++yWwlPL/cLb9
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGQmo9xstNY9B8Mp2gujXLTqCsV1u3PQKLtHg-WpWeLDA@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Returning an error value in a platform driver's remove callback results in
-a generic error message being emitted by the driver core, but otherwise it
-doesn't make a difference. The device goes away anyhow.
+On Fri, Oct 14, 2022 at 11:40:39AM +0200, Ard Biesheuvel wrote:
+> The cache struct pointer should not be published until after the
+> struct itself is fully populated. So on the producer side, some kind
+> of hardware barrier is definitely needed, or the struct may appear
+> half-baked to other cores that can read the updated pointer.
 
-So instead of triggering the generic platform error message, emit a more
-helpful message if a problem occurs and return 0 to suppress the generic
-message.
+Ah, right you are, ghes_estatus_cached() is called in all kinds of
+contexts and by other cores, sure.
 
-This patch is a preparation for making platform remove callbacks return
-void.
+> OTOH the code seems to be working fine as is, so why modify it at all?
+> (apart from the purely cosmetic changes)
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Hello,
+peterz questioned that smp_wmb() there and then we started digging. And
+frankly, even if removing that barrier won't make any difference, I'd
+still prefer it gone and have the code simpler and cleaner.
 
-note that in the situations where the driver returned an error before
-and now emits a message, there is a resource leak. Someone who knows
-more about this driver and maybe even can test stuff, might want to
-address this. This might not only be about non-freed memory, the device
-disappears but it is kept in sdei_list and so might be used after being
-gone.
+Thx.
 
-Best regards
-Uwe
-
- drivers/acpi/arm64/agdi.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-index cf31abd0ed1b..f605302395c3 100644
---- a/drivers/acpi/arm64/agdi.c
-+++ b/drivers/acpi/arm64/agdi.c
-@@ -64,8 +64,11 @@ static int agdi_remove(struct platform_device *pdev)
- 	int err, i;
- 
- 	err = sdei_event_disable(adata->sdei_event);
--	if (err)
--		return err;
-+	if (err) {
-+		dev_err(&pdev->dev, "Failed to disable sdei-event #%d (%pe)\n",
-+			adata->sdei_event, ERR_PTR(err));
-+		return 0;
-+	}
- 
- 	for (i = 0; i < 3; i++) {
- 		err = sdei_event_unregister(adata->sdei_event);
-@@ -75,7 +78,11 @@ static int agdi_remove(struct platform_device *pdev)
- 		schedule();
- 	}
- 
--	return err;
-+	if (err)
-+		dev_err(&pdev->dev, "Failed to unregister sdei-event #%d (%pe)\n",
-+			adata->sdei_event, ERR_PTR(err));
-+
-+	return 0;
- }
- 
- static struct platform_driver agdi_driver = {
-
-base-commit: 4fe89d07dcc2804c8b562f6c7896a45643d34b2f
 -- 
-2.37.2
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
