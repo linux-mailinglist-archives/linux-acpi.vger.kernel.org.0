@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B08195FEFF6
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 16:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 408A45FF01F
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 16:17:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbiJNOPO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Oct 2022 10:15:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58818 "EHLO
+        id S230415AbiJNORq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Oct 2022 10:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229863AbiJNOPN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 10:15:13 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3604DB5E;
-        Fri, 14 Oct 2022 07:15:10 -0700 (PDT)
+        with ESMTP id S230456AbiJNORl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 10:17:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE28D1D4DFB;
+        Fri, 14 Oct 2022 07:17:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A1573B82356;
-        Fri, 14 Oct 2022 14:15:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CFAC433C1;
-        Fri, 14 Oct 2022 14:15:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB81161B68;
+        Fri, 14 Oct 2022 14:17:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B089C433D7;
+        Fri, 14 Oct 2022 14:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665756908;
-        bh=kceQmgdPFaemBr6NpR+rvC6uWn6wwb6RWTB1Ad7mZ2I=;
+        s=k20201202; t=1665757048;
+        bh=JblJP1Zh7eF0jAlB1IozIAlJRPymzFVB/vcSplHa0C8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Z1YyY4ykZbiYIPSKnchJGYFQEe9j4uk+R6yK3URJyLfLiMOJYpTdEKSJep0AHv5Bd
-         WuC6mrzH3Ai0PD06U48B1Zg8sjUPvKdv64v+oA4exhYEv6KJ8HsiaDufBlLGbzHDw+
-         4YYpbioQ7VryjzzVIRwrTYVcx99+Ii453ZNTVVWok+yfiz8gKTWW1vdXgVKX33y8f1
-         Qu0rQYRwwbhjTarlhCtbGwF9VtHww81Q7g9lSMPdGXVY8ioDvf+aRtSpZUYugeXLaE
-         2TUNTNgLqTqN+zWaVEipg8SSHuhVrMaDnnNg4tlEvqWBKodKA+SdLnmIzhAU/EtT3W
-         L2uxhSFbb7a/w==
-Date:   Fri, 14 Oct 2022 16:15:01 +0200
+        b=nQ0srsLbX9fWWom/e+5249nsK7b7B6vnRPMA/2ri2Y7sxY4NTJdiiN1yRLoDEzb/Z
+         yM+437kfjpdD5hBXV4x2Awn2lo/WxXDrzDnYiiV5l7C1bnwHbZCXKNFb81BWbGvZqg
+         cjm21dtE8oQDXLMvHybfjWxsOmnTnSAvRNWIv553xZ8Lvxzbw2/qZrAeKcH4qonvnr
+         WymE8GWkd11pz/Als463rbWbLsTEimjeh2cHKB+7h9rTgh1F+uZk7HN9iQJA1J0zfj
+         abevo1lc3X20TGyc7O9yUSBc8KaaqUIRltMTiI9X1dPQYywM1LEvKNaEBbRMnPwW3O
+         O4Lgso4eYl5Pw==
+Date:   Fri, 14 Oct 2022 16:17:21 +0200
 From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
 To:     Sudeep Holla <sudeep.holla@arm.com>
 Cc:     Besar Wicaksono <bwicaksono@nvidia.com>, rafael@kernel.org,
@@ -43,13 +43,14 @@ Cc:     Besar Wicaksono <bwicaksono@nvidia.com>, rafael@kernel.org,
         linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH v2] ACPI: ARM Performance Monitoring Unit Table (APMT)
  initial support
-Message-ID: <Y0lu5Vqs8pVeAfwR@lpieralisi>
+Message-ID: <Y0lvcXocC33TOdFq@lpieralisi>
 References: <20220929002834.32664-1-bwicaksono@nvidia.com>
  <20221014105938.fyy6jns5fsu5xd7q@bogus>
+ <Y0lu5Vqs8pVeAfwR@lpieralisi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221014105938.fyy6jns5fsu5xd7q@bogus>
+In-Reply-To: <Y0lu5Vqs8pVeAfwR@lpieralisi>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,46 +60,14 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[Please Besar update my email address according to MAINTAINERS - I missed
-this thread]
+On Fri, Oct 14, 2022 at 04:15:01PM +0200, Lorenzo Pieralisi wrote:
 
-On Fri, Oct 14, 2022 at 11:59:38AM +0100, Sudeep Holla wrote:
-> Hi Besar,
-> 
-> On Wed, Sep 28, 2022 at 07:28:34PM -0500, Besar Wicaksono wrote:
-> > ARM Performance Monitoring Unit Table describes the properties of PMU
-> > support in ARM-based system. The APMT table contains a list of nodes,
-> > each represents a PMU in the system that conforms to ARM CoreSight PMU
-> > architecture. The properties of each node include information required
-> > to access the PMU (e.g. MMIO base address, interrupt number) and also
-> > identification. For more detailed information, please refer to the
-> > specification below:
-> >  * APMT: https://developer.arm.com/documentation/den0117/latest
-> >  * ARM Coresight PMU:
-> >         https://developer.arm.com/documentation/ihi0091/latest
-> > 
-> > The initial support adds the detection of APMT table and generic
-> > infrastructure to create platform devices for ARM CoreSight PMUs.
-> > Similar to IORT the root pointer of APMT is preserved during runtime
-> > and each PMU platform device is given a pointer to the corresponding
-> > APMT node.
-> > 
-> 
-> This looks good to me know.
-> 
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> 
-> Hi Lorenzo,
-> 
-> Not sure if there are any other arm specific ACPI changes in the queue
-> for v6.2. Can you please add this too ?
+[...]
 
-We should just ask Catalin/Will to pick it up for the next kernel cycle,
-if there is no need to repost we can just remind them in a couple
-of weeks.
+> This also requires Rafael's review - at least to acknowledge the
+> change.
 
-This also requires Rafael's review - at least to acknowledge the
-change.
+Never mind, Rafael has already acked it, so we just need to get
+it queued.
 
-Thanks,
 Lorenzo
