@@ -2,79 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3FEE5FF13D
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 17:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5BAE5FF201
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 18:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230285AbiJNPY5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Oct 2022 11:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43094 "EHLO
+        id S229991AbiJNQGp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Oct 2022 12:06:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230272AbiJNPYt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 11:24:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AAA248C98;
-        Fri, 14 Oct 2022 08:24:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCE2561B43;
-        Fri, 14 Oct 2022 15:24:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269C0C433D6;
-        Fri, 14 Oct 2022 15:24:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665761056;
-        bh=JWZO03i3M3oGthfvXQsP2k8HaF/1/fJ9ZZkQJqs+CMs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=aFlXQZWFqXCBzX1Z+mIQWsGCgoh4AXUaWWbhj1PPZqhC2rpjURtWCljWjhtPWt75M
-         10Ntwbh/8GGg77a69PLfGiQe8ixZRjBQyTUNNJ7T6dBGCYW6Y/hUX6GuKGCeCWhqZn
-         ZYSb05dVNLlKgH5Q0dBlfT8c+VF6bCyQWLLRzrq3qDdfeVtzr5O7prczdcAYLXkb22
-         BRezsflYx7RQ8ScdIIr0NPTxmwJkPLydPSlVW55c65ayMoZ+s+vZJcsZa9O8H8wS3t
-         I5Wc+3V0qljScR5pYNIce/2/7KR8NlMTzmMbI9oGoW9k9WCbW/BI+7KQw1vSxG5Wmj
-         Dz3McjJZRot2g==
-Received: by mail-lj1-f172.google.com with SMTP id x18so6431731ljm.1;
-        Fri, 14 Oct 2022 08:24:16 -0700 (PDT)
-X-Gm-Message-State: ACrzQf1yR4oUx2CwjJ4BluthPfqbEwf57jQ/J96l1QGnSdW4G2sKaC1G
-        /+nDtfgtyberx+r5WLIE3jc/n1PRzDbqUt8mImY=
-X-Google-Smtp-Source: AMsMyM55jht631wIbiZqbXKCkNypoq7fCNp7qbJwalyEsLUtJ39vRnH6gUAmY+wagKJB0ympBmbf2SY6fCNCxNpk/50=
-X-Received: by 2002:a2e:2d0a:0:b0:26c:a1c:cdf with SMTP id t10-20020a2e2d0a000000b0026c0a1c0cdfmr2171083ljt.352.1665761054128;
- Fri, 14 Oct 2022 08:24:14 -0700 (PDT)
+        with ESMTP id S229910AbiJNQGp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 12:06:45 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCB719420A
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Oct 2022 09:06:43 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ojNCd-0001FW-1f; Fri, 14 Oct 2022 18:06:27 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ojNCb-001W1F-PY; Fri, 14 Oct 2022 18:06:25 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ojNCb-007w70-3S; Fri, 14 Oct 2022 18:06:25 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
+Subject: [PATCH] ACPI: AGDI: Improve error reporting for problems during .remove()
+Date:   Fri, 14 Oct 2022 18:06:23 +0200
+Message-Id: <20221014160623.467195-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-References: <20221010023559.69655-1-justin.he@arm.com> <20221010023559.69655-7-justin.he@arm.com>
- <Y0VGkUxpqiIzIFzB@zn.tnic> <DBBPR08MB4538A9F831FA96545BA35D9FF7239@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <Y0WBklS1XpB5as+m@zn.tnic> <DBBPR08MB4538D5A85F707632ACCB70A4F7229@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <Y0gUpoaUBKw/jjaD@zn.tnic> <CAMj1kXGtTRaKCKJnsJ9XcRus+H16mO3TGsz+TFJLraOyvfciCA@mail.gmail.com>
- <DBBPR08MB453845A7A15596F6FE96DBC9F7249@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <CAMj1kXHrP_P79ObKPFFgpN-X7gN+zaN1vKbsQZTJGvm=Uoav3g@mail.gmail.com> <Y0l8AeQCrMLYW6g3@hirez.programming.kicks-ass.net>
-In-Reply-To: <Y0l8AeQCrMLYW6g3@hirez.programming.kicks-ass.net>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 14 Oct 2022 17:24:02 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXENTJVZU27PYqwWGod4ESkTxgJ8+2vdqWjR5DVRSbNGDg@mail.gmail.com>
-Message-ID: <CAMj1kXENTJVZU27PYqwWGod4ESkTxgJ8+2vdqWjR5DVRSbNGDg@mail.gmail.com>
-Subject: Re: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Justin He <Justin.He@arm.com>, Borislav Petkov <bp@alien8.de>,
-        Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1962; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=bcSCjGDaMicMoVHsmrxJg21//gzyQbiwls29wgz3bJs=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjSYj7fZ5B6M0Qx5T1rmKYuU/r8Tlet1+bduZ8O2Us j8dRyp+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY0mI+wAKCRDB/BR4rcrsCemXB/ 9xw8DkVVaQBm/4NUA+JJZ8ee+nLh/UGXezwD62uXtTRmoF8zzCYRG5e7BvZWphXmoKSRR+1ACeotta iQRg135YS9On0dS2kYfPqtoQss3El5BLYTIu2UavHVnX/O11lMroJUj+r8TYi4Iv9+GY6LCCLPc0ch VF3MvrcPxLrN4f79fV7HqM5Sfu9NoikyxXvTBE5Ng/au0/zdF2bNYO4WBIbk7IGM2uIFNuAZekWFcR tIAfIu6RhNl962PBKPMKcNpT8FOV3RXwdA6uOEpxz3y0Y8GQKqCd8tbFq/5hiPlmA4/02Kqn4VvKRV uP1jUM3VG/O9Q20fF++yWwlPL/cLb9
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,54 +55,67 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 14 Oct 2022 at 17:11, Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Fri, Oct 14, 2022 at 04:31:37PM +0200, Ard Biesheuvel wrote:
-> > +       if (slot != -1) {
-> > +               /*
-> > +                * Use release semantics to ensure that ghes_estatus_cached()
-> > +                * running on another CPU will see the updated cache fields if
-> > +                * it can see the new value of the pointer.
-> > +                */
-> > +               victim = xchg_release(ghes_estatus_caches + slot,
-> > +                                     RCU_INITIALIZER(new_cache));
-> > +
-> > +               /*
-> > +                * At this point, victim may point to a cached item different
-> > +                * from the one based on which we selected the slot. Instead of
-> > +                * going to the loop again to pick another slot, let's just
-> > +                * drop the other item anyway: this may cause a false cache
-> > +                * miss later on, but that won't cause any problems.
-> > +                */
-> > +               if (victim) {
-> > +                       call_rcu(&rcu_dereference(victim)->rcu,
-> > +                                ghes_estatus_cache_rcu_free);
->                 }
->
-> I think you can use unrcu_pointer() here instead, there should not be a
-> data dependency since the ->rcu member itself should be otherwise unused
-> (and if it were, we wouldn't care about its previous content anyway).
->
-> But only Alpha cares about that distinction anyway, so *shrug*.
->
+Returning an error value in a platform driver's remove callback results in
+a generic error message being emitted by the driver core, but otherwise it
+doesn't make a difference. The device goes away anyhow.
 
-Ah yeah good point - and we are not actually dereferencing the pointer
-at all here, just adding an offset to get at the address of the rcu
-member.
+So instead of triggering the generic platform error message, emit a more
+helpful message if a problem occurs and return 0 to suppress the generic
+message.
 
-So we can take this block out of the rcu_read_lock() section as well.
+This patch is a preparation for making platform remove callbacks return
+void.
 
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+Hello,
 
-> While I much like the xchg() variant; I still don't really fancy the
-> verbage the sparse nonsense makes us do.
->
->                 victim = xchg_release(&ghes_estatus_caches[slot], new_cache);
->                 if (victim)
->                         call_rcu(&victim->rcu, ghes_estatus_cache_rcu_free);
->
-> is much nicer code.
->
-> Over all; I'd simply ignore sparse (I often do).
->
+note that in the situations where the driver returned an error before
+and now emits a message, there is a resource leak. Someone who knows
+more about this driver and maybe even can test stuff, might want to
+address this. This might not only be about non-freed memory, the device
+disappears but it is kept in sdei_list and so might be used after being
+gone.
 
-No disagreement there.
+Best regards
+Uwe
+
+ drivers/acpi/arm64/agdi.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+index cf31abd0ed1b..f605302395c3 100644
+--- a/drivers/acpi/arm64/agdi.c
++++ b/drivers/acpi/arm64/agdi.c
+@@ -64,8 +64,11 @@ static int agdi_remove(struct platform_device *pdev)
+ 	int err, i;
+ 
+ 	err = sdei_event_disable(adata->sdei_event);
+-	if (err)
+-		return err;
++	if (err) {
++		dev_err(&pdev->dev, "Failed to disable sdei-event #%d (%pe)\n",
++			adata->sdei_event, ERR_PTR(err));
++		return 0;
++	}
+ 
+ 	for (i = 0; i < 3; i++) {
+ 		err = sdei_event_unregister(adata->sdei_event);
+@@ -75,7 +78,11 @@ static int agdi_remove(struct platform_device *pdev)
+ 		schedule();
+ 	}
+ 
+-	return err;
++	if (err)
++		dev_err(&pdev->dev, "Failed to unregister sdei-event #%d (%pe)\n",
++			adata->sdei_event, ERR_PTR(err));
++
++	return 0;
+ }
+ 
+ static struct platform_driver agdi_driver = {
+
+base-commit: 4fe89d07dcc2804c8b562f6c7896a45643d34b2f
+-- 
+2.37.2
+
