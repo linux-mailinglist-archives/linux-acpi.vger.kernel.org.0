@@ -2,102 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8EB5FF42B
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Oct 2022 21:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CAF35FFB4F
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Oct 2022 18:56:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230036AbiJNTki (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Oct 2022 15:40:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41486 "EHLO
+        id S229608AbiJOQ4R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 15 Oct 2022 12:56:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229964AbiJNTkh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Oct 2022 15:40:37 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45298A837C;
-        Fri, 14 Oct 2022 12:40:36 -0700 (PDT)
-Received: from zn.tnic (p200300ea9733e7ed329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7ed:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 70C4B1EC0745;
-        Fri, 14 Oct 2022 21:40:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1665776430;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=gS8YSB+heQVRjPD7iCJnDYGh7BxBWDNwHZ4jNTcuxBU=;
-        b=M13u7k0pbfrU8wuADrTQVEqpeI8Y0B1I2VnJS6/MfDuTuPQeeTjPsITS+TOuwdYOTpOdCR
-        K+MtYZU6CRQJI6NenTPCibhr5fig4MWHCBgylAWQ+84EBneoWZYlZ5gpswz3V/6bhYznaT
-        z9QvCCxrpJZxIHRAtnhiDcRJ9c6TXEY=
-Date:   Fri, 14 Oct 2022 21:40:26 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Huang Ying <ying.huang@intel.com>,
-        Justin He <Justin.He@arm.com>, Len Brown <lenb@kernel.org>,
-        James Morse <James.Morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        nd <nd@arm.com>, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
-Message-ID: <Y0m7KpdSAi6wIgfb@zn.tnic>
-References: <20221010023559.69655-7-justin.he@arm.com>
- <Y0VGkUxpqiIzIFzB@zn.tnic>
- <DBBPR08MB4538A9F831FA96545BA35D9FF7239@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <Y0WBklS1XpB5as+m@zn.tnic>
- <DBBPR08MB4538D5A85F707632ACCB70A4F7229@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <Y0gUpoaUBKw/jjaD@zn.tnic>
- <CAMj1kXGtTRaKCKJnsJ9XcRus+H16mO3TGsz+TFJLraOyvfciCA@mail.gmail.com>
- <Y0hAuBkmiUGfCs8/@hirez.programming.kicks-ass.net>
- <Y0hN+Cd8ZT1d9f7e@zn.tnic>
- <CAMj1kXGQmo9xstNY9B8Mp2gujXLTqCsV1u3PQKLtHg-WpWeLDA@mail.gmail.com>
+        with ESMTP id S229702AbiJOQ4Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 15 Oct 2022 12:56:16 -0400
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F4C4A82D;
+        Sat, 15 Oct 2022 09:56:15 -0700 (PDT)
+Received: by mail-qt1-f174.google.com with SMTP id f22so5519726qto.3;
+        Sat, 15 Oct 2022 09:56:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h1kGMyZ8iPn6jxS1RJptkgeK4wGXJYpfTtGZVw/vNYE=;
+        b=OAHyOVWJ3B+spXrMUUgSWBrY+EC9Woc50xcs4SbAgIQWmEvrgFtNQA61kkWkAcgat3
+         utwNtoforuVZjEYZf99l0xQJ7tw7CrhNsRuN3hBXp2CVSK1Jrsxep/cAvqR4j9gdWDVo
+         a3vpCX1zIda9WN2d1P//B4cUQjDVatMROYTtn1HtJw8w8RTNE6OzZ9vP/fWXvDNdVEMt
+         6jDcqtKffiVqc4NYetaDFMBo1obMp63WmNFU8Fht7KQpw+KmANPX4bvor74eZFQ3lw4j
+         PqHpO4bTF8QtlGyB83NBUySq67bc95f7/Aa2eelX58I7IKVS2BidI8Be91uNsH3xpVS7
+         sAwQ==
+X-Gm-Message-State: ACrzQf3UIGkkyuG91wvqcdS83T5a8kzh2cJk0WFAkiXx/7+2NJFZuitF
+        0Fytlm8P/LbAKit1E8wOGLN00O6Qq53NX6KiRL0=
+X-Google-Smtp-Source: AMsMyM5VpXNSDHG6hH+avu+LLqK1F1gCjNc62IhcpK3HG0VAkIbFT/UxIhJSbkA8ILrSffofXqNATnqaVHOyZGSQocM=
+X-Received: by 2002:ac8:5ac1:0:b0:39a:123c:9df5 with SMTP id
+ d1-20020ac85ac1000000b0039a123c9df5mr2595647qtd.27.1665852974906; Sat, 15 Oct
+ 2022 09:56:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXGQmo9xstNY9B8Mp2gujXLTqCsV1u3PQKLtHg-WpWeLDA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220929161917.2348231-1-rrangel@chromium.org>
+ <20220929093200.v6.6.I8092e417a8152475d13d8d638eb4c5d8ea12ac7b@changeid>
+ <CAJZ5v0izHjb8vE0ALyYo9yMOExdpCzG8f7-d5SpQnftqJfTEig@mail.gmail.com>
+ <CAHQZ30CJyhPK-OriZ5NZ=GjwNbofaCW6GZ_CvPsL0WiJGsxs-Q@mail.gmail.com>
+ <CAJZ5v0gcJRoMSODbTevRdK1zaEZHJcPxvG6XMy9-T_jvwxPFBw@mail.gmail.com>
+ <CAHQZ30CQd-0YnQgYG_OJVWn9_aUjvDAuT_DRGsxQF-q+bjr5BA@mail.gmail.com>
+ <YzYowYJpRTImmg4m@google.com> <CAJZ5v0i+QYcMuqsK9y6qy9qzJdUp503Sidr1e4V_ROyumLKCsw@mail.gmail.com>
+ <YzcqdTxLMF5028yz@smile.fi.intel.com> <YzcthIfnpi8E6XVk@google.com>
+In-Reply-To: <YzcthIfnpi8E6XVk@google.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 15 Oct 2022 18:56:04 +0200
+Message-ID: <CAJZ5v0iKXWBGYPmmg9__g3oHK2GhY+xFMnSA6c5KctOv2kTfNQ@mail.gmail.com>
+Subject: Re: [PATCH v6 06/13] ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Raul Rangel <rrangel@chromium.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Tim Van Patten <timvp@google.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "jingle.wu" <jingle.wu@emc.com.tw>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Len Brown <lenb@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Terry Bowman <terry.bowman@amd.com>, Tom Rix <trix@redhat.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 14, 2022 at 11:40:39AM +0200, Ard Biesheuvel wrote:
-> The cache struct pointer should not be published until after the
-> struct itself is fully populated. So on the producer side, some kind
-> of hardware barrier is definitely needed, or the struct may appear
-> half-baked to other cores that can read the updated pointer.
+On Fri, Sep 30, 2022 at 7:55 PM Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
+>
+> On Fri, Sep 30, 2022 at 08:42:13PM +0300, Andy Shevchenko wrote:
+> > On Fri, Sep 30, 2022 at 07:13:37PM +0200, Rafael J. Wysocki wrote:
+> > > On Fri, Sep 30, 2022 at 1:22 AM Dmitry Torokhov
+> > > <dmitry.torokhov@gmail.com> wrote:
+> >
+> > ...
+> >
+> > > I think that patches [5-8/13] from this series are significant
+> > > framework changes, so it would make sense to route them via the ACPI
+> > > tree.
+> > >
+> > > If this is fine with everybody, I will queue them up for merging into
+> > > 6.1 (probably in the second half of the upcoming merge window).
+> >
+> > I believe it's fine from GPIO ACPI perspective (there shouldn't be conflict,
+> > but if you wish you always may take this PR [1] to your tree (it's already in
+> > GPIO tree pending v6.1), it may be considered as immutable tag.
+> >
+> > [1]: https://lore.kernel.org/linux-gpio/Yym%2Fj+Y9MBOIhWtK@black.fi.intel.com/
+>
+> Yeah, having an immutable branch hanging off 6.0-rcN would be awesome -
+> I could pull it and this would avoid any potential conflicts later.
 
-Ah, right you are, ghes_estatus_cached() is called in all kinds of
-contexts and by other cores, sure.
+This material is in the mainline now, but the branch is still there in
+case you need it:
 
-> OTOH the code seems to be working fine as is, so why modify it at all?
-> (apart from the purely cosmetic changes)
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-wakeup
 
-peterz questioned that smp_wmb() there and then we started digging. And
-frankly, even if removing that barrier won't make any difference, I'd
-still prefer it gone and have the code simpler and cleaner.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+It won't be necessary any more after 6.1-rc1 is out, though, I suppose.
