@@ -2,47 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 347D15FFD25
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Oct 2022 05:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 838BE600000
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Oct 2022 16:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbiJPDkc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 15 Oct 2022 23:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37580 "EHLO
+        id S229800AbiJPOsm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 16 Oct 2022 10:48:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiJPDkb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 15 Oct 2022 23:40:31 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ADDB2F657;
-        Sat, 15 Oct 2022 20:40:28 -0700 (PDT)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Mqm496DGhzVjW5;
-        Sun, 16 Oct 2022 11:35:53 +0800 (CST)
-Received: from kwepemm600004.china.huawei.com (7.193.23.242) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sun, 16 Oct 2022 11:39:57 +0800
-Received: from localhost.localdomain (10.69.192.56) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sun, 16 Oct 2022 11:39:56 +0800
-From:   Huisong Li <lihuisong@huawei.com>
-To:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <rafael@kernel.org>, <sudeep.holla@arm.com>,
-        <rafael.j.wysocki@intel.com>, <wanghuiqiang@huawei.com>,
-        <huangdaode@huawei.com>, <tanxiaofei@huawei.com>,
-        <lihuisong@huawei.com>
-Subject: [RFC] ACPI: PCC: Support shared interrupt for multiple subspaces
-Date:   Sun, 16 Oct 2022 11:40:43 +0800
-Message-ID: <20221016034043.52227-1-lihuisong@huawei.com>
-X-Mailer: git-send-email 2.33.0
+        with ESMTP id S229820AbiJPOsY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 16 Oct 2022 10:48:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB8913DF34;
+        Sun, 16 Oct 2022 07:48:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B02E760B8B;
+        Sun, 16 Oct 2022 14:48:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29FCC433D6;
+        Sun, 16 Oct 2022 14:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665931699;
+        bh=PwswarpIsnAjgn6DfCntn7yraIl65QxAItg0kQxGTlY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WZPnuy+px4WNDcb0Fgzmb0494nU6lBk+0lEFRfgU4oArL4d8fCSzRisSvzQSlBK9r
+         VQLi61JCOMqLHCtoG/F3M3TnsYzuPIjLK8bJmnZTPr/EelLWk6Cp7TbIFlz5t74y21
+         6HHhZJygjvzc32fl0NwHV6qQ7pscFFeWA5AzLk+833cZZg4V0y+wU8rNQHwFL5R3a6
+         9SSouj+8sqXXaqQ4LwdHHNjZY6Teeioo7yQIcLKonlyC9lWVpkrozr0KR/EU6rWt4+
+         Rzo8xJ+icu/ErkLFvexJ+QF1V7w21lRlWhLxliSbNxWyq2nlKytx0PFdk64/dU9UzT
+         Ijqu/Nfz6p05g==
+Date:   Sun, 16 Oct 2022 10:48:17 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Arvid Norlander <lkml@vorpal.se>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.14 4/6] ACPI: video: Change
+ disable_backlight_sysfs_if quirks to acpi_backlight=native
+Message-ID: <Y0wZsYd0UX06AzA8@sashalap>
+References: <20221009235808.1232269-1-sashal@kernel.org>
+ <20221009235808.1232269-4-sashal@kernel.org>
+ <610e3232-d66c-cac3-b13d-ec8b24a1de6e@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.69.192.56]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <610e3232-d66c-cac3-b13d-ec8b24a1de6e@redhat.com>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,94 +57,70 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As ACPI protocol descripted, if interrupts are level, a GSIV may
-be shared by multiple subspaces, but each one must have unique
-platform interrupt ack preserve and ack set masks. Therefore, need
-set to shared interrupt for types that can distinguish interrupt
-response channel if platform interrupt mode is level triggered.
+On Mon, Oct 10, 2022 at 09:37:16AM +0200, Hans de Goede wrote:
+>Hi,
+>
+>On 10/10/22 01:58, Sasha Levin wrote:
+>> From: Hans de Goede <hdegoede@redhat.com>
+>>
+>> [ Upstream commit c5b94f5b7819348c59f9949b2b75c341a114cdd4 ]
+>>
+>> Some Toshibas have a broken acpi-video interface for brightness control
+>> and need a special firmware call on resume to turn the panel back on.
+>> So far these have been using the disable_backlight_sysfs_if workaround
+>> to deal with this.
+>>
+>> The recent x86/acpi backlight refactoring has broken this workaround:
+>> 1. This workaround relies on acpi_video_get_backlight_type() returning
+>>    acpi_video so that the acpi_video code actually runs; and
+>> 2. this relies on the actual native GPU driver to offer the sysfs
+>>    backlight interface to userspace.
+>>
+>> After the refactor this breaks since the native driver will no
+>> longer register its backlight-device if acpi_video_get_backlight_type()
+>> does not return native and making it return native breaks 1.
+>>
+>> Keeping the acpi_video backlight handling on resume active, while not
+>> using it to set the brightness, is necessary because it does a _BCM
+>> call on resume which is necessary to turn the panel back on on resume.
+>>
+>> Looking at the DSDT shows that this _BCM call results in a Toshiba
+>> HCI_SET HCI_LCD_BRIGHTNESS call, which turns the panel back on.
+>>
+>> This kind of special vendor specific handling really belongs in
+>> the vendor specific acpi driver. An earlier patch in this series
+>> modifies toshiba_acpi to make the necessary HCI_SET call on resume
+>> on affected models.
+>>
+>> With toshiba_acpi taking care of the HCI_SET call on resume,
+>> the acpi_video code no longer needs to call _BCM on resume.
+>>
+>> So instead of using the (now broken) disable_backlight_sysfs_if
+>> workaround, simply setting acpi_backlight=native to disable
+>> the broken apci-video interface is sufficient fix things now.
+>>
+>> After this there are no more users of the disable_backlight_sysfs_if
+>> flag and as discussed above the flag also no longer works as intended,
+>> so remove the disable_backlight_sysfs_if flag entirely.
+>>
+>> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>> Tested-by: Arvid Norlander <lkml@vorpal.se>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This patch goes hand in hand with:
+>
+>commit 3cb1f40dfdc3 ("drivers/platform: toshiba_acpi: Call HCI_PANEL_POWER_ON on resume on some models")
+>
+>and without that commit also being present it will cause a regression on
+>the quirked Toshiba models.
+>
+>This really is part of the big x86/ACPI backlight handling refactor which
+>has landed in 6.1 and as such is not intended for older kernels, please
+>drop this from the stable series.
 
-The distinguishing point isn't definitely command complete register.
-Because the two status values of command complete indicate that
-there is no interrupt in a subspace('1' means subspace is free for
-use, and '0' means platform is processing the command). On the whole,
-the platform interrupt ack register is more suitable for this role.
-As ACPI protocol said, If the subspace does support interrupts, and
-these are level, this register must be supplied. And is used to clear
-the interrupt by using a read, modify, write sequence. This register
-is a 'WR' register, the bit corresponding to the subspace is '1' when
-the command is completed, or is '0'.
+Will do, thanks!
 
-Therefore, register shared interrupt for multiple subspaces if support
-platform interrupt ack register and interrupts are level, and read the
-ack register to ensure the idle or unfinished command channels to
-quickly return IRQ_NONE.
-
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
----
- drivers/mailbox/pcc.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 3c2bc0ca454c..86c6cc44c73d 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -100,6 +100,7 @@ struct pcc_chan_info {
- 	struct pcc_chan_reg cmd_update;
- 	struct pcc_chan_reg error;
- 	int plat_irq;
-+	u8 plat_irq_trigger;
- };
- 
- #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
-@@ -236,6 +237,15 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	int ret;
- 
- 	pchan = chan->con_priv;
-+	ret = pcc_chan_reg_read(&pchan->plat_irq_ack, &val);
-+	if (ret)
-+		return IRQ_NONE;
-+	/* Irq ack GAS exist and check if this interrupt has the channel. */
-+	if (pchan->plat_irq_ack.gas) {
-+		val &= pchan->plat_irq_ack.set_mask;
-+		if (val == 0)
-+			return IRQ_NONE;
-+	}
- 
- 	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
- 	if (ret)
-@@ -309,10 +319,21 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
- 	spin_unlock_irqrestore(&chan->lock, flags);
- 
- 	if (pchan->plat_irq > 0) {
-+		unsigned long irqflags;
- 		int rc;
- 
--		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq, 0,
--				      MBOX_IRQ_NAME, chan);
-+		/*
-+		 * As ACPI protocol descripted, if interrupts are level, a GSIV
-+		 * may be shared by multiple subspaces.
-+		 * Therefore, register shared interrupt for multiple subspaces
-+		 * if support platform interrupt ack register and interrupts
-+		 * are level.
-+		 */
-+		irqflags = (pchan->plat_irq_ack.gas &&
-+			    pchan->plat_irq_trigger == ACPI_LEVEL_SENSITIVE) ?
-+			    IRQF_SHARED : 0;
-+		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq,
-+				      irqflags, MBOX_IRQ_NAME, chan);
- 		if (unlikely(rc)) {
- 			dev_err(dev, "failed to register PCC interrupt %d\n",
- 				pchan->plat_irq);
-@@ -457,6 +478,8 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
- 		       pcct_ss->platform_interrupt);
- 		return -EINVAL;
- 	}
-+	pchan->plat_irq_trigger = (pcct_ss->flags & ACPI_PCCT_INTERRUPT_MODE) ?
-+				ACPI_EDGE_SENSITIVE : ACPI_LEVEL_SENSITIVE;
- 
- 	if (pcct_ss->header.type == ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
- 		struct acpi_pcct_hw_reduced_type2 *pcct2_ss = (void *)pcct_ss;
 -- 
-2.33.0
-
+Thanks,
+Sasha
