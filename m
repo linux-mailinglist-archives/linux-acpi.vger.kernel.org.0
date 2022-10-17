@@ -2,217 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2597F601146
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Oct 2022 16:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D0FD6011A9
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Oct 2022 16:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230436AbiJQOjo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Oct 2022 10:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
+        id S230520AbiJQOyD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Oct 2022 10:54:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230303AbiJQOjn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Oct 2022 10:39:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7644DF43;
-        Mon, 17 Oct 2022 07:39:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F8316117D;
-        Mon, 17 Oct 2022 14:39:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97457C43144;
-        Mon, 17 Oct 2022 14:39:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666017576;
-        bh=S3adBKWWRCbdw9aTgDVjLyyamcpV9tzhi9nN0qio5y8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bkZec/mpzcK73DGRsO+9WMq/Vf5m3ykC5aBPApPU4IlCMDH/aVBUT6I0Xcr+eR1vi
-         latXBJJn9/vjqk+Cmg3zR8EZ18LjveNkJxgSQHO0b6oqQ6sJKJIbwom6zZh0xOBWSj
-         oHmxLPQjjacMwWcJYTQwvXDUYaKLd7RgFWyrS/gaymZeeCaCBcw04K6kOKaMdH52hC
-         8kuWJnaipTMtjkAqtwXBGuaU5bF3t1m6zpN3iz03ulc7N9sigKx9tZEeE2aeow9XLA
-         V8xWJnLvFkTABpmBnID3kfXpocnADmMUA6jchPTPVMC3emP5huEQdY4kYMT0HLUvXE
-         bV3P5Rn20U/ow==
-Received: by mail-lf1-f49.google.com with SMTP id f37so17819625lfv.8;
-        Mon, 17 Oct 2022 07:39:36 -0700 (PDT)
-X-Gm-Message-State: ACrzQf2pjYg+1o41l68BmIxh8yBnAO5i7KDzKrgd/e+wnqkIykLzGOvU
-        sXRLt4OS1YyVbb2ewwussiAIqtl+5bzRftrNXJ0=
-X-Google-Smtp-Source: AMsMyM55z/nkRG2B+V8V1IwJyHIiMNsM2xHM1VyPrZy9VQr+/mQ4Twt2BgzGR8m3xY0sgjtNJw8gKq0UoiD0ohuDQKQ=
-X-Received: by 2002:ac2:4c47:0:b0:4a2:c07b:4b62 with SMTP id
- o7-20020ac24c47000000b004a2c07b4b62mr3839451lfk.426.1666017574462; Mon, 17
- Oct 2022 07:39:34 -0700 (PDT)
+        with ESMTP id S230326AbiJQOx7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Oct 2022 10:53:59 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D20691A5
+        for <linux-acpi@vger.kernel.org>; Mon, 17 Oct 2022 07:53:45 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id x31-20020a17090a38a200b0020d2afec803so11217103pjb.2
+        for <linux-acpi@vger.kernel.org>; Mon, 17 Oct 2022 07:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jveD8Fr76glp1DYxH8RBX8//jU+rwCCAw4goKV+WEYA=;
+        b=UJIoHx/gk4qgZaNeRdbeKXp0RWtmWsifoNxgVvBVZKdSitOOLM8ii0b5MMfBMYzdY2
+         OrEpEtj7HKemElQL9lCXKCVZrZD1jDtjbVsrQnOtOUOPW2Ny+9R8g/0uALspK835lnWR
+         fWGTsdbdlq1DJI8l3MHLMVIF7b/28sgZW9zZs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jveD8Fr76glp1DYxH8RBX8//jU+rwCCAw4goKV+WEYA=;
+        b=5r6qkS5LrrcvCfv5b71BJOhBesHyeH+403nAwBt/GXGBZJgJ06vnurdg68MYdu3YxW
+         AZnRxExesBcYI2L6IfFSoGHto3AAVer7TgUy58bX5GMlw/BEoc1PdyFBR/67dcDzWzSo
+         OS08KwN0LHUXEfsEJRmBFEJ8351G+2x4+UG00lpYCBvZHcai0oT6FshHM8lJlAuWp4kK
+         VBLwqyu4EQ2cWwRK/BMjLeoNz36KUKz2BEumGpQajgEtQcxEleN41yBh9Wsx7VvKUK7W
+         tb0qSlBc7RWmPnyX8j7QCNIvzLULi7eWczv2+VVggAHSKxasYxqgthoGX0XVhI9aLqnR
+         9O2Q==
+X-Gm-Message-State: ACrzQf1wENsprqlu0qwnC1vCokvF0ALIcZCXgfznbK5LUAGx5vRamI55
+        mDfmHD0U4mqv2HL1PI2qm2xxGls2qBslaQ==
+X-Google-Smtp-Source: AMsMyM5ZKclObU0RtQGG/Cnj5+YBUqafct6E2F8qhtfwlObCaK+phZQEFgEt/cB1ZFz5GsL4DrE6cA==
+X-Received: by 2002:a17:902:ec91:b0:182:8eca:ade2 with SMTP id x17-20020a170902ec9100b001828ecaade2mr12275774plg.12.1666018423537;
+        Mon, 17 Oct 2022 07:53:43 -0700 (PDT)
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com. [209.85.210.177])
+        by smtp.gmail.com with ESMTPSA id b14-20020a170903228e00b00176e8f85147sm6761745plh.83.2022.10.17.07.53.42
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Oct 2022 07:53:42 -0700 (PDT)
+Received: by mail-pf1-f177.google.com with SMTP id p14so11329323pfq.5
+        for <linux-acpi@vger.kernel.org>; Mon, 17 Oct 2022 07:53:42 -0700 (PDT)
+X-Received: by 2002:a63:1326:0:b0:439:40b5:77cc with SMTP id
+ i38-20020a631326000000b0043940b577ccmr11277758pgl.473.1666018421795; Mon, 17
+ Oct 2022 07:53:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221017130140.420986-1-justin.he@arm.com> <20221017130140.420986-7-justin.he@arm.com>
-In-Reply-To: <20221017130140.420986-7-justin.he@arm.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 17 Oct 2022 16:39:22 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEge+PtOHug2FhnbAetDLOTJ4jguC4uwA4oORbu-25YiA@mail.gmail.com>
-Message-ID: <CAMj1kXEge+PtOHug2FhnbAetDLOTJ4jguC4uwA4oORbu-25YiA@mail.gmail.com>
-Subject: Re: [PATCH v9 6/7] apei/ghes: Use xchg_release() for updating new
- cache slot instead of cmpxchg()
-To:     Jia He <justin.he@arm.com>
-Cc:     Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, Peter Zijlstra <peterz@infradead.org>
+References: <20220929161917.2348231-1-rrangel@chromium.org>
+ <20220929093200.v6.6.I8092e417a8152475d13d8d638eb4c5d8ea12ac7b@changeid>
+ <CAJZ5v0izHjb8vE0ALyYo9yMOExdpCzG8f7-d5SpQnftqJfTEig@mail.gmail.com>
+ <CAHQZ30CJyhPK-OriZ5NZ=GjwNbofaCW6GZ_CvPsL0WiJGsxs-Q@mail.gmail.com>
+ <CAJZ5v0gcJRoMSODbTevRdK1zaEZHJcPxvG6XMy9-T_jvwxPFBw@mail.gmail.com>
+ <CAHQZ30CQd-0YnQgYG_OJVWn9_aUjvDAuT_DRGsxQF-q+bjr5BA@mail.gmail.com>
+ <YzYowYJpRTImmg4m@google.com> <CAJZ5v0i+QYcMuqsK9y6qy9qzJdUp503Sidr1e4V_ROyumLKCsw@mail.gmail.com>
+ <YzcqdTxLMF5028yz@smile.fi.intel.com> <YzcthIfnpi8E6XVk@google.com> <CAJZ5v0iKXWBGYPmmg9__g3oHK2GhY+xFMnSA6c5KctOv2kTfNQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iKXWBGYPmmg9__g3oHK2GhY+xFMnSA6c5KctOv2kTfNQ@mail.gmail.com>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Mon, 17 Oct 2022 08:53:29 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30D0NmVytkmiVYYZdGMEOChsO93hYRrG6SNbFiRO4S=YGA@mail.gmail.com>
+Message-ID: <CAHQZ30D0NmVytkmiVYYZdGMEOChsO93hYRrG6SNbFiRO4S=YGA@mail.gmail.com>
+Subject: Re: [PATCH v6 06/13] ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Tim Van Patten <timvp@google.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "jingle.wu" <jingle.wu@emc.com.tw>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Len Brown <lenb@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Terry Bowman <terry.bowman@amd.com>, Tom Rix <trix@redhat.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 17 Oct 2022 at 15:02, Jia He <justin.he@arm.com> wrote:
+On Sat, Oct 15, 2022 at 10:56 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> From: Ard Biesheuvel <ardb@kernel.org>
+> On Fri, Sep 30, 2022 at 7:55 PM Dmitry Torokhov
+> <dmitry.torokhov@gmail.com> wrote:
+> >
+> > On Fri, Sep 30, 2022 at 08:42:13PM +0300, Andy Shevchenko wrote:
+> > > On Fri, Sep 30, 2022 at 07:13:37PM +0200, Rafael J. Wysocki wrote:
+> > > > On Fri, Sep 30, 2022 at 1:22 AM Dmitry Torokhov
+> > > > <dmitry.torokhov@gmail.com> wrote:
+> > >
+> > > ...
+> > >
+> > > > I think that patches [5-8/13] from this series are significant
+> > > > framework changes, so it would make sense to route them via the ACPI
+> > > > tree.
+> > > >
+> > > > If this is fine with everybody, I will queue them up for merging into
+> > > > 6.1 (probably in the second half of the upcoming merge window).
+> > >
+> > > I believe it's fine from GPIO ACPI perspective (there shouldn't be conflict,
+> > > but if you wish you always may take this PR [1] to your tree (it's already in
+> > > GPIO tree pending v6.1), it may be considered as immutable tag.
+> > >
+> > > [1]: https://lore.kernel.org/linux-gpio/Yym%2Fj+Y9MBOIhWtK@black.fi.intel.com/
+> >
+> > Yeah, having an immutable branch hanging off 6.0-rcN would be awesome -
+> > I could pull it and this would avoid any potential conflicts later.
 >
-> From: Ard Biesheuvel <ardb@kernel.org>
+> This material is in the mainline now, but the branch is still there in
+> case you need it:
 >
-> ghes_estatus_cache_add() selects a slot, and either succeeds in
-> replacing its contents with a pointer to a new cached item, or it just
-> gives up and frees the new item again, without attempting to select
-> another slot even if one might be available.
+>  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+>  acpi-wakeup
 >
-> Since only inserting new items is needed, the race can only cause a failure
-> if the selected slot was updated with another new item concurrently,
-> which means that it is arbitrary which of those two items gets
-> dropped. This means the cmpxchg() and the special case are not necessary,
-> and hence just drop the existing item unconditionally. Note that this
-> does not result in loss of error events, it simply means we might
-> cause a false cache miss, and report the same event one additional
-> time in quick succession even if the cache should have prevented that.
->
-> Move the xchg_release() and call_rcu out of rcu_read_lock/unlock section
-> since there is no actually dereferencing the pointer at all.
->
-> Co-developed-by: Jia He <justin.he@arm.com>
-> Signed-off-by: Jia He <justin.he@arm.com>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  drivers/acpi/apei/ghes.c | 47 +++++++++++++++++++++-------------------
->  1 file changed, 25 insertions(+), 22 deletions(-)
->
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 27c72b175e4b..5d7754053ca0 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -150,7 +150,7 @@ struct ghes_vendor_record_entry {
->  static struct gen_pool *ghes_estatus_pool;
->  static unsigned long ghes_estatus_pool_size_request;
->
-> -static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
-> +static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
->  static atomic_t ghes_estatus_cache_alloced;
->
->  static int ghes_panic_timeout __read_mostly = 30;
-> @@ -785,31 +785,26 @@ static struct ghes_estatus_cache *ghes_estatus_cache_alloc(
->         return cache;
->  }
->
-> -static void ghes_estatus_cache_free(struct ghes_estatus_cache *cache)
-> +static void ghes_estatus_cache_rcu_free(struct rcu_head *head)
->  {
-> +       struct ghes_estatus_cache *cache;
->         u32 len;
->
-> +       cache = container_of(head, struct ghes_estatus_cache, rcu);
->         len = cper_estatus_len(GHES_ESTATUS_FROM_CACHE(cache));
->         len = GHES_ESTATUS_CACHE_LEN(len);
->         gen_pool_free(ghes_estatus_pool, (unsigned long)cache, len);
->         atomic_dec(&ghes_estatus_cache_alloced);
->  }
->
-> -static void ghes_estatus_cache_rcu_free(struct rcu_head *head)
-> -{
-> -       struct ghes_estatus_cache *cache;
-> -
-> -       cache = container_of(head, struct ghes_estatus_cache, rcu);
-> -       ghes_estatus_cache_free(cache);
-> -}
-> -
->  static void ghes_estatus_cache_add(
->         struct acpi_hest_generic *generic,
->         struct acpi_hest_generic_status *estatus)
->  {
->         int i, slot = -1, count;
->         unsigned long long now, duration, period, max_period = 0;
-> -       struct ghes_estatus_cache *cache, *slot_cache = NULL, *new_cache;
-> +       struct ghes_estatus_cache *cache, *new_cache;
-> +       struct ghes_estatus_cache __rcu *victim;
->
->         new_cache = ghes_estatus_cache_alloc(generic, estatus);
->         if (new_cache == NULL)
-> @@ -820,13 +815,11 @@ static void ghes_estatus_cache_add(
->                 cache = rcu_dereference(ghes_estatus_caches[i]);
->                 if (cache == NULL) {
->                         slot = i;
-> -                       slot_cache = NULL;
->                         break;
->                 }
->                 duration = now - cache->time_in;
->                 if (duration >= GHES_ESTATUS_IN_CACHE_MAX_NSEC) {
->                         slot = i;
-> -                       slot_cache = cache;
->                         break;
->                 }
->                 count = atomic_read(&cache->count);
-> @@ -835,18 +828,28 @@ static void ghes_estatus_cache_add(
->                 if (period > max_period) {
->                         max_period = period;
->                         slot = i;
-> -                       slot_cache = cache;
->                 }
->         }
-> -       /* new_cache must be put into array after its contents are written */
-> -       smp_wmb();
-> -       if (slot != -1 && cmpxchg(ghes_estatus_caches + slot,
-> -                                 slot_cache, new_cache) == slot_cache) {
-> -               if (slot_cache)
-> -                       call_rcu(&slot_cache->rcu, ghes_estatus_cache_rcu_free);
-> -       } else
-> -               ghes_estatus_cache_free(new_cache);
->         rcu_read_unlock();
-> +
-> +       if (slot != -1) {
-> +               /*
-> +                * Use release semantics to ensure that ghes_estatus_cached()
-> +                * running on another CPU will see the updated cache fields if
-> +                * it can see the new value of the pointer.
-> +                */
-> +               victim = xchg_release(&ghes_estatus_caches[slot], new_cache);
-> +
+> It won't be necessary any more after 6.1-rc1 is out, though, I suppose.
 
-This still lacks the RCU_INITIALIZER()
-
-> +               /*
-> +                * At this point, victim may point to a cached item different
-> +                * from the one based on which we selected the slot. Instead of
-> +                * going to the loop again to pick another slot, let's just
-> +                * drop the other item anyway: this may cause a false cache
-> +                * miss later on, but that won't cause any problems.
-> +                */
-> +               if (victim)
-> +                       call_rcu(unrcu_pointer(&victim->rcu), ghes_estatus_cache_rcu_free);
-
-Please use &unrcu_pointer(victim)->rcu here.
-
-> +       }
->  }
->
->  static void __ghes_panic(struct ghes *ghes,
-> --
-> 2.25.1
->
+Awesome, thanks for merging in the ACPI patches!
