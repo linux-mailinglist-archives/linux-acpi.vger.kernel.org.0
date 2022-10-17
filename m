@@ -2,108 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 021F4601689
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Oct 2022 20:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 868CA6016CC
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Oct 2022 21:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbiJQSoQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Oct 2022 14:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44058 "EHLO
+        id S229794AbiJQTAk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Oct 2022 15:00:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229911AbiJQSoP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Oct 2022 14:44:15 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C7941C2;
-        Mon, 17 Oct 2022 11:44:14 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id x31-20020a17090a38a200b0020d2afec803so11804083pjb.2;
-        Mon, 17 Oct 2022 11:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4EDculVdfuod3LvB+YZ/9tyRLowaSjT/EMGrKWwqWrs=;
-        b=Ag3jTmTkmqxi6rRrA6Rj3jQtI2WHV93lD7AVOheEsJ6CeVPutPpaNZOqSsCGMTVRNo
-         ACyP8mowy4wm/T2YjeECJC5RcZo6Kdk1kfBjH0VT7GzKFyHXz4UXtBQihW3Zf5kqol5W
-         31IJpOKADtfRGIu9vpvwf2OCJSTzH2uTsAWOIjCFCsrL1d/RqPeZqwWXPNk2629NXEJD
-         2Ni3vOpt38/XBG7OwNoZ2XYwqUes1TZ81nkMUMT4oZ0T2/uvdGbTUbk59mHtBVXoWqks
-         DwegG5xkm0qlGJjxkeWwHKXZi0Gg1lhm+x5ITOrG0ICZ8hP9Xy7onvZ5gVz310ouRj79
-         YQzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4EDculVdfuod3LvB+YZ/9tyRLowaSjT/EMGrKWwqWrs=;
-        b=w5L57yAnzQRsNhqRPcDA98stA5h9SmENNzLRcGaPLzWvsFG6XAahxvXIGHK8xXh6hw
-         h7XQRdliqW1hT4ydZchG8Va4G1grKiIYW1ylldx12U4ryeCN1CFlS4FvfJGKzu9MVh8k
-         0UZVcEJn0THD2APHLuR7tFcQ57AE+etkoISrq0Om0/mWECVyvUg8nnCyAVlEcXfZxHdj
-         edgwFMk9p/TZRnI4UN58+TUJNeExZQkMzlIyko+VyutqaXdBDeASJ6HbkWF+oCeGDm11
-         okeNwERHlX7XaKT5sAGuKN0oSi483lAW1ZPGzdBs9FCRstO1I+RpXbxsxkqlbb7EI7S0
-         +fww==
-X-Gm-Message-State: ACrzQf3pU0BHel1SlNkAmhFBP3LEc3Of3T24t8xx4P9kYrvI+PXNf+yf
-        Wnd8ezuSEEX2fxULMMTidsY51KiQGYM=
-X-Google-Smtp-Source: AMsMyM4zkDy5DAtUIXjtxrTG1iendeglHLWEa4bgd2iGMur+37H7ncHWGU8DpqO7zqzP74e6PB9S3A==
-X-Received: by 2002:a17:90b:33c3:b0:20a:ebc3:6514 with SMTP id lk3-20020a17090b33c300b0020aebc36514mr34401275pjb.147.1666032253704;
-        Mon, 17 Oct 2022 11:44:13 -0700 (PDT)
-Received: from localhost ([115.117.107.100])
-        by smtp.gmail.com with ESMTPSA id q12-20020a17090311cc00b001801aec1f6bsm7011337plh.141.2022.10.17.11.44.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Oct 2022 11:44:13 -0700 (PDT)
-From:   Manank Patel <pmanank200502@gmail.com>
-To:     rafael@kernel.org
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Manank Patel <pmanank200502@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH v2] "ACPI: PCC: Fix unintentional integer overflow"
-Date:   Tue, 18 Oct 2022 00:13:39 +0530
-Message-Id: <20221017184338.64152-1-pmanank200502@gmail.com>
-X-Mailer: git-send-email 2.38.0
-In-Reply-To: <20221017182035.3g67uudttl6k5gag@bogus>
-References: <20221017182035.3g67uudttl6k5gag@bogus>
+        with ESMTP id S229924AbiJQTAj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Oct 2022 15:00:39 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7018774375;
+        Mon, 17 Oct 2022 12:00:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666033237; x=1697569237;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UYwqn8lfrfS9iaOUz7zhvOyKhScwE6zhaTGCrMNhQhE=;
+  b=dRAcy++e/e9kAQUmz+nJNsYWOgWffjzwEI3eG92ttXiHGC5giSamTder
+   QRNLT8HMEvaoZy690ul7v82MbDCNRwWMd+26tcPY89hagMxm0Q8ft2Rze
+   s15o1jaQfzr9xmrDkiNM88qd5J0Z7O45Hr/MoODujjxF3Ep0lKNYOU36H
+   PKjmnY1BoxxAwU4i8+QwGD/JUNJDd/BFC3VVB/uoCGGa08u2hbG0Wh9Zp
+   tJulN+f8vZ9hD/Qg3KMV3g8Eql6nzH2M+hV5z61qUU56QsrQ1JCTKtWve
+   gRQxyXq7qK5sN52RjEv32c2M4uKTMnGa+tRd9c452k3/ly5GwP2iTGHQS
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10503"; a="332432244"
+X-IronPort-AV: E=Sophos;i="5.95,192,1661842800"; 
+   d="scan'208";a="332432244"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2022 12:00:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10503"; a="579483303"
+X-IronPort-AV: E=Sophos;i="5.95,192,1661842800"; 
+   d="scan'208";a="579483303"
+Received: from lkp-server01.sh.intel.com (HELO 8381f64adc98) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 17 Oct 2022 12:00:34 -0700
+Received: from kbuild by 8381f64adc98 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1okVLl-0000oO-3C;
+        Mon, 17 Oct 2022 19:00:33 +0000
+Date:   Tue, 18 Oct 2022 02:59:59 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ da137aba6fe2ba43809c68e882d41e0a2bb3a774
+Message-ID: <634da62f.Xx2C68NeB/s3GHYl%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fixed unintentional u32 overflow by changing PCC_CMD_WAIT_RETRIES_NUM to 500ULL
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: da137aba6fe2ba43809c68e882d41e0a2bb3a774  Merge branch 'thermal-intel' into bleeding-edge
 
-Fixes: 91cefefb6991 ("ACPI: PCC: replace wait_for_completion()")
+elapsed time: 957m
 
-Signed-off-by: Manank Patel <pmanank200502@gmail.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+configs tested: 43
+configs skipped: 2
 
----
-Thank you so much @sudeep for your clarifications!
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Changelog:
-v1->v2:
-        Change the macro itself to ULL instead of typecasting in the
-        code
+gcc tested configs:
+arc                               allnoconfig
+alpha                             allnoconfig
+riscv                             allnoconfig
+csky                              allnoconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+s390                                defconfig
+x86_64                              defconfig
+s390                             allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+arc                  randconfig-r043-20221017
+i386                                defconfig
+i386                             allyesconfig
+powerpc                           allnoconfig
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+ia64                             allmodconfig
+i386                 randconfig-a001-20221017
+i386                 randconfig-a002-20221017
+i386                 randconfig-a003-20221017
+i386                 randconfig-a005-20221017
+i386                 randconfig-a004-20221017
 
- drivers/acpi/acpi_pcc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+clang tested configs:
+hexagon              randconfig-r045-20221017
+hexagon              randconfig-r041-20221017
+riscv                randconfig-r042-20221017
+s390                 randconfig-r044-20221017
 
-diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
-index ee4ce5ba1fb2..3e252be047b8 100644
---- a/drivers/acpi/acpi_pcc.c
-+++ b/drivers/acpi/acpi_pcc.c
-@@ -27,7 +27,7 @@
-  * Arbitrary retries in case the remote processor is slow to respond
-  * to PCC commands
-  */
--#define PCC_CMD_WAIT_RETRIES_NUM	500
-+#define PCC_CMD_WAIT_RETRIES_NUM	500ULL
- 
- struct pcc_data {
- 	struct pcc_mbox_chan *pcc_chan;
 -- 
-2.38.0
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
