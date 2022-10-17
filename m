@@ -2,135 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D0FD6011A9
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Oct 2022 16:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2A836015C0
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Oct 2022 19:50:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230520AbiJQOyD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Oct 2022 10:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58438 "EHLO
+        id S230486AbiJQRt7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Oct 2022 13:49:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbiJQOx7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Oct 2022 10:53:59 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D20691A5
-        for <linux-acpi@vger.kernel.org>; Mon, 17 Oct 2022 07:53:45 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id x31-20020a17090a38a200b0020d2afec803so11217103pjb.2
-        for <linux-acpi@vger.kernel.org>; Mon, 17 Oct 2022 07:53:44 -0700 (PDT)
+        with ESMTP id S230420AbiJQRtn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Oct 2022 13:49:43 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A632167C3;
+        Mon, 17 Oct 2022 10:49:36 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id h2so4104697plb.2;
+        Mon, 17 Oct 2022 10:49:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jveD8Fr76glp1DYxH8RBX8//jU+rwCCAw4goKV+WEYA=;
-        b=UJIoHx/gk4qgZaNeRdbeKXp0RWtmWsifoNxgVvBVZKdSitOOLM8ii0b5MMfBMYzdY2
-         OrEpEtj7HKemElQL9lCXKCVZrZD1jDtjbVsrQnOtOUOPW2Ny+9R8g/0uALspK835lnWR
-         fWGTsdbdlq1DJI8l3MHLMVIF7b/28sgZW9zZs=
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9oMR6/650TUuxa8AWJTBFDSSqrQfZOVjzX/rHGH2mR4=;
+        b=gTuX67ZrPXvnWMMUi5s4SHaxySdq+IlCqEdYMIPpu8qihH7+Px6Q4LJ6wMs+7UNIIy
+         kFfMs/hv9qLAKPjmrwZbT7FrcHODtmWe+Mh9hbnrl6k/XKDqmFa/kHa9mkDdjhz+eooO
+         biFY4iZeNnjvrSLm1BcCQm98igLaF73MPrwxH9NMZYiVGlPmaPzp4EaQH1v6ZwgA57Th
+         1CueHBH34HLgiAawFaiWLnijD087rQ20S1nnB9s7SbPjlY1mT6ALopp1dlFvZl0VxpTA
+         i/ocY5rG4CIMCB4C4jTLYSFtnkwnBc8A6EOJSEDsP0LI1aI+QMrcVO4SjEzIqYwsNjBi
+         8oFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jveD8Fr76glp1DYxH8RBX8//jU+rwCCAw4goKV+WEYA=;
-        b=5r6qkS5LrrcvCfv5b71BJOhBesHyeH+403nAwBt/GXGBZJgJ06vnurdg68MYdu3YxW
-         AZnRxExesBcYI2L6IfFSoGHto3AAVer7TgUy58bX5GMlw/BEoc1PdyFBR/67dcDzWzSo
-         OS08KwN0LHUXEfsEJRmBFEJ8351G+2x4+UG00lpYCBvZHcai0oT6FshHM8lJlAuWp4kK
-         VBLwqyu4EQ2cWwRK/BMjLeoNz36KUKz2BEumGpQajgEtQcxEleN41yBh9Wsx7VvKUK7W
-         tb0qSlBc7RWmPnyX8j7QCNIvzLULi7eWczv2+VVggAHSKxasYxqgthoGX0XVhI9aLqnR
-         9O2Q==
-X-Gm-Message-State: ACrzQf1wENsprqlu0qwnC1vCokvF0ALIcZCXgfznbK5LUAGx5vRamI55
-        mDfmHD0U4mqv2HL1PI2qm2xxGls2qBslaQ==
-X-Google-Smtp-Source: AMsMyM5ZKclObU0RtQGG/Cnj5+YBUqafct6E2F8qhtfwlObCaK+phZQEFgEt/cB1ZFz5GsL4DrE6cA==
-X-Received: by 2002:a17:902:ec91:b0:182:8eca:ade2 with SMTP id x17-20020a170902ec9100b001828ecaade2mr12275774plg.12.1666018423537;
-        Mon, 17 Oct 2022 07:53:43 -0700 (PDT)
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com. [209.85.210.177])
-        by smtp.gmail.com with ESMTPSA id b14-20020a170903228e00b00176e8f85147sm6761745plh.83.2022.10.17.07.53.42
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Oct 2022 07:53:42 -0700 (PDT)
-Received: by mail-pf1-f177.google.com with SMTP id p14so11329323pfq.5
-        for <linux-acpi@vger.kernel.org>; Mon, 17 Oct 2022 07:53:42 -0700 (PDT)
-X-Received: by 2002:a63:1326:0:b0:439:40b5:77cc with SMTP id
- i38-20020a631326000000b0043940b577ccmr11277758pgl.473.1666018421795; Mon, 17
- Oct 2022 07:53:41 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9oMR6/650TUuxa8AWJTBFDSSqrQfZOVjzX/rHGH2mR4=;
+        b=UaT6V+ECd5+PJblgrdWwqzQ7r/UlIc9Pq2HQcah/ctmGsWQgkojbVw60joBaMAnhwq
+         sYqG/4L7A1vl8YhAjaegrzAkiGGEJEg4C9RkJ0haReY/2tW5Y9uUfHQoxtyCeTfi4oFa
+         Wkmf9prKJuwvCU+7SI+sq3Ff3IJ2DdOmme5ZYCGo89v9wTkP+76e0/XLVI+QDNF9ccOO
+         GiRAioXQ9bF1kI8exqP1eDRR56hzJptvNeFu37Py72MwsEy5iTGvi1eeZAAOzUIH7B9V
+         QS+j7ebJP/S6qVcx/cbfbuHeiiMD8dAW+ZRDLP+TJ/V9b8VCT5v2BBkLwTjffU5/HLrF
+         YDCw==
+X-Gm-Message-State: ACrzQf32FcE8P43ZJ6dwT7RNadBd5Ul0FgSfbR1BPVmRJjJzW27w5FuL
+        kxxtGmQO+ZCWsoYXNucRpYGAKBfGTqY=
+X-Google-Smtp-Source: AMsMyM57YlI6CQC1JuTHgBu+dS/pEQ48VJkO2tLaeJh1cpT7zrDg90e6tJdeBAdbVCS1J3udtYNbag==
+X-Received: by 2002:a17:903:2312:b0:185:43a2:3d0e with SMTP id d18-20020a170903231200b0018543a23d0emr13463825plh.118.1666028975621;
+        Mon, 17 Oct 2022 10:49:35 -0700 (PDT)
+Received: from localhost ([115.117.107.100])
+        by smtp.gmail.com with ESMTPSA id c11-20020a624e0b000000b0056170e7299csm7376420pfb.9.2022.10.17.10.49.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Oct 2022 10:49:35 -0700 (PDT)
+From:   Manank Patel <pmanank200502@gmail.com>
+To:     rafael@kernel.org
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Manank Patel <pmanank200502@gmail.com>
+Subject: Re: [PATCH] Fixes: 91cefefb6991 ("ACPI: PCC: replace wait_for_completion()")
+Date:   Mon, 17 Oct 2022 23:19:15 +0530
+Message-Id: <20221017174915.45916-1-pmanank200502@gmail.com>
+X-Mailer: git-send-email 2.38.0
+In-Reply-To: <20221013130311.1433314-1-pmanank200502@gmail.com>
+References: <20221013130311.1433314-1-pmanank200502@gmail.com>
 MIME-Version: 1.0
-References: <20220929161917.2348231-1-rrangel@chromium.org>
- <20220929093200.v6.6.I8092e417a8152475d13d8d638eb4c5d8ea12ac7b@changeid>
- <CAJZ5v0izHjb8vE0ALyYo9yMOExdpCzG8f7-d5SpQnftqJfTEig@mail.gmail.com>
- <CAHQZ30CJyhPK-OriZ5NZ=GjwNbofaCW6GZ_CvPsL0WiJGsxs-Q@mail.gmail.com>
- <CAJZ5v0gcJRoMSODbTevRdK1zaEZHJcPxvG6XMy9-T_jvwxPFBw@mail.gmail.com>
- <CAHQZ30CQd-0YnQgYG_OJVWn9_aUjvDAuT_DRGsxQF-q+bjr5BA@mail.gmail.com>
- <YzYowYJpRTImmg4m@google.com> <CAJZ5v0i+QYcMuqsK9y6qy9qzJdUp503Sidr1e4V_ROyumLKCsw@mail.gmail.com>
- <YzcqdTxLMF5028yz@smile.fi.intel.com> <YzcthIfnpi8E6XVk@google.com> <CAJZ5v0iKXWBGYPmmg9__g3oHK2GhY+xFMnSA6c5KctOv2kTfNQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iKXWBGYPmmg9__g3oHK2GhY+xFMnSA6c5KctOv2kTfNQ@mail.gmail.com>
-From:   Raul Rangel <rrangel@chromium.org>
-Date:   Mon, 17 Oct 2022 08:53:29 -0600
-X-Gmail-Original-Message-ID: <CAHQZ30D0NmVytkmiVYYZdGMEOChsO93hYRrG6SNbFiRO4S=YGA@mail.gmail.com>
-Message-ID: <CAHQZ30D0NmVytkmiVYYZdGMEOChsO93hYRrG6SNbFiRO4S=YGA@mail.gmail.com>
-Subject: Re: [PATCH v6 06/13] ACPI: resources: Add wake_capable parameter to acpi_dev_irq_flags
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Tim Van Patten <timvp@google.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "jingle.wu" <jingle.wu@emc.com.tw>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Len Brown <lenb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Terry Bowman <terry.bowman@amd.com>, Tom Rix <trix@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Oct 15, 2022 at 10:56 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Sep 30, 2022 at 7:55 PM Dmitry Torokhov
-> <dmitry.torokhov@gmail.com> wrote:
-> >
-> > On Fri, Sep 30, 2022 at 08:42:13PM +0300, Andy Shevchenko wrote:
-> > > On Fri, Sep 30, 2022 at 07:13:37PM +0200, Rafael J. Wysocki wrote:
-> > > > On Fri, Sep 30, 2022 at 1:22 AM Dmitry Torokhov
-> > > > <dmitry.torokhov@gmail.com> wrote:
-> > >
-> > > ...
-> > >
-> > > > I think that patches [5-8/13] from this series are significant
-> > > > framework changes, so it would make sense to route them via the ACPI
-> > > > tree.
-> > > >
-> > > > If this is fine with everybody, I will queue them up for merging into
-> > > > 6.1 (probably in the second half of the upcoming merge window).
-> > >
-> > > I believe it's fine from GPIO ACPI perspective (there shouldn't be conflict,
-> > > but if you wish you always may take this PR [1] to your tree (it's already in
-> > > GPIO tree pending v6.1), it may be considered as immutable tag.
-> > >
-> > > [1]: https://lore.kernel.org/linux-gpio/Yym%2Fj+Y9MBOIhWtK@black.fi.intel.com/
-> >
-> > Yeah, having an immutable branch hanging off 6.0-rcN would be awesome -
-> > I could pull it and this would avoid any potential conflicts later.
->
-> This material is in the mainline now, but the branch is still there in
-> case you need it:
->
->  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
->  acpi-wakeup
->
-> It won't be necessary any more after 6.1-rc1 is out, though, I suppose.
+Fixed unintentional u32 overflow by changing PCC_CMD_WAIT_RETRIES_NUM to 500ULL
 
-Awesome, thanks for merging in the ACPI patches!
+Signed-off-by: Manank Patel <pmanank200502@gmail.com>
+---
+
+Sorry for the spam, I made a mistake in the previous patch (I had a confusion 
+in your suggestion about the Fixes tag).As you would have realised, i'm new 
+to this, and not so familiar with the workflow (Though I have read the 
+Documentation). Let me know if you have any suggestions.
+
+ drivers/acpi/acpi_pcc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
+index ee4ce5ba1fb2..3e252be047b8 100644
+--- a/drivers/acpi/acpi_pcc.c
++++ b/drivers/acpi/acpi_pcc.c
+@@ -27,7 +27,7 @@
+  * Arbitrary retries in case the remote processor is slow to respond
+  * to PCC commands
+  */
+-#define PCC_CMD_WAIT_RETRIES_NUM	500
++#define PCC_CMD_WAIT_RETRIES_NUM	500ULL
+ 
+ struct pcc_data {
+ 	struct pcc_mbox_chan *pcc_chan;
+-- 
+2.38.0
+
