@@ -2,110 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3157602D00
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Oct 2022 15:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18C5760308A
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Oct 2022 18:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230034AbiJRNbY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Oct 2022 09:31:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36786 "EHLO
+        id S229526AbiJRQJp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Oct 2022 12:09:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbiJRNbX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Oct 2022 09:31:23 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 11647C90F1;
-        Tue, 18 Oct 2022 06:31:20 -0700 (PDT)
-Received: from loongson.cn (unknown [10.20.42.32])
-        by gateway (Coremail) with SMTP id _____8Dxu9ilqk5jE3AAAA--.2541S3;
-        Tue, 18 Oct 2022 21:31:17 +0800 (CST)
-Received: from [10.20.42.32] (unknown [10.20.42.32])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxLeCkqk5jpbcAAA--.2979S3;
-        Tue, 18 Oct 2022 21:31:17 +0800 (CST)
-Subject: Re: [PATCH] ACPI: scan: Fix DMA range assignment
-To:     Robin Murphy <robin.murphy@arm.com>, rafael@kernel.org
-Cc:     yangyicong@huawei.com, lpieralisi@kernel.org,
-        chenhuacai@loongson.cn, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lenb@kernel.org,
-        jeremy.linton@arm.com
-References: <e94f99cfe09a64c590f009d21c566339117394e2.1666098844.git.robin.murphy@arm.com>
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-Message-ID: <3793c2e8-15ad-2628-0660-f04d4f1071fd@loongson.cn>
-Date:   Tue, 18 Oct 2022 21:31:16 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        with ESMTP id S229852AbiJRQJo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Oct 2022 12:09:44 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 598BA22BFD;
+        Tue, 18 Oct 2022 09:09:40 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
+ id 349dc4d4a828391b; Tue, 18 Oct 2022 18:09:37 +0200
+Received: from kreacher.localnet (unknown [213.134.183.104])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id BA45666695D;
+        Tue, 18 Oct 2022 18:09:36 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-rtc@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Todd Brandt <todd.e.brandt@linux.intel.com>
+Subject: [PATCH] rtc: rtc-cmos: Fix wake alarm breakage
+Date:   Tue, 18 Oct 2022 18:09:31 +0200
+Message-ID: <5887691.lOV4Wx5bFT@kreacher>
 MIME-Version: 1.0
-In-Reply-To: <e94f99cfe09a64c590f009d21c566339117394e2.1666098844.git.robin.murphy@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxLeCkqk5jpbcAAA--.2979S3
-X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
-X-Coremail-Antispam: 1Uk129KBjvJXoW7tr4DKrWDWr4Utr1ruFyUZFb_yoW8Gw4fp3
-        yYg34UCr4xJrs5Wr1xJws3ua1Y9395WrW8urW5C3sa93ZxGF90yrWrCry5u3Z3JF95JF4x
-        ZFnI9F18CFWUJrDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-        bI8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
-        1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-        wVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwA2z4
-        x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJVW0owAS
-        0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0V
-        AKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1l
-        Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21l42
-        xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWU
-        GwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI4
-        8JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4U
-        MIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I
-        8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcVc_UUUUU
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.183.104
+X-CLIENT-HOSTNAME: 213.134.183.104
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeelvddgieejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppedvudefrddufeegrddukeefrddutdegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekfedruddtgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepuddupdhrtghpthhtoheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrrdiiuhhmmhhosehtohifvghrthgvtghhrdhithdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqrhhttgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+ thhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmghhorhhmrghnsehtvggthhhsihhnghhulhgrrhhithihrdhnvghtpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehtohguugdrvgdrsghrrghnughtsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=11 Fuz1=11 Fuz2=11
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Seems good. Thanks very much.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Reviewed-by: Jianmin Lv <lvjianmin@loongson.cn>
+Commit 4919d3eb2ec0 ("rtc: cmos: Fix event handler registration
+ordering issue") overlooked the fact that cmos_do_probe() depended
+on the preparations carried out by cmos_wake_setup() and the wake
+alarm stopped working after the ordering of them had been changed.
 
-On 2022/10/18 下午9:14, Robin Murphy wrote:
-> Assigning the device's dma_range_map from the iterator variable after
-> the loop means it always points to the empty terminator at the end of
-> the map, which is not what we want. Similarly, freeing the iterator on
-> error when it points to somwhere in the middle of the allocated array
-> won't work either. Fix this.
-> 
-> Fixes: bf2ee8d0c385 ("ACPI: scan: Support multiple DMA windows with different offsets")
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->   drivers/acpi/scan.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 558664d169fc..024cc373a197 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1509,9 +1509,12 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
->   			goto out;
->   		}
->   
-> +		*map = r;
-> +
->   		list_for_each_entry(rentry, &list, node) {
->   			if (rentry->res->start >= rentry->res->end) {
-> -				kfree(r);
-> +				kfree(*map);
-> +				*map = NULL;
->   				ret = -EINVAL;
->   				dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
->   				goto out;
-> @@ -1523,8 +1526,6 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
->   			r->offset = rentry->offset;
->   			r++;
->   		}
-> -
-> -		*map = r;
->   	}
->    out:
->   	acpi_dev_free_resource_list(&list);
-> 
+Address this by partially reverting commit 4919d3eb2ec0 so that
+cmos_wake_setup() is called before cmos_do_probe() again and moving
+the rtc_wake_setup() invocation from cmos_wake_setup() directly to the
+callers of cmos_do_probe() where it will happen after a successful
+completion of the latter.
+
+Fixes: 4919d3eb2ec0 ("rtc: cmos: Fix event handler registration ordering issue")
+Reported-by: Zhang Rui <rui.zhang@intel.com>
+Reported-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+@Bjorn: This is the minimum fix.  Folding cmos_wake_setup() into cmos_do_probe()
+requires changes that are a bit intrusive for post-rc1, but I will do that later.
+
+---
+ drivers/rtc/rtc-cmos.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+Index: linux-pm/drivers/rtc/rtc-cmos.c
+===================================================================
+--- linux-pm.orig/drivers/rtc/rtc-cmos.c
++++ linux-pm/drivers/rtc/rtc-cmos.c
+@@ -1233,6 +1233,9 @@ static u32 rtc_handler(void *context)
+ 
+ static inline void rtc_wake_setup(struct device *dev)
+ {
++	if (acpi_disabled)
++		return;
++
+ 	acpi_install_fixed_event_handler(ACPI_EVENT_RTC, rtc_handler, dev);
+ 	/*
+ 	 * After the RTC handler is installed, the Fixed_RTC event should
+@@ -1286,7 +1289,6 @@ static void cmos_wake_setup(struct devic
+ 
+ 	use_acpi_alarm_quirks();
+ 
+-	rtc_wake_setup(dev);
+ 	acpi_rtc_info.wake_on = rtc_wake_on;
+ 	acpi_rtc_info.wake_off = rtc_wake_off;
+ 
+@@ -1354,6 +1356,8 @@ static int cmos_pnp_probe(struct pnp_dev
+ {
+ 	int irq, ret;
+ 
++	cmos_wake_setup(&pnp->dev);
++
+ 	if (pnp_port_start(pnp, 0) == 0x70 && !pnp_irq_valid(pnp, 0)) {
+ 		irq = 0;
+ #ifdef CONFIG_X86
+@@ -1372,7 +1376,7 @@ static int cmos_pnp_probe(struct pnp_dev
+ 	if (ret)
+ 		return ret;
+ 
+-	cmos_wake_setup(&pnp->dev);
++	rtc_wake_setup(&pnp->dev);
+ 
+ 	return 0;
+ }
+@@ -1461,6 +1465,7 @@ static int __init cmos_platform_probe(st
+ 	int irq, ret;
+ 
+ 	cmos_of_init(pdev);
++	cmos_wake_setup(&pdev->dev);
+ 
+ 	if (RTC_IOMAPPED)
+ 		resource = platform_get_resource(pdev, IORESOURCE_IO, 0);
+@@ -1474,7 +1479,7 @@ static int __init cmos_platform_probe(st
+ 	if (ret)
+ 		return ret;
+ 
+-	cmos_wake_setup(&pdev->dev);
++	rtc_wake_setup(&pdev->dev);
+ 
+ 	return 0;
+ }
+
+
 
