@@ -2,98 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD44E603137
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Oct 2022 18:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEBD46031A3
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Oct 2022 19:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230130AbiJRQ7N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Oct 2022 12:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49154 "EHLO
+        id S229914AbiJRReJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Oct 2022 13:34:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbiJRQ6x (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Oct 2022 12:58:53 -0400
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2DE8ED980;
-        Tue, 18 Oct 2022 09:58:29 -0700 (PDT)
-Received: by mail-ed1-f41.google.com with SMTP id g27so21401659edf.11;
-        Tue, 18 Oct 2022 09:58:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=siBPcYsCfbgitX+AQjieJu8JYh/+uUDCJkJNpknXFJ4=;
-        b=wL0T0K/L/3noK56uA7NScOSvAQYLo4US44uVGEcZugl0BIXbD3dxzcN7NH0njDYLDp
-         YfQofxB2xlBY0sSI1Dbi3knbAtUOyXUjIUjMUuSWGnWwxuhQDVIHgqpRSr3286fwY8oO
-         2mp8Pihf27XasSGuXX1BFSo+FbAkPel2kB0grT7fUxJvhp4CFvr7RnJaXFGxp89BqAzu
-         picZAZrRZNXiwtmpW9gqtunPiOmk7GS+oaepirfLcYvrvgpcNMkq8x9RoRvAX86+PXZG
-         EkJUhE5iwRHXknjigONTgUl5f4WEkD1IDrZTokK6T6o4qtYpt1uUJBmDsO/bJAU+Nods
-         E4kQ==
-X-Gm-Message-State: ACrzQf0FJrXCG3wGkUO4y2gjDLgks5maVF1IrAIK2z5WZ2O1LqJbUsVX
-        Byz3YzDm9cFM5ANrUlYHzp4HGp0oZUJw//liZQc=
-X-Google-Smtp-Source: AMsMyM6hk5JmXwWKZXrHq2Dku1MYgmqWKxWbuxNPlgQQSM/zUNSd9wVd16CI1pqLl5EjNqIX4+djNCeijdTLG26GVV4=
-X-Received: by 2002:a05:6402:4302:b0:45d:c9b4:c007 with SMTP id
- m2-20020a056402430200b0045dc9b4c007mr3515568edc.328.1666112293447; Tue, 18
- Oct 2022 09:58:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <5887691.lOV4Wx5bFT@kreacher> <166611112152.2353171.9661532286339710942.b4-ty@bootlin.com>
-In-Reply-To: <166611112152.2353171.9661532286339710942.b4-ty@bootlin.com>
-From:   Len Brown <lenb@kernel.org>
-Date:   Tue, 18 Oct 2022 18:58:01 +0200
-Message-ID: <CAJvTdKnNM=bT9q=Ypv9FESBLSo0GOViRFn=SOUz_pYk3dFvBaQ@mail.gmail.com>
-Subject: Re: [PATCH] rtc: rtc-cmos: Fix wake alarm breakage
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Zhang Rui <rui.zhang@intel.com>,
+        with ESMTP id S229526AbiJRReI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Oct 2022 13:34:08 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FE46B1DF7;
+        Tue, 18 Oct 2022 10:34:06 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
+ id b51b4719d7d11cff; Tue, 18 Oct 2022 19:34:04 +0200
+Received: from kreacher.localnet (unknown [213.134.183.104])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 01841666955;
+        Tue, 18 Oct 2022 19:34:03 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PCI <linux-pci@vger.kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        Todd Brandt <todd.e.brandt@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        linux-rtc@vger.kernel.org
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Subject: [PATCH] ACPI: PCI: Fix device reference counting in acpi_get_pci_dev()
+Date:   Tue, 18 Oct 2022 19:34:03 +0200
+Message-ID: <12097002.O9o76ZdvQC@kreacher>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-CLIENT-IP: 213.134.183.104
+X-CLIENT-HOSTNAME: 213.134.183.104
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeelvddgkeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppedvudefrddufeegrddukeefrddutdegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekfedruddtgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdhptghisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhg
+ pdhrtghpthhtohephhgvlhhgrggrsheskhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Works for me!
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Tested-by: Len Brown <len.brown@intel.com>
+Commit 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()") failed
+to reference count the device returned by acpi_get_pci_dev() as
+expected by its callers which in some cases may cause device objects
+to be dropped prematurely.
 
-On Tue, Oct 18, 2022 at 6:39 PM Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
->
-> On Tue, 18 Oct 2022 18:09:31 +0200, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Commit 4919d3eb2ec0 ("rtc: cmos: Fix event handler registration
-> > ordering issue") overlooked the fact that cmos_do_probe() depended
-> > on the preparations carried out by cmos_wake_setup() and the wake
-> > alarm stopped working after the ordering of them had been changed.
-> >
-> > [...]
->
-> Applied, thanks!
->
-> [1/1] rtc: rtc-cmos: Fix wake alarm breakage
->       commit: 0782b66ed2fbb035dda76111df0954515e417b24
->
-> Best regards,
->
-> --
-> Alexandre Belloni, co-owner and COO, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+Add the missing get_device() to acpi_get_pci_dev().
 
+Fixes: 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/pci_root.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: linux-pm/drivers/acpi/pci_root.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/pci_root.c
++++ linux-pm/drivers/acpi/pci_root.c
+@@ -323,6 +323,7 @@ struct pci_dev *acpi_get_pci_dev(acpi_ha
+ 
+ 	list_for_each_entry(pn, &adev->physical_node_list, node) {
+ 		if (dev_is_pci(pn->dev)) {
++			get_device(pn->dev);
+ 			pci_dev = to_pci_dev(pn->dev);
+ 			break;
+ 		}
 
 
--- 
-Len Brown, Intel
+
