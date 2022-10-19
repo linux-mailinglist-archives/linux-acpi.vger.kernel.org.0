@@ -2,59 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 007E1604F82
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 20:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3AAD604FA0
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 20:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbiJSSVG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Oct 2022 14:21:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
+        id S229974AbiJSSam (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Oct 2022 14:30:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230056AbiJSSVE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 14:21:04 -0400
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A5D176B93;
-        Wed, 19 Oct 2022 11:21:03 -0700 (PDT)
-Received: by mail-qk1-f177.google.com with SMTP id x13so11267014qkg.11;
-        Wed, 19 Oct 2022 11:21:03 -0700 (PDT)
+        with ESMTP id S230329AbiJSSak (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 14:30:40 -0400
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 776C711702B;
+        Wed, 19 Oct 2022 11:30:39 -0700 (PDT)
+Received: by mail-qk1-f171.google.com with SMTP id o22so11293297qkl.8;
+        Wed, 19 Oct 2022 11:30:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rf1B0X+bp+VmAIqShi5GSUXRR6lyFCMHibX0juPXJDs=;
-        b=EkVyObfx+8qGYcDlqx6iPybjGGDPbc2WHTDH2JKtUByhOFxwSnhKJEPmss0N6aVV5t
-         789BV0X0SNLyfeUXtM4w7T9STFNm8l+tbKdF3LDDJyW5+cHcSiD+Eb30hvT47J9LplKm
-         gV2UzMyElWSxs51tYvVmUA818TMQYkciV/DwPVQ/tbKiCtOnO3oS9vGmvQq2H2xS+7fN
-         Pf/4ckL/gfomh30uzbCfxE/sU9Qc23EpdW44lLcBNIiawykfIwpLfJ1baPd7iUJqeKbl
-         iKjvRIHjVD4clhoowa7A+WWdgR6wJ8BQoaKFrM9GQbljs/L6sVhJBTbap4uvLI/eVbxI
-         6KYQ==
-X-Gm-Message-State: ACrzQf0E6gpydE7ab3O7ZPeV7Aa7TUKo/OmBNDFpk59QIy76ElPjrV8I
-        B405wbUHRqxyXQnDMqilxWXUjK7UTNvRqZ7QzH4=
-X-Google-Smtp-Source: AMsMyM5xE5VdRAuXXW1dVy8lKG3x18M/ktegPWPCecQ6aqqTD9mlPculSMOkV+5ML3P7QHaIUs6QWukfZSCTyCPFILw=
-X-Received: by 2002:a05:620a:290d:b0:6b6:1a92:d88a with SMTP id
- m13-20020a05620a290d00b006b61a92d88amr6651757qkp.58.1666203662326; Wed, 19
- Oct 2022 11:21:02 -0700 (PDT)
+        bh=ksoUwNbFYLLNy8hgo3QVu6DMpU3MXF6PNRL2jmsEX/w=;
+        b=lQC7ixmJ9+XsTgDun3JmYo7/PQrIbLM4EwNCxnnifawsVuLBSih5FkND6HaBPhNpbs
+         uPlArpoMDI7Vz+WLAJRVBbSDsI6R7axptdanBRoerQYhijnI9Q0nEPlA4pNmgT+cEAAS
+         fdr59BQVHTAAhicoh3JsWKH/RiTWuViQMdTmSCoxhqSapksCV2BM0PE0yFl/8Av/kDIk
+         MJ1NbFnz0mrpZjZR0GNtBOj1aP3cVuer6vJNjeQCEYeys+YH+LUXX47MdVhpQxw7paRO
+         VuaXBoGUYOEA0yTAHZpAJSkAyfWa7FDidGGxiH3RPXMLZTrKPTZbh2lcngo9Yip5tQub
+         piHw==
+X-Gm-Message-State: ACrzQf19jio5F4fbZaqD3bbyPrxE8I86+Sf5KyuXZW1WbUy/m2c3gXJf
+        JYaBLlwupLD200vawQvZTMFaSKdJuXl4U3YrmgcTJNC+
+X-Google-Smtp-Source: AMsMyM5XpubSdQXcEtfcZteg4xs9UUI/l0EaFIdxTAoYYxhjzLZo+kjl+J57ZUog5PL/iOnbBTMMsju3laNUaOGKKwA=
+X-Received: by 2002:a05:620a:158f:b0:6ee:93d5:e249 with SMTP id
+ d15-20020a05620a158f00b006ee93d5e249mr6577755qkk.505.1666204238591; Wed, 19
+ Oct 2022 11:30:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <5887691.lOV4Wx5bFT@kreacher> <166611112152.2353171.9661532286339710942.b4-ty@bootlin.com>
- <CAJZ5v0jh9g8fKAoymwv1UeUqtX7EcU3JkgMHsQWZSHngyQUFQg@mail.gmail.com> <Y1A/AZmfTI6hr3RZ@mail.local>
-In-Reply-To: <Y1A/AZmfTI6hr3RZ@mail.local>
+References: <e94f99cfe09a64c590f009d21c566339117394e2.1666098844.git.robin.murphy@arm.com>
+ <Y0+xo2DO+M1iJc77@lpieralisi>
+In-Reply-To: <Y0+xo2DO+M1iJc77@lpieralisi>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 19 Oct 2022 20:20:48 +0200
-Message-ID: <CAJZ5v0hiVLroUiRv-96uyiMgj-7-GkJK5yB1O2ei8Q8gVvZPGA@mail.gmail.com>
-Subject: Re: [PATCH] rtc: rtc-cmos: Fix wake alarm breakage
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Zhang Rui <rui.zhang@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Todd Brandt <todd.e.brandt@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        linux-rtc@vger.kernel.org
+Date:   Wed, 19 Oct 2022 20:30:27 +0200
+Message-ID: <CAJZ5v0huuJj_B_zeOyx4NxA6chyvebCBLvrQx8+O=++_=oOQdQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: scan: Fix DMA range assignment
+To:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>
+Cc:     rafael@kernel.org, lvjianmin@loongson.cn, yangyicong@huawei.com,
+        chenhuacai@loongson.cn, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lenb@kernel.org,
+        jeremy.linton@arm.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -66,38 +59,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 19, 2022 at 8:16 PM Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
+On Wed, Oct 19, 2022 at 10:13 AM Lorenzo Pieralisi
+<lpieralisi@kernel.org> wrote:
 >
-> On 19/10/2022 18:13:43+0200, Rafael J. Wysocki wrote:
-> > On Tue, Oct 18, 2022 at 6:39 PM Alexandre Belloni
-> > <alexandre.belloni@bootlin.com> wrote:
-> > >
-> > > On Tue, 18 Oct 2022 18:09:31 +0200, Rafael J. Wysocki wrote:
-> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > Commit 4919d3eb2ec0 ("rtc: cmos: Fix event handler registration
-> > > > ordering issue") overlooked the fact that cmos_do_probe() depended
-> > > > on the preparations carried out by cmos_wake_setup() and the wake
-> > > > alarm stopped working after the ordering of them had been changed.
-> > > >
-> > > > [...]
-> > >
-> > > Applied, thanks!
-> > >
-> > > [1/1] rtc: rtc-cmos: Fix wake alarm breakage
-> > >       commit: 0782b66ed2fbb035dda76111df0954515e417b24
+> On Tue, Oct 18, 2022 at 02:14:04PM +0100, Robin Murphy wrote:
+> > Assigning the device's dma_range_map from the iterator variable after
+> > the loop means it always points to the empty terminator at the end of
+> > the map, which is not what we want. Similarly, freeing the iterator on
+> > error when it points to somwhere in the middle of the allocated array
+> > won't work either. Fix this.
 > >
-> > Thank you!
-> >
-> > However, there is a build fix on top of this which has just been posted:
-> >
-> > https://lore.kernel.org/linux-acpi/2677035.mvXUDI8C0e@kreacher/
-> >
-> > Sorry about breaking it again.
+> > Fixes: bf2ee8d0c385 ("ACPI: scan: Support multiple DMA windows with different offsets")
+> > Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> > ---
+> >  drivers/acpi/scan.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
 >
-> I had that in rtc-fixes:
+> A quick comment below, otherwise:
 >
-> https://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux.git/commit/?h=rtc-fixes
+> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 
-Looks good, thanks!
+Applied as is and the code may be cleaned up later.
+
+Thanks!
+
+> > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> > index 558664d169fc..024cc373a197 100644
+> > --- a/drivers/acpi/scan.c
+> > +++ b/drivers/acpi/scan.c
+> > @@ -1509,9 +1509,12 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
+> >                       goto out;
+> >               }
+> >
+> > +             *map = r;
+>
+> I wonder whether having a local variable to stash the base pointer
+> would make code easier to read (so that we avoid using *map for that
+> purpose and also to return the array to the caller).
+>
+> Thanks for fixing it so promptly.
+>
+> Lorenzo
+>
+> > +
+> >               list_for_each_entry(rentry, &list, node) {
+> >                       if (rentry->res->start >= rentry->res->end) {
+> > -                             kfree(r);
+> > +                             kfree(*map);
+> > +                             *map = NULL;
+> >                               ret = -EINVAL;
+> >                               dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
+> >                               goto out;
+> > @@ -1523,8 +1526,6 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
+> >                       r->offset = rentry->offset;
+> >                       r++;
+> >               }
+> > -
+> > -             *map = r;
+> >       }
+> >   out:
+> >       acpi_dev_free_resource_list(&list);
+> > --
+> > 2.36.1.dirty
+> >
