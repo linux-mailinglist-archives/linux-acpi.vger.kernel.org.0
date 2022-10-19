@@ -2,101 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E36F60485C
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 15:56:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5889604992
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 16:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231529AbiJSN4F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Oct 2022 09:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53976 "EHLO
+        id S229660AbiJSOok (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Oct 2022 10:44:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234029AbiJSNyi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 09:54:38 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3311CBAAB;
-        Wed, 19 Oct 2022 06:37:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666186654; x=1697722654;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gKxEzzB9eAPkRTriwHcgbwVQVyOO7fdrMwkIzMwaA3g=;
-  b=e3gZxtaksfZ101v/mU3jtz8qeVXl8iOLa0LwfeIGMhnQkOaQgxNsPixf
-   M/rqCNFkbgWsAZTLq5b8HMBiZ6ZG9wnKtOH4282AaRXq6DrXhnVJzYHF/
-   sisKPttW8IMWLf9C58gOKi2O4KpVs5pGYUb8jATCca8SDbNLXX6WkgNTj
-   zh4HCpCQKMUm/qtpYSiB+8Gni6ZprHB5eIKP+hmvG0GMbxeeFKEMPNpb5
-   bcegFW6A6qevUatNV4b8H0nZIlGz31lZYaqgeKAprfFeeSB5bqm0xmt/l
-   gel4NXoMCKMOU4jDnR3OGVSNl8871nIhYixIjz4PDtNFrHei5CF0bcknG
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="307518550"
-X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="307518550"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 06:36:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="958341131"
-X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="958341131"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 19 Oct 2022 06:36:16 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ol9F0-009sZR-21;
-        Wed, 19 Oct 2022 16:36:14 +0300
-Date:   Wed, 19 Oct 2022 16:36:14 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     chengwei <foxfly.lai.tw@gmail.com>
-Cc:     lee@kernel.org, broonie@kernel.org, rafael@kernel.org,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        brgl@bgdev.pl, linux-kernel@vger.kernel.org,
-        gregkh@linuxfoundation.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        GaryWang@aaeon.com.tw, musa.lin@yunjingtech.com,
-        jack.chang@yunjingtech.com, chengwei <larry.lai@yunjingtech.com>
-Subject: Re: [PATCH 4/5] GPIO ACPI: Add support to map GPIO resources to
- ranges
-Message-ID: <Y0/9Tq71JLr+Le4N@smile.fi.intel.com>
-References: <20221019022450.16851-1-larry.lai@yunjingtech.com>
- <20221019022450.16851-5-larry.lai@yunjingtech.com>
+        with ESMTP id S231195AbiJSOoC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 10:44:02 -0400
+X-Greylist: delayed 3594 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 19 Oct 2022 07:30:33 PDT
+Received: from smtpdh19-1.aruba.it (smtpdh19-1.aruba.it [62.149.155.148])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 54603183E1D
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Oct 2022 07:30:27 -0700 (PDT)
+Received: from [192.168.50.220] ([146.241.87.206])
+        by Aruba Outgoing Smtp  with ESMTPSA
+        id l8yLom6VCSmRKl8yLoC5TK; Wed, 19 Oct 2022 15:19:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+        t=1666185545; bh=WDOGMpV390CNEKOYi9e07ywYx+WEmXUEkJzv9gxWxDQ=;
+        h=Date:MIME-Version:Subject:To:From:Content-Type;
+        b=VesLSrQjcCVgIuoR09xn8ccWOncxgNJcFM6I7wVwjsfV2pUdgYZ8hpjBNGvD2SOOt
+         QZl+pQzHBrIw3NwIm2x6BYUm2MQhMb1dmqChCu3e7NqoHzI9dvaYYet6vnVAv5rI9o
+         SdOyhMh3w2+81l3DjVSwJQap/i1CpzVudzmaK2wUd3yDKd96kZQk1P9LSiWNC2v4yX
+         u+5TrkE30+LIE3aanSyzL+2Px9i1UtgsA8F6DI6ZrjwJaKqLOwpAo5QSUSMC0v0ubX
+         TrNBJrNH3/l3GixjjJK78GYOS3iMGd4VnCk5Ur8SjrAGLk0J5B1/uodHhTEN7e4kSf
+         0sV/SxXC5mXGA==
+Message-ID: <e08af145-59eb-1a36-01d1-3ddb9eef5e7c@benettiengineering.com>
+Date:   Wed, 19 Oct 2022 15:19:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221019022450.16851-5-larry.lai@yunjingtech.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH 3/3] raid: substitute empty_zero_page with helper
+ ZERO_PAGE(0)
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-raid@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Song Liu <song@kernel.org>
+References: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
+ <20221018215755.33566-3-giulio.benetti@benettiengineering.com>
+ <Y0/Yt4uJWg4knNoc@infradead.org>
+Content-Language: en-US
+From:   Giulio Benetti <giulio.benetti@benettiengineering.com>
+In-Reply-To: <Y0/Yt4uJWg4knNoc@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfB+NDAsiJxnR3l50nzexIf2Nm5qf9kozjDLXjBsMXnWsJq1kS6Prga/nWQyUoWheKfTCL6zoU+IRJI1sdAmagXZVMkd/FUYgd79e2NLN0969HIPurf4s
+ 7FMqqGZHdB7dUwJp3GTb41IUsxfziJIyLnvZ2LjBS9yn5u/m8d4V+f0W95lHOCCGo8cqAJjRnoimvLFwFjpDbOaqnPBQADhxPA1Bpsw7xVtBnLVPAsqmdeAA
+ hfVULjRA0+GBTwTI1NvhAMDIC2d/0nQl/Xb/svdU7BuHgAPVDgZ/rwbC4Xc+zmXCjZs9ATUNqmLhxECSEYGZmCCatC2GMc1CbjslIrBo+kmqc8HZKABoxeuz
+ RaeT95Md9rzbiu3lgAtg3o/IqI0jmCKESRC5IiByX7ymiZH7J9EI94Tu767HTqsyTJCcYC18KkUPqUFcM9knS1Ut77Tiwd5WGx/a+hlWM+/Og0ZqY74KtyxQ
+ LYFfX/FiHIR++SiEBaZlD2erzaOmk7J8BBA7GQ==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 19, 2022 at 10:24:49AM +0800, chengwei wrote:
-> Add a function to gpiolib to facilitate registering a pin controller for
-> a range of GPIO pins, but using ACPI resource references and without
-> claiming the GPIO resource.
+Hi Cristoph,
 
-This is quite under explained.
+On 19/10/22 13:00, Christoph Hellwig wrote:
+> On Tue, Oct 18, 2022 at 11:57:55PM +0200, Giulio Benetti wrote:
+>>   #if RAID6_USE_EMPTY_ZERO_PAGE
+>> -# define raid6_empty_zero_page empty_zero_page
+>> +# define raid6_empty_zero_page ZERO_PAGE(0)
+>>   #else
+>>   extern const char raid6_empty_zero_page[PAGE_SIZE];
+> 
+> RAID6_USE_EMPTY_ZERO_PAGE is never set to a non-zero value.  So this
+> is dead code and we can just remove all code related to the
+> RAID6_USE_EMPTY_ZERO_PAGE case.
 
-First of all, why do you need all these?
+thank you for taking a look.
+Should I send a patch for removing the code in this v2 patchset?
 
-Second, where is the link to ACPI DSDT excerpt of the device node
-which needs that?
-
-Third, is the BIOS for these platforms is already in wild or
-can be amended?
-
-...
-
-> +		count = acpi_gpio_count_from_property(adev, propname);
->  		if (count > 0)
->  			break;
-
-This part can be split to a separate change as a prerequisite.
-
+Best regards
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Giulio Benetti
+CEO/CTO@Benetti Engineering sas
