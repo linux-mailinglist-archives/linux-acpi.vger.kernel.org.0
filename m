@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B275604823
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 15:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E36F60485C
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 15:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233129AbiJSNtn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Oct 2022 09:49:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58712 "EHLO
+        id S231529AbiJSN4F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Oct 2022 09:56:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233697AbiJSNs6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 09:48:58 -0400
+        with ESMTP id S234029AbiJSNyi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 09:54:38 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86EDF19E90B;
-        Wed, 19 Oct 2022 06:33:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3311CBAAB;
+        Wed, 19 Oct 2022 06:37:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666186386; x=1697722386;
+  t=1666186654; x=1697722654;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=uMSS2UGALuEpzvvAM47D5sxAZNzAFsz3tkvccmabASw=;
-  b=jS3uZQIfZTGBP4YKRFEKP46zzLs2PGAsvGfPVC9R4QA9wizh5V/FyHMK
-   1GolAJIy5jlsZklxwFPv7UKBQNBLMPxCIC3BIdXuzfXw5Vz9qQI0+P+fp
-   loGhT1LFXVWmQunB+F+mByxdWhcW1tCzHVxmc/ayF5WhJoC0obli7ypgw
-   3UTLqvj1ocDM1aUSy88UoWoK9Ycj5lgeoZ4RUeahGmp4MocIDxa5BcOVC
-   kEcbTgmxwPEnoP+JJj/yEsmcp59hQBv+k5qI2rdVa08K2j48QZeurBdxD
-   IRvSsof26qgsLIcrkskwwxYpOHgCITATAkB1svygDeEKUwLnMjTWA2FW5
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="307517393"
+  bh=gKxEzzB9eAPkRTriwHcgbwVQVyOO7fdrMwkIzMwaA3g=;
+  b=e3gZxtaksfZ101v/mU3jtz8qeVXl8iOLa0LwfeIGMhnQkOaQgxNsPixf
+   M/rqCNFkbgWsAZTLq5b8HMBiZ6ZG9wnKtOH4282AaRXq6DrXhnVJzYHF/
+   sisKPttW8IMWLf9C58gOKi2O4KpVs5pGYUb8jATCca8SDbNLXX6WkgNTj
+   zh4HCpCQKMUm/qtpYSiB+8Gni6ZprHB5eIKP+hmvG0GMbxeeFKEMPNpb5
+   bcegFW6A6qevUatNV4b8H0nZIlGz31lZYaqgeKAprfFeeSB5bqm0xmt/l
+   gel4NXoMCKMOU4jDnR3OGVSNl8871nIhYixIjz4PDtNFrHei5CF0bcknG
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="307518550"
 X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="307517393"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 06:32:45 -0700
+   d="scan'208";a="307518550"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 06:36:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="631670176"
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="958341131"
 X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="631670176"
+   d="scan'208";a="958341131"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 19 Oct 2022 06:32:41 -0700
+  by fmsmga005.fm.intel.com with ESMTP; 19 Oct 2022 06:36:16 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ol9BX-009sV1-2C;
-        Wed, 19 Oct 2022 16:32:39 +0300
-Date:   Wed, 19 Oct 2022 16:32:39 +0300
+        id 1ol9F0-009sZR-21;
+        Wed, 19 Oct 2022 16:36:14 +0300
+Date:   Wed, 19 Oct 2022 16:36:14 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     chengwei <foxfly.lai.tw@gmail.com>
 Cc:     lee@kernel.org, broonie@kernel.org, rafael@kernel.org,
@@ -52,14 +52,15 @@ Cc:     lee@kernel.org, broonie@kernel.org, rafael@kernel.org,
         linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
         GaryWang@aaeon.com.tw, musa.lin@yunjingtech.com,
         jack.chang@yunjingtech.com, chengwei <larry.lai@yunjingtech.com>
-Subject: Re: [PATCH 3/5] ACPI: acpi_node_add_pin_mapping added to header file
-Message-ID: <Y0/8d66G3HndiRJF@smile.fi.intel.com>
+Subject: Re: [PATCH 4/5] GPIO ACPI: Add support to map GPIO resources to
+ ranges
+Message-ID: <Y0/9Tq71JLr+Le4N@smile.fi.intel.com>
 References: <20221019022450.16851-1-larry.lai@yunjingtech.com>
- <20221019022450.16851-4-larry.lai@yunjingtech.com>
+ <20221019022450.16851-5-larry.lai@yunjingtech.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221019022450.16851-4-larry.lai@yunjingtech.com>
+In-Reply-To: <20221019022450.16851-5-larry.lai@yunjingtech.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -71,11 +72,28 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 19, 2022 at 10:24:48AM +0800, chengwei wrote:
-> Declare acpi_node_add_pin_mapping added for pinctrl-upboard
-> reference.
+On Wed, Oct 19, 2022 at 10:24:49AM +0800, chengwei wrote:
+> Add a function to gpiolib to facilitate registering a pin controller for
+> a range of GPIO pins, but using ACPI resource references and without
+> claiming the GPIO resource.
 
-This should be a part of the next change.
+This is quite under explained.
+
+First of all, why do you need all these?
+
+Second, where is the link to ACPI DSDT excerpt of the device node
+which needs that?
+
+Third, is the BIOS for these platforms is already in wild or
+can be amended?
+
+...
+
+> +		count = acpi_gpio_count_from_property(adev, propname);
+>  		if (count > 0)
+>  			break;
+
+This part can be split to a separate change as a prerequisite.
 
 -- 
 With Best Regards,
