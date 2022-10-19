@@ -2,65 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC3460453A
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 14:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45571604498
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 14:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233084AbiJSM0E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Oct 2022 08:26:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36320 "EHLO
+        id S231271AbiJSMJt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 19 Oct 2022 08:09:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233948AbiJSMZR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 08:25:17 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57B81C7D61;
-        Wed, 19 Oct 2022 05:01:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=xws8xFXwM1KyPnBLrh1r+q3lBJxGn8b72mAASi9/amU=; b=QIoDHfQoFCCed+6zaJwE3c7Vri
-        679zySmrP7NeCw0NYuZUUWOYVKL628W5Jo2uoV+mECIa6gfyTeV/ysIAnP6xN00+sH1NaDTd+L/KF
-        6JowD3VnkG5JDi57/V7dmMHixDFwpKDH8he+7AeGOwwwRZ+JNdc0bmnBiSeIarg+R55AJjLCSGvz7
-        4EowRtfH7jO1UiVdPGHhNLrPqDsba02CC29bliYwFMFYQZQW5J7aIzYPlikTsv83x5OusqA+36YEH
-        CQLB0HG+pQwM8GI3x7zbeyg6Vhx8aMMl3/2JdMCrcJyXPIXIjP+qIj3lcgEZ49oavruHFPXXRiDUn
-        TTEvniPA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1ol6nv-000j61-CW; Wed, 19 Oct 2022 11:00:07 +0000
-Date:   Wed, 19 Oct 2022 04:00:07 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Giulio Benetti <giulio.benetti@benettiengineering.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-raid@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Song Liu <song@kernel.org>
-Subject: Re: [PATCH 3/3] raid: substitute empty_zero_page with helper
- ZERO_PAGE(0)
-Message-ID: <Y0/Yt4uJWg4knNoc@infradead.org>
-References: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
- <20221018215755.33566-3-giulio.benetti@benettiengineering.com>
+        with ESMTP id S233044AbiJSMJV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 08:09:21 -0400
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ADA7E22ED;
+        Wed, 19 Oct 2022 04:45:06 -0700 (PDT)
+Received: by mail-io1-f43.google.com with SMTP id 137so14164173iou.9;
+        Wed, 19 Oct 2022 04:45:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YkeBWCcFMJNFjbaBfw9zUjyE7Y7cuaLWG97IUP/cIwE=;
+        b=2uYsTnYGOhx+EBdGM4FFhNbO0y+B6rBtBistqOR6vJrLWSWSGn6HfvH9CjZhXDnWAu
+         ETj00CuZL22d63tIeDwBEEeFzE0g0YVj8axeadGjz+AMj8/tEvzbIdNvBiNBCo2lD+S5
+         jeTyWJP8Pg9iUaEVFgmiJoXV4XZBKZxj54pVkJrmNgRqadB7YN2bwDnZ8Y0yYQIZWvru
+         UxI+xEPH7VbH5jpZnkJb3HwrO+jlbbbNukvZA6IeovWXd5ZkiEqmP++DQf3rXY1CkqFE
+         LSeiJeO5mmfcYYmyErvRlHRiMo+rzgXZdynXXmHzFOmq6/xjzL8VlZsCEgO3r71bzEjf
+         6y+w==
+X-Gm-Message-State: ACrzQf1Nd7rpTXGFmbCby3Hnl5jOCbBw0K3zy0hq79K55IgkrRxDIjGF
+        6RYTwGUWuLgSST7HNv4riW2z1/aH5DVnSt/ATrWXvnQv
+X-Google-Smtp-Source: AMsMyM4thGGOyHBsHmCvvqQFnAaUTg02mrvN5eJOGsv40LHgyG4ZXauIIJtsE/iD/+LYK3PEcWkvYSqrgq7+QexcHUo=
+X-Received: by 2002:a05:620a:158f:b0:6ee:93d5:e249 with SMTP id
+ d15-20020a05620a158f00b006ee93d5e249mr5044929qkk.505.1666179338715; Wed, 19
+ Oct 2022 04:35:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221018215755.33566-3-giulio.benetti@benettiengineering.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <12097002.O9o76ZdvQC@kreacher> <Y0+7Ug9Yh6J6uHVr@intel.com>
+In-Reply-To: <Y0+7Ug9Yh6J6uHVr@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 19 Oct 2022 13:35:26 +0200
+Message-ID: <CAJZ5v0gKW9S29xS2+qkcopzYtZKTcM=ZT-Jjc4fnEJfu=oYKaw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PCI: Fix device reference counting in acpi_get_pci_dev()
+To:     =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 18, 2022 at 11:57:55PM +0200, Giulio Benetti wrote:
->  #if RAID6_USE_EMPTY_ZERO_PAGE
-> -# define raid6_empty_zero_page empty_zero_page
-> +# define raid6_empty_zero_page ZERO_PAGE(0)
->  #else
->  extern const char raid6_empty_zero_page[PAGE_SIZE];
+On Wed, Oct 19, 2022 at 11:02 AM Ville Syrjälä
+<ville.syrjala@linux.intel.com> wrote:
+>
+> On Tue, Oct 18, 2022 at 07:34:03PM +0200, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Commit 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()") failed
+> > to reference count the device returned by acpi_get_pci_dev() as
+> > expected by its callers which in some cases may cause device objects
+> > to be dropped prematurely.
+> >
+> > Add the missing get_device() to acpi_get_pci_dev().
+> >
+> > Fixes: 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()")
+>
+> FYI this (and the rtc-cmos regression discussed in
+> https://lore.kernel.org/linux-acpi/5887691.lOV4Wx5bFT@kreacher/)
+> took down the entire Intel gfx CI.
 
-RAID6_USE_EMPTY_ZERO_PAGE is never set to a non-zero value.  So this
-is dead code and we can just remove all code related to the
-RAID6_USE_EMPTY_ZERO_PAGE case.
+Sorry for the disturbance.
+
+> I've applied both fixes into our fixup branch and things are looking much
+> healthier now.
+
+Thanks for letting me know.
+
+I've just added the $subject patch to my linux-next branch as an
+urgent fix and the other one has been applied to the RTC tree.
+
+> This one caused i915 selftests to eat a lot of POISON_FREE
+> in the CI. While bisecting it locally I didn't have
+> poisoning enabled so I got refcount_t undeflows instead.
+
+Unfortunately, making no mistakes is generally hard to offer.
+
+If catching things like this early is better, what about pulling my
+bleeding-edge branch, where all of my changes are staged before going
+into linux-next, into the CI?
+
+> https://intel-gfx-ci.01.org/tree/drm-tip/index.html has a lot
+> of colorful boxes to click if you're interested in any of the
+> logs. The fixes are included in the CI_DRM_12259 build. Earlier
+> builds were broken.
+
+Thanks!
