@@ -2,45 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27EA9603ABE
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 09:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B333603B32
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 10:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229664AbiJSHiY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Oct 2022 03:38:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52036 "EHLO
+        id S229900AbiJSINe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Oct 2022 04:13:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbiJSHiX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 03:38:23 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A437863F30;
-        Wed, 19 Oct 2022 00:38:22 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MsjC46y7gzmVFX;
-        Wed, 19 Oct 2022 15:33:36 +0800 (CST)
-Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 19 Oct 2022 15:38:09 +0800
-Received: from ubuntu1804.huawei.com (10.67.175.36) by
- dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 19 Oct 2022 15:38:09 +0800
-From:   Chen Zhongjin <chenzhongjin@huawei.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <devel@acpica.org>
-CC:     <robert.moore@intel.com>, <rafael.j.wysocki@intel.com>,
-        <lenb@kernel.org>, <lv.zheng@intel.com>, <chenzhongjin@huawei.com>
-Subject: [PATCH] ACPICA: Fix use-after-free in acpi_ps_parse_aml()
-Date:   Wed, 19 Oct 2022 15:34:43 +0800
-Message-ID: <20221019073443.248215-1-chenzhongjin@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S229755AbiJSINc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 04:13:32 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 214407B7A4;
+        Wed, 19 Oct 2022 01:13:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B0516B8229C;
+        Wed, 19 Oct 2022 08:13:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE54AC433C1;
+        Wed, 19 Oct 2022 08:13:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666167209;
+        bh=grMsjd15672MfK3WGgOcqlJzZx9mIPlajFH6LUT3LyY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RjVAr0Il58bIZWLUGi0rCHF+ypPJCVywSKez1JCpU5/aREb1O+c1fsOY9WMqJTng8
+         6pK155IBfsEku8Mk2Sji4JfTbBKqV5//ZymA9ALU95IuYmUcT3skEtAxWW1pAMl3za
+         crMcr8Tei9jvrqVmx7LlXij/WR1dNi0XlnPExfHhhuU1omNyFzl4Ae2CCQ8Dd5OPKO
+         HOF+HCIy2CL4K8aXeplRwMGsEIYUOvvRzzgZbQouWWIxvKWpeVXaAbneQ86brhiXBZ
+         50ZM3naXT9wqbwGhu5qMyyF2JkdcdCmbFF9h0L67NdjCtUFDB6pBMivaGFKZz8ZNvJ
+         5ZeclOi1xCxKA==
+Date:   Wed, 19 Oct 2022 10:13:23 +0200
+From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     rafael@kernel.org, lvjianmin@loongson.cn, yangyicong@huawei.com,
+        chenhuacai@loongson.cn, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lenb@kernel.org,
+        jeremy.linton@arm.com
+Subject: Re: [PATCH] ACPI: scan: Fix DMA range assignment
+Message-ID: <Y0+xo2DO+M1iJc77@lpieralisi>
+References: <e94f99cfe09a64c590f009d21c566339117394e2.1666098844.git.robin.murphy@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.175.36]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500013.china.huawei.com (7.185.36.172)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e94f99cfe09a64c590f009d21c566339117394e2.1666098844.git.robin.murphy@arm.com>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,79 +54,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-KASAN reports a use-after-free problem and causes kernel panic
-triggered by: modprobe acpiphp_ibm
+On Tue, Oct 18, 2022 at 02:14:04PM +0100, Robin Murphy wrote:
+> Assigning the device's dma_range_map from the iterator variable after
+> the loop means it always points to the empty terminator at the end of
+> the map, which is not what we want. Similarly, freeing the iterator on
+> error when it points to somwhere in the middle of the allocated array
+> won't work either. Fix this.
+> 
+> Fixes: bf2ee8d0c385 ("ACPI: scan: Support multiple DMA windows with different offsets")
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+>  drivers/acpi/scan.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 
-BUG: KASAN:
-use-after-free in acpi_ds_dump_method_stack (drivers/acpi/acpica/dsdebug.c:145)
-Read of size 8 at addr ffff888002f843f0 by task modprobe/519
+A quick comment below, otherwise:
 
-CPU: 2 PID: 519 Comm: modprobe Not tainted 6.0.0+
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-    Call Trace:
-    <TASK>
-    acpi_ds_dump_method_stack (drivers/acpi/acpica/dsdebug.c:145)
-    acpi_ds_method_error (drivers/acpi/acpica/dsmethod.c:232)
-    acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
-    ...
-    </TASK>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 
-    Allocated by task 519:
-    ...
-    __kasan_kmalloc (mm/kasan/common.c:526)
-    acpi_ds_create_walk_state (drivers/acpi/acpica/dswstate.c:519)
-    acpi_ds_call_control_method (drivers/acpi/acpica/dsmethod.c:498)
-    acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
-    ...
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 558664d169fc..024cc373a197 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1509,9 +1509,12 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
+>  			goto out;
+>  		}
+>  
+> +		*map = r;
 
-    Freed by task 519:
-    ...
-    __kmem_cache_free+0xb6/0x3c0
-    acpi_ds_delete_walk_state (drivers/acpi/acpica/dswstate.c:722)
-    acpi_ds_call_control_method (drivers/acpi/acpica/dsmethod.c:586)
-    acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
-    ...
----[ end Kernel panic - not syncing: Fatal exception ]---
+I wonder whether having a local variable to stash the base pointer
+would make code easier to read (so that we avoid using *map for that
+purpose and also to return the array to the caller).
 
-In the error path in acpi_ps_parse_aml():
+Thanks for fixing it so promptly.
 
-    acpi_ds_call_control_method()
-        acpi_ds_create_walk_state()
-            acpi_ds_push_walk_state()
-	    # thread->walk_state_list = walk_state
+Lorenzo
 
-        acpi_ds_init_aml_walk # *fail*
-        goto cleanup:
-        acpi_ds_delete_walk_state() # ACPI_FREE(walk_state)
-
-    acpi_ds_method_error()
-        acpi_ds_dump_method_stack()
-        # using freed thread->walk_state_list
-
-Briefly, the walk_state is pushed to thread, and freed without being poped.
-Then it is used in acpi_ds_dump_method_stack() and causes use-after-free.
-
-Add acpi_ds_pop_walk_state(thread) to the error path to fix the problem.
-
-Fixes: 0bac4295526c ("ACPICA: Dispatcher: Move stack traversal code to dispatcher")
-
-Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
----
- drivers/acpi/acpica/dsmethod.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index ae2e768830bf..19da7fc73186 100644
---- a/drivers/acpi/acpica/dsmethod.c
-+++ b/drivers/acpi/acpica/dsmethod.c
-@@ -581,6 +581,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 
- 	acpi_ds_terminate_control_method(obj_desc, next_walk_state);
- 	acpi_ds_delete_walk_state(next_walk_state);
-+	acpi_ds_pop_walk_state(thread);
- 
- 	return_ACPI_STATUS(status);
- }
--- 
-2.17.1
-
+> +
+>  		list_for_each_entry(rentry, &list, node) {
+>  			if (rentry->res->start >= rentry->res->end) {
+> -				kfree(r);
+> +				kfree(*map);
+> +				*map = NULL;
+>  				ret = -EINVAL;
+>  				dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
+>  				goto out;
+> @@ -1523,8 +1526,6 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
+>  			r->offset = rentry->offset;
+>  			r++;
+>  		}
+> -
+> -		*map = r;
+>  	}
+>   out:
+>  	acpi_dev_free_resource_list(&list);
+> -- 
+> 2.36.1.dirty
+> 
