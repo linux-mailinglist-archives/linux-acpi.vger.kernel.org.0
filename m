@@ -2,91 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEC8A604A5F
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 17:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51428604CB8
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 18:06:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230030AbiJSPEP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Oct 2022 11:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60682 "EHLO
+        id S229879AbiJSQGE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Oct 2022 12:06:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231976AbiJSPD6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 11:03:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542A91C2F0C;
-        Wed, 19 Oct 2022 07:58:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229795AbiJSQFb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 12:05:31 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2854826D7;
+        Wed, 19 Oct 2022 09:04:24 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
+ id 72dc682b41a07469; Wed, 19 Oct 2022 18:03:35 +0200
+Received: from kreacher.localnet (unknown [213.134.188.148])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95E6861908;
-        Wed, 19 Oct 2022 14:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4C3C433D6;
-        Wed, 19 Oct 2022 14:56:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666191419;
-        bh=9Bw0aFAkSLNwxg2hqGz9POPzhqsT/j8ihEWCR51Rcjs=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=qcg74Qw7KGsQEqZONGxvf3iDzilD0efRtWaDnjLieM38EazJhyp0okwur0gSZovND
-         Zw2Chlw0qEVxWQ/s8nD5v689CrMoLSMfum6CYuCA7yk/CN6ZE3OlLLCixoYk4LMbKG
-         Huaz0kqakGRjRK8C3wFVWvo7LtpPtbJdfJLpMsTz0xT+Ln+hd+N/UOzr+qGwLhSJ4G
-         La+vXCKf6uJkRT0Zb5pMJt0m4DGL/YmdJUUDa2rlRH13fEtlQeDYkS9Vg07weePl5w
-         TwOKgYup16B44vdK7FDK2oClVcSfwFA4omrzB4MzTEJDg+/23wM0gIFSX3nfb7QngB
-         93J9NNAGxCrFg==
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        linux-raid@vger.kernel.org, linux-spi@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Song Liu <song@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-In-Reply-To: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
-References: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
-Subject: Re: (subset) [PATCH 1/3] ACPI: scan: substitute empty_zero_page with helper ZERO_PAGE(0)
-Message-Id: <166619141690.565256.8563939546728659746.b4-ty@kernel.org>
-Date:   Wed, 19 Oct 2022 15:56:56 +0100
+        by v370.home.net.pl (Postfix) with ESMTPSA id 902B06669D5;
+        Wed, 19 Oct 2022 18:03:34 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-rtc@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Todd Brandt <todd.e.brandt@linux.intel.com>
+Subject: [PATCH] rtc: rtc-cmos: Fix compilation with CONFIG_ACPI unset
+Date:   Wed, 19 Oct 2022 18:03:33 +0200
+Message-ID: <2677035.mvXUDI8C0e@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.188.148
+X-CLIENT-HOSTNAME: 213.134.188.148
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeelgedgleehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppedvudefrddufeegrddukeekrddugeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekkedrudegkedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepuddupdhrtghpthhtoheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrrdiiuhhmmhhosehtohifvghrthgvtghhrdhithdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqrhhttgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+ thhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmghhorhhmrghnsehtvggthhhsihhnghhulhgrrhhithihrdhnvghtpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehtohguugdrvgdrsghrrghnughtsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=11 Fuz1=11 Fuz2=11
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 18 Oct 2022 23:57:53 +0200, Giulio Benetti wrote:
-> Not all zero page implementations use empty_zero_page global pointer so
-> let's substitute empty_zero_page occurence with helper ZERO_PAGE(0).
-> 
-> 
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Applied to
+After commit 0782b66ed2fb ("rtc: rtc-cmos: Fix wake alarm breakage")
+the driver won't build with CONFIG_ACPI unset due to a missing stub
+definition of rtc_wake_setup(), so fix that.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Fixes: 0782b66ed2fb ("rtc: rtc-cmos: Fix wake alarm breakage")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/rtc/rtc-cmos.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks!
+Index: linux-pm/drivers/rtc/rtc-cmos.c
+===================================================================
+--- linux-pm.orig/drivers/rtc/rtc-cmos.c
++++ linux-pm/drivers/rtc/rtc-cmos.c
+@@ -1337,6 +1337,10 @@ static void cmos_check_acpi_rtc_status(s
+ 
+ #else
+ 
++static inline void rtc_wake_setup(struct device *dev)
++{
++}
++
+ static void cmos_wake_setup(struct device *dev)
+ {
+ }
 
-[2/3] spi: fsl-cpm: substitute empty_zero_page with helper ZERO_PAGE(0)
-      commit: 3be6acda8241352c57d47b4d7d9968cadcb954ea
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
