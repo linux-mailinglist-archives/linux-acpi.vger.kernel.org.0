@@ -2,85 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5889604992
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 16:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEC8A604A5F
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 17:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbiJSOok (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Oct 2022 10:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48410 "EHLO
+        id S230030AbiJSPEP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Oct 2022 11:04:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231195AbiJSOoC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 10:44:02 -0400
-X-Greylist: delayed 3594 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 19 Oct 2022 07:30:33 PDT
-Received: from smtpdh19-1.aruba.it (smtpdh19-1.aruba.it [62.149.155.148])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 54603183E1D
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Oct 2022 07:30:27 -0700 (PDT)
-Received: from [192.168.50.220] ([146.241.87.206])
-        by Aruba Outgoing Smtp  with ESMTPSA
-        id l8yLom6VCSmRKl8yLoC5TK; Wed, 19 Oct 2022 15:19:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-        t=1666185545; bh=WDOGMpV390CNEKOYi9e07ywYx+WEmXUEkJzv9gxWxDQ=;
-        h=Date:MIME-Version:Subject:To:From:Content-Type;
-        b=VesLSrQjcCVgIuoR09xn8ccWOncxgNJcFM6I7wVwjsfV2pUdgYZ8hpjBNGvD2SOOt
-         QZl+pQzHBrIw3NwIm2x6BYUm2MQhMb1dmqChCu3e7NqoHzI9dvaYYet6vnVAv5rI9o
-         SdOyhMh3w2+81l3DjVSwJQap/i1CpzVudzmaK2wUd3yDKd96kZQk1P9LSiWNC2v4yX
-         u+5TrkE30+LIE3aanSyzL+2Px9i1UtgsA8F6DI6ZrjwJaKqLOwpAo5QSUSMC0v0ubX
-         TrNBJrNH3/l3GixjjJK78GYOS3iMGd4VnCk5Ur8SjrAGLk0J5B1/uodHhTEN7e4kSf
-         0sV/SxXC5mXGA==
-Message-ID: <e08af145-59eb-1a36-01d1-3ddb9eef5e7c@benettiengineering.com>
-Date:   Wed, 19 Oct 2022 15:19:01 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: Re: [PATCH 3/3] raid: substitute empty_zero_page with helper
- ZERO_PAGE(0)
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-raid@vger.kernel.org,
+        with ESMTP id S231976AbiJSPD6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Oct 2022 11:03:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542A91C2F0C;
+        Wed, 19 Oct 2022 07:58:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95E6861908;
+        Wed, 19 Oct 2022 14:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4C3C433D6;
+        Wed, 19 Oct 2022 14:56:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666191419;
+        bh=9Bw0aFAkSLNwxg2hqGz9POPzhqsT/j8ihEWCR51Rcjs=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=qcg74Qw7KGsQEqZONGxvf3iDzilD0efRtWaDnjLieM38EazJhyp0okwur0gSZovND
+         Zw2Chlw0qEVxWQ/s8nD5v689CrMoLSMfum6CYuCA7yk/CN6ZE3OlLLCixoYk4LMbKG
+         Huaz0kqakGRjRK8C3wFVWvo7LtpPtbJdfJLpMsTz0xT+Ln+hd+N/UOzr+qGwLhSJ4G
+         La+vXCKf6uJkRT0Zb5pMJt0m4DGL/YmdJUUDa2rlRH13fEtlQeDYkS9Vg07weePl5w
+         TwOKgYup16B44vdK7FDK2oClVcSfwFA4omrzB4MzTEJDg+/23wM0gIFSX3nfb7QngB
+         93J9NNAGxCrFg==
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Giulio Benetti <giulio.benetti@benettiengineering.com>,
+        linux-raid@vger.kernel.org, linux-spi@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Song Liu <song@kernel.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Song Liu <song@kernel.org>
+        Len Brown <lenb@kernel.org>
+In-Reply-To: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
 References: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
- <20221018215755.33566-3-giulio.benetti@benettiengineering.com>
- <Y0/Yt4uJWg4knNoc@infradead.org>
-Content-Language: en-US
-From:   Giulio Benetti <giulio.benetti@benettiengineering.com>
-In-Reply-To: <Y0/Yt4uJWg4knNoc@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfB+NDAsiJxnR3l50nzexIf2Nm5qf9kozjDLXjBsMXnWsJq1kS6Prga/nWQyUoWheKfTCL6zoU+IRJI1sdAmagXZVMkd/FUYgd79e2NLN0969HIPurf4s
- 7FMqqGZHdB7dUwJp3GTb41IUsxfziJIyLnvZ2LjBS9yn5u/m8d4V+f0W95lHOCCGo8cqAJjRnoimvLFwFjpDbOaqnPBQADhxPA1Bpsw7xVtBnLVPAsqmdeAA
- hfVULjRA0+GBTwTI1NvhAMDIC2d/0nQl/Xb/svdU7BuHgAPVDgZ/rwbC4Xc+zmXCjZs9ATUNqmLhxECSEYGZmCCatC2GMc1CbjslIrBo+kmqc8HZKABoxeuz
- RaeT95Md9rzbiu3lgAtg3o/IqI0jmCKESRC5IiByX7ymiZH7J9EI94Tu767HTqsyTJCcYC18KkUPqUFcM9knS1Ut77Tiwd5WGx/a+hlWM+/Og0ZqY74KtyxQ
- LYFfX/FiHIR++SiEBaZlD2erzaOmk7J8BBA7GQ==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+Subject: Re: (subset) [PATCH 1/3] ACPI: scan: substitute empty_zero_page with helper ZERO_PAGE(0)
+Message-Id: <166619141690.565256.8563939546728659746.b4-ty@kernel.org>
+Date:   Wed, 19 Oct 2022 15:56:56 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.0-dev-fc921
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Cristoph,
-
-On 19/10/22 13:00, Christoph Hellwig wrote:
-> On Tue, Oct 18, 2022 at 11:57:55PM +0200, Giulio Benetti wrote:
->>   #if RAID6_USE_EMPTY_ZERO_PAGE
->> -# define raid6_empty_zero_page empty_zero_page
->> +# define raid6_empty_zero_page ZERO_PAGE(0)
->>   #else
->>   extern const char raid6_empty_zero_page[PAGE_SIZE];
+On Tue, 18 Oct 2022 23:57:53 +0200, Giulio Benetti wrote:
+> Not all zero page implementations use empty_zero_page global pointer so
+> let's substitute empty_zero_page occurence with helper ZERO_PAGE(0).
 > 
-> RAID6_USE_EMPTY_ZERO_PAGE is never set to a non-zero value.  So this
-> is dead code and we can just remove all code related to the
-> RAID6_USE_EMPTY_ZERO_PAGE case.
+> 
 
-thank you for taking a look.
-Should I send a patch for removing the code in this v2 patchset?
+Applied to
 
-Best regards
--- 
-Giulio Benetti
-CEO/CTO@Benetti Engineering sas
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[2/3] spi: fsl-cpm: substitute empty_zero_page with helper ZERO_PAGE(0)
+      commit: 3be6acda8241352c57d47b4d7d9968cadcb954ea
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
