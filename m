@@ -2,47 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F3A6037E1
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 04:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7863603802
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Oct 2022 04:26:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229833AbiJSCHi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Oct 2022 22:07:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41102 "EHLO
+        id S229755AbiJSC0Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Oct 2022 22:26:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbiJSCHh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Oct 2022 22:07:37 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735D16C77B;
-        Tue, 18 Oct 2022 19:07:36 -0700 (PDT)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.54])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4MsYvq0JBGzJn3c;
-        Wed, 19 Oct 2022 10:04:55 +0800 (CST)
-Received: from [10.67.102.169] (10.67.102.169) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 19 Oct 2022 10:07:33 +0800
-CC:     <yangyicong@hisilicon.com>, <lvjianmin@loongson.cn>,
-        <lpieralisi@kernel.org>, <chenhuacai@loongson.cn>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lenb@kernel.org>, <jeremy.linton@arm.com>
-Subject: Re: [PATCH] ACPI: scan: Fix DMA range assignment
-To:     Robin Murphy <robin.murphy@arm.com>, <rafael@kernel.org>
-References: <e94f99cfe09a64c590f009d21c566339117394e2.1666098844.git.robin.murphy@arm.com>
-From:   Yicong Yang <yangyicong@huawei.com>
-Message-ID: <05cb83dd-76e8-d12c-957e-90fe930d03de@huawei.com>
-Date:   Wed, 19 Oct 2022 10:07:33 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
-MIME-Version: 1.0
-In-Reply-To: <e94f99cfe09a64c590f009d21c566339117394e2.1666098844.git.robin.murphy@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.169]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        with ESMTP id S229906AbiJSC0M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Oct 2022 22:26:12 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5321D6D54A;
+        Tue, 18 Oct 2022 19:26:11 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id h12so15823851pjk.0;
+        Tue, 18 Oct 2022 19:26:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=er/1qGyGPvy6leNV/3q4zAE8W98J7263JUcIKC3pW08=;
+        b=kGTujcOB3B+7jMN5o1Z99H9KU3GHkeaI9cm8VoIcbyq2/AO6Qc6EA2YrA24w+7YQ2Z
+         twmL8+DIJycKjL5ZmO9D/Zi5SzxfKKJK2Oz6IyftXGFLD/Pl3pKqCz85Y366E7VH8Yf8
+         adXGCEHt5eyafr3niacj1kpwnnBluq72pG5eda2vjXp6/bx22V1U7uakYwH73YArQ/nJ
+         8CZf3oKvqEiWRgRtQxifyvJ3EWNtt3ikzMlvYqnC08a6FVJ34YToX2AL8XQ92+X5G89P
+         FhhvK1PCCTmUyoOvLLFazppu2D3kYRdes33+qT23DYlAnSSOntlZa/Gp6B+ZE/NKxegw
+         tGfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=er/1qGyGPvy6leNV/3q4zAE8W98J7263JUcIKC3pW08=;
+        b=rw30vO825f6KE0NzMmZqOqAW8EE2RUpMVyLoos1Hq6zYb6jv0mSYfqCpCefTilbYz7
+         vEDHBBbytcG9LNU1yD3Ff98KwD6yNxZUey2GcfvKabyWCzvDA8FI0ixMZ1rbNPOS5J/2
+         heCCKgeP32O4A274yz6TZdjeMnkaZwGMmVhtIUdy+QL67Ov3clFmSvjgYrLrK/NaM3C6
+         VCckJvoZGasko/WY4bYHyG2AIj5B5H5QG65S9wTh+iDbT8hJx+4Eil2FVYYZcKe/XKr4
+         0z1f+CX9ClGywyJYERdQjEpel4/f9tda2z5ihKl00IOkp+v50AsEBLrpvqMzr1syHS8/
+         kPeg==
+X-Gm-Message-State: ACrzQf06hj3GnDK70tO46JMb9uCgdNeWjmKfntNkWJECzYlxfNjMV7xN
+        FMGI0QmUuTLDBUciOn2PA5HA3ll+hjFI
+X-Google-Smtp-Source: AMsMyM7Yurvg98ZqCVYDyHQO86dBDHZRnNHEf77YxFX38kvUJi7qaSIEHQwsDWnCc3YMDOZ5kQtC9w==
+X-Received: by 2002:a17:903:2c2:b0:182:df88:e6d3 with SMTP id s2-20020a17090302c200b00182df88e6d3mr5980937plk.81.1666146370650;
+        Tue, 18 Oct 2022 19:26:10 -0700 (PDT)
+Received: from localhost.localdomain ([106.104.115.142])
+        by smtp.gmail.com with ESMTPSA id x185-20020a6263c2000000b00562a526cd2esm9855880pfb.55.2022.10.18.19.26.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Oct 2022 19:26:10 -0700 (PDT)
+From:   chengwei <foxfly.lai.tw@gmail.com>
+X-Google-Original-From: chengwei <larry.lai@yunjingtech.com>
+To:     lee@kernel.org, broonie@kernel.org, rafael@kernel.org,
+        mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
+        linus.walleij@linaro.org, brgl@bgdev.pl
+Cc:     linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, GaryWang@aaeon.com.tw,
+        musa.lin@yunjingtech.com, jack.chang@yunjingtech.com,
+        chengwei <larry.lai@yunjingtech.com>
+Subject: [PATCH 0/5] Add support control UP board CPLD/FPGA pin control
+Date:   Wed, 19 Oct 2022 10:24:45 +0800
+Message-Id: <20221019022450.16851-1-larry.lai@yunjingtech.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,49 +71,63 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/10/18 21:14, Robin Murphy wrote:
-> Assigning the device's dma_range_map from the iterator variable after
-> the loop means it always points to the empty terminator at the end of
-> the map, which is not what we want. Similarly, freeing the iterator on
-> error when it points to somwhere in the middle of the allocated array
-> won't work either. Fix this.
-> 
-> Fixes: bf2ee8d0c385 ("ACPI: scan: Support multiple DMA windows with different offsets")
+The UP board <http://www.upboard.com> is the computer board for 
+Professional Makers and Industrial Applications. We want to upstream 
+the UP board 40-pin GP-bus Kernel driver for giving the users better 
+experience on the software release. (not just download from UP board 
+github)
 
-Thanks for fixing this. Works on my platform.
+These patches are generated from the Linux kernel mainline tag v6.0.
 
-Tested-by: Yicong Yang <yangyicong@hisilicon.com>
+(1) PATCH 1 (mfd: Add support for UP board CPLD/FPGA)
+We did git send-email this patch to maintainer on 2022/10/11 for reviewing.
 
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->  drivers/acpi/scan.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 558664d169fc..024cc373a197 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1509,9 +1509,12 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
->  			goto out;
->  		}
->  
-> +		*map = r;
-> +
->  		list_for_each_entry(rentry, &list, node) {
->  			if (rentry->res->start >= rentry->res->end) {
-> -				kfree(r);
-> +				kfree(*map);
-> +				*map = NULL;
->  				ret = -EINVAL;
->  				dev_dbg(dma_dev, "Invalid DMA regions configuration\n");
->  				goto out;
-> @@ -1523,8 +1526,6 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
->  			r->offset = rentry->offset;
->  			r++;
->  		}
-> -
-> -		*map = r;
->  	}
->   out:
->  	acpi_dev_free_resource_list(&list);
-> 
+(2) PATCH 2 (regmap: Expose regmap_writable function to check if a register is
+    writable)
+The regmap patch expose the regmap_writeable function for pinctrl-upboard 
+reference.
+
+(3) PATCH 3 (ACPI: acpi_node_add_pin_mapping added to header file)
+Declare acpi_node_add_pin_mapping added in header file.
+
+(4) PATCH 4 (GPIO ACPI: Add support to map GPIO resources to ranges)
+Add a pin mapping for named GPIO resources for pinctrl-upboard 
+reference.
+
+(3) PATCH 5 (pinctrl: Add support pin control for UP board CPLD/FPGA)
+The UP board implements certain features (pin control) through an on-board CPLD.
+** This patch depends on PATCH 1 (mfd: Add support for UP board CPLD/FPGA).
+** This patch depends on PATCH 2 to refer to regmap_writeable function.
+** This patch depends on PATCH 3 and PATCH 4 to refer to acpi_node_add_pin_mapping 
+function.
+
+chengwei (5):
+  mfd: Add support for UP board CPLD/FPGA
+  regmap: Expose regmap_writeable function to check if a register is
+    writable
+  ACPI: acpi_node_add_pin_mapping added to header file
+  GPIO ACPI: Add support to map GPIO resources to ranges
+  pinctrl: Add support pin control for UP board CPLD/FPGA
+
+ drivers/base/regmap/internal.h    |    5 -
+ drivers/base/regmap/regmap.c      |    5 +
+ drivers/gpio/gpiolib-acpi.c       |   88 ++-
+ drivers/mfd/Kconfig               |   12 +
+ drivers/mfd/Makefile              |    1 +
+ drivers/mfd/upboard-fpga.c        |  482 ++++++++++++++
+ drivers/pinctrl/Kconfig           |   15 +
+ drivers/pinctrl/Makefile          |    1 +
+ drivers/pinctrl/pinctrl-upboard.c | 1003 +++++++++++++++++++++++++++++
+ include/linux/acpi.h              |   14 +
+ include/linux/mfd/upboard-fpga.h  |   49 ++
+ include/linux/regmap.h            |    6 +
+ 12 files changed, 1659 insertions(+), 22 deletions(-)
+ create mode 100644 drivers/mfd/upboard-fpga.c
+ create mode 100644 drivers/pinctrl/pinctrl-upboard.c
+ create mode 100644 include/linux/mfd/upboard-fpga.h
+
+
+base-commit: 4fe89d07dcc2804c8b562f6c7896a45643d34b2f
+-- 
+2.17.1
+
