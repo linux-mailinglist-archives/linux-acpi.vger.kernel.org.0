@@ -2,298 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE7D606F1B
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 07:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A12460709E
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 08:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbiJUFHV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Oct 2022 01:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49292 "EHLO
+        id S229788AbiJUG7F convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 21 Oct 2022 02:59:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbiJUFHU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 01:07:20 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8094318148D;
-        Thu, 20 Oct 2022 22:07:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666328839; x=1697864839;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=D3xnR8Ta/qivJr09BNvM6YZyIJkZqkj+4BajqQyNPvE=;
-  b=fYVFhMQ2tzXLupMoDnZ9fTHazvKVvPVgwF2Xak0jss33BKCPJlVKX3/O
-   Nxn9vkh71//M/LeF4t/hbFfHNpKWR2sFiLxfeBsb5rkz+hnQ0y+98cNQO
-   enrDvOW7nYIG2qEZhpUEm0sIe9/dKcvfa3PVx8y9Qe/11995eZTDWxPdK
-   qI6992Gc3LLgtEuddtIbE6nSyjA0wMvKKuhQBVVe1homKVV/jYvhVvuja
-   gWzQmo9HvI4crOjqMf3FhEV5eTSxYdBHRmQa7DowlPTx3V5tw5AnpH9kG
-   UeXXP9z96fPi0AiJYKjfWmFd8oReBm10LhHWZNAWVx1ic5D5UMo2ai58v
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="333484974"
-X-IronPort-AV: E=Sophos;i="5.95,200,1661842800"; 
-   d="scan'208";a="333484974"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2022 22:07:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="630280376"
-X-IronPort-AV: E=Sophos;i="5.95,200,1661842800"; 
-   d="scan'208";a="630280376"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 20 Oct 2022 22:07:17 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1olkFY-00028v-2D;
-        Fri, 21 Oct 2022 05:07:16 +0000
-Date:   Fri, 21 Oct 2022 13:06:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 89871b5c10a0504b364a83363f47a069578ae1f9
-Message-ID: <635228db.9kJEbJMDHLjBWJst%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229678AbiJUG7E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 02:59:04 -0400
+Received: from mail1.bemta34.messagelabs.com (mail1.bemta34.messagelabs.com [195.245.231.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA5AC244708
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Oct 2022 23:59:01 -0700 (PDT)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGJsWRWlGSWpSXmKPExsWyc0WAsq6Rc1C
+  ywbFDohbXnh5gsvg0YQ+7xePdO1gtej/0sFrcunyd1eLM+UdsFneufWCx6LvqZ3Hl5gU2i/5X
+  +1gs9r2YyWKxd14Hm8Xyff2MFnsPAtVunNDHbnH1cRujxYWPK9kt2r4/Z7e4MnUyo8WK5hssD
+  iIen5fNZPNo+HqSyWPvrWyPX21zmT26V35l8zjd9YnF4+OpE4weB1pFPWasfsTmcffWJSaP2x
+  Oes3rsufGJ2ePrm042j7cXlzB7bD5d7dF/bRlzgGAUa2ZeUn5FAmvG0S09rAXrmSr+XbjE3MD
+  YwNTFyMkhJFAisbHrLmMXIwcHr4CdxN3V+SBhZgE9iRtTp7CB2LwCghInZz5hgYhrSyxb+JoZ
+  pJxZQE3ia1cJSFhYwETi792drCBhEQEViTc7uEHCbEBT9rd8ZgexWQRUJfY9bGaFWCojcXlRI
+  9sERu5ZSJbNQrJsFpJlsxCWLWBkWcVoVpxaVJZapGtoppdUlJmeUZKbmJmjl1ilm6iXWqpbnl
+  pcomukl1herJdaXKxXXJmbnJOil5dasokRGJ0pxYpbdzDeWPZH7xCjJAeTkiivkEJQshBfUn5
+  KZUZicUZ8UWlOavEhRj0ODoELZx9+YhS48uFTE5MUS15+XqqSBO8UR6BqwaLU9NSKtMwcYDKB
+  aZDg4FES4X3nAJTmLS5IzC3OTIdInWLM59i+c/9eZo7dx88DySXfLwLJfx+vAMkHB64Byamz/
+  +0HioPJ5WByFZic+bXtADPH121dQPL0n+kHmIXArpAS5/0GcoUAyJqM0jy4I2DJ9RKjrJQwLy
+  MDA4MQT0FqUW5mCar8K0ZxDkYlYV4vkCk8mXklcLe+AnqDCegN0y1+IG+UJCKkpBqYTN20Zl5
+  4MPHEZ7eLs43e1WVlXcn7eULr0bd+Qz7OBY4yS3Ycsk1fJdq+Z9X6G1kLDK4JGtQ/1DE4cSSL
+  da9nree168GJLsuTQ79le1Rn+UrGrpH/fVSnnv/jq5RpMgV/nwou5TZayL2zqW/ThLnPlrIce
+  JOvmdU4ryIm7+6fXPVXMrwnpx/7s2htt+r+BJF5avpPv2xbcvxl4I5p5mGvZhTu+VQRsY05nz
+  /yzcGkF/lnFG9IPLyYHLCglUlsWszlKz+sZm09Jla8XL0hqC6wbPW20P/STMl1SlOu8bVZXq+
+  cZB2mvmiejV7Gv7XhDwpu7YuZd+dqbVKL8b35gbGrXu5v5v+/cvOBkFUTm+85lyqxFGckGmox
+  FxUnAgAw3LDKKQQAAA==
+X-Env-Sender: tianasime@gmail.com
+X-Msg-Ref: server-4.tower-539.messagelabs.com!1666335537!213561!1
+X-Originating-IP: [185.168.80.35]
+X-SYMC-ESS-Client-Auth: outbound-route-from=fail
+X-StarScan-Received: 
+X-StarScan-Version: 9.100.1; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 6895 invoked from network); 21 Oct 2022 06:58:58 -0000
+Received: from unknown (HELO VSRVDCF1106) (185.168.80.35)
+  by server-4.tower-539.messagelabs.com with SMTP; 21 Oct 2022 06:58:58 -0000
+Received: from [194.99.45.27] (Unknown [194.99.45.27])
+        by VSRVDCF1106 with ESMTP
+        ; Thu, 20 Oct 2022 17:03:02 +0200
+Message-ID: <58729B0D-9AFA-48DE-8470-1F53AFE3A27D@VSRVDCF1106>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        LONGWORDS,RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: RE; Dear Customer we are still waiting!!!!!
+To:     Recipients <tianasime@gmail.com>
+From:   Mrs Sonia Anderson <tianasime@gmail.com>
+Date:   Thu, 20 Oct 2022 08:02:59 -0700
+Reply-To: bo979685@gmail.com
+X-Spam-Status: Yes, score=7.3 required=5.0 tests=BAYES_50,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,RCVD_IN_SBL,SPF_HELO_NONE,SPF_SOFTFAIL,
+        SPOOFED_FREEM_REPTO,T_HK_NAME_FM_MR_MRS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [195.245.231.1 listed in list.dnswl.org]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [194.99.45.27 listed in zen.spamhaus.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5594]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [tianasime[at]gmail.com]
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        *  0.0 DKIM_ADSP_CUSTOM_MED No valid author signature, adsp_override
+        *      is CUSTOM_MED
+        *  1.0 FORGED_GMAIL_RCVD 'From' gmail.com does not match 'Received'
+        *      headers
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [bo979685[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
+        *      [195.245.231.1 listed in wl.mailspike.net]
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.9 NML_ADSP_CUSTOM_MED ADSP custom_med hit, and not from a mailing
+        *       list
+        *  2.5 SPOOFED_FREEM_REPTO Forged freemail sender with freemail
+        *      reply-to
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 89871b5c10a0504b364a83363f47a069578ae1f9  Merge branch 'acpi-scan' into linux-next
+Bank of America
+Charlotte, North Carolina, United States
+North Tryon Street, Charlotte, NC 28255
+Text/Fax: Ext-8-1-0880.050.640
+email;bo979685@gmail.com
 
-elapsed time: 2003m
+Dear Customer,
 
-configs tested: 211
-configs skipped: 8
+We are still waiting for your reply to our last email which was sent to you .
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks,
+Sonia Anderson
+Financial Inquiries Unit 
 
-gcc tested configs:
-arc                               allnoconfig
-alpha                             allnoconfig
-csky                              allnoconfig
-riscv                             allnoconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-s390                                defconfig
-x86_64                           rhel-8.3-kvm
-x86_64                          rhel-8.3-func
-s390                             allyesconfig
-x86_64                    rhel-8.3-kselftests
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-arc                  randconfig-r043-20221018
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-m68k                             allyesconfig
-riscv                randconfig-r042-20221018
-x86_64                              defconfig
-s390                 randconfig-r044-20221018
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                        randconfig-a004
-i386                                defconfig
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-i386                          randconfig-a001
-x86_64                        randconfig-a002
-i386                          randconfig-a003
-x86_64                        randconfig-a006
-i386                          randconfig-a005
-i386                             allyesconfig
-arm                                 defconfig
-sh                            titan_defconfig
-arm                       aspeed_g5_defconfig
-m68k                          amiga_defconfig
-i386                          randconfig-c001
-sh                        sh7763rdp_defconfig
-mips                           gcw0_defconfig
-openrisc                            defconfig
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-ia64                          tiger_defconfig
-m68k                       m5475evb_defconfig
-xtensa                              defconfig
-powerpc                       maple_defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-arm                          pxa3xx_defconfig
-sparc64                          alldefconfig
-m68k                       bvme6000_defconfig
-xtensa                         virt_defconfig
-powerpc                     sequoia_defconfig
-arm                           h3600_defconfig
-arm                         cm_x300_defconfig
-i386                          debian-10.3-kvm
-i386                        debian-10.3-kunit
-i386                         debian-10.3-func
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-sh                        dreamcast_defconfig
-sh                          kfr2r09_defconfig
-mips                           ip32_defconfig
-powerpc                     mpc83xx_defconfig
-sh                          rsk7269_defconfig
-s390                          debug_defconfig
-m68k                           virt_defconfig
-sh                     sh7710voipgw_defconfig
-x86_64                        randconfig-c001
-arm                  randconfig-c002-20221020
-arm                        keystone_defconfig
-ia64                                defconfig
-arm                  randconfig-c002-20221019
-arc                  randconfig-r043-20221020
-s390                 randconfig-r044-20221020
-riscv                randconfig-r042-20221020
-arm                        clps711x_defconfig
-xtensa                           alldefconfig
-arm                          exynos_defconfig
-nios2                               defconfig
-powerpc                      ppc6xx_defconfig
-sh                   rts7751r2dplus_defconfig
-powerpc                   currituck_defconfig
-arm                           stm32_defconfig
-powerpc                 mpc834x_itx_defconfig
-openrisc                  or1klitex_defconfig
-csky                                defconfig
-sh                             shx3_defconfig
-arc                        vdk_hs38_defconfig
-arm                         assabet_defconfig
-nios2                            alldefconfig
-m68k                          sun3x_defconfig
-openrisc                       virt_defconfig
-xtensa                          iss_defconfig
-arc                          axs101_defconfig
-powerpc                   motionpro_defconfig
-m68k                                defconfig
-sparc                       sparc32_defconfig
-arc                        nsimosci_defconfig
-sh                           se7619_defconfig
-arm                         s3c6400_defconfig
-powerpc                     tqm8555_defconfig
-nios2                            allyesconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-mips                 randconfig-c004-20221020
-ia64                         bigsur_defconfig
-m68k                        stmark2_defconfig
-powerpc                      cm5200_defconfig
-sh                ecovec24-romimage_defconfig
-arm                      footbridge_defconfig
-sh                     magicpanelr2_defconfig
-arm                          gemini_defconfig
-mips                  maltasmvp_eva_defconfig
-loongarch                           defconfig
-loongarch                         allnoconfig
-loongarch                        allmodconfig
-um                               alldefconfig
-powerpc                  iss476-smp_defconfig
-sh                         apsh4a3a_defconfig
-powerpc                          allyesconfig
-riscv                               defconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-openrisc                         alldefconfig
-powerpc                       holly_defconfig
-sparc                               defconfig
-xtensa                           allyesconfig
-sparc                            allyesconfig
-x86_64                                  kexec
-m68k                         apollo_defconfig
-sh                           se7712_defconfig
-sparc                            alldefconfig
-arm                          badge4_defconfig
-arm                        oxnas_v6_defconfig
-m68k                            q40_defconfig
-powerpc                     tqm8541_defconfig
-powerpc                      chrp32_defconfig
-sh                           se7750_defconfig
-sh                           se7343_defconfig
-nios2                         10m50_defconfig
-mips                           ci20_defconfig
-m68k                        mvme147_defconfig
-mips                       bmips_be_defconfig
-
-clang tested configs:
-hexagon              randconfig-r045-20221018
-hexagon              randconfig-r041-20221018
-s390                 randconfig-r044-20221019
-hexagon              randconfig-r045-20221019
-riscv                randconfig-r042-20221019
-hexagon              randconfig-r041-20221019
-x86_64                        randconfig-a014
-x86_64                        randconfig-a005
-i386                 randconfig-a011-20221017
-i386                          randconfig-a002
-x86_64                        randconfig-a001
-i386                 randconfig-a013-20221017
-x86_64                        randconfig-a016
-x86_64                        randconfig-a003
-i386                 randconfig-a012-20221017
-i386                          randconfig-a006
-i386                 randconfig-a014-20221017
-x86_64                        randconfig-a012
-i386                          randconfig-a004
-i386                 randconfig-a016-20221017
-i386                 randconfig-a015-20221017
-powerpc                      pmac32_defconfig
-powerpc                     tqm8540_defconfig
-x86_64                        randconfig-k001
-hexagon              randconfig-r041-20221020
-hexagon              randconfig-r045-20221020
-x86_64                        randconfig-c007
-mips                 randconfig-c004-20221019
-i386                          randconfig-c001
-s390                 randconfig-c005-20221019
-arm                  randconfig-c002-20221019
-riscv                randconfig-c006-20221019
-powerpc              randconfig-c003-20221019
-arm                       mainstone_defconfig
-powerpc                      obs600_defconfig
-powerpc                     ksi8560_defconfig
-powerpc                    gamecube_defconfig
-mips                          ath79_defconfig
-arm                         shannon_defconfig
-mips                     cu1830-neo_defconfig
-arm                          ep93xx_defconfig
-powerpc                 mpc836x_rdk_defconfig
-mips                       lemote2f_defconfig
-powerpc                    socrates_defconfig
-arm                         orion5x_defconfig
-powerpc                     tqm8560_defconfig
-powerpc                     kmeter1_defconfig
-arm                           omap1_defconfig
-mips                      malta_kvm_defconfig
-arm                                 defconfig
-arm                        magician_defconfig
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-arm                  colibri_pxa300_defconfig
-mips                          ath25_defconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
