@@ -2,82 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 897AE6076A7
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 14:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AA84607DFB
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 19:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229939AbiJUMBe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Oct 2022 08:01:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32954 "EHLO
+        id S230150AbiJUR4i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Oct 2022 13:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbiJUMBc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 08:01:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0047025E88A;
-        Fri, 21 Oct 2022 05:01:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 906C761E68;
-        Fri, 21 Oct 2022 12:01:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC042C433C1;
-        Fri, 21 Oct 2022 12:01:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666353691;
-        bh=lFmVFFa/5/iKN/Yo2q9AW/qANwcO3UhaXshlV3Z6Umw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=kiQBMbsyBg7JyvM9JlDzqbseUWfTuCFGqmjFOrnS5Bv/B3HdA51uDLNEdVMBpg/kT
-         6l8LizZqkldUz1mlD6Y+9Pgv9sfIRTMbSFWgOZmGX6Ep2yGBsOflaog3GWqgdNzwxt
-         /nFEQcLM4KyuKH4dNMc71cXam5P/6b0ekEQInTjLZZtKg57J8PkyUxX9SnQceiqN4v
-         yg/snDhaEwK5kRPUDF0Ggg2/MfsrrqBMun+XVylanKhuJfW6Zitw+RyVQhsyhIDuTC
-         SIAQec1Vjjs46rwSe/Um12tcq/3lOVXKN4g3ZlORt717fbLaCoNxgDK7i1F8e9HSQO
-         c3M2OC7XJ1DNQ==
-Date:   Fri, 21 Oct 2022 07:01:29 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Jianmin Lv <lvjianmin@loongson.cn>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
-        loongarch@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Len Brown <lenb@kernel.org>, rafael@kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH V4 1/4] ACPI / PCI: fix LPIC IRQ model default PCI IRQ
- polarity
-Message-ID: <20221021120129.GA185586@bhelgaas>
+        with ESMTP id S229808AbiJUR4h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 13:56:37 -0400
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F1B26551F;
+        Fri, 21 Oct 2022 10:56:36 -0700 (PDT)
+Received: by mail-qk1-f170.google.com with SMTP id t25so2527144qkm.2;
+        Fri, 21 Oct 2022 10:56:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fPM8TKWkSeLqibh2gUQQQJJ62C2z9/V7mCcM5ffseGA=;
+        b=E/TT4g9vzADOh0eObO52uw8qMBxC/bLr7aLszGzr4wsIV0FC1fUUrRyJfb2u7Y9F30
+         jcsXZpbhswI/rzKTZNALWFKW2esNjeKRnZRPP07YardnHZUSp/8RcTb3QTEl8dobL2Kf
+         /a8ez2OGT2Id2SbBxo0rVoeRknIs7PM4IGLpiELZMColewhtWPNL+3tX5H9isZzyc2lg
+         q4VytRBx6MCgCJKnmg+f4gh/JqkvcHZKJJASTtVC9aufwNpVP7jSlYesYES9L1YGrqTl
+         R/cU8xbzs/LXd8qQcdNfYUVLZ6HpkLVyl44c//fOtXR5AQ3ado5FPJcvuNP40V6Q5Im3
+         l5ow==
+X-Gm-Message-State: ACrzQf1GWsY46Cb9j7zCwuv3wpmedpWBr7U8Xtsm/uJvUuWjTqJKzVTk
+        9sil8aER7rMnjv1t8VgwT5CJOTIa8UjN8cXdW9Be1X33
+X-Google-Smtp-Source: AMsMyM4Vt3ZrjuCWRNdfpBz4Z4erUW6gWVRGf1sCjzxago2tQ+T/Zjocx2cLM1a9t7oqLSOgGxTJmNdTg1oZaPwgClY=
+X-Received: by 2002:a05:620a:450c:b0:6ee:af91:60b2 with SMTP id
+ t12-20020a05620a450c00b006eeaf9160b2mr15639967qkp.480.1666374995779; Fri, 21
+ Oct 2022 10:56:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f8a64289-6560-7d75-461c-39b7a612e9c2@loongson.cn>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <166631003537.1167078.9373680312035292395.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <166631003537.1167078.9373680312035292395.stgit@dwillia2-xfh.jf.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 21 Oct 2022 19:56:24 +0200
+Message-ID: <CAJZ5v0iGz0Z=WFyStEB4Dj2fpjyy9r6aBYK1SKjBcayhGa=sWA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: NUMA: Add CXL CFMWS 'nodes' to the possible nodes set
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     linux-cxl@vger.kernel.org, stable@vger.kernel.org,
+        Alison Schofield <alison.schofield@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 21, 2022 at 09:58:57AM +0800, Jianmin Lv wrote:
-> On 2022/10/21 上午12:47, Bjorn Helgaas wrote:
-> > On Thu, Oct 20, 2022 at 04:22:02PM +0800, Jianmin Lv wrote:
-> > > On LoongArch ACPI based systems, the PCI devices (e.g. sata
-> > > controlers and PCI-to-to PCI bridge controlers) existed in
-> > > Loongson chipsets output high-level interrupt signal to the
-> > > interrupt controller they connected to,
+On Fri, Oct 21, 2022 at 1:55 AM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> The ACPI CEDT.CFMWS indicates a range of possible address where new CXL
+> regions can appear. Each range is associated with a QTG id (QoS
+> Throttling Group id). For each range + QTG pair that is not covered by a proximity
+> domain in the SRAT, Linux creates a new NUMA node. However, the commit
+> that added the new ranges missed updating the node_possible mask which
+> causes memory_group_register() to fail. Add the new nodes to the
+> nodes_possible mask.
+>
+> Cc: <stable@vger.kernel.org>
+> Fixes: fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
+> Cc: Alison Schofield <alison.schofield@intel.com>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Reported-by: Vishal Verma <vishal.l.verma@intel.com>
+> Tested-by: Vishal Verma <vishal.l.verma@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+> Rafael, I can take this through the CXL tree with some other pending
+> fixes.
 
-> > The point is that one should be able to write this code from a spec,
-> > without having to empirically discover the interrupt polarity.  What
-> > spec tells you about using ACTIVE_HIGH here?
-> > 
-> Yes, no mentions for the inverter in ACPI spec, the description about
-> device interrupt type can be found in Loongson chipset manual:
-> 
-> https://github.com/loongson/LoongArch-Documentation/blob/main/docs/Loongson-7A1000-usermanual-EN/interrupt-controller/device-interrupt-types.adoc
+Sure.
 
-That's the kind of reference I was looking for.  The link to HTML is
-convenient in some ways, but since specs evolve over time and URLs are
-ephemeral, I think a citation like "Loongson 7A1000 Bridge User Manual
-v2.00, sec 5.3" is more likely to be useful far in the future.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Bjorn
+>  drivers/acpi/numa/srat.c |    1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index 3b818ab186be..1f4fc5f8a819 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -327,6 +327,7 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+>                 pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
+>                         node, start, end);
+>         }
+> +       node_set(node, numa_nodes_parsed);
+>
+>         /* Set the next available fake_pxm value */
+>         (*fake_pxm)++;
+>
