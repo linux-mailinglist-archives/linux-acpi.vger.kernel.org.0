@@ -2,113 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30915607578
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 12:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 897AE6076A7
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 14:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbiJUKzW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Oct 2022 06:55:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
+        id S229939AbiJUMBe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Oct 2022 08:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbiJUKzV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 06:55:21 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD871244720;
-        Fri, 21 Oct 2022 03:55:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666349719; x=1697885719;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Wx25grSXDV+rY/7gahOrHKDqSL40ohUGsgRb8cn4kGo=;
-  b=FA3jJmYGd7OSRR9QO/OGxVrgA96MPMSCK29YBCWrfuHCokFYV9Lah4tz
-   GYwHYSNctFH79Sk/Vp9APBU6MTyPRtML9lADqQn3DmHpBuIRGYj0ObnSR
-   DYR+OxAjBXhcfJwgnw+67LTuWO+H1nPSJXCOMi0u2SzvP1/IKEUV4cMzA
-   b05qQhRSzi1GlF+18QdTeWNnxp4ZyfesTKwhZyRicV/UGv4+C695aXwnl
-   QE/Ykcn7wp9Qp61rJdYXwIGkp/TLg5IuTkm74GVahtrgpwzqGg7AHAssN
-   wZv498OC7IX1PiEQJCnLXcf6WAJQvtKqdA5RL/NMr7Z0+9rGtdvCJ/iLb
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="305709345"
-X-IronPort-AV: E=Sophos;i="5.95,200,1661842800"; 
-   d="scan'208";a="305709345"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2022 03:55:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="630432859"
-X-IronPort-AV: E=Sophos;i="5.95,200,1661842800"; 
-   d="scan'208";a="630432859"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP; 21 Oct 2022 03:55:14 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1olpgG-00B70q-2S;
-        Fri, 21 Oct 2022 13:55:12 +0300
-Date:   Fri, 21 Oct 2022 13:55:12 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     chengwei <foxfly.lai.tw@gmail.com>, lee@kernel.org,
-        broonie@kernel.org, rafael@kernel.org,
-        mika.westerberg@linux.intel.com, brgl@bgdev.pl,
-        linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, GaryWang@aaeon.com.tw,
-        musa.lin@yunjingtech.com, jack.chang@yunjingtech.com,
-        chengwei <larry.lai@yunjingtech.com>,
-        Javier Arteaga <javier@emutex.com>,
-        Nicola Lunghi <nicola.lunghi@emutex.com>
-Subject: Re: [PATCH 5/5] pinctrl: Add support pin control for UP board
- CPLD/FPGA
-Message-ID: <Y1J6kJ/sL4qqok16@smile.fi.intel.com>
-References: <20221019022450.16851-1-larry.lai@yunjingtech.com>
- <20221019022450.16851-6-larry.lai@yunjingtech.com>
- <CACRpkdYfPT6-gt2RCxzPfy+GdkLYo8KP02CLLC+uY512AqPwNw@mail.gmail.com>
+        with ESMTP id S229793AbiJUMBc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 08:01:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0047025E88A;
+        Fri, 21 Oct 2022 05:01:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 906C761E68;
+        Fri, 21 Oct 2022 12:01:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC042C433C1;
+        Fri, 21 Oct 2022 12:01:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666353691;
+        bh=lFmVFFa/5/iKN/Yo2q9AW/qANwcO3UhaXshlV3Z6Umw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=kiQBMbsyBg7JyvM9JlDzqbseUWfTuCFGqmjFOrnS5Bv/B3HdA51uDLNEdVMBpg/kT
+         6l8LizZqkldUz1mlD6Y+9Pgv9sfIRTMbSFWgOZmGX6Ep2yGBsOflaog3GWqgdNzwxt
+         /nFEQcLM4KyuKH4dNMc71cXam5P/6b0ekEQInTjLZZtKg57J8PkyUxX9SnQceiqN4v
+         yg/snDhaEwK5kRPUDF0Ggg2/MfsrrqBMun+XVylanKhuJfW6Zitw+RyVQhsyhIDuTC
+         SIAQec1Vjjs46rwSe/Um12tcq/3lOVXKN4g3ZlORt717fbLaCoNxgDK7i1F8e9HSQO
+         c3M2OC7XJ1DNQ==
+Date:   Fri, 21 Oct 2022 07:01:29 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jianmin Lv <lvjianmin@loongson.cn>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+        loongarch@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Len Brown <lenb@kernel.org>, rafael@kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH V4 1/4] ACPI / PCI: fix LPIC IRQ model default PCI IRQ
+ polarity
+Message-ID: <20221021120129.GA185586@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CACRpkdYfPT6-gt2RCxzPfy+GdkLYo8KP02CLLC+uY512AqPwNw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f8a64289-6560-7d75-461c-39b7a612e9c2@loongson.cn>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 21, 2022 at 11:09:27AM +0200, Linus Walleij wrote:
-> On Wed, Oct 19, 2022 at 4:26 AM chengwei <foxfly.lai.tw@gmail.com> wrote:
+On Fri, Oct 21, 2022 at 09:58:57AM +0800, Jianmin Lv wrote:
+> On 2022/10/21 上午12:47, Bjorn Helgaas wrote:
+> > On Thu, Oct 20, 2022 at 04:22:02PM +0800, Jianmin Lv wrote:
+> > > On LoongArch ACPI based systems, the PCI devices (e.g. sata
+> > > controlers and PCI-to-to PCI bridge controlers) existed in
+> > > Loongson chipsets output high-level interrupt signal to the
+> > > interrupt controller they connected to,
 
-> > The UP Squared board <http://www.upboard.com> implements certain
-> > features (pin control) through an on-board FPGA.
-
-> I am a bit confused by this driver. Andy pointed out some obvious nits that
-> need to be fixed but the overall architecture here is also a bit puzzling.
+> > The point is that one should be able to write this code from a spec,
+> > without having to empirically discover the interrupt polarity.  What
+> > spec tells you about using ACTIVE_HIGH here?
+> > 
+> Yes, no mentions for the inverter in ACPI spec, the description about
+> device interrupt type can be found in Loongson chipset manual:
 > 
-> This seems to want to be compatible to Raspberry Pi (RPi), then which one?
-> 
-> The driver seems to translate GPIO calls to "native GPIO" in some cases,
-> which GPIO controller is that?
+> https://github.com/loongson/LoongArch-Documentation/blob/main/docs/Loongson-7A1000-usermanual-EN/interrupt-controller/device-interrupt-types.adoc
 
-There is an SoC level GPIO (Apollo Lake I believe) and there is a discrete
-component between it and user visible header (connector). This driver AFAIU
-is about controlling that discrete component.
+That's the kind of reference I was looking for.  The link to HTML is
+convenient in some ways, but since specs evolve over time and URLs are
+ephemeral, I think a citation like "Loongson 7A1000 Bridge User Manual
+v2.00, sec 5.3" is more likely to be useful far in the future.
 
-> Also I don't see why, normally a pin control
-> driver is an agnostic back-end for a GPIO controller, so the GPIO driver
-> should be the same (whatever "native") means, and this driver should
-> not even implement a gpio chip, just let the GPIO driver do its job
-> and call back into the pin control back-end whenever it needs it.
-> 
-> Also we already have a driver that collects existing GPIOs to a new
-> GPIO chip, the GPIO aggregator:
-> drivers/gpio/gpio-aggregator.c
-> 
-> Maybe if you can explain a bit about how this hardware works and why
-> you have to do indirect calls to another GPIO controller, things will
-> be easier to understand?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Bjorn
