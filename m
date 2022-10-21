@@ -2,176 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1438607428
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 11:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4180A607490
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 11:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229965AbiJUJft (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Oct 2022 05:35:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45652 "EHLO
+        id S230123AbiJUJ6p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Oct 2022 05:58:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230036AbiJUJfo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 05:35:44 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66C5187DCE;
-        Fri, 21 Oct 2022 02:35:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1666344902;
-        bh=iwiQ6dtbZMd6P2Wdtt4KO30QQTINxxu0iK5jUadx5B8=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=bsRzn9LyTs5Lj+EVkw8ZcnshNG8GjixWpJQ+/MFpksfPNyPHCmgPyYiWTF64XkPQu
-         TPNpFehB5PK6AzDUnGaUOvFS0W9BMQMNMxFFNIaWPhCMfwQnmV1LiM3hvzVS4m6H2B
-         2c9CqxaBlKw5K5RDShx8D0UF5C7kUzrFW0egCxss=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [172.16.10.126] ([141.76.176.167]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MlNpH-1pXUSZ07hd-00lpDi; Fri, 21
- Oct 2022 11:35:02 +0200
+        with ESMTP id S229449AbiJUJ6o (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 05:58:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D482591E0
+        for <linux-acpi@vger.kernel.org>; Fri, 21 Oct 2022 02:58:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1666346322;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PDp3pjUHLMb0BayuCEe4by55GyjbnGvv6ScgCkhmq58=;
+        b=ewgsgHhLTdq1N8+JN9U44jMSkJFeaH1UWmErr/F0cHx0OElT1Ia19RPI1PsmOa0VYoLqix
+        9qRFrjggpSj2HJlwqcJ59hqF0YheSKRDSCD0m48z8h1JZlsXVZc4/61sBwwWbOy/GA2mDH
+        jtgy874cl/O0IeT+gpDiAKVASdjlvSU=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-518-O9OCXEKCM2WdpeHx0r_1Pw-1; Fri, 21 Oct 2022 05:58:36 -0400
+X-MC-Unique: O9OCXEKCM2WdpeHx0r_1Pw-1
+Received: by mail-ed1-f69.google.com with SMTP id c9-20020a05640227c900b0045d4a88c750so1820702ede.12
+        for <linux-acpi@vger.kernel.org>; Fri, 21 Oct 2022 02:58:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PDp3pjUHLMb0BayuCEe4by55GyjbnGvv6ScgCkhmq58=;
+        b=qxhvJm7lDiinulKAHPh/+MeYD2XtyEeHBr/MAC1GjQ04kV4XwHPFhPsbaGMyXDlqg9
+         FY/TConPs89rEFsu1d8tHpsM7JS9ljrpImy37vtyOpDLAkk0T5JN7JihuVCzh8PUlo16
+         iWKQtKEtJm/MMa0aIdKxuMviTOh25SKhj45cZ+icuPM4+bKg9Oni57twWZf1e7bfOiZu
+         cv0NMwe9+eDWTMYLvTSFGRK00K1ZrmIddWooTAIn9t6ERXIrHX+ENLSswKWr13Ak+U0B
+         6deNEi6lRAyYd1SuPtI5zMN8PCdyiqohngqRt2WnPBDRbSVWgKCt1b3UaQPOYm3qFX12
+         iBJg==
+X-Gm-Message-State: ACrzQf1Xg1/TkuUisaNWmWcoQvrSczq9eL+eDhqwTqT0PnvkxnKKm/zs
+        LpDuxyr+lx1D1fk8Es3x6Vs846S2PtkGnDkrcN6rh/Sre9jJ1SKClYs1eWvPl3rZMP2Owxzcy97
+        phJy6AS9Cy/DWbKoFqTzcrQ==
+X-Received: by 2002:a50:baec:0:b0:461:4c59:12bf with SMTP id x99-20020a50baec000000b004614c5912bfmr1721377ede.54.1666346314934;
+        Fri, 21 Oct 2022 02:58:34 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM7IpllFfSlcsB9cnniC+JkU6q8pFaj/gj2gDvVFmCHYZPU1i9Aa2yLQTTT6VSP9K119azM6cA==
+X-Received: by 2002:a50:baec:0:b0:461:4c59:12bf with SMTP id x99-20020a50baec000000b004614c5912bfmr1721358ede.54.1666346314652;
+        Fri, 21 Oct 2022 02:58:34 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id b17-20020a1709063cb100b007867dcd3f15sm11416600ejh.104.2022.10.21.02.58.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Oct 2022 02:58:33 -0700 (PDT)
+Message-ID: <ca8222fe-4b15-eb1f-46be-2e8288ea1cd1@redhat.com>
+Date:   Fri, 21 Oct 2022 11:58:32 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
 Subject: Re: [PATCH v2 2/2] platform/x86: dell: Add new dell-wmi-ddv driver
-To:     Hans de Goede <hdegoede@redhat.com>,
+Content-Language: en-US, nl
+To:     Armin Wolf <W_Armin@gmx.de>, rafael@kernel.org
+Cc:     markgross@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
+        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
+        productdev@system76.com, mario.limonciello@amd.com,
+        pobrn@protonmail.com, coproscefalo@gmail.com,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc:     markgross@kernel.org, rafael@kernel.org, lenb@kernel.org,
-        hmh@hmh.eng.br, matan@svgalib.org, corentin.chary@gmail.com,
-        jeremy@system76.com, productdev@system76.com,
-        mario.limonciello@amd.com, pobrn@protonmail.com,
-        coproscefalo@gmail.com, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220927204521.601887-1-W_Armin@gmx.de>
  <20220927204521.601887-3-W_Armin@gmx.de>
  <YzQmQw0hEwzXV/iz@smile.fi.intel.com>
  <34774c9d-1210-0015-f78e-97fdf717480c@gmx.de>
  <YzVqbSBHm3OrjIaQ@smile.fi.intel.com>
  <bf84f13d-f76a-c0ac-8a1f-f4e1b55e6f51@redhat.com>
-From:   Armin Wolf <W_Armin@gmx.de>
-Message-ID: <11964cd1-94b5-dc6a-a6c9-7fd5fe335ed4@gmx.de>
-Date:   Fri, 21 Oct 2022 11:34:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <bf84f13d-f76a-c0ac-8a1f-f4e1b55e6f51@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
-X-Provags-ID: V03:K1:X4pEoToi4QT7HuAczkuIfzBTEdr5/qhm3nE5Pi+nOj4pzMhjYCO
- 1HI8G2L0Q58QWEknTr3HL0zMRi9uFy7i5HHRGdu4LM+gybgxhCc28eVvSJEr/xjtqX3F8wN
- kKJ3l9bKuh4xcB0hjaL9KMJXvUObYBeGV6N73MM8paXSWr3Qjh9+pVVd10lluR4SMaJFg30
- Jv6TkJA4ThhK52fhrQMvQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/Hmq+Ne4wC4=:vzadYy6YPg0iPRTOzPQRAJ
- 5dFTqHAwfr0TQTmnCySkD0icSEuwtmZ6pZUYfCPGItQK0OzhyTmUswj7Yt7F9mA2m4kKeuY+s
- pzz7KtCx+wacZw1f1UQggvrdT8TdoI4AihLboEs445kP2N1pdsBCxjz1L1aRGFPwGBDGSDbEj
- 2Ff/0SBmJKwxJRxmGDku3qHnr/2jO+Vq9YcGviWd1BuGkvShH1QKvPlO5hlj5Lu6g8f/NLM+d
- Ls+5wR2cosg5s4rDU1U+tMQJmRD6RPXZ6mnP7x9go0LptsBoZPztc5H+fKv2Saqp3nF20PNUh
- bYi242BRmiWhzc2jaJXghYVMXFQuWiM9QifgSKHaZpSgfMQ1HU4gflSj9BGvKF6v4NH0EKjdI
- vPRYS70C9yNroORTJInmdcwq9lCbXL2G4IfEUBZuDbAZDy0GeaykaTImu4jmHIdedtxO3RJl/
- cL/esEUK4NdwfkDnZbj+ysei4vht6/dtCYXTP6vj4qnPvlTdynQmrtIelHJKCHiqpZ0/rzw10
- kNbQKe3KcWNLt3/3wXvmRw0rR7aUqJl0iTnN2jaXoeY5syRlDDj3MadQhhqbJo8CvJCcsvkDb
- gT5uKSH1F7vY+1ClzqkVVqkknD8i8bRDdI9SPv59v4WeFWLmw+Fb43ppb1FOaUJIN/0rOpuQF
- d1RQuHljfUpODJlTfkwOUhngrZ9eyfJk516wpCRtb9dZOZ+hwyV0rCJP3TVpVztrdnGvVO1iL
- zpIZwtcABTKmtz2Yj+6Iu2aTDEB0ep04ySWy1v+3GQHyYPhf6zy53PdWDqP2wu+fflsHgTtL1
- mhs+rorYP82uWu6Ljp75Uh6Az8FlcDpEt+ljTKxi7d6+Xls4nHh+ViUbtPKAJPyD5rHsv0SL7
- ViUAMTqlFo5kZ6Y6wF05jW20YWVygDkajAgzEDE9sxYIeBCP9b8TD2cCW6Po5LWnsf6mu/dLv
- y1nMx28j4R9ocFrOpDZ6jj8wOxppn58WUip1c7tRIRQO38IwQuPlP3gCVe1nnlkNocacvaJN/
- 0YqyzOw+6RI9+SliSELeI1b53hHbTcQFP4r5u0pbFqRyoogi4uQcGtYwX66Xn4cxprrf6YvvJ
- bCbNltRcSGaikwAPA/HYEqu4LihGeKMU8FHCZeRinaSyhxwPJbaciyvldhU1jUqbF6VxaiVbw
- YP56fywvy5GkS5kxQxcwQsAXo9VdLPuaidFwqtQbm36WjgBlriePtlmK+03Aio8YUtyppksKz
- UmymwatVgzfbroRp0pSrQxYHvJQz7kH1lK6UasheSFAylHL+CiDGqt8ActlfAEqnj4hEd41Gp
- K32qNM+6kHR6YR2dzVU1tgwWStJTIeatjb/5bKAvUr+PRXSgEwilBkEQ/Sd3xlCFvH/y6nnz7
- oERSAi7yGhEFkXwxlJreJiG4Zk9hG4+eVQvRgiypqu+JQy2mi+fZQDi6HoIVPU5oWeNglSBuG
- zkNFb/d+8Y2kLPH5jwVDBguGKNL5a3Ptx9FmorE+hP4VBtMO/rjs2teONHkZtjrAcXts1wATx
- Q0sykocID5b0n1WcLLk19EJJPH8fnsmTZlmHamYIQ1V0v
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+ <11964cd1-94b5-dc6a-a6c9-7fd5fe335ed4@gmx.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <11964cd1-94b5-dc6a-a6c9-7fd5fe335ed4@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am 29.09.22 um 15:12 schrieb Hans de Goede:
+Hi Armin, Rafael,
 
-> Hi,
->
-> On 9/29/22 11:50, Andy Shevchenko wrote:
->> On Wed, Sep 28, 2022 at 10:57:16PM +0200, Armin Wolf wrote:
->>> Am 28.09.22 um 12:47 schrieb Andy Shevchenko:
->>>> On Tue, Sep 27, 2022 at 10:45:21PM +0200, Armin Wolf wrote:
->> ...
+On 10/21/22 11:34, Armin Wolf wrote:
+> Am 29.09.22 um 15:12 schrieb Hans de Goede:
+> 
+>> Hi,
 >>
->>>>> +static void dell_wmi_ddv_debugfs_init(struct wmi_device *wdev)
->>>> Strictly speaking this should return int (see below).
->>>>
->>>>> +{
->>>>> +	struct dentry *entry;
->>>>> +	char name[64];
->>>>> +Fujitsu Academy
+>> On 9/29/22 11:50, Andy Shevchenko wrote:
+>>> On Wed, Sep 28, 2022 at 10:57:16PM +0200, Armin Wolf wrote:
+>>>> Am 28.09.22 um 12:47 schrieb Andy Shevchenko:
+>>>>> On Tue, Sep 27, 2022 at 10:45:21PM +0200, Armin Wolf wrote:
+>>> ...
+>>>
+>>>>>> +static void dell_wmi_ddv_debugfs_init(struct wmi_device *wdev)
+>>>>> Strictly speaking this should return int (see below).
 >>>>>
->>>>> +	scnprintf(name, ARRAY_SIZE(name), "%s-%s", DRIVER_NAME, dev_name(&=
-wdev->dev));
->>>>> +	entry =3D debugfs_create_dir(name, NULL);
->>>>> +
->>>>> +	debugfs_create_devm_seqfile(&wdev->dev, "fan_sensor_information", =
-entry,
->>>>> +				    dell_wmi_ddv_fan_read);
->>>>> +	debugfs_create_devm_seqfile(&wdev->dev, "thermal_sensor_informatio=
-n", entry,
->>>>> +				    dell_wmi_ddv_temp_read);
->>>>> +
->>>>> +	devm_add_action_or_reset(&wdev->dev, dell_wmi_ddv_debugfs_remove, =
-entry);
->>>> return devm...
->>>>
->>>> This is not related to debugfs and there is no rule to avoid checking=
- error
->>>> codes from devm_add_action_or_reset().
->>>>
->>> According to the documentation of debugfs_create_dir(), drivers should=
- work fine if debugfs
->>> initialization fails. Thus the the return value of dell_wmi_ddv_debugf=
-s_init() would be ignored
->>> when called, which means that returning an error would serve no purpos=
-e.
->>> Additionally, devm_add_action_or_reset() automatically executes the cl=
-eanup function if devres
->>> registration fails, so we do not have to care about that.
->> The problem with your code that if devm_ call fails and you ain't stop =
-probing
->> the remove-insert module (or unbind-bind) cycle will fail, because of e=
-xisting
->> (leaked) debugfs dentries.
-> No it won't if the devm_ call fails then it will directly call
-> the passed in handler so in this case we can simply continue
-> without debugfs entries (which will have been removed by the
-> handler). The directly calling of the action handler on
-> failure is the whole difference between devm_add_action()
-> and devm_add_action_or_reset()
->
-> So using it this way in the case of a debugfs init function
-> is fine.
->
->>>>> +		.name =3D DRIVER_NAME,
->>>> I would use explicit literal since this is a (semi-) ABI, and having =
-it as
->>>> a define feels not fully right.
->>> The driver name is used in two places (init and debugfs), so having a =
-define for it
->>> avoids problems in case someone forgets to change both.
->> Which is exactly what we must prevent developer to do. If changing debu=
-gfs it
->> mustn't change the driver name, because the latter is ABI, while the fo=
-rmer is
->> not.
-> Arguably both are not really ABI. Drivers have been renamed in the past
-> without issues for userspace.
->
-> Regards,
->
-> Hans
->
-What is the current status of this patch set? If necessary, i can submit a=
-n v3 patch set which includes the
-patch regarding the minor style fixes. I also tested the driver on my Dell=
- Insprion 3505 for some time, so
-i can proof it works.
+>>>>>> +{
+>>>>>> +    struct dentry *entry;
+>>>>>> +    char name[64];
+>>>>>> +Fujitsu Academy
+>>>>>>
+>>>>>> +    scnprintf(name, ARRAY_SIZE(name), "%s-%s", DRIVER_NAME, dev_name(&wdev->dev));
+>>>>>> +    entry = debugfs_create_dir(name, NULL);
+>>>>>> +
+>>>>>> +    debugfs_create_devm_seqfile(&wdev->dev, "fan_sensor_information", entry,
+>>>>>> +                    dell_wmi_ddv_fan_read);
+>>>>>> +    debugfs_create_devm_seqfile(&wdev->dev, "thermal_sensor_information", entry,
+>>>>>> +                    dell_wmi_ddv_temp_read);
+>>>>>> +
+>>>>>> +    devm_add_action_or_reset(&wdev->dev, dell_wmi_ddv_debugfs_remove, entry);
+>>>>> return devm...
+>>>>>
+>>>>> This is not related to debugfs and there is no rule to avoid checking error
+>>>>> codes from devm_add_action_or_reset().
+>>>>>
+>>>> According to the documentation of debugfs_create_dir(), drivers should work fine if debugfs
+>>>> initialization fails. Thus the the return value of dell_wmi_ddv_debugfs_init() would be ignored
+>>>> when called, which means that returning an error would serve no purpose.
+>>>> Additionally, devm_add_action_or_reset() automatically executes the cleanup function if devres
+>>>> registration fails, so we do not have to care about that.
+>>> The problem with your code that if devm_ call fails and you ain't stop probing
+>>> the remove-insert module (or unbind-bind) cycle will fail, because of existing
+>>> (leaked) debugfs dentries.
+>> No it won't if the devm_ call fails then it will directly call
+>> the passed in handler so in this case we can simply continue
+>> without debugfs entries (which will have been removed by the
+>> handler). The directly calling of the action handler on
+>> failure is the whole difference between devm_add_action()
+>> and devm_add_action_or_reset()
+>>
+>> So using it this way in the case of a debugfs init function
+>> is fine.
+>>
+>>>>>> +        .name = DRIVER_NAME,
+>>>>> I would use explicit literal since this is a (semi-) ABI, and having it as
+>>>>> a define feels not fully right.
+>>>> The driver name is used in two places (init and debugfs), so having a define for it
+>>>> avoids problems in case someone forgets to change both.
+>>> Which is exactly what we must prevent developer to do. If changing debugfs it
+>>> mustn't change the driver name, because the latter is ABI, while the former is
+>>> not.
+>> Arguably both are not really ABI. Drivers have been renamed in the past
+>> without issues for userspace.
+>>
+>> Regards,
+>>
+>> Hans
+>>
+> What is the current status of this patch set?
 
-Armin Wolf
+I indicated to Rafael (ACPI subsys maintainer) that I consider this ready
+for merging and tried to coordinate this with Rafael, but that email
+seems to have fallen through the cracks, likely due to it being pretty
+close to the 6.1 merge window. So lets try again:
+
+Rafael, from my pov this patch-set is ready for merging, since 2/2 depends
+on "[PATCH v2 1/2] ACPI: battery: Pass battery hook pointer to hook callbacks"
+we need to coordinate this.
+
+Since even patch 1/2 mostly touches files under drivers/platform/x86 I would
+prefer to merge this through the pdx86 tree, may I have your ack for this ?
+
+> If necessary, i can submit an v3 patch set which includes the
+> patch regarding the minor style fixes. I also tested the driver on my Dell Insprion 3505 for some time, so
+> i can proof it works.
+
+I can squash the follow up patch into 2/2 when merging this myself. From
+my pov no action is needed from you on this at this moment on time. But
+it is good that you send a friendly ping about this :)
+
+Regards,
+
+Hans
+
+
 
