@@ -2,188 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4180A607490
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 11:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30915607578
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 12:55:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbiJUJ6p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Oct 2022 05:58:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44824 "EHLO
+        id S229796AbiJUKzW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Oct 2022 06:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiJUJ6o (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 05:58:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D482591E0
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Oct 2022 02:58:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1666346322;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PDp3pjUHLMb0BayuCEe4by55GyjbnGvv6ScgCkhmq58=;
-        b=ewgsgHhLTdq1N8+JN9U44jMSkJFeaH1UWmErr/F0cHx0OElT1Ia19RPI1PsmOa0VYoLqix
-        9qRFrjggpSj2HJlwqcJ59hqF0YheSKRDSCD0m48z8h1JZlsXVZc4/61sBwwWbOy/GA2mDH
-        jtgy874cl/O0IeT+gpDiAKVASdjlvSU=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-518-O9OCXEKCM2WdpeHx0r_1Pw-1; Fri, 21 Oct 2022 05:58:36 -0400
-X-MC-Unique: O9OCXEKCM2WdpeHx0r_1Pw-1
-Received: by mail-ed1-f69.google.com with SMTP id c9-20020a05640227c900b0045d4a88c750so1820702ede.12
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Oct 2022 02:58:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PDp3pjUHLMb0BayuCEe4by55GyjbnGvv6ScgCkhmq58=;
-        b=qxhvJm7lDiinulKAHPh/+MeYD2XtyEeHBr/MAC1GjQ04kV4XwHPFhPsbaGMyXDlqg9
-         FY/TConPs89rEFsu1d8tHpsM7JS9ljrpImy37vtyOpDLAkk0T5JN7JihuVCzh8PUlo16
-         iWKQtKEtJm/MMa0aIdKxuMviTOh25SKhj45cZ+icuPM4+bKg9Oni57twWZf1e7bfOiZu
-         cv0NMwe9+eDWTMYLvTSFGRK00K1ZrmIddWooTAIn9t6ERXIrHX+ENLSswKWr13Ak+U0B
-         6deNEi6lRAyYd1SuPtI5zMN8PCdyiqohngqRt2WnPBDRbSVWgKCt1b3UaQPOYm3qFX12
-         iBJg==
-X-Gm-Message-State: ACrzQf1Xg1/TkuUisaNWmWcoQvrSczq9eL+eDhqwTqT0PnvkxnKKm/zs
-        LpDuxyr+lx1D1fk8Es3x6Vs846S2PtkGnDkrcN6rh/Sre9jJ1SKClYs1eWvPl3rZMP2Owxzcy97
-        phJy6AS9Cy/DWbKoFqTzcrQ==
-X-Received: by 2002:a50:baec:0:b0:461:4c59:12bf with SMTP id x99-20020a50baec000000b004614c5912bfmr1721377ede.54.1666346314934;
-        Fri, 21 Oct 2022 02:58:34 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7IpllFfSlcsB9cnniC+JkU6q8pFaj/gj2gDvVFmCHYZPU1i9Aa2yLQTTT6VSP9K119azM6cA==
-X-Received: by 2002:a50:baec:0:b0:461:4c59:12bf with SMTP id x99-20020a50baec000000b004614c5912bfmr1721358ede.54.1666346314652;
-        Fri, 21 Oct 2022 02:58:34 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id b17-20020a1709063cb100b007867dcd3f15sm11416600ejh.104.2022.10.21.02.58.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Oct 2022 02:58:33 -0700 (PDT)
-Message-ID: <ca8222fe-4b15-eb1f-46be-2e8288ea1cd1@redhat.com>
-Date:   Fri, 21 Oct 2022 11:58:32 +0200
+        with ESMTP id S229565AbiJUKzV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 06:55:21 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD871244720;
+        Fri, 21 Oct 2022 03:55:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666349719; x=1697885719;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Wx25grSXDV+rY/7gahOrHKDqSL40ohUGsgRb8cn4kGo=;
+  b=FA3jJmYGd7OSRR9QO/OGxVrgA96MPMSCK29YBCWrfuHCokFYV9Lah4tz
+   GYwHYSNctFH79Sk/Vp9APBU6MTyPRtML9lADqQn3DmHpBuIRGYj0ObnSR
+   DYR+OxAjBXhcfJwgnw+67LTuWO+H1nPSJXCOMi0u2SzvP1/IKEUV4cMzA
+   b05qQhRSzi1GlF+18QdTeWNnxp4ZyfesTKwhZyRicV/UGv4+C695aXwnl
+   QE/Ykcn7wp9Qp61rJdYXwIGkp/TLg5IuTkm74GVahtrgpwzqGg7AHAssN
+   wZv498OC7IX1PiEQJCnLXcf6WAJQvtKqdA5RL/NMr7Z0+9rGtdvCJ/iLb
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="305709345"
+X-IronPort-AV: E=Sophos;i="5.95,200,1661842800"; 
+   d="scan'208";a="305709345"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2022 03:55:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="630432859"
+X-IronPort-AV: E=Sophos;i="5.95,200,1661842800"; 
+   d="scan'208";a="630432859"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP; 21 Oct 2022 03:55:14 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1olpgG-00B70q-2S;
+        Fri, 21 Oct 2022 13:55:12 +0300
+Date:   Fri, 21 Oct 2022 13:55:12 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     chengwei <foxfly.lai.tw@gmail.com>, lee@kernel.org,
+        broonie@kernel.org, rafael@kernel.org,
+        mika.westerberg@linux.intel.com, brgl@bgdev.pl,
+        linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, GaryWang@aaeon.com.tw,
+        musa.lin@yunjingtech.com, jack.chang@yunjingtech.com,
+        chengwei <larry.lai@yunjingtech.com>,
+        Javier Arteaga <javier@emutex.com>,
+        Nicola Lunghi <nicola.lunghi@emutex.com>
+Subject: Re: [PATCH 5/5] pinctrl: Add support pin control for UP board
+ CPLD/FPGA
+Message-ID: <Y1J6kJ/sL4qqok16@smile.fi.intel.com>
+References: <20221019022450.16851-1-larry.lai@yunjingtech.com>
+ <20221019022450.16851-6-larry.lai@yunjingtech.com>
+ <CACRpkdYfPT6-gt2RCxzPfy+GdkLYo8KP02CLLC+uY512AqPwNw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH v2 2/2] platform/x86: dell: Add new dell-wmi-ddv driver
-Content-Language: en-US, nl
-To:     Armin Wolf <W_Armin@gmx.de>, rafael@kernel.org
-Cc:     markgross@kernel.org, lenb@kernel.org, hmh@hmh.eng.br,
-        matan@svgalib.org, corentin.chary@gmail.com, jeremy@system76.com,
-        productdev@system76.com, mario.limonciello@amd.com,
-        pobrn@protonmail.com, coproscefalo@gmail.com,
-        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@intel.com>
-References: <20220927204521.601887-1-W_Armin@gmx.de>
- <20220927204521.601887-3-W_Armin@gmx.de>
- <YzQmQw0hEwzXV/iz@smile.fi.intel.com>
- <34774c9d-1210-0015-f78e-97fdf717480c@gmx.de>
- <YzVqbSBHm3OrjIaQ@smile.fi.intel.com>
- <bf84f13d-f76a-c0ac-8a1f-f4e1b55e6f51@redhat.com>
- <11964cd1-94b5-dc6a-a6c9-7fd5fe335ed4@gmx.de>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <11964cd1-94b5-dc6a-a6c9-7fd5fe335ed4@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACRpkdYfPT6-gt2RCxzPfy+GdkLYo8KP02CLLC+uY512AqPwNw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Armin, Rafael,
+On Fri, Oct 21, 2022 at 11:09:27AM +0200, Linus Walleij wrote:
+> On Wed, Oct 19, 2022 at 4:26 AM chengwei <foxfly.lai.tw@gmail.com> wrote:
 
-On 10/21/22 11:34, Armin Wolf wrote:
-> Am 29.09.22 um 15:12 schrieb Hans de Goede:
+> > The UP Squared board <http://www.upboard.com> implements certain
+> > features (pin control) through an on-board FPGA.
+
+> I am a bit confused by this driver. Andy pointed out some obvious nits that
+> need to be fixed but the overall architecture here is also a bit puzzling.
 > 
->> Hi,
->>
->> On 9/29/22 11:50, Andy Shevchenko wrote:
->>> On Wed, Sep 28, 2022 at 10:57:16PM +0200, Armin Wolf wrote:
->>>> Am 28.09.22 um 12:47 schrieb Andy Shevchenko:
->>>>> On Tue, Sep 27, 2022 at 10:45:21PM +0200, Armin Wolf wrote:
->>> ...
->>>
->>>>>> +static void dell_wmi_ddv_debugfs_init(struct wmi_device *wdev)
->>>>> Strictly speaking this should return int (see below).
->>>>>
->>>>>> +{
->>>>>> +    struct dentry *entry;
->>>>>> +    char name[64];
->>>>>> +Fujitsu Academy
->>>>>>
->>>>>> +    scnprintf(name, ARRAY_SIZE(name), "%s-%s", DRIVER_NAME, dev_name(&wdev->dev));
->>>>>> +    entry = debugfs_create_dir(name, NULL);
->>>>>> +
->>>>>> +    debugfs_create_devm_seqfile(&wdev->dev, "fan_sensor_information", entry,
->>>>>> +                    dell_wmi_ddv_fan_read);
->>>>>> +    debugfs_create_devm_seqfile(&wdev->dev, "thermal_sensor_information", entry,
->>>>>> +                    dell_wmi_ddv_temp_read);
->>>>>> +
->>>>>> +    devm_add_action_or_reset(&wdev->dev, dell_wmi_ddv_debugfs_remove, entry);
->>>>> return devm...
->>>>>
->>>>> This is not related to debugfs and there is no rule to avoid checking error
->>>>> codes from devm_add_action_or_reset().
->>>>>
->>>> According to the documentation of debugfs_create_dir(), drivers should work fine if debugfs
->>>> initialization fails. Thus the the return value of dell_wmi_ddv_debugfs_init() would be ignored
->>>> when called, which means that returning an error would serve no purpose.
->>>> Additionally, devm_add_action_or_reset() automatically executes the cleanup function if devres
->>>> registration fails, so we do not have to care about that.
->>> The problem with your code that if devm_ call fails and you ain't stop probing
->>> the remove-insert module (or unbind-bind) cycle will fail, because of existing
->>> (leaked) debugfs dentries.
->> No it won't if the devm_ call fails then it will directly call
->> the passed in handler so in this case we can simply continue
->> without debugfs entries (which will have been removed by the
->> handler). The directly calling of the action handler on
->> failure is the whole difference between devm_add_action()
->> and devm_add_action_or_reset()
->>
->> So using it this way in the case of a debugfs init function
->> is fine.
->>
->>>>>> +        .name = DRIVER_NAME,
->>>>> I would use explicit literal since this is a (semi-) ABI, and having it as
->>>>> a define feels not fully right.
->>>> The driver name is used in two places (init and debugfs), so having a define for it
->>>> avoids problems in case someone forgets to change both.
->>> Which is exactly what we must prevent developer to do. If changing debugfs it
->>> mustn't change the driver name, because the latter is ABI, while the former is
->>> not.
->> Arguably both are not really ABI. Drivers have been renamed in the past
->> without issues for userspace.
->>
->> Regards,
->>
->> Hans
->>
-> What is the current status of this patch set?
+> This seems to want to be compatible to Raspberry Pi (RPi), then which one?
+> 
+> The driver seems to translate GPIO calls to "native GPIO" in some cases,
+> which GPIO controller is that?
 
-I indicated to Rafael (ACPI subsys maintainer) that I consider this ready
-for merging and tried to coordinate this with Rafael, but that email
-seems to have fallen through the cracks, likely due to it being pretty
-close to the 6.1 merge window. So lets try again:
+There is an SoC level GPIO (Apollo Lake I believe) and there is a discrete
+component between it and user visible header (connector). This driver AFAIU
+is about controlling that discrete component.
 
-Rafael, from my pov this patch-set is ready for merging, since 2/2 depends
-on "[PATCH v2 1/2] ACPI: battery: Pass battery hook pointer to hook callbacks"
-we need to coordinate this.
+> Also I don't see why, normally a pin control
+> driver is an agnostic back-end for a GPIO controller, so the GPIO driver
+> should be the same (whatever "native") means, and this driver should
+> not even implement a gpio chip, just let the GPIO driver do its job
+> and call back into the pin control back-end whenever it needs it.
+> 
+> Also we already have a driver that collects existing GPIOs to a new
+> GPIO chip, the GPIO aggregator:
+> drivers/gpio/gpio-aggregator.c
+> 
+> Maybe if you can explain a bit about how this hardware works and why
+> you have to do indirect calls to another GPIO controller, things will
+> be easier to understand?
 
-Since even patch 1/2 mostly touches files under drivers/platform/x86 I would
-prefer to merge this through the pdx86 tree, may I have your ack for this ?
-
-> If necessary, i can submit an v3 patch set which includes the
-> patch regarding the minor style fixes. I also tested the driver on my Dell Insprion 3505 for some time, so
-> i can proof it works.
-
-I can squash the follow up patch into 2/2 when merging this myself. From
-my pov no action is needed from you on this at this moment on time. But
-it is good that you send a friendly ping about this :)
-
-Regards,
-
-Hans
-
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
