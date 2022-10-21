@@ -2,100 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AA84607DFB
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 19:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F5FF607E62
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Oct 2022 20:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230150AbiJUR4i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Oct 2022 13:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47140 "EHLO
+        id S229519AbiJUStF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Oct 2022 14:49:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbiJUR4h (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 13:56:37 -0400
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F1B26551F;
-        Fri, 21 Oct 2022 10:56:36 -0700 (PDT)
-Received: by mail-qk1-f170.google.com with SMTP id t25so2527144qkm.2;
-        Fri, 21 Oct 2022 10:56:36 -0700 (PDT)
+        with ESMTP id S229506AbiJUSs6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Oct 2022 14:48:58 -0400
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB82E25ED00;
+        Fri, 21 Oct 2022 11:48:53 -0700 (PDT)
+Received: by mail-qt1-f169.google.com with SMTP id s3so2208151qtn.12;
+        Fri, 21 Oct 2022 11:48:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fPM8TKWkSeLqibh2gUQQQJJ62C2z9/V7mCcM5ffseGA=;
-        b=E/TT4g9vzADOh0eObO52uw8qMBxC/bLr7aLszGzr4wsIV0FC1fUUrRyJfb2u7Y9F30
-         jcsXZpbhswI/rzKTZNALWFKW2esNjeKRnZRPP07YardnHZUSp/8RcTb3QTEl8dobL2Kf
-         /a8ez2OGT2Id2SbBxo0rVoeRknIs7PM4IGLpiELZMColewhtWPNL+3tX5H9isZzyc2lg
-         q4VytRBx6MCgCJKnmg+f4gh/JqkvcHZKJJASTtVC9aufwNpVP7jSlYesYES9L1YGrqTl
-         R/cU8xbzs/LXd8qQcdNfYUVLZ6HpkLVyl44c//fOtXR5AQ3ado5FPJcvuNP40V6Q5Im3
-         l5ow==
-X-Gm-Message-State: ACrzQf1GWsY46Cb9j7zCwuv3wpmedpWBr7U8Xtsm/uJvUuWjTqJKzVTk
-        9sil8aER7rMnjv1t8VgwT5CJOTIa8UjN8cXdW9Be1X33
-X-Google-Smtp-Source: AMsMyM4Vt3ZrjuCWRNdfpBz4Z4erUW6gWVRGf1sCjzxago2tQ+T/Zjocx2cLM1a9t7oqLSOgGxTJmNdTg1oZaPwgClY=
-X-Received: by 2002:a05:620a:450c:b0:6ee:af91:60b2 with SMTP id
- t12-20020a05620a450c00b006eeaf9160b2mr15639967qkp.480.1666374995779; Fri, 21
- Oct 2022 10:56:35 -0700 (PDT)
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a/KYI9SK+qNSpAsWbexUxXHKrMUPsGkfv1dKVsoZ6ks=;
+        b=TEkdgSEZrdYoFEEEyW8Bgp261fLwPRJhTCmbPJ69MyF6oPURxSfNBpYIAbrg3fIT8h
+         0+QFuXdSEn9AB9mPnolu+vTC4lky59t/0tsEL59waMLeLdzzbKt3IyoWv3wJtlnoUxEk
+         4vf2menKV2ha7e4oP83isGA0FuJfn+zoe2gYL/lhFogLv8DwFD3wytOHkaDpVdfGfDgj
+         BwH8/rRHARPxGz5fZRiftlwld9PT6qdPkqdhTF39TQY15q4zPtsZjBC37K5v+C2SeYsz
+         2qD3MKCWTHcxVZhYdndQf+Bf7mzp1c68IFWLQCzed7bM75Gj+i9I20r2RHBEnpLL7B6C
+         vldA==
+X-Gm-Message-State: ACrzQf2niC9VA922sTwO6eQZvsds4llQlM5nltRNOrdhc2FIVXi0yJ/3
+        zfSrKnXjGEcMFXflpMpgayVc+SW6NW9drlIjV+JV8MDOoQk=
+X-Google-Smtp-Source: AMsMyM5h8taKdI0Fx9Ss5YZ4HdCE9r2NTegkaW5KoWbHvmHyWrFuBajq52N5ZYj1uvE/KV2XxNzHnwqzM4xvm79kUOk=
+X-Received: by 2002:a05:622a:620a:b0:35c:bf9e:8748 with SMTP id
+ hj10-20020a05622a620a00b0035cbf9e8748mr17957110qtb.494.1666378133055; Fri, 21
+ Oct 2022 11:48:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <166631003537.1167078.9373680312035292395.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <166631003537.1167078.9373680312035292395.stgit@dwillia2-xfh.jf.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 21 Oct 2022 19:56:24 +0200
-Message-ID: <CAJZ5v0iGz0Z=WFyStEB4Dj2fpjyy9r6aBYK1SKjBcayhGa=sWA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: NUMA: Add CXL CFMWS 'nodes' to the possible nodes set
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-cxl@vger.kernel.org, stable@vger.kernel.org,
-        Alison Schofield <alison.schofield@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        linux-acpi@vger.kernel.org
+Date:   Fri, 21 Oct 2022 20:48:42 +0200
+Message-ID: <CAJZ5v0h6OWoyO3om5GjsU-6+jPcXPiR-p+4LA22YD6-ptpnhbg@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.1-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 21, 2022 at 1:55 AM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> The ACPI CEDT.CFMWS indicates a range of possible address where new CXL
-> regions can appear. Each range is associated with a QTG id (QoS
-> Throttling Group id). For each range + QTG pair that is not covered by a proximity
-> domain in the SRAT, Linux creates a new NUMA node. However, the commit
-> that added the new ranges missed updating the node_possible mask which
-> causes memory_group_register() to fail. Add the new nodes to the
-> nodes_possible mask.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
-> Cc: Alison Schofield <alison.schofield@intel.com>
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reported-by: Vishal Verma <vishal.l.verma@intel.com>
-> Tested-by: Vishal Verma <vishal.l.verma@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
-> Rafael, I can take this through the CXL tree with some other pending
-> fixes.
+Hi Linus,
 
-Sure.
+Please pull from the tag
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.1-rc2
 
->  drivers/acpi/numa/srat.c |    1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index 3b818ab186be..1f4fc5f8a819 100644
-> --- a/drivers/acpi/numa/srat.c
-> +++ b/drivers/acpi/numa/srat.c
-> @@ -327,6 +327,7 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
->                 pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
->                         node, start, end);
->         }
-> +       node_set(node, numa_nodes_parsed);
->
->         /* Set the next available fake_pxm value */
->         (*fake_pxm)++;
->
+with top-most commit 3f8deab61ea86d738a1e7fdf95e9ad2bf08d14b8
+
+ Merge branches 'acpi-scan', 'acpi-resource', 'acpi-apei',
+'acpi-extlog' and 'acpi-docs'
+
+on top of commit 9abf2313adc1ca1b6180c508c25f22f9395cc780
+
+ Linux 6.1-rc1
+
+to receive ACPI fixes for 6.1-rc2.
+
+These fix 3 issues introduced during the 6.1 merge window (ACPI/PCI,
+device enumeration and documentation) and some other ones found
+recently.
+
+Specifics:
+
+ - Add missing device reference counting to acpi_get_pci_dev() after
+   changing it recently (Rafael Wysocki).
+
+ - Fix resource list walk in acpi_dma_get_range() (Robin Murphy).
+
+ - Add IRQ override quirk for LENOVO IdeaPad and extend the IRQ
+   override warning message (Jiri Slaby).
+
+ - Fix integer overflow in ghes_estatus_pool_init() (Ashish Kalra).
+
+ - Fix multiple error records handling in one of the ACPI extlog driver
+   code paths (Tony Luck).
+
+ - Prune DSDT override documentation from index after dropping it (Bagas
+   Sanjaya).
+
+Thanks!
+
+
+---------------
+
+Ashish Kalra (1):
+      ACPI: APEI: Fix integer overflow in ghes_estatus_pool_init()
+
+Bagas Sanjaya (1):
+      Documentation: ACPI: Prune DSDT override documentation from index
+
+Jiri Slaby (SUSE) (2):
+      ACPI: resource: do IRQ override on LENOVO IdeaPad
+      ACPI: resource: note more about IRQ override
+
+Rafael J. Wysocki (1):
+      ACPI: PCI: Fix device reference counting in acpi_get_pci_dev()
+
+Robin Murphy (1):
+      ACPI: scan: Fix DMA range assignment
+
+Tony Luck (1):
+      ACPI: extlog: Handle multiple records
+
+---------------
+
+ Documentation/admin-guide/acpi/index.rst |  1 -
+ drivers/acpi/acpi_extlog.c               | 33 ++++++++++++---------
+ drivers/acpi/apei/ghes.c                 |  2 +-
+ drivers/acpi/pci_root.c                  |  1 +
+ drivers/acpi/resource.c                  | 49 +++++++++++++++++++++-----------
+ drivers/acpi/scan.c                      |  7 +++--
+ include/acpi/ghes.h                      |  2 +-
+ 7 files changed, 60 insertions(+), 35 deletions(-)
