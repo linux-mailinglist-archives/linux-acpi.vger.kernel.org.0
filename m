@@ -2,72 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 235A9608CFC
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Oct 2022 13:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F618608DDA
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Oct 2022 17:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230189AbiJVLwF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Oct 2022 07:52:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44116 "EHLO
+        id S229519AbiJVPHk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 22 Oct 2022 11:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230260AbiJVLvw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Oct 2022 07:51:52 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A9E17A971;
-        Sat, 22 Oct 2022 04:50:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229506AbiJVPHj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Oct 2022 11:07:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2E3193D1
+        for <linux-acpi@vger.kernel.org>; Sat, 22 Oct 2022 08:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1666451256;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=UdygFogJPVNiES2UUsRuX8cMl6pXUhLZbaeNDbHetCw=;
+        b=KXO2pjRok+PJiAB+bNjGdBaOzHq4wYs72IB/CXH6Xuy7rhEDAs25giGLuTp7LM6UN0ft9u
+        56MR/AFV8EKR+QWQBbblZ84Cr90ijY0b2FyyjfoAVGNHd6GWU3wl9sSUgJCiDYC3dPlWUm
+        W5X8/WzP89npW1MJekCcPCeX6BXYPs8=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-510-aqkdlxnHPhmutyd5saM41g-1; Sat, 22 Oct 2022 11:07:33 -0400
+X-MC-Unique: aqkdlxnHPhmutyd5saM41g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 564FEB811D9;
-        Sat, 22 Oct 2022 11:50:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD1DC433C1;
-        Sat, 22 Oct 2022 11:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1666439416;
-        bh=lm7vjP87FUYA+4yVB1xuZ81DthREd8rb0PB0BwUCruE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NipwSaWdcs9m4O+fCa0fFpPa/RA9l2D0Gham+FMxfP4ViTRtjBTsZ3hAr7sZ7nDaB
-         BG/rMLL8TDRxD5bHM+itjSwLmIT5dEZt1B9IMRMklcUp7VNouvLa8uX/IJV+r7182z
-         auhHY2+3oMYtBSHtOXldKLtGA5c4SgaO5f//hkeI=
-Date:   Sat, 22 Oct 2022 13:50:12 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v3 0/5] device property: Consitify a few APIs and
-Message-ID: <Y1PY9PnoJ3tuvtQC@kroah.com>
-References: <20221004092129.19412-1-andriy.shevchenko@linux.intel.com>
- <Yzwi3tyAv4IoZdGR@kroah.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAE631C06EF7;
+        Sat, 22 Oct 2022 15:07:32 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.65])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 30CFD2166B30;
+        Sat, 22 Oct 2022 15:07:32 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: scan: Add LATT2021 to acpi_ignore_dep_ids[]
+Date:   Sat, 22 Oct 2022 17:07:22 +0200
+Message-Id: <20221022150722.31787-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yzwi3tyAv4IoZdGR@kroah.com>
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 04, 2022 at 02:11:10PM +0200, Greg Kroah-Hartman wrote:
-> On Tue, Oct 04, 2022 at 12:21:24PM +0300, Andy Shevchenko wrote:
-> > The property.h has inconsistency in how we annotate the parameters which
-> > are not modified anyhow by the certain APIs. Also dev_fwnode() needs to
-> > be rectified in sense of the handling const qualifier.
-> > 
-> > This series improves the above with only a couple of APIs left for now
-> > untouched (PHY, which I believe doesn't belong to property.h to begin
-> > with).
-> 
-> Looks sane at first glance.  I'll look at it some more once 6.1-rc1 is
-> out, thanks.
+Some x86/ACPI laptops with MIPI cameras have a LATT2021 ACPI device
+on which the ACPI devices for the sensors (which have flags.honor_deps set)
 
-All now applied, thanks.,
+The _DDN for the LATT2021 device is "Lattice FW Update Client Driver",
+suggesting that this is used for firmware updates of something. There
+is no Linux driver for this and if Linux gets support for it it will
+likely be in userspace through fwupd.
 
-greg k-h
+For now add the LATT2021 HID to acpi_ignore_dep_ids[] so that
+acpi_dev_ready_for_enumeration() will return true once the other _DEP
+dependencies are met.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/scan.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 558664d169fc..eb57b014d1a3 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -789,6 +789,7 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
+ static const char * const acpi_ignore_dep_ids[] = {
+ 	"PNP0D80", /* Windows-compatible System Power Management Controller */
+ 	"INT33BD", /* Intel Baytrail Mailbox Device */
++	"LATT2021", /* Lattice FW Update Client Driver */
+ 	NULL
+ };
+ 
+-- 
+2.37.3
+
