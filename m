@@ -2,89 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F618608DDA
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Oct 2022 17:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0566A608EC7
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Oct 2022 19:20:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbiJVPHk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Oct 2022 11:07:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42544 "EHLO
+        id S229585AbiJVRUP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 22 Oct 2022 13:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbiJVPHj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Oct 2022 11:07:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2E3193D1
-        for <linux-acpi@vger.kernel.org>; Sat, 22 Oct 2022 08:07:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1666451256;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=UdygFogJPVNiES2UUsRuX8cMl6pXUhLZbaeNDbHetCw=;
-        b=KXO2pjRok+PJiAB+bNjGdBaOzHq4wYs72IB/CXH6Xuy7rhEDAs25giGLuTp7LM6UN0ft9u
-        56MR/AFV8EKR+QWQBbblZ84Cr90ijY0b2FyyjfoAVGNHd6GWU3wl9sSUgJCiDYC3dPlWUm
-        W5X8/WzP89npW1MJekCcPCeX6BXYPs8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-510-aqkdlxnHPhmutyd5saM41g-1; Sat, 22 Oct 2022 11:07:33 -0400
-X-MC-Unique: aqkdlxnHPhmutyd5saM41g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S229491AbiJVRUO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Oct 2022 13:20:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 716D75AA0B;
+        Sat, 22 Oct 2022 10:20:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAE631C06EF7;
-        Sat, 22 Oct 2022 15:07:32 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.192.65])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 30CFD2166B30;
-        Sat, 22 Oct 2022 15:07:32 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: scan: Add LATT2021 to acpi_ignore_dep_ids[]
-Date:   Sat, 22 Oct 2022 17:07:22 +0200
-Message-Id: <20221022150722.31787-1-hdegoede@redhat.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EEB1E6098A;
+        Sat, 22 Oct 2022 17:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011ABC433C1;
+        Sat, 22 Oct 2022 17:20:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666459207;
+        bh=RJ1xIcUnAPVVHdSTPRNEDx0prZV40DFafeYZNSpgeqo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=pyepfrxCi11xg4UElYMhfcJzhE7NUckpxB8nZ0zHXUwhO0nvw7FtQOQrvnRKiaGAl
+         tB3gOFb13ejCAde2h+3uRZlXbAXE2M4kUWdKnX9Pgl2XiKlmi1cQ5ui2CSndL2Vngy
+         uHF+IcHZg2e3MOu0pGEEe7Yrz8Wyria0ZUdRyulheeoYCr8LOitbWdrazChYILlMvA
+         DJlWKEsdEfuq/uFi7lZ9HMVqv61Gx0GW103L7PT0iWC3v5z5CaiA5ZGRaaqARU8QIF
+         ykqf9HrD99pP+RQ8MFNU09TzrfGUYRZFjCvCgtaV0S16Yj5IEgtenoVtreiQIJX+Zc
+         vcv10mYh+5GfQ==
+Date:   Sat, 22 Oct 2022 12:20:05 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mehta Sanju <Sanju.Mehta@amd.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v2] PCI/ACPI: Don't assume D3 support if a device is
+ power manageable
+Message-ID: <20221022172005.GA456826@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221020201111.22861-1-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some x86/ACPI laptops with MIPI cameras have a LATT2021 ACPI device
-on which the ACPI devices for the sensors (which have flags.honor_deps set)
+[+cc Lukas, in case you have comment on acpi_pci_power_manageable()]
 
-The _DDN for the LATT2021 device is "Lattice FW Update Client Driver",
-suggesting that this is used for firmware updates of something. There
-is no Linux driver for this and if Linux gets support for it it will
-likely be in userspace through fwupd.
+There's a little bit of cognitive dissonance between the subject and
+the comment line:
 
-For now add the LATT2021 HID to acpi_ignore_dep_ids[] so that
-acpi_dev_ready_for_enumeration() will return true once the other _DEP
-dependencies are met.
+  PCI/ACPI: Don't assume D3 support if a device is power manageable
+  +	/* Assume D3 support if the bridge is power-manageable by ACPI. */
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/scan.c | 1 +
- 1 file changed, 1 insertion(+)
+I suggest tweaking the subject to mention the actual issue here.  It
+looks like it might be something to do with _S0W?
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 558664d169fc..eb57b014d1a3 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -789,6 +789,7 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
- static const char * const acpi_ignore_dep_ids[] = {
- 	"PNP0D80", /* Windows-compatible System Power Management Controller */
- 	"INT33BD", /* Intel Baytrail Mailbox Device */
-+	"LATT2021", /* Lattice FW Update Client Driver */
- 	NULL
- };
- 
--- 
-2.37.3
+On Thu, Oct 20, 2022 at 03:11:11PM -0500, Mario Limonciello wrote:
+> On some firmware configurations where D3 is not supported for
+> "AMD Pink Sardine" the PCIe root port for tunneling will still be
+> opted into runtime PM since `acpi_pci_bridge_d3` returns true.
 
+This paragraph sounds like it describes where you found the problem,
+but I don't think it helps us understand what the problem *is* or how
+to make sure the patch will work on other systems.
+
+> This later causes the device link between the USB4 router and the
+> PCIe root port for tunneling to misbehave.  The USB4 router may
+> enter D3 via runtime PM, but the PCIe root port for tunneling
+> remains in D0.  The expectation is the USB4 router should also
+> remain in D0 since the PCIe root port for tunneling remained in D0.
+
+I'm not very familiar with device links.  How does the link misbehave?
+Is the link doing something wrong, or is it just that we're putting
+one of the devices in the wrong power state?
+
+I assume the USB4 router would be a descendant of the Root Port.
+Generally descendants can be in lower-power states than their parents.
+What expresses the constraint that the router must stay in D0 because
+its parent is in D0?
+
+> `acpi_pci_bridge_d3` has a number of checks, but starts out with an
+> assumption that if a device is power manageable introduced from
+> commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for D3 if power
+> managed by ACPI") that it will support D3.  This is not a valid
+> assumption, as the PCIe root port for tunneling has power resources
+> but does not support D3hot or D3cold.
+
+It looks like acpi_pci_power_manageable(dev) means "the device has
+_PS0 or _PR0".  Currently we assume that means we can put dev in D3.
+
+And I think you're saying that assumption is a little bit too
+aggressive because if _S0W says the device can't wake from D3hot or
+D3cold, we should *not* use D3?
+
+> Instead of making this assertion from the power resources check
+> immediately, move the check to later on, which will have validated
+> that D3hot or D3cold can actually be reached.
+
+IIUC the intervening code doesn't check whether D3hot/D3cold can be
+*reached*, but whether the device can *wake* from D3hot/D3cold.
+
+> This fixes the USB4 router going into D3 when the firmware says that
+> the PCIe root port for tunneling can't handle it.
+
+For maintenance purposes, I think it will be helpful to know
+specifically which devices are involved (e.g., the PCI bus/device/fns
+would show the PCI relationship) and how the firmware says the Root
+Port can't handle D3.  I assume this would be _S0W?
+
+Maybe even a pidgin example of the ACPI pieces involved here, e.g.,
+
+  RP01._PR0
+  RP01._S0W (0x0)    # in S0, can wake from D0 only
+
+> Fixes: dff6139015dc6 ("PCI/ACPI: Allow D3 only if Root Port can signal and wake from D3")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v1->v2:
+>  * Just return value of acpi_pci_power_manageable
+>  * Remove extra word in commit message
+> ---
+>  drivers/pci/pci-acpi.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index a46fec776ad77..8c6aec50dd471 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -984,10 +984,6 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>  	if (acpi_pci_disabled || !dev->is_hotplug_bridge)
+>  		return false;
+>  
+> -	/* Assume D3 support if the bridge is power-manageable by ACPI. */
+> -	if (acpi_pci_power_manageable(dev))
+> -		return true;
+> -
+>  	rpdev = pcie_find_root_port(dev);
+>  	if (!rpdev)
+>  		return false;
+> @@ -1023,7 +1019,8 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>  	    obj->integer.value == 1)
+>  		return true;
+>  
+> -	return false;
+> +	/* Assume D3 support if the bridge is power-manageable by ACPI. */
+> +	return acpi_pci_power_manageable(dev);
+>  }
+>  
+>  int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+> -- 
+> 2.34.1
+> 
