@@ -2,154 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 491D56090C6
-	for <lists+linux-acpi@lfdr.de>; Sun, 23 Oct 2022 04:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74E0860970D
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Oct 2022 00:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiJWCMp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Oct 2022 22:12:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
+        id S229571AbiJWWfL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 23 Oct 2022 18:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbiJWCMl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Oct 2022 22:12:41 -0400
-X-Greylist: delayed 222 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 22 Oct 2022 19:12:39 PDT
-Received: from 014.lax.mailroute.net (014.lax.mailroute.net [199.89.1.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9956D7E331
-        for <linux-acpi@vger.kernel.org>; Sat, 22 Oct 2022 19:12:39 -0700 (PDT)
-Received: from 003.lax.mailroute.net (003.lax.mailroute.net [199.89.1.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by 014.lax.mailroute.net (Postfix) with ESMTPS id 4Mw1pf6gBWz3Gy9G
-        for <linux-acpi@vger.kernel.org>; Sun, 23 Oct 2022 02:08:58 +0000 (UTC)
-Received: from localhost (003.lax.mailroute.net [127.0.0.1])
-        by 003.lax.mailroute.net (Postfix) with ESMTP id 4Mw1pd2NJsz1spl7
-        for <linux-acpi@vger.kernel.org>; Sun, 23 Oct 2022 02:08:57 +0000 (UTC)
-X-Virus-Scanned: by MailRoute
-Received: from 003.lax.mailroute.net ([199.89.1.6])
-        by localhost (003.lax [127.0.0.1]) (mroute_mailscanner, port 10026)
-        with LMTP id fhk5cLWS5K74 for <linux-acpi@vger.kernel.org>;
-        Sun, 23 Oct 2022 02:08:56 +0000 (UTC)
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by 003.lax.mailroute.net (Postfix) with ESMTPS id 4Mw1pc3Nlbz1spkh
-        for <linux-acpi@vger.kernel.org>; Sun, 23 Oct 2022 02:08:56 +0000 (UTC)
-Received: by mail-pf1-f198.google.com with SMTP id 7-20020a056a00070700b0056264748f0fso3294655pfl.21
-        for <linux-acpi@vger.kernel.org>; Sat, 22 Oct 2022 19:08:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sladewatkins.net; s=googled;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4buRFRGWnnlKIHql0Q3qqpGLkPRxc7dJGxBLjsZx+7k=;
-        b=gHDPNqOQBs68kFLX07Qc8yCj+HUCAxaB2KUMqDN7ASOV8uQ9lPx4i8APW46VkpBG6y
-         jrMT3BGjO3M7bIbA7Igyry5dJaTXwM3w2e+054BMLvtnc2r47Hb1JrV5LIvnilCchuch
-         Ld8U/3+GXwNZjDXn9lq7aB7uSXMrRdXw9zLrfXl3+6w1wsIrql82s2wD6TjqXuAtLck4
-         dgEF1OtrWhs1aLBo2PJsaIp1/oiBRQoKF1eEM1G9Oqx3nsHsBkZ09Ps0Xms435XnSMo4
-         bIrmfgJYwSUefDKoByjxBJRC2XeCs7vyVjujK0BbtzTqgVLX8Eynzh7gcQ98nRg0xTDC
-         jCnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4buRFRGWnnlKIHql0Q3qqpGLkPRxc7dJGxBLjsZx+7k=;
-        b=UvBWHpVQsY202zakpJWShs2luYMioZ+sL41rhU2mtZMgo53XQzhZsqawta/yHQ58yr
-         mFbPwnko8JYwFy+8HMpc1/TJlvMz3s86mEROgwxE6RdfWtXqs79u/zHE54tYI9tGRLzJ
-         eQEjGeF5MtAYBWOKxrV+E35Aftfkz9dtvkaGYhjPcowuLwL4C+hKapiCRzn77ltf5/tW
-         3kGkSn8HPWfsVVAuck3jozMv8QXXkSERTOp4uUo01KhILv+zOddoyiGKbXlcgUVhYoKF
-         KO0tb8+J9Oes4zwRv3Xqxm3pSQvLNxP1vEbkXD8b6cB9q8AygHnRNqLNUwTiU5IwV5Xc
-         /c5g==
-X-Gm-Message-State: ACrzQf38XHxMbEBzhIuo8n6cOI98Od3i4lYlPDyb4u3XQdOwTOqWQn4y
-        5HKpF3x5LnP1pJH75RdAy/0FWI9NI6WKRG8j6mLxu5iMom57HXSTrlrWLzcqL5CyqIw+mbJk5Y7
-        KYzCLLS3G8u37s6s4dpi/pLDC088JmgZfMFiMAn0sjDKMQBsyklnF
-X-Received: by 2002:a17:90b:4b0c:b0:20d:233f:5dea with SMTP id lx12-20020a17090b4b0c00b0020d233f5deamr30474213pjb.241.1666490934611;
-        Sat, 22 Oct 2022 19:08:54 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM618i2VOUVwKcFjPt4cd8TCwTQ441RgVBvlLk5fztFUDwWKpFQQG4F3JkRMo7mgCqUcHtS4duAgAhoJKaUeWv8=
-X-Received: by 2002:a17:90b:4b0c:b0:20d:233f:5dea with SMTP id
- lx12-20020a17090b4b0c00b0020d233f5deamr30474187pjb.241.1666490934285; Sat, 22
- Oct 2022 19:08:54 -0700 (PDT)
+        with ESMTP id S229519AbiJWWfJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 23 Oct 2022 18:35:09 -0400
+X-Greylist: delayed 312 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 23 Oct 2022 15:35:08 PDT
+Received: from mail.usefulaso.com (unknown [98.126.219.146])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D181BEBC
+        for <linux-acpi@vger.kernel.org>; Sun, 23 Oct 2022 15:35:08 -0700 (PDT)
+Received: from localhost (unknown [127.0.0.1])
+        by mail.usefulaso.com (Postfix) with ESMTP id 64FEF887F29
+        for <linux-acpi@vger.kernel.org>; Sun, 23 Oct 2022 22:29:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=usefulaso.com; h=
+        content-transfer-encoding:content-type:content-type:mime-version
+        :message-id:date:date:subject:subject:to:from:from:reply-to; s=
+        dkim; t=1666564196; x=1669156197; bh=6BCzqfPxvfWAXH1YzLdnC5ticl4
+        240zfbKFE+TqgQzE=; b=A6fFGnhq9VgLqH4RlNmci0THBCZiRU8AVnM4xTZ9Lzm
+        nape9t24jdRfdbDH673S4xSUl0zbahBQCB8fRnE9Hcs7ktt55aA4Zm1OJ26zOucD
+        q1BAvP+VU4CelkoLBY/YpUVsYKalKul9O3VuMAqwhtsr44OGh+bSJna6V0nhDiis
+        =
+X-Virus-Scanned: amavisd-new at usefulaso.com
+Received: from mail.usefulaso.com ([127.0.0.1])
+        by localhost (mail.usefulaso.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id MeNSQ1Vg4ta9 for <linux-acpi@vger.kernel.org>;
+        Mon, 24 Oct 2022 06:29:56 +0800 (CST)
+Received: from usefulaso.com (unknown [84.17.52.166])
+        by mail.usefulaso.com (Postfix) with ESMTPA id 1396F887F27
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 06:29:53 +0800 (CST)
+Reply-To: jacques_bouchex@yahoo.com
+From:   Jacques BOUCHE <esther@usefulaso.com>
+To:     linux-acpi@vger.kernel.org
+Subject: =?UTF-8?B?Qm9uam91ciwgLyBEb2Jyw70gZGVuLA==?=
+Date:   23 Oct 2022 23:29:24 +0100
+Message-ID: <20221023232924.6EC1D4F5114AF724@usefulaso.com>
 MIME-Version: 1.0
-References: <Y1PydJnbL/9CRFFn@sol.ermione.com>
-In-Reply-To: <Y1PydJnbL/9CRFFn@sol.ermione.com>
-From:   Slade Watkins <srw@sladewatkins.net>
-Date:   Sat, 22 Oct 2022 22:08:43 -0400
-Message-ID: <CA+pv=HNmYsh_y1+so_p=MNePNyV-A-FQ-iX2ivvSWDuyYcPnSQ@mail.gmail.com>
-Subject: Re: mmc: sdhci-pci-core: Disable ES for ASUS BIOS on Jasper Lake
-To:     Andrea Baldoni <erm25d019@ermione.com>
-Cc:     Patrick Thompson <ptf@google.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,PDS_RDNS_DYNAMIC_FP,RCVD_IN_PSBL,
+        RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Oct 22, 2022 at 8:36 PM Andrea Baldoni <erm25d019@ermione.com> wrote:
->
-> Hello.
-> I am not subscribed to the list so please CC to my address.
->
-> I recently bought a new ASUS Laptop E210KA-GJ059WS with
->
-> 00:1a.0 SD Host controller: Intel Corporation Device 4dc4 (rev 01) (prog-if 01)
->         Subsystem: ASUSTeK Computer Inc. Device 1842
->         Flags: bus master, fast devsel, latency 0, IRQ 16, IOMMU group 7
->         Memory at 6001129000 (64-bit, non-prefetchable) [size=4K]
->         Capabilities: [80] Power Management version 3
->         Capabilities: [90] Vendor Specific Information: Len=14 <?>
->         Kernel driver in use: sdhci-pci
->
-> I tried to install Linux (vanilla kernel 5.19.4) and found that the internal
-> 128GB eMMC SSD was unuseable, unable to make a filesystem on it, dmesg shown
->
-> mmc0: running CQE recovery
-> and
-> mmc0: cqhci: timeout for tag 0
-> followed by register dump
->
-> (unfortunately I don't have the exact log now).
->
-> I found the patch to drivers/mmc/host/sdhci-pci-core.c posted by
-> Patrick Thompson date Thu, 13 Oct 2022 17:00:17 -0400, and applied it,
-> but the only way to make the eMMC work was to disable
-> CQE in its entirety by commenting
+Bonjour,
+D=C3=A9sol=C3=A9 pour cette fa=C3=A7on de vous contacter, je viens de voir =
+votre=20
+profil et j'ai pens=C3=A9 que vous =C3=A9tiez la personne dont j'avais=20
+besoin. En bref, je m'appelle Jacques BOUCHEX, d'origine=20
+fran=C3=A7aise. Je suis atteint d'une maladie grave qui me condamne =C3=A0=
+=20
+une mort certaine, un cancer du cerveau, et je dispose d'une=20
+somme de vingt-cinq millions cinq cent mille euros (25.500.000=20
+euros) que je souhaite remettre =C3=A0 un tiers fiable et honn=C3=AAte pour=
+=20
+son bon usage. J'ai une entreprise qui importe de l'huile rouge=20
+en France et dans d'autres pays. J'ai perdu ma femme et deux=20
+adorables enfants il y a 10 ans dans un malheureux accident de la=20
+route. J'aimerais faire don de cette somme avant de mourir car=20
+mes jours sont compt=C3=A9s. Veuillez m'envoyer un courriel =C3=A0=20
+l'adresse suivante : jacques_bouchex@yahoo.com Que le Seigneur=20
+vous b=C3=A9nisse.
 
-This one I assume?[1]
+-
 
->
-> slot->host->mmc->caps2 |= MMC_CAP2_CQE;
-> and
-> slot->host->mmc->caps2 |= MMC_CAP2_CQE_DCMD;
->
-> If someone would like me to do any targeted test to be able to solve the
-> issue better, I will be happy to do it.
->
-> At the moment I am also searching how to get the touchpad to work, I would
-> appreciate any hint and/or a contact with someone who has experience on
-> this.
->
-> I think the relevant device should be this one, but it doesn't show in
-> /proc/bus/input/devices.
->
-> P: /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:6c/ASUE1409:00
-> E: DEVPATH=/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:6c/ASUE1409:00
-> E: ID_VENDOR_FROM_DATABASE=Asuscom Network Inc
-> E: MODALIAS=acpi:ASUE1409:PNP0C50:
-> E: SUBSYSTEM=acpi
-> E: USEC_INITIALIZED=10378637
->
-> Thank you.
->
-> Best regards,
-> Andrea Baldoni
-
-Also looping in +acpi and mmc lists, +Patrick Thompson here.
-
-[1] https://lore.kernel.org/linux-mmc/20221013210017.3751025-1-ptf@google.com/
-
-Best,
--srw
+Dobr=C3=BD den,
+Omlouv=C3=A1m se za tento zp=C5=AFsob kontaktov=C3=A1n=C3=AD, jen jsem vid=
+=C4=9Bl v=C3=A1=C5=A1=20
+profil a myslel jsem, =C5=BEe jste osoba, kterou pot=C5=99ebuji. Jmenuji se=
+=20
+Jacques BOUCHEX, jsem francouzsk=C3=A9ho p=C5=AFvodu. Trp=C3=ADm v=C3=A1=C5=
+=BEnou nemoc=C3=AD,=20
+kter=C3=A1 m=C4=9B odsuzuje k jist=C3=A9 smrti, rakovinou mozku, a disponuj=
+i=20
+=C4=8D=C3=A1stkou 25 500 000 eur (dvacet p=C4=9Bt milion=C5=AF p=C4=9Bt set=
+ tis=C3=ADc eur),=20
+kterou chci p=C5=99edat spolehliv=C3=A9 a poctiv=C3=A9 t=C5=99et=C3=AD stra=
+n=C4=9B k =C5=99=C3=A1dn=C3=A9mu=20
+vyu=C5=BEit=C3=AD. M=C3=A1m spole=C4=8Dnost, kter=C3=A1 dov=C3=A1=C5=BE=C3=
+=AD =C4=8Derven=C3=BD olej do Francie a=20
+dal=C5=A1=C3=ADch zem=C3=AD. P=C5=99ed deseti lety jsem p=C5=99i ne=C5=A1=
+=C5=A5astn=C3=A9 dopravn=C3=AD nehod=C4=9B=20
+p=C5=99i=C5=A1el o man=C5=BEelku a dv=C4=9B kr=C3=A1sn=C3=A9 d=C4=9Bti. R=
+=C3=A1d bych tuto =C4=8D=C3=A1stku daroval=20
+p=C5=99ed svou smrt=C3=AD, proto=C5=BEe m=C3=A9 dny jsou se=C4=8Dteny. Pros=
+=C3=ADm, po=C5=A1lete mi=20
+e-mail na adresu jacques_bouchex@yahoo.com. A=C5=A5 v=C3=A1m P=C3=A1n =C5=
+=BEehn=C3=A1.
