@@ -2,54 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7427260A7D3
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Oct 2022 14:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CDF60A405
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Oct 2022 14:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234893AbiJXM6d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Oct 2022 08:58:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42998 "EHLO
+        id S229889AbiJXMFL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Oct 2022 08:05:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234758AbiJXM5m (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 08:57:42 -0400
-Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B79097EC1
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 05:17:05 -0700 (PDT)
-Received: by mail-qv1-xf36.google.com with SMTP id x13so4872113qvn.6
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 05:17:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3flgEAolZn9kn5oClvgduggco3LU3Kao58cYVj8GoE4=;
-        b=LFNGam9y4Mzo/GmaRHBG21OM1uk0hOommk74KXR9Ca3TMfQryGTVdhVU5ltrLDq2eZ
-         02Sufh/O0mf9igu5dzzr9xfFTvUVJnusR47enfl8COOjleX5fwL6eAZaOwUFpStJHUJi
-         hCLqEFuFEiStB87OEfhilZId7gmp5XPzc8feF2PYyJiV+KGbmtv9V+IgrRH+2aqz3DHV
-         M+0XmnIQ2XPB2CwxIkAbGWu2tAx/w1WMTphoADzrca9LYFwO0Tc5zvTS7ycemczGbZdY
-         uWICIlA0YHCEjqWRpSdtI+n8c9TyFLANwWLT4ZFSjfGAycLhmE5YxuD4ntG1ulSCg1AF
-         sMBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3flgEAolZn9kn5oClvgduggco3LU3Kao58cYVj8GoE4=;
-        b=XznEGAaXthJPWlFwNI+EW8NVjUjOPTSbuRfBqdFrD8z7MYRia4VtZsBzzDGNzh+oex
-         lWVpEqAPMDAGF3k0Bwtp1jDi3iVOALkuyxwVTRH/CRff3iggNm/6/gsQy1NYCzcfdMLk
-         FXGS5sCu3PoSabDJXOVLDehHR1b9sR64vBOdRFsF59BkfqI6C9tZisuvEdTKQ7eU+ASg
-         wu+m+iCyDabQLhtafjqcExIbWEfivCN/RB/bj7aSQ/anB8DDF5AB6TccNQBS2iJFCwj7
-         OKsLBtDBDrJagKb+f4pRaa5tc3ook9EedzsiTH1QMymG9AEXbLV1GLAsQnf3Ooo8fNrF
-         I73A==
-X-Gm-Message-State: ACrzQf0O6wkBVNIN6Chv+crW4X+8o28y1vLEhMyCWMFB35V8zb8j6Zhq
-        ANx+PFBQGMFxsjzqhP5bu00OO2ZLcOSFVZO3
-X-Google-Smtp-Source: AMsMyM5su6ApWtiy+J/kwO/a0HneChUBGcY0XEPNt6nciHQoDPKXFdF+gj0Vs4qmtnJ6gx8k4rNCKg==
-X-Received: by 2002:a17:902:ec8a:b0:185:5462:261a with SMTP id x10-20020a170902ec8a00b001855462261amr32981480plg.160.1666611509068;
-        Mon, 24 Oct 2022 04:38:29 -0700 (PDT)
-Received: from fedora.flets-east.jp ([2400:4050:c360:8200:8ae8:3c4:c0da:7419])
-        by smtp.gmail.com with ESMTPSA id b8-20020a170903228800b001830ed575c3sm19475075plh.117.2022.10.24.04.38.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 04:38:28 -0700 (PDT)
-From:   Akihiko Odaki <akihiko.odaki@daynix.com>
+        with ESMTP id S232513AbiJXMDt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 08:03:49 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA247275F9;
+        Mon, 24 Oct 2022 04:49:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666612191; x=1698148191;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=t3cjsGp+mGZTfId3Uz83F67WuGQ8r3GpeajQ9Pj0MTw=;
+  b=UkxUqyMwyIAVJpU8jQYYJmQF7FVqcu1nNSUULmp1M5bcYoSDMcq0Ep2E
+   aplorVrnxfcma5FWPqb0QfkXmZVoaKYyEwVtfmQX+2E6ULzwj5nitYuKR
+   Cphhzlm42wM5QleBRv3cV12C+7AgnyGo/LjIvhVWfiKLl6oTgg/4fx05t
+   Xjf/wp5Tf+ZP0dgb/0sF3USMF/I66369wmpurruJTuSWTXcM29VGPbSSg
+   ko6r6OPyLywcWONDaPkwAQ7DzYPyKAa4z3y2eLmiHI347Uvw8pjksIsMg
+   1WgKIGXOKO25DWh5UpmdmxCM05MOPiE7WZn53VcJu7XlcD90HpjaGNO+T
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10509"; a="333981437"
+X-IronPort-AV: E=Sophos;i="5.95,209,1661842800"; 
+   d="scan'208";a="333981437"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 04:48:46 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10509"; a="631231987"
+X-IronPort-AV: E=Sophos;i="5.95,209,1661842800"; 
+   d="scan'208";a="631231987"
+Received: from emontau-mobl2.ger.corp.intel.com (HELO localhost) ([10.252.52.221])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 04:48:35 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
@@ -57,7 +46,6 @@ Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Jonathan Corbet <corbet@lwn.net>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
         Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
@@ -67,7 +55,7 @@ Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Corentin Chary <corentin.chary@gmail.com>,
         Cezary Jackiewicz <cezary.jackiewicz@gmail.com>,
         Matthew Garrett <mjg59@srcf.ucam.org>,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>,
         Jonathan Woithe <jwoithe@just42.net>,
         Ike Panhc <ike.pan@canonical.com>,
         Daniel Dadap <ddadap@nvidia.com>,
@@ -87,44 +75,91 @@ Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         acpi4asus-user@lists.sourceforge.net,
         ibm-acpi-devel@lists.sourceforge.net, linux-fbdev@vger.kernel.org,
         devel@acpica.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 20/22] platform/x86: intel_oaktrail: Use acpi_video_get_backlight_types()
-Date:   Mon, 24 Oct 2022 20:35:11 +0900
-Message-Id: <20221024113513.5205-21-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.37.3
+Subject: Re: [PATCH 00/22] Fallback to native backlight
 In-Reply-To: <20221024113513.5205-1-akihiko.odaki@daynix.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <20221024113513.5205-1-akihiko.odaki@daynix.com>
+Date:   Mon, 24 Oct 2022 14:48:32 +0300
+Message-ID: <87tu3te92n.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-acpi_video_get_backlight_type() is now deprecated.
+On Mon, 24 Oct 2022, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> Commit 2600bfa3df99 ("ACPI: video: Add acpi_video_backlight_use_native()
+> helper") and following commits made native backlight unavailable if
+> CONFIG_ACPI_VIDEO is set and the backlight feature of ACPI video is
+> unavailable, which broke the backlight functionality on Lenovo ThinkPad
+> C13 Yoga Chromebook. Allow to fall back to native backlight in such
+> cases.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- drivers/platform/x86/intel/oaktrail.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Where's the bug report with relevant logs, kconfigs, etc?
 
-diff --git a/drivers/platform/x86/intel/oaktrail.c b/drivers/platform/x86/intel/oaktrail.c
-index 7c5c623630c1..f44a51dad16a 100644
---- a/drivers/platform/x86/intel/oaktrail.c
-+++ b/drivers/platform/x86/intel/oaktrail.c
-@@ -330,7 +330,7 @@ static int __init oaktrail_init(void)
- 		goto err_device_add;
- 	}
- 
--	if (acpi_video_get_backlight_type() == acpi_backlight_vendor) {
-+	if ((acpi_video_get_backlight_types() & ACPI_BACKLIGHT_VENDOR)) {
- 		ret = oaktrail_backlight_init();
- 		if (ret)
- 			goto err_backlight;
+BR,
+Jani.
+
+>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>
+> Akihiko Odaki (22):
+>   drm/i915/opregion: Improve backlight request condition
+>   ACPI: video: Introduce acpi_video_get_backlight_types()
+>   LoongArch: Use acpi_video_get_backlight_types()
+>   platform/x86: acer-wmi: Use acpi_video_get_backlight_types()
+>   platform/x86: asus-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: asus-wmi: Use acpi_video_get_backlight_types()
+>   platform/x86: compal-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: eeepc-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: fujitsu-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: ideapad-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: msi-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: msi-wmi: Use acpi_video_get_backlight_types()
+>   platform/x86: nvidia-wmi-ec-backlight: Use
+>     acpi_video_get_backlight_types()
+>   platform/x86: panasonic-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: samsung-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: sony-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: thinkpad_acpi: Use acpi_video_get_backlight_types()
+>   platform/x86: toshiba_acpi: Use acpi_video_get_backlight_types()
+>   platform/x86: dell-laptop: Use acpi_video_get_backlight_types()
+>   platform/x86: intel_oaktrail: Use acpi_video_get_backlight_types()
+>   ACPI: video: Remove acpi_video_get_backlight_type()
+>   ACPI: video: Fallback to native backlight
+>
+>  Documentation/gpu/todo.rst                    |  8 +--
+>  drivers/acpi/acpi_video.c                     |  2 +-
+>  drivers/acpi/video_detect.c                   | 54 ++++++++++---------
+>  drivers/gpu/drm/i915/display/intel_opregion.c |  3 +-
+>  drivers/platform/loongarch/loongson-laptop.c  |  4 +-
+>  drivers/platform/x86/acer-wmi.c               |  2 +-
+>  drivers/platform/x86/asus-laptop.c            |  2 +-
+>  drivers/platform/x86/asus-wmi.c               |  4 +-
+>  drivers/platform/x86/compal-laptop.c          |  2 +-
+>  drivers/platform/x86/dell/dell-laptop.c       |  2 +-
+>  drivers/platform/x86/eeepc-laptop.c           |  2 +-
+>  drivers/platform/x86/fujitsu-laptop.c         |  4 +-
+>  drivers/platform/x86/ideapad-laptop.c         |  2 +-
+>  drivers/platform/x86/intel/oaktrail.c         |  2 +-
+>  drivers/platform/x86/msi-laptop.c             |  2 +-
+>  drivers/platform/x86/msi-wmi.c                |  2 +-
+>  .../platform/x86/nvidia-wmi-ec-backlight.c    |  2 +-
+>  drivers/platform/x86/panasonic-laptop.c       |  2 +-
+>  drivers/platform/x86/samsung-laptop.c         |  2 +-
+>  drivers/platform/x86/sony-laptop.c            |  2 +-
+>  drivers/platform/x86/thinkpad_acpi.c          |  4 +-
+>  drivers/platform/x86/toshiba_acpi.c           |  2 +-
+>  drivers/video/backlight/backlight.c           | 18 +++++++
+>  include/acpi/video.h                          | 21 ++++----
+>  include/linux/backlight.h                     |  1 +
+>  25 files changed, 85 insertions(+), 66 deletions(-)
+
 -- 
-2.37.3
-
+Jani Nikula, Intel Open Source Graphics Center
