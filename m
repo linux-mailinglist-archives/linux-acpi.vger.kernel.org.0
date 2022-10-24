@@ -2,101 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E0860970D
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Oct 2022 00:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8654160A39C
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Oct 2022 13:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229571AbiJWWfL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 23 Oct 2022 18:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60994 "EHLO
+        id S232386AbiJXL6J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Oct 2022 07:58:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbiJWWfJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 23 Oct 2022 18:35:09 -0400
-X-Greylist: delayed 312 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 23 Oct 2022 15:35:08 PDT
-Received: from mail.usefulaso.com (unknown [98.126.219.146])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D181BEBC
-        for <linux-acpi@vger.kernel.org>; Sun, 23 Oct 2022 15:35:08 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mail.usefulaso.com (Postfix) with ESMTP id 64FEF887F29
-        for <linux-acpi@vger.kernel.org>; Sun, 23 Oct 2022 22:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=usefulaso.com; h=
-        content-transfer-encoding:content-type:content-type:mime-version
-        :message-id:date:date:subject:subject:to:from:from:reply-to; s=
-        dkim; t=1666564196; x=1669156197; bh=6BCzqfPxvfWAXH1YzLdnC5ticl4
-        240zfbKFE+TqgQzE=; b=A6fFGnhq9VgLqH4RlNmci0THBCZiRU8AVnM4xTZ9Lzm
-        nape9t24jdRfdbDH673S4xSUl0zbahBQCB8fRnE9Hcs7ktt55aA4Zm1OJ26zOucD
-        q1BAvP+VU4CelkoLBY/YpUVsYKalKul9O3VuMAqwhtsr44OGh+bSJna6V0nhDiis
-        =
-X-Virus-Scanned: amavisd-new at usefulaso.com
-Received: from mail.usefulaso.com ([127.0.0.1])
-        by localhost (mail.usefulaso.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MeNSQ1Vg4ta9 for <linux-acpi@vger.kernel.org>;
-        Mon, 24 Oct 2022 06:29:56 +0800 (CST)
-Received: from usefulaso.com (unknown [84.17.52.166])
-        by mail.usefulaso.com (Postfix) with ESMTPA id 1396F887F27
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 06:29:53 +0800 (CST)
-Reply-To: jacques_bouchex@yahoo.com
-From:   Jacques BOUCHE <esther@usefulaso.com>
-To:     linux-acpi@vger.kernel.org
-Subject: =?UTF-8?B?Qm9uam91ciwgLyBEb2Jyw70gZGVuLA==?=
-Date:   23 Oct 2022 23:29:24 +0100
-Message-ID: <20221023232924.6EC1D4F5114AF724@usefulaso.com>
+        with ESMTP id S232299AbiJXL4p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 07:56:45 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA38C1276E
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 04:47:08 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id r18so8435184pgr.12
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 04:47:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=daynix-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zcdfaNsoIuuSNF9XByhbeUp3KpNdfCPWzGZ8aF5nLxA=;
+        b=A/SaFlQiUebp/U4yUjESResGqrVwntBISSfqBzWDzKJibVbtIVr9UUfU6mxLj07U3t
+         BF1P1ziYSaSoZu2hLeXkqtIzAlvAh0MFneC+wQBMWmi0FH1LXXFBqHadJUpo8KeJTncO
+         UfWe0DIEAPCTW/sCTy15HwE2CBjAb+Rx1eEUSB+NNH260sZc5OtfAVjOXussqn3KA347
+         PpO/tyEscshRJ9N6nCBeacKW6fv3Tw1lcWUes4Zil4fK5WzarbbrLQTA4j7+JXjg1OB5
+         Nl7VXtFCfuFWoaeikVJ/SxvLnxREoubYa0ceNbAiLW7yzBhF70OMrb+09Y3IJKqA+AuT
+         576g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zcdfaNsoIuuSNF9XByhbeUp3KpNdfCPWzGZ8aF5nLxA=;
+        b=tTu4UFDL8sCIcNi45xfXLZYLe0yzvhxuvmSiDpSLEViv2x5IlCHo9daez1eOlxdZj6
+         CU+/sEmIO2fWfJwGzc+FNmDS6d5LQRMhYsQE+zCvHRWgFioguUpPlbQ8KqWoRQFRbOuY
+         fAe2LvhAOwUiYovbpIDdF6fSdX0fJePSwoS4KHsyM9MX4UvNcGp7A3iCdNmIgFLCwd2x
+         kBc+lm+FseYZ/vC/G/3uFC2Ecf9iKutxSXF9VeCS7icZ3i66hCDhPLjufnnJhEMS+FY0
+         lkl6ST+hLe8KBlejUxVN+zSWyBtsPxyFDK7htWBptu2qYO8QzbXUirEcmjm/II0wXux7
+         ZOoA==
+X-Gm-Message-State: ACrzQf2OgB4DNXmSVoJFeYtxIhW7O/1YjkoWDGmx1XQ803zFD+Mq6J+n
+        dc8NBCwMfekw6ebNTOcq1nmdOID7mMSFGE77
+X-Google-Smtp-Source: AMsMyM5stq/ljVzMueZdUgOUcwUqYp0qFBFo+CXciS0i44pLthcVHJASa5mVlU8sjRqgQycqku2BPA==
+X-Received: by 2002:a63:2345:0:b0:463:7c74:73b with SMTP id u5-20020a632345000000b004637c74073bmr28176901pgm.39.1666611341111;
+        Mon, 24 Oct 2022 04:35:41 -0700 (PDT)
+Received: from fedora.flets-east.jp ([2400:4050:c360:8200:8ae8:3c4:c0da:7419])
+        by smtp.gmail.com with ESMTPSA id b8-20020a170903228800b001830ed575c3sm19475075plh.117.2022.10.24.04.35.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Oct 2022 04:35:40 -0700 (PDT)
+From:   Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        "Lee, Chun-Yi" <jlee@suse.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Corentin Chary <corentin.chary@gmail.com>,
+        Cezary Jackiewicz <cezary.jackiewicz@gmail.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Jonathan Woithe <jwoithe@just42.net>,
+        Ike Panhc <ike.pan@canonical.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Kenneth Chan <kenneth.t.chan@gmail.com>,
+        Mattia Dongili <malattia@linux.it>,
+        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+        Azael Avalos <coproscefalo@gmail.com>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Robert Moore <robert.moore@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net,
+        ibm-acpi-devel@lists.sourceforge.net, linux-fbdev@vger.kernel.org,
+        devel@acpica.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 00/22] Fallback to native backlight
+Date:   Mon, 24 Oct 2022 20:34:51 +0900
+Message-Id: <20221024113513.5205-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,PDS_RDNS_DYNAMIC_FP,RCVD_IN_PSBL,
-        RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Bonjour,
-D=C3=A9sol=C3=A9 pour cette fa=C3=A7on de vous contacter, je viens de voir =
-votre=20
-profil et j'ai pens=C3=A9 que vous =C3=A9tiez la personne dont j'avais=20
-besoin. En bref, je m'appelle Jacques BOUCHEX, d'origine=20
-fran=C3=A7aise. Je suis atteint d'une maladie grave qui me condamne =C3=A0=
-=20
-une mort certaine, un cancer du cerveau, et je dispose d'une=20
-somme de vingt-cinq millions cinq cent mille euros (25.500.000=20
-euros) que je souhaite remettre =C3=A0 un tiers fiable et honn=C3=AAte pour=
-=20
-son bon usage. J'ai une entreprise qui importe de l'huile rouge=20
-en France et dans d'autres pays. J'ai perdu ma femme et deux=20
-adorables enfants il y a 10 ans dans un malheureux accident de la=20
-route. J'aimerais faire don de cette somme avant de mourir car=20
-mes jours sont compt=C3=A9s. Veuillez m'envoyer un courriel =C3=A0=20
-l'adresse suivante : jacques_bouchex@yahoo.com Que le Seigneur=20
-vous b=C3=A9nisse.
+Commit 2600bfa3df99 ("ACPI: video: Add acpi_video_backlight_use_native()
+helper") and following commits made native backlight unavailable if
+CONFIG_ACPI_VIDEO is set and the backlight feature of ACPI video is
+unavailable, which broke the backlight functionality on Lenovo ThinkPad
+C13 Yoga Chromebook. Allow to fall back to native backlight in such
+cases.
 
--
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Dobr=C3=BD den,
-Omlouv=C3=A1m se za tento zp=C5=AFsob kontaktov=C3=A1n=C3=AD, jen jsem vid=
-=C4=9Bl v=C3=A1=C5=A1=20
-profil a myslel jsem, =C5=BEe jste osoba, kterou pot=C5=99ebuji. Jmenuji se=
-=20
-Jacques BOUCHEX, jsem francouzsk=C3=A9ho p=C5=AFvodu. Trp=C3=ADm v=C3=A1=C5=
-=BEnou nemoc=C3=AD,=20
-kter=C3=A1 m=C4=9B odsuzuje k jist=C3=A9 smrti, rakovinou mozku, a disponuj=
-i=20
-=C4=8D=C3=A1stkou 25 500 000 eur (dvacet p=C4=9Bt milion=C5=AF p=C4=9Bt set=
- tis=C3=ADc eur),=20
-kterou chci p=C5=99edat spolehliv=C3=A9 a poctiv=C3=A9 t=C5=99et=C3=AD stra=
-n=C4=9B k =C5=99=C3=A1dn=C3=A9mu=20
-vyu=C5=BEit=C3=AD. M=C3=A1m spole=C4=8Dnost, kter=C3=A1 dov=C3=A1=C5=BE=C3=
-=AD =C4=8Derven=C3=BD olej do Francie a=20
-dal=C5=A1=C3=ADch zem=C3=AD. P=C5=99ed deseti lety jsem p=C5=99i ne=C5=A1=
-=C5=A5astn=C3=A9 dopravn=C3=AD nehod=C4=9B=20
-p=C5=99i=C5=A1el o man=C5=BEelku a dv=C4=9B kr=C3=A1sn=C3=A9 d=C4=9Bti. R=
-=C3=A1d bych tuto =C4=8D=C3=A1stku daroval=20
-p=C5=99ed svou smrt=C3=AD, proto=C5=BEe m=C3=A9 dny jsou se=C4=8Dteny. Pros=
-=C3=ADm, po=C5=A1lete mi=20
-e-mail na adresu jacques_bouchex@yahoo.com. A=C5=A5 v=C3=A1m P=C3=A1n =C5=
-=BEehn=C3=A1.
+Akihiko Odaki (22):
+  drm/i915/opregion: Improve backlight request condition
+  ACPI: video: Introduce acpi_video_get_backlight_types()
+  LoongArch: Use acpi_video_get_backlight_types()
+  platform/x86: acer-wmi: Use acpi_video_get_backlight_types()
+  platform/x86: asus-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: asus-wmi: Use acpi_video_get_backlight_types()
+  platform/x86: compal-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: eeepc-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: fujitsu-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: ideapad-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: msi-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: msi-wmi: Use acpi_video_get_backlight_types()
+  platform/x86: nvidia-wmi-ec-backlight: Use
+    acpi_video_get_backlight_types()
+  platform/x86: panasonic-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: samsung-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: sony-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: thinkpad_acpi: Use acpi_video_get_backlight_types()
+  platform/x86: toshiba_acpi: Use acpi_video_get_backlight_types()
+  platform/x86: dell-laptop: Use acpi_video_get_backlight_types()
+  platform/x86: intel_oaktrail: Use acpi_video_get_backlight_types()
+  ACPI: video: Remove acpi_video_get_backlight_type()
+  ACPI: video: Fallback to native backlight
+
+ Documentation/gpu/todo.rst                    |  8 +--
+ drivers/acpi/acpi_video.c                     |  2 +-
+ drivers/acpi/video_detect.c                   | 54 ++++++++++---------
+ drivers/gpu/drm/i915/display/intel_opregion.c |  3 +-
+ drivers/platform/loongarch/loongson-laptop.c  |  4 +-
+ drivers/platform/x86/acer-wmi.c               |  2 +-
+ drivers/platform/x86/asus-laptop.c            |  2 +-
+ drivers/platform/x86/asus-wmi.c               |  4 +-
+ drivers/platform/x86/compal-laptop.c          |  2 +-
+ drivers/platform/x86/dell/dell-laptop.c       |  2 +-
+ drivers/platform/x86/eeepc-laptop.c           |  2 +-
+ drivers/platform/x86/fujitsu-laptop.c         |  4 +-
+ drivers/platform/x86/ideapad-laptop.c         |  2 +-
+ drivers/platform/x86/intel/oaktrail.c         |  2 +-
+ drivers/platform/x86/msi-laptop.c             |  2 +-
+ drivers/platform/x86/msi-wmi.c                |  2 +-
+ .../platform/x86/nvidia-wmi-ec-backlight.c    |  2 +-
+ drivers/platform/x86/panasonic-laptop.c       |  2 +-
+ drivers/platform/x86/samsung-laptop.c         |  2 +-
+ drivers/platform/x86/sony-laptop.c            |  2 +-
+ drivers/platform/x86/thinkpad_acpi.c          |  4 +-
+ drivers/platform/x86/toshiba_acpi.c           |  2 +-
+ drivers/video/backlight/backlight.c           | 18 +++++++
+ include/acpi/video.h                          | 21 ++++----
+ include/linux/backlight.h                     |  1 +
+ 25 files changed, 85 insertions(+), 66 deletions(-)
+
+-- 
+2.37.3
+
