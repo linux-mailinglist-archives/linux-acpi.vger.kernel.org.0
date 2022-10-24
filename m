@@ -2,270 +2,237 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C6B60B394
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Oct 2022 19:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A45260B3DB
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Oct 2022 19:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235275AbiJXRKt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Oct 2022 13:10:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50392 "EHLO
+        id S233942AbiJXRSb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Oct 2022 13:18:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235289AbiJXRKN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 13:10:13 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A080691852;
-        Mon, 24 Oct 2022 08:45:12 -0700 (PDT)
-Received: from zn.tnic (p200300ea9733e790329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e790:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C09221EC068C;
-        Mon, 24 Oct 2022 17:43:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1666626225;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=iwOcNJ3tdFU+iSv3M1smqB1ztPNnc9b/fECkwptfiec=;
-        b=jlVX/Yx8sBzWdXGUX3sE5MvjvGYb4rijjF+jbcs5dwbmUjToExs+VABma8jXgyhGEF9uDp
-        yxWxiI17rTU+H2RnKWXfysJ86dyppaIaMVdXMVDynesTP0DptvgLh6Kt8gkaY5gI6P6DUj
-        ufv8jYZKwXMX1Vwb+BcEt/b8jCyUMYc=
-Date:   Mon, 24 Oct 2022 17:43:41 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH] apei/ghes: Use xchg_release() for updating new cache slot
- instead of cmpxchg()
-Message-ID: <Y1ayrYZgLqjp7WOG@zn.tnic>
-References: <20221018082214.569504-1-justin.he@arm.com>
- <20221018082214.569504-7-justin.he@arm.com>
- <Y1OtRpLRwPPG/4Il@zn.tnic>
- <CAMj1kXFu36faTPoGSGPs9KhcKsoh_DE9X2rmwdenxaJwa3P_yw@mail.gmail.com>
- <Y1O/QN32d2AlzEiA@zn.tnic>
+        with ESMTP id S233977AbiJXRSM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 13:18:12 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03BF524F38;
+        Mon, 24 Oct 2022 08:53:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666626796; x=1698162796;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version;
+  bh=Rls8J96H7XPdBkD3rN2hn7TWvGSMihVkayjTqyB85l8=;
+  b=Vk9+sZJuuWT/r4iqTa3YJvUJHyKeIhhjrGdQcWCE6hs5EI54GkZ9oTa7
+   9RBazbzvCb6BKn7OkMWS7vmlavJRQHkldFNK+QwJCSyD3Qim8x69YF4GO
+   /yp575RQp8RnkfewllMbStYVYihwF5tjJEjtBy+GOFdLUGqdrjj4lzVUB
+   voUF0Hgyv/y/KxlsA6vm0Mn/yHp7NriKRqOhzh+miU+2c9RUMxFAxprCH
+   g/T+knBtyFFQcPE5FeZg6Vk9zpNVDSkT2nt+alxPAKA94uDO9LSmP9j7s
+   OrefTpG9YYFnVBy4G4xtDwwujW2R8Over2bWAM6anyIa6hBln0pin6sij
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="393771000"
+X-IronPort-AV: E=Sophos;i="5.95,209,1661842800"; 
+   d="diff'?scan'208";a="393771000"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 08:51:39 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="694600516"
+X-IronPort-AV: E=Sophos;i="5.95,209,1661842800"; 
+   d="diff'?scan'208";a="694600516"
+Received: from reillyco-mobl.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.251.8.109])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 08:51:39 -0700
+Message-ID: <9ef3674afd370050b86a68e44c97e4f0257f1adf.camel@linux.intel.com>
+Subject: Re: BUG: bisected: thermald regression (MEMLEAK) in commit
+ c7ff29763989bd09c433f73fae3c1e1c15d9cda4
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        LKML <linux-kernel@vger.kernel.org>, rjw@rjwysocki.net
+Cc:     regressions@lists.linux.dev, regressions@leemhuis.info,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Robert Moore <robert.moore@intel.com>, devel@acpica.org
+Date:   Mon, 24 Oct 2022 08:51:38 -0700
+In-Reply-To: <e0f06714-5a49-a4e6-24e6-c4103c820819@alu.unizg.hr>
+References: <e0f06714-5a49-a4e6-24e6-c4103c820819@alu.unizg.hr>
+Content-Type: multipart/mixed; boundary="=-gQpjfCtEWz61D1kobzBy"
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Y1O/QN32d2AlzEiA@zn.tnic>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Ok,
 
-here's what I've done to it, holler if something's still missing.
+--=-gQpjfCtEWz61D1kobzBy
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-@rjw, if you wanna take this through your tree, it should work too - it
-is unrelated to the ghes_edac changes we're doing. Or I can carry it,
-whatever you prefer.
+Hi Mirsad,
 
-Thx.
+Thanks for the bisect.
 
----
-From: Ard Biesheuvel <ardb@kernel.org>
+On Mon, 2022-10-24 at 15:13 +0200, Mirsad Goran Todorovac wrote:
+> Dear all,
+> 
+> Around Sep 27th 2022 I've noticed in a mainline kernel built with 
+> CONFIG_DEBUG_KMEMLEAK=y
+> that there actually is a leak:
+> 
+> > sudo cat /sys/kernel/debug/kmemleak unreferenced object 
+> 0xffff8881095f3ee0 (size 80): comm "thermald", pid 837, jiffies 
+> 4294896698 (age 9867.428s) hex dump (first 32 bytes): 00 00 00 00 00
+> 00 
+> 00 00 0d 01 2d 00 00 00 00 00 ..........-..... af 07 01 00 00 c9 ff
+> ff 
+> 00 00 00 00 00 00 00 00 ................ backtrace:
+> [<00000000b50b9dd6>] 
+> kmem_cache_alloc+0x184/0x380 [<00000000fa8428c0>] 
+> acpi_os_acquire_object+0x2c/0x32 [<000000002cc0099f>] 
+> acpi_ps_alloc_op+0x65/0xe6 [<00000000335faf1b>] 
+> acpi_ps_get_next_arg+0x842/0x9ed [<000000007afa2dee>] 
+> acpi_ps_parse_loop+0x718/0xee1 [<0000000010ce490e>] 
+> acpi_ps_parse_aml+0x261/0x7b2 [<00000000278d4c5f>] 
+> acpi_ps_execute_method+0x360/0x459 [<00000000ff7ad4ba>] 
+> acpi_ns_evaluate+0x595/0x810 [<0000000037ce3488>] 
+> acpi_evaluate_object+0x28b/0x5b2 [<000000001a800bbf>] 
+> acpi_run_osc+0x209/0x3d0 [<00000000776fbd43>] 
+> int3400_thermal_run_osc+0xed/0x180 [int3400_thermal] 
+> [<00000000d6ec2302>] current_uuid_store+0x17c/0x1d0 [int3400_thermal]
+> [<00000000486cf3e6>] dev_attr_store+0x3e/0x60 [<00000000bf193027>] 
+> sysfs_kf_write+0x88/0xa0 [<00000000820b5cce>] 
+> kernfs_fop_write_iter+0x1c9/0x270 [<0000000062f8d35e>] 
+> vfs_write+0x5a5/0x750 Mr. Pandruvada required a bug bisect from me,
+> so I 
+> have eventually made one. # first bad commit: 
+> [c7ff29763989bd09c433f73fae3c1e1c15d9cda4] thermal: int340x: Update
+> OS 
 
-Some documentation first, about how this machinery works:
+This will say this patch as this patch is calling acpi_run_osc in
+response to thermald calls for the first time.
 
-It seems, the intent of the GHES error records cache is to collect
-already reported errors - see the ghes_estatus_cached() checks. There's
-even a sentence trying to say what this does:
+But looking at code, this is freeing the memory allocated by
+acpi_run_osc() call chain as any other caller.
 
-  /*
-   * GHES error status reporting throttle, to report more kinds of
-   * errors, instead of just most frequently occurred errors.
-   */
+	status = acpi_run_osc(handle, &context);
+	if (ACPI_SUCCESS(status)) {
+		ret = *((u32 *)(context.ret.pointer + 4));
+		if (ret != *enable)
+			result = -EPERM;
 
-New elements are added to the cache this way:
+		kfree(context.ret.pointer);
+	} else
+		result = -EPERM;
 
-  if (!ghes_estatus_cached(estatus)) {
-          if (ghes_print_estatus(NULL, ghes->generic, estatus))
-                  ghes_estatus_cache_add(ghes->generic, estatus);
+There is no kfree when call failed as at other places.
+I think you are failing, you can search for "_OSC" in dmesg.
+On some Dell systems this OSC setting fails because of some BIOS issue.
+May be you are hitting that case.
+Just for the sake of test, please apply the diff and see if the issue
+is gone.
 
-The intent being, once this new error record is reported, it gets cached
-so that it doesn't get reported for a while due to too many, same-type
-error records getting reported in burst-like scenarios. I.e., new,
-unreported error types can have a higher chance of getting reported.
+Thanks,
+Srinivas
 
-Now, the loop in ghes_estatus_cache_add() is trying to pick out the
-oldest element in there. Meaning, something which got reported already
-but a long while ago, i.e., a LRU-type scheme.
+> policy capability handshake Here is the git bisect log: 
+> mtodorov@domac:~/linux/kernel/linux_stable$ git bisect log git bisect
+> start # good: [b6abb62daa5511c4a3eaa30cbdb02544d1f10fa2] Linux 5.15.1
+> git bisect good b6abb62daa5511c4a3eaa30cbdb02544d1f10fa2 # bad: 
+> [e6f4ff3f91251f67b130c29f38673eb5702f88b9] Linux 6.0.3 git bisect bad
+> e6f4ff3f91251f67b130c29f38673eb5702f88b9 # good: 
+> [8bb7eca972ad531c9b149c0a51ab43a417385813] Linux 5.15 git bisect good
+> 8bb7eca972ad531c9b149c0a51ab43a417385813 # bad: 
+> [1464677662943738741500a6f16b85d36bbde2be] Merge tag 
+> 'platform-drivers-x86-v5.18-1' of 
+> git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-
+> x86 
+> git bisect bad 1464677662943738741500a6f16b85d36bbde2be # good: 
+> [8efd0d9c316af470377894a6a0f9ff63ce18c177] Merge tag '5.17-net-next'
+> of 
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next git
+> bisect 
+> good 8efd0d9c316af470377894a6a0f9ff63ce18c177 # good: 
+> [aaa25a2fa7964d94690f6de5edd7164ca7d76555] Merge 
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net git bisect
+> good 
+> aaa25a2fa7964d94690f6de5edd7164ca7d76555 # bad: 
+> [b4bc93bd76d4da32600795cd323c971f00a2e788] Merge tag 'arm-drivers-
+> 5.18' 
+> of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc git bisect
+> bad 
+> b4bc93bd76d4da32600795cd323c971f00a2e788 # bad: 
+> [ef510682af3dbe2f9cdae7126a1461c94e010967] Merge tag 'f2fs-for-5.18'
+> of 
+> git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs git bisect
+> bad ef510682af3dbe2f9cdae7126a1461c94e010967 # good: 
+> [a04b1bf574e1f4875ea91f5c62ca051666443200] Merge tag 'for-
+> 5.18/parisc-1' 
+> of git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux
+> git 
+> bisect good a04b1bf574e1f4875ea91f5c62ca051666443200 # bad: 
+> [b080cee72ef355669cbc52ff55dc513d37433600] Merge tag 
+> 'for-5.18/io_uring-statx-2022-03-18' of git://git.kernel.dk/linux-
+> block 
+> git bisect bad b080cee72ef355669cbc52ff55dc513d37433600 # good: 
+> [02b82b02c34321dde10d003aafcd831a769b2a8a] Merge tag 'pm-5.18-rc1' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm git
+> bisect 
+> good 02b82b02c34321dde10d003aafcd831a769b2a8a # good: 
+> [0e03b8fd29363f2df44e2a7a176d486de550757a] crypto: xilinx - Turn SHA 
+> into a tristate and allow COMPILE_TEST git bisect good 
+> 0e03b8fd29363f2df44e2a7a176d486de550757a # good: 
+> [3e504d2026eb6c8762cd6040ae57db166516824a] random: check for signal
+> and 
+> try earlier when generating entropy git bisect good 
+> 3e504d2026eb6c8762cd6040ae57db166516824a # good: 
+> [5e929367468c8f97cd1ffb0417316cecfebef94b] io_uring: terminate manual
+> loop iterator loop correctly for non-vecs git bisect good 
+> 5e929367468c8f97cd1ffb0417316cecfebef94b # bad: 
+> [2d6fc1455f3f383499e013ebc4b19ff49c53c15e] Merge branches 
+> 'thermal-powerclamp', 'thermal-int340x' and 'thermal-docs' git bisect
+> bad 2d6fc1455f3f383499e013ebc4b19ff49c53c15e # good: 
+> [1d6aab36a26ba44b114d7f8a857c430c9e0c32c9] 
+> thermal/drivers/ti-soc-thermal: Remove unused function 
+> ti_thermal_get_temp() git bisect good 
+> 1d6aab36a26ba44b114d7f8a857c430c9e0c32c9 # bad: 
+> [c7ff29763989bd09c433f73fae3c1e1c15d9cda4] thermal: int340x: Update
+> OS 
+> policy capability handshake git bisect bad 
+> c7ff29763989bd09c433f73fae3c1e1c15d9cda4 # good: 
+> [098c874e20be2a4cee3021aa9b3485ed5e1f4d5b] thermal: Replace 
+> acpi_bus_get_device() git bisect good 
+> 098c874e20be2a4cee3021aa9b3485ed5e1f4d5b # good: 
+> [668f69a5f863b877bc3ae129efe9a80b6f055141] thermal: int340x: Increase
+> bitmap size git bisect good 668f69a5f863b877bc3ae129efe9a80b6f055141
+> # 
+> first bad commit: [c7ff29763989bd09c433f73fae3c1e1c15d9cda4] thermal:
+> int340x: Update OS policy capability handshake You have new mail in 
+> /var/mail/mtodorov mtodorov@domac:~/linux/kernel/linux_stable$ I was 
+> unable to locate the culprit in the patch myself. Thank you very much
+> for your attention. I am available for all further questions. Have a 
+> nice day :) Regards, |
+> 
 
-And the cmpxchg() is there presumably to make sure when that selected
-element slot_cache is removed, it really *is* that element that gets
-removed and not one which replaced it in the meantime.
 
-Now, ghes_estatus_cache_add() selects a slot, and either succeeds in
-replacing its contents with a pointer to a newly cached item, or it just
-gives up and frees the new item again, without attempting to select
-another slot even if one might be available.
+--=-gQpjfCtEWz61D1kobzBy
+Content-Disposition: attachment; filename="free_on_fail.diff"
+Content-Type: text/x-patch; name="free_on_fail.diff"; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-Since only inserting new items is being done here, the race can only
-cause a failure if the selected slot was updated with another new item
-concurrently, which means that it is arbitrary which of those two items
-gets dropped.
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvdGhlcm1hbC9pbnRlbC9pbnQzNDB4X3RoZXJtYWwvaW50MzQw
+MF90aGVybWFsLmMgYi9kcml2ZXJzL3RoZXJtYWwvaW50ZWwvaW50MzQweF90aGVybWFsL2ludDM0
+MDBfdGhlcm1hbC5jCmluZGV4IGRiOGE2ZjYzNjU3ZC4uNjNkODMxM2I1Y2RkIDEwMDY0NAotLS0g
+YS9kcml2ZXJzL3RoZXJtYWwvaW50ZWwvaW50MzQweF90aGVybWFsL2ludDM0MDBfdGhlcm1hbC5j
+CisrKyBiL2RyaXZlcnMvdGhlcm1hbC9pbnRlbC9pbnQzNDB4X3RoZXJtYWwvaW50MzQwMF90aGVy
+bWFsLmMKQEAgLTE3OCw2ICsxNzgsNyBAQCBzdGF0aWMgaW50IGludDM0MDBfdGhlcm1hbF9ydW5f
+b3NjKGFjcGlfaGFuZGxlIGhhbmRsZSwgY2hhciAqdXVpZF9zdHIsIGludCAqZW5hYgogCWJ1ZltP
+U0NfUVVFUllfRFdPUkRdID0gMDsKIAlidWZbT1NDX1NVUFBPUlRfRFdPUkRdID0gKmVuYWJsZTsK
+IAorCWNvbnRleHQucmV0LnBvaW50ZXIgPSBOVUxMOwogCXN0YXR1cyA9IGFjcGlfcnVuX29zYyho
+YW5kbGUsICZjb250ZXh0KTsKIAlpZiAoQUNQSV9TVUNDRVNTKHN0YXR1cykpIHsKIAkJcmV0ID0g
+KigodTMyICopKGNvbnRleHQucmV0LnBvaW50ZXIgKyA0KSk7CkBAIC0xODUsOCArMTg2LDExIEBA
+IHN0YXRpYyBpbnQgaW50MzQwMF90aGVybWFsX3J1bl9vc2MoYWNwaV9oYW5kbGUgaGFuZGxlLCBj
+aGFyICp1dWlkX3N0ciwgaW50ICplbmFiCiAJCQlyZXN1bHQgPSAtRVBFUk07CiAKIAkJa2ZyZWUo
+Y29udGV4dC5yZXQucG9pbnRlcik7Ci0JfSBlbHNlCisJfSBlbHNlIHsKKwkJaWYgKGNvbnRleHQu
+cmV0LnBvaW50ZXIpCisJCQlrZnJlZShjb250ZXh0LnJldC5wb2ludGVyKTsKIAkJcmVzdWx0ID0g
+LUVQRVJNOworCX0KIAogCXJldHVybiByZXN1bHQ7CiB9Cg==
 
-And "dropped" here means, the item doesn't get added to the cache so
-the next time it is seen, it'll get reported again and an insertion
-attempt will be done again. Eventually, it'll get inserted and all those
-times when the insertion fails, the item will get reported although the
-cache is supposed to prevent that and "ratelimit" those repeated error
-records. Not a big deal in any case.
 
-This means the cmpxchg() and the special case are not necessary.
-Therefore, just drop the existing item unconditionally.
-
-Move the xchg_release() and call_rcu() out of rcu_read_lock/unlock
-section since there is no actually dereferencing the pointer at all.
-
-  [ bp:
-    - Flesh out and summarize what was discussed on the thread now
-      that that cache contraption is understood;
-    - Touch up code style. ]
-
-Co-developed-by: Jia He <justin.he@arm.com>
-Signed-off-by: Jia He <justin.he@arm.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221010023559.69655-7-justin.he@arm.com
----
- drivers/acpi/apei/ghes.c | 60 ++++++++++++++++++++++------------------
- 1 file changed, 33 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 249cd01cb920..6164bf737ee6 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -154,7 +154,7 @@ struct ghes_vendor_record_entry {
- static struct gen_pool *ghes_estatus_pool;
- static unsigned long ghes_estatus_pool_size_request;
- 
--static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
-+static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
- static atomic_t ghes_estatus_cache_alloced;
- 
- static int ghes_panic_timeout __read_mostly = 30;
-@@ -789,48 +789,42 @@ static struct ghes_estatus_cache *ghes_estatus_cache_alloc(
- 	return cache;
- }
- 
--static void ghes_estatus_cache_free(struct ghes_estatus_cache *cache)
-+static void ghes_estatus_cache_rcu_free(struct rcu_head *head)
- {
-+	struct ghes_estatus_cache *cache;
- 	u32 len;
- 
-+	cache = container_of(head, struct ghes_estatus_cache, rcu);
- 	len = cper_estatus_len(GHES_ESTATUS_FROM_CACHE(cache));
- 	len = GHES_ESTATUS_CACHE_LEN(len);
- 	gen_pool_free(ghes_estatus_pool, (unsigned long)cache, len);
- 	atomic_dec(&ghes_estatus_cache_alloced);
- }
- 
--static void ghes_estatus_cache_rcu_free(struct rcu_head *head)
--{
--	struct ghes_estatus_cache *cache;
--
--	cache = container_of(head, struct ghes_estatus_cache, rcu);
--	ghes_estatus_cache_free(cache);
--}
--
--static void ghes_estatus_cache_add(
--	struct acpi_hest_generic *generic,
--	struct acpi_hest_generic_status *estatus)
-+static void
-+ghes_estatus_cache_add(struct acpi_hest_generic *generic,
-+		       struct acpi_hest_generic_status *estatus)
- {
--	int i, slot = -1, count;
- 	unsigned long long now, duration, period, max_period = 0;
--	struct ghes_estatus_cache *cache, *slot_cache = NULL, *new_cache;
-+	struct ghes_estatus_cache *cache, *new_cache;
-+	struct ghes_estatus_cache __rcu *victim;
-+	int i, slot = -1, count;
- 
- 	new_cache = ghes_estatus_cache_alloc(generic, estatus);
--	if (new_cache == NULL)
-+	if (!new_cache)
- 		return;
-+
- 	rcu_read_lock();
- 	now = sched_clock();
- 	for (i = 0; i < GHES_ESTATUS_CACHES_SIZE; i++) {
- 		cache = rcu_dereference(ghes_estatus_caches[i]);
- 		if (cache == NULL) {
- 			slot = i;
--			slot_cache = NULL;
- 			break;
- 		}
- 		duration = now - cache->time_in;
- 		if (duration >= GHES_ESTATUS_IN_CACHE_MAX_NSEC) {
- 			slot = i;
--			slot_cache = cache;
- 			break;
- 		}
- 		count = atomic_read(&cache->count);
-@@ -839,18 +833,30 @@ static void ghes_estatus_cache_add(
- 		if (period > max_period) {
- 			max_period = period;
- 			slot = i;
--			slot_cache = cache;
- 		}
- 	}
--	/* new_cache must be put into array after its contents are written */
--	smp_wmb();
--	if (slot != -1 && cmpxchg(ghes_estatus_caches + slot,
--				  slot_cache, new_cache) == slot_cache) {
--		if (slot_cache)
--			call_rcu(&slot_cache->rcu, ghes_estatus_cache_rcu_free);
--	} else
--		ghes_estatus_cache_free(new_cache);
- 	rcu_read_unlock();
-+
-+	if (slot != -1) {
-+		/*
-+		 * Use release semantics to ensure that ghes_estatus_cached()
-+		 * running on another CPU will see the updated cache fields if
-+		 * it can see the new value of the pointer.
-+		 */
-+		victim = xchg_release(&ghes_estatus_caches[slot],
-+				      RCU_INITIALIZER(new_cache));
-+
-+		/*
-+		 * At this point, victim may point to a cached item different
-+		 * from the one based on which we selected the slot. Instead of
-+		 * going to the loop again to pick another slot, let's just
-+		 * drop the other item anyway: this may cause a false cache
-+		 * miss later on, but that won't cause any problems.
-+		 */
-+		if (victim)
-+			call_rcu(&unrcu_pointer(victim)->rcu,
-+				 ghes_estatus_cache_rcu_free);
-+	}
- }
- 
- static void __ghes_panic(struct ghes *ghes,
--- 
-2.35.1
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+--=-gQpjfCtEWz61D1kobzBy--
