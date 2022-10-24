@@ -2,110 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 552CF60BF1F
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 01:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF10860C052
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 03:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229890AbiJXX6V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Oct 2022 19:58:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55852 "EHLO
+        id S231126AbiJYBC7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Oct 2022 21:02:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231146AbiJXX6C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 19:58:02 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF6D347B57;
-        Mon, 24 Oct 2022 15:14:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666649690; x=1698185690;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IpovU0pr5GqNyG1RQY1BOg6p1QwyjDdZAzVeYeoqpcQ=;
-  b=SdBlbZeQKdECKVnMMqoOrJdEMoKXO0cf3IXrb6FZgu/ztduI2hD8kiXD
-   p3MCr9gJTe2FsaiKoE+NYpc7b+VK+OdnUVyoHnmEYuJ9yw6h2/U897t1n
-   IpnhClCcrf/SHY6/jlnH5MoWJXLdupuZuVKm+ZWz+JX6AUgkMX1ziz8Dr
-   8c0l98S0X5jFr8wlFh86v5yVjaiMeG/7t1/dRMGXRVWTrwJMU/q1xe9ag
-   deDA6JEA9RFv4gXC70RNwzvob9IUgjQaenB9nJ0oilQqD9KsrwdHsHNQO
-   BU/98oveVyMRxpeohG+Miet2hBrGtjC6AOaL1sO18du+JWfAOJiKQFLSj
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="308627361"
-X-IronPort-AV: E=Sophos;i="5.95,210,1661842800"; 
-   d="scan'208";a="308627361"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 15:14:39 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="694715326"
-X-IronPort-AV: E=Sophos;i="5.95,210,1661842800"; 
-   d="scan'208";a="694715326"
-Received: from hossain3-mobl.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.209.39.87])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 15:14:37 -0700
-Message-ID: <8bbd9bc65622aafd36433dbf0cf81338fde3007a.camel@linux.intel.com>
-Subject: Re: [PATCH 0/2] cpufreq: intel_pstate: Make HWP calibration work on
- all hybrid platforms
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Date:   Mon, 24 Oct 2022 15:14:36 -0700
-In-Reply-To: <2258064.ElGaqSPkdT@kreacher>
-References: <2258064.ElGaqSPkdT@kreacher>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        with ESMTP id S231144AbiJYBC3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 21:02:29 -0400
+X-Greylist: delayed 1503 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 24 Oct 2022 16:58:37 PDT
+Received: from server.atrad.com.au (server.atrad.com.au [150.101.241.2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C59917252B;
+        Mon, 24 Oct 2022 16:58:31 -0700 (PDT)
+Received: from marvin.atrad.com.au (marvin.atrad.com.au [192.168.0.2])
+        by server.atrad.com.au (8.17.1/8.17.1) with ESMTPS id 29OMOeVe015083
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+        Tue, 25 Oct 2022 08:54:42 +1030
+Date:   Tue, 25 Oct 2022 08:54:40 +1030
+From:   Jonathan Woithe <jwoithe@just42.net>
+To:     Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        "Lee, Chun-Yi" <jlee@suse.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Corentin Chary <corentin.chary@gmail.com>,
+        Cezary Jackiewicz <cezary.jackiewicz@gmail.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Ike Panhc <ike.pan@canonical.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Kenneth Chan <kenneth.t.chan@gmail.com>,
+        Mattia Dongili <malattia@linux.it>,
+        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+        Azael Avalos <coproscefalo@gmail.com>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Robert Moore <robert.moore@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net,
+        ibm-acpi-devel@lists.sourceforge.net, linux-fbdev@vger.kernel.org,
+        devel@acpica.org
+Subject: Re: [PATCH 09/22] platform/x86: fujitsu-laptop: Use
+ acpi_video_get_backlight_types()
+Message-ID: <Y1cQqG2eiISdKv0S@marvin.atrad.com.au>
+References: <20221024113513.5205-1-akihiko.odaki@daynix.com>
+ <20221024113513.5205-10-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221024113513.5205-10-akihiko.odaki@daynix.com>
+X-MIMEDefang-action: accept
+X-Scanned-By: MIMEDefang 2.86 on 192.168.0.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2022-10-24 at 21:18 +0200, Rafael J. Wysocki wrote:
-> Hi All,
-> 
-> The HWP calibration in intel_pstate is needed to map HWP performance
-> levels to
-> frequencies, which are used in the cpufreq sysfs interface, in a
-> reliable way.
-> On all non-hybrid "core" platforms it is sufficient to multiply the
-> HWP
-> performance levels by 100000 to obtain the corresponding frequencies,
-> but on
-> hybrid ones there is a difference between P-cores and E-cores.
-> 
-> Previous attempts to make this work were based on using CPPC (and in
-> particular
-> the nominal performance values provided by _CPC), but it turns out
-> that the
-> CPPC information is not sufficiently reliable for this purpose and
-> the only
-> way to do it is to use a hard-coded scaling factors for P-cores and
-> for E-cores
-> (which fortunately is the same as in the non-hybrid case). 
-> Fortunately, the
-> same scaling factor for P-cores works on all of the hybrid platforms
-> to date.
-> 
-> The first patch in the series ensures that all of the CPUs will use
-> correct
-> information from MSRs by avoiding the situations in which an MSR
-> values read
-> on one CPU will be used for performance scaling of another CPU.
-> 
-> The second one implements the approach outlined above.
-> 
-> Please see the changelogs for details.
+On Mon, Oct 24, 2022 at 08:35:00PM +0900, Akihiko Odaki wrote:
+> acpi_video_get_backlight_type() is now deprecated.
 
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+The practical impact of this patch series on fujitsu-laptop is obviously
+very minor assuming the new acpi_video_get_backlight_types() function
+functions as advertised.  Accordingly, as maintainer of fujitsu-laptop I
+will defer to the opinions of others who maintain the lower level
+infrastructure which is more substantially affected by the bulk of the
+changes in this series.
 
+I note that Hans has naked the series and I'm happy to go along with that.
 
-> 
-> Thanks!
-> 
-> 
-> 
+Regards
+  jonathan
 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  drivers/platform/x86/fujitsu-laptop.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/fujitsu-laptop.c b/drivers/platform/x86/fujitsu-laptop.c
+> index b543d117b12c..e820de39cb68 100644
+> --- a/drivers/platform/x86/fujitsu-laptop.c
+> +++ b/drivers/platform/x86/fujitsu-laptop.c
+> @@ -387,7 +387,7 @@ static int acpi_fujitsu_bl_add(struct acpi_device *device)
+>  	struct fujitsu_bl *priv;
+>  	int ret;
+>  
+> -	if (acpi_video_get_backlight_type() != acpi_backlight_vendor)
+> +	if (!(acpi_video_get_backlight_types() & ACPI_BACKLIGHT_VENDOR))
+>  		return -ENODEV;
+>  
+>  	priv = devm_kzalloc(&device->dev, sizeof(*priv), GFP_KERNEL);
+> @@ -819,7 +819,7 @@ static int acpi_fujitsu_laptop_add(struct acpi_device *device)
+>  
+>  	/* Sync backlight power status */
+>  	if (fujitsu_bl && fujitsu_bl->bl_device &&
+> -	    acpi_video_get_backlight_type() == acpi_backlight_vendor) {
+> +	    (acpi_video_get_backlight_types() & ACPI_BACKLIGHT_VENDOR)) {
+>  		if (call_fext_func(fext, FUNC_BACKLIGHT, 0x2,
+>  				   BACKLIGHT_PARAM_POWER, 0x0) == BACKLIGHT_OFF)
+>  			fujitsu_bl->bl_device->props.power = FB_BLANK_POWERDOWN;
+> -- 
+> 2.37.3
