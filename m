@@ -2,107 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D9460CCEA
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 15:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE98160CE78
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 16:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232704AbiJYNFI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Oct 2022 09:05:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38158 "EHLO
+        id S233037AbiJYOKi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Oct 2022 10:10:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232730AbiJYNEs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 09:04:48 -0400
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1594AEC1F5;
-        Tue, 25 Oct 2022 06:04:01 -0700 (PDT)
-Received: by mail-qk1-f176.google.com with SMTP id z30so7908709qkz.13;
-        Tue, 25 Oct 2022 06:04:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8hTvjb0tcZh53KAmGJm9tIusRTTvIDlg3I7uw0cpzIY=;
-        b=c1cvhCUvwomPymwDcMD7gZFqe0UXxocTDwjmZhsJ8HTSFu25IR28+KgGLX1y+GMF1Y
-         oEvIj9/BpAR5s6/ECbgfn3lWPrxvey+cYgWFG+CgEwvphb+CGy6Pf5gnNrUzXqq5GQJx
-         1amfgG4SJpaLWrLFgctPcE/JqZvI88UzEjAJGoDjCYAYKeOvdsHbweR9TKCP+NzoRPOW
-         2rgQ7F0nCmyG9OhhUrnjtS8eRoq+M40Jfu5F9I2/LDUiwoGlD/iV9DOPTlgzGluSYyFY
-         ZJDapUoOaY2mzzlZGOpggv5u9q+EC0ifQI6mcc20cT98CTrHAqmQS4O76B0yb0MYwycD
-         11mw==
-X-Gm-Message-State: ACrzQf3kSYieTKs9wSiftT2yy2KfBKRvGrw4CVieuCW6mv3Mzkb6mB2i
-        0IbLvW2HkkGXrGA4uIJ5ZijvuqyF/Bkp9/VsPOC2ihIo
-X-Google-Smtp-Source: AMsMyM73afkLbc80YdAd3R70hpqRQwlAa+WHnXnKxEr49aecEbUtC44cg79MM3bNaOl/Z3KrZfPKkbcwekYEk7rHXuM=
-X-Received: by 2002:a05:620a:4547:b0:6ee:dc16:d67a with SMTP id
- u7-20020a05620a454700b006eedc16d67amr26999081qkp.23.1666703040184; Tue, 25
- Oct 2022 06:04:00 -0700 (PDT)
+        with ESMTP id S231663AbiJYOKM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 10:10:12 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21CBBDF6B;
+        Tue, 25 Oct 2022 07:08:34 -0700 (PDT)
+Received: from zn.tnic (p200300ea9733e753329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e753:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7C3C11EC06BD;
+        Tue, 25 Oct 2022 16:08:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1666706913;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=Jc8a/OSsnYlaB3S1Nvjq3uClUaYYpKLD90hg9EtVTPg=;
+        b=dNsHnIjdnHhC8+xUB97zasgFuOmSYMWY39W1wTEtyQctFCxqF7QDUUKixfu/4CcfLNMdSq
+        pvCsskZxRpiBYEWK3OCLR4Cez0qzINVFnqBRP9REuCyAM8VPtJeHpbX8+Cd17qdC6vELCO
+        BERkzd/7dBx7uKASQkGyGGay3hVKIHs=
+Date:   Tue, 25 Oct 2022 16:08:28 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Jia He <justin.he@arm.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Jan Luebbe <jlu@pengutronix.de>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Kani Toshi <toshi.kani@hpe.com>,
+        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
+        nd@arm.com, Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v10 0/7] Make ghes_edac a proper module
+Message-ID: <Y1ft3KxOGXd7I6F9@zn.tnic>
+References: <20221018082214.569504-1-justin.he@arm.com>
 MIME-Version: 1.0
-References: <2258064.ElGaqSPkdT@kreacher> <8bbd9bc65622aafd36433dbf0cf81338fde3007a.camel@linux.intel.com>
-In-Reply-To: <8bbd9bc65622aafd36433dbf0cf81338fde3007a.camel@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 25 Oct 2022 15:03:49 +0200
-Message-ID: <CAJZ5v0gMhzWiBm5H8V6eHfsCyJ0tyEaCfYJo0TvCeug6_Ek+DA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] cpufreq: intel_pstate: Make HWP calibration work on
- all hybrid platforms
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221018082214.569504-1-justin.he@arm.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 25, 2022 at 1:58 AM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
-> On Mon, 2022-10-24 at 21:18 +0200, Rafael J. Wysocki wrote:
-> > Hi All,
-> >
-> > The HWP calibration in intel_pstate is needed to map HWP performance
-> > levels to
-> > frequencies, which are used in the cpufreq sysfs interface, in a
-> > reliable way.
-> > On all non-hybrid "core" platforms it is sufficient to multiply the
-> > HWP
-> > performance levels by 100000 to obtain the corresponding frequencies,
-> > but on
-> > hybrid ones there is a difference between P-cores and E-cores.
-> >
-> > Previous attempts to make this work were based on using CPPC (and in
-> > particular
-> > the nominal performance values provided by _CPC), but it turns out
-> > that the
-> > CPPC information is not sufficiently reliable for this purpose and
-> > the only
-> > way to do it is to use a hard-coded scaling factors for P-cores and
-> > for E-cores
-> > (which fortunately is the same as in the non-hybrid case).
-> > Fortunately, the
-> > same scaling factor for P-cores works on all of the hybrid platforms
-> > to date.
-> >
-> > The first patch in the series ensures that all of the CPUs will use
-> > correct
-> > information from MSRs by avoiding the situations in which an MSR
-> > values read
-> > on one CPU will be used for performance scaling of another CPU.
-> >
-> > The second one implements the approach outlined above.
-> >
-> > Please see the changelogs for details.
->
-> Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+On Tue, Oct 18, 2022 at 08:22:07AM +0000, Jia He wrote:
+> Commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in
+> apci_init()") introduced a bug that ghes_edac_register() would be invoked
+> before edac_init(). Because at that time, the bus "edac" hasn't been even
+> registered, this created sysfs /devices/mc0 instead of
+> /sys/devices/system/edac/mc/mc0 on an Ampere eMag server.
+> 
+> The solution is to make ghes_edac a proper module.
+> 
+> Changelog:
+> v10:
 
-Thank you!
+All queued, thanks for the effort.
 
-As discussed offline, I'm going to fast-track this series as urgent
-fixes to cover systems in the field that are likely to have problems
-related to it.
+It'll appear in Linux next soon.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
