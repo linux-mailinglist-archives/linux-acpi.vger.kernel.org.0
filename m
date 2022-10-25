@@ -2,206 +2,336 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0013860D6D7
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Oct 2022 00:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 180F360D7DC
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Oct 2022 01:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232140AbiJYWLR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Oct 2022 18:11:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45166 "EHLO
+        id S231449AbiJYX1d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Oct 2022 19:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232579AbiJYWKy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 18:10:54 -0400
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2045.outbound.protection.outlook.com [40.107.96.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87072993A9;
-        Tue, 25 Oct 2022 15:10:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h3eB9VQirvGVfogWUrRayIAGuyekFb7dVsdWFeNtfn1pQeHmUeJneScLeqTEQKdZ+e7vFfalVENpjy+Deyw6zlZZoO64PBOM+0FlnV8tqPjQHpKHfhpW/26m9RRRoiKG/ceoxebBrK9Bib8r5h9RulfayceQlpn3l/0LmqmRNNN0MbfjoAyqGc/mshtXnpspRa2MGRqW7jMgyfeiSzd5qSfQeIR387EHXJXbzDftUPS96ywpCI8mjP0shrrSVPf0+kTegB8XCNuySwAGuVjIhNjOYm2kXPLK6Gj6ENXmizUCpcgvw2u9PTUhstuQs580KljW2rk1X3qH3fnkpqVvhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3jiRo/hM9NqoJag8d2jT/x/LvS3lQdwskCt8tlystQk=;
- b=d9kTONXjU7wpaFbXlXg9CbIaxJLMkOtKdrg3WqHWn/RoY9loOXXr5QNSrh/1NWN5fAc1QRGFYCEUZIdPs/0Q98RLb+GzbbR+IbJZdipBRUHSEYpdEmgCYg8pkuY52MD/XxP0/2Mi3/1q0phtYUGJ90rlRevLjvu4x037YDJ10NCWBcWljaa8JwO6IHFm4QEh010i6CrQQNZ4VgTzqvrhMSq0AvOqbGgD/Df5tT6mygIyDKkrKji1OEGUK3E5m+M8B0/ir5IHzpBLTmEGoaQXetOIHlNy1me+PhyiuJQIgvainS25LNI/agT/Nv6pPJXVAl/4Uxqg+0uu2aRWEMoVxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3jiRo/hM9NqoJag8d2jT/x/LvS3lQdwskCt8tlystQk=;
- b=BSe6kI86qw7+9MUGf5kRuBmh9ZFKJoVu/8kBlZSreuXfdSsWh++HSs+MuXG+rF9s7GB5Mun99O1mTHLNrVncBVBzwpicGJ2bPfiG/4XNMGxJVFUsgEJtmPDgWk3L81ug7NPuHOpaO8OXb6ejWb8QqqHLGOJI9SlyzPCsvnDcPz0=
-Received: from BN9PR03CA0127.namprd03.prod.outlook.com (2603:10b6:408:fe::12)
- by MN2PR12MB4440.namprd12.prod.outlook.com (2603:10b6:208:26e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.21; Tue, 25 Oct
- 2022 22:10:48 +0000
-Received: from BN8NAM11FT010.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:fe:cafe::65) by BN9PR03CA0127.outlook.office365.com
- (2603:10b6:408:fe::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.27 via Frontend
- Transport; Tue, 25 Oct 2022 22:10:48 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT010.mail.protection.outlook.com (10.13.177.53) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5746.16 via Frontend Transport; Tue, 25 Oct 2022 22:10:48 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 25 Oct
- 2022 17:10:46 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Len Brown" <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
-CC:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mehta Sanju <Sanju.Mehta@amd.com>,
-        Lukas Wunner <lukas@wunner.de>, <linux-acpi@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3] PCI/ACPI: PCI/ACPI: Validate devices with power resources support D3
-Date:   Tue, 25 Oct 2022 17:10:54 -0500
-Message-ID: <20221025221054.12377-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229949AbiJYX1c (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 19:27:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C1D7CF84D
+        for <linux-acpi@vger.kernel.org>; Tue, 25 Oct 2022 16:27:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1666740450;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=puUdXLz/uC3vdYW/XXAB/H3hdF0sICpu5CsGDgg4XaA=;
+        b=LYkbcRX7ycgCigfQu88svGVoFxkQJjDkgiCJPYMFLMJUxeWAKovPGx5oH9wJqIAFwl6WHG
+        FvqBlLW4XSBkz6cgLSUKB7eTQ2AcBO7vBRy6gbTlQUGRAQ1zNpXOAoxH9OJXppREKULB+2
+        o4HyocFKyC5DPzdXzZSb8Rmpb9jmWM8=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-620-e3wXtbjJNHKtnAW5bQWZdA-1; Tue, 25 Oct 2022 19:27:29 -0400
+X-MC-Unique: e3wXtbjJNHKtnAW5bQWZdA-1
+Received: by mail-ej1-f72.google.com with SMTP id gt15-20020a1709072d8f00b007aaac7973fbso2484189ejc.23
+        for <linux-acpi@vger.kernel.org>; Tue, 25 Oct 2022 16:27:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=puUdXLz/uC3vdYW/XXAB/H3hdF0sICpu5CsGDgg4XaA=;
+        b=hVVgZzOhBN8nx3ggUMWSpTvQdOeFCrt2JMUs6Sb0gAsCmgwVfltp160i6lkVNdVgSC
+         4pTVNira/FNGqidPB5aQx4tEY6pnlk9oonZp0BdiOJnLnATNDUklD5rYfT5lSHkPBZIK
+         iTj22wV4sdKlU9wnvROGsmXEfIh8tSF1hSSym1z+AOYcOddrbLfaGPOEb1mPDjZjA2FB
+         nC+53+cpUwD8TU9x+OA36o42hsDDJXccNWj+GfWgeiy2xoxcgnfmFopxikIXDAZB8fhc
+         TT5OJwpMU35h7yIWazVKzUpL68RZy5BKefpfIiC5F2qEsgUN/yrsWoOjFw3ztxwo6bO2
+         vU/g==
+X-Gm-Message-State: ACrzQf37B3pU6V/6kqPY+iT/SnLHcMSY41hKEnPXpYl4xrhPhAP/pPDQ
+        MEx8nkUq12g8erbOZDlMs7bZZgknT7J8EEOfGnP+oEEVrHX6JESCJejwOhFrn+A4cB3TauvwPKn
+        SuydCY/Hn69YwV4+CgH5MTQ==
+X-Received: by 2002:a17:907:9807:b0:797:a5ba:1327 with SMTP id ji7-20020a170907980700b00797a5ba1327mr27576649ejc.274.1666740448335;
+        Tue, 25 Oct 2022 16:27:28 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM5R43xfVrJF6JVMO4P0phNahk3Rz3L+gJ4dd3zlk/b6TqQ72C2s9IHCa/K6/cirQE5hUnjRqA==
+X-Received: by 2002:a17:907:9807:b0:797:a5ba:1327 with SMTP id ji7-20020a170907980700b00797a5ba1327mr27576630ejc.274.1666740448071;
+        Tue, 25 Oct 2022 16:27:28 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id d20-20020a17090648d400b007867dcd3f15sm2039899ejt.104.2022.10.25.16.27.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Oct 2022 16:27:26 -0700 (PDT)
+Message-ID: <cb5add36-c13c-ccd5-1b4b-71b45163a170@redhat.com>
+Date:   Wed, 26 Oct 2022 01:27:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT010:EE_|MN2PR12MB4440:EE_
-X-MS-Office365-Filtering-Correlation-Id: ffea848c-b1bd-4547-9d81-08dab6d5c5bd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FYdl+qjBpG8BaZ3MzheMnfFwVqk7nnLStwBauDZHD+FgNdem7ZvFYa20XkS5e/BaQSuHW7MM0mCSiBNeFl7gIATqGKrYNRh3CqE/n3feUzGvQu7K0braVdi6eRO4E3gN+siYrJptXFJOQySYQVzqryvkDSoWcN54pJ+PDZlhlD9xfFE1CZKVFje9Kr3mewtZOYwDNN0kNpOaveOP7YitC9D/UbJ4azXzLIsp2qKkNnxEuvsDG6IygGPUN8WsGej52sFhZZAXjvG6RdVO+YzFF4Y1gpspzOZA4Ev0wUo3YrgkFVml2cmp8eFqvS1KL2u0tiO8JqMQvl+DZI5sG48KTIzxlXA4QkKEjbvIruRdNTGCxxS5o3DFV15oN5/IEUEcVmyjTI6cpJx8aDncv6NCtxJSdj7txI/VNY1zk+juZPsmJQPcKHjCRsjA1tfZAYblHd2U27tyNELnsftm659eaL/oa4FaE5HluCwxSZ5aw2Xs71owB1hfGq9tUde4wTz/+23PzFbWAP4xAfhgkKJv1Y0SMhsdTpFk5meVqSCWqlqbLS/Muof6r9BBkbizzJZZO35oQGDTzvW8NgEIIMyDOv9bR3mkZiU9D9hJ2ihzXQHlr+mehsLevCcGbH4KDyPE7lS4zrG/y7hvbxhuNQcR/lPWAyNdaxbRu3/iXCTPv83klDCeOqlu6/f7e+lJvJAZPmTES8NxDNeO6OHwvzUR45nIoZY3J0qAy99h5BJCaAWpp31mWVMHSNACKT387ndCBgLzSnyp09CXvECKfn1hvg175vgMQrZT4L+U5KgGWuQubUqP0VIdsUJtECuz56uE
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(346002)(396003)(376002)(39860400002)(136003)(451199015)(46966006)(40470700004)(36840700001)(40480700001)(4326008)(8676002)(2616005)(26005)(16526019)(66574015)(186003)(82310400005)(7696005)(70206006)(36860700001)(41300700001)(40460700003)(47076005)(1076003)(70586007)(5660300002)(426003)(2906002)(8936002)(44832011)(336012)(478600001)(110136005)(19627235002)(316002)(6666004)(54906003)(15650500001)(83380400001)(86362001)(36756003)(356005)(82740400003)(81166007)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2022 22:10:48.7705
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ffea848c-b1bd-4547-9d81-08dab6d5c5bd
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT010.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4440
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
+Subject: Re: [PATCH v5 02/31] drm/i915: Don't register backlight when another
+ backlight should be used (v2)
+Content-Language: en-US, nl
+To:     Matthew Garrett <mjg59@srcf.ucam.org>
+Cc:     Dmitry Osipenko <digetx@gmail.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Pan@freedesktop.org, Xinhui <Xinhui.Pan@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>, linux-acpi@vger.kernel.org,
+        Jani Nikula <jani.nikula@intel.com>,
+        nouveau@lists.freedesktop.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        David Airlie <airlied@redhat.com>, Len Brown <lenb@kernel.org>
+References: <20220825143726.269890-1-hdegoede@redhat.com>
+ <20220825143726.269890-3-hdegoede@redhat.com>
+ <f914ceb3-94bd-743c-f8b6-0334086e731a@gmail.com>
+ <42a5f2c9-a1dc-8fc0-7334-fe6c390ecfbb@redhat.com>
+ <20221024203057.GA28675@srcf.ucam.org>
+ <8f53b8b6-ead2-22f5-16f7-65b31f7cc05c@redhat.com>
+ <20221025193248.GA21457@srcf.ucam.org>
+ <144cd47e-42dc-2b84-1a90-ea5e080e08a3@redhat.com>
+ <20221025204043.GA23306@srcf.ucam.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20221025204043.GA23306@srcf.ucam.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Firmware typically advertises that PCIe devices can support D3
-by a combination of the value returned by _S0W as well as the
-HotPlugSupportInD3 _DSD.
+Hi,
 
-`acpi_pci_bridge_d3` looks for this combination but also contains
-an assumption that if a device contains power resources it can support
-D3.  This was introduced from commit c6e331312ebf ("PCI/ACPI: Whitelist
-hotplug ports for D3 if power managed by ACPI").
+On 10/25/22 22:40, Matthew Garrett wrote:
+> On Tue, Oct 25, 2022 at 10:25:33PM +0200, Hans de Goede wrote:
+> 
+>> Having the native driver come and then go and be replaced
+>> with the vendor driver would also be quite inconvenient
+>> for these planned changes.
+> 
+> I understand that it would be inconvenient, but you've broken existing 
+> working setups.
 
-On some firmware configurations for "AMD Pink Sardine" D3 is not
-supported for wake in _S0W for the PCIe root port for tunneling.
-However the device will still be opted into runtime PM since
-`acpi_pci_bridge_d3` returns since the ACPI device contains power
-resources.
+I fully acknowledge that I have broken existing working setups
+and I definitely want to see this fixed before say 6.1-rc6!
 
-When the thunderbolt driver is loaded a device link between the USB4
-router and the PCIe root port for tunneling is created where the PCIe
-root port for tunneling is the consumer and the USB4 router is the
-supplier.  Here is a demonstration of this topology that occurs:
+I'm not convinced (at all) that any solutions which re-introduce
+acpi_video_get_backlight_type() return-s value changing
+half way the boot, with some backlight interface getting
+registered and then unregistered again later because
+it turns out to be the wrong one is a good fix here.
 
-├─ 0000:00:03.1
-|       | ACPI Path: \_SB_.PCI0.GP11 (Supports "0" in _S0W)
-|       | Device Links: supplier:pci:0000:c4:00.5
-|       └─ D0 (Runtime PM enabled)
-├─ 0000:00:04.1
-|       | ACPI Path: \_SB_.PCI0.GP12 (Supports "0" in _S0W)
-|       | Device Links: supplier:pci:0000:c4:00.6
-|       └─ D0 (Runtime PM enabled)
-├─ 0000:00:08.3
-|       | ACPI Path: \_SB_.PCI0.GP19
-|       ├─ D0 (Runtime PM disabled)
-|       ├─ 0000:c4:00.3
-|       |       | ACPI Path: \_SB_.PCI0.GP19.XHC3
-|       |       | Device Links: supplier:pci:0000:c4:00.5
-|       |       └─ D3cold (Runtime PM enabled)
-|       ├─ 0000:c4:00.4
-|       |       | ACPI Path: \_SB_.PCI0.GP19.XHC4
-|       |       | Device Links: supplier:pci:0000:c4:00.6
-|       |       └─ D3cold (Runtime PM enabled)
-|       ├─ 0000:c4:00.5
-|       |       | ACPI Path: \_SB_.PCI0.GP19.NHI0 (Supports "4" in _S0W)
-|       |       | Device Links: consumer:pci:0000:00:03.1 consumer:pci:0000:c4:00.3
-|       |       └─ D3cold (Runtime PM enabled)
-|       └─ 0000:c4:00.6
-|               | ACPI Path: \_SB_.PCI0.GP19.NHI1 (Supports "4" in _S0W)
-|               | Device Links: consumer:pci:0000:c4:00.4 consumer:pci:0000:00:04.1
-|               └─ D3cold (Runtime PM enabled)
+The whole goal of the refactor was to leave these sorts
+of shenanigans behind us.
 
-Allowing the PCIe root port for tunneling to go into runtime PM (even if
-it doesn't support D3) allows the USB4 router to also go into runtime PM.
-The PCIe root port for tunneling stays in D0 but is in runtime PM. Due to
-the device link the USB4 router transitions to D3cold when this happens.
+>> Can you perhaps explain a bit in what way your laptop
+>> is weird ?
+> 
+> It's a Chinese replacement motherboard for a Thinkpad X201, running my 
+> own port of Coreboot. Its DMI strings look like an actual Thinkpad in 
+> order to ensure that thinkpad_acpi can bind for hotkey suport, so it's 
+> hard to quirk. It'll actually be fixed by your proposed patch to fall 
+> back to native rather than vendor, but that patch will break any older 
+> machines that offer a vendor interface and don't have the native control 
+> hooked up (pretty sure at least the Thinkpad X40 falls into that 
+> category).
 
-The expectation is the USB4 router should have also remained in D0 since
-the PCIe root port for tunneling remained in D0.
+So looking at:
 
-Instead of making this assertion from the power resources check
-immediately, move the check to later on, which will have validated
-that the device supports wake from D3hot or D3cold.
+https://review.coreboot.org/plugins/gitiles/coreboot/+/refs/heads/master/src/mainboard/51nb/x210/acpi/graphics.asl
 
-This fix prevents the USB4 router going into D3 when the firmware says that
-the PCIe root port for tunneling can't handle it while still allowing
-system that don't have the HotplugSupportInD3 _DSD to also enter D3 if they
-have power resources that can wake from D3.
+this code should actually set the ACPI_VIDEO_BACKLIGHT flag:
+drivers/acpi/scan.c:
 
-Fixes: dff6139015dc6 ("PCI/ACPI: Allow D3 only if Root Port can signal and wake from D3")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+static acpi_status
+acpi_backlight_cap_match(acpi_handle handle, u32 level, void *context,
+                          void **return_value)
+{
+        long *cap = context;
+
+        if (acpi_has_method(handle, "_BCM") &&
+            acpi_has_method(handle, "_BCL")) {
+                acpi_handle_debug(handle, "Found generic backlight support\n");
+                *cap |= ACPI_VIDEO_BACKLIGHT;
+                /* We have backlight support, no need to scan further */
+                return AE_CTRL_TERMINATE;
+        }
+        return 0;
+}
+
+What does seem to be missing compared to a "normal" DSDT
+is a call to _OSI("Windows 2012") so I would expect this code
+in acpi_video_get_backlight_type():
+
+        /* On systems with ACPI video use either native or ACPI video. */
+        if (video_caps & ACPI_VIDEO_BACKLIGHT) {
+                /*
+                 * Windows 8 and newer no longer use the ACPI video interface,
+                 * so it often does not work. If the ACPI tables are written
+                 * for win8 and native brightness ctl is available, use that.
+                 *
+                 * The native check deliberately is inside the if acpi-video
+                 * block on older devices without acpi-video support native
+                 * is usually not the best choice.
+                 */
+                if (acpi_osi_is_win8() && native_available)
+                        return acpi_backlight_native;
+                else
+                        return acpi_backlight_video;
+        }
+
+To enter the "return acpi_backlight_video" path since acpi_osi_is_win8()
+will return false.
+
+And then the ACPI backlight methods from:
+https://review.coreboot.org/plugins/gitiles/coreboot/+/refs/heads/master/src/mainboard/51nb/x210/acpi/graphics.asl
+
+should get called when changing the backlight brightness,
+so assuming that those methods work then things should work fine.
+
+What does "ls /sys/class/backlight" output on the X210 / NB51 board
+with a 6.0 kernel? And what does it output with the 6.1-rc? kernels?
+
+IOW which backlight device / control method is being selected
+and which one do you want / which one(s) do actually work?
+
+I have been thinking about maybe doing something with 
+a dmi_get_bios_year() check (see below), but that will cause
+native to get prefered over vendor on old ThinkPads with
+coreboot (and thus a new enough year in DMI_BIOS_DATE), which
+will likely break backlight control there (if i915 offers
+backlight control on those that is).
+
+Also I wonder if it would be possible to set DMI_BIOS_VENDOR
+to "Coreboot" so that we can use that? Note that thinkpad_acpi
+does not care about the DMI_BIOS_VENDOR value, at least
+not on models which start their DMI_PRODUCT_VERSION with
+either "ThinkPad" or "Lenovo".
+
+###
+
+Looking more at this I notice that coreboot has a
+drivers_intel_gma_displays_ssdt_generate() which seems to
+at least always generate ACPI video bus ASL including
+backlight control bits.
+
+So the only reason why the current heurstics are not
+returning native is the acpi_osi_is_win8() check.
+
+So maybe that beeds to become:
+
+                if ((acpi_osi_is_win8() || dmi_get_bios_year() >= 2018) && native_available)
+                        return acpi_backlight_native;
+                else
+                        return acpi_backlight_video;
+
+Although I think that will result in the same behavior
+as my patch below, and then my patch below would be cleaner...
+
+###
+
+Also note that there actually already is a DMI quirk for the X201s,
+forcing ACPI video backlight control there. This is not strictly
+necessary, but when we first started using native by default on
+(back then) newer laptops some users of script everything yourself
+window-managers like i3 complained that they were relying on
+the in kernel handling of brightness key presses, which only works
+when using the acpi backlight control method...
+
+If that quirk matches your device then fixing
+the acpi_video_get_backlight_type() heuristics is not going to
+help. In that case we might decide to just drop the quirk though,
+since it was never really necessary in the first place; or change
+it to native, which may also help the X210 case?
+
+Regards,
+
+Hans
+
+
+
+From 31fa1f5e60b32a5e239023a2f0f5a6d457175e5a Mon Sep 17 00:00:00 2001
+From: Hans de Goede <hdegoede@redhat.com>
+Date: Tue, 25 Oct 2022 20:38:56 +0200
+Subject: [PATCH] ACPI: video: Fix acpi_video_get_backlight_type() on coreboot
+ laptops
+
+On laptops flashed with Coreboot the ACPI tables will often not have
+ACPI Video Bus backlight control, which was causing
+acpi_video_get_backlight_type() to return vendor even though
+GPU native backlight control is available and should be used.
+
+Rework acpi_video_get_backlight_type() so as to not rely on
+the presence of ACPI Video Bus backlight control to decide if
+native backlight control should be used.
+
+Note this may break things on old laptops where the vendor interface
+should actually be used, in case these have been flashed with Coreboot
+causing their BIOS-date year to match the check.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
-v2->v3:
- * Reword commit message
-v1->v2:
- * Just return value of acpi_pci_power_manageable (Rafael)
- * Remove extra word in commit message
----
- drivers/pci/pci-acpi.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/acpi/video_detect.c | 31 +++++++++++--------------------
+ 1 file changed, 11 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index a46fec776ad77..8c6aec50dd471 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -984,10 +984,6 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
- 	if (acpi_pci_disabled || !dev->is_hotplug_bridge)
- 		return false;
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 9cd8797d12bb..2fe0fd22a7ac 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -718,30 +718,21 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
+ 	if (apple_gmux_present())
+ 		return acpi_backlight_apple_gmux;
  
--	/* Assume D3 support if the bridge is power-manageable by ACPI. */
--	if (acpi_pci_power_manageable(dev))
--		return true;
+-	/* On systems with ACPI video use either native or ACPI video. */
+-	if (video_caps & ACPI_VIDEO_BACKLIGHT) {
+-		/*
+-		 * Windows 8 and newer no longer use the ACPI video interface,
+-		 * so it often does not work. If the ACPI tables are written
+-		 * for win8 and native brightness ctl is available, use that.
+-		 *
+-		 * The native check deliberately is inside the if acpi-video
+-		 * block on older devices without acpi-video support native
+-		 * is usually not the best choice.
+-		 */
+-		if (acpi_osi_is_win8() && native_available)
+-			return acpi_backlight_native;
+-		else
+-			return acpi_backlight_video;
+-	}
 -
- 	rpdev = pcie_find_root_port(dev);
- 	if (!rpdev)
- 		return false;
-@@ -1023,7 +1019,8 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
- 	    obj->integer.value == 1)
- 		return true;
+ 	/*
+-	 * Chromebooks that don't have backlight handle in ACPI table
+-	 * are supposed to use native backlight if it's available.
++	 * On older systems the backlight was typically connected to the EC
++	 * rather then to the GPU, so GPU native control may not work there.
++	 * Prefer native on devices designed for Windows 8+, Chromebooks and
++	 * laptops with a BIOS from 2018 or later (for misc. Coreboot models).
+ 	 */
+-	if (google_cros_ec_present() && native_available)
++	if (native_available && (acpi_osi_is_win8() ||
++				 google_cros_ec_present() ||
++				 dmi_get_bios_year() >= 2018))
+ 		return acpi_backlight_native;
  
--	return false;
-+	/* Assume D3 support if the bridge is power-manageable by ACPI. */
-+	return acpi_pci_power_manageable(dev);
++	/* Use the ACPI video interface if available */
++	if (video_caps & ACPI_VIDEO_BACKLIGHT)
++		return acpi_backlight_video;
++
+ 	/* No ACPI video (old hw), use vendor specific fw methods. */
+ 	return acpi_backlight_vendor;
  }
- 
- int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
 -- 
-2.34.1
+2.37.3
 
