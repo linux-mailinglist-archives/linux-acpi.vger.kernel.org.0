@@ -2,150 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6977560D00F
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 17:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D056F60D097
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 17:30:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232923AbiJYPMW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Oct 2022 11:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51734 "EHLO
+        id S233238AbiJYPaH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Oct 2022 11:30:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232946AbiJYPMU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 11:12:20 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10A9740BD9;
-        Tue, 25 Oct 2022 08:12:19 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id u2so8169642ljl.3;
-        Tue, 25 Oct 2022 08:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=i3VCaLUSkP0MHn9g1Bdf8SvWr5beC5vVRYzG/hEHOwM=;
-        b=KTXHatYhfbJ2a1sMmM8whproz8b9Ke5Q7Nnzl12OSpOZiXx2lNMEkbn0qSlv0WvCbd
-         7T0E/h+cX2gK+AVbtSMBG/I1CuRTDL1tMME+E5KkPVn+oghs3XSqj+RKpjkBSBxQZbMW
-         94mZIyqeZRnuHH/3uSzyyGuEVGrL77eXiScoBqnSO978mmuxRreEpOIEqnoFXqaCrYxy
-         g5VQLqd6SQoo6P48TPIWMstK2atLw0NASknSIC7DdswGQuZATKNYy7sdqSDg02C+/ZTB
-         KnEmC+dkqLARf7ALRt2jx96PYE9aqWBguXjkGmu19mONskqZDIfC3CcnmI+/PoDOtgdY
-         kMog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i3VCaLUSkP0MHn9g1Bdf8SvWr5beC5vVRYzG/hEHOwM=;
-        b=4g4Y4vgumlDH7SvqBzY64abRzb1C16FTjwCbDLxMe5Cu1o9qmQmfy8tGnVPnENzMRi
-         ogrXUve8ClgJ667S+m6nPTEZy71WbosCBIwZplsY9lQ3Owvp/b14DgdiIm3kBOL5/L1g
-         4iptTQ6rXTVCsyRLlHOlviuQKuaf2rC7s5QEIH5qp9pKlot/Sg7WC+TdzHGinu4Y13aa
-         SaC+IiUXup4G3eR+ateH61nX4BzkfrjGl0ZT0UXrjwXrY356Wr0m2b59eKtIXtpMlGw8
-         CPKM8MvTzv9JiM/hNrey276DdCDGf1LMzxct4xEu+yqi68X5BxvgJ0XNPG+gj7EY+8W5
-         ZpBg==
-X-Gm-Message-State: ACrzQf0ChNU/aeXdPwvb2zTdsHfQEjeLMEPdeq3yj5vLy+1o2xR8LBvf
-        NXQ5siF4r5EnFDbWH3g5pnA=
-X-Google-Smtp-Source: AMsMyM4jlDjlJdOcztU47g3WlSh0KAN2tsPbAB0uuR9Wdc6tOFQwxyKUmQJCshu5WmoQd2gwwryK1A==
-X-Received: by 2002:a05:651c:1241:b0:261:9313:9cb9 with SMTP id h1-20020a05651c124100b0026193139cb9mr14393521ljh.213.1666710737399;
-        Tue, 25 Oct 2022 08:12:17 -0700 (PDT)
-Received: from dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::2])
-        by smtp.gmail.com with ESMTPSA id r7-20020a2eb607000000b0026befa96249sm545053ljn.8.2022.10.25.08.12.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Oct 2022 08:12:16 -0700 (PDT)
-Date:   Tue, 25 Oct 2022 18:12:11 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
-Subject: [PATCH v2 2/2] i2c: i2c-smbus: fwnode_irq_get_byname() return value
- fix
-Message-ID: <fbd52f5f5253b382b8d7b3e8046134de29f965b8.1666710197.git.mazziesaccount@gmail.com>
-References: <cover.1666710197.git.mazziesaccount@gmail.com>
+        with ESMTP id S233105AbiJYPaG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 11:30:06 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDD92AC78;
+        Tue, 25 Oct 2022 08:30:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666711805; x=1698247805;
+  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=xn5JOS/FH+ZZXqzrPkPODHcTMuCEZjsZ59+va4WxJ7A=;
+  b=CvPslIeOsFexfPByRaSzOuU8ter0iUdOGyGigzfK/IAq3bXKJNNfwUf0
+   hcVkRfi64TzU4gjecrijIu/b2NfpGxfN9BqnaOf7pgFlgwgT9Zgkh6XdK
+   8fHfU8aMXVH6tGucy8D7uTfz2z7P6n+rT2AG1jCaOj8bYXDG68cQ/Dxkf
+   UdE23kwtTIQKkDEFB2PDqGEmBb0RobqYR4APHA9zXwcK7BKBLYcbMsHcq
+   49VqNwxGQ8C3CDfavm/tysVnSK4C7xMQXiYy9MVYT1a5eUivbcA4e56yD
+   uEHty3t+S1/JeHe4E8pPozr9Urbxv/p2YLKnwsjaz35nVv/qdA0g2l+Rx
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="371921673"
+X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
+   d="scan'208";a="371921673"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 08:28:41 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="694995410"
+X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
+   d="scan'208";a="694995410"
+Received: from wdunn-mobl1.amr.corp.intel.com ([10.212.194.192])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 08:28:39 -0700
+Message-ID: <836b1787426d5b1569f6d77007a4765ee17d5ea6.camel@linux.intel.com>
+Subject: Re: [PATCH] rtc: rtc-cmos: Fix wake alarm breakage
+From:   Todd Brandt <todd.e.brandt@linux.intel.com>
+Reply-To: todd.e.brandt@linux.intel.com
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Mario Limonciello <mario.limonciello@amd.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Zhang Rui <rui.zhang@intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        linux-rtc@vger.kernel.org
+Date:   Tue, 25 Oct 2022 08:28:39 -0700
+In-Reply-To: <166611112152.2353171.9661532286339710942.b4-ty@bootlin.com>
+References: <5887691.lOV4Wx5bFT@kreacher>
+         <166611112152.2353171.9661532286339710942.b4-ty@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="l4NgxrvU12sZ6SXP"
-Content-Disposition: inline
-In-Reply-To: <cover.1666710197.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, 2022-10-18 at 18:38 +0200, Alexandre Belloni wrote:
+> On Tue, 18 Oct 2022 18:09:31 +0200, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >=20
+> > Commit 4919d3eb2ec0 ("rtc: cmos: Fix event handler registration
+> > ordering issue") overlooked the fact that cmos_do_probe() depended
+> > on the preparations carried out by cmos_wake_setup() and the wake
+> > alarm stopped working after the ordering of them had been changed.
+> >=20
+> > [...]
+>=20
+> Applied, thanks!
 
---l4NgxrvU12sZ6SXP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I did testing yesterday on the 6.1.0-rc2 build and this patch hasn't
+made it into rc2. This is an extreme inconvenience to anyone testing
+low power modes as the rtc wakealarm doesn't function. I'm a little
+surprised more people haven't complained.
 
-The fwnode_irq_get_byname() was changed to not return 0 upon failure so
-return value check can be adjusted to reflect the change.
+Please get this in 6.1.0-rc3.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> [1/1] rtc: rtc-cmos: Fix wake alarm breakage
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 commit: 0782b66ed2fbb035dda76111df0954515e=
+417b24
+>=20
+> Best regards,
+>=20
 
----
-
-Depends on the mentioned return value change which is in patch 1/2. The
-return value change does also cause a functional change here. Eg. when
-IRQ mapping fails, the fwnode_irq_get_byname() no longer returns zero.
-This will cause also the probe here to return nonzero failure. I guess
-this is desired behaviour.
----
- drivers/i2c/i2c-smbus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index 07c92c8495a3..d0cc4b7903ed 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -130,7 +130,7 @@ static int smbalert_probe(struct i2c_client *ara,
- 	} else {
- 		irq =3D fwnode_irq_get_byname(dev_fwnode(adapter->dev.parent),
- 					    "smbus_alert");
--		if (irq <=3D 0)
-+		if (irq < 0)
- 			return irq;
- 	}
-=20
---=20
-2.37.3
-
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---l4NgxrvU12sZ6SXP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmNX/MsACgkQeFA3/03a
-ocXWjQf5Ad3uT3IcCKD9oMes2g8FBvhi9jtZG+MiQRlG7SXFk7Nb0B0otsRhUsCL
-J9pHh/ISir/zwemhIHJ+6eJIf4NlOKe5IddaPy9W7CCiEQGIGkeQignTT7AUDlLR
-apayaW6z5rE6le/DDU8VBXB6uNWNypGdWy053Ob6Q40VmN9VYpQU3IO+V4Gueo8y
-dLH7UsQCl8jy/CYMWbNdxp38HsTKH7gvu8nXygA8t4AjeMPgXcF1tVxcX1E3aC6p
-8rMcpMEJDiYy/bC4p4oXv4pV9iuBlPOO6i3okb2vKhKgCUOXDdXaqsb20hHyPdkX
-W6TXLsT7BXgbqdDbquaTm+jcvmLf3w==
-=TFxZ
------END PGP SIGNATURE-----
-
---l4NgxrvU12sZ6SXP--
