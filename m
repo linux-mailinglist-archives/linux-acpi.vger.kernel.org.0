@@ -2,127 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26B7660CAB3
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 13:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECEBB60CABA
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 13:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231921AbiJYLPu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Oct 2022 07:15:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39392 "EHLO
+        id S231414AbiJYLRS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Oct 2022 07:17:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231819AbiJYLPm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 07:15:42 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7050211E461;
-        Tue, 25 Oct 2022 04:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666696541; x=1698232541;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I/5u94u6MpEzVP8gikfALeB7J/YtsYkWMNaw/bQchGY=;
-  b=fcrXhQPlhrvYU1vQRG+hXusiPCZKALwy93mnCFWVj6rHvkkBYfeifkb1
-   +TXyyd8RJII7RMc0RoYxnVZPBcRxvTcchBo6JnV58iB6Fdf5eEIRKpVmM
-   MvCfV16Zoqi0AvnEFB4VXDTVCCllgaLTVlNUR8k8gxpBLZyZqNBIzC9ta
-   iikHIdb1QaQsmUAMC3tyAuQ9wzptkN6S8J134ENtukgYC85vz1FaSyezT
-   1o7/BHel1GnJd0T4cVu7HoxOt4p7hB6YsGj3IlJgjkXkQuJ6SKzN1xLcF
-   p5LA2f11yniOLeLj6escoB3/tZ6ous/hMFJQ2MUxXVg0KujvaRDe+Hi+y
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="306378060"
-X-IronPort-AV: E=Sophos;i="5.95,211,1661842800"; 
-   d="scan'208";a="306378060"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 04:15:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="960778489"
-X-IronPort-AV: E=Sophos;i="5.95,211,1661842800"; 
-   d="scan'208";a="960778489"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 25 Oct 2022 04:15:38 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1onHuC-001xlF-1b;
-        Tue, 25 Oct 2022 14:15:36 +0300
-Date:   Tue, 25 Oct 2022 14:15:36 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
-Subject: Re: [PATCH 1/2] drivers: fwnode: fix fwnode_irq_get_byname()
-Message-ID: <Y1fFWPmsC3Y5KeM6@smile.fi.intel.com>
-References: <cover.1666687086.git.mazziesaccount@gmail.com>
- <cc853a7e4b3533585e3641620bf4972663f22edc.1666687086.git.mazziesaccount@gmail.com>
- <Y1ep5zN+wifkP7v+@smile.fi.intel.com>
- <ec8cc1bd-3150-dc5d-8b8a-870f21b52433@fi.rohmeurope.com>
+        with ESMTP id S231301AbiJYLRS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 07:17:18 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA991BEA5;
+        Tue, 25 Oct 2022 04:17:16 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MxTmr3yf9zVj3L;
+        Tue, 25 Oct 2022 19:12:28 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 25 Oct 2022 19:17:14 +0800
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 25 Oct 2022 19:17:13 +0800
+From:   Xiongfeng Wang <wangxiongfeng2@huawei.com>
+To:     <robert.moore@intel.com>, <rafael.j.wysocki@intel.com>,
+        <lenb@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
+        <linux-kernel@vger.kernel.org>, <wangxiongfeng2@huawei.com>,
+        <liwei391@huawei.com>
+Subject: [PATCH] ACPICA: add missing macro ACPI_FUNCTION_TRACE() for ns_repair_HID()
+Date:   Tue, 25 Oct 2022 19:36:43 +0800
+Message-ID: <20221025113643.79743-1-wangxiongfeng2@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ec8cc1bd-3150-dc5d-8b8a-870f21b52433@fi.rohmeurope.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 25, 2022 at 10:00:07AM +0000, Vaittinen, Matti wrote:
-> On 10/25/22 12:18, Andy Shevchenko wrote:
-> > On Tue, Oct 25, 2022 at 11:50:59AM +0300, Matti Vaittinen wrote:
+The following commit add function tracing macros for the namespace repair
+mechanism.
 
-...
+  commit 0766efdf9a9d24eaefe260c787f49af225018b16
+  ACPICA: Add function trace macros to improve debugging
 
-> >> +	ret = fwnode_irq_get(fwnode, index);
-> > 
-> >> +
-> > 
-> > Redundant blank line and better to use traditional pattern: >
-> >> +	if (!ret)
-> >> +		return -EINVAL;
-> >> +
-> >> +	return ret;
-> > 
-> > 	if (ret)
-> > 		return ret;
-> > 
-> > 	/* We treat mapping errors as invalid case */
-> > 	return -EINVAL;
-> > 
-> >>   }
-> 
-> I like the added comment - but in this case I don't prefer the 
-> "traditional pattern" you suggest. We do check for a very special error 
-> case indicated by ret 0.
-> 
-> if (!ret)
-> 	return -EINVAL;
-> 
-> makes it obvious the zero is special error.
+But it missed the trace macro for the entry of ns_repair_HID(). Let's
+add it.
 
-I don't think so. It makes ! easily to went through the cracks. If you want an
-explicit, use ' == 0' and add a comment.
+Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+---
+ drivers/acpi/acpica/nsrepair2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> if (ret)
-> 	return ret;
-> 
-> the traditional pattern makes this look like traditional error return - 
-> which it is not. The comment you added is nice though. It could be just 
-> before the check for
-> 
-> if (!ret).
-
+diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
+index dd533c887e3a..957d7eb4861f 100644
+--- a/drivers/acpi/acpica/nsrepair2.c
++++ b/drivers/acpi/acpica/nsrepair2.c
+@@ -499,7 +499,7 @@ acpi_ns_repair_HID(struct acpi_evaluate_info *info,
+ 	char *source;
+ 	char *dest;
+ 
+-	ACPI_FUNCTION_NAME(ns_repair_HID);
++	ACPI_FUNCTION_TRACE(ns_repair_HID);
+ 
+ 	/* We only care about string _HID objects (not integers) */
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.20.1
 
