@@ -2,168 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D52BA60C072
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 03:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 078DF60C236
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 05:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230331AbiJYBHC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Oct 2022 21:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42838 "EHLO
+        id S231216AbiJYDXw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Oct 2022 23:23:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230440AbiJYBGY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 21:06:24 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2089.outbound.protection.outlook.com [40.107.243.89])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FAFF46876;
-        Mon, 24 Oct 2022 17:13:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WrpJtpauuZasbKYsjVjc52Y7Q8r44Epy+tL3QakJxKs1VEvb4HIEC2xeDA8ZmsDtgumqBmU75HnQ8XlWbbycYd12u7MDf1CCNHCwCH964tXvTJqxxV883aJsplvlsgFeTQaT7cboD3dD7mU84nTNL+dXrqv9fOHdt6EwC3oGrTQGVDyXGR7PtajuF8oK6V4O+wXWkDCkS5RnaZ+Z3OFFPgKkLvBRuvdA9pE8slQokmNNqaMJLGN9HQLquyZwo8M7c4lCAcQt6FCuUVX8AkRbc+4JaB+Mz5b7cl8kFCTgulgLSi0tMCgkhaM2KyFk0/jGzbbi5bgkC4CDHyyhkO/rZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=462CG1lQd8cFnR9KkbGfS9+y5dM0qh+K0NCFKfVTZmk=;
- b=fkLHZ62Na7tMYrG3a5biezDjMSBAegN3OLQcUlrhL5PJthVoy6vgDZNBdL6b4ArLrnaeIef2G2/gR3cnX+UqxngurZS3F44AC/3jBasLhq4TBHZEkS7ehNhsTi9UT0jwgyzAxaa8L+ZUa3JxNOqXBXGLQoBxSYtWi6fxTHGxGb88VDan3NAInFJMLOCnvog0KJqp0wlB9+wL4N8PFQSc6saiOf63EUE2xLjxS8N3UROUTehxvS/VpB23ARuw/k2bBKk8vReUOse1AyJVhVaZH2Kb+GdgCgWJSeF7xgA2b1R9MdTG+hpaHU6Y2SrMTC8r+z1xNkGr5sNPDiSLpFNVxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=462CG1lQd8cFnR9KkbGfS9+y5dM0qh+K0NCFKfVTZmk=;
- b=f2wPdnGK/L9BQw54gKgdmMtq3QZfnbS0JsMkLkr9I9nKdJK7+RUDlbRsZnUd1vi3QFZs1OWqm8n9fxyTpGwtTyMWvk8QwcSczK+TDhNKYeaq45Ue+eYNxd0VumpF2Rx8Ld7uZXRCz77OkCEuKi61p3N95utSP1pj+KfoyfB+JEI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by CY8PR12MB7244.namprd12.prod.outlook.com (2603:10b6:930:57::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.35; Tue, 25 Oct
- 2022 00:13:12 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::f8c0:db03:2d30:792c]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::f8c0:db03:2d30:792c%3]) with mapi id 15.20.5746.026; Tue, 25 Oct 2022
- 00:13:12 +0000
-Message-ID: <1f80828d-4c8c-f98f-24e9-68f5c886dd40@amd.com>
-Date:   Mon, 24 Oct 2022 19:13:10 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH] ACPI: x86: Add another system to quirk list for forcing
- StorageD3Enable
+        with ESMTP id S229909AbiJYDXv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 23:23:51 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C34348A16
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 20:23:49 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id j12so10132677plj.5
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 20:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=daynix-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f9FEmbC5xpjHJg/2O8DNlMMB4H4G84Faq1RNdC5/70Y=;
+        b=J6AoKAQCxSkBd/sowbwPCi6ub1mPxV0qlHWX0WF7X3NIlYQn4YHES82Srn6p4epgIr
+         I/r34Cbt1RAn8twGDRZkfGNfzOPw/CE/lQ3d8KKm/xk0O0byOMZgfEBxXin8xMsH6Ae4
+         OYdMDc09gEwKmklQ38eKDQ1EP/Ifp9975kI3vOWpMT2+B7APWMDg1HWdHh6RDm2IhmZp
+         nFlQWBQ5LXCjatGUOm0Nssz0irDhTOK5bRfoLWDBGVjr3x7Zn+3TjCCDg34vvNahoMXf
+         /GTBMcEoPm5pkxKRsBe/cZklokeE7OuhvhWmNxe9o2BV3Dg9u2aHkD+tP04uQVNOH6VR
+         XDtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f9FEmbC5xpjHJg/2O8DNlMMB4H4G84Faq1RNdC5/70Y=;
+        b=NarOQWyxlFdiqNArx9+2szYPCNgpFdh68tCVlvJozfmc67vhW+JbI6xYuF0tJawyCH
+         ZevMwvrPTFAEAnUh/dTfGB8VTEx9vSrMfXZtmdsBZI4G6qnyeIMhRVgsBCjMtxkfUXGH
+         W+lVl5gdX3F+YvhJKSZXtVJUb0QlcDrBV7ZKaykNPQZNy+X4X1IvIfLf8hXmweuCPgvf
+         rD5hW/DRR+oYpyQRJ6ys6rawza8ypWpmJthHIL/WB2Ko/E3yEUA/RPGHeMLZYNsOJjY1
+         45zJnel3E0ei0Wap2x+QOW6z81JwVaF0p3pnAmJ0fGciNTd4GSD5LoRF1Nl+0GoS1FAz
+         gkdQ==
+X-Gm-Message-State: ACrzQf069rAWSCzFFWNer3vUqQvKRXj06l5bLNonzXhLg+Um41qsvWzl
+        sxoP897UHiGXR6HiBgd1jvHung==
+X-Google-Smtp-Source: AMsMyM6T9pbgn5kWI4AmOtmghV7rd1u8oseHmlwr+2DnuT3VwNTxi88zyEHreGyjv+o07wkD42j/iQ==
+X-Received: by 2002:a17:90b:4a47:b0:212:f7ef:1bd6 with SMTP id lb7-20020a17090b4a4700b00212f7ef1bd6mr13717346pjb.79.1666668229127;
+        Mon, 24 Oct 2022 20:23:49 -0700 (PDT)
+Received: from ?IPV6:2400:4050:c360:8200:8ae8:3c4:c0da:7419? ([2400:4050:c360:8200:8ae8:3c4:c0da:7419])
+        by smtp.gmail.com with ESMTPSA id n16-20020a170903111000b001868d4600b8sm397270plh.158.2022.10.24.20.23.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Oct 2022 20:23:48 -0700 (PDT)
+Message-ID: <8ed65e3e-e0b9-05ae-b113-db9d649a1e5a@daynix.com>
+Date:   Tue, 25 Oct 2022 12:23:39 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH 00/22] Fallback to native backlight
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        "Lee, Chun-Yi" <jlee@suse.com>, Mark Gross <markgross@kernel.org>,
+        Corentin Chary <corentin.chary@gmail.com>,
+        Cezary Jackiewicz <cezary.jackiewicz@gmail.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Jonathan Woithe <jwoithe@just42.net>,
+        Ike Panhc <ike.pan@canonical.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Kenneth Chan <kenneth.t.chan@gmail.com>,
+        Mattia Dongili <malattia@linux.it>,
+        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+        Azael Avalos <coproscefalo@gmail.com>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Robert Moore <robert.moore@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net,
+        ibm-acpi-devel@lists.sourceforge.net, linux-fbdev@vger.kernel.org,
+        devel@acpica.org
+References: <20221024113513.5205-1-akihiko.odaki@daynix.com>
+ <746e5cc6-516f-8f69-9d4b-8fe237de8fd6@redhat.com>
+ <edec5950-cec8-b647-ccb1-ba48f9b3bbb0@daynix.com>
+ <60672af8-05d2-113c-12b9-d635608be0dd@redhat.com>
+ <ea69242c-0bc8-c7bb-9602-c7489bb69684@daynix.com>
+ <7373e258-f7cc-4416-9b1c-c8c9dab59ada@daynix.com>
+ <ae3497ed-b68d-c36a-6b6f-f7b9771d9238@redhat.com>
+ <78ad5d7b-4078-0b8e-f4aa-6c8113631359@daynix.com> <87o7u1drcz.fsf@intel.com>
 Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Dell.Client.Kernel@dell.com,
-        Julius Brockmann <mail@juliusbrockmann.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20221014121136.8677-1-mario.limonciello@amd.com>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <20221014121136.8677-1-mario.limonciello@amd.com>
+From:   Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <87o7u1drcz.fsf@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR19CA0065.namprd19.prod.outlook.com
- (2603:10b6:208:19b::42) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CY8PR12MB7244:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea907b55-72a6-49cb-e494-08dab61db44d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: In/65dCgj0Jj1tSnKY3zaaf9Dcr+SlH+i6qtxHdCAZHP2Efz2BDWe7zK7imLcyN39ZqM/bEifDp0t+EZQRAQVFefwmMx07HFDijGgCb9HiQEYnDgwJtbFOaMB2IX059NTNlXh4Bi1CAC5QsJ4JwjBQ9QEAlbznTA5pYFhHnwOMOfeYYtzHZt+molt1jJVfccVy6O2EUDAkn1YXW30vSe6FjP5uB4WF6J3AOPIojmGWq/HvBgb/mB83VsZY7ucRnHVM5LB/2YaVpoWF1O7NaUaYtccUquJytnf65VjoB0JhPJVf3jbnUwS2VxuyJ+4h3vvTYb+QmpxPUy589Jjd7AnqtoGkQLFAH/yG/BJDzQ1rXLvaaPbN0KwwaVZ2sn+E5bTCeLlJY/aVZi6tKnDMo4d0sm6AzmdWoROrmIcCOwT/8c92cH1tmhhQIspjqzizl6kwe7melVrVlS1QZEY/NKQ85hiLK+jFSdUjk20T5imC6OVvlvE7bA+EpNZcwPgt0/92PgKUMvO7mkdPtTPC6g1Nnixz6ldeFzeIj4nn9wQu1RJ/k8YCGME5BmGY5EJd/j2poVSsn5D2tUkCbI29cktbYuT1wU1JpJ2LcFp0A7Rri7+jUODjqN03vli36M4EgpRGib9lnEFjRUv6UoO6MUqkYMGzK/fWHwPFb5YAMwAYRitBuW1ixwg/br7KZn354cOlLft0oUEnPx31+9yVoaqVUaonsYNwE8REtjLJfempMxpJV39Gk8lMBPxZzadT+0ww/RJt9G3C9YBNIxuOFrH3mMw0PuV8aydU0t45LWqS3F3xOpHgkoCZ/BlPlzNtzdBSUDOdPBCV4vldjE8lHIkA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(136003)(366004)(346002)(39860400002)(376002)(451199015)(86362001)(53546011)(41300700001)(5660300002)(36756003)(6486002)(8936002)(66556008)(6506007)(6916009)(66946007)(54906003)(966005)(66476007)(4326008)(8676002)(316002)(2906002)(38100700002)(478600001)(31696002)(31686004)(6512007)(26005)(186003)(2616005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZWVxaDNKbFBCejZqc2FuOXpRUUM0bmxZQlRlN3d2NmJoQWtjUHVoWFh6NkpE?=
- =?utf-8?B?TXZ4Vk9rWGh6Vi85SDhKc2M0eXVRTmFEVDZUOGNsZit1bnlmVjRtc0Z4WXND?=
- =?utf-8?B?YTg3S3Fyc2pOMTErT09STUd0TzJiOXN1WWhkUFFSNzk3SGdJR0IwNjgyYTl0?=
- =?utf-8?B?Z3A3bTFPSkgzc05kMEFuOVJzRjY5bXV6TkRrS2h6ZERjUWw3U1pFTk92UDRZ?=
- =?utf-8?B?V2pwYjR0cEphT0xMckJYeHl4WkN3cHZRS0J0VFpjaFdGZjlFUzE2Q2hBWjZT?=
- =?utf-8?B?SEdxamZTMHNUd0xwaGRmdlBjdDlWZ3cyb09IR2s5Yld4TE1QSm9WblF4dFd0?=
- =?utf-8?B?Ynk2d0cvZS90Q2w5Zm1BWUlwN3g2UTBqNGFKVXFUNEN6dDJvV1ZiaUo3dnRv?=
- =?utf-8?B?V0IzWDFOZWFLeWxzaTUzSUFCdmhHN0NJUFpMYXRjZWltSHB5bGVXRWlLL2Vx?=
- =?utf-8?B?QXdFOHVzZlJDdXVYMFUxUUVlT0RjSTFnTUhNRC80eUdDOXYvSzBVa3BQMU42?=
- =?utf-8?B?aTcyNUpYcEY0N1AzcFBLZkV4YkxwM0VyS3VIeWxlV1AreWc0ZVdYVHQ1b3Rv?=
- =?utf-8?B?Wkh3d0o1SFNnK2hqdzhkMDVtN0ZqTUJERVZ3Q3ltQTBoc2I1VmdoWXFmQlMv?=
- =?utf-8?B?TVRNdWc2ekR3WnJubnJ0eXNHVVQ4Z1ZqUTJueVIzUFc5M1lLOFhsM3VSYjJI?=
- =?utf-8?B?em1oYlh1Z0s2TjB6SXpVWFk1My91WUZhSWhUcnJKSlhuL2t5aWw4bkhJWGZE?=
- =?utf-8?B?TCt0YmVtNW11aTR4Tm14d3ZrSU5HZ09pVTJIc2lCYzZ5WXVBcm5mUHRjWnJ2?=
- =?utf-8?B?ZE00U0pVVTNtNTdvLzBrWU1jQzBGN2Q2TURXYk5DbnhmbzkwanczY1N6K2kv?=
- =?utf-8?B?aStTMFc1ajM5RTNPREMyY0x3dkZqWUNON0cxK2JBSXRIaW1YZzVSbXRibURh?=
- =?utf-8?B?RXJMRUVDRTU5c2hDQjdBN0NtOWg0ekFIWnV4T1Q4MXNIZHdLSEt3b1phYVR5?=
- =?utf-8?B?bThZSmJuWkV1UzFVQlE0L2QwNmdGcFdiMkd3NlhiNWZlSzljbVMrbmYyVkx3?=
- =?utf-8?B?em9rc2cyR3M1NE1CRWhNcDdtWGpINHp1OFROd00ybW5NdXlaYzJWOHVCRXBy?=
- =?utf-8?B?MG1YZXZPclY2cGNlTk41bE50cnA1VjYyeUVtNzJsdWxoOEpYTUQ0V05vRWdt?=
- =?utf-8?B?UW1zc1BXNDYvZ0tpM21iOWp2Z3VLb3hNRWdtSllONitjd2xmWVl0dERTZk15?=
- =?utf-8?B?U2xMWHlsMkVOa3d4UEJXVXZvZGdtbEMzeGZzNWJDclZXRDZjdmw1dkN5Z3Mr?=
- =?utf-8?B?dDVvMUpWSzVnVWdJU05FTkV5Ym92VjNvVWFRSG1JMHdHTW5ISjloMXhQQWVS?=
- =?utf-8?B?YzZndWpsa1dCMTBXcy8ramNGVGxieTFhVlptakZSWGFJNy9XTzJRck1nNTcz?=
- =?utf-8?B?Q2NsL3Jxc1grajkwRXl3UXFZamRSUElINzdPazR2Z2gvend3cXo1VzFzS1M1?=
- =?utf-8?B?YWxTczQ1MzZHN2JDNXJYVXFncWx3dWZBUXdZQ2FIZWlXbFpLSndqWUUvTnNv?=
- =?utf-8?B?QXpqbktkS21wQkNQUDhTQlBWR2hOM3hUdE56MDVleU1XN2VodHh6em1rN2JQ?=
- =?utf-8?B?bmFGOHAyNFVYM3hrcmVUMmJMak9PYUszS1N1SitBcjUzbmpwNVAyempEMGJL?=
- =?utf-8?B?d2FHVTdtWHBBcVA0c1JBd2NTNmFoZHJBbFF6V3hrMVVxd0ZIQit4RGdHbW4r?=
- =?utf-8?B?eE5xOVhkdEFuSzd4NnBZNWhxQi83Y3AzYThjY1FVQVFTbzBvL2VGL2duTnZp?=
- =?utf-8?B?VERJY3RVaC9ibHNKbDZNaUZkdnlHajRtdUxyUmJlK1VNVTdZOVdrZmlybktm?=
- =?utf-8?B?a2E5N2gvS25VOFcyYytQdDZZYVhDaCtldzVRRU9WQ1RNamJMWXVienI4Mmdn?=
- =?utf-8?B?N2lCdEtqRG4wSkhmSkFGYXFvT3FtMEtPOW1rbWxROExzRGpkcnV6N3hSa0Vt?=
- =?utf-8?B?WEgzTTUwdWduMDNIQU40Q1ZIeTFkK2dnZzJETHV6VmlaOWtvMUdjdUEyMzI1?=
- =?utf-8?B?c3k5NHBiaG5iN3drdXU3YXBtalM3WHgvdTE5UXZXdUtQUVpmOEd6dzBJVG55?=
- =?utf-8?Q?rgSLL4k49MhLgl9eQk9bSN17S?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea907b55-72a6-49cb-e494-08dab61db44d
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2022 00:13:12.4781
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UnMOYJmtIfc4C76KdWakqTI2X9mAGWhFxWS9DDMOCghA1hR0B2k/+Tu1zjcAHHPfId4wUum/gkD2+8FAXUt4fA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7244
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/14/2022 07:11, Mario Limonciello wrote:
-> commit 018d6711c26e4 ("ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1
-> for StorageD3Enable") introduced a quirk to allow a system with ambiguous
-> use of _ADR 0 to force StorageD3Enable.
+On 2022/10/25 3:11, Jani Nikula wrote:
+> On Tue, 25 Oct 2022, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>> That aside, the first patch in this series can be applied without the
+>> later patches so you may have a look at it. It's fine if you don't merge
+>> it though since it does not fix really a pragmatic bug as its message says.
 > 
-> Julius Brockmann reports that Inspiron 16 5625 suffers that same symptoms.
-> Add this other system to the list as well.
+> I think it's problematic because it needlessly ties i915 backlight
+> operation to existence of backlight devices that may not be related to
+> Intel GPU at all. The direction should be multiple supported backlight
+> devices, across GPUs and connectors, but only one per display.
 > 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216440
-> Reported-and-tested-by: Julius Brockmann <mail@juliusbrockmann.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->   drivers/acpi/x86/utils.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+> BR,
+> Jani.
+> 
 > 
 
-Hi Rafael,
+Unfortunately it is the current situation (even without this patch), and 
+this patch is not meant to fix the particular issue.
 
-This got sent near the merge window a few weeks ago.  It's a trivial fix 
-so I just want to make sure it didn't get misplaced.
+This patch replaces the following expression:
+acpi_video_get_backlight_type() == acpi_backlight_native
 
-Thanks!
+As you can see, acpi_video_get_backlight_type() doesn't take a parameter 
+which represents the backlight currently being operated. The problem is 
+known and documented in "Brightness handling on devices with multiple 
+internal panels" section of Documentation/gpu/todo.rst.
 
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index f8a2cbdc0ce2b..d7d3f1669d4c0 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -219,6 +219,12 @@ static const struct dmi_system_id force_storage_d3_dmi[] = {
->   			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
->   		}
->   	},
-> +	{
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 16 5625"),
-> +		}
-> +	},
->   	{}
->   };
->   
+The exiting solution is based on the assumption that no device with i915 
+and multiple internal backlights.
 
+Regards,
+Akihiko Odaki
