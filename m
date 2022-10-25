@@ -2,146 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 078DF60C236
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 05:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3463E60C336
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 07:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231216AbiJYDXw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Oct 2022 23:23:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
+        id S230447AbiJYFYs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Oct 2022 01:24:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229909AbiJYDXv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Oct 2022 23:23:51 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C34348A16
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 20:23:49 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id j12so10132677plj.5
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Oct 2022 20:23:49 -0700 (PDT)
+        with ESMTP id S230341AbiJYFYm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 01:24:42 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BECBBE1D;
+        Mon, 24 Oct 2022 22:24:41 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id bn35so6692985ljb.5;
+        Mon, 24 Oct 2022 22:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=f9FEmbC5xpjHJg/2O8DNlMMB4H4G84Faq1RNdC5/70Y=;
-        b=J6AoKAQCxSkBd/sowbwPCi6ub1mPxV0qlHWX0WF7X3NIlYQn4YHES82Srn6p4epgIr
-         I/r34Cbt1RAn8twGDRZkfGNfzOPw/CE/lQ3d8KKm/xk0O0byOMZgfEBxXin8xMsH6Ae4
-         OYdMDc09gEwKmklQ38eKDQ1EP/Ifp9975kI3vOWpMT2+B7APWMDg1HWdHh6RDm2IhmZp
-         nFlQWBQ5LXCjatGUOm0Nssz0irDhTOK5bRfoLWDBGVjr3x7Zn+3TjCCDg34vvNahoMXf
-         /GTBMcEoPm5pkxKRsBe/cZklokeE7OuhvhWmNxe9o2BV3Dg9u2aHkD+tP04uQVNOH6VR
-         XDtw==
+        bh=TVytv0a4cjMk9lrwtG4w8hPvQBP8qabYQWD39/Mm8gU=;
+        b=buVpW2cCDje1OJjiB/F72+1QhTWqpAJHlcwOYdulAbgJHe/Df6qGapuhHuClK5l/vn
+         b4BRbEPDic480X2guACkeF6Nqxr5ISnEqtVlTmQkLihU5eoM0XiCiIEWmdNoargre79j
+         PzhGbcxQ0gOzSaBv0akKGH9UF3l9xyMoyBVS3Z57JHddqiZmJ7JIh0soWSUm0TuOBSkh
+         C6ispySx5h4rsBcwJFBom6zNOtFgOvkjD7aAqftAV/7s5SO5jCa8m8JjXemIxclekSvF
+         EKcWW8aZ56HAK6ckCAWBuXGnMoxogRTqsi1G6iH74jUyFpfsZ8zWmpPWRWTKiC6cS6Ph
+         aLVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f9FEmbC5xpjHJg/2O8DNlMMB4H4G84Faq1RNdC5/70Y=;
-        b=NarOQWyxlFdiqNArx9+2szYPCNgpFdh68tCVlvJozfmc67vhW+JbI6xYuF0tJawyCH
-         ZevMwvrPTFAEAnUh/dTfGB8VTEx9vSrMfXZtmdsBZI4G6qnyeIMhRVgsBCjMtxkfUXGH
-         W+lVl5gdX3F+YvhJKSZXtVJUb0QlcDrBV7ZKaykNPQZNy+X4X1IvIfLf8hXmweuCPgvf
-         rD5hW/DRR+oYpyQRJ6ys6rawza8ypWpmJthHIL/WB2Ko/E3yEUA/RPGHeMLZYNsOJjY1
-         45zJnel3E0ei0Wap2x+QOW6z81JwVaF0p3pnAmJ0fGciNTd4GSD5LoRF1Nl+0GoS1FAz
-         gkdQ==
-X-Gm-Message-State: ACrzQf069rAWSCzFFWNer3vUqQvKRXj06l5bLNonzXhLg+Um41qsvWzl
-        sxoP897UHiGXR6HiBgd1jvHung==
-X-Google-Smtp-Source: AMsMyM6T9pbgn5kWI4AmOtmghV7rd1u8oseHmlwr+2DnuT3VwNTxi88zyEHreGyjv+o07wkD42j/iQ==
-X-Received: by 2002:a17:90b:4a47:b0:212:f7ef:1bd6 with SMTP id lb7-20020a17090b4a4700b00212f7ef1bd6mr13717346pjb.79.1666668229127;
-        Mon, 24 Oct 2022 20:23:49 -0700 (PDT)
-Received: from ?IPV6:2400:4050:c360:8200:8ae8:3c4:c0da:7419? ([2400:4050:c360:8200:8ae8:3c4:c0da:7419])
-        by smtp.gmail.com with ESMTPSA id n16-20020a170903111000b001868d4600b8sm397270plh.158.2022.10.24.20.23.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Oct 2022 20:23:48 -0700 (PDT)
-Message-ID: <8ed65e3e-e0b9-05ae-b113-db9d649a1e5a@daynix.com>
-Date:   Tue, 25 Oct 2022 12:23:39 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: Re: [PATCH 00/22] Fallback to native backlight
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jonathan Corbet <corbet@lwn.net>,
+        bh=TVytv0a4cjMk9lrwtG4w8hPvQBP8qabYQWD39/Mm8gU=;
+        b=dAs96YkgtLp9KKiJfRBAhJuJZhTn8xORSt1OOMz3p9t+6s+JvBmVHbNEXx/CIrPANV
+         uIH4Ees05hiigS7AcV1jckqW4H37TIK1VTNXlSwHEASD+LMswLncAqadWuYuQa7kIvA6
+         oe4PCbuUBl3G9TaSghUcM2qKTCxbr2AogdzFiMRHByr3GIgJCFAzTi60FRwy9vp520jy
+         bfs3ei6cpGMexB/VDg+byplpvAmkh5330jdwDqIRSS8S3LB7PrqWIPX0COCgbJuP/eTM
+         3m1E7GQ4Hv9XuTt01lBW4suLgZ4IvIWs9uCUu8zG3Wk75S9ptHudzLES1rs+SrH8g/c2
+         fGvw==
+X-Gm-Message-State: ACrzQf30HTBJt0djlnO9oAxZrsuSgbEenNGXqSNrTVT2j8cO24lDCx+U
+        d7NydBJklj2U2S5/yheyspA=
+X-Google-Smtp-Source: AMsMyM7h3j7lBw6P3UcT3MebAx0tm0hSe/+8+oqDTLsFGlxUOaIpvN1t5Q1zAPo4F3CJOSGUKAn+yA==
+X-Received: by 2002:a2e:6a03:0:b0:276:c5d2:be6c with SMTP id f3-20020a2e6a03000000b00276c5d2be6cmr6454740ljc.104.1666675479878;
+        Mon, 24 Oct 2022 22:24:39 -0700 (PDT)
+Received: from dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::2])
+        by smtp.gmail.com with ESMTPSA id f7-20020a05651c02c700b0027718ee951dsm36222ljo.37.2022.10.24.22.24.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Oct 2022 22:24:39 -0700 (PDT)
+Date:   Tue, 25 Oct 2022 08:24:24 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        "Lee, Chun-Yi" <jlee@suse.com>, Mark Gross <markgross@kernel.org>,
-        Corentin Chary <corentin.chary@gmail.com>,
-        Cezary Jackiewicz <cezary.jackiewicz@gmail.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
-        Jonathan Woithe <jwoithe@just42.net>,
-        Ike Panhc <ike.pan@canonical.com>,
-        Daniel Dadap <ddadap@nvidia.com>,
-        Kenneth Chan <kenneth.t.chan@gmail.com>,
-        Mattia Dongili <malattia@linux.it>,
-        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-        Azael Avalos <coproscefalo@gmail.com>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Robert Moore <robert.moore@intel.com>,
-        dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org,
-        platform-driver-x86@vger.kernel.org,
-        acpi4asus-user@lists.sourceforge.net,
-        ibm-acpi-devel@lists.sourceforge.net, linux-fbdev@vger.kernel.org,
-        devel@acpica.org
-References: <20221024113513.5205-1-akihiko.odaki@daynix.com>
- <746e5cc6-516f-8f69-9d4b-8fe237de8fd6@redhat.com>
- <edec5950-cec8-b647-ccb1-ba48f9b3bbb0@daynix.com>
- <60672af8-05d2-113c-12b9-d635608be0dd@redhat.com>
- <ea69242c-0bc8-c7bb-9602-c7489bb69684@daynix.com>
- <7373e258-f7cc-4416-9b1c-c8c9dab59ada@daynix.com>
- <ae3497ed-b68d-c36a-6b6f-f7b9771d9238@redhat.com>
- <78ad5d7b-4078-0b8e-f4aa-6c8113631359@daynix.com> <87o7u1drcz.fsf@intel.com>
-Content-Language: en-US
-From:   Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87o7u1drcz.fsf@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Wolfram Sang <wsa@kernel.org>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] drivers: fwnode: fix fwnode_irq_get_byname() kerneldoc
+Message-ID: <Y1dzCCMCDswQFVvO@dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="uc/Yl6o0ICkvldoT"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/10/25 3:11, Jani Nikula wrote:
-> On Tue, 25 Oct 2022, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->> That aside, the first patch in this series can be applied without the
->> later patches so you may have a look at it. It's fine if you don't merge
->> it though since it does not fix really a pragmatic bug as its message says.
-> 
-> I think it's problematic because it needlessly ties i915 backlight
-> operation to existence of backlight devices that may not be related to
-> Intel GPU at all. The direction should be multiple supported backlight
-> devices, across GPUs and connectors, but only one per display.
-> 
-> BR,
-> Jani.
-> 
-> 
 
-Unfortunately it is the current situation (even without this patch), and 
-this patch is not meant to fix the particular issue.
+--uc/Yl6o0ICkvldoT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch replaces the following expression:
-acpi_video_get_backlight_type() == acpi_backlight_native
+The fwnode_irq_get_byname() may return zero on device-tree mapping
+error. Fix documentation to reflect this as current documentation
+suggests check:
 
-As you can see, acpi_video_get_backlight_type() doesn't take a parameter 
-which represents the backlight currently being operated. The problem is 
-known and documented in "Brightness handling on devices with multiple 
-internal panels" section of Documentation/gpu/todo.rst.
+if (ret < 0)
+is enough to detect the errors. This is not the case.
 
-The exiting solution is based on the assumption that no device with i915 
-and multiple internal backlights.
+Add zero as a return value indicating error.
 
-Regards,
-Akihiko Odaki
+Fixes: ca0acb511c21 ("device property: Add fwnode_irq_get_byname")
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+---
+ drivers/base/property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 4d6278a84868..df437d10aa08 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -960,7 +960,7 @@ EXPORT_SYMBOL(fwnode_irq_get);
+  * string.
+  *
+  * Return:
+- * Linux IRQ number on success, or negative errno otherwise.
++ * Linux IRQ number on success, zero or negative errno otherwise.
+  */
+ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *=
+name)
+ {
+--=20
+2.37.3
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--uc/Yl6o0ICkvldoT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmNXcwMACgkQeFA3/03a
+ocUg6Af+Ls7j4fkHTryTfxqGKCiYFi1KScwGYHQO3y1tkKNIUo/OWRP8AWHsQgMA
+V9pXPNYi9lUKQPWL/XRVqyMwBdj5Q1gfA/oFmq2tA93ZPyspNJSmIH/Z6qiZ6r+/
+MXNITc6JYTU1I5Le4H9YZbmG6pCXtjySbnbbCUFzZGzNm89bEbazBt4a2EdRLX/R
+JrQh6so61vqaGy9UFLwPOAaQFOG1l0o3ijw2A7K8ft3dvOF51SEVNgzUgthNitej
+uEvxgKPXDFywUCSkVsYnh0jxbGGxqRNvyLMYYwjHhvao/6BntKA2nhpviwkXTqij
+Sz/x5kydBm1jJgMNJQ0c/3LSUgvQ+w==
+=ZekD
+-----END PGP SIGNATURE-----
+
+--uc/Yl6o0ICkvldoT--
