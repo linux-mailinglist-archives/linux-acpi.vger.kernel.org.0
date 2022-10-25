@@ -2,231 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A21F160C3AE
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 08:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 017E560C3FF
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 08:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229841AbiJYGRL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Oct 2022 02:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34550 "EHLO
+        id S231345AbiJYGss (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Oct 2022 02:48:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230307AbiJYGRK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 02:17:10 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582BBDF8;
-        Mon, 24 Oct 2022 23:17:08 -0700 (PDT)
-Received: from dggpeml500022.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MxM6R0ZWRz15M3l;
-        Tue, 25 Oct 2022 14:12:15 +0800 (CST)
-Received: from huawei.com (10.175.112.208) by dggpeml500022.china.huawei.com
- (7.185.36.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 25 Oct
- 2022 14:17:06 +0800
-From:   Zhang Zekun <zhangzekun11@huawei.com>
-To:     <lenb@kernel.org>, <rafael@kernel.org>
-CC:     <patchwork@huawei.com>, <wangkefeng.wang@huawei.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH RFC] ACPI: container: Add power domain control methods
-Date:   Tue, 25 Oct 2022 06:14:37 +0000
-Message-ID: <20221025061437.17571-1-zhangzekun11@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S231363AbiJYGsq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 02:48:46 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E1E314C51E;
+        Mon, 24 Oct 2022 23:48:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666680521; x=1698216521;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Igm2YXVsITO0q1gnmGrhBBce4AS/xc/BK9V7bbBw9/U=;
+  b=Dxezeokg++hf2NGyKDJlkHFjPZ0BVf4spApIXrjMV09mcwAKqwYDGlfc
+   Hjo4ElZqNkwy57Oj728X3knBmwsPYXTeAoFgktB1dhRL+IS32a7n7+IzO
+   ydkVHGkpLGXMan7PddUsE9+iqoNB9xZNtFYbfh9QEwLEZNKa0YflcepB7
+   5lYWpvaZvt+A7EGLW/3C0NVjGEMXI7wyjVOz/tI2BMEZvh/mWqF5KvXTA
+   nfiz5JHTDplYOf9/bgr2F3ScGMtE0B9LcV0qkgEWmFnk/rK7c3zkv34vr
+   zlb/pCz9ZNRHZqj4cZqre+nm2teZ1GhWyFbwnJp3CGloS0/PRzIczOYkd
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="306333490"
+X-IronPort-AV: E=Sophos;i="5.95,211,1661842800"; 
+   d="scan'208";a="306333490"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 23:48:40 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="631529267"
+X-IronPort-AV: E=Sophos;i="5.95,211,1661842800"; 
+   d="scan'208";a="631529267"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 23:48:37 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id DE16120144;
+        Tue, 25 Oct 2022 09:48:34 +0300 (EEST)
+Date:   Tue, 25 Oct 2022 06:48:34 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers: fwnode: fix fwnode_irq_get_byname() kerneldoc
+Message-ID: <Y1eGwtqbOhXCGoaM@paasikivi.fi.intel.com>
+References: <Y1dzCCMCDswQFVvO@dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.208]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500022.china.huawei.com (7.185.36.66)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y1dzCCMCDswQFVvO@dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Platform devices which supports power control are often required to be
-power off/on together with the devices in the same power domain. However,
-there isn't a generic driver that support the power control logic of
-these devices.
+Moi,
 
-ACPI container seems to be a good place to hold these control logic. Add
-platform devices in the same power domain in a ACPI container, we can
-easily get the locality information about these devices and can moniter
-the power of these devices in the same power domain together.
+On Tue, Oct 25, 2022 at 08:24:24AM +0300, Matti Vaittinen wrote:
+> The fwnode_irq_get_byname() may return zero on device-tree mapping
+> error. Fix documentation to reflect this as current documentation
+> suggests check:
+> 
+> if (ret < 0)
+> is enough to detect the errors. This is not the case.
+> 
+> Add zero as a return value indicating error.
+> 
+> Fixes: ca0acb511c21 ("device property: Add fwnode_irq_get_byname")
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> ---
+>  drivers/base/property.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 4d6278a84868..df437d10aa08 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -960,7 +960,7 @@ EXPORT_SYMBOL(fwnode_irq_get);
+>   * string.
+>   *
+>   * Return:
+> - * Linux IRQ number on success, or negative errno otherwise.
+> + * Linux IRQ number on success, zero or negative errno otherwise.
 
-This patch provide three userspace control interface to control the power
-of devices together in the container:
-- on: power up the devices in the container and then online these devices
-  which will be triggered by BIOS.
-- off: offline and eject the child devices in the container which are
-  ejectable.
-- pxms: show the pxms of devices which are present in the container.
+I wonder if it would be possible instead to always return a negative error
+code on error. Returning zero on error is really unconventional and can be
+expected to be a source of bugs.
 
-In our scenario, we need to control the power of HBM memory devices which
-can be power consuming and will only be used in some specialized scenarios,
-such as HPC. HBM memory devices in a socket are in the same power domain,
-and should be power off/on together. We have come up with an idea that put
-these power control logic in a specialized driver, but ACPI container seems
-to be a more generic place to hold these control logic.
+We have code already that takes the error code zero into account in e.g.
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
----
- drivers/acpi/Kconfig     |  12 +++++
- drivers/acpi/container.c | 112 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 124 insertions(+)
+static int smbalert_probe(struct i2c_client *ara,
+                          const struct i2c_device_id *id)
+{
+...
+                irq = fwnode_irq_get_byname(dev_fwnode(adapter->dev.parent),
+                                            "smbus_alert");
+                if (irq <= 0)
+                        return irq;
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index 473241b5193f..ebb26d56dba0 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -584,6 +584,18 @@ config ACPI_PRMT
- 	  substantially increase computational overhead related to the
- 	  initialization of some server systems.
- 
-+config ACPI_POWER_DOMAIN_CTL
-+	bool "acpi container power domain control support"
-+	depends on ACPI_CONTAINER
-+	default n
-+	help
-+	  Add userspace power control interfaces in container which can be used
-+	  for manipulating the power of child devices in the same power domain.
-+
-+	  To use this feature you need to put devices in the same power domain
-+	  in a container. Enable this feature if you want to control the power
-+	  of these devices together.
-+
- endif	# ACPI
- 
- config X86_PM_TIMER
-diff --git a/drivers/acpi/container.c b/drivers/acpi/container.c
-index 5b7e3b9ae370..9ed2eb5a3dcc 100644
---- a/drivers/acpi/container.c
-+++ b/drivers/acpi/container.c
-@@ -42,6 +42,115 @@ static void acpi_container_release(struct device *dev)
- 	kfree(to_container_dev(dev));
- }
- 
-+#ifdef CONFIG_ACPI_POWER_DOMAIN_CTL
-+
-+static int get_pxm(struct acpi_device *acpi_device, void *arg)
-+{
-+	int nid;
-+	unsigned long long sta;
-+	acpi_handle handle;
-+	nodemask_t *mask;
-+	acpi_status status;
-+
-+	mask = arg;
-+	handle = acpi_device->handle;
-+
-+	status = acpi_evaluate_integer(handle, "_STA", NULL, &sta);
-+	if (ACPI_SUCCESS(status) && (sta & ACPI_STA_DEVICE_ENABLED)) {
-+		nid = acpi_get_node(handle);
-+		if (nid >= 0)
-+			node_set(nid, *mask);
-+	}
-+
-+	return 0;
-+}
-+
-+static ssize_t pxms_show(struct device *dev,
-+			 struct device_attribute *attr,
-+			 char *buf)
-+{
-+	nodemask_t mask;
-+	acpi_status status;
-+	struct acpi_device *adev;
-+
-+	adev = to_acpi_device(dev);
-+	nodes_clear(mask);
-+
-+	status = acpi_dev_for_each_child(adev, get_pxm, &mask);
-+
-+	return sysfs_emit(buf, "%*pbl\n", nodemask_pr_args(&mask));
-+}
-+DEVICE_ATTR_RO(pxms);
-+
-+static ssize_t on_store(struct device *d, struct device_attribute *attr,
-+		const char *buf, size_t count)
-+{
-+	acpi_status status;
-+	acpi_handle handle;
-+	struct acpi_device *adev;
-+
-+	if (!count || buf[0] != '1')
-+		return -EINVAL;
-+
-+	adev = to_acpi_device(d);
-+	handle = adev->handle;
-+	status = acpi_evaluate_object(handle, "_ON", NULL, NULL);
-+	if (status == AE_NOT_FOUND)
-+		acpi_handle_warn(handle, "No power on support for the container\n");
-+	else if (ACPI_FAILURE(status))
-+		acpi_handle_warn(handle, "Power on the device failed (0x%x)\n", status);
-+
-+	return count;
-+}
-+DEVICE_ATTR_WO(on);
-+
-+static int eject_device(struct acpi_device *acpi_device, void *not_used)
-+{
-+	acpi_object_type unused;
-+	acpi_status status;
-+
-+	status = acpi_get_type(acpi_device->handle, &unused);
-+	if (ACPI_FAILURE(status) || !acpi_device->flags.ejectable)
-+		return -ENODEV;
-+
-+	acpi_dev_get(acpi_device);
-+	status = acpi_hotplug_schedule(acpi_device, ACPI_OST_EC_OSPM_EJECT);
-+	if (ACPI_SUCCESS(status))
-+		return status;
-+
-+	acpi_dev_put(acpi_device);
-+	acpi_evaluate_ost(acpi_device->handle, ACPI_OST_EC_OSPM_EJECT,
-+			  ACPI_OST_SC_NON_SPECIFIC_FAILURE, NULL);
-+
-+	return status == AE_NO_MEMORY ? -ENOMEM : -EAGAIN;
-+}
-+
-+static ssize_t off_store(struct device *d, struct device_attribute *attr,
-+		const char *buf, size_t count)
-+{
-+	struct acpi_device *adev;
-+	acpi_status status;
-+
-+	if (!count || buf[0] != '1')
-+		return -EINVAL;
-+
-+	adev = to_acpi_device(d);
-+	status = acpi_dev_for_each_child(adev, eject_device, NULL);
-+	if (ACPI_SUCCESS(status))
-+		return count;
-+
-+	return status;
-+}
-+DEVICE_ATTR_WO(off);
-+
-+static void create_sysfs(struct device *dev)
-+{
-+	device_create_file(dev, &dev_attr_on);
-+	device_create_file(dev, &dev_attr_off);
-+	device_create_file(dev, &dev_attr_pxms);
-+}
-+#endif
-+
- static int container_device_attach(struct acpi_device *adev,
- 				   const struct acpi_device_id *not_used)
- {
-@@ -68,6 +177,9 @@ static int container_device_attach(struct acpi_device *adev,
- 		return ret;
- 	}
- 	adev->driver_data = dev;
-+#ifdef CONFIG_ACPI_POWER_DOMAIN_CTL
-+	create_sysfs(&adev->dev);
-+#endif
- 	return 1;
- }
- 
+And zero turns into successful probe!
+
+>   */
+>  int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name)
+>  {
+
 -- 
-2.30.0
+Terveisin,
 
+Sakari Ailus
