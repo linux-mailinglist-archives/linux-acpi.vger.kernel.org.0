@@ -2,64 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D056F60D097
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 17:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6B6860D18A
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Oct 2022 18:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233238AbiJYPaH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Oct 2022 11:30:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51826 "EHLO
+        id S231748AbiJYQWA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Oct 2022 12:22:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233105AbiJYPaG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 11:30:06 -0400
+        with ESMTP id S231693AbiJYQV6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Oct 2022 12:21:58 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDD92AC78;
-        Tue, 25 Oct 2022 08:30:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4513780EA5;
+        Tue, 25 Oct 2022 09:21:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666711805; x=1698247805;
-  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=xn5JOS/FH+ZZXqzrPkPODHcTMuCEZjsZ59+va4WxJ7A=;
-  b=CvPslIeOsFexfPByRaSzOuU8ter0iUdOGyGigzfK/IAq3bXKJNNfwUf0
-   hcVkRfi64TzU4gjecrijIu/b2NfpGxfN9BqnaOf7pgFlgwgT9Zgkh6XdK
-   8fHfU8aMXVH6tGucy8D7uTfz2z7P6n+rT2AG1jCaOj8bYXDG68cQ/Dxkf
-   UdE23kwtTIQKkDEFB2PDqGEmBb0RobqYR4APHA9zXwcK7BKBLYcbMsHcq
-   49VqNwxGQ8C3CDfavm/tysVnSK4C7xMQXiYy9MVYT1a5eUivbcA4e56yD
-   uEHty3t+S1/JeHe4E8pPozr9Urbxv/p2YLKnwsjaz35nVv/qdA0g2l+Rx
+  t=1666714917; x=1698250917;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JIY/0KwS4tqdqoinWPwzk3zy7GThTftpHV5/elSMquw=;
+  b=Bn08f7uxVp4J8F+sc0CO4Uppw6gp1HkYW6f6L/Bl52+17aZXfCyaJPwR
+   a9nTfA9jNoMDH8XdIM7kiS/edrvxDXaGEv1O0YpZWGS4NpOXC+cYKPtxM
+   +tSmaxDq2zcZi7s9oaQVurddRI4HgYQPNq8PlIn8Gd5ohcInI7k8UzkPL
+   e011CTtyR4bumPcSQEH2OxEbOngs86yWh6EUcsjl3HtcMtK6M56JM+8x4
+   hpp0qFk0KFeSneNWDYhEVgr+eQRvDCKvXKIbO2JgSOEnGFx2BOEZJd5uR
+   DEkgYKvd2RazvqAHESPQ5Qg6S3oHnsJ5afVpap7ymsLWlIBkDAsH6wIU0
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="371921673"
+X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="371937328"
 X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
-   d="scan'208";a="371921673"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 08:28:41 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="694995410"
+   d="scan'208";a="371937328"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 09:21:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="609628147"
 X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
-   d="scan'208";a="694995410"
-Received: from wdunn-mobl1.amr.corp.intel.com ([10.212.194.192])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 08:28:39 -0700
-Message-ID: <836b1787426d5b1569f6d77007a4765ee17d5ea6.camel@linux.intel.com>
-Subject: Re: [PATCH] rtc: rtc-cmos: Fix wake alarm breakage
-From:   Todd Brandt <todd.e.brandt@linux.intel.com>
-Reply-To: todd.e.brandt@linux.intel.com
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Zhang Rui <rui.zhang@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        linux-rtc@vger.kernel.org
-Date:   Tue, 25 Oct 2022 08:28:39 -0700
-In-Reply-To: <166611112152.2353171.9661532286339710942.b4-ty@bootlin.com>
-References: <5887691.lOV4Wx5bFT@kreacher>
-         <166611112152.2353171.9661532286339710942.b4-ty@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1-0ubuntu1 
+   d="scan'208";a="609628147"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 25 Oct 2022 09:21:37 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1onMgI-00267N-32;
+        Tue, 25 Oct 2022 19:21:34 +0300
+Date:   Tue, 25 Oct 2022 19:21:34 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] drivers: fwnode: fix fwnode_irq_get_byname()
+Message-ID: <Y1gNDtE4dRC4WuP/@smile.fi.intel.com>
+References: <cover.1666710197.git.mazziesaccount@gmail.com>
+ <a3bf7094a9f9ebf114736dc7944553dcc701fe73.1666710197.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a3bf7094a9f9ebf114736dc7944553dcc701fe73.1666710197.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
@@ -69,30 +72,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2022-10-18 at 18:38 +0200, Alexandre Belloni wrote:
-> On Tue, 18 Oct 2022 18:09:31 +0200, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >=20
-> > Commit 4919d3eb2ec0 ("rtc: cmos: Fix event handler registration
-> > ordering issue") overlooked the fact that cmos_do_probe() depended
-> > on the preparations carried out by cmos_wake_setup() and the wake
-> > alarm stopped working after the ordering of them had been changed.
-> >=20
-> > [...]
->=20
-> Applied, thanks!
+On Tue, Oct 25, 2022 at 06:11:49PM +0300, Matti Vaittinen wrote:
+> The fwnode_irq_get_byname() does return 0 upon device-tree IRQ mapping
+> failure. This is contradicting the function documentation and can
+> potentially be a source of errors like:
+> 
+> int probe(...) {
+> 	...
+> 
+> 	irq = fwnode_irq_get_byname();
+> 	if (irq <= 0)
+> 		return irq;
+> 
+> 	...
+> }
+> 
+> Here we do correctly check the return value from fwnode_irq_get_byname()
+> but the driver probe will now return success. (There was already one
+> such user in-tree).
+> 
+> Change the fwnode_irq_get_byname() to work as documented and according to
+> the common convention and abd always return a negative errno upon failure.
 
-I did testing yesterday on the 6.1.0-rc2 build and this patch hasn't
-made it into rc2. This is an extreme inconvenience to anyone testing
-low power modes as the rtc wakealarm doesn't function. I'm a little
-surprised more people haven't complained.
+and abd ?
 
-Please get this in 6.1.0-rc3.
+...
 
-> [1/1] rtc: rtc-cmos: Fix wake alarm breakage
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 commit: 0782b66ed2fbb035dda76111df0954515e=
-417b24
->=20
-> Best regards,
->=20
+> +	ret = fwnode_irq_get(fwnode, index);
+> +	/* We treat mapping errors as invalid case */
+> +	if (ret == 0)
+> +		return -EINVAL;
+> +
+> +	return ret;
+
+This looks good.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
