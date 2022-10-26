@@ -2,451 +2,287 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B485B60E69D
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Oct 2022 19:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACA6760E6CA
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Oct 2022 19:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234139AbiJZRgC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Oct 2022 13:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57012 "EHLO
+        id S234292AbiJZRwb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Oct 2022 13:52:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbiJZRf5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Oct 2022 13:35:57 -0400
-Received: from mellanox.co.il (mail-il-dmz.mellanox.com [193.47.165.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7AF69C7057
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Oct 2022 10:35:53 -0700 (PDT)
-Received: from Internal Mail-Server by MTLPINE1 (envelope-from asmaa@mellanox.com)
-        with SMTP; 26 Oct 2022 20:29:06 +0300
-Received: from bu-vnc02.mtbu.labs.mlnx (bu-vnc02.mtbu.labs.mlnx [10.15.2.65])
-        by mtbu-labmailer.labs.mlnx (8.14.4/8.14.4) with ESMTP id 29QHSxgY015430;
-        Wed, 26 Oct 2022 13:28:59 -0400
-Received: (from asmaa@localhost)
-        by bu-vnc02.mtbu.labs.mlnx (8.14.7/8.13.8/Submit) id 29QHSx2W027361;
-        Wed, 26 Oct 2022 13:28:59 -0400
-From:   Asmaa Mnebhi <asmaa@nvidia.com>
-To:     linus.walleij@linaro.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, andy.shevchenko@gmail.com,
-        bgolaszewski@baylibre.com, linux-acpi@vger.kernel.org
-Cc:     Asmaa Mnebhi <asmaa@nvidia.com>
-Subject: [PATCH v1 2/2] Support NVIDIA BlueField-3 pinctrl driver
-Date:   Wed, 26 Oct 2022 13:28:43 -0400
-Message-Id: <20221026172843.27236-3-asmaa@nvidia.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20221026172843.27236-1-asmaa@nvidia.com>
-References: <20221026172843.27236-1-asmaa@nvidia.com>
+        with ESMTP id S234317AbiJZRwZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Oct 2022 13:52:25 -0400
+Received: from domac.alu.hr (domac.alu.hr [IPv6:2001:b68:2:2800::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B928F923C9
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Oct 2022 10:52:17 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id 9B471604F2;
+        Wed, 26 Oct 2022 19:52:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1666806729; bh=/cPVVwLxCJykskvapN3iSQ/QyEuP7ZZdJZTFQ1rvd7Q=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=Z9j0OUug2d5DDQnn1RDApCpjODAgGITl91HkDPew7HfH/sq7vOjLWks2FKb8hApbf
+         L+JcmMoE2+YsL+Vc1nVOuvT/5XPncLMHnykEbWOC0KaoSFsZK98J5xa12iPzSXLVey
+         qQTSD1lRGTslRpiX1bXOghzgicAlP2Dj5q4yoGzfbkh37m2sKZ5vy2Vx0+C74+FJHW
+         PeQN/O6MHPZRZ9diPWB69JkKTiP2K5cqtOx3CpwKcdzsag5zRxahi2Y/8Z0WYHTogM
+         iwqPkD0+3IkdKVTsLy5c9lReLq0Z1MsdMVzeGm/tL6GjIqwqStAANhq0WSgrwvVOFp
+         95iWeu4O2sNqQ==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id P8dag7I5IpKy; Wed, 26 Oct 2022 19:52:05 +0200 (CEST)
+Received: from [192.168.0.12] (unknown [188.252.199.26])
+        by domac.alu.hr (Postfix) with ESMTPSA id 9FD68604EC;
+        Wed, 26 Oct 2022 19:52:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1666806725; bh=/cPVVwLxCJykskvapN3iSQ/QyEuP7ZZdJZTFQ1rvd7Q=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=Tk+EIwimkS8MebCtMJwJMUn2W7sF43actOEDbEqJ9Ydp2etWDyKY5tjLiF4WZFg7L
+         yZBIxA2q35TrxiSYmEv0EcbpUHrNR7H7HQv0pRpiNVM5v2vU7ZQF2corOFEzlscYZW
+         W3Q42sU2ddJhN1+z6kvyNwmPMkfF4JvxVJLNLTJ8ijPuifPyFZoXUxYMSwC+Xm2+VV
+         k1ehqYQkTXLhQnKb/9imvz1HbjFTeP3JEj8fPzZKjOXifpp1a9WoQMA17e0v2Nznnr
+         bAvuQmKi1a0UT66rfUytK+a/IaKVMBdOPJEsvklS06gwM8ZfmWTAUSfNEeCjVoqbYk
+         XOmmWc5UviYoA==
+Content-Type: multipart/mixed; boundary="------------Ll0EviEI1ovXA5j6SuTndsfK"
+Message-ID: <6c2f47c8-d6b5-074a-4c8f-e9cd04f62ef4@alu.unizg.hr>
+Date:   Wed, 26 Oct 2022 19:52:03 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: BUG: bisected: thermald regression (MEMLEAK) in commit
+ c7ff29763989bd09c433f73fae3c1e1c15d9cda4
+From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>, rjw@rjwysocki.net
+Cc:     regressions@lists.linux.dev, regressions@leemhuis.info,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Robert Moore <robert.moore@intel.com>, devel@acpica.org
+References: <e0f06714-5a49-a4e6-24e6-c4103c820819@alu.unizg.hr>
+ <9ef3674afd370050b86a68e44c97e4f0257f1adf.camel@linux.intel.com>
+ <bd1f0d2a-d456-92cc-ecca-23e480aea4b1@alu.unizg.hr>
+ <e5d3d561bb3a9c68bc903cfc35c27629a4a9225c.camel@linux.intel.com>
+ <d034dbbc-613c-1a5e-df64-d0251453c8eb@alu.unizg.hr>
+Content-Language: en-US
+In-Reply-To: <d034dbbc-613c-1a5e-df64-d0251453c8eb@alu.unizg.hr>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch adds support to the BlueField-3 SoC pin controller.
-It allows muxing individual GPIOs to switch from the default
-hardware mode to software controlled mode.
+This is a multi-part message in MIME format.
+--------------Ll0EviEI1ovXA5j6SuTndsfK
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
----
- drivers/pinctrl/Kconfig         |   9 +
- drivers/pinctrl/Makefile        |   1 +
- drivers/pinctrl/pinctrl-mlxbf.c | 353 ++++++++++++++++++++++++++++++++
- 3 files changed, 363 insertions(+)
- create mode 100644 drivers/pinctrl/pinctrl-mlxbf.c
+Dear all,
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index f71fefff400f..caeef68cf51e 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -512,6 +512,15 @@ config PINCTRL_ZYNQMP
- 	  This driver can also be built as a module. If so, the module
- 	  will be called pinctrl-zynqmp.
- 
-+config PINCTRL_MLXBF
-+	tristate "NVIDIA BlueField-3 SoC Pinctrl driver"
-+	depends on (MELLANOX_PLATFORM && ARM64 && ACPI)
-+	select PINMUX
-+	select GPIOLIB
-+	select GPIOLIB_IRQCHIP
-+	help
-+	  This selects the pinctrl driver for BlueField-3 SoCs.
-+
- source "drivers/pinctrl/actions/Kconfig"
- source "drivers/pinctrl/aspeed/Kconfig"
- source "drivers/pinctrl/bcm/Kconfig"
-diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
-index 89bfa01b5231..e4497078146e 100644
---- a/drivers/pinctrl/Makefile
-+++ b/drivers/pinctrl/Makefile
-@@ -35,6 +35,7 @@ obj-$(CONFIG_PINCTRL_MCP23S08_I2C)	+= pinctrl-mcp23s08_i2c.o
- obj-$(CONFIG_PINCTRL_MCP23S08_SPI)	+= pinctrl-mcp23s08_spi.o
- obj-$(CONFIG_PINCTRL_MCP23S08)	+= pinctrl-mcp23s08.o
- obj-$(CONFIG_PINCTRL_MICROCHIP_SGPIO)	+= pinctrl-microchip-sgpio.o
-+obj-$(CONFIG_PINCTRL_MLXBF)	+= pinctrl-mlxbf.o
- obj-$(CONFIG_PINCTRL_OCELOT)	+= pinctrl-ocelot.o
- obj-$(CONFIG_PINCTRL_OXNAS)	+= pinctrl-oxnas.o
- obj-$(CONFIG_PINCTRL_PALMAS)	+= pinctrl-palmas.o
-diff --git a/drivers/pinctrl/pinctrl-mlxbf.c b/drivers/pinctrl/pinctrl-mlxbf.c
-new file mode 100644
-index 000000000000..6304a66f0290
---- /dev/null
-+++ b/drivers/pinctrl/pinctrl-mlxbf.c
-@@ -0,0 +1,353 @@
-+// SPDX-License-Identifier: GPL-2.0-only or BSD-3-Clause
-+
-+/*
-+ * Copyright (C) 2022 NVIDIA CORPORATION & AFFILIATES
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/err.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+#include <linux/gpio.h>
-+
-+#include <linux/pinctrl/machine.h>
-+#include <linux/pinctrl/pinctrl.h>
-+#include <linux/pinctrl/pinmux.h>
-+#include <linux/pinctrl/pinconf.h>
-+#include <linux/pinctrl/pinconf-generic.h>
-+
-+#include "core.h"
-+
-+#define MLXBF_GPIO0_FW_CONTROL_SET   0
-+#define MLXBF_GPIO0_FW_CONTROL_CLEAR 0x14
-+#define MLXBF_GPIO1_FW_CONTROL_SET   0x80
-+#define MLXBF_GPIO1_FW_CONTROL_CLEAR 0x94
-+
-+#define MLXBF_NGPIOS_GPIO0    32
-+
-+enum {
-+	MLXBF_GPIO_HW_MODE,
-+	MLXBF_GPIO_SW_MODE
-+};
-+
-+struct mlxbf_pinctrl {
-+	void __iomem *base;
-+	struct device *dev;
-+	struct pinctrl_dev *pctl;
-+	struct pinctrl_gpio_range gpio_range;
-+};
-+
-+#define MLXBF_GPIO_RANGE(_id, _pinbase, _gpiobase, _npins)	\
-+	{							\
-+		.name = "mlxbf_gpio_range",			\
-+		.id = _id,					\
-+		.base = _gpiobase,				\
-+		.pin_base = _pinbase,				\
-+		.npins = _npins,				\
-+	}
-+
-+static struct pinctrl_gpio_range mlxbf_pinctrl_gpio_ranges[] = {
-+	MLXBF_GPIO_RANGE(0, 0,  480, 32),
-+	MLXBF_GPIO_RANGE(1,  32, 456, 24),
-+};
-+
-+static const struct pinctrl_pin_desc mlxbf_pins[] = {
-+	PINCTRL_PIN(0, "gpio0"),
-+	PINCTRL_PIN(1, "gpio1"),
-+	PINCTRL_PIN(2, "gpio2"),
-+	PINCTRL_PIN(3, "gpio3"),
-+	PINCTRL_PIN(4, "gpio4"),
-+	PINCTRL_PIN(5, "gpio5"),
-+	PINCTRL_PIN(6, "gpio6"),
-+	PINCTRL_PIN(7, "gpio7"),
-+	PINCTRL_PIN(8, "gpio8"),
-+	PINCTRL_PIN(9, "gpio9"),
-+	PINCTRL_PIN(10, "gpio10"),
-+	PINCTRL_PIN(11, "gpio11"),
-+	PINCTRL_PIN(12, "gpio12"),
-+	PINCTRL_PIN(13, "gpio13"),
-+	PINCTRL_PIN(14, "gpio14"),
-+	PINCTRL_PIN(15, "gpio15"),
-+	PINCTRL_PIN(16, "gpio16"),
-+	PINCTRL_PIN(17, "gpio17"),
-+	PINCTRL_PIN(18, "gpio18"),
-+	PINCTRL_PIN(19, "gpio19"),
-+	PINCTRL_PIN(20, "gpio20"),
-+	PINCTRL_PIN(21, "gpio21"),
-+	PINCTRL_PIN(22, "gpio22"),
-+	PINCTRL_PIN(23, "gpio23"),
-+	PINCTRL_PIN(24, "gpio24"),
-+	PINCTRL_PIN(25, "gpio25"),
-+	PINCTRL_PIN(26, "gpio26"),
-+	PINCTRL_PIN(27, "gpio27"),
-+	PINCTRL_PIN(28, "gpio28"),
-+	PINCTRL_PIN(29, "gpio29"),
-+	PINCTRL_PIN(30, "gpio30"),
-+	PINCTRL_PIN(31, "gpio31"),
-+	PINCTRL_PIN(32, "gpio32"),
-+	PINCTRL_PIN(33, "gpio33"),
-+	PINCTRL_PIN(34, "gpio34"),
-+	PINCTRL_PIN(35, "gpio35"),
-+	PINCTRL_PIN(36, "gpio36"),
-+	PINCTRL_PIN(37, "gpio37"),
-+	PINCTRL_PIN(38, "gpio38"),
-+	PINCTRL_PIN(39, "gpio39"),
-+	PINCTRL_PIN(40, "gpio40"),
-+	PINCTRL_PIN(41, "gpio41"),
-+	PINCTRL_PIN(42, "gpio42"),
-+	PINCTRL_PIN(43, "gpio43"),
-+	PINCTRL_PIN(44, "gpio44"),
-+	PINCTRL_PIN(45, "gpio45"),
-+	PINCTRL_PIN(46, "gpio46"),
-+	PINCTRL_PIN(47, "gpio47"),
-+	PINCTRL_PIN(48, "gpio48"),
-+	PINCTRL_PIN(49, "gpio49"),
-+	PINCTRL_PIN(50, "gpio50"),
-+	PINCTRL_PIN(51, "gpio51"),
-+	PINCTRL_PIN(52, "gpio52"),
-+	PINCTRL_PIN(53, "gpio53"),
-+	PINCTRL_PIN(54, "gpio54"),
-+	PINCTRL_PIN(55, "gpio55"),
-+};
-+
-+/*
-+ * All single-pin functions can be mapped to any GPIO, however pinmux applies
-+ * functions to pin groups and only those groups declared as supporting that
-+ * function. To make this work we must put each pin in its own dummy group so
-+ * that the functions can be described as applying to all pins.
-+ * We use the same name as in the datasheet.
-+ */
-+static const char * const mlxbf_pinctrl_single_group_names[] = {
-+	"gpio0", "gpio1",  "gpio2",  "gpio3",  "gpio4",  "gpio5",  "gpio6",
-+	"gpio7", "gpio8",  "gpio9",  "gpio10", "gpio11", "gpio12", "gpio13",
-+	"gpio14", "gpio15", "gpio16", "gpio17", "gpio18", "gpio19", "gpio20",
-+	"gpio21", "gpio22", "gpio23", "gpio24", "gpio25", "gpio26", "gpio27",
-+	"gpio28", "gpio29", "gpio30", "gpio31", "gpio32", "gpio33", "gpio34",
-+	"gpio35", "gpio36", "gpio37", "gpio38", "gpio39", "gpio40", "gpio41",
-+	"gpio42", "gpio43", "gpio44", "gpio45", "gpio46", "gpio47", "gpio48",
-+	"gpio49", "gpio50", "gpio51", "gpio52", "gpio53", "gpio54", "gpio55"
-+};
-+
-+/* Set of pin numbers for single-pin groups */
-+static const unsigned int mlxbf_pinctrl_single_group_pins[] = {
-+	0,  1,  2,  3,  4,  5,  6,
-+	7,  8,  9, 10, 11, 12, 13,
-+	14, 15, 16, 17, 18, 19, 20,
-+	21, 22, 23, 24, 25, 26, 27,
-+	28, 29, 30, 31, 32, 33, 34,
-+	35, 36, 37, 38, 39, 40, 41,
-+	42, 43, 44, 45, 46, 47, 48,
-+	49, 50, 51, 52, 53, 54, 55,
-+};
-+
-+static int mlxbf_get_groups_count(struct pinctrl_dev *pctldev)
-+{
-+	/* Number single-pin groups */
-+	return ARRAY_SIZE(mlxbf_pinctrl_single_group_pins);
-+}
-+
-+static const char *mlxbf_get_group_name(struct pinctrl_dev *pctldev,
-+					 unsigned int selector)
-+{
-+	return mlxbf_pinctrl_single_group_names[selector];
-+}
-+
-+static int mlxbf_get_group_pins(struct pinctrl_dev *pctldev,
-+				 unsigned int selector,
-+				 const unsigned int **pins,
-+				 unsigned int *num_pins)
-+{
-+	/* return the dummy group for a single pin */
-+	*pins = &mlxbf_pinctrl_single_group_pins[selector];
-+	*num_pins = 1;
-+
-+	return 0;
-+}
-+
-+static const struct pinctrl_ops mlxbf_pinctrl_group_ops = {
-+	.get_groups_count = mlxbf_get_groups_count,
-+	.get_group_name = mlxbf_get_group_name,
-+	.get_group_pins = mlxbf_get_group_pins,
-+};
-+
-+static const char * const mlxbf_gpiofunc_group_names[] = { "swctrl" };
-+static const char * const mlxbf_hwfunc_group_names[]   = { "hwctrl" };
-+
-+/*
-+ * Only 2 functions are supported which apply to all pins:
-+ * 1) Possible default hardware functionality
-+ * 2) Software controlled GPIO
-+ */
-+static const struct {
-+	const char *name;
-+	const char * const *group_names;
-+} mlxbf_pmx_funcs[] = {
-+	{
-+		.name = "hwfunc",
-+		.group_names = mlxbf_hwfunc_group_names
-+	},
-+	{
-+		.name = "gpiofunc",
-+		.group_names = mlxbf_gpiofunc_group_names
-+	},
-+};
-+
-+static int mlxbf_pmx_get_funcs_count(struct pinctrl_dev *pctldev)
-+{
-+	return ARRAY_SIZE(mlxbf_pmx_funcs);
-+}
-+
-+static const char *mlxbf_pmx_get_func_name(struct pinctrl_dev *pctldev,
-+					   unsigned int selector)
-+{
-+	return mlxbf_pmx_funcs[selector].name;
-+}
-+
-+static int mlxbf_pmx_get_groups(struct pinctrl_dev *pctldev,
-+				 unsigned int selector,
-+				 const char * const **groups,
-+				 unsigned int * const num_groups)
-+{
-+	*groups = mlxbf_pmx_funcs[selector].group_names;
-+	/* The function where "software has control over a GPIO" is available to all gpio pins */
-+	*num_groups = ARRAY_SIZE(mlxbf_pinctrl_single_group_pins);
-+
-+	return 0;
-+}
-+
-+static int mlxbf_pmx_set(struct pinctrl_dev *pctldev,
-+			      unsigned int selector,
-+			      unsigned int group)
-+{
-+	struct mlxbf_pinctrl *priv = pinctrl_dev_get_drvdata(pctldev);
-+
-+	if (selector == MLXBF_GPIO_HW_MODE) {
-+		if (group < MLXBF_NGPIOS_GPIO0)
-+			writel(BIT(group), priv->base + MLXBF_GPIO0_FW_CONTROL_CLEAR);
-+		else
-+			writel(BIT(group % MLXBF_NGPIOS_GPIO0), priv->base + MLXBF_GPIO1_FW_CONTROL_CLEAR);
-+	}
-+
-+	if (selector == MLXBF_GPIO_SW_MODE) {
-+		if (group < MLXBF_NGPIOS_GPIO0)
-+			writel(BIT(group), priv->base + MLXBF_GPIO0_FW_CONTROL_SET);
-+		else
-+			writel(BIT(group % MLXBF_NGPIOS_GPIO0), priv->base + MLXBF_GPIO1_FW_CONTROL_SET);
-+	}
-+
-+	return 0;
-+}
-+
-+static int mlxbf_gpio_request_enable(struct pinctrl_dev *pctldev,
-+				     struct pinctrl_gpio_range *range,
-+				     unsigned int offset)
-+{
-+	struct mlxbf_pinctrl *priv = pinctrl_dev_get_drvdata(pctldev);
-+
-+	if (offset < MLXBF_NGPIOS_GPIO0)
-+		writel(BIT(offset), priv->base + MLXBF_GPIO0_FW_CONTROL_SET);
-+	else
-+		writel(BIT(offset % MLXBF_NGPIOS_GPIO0), priv->base + MLXBF_GPIO1_FW_CONTROL_SET);
-+
-+	return 0;
-+}
-+
-+static void mlxbf_gpio_disable_free(struct pinctrl_dev *pctldev,
-+				    struct pinctrl_gpio_range *range,
-+				    unsigned int offset)
-+{
-+	struct mlxbf_pinctrl *priv = pinctrl_dev_get_drvdata(pctldev);
-+
-+	/* disable GPIO functionality by giving control back to hardware */
-+	if (offset < MLXBF_NGPIOS_GPIO0)
-+		writel(BIT(offset), priv->base + MLXBF_GPIO0_FW_CONTROL_CLEAR);
-+	else
-+		writel(BIT(offset % MLXBF_NGPIOS_GPIO0), priv->base + MLXBF_GPIO1_FW_CONTROL_CLEAR);
-+
-+}
-+
-+static const struct pinmux_ops mlxbf_pmx_ops = {
-+	.get_functions_count = mlxbf_pmx_get_funcs_count,
-+	.get_function_name = mlxbf_pmx_get_func_name,
-+	.get_function_groups = mlxbf_pmx_get_groups,
-+	.set_mux = mlxbf_pmx_set,
-+	.gpio_request_enable = mlxbf_gpio_request_enable,
-+	.gpio_disable_free = mlxbf_gpio_disable_free,
-+};
-+
-+static struct pinctrl_desc mlxbf_pin_desc = {
-+	.name = "pinctrl-mlxbf",
-+	.pins = mlxbf_pins,
-+	.npins = ARRAY_SIZE(mlxbf_pins),
-+	.pctlops = &mlxbf_pinctrl_group_ops,
-+	.pmxops = &mlxbf_pmx_ops,
-+	.owner = THIS_MODULE,
-+};
-+
-+static int mlxbf_pinctrl_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct mlxbf_pinctrl *priv;
-+	struct resource *res;
-+	int ret;
-+
-+	BUILD_BUG_ON(ARRAY_SIZE(mlxbf_pinctrl_single_group_names) !=
-+		     ARRAY_SIZE(mlxbf_pinctrl_single_group_pins));
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->dev = &pdev->dev;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		return -ENODEV;
-+
-+	priv->base = devm_ioremap(dev, res->start, resource_size(res));
-+	if (!priv->base)
-+		return -ENOMEM;
-+
-+	ret = devm_pinctrl_register_and_init(priv->dev,
-+					     &mlxbf_pin_desc,
-+					     priv,
-+					     &priv->pctl);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed pinctrl register (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	ret = pinctrl_enable(priv->pctl);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to enable pinctrl (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	pinctrl_add_gpio_range(priv->pctl, &mlxbf_pinctrl_gpio_ranges[0]);
-+	pinctrl_add_gpio_range(priv->pctl, &mlxbf_pinctrl_gpio_ranges[1]);
-+
-+	return 0;
-+}
-+
-+static const struct acpi_device_id mlxbf_pinctrl_acpi_ids[] = {
-+	{ "MLNXBF34", 0 },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(acpi, mlxbf_pinctrl_acpi_ids);
-+
-+static struct platform_driver mlxbf_pinctrl_driver = {
-+	.driver = {
-+		.name = "pinctrl-mlxbf",
-+		.acpi_match_table = mlxbf_pinctrl_acpi_ids,
-+	},
-+	.probe = mlxbf_pinctrl_probe,
-+};
-+
-+module_platform_driver(mlxbf_pinctrl_driver);
-+
-+MODULE_DESCRIPTION("NVIDIA pinctrl driver");
-+MODULE_AUTHOR("Asmaa Mnebhi <asmaa@nvidia.com>");
-+MODULE_LICENSE("Dual BSD/GPL");
+On 24. 10. 2022. 20:56, Mirsad Goran Todorovac wrote:
+> On 24. 10. 2022. 20:39, srinivas pandruvada wrote:
+>
+>>> Thank you for the patch. Unfortunately, when applied to v6.0.3 it
+>>> didn't
+>>> fix the issue.
+>> Thanks for the test. I copied to acpi and acpica mailing list. Someone
+>> can tell us what is this call doing wrong here. 
+
+I have worse news: after every
+
+# systemctl stop thermald
+# systemctl start thermald
+
+the number of leaks increases by one allocated block (apparently 80 
+bytes). The effect appears to be
+cummulative.
+
+Please find the results of the MEMLEAK scan in the attachment.
+
+In theory, motivated adversary could theoretically exhaust  i.e. 8 GiB 
+in a loop of 10 million thermald stops/starts,
+on my laptop and 2 sec for stop+start, it would be approx. 230 days.
+
+Hope this helps.
+
+Mirsad
+
 -- 
-2.30.1
 
+Mirsad Goran Todorovac
+Sistem inženjer
+Grafički fakultet | Akademija likovnih umjetnosti
+Sveučilište u Zagrebu
+-- 
+System engineer
+Faculty of Graphic Arts | Academy of Fine Arts
+University of Zagreb, Republic of Croatia
+The European Union
+
+--------------Ll0EviEI1ovXA5j6SuTndsfK
+Content-Type: text/plain; charset=UTF-8; name="memleak-cummulative.txt"
+Content-Disposition: attachment; filename="memleak-cummulative.txt"
+Content-Transfer-Encoding: base64
+
+dW5yZWZlcmVuY2VkIG9iamVjdCAweGZmZmY5NWU2ODZkZjdjODAgKHNpemUgODApOgogIGNv
+bW0gInRoZXJtYWxkIiwgcGlkIDg1MywgamlmZmllcyA0Mjk0ODk0MzA4IChhZ2UgMTMyNy43
+ODRzKQogIGhleCBkdW1wIChmaXJzdCAzMiBieXRlcyk6CiAgICAwMCAwMCAwMCAwMCAwMCAw
+MCAwMCAwMCAwZCAwMSAyZCAwMCAwMCAwMCAwMCAwMCAgLi4uLi4uLi4uLi0uLi4uLgogICAg
+YWYgMDcgMDEgNDAgZmUgYTIgZmYgZmYgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIC4uLkAu
+Li4uLi4uLi4uLi4KICBiYWNrdHJhY2U6CiAgICBbPDAwMDAwMDAwZGEzYzY2N2M+XSBzbGFi
+X3Bvc3RfYWxsb2NfaG9vaysweDgwLzB4MmUwCiAgICBbPDAwMDAwMDAwNzgyMGY3NjM+XSBr
+bWVtX2NhY2hlX2FsbG9jKzB4MTcxLzB4MzAwCiAgICBbPDAwMDAwMDAwYzhkMDBiY2M+XSBh
+Y3BpX29zX2FjcXVpcmVfb2JqZWN0KzB4MmMvMHgzMgogICAgWzwwMDAwMDAwMDNhZWM0NTFh
+Pl0gYWNwaV9wc19hbGxvY19vcCsweDRhLzB4OTkKICAgIFs8MDAwMDAwMDA4YTdmNmM4MT5d
+IGFjcGlfcHNfZ2V0X25leHRfYXJnKzB4NjExLzB4NzYxCiAgICBbPDAwMDAwMDAwZjdmY2Mw
+M2Q+XSBhY3BpX3BzX3BhcnNlX2xvb3ArMHg0OTQvMHg4ZDcKICAgIFs8MDAwMDAwMDA3OGJh
+NjM5Nz5dIGFjcGlfcHNfcGFyc2VfYW1sKzB4MWJiLzB4NTYxCiAgICBbPDAwMDAwMDAwZTE4
+OWFjMzA+XSBhY3BpX3BzX2V4ZWN1dGVfbWV0aG9kKzB4MjBmLzB4MmQ1CiAgICBbPDAwMDAw
+MDAwNzg1MzJiYjk+XSBhY3BpX25zX2V2YWx1YXRlKzB4MzRkLzB4NGYzCiAgICBbPDAwMDAw
+MDAwNzE1Mzg5NDM+XSBhY3BpX2V2YWx1YXRlX29iamVjdCsweDE4MC8weDNhZQogICAgWzww
+MDAwMDAwMGZkY2VjOTM4Pl0gYWNwaV9ydW5fb3NjKzB4MTI4LzB4MjUwCiAgICBbPDAwMDAw
+MDAwZTA1NDRlNTc+XSBpbnQzNDAwX3RoZXJtYWxfcnVuX29zYysweDZmLzB4YzAgW2ludDM0
+MDBfdGhlcm1hbF0KICAgIFs8MDAwMDAwMDA3YTQ0MzQ2Mj5dIGN1cnJlbnRfdXVpZF9zdG9y
+ZSsweGUzLzB4MTIwIFtpbnQzNDAwX3RoZXJtYWxdCiAgICBbPDAwMDAwMDAwNTA2M2FlNTU+
+XSBkZXZfYXR0cl9zdG9yZSsweDE0LzB4MzAKICAgIFs8MDAwMDAwMDAxY2NjMGIwND5dIHN5
+c2ZzX2tmX3dyaXRlKzB4MzgvMHg1MAogICAgWzwwMDAwMDAwMGYyNGRjZmZjPl0ga2VybmZz
+X2ZvcF93cml0ZV9pdGVyKzB4MTQ2LzB4MWQwCnVucmVmZXJlbmNlZCBvYmplY3QgMHhmZmZm
+OTVlNjgzNzY4ODIwIChzaXplIDgwKToKICBjb21tICJ0aGVybWFsZCIsIHBpZCA4NTMsIGpp
+ZmZpZXMgNDI5NDk1MDAyMSAoYWdlIDExMDUuMDY0cykKICBoZXggZHVtcCAoZmlyc3QgMzIg
+Ynl0ZXMpOgogICAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMGQgMDEgMmQgMDAgMDAgMDAg
+MDAgMDAgIC4uLi4uLi4uLi4tLi4uLi4KICAgIDNhIDA4IDAxIDQwIGZlIGEyIGZmIGZmIDAw
+IDAwIDAwIDAwIDAwIDAwIDAwIDAwICA6Li5ALi4uLi4uLi4uLi4uCiAgYmFja3RyYWNlOgog
+ICAgWzwwMDAwMDAwMGRhM2M2NjdjPl0gc2xhYl9wb3N0X2FsbG9jX2hvb2srMHg4MC8weDJl
+MAogICAgWzwwMDAwMDAwMDc4MjBmNzYzPl0ga21lbV9jYWNoZV9hbGxvYysweDE3MS8weDMw
+MAogICAgWzwwMDAwMDAwMGM4ZDAwYmNjPl0gYWNwaV9vc19hY3F1aXJlX29iamVjdCsweDJj
+LzB4MzIKICAgIFs8MDAwMDAwMDAzYWVjNDUxYT5dIGFjcGlfcHNfYWxsb2Nfb3ArMHg0YS8w
+eDk5CiAgICBbPDAwMDAwMDAwOGE3ZjZjODE+XSBhY3BpX3BzX2dldF9uZXh0X2FyZysweDYx
+MS8weDc2MQogICAgWzwwMDAwMDAwMGY3ZmNjMDNkPl0gYWNwaV9wc19wYXJzZV9sb29wKzB4
+NDk0LzB4OGQ3CiAgICBbPDAwMDAwMDAwNzhiYTYzOTc+XSBhY3BpX3BzX3BhcnNlX2FtbCsw
+eDFiYi8weDU2MQogICAgWzwwMDAwMDAwMGUxODlhYzMwPl0gYWNwaV9wc19leGVjdXRlX21l
+dGhvZCsweDIwZi8weDJkNQogICAgWzwwMDAwMDAwMDc4NTMyYmI5Pl0gYWNwaV9uc19ldmFs
+dWF0ZSsweDM0ZC8weDRmMwogICAgWzwwMDAwMDAwMDcxNTM4OTQzPl0gYWNwaV9ldmFsdWF0
+ZV9vYmplY3QrMHgxODAvMHgzYWUKICAgIFs8MDAwMDAwMDBmZGNlYzkzOD5dIGFjcGlfcnVu
+X29zYysweDEyOC8weDI1MAogICAgWzwwMDAwMDAwMGUwNTQ0ZTU3Pl0gaW50MzQwMF90aGVy
+bWFsX3J1bl9vc2MrMHg2Zi8weGMwIFtpbnQzNDAwX3RoZXJtYWxdCiAgICBbPDAwMDAwMDAw
+MTRiOTZmN2Q+XSBpbnQzNDAwX3RoZXJtYWxfY2hhbmdlX21vZGUrMHhkMy8weDExMCBbaW50
+MzQwMF90aGVybWFsXQogICAgWzwwMDAwMDAwMDZmZmM4ODI2Pl0gdGhlcm1hbF96b25lX2Rl
+dmljZV9zZXRfbW9kZSsweDQ2LzB4YzAKICAgIFs8MDAwMDAwMDAzNmExZjIyMT5dIHRoZXJt
+YWxfem9uZV9kZXZpY2VfZGlzYWJsZSsweDEwLzB4MjAKICAgIFs8MDAwMDAwMDA1MDJlNGU3
+ND5dIG1vZGVfc3RvcmUrMHg1Yy8weDgwCnVucmVmZXJlbmNlZCBvYmplY3QgMHhmZmZmOTVl
+NjhhNjE4MWUwIChzaXplIDgwKToKICBjb21tICJ0aGVybWFsZCIsIHBpZCA1MjA2LCBqaWZm
+aWVzIDQyOTQ5NTE5NjMgKGFnZSAxMDk3LjMwMHMpCiAgaGV4IGR1bXAgKGZpcnN0IDMyIGJ5
+dGVzKToKICAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDBkIDAxIDJkIDAwIDAwIDAwIDAw
+IDAwICAuLi4uLi4uLi4uLS4uLi4uCiAgICBhZiAwNyAwMSA0MCBmZSBhMiBmZiBmZiAwMCAw
+MCAwMCAwMCAwMCAwMCAwMCAwMCAgLi4uQC4uLi4uLi4uLi4uLgogIGJhY2t0cmFjZToKICAg
+IFs8MDAwMDAwMDBkYTNjNjY3Yz5dIHNsYWJfcG9zdF9hbGxvY19ob29rKzB4ODAvMHgyZTAK
+ICAgIFs8MDAwMDAwMDA3ODIwZjc2Mz5dIGttZW1fY2FjaGVfYWxsb2MrMHgxNzEvMHgzMDAK
+ICAgIFs8MDAwMDAwMDBjOGQwMGJjYz5dIGFjcGlfb3NfYWNxdWlyZV9vYmplY3QrMHgyYy8w
+eDMyCiAgICBbPDAwMDAwMDAwM2FlYzQ1MWE+XSBhY3BpX3BzX2FsbG9jX29wKzB4NGEvMHg5
+OQogICAgWzwwMDAwMDAwMDhhN2Y2YzgxPl0gYWNwaV9wc19nZXRfbmV4dF9hcmcrMHg2MTEv
+MHg3NjEKICAgIFs8MDAwMDAwMDBmN2ZjYzAzZD5dIGFjcGlfcHNfcGFyc2VfbG9vcCsweDQ5
+NC8weDhkNwogICAgWzwwMDAwMDAwMDc4YmE2Mzk3Pl0gYWNwaV9wc19wYXJzZV9hbWwrMHgx
+YmIvMHg1NjEKICAgIFs8MDAwMDAwMDBlMTg5YWMzMD5dIGFjcGlfcHNfZXhlY3V0ZV9tZXRo
+b2QrMHgyMGYvMHgyZDUKICAgIFs8MDAwMDAwMDA3ODUzMmJiOT5dIGFjcGlfbnNfZXZhbHVh
+dGUrMHgzNGQvMHg0ZjMKICAgIFs8MDAwMDAwMDA3MTUzODk0Mz5dIGFjcGlfZXZhbHVhdGVf
+b2JqZWN0KzB4MTgwLzB4M2FlCiAgICBbPDAwMDAwMDAwZmRjZWM5Mzg+XSBhY3BpX3J1bl9v
+c2MrMHgxMjgvMHgyNTAKICAgIFs8MDAwMDAwMDBlMDU0NGU1Nz5dIGludDM0MDBfdGhlcm1h
+bF9ydW5fb3NjKzB4NmYvMHhjMCBbaW50MzQwMF90aGVybWFsXQogICAgWzwwMDAwMDAwMDdh
+NDQzNDYyPl0gY3VycmVudF91dWlkX3N0b3JlKzB4ZTMvMHgxMjAgW2ludDM0MDBfdGhlcm1h
+bF0KICAgIFs8MDAwMDAwMDA1MDYzYWU1NT5dIGRldl9hdHRyX3N0b3JlKzB4MTQvMHgzMAog
+ICAgWzwwMDAwMDAwMDFjY2MwYjA0Pl0gc3lzZnNfa2Zfd3JpdGUrMHgzOC8weDUwCiAgICBb
+PDAwMDAwMDAwZjI0ZGNmZmM+XSBrZXJuZnNfZm9wX3dyaXRlX2l0ZXIrMHgxNDYvMHgxZDAK
+dW5yZWZlcmVuY2VkIG9iamVjdCAweGZmZmY5NWU2ODdkYmU1MDAgKHNpemUgODApOgogIGNv
+bW0gInRoZXJtYWxkIiwgcGlkIDUyMDYsIGppZmZpZXMgNDI5NDk1Mjg4OSAoYWdlIDEwOTMu
+NzI0cykKICBoZXggZHVtcCAoZmlyc3QgMzIgYnl0ZXMpOgogICAgMDAgMDAgMDAgMDAgMDAg
+MDAgMDAgMDAgMGQgMDEgMmQgMDAgMDAgMDAgMDAgMDAgIC4uLi4uLi4uLi4tLi4uLi4KICAg
+IDNhIDA4IDAxIDQwIGZlIGEyIGZmIGZmIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwICA6Li5A
+Li4uLi4uLi4uLi4uCiAgYmFja3RyYWNlOgogICAgWzwwMDAwMDAwMGRhM2M2NjdjPl0gc2xh
+Yl9wb3N0X2FsbG9jX2hvb2srMHg4MC8weDJlMAogICAgWzwwMDAwMDAwMDc4MjBmNzYzPl0g
+a21lbV9jYWNoZV9hbGxvYysweDE3MS8weDMwMAogICAgWzwwMDAwMDAwMGM4ZDAwYmNjPl0g
+YWNwaV9vc19hY3F1aXJlX29iamVjdCsweDJjLzB4MzIKICAgIFs8MDAwMDAwMDAzYWVjNDUx
+YT5dIGFjcGlfcHNfYWxsb2Nfb3ArMHg0YS8weDk5CiAgICBbPDAwMDAwMDAwOGE3ZjZjODE+
+XSBhY3BpX3BzX2dldF9uZXh0X2FyZysweDYxMS8weDc2MQogICAgWzwwMDAwMDAwMGY3ZmNj
+MDNkPl0gYWNwaV9wc19wYXJzZV9sb29wKzB4NDk0LzB4OGQ3CiAgICBbPDAwMDAwMDAwNzhi
+YTYzOTc+XSBhY3BpX3BzX3BhcnNlX2FtbCsweDFiYi8weDU2MQogICAgWzwwMDAwMDAwMGUx
+ODlhYzMwPl0gYWNwaV9wc19leGVjdXRlX21ldGhvZCsweDIwZi8weDJkNQogICAgWzwwMDAw
+MDAwMDc4NTMyYmI5Pl0gYWNwaV9uc19ldmFsdWF0ZSsweDM0ZC8weDRmMwogICAgWzwwMDAw
+MDAwMDcxNTM4OTQzPl0gYWNwaV9ldmFsdWF0ZV9vYmplY3QrMHgxODAvMHgzYWUKICAgIFs8
+MDAwMDAwMDBmZGNlYzkzOD5dIGFjcGlfcnVuX29zYysweDEyOC8weDI1MAogICAgWzwwMDAw
+MDAwMGUwNTQ0ZTU3Pl0gaW50MzQwMF90aGVybWFsX3J1bl9vc2MrMHg2Zi8weGMwIFtpbnQz
+NDAwX3RoZXJtYWxdCiAgICBbPDAwMDAwMDAwMTRiOTZmN2Q+XSBpbnQzNDAwX3RoZXJtYWxf
+Y2hhbmdlX21vZGUrMHhkMy8weDExMCBbaW50MzQwMF90aGVybWFsXQogICAgWzwwMDAwMDAw
+MDZmZmM4ODI2Pl0gdGhlcm1hbF96b25lX2RldmljZV9zZXRfbW9kZSsweDQ2LzB4YzAKICAg
+IFs8MDAwMDAwMDAzNmExZjIyMT5dIHRoZXJtYWxfem9uZV9kZXZpY2VfZGlzYWJsZSsweDEw
+LzB4MjAKICAgIFs8MDAwMDAwMDA1MDJlNGU3ND5dIG1vZGVfc3RvcmUrMHg1Yy8weDgwCnVu
+cmVmZXJlbmNlZCBvYmplY3QgMHhmZmZmOTVlNjg3YTM0Y2QwIChzaXplIDgwKToKICBjb21t
+ICJ0aGVybWFsZCIsIHBpZCA1MjE0LCBqaWZmaWVzIDQyOTQ5NTM2MjggKGFnZSAxMDkwLjc2
+OHMpCiAgaGV4IGR1bXAgKGZpcnN0IDMyIGJ5dGVzKToKICAgIDAwIDAwIDAwIDAwIDAwIDAw
+IDAwIDAwIDBkIDAxIDJkIDAwIDAwIDAwIDAwIDAwICAuLi4uLi4uLi4uLS4uLi4uCiAgICBh
+ZiAwNyAwMSA0MCBmZSBhMiBmZiBmZiAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgLi4uQC4u
+Li4uLi4uLi4uLgogIGJhY2t0cmFjZToKICAgIFs8MDAwMDAwMDBkYTNjNjY3Yz5dIHNsYWJf
+cG9zdF9hbGxvY19ob29rKzB4ODAvMHgyZTAKICAgIFs8MDAwMDAwMDA3ODIwZjc2Mz5dIGtt
+ZW1fY2FjaGVfYWxsb2MrMHgxNzEvMHgzMDAKICAgIFs8MDAwMDAwMDBjOGQwMGJjYz5dIGFj
+cGlfb3NfYWNxdWlyZV9vYmplY3QrMHgyYy8weDMyCiAgICBbPDAwMDAwMDAwM2FlYzQ1MWE+
+XSBhY3BpX3BzX2FsbG9jX29wKzB4NGEvMHg5OQogICAgWzwwMDAwMDAwMDhhN2Y2YzgxPl0g
+YWNwaV9wc19nZXRfbmV4dF9hcmcrMHg2MTEvMHg3NjEKICAgIFs8MDAwMDAwMDBmN2ZjYzAz
+ZD5dIGFjcGlfcHNfcGFyc2VfbG9vcCsweDQ5NC8weDhkNwogICAgWzwwMDAwMDAwMDc4YmE2
+Mzk3Pl0gYWNwaV9wc19wYXJzZV9hbWwrMHgxYmIvMHg1NjEKICAgIFs8MDAwMDAwMDBlMTg5
+YWMzMD5dIGFjcGlfcHNfZXhlY3V0ZV9tZXRob2QrMHgyMGYvMHgyZDUKICAgIFs8MDAwMDAw
+MDA3ODUzMmJiOT5dIGFjcGlfbnNfZXZhbHVhdGUrMHgzNGQvMHg0ZjMKICAgIFs8MDAwMDAw
+MDA3MTUzODk0Mz5dIGFjcGlfZXZhbHVhdGVfb2JqZWN0KzB4MTgwLzB4M2FlCiAgICBbPDAw
+MDAwMDAwZmRjZWM5Mzg+XSBhY3BpX3J1bl9vc2MrMHgxMjgvMHgyNTAKICAgIFs8MDAwMDAw
+MDBlMDU0NGU1Nz5dIGludDM0MDBfdGhlcm1hbF9ydW5fb3NjKzB4NmYvMHhjMCBbaW50MzQw
+MF90aGVybWFsXQogICAgWzwwMDAwMDAwMDdhNDQzNDYyPl0gY3VycmVudF91dWlkX3N0b3Jl
+KzB4ZTMvMHgxMjAgW2ludDM0MDBfdGhlcm1hbF0KICAgIFs8MDAwMDAwMDA1MDYzYWU1NT5d
+IGRldl9hdHRyX3N0b3JlKzB4MTQvMHgzMAogICAgWzwwMDAwMDAwMDFjY2MwYjA0Pl0gc3lz
+ZnNfa2Zfd3JpdGUrMHgzOC8weDUwCiAgICBbPDAwMDAwMDAwZjI0ZGNmZmM+XSBrZXJuZnNf
+Zm9wX3dyaXRlX2l0ZXIrMHgxNDYvMHgxZDAKdW5yZWZlcmVuY2VkIG9iamVjdCAweGZmZmY5
+NWU2ODdhMzQ4MjAgKHNpemUgODApOgogIGNvbW0gInRoZXJtYWxkIiwgcGlkIDUyMTQsIGpp
+ZmZpZXMgNDI5NTE5NDE4MiAoYWdlIDEyOC41NjhzKQogIGhleCBkdW1wIChmaXJzdCAzMiBi
+eXRlcyk6CiAgICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwZCAwMSAyZCAwMCAwMCAwMCAw
+MCAwMCAgLi4uLi4uLi4uLi0uLi4uLgogICAgM2EgMDggMDEgNDAgZmUgYTIgZmYgZmYgMDAg
+MDAgMDAgMDAgMDAgMDAgMDAgMDAgIDouLkAuLi4uLi4uLi4uLi4KICBiYWNrdHJhY2U6CiAg
+ICBbPDAwMDAwMDAwZGEzYzY2N2M+XSBzbGFiX3Bvc3RfYWxsb2NfaG9vaysweDgwLzB4MmUw
+CiAgICBbPDAwMDAwMDAwNzgyMGY3NjM+XSBrbWVtX2NhY2hlX2FsbG9jKzB4MTcxLzB4MzAw
+CiAgICBbPDAwMDAwMDAwYzhkMDBiY2M+XSBhY3BpX29zX2FjcXVpcmVfb2JqZWN0KzB4MmMv
+MHgzMgogICAgWzwwMDAwMDAwMDNhZWM0NTFhPl0gYWNwaV9wc19hbGxvY19vcCsweDRhLzB4
+OTkKICAgIFs8MDAwMDAwMDA4YTdmNmM4MT5dIGFjcGlfcHNfZ2V0X25leHRfYXJnKzB4NjEx
+LzB4NzYxCiAgICBbPDAwMDAwMDAwZjdmY2MwM2Q+XSBhY3BpX3BzX3BhcnNlX2xvb3ArMHg0
+OTQvMHg4ZDcKICAgIFs8MDAwMDAwMDA3OGJhNjM5Nz5dIGFjcGlfcHNfcGFyc2VfYW1sKzB4
+MWJiLzB4NTYxCiAgICBbPDAwMDAwMDAwZTE4OWFjMzA+XSBhY3BpX3BzX2V4ZWN1dGVfbWV0
+aG9kKzB4MjBmLzB4MmQ1CiAgICBbPDAwMDAwMDAwNzg1MzJiYjk+XSBhY3BpX25zX2V2YWx1
+YXRlKzB4MzRkLzB4NGYzCiAgICBbPDAwMDAwMDAwNzE1Mzg5NDM+XSBhY3BpX2V2YWx1YXRl
+X29iamVjdCsweDE4MC8weDNhZQogICAgWzwwMDAwMDAwMGZkY2VjOTM4Pl0gYWNwaV9ydW5f
+b3NjKzB4MTI4LzB4MjUwCiAgICBbPDAwMDAwMDAwZTA1NDRlNTc+XSBpbnQzNDAwX3RoZXJt
+YWxfcnVuX29zYysweDZmLzB4YzAgW2ludDM0MDBfdGhlcm1hbF0KICAgIFs8MDAwMDAwMDAx
+NGI5NmY3ZD5dIGludDM0MDBfdGhlcm1hbF9jaGFuZ2VfbW9kZSsweGQzLzB4MTEwIFtpbnQz
+NDAwX3RoZXJtYWxdCiAgICBbPDAwMDAwMDAwNmZmYzg4MjY+XSB0aGVybWFsX3pvbmVfZGV2
+aWNlX3NldF9tb2RlKzB4NDYvMHhjMAogICAgWzwwMDAwMDAwMDM2YTFmMjIxPl0gdGhlcm1h
+bF96b25lX2RldmljZV9kaXNhYmxlKzB4MTAvMHgyMAogICAgWzwwMDAwMDAwMDUwMmU0ZTc0
+Pl0gbW9kZV9zdG9yZSsweDVjLzB4ODAKdW5yZWZlcmVuY2VkIG9iamVjdCAweGZmZmY5NWU2
+ODdkYmU0YjAgKHNpemUgODApOgogIGNvbW0gInRoZXJtYWxkIiwgcGlkIDU3NjMsIGppZmZp
+ZXMgNDI5NTE5NzgxNCAoYWdlIDExNC4xODhzKQogIGhleCBkdW1wIChmaXJzdCAzMiBieXRl
+cyk6CiAgICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwZCAwMSAyZCAwMCAwMCAwMCAwMCAw
+MCAgLi4uLi4uLi4uLi0uLi4uLgogICAgYWYgMDcgMDEgNDAgZmUgYTIgZmYgZmYgMDAgMDAg
+MDAgMDAgMDAgMDAgMDAgMDAgIC4uLkAuLi4uLi4uLi4uLi4KICBiYWNrdHJhY2U6CiAgICBb
+PDAwMDAwMDAwZGEzYzY2N2M+XSBzbGFiX3Bvc3RfYWxsb2NfaG9vaysweDgwLzB4MmUwCiAg
+ICBbPDAwMDAwMDAwNzgyMGY3NjM+XSBrbWVtX2NhY2hlX2FsbG9jKzB4MTcxLzB4MzAwCiAg
+ICBbPDAwMDAwMDAwYzhkMDBiY2M+XSBhY3BpX29zX2FjcXVpcmVfb2JqZWN0KzB4MmMvMHgz
+MgogICAgWzwwMDAwMDAwMDNhZWM0NTFhPl0gYWNwaV9wc19hbGxvY19vcCsweDRhLzB4OTkK
+ICAgIFs8MDAwMDAwMDA4YTdmNmM4MT5dIGFjcGlfcHNfZ2V0X25leHRfYXJnKzB4NjExLzB4
+NzYxCiAgICBbPDAwMDAwMDAwZjdmY2MwM2Q+XSBhY3BpX3BzX3BhcnNlX2xvb3ArMHg0OTQv
+MHg4ZDcKICAgIFs8MDAwMDAwMDA3OGJhNjM5Nz5dIGFjcGlfcHNfcGFyc2VfYW1sKzB4MWJi
+LzB4NTYxCiAgICBbPDAwMDAwMDAwZTE4OWFjMzA+XSBhY3BpX3BzX2V4ZWN1dGVfbWV0aG9k
+KzB4MjBmLzB4MmQ1CiAgICBbPDAwMDAwMDAwNzg1MzJiYjk+XSBhY3BpX25zX2V2YWx1YXRl
+KzB4MzRkLzB4NGYzCiAgICBbPDAwMDAwMDAwNzE1Mzg5NDM+XSBhY3BpX2V2YWx1YXRlX29i
+amVjdCsweDE4MC8weDNhZQogICAgWzwwMDAwMDAwMGZkY2VjOTM4Pl0gYWNwaV9ydW5fb3Nj
+KzB4MTI4LzB4MjUwCiAgICBbPDAwMDAwMDAwZTA1NDRlNTc+XSBpbnQzNDAwX3RoZXJtYWxf
+cnVuX29zYysweDZmLzB4YzAgW2ludDM0MDBfdGhlcm1hbF0KICAgIFs8MDAwMDAwMDA3YTQ0
+MzQ2Mj5dIGN1cnJlbnRfdXVpZF9zdG9yZSsweGUzLzB4MTIwIFtpbnQzNDAwX3RoZXJtYWxd
+CiAgICBbPDAwMDAwMDAwNTA2M2FlNTU+XSBkZXZfYXR0cl9zdG9yZSsweDE0LzB4MzAKICAg
+IFs8MDAwMDAwMDAxY2NjMGIwND5dIHN5c2ZzX2tmX3dyaXRlKzB4MzgvMHg1MAogICAgWzww
+MDAwMDAwMGYyNGRjZmZjPl0ga2VybmZzX2ZvcF93cml0ZV9pdGVyKzB4MTQ2LzB4MWQwCg==
+
+
+--------------Ll0EviEI1ovXA5j6SuTndsfK--
