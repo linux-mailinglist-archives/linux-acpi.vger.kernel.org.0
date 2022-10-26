@@ -2,258 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA1860DE7A
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Oct 2022 11:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CD5A60DF56
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Oct 2022 13:17:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229551AbiJZJ7n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Oct 2022 05:59:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42674 "EHLO
+        id S233150AbiJZLRD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 26 Oct 2022 07:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231903AbiJZJ7l (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Oct 2022 05:59:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE50C647B
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Oct 2022 02:59:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1666778374;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=88clgiauNntAl3Wz7H3JYTecCEZyzTGGOgZ+LgOj43I=;
-        b=eAmcIBZ2fJwuaQX2xZ1NE9RXLF7+9MTXgFNgUatjGChLQd+4F2NV08EAwr1F2jM5txspVz
-        1iZjj8ggOcUqaO6/U9urOtgwPAMMr7EhOgY6zAujRYBB4dVPgA1bltHWzmlK3CdcoQ7aGF
-        I3spo7NoQa0wga+at26gd0GJ8ljvvQk=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-648-kzfC16jaOWqX1GmHAGlftg-1; Wed, 26 Oct 2022 05:59:33 -0400
-X-MC-Unique: kzfC16jaOWqX1GmHAGlftg-1
-Received: by mail-ed1-f72.google.com with SMTP id e15-20020a056402190f00b00461b0576620so7517034edz.2
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Oct 2022 02:59:33 -0700 (PDT)
+        with ESMTP id S233210AbiJZLRB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Oct 2022 07:17:01 -0400
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A319185B;
+        Wed, 26 Oct 2022 04:17:00 -0700 (PDT)
+Received: by mail-qk1-f181.google.com with SMTP id o2so10198615qkk.10;
+        Wed, 26 Oct 2022 04:17:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=88clgiauNntAl3Wz7H3JYTecCEZyzTGGOgZ+LgOj43I=;
-        b=PvDDrTrN5Q/i4iJFXtOvVJAL88UbKwnsUQhwmIyzVtDbOUcjLGXjF0uQ3tdirjzPpd
-         DcaCkyL8j+zGaDzuFna6WbsuBnrLoLbInjNcDhgnnxlfIMlCaWEJ4El+aXUhqFjBBE0q
-         0VHVC6czbI1rr4TLe9qvzM41mXU5LvbCPxct+VbDitqvRJbLCZe7WZsnTYFw1NafeLUp
-         wwJW7UqUOHv2OAaX3aGTmAjSbHWxMofft2uR9YOGGqHSCfhZYSEaZsxiJhJT42p1Q7qD
-         Lnsgt6PlKM6WPx3cB90uJphrPnnSXeiX/yjTujkKJkUrdKEWdQ5DabjkBAEK3fNMiYJa
-         G4XA==
-X-Gm-Message-State: ACrzQf1O9AweHPqebzABg4SjU+G7GXZPqDl9zyQnJS7MX7smKsbG+sG4
-        +gjrEcYRTD4cDhgKoa7DCRfaU7shCCKtnzfDgomIeHjfmiy+P8b5V30ZnBtiLwtQUQNbG11D9LD
-        y2vzFIDoTXEXDJFfYJ3Tplg==
-X-Received: by 2002:a17:906:fe04:b0:777:b13d:30a6 with SMTP id wy4-20020a170906fe0400b00777b13d30a6mr36058261ejb.248.1666778372048;
-        Wed, 26 Oct 2022 02:59:32 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM778dCSL7x8318qzKenTU6R7Jp/heP0pFWsLg0Zjgt4GfqQod/XgRUMTGVY4TA8QIvtp3pSAg==
-X-Received: by 2002:a17:906:fe04:b0:777:b13d:30a6 with SMTP id wy4-20020a170906fe0400b00777b13d30a6mr36058246ejb.248.1666778371810;
-        Wed, 26 Oct 2022 02:59:31 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id x10-20020a1709060eea00b007415f8ffcbbsm2706055eji.98.2022.10.26.02.59.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Oct 2022 02:59:29 -0700 (PDT)
-Message-ID: <fa6cc1d9-6740-b495-2c72-cae18c429ca6@redhat.com>
-Date:   Wed, 26 Oct 2022 11:59:28 +0200
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bkc8jxMr2p6wy1sRq7AUIm9TzPToZYJ54wpY7zhIe7M=;
+        b=okIQpk88CukLyRLQlj6tQCb9S9y0qYVOkSH/Bq5gsQKgW4Y71LxCUd2RloCIUIYkUv
+         KkHZd+jT12ttmDZF0iMbG7pvjx99gWVp2K5xJLTEPXOcEU0gLckfRkUVBR+EM03ljEfE
+         yaVGufqC2mClaLwh2HsqXvyn2CIddOJeTFe9C7UWHmBdo8PpvxnKNWnIGefTpTDNaZMR
+         Us5JPvlIRrgliFYZzAgDRuGgooe61hQMdGtHUMsZaYYMSBh/UPfL0hBfttR3gL9AnRot
+         WjMyGMcTIofz5S1818qYac9EhCjnLrtc4zkMtxcCr6elE2H1/3E7WbvYN/tAp4nyuzdO
+         2/Xw==
+X-Gm-Message-State: ACrzQf0p36iWrOR3gg+sBskbfs+BIJaxPTFY4RskIsEwqdVfVvXT4vPs
+        RR/ij3ZzBTZTd5PZVIffBUCIDeetpjmc4lvtKeE3LoIq
+X-Google-Smtp-Source: AMsMyM6fUqqeJOG0uDJp7tM0ShfTGW7AHW/hrkgyrqrWJCztj5e71zwgscXRycTffepa26BPFVd9UIcmMujBH9yxuVY=
+X-Received: by 2002:a05:620a:d89:b0:6cf:c98b:744c with SMTP id
+ q9-20020a05620a0d8900b006cfc98b744cmr29776452qkl.443.1666783019193; Wed, 26
+ Oct 2022 04:16:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH v5 02/31] drm/i915: Don't register backlight when another
- backlight should be used (v2)
-Content-Language: en-US, nl
-To:     Matthew Garrett <mjg59@srcf.ucam.org>
-Cc:     Dmitry Osipenko <digetx@gmail.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Karol Herbst <kherbst@redhat.com>, Lyude <lyude@redhat.com>,
-        Daniel Dadap <ddadap@nvidia.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Pan@freedesktop.org, Xinhui <Xinhui.Pan@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+References: <20221025221054.12377-1-mario.limonciello@amd.com>
+In-Reply-To: <20221025221054.12377-1-mario.limonciello@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 26 Oct 2022 13:16:45 +0200
+Message-ID: <CAJZ5v0iy6WwujE6kwJ2i=A4Cjmvnvi9UgovNp_NzW759MZ-7Aw@mail.gmail.com>
+Subject: Re: [PATCH v3] PCI/ACPI: PCI/ACPI: Validate devices with power
+ resources support D3
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>, linux-acpi@vger.kernel.org,
-        Jani Nikula <jani.nikula@intel.com>,
-        nouveau@lists.freedesktop.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel@lists.freedesktop.org,
-        platform-driver-x86@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        David Airlie <airlied@redhat.com>, Len Brown <lenb@kernel.org>
-References: <20220825143726.269890-1-hdegoede@redhat.com>
- <20220825143726.269890-3-hdegoede@redhat.com>
- <f914ceb3-94bd-743c-f8b6-0334086e731a@gmail.com>
- <42a5f2c9-a1dc-8fc0-7334-fe6c390ecfbb@redhat.com>
- <20221024203057.GA28675@srcf.ucam.org>
- <8f53b8b6-ead2-22f5-16f7-65b31f7cc05c@redhat.com>
- <20221025193248.GA21457@srcf.ucam.org>
- <144cd47e-42dc-2b84-1a90-ea5e080e08a3@redhat.com>
- <20221025204043.GA23306@srcf.ucam.org>
- <cb5add36-c13c-ccd5-1b4b-71b45163a170@redhat.com>
- <20221025234040.GA27673@srcf.ucam.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20221025234040.GA27673@srcf.ucam.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Mehta Sanju <Sanju.Mehta@amd.com>,
+        Lukas Wunner <lukas@wunner.de>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Oct 26, 2022 at 12:10 AM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> Firmware typically advertises that PCIe devices can support D3
+> by a combination of the value returned by _S0W as well as the
+> HotPlugSupportInD3 _DSD.
+>
+> `acpi_pci_bridge_d3` looks for this combination but also contains
+> an assumption that if a device contains power resources it can support
+> D3.  This was introduced from commit c6e331312ebf ("PCI/ACPI: Whitelist
+> hotplug ports for D3 if power managed by ACPI").
+>
+> On some firmware configurations for "AMD Pink Sardine" D3 is not
+> supported for wake in _S0W for the PCIe root port for tunneling.
+> However the device will still be opted into runtime PM since
+> `acpi_pci_bridge_d3` returns since the ACPI device contains power
+> resources.
+>
+> When the thunderbolt driver is loaded a device link between the USB4
+> router and the PCIe root port for tunneling is created where the PCIe
+> root port for tunneling is the consumer and the USB4 router is the
+> supplier.  Here is a demonstration of this topology that occurs:
+>
+> ├─ 0000:00:03.1
+> |       | ACPI Path: \_SB_.PCI0.GP11 (Supports "0" in _S0W)
+> |       | Device Links: supplier:pci:0000:c4:00.5
+> |       └─ D0 (Runtime PM enabled)
+> ├─ 0000:00:04.1
+> |       | ACPI Path: \_SB_.PCI0.GP12 (Supports "0" in _S0W)
+> |       | Device Links: supplier:pci:0000:c4:00.6
+> |       └─ D0 (Runtime PM enabled)
+> ├─ 0000:00:08.3
+> |       | ACPI Path: \_SB_.PCI0.GP19
+> |       ├─ D0 (Runtime PM disabled)
+> |       ├─ 0000:c4:00.3
+> |       |       | ACPI Path: \_SB_.PCI0.GP19.XHC3
+> |       |       | Device Links: supplier:pci:0000:c4:00.5
+> |       |       └─ D3cold (Runtime PM enabled)
+> |       ├─ 0000:c4:00.4
+> |       |       | ACPI Path: \_SB_.PCI0.GP19.XHC4
+> |       |       | Device Links: supplier:pci:0000:c4:00.6
+> |       |       └─ D3cold (Runtime PM enabled)
+> |       ├─ 0000:c4:00.5
+> |       |       | ACPI Path: \_SB_.PCI0.GP19.NHI0 (Supports "4" in _S0W)
+> |       |       | Device Links: consumer:pci:0000:00:03.1 consumer:pci:0000:c4:00.3
+> |       |       └─ D3cold (Runtime PM enabled)
+> |       └─ 0000:c4:00.6
+> |               | ACPI Path: \_SB_.PCI0.GP19.NHI1 (Supports "4" in _S0W)
+> |               | Device Links: consumer:pci:0000:c4:00.4 consumer:pci:0000:00:04.1
+> |               └─ D3cold (Runtime PM enabled)
+>
+> Allowing the PCIe root port for tunneling to go into runtime PM (even if
+> it doesn't support D3) allows the USB4 router to also go into runtime PM.
+> The PCIe root port for tunneling stays in D0 but is in runtime PM. Due to
+> the device link the USB4 router transitions to D3cold when this happens.
+>
+> The expectation is the USB4 router should have also remained in D0 since
+> the PCIe root port for tunneling remained in D0.
+>
+> Instead of making this assertion from the power resources check
+> immediately, move the check to later on, which will have validated
+> that the device supports wake from D3hot or D3cold.
+>
+> This fix prevents the USB4 router going into D3 when the firmware says that
+> the PCIe root port for tunneling can't handle it while still allowing
+> system that don't have the HotplugSupportInD3 _DSD to also enter D3 if they
+> have power resources that can wake from D3.
+>
+> Fixes: dff6139015dc6 ("PCI/ACPI: Allow D3 only if Root Port can signal and wake from D3")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-On 10/26/22 01:40, Matthew Garrett wrote:
-> On Wed, Oct 26, 2022 at 01:27:25AM +0200, Hans de Goede wrote:
-> 
->> this code should actually set the ACPI_VIDEO_BACKLIGHT flag:
->> drivers/acpi/scan.c:
->>
->> static acpi_status
->> acpi_backlight_cap_match(acpi_handle handle, u32 level, void *context,
->>                           void **return_value)
->> {
->>         long *cap = context;
->>
->>         if (acpi_has_method(handle, "_BCM") &&
->>             acpi_has_method(handle, "_BCL")) {
->>                 acpi_handle_debug(handle, "Found generic backlight support\n");
->>                 *cap |= ACPI_VIDEO_BACKLIGHT;
->>                 /* We have backlight support, no need to scan further */
->>                 return AE_CTRL_TERMINATE;
->>         }
->>         return 0;
->> }
-> 
-> Ah, yeah, my local tree no longer matches the upstream behaviour because 
-> I've hacked the EC firmware to remove the backlight trigger because it 
-> had an extremely poor brightness curve and also automatically changed it 
-> on AC events - as a result I removed the backlight code from the DSDT 
-> and just fell back to the native control. Like I said I'm a long way 
-> from the normal setup, but this did previously work.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Ok, so this is a local customization to what is already a custom BIOS
-for a custom motherboard. There is a lot of custom in that sentence and
-TBH at some point things might become too custom for them to be expected
-to work OOTB.
-
-Note that you can always just override the choses made by the heuristisc/
-quirks on the kernel commandline by adding:
-
-acpi_backlight=native   (I think you want this one?)
-
-or if you want the old thinkpad_acpi module vendor/EC interface:
-
-acpi_backlight=vendor
-
-Asking you to pass this on the commandline does not seem like a huge
-stretch given the large amount of hw/firmware customization you have done ?
-
-> The "right" logic here seems pretty simple: if ACPI backlight control is 
-> expected to work, use it. If it isn't, but there's a vendor interface, 
-> use it. If there's no vendor interface, use the native interface.
-
-I'm afraid things are not that simple. I assume that with
-"if ACPI backlight control is expected to work" you mean don't
-use ACPI backlight control when (acpi_osi_is_win8() && native_available)
-evaluates to true because it is known to be broken on some of
-those systems because Windows 8 stopped using it ?
-
-Unfortunately something similar applies to vendor interfaces,
-When Windows XP started using (and mandating for certification
-IIRC) ACPI backlight control, vendors still kept their own
-vendor specific EC/smbios/ACPI/WMI backlight interfaces around for
-a long long time, except they were often no longer tested.
-
-So basically we have 3 major backlight control methods:
-
-1. native GPU backlight control, which sometimes does not work
-on older laptops because the backlight is connected to the EC
-rather then the GPU there, yet often still enabled in the
-video-bios-tables so the GPU drivers will still try to use it.
-
-2. ACPI -> known to be always present on recent Windows laptops
-because mandated by the hardware certification requirements
-(even on Windows 8+), but regularly broken on Windows 8+ because
-their backlight control was moved from the core-os to the GPU
-drivers and those typically use the native method.
-
-3. Vendor specific EC/smbios/ACPI/WMI interfaces which work
-on older laptops, but are often present on newer laptops
-despite them no longer working and to get working backlight
-control either 1. or 2. should be used.
-
-So basically non of the 3 main backlight control methods can
-be trusted even if they are present. Which is why need to have
-a combination of heuristics + quirks.
-
-And I have been working on moving all this into a central
-place in drivers/acpi/video_detect.c because having
-the heuristics + quirks spread out all over the place does
-not help.
-
-> The 
-> problem you're dealing with is that the knowledge of whether or not 
-> there's a vendor interface isn't something the core kernel code knows 
-> about. What you're proposing here is effectively for us to expose 
-> additional information about whether or not there's a vendor interface 
-> in the system firmware, but since we're talking in some cases about 
-> hardware that's almost 20 years old, we're not realistically going to 
-> get those old machines fixed.
-
-I don't understand why you keep talking about the old vendor interfaces,
-at least for the chromebook part of this thread the issue is that
-the i915 driver no longer registers the intel_backlight device which
-is a native device type, which is caused by the patch this email
-thread is about (and old vendor interfaces do not come into play
-at all here). So AFAICT this is a native vs acpi backlight control
-issue ?
-
-I really want to resolve your bug, but I still lack a lot of info,
-like what backlight interface you were actually using in 6.0 ?
-
-Can you please provide the following info for your laptop:
-
-1. Output of "ls /sys/class/backlight" with 6.0  (working setup)
-2. Output of "ls /sys/class/backlight" with 6.1  (non-working setup)
-3. dmidecode output, so that I can check if this quirk:
-
-        {
-         .callback = video_detect_force_video,
-         /* ThinkPad X201s */
-         .matches = {
-                DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-                DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X201s"),
-                },
-        },
-
-will trigger.
-
-4. An acpidump. Although you already said that you have removed the
-ACPI video bus bits, so I guess I can just assume that
-the ACPI_VIDEO_BACKLIGHT flag won't get set.
-
-Regards,
-
-Hans
-
-
-p.s.
-
-This thread has made me wonder if the 6.1 changes don't cause
-regressions on other laptops flashed with a CoreOS BIOS, I will
-start a mail-thread asking for testing on the CoreOS mailinglist.
-
+> ---
+> v2->v3:
+>  * Reword commit message
+> v1->v2:
+>  * Just return value of acpi_pci_power_manageable (Rafael)
+>  * Remove extra word in commit message
+> ---
+>  drivers/pci/pci-acpi.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index a46fec776ad77..8c6aec50dd471 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -984,10 +984,6 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>         if (acpi_pci_disabled || !dev->is_hotplug_bridge)
+>                 return false;
+>
+> -       /* Assume D3 support if the bridge is power-manageable by ACPI. */
+> -       if (acpi_pci_power_manageable(dev))
+> -               return true;
+> -
+>         rpdev = pcie_find_root_port(dev);
+>         if (!rpdev)
+>                 return false;
+> @@ -1023,7 +1019,8 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>             obj->integer.value == 1)
+>                 return true;
+>
+> -       return false;
+> +       /* Assume D3 support if the bridge is power-manageable by ACPI. */
+> +       return acpi_pci_power_manageable(dev);
+>  }
+>
+>  int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+> --
+> 2.34.1
+>
