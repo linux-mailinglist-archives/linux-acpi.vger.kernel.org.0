@@ -2,144 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C74060ECEA
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Oct 2022 02:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6209960EECA
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Oct 2022 05:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233540AbiJ0ASZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Oct 2022 20:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48758 "EHLO
+        id S233993AbiJ0DqE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Oct 2022 23:46:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233790AbiJ0ASY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Oct 2022 20:18:24 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3022AC96CF;
-        Wed, 26 Oct 2022 17:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666829904; x=1698365904;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=oB6nTDCMqGB4bl603Y+aNjuJYpKdztso9dayg7OlEFk=;
-  b=DFmReBYMh5B2EubJ+g1paD0HAlOFgidR6FCsRnIAL/UrW/FgbEwDznoh
-   H59J1Ri2SJrI+orHOcu077Mi2Z666JN7ZEMnYrrVeHSNdZburcAUmHRFj
-   LJsF55+9cfHJNZen+rBZrCEnQsr+FVnDWDH2sl1g7kVZxUi0GjxeukalR
-   MunoqcmlFHdliGQS0fZMhtEN4Xb86CICd2ATkvZnugF5TZj5I49zR2Rkd
-   9WARYPkl0wbGcQ4KHRnmh9K4vHDuGjpJUuZtqfMFqnQB1dcB0Be13Lsg6
-   0o1e9x+GzXZXyD0sVYo3bfNJsIhbSsZiF9FB6G2SxMcXU+zojsA8T5f09
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10512"; a="288490084"
-X-IronPort-AV: E=Sophos;i="5.95,215,1661842800"; 
-   d="scan'208";a="288490084"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2022 17:18:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10512"; a="663414342"
-X-IronPort-AV: E=Sophos;i="5.95,215,1661842800"; 
-   d="scan'208";a="663414342"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 26 Oct 2022 17:18:22 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1onqbF-00081D-1M;
-        Thu, 27 Oct 2022 00:18:21 +0000
-Date:   Thu, 27 Oct 2022 08:18:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 1de66fcb380ec2ea6ad56911061c65ba1928a94c
-Message-ID: <6359ce46.UUtBc51qx8f6Watx%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229441AbiJ0Dp5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Oct 2022 23:45:57 -0400
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C2013C8FB
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Oct 2022 20:45:51 -0700 (PDT)
+X-ASG-Debug-ID: 1666840501-1eb14e7e6453440001-I98ny2
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx2.zhaoxin.com with ESMTP id 3nQPDXg0rWtNe8Ta (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 27 Oct 2022 11:15:01 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.12; Thu, 27 Oct
+ 2022 11:15:01 +0800
+Received: from localhost.localdomain (10.32.64.1) by ZXBJMBX03.zhaoxin.com
+ (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.12; Thu, 27 Oct
+ 2022 11:14:59 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+From:   LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.7
+To:     <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+        <tony.luck@intel.com>, <bp@alien8.de>, <robert.moore@intel.com>,
+        <ying.huang@intel.com>, <rdunlap@infradead.org>,
+        <bhelgaas@google.com>, <linux-acpi@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devel@acpica.org>
+CC:     <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>,
+        <ErosZhang@zhaoxin.com>, leoliu-oc <leoliu-oc@zhaoxin.com>
+Subject: [PATCH 0/5] Parse the PCIE AER structure and set to relevant registers
+Date:   Thu, 27 Oct 2022 11:14:58 +0800
+X-ASG-Orig-Subj: [PATCH 0/5] Parse the PCIE AER structure and set to relevant registers
+Message-ID: <20221027031458.2855599-1-LeoLiu-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.32.64.1]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1666840501
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 940
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.4116 1.0000 0.0000
+X-Barracuda-Spam-Score: 0.00
+X-Barracuda-Spam-Status: No, SCORE=0.00 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.101705
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 1de66fcb380ec2ea6ad56911061c65ba1928a94c  Merge branch 'acpi-scan' into bleeding-edge
+From: leoliu-oc <leoliu-oc@zhaoxin.com>
 
-elapsed time: 721m
+HEST PCIE AER error source information describes the Uncorrectable Error 
+Severity, CorrectableError Mask and other aer register's value to write to the
+bridge's Correctable Error Mask register.
 
-configs tested: 62
-configs skipped: 2
+leoliu-oc (5):
+  ACPI/APEI: Add apei_hest_parse_aer()
+  ACPI/APEI: remove static from apei_hest_parse()
+  ACPI/PCI: Add AER bits #defines for PCIE/PCI-X bridges
+  ACPI/PCI: Add pci_acpi_program_hest_aer_params()
+  ACPI/PCI: config pcie devices's aer register
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arc                                 defconfig
-arc                               allnoconfig
-alpha                               defconfig
-powerpc                           allnoconfig
-alpha                             allnoconfig
-riscv                             allnoconfig
-csky                              allnoconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-s390                                defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-s390                             allmodconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-sh                               allmodconfig
-s390                             allyesconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-i386                                defconfig
-riscv                randconfig-r042-20221026
-x86_64                          rhel-8.3-func
-arc                  randconfig-r043-20221026
-ia64                             allmodconfig
-s390                 randconfig-r044-20221026
-x86_64                    rhel-8.3-kselftests
-arm                                 defconfig
-i386                             allyesconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a013
-arm64                            allyesconfig
-x86_64                        randconfig-a011
-arm                              allyesconfig
-i386                          randconfig-a014
-m68k                             allmodconfig
-x86_64                        randconfig-a002
-x86_64                        randconfig-a015
-arc                              allyesconfig
-i386                          randconfig-a012
-i386                          randconfig-a016
-alpha                            allyesconfig
-x86_64                        randconfig-a006
-m68k                             allyesconfig
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-
-clang tested configs:
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-hexagon              randconfig-r041-20221026
-hexagon              randconfig-r045-20221026
-i386                          randconfig-a013
-x86_64                        randconfig-a012
-i386                          randconfig-a011
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a014
-i386                          randconfig-a015
-x86_64                        randconfig-a016
-x86_64                        randconfig-a003
+ drivers/acpi/apei/hest.c      | 121 +++++++++++++++++++++++++++++++++-
+ drivers/pci/pci-acpi.c        |  92 ++++++++++++++++++++++++++
+ drivers/pci/pci.h             |   5 ++
+ drivers/pci/probe.c           |   1 +
+ include/acpi/actbl1.h         |  69 +++++++++++++++++++
+ include/acpi/apei.h           |   9 +++
+ include/uapi/linux/pci_regs.h |   5 ++
+ 7 files changed, 300 insertions(+), 2 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.20.1
+
