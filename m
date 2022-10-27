@@ -2,40 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D003E60EEFA
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Oct 2022 06:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 825F660EF41
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Oct 2022 06:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233548AbiJ0EZg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Oct 2022 00:25:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
+        id S229743AbiJ0E7M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Oct 2022 00:59:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbiJ0EZg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Oct 2022 00:25:36 -0400
-Received: from out30-43.freemail.mail.aliyun.com (out30-43.freemail.mail.aliyun.com [115.124.30.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5D132B9D;
-        Wed, 26 Oct 2022 21:25:00 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0VT9cxpK_1666844688;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VT9cxpK_1666844688)
-          by smtp.aliyun-inc.com;
-          Thu, 27 Oct 2022 12:24:51 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        jarkko@kernel.org, naoya.horiguchi@nec.com, linmiaohe@huawei.com,
-        akpm@linux-foundation.org
-Cc:     stable@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cuibixuan@linux.alibaba.com,
-        baolin.wang@linux.alibaba.com, zhuo.song@linux.alibaba.com,
-        xueshuai@linux.alibaba.com
-Subject: [PATCH] ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on action required events
-Date:   Thu, 27 Oct 2022 12:24:45 +0800
-Message-Id: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S234259AbiJ0E7D (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Oct 2022 00:59:03 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E45915819A;
+        Wed, 26 Oct 2022 21:59:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666846741; x=1698382741;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=VIboXZAzPOAyqYw2WVL+sf/zfuy9m8FGbkzVfNiyFOo=;
+  b=Nukh5lyMS4N81XwHuDdamTBBB+XJcSeLXUj52fLhSCkpTcGE9RvVDgDb
+   5JFsSZYcG26G4XJORIS4mjIWtG3IfAx9vh9IQP3iBb5Ftsm8DNQh2QQMx
+   nOdA3a6Z1hSZpCo61jSJ7BU5VaDlNAkub1sZtUatV928aQoRVj0t6r+aw
+   XwsnUqLKl5BPsdtx0wEy5XRighr4dvz/5aWBEGCOtKq7GBDdrJP0XWFpL
+   kh0R+BgYD3COtEgWPUznvyPUzQriMaDHXmdsXjhzk6bGa17VNQ2nJ7C7X
+   eG+dqGnst5wQaTXyQ35EvVl0gG4J6CpMAeBjkVBilkCJvoRxYj0SffV+a
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10512"; a="295538600"
+X-IronPort-AV: E=Sophos;i="5.95,215,1661842800"; 
+   d="scan'208";a="295538600"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2022 21:59:01 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10512"; a="774854441"
+X-IronPort-AV: E=Sophos;i="5.95,215,1661842800"; 
+   d="scan'208";a="774854441"
+Received: from holmeskx-mobl.amr.corp.intel.com (HELO [10.209.105.249]) ([10.209.105.249])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2022 21:59:00 -0700
+Message-ID: <f00d1a76-d066-2a03-d5e9-d445a8307e85@linux.intel.com>
+Date:   Wed, 26 Oct 2022 21:58:59 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.2.2
+Subject: Re: [PATCH 1/5] ACPI/APEI: Add apei_hest_parse_aer()
+Content-Language: en-US
+To:     LeoLiu-oc <LeoLiu-oc@zhaoxin.com>, rafael@kernel.org,
+        lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
+        bp@alien8.de, robert.moore@intel.com, ying.huang@intel.com,
+        rdunlap@infradead.org, bhelgaas@google.com,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devel@acpica.org
+Cc:     CobeChen@zhaoxin.com, TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com
+References: <20221027031518.2855743-1-LeoLiu-oc@zhaoxin.com>
+From:   Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20221027031518.2855743-1-LeoLiu-oc@zhaoxin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,71 +67,277 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are two major types of uncorrected error (UC) :
 
-- Action Required: The error is detected and the processor already consumes the
-  memory. OS requires to take action (for example, offline failure page/kill
-  failure thread) to recover this uncorrectable error.
 
-- Action Optional: The error is detected out of processor execution context.
-  Some data in the memory are corrupted. But the data have not been consumed.
-  OS is optional to take action to recover this uncorrectable error.
+On 10/26/22 8:15 PM, LeoLiu-oc wrote:
+> From: leoliu-oc <leoliu-oc@zhaoxin.com>
+> 
+> apei_hest_parse_aer() is used to parse and record the PCI Express AER
+> Structure in the HEST Table.
+> 
+> Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
 
-For X86 platforms, we can easily distinguish between these two types
-based on the MCA Bank. While for arm64 platform, the memory failure
-flags for all UCs which severity are GHES_SEV_RECOVERABLE are set as 0,
-a.k.a, Action Optional now.
+Does this code compile? It looks like there are some compile time issues.
 
-If UC is detected by a background scrubber, it is obviously an Action
-Optional error.  For other errors, we should conservatively regard them
-as Action Required.
+> ---
+>  drivers/acpi/apei/hest.c | 119 ++++++++++++++++++++++++++++++++++++++-
+>  include/acpi/actbl1.h    |  69 +++++++++++++++++++++++
+>  include/acpi/apei.h      |   7 +++
+>  3 files changed, 194 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
+> index 6aef1ee5e1bd..0bfdc18758f5 100644
+> --- a/drivers/acpi/apei/hest.c
+> +++ b/drivers/acpi/apei/hest.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/platform_device.h>
+>  #include <acpi/apei.h>
+>  #include <acpi/ghes.h>
+> +#include <linux/pci.h>
+>  
+>  #include "apei-internal.h"
+>  
+> @@ -86,7 +87,48 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
+>  	return len;
+>  };
+>  
+> -typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
 
-cper_sec_mem_err::error_type identifies the type of error that occurred
-if CPER_MEM_VALID_ERROR_TYPE is set. So, set memory failure flags as 0
-for Scrub Uncorrected Error (type 14). Otherwise, set memory failure
-flags as MF_ACTION_REQUIRED.
+You are still using apei_hest_func_t. Why remove it?
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 10 ++++++++--
- include/linux/cper.h     |  3 +++
- 2 files changed, 11 insertions(+), 2 deletions(-)
+> +static inline bool hest_source_is_pcie_aer(struct acpi_hest_header *hest_hdr)
+> +{
+> +	if (hest_hdr->type == ACPI_HEST_TYPE_AER_ROOT_PORT ||
+> +		hest_hdr->type == ACPI_HEST_TYPE_AER_ENDPOINT ||
+> +		hest_hdr->type == ACPI_HEST_TYPE_AER_BRIDGE)
+> +		return true;
+> +	return false;
+> +}
+> +
+> +static inline bool hest_match_type(struct acpi_hest_header *hest_hdr,
+> +				struct pci_dev *dev)
+> +{
+> +	u16 hest_type = hest_hdr->type;
+> +	u8 pcie_type = pci_pcie_type(dev);
+> +
+> +	if ((hest_type == ACPI_HEST_TYPE_AER_ROOT_PORT &&
+> +		pcie_type == PCI_EXP_TYPE_ROOT_PORT) ||
+> +		(hest_type == ACPI_HEST_TYPE_AER_ENDPOINT &&
+> +		pcie_type == PCI_EXP_TYPE_ENDPOINT) ||
+> +		(hest_type == ACPI_HEST_TYPE_AER_BRIDGE &&
+> +		(pcie_type == PCI_EXP_TYPE_PCI_BRIDGE || pcie_type == PCI_EXP_TYPE_PCIE_BRIDGE)))
+> +		return true;
+> +	return false;
+> +}
+> +
+> +static inline bool hest_match_pci_devfn(struct acpi_hest_aer_common *p,
+> +		struct pci_dev *pci)
+> +{
+> +	return	ACPI_HEST_SEGMENT(p->bus) == pci_domain_nr(pci->bus) &&
+> +			ACPI_HEST_BUS(p->bus)     == pci->bus->number &&
+> +			p->device                 == PCI_SLOT(pci->devfn) &&
+> +			p->function               == PCI_FUNC(pci->devfn);
+> +}
+> +
+> +static inline bool hest_match_pci(struct acpi_hest_header *hest_hdr,
+> +		struct acpi_hest_aer_common *p, struct pci_dev *pci)
+> +{
+> +	if (hest_match_type(hest_hdr, pci))
+> +		return(hest_match_pci_devfn(p, pci));
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 80ad530583c9..6c03059cbfc6 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -474,8 +474,14 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	if (sec_sev == GHES_SEV_CORRECTED &&
- 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
- 		flags = MF_SOFT_OFFLINE;
--	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
--		flags = 0;
-+	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE) {
-+		if (mem_err->validation_bits & CPER_MEM_VALID_ERROR_TYPE)
-+			flags = mem_err->error_type == CPER_MEM_SCRUB_UC ?
-+					0 :
-+					MF_ACTION_REQUIRED;
-+		else
-+			flags = MF_ACTION_REQUIRED;
-+	}
- 
- 	if (flags != -1)
- 		return ghes_do_memory_failure(mem_err->physical_addr, flags);
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index eacb7dd7b3af..b77ab7636614 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -235,6 +235,9 @@ enum {
- #define CPER_MEM_VALID_BANK_ADDRESS		0x100000
- #define CPER_MEM_VALID_CHIP_ID			0x200000
- 
-+#define CPER_MEM_SCRUB_CE			13
-+#define CPER_MEM_SCRUB_UC			14
-+
- #define CPER_MEM_EXT_ROW_MASK			0x3
- #define CPER_MEM_EXT_ROW_SHIFT			16
- 
+I think it is return hest_match_pci_devfn(p, pci);
+
+> +	else
+> +		return false;
+> +}
+>  
+>  static int apei_hest_parse(apei_hest_func_t func, void *data)
+>  {
+> @@ -124,6 +166,81 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
+>  	return 0;
+>  }
+>  
+> +/*
+> + * apei_hest_parse_aer - Find the AER structure in the HEST Table and
+> + * match it with the PCI device.
+> + *
+> + * @hest_hdr: To save the acpi aer error source in hest table
+> + *
+> + * Return 1 if the pci dev matched with the acpi aer error source in
+> + * hest table, else return 0.
+> + */
+> +int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data)
+> +{
+> +	struct acpi_hest_parse_aer_info *info = data;
+> +	struct acpi_hest_aer_endpoint *acpi_hest_aer_endpoint = NULL;
+> +	struct acpi_hest_aer_root_port *acpi_hest_aer_root_port = NULL;
+> +	struct acpi_hest_aer_for_bridge *acpi_hest_aer_for_bridge = NULL;
+> +
+> +	if (!hest_source_is_pcie_aer(hest_hdr))
+> +		return 0;
+> +
+> +	if (hest_hdr->type == ACPI_HEST_TYPE_AER_ROOT_PORT) {
+> +		acpi_hest_aer_root_port = (struct acpi_hest_aer_root_port *)(hest_hdr + 1);
+> +		if (acpi_hest_aer_root_port->flags & ACPI_HEST_GLOBAL) {
+> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
+> +				info->acpi_hest_aer_root_port = acpi_hest_aer_root_port;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		} else {
+> +			if (hest_match_pci(hest_hdr,
+> +					(struct acpi_hest_aer_common *)acpi_hest_aer_root_port,
+> +					info->pci_dev)) {
+> +				info->acpi_hest_aer_root_port = acpi_hest_aer_root_port;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		}
+> +	} else if (hest_hdr->type == ACPI_HEST_TYPE_AER_ENDPOINT) {
+> +		acpi_hest_aer_endpoint = (struct acpi_hest_aer_endpoint *)(hest_hdr + 1);
+> +		if (acpi_hest_aer_endpoint->flags & ACPI_HEST_GLOBAL) {
+> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
+> +				info->acpi_hest_aer_endpoint = acpi_hest_aer_endpoint;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		} else {
+> +			if (hest_match_pci(hest_hdr,
+> +					(struct acpi_hest_aer_common *)acpi_hest_aer_endpoint,
+> +					info->pci_dev)) {
+> +				info->acpi_hest_aer_endpoint = acpi_hest_aer_endpoint;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		}
+> +	} else if (hest_hdr->type == ACPI_HEST_TYPE_AER_BRIDGE) {
+> +		acpi_hest_aer_for_bridge =
+> +			(struct acpi_hest_aer_for_bridge *)(hest_hdr + 1);
+> +		if (acpi_hest_aer_for_bridge->flags & ACPI_HEST_GLOBAL) {
+> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
+> +				info->acpi_hest_aer_for_bridge = acpi_hest_aer_for_bridge;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		} else {
+> +			if (hest_match_pci(hest_hdr,
+> +					(struct acpi_hest_aer_common *)acpi_hest_aer_for_bridge,
+> +					info->pci_dev)) {
+> +				info->acpi_hest_aer_for_bridge = acpi_hest_aer_for_bridge;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		}
+> +	}
+> +	return info->hest_matched_with_dev;
+> +}
+> +
+>  /*
+>   * Check if firmware advertises firmware first mode. We need FF bit to be set
+>   * along with a set of MC banks which work in FF mode.
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index 15c78678c5d3..7f52035512b2 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -1385,6 +1385,75 @@ struct acpi_hest_aer_bridge {
+>  	u32 advanced_capabilities2;
+>  };
+>  
+> +struct acpi_hest_parse_aer_info {
+> +	struct pci_dev *pci_dev;
+> +	int hest_matched_with_dev;
+> +	struct acpi_hest_aer_endpoint *acpi_hest_aer_endpoint;
+> +	struct acpi_hest_aer_root_port *acpi_hest_aer_root_port;
+> +	struct acpi_hest_aer_for_bridge *acpi_hest_aer_for_bridge;
+> +};
+> +
+> +/* HEST Sub-structure for PCIE EndPoint Structure (6) */
+> +
+> +struct acpi_hest_aer_root_port {
+> +	u16 reserved1;
+> +	u8 flags;
+> +	u8 enabled;
+> +	u32 records_to_preallocate;
+> +	u32 max_sections_per_record;
+> +	u32 bus;		/* Bus and Segment numbers */
+> +	u16 device;
+> +	u16 function;
+> +	u16 device_control;
+> +	u16 reserved2;
+> +	u32 uncorrectable_mask;
+> +	u32 uncorrectable_severity;
+> +	u32 correctable_mask;
+> +	u32 advanced_capabilities;
+> +	u32 root_error_command;
+> +};
+> +
+> +/* HEST Sub-structure for PCIE EndPoint Structure (7) */
+> +
+> +struct acpi_hest_aer_endpoint {
+> +	u16 reserved1;
+> +	u8 flags;
+> +	u8 enabled;
+> +	u32 records_to_preallocate;
+> +	u32 max_sections_per_record;
+> +	u32 bus;		/* Bus and Segment numbers */
+> +	u16 device;
+> +	u16 function;
+> +	u16 device_control;
+> +	u16 reserved2;
+> +	u32 uncorrectable_mask;
+> +	u32 uncorrectable_severity;
+> +	u32 correctable_mask;
+> +	u32 advanced_capabilities;
+> +};
+> +
+> +/* HEST Sub-structure for PCIE/PCI Bridge Structure (8) */
+> +
+> +struct acpi_hest_aer_for_bridge {
+> +	u16 reserved1;
+> +	u8 flags;
+> +	u8 enabled;
+> +	u32 records_to_preallocate;
+> +	u32 max_sections_per_record;
+> +	u32 bus;
+> +	u16 device;
+> +	u16 function;
+> +	u16 device_control;
+> +	u16 reserved2;
+> +	u32 uncorrectable_mask;
+> +	u32 uncorrectable_severity;
+> +	u32 correctable_mask;
+> +	u32 advanced_capabilities;
+> +	u32 uncorrectable_mask2;
+> +	u32 uncorrectable_severity2;
+> +	u32 advanced_capabilities2;
+> +};
+> +
+>  /* 9: Generic Hardware Error Source */
+>  
+>  struct acpi_hest_generic {
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index dc60f7db5524..8a0b2b9edbaf 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -33,10 +33,17 @@ void __init acpi_ghes_init(void);
+>  static inline void acpi_ghes_init(void) { }
+>  #endif
+>  
+> +typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> +
+>  #ifdef CONFIG_ACPI_APEI
+>  void __init acpi_hest_init(void);
+> +int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data);
+>  #else
+>  static inline void acpi_hest_init(void) { }
+> +static inline int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data)
+> +{
+> +	return -EINVAL;
+> +}
+>  #endif
+>  
+>  int erst_write(const struct cper_record_header *record);
+
 -- 
-2.20.1.9.gb50a0d7
-
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
