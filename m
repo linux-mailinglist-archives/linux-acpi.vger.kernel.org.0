@@ -2,342 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 825F660EF41
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Oct 2022 06:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEF6960EF75
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Oct 2022 07:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbiJ0E7M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Oct 2022 00:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60216 "EHLO
+        id S232679AbiJ0FYM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Oct 2022 01:24:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234259AbiJ0E7D (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Oct 2022 00:59:03 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E45915819A;
-        Wed, 26 Oct 2022 21:59:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666846741; x=1698382741;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=VIboXZAzPOAyqYw2WVL+sf/zfuy9m8FGbkzVfNiyFOo=;
-  b=Nukh5lyMS4N81XwHuDdamTBBB+XJcSeLXUj52fLhSCkpTcGE9RvVDgDb
-   5JFsSZYcG26G4XJORIS4mjIWtG3IfAx9vh9IQP3iBb5Ftsm8DNQh2QQMx
-   nOdA3a6Z1hSZpCo61jSJ7BU5VaDlNAkub1sZtUatV928aQoRVj0t6r+aw
-   XwsnUqLKl5BPsdtx0wEy5XRighr4dvz/5aWBEGCOtKq7GBDdrJP0XWFpL
-   kh0R+BgYD3COtEgWPUznvyPUzQriMaDHXmdsXjhzk6bGa17VNQ2nJ7C7X
-   eG+dqGnst5wQaTXyQ35EvVl0gG4J6CpMAeBjkVBilkCJvoRxYj0SffV+a
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10512"; a="295538600"
-X-IronPort-AV: E=Sophos;i="5.95,215,1661842800"; 
-   d="scan'208";a="295538600"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2022 21:59:01 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10512"; a="774854441"
-X-IronPort-AV: E=Sophos;i="5.95,215,1661842800"; 
-   d="scan'208";a="774854441"
-Received: from holmeskx-mobl.amr.corp.intel.com (HELO [10.209.105.249]) ([10.209.105.249])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2022 21:59:00 -0700
-Message-ID: <f00d1a76-d066-2a03-d5e9-d445a8307e85@linux.intel.com>
-Date:   Wed, 26 Oct 2022 21:58:59 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.2.2
-Subject: Re: [PATCH 1/5] ACPI/APEI: Add apei_hest_parse_aer()
-Content-Language: en-US
-To:     LeoLiu-oc <LeoLiu-oc@zhaoxin.com>, rafael@kernel.org,
-        lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
-        bp@alien8.de, robert.moore@intel.com, ying.huang@intel.com,
-        rdunlap@infradead.org, bhelgaas@google.com,
+        with ESMTP id S229670AbiJ0FYL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Oct 2022 01:24:11 -0400
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2170015A324;
+        Wed, 26 Oct 2022 22:24:09 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
+        by bmailout2.hostsharing.net (Postfix) with ESMTPS id B5FA02800C974;
+        Thu, 27 Oct 2022 07:24:07 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id AA95E43217; Thu, 27 Oct 2022 07:24:07 +0200 (CEST)
+Date:   Thu, 27 Oct 2022 07:24:07 +0200
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mehta Sanju <Sanju.Mehta@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devel@acpica.org
-Cc:     CobeChen@zhaoxin.com, TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com
-References: <20221027031518.2855743-1-LeoLiu-oc@zhaoxin.com>
-From:   Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20221027031518.2855743-1-LeoLiu-oc@zhaoxin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] PCI/ACPI: PCI/ACPI: Validate devices with power
+ resources support D3
+Message-ID: <20221027052407.GA18319@wunner.de>
+References: <20221026215237.18556-1-mario.limonciello@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221026215237.18556-1-mario.limonciello@amd.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+        TVD_PH_BODY_ACCOUNTS_PRE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 10/26/22 8:15 PM, LeoLiu-oc wrote:
-> From: leoliu-oc <leoliu-oc@zhaoxin.com>
+On Wed, Oct 26, 2022 at 04:52:37PM -0500, Mario Limonciello wrote:
+> Firmware typically advertises that ACPI devices that represent PCIe
+> devices can support D3 by a combination of the value returned by
+> _S0W as well as the HotPlugSupportInD3 _DSD [1].
 > 
-> apei_hest_parse_aer() is used to parse and record the PCI Express AER
-> Structure in the HEST Table.
+> `acpi_pci_bridge_d3` looks for this combination but also contains
+> an assumption that if an ACPI device contains power resources the PCIe
+> device it's associated with can support D3.  This was introduced
+> from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
+> D3 if power managed by ACPI").
 > 
-> Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
+> Some firmware configurations for "AMD Pink Sardine" do not support
+> wake from D3 in _S0W for the ACPI device representing the PCIe root
+> port used for tunneling. The PCIe device will still be opted into
+> runtime PM in the kernel [2] because of the logic within
+> `acpi_pci_bridge_d3`. This currently happens because the ACPI
+> device contains power resources.
 
-Does this code compile? It looks like there are some compile time issues.
+So put briefly, in acpi_pci_bridge_d3() we fail to take wake capabilities
+into account and blindly assume that a bridge can be runtime suspended
+to D3 if it is power-manageable by ACPI.
 
-> ---
->  drivers/acpi/apei/hest.c | 119 ++++++++++++++++++++++++++++++++++++++-
->  include/acpi/actbl1.h    |  69 +++++++++++++++++++++++
->  include/acpi/apei.h      |   7 +++
->  3 files changed, 194 insertions(+), 1 deletion(-)
+By moving the acpi_pci_power_manageable() below the wake capabilities
+checks, we avoid runtime suspending a bridge that is not wakeup capable.
+
+The more verbose explanation in the commit message is useful to
+understand how the issue was exposed, but it somewhat obscures
+the issue itself.
+
+
+> When the thunderbolt driver is loaded two device links are created:
+> * USB4 router <-> PCIe root port for tunneling
+> * USB4 router <-> XHCI PCIe device
+
+Those double arrows are a little misleading, a device link is
+unidirectional, so it's really <-- and not <->.
+
+
+> Currently runtime PM is allowed for all of these devices.  This means that
+> when all consumers are idle long enough, they will enter their deepest allowed
+> sleep state. Once all consumers are in their deepest allowed sleep state the
+> suppliers will enter the deepest sleep state as well.
 > 
-> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-> index 6aef1ee5e1bd..0bfdc18758f5 100644
-> --- a/drivers/acpi/apei/hest.c
-> +++ b/drivers/acpi/apei/hest.c
-> @@ -25,6 +25,7 @@
->  #include <linux/platform_device.h>
->  #include <acpi/apei.h>
->  #include <acpi/ghes.h>
-> +#include <linux/pci.h>
->  
->  #include "apei-internal.h"
->  
-> @@ -86,7 +87,48 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
->  	return len;
->  };
->  
-> -typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> * The PCIe root port for tunneling doesn't support waking from D3hot or
+>   D3cold so it stays in D0.
 
-You are still using apei_hest_func_t. Why remove it?
+Huh?  I thought it's runtime suspended to D3hot even though it should stay
+runtime resumed in D0 because it's not wakeup capable in D3hot?
 
-> +static inline bool hest_source_is_pcie_aer(struct acpi_hest_header *hest_hdr)
-> +{
-> +	if (hest_hdr->type == ACPI_HEST_TYPE_AER_ROOT_PORT ||
-> +		hest_hdr->type == ACPI_HEST_TYPE_AER_ENDPOINT ||
-> +		hest_hdr->type == ACPI_HEST_TYPE_AER_BRIDGE)
-> +		return true;
-> +	return false;
-> +}
-> +
-> +static inline bool hest_match_type(struct acpi_hest_header *hest_hdr,
-> +				struct pci_dev *dev)
-> +{
-> +	u16 hest_type = hest_hdr->type;
-> +	u8 pcie_type = pci_pcie_type(dev);
-> +
-> +	if ((hest_type == ACPI_HEST_TYPE_AER_ROOT_PORT &&
-> +		pcie_type == PCI_EXP_TYPE_ROOT_PORT) ||
-> +		(hest_type == ACPI_HEST_TYPE_AER_ENDPOINT &&
-> +		pcie_type == PCI_EXP_TYPE_ENDPOINT) ||
-> +		(hest_type == ACPI_HEST_TYPE_AER_BRIDGE &&
-> +		(pcie_type == PCI_EXP_TYPE_PCI_BRIDGE || pcie_type == PCI_EXP_TYPE_PCIE_BRIDGE)))
-> +		return true;
-> +	return false;
-> +}
-> +
-> +static inline bool hest_match_pci_devfn(struct acpi_hest_aer_common *p,
-> +		struct pci_dev *pci)
-> +{
-> +	return	ACPI_HEST_SEGMENT(p->bus) == pci_domain_nr(pci->bus) &&
-> +			ACPI_HEST_BUS(p->bus)     == pci->bus->number &&
-> +			p->device                 == PCI_SLOT(pci->devfn) &&
-> +			p->function               == PCI_FUNC(pci->devfn);
-> +}
-> +
-> +static inline bool hest_match_pci(struct acpi_hest_header *hest_hdr,
-> +		struct acpi_hest_aer_common *p, struct pci_dev *pci)
-> +{
-> +	if (hest_match_type(hest_hdr, pci))
-> +		return(hest_match_pci_devfn(p, pci));
 
-I think it is return hest_match_pci_devfn(p, pci);
+> * The XHCI PCIe device supports wakeup from D3cold so it goes to D3cold.
+> * Both consumers are in their deepest state and the USB4 router supports
+>   wakeup from D3cold, so it goes into this state.
+> 
+> The expectation is the USB4 router should have also remained in D0 since
+> the PCIe root port for tunneling remained in D0 and a device link exists
+> between the two devices.
 
-> +	else
-> +		return false;
-> +}
->  
->  static int apei_hest_parse(apei_hest_func_t func, void *data)
->  {
-> @@ -124,6 +166,81 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
->  	return 0;
->  }
->  
-> +/*
-> + * apei_hest_parse_aer - Find the AER structure in the HEST Table and
-> + * match it with the PCI device.
-> + *
-> + * @hest_hdr: To save the acpi aer error source in hest table
-> + *
-> + * Return 1 if the pci dev matched with the acpi aer error source in
-> + * hest table, else return 0.
-> + */
-> +int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data)
-> +{
-> +	struct acpi_hest_parse_aer_info *info = data;
-> +	struct acpi_hest_aer_endpoint *acpi_hest_aer_endpoint = NULL;
-> +	struct acpi_hest_aer_root_port *acpi_hest_aer_root_port = NULL;
-> +	struct acpi_hest_aer_for_bridge *acpi_hest_aer_for_bridge = NULL;
-> +
-> +	if (!hest_source_is_pcie_aer(hest_hdr))
-> +		return 0;
-> +
-> +	if (hest_hdr->type == ACPI_HEST_TYPE_AER_ROOT_PORT) {
-> +		acpi_hest_aer_root_port = (struct acpi_hest_aer_root_port *)(hest_hdr + 1);
-> +		if (acpi_hest_aer_root_port->flags & ACPI_HEST_GLOBAL) {
-> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
-> +				info->acpi_hest_aer_root_port = acpi_hest_aer_root_port;
-> +				info->hest_matched_with_dev = 1;
-> +			} else
-> +				info->hest_matched_with_dev = 0;
-> +		} else {
-> +			if (hest_match_pci(hest_hdr,
-> +					(struct acpi_hest_aer_common *)acpi_hest_aer_root_port,
-> +					info->pci_dev)) {
-> +				info->acpi_hest_aer_root_port = acpi_hest_aer_root_port;
-> +				info->hest_matched_with_dev = 1;
-> +			} else
-> +				info->hest_matched_with_dev = 0;
-> +		}
-> +	} else if (hest_hdr->type == ACPI_HEST_TYPE_AER_ENDPOINT) {
-> +		acpi_hest_aer_endpoint = (struct acpi_hest_aer_endpoint *)(hest_hdr + 1);
-> +		if (acpi_hest_aer_endpoint->flags & ACPI_HEST_GLOBAL) {
-> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
-> +				info->acpi_hest_aer_endpoint = acpi_hest_aer_endpoint;
-> +				info->hest_matched_with_dev = 1;
-> +			} else
-> +				info->hest_matched_with_dev = 0;
-> +		} else {
-> +			if (hest_match_pci(hest_hdr,
-> +					(struct acpi_hest_aer_common *)acpi_hest_aer_endpoint,
-> +					info->pci_dev)) {
-> +				info->acpi_hest_aer_endpoint = acpi_hest_aer_endpoint;
-> +				info->hest_matched_with_dev = 1;
-> +			} else
-> +				info->hest_matched_with_dev = 0;
-> +		}
-> +	} else if (hest_hdr->type == ACPI_HEST_TYPE_AER_BRIDGE) {
-> +		acpi_hest_aer_for_bridge =
-> +			(struct acpi_hest_aer_for_bridge *)(hest_hdr + 1);
-> +		if (acpi_hest_aer_for_bridge->flags & ACPI_HEST_GLOBAL) {
-> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
-> +				info->acpi_hest_aer_for_bridge = acpi_hest_aer_for_bridge;
-> +				info->hest_matched_with_dev = 1;
-> +			} else
-> +				info->hest_matched_with_dev = 0;
-> +		} else {
-> +			if (hest_match_pci(hest_hdr,
-> +					(struct acpi_hest_aer_common *)acpi_hest_aer_for_bridge,
-> +					info->pci_dev)) {
-> +				info->acpi_hest_aer_for_bridge = acpi_hest_aer_for_bridge;
-> +				info->hest_matched_with_dev = 1;
-> +			} else
-> +				info->hest_matched_with_dev = 0;
-> +		}
-> +	}
-> +	return info->hest_matched_with_dev;
-> +}
-> +
->  /*
->   * Check if firmware advertises firmware first mode. We need FF bit to be set
->   * along with a set of MC banks which work in FF mode.
-> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-> index 15c78678c5d3..7f52035512b2 100644
-> --- a/include/acpi/actbl1.h
-> +++ b/include/acpi/actbl1.h
-> @@ -1385,6 +1385,75 @@ struct acpi_hest_aer_bridge {
->  	u32 advanced_capabilities2;
->  };
->  
-> +struct acpi_hest_parse_aer_info {
-> +	struct pci_dev *pci_dev;
-> +	int hest_matched_with_dev;
-> +	struct acpi_hest_aer_endpoint *acpi_hest_aer_endpoint;
-> +	struct acpi_hest_aer_root_port *acpi_hest_aer_root_port;
-> +	struct acpi_hest_aer_for_bridge *acpi_hest_aer_for_bridge;
-> +};
-> +
-> +/* HEST Sub-structure for PCIE EndPoint Structure (6) */
-> +
-> +struct acpi_hest_aer_root_port {
-> +	u16 reserved1;
-> +	u8 flags;
-> +	u8 enabled;
-> +	u32 records_to_preallocate;
-> +	u32 max_sections_per_record;
-> +	u32 bus;		/* Bus and Segment numbers */
-> +	u16 device;
-> +	u16 function;
-> +	u16 device_control;
-> +	u16 reserved2;
-> +	u32 uncorrectable_mask;
-> +	u32 uncorrectable_severity;
-> +	u32 correctable_mask;
-> +	u32 advanced_capabilities;
-> +	u32 root_error_command;
-> +};
-> +
-> +/* HEST Sub-structure for PCIE EndPoint Structure (7) */
-> +
-> +struct acpi_hest_aer_endpoint {
-> +	u16 reserved1;
-> +	u8 flags;
-> +	u8 enabled;
-> +	u32 records_to_preallocate;
-> +	u32 max_sections_per_record;
-> +	u32 bus;		/* Bus and Segment numbers */
-> +	u16 device;
-> +	u16 function;
-> +	u16 device_control;
-> +	u16 reserved2;
-> +	u32 uncorrectable_mask;
-> +	u32 uncorrectable_severity;
-> +	u32 correctable_mask;
-> +	u32 advanced_capabilities;
-> +};
-> +
-> +/* HEST Sub-structure for PCIE/PCI Bridge Structure (8) */
-> +
-> +struct acpi_hest_aer_for_bridge {
-> +	u16 reserved1;
-> +	u8 flags;
-> +	u8 enabled;
-> +	u32 records_to_preallocate;
-> +	u32 max_sections_per_record;
-> +	u32 bus;
-> +	u16 device;
-> +	u16 function;
-> +	u16 device_control;
-> +	u16 reserved2;
-> +	u32 uncorrectable_mask;
-> +	u32 uncorrectable_severity;
-> +	u32 correctable_mask;
-> +	u32 advanced_capabilities;
-> +	u32 uncorrectable_mask2;
-> +	u32 uncorrectable_severity2;
-> +	u32 advanced_capabilities2;
-> +};
-> +
->  /* 9: Generic Hardware Error Source */
->  
->  struct acpi_hest_generic {
-> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-> index dc60f7db5524..8a0b2b9edbaf 100644
-> --- a/include/acpi/apei.h
-> +++ b/include/acpi/apei.h
-> @@ -33,10 +33,17 @@ void __init acpi_ghes_init(void);
->  static inline void acpi_ghes_init(void) { }
->  #endif
->  
-> +typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
-> +
->  #ifdef CONFIG_ACPI_APEI
->  void __init acpi_hest_init(void);
-> +int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data);
->  #else
->  static inline void acpi_hest_init(void) { }
-> +static inline int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data)
-> +{
-> +	return -EINVAL;
-> +}
->  #endif
->  
->  int erst_write(const struct cper_record_header *record);
+This paragraph sounds like the problem is the router runtime suspended.
+IIUC the router could only runtime suspend because its consumer, the
+Root Port, runtime suspended.  By preventing the Root Port from runtime
+suspending, you're implicitly preventing it's supplier (the router)
+from suspending.
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+
+> Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-pcie-root-ports-supporting-hot-plug-in-d3 [1]
+> Link: https://github.com/torvalds/linux/blob/v6.1-rc1/drivers/pci/pcie/portdrv_pci.c#L126 [2]
+> Link: https://github.com/torvalds/linux/blob/v6.1-rc1/drivers/thunderbolt/acpi.c#L29 [3]
+
+I think git.kernel.org links are preferred to 3rd party hosting services.
+
+Thanks,
+
+Lukas
