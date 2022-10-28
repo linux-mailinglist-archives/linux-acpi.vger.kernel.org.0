@@ -2,87 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 219116115A0
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 17:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C29326115B4
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 17:18:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229773AbiJ1PQT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Oct 2022 11:16:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39966 "EHLO
+        id S229552AbiJ1PSE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Oct 2022 11:18:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230243AbiJ1PQO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 11:16:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13793196EDF;
-        Fri, 28 Oct 2022 08:15:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6F4D3B82A02;
-        Fri, 28 Oct 2022 15:15:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD71C433D6;
-        Fri, 28 Oct 2022 15:15:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666970114;
-        bh=02WuV/6Oxf4oaaL4sBi5+rFgJwnlkTCxNF7buk7z4Ro=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=B2P022tTJlgBjHTZDrpky8xXpIGGFo/2oHNpXNFDvrgUSedzYNfFdd3smMnoJJSsc
-         AdTizT7iNYVtfgm4dPKQAv08X+cVqjeJWzQRhzFjoL/309cBRg6L/v1ogB0fiEvtOQ
-         45xQmnkYrdt4OaLydu+ibcLh9Dbp1OC6yvzJ/3YkX/yDPnDH7HQ78vUZ3FPVZSeg8f
-         efAiE4eqyHNkfCspkeJDFzOQB/2weax8z0QK548O0GxJiUeEBOA14fLIt6+jbMjomA
-         3dWgNIYjNe+IKl3o9hmDZJLedC0Q9dymsQlt3RrzvaBcJbNo2kdNwpmBs2xb0Uu4h/
-         x63UWi2eHCz9w==
-Date:   Fri, 28 Oct 2022 10:15:12 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-Cc:     Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>, rafael@kernel.org,
-        lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
-        bp@alien8.de, robert.moore@intel.com, ying.huang@intel.com,
-        rdunlap@infradead.org, bhelgaas@google.com,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devel@acpica.org,
-        CobeChen@zhaoxin.com, TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com
-Subject: Re: [PATCH 0/5] Parse the PCIE AER structure and set to relevant
- registers
-Message-ID: <20221028151512.GA889708@bhelgaas>
+        with ESMTP id S230410AbiJ1PRq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 11:17:46 -0400
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6134420C9B3;
+        Fri, 28 Oct 2022 08:17:45 -0700 (PDT)
+Received: by mail-qt1-f180.google.com with SMTP id a27so327972qtw.10;
+        Fri, 28 Oct 2022 08:17:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3yHtPsMV0ZtZibYDErsuqkp3aAUiU24r8aPqIVoD3v4=;
+        b=G0PReAJxRHHhECs1xMrpz5JVRr0BPiY1fuvuAVG8/73NvKBO/56fFLrWtwJDVXK1em
+         HSprFf8E3dw96NGJB/ZFUvr/1Yd15ugT9VOmzSyx6bfy7GD7HMRWPUUF9nUX+KBZpKLE
+         HPt7ccgfQJwx8Dn76UX4FB6xOn5UOYdJHozwg7BhkBi7NdkhyFlK+WiR4VjxUXPrR9sS
+         urfu6JcBK6cHz4sl3yCWxmg/eUoDUz6vMAgCOZpKqiEi7eAmXKq5XW5mG9XVgOhRf8zV
+         B4wGaFOIM07lwpuGdSyxDj6xXF4T1EYP6iLuMPsqhWmBXXdJB/HvnmgIa2BESFJQcjcF
+         xD7Q==
+X-Gm-Message-State: ACrzQf0Mb3ahE9iDWgvKHTf6Jw1h2mT9OVHhl9MdkTEyT5af0ePcpr6I
+        2skqCA6IQRioePQElyJYX5HF+cN5f9An9JNcX49yr0xpXIo=
+X-Google-Smtp-Source: AMsMyM56+qk07VCJaQuHTA7kiZu2yoXyzvWZRejmZVKLQ2Gw033Kj2tA8Gfpghm1mG5cgYgDhng5931CHHO42Nc2k38=
+X-Received: by 2002:a05:622a:1750:b0:39a:82aa:f4ab with SMTP id
+ l16-20020a05622a175000b0039a82aaf4abmr46105697qtk.411.1666970264407; Fri, 28
+ Oct 2022 08:17:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d4096cf3-7f16-b20c-01ea-e235bc90ae77@zhaoxin.com>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 28 Oct 2022 17:17:33 +0200
+Message-ID: <CAJZ5v0hT3gebDJdqjoODa_z+WgJqJBgusCg1j2P8Os4=mJ0G4g@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v6.1-rc3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 28, 2022 at 07:19:25PM +0800, LeoLiuoc wrote:
-> 在 2022/10/27 12:17, Sathyanarayanan Kuppuswamy 写道:
-> > On 10/26/22 8:14 PM, LeoLiu-oc wrote:
+Hi Linus,
 
-> > Can you add spec reference?
-> > 
-> Please refer to Section 18.3.2 ACPI Error Source of acpi spec v6.3. Links to
-> the online versions of ACPI Spec 6.3 is
-> https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/18_ACPI_Platform_Error_Interfaces/error-source-discovery.html#acpi-error-source.
-> 
-> Section 18.3.2.4 describes PCI Express Root Port AER Structure, section
-> 18.3.2.5 describes PCI Express Device AER Structure, section 18.3.2.6
-> describes PCI Express/PCI-X Bridge AER Structure.
+Please pull from the tag
 
-Thanks.  It's OK to have the spec references in the email thread, but
-the real point is that they should be in the commit log and, when it
-makes sense, in code comments.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-6.1-rc3
 
-Cite the most recent spec version when you can.  In this case, I think
-it is ACPI r6.5.
+with top-most commit 6f257934ed6170ed0094149e0e1bac09f7997103
 
-Personally I don't really care for URL references because they tend to
-get stale over time as websites are reorganized and domains change.
-Something like "ACPI r6.5, sec 18.3.2.4" is unambiguous and will
-remain usable forever.
+ Merge branches 'pm-sleep', 'pm-domains' and 'pm-tools'
 
-Bjorn
+on top of commit 247f34f7b80357943234f93f247a1ae6b6c3a740
+
+ Linux 6.1-rc2
+
+to receive power management fixes for 6.1-rc3.
+
+These make the intel_pstate driver work as expected on all hybrid
+platforms to date (regardless of possible platform firmware issues),
+fix hybrid sleep on systems using suspend-to-idle by default, make
+the generic power domains code handle disabled idle states properly
+and update pm-graph.
+
+Specifics:
+
+ - Make intel_pstate use what is known about the hardware instead of
+   relying on information from the platform firmware (ACPI CPPC in
+   particular) to establish the relationship between the HWP CPU
+   performance levels and frequencies on all hybrid platforms
+   available to date (Rafael Wysocki).
+
+ - Allow hybrid sleep to use suspend-to-idle as a system suspend method
+   if it is the current suspend method of choice (Mario Limonciello).
+
+ - Fix handling of unavailable/disabled idle states in the generic
+   power domains code (Sudeep Holla).
+
+ - Update the pm-graph suite of utilities to version 5.10 which is
+   fixes-mostly and does not add any new features (Todd Brandt).
+
+Thanks!
+
+
+---------------
+
+Mario Limonciello (1):
+      PM: hibernate: Allow hybrid sleep to work with s2idle
+
+Rafael J. Wysocki (2):
+      cpufreq: intel_pstate: Read all MSRs on the target CPU
+      cpufreq: intel_pstate: hybrid: Use known scaling factor for P-cores
+
+Sudeep Holla (1):
+      PM: domains: Fix handling of unavailable/disabled idle states
+
+Todd Brandt (1):
+      pm-graph v5.10
+
+---------------
+
+ drivers/base/power/domain.c        |   4 +
+ drivers/cpufreq/intel_pstate.c     | 133 ++++++++--------------
+ kernel/power/hibernate.c           |   2 +-
+ tools/power/pm-graph/README        |  12 +-
+ tools/power/pm-graph/sleepgraph.8  |   3 +
+ tools/power/pm-graph/sleepgraph.py | 225 ++++++++++++++++++-------------------
+ 6 files changed, 170 insertions(+), 209 deletions(-)
