@@ -2,51 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74B816115EB
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 17:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5666A611637
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 17:46:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbiJ1Pdb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Oct 2022 11:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45060 "EHLO
+        id S229665AbiJ1Pqf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Oct 2022 11:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbiJ1Pd3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 11:33:29 -0400
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD7771D8191;
-        Fri, 28 Oct 2022 08:33:28 -0700 (PDT)
-Received: by mail-qt1-f172.google.com with SMTP id c23so3663856qtw.8;
-        Fri, 28 Oct 2022 08:33:28 -0700 (PDT)
+        with ESMTP id S229864AbiJ1Pqe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 11:46:34 -0400
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB9941E046F;
+        Fri, 28 Oct 2022 08:46:33 -0700 (PDT)
+Received: by mail-qk1-f179.google.com with SMTP id l9so3655901qkk.11;
+        Fri, 28 Oct 2022 08:46:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=emG8YeAVqW+/ZAho2B0vb4ajWXxFNk2QbTHbh07XcYA=;
-        b=QW9Jq5406mcvkjWW/C8CeUol1FjLXPNbUur5ri8KrsyBj7ffhCmPj3VnpSlMJk3no+
-         eXTxX7cnaP2+7Pol4mJwP+Z8d7GCycILyGMOP72Jwqm12ne3zroUDKA3agC+0UYB5nD0
-         oYVwhfmBAdJaukg/wqHh43q6Ih+Umf+UB84N2Z89qWhOQ7Btqk8QjcNIWugsjHEBlcKO
-         +O3xqujbTzj9GBVitDlaa5G/YOl4hpBifEThgSIKB2gjlbSmLjaIsMLB609s9dOxcoE0
-         8L8TxhcFkzFw9aKyhy/vy9v54zufbU7yXYDkJfppK+fXoeq8eTJPHV0VwjeXvhKnCGht
-         nfvw==
-X-Gm-Message-State: ACrzQf31CPCly+yb9S7xO+Ab72NGBH1N+bqM72z3AkiagXrRbWyMpwxB
-        V81kKJxNh7SX0oSaeVr+gdlPNzsQo00wE4zAWzomPq0a
-X-Google-Smtp-Source: AMsMyM58kxrSw/gRfhRSshGIQwBcIu3sakSET0mmEpMVXoYnCGNIZ5LillaWVZQdXDOf5Wk0yRWdlRW4CiO4L0ctHgg=
-X-Received: by 2002:a05:622a:44d:b0:39c:f7a4:5ee0 with SMTP id
- o13-20020a05622a044d00b0039cf7a45ee0mr58309qtx.48.1666971208003; Fri, 28 Oct
- 2022 08:33:28 -0700 (PDT)
+        bh=BKQqdCWDDAGGP8gb8rCqO8l0puH1w2x+5jwsSPT3dH8=;
+        b=T6KSc//YaVzwvKMk9mK9qFbojevZ2W/a0hrjNZm6T6/X21GdqRDKydTTuvrSdfL3vV
+         RXepDFEERtxeaTwjKBUBKF+6gBl4YYaTHBbnrgGgoTKbLSVwpuDSox82iikoflekAHhX
+         UpJ4PuGs5DJ2FspMRtlXzsOKvOSM2eaiGf1OHTcvSxEqvWY8qJN57/08xrYybDvWpeob
+         0+jLbc+o2WHnuw2g6MCjXMVxizDtYcKKBtZ9AL+k3dkBwjB0rFbo3NnjpSzejrj373xp
+         dxRvRrLYLzFUXdwsXyMSPJ6GXRt4pkWUCuZ974C14nWNG9QNOihKhdOyXGDC/IYNXkQb
+         42OA==
+X-Gm-Message-State: ACrzQf2Q8SKDruRn+YgmWH1oqZ3mEBeYButiCaF+DMkIhXvHza832wPf
+        jgzle+pnYXewYS6tcZ+Jzo+zsMJTIA+E8vaHi14=
+X-Google-Smtp-Source: AMsMyM7JGKws7/zx7E8lbz506/vh57h5RoEHBHCrQMMQwd1SsZeEo1RWTkguImcsTHuJy2nPGjgsEVR8wAfAV/8Il0M=
+X-Received: by 2002:a37:b1c2:0:b0:6fa:1185:4dbf with SMTP id
+ a185-20020a37b1c2000000b006fa11854dbfmr138484qkf.764.1666971993053; Fri, 28
+ Oct 2022 08:46:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221014121136.8677-1-mario.limonciello@amd.com> <1f80828d-4c8c-f98f-24e9-68f5c886dd40@amd.com>
-In-Reply-To: <1f80828d-4c8c-f98f-24e9-68f5c886dd40@amd.com>
+References: <20221019073443.248215-1-chenzhongjin@huawei.com>
+In-Reply-To: <20221019073443.248215-1-chenzhongjin@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 28 Oct 2022 17:33:17 +0200
-Message-ID: <CAJZ5v0j6CunHQrSNQ24L-+jny9BFjBT=2VbJbihEV85AJYMUzQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: x86: Add another system to quirk list for forcing StorageD3Enable
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Dell.Client.Kernel@dell.com,
-        Julius Brockmann <mail@juliusbrockmann.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Fri, 28 Oct 2022 17:46:22 +0200
+Message-ID: <CAJZ5v0hV2AFEgiuxxbDFUWLa0ZthSz3a=-9U4pjXm-GmmSgexw@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Fix use-after-free in acpi_ps_parse_aml()
+To:     Chen Zhongjin <chenzhongjin@huawei.com>, robert.moore@intel.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org, rafael.j.wysocki@intel.com, lenb@kernel.org,
+        lv.zheng@intel.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -58,32 +56,88 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 25, 2022 at 2:13 AM Limonciello, Mario
-<mario.limonciello@amd.com> wrote:
+On Wed, Oct 19, 2022 at 9:38 AM Chen Zhongjin <chenzhongjin@huawei.com> wrote:
 >
-> On 10/14/2022 07:11, Mario Limonciello wrote:
-> > commit 018d6711c26e4 ("ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1
-> > for StorageD3Enable") introduced a quirk to allow a system with ambiguous
-> > use of _ADR 0 to force StorageD3Enable.
-> >
-> > Julius Brockmann reports that Inspiron 16 5625 suffers that same symptoms.
-> > Add this other system to the list as well.
-> >
-> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=216440
-> > Reported-and-tested-by: Julius Brockmann <mail@juliusbrockmann.com>
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > ---
-> >   drivers/acpi/x86/utils.c | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> >
+> KASAN reports a use-after-free problem and causes kernel panic
+> triggered by: modprobe acpiphp_ibm
 >
-> Hi Rafael,
+> BUG: KASAN:
+> use-after-free in acpi_ds_dump_method_stack (drivers/acpi/acpica/dsdebug.c:145)
+> Read of size 8 at addr ffff888002f843f0 by task modprobe/519
 >
-> This got sent near the merge window a few weeks ago.  It's a trivial fix
-> so I just want to make sure it didn't get misplaced.
+> CPU: 2 PID: 519 Comm: modprobe Not tainted 6.0.0+
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+>     Call Trace:
+>     <TASK>
+>     acpi_ds_dump_method_stack (drivers/acpi/acpica/dsdebug.c:145)
+>     acpi_ds_method_error (drivers/acpi/acpica/dsmethod.c:232)
+>     acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
+>     ...
+>     </TASK>
+>
+>     Allocated by task 519:
+>     ...
+>     __kasan_kmalloc (mm/kasan/common.c:526)
+>     acpi_ds_create_walk_state (drivers/acpi/acpica/dswstate.c:519)
+>     acpi_ds_call_control_method (drivers/acpi/acpica/dsmethod.c:498)
+>     acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
+>     ...
+>
+>     Freed by task 519:
+>     ...
+>     __kmem_cache_free+0xb6/0x3c0
+>     acpi_ds_delete_walk_state (drivers/acpi/acpica/dswstate.c:722)
+>     acpi_ds_call_control_method (drivers/acpi/acpica/dsmethod.c:586)
+>     acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
+>     ...
+> ---[ end Kernel panic - not syncing: Fatal exception ]---
+>
+> In the error path in acpi_ps_parse_aml():
+>
+>     acpi_ds_call_control_method()
+>         acpi_ds_create_walk_state()
+>             acpi_ds_push_walk_state()
+>             # thread->walk_state_list = walk_state
+>
+>         acpi_ds_init_aml_walk # *fail*
+>         goto cleanup:
+>         acpi_ds_delete_walk_state() # ACPI_FREE(walk_state)
+>
+>     acpi_ds_method_error()
+>         acpi_ds_dump_method_stack()
+>         # using freed thread->walk_state_list
+>
+> Briefly, the walk_state is pushed to thread, and freed without being poped.
+> Then it is used in acpi_ds_dump_method_stack() and causes use-after-free.
+>
+> Add acpi_ds_pop_walk_state(thread) to the error path to fix the problem.
+>
+> Fixes: 0bac4295526c ("ACPICA: Dispatcher: Move stack traversal code to dispatcher")
+>
+> Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
 
-I had a plan to push it for -rc3, but then I didn't include it in the PR.
+This should be submitted to the upstream project on GitHub, but it
+looks bad enough, so I'll take care of this.
 
-I'll queue it up for -rc4 now.
+Applied as 6.1-rc material, thanks!
 
-Thanks!
+> ---
+>  drivers/acpi/acpica/dsmethod.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
+> index ae2e768830bf..19da7fc73186 100644
+> --- a/drivers/acpi/acpica/dsmethod.c
+> +++ b/drivers/acpi/acpica/dsmethod.c
+> @@ -581,6 +581,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+>
+>         acpi_ds_terminate_control_method(obj_desc, next_walk_state);
+>         acpi_ds_delete_walk_state(next_walk_state);
+> +       acpi_ds_pop_walk_state(thread);
+>
+>         return_ACPI_STATUS(status);
+>  }
+> --
+
+Bob, this looks correct to me, but I may be missing something in which
+case please let me know.
