@@ -2,77 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A008611A12
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 20:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2569B611E67
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Oct 2022 01:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229450AbiJ1SZ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Oct 2022 14:25:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33344 "EHLO
+        id S229941AbiJ1X51 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Oct 2022 19:57:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbiJ1SZ2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 14:25:28 -0400
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E1657435D
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Oct 2022 11:25:26 -0700 (PDT)
-Received: by mail-qk1-f170.google.com with SMTP id k4so1094092qkj.8
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Oct 2022 11:25:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zQO3gevuQyurHuvPPfbnljg16Dr3s73aLVlIfvXtcEE=;
-        b=mBkWEFKKDTt6KigqCCNlh2pWdwlEzb6qE9z3UN7QDD7iCL9s4RCsetKoKcTxt6gUXv
-         f1jvF9hjXH5KlC5tJT1zZeM9Uf6X8Wr6XqfqZLn+160GEVXJhjzlOBYJJJ5RE8FlXOzr
-         UgwWf8oRSc5KDer1P7+LrXGtwXltBih3mXnow3hEa3Liwt3+F+PcsWrLULvXk3p76Wyl
-         5b4I65coFMJWlN+5PQs34og0YC9d1/VMhZ+537V6fOCwEo7CLjv8JpkpCRPRIfUioceH
-         lAsWXWjM7bA0RnLUL76U3jHBL7PsFq3bhd8+EKbSpyv63SmafnxOU1UyM83i3Sdy+gIQ
-         jcQQ==
-X-Gm-Message-State: ACrzQf0Sb1yNkcl1SIr+sb2KztCA7rIv8xz/S1Eub91+ikcGc4MRaRVE
-        j8H+PK55bWTuMdl6Z7fXxFM35biao8SXZJTyY2U=
-X-Google-Smtp-Source: AMsMyM6cUbm3cHfjL8CoKUhxPIEWD4mH0siHczuaC//Mungc2CDK+eJJKWzq+ggitc+ok1ORixD/9euNCEzLQLoYUW0=
-X-Received: by 2002:a37:b1c2:0:b0:6fa:1185:4dbf with SMTP id
- a185-20020a37b1c2000000b006fa11854dbfmr439335qkf.764.1666981525264; Fri, 28
- Oct 2022 11:25:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <e0f06714-5a49-a4e6-24e6-c4103c820819@alu.unizg.hr>
- <9ef3674afd370050b86a68e44c97e4f0257f1adf.camel@linux.intel.com>
- <bd1f0d2a-d456-92cc-ecca-23e480aea4b1@alu.unizg.hr> <e5d3d561bb3a9c68bc903cfc35c27629a4a9225c.camel@linux.intel.com>
- <d034dbbc-613c-1a5e-df64-d0251453c8eb@alu.unizg.hr> <6c2f47c8-d6b5-074a-4c8f-e9cd04f62ef4@alu.unizg.hr>
- <180b1a4fb9cf78c8905f275e0373e009224d4639.camel@linux.intel.com>
- <78e347e9-c8b1-f228-ca32-0ad6186a6285@alu.unizg.hr> <a4457f46-72c9-f9b0-b87a-cb3dd5cd066f@alu.unizg.hr>
-In-Reply-To: <a4457f46-72c9-f9b0-b87a-cb3dd5cd066f@alu.unizg.hr>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 28 Oct 2022 20:25:14 +0200
-Message-ID: <CAJZ5v0jfHtOXDFUFYj8EOGMT74iWfkQqEW3L2D2dZv6Y1jFSrw@mail.gmail.com>
-Subject: Re: BUG: bisected: thermald regression (MEMLEAK) in commit c7ff29763989bd09c433f73fae3c1e1c15d9cda4
-To:     Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        devel@acpica.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229978AbiJ1X50 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 19:57:26 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1518B59251;
+        Fri, 28 Oct 2022 16:57:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B34A3B82DDD;
+        Fri, 28 Oct 2022 23:57:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5910FC433C1;
+        Fri, 28 Oct 2022 23:57:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667001443;
+        bh=stwXUVWiYszaeox1+Fx1wt+zzqcan7l4R1cBxTzila0=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=Mwi6njBQcLWSw+KaRdjMSrYsEkYsfGGnq6YumFl4prvoA73IRNsRDT3IKCaOBf9pS
+         IDypU7rN0jZVTmlCCFMO7Y0QMcIg931OJNBa+dMss3RtwYE6zdBvXMOwh5mm2fjEhE
+         DX3a7aIQwyougV83GmZcNOZz8V7cpYYG9hiRGxtfj2cVF2A784Qiow2mPw1vBE2j1+
+         B8u3poAPzr4z7Lx198SinK2NLI0NbNeQpwRF2OcyByW3vLAIgLeA1MXFnJtj0H+1cd
+         m9ww8WxCPvp3/J+g5QwGoRbkTFvYkV3AP4q6W/Meg1w20tTtRamauxcwzhlNCqfFh3
+         WTbyUGet1wHeQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3A96CC41671;
+        Fri, 28 Oct 2022 23:57:23 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI and device properties fixes for v6.1-rc3
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hUPC_+d71tWx5S-sQQS3oc59mqmNFxhpiqozfMn44i4A@mail.gmail.com>
+References: <CAJZ5v0hUPC_+d71tWx5S-sQQS3oc59mqmNFxhpiqozfMn44i4A@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hUPC_+d71tWx5S-sQQS3oc59mqmNFxhpiqozfMn44i4A@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.1-rc3
+X-PR-Tracked-Commit-Id: dd183e320524f076a765ec441193deb90bd53836
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 13f05fb219d528d0352340106967b126c99209f5
+Message-Id: <166700144323.1674.15828836014188135986.pr-tracker-bot@kernel.org>
+Date:   Fri, 28 Oct 2022 23:57:23 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 27, 2022 at 8:20 PM Mirsad Goran Todorovac
-<mirsad.todorovac@alu.unizg.hr> wrote:
->
-> Re-sending compressed attachments to fit into the size limit.
->
-> On 27. 10. 2022. 20:03, Mirsad Goran Todorovac wrote:
-> > P.S.
-> >
-> > Forgot another useful thing you've mentioned: please find attached the
-> > dmesg output.
-> >
-> > Good luck!
+The pull request you sent on Fri, 28 Oct 2022 17:20:57 +0200:
 
-I'm wondering if the problem is reproducible with this patch applied:
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.1-rc3
 
-https://patchwork.kernel.org/project/linux-acpi/patch/20221019073443.248215-1-chenzhongjin@huawei.com/
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/13f05fb219d528d0352340106967b126c99209f5
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
