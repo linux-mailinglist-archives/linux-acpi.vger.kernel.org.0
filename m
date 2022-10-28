@@ -2,111 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92302611869
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 18:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F19F66118D0
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 19:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230035AbiJ1Q5U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Oct 2022 12:57:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33372 "EHLO
+        id S230454AbiJ1RF1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Oct 2022 13:05:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230269AbiJ1Q4n (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 12:56:43 -0400
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AA011EB56B;
-        Fri, 28 Oct 2022 09:56:16 -0700 (PDT)
-Received: by mail-qt1-f181.google.com with SMTP id r19so3820921qtx.6;
-        Fri, 28 Oct 2022 09:56:16 -0700 (PDT)
+        with ESMTP id S230437AbiJ1RE0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 13:04:26 -0400
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E806022EE13;
+        Fri, 28 Oct 2022 10:04:01 -0700 (PDT)
+Received: by mail-qk1-f182.google.com with SMTP id i10so3671318qkl.12;
+        Fri, 28 Oct 2022 10:04:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rDfK2H1aBftmwIp77bKuXrrx29hMSNAG+g0WQdlgDPo=;
-        b=GLZznfFYDpdyS5bB46y/wQetcZkKqEa6NmLfYlz3egVlqF4OmTEKv0SRxbffJNsIXq
-         SRJXPpgwOH2d9jUroR5S4zITCId8K1SuhgnRjBSF+EpTgMjFVBaI7poX+NZn0sDr3tOm
-         z57nybwksEVWTqBwGXJ3BhbjGKNCsUj/v5/Zv5KaWpN3SWPNIeFJS7lw03DkBUyHAk3C
-         Rvo7sTtQmyFK4Kk7V0FhaVmz1dNup/dx/Dlb+93RQxmPD5hZlfKB6DzQBZ0ADrj5mMfw
-         kIxwwtyHxJS/99aJQnvQF2jipy5cvV1+PuUomf8JhJmvBeN0lwFZ7CSxNN+tzjn0dt8s
-         j2yQ==
-X-Gm-Message-State: ACrzQf3lfR/Y5nTD6vGLVcv1Ay6z6CP9ItCI2a3dXoKzgrrRyLc7yeYa
-        Z31lAod95xf7Fyj8AdLmA9AtVg9y1adMKzOLznw=
-X-Google-Smtp-Source: AMsMyM67fuSLwLA17n2MGGaxc8z04FhqqGkYApd52+dq8IDxDDRCv84+9RgjLd5vQBMN1zc6dJQersxY5xtKY6PLFlU=
-X-Received: by 2002:a05:622a:1a25:b0:39c:b862:7318 with SMTP id
- f37-20020a05622a1a2500b0039cb8627318mr350823qtb.147.1666976174432; Fri, 28
- Oct 2022 09:56:14 -0700 (PDT)
+        bh=JElIA9LePDbKf27U3pzxRqWF9A+WS8s4+82DDmZaDeo=;
+        b=inMb21mBmr4Jxtt/ZegkkAknNvJgimCQDFS6/UOglO9NYXkIXcRhpVSTM5In/t0GYc
+         fyHhQqEpw57JT1ueH/l4EP/Cv9Xi4IuG/9fGL5vy3RDA41B8rYPMbl7/hUvOBC5x4k4a
+         PGtzApryszMYqAKEUXdcMpnGOPGqYjrRuDhv9lxKBoOk2BZ8FTvTjbJ2yyrCR8K2+KYC
+         1zlRFOyQkI2mjfB0r8hbSqWQckLRstLN72AFUvv3p0P/bxnT1q2Sma7dQAS8HeYqnL8j
+         B2o/5LyUm8qBxmS9WRunkSIgmS2H2PM3rOUyQC4D4WaIqU4xe4NSKdhCmnZgjb34eqof
+         6iSw==
+X-Gm-Message-State: ACrzQf2pm5AUA0PkfyDAP688H+Q6hhmaNPj6ndsiJikwnCH9Jig84W2W
+        4Koz8sZ0TXgLvUz2iIVA3A0Lhgm9h49D1wa9E6I=
+X-Google-Smtp-Source: AMsMyM7L21SPn8693hFZN1+o5PLPNqWUFkd7F0dX8sLWov8hd745AlOQQdR52EMmJc8TSOKa15IrNul6xe8t4lJkUtU=
+X-Received: by 2002:a05:620a:d89:b0:6cf:c98b:744c with SMTP id
+ q9-20020a05620a0d8900b006cfc98b744cmr140154qkl.443.1666976640511; Fri, 28 Oct
+ 2022 10:04:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221027150525.753064657@goodmis.org> <20221027150926.006142977@goodmis.org>
-In-Reply-To: <20221027150926.006142977@goodmis.org>
+References: <20221024133258.2158083-1-colin.i.king@gmail.com>
+In-Reply-To: <20221024133258.2158083-1-colin.i.king@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 28 Oct 2022 18:56:03 +0200
-Message-ID: <CAJZ5v0gbhc-03JwS7T2sKKhNQWa56UUOYGtgc2Zc8nM-Max7jA@mail.gmail.com>
-Subject: Re: [RFC][PATCH v2 05/31] timers: ACPI: Use del_timer_shutdown()
- before freeing timer
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-acpi@vger.kernel.org
+Date:   Fri, 28 Oct 2022 19:03:49 +0200
+Message-ID: <CAJZ5v0jJPHrfUpY4ZxJYhNR334XZC_iUvetYgRGZW+iLgGrUzg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: processor_throttling: remove variable count
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 27, 2022 at 5:09 PM Steven Rostedt <rostedt@goodmis.org> wrote:
+On Mon, Oct 24, 2022 at 3:33 PM Colin Ian King <colin.i.king@gmail.com> wrote:
 >
-> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+> Variable count is just being incremented and it's never used
+> anywhere else. The variable and the increment are redundant so
+> remove it.
 >
-> Before a timer is freed, del_timer_shutdown() must be called.
->
-> Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home/
->
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: James Morse <james.morse@arm.com>
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-Please add "APEI: ghes:" to the subject after "ACPI:".
-
-Apart from this
-
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 > ---
->  drivers/acpi/apei/ghes.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/processor_throttling.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 >
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 80ad530583c9..916b952b14d0 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -1405,7 +1405,7 @@ static int ghes_remove(struct platform_device *ghes_dev)
->         ghes->flags |= GHES_EXITING;
->         switch (generic->notify.type) {
->         case ACPI_HEST_NOTIFY_POLLED:
-> -               del_timer_sync(&ghes->timer);
-> +               del_timer_shutdown(&ghes->timer);
->                 break;
->         case ACPI_HEST_NOTIFY_EXTERNAL:
->                 free_irq(ghes->irq, ghes);
+> diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
+> index a822fe410dda..00d045e5f524 100644
+> --- a/drivers/acpi/processor_throttling.c
+> +++ b/drivers/acpi/processor_throttling.c
+> @@ -50,7 +50,7 @@ static int __acpi_processor_set_throttling(struct acpi_processor *pr,
+>
+>  static int acpi_processor_update_tsd_coord(void)
+>  {
+> -       int count, count_target;
+> +       int count_target;
+>         int retval = 0;
+>         unsigned int i, j;
+>         cpumask_var_t covered_cpus;
+> @@ -107,7 +107,6 @@ static int acpi_processor_update_tsd_coord(void)
+>
+>                 /* Validate the Domain info */
+>                 count_target = pdomain->num_processors;
+> -               count = 1;
+>
+>                 for_each_possible_cpu(j) {
+>                         if (i == j)
+> @@ -140,7 +139,6 @@ static int acpi_processor_update_tsd_coord(void)
+>
+>                         cpumask_set_cpu(j, covered_cpus);
+>                         cpumask_set_cpu(j, pthrottling->shared_cpu_map);
+> -                       count++;
+>                 }
+>                 for_each_possible_cpu(j) {
+>                         if (i == j)
 > --
-> 2.35.1
+
+Applied as 6.2 material, thanks!
