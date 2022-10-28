@@ -2,101 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F2DE610560
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 00:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 075CC610BAE
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Oct 2022 09:56:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234867AbiJ0WJl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Oct 2022 18:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39118 "EHLO
+        id S229455AbiJ1Hz7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Oct 2022 03:55:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233747AbiJ0WJk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Oct 2022 18:09:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F695FB2;
-        Thu, 27 Oct 2022 15:09:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17B266254F;
-        Thu, 27 Oct 2022 22:09:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F780C433D6;
-        Thu, 27 Oct 2022 22:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666908573;
-        bh=0ibclOpSF9HH3L57UEPEv2fw+q8NLFznCDvQbhV9ktQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=aHn9T3jiGiyP4WIK+IhzHViEpCB7YO6wdnH4UREjTPbgA6/bOaGrU8ubBbBpy+1fY
-         pmTXwIkm5b6ZRNOizyBQjpsm8+2ifPIPQNrGmO0CIsTgRBeP9mMKJUGg6H2vTbqP4t
-         ynJ9wThvOy2cOTwjs1g/4/gXc9vg4EvIOstBSIYNe9Hbej2Mnr9lktv6vkUGtiOonX
-         jJxJoNg0Ut1QQJXccNa3s/5HjXgpLOOrrbWa/Uri92WknLGcgeUBQ8LeD/TQyXPhZO
-         Mi4fOgoi91oYxOrufjLzedzA8ubx98muaFLLOsE12gz1ulxT1hcluIgs9kLtK3c0Oy
-         t5fu+XgExEYVg==
-Date:   Thu, 27 Oct 2022 17:09:31 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, robert.moore@intel.com,
-        ying.huang@intel.com, rdunlap@infradead.org, bhelgaas@google.com,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devel@acpica.org,
-        CobeChen@zhaoxin.com, TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com
-Subject: Re: [PATCH 0/5] Parse the PCIE AER structure and set to relevant
- registers
-Message-ID: <20221027220931.GA843829@bhelgaas>
+        with ESMTP id S229544AbiJ1Hz6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Oct 2022 03:55:58 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00BA6F564;
+        Fri, 28 Oct 2022 00:55:57 -0700 (PDT)
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MzFGP46znzHvYp;
+        Fri, 28 Oct 2022 15:55:41 +0800 (CST)
+Received: from kwepemm600004.china.huawei.com (7.193.23.242) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 28 Oct 2022 15:55:56 +0800
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 28 Oct 2022 15:55:55 +0800
+Message-ID: <f0c408a6-cd94-4963-d4d7-e7d08b6150be@huawei.com>
+Date:   Fri, 28 Oct 2022 15:55:54 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221027031458.2855599-1-LeoLiu-oc@zhaoxin.com>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [RFC] ACPI: PCC: Support shared interrupt for multiple subspaces
+To:     Sudeep Holla <sudeep.holla@arm.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
+        <wanghuiqiang@huawei.com>, <huangdaode@huawei.com>,
+        <tanxiaofei@huawei.com>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20221027155323.7xmpjfrh7qmil6o3@bogus>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20221027155323.7xmpjfrh7qmil6o3@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 27, 2022 at 11:14:58AM +0800, LeoLiu-oc wrote:
-> From: leoliu-oc <leoliu-oc@zhaoxin.com>
-> 
-> HEST PCIE AER error source information describes the Uncorrectable Error 
-> Severity, CorrectableError Mask and other aer register's value to write to the
-> bridge's Correctable Error Mask register.
+在 2022/10/27 23:53, Sudeep Holla 写道:
+> On Sun, Oct 16, 2022 at 11:40:43AM +0800, Huisong Li wrote:
+>> As ACPI protocol descripted, if interrupts are level, a GSIV may
+>> be shared by multiple subspaces, but each one must have unique
+>> platform interrupt ack preserve and ack set masks. Therefore, need
+>> set to shared interrupt for types that can distinguish interrupt
+>> response channel if platform interrupt mode is level triggered.
+>>
+>> The distinguishing point isn't definitely command complete register.
+>> Because the two status values of command complete indicate that
+>> there is no interrupt in a subspace('1' means subspace is free for
+>> use, and '0' means platform is processing the command). On the whole,
+>> the platform interrupt ack register is more suitable for this role.
+>> As ACPI protocol said, If the subspace does support interrupts, and
+>> these are level, this register must be supplied. And is used to clear
+>> the interrupt by using a read, modify, write sequence. This register
+>> is a 'WR' register, the bit corresponding to the subspace is '1' when
+>> the command is completed, or is '0'.
+>>
+>> Therefore, register shared interrupt for multiple subspaces if support
+>> platform interrupt ack register and interrupts are level, and read the
+>> ack register to ensure the idle or unfinished command channels to
+>> quickly return IRQ_NONE.
+>>
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>> ---
+>>   drivers/mailbox/pcc.c | 27 +++++++++++++++++++++++++--
+>>   1 file changed, 25 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+>> index 3c2bc0ca454c..86c6cc44c73d 100644
+>> --- a/drivers/mailbox/pcc.c
+>> +++ b/drivers/mailbox/pcc.c
+>> @@ -100,6 +100,7 @@ struct pcc_chan_info {
+>>   	struct pcc_chan_reg cmd_update;
+>>   	struct pcc_chan_reg error;
+>>   	int plat_irq;
+>> +	u8 plat_irq_trigger;
+>>   };
+>>   
+>>   #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
+>> @@ -236,6 +237,15 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>>   	int ret;
+>>   
+>>   	pchan = chan->con_priv;
+>> +	ret = pcc_chan_reg_read(&pchan->plat_irq_ack, &val);
+>> +	if (ret)
+>> +		return IRQ_NONE;
+>> +	/* Irq ack GAS exist and check if this interrupt has the channel. */
+>> +	if (pchan->plat_irq_ack.gas) {
+>> +		val &= pchan->plat_irq_ack.set_mask;
+> I am not sure if the above is correct. The spec doesn't specify that the
+> set_mask can be used to detect if the interrupt belongs to this channel.
+> We need clarification to use those bits.
+Yes, the spec only say that the interrupt ack register is used to clear the
+interrupt by using a read, modify, write sequence. But the processing
+of PCC driver is as follows:
+Irq Ack Register = (Irq Ack Register & Preserve_mask) | Set_mask
 
-I guess the point is to extract register values from HEST PCI Express
-AER structures (ACPI r6.5, sec 18.3.2.4, etc.) and program them into
-AER Capabilities?
-
-> leoliu-oc (5):
->   ACPI/APEI: Add apei_hest_parse_aer()
->   ACPI/APEI: remove static from apei_hest_parse()
->   ACPI/PCI: Add AER bits #defines for PCIE/PCI-X bridges
->   ACPI/PCI: Add pci_acpi_program_hest_aer_params()
->   ACPI/PCI: config pcie devices's aer register
-
-If/when you repost this, it would be nice if the patches ([1/5],
-[2/5], etc) were responses to the cover letter ([0/5]).  Since they're
-not responses, b4 doesn't know they're connected and can't grab the
-whole series at once.
-
-Also capitalize the subject lines consistently and s/PCIE/PCIe/ and
-s/pcie/PCIe/ and s/aer/AER/, e.g.,
-
-  ACPI/APEI: Add apei_hest_parse_aer()
-  ACPI/APEI: Remove static from apei_hest_parse()
-  PCI: Add AER #defines for PCIe/PCI-X bridges
-  ACPI/PCI: Add pci_acpi_program_hest_aer_params()
-  ACPI/PCI: Configure devices AER registers based on HEST
-
->  drivers/acpi/apei/hest.c      | 121 +++++++++++++++++++++++++++++++++-
->  drivers/pci/pci-acpi.c        |  92 ++++++++++++++++++++++++++
->  drivers/pci/pci.h             |   5 ++
->  drivers/pci/probe.c           |   1 +
->  include/acpi/actbl1.h         |  69 +++++++++++++++++++
->  include/acpi/apei.h           |   9 +++
->  include/uapi/linux/pci_regs.h |   5 ++
->  7 files changed, 300 insertions(+), 2 deletions(-)
-> 
-> -- 
-> 2.20.1
-> 
+The set_mask is using to clear the interrupt of this channel by using OR
+operation. And it should be write '1' to the corresponding bit of the 
+channel
+to clear interrupt. So I think it is ok to use set_mask to detect if the
+interrupt belongs to this channel.
+>
+> This triggered be that I have a patch to address this. I will try to search
+> and share, but IIRC I had a flag set when the doorbell was rung to track
+> which channel or when to expect the irq. I will dig that up.
+Looking forward to your patch.😁
+>
+>> +		if (val == 0)
+>> +			return IRQ_NONE;
+>> +	}
+>>   
+>>   	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
+>>   	if (ret)
+>> @@ -309,10 +319,21 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
+>>   	spin_unlock_irqrestore(&chan->lock, flags);
+>>   
+>>   	if (pchan->plat_irq > 0) {
+>> +		unsigned long irqflags;
+>>   		int rc;
+>>   
+>> -		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq, 0,
+>> -				      MBOX_IRQ_NAME, chan);
+>> +		/*
+>> +		 * As ACPI protocol descripted, if interrupts are level, a GSIV
+>> +		 * may be shared by multiple subspaces.
+>> +		 * Therefore, register shared interrupt for multiple subspaces
+>> +		 * if support platform interrupt ack register and interrupts
+>> +		 * are level.
+>> +		 */
+>> +		irqflags = (pchan->plat_irq_ack.gas &&
+>> +			    pchan->plat_irq_trigger == ACPI_LEVEL_SENSITIVE) ?
+>> +			    IRQF_SHARED : 0;
+> We can hide all the details in a macro or oneline function that returns if
+Ack
+> the interrupt can be shared. Also since this is threaded interrupt, you may
+> need to keep it disabled until the thread handler is run.
+'it' means 'interrupt', right? If it is, I don't understand why it needs to
+be disabled. The irq handlers under this irq number are called serially when
+the interrupt is triggered.
+>
