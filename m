@@ -2,187 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1958614028
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Oct 2022 22:52:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3399D614073
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Oct 2022 23:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229469AbiJaVwA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Oct 2022 17:52:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48894 "EHLO
+        id S229930AbiJaWJr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Oct 2022 18:09:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbiJaVv7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Oct 2022 17:51:59 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2079.outbound.protection.outlook.com [40.107.237.79])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AB610FD3;
-        Mon, 31 Oct 2022 14:51:58 -0700 (PDT)
+        with ESMTP id S229872AbiJaWJq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Oct 2022 18:09:46 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2058.outbound.protection.outlook.com [40.107.243.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E060D46;
+        Mon, 31 Oct 2022 15:09:45 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lYtex55BK2ubrlHEnqxrlI4/DqUTjVZbSC7IMhhrYMSOW1nq0xdJDNqpilz3bUcBTqZKmF5zQDS8auhjrfvT9t33UQKZXvRpHDm6fsc3ZFS5NKKEIXwYg5AXojJFOXRtE8Nd0XPSxTDG2gTnLf5hjekWJJDQIhCiWDOfdUkIqIiZUzjsWrlzRM5YDS+j4rANhDbxKkZNsgw5T+cSwOSA217swYRmykvagQEidxHFuMMwQlWXRfrqZD9R/15h5NI03n00Chh9PqSIRbRCyp7hls0Y4cIVpV/tsablDbGQd5xb0Luk1XyvTX/Lh/naaDDlfWZkaytFc8+ACNCqCtp0OQ==
+ b=bhGyxe3DTCrQVk2Mcwy8UF43XvP+NniW5WxGbjNkpv8XYzFwnrV8ggA8JjZ6mNJgFuJulWgMWB0c+WsDhAGIBb1eAI29CFw6OKVyyH0LCVCOcXOvQU5cKHNPlk0qh65fz7/DDtYuXuh2dbrJf/N1MrJACTx/pAMk+RcQn98BfZZojk1AgwwzOwUbalmbOpUqSTFrKvx+dd5lGHWrTzUVsA9LKNihbe7eBkYZjWUzzf15OUWQ/UdMxNtUqWXNRRKRY+NC0JuWrsBF/yel4EX+c5m2y/bL+ZJNTCGDtnZtTjZcVu1glU/BkgGz+yzf60fMy7cmvZBO3V2zgOMaTPooCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9ureep4TDDdDF3PoSot1pX5qFfCMiVzXhgATOm823Tg=;
- b=U3YS3j3VtCaDpUMuV3KBVQmy9hyXXkZ8HL4MxG8JMeYoY0689RGZHjIe4HA/dmrlxw1GxIkD9H5Cw7a9hqOidC23nIVfd3hJDbiAzVZ0gH7N1nhXKZVY/Mn0qoMdqZ4WR3r/jx6Vg9GXUZDDm1mKvpQne847Pgc4udKerwfqQ6pBN0dh14xQwvs7jDxDWUITmidpfvtufY/naO7c0dfwUXxM4Xg6A6WiqrffyVgoqXtnUK6rCQohvEKhX1PJHV0W7tfRyWJc/ivEwvC1dFrQxu67tjA64RnUQoTODwElfJfVsP3gQq4dZOunzxEW63Mjc9sjKD9BRIez0anISOJtGw==
+ bh=eT86JFAb8XC/7CrvMG4BHyAjJTifmqEMiI05ddilb1U=;
+ b=aVPJxHcFkWsBUFmtNGcJv+ZT+QnPshzKbzNWM57GV4tNMdrbhpHUtmC1JP1QBp35dOM/9hJa6cJLFERnuDkK6Mt00yrGCeMp+kwhida5HR2KeKa/NmVjwLiBzn9j4wRCWOV5KoCgVFCeLNrIKp600uB5li5AHLFGkooNhf+Sfuft+hzIhkz6IVFjcmOmAeuhlCv4OIGqu9gYE6esEnSJMa4M6JrU1MtHkiP8Z2F/yqsnfK/C6bYw4zD0OtZpuuVGjM/Em0+4cXW2WdkZdvztK4twBx4ImnaeCjHwy2OPaY5/H0+SVfEtKI3m6ThRAvGtOFJbEYiHfxT3GRaQWondSA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9ureep4TDDdDF3PoSot1pX5qFfCMiVzXhgATOm823Tg=;
- b=Cyql5TBEiVftXtNggrYOuM7Dm+3ny9JvjDCGgVbO10yRRRsebXFCVD8klvuz5JshdtUKEaptsFwnWCMqkPjodcYGhB0Jw1uDwFMKh9TGxkx8hyV3fUKgy1HHReH/xKGtiwLbLS6zCl8aqGNsQk61XntLGqCGaz2CQEuRrDVEjJo=
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by CH3PR12MB7666.namprd12.prod.outlook.com (2603:10b6:610:152::18) with
+ bh=eT86JFAb8XC/7CrvMG4BHyAjJTifmqEMiI05ddilb1U=;
+ b=oJQxUDje5IWO0Gl/2VNdncS3p8uovsQTijI6NESnwH41unVrWad9cBOR5VZHiN+snMr7qqFFHkOrRfJ8duSU6usqzPoS6JuC1V0G3o1+38Mi4G9kArtiS5EqEi28cGyumhQQFpd0IT0B/SVElGipyl/tCYJEUVBODDpkdioRTwMXQmIp7/h84k8kp3mQJtFXcWGYeo+dC1PkpsLWdK4Ye3e6tiYdt4aaAaU5/tDT+kptO/koXtMq/gV+WTtFEmFHqitleBUAANxx4fQbP/DUx981NTNycNUHTdJvg/dqWg+a58LTYxV0FyJYVS9dPQaZqWw+PtkgxWvTuwj2H2Q+OQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB2763.namprd12.prod.outlook.com (2603:10b6:5:48::16) by
+ MN2PR12MB4096.namprd12.prod.outlook.com (2603:10b6:208:1dc::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.15; Mon, 31 Oct
- 2022 21:51:56 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::f8c0:db03:2d30:792c]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::f8c0:db03:2d30:792c%3]) with mapi id 15.20.5769.016; Mon, 31 Oct 2022
- 21:51:56 +0000
-From:   "Limonciello, Mario" <Mario.Limonciello@amd.com>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Dadap <ddadap@nvidia.com>
-CC:     Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>
-Subject: RE: [PATCH] ACPI: video: Add backlight=native DMI quirk for Dell G15
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.19; Mon, 31 Oct
+ 2022 22:09:43 +0000
+Received: from DM6PR12MB2763.namprd12.prod.outlook.com
+ ([fe80::bfe:4295:5744:4396]) by DM6PR12MB2763.namprd12.prod.outlook.com
+ ([fe80::bfe:4295:5744:4396%5]) with mapi id 15.20.5769.019; Mon, 31 Oct 2022
+ 22:09:43 +0000
+Date:   Mon, 31 Oct 2022 17:09:40 -0500
+From:   Daniel Dadap <ddadap@nvidia.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH] ACPI: video: Add backlight=native DMI quirk for Dell G15
  5515
-Thread-Topic: [PATCH] ACPI: video: Add backlight=native DMI quirk for Dell G15
- 5515
-Thread-Index: AQHY7W+EsPpR43M85k6TtXj7ov7Zla4pCrLA
-Date:   Mon, 31 Oct 2022 21:51:55 +0000
-Message-ID: <MN0PR12MB6101C2BD5FAEC45B51B61667E2379@MN0PR12MB6101.namprd12.prod.outlook.com>
+Message-ID: <Y2BHpKxWitLSMFER@lenny>
 References: <20221031212556.401618-1-hdegoede@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20221031212556.401618-1-hdegoede@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=true;
- MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2022-10-31T21:50:29Z;
- MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;
- MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public-AIP 2.0;
- MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
- MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ActionId=9b4e9d76-feca-4b61-9844-b9bdaa58c298;
- MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=1
-msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_enabled: true
-msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_setdate: 2022-10-31T21:51:54Z
-msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_method: Privileged
-msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_name: Public-AIP 2.0
-msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_siteid: 3dd8961f-e488-4e60-8e11-a82d994e183d
-msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_actionid: 44ba9e2c-b95d-44ca-b7c5-7c8747207292
-msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_contentbits: 0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR12MB6101:EE_|CH3PR12MB7666:EE_
-x-ms-office365-filtering-correlation-id: 29393747-97a7-473c-a312-08dabb8a210a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: EASheHFBk8nB52XTR8jUsX/wiwGur7q2nqMgyPERqfwprRIFdP97m4y5F6k+bLuCrtfJFhVaQnLIzyXN7zWr6bibqs1ynPXTsPoNOk90UtAvps1kq62Xexw/WKg7s3sOPnvWtrbhu9y1x2+TzZPGjjL4zVhipgHcDu0wjMyvYrZaiXt2W825I7+U/k4T6ieuthYw9V+oCQRi0yTGN+XKL9SJ8geI4Cccp8YvW0HujFvdf+54eCmAMT9d5VrC5hdABGbuW7JJY6rgFb04Kr0tIKBkqHpFhw+PF0Ro710IUQs6uFoDWgVWuYEDc+83BGLdLfoSMzBR0WQgl90t7uvWE1gUDCpiDPNuRXmUWYN6U1GQmrVfCRI304NJIPwtMvSuW6WqEin7gFQ4q3gbJo5kpJedeS2KYU5cJz4ZCi2D23vYwvyTOIamQQx2l7q4M/jR6E9sCacm0JpWTk+a8CFdnT2oc5b6yK60w8lev4Jd26po8I1GhqvU2KVcXNmWWfzhM0UUOfeuqPByrqIgzx+qMU+rZs2oAQHY6apPM6dvmDdRn1UxEFJnG8TK9obZZ1aAY1x2PYd+YcyFxJDr9MbbrQN3TX2Gf2eN9wINHR54l629Y4sKfvXsUMdCWGHTEtWo5K7evrR7bk5MFuhkWZu4FKSGopeqNqsGgGvrLXLqGSWpd9N0ie12XBcOPQw982XizRCmLzDIqr9F6UAav/gnwBe6OprL5IFVrgRy7IdcmCrFsI8j0REq2738m/yiG6wWBj4i1IQ0CLMLi4UgEGoXYA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(376002)(136003)(396003)(39860400002)(366004)(451199015)(9686003)(6506007)(55016003)(7696005)(478600001)(186003)(53546011)(2906002)(83380400001)(110136005)(76116006)(316002)(66446008)(54906003)(52536014)(66556008)(5660300002)(4326008)(8936002)(41300700001)(66946007)(64756008)(66476007)(8676002)(71200400001)(86362001)(38100700002)(122000001)(33656002)(38070700005);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?YTCoYZLt2HuQtaDkxnr5B/FsA4RTRABZoiDaWsD6uyvlXvtFe0MdgLF1u1a3?=
- =?us-ascii?Q?/onr5evqbjIoPi8F1o7sGK/QI/yICFQTIowhQfSJiwwcurU8KXvwMxIMWX1x?=
- =?us-ascii?Q?yhoBdR5UVXi34ZDwd/Extr3Ni/BNaxYY854HzGwJLvSpswR4oUL8yq+SLqNT?=
- =?us-ascii?Q?74eVBtTXXb/rWfgO7VHf8ZgVL6G5vONteOAGsOw+3vYlreLoqZOkLvMxomMt?=
- =?us-ascii?Q?IBagih4oGtUF+7cKGcvgOfAfcWuGkIQxz8AX7ovMP2LWlk0XjheBX2zd6mKA?=
- =?us-ascii?Q?PhIgg7g+Adriq0UBaWxv7iXydYAdw4vacGL7pfa8vQZW3/dE2V3qOu3noXC5?=
- =?us-ascii?Q?UKsMR/ZriS7eZVt80KchfVdwnekUy2dBZrGzOPEea7+3iAwthSUiyjtAJnce?=
- =?us-ascii?Q?5vLypyJEMLBBmP8VLQuw2AiIZspbrepKE/wwOYzGembHXnlTP7ev8kCsk4cr?=
- =?us-ascii?Q?C9oI/Fh7lqzr/Nh27VDWj/9gos6aBDctiiG3UGuSwW1ReHYwENsG3iSwACqY?=
- =?us-ascii?Q?y8RCydc9TPWgXMxHBiICV2tHAQ2FeJKcGV5HGi94kJsFdpYH8H9L0b4lAINw?=
- =?us-ascii?Q?L8BQVhu7TqS8JhDXRzsBKf8yYfmWvZWuYTj4enjoEZouMLBfmQO0CZs/QQCc?=
- =?us-ascii?Q?93Yr/XrXQQ4T73Z1kOapF4W180Us1ak9N2zXwy/z4dij74PLGjgWhzwy89an?=
- =?us-ascii?Q?A0KPqrc36RXjEBnBoZCDCNAMteCqpPXGA+cxkNWA9dekBpvmE4gRCxDDGkM4?=
- =?us-ascii?Q?+rF7L5QExz/jg6jtm2jsYisVVeIJPtS6ronaHclESrCbAm28CXmGB7JPdoRd?=
- =?us-ascii?Q?tZZBZkPw7dsKw1zmODKQVNDKE/BU8iH2BnVhUuRhuGAfIQeet3v1U033FYf4?=
- =?us-ascii?Q?zuLm6adlOUmPrte6ud1foNxoOvm9peAQOaMTrxoCXjvYllSMyHBEQupjafet?=
- =?us-ascii?Q?YQJEVuEk+aq7EuIodu9lkbfNzmoKjUTYkQsYPzA7mdMXWqhXS2/4XfP1ocS1?=
- =?us-ascii?Q?07cpexPcrXQFHAlvPnNjw3Flqa20agwCHMZr9/sZErqVF5kz7DJG2EEc5DFv?=
- =?us-ascii?Q?ZBtbu0+7zQQOxJr6hJ0sLSG0gfUrgyHxa7LYtP1Z3Wz5DoU4sFhh4EWwlqli?=
- =?us-ascii?Q?8L52MPtQsYDn7ZAJnZ3w36ZBNR0Kb+XslTnQjIJQpjkOzmsVHQV2KQFvu4hV?=
- =?us-ascii?Q?RhB669VwYHGf6xKej48qu03hsYdXWX7G0+4j86hsUuIfb/q5ygvXVJHql+qC?=
- =?us-ascii?Q?shQnWAvoKjkCpam/afKGdot7To1KkPFi8LPSQdTTGDKukBT3yRCeCfDmW46G?=
- =?us-ascii?Q?+MPZKYF12ZcU8LDJQ4FLA7wg78qh9a3tvgtkc0rApOam3jep9NDBFymG+q+i?=
- =?us-ascii?Q?m/MaizBys41cDkUqOFCmHobXtvAtZ1jw16NbVALsOTKj/CPmr7c1bZl+OBjq?=
- =?us-ascii?Q?TRnApgDtxBh018kP9vYHeGdU7prYI2KpuyBM9ojltsdn6WGsBAO23JJU3V4/?=
- =?us-ascii?Q?Vvl+RFmXkuDzXOscprnNkJOrdyYpEcR+iMgk98D9DU4rUJwTol7+hMcpeRos?=
- =?us-ascii?Q?Si1t2ijVE8f69CJfRjy0JVC8DHMve8QVASkJ77jeEKK/gAQ2aUe2BH0alq7n?=
- =?us-ascii?Q?kwew/igFXDXM4mZ5AgsE7i4=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SN1PR12CA0105.namprd12.prod.outlook.com
+ (2603:10b6:802:21::40) To DM6PR12MB2763.namprd12.prod.outlook.com
+ (2603:10b6:5:48::16)
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2763:EE_|MN2PR12MB4096:EE_
+X-MS-Office365-Filtering-Correlation-Id: 036fbce7-80b5-444c-4132-08dabb8c9d44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: rnmFQkBDs9/+J2Y72IylcO6tUfX3CxSkt1VWnyHpPUILUuEfOx+B+dOQuvqN+UVA1DNHBnkVZsno7w/2J5SWdgj0XV5Lw7DXI9wXwTvDs2+0buw306mxHg0TS25rVcEyQT6sjRhLA7JqI7HhSq0bMB+b/XZdjM/oy8gcM8Nh8fvCsOlQ9YYk60K+V7orv/f5gzbnCMureAGvSATi5oEyne2amtWTtKHIs6usQhwclL/5jU9wcyPTL3YlmC40lHaiVWR3v5eNfXTIJn9SfGBzIe8PKoySJcBHEQJ40wc4vJW98J9j6qn3k1Udfpry9CeXOuWZ5ppg+5mDQE3khSzQ/TsnVY7+5uAw412fod3k2X0C7vShYQgwnlGjWIqISG/VL977xXX3j7+XxPD0foU4kwttP+5iRZo/Qtwby+ofCKSIxhCpJBxgZb+oM/L+9VzHof2zPQ/JNPOpCImmz3CQ8rrc/T+uUAUbPCad9sLlq25g7c2OI83gOE6vWRWj0YbaIilxrpAyFjvx4u359AvFFVH9IgsdIPRrlBh1/VK3C2a0nubZZnLQgg0+714+IQx1WA5we8uArPhJ1bxpbnFjdUioLLpmmi3wtLKl3zUfmPI9yM6iedWzNjO18QyZ3Vo61AsW+pk79HNCvlzjREBP+sT0YZ6Ac7xiwLsBC6tBIXpaL2Rsq9Rd/Z9Fsfooh88E/LF9LjbtQh9667EhcMK74A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2763.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(7916004)(366004)(376002)(396003)(39860400002)(346002)(136003)(451199015)(66899015)(83380400001)(6486002)(2906002)(38100700002)(33716001)(6512007)(9686003)(26005)(186003)(8676002)(86362001)(4326008)(66946007)(66476007)(8936002)(316002)(6506007)(5660300002)(41300700001)(66556008)(6916009)(478600001)(54906003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?I/jqtsstcPVOdY2jFssctFELHhEIvtsCVU6iAVPsYNIDYrCAhsHp4teki3cD?=
+ =?us-ascii?Q?YiJL1mi9g+pcUazLNecjlEqIE9FJet9s7VHK6x1ICiffV1+pGW0wtmoQmeiO?=
+ =?us-ascii?Q?2aeitzXqQYesRQJh7IOpuNUmKFevdWhcHYUz3ZjixMJGBKaQSeKzLqeYLkU+?=
+ =?us-ascii?Q?t4pYtK7f50q1wTEcHLyFAAACbXyOZTCt1no1TIxGZAh6qdopBLbiRnoHttVf?=
+ =?us-ascii?Q?RC7KGrlXWf23QU864cTObDD2Rt3OLOSYCw5BvY2IeRl6NTfEggH4DVyN6zdu?=
+ =?us-ascii?Q?Ca2Rr+SltwfDWPFW2YQtF+ilvlk5xVjBsXYc2zzZNvR5FM8rxnYxahvrwJ2G?=
+ =?us-ascii?Q?329WDjT69SqjBUBs89XxqKHkzsgATPAxkdlu9y+lbhA4yXCbW6MUNPnj+gNt?=
+ =?us-ascii?Q?q1XEOZuke8sQQXwINstsidgB2UWLSBaGuP1+FN1Yw2tTjdJpkUs94QlNOHJO?=
+ =?us-ascii?Q?AP2VeW2BI57NHlwDGs41CuwBgAll6O/ZQsKcZzLYXvRs22VEa5fk4wovlFw4?=
+ =?us-ascii?Q?jJvO6R5jCUI+Mq7QhCZK2LeBVUlrFvC1bOOglMPKyAKX+TSRZ84KZXEKMsvp?=
+ =?us-ascii?Q?LZ/zR6ZHpg0iwqZIi5yBR7pbqAhz5U7wij9H5CLicN61DpbeDlEPh2aaJRpa?=
+ =?us-ascii?Q?3U7Qf1/e20svoFdh8JcWElF2C7clS0v8UKlAKvyk21ZFl1grn6tiDifjmimx?=
+ =?us-ascii?Q?pN6BbroOyw+5Mer1Wgz5WEiqEYqx5nfVsL0woAy638zyat1pJtbVPq6ulHUz?=
+ =?us-ascii?Q?+Bpvrc43Pz9iLx1Orkeagw70y3VtsvTjqV3U9y7YxALRqY0CweQt3xDW2Wkz?=
+ =?us-ascii?Q?7H/6mNgKY1wovZBxVWtlQNbDuIo0RjHzhghT2WKFPVDF3QJtjHc7DG7Swp54?=
+ =?us-ascii?Q?ybtIPiaXLUXDfn68iD6Xgy0RFHA2kbGK1tydmwMEpMeoP4oIZhrz/gCEmUSK?=
+ =?us-ascii?Q?8ltiWFDEN7zxLgv4B2LIvsaVbp4NUkk1zwdrJ4CuoBM29B5FGLLT3X+cA2QA?=
+ =?us-ascii?Q?FQOnZqEM3/pQuOxXZ2Lh1/jsFsXn7cTgvEz7Fdk4oyJ6vFbrp9wlbw6ZQXW3?=
+ =?us-ascii?Q?DEIA+90XbESgPAAzimckrvEoEBGN9tLBGy2Hozx7zRfKv3xQ3bnfqG3FSEZV?=
+ =?us-ascii?Q?Yca6MvhxfuqxyUqMMeNpFazOA4Fx7mafmwFgHrHLeN+JTXuHdHvpBgimELeb?=
+ =?us-ascii?Q?j7+BIVQp1tL/GaPT32e3NLsMGlZo7Ocoxny86jElBfykSJ5YD22k04/1eYin?=
+ =?us-ascii?Q?fW7bHWOf3rdwygiIBB0vdiKujLMfBaLyosKr2qJLORJ9/5cNZnKtE1RBcd7t?=
+ =?us-ascii?Q?L1/vICKKCe5PFmcAa72dIDukmtO0AIcAAL3uBzD0hQqRQDx5QU1f9TeaVwR6?=
+ =?us-ascii?Q?BaBimnyBCs6ib6+fz7mDJ2eqA9KuuzzFYmWV9pxAilYGRoqVOq3bMLF+mT6m?=
+ =?us-ascii?Q?rPgKp1yjXnrrUDVCKJeI9OII7d+oxEBkJtso3XAA+CGQfSzzba0xO6omFS4/?=
+ =?us-ascii?Q?YP2Oei9iPpPE7vqmoU4EkBKQ6DBMehpD38ROfU3Knf6+Gax+VPJrfmk0PnGI?=
+ =?us-ascii?Q?vBnbZzYgMoVLew0AE6SUM8gdxtQd6QY4ICAFmx9u?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 036fbce7-80b5-444c-4132-08dabb8c9d44
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2763.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29393747-97a7-473c-a312-08dabb8a210a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2022 21:51:55.9947
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2022 22:09:43.6689
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oMsUp224rxDKhfID2KNtAoQGC8HHoT5lki2NCiPV2DPXBBUVnyOvtuabdAmHgqyNreyqJe5M5O3OgUnIZQCVjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7666
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YlKwfL9wAk5GOLWOyXiSo7bVyKfNQplfP+MkyMhhmysOstv5a6RLUvyslDt/WonBR6/DhIh1Tpr8Q8ucb5ghYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4096
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[Public]
+Thanks, Hans:
 
-> -----Original Message-----
-> From: Hans de Goede <hdegoede@redhat.com>
-> Sent: Monday, October 31, 2022 16:26
-> To: Rafael J . Wysocki <rafael@kernel.org>
-> Cc: Hans de Goede <hdegoede@redhat.com>; Len Brown
-> <lenb@kernel.org>; linux-acpi@vger.kernel.org; platform-driver-
-> x86@vger.kernel.org; Daniel Dadap <ddadap@nvidia.com>
-> Subject: [PATCH] ACPI: video: Add backlight=3Dnative DMI quirk for Dell G=
-15
-> 5515
->=20
+On Mon, Oct 31, 2022 at 10:25:56PM +0100, Hans de Goede wrote:
 > The Dell G15 5515 has the WMI interface (and WMI call returns) expected
 > by the nvidia-wmi-ec-backlight interface. But the backlight class device
 > registered by the nvidia-wmi-ec-backlight driver does not actually work.
->=20
-
-Is there a way to detect this from nvidia-wmi-ec-backlight?  I would think =
-it's
-cleaner to have that driver return -ENODEV so you end up with just the "wor=
-king"
-amdgpu_bl0.
-
+> 
 > The amdgpu_bl0 native GPU backlight class device does actually work,
-> add a backlight=3Dnative DMI quirk for this.
->=20
+> add a backlight=native DMI quirk for this.
+
+I'm not certain whether you have direct access to the system, but I am
+curious as to what mode the system is in when it exposes a non-working
+WMI backlight interface. The expectation is that the WMI EC backlight
+interface should only be exposed when the system is in dynamic mode
+(different vendors may call this differeint things in the EFI setup
+menus), and the native backlight interfaces for the GPUs, be they
+discrete or integrated, should only be exposed when a mode that keeps
+only one of the GPUs connected to the panel; i.e., in discrete-only mode
+the discrete GPU should have a working native backlight interface, and
+in integrated-only mode, or a hybrid mode which does not allow dynamic
+mux switching, the integrated GPU should have a working native backlight
+interface.
+
+For this notebook the AMD GPU would be the integrated one, so if the
+system is *not* in dynamic switch mode, and the WMI interface is
+reporting that the backlight should be handled by the EC, then that is
+certainly a bug in the system, and this would be the correct workaround,
+when the system is operating in an iGPU-only or non-dynamic hybrid mode.
+However, if the system is switched to a dynamic mode, then this would
+break the EC backlight, which should be the corect backlight interface
+for that case. Another possible system bug would be if the condition
+described in the change description occurs when the system *is* in a
+dynamic mode, but is routing backlight control to the iGPU anyway. That
+would be a messier bug to deal with, since it would also be necessary to
+determine which backlight interface is functional when the display is
+switched over to the dGPU.
+
+If it's not too much trouble could you (or the reporter, if you don't
+have the system) check which backlight interfaces are exposed, and which
+of those actually work, for each of the different hybrid GPU modes? I am
+not certain what they would be called on the setup screen, but the
+possible modes should be:
+
+* Integrated only
+* Discrete only
+* Hybrid, without dynamic switching
+* Hybrid, with dynamic switching
+
+, or a subset thereof. Usually I would expect the minimal subset to be
+discrete only plus one or both of the hybrid modes. Since we're not sure
+what these are called on the setup screen it is probably best to simply
+report the names of the mode as they are listed in the UI.
+
 > Cc: Daniel Dadap <ddadap@nvidia.com>
 > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
 >  drivers/acpi/video_detect.c | 10 ++++++++++
 >  1 file changed, 10 insertions(+)
->=20
+> 
 > diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
 > index 841f6213b4de..88acc09773bb 100644
 > --- a/drivers/acpi/video_detect.c
 > +++ b/drivers/acpi/video_detect.c
-> @@ -645,6 +645,16 @@ static const struct dmi_system_id
-> video_detect_dmi_table[] =3D {
+> @@ -645,6 +645,16 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
 >  		},
 >  	},
->=20
-> +	/* Models which have nvidia-ec-wmi support, but should not use it.
-> */
+>  
+> +	/* Models which have nvidia-ec-wmi support, but should not use it. */
 > +	{
-> +	 .callback =3D video_detect_force_native,
+> +	 .callback = video_detect_force_native,
 > +	 /* Dell G15 5515 */
-> +	 .matches =3D {
+> +	 .matches = {
 > +		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
 > +		DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5515"),
 > +		},
@@ -191,5 +194,6 @@ amdgpu_bl0.
 >  	/*
 >  	 * Desktops which falsely report a backlight and which our heuristics
 >  	 * for this do not catch.
-> --
+> -- 
 > 2.37.3
+> 
