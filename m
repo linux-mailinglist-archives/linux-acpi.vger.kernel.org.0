@@ -2,54 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C6C561436A
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Nov 2022 03:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CF2761448D
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Nov 2022 07:14:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbiKACuJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Oct 2022 22:50:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43950 "EHLO
+        id S229471AbiKAGOc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Nov 2022 02:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbiKACuJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Oct 2022 22:50:09 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52AAE17A88;
-        Mon, 31 Oct 2022 19:50:07 -0700 (PDT)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N1ZCs592czpVyl;
-        Tue,  1 Nov 2022 10:46:33 +0800 (CST)
-Received: from kwepemm600004.china.huawei.com (7.193.23.242) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+        with ESMTP id S229475AbiKAGOc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Nov 2022 02:14:32 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE21912088;
+        Mon, 31 Oct 2022 23:14:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667283270; x=1698819270;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=5zV37gjuf3zPHJxzwRwN4FjtyOGU0XzuSeOkPDRAlHg=;
+  b=CxGQvBz0swmEWxtD4c1gb2JSzAJ+O3HOFyUdpAiwvKtPtENzDBJjmP3J
+   lKjG+cY8AfDPgrgG8EWY5g3J0ADgHA6Ii15uqV8HSEjptHRL4fim8Kv5B
+   Obl7AqGVpbIYzMMcGLM02SyjEA4kRe8dKr/8VdoGv3zhW2HqHsMDh3XX0
+   d2TUXz6Hl1+SFMemHo5d09OdQliVlAPkBz4ByF3KnUy9Z/76fdWZvUaYi
+   J2NsE+5PcX2bkApGRSZQ61/+7HckhMY47M/61urblQWWwOsEdDH1pEgi6
+   LgHhiAQnnkUs0SBjvEB26ARp+F8d/Fqh11LaGtsTi/HW8sSXwxQlfMCAL
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10517"; a="288788445"
+X-IronPort-AV: E=Sophos;i="5.95,229,1661842800"; 
+   d="scan'208";a="288788445"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2022 23:14:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10517"; a="723066342"
+X-IronPort-AV: E=Sophos;i="5.95,229,1661842800"; 
+   d="scan'208";a="723066342"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by FMSMGA003.fm.intel.com with ESMTP; 31 Oct 2022 23:14:23 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 1 Nov 2022 10:49:58 +0800
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ 15.1.2375.31; Mon, 31 Oct 2022 23:14:22 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 1 Nov 2022 10:49:57 +0800
-Message-ID: <925f360d-e6b3-6004-de22-f39eaa86a750@huawei.com>
-Date:   Tue, 1 Nov 2022 10:49:57 +0800
-MIME-Version: 1.0
+ 15.1.2375.31 via Frontend Transport; Mon, 31 Oct 2022 23:14:22 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.48) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.31; Mon, 31 Oct 2022 23:14:22 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BbhKG5SZm0bMiyTjuw2+3379dcxxD0NpJwMT3gUK8O5RTvDRKWU1wSIEEfofVZs9ia5IGvI6valn66j+yRBViJFUySHxN8fb0l3uJpK9MbSp6mZJ1+Qod1NPAj7gR9M2voY8JuywBoh337dmfsYNl8BiqteZaulQKC0+cv0/rvkBzZJD3UQ4RGm++7rIwvUBHwNLNNtXgZmC3y05WK6ahfO0bEbqb9eVEudcYWzukBRq8dl5gOOw14sy4QdDhac/8ZrmX1mPl+lbcvPAovIprtzT9+tLi6iLlsL1pnyNJKl0WzyHdGPytk0Lb4lKpMhU6nJhBfqJ8uovJYjgpwmzTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/zyYBBfw1VLIZPqn+Teb/ehdoK6jnvKyNRCggQ3d/ck=;
+ b=VhSJriFPzGcLAixtflnZGabWYqr+EE4369s2xMMj2R+g914X0PZG0WzvLiVdPbwuVXspisLzn/oq3qsCHEfF6B4doxthVqyMGmif9kLBWcC0UttESxdmPSbRX+MdlEJj21CttSHsIZH3PH1mf85OH186LyYYy7dK5ahXWo6B/T3UntCrkVv9b3DEI0BlvE/iZmVtmDB8rFohQF4FEwASuQP17EdnzScry34GyAPGMyYWgT05cZT2Wjq4cZeuMOhaGUZRUx2weipajg6U5urOn+HsfrUD00WQZlawspDRiMUYtV3T+66i2ioGK+tFB5rwKR7r7UTmCbM+ZsKZbw/mZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN6PR11MB3956.namprd11.prod.outlook.com (2603:10b6:405:77::10)
+ by CY5PR11MB6092.namprd11.prod.outlook.com (2603:10b6:930:2c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.18; Tue, 1 Nov
+ 2022 06:14:19 +0000
+Received: from BN6PR11MB3956.namprd11.prod.outlook.com
+ ([fe80::91c7:649d:3f24:3d15]) by BN6PR11MB3956.namprd11.prod.outlook.com
+ ([fe80::91c7:649d:3f24:3d15%5]) with mapi id 15.20.5769.015; Tue, 1 Nov 2022
+ 06:14:17 +0000
+Message-ID: <74063430-66c0-901e-68e7-574504bafd24@intel.com>
+Date:   Tue, 1 Nov 2022 14:14:05 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [RFC] ACPI: PCC: Support shared interrupt for multiple subspaces
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <wanghuiqiang@huawei.com>, <huangdaode@huawei.com>,
-        <tanxiaofei@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221027155323.7xmpjfrh7qmil6o3@bogus>
- <f0c408a6-cd94-4963-d4d7-e7d08b6150be@huawei.com>
- <20221031104036.bv6a7i6hxrmtpj23@bogus>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20221031104036.bv6a7i6hxrmtpj23@bogus>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+ Thunderbird/91.13.0
+Subject: Re: [PATCH 1/5] ACPI/APEI: Add apei_hest_parse_aer()
+Content-Language: en-US
+To:     LeoLiu-oc <LeoLiu-oc@zhaoxin.com>, <rafael@kernel.org>,
+        <lenb@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <robert.moore@intel.com>, <ying.huang@intel.com>,
+        <rdunlap@infradead.org>, <bhelgaas@google.com>,
+        <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devel@acpica.org>
+CC:     <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>,
+        <ErosZhang@zhaoxin.com>
+References: <20221027031518.2855743-1-LeoLiu-oc@zhaoxin.com>
+From:   "Li, Ming" <ming4.li@intel.com>
+Organization: Intel
+In-Reply-To: <20221027031518.2855743-1-LeoLiu-oc@zhaoxin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SGAP274CA0011.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::23)
+ To BN6PR11MB3956.namprd11.prod.outlook.com (2603:10b6:405:77::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN6PR11MB3956:EE_|CY5PR11MB6092:EE_
+X-MS-Office365-Filtering-Correlation-Id: a48ba291-cd4f-4fdd-46f7-08dabbd04eb6
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: BhSox4u2FNP2PruwuhKnim0HwR1Qxjp8zpGzDxee7k3V8GAS3i9B0eJWqyfdfuk9px80gXk9YEkAMQr/1Nyw+V+LbRKIR0kaEJ+izoXUE9QZ29kjBkRJLg2U3y6dJIsoP7Teun8kIgRxVkdo6mtDclRthDeMoPj+7N6knLE0B7icC1NSeAcmpuB1G6qr8SCwekZJua9ZoniZH5GqGizLGPWgxrE9pIbBpC+6AkwIMo5gGK+pRfBYT5w/wv6aZTI/kfK5AMYBNYqAFazfr4LR45tbvl82p1X+Hzo5lkP2Qdmeo8GoEIAqpy3AdutYDp9emCX9pU2HneqZ5vAoocaK0d1J8oS37/rmzr15yVJ3CNtCGZ6/ZRIzInVXeaE9grUkPSBoWdAjXl22xHJ+lTkhqrR1GgCFLSVk0EhMTcm4Ikdtpw/xuwTZfEeijKlxvUQg2ZQnrxc3RppU0CMl12K2tsH9icFoWdkICD7ADE/y3wmSpfwRZ0KRqO0M3v/xk8wDHOGEnYEG/4M9eRiKJN+FHgk1F5+rJoeNT+i0iDb5d1c2MSM8Aity9/G5XJhk9xeCUMclxEd12YsRuvD5r8u5Z1MPtDfWJG1sCVdZUO0o+VKO0XPjUJQQqx9EW0sH80Fa6Xsj1eDLHdBpQMiKRSdXZFa7vK17knLfohv7ea7j8tmsN9W7ix/Kiruwa/NiscKlOmo9ZjAld9PGf+km8cBVS6vf4vGwWdHHtyY9nPAfGC+/v2Hl9RiKBbmcdiiokhqTL6ibTa1w96KIYomOgZB+5kkvHaDF8b2IphaUye/lhP/w8Vq4Ycp1HAzMVKC2s6Xq
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB3956.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(366004)(376002)(39860400002)(396003)(346002)(136003)(451199015)(82960400001)(38100700002)(921005)(36756003)(31696002)(86362001)(6486002)(2906002)(6666004)(66476007)(66556008)(478600001)(8936002)(7416002)(66946007)(41300700001)(5660300002)(8676002)(26005)(6512007)(6506007)(186003)(316002)(2616005)(4326008)(36916002)(53546011)(83380400001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bjBHbEVzTmNHeSt2V2JMVkhkb3pJWHM2RVVNK0szcjBsNTZzN3h2ZUtwdE01?=
+ =?utf-8?B?d0dsRjlTUSsyU2xQY0lHdXRncXRWMG91ODE2L0laWStwdHM2STZKU1psSWxD?=
+ =?utf-8?B?bGNDeEtsampzS1ViSlR6OE91OVdkUm5Td2hGdllTcE5sTDRGbzgyK291U0FS?=
+ =?utf-8?B?SHhzS2FKRzVsM3l0WjFib1RWVUJtOHZHZmNPczZ3OGVWM2xWNVdCTDU2UXoz?=
+ =?utf-8?B?VHlkNWp3Wnlvc0ZZclJaZlo2V0VtendNc0RqcWQzWGcrQUh6QkdXcjZUclVp?=
+ =?utf-8?B?WFhQSzlGdXR0OHRXNFVodHEwY1JBTmloZSs4Z1pFTmMyM0syLzl4MnNpR3la?=
+ =?utf-8?B?VWpPbHBicjNLSDZZZGJiM1oyTGhmeVEzMG04ZE5FVktOVDRtRXAvclJScnZH?=
+ =?utf-8?B?TlZYM2Y2WVpsbGlYY1pGYUh4UXc2NVBwS2lxcVpod0NBYmVRVmYyZUZnYjhz?=
+ =?utf-8?B?cWQ0RTJFa0pKenQ3L0xkM1ZPWkRDbFI2cHhBalBkcDN4V1RTdE4zUVVpVTMz?=
+ =?utf-8?B?Yld0c3FtcTl5Z01PdGVPayt6NnlNYmZoZ3A1S0RhektIa040ZnBTNUNiZzFq?=
+ =?utf-8?B?VDYzRXBwNlFFcEZZeWNESXk2TXdFQVN3bzBhd2RNZnJneFE5WGZhbE1LOTVK?=
+ =?utf-8?B?M01Kb3Y4bHFXcUt1YktNYkhoZFIxdEM0NzlFSjNLQzU4TjJGb1orZmtHTzhi?=
+ =?utf-8?B?SnNXTFAwMGhzQ3l6TDFUa0xUUW1ZKytWY0JpbDNqbVdKaXRpWFRWOENONWxa?=
+ =?utf-8?B?TUl2emFyVXVmVEdrb2Z4Umh1SFRCRldTRzdoSkliQ29zYzlwY0ozbDExcHBE?=
+ =?utf-8?B?QmQ3cEd0K0xEMVJ2bERhVWdJMEhkQU5sMHNTVGl5N1BlbktIN2RjdzllTU95?=
+ =?utf-8?B?ZmJCd1lpcEZDS0lMaTRHeHQ5bE5IUGg1cVoxOFQxakNSMFh6THZBcEpuNHE2?=
+ =?utf-8?B?RjBnR2F4WGFINExxY0swWDFQNVl5d2krTWhRdXpDbEhrc3lzQmtmVmlDTVly?=
+ =?utf-8?B?WWg3cmtobTlVVDRFWVVsRzJ0SnVKSHU4ZHNoUDlPL3VGekhCK0tWcWp5cDBq?=
+ =?utf-8?B?RG5JVmsycHA5N0xLRnJjRUhYdWxYTmFaZERWSW9BUHFyNnNhTXRycDVLUVpl?=
+ =?utf-8?B?Uk00Z2luSDlnS1RTTWRMTzJxYnRCa0R6RG9uMnNHWUtEbEg3SUJWL1c3RnpG?=
+ =?utf-8?B?clJQa1BVSHlNZndnU054cU8wMy8rcmx3Z1F2R0NFTE1QSTRDM2FKUTFKNDZk?=
+ =?utf-8?B?ZEprQm56L3dONnU3OVNpQmxxaUxTU0pqQTVZcHVadlh4NWxubmtBWEQrZlZk?=
+ =?utf-8?B?dVFzbklxdC9vK01ZVFpzSzVSYnQ1THl1bGJ1cGQxSVhhTERTQ0NYa1hleCsr?=
+ =?utf-8?B?OXB6Mm4vYXpkaUg3YUZYRlc2ZEJpTVFPZzdjOEdQOHd5MW1KanhjcS95MWoz?=
+ =?utf-8?B?TDNRdTRreVpWckV2ZEtQalA4NUZVZkx4UUlxUHdaU3JJYStyK0tJY2NrSmpX?=
+ =?utf-8?B?Tnd5blJZM3JSeUt2bTQzYmtRVzkvZmVTVFZwSkh0djE4R2s2VU0yRVAwSlJ5?=
+ =?utf-8?B?K1h3VHpLUktRMjVyS0ZINWNoWGFMeTBqZ3hQTlFVbzU2SU9lbUNRY3daSmd1?=
+ =?utf-8?B?VlpCMVhEVUVLRCtROHZGRTFNUUFzSmtBcVJZV1NNWTMzRkV6cGZSYjhWYXh5?=
+ =?utf-8?B?Z2NGUzlzaEk1dlhqRjREM0VEYzVmNkZ0eTNIWlBpVnpYSjNMUTgvREZNOWNi?=
+ =?utf-8?B?clpSdHk1RHkrMmI4Sjk0TnNQbE1NSE9aVFZPZ2EzSUtOQWNtYTVBV1kxYXFa?=
+ =?utf-8?B?amtDSXVRanZzWlI0YWxCaEM0dUFxVGkyTmE1Wk5YM3IwSTZRanh5OVd4eGlX?=
+ =?utf-8?B?WWZlNHJ3aHdHQXEwSmorQXdINUV5eFNsN2s5c0thVUp3VVFzbFhjNjgyUHpo?=
+ =?utf-8?B?WGZHK21tSEhodkl1SEFBbm5UOEFXUVRnbDA3R3I0eE9FN2E2cVRScHZkQ0F5?=
+ =?utf-8?B?VW91Q2NmNW55RzhpZ3lPZ1pwdnRvUENGdnYrbzJ6MldyRWJuZWZ3UzJLalVB?=
+ =?utf-8?B?Vm83dm5hODFob2JwRHI3d25jY3ZsN2tGaG9sai9MS3ZwTURUaDdQYkF6Qlor?=
+ =?utf-8?Q?Yt1SVd0Svi/QRGO6W+Cs9KKi9?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a48ba291-cd4f-4fdd-46f7-08dabbd04eb6
+X-MS-Exchange-CrossTenant-AuthSource: BN6PR11MB3956.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Nov 2022 06:14:17.7944
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CryLyysbwT4XUkKLx02PcURYcajybXxGzggIauGY1CZTlVdNTYaB2f5dgqAuiHdS7ud0iCmRY8n0OHpko1sa+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6092
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,255 +162,270 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
-在 2022/10/31 18:40, Sudeep Holla 写道:
-> On Fri, Oct 28, 2022 at 03:55:54PM +0800, lihuisong (C) wrote:
->> 在 2022/10/27 23:53, Sudeep Holla 写道:
->>> On Sun, Oct 16, 2022 at 11:40:43AM +0800, Huisong Li wrote:
->>>> As ACPI protocol descripted, if interrupts are level, a GSIV may
->>>> be shared by multiple subspaces, but each one must have unique
->>>> platform interrupt ack preserve and ack set masks. Therefore, need
->>>> set to shared interrupt for types that can distinguish interrupt
->>>> response channel if platform interrupt mode is level triggered.
->>>>
->>>> The distinguishing point isn't definitely command complete register.
->>>> Because the two status values of command complete indicate that
->>>> there is no interrupt in a subspace('1' means subspace is free for
->>>> use, and '0' means platform is processing the command). On the whole,
->>>> the platform interrupt ack register is more suitable for this role.
->>>> As ACPI protocol said, If the subspace does support interrupts, and
->>>> these are level, this register must be supplied. And is used to clear
->>>> the interrupt by using a read, modify, write sequence. This register
->>>> is a 'WR' register, the bit corresponding to the subspace is '1' when
->>>> the command is completed, or is '0'.
->>>>
->>>> Therefore, register shared interrupt for multiple subspaces if support
->>>> platform interrupt ack register and interrupts are level, and read the
->>>> ack register to ensure the idle or unfinished command channels to
->>>> quickly return IRQ_NONE.
->>>>
->>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->>>> ---
->>>>    drivers/mailbox/pcc.c | 27 +++++++++++++++++++++++++--
->>>>    1 file changed, 25 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
->>>> index 3c2bc0ca454c..86c6cc44c73d 100644
->>>> --- a/drivers/mailbox/pcc.c
->>>> +++ b/drivers/mailbox/pcc.c
->>>> @@ -100,6 +100,7 @@ struct pcc_chan_info {
->>>>    	struct pcc_chan_reg cmd_update;
->>>>    	struct pcc_chan_reg error;
->>>>    	int plat_irq;
->>>> +	u8 plat_irq_trigger;
->>>>    };
->>>>    #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
->>>> @@ -236,6 +237,15 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->>>>    	int ret;
->>>>    	pchan = chan->con_priv;
->>>> +	ret = pcc_chan_reg_read(&pchan->plat_irq_ack, &val);
->>>> +	if (ret)
->>>> +		return IRQ_NONE;
->>>> +	/* Irq ack GAS exist and check if this interrupt has the channel. */
->>>> +	if (pchan->plat_irq_ack.gas) {
->>>> +		val &= pchan->plat_irq_ack.set_mask;
->>> I am not sure if the above is correct. The spec doesn't specify that the
->>> set_mask can be used to detect if the interrupt belongs to this channel.
->>> We need clarification to use those bits.
->> Yes, the spec only say that the interrupt ack register is used to clear the
->> interrupt by using a read, modify, write sequence. But the processing
->> of PCC driver is as follows:
->> Irq Ack Register = (Irq Ack Register & Preserve_mask) | Set_mask
->>
->> The set_mask is using to clear the interrupt of this channel by using OR
->> operation. And it should be write '1' to the corresponding bit of the
->> channel
->> to clear interrupt. So I think it is ok to use set_mask to detect if the
->> interrupt belongs to this channel.
-> The problem is it can be write-only register and reads as always zero.
-But it seems that it must be a read/write register according to the ACPI 
-spec.
-> I know a platform with such a behaviour.
-Can you tell me which platform?
->
->>> This triggered be that I have a patch to address this. I will try to search
->>> and share, but IIRC I had a flag set when the doorbell was rung to track
->>> which channel or when to expect the irq. I will dig that up.
->> Looking forward to your patch.😁
-> Please find below. I am not convinced yet to have extra flag for checking if
-> the channel is in use. The other idea I had is to use the Generic Communications
-> Channel Shared Memory Region Status Field in particular Command Complete
-> field. I haven't tried it yet and hence the reason for not posting the patch.
-> Let me know if the idea looks sane, so that I can try something and share
-I don't think it is feasible. From the spec, the Command Complete field 
-in the Generic
-Communications Channel Shared Memory Region Status Field for type1/2 is 
-similar to
-the Command Complete Check Register in Master Slave Communications 
-Channel Shared
-Memory Region for type3/4.
-> it. I may not have a setup handy to test and may need sometime to test though.
->
-> Regards,
-> Sudeep
->
-> -->8
-> >From 6dd9ad4f3a11dc9b97d308e70b544337c4169803 Mon Sep 17 00:00:00 2001
-> From: Sudeep Holla <sudeep.holla@arm.com>
-> Date: Thu, 27 Oct 2022 21:51:39 +0100
-> Subject: [PATCH] ACPI: PCC: Support shared level triggered interrupt for
->   multiple subspaces
->
-> If the platform acknowledge interrupt is level triggered, then it can
-> be shared by multiple subspaces provided each one has a unique platform
-> interrupt ack preserve and ack set masks.
->
-> If it can be shared, then we can request the irq with IRQF_SHARED and
-> IRQF_ONESHOT flags. The first one indicating it can be shared and the
-> latter one to keep the interrupt disabled after the hardirq handler
-> finished.
-after --> until , right?
->
-> Further, since there is no way to detect if the interrupt is for a given
-> channel as the interrupt ack preserve and ack set masks are for clearing
-> the interrupt and not for reading the status, we need a way to identify
-> if the given channel is in use and expecting the interrupt.
->
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+
+On 10/27/2022 11:15 AM, LeoLiu-oc wrote:
+> From: leoliu-oc <leoliu-oc@zhaoxin.com>
+> 
+> apei_hest_parse_aer() is used to parse and record the PCI Express AER
+> Structure in the HEST Table.
+> 
+> Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
 > ---
->   drivers/mailbox/pcc.c | 36 +++++++++++++++++++++++++++++++++---
->   1 file changed, 33 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index 3c2bc0ca454c..a61528c874a2 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -91,6 +91,8 @@ struct pcc_chan_reg {
->    * @cmd_update: PCC register bundle for the command complete update register
->    * @error: PCC register bundle for the error status register
->    * @plat_irq: platform interrupt
-> + * @plat_irq_flags: platform interrupt flags
-> + * @chan_in_use: flag indicating whether the channel is in use or not
->    */
->   struct pcc_chan_info {
->   	struct pcc_mbox_chan chan;
-> @@ -100,6 +102,8 @@ struct pcc_chan_info {
->   	struct pcc_chan_reg cmd_update;
->   	struct pcc_chan_reg error;
->   	int plat_irq;
-> +	unsigned int plat_irq_flags;
-> +	bool chan_in_use;
->   };
->
->   #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
-> @@ -221,6 +225,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->   	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->   }
->
-> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
+>  drivers/acpi/apei/hest.c | 119 ++++++++++++++++++++++++++++++++++++++-
+>  include/acpi/actbl1.h    |  69 +++++++++++++++++++++++
+>  include/acpi/apei.h      |   7 +++
+>  3 files changed, 194 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
+> index 6aef1ee5e1bd..0bfdc18758f5 100644
+> --- a/drivers/acpi/apei/hest.c
+> +++ b/drivers/acpi/apei/hest.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/platform_device.h>
+>  #include <acpi/apei.h>
+>  #include <acpi/ghes.h>
+> +#include <linux/pci.h>
+>  
+>  #include "apei-internal.h"
+>  
+> @@ -86,7 +87,48 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
+>  	return len;
+>  };
+>  
+> -typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> +static inline bool hest_source_is_pcie_aer(struct acpi_hest_header *hest_hdr)
 > +{
-> +	return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
-> +		ACPI_LEVEL_SENSITIVE;
+> +	if (hest_hdr->type == ACPI_HEST_TYPE_AER_ROOT_PORT ||
+> +		hest_hdr->type == ACPI_HEST_TYPE_AER_ENDPOINT ||
+> +		hest_hdr->type == ACPI_HEST_TYPE_AER_BRIDGE)
+> +		return true;
+> +	return false;
 > +}
 > +
->   /**
->    * pcc_mbox_irq - PCC mailbox interrupt handler
->    * @irq:	interrupt number
-> @@ -237,6 +247,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->
->   	pchan = chan->con_priv;
->
-> +	if (!pchan->chan_in_use)
-> +		return IRQ_NONE;
+> +static inline bool hest_match_type(struct acpi_hest_header *hest_hdr,
+> +				struct pci_dev *dev)
+> +{
+> +	u16 hest_type = hest_hdr->type;
+> +	u8 pcie_type = pci_pcie_type(dev);
 > +
->   	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
->   	if (ret)
->   		return IRQ_NONE;
-> @@ -262,6 +275,8 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->
->   	mbox_chan_received_data(chan, NULL);
-
-This flag should be set to false when the Error status register 
-indicates that the channel has an error.
-
-what do you think?
-
->
-> +	pchan->chan_in_use = false;
-
-Maybe need add following logic?
-if (pchan->plat_irq_ack.gas)
-     pchan->chan_in_use = false;
-
+> +	if ((hest_type == ACPI_HEST_TYPE_AER_ROOT_PORT &&
+> +		pcie_type == PCI_EXP_TYPE_ROOT_PORT) ||
+> +		(hest_type == ACPI_HEST_TYPE_AER_ENDPOINT &&
+> +		pcie_type == PCI_EXP_TYPE_ENDPOINT) ||
+> +		(hest_type == ACPI_HEST_TYPE_AER_BRIDGE &&
+> +		(pcie_type == PCI_EXP_TYPE_PCI_BRIDGE || pcie_type == PCI_EXP_TYPE_PCIE_BRIDGE)))
+> +		return true;
+> +	return false;
+> +}
 > +
->   	return IRQ_HANDLED;
->   }
->
-> @@ -310,9 +325,12 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
->
->   	if (pchan->plat_irq > 0) {
->   		int rc;
-> +		unsigned long irqflags;
->
-> -		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq, 0,
-> -				      MBOX_IRQ_NAME, chan);
-> +		irqflags = pcc_chan_plat_irq_can_be_shared(pchan) ?
-> +			    IRQF_SHARED | IRQF_ONESHOT : 0;
-> +		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq,
-> +				      irqflags, MBOX_IRQ_NAME, chan);
->   		if (unlikely(rc)) {
->   			dev_err(dev, "failed to register PCC interrupt %d\n",
->   				pchan->plat_irq);
-> @@ -374,7 +392,11 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
->   	if (ret)
->   		return ret;
->
-> -	return pcc_chan_reg_read_modify_write(&pchan->db);
-> +	ret = pcc_chan_reg_read_modify_write(&pchan->db);
-> +	if (!ret)
-> +		pchan->chan_in_use = true;
+> +static inline bool hest_match_pci_devfn(struct acpi_hest_aer_common *p,
+> +		struct pci_dev *pci)
+> +{
+> +	return	ACPI_HEST_SEGMENT(p->bus) == pci_domain_nr(pci->bus) &&
+> +			ACPI_HEST_BUS(p->bus)     == pci->bus->number &&
+> +			p->device                 == PCI_SLOT(pci->devfn) &&
+> +			p->function               == PCI_FUNC(pci->devfn);
+> +}
 > +
-> +	return ret;
->   }
->
->   static const struct mbox_chan_ops pcc_chan_ops = {
-> @@ -458,6 +480,8 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
->   		return -EINVAL;
->   	}
->
-> +	pchan->plat_irq_flags = pcct_ss->flags;
+> +static inline bool hest_match_pci(struct acpi_hest_header *hest_hdr,
+> +		struct acpi_hest_aer_common *p, struct pci_dev *pci)
+> +{
+> +	if (hest_match_type(hest_hdr, pci))
+> +		return(hest_match_pci_devfn(p, pci));
+> +	else
+> +		return false;
+> +}
+>  
+>  static int apei_hest_parse(apei_hest_func_t func, void *data)
+>  {
+> @@ -124,6 +166,81 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
+>  	return 0;
+>  }
+>  
+> +/*
+> + * apei_hest_parse_aer - Find the AER structure in the HEST Table and
+> + * match it with the PCI device.
+> + *
+> + * @hest_hdr: To save the acpi aer error source in hest table
+> + *
+> + * Return 1 if the pci dev matched with the acpi aer error source in
+> + * hest table, else return 0.
+> + */
+> +int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data)
+> +{
+> +	struct acpi_hest_parse_aer_info *info = data;
+> +	struct acpi_hest_aer_endpoint *acpi_hest_aer_endpoint = NULL;
+> +	struct acpi_hest_aer_root_port *acpi_hest_aer_root_port = NULL;
+> +	struct acpi_hest_aer_for_bridge *acpi_hest_aer_for_bridge = NULL;
 > +
->   	if (pcct_ss->header.type == ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
->   		struct acpi_pcct_hw_reduced_type2 *pcct2_ss = (void *)pcct_ss;
->
-> @@ -478,6 +502,12 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
->   					"PLAT IRQ ACK");
->   	}
->
-> +	if (pcc_chan_plat_irq_can_be_shared(pchan) &&
-> +	    !pchan->plat_irq_ack.gas) {
-> +		pr_err("PCC subspace has level IRQ with no ACK register\n");
-> +		return -EINVAL;
+> +	if (!hest_source_is_pcie_aer(hest_hdr))
+> +		return 0;
+> +
+> +	if (hest_hdr->type == ACPI_HEST_TYPE_AER_ROOT_PORT) {
+> +		acpi_hest_aer_root_port = (struct acpi_hest_aer_root_port *)(hest_hdr + 1);
+> +		if (acpi_hest_aer_root_port->flags & ACPI_HEST_GLOBAL) {
+> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
+> +				info->acpi_hest_aer_root_port = acpi_hest_aer_root_port;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		} else {
+> +			if (hest_match_pci(hest_hdr,
+> +					(struct acpi_hest_aer_common *)acpi_hest_aer_root_port,
+> +					info->pci_dev)) {
+> +				info->acpi_hest_aer_root_port = acpi_hest_aer_root_port;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		}
+> +	} else if (hest_hdr->type == ACPI_HEST_TYPE_AER_ENDPOINT) {
+> +		acpi_hest_aer_endpoint = (struct acpi_hest_aer_endpoint *)(hest_hdr + 1);
+> +		if (acpi_hest_aer_endpoint->flags & ACPI_HEST_GLOBAL) {
+> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
+> +				info->acpi_hest_aer_endpoint = acpi_hest_aer_endpoint;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		} else {
+> +			if (hest_match_pci(hest_hdr,
+> +					(struct acpi_hest_aer_common *)acpi_hest_aer_endpoint,
+> +					info->pci_dev)) {
+> +				info->acpi_hest_aer_endpoint = acpi_hest_aer_endpoint;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		}
+> +	} else if (hest_hdr->type == ACPI_HEST_TYPE_AER_BRIDGE) {
+> +		acpi_hest_aer_for_bridge =
+> +			(struct acpi_hest_aer_for_bridge *)(hest_hdr + 1);
+> +		if (acpi_hest_aer_for_bridge->flags & ACPI_HEST_GLOBAL) {
+> +			if (hest_match_type(hest_hdr, info->pci_dev)) {
+> +				info->acpi_hest_aer_for_bridge = acpi_hest_aer_for_bridge;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		} else {
+> +			if (hest_match_pci(hest_hdr,
+> +					(struct acpi_hest_aer_common *)acpi_hest_aer_for_bridge,
+> +					info->pci_dev)) {
+> +				info->acpi_hest_aer_for_bridge = acpi_hest_aer_for_bridge;
+> +				info->hest_matched_with_dev = 1;
+> +			} else
+> +				info->hest_matched_with_dev = 0;
+> +		}
 > +	}
+> +	return info->hest_matched_with_dev;
+> +}
+Hi Leo,
+
+What do you think of that we could use a switch structure to instead these hest_source_is_pcie_aer() and if-else.
+
+thanks
+Ming
+
 > +
->   	return ret;
->   }
->
-> --
-> 2.38.1
-
-Hi Sudeep,
-
-ACPI spec requested that the Irq Ack Register is a read/write register. 
- From this point,
-only using this register supports for detecting if the interrupt is for 
-a given channel
-as my patch implemented. But If we need consider the platform whose Irq 
-Ack Register is
-write-only register, the chan_in_use flag in your patch looks good to me.
-
-Regards,
-Huisong
->
->
->
-> .
+>  /*
+>   * Check if firmware advertises firmware first mode. We need FF bit to be set
+>   * along with a set of MC banks which work in FF mode.
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index 15c78678c5d3..7f52035512b2 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -1385,6 +1385,75 @@ struct acpi_hest_aer_bridge {
+>  	u32 advanced_capabilities2;
+>  };
+>  
+> +struct acpi_hest_parse_aer_info {
+> +	struct pci_dev *pci_dev;
+> +	int hest_matched_with_dev;
+> +	struct acpi_hest_aer_endpoint *acpi_hest_aer_endpoint;
+> +	struct acpi_hest_aer_root_port *acpi_hest_aer_root_port;
+> +	struct acpi_hest_aer_for_bridge *acpi_hest_aer_for_bridge;
+> +};
+> +
+> +/* HEST Sub-structure for PCIE EndPoint Structure (6) */
+> +
+> +struct acpi_hest_aer_root_port {
+> +	u16 reserved1;
+> +	u8 flags;
+> +	u8 enabled;
+> +	u32 records_to_preallocate;
+> +	u32 max_sections_per_record;
+> +	u32 bus;		/* Bus and Segment numbers */
+> +	u16 device;
+> +	u16 function;
+> +	u16 device_control;
+> +	u16 reserved2;
+> +	u32 uncorrectable_mask;
+> +	u32 uncorrectable_severity;
+> +	u32 correctable_mask;
+> +	u32 advanced_capabilities;
+> +	u32 root_error_command;
+> +};
+> +
+> +/* HEST Sub-structure for PCIE EndPoint Structure (7) */
+> +
+> +struct acpi_hest_aer_endpoint {
+> +	u16 reserved1;
+> +	u8 flags;
+> +	u8 enabled;
+> +	u32 records_to_preallocate;
+> +	u32 max_sections_per_record;
+> +	u32 bus;		/* Bus and Segment numbers */
+> +	u16 device;
+> +	u16 function;
+> +	u16 device_control;
+> +	u16 reserved2;
+> +	u32 uncorrectable_mask;
+> +	u32 uncorrectable_severity;
+> +	u32 correctable_mask;
+> +	u32 advanced_capabilities;
+> +};
+> +
+> +/* HEST Sub-structure for PCIE/PCI Bridge Structure (8) */
+> +
+> +struct acpi_hest_aer_for_bridge {
+> +	u16 reserved1;
+> +	u8 flags;
+> +	u8 enabled;
+> +	u32 records_to_preallocate;
+> +	u32 max_sections_per_record;
+> +	u32 bus;
+> +	u16 device;
+> +	u16 function;
+> +	u16 device_control;
+> +	u16 reserved2;
+> +	u32 uncorrectable_mask;
+> +	u32 uncorrectable_severity;
+> +	u32 correctable_mask;
+> +	u32 advanced_capabilities;
+> +	u32 uncorrectable_mask2;
+> +	u32 uncorrectable_severity2;
+> +	u32 advanced_capabilities2;
+> +};
+> +
+>  /* 9: Generic Hardware Error Source */
+>  
+>  struct acpi_hest_generic {
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index dc60f7db5524..8a0b2b9edbaf 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -33,10 +33,17 @@ void __init acpi_ghes_init(void);
+>  static inline void acpi_ghes_init(void) { }
+>  #endif
+>  
+> +typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> +
+>  #ifdef CONFIG_ACPI_APEI
+>  void __init acpi_hest_init(void);
+> +int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data);
+>  #else
+>  static inline void acpi_hest_init(void) { }
+> +static inline int apei_hest_parse_aer(struct acpi_hest_header *hest_hdr, void *data)
+> +{
+> +	return -EINVAL;
+> +}
+>  #endif
+>  
+>  int erst_write(const struct cper_record_header *record);
