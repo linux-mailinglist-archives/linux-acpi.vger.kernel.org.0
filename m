@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E1A614911
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Nov 2022 12:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0020E614949
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Nov 2022 12:35:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231199AbiKALcW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Nov 2022 07:32:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35532 "EHLO
+        id S231315AbiKALfq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Nov 2022 07:35:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230027AbiKALbO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Nov 2022 07:31:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3ADD1B1D4;
-        Tue,  1 Nov 2022 04:29:53 -0700 (PDT)
+        with ESMTP id S230089AbiKALf0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Nov 2022 07:35:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 797C61CB1D;
+        Tue,  1 Nov 2022 04:31:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A2A22B81CC4;
-        Tue,  1 Nov 2022 11:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265ACC433C1;
-        Tue,  1 Nov 2022 11:29:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDA84615DD;
+        Tue,  1 Nov 2022 11:30:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B275C433D6;
+        Tue,  1 Nov 2022 11:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667302191;
-        bh=fTxdGbI+IVq9j1dwi/abAJ5IxQcXEr3a2vQI3qnLdz0=;
+        s=k20201202; t=1667302239;
+        bh=uqyuWR1r5w6IShtUPWv7xEGNh6pYqaTS19lYL1oAyI0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KJ8ksWXTl9QhPX6NXok4p2INxz5detjv0KPOSgV/K7VMJERBs/NFyd9ReVoQv2X3E
-         +tAHxbfpP3B0TaQb5yeKJQyNKNQ30rGSDs8A/6kOrQmufIOV7sD2xBnc3VuqTHWsiz
-         D1RBR6QuGZdBvJmev6WZ3qpsN1EBq2f2L6Ro9MFgSzKyOSZsCnJcHRhZfCGdyIrvAl
-         W/U3/r1ONODBWv3OdSRmLrMdgfmksbTgkGtQWbNLxIbBIbsFXLTPGPM+Za0kxjrEim
-         Z408Bma0x0T2P921nvvf51EVouQAvI0gPO8u1tjDNEpnLEPJHEt5DYpo+LBHoSzOeh
-         Rv2VM7ovX6V5g==
+        b=LHZis4/UE+o5JkCsJJe3veGPUiykwKplEG834v8jTbpIP4FVBHERFfDiWeB7190Lp
+         55NTJQITyf9q4Qh9UXrN+FPIa3/g8nksb1RzReJ2ZQchtCyqmeg7ZzifFhpKV59WTA
+         6awDxGhZc/ZZnw7c3HCwc5OpSSW72wJJXuTtBEQ2u8rbOoR1w/67yS+Y2zL6CB/SGi
+         GQcrdWfBW9M+88+qYO2QK3aA+uo8X0XhvI5CzkrU+ydwfQjaypnXlvaC+z3+1YPXPb
+         o/5YeQ92wVSFosXDot/kPabUeQGhKkyjsOXvLhr3KXFf0ZBFTb+VtSXau6cVArJWcP
+         NdUYPQp3rJ31g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ashish Kalra <ashish.kalra@amd.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         robert.moore@intel.com, xueshuai@linux.alibaba.com,
-        tony.luck@intel.com, jarkko@kernel.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 5.15 13/19] ACPI: APEI: Fix integer overflow in ghes_estatus_pool_init()
-Date:   Tue,  1 Nov 2022 07:29:13 -0400
-Message-Id: <20221101112919.799868-13-sashal@kernel.org>
+        tony.luck@intel.com, dave.hansen@linux.intel.com,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: [PATCH AUTOSEL 5.10 09/14] ACPI: APEI: Fix integer overflow in ghes_estatus_pool_init()
+Date:   Tue,  1 Nov 2022 07:30:05 -0400
+Message-Id: <20221101113012.800271-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221101112919.799868-1-sashal@kernel.org>
-References: <20221101112919.799868-1-sashal@kernel.org>
+In-Reply-To: <20221101113012.800271-1-sashal@kernel.org>
+References: <20221101113012.800271-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -108,7 +108,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index d490670f8d55..8678e162181f 100644
+index 5206fd3b7867..9bdb5bd5fda6 100644
 --- a/drivers/acpi/apei/ghes.c
 +++ b/drivers/acpi/apei/ghes.c
 @@ -163,7 +163,7 @@ static void ghes_unmap(void __iomem *vaddr, enum fixed_addresses fixmap_idx)
