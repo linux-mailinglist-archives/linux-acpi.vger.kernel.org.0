@@ -2,97 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C5D615FC0
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Nov 2022 10:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40BC5616154
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Nov 2022 12:01:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229929AbiKBJbN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Nov 2022 05:31:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43098 "EHLO
+        id S229988AbiKBLBk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Nov 2022 07:01:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbiKBJbM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Nov 2022 05:31:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3961210E2;
-        Wed,  2 Nov 2022 02:31:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA3D9618C4;
-        Wed,  2 Nov 2022 09:31:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6ABC433C1;
-        Wed,  2 Nov 2022 09:31:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667381471;
-        bh=Gg/fPN5aJjIxWUU4f2lqbCwhG9+mABQUoLO1LEyugvA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VA9kqUgFzHW7TNNVFU0PUVwRSgugIQCwLDDSfTZD2GL2XxifBiQZCkHerKlJKxwKk
-         36kvIAXAXK1hOwjS1jaxYUKTxJQk7ngM4NiLMhq1NdjL2UMrAuQKeHvbnMLgppjteZ
-         AXvP/1y6CiiQv46HYtuDYqLXjU879ewH68iKsMWoFMZ+gnUcC2JQlDVZvfLS46/tKJ
-         0qtz+1tbUIw+rdzWFs19fqtGsOG/Rj/IR/O3Q3dHFyXpq0bVfeVaC66fWnbxCY4eHG
-         Q8fw64tP8w/G1HbUSZe3sn2sb7Q4kVUNmPgEKIZqQcazF5PPB2BFui3kIZUq7FGkS0
-         VAxKq7ffmvGrQ==
-Date:   Wed, 2 Nov 2022 10:31:03 +0100
-From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
-To:     Sudeep Holla <sudeep.holla@arm.com>, catalin.marinas@arm.com,
-        will@kernel.org
-Cc:     Besar Wicaksono <bwicaksono@nvidia.com>, rafael@kernel.org,
-        lenb@kernel.org, guohanjun@huawei.com, linux-tegra@vger.kernel.org,
-        treding@nvidia.com, jonathanh@nvidia.com, vsethi@nvidia.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2] ACPI: ARM Performance Monitoring Unit Table (APMT)
- initial support
-Message-ID: <Y2I411GOEkiqlCBg@lpieralisi>
-References: <20220929002834.32664-1-bwicaksono@nvidia.com>
- <20221014105938.fyy6jns5fsu5xd7q@bogus>
+        with ESMTP id S229513AbiKBLBj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Nov 2022 07:01:39 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D541029361;
+        Wed,  2 Nov 2022 04:01:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667386897; x=1698922897;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d5QvCOMsjMBr33OdD5oCaZxykkRV0ETIs7RVP9U9RZc=;
+  b=UquZEJQ7H6BK2r+Bsm7LS5BcgU58r4roA2OV50tbrv9S88Sc2gqjL2Iz
+   d3zNyRMFJQlg2TqHVi4GxqEy0mbYoTdsPnYj9c8L+FCUTJNpy+b3nHFDX
+   rkpmg2HHNtDg4W9ByQkbzTLWbwHFBa4N/T4/mpmciQIk8rat08gcGDMOa
+   jXbwh7+INY+JLEfY6OKYLYWKc/40zb8xAYZzxSz108RQymJAWBytQlDXx
+   LEHaYjpzmFrO85zmIoJshh8hgnuLN1pi+AOYMoQAEXF6GTSmqUCAjDRl2
+   GwvFiVsYGhEUIDfy0nSVz+6wFWiLB/+6K7JvaXK3KDIXmso7HLuI8jqzi
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="336054732"
+X-IronPort-AV: E=Sophos;i="5.95,232,1661842800"; 
+   d="scan'208";a="336054732"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 04:01:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="634222033"
+X-IronPort-AV: E=Sophos;i="5.95,232,1661842800"; 
+   d="scan'208";a="634222033"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP; 02 Nov 2022 04:01:33 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oqBUx-0068pG-1t;
+        Wed, 02 Nov 2022 13:01:31 +0200
+Date:   Wed, 2 Nov 2022 13:01:31 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH v2 0/2] gpiolib: more cleanups to get rid of of_node
+Message-ID: <Y2JOCyWZfWnWZWHv@smile.fi.intel.com>
+References: <20221005152947.71696-1-andriy.shevchenko@linux.intel.com>
+ <Y1LsjgEHXz621by6@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221014105938.fyy6jns5fsu5xd7q@bogus>
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y1LsjgEHXz621by6@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 14, 2022 at 11:59:38AM +0100, Sudeep Holla wrote:
-> Hi Besar,
-> 
-> On Wed, Sep 28, 2022 at 07:28:34PM -0500, Besar Wicaksono wrote:
-> > ARM Performance Monitoring Unit Table describes the properties of PMU
-> > support in ARM-based system. The APMT table contains a list of nodes,
-> > each represents a PMU in the system that conforms to ARM CoreSight PMU
-> > architecture. The properties of each node include information required
-> > to access the PMU (e.g. MMIO base address, interrupt number) and also
-> > identification. For more detailed information, please refer to the
-> > specification below:
-> >  * APMT: https://developer.arm.com/documentation/den0117/latest
-> >  * ARM Coresight PMU:
-> >         https://developer.arm.com/documentation/ihi0091/latest
+On Fri, Oct 21, 2022 at 10:01:34PM +0300, Andy Shevchenko wrote:
+> On Wed, Oct 05, 2022 at 06:29:45PM +0300, Andy Shevchenko wrote:
+> > One more user outside of GPIO library and pin control folders needs
+> > to be updated to use fwnode instead of of_node. To make this easier
+> > introduce a helper in property.h and convert the user.
 > > 
-> > The initial support adds the detection of APMT table and generic
-> > infrastructure to create platform devices for ARM CoreSight PMUs.
-> > Similar to IORT the root pointer of APMT is preserved during runtime
-> > and each PMU platform device is given a pointer to the corresponding
-> > APMT node.
+> > Note, the helper will be useful not only for the current users,
+> > but any future ones that want to replace of_device_is_compatible()
+> > with analogous fwnode API.
 > > 
+> > Changelog v2:
+> > - placed new helper correctly in the property.h
 > 
-> This looks good to me know.
-> 
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> 
-> Hi Lorenzo,
-> 
-> Not sure if there are any other arm specific ACPI changes in the queue
-> for v6.2. Can you please add this too ?
+> Any comments on the series?
 
-Hi Catalin, Will,
+I'm going to apply this to my branch with Sakari's tag since there is no answer
+from PPC maintainers for a month.
 
-would you mind picking this patch up for v6.2 please ?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Thank you very much.
 
-Lorenzo
