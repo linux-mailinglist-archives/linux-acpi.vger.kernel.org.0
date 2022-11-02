@@ -2,247 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09AA1615765
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Nov 2022 03:12:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2C4615CAF
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Nov 2022 08:07:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229756AbiKBCMo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Nov 2022 22:12:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41654 "EHLO
+        id S230197AbiKBHHe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Nov 2022 03:07:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbiKBCMn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Nov 2022 22:12:43 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42AED64F8;
-        Tue,  1 Nov 2022 19:12:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667355161; x=1698891161;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FaTjZIMPUaV+44T2HRH3XxAC84DB7PBPx2yckCzy/5s=;
-  b=Kb1thNIIhftcmycJpwS/OydvPaNT48XvdfhjQrGvKH3loISBNy1mQHjJ
-   p10i1lpuU7YAPqrBk9HFHk+wfdVfUWRfkSDjrRrA/mVySiRMvNz/afkjy
-   GVgD6IAeQx7B7qIbViDy7HCuX4nwHESWOyC7HskhjBKTMOiYysC1K2Hj3
-   lEb6zdZi7SegT3t44tX5Bh7t2AhUZ7yilssGYkD7+Vwr13SasnKdlXXZt
-   aAlSMY9Ch+jYDh/cVR45RBTY2uGAOdHtILE0SdGA6sIEQRgaxwV7uRfmh
-   6OQoCpeiawpL3FL/UtRfDlgGBt4NrGnxLZpxm75/gHJHt2cTlMf5T/itV
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="296730589"
-X-IronPort-AV: E=Sophos;i="5.95,232,1661842800"; 
-   d="scan'208";a="296730589"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2022 19:12:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="963346719"
-X-IronPort-AV: E=Sophos;i="5.95,232,1661842800"; 
-   d="scan'208";a="963346719"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by fmsmga005.fm.intel.com with ESMTP; 01 Nov 2022 19:12:36 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oq3F5-000EK9-3C;
-        Wed, 02 Nov 2022 02:12:35 +0000
-Date:   Wed, 02 Nov 2022 10:12:10 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
- e0ac4f6ff9ff842b7c287cfa2deb27aadaa76bfb
-Message-ID: <6361d1fa.2HklfKes1DjBoezb%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S230210AbiKBHHa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Nov 2022 03:07:30 -0400
+Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A8D81EEC3;
+        Wed,  2 Nov 2022 00:07:26 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0VTme8ok_1667372840;
+Received: from 30.32.78.92(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VTme8ok_1667372840)
+          by smtp.aliyun-inc.com;
+          Wed, 02 Nov 2022 15:07:24 +0800
+Message-ID: <1aa0ca90-d44c-aa99-1e2d-bd2ae610b088@linux.alibaba.com>
+Date:   Wed, 2 Nov 2022 15:07:20 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.13.0
+Subject: Re: [PATCH] ACPI: APEI: set memory failure flags as
+ MF_ACTION_REQUIRED on action required events
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, jarkko@kernel.org,
+        naoya.horiguchi@nec.com, linmiaohe@huawei.com,
+        akpm@linux-foundation.org, stable@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        cuibixuan@linux.alibaba.com, baolin.wang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <CAJZ5v0hdgxsDiXqOmeqBQoZUQJ1RssM=3jpYpWt3qzy0n2eyaA@mail.gmail.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <CAJZ5v0hdgxsDiXqOmeqBQoZUQJ1RssM=3jpYpWt3qzy0n2eyaA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: e0ac4f6ff9ff842b7c287cfa2deb27aadaa76bfb  Merge branch 'acpica' into bleeding-edge
 
-Error/Warning reports:
 
-https://lore.kernel.org/oe-kbuild-all/202210291101.UBt5Vjis-lkp@intel.com
+在 2022/10/29 AM1:08, Rafael J. Wysocki 写道:
+> On Thu, Oct 27, 2022 at 6:25 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
+>>
+>> There are two major types of uncorrected error (UC) :
+>>
+>> - Action Required: The error is detected and the processor already consumes the
+>>   memory. OS requires to take action (for example, offline failure page/kill
+>>   failure thread) to recover this uncorrectable error.
+>>
+>> - Action Optional: The error is detected out of processor execution context.
+>>   Some data in the memory are corrupted. But the data have not been consumed.
+>>   OS is optional to take action to recover this uncorrectable error.
+>>
+>> For X86 platforms, we can easily distinguish between these two types
+>> based on the MCA Bank. While for arm64 platform, the memory failure
+>> flags for all UCs which severity are GHES_SEV_RECOVERABLE are set as 0,
+>> a.k.a, Action Optional now.
+>>
+>> If UC is detected by a background scrubber, it is obviously an Action
+>> Optional error.  For other errors, we should conservatively regard them
+>> as Action Required.
+>>
+>> cper_sec_mem_err::error_type identifies the type of error that occurred
+>> if CPER_MEM_VALID_ERROR_TYPE is set. So, set memory failure flags as 0
+>> for Scrub Uncorrected Error (type 14). Otherwise, set memory failure
+>> flags as MF_ACTION_REQUIRED.
+>>
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> 
+> I need input from the APEI reviewers on this.
+> 
+> Thanks!
 
-Error/Warning: (recently discovered and may have been fixed)
+Hi, Rafael,
 
-arch/loongarch/include/asm/acpi.h:102:8: error: redefinition of 'struct acpi_madt_core_pic'
-arch/loongarch/include/asm/acpi.h:112:8: error: redefinition of 'struct acpi_madt_lio_pic'
-arch/loongarch/include/asm/acpi.h:123:8: error: redefinition of 'struct acpi_madt_eio_pic'
-arch/loongarch/include/asm/acpi.h:133:8: error: redefinition of 'struct acpi_madt_ht_pic'
-arch/loongarch/include/asm/acpi.h:143:8: error: redefinition of 'struct acpi_madt_bio_pic'
-arch/loongarch/include/asm/acpi.h:154:8: error: redefinition of 'struct acpi_madt_msi_pic'
-arch/loongarch/include/asm/acpi.h:164:8: error: redefinition of 'struct acpi_madt_lpc_pic'
-arch/loongarch/include/asm/acpi.h:56:6: error: redeclaration of 'enum acpi_madt_core_pic_version'
-arch/loongarch/include/asm/acpi.h:57:9: error: redeclaration of enumerator 'ACPI_MADT_CORE_PIC_VERSION_NONE'
-arch/loongarch/include/asm/acpi.h:58:9: error: redeclaration of enumerator 'ACPI_MADT_CORE_PIC_VERSION_V1'
-arch/loongarch/include/asm/acpi.h:59:9: error: redeclaration of enumerator 'ACPI_MADT_CORE_PIC_VERSION_RESERVED'
-arch/loongarch/include/asm/acpi.h:62:6: error: redeclaration of 'enum acpi_madt_lio_pic_version'
-arch/loongarch/include/asm/acpi.h:63:9: error: redeclaration of enumerator 'ACPI_MADT_LIO_PIC_VERSION_NONE'
-arch/loongarch/include/asm/acpi.h:64:9: error: redeclaration of enumerator 'ACPI_MADT_LIO_PIC_VERSION_V1'
-arch/loongarch/include/asm/acpi.h:65:9: error: redeclaration of enumerator 'ACPI_MADT_LIO_PIC_VERSION_RESERVED'
-arch/loongarch/include/asm/acpi.h:68:6: error: redeclaration of 'enum acpi_madt_eio_pic_version'
-arch/loongarch/include/asm/acpi.h:69:9: error: redeclaration of enumerator 'ACPI_MADT_EIO_PIC_VERSION_NONE'
-arch/loongarch/include/asm/acpi.h:70:9: error: redeclaration of enumerator 'ACPI_MADT_EIO_PIC_VERSION_V1'
-arch/loongarch/include/asm/acpi.h:71:9: error: redeclaration of enumerator 'ACPI_MADT_EIO_PIC_VERSION_RESERVED'
-arch/loongarch/include/asm/acpi.h:74:6: error: redeclaration of 'enum acpi_madt_ht_pic_version'
-arch/loongarch/include/asm/acpi.h:75:9: error: redeclaration of enumerator 'ACPI_MADT_HT_PIC_VERSION_NONE'
-arch/loongarch/include/asm/acpi.h:76:9: error: redeclaration of enumerator 'ACPI_MADT_HT_PIC_VERSION_V1'
-arch/loongarch/include/asm/acpi.h:77:9: error: redeclaration of enumerator 'ACPI_MADT_HT_PIC_VERSION_RESERVED'
-arch/loongarch/include/asm/acpi.h:80:6: error: redeclaration of 'enum acpi_madt_bio_pic_version'
-arch/loongarch/include/asm/acpi.h:81:9: error: redeclaration of enumerator 'ACPI_MADT_BIO_PIC_VERSION_NONE'
-arch/loongarch/include/asm/acpi.h:82:9: error: redeclaration of enumerator 'ACPI_MADT_BIO_PIC_VERSION_V1'
-arch/loongarch/include/asm/acpi.h:83:9: error: redeclaration of enumerator 'ACPI_MADT_BIO_PIC_VERSION_RESERVED'
-arch/loongarch/include/asm/acpi.h:86:6: error: redeclaration of 'enum acpi_madt_msi_pic_version'
-arch/loongarch/include/asm/acpi.h:87:9: error: redeclaration of enumerator 'ACPI_MADT_MSI_PIC_VERSION_NONE'
-arch/loongarch/include/asm/acpi.h:88:9: error: redeclaration of enumerator 'ACPI_MADT_MSI_PIC_VERSION_V1'
-arch/loongarch/include/asm/acpi.h:89:9: error: redeclaration of enumerator 'ACPI_MADT_MSI_PIC_VERSION_RESERVED'
-arch/loongarch/include/asm/acpi.h:92:6: error: redeclaration of 'enum acpi_madt_lpc_pic_version'
-arch/loongarch/include/asm/acpi.h:93:9: error: redeclaration of enumerator 'ACPI_MADT_LPC_PIC_VERSION_NONE'
-arch/loongarch/include/asm/acpi.h:94:9: error: redeclaration of enumerator 'ACPI_MADT_LPC_PIC_VERSION_V1'
-arch/loongarch/include/asm/acpi.h:95:9: error: redeclaration of enumerator 'ACPI_MADT_LPC_PIC_VERSION_RESERVED'
-drivers/irqchip/irq-loongarch-cpu.c:101:46: error: passing argument 2 of 'liointc_acpi_init' from incompatible pointer type [-Werror=incompatible-pointer-types]
-drivers/irqchip/irq-loongarch-cpu.c:110:46: error: passing argument 2 of 'eiointc_acpi_init' from incompatible pointer type [-Werror=incompatible-pointer-types]
-drivers/irqchip/irq-loongson-eiointc.c:313:50: error: passing argument 2 of 'pch_pic_acpi_init' from incompatible pointer type [-Werror=incompatible-pointer-types]
-drivers/irqchip/irq-loongson-eiointc.c:326:50: error: passing argument 2 of 'pch_msi_acpi_init' from incompatible pointer type [-Werror=incompatible-pointer-types]
-drivers/irqchip/irq-loongson-eiointc.c:340:12: error: conflicting types for 'eiointc_acpi_init'; have 'int(struct irq_domain *, struct acpi_madt_eio_pic *)'
-drivers/irqchip/irq-loongson-liointc.c:352:12: error: conflicting types for 'liointc_acpi_init'; have 'int(struct irq_domain *, struct acpi_madt_lio_pic *)'
-drivers/irqchip/irq-loongson-pch-lpc.c:150:12: error: conflicting types for 'pch_lpc_acpi_init'; have 'int(struct irq_domain *, struct acpi_madt_lpc_pic *)'
-drivers/irqchip/irq-loongson-pch-pic.c:334:63: error: passing argument 2 of 'pch_lpc_acpi_init' from incompatible pointer type [-Werror=incompatible-pointer-types]
-drivers/irqchip/irq-loongson-pch-pic.c:344:12: error: conflicting types for 'pch_pic_acpi_init'; have 'int(struct irq_domain *, struct acpi_madt_bio_pic *)'
+Sorry, I missed this email. Thank you for you quick reply. Let's discuss with
+reviewers.
 
-Error/Warning ids grouped by kconfigs:
+Thank you.
 
-gcc_recent_errors
-|-- loongarch-allyesconfig
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_bio_pic_version
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_core_pic_version
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_eio_pic_version
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_ht_pic_version
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_lio_pic_version
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_lpc_pic_version
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_msi_pic_version
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_BIO_PIC_VERSION_NONE
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_BIO_PIC_VERSION_RESERVED
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_BIO_PIC_VERSION_V1
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_CORE_PIC_VERSION_NONE
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_CORE_PIC_VERSION_RESERVED
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_CORE_PIC_VERSION_V1
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_EIO_PIC_VERSION_NONE
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_EIO_PIC_VERSION_RESERVED
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_EIO_PIC_VERSION_V1
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_HT_PIC_VERSION_NONE
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_HT_PIC_VERSION_RESERVED
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_HT_PIC_VERSION_V1
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_LIO_PIC_VERSION_NONE
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_LIO_PIC_VERSION_RESERVED
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_LIO_PIC_VERSION_V1
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_LPC_PIC_VERSION_NONE
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_LPC_PIC_VERSION_RESERVED
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_LPC_PIC_VERSION_V1
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_MSI_PIC_VERSION_NONE
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_MSI_PIC_VERSION_RESERVED
-|   |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_MSI_PIC_VERSION_V1
-|   |-- arch-loongarch-include-asm-acpi.h:error:redefinition-of-struct-acpi_madt_bio_pic
-|   |-- arch-loongarch-include-asm-acpi.h:error:redefinition-of-struct-acpi_madt_core_pic
-|   |-- arch-loongarch-include-asm-acpi.h:error:redefinition-of-struct-acpi_madt_eio_pic
-|   |-- arch-loongarch-include-asm-acpi.h:error:redefinition-of-struct-acpi_madt_ht_pic
-|   |-- arch-loongarch-include-asm-acpi.h:error:redefinition-of-struct-acpi_madt_lio_pic
-|   |-- arch-loongarch-include-asm-acpi.h:error:redefinition-of-struct-acpi_madt_lpc_pic
-|   `-- arch-loongarch-include-asm-acpi.h:error:redefinition-of-struct-acpi_madt_msi_pic
-`-- loongarch-randconfig-r012-20221101
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_bio_pic_version
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_core_pic_version
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_eio_pic_version
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_ht_pic_version
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_lio_pic_version
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_lpc_pic_version
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enum-acpi_madt_msi_pic_version
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_BIO_PIC_VERSION_NONE
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_BIO_PIC_VERSION_RESERVED
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_BIO_PIC_VERSION_V1
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_CORE_PIC_VERSION_NONE
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_CORE_PIC_VERSION_RESERVED
-    |-- arch-loongarch-include-asm-acpi.h:error:redeclaration-of-enumerator-ACPI_MADT_CORE_PIC_VERSION_V1
+Cheers,
+Shuai
 
-elapsed time: 727m
 
-configs tested: 62
-configs skipped: 2
-
-gcc tested configs:
-arc                                 defconfig
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-alpha                               defconfig
-x86_64                           rhel-8.3-kvm
-powerpc                           allnoconfig
-x86_64                              defconfig
-um                             i386_defconfig
-arm                                 defconfig
-x86_64                          rhel-8.3-func
-um                           x86_64_defconfig
-x86_64                        randconfig-a015
-s390                                defconfig
-arm64                            allyesconfig
-i386                                defconfig
-arm                              allyesconfig
-i386                          randconfig-a012
-arc                               allnoconfig
-x86_64                               rhel-8.3
-arc                              allyesconfig
-ia64                             allmodconfig
-i386                          randconfig-a016
-alpha                             allnoconfig
-s390                             allmodconfig
-alpha                            allyesconfig
-x86_64                           allyesconfig
-riscv                             allnoconfig
-sh                               allmodconfig
-arc                  randconfig-r043-20221101
-csky                              allnoconfig
-mips                             allyesconfig
-i386                          randconfig-a014
-m68k                             allmodconfig
-powerpc                          allmodconfig
-s390                             allyesconfig
-m68k                             allyesconfig
-i386                             allyesconfig
-
-clang tested configs:
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64               randconfig-a003-20221031
-x86_64                        randconfig-a012
-x86_64               randconfig-a002-20221031
-i386                 randconfig-a001-20221031
-i386                 randconfig-a003-20221031
-i386                 randconfig-a002-20221031
-x86_64               randconfig-a001-20221031
-i386                          randconfig-a013
-x86_64               randconfig-a006-20221031
-i386                          randconfig-a011
-hexagon              randconfig-r041-20221101
-i386                 randconfig-a004-20221031
-i386                 randconfig-a006-20221031
-x86_64               randconfig-a004-20221031
-x86_64               randconfig-a005-20221031
-i386                 randconfig-a005-20221031
-i386                          randconfig-a015
-hexagon              randconfig-r045-20221101
-riscv                randconfig-r042-20221101
-s390                 randconfig-r044-20221101
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> 
+>> ---
+>>  drivers/acpi/apei/ghes.c | 10 ++++++++--
+>>  include/linux/cper.h     |  3 +++
+>>  2 files changed, 11 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>> index 80ad530583c9..6c03059cbfc6 100644
+>> --- a/drivers/acpi/apei/ghes.c
+>> +++ b/drivers/acpi/apei/ghes.c
+>> @@ -474,8 +474,14 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+>>         if (sec_sev == GHES_SEV_CORRECTED &&
+>>             (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+>>                 flags = MF_SOFT_OFFLINE;
+>> -       if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+>> -               flags = 0;
+>> +       if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE) {
+>> +               if (mem_err->validation_bits & CPER_MEM_VALID_ERROR_TYPE)
+>> +                       flags = mem_err->error_type == CPER_MEM_SCRUB_UC ?
+>> +                                       0 :
+>> +                                       MF_ACTION_REQUIRED;
+>> +               else
+>> +                       flags = MF_ACTION_REQUIRED;
+>> +       }
+>>
+>>         if (flags != -1)
+>>                 return ghes_do_memory_failure(mem_err->physical_addr, flags);
+>> diff --git a/include/linux/cper.h b/include/linux/cper.h
+>> index eacb7dd7b3af..b77ab7636614 100644
+>> --- a/include/linux/cper.h
+>> +++ b/include/linux/cper.h
+>> @@ -235,6 +235,9 @@ enum {
+>>  #define CPER_MEM_VALID_BANK_ADDRESS            0x100000
+>>  #define CPER_MEM_VALID_CHIP_ID                 0x200000
+>>
+>> +#define CPER_MEM_SCRUB_CE                      13
+>> +#define CPER_MEM_SCRUB_UC                      14
+>> +
+>>  #define CPER_MEM_EXT_ROW_MASK                  0x3
+>>  #define CPER_MEM_EXT_ROW_SHIFT                 16
+>>
+>> --
+>> 2.20.1.9.gb50a0d7
+>>
