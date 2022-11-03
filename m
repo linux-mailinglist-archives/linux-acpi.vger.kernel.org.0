@@ -2,50 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9566187F6
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Nov 2022 19:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 302E56187F9
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Nov 2022 19:53:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbiKCSvM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Nov 2022 14:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
+        id S229461AbiKCSx2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Nov 2022 14:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbiKCSvL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Nov 2022 14:51:11 -0400
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7DAFF7E;
-        Thu,  3 Nov 2022 11:51:10 -0700 (PDT)
-Received: by mail-qv1-f44.google.com with SMTP id j6so1738346qvn.12;
-        Thu, 03 Nov 2022 11:51:10 -0700 (PDT)
+        with ESMTP id S229699AbiKCSx1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Nov 2022 14:53:27 -0400
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE2149FEF;
+        Thu,  3 Nov 2022 11:53:24 -0700 (PDT)
+Received: by mail-qt1-f172.google.com with SMTP id hh9so1798029qtb.13;
+        Thu, 03 Nov 2022 11:53:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zis0owZsMFVBZPGXe9QCidngIGxG+l6l59XKN5cG8j8=;
-        b=csMiiU2AUBdqpr5DTquZRnoIzQ2aNa8Yv9gXLWHEWvhkuMfp7RRLohcxIPGa9uuSHV
-         NS6yYVbmSksyAImklNojOxaB/67fQz+O2R7uQo+uOHDqq9ZnyalnooMNQHH5D40GzCKa
-         sz70L6p/hseKeO3Zzw7lh1nXA4AVtAVHXlrQcdVxl0+a2+MYlZB9bxkSdF9P+jQWQi2V
-         5c4zWFyJfQbCTvke/lyHzu+taxVB15+EmnKkq3LzZIIff/XnG3QHTxZWSiLZp68JsYkQ
-         0G+Db9n0e9xkJo85p2Om7S/4zL1GLZjWivhG0/3TgPuQjq8v/XeOiO/Pw8tOOzXsR+s0
-         9xHg==
-X-Gm-Message-State: ACrzQf1aTe7pYHkBnA6Kz9zWLuE+if43VXHkiR6uPSsFIRnMFnPkEq6p
-        tFpdYHcVKuo+2j64ynhINerBBMghdE8sx/p5wBY=
-X-Google-Smtp-Source: AMsMyM4L7sSHmachWAk++pMl1KlZa5F7H0zd2YHtl1JVodoSNE1tlCQWGPBsQPRpUHocU+XhNhjWkK28bHbIgVo8qY0=
-X-Received: by 2002:a0c:a90d:0:b0:4b3:f322:1280 with SMTP id
- y13-20020a0ca90d000000b004b3f3221280mr28441369qva.83.1667501470073; Thu, 03
- Nov 2022 11:51:10 -0700 (PDT)
+        bh=e3P3zdhy8GKexWx3vyrC2poycFZmbZATTV4uCKdeI44=;
+        b=BkmpreiOCbLX+dtUWJ+2YdF9+bdOs8FJkLKV/MOd138mAPNSrWqt2OisXMxL0B49gA
+         Xkj9B+giyvQh4Vp/LghlyHW3gU8ruEist71r5kXjp0kXPDlFe4l+bhO0TfCYLv5Zslr/
+         fPAwLT3SJ0lAJJvMPMOjMmE25nKsBIT1Ai6d95zcfZ0Vhn6Eu2MuTW59aDuUR5sok7KP
+         PDrvjus151I2wZ8rFkbM5Md0piP2VR1tgQD/3wztWYW3UazR0kMaiSF7pK8oChyBbidc
+         jYruMe3giJsXWjhDSWniiz5vl2nf/38WUtelp8IR2eemPPDaco0nlQXgI9z6wdMX9AeM
+         SrYQ==
+X-Gm-Message-State: ACrzQf0ihpYA6saMeAKUgr2ERNhOWhUmRqaySke5GELgHX+Ax34aUHZz
+        cM14/O7ivZcvSlQlHaXOk3tz+UqzdaKabkOAt+A=
+X-Google-Smtp-Source: AMsMyM4QSySjm+ZEB/jau7CJMJJfWL1+5ZQtQRrNl6i66knX97g4Qv73Gu/6SVigeCoz4CyrTFJzPtEC8KPqj3i61Aw=
+X-Received: by 2002:a05:622a:1a25:b0:39c:b862:7318 with SMTP id
+ f37-20020a05622a1a2500b0039cb8627318mr26133393qtb.147.1667501603818; Thu, 03
+ Nov 2022 11:53:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221031105806.370672-1-hdegoede@redhat.com>
-In-Reply-To: <20221031105806.370672-1-hdegoede@redhat.com>
+References: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
+In-Reply-To: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 3 Nov 2022 19:50:59 +0100
-Message-ID: <CAJZ5v0jQvopYK-N4eXnp_Fif9vQ8Q=sYGiUhoNeY9hDavkOSgw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: video: Improve Chromebook checks
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "Mr . Chromebox" <mrchromebox@gmail.com>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Date:   Thu, 3 Nov 2022 19:53:12 +0100
+Message-ID: <CAJZ5v0hRBd8OEg1CJUQGhb6_59j-+-zZTid8kmMV9nUk2CF3EA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] ACPI: scan: substitute empty_zero_page with helper ZERO_PAGE(0)
+To:     Giulio Benetti <giulio.benetti@benettiengineering.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-raid@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Song Liu <song@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -57,61 +59,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 31, 2022 at 11:58 AM Hans de Goede <hdegoede@redhat.com> wrote:
+On Tue, Oct 18, 2022 at 11:59 PM Giulio Benetti
+<giulio.benetti@benettiengineering.com> wrote:
 >
-> 2 improvements for the Chromebook handling in
-> acpi_video_get_backlight_type():
+> Not all zero page implementations use empty_zero_page global pointer so
+> let's substitute empty_zero_page occurence with helper ZERO_PAGE(0).
 >
-> 1. Also check for the "GOOG000C" ACPI HID used on some models
-> 2. Move the Chromebook check to above the ACPI-video check normally
->    Chromebooks don't have ACPI video backlight support, but when
->    flashed with upstream coreboot builds they may have ACPI video
->    backlight support, but native should still be used/preferred then.
->
-> Suggested-by: Mr. Chromebox <mrchromebox@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
 > ---
->  drivers/acpi/video_detect.c | 13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
+>  drivers/acpi/scan.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index 9cd8797d12bb..841f6213b4de 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -670,7 +670,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 558664d169fc..4d2d274cc8ad 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -30,7 +30,7 @@ extern struct acpi_device *acpi_root;
+>  #define ACPI_BUS_HID                   "LNXSYBUS"
+>  #define ACPI_BUS_DEVICE_NAME           "System Bus"
 >
->  static bool google_cros_ec_present(void)
->  {
-> -       return acpi_dev_found("GOOG0004");
-> +       return acpi_dev_found("GOOG0004") || acpi_dev_found("GOOG000C");
->  }
+> -#define INVALID_ACPI_HANDLE    ((acpi_handle)empty_zero_page)
+> +#define INVALID_ACPI_HANDLE    ((acpi_handle)ZERO_PAGE(0))
 >
->  /*
-> @@ -718,6 +718,10 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
->         if (apple_gmux_present())
->                 return acpi_backlight_apple_gmux;
+>  static const char *dummy_hid = "device";
 >
-> +       /* Chromebooks should always use native backlight control. */
-> +       if (google_cros_ec_present() && native_available)
-> +               return acpi_backlight_native;
-> +
->         /* On systems with ACPI video use either native or ACPI video. */
->         if (video_caps & ACPI_VIDEO_BACKLIGHT) {
->                 /*
-> @@ -735,13 +739,6 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
->                         return acpi_backlight_video;
->         }
->
-> -       /*
-> -        * Chromebooks that don't have backlight handle in ACPI table
-> -        * are supposed to use native backlight if it's available.
-> -        */
-> -       if (google_cros_ec_present() && native_available)
-> -               return acpi_backlight_native;
-> -
->         /* No ACPI video (old hw), use vendor specific fw methods. */
->         return acpi_backlight_vendor;
->  }
 > --
 
 Applied as 6.2 material, thanks!
