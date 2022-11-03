@@ -2,52 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 483596187EA
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Nov 2022 19:48:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9566187F6
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Nov 2022 19:51:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbiKCSsd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Nov 2022 14:48:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42168 "EHLO
+        id S229882AbiKCSvM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Nov 2022 14:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229992AbiKCSsb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Nov 2022 14:48:31 -0400
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC4AE17048;
-        Thu,  3 Nov 2022 11:48:30 -0700 (PDT)
-Received: by mail-qv1-f50.google.com with SMTP id mi9so1752686qvb.8;
-        Thu, 03 Nov 2022 11:48:30 -0700 (PDT)
+        with ESMTP id S229699AbiKCSvL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Nov 2022 14:51:11 -0400
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7DAFF7E;
+        Thu,  3 Nov 2022 11:51:10 -0700 (PDT)
+Received: by mail-qv1-f44.google.com with SMTP id j6so1738346qvn.12;
+        Thu, 03 Nov 2022 11:51:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qFFj0YnqgTVbsW45BjHNbWg4SjPrNwZE8AOD83zKJ74=;
-        b=Ue83nvM49wxmIJpeW0OdsHD3NSvihD3GyzcevI5S7uiJNIjY+Ud+7eAp3rb+X+S0PR
-         KcAdJrR6FtS+MFBh7QuRpQ4ouO1vEKlg3cLtlQNk8cGUntKbT9y7LMuJClvOeUWGOCQg
-         gVVwUKpUnES7wma6SAPNy3srUgd4nrtt3K/PiMttvc8+4HPNgqfVWwA0hkj4dhni+LQl
-         +83k2EoB0FHv6u7xFh6V886k5VYAZWS/SflmxWB44v3TGzi79KVetJrkTKSz4cRKlFZh
-         A900vMp3zMbR7BDjgRwiNDjbUsNBr+M47xlxrKfDpTtaHhcg60K21MXJjLimqFTNSjXx
-         6l1g==
-X-Gm-Message-State: ACrzQf2SAkYYZsOgrtVdRcAk5Dv+cpiFrsUlgo5ih+YVfDFl9WKJcrLp
-        Oirq8ExSKPB2JPAYMNadb1PLF2JrvRMB2va2Qhnfrcky
-X-Google-Smtp-Source: AMsMyM5ByWBOLNaWU6upUbPGJQZXvuckz/Axld8j4XIsJqWWxPKRr6T3ZjvryDDlHqoJOyOQI58Wmx/N/Sqtel0PzrE=
-X-Received: by 2002:a0c:c684:0:b0:4bb:fc53:5ad9 with SMTP id
- d4-20020a0cc684000000b004bbfc535ad9mr19725144qvj.3.1667501309876; Thu, 03 Nov
- 2022 11:48:29 -0700 (PDT)
+        bh=zis0owZsMFVBZPGXe9QCidngIGxG+l6l59XKN5cG8j8=;
+        b=csMiiU2AUBdqpr5DTquZRnoIzQ2aNa8Yv9gXLWHEWvhkuMfp7RRLohcxIPGa9uuSHV
+         NS6yYVbmSksyAImklNojOxaB/67fQz+O2R7uQo+uOHDqq9ZnyalnooMNQHH5D40GzCKa
+         sz70L6p/hseKeO3Zzw7lh1nXA4AVtAVHXlrQcdVxl0+a2+MYlZB9bxkSdF9P+jQWQi2V
+         5c4zWFyJfQbCTvke/lyHzu+taxVB15+EmnKkq3LzZIIff/XnG3QHTxZWSiLZp68JsYkQ
+         0G+Db9n0e9xkJo85p2Om7S/4zL1GLZjWivhG0/3TgPuQjq8v/XeOiO/Pw8tOOzXsR+s0
+         9xHg==
+X-Gm-Message-State: ACrzQf1aTe7pYHkBnA6Kz9zWLuE+if43VXHkiR6uPSsFIRnMFnPkEq6p
+        tFpdYHcVKuo+2j64ynhINerBBMghdE8sx/p5wBY=
+X-Google-Smtp-Source: AMsMyM4L7sSHmachWAk++pMl1KlZa5F7H0zd2YHtl1JVodoSNE1tlCQWGPBsQPRpUHocU+XhNhjWkK28bHbIgVo8qY0=
+X-Received: by 2002:a0c:a90d:0:b0:4b3:f322:1280 with SMTP id
+ y13-20020a0ca90d000000b004b3f3221280mr28441369qva.83.1667501470073; Thu, 03
+ Nov 2022 11:51:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
- <57396f1eacfacdb589127499f8ff64225a39e110.1667336095.git.christophe.jaillet@wanadoo.fr>
- <Y2JVhffdmXkkrIRN@smile.fi.intel.com>
-In-Reply-To: <Y2JVhffdmXkkrIRN@smile.fi.intel.com>
+References: <20221031105806.370672-1-hdegoede@redhat.com>
+In-Reply-To: <20221031105806.370672-1-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 3 Nov 2022 19:48:19 +0100
-Message-ID: <CAJZ5v0hdzYuiKECEdXFB0vmz=6Z697DRp0Xx5jwyqHH4SGrLCA@mail.gmail.com>
-Subject: Re: [PATCH 09/30] ACPI: sysfs: Use kstrtobool() instead of strtobool()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-acpi@vger.kernel.org
+Date:   Thu, 3 Nov 2022 19:50:59 +0100
+Message-ID: <CAJZ5v0jQvopYK-N4eXnp_Fif9vQ8Q=sYGiUhoNeY9hDavkOSgw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: video: Improve Chromebook checks
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "Mr . Chromebox" <mrchromebox@gmail.com>,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -59,56 +57,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 2, 2022 at 12:33 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Mon, Oct 31, 2022 at 11:58 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> On Tue, Nov 01, 2022 at 10:13:57PM +0100, Christophe JAILLET wrote:
-> > strtobool() is the same as kstrtobool().
-> > However, the latter is more used within the kernel.
-> >
-> > In order to remove strtobool() and slightly simplify kstrtox.h, switch to
-> > the other function name.
-> >
-> > While at it, include the corresponding header file (<linux/kstrtox.h>)
+> 2 improvements for the Chromebook handling in
+> acpi_video_get_backlight_type():
 >
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 1. Also check for the "GOOG000C" ACPI HID used on some models
+> 2. Move the Chromebook check to above the ACPI-video check normally
+>    Chromebooks don't have ACPI video backlight support, but when
+>    flashed with upstream coreboot builds they may have ACPI video
+>    backlight support, but native should still be used/preferred then.
 >
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > ---
-> > This patch is part of a serie that axes all usages of strtobool().
-> > Each patch can be applied independently from the other ones.
-> >
-> > The last patch of the serie removes the definition of strtobool().
-> >
-> > You may not be in copy of the cover letter. So, if needed, it is available
-> > at [1].
-> >
-> > [1]: https://lore.kernel.org/all/cover.1667336095.git.christophe.jaillet@wanadoo.fr/
-> > ---
-> >  drivers/acpi/sysfs.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> > index cc2fe0618178..2d81c742e4d2 100644
-> > --- a/drivers/acpi/sysfs.c
-> > +++ b/drivers/acpi/sysfs.c
-> > @@ -9,6 +9,7 @@
-> >  #include <linux/bitmap.h>
-> >  #include <linux/init.h>
-> >  #include <linux/kernel.h>
-> > +#include <linux/kstrtox.h>
-> >  #include <linux/moduleparam.h>
-> >
-> >  #include "internal.h"
-> > @@ -992,7 +993,7 @@ static ssize_t force_remove_store(struct kobject *kobj,
-> >       bool val;
-> >       int ret;
-> >
-> > -     ret = strtobool(buf, &val);
-> > +     ret = kstrtobool(buf, &val);
-> >       if (ret < 0)
-> >               return ret;
-> >
-> > --
+> Suggested-by: Mr. Chromebox <mrchromebox@gmail.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/video_detect.c | 13 +++++--------
+>  1 file changed, 5 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+> index 9cd8797d12bb..841f6213b4de 100644
+> --- a/drivers/acpi/video_detect.c
+> +++ b/drivers/acpi/video_detect.c
+> @@ -670,7 +670,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+>
+>  static bool google_cros_ec_present(void)
+>  {
+> -       return acpi_dev_found("GOOG0004");
+> +       return acpi_dev_found("GOOG0004") || acpi_dev_found("GOOG000C");
+>  }
+>
+>  /*
+> @@ -718,6 +718,10 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
+>         if (apple_gmux_present())
+>                 return acpi_backlight_apple_gmux;
+>
+> +       /* Chromebooks should always use native backlight control. */
+> +       if (google_cros_ec_present() && native_available)
+> +               return acpi_backlight_native;
+> +
+>         /* On systems with ACPI video use either native or ACPI video. */
+>         if (video_caps & ACPI_VIDEO_BACKLIGHT) {
+>                 /*
+> @@ -735,13 +739,6 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
+>                         return acpi_backlight_video;
+>         }
+>
+> -       /*
+> -        * Chromebooks that don't have backlight handle in ACPI table
+> -        * are supposed to use native backlight if it's available.
+> -        */
+> -       if (google_cros_ec_present() && native_available)
+> -               return acpi_backlight_native;
+> -
+>         /* No ACPI video (old hw), use vendor specific fw methods. */
+>         return acpi_backlight_vendor;
+>  }
+> --
 
 Applied as 6.2 material, thanks!
