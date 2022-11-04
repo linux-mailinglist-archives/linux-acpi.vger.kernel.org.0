@@ -2,126 +2,223 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B893F619DEB
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 18:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1FC7619E4F
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 18:17:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231831AbiKDRA1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Nov 2022 13:00:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49860 "EHLO
+        id S229749AbiKDRRt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Nov 2022 13:17:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231485AbiKDRAZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 13:00:25 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1A031F8D
-        for <linux-acpi@vger.kernel.org>; Fri,  4 Nov 2022 10:00:24 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id 8so3447613qka.1
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Nov 2022 10:00:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/jNIi3NLp/0QE0eLEgGhnlZnXslRxZtVSsauwMnJ52A=;
-        b=TyCMiI4ARMPxd18RVlEv+qm2LWR7zC104Hlivn40qb5lZJslIeDFuCNMNvjneFE/Nj
-         LFwCX5vAwmEX/R8qjGO9x9K9/hgdwoRd2q59WUqMzWoiDvISQjer+tTT1jJ7UfSLA8Vn
-         fR3VeAjk206NeR5DC2lSXJH82ZME8JVM9jplc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/jNIi3NLp/0QE0eLEgGhnlZnXslRxZtVSsauwMnJ52A=;
-        b=rRpaLhTZbzZwAi5fmZCR4+vZm8sCKkhIXEB6M4pd6tg+qtsaKaHCWHR77vZinRsLs9
-         tS71er+bISBjrpSmy11z3Z97ZVTNfaGgOr4omdwCYmpO8fzJqmhb3TWKiSnUTXNhgoF8
-         s9RGqW0BmNqOOTjqk/SO/0xO5kwdj0K9Kk1dP2oGNQCHzBQIrMhIntU+7uscJlibi35+
-         AtmWeXZMwP9xHTqs5Ijr3RCSEfzN52AOfMxcGJAv66rwx+/UMQhe3vE2cwnXc6EjvHvZ
-         X8rLGFo1BjoZ4lAOjw8cwbRQdcK6O1G2ePJGgE/ioq9MEubFG56SznxeGBcqxy6y/u+D
-         aZWg==
-X-Gm-Message-State: ACrzQf02nmYX3CEen6CAjfunOs0I6Khj+L7qc1HkI8xAU6SHTyPgSHQq
-        vTtVEbImO0xt+RVDlWlnWMr4/lpO9Yn9kQ==
-X-Google-Smtp-Source: AMsMyM7D4J2QDx4xZWUCILUG3MdwHy4C3BiYauAeV/adelEOWPWIMm4lsf0fSUvM+V9lf4OPNkfEmw==
-X-Received: by 2002:a05:620a:2848:b0:6ad:db0a:f227 with SMTP id h8-20020a05620a284800b006addb0af227mr26015788qkp.44.1667581223119;
-        Fri, 04 Nov 2022 10:00:23 -0700 (PDT)
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
-        by smtp.gmail.com with ESMTPSA id g10-20020a05620a40ca00b006cebda00630sm3304345qko.60.2022.11.04.10.00.20
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Nov 2022 10:00:20 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-36cbcda2157so48830487b3.11
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Nov 2022 10:00:20 -0700 (PDT)
-X-Received: by 2002:a81:8241:0:b0:370:5fad:47f0 with SMTP id
- s62-20020a818241000000b003705fad47f0mr27409344ywf.441.1667581219811; Fri, 04
- Nov 2022 10:00:19 -0700 (PDT)
+        with ESMTP id S231756AbiKDRRd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 13:17:33 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA2A842F4E;
+        Fri,  4 Nov 2022 10:17:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667582251; x=1699118251;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WgIQx6ItQN2BeraUn6yfs2aWC/9lQldfAk5Z+hzj/fo=;
+  b=fyUeHYKgo4a4p5EmcFycRi4SX96uiC+pe1a1b7PeYjBxBQmRZXUEO5fi
+   sI6C5WTRYbwXPNKC0dZqb10EjFENB+YsCjRHgtaLHY7FpQMkxvJScLSB3
+   1mEHGnvKk4bF96TFRi0tLaZIPwLdwoBj0lDXJoHoSGVI4zCxkwj8CCDSz
+   Cdge3WTIBf4BzMlhoxG/PehrqSIR2m/dIXSPB3gwZMyIMitf+aCzsrUj3
+   fRMEQ16hUYDOLDQVzKHL2d1O4jD9T9aCC70LOv4RIlsYNR2NVr63r5ypG
+   l30woRefiL9JnsCcY5rkNu6AP8Xebn7Mee5KnZ0A+Cct/q5fP+bFrH8cn
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10521"; a="311768225"
+X-IronPort-AV: E=Sophos;i="5.96,138,1665471600"; 
+   d="scan'208";a="311768225"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2022 10:17:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10521"; a="668427097"
+X-IronPort-AV: E=Sophos;i="5.96,138,1665471600"; 
+   d="scan'208";a="668427097"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 04 Nov 2022 10:17:29 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1or0Js-007SvW-0G;
+        Fri, 04 Nov 2022 19:17:28 +0200
+Date:   Fri, 4 Nov 2022 19:17:27 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/6] gpiolib: consolidate GPIO lookups
+Message-ID: <Y2VJJ8CYhGY69c/z@smile.fi.intel.com>
+References: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
+ <20221031-gpiolib-swnode-v1-5-a0ab48d229c7@gmail.com>
 MIME-Version: 1.0
-References: <20221104054053.431922658@goodmis.org>
-In-Reply-To: <20221104054053.431922658@goodmis.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 4 Nov 2022 10:00:03 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whKE5UL+AuCC2wK8oq8D_ueSO_T7-9Acx4POouqVi8ZHg@mail.gmail.com>
-Message-ID: <CAHk-=whKE5UL+AuCC2wK8oq8D_ueSO_T7-9Acx4POouqVi8ZHg@mail.gmail.com>
-Subject: Re: [RFC][PATCH v3 00/33] timers: Use timer_shutdown*() before
- freeing timers
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>, rcu@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-edac@vger.kernel.org,
-        cgroups@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org, drbd-dev@lists.linbit.com,
-        linux-bluetooth@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-leds@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221031-gpiolib-swnode-v1-5-a0ab48d229c7@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 3, 2022 at 10:48 PM Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> Ideally, I would have the first patch go into this rc cycle, which is mostly
-> non functional as it will allow the other patches to come in via the respective
-> subsystems in the next merge window.
+On Thu, Nov 03, 2022 at 11:10:15PM -0700, Dmitry Torokhov wrote:
+> Ensure that all paths to obtain/look up GPIOD from generic
+> consumer-visible APIs go through the new gpiod_find_and_request()
+> helper, so that we can easily extend it with support for new firmware
+> mechanisms.
 
-Ack.
+...
 
-I also wonder if we could do the completely trivially correct
-conversions immediately.
+> +static struct gpio_desc *gpiod_find_by_fwnode(struct fwnode_handle *fwnode,
+> +					      struct device *consumer,
+> +					      const char *con_id,
+> +					      unsigned int idx,
+> +					      enum gpiod_flags *flags,
+> +					      unsigned long *lookupflags)
+>  {
 
-I'm talking about the scripted ones where it's currently a
-"del_timer_sync()", and the very next action is freeing whatever data
-structure the timer is in (possibly with something like free_irq() in
-between - my point is that there's an unconditional free that is very
-clear and unambiguous), so that there is absolutely no question about
-whether they should use "timer_shutdown_sync()" or not.
+> +	struct gpio_desc *desc = ERR_PTR(-ENOENT);
 
-IOW, things like patches 03, 17 and 31, and at least parts others in
-this series.
+No need, just return directly.
 
-This series clearly has several much more complex cases that need
-actual real code review, and I think it would help to have the
-completely unambiguous cases out of the way, just to get rid of noise.
+> +	dev_dbg(consumer, "GPIO lookup for consumer %s in node '%s'\n",
+> +		con_id, fwnode_get_name(fwnode));
 
-So I'd take that first patch, and a scripted set of "this cannot
-change any semantics" patches early.
+%pfwP ?
 
-                Linus
+> +
+> +	/* Using device tree? */
+>  	if (is_of_node(fwnode)) {
+> +		dev_dbg(consumer, "using device tree for GPIO lookup\n");
+> +		desc = of_find_gpio(to_of_node(fwnode),
+> +				    con_id, idx, lookupflags);
+>  	} else if (is_acpi_node(fwnode)) {
+
+With direct return, no need for 'else' here.
+
+> +		dev_dbg(consumer, "using ACPI for GPIO lookup\n");
+> +		desc = acpi_find_gpio(fwnode, con_id, idx, flags, lookupflags);
+>  	}
+>  
+> +	return desc;
+> +}
+
+...
+
+> +static struct gpio_desc *gpiod_find_and_request(struct device *consumer,
+> +						struct fwnode_handle *fwnode,
+> +						const char *con_id,
+> +						unsigned int idx,
+> +						enum gpiod_flags flags,
+> +						const char *label,
+> +						bool platform_lookup_allowed)
+> +{
+
+> +	struct gpio_desc *desc = ERR_PTR(-ENOENT);
+
+We can get rid of the assignment, see below.
+
+
+> +	unsigned long lookupflags;
+> +	int ret;
+
+> +	if (fwnode)
+
+Do we need this check?
+
+Debug message above (when %pfw is used) would be even useful when
+fwnode == NULL.
+
+> +		desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx,
+> +					    &flags, &lookupflags);
+
+> +
+
+The blank line can be removed after above comments being addressed.
+
+> +	if (gpiod_not_found(desc) && platform_lookup_allowed) {
+> +		/*
+> +		 * Either we are not using DT or ACPI, or their lookup did not
+> +		 * return a result. In that case, use platform lookup as a
+> +		 * fallback.
+> +		 */
+> +		dev_dbg(consumer, "using lookup tables for GPIO lookup\n");
+> +		desc = gpiod_find(consumer, con_id, idx, &lookupflags);
+> +	}
+> +
+> +	if (IS_ERR(desc)) {
+> +		dev_dbg(consumer, "No GPIO consumer %s found\n", con_id);
+> +		return desc;
+> +	}
+> +
+> +	/*
+> +	 * If a connection label was passed use that, else attempt to use
+> +	 * the device name as label
+> +	 */
+>  	ret = gpiod_request(desc, label);
+> +	if (ret) {
+> +		if (!(ret == -EBUSY && flags & GPIOD_FLAGS_BIT_NONEXCLUSIVE))
+> +			return ERR_PTR(ret);
+> +
+> +		/*
+> +		 * This happens when there are several consumers for
+> +		 * the same GPIO line: we just return here without
+> +		 * further initialization. It is a bit of a hack.
+> +		 * This is necessary to support fixed regulators.
+> +		 *
+> +		 * FIXME: Make this more sane and safe.
+> +		 */
+
+> +		dev_info(consumer,
+> +			 "nonexclusive access to GPIO for %s\n", con_id);
+
+Cam be one line.
+
+> +		return desc;
+> +	}
+>  
+> +	ret = gpiod_configure_flags(desc, con_id, lookupflags, flags);
+>  	if (ret < 0) {
+> +		dev_dbg(consumer, "setup of GPIO %s failed\n", con_id);
+>  		gpiod_put(desc);
+>  		return ERR_PTR(ret);
+>  	}
+
+...
+
+>  struct gpio_desc *fwnode_gpiod_get_index(struct fwnode_handle *fwnode,
+> +					 const char *con_id,
+> +					 int index,
+>  					 enum gpiod_flags flags,
+>  					 const char *label)
+>  {
+>  
+
+Unnecessary blank line?
+
+> +	return gpiod_find_and_request(NULL, fwnode, con_id, index, flags, label,
+> +				      false);
+
+Can be one line.
+
+>  }
+
+...
+
+
+> +	return gpiod_find_and_request(dev, fwnode, con_id, idx, flags, label,
+> +				      true);
+
+Ditto.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
