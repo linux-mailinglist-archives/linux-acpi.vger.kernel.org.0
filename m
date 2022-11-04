@@ -2,84 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26E65619B0E
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 16:10:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54367619B2F
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 16:15:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232403AbiKDPKP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Nov 2022 11:10:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53634 "EHLO
+        id S231913AbiKDPPh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Nov 2022 11:15:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232194AbiKDPKN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 11:10:13 -0400
-Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E02DCE32
-        for <linux-acpi@vger.kernel.org>; Fri,  4 Nov 2022 08:10:11 -0700 (PDT)
-Received: by mail-vs1-xe29.google.com with SMTP id n68so4619115vsc.3
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Nov 2022 08:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YAwBDkIAtIBDNt5L2u1kCaJTDfLOL3ZRkXytH05z5qg=;
-        b=x8MXBUA56mMRv9UOLz5WNRX0Ob0S78eUI08o1E1lcX3wI4ykcSk0SAplzbeFlbtg5X
-         KFFBDk9R2XF1UMvdDd6AXgwkh+3p/L8d98+eXXxqdA+vkMdpjRBMOnBhT2Pve/QMowxl
-         Z6Pw1QiR6M2NCUK19NmE/4kH4Uem0vVrmkqPnm8ATukqxavrw4VYsMSsLHC3G6AXFvEQ
-         +Nd3zfToovh6czTQyCQ5cXybtaDGjM8zB0u51ZGrAJwd6BK2ddZcsGsGbPYY4OFcCW43
-         OU9fSYVCaAOhgF1JPWiJFj305PXm5+WKNu6qZ3rRs2qjfzh27l6BXp/vz0xo9/18oOaP
-         v54Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YAwBDkIAtIBDNt5L2u1kCaJTDfLOL3ZRkXytH05z5qg=;
-        b=J7Snsikvq1sfzl8zRqzrMtYEOWwxu1WlNw4MmWkd6sWe+iskdCvuwtzFlZVFiHEPjM
-         2Qz9aJfunANcDrX9z2eC2c4CkeAp1/tSF4+k9RzQZpG4IszV6nQUT4FBumdhDBglhGH/
-         zM454FcdL2n7HsmRGObHIJ1qCzFyxvRP4GR6li0bCtNe5uPKyOdUKuyWWHwPf8u32fti
-         ojXY/O/55szPPAaiDmHY4JoO7egs47Zho/koJqyi21eeJh7BmRDkDZE5hNMl2CaDwiP5
-         CtilOJYVKdhLlJ9Zc6kjeOug6hco8m8K4iXG7Aojmn1vLftwYFkNUOnl4Ut+XDD6WhiE
-         5SYA==
-X-Gm-Message-State: ACrzQf1Zon5jsvLrFGvFHDsDDDxv9wFlMV/NX7KxIB6cCy9sXBfQ374d
-        ggVmQbE803GpAX1h7tmKkseFaHPtfusorGYuliJ03A==
-X-Google-Smtp-Source: AMsMyM6oV2D5vVn+fC0RSecgHmq+3QWbsUa/GttIAESJ1hfdNfvX1EhVWoSsO52NlgsXJf2lEiiz7sptGJZOBd6EE48=
-X-Received: by 2002:a05:6102:11a:b0:3a7:769c:6dee with SMTP id
- z26-20020a056102011a00b003a7769c6deemr295005vsq.13.1667574610136; Fri, 04 Nov
- 2022 08:10:10 -0700 (PDT)
+        with ESMTP id S230139AbiKDPPg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 11:15:36 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CCC5710D9;
+        Fri,  4 Nov 2022 08:15:34 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ACD4F1FB;
+        Fri,  4 Nov 2022 08:15:40 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E331F3F703;
+        Fri,  4 Nov 2022 08:15:32 -0700 (PDT)
+Date:   Fri, 4 Nov 2022 15:15:30 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Robbie King <robbiek@xsightlabs.com>
+Cc:     "lihuisong (C)" <lihuisong@huawei.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rafael@kernel.org,
+        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
+        huangdaode@huawei.com, tanxiaofei@huawei.com,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [RFC] ACPI: PCC: Support shared interrupt for multiple subspaces
+Message-ID: <20221104151530.44sms3fnarqnvvsl@bogus>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20221027155323.7xmpjfrh7qmil6o3@bogus>
+ <f0c408a6-cd94-4963-d4d7-e7d08b6150be@huawei.com>
+ <20221031104036.bv6a7i6hxrmtpj23@bogus>
+ <925f360d-e6b3-6004-de22-f39eaa86a750@huawei.com>
+ <d0b178d3-a036-399f-fb0c-bb7f8c52995c@xsightlabs.com>
 MIME-Version: 1.0
-References: <20221103180643.79352-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20221103180643.79352-1-andriy.shevchenko@linux.intel.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Fri, 4 Nov 2022 16:09:59 +0100
-Message-ID: <CAMRc=McicB36evBh5thWPtnMPuzbfY+4m29i6Mp-1tJSw9OvjQ@mail.gmail.com>
-Subject: Re: [rft, PATCH v2 1/1] gpiolib: Get rid of not used of_node member
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d0b178d3-a036-399f-fb0c-bb7f8c52995c@xsightlabs.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 3, 2022 at 7:06 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Fri, Nov 04, 2022 at 11:04:22AM -0400, Robbie King wrote:
+> Hello Huisong, your raising of the shared interrupt issue is very timely, I
+> am working to implement "Extended PCC subspaces (types 3 and 4)" using PCC
+> on the ARM RDN2 reference platform as a proof of concept, and encountered
+> this issue as well.  FWIW, I am currently testing using Sudeep's patch with
+> the "chan_in_use" flag removed, and so far have not encountered any issues.
 >
-> All new drivers should use fwnode and / or parent to provide the
-> necessary information to the GPIO library.
+
+Interesting, do you mean the patch I post in this thread but without the
+whole chan_in_use flag ?
+
+> I think the RDN2 may provide an example of a write only interrupt
+> acknowledge mechanism mentioned by Sudeep.
 >
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
 
-This looks good to me. I'm thinking about just applying it and giving
-it a spin in next right away.
+Yes.
 
-Linus: any objections?
+> The RDN2 reference design uses the MHUv2 IP for the doorbell mechanism.  If
+> my implementation is correct (and it quite possibly is not), acknowledging
+> the DB interrupt from the platform is accomplished by writing a 1 to the
+> appropriate bit in the receiver channel window CH_CLR register, which is
+> documented as:
+>
+>   Channel flag clear.
+>   Write 0b1 to a bit clears the corresponding bit in the CH_ST and CH_ST_MSK.
+>   Writing 0b0 has no effect.
+>   Each bit always reads as 0b0.
+>
 
-Bartosz
+Correct, on this MHUv[1-2], it is write only register and it reads zero.
+So basically you will ignore the interrupt if we apply the logic Huisong
+proposed initially.
+
+> in the "Arm Corstone SSE-700 Subsystem Technical Reference Manual".
+>
+> Apologies if I am off in the weeds here as I have only been working with
+> PCC/SCMI for a very short period of time.
+
+Good to know info :).
+
+-- 
+Regards,
+Sudeep
