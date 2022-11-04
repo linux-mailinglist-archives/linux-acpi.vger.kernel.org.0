@@ -2,87 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 302E56187F9
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Nov 2022 19:53:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95471618F13
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 04:31:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbiKCSx2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Nov 2022 14:53:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43858 "EHLO
+        id S231404AbiKDDbk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Nov 2022 23:31:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbiKCSx1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Nov 2022 14:53:27 -0400
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE2149FEF;
-        Thu,  3 Nov 2022 11:53:24 -0700 (PDT)
-Received: by mail-qt1-f172.google.com with SMTP id hh9so1798029qtb.13;
-        Thu, 03 Nov 2022 11:53:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e3P3zdhy8GKexWx3vyrC2poycFZmbZATTV4uCKdeI44=;
-        b=BkmpreiOCbLX+dtUWJ+2YdF9+bdOs8FJkLKV/MOd138mAPNSrWqt2OisXMxL0B49gA
-         Xkj9B+giyvQh4Vp/LghlyHW3gU8ruEist71r5kXjp0kXPDlFe4l+bhO0TfCYLv5Zslr/
-         fPAwLT3SJ0lAJJvMPMOjMmE25nKsBIT1Ai6d95zcfZ0Vhn6Eu2MuTW59aDuUR5sok7KP
-         PDrvjus151I2wZ8rFkbM5Md0piP2VR1tgQD/3wztWYW3UazR0kMaiSF7pK8oChyBbidc
-         jYruMe3giJsXWjhDSWniiz5vl2nf/38WUtelp8IR2eemPPDaco0nlQXgI9z6wdMX9AeM
-         SrYQ==
-X-Gm-Message-State: ACrzQf0ihpYA6saMeAKUgr2ERNhOWhUmRqaySke5GELgHX+Ax34aUHZz
-        cM14/O7ivZcvSlQlHaXOk3tz+UqzdaKabkOAt+A=
-X-Google-Smtp-Source: AMsMyM4QSySjm+ZEB/jau7CJMJJfWL1+5ZQtQRrNl6i66knX97g4Qv73Gu/6SVigeCoz4CyrTFJzPtEC8KPqj3i61Aw=
-X-Received: by 2002:a05:622a:1a25:b0:39c:b862:7318 with SMTP id
- f37-20020a05622a1a2500b0039cb8627318mr26133393qtb.147.1667501603818; Thu, 03
- Nov 2022 11:53:23 -0700 (PDT)
+        with ESMTP id S231418AbiKDDbM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Nov 2022 23:31:12 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C472793B;
+        Thu,  3 Nov 2022 20:28:34 -0700 (PDT)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N3R0k3DbCz15MMK;
+        Fri,  4 Nov 2022 11:28:22 +0800 (CST)
+Received: from dggpemm500016.china.huawei.com (7.185.36.25) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 4 Nov 2022 11:28:27 +0800
+Received: from huawei.com (10.67.175.41) by dggpemm500016.china.huawei.com
+ (7.185.36.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 4 Nov
+ 2022 11:28:27 +0800
+From:   Yipeng Zou <zouyipeng@huawei.com>
+To:     <rafael@kernel.org>, <lenb@kernel.org>, <bhelgaas@google.com>,
+        <tn@semihalf.com>, <linux-acpi@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>
+CC:     <zouyipeng@huawei.com>
+Subject: [PATCH] PCI/ACPI: use ACPI Method Name macro directly
+Date:   Fri, 4 Nov 2022 11:24:30 +0800
+Message-ID: <20221104032430.186424-1-zouyipeng@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
-In-Reply-To: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 3 Nov 2022 19:53:12 +0100
-Message-ID: <CAJZ5v0hRBd8OEg1CJUQGhb6_59j-+-zZTid8kmMV9nUk2CF3EA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPI: scan: substitute empty_zero_page with helper ZERO_PAGE(0)
-To:     Giulio Benetti <giulio.benetti@benettiengineering.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-raid@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Song Liu <song@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.67.175.41]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500016.china.huawei.com (7.185.36.25)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 18, 2022 at 11:59 PM Giulio Benetti
-<giulio.benetti@benettiengineering.com> wrote:
->
-> Not all zero page implementations use empty_zero_page global pointer so
-> let's substitute empty_zero_page occurence with helper ZERO_PAGE(0).
->
-> Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
-> ---
->  drivers/acpi/scan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 558664d169fc..4d2d274cc8ad 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -30,7 +30,7 @@ extern struct acpi_device *acpi_root;
->  #define ACPI_BUS_HID                   "LNXSYBUS"
->  #define ACPI_BUS_DEVICE_NAME           "System Bus"
->
-> -#define INVALID_ACPI_HANDLE    ((acpi_handle)empty_zero_page)
-> +#define INVALID_ACPI_HANDLE    ((acpi_handle)ZERO_PAGE(0))
->
->  static const char *dummy_hid = "device";
->
-> --
+It's convenience to find all at once, use METHOD_NAME__UID as path string.
 
-Applied as 6.2 material, thanks!
+Fixes: 169de969c018 ("PCI/ACPI: Provide acpi_get_rc_resources() for ARM64 platform")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+---
+ drivers/pci/pci-acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index a46fec776ad7..068d6745bf98 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -67,7 +67,7 @@ static acpi_status acpi_match_rc(acpi_handle handle, u32 lvl, void *context,
+ 	unsigned long long uid;
+ 	acpi_status status;
+ 
+-	status = acpi_evaluate_integer(handle, "_UID", NULL, &uid);
++	status = acpi_evaluate_integer(handle, METHOD_NAME__UID, NULL, &uid);
+ 	if (ACPI_FAILURE(status) || uid != *segment)
+ 		return AE_CTRL_DEPTH;
+ 
+-- 
+2.17.1
+
