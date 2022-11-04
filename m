@@ -2,92 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74CFE619032
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 06:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F4B6190AB
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 07:10:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231358AbiKDFsy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Nov 2022 01:48:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55652 "EHLO
+        id S230051AbiKDGKY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Nov 2022 02:10:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231205AbiKDFsu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 01:48:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E393728E0C;
-        Thu,  3 Nov 2022 22:48:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21462620B2;
-        Fri,  4 Nov 2022 05:48:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF3DC43144;
-        Fri,  4 Nov 2022 05:48:46 +0000 (UTC)
-Received: from rostedt by gandalf.local.home with local (Exim 4.96)
-        (envelope-from <rostedt@goodmis.org>)
-        id 1oqpZo-00710Z-37;
-        Fri, 04 Nov 2022 01:49:12 -0400
-Message-ID: <20221104054912.802343429@goodmis.org>
-User-Agent: quilt/0.66
-Date:   Fri, 04 Nov 2022 01:40:58 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [RFC][PATCH v3 05/33] timers: ACPI: Use timer_shutdown_sync() before freeing timer
-References: <20221104054053.431922658@goodmis.org>
+        with ESMTP id S230008AbiKDGKW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 02:10:22 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 376C028E30;
+        Thu,  3 Nov 2022 23:10:21 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id u8-20020a17090a5e4800b002106dcdd4a0so7322170pji.1;
+        Thu, 03 Nov 2022 23:10:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TLME7jH56C8D1+m0LNBApvFwrtLDMdDD21KTM6uwzsE=;
+        b=I4A3+fMFdFrw1ItUiXAMXyb/dpRXhGT7joIpaNMQ0W+htpFOy8qm0RnLufRDNI/oee
+         ui0A4rrd/yjdVcAr7RIQRAC8GqqUe6MjpRyPsyE5xs9v5xj+RlqS4CKsYpmj+ZubOiXz
+         Gx3wkPoK/VqHXweC6RPk2oIOTW2xe7RrZON67KUHnXdUOaQbl5Z5wtboxg1mljZNhuNr
+         tOxTvYcCQwEdwhMXmSqOlptpeIaCOuKQ5h6PtRtWQyeQuWyuVbo7TZb85bxWRsk7mzGJ
+         WPPhy3mzkTrHkv94sEzsV4VUHaxz8Ij20JKxnCkC/id7+pDZmsMTKYMqav5JH7+eyWOQ
+         McpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TLME7jH56C8D1+m0LNBApvFwrtLDMdDD21KTM6uwzsE=;
+        b=d85n0d9umkbTZ+cHMkAKSw7mWVP2z+qrd634cOLQ+DuoxNL+7MoKJC9V9ddp4lJfDW
+         Z01YuS/+s/iZukx2FgrDU3jMC9ox74uxgl6fDROo9cM3IyFRrScd7FnysYgJeiVgczht
+         i1joncTdCdx5bEZmK6YpQI+xfGwXmFffIueqmAOrHaz2WQ9hC3NNTb2Qk7KUrqANyQ5E
+         GVK7nxc1HlMj+akcfJkuYLYXZ5XUhSkSxAYsTmlIUztLlq4xnhxNbyecrBVTlM/pAhxz
+         fc2IKz64rTRTRQk1CqEVFqK8ZAvhIGqyVl3L1QS2oEvrgi+gVFA83Vbrr4kSgXeZcuhz
+         d/Ww==
+X-Gm-Message-State: ACrzQf2gSFDWxhAQ4ePyVST8Qps71GJY6zoyhyoOnWymZqSBAB+mzsTE
+        1oVl9BqXDNrKefck8RzHejA=
+X-Google-Smtp-Source: AMsMyM6BNQnQnQmZJJmsIBLNwFI6ds2hXPvf65DlA882GVt+r1tc2tqiMseTvUiQJJMHn6UWrZ3epA==
+X-Received: by 2002:a17:90a:9c6:b0:213:b346:21dc with SMTP id 64-20020a17090a09c600b00213b34621dcmr32914249pjo.166.1667542220641;
+        Thu, 03 Nov 2022 23:10:20 -0700 (PDT)
+Received: from dtor-ws.mtv.corp.google.com ([2620:15c:9d:2:a6ae:11ff:fe11:fcc3])
+        by smtp.gmail.com with ESMTPSA id x5-20020aa79ac5000000b0056bfd4a2702sm1791411pfp.45.2022.11.03.23.10.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Nov 2022 23:10:19 -0700 (PDT)
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/6] Add support for software nodes to gpiolib
+Date:   Thu,  3 Nov 2022 23:10:10 -0700
+Message-Id: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
+X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.11.0-dev-28747
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-
-Before a timer is freed, timer_shutdown_sync() must be called.
-
-Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home/
-
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: James Morse <james.morse@arm.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- drivers/acpi/apei/ghes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 9952f3a792ba..9a0e41c21cf9 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1405,7 +1405,7 @@ static int ghes_remove(struct platform_device *ghes_dev)
- 	ghes->flags |= GHES_EXITING;
- 	switch (generic->notify.type) {
- 	case ACPI_HEST_NOTIFY_POLLED:
--		del_timer_sync(&ghes->timer);
-+		timer_shutdown_sync(&ghes->timer);
- 		break;
- 	case ACPI_HEST_NOTIFY_EXTERNAL:
- 		free_irq(ghes->irq, ghes);
--- 
-2.35.1
+This series attempts to add support for software nodes to gpiolib, using=0D
+software node references. This allows us to convert more drivers to the=0D
+generic device properties and drop support for custom platform data.=0D
+=0D
+To describe a GPIO via software nodes we can create the following data=0D
+items:=0D
+=0D
+/* Node representing the GPIO controller/GPIO bank */=0D
+static const struct software_node gpio_bank_b_node =3D {=0D
+        .name =3D "B",=0D
+};=0D
+=0D
+/*=0D
+ * Properties that will be assigned to a software node assigned to=0D
+ * the devicei that used platform data.=0D
+ */=0D
+static const struct property_entry simone_key_enter_props[] =3D {=0D
+        PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),=0D
+        PROPERTY_ENTRY_STRING("label", "enter"),=0D
+        PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW=
+),=0D
+        { }=0D
+};=0D
+=0D
+The code in gpiolib handling software nodes uses the name in the=0D
+software node representing GPIO controller to locate the actual instance=0D
+of GPIO controller.=0D
+=0D
+Note that kbuild robot is likely to complain about this patchset because=0D
+it depends on patches removing [devm_]gpiod_get_from_of_node() and=0D
+devm_fwnode_get_[index_]gpiod_from_child() APIs that are still pending.=0D
+I pushed them to=0D
+=0D
+git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git tmp-gpiolib=0D
+=0D
+for your reference.=0D
+=0D
+To: Linus Walleij <linus.walleij@linaro.org>=0D
+To: Bartosz Golaszewski <brgl@bgdev.pl>=0D
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>=0D
+Cc: linux-gpio@vger.kernel.org=0D
+Cc: linux-kernel@vger.kernel.org=0D
+Cc: linux-acpi@vger.kernel.org=0D
+=0D
+---=0D
+Dmitry Torokhov (6):=0D
+      gpiolib: of: change of_find_gpio() to accept device node=0D
+      gpiolib: acpi: change acpi_find_gpio() to accept firmware node=0D
+      gpiolib: acpi: teach acpi_find_gpio() to handle data-only nodes=0D
+      gpiolib: acpi: avoid leaking ACPI details into upper gpiolib layers=0D
+      gpiolib: consolidate GPIO lookups=0D
+      gpiolib: add support for software nodes=0D
+=0D
+ drivers/gpio/Makefile         |   1 +=0D
+ drivers/gpio/gpiolib-acpi.c   | 132 +++++++++++++----------=0D
+ drivers/gpio/gpiolib-acpi.h   |  54 +---------=0D
+ drivers/gpio/gpiolib-of.c     |  52 +--------=0D
+ drivers/gpio/gpiolib-of.h     |  16 +--=0D
+ drivers/gpio/gpiolib-swnode.c | 106 +++++++++++++++++++=0D
+ drivers/gpio/gpiolib-swnode.h |  13 +++=0D
+ drivers/gpio/gpiolib.c        | 239 ++++++++++++++++++++------------------=
+----=0D
+ 8 files changed, 316 insertions(+), 297 deletions(-)=0D
+---=0D
+base-commit: dc04f5ab1b1114aa19b9026f816fc01ca9c9941d=0D
+change-id: 20221031-gpiolib-swnode-948203f49b23=0D
+=0D
+-- =0D
+Dmitry=0D
+=0D
