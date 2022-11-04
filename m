@@ -2,264 +2,262 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95CFF619F70
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 19:08:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3711361A04F
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Nov 2022 19:52:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230389AbiKDSIN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Nov 2022 14:08:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34872 "EHLO
+        id S229578AbiKDSwd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Nov 2022 14:52:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbiKDSIM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 14:08:12 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B1B2AE26;
-        Fri,  4 Nov 2022 11:08:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667585291; x=1699121291;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zNHEcvSskJAUK54MphoYaB9GZqt7VYoOfB3nL+MgM4A=;
-  b=RX2ZnH0tWIAAl4jTU8fCa1swujNlFauPSuwe3RJ5yvRxLpKOUkCbGn0k
-   jIs5cighHI2n+P7LPUlxS/g7yY5N1dIpI38nvV4U/3h3t2XAnlGK6a/ai
-   uCrQxh4sA8i4fZe+Z+XqqRrBaDf4M3sHXYL4NHCQjUEYRillf49D+EtJC
-   Mm+9oWDpum125knyiWDKwIvyCviZFqNSM5knwGL69C/0NOkhGhGBSNddq
-   L41hJJ8hYX6SuH7XZuEvo7ni5ZKN/2hUDvHdHK9okXua83xg1/qasxgQK
-   Tfg9CrfBXafQdsEto6ztSlSfxId2hsxrK851cw4hjJ5Zebl6J5IerAkuA
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10521"; a="307656670"
-X-IronPort-AV: E=Sophos;i="5.96,138,1665471600"; 
-   d="scan'208";a="307656670"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2022 11:08:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10521"; a="760411612"
-X-IronPort-AV: E=Sophos;i="5.96,138,1665471600"; 
-   d="scan'208";a="760411612"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 04 Nov 2022 11:08:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1or16p-007Thj-2s;
-        Fri, 04 Nov 2022 20:08:03 +0200
-Date:   Fri, 4 Nov 2022 20:08:03 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+        with ESMTP id S229555AbiKDSwb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 14:52:31 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665B459FE7;
+        Fri,  4 Nov 2022 11:52:30 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id d13-20020a17090a3b0d00b00213519dfe4aso5302985pjc.2;
+        Fri, 04 Nov 2022 11:52:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ucz5LsKRWTnco49tLmp1yAQRn6RZFKpYnyt+vhQDTKY=;
+        b=KBd8EDFK9r/2YuJezlbJ2rF1/+gDovqfgsgW5KxfAhfTwd4ywYz7SW4xIcl+V9sFkI
+         8oS36qt77hxizFjVgGHx2GtC5f5iuCsB+84devES+QNfZKKgxHPwIXeU8fpuIyIFpiVV
+         hTRrtBl2CUxOSeYPjVfP4xKMmPvyMhsoI9FpdVIPGxl3HmR7Yry6GkWpFUvjHh1+vSPU
+         AJedSN4r9nY+OlnWw3hTm3y+BQCj9nWKryue1J00RYr3GtkearnHqoJbsT+XMtPZ+IzE
+         rliVoY0UweTOMpt4htKJLWDqM0RYK22JKXqcq96YwUjpQp7nYoWMdudgIzBR5GXqEXce
+         T9VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ucz5LsKRWTnco49tLmp1yAQRn6RZFKpYnyt+vhQDTKY=;
+        b=bVp17HbXvb9LyYmAd2UTgbDvIPJVEoRiyK/xsO91o7B4DNWi8Li55n77EiVumC7ahx
+         9Hrxcfp4vzGbweSujdmgv6+BQgRBhPZp4bTOOvUa5U7JO2bz/WkMP4nSr8eQmm7Q3CTl
+         SZSJ457scgljuenkWaBiLjCd/vh/NuP0BZFXvaoQhyeb7DGSAtJN6MGjMwBSDS7pHLkC
+         wK2P7cjdRkYFZu6D6tDj53+xzY/8Msa63ZBbrhDtMM3BZKfGdsoxsXN24jHqn9Er2ABn
+         AIPRMsEx4cZocnwOyRhWCSR3RItns177+6KqT7FShk9qHqzJ/VsurtkbqO9uYk11au4h
+         kyhg==
+X-Gm-Message-State: ACrzQf10518f/TxVmO8VhHYCfGbxkzs3vk83PHJHdQAM/yymjnpyPoxM
+        gZrQ3udS28+yu25OUV1zXpk=
+X-Google-Smtp-Source: AMsMyM5n3BmX4/4nkJDZfc84c6nVKx0cT+rWFP3ZcPGUx7r+tPuCqq+S0SjlpnCkKz6bM5uM15/VOg==
+X-Received: by 2002:a17:902:e84a:b0:186:b8ff:c698 with SMTP id t10-20020a170902e84a00b00186b8ffc698mr36687594plg.143.1667587949628;
+        Fri, 04 Nov 2022 11:52:29 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:a6ae:11ff:fe11:fcc3])
+        by smtp.gmail.com with ESMTPSA id n6-20020a170902e54600b0017f5c7d3931sm73646plf.282.2022.11.04.11.52.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Nov 2022 11:52:28 -0700 (PDT)
+Date:   Fri, 4 Nov 2022 11:52:26 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
         linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] gpiolib: add support for software nodes
-Message-ID: <Y2VVA2Wp1IWoJf3m@smile.fi.intel.com>
+Subject: Re: [PATCH 5/6] gpiolib: consolidate GPIO lookups
+Message-ID: <Y2Vfatm3VRGcktNN@google.com>
 References: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
- <20221031-gpiolib-swnode-v1-6-a0ab48d229c7@gmail.com>
+ <20221031-gpiolib-swnode-v1-5-a0ab48d229c7@gmail.com>
+ <Y2VJJ8CYhGY69c/z@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221031-gpiolib-swnode-v1-6-a0ab48d229c7@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y2VJJ8CYhGY69c/z@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 03, 2022 at 11:10:16PM -0700, Dmitry Torokhov wrote:
-> Now that static device properties understand notion of child nodes and
-> references, let's teach gpiolib to handle them:
+Hi Andy,
+
+On Fri, Nov 04, 2022 at 07:17:27PM +0200, Andy Shevchenko wrote:
+> On Thu, Nov 03, 2022 at 11:10:15PM -0700, Dmitry Torokhov wrote:
+> > Ensure that all paths to obtain/look up GPIOD from generic
+> > consumer-visible APIs go through the new gpiod_find_and_request()
+> > helper, so that we can easily extend it with support for new firmware
+> > mechanisms.
 > 
-> - GPIOs are represented as a references to software nodes representing
->   gpiochip
-> - references must have 2 arguments - GPIO number within the chip and
->   GPIO flags (GPIO_ACTIVE_LOW/GPIO_ACTIVE_HIGH, etc).
-> - name of the software node representing gpiochip must match label of
->   the gpiochip, as we use it to locate gpiochip structure at runtime.
+> ...
 > 
-> const struct software_node gpio_bank_b_node = {
-> 	.name = "B",
-> };
+> > +static struct gpio_desc *gpiod_find_by_fwnode(struct fwnode_handle *fwnode,
+> > +					      struct device *consumer,
+> > +					      const char *con_id,
+> > +					      unsigned int idx,
+> > +					      enum gpiod_flags *flags,
+> > +					      unsigned long *lookupflags)
+> >  {
 > 
-> const struct property_entry simone_key_enter_props[] __initconst = {
-> 	PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),
+> > +	struct gpio_desc *desc = ERR_PTR(-ENOENT);
+> 
+> No need, just return directly.
+> 
+> > +	dev_dbg(consumer, "GPIO lookup for consumer %s in node '%s'\n",
+> > +		con_id, fwnode_get_name(fwnode));
+> 
+> %pfwP ?
 
-> 	PROPERTY_ENTRY_STRING("label", "enter"),
-> 	PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW),
+OK. Although, I think I like %pfw (without 'P') better as it gives
+results like:
 
-Okay, can we have an example for something like reset-gpios? Because from
-the above I can't easily get what label is and how in the `gpioinfo` tool
-the requested line will look like.
+	/soc/i2c@11007000/edp-bridge@8
 
-> 	{ }
-> };
+or
 
-...
+	\_SB.PCI0.I2C1.D010
 
-> +#include <linux/err.h>
-> +#include <linux/errno.h>
-> +#include <linux/gpio/consumer.h>
+which should help identifying the exact node.
 
-It seems you are using much more that these ones.
+> 
+> > +
+> > +	/* Using device tree? */
+> >  	if (is_of_node(fwnode)) {
+> > +		dev_dbg(consumer, "using device tree for GPIO lookup\n");
+> > +		desc = of_find_gpio(to_of_node(fwnode),
+> > +				    con_id, idx, lookupflags);
+> >  	} else if (is_acpi_node(fwnode)) {
+> 
+> With direct return, no need for 'else' here.
 
-...
+When we have several branches of equal weight I prefer not to have
+early/inline returns, but I can add:
 
-> +	char prop_name[32]; /* 32 is max size of property name */
-
-Why is it not defined then?
-
-...
-
-> +	/*
-> +	 * Note we do not need to try both -gpios and -gpio suffixes,
-> +	 * as, unlike OF and ACPI, we can fix software nodes to conform
-> +	 * to the proper binding.
-> +	 */
-
-True, but for the sake of consistency between providers perhaps it makes sense
-to check that as well. Dunno, up to Linus and Bart to decide.
-
-...
-
-> +	/*
-> +	 * We expect all swnode-described GPIOs have GPIO number and
-> +	 * polarity arguments, hence nargs is set to 2.
-> +	 */
-
-Maybe instead you can provide a custom macro wrapper that will check the number
-of arguments at compile time?
-
-...
-
-> +		pr_debug("%s: can't parse '%s' property of node '%pfwP[%d]'\n",
-> +			__func__, prop_name, fwnode, idx);
-
-__func__ is not needed. Dynamic Debug can automatically add it.
-Since you have an fwnode, use that as a marker.
-
-...
-
-> +	chip = gpiochip_find((void *)chip_node->name,
-> +			     swnode_gpiochip_match_name);
-
-One line?
-
-...
-
-> +	pr_debug("%s: parsed '%s' property of node '%pfwP[%d]' - status (%d)\n",
-> +		 __func__, prop_name, fwnode, idx, PTR_ERR_OR_ZERO(desc));
-
-Same as above.
-
-...
-
-> +	char prop_name[32];
-
-> +	if (con_id)
-> +		snprintf(prop_name, sizeof(prop_name), "%s-gpios", con_id);
-> +	else
-> +		strscpy(prop_name, "gpios", sizeof(prop_name));
-
-I saw this code, please deduplicate.
-
-...
-
-> +	/*
-> +	 * This is not very efficient, but GPIO lists usually have only
-> +	 * 1 or 2 entries.
-> +	 */
-> +	count = 0;
-> +	while (fwnode_property_get_reference_args(fwnode, prop_name, NULL,
-> +						  0, count, &args) == 0)
-
-I would put it into for loop (and looking into property.h I think propname
-is fine variable name):
-
-	for (count = 0; ; count++) {
-		if (fwnode_property_get_reference_args(fwnode, propname, NULL, 0, count, &args))
-			break;
+	} else {
+		desc = ERR_PTR(-ENOENT);
 	}
 
-Btw, what about reference counting? Do we need to care about it?
+at the end, what do you think?
 
-> +	return count ? count : -ENOENT;
+> 
+> > +		dev_dbg(consumer, "using ACPI for GPIO lookup\n");
+> > +		desc = acpi_find_gpio(fwnode, con_id, idx, flags, lookupflags);
+> >  	}
+> >  
+> > +	return desc;
+> > +}
+> 
+> ...
+> 
+> > +static struct gpio_desc *gpiod_find_and_request(struct device *consumer,
+> > +						struct fwnode_handle *fwnode,
+> > +						const char *con_id,
+> > +						unsigned int idx,
+> > +						enum gpiod_flags flags,
+> > +						const char *label,
+> > +						bool platform_lookup_allowed)
+> > +{
+> 
+> > +	struct gpio_desc *desc = ERR_PTR(-ENOENT);
+> 
+> We can get rid of the assignment, see below.
+> 
+> 
+> > +	unsigned long lookupflags;
+> > +	int ret;
+> 
+> > +	if (fwnode)
+> 
+> Do we need this check?
 
-Elvis would work as well.
+Yes, I would prefer to have it as it clearly informs the reader that we
+are only doing lookup by node if we actually have a node.
 
-	return count ?: -ENOENT;
+gpiod_find_and_request() expects that it gets a valid node and in the
+followup change it will be dereferencing fwnode without checking for
+NULL-ness.
 
+> 
+> Debug message above (when %pfw is used) would be even useful when
+> fwnode == NULL.
+> 
+> > +		desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx,
+> > +					    &flags, &lookupflags);
+> 
+> > +
+> 
+> The blank line can be removed after above comments being addressed.
+> 
+> > +	if (gpiod_not_found(desc) && platform_lookup_allowed) {
+> > +		/*
+> > +		 * Either we are not using DT or ACPI, or their lookup did not
+> > +		 * return a result. In that case, use platform lookup as a
+> > +		 * fallback.
+> > +		 */
+> > +		dev_dbg(consumer, "using lookup tables for GPIO lookup\n");
+> > +		desc = gpiod_find(consumer, con_id, idx, &lookupflags);
+> > +	}
+> > +
+> > +	if (IS_ERR(desc)) {
+> > +		dev_dbg(consumer, "No GPIO consumer %s found\n", con_id);
+> > +		return desc;
+> > +	}
+> > +
+> > +	/*
+> > +	 * If a connection label was passed use that, else attempt to use
+> > +	 * the device name as label
+> > +	 */
+> >  	ret = gpiod_request(desc, label);
+> > +	if (ret) {
+> > +		if (!(ret == -EBUSY && flags & GPIOD_FLAGS_BIT_NONEXCLUSIVE))
+> > +			return ERR_PTR(ret);
+> > +
+> > +		/*
+> > +		 * This happens when there are several consumers for
+> > +		 * the same GPIO line: we just return here without
+> > +		 * further initialization. It is a bit of a hack.
+> > +		 * This is necessary to support fixed regulators.
+> > +		 *
+> > +		 * FIXME: Make this more sane and safe.
+> > +		 */
+> 
+> > +		dev_info(consumer,
+> > +			 "nonexclusive access to GPIO for %s\n", con_id);
+> 
+> Cam be one line.
 
-...
+I still have not embraced the new 100 columns limit. Linus, Bart, are
+you OK with moving to 100 or do you want to stay with 80 for a while?
 
-> +struct fwnode_handle;
+> 
+> > +		return desc;
+> > +	}
+> >  
+> > +	ret = gpiod_configure_flags(desc, con_id, lookupflags, flags);
+> >  	if (ret < 0) {
+> > +		dev_dbg(consumer, "setup of GPIO %s failed\n", con_id);
+> >  		gpiod_put(desc);
+> >  		return ERR_PTR(ret);
+> >  	}
+> 
+> ...
+> 
+> >  struct gpio_desc *fwnode_gpiod_get_index(struct fwnode_handle *fwnode,
+> > +					 const char *con_id,
+> > +					 int index,
+> >  					 enum gpiod_flags flags,
+> >  					 const char *label)
+> >  {
+> >  
+> 
+> Unnecessary blank line?
 
-struct gpio_desc;
+Indeed, I'll fix it.
 
-> +
-> +struct gpio_desc *swnode_find_gpio(struct fwnode_handle *fwnode,
-> +				   const char *con_id, unsigned int idx,
-> +				   unsigned long *flags);
-> +int swnode_gpio_count(struct fwnode_handle *fwnode, const char *con_id);
+> 
+> > +	return gpiod_find_and_request(NULL, fwnode, con_id, index, flags, label,
+> > +				      false);
+> 
+> Can be one line.
 
-...
+Yep, depending on 80/100 column answer.
 
-> +	/*
-> +	 * First look up GPIO in the secondary software node in case
-> +	 * it was used to store updated properties.
+Thanks for the review!
 
-Why this is done first? We don't try secondary before we have checked primary.
-
-> +	 */
-
-> +	if (is_software_node(fwnode->secondary)) {
-
-With the previous comments it would become
-
-	if (fwnode && is_...)
-
-> +		dev_dbg(consumer,
-> +			"using secondary software node for GPIO lookup\n");
-> +		desc = swnode_find_gpio(fwnode->secondary,
-> +					con_id, idx, lookupflags);
-> +		if (!gpiod_not_found(desc))
-> +			return desc;
-> +	}
-
-...
-
->  int gpiod_count(struct device *dev, const char *con_id)
->  {
-> +	struct fwnode_handle *fwnode = dev ? dev_fwnode(dev) : NULL;
-> +	int count;
-> +
-> +	/*
-> +	 * First look up GPIO in the secondary software node in case
-> +	 * it was used to store updated properties.
-> +	 */
-
-Same question as above.
-
-> +	if (!IS_ERR_OR_NULL(fwnode) && is_software_node(fwnode->secondary)) {
-> +		count = swnode_gpio_count(fwnode->secondary, con_id);
-> +		if (count > 0)
-> +			return count;
-> +	}
->  
->  	if (is_of_node(fwnode))
->  		count = of_gpio_get_count(dev, con_id);
->  	else if (is_acpi_node(fwnode))
->  		count = acpi_gpio_count(dev, con_id);
-> +	else if (is_software_node(fwnode))
-> +		count = swnode_gpio_count(fwnode, con_id);
-> +	else
-> +		count = -ENOENT;
->  
->  	if (count < 0)
->  		count = platform_gpio_count(dev, con_id);
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Dmitry
