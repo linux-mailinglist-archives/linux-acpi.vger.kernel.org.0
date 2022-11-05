@@ -2,103 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC86461DCB9
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Nov 2022 18:53:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12D7661DCDD
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Nov 2022 19:03:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbiKERxq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Nov 2022 13:53:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38718 "EHLO
+        id S229725AbiKESDe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 5 Nov 2022 14:03:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiKERxp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Nov 2022 13:53:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 657E0B7D4;
-        Sat,  5 Nov 2022 10:53:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0C95DB8006F;
-        Sat,  5 Nov 2022 17:53:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199F5C433D6;
-        Sat,  5 Nov 2022 17:53:40 +0000 (UTC)
-Date:   Sat, 5 Nov 2022 13:53:38 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>, rcu@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-edac@vger.kernel.org,
-        cgroups@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org, drbd-dev@lists.linbit.com,
-        linux-bluetooth@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-leds@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Subject: Re: [PATCH v4a 00/38] timers: Use timer_shutdown*() before freeing
- timers
-Message-ID: <20221105135338.14309ea1@rorschach.local.home>
-In-Reply-To: <CAHk-=wi95dGkg7DiuOZ27gGW+mxJipn9ykB6LHB-HrbbLG6OMQ@mail.gmail.com>
-References: <20221105060024.598488967@goodmis.org>
-        <CAHk-=wi95dGkg7DiuOZ27gGW+mxJipn9ykB6LHB-HrbbLG6OMQ@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S229453AbiKESDe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Nov 2022 14:03:34 -0400
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12940BF5A
+        for <linux-acpi@vger.kernel.org>; Sat,  5 Nov 2022 11:03:33 -0700 (PDT)
+Received: by mail-qt1-f179.google.com with SMTP id e15so5001672qts.1
+        for <linux-acpi@vger.kernel.org>; Sat, 05 Nov 2022 11:03:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y3Qu4YyFde1q61kBKcifgOatPmMPyq5Eee9DU/i3vkI=;
+        b=wcTH4Vz+CZ1mUA8E0s5sRMp14LAGSHEoY53AGphVxeQG4LVW/TWO1Rn9Iqb9w3bDKa
+         nTKxAPuF61N+lG7gXCvNcXpLpGUJh6VQijLU1TnvkzLejQSUbE7ccOrbHTaCHjfyQMQF
+         dmOVhIh61KvhMryCJjwNZqPuJSwqcalg7v3tgTUyELKlavkf+uYJmYuE1fCx14pvAr+L
+         W0VaxNg7Mqvaed4Ekj7ve001soJ7m2Us5Ul7Tjnuu2tRB0tfJlBwSFYNq1rB18nwyzK2
+         Ga0GifyP/g2MCBq5tfGZDvnYr7WiKji2SsuVVS1ZVRA1UTMFRgEx7aFB1faOdB/eQs2L
+         WBnQ==
+X-Gm-Message-State: ACrzQf19cFhBLtqg1ZpjjFGYUAYpFQSyyAvZnLftCa6BtIhTHvvQen/k
+        UkPRN5kxVl37DglJO5BRy2jvZCpHTB/geCX09cKOE0vE4kA=
+X-Google-Smtp-Source: AMsMyM4iiRDz5qwuYxLyrt4xiPdWvthtPmgkvSBdTJcPwEUteyzmZQEC2IoAIL+qEeQRNni3aC8B1oYG4jjtYl467HI=
+X-Received: by 2002:a05:622a:4c07:b0:3a5:27ec:6dd3 with SMTP id
+ ey7-20020a05622a4c0700b003a527ec6dd3mr25912211qtb.411.1667671412216; Sat, 05
+ Nov 2022 11:03:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20221104212108.73537-1-hdegoede@redhat.com>
+In-Reply-To: <20221104212108.73537-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sat, 5 Nov 2022 19:03:18 +0100
+Message-ID: <CAJZ5v0h8FvqLwTixFALfOT2xbgiSqbT3XCMCbubwad4fHpK0hQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] ACPI: video: Fix backlight regressions in 6.1
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 5 Nov 2022 08:59:36 -0700
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On Fri, Nov 4, 2022 at 10:22 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi Rafael,
+>
+> Here is a series of patches to fix known (and likely also unknown)
+> regressions caused by the backlight-detect refactor landing in 6.1.
+>
+> This builds on top of the earlier Chromebook fix which went upstream
+> through platform-drivers-x86.git/fixes. as such I believe it would
+> be best for this series to go upstream through the pdx86 tree.
+>
+> Can you please give your Ack for merging this through the pdx86
+> git tree?
 
-> Others in the series were *definitely* not scripted, doing clearly
-> manual cleanups:
-> 
-> -    if (dch->timer.function) {
-> -        del_timer(&dch->timer);
-> -        dch->timer.function = NULL;
-> -    }
-> +    timer_shutdown(&dch->timer);
-> 
-> so no, this does *not* make me feel "ok, this is all trivial".
+Sure, feel free to add
 
-I just ran the script and the above code turned to:
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-diff --git a/drivers/isdn/hardware/mISDN/hfcmulti.c b/drivers/isdn/hardware/mISDN/hfcmulti.c
-index 4f7eaa17fb27..2695bbde52db 100644
---- a/drivers/isdn/hardware/mISDN/hfcmulti.c
-+++ b/drivers/isdn/hardware/mISDN/hfcmulti.c
-@@ -4544,7 +4544,7 @@ release_port(struct hfc_multi *hc, struct dchannel *dch)
-        spin_lock_irqsave(&hc->lock, flags);
- 
-        if (dch->timer.function) {
--               del_timer(&dch->timer);
-+               timer_shutdown(&dch->timer);
-                dch->timer.function = NULL;
-        }
- 
-Which is silly. Because timer_shutdown() makes timer.function = NULL.
+to these patches.
 
-That's why I changed it. And it really shouldn't be touching
-timer.function anyway.
+Also note that I'm going to drop the previously applied
 
--- Steve
+https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?h=bleeding-edge&id=6a377205da554cec45c8fd1cd8395030b448de31
+
+from my tree.
+
+Thanks!
