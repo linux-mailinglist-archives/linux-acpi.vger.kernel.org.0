@@ -2,202 +2,255 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5721961A794
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Nov 2022 05:57:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AC9B61D78F
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Nov 2022 07:01:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbiKEE5D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Nov 2022 00:57:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46932 "EHLO
+        id S229556AbiKEGBb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 5 Nov 2022 02:01:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbiKEE5C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Nov 2022 00:57:02 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC08A2F64E;
-        Fri,  4 Nov 2022 21:57:01 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id 130so6178373pfu.8;
-        Fri, 04 Nov 2022 21:57:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=k7Ob2pp2Kintql84ksy91OPK6CpqOp8C+QUZOHOIzx4=;
-        b=OlfrbKtYzX91oavc1bt49EQ8ADSCYYeoUJFIOps8SgOrGdCItck2EgC0Gu/YFn4S8F
-         unE0B7ssT4vqI5ujY3LnSuY9/UHjVn3Hyodunk0DJl7MQerL2DZfOGFEI9FaNOR8PvYb
-         n0OYlcsYI76dh6Qe9OZv3+eI3mhQmgakKOFrwX1v14iZP4W204ZwKsGjk02VPrNOhqye
-         Gs/eoNlDriy/DiOOVEEc/oZWiy/nYpA3wf2RRhaTvl2jIFEoOvat+NwL1WGv9EwnqLU4
-         tE5tmMH/9vPyBIA4+jrAz4iema/JlO3EdaGxKy9rAXOwLg2QGasTgHhTqDKR2C7ogfpb
-         V7eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k7Ob2pp2Kintql84ksy91OPK6CpqOp8C+QUZOHOIzx4=;
-        b=qRZkfhCWC7snmca1iukGiYIfHBgzNP1gUe0IseL4zDsKR0WN5cKhyG/BU1T2AnIeIh
-         Ztz8Rk8XVzJGDanB8jkBvwXYu6KN/3HBytTQIeJGyvIJ/7+CaCzPCuckSOxlo7aPpPb4
-         NMwtYs7CxRVrvN3y5BuoGR18Utug5Nd8/KfJlSELAU7CAzhObB4i49Kkxcq3R+X5m0CT
-         YvXVWhPsGJUwtEJ3VjPH2jZrsvSen6XufoJl9N2s3a2aI6D+SPqeX+loBIVSg8qlNxT3
-         yEMUp3xxLgFD6dx1tAhwqotUr4JYi/O5qx8Gzc9ZSKM8u2/03nGjVPAAQEj7f3onfj7b
-         k04A==
-X-Gm-Message-State: ACrzQf0c2j/LHe1vUbMU5Mt3+TKtunIt//raBqc+PunpxSAqn49Lke5u
-        D+brdovOI0kTRpNDMeCqBWHXEZHmhLo=
-X-Google-Smtp-Source: AMsMyM5peciw5iRYCzFFSGTpV5ZKxLEb+vdKvf8i4k6gRZmSvRw3nYVpmzT+v0MGa2hV5IAWItIB6g==
-X-Received: by 2002:a63:544e:0:b0:46f:7b0e:e4f with SMTP id e14-20020a63544e000000b0046f7b0e0e4fmr33950543pgm.92.1667624221083;
-        Fri, 04 Nov 2022 21:57:01 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:5e7f:d665:c23a:5a4c])
-        by smtp.gmail.com with ESMTPSA id b17-20020a621b11000000b0053e4baecc14sm438951pfb.108.2022.11.04.21.56.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Nov 2022 21:57:00 -0700 (PDT)
-Date:   Fri, 4 Nov 2022 21:56:57 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/6] gpiolib: consolidate GPIO lookups
-Message-ID: <Y2XtGTAjEB24tqrF@google.com>
-References: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
- <20221031-gpiolib-swnode-v1-5-a0ab48d229c7@gmail.com>
- <Y2VJJ8CYhGY69c/z@smile.fi.intel.com>
- <Y2Vfatm3VRGcktNN@google.com>
- <Y2V+8tiwstXbTWoq@smile.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y2V+8tiwstXbTWoq@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229472AbiKEGBa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Nov 2022 02:01:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54B812D1FD;
+        Fri,  4 Nov 2022 23:01:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD4126098A;
+        Sat,  5 Nov 2022 06:01:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B27C433C1;
+        Sat,  5 Nov 2022 06:01:27 +0000 (UTC)
+Received: from rostedt by gandalf.local.home with local (Exim 4.96)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1orCFf-007Oer-03;
+        Sat, 05 Nov 2022 02:01:55 -0400
+Message-ID: <20221105060024.598488967@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Sat, 05 Nov 2022 02:00:24 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Anna-Maria Gleixner <anna-maria@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>, rcu@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-edac@vger.kernel.org, cgroups@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-pm@vger.kernel.org, drbd-dev@lists.linbit.com,
+        linux-bluetooth@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
+        linux-input@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-leds@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
+        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
+        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
+Subject: [PATCH v4a 00/38] timers: Use timer_shutdown*() before freeing timers
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 04, 2022 at 11:06:58PM +0200, Andy Shevchenko wrote:
-> On Fri, Nov 04, 2022 at 11:52:26AM -0700, Dmitry Torokhov wrote:
-> > On Fri, Nov 04, 2022 at 07:17:27PM +0200, Andy Shevchenko wrote:
-> > > On Thu, Nov 03, 2022 at 11:10:15PM -0700, Dmitry Torokhov wrote:
-> 
-> ...
-> 
-> > > > +static struct gpio_desc *gpiod_find_by_fwnode(struct fwnode_handle *fwnode,
-> > > > +					      struct device *consumer,
-> > > > +					      const char *con_id,
-> > > > +					      unsigned int idx,
-> > > > +					      enum gpiod_flags *flags,
-> > > > +					      unsigned long *lookupflags)
-> > > >  {
-> > > 
-> > > > +	struct gpio_desc *desc = ERR_PTR(-ENOENT);
-> > > 
-> > > No need, just return directly.
-> > > 
-> > > > +	dev_dbg(consumer, "GPIO lookup for consumer %s in node '%s'\n",
-> > > > +		con_id, fwnode_get_name(fwnode));
-> > > 
-> > > %pfwP ?
-> > 
-> > OK. Although, I think I like %pfw (without 'P') better as it gives
-> > results like:
-> > 
-> > 	/soc/i2c@11007000/edp-bridge@8
-> > 
-> > or
-> > 
-> > 	\_SB.PCI0.I2C1.D010
-> > 
-> > which should help identifying the exact node.
-> 
-> I agree.
-> 
-> > > > +	/* Using device tree? */
-> > > >  	if (is_of_node(fwnode)) {
-> > > > +		dev_dbg(consumer, "using device tree for GPIO lookup\n");
-> > > > +		desc = of_find_gpio(to_of_node(fwnode),
-> > > > +				    con_id, idx, lookupflags);
-> > > >  	} else if (is_acpi_node(fwnode)) {
-> > > 
-> > > With direct return, no need for 'else' here.
-> > 
-> > When we have several branches of equal weight I prefer not to have
-> > early/inline returns, but I can add:
-> > 
-> > 	} else {
-> > 		desc = ERR_PTR(-ENOENT);
-> > 	}
-> > 
-> > at the end, what do you think?
-> 
-> No strong opinion here.
-> 
-> > > > +		dev_dbg(consumer, "using ACPI for GPIO lookup\n");
-> > > > +		desc = acpi_find_gpio(fwnode, con_id, idx, flags, lookupflags);
-> > > >  	}
-> > > >  
-> > > > +	return desc;
-> > > > +}
-> 
-> ...
-> 
-> > > > +	struct gpio_desc *desc = ERR_PTR(-ENOENT);
-> > > 
-> > > We can get rid of the assignment, see below.
-> 
-> Still below another thought which affects this.
-> 
-> > > > +	if (fwnode)
-> > > 
-> > > Do we need this check?
-> > 
-> > Yes, I would prefer to have it as it clearly informs the reader that we
-> > are only doing lookup by node if we actually have a node.
-> > 
-> > gpiod_find_and_request() expects that it gets a valid node and in the
-> > followup change it will be dereferencing fwnode without checking for
-> > NULL-ness.
-> 
-> But most of the code will check for the NULL anyway. The exceptions are
-> dev_dbg() and accessing to the secondary fwnode.
 
-I think it is just a matter of what I want to express through source. I
-want to show that the device might not have fwnode, and that we only
-descend into gpiod_find_by_fwnode() in cases where we actually have
-fwnode.
+Back in April, I posted an RFC patch set to help mitigate a common issue
+where a timer gets armed just before it is freed, and when the timer
+goes off, it crashes in the timer code without any evidence of who the
+culprit was. I got side tracked and never finished up on that patch set.
+Since this type of crash is still our #1 crash we are seeing in the field,
+it has become a priority again to finish it.
 
-> 
-> > > Debug message above (when %pfw is used) would be even useful when
-> > > fwnode == NULL.
-> 
-> > > > +		desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx,
-> > > > +					    &flags, &lookupflags);
-> 
-> Looking into drivers/base/property.c makes me realize that you might need to
-> test for error pointer as well.
-> 
-> Perhaps something like
-> 
-> 	if (IS_ERR_OR_NULL(fwnode))
-> 		return ERR_PTR(-ENOENT);
-> 
-> in the gpiod_find_by_fwnode() needs to be added. Can you check this?
+The last version of that patch set is here:
 
-No, only fwnode->secondary pointer can be PTR_ERR()-encoded.
+  https://lore.kernel.org/all/20221104054053.431922658@goodmis.org/
 
-From comment to set_primary_fwnode() in drivers/base/core.c
+I'm calling this version 4a as it only has obvious changes were the timer that
+is being shutdown is in the same function where it will be freed or released,
+as this series should be "safe" for adding. I'll be calling the other patches
+4b for the next merge window.
 
- * Valid fwnode cases are:
- *  - primary --> secondary --> -ENODEV
- *  - primary --> NULL
- *  - secondary --> -ENODEV
- *  - NULL
+Patch 1 fixes an issue with sunrpc/xprt where it incorrectly uses
+del_singleshot_timer_sync() for something that is not a oneshot timer. As this
+will be converted to shutdown, this needs to be fixed first.
 
-I do not believe we should be concerned about someone passing secondary
-pointers from fwnodes directly into gpiolib.
+Patches 2-4 changes existing timer_shutdown() functions used locally in ARM and
+some drivers to better namespace names.
 
-Thanks.
+Patch 5 implements the new timer_shutdown() and timer_shutdown_sync() functions
+that disable re-arming the timer after they are called.
 
--- 
-Dmitry
+Patches 6-28 change all the locations where there's a kfree(), kfree_rcu(),
+kmem_cache_free() and one call_rcu() call where the RCU function frees the
+timer (the workqueue patch) in the same function as the del_timer{,_sync}() is
+called on that timer, and there's no extra exit path between the del_timer and
+freeing of the timer.
+
+Patches 29-32 add timer_shutdown*() on on-stack timers that are about to be
+released at the end of the function.
+
+Patches 33-37 add timer_shutdown*() on module timers in the module exit code.
+
+Patch 38 simply converts an open coded "shutdown" code into timer_shutdown(),
+as a way timer_shutdown() disables the timer is by setting that timer function
+to NULL.
+
+Linus, I sorted the patches this way to let you see which you would think is
+safe to go into this -rc. I honestly believe that they are all safe, but that's
+just my own opinion.
+
+This series is here:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace.git
+timers-start
+
+Head SHA1: f58b516a65bac76f1bfa00126856d6c6c3d24a40
+
+
+Steven Rostedt (Google) (38):
+      SUNRPC/xprt: Use del_timer_sync() instead of del_singleshot_timer_sync()
+      ARM: spear: Do not use timer namespace for timer_shutdown() function
+      clocksource/drivers/arm_arch_timer: Do not use timer namespace for timer_shutdown() function
+      clocksource/drivers/sp804: Do not use timer namespace for timer_shutdown() function
+      timers: Add timer_shutdown_sync() and timer_shutdown() to be called before freeing timers
+      timers: sh: Use timer_shutdown_sync() before freeing timer
+      timers: block: Use timer_shutdown_sync() before freeing timer
+      timers: ACPI: Use timer_shutdown_sync() before freeing timer
+      timers: atm: Use timer_shutdown_sync() before freeing timer
+      timers: Bluetooth: Use timer_shutdown_sync() before freeing timer
+      timers: drm: Use timer_shutdown_sync() before freeing timer
+      timers: HID: Use timer_shutdown_sync() before freeing timer
+      timers: Input: Use timer_shutdown_sync() before freeing timer
+      timers: mISDN: Use timer_shutdown_sync() before freeing timer
+      timers: leds: Use timer_shutdown_sync() before freeing timer
+      timers: media: Use timer_shutdown_sync() before freeing timer
+      timers: net: Use timer_shutdown_sync() before freeing timer
+      timers: usb: Use timer_shutdown_sync() before freeing timer
+      timers: nfc: pn533: Use timer_shutdown_sync() before freeing timer
+      timers: pcmcia: Use timer_shutdown_sync() before freeing timer
+      timers: scsi: Use timer_shutdown_sync() and timer_shutdown() before freeing timer
+      timers: tty: Use timer_shutdown_sync() before freeing timer
+      timers: ext4: Use timer_shutdown_sync() before freeing timer
+      timers: fs/nilfs2: Use timer_shutdown_sync() before freeing timer
+      timers: ALSA: Use timer_shutdown_sync() before freeing timer
+      timers: jbd2: Use timer_shutdown() before freeing timer
+      timers: sched/psi: Use timer_shutdown_sync() before freeing timer
+      timers: workqueue: Use timer_shutdown_sync() before freeing timer
+      random: use timer_shutdown_sync() for on stack timers
+      timers: dma-buf: Use timer_shutdown_sync() for on stack timers
+      timers: drm: Use timer_shutdown_sync() for on stack timers
+      timers: media: Use timer_shutdown_sync() for on stack timers
+      timers: s390/cmm: Use timer_shutdown_sync() before a module is released
+      timers: atm: Use timer_shutdown_sync() before a module is released
+      timers: hangcheck: Use timer_shutdown_sync() before a module is released
+      timers: ipmi: Use timer_shutdown_sync() before a module is released
+      timers: Input: Use timer_shutdown_sync() before a module is released
+      timers: PM: Use timer_shutdown_sync()
+
+----
+ .../RCU/Design/Requirements/Requirements.rst       |  2 +-
+ Documentation/core-api/local_ops.rst               |  2 +-
+ Documentation/kernel-hacking/locking.rst           |  5 ++
+ arch/arm/mach-spear/time.c                         |  8 +--
+ arch/s390/mm/cmm.c                                 |  4 +-
+ arch/sh/drivers/push-switch.c                      |  2 +-
+ block/blk-iocost.c                                 |  2 +-
+ block/blk-iolatency.c                              |  2 +-
+ block/blk-throttle.c                               |  2 +-
+ block/kyber-iosched.c                              |  2 +-
+ drivers/acpi/apei/ghes.c                           |  2 +-
+ drivers/atm/idt77105.c                             |  4 +-
+ drivers/atm/idt77252.c                             |  4 +-
+ drivers/atm/iphase.c                               |  2 +-
+ drivers/base/power/wakeup.c                        |  7 +--
+ drivers/block/drbd/drbd_main.c                     |  2 +-
+ drivers/block/loop.c                               |  2 +-
+ drivers/block/sunvdc.c                             |  2 +-
+ drivers/bluetooth/hci_bcsp.c                       |  2 +-
+ drivers/bluetooth/hci_h5.c                         |  4 +-
+ drivers/bluetooth/hci_qca.c                        |  4 +-
+ drivers/char/hangcheck-timer.c                     |  4 +-
+ drivers/char/ipmi/ipmi_msghandler.c                |  2 +-
+ drivers/char/random.c                              |  2 +-
+ drivers/clocksource/arm_arch_timer.c               | 12 ++--
+ drivers/clocksource/timer-sp804.c                  |  6 +-
+ drivers/dma-buf/st-dma-fence.c                     |  2 +-
+ drivers/gpu/drm/gud/gud_pipe.c                     |  2 +-
+ drivers/gpu/drm/i915/i915_sw_fence.c               |  2 +-
+ drivers/hid/hid-wiimote-core.c                     |  2 +-
+ drivers/input/keyboard/locomokbd.c                 |  2 +-
+ drivers/input/keyboard/omap-keypad.c               |  2 +-
+ drivers/input/mouse/alps.c                         |  2 +-
+ drivers/input/serio/hil_mlc.c                      |  2 +-
+ drivers/isdn/hardware/mISDN/hfcmulti.c             |  5 +-
+ drivers/isdn/mISDN/l1oip_core.c                    |  4 +-
+ drivers/isdn/mISDN/timerdev.c                      |  4 +-
+ drivers/leds/trigger/ledtrig-pattern.c             |  2 +-
+ drivers/leds/trigger/ledtrig-transient.c           |  2 +-
+ drivers/media/pci/ivtv/ivtv-driver.c               |  2 +-
+ drivers/media/usb/pvrusb2/pvrusb2-hdw.c            | 18 +++---
+ drivers/media/usb/s2255/s2255drv.c                 |  4 +-
+ drivers/net/ethernet/intel/i40e/i40e_main.c        |  7 +--
+ drivers/net/ethernet/marvell/sky2.c                |  2 +-
+ drivers/net/ethernet/sun/sunvnet.c                 |  2 +-
+ drivers/net/usb/sierra_net.c                       |  2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c   |  2 +-
+ drivers/net/wireless/intersil/hostap/hostap_ap.c   |  2 +-
+ drivers/net/wireless/marvell/mwifiex/main.c        |  2 +-
+ drivers/net/wireless/microchip/wilc1000/hif.c      |  6 +-
+ drivers/nfc/pn533/pn533.c                          |  2 +-
+ drivers/nfc/pn533/uart.c                           |  2 +-
+ drivers/pcmcia/bcm63xx_pcmcia.c                    |  2 +-
+ drivers/pcmcia/electra_cf.c                        |  2 +-
+ drivers/pcmcia/omap_cf.c                           |  2 +-
+ drivers/pcmcia/pd6729.c                            |  4 +-
+ drivers/pcmcia/yenta_socket.c                      |  4 +-
+ drivers/scsi/qla2xxx/qla_edif.c                    |  4 +-
+ drivers/staging/media/atomisp/i2c/atomisp-lm3554.c |  2 +-
+ drivers/tty/n_gsm.c                                |  2 +-
+ drivers/tty/sysrq.c                                |  2 +-
+ drivers/usb/gadget/udc/m66592-udc.c                |  2 +-
+ drivers/usb/serial/garmin_gps.c                    |  2 +-
+ drivers/usb/serial/mos7840.c                       |  2 +-
+ fs/ext4/super.c                                    |  2 +-
+ fs/jbd2/journal.c                                  |  2 +
+ fs/nilfs2/segment.c                                |  2 +-
+ include/linux/timer.h                              | 64 +++++++++++++++++++---
+ kernel/sched/psi.c                                 |  1 +
+ kernel/time/timer.c                                | 64 ++++++++++++----------
+ kernel/workqueue.c                                 |  4 +-
+ net/802/garp.c                                     |  2 +-
+ net/802/mrp.c                                      |  2 +-
+ net/bridge/br_multicast.c                          |  6 +-
+ net/bridge/br_multicast_eht.c                      |  4 +-
+ net/core/gen_estimator.c                           |  2 +-
+ net/core/neighbour.c                               |  2 +
+ net/ipv4/inet_timewait_sock.c                      |  1 +
+ net/ipv4/ipmr.c                                    |  2 +-
+ net/ipv6/ip6mr.c                                   |  2 +-
+ net/mac80211/mesh_pathtbl.c                        |  2 +-
+ net/netfilter/ipset/ip_set_list_set.c              |  2 +-
+ net/netfilter/ipvs/ip_vs_lblc.c                    |  2 +-
+ net/netfilter/ipvs/ip_vs_lblcr.c                   |  2 +-
+ net/netfilter/xt_LED.c                             |  2 +-
+ net/rxrpc/conn_object.c                            |  2 +-
+ net/sched/cls_flow.c                               |  2 +-
+ net/sunrpc/svc.c                                   |  2 +-
+ net/sunrpc/xprt.c                                  |  2 +-
+ net/tipc/discover.c                                |  2 +-
+ net/tipc/monitor.c                                 |  2 +-
+ sound/i2c/other/ak4117.c                           |  2 +-
+ sound/synth/emux/emux.c                            |  2 +-
+ 93 files changed, 227 insertions(+), 169 deletions(-)
