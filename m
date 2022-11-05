@@ -2,94 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D72B461A5C7
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Nov 2022 00:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CB1E61A78E
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Nov 2022 05:48:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbiKDXep (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Nov 2022 19:34:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56244 "EHLO
+        id S229486AbiKEEsy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 5 Nov 2022 00:48:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbiKDXep (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Nov 2022 19:34:45 -0400
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3F2D26117;
-        Fri,  4 Nov 2022 16:34:43 -0700 (PDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-13be3ef361dso7118980fac.12;
-        Fri, 04 Nov 2022 16:34:43 -0700 (PDT)
+        with ESMTP id S229461AbiKEEsx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Nov 2022 00:48:53 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABEF81C402;
+        Fri,  4 Nov 2022 21:48:51 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id d13-20020a17090a3b0d00b00213519dfe4aso6152056pjc.2;
+        Fri, 04 Nov 2022 21:48:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6hvd6urNEa2bZ2TTknP5YJ+H72Ja2eceUu/0SfBV1dc=;
-        b=Jg8jucXtBJP8myrTJM3z0Wltiv65Ikg/KpM2vg9+TBoUW8c9U6W60sIjrbQ9g2FcCc
-         31LubanrKiS7Sxd3jWqCYjN51E7mjzHAKTsl2yG3a+PmWqITk6B5s+HGczlPeMYiJFrb
-         vBZoQtVDG0kLRBI424jNNGG2b2bDrcM9K1WztoTH0rQVEK4L8GAlPvrCSGnj6IlV9xUa
-         XQ46HitYNVXogafALOjhYHs25Hj1J/FbNvVDg+CD68rFnvYhDXkugu2K8l076C7M7TZq
-         Qr6xjmcHk7Gk4pAipfE4FkxiMKzRcyJTcom7FrkAkJoEkKmmujHBgxhv3f/neLNWJFlx
-         4OcQ==
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FpxdRqL+dkJv4/HHt8a4Epp35V0m09+rczWeETBMLPY=;
+        b=pRlvJCvrMGfptaNYC9m4TAdhYQs8dKGjERXR6+HRH/FXermgHoskU4XlCAbwmMG0ZX
+         LVU63qDRUaOZAZce/CvN8/tomHWf8ABfo+XtUd7HpUvic1tdMbsQz/gWMW7lz1n6OEUd
+         IYncTnzsLRnkd5JHlmnu4XL0+qDFdM5GoLWzzoUGPRvraw/6JdfmVkB9o8MKXfrgZl+w
+         8XkMVyiqnb/JhzvC4DLZG16M5RAZN6xwwrWou7Hq6Fix5i3n8LsfVbio9VZyFdb2Zt33
+         z3dT/jxI9j3ICNLrX32Z5h4e2eef6l98K+QbeMDhfV+JCm3/q7+YNDtLLzCY85W4qj+t
+         07Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6hvd6urNEa2bZ2TTknP5YJ+H72Ja2eceUu/0SfBV1dc=;
-        b=X5cKH3F/66QouUPW6NBBA75UrBnbuk/XBDybvyEhkVZT3NRqDW6Lo980Sw/d8jB6Di
-         abIqXu3S+1VtuD2JKDUj7UYYIedXqzmm2arnsEjxHMw1gtiQyC7dzR3xWnI0MMc7xLnX
-         vw3C5ZTMFXSmFhy9oJR19PP6GjG+RyR8KJDp+2tC30j6jNhtZ/T09pLn0AvqWS/89y50
-         IRoQFqpy3DWqRKZWRx8lhC2uDzja2L2B4sQSht5toOqh15uSeejvPcBbaB9KD5wChq08
-         5Vm94hy/LSjNrDn+gU20+9q1akQiy5FaWJFjcTCpynnOVxMj51sTXqh6Kowfzub0pIke
-         jaNg==
-X-Gm-Message-State: ACrzQf0ktMf5+p73LsbFHoq6Ni0Je6tYlC4T/L7ojglKMcwnF/cpa4wf
-        +xVNPPnUNPXjaHRyrepWVHOdREHU5y8=
-X-Google-Smtp-Source: AMsMyM7MF9Q/Pp9YnJEtGj4XwhLtYIPmz5/gJtrzdgqLYVrzm8NOvh6bI3lkPYE6537XupHrGdc+uQ==
-X-Received: by 2002:a05:6870:6717:b0:13d:8222:329e with SMTP id gb23-20020a056870671700b0013d8222329emr7986841oab.128.1667604883046;
-        Fri, 04 Nov 2022 16:34:43 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id w29-20020a056870339d00b0011e37fb5493sm183421oae.30.2022.11.04.16.34.41
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FpxdRqL+dkJv4/HHt8a4Epp35V0m09+rczWeETBMLPY=;
+        b=r5cRHDnpA40OFGz5Tsv2+FzHhAs1j9VcxeBjZgzkQcKW1c28CKRet5+C63+9CnD2v4
+         Vru+KEYSN//kmHIiGstlttTqdvDgsNdTJz4HFHOCEUNxh0JLYqt0G8awsRMXFD8e+8d+
+         M5dSp+PhVTbUr5xgS1w1wD71AsiS89topFxRQOo3PrV9ttXTVMi36cwyqrNN8A5qgzUW
+         oW1HVjyJD/+sfp0ot9eOGgfXSpqjtsrtvjA/qXxt9NG1XKa1qVGSORjbHOg7rxNEuHFe
+         g6UyS7g8qms7LUxO8yVukfbjzGL2ZcvRA2CVbFFfKTeqoBCSY6l5ToW0qPP3h9hmE2ZQ
+         FN1A==
+X-Gm-Message-State: ACrzQf24Vx6xNMGx1AKBmV475ELl6wh/HUVTJ8iL/uKyYuqgWkAAvMkf
+        EFbj/OX7wyRn+vcGoWtRhPdzW6MLl+I=
+X-Google-Smtp-Source: AMsMyM6k4iAP5tS4ioTHzC6NDpfddONQYAOOu49tTBtG0FbaAtsd5bYClXSJVvtTpt1jZZyhEzbvMw==
+X-Received: by 2002:a17:902:ecc1:b0:186:b57e:d229 with SMTP id a1-20020a170902ecc100b00186b57ed229mr39688708plh.167.1667623730790;
+        Fri, 04 Nov 2022 21:48:50 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:5e7f:d665:c23a:5a4c])
+        by smtp.gmail.com with ESMTPSA id e4-20020a17090a684400b00212daa6f41dsm469092pjm.28.2022.11.04.21.48.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Nov 2022 16:34:41 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 4 Nov 2022 16:34:40 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>, rcu@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-edac@vger.kernel.org,
-        cgroups@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org, drbd-dev@lists.linbit.com,
-        linux-bluetooth@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
-        linux-input@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-leds@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-nilfs@vger.kernel.org,
-        bridge@lists.linux-foundation.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Subject: Re: [RFC][PATCH v3 00/33] timers: Use timer_shutdown*() before
- freeing timers
-Message-ID: <20221104233440.GA2443898@roeck-us.net>
-References: <20221104054053.431922658@goodmis.org>
+        Fri, 04 Nov 2022 21:48:50 -0700 (PDT)
+Date:   Fri, 4 Nov 2022 21:48:47 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] gpiolib: add support for software nodes
+Message-ID: <Y2XrL0noH4HqsAU7@google.com>
+References: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
+ <20221031-gpiolib-swnode-v1-6-a0ab48d229c7@gmail.com>
+ <Y2VVA2Wp1IWoJf3m@smile.fi.intel.com>
+ <Y2Vo8g5HfvSi7Bck@google.com>
+ <Y2V8uwTHYw2McL5S@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221104054053.431922658@goodmis.org>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y2V8uwTHYw2McL5S@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,152 +78,226 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 04, 2022 at 01:40:53AM -0400, Steven Rostedt wrote:
+On Fri, Nov 04, 2022 at 10:57:31PM +0200, Andy Shevchenko wrote:
+> On Fri, Nov 04, 2022 at 12:33:06PM -0700, Dmitry Torokhov wrote:
+> > On Fri, Nov 04, 2022 at 08:08:03PM +0200, Andy Shevchenko wrote:
+> > > On Thu, Nov 03, 2022 at 11:10:16PM -0700, Dmitry Torokhov wrote:
 > 
-> Back in April, I posted an RFC patch set to help mitigate a common issue
-> where a timer gets armed just before it is freed, and when the timer
-> goes off, it crashes in the timer code without any evidence of who the
-> culprit was. I got side tracked and never finished up on that patch set.
-> Since this type of crash is still our #1 crash we are seeing in the field,
-> it has become a priority again to finish it.
+> ...
 > 
+> > > > const struct property_entry simone_key_enter_props[] __initconst = {
+> > > > 	PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),
+> > > 
+> > > > 	PROPERTY_ENTRY_STRING("label", "enter"),
+> > > > 	PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW),
+> > > 
+> > > Okay, can we have an example for something like reset-gpios? Because from
+> > > the above I can't easily get what label is and how in the `gpioinfo` tool
+> > > the requested line will look like.
+> > 
+> > The label is something unrelated to gpio. The example was supposed to
+> > match gpio-keys binding found in
+> > Documentation/devicetree/bindings/input/gpio-keys.yaml
+> 
+> Yes, but what would be output of `gpioinfo` for the above  example and
+> if GPIO is named properly (with con_id)?
 
-After applying the patches attached below, everything compiles for me,
-and there are no crashes. There are still various warnings, most in
-networking. I know I need to apply some patch(es) to fix the networking
-warnings, but I didn't entirely understand what exactly to apply, so
-I didn't try.
+Same as if I am using device tree, or ACPI, etc. I am not changing how
+labeling is done, so whatever rules were before adding swnode support
+they will be used with swnodes.
 
-Complete logs are at https://kerneltests.org/builders, on the bottom half
-of the page (qemu tests, in the 'testing' column).
+With the hack patch to gpio-keys.c below and device using the following
+DT fragment I see the following from gpioinfo:
 
-Guenter
+        gpio_keys: gpio-keys {
+                status = "okay";
 
----
-Warnings:
+                compatible = "gpio-keys";
+                pinctrl-names = "default";
+                pinctrl-0 = <&pen_eject>;
 
-ODEBUG: free active (active state 0) object type: timer_list hint: tcp_write_timer+0x0/0x1d0
-	from tcp_close -> __sk_destruct -> tcp_write_timer
+                pen_insert: pen-insert {
+                        label = "Pen Insert";
+                        /* Insert = low, eject = high */
+                        /* gpios = <&pio 18 GPIO_ACTIVE_LOW>; */
+                        linux,code = <SW_PEN_INSERTED>;
+                        linux,input-type = <EV_SW>;
+                        wakeup-event-action = <EV_ACT_DEASSERTED>;
+                        wakeup-source;
+                };
+        };
 
-ODEBUG: free active (active state 0) object type: timer_list hint: tcp_keepalive_timer+0x0/0x4c0
-	from tcp_close -> __sk_destruct -> tcp_keepalive_timer -> __del_timer_sync
+Just "gpios" (con_id == NULL):
 
-ODEBUG: free active (active state 0) object type: timer_list hint: blk_rq_timed_out_timer+0x0/0x40
-	blk_free_queue_rcu -> blk_free_queue_rcu -> blk_rq_timed_out_timer
+        line  18: "PEN_EJECT_OD" "Pen Insert" input active-low [used]
 
----
-Changes applied on top of patch set to fix build errors:
+With "key-gpios" (con_id == "key") it is exactly the same:
 
-diff --git a/arch/arm/mach-spear/time.c b/arch/arm/mach-spear/time.c
-index e979e2197f8e..5371c824786d 100644
---- a/arch/arm/mach-spear/time.c
-+++ b/arch/arm/mach-spear/time.c
-@@ -90,7 +90,7 @@ static void __init spear_clocksource_init(void)
- 		200, 16, clocksource_mmio_readw_up);
- }
+        line  18: "PEN_EJECT_OD" "Pen Insert" input active-low [used]
+
+Ah, I guess you wonder how it will look like if we do not pass this
+"label" into devm_fwnode_gpiod_get() and instead use NULL?
+
+	line  18: "PEN_EJECT_OD" "?" input active-low [used]
+
+If the driver used gpiod_get() or similar it would either have the
+"con_id" label or device name (produced with dev_name(dev) if con_id is
+NULL. Still, not changes from using swnodes compared to ACPI or DT.
+
+> 
+> > > > 	{ }
+> > > > };
+> 
+> ...
+> 
+> > > > +	/*
+> > > > +	 * We expect all swnode-described GPIOs have GPIO number and
+> > > > +	 * polarity arguments, hence nargs is set to 2.
+> > > > +	 */
+> > > 
+> > > Maybe instead you can provide a custom macro wrapper that will check the number
+> > > of arguments at compile time?
+> > 
+> > We could have PROPERTY_ENTRY_GPIO() built on top of PROPERTY_ENTRY_REF()
+> > that enforces needed arguments.
+> 
+> Yes, that's what I meant.
+
+Where do you think it should go? Not sure if I want to pollute
+property.h, I guess linux/gpio/matchine.h will need to include
+property.h?
+
+> 
+> ...
+> 
+> > > > +		pr_debug("%s: can't parse '%s' property of node '%pfwP[%d]'\n",
+> > > > +			__func__, prop_name, fwnode, idx);
+> > > 
+> > > __func__ is not needed. Dynamic Debug can automatically add it.
+> > > Since you have an fwnode, use that as a marker.
+> > 
+> > I was mimicking gpiolib-of.c::of_get_named_gpiod_flags(). I guess we can
+> > guess the function from other log messages we emit, but does it hurt
+> > having it?
+> 
+> I think it's redundant. You can modify message itself to improve its
+> uniqueness.
+
+¯\_(ツ)_/¯ I think we are moving into extreme bikeshedding direction
+here.
+
+> 
+> ...
+> 
+> > > > +	/*
+> > > > +	 * This is not very efficient, but GPIO lists usually have only
+> > > > +	 * 1 or 2 entries.
+> > > > +	 */
+> > > > +	count = 0;
+> > > > +	while (fwnode_property_get_reference_args(fwnode, prop_name, NULL,
+> > > > +						  0, count, &args) == 0)
+> > > 
+> > > I would put it into for loop (and looking into property.h I think propname
+> > > is fine variable name):
+> > > 
+> > > 	for (count = 0; ; count++) {
+> > > 		if (fwnode_property_get_reference_args(fwnode, propname, NULL, 0, count, &args))
+> > > 			break;
+> > > 	}
+> > 
+> > OK on name, but I like explicit counting with the "while" loop as it
+> > shows the purpose of the code.
+> 
+> OK, let's see how it will look like with the proper dropped reference.
+> 
+> > > Btw, what about reference counting? Do we need to care about it?
+> > 
+> > Yes, indeed, we need to drop the reference, thank you for noticing!
+> 
+> ...
+> 
+> > > > +	/*
+> > > > +	 * First look up GPIO in the secondary software node in case
+> > > > +	 * it was used to store updated properties.
+> > > 
+> > > Why this is done first? We don't try secondary before we have checked primary.
+> > 
+> > I believe we should check secondary first, so that secondaries can be
+> > used not only to add missing properties, but also to override existing
+> > ones in case they are incorrect.
+> 
+> It contradicts all code we have in the kernel regarding the use of software
+> nodes, you need very strong argument to justify that.
+> 
+> Personally I think this must be fixed.
+
+I agree, the rest of the code should be fixed ;) I'll put it on my TODO
+list.
+
+I gave my argument above already: swnodes should not only be useful to
+add missing properties, but also allow fixing up existing ones. If I
+implemented what you are suggesting then I would not be able to create
+this concise example and would need to model entire DT node for GPIO
+keys.
+
+Thanks.
+
+-- 
+Dmitry
+
+
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index 22a91db645b8f..5fe51c5baa6bb 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -30,6 +30,17 @@
+ #include <linux/spinlock.h>
+ #include <dt-bindings/input/gpio-keys.h>
  
--static inline void timer_shutdown(struct clock_event_device *evt)
-+static inline void spear_timer_shutdown(struct clock_event_device *evt)
++#include <linux/property.h>
++#include <linux/gpio/machine.h>
++const struct software_node gpio_bank_node = {
++	.name = "pinctrl_paris",
++};
++
++const struct property_entry pen_insert_props[] = {
++	PROPERTY_ENTRY_REF("key-gpios", &gpio_bank_node, 18, GPIO_ACTIVE_LOW),
++	{ }
++};
++
+ struct gpio_button_data {
+ 	const struct gpio_keys_button *button;
+ 	struct input_dev *input;
+@@ -519,8 +530,11 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
+ 	spin_lock_init(&bdata->lock);
+ 
+ 	if (child) {
++		if (!strcmp(fwnode_get_name(child), "pen-insert"))
++			child->secondary = fwnode_create_software_node(pen_insert_props, NULL);
++
+ 		bdata->gpiod = devm_fwnode_gpiod_get(dev, child,
+-						     NULL, GPIOD_IN, desc);
++						     "key", GPIOD_IN, desc);
+ 		if (IS_ERR(bdata->gpiod)) {
+ 			error = PTR_ERR(bdata->gpiod);
+ 			if (error == -ENOENT) {
+@@ -1056,14 +1070,18 @@ static struct platform_driver gpio_keys_device_driver = {
+ 	}
+ };
+ 
++
++
+ static int __init gpio_keys_init(void)
  {
- 	u16 val = readw(gpt_base + CR(CLKEVT));
++	software_node_register(&gpio_bank_node);
+ 	return platform_driver_register(&gpio_keys_device_driver);
+ }
  
-@@ -101,7 +101,7 @@ static inline void timer_shutdown(struct clock_event_device *evt)
- 
- static int spear_shutdown(struct clock_event_device *evt)
+ static void __exit gpio_keys_exit(void)
  {
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
- 
- 	return 0;
- }
-@@ -111,7 +111,7 @@ static int spear_set_oneshot(struct clock_event_device *evt)
- 	u16 val;
- 
- 	/* stop the timer */
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
- 
- 	val = readw(gpt_base + CR(CLKEVT));
- 	val |= CTRL_ONE_SHOT;
-@@ -126,7 +126,7 @@ static int spear_set_periodic(struct clock_event_device *evt)
- 	u16 val;
- 
- 	/* stop the timer */
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
- 
- 	period = clk_get_rate(gpt_clk) / HZ;
- 	period >>= CTRL_PRESCALER16;
-diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-index a7ff77550e17..9c3420a0d19d 100644
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -687,8 +687,8 @@ static irqreturn_t arch_timer_handler_virt_mem(int irq, void *dev_id)
- 	return timer_handler(ARCH_TIMER_MEM_VIRT_ACCESS, evt);
+ 	platform_driver_unregister(&gpio_keys_device_driver);
++	software_node_unregister(&gpio_bank_node);
  }
  
--static __always_inline int timer_shutdown(const int access,
--					  struct clock_event_device *clk)
-+static __always_inline int arch_timer_shutdown(const int access,
-+					       struct clock_event_device *clk)
- {
- 	unsigned long ctrl;
- 
-@@ -701,22 +701,22 @@ static __always_inline int timer_shutdown(const int access,
- 
- static int arch_timer_shutdown_virt(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
- }
- 
- static int arch_timer_shutdown_phys(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
- }
- 
- static int arch_timer_shutdown_virt_mem(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
- }
- 
- static int arch_timer_shutdown_phys_mem(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
- }
- 
- static __always_inline void set_next_event(const int access, unsigned long evt,
-diff --git a/drivers/clocksource/timer-sp804.c b/drivers/clocksource/timer-sp804.c
-index e6a87f4af2b5..a3c38e1343f0 100644
---- a/drivers/clocksource/timer-sp804.c
-+++ b/drivers/clocksource/timer-sp804.c
-@@ -155,14 +155,14 @@ static irqreturn_t sp804_timer_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static inline void timer_shutdown(struct clock_event_device *evt)
-+static inline void sp804_timer_shutdown(struct clock_event_device *evt)
- {
- 	writel(0, common_clkevt->ctrl);
- }
- 
- static int sp804_shutdown(struct clock_event_device *evt)
- {
--	timer_shutdown(evt);
-+	sp804_timer_shutdown(evt);
- 	return 0;
- }
- 
-@@ -171,7 +171,7 @@ static int sp804_set_periodic(struct clock_event_device *evt)
- 	unsigned long ctrl = TIMER_CTRL_32BIT | TIMER_CTRL_IE |
- 			     TIMER_CTRL_PERIODIC | TIMER_CTRL_ENABLE;
- 
--	timer_shutdown(evt);
-+	sp804_timer_shutdown(evt);
- 	writel(common_clkevt->reload, common_clkevt->load);
- 	writel(ctrl, common_clkevt->ctrl);
- 	return 0;
+ late_initcall(gpio_keys_init);
 
