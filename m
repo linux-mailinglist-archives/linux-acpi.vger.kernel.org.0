@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D9761E400
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Nov 2022 18:06:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1402061E435
+	for <lists+linux-acpi@lfdr.de>; Sun,  6 Nov 2022 18:08:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbiKFRGh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 6 Nov 2022 12:06:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38632 "EHLO
+        id S231191AbiKFRIi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 6 Nov 2022 12:08:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230320AbiKFRF6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Nov 2022 12:05:58 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A9AB10FEF;
-        Sun,  6 Nov 2022 09:05:09 -0800 (PST)
+        with ESMTP id S230462AbiKFRH6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Nov 2022 12:07:58 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBDF2EE1F;
+        Sun,  6 Nov 2022 09:05:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AE979B80C6D;
-        Sun,  6 Nov 2022 17:05:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5B3C433D6;
-        Sun,  6 Nov 2022 17:05:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CFD7660CF5;
+        Sun,  6 Nov 2022 17:05:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A79C433C1;
+        Sun,  6 Nov 2022 17:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667754307;
-        bh=/NiMo/wrEOascdcvbbrGjZmpvDphjSdGKHk1PUjRYWU=;
+        s=k20201202; t=1667754353;
+        bh=NssqwD5/Gv4Zq01FZfPoyFmZ9zR/cF/rab9d/sMdA+Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kpu/uX2pLsgX3IqrtJBlw1sFhlt4TmtYe+rUIcOWRY6zBqkhRUzJ8PvwdB4zhFT67
-         AalqIhjq+j+A9rvKRw/cZSz3V3DhlN/AMjbKvO5isjQ1oyHBUyI7WmLGscjAZobqJf
-         PmXwDyuFhRxBLdEmqTvkOSe8niaY+c+2/15BFa8Gs4tn9Sd5y4B79bqI8Oga5lGaXb
-         XMRG+bneO3Gm62iQE7sxUxeZAaqhmZYRs6hwl0dLhGDlAkPOnCHKIqI2jFvBm1+/iz
-         C41L6xLFnwXBlpM67lJjalreriUUiC8TNnJmKO2j/VTC87JywDkDsYJOYm6W/W47lY
-         rM4EOOjWOKMIw==
+        b=rYqnQEHWcqydud4uqxP625TJtfil8nyJIHmQOBuBjE9L+RmYMh16or4MN2WTeQWcl
+         8D0WINnRwulpfhqWbWoM6STOb0Wf7NdPqVr1s9jOVnCehvHFmM0x1Lv3uwQhruQSSc
+         L1GxJ/iKHxxwEBOWOsDFPqJd0E1X4kXG6IPcnq+4gF995I4aaPX+JuTsTREVqVRkaZ
+         Kh6CR9OFlTh7mv8KzkLWQs7dm7gS67QEvCT0Gt1AuyHEolG/0dGQy31qUrVa2grcKJ
+         srFYvBA7R7/136sNUdOLE17wHItk/b607BSwmlkhrHe7/TYpMLkKeSLyRuJcOosdF4
+         ogGtezdDzE4pw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 30/30] ACPI: scan: Add LATT2021 to acpi_ignore_dep_ids[]
-Date:   Sun,  6 Nov 2022 12:03:42 -0500
-Message-Id: <20221106170345.1579893-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 18/18] ACPI: scan: Add LATT2021 to acpi_ignore_dep_ids[]
+Date:   Sun,  6 Nov 2022 12:05:07 -0500
+Message-Id: <20221106170509.1580304-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221106170345.1579893-1-sashal@kernel.org>
-References: <20221106170345.1579893-1-sashal@kernel.org>
+In-Reply-To: <20221106170509.1580304-1-sashal@kernel.org>
+References: <20221106170509.1580304-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -81,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 42cec8120f18..adfeb5770efd 100644
+index 6e9cd41c5f9b..ae74720888db 100644
 --- a/drivers/acpi/scan.c
 +++ b/drivers/acpi/scan.c
-@@ -796,6 +796,7 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
+@@ -793,6 +793,7 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
  static const char * const acpi_ignore_dep_ids[] = {
  	"PNP0D80", /* Windows-compatible System Power Management Controller */
  	"INT33BD", /* Intel Baytrail Mailbox Device */
