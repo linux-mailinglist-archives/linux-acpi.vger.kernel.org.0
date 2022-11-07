@@ -2,204 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A22661EAE7
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 07:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F031A61ECC7
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 09:20:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231218AbiKGGYv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Nov 2022 01:24:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
+        id S230304AbiKGIUo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Nov 2022 03:20:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230204AbiKGGYu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Nov 2022 01:24:50 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FC0AE0FB;
-        Sun,  6 Nov 2022 22:24:49 -0800 (PST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N5Lhh3lfTzpVtp;
-        Mon,  7 Nov 2022 14:21:08 +0800 (CST)
-Received: from kwepemm600004.china.huawei.com (7.193.23.242) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 7 Nov 2022 14:24:46 +0800
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 7 Nov 2022 14:24:45 +0800
-Message-ID: <09e0a108-9f22-a9a0-2145-a81936745887@huawei.com>
-Date:   Mon, 7 Nov 2022 14:24:45 +0800
+        with ESMTP id S229586AbiKGIUn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Nov 2022 03:20:43 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1BDE24;
+        Mon,  7 Nov 2022 00:20:42 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 23382B80E34;
+        Mon,  7 Nov 2022 08:20:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7194BC433C1;
+        Mon,  7 Nov 2022 08:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667809239;
+        bh=HsumuHWGEkVvYRJ9gfr46c7MJjHktceqJIjdDmY63pQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hhgh6OeHVpRaa1eETr2Fq35BwwgvCURF3ehZ26Z4+wA6YYGGi5pYgeOZF8CDgrc9f
+         w7kzJ5KJkDmmskVaaC5wfP4CZ+XqEz8UMFc+CNBDOhc4xVRE+x1UFjg6CLKQa3qbIZ
+         FxmG2ChDjQxtKYvfHIa5eBJjCe+eBz4+NOAEzb/XQD28O9Tcfjwue3kfHzE33+L2CN
+         2jRdn7+eFhTSUlZYmkcnvgcOIVrGF3R2byH9L0QkkGkoixH6+Gb/VXHn5fL0ulaf0l
+         kv+WscTG0c6qmxqUefWxlDwfgI/Gm9cW5osIFPgp1OSjjOibbVKKwEWBWkz5MQdhW6
+         NXYPRqg652E/A==
+Date:   Mon, 7 Nov 2022 08:20:31 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     Dawei Li <set_pte_at@outlook.com>
+Cc:     rafael@kernel.org, gregkh@linuxfoundation.org,
+        u.kleine-koenig@pengutronix.de, dvhart@infradead.org,
+        andy@infradead.org, lenb@kernel.org, arnd@arndb.de,
+        peterhuewe@gmx.de, kys@microsoft.com, kronos.it@gmail.com,
+        dmitry.torokhov@gmail.com, bleung@chromium.org,
+        sujith.thomas@intel.com, vithampi@vmware.com,
+        wim@linux-watchdog.org, jgross@suse.com, davem@davemloft.net,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] acpi: make remove callback of acpi driver void
+Message-ID: <Y2i/zy8CVzTb6qdE@google.com>
+References: <TYCP286MB232348AC39E6F4966FA9494BCA3D9@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [RFC] ACPI: PCC: Support shared interrupt for multiple subspaces
-To:     Robbie King <robbiek@xsightlabs.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <wanghuiqiang@huawei.com>, <huangdaode@huawei.com>,
-        <tanxiaofei@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221027155323.7xmpjfrh7qmil6o3@bogus>
- <f0c408a6-cd94-4963-d4d7-e7d08b6150be@huawei.com>
- <20221031104036.bv6a7i6hxrmtpj23@bogus>
- <925f360d-e6b3-6004-de22-f39eaa86a750@huawei.com>
- <d0b178d3-a036-399f-fb0c-bb7f8c52995c@xsightlabs.com>
- <20221104151530.44sms3fnarqnvvsl@bogus>
- <ca35058d-1f40-3f85-9e2d-bfb29c8625cb@xsightlabs.com>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <ca35058d-1f40-3f85-9e2d-bfb29c8625cb@xsightlabs.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <TYCP286MB232348AC39E6F4966FA9494BCA3D9@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Sun, 06 Nov 2022, Dawei Li wrote:
 
-在 2022/11/4 23:39, Robbie King 写道:
-> On 11/4/2022 11:15 AM, Sudeep Holla wrote:
->> On Fri, Nov 04, 2022 at 11:04:22AM -0400, Robbie King wrote:
->>> Hello Huisong, your raising of the shared interrupt issue is very 
->>> timely, I
->>> am working to implement "Extended PCC subspaces (types 3 and 4)" 
->>> using PCC
->>> on the ARM RDN2 reference platform as a proof of concept, and 
->>> encountered
->>> this issue as well.  FWIW, I am currently testing using Sudeep's 
->>> patch with
->>> the "chan_in_use" flag removed, and so far have not encountered any 
->>> issues.
->>>
->>
->> Interesting, do you mean the patch I post in this thread but without the
->> whole chan_in_use flag ?
->
-> That's right, diff I'm running with is attached to end of message.
-Hello Robbie, In multiple subspaces scenario, there is a problem
-that OS doesn't know which channel should respond to the interrupt
-if no this chan_in_use flag. If you have not not encountered any
-issues in this case, it may be related to your register settings.
+> For bus-based driver, device removal is implemented as:
+> 1 device_remove()->
+> 2   bus->remove()->
+> 3     driver->remove()
+> 
+> Driver core needs _no_ inform from callee(bus driver) about the
+> result of remove callback. In that case,
+> commit <fc7a6209d571> ("bus: Make remove callback return void")
+> forces struct bus_type::remove() be void-returned.
+> 
+> Now we have the situation that both 1 & 2 of calling chain are
+> void-returned, so it does _not_ make much sense for 3(driver->remove)
+> to return non-void to its caller.
+> 
+> So the basic idea behind this change is making remove() callback of
+> any bus-based driver to be void-returned.
+> 
+> This change itself, is for device drivers based on acpi-bus.
+> 
+> Signed-off-by: Dawei Li <set_pte_at@outlook.com>
+> ---
+>  arch/ia64/hp/common/aml_nfw.c                 |  4 ++--
+>  arch/x86/platform/olpc/olpc-xo15-sci.c        |  3 +--
+>  drivers/acpi/ac.c                             |  8 +++-----
+>  drivers/acpi/acpi_pad.c                       |  3 +--
+>  drivers/acpi/acpi_video.c                     |  8 +++-----
+>  drivers/acpi/battery.c                        |  5 ++---
+>  drivers/acpi/button.c                         |  5 ++---
+>  drivers/acpi/ec.c                             |  5 ++---
+>  drivers/acpi/hed.c                            |  3 +--
+>  drivers/acpi/nfit/core.c                      |  3 +--
+>  drivers/acpi/sbs.c                            |  9 ++++-----
+>  drivers/acpi/sbshc.c                          |  7 +++----
+>  drivers/acpi/thermal.c                        |  7 +++----
+>  drivers/acpi/tiny-power-button.c              | 10 +++++++---
+>  drivers/char/sonypi.c                         |  3 +--
+>  drivers/char/tpm/tpm_crb.c                    |  4 +---
+>  drivers/hv/vmbus_drv.c                        |  4 +---
+>  drivers/hwmon/acpi_power_meter.c              |  5 ++---
+>  drivers/hwmon/asus_atk0110.c                  |  6 ++----
+>  drivers/input/misc/atlas_btns.c               |  4 +---
+>  drivers/net/fjes/fjes_main.c                  |  4 +---
+>  .../platform/chrome/chromeos_privacy_screen.c |  3 +--
+>  drivers/platform/chrome/wilco_ec/event.c      |  4 +---
+>  drivers/platform/surface/surfacepro3_button.c |  3 +--
+>  drivers/platform/x86/asus-laptop.c            |  3 +--
+>  drivers/platform/x86/asus-wireless.c          |  3 +--
+>  drivers/platform/x86/classmate-laptop.c       | 20 +++++++++----------
+>  drivers/platform/x86/dell/dell-rbtn.c         |  6 ++----
+>  drivers/platform/x86/eeepc-laptop.c           |  3 +--
+>  drivers/platform/x86/fujitsu-laptop.c         |  4 +---
+>  drivers/platform/x86/fujitsu-tablet.c         |  3 +--
+>  drivers/platform/x86/intel/rst.c              |  4 +---
+>  drivers/platform/x86/lg-laptop.c              |  4 +---
+>  drivers/platform/x86/panasonic-laptop.c       |  8 +++-----
+>  drivers/platform/x86/sony-laptop.c            |  9 +++------
+>  drivers/platform/x86/system76_acpi.c          |  4 +---
+>  drivers/platform/x86/topstar-laptop.c         |  3 +--
+>  drivers/platform/x86/toshiba_acpi.c           |  4 +---
+>  drivers/platform/x86/toshiba_bluetooth.c      |  6 +++---
+>  drivers/platform/x86/toshiba_haps.c           |  4 +---
+>  drivers/platform/x86/wireless-hotkey.c        |  3 +--
+>  drivers/platform/x86/xo15-ebook.c             |  3 +--
+>  drivers/ptp/ptp_vmw.c                         |  3 +--
+>  drivers/thermal/intel/intel_menlow.c          |  8 +++-----
 
-@Sudeep, what shoud we do next?
->
->>
->>> I think the RDN2 may provide an example of a write only interrupt
->>> acknowledge mechanism mentioned by Sudeep.
->>>
->>
->> Yes.
->>
->>> The RDN2 reference design uses the MHUv2 IP for the doorbell 
->>> mechanism.  If
->>> my implementation is correct (and it quite possibly is not), 
->>> acknowledging
->>> the DB interrupt from the platform is accomplished by writing a 1 to 
->>> the
->>> appropriate bit in the receiver channel window CH_CLR register, 
->>> which is
->>> documented as:
->>>
->>>    Channel flag clear.
->>>    Write 0b1 to a bit clears the corresponding bit in the CH_ST and 
->>> CH_ST_MSK.
->>>    Writing 0b0 has no effect.
->>>    Each bit always reads as 0b0.
->>>
->>
->> Correct, on this MHUv[1-2], it is write only register and it reads zero.
->> So basically you will ignore the interrupt if we apply the logic Huisong
->> proposed initially.
->>
->>> in the "Arm Corstone SSE-700 Subsystem Technical Reference Manual".
->>>
->>> Apologies if I am off in the weeds here as I have only been working 
->>> with
->>> PCC/SCMI for a very short period of time.
->>
->> Good to know info :).
->>
->
-> It helps that your linux / firmware code is easy to follow! :)
->
-> One other minor issue I encountered was that a NULL GAS (all zeros) 
-> doesn't
-> seem to be supported by pcc_chan_reg_init, may be a good opportunity 
-> for me
-> to submit my first RFC...
->
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index ed18936b8ce6..3fa7335d15b0 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -100,6 +100,7 @@ struct pcc_chan_info {
->         struct pcc_chan_reg cmd_update;
->         struct pcc_chan_reg error;
->         int plat_irq;
-> +       unsigned int plat_irq_flags;
->  };
->
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index ed18936b8ce6..3fa7335d15b0 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -100,6 +100,7 @@ struct pcc_chan_info {
->         struct pcc_chan_reg cmd_update;
->         struct pcc_chan_reg error;
->         int plat_irq;
-> +       unsigned int plat_irq_flags;
->  };
->
->  #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
-> @@ -221,6 +222,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 
-> flags)
->         return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->  }
->
-> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
-> +{
-> +       return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
-> +               ACPI_LEVEL_SENSITIVE;
-> +}
-> +
->  /**
->   * pcc_mbox_irq - PCC mailbox interrupt handler
->   * @irq:       interrupt number
-> @@ -310,9 +317,12 @@ pcc_mbox_request_channel(struct mbox_client *cl, 
-> int subspace_id)
->
->         if (pchan->plat_irq > 0) {
->                 int rc;
-> +               unsigned long irqflags;
->
-> -               rc = devm_request_irq(dev, pchan->plat_irq, 
-> pcc_mbox_irq, 0,
-> -                                     MBOX_IRQ_NAME, chan);
-> +               irqflags = pcc_chan_plat_irq_can_be_shared(pchan) ?
-> +                           IRQF_SHARED | IRQF_ONESHOT : 0;
-> +               rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq,
-> +                                     irqflags, MBOX_IRQ_NAME, chan);
->                 if (unlikely(rc)) {
->                         dev_err(dev, "failed to register PCC interrupt 
-> %d\n",
->                                 pchan->plat_irq);
-> @@ -458,6 +468,8 @@ static int pcc_parse_subspace_irq(struct 
-> pcc_chan_info *pchan,
->                 return -EINVAL;
->         }
->
-> +       pchan->plat_irq_flags = pcct_ss->flags;
-> +
->         if (pcct_ss->header.type == 
-> ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
->                 struct acpi_pcct_hw_reduced_type2 *pcct2_ss = (void 
-> *)pcct_ss;
->
->
-> .
+>  drivers/video/backlight/apple_bl.c            |  3 +--
+
+Acked-by: Lee Jones <lee@kernel.org>
+
+>  drivers/watchdog/ni903x_wdt.c                 |  4 +---
+>  drivers/xen/xen-acpi-pad.c                    |  3 +--
+>  include/acpi/acpi_bus.h                       |  2 +-
+>  48 files changed, 88 insertions(+), 149 deletions(-)
+
+-- 
+Lee Jones [李琼斯]
