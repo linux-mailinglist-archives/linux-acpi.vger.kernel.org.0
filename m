@@ -2,54 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8F261EF04
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 10:30:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 279C361F005
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 11:12:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231433AbiKGJaz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Nov 2022 04:30:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56814 "EHLO
+        id S231577AbiKGKME (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Nov 2022 05:12:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231359AbiKGJay (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Nov 2022 04:30:54 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BD813F99;
-        Mon,  7 Nov 2022 01:30:52 -0800 (PST)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4N5Qr764m2zJnT5;
-        Mon,  7 Nov 2022 17:27:51 +0800 (CST)
-Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 7 Nov 2022 17:30:40 +0800
-Received: from [10.67.108.67] (10.67.108.67) by dggpemm500013.china.huawei.com
- (7.185.36.172) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 7 Nov
- 2022 17:30:40 +0800
-Message-ID: <c01b8c85-59d0-20a8-5e72-4e628a84bf05@huawei.com>
-Date:   Mon, 7 Nov 2022 17:30:36 +0800
+        with ESMTP id S230515AbiKGKME (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Nov 2022 05:12:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C93F186F9
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Nov 2022 02:11:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1667815863;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2joyg/Y0Frm3DrFDZnrlLZ/48yC402wd11jenlPgzmA=;
+        b=ANGRa6q7upM5zT5tkTq1T8sbeYJVA6rgZkzYoFteGxUkegyu1GYVfDkO4k0K3Jd0YMC9B8
+        KWgcQD1Hvoo7IFIJoIwen5SxaNceiuLOgVQ8TjLEEsvXsLq8DovPcmmCEeJ4OvegFCv851
+        UVBJfVmfULzH3X3bHAEo04veawKQLFo=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-241-KaWydovKPVS0c-ZcBdM3qA-1; Mon, 07 Nov 2022 05:11:02 -0500
+X-MC-Unique: KaWydovKPVS0c-ZcBdM3qA-1
+Received: by mail-ej1-f70.google.com with SMTP id sh31-20020a1709076e9f00b007ae32b7eb51so4052748ejc.9
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Nov 2022 02:11:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2joyg/Y0Frm3DrFDZnrlLZ/48yC402wd11jenlPgzmA=;
+        b=arJnSMsC/IV93czWtJYCphf62cYAAUXG0uI5Xq9TIB65kQ/Qawfdks+vaElzRkxtYY
+         weS4SQeskhbLCO7HwbqiKUTFSK9KLI8iYA/s8FkNrkMXcECK2BlaPNKxyye5HEp+XAJt
+         u1zVyskg+NdpRQdCHzlAnl1nAKgtfPCp6Xl446H+zOnbZWr9U0je+Z2MJfnQB1htBav7
+         h9PK6nQwK73+/KD9sxarYGa25sV+rvjD5qFjK5OmZpr5xWqVvqCpM0mT9FUXSjMCS17r
+         FA8l1S5xhZHwoWkHFmVfwCUT4w+GuDCGyhfYwB+yWnLsWzi9DJpQChkZy1MORiyI0M1l
+         L2LQ==
+X-Gm-Message-State: ACrzQf09YKrxgU/K6WFRZN/H2dU+A2/Orc7T8+dyZ3ertOKst+MDYn9e
+        ATrWuzHsLfRGV/OZ4fLpT2MNNAWgfzEd79gB0LfV8mBIYQWklH7kdUM/6XoA+r7ZHzCO4H3plxA
+        4pHm4r7E3B3Ln/n070J6BQw==
+X-Received: by 2002:a50:bb06:0:b0:461:4acc:4540 with SMTP id y6-20020a50bb06000000b004614acc4540mr51228037ede.307.1667815860666;
+        Mon, 07 Nov 2022 02:11:00 -0800 (PST)
+X-Google-Smtp-Source: AMsMyM7kbj6phhXGHkimhxJvMalWj0xdMtE1Bg7QYtcoGOoguaIp4xajIfpiQo1HZMIqGl0eOYa68w==
+X-Received: by 2002:a50:bb06:0:b0:461:4acc:4540 with SMTP id y6-20020a50bb06000000b004614acc4540mr51228025ede.307.1667815860486;
+        Mon, 07 Nov 2022 02:11:00 -0800 (PST)
+Received: from [10.40.98.142] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id s18-20020aa7c552000000b00461c1804cdasm3991790edr.3.2022.11.07.02.10.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Nov 2022 02:10:59 -0800 (PST)
+Message-ID: <04d96d5a-eb81-eb5a-5db8-9103f1da5c42@redhat.com>
+Date:   Mon, 7 Nov 2022 11:10:59 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0
-Subject: Re: [PATCH] ACPICA: Fix use-after-free in acpi_ps_parse_aml()
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     <robert.moore@intel.com>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <rafael.j.wysocki@intel.com>,
-        <lenb@kernel.org>, <lv.zheng@intel.com>
-References: <20221019073443.248215-1-chenzhongjin@huawei.com>
- <CAJZ5v0hV2AFEgiuxxbDFUWLa0ZthSz3a=-9U4pjXm-GmmSgexw@mail.gmail.com>
- <CAJZ5v0jPCGoss6X5bmv9Nw9ZxrDxirEEMh6UKSgOoArs2d9ffA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
+Subject: Re: [PATCH 0/3] ACPI: video: Fix backlight regressions in 6.1
 Content-Language: en-US
-From:   Chen Zhongjin <chenzhongjin@huawei.com>
-In-Reply-To: <CAJZ5v0jPCGoss6X5bmv9Nw9ZxrDxirEEMh6UKSgOoArs2d9ffA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        linux-acpi@vger.kernel.org
+References: <20221104212108.73537-1-hdegoede@redhat.com>
+ <CAJZ5v0h8FvqLwTixFALfOT2xbgiSqbT3XCMCbubwad4fHpK0hQ@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAJZ5v0h8FvqLwTixFALfOT2xbgiSqbT3XCMCbubwad4fHpK0hQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.108.67]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500013.china.huawei.com (7.185.36.172)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,115 +85,36 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 2022/11/6 3:00, Rafael J. Wysocki wrote:
-> On Fri, Oct 28, 2022 at 5:46 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->> On Wed, Oct 19, 2022 at 9:38 AM Chen Zhongjin <chenzhongjin@huawei.com> wrote:
->>> KASAN reports a use-after-free problem and causes kernel panic
->>> triggered by: modprobe acpiphp_ibm
->>>
->>> BUG: KASAN:
->>> use-after-free in acpi_ds_dump_method_stack (drivers/acpi/acpica/dsdebug.c:145)
->>> Read of size 8 at addr ffff888002f843f0 by task modprobe/519
->>>
->>> CPU: 2 PID: 519 Comm: modprobe Not tainted 6.0.0+
->>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
->>>      Call Trace:
->>>      <TASK>
->>>      acpi_ds_dump_method_stack (drivers/acpi/acpica/dsdebug.c:145)
->>>      acpi_ds_method_error (drivers/acpi/acpica/dsmethod.c:232)
->>>      acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
->>>      ...
->>>      </TASK>
->>>
->>>      Allocated by task 519:
->>>      ...
->>>      __kasan_kmalloc (mm/kasan/common.c:526)
->>>      acpi_ds_create_walk_state (drivers/acpi/acpica/dswstate.c:519)
->>>      acpi_ds_call_control_method (drivers/acpi/acpica/dsmethod.c:498)
->>>      acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
->>>      ...
->>>
->>>      Freed by task 519:
->>>      ...
->>>      __kmem_cache_free+0xb6/0x3c0
->>>      acpi_ds_delete_walk_state (drivers/acpi/acpica/dswstate.c:722)
->>>      acpi_ds_call_control_method (drivers/acpi/acpica/dsmethod.c:586)
->>>      acpi_ps_parse_aml (drivers/acpi/acpica/psparse.c:607)
->>>      ...
->>> ---[ end Kernel panic - not syncing: Fatal exception ]---
->>>
->>> In the error path in acpi_ps_parse_aml():
->>>
->>>      acpi_ds_call_control_method()
->>>          acpi_ds_create_walk_state()
->>>              acpi_ds_push_walk_state()
->>>              # thread->walk_state_list = walk_state
->>>
->>>          acpi_ds_init_aml_walk # *fail*
->>>          goto cleanup:
->>>          acpi_ds_delete_walk_state() # ACPI_FREE(walk_state)
->>>
->>>      acpi_ds_method_error()
->>>          acpi_ds_dump_method_stack()
->>>          # using freed thread->walk_state_list
->>>
->>> Briefly, the walk_state is pushed to thread, and freed without being poped.
->>> Then it is used in acpi_ds_dump_method_stack() and causes use-after-free.
->>>
->>> Add acpi_ds_pop_walk_state(thread) to the error path to fix the problem.
->>>
->>> Fixes: 0bac4295526c ("ACPICA: Dispatcher: Move stack traversal code to dispatcher")
->>>
->>> Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
->> This should be submitted to the upstream project on GitHub, but it
->> looks bad enough, so I'll take care of this.
+On 11/5/22 19:03, Rafael J. Wysocki wrote:
+> On Fri, Nov 4, 2022 at 10:22 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >>
->> Applied as 6.1-rc material, thanks!
+>> Hi Rafael,
 >>
->>> ---
->>>   drivers/acpi/acpica/dsmethod.c | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
->>> index ae2e768830bf..19da7fc73186 100644
->>> --- a/drivers/acpi/acpica/dsmethod.c
->>> +++ b/drivers/acpi/acpica/dsmethod.c
->>> @@ -581,6 +581,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
->>>
->>>          acpi_ds_terminate_control_method(obj_desc, next_walk_state);
->>>          acpi_ds_delete_walk_state(next_walk_state);
->>> +       acpi_ds_pop_walk_state(thread);
-> On second thought, though, should it be popped before deleting?
-> Otherwise it looks like there will be still use-after-free, because
-> acpi_ds_pop_walk_state() accesses the walk_state at the top of the
-> queue.
+>> Here is a series of patches to fix known (and likely also unknown)
+>> regressions caused by the backlight-detect refactor landing in 6.1.
+>>
+>> This builds on top of the earlier Chromebook fix which went upstream
+>> through platform-drivers-x86.git/fixes. as such I believe it would
+>> be best for this series to go upstream through the pdx86 tree.
+>>
+>> Can you please give your Ack for merging this through the pdx86
+>> git tree?
+> 
+> Sure, feel free to add
+> 
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> to these patches.
 
-You are right it is wrong and sorry I didn't notice that.
+Thanks, I'll go and prepare a fixes pull-req for Linus with these patches.
 
-I have reproduced same problem on current tree... Have no idea why I 
-missed it before.
+> Also note that I'm going to drop the previously applied
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?h=bleeding-edge&id=6a377205da554cec45c8fd1cd8395030b448de31
 
+Ack, thanks.
 
-I noticed that this patch have been on next-tree so I submitted another 
-one to fix it.
+Regards,
 
-See "ACPICA: Fix pop_walk_state called after walk_state is deleted"
+Hans
 
-
-Thanks for your time!
-
-Best,
-
-Chen
-
-> Moreover, it is not correct to pop the walk state if next_walk_state
-> is NULL AFAICS.
->
-> I'm dropping this one.
->
->
->>>          return_ACPI_STATUS(status);
->>>   }
->>> --
->> Bob, this looks correct to me, but I may be missing something in which
->> case please let me know.
