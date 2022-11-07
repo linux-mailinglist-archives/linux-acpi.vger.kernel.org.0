@@ -2,119 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 279C361F005
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 11:12:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3544361F063
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 11:24:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231577AbiKGKME (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Nov 2022 05:12:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56698 "EHLO
+        id S231637AbiKGKX6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Nov 2022 05:23:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230515AbiKGKME (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Nov 2022 05:12:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C93F186F9
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Nov 2022 02:11:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1667815863;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2joyg/Y0Frm3DrFDZnrlLZ/48yC402wd11jenlPgzmA=;
-        b=ANGRa6q7upM5zT5tkTq1T8sbeYJVA6rgZkzYoFteGxUkegyu1GYVfDkO4k0K3Jd0YMC9B8
-        KWgcQD1Hvoo7IFIJoIwen5SxaNceiuLOgVQ8TjLEEsvXsLq8DovPcmmCEeJ4OvegFCv851
-        UVBJfVmfULzH3X3bHAEo04veawKQLFo=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-241-KaWydovKPVS0c-ZcBdM3qA-1; Mon, 07 Nov 2022 05:11:02 -0500
-X-MC-Unique: KaWydovKPVS0c-ZcBdM3qA-1
-Received: by mail-ej1-f70.google.com with SMTP id sh31-20020a1709076e9f00b007ae32b7eb51so4052748ejc.9
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Nov 2022 02:11:01 -0800 (PST)
+        with ESMTP id S231683AbiKGKXz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Nov 2022 05:23:55 -0500
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD720165BF
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Nov 2022 02:23:52 -0800 (PST)
+Received: by mail-pj1-x1044.google.com with SMTP id l22-20020a17090a3f1600b00212fbbcfb78so14103571pjc.3
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Nov 2022 02:23:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
+        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
+         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
+         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
+         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
+         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
+         SKzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2joyg/Y0Frm3DrFDZnrlLZ/48yC402wd11jenlPgzmA=;
-        b=arJnSMsC/IV93czWtJYCphf62cYAAUXG0uI5Xq9TIB65kQ/Qawfdks+vaElzRkxtYY
-         weS4SQeskhbLCO7HwbqiKUTFSK9KLI8iYA/s8FkNrkMXcECK2BlaPNKxyye5HEp+XAJt
-         u1zVyskg+NdpRQdCHzlAnl1nAKgtfPCp6Xl446H+zOnbZWr9U0je+Z2MJfnQB1htBav7
-         h9PK6nQwK73+/KD9sxarYGa25sV+rvjD5qFjK5OmZpr5xWqVvqCpM0mT9FUXSjMCS17r
-         FA8l1S5xhZHwoWkHFmVfwCUT4w+GuDCGyhfYwB+yWnLsWzi9DJpQChkZy1MORiyI0M1l
-         L2LQ==
-X-Gm-Message-State: ACrzQf09YKrxgU/K6WFRZN/H2dU+A2/Orc7T8+dyZ3ertOKst+MDYn9e
-        ATrWuzHsLfRGV/OZ4fLpT2MNNAWgfzEd79gB0LfV8mBIYQWklH7kdUM/6XoA+r7ZHzCO4H3plxA
-        4pHm4r7E3B3Ln/n070J6BQw==
-X-Received: by 2002:a50:bb06:0:b0:461:4acc:4540 with SMTP id y6-20020a50bb06000000b004614acc4540mr51228037ede.307.1667815860666;
-        Mon, 07 Nov 2022 02:11:00 -0800 (PST)
-X-Google-Smtp-Source: AMsMyM7kbj6phhXGHkimhxJvMalWj0xdMtE1Bg7QYtcoGOoguaIp4xajIfpiQo1HZMIqGl0eOYa68w==
-X-Received: by 2002:a50:bb06:0:b0:461:4acc:4540 with SMTP id y6-20020a50bb06000000b004614acc4540mr51228025ede.307.1667815860486;
-        Mon, 07 Nov 2022 02:11:00 -0800 (PST)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id s18-20020aa7c552000000b00461c1804cdasm3991790edr.3.2022.11.07.02.10.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Nov 2022 02:10:59 -0800 (PST)
-Message-ID: <04d96d5a-eb81-eb5a-5db8-9103f1da5c42@redhat.com>
-Date:   Mon, 7 Nov 2022 11:10:59 +0100
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
+        b=Mu1qQ3e7Rt9sPakLAZD/gDmTvd8aoTC264S+Nwh2BiNF4GVP4M119Y/UmjTUJTLHhH
+         ygvx2f3z76/ME2iqywkkRGvaro4bs28DuWbMw1gCRxDbLXtNQNprg4fo7J5/NvqKaHYw
+         GkD2950vq2ZwHwByFM9qOMerXWJjt2qp0i+0OLbxrI90vXOi5Rw9GPlzmoMq+crz3S1E
+         V3m3bFMaZoLMsPalhS2oMTBSe6TT47Vxlhom7xxeCNHO7z03PUWIp4ZF9hS5OC/U0/Lc
+         fwLrZFXM44sQ4PHH/JJ1D0xJJO8ObBV/2mAGt1zGq0xQij/S1k7TjAKwhxzXmMbQIOO3
+         bTgA==
+X-Gm-Message-State: ACrzQf2P7nUahxkPuyNaW3cV3DBD1f4xYiq0sgM8vTQSONjr0HrQdeVI
+        ifgSDNcq7bqVLo4tKj1YuUixM4ZLi+y3ooCqSFo=
+X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
+X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
+ p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
+ Nov 2022 02:23:52 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH 0/3] ACPI: video: Fix backlight regressions in 6.1
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        linux-acpi@vger.kernel.org
-References: <20221104212108.73537-1-hdegoede@redhat.com>
- <CAJZ5v0h8FvqLwTixFALfOT2xbgiSqbT3XCMCbubwad4fHpK0hQ@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0h8FvqLwTixFALfOT2xbgiSqbT3XCMCbubwad4fHpK0hQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
+ 02:23:51 -0800 (PST)
+Reply-To: contact@ammico.it
+From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
+Date:   Mon, 7 Nov 2022 11:23:51 +0100
+Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
+Subject: Re:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
+        BAYES_20,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1044 listed in]
+        [list.dnswl.org]
+        * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
+        *      [score: 0.1653]
+        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [977638ib[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 11/5/22 19:03, Rafael J. Wysocki wrote:
-> On Fri, Nov 4, 2022 at 10:22 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi Rafael,
->>
->> Here is a series of patches to fix known (and likely also unknown)
->> regressions caused by the backlight-detect refactor landing in 6.1.
->>
->> This builds on top of the earlier Chromebook fix which went upstream
->> through platform-drivers-x86.git/fixes. as such I believe it would
->> be best for this series to go upstream through the pdx86 tree.
->>
->> Can you please give your Ack for merging this through the pdx86
->> git tree?
-> 
-> Sure, feel free to add
-> 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> to these patches.
-
-Thanks, I'll go and prepare a fixes pull-req for Linus with these patches.
-
-> Also note that I'm going to drop the previously applied
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?h=bleeding-edge&id=6a377205da554cec45c8fd1cd8395030b448de31
-
-Ack, thanks.
-
-Regards,
-
-Hans
-
+Hei ja miten voit?
+Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
+ toivolla
+v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
+leikkaus
+t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
+suudet selviyty=C3=A4.
+Mutta ennen kuin min=C3=A4
+Tee toinen vaarallinen operaatio, annan sen sinulle
+Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
+sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
+voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
+iden auttamista
+ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
+=C3=A4 minulla ei ole niit=C3=A4
+kenelt=C3=A4 perii rahaa.
+Vastaa minulle nopeasti
+terveisi=C3=A4
+Rouva Monika Evereen
+Florida, Amerikan Yhdysvallat
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+Hi and how are you?
+My name is Mrs. Evereen, I am sending this message with great hope for
+an immediate response, as I have to undergo heart reoperation in my
+current poor health with little chance of survival. But before I
+undertake the second dangerous operation, I will give you the
+$6,550,000 I have in my US bank account to invest well, manage and use
+the profits to run a charity project for me. I count helping the sick
+and the poor as my last wish on earth, because I have no one to
+inherit money from.
+Please give me a quick reply
+regards
+Mrs. Monika Evereen
+Florida, United States of America
