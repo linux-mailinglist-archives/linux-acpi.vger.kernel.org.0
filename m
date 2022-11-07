@@ -2,68 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32BB162001E
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 22:03:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32FCE6200F0
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 22:21:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233165AbiKGVDQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Nov 2022 16:03:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49786 "EHLO
+        id S233034AbiKGVV2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Nov 2022 16:21:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232847AbiKGVDO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Nov 2022 16:03:14 -0500
+        with ESMTP id S233040AbiKGVVB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Nov 2022 16:21:01 -0500
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA085CD;
-        Mon,  7 Nov 2022 13:03:13 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98B752CC96;
+        Mon,  7 Nov 2022 13:20:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667854993; x=1699390993;
+  t=1667856011; x=1699392011;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=/t0kKZtuMzaxfWyNmxPnh3ha4ScceX6epiC/hXzz3NE=;
-  b=GWIxLPQTjzks2IMqhdSniKkCnE8B3sGrnIIkzf75kYZvk93o3tZMjqjJ
-   Td3foib+gTtc4gS+b8P9dyEP5NKk0a8/JDQuL9Y0FwCNQuZQ9HZTskxLr
-   oEHt7AHYQODzQi76lVgffAUmU3lZXh5SwfwI7+ODgJowfkRaBfSdGwOSk
-   WY3H7BRU7LJd1MN/NozoVtL18+EnAyW2nhpJtZRKrV06dv5ZSvS6D/cWV
-   /TnbQLpuAk6krVu1zrufGOt1SxMTDeOFtQgCs8SyEmMxpFhXf3algvmNF
-   FjpK0wnmQSFGEdR76+VuuZDmjaiwppMDX6PiqjNH8zjjHGbFHJwGoBiYH
+  bh=XX1vVahvgx8jLWiHYJaLveSZ/nWM8jWynggYohP/c3M=;
+  b=nYF2FtZhkL2QNiRznA6ba6DRswpgNNeAlFhSBaf4bFj0yGI9J5faoAEY
+   XU4fBEVgqe7DRzS4kIAh8g2eP91vIrYUlr1ZQu6ACE4P1bulDvCsT00Wx
+   2rpgku2NlNt9bdSx2vtX+PgtQJ68ytZ7L5H+aVmdIg9WLRI2Lzj2XxDuZ
+   UKMq+qfVMxGyKLTQPfzBqbL52aKyPJSuG+ViEsVLJwaTmM9uVaNnpQyw9
+   yk3g5zHtE8rvnuzLPOSNL1zP89yJWjPhlM9aJ+1Qa2t547/mTcVtylNRV
+   2GBPWC24aQgkE4JMzu7enHw4gYnOIiCdodRlMcCjmSq6n81+YvM/Lt10y
    A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10524"; a="337245632"
+X-IronPort-AV: E=McAfee;i="6500,9779,10524"; a="337248782"
 X-IronPort-AV: E=Sophos;i="5.96,145,1665471600"; 
-   d="scan'208";a="337245632"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2022 13:02:50 -0800
+   d="scan'208";a="337248782"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2022 13:20:11 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10524"; a="669290605"
+X-IronPort-AV: E=McAfee;i="6500,9779,10524"; a="741663132"
 X-IronPort-AV: E=Sophos;i="5.96,145,1665471600"; 
-   d="scan'208";a="669290605"
+   d="scan'208";a="741663132"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 07 Nov 2022 13:02:48 -0800
+  by fmsmga002.fm.intel.com with ESMTP; 07 Nov 2022 13:20:08 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1os9GY-008pkE-3A;
-        Mon, 07 Nov 2022 23:02:46 +0200
-Date:   Mon, 7 Nov 2022 23:02:46 +0200
+        id 1os9XK-008q2Q-1o;
+        Mon, 07 Nov 2022 23:20:06 +0200
+Date:   Mon, 7 Nov 2022 23:20:06 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] gpiolib: add support for software nodes
-Message-ID: <Y2lydj42MtbfY3vm@smile.fi.intel.com>
-References: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
- <20221031-gpiolib-swnode-v1-6-a0ab48d229c7@gmail.com>
- <Y2VVA2Wp1IWoJf3m@smile.fi.intel.com>
- <Y2Vo8g5HfvSi7Bck@google.com>
- <Y2V8uwTHYw2McL5S@smile.fi.intel.com>
- <Y2XrL0noH4HqsAU7@google.com>
- <Y2jnGVKDmGvK94AV@smile.fi.intel.com>
- <Y2kucGtw/t9v0245@google.com>
- <Y2lxuyvdD3EEbfeE@smile.fi.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-rtc@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Alessandro Zummo <a.zummo@towertech.it>
+Subject: Re: [PATCH v1 5/5] rtc: rtc-cmos: Disable ACPI RTC event on removal
+Message-ID: <Y2l2hid1SSAzpKhS@smile.fi.intel.com>
+References: <2276401.ElGaqSPkdT@kreacher>
+ <2219830.iZASKD2KPV@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y2lxuyvdD3EEbfeE@smile.fi.intel.com>
+In-Reply-To: <2219830.iZASKD2KPV@kreacher>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -75,31 +70,26 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 07, 2022 at 10:59:39PM +0200, Andy Shevchenko wrote:
-> On Mon, Nov 07, 2022 at 08:12:32AM -0800, Dmitry Torokhov wrote:
+On Mon, Nov 07, 2022 at 09:03:06PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Make cmos_do_remove() drop the ACPI RTC fixed event handler so as to
+> prevent it from operating on stale data in case the event triggers
+> after driver removal.
+> 
+> While at it, make cmos_do_remove() also clear the driver data pointer
+> of the device and make cmos_acpi_wake_setup() do that in the error path
+> too.
 
 ...
 
-> > Swnodes are controlled by the kernel and thus we can potentially allow
-> > users tweak them from usersoace. There is a desire to allow easier
-> > access to various driver's parameters - see for example Hans patches to
-> > Goodix and Silead where he adds code that intercepts reading of device
-> > properties and instead gets data form module parameter - I would like to
-> > have such facility in more general way.
-> > 
-> > https://lore.kernel.org/all/20221025122930.421377-3-hdegoede@redhat.com/
-> 
-> How can you guarantee that flip-flopping priority of reading properties doesn't
-> break things?
-> 
-> Moreover, what problem we are trying to hack up? The DT should be fixed in DT.
-> ACPI? In ACPI properties are not that common, and even that, we shouldn't unleash
-> vendors to make all possible abuse-like mistakes in ACPI, that's why I do not think
-> that allowing property quirks is a good idea at all.
+> +	dev_set_drvdata(dev, NULL);
 
-To clarify. In the context when we consider the reversed priority of their
-importance. That said, that the "quirk first, firmware later" is NAK by me,
-while "firmware first, quirk latter" is pretty much fine.
+> +	dev_set_drvdata(dev, NULL);
+
+Maybe I'm missing something, but the cmos_do_remove() is called by ->remove()
+callback of the real drivers (pnp and platform) and device core is already
+doing this. So, don't know why you need these calls to be explicit.
 
 -- 
 With Best Regards,
