@@ -2,135 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3258461E854
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 02:38:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4E5F61E9A1
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Nov 2022 04:30:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230285AbiKGBiF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 6 Nov 2022 20:38:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41534 "EHLO
+        id S230497AbiKGDaZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 6 Nov 2022 22:30:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230283AbiKGBiE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Nov 2022 20:38:04 -0500
-X-Greylist: delayed 724 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 06 Nov 2022 17:38:02 PST
-Received: from smtp.tom.com (smtprz25.163.net [106.38.219.110])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BD6EBC38
-        for <linux-acpi@vger.kernel.org>; Sun,  6 Nov 2022 17:38:02 -0800 (PST)
-Received: from my-app02.tom.com (my-app02.tom.com [127.0.0.1])
-        by freemail02.tom.com (Postfix) with ESMTP id 4E988B00D31
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Nov 2022 09:25:52 +0800 (CST)
-Received: from my-app02.tom.com (HELO smtp.tom.com) ([127.0.0.1])
-          by my-app02 (TOM SMTP Server) with SMTP ID -1583402892
-          for <linux-acpi@vger.kernel.org>;
-          Mon, 07 Nov 2022 09:25:52 +0800 (CST)
-Received: from antispam1.tom.com (unknown [172.25.16.55])
-        by freemail02.tom.com (Postfix) with ESMTP id 38C4CB00CBF
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Nov 2022 09:25:52 +0800 (CST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tom.com; s=201807;
-        t=1667784352; bh=CZPj/gYTHe0cbu9G9cAtpVDX1hQqwl2Q6jjzkB5MRCc=;
-        h=Date:To:Cc:From:Subject:From;
-        b=47wVSV6nWbPm08Uve4CGAOehwmYxDbJ5MhtygKl8AkO1oUdMXEufdf4orjw/kuF1T
-         kPfKPJvSOApBm55ewmnO4n8ETqWR5qGtA1Tq7i+FgwTI9M6n89Rtq/gDL7n/BNqChe
-         FlBXYqUkHXbrRHbaLiRmxhHcilyY/u358Op3I8zE=
-Received: from antispam1.tom.com (antispam1.tom.com [127.0.0.1])
-        by antispam1.tom.com (Postfix) with ESMTP id 217CDD4184E
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Nov 2022 09:25:52 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at antispam1.tom.com
-Received: from antispam1.tom.com ([127.0.0.1])
-        by antispam1.tom.com (antispam1.tom.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id cPnf_gUXb80u for <linux-acpi@vger.kernel.org>;
-        Mon,  7 Nov 2022 09:25:50 +0800 (CST)
-Received: from [192.168.0.106] (unknown [120.207.227.204])
-        by antispam1.tom.com (Postfix) with ESMTPA id CB421D41357;
-        Mon,  7 Nov 2022 09:25:49 +0800 (CST)
-Message-ID: <39ebab39-fb03-4be4-ec00-c5665f19fbdd@tom.com>
-Date:   Mon, 7 Nov 2022 09:25:51 +0800
+        with ESMTP id S230328AbiKGDaY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Nov 2022 22:30:24 -0500
+X-Greylist: delayed 1186 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 06 Nov 2022 19:30:21 PST
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA5CDFC8
+        for <linux-acpi@vger.kernel.org>; Sun,  6 Nov 2022 19:30:21 -0800 (PST)
+X-ASG-Debug-ID: 1667790601-086e23532769b20001-I98ny2
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx1.zhaoxin.com with ESMTP id E2xKyaNV8BoQDAPn (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 07 Nov 2022 11:10:01 +0800 (CST)
+X-Barracuda-Envelope-From: TonyWWang-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.12; Mon, 7 Nov
+ 2022 11:10:00 +0800
+Received: from tony-HX002EA0.zhaoxin.com (10.32.64.2) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.12; Mon, 7 Nov
+ 2022 11:09:57 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+From:   Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
+To:     <rafael@kernel.org>, <len.brown@intel.com>, <pavel@ucw.cz>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <CobeChen@zhaoxin.com>,
+        <TimGuo@zhaoxin.com>, <LindaChai@zhaoxin.com>, <LeoLiu@zhaoxin.com>
+Subject: [PATCH] x86/acpi/cstate: Optimize ARB_DISABLE on Centaur CPUs
+Date:   Mon, 7 Nov 2022 11:09:56 +0800
+X-ASG-Orig-Subj: [PATCH] x86/acpi/cstate: Optimize ARB_DISABLE on Centaur CPUs
+Message-ID: <1667790596-4223-1-git-send-email-TonyWWang-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-To:     stable@vger.kernel.org
-Content-Language: en-US
-Cc:     regressions@lists.linux.dev
-From:   malaizhichun <malaizhichun@tom.com>
-Subject: This is about the acip-bios problem
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.32.64.2]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1667790601
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1973
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.101960
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Please what time  the acpi-bios error reported by the dmesg command will 
-be fixed, it's really annoying. I have never been able to eliminate such 
-reports, it's only to insert loglevel=3 in grub settings to block. But 
-it doesn't solve the problem, and  I use google search , it's tells me 
-that fix this problem need a bios upgrade, but actually my hardware has  
-stopped upgrade, so I don't know how to do fix this, thanks
+On all recent Centaur platforms, ARB_DISABLE is handled by PMU
+automatically while entering C3 type state. No need for OS to
+issue the ARB_DISABLE, so set bm_control to zero to indicate that.
 
+Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+---
+ arch/x86/kernel/acpi/cstate.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-[    0.160900] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.160900] ACPI: Added _OSI(Linux-Dell-Video)
-[    0.160900] ACPI: Added _OSI(Linux-Lenovo-NV-HDMI-Audio)
-[    0.160900] ACPI: Added _OSI(Linux-HPI-Hybrid-Graphics)
-[    0.219876] ACPI BIOS Error (bug): Failure creating named object 
-[\_SB.PCI0.XHC.RHUB.TPLD], AE_ALREADY_EXISTS (20220331/dswload2-326)
-[    0.219885] ACPI Error: AE_ALREADY_EXISTS, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.219889] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0014)
-[    0.219944] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS01], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.219950] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.219953] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0010)
-[    0.219983] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS02], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.219987] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.219990] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0010)
-[    0.220019] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS03], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.220023] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.220026] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0010)
-[    0.220055] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS04], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.220059] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.220062] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0010)
-[    0.220090] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS05], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.220095] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.220098] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0010)
-[    0.220126] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS06], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.220130] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.220133] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0010)
-[    0.220162] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS07], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.220166] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.220169] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0010)
-[    0.220197] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS08], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.220202] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
-[    0.220205] ACPI: Skipping parse of AML opcode: OpcodeName 
-unavailable (0x0010)
-[    0.220233] ACPI BIOS Error (bug): Could not resolve symbol 
-[\_SB.PCI0.XHC.RHUB.HS09], AE_NOT_FOUND (20220331/dswload2-162)
-[    0.220237] ACPI Error: AE_NOT_FOUND, During name lookup/catalog 
-(20220331/psobject-220)
+diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+index 7945eae..da71679 100644
+--- a/arch/x86/kernel/acpi/cstate.c
++++ b/arch/x86/kernel/acpi/cstate.c
+@@ -52,17 +52,25 @@ void acpi_processor_power_init_bm_check(struct acpi_processor_flags *flags,
+ 	if (c->x86_vendor == X86_VENDOR_INTEL &&
+ 	    (c->x86 > 0xf || (c->x86 == 6 && c->x86_model >= 0x0f)))
+ 			flags->bm_control = 0;
+-	/*
+-	 * For all recent Centaur CPUs, the ucode will make sure that each
+-	 * core can keep cache coherence with each other while entering C3
+-	 * type state. So, set bm_check to 1 to indicate that the kernel
+-	 * doesn't need to execute a cache flush operation (WBINVD) when
+-	 * entering C3 type state.
+-	 */
++
+ 	if (c->x86_vendor == X86_VENDOR_CENTAUR) {
+ 		if (c->x86 > 6 || (c->x86 == 6 && c->x86_model == 0x0f &&
+-		    c->x86_stepping >= 0x0e))
+-			flags->bm_check = 1;
++		    c->x86_stepping >= 0x0e)) {
++			/*
++			 * For all recent Centaur CPUs, the ucode will make sure that each
++			 * core can keep cache coherence with each other while entering C3
++			 * type state. So, set bm_check to 1 to indicate that the kernel
++			 * doesn't need to execute a cache flush operation (WBINVD) when
++			 * entering C3 type state.
++			 */
++			flags->bm_check = 1;
++			/*
++			 * For all recent Zhaoxin platforms, ARB_DISABLE is a nop.
++			 * Set bm_control to zero to indicate that ARB_DISABLE is
++			 * not required while entering C3 type state.
++			 */
++			flags->bm_control = 0;
++		}
+ 	}
+ 
+ 	if (c->x86_vendor == X86_VENDOR_ZHAOXIN) {
+-- 
+2.7.4
 
