@@ -2,139 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 936C762189F
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 16:42:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AA9C6218D7
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 16:53:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234205AbiKHPly (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 10:41:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59588 "EHLO
+        id S234509AbiKHPxa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 10:53:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234424AbiKHPlx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 10:41:53 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32F95C751;
-        Tue,  8 Nov 2022 07:41:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667922112; x=1699458112;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Fj2cRf0yfLP9Hty6jDMoaxrwsB/IsUZhdIEv+NMr+lk=;
-  b=WJCQ17IGIH0C/eLm+QAik0jtkVN2S7YfJVpUalNQfjx2/xNPmMfVCTiZ
-   ppg1EorRy7HsyGn20Ly00AvEnSqD9wyzpYfQZZC2u/DsCAEgFHUMgNyQu
-   1zxtMvshpKBJvE0IqcGbZAGOYaD95kx4ZT6d4F2dM9QKDSzVMdkfA9vBI
-   glur8/yq53SojqKajMS09TV2lY4yCzkCLt8cRPYaS+G6OQYJzDH2JkFZR
-   gY9iKSpnXFCGic50UE6e78vMwqivZa3H+FMudHxAkBfA2OhRE/b3RfhSW
-   IvfYrOQR0z4TfA0UCqu2O/tcWLzyFsmJTkDXC9JaZW0NV7VgN57outFLf
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10525"; a="290445132"
-X-IronPort-AV: E=Sophos;i="5.96,148,1665471600"; 
-   d="scan'208";a="290445132"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2022 07:41:52 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10525"; a="669591064"
-X-IronPort-AV: E=Sophos;i="5.96,148,1665471600"; 
-   d="scan'208";a="669591064"
-Received: from liuc3-mobl1.ccr.corp.intel.com ([10.254.214.201])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2022 07:41:49 -0800
-Message-ID: <0ab36c3ac0841296227b96ec0a5cadca0c4ac2ed.camel@intel.com>
-Subject: Re: [PATCH v1 1/5] rtc: rtc-cmos: Call cmos_wake_setup() from
- cmos_do_probe()
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-rtc@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Date:   Tue, 08 Nov 2022 23:41:47 +0800
-In-Reply-To: <CAJZ5v0gavPhs5wqhE0VOrhydbqVgC4BSRxN-aGPmAP2a2k_WhA@mail.gmail.com>
-References: <2276401.ElGaqSPkdT@kreacher> <1850290.tdWV9SEqCh@kreacher>
-         <b369e6d44b01e0ccc653e333bc2def556b17bbb3.camel@intel.com>
-         <CAJZ5v0gavPhs5wqhE0VOrhydbqVgC4BSRxN-aGPmAP2a2k_WhA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S233970AbiKHPx2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 10:53:28 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3C6EB1;
+        Tue,  8 Nov 2022 07:53:26 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C87B76162F;
+        Tue,  8 Nov 2022 15:53:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF58C433D6;
+        Tue,  8 Nov 2022 15:53:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1667922805;
+        bh=PRO30yRurUbHZpdLzN8x9Q3584RZSHnID9+jX8Obh+U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IClHp78MU3nWMIP915AO6LG55lEQ0hHr0Ool07pB41BAPb2TPgPe3WrIpobyyw3qo
+         uPC317aauYjXJzr4/Ag66h7TPrKHTT9B93oVZw5uAdmzgRdfcwXOUquQkbP+7BO/2t
+         jeZWjTuBpbd1b8P3cUIsJzmoEFwMZ98BKSVLeehU=
+Date:   Tue, 8 Nov 2022 16:53:21 +0100
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     Larry Lai <larry.lai@yunjingtech.com>
+Cc:     Lee Jones <lee@kernel.org>, chengwei <foxfly.lai.tw@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "brgl@bgdev.pl" <brgl@bgdev.pl>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "GaryWang@aaeon.com.tw" <GaryWang@aaeon.com.tw>,
+        Musa Lin <musa.lin@yunjingtech.com>,
+        Jack Chang <jack.chang@yunjingtech.com>,
+        Javier Arteaga <javier@emutex.com>,
+        Nicola Lunghi <nicola.lunghi@emutex.com>,
+        Noah Hung <noah.hung@yunjingtech.com>
+Subject: Re: =?utf-8?B?5Zue6KaG?= =?utf-8?Q?=3A?= [PATCH 1/5] mfd: Add
+ support for UP board CPLD/FPGA
+Message-ID: <Y2p7cQXULoBp4k3f@kroah.com>
+References: <20221019022450.16851-1-larry.lai@yunjingtech.com>
+ <20221019022450.16851-2-larry.lai@yunjingtech.com>
+ <Y1/ik4XGNWsOg5KH@google.com>
+ <SG2PR06MB37422173908A6584B3D6D349F93F9@SG2PR06MB3742.apcprd06.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SG2PR06MB37422173908A6584B3D6D349F93F9@SG2PR06MB3742.apcprd06.prod.outlook.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2022-11-08 at 14:09 +0100, Rafael J. Wysocki wrote:
-> On Tue, Nov 8, 2022 at 3:31 AM Zhang Rui <rui.zhang@intel.com> wrote:
-> > On Mon, 2022-11-07 at 20:59 +0100, Rafael J. Wysocki wrote:
-> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > 
-> > > Notice that cmos_wake_setup() is the only user of acpi_rtc_info
-> > > and
-> > > it
-> > > can operate on the cmos_rtc variable directly, so it need not set
-> > > the
-> > > platform_data pointer before cmos_do_probe() is called.  Instead,
-> > > it
-> > > can be called by cmos_do_probe() in the case when the
-> > > platform_data
-> > > pointer is not set to implement the default behavior (which is to
-> > > use
-> > > the FADT information as long as ACPI support is enabled).
-> > > 
-> > 
-> > ...
-> > 
-> > > @@ -827,19 +829,27 @@ cmos_do_probe(struct device *dev, struct
-> > >               if (info->address_space)
-> > >                       address_space = info->address_space;
-> > > 
-> > > -             if (info->rtc_day_alarm && info->rtc_day_alarm <
-> > > 128)
-> > > -                     cmos_rtc.day_alrm = info->rtc_day_alarm;
-> > > -             if (info->rtc_mon_alarm && info->rtc_mon_alarm <
-> > > 128)
-> > > -                     cmos_rtc.mon_alrm = info->rtc_mon_alarm;
-> > > -             if (info->rtc_century && info->rtc_century < 128)
-> > > -                     cmos_rtc.century = info->rtc_century;
-> > > +             cmos_rtc.day_alrm = info->rtc_day_alarm;
-> > > +             cmos_rtc.mon_alrm = info->rtc_mon_alarm;
-> > > +             cmos_rtc.century = info->rtc_century;
-> > > 
-> > >               if (info->wake_on && info->wake_off) {
-> > >                       cmos_rtc.wake_on = info->wake_on;
-> > >                       cmos_rtc.wake_off = info->wake_off;
-> > >               }
-> > > +     } else {
-> > > +             cmos_wake_setup(dev);
-> > >       }
-> > > 
-> > > 
-> > 
-> > Previously, before commit a474aaedac99 ("rtc-cmos: move wake setup
-> > from
-> > ACPI glue into RTC driver"), dev->platform_data is set in
-> > drivers/acpi/glue.c, and the above commit moves it to
-> > cmos_wake_setup()
-> > in this file.
-> > 
-> > Now, with this patch, my understanding is that dev->platform_data
-> > is
-> > never set, thus we can remove the 'info' variable and the
-> >         if (info)
-> > check above.
+On Tue, Nov 08, 2022 at 03:45:45PM +0000, Larry Lai wrote:
+> Dear Jones,
 > 
-> There are other users of this driver which can be found by grepping
-> for cmos_rtc_board_info.
-> 
-> They create platform device objects with platform_data set which are
-> then bound to by this driver.
+>         Thank you for spending time to review this code, please check our response below your comment with yellow background.
 
-yeah, I overlooked this.
+html email will be rejected by the mailing lists.  Please resend in
+plain-text format.
 
 thanks,
-rui
 
+greg k-h
