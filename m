@@ -2,105 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02C56620EB2
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 12:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02270620F72
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 12:48:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234139AbiKHLV4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 06:21:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32830 "EHLO
+        id S233876AbiKHLsz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 06:48:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234108AbiKHLVr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 06:21:47 -0500
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D1D4B9BA
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Nov 2022 03:21:43 -0800 (PST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-36a4b86a0abso130657587b3.7
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Nov 2022 03:21:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jD/YBCtOhOa1ipEyheDVa6geA3XolzkSqDbroMLmTEw=;
-        b=TH6ODfpzgWQOI6wK8En85vWReym/6MZKLaa27NkF6wKNmePYkJDD4IOjEcA55zYEoa
-         HHB0a9gnxmJPipnjfbR/VTrTtbZP9JbC3khMivblt/XvUW8aBVIZyTmxKN/Qv0xNEpBV
-         X05HHz+nqmiHXAfjfgiHxkx67gPkCb15hnBSl7YhnxRThqtJ0izawNEQRCBRgNr7/Vnw
-         pgJhAFeW/Oo0lmTvp7FOO3mONf7oOkQPFxaPHBWSyR1yI88QGW2abJQWrY8AU74+txMd
-         gKcxlEKpQy8Dh7cC+yRZRubj5o+X3LQDqSvIxldsnQinpZXNaqtta7vJkEyAVlZvCJO1
-         TrIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jD/YBCtOhOa1ipEyheDVa6geA3XolzkSqDbroMLmTEw=;
-        b=51aQznBAZNRiNk1Mdt249w1MIZ4OeDARWmOvZJgRdithmVEMUgJL3HJTBfjZOi3dhN
-         KDFR1LXx0vsMFXAXK6aOufPGjHvkK9E43TTIdrWHCtX4T65UBN6+3/7yETr2L66rtSUU
-         zYJMt+yDOY4F+hzBtqz3k+KLuarMGgNGzN4GjpzMf3Iuh9Cr9gWPSp+FfW9OMNkh/luX
-         t3Mg38J9yHx2DpX4l6kuddPRN6WRQBV/KsUCP7kZGwZAn+lNcpUNAD6wa1i7N++yTLXR
-         dEJoYNFd3ymJ7BRjR6r9rPRC+iAznYOa0eV/YGyOeXuMyF8llavT7wC/eECubMx3SG+q
-         K8nw==
-X-Gm-Message-State: ACrzQf0w63caVQGsLgvgk0NGU5HFYnc8Z3y3v/aO/TnVAM4tJw+QYhuB
-        I7AN/uGTru217xSITieMFvx0dWWYVhbajXlX4+s=
-X-Google-Smtp-Source: AMsMyM73Po92pkBAuMw1lnuuxVsDEt6vWZsXPrYQ9yqzpQAFsXcQLr1QePow3gpIHUdrgggOwyqdpjF4eWyEAjgQlxQ=
-X-Received: by 2002:a81:8644:0:b0:349:1126:97a4 with SMTP id
- w65-20020a818644000000b00349112697a4mr50326237ywf.333.1667906503158; Tue, 08
- Nov 2022 03:21:43 -0800 (PST)
+        with ESMTP id S233794AbiKHLsy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 06:48:54 -0500
+Received: from jari.cn (unknown [218.92.28.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 56A7B55BA;
+        Tue,  8 Nov 2022 03:48:53 -0800 (PST)
+Received: by ajax-webmail-localhost.localdomain (Coremail) ; Tue, 8 Nov 2022
+ 19:43:54 +0800 (GMT+08:00)
+X-Originating-IP: [182.148.13.29]
+Date:   Tue, 8 Nov 2022 19:43:54 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   wangkailong@jari.cn
+To:     Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Wentland <harry.wentland@amd.com>, Li <sunpeng.li@amd.com>,
+        Siqueira <Rodrigo.Siqueira@amd.com>,
+        Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>, Airlie <airlied@gmail.com>,
+        Vetter <daniel@ffwll.ch>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH] ACPICA: Fix return
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT6.0.1 build 20210329(c53f3fee)
+ Copyright (c) 2002-2022 www.mailtech.cn
+ mispb-4e503810-ca60-4ec8-a188-7102c18937cf-zhkzyfz.cn
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Received: by 2002:a05:7010:a38a:b0:313:c983:1d7e with HTTP; Tue, 8 Nov 2022
- 03:21:42 -0800 (PST)
-Reply-To: mrinvest1010@gmail.com
-From:   "K. A. Mr. Kairi" <ctocik2@gmail.com>
-Date:   Tue, 8 Nov 2022 03:21:42 -0800
-Message-ID: <CAC9COZcaXufcjypwUNRcwAEKjKwxfz16pebG_pB5BL8dL_E_kA@mail.gmail.com>
-Subject: Re: My Response..
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+Message-ID: <7ce6bd54.f8.184570dd1b6.Coremail.wangkailong@jari.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: AQAAfwCXq+H6QGpj7csBAA--.64W
+X-CM-SenderInfo: 5zdqwypdlo00nj6mt2flof0/1tbiAQAEB2FEYx0DfAAAsm
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_00,RCVD_IN_PBL,RDNS_NONE,
+        T_SPF_HELO_PERMERROR,T_SPF_PERMERROR,XPRIO autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1130 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mrinvest1010[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [ctocik2[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [ctocik2[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-Hi
-
-How are you with your family, I have a serious client, whom will be
-interested to invest in your country, I got your Details through the
-Investment Network and world Global Business directory.
-
-If you are interested for more details.....
-
-Sincerely,
-Kairi Andrew
+cmV0dXJuIGlzIG5vdCBhIGZ1bmN0aW9uLCBwYXJlbnRoZXNlcyBhcmUgbm90IHJlcXVpcmVkCgpT
+aWduZWQtb2ZmLWJ5OiBLYWlMb25nIFdhbmcgPHdhbmdrYWlsb25nQGphcmkuY24+Ci0tLQogZHJp
+dmVycy9hY3BpL2FjcGljYS9ldnNjaS5jICAgICAgICAgICAgICAgICAgICAgfCAxMiArKysrKy0t
+LS0tLS0KIGRyaXZlcnMvZ3B1L2RybS9hbWQvZGlzcGxheS9kYy9jb3JlL2RjX3N0cmVhbS5jIHwg
+MTcgKysrKysrKy0tLS0tLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwg
+MTcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2FjcGljYS9ldnNjaS5j
+IGIvZHJpdmVycy9hY3BpL2FjcGljYS9ldnNjaS5jCmluZGV4IDM5MTVmZjYxNDEyYi4uNjNkZDJh
+YTJkMTZhIDEwMDY0NAotLS0gYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2V2c2NpLmMKKysrIGIvZHJp
+dmVycy9hY3BpL2FjcGljYS9ldnNjaS5jCkBAIC0zOCw5ICszOCw4IEBAIHUzMiBhY3BpX2V2X3Nj
+aV9kaXNwYXRjaCh2b2lkKQogCiAJLyogQXJlIHRoZXJlIGFueSBob3N0LWluc3RhbGxlZCBTQ0kg
+aGFuZGxlcnM/ICovCiAKLQlpZiAoIWFjcGlfZ2JsX3NjaV9oYW5kbGVyX2xpc3QpIHsKLQkJcmV0
+dXJuIChpbnRfc3RhdHVzKTsKLQl9CisJaWYgKCFhY3BpX2dibF9zY2lfaGFuZGxlcl9saXN0KQor
+CQlyZXR1cm4gaW50X3N0YXR1czsKIAogCWZsYWdzID0gYWNwaV9vc19hY3F1aXJlX2xvY2soYWNw
+aV9nYmxfZ3BlX2xvY2spOwogCkBAIC01Nyw3ICs1Niw3IEBAIHUzMiBhY3BpX2V2X3NjaV9kaXNw
+YXRjaCh2b2lkKQogCX0KIAogCWFjcGlfb3NfcmVsZWFzZV9sb2NrKGFjcGlfZ2JsX2dwZV9sb2Nr
+LCBmbGFncyk7Ci0JcmV0dXJuIChpbnRfc3RhdHVzKTsKKwlyZXR1cm4gaW50X3N0YXR1czsKIH0K
+IAogLyoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioKQEAgLTE5Myw5ICsxOTIsOCBAQCBhY3BpX3N0YXR1
+cyBhY3BpX2V2X3JlbW92ZV9hbGxfc2NpX2hhbmRsZXJzKHZvaWQpCiAJICAgIGFjcGlfb3NfcmVt
+b3ZlX2ludGVycnVwdF9oYW5kbGVyKCh1MzIpIGFjcGlfZ2JsX0ZBRFQuc2NpX2ludGVycnVwdCwK
+IAkJCQkJICAgICBhY3BpX2V2X3NjaV94cnVwdF9oYW5kbGVyKTsKIAotCWlmICghYWNwaV9nYmxf
+c2NpX2hhbmRsZXJfbGlzdCkgewotCQlyZXR1cm4gKHN0YXR1cyk7Ci0JfQorCWlmICghYWNwaV9n
+Ymxfc2NpX2hhbmRsZXJfbGlzdCkKKwkJcmV0dXJuIHN0YXR1czsKIAogCWZsYWdzID0gYWNwaV9v
+c19hY3F1aXJlX2xvY2soYWNwaV9nYmxfZ3BlX2xvY2spOwogCmRpZmYgLS1naXQgYS9kcml2ZXJz
+L2dwdS9kcm0vYW1kL2Rpc3BsYXkvZGMvY29yZS9kY19zdHJlYW0uYyBiL2RyaXZlcnMvZ3B1L2Ry
+bS9hbWQvZGlzcGxheS9kYy9jb3JlL2RjX3N0cmVhbS5jCmluZGV4IDM4ZDcxYjVjMWYyZC4uNjY2
+NjFhMjAxMTdiIDEwMDY0NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0vYW1kL2Rpc3BsYXkvZGMvY29y
+ZS9kY19zdHJlYW0uYworKysgYi9kcml2ZXJzL2dwdS9kcm0vYW1kL2Rpc3BsYXkvZGMvY29yZS9k
+Y19zdHJlYW0uYwpAQCAtMjksNyArMjksNiBAQAogI2luY2x1ZGUgImNvcmVfdHlwZXMuaCIKICNp
+bmNsdWRlICJyZXNvdXJjZS5oIgogI2luY2x1ZGUgImlwcC5oIgotI2luY2x1ZGUgInRpbWluZ19n
+ZW5lcmF0b3IuaCIKICNpbmNsdWRlICJkY19kbXViX3Nydi5oIgogCiAjZGVmaW5lIERDX0xPR0dF
+UiBkYy0+Y3R4LT5sb2dnZXIKQEAgLTE1Miw5ICsxNTEsOCBAQCBzdGF0aWMgdm9pZCBkY19zdHJl
+YW1fZnJlZShzdHJ1Y3Qga3JlZiAqa3JlZikKIAogdm9pZCBkY19zdHJlYW1fcmVsZWFzZShzdHJ1
+Y3QgZGNfc3RyZWFtX3N0YXRlICpzdHJlYW0pCiB7Ci0JaWYgKHN0cmVhbSAhPSBOVUxMKSB7CisJ
+aWYgKHN0cmVhbSAhPSBOVUxMKQogCQlrcmVmX3B1dCgmc3RyZWFtLT5yZWZjb3VudCwgZGNfc3Ry
+ZWFtX2ZyZWUpOwotCX0KIH0KIAogc3RydWN0IGRjX3N0cmVhbV9zdGF0ZSAqZGNfY3JlYXRlX3N0
+cmVhbV9mb3Jfc2luaygKQEAgLTMxNiwxMSArMzE0LDExIEBAIGJvb2wgZGNfc3RyZWFtX3NldF9j
+dXJzb3JfYXR0cmlidXRlcygKIAlzdHJ1Y3QgZGMgICpkYzsKIAlib29sIHJlc2V0X2lkbGVfb3B0
+aW1pemF0aW9ucyA9IGZhbHNlOwogCi0JaWYgKE5VTEwgPT0gc3RyZWFtKSB7CisJaWYgKHN0cmVh
+bSA9PSBOVUxMKSB7CiAJCWRtX2Vycm9yKCJEQzogZGNfc3RyZWFtIGlzIE5VTEwhXG4iKTsKIAkJ
+cmV0dXJuIGZhbHNlOwogCX0KLQlpZiAoTlVMTCA9PSBhdHRyaWJ1dGVzKSB7CisJaWYgKGF0dHJp
+YnV0ZXMgPT0gTlVMTCkgewogCQlkbV9lcnJvcigiREM6IGF0dHJpYnV0ZXMgaXMgTlVMTCFcbiIp
+OwogCQlyZXR1cm4gZmFsc2U7CiAJfQpAQCAtMzk5LDEyICszOTcsMTIgQEAgYm9vbCBkY19zdHJl
+YW1fc2V0X2N1cnNvcl9wb3NpdGlvbigKIAlzdHJ1Y3QgZGMgICpkYyA9IHN0cmVhbS0+Y3R4LT5k
+YzsKIAlib29sIHJlc2V0X2lkbGVfb3B0aW1pemF0aW9ucyA9IGZhbHNlOwogCi0JaWYgKE5VTEwg
+PT0gc3RyZWFtKSB7CisJaWYgKHN0cmVhbSA9PSBOVUxMKSB7CiAJCWRtX2Vycm9yKCJEQzogZGNf
+c3RyZWFtIGlzIE5VTEwhXG4iKTsKIAkJcmV0dXJuIGZhbHNlOwogCX0KIAotCWlmIChOVUxMID09
+IHBvc2l0aW9uKSB7CisJaWYgKHBvc2l0aW9uID09IE5VTEwpIHsKIAkJZG1fZXJyb3IoIkRDOiBj
+dXJzb3IgcG9zaXRpb24gaXMgTlVMTCFcbiIpOwogCQlyZXR1cm4gZmFsc2U7CiAJfQpAQCAtNDY4
+LDkgKzQ2Niw4IEBAIGJvb2wgZGNfc3RyZWFtX2FkZF93cml0ZWJhY2soc3RydWN0IGRjICpkYywK
+IAkJfQogCX0KIAotCWlmICghaXNEcmMpIHsKKwlpZiAoIWlzRHJjKQogCQlzdHJlYW0tPndyaXRl
+YmFja19pbmZvW3N0cmVhbS0+bnVtX3diX2luZm8rK10gPSAqd2JfaW5mbzsKLQl9CiAKIAlpZiAo
+ZGMtPmh3c3MuZW5hYmxlX3dyaXRlYmFjaykgewogCQlzdHJ1Y3QgZGNfc3RyZWFtX3N0YXR1cyAq
+c3RyZWFtX3N0YXR1cyA9IGRjX3N0cmVhbV9nZXRfc3RhdHVzKHN0cmVhbSk7CkBAIC01MjYsNyAr
+NTIzLDcgQEAgYm9vbCBkY19zdHJlYW1fcmVtb3ZlX3dyaXRlYmFjayhzdHJ1Y3QgZGMgKmRjLAog
+CS8qIHJlbW92ZSB3cml0ZWJhY2sgaW5mbyBmb3IgZGlzYWJsZWQgd3JpdGViYWNrIHBpcGVzIGZy
+b20gc3RyZWFtICovCiAJZm9yIChpID0gMCwgaiA9IDA7IGkgPCBzdHJlYW0tPm51bV93Yl9pbmZv
+OyBpKyspIHsKIAkJaWYgKHN0cmVhbS0+d3JpdGViYWNrX2luZm9baV0ud2JfZW5hYmxlZCkgewot
+CQkJaWYgKGogPCBpKQorCQkJaWYgKGkgIT0gaikKIAkJCQkvKiB0cmltIHRoZSBhcnJheSAqLwog
+CQkJCXN0cmVhbS0+d3JpdGViYWNrX2luZm9bal0gPSBzdHJlYW0tPndyaXRlYmFja19pbmZvW2ld
+OwogCQkJaisrOwotLSAKMi4zNi4xCg==
