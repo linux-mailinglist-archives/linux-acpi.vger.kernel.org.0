@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBF7C621708
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 15:43:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9BA621777
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 15:54:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234421AbiKHOnW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 09:43:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47766 "EHLO
+        id S233819AbiKHOy1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 09:54:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232367AbiKHOnV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 09:43:21 -0500
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2102631ECF;
-        Tue,  8 Nov 2022 06:43:20 -0800 (PST)
-Received: by mail-qk1-f178.google.com with SMTP id p18so4626390qkg.2;
-        Tue, 08 Nov 2022 06:43:20 -0800 (PST)
+        with ESMTP id S234328AbiKHOyT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 09:54:19 -0500
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010FA43849;
+        Tue,  8 Nov 2022 06:54:17 -0800 (PST)
+Received: by mail-qv1-f49.google.com with SMTP id x13so10366519qvn.6;
+        Tue, 08 Nov 2022 06:54:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=chPq10Gzwk+MmB+dQBE8YARzKswl0L8S0c4cotUK9Yo=;
-        b=Nel+RCouuBuJs1TaAED5Cvd/nfznpqnUTi9Q0+X++UdFTeQ4MNw88NfXMK0pdiBLVp
-         xr4K+7kkKqYRk4HW5P2C7UsMk6UT9ghbd++Z0KEBUNJFPHGzJ3t1Whmuzz+oybC8xZQQ
-         xURZD392gkNacpyQ3UPKy7LPBjh5/BRtiqEbdAGRoEWuiViwRRuw+Cm+elPpe5V0rvG/
-         hsUAC/lkUEcKXq9GgtvdSke5QkeKvzTVxPjutX5/MzFbrqWD7cKyWZynmc5oI4MiLiNN
-         XOI/y1sJDeroHBMAOocVfr5t+RXxtTj73YRUz8PDlgKSMy+Qb93ohs0WFYBlSRA3GVGq
-         Y7lA==
-X-Gm-Message-State: ACrzQf0yBEiLduDrjmQczD9clJEByYdLMt414dNPUvhaFomUL06dYzzr
-        N55IUZIiIeP9qF3VU9aF3v4FAKoixSJiuwjHbzI=
-X-Google-Smtp-Source: AMsMyM61bIp/lkNqz9d4L2NL67oaG2AS8g2ED2d2BN7jytLEkidQhYJsMKVpa/kDJFQhN8K4Q8s3uCUrZF8Mm0Ykuqc=
-X-Received: by 2002:a05:620a:d89:b0:6cf:c98b:744c with SMTP id
- q9-20020a05620a0d8900b006cfc98b744cmr38559368qkl.443.1667918599300; Tue, 08
- Nov 2022 06:43:19 -0800 (PST)
+        bh=QF12oZt8AZ44/sdT+3QD1AGRv3vT5XnqG2NmIMvCMaw=;
+        b=8Mob5Apdy2I0+S5WmtQGynQ2oQ2420U9zneAhvlJ+Q9He3aMpwgyu1nIwKU9QKAPXP
+         ehr/BiWPi6FfaJupCo7vBSxa1ccpzTsHrJhNGUn5Ebd4hObOsu8TMRFyCmd+l1IteG6d
+         owDax5cd9B+gWoaHkKz1WBEKs4zP3/S2H5ocTv8ROKomzZfAYX7a4T2fWVrt4cwEzKVl
+         yUFlzHy0j6LwMUJpu23XpY6OuxZjI1YZ1dcKVvkvO8ZAbsDpj8coR9xS9+K050seldFC
+         POSPyUB7MOzOgfYJZCe2VFcvT+8ym2oD4MwuTLzNtdc+XaSwGnCIVsr3nKwF00hWA/sN
+         M49A==
+X-Gm-Message-State: ACrzQf1h/cIwFYQ4kh2QKTiOtnLrfyMkIp+Vt8uLYjnWhEWEAA7t13Eu
+        aa4FJjWKMD/uM6J0seIWlyUuKGVE2GgT57cdIIc=
+X-Google-Smtp-Source: AMsMyM7GtWyaiX2oLjca/bNy3xuAt3+ZcvrX8C8jVXQBaDZP9TLtB6uEYX98TnhmfHqefXV6eqOyRQfkIkEImBP6fMU=
+X-Received: by 2002:a05:6214:f63:b0:4b8:c0bc:c43e with SMTP id
+ iy3-20020a0562140f6300b004b8c0bcc43emr49934995qvb.119.1667919257095; Tue, 08
+ Nov 2022 06:54:17 -0800 (PST)
 MIME-Version: 1.0
-References: <2276401.ElGaqSPkdT@kreacher> <8155359.T7Z3S40VBb@kreacher> <Y2l21CkXvm7mkONq@smile.fi.intel.com>
-In-Reply-To: <Y2l21CkXvm7mkONq@smile.fi.intel.com>
+References: <2276401.ElGaqSPkdT@kreacher> <2219830.iZASKD2KPV@kreacher> <Y2l2hid1SSAzpKhS@smile.fi.intel.com>
+In-Reply-To: <Y2l2hid1SSAzpKhS@smile.fi.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Nov 2022 15:43:08 +0100
-Message-ID: <CAJZ5v0j1zeucPOrSa9buYoUms7M9rPAQqo7g50hS2SeyBy63HQ@mail.gmail.com>
-Subject: Re: [PATCH v1 4/5] rtc: rtc-cmos: Rename ACPI-related functions
+Date:   Tue, 8 Nov 2022 15:54:06 +0100
+Message-ID: <CAJZ5v0gnRNe+k2BEJGnJiWHmWTyb0cxgZ9pMLwMUtU2f=VJv2Q@mail.gmail.com>
+Subject: Re: [PATCH v1 5/5] rtc: rtc-cmos: Disable ACPI RTC event on removal
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -60,23 +60,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 7, 2022 at 10:22 PM Andy Shevchenko
+On Mon, Nov 7, 2022 at 10:21 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Mon, Nov 07, 2022 at 09:01:50PM +0100, Rafael J. Wysocki wrote:
+> On Mon, Nov 07, 2022 at 09:03:06PM +0100, Rafael J. Wysocki wrote:
 > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > >
-> > The names of rtc_wake_setup() and cmos_wake_setup() don't indicate
-> > that these functions are ACPI-related, which is the case, and the
-> > former doesn't really reflect the role of the function.
+> > Make cmos_do_remove() drop the ACPI RTC fixed event handler so as to
+> > prevent it from operating on stale data in case the event triggers
+> > after driver removal.
 > >
-> > Rename them to acpi_rtc_event_setup() and cmos_acpi_wake_setup(),
-> > respectively, to address this shortcoming.
+> > While at it, make cmos_do_remove() also clear the driver data pointer
+> > of the device and make cmos_acpi_wake_setup() do that in the error path
+> > too.
 >
-> Hmm... I'm not sure I understand why in one case acpi is a prefix and
-> in the other is kinda mid-suffix?
+> ...
+>
+> > +     dev_set_drvdata(dev, NULL);
+>
+> > +     dev_set_drvdata(dev, NULL);
+>
+> Maybe I'm missing something, but the cmos_do_remove() is called by ->remove()
+> callback of the real drivers (pnp and platform) and device core is already
+> doing this. So, don't know why you need these calls to be explicit.
 
-Because the former installs an ACPI RTC fixed event handler and the
-latter populates the cmos_rtc data structure in the ACPI case.
-
-Maybe it would be better to call the latter cmos_wake_setup_acpi().
+Good point, but then I guess I should move this patch to the front,
+because the issue fixed by it may trigger a use-after-free in
+rtc_handler() already.
