@@ -2,84 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C1462177F
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 15:55:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 936C762189F
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 16:42:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234328AbiKHOzL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 09:55:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58846 "EHLO
+        id S234205AbiKHPly (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 10:41:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234263AbiKHOzK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 09:55:10 -0500
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27F65CE1B;
-        Tue,  8 Nov 2022 06:55:10 -0800 (PST)
-Received: by mail-qt1-f177.google.com with SMTP id cg5so8734495qtb.12;
-        Tue, 08 Nov 2022 06:55:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=upVQhf6pWIcHB9R3hepXMqElSmvFn2xXyyNPv5bvdTY=;
-        b=aDJty5h6++lsbfctKlaWxFFCExe2kOJH9aLGtlL4su7ELmY9PJ8LjeFDbRuJCaNREY
-         uBRkq9CNaN+EgiOFvRXFvNwZ2Hv2J0uW7tFXaDoyCrwZHEtKNP0KmrflzJZvVGmmBrQN
-         1xWbtKP3upqFMts3B1RKYpHJCE0mTtnf/ZRxcOa4Eb3pJ6mUZ/xrT2npRE2EreRndqSv
-         /1wZ2iMkdaYNldegQQaiSI7rvfkWZ8MQqz05gUEWvWTIaMrCDhhjsrcbznVs1EwRGFE7
-         5rYD09izHypvoZP6KW6nVOcjWaONeVTuu9x8Hlup7orzg7H5KsXIsYL5UG3u1nHTq3c6
-         k7kw==
-X-Gm-Message-State: ACrzQf1xtijge7dyQpzEqzMP/5gnM2Fe/siRHerQzsAmw2U9Z3rbA61a
-        xtdzPQ61lQ2BQGNyeyPeqFXwUYxXcK8Xlh/vRd0=
-X-Google-Smtp-Source: AMsMyM5ZQc2iucd5JPOSecyTGUine/Ks1jqk4Zr9kkZcrUK1da9BzKDou3F3mzGkANM0SZla+yC+/6m96K833cnE5NI=
-X-Received: by 2002:ac8:7d15:0:b0:3a5:449:87c3 with SMTP id
- g21-20020ac87d15000000b003a5044987c3mr43723966qtb.357.1667919309329; Tue, 08
- Nov 2022 06:55:09 -0800 (PST)
-MIME-Version: 1.0
-References: <2276401.ElGaqSPkdT@kreacher> <2219830.iZASKD2KPV@kreacher> <Y2l4hmXQTiQZssDK@smile.fi.intel.com>
-In-Reply-To: <Y2l4hmXQTiQZssDK@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Nov 2022 15:54:58 +0100
-Message-ID: <CAJZ5v0j3xwDKJig5OMkW208vxE3a-9_A2v06NDU4HRYpy4gZ5w@mail.gmail.com>
-Subject: Re: [PATCH v1 5/5] rtc: rtc-cmos: Disable ACPI RTC event on removal
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S234424AbiKHPlx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 10:41:53 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32F95C751;
+        Tue,  8 Nov 2022 07:41:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667922112; x=1699458112;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Fj2cRf0yfLP9Hty6jDMoaxrwsB/IsUZhdIEv+NMr+lk=;
+  b=WJCQ17IGIH0C/eLm+QAik0jtkVN2S7YfJVpUalNQfjx2/xNPmMfVCTiZ
+   ppg1EorRy7HsyGn20Ly00AvEnSqD9wyzpYfQZZC2u/DsCAEgFHUMgNyQu
+   1zxtMvshpKBJvE0IqcGbZAGOYaD95kx4ZT6d4F2dM9QKDSzVMdkfA9vBI
+   glur8/yq53SojqKajMS09TV2lY4yCzkCLt8cRPYaS+G6OQYJzDH2JkFZR
+   gY9iKSpnXFCGic50UE6e78vMwqivZa3H+FMudHxAkBfA2OhRE/b3RfhSW
+   IvfYrOQR0z4TfA0UCqu2O/tcWLzyFsmJTkDXC9JaZW0NV7VgN57outFLf
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10525"; a="290445132"
+X-IronPort-AV: E=Sophos;i="5.96,148,1665471600"; 
+   d="scan'208";a="290445132"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2022 07:41:52 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10525"; a="669591064"
+X-IronPort-AV: E=Sophos;i="5.96,148,1665471600"; 
+   d="scan'208";a="669591064"
+Received: from liuc3-mobl1.ccr.corp.intel.com ([10.254.214.201])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2022 07:41:49 -0800
+Message-ID: <0ab36c3ac0841296227b96ec0a5cadca0c4ac2ed.camel@intel.com>
+Subject: Re: [PATCH v1 1/5] rtc: rtc-cmos: Call cmos_wake_setup() from
+ cmos_do_probe()
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         linux-rtc@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Alessandro Zummo <a.zummo@towertech.it>
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date:   Tue, 08 Nov 2022 23:41:47 +0800
+In-Reply-To: <CAJZ5v0gavPhs5wqhE0VOrhydbqVgC4BSRxN-aGPmAP2a2k_WhA@mail.gmail.com>
+References: <2276401.ElGaqSPkdT@kreacher> <1850290.tdWV9SEqCh@kreacher>
+         <b369e6d44b01e0ccc653e333bc2def556b17bbb3.camel@intel.com>
+         <CAJZ5v0gavPhs5wqhE0VOrhydbqVgC4BSRxN-aGPmAP2a2k_WhA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.36.5-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 7, 2022 at 10:28 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Mon, Nov 07, 2022 at 09:03:06PM +0100, Rafael J. Wysocki wrote:
->
-> ...
->
-> > +static inline void acpi_rtc_event_cleanup(void)
-> > +{
-> > +     if (!acpi_disabled)
->
-> Btw, other functions look like using
->
->         if (acpi_disabled)
->                 return;
->
-> pattern. Maybe here the same for the sake of consistency?
->
-> > +             acpi_remove_fixed_event_handler(ACPI_EVENT_RTC, rtc_handler);
-> > +}
->
+On Tue, 2022-11-08 at 14:09 +0100, Rafael J. Wysocki wrote:
+> On Tue, Nov 8, 2022 at 3:31 AM Zhang Rui <rui.zhang@intel.com> wrote:
+> > On Mon, 2022-11-07 at 20:59 +0100, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > 
+> > > Notice that cmos_wake_setup() is the only user of acpi_rtc_info
+> > > and
+> > > it
+> > > can operate on the cmos_rtc variable directly, so it need not set
+> > > the
+> > > platform_data pointer before cmos_do_probe() is called.  Instead,
+> > > it
+> > > can be called by cmos_do_probe() in the case when the
+> > > platform_data
+> > > pointer is not set to implement the default behavior (which is to
+> > > use
+> > > the FADT information as long as ACPI support is enabled).
+> > > 
+> > 
+> > ...
+> > 
+> > > @@ -827,19 +829,27 @@ cmos_do_probe(struct device *dev, struct
+> > >               if (info->address_space)
+> > >                       address_space = info->address_space;
+> > > 
+> > > -             if (info->rtc_day_alarm && info->rtc_day_alarm <
+> > > 128)
+> > > -                     cmos_rtc.day_alrm = info->rtc_day_alarm;
+> > > -             if (info->rtc_mon_alarm && info->rtc_mon_alarm <
+> > > 128)
+> > > -                     cmos_rtc.mon_alrm = info->rtc_mon_alarm;
+> > > -             if (info->rtc_century && info->rtc_century < 128)
+> > > -                     cmos_rtc.century = info->rtc_century;
+> > > +             cmos_rtc.day_alrm = info->rtc_day_alarm;
+> > > +             cmos_rtc.mon_alrm = info->rtc_mon_alarm;
+> > > +             cmos_rtc.century = info->rtc_century;
+> > > 
+> > >               if (info->wake_on && info->wake_off) {
+> > >                       cmos_rtc.wake_on = info->wake_on;
+> > >                       cmos_rtc.wake_off = info->wake_off;
+> > >               }
+> > > +     } else {
+> > > +             cmos_wake_setup(dev);
+> > >       }
+> > > 
+> > > 
+> > 
+> > Previously, before commit a474aaedac99 ("rtc-cmos: move wake setup
+> > from
+> > ACPI glue into RTC driver"), dev->platform_data is set in
+> > drivers/acpi/glue.c, and the above commit moves it to
+> > cmos_wake_setup()
+> > in this file.
+> > 
+> > Now, with this patch, my understanding is that dev->platform_data
+> > is
+> > never set, thus we can remove the 'info' variable and the
+> >         if (info)
+> > check above.
+> 
+> There are other users of this driver which can be found by grepping
+> for cmos_rtc_board_info.
+> 
+> They create platform device objects with platform_data set which are
+> then bound to by this driver.
 
-Well, it is more lines of code, but whatever.
+yeah, I overlooked this.
+
+thanks,
+rui
+
