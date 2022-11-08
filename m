@@ -2,92 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CFB2620D98
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 11:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBFAF620DE5
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 11:56:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233941AbiKHKsQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 05:48:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36862 "EHLO
+        id S233643AbiKHK4Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 05:56:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233965AbiKHKsE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 05:48:04 -0500
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50A844298D
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Nov 2022 02:48:03 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id m22so275625eji.10
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Nov 2022 02:48:03 -0800 (PST)
+        with ESMTP id S233893AbiKHK4M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 05:56:12 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74E0145EE3
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Nov 2022 02:56:11 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id f7so21839740edc.6
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Nov 2022 02:56:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NLSZQDOdS774Nz52CcTIDX3lJJfQJqLZXfRGXtR9Ekg=;
-        b=Q/9aeYAvohkURoWlz1zGEDYuDkN2MX0lw+Kk0YRLwtj9goOQOAF9xG0NgpAkIK3Vou
-         aRnXhbvzVWvGcHLNMfTBTN8fXWdoGK9hQj8Hf+aqs2EDM++WUjhIAR2L7ZimVj11vzkk
-         WaT/Hni/SPZACleYu1QbfipP3b0DdDLSxNcTxcNg9hRcEiTN3rH6acxDChexGFMj4kn8
-         OWC/amXtKTXEk2ldm5eSpTw/7D7fUjvYWrVveuaf+i2VvBRlmqVfL1vNp+zK5OKwXgZw
-         sXFfIQHFxKtjDHZv9q+05JY7Y89zc91ioC3rwXcefBOliuZ/iovPcxJGRvuI47FOy3cl
-         2YoQ==
+        bh=FccelAfQS/m5g8ggsBzyXrVvppJAlPrrtbe85Vmaz8Y=;
+        b=feDRgRyqWhJmIdvbBPPnVEbuWegO60t1uAEif7gII8pT7NHrsotmcPggE2iXi07sok
+         LoFVA1wmGZnhSaUApPZIeRymkQ0LLfUW9pNTUylaRhpfpq6S0RjCpGqiW42j3SQE0mcL
+         8UhSo3xK2Z24huYBJUNp4WJjiAEfLfhlfwNdgsfwqWar6cD6OTzg7lwhMH8vl6S4llfV
+         eBAnG3PdM7zj5H6TpZY8gt/fqIApdoHtblZD7WaXU/FoG+ETWt4KqJCf/qVKLxWRgcLg
+         ZamVJQLseyGIMv4d1z8ynwiOuMlNbil0Z+OQaaPHzw3kup38BGdckBVdkiSlHkHtaQTj
+         uTiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NLSZQDOdS774Nz52CcTIDX3lJJfQJqLZXfRGXtR9Ekg=;
-        b=bjuTwLULrAkNRKu2kJGq/DH/5Q7rd7sBEzHZsUOmUMsFPtDoE8NHdpMDQ+MaI+JyYG
-         yOuBkRk0ah3JzrROtQjzbXKD3vgYn9rKnJAWIjfF6VR2hX+xpOg2nPwxIcz5sU5OLes6
-         LKr9fXwTOSf+6MuiShOFRQDn2pmGEtrxOUD0u3obNhPgBi31TLB5Z40ZrwwOy0IPj58P
-         C9yFQBZo0PkAZxfAqUMdn6Ucj/7o9i5owZIn0UNpkndIMnBev4zszpjLaMP6Ko5r4rlG
-         oZTGx9HHY5iR5a3LMnbz1631XNzr7pIWs43bWF2JEJ9URDk7Olnw3BdSmHdS2Qv0EFXX
-         LNKw==
-X-Gm-Message-State: ACrzQf0XlZ8pAkSAxIOUNlXx8H0wJpa48IdcO76o/eg3sSHpC6VSSCFz
-        UtEiOYKaApXyKCpopGu7R8HH7d6khGw/pc+A9YITCQ==
-X-Google-Smtp-Source: AMsMyM4AKmqQtElrAYKhu/RuZpiMiFWRy6OpfbPMp/rWEBwBmcX73CFRJ6uB1YEN9d/PjYiVETR77As0iG1GsQhAgS8=
-X-Received: by 2002:a17:907:c1e:b0:7ae:31a0:571e with SMTP id
- ga30-20020a1709070c1e00b007ae31a0571emr20557470ejc.690.1667904481920; Tue, 08
- Nov 2022 02:48:01 -0800 (PST)
+        bh=FccelAfQS/m5g8ggsBzyXrVvppJAlPrrtbe85Vmaz8Y=;
+        b=rmHleN4iK3N7Uewf2n+UB8r+iY0RlRiiNOghLZpw+cXZ0zq5hXq4YOIdtOA0CTbEP4
+         UfyXWTNOckVixuAI3bAfLutvUjI8Gc6W9NIBqM3USh57xJexJoHbWpYpkJ6jAubo/JR7
+         j3fE+gZbY7EhiCWRqG6fXRDJu2zmuGIGtBjCtik7yCiLYDzvnqMlgqy610uBR+FEu7wl
+         F4DMlf2UsTAB0qGcPFR7vHWIi9yjblIcrVhf/9FARrYyOFK1h1g262raeGm/4jTMJAgc
+         fW1wxHdQsqb2Gj6xIUaXWYfUzUluti3nlfQ1f+x9duUQyLwnSk41olvQGJsfDvrqP/VB
+         6Ahw==
+X-Gm-Message-State: ACrzQf0wO8CfYjWUrpFia+BOokMZdoW+SmKlSUxo4UM+cfwaEMYZ5Qvd
+        xdJZCYkGs08PGUj3HqQpswQhrMxg0c+AF0q1XNY+gQ==
+X-Google-Smtp-Source: AMsMyM4KOaiC0JNQ11EpiDKQI00Gz/S86LhHNuQlyz7TpGUYby386MG585a5cdedC4QDpFcFKnOwfrbBWZ1atnMKnbI=
+X-Received: by 2002:aa7:c718:0:b0:462:ff35:95dc with SMTP id
+ i24-20020aa7c718000000b00462ff3595dcmr53791725edq.32.1667904970028; Tue, 08
+ Nov 2022 02:56:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20221103180643.79352-1-andriy.shevchenko@linux.intel.com> <CAMRc=McicB36evBh5thWPtnMPuzbfY+4m29i6Mp-1tJSw9OvjQ@mail.gmail.com>
-In-Reply-To: <CAMRc=McicB36evBh5thWPtnMPuzbfY+4m29i6Mp-1tJSw9OvjQ@mail.gmail.com>
+References: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
+In-Reply-To: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 8 Nov 2022 11:47:50 +0100
-Message-ID: <CACRpkda0aLXxZn4DJdo0BjwhLYWBjmG+_iEtDz84F9e1srqXGA@mail.gmail.com>
-Subject: Re: [rft, PATCH v2 1/1] gpiolib: Get rid of not used of_node member
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
+Date:   Tue, 8 Nov 2022 11:55:58 +0100
+Message-ID: <CACRpkdYRcqHoW5KOaOW-kSh5QsTM2nZgdfM5AnNPZiepx7FWPQ@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Add support for software nodes to gpiolib
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 4, 2022 at 4:10 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+On Fri, Nov 4, 2022 at 7:10 AM Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
 
-> On Thu, Nov 3, 2022 at 7:06 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > All new drivers should use fwnode and / or parent to provide the
-> > necessary information to the GPIO library.
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
+> This series attempts to add support for software nodes to gpiolib, using
+> software node references. This allows us to convert more drivers to the
+> generic device properties and drop support for custom platform data.
 >
-> This looks good to me. I'm thinking about just applying it and giving
-> it a spin in next right away.
+> To describe a GPIO via software nodes we can create the following data
+> items:
 >
-> Linus: any objections?
+> /* Node representing the GPIO controller/GPIO bank */
+> static const struct software_node gpio_bank_b_node = {
+>         .name = "B",
+> };
+>
+> /*
+>  * Properties that will be assigned to a software node assigned to
+>  * the devicei that used platform data.
+>  */
+> static const struct property_entry simone_key_enter_props[] = {
+>         PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),
+>         PROPERTY_ENTRY_STRING("label", "enter"),
+>         PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW),
+>         { }
+> };
+>
+> The code in gpiolib handling software nodes uses the name in the
+> software node representing GPIO controller to locate the actual instance
+> of GPIO controller.
+>
+> Note that kbuild robot is likely to complain about this patchset because
+> it depends on patches removing [devm_]gpiod_get_from_of_node() and
+> devm_fwnode_get_[index_]gpiod_from_child() APIs that are still pending.
+> I pushed them to
+>
+> git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git tmp-gpiolib
+>
+> for your reference.
+>
+> To: Linus Walleij <linus.walleij@linaro.org>
+> To: Bartosz Golaszewski <brgl@bgdev.pl>
+> To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: linux-gpio@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-acpi@vger.kernel.org
 
-No objections, sorry for taking some days to respond.
+I have waited literally years for this patch series :D
 
-Separation of concerns is always good :)
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+
+The ACPI details is Andy territory so I dare not speak about those,
+but for everything else I think this is a go.
 
 Yours,
 Linus Walleij
