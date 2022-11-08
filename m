@@ -2,118 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02270620F72
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 12:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E91B862107A
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 13:25:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233876AbiKHLsz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 06:48:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48584 "EHLO
+        id S234182AbiKHMZ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 07:25:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233794AbiKHLsy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 06:48:54 -0500
-Received: from jari.cn (unknown [218.92.28.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 56A7B55BA;
-        Tue,  8 Nov 2022 03:48:53 -0800 (PST)
-Received: by ajax-webmail-localhost.localdomain (Coremail) ; Tue, 8 Nov 2022
- 19:43:54 +0800 (GMT+08:00)
-X-Originating-IP: [182.148.13.29]
-Date:   Tue, 8 Nov 2022 19:43:54 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   wangkailong@jari.cn
-To:     Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Wentland <harry.wentland@amd.com>, Li <sunpeng.li@amd.com>,
-        Siqueira <Rodrigo.Siqueira@amd.com>,
-        Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>, Airlie <airlied@gmail.com>,
-        Vetter <daniel@ffwll.ch>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH] ACPICA: Fix return
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT6.0.1 build 20210329(c53f3fee)
- Copyright (c) 2002-2022 www.mailtech.cn
- mispb-4e503810-ca60-4ec8-a188-7102c18937cf-zhkzyfz.cn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S234198AbiKHMZy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 07:25:54 -0500
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859CC4FFA8
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Nov 2022 04:25:53 -0800 (PST)
+Received: by mail-qv1-xf32.google.com with SMTP id i12so10106574qvs.2
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Nov 2022 04:25:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=jCYo8RYwbrzkYOVj5WJhufPxwk0UsnU4PISt7mt4ZNohQ9iZwPaaAhSViexeI0Z+dP
+         S2YVDLAfG6OY7EinrHw2tgpAjGr/Cwwwkmmi39vBEkd++H4pWVZylBAgV5XMo0T+mep/
+         iyXisD4zrZT7Y6nFutY95kKPXlip4yzo2fxRTVzTWCBCMD+2ZH6og7L3TeBoF8RoHQg3
+         MHdfkTAkCYdUbdD6IIuN2GZCYkKcgzZpoGkiBjrjoYA+tghpmm8mBGjfH7YeVZO/fFTV
+         shL0M562/AGZT5C8bUJ7b0pNxUX9GJGIVb8Swo+bJo6/N9JyznkDfZqNJ84203qGMdlk
+         EGAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=1jD67LD1oRWWBZ9+DkwA6PKeRDpqTtnwbTYPZxQtbJvJDqZUSz/u0N5Y79VvOe4PK1
+         ou98ZqqN/g9Cl8mxak+lquyNHjOmO4bwbdN1Pmnrz7ZQ4FkT9Uh5IRAiwaIsZm7pXoSJ
+         hdXXynIt4S8/2q1ML9OfDgphlwzDMjy2TOWQm/zUqk5eVjbUGW6/OUddFsg7CkZzeG00
+         GX6ihlDHWpgK+nTqjrQwRy/IraK+0wE2IAkziEPcuz//INWcvjYzEpUuoRJTMvxFly8D
+         BTp0smNrBZ+G2suqiona+I1FknVbm/vYjLw7Is2Fpw+anvbFLI+pgRBc5/jfXpYENzeT
+         PKcQ==
+X-Gm-Message-State: ACrzQf0HP6a+DNcXxGUbMTMpgiDYK3CmEA2Nusk+kT3ZgH05Fvmc9RoX
+        VJ+lvr5nw4OVUi4nXbB3BRphuFeAgM5FDkh54NE=
+X-Google-Smtp-Source: AMsMyM4enNp/AjKT4tfs0jEImNeET3uerfTgVTfte8XjbOEn2WA2ZRt9BjEVgvhE/yDkDoQCRS1cgyqvGVC029Z6UTg=
+X-Received: by 2002:a05:6214:c41:b0:4bb:92b0:3873 with SMTP id
+ r1-20020a0562140c4100b004bb92b03873mr50115550qvj.76.1667910352645; Tue, 08
+ Nov 2022 04:25:52 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <7ce6bd54.f8.184570dd1b6.Coremail.wangkailong@jari.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAfwCXq+H6QGpj7csBAA--.64W
-X-CM-SenderInfo: 5zdqwypdlo00nj6mt2flof0/1tbiAQAEB2FEYx0DfAAAsm
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
-X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_00,RCVD_IN_PBL,RDNS_NONE,
-        T_SPF_HELO_PERMERROR,T_SPF_PERMERROR,XPRIO autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Received: by 2002:a05:6214:2f8a:b0:4bb:6e86:8303 with HTTP; Tue, 8 Nov 2022
+ 04:25:52 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   Mr Abraham <mr.abraham2021@gmail.com>
+Date:   Tue, 8 Nov 2022 12:25:52 +0000
+Message-ID: <CAJ2UK+YrtzYn9_zOXMtnYaO0eGg4gorFMzUobrJ_z5o18RFL7Q@mail.gmail.com>
+Subject: Greeting
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4985]
+        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:f32 listed in]
+        [list.dnswl.org]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mr.abraham022[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mr.abraham2021[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mr.abraham2021[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-cmV0dXJuIGlzIG5vdCBhIGZ1bmN0aW9uLCBwYXJlbnRoZXNlcyBhcmUgbm90IHJlcXVpcmVkCgpT
-aWduZWQtb2ZmLWJ5OiBLYWlMb25nIFdhbmcgPHdhbmdrYWlsb25nQGphcmkuY24+Ci0tLQogZHJp
-dmVycy9hY3BpL2FjcGljYS9ldnNjaS5jICAgICAgICAgICAgICAgICAgICAgfCAxMiArKysrKy0t
-LS0tLS0KIGRyaXZlcnMvZ3B1L2RybS9hbWQvZGlzcGxheS9kYy9jb3JlL2RjX3N0cmVhbS5jIHwg
-MTcgKysrKysrKy0tLS0tLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwg
-MTcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2FjcGljYS9ldnNjaS5j
-IGIvZHJpdmVycy9hY3BpL2FjcGljYS9ldnNjaS5jCmluZGV4IDM5MTVmZjYxNDEyYi4uNjNkZDJh
-YTJkMTZhIDEwMDY0NAotLS0gYS9kcml2ZXJzL2FjcGkvYWNwaWNhL2V2c2NpLmMKKysrIGIvZHJp
-dmVycy9hY3BpL2FjcGljYS9ldnNjaS5jCkBAIC0zOCw5ICszOCw4IEBAIHUzMiBhY3BpX2V2X3Nj
-aV9kaXNwYXRjaCh2b2lkKQogCiAJLyogQXJlIHRoZXJlIGFueSBob3N0LWluc3RhbGxlZCBTQ0kg
-aGFuZGxlcnM/ICovCiAKLQlpZiAoIWFjcGlfZ2JsX3NjaV9oYW5kbGVyX2xpc3QpIHsKLQkJcmV0
-dXJuIChpbnRfc3RhdHVzKTsKLQl9CisJaWYgKCFhY3BpX2dibF9zY2lfaGFuZGxlcl9saXN0KQor
-CQlyZXR1cm4gaW50X3N0YXR1czsKIAogCWZsYWdzID0gYWNwaV9vc19hY3F1aXJlX2xvY2soYWNw
-aV9nYmxfZ3BlX2xvY2spOwogCkBAIC01Nyw3ICs1Niw3IEBAIHUzMiBhY3BpX2V2X3NjaV9kaXNw
-YXRjaCh2b2lkKQogCX0KIAogCWFjcGlfb3NfcmVsZWFzZV9sb2NrKGFjcGlfZ2JsX2dwZV9sb2Nr
-LCBmbGFncyk7Ci0JcmV0dXJuIChpbnRfc3RhdHVzKTsKKwlyZXR1cm4gaW50X3N0YXR1czsKIH0K
-IAogLyoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioKQEAgLTE5Myw5ICsxOTIsOCBAQCBhY3BpX3N0YXR1
-cyBhY3BpX2V2X3JlbW92ZV9hbGxfc2NpX2hhbmRsZXJzKHZvaWQpCiAJICAgIGFjcGlfb3NfcmVt
-b3ZlX2ludGVycnVwdF9oYW5kbGVyKCh1MzIpIGFjcGlfZ2JsX0ZBRFQuc2NpX2ludGVycnVwdCwK
-IAkJCQkJICAgICBhY3BpX2V2X3NjaV94cnVwdF9oYW5kbGVyKTsKIAotCWlmICghYWNwaV9nYmxf
-c2NpX2hhbmRsZXJfbGlzdCkgewotCQlyZXR1cm4gKHN0YXR1cyk7Ci0JfQorCWlmICghYWNwaV9n
-Ymxfc2NpX2hhbmRsZXJfbGlzdCkKKwkJcmV0dXJuIHN0YXR1czsKIAogCWZsYWdzID0gYWNwaV9v
-c19hY3F1aXJlX2xvY2soYWNwaV9nYmxfZ3BlX2xvY2spOwogCmRpZmYgLS1naXQgYS9kcml2ZXJz
-L2dwdS9kcm0vYW1kL2Rpc3BsYXkvZGMvY29yZS9kY19zdHJlYW0uYyBiL2RyaXZlcnMvZ3B1L2Ry
-bS9hbWQvZGlzcGxheS9kYy9jb3JlL2RjX3N0cmVhbS5jCmluZGV4IDM4ZDcxYjVjMWYyZC4uNjY2
-NjFhMjAxMTdiIDEwMDY0NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0vYW1kL2Rpc3BsYXkvZGMvY29y
-ZS9kY19zdHJlYW0uYworKysgYi9kcml2ZXJzL2dwdS9kcm0vYW1kL2Rpc3BsYXkvZGMvY29yZS9k
-Y19zdHJlYW0uYwpAQCAtMjksNyArMjksNiBAQAogI2luY2x1ZGUgImNvcmVfdHlwZXMuaCIKICNp
-bmNsdWRlICJyZXNvdXJjZS5oIgogI2luY2x1ZGUgImlwcC5oIgotI2luY2x1ZGUgInRpbWluZ19n
-ZW5lcmF0b3IuaCIKICNpbmNsdWRlICJkY19kbXViX3Nydi5oIgogCiAjZGVmaW5lIERDX0xPR0dF
-UiBkYy0+Y3R4LT5sb2dnZXIKQEAgLTE1Miw5ICsxNTEsOCBAQCBzdGF0aWMgdm9pZCBkY19zdHJl
-YW1fZnJlZShzdHJ1Y3Qga3JlZiAqa3JlZikKIAogdm9pZCBkY19zdHJlYW1fcmVsZWFzZShzdHJ1
-Y3QgZGNfc3RyZWFtX3N0YXRlICpzdHJlYW0pCiB7Ci0JaWYgKHN0cmVhbSAhPSBOVUxMKSB7CisJ
-aWYgKHN0cmVhbSAhPSBOVUxMKQogCQlrcmVmX3B1dCgmc3RyZWFtLT5yZWZjb3VudCwgZGNfc3Ry
-ZWFtX2ZyZWUpOwotCX0KIH0KIAogc3RydWN0IGRjX3N0cmVhbV9zdGF0ZSAqZGNfY3JlYXRlX3N0
-cmVhbV9mb3Jfc2luaygKQEAgLTMxNiwxMSArMzE0LDExIEBAIGJvb2wgZGNfc3RyZWFtX3NldF9j
-dXJzb3JfYXR0cmlidXRlcygKIAlzdHJ1Y3QgZGMgICpkYzsKIAlib29sIHJlc2V0X2lkbGVfb3B0
-aW1pemF0aW9ucyA9IGZhbHNlOwogCi0JaWYgKE5VTEwgPT0gc3RyZWFtKSB7CisJaWYgKHN0cmVh
-bSA9PSBOVUxMKSB7CiAJCWRtX2Vycm9yKCJEQzogZGNfc3RyZWFtIGlzIE5VTEwhXG4iKTsKIAkJ
-cmV0dXJuIGZhbHNlOwogCX0KLQlpZiAoTlVMTCA9PSBhdHRyaWJ1dGVzKSB7CisJaWYgKGF0dHJp
-YnV0ZXMgPT0gTlVMTCkgewogCQlkbV9lcnJvcigiREM6IGF0dHJpYnV0ZXMgaXMgTlVMTCFcbiIp
-OwogCQlyZXR1cm4gZmFsc2U7CiAJfQpAQCAtMzk5LDEyICszOTcsMTIgQEAgYm9vbCBkY19zdHJl
-YW1fc2V0X2N1cnNvcl9wb3NpdGlvbigKIAlzdHJ1Y3QgZGMgICpkYyA9IHN0cmVhbS0+Y3R4LT5k
-YzsKIAlib29sIHJlc2V0X2lkbGVfb3B0aW1pemF0aW9ucyA9IGZhbHNlOwogCi0JaWYgKE5VTEwg
-PT0gc3RyZWFtKSB7CisJaWYgKHN0cmVhbSA9PSBOVUxMKSB7CiAJCWRtX2Vycm9yKCJEQzogZGNf
-c3RyZWFtIGlzIE5VTEwhXG4iKTsKIAkJcmV0dXJuIGZhbHNlOwogCX0KIAotCWlmIChOVUxMID09
-IHBvc2l0aW9uKSB7CisJaWYgKHBvc2l0aW9uID09IE5VTEwpIHsKIAkJZG1fZXJyb3IoIkRDOiBj
-dXJzb3IgcG9zaXRpb24gaXMgTlVMTCFcbiIpOwogCQlyZXR1cm4gZmFsc2U7CiAJfQpAQCAtNDY4
-LDkgKzQ2Niw4IEBAIGJvb2wgZGNfc3RyZWFtX2FkZF93cml0ZWJhY2soc3RydWN0IGRjICpkYywK
-IAkJfQogCX0KIAotCWlmICghaXNEcmMpIHsKKwlpZiAoIWlzRHJjKQogCQlzdHJlYW0tPndyaXRl
-YmFja19pbmZvW3N0cmVhbS0+bnVtX3diX2luZm8rK10gPSAqd2JfaW5mbzsKLQl9CiAKIAlpZiAo
-ZGMtPmh3c3MuZW5hYmxlX3dyaXRlYmFjaykgewogCQlzdHJ1Y3QgZGNfc3RyZWFtX3N0YXR1cyAq
-c3RyZWFtX3N0YXR1cyA9IGRjX3N0cmVhbV9nZXRfc3RhdHVzKHN0cmVhbSk7CkBAIC01MjYsNyAr
-NTIzLDcgQEAgYm9vbCBkY19zdHJlYW1fcmVtb3ZlX3dyaXRlYmFjayhzdHJ1Y3QgZGMgKmRjLAog
-CS8qIHJlbW92ZSB3cml0ZWJhY2sgaW5mbyBmb3IgZGlzYWJsZWQgd3JpdGViYWNrIHBpcGVzIGZy
-b20gc3RyZWFtICovCiAJZm9yIChpID0gMCwgaiA9IDA7IGkgPCBzdHJlYW0tPm51bV93Yl9pbmZv
-OyBpKyspIHsKIAkJaWYgKHN0cmVhbS0+d3JpdGViYWNrX2luZm9baV0ud2JfZW5hYmxlZCkgewot
-CQkJaWYgKGogPCBpKQorCQkJaWYgKGkgIT0gaikKIAkJCQkvKiB0cmltIHRoZSBhcnJheSAqLwog
-CQkJCXN0cmVhbS0+d3JpdGViYWNrX2luZm9bal0gPSBzdHJlYW0tPndyaXRlYmFja19pbmZvW2ld
-OwogCQkJaisrOwotLSAKMi4zNi4xCg==
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
