@@ -2,97 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D25926216A6
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 15:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBF7C621708
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 15:43:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233784AbiKHObV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 09:31:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38736 "EHLO
+        id S234421AbiKHOnW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 09:43:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234130AbiKHOay (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 09:30:54 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FBFC4384E
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Nov 2022 06:30:45 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id p12so8834297plq.4
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Nov 2022 06:30:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=WDX8jESP5o0hYsqTRNV0E33I+UiuXo6QrBUYHK2m8yjd+yVsSQJ670MLuInnJ00AAn
-         lBBWrOntbuVMAue0wE2TrwsZKXEfFDNMqC5R6tCWqKEgGFxQxkRlJNdbKjRsJjGNfBru
-         KH2TG+ATlAWpLsgkVeBpn6IJJwDTPIZ2HiIrsZ0Wc9Fh2CfiYZRH2JVCtla2mAhfrDcv
-         WfczoRhEaDFduiY4E6NZmxTOoipjt0njg7MBnJjMGOYDxF1sJVrs/1Vd3642UyDZ3J2M
-         wtJ+Kd2QePZiVLlJxgLdMXSB8gNW9u9/Dkv2pwXgXMeRUPq+88NYf11ItH6tmWpWacMI
-         UUsw==
+        with ESMTP id S232367AbiKHOnV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 09:43:21 -0500
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2102631ECF;
+        Tue,  8 Nov 2022 06:43:20 -0800 (PST)
+Received: by mail-qk1-f178.google.com with SMTP id p18so4626390qkg.2;
+        Tue, 08 Nov 2022 06:43:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=67DFxdfR/yg75ine5ZhwYKLpfknrmBMNubwmPsb+mecBngKvDdLtFwkvKGFWjyYBzJ
-         81vZs5CwuE7SJkvv6odM7hEZ1oyebby8qlYrhd1kyEZP2koqw5KsJ3P8l9b1utAmwNoQ
-         TZWdRKbCDD9ckxZ7pM2ofWghoxgD1+XKVSxUD2PI4ZSFHuBn9bgsnHTYTOpIExVe+akV
-         KIxbPY3qX00Y4QfbKuXPP65WELQOZEsOZqOAHhM7rGJFPaQpIFxe5bde5IuitmfiSoqo
-         FKIKtfZhZnKtR+O/ytGvtNY9mzJ3M0WEhvXaL2kZTR/wjULksvsOO3aW75Z5iZ1j0H/m
-         Rd8A==
-X-Gm-Message-State: ACrzQf2dX6PqcJuvPtYCwpck4DpHIIv2Tr394tnLieV/SSZyXIIh1wTo
-        dvXkLmJ/BRtyxUPmiXMYico6uK57T1L3IXpl0qg=
-X-Google-Smtp-Source: AMsMyM4L9V3t32r7uko+t8YxF1/SxpO/2u5BqPtEP2fFULrP29Yi88sG/7O0kyMBFpxPmDfBvPymU/6htrkybSwddAw=
-X-Received: by 2002:a17:90a:77c1:b0:214:2921:41c9 with SMTP id
- e1-20020a17090a77c100b00214292141c9mr35377782pjs.104.1667917844700; Tue, 08
- Nov 2022 06:30:44 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=chPq10Gzwk+MmB+dQBE8YARzKswl0L8S0c4cotUK9Yo=;
+        b=Nel+RCouuBuJs1TaAED5Cvd/nfznpqnUTi9Q0+X++UdFTeQ4MNw88NfXMK0pdiBLVp
+         xr4K+7kkKqYRk4HW5P2C7UsMk6UT9ghbd++Z0KEBUNJFPHGzJ3t1Whmuzz+oybC8xZQQ
+         xURZD392gkNacpyQ3UPKy7LPBjh5/BRtiqEbdAGRoEWuiViwRRuw+Cm+elPpe5V0rvG/
+         hsUAC/lkUEcKXq9GgtvdSke5QkeKvzTVxPjutX5/MzFbrqWD7cKyWZynmc5oI4MiLiNN
+         XOI/y1sJDeroHBMAOocVfr5t+RXxtTj73YRUz8PDlgKSMy+Qb93ohs0WFYBlSRA3GVGq
+         Y7lA==
+X-Gm-Message-State: ACrzQf0yBEiLduDrjmQczD9clJEByYdLMt414dNPUvhaFomUL06dYzzr
+        N55IUZIiIeP9qF3VU9aF3v4FAKoixSJiuwjHbzI=
+X-Google-Smtp-Source: AMsMyM61bIp/lkNqz9d4L2NL67oaG2AS8g2ED2d2BN7jytLEkidQhYJsMKVpa/kDJFQhN8K4Q8s3uCUrZF8Mm0Ykuqc=
+X-Received: by 2002:a05:620a:d89:b0:6cf:c98b:744c with SMTP id
+ q9-20020a05620a0d8900b006cfc98b744cmr38559368qkl.443.1667918599300; Tue, 08
+ Nov 2022 06:43:19 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:ac4:c8c2:0:b0:56a:d900:eb11 with HTTP; Tue, 8 Nov 2022
- 06:30:43 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <davidbraddy01@gmail.com>
-Date:   Tue, 8 Nov 2022 14:30:43 +0000
-Message-ID: <CAHGOU4PbuaQmBHRnRdx0u3UurwX2NABaxQZ3A0KbDYPAmYk7uQ@mail.gmail.com>
-Subject: Greeting
-To:     undisclosed-recipients:;
+References: <2276401.ElGaqSPkdT@kreacher> <8155359.T7Z3S40VBb@kreacher> <Y2l21CkXvm7mkONq@smile.fi.intel.com>
+In-Reply-To: <Y2l21CkXvm7mkONq@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 8 Nov 2022 15:43:08 +0100
+Message-ID: <CAJZ5v0j1zeucPOrSa9buYoUms7M9rPAQqo7g50hS2SeyBy63HQ@mail.gmail.com>
+Subject: Re: [PATCH v1 4/5] rtc: rtc-cmos: Rename ACPI-related functions
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-rtc@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Alessandro Zummo <a.zummo@towertech.it>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4988]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:62d listed in]
-        [list.dnswl.org]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mr.abraham022[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [davidbraddy01[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [davidbraddy01[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+On Mon, Nov 7, 2022 at 10:22 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Mon, Nov 07, 2022 at 09:01:50PM +0100, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > The names of rtc_wake_setup() and cmos_wake_setup() don't indicate
+> > that these functions are ACPI-related, which is the case, and the
+> > former doesn't really reflect the role of the function.
+> >
+> > Rename them to acpi_rtc_event_setup() and cmos_acpi_wake_setup(),
+> > respectively, to address this shortcoming.
+>
+> Hmm... I'm not sure I understand why in one case acpi is a prefix and
+> in the other is kinda mid-suffix?
+
+Because the former installs an ACPI RTC fixed event handler and the
+latter populates the cmos_rtc data structure in the ACPI case.
+
+Maybe it would be better to call the latter cmos_wake_setup_acpi().
