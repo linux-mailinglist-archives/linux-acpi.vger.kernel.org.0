@@ -2,123 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBFAF620DE5
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 11:56:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85F2C620E23
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 12:06:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233643AbiKHK4Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 05:56:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44982 "EHLO
+        id S233658AbiKHLGB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 06:06:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233893AbiKHK4M (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 05:56:12 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74E0145EE3
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Nov 2022 02:56:11 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id f7so21839740edc.6
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Nov 2022 02:56:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FccelAfQS/m5g8ggsBzyXrVvppJAlPrrtbe85Vmaz8Y=;
-        b=feDRgRyqWhJmIdvbBPPnVEbuWegO60t1uAEif7gII8pT7NHrsotmcPggE2iXi07sok
-         LoFVA1wmGZnhSaUApPZIeRymkQ0LLfUW9pNTUylaRhpfpq6S0RjCpGqiW42j3SQE0mcL
-         8UhSo3xK2Z24huYBJUNp4WJjiAEfLfhlfwNdgsfwqWar6cD6OTzg7lwhMH8vl6S4llfV
-         eBAnG3PdM7zj5H6TpZY8gt/fqIApdoHtblZD7WaXU/FoG+ETWt4KqJCf/qVKLxWRgcLg
-         ZamVJQLseyGIMv4d1z8ynwiOuMlNbil0Z+OQaaPHzw3kup38BGdckBVdkiSlHkHtaQTj
-         uTiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FccelAfQS/m5g8ggsBzyXrVvppJAlPrrtbe85Vmaz8Y=;
-        b=rmHleN4iK3N7Uewf2n+UB8r+iY0RlRiiNOghLZpw+cXZ0zq5hXq4YOIdtOA0CTbEP4
-         UfyXWTNOckVixuAI3bAfLutvUjI8Gc6W9NIBqM3USh57xJexJoHbWpYpkJ6jAubo/JR7
-         j3fE+gZbY7EhiCWRqG6fXRDJu2zmuGIGtBjCtik7yCiLYDzvnqMlgqy610uBR+FEu7wl
-         F4DMlf2UsTAB0qGcPFR7vHWIi9yjblIcrVhf/9FARrYyOFK1h1g262raeGm/4jTMJAgc
-         fW1wxHdQsqb2Gj6xIUaXWYfUzUluti3nlfQ1f+x9duUQyLwnSk41olvQGJsfDvrqP/VB
-         6Ahw==
-X-Gm-Message-State: ACrzQf0wO8CfYjWUrpFia+BOokMZdoW+SmKlSUxo4UM+cfwaEMYZ5Qvd
-        xdJZCYkGs08PGUj3HqQpswQhrMxg0c+AF0q1XNY+gQ==
-X-Google-Smtp-Source: AMsMyM4KOaiC0JNQ11EpiDKQI00Gz/S86LhHNuQlyz7TpGUYby386MG585a5cdedC4QDpFcFKnOwfrbBWZ1atnMKnbI=
-X-Received: by 2002:aa7:c718:0:b0:462:ff35:95dc with SMTP id
- i24-20020aa7c718000000b00462ff3595dcmr53791725edq.32.1667904970028; Tue, 08
- Nov 2022 02:56:10 -0800 (PST)
+        with ESMTP id S233882AbiKHLGA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 06:06:00 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 20BAF47323;
+        Tue,  8 Nov 2022 03:05:58 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 007941FB;
+        Tue,  8 Nov 2022 03:06:04 -0800 (PST)
+Received: from pierre123.arm.com (unknown [10.57.5.33])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 26E713F534;
+        Tue,  8 Nov 2022 03:05:55 -0800 (PST)
+From:   Pierre Gondois <pierre.gondois@arm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Pierre Gondois <pierre.gondois@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gavin Shan <gshan@redhat.com>, SeongJae Park <sj@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+Subject: [PATCH 0/5] arch_topology: Build cacheinfo from primary CPU
+Date:   Tue,  8 Nov 2022 12:04:16 +0100
+Message-Id: <20221108110424.166896-1-pierre.gondois@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
-In-Reply-To: <20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 8 Nov 2022 11:55:58 +0100
-Message-ID: <CACRpkdYRcqHoW5KOaOW-kSh5QsTM2nZgdfM5AnNPZiepx7FWPQ@mail.gmail.com>
-Subject: Re: [PATCH 0/6] Add support for software nodes to gpiolib
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 4, 2022 at 7:10 AM Dmitry Torokhov
-<dmitry.torokhov@gmail.com> wrote:
+[1] and [2] build the CPU topology from the cacheinfo information for
+both DT/ACPI based systems and remove (struct cpu_topology).llc_id
+which was used by ACPI only.
 
-> This series attempts to add support for software nodes to gpiolib, using
-> software node references. This allows us to convert more drivers to the
-> generic device properties and drop support for custom platform data.
->
-> To describe a GPIO via software nodes we can create the following data
-> items:
->
-> /* Node representing the GPIO controller/GPIO bank */
-> static const struct software_node gpio_bank_b_node = {
->         .name = "B",
-> };
->
-> /*
->  * Properties that will be assigned to a software node assigned to
->  * the devicei that used platform data.
->  */
-> static const struct property_entry simone_key_enter_props[] = {
->         PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),
->         PROPERTY_ENTRY_STRING("label", "enter"),
->         PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW),
->         { }
-> };
->
-> The code in gpiolib handling software nodes uses the name in the
-> software node representing GPIO controller to locate the actual instance
-> of GPIO controller.
->
-> Note that kbuild robot is likely to complain about this patchset because
-> it depends on patches removing [devm_]gpiod_get_from_of_node() and
-> devm_fwnode_get_[index_]gpiod_from_child() APIs that are still pending.
-> I pushed them to
->
-> git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git tmp-gpiolib
->
-> for your reference.
->
-> To: Linus Walleij <linus.walleij@linaro.org>
-> To: Bartosz Golaszewski <brgl@bgdev.pl>
-> To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: linux-gpio@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-acpi@vger.kernel.org
+Creating the cacheinfo for secondary CPUs is done during early boot.
+Preemption and interrupts are disabled at this stage. On PREEMPT_RT
+kernels, allocating memory (and parsing the PPTT table for ACPI based
+systems) triggers a:
+  'BUG: sleeping function called from invalid context' [4]
 
-I have waited literally years for this patch series :D
+To prevent this bug, allocate the cacheinfo from the primary CPU when
+preemption and interrupts are enabled and before booting secondary
+CPUs. The cache levels/leaves are computed from DT/ACPI PPTT information
+only, without relying on the arm64 CLIDR_EL1 register.
+If no cache information is found in the DT/ACPI PPTT, then fallback
+to the current state, triggering [4] on PREEMPT_RT kernels.
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Patches to update the arm64 device trees that have incomplete cacheinfo
+(mostly for missing the 'cache-level' or 'cache-unified' property)
+have been sent at [3].
 
-The ACPI details is Andy territory so I dare not speak about those,
-but for everything else I think this is a go.
+Tested platforms:
+- ACPI + PPTT: Ampere Altra, Ampere eMAG, Cavium ThunderX2,
+  Kunpeng 920, Juno-r2
+- DT: rb5, db845c, Juno-r2
 
-Yours,
-Linus Walleij
+[1] https://lore.kernel.org/all/20220704101605.1318280-1-sudeep.holla@arm.com/
+[2] https://lore.kernel.org/all/20220720-arch_topo_fixes-v3-0-43d696288e84@arm.com/
+[3] https://lore.kernel.org/all/20221107155825.1644604-1-pierre.gondois@arm.com/
+[4] On an Ampere Altra, with PREEMPT_RT kernel based on v6.0.0-rc4:
+
+
+[    7.560791] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+[    7.560794] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/111
+[    7.560796] preempt_count: 1, expected: 0
+[    7.560797] RCU nest depth: 1, expected: 1
+[    7.560799] 3 locks held by swapper/111/0:
+[    7.560800]  #0: ffff403e406cae98 (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x218/0x12c8
+[    7.560811]  #1: ffffc5f8ed09f8e8 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x48/0xf0
+[    7.560820]  #2: ffff403f400b4fd8 (&zone->lock){+.+.}-{3:3}, at: rmqueue_bulk+0x64/0xa80
+[    7.560824] irq event stamp: 0
+[    7.560825] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+[    7.560827] hardirqs last disabled at (0): [<ffffc5f8e9f7d594>] copy_process+0x5dc/0x1ab8
+[    7.560830] softirqs last  enabled at (0): [<ffffc5f8e9f7d594>] copy_process+0x5dc/0x1ab8
+[    7.560833] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[    7.560834] Preemption disabled at:
+[    7.560835] [<ffffc5f8e9fd3c28>] migrate_enable+0x30/0x130
+[    7.560838] CPU: 111 PID: 0 Comm: swapper/111 Tainted: G        W          6.0.0-rc4-[...]
+[    7.560841] Call trace:
+[...]
+[    7.560870]  __kmalloc+0xbc/0x1e8
+[    7.560873]  detect_cache_attributes+0x2d4/0x5f0
+[    7.560876]  update_siblings_masks+0x30/0x368
+[    7.560880]  store_cpu_topology+0x78/0xb8
+[    7.560883]  secondary_start_kernel+0xd0/0x198
+[    7.560885]  __secondary_switched+0xb0/0xb4
+
+Pierre Gondois (5):
+  cacheinfo: Use riscv's init_cache_level() as generic OF implem
+  cacheinfo: Return error code in init_of_cache_level()
+  ACPI: PPTT: Remove acpi_find_cache_levels()
+  ACPI: PPTT: Update acpi_find_last_cache_level() to
+    acpi_get_cache_info()
+  arch_topology: Build cacheinfo from primary CPU
+
+ arch/arm64/kernel/cacheinfo.c |   9 ++-
+ arch/riscv/kernel/cacheinfo.c |  39 +------------
+ drivers/acpi/pptt.c           |  86 +++++++++++++++++------------
+ drivers/base/arch_topology.c  |  10 +++-
+ drivers/base/cacheinfo.c      | 101 ++++++++++++++++++++++++++++++----
+ include/linux/cacheinfo.h     |  10 +++-
+ 6 files changed, 164 insertions(+), 91 deletions(-)
+
+-- 
+2.25.1
+
