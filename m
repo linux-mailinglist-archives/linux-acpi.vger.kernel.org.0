@@ -2,25 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B888621900
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 17:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DCDA62190A
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Nov 2022 17:06:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233878AbiKHQEf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Nov 2022 11:04:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46326 "EHLO
+        id S233978AbiKHQGG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Nov 2022 11:06:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233856AbiKHQEe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 11:04:34 -0500
+        with ESMTP id S232035AbiKHQGF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Nov 2022 11:06:05 -0500
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7A3EB140FF;
-        Tue,  8 Nov 2022 08:04:33 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2A2EA1EC7F;
+        Tue,  8 Nov 2022 08:06:04 -0800 (PST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 334E223A;
-        Tue,  8 Nov 2022 08:03:35 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E197C1FB;
+        Tue,  8 Nov 2022 08:06:09 -0800 (PST)
 Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0EB0E3F73D;
-        Tue,  8 Nov 2022 08:03:25 -0800 (PST)
-Date:   Tue, 8 Nov 2022 16:03:23 +0000
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 10D103F73D;
+        Tue,  8 Nov 2022 08:06:00 -0800 (PST)
+Date:   Tue, 8 Nov 2022 16:05:58 +0000
 From:   Sudeep Holla <sudeep.holla@arm.com>
 To:     Pierre Gondois <pierre.gondois@arm.com>
 Cc:     linux-kernel@vger.kernel.org,
@@ -34,19 +34,18 @@ Cc:     linux-kernel@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Gavin Shan <gshan@redhat.com>,
         Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Jani Nikula <jani.nikula@intel.com>,
+        SeongJae Park <sj@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 1/5] cacheinfo: Use riscv's init_cache_level() as generic
- OF implem
-Message-ID: <20221108160323.kqotjshjxr67muaf@bogus>
+Subject: Re: [PATCH 2/5] cacheinfo: Return error code in init_of_cache_level()
+Message-ID: <20221108160558.ee7etff5oom57ddd@bogus>
 References: <20221108110424.166896-1-pierre.gondois@arm.com>
- <20221108110424.166896-2-pierre.gondois@arm.com>
+ <20221108110424.166896-3-pierre.gondois@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221108110424.166896-2-pierre.gondois@arm.com>
+In-Reply-To: <20221108110424.166896-3-pierre.gondois@arm.com>
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,13 +54,13 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 08, 2022 at 12:04:17PM +0100, Pierre Gondois wrote:
-> Riscv's implementation of init_of_cache_level() is following
-> the Devicetree Specification v0.3 regarding caches, cf.:
-> - s3.7.3 'Internal (L1) Cache Properties'
-> - s3.8 'Multi-level and Shared Cache Nodes'
+On Tue, Nov 08, 2022 at 12:04:18PM +0100, Pierre Gondois wrote:
+> Make init_of_cache_level() return an error code when the cache
+> information parsing fails to help detecting missing information.
 > 
-> Allow reusing the implementation by moving it.
+> init_of_cache_level() is only called for riscv. Returning an error
+> code instead of 0 will prevent detect_cache_attributes() to allocate
+> memory if an incomplete DT is parsed.
 >
 
 Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
