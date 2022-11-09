@@ -2,84 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F51C622CA5
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 14:45:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 985F3622CD6
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 14:51:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbiKINpR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Nov 2022 08:45:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
+        id S229927AbiKINv2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Nov 2022 08:51:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbiKINpQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 08:45:16 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 329BD13D47;
-        Wed,  9 Nov 2022 05:45:16 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CE1CEB81EC6;
-        Wed,  9 Nov 2022 13:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A91C433D6;
-        Wed,  9 Nov 2022 13:45:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1668001513;
-        bh=E27wU8CHwv3ph1+Lgq64qqtraNEyNswv/8Z7MWYYWxE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Pq2FSoOQFazxaPMW/IG7R+nPNOQZwBB6RzA4oHece//Rw6OlsnZpWUBcnZ9GIaikT
-         5AfEKyeL8SpUgaHcBK0HKvns8BHwK/5dlvIdd88q7hx8+osRPeyqmKcNm3dcNJ49bj
-         +jpUmZznxU+eVTxvrl3DkbLgyhTN1eXZ/IFBzS+k=
-Date:   Wed, 9 Nov 2022 14:45:09 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Dawei Li <set_pte_at@outlook.com>
-Cc:     rafael@kernel.org, u.kleine-koenig@pengutronix.de,
-        dvhart@infradead.org, andy@infradead.org, lenb@kernel.org,
-        arnd@arndb.de, peterhuewe@gmx.de, kys@microsoft.com,
-        kronos.it@gmail.com, dmitry.torokhov@gmail.com,
-        bleung@chromium.org, sujith.thomas@intel.com, vithampi@vmware.com,
-        lee@kernel.org, wim@linux-watchdog.org, jgross@suse.com,
-        davem@davemloft.net, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] acpi: make remove callback of acpi driver void
-Message-ID: <Y2uu5Q7mLzS0w9VR@kroah.com>
-References: <TYCP286MB232348AC39E6F4966FA9494BCA3D9@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+        with ESMTP id S229564AbiKINv1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 08:51:27 -0500
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C58623157
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Nov 2022 05:51:26 -0800 (PST)
+Received: by mail-qv1-f49.google.com with SMTP id ml12so12318531qvb.0
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Nov 2022 05:51:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kWvAKiH1/mvr7kZZJrJ/hOQhLsckRfAT3gnv+TqAaPs=;
+        b=RJ0cYU7mNMxNJIWssn13rKPis8HTQO8KPmC6hZHfSkcukCLsjEj0Ak8YUvUoonsA9u
+         /4w3c0bmWW9HGsq/cvMUXnk3ZUWHNCItuxxkFitNQWvSZqXMfgEOtezZ1ck8bbNHIHvB
+         UZhd/lbsjUIEG/GBmJYknJL5VftqcIOksyJ1f+5fQ/B5SvKz7dELTczOe+Ad0ocNivuJ
+         KJGrSiDJNPyx5N4EuBWZgWYaf7fP+YZDydR+ZVrSrsgvchQL7lXAP5IAl/hKMQJWIkb2
+         c30o6mhOlcc4SJoW7DopNxIFDR5LwpNEXYSlrQrGNFWF2n/xtam+bIe9FaNR+6Or0LxO
+         vPVg==
+X-Gm-Message-State: ACrzQf2cVvCMgz9E5XLe5I2iClD/D43bK2cDZcQ4O5F+2VrY7yVDnFPF
+        pouflzRZGFKocVjp2JNcWREttabJ28Hx1e2wZ3jY1TL1Ad8=
+X-Google-Smtp-Source: AMsMyM4/RSGviACwqoueB5g5Es1ITl0Nbe/j9BHwTvRvjPejA1xi67Cyfxeh3iv2xK/pwW9lCDbzCmsFpSE1AMp/bBg=
+X-Received: by 2002:a05:6214:f63:b0:4b8:c0bc:c43e with SMTP id
+ iy3-20020a0562140f6300b004b8c0bcc43emr54475285qvb.119.1668001885283; Wed, 09
+ Nov 2022 05:51:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYCP286MB232348AC39E6F4966FA9494BCA3D9@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221105145258.12700-1-hdegoede@redhat.com> <c364cee1-4309-ebc2-9aa3-ff467fe0096f@redhat.com>
+In-Reply-To: <c364cee1-4309-ebc2-9aa3-ff467fe0096f@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 9 Nov 2022 14:51:14 +0100
+Message-ID: <CAJZ5v0hJx4GX-0Ny17LgbBZGXRDG+bnfmhDQeKpBDusQ+j1g6A@mail.gmail.com>
+Subject: Re: [RFC 0/2] ACPI: video: prefer native over vendor
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Nov 06, 2022 at 10:57:53PM +0800, Dawei Li wrote:
-> For bus-based driver, device removal is implemented as:
-> 1 device_remove()->
-> 2   bus->remove()->
-> 3     driver->remove()
-> 
-> Driver core needs _no_ inform from callee(bus driver) about the
-> result of remove callback. In that case,
-> commit <fc7a6209d571> ("bus: Make remove callback return void")
-> forces struct bus_type::remove() be void-returned.
-> 
-> Now we have the situation that both 1 & 2 of calling chain are
-> void-returned, so it does _not_ make much sense for 3(driver->remove)
-> to return non-void to its caller.
-> 
-> So the basic idea behind this change is making remove() callback of
-> any bus-based driver to be void-returned.
-> 
-> This change itself, is for device drivers based on acpi-bus.
-> 
-> Signed-off-by: Dawei Li <set_pte_at@outlook.com>
+On Sat, Nov 5, 2022 at 4:17 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 11/5/22 15:52, Hans de Goede wrote:
+> > Hi Rafael, Matthew,
+> >
+> > Here is a second attempt at always registering only a single
+> > /sys/class/backlight device per panel.
+> >
+> > This first round of testing has shown that native works well even on
+> > systems so old that the don't have acpi_video backlight control support.
+> >
+> > This patch series makes native be preferred over vendor, which should
+> > avoid the problems seen with the 6.1 changes before the fixes.
+> >
+> > ATM there is one known model where this will cause a regression,
+> > the Sony Vaio PCG-FRV3 from 2003. I plan to add a DMI quirk for that
+> > in the next version of this series, but I'm waiting for some more
+> > testing (to check that the vendor interface does actually work) first.
+> >
+> > I will also do another blogpost, focussing on asking users to see
+> > if they have a laptop which provides a combination of vendor + native
+> > backlight interfaces, which may be impacted by this series. This is
+> > the main reason why this is a RFC for now.
+>
+> The blogpost requesting testing of laptops with a combination
+> of vendor + native backlight interfaces can be found here:
+>
+> https://hansdegoede.dreamwidth.org/27024.html
 
-As RFC patches don't mean to be applied, I'll wait for a real version to
-be submitted before reviewing this.
-
-thanks,
-
-greg k-h
+The patches in this series look reasonable to me, even though I'm not
+sure if the assumption that the Windows 8 hardware certification
+requirements were always followed is not overly optimistic.
