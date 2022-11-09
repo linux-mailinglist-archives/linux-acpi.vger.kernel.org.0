@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4CB7622B34
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 13:15:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71A47622B2F
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 13:15:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbiKIMPz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Nov 2022 07:15:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46934 "EHLO
+        id S229874AbiKIMPu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Nov 2022 07:15:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229902AbiKIMPv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 07:15:51 -0500
+        with ESMTP id S229509AbiKIMPt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 07:15:49 -0500
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6791B13E9E;
-        Wed,  9 Nov 2022 04:15:50 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D07F13E9E;
+        Wed,  9 Nov 2022 04:15:47 -0800 (PST)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 49e6a371ea360711; Wed, 9 Nov 2022 13:15:47 +0100
+ id f64f02712e042cbc; Wed, 9 Nov 2022 13:15:44 +0100
 Received: from kreacher.localnet (unknown [213.134.163.195])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 7114766EBA7;
-        Wed,  9 Nov 2022 13:15:46 +0100 (CET)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 0EB3C66EBA7;
+        Wed,  9 Nov 2022 13:15:44 +0100 (CET)
 Authentication-Results: v370.home.net.pl; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: v370.home.net.pl; spf=fail smtp.mailfrom=rjwysocki.net
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
@@ -35,9 +35,9 @@ Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         Alessandro Zummo <a.zummo@towertech.it>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Bjorn Helgaas <helgaas@kernel.org>
-Subject: [PATCH v2 4/5] rtc: rtc-cmos: Rename ACPI-related functions
-Date:   Wed, 09 Nov 2022 13:12:00 +0100
-Message-ID: <3225614.44csPzL39Z@kreacher>
+Subject: [PATCH v2 5/5] rtc: rtc-cmos: Disable ACPI RTC event on removal
+Date:   Wed, 09 Nov 2022 13:15:36 +0100
+Message-ID: <2224609.iZASKD2KPV@kreacher>
 In-Reply-To: <5640233.DvuYhMxLoT@kreacher>
 References: <5640233.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
@@ -59,80 +59,63 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The names of rtc_wake_setup() and cmos_wake_setup() don't indicate
-that these functions are ACPI-related, which is the case, and the
-former doesn't really reflect the role of the function.
+Make cmos_do_remove() drop the ACPI RTC fixed event handler so as to
+prevent it from operating on stale data in case the event triggers
+after driver removal.
 
-Rename them to acpi_rtc_event_setup() and acpi_cmos_wake_setup(),
-respectively, to address this shortcoming.
-
-No intentional functional impact.
-
+Fixes: 311ee9c151ad ("rtc: cmos: allow using ACPI for RTC alarm instead of HPET")
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
 
 v1 -> v2:
-   * Use acpi_cmos_wake_setup() as the new name instead of
-     cmos_acpi_wake_setup() (Andy)
+   * Do not clear the driver data pointer (the driver core does that) (Andy)
+   * Adjust the code pattern in acpi_rtc_event_cleanup() (Andy)
+   * Drop inline from the full definition of acpi_rtc_event_cleanup()
 
 ---
- drivers/rtc/rtc-cmos.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/rtc/rtc-cmos.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 Index: linux-pm/drivers/rtc/rtc-cmos.c
 ===================================================================
 --- linux-pm.orig/drivers/rtc/rtc-cmos.c
 +++ linux-pm/drivers/rtc/rtc-cmos.c
-@@ -784,7 +784,7 @@ static u32 rtc_handler(void *context)
- 	return ACPI_INTERRUPT_HANDLED;
+@@ -798,6 +798,14 @@ static void acpi_rtc_event_setup(struct
+ 	acpi_disable_event(ACPI_EVENT_RTC, 0);
  }
  
--static void rtc_wake_setup(struct device *dev)
-+static void acpi_rtc_event_setup(struct device *dev)
++static void acpi_rtc_event_cleanup(void)
++{
++	if (acpi_disabled)
++		return;
++
++	acpi_remove_fixed_event_handler(ACPI_EVENT_RTC, rtc_handler);
++}
++
+ static void rtc_wake_on(struct device *dev)
  {
- 	if (acpi_disabled)
- 		return;
-@@ -828,7 +828,7 @@ static void use_acpi_alarm_quirks(void)
- static inline void use_acpi_alarm_quirks(void) { }
- #endif
- 
--static void cmos_wake_setup(struct device *dev)
-+static void acpi_cmos_wake_setup(struct device *dev)
- {
- 	if (acpi_disabled)
- 		return;
-@@ -880,11 +880,11 @@ static void cmos_check_acpi_rtc_status(s
- 
- #else /* !CONFIG_ACPI */
- 
--static inline void rtc_wake_setup(struct device *dev)
-+static inline void acpi_rtc_event_setup(struct device *dev)
+ 	acpi_clear_event(ACPI_EVENT_RTC);
+@@ -884,6 +892,10 @@ static inline void acpi_rtc_event_setup(
  {
  }
  
--static inline void cmos_wake_setup(struct device *dev)
-+static inline void acpi_cmos_wake_setup(struct device *dev)
++static inline void acpi_rtc_event_cleanup(void)
++{
++}
++
+ static inline void acpi_cmos_wake_setup(struct device *dev)
  {
  }
- 
-@@ -986,7 +986,7 @@ cmos_do_probe(struct device *dev, struct
- 			cmos_rtc.wake_off = info->wake_off;
- 		}
- 	} else {
--		cmos_wake_setup(dev);
-+		acpi_cmos_wake_setup(dev);
+@@ -1138,6 +1150,9 @@ static void cmos_do_remove(struct device
+ 			hpet_unregister_irq_handler(cmos_interrupt);
  	}
  
- 	if (cmos_rtc.day_alrm >= 128)
-@@ -1091,7 +1091,7 @@ cmos_do_probe(struct device *dev, struct
- 	 * the ACPI RTC fixed event.
- 	 */
- 	if (!info)
--		rtc_wake_setup(dev);
-+		acpi_rtc_event_setup(dev);
++	if (!dev_get_platdata(dev))
++		acpi_rtc_event_cleanup();
++
+ 	cmos->rtc = NULL;
  
- 	dev_info(dev, "%s%s, %d bytes nvram%s\n",
- 		 !is_valid_irq(rtc_irq) ? "no alarms" :
+ 	ports = cmos->iomem;
 
 
 
