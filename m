@@ -2,89 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FDC96228FF
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 11:50:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89EA66229D1
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 12:12:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbiKIKu4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Nov 2022 05:50:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37760 "EHLO
+        id S229558AbiKILMS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Nov 2022 06:12:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbiKIKu4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 05:50:56 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8133F1E9;
-        Wed,  9 Nov 2022 02:50:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667991055; x=1699527055;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=LWNcWECinfMb+fcqwO/G8pIM6Y4hWmoQNoCDj4j5org=;
-  b=BWL0Td7VKFUcNfGwitgBM3dAnjrbkc1YqD9wraqd7/cBACrIx+DjBYmj
-   dSEBNZe7GTw96PIoVXS4XY2nNDNowhn5t7uHJMpqtSKORTb3Dq71cuiID
-   z0vkVzlWs0eYkYHZAn+eegC+/8a3mUGqYe+p1Xtm6U/ZOhGc1aKBF1ymy
-   fbxgH2xSn7FwXH3BhkHWEKdkoC+6W2cQP5Dp+xUwoJTiCK4OPnVbz2ieO
-   LqFiPHE0tGjmlIDBfSJSEJFk0tMqBU+u4SJNzeRkPOmeKU8rj4XM7bRAC
-   L6tayQb+ta3DoGZ5r+OurGkC3rqr1gUzB6yFvIw/U5hamzscb2W8mkU94
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10525"; a="397239950"
-X-IronPort-AV: E=Sophos;i="5.96,150,1665471600"; 
-   d="scan'208";a="397239950"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2022 02:50:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10525"; a="779300606"
-X-IronPort-AV: E=Sophos;i="5.96,150,1665471600"; 
-   d="scan'208";a="779300606"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 09 Nov 2022 02:50:54 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 25BBDF7; Wed,  9 Nov 2022 12:51:18 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH v1 2/2] resource: Convert DEFINE_RES_NAMED() to be compound literal
-Date:   Wed,  9 Nov 2022 12:51:14 +0200
-Message-Id: <20221109105114.32886-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221109105114.32886-1-andriy.shevchenko@linux.intel.com>
-References: <20221109105114.32886-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229540AbiKILMR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 06:12:17 -0500
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48D722B3C;
+        Wed,  9 Nov 2022 03:12:16 -0800 (PST)
+Received: by mail-qk1-f179.google.com with SMTP id 8so10712107qka.1;
+        Wed, 09 Nov 2022 03:12:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aRbEPLJDZs00e0naDlA/9gKuzLlGHl7wDAqA6Ym3dJc=;
+        b=eSE5PitczGGXN10zAj1NFg/AWoup7K38NcHNTSkaklzTGsBF5u/XPMWyYwtheXAIGy
+         GJIX/2VPXMhhGRe1YrEjFa+EFUju1V2T4aAxHFoAfvCHEkSJoWnwJIvtAfhdZghRu77U
+         R1EctkHNs6G+k3QbJTcJik0nSza4WOtbov+jgRAR0qu8MRqiTJMsfaQ9MjrwKcayQen9
+         8xyyoFn/8DMIqZNIYKFq+9A97wsnhpGcHklr1dTXp4yJxz1WBm9fs9bHiOvCyYAuw8I2
+         /5MxfwbwR6fw6LQH4MfBIIu4u75IRPufGVKopMJqzJFvYOOpKpLdD/IOIx0qegEJwVSv
+         nZRg==
+X-Gm-Message-State: ACrzQf2WxxW58qxjJBfJbxz6dq4SpOFpsryVbyIEE4QHKZlobLlIM6HP
+        Rhj/eATei/hEUm7sso9x5WSpQ+t3HgsVIyZuidCZkdEY
+X-Google-Smtp-Source: AMsMyM6akL5ZYpwLHjQtcFwxu8an9ECUD+COd60a2CfbtiGIUC1/jYR8pwCptfIsLRqMhrNOVsaRCnlQXAXyGpC8NQ4=
+X-Received: by 2002:a05:620a:1476:b0:6fa:4c67:83ec with SMTP id
+ j22-20020a05620a147600b006fa4c6783ecmr30970439qkl.23.1667992335697; Wed, 09
+ Nov 2022 03:12:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20221109105114.32886-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20221109105114.32886-1-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 9 Nov 2022 12:12:03 +0100
+Message-ID: <CAJZ5v0gxM80EKiiMJKkN6t1CVgf1=6yYA3D4=TfOHVh1chaJuw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] resource: Replace printk(KERN_WARNING) by pr_warn()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently DEFINE_RES_NAMED() can only be used to fill the static data.
-In some cases it would be convenient to use it as right value in the
-assignment operation. But it can't be done as is, because compiler has
-no clue about the data layout. Converting it to be a compound literal
-allows the above mentioned usage.
+On Wed, Nov 9, 2022 at 11:51 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Replace printk(KERN_WARNING) by pr_warn().
+>
+> While at it, use %pa for the resource_size_t variables.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/ioport.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is Greg's stuff I think.
 
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 27642ca15d93..67d3fb2133b6 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -155,7 +155,7 @@ enum {
- 
- /* helpers to define resources */
- #define DEFINE_RES_NAMED(_start, _size, _name, _flags)			\
--	{								\
-+(struct resource) {							\
- 		.start = (_start),					\
- 		.end = (_start) + (_size) - 1,				\
- 		.name = (_name),					\
--- 
-2.35.1
+> ---
+>  kernel/resource.c | 17 +++++++----------
+>  1 file changed, 7 insertions(+), 10 deletions(-)
+>
+> diff --git a/kernel/resource.c b/kernel/resource.c
+> index 4c5e80b92f2f..ab32b015bd50 100644
+> --- a/kernel/resource.c
+> +++ b/kernel/resource.c
+> @@ -888,7 +888,7 @@ void insert_resource_expand_to_fit(struct resource *root, struct resource *new)
+>                 if (conflict->end > new->end)
+>                         new->end = conflict->end;
+>
+> -               printk("Expanded resource %s due to conflict with %s\n", new->name, conflict->name);
+> +               pr_info("Expanded resource %s due to conflict with %s\n", new->name, conflict->name);
+>         }
+>         write_unlock(&resource_lock);
+>  }
+> @@ -1283,9 +1283,7 @@ void __release_region(struct resource *parent, resource_size_t start,
+>
+>         write_unlock(&resource_lock);
+>
+> -       printk(KERN_WARNING "Trying to free nonexistent resource "
+> -               "<%016llx-%016llx>\n", (unsigned long long)start,
+> -               (unsigned long long)end);
+> +       pr_warn("Trying to free nonexistent resource <%pa-%pa>\n", &start, &end);
+>  }
+>  EXPORT_SYMBOL(__release_region);
+>
+> @@ -1658,6 +1656,7 @@ __setup("reserve=", reserve_setup);
+>  int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
+>  {
+>         struct resource *p = &iomem_resource;
+> +       resource_size_t end = addr + size - 1;
 
+And this change could be mentioned in the changelog too.
+
+>         int err = 0;
+>         loff_t l;
+>
+> @@ -1667,12 +1666,12 @@ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
+>                  * We can probably skip the resources without
+>                  * IORESOURCE_IO attribute?
+>                  */
+> -               if (p->start >= addr + size)
+> +               if (p->start > end)
+>                         continue;
+>                 if (p->end < addr)
+>                         continue;
+>                 if (PFN_DOWN(p->start) <= PFN_DOWN(addr) &&
+> -                   PFN_DOWN(p->end) >= PFN_DOWN(addr + size - 1))
+> +                   PFN_DOWN(p->end) >= PFN_DOWN(end))
+>                         continue;
+>                 /*
+>                  * if a resource is "BUSY", it's not a hardware resource
+> @@ -1683,10 +1682,8 @@ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
+>                 if (p->flags & IORESOURCE_BUSY)
+>                         continue;
+>
+> -               printk(KERN_WARNING "resource sanity check: requesting [mem %#010llx-%#010llx], which spans more than %s %pR\n",
+> -                      (unsigned long long)addr,
+> -                      (unsigned long long)(addr + size - 1),
+> -                      p->name, p);
+> +               pr_warn("resource sanity check: requesting [mem %pa-%pa], which spans more than %s %pR\n",
+> +                       &addr, &end, p->name, p);
+>                 err = -1;
+>                 break;
+>         }
+> --
+> 2.35.1
+>
