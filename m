@@ -2,102 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D440622C80
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 14:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C5A5622C89
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 14:37:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230182AbiKINfk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Nov 2022 08:35:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58008 "EHLO
+        id S229550AbiKINhG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Nov 2022 08:37:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbiKINfd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 08:35:33 -0500
-X-Greylist: delayed 569 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Nov 2022 05:35:23 PST
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [58.251.27.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12E230F5F
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Nov 2022 05:35:23 -0800 (PST)
-Received: from mxde.zte.com.cn (unknown [10.35.20.165])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mxct.zte.com.cn (FangMail) with ESMTPS id 4N6m1q5WJjz1DyW
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Nov 2022 21:25:51 +0800 (CST)
-Received: from mxus.zte.com.cn (unknown [10.207.168.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mxde.zte.com.cn (FangMail) with ESMTPS id 4N6m1Y6SH1z5TCG6
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Nov 2022 21:25:37 +0800 (CST)
-Received: from mxhk.zte.com.cn (unknown [192.168.250.137])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mxus.zte.com.cn (FangMail) with ESMTPS id 4N6m1V5hnHz9tyD7
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Nov 2022 21:25:34 +0800 (CST)
-Received: from mxct.zte.com.cn (unknown [192.168.251.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4N6m1R2hpMz8R043
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Nov 2022 21:25:31 +0800 (CST)
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        with ESMTP id S229516AbiKINhF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 08:37:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4754E2B629;
+        Wed,  9 Nov 2022 05:37:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mxct.zte.com.cn (FangMail) with ESMTPS id 4N6m1N1MFPz4y0vN;
-        Wed,  9 Nov 2022 21:25:28 +0800 (CST)
-Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
-        by mse-fl2.zte.com.cn with SMTP id 2A9DPLPo095556;
-        Wed, 9 Nov 2022 21:25:21 +0800 (+08)
-        (envelope-from yang.yang29@zte.com.cn)
-Received: from mapi (szxlzmapp03[null])
-        by mapi (Zmail) with MAPI id mid14;
-        Wed, 9 Nov 2022 21:25:25 +0800 (CST)
-Date:   Wed, 9 Nov 2022 21:25:25 +0800 (CST)
-X-Zmail-TransId: 2b05636baa4532d1ea80
-X-Mailer: Zmail v1.0
-Message-ID: <202211092125250606392@zte.com.cn>
-Mime-Version: 1.0
-From:   <yang.yang29@zte.com.cn>
-To:     <rafael@kernel.org>
-Cc:     <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <xu.panda@zte.com.cn>,
-        <yang.yang29@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIEFDUEk6IHN5c2ZzOiB1c2Ugc3lzZnNfZW1pdCgpIHRvIGluc3RlYWQgb2Ygc2NucHJpbnRmKCk=?=
-Content-Type: text/plain;
-        charset="UTF-8"
-X-MAIL: mse-fl2.zte.com.cn 2A9DPLPo095556
-X-Fangmail-Gw-Spam-Type: 0
-X-FangMail-Miltered: at cgslv5.04-192.168.251.14.novalocal with ID 636BAA5E.000 by FangMail milter!
-X-FangMail-Envelope: 1668000351/4N6m1q5WJjz1DyW/636BAA5E.000/10.35.20.165/[10.35.20.165]/mxde.zte.com.cn/<yang.yang29@zte.com.cn>
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 636BAA5E.000/4N6m1q5WJjz1DyW
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D75CA61AA9;
+        Wed,  9 Nov 2022 13:37:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD17DC433D6;
+        Wed,  9 Nov 2022 13:37:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1668001024;
+        bh=f/xAPisSsdWyYC6XwiUc5ujSvIiCpdpduXCMm9nkl14=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=w/smpQkObQOV0Ptab+55OvgyBT2RULz8sUW1x/rcNTUB8XtBpv8pBFkQJRNuQBRUA
+         I+dy3R3Vd2oxHXvwQPIHS9bUGba4RA2URg5+FylAjk/RNkm8TIjEMsy9PJaHUu52+f
+         qZew5XnElQ50T8as62KsfFda1u19X9M/VH99w8es=
+Date:   Wed, 9 Nov 2022 14:37:01 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] resource: Replace printk(KERN_WARNING) by
+ pr_warn()
+Message-ID: <Y2us/RKHYLMTrje0@kroah.com>
+References: <20221109105114.32886-1-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0gxM80EKiiMJKkN6t1CVgf1=6yYA3D4=TfOHVh1chaJuw@mail.gmail.com>
+ <Y2uOd+mCwmh4qdm8@smile.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y2uOd+mCwmh4qdm8@smile.fi.intel.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Xu Panda <xu.panda@zte.com.cn>
+On Wed, Nov 09, 2022 at 01:26:47PM +0200, Andy Shevchenko wrote:
+> On Wed, Nov 09, 2022 at 12:12:03PM +0100, Rafael J. Wysocki wrote:
+> > On Wed, Nov 9, 2022 at 11:51 AM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > >
+> > > Replace printk(KERN_WARNING) by pr_warn().
+> > >
+> > > While at it, use %pa for the resource_size_t variables.
+> > >
+> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > 
+> > This is Greg's stuff I think.
+> 
+> OK.
+> 
+> ...
+> 
+> > > +       resource_size_t end = addr + size - 1;
+> > 
+> > And this change could be mentioned in the changelog too.
+> 
+> And it's (indirectly). This is to have a variable to be consistent in the
+> print. But I can add more explicit mention.
 
-Replace scnprintf() with sysfs_emit() to simplify the code.
-
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
-Signed-off-by: Yang Yang <yang.yang29@zte.com>
----
- drivers/acpi/sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index 2d81c742e4d2..e6fe1c02a138 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -198,7 +198,7 @@ static int param_set_trace_method_name(const char *val,
-
- static int param_get_trace_method_name(char *buffer, const struct kernel_param *kp)
- {
--	return scnprintf(buffer, PAGE_SIZE, "%s\n", acpi_gbl_trace_method_name);
-+	return sysfs_emit(buffer, "%s\n", acpi_gbl_trace_method_name);
- }
-
- static const struct kernel_param_ops param_ops_trace_method = {
--- 
-2.15.2
+Please do.
