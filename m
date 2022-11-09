@@ -2,139 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89EA66229D1
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 12:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 307D36229FE
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Nov 2022 12:15:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbiKILMS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Nov 2022 06:12:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
+        id S230038AbiKILPt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Nov 2022 06:15:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbiKILMR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 06:12:17 -0500
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48D722B3C;
-        Wed,  9 Nov 2022 03:12:16 -0800 (PST)
-Received: by mail-qk1-f179.google.com with SMTP id 8so10712107qka.1;
-        Wed, 09 Nov 2022 03:12:16 -0800 (PST)
+        with ESMTP id S229578AbiKILPU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 06:15:20 -0500
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C67926252;
+        Wed,  9 Nov 2022 03:14:53 -0800 (PST)
+Received: by mail-qt1-f173.google.com with SMTP id h21so10158949qtu.2;
+        Wed, 09 Nov 2022 03:14:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aRbEPLJDZs00e0naDlA/9gKuzLlGHl7wDAqA6Ym3dJc=;
-        b=eSE5PitczGGXN10zAj1NFg/AWoup7K38NcHNTSkaklzTGsBF5u/XPMWyYwtheXAIGy
-         GJIX/2VPXMhhGRe1YrEjFa+EFUju1V2T4aAxHFoAfvCHEkSJoWnwJIvtAfhdZghRu77U
-         R1EctkHNs6G+k3QbJTcJik0nSza4WOtbov+jgRAR0qu8MRqiTJMsfaQ9MjrwKcayQen9
-         8xyyoFn/8DMIqZNIYKFq+9A97wsnhpGcHklr1dTXp4yJxz1WBm9fs9bHiOvCyYAuw8I2
-         /5MxfwbwR6fw6LQH4MfBIIu4u75IRPufGVKopMJqzJFvYOOpKpLdD/IOIx0qegEJwVSv
-         nZRg==
-X-Gm-Message-State: ACrzQf2WxxW58qxjJBfJbxz6dq4SpOFpsryVbyIEE4QHKZlobLlIM6HP
-        Rhj/eATei/hEUm7sso9x5WSpQ+t3HgsVIyZuidCZkdEY
-X-Google-Smtp-Source: AMsMyM6akL5ZYpwLHjQtcFwxu8an9ECUD+COd60a2CfbtiGIUC1/jYR8pwCptfIsLRqMhrNOVsaRCnlQXAXyGpC8NQ4=
-X-Received: by 2002:a05:620a:1476:b0:6fa:4c67:83ec with SMTP id
- j22-20020a05620a147600b006fa4c6783ecmr30970439qkl.23.1667992335697; Wed, 09
- Nov 2022 03:12:15 -0800 (PST)
+        bh=2LoQEn5/8EtgWAYYJZo0hd0ZjYLVH9VwKS+TlrTIk8U=;
+        b=zwUZbdy4a1Hlm8/4LWUX1PK3WOAYybBzupQ7ihYjU2gTT2Q28TDxCfhhpKCXjPFpDn
+         sVpbEk74sTXNfOu+kKKubadymyfnqwisH3OpZ//uEx9/DuXMyaPMDLMX0kozd2LC6IuV
+         NKb+LoYdu9FHWDmGZTmYM69tmaV+2fYDHoZT2Cu0P0VhBsKWD4syMG7BFpK7sWv0BnBP
+         m+ZmeLY4JTnm8v2dzTHQTTEk6IkUIMjS4pfxaOyTG1tDCGW5SBopBeLmjK0wSUykA2mE
+         yz8VQkcDRSAQOCOSshlqnQ9anblyBDHOUOe63w7E/Wuvp5M7psbw6pJjm0siA3Ekiejo
+         uvIg==
+X-Gm-Message-State: ACrzQf0SeKMn5I6EWYcIQVfCv+lMxQpyb8+sOrbgm1CR9VdLx5sjJZ3c
+        YuaxIi9lkQpBYbB2h7ZFcERQzN8e7T0r4AjuK3EQwh1q
+X-Google-Smtp-Source: AMsMyM5nuCDdu/kzC0URQJdfcaMgsRlSh9RigkZ48kqx1mrKcKMKMgQEFgO+YfQ0gFCzRqd3Fki+zuGBGYncCOV1EMA=
+X-Received: by 2002:ac8:690f:0:b0:3a5:4678:5b24 with SMTP id
+ bt15-20020ac8690f000000b003a546785b24mr865490qtb.411.1667992492912; Wed, 09
+ Nov 2022 03:14:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20221109105114.32886-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20221109105114.32886-1-andriy.shevchenko@linux.intel.com>
+References: <20221109105114.32886-1-andriy.shevchenko@linux.intel.com> <20221109105114.32886-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20221109105114.32886-2-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 9 Nov 2022 12:12:03 +0100
-Message-ID: <CAJZ5v0gxM80EKiiMJKkN6t1CVgf1=6yYA3D4=TfOHVh1chaJuw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] resource: Replace printk(KERN_WARNING) by pr_warn()
+Date:   Wed, 9 Nov 2022 12:14:40 +0100
+Message-ID: <CAJZ5v0grw=PcbLcMmaUSU_spdh7W2tSAy0zyw=08H+Ak82NXNA@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] resource: Convert DEFINE_RES_NAMED() to be
+ compound literal
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 9, 2022 at 11:51 AM Andy Shevchenko
+On Wed, Nov 9, 2022 at 11:50 AM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> Replace printk(KERN_WARNING) by pr_warn().
->
-> While at it, use %pa for the resource_size_t variables.
+> Currently DEFINE_RES_NAMED() can only be used to fill the static data.
+> In some cases it would be convenient to use it as right value in the
+> assignment operation. But it can't be done as is, because compiler has
+> no clue about the data layout. Converting it to be a compound literal
+> allows the above mentioned usage.
 >
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-This is Greg's stuff I think.
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
 
 > ---
->  kernel/resource.c | 17 +++++++----------
->  1 file changed, 7 insertions(+), 10 deletions(-)
+>  include/linux/ioport.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/kernel/resource.c b/kernel/resource.c
-> index 4c5e80b92f2f..ab32b015bd50 100644
-> --- a/kernel/resource.c
-> +++ b/kernel/resource.c
-> @@ -888,7 +888,7 @@ void insert_resource_expand_to_fit(struct resource *root, struct resource *new)
->                 if (conflict->end > new->end)
->                         new->end = conflict->end;
+> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+> index 27642ca15d93..67d3fb2133b6 100644
+> --- a/include/linux/ioport.h
+> +++ b/include/linux/ioport.h
+> @@ -155,7 +155,7 @@ enum {
 >
-> -               printk("Expanded resource %s due to conflict with %s\n", new->name, conflict->name);
-> +               pr_info("Expanded resource %s due to conflict with %s\n", new->name, conflict->name);
->         }
->         write_unlock(&resource_lock);
->  }
-> @@ -1283,9 +1283,7 @@ void __release_region(struct resource *parent, resource_size_t start,
->
->         write_unlock(&resource_lock);
->
-> -       printk(KERN_WARNING "Trying to free nonexistent resource "
-> -               "<%016llx-%016llx>\n", (unsigned long long)start,
-> -               (unsigned long long)end);
-> +       pr_warn("Trying to free nonexistent resource <%pa-%pa>\n", &start, &end);
->  }
->  EXPORT_SYMBOL(__release_region);
->
-> @@ -1658,6 +1656,7 @@ __setup("reserve=", reserve_setup);
->  int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
->  {
->         struct resource *p = &iomem_resource;
-> +       resource_size_t end = addr + size - 1;
-
-And this change could be mentioned in the changelog too.
-
->         int err = 0;
->         loff_t l;
->
-> @@ -1667,12 +1666,12 @@ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
->                  * We can probably skip the resources without
->                  * IORESOURCE_IO attribute?
->                  */
-> -               if (p->start >= addr + size)
-> +               if (p->start > end)
->                         continue;
->                 if (p->end < addr)
->                         continue;
->                 if (PFN_DOWN(p->start) <= PFN_DOWN(addr) &&
-> -                   PFN_DOWN(p->end) >= PFN_DOWN(addr + size - 1))
-> +                   PFN_DOWN(p->end) >= PFN_DOWN(end))
->                         continue;
->                 /*
->                  * if a resource is "BUSY", it's not a hardware resource
-> @@ -1683,10 +1682,8 @@ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
->                 if (p->flags & IORESOURCE_BUSY)
->                         continue;
->
-> -               printk(KERN_WARNING "resource sanity check: requesting [mem %#010llx-%#010llx], which spans more than %s %pR\n",
-> -                      (unsigned long long)addr,
-> -                      (unsigned long long)(addr + size - 1),
-> -                      p->name, p);
-> +               pr_warn("resource sanity check: requesting [mem %pa-%pa], which spans more than %s %pR\n",
-> +                       &addr, &end, p->name, p);
->                 err = -1;
->                 break;
->         }
+>  /* helpers to define resources */
+>  #define DEFINE_RES_NAMED(_start, _size, _name, _flags)                 \
+> -       {                                                               \
+> +(struct resource) {                                                    \
+>                 .start = (_start),                                      \
+>                 .end = (_start) + (_size) - 1,                          \
+>                 .name = (_name),                                        \
 > --
 > 2.35.1
 >
