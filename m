@@ -2,107 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AF916241D5
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 13:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9D736241F4
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 13:08:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbiKJMAf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Nov 2022 07:00:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52618 "EHLO
+        id S229960AbiKJMIg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Nov 2022 07:08:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230150AbiKJMAf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 07:00:35 -0500
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BDAF21E0F;
-        Thu, 10 Nov 2022 04:00:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668081633; x=1699617633;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=MXjGcSIK04ScLohpdYFk9DXdIqTJwmlzr90IomobVJ4=;
-  b=mK84qeq0hs/hmQbjjt7IWEwlOtGMvlpr4F/xQ7hdhwDn0Jdb7BUCasVG
-   ZkQV/eB1DS5acBoLjM8bjC9FCAgGaQmS6VzOM3S8GrpKwe8I8e8gvAX1Z
-   1plu74LaomWdSmnR18ck5L4roPEWLsbeD5W7M2vSyGDaVHoD6QkE5J7ek
-   imwrq8hCWM/WRp6qeloSf3mKqIpKnhkoeFBn7Eq9YQP12AT95eX6frQqO
-   FfDKrayLmwWO3K4yQT3r/0b8Cu32GKg9Fbk0NsfidRcDCUv92c89tw9Ob
-   BZRLbylUsE2dPCtAg6AtIOQlbBrRI/dqW1Un4WA3RVAYz4f0FKNzyeaCX
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10526"; a="373410977"
-X-IronPort-AV: E=Sophos;i="5.96,153,1665471600"; 
-   d="scan'208";a="373410977"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2022 04:00:32 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10526"; a="588152059"
-X-IronPort-AV: E=Sophos;i="5.96,153,1665471600"; 
-   d="scan'208";a="588152059"
-Received: from jvpendej-mobl2.gar.corp.intel.com ([10.214.150.188])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2022 04:00:28 -0800
-Message-ID: <1d8ad923707b1c6347d830088a410c31b794968c.camel@intel.com>
-Subject: Re: [PATCH v2 0/5] rtc: rtc-cmos: Assorted ACPI-related cleanups
- and fixes
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-rtc@vger.kernel.org
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Date:   Thu, 10 Nov 2022 20:00:25 +0800
-In-Reply-To: <5640233.DvuYhMxLoT@kreacher>
-References: <5640233.DvuYhMxLoT@kreacher>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S230018AbiKJMIe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 07:08:34 -0500
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20A83A0;
+        Thu, 10 Nov 2022 04:08:29 -0800 (PST)
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N7LFn4rY2z15MVx;
+        Thu, 10 Nov 2022 20:08:13 +0800 (CST)
+Received: from kwepemm600004.china.huawei.com (7.193.23.242) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 10 Nov 2022 20:08:27 +0800
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 10 Nov 2022 20:08:26 +0800
+Message-ID: <ff852f4a-7d37-c947-139d-8882a3ebb9a3@huawei.com>
+Date:   Thu, 10 Nov 2022 20:08:25 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH 2/3] ACPI: PCC: add check for platform interrupt
+To:     Sudeep Holla <sudeep.holla@arm.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
+        <wanghuiqiang@huawei.com>, <zhangzekun11@huawei.com>,
+        <wangxiongfeng2@huawei.com>, <tanxiaofei@huawei.com>,
+        <guohanjun@huawei.com>, <xiexiuqi@huawei.com>,
+        <wangkefeng.wang@huawei.com>, <huangdaode@huawei.com>
+References: <20221110015034.7943-1-lihuisong@huawei.com>
+ <20221110015034.7943-3-lihuisong@huawei.com>
+ <20221110103618.3vuyfdhcebf7ewmo@bogus>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20221110103618.3vuyfdhcebf7ewmo@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2022-11-09 at 13:05 +0100, Rafael J. Wysocki wrote:
-> Hi All,
-> 
-> This is a v2 of the series previously posted as
-> 
-> https://lore.kernel.org/linux-acpi/2276401.ElGaqSPkdT@kreacher/
-> 
-> The first three patches in the series have not changed since then (I
-> have
-> considered moving the last patch, which is a fix, to the front, but
-> that turns
-> out to be a bit cumbersome and not really worth the effort).
-> 
-> This series of patches does some assorted ACPI-related cleanups to
-> the CMOS RTC
-> driver:
-> - redundant static variable is dropped,
-> - code duplication is reduced,
-> - code is relocated so as to drop a few unnecessary forward
-> declarations of
->   functions,
-> - functions are renamed to avoid confusion,
-> and fixes up an issue in the driver removal path.
-> 
-> 
-> 
 
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-
-And I have tested the patch series on a platform with both
-use_acpi_alarm parameter set and cleared, the ACPI RTC fixed event
-works as expected, for both runtime and suspend wakeups.
-
-So
-Tested-by: Zhang Rui <rui.zhang@intel.com>
-
-thanks,
-rui
-
-
+在 2022/11/10 18:36, Sudeep Holla 写道:
+> On Thu, Nov 10, 2022 at 09:50:33AM +0800, Huisong Li wrote:
+>> PCC Operation Region driver senses the completion of command by interrupt
+>> way. If platform can not generate an interrupt when a command complete,
+>> the caller never gets the desired result. So let's reject the setup of the
+>> PCC address space on platform that do not support interrupt mode.
+>>
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>> ---
+>>   drivers/acpi/acpi_pcc.c | 47 +++++++++++++++++++++++++----------------
+>>   1 file changed, 29 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
+>> index 3e252be047b8..8efd08e469aa 100644
+>> --- a/drivers/acpi/acpi_pcc.c
+>> +++ b/drivers/acpi/acpi_pcc.c
+>> @@ -53,6 +53,7 @@ acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
+>>   	struct pcc_data *data;
+>>   	struct acpi_pcc_info *ctx = handler_context;
+>>   	struct pcc_mbox_chan *pcc_chan;
+>> +	static acpi_status ret;
+>>   
+>>   	data = kzalloc(sizeof(*data), GFP_KERNEL);
+>>   	if (!data)
+>> @@ -69,23 +70,35 @@ acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
+>>   	if (IS_ERR(data->pcc_chan)) {
+>>   		pr_err("Failed to find PCC channel for subspace %d\n",
+>>   		       ctx->subspace_id);
+>> -		kfree(data);
+>> -		return AE_NOT_FOUND;
+>> +		ret = AE_NOT_FOUND;
+>> +		goto request_channel_fail;
+>>   	}
+>>
+> Your patch seems to be not based on the upstream.
+> Commit f890157e61b8 ("ACPI: PCC: Release resources on address space setup
+> failure path") has addressed it already.
+I make this patch based on the commit f890157e61b8.
+Here is to unify the relese resources path.
+>
+>>   	pcc_chan = data->pcc_chan;
+>> +	if (!pcc_chan->mchan->mbox->txdone_irq) {
+>> +		pr_err("This channel-%d does not support interrupt.\n",
+>> +		       ctx->subspace_id);
+>> +		ret = AE_SUPPORT;
+>> +		goto request_channel_fail;
+>> +	}
+> Indeed, I supported only interrupt case and this approach is better than
+> checking it in handler atleast until we add support for polling based
+> transfers in future(hope that never happens, but you never know)
+Yes
+>
