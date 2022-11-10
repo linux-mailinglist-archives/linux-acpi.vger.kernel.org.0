@@ -2,92 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 204FB624440
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 15:28:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D6A6245DC
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 16:30:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231367AbiKJO2m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Nov 2022 09:28:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55280 "EHLO
+        id S230019AbiKJPaE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Nov 2022 10:30:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229923AbiKJO2e (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 09:28:34 -0500
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FA925D1;
-        Thu, 10 Nov 2022 06:28:26 -0800 (PST)
-Received: from dggpeml500022.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N7PMG3bMrz15MNt;
-        Thu, 10 Nov 2022 22:28:10 +0800 (CST)
-Received: from [10.174.176.82] (10.174.176.82) by
- dggpeml500022.china.huawei.com (7.185.36.66) with Microsoft SMTP Server
+        with ESMTP id S229675AbiKJP3u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 10:29:50 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509F8DFBA
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Nov 2022 07:28:30 -0800 (PST)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N7QhP1FBKzmVZs
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Nov 2022 23:28:05 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 10 Nov 2022 22:28:23 +0800
-Message-ID: <21498cd9-e84f-2592-8f7b-16c86c4f05fd@huawei.com>
-Date:   Thu, 10 Nov 2022 22:28:23 +0800
+ 15.1.2375.31; Thu, 10 Nov 2022 23:28:19 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 10 Nov
+ 2022 23:28:19 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-acpi@vger.kernel.org>
+CC:     <rafael.j.wysocki@intel.com>, <yangyingliang@huawei.com>,
+        <guohanjun@huawei.com>
+Subject: [PATCH] PNP: fix name memory leak in pnp_alloc_dev()
+Date:   Thu, 10 Nov 2022 23:26:58 +0800
+Message-ID: <20221110152658.403160-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.1
-Subject: Re: [PATCH RFC] ACPI: container: Add power domain control methods
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     <lenb@kernel.org>, <patchwork@huawei.com>,
-        <wangkefeng.wang@huawei.com>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <guohanjun@huawei.com>,
-        <wanghuiqiang@huawei.com>, <lihuisong@huawei.com>,
-        <wangxiongfeng2@huawei.com>
-References: <20221025061437.17571-1-zhangzekun11@huawei.com>
- <CAJZ5v0hpYodc_fd1DtBM-VEmhxepq7eQcQkbDXvWn0uMQ_yGNA@mail.gmail.com>
- <91e13efd-2de9-6fa1-188f-ec74958fff99@huawei.com>
- <CAJZ5v0h1zNSo4E-hk+vBemfV7_gsOe+3Gz-vAcn9AiufTCwX3Q@mail.gmail.com>
-From:   "zhangzekun (A)" <zhangzekun11@huawei.com>
-In-Reply-To: <CAJZ5v0h1zNSo4E-hk+vBemfV7_gsOe+3Gz-vAcn9AiufTCwX3Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.82]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml500022.china.huawei.com (7.185.36.66)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
 X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Rafael J
+Afer commit 1fa5ae857bb1 ("driver core: get rid of struct device's
+bus_id string array"), the name of device is allocated dynamically,
+it need be freed in the error path.
 
-Thanks a lot for your advice! I will look into LPI and find a better way
-to do what I want.
+Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/pnp/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best Regards,
-Zekun, Zhang
-
-在 2022/11/10 21:05, Rafael J. Wysocki 写道:
-> On Thu, Nov 10, 2022 at 1:13 PM zhangzekun (A) <zhangzekun11@huawei.com> wrote:
->> Kindly ping.
-> I'm not going to apply this patch if that's what you're asking about.
->
-> Please have a look at LPI which is the ACPI way of doing what you want.
->
-> If you need to extend the support for it in the kernel, please do so.
->
-> If you need to extend the definition of LPI in the ACPI specification,
-> there is also a way to do that.
->
-> What you are trying to do would require extending the container device
-> definition in the specification anyway.
->
->> 在 2022/10/29 1:07, Rafael J. Wysocki 写道:
->>> On Tue, Oct 25, 2022 at 8:17 AM Zhang Zekun <zhangzekun11@huawei.com> wrote:
->>>> Platform devices which supports power control are often required to be
->>>> power off/on together with the devices in the same power domain. However,
->>>> there isn't a generic driver that support the power control logic of
->>>> these devices.
->>> Not true.
->>>
->>> There is the ACPI power resources interface designed to represent
->>> power domains that is well supported and used in the industry.
->>>
->>> If it doesn't work for you, explain why.
->>>
+diff --git a/drivers/pnp/core.c b/drivers/pnp/core.c
+index 4df5aa6a309c..bb3976566822 100644
+--- a/drivers/pnp/core.c
++++ b/drivers/pnp/core.c
+@@ -152,6 +152,7 @@ struct pnp_dev *pnp_alloc_dev(struct pnp_protocol *protocol, int id,
+ 
+ 	dev_id = pnp_add_id(dev, pnpid);
+ 	if (!dev_id) {
++		kfree_const(dev->dev.kobj.name);
+ 		kfree(dev);
+ 		return NULL;
+ 	}
+-- 
+2.25.1
 
