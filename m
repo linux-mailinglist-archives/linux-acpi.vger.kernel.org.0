@@ -2,95 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A853C624411
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 15:16:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 204FB624440
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 15:28:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbiKJOQf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Nov 2022 09:16:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46092 "EHLO
+        id S231367AbiKJO2m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Nov 2022 09:28:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231299AbiKJOQV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 09:16:21 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C9E7833C;
-        Thu, 10 Nov 2022 06:16:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668089767; x=1699625767;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KBYszAOzdmRi0kxUltvHbNHN8tp2cigSnsqbcqgvMaA=;
-  b=evwhRF5JhGBO8NfQVno46u2ocqZxYsTN8NJz4ze5vZpwf1lp+uLp6Ta9
-   BQe156GWHmv+dkkDMw4/A+Chry1na39/rnypTKddHwr120pHgTaxSUpmF
-   xLqMl0cFvhAZHeRiEnx2kdXhL+JKeJ/ziKNNNoLI9c51XLotfZ6c/bhne
-   AFJbCXwLN/NWPH75+Vcn138RVHsBHAIOokVZDtnaupAHjnqlY+hLgfefy
-   /Q70Glj0ZeQo4t1A4m2e2cuAQQA2YSbPumh853moAbIyVLwQDirGyHpjM
-   YgEG0fE+tptGzqsX/PIsVvQP51hAiFB14pKubH5YdTr64aLkwSQgt8u+q
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10527"; a="291712885"
-X-IronPort-AV: E=Sophos;i="5.96,153,1665471600"; 
-   d="scan'208";a="291712885"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2022 06:16:07 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10527"; a="779786485"
-X-IronPort-AV: E=Sophos;i="5.96,153,1665471600"; 
-   d="scan'208";a="779786485"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 10 Nov 2022 06:16:05 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ot8Lc-00ABER-0l;
-        Thu, 10 Nov 2022 16:16:04 +0200
-Date:   Thu, 10 Nov 2022 16:16:03 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] Add support for software nodes to gpiolib
-Message-ID: <Y20Ho88s2H/PWd7M@smile.fi.intel.com>
-References: <20221031-gpiolib-swnode-v2-0-81f55af5fa0e@gmail.com>
- <Y2uPJfkYpuI/uHeQ@smile.fi.intel.com>
- <Y2wAT3LOytr9AfZt@google.com>
+        with ESMTP id S229923AbiKJO2e (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 09:28:34 -0500
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FA925D1;
+        Thu, 10 Nov 2022 06:28:26 -0800 (PST)
+Received: from dggpeml500022.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N7PMG3bMrz15MNt;
+        Thu, 10 Nov 2022 22:28:10 +0800 (CST)
+Received: from [10.174.176.82] (10.174.176.82) by
+ dggpeml500022.china.huawei.com (7.185.36.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 10 Nov 2022 22:28:23 +0800
+Message-ID: <21498cd9-e84f-2592-8f7b-16c86c4f05fd@huawei.com>
+Date:   Thu, 10 Nov 2022 22:28:23 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y2wAT3LOytr9AfZt@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.1
+Subject: Re: [PATCH RFC] ACPI: container: Add power domain control methods
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     <lenb@kernel.org>, <patchwork@huawei.com>,
+        <wangkefeng.wang@huawei.com>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <guohanjun@huawei.com>,
+        <wanghuiqiang@huawei.com>, <lihuisong@huawei.com>,
+        <wangxiongfeng2@huawei.com>
+References: <20221025061437.17571-1-zhangzekun11@huawei.com>
+ <CAJZ5v0hpYodc_fd1DtBM-VEmhxepq7eQcQkbDXvWn0uMQ_yGNA@mail.gmail.com>
+ <91e13efd-2de9-6fa1-188f-ec74958fff99@huawei.com>
+ <CAJZ5v0h1zNSo4E-hk+vBemfV7_gsOe+3Gz-vAcn9AiufTCwX3Q@mail.gmail.com>
+From:   "zhangzekun (A)" <zhangzekun11@huawei.com>
+In-Reply-To: <CAJZ5v0h1zNSo4E-hk+vBemfV7_gsOe+3Gz-vAcn9AiufTCwX3Q@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.176.82]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500022.china.huawei.com (7.185.36.66)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 09, 2022 at 11:32:31AM -0800, Dmitry Torokhov wrote:
-> On Wed, Nov 09, 2022 at 01:29:41PM +0200, Andy Shevchenko wrote:
-> > On Tue, Nov 08, 2022 at 04:26:45PM -0800, Dmitry Torokhov wrote:
+Hi, Rafael J
 
-...
+Thanks a lot for your advice! I will look into LPI and find a better way
+to do what I want.
 
-> > Thank for an update!
-> > 
-> > I have almost nothing serious except two nit-picks I think we can address:
-> > - dropping const qualifier for no (?) reason
-> > - having a superfluous check and extra dev_dbg()
-> > 
-> > If you are are going to address them, feel free to add my Rb tag to
-> > the patches 5 & 6.
-> 
-> Thank you for the reviews. I addressed most of your comments, but
-> because I still left the check you were concerned about in I'd like an
-> explicit reviewed-by on the v3 if you OK giving it.
+Best Regards,
+Zekun, Zhang
 
-I gave for patch 6 and for patch 5 I still think we can get rid of the check.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+在 2022/11/10 21:05, Rafael J. Wysocki 写道:
+> On Thu, Nov 10, 2022 at 1:13 PM zhangzekun (A) <zhangzekun11@huawei.com> wrote:
+>> Kindly ping.
+> I'm not going to apply this patch if that's what you're asking about.
+>
+> Please have a look at LPI which is the ACPI way of doing what you want.
+>
+> If you need to extend the support for it in the kernel, please do so.
+>
+> If you need to extend the definition of LPI in the ACPI specification,
+> there is also a way to do that.
+>
+> What you are trying to do would require extending the container device
+> definition in the specification anyway.
+>
+>> 在 2022/10/29 1:07, Rafael J. Wysocki 写道:
+>>> On Tue, Oct 25, 2022 at 8:17 AM Zhang Zekun <zhangzekun11@huawei.com> wrote:
+>>>> Platform devices which supports power control are often required to be
+>>>> power off/on together with the devices in the same power domain. However,
+>>>> there isn't a generic driver that support the power control logic of
+>>>> these devices.
+>>> Not true.
+>>>
+>>> There is the ACPI power resources interface designed to represent
+>>> power domains that is well supported and used in the industry.
+>>>
+>>> If it doesn't work for you, explain why.
+>>>
 
