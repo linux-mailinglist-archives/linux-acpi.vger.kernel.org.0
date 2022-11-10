@@ -2,43 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06EDF624031
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 11:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF916241D5
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 13:00:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbiKJKoV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Nov 2022 05:44:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39464 "EHLO
+        id S229667AbiKJMAf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Nov 2022 07:00:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbiKJKoU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 05:44:20 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 61FEE27DDC;
-        Thu, 10 Nov 2022 02:44:19 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 572001FB;
-        Thu, 10 Nov 2022 02:44:25 -0800 (PST)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 642DD3F534;
-        Thu, 10 Nov 2022 02:44:17 -0800 (PST)
-Date:   Thu, 10 Nov 2022 10:44:15 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Huisong Li <lihuisong@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rafael@kernel.org, rafael.j.wysocki@intel.com,
-        Sudeep Holla <sudeep.holla@arm.com>, wanghuiqiang@huawei.com,
-        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
-        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
-        wangkefeng.wang@huawei.com, huangdaode@huawei.com
-Subject: Re: [PATCH 3/3] mailbox: pcc: fix 'pcc_chan_count' when fail to
- initialize PCC
-Message-ID: <20221110104415.gk3asb5yc26slcs7@bogus>
-References: <20221110015034.7943-1-lihuisong@huawei.com>
- <20221110015034.7943-4-lihuisong@huawei.com>
+        with ESMTP id S230150AbiKJMAf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 07:00:35 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BDAF21E0F;
+        Thu, 10 Nov 2022 04:00:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668081633; x=1699617633;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=MXjGcSIK04ScLohpdYFk9DXdIqTJwmlzr90IomobVJ4=;
+  b=mK84qeq0hs/hmQbjjt7IWEwlOtGMvlpr4F/xQ7hdhwDn0Jdb7BUCasVG
+   ZkQV/eB1DS5acBoLjM8bjC9FCAgGaQmS6VzOM3S8GrpKwe8I8e8gvAX1Z
+   1plu74LaomWdSmnR18ck5L4roPEWLsbeD5W7M2vSyGDaVHoD6QkE5J7ek
+   imwrq8hCWM/WRp6qeloSf3mKqIpKnhkoeFBn7Eq9YQP12AT95eX6frQqO
+   FfDKrayLmwWO3K4yQT3r/0b8Cu32GKg9Fbk0NsfidRcDCUv92c89tw9Ob
+   BZRLbylUsE2dPCtAg6AtIOQlbBrRI/dqW1Un4WA3RVAYz4f0FKNzyeaCX
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10526"; a="373410977"
+X-IronPort-AV: E=Sophos;i="5.96,153,1665471600"; 
+   d="scan'208";a="373410977"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2022 04:00:32 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10526"; a="588152059"
+X-IronPort-AV: E=Sophos;i="5.96,153,1665471600"; 
+   d="scan'208";a="588152059"
+Received: from jvpendej-mobl2.gar.corp.intel.com ([10.214.150.188])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2022 04:00:28 -0800
+Message-ID: <1d8ad923707b1c6347d830088a410c31b794968c.camel@intel.com>
+Subject: Re: [PATCH v2 0/5] rtc: rtc-cmos: Assorted ACPI-related cleanups
+ and fixes
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-rtc@vger.kernel.org
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Date:   Thu, 10 Nov 2022 20:00:25 +0800
+In-Reply-To: <5640233.DvuYhMxLoT@kreacher>
+References: <5640233.DvuYhMxLoT@kreacher>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221110015034.7943-4-lihuisong@huawei.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,56 +66,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 10, 2022 at 09:50:34AM +0800, Huisong Li wrote:
-> Currently, 'pcc_chan_count' is a non-zero value if PCC subspaces are parsed
-> successfully and subsequent processes is failure during initializing PCC
-> process. This may cause that pcc_mbox_request_channel() can still be
-> executed successfully , which will misleads the caller that this channel is
-> available.
+On Wed, 2022-11-09 at 13:05 +0100, Rafael J. Wysocki wrote:
+> Hi All,
 > 
-> Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe")
-> Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> ---
->  drivers/mailbox/pcc.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+> This is a v2 of the series previously posted as
 > 
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index 7cee37dd3b73..47d70c5884e3 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -294,6 +294,7 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
->  		pr_err("Channel not found for idx: %d\n", subspace_id);
->  		return ERR_PTR(-EBUSY);
->  	}
-> +
+> https://lore.kernel.org/linux-acpi/2276401.ElGaqSPkdT@kreacher/
+> 
+> The first three patches in the series have not changed since then (I
+> have
+> considered moving the last patch, which is a fix, to the front, but
+> that turns
+> out to be a bit cumbersome and not really worth the effort).
+> 
+> This series of patches does some assorted ACPI-related cleanups to
+> the CMOS RTC
+> driver:
+> - redundant static variable is dropped,
+> - code duplication is reduced,
+> - code is relocated so as to drop a few unnecessary forward
+> declarations of
+>   functions,
+> - functions are renamed to avoid confusion,
+> and fixes up an issue in the driver removal path.
+> 
+> 
+> 
 
-Spurious/not needed change ?
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
 
->  	dev = chan->mbox->dev;
->  
->  	spin_lock_irqsave(&chan->lock, flags);
-> @@ -735,7 +736,8 @@ static int __init pcc_init(void)
->  
->  	if (ret) {
->  		pr_debug("ACPI PCC probe failed.\n");
-> -		return -ENODEV;
-> +		ret = -ENODEV;
-> +		goto out;
+And I have tested the patch series on a platform with both
+use_acpi_alarm parameter set and cleared, the ACPI RTC fixed event
+works as expected, for both runtime and suspend wakeups.
 
-Not needed, we don't set pcc_chan_count if the probe failed.
+So
+Tested-by: Zhang Rui <rui.zhang@intel.com>
 
->  	}
->  
->  	pcc_pdev = platform_create_bundle(&pcc_mbox_driver,
-> @@ -743,10 +745,13 @@ static int __init pcc_init(void)
->  
->  	if (IS_ERR(pcc_pdev)) {
->  		pr_debug("Err creating PCC platform bundle\n");
-> -		return PTR_ERR(pcc_pdev);
-> +		ret = PTR_ERR(pcc_pdev);
+thanks,
+rui
 
-You just need to set pcc_chan_count to 0 here, so no need for goto.
 
--- 
-Regards,
-Sudeep
