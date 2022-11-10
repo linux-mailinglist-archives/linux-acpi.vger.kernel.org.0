@@ -2,108 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D0E3623933
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 02:52:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 933C2623FB9
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 11:25:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231966AbiKJBww (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Nov 2022 20:52:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47910 "EHLO
+        id S229625AbiKJKZg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Nov 2022 05:25:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232142AbiKJBwu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Nov 2022 20:52:50 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 136ADBC85;
-        Wed,  9 Nov 2022 17:52:50 -0800 (PST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4N74XB2WGqzJnZL;
-        Thu, 10 Nov 2022 09:49:46 +0800 (CST)
-Received: from kwepemm600004.china.huawei.com (7.193.23.242) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 10 Nov 2022 09:52:48 +0800
-Received: from localhost.localdomain (10.28.79.22) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 10 Nov 2022 09:52:47 +0800
-From:   Huisong Li <lihuisong@huawei.com>
-To:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <rafael@kernel.org>, <sudeep.holla@arm.com>,
-        <rafael.j.wysocki@intel.com>, <wanghuiqiang@huawei.com>,
-        <zhangzekun11@huawei.com>, <wangxiongfeng2@huawei.com>,
-        <tanxiaofei@huawei.com>, <guohanjun@huawei.com>,
-        <xiexiuqi@huawei.com>, <wangkefeng.wang@huawei.com>,
-        <huangdaode@huawei.com>, <lihuisong@huawei.com>
-Subject: [PATCH 3/3] mailbox: pcc: fix 'pcc_chan_count' when fail to initialize PCC
-Date:   Thu, 10 Nov 2022 09:50:34 +0800
-Message-ID: <20221110015034.7943-4-lihuisong@huawei.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20221110015034.7943-1-lihuisong@huawei.com>
+        with ESMTP id S229559AbiKJKZe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 05:25:34 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5406713EA4;
+        Thu, 10 Nov 2022 02:25:33 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0BF11FB;
+        Thu, 10 Nov 2022 02:25:38 -0800 (PST)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A23D3F534;
+        Thu, 10 Nov 2022 02:25:30 -0800 (PST)
+Date:   Thu, 10 Nov 2022 10:25:28 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Huisong Li <lihuisong@huawei.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>, rafael@kernel.org,
+        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
+        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
+        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
+        wangkefeng.wang@huawei.com, huangdaode@huawei.com
+Subject: Re: [PATCH 1/3] mailbox: pcc: rename platform interrupt bit macro
+ name
+Message-ID: <20221110102528.6kuznowxtqkouvlb@bogus>
 References: <20221110015034.7943-1-lihuisong@huawei.com>
+ <20221110015034.7943-2-lihuisong@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.28.79.22]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221110015034.7943-2-lihuisong@huawei.com>
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently, 'pcc_chan_count' is a non-zero value if PCC subspaces are parsed
-successfully and subsequent processes is failure during initializing PCC
-process. This may cause that pcc_mbox_request_channel() can still be
-executed successfully , which will misleads the caller that this channel is
-available.
+On Thu, Nov 10, 2022 at 09:50:32AM +0800, Huisong Li wrote:
+> Currently, the name of platform interrupt bit macro, ACPI_PCCT_DOORBELL,
+> is not very appropriate. The doorbell is generally considered as an action
+> when send mailbox data. Actually, the macro value comes from Platform
+> Interrupt in Platform Communications Channel Global Flags. If the bit is
+> '1', it means that the platform is capable of generating an interrupt to
+> indicate completion of a command.
+>
 
-Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe")
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
----
- drivers/mailbox/pcc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+This is touching ACPICA header file, so it must be submitted to ACPICA
+separately following the guidelines in the github and imported into the
+kernel.
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 7cee37dd3b73..47d70c5884e3 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -294,6 +294,7 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
- 		pr_err("Channel not found for idx: %d\n", subspace_id);
- 		return ERR_PTR(-EBUSY);
- 	}
-+
- 	dev = chan->mbox->dev;
- 
- 	spin_lock_irqsave(&chan->lock, flags);
-@@ -735,7 +736,8 @@ static int __init pcc_init(void)
- 
- 	if (ret) {
- 		pr_debug("ACPI PCC probe failed.\n");
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto out;
- 	}
- 
- 	pcc_pdev = platform_create_bundle(&pcc_mbox_driver,
-@@ -743,10 +745,13 @@ static int __init pcc_init(void)
- 
- 	if (IS_ERR(pcc_pdev)) {
- 		pr_debug("Err creating PCC platform bundle\n");
--		return PTR_ERR(pcc_pdev);
-+		ret = PTR_ERR(pcc_pdev);
-+		goto out;
- 	}
- 
--	return 0;
-+out:
-+	pcc_chan_count = 0;
-+	return ret;
- }
- 
- /*
+However, I don't see any point in this change. Yes the language "doorbell"
+is not used in this particular context in the spec, but it is implicit from
+other parts. I am not opposing the change though if Rafael is OK and ACPICA
+project accepts it.
+
 -- 
-2.22.0
-
+Regards,
+Sudeep
