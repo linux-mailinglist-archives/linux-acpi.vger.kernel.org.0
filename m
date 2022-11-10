@@ -2,83 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC1C62510F
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Nov 2022 03:49:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D2B625521
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Nov 2022 09:22:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232499AbiKKCtu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Nov 2022 21:49:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38328 "EHLO
+        id S230181AbiKKIV7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 11 Nov 2022 03:21:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233015AbiKKCth (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 21:49:37 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD630DF0A;
-        Thu, 10 Nov 2022 18:47:06 -0800 (PST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N7jgZ37xHzbmlq;
-        Fri, 11 Nov 2022 10:43:22 +0800 (CST)
-Received: from kwepemm600004.china.huawei.com (7.193.23.242) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 11 Nov 2022 10:47:04 +0800
-Received: from localhost.localdomain (10.28.79.22) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 11 Nov 2022 10:47:04 +0800
-From:   Huisong Li <lihuisong@huawei.com>
-To:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <rafael@kernel.org>, <sudeep.holla@arm.com>,
-        <rafael.j.wysocki@intel.com>, <wanghuiqiang@huawei.com>,
-        <zhangzekun11@huawei.com>, <wangxiongfeng2@huawei.com>,
-        <tanxiaofei@huawei.com>, <guohanjun@huawei.com>,
-        <xiexiuqi@huawei.com>, <wangkefeng.wang@huawei.com>,
-        <huangdaode@huawei.com>, <lihuisong@huawei.com>
-Subject: [PATCH V2 2/2] mailbox: pcc: fix 'pcc_chan_count' when fail to initialize PCC
-Date:   Fri, 11 Nov 2022 10:44:48 +0800
-Message-ID: <20221111024448.25012-3-lihuisong@huawei.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20221111024448.25012-1-lihuisong@huawei.com>
-References: <20221110015034.7943-1-lihuisong@huawei.com>
- <20221111024448.25012-1-lihuisong@huawei.com>
+        with ESMTP id S232968AbiKKIV5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Nov 2022 03:21:57 -0500
+Received: from mail.dabacenter.ir (mail.dabacenter.ir [81.31.238.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE51654EA;
+        Fri, 11 Nov 2022 00:21:55 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dabacenter.ir (Postfix) with ESMTP id 5762148DB011;
+        Thu, 10 Nov 2022 18:15:09 +0330 (+0330)
+Received: from mail.dabacenter.ir ([127.0.0.1])
+        by localhost (mail.dabacenter.ir [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id A811Q_hsNPD2; Thu, 10 Nov 2022 18:15:08 +0330 (+0330)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dabacenter.ir (Postfix) with ESMTP id 97AB048CDECB;
+        Thu, 10 Nov 2022 18:12:15 +0330 (+0330)
+X-Virus-Scanned: amavisd-new at dabacenter.ir
+Received: from mail.dabacenter.ir ([127.0.0.1])
+        by localhost (mail.dabacenter.ir [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id DB9uCbWKv517; Thu, 10 Nov 2022 18:12:15 +0330 (+0330)
+Received: from [212.162.151.153] (unknown [212.162.151.153])
+        by mail.dabacenter.ir (Postfix) with ESMTPSA id CC79A48D3828;
+        Thu, 10 Nov 2022 18:08:25 +0330 (+0330)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.28.79.22]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Re: Liaison Officer Needed In Your State...
+To:     Recipients <mail@redington.com>
+From:   "Ms. Kelvin Lin " <mail@redington.com>
+Date:   Thu, 10 Nov 2022 06:37:27 -0800
+Reply-To: mail@gukaimail.com
+Message-Id: <20221110143825.CC79A48D3828@mail.dabacenter.ir>
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_99,BAYES_999,
+        RCVD_IN_VALIDITY_RPBL,SPF_FAIL,SPF_HELO_NONE,TO_EQ_FM_DOM_SPF_FAIL,
+        TO_EQ_FM_SPF_FAIL autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [81.31.238.26 listed in bl.score.senderscore.com]
+        *  0.0 SPF_FAIL SPF: sender does not match SPF record (fail)
+        *      [SPF failed: Please see http://www.openspf.org/Why?s=mfrom;id=mail%40redington.com;ip=81.31.238.26;r=lindbergh.monkeyblade.net]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 TO_EQ_FM_DOM_SPF_FAIL To domain == From domain and external SPF
+        *       failed
+        *  0.0 TO_EQ_FM_SPF_FAIL To == From and external SPF failed
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently, 'pcc_chan_count' is a non-zero value if PCC subspaces are parsed
-successfully and subsequent processes is failure during initializing PCC
-process. This may cause that pcc_mbox_request_channel() can still be
-executed successfully , which will misleads the caller that this channel is
-available.
+Hello,
 
-Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe")
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
----
- drivers/mailbox/pcc.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 3c2bc0ca454c..105d46c9801b 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -743,6 +743,7 @@ static int __init pcc_init(void)
- 
- 	if (IS_ERR(pcc_pdev)) {
- 		pr_debug("Err creating PCC platform bundle\n");
-+		pcc_chan_count = 0;
- 		return PTR_ERR(pcc_pdev);
- 	}
- 
--- 
-2.22.0
+A reputable pharmaceutical company from Vietnam is in need of a reliable individual or corporate entity in your state to act as their Liaison; this will not affect your current job or business operations in anyway.  If interested, reply for more information.
 
+
+Sincerely,
+Ms. Kelvin Lin
