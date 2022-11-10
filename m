@@ -2,49 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 500CD624A9B
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 20:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BC93624AA1
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 20:29:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbiKJT0S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Nov 2022 14:26:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34416 "EHLO
+        id S229591AbiKJT3g convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 10 Nov 2022 14:29:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiKJT0R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 14:26:17 -0500
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C57372ED56;
-        Thu, 10 Nov 2022 11:26:16 -0800 (PST)
-Received: by mail-qt1-f171.google.com with SMTP id cg5so1530696qtb.12;
-        Thu, 10 Nov 2022 11:26:16 -0800 (PST)
+        with ESMTP id S229463AbiKJT3f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 14:29:35 -0500
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA50865BE;
+        Thu, 10 Nov 2022 11:29:34 -0800 (PST)
+Received: by mail-qk1-f169.google.com with SMTP id s20so1774937qkg.5;
+        Thu, 10 Nov 2022 11:29:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RdILW2TfdSLcvwmccYyLpd9PEgHcqApl5ASbOnvFyLQ=;
-        b=hPjk1U5q5+hKduPsTTZewAYTO7VjuuiLqy1ITGGEIPD66w5ik1JS9eLrW0XlPZ6Xgv
-         uca7VjhWSNfudy+hcX3tsU3xuI2aUwBlj6VaMHXyMCNdtreXUzvPT/5JuewQAcYIqTxX
-         egcyQz3GPnEhgSZw4fotg+hKetxwlJTzJzl5fwYwSL6haNW6fhwvo/+MnphJJcuGI+mb
-         w/8XNFz+G8zuFB89Z3HrEVqpJ4Fh+5XS/i+HLvV+htMOoIw4hc/gH1Q23Z8loU4Mp8JR
-         HzJVNgzojRFO8xW3MSkQQkcpOcZZTce+dOvyVJ3gixd5leLXoxqyJQEYskGJT8uG9TgC
-         AR7Q==
-X-Gm-Message-State: ACrzQf0CO4X/zpN6wYbSP7RzqDg969ycq0M+JDr8LfKY2ckNdagPiIu/
-        kbj+MQVoMPaUpq3TE5bBWR3XDaOWfLihMPJUQXs=
-X-Google-Smtp-Source: AMsMyM5ktEA3aUw5IRtIhd3g+zdFRr6hdyuyfF9mJftyAkgbQ3Db2e7gyhNiWHydReVIIEbhfO7ez2rGHKVRyhxh6jA=
-X-Received: by 2002:ac8:690f:0:b0:3a5:4678:5b24 with SMTP id
- bt15-20020ac8690f000000b003a546785b24mr1513773qtb.411.1668108375937; Thu, 10
- Nov 2022 11:26:15 -0800 (PST)
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eSVYD1v7K4BrYXK0u3SCv8ScBPQPneRqu4O2yg7mNMk=;
+        b=hOfwHCJ8qqoKe+v7P7aZ703GZ2iIDHpQQ+Pps1kT6xhyI9sED5nIMrTPW52goguAA8
+         zxJBNl7HEgS5OPbyCagcvXL1jDwfpLclPUqXNfo10IO0KIpuXQRAQ5MoonSMMWZZnD2l
+         l6eIP/suh/N8r7/zewstbbTNWzDrZHhIZ6kMWH0j4fByMKadsdRYAZSwLyQ8KGZ1iS4G
+         Hoy9rNVyxlSBobnddE2mySNynJWpIjM4kol7W2bnq1eZiWvvjHj9y10e77qUGRIgaU0g
+         IUQhI4PiOe9jKclc5joVfQ6gscewd/+LdxKNVOxe6oKsQlRXY6PdefSKL3U6dkU4g/v3
+         3WEA==
+X-Gm-Message-State: ACrzQf3lMl3+5Jc97ZT7dcpuNMzzva0+Q5s6HKALTVA4FqAn0rD613QZ
+        uJNkgH2GhGcuWwjLPT7VYOcXpKBGaa7a/EJpBYQ=
+X-Google-Smtp-Source: AMsMyM5yJg+cU512ZzXG5/3nSOncbL3I3fJWCtg6E2p/m23cKJFAo2qUEgBISuBpUEaeeGsY+SuWVG6ByDdKlTkJeLg=
+X-Received: by 2002:ae9:eb4a:0:b0:6fa:df0:f326 with SMTP id
+ b71-20020ae9eb4a000000b006fa0df0f326mr1677320qkg.23.1668108573853; Thu, 10
+ Nov 2022 11:29:33 -0800 (PST)
 MIME-Version: 1.0
-References: <202211092125250606392@zte.com.cn>
-In-Reply-To: <202211092125250606392@zte.com.cn>
+References: <20221110015034.7943-1-lihuisong@huawei.com> <20221110015034.7943-2-lihuisong@huawei.com>
+ <20221110102528.6kuznowxtqkouvlb@bogus> <4f167ee7-ad50-d66c-8bd7-811fa0e83cfd@huawei.com>
+In-Reply-To: <4f167ee7-ad50-d66c-8bd7-811fa0e83cfd@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 10 Nov 2022 20:26:05 +0100
-Message-ID: <CAJZ5v0hLP4pzGzyHAXb9Ksox5_rT85_30B95yX0mqt6=vMmzaw@mail.gmail.com>
-Subject: Re: [PATCH linux-next] ACPI: sysfs: use sysfs_emit() to instead of scnprintf()
-To:     yang.yang29@zte.com.cn
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, xu.panda@zte.com.cn
+Date:   Thu, 10 Nov 2022 20:29:23 +0100
+Message-ID: <CAJZ5v0h82m37Li3YOfP7_8aAS3ULwzunpWZJwRPncLooPqvE-g@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mailbox: pcc: rename platform interrupt bit macro name
+To:     "lihuisong (C)" <lihuisong@huawei.com>
+Cc:     Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rafael@kernel.org,
+        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
+        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
+        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
+        wangkefeng.wang@huawei.com, huangdaode@huawei.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
@@ -55,32 +61,29 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 9, 2022 at 2:25 PM <yang.yang29@zte.com.cn> wrote:
+On Thu, Nov 10, 2022 at 1:17 PM lihuisong (C) <lihuisong@huawei.com> wrote:
 >
-> From: Xu Panda <xu.panda@zte.com.cn>
 >
-> Replace scnprintf() with sysfs_emit() to simplify the code.
->
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
-> Signed-off-by: Yang Yang <yang.yang29@zte.com>
-> ---
->  drivers/acpi/sysfs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index 2d81c742e4d2..e6fe1c02a138 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -198,7 +198,7 @@ static int param_set_trace_method_name(const char *val,
->
->  static int param_get_trace_method_name(char *buffer, const struct kernel_param *kp)
->  {
-> -       return scnprintf(buffer, PAGE_SIZE, "%s\n", acpi_gbl_trace_method_name);
-> +       return sysfs_emit(buffer, "%s\n", acpi_gbl_trace_method_name);
->  }
->
->  static const struct kernel_param_ops param_ops_trace_method = {
-> --
+> 在 2022/11/10 18:25, Sudeep Holla 写道:
+> > On Thu, Nov 10, 2022 at 09:50:32AM +0800, Huisong Li wrote:
+> >> Currently, the name of platform interrupt bit macro, ACPI_PCCT_DOORBELL,
+> >> is not very appropriate. The doorbell is generally considered as an action
+> >> when send mailbox data. Actually, the macro value comes from Platform
+> >> Interrupt in Platform Communications Channel Global Flags. If the bit is
+> >> '1', it means that the platform is capable of generating an interrupt to
+> >> indicate completion of a command.
+> >>
+> > This is touching ACPICA header file, so it must be submitted to ACPICA
+> > separately following the guidelines in the github and imported into the
+> > kernel.
+> Got it, thanks.
+> >
+> > However, I don't see any point in this change. Yes the language "doorbell"
+> > is not used in this particular context in the spec, but it is implicit from
+> > other parts. I am not opposing the change though if Rafael is OK and ACPICA
+> > project accepts it.
+> @Rafael, what do you think?
 
-Applied as 6.2 material, thanks!
+Well, I wouldn't send a patch to make this change myself, but if you
+really care about it, please submit an upstream ACPICA pull request in
+the first place and we'll see.
