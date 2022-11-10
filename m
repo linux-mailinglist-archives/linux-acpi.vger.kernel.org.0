@@ -2,52 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79211624A82
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 20:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B220624A99
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Nov 2022 20:23:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbiKJTUd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Nov 2022 14:20:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59298 "EHLO
+        id S229869AbiKJTXi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Nov 2022 14:23:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229757AbiKJTUc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 14:20:32 -0500
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E642E0FA;
-        Thu, 10 Nov 2022 11:20:31 -0800 (PST)
-Received: by mail-qv1-f48.google.com with SMTP id c8so2082624qvn.10;
-        Thu, 10 Nov 2022 11:20:31 -0800 (PST)
+        with ESMTP id S230294AbiKJTXh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 14:23:37 -0500
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CEDBB859
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Nov 2022 11:23:35 -0800 (PST)
+Received: by mail-qk1-f173.google.com with SMTP id g10so1762272qkl.6
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Nov 2022 11:23:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+YBGKTfu6TLq6OsvTGJR+t71TVt0vJcs9iDhz7OHA1o=;
-        b=h/TnhlQit3+0usG12PwpjxiOc/IYbJ4ADi73QrZbk1W3sLJJd+2DxuuHf4S/w2DbNA
-         8eqUI+lPEzIsAEJJEr72Qtr72A9BmYmgSTvGXOpkUiFnhmFOGIDNj42vpbTlRElsJDo8
-         ZC2WfCUjqe+QrTGcLmd0j5+asYKVvM5WlX51oceakKqQZ5jMkKC/kMoDUL+Dwpwg1ETM
-         hsJMRVJa9FUoGuY7wwJhN/zyO5ALWgetMzBiuPa/MrAd05BPyUxdqoFRbdk/jFZ+L8wE
-         KOmhOjcjluO4pMbGG0dTLV8DeOtuFtdYsZ3Lwk7WKPKQcejwRjH1EmTDbYWkLfZLv8Wa
-         xLIw==
-X-Gm-Message-State: ACrzQf1v9gOQUj3Rl6/DvY7GVS1qzgDFQJcmFAgWukCG0NJ2okcEo3fB
-        XnAbyN6fYH6qP9JrZRTEKmNcAQnkKrL+e/udBvYgjWS1
-X-Google-Smtp-Source: AMsMyM4xM18mDWQ0LwAfP6WGTfoheXlOQYA+bO6ijx+JQvmLhV27lg76GbEN1QhBxndCxvdihVHsKKErxaEF/KmDcsA=
-X-Received: by 2002:a05:6214:4517:b0:4b1:a9ac:21de with SMTP id
- oo23-20020a056214451700b004b1a9ac21demr1706384qvb.119.1668108030271; Thu, 10
- Nov 2022 11:20:30 -0800 (PST)
+        bh=+XSqyH4okSw608+E1B3obXlqksN66twvjfOfCM/IBR8=;
+        b=wQf7RGWU+6QF8R6wCAL/gAYvRe6ZyJAFRXa8+S5DCZ6i+P6kSW0nAxr/H9VwfjB4at
+         77DjjqOwJdFQejicYA3/YTeuWEHo6FoogmA1+OWHdCXk8hAlU1WZVGG7ZtQ5+nJIjJh7
+         bZUeERStj/gMkds/hlDEgz7ijarIfi0h8Vj+tvfi6Dz3LgpznsN6PdVs2HjCGqIDau/n
+         n8uqINl6Vqd8m41yymmT3qGSdkaRHX0+ELLpA1XxgHhvxCpdMHy3Va7+V8N/ohgMoBZQ
+         Cnyh6RstAAzQv0t/tTzLcF5uXpyLNERzun+BvH3KptiZTuKVyazvk83DKTcdGGuEj90j
+         iluQ==
+X-Gm-Message-State: ACrzQf2Ua8VpY3uflrUiez0uAN6mO6LrNmj1fXxU6kvlGpNXUoAbguQ4
+        e7sje7E1fGAEyk2jzVTuPYGUnlmBYnBfuLPVDEhxxf3A
+X-Google-Smtp-Source: AMsMyM5hBEHEuEx1laJbWwT3sqdfCFw9igv3rJiit0LFbUM54pIQcq/5oCYg5o0D5T/DcJi1TZjlDsdrpKSPduUnu1s=
+X-Received: by 2002:ae9:eb4a:0:b0:6fa:df0:f326 with SMTP id
+ b71-20020ae9eb4a000000b006fa0df0f326mr1670814qkg.23.1668108214154; Thu, 10
+ Nov 2022 11:23:34 -0800 (PST)
 MIME-Version: 1.0
-References: <1667792089-4904-1-git-send-email-TonyWWang-oc@zhaoxin.com>
-In-Reply-To: <1667792089-4904-1-git-send-email-TonyWWang-oc@zhaoxin.com>
+References: <20221108014623.71622-1-wangxiongfeng2@huawei.com>
+In-Reply-To: <20221108014623.71622-1-wangxiongfeng2@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 10 Nov 2022 20:20:19 +0100
-Message-ID: <CAJZ5v0ggQOYdCEosCSFFd=09fsH6BbFSgwurDuoBhW+fRKSAqA@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/acpi/cstate: Optimize ARB_DISABLE on Centaur CPUs
-To:     Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-Cc:     rafael@kernel.org, len.brown@intel.com, pavel@ucw.cz,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, CobeChen@zhaoxin.com,
-        TimGuo@zhaoxin.com, LindaChai@zhaoxin.com, LeoLiu@zhaoxin.com
+Date:   Thu, 10 Nov 2022 20:23:23 +0100
+Message-ID: <CAJZ5v0hbMZJRstwshZfDuGv3cBZC9tzQTmkJBFToNv8PdwH8Pw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: irq: Fix some kernel-doc issues
+To:     Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, maz@kernel.org,
+        lvjianmin@loongson.cn, guohanjun@huawei.com,
+        linux-acpi@vger.kernel.org, yangyingliang@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -59,66 +56,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 7, 2022 at 4:35 AM Tony W Wang-oc <TonyWWang-oc@zhaoxin.com> wrote:
+On Tue, Nov 8, 2022 at 2:27 AM Xiongfeng Wang <wangxiongfeng2@huawei.com> wrote:
 >
-> On all recent Centaur platforms, ARB_DISABLE is handled by PMU
-> automatically while entering C3 type state. No need for OS to
-> issue the ARB_DISABLE, so set bm_control to zero to indicate that.
+> The following commit change the second parameter of acpi_set_irq_model()
+> but forgot to update the function description. Let's fix it.
 >
-> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+>   commit 7327b16f5f56 ("APCI: irq: Add support for multiple GSI domains")
+>
+> Also add description of parameter 'gsi' for
+> acpi_get_irq_source_fwhandle() to avoid the following build W=1 warning.
+>
+>   drivers/acpi/irq.c:108: warning: Function parameter or member 'gsi' not described in 'acpi_get_irq_source_fwhandle'
+>
+> Fixes: 7327b16f5f56 ("APCI: irq: Add support for multiple GSI domains")
+> Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Or x86 maintainers please let me know if you want me to take care of this.
-
-Thanks!
+Applied as 6.2 material, thanks!
 
 > ---
-> Changes in V2:
->  - fix typo in comments.
-> ---
->  arch/x86/kernel/acpi/cstate.c | 26 +++++++++++++++++---------
->  1 file changed, 17 insertions(+), 9 deletions(-)
+>  drivers/acpi/irq.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
-> index 7945eae..da71679 100644
-> --- a/arch/x86/kernel/acpi/cstate.c
-> +++ b/arch/x86/kernel/acpi/cstate.c
-> @@ -52,17 +52,25 @@ void acpi_processor_power_init_bm_check(struct acpi_processor_flags *flags,
->         if (c->x86_vendor == X86_VENDOR_INTEL &&
->             (c->x86 > 0xf || (c->x86 == 6 && c->x86_model >= 0x0f)))
->                         flags->bm_control = 0;
-> -       /*
-> -        * For all recent Centaur CPUs, the ucode will make sure that each
-> -        * core can keep cache coherence with each other while entering C3
-> -        * type state. So, set bm_check to 1 to indicate that the kernel
-> -        * doesn't need to execute a cache flush operation (WBINVD) when
-> -        * entering C3 type state.
-> -        */
-> +
->         if (c->x86_vendor == X86_VENDOR_CENTAUR) {
->                 if (c->x86 > 6 || (c->x86 == 6 && c->x86_model == 0x0f &&
-> -                   c->x86_stepping >= 0x0e))
-> -                       flags->bm_check = 1;
-> +                   c->x86_stepping >= 0x0e)) {
-> +                       /*
-> +                        * For all recent Centaur CPUs, the ucode will make sure that each
-> +                        * core can keep cache coherence with each other while entering C3
-> +                        * type state. So, set bm_check to 1 to indicate that the kernel
-> +                        * doesn't need to execute a cache flush operation (WBINVD) when
-> +                        * entering C3 type state.
-> +                        */
-> +                       flags->bm_check = 1;
-> +                       /*
-> +                        * For all recent Centaur platforms, ARB_DISABLE is a nop.
-> +                        * Set bm_control to zero to indicate that ARB_DISABLE is
-> +                        * not required while entering C3 type state.
-> +                        */
-> +                       flags->bm_control = 0;
-> +               }
->         }
->
->         if (c->x86_vendor == X86_VENDOR_ZHAOXIN) {
+> diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
+> index 1cc4647f78b8..c2c786eb95ab 100644
+> --- a/drivers/acpi/irq.c
+> +++ b/drivers/acpi/irq.c
+> @@ -94,6 +94,7 @@ EXPORT_SYMBOL_GPL(acpi_unregister_gsi);
+>  /**
+>   * acpi_get_irq_source_fwhandle() - Retrieve fwhandle from IRQ resource source.
+>   * @source: acpi_resource_source to use for the lookup.
+> + * @gsi: GSI IRQ number
+>   *
+>   * Description:
+>   * Retrieve the fwhandle of the device referenced by the given IRQ resource
+> @@ -297,8 +298,8 @@ EXPORT_SYMBOL_GPL(acpi_irq_get);
+>  /**
+>   * acpi_set_irq_model - Setup the GSI irqdomain information
+>   * @model: the value assigned to acpi_irq_model
+> - * @fwnode: the irq_domain identifier for mapping and looking up
+> - *          GSI interrupts
+> + * @fn: a dispatcher function that will return the domain fwnode
+> + *     for a given GSI
+>   */
+>  void __init acpi_set_irq_model(enum acpi_irq_model_id model,
+>                                struct fwnode_handle *(*fn)(u32))
 > --
-> 2.7.4
+> 2.20.1
 >
