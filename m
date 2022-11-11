@@ -2,354 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D94626483
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Nov 2022 23:19:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 215DD6265B0
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Nov 2022 00:44:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234666AbiKKWTs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Nov 2022 17:19:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46370 "EHLO
+        id S234673AbiKKXn6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Nov 2022 18:43:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234612AbiKKWTY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Nov 2022 17:19:24 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327E39FF3;
-        Fri, 11 Nov 2022 14:19:23 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id k7so5277944pll.6;
-        Fri, 11 Nov 2022 14:19:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8e9qt1EThZ8DxhiWWBzObBNLU7s1JE4dLO1Y/7HqnGA=;
-        b=la77TJAPgqsJGHCt1tRPnBp6TO/wknDaKOMIAU0HQ677C5OX7mGcET+dVn4SpT1Kfy
-         MckhDcY0IUeY3XWu7Iy9dEXKGyGHDn42/DlZZkOd7DM4oh2uo7K+CM8AoYKTSYXB6WpF
-         X5VYmsGyUkO2jkYP3pcIqd6f8H4udTPzfRExYdRX5Ix8CObDxJgTT9D368XaGkR8Kbuc
-         PKxBTfLk+MaV7k8RzfJta5Cv6ew6i3xb8y29RkNJYpCiq3fneUFf/k15biV/OxeNpocf
-         d1rtE40hk2ce1GQ6P3CZm1e8rzCAfiCINXlhx69ehORrZCQrf2dOzf+FNKog5Rv/BfvZ
-         ei4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8e9qt1EThZ8DxhiWWBzObBNLU7s1JE4dLO1Y/7HqnGA=;
-        b=Px9AkceT4mvQycnzxwgY/njfahGKSMll2F4uLngaiSoexCqKCAJkdY51DpNm4x6y+v
-         wfzlSXscf66UR2lYfxlQth3VASeEz5Dd7tsFXiDbP9JuipFkWC9Te5yTsG5Yya1GUjxK
-         1bKL16noUrNHXpogBNawVNq2LVhcun4BnztnSmzOa3YOnQfNuQzBnjqWK+pX0oif8hjC
-         MFqVOhB4nLdi/OS8eHJczPvNfwvZqD45iR9FTEPGPwQVZ3fYqAV1TFxVkwrNqXc4JJKM
-         gHHvJSMIx1PdqnduUi4o5WFdUzFYM1ejlWVtfErqBtExQqM5yP6VJF68h3K3BUym/9Lc
-         hB9g==
-X-Gm-Message-State: ANoB5pkunNeV7ZBCwQ7hvBkHHYHZ+ufJEi2X2RMb8TJAneeLBRboCOBK
-        ZU7SzcNOM4Cn+niVH6z+PbE=
-X-Google-Smtp-Source: AA0mqf6JFu3NdHAl9ynWlwiXLiCenaaQREKQsMlK4py6nS55dkkLBaUKJBPiMvitH10IGm5z6PC9Bg==
-X-Received: by 2002:a17:903:2442:b0:186:e8bd:9c14 with SMTP id l2-20020a170903244200b00186e8bd9c14mr4428835pls.174.1668205162520;
-        Fri, 11 Nov 2022 14:19:22 -0800 (PST)
-Received: from dtor-ws.mtv.corp.google.com ([2620:15c:9d:2:de05:ad1e:65ae:ea4d])
-        by smtp.gmail.com with ESMTPSA id q9-20020a170902bd8900b00180daa59314sm2201109pls.125.2022.11.11.14.19.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Nov 2022 14:19:21 -0800 (PST)
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v4 6/6] gpiolib: add support for software nodes
-Date:   Fri, 11 Nov 2022 14:19:08 -0800
-Message-Id: <20221031-gpiolib-swnode-v4-6-6c1671890027@gmail.com>
-X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-In-Reply-To: <20221031-gpiolib-swnode-v4-0-6c1671890027@gmail.com>
-References: <20221031-gpiolib-swnode-v4-0-6c1671890027@gmail.com>
+        with ESMTP id S234602AbiKKXn6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Nov 2022 18:43:58 -0500
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2069.outbound.protection.outlook.com [40.107.223.69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F4DCE17;
+        Fri, 11 Nov 2022 15:43:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Zd/m+rQCVtoCkpjP0n+ddAZuASR3TFPG2Wdg4mYTJhjddQFMRnUSHMW79SCGuFD04pRbHFHBulJ0SNxyZMJe7FlFEoTi6Xtnlu2cyXRzkDHp8z6ohT2nWnogZKDU8JDOMvIW5MkP74R/U5EboiawUBpiyZI166SlXDknnfgHR1DVkiAxAyxJCHo2WWZx2Xtadc2LgDgmyxYkxZXutUtFTPvtAn/GMuBPBV2Rw709L2RgAmw8K5JBvlPgsTPyyrCabq26rGxAAra4cyKYRwYDMz04uORXff+dsCupEj0XaoDKRYBUFhOdCmomau1APQHSbGq3tjQfsAeLSAqW8qNmkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w0PmLlEWGTZU26znzCiDvS0yf/ED5CgleOVcx6RAnbU=;
+ b=m6AxE2zMWHykI/n5JsKcLeE+fDikuEDdBcAm/YOLrnSydnGEQ7zZyXKP8aqqje2f7tiiS33r1SrbGjrUvBHD13qaoOn68KP5sFgNRUeFgcbTyF/6Nyc2GGzOLVodfqhnCc+ZDKRdSfD3q/xIn0uFnhh/0NYdzV9YdSSOyKE8jUnvw7s7AaKm7sqlBvd03pMRjyY/Z52e37D3MFDub+qWBOQRJ82jJjiNXxj7mXY2qXDVErYutmtAtB4ByC1U2z99GRqPNKnERCQpV5ubd5k5Okp6Z5Tn88h2kR5PeGqesIFsPZLgcOuf3QZefPekUL5ibl5wJQ5GXqEHQpp2qRGDPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w0PmLlEWGTZU26znzCiDvS0yf/ED5CgleOVcx6RAnbU=;
+ b=Z+HZKAy/mbSOG6hNGs+Hx10WQTueRFWDJpXZfWkM2QTktBr0FL2DUsxRBSvCQFxy4fRvRyhR4sxgw4xMpHBRCcQafKKMm7nyRr51oi3meXYwKa/ignp7E/vVmwtHZjmSAleU5SWKcLAO9R38B3PdG9qW282kDjYkIgvybTdhUhUuiz37QMxcI3Sn3U8Ip68pO1scV05dhKI30ZwLNWUSgp9IPODDePdsFGVU36MZ7vU+hqAPz04VLPUMsZQorBgMl2jZcTEExvVjryERLFXLpgrg7u9QVlf2Btx0o+GIS+sVg6qWOFgPC0nLzdLp3/DpMqfMglqj8Yqj9HMmWOs/wA==
+Received: from DS7PR03CA0213.namprd03.prod.outlook.com (2603:10b6:5:3ba::8) by
+ PH7PR12MB5782.namprd12.prod.outlook.com (2603:10b6:510:1d1::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.13; Fri, 11 Nov
+ 2022 23:43:55 +0000
+Received: from DM6NAM11FT030.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:3ba:cafe::9e) by DS7PR03CA0213.outlook.office365.com
+ (2603:10b6:5:3ba::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.14 via Frontend
+ Transport; Fri, 11 Nov 2022 23:43:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ DM6NAM11FT030.mail.protection.outlook.com (10.13.172.146) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5813.12 via Frontend Transport; Fri, 11 Nov 2022 23:43:54 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.26; Fri, 11 Nov
+ 2022 15:43:52 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Fri, 11 Nov
+ 2022 15:43:52 -0800
+Received: from msst-build.nvidia.com (10.127.8.14) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server id 15.2.986.36 via Frontend
+ Transport; Fri, 11 Nov 2022 15:43:51 -0800
+From:   Besar Wicaksono <bwicaksono@nvidia.com>
+To:     <will@kernel.org>, <lorenzo.pieralisi@arm.com>,
+        <guohanjun@huawei.com>, <sudeep.holla@arm.com>
+CC:     <linux-tegra@vger.kernel.org>, <treding@nvidia.com>,
+        <jonathanh@nvidia.com>, <vsethi@nvidia.com>,
+        <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Besar Wicaksono <bwicaksono@nvidia.com>
+Subject: [PATCH] ACPI: APMT: Fix kerneldoc and indentation
+Date:   Fri, 11 Nov 2022 17:43:23 -0600
+Message-ID: <20221111234323.16182-1-bwicaksono@nvidia.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.11.0-dev-28747
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT030:EE_|PH7PR12MB5782:EE_
+X-MS-Office365-Filtering-Correlation-Id: 197d33da-fe17-4d0a-65ba-08dac43e9850
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uzCYyFQSLumYsArLGFEmXmpB8wcaXzRvdtuzbxKOqQgztrJi4axxDCHZlkrggsgUF14Sp7+DJOt2/oSt/Masxwlk/vuRJpgsPx58JQQALO9whYWYOTPuYRhqzwnfavvAKOK4Hgn3V8A40UM7rYL96WnvwFXlDRBf0Knga3U7GsZMaJGMH9Z3C7AWYq/r2BbhNl4J0WsdY3nvCyzNgvubfeQDB9ubuDaIdRjvRpUerQmCHOXsNYRwI6DDQafg9RQ6W5FlSMoYQhrhWoXvVDNNL/MN3oJ8NkKj28pywLn8ina8tVnrbkZElhmgrPAKKmCVwE6y156DSu/N3bg4x+SYq8tCirQDE2hEsdaKG/aKlSVL5zgT17rsxW56PL4XAhSFL+6N0quTMqb2Rob3zrJBDYCQnEd7a7Kzn4yfz9A9uu1WsfAPZRgxM4Zq4mTqSQrSKCy7PXFdgbTBL0nzUDghTqGZ4KkE19hx0qtr7FgMTEPaC6WbovA6agmMx/EJEE889R4YUPBOrZrzBu7y3AWuSZYPznhLIBmJJo16UP5PVy6DRceM1Ua3BkELSF/DdMkYKGWPYNpM+pJFh4ZpgnZ6SoSPhOyLWSy7tINwm7qnJh+6jxahEOUVYSA3P8M9+3JNCeU/tW3rWQag4DhDA2XW9INP3ddZwudUBNpC/VSNTvY0xXyYR3i9fu/KKhI/4aLinxQ2DPXrc1fj2bbYF5HSaymg4h4REAJtPv01pc5mMRuR5NuqXKbjiu1jXJtfo6MQH5gem022XgzcGl7G6I2Bcw==
+X-Forefront-Antispam-Report: CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(396003)(376002)(136003)(346002)(451199015)(40470700004)(46966006)(36840700001)(40460700003)(41300700001)(336012)(4744005)(4326008)(5660300002)(186003)(83380400001)(110136005)(8936002)(7696005)(70586007)(54906003)(26005)(2616005)(1076003)(316002)(36860700001)(7636003)(356005)(36756003)(47076005)(82740400003)(40480700001)(426003)(82310400005)(2906002)(86362001)(8676002)(70206006)(478600001)(107886003)(6666004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2022 23:43:54.7206
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 197d33da-fe17-4d0a-65ba-08dac43e9850
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT030.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5782
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that static device properties understand notion of child nodes and
-references, let's teach gpiolib to handle them:
+Add missing kerneldoc and fix alignment on one of the arguments of
+apmt_add_platform_device function.
 
-- GPIOs are represented as a references to software nodes representing
-  gpiochip
-- references must have 2 arguments - GPIO number within the chip and
-  GPIO flags (GPIO_ACTIVE_LOW/GPIO_ACTIVE_HIGH, etc)
-- a new PROPERTY_ENTRY_GPIO() macro is supplied to ensure the above
-- name of the software node representing gpiochip must match label of
-  the gpiochip, as we use it to locate gpiochip structure at runtime
-
-The following illustrates use of software nodes to describe a "System"
-button that is currently specified via use of gpio_keys_platform_data
-in arch/mips/alchemy/board-mtx1.c. It follows bindings specified in
-Documentation/devicetree/bindings/input/gpio-keys.yaml.
-
-static const struct software_node mxt1_gpiochip2_node = {
-	.name = "alchemy-gpio2",
-};
-
-static const struct property_entry mtx1_gpio_button_props[] = {
-	PROPERTY_ENTRY_U32("linux,code", BTN_0),
-	PROPERTY_ENTRY_STRING("label", "System button"),
-	PROPERTY_ENTRY_GPIO("gpios", &mxt1_gpiochip2_node, 7, GPIO_ACTIVE_LOW),
-	{ }
-};
-
-Similarly, arch/arm/mach-tegra/board-paz00.c can be converted to:
-
-static const struct software_node tegra_gpiochip_node = {
-	.name = "tegra-gpio",
-};
-
-static struct property_entry wifi_rfkill_prop[] __initdata = {
-	PROPERTY_ENTRY_STRING("name", "wifi_rfkill"),
-	PROPERTY_ENTRY_STRING("type", "wlan"),
-	PROPERTY_ENTRY_GPIO("reset-gpios",
-			    &tegra_gpiochip_node, 25, GPIO_ACTIVE_HIGH);
-	PROPERTY_ENTRY_GPIO("shutdown-gpios",
-			    &tegra_gpiochip_node, 85, GPIO_ACTIVE_HIGH);
-	{ },
-};
-
-static struct platform_device wifi_rfkill_device = {
-	.name	= "rfkill_gpio",
-	.id	= -1,
-};
-
-...
-
-	software_node_register(&tegra_gpiochip_node);
-	device_create_managed_software_node(&wifi_rfkill_device.dev,
-					    wifi_rfkill_prop, NULL);
-
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Besar Wicaksono <bwicaksono@nvidia.com>
 ---
- drivers/gpio/Makefile         |   1 +
- drivers/gpio/gpiolib-swnode.c | 123 ++++++++++++++++++++++++++++++++++++++++++
- drivers/gpio/gpiolib-swnode.h |  14 +++++
- drivers/gpio/gpiolib.c        |   7 +++
- include/linux/gpio/property.h |  11 ++++
- 5 files changed, 156 insertions(+)
+ drivers/acpi/arm64/apmt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 8629e9eaf79e..010587025fc8 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_OF_GPIO)		+= gpiolib-of.o
- obj-$(CONFIG_GPIO_CDEV)		+= gpiolib-cdev.o
- obj-$(CONFIG_GPIO_SYSFS)	+= gpiolib-sysfs.o
- obj-$(CONFIG_GPIO_ACPI)		+= gpiolib-acpi.o
-+obj-$(CONFIG_GPIOLIB)		+= gpiolib-swnode.o
- 
- # Device drivers. Generally keep list sorted alphabetically
- obj-$(CONFIG_GPIO_REGMAP)	+= gpio-regmap.o
-diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
-new file mode 100644
-index 000000000000..dd9ccac214d1
---- /dev/null
-+++ b/drivers/gpio/gpiolib-swnode.c
-@@ -0,0 +1,123 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Software Node helpers for the GPIO API
-+ *
-+ * Copyright 2022 Google LLC
-+ */
-+#include <linux/err.h>
-+#include <linux/errno.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/gpio/driver.h>
-+#include <linux/kernel.h>
-+#include <linux/printk.h>
-+#include <linux/property.h>
-+#include <linux/string.h>
-+
-+#include "gpiolib.h"
-+#include "gpiolib-swnode.h"
-+
-+static void swnode_format_propname(const char *con_id, char *propname,
-+				   size_t max_size)
-+{
-+	/*
-+	 * Note we do not need to try both -gpios and -gpio suffixes,
-+	 * as, unlike OF and ACPI, we can fix software nodes to conform
-+	 * to the proper binding.
-+	 */
-+	if (con_id)
-+		snprintf(propname, max_size, "%s-gpios", con_id);
-+	else
-+		strscpy(propname, "gpios", max_size);
-+}
-+
-+static int swnode_gpiochip_match_name(struct gpio_chip *chip, void *data)
-+{
-+	return !strcmp(chip->label, data);
-+}
-+
-+static struct gpio_chip *swnode_get_chip(struct fwnode_handle *fwnode)
-+{
-+	const struct software_node *chip_node;
-+	struct gpio_chip *chip;
-+
-+	chip_node = to_software_node(fwnode);
-+	if (!chip_node || !chip_node->name)
-+		return ERR_PTR(-EINVAL);
-+
-+	chip = gpiochip_find((void *)chip_node->name, swnode_gpiochip_match_name);
-+	return chip ?: ERR_PTR(-EPROBE_DEFER);
-+}
-+
-+struct gpio_desc *swnode_find_gpio(struct fwnode_handle *fwnode,
-+				   const char *con_id, unsigned int idx,
-+				   unsigned long *flags)
-+{
-+	const struct software_node *swnode;
-+	struct fwnode_reference_args args;
-+	struct gpio_chip *chip;
-+	struct gpio_desc *desc;
-+	char propname[32]; /* 32 is max size of property name */
-+	int error;
-+
-+	swnode = to_software_node(fwnode);
-+	if (!swnode)
-+		return ERR_PTR(-EINVAL);
-+
-+	swnode_format_propname(con_id, propname, sizeof(propname));
-+
-+	/*
-+	 * We expect all swnode-described GPIOs have GPIO number and
-+	 * polarity arguments, hence nargs is set to 2.
-+	 */
-+	error = fwnode_property_get_reference_args(fwnode, propname, NULL, 2, idx, &args);
-+	if (error) {
-+		pr_debug("%s: can't parse '%s' property of node '%pfwP[%d]'\n",
-+			__func__, propname, fwnode, idx);
-+		return ERR_PTR(error);
-+	}
-+
-+	chip = swnode_get_chip(args.fwnode);
-+	fwnode_handle_put(args.fwnode);
-+	if (IS_ERR(chip))
-+		return ERR_CAST(chip);
-+
-+	desc = gpiochip_get_desc(chip, args.args[0]);
-+	*flags = args.args[1]; /* We expect native GPIO flags */
-+
-+	pr_debug("%s: parsed '%s' property of node '%pfwP[%d]' - status (%d)\n",
-+		 __func__, propname, fwnode, idx, PTR_ERR_OR_ZERO(desc));
-+
-+	return desc;
-+}
-+
-+/**
-+ * swnode_gpio_count - count the GPIOs associated with a device / function
-+ * @fwnode:	firmware node of the GPIO consumer, can be %NULL for
-+ *		system-global GPIOs
-+ * @con_id:	function within the GPIO consumer
-+ *
-+ * Return:
-+ * The number of GPIOs associated with a device / function or %-ENOENT,
-+ * if no GPIO has been assigned to the requested function.
-+ */
-+int swnode_gpio_count(const struct fwnode_handle *fwnode, const char *con_id)
-+{
-+	struct fwnode_reference_args args;
-+	char propname[32];
-+	int count;
-+
-+	swnode_format_propname(con_id, propname, sizeof(propname));
-+
-+	/*
-+	 * This is not very efficient, but GPIO lists usually have only
-+	 * 1 or 2 entries.
-+	 */
-+	count = 0;
-+	while (fwnode_property_get_reference_args(fwnode, propname, NULL, 0,
-+						  count, &args) == 0) {
-+		fwnode_handle_put(args.fwnode);
-+		count++;
-+	}
-+
-+	return count ?: -ENOENT;
-+}
-diff --git a/drivers/gpio/gpiolib-swnode.h b/drivers/gpio/gpiolib-swnode.h
-new file mode 100644
-index 000000000000..af849e56f6bc
---- /dev/null
-+++ b/drivers/gpio/gpiolib-swnode.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef GPIOLIB_SWNODE_H
-+#define GPIOLIB_SWNODE_H
-+
-+struct fwnode_handle;
-+struct gpio_desc;
-+
-+struct gpio_desc *swnode_find_gpio(struct fwnode_handle *fwnode,
-+				   const char *con_id, unsigned int idx,
-+				   unsigned long *flags);
-+int swnode_gpio_count(const struct fwnode_handle *fwnode, const char *con_id);
-+
-+#endif /* GPIOLIB_SWNODE_H */
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 7f739096c4cf..7936d54a2e30 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -26,6 +26,7 @@
- #include "gpiolib.h"
- #include "gpiolib-of.h"
- #include "gpiolib-acpi.h"
-+#include "gpiolib-swnode.h"
- #include "gpiolib-cdev.h"
- #include "gpiolib-sysfs.h"
- 
-@@ -3870,6 +3871,10 @@ static struct gpio_desc *gpiod_find_by_fwnode(struct fwnode_handle *fwnode,
- 		dev_dbg(consumer, "using ACPI '%pfw' for '%s' GPIO lookup\n",
- 			fwnode, con_id);
- 		desc = acpi_find_gpio(fwnode, con_id, idx, flags, lookupflags);
-+	} else if (is_software_node(fwnode)) {
-+		dev_dbg(consumer, "using swnode '%pfw' for '%s' GPIO lookup\n",
-+			fwnode, con_id);
-+		desc = swnode_find_gpio(fwnode, con_id, idx, lookupflags);
- 	}
- 
- 	return desc;
-@@ -3987,6 +3992,8 @@ int gpiod_count(struct device *dev, const char *con_id)
- 		count = of_gpio_get_count(dev, con_id);
- 	else if (is_acpi_node(fwnode))
- 		count = acpi_gpio_count(dev, con_id);
-+	else if (is_software_node(fwnode))
-+		count = swnode_gpio_count(fwnode, con_id);
- 
- 	if (count < 0)
- 		count = platform_gpio_count(dev, con_id);
-diff --git a/include/linux/gpio/property.h b/include/linux/gpio/property.h
-new file mode 100644
-index 000000000000..6c75c8bd44a0
---- /dev/null
-+++ b/include/linux/gpio/property.h
-@@ -0,0 +1,11 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+#ifndef __LINUX_GPIO_PROPERTY_H
-+#define __LINUX_GPIO_PROPERTY_H
-+
-+#include <dt-bindings/gpio/gpio.h> /* for GPIO_* flags */
-+#include <linux/property.h>
-+
-+#define PROPERTY_ENTRY_GPIO(_name_, _chip_node_, _idx_, _flags_) \
-+	PROPERTY_ENTRY_REF(_name_, _chip_node_, _idx_, _flags_)
-+
-+#endif /* __LINUX_GPIO_PROPERTY_H */
-
+diff --git a/drivers/acpi/arm64/apmt.c b/drivers/acpi/arm64/apmt.c
+index f55167ca51e7..5a3f90a34e4b 100644
+--- a/drivers/acpi/arm64/apmt.c
++++ b/drivers/acpi/arm64/apmt.c
+@@ -66,11 +66,12 @@ static int __init apmt_init_resources(struct resource *res,
+ /**
+  * apmt_add_platform_device() - Allocate a platform device for APMT node
+  * @node: Pointer to device ACPI APMT node
++ * @fwnode: fwnode associated with the APMT node
+  *
+  * Returns: 0 on success, <0 failure
+  */
+ static int __init apmt_add_platform_device(struct acpi_apmt_node *node,
+-							struct fwnode_handle *fwnode)
++					   struct fwnode_handle *fwnode)
+ {
+ 	struct platform_device *pdev;
+ 	int ret, count;
 -- 
-b4 0.11.0-dev-28747
+2.17.1
+
