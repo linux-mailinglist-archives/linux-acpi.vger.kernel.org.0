@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E8CE62503C
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Nov 2022 03:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BFDF6250A1
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Nov 2022 03:37:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232117AbiKKCeI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Nov 2022 21:34:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47034 "EHLO
+        id S232933AbiKKChM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Nov 2022 21:37:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232527AbiKKCeD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 21:34:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BBA2F026;
-        Thu, 10 Nov 2022 18:33:55 -0800 (PST)
+        with ESMTP id S229758AbiKKCgm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Nov 2022 21:36:42 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DAB067135;
+        Thu, 10 Nov 2022 18:35:23 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 190286199B;
-        Fri, 11 Nov 2022 02:33:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C1FC433C1;
-        Fri, 11 Nov 2022 02:33:53 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 7BE97CE253A;
+        Fri, 11 Nov 2022 02:35:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84EAC433C1;
+        Fri, 11 Nov 2022 02:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668134034;
-        bh=K+PxLfZrk+uscT0HgJ1VnwXpGgb/g2yGnLnlZ9mvyFg=;
+        s=k20201202; t=1668134119;
+        bh=agU2693fQ0geZoZRed5L63YUqgI6tDoXWX99hsy2RKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=erfu5rZxE0uYa1hX63ziESplOgQqDSWCIP9gUM9XIt1tyZFoAQTWl3FuWLvnAwETj
-         2h4H/3KOBhZrkfQ/vNM4x44LbALq6dUiURzGiBg6OUMpyLKb/Dmqq7m+FGeb7EpxXV
-         i+bb/hSjlyoL/3nBNkvj6ZNSt+776Z0uotKJQWqwSVDdQcu5rmN3iA4Ia8VnZSQyi/
-         LIMlE7bp9BfzpelBG7x2QQcDaVN2RnzIZ7s87keM/Mzr5CgqwFbIKQSB/MnLxt28l+
-         CZpkuQxSb7FrEI7j2xpVNzxtRB9QolubueyRmk+RJ8Jd/7pT1zzsyk81F6H2re4eOw
-         GeEx0iQu5llqw==
+        b=qzDJMzVBkfdhUia2yM6kntW1sPlq5i0nZxqvZDnyAGsnyBRtWexoqAbCrExUZ1Lxh
+         GH9pEAh7xH05Dwoz5p90LSGSQa6cAjJbBTXLGNpLYUtMcgLrIEfikfHXDnV6NUIj3z
+         NmhGGkDlDmNJ2FmUHXrwB79YDy3Er2xebLyln1c2TwcW2KQDeO68XTWXx6Q1yA8Slu
+         uXyORXWqJ0ahWWJvKKOp+LAWqJP0BetdlC56UJMaxZ8ikYpgcndl+L6jr552YIjKl0
+         usQ1kaKhMqOhwrV2t2flNhTDLDCxIQXUzYk1bngR/Zu4L7AeaC7hGtjg8IKfVZF+/Y
+         f1vpL/2w6UHHw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Mario Limonciello <mario.limonciello@amd.com>,
@@ -38,12 +38,12 @@ Cc:     Mario Limonciello <mario.limonciello@amd.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         hdegoede@redhat.com, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 06/30] ACPI: x86: Add another system to quirk list for forcing StorageD3Enable
-Date:   Thu, 10 Nov 2022 21:33:14 -0500
-Message-Id: <20221111023340.227279-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 04/11] ACPI: x86: Add another system to quirk list for forcing StorageD3Enable
+Date:   Thu, 10 Nov 2022 21:35:04 -0500
+Message-Id: <20221111023511.227800-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221111023340.227279-1-sashal@kernel.org>
-References: <20221111023340.227279-1-sashal@kernel.org>
+In-Reply-To: <20221111023511.227800-1-sashal@kernel.org>
+References: <20221111023511.227800-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -78,10 +78,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+)
 
 diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index d7cdd8406c84..950a93922ca8 100644
+index 3a3f09b6cbfc..222b951ff56a 100644
 --- a/drivers/acpi/x86/utils.c
 +++ b/drivers/acpi/x86/utils.c
-@@ -219,6 +219,12 @@ static const struct dmi_system_id force_storage_d3_dmi[] = {
+@@ -210,6 +210,12 @@ static const struct dmi_system_id force_storage_d3_dmi[] = {
  			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
  		}
  	},
