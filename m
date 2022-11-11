@@ -2,128 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 348CE625CF9
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Nov 2022 15:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D457625E99
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Nov 2022 16:46:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234129AbiKKO01 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Nov 2022 09:26:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
+        id S234045AbiKKPqF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Nov 2022 10:46:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234588AbiKKO0L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Nov 2022 09:26:11 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 202EF1AD;
-        Fri, 11 Nov 2022 06:26:08 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D9AF51FB;
-        Fri, 11 Nov 2022 06:26:14 -0800 (PST)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E55DD3F73D;
-        Fri, 11 Nov 2022 06:26:06 -0800 (PST)
-Date:   Fri, 11 Nov 2022 14:26:04 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Huisong Li <lihuisong@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>, rafael@kernel.org,
-        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
-        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
-        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
-        wangkefeng.wang@huawei.com, huangdaode@huawei.com
-Subject: Re: [PATCH V2 1/2] ACPI: PCC: add check for platform interrupt
-Message-ID: <20221111142604.qrk7bf2qf6ibfln3@bogus>
-References: <20221110015034.7943-1-lihuisong@huawei.com>
- <20221111024448.25012-1-lihuisong@huawei.com>
- <20221111024448.25012-2-lihuisong@huawei.com>
+        with ESMTP id S233923AbiKKPqE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Nov 2022 10:46:04 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A480625C4D;
+        Fri, 11 Nov 2022 07:46:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668181563; x=1699717563;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DmQaptAdDzNbGCp3ivClJtgkBMbzP5Q4OG5xUGDVa0A=;
+  b=Z4Gb+3im8KbmFkDdos4X2EHC1Z0os0MURDxlh+fdbYu3d9s8pftFMlza
+   19gEUMMzdCtrCN+e7nZ/uC2VwPX+m2jNPtyeotHigFBbWpw43PD3EwHOE
+   dgYRrlRVKuioppTm/QkozmNw1S85ejBqMBaU76jZgFlkyuJohZlV264gO
+   V8irFa2lx0POvvHBOy+9bYbJD8tcezsF7dRId+kUxA+yVsPQEoMd7+959
+   BI+WAjwSmXWN2nRo0MEbYhZrocWZjVjzTf8lGHIoaORnB4j1XVHuTX1tb
+   pf0yhY9iVJsRp2N2hVCo6Z8NqbZVZMvp3jxDyoF/+FIGy7zAUzWOFUy9g
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10528"; a="309246132"
+X-IronPort-AV: E=Sophos;i="5.96,156,1665471600"; 
+   d="scan'208";a="309246132"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2022 07:46:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10528"; a="668843583"
+X-IronPort-AV: E=Sophos;i="5.96,156,1665471600"; 
+   d="scan'208";a="668843583"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga008.jf.intel.com with ESMTP; 11 Nov 2022 07:46:00 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 8376B155; Fri, 11 Nov 2022 17:46:24 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH v3 1/3] device property: Get rid of __PROPERTY_ENTRY_ARRAY_EL*SIZE*()
+Date:   Fri, 11 Nov 2022 17:46:19 +0200
+Message-Id: <20221111154621.15941-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221111024448.25012-2-lihuisong@huawei.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Change $subject to:
-"ACPI: PCC: Setup PCC Opregion handler only if platform interrupt is available"
+First of all, _ELEMENT_SIZE() repeats existing sizeof_field() macro.
+Second, usage of _ARRAY_ELSIZE_LEN() adds unnecessary indirection
+to the data layout. It's more understandable when the data structure
+is placed explicitly. That said, get rid of those macros by replacing
+them with the existing helper and explicit data structure layout.
 
-On Fri, Nov 11, 2022 at 10:44:47AM +0800, Huisong Li wrote:
-> Currently, PCC Operation Region driver senses the completion of command by
-> interrupt way. If platform can not generate an interrupt when a command
-> complete, the caller never gets the desired result. So let's reject the
-> setup of the PCC address space on platform that do not support interrupt
-> mode.
->
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v3: fixed typo in PROPERTY_ENTRY_REF_ARRAY_LEN() impl (LKP)
+v2: rebased on latest Linux Next, fixed anon union assignment
+ include/linux/property.h | 34 ++++++++++++++--------------------
+ 1 file changed, 14 insertions(+), 20 deletions(-)
 
-Please reword something like below:
-
-"Currently, PCC OpRegion handler depends on the availability of platform
-interrupt to be functional currently. If it is not available, the OpRegion
-can't be executed successfully or the desired outcome won't be possible.
-So let's reject setting up the PCC OpRegion handler on the platform if
-it doesn't support or have platform interrupt available"
-
-> Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> ---
->  drivers/acpi/acpi_pcc.c | 47 +++++++++++++++++++++++++----------------
->  1 file changed, 29 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
-> index 3e252be047b8..8efd08e469aa 100644
-> --- a/drivers/acpi/acpi_pcc.c
-> +++ b/drivers/acpi/acpi_pcc.c
-> @@ -53,6 +53,7 @@ acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
->  	struct pcc_data *data;
->  	struct acpi_pcc_info *ctx = handler_context;
->  	struct pcc_mbox_chan *pcc_chan;
-> +	static acpi_status ret;
->  
->  	data = kzalloc(sizeof(*data), GFP_KERNEL);
->  	if (!data)
-> @@ -69,23 +70,35 @@ acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
->  	if (IS_ERR(data->pcc_chan)) {
->  		pr_err("Failed to find PCC channel for subspace %d\n",
->  		       ctx->subspace_id);
-> -		kfree(data);
-> -		return AE_NOT_FOUND;
-> +		ret = AE_NOT_FOUND;
-> +		goto request_channel_fail;
-
-The labels are confusing IMO. I would do 's/request_channel_fail/err_free_data/'
-to indicate what is exactly done there rather than just describing what
-failed.
-
->  	}
->  
->  	pcc_chan = data->pcc_chan;
-> +	if (!pcc_chan->mchan->mbox->txdone_irq) {
-> +		pr_err("This channel-%d does not support interrupt.\n",
-> +		       ctx->subspace_id);
-> +		ret = AE_SUPPORT;
-> +		goto request_channel_fail;
-
-This is wrong, you must goto "ioremap_fail" as you have been successful in
-opening the channel and now need to free the same.
-
-> +	}
->  	data->pcc_comm_addr = acpi_os_ioremap(pcc_chan->shmem_base_addr,
->  					      pcc_chan->shmem_size);
->  	if (!data->pcc_comm_addr) {
->  		pr_err("Failed to ioremap PCC comm region mem for %d\n",
->  		       ctx->subspace_id);
-> -		pcc_mbox_free_channel(data->pcc_chan);
-> -		kfree(data);
-> -		return AE_NO_MEMORY;
-> +		ret = AE_NO_MEMORY;
-> +		goto ioremap_fail;
-
-Again I prefer 's/ioremap_fail/err_free_channel/' or something similar.
-
-With all the above comments incorporated, you can add:
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 5d840299146d..0eab13a5c7df 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -12,6 +12,7 @@
+ 
+ #include <linux/bits.h>
+ #include <linux/fwnode.h>
++#include <linux/stddef.h>
+ #include <linux/types.h>
+ 
+ struct device;
+@@ -311,24 +312,14 @@ struct property_entry {
+  * crafted to avoid gcc-4.4.4's problems with initialization of anon unions
+  * and structs.
+  */
+-
+-#define __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_)				\
+-	sizeof(((struct property_entry *)NULL)->value._elem_[0])
+-
+-#define __PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_, _elsize_, _Type_,	\
+-					  _val_, _len_)			\
+-(struct property_entry) {						\
+-	.name = _name_,							\
+-	.length = (_len_) * (_elsize_),					\
+-	.type = DEV_PROP_##_Type_,					\
+-	{ .pointer = _val_ },						\
++#define __PROPERTY_ENTRY_ARRAY_LEN(_name_, _elem_, _Type_, _val_, _len_)		\
++(struct property_entry) {								\
++	.name = _name_,									\
++	.length = (_len_) * sizeof_field(struct property_entry, value._elem_[0]),	\
++	.type = DEV_PROP_##_Type_,							\
++	{ .pointer = _val_ },								\
+ }
+ 
+-#define __PROPERTY_ENTRY_ARRAY_LEN(_name_, _elem_, _Type_, _val_, _len_)\
+-	__PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_,			\
+-				__PROPERTY_ENTRY_ELEMENT_SIZE(_elem_),	\
+-				_Type_, _val_, _len_)
+-
+ #define PROPERTY_ENTRY_U8_ARRAY_LEN(_name_, _val_, _len_)		\
+ 	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u8_data, U8, _val_, _len_)
+ #define PROPERTY_ENTRY_U16_ARRAY_LEN(_name_, _val_, _len_)		\
+@@ -340,9 +331,12 @@ struct property_entry {
+ #define PROPERTY_ENTRY_STRING_ARRAY_LEN(_name_, _val_, _len_)		\
+ 	__PROPERTY_ENTRY_ARRAY_LEN(_name_, str, STRING, _val_, _len_)
+ #define PROPERTY_ENTRY_REF_ARRAY_LEN(_name_, _val_, _len_)		\
+-	__PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_,			\
+-				sizeof(struct software_node_ref_args),	\
+-				REF, _val_, _len_)
++(struct property_entry) {						\
++	.name = _name_,							\
++	.length = (_len_) * sizeof(struct software_node_ref_args),	\
++	.type = DEV_PROP_REF,						\
++	{ .pointer = _val_ },						\
++}
+ 
+ #define PROPERTY_ENTRY_U8_ARRAY(_name_, _val_)				\
+ 	PROPERTY_ENTRY_U8_ARRAY_LEN(_name_, _val_, ARRAY_SIZE(_val_))
+@@ -360,7 +354,7 @@ struct property_entry {
+ #define __PROPERTY_ENTRY_ELEMENT(_name_, _elem_, _Type_, _val_)		\
+ (struct property_entry) {						\
+ 	.name = _name_,							\
+-	.length = __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_),		\
++	.length = sizeof_field(struct property_entry, value._elem_[0]),	\
+ 	.is_inline = true,						\
+ 	.type = DEV_PROP_##_Type_,					\
+ 	{ .value = { ._elem_[0] = _val_ } },				\
 -- 
-Regards,
-Sudeep
+2.35.1
+
