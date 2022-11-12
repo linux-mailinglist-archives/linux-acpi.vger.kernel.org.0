@@ -2,254 +2,292 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FAE26265BC
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Nov 2022 00:54:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAAF96265F0
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Nov 2022 01:20:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234629AbiKKXyR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Nov 2022 18:54:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36010 "EHLO
+        id S233851AbiKLAU2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Nov 2022 19:20:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbiKKXyQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Nov 2022 18:54:16 -0500
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062.outbound.protection.outlook.com [40.107.220.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6C7922BDB;
-        Fri, 11 Nov 2022 15:54:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hcIRTtekrRTEusTWBjBwkb7Nj8UHUQiYmgjbCe3mu0SwwqZwEwiDVjY5Ta8ZxdK9RO+lncauDZAiLhi/P+GxQC8doClNbIqcqZrfpkHUExHzCQb6z8FsqpKhs0gW14prasocCs54L/8ZgqHDdrYgkiGHxAdjPYqtfQV8LJcVf4I8/xQ7TsXZ7N+MNCP/jlHZ/9KQ8sJHBkdMcvkcL90dkVcff14roT4lQ0u2kP5vb4F7W7CcbFCdIWn0J84UoiyPIloTOCfWi0BjASdfRjvbDVVt1Nc6+Ly8rga6C6nIXBH6tEZUKbQHkOG4rzEfnS3b6CojtmbEyszJRFZ1OSAopQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FCnPf3me1ThSTIqzekxX7BSQSu0EixhkGFkYEN25fSs=;
- b=lF8HFih5vDEfV2vETJlnq84ke1hWdmX4+xvH3N4Ipvy+6+NbPDSaklsvUL6DM16zlxoNz0ETEvEBjNeb00XMom0+5l3FotQz0azkAA8UMH0Xnq8v3OLtV4oxKgeCGhJTHMKnfSU+0lUbTpXipdt/w9tjfdsbX9en7EOeLchVSQ97C6WJsj9UoozLCGRQkU08PLO3wOqmoM4VR1FDH30g21l3VR/W7Mxaajsq5Ok0uZxK4fcHg6UshlJ4Ri/35MxxC9QjPQ/6hzaQ3tfDnBF19VIuDUs0Lgd81zUZrhLW9xeD0o4Gui+pALumndg7CfnDocArMsF9vL2HOh8+KxETpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FCnPf3me1ThSTIqzekxX7BSQSu0EixhkGFkYEN25fSs=;
- b=HBJRSB4Wxww5yrfWuzZtD7r5D5Xkf9xvbJarubX6Ce+q+S//W7/iB4L4U1TFFS+ApAP8DM6HSq1Tv/vV06XBG4GIDdOXaawm/LbbRkJpcciR9FLQWmHs+XJLpoqOpP0PfBo0wmE/76+u/SKsCv6vUbSnrKkjzFHwapPJ55mKykQXSZaoTVwZmZ2lkgZ8Qc4zd0/vXcbGa/EFGArszaIGDkbLZsrO5rWpSHKxmRfgaVmJhJ3Xrb12GB2wg152bv/Gv3j/E3z+dso1Hy68y3Gr2JRhntIWQCWOIJ+sVIuRY5q/huzJvYv+Mx5KTzqhKR14NzKgrBDVa4Ks5EPbKPAv1A==
-Received: from SJ0PR12MB5676.namprd12.prod.outlook.com (2603:10b6:a03:42e::8)
- by CH0PR12MB5203.namprd12.prod.outlook.com (2603:10b6:610:ba::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.13; Fri, 11 Nov
- 2022 23:54:07 +0000
-Received: from SJ0PR12MB5676.namprd12.prod.outlook.com
- ([fe80::46c4:5346:c449:9bd4]) by SJ0PR12MB5676.namprd12.prod.outlook.com
- ([fe80::46c4:5346:c449:9bd4%3]) with mapi id 15.20.5791.027; Fri, 11 Nov 2022
- 23:54:07 +0000
-From:   Besar Wicaksono <bwicaksono@nvidia.com>
-To:     Will Deacon <will@kernel.org>
-CC:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        Thierry Reding <treding@nvidia.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Vikram Sethi <vsethi@nvidia.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v2] ACPI: ARM Performance Monitoring Unit Table (APMT)
- initial support
-Thread-Topic: [PATCH v2] ACPI: ARM Performance Monitoring Unit Table (APMT)
- initial support
-Thread-Index: AQHY05p5Zh4pJFmZEk6UwzpU+Lc4ma40EgWAgAaXIeA=
-Date:   Fri, 11 Nov 2022 23:54:07 +0000
-Message-ID: <SJ0PR12MB5676DF8011687CFB0E124FC7A0009@SJ0PR12MB5676.namprd12.prod.outlook.com>
-References: <20220929002834.32664-1-bwicaksono@nvidia.com>
- <20221107191034.GB21991@willie-the-truck>
-In-Reply-To: <20221107191034.GB21991@willie-the-truck>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR12MB5676:EE_|CH0PR12MB5203:EE_
-x-ms-office365-filtering-correlation-id: 4cf9d7ea-9945-46f6-44f4-08dac4400591
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: xZEg0PMipPGaV4m3/N3aamaA4IZF2ZnBkGQrFFs7S4meGSTdEiqkuZTkK7NqnudhGbedwI6QkdQiesblLAobvYrlYEpvQcq0sKx57uP+b9oZyVEEOwD00L/9L2loBD8PQMm+pCvHdJAE8h7xEmjIpkZNw24VauQCelFlEbKllc7nIYlECc0Yyuf3rosOEN2qGyfgv8j2D1HaULXODGTuvz49Q9x7k4JZHWGaRt47i6n6A7UAcsh6STIXVWwJ6OGtu4N1Zs22nIkTCi95b8xOh/BsiOdoo3zLH+1NH0IihgdDZ9NDnVpmVfhNDR1LieU8Edb1K6uH9dBxZnwPMWURSUhbyVQxTcfK6cqmFNc7W1s8CdFRGYfWeKL1JNjwcHnlVoeJ8/uK3EAzCsmdAxoV5p/YGie9haTc7z9MhQNIaHwVSSShqP5pv6IifyWuspgsrkTn/6fw/aPJ8md2my58zAzaxn9bYiX3Xn9G/PlTERJnRVQJluAURmtIwTHczu6W2miH/p28JesakFW8Zp99WB7MQIxGMCY9MbS6Kyv0+GdUzXleAzfjaUSKOSMXJijYPMNXAf1LAHA76Cfc3J9Qqxvoc+jQeY7Q1tCEF7Cgu19I6zYkm4F717rEUKX6AwzAjnUJX56cLeusBgbPsjqLzeMiKdhq5Le0Xw0Djn9JBCeliTMXAs26qcp8uaXJog40rakU14g10nWaW0E2SRNt+MUXJCf3c6028Jjt7d78J7DYSOLc6r2iBgQqaaMqtTvtb9T89nm5NQWhcKA9XTdRYfNx21H9fNly9z+bOcAF9mnwZdMaOR4eeleMekL3+368CuVxTIur6BGhWv/G3BBVA1Gzocv/rAPrSUWCkobNIjs=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR12MB5676.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(39860400002)(376002)(366004)(136003)(346002)(451199015)(6916009)(316002)(54906003)(122000001)(86362001)(66946007)(66446008)(66476007)(76116006)(66556008)(186003)(64756008)(8676002)(38100700002)(4326008)(2906002)(7416002)(478600001)(9686003)(8936002)(52536014)(71200400001)(33656002)(41300700001)(38070700005)(83380400001)(26005)(5660300002)(55016003)(53546011)(7696005)(6506007)(966005);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?nT/5x8uOewOPBSiIVScWpxdnUGyatLJjXnRRZunv7f6iJx3ofxxUGYxuvZjG?=
- =?us-ascii?Q?siBpSh26S4loBmljAZNEMrIH2xeKX3ujL2+Dr581sPJg2O7qUQbC0X34JYVh?=
- =?us-ascii?Q?HkhCQo4D3XCEy24AHgXMg38iPbR5jxy/p2S8B4twBpcaXb+85tWiB+CbOCN3?=
- =?us-ascii?Q?vfaF9Am80aVMEpNS5WRCIXXNVXEg1brAg0IFp/PnoPfIKKu/WPWCWcKhmIhw?=
- =?us-ascii?Q?JZ/HHX59g3qDAB38Bu7EdkYml7At28R7PAg/jlihJI1HTB/HJy+dy+l0tf4Z?=
- =?us-ascii?Q?weYcFTHX6Z74yUIT4Jsep57GltbqCbMESgmHNk1O1ULulvtdQIMcs/SyHT4V?=
- =?us-ascii?Q?noGmlIzC8HCm+qU72yBXlPCaTeRmfN9J2U0SoW5H9P/A//2hGdtY+uHT4itj?=
- =?us-ascii?Q?5QYXo7C0QlHA747i/2GnUKlW3mnPh4ZPhaXfjub6EttTNHNLuHK/V9EN/XQq?=
- =?us-ascii?Q?1AFIMBv6I/9nR34/Y1m5KzTpeybHL2E3Zjkv+VbdVvvXSl6qiCu0ij4V62IN?=
- =?us-ascii?Q?doaO6aNX3RNXAvvW1wg3iMbO9vBkV4zuZsHYPO/J9xwHcxDncMaGmsQIu0uT?=
- =?us-ascii?Q?SJ4UMQS7CFL8wHxMF0dYzOz17OdUq23zJ6omZbb3L77/4vUC8L2WwozFg38M?=
- =?us-ascii?Q?XCXPB8i/gTN/2PpCfOPzICHP7TM0FoWikEZlhbBI01qF0X9yzfdrTqzVI+7A?=
- =?us-ascii?Q?ZjiSARU3nzyfNxSWLQkdcXyc4kebAv5I4/xvqaEwwelZD2hboluwwPbVtMU5?=
- =?us-ascii?Q?877xrx02DGL4ePgVBwQpcDye3gT78ZbCzVreAZ3N75JD0Jclgh9B1T8FSpu7?=
- =?us-ascii?Q?scxp0h4rboHJ6xBNi7B64Mlt6p81d9oSEk2KiaGN0ZYLvuXzYko/JSkhba5S?=
- =?us-ascii?Q?vt2hMysSZg8vXnYpWWX++h0M3In0s+NDp27jqTO7Vb81nwrtE7u/MVgx9Tqs?=
- =?us-ascii?Q?GdwiDYYS26q9XajYAS1gAN+k+jRGzlufm07bjWrMdWidPYwceJMjMhNea0IX?=
- =?us-ascii?Q?Y4BpGrhJb78SdT0CCnyClWbejQ5zbvc67x2n5/MLqSUJK0jWagyoeIC7PZ0P?=
- =?us-ascii?Q?hblbQgM3jZekJDL10MGLxPokzFXUbGp5JAW8DfR3lx4DKdWbvLaIK5vt6Mqv?=
- =?us-ascii?Q?ZtFRiud1GEIBmDh99mL1oKGdkhwifD3fo/m98D9YAdBpQByb8SDRf8camlqo?=
- =?us-ascii?Q?lbwLkMawcoa9QsVhKdfLPe2oDmtFfQIFI3M0CB+sb/LTIQYMak66zKq9iMeY?=
- =?us-ascii?Q?YiqKDJ+nfI3AL0gGm/6t5o4zaxG0pYfjZXCGRs6+rF/FlJ7sndRcSfMSxLFD?=
- =?us-ascii?Q?8BC/gaCZb3+bStnmqTMe+QeJb+rWgXNH/7SxDSHdJg6YvvlREpN+S9Rm9zZd?=
- =?us-ascii?Q?jOk+P6zyHor45pB06Vh5W+yz3mn1o1wozRo5odxBMK1RcqD5OCcj9/8r9K7a?=
- =?us-ascii?Q?gIk4zmCCKImSavGYr+42rR3HKhVhKhpsfvK9LxKRBmFP2JeGJ2UcqTvzRZAl?=
- =?us-ascii?Q?8T2+wTp3QHCghK5jB2UN278sqsQuoqX/Zp+KGVTOQLRalnZ/CskrHPBth1/o?=
- =?us-ascii?Q?ykBYfv22jwkQmhOBge7XcWbaRdhW9zW3MrGE85Pb?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S233502AbiKLAU1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Nov 2022 19:20:27 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3A0BC2D;
+        Fri, 11 Nov 2022 16:20:26 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5563E6207F;
+        Sat, 12 Nov 2022 00:20:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF2AC433D6;
+        Sat, 12 Nov 2022 00:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668212425;
+        bh=oNKpFMiVqEx9a2F+79u5/Oy5/BPF4GsQuOKfE3HpXVE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=p+C0GKSj/10Lqgl8cQs/vR0+CdDE2spABxEGWKemi4ZuNMn4lcnB3K7DI5R6F5ffy
+         Hdtjg/Hp67Z5l198dLWLgfdr23NB3VlxIfl/7RvgctbE7est6vY3djKhybfg4rdt9u
+         wm2zqBDORVjQqB+0DoP4W/t5IL+vlS1cK3o7LHKJezE3/Rsf5JW036ckrS+qSakkVN
+         Rvvq79j2K5IrPWzRcXGF5qyEd3aj8ZgbIbrkqZlNWXv0muHhdC0fLzkLx6p1sF2zL9
+         axRdzQwbGF6VMrkRzeZ6EtNINpvh4MQDR6e8fNbf/KC3gupmXsDLkfs0glEQsEU8lG
+         R62qRA2t8nWrA==
+Date:   Fri, 11 Nov 2022 18:20:23 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@suse.de>,
+        Mateusz =?utf-8?Q?Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+        Jean Delvare <jdelvare@suse.com>, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v2] acpi,pci: handle duplicate IRQ routing entries
+ returned from _PRT
+Message-ID: <20221112002023.GA764787@bhelgaas>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB5676.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4cf9d7ea-9945-46f6-44f4-08dac4400591
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Nov 2022 23:54:07.6079
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: f3DrQh94E2/t1g3d1X2GuFGZQyZ84YL/jaGt1PLoMZWeQV6k/MKSr7IBFZZamFSUtAqv5YNNF5o5S5DcWq6exQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5203
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220917090944.110885-1-mat.jonczyk@o2.pl>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Will,
+[+cc Jean, linux-i2c]
 
+On Sat, Sep 17, 2022 at 11:09:44AM +0200, Mateusz Jończyk wrote:
+> On some platforms, the ACPI _PRT function returns duplicate interrupt
+> routing entries. Linux uses the first matching entry, but sometimes the
+> second matching entry contains the correct interrupt vector.
 
-> -----Original Message-----
-> From: Will Deacon <will@kernel.org>
-> Sent: Monday, November 7, 2022 1:11 PM
-> To: Besar Wicaksono <bwicaksono@nvidia.com>
-> Cc: rafael@kernel.org; lenb@kernel.org; catalin.marinas@arm.com;
-> lorenzo.pieralisi@arm.com; guohanjun@huawei.com;
-> sudeep.holla@arm.com; linux-tegra@vger.kernel.org; Thierry Reding
-> <treding@nvidia.com>; Jonathan Hunter <jonathanh@nvidia.com>; Vikram
-> Sethi <vsethi@nvidia.com>; linux-acpi@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org
-> Subject: Re: [PATCH v2] ACPI: ARM Performance Monitoring Unit Table
-> (APMT) initial support
->=20
-> External email: Use caution opening links or attachments
->=20
->=20
-> On Wed, Sep 28, 2022 at 07:28:34PM -0500, Besar Wicaksono wrote:
-> > diff --git a/drivers/acpi/arm64/apmt.c b/drivers/acpi/arm64/apmt.c
-> > new file mode 100644
-> > index 000000000000..f55167ca51e7
-> > --- /dev/null
-> > +++ b/drivers/acpi/arm64/apmt.c
-> > @@ -0,0 +1,177 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * ARM APMT table support.
-> > + * Design document number: ARM DEN0117.
-> > + *
-> > + * Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.
-> > + *
-> > + */
-> > +
-> > +#define pr_fmt(fmt)  "ACPI: APMT: " fmt
-> > +
-> > +#include <linux/acpi.h>
-> > +#include <linux/acpi_apmt.h>
-> > +#include <linux/init.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/platform_device.h>
-> > +
-> > +#define DEV_NAME "arm-cs-arch-pmu"
-> > +
-> > +/* There can be up to 3 resources: page 0 and 1 address, and interrupt=
-. */
-> > +#define DEV_MAX_RESOURCE_COUNT 3
-> > +
-> > +/* Root pointer to the mapped APMT table */
-> > +static struct acpi_table_header *apmt_table;
-> > +
-> > +static int __init apmt_init_resources(struct resource *res,
-> > +                                           struct acpi_apmt_node *node=
-)
-> > +{
-> > +     int irq, trigger;
-> > +     int num_res =3D 0;
-> > +
-> > +     res[num_res].start =3D node->base_address0;
-> > +     res[num_res].end =3D node->base_address0 + SZ_4K - 1;
-> > +     res[num_res].flags =3D IORESOURCE_MEM;
-> > +
-> > +     num_res++;
-> > +
-> > +     res[num_res].start =3D node->base_address1;
-> > +     res[num_res].end =3D node->base_address1 + SZ_4K - 1;
-> > +     res[num_res].flags =3D IORESOURCE_MEM;
-> > +
-> > +     num_res++;
-> > +
-> > +     if (node->ovflw_irq !=3D 0) {
-> > +             trigger =3D (node->ovflw_irq_flags &
-> ACPI_APMT_OVFLW_IRQ_FLAGS_MODE);
-> > +             trigger =3D (trigger =3D=3D
-> ACPI_APMT_OVFLW_IRQ_FLAGS_MODE_LEVEL) ?
-> > +                     ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
-> > +             irq =3D acpi_register_gsi(NULL, node->ovflw_irq, trigger,
-> > +                                             ACPI_ACTIVE_HIGH);
-> > +
-> > +             if (irq <=3D 0) {
-> > +                     pr_warn("APMT could not register gsi hwirq %d\n",=
- irq);
-> > +                     return num_res;
-> > +             }
-> > +
-> > +             res[num_res].start =3D irq;
-> > +             res[num_res].end =3D irq;
-> > +             res[num_res].flags =3D IORESOURCE_IRQ;
-> > +
-> > +             num_res++;
-> > +     }
-> > +
-> > +     return num_res;
-> > +}
-> > +
-> > +/**
-> > + * apmt_add_platform_device() - Allocate a platform device for APMT
-> node
-> > + * @node: Pointer to device ACPI APMT node
-> > + *
-> > + * Returns: 0 on success, <0 failure
-> > + */
-> > +static int __init apmt_add_platform_device(struct acpi_apmt_node
-> *node,
-> > +                                                     struct fwnode_han=
-dle *fwnode)
->=20
-> I queued this already, but my testing kicked up a nit that 'fwnode' is no=
-t
-> described in the kerneldoc. Please can you send a follow-up fix for that,
-> based on for-next/acpi? The indentation is also pretty weird with extra
-> parameter.
->=20
+Rafael, Jean, what do you think about this?  It seems like kind of a
+lot of infrastructure to deal with this oddness, but I'm not really
+opposed to it.
 
-Thanks for getting this patch. I have sent the follow-up fix with:
-https://lore.kernel.org/linux-arm-kernel/20221111234323.16182-1-bwicaksono@=
-nvidia.com/
+This is in i2c-i801.c, which seems to have some support for polling;
+maybe it could make smart enough to complain and automatically switch
+to polling if a timeout occurs.
 
-Regards,
-Besar
+Or maybe we scan the entire _PRT and let the match win (instead of the
+first as we do today).
 
-> Will
+Or ...?
+
+Google finds a lot of hits for "i801_smbus" "timeout waiting for
+interrupt", but I can't tell whether they're a similar _PRT issue or
+something else.
+
+> This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
+> SMBus controller. This controller was nonfunctional unless its interrupt
+> usage was disabled (using the "disable_features=0x10" module parameter).
+> 
+> After investigation, it turned out that the driver was using an
+> incorrect interrupt vector: in lspci output for this device there was:
+>         Interrupt: pin B routed to IRQ 19
+> but after running i2cdetect (without using any i2c-i801 module
+> parameters) the following was logged to dmesg:
+> 
+>         [...]
+>         [  132.248657] i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
+>         [  132.248669] i801_smbus 0000:00:1f.3: Transaction timeout
+>         [  132.452649] i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
+>         [  132.452662] i801_smbus 0000:00:1f.3: Transaction timeout
+>         [  132.467682] irq 17: nobody cared (try booting with the "irqpoll" option)
+> 
+> Existence of duplicate entries in a table returned by the _PRT method
+> was confirmed by disassembling the ACPI DSTD table.
+> 
+> Linux used the first matching entry, which was incorrect. In order not
+> to disrupt existing systems, use the first matching entry unless the
+> pci=prtlast kernel parameter is used or a Dell Latitude E6500 laptop is
+> detected.
+> 
+> Disclaimer: there is nothing really interesting connected to the SMBus
+> controller on this laptop, but this change may help other systems.
+> 
+> Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Borislav Petkov <bp@suse.de>
+> 
+> ---
+> v2: do not quote the disassembled ACPI DSDT table - for copyright reasons.
+> ---
+>  .../admin-guide/kernel-parameters.txt         |  8 ++
+>  drivers/acpi/pci_irq.c                        | 89 ++++++++++++++++++-
+>  drivers/pci/pci.c                             |  9 ++
+>  3 files changed, 102 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 426fa892d311..2ff351db10b8 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -4190,6 +4190,14 @@
+>  				bridge windows. This is the default on modern
+>  				hardware. If you need to use this, please report
+>  				a bug to <linux-pci@vger.kernel.org>.
+> +		prtlast		If the _PRT ACPI method returns duplicate
+> +				IRQ routing entries, use the last matching entry
+> +				for a given device. If the platform may be
+> +				affected by this problem, an error message is
+> +				printed to dmesg - this parameter is
+> +				ineffective otherwise. If you need to use this,
+> +				please report a bug to
+> +				<linux-pci@vger.kernel.org>.
+>  		routeirq	Do IRQ routing for all PCI devices.
+>  				This is normally done in pci_enable_device(),
+>  				so this option is a temporary workaround
+> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+> index 08e15774fb9f..5cead840de0b 100644
+> --- a/drivers/acpi/pci_irq.c
+> +++ b/drivers/acpi/pci_irq.c
+> @@ -196,12 +196,73 @@ static int acpi_pci_irq_check_entry(acpi_handle handle, struct pci_dev *dev,
+>  	return 0;
+>  }
+>  
+> +extern bool pci_prtlast;
+> +
+> +static const struct dmi_system_id pci_prtlast_dmi[] = {
+> +	{
+> +		.ident = "Dell Latitude E6500",
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "Latitude E6500"),
+> +		},
+> +	},
+> +	{ }
+> +};
+> +
+> +static bool acpi_pci_prt_use_last(struct acpi_prt_entry *curr,
+> +				  const char *current_source,
+> +				  const char *previous_match_source,
+> +				  int previous_match_index)
+> +{
+> +	bool ret;
+> +	const struct dmi_system_id *id;
+> +	const int msg_bufsize = 512;
+> +	char *msg = kmalloc(msg_bufsize, GFP_KERNEL);
+> +
+> +	if (!msg)
+> +		return false;
+> +
+> +	snprintf(msg, msg_bufsize,
+> +		 FW_BUG
+> +		 "ACPI _PRT returned duplicate IRQ routing entries for PCI device "
+> +		 "%04x:%02x:%02x[INT%c]: %s[%d] and %s[%d]. ",
+> +		 curr->id.segment, curr->id.bus, curr->id.device,
+> +		 pin_name(curr->pin),
+> +		 previous_match_source, previous_match_index,
+> +		 current_source, curr->index);
+> +
+> +	id = dmi_first_match(pci_prtlast_dmi);
+> +
+> +	if (id) {
+> +		pr_warn("%s%s detected, using last entry.\n",
+> +			msg, id->ident);
+> +
+> +		ret = true;
+> +	} else if (pci_prtlast) {
+> +		pr_err(
+> +"%sUsing last entry, as directed on the command line. If this helps, report a bug.\n",
+> +		       msg);
+> +
+> +		ret = true;
+> +	} else {
+> +		pr_err("%sIf necessary, use \"pci=prtlast\" and report a bug.\n",
+> +		       msg);
+> +
+> +		ret = false;
+> +	}
+> +
+> +	kfree(msg);
+> +	return ret;
+> +}
+> +
+>  static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
+> -			  int pin, struct acpi_prt_entry **entry_ptr)
+> +			  int pin, struct acpi_prt_entry **entry_ptr_out)
+>  {
+>  	acpi_status status;
+>  	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+>  	struct acpi_pci_routing_table *entry;
+> +	struct acpi_prt_entry *match = NULL;
+> +	const char *match_source = NULL;
+>  	acpi_handle handle = NULL;
+>  
+>  	if (dev->bus->bridge)
+> @@ -219,13 +280,33 @@ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
+>  
+>  	entry = buffer.pointer;
+>  	while (entry && (entry->length > 0)) {
+> -		if (!acpi_pci_irq_check_entry(handle, dev, pin,
+> -						 entry, entry_ptr))
+> -			break;
+> +		struct acpi_prt_entry *curr;
+> +
+> +		if (!acpi_pci_irq_check_entry(handle, dev, pin, entry, &curr)) {
+> +			if (!match) {
+> +				// first match
+> +				match = curr;
+> +				match_source = entry->source;
+> +			} else if (!acpi_pci_prt_use_last(curr,
+> +							  entry->source,
+> +							  match_source,
+> +							  match->index)) {
+> +				// duplicates found, use first entry
+> +				kfree(curr);
+> +			} else {
+> +				// duplicates found, use last entry
+> +				kfree(match);
+> +				match = curr;
+> +				match_source = entry->source;
+> +			}
+> +		}
+> +
+>  		entry = (struct acpi_pci_routing_table *)
+>  		    ((unsigned long)entry + entry->length);
+>  	}
+>  
+> +	*entry_ptr_out = match;
+> +
+>  	kfree(buffer.pointer);
+>  	return 0;
+>  }
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 95bc329e74c0..a14a2e4e4197 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -155,6 +155,11 @@ static bool pci_bridge_d3_disable;
+>  /* Force bridge_d3 for all PCIe ports */
+>  static bool pci_bridge_d3_force;
+>  
+> +#ifdef CONFIG_ACPI
+> +/* Use the last matching entry from the table returned by the _PRT ACPI method. */
+> +bool pci_prtlast;
+> +#endif
+> +
+>  static int __init pcie_port_pm_setup(char *str)
+>  {
+>  	if (!strcmp(str, "off"))
+> @@ -6896,6 +6901,10 @@ static int __init pci_setup(char *str)
+>  				pci_add_flags(PCI_SCAN_ALL_PCIE_DEVS);
+>  			} else if (!strncmp(str, "disable_acs_redir=", 18)) {
+>  				disable_acs_redir_param = str + 18;
+> +#ifdef CONFIG_ACPI
+> +			} else if (!strncmp(str, "prtlast", 7)) {
+> +				pci_prtlast = true;
+> +#endif
+>  			} else {
+>  				pr_err("PCI: Unknown option `%s'\n", str);
+>  			}
+> 
+> base-commit: 7e18e42e4b280c85b76967a9106a13ca61c16179
+> -- 
+> 2.25.1
+> 
