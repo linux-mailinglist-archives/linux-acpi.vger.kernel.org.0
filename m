@@ -2,73 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44B67626ED3
-	for <lists+linux-acpi@lfdr.de>; Sun, 13 Nov 2022 10:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A244626FA0
+	for <lists+linux-acpi@lfdr.de>; Sun, 13 Nov 2022 14:07:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232676AbiKMJzm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 13 Nov 2022 04:55:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60638 "EHLO
+        id S235305AbiKMNH4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 13 Nov 2022 08:07:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229753AbiKMJzk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 13 Nov 2022 04:55:40 -0500
-Received: from jari.cn (unknown [218.92.28.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C7B23E009;
-        Sun, 13 Nov 2022 01:55:39 -0800 (PST)
-Received: by ajax-webmail-localhost.localdomain (Coremail) ; Sun, 13 Nov
- 2022 17:50:30 +0800 (GMT+08:00)
-X-Originating-IP: [182.148.14.167]
-Date:   Sun, 13 Nov 2022 17:50:30 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   wangkailong@jari.cn
-To:     robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org
-Subject:  [PATCH] ACPICA: fix array_size.cocci warning
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT6.0.1 build 20210329(c53f3fee)
- Copyright (c) 2002-2022 www.mailtech.cn
- mispb-4e503810-ca60-4ec8-a188-7102c18937cf-zhkzyfz.cn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S233794AbiKMNH4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 13 Nov 2022 08:07:56 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64EBD2DE4;
+        Sun, 13 Nov 2022 05:07:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668344875; x=1699880875;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6w4/HuZSKBn1ULdEYMPCcnr1BIe4XuqcxBf8rpKCE70=;
+  b=S3HyHrzJ4AW5+pz7+nudTwCvRMWhAwb4QU5rZJsy/OmQyQAAy9PDn2ES
+   NiG0ypPE7llyPB3jE15f5MsONUez41nnk2I6Jlhgo7At6z8SsWfI6SlB3
+   +KR906Ni6TgAm2sRwpta5jA+rvhSdMA42yu1LimmXm+l4SKo9yF30RCis
+   FrsFwgQmaFA/FBBqByRLnfd5QAO9txfbIVlJe637VfAFAV/hwoqfH22gH
+   gMLSMozHr6vhGjj5zQh5RKy81ZOMDP31ME9O3fXEoRWm1H+y74hAleVWW
+   J9yLpzowi0gGQ+Y05pFs7YlYzGpIet994r729akVCLvFxb5oND5rsRf2U
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10529"; a="310519815"
+X-IronPort-AV: E=Sophos;i="5.96,161,1665471600"; 
+   d="scan'208";a="310519815"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2022 05:07:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10529"; a="638120509"
+X-IronPort-AV: E=Sophos;i="5.96,161,1665471600"; 
+   d="scan'208";a="638120509"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP; 13 Nov 2022 05:07:52 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ouCiF-00BgY5-10;
+        Sun, 13 Nov 2022 15:07:51 +0200
+Date:   Sun, 13 Nov 2022 15:07:50 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 5/6] gpiolib: consolidate GPIO lookups
+Message-ID: <Y3DsJubv/t0nDCa7@smile.fi.intel.com>
+References: <20221031-gpiolib-swnode-v4-0-6c1671890027@gmail.com>
+ <20221031-gpiolib-swnode-v4-5-6c1671890027@gmail.com>
 MIME-Version: 1.0
-Message-ID: <3701ca18.12f.1847065cd7e.Coremail.wangkailong@jari.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAfwD3C+LmvXBj4BsDAA--.83W
-X-CM-SenderInfo: 5zdqwypdlo00nj6mt2flof0/1tbiAQAEB2FEYx0DfwAZs8
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
-X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_00,RCVD_IN_PBL,RDNS_NONE,
-        T_SPF_HELO_PERMERROR,T_SPF_PERMERROR,XPRIO autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221031-gpiolib-swnode-v4-5-6c1671890027@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Rml4IGZvbGxvd2luZyBjb2NjaWNoZWNrIHdhcm5pbmc6Cgpkcml2ZXJzL2FjcGkvYWNwaWNhL3Ri
-ZmFkdC5jOjEwNzoyNy0yODogV0FSTklORzogVXNlIEFSUkFZX1NJWkUKZHJpdmVycy9hY3BpL2Fj
-cGljYS90YmZhZHQuYzoxMzc6MzAtMzE6IFdBUk5JTkc6IFVzZSBBUlJBWV9TSVpFCgpTaWduZWQt
-b2ZmLWJ5OiBLYWlMb25nIFdhbmcgPHdhbmdrYWlsb25nQGphcmkuY24+Ci0tLQogZHJpdmVycy9h
-Y3BpL2FjcGljYS90YmZhZHQuYyB8IDggKystLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2Vy
-dGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2FjcGlj
-YS90YmZhZHQuYyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0LmMKaW5kZXggMzFkN2VhODRh
-MzYwLi42MzdmY2Q3NGYzMGUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0
-LmMKKysrIGIvZHJpdmVycy9hY3BpL2FjcGljYS90YmZhZHQuYwpAQCAtMTAzLDkgKzEwMyw3IEBA
-IHN0YXRpYyBzdHJ1Y3QgYWNwaV9mYWR0X2luZm8gZmFkdF9pbmZvX3RhYmxlW10gPSB7CiAJIEFD
-UElfRkFEVF9TRVBBUkFURV9MRU5HVEggfCBBQ1BJX0ZBRFRfR1BFX1JFR0lTVEVSfQogfTsKIAot
-I2RlZmluZSBBQ1BJX0ZBRFRfSU5GT19FTlRSSUVTIFwKLQkJCShzaXplb2YgKGZhZHRfaW5mb190
-YWJsZSkgLyBzaXplb2YgKHN0cnVjdCBhY3BpX2ZhZHRfaW5mbykpCi0KKyNkZWZpbmUgQUNQSV9G
-QURUX0lORk9fRU5UUklFUyAoQVJSQVlfU0laRShmYWR0X2luZm9fdGFibGUpKQogLyogVGFibGUg
-dXNlZCB0byBzcGxpdCBFdmVudCBCbG9ja3MgaW50byBzZXBhcmF0ZSBzdGF0dXMvZW5hYmxlIHJl
-Z2lzdGVycyAqLwogCiB0eXBlZGVmIHN0cnVjdCBhY3BpX2ZhZHRfcG1faW5mbyB7CkBAIC0xMzMs
-OSArMTMxLDcgQEAgc3RhdGljIHN0cnVjdCBhY3BpX2ZhZHRfcG1faW5mbyBmYWR0X3BtX2luZm9f
-dGFibGVbXSA9IHsKIAkgMX0KIH07CiAKLSNkZWZpbmUgQUNQSV9GQURUX1BNX0lORk9fRU5UUklF
-UyBcCi0JCQkoc2l6ZW9mIChmYWR0X3BtX2luZm9fdGFibGUpIC8gc2l6ZW9mIChzdHJ1Y3QgYWNw
-aV9mYWR0X3BtX2luZm8pKQotCisjZGVmaW5lIEFDUElfRkFEVF9QTV9JTkZPX0VOVFJJRVMgKEFS
-UkFZX1NJWkUoZmFkdF9wbV9pbmZvX3RhYmxlKSkKIC8qKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCiAg
-KgogICogRlVOQ1RJT046ICAgIGFjcGlfdGJfaW5pdF9nZW5lcmljX2FkZHJlc3MKLS0gCjIuMjUu
-MQo=
+On Fri, Nov 11, 2022 at 02:19:07PM -0800, Dmitry Torokhov wrote:
+> Ensure that all paths to obtain/look up GPIOD from generic
+> consumer-visible APIs go through the new gpiod_find_and_request()
+> helper, so that we can easily extend it with support for new firmware
+> mechanisms.
+> 
+> The only exception is OF-specific [devm_]gpiod_get_from_of_node() API
+> that is still being used by a couple of drivers and will be removed as
+> soon as patches converting them to use generic fwnode/device APIs are
+> accepted.
+
+...
+
+> +static struct gpio_desc *gpiod_find_and_request(struct device *consumer,
+> +						struct fwnode_handle *fwnode,
+> +						const char *con_id,
+> +						unsigned int idx,
+> +						enum gpiod_flags flags,
+> +						const char *label,
+> +						bool platform_lookup_allowed)
+> +{
+> +	struct gpio_desc *desc = ERR_PTR(-ENOENT);
+> +	unsigned long lookupflags;
+> +	int ret;
+
+> +	if (!IS_ERR_OR_NULL(fwnode))
+
+Just for the record. I haven't given my tag to this patch, because I think that
+the above check (and respective assignment above) are redundant. Even comment
+inside the below condition clarifies the point of the meaning of descriptor
+being not found. Besides that many of device property APIs designed the way
+that input fwnode can be invalid.
+
+Nevertheless, we agreed with Dmitry that this disagreement should be solved on
+maintainer's level, while it doesn't affect code functionality.
+
+The rest of the patch is fine.
+
+> +		desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx,
+> +					    &flags, &lookupflags);
+> +
+> +	if (gpiod_not_found(desc) && platform_lookup_allowed) {
+> +		/*
+> +		 * Either we are not using DT or ACPI, or their lookup did not
+> +		 * return a result. In that case, use platform lookup as a
+> +		 * fallback.
+> +		 */
+> +		dev_dbg(consumer, "using lookup tables for GPIO lookup\n");
+> +		desc = gpiod_find(consumer, con_id, idx, &lookupflags);
+> +	}
+> +
+> +	if (IS_ERR(desc)) {
+> +		dev_dbg(consumer, "No GPIO consumer %s found\n", con_id);
+> +		return desc;
+> +	}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
