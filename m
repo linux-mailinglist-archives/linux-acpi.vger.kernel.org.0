@@ -2,143 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8685626B80
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Nov 2022 21:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44B67626ED3
+	for <lists+linux-acpi@lfdr.de>; Sun, 13 Nov 2022 10:55:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231919AbiKLUKc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 12 Nov 2022 15:10:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38762 "EHLO
+        id S232676AbiKMJzm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 13 Nov 2022 04:55:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233863AbiKLUKa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 12 Nov 2022 15:10:30 -0500
-X-Greylist: delayed 187 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 12 Nov 2022 12:10:29 PST
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74AF765E3
-        for <linux-acpi@vger.kernel.org>; Sat, 12 Nov 2022 12:10:28 -0800 (PST)
-Received: (wp-smtpd smtp.tlen.pl 18112 invoked from network); 12 Nov 2022 21:10:25 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1668283825; bh=uqtOYyBZaSxTk6vFnxq67IjlDkClKoEOAUnHV1aUrT0=;
-          h=From:To:Cc:Subject;
-          b=FhnxMZy8l4sI4n3JMwI9GDByfbqZg8//i211z5MahGRACd3DKqmVMBsZ0BONJt2f0
-           yVX3tA8CGJkpBIwigre1BPdvyv0QNZjklYcsL4AQ+QWmqV6TMSGR69EBT7U/TZdPK+
-           s9iLLuzykfJTf1/yGZEw8R8eByS06fyS1Rhz330c=
-Received: from aaey149.neoplus.adsl.tpnet.pl (HELO localhost.localdomain) (mat.jonczyk@o2.pl@[83.4.128.149])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with SMTP
-          for <linux-kernel@vger.kernel.org>; 12 Nov 2022 21:10:25 +0100
-From:   =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-To:     linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
-Cc:     =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@suse.de>,
-        Jean Delvare <jdelvare@suse.com>
-Subject: [PATCH] acpi,pci: warn about duplicate IRQ routing entries returned from _PRT
-Date:   Sat, 12 Nov 2022 21:09:27 +0100
-Message-Id: <20221112200927.7255-1-mat.jonczyk@o2.pl>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <35cfe433-bafa-9aeb-20ad-2f275f585b6c@o2.pl>
-References: <35cfe433-bafa-9aeb-20ad-2f275f585b6c@o2.pl>
-MIME-Version: 1.0
+        with ESMTP id S229753AbiKMJzk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 13 Nov 2022 04:55:40 -0500
+Received: from jari.cn (unknown [218.92.28.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C7B23E009;
+        Sun, 13 Nov 2022 01:55:39 -0800 (PST)
+Received: by ajax-webmail-localhost.localdomain (Coremail) ; Sun, 13 Nov
+ 2022 17:50:30 +0800 (GMT+08:00)
+X-Originating-IP: [182.148.14.167]
+Date:   Sun, 13 Nov 2022 17:50:30 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   wangkailong@jari.cn
+To:     robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org
+Subject:  [PATCH] ACPICA: fix array_size.cocci warning
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT6.0.1 build 20210329(c53f3fee)
+ Copyright (c) 2002-2022 www.mailtech.cn
+ mispb-4e503810-ca60-4ec8-a188-7102c18937cf-zhkzyfz.cn
+Content-Transfer-Encoding: base64
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: 72f4d30cf4d363848074315d888fad29
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [UVOU]                               
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Message-ID: <3701ca18.12f.1847065cd7e.Coremail.wangkailong@jari.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: AQAAfwD3C+LmvXBj4BsDAA--.83W
+X-CM-SenderInfo: 5zdqwypdlo00nj6mt2flof0/1tbiAQAEB2FEYx0DfwAZs8
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_00,RCVD_IN_PBL,RDNS_NONE,
+        T_SPF_HELO_PERMERROR,T_SPF_PERMERROR,XPRIO autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On some platforms, the ACPI _PRT function returns duplicate interrupt
-routing entries. Linux uses the first matching entry, but sometimes the
-second matching entry contains the correct interrupt vector.
-
-To check how widespread this problem is, print a warning to dmesg if
-this is the case.
-
-This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
-SMBus controller. This controller was nonfunctional unless its interrupt
-usage was disabled (using the "disable_features=0x10" module parameter).
-
-After investigation, it turned out that the driver was using an
-incorrect interrupt vector: in lspci output for this device there was:
-        Interrupt: pin B routed to IRQ 19
-but after running i2cdetect (without using any i2c-i801 module
-parameters) the following was logged to dmesg:
-
-	[...]
-        i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
-        i801_smbus 0000:00:1f.3: Transaction timeout
-        irq 17: nobody cared (try booting with the "irqpoll" option)
-
-Existence of duplicate entries in the table returned by the _PRT method
-was confirmed by disassembling the ACPI DSDT table.
-
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Borislav Petkov <bp@suse.de>
-Cc: Jean Delvare <jdelvare@suse.com>
----
- drivers/acpi/pci_irq.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-index 08e15774fb9f..c3168927446c 100644
---- a/drivers/acpi/pci_irq.c
-+++ b/drivers/acpi/pci_irq.c
-@@ -203,6 +203,8 @@ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct acpi_pci_routing_table *entry;
- 	acpi_handle handle = NULL;
-+	struct acpi_prt_entry *match = NULL;
-+	const char *match_int_source = NULL;
- 
- 	if (dev->bus->bridge)
- 		handle = ACPI_HANDLE(dev->bus->bridge);
-@@ -219,13 +221,30 @@ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
- 
- 	entry = buffer.pointer;
- 	while (entry && (entry->length > 0)) {
--		if (!acpi_pci_irq_check_entry(handle, dev, pin,
--						 entry, entry_ptr))
--			break;
-+		struct acpi_prt_entry *curr;
-+
-+		if (!acpi_pci_irq_check_entry(handle, dev, pin, entry, &curr)) {
-+			if (match == NULL) {
-+				match = curr;
-+				match_int_source = entry->source;
-+			} else {
-+				pr_warn(FW_BUG
-+				"ACPI _PRT returned duplicate IRQ routing entries for device "
-+					"%04x:%02x:%02x[INT%c]: %s[%d] and %s[%d]. ",
-+					curr->id.segment, curr->id.bus, curr->id.device,
-+					pin_name(curr->pin),
-+					match_int_source, match->index,
-+					entry->source, curr->index);
-+				// we use the first matching entry nonetheless
-+			}
-+		}
-+
- 		entry = (struct acpi_pci_routing_table *)
- 		    ((unsigned long)entry + entry->length);
- 	}
- 
-+	*entry_ptr = match;
-+
- 	kfree(buffer.pointer);
- 	return 0;
- }
-
-base-commit: f0c4d9fc9cc9462659728d168387191387e903cc
--- 
-2.25.1
-
+Rml4IGZvbGxvd2luZyBjb2NjaWNoZWNrIHdhcm5pbmc6Cgpkcml2ZXJzL2FjcGkvYWNwaWNhL3Ri
+ZmFkdC5jOjEwNzoyNy0yODogV0FSTklORzogVXNlIEFSUkFZX1NJWkUKZHJpdmVycy9hY3BpL2Fj
+cGljYS90YmZhZHQuYzoxMzc6MzAtMzE6IFdBUk5JTkc6IFVzZSBBUlJBWV9TSVpFCgpTaWduZWQt
+b2ZmLWJ5OiBLYWlMb25nIFdhbmcgPHdhbmdrYWlsb25nQGphcmkuY24+Ci0tLQogZHJpdmVycy9h
+Y3BpL2FjcGljYS90YmZhZHQuYyB8IDggKystLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2Vy
+dGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2FjcGlj
+YS90YmZhZHQuYyBiL2RyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0LmMKaW5kZXggMzFkN2VhODRh
+MzYwLi42MzdmY2Q3NGYzMGUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvYWNwaS9hY3BpY2EvdGJmYWR0
+LmMKKysrIGIvZHJpdmVycy9hY3BpL2FjcGljYS90YmZhZHQuYwpAQCAtMTAzLDkgKzEwMyw3IEBA
+IHN0YXRpYyBzdHJ1Y3QgYWNwaV9mYWR0X2luZm8gZmFkdF9pbmZvX3RhYmxlW10gPSB7CiAJIEFD
+UElfRkFEVF9TRVBBUkFURV9MRU5HVEggfCBBQ1BJX0ZBRFRfR1BFX1JFR0lTVEVSfQogfTsKIAot
+I2RlZmluZSBBQ1BJX0ZBRFRfSU5GT19FTlRSSUVTIFwKLQkJCShzaXplb2YgKGZhZHRfaW5mb190
+YWJsZSkgLyBzaXplb2YgKHN0cnVjdCBhY3BpX2ZhZHRfaW5mbykpCi0KKyNkZWZpbmUgQUNQSV9G
+QURUX0lORk9fRU5UUklFUyAoQVJSQVlfU0laRShmYWR0X2luZm9fdGFibGUpKQogLyogVGFibGUg
+dXNlZCB0byBzcGxpdCBFdmVudCBCbG9ja3MgaW50byBzZXBhcmF0ZSBzdGF0dXMvZW5hYmxlIHJl
+Z2lzdGVycyAqLwogCiB0eXBlZGVmIHN0cnVjdCBhY3BpX2ZhZHRfcG1faW5mbyB7CkBAIC0xMzMs
+OSArMTMxLDcgQEAgc3RhdGljIHN0cnVjdCBhY3BpX2ZhZHRfcG1faW5mbyBmYWR0X3BtX2luZm9f
+dGFibGVbXSA9IHsKIAkgMX0KIH07CiAKLSNkZWZpbmUgQUNQSV9GQURUX1BNX0lORk9fRU5UUklF
+UyBcCi0JCQkoc2l6ZW9mIChmYWR0X3BtX2luZm9fdGFibGUpIC8gc2l6ZW9mIChzdHJ1Y3QgYWNw
+aV9mYWR0X3BtX2luZm8pKQotCisjZGVmaW5lIEFDUElfRkFEVF9QTV9JTkZPX0VOVFJJRVMgKEFS
+UkFZX1NJWkUoZmFkdF9wbV9pbmZvX3RhYmxlKSkKIC8qKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCiAg
+KgogICogRlVOQ1RJT046ICAgIGFjcGlfdGJfaW5pdF9nZW5lcmljX2FkZHJlc3MKLS0gCjIuMjUu
+MQo=
