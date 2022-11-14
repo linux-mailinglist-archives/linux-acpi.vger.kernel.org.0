@@ -2,79 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 579356284DE
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 17:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA788628616
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 17:54:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237411AbiKNQRy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Nov 2022 11:17:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52822 "EHLO
+        id S236840AbiKNQym (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Nov 2022 11:54:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237458AbiKNQRp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 11:17:45 -0500
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB3E62ED63;
-        Mon, 14 Nov 2022 08:17:16 -0800 (PST)
-Received: by mail-qt1-f171.google.com with SMTP id a27so7033567qtw.10;
-        Mon, 14 Nov 2022 08:17:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MG2DwBbr5dqsaW3mK7dHyLfa8FobjN2Nv6cl+aBJihI=;
-        b=IuBBeZv4T/VFSqIlKlzqrzBGs3PC4LBj/H8tnI2boma8ku0MO9PtFi36v92WQexVg0
-         aBq9mY2a3cjMP1pIrOu5Kfn0HVh5fjhWZPtH2L1XWK8an8OO1R2v2LsBarR9afLPDBht
-         AVHGZvC8qU0qpI0XO7n/Gh6xhOhe1Rw7555UOPBduitgTxQlkU235HIWMEd7NE9WGuKd
-         IEDUGBPX3dHX8/3NaJ1UdEqVx4TyqkHjroHBAScKRSnm1jPFLIvaTtIKcCslPXbVScEE
-         rHLSdjkZUx8MGbbcvAJh2ajKrgYG4hQmrW861GfrNfgtOO4OWWj859YDS+DCzZtb11wj
-         Of2A==
-X-Gm-Message-State: ANoB5pmH4OqpKMvBhbNn+vop5LHGNqOZO1qhlOvl8eaISKZRB3UbhE8l
-        PRz5nNhivouqZs0qHeaZheFDz6bJRsT00K3GF8A=
-X-Google-Smtp-Source: AA0mqf5sZdpMhkd0wSOTKDrCn1eXwtNpTjnqcyf1w5SxwNQFnlr2SV7SIPNwFVaytbUhruPMS0Tc9i7h5fIr+T1l9R0=
-X-Received: by 2002:a05:622a:8cc:b0:3a5:5987:42c6 with SMTP id
- i12-20020a05622a08cc00b003a5598742c6mr12559271qte.147.1668442635838; Mon, 14
- Nov 2022 08:17:15 -0800 (PST)
-MIME-Version: 1.0
-References: <20221109174720.203723-1-jeremy.linton@arm.com> <20221114161206.5sspq25v57ddco4o@bogus>
-In-Reply-To: <20221114161206.5sspq25v57ddco4o@bogus>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 14 Nov 2022 17:16:59 +0100
-Message-ID: <CAJZ5v0jHk9eEj0EnH-hWnRsabAs+E3LiudTPE+KFhcsZARaw5Q@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Enable FPDT on arm64
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Jeremy Linton <jeremy.linton@arm.com>, rafael@kernel.org,
-        linux-acpi@vger.kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, corbet@lwn.net, lenb@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        with ESMTP id S236117AbiKNQyl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 11:54:41 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B619F63;
+        Mon, 14 Nov 2022 08:54:40 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 072DA612FA;
+        Mon, 14 Nov 2022 16:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF11C433C1;
+        Mon, 14 Nov 2022 16:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668444879;
+        bh=MUy8O5WFGyXPVwY1Gpp83dzNZ67hEk35Q6+dyzfGqQQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=nseCzYfBwjX++T+61HAXaIWWQwdFnHY1w2zmhmK4nuSDU1npeMBrbRW9jOr7P+Bsc
+         b2y6GMp9oqCNP/RoJkdFq3Q/0MxotWPQ/b+d9zIVaXBi3Ts6XxmF5pNFZUFblna+PD
+         P2zn/EBIcsTmyeOTFLH+1q14KCwFkfCWQOKMvJPOlhNWwFGobLrHInqN7HOio9UoSr
+         gOWJchUyyWtj3lVKlAYo5gVvc2w3HBO2tQMjf2jqEDwT2IBTzKp05LsEjamZfo9m2h
+         QskYroBVriNQFfguj35pWXQZpg1od2mb0wD6lrCU7R553f1gTObL1zusdquVUszDev
+         R1Nl7OUTNX2JA==
+Date:   Mon, 14 Nov 2022 10:54:37 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mehta Sanju <Sanju.Mehta@amd.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power
+ resources support D3
+Message-ID: <20221114165437.GA917550@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <53e6278b-9261-952e-56bb-4bd288cd2e9e@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 14, 2022 at 5:12 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
->
-> On Wed, Nov 09, 2022 at 11:47:20AM -0600, Jeremy Linton wrote:
-> > FPDT provides some boot timing records useful for analyzing
-> > parts of the UEFI boot stack. Given the existing code works
-> > on arm64, and allows reading the values without utilizing
-> > /dev/mem it seems like a good idea to turn it on.
-> >
->
-> FWIW, this looks good to me.
->
-> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
->
-> Hi Rafael,
->
-> Just saw this marked as "Handled Elsewhere", do you prefer to be merged
-> via arm64 or other tree ? This doesn't have any arm64 changes, just Kconfig
-> and doc changes. Let us know.
+On Mon, Nov 14, 2022 at 09:37:58AM -0600, Limonciello, Mario wrote:
+> On 11/14/2022 09:33, Rafael J. Wysocki wrote:
+> > On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
+> > > > On 11/11/2022 11:41, Bjorn Helgaas wrote:
+> > > > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
+> > > > > > Firmware typically advertises that ACPI devices that represent PCIe
+> > > > > > devices can support D3 by a combination of the value returned by
+> > > > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
+> > > > > > 
+> > > > > > `acpi_pci_bridge_d3` looks for this combination but also contains
+> > > > > > an assumption that if an ACPI device contains power resources the PCIe
+> > > > > > device it's associated with can support D3.  This was introduced
+> > > > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
+> > > > > > D3 if power managed by ACPI").
+> > > > > > 
+> > > > > > Some firmware configurations for "AMD Pink Sardine" do not support
+> > > > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
+> > > > > > port used for tunneling. The PCIe device will still be opted into
+> > > > > > runtime PM in the kernel [2] because of the logic within
+> > > > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
+> > > > > > device contains power resources.
+> > > 
+> > > Wait.  Is this as simple as just recognizing that:
+> > > 
+> > >    _PS0 means the OS has a knob to put the device in D0, but it doesn't
+> > >    mean the device can wake itself from a low-power state.  The OS has
+> > >    to use _S0W to learn the device's ability to wake itself.
+> > 
+> > It is.
+> > 
+> > > If that's enough, maybe we don't need to complicate this with all the
+> > > Thunderbolt and device link stuff.  Which would be great, because the
+> > > code change itself has nothing to do with those things.
+> > 
+> > Indeed.
+> 
+> I'd think it's still useful to leave "something" in the commit message about
+> how we got to that conclusion though.
+> 
+> Bjorn, do you want me to to attempt to rewrite the commit message and send a
+> v6, or would you like to?
 
-There is arm64 in the subject, though, so I think it belongs there.
+Let me give it a try and post it for your reaction.
+
+Bjorn
