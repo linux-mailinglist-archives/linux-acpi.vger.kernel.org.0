@@ -2,50 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 935A26283D2
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 16:27:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B1FE6283E5
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 16:30:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236205AbiKNP1y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Nov 2022 10:27:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50448 "EHLO
+        id S236569AbiKNPal (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Nov 2022 10:30:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234198AbiKNP1u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 10:27:50 -0500
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D880020196
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Nov 2022 07:27:49 -0800 (PST)
-Received: by mail-il1-f176.google.com with SMTP id o13so5878596ilq.6
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Nov 2022 07:27:49 -0800 (PST)
+        with ESMTP id S236205AbiKNPaj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 10:30:39 -0500
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB0D14D17;
+        Mon, 14 Nov 2022 07:30:38 -0800 (PST)
+Received: by mail-qk1-f179.google.com with SMTP id k2so7585028qkk.7;
+        Mon, 14 Nov 2022 07:30:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eTmBJiw7zq2+55IK2i5lvqXpXrgtNnZfziAf8eIe8Wo=;
-        b=PaWrpJd/EIlMNI9jfFZReqGFh8H9grZ0A1tbNZHQjFVqRqm/wctdxI217YO8nUXeUF
-         ttRNGT0eLKv6e0hJ+CKBJILStcwmJ36hyNd7O0ekq7t3eptiswJZEzo6BnIewSbO9cnf
-         UTRwfTD3bm72JT7kfc3UlUpP1MPAwDpksnrDdAGEXk2HVE2QPp/Am4T6stA5Bhzwlbl8
-         44K6kdZoOQZeSJPG6zbXHvGNgelVGhfdMDXkpAfKVN36ftmVqCSb2NQgShialygTbnOS
-         C+R3rflSg/3tpNKYbpW5QVwA5cSWycHOKssF2xg0abvjk2VeTEi2KHBgbSE+bzOcGLQL
-         HB7g==
-X-Gm-Message-State: ANoB5pnNXGgqO2I/df5G5sUPZvtf/+KXlrsrbVo8nHw4rh+vdxawSO97
-        oy6lcJMJvPDsYtH0sPcFs0/fHuLaTv4sPd7RzZc=
-X-Google-Smtp-Source: AA0mqf5k/eaKKiIZ+n1xGSzntcavLzI1a8iWAljJbyt3k5LIAyG2BYa1Z3iaXXz8QNTayV0/XVqGetEGWV7lV9eMVQo=
-X-Received: by 2002:a92:194d:0:b0:302:55d5:8808 with SMTP id
- e13-20020a92194d000000b0030255d58808mr3119054ilm.152.1668439669139; Mon, 14
- Nov 2022 07:27:49 -0800 (PST)
+        bh=h99OlI5BbKbsPyp3lQEwfF/aB86+nXeBTZxW/Q0PKWg=;
+        b=SsO8ug6Rvjx5h0LpBBfnCwqbFrPpL5+BGjGPrrpVv8pKxXoZvkTTh9JiUgzLgA6GtW
+         3hpaPVg0H7OcHIrsbpyAR1lM+7lluZArfdJBWBkzVttcPd8G7yXuvY3czVRmNrzWmhrU
+         G+BhLWF+HJ23t1ETWZNQ8iNwtuKjnVekiJhpNax9R2OohWgoY9gMjF6t863iEvQE+W8M
+         NxnDOgKqujuYr97Z9t8UYILrEHv5+EGnlcbdk9IvCNy+kEXZXgq9HU6vpT5coGHtgoba
+         drASF487i7ALSZdcihiLTQjs/STyZ7CAhqU0x0Z0h5oj34imH2BB4btEpJxSVd7TTLp2
+         jv8Q==
+X-Gm-Message-State: ANoB5plsba5C0bGx2qL99GvsOiufXyTm/8sGLvrLjk1IR3DPu2gkZw30
+        w4UK8AHoGUEVKJ/mU+ajkYVXqcHG6agEMnyG5Mc=
+X-Google-Smtp-Source: AA0mqf7/MXQ7rX7nNJyNfnme/xAECA9tjCnRtwu5640fhPYM+RESqqf6mBtZy+ln2slbv0ACukYwvkSrHET711EC5XU=
+X-Received: by 2002:a37:638f:0:b0:6ec:fa04:d97c with SMTP id
+ x137-20020a37638f000000b006ecfa04d97cmr11105446qkb.764.1668439837750; Mon, 14
+ Nov 2022 07:30:37 -0800 (PST)
 MIME-Version: 1.0
-References: <20221114144459.455519-1-hdegoede@redhat.com>
-In-Reply-To: <20221114144459.455519-1-hdegoede@redhat.com>
+References: <3701ca18.12f.1847065cd7e.Coremail.wangkailong@jari.cn>
+In-Reply-To: <3701ca18.12f.1847065cd7e.Coremail.wangkailong@jari.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 14 Nov 2022 16:27:32 +0100
-Message-ID: <CAJZ5v0jPV3VXSXO+tW+dUwZ7QkWdXmiDtA7TTOgM9++SpBiWZA@mail.gmail.com>
-Subject: Re: [PATCH 0/7] ACPI: video: Prefer native over vendor + quirk updates
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        linux-acpi@vger.kernel.org
+Date:   Mon, 14 Nov 2022 16:30:20 +0100
+Message-ID: <CAJZ5v0i7oQK4t8ua6sSbbRGEZfStzosT8+JfcAYL5WJEgNVceA@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: fix array_size.cocci warning
+To:     wangkailong@jari.cn
+Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -57,50 +56,49 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 14, 2022 at 3:45 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Sun, Nov 13, 2022 at 10:55 AM <wangkailong@jari.cn> wrote:
 >
-> Hi Rafael, et. al.,
+> Fix following coccicheck warning:
 >
-> As mentioned already in the RFC:
+> drivers/acpi/acpica/tbfadt.c:107:27-28: WARNING: Use ARRAY_SIZE
+> drivers/acpi/acpica/tbfadt.c:137:30-31: WARNING: Use ARRAY_SIZE
 >
-> """
-> Here is a second attempt at always registering only a single
-> /sys/class/backlight device per panel.
->
-> This first round of testing has shown that native works well even on
-> systems so old that the don't have acpi_video backlight control support.
->
-> This patch series makes native be preferred over vendor, which should
-> avoid the problems seen with the 6.1 changes before the fixes.
-> """
->
-> The 2 base patches (last 2 patches of the series now) are unchanged from
-> the RFC. New is a bunch of video_detect DMI quirk updates, 3 small fixes to
-> existing quirks + 2 new quirks. 1 of the new quirks is necessary to avoid
-> a known regression with preferring native over vendor on 1 model,
-> the other DMI quirk is unrelated to the other changes.
->
-> This series applies on top of the platform-drivers-x86-v6.1-3 tag from:
-> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/
->
-> So either you will need to merge that tag (or merge v6.1-rc5 from Linus)
-> before applying these patches, or I can merge this through my for-next
-> branch which already has these changes. Either way works for me.
+> Signed-off-by: KaiLong Wang <wangkailong@jari.cn>
 
-I'll apply them on top of the -rc5.
+Please submit ACPICA changes to the upstream project on GitHub.
 
-> Hans de Goede (7):
->   ACPI: video: Add a few bugtracker links to DMI quirks
->   ACPI: video: Change GIGABYTE GB-BXBT-2807 quirk to force_none
->   ACPI: video: Change Sony Vaio VPCEH3U1E quirk to force_native
->   ACPI: video: Add force_vendor quirk for Sony Vaio PCG-FRV35
->   ACPI: video: Add force_native quirk for Sony Vaio VPCY11S1E
->   ACPI: video: Simplify __acpi_video_get_backlight_type()
->   ACPI: video: Prefer native over vendor
+If they are not applicable there, they are also not applicable to the
+Linux kernel.
+
+> ---
+>  drivers/acpi/acpica/tbfadt.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 >
->  drivers/acpi/video_detect.c | 110 ++++++++++++++++++++----------------
->  1 file changed, 62 insertions(+), 48 deletions(-)
+> diff --git a/drivers/acpi/acpica/tbfadt.c b/drivers/acpi/acpica/tbfadt.c
+> index 31d7ea84a360..637fcd74f30e 100644
+> --- a/drivers/acpi/acpica/tbfadt.c
+> +++ b/drivers/acpi/acpica/tbfadt.c
+> @@ -103,9 +103,7 @@ static struct acpi_fadt_info fadt_info_table[] = {
+>          ACPI_FADT_SEPARATE_LENGTH | ACPI_FADT_GPE_REGISTER}
+>  };
 >
+> -#define ACPI_FADT_INFO_ENTRIES \
+> -                       (sizeof (fadt_info_table) / sizeof (struct acpi_fadt_info))
+> -
+> +#define ACPI_FADT_INFO_ENTRIES (ARRAY_SIZE(fadt_info_table))
+>  /* Table used to split Event Blocks into separate status/enable registers */
+>
+>  typedef struct acpi_fadt_pm_info {
+> @@ -133,9 +131,7 @@ static struct acpi_fadt_pm_info fadt_pm_info_table[] = {
+>          1}
+>  };
+>
+> -#define ACPI_FADT_PM_INFO_ENTRIES \
+> -                       (sizeof (fadt_pm_info_table) / sizeof (struct acpi_fadt_pm_info))
+> -
+> +#define ACPI_FADT_PM_INFO_ENTRIES (ARRAY_SIZE(fadt_pm_info_table))
+>  /*******************************************************************************
+>   *
+>   * FUNCTION:    acpi_tb_init_generic_address
 > --
-
-Thanks!
+> 2.25.1
