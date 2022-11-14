@@ -2,48 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B1FE6283E5
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 16:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5B0628400
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 16:34:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236569AbiKNPal (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Nov 2022 10:30:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53308 "EHLO
+        id S229484AbiKNPeQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Nov 2022 10:34:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236205AbiKNPaj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 10:30:39 -0500
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB0D14D17;
-        Mon, 14 Nov 2022 07:30:38 -0800 (PST)
-Received: by mail-qk1-f179.google.com with SMTP id k2so7585028qkk.7;
-        Mon, 14 Nov 2022 07:30:38 -0800 (PST)
+        with ESMTP id S236007AbiKNPeL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 10:34:11 -0500
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D3151170;
+        Mon, 14 Nov 2022 07:34:10 -0800 (PST)
+Received: by mail-qv1-f50.google.com with SMTP id o8so7964228qvw.5;
+        Mon, 14 Nov 2022 07:34:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=h99OlI5BbKbsPyp3lQEwfF/aB86+nXeBTZxW/Q0PKWg=;
-        b=SsO8ug6Rvjx5h0LpBBfnCwqbFrPpL5+BGjGPrrpVv8pKxXoZvkTTh9JiUgzLgA6GtW
-         3hpaPVg0H7OcHIrsbpyAR1lM+7lluZArfdJBWBkzVttcPd8G7yXuvY3czVRmNrzWmhrU
-         G+BhLWF+HJ23t1ETWZNQ8iNwtuKjnVekiJhpNax9R2OohWgoY9gMjF6t863iEvQE+W8M
-         NxnDOgKqujuYr97Z9t8UYILrEHv5+EGnlcbdk9IvCNy+kEXZXgq9HU6vpT5coGHtgoba
-         drASF487i7ALSZdcihiLTQjs/STyZ7CAhqU0x0Z0h5oj34imH2BB4btEpJxSVd7TTLp2
-         jv8Q==
-X-Gm-Message-State: ANoB5plsba5C0bGx2qL99GvsOiufXyTm/8sGLvrLjk1IR3DPu2gkZw30
-        w4UK8AHoGUEVKJ/mU+ajkYVXqcHG6agEMnyG5Mc=
-X-Google-Smtp-Source: AA0mqf7/MXQ7rX7nNJyNfnme/xAECA9tjCnRtwu5640fhPYM+RESqqf6mBtZy+ln2slbv0ACukYwvkSrHET711EC5XU=
-X-Received: by 2002:a37:638f:0:b0:6ec:fa04:d97c with SMTP id
- x137-20020a37638f000000b006ecfa04d97cmr11105446qkb.764.1668439837750; Mon, 14
- Nov 2022 07:30:37 -0800 (PST)
+        bh=KOfoaOPTc0krweU3P8wUkVTnZoULqG3PmNlXhu4M7TI=;
+        b=KY05PUqOp7FWcbU7eUfMaqVEef9rV8wBfLzgKHHluppi7/vDpdWTOIGrvfkqnqDDU2
+         8n7f2mT4Zt4XV1XN9KPNNCcewmrgz1Sv4HBaQIi4vUkAM3lYehWLuMoA0WIRc8rlpEdq
+         u6nkKIB9ijGdD7hx+wd0uukJ6zK0a16wXKRKP55+/9jE4xd2hJ5F7Fe5yrDW0QpC8WBl
+         qMiXAhpdO4YllgFW4NhLrZFqx19l0DcvnqxMLEXwmOnu50wvOyo6mJCgSfK67I0VQEgJ
+         +Mrm+ZxHTpsgHT55GjvVSQAehoHuSp0KeJYoo8Qi5Xe8uxJb4U+Cj5hmLHXnsqFqC3ew
+         z/bA==
+X-Gm-Message-State: ANoB5plRbehmcoiHx8zHLCm8enOR/KMg81r8oSnC4q7eOD7wpqxCjIOK
+        FUC2SrZntK8ZkkLlTgarMcs33eEfWJzQnCtvAVA=
+X-Google-Smtp-Source: AA0mqf6Nf71NA2JkPO/KxpfY/G2pWuerSOGZllPXl2qRNpfXA+FqSdXKHatBGpZ1xnWnxU3Yw6FuOoOu4fzhLgr8QcE=
+X-Received: by 2002:a0c:e606:0:b0:4b1:a9ac:21de with SMTP id
+ z6-20020a0ce606000000b004b1a9ac21demr12899948qvm.119.1668440049335; Mon, 14
+ Nov 2022 07:34:09 -0800 (PST)
 MIME-Version: 1.0
-References: <3701ca18.12f.1847065cd7e.Coremail.wangkailong@jari.cn>
-In-Reply-To: <3701ca18.12f.1847065cd7e.Coremail.wangkailong@jari.cn>
+References: <5754039e-e3c6-cdb8-8d64-6332b0093940@amd.com> <20221111214209.GA748269@bhelgaas>
+In-Reply-To: <20221111214209.GA748269@bhelgaas>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 14 Nov 2022 16:30:20 +0100
-Message-ID: <CAJZ5v0i7oQK4t8ua6sSbbRGEZfStzosT8+JfcAYL5WJEgNVceA@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: fix array_size.cocci warning
-To:     wangkailong@jari.cn
-Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
-        lenb@kernel.org, linux-acpi@vger.kernel.org, devel@acpica.org,
+Date:   Mon, 14 Nov 2022 16:33:52 +0100
+Message-ID: <CAJZ5v0g834K4ZBrEvhAbJhvGBVyq53nreG+xeBufXKQXA3VtrQ@mail.gmail.com>
+Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power
+ resources support D3
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mehta Sanju <Sanju.Mehta@amd.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
@@ -56,49 +64,38 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Nov 13, 2022 at 10:55 AM <wangkailong@jari.cn> wrote:
+On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
 >
-> Fix following coccicheck warning:
+> On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
+> > On 11/11/2022 11:41, Bjorn Helgaas wrote:
+> > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
+> > > > Firmware typically advertises that ACPI devices that represent PCIe
+> > > > devices can support D3 by a combination of the value returned by
+> > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
+> > > >
+> > > > `acpi_pci_bridge_d3` looks for this combination but also contains
+> > > > an assumption that if an ACPI device contains power resources the PCIe
+> > > > device it's associated with can support D3.  This was introduced
+> > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
+> > > > D3 if power managed by ACPI").
+> > > >
+> > > > Some firmware configurations for "AMD Pink Sardine" do not support
+> > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
+> > > > port used for tunneling. The PCIe device will still be opted into
+> > > > runtime PM in the kernel [2] because of the logic within
+> > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
+> > > > device contains power resources.
 >
-> drivers/acpi/acpica/tbfadt.c:107:27-28: WARNING: Use ARRAY_SIZE
-> drivers/acpi/acpica/tbfadt.c:137:30-31: WARNING: Use ARRAY_SIZE
+> Wait.  Is this as simple as just recognizing that:
 >
-> Signed-off-by: KaiLong Wang <wangkailong@jari.cn>
+>   _PS0 means the OS has a knob to put the device in D0, but it doesn't
+>   mean the device can wake itself from a low-power state.  The OS has
+>   to use _S0W to learn the device's ability to wake itself.
 
-Please submit ACPICA changes to the upstream project on GitHub.
+It is.
 
-If they are not applicable there, they are also not applicable to the
-Linux kernel.
+> If that's enough, maybe we don't need to complicate this with all the
+> Thunderbolt and device link stuff.  Which would be great, because the
+> code change itself has nothing to do with those things.
 
-> ---
->  drivers/acpi/acpica/tbfadt.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/tbfadt.c b/drivers/acpi/acpica/tbfadt.c
-> index 31d7ea84a360..637fcd74f30e 100644
-> --- a/drivers/acpi/acpica/tbfadt.c
-> +++ b/drivers/acpi/acpica/tbfadt.c
-> @@ -103,9 +103,7 @@ static struct acpi_fadt_info fadt_info_table[] = {
->          ACPI_FADT_SEPARATE_LENGTH | ACPI_FADT_GPE_REGISTER}
->  };
->
-> -#define ACPI_FADT_INFO_ENTRIES \
-> -                       (sizeof (fadt_info_table) / sizeof (struct acpi_fadt_info))
-> -
-> +#define ACPI_FADT_INFO_ENTRIES (ARRAY_SIZE(fadt_info_table))
->  /* Table used to split Event Blocks into separate status/enable registers */
->
->  typedef struct acpi_fadt_pm_info {
-> @@ -133,9 +131,7 @@ static struct acpi_fadt_pm_info fadt_pm_info_table[] = {
->          1}
->  };
->
-> -#define ACPI_FADT_PM_INFO_ENTRIES \
-> -                       (sizeof (fadt_pm_info_table) / sizeof (struct acpi_fadt_pm_info))
-> -
-> +#define ACPI_FADT_PM_INFO_ENTRIES (ARRAY_SIZE(fadt_pm_info_table))
->  /*******************************************************************************
->   *
->   * FUNCTION:    acpi_tb_init_generic_address
-> --
-> 2.25.1
+Indeed.
