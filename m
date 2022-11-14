@@ -2,209 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCE4B62835F
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 16:01:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 935A26283D2
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 16:27:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235858AbiKNPA7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Nov 2022 10:00:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33618 "EHLO
+        id S236205AbiKNP1y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Nov 2022 10:27:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237146AbiKNPA5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 10:00:57 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265691DA67;
-        Mon, 14 Nov 2022 07:00:54 -0800 (PST)
-Received: from canpemm500001.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N9stZ6cXnzHw1J;
-        Mon, 14 Nov 2022 23:00:22 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- canpemm500001.china.huawei.com (7.192.104.163) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 14 Nov 2022 23:00:51 +0800
-From:   Xie XiuQi <xiexiuqi@huawei.com>
-To:     <catalin.marinas@arm.com>, <will@kernel.org>,
-        <james.morse@arm.com>, <bp@alien8.de>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <tanxiaofei@huawei.com>, <lvying6@huawei.com>
-Subject: [PATCH] arm64: fix error unhandling in synchronous External Data Abort
-Date:   Mon, 14 Nov 2022 23:19:15 +0800
-Message-ID: <20221114151915.167414-1-xiexiuqi@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        with ESMTP id S234198AbiKNP1u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 10:27:50 -0500
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D880020196
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Nov 2022 07:27:49 -0800 (PST)
+Received: by mail-il1-f176.google.com with SMTP id o13so5878596ilq.6
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Nov 2022 07:27:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eTmBJiw7zq2+55IK2i5lvqXpXrgtNnZfziAf8eIe8Wo=;
+        b=PaWrpJd/EIlMNI9jfFZReqGFh8H9grZ0A1tbNZHQjFVqRqm/wctdxI217YO8nUXeUF
+         ttRNGT0eLKv6e0hJ+CKBJILStcwmJ36hyNd7O0ekq7t3eptiswJZEzo6BnIewSbO9cnf
+         UTRwfTD3bm72JT7kfc3UlUpP1MPAwDpksnrDdAGEXk2HVE2QPp/Am4T6stA5Bhzwlbl8
+         44K6kdZoOQZeSJPG6zbXHvGNgelVGhfdMDXkpAfKVN36ftmVqCSb2NQgShialygTbnOS
+         C+R3rflSg/3tpNKYbpW5QVwA5cSWycHOKssF2xg0abvjk2VeTEi2KHBgbSE+bzOcGLQL
+         HB7g==
+X-Gm-Message-State: ANoB5pnNXGgqO2I/df5G5sUPZvtf/+KXlrsrbVo8nHw4rh+vdxawSO97
+        oy6lcJMJvPDsYtH0sPcFs0/fHuLaTv4sPd7RzZc=
+X-Google-Smtp-Source: AA0mqf5k/eaKKiIZ+n1xGSzntcavLzI1a8iWAljJbyt3k5LIAyG2BYa1Z3iaXXz8QNTayV0/XVqGetEGWV7lV9eMVQo=
+X-Received: by 2002:a92:194d:0:b0:302:55d5:8808 with SMTP id
+ e13-20020a92194d000000b0030255d58808mr3119054ilm.152.1668439669139; Mon, 14
+ Nov 2022 07:27:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500001.china.huawei.com (7.192.104.163)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221114144459.455519-1-hdegoede@redhat.com>
+In-Reply-To: <20221114144459.455519-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 14 Nov 2022 16:27:32 +0100
+Message-ID: <CAJZ5v0jPV3VXSXO+tW+dUwZ7QkWdXmiDtA7TTOgM9++SpBiWZA@mail.gmail.com>
+Subject: Re: [PATCH 0/7] ACPI: video: Prefer native over vendor + quirk updates
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-According to the RAS documentation, if we cannot determine the impact
-of the error based on the details of the error when an SEA occurs, the
-process cannot safely continue to run. Therefore, for unhandled error,
-we should signal the system and terminate the process immediately.
+On Mon, Nov 14, 2022 at 3:45 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi Rafael, et. al.,
+>
+> As mentioned already in the RFC:
+>
+> """
+> Here is a second attempt at always registering only a single
+> /sys/class/backlight device per panel.
+>
+> This first round of testing has shown that native works well even on
+> systems so old that the don't have acpi_video backlight control support.
+>
+> This patch series makes native be preferred over vendor, which should
+> avoid the problems seen with the 6.1 changes before the fixes.
+> """
+>
+> The 2 base patches (last 2 patches of the series now) are unchanged from
+> the RFC. New is a bunch of video_detect DMI quirk updates, 3 small fixes to
+> existing quirks + 2 new quirks. 1 of the new quirks is necessary to avoid
+> a known regression with preferring native over vendor on 1 model,
+> the other DMI quirk is unrelated to the other changes.
+>
+> This series applies on top of the platform-drivers-x86-v6.1-3 tag from:
+> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/
+>
+> So either you will need to merge that tag (or merge v6.1-rc5 from Linus)
+> before applying these patches, or I can merge this through my for-next
+> branch which already has these changes. Either way works for me.
 
-2.2 Generating error exceptions:
-  "An error exception is generated when a detected error is signaled
-  to the PE as an in-band error response to an architecturally-executed
-  memory access or cache maintenance operation. This includes any explicit
-  data access, instruction fetch, translation table walk, or hardware
-  update to the translation tables made by an architecturally-executed
-  instruction." [1]
+I'll apply them on top of the -rc5.
 
-2.3 Taking error exceptions:
-  Software is only able to successfully recover execution and make progress
-  from a restart address for the exception by executing an Exception Return
-  instruction to branch to the instruction at this restart address if all
-  of the following are true: [2]
-    - The error has not been silently propagated by the PE.
-    - At the point when the Exception Return instruction is executed, the
-      PE state and memory system state are consistent with the PE having
-      executed all of the instructions up to but not including the
-      instruction at the restart address, and none afterwards. That is,
-      at least one of the following restart conditions is true:
-        - The error has been not architecturally consumed by the PE
-          andinfected the PE state.
-        - Executing the instruction at the restart address will not consume
-          the error and will correct any corrupt state by overwriting it
-          with the correct value or values
+> Hans de Goede (7):
+>   ACPI: video: Add a few bugtracker links to DMI quirks
+>   ACPI: video: Change GIGABYTE GB-BXBT-2807 quirk to force_none
+>   ACPI: video: Change Sony Vaio VPCEH3U1E quirk to force_native
+>   ACPI: video: Add force_vendor quirk for Sony Vaio PCG-FRV35
+>   ACPI: video: Add force_native quirk for Sony Vaio VPCY11S1E
+>   ACPI: video: Simplify __acpi_video_get_backlight_type()
+>   ACPI: video: Prefer native over vendor
+>
+>  drivers/acpi/video_detect.c | 110 ++++++++++++++++++++----------------
+>  1 file changed, 62 insertions(+), 48 deletions(-)
+>
+> --
 
-After commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea() synchronise
-with APEI's irq work"), we deferred de SEA process to irq_work.
-For example, an memory reading error without valid pa, the process isn't
-been terminated. It is not safe.
-
-In this patch, a SIGBUS is force signaled to fix this case.
-
-Note:
-RAS documentation: https://developer.arm.com/documentation/ddi0587/latest
-
-Fixes: 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea() synchronise with APEI's irq work")
-Signed-off-by: Xie XiuQi <xiexiuqi@huawei.com>
----
- arch/arm64/kernel/acpi.c      |  6 ++++++
- drivers/acpi/apei/apei-base.c |  4 ++++
- drivers/acpi/apei/ghes.c      | 14 +++++++++++---
- include/acpi/apei.h           |  1 +
- 4 files changed, 22 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index a5a256e3f9fe..a8cb02ddaf33 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -32,6 +32,7 @@
- #include <asm/cpu_ops.h>
- #include <asm/daifflags.h>
- #include <asm/smp_plat.h>
-+#include <asm/traps.h>
- 
- int acpi_noirq = 1;		/* skip ACPI IRQ initialization */
- int acpi_disabled = 1;
-@@ -407,6 +408,11 @@ int apei_claim_sea(struct pt_regs *regs)
- 	return err;
- }
- 
-+void arch_apei_do_unhandled_sea(void)
-+{
-+	arm64_force_sig_mceerr(BUS_MCEERR_AR, 0, 0, "Unhandled processor error");
-+}
-+
- void arch_reserve_mem_area(acpi_physical_address addr, size_t size)
- {
- 	memblock_mark_nomap(addr, size);
-diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-index 9b52482b4ed5..f372cf872125 100644
---- a/drivers/acpi/apei/apei-base.c
-+++ b/drivers/acpi/apei/apei-base.c
-@@ -773,6 +773,10 @@ void __weak arch_apei_report_mem_error(int sev,
- }
- EXPORT_SYMBOL_GPL(arch_apei_report_mem_error);
- 
-+void __weak arch_apei_do_unhandled_sea(void)
-+{
-+}
-+
- int apei_osc_setup(void)
- {
- 	static u8 whea_uuid_str[] = "ed855e0c-6c90-47bf-a62a-26de0fc5ad5c";
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 9952f3a792ba..7da39da4577a 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -48,6 +48,7 @@
- #include <asm/fixmap.h>
- #include <asm/tlbflush.h>
- #include <ras/ras_event.h>
-+#include <asm/traps.h>
- 
- #include "apei-internal.h"
- 
-@@ -483,11 +484,12 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	return false;
- }
- 
--static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-+static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
-+				     int sev, int type)
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
- 	bool queued = false;
--	int sec_sev, i;
-+	int sec_sev, i, unhandled_err_count = 0;
- 	char *p;
- 
- 	log_arm_hw_error(err);
-@@ -521,9 +523,14 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
- 				    "Unhandled processor error type: %s\n",
- 				    error_type);
-+		unhandled_err_count++;
-+
- 		p += err_info->length;
- 	}
- 
-+	if (unhandled_err_count && type == ACPI_HEST_NOTIFY_SEA)
-+		arch_apei_do_unhandled_sea();
-+
- 	return queued;
- }
- 
-@@ -631,6 +638,7 @@ static bool ghes_do_proc(struct ghes *ghes,
- 	const guid_t *fru_id = &guid_null;
- 	char *fru_text = "";
- 	bool queued = false;
-+	int type = ghes->generic->notify.type;
- 
- 	sev = ghes_severity(estatus->error_severity);
- 	apei_estatus_for_each_section(estatus, gdata) {
-@@ -654,7 +662,7 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			ghes_handle_aer(gdata);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			queued = ghes_handle_arm_hw_error(gdata, sev);
-+			queued = ghes_handle_arm_hw_error(gdata, sev, type);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
-diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-index dc60f7db5524..663db1f9556f 100644
---- a/include/acpi/apei.h
-+++ b/include/acpi/apei.h
-@@ -52,6 +52,7 @@ int erst_clear(u64 record_id);
- 
- int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data);
- void arch_apei_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
-+void arch_apei_do_unhandled_sea(void);
- 
- #endif
- #endif
--- 
-2.20.1
-
+Thanks!
