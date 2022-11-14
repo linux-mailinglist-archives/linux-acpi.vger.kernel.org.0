@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0FB462831A
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 15:46:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 672A362831E
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Nov 2022 15:47:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235984AbiKNOqk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Nov 2022 09:46:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50326 "EHLO
+        id S235697AbiKNOq4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Nov 2022 09:46:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235636AbiKNOqi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 09:46:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4946F26FB
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Nov 2022 06:45:15 -0800 (PST)
+        with ESMTP id S236238AbiKNOqn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 09:46:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03496377
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Nov 2022 06:45:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1668437114;
+        s=mimecast20190719; t=1668437117;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xHIQBUfqD0ipeTA29MoZZ4xWXf/VHbmW4bpPAmWI8kk=;
-        b=Xt/n6+mhQ1G1/nZE3YL7i54iNjEPJFBgIqfVgaWzKzkRrb2/d3OZV8HWTD1Q+qQm/MkgIP
-        p/jvvRmiVrkmsbshzvJ/gxBL1vuMxFEJ7NMWgI1wBN4ngt/r+C9X7UGw0004zLTp9VDW/d
-        kVQ7nHzNdL/yYc0BF09f7CF3FUiZtQs=
+        bh=pLKwd7LdFoY3d3OGGTqZ2TY1L53YOPPgucadnQcACLc=;
+        b=Hl5G5nlK3YGkOJ4/rEW6yR2N42WjHknu0ql3lqVAO3S8serLPE9DFEpF13oq1C5iUSO9R4
+        g/NeJW34G/VbbiUyY770UaRHr8sItPHt5m5xNCbYqmSG4nygFTewLq2ZU9rNL2Nr8AgXgj
+        922vkW6mUxvpcjwW8YwwO922+G4nRAE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-624-BzDQyg3KOiCO0cZRtFbJFg-1; Mon, 14 Nov 2022 09:45:11 -0500
-X-MC-Unique: BzDQyg3KOiCO0cZRtFbJFg-1
+ us-mta-651-gA0E6UgPMCq1Vd5ER2K7Sw-1; Mon, 14 Nov 2022 09:45:12 -0500
+X-MC-Unique: gA0E6UgPMCq1Vd5ER2K7Sw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A25B687B2A0;
-        Mon, 14 Nov 2022 14:45:10 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E779A800B23;
+        Mon, 14 Nov 2022 14:45:11 +0000 (UTC)
 Received: from x1.localdomain.com (unknown [10.39.193.154])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2AF1B1401C21;
-        Mon, 14 Nov 2022 14:45:08 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1D7D61415102;
+        Mon, 14 Nov 2022 14:45:10 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>
 Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         Matthew Garrett <mjg59@srcf.ucam.org>,
         linux-acpi@vger.kernel.org
-Subject: [PATCH 3/7] ACPI: video: Change Sony Vaio VPCEH3U1E quirk to force_native
-Date:   Mon, 14 Nov 2022 15:44:55 +0100
-Message-Id: <20221114144459.455519-4-hdegoede@redhat.com>
+Subject: [PATCH 4/7] ACPI: video: Add force_vendor quirk for Sony Vaio PCG-FRV35
+Date:   Mon, 14 Nov 2022 15:44:56 +0100
+Message-Id: <20221114144459.455519-5-hdegoede@redhat.com>
 In-Reply-To: <20221114144459.455519-1-hdegoede@redhat.com>
 References: <20221114144459.455519-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -60,75 +60,44 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-According to: https://bugzilla.kernel.org/show_bug.cgi?id=202401
-the Sony Vaio VPCEH3U1E quirk was added to disable the acpi_video0
-backlight interface because that was not working, so that userspace
-will pick the actually working native nv_backlight interface instead.
+The Sony Vaio PCG-FRV35 advertises both native and vendor backlight
+control interfaces. With the upcoming changes to prefer native over
+vendor acpi_video_get_backlight_type() will start returning native on
+these laptops.
 
-With the new kernel behavior of hiding native interfaces unless
-acpi_video_get_backlight_type() returns native, the current
-video_detect_force_vendor quirk will cause the working nv_backlight
-interface will be disabled too.
-
-Change the quirk to video_detect_force_native to get the desired
-result of only registering the nv_backlight interface.
-
-After this all currently remaining force_vendor quirks in
-video_detect_dmi_table[] are there to prefer a vendor interface over
-a non working ACPI video interface, add a comment to document this.
+But the native radeon_bl0 interface does not work, where as the sony
+vendor interface does work. Add a quirk to force use of the vendor
+interface.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/video_detect.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/acpi/video_detect.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index a1ac7de186be..327e0967ba54 100644
+index 327e0967ba54..43f667523ab0 100644
 --- a/drivers/acpi/video_detect.c
 +++ b/drivers/acpi/video_detect.c
-@@ -132,6 +132,10 @@ static int video_detect_force_none(const struct dmi_system_id *d)
- }
+@@ -239,6 +239,19 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		},
+ 	},
  
- static const struct dmi_system_id video_detect_dmi_table[] = {
 +	/*
 +	 * Models which should use the vendor backlight interface,
-+	 * because of broken ACPI video backlight control.
++	 * because of broken native backlight control.
 +	 */
- 	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1128309 */
- 	 .callback = video_detect_force_vendor,
-@@ -226,15 +230,6 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_BOARD_NAME, "NC210/NC110"),
- 		},
- 	},
--	{
--	 /* https://bugzilla.kernel.org/show_bug.cgi?id=202401 */
--	 .callback = video_detect_force_vendor,
--	 /* Sony VPCEH3U1E */
--	 .matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "Sony Corporation"),
--		DMI_MATCH(DMI_PRODUCT_NAME, "VPCEH3U1E"),
--		},
--	},
- 	{
- 	 .callback = video_detect_force_vendor,
- 	 /* Xiaomi Mi Pad 2 */
-@@ -604,6 +599,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_BOARD_NAME, "N250P"),
- 		},
- 	},
 +	{
-+	 /* https://bugzilla.kernel.org/show_bug.cgi?id=202401 */
-+	 .callback = video_detect_force_native,
-+	 /* Sony Vaio VPCEH3U1E */
++	 .callback = video_detect_force_vendor,
++	 /* Sony Vaio PCG-FRV35 */
 +	 .matches = {
 +		DMI_MATCH(DMI_SYS_VENDOR, "Sony Corporation"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "VPCEH3U1E"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "PCG-FRV35"),
 +		},
 +	},
- 
++
  	/*
- 	 * These Toshibas have a broken acpi-video interface for brightness
+ 	 * Toshiba models with Transflective display, these need to use
+ 	 * the toshiba_acpi vendor driver for proper Transflective handling.
 -- 
 2.37.3
 
