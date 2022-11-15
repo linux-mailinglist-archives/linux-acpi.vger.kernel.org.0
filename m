@@ -2,159 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44CFE6295CD
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Nov 2022 11:28:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C007E62960E
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Nov 2022 11:37:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238009AbiKOK2i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Nov 2022 05:28:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44478 "EHLO
+        id S229745AbiKOKhL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Nov 2022 05:37:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238300AbiKOK2a (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Nov 2022 05:28:30 -0500
-Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FC331C426
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Nov 2022 02:28:29 -0800 (PST)
-Received: by mail-vk1-xa29.google.com with SMTP id o24so5773664vkl.9
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Nov 2022 02:28:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=owVSiCo0xTiIjg+S7LE7MNcpjpqKTahyg6ebxtf7fi4=;
-        b=iszNePxr4+6OULyAq0+jPMg5itpWKP30bqSzfoRXUltzE9AgLE80qLrkdCWkrwANV/
-         qxQHJX7xsDXrvYSS+8iz+RIiXto6NXF89UUlmmmm9R4/tn3DvtA9Pc7Ux2/5LyJl/nyT
-         y+Dj4TygzJbXibhvr8Z0p8AWF3KP5rddtxBjiyDElHkiXCtayd3wnB2kkPz5BfvOS9oT
-         TbwaPqvNNsJETy7ut27UFc+7TDFCABqlsrvYYiOP0mGZ2eXo69W2iF4SxsR4JRb4Nlb4
-         nLWbdpxBbORKqPfECl+6WOnpIS8ksPCHoZOr4rktlPmnx+sHK3cWCX0U+0hLqy88muNk
-         Edsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=owVSiCo0xTiIjg+S7LE7MNcpjpqKTahyg6ebxtf7fi4=;
-        b=KaVPH01qFragvnG5dyCYyHG6uC9u2WpRnlPH2//31ghoEPt8Sw5NuJJVjfhSG2p70G
-         4myvRIGl/2iy1U0P0UZ+r51HmWtYWCfdE2jRdP2XLqLhardRYO7QNOuq7hqvTkcbenSc
-         fAgGDY/MJ10tQm9EHdUtSIRUACsQ25tfLbl7dHkSH3kUXtu6jZQGNT/GWsLIOv97a0uv
-         0fh4l5bK/fpCx0dlWZF1swcrQdbjpXi3lG1WdNeMnCKSmo43ajCjDbpG2vqE1aGOM5vS
-         E3eRKHsQLtGs4fDlauiT2GX87vNxf90uCoIW9+bvQQiwMaKEB4qXr49tGBQAEph0Dw7g
-         IWxQ==
-X-Gm-Message-State: ANoB5pl4AM2nFjUcRqvTylnI2Va9bVJLgleO53zUtJOtw0vQ2dMWy1Rv
-        6w306Rx5nQ2kLy8ChAAKKtLmeejXOjLECLJ3IGFs5g==
-X-Google-Smtp-Source: AA0mqf5pgRlnwBXZmzHSzvSNJ0lZhazKM56aYr1xj6lzRytjZxFpUNw/z31FQd98R0hQFFA9oBtyuzwaGkiV5tGxU/Q=
-X-Received: by 2002:a1f:27c6:0:b0:3ab:85c0:e1e8 with SMTP id
- n189-20020a1f27c6000000b003ab85c0e1e8mr9462160vkn.1.1668508108278; Tue, 15
- Nov 2022 02:28:28 -0800 (PST)
+        with ESMTP id S238403AbiKOKg6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Nov 2022 05:36:58 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD91AE7C
+        for <linux-acpi@vger.kernel.org>; Tue, 15 Nov 2022 02:36:56 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1outJG-0003jL-Hp; Tue, 15 Nov 2022 11:36:54 +0100
+Message-ID: <761ee287-99d7-9695-6e10-44a2080ae6d9@leemhuis.info>
+Date:   Tue, 15 Nov 2022 11:36:54 +0100
 MIME-Version: 1.0
-References: <20221031-gpiolib-swnode-v4-0-6c1671890027@gmail.com>
-In-Reply-To: <20221031-gpiolib-swnode-v4-0-6c1671890027@gmail.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Tue, 15 Nov 2022 11:28:17 +0100
-Message-ID: <CAMRc=Mf+FFyx7Mkw-nLMaoayJUjZbkEHDkVCsa_L+XkX6sEQDQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/6] Add support for software nodes to gpiolib
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: BUG: bisected: thermald regression (MEMLEAK) in commit
+ c7ff29763989bd09c433f73fae3c1e1c15d9cda4
+Content-Language: en-US, de-DE
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        devel@acpica.org,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <e0f06714-5a49-a4e6-24e6-c4103c820819@alu.unizg.hr>
+ <9ef3674afd370050b86a68e44c97e4f0257f1adf.camel@linux.intel.com>
+ <bd1f0d2a-d456-92cc-ecca-23e480aea4b1@alu.unizg.hr>
+ <e5d3d561bb3a9c68bc903cfc35c27629a4a9225c.camel@linux.intel.com>
+ <d034dbbc-613c-1a5e-df64-d0251453c8eb@alu.unizg.hr>
+ <6c2f47c8-d6b5-074a-4c8f-e9cd04f62ef4@alu.unizg.hr>
+ <180b1a4fb9cf78c8905f275e0373e009224d4639.camel@linux.intel.com>
+ <78e347e9-c8b1-f228-ca32-0ad6186a6285@alu.unizg.hr>
+ <a4457f46-72c9-f9b0-b87a-cb3dd5cd066f@alu.unizg.hr>
+ <CAJZ5v0jfHtOXDFUFYj8EOGMT74iWfkQqEW3L2D2dZv6Y1jFSrw@mail.gmail.com>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <CAJZ5v0jfHtOXDFUFYj8EOGMT74iWfkQqEW3L2D2dZv6Y1jFSrw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1668508616;74e24999;
+X-HE-SMSGID: 1outJG-0003jL-Hp
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 11, 2022 at 11:19 PM Dmitry Torokhov
-<dmitry.torokhov@gmail.com> wrote:
->
-> This series attempts to add support for software nodes to gpiolib, using
-> software node references. This allows us to convert more drivers to the
-> generic device properties and drop support for custom platform data.
->
-> To describe a GPIO via software nodes we can create the following data
-> items:
->
-> /* Node representing the GPIO controller/GPIO bank */
-> static const struct software_node gpio_bank_b_node = {
->         .name = "B",
-> };
->
-> /*
->  * Properties that will be assigned to a software node assigned to
->  * the device that used platform data.
->  */
-> static const struct property_entry simone_key_enter_props[] = {
->         PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),
->         PROPERTY_ENTRY_STRING("label", "enter"),
->         PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW),
->         { }
-> };
->
-> The code in gpiolib handling software nodes uses the name in the
-> software node representing GPIO controller to locate the actual instance
-> of GPIO controller.
->
-> To: Linus Walleij <linus.walleij@linaro.org>
-> To: Bartosz Golaszewski <brgl@bgdev.pl>
-> To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: linux-gpio@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-acpi@vger.kernel.org
->
-> ---
-> Changes in v4:
-> - Rebased on top of next-20221111
-> - Added Andy's reviewed-by for patch #6
-> - Link to v3: https://lore.kernel.org/r/20221031-gpiolib-swnode-v3-0-0282162b0fa4@gmail.com
->
-> Changes in v3:
-> - Addressed more Andy's comments
-> - Link to v2: https://lore.kernel.org/r/20221031-gpiolib-swnode-v2-0-81f55af5fa0e@gmail.com
->
-> Changes in v2:
-> - reworked the series to be independent of other in-flight patches.
->   That meant keeping devm_gpiod_get_from_of_node() for now.
-> - removed handling of secondary nodes, it deserves a separate patch
->   series
-> - fixed refcounting when handling swnodes (Andy)
-> - added include/linux/gpio/property.h with PROPERTY_ENTRY_GPIO (Andy)
-> - addressed most of the rest of Andy's comments
-> - collected reviewed-by and acked-by
-> - Link to v1: https://lore.kernel.org/r/20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com
->
-> ---
-> Dmitry Torokhov (6):
->       gpiolib: of: change of_find_gpio() to accept device node
->       gpiolib: acpi: change acpi_find_gpio() to accept firmware node
->       gpiolib: acpi: teach acpi_find_gpio() to handle data-only nodes
->       gpiolib: acpi: avoid leaking ACPI details into upper gpiolib layers
->       gpiolib: consolidate GPIO lookups
->       gpiolib: add support for software nodes
->
->  drivers/gpio/Makefile         |   1 +
->  drivers/gpio/gpiolib-acpi.c   | 132 +++++++++++++++-----------
->  drivers/gpio/gpiolib-acpi.h   |  54 +----------
->  drivers/gpio/gpiolib-of.c     |   7 +-
->  drivers/gpio/gpiolib-of.h     |   4 +-
->  drivers/gpio/gpiolib-swnode.c | 123 +++++++++++++++++++++++++
->  drivers/gpio/gpiolib-swnode.h |  14 +++
->  drivers/gpio/gpiolib.c        | 209 ++++++++++++++++--------------------------
->  include/linux/gpio/property.h |  11 +++
->  9 files changed, 315 insertions(+), 240 deletions(-)
-> ---
-> base-commit: f8f60f322f0640c8edda2942ca5f84b7a27c417a
-> change-id: 20221031-gpiolib-swnode-948203f49b23
->
-> --
-> Dmitry
->
 
-I still had some fuzz when applying, can you for the future rebase on
-top of the GPIO for-next branch?
 
-Anyway: series applied.
+On 28.10.22 20:25, Rafael J. Wysocki wrote:
+> On Thu, Oct 27, 2022 at 8:20 PM Mirsad Goran Todorovac
+> <mirsad.todorovac@alu.unizg.hr> wrote:
+>>
+>> Re-sending compressed attachments to fit into the size limit.
+>>
+>> On 27. 10. 2022. 20:03, Mirsad Goran Todorovac wrote:
+>>> P.S.
+>>>
+>>> Forgot another useful thing you've mentioned: please find attached the
+>>> dmesg output.
+>>>
+>>> Good luck!
+> 
+> I'm wondering if the problem is reproducible with this patch applied:
+> 
+> https://patchwork.kernel.org/project/linux-acpi/patch/20221019073443.248215-1-chenzhongjin@huawei.com/
 
-Bart
+Mirsad, did you ever give that a try?
+
+Side note: while looking into this, I noticed that Rafael proposed and
+merged a different fix:
+https://lore.kernel.org/all/2669303.mvXUDI8C0e@kreacher/
+https://patchwork.kernel.org/project/linux-acpi/patch/2669303.mvXUDI8C0e@kreacher/
+
+Ciao, Thorsten
