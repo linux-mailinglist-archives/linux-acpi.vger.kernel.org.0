@@ -2,151 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A549162929C
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Nov 2022 08:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FCE6629354
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Nov 2022 09:36:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbiKOHnE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Nov 2022 02:43:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54748 "EHLO
+        id S232248AbiKOIgV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Nov 2022 03:36:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbiKOHnE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Nov 2022 02:43:04 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E653FBBA;
-        Mon, 14 Nov 2022 23:43:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668498181; x=1700034181;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=oKTZy0MT8rZr6FDINCECGLb1+1ZH94JhfUwq+2xKvQ8=;
-  b=mHD9TnqIkbyIxY99d4Lxk3lZSkzKkk4rdSwCORAZQor4t13cAlSswUDA
-   b/Xcx5xQF7knv/tqfUVlkxScDy72R9v8V2UfXFhxvWUIMVExljZG84gN/
-   +t//LouLF6ucnsvuDW2OEqX9vn1Lcv80iSXYUskFJp3/Jg7FLzktc0Dyd
-   kLrycHe2fKZ5rhnKRU/e5JeyWaTGXFqiEJekAWT2qySKysRuCL13XHFKw
-   CFKVOtnJplwircr5HBdbr5rVoIMvDxicXqNZ6P9J02X/vjFwa1yG9LnpB
-   zGlwWTku8UXXmo/Yw1dv/6RGWrakub3lOrHPxUJW+wG18bbLhygBf8FIS
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="291899419"
-X-IronPort-AV: E=Sophos;i="5.96,165,1665471600"; 
-   d="scan'208";a="291899419"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2022 23:43:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="707640387"
-X-IronPort-AV: E=Sophos;i="5.96,165,1665471600"; 
-   d="scan'208";a="707640387"
-Received: from lkp-server01.sh.intel.com (HELO ebd99836cbe0) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 14 Nov 2022 23:43:00 -0800
-Received: from kbuild by ebd99836cbe0 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ouqax-0001At-1t;
-        Tue, 15 Nov 2022 07:42:59 +0000
-Date:   Tue, 15 Nov 2022 15:42:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
- 8992b8d17e6c314a528a5bce386de28701f2a2ef
-Message-ID: <637342fd.RhRuSQOunz8IKuR7%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S232220AbiKOIgU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Nov 2022 03:36:20 -0500
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92ED6A45A;
+        Tue, 15 Nov 2022 00:36:19 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 4F651336D7;
+        Tue, 15 Nov 2022 08:36:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1668501378; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4tKdXBWNvg+z3airdpWFuU1qjWkHff+0GGnYxrPeMn8=;
+        b=syhFFZjmY4/YWluAt369BB2obYCMnpd5bN8ibXstiNKXHoYHW35tTWjrItbDTf6yfRU+1T
+        5NVCQheSB50r6YfFvJ+EhXPmq1KmDb2Tgp4N21YSRodIjCRFgoUbWh8ILMcVRpNqBtIsFP
+        WU0j0z8AIh0f58h+KF2S9FUxNf7medU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1668501378;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4tKdXBWNvg+z3airdpWFuU1qjWkHff+0GGnYxrPeMn8=;
+        b=9pQP7jOMBkIA4ftbYQjFwibFPUz5Lm1jq5+KEzbIrvlk1dIKvMIcsGQGBPFaq7v36HH7/X
+        rWyJXq+pUH1q6sDw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id EFFF013A91;
+        Tue, 15 Nov 2022 08:36:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id W6bFOIFPc2PgQgAAMHmgww
+        (envelope-from <jdelvare@suse.de>); Tue, 15 Nov 2022 08:36:17 +0000
+Date:   Tue, 15 Nov 2022 09:36:17 +0100
+From:   Jean Delvare <jdelvare@suse.de>
+To:     Mateusz =?UTF-8?B?Sm/FhGN6eWs=?= <mat.jonczyk@o2.pl>
+Cc:     linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Borislav Petkov <bp@suse.de>
+Subject: Re: [PATCH v2] acpi,pci: warn about duplicate IRQ routing entries
+ returned from _PRT
+Message-ID: <20221115093617.519f3aeb@endymion.delvare>
+In-Reply-To: <20221113173442.5770-1-mat.jonczyk@o2.pl>
+References: <20221112200927.7255-1-mat.jonczyk@o2.pl>
+        <20221113173442.5770-1-mat.jonczyk@o2.pl>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 8992b8d17e6c314a528a5bce386de28701f2a2ef  Merge branch 'acpi-bus' into bleeding-edge
+Hi Mateusz,
 
-Warning reports:
+On Sun, 13 Nov 2022 18:34:42 +0100, Mateusz Jo=C5=84czyk wrote:
+> On some platforms, the ACPI _PRT function returns duplicate interrupt
+> routing entries. Linux uses the first matching entry, but sometimes the
+> second matching entry contains the correct interrupt vector.
+>=20
+> Print a warning to dmesg if duplicate interrupt routing entries are
+> present, so that we could check how many models are affected.
 
-https://lore.kernel.org/oe-kbuild-all/202211150900.CUzIO2xF-lkp@intel.com
+Excellent idea. We want hardware manufacturers to fix such bugs in the
+firmware, and the best way for this to happen is to report them
+whenever they are encountered.
 
-Warning: (recently discovered and may have been fixed)
+> This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
+> SMBus controller. This controller was nonfunctional unless its interrupt
+> usage was disabled (using the "disable_features=3D0x10" module parameter).
+>=20
+> After investigation, it turned out that the driver was using an
+> incorrect interrupt vector: in lspci output for this device there was:
+>         Interrupt: pin B routed to IRQ 19
+> but after running i2cdetect (without using any i2c-i801 module
+> parameters) the following was logged to dmesg:
+>=20
+>         [...]
+>         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
+>         i801_smbus 0000:00:1f.3: Transaction timeout
+>         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
+>         i801_smbus 0000:00:1f.3: Transaction timeout
+>         irq 17: nobody cared (try booting with the "irqpoll" option)
+>=20
+> Existence of duplicate entries in a table returned by the _PRT method
+> was confirmed by disassembling the ACPI DSDT table.
 
-arch/arm64/kernel/acpi.c:433:5: warning: no previous prototype for 'acpi_ffh_address_space_arch_setup' [-Wmissing-prototypes]
-arch/arm64/kernel/acpi.c:476:5: warning: no previous prototype for 'acpi_ffh_address_space_arch_handler' [-Wmissing-prototypes]
+Excuse a probably stupid question, but what would happen if we would
+plain ignore the IRQ routing information from ACPI in this case? Would
+we fallback to some pure-PCI routing logic which may have a chance to
+find the right IRQ routing (matching the second ACPI routing entry in
+this case)?
 
-Warning ids grouped by kconfigs:
+> Signed-off-by: Mateusz Jo=C5=84czyk <mat.jonczyk@o2.pl>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Borislav Petkov <bp@suse.de>
+> Cc: Jean Delvare <jdelvare@suse.com>
+>=20
+> --
+> v2: - add a newline at the end of the kernel log message,
+>     - replace: "if (match =3D=3D NULL)" -> "if (!match)"
+>     - patch description tweaks.
+>=20
+> Tested on two computers, including the affected Dell Latitude E6500 lapto=
+p.
+>=20
+>  drivers/acpi/pci_irq.c | 25 ++++++++++++++++++++++---
+>  1 file changed, 22 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+> index 08e15774fb9f..a4e41b7b71ed 100644
+> --- a/drivers/acpi/pci_irq.c
+> +++ b/drivers/acpi/pci_irq.c
+> @@ -203,6 +203,8 @@ static int acpi_pci_irq_find_prt_entry(struct pci_dev=
+ *dev,
+>  	struct acpi_buffer buffer =3D { ACPI_ALLOCATE_BUFFER, NULL };
+>  	struct acpi_pci_routing_table *entry;
+>  	acpi_handle handle =3D NULL;
+> +	struct acpi_prt_entry *match =3D NULL;
+> +	const char *match_int_source =3D NULL;
+> =20
+>  	if (dev->bus->bridge)
+>  		handle =3D ACPI_HANDLE(dev->bus->bridge);
+> @@ -219,13 +221,30 @@ static int acpi_pci_irq_find_prt_entry(struct pci_d=
+ev *dev,
+> =20
+>  	entry =3D buffer.pointer;
+>  	while (entry && (entry->length > 0)) {
+> -		if (!acpi_pci_irq_check_entry(handle, dev, pin,
+> -						 entry, entry_ptr))
+> -			break;
+> +		struct acpi_prt_entry *curr;
+> +
+> +		if (!acpi_pci_irq_check_entry(handle, dev, pin, entry, &curr)) {
+> +			if (!match) {
+> +				match =3D curr;
+> +				match_int_source =3D entry->source;
+> +			} else {
+> +				pr_warn(FW_BUG
+> +				"ACPI _PRT returned duplicate IRQ routing entries for device "
+> +					"%04x:%02x:%02x[INT%c]: %s[%d] and %s[%d].\n",
 
-gcc_recent_errors
-`-- arm64-allyesconfig
-    |-- arch-arm64-kernel-acpi.c:warning:no-previous-prototype-for-acpi_ffh_address_space_arch_handler
-    `-- arch-arm64-kernel-acpi.c:warning:no-previous-prototype-for-acpi_ffh_address_space_arch_setup
+The beginning of the string should be aligned with the opening
+parenthesis, and the string should be on a single line (this is a
+encouraged exception to the 80-column rule). I would also omit the
+tailing dot for consistency.
 
-elapsed time: 722m
+> +					curr->id.segment, curr->id.bus, curr->id.device,
 
-configs tested: 56
-configs skipped: 2
+Is the IRQ per PCI device, or per PCI function? If the latter, then you
+should print "%02x.%x" instead of just "%02x", with the extra element
+being curr->id.function.
 
-gcc tested configs:
-arc                                 defconfig
-alpha                               defconfig
-arm                               allnoconfig
-arc                               allnoconfig
-alpha                             allnoconfig
-i386                              allnoconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-s390                                defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-arc                  randconfig-r043-20221115
-riscv                randconfig-r042-20221115
-s390                 randconfig-r044-20221115
-m68k                             allyesconfig
-x86_64                              defconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-powerpc                           allnoconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-powerpc                          allmodconfig
-x86_64                           allyesconfig
-mips                             allyesconfig
-i386                                defconfig
-ia64                             allmodconfig
-i386                 randconfig-a001-20221114
-i386                 randconfig-a004-20221114
-x86_64                    rhel-8.3-kselftests
-i386                 randconfig-a002-20221114
-i386                 randconfig-a005-20221114
-sh                               allmodconfig
-x86_64                           rhel-8.3-syz
-arm                                 defconfig
-i386                 randconfig-a006-20221114
-x86_64                         rhel-8.3-kunit
-i386                             allyesconfig
-x86_64                           rhel-8.3-kvm
-i386                 randconfig-a003-20221114
-arm64                            allyesconfig
-arm                              allyesconfig
+> +					pin_name(curr->pin),
+> +					match_int_source, match->index,
+> +					entry->source, curr->index);
+> +				// we use the first matching entry nonetheless
 
-clang tested configs:
-hexagon              randconfig-r041-20221115
-hexagon              randconfig-r045-20221115
-x86_64               randconfig-a012-20221114
-x86_64               randconfig-a013-20221114
-x86_64               randconfig-a011-20221114
-x86_64               randconfig-a014-20221114
-x86_64               randconfig-a016-20221114
-x86_64               randconfig-a015-20221114
-i386                 randconfig-a011-20221114
-i386                 randconfig-a013-20221114
-i386                 randconfig-a012-20221114
-i386                 randconfig-a014-20221114
-i386                 randconfig-a015-20221114
-i386                 randconfig-a016-20221114
+The rest of the file uses /* C89-style comments */ so I would stick to
+that for consistency.
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> +			}
+> +		}
+> +
+>  		entry =3D (struct acpi_pci_routing_table *)
+>  		    ((unsigned long)entry + entry->length);
+>  	}
+> =20
+> +	*entry_ptr =3D match;
+> +
+>  	kfree(buffer.pointer);
+>  	return 0;
+>  }
+
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Tested-by: Jean Delvare <jdelvare@suse.de>
+
+(Tested on a Dell OptiPlex 9020 not affected by the problem.)
+
+--=20
+Jean Delvare
+SUSE L3 Support
