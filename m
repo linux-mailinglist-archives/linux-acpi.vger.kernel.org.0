@@ -2,97 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C73526290A2
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Nov 2022 04:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A549162929C
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Nov 2022 08:43:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232396AbiKODN1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Nov 2022 22:13:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54708 "EHLO
+        id S230286AbiKOHnE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Nov 2022 02:43:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232562AbiKODNX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Nov 2022 22:13:23 -0500
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 008D3263D
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Nov 2022 19:13:21 -0800 (PST)
-X-ASG-Debug-ID: 1668481999-1eb14e7e63898a0001-I98ny2
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id AEK4qm34JgfWn1ro (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Tue, 15 Nov 2022 11:13:19 +0800 (CST)
-X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.12; Tue, 15 Nov
- 2022 11:13:19 +0800
-Received: from localhost.localdomain (10.32.64.1) by ZXBJMBX03.zhaoxin.com
- (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.12; Tue, 15 Nov
- 2022 11:13:16 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-From:   LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.7
-To:     <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-        <tony.luck@intel.com>, <bp@alien8.de>, <robert.moore@intel.com>,
-        <ying.huang@intel.com>, <rdunlap@infradead.org>,
-        <bhelgaas@google.com>, <linux-acpi@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devel@acpica.org>
-CC:     <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>,
-        <ErosZhang@zhaoxin.com>, leoliu-oc <leoliu-oc@zhaoxin.com>
-Subject: [PATCH v2 5/5] ACPI/PCI: Config PCIe devices's AER register
-Date:   Tue, 15 Nov 2022 11:13:15 +0800
-X-ASG-Orig-Subj: [PATCH v2 5/5] ACPI/PCI: Config PCIe devices's AER register
-Message-ID: <20221115031315.1667355-1-LeoLiu-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.20.1
+        with ESMTP id S229631AbiKOHnE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Nov 2022 02:43:04 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E653FBBA;
+        Mon, 14 Nov 2022 23:43:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668498181; x=1700034181;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oKTZy0MT8rZr6FDINCECGLb1+1ZH94JhfUwq+2xKvQ8=;
+  b=mHD9TnqIkbyIxY99d4Lxk3lZSkzKkk4rdSwCORAZQor4t13cAlSswUDA
+   b/Xcx5xQF7knv/tqfUVlkxScDy72R9v8V2UfXFhxvWUIMVExljZG84gN/
+   +t//LouLF6ucnsvuDW2OEqX9vn1Lcv80iSXYUskFJp3/Jg7FLzktc0Dyd
+   kLrycHe2fKZ5rhnKRU/e5JeyWaTGXFqiEJekAWT2qySKysRuCL13XHFKw
+   CFKVOtnJplwircr5HBdbr5rVoIMvDxicXqNZ6P9J02X/vjFwa1yG9LnpB
+   zGlwWTku8UXXmo/Yw1dv/6RGWrakub3lOrHPxUJW+wG18bbLhygBf8FIS
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="291899419"
+X-IronPort-AV: E=Sophos;i="5.96,165,1665471600"; 
+   d="scan'208";a="291899419"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2022 23:43:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="707640387"
+X-IronPort-AV: E=Sophos;i="5.96,165,1665471600"; 
+   d="scan'208";a="707640387"
+Received: from lkp-server01.sh.intel.com (HELO ebd99836cbe0) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 14 Nov 2022 23:43:00 -0800
+Received: from kbuild by ebd99836cbe0 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ouqax-0001At-1t;
+        Tue, 15 Nov 2022 07:42:59 +0000
+Date:   Tue, 15 Nov 2022 15:42:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
+ 8992b8d17e6c314a528a5bce386de28701f2a2ef
+Message-ID: <637342fd.RhRuSQOunz8IKuR7%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.32.64.1]
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1668481999
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 791
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.3900 1.0000 -0.0264
-X-Barracuda-Spam-Score: -0.03
-X-Barracuda-Spam-Status: No, SCORE=-0.03 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.102147
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------------------------
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: leoliu-oc <leoliu-oc@zhaoxin.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 8992b8d17e6c314a528a5bce386de28701f2a2ef  Merge branch 'acpi-bus' into bleeding-edge
 
-Call the func pci_acpi_program_hest_aer_params() for every PCIe device.
-Extracting register values from HEST PCIe AER structures and programming
-them into AER Capabilities are implemented in this function.
+Warning reports:
 
-Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
----
- drivers/pci/probe.c | 1 +
- 1 file changed, 1 insertion(+)
+https://lore.kernel.org/oe-kbuild-all/202211150900.CUzIO2xF-lkp@intel.com
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index b66fa42c4b1f..02bf9180e96d 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2263,6 +2263,7 @@ static void pci_configure_device(struct pci_dev *dev)
- 	pci_configure_serr(dev);
- 
- 	pci_acpi_program_hp_params(dev);
-+	pci_acpi_program_hest_aer_params(dev);
- }
- 
- static void pci_release_capabilities(struct pci_dev *dev)
+Warning: (recently discovered and may have been fixed)
+
+arch/arm64/kernel/acpi.c:433:5: warning: no previous prototype for 'acpi_ffh_address_space_arch_setup' [-Wmissing-prototypes]
+arch/arm64/kernel/acpi.c:476:5: warning: no previous prototype for 'acpi_ffh_address_space_arch_handler' [-Wmissing-prototypes]
+
+Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+`-- arm64-allyesconfig
+    |-- arch-arm64-kernel-acpi.c:warning:no-previous-prototype-for-acpi_ffh_address_space_arch_handler
+    `-- arch-arm64-kernel-acpi.c:warning:no-previous-prototype-for-acpi_ffh_address_space_arch_setup
+
+elapsed time: 722m
+
+configs tested: 56
+configs skipped: 2
+
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+arm                               allnoconfig
+arc                               allnoconfig
+alpha                             allnoconfig
+i386                              allnoconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+s390                                defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+arc                  randconfig-r043-20221115
+riscv                randconfig-r042-20221115
+s390                 randconfig-r044-20221115
+m68k                             allyesconfig
+x86_64                              defconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+powerpc                           allnoconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+powerpc                          allmodconfig
+x86_64                           allyesconfig
+mips                             allyesconfig
+i386                                defconfig
+ia64                             allmodconfig
+i386                 randconfig-a001-20221114
+i386                 randconfig-a004-20221114
+x86_64                    rhel-8.3-kselftests
+i386                 randconfig-a002-20221114
+i386                 randconfig-a005-20221114
+sh                               allmodconfig
+x86_64                           rhel-8.3-syz
+arm                                 defconfig
+i386                 randconfig-a006-20221114
+x86_64                         rhel-8.3-kunit
+i386                             allyesconfig
+x86_64                           rhel-8.3-kvm
+i386                 randconfig-a003-20221114
+arm64                            allyesconfig
+arm                              allyesconfig
+
+clang tested configs:
+hexagon              randconfig-r041-20221115
+hexagon              randconfig-r045-20221115
+x86_64               randconfig-a012-20221114
+x86_64               randconfig-a013-20221114
+x86_64               randconfig-a011-20221114
+x86_64               randconfig-a014-20221114
+x86_64               randconfig-a016-20221114
+x86_64               randconfig-a015-20221114
+i386                 randconfig-a011-20221114
+i386                 randconfig-a013-20221114
+i386                 randconfig-a012-20221114
+i386                 randconfig-a014-20221114
+i386                 randconfig-a015-20221114
+i386                 randconfig-a016-20221114
+
 -- 
-2.20.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
