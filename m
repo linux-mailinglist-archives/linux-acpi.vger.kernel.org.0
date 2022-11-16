@@ -2,172 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7F362AF58
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Nov 2022 00:19:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B32F62B01D
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Nov 2022 01:37:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230490AbiKOXTX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Nov 2022 18:19:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35186 "EHLO
+        id S229797AbiKPAhq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Nov 2022 19:37:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiKOXTW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Nov 2022 18:19:22 -0500
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67EE46319;
-        Tue, 15 Nov 2022 15:19:21 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id v3so15003131pgh.4;
-        Tue, 15 Nov 2022 15:19:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qz56XkUie8CTZ7dnEHUH6pIADzDVI3YbYDDxtOkhxuE=;
-        b=ZShIHfir/IpmOj3wxLNBiSKmw4lA73I6HtSJfOvQ5ndCi07b8wQ9tNMYXnaXyI79BV
-         srliTEymVBTk48KSaGkAIykqqVWkpwYj4gIzPCR/7dK+bOaX+uy1qDtbFUHHrx2VqTvW
-         K7+3N94zkUYFi7+EaLAeq8cCElnNH3y5jJzcCNrQOAJkxOGupmhCdKksNhYDLo4X6wlx
-         kRlioTyKFYqPs4+IE3oCwZlp2+94I8ueyWIMWIPmTZzI4K28yR7GH6CJNLyEm3TnXvdY
-         b/0PR+Y7aOKxNQVLDQDNBMZ+tqBLajmx0hJenDv4qiGC/gBB0hyP+WM9NDcy/TLN2Omj
-         d1Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qz56XkUie8CTZ7dnEHUH6pIADzDVI3YbYDDxtOkhxuE=;
-        b=Nuh5FM3/vOe6JELLi+86oqvGrE3eLNzEX+CI/cxFPvjyKV6KFOJDDxptCwCG/OaIzx
-         MB30JYabFxn2eoMfSuqnllWRQWnX5t/yt4lVMG/xf0tp2nhu5SbuSh6EI1OF0Id96Hwc
-         5QSEglIRK3SNY61OkICTHnqFAYwNZKYxJoYWzQqDwKfOgAjwp9wz3FgbUIRB7sXA4DoW
-         w4y8e2trrn6g8sVfO73mb9VmLLadEp4aBQG5x9PZdd0vmoEmwqolqi6QAWGZn1xvYym3
-         25OJb18BjdTFdacuHHLXCa+GB50ngkDGqAR7NXE5pBfZVRpaG+uMs0Scwl5nkYBTPAI4
-         DJhw==
-X-Gm-Message-State: ANoB5pniZXCX2r5+we1JsntBKrpNzp3fVwV1rPOXATcsxWx/XUcHWeDK
-        T6/BMFCaVlVERSRs79JtBKc=
-X-Google-Smtp-Source: AA0mqf5K1YA8mAOeu5fTKmA/mnWODA/nUqDxUPTwnORtbJEvmNGik7Vl8Q8Ij6bDGeIyLXvotf2p4A==
-X-Received: by 2002:a65:58c7:0:b0:439:3c55:3df1 with SMTP id e7-20020a6558c7000000b004393c553df1mr17785447pgu.606.1668554360675;
-        Tue, 15 Nov 2022 15:19:20 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:2d36:e9a0:170b:669f])
-        by smtp.gmail.com with ESMTPSA id m6-20020a17090a668600b0020d3662cc77sm92990pjj.48.2022.11.15.15.19.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Nov 2022 15:19:19 -0800 (PST)
-Date:   Tue, 15 Nov 2022 15:19:16 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 0/6] Add support for software nodes to gpiolib
-Message-ID: <Y3QedBxErvjc+YHi@google.com>
-References: <20221031-gpiolib-swnode-v4-0-6c1671890027@gmail.com>
- <CAMRc=Mf+FFyx7Mkw-nLMaoayJUjZbkEHDkVCsa_L+XkX6sEQDQ@mail.gmail.com>
+        with ESMTP id S229655AbiKPAhp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Nov 2022 19:37:45 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 547832A970;
+        Tue, 15 Nov 2022 16:37:44 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 042BCB81A66;
+        Wed, 16 Nov 2022 00:37:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B8FC433B5;
+        Wed, 16 Nov 2022 00:37:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668559061;
+        bh=BNuisBrauM7r8I3QUy7HVPUK60+5GXaUDdg+V+tFKwY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=LA+WyWfTOWaUtNNq2tFThoTEEfrHluSWEeogkfZGw3+pGKlGo6cOVl89ZATAYaTK/
+         rfRzytfqVh/+39qQG8Go0eb8E5MldwGD7sWH/0sdrSl2Qsffr4cKBOWF0j/8D7OHZJ
+         XdVHz2Z8fviZpvdCrO/MVp1XqKgAn4ic7R3ysWgyKYoFU3ugIu+TjsnJ3Uy6SWSQcJ
+         lYZKIoCzGuAkpC7em7cgWbzK80pTKRNMaRHSUI1X8xpunoOtwWFlI4vIQoXvdeQLRR
+         z5KXMtvkBXLCqPTEfCm+YhMy8NK3osBLs5rTF2FbVSE3qNnh5KX0yn+ydtiXdje4c6
+         DRIM2EPH+8O/Q==
+Date:   Tue, 15 Nov 2022 18:37:39 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mehta Sanju <Sanju.Mehta@amd.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power
+ resources support D3
+Message-ID: <20221116003739.GA1061657@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMRc=Mf+FFyx7Mkw-nLMaoayJUjZbkEHDkVCsa_L+XkX6sEQDQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAJZ5v0g834K4ZBrEvhAbJhvGBVyq53nreG+xeBufXKQXA3VtrQ@mail.gmail.com>
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URI_TRY_3LD autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 15, 2022 at 11:28:17AM +0100, Bartosz Golaszewski wrote:
-> On Fri, Nov 11, 2022 at 11:19 PM Dmitry Torokhov
-> <dmitry.torokhov@gmail.com> wrote:
+On Mon, Nov 14, 2022 at 04:33:52PM +0100, Rafael J. Wysocki wrote:
+> On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
 > >
-> > This series attempts to add support for software nodes to gpiolib, using
-> > software node references. This allows us to convert more drivers to the
-> > generic device properties and drop support for custom platform data.
+> > On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
+> > > On 11/11/2022 11:41, Bjorn Helgaas wrote:
+> > > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
+> > > > > Firmware typically advertises that ACPI devices that represent PCIe
+> > > > > devices can support D3 by a combination of the value returned by
+> > > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
+> > > > >
+> > > > > `acpi_pci_bridge_d3` looks for this combination but also contains
+> > > > > an assumption that if an ACPI device contains power resources the PCIe
+> > > > > device it's associated with can support D3.  This was introduced
+> > > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
+> > > > > D3 if power managed by ACPI").
+> > > > >
+> > > > > Some firmware configurations for "AMD Pink Sardine" do not support
+> > > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
+> > > > > port used for tunneling. The PCIe device will still be opted into
+> > > > > runtime PM in the kernel [2] because of the logic within
+> > > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
+> > > > > device contains power resources.
 > >
-> > To describe a GPIO via software nodes we can create the following data
-> > items:
+> > Wait.  Is this as simple as just recognizing that:
 > >
-> > /* Node representing the GPIO controller/GPIO bank */
-> > static const struct software_node gpio_bank_b_node = {
-> >         .name = "B",
-> > };
-> >
-> > /*
-> >  * Properties that will be assigned to a software node assigned to
-> >  * the device that used platform data.
-> >  */
-> > static const struct property_entry simone_key_enter_props[] = {
-> >         PROPERTY_ENTRY_U32("linux,code", KEY_ENTER),
-> >         PROPERTY_ENTRY_STRING("label", "enter"),
-> >         PROPERTY_ENTRY_REF("gpios", &gpio_bank_b_node, 123, GPIO_ACTIVE_LOW),
-> >         { }
-> > };
-> >
-> > The code in gpiolib handling software nodes uses the name in the
-> > software node representing GPIO controller to locate the actual instance
-> > of GPIO controller.
-> >
-> > To: Linus Walleij <linus.walleij@linaro.org>
-> > To: Bartosz Golaszewski <brgl@bgdev.pl>
-> > To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Cc: linux-gpio@vger.kernel.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-acpi@vger.kernel.org
-> >
-> > ---
-> > Changes in v4:
-> > - Rebased on top of next-20221111
-> > - Added Andy's reviewed-by for patch #6
-> > - Link to v3: https://lore.kernel.org/r/20221031-gpiolib-swnode-v3-0-0282162b0fa4@gmail.com
-> >
-> > Changes in v3:
-> > - Addressed more Andy's comments
-> > - Link to v2: https://lore.kernel.org/r/20221031-gpiolib-swnode-v2-0-81f55af5fa0e@gmail.com
-> >
-> > Changes in v2:
-> > - reworked the series to be independent of other in-flight patches.
-> >   That meant keeping devm_gpiod_get_from_of_node() for now.
-> > - removed handling of secondary nodes, it deserves a separate patch
-> >   series
-> > - fixed refcounting when handling swnodes (Andy)
-> > - added include/linux/gpio/property.h with PROPERTY_ENTRY_GPIO (Andy)
-> > - addressed most of the rest of Andy's comments
-> > - collected reviewed-by and acked-by
-> > - Link to v1: https://lore.kernel.org/r/20221031-gpiolib-swnode-v1-0-a0ab48d229c7@gmail.com
-> >
-> > ---
-> > Dmitry Torokhov (6):
-> >       gpiolib: of: change of_find_gpio() to accept device node
-> >       gpiolib: acpi: change acpi_find_gpio() to accept firmware node
-> >       gpiolib: acpi: teach acpi_find_gpio() to handle data-only nodes
-> >       gpiolib: acpi: avoid leaking ACPI details into upper gpiolib layers
-> >       gpiolib: consolidate GPIO lookups
-> >       gpiolib: add support for software nodes
-> >
-> >  drivers/gpio/Makefile         |   1 +
-> >  drivers/gpio/gpiolib-acpi.c   | 132 +++++++++++++++-----------
-> >  drivers/gpio/gpiolib-acpi.h   |  54 +----------
-> >  drivers/gpio/gpiolib-of.c     |   7 +-
-> >  drivers/gpio/gpiolib-of.h     |   4 +-
-> >  drivers/gpio/gpiolib-swnode.c | 123 +++++++++++++++++++++++++
-> >  drivers/gpio/gpiolib-swnode.h |  14 +++
-> >  drivers/gpio/gpiolib.c        | 209 ++++++++++++++++--------------------------
-> >  include/linux/gpio/property.h |  11 +++
-> >  9 files changed, 315 insertions(+), 240 deletions(-)
-> > ---
-> > base-commit: f8f60f322f0640c8edda2942ca5f84b7a27c417a
-> > change-id: 20221031-gpiolib-swnode-948203f49b23
-> >
-> > --
-> > Dmitry
-> >
+> >   _PS0 means the OS has a knob to put the device in D0, but it doesn't
+> >   mean the device can wake itself from a low-power state.  The OS has
+> >   to use _S0W to learn the device's ability to wake itself.
 > 
-> I still had some fuzz when applying, can you for the future rebase on
-> top of the GPIO for-next branch?
+> It is.
 
-OK, I will, but I thought it is feeding into the next tree?
+Now I'm confused again about what "HotPlugSupportInD3" means.  The MS
+web page [1] says it identifies Root Ports capable of handling hot
+plug events while in D3.  That sounds kind of related to _S0W: If _S0W
+says "I can wake myself from D3hot and D3cold", how is that different
+from "I can handle hotplug events in D3"?
 
-> 
-> Anyway: series applied.
+This patch says that if dev's Root Port has "HotPlugSupportInD3", we
+don't need _PS0 or _PR0 for dev.  I guess that must be true, because
+previously the fact that we checked for "HotPlugSupportInD3" meant the
+device did NOT have _PS0 or _PR0.
 
-Thanks!
-
--- 
-Dmitry
+[1] https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-pcie-root-ports-supporting-hot-plug-in-d3
