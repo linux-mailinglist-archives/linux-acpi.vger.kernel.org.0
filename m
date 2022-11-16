@@ -2,143 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7424162CEB3
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Nov 2022 00:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 811B062CEEC
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Nov 2022 00:42:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbiKPX2p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Nov 2022 18:28:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54432 "EHLO
+        id S234444AbiKPXms (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Nov 2022 18:42:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229703AbiKPX2o (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Nov 2022 18:28:44 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B89959FC2;
-        Wed, 16 Nov 2022 15:28:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1AB95B81F2E;
-        Wed, 16 Nov 2022 23:28:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996AEC433B5;
-        Wed, 16 Nov 2022 23:28:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668641319;
-        bh=1zBpfGyr9uizob8bMvX0NxzH7tfCiWb/ipmk6cC1kgQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=bYtSabnYqm/WvoU9MYqsHKIoeQLBGZCnaff2fP/BFlz66dHeMs9tLxjF5ILTr8Dn/
-         lEH2aWsd+uBxVnycPs6uUQZpzJrKIRg4/4qysBrTaDN/qaUwuaTNsL4PN6hkkAthDz
-         hfiN9C0jm6iyPUss8FAJyTcYfjs/4wblV1HZ8aVV6qpWXGMeWWNxEmumqotgZ/1nFj
-         DyeFsl7mEYBDXfDL6t1sm2ubwO8mZUGiT4M8rFUqhIJ/AnTlbl9zWVj56ou4XnO+Zu
-         e+5+MoIW/bN5SdPBQ9aURVrvmbrnLW9KaOsDu4GjwmIUqmJ3M60jXJgY+56d2oKYpA
-         MlSsvafVu/JvQ==
-Date:   Wed, 16 Nov 2022 17:28:38 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mehta Sanju <Sanju.Mehta@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power
- resources support D3
-Message-ID: <20221116232838.GA1140883@bhelgaas>
+        with ESMTP id S238946AbiKPXme (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Nov 2022 18:42:34 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51FD06F36D;
+        Wed, 16 Nov 2022 15:41:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668642088; x=1700178088;
+  h=subject:mime-version:content-transfer-encoding:from:date:
+   message-id:to;
+  bh=gcknXCLuemBiw6QyYPT0m60B03ddAIIJISsWvFv8N2A=;
+  b=gvC8nGezjg2vJC8Y/Pz/9r3y13zbtrwNeatmAvIPAC8aBeBVM6MI7H2k
+   Yz49o4s2mFNMG5q3k063JV1d5mkNgbw6KiYGQm5m6jRf+Ndr7Wsx7zC0d
+   KwXT2vVp3/9/308iT92lbvwvchPp4hRHC87MWExmQOGe6cNOEXPh35j3G
+   +Hdv4xHI9JE2wtWo8DxJFTVybiuL+0UTEq6T/sbsMmbtvB3PDP5CML+rg
+   hgVOdSzRb7iKMiFd/dGk5dyLn7D/81kdLr9OEJzB/0AbIjDJKSHz7tPYR
+   KvMquCKmVkVRjdO5cZjWsJS0XAVT9XrcyUq+nOOcOkcQsphiqx4tx/8BS
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10533"; a="292405778"
+X-IronPort-AV: E=Sophos;i="5.96,169,1665471600"; 
+   d="scan'208";a="292405778"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2022 15:41:28 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10533"; a="641848518"
+X-IronPort-AV: E=Sophos;i="5.96,169,1665471600"; 
+   d="scan'208";a="641848518"
+Received: from jjeyaram-mobl1.amr.corp.intel.com (HELO [192.168.1.28]) ([10.212.1.223])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2022 15:41:27 -0800
+Subject: [PATCH v2 0/2] ACPI: HMAT: fix single-initiator target registrations
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0gyVq0AOM1_kd3QWHj+jihL-vxBv=fcEJ_Zcp8QiOymcg@mail.gmail.com>
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URI_TRY_3LD autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-b4-tracking: H4sIAD90dWMC/z2OwQrCMBBEf6Xs2YQk1YZ68j9EynZNzUKaSFKLUvrvBg+ehhl4M7NBcZldgXOzQX
+ YrF06xGnNogDzGhxN8rx6MMkZr3QmkJw9+xmWY+C0s0nQcCVtLCiozYnFizBjJVyq+Qqih57Kk/Plt
+ rLrK9V+n7Mm2ndS96rteCS3qA49BBrm6POOF4+KCpDTDbd/3L3hSabKuAAAA
+From:   Vishal Verma <vishal.l.verma@intel.com>
+Date:   Wed, 16 Nov 2022 16:37:35 -0700
+Message-Id: <20221116-acpi_hmat_fix-v2-0-3712569be691@intel.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        linux-kernel@vger.kernel.org,
+        Chris Piper <chris.d.piper@intel.com>, nvdimm@lists.linux.dev,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Liu Shixin <liushixin2@huawei.com>, stable@vger.kernel.org
+X-Mailer: b4 0.11.0-dev-d1636
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1380;
+ i=vishal.l.verma@intel.com; h=from:subject:message-id;
+ bh=gcknXCLuemBiw6QyYPT0m60B03ddAIIJISsWvFv8N2A=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDMmlpeqLbCaqG/ZfYnqxx+nhqoR3PKfqXh/hYqsqXyDMtOJO
+ 9MGfHaUsDGJcDLJiiix/93xkPCa3PZ8nMMERZg4rE8gQBi5OAZiInCzDP4Vfyk9MrX5umfrqYflbtu
+ meV6foTm1bxyRpUbljS4mbyXKG/9X2l2XXX1yVdbupbdVGjmTG6hWRbzaWzyzmclKJEpdjYwYA
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
+ fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 16, 2022 at 01:00:36PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Nov 16, 2022 at 1:37 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Mon, Nov 14, 2022 at 04:33:52PM +0100, Rafael J. Wysocki wrote:
-> > > On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > >
-> > > > On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
-> > > > > On 11/11/2022 11:41, Bjorn Helgaas wrote:
-> > > > > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
-> > > > > > > Firmware typically advertises that ACPI devices that represent PCIe
-> > > > > > > devices can support D3 by a combination of the value returned by
-> > > > > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
-> > > > > > >
-> > > > > > > `acpi_pci_bridge_d3` looks for this combination but also contains
-> > > > > > > an assumption that if an ACPI device contains power resources the PCIe
-> > > > > > > device it's associated with can support D3.  This was introduced
-> > > > > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
-> > > > > > > D3 if power managed by ACPI").
-> > > > > > >
-> > > > > > > Some firmware configurations for "AMD Pink Sardine" do not support
-> > > > > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
-> > > > > > > port used for tunneling. The PCIe device will still be opted into
-> > > > > > > runtime PM in the kernel [2] because of the logic within
-> > > > > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
-> > > > > > > device contains power resources.
-> > > >
-> > > > Wait.  Is this as simple as just recognizing that:
-> > > >
-> > > >   _PS0 means the OS has a knob to put the device in D0, but it doesn't
-> > > >   mean the device can wake itself from a low-power state.  The OS has
-> > > >   to use _S0W to learn the device's ability to wake itself.
-> > >
-> > > It is.
-> >
-> > Now I'm confused again about what "HotPlugSupportInD3" means.  The MS
-> > web page [1] says it identifies Root Ports capable of handling hot
-> > plug events while in D3.  That sounds kind of related to _S0W: If _S0W
-> > says "I can wake myself from D3hot and D3cold", how is that different
-> > from "I can handle hotplug events in D3"?
-> 
-> For native PME/hot-plug signaling there is no difference.  This is the
-> same interrupt by the spec after all IIRC.
-> 
-> For GPE-based signaling, though, there is a difference, because GPEs
-> can only be used directly for wake signaling (this is related to
-> _PRW).  In particular, the only provision in the ACPI spec for device
-> hot-add are the Bus Check and Device Check notification values (0 and
-> 1) which require AML to run and evaluate Notify() on specific AML
-> objects.
-> 
-> Hence, there is no spec-defined way to tell the OS that "something can
-> be hot-added under this device while in D3 and you will get notified
-> about that".
+Patch 1 is an obvious cleanup found while fixing this problem.
 
-So I guess acpi_pci_bridge_d3() looks for:
+Patch 2 Fixes a bug with initiator registration for single-initiator
+systems. More details on this in its commit message.
 
-  - "wake signaling while in D3" (_S0W) and
-  - "notification of hotplug while in D3" ("HotPlugSupportInD3")
+Rafael - I didn't retain your ack for patch 2 since it seemed like a
+nontrivial change.
 
-For Root Ports with both those abilities (or bridges below such Root
-Ports), we allow D3, and this patch doesn't change that.
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+Cc: Chris Piper <chris.d.piper@intel.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 
-What this patch *does* change is that all bridges with _PS0 or _PR0
-previously could use D3, but now will only be able to use D3 if they
-are also (or are below) a Root Port that can signal wakeup
-(wakeup.flags.valid) and can wakeup from D3hot or D3cold (_S0W).
+---
+Changes in v2:
+- Collect Acks for patch 1.
+- Separate out the bitmask generation from the comparision helper to make
+  it more explicit and easier to follow (Kirill)
+- Link to v1: https://lore.kernel.org/r/20221116075736.1909690-1-vishal.l.verma@intel.com
 
-And this fixes the Pink Sardine because it has Root Ports that do
-Thunderbolt tunneling, and they have _PS0 or _PR0 but their _S0W says
-they cannot wake from D3.  Previously we put those in D3, but they
-couldn't wake up.  Now we won't put them in D3.
+---
+Vishal Verma (2):
+      ACPI: HMAT: remove unnecessary variable initialization
+      ACPI: HMAT: Fix initiator registration for single-initiator systems
 
-I guess there's a possibility that this could break or cause higher
-power consumption on systems that were fixed by c6e331312ebf
-("PCI/ACPI: Whitelist hotplug ports for D3 if power managed by ACPI").
-I don't know enough about that scenario.  Maybe Lukas will chime in.
+ drivers/acpi/numa/hmat.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
+---
+base-commit: 9abf2313adc1ca1b6180c508c25f22f9395cc780
+change-id: 20221116-acpi_hmat_fix-7acf4bca37c0
 
-> > This patch says that if dev's Root Port has "HotPlugSupportInD3", we
-> > don't need _PS0 or _PR0 for dev.  I guess that must be true, because
-> > previously the fact that we checked for "HotPlugSupportInD3" meant the
-> > device did NOT have _PS0 or _PR0.
-> >
-> > [1] https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-pcie-root-ports-supporting-hot-plug-in-d3
+Best regards,
+-- 
+Vishal Verma <vishal.l.verma@intel.com>
