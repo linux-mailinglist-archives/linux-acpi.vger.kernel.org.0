@@ -2,58 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C461662BD0A
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Nov 2022 13:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D16262BD40
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Nov 2022 13:11:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231501AbiKPMHH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Nov 2022 07:07:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53426 "EHLO
+        id S231734AbiKPMLX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Nov 2022 07:11:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233584AbiKPMGv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Nov 2022 07:06:51 -0500
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5011C29C86;
-        Wed, 16 Nov 2022 04:00:50 -0800 (PST)
-Received: by mail-qv1-f50.google.com with SMTP id x13so11732420qvn.6;
-        Wed, 16 Nov 2022 04:00:50 -0800 (PST)
+        with ESMTP id S233482AbiKPMLJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Nov 2022 07:11:09 -0500
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358A245A00;
+        Wed, 16 Nov 2022 04:04:21 -0800 (PST)
+Received: by mail-qk1-f177.google.com with SMTP id v8so11402207qkg.12;
+        Wed, 16 Nov 2022 04:04:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pLjn09SIm5W8Gdy8FxqMI+enAz3ipU2J5urg+CGsoDg=;
-        b=eCCimOmXA9GTB1ElMIRtpNl+jr6pag4nT82xVGVNDKZjTPZJ29qT+ZiHDEaxllSStI
-         4slzvLcItwlSvBTndqpMZZSDaGcfhpLZvW6HO6XHGqP4EOYSZwPVJtNH4Mqxagp6zFNM
-         593hjKcQtn0ea/2+bMQ8ibOzaDoMzr49zzJdKj6BqmQcdrx0uNF7SLkxOc/MxNfOtO2B
-         bJ2nTVkmpzU/k8r5X2B/BzJQZpa8U9za94IxMsVXfmcM8Q/ZmcFzJVnLenz7MJBKvZHc
-         meARiSwMynJyi/pYUeRlB10/HBCofy9ZzXKUg/GG/0RQszBYJWzFlp3DjIb2+tc97zB3
-         0tnw==
-X-Gm-Message-State: ANoB5pkpfuewP7z693aMPrIG85Vdb9Fxpo0GE2g+54cJtrSku4N1NxQk
-        mT20TtaHDP1uKslg9NDBppNpTNzJFRKzVFrqY6+nG97Y
-X-Google-Smtp-Source: AA0mqf5iQnSi2WYAf3lvk6A5SWcouBkUCDGrperQwwzY6EkndjzlhDFA44ccIAvaQkqUC9rEbGGIq4eOvUxCKRSSgeI=
-X-Received: by 2002:a0c:8043:0:b0:4c0:8055:fb5 with SMTP id
- 61-20020a0c8043000000b004c080550fb5mr20815149qva.73.1668600048968; Wed, 16
- Nov 2022 04:00:48 -0800 (PST)
+        bh=YQdBkxqg5BqsUvdY+IvEe5QBnPb9zU/ugVGD23aN9Pc=;
+        b=lA+a75CIx0a7kotuRQ0WHl9kLQ1WRRjlysJF3v7et1wK3rJPpQ64Gk6DnjW0BsEWKi
+         riMopdW6/yGUwG4GMKv80fPNuNOBV40QQYPGSPILjC2qhXDBgTJkw7MCQEEiXMp6ymoG
+         aMF7mbp3qhmjjoY/Ov1fenyeweAWlvJehESgx9Lo9VnI+fBzTTJc7s+U9qFdBdE1Csgz
+         WrleRzFxcusuRIrb8XLF/5/MoGLmbp4PNnmRofN+S6RE35j8y9ll4Wd6ORQ22jMLSpDt
+         NiZIh5S9SHg6BB4us5m2u7gOP69ScHABhj9X7WskzpcQN1lcUWzjdYkC6oXduyt6gXku
+         0cGA==
+X-Gm-Message-State: ANoB5pkevG5i1DgcdgqKfrTPJDujoo3OgJ4lA7N8HKk1UugS7D2nwt0p
+        hkG0llLWKaXkCPor2xm6sfHlR/Qb1ZyYTCQBJXZ/rpNy
+X-Google-Smtp-Source: AA0mqf6yT2vd1Aqocqi53J5J3FryjVqUIUHcxPUW5lEr/cSGo6jsIlR1imANAiZRmrxh3QOsZPojLDJpr14dvqZYtEg=
+X-Received: by 2002:a37:638f:0:b0:6ec:fa04:d97c with SMTP id
+ x137-20020a37638f000000b006ecfa04d97cmr18174937qkb.764.1668600260287; Wed, 16
+ Nov 2022 04:04:20 -0800 (PST)
 MIME-Version: 1.0
-References: <CAJZ5v0g834K4ZBrEvhAbJhvGBVyq53nreG+xeBufXKQXA3VtrQ@mail.gmail.com>
- <20221116003739.GA1061657@bhelgaas>
-In-Reply-To: <20221116003739.GA1061657@bhelgaas>
+References: <20221116075736.1909690-1-vishal.l.verma@intel.com>
+In-Reply-To: <20221116075736.1909690-1-vishal.l.verma@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 16 Nov 2022 13:00:36 +0100
-Message-ID: <CAJZ5v0gyVq0AOM1_kd3QWHj+jihL-vxBv=fcEJ_Zcp8QiOymcg@mail.gmail.com>
-Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power
- resources support D3
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mehta Sanju <Sanju.Mehta@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Wed, 16 Nov 2022 13:04:07 +0100
+Message-ID: <CAJZ5v0hP9p+0gWNKaOD=3FW3SDrb3ZXWaUyqVGx_GVzkapeUSA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] ACPI: HMAT: fix single-initiator target registrations
+To:     Vishal Verma <vishal.l.verma@intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        nvdimm@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>, liushixin2@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -65,62 +57,27 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 16, 2022 at 1:37 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Wed, Nov 16, 2022 at 8:57 AM Vishal Verma <vishal.l.verma@intel.com> wrote:
 >
-> On Mon, Nov 14, 2022 at 04:33:52PM +0100, Rafael J. Wysocki wrote:
-> > On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > >
-> > > On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
-> > > > On 11/11/2022 11:41, Bjorn Helgaas wrote:
-> > > > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
-> > > > > > Firmware typically advertises that ACPI devices that represent PCIe
-> > > > > > devices can support D3 by a combination of the value returned by
-> > > > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
-> > > > > >
-> > > > > > `acpi_pci_bridge_d3` looks for this combination but also contains
-> > > > > > an assumption that if an ACPI device contains power resources the PCIe
-> > > > > > device it's associated with can support D3.  This was introduced
-> > > > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
-> > > > > > D3 if power managed by ACPI").
-> > > > > >
-> > > > > > Some firmware configurations for "AMD Pink Sardine" do not support
-> > > > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
-> > > > > > port used for tunneling. The PCIe device will still be opted into
-> > > > > > runtime PM in the kernel [2] because of the logic within
-> > > > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
-> > > > > > device contains power resources.
-> > >
-> > > Wait.  Is this as simple as just recognizing that:
-> > >
-> > >   _PS0 means the OS has a knob to put the device in D0, but it doesn't
-> > >   mean the device can wake itself from a low-power state.  The OS has
-> > >   to use _S0W to learn the device's ability to wake itself.
-> >
-> > It is.
+> Patch 1 is an obvious cleanup found while fixing this problem.
 >
-> Now I'm confused again about what "HotPlugSupportInD3" means.  The MS
-> web page [1] says it identifies Root Ports capable of handling hot
-> plug events while in D3.  That sounds kind of related to _S0W: If _S0W
-> says "I can wake myself from D3hot and D3cold", how is that different
-> from "I can handle hotplug events in D3"?
-
-For native PME/hot-plug signaling there is no difference.  This is the
-same interrupt by the spec after all IIRC.
-
-For GPE-based signaling, though, there is a difference, because GPEs
-can only be used directly for wake signaling (this is related to
-_PRW).  In particular, the only provision in the ACPI spec for device
-hot-add are the Bus Check and Device Check notification values (0 and
-1) which require AML to run and evaluate Notify() on specific AML
-objects.
-
-Hence, there is no spec-defined way to tell the OS that "something can
-be hot-added under this device while in D3 and you will get notified
-about that".
-
-> This patch says that if dev's Root Port has "HotPlugSupportInD3", we
-> don't need _PS0 or _PR0 for dev.  I guess that must be true, because
-> previously the fact that we checked for "HotPlugSupportInD3" meant the
-> device did NOT have _PS0 or _PR0.
+> Patch 2 Fixes a bug with initiator registration for single-initiator
+> systems. More details on this in its commit message.
 >
-> [1] https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-pcie-root-ports-supporting-hot-plug-in-d3
+>
+> Vishal Verma (2):
+>   ACPI: HMAT: remove unnecessary variable initialization
+>   ACPI: HMAT: Fix initiator registration for single-initiator systems
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+for both and please feel free to ask Dan to take them.
+
+Alternatively, if you want me to apply them, please let me know.
+
+>  drivers/acpi/numa/hmat.c | 33 ++++++++++++++++++++++++++++++---
+>  1 file changed, 30 insertions(+), 3 deletions(-)
+>
+>
+> base-commit: 9abf2313adc1ca1b6180c508c25f22f9395cc780
+> --
