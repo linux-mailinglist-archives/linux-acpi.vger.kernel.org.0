@@ -2,132 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E17362CF2B
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Nov 2022 00:55:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECF5D62D0AC
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Nov 2022 02:34:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234388AbiKPXzC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Nov 2022 18:55:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44096 "EHLO
+        id S234546AbiKQBeT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Nov 2022 20:34:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233886AbiKPXzB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Nov 2022 18:55:01 -0500
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C339066C9E;
-        Wed, 16 Nov 2022 15:55:00 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 8FBA832003C0;
-        Wed, 16 Nov 2022 18:54:59 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Wed, 16 Nov 2022 18:55:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-         h=cc:cc:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1668642899; x=1668729299; bh=E6
-        JF0cEeUYzVPtpcCWq54L+1lUQkLjUmOjkjEOpTZQs=; b=HxYk+rY3975eYJAPSW
-        Ph7ZU1IwAnV4TanjbmZUbDB6VzD/zAZfucXLQXGfvHyoibQO0lD1E2qcwXsf3Alp
-        7PPDHs2Y7WKoBapqB+/iV0/iTm0RXFCMrsgHaag5LHGYqbiLx/IuUsTwkZsCbBRG
-        0Z3zd3w0NkBhAfzrNz8A/8Ll+OU1CmIwCLOtNvkPGmvh7+EjfSFMHTGC7Xjqz3Wn
-        wi7vbkyOHminV0tsPsCiMU3LBwZeDZ9ErNMA4tICmPEqmoCe6R+Ei1yI4avkZ9wy
-        leIpyBk4x1WB7nUXHJu1FP4KLZZ+rVhChhJNTuarphOpvXAIlq4Vknwov//y13RI
-        s8sg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; t=1668642899; x=1668729299; bh=E6JF0cEeUYzVPtpcCWq54L+1lUQk
-        LjUmOjkjEOpTZQs=; b=G07M2l3GSh3PLRpUpbkrFfJDVMCtKW0iGwiKO8yVW688
-        ZPOucYUGnER+7H6ToVIvXVQDpXtrNMor5uRwNLLAKXFG9fk5/97wq7YoI0/rNtLd
-        IWWocrNz3QIS/18Ltl2wAuGImJe8BZizYkyzEoz29+wFZBwXrrjnnY4Vw+5naKL/
-        1QQ9Ol7iYPlEtwt+C0WBLRenclkgXHuCJvxo3anJr/aJmTRWP7Q/9ujfOd8KSnjl
-        VABLD32s5ltm4PfAvK7gBzffZyDqQTO9BFVPARHIElY2Gu5jV0YDLka5u6YlmMFL
-        0kUe9ac6M5uXZ4U43WwFBojxgvm5W+DQNIGNHJaJLw==
-X-ME-Sender: <xms:Unh1Y854ORzk8SFRgynH9lD4k_-BLpT6Vg3ODpSR1Vcs_p_sVrMZyg>
-    <xme:Unh1Y96f3_BXmDZJ0FjEkx0fsO4UhHjD3_O2O04XZdLpFg-nlIP5BwgDJD9SA1yLv
-    zBCtXTsXwOrwcxKrSY>
-X-ME-Received: <xmr:Unh1Y7fd4FQnxXfNnAs_lVR-Ad9HbRsJXxBHKEG-UNlH3z-s5DLQ-AdYoRnBPYubNhnp3A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvgedrgeejgdduiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttddttddttddvnecuhfhrohhmpedfmfhirhhi
-    lhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrg
-    hmvgeqnecuggftrfgrthhtvghrnhephfeigefhtdefhedtfedthefghedutddvueehtedt
-    tdehjeeukeejgeeuiedvkedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgv
-X-ME-Proxy: <xmx:Unh1YxI9iIYdKgHxx2SGafkvR7A5ElwzVHFEn0Dgj5n8wQrEVljFbw>
-    <xmx:Unh1YwLxu9M0RFU14x20Qo__UDf-WabQX-f-fkbHcvELqCyBSXadCA>
-    <xmx:Unh1YywGTGww3BJL_IVBSnir7p7Ut6GxjQPE6OWW3E-wURkQ0M9CNg>
-    <xmx:U3h1Y1XGTsKaY2E1nHo6LGGHZAd7Gxgkw29BGhfWxjRD5Qq8EuHuRQ>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Nov 2022 18:54:58 -0500 (EST)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 9E6CC109702; Thu, 17 Nov 2022 02:54:55 +0300 (+03)
-Date:   Thu, 17 Nov 2022 02:54:55 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Vishal Verma <vishal.l.verma@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-kernel@vger.kernel.org,
-        Chris Piper <chris.d.piper@intel.com>, nvdimm@lists.linux.dev,
-        linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Liu Shixin <liushixin2@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] ACPI: HMAT: Fix initiator registration for
- single-initiator systems
-Message-ID: <20221116235455.74nqyfdcqe72mhbi@box.shutemov.name>
-References: <20221116-acpi_hmat_fix-v2-0-3712569be691@intel.com>
- <20221116-acpi_hmat_fix-v2-2-3712569be691@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221116-acpi_hmat_fix-v2-2-3712569be691@intel.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S234444AbiKQBeS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Nov 2022 20:34:18 -0500
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 476F51DDF9;
+        Wed, 16 Nov 2022 17:34:17 -0800 (PST)
+Received: from mxct.zte.com.cn (unknown [192.168.251.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4NCMs25BWqz4xVnD;
+        Thu, 17 Nov 2022 09:34:14 +0800 (CST)
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NCMry6TYlz4y3ZB;
+        Thu, 17 Nov 2022 09:34:10 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.40.50])
+        by mse-fl2.zte.com.cn with SMTP id 2AH1XxdK072447;
+        Thu, 17 Nov 2022 09:33:59 +0800 (+08)
+        (envelope-from guo.ziliang@zte.com.cn)
+Received: from mapi (xaxapp03[null])
+        by mapi (Zmail) with MAPI id mid32;
+        Thu, 17 Nov 2022 09:34:00 +0800 (CST)
+Date:   Thu, 17 Nov 2022 09:34:00 +0800 (CST)
+X-Zmail-TransId: 2afb63758f887390f199
+X-Mailer: Zmail v1.0
+Message-ID: <202211170934005278113@zte.com.cn>
+Mime-Version: 1.0
+From:   <guo.ziliang@zte.com.cn>
+To:     <rafael@kernel.org>
+Cc:     <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIEFDUEk6IHN5c2ZzOiB1c2Ugc3lzZnNfZW1pdCgpIHRvIGluc3RlYWQgb2Ygc2NucHJpbnRmKCk=?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl2.zte.com.cn 2AH1XxdK072447
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.250.138.novalocal with ID 63758F96.002 by FangMail milter!
+X-FangMail-Envelope: 1668648854/4NCMs25BWqz4xVnD/63758F96.002/192.168.251.13/[192.168.251.13]/mxct.zte.com.cn/<guo.ziliang@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 63758F96.002/4NCMs25BWqz4xVnD
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 16, 2022 at 04:37:37PM -0700, Vishal Verma wrote:
-> In a system with a single initiator node, and one or more memory-only
-> 'target' nodes, the memory-only node(s) would fail to register their
-> initiator node correctly. i.e. in sysfs:
-> 
->   # ls /sys/devices/system/node/node0/access0/targets/
->   node0
-> 
-> Where as the correct behavior should be:
-> 
->   # ls /sys/devices/system/node/node0/access0/targets/
->   node0 node1
-> 
-> This happened because hmat_register_target_initiators() uses list_sort()
-> to sort the initiator list, but the sort comparision function
-> (initiator_cmp()) is overloaded to also set the node mask's bits.
-> 
-> In a system with a single initiator, the list is singular, and list_sort
-> elides the comparision helper call. Thus the node mask never gets set,
-> and the subsequent search for the best initiator comes up empty.
-> 
-> Add a new helper to consume the sorted initiator list, and generate the
-> nodemask, decoupling it from the overloaded initiator_cmp() comparision
-> callback. This prevents the singular list corner case naturally, and
-> makes the code easier to follow as well.
-> 
-> Cc: <stable@vger.kernel.org>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Cc: Liu Shixin <liushixin2@huawei.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-by: Chris Piper <chris.d.piper@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+From: guo ziliang <guo.ziliang@zte.com.cn>
 
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Replace the open-code with sysfs_emit() to simplify the code.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Signed-off-by: guo ziliang <guo.ziliang@zte.com.cn>
+---
+ drivers/acpi/sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+index 2d81c74..7db3b53 100644
+--- a/drivers/acpi/sysfs.c
++++ b/drivers/acpi/sysfs.c
+@@ -198,7 +198,7 @@ static int param_set_trace_method_name(const char *val,
+
+ static int param_get_trace_method_name(char *buffer, const struct kernel_param *kp)
+ {
+-       return scnprintf(buffer, PAGE_SIZE, "%s\n", acpi_gbl_trace_method_name);
++       return sysfs_emit(buffer, "%s\n", acpi_gbl_trace_method_name);
+ }
+
+ static const struct kernel_param_ops param_ops_trace_method = {
+--
+1.8.3.1
