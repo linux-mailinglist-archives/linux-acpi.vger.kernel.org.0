@@ -2,108 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D97AA62F6B6
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Nov 2022 15:01:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB88F62FC44
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Nov 2022 19:15:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241108AbiKROBE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Nov 2022 09:01:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43318 "EHLO
+        id S241904AbiKRSP5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Nov 2022 13:15:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240540AbiKROBD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 09:01:03 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F1CD073BA8
-        for <linux-acpi@vger.kernel.org>; Fri, 18 Nov 2022 06:01:02 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 24DD723A;
-        Fri, 18 Nov 2022 06:01:09 -0800 (PST)
-Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 191483F587;
-        Fri, 18 Nov 2022 06:01:01 -0800 (PST)
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jose Marinho <jose.marinho@arm.com>
-Subject: [PATCH -next] ACPI: bus: Fix the _OSC capability check for FFH OpRegion
-Date:   Fri, 18 Nov 2022 14:00:59 +0000
-Message-Id: <20221118140059.614302-1-sudeep.holla@arm.com>
-X-Mailer: git-send-email 2.38.1
+        with ESMTP id S242555AbiKRSPz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 13:15:55 -0500
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE55898F4
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Nov 2022 10:15:54 -0800 (PST)
+Received: by mail-pg1-x536.google.com with SMTP id f9so1459577pgf.7
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Nov 2022 10:15:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tmg0LliGpsZZHm4HXiakpzT3kGjALzuosA9bdBtcr+Q=;
+        b=eiAPF5GM7kr6LedkAaCy65AdbVFDpDohOTBtN5jzYKzNKrFe9SMUfOeHShgkG72ML/
+         TsZq+WEQoaSw0hMt+I5CwhPS5//DaY0NCujymzjFkkHz8CoYyrH7MzIACPlboc+3lm38
+         RDqL5ZoJZO9q+GU5AddFLfwE9IpWtNpDyk7N8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tmg0LliGpsZZHm4HXiakpzT3kGjALzuosA9bdBtcr+Q=;
+        b=olrHXDgia02jLS8eFfBTStH0BTErzJr7bTKCJCxqnY5YN6PbhGgJGt7Zgnnm+N1PVD
+         5vEyLM/KnPFGCyUL4V+USzCwDxXvc+k9Da+BQVfE9xMrFEweEhZaD68HSoF27EWnJz36
+         n/t+55FCPqYtcsa9j5bbhPzkvqkk5IPmA/Y/jeBvaPKvCsRDlKscZb3FGAt1eqq9ZTJK
+         +3gT1tRDWU4Ai/p8DrVKJSQ89bNEwBllKP1ipincQb9C0HlUAC3DJUWrQhF2PmzsfE3q
+         b07bM38b1TZF3+4AGbqglyQoIg7ibchMjBx63cii5tJhv5L7mvfXy5Fo3i5TYLSJkhos
+         lwPA==
+X-Gm-Message-State: ANoB5pkKZnqTU+7CiN4J4CvUyhRwR+bg4dMuDMt0TduUW7IH7JKwjwrh
+        pNdhQYIeuAaHhx6IaNAt6LfLzw==
+X-Google-Smtp-Source: AA0mqf5WDnA1r5jesMg2Qg61/95ge1c7MF8CtLnRwIZaYDBuT4OQmMYteUJ6lQc50XLxtxY/qLeJXg==
+X-Received: by 2002:a62:ab18:0:b0:56b:9ae8:ca05 with SMTP id p24-20020a62ab18000000b0056b9ae8ca05mr8908089pff.59.1668795354181;
+        Fri, 18 Nov 2022 10:15:54 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id e10-20020a17090a4a0a00b00217090ece49sm3068381pjh.31.2022.11.18.10.15.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Nov 2022 10:15:53 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>, Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH] ACPICA: Replace fake flexible arrays with flexible array members
+Date:   Fri, 18 Nov 2022 10:15:51 -0800
+Message-Id: <20221118181538.never.225-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1891; h=from:subject:message-id; bh=hNQ8xGwsN5w0u1FbYYQ7J14X7B6YxBpfy2M2HM3+Jjc=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBjd8vXU+Wg7XOvkEcmLqHTez5MBdtt0fUOreosAnS4 ntlijcaJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCY3fL1wAKCRCJcvTf3G3AJjDkD/ sFy/fgnccpfOxOXUfmtmxp15lFZTGFZrdm9pbQImExpBb+3wb3jtS5vOigfPdnrVbUAgGA4vw2yBmZ QkApv68Dgc5HzHHbjzpWx2Doo6zdD7kuIygYQqG1TRHIQjr4NWA47yR63Aq3AFYKPh2q+xRCpMrMK5 ZEbxM26zdW+0jmw3BtJ1mmi8V4Q2bhU5+8EyqJ7ESMcqxQKPIrdOtdorD+ACi2P/tJv7prDbSVHFuo 04Jm+Io0K50lcfK9MBGuP45auU9z25kCe/rM5fh5QE9TJrXEVb4lJhoyX64FHY7ya1K9uXk7mGpTuq rCZqhfrGcJvSetSG3qWaP14jtazw1pGpyTE1jMvmuCebgEHupzq2DrThTsn8XX9xLKE9pplLP1OziQ 5tgbmRcDMxNFRQxVL/W1XwTl72j1QD9FbaanBJHksNkYuNAlTPJmVWZR5BowGyuSZJKQ2z0M/fTs0O LXegQJRXyN4FjtHyN/1N7XXNMtEiygKrFXA6YCU4RuSM/C25VrCFo5Rfjlvoed3qfBOTejkqRy1MNV nI21vUXGwSzoJAunS1g5tGn007d7H5tGmp9qY2OTJZBQK3tC1QxMy2Hr1/4XeqygKonufrTM05F3wP eI1e7KQ4oKKMbtYa4eQBq4YsSjyId0Th+edmiKiF/uIcwqjKiKtrc6iqflUg==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As per the ACPI specification(vide section Platform-Wide OSPM Capabilities)
-the OSPM must set this bit to indicate support for the usage of Functional
-Fixed Hardware (FFixedHW) Operation Regions rather than the firmware as
-expected in the code.
+Functionally identical to ACPICA upstream pull request 813:
+https://github.com/acpica/acpica/pull/813
 
-Update the check accordingly to reflect the requirement as stated in the
-specification.
+One-element arrays (and multi-element arrays being treated as
+dynamically sized) are deprecated[1] and are being replaced with
+flexible array members in support of the ongoing efforts to tighten the
+FORTIFY_SOURCE routines on memcpy(), correctly instrument array indexing
+with UBSAN_BOUNDS, and to globally enable -fstrict-flex-arrays=3.
 
-Reported-by: Jose Marinho <jose.marinho@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Replace one-element array with flexible-array member in struct
+acpi_resource_extended_irq. Replace 4-byte fixed-size array with 4-byte
+padding in a union with a flexible-array member in struct
+acpi_pci_routing_table.
+
+This results in no differences in binary output.
+
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Robert Moore <robert.moore@intel.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Cc: devel@acpica.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/acpi/bus.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ include/acpi/acrestyp.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Hi Rafael,
-
-Sorry for this, but looks like I clearly missed to noticed this change
-in the process of evolution of FFH OpRegions support. I had platform with
-buggy/prototype firmware(must be from the initial code-first proposal)
-and failed to catch this earlier. Thanks to Jose for identifying this.
-
-Regards,
-Sudeep
-
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 245fb0828e47..2b9eac7e7777 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -300,8 +300,6 @@ EXPORT_SYMBOL_GPL(osc_sb_native_usb4_support_confirmed);
+diff --git a/include/acpi/acrestyp.h b/include/acpi/acrestyp.h
+index a7fb8ddb3dc6..ee945084d46e 100644
+--- a/include/acpi/acrestyp.h
++++ b/include/acpi/acrestyp.h
+@@ -332,7 +332,7 @@ struct acpi_resource_extended_irq {
+ 	u8 wake_capable;
+ 	u8 interrupt_count;
+ 	struct acpi_resource_source resource_source;
+-	u32 interrupts[1];
++	u32 interrupts[];
+ };
  
- bool osc_sb_cppc2_support_acked;
+ struct acpi_resource_generic_register {
+@@ -679,7 +679,10 @@ struct acpi_pci_routing_table {
+ 	u32 pin;
+ 	u64 address;		/* here for 64-bit alignment */
+ 	u32 source_index;
+-	char source[4];		/* pad to 64 bits so sizeof() works in all cases */
++	union {
++		char pad[4];	/* pad to 64 bits so sizeof() works in all cases */
++		DECLARE_FLEX_ARRAY(char, source);
++	};
+ };
  
--bool osc_sb_ffh_opregion_support_confirmed;
--
- static u8 sb_uuid_str[] = "0811B06E-4A27-44F9-8D60-3CBBC22E7B48";
- static void acpi_bus_osc_negotiate_platform_control(void)
- {
-@@ -325,6 +323,8 @@ static void acpi_bus_osc_negotiate_platform_control(void)
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
- 	if (IS_ENABLED(CONFIG_ACPI_PRMT))
- 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PRM_SUPPORT;
-+	if (IS_ENABLED(CONFIG_ACPI_FFH))
-+		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_FFH_OPR_SUPPORT;
- 
- #ifdef CONFIG_ARM64
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_GENERIC_INITIATOR_SUPPORT;
-@@ -385,8 +385,6 @@ static void acpi_bus_osc_negotiate_platform_control(void)
- 			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
- 		osc_cpc_flexible_adr_space_confirmed =
- 			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_CPC_FLEXIBLE_ADR_SPACE;
--		osc_sb_ffh_opregion_support_confirmed =
--			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_FFH_OPR_SUPPORT;
- 	}
- 
- 	kfree(context.ret.pointer);
-@@ -1412,8 +1410,7 @@ static int __init acpi_init(void)
- 		disable_acpi();
- 		return result;
- 	}
--	if (osc_sb_ffh_opregion_support_confirmed)
--		acpi_init_ffh();
-+	acpi_init_ffh();
- 
- 	pci_mmcfg_late_init();
- 	acpi_iort_init();
+ #endif				/* __ACRESTYP_H__ */
 -- 
-2.38.1
+2.34.1
 
