@@ -2,163 +2,297 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A288162F3A5
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Nov 2022 12:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D5F62F5B5
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Nov 2022 14:16:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241287AbiKRLYg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Nov 2022 06:24:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56814 "EHLO
+        id S233543AbiKRNQc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Nov 2022 08:16:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241272AbiKRLYC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 06:24:02 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317B025C4;
-        Fri, 18 Nov 2022 03:23:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668770609; x=1700306609;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=CPRqb+N9sWSwuA8doPF+bdmmjaG5kfr5h+4RR2E29Mo=;
-  b=cWhfrQEzrzwBuABYHj/S+MUYdVRVSo8p1g3sqIrgUCQ9LUuQstb2OaGc
-   SrwDngu0INf0zVWZcsalm7ck6cRt/9gOPgP3Lfv3LnwX4r1p5Qajx8K31
-   ANYuRAcN4lUf3DT9zFBfxuWwEXdAPMtLxT1hHiqnuWebIjAz2IsP8BZoI
-   InvJ1PqWPxc3EmsLEBj63s7PrIWLUz4isDuSV0StHlN7OXh3nGIW9Bopc
-   byNlQu5J/gNIF56s4KwtJhof+50jdStWo1WN0b+/B/hdUiqN/3yuYIkpj
-   y6AK2Qi/b/Ui2K2KXOQV42fCs5H+NI11bUO44+YsYbL5CGxPrtMbFjtBh
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10534"; a="314933887"
-X-IronPort-AV: E=Sophos;i="5.96,174,1665471600"; 
-   d="scan'208";a="314933887"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2022 03:23:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10534"; a="642485162"
-X-IronPort-AV: E=Sophos;i="5.96,174,1665471600"; 
-   d="scan'208";a="642485162"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Nov 2022 03:23:24 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 18 Nov 2022 03:23:23 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 18 Nov 2022 03:23:23 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31 via Frontend Transport; Fri, 18 Nov 2022 03:23:23 -0800
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.46) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.31; Fri, 18 Nov 2022 03:23:23 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ROwXnvCzIgpuFN3qMc2LVtwhDeaJkcymkb8MmTaqQSLyD3xC+Wq4BvS0sQpkD01NmCRxil70oyhvMX4o/lj2/pMeECKMCnFaS61A9WMQhFV9pARv6ZR0H76BGfXFRKA/QxqCIAlUtJ1mLAbGJIVgFXiKgD97E8HQycR0ZFUtFo1Ot4m/ndOTXL3FcIq5Prxc85L9cpDXJnaINBi3Z22kqS81rQsLiFJR19azBuB/UTXKjC+F9yMfNplJIy3aqSl0wQvSlzkV7S/GbnY2i9iZtaHIvhTr+/E+gCR1oHD2Ut3dQqnnVIDUtBwH5Bzct72GajljOWDZvk8/ju3Ju5XKzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rRSz/iOrwKzAG9uAG4srK3KQJb6LN0RgmvTlm9nvq1g=;
- b=JjcT3amrj1W3au3gDn5IvsULo1ykkmGwabg72JQ7OrXsbhvaBw5m1vXTU1D2afu+4QOgb2V+L6i6ivmZAq+kGespaQQ2vYdHDCE/RSbh4+9tNPRxdbHE7DN9/ZWrWhx2/dyG9bp/5KOYlIjMTM3zazgnW9jMSp7RmaU8JwIMp3t2oVR43htcCpa958WzIeckkD29wFGo1EF+OIarmoLTKBNPvTQqnfzFo2jsuZ6DUPhYvpymo2VkNpsnhiipnyLU5jHgDZsGc3STD6/y9TrP0O03NzE9YJ5Q5y2F1vGInhh5KrJRc+T+dK74ukIzwuFLUpOO5Ww/lEYPPxP4ZoguaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN0PR11MB6206.namprd11.prod.outlook.com (2603:10b6:208:3c6::8)
- by SJ0PR11MB4829.namprd11.prod.outlook.com (2603:10b6:a03:2d3::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5834.9; Fri, 18 Nov
- 2022 11:23:16 +0000
-Received: from MN0PR11MB6206.namprd11.prod.outlook.com
- ([fe80::3849:238:f7bb:f1d1]) by MN0PR11MB6206.namprd11.prod.outlook.com
- ([fe80::3849:238:f7bb:f1d1%7]) with mapi id 15.20.5791.027; Fri, 18 Nov 2022
- 11:23:16 +0000
-Date:   Fri, 18 Nov 2022 19:23:02 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     Wang ShaoBo <bobo.shaobowang@huawei.com>
-CC:     <rafael.j.wysocki@intel.com>, <rafael@kernel.org>,
-        <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-        <guohanjun@huawei.com>, <liwei391@huawei.com>,
-        <linux-kernel@vger.kernel.org>, <rui.zhang@intel.com>
-Subject: Re: [PATCH 2/2] ACPI: pfr_update: use ACPI_FREE() to free acpi_object
-Message-ID: <Y3drFvDUME3vYIFD@chenyu5-mobl1>
-References: <20221118063219.2612473-1-bobo.shaobowang@huawei.com>
- <20221118063219.2612473-3-bobo.shaobowang@huawei.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20221118063219.2612473-3-bobo.shaobowang@huawei.com>
-X-ClientProxiedBy: SG2PR02CA0002.apcprd02.prod.outlook.com
- (2603:1096:3:17::14) To MN0PR11MB6206.namprd11.prod.outlook.com
- (2603:10b6:208:3c6::8)
+        with ESMTP id S242036AbiKRNQc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 08:16:32 -0500
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60B74B99B;
+        Fri, 18 Nov 2022 05:16:30 -0800 (PST)
+Received: by mail-qv1-f53.google.com with SMTP id h10so3285511qvq.7;
+        Fri, 18 Nov 2022 05:16:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oEtvqK1EocSu34EMg6X6BMEKvn7qI8sTz8RH/chjaQU=;
+        b=bjVoMSXk5IHtcYCRoym5SyJeShZNXoLW1O4zDQYrSR/7kgt8OXjb0a9brQAQDAYXYp
+         O86atnowQeaLgw4AbQCOh4u45WR8zuC0AsCP81elP4as/ZWJMQ8T5mh+OJjk/984Fbzx
+         SaHDxnUEDHbwFvNw4c00CN4BxyPguBiod0MT6QTFOdOvvWnx94r/ly3L6272a2B1U4t1
+         wlb8tYCmxBGoX2AWRJC8X6QDvyNAa36iIiVf9Zy3M71GFPbRHDgMWucerTcG2Lhg5at/
+         FKujoezmizzNUyJWN2b3SgJXIM54CWZ6rgCXJ9b1ZMy9kzdKuf07DSvYfcuhVelEROLZ
+         uuGw==
+X-Gm-Message-State: ANoB5pmNRDifSyYwhleSbQqO/J1lyTUjwKesRXdlniangGkbWwIK1P61
+        FN0BHqIuGHbAPquwVna+DiMYh7VWCHySVhkZ1Cs=
+X-Google-Smtp-Source: AA0mqf7AchEqrHaQgaUXmEcDBx+Suvn0ybnxomvpFCWvtr0Qh+PFfpnNMiYkC5JKchQI7QHc0ICkH/ZNDTxTq3GRChw=
+X-Received: by 2002:ad4:534b:0:b0:4b1:8429:a8a7 with SMTP id
+ v11-20020ad4534b000000b004b18429a8a7mr6612515qvs.52.1668777389717; Fri, 18
+ Nov 2022 05:16:29 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR11MB6206:EE_|SJ0PR11MB4829:EE_
-X-MS-Office365-Filtering-Correlation-Id: 502151ad-4250-4b4a-8e36-08dac95749dc
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: LfRD7KS1hVMGEdukS8rir3jdsBs6gmipvt1K0hAZ5CATgRfZ9RfAYIugwhmfO8gbdL1nf1EA7YEPdSPxw89MMx0E7ZqAva+xw6liKnV6O9YplB5svdPYZOx4zZpIeRvY8mxyuSwTk8pm+78wRjbPJHxlRsZBHGVvkKKnWgvGQitkarh5Nn6aRBCdlw8mDnhClkMzMj7oFcDcvUsqsj+qhmcTE+/9PCeq9CZfedvx60qcJezvCYbFfdS2gQfg6Xok8zN+XLxQnRWe5QUXnXPqOVlO47xNZDo3UuQHltGB5mhczS4MsPry7pSkTWup1j+sQ7iIIfvRIILk9Uko0zMbLBSYI+TxJkaOITjhNXkI2KVGjgC1qbGDkyCfaM7+1VC2PzzBtsqFi4LO7PNh/Zk9oR+YaIYmWkCmS68is8bpe1v/B0RxpCn44bgTw7cLXXnBHEyhvymautJd33c6lxuYgz9ZG93PIWgD3bxO+tUknSjEz5O5esVBm0bTvJHMg+FHTmozUY0uX8TK7r0vBaU6CsERmD00+E4xy3NYCHqAHMw0HmUigpc55Wy+1Zo9Ul66ANzu3ZpH+l3ouuiK6BGuiWbWCu4C39wGj6ytsdcMQ4KjTkTrnro5T8r4mbnxngvLTpzpc77ANmTCX5nFLqy+zw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB6206.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(7916004)(346002)(39860400002)(366004)(396003)(136003)(376002)(451199015)(26005)(6512007)(6666004)(53546011)(33716001)(107886003)(2906002)(8676002)(5660300002)(82960400001)(6486002)(186003)(6506007)(66476007)(83380400001)(66556008)(66946007)(4326008)(4744005)(4001150100001)(316002)(41300700001)(8936002)(9686003)(6916009)(478600001)(86362001)(38100700002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JC6qhOa6HBpgaCY8KXGie8T63qOetY5JPAIgknUIkAD13IG9N3D70puXG2a8?=
- =?us-ascii?Q?B34vZggqVVKD7Rr6Po109WOKo+9b5/KF9HGzVJxA3S4ynCBpiUcQQkVFJPYp?=
- =?us-ascii?Q?ogC18X5oV1kQW9IKoQjcRsU3hksjyXwMMPYycrNcutftbjq3GNOWm8vl9pdW?=
- =?us-ascii?Q?ZOHkucJcHoVJIF1RGzf5+JKvlfvUj7NhTlkeLYMRPxCWgQSLobsRbIR1hN3W?=
- =?us-ascii?Q?Qhf4MXzXMA8J6WgkbShx1fft2LGfoUSOk+K5dGsJayHOqpTixPeRII76sFZx?=
- =?us-ascii?Q?H8TtVRwEbT9nmN64HkjvuKvtWtWcuqxvCG7DV7m6zfBZa+Rtro9zBmGbii+R?=
- =?us-ascii?Q?lyFCu9aV+e441FmYu1retXBtSYu2FDW8V3A9bjfLZf/MMbjR2vAvVtlXKmmq?=
- =?us-ascii?Q?BdS6l/aQvEaVxig9bhHCy+lLYwse/Wh4ZGhC7jtv0UsC0jDMBCsGidDOCnM8?=
- =?us-ascii?Q?ayf/jl8+W57hMbfaqSyv5NOocmqM3neu1SRL0Rf6VjaBkXPsIT/U8+8Wl6fI?=
- =?us-ascii?Q?rJKhZ4+brVX7a4JYs276ZNj1YXzTTPZHDgA4c+2VwtW/6mhhZH+Dc2qBzEEC?=
- =?us-ascii?Q?cjkqxs2kvtg6+yIrbXNkrUWZW+pFvZmDWCr6t/ApKqIisK4PmO3WTI7m+Q0p?=
- =?us-ascii?Q?Gr1tbAISo+mboJgLDrafQpa+cfv49R4ylvq4ztba+LeVqQWoge/2FyveQt5L?=
- =?us-ascii?Q?c6FoE5SWF9Wpc4xQfgmA5ezJhp31oiAsgP/0FNBGL3JLzR+fTRkp6T97EmP4?=
- =?us-ascii?Q?NpZ/J7xgsqCIvTsDyvj1LfNmBPxnTIO6M0sg3YkB+0G0abntrK3JnaKDrhb7?=
- =?us-ascii?Q?FchC6cplOuNXIkfO/9oJChPaGD8NtEHb3OPGoADybQ8dI/UwAm4G6ooWyRQx?=
- =?us-ascii?Q?4j6aFxFuUzwhzBgMWMBY9Quid3tgwHGyFcxw/wg+bxbN4lExv3u8AffQQLmi?=
- =?us-ascii?Q?MiijLAWCjRld7eeO91RXGjE92O5P8U0/RVVS4Q3sp0ttI/ovOETgvJJo0yO5?=
- =?us-ascii?Q?TArE7KVQaf879beX4guUh0mqKXXS+5uvIF34QkJgre4XXYxuxBqsmgAIJz2C?=
- =?us-ascii?Q?s/Kt8PFx6PBcG6HrE6XpULMyVTjjh9nC/PvCGMgspamLQyDbYcNIN+f1JZOJ?=
- =?us-ascii?Q?gJLWPGGrAVIe9VEdRfPWMSCTbxcWy1F7jkzgm4Lfc70iAJeKbSdyUboMfBL9?=
- =?us-ascii?Q?lueUKfmUv6ZJxTHcgJiOccmFUUKP+UcbTSfW+isAOuRRuX+Qw6LtJ3WCVIWZ?=
- =?us-ascii?Q?iMZsY5PNhLx8glx4j8HShQ00D9gMTLVRi3frwBZd2oL9of2eVifVg1BHfWeR?=
- =?us-ascii?Q?TRUD9N3JvHCM50idU//cGJ541K9n/QV2c/zR6U2nVWP3n0q0flEDPMjYoy/G?=
- =?us-ascii?Q?+2/HHAif1HLtv5JTQE+G/Rp/SKg4tZBGhjz2sgEwY326x+VjGPfJH0OuYrPe?=
- =?us-ascii?Q?1Qvi0V+l7gIXh11yIfeDurmlL6nNDG3iAJM6NkkFcVUqL151xqmFjn9JMj7B?=
- =?us-ascii?Q?bZfwksiSieYaWXKWrffEvMmWqen9Erd0bkPn4IjedwOSDfQS+VpawxhOzxVJ?=
- =?us-ascii?Q?L+gVjQonXmxud6c7fRZMVsX6sLBSAXDkf+uvGClW?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 502151ad-4250-4b4a-8e36-08dac95749dc
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6206.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2022 11:23:16.6295
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dMtJBp69h2082hIoheAN7cwpNJ9NnIxNMeACbjY9bNg896fZw5e6+jmAXuE47h6Ui9Mjl6S8E57nafGd6TuuVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4829
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAJZ5v0gX_ZEM60_4V-vn+uP+QqPEewwkpk8-PpnY28bUHgdFPw@mail.gmail.com>
+ <20221117221621.GA1208852@bhelgaas>
+In-Reply-To: <20221117221621.GA1208852@bhelgaas>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 18 Nov 2022 14:16:17 +0100
+Message-ID: <CAJZ5v0i3LyfMLx8cuYMdRzJagW-d0Vz3PBVEtFGpDBD6+7VZHQ@mail.gmail.com>
+Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power
+ resources support D3
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mehta Sanju <Sanju.Mehta@amd.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022-11-18 at 14:32:19 +0800, Wang ShaoBo wrote:
-> acpi_evaluate_dsm_typed()/acpi_evaluate_dsm() should be coupled with
-> ACPI_FREE() to free the ACPI memory, because we need to track the
-> allocation of acpi_object when ACPI_DBG_TRACK_ALLOCATIONS enabled,
-> so use ACPI_FREE() instead of kfree().
-> 
-> Fixes: 0db89fa243e5 ("ACPI: Introduce Platform Firmware Runtime Update device driver")
-> Signed-off-by: Wang ShaoBo <bobo.shaobowang@huawei.com>
-Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+On Thu, Nov 17, 2022 at 11:16 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Thu, Nov 17, 2022 at 06:01:26PM +0100, Rafael J. Wysocki wrote:
+> > On Thu, Nov 17, 2022 at 12:28 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > On Wed, Nov 16, 2022 at 01:00:36PM +0100, Rafael J. Wysocki wrote:
+> > > > On Wed, Nov 16, 2022 at 1:37 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > On Mon, Nov 14, 2022 at 04:33:52PM +0100, Rafael J. Wysocki wrote:
+> > > > > > On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > > >
+> > > > > > > On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
+> > > > > > > > On 11/11/2022 11:41, Bjorn Helgaas wrote:
+> > > > > > > > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
+> > > > > > > > > > Firmware typically advertises that ACPI devices that represent PCIe
+> > > > > > > > > > devices can support D3 by a combination of the value returned by
+> > > > > > > > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
+> > > > > > > > > >
+> > > > > > > > > > `acpi_pci_bridge_d3` looks for this combination but also contains
+> > > > > > > > > > an assumption that if an ACPI device contains power resources the PCIe
+> > > > > > > > > > device it's associated with can support D3.  This was introduced
+> > > > > > > > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
+> > > > > > > > > > D3 if power managed by ACPI").
+> > > > > > > > > >
+> > > > > > > > > > Some firmware configurations for "AMD Pink Sardine" do not support
+> > > > > > > > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
+> > > > > > > > > > port used for tunneling. The PCIe device will still be opted into
+> > > > > > > > > > runtime PM in the kernel [2] because of the logic within
+> > > > > > > > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
+> > > > > > > > > > device contains power resources.
+> > > > > > >
+> > > > > > > Wait.  Is this as simple as just recognizing that:
+> > > > > > >
+> > > > > > >   _PS0 means the OS has a knob to put the device in D0, but it doesn't
+> > > > > > >   mean the device can wake itself from a low-power state.  The OS has
+> > > > > > >   to use _S0W to learn the device's ability to wake itself.
+> > > > > >
+> > > > > > It is.
+> > > > >
+> > > > > Now I'm confused again about what "HotPlugSupportInD3" means.  The MS
+> > > > > web page [1] says it identifies Root Ports capable of handling hot
+> > > > > plug events while in D3.  That sounds kind of related to _S0W: If _S0W
+> > > > > says "I can wake myself from D3hot and D3cold", how is that different
+> > > > > from "I can handle hotplug events in D3"?
+> > > >
+> > > > For native PME/hot-plug signaling there is no difference.  This is the
+> > > > same interrupt by the spec after all IIRC.
+> > > >
+> > > > For GPE-based signaling, though, there is a difference, because GPEs
+> > > > can only be used directly for wake signaling (this is related to
+> > > > _PRW).  In particular, the only provision in the ACPI spec for device
+> > > > hot-add are the Bus Check and Device Check notification values (0 and
+> > > > 1) which require AML to run and evaluate Notify() on specific AML
+> > > > objects.
+> > > >
+> > > > Hence, there is no spec-defined way to tell the OS that "something can
+> > > > be hot-added under this device while in D3 and you will get notified
+> > > > about that".
+> > >
+> > > So I guess acpi_pci_bridge_d3() looks for:
+> > >
+> > >   - "wake signaling while in D3" (_S0W) and
+> > >   - "notification of hotplug while in D3" ("HotPlugSupportInD3")
+> > >
+> > > For Root Ports with both those abilities (or bridges below such Root
+> > > Ports), we allow D3, and this patch doesn't change that.
+> > >
+> > > What this patch *does* change is that all bridges with _PS0 or _PR0
+> > > previously could use D3, but now will only be able to use D3 if they
+> > > are also (or are below) a Root Port that can signal wakeup
+> > > (wakeup.flags.valid) and can wakeup from D3hot or D3cold (_S0W).
+> > >
+> > > And this fixes the Pink Sardine because it has Root Ports that do
+> > > Thunderbolt tunneling, and they have _PS0 or _PR0 but their _S0W says
+> > > they cannot wake from D3.  Previously we put those in D3, but they
+> > > couldn't wake up.  Now we won't put them in D3.
+> > >
+> > > I guess there's a possibility that this could break or cause higher
+> > > power consumption on systems that were fixed by c6e331312ebf
+> > > ("PCI/ACPI: Whitelist hotplug ports for D3 if power managed by ACPI").
+> > > I don't know enough about that scenario.  Maybe Lukas will chime in.
+> >
+> > Well, it is possible that some of these systems will be affected.
+> >
+> > One of such cases is when the port in question has _S0W which says
+> > that wakeup from D3 is not supported.  In that case I think the kernel
+> > should honor the _S0W input, because there may be a good reason known
+> > to the platform integrator for it.
+> >
+> > The other case is when wakeup.flags.valid is unset for the port's ACPI
+> > companion which means that the port cannot signal wakeup through
+> > ACPI-related means at all and this may be problematic, especially in
+> > the system-wide suspend case in which the wakeup capability is not too
+> > relevant unless there is a system wakeup device under the port.
+> >
+> > I don't think that the adev->wakeup.flags.valid check has any bearing
+> > on the _S0W check - if there is _S0W and it says "no wakeup from D3",
+> > it should still be taken into account - so that check can be moved
+> > past the _S0W check.
+>
+> So if _S0W says it can wake from D3, but wakeup.flags is not valid,
+> it's still OK to use D3?
 
-thanks,
-Chenyu
+No, it isn't, as per the code today and I don't think that this
+particular part should be changed now.
+
+_S0W may only cause acpi_pci_bridge_d3() to return false, it is not
+sufficient for true to be returned.
+
+> I guess in this case we assume wakeup would
+> be via native PME/hotplug signaling?
+
+This may be taken into consideration at one point, if need be, but not
+in this particular patch IMO.
+
+> > Now, for compatibility with systems where ports have neither _S0W nor
+> > the HotPlugSupportInD3 property, the acpi_pci_power_manageable()
+> > return value should determine the outcome regardless of the
+> > adev->wakeup.flags.valid value, so the latter should only determine
+> > whether or not the HotPlugSupportInD3 property will be inspected
+> > (which may cause true to be returned before the "power manageable"
+> > check).
+> >
+> > IOW, something like this (after checking _S0W):
+> >
+> > if (adev->wakeup.flags.valid &&
+> >     !acpi_dev_get_property(adev, "HotPlugSupportInD3",
+> > ACPI_TYPE_INTEGER, &obj) &&
+> >     obj->integer.value == 1)
+> >         return true;
+> >
+> > return acpi_pci_power_manageable(dev);
+> >
+> > Where the if () condition basically means that wakeup signaling is
+> > supported (and there is no indication that it cannot be done from D3
+> > as per the previous _S0W check) and hotplug signaling from D3 is
+> > supported.
+> >
+> > > > > This patch says that if dev's Root Port has "HotPlugSupportInD3", we
+> > > > > don't need _PS0 or _PR0 for dev.  I guess that must be true, because
+> > > > > previously the fact that we checked for "HotPlugSupportInD3" meant the
+> > > > > device did NOT have _PS0 or _PR0.
+> > > > >
+> > > > > [1] https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-pcie-root-ports-supporting-hot-plug-in-d3
+>
+> I think you're suggesting the patch below, which will make
+> acpi_pci_bridge_d3(dev) return "true" if:
+>
+>   - Root Port can wake from D3hot or D3cold, has "HotPlugSupportInD3",
+>     and has wakeup.flags.valid, OR
+>
+>   - Root Port can wake from D3hot or D3cold, and "dev" has _PR0 or
+>     _PS0
+
+Well, not exactly.  The second point should be
+
+ - Root Port's ACPI companion ('dev') has _PR0 or _PS0.
+
+> Previously, all bridges with _PR0 or _PS0 could use D3; now we also
+> require that the Root Port's _S0W says it can wake from at least
+> D3hot.
+
+Yes, if _S0W is present and it evaluates successfully, then it is
+required to confirm that wakeup signaling from at least D3hot is
+supported for 'true' to be returned (but it is not sufficient for that
+by itself).
+
+That's the only functional change made by that patch and yes, the
+patch below is what I mean.
+
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index a46fec776ad7..66c9ae1dc5da 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -984,10 +984,6 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>         if (acpi_pci_disabled || !dev->is_hotplug_bridge)
+>                 return false;
+>
+> -       /* Assume D3 support if the bridge is power-manageable by ACPI. */
+> -       if (acpi_pci_power_manageable(dev))
+> -               return true;
+> -
+>         rpdev = pcie_find_root_port(dev);
+>         if (!rpdev)
+>                 return false;
+> @@ -996,14 +992,6 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>         if (!adev)
+>                 return false;
+>
+> -       /*
+> -        * If the Root Port cannot signal wakeup signals at all, i.e., it
+> -        * doesn't supply a wakeup GPE via _PRW, it cannot signal hotplug
+> -        * events from low-power states including D3hot and D3cold.
+> -        */
+> -       if (!adev->wakeup.flags.valid)
+> -               return false;
+> -
+>         /*
+>          * If the Root Port cannot wake itself from D3hot or D3cold, we
+>          * can't use D3.
+> @@ -1014,16 +1002,21 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>
+>         /*
+>          * The "HotPlugSupportInD3" property in a Root Port _DSD indicates
+> -        * the Port can signal hotplug events while in D3.  We assume any
+> -        * bridges *below* that Root Port can also signal hotplug events
+> -        * while in D3.
+> +        * the Port can signal hotplug events while in D3.  This differs
+> +        * from _S0W because _S0W may rely on GPEs, which can only be used
+> +        * directly for wake signaling, not hotplug events.
+> +        *
+> +        * We assume any bridges *below* that Root Port can also signal
+> +        * hotplug events while in D3.
+>          */
+> -       if (!acpi_dev_get_property(adev, "HotPlugSupportInD3",
+> +       if (adev->wakeup.flags.valid &&
+> +           !acpi_dev_get_property(adev, "HotPlugSupportInD3",
+>                                    ACPI_TYPE_INTEGER, &obj) &&
+>             obj->integer.value == 1)
+>                 return true;
+>
+> -       return false;
+> +       /* Assume D3 support if the bridge is power-manageable by ACPI. */
+> +       return acpi_pci_power_manageable(dev);
+>  }
+>
+>  int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+
+Note that the adev->wakeup.flags.valid is still necessary in the cases
+when _S0W is not present, because in those cases wakeup support
+implies that it is supported in all D-states.  It is sort of redundant
+when _S0W is present, but the current code has it and this particular
+patch doesn't (or even shouldn't) change that.
