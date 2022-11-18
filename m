@@ -2,98 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0DC662EDA5
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Nov 2022 07:33:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E07A62F3EB
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Nov 2022 12:42:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240260AbiKRGd5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Nov 2022 01:33:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46226 "EHLO
+        id S232902AbiKRLmc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Nov 2022 06:42:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230287AbiKRGd4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 01:33:56 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADED665840;
-        Thu, 17 Nov 2022 22:33:55 -0800 (PST)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ND6Rv4vG6zRpK0;
-        Fri, 18 Nov 2022 14:33:31 +0800 (CST)
-Received: from dggpemm500015.china.huawei.com (7.185.36.181) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 18 Nov 2022 14:33:54 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500015.china.huawei.com
- (7.185.36.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 18 Nov
- 2022 14:33:53 +0800
-From:   Wang ShaoBo <bobo.shaobowang@huawei.com>
-CC:     <rafael.j.wysocki@intel.com>, <rafael@kernel.org>,
-        <lenb@kernel.org>, <yu.c.chen@intel.com>,
-        <linux-acpi@vger.kernel.org>, <guohanjun@huawei.com>,
-        <liwei391@huawei.com>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] ACPI: pfr_update: use ACPI_FREE() to free acpi_object
-Date:   Fri, 18 Nov 2022 14:32:19 +0800
-Message-ID: <20221118063219.2612473-3-bobo.shaobowang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221118063219.2612473-1-bobo.shaobowang@huawei.com>
-References: <20221118063219.2612473-1-bobo.shaobowang@huawei.com>
+        with ESMTP id S230042AbiKRLmb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 06:42:31 -0500
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6273922D0
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Nov 2022 03:42:30 -0800 (PST)
+Received: by mail-io1-xd43.google.com with SMTP id d123so3604325iof.7
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Nov 2022 03:42:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0CQz5nQhHHLvbYQj0zh9N0b40a6wZgwbFL9tmGZqeEg=;
+        b=Tex5mwJ7x6BiFUIAp+uRoU6IkbWRJatFtMcZZBVivPg90rrh1dY3FoIv/T+Txm0AO+
+         Y/GneqJSDlX0/5a65rAIJWN+IMg+4kvZ5vEva4OT+tNdpBlsXe13DO91n26LRiPmsy0R
+         3UMNLatvdzW4bgxq9X+KppIQ21d2HaXuXY84q7JZ8ohKtHts2J3jsY3sgOP+ZWXil0rG
+         Hra0UEvZ9hIqvt3GAuxJ0nh0mcr6vn2bURxLNUZx25pUc/+P4bMeqqnHIY4t4qN3/1mP
+         TEbrfvh2Mp39F6Pykqj3l0szXondbQa9cuH8IENU61IvoWL9rW7rMjZUY5RDfKhQaI5M
+         K/ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0CQz5nQhHHLvbYQj0zh9N0b40a6wZgwbFL9tmGZqeEg=;
+        b=OXNnNDBCiiuMjxoaGtKFqJIh8lif9SkcAjp/Yw9Ycn33MpOgpx9g6ZaZPkWBbt0rgu
+         RS9UdDefAt+Xx3YJeXRom3E+C9kn/kHEd+uBzzwWoj7CcitIBPcBpd2SidLsNetDpaVA
+         LCt5ZzTwbgm/W1HC2YZLUad6dIqQnhnNCJIT6ZORwR2rG/HZtjOSK1imp45IVZQL7BKE
+         cc2OKnScvDAVtAmFLxqQBRCxfyfmBAO82zfJMQp4OtFNvxmxiE6yJdFVKUwKVvf0jl8W
+         qDvPzqADugt2nohAjy2Wo0G9meFz0pcKlDBveiNzRmZ15YGF8uhixVOIoqtINOKecirt
+         igQA==
+X-Gm-Message-State: ANoB5pmoskejlPLBAE3Q6J7fR4z9n6EjL2SXdw47qHDqn6jOZs5IZuP9
+        mckWp4C6zuKBLLW0TlBYcwxxfLeecWvUD5zC/xjsr/Fw5elaKA==
+X-Google-Smtp-Source: AA0mqf68mKmvSaXJxjVoDoeIYIUQoWgLvxSG204DiSh/FEw/PLNG/DtIhMsmwd9hr2z8gt3U7WSNPTv8aAu0Ik2eJLg=
+X-Received: by 2002:a05:620a:990:b0:6fb:c6b6:e7a8 with SMTP id
+ x16-20020a05620a099000b006fbc6b6e7a8mr4327414qkx.215.1668770373234; Fri, 18
+ Nov 2022 03:19:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500015.china.huawei.com (7.185.36.181)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:620a:24c1:0:0:0:0 with HTTP; Fri, 18 Nov 2022 03:19:32
+ -0800 (PST)
+Reply-To: azimpemji251@gmail.com
+From:   Azim Pemji <gsmaiturare@gmail.com>
+Date:   Fri, 18 Nov 2022 12:19:32 +0100
+Message-ID: <CAK8Phj43LZvyuU_zn8TYU8eDdee7hHHU6RQd_msLuyPhqiEcDg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-acpi_evaluate_dsm_typed()/acpi_evaluate_dsm() should be coupled with
-ACPI_FREE() to free the ACPI memory, because we need to track the
-allocation of acpi_object when ACPI_DBG_TRACK_ALLOCATIONS enabled,
-so use ACPI_FREE() instead of kfree().
-
-Fixes: 0db89fa243e5 ("ACPI: Introduce Platform Firmware Runtime Update device driver")
-Signed-off-by: Wang ShaoBo <bobo.shaobowang@huawei.com>
----
- drivers/acpi/pfr_update.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/pfr_update.c b/drivers/acpi/pfr_update.c
-index 6bb0b778b5da..9d2bdc13253a 100644
---- a/drivers/acpi/pfr_update.c
-+++ b/drivers/acpi/pfr_update.c
-@@ -178,7 +178,7 @@ static int query_capability(struct pfru_update_cap_info *cap_hdr,
- 	ret = 0;
- 
- free_acpi_buffer:
--	kfree(out_obj);
-+	ACPI_FREE(out_obj);
- 
- 	return ret;
- }
-@@ -224,7 +224,7 @@ static int query_buffer(struct pfru_com_buf_info *info,
- 	ret = 0;
- 
- free_acpi_buffer:
--	kfree(out_obj);
-+	ACPI_FREE(out_obj);
- 
- 	return ret;
- }
-@@ -385,7 +385,7 @@ static int start_update(int action, struct pfru_device *pfru_dev)
- 	ret = 0;
- 
- free_acpi_buffer:
--	kfree(out_obj);
-+	ACPI_FREE(out_obj);
- 
- 	return ret;
- }
--- 
-2.25.1
-
+--=20
+Die Summe von 1.200.000,00 $ wurde Ihnen von Herrn Azim gespendet. F=C3=BCr
+weitere Informationen wenden Sie sich bitte an azimpemji251@gmail.com
