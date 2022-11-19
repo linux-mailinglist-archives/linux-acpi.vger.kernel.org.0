@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45112630A46
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Nov 2022 03:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C052A630A77
+	for <lists+linux-acpi@lfdr.de>; Sat, 19 Nov 2022 03:27:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234454AbiKSCY2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Nov 2022 21:24:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39844 "EHLO
+        id S236378AbiKSC13 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Nov 2022 21:27:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234739AbiKSCWx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 21:22:53 -0500
+        with ESMTP id S235718AbiKSCZX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 21:25:23 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA93C72C5;
-        Fri, 18 Nov 2022 18:15:24 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29EB80997;
+        Fri, 18 Nov 2022 18:15:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 49950B82678;
-        Sat, 19 Nov 2022 02:15:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331F6C43146;
-        Sat, 19 Nov 2022 02:15:21 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9E7E9B82676;
+        Sat, 19 Nov 2022 02:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85749C433D7;
+        Sat, 19 Nov 2022 02:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668824122;
-        bh=CoPjKinLd5zi2JDuYqAsz42tE0yq+RlZEeZtnxDFjFY=;
+        s=k20201202; t=1668824153;
+        bh=/UNhONuEPMfoFhB7C+3F3s8jtVtjM7CFczWkPwqlbr8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n1Q82oma9Iq7R2qk2CUAd/VgpXkouPuIbpb1xgCXpUDb9VEudMjYqcL8f3SwH3Qpm
-         qgUQyYuSRn4rW7HQzdzCwp4YCIzUahriri69QEKTxsuYjcbzQ8pFNECN3w5zOErc16
-         Wa3tRkiQ2Qd88jTdJzVSfkMBV3f56053dhMRBnGlBMmOIv1s4aSe9othoMkbjVFfd+
-         q/zZHHRSbYLIV3a/LyIjzkZCIHvF+xVFPh+lm94P8Op/bEBfpQyDktT6dL6QRBGyAu
-         ysLvrxlb+hUsM3lNyKwh53k0+30ploFlrnbUMqk75V3p2PrTx9V7x6ezZ4bOpkRsS1
-         860+D1nfVnehg==
+        b=GRGhOh+IeNemx2yvsOT/LAfM1m6RsP4bI5oU3PC+KOff7LBAqiKlc0spIa5E17nZ+
+         ggzXr/L64PcsI6Y2PCbg5KFsjLoMJJo+7PDw0MTE2t8qqTvKw2PRhsBW63iYWmtZ6F
+         VqTgCrnbjRuXXo4Hff09l4Z+AEPbSXR4sw+rQGMmBeN4z5WVHKXnnJsUdAS2Xl2yEI
+         UyoFATpOG3fOq8iG5cw9uXFdwdT2yIoACK95l/DPlkE8h95VqLy/CdM1tugBJq/Xxh
+         mrgo/UKep4NQ8Kju9vmcPpRkLUtOcMRcE6pwA1tvHTUxQN6z11lbzRiJYLHRKlKxJm
+         oa4s5YqY0qZmQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         Iris <pawel.js@protonmail.com>, Daniel Dadap <ddadap@nvidia.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 10/18] ACPI: video: Add backlight=native DMI quirk for Dell G15 5515
-Date:   Fri, 18 Nov 2022 21:14:51 -0500
-Message-Id: <20221119021459.1775052-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 06/11] ACPI: video: Add backlight=native DMI quirk for Dell G15 5515
+Date:   Fri, 18 Nov 2022 21:15:38 -0500
+Message-Id: <20221119021543.1775315-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221119021459.1775052-1-sashal@kernel.org>
-References: <20221119021459.1775052-1-sashal@kernel.org>
+In-Reply-To: <20221119021543.1775315-1-sashal@kernel.org>
+References: <20221119021543.1775315-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -80,10 +80,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 14 insertions(+)
 
 diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index b13713199ad9..8dfcb6b44936 100644
+index e5518b88f710..f514b16a5c23 100644
 --- a/drivers/acpi/video_detect.c
 +++ b/drivers/acpi/video_detect.c
-@@ -564,6 +564,20 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+@@ -527,6 +527,20 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
  		DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
  		},
  	},
