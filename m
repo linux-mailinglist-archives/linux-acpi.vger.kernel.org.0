@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 267396309E4
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Nov 2022 03:20:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45112630A46
+	for <lists+linux-acpi@lfdr.de>; Sat, 19 Nov 2022 03:24:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232634AbiKSCU1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Nov 2022 21:20:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58568 "EHLO
+        id S234454AbiKSCY2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Nov 2022 21:24:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235506AbiKSCTy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 21:19:54 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E28B9613;
-        Fri, 18 Nov 2022 18:14:29 -0800 (PST)
+        with ESMTP id S234739AbiKSCWx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Nov 2022 21:22:53 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA93C72C5;
+        Fri, 18 Nov 2022 18:15:24 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A03EA62832;
-        Sat, 19 Nov 2022 02:14:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA83C433D7;
-        Sat, 19 Nov 2022 02:14:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 49950B82678;
+        Sat, 19 Nov 2022 02:15:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331F6C43146;
+        Sat, 19 Nov 2022 02:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668824061;
+        s=k20201202; t=1668824122;
         bh=CoPjKinLd5zi2JDuYqAsz42tE0yq+RlZEeZtnxDFjFY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rQd+g3xZE94hf7/t7NW14sC+b0B0aEjxGGRrpLNwJL3jKLzQRtfv1NyDHbuP64x/s
-         VhUu3xb9osnjJxA81viQgpFEpL0WGwNWhFgmr1gXmTwKcL+jl+fgH8WozSodsre974
-         hdnWeUO0vrElNUAASoGTTu9cdjy5cXxhHffR3Cv+7uw1bpqH8lpGPyI8MYihZT6vY0
-         yRU7DFlyIvSMBY2CvT0xwJUjHwSNpOSgDQgH/bERapOo2ZBMV1D391GO1e2QwvtKfv
-         RVnhoVQV1WTsa09o4CgTLMBHUQtqFOc+FZ3yk2WfStkCM9z6qVBi4I2gAI/gnddTkr
-         c4wbK4t/7gDPQ==
+        b=n1Q82oma9Iq7R2qk2CUAd/VgpXkouPuIbpb1xgCXpUDb9VEudMjYqcL8f3SwH3Qpm
+         qgUQyYuSRn4rW7HQzdzCwp4YCIzUahriri69QEKTxsuYjcbzQ8pFNECN3w5zOErc16
+         Wa3tRkiQ2Qd88jTdJzVSfkMBV3f56053dhMRBnGlBMmOIv1s4aSe9othoMkbjVFfd+
+         q/zZHHRSbYLIV3a/LyIjzkZCIHvF+xVFPh+lm94P8Op/bEBfpQyDktT6dL6QRBGyAu
+         ysLvrxlb+hUsM3lNyKwh53k0+30ploFlrnbUMqk75V3p2PrTx9V7x6ezZ4bOpkRsS1
+         860+D1nfVnehg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         Iris <pawel.js@protonmail.com>, Daniel Dadap <ddadap@nvidia.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 13/27] ACPI: video: Add backlight=native DMI quirk for Dell G15 5515
-Date:   Fri, 18 Nov 2022 21:13:38 -0500
-Message-Id: <20221119021352.1774592-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 10/18] ACPI: video: Add backlight=native DMI quirk for Dell G15 5515
+Date:   Fri, 18 Nov 2022 21:14:51 -0500
+Message-Id: <20221119021459.1775052-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221119021352.1774592-1-sashal@kernel.org>
-References: <20221119021352.1774592-1-sashal@kernel.org>
+In-Reply-To: <20221119021459.1775052-1-sashal@kernel.org>
+References: <20221119021459.1775052-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
