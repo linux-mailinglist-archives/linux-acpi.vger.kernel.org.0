@@ -2,75 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BC3B631432
-	for <lists+linux-acpi@lfdr.de>; Sun, 20 Nov 2022 13:50:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88B6B63163D
+	for <lists+linux-acpi@lfdr.de>; Sun, 20 Nov 2022 21:10:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbiKTMuh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 20 Nov 2022 07:50:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40610 "EHLO
+        id S229925AbiKTUKO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 20 Nov 2022 15:10:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbiKTMug (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Nov 2022 07:50:36 -0500
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9792DDB
-        for <linux-acpi@vger.kernel.org>; Sun, 20 Nov 2022 04:50:35 -0800 (PST)
-Received: by mail-lj1-x244.google.com with SMTP id d3so11887163ljl.1
-        for <linux-acpi@vger.kernel.org>; Sun, 20 Nov 2022 04:50:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pfTPu38wdLYx20XCd4g5K+axDKOy6yjpiiCEdHmHiM8=;
-        b=arWPZ02tFVcaiqwVL6eAlLYJBWO1O/6qCOQr/RSin9dI9zCt+QtcbD7nyV//FLE08i
-         AkzpsAKRsLnE4zFil39IWNiWyoCW08ZpHnRELV+wzqkHJYk77PcqQUrRinTqtQq31F66
-         8rmz0V+vHS9bjKSKRBbHmDEvBg2Z59wF9EiO57coU4KQHEZs71cHj+ibAey0YtHUbxiH
-         nLTJ1CqBSTJAuf3rs/R/gKtO2iIRjkhvNAW3N52Jj2yTnHTy6E3wap6Mei8nbG7gFxad
-         cqQw/Q2LCAlvhO3WIvDPPuEqv4pEmPRluRqJqDfR1AVkfJpseoCzoaUx8uk7rQigfFuN
-         o/5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pfTPu38wdLYx20XCd4g5K+axDKOy6yjpiiCEdHmHiM8=;
-        b=wAc6jGHEbfZMoKk0rxlORL2ANxw8hT6AcGafcBIUbEgOrLfk8J4PB81K+q8YRaNPWw
-         xsXN8upyOPYhcMCYuNHqm6v2LLLTjV0N0J3t/Hc+FAhtix9al+TeqnT/xbObfEUyu+1n
-         oVCWU5kPc8mWetAEI7QU61NxsLvQ/3WM1DSRP2GRjE7kT7mFEHWP4QvszosHUm3wSlUV
-         prfa10S+XncSMeKcaVIxOZaRynHr+MiHCJUFjJ0t6otFlzOmnEUSJczXe8fc8mjqFh6E
-         1MtAaa+Z08boWrzIVcXdOSDPQOpLpxDUfvni25gH9wfrlFOUXixGoffY1uwGvhJp+89I
-         m9Lg==
-X-Gm-Message-State: ANoB5pm3mqowxO0icmT7vMih4oexgY+FfZk5XoNpK6qlUrumt20RMfOa
-        hzr8f1L8mCFPzkkXryQrUUc55cTLZEnIxDiO9aU=
-X-Google-Smtp-Source: AA0mqf6zlTV9SphwuJNvAd8NnebDS49C9W3FIS51Ojrbnm+4P2xtRSYKw1rPiD7RnUj7TE2/XMDBF08zow3JiCzD8Ko=
-X-Received: by 2002:a05:651c:10a2:b0:279:e41:1481 with SMTP id
- k2-20020a05651c10a200b002790e411481mr4346840ljn.184.1668948634040; Sun, 20
- Nov 2022 04:50:34 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:6504:4083:b0:200:c202:6a27 with HTTP; Sun, 20 Nov 2022
- 04:50:33 -0800 (PST)
-Reply-To: te463602@gmail.com
-From:   Nam Woo <nwoo4504@gmail.com>
-Date:   Sun, 20 Nov 2022 04:50:33 -0800
-Message-ID: <CAKEwtxKoBecKZj+Ty_yadqon0mU2a18FA3mJEe7CCuYBcCh5dQ@mail.gmail.com>
-Subject: Very Urgent,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        with ESMTP id S229926AbiKTUJ5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Nov 2022 15:09:57 -0500
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36AEE2F397;
+        Sun, 20 Nov 2022 12:09:04 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id C24665C005B;
+        Sun, 20 Nov 2022 15:09:01 -0500 (EST)
+Received: from imap48 ([10.202.2.98])
+  by compute5.internal (MEProxy); Sun, 20 Nov 2022 15:09:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:message-id:mime-version
+        :reply-to:sender:subject:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1668974941; x=
+        1669061341; bh=A/l1Y0qAN4hTYqzDIPOQtrpLivbhrove9YLZsjDBhXY=; b=N
+        hb9+fYrrigI3KxlY/Xw+wwrh6mktNlLsNpp1wZLwIGqB1B2JtlV83df3Syq/fv6U
+        DY43+W9JA5FipwBbm7e3CflcgGL3ybluWQvqag22ucC0/SUsXGMqkAY79F5fRnQ+
+        nx8IJoboDUWORpH/lwaZyzVniympVlUqGqvVjrRAHaYgnWBfCvHXp9Ibmg8X3FNR
+        vbaOYDzvQtaQbEhjn4W13LXjwmmIJBm6ts1ObFnk8dLBJfXbRe6RH7hrlyCKHlg2
+        uWFLkvKRPcCu7NBe1mB/GdzsMM6n/IlFdex2yu1LIO8kIJKTgnb8jAZTv+YLzWUE
+        8sX0xM70zN86NFJgxisOw==
+X-ME-Sender: <xms:XYl6Y8t4iF2FtDL21rfqdGvf7DIDGTeIduwo60ChBM76xNlMsDVWPg>
+    <xme:XYl6Y5fsuxw5fl106vN6fYr4fGtX4OC7s6f3vcO6RXgkrdGMe-EYryzT5vVFQCw9L
+    D7nVHDhlgxXcvVabJE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvgedrheeggddutdelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenuchmihhsshhinhhgucfvqfcufhhivghlugculdeftd
+    dmnecujfgurhepofgfggfkfffhufgtsehttdertderredtnecuhfhrohhmpehthhhomhgr
+    shcuoehthhhomhgrshesphhouhhrrhhivghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    fftedtffekieffjeetteelieehgeekvdevleehheejfeevfefgffegfeefveeludenucff
+    ohhmrghinhepkhgvrhhnvghlrdhorhhgpdhfrhgvvgiivghsrdhsohhfthifrghrvgenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehthhhomhgr
+    shesphhouhhrrhhivghlrdhorhhg
+X-ME-Proxy: <xmx:XYl6Y3y-Jxfhiqpz3Klus1WKdbDQjdOsgCYLRyyTjXzjV1CY2kTDAw>
+    <xmx:XYl6Y_PuQvhH2m-DodW9LscMm2a7gHN45iOSUDHXPD2KpG4NrhorbQ>
+    <xmx:XYl6Y8_TdRXKQyJGF7F9rKTclKlZxFzhgWLrPNHqXr6KiHZ6dlCK_g>
+    <xmx:XYl6Y-Lrc92Hyltj9pAnlkdLFFkPrKiC92B98wbeRVoOvSecLUo6ew>
+Feedback-ID: i1ac9442a:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 3785C31A0063; Sun, 20 Nov 2022 15:09:01 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1115-g8b801eadce-fm-20221102.001-g8b801ead
+Mime-Version: 1.0
+Message-Id: <364007fe-1575-4609-a183-835ca1015d77@app.fastmail.com>
+Date:   Sun, 20 Nov 2022 21:08:37 +0100
+From:   thomas <thomas@pourriel.org>
+Subject: [Bug] NVME controller down (Seagate FireCuda 530)
+Content-Type: text/plain
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,MISSING_HEADERS,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NEUTRAL autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-Hello,,
-We are privileged and delighted to reach you via email" And we are
-urgently waiting to hear from you. and again your number is not
-connecting.
+Hello,
 
-Thanks,
-Nam Woo
+Following a recommendation from https://bugzilla.kernel.org/show_bug.cgi?id=216709 , I'm posting this here, in the hope that it finds a resolution.
+
+# ISSUE DESCRIPTION
+A few seconds after GNOME is started, the NVME drive that is mounted (but which is not used to boot from) is inacessible. dmesg output is:
+
+> [  281.692677] nvme nvme0: controller is down; will reset: CSTS=0xffffffff,
+> PCI_STATUS=0x10
+> [  281.778102] nvme 0000:04:00.0: enabling device (0000 -> 0002)
+> [  281.778436] nvme nvme0: Removing after probe failure status: -19
+> [  281.797929] nvme0n1: detected capacity change from 3907029168 to 0
+> [  281.797947] blk_update_request: I/O error, dev nvme0n1, sector 2786568960
+> op 0x1:(WRITE) flags 0x103000 phys_seg 1 prio class 0
+> [  281.797972] Buffer I/O error on dev nvme0n1p3, logical block 308281696,
+> lost async page write
+> [  281.850852] FAT-fs (nvme0n1p4): unable to read boot sector to mark fs as
+> dirty
+> [  343.901432] EXT4-fs warning (device nvme0n1p3):
+> htree_dirblock_to_tree:1067: inode #77070337: lblock 0: comm ls: error -5
+> reading directory block
+> [  343.902354] EXT4-fs error (device nvme0n1p3): __ext4_find_entry:1658:
+> inode #77070337: comm test-nvme-write: reading directory lblock 0
+> [  350.028540] Aborting journal on device nvme0n1p3-8.
+> [  350.028548] Buffer I/O error on dev nvme0n1p3, logical block 223903744,
+> lost sync page write
+> [  350.028554] JBD2: Error -5 detected when updating journal superblock for
+> nvme0n1p3-8.
+
+
+# WHAT I'VE TRIED (without much luck)
+- I've managed to install ZorinOS several times on the drive, so the drive works long enough to have everything copied and installed.
+- On the first 2 Samsung drives, I've managed to install Windows. I did not try with the latest drive.
+- This is the 3rd drive I'm testing (tried with 2 Samsung 970 EVO plus 2To before, and now with a Seagate FireCuda 530 2To)
+- I've tried with either kernel parameter pcie_aspm=off or nvme_core.default_ps_max_latency_us=0 and finally with both, but I get the same result in all 3 cases.
+- I've also tried with various values for nvme_core.default_ps_max_latency_us (starting with 5500)
+- If I boot from the drive, starting in recovery mode, and resuming normal start, seems to postpone a bit the freeze of the system but only by a few minutes. But it still freezes.
+
+
+# SOFTWARE / HARDWARE
+- Linux Kernel : 5.15.0-53-generic
+- Distribution : Zorin OS 16.2
+- Motherboard : GIGABYTE B550 AORUS Elite V2 
+- NVME Drive : Seagate FireCuda 530 2To (latest firmware)
+- CPU : AMD Ryzen 5700X
+
+Thomas.
