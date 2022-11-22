@@ -2,266 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2444633E01
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 14:46:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F1C633E8B
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 15:09:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233110AbiKVNqH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Nov 2022 08:46:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43858 "EHLO
+        id S231993AbiKVOJx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Nov 2022 09:09:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbiKVNqH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 08:46:07 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A47DA5A6C0;
-        Tue, 22 Nov 2022 05:46:04 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E14051FB;
-        Tue, 22 Nov 2022 05:46:10 -0800 (PST)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8EE0C3F73D;
-        Tue, 22 Nov 2022 05:46:02 -0800 (PST)
-Date:   Tue, 22 Nov 2022 13:46:00 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Huisong Li <lihuisong@huawei.com>
-Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
-        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
-        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
-        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
-        wangkefeng.wang@huawei.com, huangdaode@huawei.com
-Subject: Re: [RFC V2] ACPI: PCC: Support shared interrupt for multiple
- subspaces
-Message-ID: <20221122134600.3cd44ssgamn362xz@bogus>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221122033051.15507-1-lihuisong@huawei.com>
+        with ESMTP id S233747AbiKVOJ1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 09:09:27 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E5E17A9F;
+        Tue, 22 Nov 2022 06:07:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669126072; x=1700662072;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=IHxOYkLfkkrc/bieTDxjR1LwY2YqYpBSUyTZJebUioA=;
+  b=e8CNtRp6BK33OSW+orrY3o3KRW3cwtsq6MFQtWr8zRvq9LiKdWk6od4k
+   uQRdedepGL1LPLOiDcQdBcwxrNvx7mK2EDe8FzunFUqcBX0gjcpYlHWnh
+   eQpDVVU0/HRg/k4Lrhdhr0WlZZGlYuPoCRgrwUy/+lDo+P57kWUEz6PxY
+   /YVgTr2nrFEBtyjPrtV2tt9ilEKWey/IT0yMxt5jQsO3tj3x067UsgjRM
+   Ih5saFeRAg3h28KhA9Vn0XpzCyns9xFqcT3GPROPVskq8GZwcY2G7klPX
+   hcuuM+n1v4w//GKSHVsCgRFiwMcuJxDDoHu7BiLZp5y42cRbgKiS0w8WD
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="313851205"
+X-IronPort-AV: E=Sophos;i="5.96,184,1665471600"; 
+   d="scan'208";a="313851205"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 06:07:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="619223198"
+X-IronPort-AV: E=Sophos;i="5.96,184,1665471600"; 
+   d="scan'208";a="619223198"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 22 Nov 2022 06:07:12 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oxTva-00FrCW-31;
+        Tue, 22 Nov 2022 16:07:10 +0200
+Date:   Tue, 22 Nov 2022 16:07:10 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        djrscally@gmail.com, heikki.krogerus@linux.intel.com,
+        sakari.ailus@linux.intel.com, gregkh@linuxfoundation.org,
+        rafael@kernel.org
+Subject: Re: [PATCH v2] device property: fix of node refcount leak in
+ fwnode_graph_get_next_endpoint()
+Message-ID: <Y3zXjpY2/Le/3J9q@smile.fi.intel.com>
+References: <20221122120039.760773-1-yangyingliang@huawei.com>
+ <Y3zGjLsDmVv0ErVR@smile.fi.intel.com>
+ <75602dce-0780-e51a-c8c9-d1820ddf3e2b@huawei.com>
+ <Y3zLwj/G/E3kZsJE@smile.fi.intel.com>
+ <26c0d10a-5dd8-6cea-57b3-eea63099baa1@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221122033051.15507-1-lihuisong@huawei.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <26c0d10a-5dd8-6cea-57b3-eea63099baa1@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 22, 2022 at 11:30:51AM +0800, Huisong Li wrote:
-> If the platform acknowledge interrupt is level triggered, then it can
-> be shared by multiple subspaces provided each one has a unique platform
-> interrupt ack preserve and ack set masks.
+On Tue, Nov 22, 2022 at 09:41:28PM +0800, Yang Yingliang wrote:
+> On 2022/11/22 21:16, Andy Shevchenko wrote:
+> > On Tue, Nov 22, 2022 at 09:12:41PM +0800, Yang Yingliang wrote:
+> > > On 2022/11/22 20:54, Andy Shevchenko wrote:
+> > > > On Tue, Nov 22, 2022 at 08:00:39PM +0800, Yang Yingliang wrote:
+
+...
+
+> > > > It seems too complicated for the simple fix.
+> > > > 
+> > > > As I said, just drop const qualifier and add fwnode_handle_get() in the 'else'
+> > > > branch. This will allow you to drop if (prev) at the end.
+> > > fwnode is const, fwnode_handle_get doesn't accept this type.
+> > I'm talking about parent.
+> You suggested this:
 > 
-> If it can be shared, then we can request the irq with IRQF_SHARED and
-> IRQF_ONESHOT flags. The first one indicating it can be shared and the
-> latter one to keep the interrupt disabled until the hardirq handler
-> finished.
+> "Instead you might consider to replace
 > 
-> Further, since there is no way to detect if the interrupt is for a given
-> channel as the interrupt ack preserve and ack set masks are for clearing
-> the interrupt and not for reading the status, we need a way to identify
-> if the given channel is in use and expecting the interrupt.
+> 	parent = fwnode;
 > 
-> The way and differences of identification interrupt of each types for a
-> given channel are as follows:
-> 1) type0, type1 and type5: do not support shared level triggered interrupt.
-> 2) type2: whether the interrupt belongs to a given channel is detected
->           based on the status field in Generic Communications Channel
->           Shared Memory Region during calling rx_callback in PCC client
->           code.
-> 3) type3: use the command complete register and chan_in_use flag to control
-> 4) type4: use the command complete register and need to set the
->           corresponding bit of salve subspace to 1 by default in platform.
+> by
 > 
-> Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-
-While I am aware that there are parts of this patch that I have suggested or
-was part of the discussion, it doesn't mean you can add my sign-off without
-my consent. You have introduced new things here which I haven't seen or
-agreed to, so this sign-off is completely meaningless and wrong. Please
-don't do that in the future.
-
-> Signed-off-by: Robbie King <robbiek@xsightlabs.com>
-> ---
->  -v2: don't use platform interrupt ack register to identify if the given
->       channel should respond interrupt.
+> 	parent = fwnode_handle_get(fwnode);"
 > 
-> ---
->  drivers/mailbox/pcc.c | 130 +++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 116 insertions(+), 14 deletions(-)
 > 
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index 3c2bc0ca454c..674e214d64d1 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -80,6 +80,13 @@ struct pcc_chan_reg {
->  	u64 status_mask;
->  };
->  
-> +enum pcc_chan_mesg_dir {
-> +	PCC_ONLY_AP_TO_SCP,
-> +	PCC_ONLY_SCP_TO_AP,
+> It has compile warning:
+> drivers/base/property.c: In function ‘fwnode_graph_get_next_endpoint’:
+> drivers/base/property.c:1004:30: warning: passing argument 1 of ‘fwnode_handle_get’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+>    parent = fwnode_handle_get(fwnode);
+>                               ^~~~~~
+> drivers/base/property.c:809:63: note: expected ‘struct fwnode_handle *’ but argument is of type ‘const struct fwnode_handle *’
+>  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode)
+> 
+> ~~~~~~~~~~~~~~~~~~~~~~^~~~~~
 
-AP and SCP sounds very specific to your platform. The ACPI PCC spec doesn't
-talk about these or use these terminology IIUC. You need to refer AP as OSPM
-and SCP as platform.
+I see what you mean. Thank you for clarification.
 
-> +	PCC_BIDIRECTIONAL,
+So, it seems a bit twisted.
 
-Again I need to check about this in the specification.
+If prev == NULL, can the
 
-> +	PCC_DIR_UNKNOWN,
-> +};
-> +
->  /**
->   * struct pcc_chan_info - PCC channel specific information
->   *
-> @@ -91,6 +98,10 @@ struct pcc_chan_reg {
->   * @cmd_update: PCC register bundle for the command complete update register
->   * @error: PCC register bundle for the error status register
->   * @plat_irq: platform interrupt
-> + * @plat_irq_flags: platform interrupt flags
-> + * @chan_in_use: flag indicating whether the channel is in use or not when use
-> + *               platform interrupt, and only use it for PCC_ONLY_AP_TO_SCP
-> + * @mesg_dir: direction of message transmission supported by the channel
->   */
->  struct pcc_chan_info {
->  	struct pcc_mbox_chan chan;
-> @@ -100,12 +111,17 @@ struct pcc_chan_info {
->  	struct pcc_chan_reg cmd_update;
->  	struct pcc_chan_reg error;
->  	int plat_irq;
-> +	unsigned int plat_irq_flags;
-> +	bool chan_in_use;
-> +	u8 mesg_dir;
->  };
->  
->  #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
->  static struct pcc_chan_info *chan_info;
->  static int pcc_chan_count;
->  
-> +static int pcc_send_data(struct mbox_chan *chan, void *data);
-> +
->  /*
->   * PCC can be used with perf critical drivers such as CPPC
->   * So it makes sense to locally cache the virtual address and
-> @@ -221,6 +237,47 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->  	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->  }
->  
-> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
-> +{
-> +	return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
-> +		ACPI_LEVEL_SENSITIVE;
-> +}
-> +
-> +static bool pcc_chan_need_rsp_irq(struct pcc_chan_info *pchan,
-> +				  u64 cmd_complete_reg_val)
-> +{
-> +	bool need_rsp;
-> +
-> +	if (!pchan->cmd_complete.gas)
-> +		return true;
-> +
-> +	cmd_complete_reg_val &= pchan->cmd_complete.status_mask;
-> +
-> +	switch (pchan->mesg_dir) {
-> +	case PCC_ONLY_AP_TO_SCP:
-> +		/*
-> +		 * For the communication from AP to SCP, if this channel is in
-> +		 * use, command complete bit is 1 indicates that the command
-> +		 * being executed has been completed.
-> +		 */
-> +		need_rsp = cmd_complete_reg_val != 0;
-> +		break;
-> +	case PCC_ONLY_SCP_TO_AP:
-> +		/*
-> +		 * For the communication from SCP to AP， if this channel is in
-> +		 * use, command complete bit is 0 indicates that the bit has
-> +		 * been cleared and AP should response the interrupt.
-> +		 */
-> +		need_rsp = cmd_complete_reg_val == 0;
-> +		break;
-> +	default:
-> +		need_rsp = true;
-> +		break;
-> +	}
-> +
-> +	return need_rsp;
-> +}
-> +
->  /**
->   * pcc_mbox_irq - PCC mailbox interrupt handler
->   * @irq:	interrupt number
-> @@ -232,37 +289,54 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->  {
->  	struct pcc_chan_info *pchan;
->  	struct mbox_chan *chan = p;
-> +	static irqreturn_t rc;
->  	u64 val;
->  	int ret;
->  
->  	pchan = chan->con_priv;
-> +	if (pchan->mesg_dir == PCC_ONLY_AP_TO_SCP && !pchan->chan_in_use)
-> +		return IRQ_NONE;
->  
->  	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
->  	if (ret)
->  		return IRQ_NONE;
-> +	if (!pcc_chan_need_rsp_irq(pchan, val))
-> +		return IRQ_NONE;
->
+        ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, NULL);
 
-Not sure the login in pcc_chan_need_rsp_irq works for type1/2 channels
-or am I missing something.
+return NULL?
 
-> -	if (val) { /* Ensure GAS exists and value is non-zero */
-> -		val &= pchan->cmd_complete.status_mask;
-> -		if (!val)
-> -			return IRQ_NONE;
-> +	ret = pcc_chan_reg_read(&pchan->error, &val);
-> +	if (ret) {
-> +		rc = IRQ_NONE;
-> +		goto out;
->  	}
->  
-> -	ret = pcc_chan_reg_read(&pchan->error, &val);
-> -	if (ret)
-> -		return IRQ_NONE;
->  	val &= pchan->error.status_mask;
->  	if (val) {
->  		val &= ~pchan->error.status_mask;
->  		pcc_chan_reg_write(&pchan->error, val);
-> -		return IRQ_NONE;
-> +		rc = IRQ_NONE;
-> +		goto out;
->  	}
->  
-> -	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
-> -		return IRQ_NONE;
-> +	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack)) {
-> +		rc = IRQ_NONE;
-> +		goto out;
-> +	}
->  
->  	mbox_chan_received_data(chan, NULL);
-> +	/*
-> +	 * For slave subspace, need to set the command complete bit and ring
-> +	 * doorbell after processing message.
-> +	 */
-> +	if (pchan->mesg_dir == PCC_ONLY_SCP_TO_AP)
-> +		pcc_send_data(chan, NULL);
-> +
-> +	rc = IRQ_HANDLED;
->
-
-Also I think it is better to split the support into 2 different patches.
-Add type 4 channel interrupt handling support and then handle interrupt
-sharing or vice-versa. I am struggling to follow this. I would also avoid
-goto in a interrupt handler unless absolutely necessary.
+If no, we may move this case directly to the 'else' branch and return from there.
 
 -- 
-Regards,
-Sudeep
+With Best Regards,
+Andy Shevchenko
+
+
