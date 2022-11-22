@@ -2,74 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F5626337FC
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 10:08:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E90856338B9
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 10:41:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233084AbiKVJI5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Nov 2022 04:08:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41208 "EHLO
+        id S233293AbiKVJlE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Nov 2022 04:41:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233242AbiKVJIk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 04:08:40 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6848831FBE
-        for <linux-acpi@vger.kernel.org>; Tue, 22 Nov 2022 01:08:39 -0800 (PST)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NGdcW3VtTzqSWN;
-        Tue, 22 Nov 2022 17:04:43 +0800 (CST)
-Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 22 Nov 2022 17:08:37 +0800
-Received: from linux-ibm.site (10.175.102.37) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 22 Nov 2022 17:08:37 +0800
-From:   Hanjun Guo <guohanjun@huawei.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH] ACPI: fan: Bail out if extract package failed
-Date:   Tue, 22 Nov 2022 16:53:28 +0800
-Message-ID: <1669107208-16226-1-git-send-email-guohanjun@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
+        with ESMTP id S233204AbiKVJlE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 04:41:04 -0500
+X-Greylist: delayed 1796 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Nov 2022 01:41:01 PST
+Received: from mail.axisfairfi.com (mail.axisfairfi.com [94.177.230.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E00DD248D5
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Nov 2022 01:41:01 -0800 (PST)
+Received: by mail.axisfairfi.com (Postfix, from userid 1001)
+        id 8DBC28255E; Tue, 22 Nov 2022 09:05:15 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=axisfairfi.com;
+        s=mail; t=1669107917;
+        bh=0BgaW9t8GFER5QecxVkFsHrVi3gO/4V5KAZgJaiRYBs=;
+        h=Date:From:To:Subject:From;
+        b=hxJc9tGmeVEjgUlEPfbu1FBWVM5b6gVBLt91F6CpPoR/0JtkowKlY4XjQSJR2zfh7
+         A3M5tPYmTTmhI0gvfo9QMD163flAo9ennTZecvfH2D/VB6R4QHW51JL7YYr4lXH0UF
+         xfC8IsjxsHxxr3bEOjMHkuCGHhdshaGCMibuPvq9dXkxSl93NE4MoVY4XHAnDWshJS
+         d0RrrAnu420/JS1BM5CDu7fhnGKT2GAZDCzo9qczUdby7TpVhwh6AzdaTPJVFLnpmn
+         qXXtbfAaGZdyjSBPmAZh2/uHYkK0drFqmWXsb63tBQhh1vYdIx2vM1ZAhNBtlW34nW
+         /YPhJptaSQAPg==
+Received: by mail.axisfairfi.com for <linux-acpi@vger.kernel.org>; Tue, 22 Nov 2022 09:05:14 GMT
+Message-ID: <20221122074500-0.1.d.nn2.0.3m5buxjbrj@axisfairfi.com>
+Date:   Tue, 22 Nov 2022 09:05:14 GMT
+From:   "Zbynek Spacek" <zbynek.spacek@axisfairfi.com>
+To:     <linux-acpi@vger.kernel.org>
+Subject: Silikonmischungen
+X-Mailer: mail.axisfairfi.com
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_FMBLA_NEWDOM14,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Bail out if we extract the _FIF package failed, or we will end
-of referencing the garbage information in fields[], the fan control
-will be in mess, fix it.
+Good morning,
 
-Fiexes: d445571fa369 ("ACPI: fan: Optimize struct acpi_fan_fif")
-Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
----
- drivers/acpi/fan_core.c | 1 +
- 1 file changed, 1 insertion(+)
+do you need intermediates for processing, plastics (e.g. rubber) or silic=
+one mixtures?
 
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index 52a0b30..9dccbae 100644
---- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -236,6 +236,7 @@ static int acpi_fan_get_fif(struct acpi_device *device)
- 	if (ACPI_FAILURE(status)) {
- 		dev_err(&device->dev, "Invalid _FIF element\n");
- 		status = -EINVAL;
-+		goto err;
- 	}
- 
- 	fan->fif.revision = fields[0];
--- 
-1.7.12.4
+We provide a wide range of silicone rubbers with various properties, sili=
+cone mixtures from renowned manufacturers such as Wacker, Elastosil LR an=
+d dyes, stabilizers, primers and anti-adhesive additives.
 
+We also produce technical silicone compounds with increased resistance to=
+ oils, resistant to high temperatures and water vapor, conductive and man=
+y more.
+
+We provide fast order fulfillment, timely deliveries and cost optimizatio=
+n.
+
+Can I introduce what we can offer you?
+
+
+Zbynek Spacek
