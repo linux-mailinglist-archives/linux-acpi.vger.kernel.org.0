@@ -2,82 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59CA6633691
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 09:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5626337FC
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 10:08:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232646AbiKVIFG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Nov 2022 03:05:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42450 "EHLO
+        id S233084AbiKVJI5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Nov 2022 04:08:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbiKVIFB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 03:05:01 -0500
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8429621E12;
-        Tue, 22 Nov 2022 00:04:59 -0800 (PST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
-        by bmailout2.hostsharing.net (Postfix) with ESMTPS id 4F23D28011610;
-        Tue, 22 Nov 2022 09:04:55 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 40428196CA; Tue, 22 Nov 2022 09:04:55 +0100 (CET)
-Date:   Tue, 22 Nov 2022 09:04:55 +0100
-From:   Lukas Wunner <lukas@wunner.de>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v1 0/2] PCI: hotplug: Add checks to avoid doing hotplug
- on PCIe Upstream Ports
-Message-ID: <20221122080455.GA27182@wunner.de>
-References: <5623410.DvuYhMxLoT@kreacher>
+        with ESMTP id S233242AbiKVJIk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 04:08:40 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6848831FBE
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Nov 2022 01:08:39 -0800 (PST)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NGdcW3VtTzqSWN;
+        Tue, 22 Nov 2022 17:04:43 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 22 Nov 2022 17:08:37 +0800
+Received: from linux-ibm.site (10.175.102.37) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 22 Nov 2022 17:08:37 +0800
+From:   Hanjun Guo <guohanjun@huawei.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Hanjun Guo <guohanjun@huawei.com>
+Subject: [PATCH] ACPI: fan: Bail out if extract package failed
+Date:   Tue, 22 Nov 2022 16:53:28 +0800
+Message-ID: <1669107208-16226-1-git-send-email-guohanjun@huawei.com>
+X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5623410.DvuYhMxLoT@kreacher>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.175.102.37]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 21, 2022 at 07:13:15PM +0100, Rafael J. Wysocki wrote:
-> PCIe Upstream Ports are not hotplug-capable by definition, but it turns out
-> that in some cases, if the system is configured in a particularly interesting
-> way, the kernel may be made attempt to operate an Upstream Port as a hotplug
-> one which causes functional issues to appear.
-> 
-> The following 2 patches amend the code to prevent this behavior from occurring.
+Bail out if we extract the _FIF package failed, or we will end
+of referencing the garbage information in fields[], the fan control
+will be in mess, fix it.
 
-Both patches LGTM.
+Fiexes: d445571fa369 ("ACPI: fan: Optimize struct acpi_fan_fif")
+Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+---
+ drivers/acpi/fan_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The spec reference for this change is PCIe r6.0.1 sec 7.5.3.2:
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index 52a0b30..9dccbae 100644
+--- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -236,6 +236,7 @@ static int acpi_fan_get_fif(struct acpi_device *device)
+ 	if (ACPI_FAILURE(status)) {
+ 		dev_err(&device->dev, "Invalid _FIF element\n");
+ 		status = -EINVAL;
++		goto err;
+ 	}
+ 
+ 	fan->fif.revision = fields[0];
+-- 
+1.7.12.4
 
-The Slot Implemented bit in the PCI Express Capabilities register
-is only valid for Downstream Ports and undefined on Upstream Ports.
-
-The Slot Capabilities / Control / Status registers are only operable
-if the Slot Implemented bit is valid and set.  PCIe hotplug depends
-on those registers.
-
-(pcie_capability_reg_implemented() in drivers/pci/access.c returns false
-for the Slot Capabilities / Control / Status registers unless the port
-is a Root or Downstream Port.  Reads of those registers thus always
-return 0.)
-
-(Root Ports are Downstream Ports per the definition of "Downstream"
-on page 94 of the PCIe r6.0.1 Base Spec.)
-
-Thanks,
-
-Lukas
