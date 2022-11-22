@@ -2,66 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C007633D58
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 14:17:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A09A9633DC8
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 14:35:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233715AbiKVNQ7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Nov 2022 08:16:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46034 "EHLO
+        id S233777AbiKVNfr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Nov 2022 08:35:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233691AbiKVNQ4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 08:16:56 -0500
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A21BCE49;
-        Tue, 22 Nov 2022 05:16:55 -0800 (PST)
+        with ESMTP id S232891AbiKVNfn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 08:35:43 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10DD451C26;
+        Tue, 22 Nov 2022 05:35:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669123016; x=1700659016;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jt1CUqgeOpQd7tpbxtZzW4+aRWARSRwhtrbZwOcfz0g=;
-  b=KggZqIB1aPpeh8Ce21B0xjnMyKJHZHSjZTT07QpawjrSkj2wHH5KIfPO
-   EOTbJxJFE1jh92PRfw9vgfnOutgvtxm2Px9RN0AtKFA7o2n2EoZZLmErZ
-   PjM9vbbGG73qv7ahIXTYHiOmT1gl5WL7QC2FyOCTNwK0tfN2YI0sW5TI9
-   MTz5uF4G24+cNspAwHfEIcwzB+KkeNIjkXXO4WPp1KT5AWQYHWZDwp2Ql
-   c7qhXqED/8YtPI1bgy6JLyHJUkr1GgR6SRwizYND9qyc7pfsmH1OhPGSK
-   jZggTYa1EnVJ4Dh5+vONTKr4XTEP0Y1TUgDbX+2/vZRa7npi7lFE46G1Z
+  t=1669124143; x=1700660143;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=buFbMo2ULium7j74ddZOqvKKRSi8X7Y7FsUFsVFRKHQ=;
+  b=eXv/2YFrGUTpIdR3r0Aqpa44f8+e1uhNfvyDQGdOzE2Pr/5Sl35YrNvJ
+   SkOuk6BlSQ5B/aHLl1F/HOQdAMStP0N3PyZa0oKjSBhdTZJ5gMzCAPD39
+   0mqejyxzgr5A8x+SlI+NLyfVoDZ1OktonVQVeXXYHu2A8ym2mBT7Uu6OI
+   p58jQ7WEvnpqXYd5FFhCm9M9vNGPy5gZjDrvhKd01XeZM7bqSerfaBYJb
+   g7lkHKAh1LRuqYhVKxf1xKqgYvZcR60U3C3FWQ2DTic5fw/3psbA05N4w
+   6ZHHHUZGTuXlMTpVQU6EV23CCEVwRNOtOqGt8RL3E2SJe7dJ/v6x5X1Yx
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10538"; a="375954199"
+X-IronPort-AV: E=McAfee;i="6500,9779,10538"; a="311442548"
 X-IronPort-AV: E=Sophos;i="5.96,184,1665471600"; 
-   d="scan'208";a="375954199"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 05:16:56 -0800
+   d="scan'208";a="311442548"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2022 05:35:41 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10538"; a="730389472"
+X-IronPort-AV: E=McAfee;i="6500,9779,10538"; a="672484472"
 X-IronPort-AV: E=Sophos;i="5.96,184,1665471600"; 
-   d="scan'208";a="730389472"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP; 22 Nov 2022 05:16:52 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oxT8t-00FqKL-0H;
-        Tue, 22 Nov 2022 15:16:51 +0200
-Date:   Tue, 22 Nov 2022 15:16:50 +0200
+   d="scan'208";a="672484472"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga008.jf.intel.com with ESMTP; 22 Nov 2022 05:35:38 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 6364B128; Tue, 22 Nov 2022 15:36:04 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        djrscally@gmail.com, heikki.krogerus@linux.intel.com,
-        sakari.ailus@linux.intel.com, gregkh@linuxfoundation.org,
-        rafael@kernel.org
-Subject: Re: [PATCH v2] device property: fix of node refcount leak in
- fwnode_graph_get_next_endpoint()
-Message-ID: <Y3zLwj/G/E3kZsJE@smile.fi.intel.com>
-References: <20221122120039.760773-1-yangyingliang@huawei.com>
- <Y3zGjLsDmVv0ErVR@smile.fi.intel.com>
- <75602dce-0780-e51a-c8c9-d1820ddf3e2b@huawei.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH v4 1/4] device property: Get rid of __PROPERTY_ENTRY_ARRAY_EL*SIZE*()
+Date:   Tue, 22 Nov 2022 15:35:57 +0200
+Message-Id: <20221122133600.49897-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <75602dce-0780-e51a-c8c9-d1820ddf3e2b@huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,23 +63,89 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 22, 2022 at 09:12:41PM +0800, Yang Yingliang wrote:
-> On 2022/11/22 20:54, Andy Shevchenko wrote:
-> > On Tue, Nov 22, 2022 at 08:00:39PM +0800, Yang Yingliang wrote:
+First of all, _ELEMENT_SIZE() repeats existing sizeof_field() macro.
+Second, usage of _ARRAY_ELSIZE_LEN() adds unnecessary indirection
+to the data layout. It's more understandable when the data structure
+is placed explicitly. That said, get rid of those macros by replacing
+them with the existing helper and explicit data structure layout.
 
-...
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+v4: added tag (Heikki)
+v3: fixed typo in PROPERTY_ENTRY_REF_ARRAY_LEN() impl (LKP)
+v2: rebased on latest Linux Next, fixed anon union assignment
+ include/linux/property.h | 34 ++++++++++++++--------------------
+ 1 file changed, 14 insertions(+), 20 deletions(-)
 
-> > It seems too complicated for the simple fix.
-> > 
-> > As I said, just drop const qualifier and add fwnode_handle_get() in the 'else'
-> > branch. This will allow you to drop if (prev) at the end.
-> 
-> fwnode is const, fwnode_handle_get doesn't accept this type.
-
-I'm talking about parent.
-
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 5d840299146d..0eab13a5c7df 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -12,6 +12,7 @@
+ 
+ #include <linux/bits.h>
+ #include <linux/fwnode.h>
++#include <linux/stddef.h>
+ #include <linux/types.h>
+ 
+ struct device;
+@@ -311,24 +312,14 @@ struct property_entry {
+  * crafted to avoid gcc-4.4.4's problems with initialization of anon unions
+  * and structs.
+  */
+-
+-#define __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_)				\
+-	sizeof(((struct property_entry *)NULL)->value._elem_[0])
+-
+-#define __PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_, _elsize_, _Type_,	\
+-					  _val_, _len_)			\
+-(struct property_entry) {						\
+-	.name = _name_,							\
+-	.length = (_len_) * (_elsize_),					\
+-	.type = DEV_PROP_##_Type_,					\
+-	{ .pointer = _val_ },						\
++#define __PROPERTY_ENTRY_ARRAY_LEN(_name_, _elem_, _Type_, _val_, _len_)		\
++(struct property_entry) {								\
++	.name = _name_,									\
++	.length = (_len_) * sizeof_field(struct property_entry, value._elem_[0]),	\
++	.type = DEV_PROP_##_Type_,							\
++	{ .pointer = _val_ },								\
+ }
+ 
+-#define __PROPERTY_ENTRY_ARRAY_LEN(_name_, _elem_, _Type_, _val_, _len_)\
+-	__PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_,			\
+-				__PROPERTY_ENTRY_ELEMENT_SIZE(_elem_),	\
+-				_Type_, _val_, _len_)
+-
+ #define PROPERTY_ENTRY_U8_ARRAY_LEN(_name_, _val_, _len_)		\
+ 	__PROPERTY_ENTRY_ARRAY_LEN(_name_, u8_data, U8, _val_, _len_)
+ #define PROPERTY_ENTRY_U16_ARRAY_LEN(_name_, _val_, _len_)		\
+@@ -340,9 +331,12 @@ struct property_entry {
+ #define PROPERTY_ENTRY_STRING_ARRAY_LEN(_name_, _val_, _len_)		\
+ 	__PROPERTY_ENTRY_ARRAY_LEN(_name_, str, STRING, _val_, _len_)
+ #define PROPERTY_ENTRY_REF_ARRAY_LEN(_name_, _val_, _len_)		\
+-	__PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_,			\
+-				sizeof(struct software_node_ref_args),	\
+-				REF, _val_, _len_)
++(struct property_entry) {						\
++	.name = _name_,							\
++	.length = (_len_) * sizeof(struct software_node_ref_args),	\
++	.type = DEV_PROP_REF,						\
++	{ .pointer = _val_ },						\
++}
+ 
+ #define PROPERTY_ENTRY_U8_ARRAY(_name_, _val_)				\
+ 	PROPERTY_ENTRY_U8_ARRAY_LEN(_name_, _val_, ARRAY_SIZE(_val_))
+@@ -360,7 +354,7 @@ struct property_entry {
+ #define __PROPERTY_ENTRY_ELEMENT(_name_, _elem_, _Type_, _val_)		\
+ (struct property_entry) {						\
+ 	.name = _name_,							\
+-	.length = __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_),		\
++	.length = sizeof_field(struct property_entry, value._elem_[0]),	\
+ 	.is_inline = true,						\
+ 	.type = DEV_PROP_##_Type_,					\
+ 	{ .value = { ._elem_[0] = _val_ } },				\
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.35.1
 
