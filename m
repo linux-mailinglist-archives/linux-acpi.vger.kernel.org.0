@@ -2,147 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA78F633BA2
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 12:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8890A633BFB
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 13:02:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233452AbiKVLnV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Nov 2022 06:43:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57494 "EHLO
+        id S232611AbiKVMCb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Nov 2022 07:02:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbiKVLmr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 06:42:47 -0500
-Received: from out30-43.freemail.mail.aliyun.com (out30-43.freemail.mail.aliyun.com [115.124.30.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29CD1096;
-        Tue, 22 Nov 2022 03:41:03 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0VVSKSda_1669117258;
-Received: from 30.221.150.59(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VVSKSda_1669117258)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Nov 2022 19:41:00 +0800
-Message-ID: <c407cfb5-ccec-adca-47dd-437846f2f2f8@linux.alibaba.com>
-Date:   Tue, 22 Nov 2022 19:40:58 +0800
+        with ESMTP id S231998AbiKVMC3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 07:02:29 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B497B4E;
+        Tue, 22 Nov 2022 04:02:26 -0800 (PST)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NGjXy2DrCzmW3s;
+        Tue, 22 Nov 2022 20:01:54 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 22 Nov 2022 20:02:24 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 22 Nov
+ 2022 20:02:24 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <andriy.shevchenko@linux.intel.com>, <djrscally@gmail.com>,
+        <heikki.krogerus@linux.intel.com>, <sakari.ailus@linux.intel.com>,
+        <gregkh@linuxfoundation.org>, <rafael@kernel.org>
+Subject: [PATCH v2] device property: fix of node refcount leak in fwnode_graph_get_next_endpoint()
+Date:   Tue, 22 Nov 2022 20:00:39 +0800
+Message-ID: <20221122120039.760773-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.13.1
-Subject: Re: [PATCH] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on action required events
-Content-Language: en-US
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     "Luck, Tony" <tony.luck@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
-        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <CAJZ5v0hdgxsDiXqOmeqBQoZUQJ1RssM=3jpYpWt3qzy0n2eyaA@mail.gmail.com>
- <SJ1PR11MB60839264AEF656759C8C56D1FC329@SJ1PR11MB6083.namprd11.prod.outlook.com>
- <6eb3c5f4-2198-d501-7320-ea6209a63465@linux.alibaba.com>
-In-Reply-To: <6eb3c5f4-2198-d501-7320-ea6209a63465@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+The 'parent' returned by fwnode_graph_get_port_parent()
+with refcount incremented when 'prev' is not null, it
+needs be put when finish using it.
 
+Because the parent is const, introduce a new variable to
+store the returned fwnode, then put it before returning
+from fwnode_graph_get_next_endpoint().
 
-在 2022/11/2 PM7:53, Shuai Xue 写道:
-> 
-> 
-> 在 2022/10/29 AM1:25, Luck, Tony 写道:
->>>> cper_sec_mem_err::error_type identifies the type of error that occurred
->>>> if CPER_MEM_VALID_ERROR_TYPE is set. So, set memory failure flags as 0
->>>> for Scrub Uncorrected Error (type 14). Otherwise, set memory failure
->>>> flags as MF_ACTION_REQUIRED.
->>
->> On x86 the "action required" cases are signaled by a synchronous machine check
->> that is delivered before the instruction that is attempting to consume the uncorrected
->> data retires. I.e., it is guaranteed that the uncorrected error has not been propagated
->> because it is not visible in any architectural state.
-> 
-> On arm, if a 2-bit (uncorrectable) error is detected, and the memory access has been
-> architecturally executed, that error is considered “consumed”. The CPU will take a
-> synchronous error exception, signaled as synchronous external abort (SEA), which is
-> analogously to MCE.
-> 
->>
->> APEI signaled errors don't fall into that category on x86 ... the uncorrected data
->> could have been consumed and propagated long before the signaling used for
->> APEI can alert the OS.
->>
->> Does ARM deliver APEI signals synchronously?
->>
->> If not, then this patch might deliver a false sense of security to applications
->> about the state of uncorrected data in the system.
->>
-> 
-> Well, it does not always. There are many APEI notification, such as SCI, GSIV, GPIO,
-> SDEI, SEA, etc. Not all APEI notifications are synchronously and it depends on
-> hardware signal. As far as I know, if a UE is detected and consumed, synchronous external
-> abort is signaled to firmware and firmware then performs a first-level triage and
-> synchronously notify OS by SDEI or SEA notification. On the other hand, if CE is
-> detected, a asynchronous interrupt will be signaled and firmware could notify OS
-> by GPIO or GSIV.
-> 
-> Best Regards,
-> Shuai
-> 
-> 
+Fixes: b5b41ab6b0c1 ("device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+v1 -> v2:
+  Introduce a new variable to store the returned fwnode.
+---
+ drivers/base/property.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-
-Hi, Tony,
-
-Prefetch data with UE error triggers async interrupt on both X86 and Arm64 platform
-(CMCI in X86 and SPI in arm64). It does not belongs to scrub UEs. I have to admit that
-cper_sec_mem_err::error_type is not an appropriate basis to distinguish
-"action required" cases.
-
-
-
-acpi_hest_generic_data::flags (UEFI spec section N.2.2) could be used to indicate
-Action Optional (Scrub/Prefetch).
-
-	Bit 5 – Latent error: If set this flag indicates that action has been
-	taken to ensure error containment (such a poisoning data), but
-	the error has not been fully corrected and the data has not been
-	consumed. System software may choose to take further
-	corrective action before the data is consumed.
-
-Our hardware team has submitted a proposal to UEFI community to add a new bit:
-
-	Bit 8 – sync flag; if set this flag indicates that
-	this event record is synchronous(e.g. cpu
-	core consumes poison data, then cause
-	instruction/data abort); if not set, this event
-	record is asynchronous.
-
-With bit 8, we will know it is "Action Required".
-
-
-I will send a new patch set to rework GHES error handling after the proposal is accept.
-
-
-Thank you.
-
-Best Regards
-Shuai
-
-
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 2a5a37fcd998..7a32582aaca8 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -989,26 +989,32 @@ struct fwnode_handle *
+ fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
+ 			       struct fwnode_handle *prev)
+ {
++	struct fwnode_handle *ep, *port_parent = NULL;
+ 	const struct fwnode_handle *parent;
+-	struct fwnode_handle *ep;
+ 
+ 	/*
+ 	 * If this function is in a loop and the previous iteration returned
+ 	 * an endpoint from fwnode->secondary, then we need to use the secondary
+ 	 * as parent rather than @fwnode.
+ 	 */
+-	if (prev)
+-		parent = fwnode_graph_get_port_parent(prev);
+-	else
++	if (prev) {
++		port_parent = fwnode_graph_get_port_parent(prev);
++		parent = port_parent;
++	} else {
+ 		parent = fwnode;
++	}
+ 	if (IS_ERR_OR_NULL(parent))
+ 		return NULL;
+ 
+ 	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
+-	if (ep)
++	if (ep) {
++		fwnode_handle_put(port_parent);
+ 		return ep;
++	}
+ 
+-	return fwnode_graph_get_next_endpoint(parent->secondary, NULL);
++	ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
++	fwnode_handle_put(port_parent);
++	return ep;
+ }
+ EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
+ 
+-- 
+2.25.1
 
