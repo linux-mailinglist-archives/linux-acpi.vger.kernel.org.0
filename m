@@ -2,151 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 003396349DF
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Nov 2022 23:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15D9A634DD6
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 03:27:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235127AbiKVWNW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Nov 2022 17:13:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56606 "EHLO
+        id S235342AbiKWC1j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Nov 2022 21:27:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234070AbiKVWNV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 17:13:21 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EE832066;
-        Tue, 22 Nov 2022 14:13:20 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id k2-20020a17090a4c8200b002187cce2f92so187381pjh.2;
-        Tue, 22 Nov 2022 14:13:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4AX85xZR/Z+/BFidSsN8cuPlIss1GzSZ5O8aUvSnWk0=;
-        b=qtAroXIgR/kdmdgCvSWoRUBWUO7Q0R2oetA+DSgo8Im+qMa/WgDIzDI593eVDOfjmp
-         /YNDGl7b6PbGXNqPzfD0FYgqkIGyDLdO86xQISGNXBMAGCXQuwwtVGVVEez+EP+fv2YT
-         zEQKRaATTkqUxQrcsN0JxSecjm28Y7LeWESKEVAyR9T/wWVJF8MbJvxjjbNRQ2D+aCP3
-         kyuy2Nz8vKEQvRzjE6We5EvrQZh7e5sd8wWjPyBazcOmKlUC/RA83uyT7heG/aZy8O8t
-         QOUrE61bK1vgJYcSRRaY5D2iOxjwH6flA1rp/3fPzc5EB3D0BNxCi6I04NseacqdYRTz
-         v75Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4AX85xZR/Z+/BFidSsN8cuPlIss1GzSZ5O8aUvSnWk0=;
-        b=q0Fi4Ia0h0dgHRK03X1yF1Z8NwuxPrtSymaj1n+mbTSH66Kf1xKAZfDvApm6mHNPwu
-         MJ2x02FMF2GFRfSmqbQMth8ctr3wFnIqV1AU3sih2h44qJ8MkgK5029/z7HzeVD2HBIP
-         1NHvYFw5Ibhueu+I7KTHq6NA/5+Bktl8JeO+r5TduDxDSbifsLS/oD1HGtlIfrQk35Nk
-         MavUxNn/iAo7fdWwe5x/y4b11EnwuyhPoWrmmfy8+lFaYo/XLRL++oc12pirV5Ll04c0
-         LxS/P4NjKKGSgTWbhlrcDIyAOyUL3sv0mnWW8bt7AhF0C2R1IFJGuEyOLNaOurFK9HSL
-         V8WQ==
-X-Gm-Message-State: ANoB5pliJ2ugPGUI8r0Oq52Y5oy4PPx9E2UiXHxfnKQkNx7+KgNmNgMF
-        MmP7Wya2k1uOFORcbFv4QAc=
-X-Google-Smtp-Source: AA0mqf7SSV5Spx3SdIMHV/m3SHtcgR2doOiXV0pHeCoiNsvfzayliCTA8GTupUvJ8yUHKFE/rHkUJA==
-X-Received: by 2002:a17:90a:e2c5:b0:214:1648:687d with SMTP id fr5-20020a17090ae2c500b002141648687dmr34036143pjb.78.1669155199951;
-        Tue, 22 Nov 2022 14:13:19 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:af8d:6047:29d5:446c])
-        by smtp.gmail.com with ESMTPSA id g6-20020a170902868600b0018703bf42desm12536214plo.159.2022.11.22.14.13.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Nov 2022 14:13:18 -0800 (PST)
-Date:   Tue, 22 Nov 2022 14:13:15 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Raul Rangel <rrangel@chromium.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Tim Van Patten <timvp@google.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "jingle.wu" <jingle.wu@emc.com.tw>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Len Brown <lenb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Terry Bowman <terry.bowman@amd.com>, Tom Rix <trix@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        llvm@lists.linux.dev, Alexis Savery <asavery@google.com>
-Subject: Re: [PATCH v6 06/13] ACPI: resources: Add wake_capable parameter to
- acpi_dev_irq_flags
-Message-ID: <Y31JezKDlQjmld03@google.com>
-References: <CAHQZ30CJyhPK-OriZ5NZ=GjwNbofaCW6GZ_CvPsL0WiJGsxs-Q@mail.gmail.com>
- <CAJZ5v0gcJRoMSODbTevRdK1zaEZHJcPxvG6XMy9-T_jvwxPFBw@mail.gmail.com>
- <CAHQZ30CQd-0YnQgYG_OJVWn9_aUjvDAuT_DRGsxQF-q+bjr5BA@mail.gmail.com>
- <YzYowYJpRTImmg4m@google.com>
- <CAJZ5v0i+QYcMuqsK9y6qy9qzJdUp503Sidr1e4V_ROyumLKCsw@mail.gmail.com>
- <YzcqdTxLMF5028yz@smile.fi.intel.com>
- <YzcthIfnpi8E6XVk@google.com>
- <CAJZ5v0iKXWBGYPmmg9__g3oHK2GhY+xFMnSA6c5KctOv2kTfNQ@mail.gmail.com>
- <CAHQZ30D0NmVytkmiVYYZdGMEOChsO93hYRrG6SNbFiRO4S=YGA@mail.gmail.com>
- <CAHQZ30D-vBHQG9tDXy_upKHzfFMA9ttUT72K4hqKNS+CtEek3w@mail.gmail.com>
+        with ESMTP id S235331AbiKWC1j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 21:27:39 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D89312ADC;
+        Tue, 22 Nov 2022 18:27:38 -0800 (PST)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NH4gK37slzqScy;
+        Wed, 23 Nov 2022 10:23:41 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 23 Nov 2022 10:27:36 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 23 Nov
+ 2022 10:27:35 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <andriy.shevchenko@linux.intel.com>, <djrscally@gmail.com>,
+        <heikki.krogerus@linux.intel.com>, <sakari.ailus@linux.intel.com>,
+        <gregkh@linuxfoundation.org>, <rafael@kernel.org>
+Subject: [PATCH v3] device property: fix of node refcount leak in fwnode_graph_get_next_endpoint()
+Date:   Wed, 23 Nov 2022 10:25:42 +0800
+Message-ID: <20221123022542.2999510-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHQZ30D-vBHQG9tDXy_upKHzfFMA9ttUT72K4hqKNS+CtEek3w@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 07, 2022 at 11:36:07AM -0700, Raul Rangel wrote:
-> On Mon, Oct 17, 2022 at 8:53 AM Raul Rangel <rrangel@chromium.org> wrote:
-> >
-> > On Sat, Oct 15, 2022 at 10:56 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > On Fri, Sep 30, 2022 at 7:55 PM Dmitry Torokhov
-> > > <dmitry.torokhov@gmail.com> wrote:
-> > > >
-> > > > On Fri, Sep 30, 2022 at 08:42:13PM +0300, Andy Shevchenko wrote:
-> > > > > On Fri, Sep 30, 2022 at 07:13:37PM +0200, Rafael J. Wysocki wrote:
-> > > > > > On Fri, Sep 30, 2022 at 1:22 AM Dmitry Torokhov
-> > > > > > <dmitry.torokhov@gmail.com> wrote:
-> > > > >
-> > > > > ...
-> > > > >
-> > > > > > I think that patches [5-8/13] from this series are significant
-> > > > > > framework changes, so it would make sense to route them via the ACPI
-> > > > > > tree.
-> > > > > >
-> > > > > > If this is fine with everybody, I will queue them up for merging into
-> > > > > > 6.1 (probably in the second half of the upcoming merge window).
-> > > > >
-> > > > > I believe it's fine from GPIO ACPI perspective (there shouldn't be conflict,
-> > > > > but if you wish you always may take this PR [1] to your tree (it's already in
-> > > > > GPIO tree pending v6.1), it may be considered as immutable tag.
-> > > > >
-> > > > > [1]: https://lore.kernel.org/linux-gpio/Yym%2Fj+Y9MBOIhWtK@black.fi.intel.com/
-> > > >
-> > > > Yeah, having an immutable branch hanging off 6.0-rcN would be awesome -
-> > > > I could pull it and this would avoid any potential conflicts later.
-> > >
-> > > This material is in the mainline now, but the branch is still there in
-> > > case you need it:
-> > >
-> > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> > >  acpi-wakeup
-> > >
-> > > It won't be necessary any more after 6.1-rc1 is out, though, I suppose.
-> >
-> 
-> >
-> > Awesome, thanks for merging in the ACPI patches!
-> 
-> Dmitry,
->  What are the next steps to getting the I2C patches landed? Should I
-> push out a new series that's rebased on 6.1-rc1?
+The 'parent' returned by fwnode_graph_get_port_parent()
+with refcount incremented when 'prev' is not NULL, it
+needs be put when finish using it.
 
-Everything should be applied now and will be in 6.2.
+Because the parent is const, introduce a new variable to
+store the returned fwnode, then put it before returning
+from fwnode_graph_get_next_endpoint().
 
-Thanks.
+Fixes: b5b41ab6b0c1 ("device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+v2 -> v3:
+  Add a out label.
 
+v1 -> v2:
+  Introduce a new variable to store the returned fwnode.
+---
+ drivers/base/property.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 2a5a37fcd998..7f338cb4fb7b 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -989,26 +989,32 @@ struct fwnode_handle *
+ fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
+ 			       struct fwnode_handle *prev)
+ {
++	struct fwnode_handle *ep, *port_parent = NULL;
+ 	const struct fwnode_handle *parent;
+-	struct fwnode_handle *ep;
+ 
+ 	/*
+ 	 * If this function is in a loop and the previous iteration returned
+ 	 * an endpoint from fwnode->secondary, then we need to use the secondary
+ 	 * as parent rather than @fwnode.
+ 	 */
+-	if (prev)
+-		parent = fwnode_graph_get_port_parent(prev);
+-	else
++	if (prev) {
++		port_parent = fwnode_graph_get_port_parent(prev);
++		parent = port_parent;
++	} else {
+ 		parent = fwnode;
++	}
+ 	if (IS_ERR_OR_NULL(parent))
+ 		return NULL;
+ 
+ 	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
+ 	if (ep)
+-		return ep;
++		goto out_put_port_parent;
++
++	ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+ 
+-	return fwnode_graph_get_next_endpoint(parent->secondary, NULL);
++out_put_port_parent:
++	fwnode_handle_put(port_parent);
++	return ep;
+ }
+ EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
+ 
 -- 
-Dmitry
+2.25.1
+
