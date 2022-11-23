@@ -2,155 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5123263695B
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 19:56:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B8C0636970
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 20:02:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239551AbiKWSz5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Nov 2022 13:55:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54582 "EHLO
+        id S238833AbiKWTCF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Nov 2022 14:02:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239125AbiKWSz4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Nov 2022 13:55:56 -0500
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C1688F9F;
-        Wed, 23 Nov 2022 10:55:55 -0800 (PST)
-Received: by mail-qk1-f171.google.com with SMTP id j26so5968953qki.10;
-        Wed, 23 Nov 2022 10:55:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U7s6lbvc7lHM7l6f8IQURXuINfb0VjPAm0oTGMN2Eeg=;
-        b=WuxKzdF1+aSxNewHv28NlTwesbEkehJdv/BI/kDap1px1M/byLdic4/Dp8WW2DxDrX
-         pMEUXmfkSzj8ByzEgFw2YpRkpA2qxlSbnHN6U82cP/ZaioY7rVtWV6nghowfCLbtcClQ
-         YgNog1GZnHlUdJdpsgY/ge/PCASxw9M+adjWvxn/aeLca8BDu33av84Uqn6yzjc0S3Uw
-         VqH9lNvLmEU5SVe9uIM0SnZffplt7IJ+9n14CeJZkFLjC8tFwnHc7t7Q2yOrl8guztjc
-         bQspq0Z279CkgGm2J6Hx8WqCIDFLXd31Ku1Flwh1SzEkV3qtRDnsmipH1amnZwnULW2S
-         cl6w==
-X-Gm-Message-State: ANoB5plzq2Schto1HhsNz6hJfR5hb88nncjflpJy/Mn37Sp0fj+4+bXH
-        /N1u9b2Q94BDBGUcYIK0Jeq0rJYyJhQl47CVoX+OlzyiPE8=
-X-Google-Smtp-Source: AA0mqf6shJnjTHqj6dLYBj9ePLdTskc4CscgrYQd0L3ZDN9Khn97ScUVPCcoqITVwY4Dt41j8gvKbRi8Wjm77bNJpro=
-X-Received: by 2002:a05:620a:4611:b0:6fa:af7e:927c with SMTP id
- br17-20020a05620a461100b006faaf7e927cmr25845781qkb.443.1669229755043; Wed, 23
- Nov 2022 10:55:55 -0800 (PST)
-MIME-Version: 1.0
-References: <20221122133600.49897-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20221122133600.49897-1-andriy.shevchenko@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 23 Nov 2022 19:55:44 +0100
-Message-ID: <CAJZ5v0gewC7z5XY+r8=2bkOAO2y8q7VVbrazj0z+4xGRR2Bkew@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] device property: Get rid of __PROPERTY_ENTRY_ARRAY_EL*SIZE*()
+        with ESMTP id S237809AbiKWTCC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Nov 2022 14:02:02 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB1A992B73;
+        Wed, 23 Nov 2022 11:02:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6CA88B823F2;
+        Wed, 23 Nov 2022 19:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBFCC433C1;
+        Wed, 23 Nov 2022 19:01:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1669230119;
+        bh=/+8sC7eTU2zXq6flELFZn64zodlk1JLAzuh+ERsCqDY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yKvfYsb246zix6A7u9SqWYymcPPvPJkZDpNcN6KkkufYCDc0Z3U76bP3vxuVLfPLZ
+         tCfFWn8mbCHzU0BKi2AOpSSmM5+W1Tge1okHQJ8I+9PFK1AUHr++Q+PXEJtW0jMdld
+         9xXrUXmxTYfWASc/OSySE1ObYeTlYmB71Ry1Nt84=
+Date:   Wed, 23 Nov 2022 20:01:56 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Scally <djrscally@gmail.com>,
+Cc:     =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Yong Zhi <yong.zhi@intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>
+Subject: Re: [PATCH v1 3/4] software node: Switch property entry test to new
+ API
+Message-ID: <Y35uJNWfEdpPSo69@kroah.com>
+References: <20221118185617.33908-1-andriy.shevchenko@linux.intel.com>
+ <20221118185617.33908-3-andriy.shevchenko@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221118185617.33908-3-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 22, 2022 at 2:35 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> First of all, _ELEMENT_SIZE() repeats existing sizeof_field() macro.
-> Second, usage of _ARRAY_ELSIZE_LEN() adds unnecessary indirection
-> to the data layout. It's more understandable when the data structure
-> is placed explicitly. That said, get rid of those macros by replacing
-> them with the existing helper and explicit data structure layout.
->
+On Fri, Nov 18, 2022 at 08:56:16PM +0200, Andy Shevchenko wrote:
+> Switch property entry test to use software_node_register_node_group() API.
+> The current one is going to be removed soon.
+> 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-The series in which this patch is included does not apply cleanly for me.
-
-I guess it depends on the earlier material already in Greg's tree, so
-I'm leaving it to Greg.
-
 > ---
-> v4: added tag (Heikki)
-> v3: fixed typo in PROPERTY_ENTRY_REF_ARRAY_LEN() impl (LKP)
-> v2: rebased on latest Linux Next, fixed anon union assignment
->  include/linux/property.h | 34 ++++++++++++++--------------------
->  1 file changed, 14 insertions(+), 20 deletions(-)
->
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 5d840299146d..0eab13a5c7df 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -12,6 +12,7 @@
->
->  #include <linux/bits.h>
->  #include <linux/fwnode.h>
-> +#include <linux/stddef.h>
->  #include <linux/types.h>
->
->  struct device;
-> @@ -311,24 +312,14 @@ struct property_entry {
->   * crafted to avoid gcc-4.4.4's problems with initialization of anon unions
->   * and structs.
->   */
-> -
-> -#define __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_)                          \
-> -       sizeof(((struct property_entry *)NULL)->value._elem_[0])
-> -
-> -#define __PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_, _elsize_, _Type_,    \
-> -                                         _val_, _len_)                 \
-> -(struct property_entry) {                                              \
-> -       .name = _name_,                                                 \
-> -       .length = (_len_) * (_elsize_),                                 \
-> -       .type = DEV_PROP_##_Type_,                                      \
-> -       { .pointer = _val_ },                                           \
-> +#define __PROPERTY_ENTRY_ARRAY_LEN(_name_, _elem_, _Type_, _val_, _len_)               \
-> +(struct property_entry) {                                                              \
-> +       .name = _name_,                                                                 \
-> +       .length = (_len_) * sizeof_field(struct property_entry, value._elem_[0]),       \
-> +       .type = DEV_PROP_##_Type_,                                                      \
-> +       { .pointer = _val_ },                                                           \
->  }
->
-> -#define __PROPERTY_ENTRY_ARRAY_LEN(_name_, _elem_, _Type_, _val_, _len_)\
-> -       __PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_,                       \
-> -                               __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_),  \
-> -                               _Type_, _val_, _len_)
-> -
->  #define PROPERTY_ENTRY_U8_ARRAY_LEN(_name_, _val_, _len_)              \
->         __PROPERTY_ENTRY_ARRAY_LEN(_name_, u8_data, U8, _val_, _len_)
->  #define PROPERTY_ENTRY_U16_ARRAY_LEN(_name_, _val_, _len_)             \
-> @@ -340,9 +331,12 @@ struct property_entry {
->  #define PROPERTY_ENTRY_STRING_ARRAY_LEN(_name_, _val_, _len_)          \
->         __PROPERTY_ENTRY_ARRAY_LEN(_name_, str, STRING, _val_, _len_)
->  #define PROPERTY_ENTRY_REF_ARRAY_LEN(_name_, _val_, _len_)             \
-> -       __PROPERTY_ENTRY_ARRAY_ELSIZE_LEN(_name_,                       \
-> -                               sizeof(struct software_node_ref_args),  \
-> -                               REF, _val_, _len_)
-> +(struct property_entry) {                                              \
-> +       .name = _name_,                                                 \
-> +       .length = (_len_) * sizeof(struct software_node_ref_args),      \
-> +       .type = DEV_PROP_REF,                                           \
-> +       { .pointer = _val_ },                                           \
-> +}
->
->  #define PROPERTY_ENTRY_U8_ARRAY(_name_, _val_)                         \
->         PROPERTY_ENTRY_U8_ARRAY_LEN(_name_, _val_, ARRAY_SIZE(_val_))
-> @@ -360,7 +354,7 @@ struct property_entry {
->  #define __PROPERTY_ENTRY_ELEMENT(_name_, _elem_, _Type_, _val_)                \
->  (struct property_entry) {                                              \
->         .name = _name_,                                                 \
-> -       .length = __PROPERTY_ENTRY_ELEMENT_SIZE(_elem_),                \
-> +       .length = sizeof_field(struct property_entry, value._elem_[0]), \
->         .is_inline = true,                                              \
->         .type = DEV_PROP_##_Type_,                                      \
->         { .value = { ._elem_[0] = _val_ } },                            \
-> --
-> 2.35.1
->
+>  drivers/base/test/property-entry-test.c | 30 ++++++++++++-------------
+>  1 file changed, 14 insertions(+), 16 deletions(-)
+
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
