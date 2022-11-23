@@ -2,171 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83258636101
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 15:04:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE8AC6361E2
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 15:32:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238473AbiKWOD7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Nov 2022 09:03:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57088 "EHLO
+        id S236071AbiKWOcW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Nov 2022 09:32:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238402AbiKWODl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Nov 2022 09:03:41 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23FAC7658;
-        Wed, 23 Nov 2022 05:59:06 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id f18so42997141ejz.5;
-        Wed, 23 Nov 2022 05:59:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AJ96Qo939E/LqBCZfcidWQRpLbhFZIXN8NEAiTpAhxk=;
-        b=iZRqD+AZI8YXmWPNNo+Fwqqrxkdxxp8sdDhXpzQpS+Z7O6ViZRfqwWBRa1+q6Fn++z
-         AayBKunxqdaXyMJwtJZy3prCnDCGQ0bf8s3sNL8v8cU+NRhqFpeFsIofjTg60S/cPv71
-         H+sPHuj9u82mvhCqWAi/DQC3hw1wr9h8SadxlGtO1i2opKK+8L4eXSIBcFr67zvlz0zl
-         CppQAaJx+cMEavlnguot+la0zcqSDuv3T+S6/PQUa7xI6LA3gJLCSh2MX8CVHkwmdm4o
-         1ueE/AeHSGD8djbrX3VA431+kO+OYoaPdqwS1MoX0XoMPIRKU2d/L5Kyjwtu65MvGCmS
-         m0iA==
+        with ESMTP id S238592AbiKWObn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Nov 2022 09:31:43 -0500
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F273D4D5E9;
+        Wed, 23 Nov 2022 06:30:50 -0800 (PST)
+Received: by mail-qv1-f46.google.com with SMTP id h7so11633867qvs.3;
+        Wed, 23 Nov 2022 06:30:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AJ96Qo939E/LqBCZfcidWQRpLbhFZIXN8NEAiTpAhxk=;
-        b=N/g480wtD8DkRSvzjFK0982z5jF2d5bt6Z1mRY2gUT8oWuFBrWpXcTDoTGEPC1oVjY
-         HmgB7FZUep8UNto1dQarttCT5e3x/XLxsACdFjekiqBJLgQa5Aw7Tk6tO3E9FkGwA5ON
-         ALcL2RLr1kNdIuXQyYgriWXLBCa6cFr4zmC/W5v5grjhxxpy2VeztCJkn6jUdMJzHS2M
-         ZBMuVcPqSbispu9NW8zw5xFgVDF+YIR2cpycjrTInTGEAI0B7U4HWbOtVSiJRU84vp43
-         fy8C2FRHALL5moTG7La08EDJ5ioCnI51rHhzn5kVAn5ZhAEcciSfpraZ5ee5a63WXSVG
-         v5Cg==
-X-Gm-Message-State: ANoB5pnP/M70V7HMqNOn81cSXBk/Q/kxqbX6LGjBSOfq10OY/urW1f+G
-        X13+ETVLkpWNCdJ4HXMB4YA=
-X-Google-Smtp-Source: AA0mqf4zngmNYriYQQf6WQDa/SSuXsv/0hsexE8WPkPKL+mwy2wneQC+ycXRX8UErwxgAKGb3ytkyA==
-X-Received: by 2002:a17:906:c30c:b0:7ba:1f48:ccec with SMTP id s12-20020a170906c30c00b007ba1f48ccecmr1909635ejz.105.1669211944571;
-        Wed, 23 Nov 2022 05:59:04 -0800 (PST)
-Received: from [10.20.0.7] ([37.120.217.162])
-        by smtp.gmail.com with ESMTPSA id d12-20020a056402078c00b0045b3853c4b7sm7741854edy.51.2022.11.23.05.59.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Nov 2022 05:59:04 -0800 (PST)
-Message-ID: <97be39ed-3cea-d55a-caa6-c2652baef399@gmail.com>
-Date:   Wed, 23 Nov 2022 14:59:00 +0100
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uPqYz53CENoAvpoVCMtaYiYdCQ+z24Prz3+5ZCF25yI=;
+        b=AAPbMIKMB67EsQyJPsC79mZC2RcIGlRf8gB7VcdzMXb92AnfiJ9ORGFjpUfv1bnSde
+         hgo1tSakWj401OsetoWuKh8aKw51w4/j3P+0QiJRBob0tzO+uGz9O7YA6E0Tmc0iFKsv
+         wyyKwf/fysfzI525f+p9RBs3orILBxlgI0diPNIu+O5iIfao0svKY0shosTMw0BxXTXv
+         mtsC/Ck6ST/NuQ7VpXm4AlqMDM93bH9Lzv4Unj9IJJbh12DzUTw+Syz+guAiWm8bfrHT
+         9E69U6+V09LQSWBaY6TyWuyET06MqiOcpej/7pgjwux6KwbrH/X1YDRfWYBS4gGxRYFN
+         nYXw==
+X-Gm-Message-State: ANoB5pkvx+79OoFCljB5ncaDhnmJRyPFZTbJEyDatiXuc/NqB0hvuE40
+        PAZWDwgEXDZAktVaG2CTav4C6uWgB+ld0RSbWUk=
+X-Google-Smtp-Source: AA0mqf6qnpTmTFryR7zC/cHKFhWbJw3XtyaIp3+m15iLdslak72lEuPM/k+aCKzeVkEvcTVVvnogkpm9xBii4DFvxw0=
+X-Received: by 2002:a0c:ed50:0:b0:4bb:f952:c799 with SMTP id
+ v16-20020a0ced50000000b004bbf952c799mr8421203qvq.3.1669213850057; Wed, 23 Nov
+ 2022 06:30:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 3/5] driver core: make struct device_type.uevent() take a
- const *
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+References: <20221121171217.3581004-1-pierre.gondois@arm.com>
+In-Reply-To: <20221121171217.3581004-1-pierre.gondois@arm.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 23 Nov 2022 15:30:39 +0100
+Message-ID: <CAJZ5v0gbr5D8Qt5t=Y-bQ=B67EEJWsbmpO9BTNxapxQs3yVZiA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] [PATCH 0/5] arch_topology: Build cacheinfo from
+ primary CPU
+To:     Pierre Gondois <pierre.gondois@arm.com>
+Cc:     linux-kernel@vger.kernel.org, Ionela.Voinescu@arm.com,
+        Rob.Herring@arm.com, Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Wolfram Sang <wsa@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sean Young <sean@mess.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Jilin Yuan <yuanjilin@cdjrlc.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Won Chung <wonchung@google.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-References: <20221123122523.1332370-1-gregkh@linuxfoundation.org>
- <20221123122523.1332370-3-gregkh@linuxfoundation.org>
- <711d5275-7e80-c00d-0cdc-0f3d52175361@gmail.com>
- <Y34hgIW8p1RlQTBB@smile.fi.intel.com>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <Y34hgIW8p1RlQTBB@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Gavin Shan <gshan@redhat.com>, SeongJae Park <sj@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11/23/22 14:34, Andy Shevchenko wrote:
-> On Wed, Nov 23, 2022 at 02:14:31PM +0100, Maximilian Luz wrote:
->> On 11/23/22 13:25, Greg Kroah-Hartman wrote:
->>> The uevent() callback in struct device_type should not be modifying the
->>> device that is passed into it, so mark it as a const * and propagate the
->>> function signature changes out into all relevant subsystems that use
->>> this callback.
-> 
+On Mon, Nov 21, 2022 at 6:12 PM Pierre Gondois <pierre.gondois@arm.com> wrote:
+>
+> v2:
+>  - Applied renaming/formatting comments from v1.
+>  - Check CACHE_TYPE_VALID flag in pppt.c.
+>
+> Note:
+> This patchset requires the following patch to be applied first in
+> order to avoid the same bug described in the commit message:
+> https://lore.kernel.org/all/20221116094958.2141072-1-pierre.gondois@arm.com/
+>
+> [1] and [2] build the CPU topology from the cacheinfo information for
+> both DT/ACPI based systems and remove (struct cpu_topology).llc_id
+> which was used by ACPI only.
+>
+> Creating the cacheinfo for secondary CPUs is done during early boot.
+> Preemption and interrupts are disabled at this stage. On PREEMPT_RT
+> kernels, allocating memory (and parsing the PPTT table for ACPI based
+> systems) triggers a:
+>   'BUG: sleeping function called from invalid context' [4]
+>
+> To prevent this bug, allocate the cacheinfo from the primary CPU when
+> preemption and interrupts are enabled and before booting secondary
+> CPUs. The cache levels/leaves are computed from DT/ACPI PPTT information
+> only, without relying on the arm64 CLIDR_EL1 register.
+> If no cache information is found in the DT/ACPI PPTT, then fallback
+> to the current state, triggering [4] on PREEMPT_RT kernels.
+>
+> Patches to update the arm64 device trees that have incomplete cacheinfo
+> (mostly for missing the 'cache-level' or 'cache-unified' property)
+> have been sent at [3].
+>
+> Tested platforms:
+> - ACPI + PPTT: Ampere Altra, Ampere eMAG, Cavium ThunderX2,
+>   Kunpeng 920, Juno-r2
+> - DT: rb5, db845c, Juno-r2
+>
+> [1] https://lore.kernel.org/all/20220704101605.1318280-1-sudeep.holla@arm.com/
+> [2] https://lore.kernel.org/all/20220720-arch_topo_fixes-v3-0-43d696288e84@arm.com/
+> [3] https://lore.kernel.org/all/20221107155825.1644604-1-pierre.gondois@arm.com/
+> [4] On an Ampere Altra, with PREEMPT_RT kernel based on v6.0.0-rc4:
+>
+>
+> [    7.560791] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+> [    7.560794] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/111
+> [    7.560796] preempt_count: 1, expected: 0
+> [    7.560797] RCU nest depth: 1, expected: 1
+> [    7.560799] 3 locks held by swapper/111/0:
+> [    7.560800]  #0: ffff403e406cae98 (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x218/0x12c8
+> [    7.560811]  #1: ffffc5f8ed09f8e8 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x48/0xf0
+> [    7.560820]  #2: ffff403f400b4fd8 (&zone->lock){+.+.}-{3:3}, at: rmqueue_bulk+0x64/0xa80
+> [    7.560824] irq event stamp: 0
+> [    7.560825] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+> [    7.560827] hardirqs last disabled at (0): [<ffffc5f8e9f7d594>] copy_process+0x5dc/0x1ab8
+> [    7.560830] softirqs last  enabled at (0): [<ffffc5f8e9f7d594>] copy_process+0x5dc/0x1ab8
+> [    7.560833] softirqs last disabled at (0): [<0000000000000000>] 0x0
+> [    7.560834] Preemption disabled at:
+> [    7.560835] [<ffffc5f8e9fd3c28>] migrate_enable+0x30/0x130
+> [    7.560838] CPU: 111 PID: 0 Comm: swapper/111 Tainted: G        W          6.0.0-rc4-[...]
+> [    7.560841] Call trace:
 > [...]
-> 
->>> -static inline struct ssam_device *to_ssam_device(struct device *d)
->>> +static inline struct ssam_device *to_ssam_device(const struct device *d)
->>>    {
->>>    	return container_of(d, struct ssam_device, dev);
->>>    }
->>
->> I am slightly conflicted about this change as that now more or less
->> implicitly drops the const. So I'm wondering if it wouldn't be better to
->> either create a function specifically for const pointers or to just
->> open-code it in the instance above.
->>
->> I guess we could also convert this to a macro. Then at least there
->> wouldn't be an explicit and potentially misleading const-conversion
->> indicated in the function signature.
-> 
-> This is an intermediate step as far as I know since moving container_of to
-> recognize const is a bit noisy right now. I guess you can find a discussion
-> on the topic between Greg and Sakari.
+> [    7.560870]  __kmalloc+0xbc/0x1e8
+> [    7.560873]  detect_cache_attributes+0x2d4/0x5f0
+> [    7.560876]  update_siblings_masks+0x30/0x368
+> [    7.560880]  store_cpu_topology+0x78/0xb8
+> [    7.560883]  secondary_start_kernel+0xd0/0x198
+> [    7.560885]  __secondary_switched+0xb0/0xb4
+>
+> Pierre Gondois (5):
+>   cacheinfo: Use RISC-V's init_cache_level() as generic OF
+>     implementation
+>   cacheinfo: Return error code in init_of_cache_level()
+>   ACPI: PPTT: Remove acpi_find_cache_levels()
+>   ACPI: PPTT: Update acpi_find_last_cache_level() to
+>     acpi_get_cache_info()
+>   arch_topology: Build cacheinfo from primary CPU
+>
+>  arch/arm64/kernel/cacheinfo.c |   9 ++-
+>  arch/riscv/kernel/cacheinfo.c |  39 +------------
+>  drivers/acpi/pptt.c           |  93 +++++++++++++++++-------------
+>  drivers/base/arch_topology.c  |  10 +++-
+>  drivers/base/cacheinfo.c      | 104 ++++++++++++++++++++++++++++++----
+>  include/linux/cacheinfo.h     |  10 +++-
+>  6 files changed, 170 insertions(+), 95 deletions(-)
+>
+> --
 
-Thanks! I assume you are referring to the following?
+For the ACPI material in the series:
 
-	https://lore.kernel.org/lkml/4218173bd72b4f1899d4c41a8e251f0d@AcuMS.aculab.com/T/
+Acked-by: Rafael J. Wysocki  <rafael.j.wysocki@intel.com>
 
-As far as I can tell this is only a warning in documentation, not
-compile time (which would probably be impossible?).
-
-As I've said I'd be fine with converting the function to a macro (and
-preferably adding a similar warning like the one proposed in that
-thread). The point that irks me up is just that, as proposed, the
-function signature would now advertise a conversion that should never be
-happening.
-
-Having two separate functions would create a compile-time guarantee, so
-I'd prefer that, but I can understand if that might be considered too
-noisy in code. Or if there is a push to make container_of() emit a
-compile-time warning I'd also be perfectly happy with converting it to a
-macro now as that'd alleviate the need for functions in the future.
-
-Regards,
-Max
-
+and I'm assuming that this series will be merged through a different tree.
