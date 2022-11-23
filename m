@@ -2,68 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FACA634E78
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 04:42:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BABA6358D7
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 11:04:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235369AbiKWDmc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Nov 2022 22:42:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53576 "EHLO
+        id S237194AbiKWKD4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Nov 2022 05:03:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234329AbiKWDmb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Nov 2022 22:42:31 -0500
-Received: from out30-56.freemail.mail.aliyun.com (out30-56.freemail.mail.aliyun.com [115.124.30.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A19ACD4;
-        Tue, 22 Nov 2022 19:42:28 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0VVV8TGg_1669174943;
-Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0VVV8TGg_1669174943)
-          by smtp.aliyun-inc.com;
-          Wed, 23 Nov 2022 11:42:26 +0800
-From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To:     rafael@kernel.org
-Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH] ACPI: bus: make osc_sb_ffh_opregion_support_confirmed static
-Date:   Wed, 23 Nov 2022 11:42:15 +0800
-Message-Id: <20221123034215.119461-1-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
+        with ESMTP id S237475AbiKWKCQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Nov 2022 05:02:16 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5ED69FAE98;
+        Wed, 23 Nov 2022 01:54:27 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69F981FB;
+        Wed, 23 Nov 2022 01:54:33 -0800 (PST)
+Received: from bogus (unknown [10.57.6.137])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3EEAB3F587;
+        Wed, 23 Nov 2022 01:54:24 -0800 (PST)
+Date:   Wed, 23 Nov 2022 09:54:21 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linux-kernel@vger.kernel.org, Abaci Robot <abaci@linux.alibaba.com>
+Subject: Re: [PATCH] ACPI: bus: make osc_sb_ffh_opregion_support_confirmed
+ static
+Message-ID: <20221123095421.ffolxbq2csqirw7u@bogus>
+References: <20221123034215.119461-1-jiapeng.chong@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221123034215.119461-1-jiapeng.chong@linux.alibaba.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This symbol is not used outside of bus.c, so marks it static.
+On Wed, Nov 23, 2022 at 11:42:15AM +0800, Jiapeng Chong wrote:
+> This symbol is not used outside of bus.c, so marks it static.
+> 
+> drivers/acpi/bus.c:304:6: warning: symbol 'osc_sb_ffh_opregion_support_confirmed' was not declared. Should it be static?
+> 
+> Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3241
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
 
-drivers/acpi/bus.c:304:6: warning: symbol 'osc_sb_ffh_opregion_support_confirmed' was not declared. Should it be static?
+Sorry for not replying to the original report which I meant to and for some
+reason left it in the draft. Anyways in order to fix another bug, this
+variable was removed thereby removing this build/sparse warning. This
+warning should not appear from today's linux-next.
 
-Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3241
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
- drivers/acpi/bus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for spotting and this patch fixing it.
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index a5ec8120e510..c2effd3f56ab 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -301,7 +301,7 @@ EXPORT_SYMBOL_GPL(osc_sb_native_usb4_support_confirmed);
- 
- bool osc_sb_cppc2_support_acked;
- 
--bool osc_sb_ffh_opregion_support_confirmed;
-+static bool osc_sb_ffh_opregion_support_confirmed;
- 
- static u8 sb_uuid_str[] = "0811B06E-4A27-44F9-8D60-3CBBC22E7B48";
- static void acpi_bus_osc_negotiate_platform_control(void)
 -- 
-2.20.1.7.g153144c
-
+Regards,
+Sudeep
